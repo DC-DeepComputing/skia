@@ -408,7 +408,7 @@ private:
 };
 
 struct Device::StripGeneratorWrapper {
-    StripGenerator<GpuTile<SparseStripsConfig::kTileWidth, SparseStripsConfig::kTileHeight>> fGenerator;
+    StripGenerator<Tile<SparseStripsConfig::kTileWidth, SparseStripsConfig::kTileHeight>> fGenerator;
 
     StripGeneratorWrapper(SkISize deviceSize, const SkTDArray<SparseStripsConfig::MSAAType>& lut, Recorder* recorder)
         : fGenerator(deviceSize, lut, recorder) {}

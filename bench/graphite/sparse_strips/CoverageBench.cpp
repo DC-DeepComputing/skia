@@ -15,6 +15,9 @@
 #include "src/gpu/graphite/sparse_strips/Flatten.h"
 #include "src/gpu/graphite/sparse_strips/MSAA_LUT.h"
 #include "src/gpu/graphite/sparse_strips/MakeStrip.h"
+#include "src/gpu/graphite/sparse_strips/MakeStrip_impl.h"
+#include "src/gpu/graphite/sparse_strips/CompressedRowTiler.h"
+#include "src/gpu/graphite/sparse_strips/RowTiler.h"
 #include "src/gpu/graphite/sparse_strips/SparseStripsConfig.h"
 #include "src/gpu/graphite/sparse_strips/Strip.h"
 #include "src/gpu/graphite/sparse_strips/Tiler.h"
@@ -34,8 +37,10 @@ public:
                                   WideTiles<kTileHeight>&,
                                   bool,
                                   const WindingHistogram&,
-                                  const SkIRect&,
-                                  MsaaExactMaskObserver<MSAAType>
+                                  const SkIRect&
+#if defined(GPU_TEST_UTILS)
+                                  , MsaaExactMaskObserver<MSAAType>
+#endif
     );
 
     CoverageBench(const char* name, MakeStripsFn func)
@@ -72,8 +77,15 @@ protected:
         SkTDArray<MSAAType> alphas;
         for (int i = 0; i < loops; ++i) {
             for (int ii = 0; ii < fTiles.size(); ++ii) {
+                strips.clear();
+                alphas.clear();
+                wides.clear();
                 fFunc(fTiles[ii], strips, alphas, SkPathFillType::kDefault, fPolylines[ii], fLUT,
-                      wides, /*isCulled=*/false, fCulled, Tiger::kDim, nullptr);
+                      wides, /*isCulled=*/false, fCulled, Tiger::kDim
+#if defined(GPU_TEST_UTILS)
+                      , nullptr
+#endif
+                );
             }
         }
     }
@@ -83,6 +95,81 @@ private:
     MakeStripsFn fFunc;
     skia_private::TArray<Polyline> fPolylines;
     skia_private::TArray<Tiles<kTileWidth, kTileHeight>> fTiles;
+    SkTDArray<MSAAType> fLUT;
+    WindingHistogram fCulled;
+};
+
+template <uint16_t kTileWidth, uint16_t kTileHeight, typename MSAAType>
+class CoverageBenchRow : public Benchmark {
+public:
+    using MakeRowStripsFn = void (*)(RowTiles<kTileWidth, kTileHeight>&,
+                                     SkTDArray<Strip>&,
+                                     SkTDArray<MSAAType>&,
+                                     bool,
+                                     const Polyline&,
+                                     const SkTDArray<MSAAType>&,
+                                     WideTiles<kTileHeight>&,
+                                     bool,
+                                     const WindingHistogram&,
+                                     const SkIRect&
+#if defined(GPU_TEST_UTILS)
+                                     , MsaaExactMaskObserver<MSAAType>
+#endif
+    );
+
+    CoverageBenchRow(const char* name, MakeRowStripsFn func)
+            : fFunc(func)
+            , fLUT(GenerateMSAALUT<MSAAType>())
+            , fCulled((Tiger::kImageHeight + kTileHeight + 1) / kTileHeight) {
+        fName.printf("SparseStrips_%s_%ux%u", name, kTileWidth, kTileHeight);
+        fCulled.resize((Tiger::kImageHeight + kTileHeight + 1) / kTileHeight);
+    }
+
+protected:
+    const char* onGetName() override { return fName.c_str(); }
+
+    void onDelayedSetup() override {
+        Flatten flattener;
+        for (const char* svgString : Tiger::kTigerPathStrings) {
+            SkPath path;
+            if (SkParsePath::FromSVGString(svgString, &path)) {
+                Polyline polyline;
+                flattener.processPaths<FlattenMode::kSimd>(path, SkMatrix(), Tiger::kDim, polyline);
+                RowTiles<kTileWidth, kTileHeight> tiler;
+                tiler.reset();
+                tiler.makeTilesMSAA(polyline, Tiger::kDim, fCulled);
+                tiler.sortTiles();
+                fTiles.emplace_back(std::move(tiler));
+                fPolylines.emplace_back(polyline);
+            }
+        }
+    }
+
+    void onDraw(int loops, SkCanvas* canvas) override {
+        SkTDArray<Strip> strips;
+        WideTiles<kTileHeight> wides;
+        SkTDArray<MSAAType> alphas;
+        for (int i = 0; i < loops; ++i) {
+            for (int ii = 0; ii < fTiles.size(); ++ii) {
+                strips.clear();
+                alphas.clear();
+                wides.clear();
+                // Assumes default fill type mapped to kIsWinding=true via template argument
+                fFunc(fTiles[ii], strips, alphas, /*isInverse=*/false, fPolylines[ii], fLUT,
+                      wides, /*isCulled=*/false, fCulled, Tiger::kDim
+#if defined(GPU_TEST_UTILS)
+                      , nullptr
+#endif
+                );
+            }
+        }
+    }
+
+private:
+    SkString fName;
+    MakeRowStripsFn fFunc;
+    skia_private::TArray<Polyline> fPolylines;
+    skia_private::TArray<RowTiles<kTileWidth, kTileHeight>> fTiles;
     SkTDArray<MSAAType> fLUT;
     WindingHistogram fCulled;
 };
@@ -139,6 +226,8 @@ protected:
 
         for (int i = 0; i < loops; ++i) {
             for (int ii = 0; ii < fTiles.size(); ++ii) {
+                strips.clear();
+                wides.clear();
                 GpuTiles mutableTiles = fTiles[ii];
 
                 fFunc(mutableTiles, strips, SkPathFillType::kDefault, fPolylines[ii], wides,
@@ -152,6 +241,88 @@ private:
     MakeStripsFn fFunc;
     skia_private::TArray<Polyline> fPolylines;
     skia_private::TArray<GpuTiles> fTiles;
+    WindingHistogram fCulled;
+};
+
+template <uint16_t kTileWidth, uint16_t kTileHeight, typename MSAAType>
+class CoverageBenchCompressedRow : public Benchmark {
+public:
+    using TileContainer = CompressedRowTiles<>;
+
+    using MakeCompressedRowStripsFn = void (*)(TileContainer&,
+                                               SkTDArray<Strip>&,
+                                               SkTDArray<MSAAType>&,
+                                               bool,
+                                               const Polyline&,
+                                               const SkTDArray<MSAAType>&,
+                                               WideTiles<kTileHeight>&,
+                                               bool,
+                                               const WindingHistogram&,
+                                               const SkIRect&,
+                                               SkTDArray<size_t>&
+#if defined(GPU_TEST_UTILS)
+                                               , MsaaExactMaskObserver<MSAAType>
+#endif
+    );
+
+    CoverageBenchCompressedRow(const char* name, MakeCompressedRowStripsFn func)
+            : fFunc(func)
+            , fLUT(GenerateMSAALUT<MSAAType>())
+            , fCulled((Tiger::kImageHeight + kTileHeight + 1) / kTileHeight) {
+        fName.printf("SparseStrips_%s_%ux%u", name, kTileWidth, kTileHeight);
+        fCulled.resize((Tiger::kImageHeight + kTileHeight + 1) / kTileHeight);
+    }
+
+protected:
+    const char* onGetName() override { return fName.c_str(); }
+
+    void onDelayedSetup() override {
+        Flatten flattener;
+        for (const char* svgString : Tiger::kTigerPathStrings) {
+            SkPath path;
+            if (SkParsePath::FromSVGString(svgString, &path)) {
+                Polyline polyline;
+                flattener.processPaths<FlattenMode::kSimd>(path, SkMatrix(), Tiger::kDim, polyline);
+                TileContainer tiler;
+                tiler.reset();
+                tiler.makeCompressedTilesMSAA(polyline, Tiger::kDim, fCulled);
+                tiler.sortTiles();
+                fTiles.emplace_back(std::move(tiler));
+                fPolylines.emplace_back(polyline);
+            }
+        }
+    }
+
+    void onDraw(int loops, SkCanvas* canvas) override {
+        SkTDArray<Strip> strips;
+        WideTiles<kTileHeight> wides;
+        SkTDArray<MSAAType> alphas;
+        SkTDArray<size_t> firstIdxForX;
+
+        for (int i = 0; i < loops; ++i) {
+            for (int ii = 0; ii < fTiles.size(); ++ii) {
+                strips.clear();
+                alphas.clear();
+                wides.clear();
+                firstIdxForX.clear();
+
+                // Assumes default fill type mapped to kIsWinding=true via template argument
+                fFunc(fTiles[ii], strips, alphas, /*isInverse=*/false, fPolylines[ii], fLUT,
+                      wides, /*isCulled=*/false, fCulled, Tiger::kDim, firstIdxForX
+#if defined(GPU_TEST_UTILS)
+                      , nullptr
+#endif
+                );
+            }
+        }
+    }
+
+private:
+    SkString fName;
+    MakeCompressedRowStripsFn fFunc;
+    skia_private::TArray<Polyline> fPolylines;
+    skia_private::TArray<TileContainer> fTiles;
+    SkTDArray<MSAAType> fLUT;
     WindingHistogram fCulled;
 };
 
@@ -177,6 +348,15 @@ DEF_BENCH(return (new skgpu::graphite::CoverageBench<4, 4,
         "CoverageBench",
         &skgpu::graphite::MakeStrip::
                 MakeStripsMsaa<4, 4, skgpu::graphite::SparseStripsConfig::MSAAType>));)
-DEF_BENCH(return (new skgpu::graphite::CoverageBenchGpu<8, 8, 256, skgpu::graphite::SparseStripsConfig::MSAAType>(
-        "CoverageBenchGPU",
-        &skgpu::graphite::MakeStrip::MakeStripsGpu<8, 8, 256, skgpu::graphite::SparseStripsConfig::MSAAType>));)
+
+DEF_BENCH(return (new skgpu::graphite::CoverageBenchRow<8, 8,
+                                                        skgpu::graphite::SparseStripsConfig::MSAAType>(
+        "CoverageBenchRowSimd",
+        &skgpu::graphite::MakeStripImpl::
+                MakeRowStripsSimd<8, 8, true, skgpu::graphite::SparseStripsConfig::MSAAType>));)
+DEF_BENCH(return (new skgpu::graphite::CoverageBenchCompressedRow<8, 8,
+                                                                  skgpu::graphite::SparseStripsConfig::MSAAType>(
+        "CoverageBenchCompressedRowSimd",
+        &skgpu::graphite::MakeStripImpl::
+                MakeCompressedRowStripsSimd<8, 8, true, skgpu::graphite::SparseStripsConfig::MSAAType,
+                                            skgpu::graphite::CompressedRowTiles<>>));)

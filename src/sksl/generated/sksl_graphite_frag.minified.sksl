@@ -260,7 +260,7 @@ static constexpr char SKSL_MINIFIED_sksl_graphite_frag[] =
 "float2 a,float4 b,half2 c,int d,sampler2D e){switch(d){case 0:{return $L(a,"
 "b,c.x,c.y,e);}case 2:{return $M(a,b,e);}case 1:{return $N(a,b,c.x,e);}}return"
 " half4(0.);}$pure half4 endcap_coverage_fn(float2 a,float2 b,sampler2D c,sampler2D"
-" d,uint e){uint f=4;uint g=4;uint h=uint(floor(a.x));uint i=uint(floor(a.y)"
+" d,uint e){uint f=8;uint g=8;uint h=uint(floor(a.x));uint i=uint(floor(a.y)"
 ");uint j=h/f;uint k=h%f;uint l=i;uint m=f*g;uint n=(j*m+l*f)+k;uint o=e+n;uint"
 " p=o&3;uint q=o>>2;uint r=q&16777215;uint2 s=uint2(r&4095,r>>12);half4 t;int"
 " u=min(int(q>>24),1);if(u==0)t=textureRead(c,s);else t=textureRead(d,s);return"

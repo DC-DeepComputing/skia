@@ -27,7 +27,9 @@
 #include "src/gpu/graphite/sparse_strips/SparseStripsConfig.h"
 #include "src/gpu/graphite/sparse_strips/SparseStripsConstants.h"
 #include "src/gpu/graphite/sparse_strips/Strip.h"
+#include "src/gpu/graphite/sparse_strips/CompressedRowTiler.h"
 #include "src/gpu/graphite/sparse_strips/Tiler.h"
+#include "src/gpu/graphite/sparse_strips/RowTiler.h"
 #include "src/gpu/graphite/sparse_strips/WindingHistogram.h"
 
 #include "src/gpu/graphite/BufferManager.h"
@@ -72,7 +74,8 @@ public:
         constexpr bool isCPU = std::is_same_v<TileType, Tile<kTileWidth, kTileHeight>>;
         constexpr bool isGPU = std::is_same_v<TileType, GpuTile<kTileWidth, kTileHeight>>;
         if constexpr (isCPU) {
-            return processGeometryCPU(path, ctm, clip);
+            //return processGeometryCPU(path, ctm, clip);
+            return processGeometryCPURow(path, ctm, clip);
         } else if constexpr (isGPU) {
             return processGeometryGPU(path, ctm, clip);
         } else {
@@ -254,6 +257,69 @@ private:
         return {fWides, fEnds};
     }
 
+    SK_ALWAYS_INLINE const std::pair<WideTiles<kTileHeight>&, EndCaps<kTileHeight>&>
+    processGeometryCPURow(const SkPath& path, const SkMatrix& ctm, const SkIRect& clip) {
+        this->reset();
+
+        fFlattener.processPaths<FlattenMode::kSimd>(path, ctm, fDeviceSize, fFlattenned);
+
+        fWindingHistogram.resize((fDeviceSize.bottom() + kTileHeight - 1) / kTileHeight);
+        if (fCulled) {
+            fWindingHistogram.clear();
+        }
+
+        // CHANGED: Use the RowTiles state and generation logic
+        // fCulled = fRowTiles.makeTilesMSAA(fFlattenned, fDeviceSize, fWindingHistogram);
+        // fRowTiles.sortTiles();
+
+        fCulled = fComRowTiles.makeCompressedTilesMSAA(fFlattenned, fDeviceSize, fWindingHistogram);
+        fComRowTiles.sortTiles();
+
+        AlphaAtlasManager* manager = fRecorder->priv().atlasProvider()->alphaAtlasManager();
+
+        // CHANGED: Route to the new SIMD strip maker
+        // MakeStripImpl::MakeRowStripsSimd<kTileWidth, kTileHeight, true, MSAAType>(fRowTiles,
+        //                              fStrips,
+        //                              manager->getAlphaBuffer(),
+        //                              false,
+        //                              fFlattenned,
+        //                              fLUT,
+        //                              fWides,
+        //                              fCulled,
+        //                              fWindingHistogram,
+        //                              fDeviceSize);
+
+        MakeStripImpl::MakeCompressedRowStripsSimd<kTileWidth, kTileHeight, true, MSAAType>(fComRowTiles,
+                                     fStrips,
+                                     manager->getAlphaBuffer(),
+                                     false,
+                                     fFlattenned,
+                                     fLUT,
+                                     fWides,
+                                     fCulled,
+                                     fWindingHistogram,
+                                     fDeviceSize,
+                                     firstIdxForX);
+
+        SkASSERT(fRecorder);
+        int32_t globalOffset = manager->getUploadOffset();
+        manager->getAssociatedProxies(fAllocations);
+        if (fStrips.size() > 1 && !fAllocations.empty()) {
+            int32_t stripIdx = 1;
+            for (const auto& alloc : fAllocations) {
+                fEnds.addProxy(alloc.second);
+                int32_t endIdx = alloc.first;
+                int32_t currEndIdx = 0;
+                while (currEndIdx < endIdx && stripIdx < fStrips.size()) {
+                    currEndIdx = processStripPair(stripIdx, globalOffset);
+                    stripIdx++;
+                }
+            }
+        }
+
+        return {fWides, fEnds};
+    }
+
     SK_ALWAYS_INLINE int32_t processStripPair(int32_t stripIdx, int32_t globalOffset) {
         constexpr size_t kBytesPerTile = kTileWidth * kTileHeight;
         const Strip& prev = fStrips[stripIdx - 1];
@@ -278,7 +344,10 @@ private:
 
     void reset() {
         fFlattenned.reset();
+        fComRowTiles.reset();
+        firstIdxForX.clear();
         fTiles.reset();
+        fRowTiles.reset();
         fStrips.clear();
         fAllocations.clear();
         fWides.clear();
@@ -289,10 +358,13 @@ private:
     bool fCulled;
     Flatten fFlattener;
     Tiles<kTileWidth, kTileHeight, TileType> fTiles;
+    RowTiles<kTileWidth, kTileHeight, TileType> fRowTiles;
+    CompressedRowTiles<> fComRowTiles;
     Polyline fFlattenned;
     SkTDArray<Strip> fStrips;
     const SkTDArray<MSAAType>& fLUT;
     SkTDArray<std::pair<int32_t, sk_sp<TextureProxy>>> fAllocations;
+    SkTDArray<size_t> firstIdxForX;
     Recorder* fRecorder;
     WindingHistogram fWindingHistogram;
 

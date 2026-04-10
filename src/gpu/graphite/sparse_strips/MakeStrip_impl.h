@@ -15,6 +15,7 @@
 #include "src/gpu/graphite/sparse_strips/SparseStripTypes.h"
 #include "src/gpu/graphite/sparse_strips/SparseStripsConfig.h"
 #include "src/gpu/graphite/sparse_strips/SparseStripsConstants.h"
+#include "src/gpu/graphite/sparse_strips/RowTiler.h"
 #include "src/gpu/graphite/sparse_strips/Strip.h"
 #include "src/gpu/graphite/sparse_strips/Tiler.h"
 
@@ -208,6 +209,39 @@ public:
                                       int32_t tileOffset,
                                       int32_t alphaOffset);
 
+    template <uint16_t TileWidth, uint16_t TileHeight, bool kIsWinding, typename MSAAType>
+    static void MakeRowStripsSimd(RowTiles<TileWidth, TileHeight>& tileContainer,
+                                  SkTDArray<Strip>& stripBuf,
+                                  SkTDArray<MSAAType>& alphaBuf,
+                                  bool isInverse,
+                                  const Polyline& polyline,
+                                  const SkTDArray<MSAAType>& maskLut,
+                                  WideTiles<TileHeight>& wides,
+                                  bool isCulled,
+                                  const WindingHistogram& windingHistogram,
+                                  const SkIRect& clipRect
+#if defined(GPU_TEST_UTILS)
+                                  , MsaaExactMaskObserver<MSAAType> observer = nullptr
+#endif
+    );
+
+    template <uint16_t TileWidth, uint16_t TileHeight, bool kIsWinding, typename MSAAType, typename TileContainer>
+    static void MakeCompressedRowStripsSimd(TileContainer& tileContainer,
+                                            SkTDArray<Strip>& stripBuf,
+                                            SkTDArray<MSAAType>& alphaBuf,
+                                            bool isInverse,
+                                            const Polyline& polyline,
+                                            const SkTDArray<MSAAType>& maskLut,
+                                            WideTiles<TileHeight>& wides,
+                                            bool isCulled,
+                                            const WindingHistogram& windingHistogram,
+                                            const SkIRect& clipRect,
+                                            SkTDArray<size_t>& firstIdxForX
+#if defined(GPU_TEST_UTILS)
+                                            , MsaaExactMaskObserver<MSAAType> observer = nullptr
+#endif
+    );
+
 private:
     // Core tile traversal state machine. This template completely deduplicates the complex outer
     // looping, tile starting, strip pushing, and culling behaviors without any performance overhead.
@@ -386,7 +420,421 @@ private:
 
         processEmptyTileRows(prevTile.y + 1, windingHistogram.size());
     }
+
+    // Row-based traversal state machine. Uses a logical iterator over the row arrays
+    // to maintain 1:1 behavioral parity with the flat array state machine.
+    template <uint16_t TileWidth, uint16_t TileHeight, bool kIsWinding, typename TileContainer,
+              typename F_AlphaIdx, typename F_Init, typename F_OnTileStart, typename F_OnRowStart, typename F_OnLine>
+    static void TraverseRowStrips(TileContainer& tileContainer,
+                                  SkTDArray<Strip>& stripBuf,
+                                  bool isInverse,
+                                  bool isCulled,
+                                  const WindingHistogram& windingHistogram,
+                                  WideTiles<TileHeight>& wides,
+                                  const SkIRect& clipRect,
+                                  const Polyline& polyline,
+                                  F_AlphaIdx&& getAlphaIdx, // tileOffset removed
+                                  F_Init&& init,
+                                  F_OnTileStart&& onTileStart,
+                                  F_OnRowStart&& onRowStart,
+                                  F_OnLine&& onLine) {
+
+        auto shouldFill = [](int32_t w) {
+            if constexpr (kIsWinding) return w != 0;
+            else return (w & 1) != 0;
+        };
+
+        auto processEmptyTileRows = [&](uint16_t startTileY, uint16_t endTileY) {
+            if (startTileY >= endTileY) return;
+
+            uint16_t y = startTileY;
+            uint16_t startX = static_cast<uint16_t>(clipRect.left());
+            uint16_t width = static_cast<uint16_t>(clipRect.width());
+
+            if (isCulled && isInverse) {
+                const auto& activeRows = windingHistogram.activeRows();
+                while (y < endTileY) {
+                    int wordIdx = y >> 5;
+                    uint16_t wordEnd = std::min<uint16_t>(endTileY, (wordIdx + 1) << 5);
+                    uint32_t mask = activeRows[wordIdx] & (~0u << (y & 31));
+                    uint32_t endShift = wordEnd & 31;
+                    if (endShift != 0) mask &= (1u << endShift) - 1;
+
+                    while (mask != 0) {
+                        int bit = std::countr_zero(mask);
+                        uint16_t nextActiveY = (wordIdx << 5) + bit;
+                        for (; y < nextActiveY; ++y) wides.addTile(startX, y * TileHeight, width);
+                        if (!shouldFill(windingHistogram[y]))
+                            wides.addTile(startX, y * TileHeight, width);
+                        y++;
+                        mask &= mask - 1;
+                    }
+                    for (; y < wordEnd; ++y) wides.addTile(startX, y * TileHeight, width);
+                }
+            } else if (isCulled) {
+                const auto& activeRows = windingHistogram.activeRows();
+                while (y < endTileY) {
+                    int wordIdx = y >> 5;
+                    uint16_t wordEnd = std::min<uint16_t>(endTileY, (wordIdx + 1) << 5);
+                    uint32_t mask = activeRows[wordIdx] & (~0u << (y & 31));
+                    uint32_t endShift = wordEnd & 31;
+                    if (endShift != 0) mask &= (1u << endShift) - 1;
+
+                    while (mask != 0) {
+                        int bit = std::countr_zero(mask);
+                        y = (wordIdx << 5) + bit;
+                        if (shouldFill(windingHistogram[y]))
+                            wides.addTile(startX, y * TileHeight, width);
+                        mask &= mask - 1;
+                    }
+                    y = wordEnd;
+                }
+            } else if (isInverse) {
+                for (; y < endTileY; ++y) wides.addTile(startX, y * TileHeight, width);
+            }
+        };
+
+        auto& tileRows = tileContainer.getRows();
+
+        size_t totalCount = 0;
+        for (const auto& row : tileRows) {
+            totalCount += row.size();
+        }
+
+        if (totalCount == 0) {
+            processEmptyTileRows(0, windingHistogram.size());
+            return;
+        }
+
+        // Find the first valid tile safely (in case early rows are empty)
+        int startYIdx = 0;
+        while (startYIdx < tileRows.size() && tileRows[startYIdx].empty()) {
+            startYIdx++;
+        }
+
+        using TileType = typename TileContainer::value_type;
+        TileType prevTile = tileRows[startYIdx][0];
+
+        // --- LOOP PEELING: Handle the very first tile outside the loop ---
+        int32_t windingDelta = windingHistogram[prevTile.y];
+        init(prevTile, windingDelta);
+
+        processEmptyTileRows(0, prevTile.y);
+        bool fillLeftStart = shouldFill(windingDelta) ^ isInverse;
+        if (isInverse || isCulled) {
+            if (fillLeftStart) {
+                stripBuf.push_back(Strip(static_cast<uint16_t>(clipRect.left()), prevTile.y * TileHeight, getAlphaIdx(), false));
+            }
+        }
+
+        // 1. Call onTileStart FIRST to flush the initial dummy state and advance the alpha pointer
+        onTileStart(prevTile, true, 0, windingDelta);
+
+        // 2. NOW initialize currentStrip so it captures the correct alpha index for the first real tile
+        Strip currentStrip(prevTile.x * TileWidth, prevTile.y * TileHeight, getAlphaIdx(), fillLeftStart);
+
+        size_t i = 0; // 3. Start tracking at 0
+
+        // --- THE HOT LOOP ---
+        for (int yIdx = startYIdx; yIdx < tileRows.size(); ++yIdx) {
+            const auto& row = tileRows[yIdx];
+
+            // 4. Do NOT skip index 0. The peeled init just set up state;
+            // we still need to run onLine() for the first segment!
+            int startXIdx = 0;
+
+            for (int xIdx = startXIdx; xIdx < row.size(); ++xIdx) {
+                const TileType& tile = row[xIdx];
+
+                // Because we peeled the first tile, these checks are now beautifully simple
+                bool rowStart = (tile.y != prevTile.y);
+                bool tileStart = rowStart || (tile.x != prevTile.x);
+                bool segStart = tileStart && !(tile.y == prevTile.y && tile.x == prevTile.x + 1);
+
+                if (tileStart) {
+                    onTileStart(tile, rowStart, i, windingDelta);
+                }
+
+                if (segStart) {
+                    stripBuf.push_back(currentStrip);
+
+                    bool fillLeftCaptive = false;
+                    if (rowStart) {
+                        if (windingDelta != 0 || isInverse) {
+                            stripBuf.push_back(Strip(0xFFFF, prevTile.y * TileHeight, getAlphaIdx(), shouldFill(windingDelta) ^ isInverse));
+                        }
+
+                        processEmptyTileRows(prevTile.y + 1, tile.y);
+
+                        windingDelta = windingHistogram[tile.y];
+                        onRowStart(windingDelta);
+                        fillLeftCaptive = shouldFill(windingDelta) ^ isInverse;
+
+                        if (fillLeftCaptive) {
+                            stripBuf.push_back(Strip(static_cast<uint16_t>(clipRect.left()), tile.y * TileHeight, getAlphaIdx(), false));
+                        }
+                    } else {
+                        fillLeftCaptive = shouldFill(windingDelta) ^ isInverse;
+                    }
+
+                    currentStrip = Strip(tile.x * TileWidth, tile.y * TileHeight, getAlphaIdx(), fillLeftCaptive);
+                }
+
+                prevTile = tile;
+
+                Line line = polyline.getLine(tile.packedWindingLineIdx >> INT_MASK_SHIFT);
+                float p0_x = line.p0.fX;
+                float p0_y = line.p0.fY;
+                float p1_x = line.p1.fX;
+                float p1_y = line.p1.fY;
+                bool canonicalXDir = p1_x >= p0_x;
+                bool canonicalYDir = p1_y >= p0_y;
+
+                uint32_t windingBit = (tile.packedWindingLineIdx & W) ? 1 : 0;
+                if constexpr (kIsWinding) {
+                    windingDelta += (canonicalYDir ? 1 : -1) * static_cast<int32_t>(windingBit);
+                } else {
+                    windingDelta ^= static_cast<int32_t>(windingBit);
+                }
+
+                onLine(tile, line, canonicalXDir, canonicalYDir, i);
+                i++;
+            }
+        }
+
+        // --- POST-LOOP SENTINEL ---
+        TileType sentinel(0xFFFF, 0xFFFF, 0, 0);
+        onTileStart(sentinel, true, i, windingDelta); // i is exactly totalCount here
+
+        stripBuf.push_back(currentStrip);
+        stripBuf.push_back(Strip(0xFFFF, prevTile.y * TileHeight, getAlphaIdx(), shouldFill(windingDelta) ^ isInverse));
+
+        processEmptyTileRows(prevTile.y + 1, windingHistogram.size());
+    }
+
+    template <uint16_t TileWidth, uint16_t TileHeight, bool kIsWinding, typename TileContainer,
+              typename F_AlphaIdx, typename F_Init, typename F_OnTileStart, typename F_OnRowStart, typename F_OnLine>
+    static void TraverseCompressedRowStrips(TileContainer& tileContainer,
+                                            SkTDArray<Strip>& stripBuf,
+                                            bool isInverse,
+                                            bool isCulled,
+                                            const WindingHistogram& windingHistogram,
+                                            WideTiles<TileHeight>& wides,
+                                            const SkIRect& clipRect,
+                                            const Polyline& polyline,
+                                            SkTDArray<size_t>& firstIdxForX,
+                                            F_AlphaIdx&& getAlphaIdx,
+                                            F_Init&& init,
+                                            F_OnTileStart&& onTileStart,
+                                            F_OnRowStart&& onRowStart,
+                                            F_OnLine&& onLine) {
+
+        auto shouldFill = [](int32_t w) {
+            if constexpr (kIsWinding) return w != 0;
+            else return (w & 1) != 0;
+        };
+
+        auto processEmptyTileRows = [&](uint16_t startTileY, uint16_t endTileY) {
+            if (startTileY >= endTileY) return;
+
+            uint16_t y = startTileY;
+            uint16_t startX = static_cast<uint16_t>(clipRect.left());
+            uint16_t width = static_cast<uint16_t>(clipRect.width());
+
+            if (isCulled && isInverse) {
+                const auto& activeRows = windingHistogram.activeRows();
+                while (y < endTileY) {
+                    int wordIdx = y >> 5;
+                    uint16_t wordEnd = std::min<uint16_t>(endTileY, (wordIdx + 1) << 5);
+                    uint32_t mask = activeRows[wordIdx] & (~0u << (y & 31));
+                    uint32_t endShift = wordEnd & 31;
+                    if (endShift != 0) mask &= (1u << endShift) - 1;
+
+                    while (mask != 0) {
+                        int bit = std::countr_zero(mask);
+                        uint16_t nextActiveY = (wordIdx << 5) + bit;
+                        for (; y < nextActiveY; ++y) wides.addTile(startX, y * TileHeight, width);
+                        if (!shouldFill(windingHistogram[y]))
+                            wides.addTile(startX, y * TileHeight, width);
+                        y++;
+                        mask &= mask - 1;
+                    }
+                    for (; y < wordEnd; ++y) wides.addTile(startX, y * TileHeight, width);
+                }
+            } else if (isCulled) {
+                const auto& activeRows = windingHistogram.activeRows();
+                while (y < endTileY) {
+                    int wordIdx = y >> 5;
+                    uint16_t wordEnd = std::min<uint16_t>(endTileY, (wordIdx + 1) << 5);
+                    uint32_t mask = activeRows[wordIdx] & (~0u << (y & 31));
+                    uint32_t endShift = wordEnd & 31;
+                    if (endShift != 0) mask &= (1u << endShift) - 1;
+
+                    while (mask != 0) {
+                        int bit = std::countr_zero(mask);
+                        y = (wordIdx << 5) + bit;
+                        if (shouldFill(windingHistogram[y]))
+                            wides.addTile(startX, y * TileHeight, width);
+                        mask &= mask - 1;
+                    }
+                    y = wordEnd;
+                }
+            } else if (isInverse) {
+                for (; y < endTileY; ++y) wides.addTile(startX, y * TileHeight, width);
+            }
+        };
+
+        auto& tileRows = tileContainer.getRows();
+
+        // 1. Find the very first active row to seed our peeled state
+        int startYIdx = 0;
+        while (startYIdx < tileRows.size() && tileRows[startYIdx].empty()) {
+            startYIdx++;
+        }
+
+        if (startYIdx >= tileRows.size()) {
+            processEmptyTileRows(0, windingHistogram.size());
+            return;
+        }
+
+        // Peel initialization state
+        int prevX = tileRows[startYIdx][0].x();
+        int prevY = startYIdx;
+        int32_t windingDelta = windingHistogram[startYIdx];
+
+        init(prevX, startYIdx, windingDelta);
+
+        processEmptyTileRows(0, startYIdx);
+        bool fillLeftStart = shouldFill(windingDelta) ^ isInverse;
+        if (isInverse || isCulled) {
+            if (fillLeftStart) {
+                stripBuf.push_back(Strip(static_cast<uint16_t>(clipRect.left()), startYIdx * TileHeight, getAlphaIdx(), false));
+            }
+        }
+
+        // Call onTileStart FIRST to flush the initial dummy state and advance the alpha pointer
+        onTileStart(prevX, startYIdx, true, 0, windingDelta);
+
+        Strip currentStrip(prevX * TileWidth, startYIdx * TileHeight, getAlphaIdx(), fillLeftStart);
+        size_t absoluteIndex = 0;
+
+        // 2. The 2D Row Traversal
+        for (int yIdx = startYIdx; yIdx < tileRows.size(); ++yIdx) {
+            const auto& row = tileRows[yIdx];
+            if (row.empty()) continue;
+
+            uint32_t minX = row[0].x();
+            uint32_t maxX = 0;
+            for (const auto& rle : row) {
+                maxX = std::max<uint32_t>(maxX, rle.x() + rle.runLength());
+            }
+
+            size_t activeStartIdx = 0;
+
+            // 3. The 1D Sweep Line Algorithm
+            for (uint32_t currentX = minX; currentX < maxX; ++currentX) {
+
+                // OPTIMIZATION 1: Clean up fully expired runs from the active front
+                while (activeStartIdx < row.size() &&
+                       row[activeStartIdx].x() + row[activeStartIdx].runLength() <= currentX) {
+                    activeStartIdx++;
+                }
+
+                if (activeStartIdx >= row.size()) {
+                    break; // No more runs in this row
+                }
+
+                // OPTIMIZATION 2: If the earliest available run hasn't started yet, jump empty space instantly
+                if (row[activeStartIdx].x() > currentX) {
+                    currentX = row[activeStartIdx].x() - 1; // Jump so the loop's ++ lands right on the start
+                    continue;
+                }
+
+                // If we reach here, we are guaranteed to have at least one active run.
+                bool rowStart = (prevY != yIdx);
+                bool tileStart = rowStart || (prevX != static_cast<int>(currentX));
+                bool segStart = tileStart && !(prevY == yIdx && prevX == static_cast<int>(currentX) - 1);
+
+                if (tileStart) {
+                    if (segStart) {
+                        stripBuf.push_back(currentStrip);
+
+                        bool fillLeftCaptive = false;
+                        if (rowStart) {
+                            if (windingDelta != 0 || isInverse) {
+                                stripBuf.push_back(Strip(0xFFFF, prevY * TileHeight, getAlphaIdx(), shouldFill(windingDelta) ^ isInverse));
+                            }
+
+                            processEmptyTileRows(prevY + 1, yIdx);
+
+                            windingDelta = windingHistogram[yIdx];
+                            onRowStart(windingDelta);
+                            fillLeftCaptive = shouldFill(windingDelta) ^ isInverse;
+
+                            if (fillLeftCaptive) {
+                                stripBuf.push_back(Strip(static_cast<uint16_t>(clipRect.left()), yIdx * TileHeight, getAlphaIdx(), false));
+                            }
+                        } else {
+                            fillLeftCaptive = shouldFill(windingDelta) ^ isInverse;
+                        }
+
+                        currentStrip = Strip(currentX * TileWidth, yIdx * TileHeight, getAlphaIdx(), fillLeftCaptive);
+                    }
+
+                    onTileStart(currentX, yIdx, rowStart, absoluteIndex, windingDelta);
+                }
+
+                // Fire onLine for EVERY active segment overlapping this coordinate
+                for (size_t i = activeStartIdx; i < row.size(); ++i) {
+                    const auto& rle = row[i];
+                    if (rle.x() > currentX) break; // Safe to stop early since they are sorted
+
+                    if (currentX < rle.x() + rle.runLength()) {
+
+                        // Extract the correct mask for this specific intersection point
+                        uint32_t mask = 0xFFFFFFFF;
+                        if (rle.runLength() == 1 || currentX == rle.x()) {
+                            mask = rle.startMask();
+                        } else if (currentX == rle.x() + rle.runLength() - 1) {
+                            mask = rle.endMask();
+                        }
+
+                        Line line = polyline.getLine(rle.lineIdx());
+                        bool canonicalXDir = line.p1.fX >= line.p0.fX;
+                        bool canonicalYDir = line.p1.fY >= line.p0.fY;
+
+                        uint32_t windingBit = (mask & W) ? 1 : 0;
+                        if constexpr (kIsWinding) {
+                            windingDelta += (canonicalYDir ? 1 : -1) * static_cast<int32_t>(windingBit);
+                        } else {
+                            windingDelta ^= static_cast<int32_t>(windingBit);
+                        }
+
+                        onLine(rle, mask, line, canonicalXDir, canonicalYDir, absoluteIndex);
+                    }
+                }
+
+                prevX = currentX;
+                prevY = yIdx;
+                absoluteIndex++;
+            }
+        }
+
+        // 4. Post-Loop Sentinel Logic
+        if (absoluteIndex > 0) {
+            onTileStart(0xFFFF, 0xFFFF, true, absoluteIndex, windingDelta);
+
+            stripBuf.push_back(currentStrip);
+            stripBuf.push_back(Strip(0xFFFF, prevY * TileHeight, getAlphaIdx(), shouldFill(windingDelta) ^ isInverse));
+
+            processEmptyTileRows(prevY + 1, windingHistogram.size());
+        }
+    }
 };
+
+//==================================================================================================
+// END
+//==================================================================================================
 
 template <uint16_t TileWidth, uint16_t TileHeight, bool kIsWinding, typename MSAAType>
 void MakeStripImpl::MakeStripsImpl(Tiles<TileWidth, TileHeight>& tileContainer,
@@ -1097,6 +1545,831 @@ uint32_t MakeStripImpl::MakeStripsGpuImpl(
     );
 
     return localAlphaIdx;
+}
+
+template <uint16_t TileWidth, uint16_t TileHeight, bool kIsWinding, typename MSAAType>
+void MakeStripImpl::MakeRowStripsSimd(RowTiles<TileWidth, TileHeight>& tileContainer,
+                                      SkTDArray<Strip>& stripBuf,
+                                      SkTDArray<MSAAType>& alphaBuffer,
+                                      bool isInverse,
+                                      const Polyline& polyline,
+                                      const SkTDArray<MSAAType>& maskLut,
+                                      WideTiles<TileHeight>& wides,
+                                      bool isCulled,
+                                      const WindingHistogram& windingHistogram,
+                                      const SkIRect& clipRect
+#if defined(GPU_TEST_UTILS)
+                                      , MsaaExactMaskObserver<MSAAType> observer
+#endif
+) {
+    constexpr int32_t  kNumSubSamples  = sizeof(MSAAType) * 8;
+    constexpr float    kNumSubSamplesF = static_cast<float>(kNumSubSamples);
+    constexpr MSAAType kSubSampleMask  = static_cast<MSAAType>((1 << kNumSubSamples) - 1);
+    constexpr MSAAType kMSAASubAsAdd   = static_cast<MSAAType>(-1);
+    constexpr MSAAType kMSAABias       = static_cast<MSAAType>(1 << (kNumSubSamples - 1));
+
+    auto deltaToMask = [&](int32_t w) {
+        MSAAType w_byte;
+        if constexpr (kIsWinding) w_byte = kMSAABias + static_cast<MSAAType>(static_cast<int8_t>(w));
+        else w_byte = static_cast<MSAAType>(w & 1);
+        return static_cast<uint32_t>(w_byte) * 0x01010101u;
+    };
+
+    constexpr int32_t kTileAlphaCount = TileWidth * TileHeight;
+    int32_t localAlphaIdx = alphaBuffer.size();
+
+    // Calculate total count across all rows for allocation estimation
+    size_t totalTiles = 0;
+    for (const auto& row : tileContainer.getRows()) {
+        totalTiles += row.size();
+    }
+
+    size_t megaGuess = totalTiles * kTileAlphaCount * 2;
+    alphaBuffer.reserve(localAlphaIdx + megaGuess);
+
+    using swar_pixel = skvx::Vec<2, uint32_t>;
+    using pixel_bytes = skvx::Vec<8, MSAAType>;
+    swar_pixel mask[TileHeight][TileWidth];
+
+    auto resetMask = [&](uint32_t val) {
+        if (val == 0) {
+            std::memset(mask, 0, sizeof(mask));
+        } else {
+            swar_pixel* flat_mask = &mask[0][0];
+            constexpr int totalPixels = TileWidth * TileHeight;
+
+            if constexpr (TileWidth % 8 == 0) {
+                skvx::Vec<16, uint32_t> v_val = {val, val, val, val, val, val, val, val,
+                                                 val, val, val, val, val, val, val, val};
+                for (int i = 0; i < totalPixels; i += 8) v_val.store(flat_mask + i);
+            } else if constexpr (TileWidth % 4 == 0) {
+                skvx::Vec<8, uint32_t> v_val = {val, val, val, val, val, val, val, val};
+                for (int i = 0; i < totalPixels; i += 4) v_val.store(flat_mask + i);
+            } else {
+                swar_pixel p = {val, val};
+                for (int i = 0; i < totalPixels; ++i) flat_mask[i] = p;
+            }
+        }
+    };
+
+    float tileMinX = 0, tileMinY = 0, tileMaxX = 0, tileMaxY = 0;
+
+    TraverseRowStrips<TileWidth, TileHeight, kIsWinding>(
+        tileContainer, stripBuf, isInverse, isCulled, windingHistogram, wides, clipRect, polyline,
+        /* getAlphaIdx */ [&]() { return localAlphaIdx; },
+        /* init */ [&](const auto& pt, int32_t wd) {
+            resetMask(deltaToMask(wd));
+            tileMinX = static_cast<float>(pt.x * TileWidth);
+            tileMinY = static_cast<float>(pt.y * TileHeight);
+            tileMaxX = tileMinX + static_cast<float>(TileWidth);
+            tileMaxY = tileMinY + static_cast<float>(TileHeight);
+        },
+        /* onTileStart */ [&](const auto& tile, bool rowStart, size_t i, int32_t currentWd) {
+            if (localAlphaIdx + kTileAlphaCount > alphaBuffer.capacity()) {
+                constexpr size_t kChunkSize = 4 * kTileAlphaCount;
+                alphaBuffer.reserve(alphaBuffer.capacity() + kChunkSize);
+            }
+            MSAAType* alphaBase = alphaBuffer.begin();
+
+            auto get_counts_wide = [&](auto v) {
+                using VecT = decltype(v);
+                if constexpr (kIsWinding) {
+                    using Vec8 = skvx::Vec<sizeof(VecT), MSAAType>;
+                    Vec8 v_bytes = sk_bit_cast<Vec8>(v);
+                    Vec8 bias_bytes(kMSAABias);
+                    Vec8 cmp = (v_bytes != bias_bytes);
+                    VecT active_bytes = sk_bit_cast<VecT>(cmp) & VecT(0x01010101u);
+                    return (active_bytes * VecT(0x01010101u)) >> 24;
+                } else {
+                    VecT ones(0x01010101u);
+                    VecT active_bytes = v & ones;
+                    return (active_bytes * ones) >> 24;
+                }
+            };
+
+            auto process_chunk = [&](auto size_tag, int y, int x) {
+                constexpr int ChunkSize = decltype(size_tag)::value;
+
+                auto v_mask = skvx::Vec<ChunkSize * 2, uint32_t>::Load(&mask[y][x]);
+                auto counts = get_counts_wide(v_mask);
+
+                skvx::Vec<ChunkSize, uint32_t> activeSamples;
+                if constexpr (ChunkSize == 8) {
+                    auto counts_lo = skvx::shuffle<0, 2, 4, 6, 8, 10, 12, 14>(counts);
+                    auto counts_hi = skvx::shuffle<1, 3, 5, 7, 9, 11, 13, 15>(counts);
+                    activeSamples = counts_lo + counts_hi;
+                } else {
+                    auto counts_lo = skvx::shuffle<0, 2, 4, 6>(counts);
+                    auto counts_hi = skvx::shuffle<1, 3, 5, 7>(counts);
+                    activeSamples = counts_lo + counts_hi;
+                }
+
+                if (isInverse) activeSamples = skvx::Vec<ChunkSize, uint32_t>(kNumSubSamples) - activeSamples;
+
+                skvx::Vec<ChunkSize, uint32_t> alpha32 = (activeSamples * kSubSampleMask + (kNumSubSamples / 2)) / kNumSubSamples;
+                skvx::cast<MSAAType>(alpha32).store(alphaBase + localAlphaIdx);
+                localAlphaIdx += ChunkSize;
+
+#if defined(GPU_TEST_UTILS)
+                if (observer) {
+                    auto shouldFillObs = [](int32_t w) {
+                        if constexpr (kIsWinding) return w != 0;
+                        else return (w & 1) != 0;
+                    };
+                    for (int xx = x; xx < x + ChunkSize; ++xx) {
+                        swar_pixel v = mask[y][xx];
+                        MSAAType exactMask = 0;
+                        uint32_t lo = v[0];
+                        uint32_t hi = v[1];
+                        for (int s = 0; s < 4; ++s) {
+                            int8_t s_lo = (int8_t)(lo & kSubSampleMask);
+                            int8_t s_hi = (int8_t)(hi & kSubSampleMask);
+                            if constexpr (kIsWinding) {
+                                s_lo = (int8_t)((MSAAType)s_lo - kMSAABias);
+                                s_hi = (int8_t)((MSAAType)s_hi - kMSAABias);
+                            }
+                            if (shouldFillObs(s_lo)) exactMask |= (1 << s);
+                            if (shouldFillObs(s_hi)) exactMask |= (1 << (s + 4));
+                            lo >>= 8;
+                            hi >>= 8;
+                        }
+                        if (isInverse) exactMask = ~exactMask & kSubSampleMask;
+                        observer(exactMask);
+                    }
+                }
+#endif
+            };
+
+            for (int y = 0; y < TileHeight; ++y) {
+                if constexpr (TileWidth % 8 == 0) {
+                    for (int x = 0; x < TileWidth; x += 8) process_chunk(std::integral_constant<int, 8>{}, y, x);
+                } else if constexpr (TileWidth % 4 == 0) {
+                    for (int x = 0; x < TileWidth; x += 4) process_chunk(std::integral_constant<int, 4>{}, y, x);
+                }
+            }
+
+            if (!rowStart) resetMask(deltaToMask(currentWd));
+
+            tileMinX = (float)(tile.x * TileWidth);
+            tileMinY = (float)(tile.y * TileHeight);
+            tileMaxX = tileMinX + (float)TileWidth;
+            tileMaxY = tileMinY + (float)TileHeight;
+        },
+        /* onRowStart */ [&](int32_t wd) {
+            resetMask(deltaToMask(wd));
+        },
+        /* onLine */ [&](const auto& tile, Line line, bool canonicalXDir, bool canonicalYDir, size_t i) {
+            float rightEdge = canonicalXDir ? line.p1.fX : line.p0.fX;
+            if (rightEdge < 0.0f) return;
+
+            float dx = line.p1.fX - line.p0.fX;
+            float dy = line.p1.fY - line.p0.fY;
+            float idx = (std::abs(dx) <= kStripEpsilon) ? 0.0f : 1.0f / dx;
+            float idy = (std::abs(dy) <= kStripEpsilon) ? 0.0f : 1.0f / dy;
+            float dxdy = dx * idy;
+
+            std::array<float, 4> bounds = {tileMinX, tileMinY, tileMaxX, tileMaxY};
+            std::array<float, 4> derivs = {dx, dy, idx, idy};
+
+            auto clipped = clipToTile(line, bounds, derivs, tile.packedWindingLineIdx & INTERSECTION_MASK, canonicalXDir, canonicalYDir);
+            SkPoint pTop = clipped[0];
+            SkPoint pBot = clipped[1];
+
+            // --- Wide SIMD L Boundary Fill ---
+            if (tile.packedWindingLineIdx & L) {
+                float yEdge = (pTop.fX < pBot.fX) ? pTop.fY : pBot.fY;
+                MSAAType fill_byte;
+                if constexpr (kIsWinding) fill_byte = canonicalXDir ? kMSAASubAsAdd : 1;
+                else fill_byte = 1;
+
+                uint32_t fill_32 = fill_byte * 0x01010101u;
+                for (int y = (int)std::ceil(yEdge); y < TileHeight; ++y) {
+                    if constexpr (TileWidth % 8 == 0) {
+                        skvx::Vec<16, uint32_t> v_fill16_32 = {
+                            fill_32, fill_32, fill_32, fill_32, fill_32, fill_32, fill_32, fill_32,
+                            fill_32, fill_32, fill_32, fill_32, fill_32, fill_32, fill_32, fill_32 };
+                        for (int x = 0; x < TileWidth; x += 8) {
+                            auto v_mask = skvx::Vec<16, uint32_t>::Load(&mask[y][x]);
+                            if constexpr (kIsWinding) {
+                                auto m_b = sk_bit_cast<skvx::Vec<64, MSAAType>>(v_mask);
+                                auto f_b = sk_bit_cast<skvx::Vec<64, MSAAType>>(v_fill16_32);
+                                v_mask = sk_bit_cast<skvx::Vec<16, uint32_t>>(m_b + f_b);
+                            } else {
+                                v_mask ^= v_fill16_32;
+                            }
+                            v_mask.store(&mask[y][x]);
+                        }
+                    } else if constexpr (TileWidth % 4 == 0) {
+                        skvx::Vec<8, uint32_t> v_fill8_32 = {
+                            fill_32, fill_32, fill_32, fill_32, fill_32, fill_32, fill_32, fill_32 };
+                        for (int x = 0; x < TileWidth; x += 4) {
+                            auto v_mask = skvx::Vec<8, uint32_t>::Load(&mask[y][x]);
+                            if constexpr (kIsWinding) {
+                                auto m_b = sk_bit_cast<skvx::Vec<32, MSAAType>>(v_mask);
+                                auto f_b = sk_bit_cast<skvx::Vec<32, MSAAType>>(v_fill8_32);
+                                v_mask = sk_bit_cast<skvx::Vec<8, uint32_t>>(m_b + f_b);
+                            } else {
+                                v_mask ^= v_fill8_32;
+                            }
+                            v_mask.store(&mask[y][x]);
+                        }
+                    }
+                }
+            }
+
+            if (std::abs(dy) < kStripEpsilon && pTop.fY == std::floor(pTop.fY)) return;
+
+            int startY = (int)std::floor(pTop.fY);
+            int endY = (int)std::ceil(pBot.fY);
+
+            constexpr int kPaddedHeight = ((TileHeight + 1 + 3) / 4) * 4;
+            float edgeX[kPaddedHeight];
+            float edgeY[kPaddedHeight];
+            for (int j = 0; j < kPaddedHeight; ++j) edgeY[j] = static_cast<float>(j);
+            {
+                skvx::float4 v_pTopX(pTop.fX);
+                skvx::float4 v_pTopY(pTop.fY);
+                skvx::float4 v_dxdy(dxdy);
+
+                int height;
+                if constexpr (TileHeight > 4) height = (endY + 3) / 4 * 4;
+                else height = 4;
+
+                for (int k = 0; k < height; k += 4) {
+                    skvx::float4 v_gridY = skvx::float4::Load(edgeY + k);
+                    skvx::float4 v_gridX = v_pTopX + (v_gridY - v_pTopY) * v_dxdy;
+                    v_gridX.store(edgeX + k);
+                }
+
+                edgeX[startY] = pTop.fX;
+                edgeY[startY] = pTop.fY;
+                edgeX[endY] = pBot.fX;
+                edgeY[endY] = pBot.fY;
+            }
+
+            float nx = dy;
+            float ny = -dx;
+            if (nx < 0.0f) { nx = -nx; ny = -ny; }
+            float D = nx + std::abs(ny);
+            float invD = (D < kStripEpsilon) ? 0.0f : 1.0f / D;
+            bool isPos = ny <= 0.0f;
+            float c_local = nx * pTop.fX + ny * pTop.fY;
+            float s = std::abs(ny) * invD;
+            int v_mod = std::clamp(static_cast<int>(std::floor(s * (kMaskHeight / 2))), 0, (kMaskHeight / 2) - 1);
+            int v = isPos ? (v_mod + kMaskHeight / 2) : v_mod;
+            float stepX = nx * invD;
+            float stepY = ny * invD;
+            float t_base = ((isPos ? nx : D) - c_local) * invD;
+
+            bool xDir = pTop.fX <= pBot.fX;
+            for (int y = startY; y < endY; ++y) {
+                float p_top_x = edgeX[y];
+                float p_top_y = edgeY[y];
+                float p_bot_x = edgeX[y + 1];
+                float p_bot_y = edgeY[y + 1];
+
+                SkASSERT(!std::isnan(p_top_x) && !std::isnan(p_top_y) && !std::isnan(p_bot_x) && !std::isnan(p_bot_y));
+
+                float xMin = std::fmin(p_top_x, p_bot_x);
+                float xMax = std::fmax(p_top_x, p_bot_x);
+                int xStart = std::clamp(static_cast<int>(std::floor(xMin)), 0, TileWidth - 1);
+                int xEnd = std::clamp(static_cast<int>(std::floor(xMax)), 0, TileWidth - 1);
+
+                float t_val = t_base + stepY * static_cast<float>(y) + stepX * static_cast<float>(xStart);
+                int32_t t_fixed = static_cast<int32_t>(t_val * 64.0f * 65536.0f);
+                int32_t stepX_fixed = static_cast<int32_t>(stepX * 64.0f * 65536.0f);
+                int lut_row_offset = v * kMaskWidth;
+
+                bool is_startY = (y == startY);
+                bool is_endY_minus_1 = (y == endY - 1);
+                bool pixelTopTouch = (p_top_y != std::floor(p_top_y));
+                bool default_bumped = pixelTopTouch && xDir;
+
+                MSAAType start_mask_val = kSubSampleMask;
+                bool start_bumped = default_bumped;
+                if (is_startY) {
+                    start_bumped = (p_top_x == 0.0f && pixelTopTouch);
+                    if (!start_bumped) {
+                        uint32_t shift = static_cast<uint32_t>(std::round(kNumSubSamplesF * (p_top_y - static_cast<float>(y))));
+                        start_mask_val = static_cast<MSAAType>(kSubSampleMask << shift);
+                    }
+                }
+
+                MSAAType end_mask_val = kSubSampleMask;
+                if (is_endY_minus_1 && p_bot_x != 0.0f) {
+                    uint32_t shift = static_cast<uint32_t>(std::round(kNumSubSamplesF * (p_bot_y - static_cast<float>(y))));
+                    end_mask_val = static_cast<MSAAType>(~(kSubSampleMask << shift));
+                }
+                if (!is_startY) start_mask_val = kSubSampleMask;
+                if (!is_endY_minus_1) end_mask_val = kSubSampleMask;
+
+                auto processPixel = [&](int px, MSAAType edgeMask, uint32_t bumpVal) {
+                    int u = std::clamp(t_fixed >> 16, 0, kMaskWidthExcl);
+                    SkASSERT(v * kMaskWidth + u < maskLut.size());
+                    MSAAType maskVal = maskLut[lut_row_offset + u] & edgeMask;
+
+                    uint32_t mask_lo = ((maskVal & 0x0F) * 0x00204081u) & 0x01010101u;
+                    uint32_t mask_hi = (((maskVal >> 4) & 0x0F) * 0x00204081u) & 0x01010101u;
+
+                    pixel_bytes p_res = sk_bit_cast<pixel_bytes>(swar_pixel(mask_lo, mask_hi));
+                    pixel_bytes p_mask = sk_bit_cast<pixel_bytes>(mask[y][px]);
+                    pixel_bytes p_bump(bumpVal);
+
+                    if constexpr (kIsWinding) {
+                        p_res -= p_bump;
+                        if (canonicalYDir) p_mask += p_res;
+                        else p_mask -= p_res;
+                    } else {
+                        p_res ^= p_bump;
+                        p_mask ^= p_res;
+                    }
+
+                    mask[y][px] = sk_bit_cast<swar_pixel>(p_mask);
+                    t_fixed += stepX_fixed;
+                };
+
+                if (xStart == xEnd) {
+                    MSAAType combinedMask = start_mask_val & end_mask_val;
+                    processPixel(xStart, combinedMask, start_bumped);
+                } else {
+                    MSAAType leftMask = xDir ? start_mask_val : end_mask_val;
+                    processPixel(xStart, leftMask, xDir ? start_bumped : default_bumped);
+
+                    uint32_t midBumped = default_bumped ? 1 : 0;
+                    for (int x = xStart + 1; x < xEnd; ++x) processPixel(x, kSubSampleMask, midBumped);
+
+                    MSAAType rightMask = xDir ? end_mask_val : start_mask_val;
+                    processPixel(xEnd, rightMask, xDir ? default_bumped : start_bumped);
+                }
+
+                bool crossedTop = (y > startY) || (p_top_y == std::floor(p_top_y));
+                if (crossedTop) {
+                    MSAAType fill_byte;
+                    if constexpr (kIsWinding) fill_byte = canonicalYDir ? 1 : kMSAASubAsAdd;
+                    else fill_byte = 1;
+
+                    int x = xEnd + 1;
+                    uint32_t fill_32 = fill_byte * 0x01010101u;
+                    if constexpr (TileWidth >= 8) {
+                        skvx::Vec<16, uint32_t> v_fill16_32 = {
+                            fill_32, fill_32, fill_32, fill_32, fill_32, fill_32, fill_32, fill_32,
+                            fill_32, fill_32, fill_32, fill_32, fill_32, fill_32, fill_32, fill_32 };
+                        while (x + 8 <= TileWidth) {
+                            auto v_mask = skvx::Vec<16, uint32_t>::Load(&mask[y][x]);
+                            if constexpr (kIsWinding) {
+                                auto m_b = sk_bit_cast<skvx::Vec<64, MSAAType>>(v_mask);
+                                auto f_b = sk_bit_cast<skvx::Vec<64, MSAAType>>(v_fill16_32);
+                                v_mask = sk_bit_cast<skvx::Vec<16, uint32_t>>(m_b + f_b);
+                            } else {
+                                v_mask ^= v_fill16_32;
+                            }
+                            v_mask.store(&mask[y][x]);
+                            x += 8;
+                        }
+                    } else if constexpr (TileWidth >= 4) {
+                        skvx::Vec<8, uint32_t> v_fill8_32 = {
+                            fill_32, fill_32, fill_32, fill_32, fill_32, fill_32, fill_32, fill_32 };
+                        while (x + 4 <= TileWidth) {
+                            auto v_mask = skvx::Vec<8, uint32_t>::Load(&mask[y][x]);
+                            if constexpr (kIsWinding) {
+                                auto m_b = sk_bit_cast<skvx::Vec<32, MSAAType>>(v_mask);
+                                auto f_b = sk_bit_cast<skvx::Vec<32, MSAAType>>(v_fill8_32);
+                                v_mask = sk_bit_cast<skvx::Vec<8, uint32_t>>(m_b + f_b);
+                            } else {
+                                v_mask ^= v_fill8_32;
+                            }
+                            v_mask.store(&mask[y][x]);
+                            x += 4;
+                        }
+                    }
+
+                    const pixel_bytes p_fill(fill_byte);
+                    for (; x < TileWidth; ++x) {
+                        pixel_bytes p_mask = sk_bit_cast<pixel_bytes>(mask[y][x]);
+                        if constexpr (kIsWinding) p_mask += p_fill;
+                        else p_mask ^= p_fill;
+                        mask[y][x] = sk_bit_cast<swar_pixel>(p_mask);
+                    }
+                }
+            }
+        }
+    );
+
+    alphaBuffer.resize(localAlphaIdx);
+}
+
+template <uint16_t TileWidth, uint16_t TileHeight, bool kIsWinding, typename MSAAType, typename TileContainer>
+void MakeStripImpl::MakeCompressedRowStripsSimd(TileContainer& tileContainer,
+                                                SkTDArray<Strip>& stripBuf,
+                                                SkTDArray<MSAAType>& alphaBuffer,
+                                                bool isInverse,
+                                                const Polyline& polyline,
+                                                const SkTDArray<MSAAType>& maskLut,
+                                                WideTiles<TileHeight>& wides,
+                                                bool isCulled,
+                                                const WindingHistogram& windingHistogram,
+                                                const SkIRect& clipRect,
+                                                SkTDArray<size_t>& firstIdxForX
+#if defined(GPU_TEST_UTILS)
+                                                , MsaaExactMaskObserver<MSAAType> observer
+#endif
+) {
+    constexpr int32_t  kNumSubSamples  = sizeof(MSAAType) * 8;
+    constexpr float    kNumSubSamplesF = static_cast<float>(kNumSubSamples);
+    constexpr MSAAType kSubSampleMask  = static_cast<MSAAType>((1 << kNumSubSamples) - 1);
+    constexpr MSAAType kMSAASubAsAdd   = static_cast<MSAAType>(-1);
+    constexpr MSAAType kMSAABias       = static_cast<MSAAType>(1 << (kNumSubSamples - 1));
+
+    auto deltaToMask = [&](int32_t w) {
+        MSAAType w_byte;
+        if constexpr (kIsWinding) w_byte = kMSAABias + static_cast<MSAAType>(static_cast<int8_t>(w));
+        else w_byte = static_cast<MSAAType>(w & 1);
+        return static_cast<uint32_t>(w_byte) * 0x01010101u;
+    };
+
+    constexpr int32_t kTileAlphaCount = TileWidth * TileHeight;
+    int32_t localAlphaIdx = alphaBuffer.size();
+
+    // Calculate total count across all compressed runs for allocation estimation
+    size_t totalTiles = 0;
+    for (const auto& row : tileContainer.getRows()) {
+        for (const auto& rle : row) {
+            totalTiles += rle.runLength();
+        }
+    }
+
+    size_t megaGuess = totalTiles * kTileAlphaCount * 2;
+    alphaBuffer.reserve(localAlphaIdx + megaGuess);
+
+    using swar_pixel = skvx::Vec<2, uint32_t>;
+    using pixel_bytes = skvx::Vec<8, MSAAType>;
+    swar_pixel mask[TileHeight][TileWidth];
+
+    auto resetMask = [&](uint32_t val) {
+        if (val == 0) {
+            std::memset(mask, 0, sizeof(mask));
+        } else {
+            swar_pixel* flat_mask = &mask[0][0];
+            constexpr int totalPixels = TileWidth * TileHeight;
+
+            if constexpr (TileWidth % 8 == 0) {
+                skvx::Vec<16, uint32_t> v_val = {val, val, val, val, val, val, val, val,
+                                                 val, val, val, val, val, val, val, val};
+                for (int i = 0; i < totalPixels; i += 8) v_val.store(flat_mask + i);
+            } else if constexpr (TileWidth % 4 == 0) {
+                skvx::Vec<8, uint32_t> v_val = {val, val, val, val, val, val, val, val};
+                for (int i = 0; i < totalPixels; i += 4) v_val.store(flat_mask + i);
+            } else {
+                swar_pixel p = {val, val};
+                for (int i = 0; i < totalPixels; ++i) flat_mask[i] = p;
+            }
+        }
+    };
+
+    float tileMinX = 0, tileMinY = 0, tileMaxX = 0, tileMaxY = 0;
+
+    TraverseCompressedRowStrips<TileWidth, TileHeight, kIsWinding>(
+        tileContainer, stripBuf, isInverse, isCulled, windingHistogram, wides, clipRect, polyline, firstIdxForX,
+        /* getAlphaIdx */ [&]() { return localAlphaIdx; },
+        /* init */ [&](int x, int y, int32_t wd) {
+            resetMask(deltaToMask(wd));
+            tileMinX = static_cast<float>(x * TileWidth);
+            tileMinY = static_cast<float>(y * TileHeight);
+            tileMaxX = tileMinX + static_cast<float>(TileWidth);
+            tileMaxY = tileMinY + static_cast<float>(TileHeight);
+        },
+        /* onTileStart */ [&](uint32_t x, int y, bool rowStart, size_t i, int32_t currentWd) {
+            if (localAlphaIdx + kTileAlphaCount > alphaBuffer.capacity()) {
+                constexpr size_t kChunkSize = 4 * kTileAlphaCount;
+                alphaBuffer.reserve(alphaBuffer.capacity() + kChunkSize);
+            }
+            MSAAType* alphaBase = alphaBuffer.begin();
+
+            auto get_counts_wide = [&](auto v) {
+                using VecT = decltype(v);
+                if constexpr (kIsWinding) {
+                    using Vec8 = skvx::Vec<sizeof(VecT), MSAAType>;
+                    Vec8 v_bytes = sk_bit_cast<Vec8>(v);
+                    Vec8 bias_bytes(kMSAABias);
+                    Vec8 cmp = (v_bytes != bias_bytes);
+                    VecT active_bytes = sk_bit_cast<VecT>(cmp) & VecT(0x01010101u);
+                    return (active_bytes * VecT(0x01010101u)) >> 24;
+                } else {
+                    VecT ones(0x01010101u);
+                    VecT active_bytes = v & ones;
+                    return (active_bytes * ones) >> 24;
+                }
+            };
+
+            auto process_chunk = [&](auto size_tag, int px_y, int px_x) {
+                constexpr int ChunkSize = decltype(size_tag)::value;
+
+                auto v_mask = skvx::Vec<ChunkSize * 2, uint32_t>::Load(&mask[px_y][px_x]);
+                auto counts = get_counts_wide(v_mask);
+
+                skvx::Vec<ChunkSize, uint32_t> activeSamples;
+                if constexpr (ChunkSize == 8) {
+                    auto counts_lo = skvx::shuffle<0, 2, 4, 6, 8, 10, 12, 14>(counts);
+                    auto counts_hi = skvx::shuffle<1, 3, 5, 7, 9, 11, 13, 15>(counts);
+                    activeSamples = counts_lo + counts_hi;
+                } else {
+                    auto counts_lo = skvx::shuffle<0, 2, 4, 6>(counts);
+                    auto counts_hi = skvx::shuffle<1, 3, 5, 7>(counts);
+                    activeSamples = counts_lo + counts_hi;
+                }
+
+                if (isInverse) activeSamples = skvx::Vec<ChunkSize, uint32_t>(kNumSubSamples) - activeSamples;
+
+                skvx::Vec<ChunkSize, uint32_t> alpha32 = (activeSamples * kSubSampleMask + (kNumSubSamples / 2)) / kNumSubSamples;
+                skvx::cast<MSAAType>(alpha32).store(alphaBase + localAlphaIdx);
+                localAlphaIdx += ChunkSize;
+
+#if defined(GPU_TEST_UTILS)
+                if (observer) {
+                    auto shouldFillObs = [](int32_t w) {
+                        if constexpr (kIsWinding) return w != 0;
+                        else return (w & 1) != 0;
+                    };
+                    for (int xx = px_x; xx < px_x + ChunkSize; ++xx) {
+                        swar_pixel v = mask[px_y][xx];
+                        MSAAType exactMask = 0;
+                        uint32_t lo = v[0];
+                        uint32_t hi = v[1];
+                        for (int s = 0; s < 4; ++s) {
+                            int8_t s_lo = (int8_t)(lo & kSubSampleMask);
+                            int8_t s_hi = (int8_t)(hi & kSubSampleMask);
+                            if constexpr (kIsWinding) {
+                                s_lo = (int8_t)((MSAAType)s_lo - kMSAABias);
+                                s_hi = (int8_t)((MSAAType)s_hi - kMSAABias);
+                            }
+                            if (shouldFillObs(s_lo)) exactMask |= (1 << s);
+                            if (shouldFillObs(s_hi)) exactMask |= (1 << (s + 4));
+                            lo >>= 8;
+                            hi >>= 8;
+                        }
+                        if (isInverse) exactMask = ~exactMask & kSubSampleMask;
+                        observer(exactMask);
+                    }
+                }
+#endif
+            };
+
+            for (int py = 0; py < TileHeight; ++py) {
+                if constexpr (TileWidth % 8 == 0) {
+                    for (int px = 0; px < TileWidth; px += 8) process_chunk(std::integral_constant<int, 8>{}, py, px);
+                } else if constexpr (TileWidth % 4 == 0) {
+                    for (int px = 0; px < TileWidth; px += 4) process_chunk(std::integral_constant<int, 4>{}, py, px);
+                }
+            }
+
+            if (!rowStart) resetMask(deltaToMask(currentWd));
+
+            tileMinX = (float)(x * TileWidth);
+            tileMinY = (float)(y * TileHeight);
+            tileMaxX = tileMinX + (float)TileWidth;
+            tileMaxY = tileMinY + (float)TileHeight;
+        },
+        /* onRowStart */ [&](int32_t wd) {
+            resetMask(deltaToMask(wd));
+        },
+        /* onLine */ [&](const auto& rle, uint32_t intersectionMask, Line line, bool canonicalXDir, bool canonicalYDir, size_t i) {
+            float rightEdge = canonicalXDir ? line.p1.fX : line.p0.fX;
+            if (rightEdge < 0.0f) return;
+
+            float dx = line.p1.fX - line.p0.fX;
+            float dy = line.p1.fY - line.p0.fY;
+            float idx = (std::abs(dx) <= kStripEpsilon) ? 0.0f : 1.0f / dx;
+            float idy = (std::abs(dy) <= kStripEpsilon) ? 0.0f : 1.0f / dy;
+            float dxdy = dx * idy;
+
+            std::array<float, 4> bounds = {tileMinX, tileMinY, tileMaxX, tileMaxY};
+            std::array<float, 4> derivs = {dx, dy, idx, idy};
+
+            auto clipped = clipToTile(line, bounds, derivs, intersectionMask & INTERSECTION_MASK, canonicalXDir, canonicalYDir);
+            SkPoint pTop = clipped[0];
+            SkPoint pBot = clipped[1];
+
+            // --- Wide SIMD L Boundary Fill ---
+            if (intersectionMask & L) {
+                float yEdge = (pTop.fX < pBot.fX) ? pTop.fY : pBot.fY;
+                MSAAType fill_byte;
+                if constexpr (kIsWinding) fill_byte = canonicalXDir ? kMSAASubAsAdd : 1;
+                else fill_byte = 1;
+
+                uint32_t fill_32 = fill_byte * 0x01010101u;
+                for (int py = (int)std::ceil(yEdge); py < TileHeight; ++py) {
+                    if constexpr (TileWidth % 8 == 0) {
+                        skvx::Vec<16, uint32_t> v_fill16_32 = {
+                            fill_32, fill_32, fill_32, fill_32, fill_32, fill_32, fill_32, fill_32,
+                            fill_32, fill_32, fill_32, fill_32, fill_32, fill_32, fill_32, fill_32 };
+                        for (int px = 0; px < TileWidth; px += 8) {
+                            auto v_mask = skvx::Vec<16, uint32_t>::Load(&mask[py][px]);
+                            if constexpr (kIsWinding) {
+                                auto m_b = sk_bit_cast<skvx::Vec<64, MSAAType>>(v_mask);
+                                auto f_b = sk_bit_cast<skvx::Vec<64, MSAAType>>(v_fill16_32);
+                                v_mask = sk_bit_cast<skvx::Vec<16, uint32_t>>(m_b + f_b);
+                            } else {
+                                v_mask ^= v_fill16_32;
+                            }
+                            v_mask.store(&mask[py][px]);
+                        }
+                    } else if constexpr (TileWidth % 4 == 0) {
+                        skvx::Vec<8, uint32_t> v_fill8_32 = {
+                            fill_32, fill_32, fill_32, fill_32, fill_32, fill_32, fill_32, fill_32 };
+                        for (int px = 0; px < TileWidth; px += 4) {
+                            auto v_mask = skvx::Vec<8, uint32_t>::Load(&mask[py][px]);
+                            if constexpr (kIsWinding) {
+                                auto m_b = sk_bit_cast<skvx::Vec<32, MSAAType>>(v_mask);
+                                auto f_b = sk_bit_cast<skvx::Vec<32, MSAAType>>(v_fill8_32);
+                                v_mask = sk_bit_cast<skvx::Vec<8, uint32_t>>(m_b + f_b);
+                            } else {
+                                v_mask ^= v_fill8_32;
+                            }
+                            v_mask.store(&mask[py][px]);
+                        }
+                    }
+                }
+            }
+
+            if (std::abs(dy) < kStripEpsilon && pTop.fY == std::floor(pTop.fY)) return;
+
+            int startY = (int)std::floor(pTop.fY);
+            int endY = (int)std::ceil(pBot.fY);
+
+            constexpr int kPaddedHeight = ((TileHeight + 1 + 3) / 4) * 4;
+            float edgeX[kPaddedHeight];
+            float edgeY[kPaddedHeight];
+            for (int j = 0; j < kPaddedHeight; ++j) edgeY[j] = static_cast<float>(j);
+            {
+                skvx::float4 v_pTopX(pTop.fX);
+                skvx::float4 v_pTopY(pTop.fY);
+                skvx::float4 v_dxdy(dxdy);
+
+                int height;
+                if constexpr (TileHeight > 4) height = (endY + 3) / 4 * 4;
+                else height = 4;
+
+                for (int k = 0; k < height; k += 4) {
+                    skvx::float4 v_gridY = skvx::float4::Load(edgeY + k);
+                    skvx::float4 v_gridX = v_pTopX + (v_gridY - v_pTopY) * v_dxdy;
+                    v_gridX.store(edgeX + k);
+                }
+
+                edgeX[startY] = pTop.fX;
+                edgeY[startY] = pTop.fY;
+                edgeX[endY] = pBot.fX;
+                edgeY[endY] = pBot.fY;
+            }
+
+            float nx = dy;
+            float ny = -dx;
+            if (nx < 0.0f) { nx = -nx; ny = -ny; }
+            float D = nx + std::abs(ny);
+            float invD = (D < kStripEpsilon) ? 0.0f : 1.0f / D;
+            bool isPos = ny <= 0.0f;
+            float c_local = nx * pTop.fX + ny * pTop.fY;
+            float s = std::abs(ny) * invD;
+            int v_mod = std::clamp(static_cast<int>(std::floor(s * (kMaskHeight / 2))), 0, (kMaskHeight / 2) - 1);
+            int v = isPos ? (v_mod + kMaskHeight / 2) : v_mod;
+            float stepX = nx * invD;
+            float stepY = ny * invD;
+            float t_base = ((isPos ? nx : D) - c_local) * invD;
+
+            bool xDir = pTop.fX <= pBot.fX;
+            for (int py = startY; py < endY; ++py) {
+                float p_top_x = edgeX[py];
+                float p_top_y = edgeY[py];
+                float p_bot_x = edgeX[py + 1];
+                float p_bot_y = edgeY[py + 1];
+
+                SkASSERT(!std::isnan(p_top_x) && !std::isnan(p_top_y) && !std::isnan(p_bot_x) && !std::isnan(p_bot_y));
+
+                float xMin = std::fmin(p_top_x, p_bot_x);
+                float xMax = std::fmax(p_top_x, p_bot_x);
+                int xStart = std::clamp(static_cast<int>(std::floor(xMin)), 0, TileWidth - 1);
+                int xEnd = std::clamp(static_cast<int>(std::floor(xMax)), 0, TileWidth - 1);
+
+                float t_val = t_base + stepY * static_cast<float>(py) + stepX * static_cast<float>(xStart);
+                int32_t t_fixed = static_cast<int32_t>(t_val * 64.0f * 65536.0f);
+                int32_t stepX_fixed = static_cast<int32_t>(stepX * 64.0f * 65536.0f);
+                int lut_row_offset = v * kMaskWidth;
+
+                bool is_startY = (py == startY);
+                bool is_endY_minus_1 = (py == endY - 1);
+                bool pixelTopTouch = (p_top_y != std::floor(p_top_y));
+                bool default_bumped = pixelTopTouch && xDir;
+
+                MSAAType start_mask_val = kSubSampleMask;
+                bool start_bumped = default_bumped;
+                if (is_startY) {
+                    start_bumped = (p_top_x == 0.0f && pixelTopTouch);
+                    if (!start_bumped) {
+                        uint32_t shift = static_cast<uint32_t>(std::round(kNumSubSamplesF * (p_top_y - static_cast<float>(py))));
+                        start_mask_val = static_cast<MSAAType>(kSubSampleMask << shift);
+                    }
+                }
+
+                MSAAType end_mask_val = kSubSampleMask;
+                if (is_endY_minus_1 && p_bot_x != 0.0f) {
+                    uint32_t shift = static_cast<uint32_t>(std::round(kNumSubSamplesF * (p_bot_y - static_cast<float>(py))));
+                    end_mask_val = static_cast<MSAAType>(~(kSubSampleMask << shift));
+                }
+                if (!is_startY) start_mask_val = kSubSampleMask;
+                if (!is_endY_minus_1) end_mask_val = kSubSampleMask;
+
+                auto processPixel = [&](int px, MSAAType edgeMask, uint32_t bumpVal) {
+                    int u = std::clamp(t_fixed >> 16, 0, kMaskWidthExcl);
+                    SkASSERT(v * kMaskWidth + u < maskLut.size());
+                    MSAAType maskVal = maskLut[lut_row_offset + u] & edgeMask;
+
+                    uint32_t mask_lo = ((maskVal & 0x0F) * 0x00204081u) & 0x01010101u;
+                    uint32_t mask_hi = (((maskVal >> 4) & 0x0F) * 0x00204081u) & 0x01010101u;
+
+                    pixel_bytes p_res = sk_bit_cast<pixel_bytes>(swar_pixel(mask_lo, mask_hi));
+                    pixel_bytes p_mask = sk_bit_cast<pixel_bytes>(mask[py][px]);
+                    pixel_bytes p_bump(bumpVal);
+
+                    if constexpr (kIsWinding) {
+                        p_res -= p_bump;
+                        if (canonicalYDir) p_mask += p_res;
+                        else p_mask -= p_res;
+                    } else {
+                        p_res ^= p_bump;
+                        p_mask ^= p_res;
+                    }
+
+                    mask[py][px] = sk_bit_cast<swar_pixel>(p_mask);
+                    t_fixed += stepX_fixed;
+                };
+
+                if (xStart == xEnd) {
+                    MSAAType combinedMask = start_mask_val & end_mask_val;
+                    processPixel(xStart, combinedMask, start_bumped);
+                } else {
+                    MSAAType leftMask = xDir ? start_mask_val : end_mask_val;
+                    processPixel(xStart, leftMask, xDir ? start_bumped : default_bumped);
+
+                    uint32_t midBumped = default_bumped ? 1 : 0;
+                    for (int px = xStart + 1; px < xEnd; ++px) processPixel(px, kSubSampleMask, midBumped);
+
+                    MSAAType rightMask = xDir ? end_mask_val : start_mask_val;
+                    processPixel(xEnd, rightMask, xDir ? default_bumped : start_bumped);
+                }
+
+                bool crossedTop = (py > startY) || (p_top_y == std::floor(p_top_y));
+                if (crossedTop) {
+                    MSAAType fill_byte;
+                    if constexpr (kIsWinding) fill_byte = canonicalYDir ? 1 : kMSAASubAsAdd;
+                    else fill_byte = 1;
+
+                    int px = xEnd + 1;
+                    uint32_t fill_32 = fill_byte * 0x01010101u;
+                    if constexpr (TileWidth >= 8) {
+                        skvx::Vec<16, uint32_t> v_fill16_32 = {
+                            fill_32, fill_32, fill_32, fill_32, fill_32, fill_32, fill_32, fill_32,
+                            fill_32, fill_32, fill_32, fill_32, fill_32, fill_32, fill_32, fill_32 };
+                        while (px + 8 <= TileWidth) {
+                            auto v_mask = skvx::Vec<16, uint32_t>::Load(&mask[py][px]);
+                            if constexpr (kIsWinding) {
+                                auto m_b = sk_bit_cast<skvx::Vec<64, MSAAType>>(v_mask);
+                                auto f_b = sk_bit_cast<skvx::Vec<64, MSAAType>>(v_fill16_32);
+                                v_mask = sk_bit_cast<skvx::Vec<16, uint32_t>>(m_b + f_b);
+                            } else {
+                                v_mask ^= v_fill16_32;
+                            }
+                            v_mask.store(&mask[py][px]);
+                            px += 8;
+                        }
+                    } else if constexpr (TileWidth >= 4) {
+                        skvx::Vec<8, uint32_t> v_fill8_32 = {
+                            fill_32, fill_32, fill_32, fill_32, fill_32, fill_32, fill_32, fill_32 };
+                        while (px + 4 <= TileWidth) {
+                            auto v_mask = skvx::Vec<8, uint32_t>::Load(&mask[py][px]);
+                            if constexpr (kIsWinding) {
+                                auto m_b = sk_bit_cast<skvx::Vec<32, MSAAType>>(v_mask);
+                                auto f_b = sk_bit_cast<skvx::Vec<32, MSAAType>>(v_fill8_32);
+                                v_mask = sk_bit_cast<skvx::Vec<8, uint32_t>>(m_b + f_b);
+                            } else {
+                                v_mask ^= v_fill8_32;
+                            }
+                            v_mask.store(&mask[py][px]);
+                            px += 4;
+                        }
+                    }
+
+                    const pixel_bytes p_fill(fill_byte);
+                    for (; px < TileWidth; ++px) {
+                        pixel_bytes p_mask = sk_bit_cast<pixel_bytes>(mask[py][px]);
+                        if constexpr (kIsWinding) p_mask += p_fill;
+                        else p_mask ^= p_fill;
+                        mask[py][px] = sk_bit_cast<swar_pixel>(p_mask);
+                    }
+                }
+            }
+        }
+    );
+
+    alphaBuffer.resize(localAlphaIdx);
 }
 
 }  // namespace skgpu::graphite

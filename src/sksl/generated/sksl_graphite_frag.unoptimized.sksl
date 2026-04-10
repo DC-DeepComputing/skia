@@ -481,7 +481,7 @@ static constexpr char SKSL_MINIFIED_sksl_graphite_frag[] =
 "s);}case 1:{return $rrect_blur_coverage_fn(coords,shapeData,blurData.x,s);}"
 "}return half4(0.);}$pure half4 endcap_coverage_fn(float2 rectCoord,float2 atlasSize"
 ",sampler2D alpha_text_0,sampler2D alpha_text_1,uint maskIndex){uint tileWidth"
-"=4;uint tileHeight=4;uint dx=uint(floor(rectCoord.x));uint dy=uint(floor(rectCoord"
+"=8;uint tileHeight=8;uint dx=uint(floor(rectCoord.x));uint dy=uint(floor(rectCoord"
 ".y));uint tileX=dx/tileWidth;uint inTileX=dx%tileWidth;uint inTileY=dy;uint"
 " tileArea=tileWidth*tileHeight;uint linearOffset=(tileX*tileArea+inTileY*tileWidth"
 ")+inTileX;uint linearIdx=maskIndex+linearOffset;uint channelIdx=linearIdx&3"

@@ -1861,8 +1861,8 @@ $pure half4 endcap_coverage_fn(float2 rectCoord,
                                uint maskIndex) {
 
     // Cast the varying width passed from the vertex shader
-    uint tileWidth = 4;
-    uint tileHeight = 4;
+    uint tileWidth = 8;
+    uint tileHeight = 8;
 
     // Floor and cast the interpolated floating-point local coordinates
     uint dx = uint(floor(rectCoord.x));
