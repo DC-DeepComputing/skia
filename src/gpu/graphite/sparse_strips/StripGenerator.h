@@ -30,6 +30,11 @@
 #include "src/gpu/graphite/sparse_strips/Tiler.h"
 #include "src/gpu/graphite/sparse_strips/WindingHistogram.h"
 
+#include "src/gpu/graphite/BufferManager.h"
+#include "src/gpu/graphite/compute/DispatchGroup.h"
+#include "src/gpu/graphite/compute/SparseStripsRenderer.h"
+#include "src/gpu/graphite/task/ComputeTask.h"
+
 #include <algorithm>
 #include <array>
 #include <cstdint>
@@ -43,9 +48,11 @@ namespace skgpu::graphite {
 template <typename TileType> class StripGenerator {
 public:
     using MSAAType = SparseStripsConfig::MSAAType;
-    static constexpr uint16_t kTileWidth = SparseStripsConfig::kTileWidth;
-    static constexpr uint16_t kTileHeight = SparseStripsConfig::kTileHeight;
-    static constexpr uint32_t kWorkgroupSize = SparseStripsConfig::kWorkgroupSize;
+    static constexpr uint16_t kTileWidth           = SparseStripsConfig::kTileWidth;
+    static constexpr uint16_t kTileHeight          = SparseStripsConfig::kTileHeight;
+    static constexpr uint32_t kPartSize            = SparseStripsConfig::kPartSize;
+    static constexpr uint32_t kMSAAWorkgroupSize   = SparseStripsConfig::kMSAAWorkgroupSize;
+    static constexpr uint32_t kStitchWorkgroupSize = SparseStripsConfig::kStitchWorkgroupSize;
 
     StripGenerator(SkISize deviceSize, const SkTDArray<MSAAType>& lut, Recorder* recorder)
             : fDeviceSize(SkIRect::MakeSize(deviceSize))
@@ -73,14 +80,86 @@ public:
         }
     }
 
-    void flushGpu() {
+    BindBufferInfo flushGpu(BindBufferInfo (*initDebugBuffer)(DrawBufferManager*) = nullptr) {
         constexpr bool isGPU = std::is_same_v<TileType, GpuTile<kTileWidth, kTileHeight>>;
-        if constexpr (isGPU) {
-            this->reset();
-            GpuAlphaAtlasManager* manager = fRecorder->priv().atlasProvider()->gpuAlphaAtlasManager();
-            SkASSERT(manager);
-            manager->postFlush();
+        if constexpr (!isGPU) {
+            return {};
         }
+
+        uint32_t tileCount = fTiles.getTiles().size();
+        if (tileCount == 0) {
+            this->reset();
+            return {};
+        }
+
+        GpuAlphaAtlasManager* manager = fRecorder->priv().atlasProvider()->gpuAlphaAtlasManager();
+        DrawBufferManager* bufMgr = fRecorder->priv().drawBufferManager();
+        SkASSERT(manager && bufMgr);
+
+        uint32_t msaaWorkgroups = (tileCount + kPartSize - 1) / kPartSize;
+        uint32_t stitchWorkgroups = (msaaWorkgroups + kStitchWorkgroupSize - 1) /
+                                    kStitchWorkgroupSize;
+
+        size_t lutSize = fLUT.size() * sizeof(MSAAType);
+        auto [lutWriter, lutBuf, _1] = bufMgr->getMappedStorageBuffer(lutSize, 1);
+        if (lutWriter) lutWriter.write(fLUT.data(), lutSize);
+
+        size_t linesSize = fFlattenned.count() * 4 * sizeof(float);
+        auto [linesWriter, linesBuf, _2] = bufMgr->getMappedStorageBuffer(linesSize, 1);
+        if (linesWriter) linesWriter.write(fFlattenned.points().data(), linesSize);
+
+        size_t tilesSize = tileCount * sizeof(TileType);
+        auto [tilesWriter, tilesBuf, _3] = bufMgr->getMappedStorageBuffer(tilesSize, 1);
+        if (tilesWriter) tilesWriter.write(fTiles.getTiles().data(), tilesSize);
+
+        size_t indicatorSize = msaaWorkgroups * 2 * sizeof(uint32_t);
+        auto indicatorBuf = bufMgr->getScratchStorage(indicatorSize).getSubrange(indicatorSize, 1);
+
+        size_t partRedSize = msaaWorkgroups * 2 * kTileHeight * kTileWidth * 8;
+        auto partRedBuf = bufMgr->getScratchStorage(partRedSize).getSubrange(partRedSize, 1);
+
+        BindBufferInfo debugBufInfo = initDebugBuffer ? initDebugBuffer(bufMgr) :
+                                      bufMgr->getScratchStorage(4).getSubrange(4, 1);
+
+        auto proxies = manager->getProxies();
+        if (!proxies.empty()) {
+            DispatchGroup::Builder builder(fRecorder);
+
+            struct Config {
+                uint32_t tile_count;
+                uint32_t end_tile_count;
+                uint32_t workgroups;
+                uint32_t d;
+            } configData = { tileCount, 0, msaaWorkgroups, 0 };
+
+            auto [configWriter, configBuf, _0] = bufMgr->getMappedUniformBuffer(sizeof(Config), 1);
+            if (configWriter) configWriter.write(&configData, sizeof(Config));
+
+            builder.assignSharedBuffer(configBuf, SparseStripsSlots::kConfig);
+            builder.assignSharedBuffer(lutBuf, SparseStripsSlots::kMsaaLut);
+            builder.assignSharedBuffer(linesBuf, SparseStripsSlots::kLines);
+            builder.assignSharedBuffer(tilesBuf, SparseStripsSlots::kPmtIn);
+            builder.assignSharedBuffer(indicatorBuf, SparseStripsSlots::kPartIndicator, ClearBuffer::kYes);
+            builder.assignSharedBuffer(partRedBuf, SparseStripsSlots::kPartRed, ClearBuffer::kNo);
+            builder.assignSharedBuffer(debugBufInfo, SparseStripsSlots::kDebug, ClearBuffer::kYes);
+
+            builder.assignSharedTexture(proxies[0], SparseStripsSlots::kOutput0);
+            if (proxies.size() > 1) {
+                builder.assignSharedTexture(proxies[1], SparseStripsSlots::kOutput1);
+            }
+
+            builder.appendStep(&fMsaaStep, WorkgroupSize(msaaWorkgroups, 1, 1));
+            builder.appendStep(&fStitchStep, WorkgroupSize(stitchWorkgroups, 1, 1));
+
+            ComputeTask::DispatchGroupList groups;
+            groups.push_back(builder.finalize());
+            fRecorder->priv().add(ComputeTask::Make(std::move(groups)));
+        }
+
+        manager->postFlush();
+        this->reset();
+
+        return debugBufInfo;
     }
 
 private:
@@ -151,7 +230,7 @@ private:
 
         int32_t currentGlobalOffset = manager->getAlphaIndex();
         int32_t alphaCount =
-                MakeStrip::MakeStripsGpu<kTileWidth, kTileHeight, kWorkgroupSize, MSAAType>(
+                MakeStrip::MakeStripsGpu<kTileWidth, kTileHeight, kMSAAWorkgroupSize, MSAAType>(
                         fTiles,
                         fStrips,
                         path.getFillType(),
@@ -160,7 +239,8 @@ private:
                         fCulled,
                         fWindingHistogram,
                         fDeviceSize,
-                        prevTileCount);
+                        prevTileCount,
+                        currentGlobalOffset);
 
         for (int stripIdx = 1; stripIdx < fStrips.size(); ++stripIdx) {
             processStripPair(stripIdx, currentGlobalOffset);
@@ -218,6 +298,9 @@ private:
 
     WideTiles<kTileHeight> fWides;
     EndCaps<kTileHeight> fEnds;
+
+    SparseStripsMsaaStep fMsaaStep;
+    SparseStripsStitchStep fStitchStep;
 };
 
 }  // namespace skgpu::graphite

@@ -366,6 +366,7 @@ sparse_strips_test_sources = [
   "$_tests/graphite/sparse_strips/TilerTest.cpp",
   "$_tests/graphite/sparse_strips/compute/BitCountTestCompute.cpp",
   "$_tests/graphite/sparse_strips/compute/ClipTestCompute.cpp",
+  "$_tests/graphite/sparse_strips/compute/TestRig.cpp",
   "$_tests/graphite/sparse_strips/compute/ScanAndReduceTestCompute.cpp",
   "$_tests/graphite/sparse_strips/compute/SimpleCoverageTestCompute.cpp",
 ]

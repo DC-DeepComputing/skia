@@ -76,6 +76,9 @@ const EPSILON: f32                      = %ff;
 inline std::string GetWgslConfigDerived() {
     SkString config = SkStringPrintf(R"(
 const BLOCK_DIM: u32                    = %uu;
+const STITCH_BLOCK_DIM: u32             = %uu;
+// The number of tiles processed per workgroup, with the binding of 1 thread per row.
+const PART_SIZE: u32                    = %uu;
 const TILE_WIDTH: u32                   = %uu;
 const TILE_HEIGHT: u32                  = %uu;
 const TILE_DIM_LOG: u32                 = %uu;
@@ -84,32 +87,25 @@ const MASK_WIDTH: u32                   = %uu;
 const MASK_HEIGHT: u32                  = %uu;
 const MASK_WIDTH_EXCL: u32              = %uu;
 
-const MSAA_SUB_SAMPLE_MASK: u32         = 0x%02Xu;
-const MSAA_SUB_AS_ADD: u32              = 0x%02Xu;
-const MSAA_BIAS_SPLAT: vec2<u32>        = vec2<u32>(0x%02X%02X%02X%02Xu);
-const MSAA_INV_SAMPLES: f32             = %ff;
-const MSAA_SAMPLES_F32: f32             = %ff;
+const MSAA_SUB_SAMPLE_MASK: u32         = 0xFFu;
+const MSAA_SUB_AS_ADD: u32              = 0xFEFEFEFFu;
+const MSAA_BIAS_SPLAT: vec2<u32>        = vec2<u32>(0x80808080u);
+const MSAA_INV_SAMPLES: f32             = 0.125;
+const MSAA_SAMPLES_F32: f32             = 8.0;
 
 // Should be read as TILE_WIDTH * (num u32s per subsamples) / (num u32s per u32)
 const VEC2_COLS: u32                    = TILE_WIDTH * 2u / 2u;
-// The number of tiles processed per workgroup, with the binding of 1 thread per row.
-const PART_SIZE: u32                    = BLOCK_DIM / TILE_HEIGHT;
 )",
-    SparseStripsConfig::kWorkgroupSize,
+    SparseStripsConfig::kMSAAWorkgroupSize,
+    SparseStripsConfig::kStitchWorkgroupSize,
+    SparseStripsConfig::kPartSize,
     SparseStripsConfig::kTileWidth,
     SparseStripsConfig::kTileHeight,
     SparseStripsConfig::kTileDimLog,
     SparseStripsConfig::kLutWidth,
     SparseStripsConfig::kLutHeight,
-    SparseStripsConfig::kLutWidth - 1,
-    SparseStripsConstants::kSubSampleMask,
-    SparseStripsConstants::kMSAASubAsAdd,
-    SparseStripsConstants::kMSAABias,
-    SparseStripsConstants::kMSAABias,
-    SparseStripsConstants::kMSAABias,
-    SparseStripsConstants::kMSAABias,
-    SparseStripsConstants::kMSAAInvSamples,
-    SparseStripsConstants::kMSAASamplesF);
+    SparseStripsConfig::kLutWidth - 1
+    );
 
     return std::string(config.c_str());
 }
@@ -138,9 +134,10 @@ inline constexpr char kWgslBindings[] = R"(
 @group(0) @binding(2) var<storage, read> pmt_in: array<PreMergeTile>;
 @group(0) @binding(3) var<storage, read_write> part_indicator: array<u32>;
 @group(0) @binding(4) var<storage, read_write> part_red: array<array<array<vec2<u32>, VEC2_COLS>, TILE_HEIGHT>>;
-@group(0) @binding(5) var output: texture_storage_2d<rgba32uint, write>;
-@group(0) @binding(6) var<storage, read_write> debug: array<vec2<u32>>;
-@group(0) @binding(7) var<storage, read> lines: array<vec4<f32>>;
+@group(0) @binding(5) var output0: texture_storage_2d<rgba8unorm, write>;
+@group(0) @binding(6) var output1: texture_storage_2d<rgba8unorm, write>;
+@group(0) @binding(7) var<storage, read_write> debug: array<vec2<u32>>;
+@group(0) @binding(8) var<storage, read> lines: array<vec2<f32>>;
 )";
 
 inline constexpr char kWgslWorkgroupVars[] = R"(
@@ -153,8 +150,8 @@ fn msaa(@builtin(local_invocation_id) tid: vec3<u32>,
         @builtin(global_invocation_id) gid: vec3<u32>,
         @builtin(workgroup_id) wgid: vec3<u32>)  {
     var pmt: PreMergeTile;
-    if ((gid.x >> 2u) < config.tile_count) {
-        pmt = pmt_in[gid.x >> 2u];
+    if ((gid.x >> TILE_DIM_LOG) < config.tile_count) {
+        pmt = pmt_in[gid.x >> TILE_DIM_LOG];
     } else {
         pmt = PreMergeTile(
             0xffffffffu, // packed_xy
@@ -164,9 +161,9 @@ fn msaa(@builtin(local_invocation_id) tid: vec3<u32>,
         );
     }
 
-    let line_pts = lines[get_line_idx(pmt.packed_winding_line_idx)];
-    let p0 = line_pts.xy;
-    let p1 = line_pts.zw;
+    let line_idx = get_line_idx(pmt.packed_winding_line_idx);
+    let p0 = lines[line_idx];
+    let p1 = lines[line_idx + 1];
 
     let d = p1 - p0;
     let is_vertical = abs(d.x) <= EPSILON;
@@ -258,13 +255,14 @@ const std::string kWgslRowSetup = R"(
     let startY = u32(floor(clipped_top.y));
     let endY = u32(ceil(clipped_bot.y));
     let xDir = clipped_top.x <= clipped_bot.x;
-    let is_winding = get_fill_rule(pmt.packed_scanned_winding) != 0u;
+    //let is_winding = get_fill_rule(pmt.packed_scanned_winding) != 0u;
+    let is_winding = true;
 
     // 2. Declare and Initialize Row Mask
     var mask: array<vec2u, TILE_WIDTH>;
     {
         let winding = get_scanned_winding(pmt.packed_scanned_winding);
-        let is_start_tile = get_start_tile_idx(pmt.packed_scanned_winding) == (tid.x >> 2u);
+        let is_start_tile = get_start_tile_idx(pmt.packed_scanned_winding) == (tid.x >> TILE_DIM_LOG);
         let w_base = winding * select(0u, 0x1010101u, is_start_tile);
 
         let w = MSAA_BIAS_SPLAT + vec2u(w_base);
@@ -279,8 +277,8 @@ const std::string kWgslLeftEdgeFill = R"(
     if ((intersection_data & INTERSECTS_LEFT_MASK) != 0u) {
         let y_edge = select(clipped_bot.y, clipped_top.y, xDir);
         if (f32(local_y) >= ceil(y_edge)) {
-            let fill_byte = select(1u, select(MSAA_SUB_AS_ADD, 1u, canonical_x_dir), is_winding);
-            let p_fill = vec2u(fill_byte * 0x01010101u);
+            //let fill_byte = select(1u, select(MSAA_SUB_AS_ADD, 1u, canonical_x_dir), is_winding);
+            let p_fill = vec2u(select(0x1010101u, 0xfefefeffu, canonical_x_dir));
             for (var col = 0u; col < TILE_WIDTH; col += 1u) {
                 if (is_winding) {
                     mask[col] += p_fill;
@@ -301,7 +299,7 @@ const std::string kWgslProcessPixel = R"(
 
                 // Shift the targeted 8-bit segment down. The & local_mask naturally
                 // strips out the upper bits of the u32, preventing bleed-through.
-                let maskVal = (msaa_lut[word_idx] >> bit_shift) & local_mask;
+                let maskVal = (msaa_lut[word_idx] >> bit_shift) & local_mask & MSAA_SUB_SAMPLE_MASK;
 
                 let mask_lo = ((maskVal & 0x0Fu) * 0x00204081u) & 0x01010101u;
                 let mask_hi = (((maskVal >> 4u) & 0x0Fu) * 0x00204081u) & 0x01010101u;
@@ -310,8 +308,13 @@ const std::string kWgslProcessPixel = R"(
                 let p_bump = vec2u(local_bump * 0x01010101u);
 
                 if (is_winding) {
-                    p_res = p_res - p_bump;
+                    p_res -= p_bump;
                     p_res = select(vec2u(0u) - p_res, p_res, canonical_y_dir);
+                    // if (canonical_y_dir) {
+                    //     mask[local_x] += p_res;
+                    // } else {
+                    //     mask[local_x] -= p_res;
+                    // }
                     mask[local_x] += p_res;
                 } else {
                     p_res = p_res ^ p_bump;
@@ -332,7 +335,7 @@ const std::string kWgslMaskGen_SlopeIntercept = R"(
     let invD = select(1.0 / D, 0.0, D < EPSILON);
     let isPos = ny <= 0.0;
 
-    let c_local = nx * p0.x + ny * p0.y;
+    let c_local = nx * clipped_top.x + ny * clipped_top.y;
     let s = abs(ny) * invD;
 
     let half_mask_height = i32(MASK_HEIGHT / 2u);
@@ -427,8 +430,13 @@ const std::string kWgslMaskGen_SlopeIntercept = R"(
         // 7. Post-Edge SIMD Fill (crossedTop logic)
         let crossedTop = (local_y > startY) || (py_top == floor(py_top));
         if (crossedTop) {
-            let fill_byte = select(1u, select(MSAA_SUB_AS_ADD, 1u, canonical_y_dir), is_winding);
-            let p_fill = vec2u(fill_byte * 0x01010101u);
+            let fill_val = select(
+                0x01010101u,
+                select(MSAA_SUB_AS_ADD, 0x01010101u, canonical_y_dir),
+                is_winding
+            );
+            let p_fill = vec2u(fill_val);
+
             for (var x = xEnd + 1u; x < TILE_WIDTH; x += 1u) {
                 if (is_winding) {
                     mask[x] += p_fill;
@@ -441,8 +449,8 @@ const std::string kWgslMaskGen_SlopeIntercept = R"(
 )";
 
 inline constexpr char kWgslScan_Base[] = R"(
-    let row_index = tid.x & 3u;
-    let tile_index = tid.x >> 2u;
+    let row_index = tid.x & TILE_DIM_MASK;
+    let tile_index = tid.x >> TILE_DIM_LOG;
     for (var col = 0u; col < TILE_WIDTH; col += 1u) {
         wg_scan[tile_index][row_index][col] = mask[col];
     }
@@ -470,7 +478,7 @@ inline constexpr char kWgslScan_Base[] = R"(
 inline constexpr char kWgslScan_SegmentedReduction[] = R"(
     let tile_start_id = get_start_tile_idx(pmt.packed_scanned_winding);
     let is_valid = tile_start_id != INVALID_START_TILE;
-    let is_last_tile = (tid.x >> 2u) == PART_SIZE - 1u;
+    let is_last_tile = (tid.x >> TILE_DIM_LOG) == PART_SIZE - 1u;
     let is_end = is_end_tile(pmt.packed_scanned_winding);
 
     if (is_end || is_last_tile) {
@@ -498,31 +506,40 @@ inline constexpr char kWgslBitCountingInner[] = R"(
                     let zeros = subbed & (~diff) & MSAA_BIAS_SPLAT;
                     let actives = zeros ^ MSAA_BIAS_SPLAT;
                     let counts = ((actives >> vec2u(7)) * 0x01010101u) >> vec2u(24);
-                    row_pixels[col] = f32(counts.x + counts.y) * MSAA_INV_SAMPLES;
+                    row_pixels[col] = f32(counts.x + counts.y) * 0.125;
 )";
 
+// We merge the texture store directly into this block to avoid 128-bit register bloat.
 inline const std::string kWgslBitCounting = std::string(R"(
-            for (var row = 0u; row < TILE_HEIGHT; row += 1u) {
-                var row_pixels: vec4<f32>;
-                for (var col = 0u; col < TILE_WIDTH; col += 1u) {
-                    let cov_mask = tile_masks[row][col];
-)") + kWgslBitCountingInner + R"(
-                }
-                final_alphas[row] = pack4x8unorm(abs(row_pixels));
-            }
-)";
+    var row_pixels: vec4<f32>;
+    for (var col = 0u; col < TILE_WIDTH; col += 1u) {
+        let cov_mask = mask[col];
 
-inline constexpr char kWgslTextureStore[] = R"(
-            let tex_dims = textureDimensions(output);
-            let tex_width = tex_dims.x;
-            let output_coords = vec2<u32>(
-                alpha_index % tex_width,
-                alpha_index / tex_width
-            );
-            if (output_coords.y < tex_dims.y) {
-                textureStore(output, output_coords, final_alphas);
-            }
-)";
+        let diff = cov_mask ^ MSAA_BIAS_SPLAT;
+        let subbed = diff - 0x01010101u;
+        let zeros = subbed & (~diff) & MSAA_BIAS_SPLAT;
+        let actives = zeros ^ MSAA_BIAS_SPLAT;
+        let counts = ((actives >> vec2u(7)) * 0x01010101u) >> vec2u(24);
+        row_pixels[col] = f32(counts.x + counts.y) * MSAA_INV_SAMPLES;
+    }
+
+    // Get texture dims?
+    let base_texel_idx = pmt.alpha_index >> 2u;
+    let texel_idx = base_texel_idx + row_index;
+
+    let page_local_idx = texel_idx & 0xffffffu;
+    let output_coords = vec2<u32>(
+        page_local_idx & 4095,
+        page_local_idx >> 12
+    );
+
+    let tex_page = min(texel_idx >> 24, 1);
+    if (tex_page == 0) {
+        textureStore(output0, output_coords, row_pixels);
+    } else {
+        textureStore(output1, output_coords, row_pixels);
+    }
+)");
 
 }  // namespace skgpu::graphite
 

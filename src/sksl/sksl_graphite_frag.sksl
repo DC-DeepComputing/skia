@@ -1859,8 +1859,10 @@ $pure half4 endcap_coverage_fn(float2 rectCoord,
                                sampler2D alpha_text_0,
                                sampler2D alpha_text_1,
                                uint maskIndex) {
-    uint tileWidth = 8;
-    uint tileHeight = 8;
+
+    // Cast the varying width passed from the vertex shader
+    uint tileWidth = 4;
+    uint tileHeight = 4;
 
     // Floor and cast the interpolated floating-point local coordinates
     uint dx = uint(floor(rectCoord.x));
@@ -1878,7 +1880,7 @@ $pure half4 endcap_coverage_fn(float2 rectCoord,
     uint trueLinearIdx = linearIdx >> 2;
 
     uint atlasLinearIdx = trueLinearIdx & 0xffffff;
-    uint2 uv = uint2(atlasLinearIdx % 4096, atlasLinearIdx / 4096);
+    uint2 uv = uint2(atlasLinearIdx & 4095, atlasLinearIdx >> 12);
 
     half4 texColor;
     int texPage = min(int(trueLinearIdx >> 24), 1);

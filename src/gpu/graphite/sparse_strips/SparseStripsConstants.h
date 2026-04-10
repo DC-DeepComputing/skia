@@ -75,7 +75,7 @@ struct SparseStripsConstants {
     // For the compute shader
     //==============================================================================================
     static constexpr uint32_t SCANNED_WINDING_SHIFT = 24;    // Upper 8 bits
-    static constexpr uint32_t INVALID_START_TILE    = SparseStripsConfig::kWorkgroupSize;
+    static constexpr uint32_t INVALID_START_TILE    = SparseStripsConfig::kMSAAWorkgroupSize;
     static constexpr uint32_t FILL_RULE_SHIFT       = 22;    // Next 2 bits
     static constexpr uint32_t FILL_RULE_MASK        = 0x3;
     static constexpr uint32_t IS_END_TILE_SHIFT     = 21;    // Next 1 bit

@@ -11,6 +11,8 @@ CORE_FILES = [
     "ComputeStep.h",
     "DispatchGroup.cpp",
     "DispatchGroup.h",
+    "SparseStripsRenderer.h",
+    "SparseStripsRenderer.cpp",
 ]
 
 split_srcs_and_hdrs(

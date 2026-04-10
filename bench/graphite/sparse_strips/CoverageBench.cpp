@@ -101,6 +101,7 @@ public:
                                       bool,
                                       const WindingHistogram&,
                                       const SkIRect&,
+                                      int32_t,
                                       int32_t
     );
 
@@ -141,7 +142,7 @@ protected:
                 GpuTiles mutableTiles = fTiles[ii];
 
                 fFunc(mutableTiles, strips, SkPathFillType::kDefault, fPolylines[ii], wides,
-                      /*isCulled=*/false, fCulled, Tiger::kDim, /*tileOffset=*/0);
+                      /*isCulled=*/false, fCulled, Tiger::kDim, /*tileOffset=*/0, /*alphaOffset=*/0);
             }
         }
     }
