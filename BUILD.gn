@@ -168,14 +168,23 @@ template("opts") {
 is_x86 = current_cpu == "x64" || current_cpu == "x86"
 is_loong64 = current_cpu == "loong64"
 
+opts("avx") {
+  enabled = is_x86
+  sources = skia_opts.avx_sources
+  if (is_win) {
+    cflags = [ "/arch:AVX" ]
+  } else {
+    cflags = [ "-mavx" ]
+  }
+}
+
 opts("ml3") {
   enabled = is_x86
   sources = skia_opts.ml3_sources
   if (is_win) {
     cflags = [ "/arch:AVX2" ]
   } else {
-    # TODO(kjlubick) use -march=x86-64-v3
-    cflags = [ "-march=haswell" ]
+    cflags = [ "-march=x86-64-v3" ]
   }
 }
 
@@ -185,8 +194,7 @@ opts("ml4") {
   if (is_win) {
     cflags = [ "/arch:AVX512" ]
   } else {
-    # TODO(kjlubick) use -march=x86-64-v4
-    cflags = [ "-march=skylake-avx512" ]
+    cflags = [ "-march=x86-64-v4" ]
   }
 }
 
@@ -1911,6 +1919,7 @@ skia_component("skia") {
   deps = [
     ":android_utils",
     ":avif",
+    ":avx",
     ":crabbyavif",
     ":jpeg_decode",
     ":jpegxl_decode",

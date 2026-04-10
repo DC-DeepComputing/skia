@@ -342,7 +342,6 @@ skia_filegroup(
         "SkMatrix.cpp",
         "SkMatrixInvert.cpp",
         "SkMemset_opts.cpp",
-        "SkMemset_opts_avx.cpp",
         "SkMemset_opts_erms.cpp",
         "SkMesh.cpp",
         "SkMipmap.cpp",
@@ -462,6 +461,15 @@ skia_filegroup(
         "SkRasterPipelineContextUtils.h",
         "SkRasterPipelineOpContexts.h",
         "SkRasterPipelineOpList.h",
+    ],
+    visibility = ["//src/opts:__pkg__"],
+)
+
+skia_filegroup(
+    name = "avx_srcs",
+    srcs = [
+        "SkMemset.h",
+        "SkOptsTargets.h",
     ],
     visibility = ["//src/opts:__pkg__"],
 )

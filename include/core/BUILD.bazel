@@ -124,3 +124,14 @@ skia_filegroup(
     ],
     visibility = ["//src/opts:__pkg__"],
 )
+
+skia_filegroup(
+    name = "avx_srcs",
+    srcs = [
+        "SkAlphaType.h",
+        "SkColor.h",
+        "SkScalar.h",  # TODO(kjlubick) drop SkScalar.h from SkColor
+        "SkTypes.h",  # TODO(kjlubick) drop SkScalar.h from SkTypes
+    ],
+    visibility = ["//src/opts:__pkg__"],
+)

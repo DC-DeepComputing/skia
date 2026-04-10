@@ -5,11 +5,15 @@
  * found in the LICENSE file.
  */
 
-#ifndef SkUtils_opts_DEFINED
-#define SkUtils_opts_DEFINED
+#ifndef SkMemset_opts_DEFINED
+#define SkMemset_opts_DEFINED
 
 #include <stdint.h>
 #include "src/base/SkVx.h"
+
+// #define XSTR(x) STR(x)
+// #define STR(x) #x
+// #pragma message "The value of SK_CPU_X64_LEVEL: " XSTR(SK_CPU_X64_LEVEL)
 
 namespace SK_OPTS_NS {
 
@@ -72,4 +76,4 @@ namespace SK_OPTS_NS {
 
 }  // namespace SK_OPTS_NS
 
-#endif//SkUtils_opts_DEFINED
+#endif  // SkMemset_opts_DEFINED

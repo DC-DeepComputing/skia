@@ -976,6 +976,16 @@ var gniExportDescs = []exporter.GNIExportDesc{
 		{Var: "skia_jsonreader_sources",
 			Rules: []string{"//modules/jsonreader:jsonreader"}},
 	}},
+	{GNI: "gn/opts.gni", Vars: []exporter.GNIFileListExportDesc{
+		{Var: "avx",
+			Rules: []string{"//src/opts:avx"}},
+		{Var: "ml3",
+			Rules: []string{"//src/opts:ml3"}},
+		{Var: "ml4",
+			Rules: []string{"//src/opts:ml4"}},
+		{Var: "lasx",
+			Rules: []string{"//src/opts:lasx"}},
+	}},
 }
 
 const (

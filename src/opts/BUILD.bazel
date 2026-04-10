@@ -28,6 +28,26 @@ licenses(["notice"])
 
 skia_cc_library(
     # https://en.wikipedia.org/wiki/X86-64#Microarchitecture_levels and this is level 3
+    name = "avx",
+    srcs = [
+        "SkMemset_opts_avx.cpp",
+        "//include/core:avx_srcs",
+        "//src/core:avx_srcs",
+    ],
+    copts = DEFAULT_COPTS + ["-mavx"],
+    textual_hdrs = [
+        "SkMemset_opts.h",
+        "SkOpts_RestoreTarget.h",
+        "SkOpts_SetTarget.h",
+    ],
+    deps = [
+        "//src/base",
+        "@skia_user_config//:user_config",
+    ],
+)
+
+skia_cc_library(
+    # https://en.wikipedia.org/wiki/X86-64#Microarchitecture_levels and this is level 3
     name = "ml3",
     srcs = [
         "SkOpts_ml3.cpp",
@@ -91,13 +111,21 @@ skia_filegroup(
         "SkBitmapProcState_opts.h",
         "SkBlitMask_opts.h",
         "SkBlitRow_opts.h",
-        "SkMemset_opts.h",
         "SkOpts_RestoreTarget.h",
         "SkOpts_SetTarget.h",
         "SkRasterPipeline_opts.h",
         "SkSwizzler_opts.inc",
     ],
     visibility = [
-        "//src/core:__pkg__",
+        "//src/core:__pkg__",  # If we are doing opts right, this shouldn't be necessary anymore
+    ],
+)
+
+# We don't build for this architecture with Bazel and so this is just a filegroup
+# for export to GNI
+skia_filegroup(
+    name = "lasx",
+    srcs = [
+        "SkOpts_lasx.cpp",
     ],
 )
