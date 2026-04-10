@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fdee6fc6_4a49c2cb",
+        "filename": "src/partition_alloc/BUILD.bazel",
+        "patchSetId": 21
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-04-10T11:16:02Z",
+      "side": 1,
+      "message": "Done!",
+      "parentUuid": "8463e795_13997b1d",
+      "range": {
+        "startLine": 26,
+        "startChar": 4,
+        "endLine": 26,
+        "endChar": 21
+      },
+      "revId": "0b1dcb44d7e797b8569684000a224c432c91eac1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d58a85fc_64d7ad49",
@@ -85,6 +109,30 @@
       "writtenOn": "2026-02-17T15:30:08Z",
       "side": 1,
       "message": "Don\u0027t make any targets that aren\u0027t in //BUILD.bazel public",
+      "range": {
+        "startLine": 27,
+        "startChar": 4,
+        "endLine": 27,
+        "endChar": 14
+      },
+      "revId": "0b1dcb44d7e797b8569684000a224c432c91eac1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b643267_52204c70",
+        "filename": "src/partition_alloc/BUILD.bazel",
+        "patchSetId": 21
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-04-10T11:16:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d58a85fc_64d7ad49",
       "range": {
         "startLine": 27,
         "startChar": 4,
@@ -165,6 +213,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "40f3c10e_c56dcd27",
+        "filename": "src/partition_alloc/partition_alloc/pointers/raw_ptr.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-04-10T11:16:02Z",
+      "side": 1,
+      "message": "Good catch!\n\nI copied it from dawn, where I forgot this too. Apparently this doesn\u0027t really matter, but yes, this is useful in theory. I will follow-up on Dawn:\nhttps://dawn-review.googlesource.com/c/dawn/+/300915",
+      "parentUuid": "e67f4813_b4c0ae6f",
+      "range": {
+        "startLine": 152,
+        "startChar": 7,
+        "endLine": 152,
+        "endChar": 15
+      },
+      "revId": "0b1dcb44d7e797b8569684000a224c432c91eac1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bf37b91f_a2cf44dd",
@@ -178,6 +250,30 @@
       "writtenOn": "2026-02-17T15:30:08Z",
       "side": 1,
       "message": "Are these all zero because they aren\u0027t implemented / i.e. are no-ops?",
+      "range": {
+        "startLine": 307,
+        "startChar": 23,
+        "endLine": 307,
+        "endChar": 50
+      },
+      "revId": "0b1dcb44d7e797b8569684000a224c432c91eac1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "825a6f9f_8e1c1cc5",
+        "filename": "src/partition_alloc/partition_alloc/pointers/raw_ptr.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-04-10T11:16:02Z",
+      "side": 1,
+      "message": "They aren\u0027t implemented.\nThat being",
+      "parentUuid": "bf37b91f_a2cf44dd",
       "range": {
         "startLine": 307,
         "startChar": 23,
