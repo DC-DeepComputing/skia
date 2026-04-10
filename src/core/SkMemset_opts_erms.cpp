@@ -53,6 +53,7 @@ static void (*g_memset64_prev)(uint64_t*, uint64_t, int);
 static void (*g_rect_memset16_prev)(uint16_t*, uint16_t, int, size_t, int);
 static void (*g_rect_memset32_prev)(uint32_t*, uint32_t, int, size_t, int);
 static void (*g_rect_memset64_prev)(uint64_t*, uint64_t, int, size_t, int);
+static void (*g_rect_memset128_prev)(void*, SkColor4f, int, size_t, int);
 
 // Empirically determined with `nanobench -m memset`.
 static bool small(size_t bytes) { return bytes < 1024; }
@@ -93,6 +94,9 @@ static inline void rect_memset64(uint64_t* dst, uint64_t v, int n, size_t rowByt
         repsto(dst, v, n);
     }
 }
+static inline void rect_memset128(void* dst, SkColor4f v, int n, size_t rowBytes, int height) {
+    return g_rect_memset128_prev(dst, v, n, rowBytes, height);
+}
 
 }  // namespace erms
 
@@ -107,6 +111,7 @@ namespace SkOpts {
             g_rect_memset16_prev = rect_memset16;
             g_rect_memset32_prev = rect_memset32;
             g_rect_memset64_prev = rect_memset64;
+            g_rect_memset128_prev = rect_memset128;
 
             memset16      = erms::memset16;
             memset32      = erms::memset32;
@@ -114,6 +119,7 @@ namespace SkOpts {
             rect_memset16 = erms::rect_memset16;
             rect_memset32 = erms::rect_memset32;
             rect_memset64 = erms::rect_memset64;
+            rect_memset128 = erms::rect_memset128;
         #endif  // X86_64 && !SK_ENABLE_OPTIMIZE_SIZE
     }
 }  // namespace SkOpts
