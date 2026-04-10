@@ -34,6 +34,24 @@
       "parentUuid": "6ef4b118_ac763b17",
       "revId": "78338cf454b4b4ea2ebec689c67cc230948203dd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc761561_162c1546",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-04-10T00:23:02Z",
+      "side": 1,
+      "message": "I think I would just prefer that such a flag didn\u0027t live in Skia. Instead we create the an allocator in Android (could basically be a copy of Skia\u0027s) and then this flag can easily be controlled by an Android system flag. That way it could be set to whatever size is most appropriate.\n\nFWIW we want to remove the use of our checked in VMA Allocator outside of internal tests. So this is more of a forcing function for someone to do the work to port a version of it into Android itself",
+      "parentUuid": "1b103a32_405a202d",
+      "revId": "78338cf454b4b4ea2ebec689c67cc230948203dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
