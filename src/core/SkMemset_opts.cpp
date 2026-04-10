@@ -20,6 +20,7 @@ namespace SkOpts {
     DEFINE_DEFAULT(memset16);
     DEFINE_DEFAULT(memset32);
     DEFINE_DEFAULT(memset64);
+    DEFINE_DEFAULT(memset128);
 
     DEFINE_DEFAULT(rect_memset16);
     DEFINE_DEFAULT(rect_memset32);

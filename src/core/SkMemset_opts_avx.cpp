@@ -28,6 +28,7 @@ namespace SkOpts {
         memset16 = avx::memset16;
         memset32 = avx::memset32;
         memset64 = avx::memset64;
+        memset128 = avx::memset128;
 
         rect_memset16 = avx::rect_memset16;
         rect_memset32 = avx::rect_memset32;

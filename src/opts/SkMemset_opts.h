@@ -44,6 +44,12 @@ namespace SK_OPTS_NS {
     /*not static*/ inline void memset64(uint64_t buffer[], uint64_t value, int count) {
         memsetT(buffer, value, count);
     }
+    /*not static*/ inline void memset128(void* buffer, const uint64_t value[2], int count) {
+        struct uint128 { uint64_t lo, hi; };
+        uint128 v;
+        memcpy(&v, value, 16);
+        memsetT((uint128*)buffer, v, count);
+    }
 
     template <typename T>
     static void rect_memsetT(T buffer[], T value, int count, size_t rowBytes, int height) {
