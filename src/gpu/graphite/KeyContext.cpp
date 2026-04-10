@@ -75,6 +75,8 @@ KeyContext::KeyContext(const KeyContext& other,
 
 KeyContext::~KeyContext() {}
 
+KeyContext& KeyContext::operator=(const KeyContext&) = default;
+
 sk_sp<RuntimeEffectDictionary> KeyContext::rtEffectDict() const { return fRTEffectDict; }
 
 KeyContext KeyContext::forRuntimeEffect(const SkRuntimeEffect* effect, int child) const {
