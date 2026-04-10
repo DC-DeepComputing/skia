@@ -32,6 +32,7 @@ namespace SkOpts {
         rect_memset16 = avx::rect_memset16;
         rect_memset32 = avx::rect_memset32;
         rect_memset64 = avx::rect_memset64;
+        rect_memset128 = avx::rect_memset128;
     }
 }  // namespace SkOpts
 

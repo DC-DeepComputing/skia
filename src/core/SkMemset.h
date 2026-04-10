@@ -10,6 +10,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include "include/core/SkColor.h"
 
 namespace SkOpts {
     extern void (*memset16)(uint16_t[], uint16_t, int);
@@ -19,6 +20,7 @@ namespace SkOpts {
     extern void (*rect_memset16)(uint16_t[], uint16_t, int, size_t, int);
     extern void (*rect_memset32)(uint32_t[], uint32_t, int, size_t, int);
     extern void (*rect_memset64)(uint64_t[], uint64_t, int, size_t, int);
+    extern void (*rect_memset128)(void*, SkColor4f, int, size_t, int);
 
     void Init_Memset();
 }  // namespace SkOpts
