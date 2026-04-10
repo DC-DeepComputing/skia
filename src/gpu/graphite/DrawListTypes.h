@@ -45,7 +45,8 @@ struct LayerKey {
     // NOTE: removing the uniform index on this check decreases stencil lists on desk_samoa
     // from 602 -> 69
     bool operator==(const LayerKey& other) const {
-        return fPipelineIndex == other.fPipelineIndex && fTextureIndex == other.fTextureIndex;
+        return *reinterpret_cast<const uint64_t*>(this) ==
+               *reinterpret_cast<const uint64_t*>(&other);
     }
 
     bool operator!=(const LayerKey& other) const { return !(*this == other); }
@@ -100,11 +101,21 @@ struct Layer {
     SkTInternalLList<BindingList> fBindings;
     SK_DECLARE_INTERNAL_LLIST_INTERFACE(Layer);
 
-    // Search backwards and towards the start, inclusive. Matching on the startList is valid, as
-    // the insertion is guaranteed to be appendTail
+    template <bool kForwards>
     BindingList* searchBinding(const LayerKey& key, BindingList* startList) {
-        BindingList* end = startList ? startList->fPrev : nullptr;
-        for (BindingList* list = fBindings.tail(); list != end; list = list->fPrev) {
+        BindingList* list;
+        BindingList* end;
+
+        if constexpr (kForwards) {
+            list = startList ? startList : fBindings.head();
+            end = nullptr;
+        } else {
+            list = fBindings.tail();
+            end = startList ? startList->fPrev : nullptr;
+        }
+
+        // Advancement is evaluated at compile time
+        for (; list != end; list = kForwards ? list->fNext : list->fPrev) {
             if (list->fKey == key) {
                 return list;
             }
