@@ -329,6 +329,30 @@
       },
       "revId": "0b1dcb44d7e797b8569684000a224c432c91eac1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d17a3f9_50b4f93b",
+        "filename": "src/partition_alloc/partition_alloc/pointers/raw_ref.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-04-10T13:00:42Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "9785a804_83f36c49",
+      "range": {
+        "startLine": 58,
+        "startChar": 21,
+        "endLine": 58,
+        "endChar": 28
+      },
+      "revId": "0b1dcb44d7e797b8569684000a224c432c91eac1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

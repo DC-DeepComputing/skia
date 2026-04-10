@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76231f5a_191d0470",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 30
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-04-10T13:00:42Z",
+      "side": 1,
+      "message": "Interesting note from the code size build - an extra 100-200k? That seems like a lot. Do you think it makes sense to include PartitionAlloc in those builds or do we just want it for tests? In general, we want to test that code size thing in a similar way to how it will be shipped to clients.",
+      "revId": "60f2b3b6fe451b9e9035f42365fb805adbc87f87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
