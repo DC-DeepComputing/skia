@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkBitmap.h"
+#include "include/core/SkCanvas.h"
 #include "include/core/SkFont.h"
 #include "include/core/SkFontMetrics.h"
 #include "include/core/SkStream.h"
@@ -331,4 +333,61 @@ DEF_TEST(Fontations_SyntheticXHeight, reporter) {
     // xHeight falls back to ascent as well.
     const SkScalar kExpected = 11.138672;
     REPORTER_ASSERT(reporter, metrics.fXHeight == kExpected, "Metrics mismatch: %f vs. %f", kExpected, metrics.fXHeight);
+}
+
+static void test_cbdt_nonpng(skiatest::Reporter* reporter, const char* fontFile, int format) {
+    sk_sp<SkTypeface> typeface(SkTypeface_Make_Fontations(
+            GetResourceAsStream(fontFile), SkFontArguments()));
+    if (!typeface) {
+        ERRORF(reporter, "Failed to load %s", fontFile);
+        return;
+    }
+
+    SkFont font(typeface, 16);
+
+    // U+2662 (diamond) is mapped in all test fonts.
+    SkGlyphID glyphId = typeface->unicharToGlyph(0x2662);
+    REPORTER_ASSERT(reporter, glyphId != 0,
+                    "Glyph for U+2662 should exist in %s", fontFile);
+
+    // Draw glyph and verify non-zero alpha pixels.
+    const int kSize = 32;
+    SkBitmap bitmap;
+    bitmap.allocPixels(SkImageInfo::MakeA8(kSize, kSize));
+    bitmap.eraseColor(SK_ColorTRANSPARENT);
+
+    SkCanvas canvas(bitmap);
+    SkPaint paint;
+    const char* diamond = "\xE2\x99\xA2"; // U+2662 in UTF-8
+    canvas.drawSimpleText(diamond, 3, SkTextEncoding::kUTF8, 0, 20, font, paint);
+
+    bool hasNonZero = false;
+    for (int y = 0; y < kSize && !hasNonZero; y++) {
+        const uint8_t* row = bitmap.getAddr8(0, y);
+        for (int x = 0; x < kSize; x++) {
+            if (row[x] != 0) {
+                hasNonZero = true;
+                break;
+            }
+        }
+    }
+    REPORTER_ASSERT(reporter, hasNonZero,
+                    "CBDT format %d glyph should render non-zero alpha pixels (%s)",
+                    format, fontFile);
+}
+
+DEF_TEST(Fontations_CBDT_NonPng_Format1, reporter) {
+    test_cbdt_nonpng(reporter, "fonts/cbdt_fmt1.ttf", 1);
+}
+
+DEF_TEST(Fontations_CBDT_NonPng_Format2, reporter) {
+    test_cbdt_nonpng(reporter, "fonts/cbdt_fmt2.ttf", 2);
+}
+
+DEF_TEST(Fontations_CBDT_NonPng_Format6, reporter) {
+    test_cbdt_nonpng(reporter, "fonts/cbdt_fmt6.ttf", 6);
+}
+
+DEF_TEST(Fontations_CBDT_NonPng_Format7, reporter) {
+    test_cbdt_nonpng(reporter, "fonts/cbdt_fmt7.ttf", 7);
 }
