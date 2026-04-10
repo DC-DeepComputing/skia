@@ -394,7 +394,8 @@ static const TagHandler aliasHandler = {
                 SkAutoAsciiToLC tolc(value);
                 aliasName.set(tolc.lc());
             } else if (MEMEQ("to", name, nameLen)) {
-                to.set(value);
+                SkAutoAsciiToLC tolc(value);
+                to.set(tolc.lc());
             } else if (MEMEQ("weight", name, nameLen)) {
                 if (!parse_non_negative_integer(value, &weight)) {
                     SK_FONTCONFIGPARSER_WARNING("'%s' is an invalid weight", value);
@@ -609,6 +610,34 @@ static const TagHandler topLevelHandler = {
                 }
             }
             return &jbParser::familySetHandler;
+        } else if (MEMEQ("fonts-modification", tag, len)) {
+            // Modern OEM customization files (e.g. /product/etc/fonts_customization.xml)
+            // use the <fonts-modification> root tag instead of <familyset>.
+            //
+            // Skia natively supports parsing the standard children of this file:
+            // - `<family name="...">`: Instantiated perfectly as new global named families.
+            // - `<font>` and `<axis>`: Parsed and bound correctly to the new named families.
+            // - `<alias>`: Mapped properly to existing named families.
+            //
+            // What is NOT supported:
+            // 1. `customizationType="append-to-existing"`
+            //    If an OEM writes `<family customizationType="append-to-existing" name="sans-serif">`
+            //    Minikin would find the existing `sans-serif` family from `fonts.xml` and merge
+            //    these new fonts directly into it. Skia's parser ignores `customizationType`
+            //    entirely. By purely looking at `name="sans-serif"`, Skia will simply instantiate
+            //    a second, completely independent `FontFamily` named "sans-serif". This can lead
+            //    to shadowing instead of merging. (OEMs primarily use `new-named-family` which
+            //    Skia maps perfectly).
+            //
+            // 2. `supportedAxes="wght,ital"`
+            //    If an OEM writes `<font supportedAxes="wght">`, Minikin restricts the exposed
+            //    variable font axes of the TTF to only weight. Skia completely ignores the
+            //    `supportedAxes` attribute, meaning all valid axes contained within the font file
+            //    remain fully exposed and animatable.
+
+            // Force the modern parser.
+            self->fVersion = 21;
+            return &lmpParser::familySetHandler;
         }
         return nullptr;
     },
