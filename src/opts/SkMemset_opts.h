@@ -65,6 +65,10 @@ namespace SK_OPTS_NS {
                                              size_t rowBytes, int height) {
         rect_memsetT(buffer, value, count, rowBytes, height);
     }
+    /*not static*/ inline void rect_memset128(void* buffer, SkColor4f value, int count,
+                                              size_t rowBytes, int height) {
+        rect_memsetT((SkColor4f*)buffer, value, count, rowBytes, height);
+    }
 
 }  // namespace SK_OPTS_NS
 
