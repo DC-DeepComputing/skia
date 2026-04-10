@@ -16,6 +16,24 @@
       "message": "Hello, We at Samsung have also found that reducing the block size saves memory on Android. Currently, we cannot identify any issues with this approach. Therefore, I am curious about what potential problems might exist and if there is any oversight we might have missed",
       "revId": "9d8370e27922737a099526366f2d938f6de15818",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3457a15_f2937887",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-04-10T00:19:05Z",
+      "side": 1,
+      "message": "So when this originally landed, we did find there were use cases where memory reduced as we expected (why we made the change). But once running in users hands we got many reports of memory regressions as well. This surprised us at first, but after thinking about it, there are definitely allocation scenarios you can think of where the memory actually would increase would small block sizes.\n\nAs a contrived example, say you had blocks of size 128k. Any allocation bigger than the block size would go into a dedicated allocation. Now say the client has a pattern of allocating memory in an order like 36k, 92k, 36k, 92k, 36k, 92k, etc. With 128k blocks this will pack tightly and all will be good with no wasted space. However, now lets say we drop the block size to 64k. All the 92k allocations just go into a dedicated allocation. However, we can only fit 1 36k allocation per block and the rest of the block gets wasted. So now for every 36k/92k pair we end up needing 92k+64k \u003d 156k. This is an overall ~22% increase in memory usage by lowering the block size.\n\nSo in the end it turns out that there really isn\u0027t a \"best\" block size and it all is very dependent on usage pattern as to whether small or large saves more memory.",
+      "parentUuid": "76765912_4c6c6075",
+      "revId": "9d8370e27922737a099526366f2d938f6de15818",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
