@@ -34,6 +34,24 @@
       "parentUuid": "76231f5a_191d0470",
       "revId": "60f2b3b6fe451b9e9035f42365fb805adbc87f87",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a784d8c_13810d28",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 30
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-04-10T15:18:03Z",
+      "side": 1,
+      "message": "I just figured out how to do it. I will submit a preliminary patch.",
+      "parentUuid": "7e490d3a_3f501280",
+      "revId": "60f2b3b6fe451b9e9035f42365fb805adbc87f87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
