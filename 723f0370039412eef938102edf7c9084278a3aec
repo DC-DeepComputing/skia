@@ -37,6 +37,29 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "edfbc9d5_1b95f9a4",
+        "filename": "include/core/SkFontMgr.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-04-10T14:51:25Z",
+      "side": 1,
+      "message": "As a comment to the future, \"character\" here is not a great name, it is more legacy and is closer to how OpenType documents the cmap Format 14 table. If fully going with OpenType names here, this \"CMapEntry\" is a \"UVS\" (Unicode Variation Sequence) which consists of a \"base character\" and a \"variation selector\". However, it is also used for non-UVS (no variation selector) purposes. The naming here is something of a compromise.\n\nFrom a user (and maybe even implementation) point of view it might make sense to just allow a string of UTF-8 here. However, while putting together this interface it seemed best to make this extremely explicit.",
+      "range": {
+        "startLine": 91,
+        "startChar": 22,
+        "endLine": 91,
+        "endChar": 31
+      },
+      "revId": "723f0370039412eef938102edf7c9084278a3aec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "5128302b_e9e6e3bf",
         "filename": "include/core/SkFontMgr.h",
         "patchSetId": 10
@@ -48,6 +71,30 @@
       "writtenOn": "2026-04-09T21:22:21Z",
       "side": 1,
       "message": "It reads a bit strange to have different types for these, but I guess it\u0027s historical that familyName is a C string and bcp147 is not.",
+      "range": {
+        "startLine": 96,
+        "startChar": 0,
+        "endLine": 98,
+        "endChar": 31
+      },
+      "revId": "723f0370039412eef938102edf7c9084278a3aec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae7936ff_22492f9a",
+        "filename": "include/core/SkFontMgr.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-04-10T14:51:25Z",
+      "side": 1,
+      "message": "I should move the documentation from the other calls here, bcp47 is a stack of (C string) tags.",
+      "parentUuid": "5128302b_e9e6e3bf",
       "range": {
         "startLine": 96,
         "startChar": 0,
@@ -71,6 +118,30 @@
       "writtenOn": "2026-04-09T21:22:21Z",
       "side": 1,
       "message": "We check for nullptr at the call site, looks like this could be an assert.",
+      "range": {
+        "startLine": 824,
+        "startChar": 0,
+        "endLine": 826,
+        "endChar": 5
+      },
+      "revId": "723f0370039412eef938102edf7c9084278a3aec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "604d980c_5e2e66dd",
+        "filename": "src/ports/SkFontMgr_win_dw.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 826,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-04-10T14:51:25Z",
+      "side": 1,
+      "message": "Yes, this is this way because that\u0027s how `fallback` worked, but in this case we\u0027re actually passing in the parameter directly (instead of checking for it off of `this`) so it makes sense that the caller should always have one to pass in.",
+      "parentUuid": "dd856a39_6dbf26b4",
       "range": {
         "startLine": 824,
         "startChar": 0,
