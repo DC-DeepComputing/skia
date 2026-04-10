@@ -16,6 +16,29 @@
       "message": "(eep)",
       "revId": "870889e2335fe8268d74c42252e952abfa00c647",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e7c6254_3278905a",
+        "filename": "src/codec/SkHdrAgtm.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 317,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-04-10T14:21:03Z",
+      "side": 1,
+      "message": "Can we return nullptr if maxNumControlPoints \u003c AdaptiveGlobalToneMap::GainCurve::kMaxNumControlPoints? I want to make sure we aren\u0027t going to get OOM\u0027d by a bad image here.",
+      "range": {
+        "startLine": 317,
+        "startChar": 12,
+        "endLine": 317,
+        "endChar": 31
+      },
+      "revId": "870889e2335fe8268d74c42252e952abfa00c647",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
