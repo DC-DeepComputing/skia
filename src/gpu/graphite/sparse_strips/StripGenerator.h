@@ -18,6 +18,7 @@
 #include "src/gpu/graphite/geom/EndCaps.h"
 #include "src/gpu/graphite/geom/WideTiles.h"
 #include "src/gpu/graphite/sparse_strips/AlphaAtlasManager.h"
+#include "src/gpu/graphite/sparse_strips/GpuAlphaAtlasManager.h"
 #include "src/gpu/graphite/sparse_strips/Flatten.h"
 #include "src/gpu/graphite/sparse_strips/MSAA_LUT.h"
 #include "src/gpu/graphite/sparse_strips/MakeStrip.h"
@@ -49,7 +50,6 @@ public:
     StripGenerator(SkISize deviceSize, const SkTDArray<MSAAType>& lut, Recorder* recorder)
             : fDeviceSize(SkIRect::MakeSize(deviceSize))
             , fCulled(true)
-            , fAlphaIndex(0)
             , fLUT(lut)
             , fRecorder(recorder)
             , fWindingHistogram((fDeviceSize.bottom() + kTileHeight - 1) / kTileHeight) {
@@ -77,7 +77,9 @@ public:
         constexpr bool isGPU = std::is_same_v<TileType, GpuTile<kTileWidth, kTileHeight>>;
         if constexpr (isGPU) {
             this->reset();
-            fAlphaIndex = 0;
+            GpuAlphaAtlasManager* manager = fRecorder->priv().atlasProvider()->gpuAlphaAtlasManager();
+            SkASSERT(manager);
+            manager->postFlush();
         }
     }
 
@@ -144,6 +146,10 @@ private:
         fCulled = fTiles.makeTilesMSAA(fFlattenned, fDeviceSize, fWindingHistogram, prevLineCount);
         fTiles.sortTiles(prevTileCount);  // adjust if sktdarray
 
+        GpuAlphaAtlasManager* manager = fRecorder->priv().atlasProvider()->gpuAlphaAtlasManager();
+        SkASSERT(manager);
+
+        int32_t currentGlobalOffset = manager->getAlphaIndex();
         int32_t alphaCount =
                 MakeStrip::MakeStripsGpu<kTileWidth, kTileHeight, kWorkgroupSize, MSAAType>(
                         fTiles,
@@ -157,10 +163,13 @@ private:
                         prevTileCount);
 
         for (int stripIdx = 1; stripIdx < fStrips.size(); ++stripIdx) {
-            processStripPair(stripIdx, fAlphaIndex);
+            processStripPair(stripIdx, currentGlobalOffset);
         }
 
-        fAlphaIndex += alphaCount;
+        manager->advanceAlphaIndex(alphaCount);
+        for (auto& proxy : manager->getProxies()){
+            fEnds.addProxy(proxy);
+        }
 
         return {fWides, fEnds};
     }
@@ -198,7 +207,6 @@ private:
 
     SkIRect fDeviceSize;
     bool fCulled;
-    int32_t fAlphaIndex;
     Flatten fFlattener;
     Tiles<kTileWidth, kTileHeight, TileType> fTiles;
     Polyline fFlattenned;

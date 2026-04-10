@@ -19,6 +19,7 @@
 #include "src/gpu/graphite/RendererProvider.h"
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/sparse_strips/AlphaAtlasManager.h"
+#include "src/gpu/graphite/sparse_strips/GpuAlphaAtlasManager.h"
 #include "src/gpu/graphite/text/TextAtlasManager.h"
 
 #include <utility>
@@ -31,8 +32,10 @@ static bool use_clip_atlas(const Recorder* recorder) {
             PathRendererStrategy::kRasterAtlas;
 }
 
+// TODO (thomsmit): conditionally construct the alpha atlas managers.
 AtlasProvider::AtlasProvider(Recorder* recorder)
         : fAlphaAtlasManager(std::make_unique<AlphaAtlasManager>(recorder))
+        , fGpuAlphaAtlasManager(std::make_unique<GpuAlphaAtlasManager>(recorder))
         , fTextAtlasManager(std::make_unique<TextAtlasManager>(recorder))
         , fRasterPathAtlas(std::make_unique<RasterPathAtlas>(recorder))
         , fClipAtlasManager(use_clip_atlas(recorder) ? std::make_unique<ClipAtlasManager>(recorder)

@@ -472,6 +472,7 @@ sk_sp<Device> Device::Make(Recorder* recorder,
             break;
 
         case PathRendererStrategy::kCPUSparseStripsMSAA8:
+        case PathRendererStrategy::kHybridSparseStripsMSAA8:
         case PathRendererStrategy::kRasterAtlas:
         case PathRendererStrategy::kComputeAnalyticAA:
         case PathRendererStrategy::kComputeMSAA16:
@@ -494,6 +495,8 @@ sk_sp<Device> Device::Make(Recorder* recorder,
     } // else kLoad is the default initial op for a DrawContext
 
     sk_sp<Device> device{new Device(recorder, std::move(dc))};
+
+    // More intelligently choose which to get!
     if (recorder->priv().rendererProvider()->IsSupported(
                 PathRendererStrategy::kCPUSparseStripsMSAA8, caps)) {
         device->fStripGenerator = std::make_unique<StripGeneratorWrapper>(
@@ -501,6 +504,7 @@ sk_sp<Device> Device::Make(Recorder* recorder,
                 recorder->fSharedContext->globalCache()->getMSAA8MaskLUT(),
                 recorder);
     }
+
     if (registerWithRecorder) {
         // We don't register the device with the recorder until after the constructor has returned.
         recorder->registerDevice(device);
@@ -2125,6 +2129,8 @@ std::pair<const Renderer*, PathAtlas*> Device::chooseRenderer(const Transform& l
             // Never uses an atlas for rendering, leave it null
             break;
 
+        case PathRendererStrategy::kHybridSparseStripsMSAA8:
+            [[fallthrough]];
         case PathRendererStrategy::kCPUSparseStripsMSAA8:
             return {renderers->sparseStrips(), nullptr};
     }

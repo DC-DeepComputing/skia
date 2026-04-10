@@ -71,6 +71,9 @@ enum class PathRendererStrategy {
     // Runs the SparseStrips pipeline with SW-emulated MSAA with rasterization on the CPU. Clipping
     // paths are rendered using kTessellation.
     kCPUSparseStripsMSAA8,
+
+    // Runs the SparseStrips pipeline with SW-emulated MSAA with rasterization on the GPU.
+    kHybridSparseStripsMSAA8,
 };
 
 /**
