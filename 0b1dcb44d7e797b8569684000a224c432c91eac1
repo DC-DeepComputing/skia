@@ -284,6 +284,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9637d8b_c9888f5c",
+        "filename": "src/partition_alloc/partition_alloc/pointers/raw_ptr.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 4641039
+      },
+      "writtenOn": "2026-04-10T11:18:23Z",
+      "side": 1,
+      "message": "Yes, none of them are implemented.\n\nThat being said, we probably should make the different values different to ensure that what doesn\u0027t compile with partition_alloc enabled, do not compile with it disabled either.",
+      "parentUuid": "825a6f9f_8e1c1cc5",
+      "range": {
+        "startLine": 307,
+        "startChar": 23,
+        "endLine": 307,
+        "endChar": 50
+      },
+      "revId": "0b1dcb44d7e797b8569684000a224c432c91eac1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9785a804_83f36c49",
