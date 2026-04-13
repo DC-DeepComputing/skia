@@ -16,6 +16,75 @@
       "message": "PTAL",
       "revId": "c785fc9ff8dfc534e2a661f77f42a6f480ceaae1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ce06887_c2888e1f",
+        "filename": "src/gpu/graphite/Caps.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-13T20:16:17Z",
+      "side": 1,
+      "message": "blocking comment",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 58,
+        "endChar": 26
+      },
+      "revId": "c785fc9ff8dfc534e2a661f77f42a6f480ceaae1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2980b213_1b837db6",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-13T20:16:17Z",
+      "side": 1,
+      "message": "targetMatch \u003d ?",
+      "range": {
+        "startLine": 223,
+        "startChar": 0,
+        "endLine": 223,
+        "endChar": 81
+      },
+      "revId": "c785fc9ff8dfc534e2a661f77f42a6f480ceaae1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d4c9620_c0a5bdae",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-13T20:16:17Z",
+      "side": 1,
+      "message": "Maybe add a comment that kIsDepthOnly is always false when recording forwards?",
+      "range": {
+        "startLine": 226,
+        "startChar": 0,
+        "endLine": 226,
+        "endChar": 57
+      },
+      "revId": "c785fc9ff8dfc534e2a661f77f42a6f480ceaae1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
