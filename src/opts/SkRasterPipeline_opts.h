@@ -6762,6 +6762,85 @@ LOWP_STAGE_GP(bilerp_clamp_8888, const SkRasterPipelineContexts::GatherCtx* ctx)
         ty = cast<I16>(qy ^ 0x8000);
 #endif
 
+#if defined(SKRP_CPU_ML4)
+    // We declare ptr once here and pass it to all ix_and_ptr calls. While ix_and_ptr
+    // redundantly sets *ptr to the same ctx->pixels each time, the compiler optimizes
+    // these away, leaving us with a single base pointer for all four gather operations.
+    const uint32_t* ptr;
+    U32 ix_TL = ix_and_ptr(&ptr, ctx, sx, sy);
+    U32 ix_TR = ix_and_ptr(&ptr, ctx, sx+1, sy);
+    U32 ix_BL = ix_and_ptr(&ptr, ctx, sx, sy+1);
+    U32 ix_BR = ix_and_ptr(&ptr, ctx, sx+1, sy+1);
+
+    __m512i TL = (__m512i)gather_unaligned<U32>(ptr, ix_TL);
+    __m512i TR = (__m512i)gather_unaligned<U32>(ptr, ix_TR);
+    __m512i BL = (__m512i)gather_unaligned<U32>(ptr, ix_BL);
+    __m512i BR = (__m512i)gather_unaligned<U32>(ptr, ix_BR);
+
+    __m512i TL_lo = _mm512_cvtepu8_epi16(_mm512_castsi512_si256(TL));
+    __m512i TL_hi = _mm512_cvtepu8_epi16(_mm512_extracti32x8_epi32(TL, 1));
+    __m512i TR_lo = _mm512_cvtepu8_epi16(_mm512_castsi512_si256(TR));
+    __m512i TR_hi = _mm512_cvtepu8_epi16(_mm512_extracti32x8_epi32(TR, 1));
+    __m512i BL_lo = _mm512_cvtepu8_epi16(_mm512_castsi512_si256(BL));
+    __m512i BL_hi = _mm512_cvtepu8_epi16(_mm512_extracti32x8_epi32(BL, 1));
+    __m512i BR_lo = _mm512_cvtepu8_epi16(_mm512_castsi512_si256(BR));
+    __m512i BR_hi = _mm512_cvtepu8_epi16(_mm512_extracti32x8_epi32(BR, 1));
+
+    __m512i idx_lo = _mm512_set_epi16(
+        7,7,7,7, 6,6,6,6, 5,5,5,5, 4,4,4,4,
+        3,3,3,3, 2,2,2,2, 1,1,1,1, 0,0,0,0
+    );
+    __m512i idx_hi = _mm512_set_epi16(
+        15,15,15,15, 14,14,14,14, 13,13,13,13, 12,12,12,12,
+        11,11,11,11, 10,10,10,10,  9, 9, 9, 9,  8, 8, 8, 8
+    );
+    __m512i tx512 = _mm512_castsi256_si512((__m256i)tx);
+    __m512i ty512 = _mm512_castsi256_si512((__m256i)ty);
+
+    __m512i tx_lo = _mm512_permutexvar_epi16(idx_lo, tx512);
+    __m512i tx_hi = _mm512_permutexvar_epi16(idx_hi, tx512);
+    __m512i ty_lo = _mm512_permutexvar_epi16(idx_lo, ty512);
+    __m512i ty_hi = _mm512_permutexvar_epi16(idx_hi, ty512);
+
+    auto lerpX_512 = [](__m512i L, __m512i R, __m512i t) -> __m512i {
+        __m512i width  = _mm512_slli_epi16(_mm512_sub_epi16(R, L), 7);
+        __m512i middle = _mm512_slli_epi16(_mm512_add_epi16(R, L), 7);
+        __m512i mult   = _mm512_mulhrs_epi16(t, width);
+        __m512i sum    = _mm512_add_epi16(mult, middle);
+        sum            = _mm512_add_epi16(sum, _mm512_set1_epi16(1));
+        return _mm512_srli_epi16(sum, 1);
+    };
+
+    auto lerpY_512 = [](__m512i T, __m512i B, __m512i t) -> __m512i {
+        __m512i width  = _mm512_sub_epi16(B, T);
+        __m512i middle = _mm512_add_epi16(B, T);
+        __m512i mult   = _mm512_mulhrs_epi16(t, width);
+        __m512i sum    = _mm512_add_epi16(mult, middle);
+        sum            = _mm512_add_epi16(sum, _mm512_set1_epi16(0x80));
+        return _mm512_srli_epi16(sum, 8);
+    };
+
+    __m512i top_lo = lerpX_512(TL_lo, TR_lo, tx_lo);
+    __m512i top_hi = lerpX_512(TL_hi, TR_hi, tx_hi);
+    __m512i bot_lo = lerpX_512(BL_lo, BR_lo, tx_lo);
+    __m512i bot_hi = lerpX_512(BL_hi, BR_hi, tx_hi);
+
+    __m512i res_lo = lerpY_512(top_lo, bot_lo, ty_lo);
+    __m512i res_hi = lerpY_512(top_hi, bot_hi, ty_hi);
+
+    __m512i packed = _mm512_packus_epi16(res_lo, res_hi);
+
+    __m512i pack_idx = _mm512_set_epi32(
+        15, 14, 11, 10,
+        7,  6,  3,  2,
+        13, 12, 9,  8,
+        5,  4,  1,  0
+    );
+    __m512i rgba = _mm512_permutexvar_epi32(pack_idx, packed);
+
+    from_8888((U32)rgba, &r, &g, &b, &a);
+#else
+    const uint32_t* ptr;
     // Substituting the {qx} by the equation for tx from above into the lerp equation where v is
     // the lerped value:
     //         v = {qx}*(R - L) + L,
@@ -6776,24 +6855,13 @@ LOWP_STAGE_GP(bilerp_clamp_8888, const SkRasterPipelineContexts::GatherCtx* ctx)
     //     2^-9 * 2 * v = tx*(R - L)*2^-9 + (R + L)*2^-9
     //         2^-8 * v = 2^-9 * (tx*(R - L) + (R + L))
     //                v = 1/2 * (tx*(R - L) + (R + L))
+
     auto lerpX = [&](U16 left, U16 right) -> U16 {
         I16 width  = (I16)(right - left) << 7;
         U16 middle = (right + left) << 7;
-        // The constrained_add is the most subtle part of lerp. The first term is on the interval
-        // [-1, 1), and the second term is on the interval is on the interval [0, 1) because
-        // both terms are too high by a factor of 2 which will be handled below. (Both R and L are
-        // on [0, 1/2), but the sum R + L is on the interval [0, 1).) Generally, the sum below
-        // should overflow, but because we know that sum produces an output on the
-        // interval [0, 1) we know that the extra bit that would be needed will always be 0. So
-        // we need to be careful to treat this sum as an unsigned positive number in the divide
-        // by 2 below. Add +1 for rounding.
         U16 v2  = constrained_add(scaled_mult(tx, width), middle) + 1;
-        // Divide by 2 to calculate v and at the same time bring the intermediate value onto the
-        // interval [0, 1/2] to set up for the lerpY.
         return v2 >> 1;
     };
-
-    const uint32_t* ptr;
     U32 ix = ix_and_ptr(&ptr, ctx, sx, sy);
     U16 leftR, leftG, leftB, leftA;
     from_8888(gather_unaligned<U32>(ptr, ix), &leftR,&leftG,&leftB,&leftA);
@@ -6833,6 +6901,7 @@ LOWP_STAGE_GP(bilerp_clamp_8888, const SkRasterPipelineContexts::GatherCtx* ctx)
     g = lerpY(topG, bottomG);
     b = lerpY(topB, bottomB);
     a = lerpY(topA, bottomA);
+#endif
 }
 
 LOWP_STAGE_GG(xy_to_unit_angle, NoCtx) {

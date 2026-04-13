@@ -1,0 +1,91 @@
+digraph G {
+    rankdir=TB;
+    node [shape=box, style=filled, fillcolor=lightcyan, fontname="Helvetica"];
+    edge [fontname="Helvetica", fontsize=10];
+
+    // Inputs
+    subgraph cluster_inputs {
+        label = "Memory Gather (32-bit RGBA per pixel)";
+        style = dashed;
+        TL [label="Top-Left (TL)\n16 pixels"];
+        TR [label="Top-Right (TR)\n16 pixels"];
+        BL [label="Bottom-Left (BL)\n16 pixels"];
+        BR [label="Bottom-Right (BR)\n16 pixels"];
+    }
+
+    // Unpack
+    subgraph cluster_unpack {
+        label = "Unpack 8-bit to 16-bit\n_mm512_cvtepu8_epi16";
+        style = dashed;
+        fillcolor = lightyellow;
+
+        TL_split [label="TL_lo (Pixels 0-7)\nTL_hi (Pixels 8-15)"];
+        TR_split [label="TR_lo (Pixels 0-7)\nTR_hi (Pixels 8-15)"];
+        BL_split [label="BL_lo (Pixels 0-7)\nBL_hi (Pixels 8-15)"];
+        BR_split [label="BR_lo (Pixels 0-7)\nBR_hi (Pixels 8-15)"];
+
+        TL -> TL_split;
+        TR -> TR_split;
+        BL -> BL_split;
+        BR -> BR_split;
+    }
+
+    // Weights
+    subgraph cluster_weights {
+        label = "Interpolation Weights";
+        style = dashed;
+        tx [label="tx (Horizontal Weights)\n1 per pixel", shape=ellipse, fillcolor=lightpink];
+        ty [label="ty (Vertical Weights)\n1 per pixel", shape=ellipse, fillcolor=lightpink];
+
+        tx_dup [label="Duplicate tx 4x per pixel\n_mm512_permutexvar_epi16\n(tx_lo, tx_hi)"];
+        ty_dup [label="Duplicate ty 4x per pixel\n_mm512_permutexvar_epi16\n(ty_lo, ty_hi)"];
+
+        tx -> tx_dup;
+        ty -> ty_dup;
+    }
+
+    // Horizontal Lerp
+    subgraph cluster_lerpx {
+        label = "Horizontal Interpolation (lerpX_512)\n_mm512_mulhrs_epi16";
+        style = dashed;
+        fillcolor = lightgreen;
+
+        top_lerp [label="Top Row: lerpX(TL, TR, tx)"];
+        bot_lerp [label="Bottom Row: lerpX(BL, BR, tx)"];
+
+        TL_split -> top_lerp;
+        TR_split -> top_lerp;
+        tx_dup -> top_lerp [color=red, style=dashed];
+
+        BL_split -> bot_lerp;
+        BR_split -> bot_lerp;
+        tx_dup -> bot_lerp [color=red, style=dashed];
+    }
+
+    // Vertical Lerp
+    subgraph cluster_lerpy {
+        label = "Vertical Interpolation (lerpY_512)\n_mm512_mulhrs_epi16";
+        style = dashed;
+        fillcolor = lightgreen;
+
+        final_lerp [label="Final Result: lerpY(Top, Bottom, ty)"];
+
+        top_lerp -> final_lerp;
+        bot_lerp -> final_lerp;
+        ty_dup -> final_lerp [color=blue, style=dashed];
+    }
+
+    // Pack
+    subgraph cluster_pack {
+        label = "Repack 16-bit to 8-bit RGBA";
+        style = dashed;
+        fillcolor = lightyellow;
+
+        pack [label="Pack & Permute\n_mm512_packus_epi16\n_mm512_permutexvar_epi32"];
+        final_lerp -> pack;
+    }
+
+    // Output
+    Output [label="Interpolated 16 Pixels\n(RGBA Interleaved)"];
+    pack -> Output;
+}
