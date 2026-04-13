@@ -1,0 +1,224 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5d6e444_c63b3a56",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-13T17:56:25Z",
+      "side": 1,
+      "message": "Let\u0027s roll these changes into a single patch with the readability CL changes",
+      "revId": "a64994ff7f0b1e0ab7e563d84c2b653127a36f76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b31c049c_ab6b38a5",
+        "filename": "src/core/SkScan_Hairline.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 596,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-13T17:56:25Z",
+      "side": 1,
+      "message": "This switch statement is redundant, as we\u0027re already switching on the verb type inside the verb switch below. Can we inline these function calls?",
+      "range": {
+        "startLine": 583,
+        "startChar": 0,
+        "endLine": 596,
+        "endChar": 0
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "1b687f10_c410d3a6",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/core/SkScan_Hairline.cpp",
+              "range": {
+                "startLine": 583,
+                "startChar": 0,
+                "endLine": 597,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "src/core/SkScan_Hairline.cpp",
+              "range": {
+                "startLine": 696,
+                "startChar": 0,
+                "endLine": 697,
+                "endChar": 0
+              },
+              "replacement": "                    (!isClosed || SkPath::IsLineDegenerate(srcPts[0], srcPts[1], true))) {\n"
+            },
+            {
+              "path": "src/core/SkScan_Hairline.cpp",
+              "range": {
+                "startLine": 705,
+                "startChar": 0,
+                "endLine": 706,
+                "endChar": 0
+              },
+              "replacement": "                    (!isClosed || SkPath::IsQuadDegenerate(srcPts[0], srcPts[1], srcPts[2], true))) {\n"
+            },
+            {
+              "path": "src/core/SkScan_Hairline.cpp",
+              "range": {
+                "startLine": 720,
+                "startChar": 0,
+                "endLine": 721,
+                "endChar": 0
+              },
+              "replacement": "                    (!isClosed || SkPath::IsQuadDegenerate(srcPts[0], srcPts[1], srcPts[2], true))) {\n"
+            },
+            {
+              "path": "src/core/SkScan_Hairline.cpp",
+              "range": {
+                "startLine": 737,
+                "startChar": 0,
+                "endLine": 738,
+                "endChar": 0
+              },
+              "replacement": "                    (!isClosed || SkPath::IsCubicDegenerate(srcPts[0], srcPts[1], srcPts[2], srcPts[3], true))) {\n"
+            }
+          ]
+        }
+      ],
+      "revId": "a64994ff7f0b1e0ab7e563d84c2b653127a36f76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83c07097_39d57b2b",
+        "filename": "src/core/SkScan_Hairline.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 604,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-13T17:56:25Z",
+      "side": 1,
+      "message": "This is also optional and needs to be checked, or at least have an assert that it should never happen. I.e. a malformed path may end on neither a `kClose` or `kMove` verb.",
+      "range": {
+        "startLine": 602,
+        "startChar": 4,
+        "endLine": 604,
+        "endChar": 54
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "effb4846_b34ea671",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/core/SkScan_Hairline.cpp",
+              "range": {
+                "startLine": 1,
+                "startChar": 0,
+                "endLine": 1,
+                "endChar": 0
+              },
+              "replacement": "    if (!rec.has_value()) {\n        // Malformed path, contour ended unexpectedly.\n        return false;\n    }\n"
+            }
+          ]
+        }
+      ],
+      "revId": "a64994ff7f0b1e0ab7e563d84c2b653127a36f76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26dda05f_1ef4be76",
+        "filename": "src/core/SkScan_Hairline.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 685,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-13T17:56:25Z",
+      "side": 1,
+      "message": "Since we already switching on the verb type, I think we could just use constexpr see comments on other CL.",
+      "range": {
+        "startLine": 685,
+        "startChar": 8,
+        "endLine": 685,
+        "endChar": 47
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "561c3740_fc17bc8a",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/core/SkScan_Hairline.cpp",
+              "range": {
+                "startLine": 685,
+                "startChar": 0,
+                "endLine": 686,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "src/core/SkScan_Hairline.cpp",
+              "range": {
+                "startLine": 696,
+                "startChar": 0,
+                "endLine": 697,
+                "endChar": 0
+              },
+              "replacement": "                    (!isClosed || determine_degeneracy(srcPts, 2))) {\n"
+            },
+            {
+              "path": "src/core/SkScan_Hairline.cpp",
+              "range": {
+                "startLine": 705,
+                "startChar": 0,
+                "endLine": 706,
+                "endChar": 0
+              },
+              "replacement": "                    (!isClosed || determine_degeneracy(srcPts, 3))) {\n"
+            },
+            {
+              "path": "src/core/SkScan_Hairline.cpp",
+              "range": {
+                "startLine": 720,
+                "startChar": 0,
+                "endLine": 721,
+                "endChar": 0
+              },
+              "replacement": "                    (!isClosed || determine_degeneracy(srcPts, 3))) {\n"
+            },
+            {
+              "path": "src/core/SkScan_Hairline.cpp",
+              "range": {
+                "startLine": 737,
+                "startChar": 0,
+                "endLine": 738,
+                "endChar": 0
+              },
+              "replacement": "                    (!isClosed || determine_degeneracy(srcPts, 4))) {\n"
+            }
+          ]
+        }
+      ],
+      "revId": "a64994ff7f0b1e0ab7e563d84c2b653127a36f76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
