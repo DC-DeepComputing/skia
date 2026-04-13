@@ -33,6 +33,24 @@
       "message": "Even worse, now these are confusing. Should this be a normal request (allow synthetics) or a normal return (does not implement synthetics).",
       "revId": "16e839ec9771649050b01fed4ed7d0070b460148",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17e90055_835b78c0",
+        "filename": "include/core/SkFontStyle.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-04-13T15:01:23Z",
+      "side": 1,
+      "message": "The issue here is that on a request it makes sense to have yes/no/maybe, but this is incompatible with the equivalence operator that is currently mostly being used in tests.\n\nThis is similar to `SkFontParameters` and `SkFontArguments`. `SkFontArguments` turns out to be quite useful to flexibly make a request (when providing font data) because all the information is needed and it is a specific request. `SkFontParameters` has turned out to be less useful because it is generally not necessary to get all the information all at once. Instead of using `SkFontParameters` there are just individual `getXXX` on `SkTypeface` to get each piece of information.\n\nApplying this to the current issue, it makes some sense to expand SkFontStyle into `SkFontRequest(Arguments)` which is like `SkFontParameters` but for making a request against a collection instead of request against a font file (though the line between these two is getting smaller). This would not have a `operator\u003d\u003d`. `SkTypeface::fontStyle` would be removed and replaced with `getWeight`, `getWidth`, `getStyle`, and `getSlant` (and of course `isSyntheticBold` and `isSyntheticOblique`) instead of adding a `SkFontRequest(Parameters)` which would be as unused as `SkFontParameters`. If adding a new thing anyway for the future, the existing SkFontStyle can just be allowed to remain as-is for now while adding the new `SkFontRequest`.",
+      "parentUuid": "3ecf8e5a_29010932",
+      "revId": "16e839ec9771649050b01fed4ed7d0070b460148",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
