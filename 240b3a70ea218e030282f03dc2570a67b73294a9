@@ -16,6 +16,24 @@
       "message": "[gardener] This CL is regressing performance, https://skia-perf.luci.app/e/?begin\u003d1775406209\u0026end\u003d1776097409\u0026keys\u003dX3fd69c537bbcc207a55de52b38cec0b1\u0026num_commits\u003d50\u0026request_type\u003d1\u0026xbaroffset\u003d78894. If I had to guess, this is because the new struct takes the `SkPathRaw` by value and not by reference, and then the struct itself is being passed by value (and the compiler is deciding to not inline). Can we try changing this to refs/ptrs where appropriate?\n\nAnother possibility is that by passing the `numPts` variable in more places, which is not visible at compile time, we are losing some opportunities for compiler optimization, such as unrolling the copy loop. Since we are already switching on the verb type, can we make `constexpr int kCubicPts` and pass those instead?",
       "revId": "240b3a70ea218e030282f03dc2570a67b73294a9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1e2d448_ec38a7cc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-04-13T18:01:32Z",
+      "side": 1,
+      "message": "just to clarify, what is kCubicPts meant to replace?",
+      "parentUuid": "78efe7f0_6cd78be8",
+      "revId": "240b3a70ea218e030282f03dc2570a67b73294a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
