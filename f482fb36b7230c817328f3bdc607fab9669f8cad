@@ -1,0 +1,277 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62543b63_6f451931",
+        "filename": "src/core/SkScan_Hairline.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-13T18:49:47Z",
+      "side": 1,
+      "message": "nit: lineproc is already a function ptr so it doesn\u0027t need to be a pointer.",
+      "range": {
+        "startLine": 221,
+        "startChar": 4,
+        "endLine": 221,
+        "endChar": 34
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "6699a80a_7b5e5522",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/core/SkScan_Hairline.cpp",
+              "range": {
+                "startLine": 221,
+                "startChar": 0,
+                "endLine": 222,
+                "endChar": 0
+              },
+              "replacement": "    SkScan::HairRgnProc lineproc;\n"
+            },
+            {
+              "path": "src/core/SkScan_Hairline.cpp",
+              "range": {
+                "startLine": 393,
+                "startChar": 0,
+                "endLine": 394,
+                "endChar": 0
+              },
+              "replacement": "    hair_quad(pts, d.clip, d.blitter, level, d.lineproc);\n"
+            },
+            {
+              "path": "src/core/SkScan_Hairline.cpp",
+              "range": {
+                "startLine": 503,
+                "startChar": 0,
+                "endLine": 504,
+                "endChar": 0
+              },
+              "replacement": "        hair_cubic(pts, d.clip, d.blitter, d.lineproc);\n"
+            },
+            {
+              "path": "src/core/SkScan_Hairline.cpp",
+              "range": {
+                "startLine": 511,
+                "startChar": 0,
+                "endLine": 512,
+                "endChar": 0
+              },
+              "replacement": "                    \u0026tmp[i * 3], d.clip, d.blitter, d.lineproc);\n"
+            },
+            {
+              "path": "src/core/SkScan_Hairline.cpp",
+              "range": {
+                "startLine": 689,
+                "startChar": 0,
+                "endLine": 690,
+                "endChar": 0
+              },
+              "replacement": "    DrawingParameters params \u003d {clip, insetClip, outsetClip, blitter, lineproc};\n"
+            }
+          ]
+        }
+      ],
+      "revId": "f482fb36b7230c817328f3bdc607fab9669f8cad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0dbdd464_33d1ee58",
+        "filename": "src/core/SkScan_Hairline.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 382,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-13T18:49:47Z",
+      "side": 1,
+      "message": "nit: here and below, the skia convention is that objects that are mutated in a function are passed by pointer.",
+      "range": {
+        "startLine": 382,
+        "startChar": 50,
+        "endLine": 382,
+        "endChar": 70
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "ab2c66da_70d2d43d",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/core/SkScan_Hairline.cpp",
+              "range": {
+                "startLine": 382,
+                "startChar": 0,
+                "endLine": 385,
+                "endChar": 0
+              },
+              "replacement": "static inline void hairquad(const SkPoint pts[3], DrawingParameters* d, int level) {\n    if (d-\u003einsetClip) {\n        SkASSERT(d-\u003eoutsetClip);\n"
+            },
+            {
+              "path": "src/core/SkScan_Hairline.cpp",
+              "range": {
+                "startLine": 386,
+                "startChar": 0,
+                "endLine": 387,
+                "endChar": 0
+              },
+              "replacement": "        if (!geometric_overlap(*d-\u003eoutsetClip, bounds)) {\n"
+            },
+            {
+              "path": "src/core/SkScan_Hairline.cpp",
+              "range": {
+                "startLine": 388,
+                "startChar": 0,
+                "endLine": 390,
+                "endChar": 0
+              },
+              "replacement": "        } else if (geometric_contains(*d-\u003einsetClip, bounds)) {\n            d-\u003eclip \u003d nullptr;\n"
+            },
+            {
+              "path": "src/core/SkScan_Hairline.cpp",
+              "range": {
+                "startLine": 393,
+                "startChar": 0,
+                "endLine": 394,
+                "endChar": 0
+              },
+              "replacement": "    hair_quad(pts, d-\u003eclip, d-\u003eblitter, level, *d-\u003elineproc);\n"
+            },
+            {
+              "path": "src/core/SkScan_Hairline.cpp",
+              "range": {
+                "startLine": 491,
+                "startChar": 0,
+                "endLine": 494,
+                "endChar": 0
+              },
+              "replacement": "static inline void haircubic(const SkPoint pts[4], DrawingParameters* d, int level) {\n    if (d-\u003einsetClip) {\n        SkASSERT(d-\u003eoutsetClip);\n"
+            },
+            {
+              "path": "src/core/SkScan_Hairline.cpp",
+              "range": {
+                "startLine": 495,
+                "startChar": 0,
+                "endLine": 496,
+                "endChar": 0
+              },
+              "replacement": "        if (!geometric_overlap(*d-\u003eoutsetClip, bounds)) {\n"
+            },
+            {
+              "path": "src/core/SkScan_Hairline.cpp",
+              "range": {
+                "startLine": 497,
+                "startChar": 0,
+                "endLine": 499,
+                "endChar": 0
+              },
+              "replacement": "        } else if (geometric_contains(*d-\u003einsetClip, bounds)) {\n            d-\u003eclip \u003d nullptr;\n"
+            },
+            {
+              "path": "src/core/SkScan_Hairline.cpp",
+              "range": {
+                "startLine": 503,
+                "startChar": 0,
+                "endLine": 504,
+                "endChar": 0
+              },
+              "replacement": "        hair_cubic(pts, d-\u003eclip, d-\u003eblitter, *d-\u003elineproc);\n"
+            },
+            {
+              "path": "src/core/SkScan_Hairline.cpp",
+              "range": {
+                "startLine": 511,
+                "startChar": 0,
+                "endLine": 512,
+                "endChar": 0
+              },
+              "replacement": "                    \u0026tmp[i * 3], d-\u003eclip, d-\u003eblitter, *d-\u003elineproc);\n"
+            },
+            {
+              "path": "src/core/SkScan_Hairline.cpp",
+              "range": {
+                "startLine": 719,
+                "startChar": 0,
+                "endLine": 720,
+                "endChar": 0
+              },
+              "replacement": "                hairquad(pts, \u0026params, compute_quad_level(pts));\n"
+            },
+            {
+              "path": "src/core/SkScan_Hairline.cpp",
+              "range": {
+                "startLine": 730,
+                "startChar": 0,
+                "endLine": 731,
+                "endChar": 0
+              },
+              "replacement": "                hairconic(pts, \u0026params, rec-\u003econicWeight());\n"
+            },
+            {
+              "path": "src/core/SkScan_Hairline.cpp",
+              "range": {
+                "startLine": 741,
+                "startChar": 0,
+                "endLine": 742,
+                "endChar": 0
+              },
+              "replacement": "                haircubic(pts, \u0026params, kMaxCubicSubdivideLevel);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "f482fb36b7230c817328f3bdc607fab9669f8cad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b73d2d2f_ae221817",
+        "filename": "src/core/SkScan_Hairline.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 703,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-13T18:49:47Z",
+      "side": 1,
+      "message": "nit: `constexpr` here and below",
+      "range": {
+        "startLine": 703,
+        "startChar": 16,
+        "endLine": 703,
+        "endChar": 21
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "e75c8a9c_fdbf28f2",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/core/SkScan_Hairline.cpp",
+              "range": {
+                "startLine": 703,
+                "startChar": 0,
+                "endLine": 704,
+                "endChar": 0
+              },
+              "replacement": "                constexpr int kNumLinePts \u003d 2;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "f482fb36b7230c817328f3bdc607fab9669f8cad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
