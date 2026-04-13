@@ -3,6 +3,23 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "3c6e1f58_91c34dbc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-04-13T17:28:39Z",
+      "side": 1,
+      "message": "This CL should wait until the other one (\"Render visible hyphen at soft hyphen (U+00AD) line breaks\") because it also requires adding the author to the Skia AUTHORS list.",
+      "revId": "aeaa9db00668c01f031e8960dd25c901f1c80c6e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "cd4ec38e_9860d420",
         "filename": "modules/skparagraph/src/TextLine.cpp",
         "patchSetId": 5
