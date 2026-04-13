@@ -881,28 +881,28 @@ void VisitAndroidPrecompileSettings_Old(
           DrawTypeFlags::kNonAAFillRect,
           kRGBA16F_1_D_Linear },
 
-        // 100% (2/2) handles 49 99
+        // 27: 100% (2/2) handles 49 99
         { BlurFilterMix(effectManager),
           kRRectAndNonAARect,
           kRGBA_1_D },
 
         // These two are solid colors drawn w/ a LinearEffect
 
-        // 30: 100% (1/1) handles 4
+        // 28: 100% (1/1) handles 4
         { LinearEffect(kUNKNOWN__SRGB__false__UNKNOWN__Shader,
                        PrecompileShaders::Color(),
                        SkBlendMode::kSrcOver),
           DrawTypeFlags::kNonAAFillRect,
           kRGBA16F_1_D_SRGB },
 
-        // 100% (1/1) handles 54
+        // 29: 100% (1/1) handles 54
         { LinearEffect(kBT2020_ITU_PQ__BT2020__false__UNKNOWN__Shader,
                        PrecompileShaders::Color(),
                        SkBlendMode::kSrc),
           DrawTypeFlags::kNonAAFillRect,
           kRGBA_1_D_SRGB },
 
-        // 100% (2/2) handles 2 141
+        // 30: 100% (2/2) handles 2 141
         { LinearEffect(kUNKNOWN__SRGB__false__UNKNOWN__Shader,
                        create_hw_image_precompile_shader(),
                        SkBlendMode::kSrcOver),
@@ -1167,7 +1167,7 @@ void VisitAndroidPrecompileSettings_Old(
           DrawTypeFlags::kNonAAFillRect,
           kRGBA_1_D_SRGB },
 
-        // 64: 100% (1/1) handles: 178
+        // 64: 100% (2/2) handles: 178 181
         // This is just 24 wrapped in a very specific LinearEffect
         { LinearEffect(kUNKNOWN__SRGB__false__UNKNOWN__Shader,
                        create_tone_map(effectManager),
@@ -1177,9 +1177,33 @@ void VisitAndroidPrecompileSettings_Old(
                        /* dither= */ false,
                        SkColorSpace::MakeSRGBLinear()),
           DrawTypeFlags::kNonAAFillRect,
-          kRGBA_1_D_SRGB },
+          kCombo_RGBA_1D_SRGB_w16F },
 
-#if defined(SK_VULKAN) && defined(SK_BUILD_FOR_ANDROID)
+        // 65: 100% (1/1) handles: 183
+        // The same as 30 but with a color space
+        { LinearEffect(kUNKNOWN__SRGB__false__UNKNOWN__Shader,
+                       PrecompileShaders::Color(),
+                       SkBlendMode::kSrcOver,
+                       /* paintColorIsOpaque= */ true,
+                       /* matrixColorFilter= */ false,
+                       /* dither= */ false,
+                       SkColorSpace::MakeSRGBLinear()),
+          DrawTypeFlags::kNonAAFillRect,
+          kRGBA16F_1_D_SRGB },
+
+        // 66: 100% (1/1) handles: 182
+        // This is just 30 w/ a color space
+        { LinearEffect(kUNKNOWN__SRGB__false__UNKNOWN__Shader,
+                       create_hw_image_precompile_shader(),
+                       SkBlendMode::kSrcOver,
+                       /* paintColorIsOpaque= */ true,
+                       /* matrixColorFilter= */ false,
+                       /* dither= */ false,
+                       SkColorSpace::MakeSRGBLinear()),
+          DrawTypeFlags::kNonAAFillRect,
+          kRGBA16F_1_D_SRGB },
+
+#if 0 // defined(SK_VULKAN) && defined(SK_BUILD_FOR_ANDROID)
 
         // 238 Full range (kHIAAO4AAAAAAAAA) block ----------------
 
