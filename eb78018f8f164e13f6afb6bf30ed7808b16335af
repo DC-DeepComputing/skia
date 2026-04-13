@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d0d1ddc_75d1143f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-13T20:11:29Z",
+      "side": 1,
+      "message": "I took a look at the gold diffs and discovered that the drawTextBlob was incorrectly dropping down to nearest after this change (because it was no longer type restricted), but the rect draws were not dropping down to nearest (always allowed evenwithout this CL).\n\nThe cause is from how text passes in the transform to apply to the glyph as the \"local-to-device\" matrix that ends up in keycontext doing the sampling optimization. The actual local-to-device for shading is embedded elsewhere.\n\nI had a prior set of CLs to flip this around for other reasons, so I\u0027m going to push that forward so we can fix the transform passed into keycontext before this change lands.",
+      "revId": "eb78018f8f164e13f6afb6bf30ed7808b16335af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
