@@ -88,6 +88,24 @@
       "parentUuid": "7a784d8c_13810d28",
       "revId": "60f2b3b6fe451b9e9035f42365fb805adbc87f87",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "395519f5_b6394c59",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 30
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-04-13T15:02:23Z",
+      "side": 1,
+      "message": "Done in preliminary patch.",
+      "parentUuid": "c827d056_dc07a42f",
+      "revId": "60f2b3b6fe451b9e9035f42365fb805adbc87f87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
