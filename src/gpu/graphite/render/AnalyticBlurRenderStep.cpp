@@ -99,6 +99,8 @@ void AnalyticBlurRenderStep::writeUniformsAndTextures(const DrawParams& params,
     gatherer->write(static_cast<int>(blur.shapeType()));
     gatherer->write(params.order().depthAsFloat());
 
+    SkDebugf("rrect blur @ %u, z = %u -> %f\n", params.order().paintOrder().bits(), params.order().depth().bits(), params.order().depthAsFloat());
+
     SkSamplingOptions samplingOptions = blur.shapeType() == AnalyticBlurMask::ShapeType::kRect
                                                 ? SkFilterMode::kLinear
                                                 : SkFilterMode::kNearest;

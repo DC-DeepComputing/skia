@@ -58,10 +58,10 @@ public:
     CoverageMaskShape() = default;
     CoverageMaskShape(const Shape& shape,
                       sk_sp<TextureProxy> proxy,
-                      const SkM44& deviceToLocal,
+                      const SkM44& maskToDevice,
                       const MaskInfo& maskInfo)
             : fTextureProxy(std::move(proxy))
-            , fDeviceToLocal(deviceToLocal)
+            , fMaskToDevice(maskToDevice)
             , fInverted(shape.inverted())
             , fMaskInfo(maskInfo) {
         SkASSERT(fTextureProxy);
@@ -77,12 +77,20 @@ public:
 
     // Returns the mask-space bounds of the clipped coverage mask shape. For inverse fills this
     // is different from the actual draw bounds stored in the Clip.
+
+    // FIXME: If we are using the canvas local2device matrix for shading and the transform of the
+    // DrawParams, then we are applying that to this bounds().
+    //
+    // This was fine when we were using the mask2device matrix on DrawParams, but we need it to be
+    // something else if we are applying local2device to get the draw bounds in the ClipStack,
+    // or we need to let the clip stack to use a different transform for the bounds?
     Rect bounds() const {
         return Rect(0.f, 0.f, (float) this->maskSize().x(), (float) this->maskSize().y());
     }
 
-    // The inverse local-to-device matrix.
-    const SkM44& deviceToLocal() const { return fDeviceToLocal; }
+    // The transform from the mask's texture coordinate space to device coordinates, which may be
+    // different from the local-to-device transform used for shading coordinates.
+    const SkM44& maskToDevice() const { return fMaskToDevice; }
 
     // The texture-relative integer UV coordinates of the top-left corner of this shape's
     // coverage mask bounds.
@@ -101,7 +109,7 @@ private:
     // We store a ref to the texture proxy to keep it alive.
     // TODO: switch to raw pointer once textures/uniforms are extracted in Device::drawGeometry.
     sk_sp<TextureProxy> fTextureProxy;
-    SkM44 fDeviceToLocal;
+    SkM44 fMaskToDevice;
     bool fInverted;
     MaskInfo fMaskInfo;
 };
