@@ -1,0 +1,22 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd4ec38e_9860d420",
+        "filename": "modules/skparagraph/src/TextLine.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1225,
+      "author": {
+        "id": 4714569
+      },
+      "writtenOn": "2026-04-13T16:27:59Z",
+      "side": 1,
+      "message": "Done. PS5 adds Run::fHyphen / isHyphen() (parallel to fEllipsis / isEllipsis()), set in createSoftHyphen(), and used here instead of pointer comparison.",
+      "parentUuid": "67d7b870_be865ba1",
+      "revId": "aeaa9db00668c01f031e8960dd25c901f1c80c6e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
