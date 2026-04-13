@@ -235,6 +235,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5c2f1cb9_54da541b",
+        "filename": "src/core/SkScan_Hairline.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 382,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-13T18:52:40Z",
+      "side": 1,
+      "message": "Else, if it\u0027s not mutating it should be a const reference.",
+      "parentUuid": "0dbdd464_33d1ee58",
+      "range": {
+        "startLine": 382,
+        "startChar": 50,
+        "endLine": 382,
+        "endChar": 70
+      },
+      "revId": "f482fb36b7230c817328f3bdc607fab9669f8cad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b73d2d2f_ae221817",
         "filename": "src/core/SkScan_Hairline.cpp",
         "patchSetId": 4
