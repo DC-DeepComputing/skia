@@ -1642,9 +1642,7 @@ void Device::drawGeometry(const Transform& localToDevice,
                           scopedDrawBuilder.gatherer(),
                           localToDevice.matrix(),
                           fDC->colorInfo(),
-                          geometry.isShape() || geometry.isEdgeAAQuad()
-                                ? KeyGenFlags::kDefault
-                                : KeyGenFlags::kDisableSamplingOptimization,
+                          KeyGenFlags::kDefault,
                           paint.color()};
     auto keyResult = shading.toKey(keyContext);
     if (!keyResult) {
