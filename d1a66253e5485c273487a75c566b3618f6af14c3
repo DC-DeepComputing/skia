@@ -1,0 +1,62 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8957bd23_80aa6515",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-14T18:05:16Z",
+      "side": 1,
+      "message": "Can you add the bug number from the previous fix?",
+      "revId": "d1a66253e5485c273487a75c566b3618f6af14c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "963265a9_1fccf8c5",
+        "filename": "src/core/SkScan_Hairline.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 698,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-14T18:05:16Z",
+      "side": 1,
+      "message": "Previously, this always initialized `isClosed` to `is_next_contour_closed`. The issue is that if `isButtCap \u003d true`, `isClosed` will carry over the value from the previous contour, which may not be false. \n\nThis should instead be: `isClosed \u003d !isButtCap \u0026\u0026 is_next_contour_closed(iter);`",
+      "range": {
+        "startLine": 698,
+        "startChar": 16,
+        "endLine": 698,
+        "endChar": 72
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "620c7be4_def21445",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/core/SkScan_Hairline.cpp",
+              "range": {
+                "startLine": 698,
+                "startChar": 0,
+                "endLine": 699,
+                "endChar": 0
+              },
+              "replacement": "                isClosed \u003d !isButtCap \u0026\u0026 is_next_contour_closed(iter);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "d1a66253e5485c273487a75c566b3618f6af14c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
