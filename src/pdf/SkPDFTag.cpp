@@ -16,6 +16,7 @@
 #include "src/pdf/SkPDFDocumentPriv.h"
 
 #include <algorithm>
+#include <compare>
 #include <memory>
 #include <utility>
 #include <vector>
@@ -68,7 +69,7 @@ struct SkPDFStructElem {
         int fMcid;
         SkPDFParentTreeKey fStructParentsKey;
     };
-    TArray<MarkedContentInfo> fMarkedContent;
+    std::vector<MarkedContentInfo> fMarkedContent;
     int fElemId = 0;
     bool fWantTitle = false;
     bool fUsed = false;
@@ -82,7 +83,7 @@ struct SkPDFStructElem {
     std::vector<int> fAttributeElemIds;
     struct ContentItemInfo {
         unsigned fPageIndex;
-        SkPDFIndirectReference fContentItemRef;
+        SkPDFParentTreeKey fStructParentKey;
     };
     std::vector<ContentItemInfo> fContentItems;
 
@@ -109,10 +110,61 @@ struct SkPDFStructElem {
         }
     }
 
+    class ContentIndex {
+        SkPDFParentTreeKey fParentId;
+        int fMcid;
+    public:
+        ContentIndex() : fParentId(), fMcid(0) {}
+        ContentIndex(const MarkedContentInfo& mci)
+            : fParentId(mci.fStructParentsKey), fMcid(mci.fMcid) {}
+        ContentIndex(const ContentItemInfo& cii)
+            : fParentId(cii.fStructParentKey), fMcid(0) {}
+        bool valid() const { return static_cast<bool>(fParentId); }
+        std::strong_ordering operator<=>(const ContentIndex&) const = default;
+    };
+    class ContentSpan {
+        struct Data {
+            ContentIndex fFirst;
+            ContentIndex fLast;
+            bool operator==(const Data&) const = default;
+        };
+        std::optional<Data> fData;
+    public:
+        ContentSpan() = default;
+        ContentSpan(const ContentSpan&) = default;
+        ContentSpan& operator=(const ContentSpan&) = default;
+        bool operator==(const ContentSpan& that) const = default;
+        bool empty() const { return !fData.has_value(); }
+        const ContentIndex& first() const { return fData->fFirst; }
+        const ContentIndex& last() const { return fData->fLast; }
+        void accumulate(const ContentIndex& ci) {
+            if (!ci.valid()) {
+                return;
+            }
+            if (this->empty()) {
+                fData.emplace(ci, ci);
+                return;
+            }
+            if (ci < fData->fFirst) {
+                fData->fFirst = ci;
+            }
+            if (fData->fLast < ci) {
+                fData->fLast = ci;
+            }
+        }
+        void accumulate(const ContentSpan& cs) {
+            if (cs.empty()) {
+                return;
+            }
+            this->accumulate(cs.first());
+            this->accumulate(cs.last());
+        }
+    };
     SkPDFIndirectReference emitStructElem(const SkPDFStructTree& structTree,
                                           SkPDFIndirectReference parent,
                                           std::vector<SkPDFStructTree::IDTreeEntry>* idTree,
-                                          SkPDFDocument* doc);
+                                          SkPDFDocument* doc,
+                                          ContentSpan&);
 };
 
 SkPDF::AttributeList::AttributeList() = default;
@@ -358,19 +410,32 @@ SkPDFParentTreeKey SkPDFStructTree::createStructParentKeyForElemId(
 
     structElem->setUsed(fStructElemForElemId);
 
-    SkPDFStructElem::ContentItemInfo contentItemInfo = {pageIndex, contentItemRef};
-    structElem->fContentItems.push_back(contentItemInfo);
-
     SkPDFParentTreeKey structParentKey{fParentTree.size()};
-    fParentTree.emplace_back(Item{structElem});
+    SkPDFStructElem::ContentItemInfo contentItemInfo = {pageIndex, structParentKey};
+    structElem->fContentItems.push_back(contentItemInfo);
+    fParentTree.emplace_back(Item{structElem, contentItemRef});
     return structParentKey;
+}
+
+SkPDFIndirectReference SkPDFStructTree::getContentItemRefForStructParentKey(
+        SkPDFParentTreeKey structParentKey) const
+{
+    if (structParentKey.fValue < 0 || fParentTree.size() <= structParentKey.fValue) {
+        return SkPDFIndirectReference();
+    }
+    const ParentTreeEntry& entry = fParentTree[structParentKey.fValue];
+    if (!std::holds_alternative<Item>(entry)) {
+        return SkPDFIndirectReference();
+    }
+    return std::get<Item>(entry).fContentItemRef;
 }
 
 SkPDFIndirectReference SkPDFStructElem::emitStructElem(
         const SkPDFStructTree& structTree,
         SkPDFIndirectReference parent,
         std::vector<SkPDFStructTree::IDTreeEntry>* idTree,
-        SkPDFDocument* doc)
+        SkPDFDocument* doc,
+        ContentSpan& contentSpan)
 {
     fRef = doc->reserveRef();
 
@@ -386,18 +451,92 @@ SkPDFIndirectReference SkPDFStructElem::emitStructElem(
     dict.insertRef("P", parent);
 
     { // K
-        std::unique_ptr<SkPDFArray> kids(new SkPDFOptionalArray());
+        // Need to emit the kids in order. There are three kinds of kids:
+        //   1. children (structure elements, in user order, have marked content and content items)
+        //   2. marked content (drawing, sort by {struct parent key, marked content id})
+        //   3. content items (currently just annotations, {struct parent key, 0})
+        // The children must be emitted in the order specified by the user.
+        // The marked content and content items must be emitted in the order they were drawn.
+        // If all the kid content is well ordered (no child span overlapping with anything else) and
+        // that order matches the user specified order of children then there is a "good" order.
+        // But any form of overlap is possible so there may not be a "good" order.
+        // In other words, the structure tree is an ordered hierarchy but the user can draw items
+        // and associate them with structure tree entries in any order. If the content isn't
+        // hierarchical it won't fit well into the structure tree. So try to find a least-bad order.
+        //
+        // The strategy used here is:
+        // 1. Merge all overlapping child spans to order the children.
+        // 2. Emit the each next child, marked content, or content item.
+        //    Empty children are emitted first then compare the rest by ContentIndex.
+
+        // Emit the children and collect their spans then order their spans
+        struct ChildSpan {
+            ContentSpan fContentSpan;
+            SkPDFIndirectReference fRef;
+        };
+        std::vector<ChildSpan> childSpans;
         for (auto&& child : fChildren) {
             if (child.fUsed) {
-                kids->appendRef(child.emitStructElem(structTree, fRef, idTree, doc));
+                ChildSpan& childSpan = childSpans.emplace_back();
+                childSpan.fRef = child.emitStructElem(structTree, fRef, idTree, doc,
+                                                      childSpan.fContentSpan);
             }
         }
+        if (childSpans.size() > 1) {
+            // If any two child spans overlap then they and all children between them are merged.
+            // For example should the 4th and 15th overlap, the 4th-15th are merged.
+            // 1. Sort {span, i} by span.first
+            // 2. If two spans overlap, merge all original spans from min to max i.
+            struct IndexedContentSpan {
+                ContentSpan fContentSpan;
+                size_t fIndex;
+                // Sort empty to front. Empty are skipped for span computation but may be merged.
+                bool operator<(const IndexedContentSpan& that) {
+                    if (!fContentSpan.empty() && !that.fContentSpan.empty()) {
+                        return fContentSpan.first() < that.fContentSpan.first();
+                    }
+                    return !that.fContentSpan.empty();
+                }
+            };
+            std::vector<IndexedContentSpan> indexedContentSpan(childSpans.size());
+            for (size_t i = 0; i < childSpans.size(); ++i) {
+                indexedContentSpan.emplace_back(childSpans[i].fContentSpan, i);
+            }
+            std::sort(indexedContentSpan.begin(), indexedContentSpan.end());
+            for (size_t i = 1; i < indexedContentSpan.size(); ++i) {
+                const IndexedContentSpan& curr = indexedContentSpan[i];
+                const IndexedContentSpan& prev = indexedContentSpan[i-1];
+                if (prev.fContentSpan.empty()) {
+                    continue;
+                }
+                if (curr.fContentSpan.first() <= prev.fContentSpan.last()) {
+                    const size_t first = std::min(prev.fIndex, curr.fIndex);
+                    const size_t last = std::max(prev.fIndex, curr.fIndex);
+                    ContentSpan mergedContentSpan;
+                    mergedContentSpan.accumulate(prev.fContentSpan);
+                    mergedContentSpan.accumulate(curr.fContentSpan);
+                    for (size_t j = first; j <= last; ++j) {
+                        childSpans[j].fContentSpan.accumulate(mergedContentSpan);
+                    }
+                }
+            }
+        }
+        // Postcondition: spans are empty, disjoint with previous, or same as previous.
+        for (size_t i = 1; i < childSpans.size(); ++i) {
+            SkASSERT(
+                childSpans[i-1].fContentSpan.empty() ||
+                childSpans[i-1].fContentSpan.last() < childSpans[i-1].fContentSpan.first() ||
+                childSpans[i-1].fContentSpan == childSpans[i-1].fContentSpan
+            );
+        }
+
+        // Setup the marked content
+        unsigned longestPage = 0;
         if (!fMarkedContent.empty()) {
             // Use the mode page as /Pg and use integer mcid for marks on that page.
             // SkPDFStructElem::fMarkedContent is already sorted by page, since it is append only in
             // createMarkForElemId where pageIndex is the monotonically increasing current page.
             size_t longestRun = 0;
-            unsigned longestPage = 0;
             size_t currentRun = 0;
             unsigned currentPage = 0;
             for (const SkPDFStructElem::MarkedContentInfo& info : fMarkedContent) {
@@ -413,13 +552,44 @@ SkPDFIndirectReference SkPDFStructElem::emitStructElem(
                     longestPage = currentPage;
                 }
             }
-            for (const SkPDFStructElem::MarkedContentInfo& info : fMarkedContent) {
+            dict.insertRef("Pg", doc->getPage(longestPage));
+        }
+
+        std::unique_ptr<SkPDFArray> kids(new SkPDFOptionalArray());
+        auto markedContent = fMarkedContent.begin();
+        auto contentItem = fContentItems.begin();
+        auto childSpan = childSpans.begin();
+        while (markedContent != fMarkedContent.end() ||
+               contentItem != fContentItems.end() ||
+               childSpan != childSpans.end())
+        {
+            ContentIndex mci = markedContent == fMarkedContent.end()
+                             ? ContentIndex()
+                             : ContentIndex(*markedContent);
+            ContentIndex cii = contentItem == fContentItems.end()
+                             ? ContentIndex()
+                             : ContentIndex(*contentItem);
+
+            if (childSpan != childSpans.end() && (
+                 childSpan->fContentSpan.empty() ||
+                 ((!mci.valid() || childSpan->fContentSpan.first() <= mci) &&
+                  (!cii.valid() || childSpan->fContentSpan.first() <= cii))))
+            {
+                kids->appendRef(childSpan->fRef);
+                contentSpan.accumulate(childSpan->fContentSpan);
+                ++childSpan;
+                continue;
+            }
+
+            if (mci.valid() && (!cii.valid() || mci <= cii)) {
+                const SkPDFStructElem::MarkedContentInfo& info = *markedContent;
                 SkPDFIndirectReference contentStreamRef =
                         structTree.getContentStreamRefForStructParentsKey(info.fStructParentsKey);
                 if (info.fLocation.fPageIndex == longestPage &&
                     contentStreamRef == SkPDFStructTree::kPageContentStreamRef)
                 {
                     kids->appendInt(info.fMcid);
+                    contentSpan.accumulate(info);
                 } else if (contentStreamRef ||
                            contentStreamRef == SkPDFStructTree::kPageContentStreamRef)
                 {
@@ -432,15 +602,28 @@ SkPDFIndirectReference SkPDFStructElem::emitStructElem(
                     }
                     mcr->insertInt("MCID", info.fMcid);
                     kids->appendObject(std::move(mcr));
+                    contentSpan.accumulate(info);
                 }
+
+                ++markedContent;
+                continue;
             }
-            dict.insertRef("Pg", doc->getPage(longestPage));
-        }
-        for (const SkPDFStructElem::ContentItemInfo& contentItemInfo : fContentItems) {
-            std::unique_ptr<SkPDFDict> contentItemDict = SkPDFMakeDict("OBJR");
-            contentItemDict->insertRef("Obj", contentItemInfo.fContentItemRef);
-            contentItemDict->insertRef("Pg", doc->getPage(contentItemInfo.fPageIndex));
-            kids->appendObject(std::move(contentItemDict));
+
+            if (cii.valid() && (!mci.valid() || cii <= mci)) {
+                const SkPDFStructElem::ContentItemInfo& info = *contentItem;
+                SkPDFIndirectReference contentItemRef =
+                    structTree.getContentItemRefForStructParentKey(info.fStructParentKey);
+                std::unique_ptr<SkPDFDict> contentItemDict = SkPDFMakeDict("OBJR");
+                contentItemDict->insertRef("Obj", contentItemRef);
+                contentItemDict->insertRef("Pg", doc->getPage(info.fPageIndex));
+                kids->appendObject(std::move(contentItemDict));
+                contentSpan.accumulate(info);
+
+                ++contentItem;
+                continue;
+            }
+
+            SkASSERT(false);
         }
         dict.insertObject("K", std::move(kids));
     }
@@ -488,7 +671,9 @@ SkPDFIndirectReference SkPDFStructTree::emitStructTreeRoot(SkPDFDocument* doc) c
     // Build the StructTreeRoot.
     SkPDFDict structTreeRoot("StructTreeRoot");
     std::vector<IDTreeEntry> idTree;
-    structTreeRoot.insertRef("K", fRoot->emitStructElem(*this, structTreeRootRef, &idTree, doc));
+    SkPDFStructElem::ContentSpan rootContentSpan;
+    structTreeRoot.insertRef("K", fRoot->emitStructElem(*this, structTreeRootRef, &idTree, doc,
+                                                        rootContentSpan));
     structTreeRoot.insertInt("ParentTreeNextKey", fParentTree.size());
 
     // Build the parent tree, a number tree which consists of two things:
