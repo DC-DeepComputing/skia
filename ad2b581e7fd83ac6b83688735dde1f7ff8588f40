@@ -123,6 +123,24 @@
       "parentUuid": "2a9e6233_9c4b0fd0",
       "revId": "ad2b581e7fd83ac6b83688735dde1f7ff8588f40",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0148662d_9639b234",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-04-14T20:24:49Z",
+      "side": 1,
+      "message": "Yes, the check needs to be against the initial `glyphCount`. Ideally `glyphCount` would be `const` and `CFIndex glyphsRemaining \u003d glyphCount;` at the beginning, `while (glyphsRemainging \u003e 0) {`, `--glyphCount;`.",
+      "parentUuid": "761288a1_0a076560",
+      "revId": "ad2b581e7fd83ac6b83688735dde1f7ff8588f40",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
