@@ -64,9 +64,9 @@ public:
     bool fSeenAllFrames = false;
     std::vector<Frame> fFrames;
     int fLastProcessedFrame = SkCodec::kNoFrame;
-    void* fDst;
-    size_t fPixelShift;
-    size_t fRowBytes;
+    void* fDst = nullptr;
+    size_t fPixelShift = 0;
+    size_t fRowBytes = 0;
     SkColorType fDstColorType;
 
 protected:
