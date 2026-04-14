@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4729a400_9310d035",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-14T18:14:00Z",
+      "side": 1,
+      "message": "Nit: `Additional performance optimization in SkScan_Hairline`?\n\nNit: Empty line between the title of the CL and the bug and change-id. Right now, gerrit is reading the CL description as the title.",
+      "revId": "a0f220af9871480d6f0cc89c19c780ba31180ccf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
