@@ -205,13 +205,13 @@ public:
     const SkM44* maskToDevice() const {
         if (fType == Type::kCoverageMaskShape) {
             return &this->coverageMaskShape().maskToDevice();
+        } else if (fType == Type::kSubRun) {
+            return &this->subRunData().maskToDevice();
         } else {
             // Everything is defined relative to the local coordinate space.
             // TODO(michaelludwig): AnalyticBlur might by simplified using this instead of
             // deviceToScaledShape(), but it already tracks its original local bounds and not just
             // mask-space bounds so analytic blurs may be fine.
-            // TODO(michaelludwig): Text subruns need to be restructured to store their mask to
-            // device matrix so that their KeyContext can see the correct local matrix.
             return nullptr;
         }
     }
