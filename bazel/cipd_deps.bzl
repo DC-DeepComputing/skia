@@ -46,6 +46,32 @@ exports_files(
     )
 
     cipd_install(
+        name = "cmake_linux_amd64",
+        build_file_content = """
+exports_files(
+    glob(["bin/*"]),
+    visibility = ["//visibility:public"]
+)
+""",
+        cipd_package = "skia/bots/cmake_linux",
+        sha256 = "7d29996e77af9f5639565732790ae432fffd30249dc5036540738a32f97bd3c1",
+        tag = "version:5",
+    )
+
+    cipd_install(
+        name = "ninja_linux_amd64",
+        build_file_content = """
+exports_files(
+    ["ninja"],
+    visibility = ["//visibility:public"]
+)
+""",
+        cipd_package = "infra/3pp/tools/ninja/linux-amd64",
+        sha256 = "3f1f1cc0f69a1bcfdf67fb6c2bc7419b1dd812bb8d0e79afa9bfa8a3553b5082",
+        tag = "version:2@1.12.1.chromium.4",
+    )
+
+    cipd_install(
         name = "git_linux_amd64",
         build_file_content = """
 filegroup(
