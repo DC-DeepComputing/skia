@@ -347,10 +347,13 @@ static sk_sp<SkImage> deserialize_image(sk_sp<SkData> data, SkDeserialProcs dPro
                                         std::optional<SkAlphaType> alphaType) {
     sk_sp<SkImage> image;
     if (dProcs.fImageDataProc) {
-        image = dProcs.fImageDataProc(data, alphaType, dProcs.fImageCtx);
-    } else if (dProcs.fImageProc) {
+        image = dProcs.fImageDataProc(std::move(data), alphaType, dProcs.fImageCtx);
+    }
+#if !defined(SK_DISABLE_LEGACY_IMAGE_DESERIAL_PROC)
+    else if (dProcs.fImageProc) {
         image = dProcs.fImageProc(data->data(), data->size(), alphaType, dProcs.fImageCtx);
     }
+#endif
     return image;
 }
 
@@ -415,7 +418,7 @@ sk_sp<SkImage> SkReadBuffer::readImage() {
             this->validate(false);
             return nullptr;
         }
-        image = deserialize_image(data, fProcs, alphaType);
+        image = deserialize_image(std::move(data), fProcs, alphaType);
     }
 
     // This flag is not written by new SKPs anymore.

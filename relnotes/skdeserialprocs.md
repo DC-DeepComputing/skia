@@ -1,0 +1,1 @@
+`SkDeserialImageProc` and `SkDeserialProcs::fImageProc` have been deprecated in favor of `SkDeserialImageFromDataProc` and `SkDeserialProcs::fImageDataProc`. They will be deleted in an upcoming release.

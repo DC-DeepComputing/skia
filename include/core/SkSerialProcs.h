@@ -53,15 +53,15 @@ using SkDeserialPictureProc = sk_sp<SkPicture> (*)(const void* data, size_t leng
  *  An explicit SkAlphaType may have been encoded in the bytestream; if not, then the passed in
  *  optional will be not present.
  *
- *  Clients should set at least SkDeserialImageProc; SkDeserialImageFromDataProc may be called
- *  if the internal implementation has a SkData copy already. Implementations of SkDeserialImageProc
- *  must make a copy of any data they needed after the proc finishes, since the data will go away
- *  after serialization ends.
+ *  Implementations of SkDeserialImageFromDataProc must make a copy of any data they need before
+ *  the proc finishes, since the data will go away after serialization ends.
  */
+#if !defined(SK_DISABLE_LEGACY_IMAGE_DESERIAL_PROC)
 using SkDeserialImageProc = sk_sp<SkImage> (*)(const void* data,
                                                size_t length,
                                                std::optional<SkAlphaType>,
                                                void* ctx);
+#endif
 
 using SkDeserialImageFromDataProc = sk_sp<SkImage> (*)(sk_sp<SkData>,
                                                        std::optional<SkAlphaType>,
@@ -97,7 +97,9 @@ struct SK_API SkDeserialProcs {
     SkDeserialPictureProc        fPictureProc = nullptr;
     void*                        fPictureCtx = nullptr;
 
+#if !defined(SK_DISABLE_LEGACY_IMAGE_DESERIAL_PROC)
     SkDeserialImageProc          fImageProc = nullptr;
+#endif
     SkDeserialImageFromDataProc  fImageDataProc = nullptr;
     void*                        fImageCtx = nullptr;
 
