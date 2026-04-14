@@ -600,8 +600,7 @@ static inline void hairconic(const SkPoint* p, DrawingParameters d, float conicW
 }
 
 // This function assumes that iter is currently ON a SkPathVerb::kMove verb
-static inline bool is_next_contour_closed(SkPathIter iter) {
-    auto scanner = iter;  // Create a copy for lookahead
+static inline bool is_next_contour_closed(SkPathIter scanner) {
     // we assume the first verb is already a move, so do scanner.next() to proceed to the next verb.
     // This will ideally be a contour verb or a close
     auto rec = scanner.next();
@@ -696,7 +695,7 @@ void hair_path(const SkPathRaw& raw,
         switch (verb) {
             case SkPathVerb::kMove:
                 firstPt = lastPt = srcPts[0];
-                isClosed = is_next_contour_closed(iter);
+                isClosed = !isButtCap && is_next_contour_closed(iter);
                 break;
             case SkPathVerb::kLine: {
                 constexpr int kNumLinePts = 2;
