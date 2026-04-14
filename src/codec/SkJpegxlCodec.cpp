@@ -209,7 +209,7 @@ SkCodec::Result SkJpegxlCodec::onGetPixels(const SkImageInfo& dstInfo, void* dst
     auto* dec = codec.fDecoder.get();
     JxlDecoderStatus status;
 
-    if ((codec.fLastProcessedFrame >= index) || (codec.fLastProcessedFrame = SkCodec::kNoFrame)) {
+    if ((codec.fLastProcessedFrame >= index) || (codec.fLastProcessedFrame == SkCodec::kNoFrame)) {
         codec.fLastProcessedFrame = SkCodec::kNoFrame;
         JxlDecoderRewind(dec);
         status = JxlDecoderSubscribeEvents(dec, JXL_DEC_FRAME | JXL_DEC_FULL_IMAGE);
