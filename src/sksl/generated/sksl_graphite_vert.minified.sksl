@@ -120,7 +120,7 @@ static constexpr char SKSL_MINIFIED_sksl_graphite_vert[] =
 "=f;}o=h;p=g;q=s;return float4(v.xy,i,1.);}float4 text_vertex_fn(float2 a,float4x4"
 " b,float4x4 c,float2 d,float2 e,float2 f,float2 g,float h,float i,out float2"
 " j,out float2 k,out float2 l){a*=e;float2 m=h*a+g;float4 n=b*float4(m,0.,1."
-");l=(c*n).xy;k=a+f;j=k*d;return float4(n.xy,i*n.w,n.w);}float4 coverage_mask_vertex_fn"
+");l=(inverse(c)*n).xy;k=a+f;j=k*d;return float4(n.xy,i*n.w,n.w);}float4 coverage_mask_vertex_fn"
 "(float2 a,float3x3 b,float4 c,float4 d,float2 e,float f,float3x3 g,out float4"
 " h,out float2 i,out half j,out float2 k){i=mix(c.xy,c.zw,a);float3 l=b*float3"
 "(i+e,1.);float3 m=inverse(g)*l;k=m.xy/m.z;if(all(lessThanEqual(d.xy,d.zw)))"
