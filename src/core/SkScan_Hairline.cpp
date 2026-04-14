@@ -696,7 +696,7 @@ void hair_path(const SkPathRaw& raw,
         switch (verb) {
             case SkPathVerb::kMove:
                 firstPt = lastPt = srcPts[0];
-                isClosed = is_next_contour_closed(iter);
+                if (!isButtCap) isClosed = is_next_contour_closed(iter);
                 break;
             case SkPathVerb::kLine: {
                 constexpr int kNumLinePts = 2;
