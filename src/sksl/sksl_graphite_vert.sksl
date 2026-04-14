@@ -1092,8 +1092,8 @@ float4 circular_arc_vertex_fn(float3 position,
 
 float4 text_vertex_fn(float2 baseCoords,
                       // Uniforms
-                      float4x4 subRunDeviceMatrix,
-                      float4x4 deviceToLocal,
+                      float4x4 maskToDevice,
+                      float4x4 localToDevice,
                       float2 atlasSizeInv,
                       // Instance Attributes
                       float2 size,
@@ -1110,14 +1110,14 @@ float4 text_vertex_fn(float2 baseCoords,
 
     // Sub runs have a decomposed transform and are sometimes already transformed into device
     // space, in which `subRunCoords` represents the bounds projected to device space without
-    // the local-to-device translation and `subRunDeviceMatrix` contains the translation.
+    // the local-to-device translation and `maskToDevice` contains the translation.
     float2 subRunCoords = strikeToSourceScale * baseCoords + xyPos;
-    float4 position = subRunDeviceMatrix * subRunCoords.xy01;
+    float4 position = maskToDevice * subRunCoords.xy01;
 
     // Calculate the local coords used for shading.
     // TODO(b/246963258): This is incorrect if the transform has perspective, which would
     // require a division + a valid z coordinate (which is currently set to 0).
-    stepLocalCoords = (deviceToLocal * position).xy;
+    stepLocalCoords = (inverse(localToDevice) * position).xy;
 
     unormTexCoords = baseCoords + uvPos;
     textureCoords = unormTexCoords * atlasSizeInv;
