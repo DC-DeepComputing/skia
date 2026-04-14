@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f09480a2_e03a0580",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4768469
+      },
+      "writtenOn": "2026-04-14T16:18:58Z",
+      "side": 1,
+      "message": "LGTM (but with zero Skia knowledge)",
+      "revId": "ad2b581e7fd83ac6b83688735dde1f7ff8588f40",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
