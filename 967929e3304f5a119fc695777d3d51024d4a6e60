@@ -16,6 +16,361 @@
       "message": "PTAL",
       "revId": "967929e3304f5a119fc695777d3d51024d4a6e60",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6eaa52b_1d54629d",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-14T13:50:03Z",
+      "side": 1,
+      "message": "// This is used to hold the result of a single call to estimate_subdiv and splayed out into the arrays in FlattenCtx.\n?",
+      "revId": "967929e3304f5a119fc695777d3d51024d4a6e60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "499ecbe8_d0b5d060",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-14T13:50:03Z",
+      "side": 1,
+      "message": "Not fDa ?",
+      "range": {
+        "startLine": 16,
+        "startChar": 11,
+        "endLine": 16,
+        "endChar": 14
+      },
+      "revId": "967929e3304f5a119fc695777d3d51024d4a6e60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d12fbe19_d94b17fa",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-14T13:50:03Z",
+      "side": 1,
+      "message": "Should this be quadTolerance given C#3 ?",
+      "range": {
+        "startLine": 76,
+        "startChar": 11,
+        "endLine": 76,
+        "endChar": 20
+      },
+      "revId": "967929e3304f5a119fc695777d3d51024d4a6e60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8330c0ae_0e5e307d",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-14T13:50:03Z",
+      "side": 1,
+      "message": "// - see #3 above ?",
+      "range": {
+        "startLine": 78,
+        "startChar": 13,
+        "endLine": 78,
+        "endChar": 29
+      },
+      "revId": "967929e3304f5a119fc695777d3d51024d4a6e60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "669c5012_df0b99f9",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-14T13:50:03Z",
+      "side": 1,
+      "message": "Are there better names for these ?",
+      "range": {
+        "startLine": 82,
+        "startChar": 12,
+        "endLine": 82,
+        "endChar": 16
+      },
+      "revId": "967929e3304f5a119fc695777d3d51024d4a6e60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8dd7053f_bf4abe8f",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-14T13:50:03Z",
+      "side": 1,
+      "message": "errSq ?",
+      "range": {
+        "startLine": 87,
+        "startChar": 11,
+        "endLine": 87,
+        "endChar": 14
+      },
+      "revId": "967929e3304f5a119fc695777d3d51024d4a6e60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce844a4b_6fd1ec22",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-14T13:50:03Z",
+      "side": 1,
+      "message": "estimate_num_quads ?",
+      "range": {
+        "startLine": 45,
+        "startChar": 7,
+        "endLine": 45,
+        "endChar": 22
+      },
+      "revId": "967929e3304f5a119fc695777d3d51024d4a6e60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "277e64ff_afea814c",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-14T13:50:03Z",
+      "side": 1,
+      "message": "estimate_subdiv ?",
+      "range": {
+        "startLine": 52,
+        "startChar": 7,
+        "endLine": 52,
+        "endChar": 25
+      },
+      "revId": "967929e3304f5a119fc695777d3d51024d4a6e60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "612dfe85_014dcab0",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-14T13:50:03Z",
+      "side": 1,
+      "message": "kSqrtQuadErrTolerance ?",
+      "revId": "967929e3304f5a119fc695777d3d51024d4a6e60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0863653_4e6a8349",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-14T13:50:03Z",
+      "side": 1,
+      "message": "kQuadErrTolerance2 ?",
+      "revId": "967929e3304f5a119fc695777d3d51024d4a6e60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b17fe49_66086372",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-14T13:50:03Z",
+      "side": 1,
+      "message": "Does it actually pass state? That seems dubious for a member variable.",
+      "range": {
+        "startLine": 108,
+        "startChar": 33,
+        "endLine": 108,
+        "endChar": 88
+      },
+      "revId": "967929e3304f5a119fc695777d3d51024d4a6e60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4aa14c9_d7ed464d",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-14T13:50:03Z",
+      "side": 1,
+      "message": "This struct caches the intermediate results of a single XXX invocation:\n the subdivided quads (from XXX and YYY) are stored in fEvenPts and fOddPts\n the parameters for subdividing (fA0, fDa, fU0 and fUScale) are stored in the call to ZZZ and used in AAA.\n ...",
+      "revId": "967929e3304f5a119fc695777d3d51024d4a6e60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc7e492e_02e04bce",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-14T13:50:03Z",
+      "side": 1,
+      "message": "// - where p2 of the prior quad is p0 of the next quad.",
+      "revId": "967929e3304f5a119fc695777d3d51024d4a6e60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4fd2ef0c_0403a21e",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-14T13:50:03Z",
+      "side": 1,
+      "message": "I would move this up a line.",
+      "revId": "967929e3304f5a119fc695777d3d51024d4a6e60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37410035_b14dc193",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-14T13:50:03Z",
+      "side": 1,
+      "message": "numPts ?",
+      "range": {
+        "startLine": 155,
+        "startChar": 53,
+        "endLine": 155,
+        "endChar": 54
+      },
+      "revId": "967929e3304f5a119fc695777d3d51024d4a6e60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "725c0d2a_e4d01bb3",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-14T13:50:03Z",
+      "side": 1,
+      "message": "These aren\u0027t useful parameter names.",
+      "range": {
+        "startLine": 157,
+        "startChar": 32,
+        "endLine": 157,
+        "endChar": 63
+      },
+      "revId": "967929e3304f5a119fc695777d3d51024d4a6e60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4adc417_a7b513c2",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-14T13:50:03Z",
+      "side": 1,
+      "message": "startIdx",
+      "range": {
+        "startLine": 157,
+        "startChar": 72,
+        "endLine": 157,
+        "endChar": 81
+      },
+      "revId": "967929e3304f5a119fc695777d3d51024d4a6e60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
