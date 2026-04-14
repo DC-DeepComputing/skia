@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7e72b97_11116715",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4777043
+      },
+      "writtenOn": "2026-04-14T14:48:03Z",
+      "side": 1,
+      "message": "Added myself to AUTHORS, please renew your approval 😊",
+      "revId": "205c2b181d00372fd432a51f3171a2acb39c3c34",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
