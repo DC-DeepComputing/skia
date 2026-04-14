@@ -1436,6 +1436,9 @@ void Device::drawAtlasSubRun(const sktext::gpu::AtlasSubRun* subRun,
 
     auto& glyphData = subRun->glyphVector().accessBackendData<GlyphData>();
 
+    auto [bounds, maskToDevice] =
+            subRun->vertexFiller().boundsAndDeviceMatrix(localToDevice, drawOrigin);
+
     for (int subRunCursor = 0; subRunCursor < subRunEnd;) {
         // For the remainder of the run, add any atlas uploads to the Recorder's TextAtlasManager
         auto [ok, glyphsRegenerated] = glyphData.regenerateAtlas(subRunCursor,
@@ -1450,14 +1453,11 @@ void Device::drawAtlasSubRun(const sktext::gpu::AtlasSubRun* subRun,
             return;
         }
         if (glyphsRegenerated) {
-            auto [bounds, maskToDevice] =
-                    subRun->vertexFiller().boundsAndDeviceMatrix(localToDevice, drawOrigin);
-
-            this->drawGeometry(Transform{SkM44{maskToDevice}},
+            this->drawGeometry(localToDevice,
                                Geometry(SubRunData(subRun,
                                                    subRunStorage,
                                                    bounds,
-                                                   localToDevice.inverse(),
+                                                   SkM44{maskToDevice},
                                                    subRunCursor,
                                                    glyphsRegenerated,
                                                    SkPaintPriv::ComputeLuminanceColor(paint),
