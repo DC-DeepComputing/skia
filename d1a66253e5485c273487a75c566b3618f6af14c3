@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "60e8e21d_e8f2a569",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-04-14T18:09:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8957bd23_80aa6515",
+      "revId": "d1a66253e5485c273487a75c566b3618f6af14c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "963265a9_1fccf8c5",
@@ -55,6 +73,30 @@
           ]
         }
       ],
+      "revId": "d1a66253e5485c273487a75c566b3618f6af14c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2676391_fee54602",
+        "filename": "src/core/SkScan_Hairline.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 698,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-04-14T18:09:49Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "963265a9_1fccf8c5",
+      "range": {
+        "startLine": 698,
+        "startChar": 16,
+        "endLine": 698,
+        "endChar": 72
+      },
       "revId": "d1a66253e5485c273487a75c566b3618f6af14c3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
