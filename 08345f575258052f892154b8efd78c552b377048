@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "612831df_f7f84400",
+        "filename": "src/gpu/graphite/geom/Geometry.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-14T21:06:54Z",
+      "side": 1,
+      "message": "bounds",
+      "range": {
+        "startLine": 182,
+        "startChar": 25,
+        "endLine": 182,
+        "endChar": 31
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "95ba5b8e_e0504fcb",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/geom/Geometry.h",
+              "range": {
+                "startLine": 182,
+                "startChar": 0,
+                "endLine": 183,
+                "endChar": 0
+              },
+              "replacement": "    // returns null, the bounds are relative to the original local-to-device transofrm of the draw.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "08345f575258052f892154b8efd78c552b377048",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
