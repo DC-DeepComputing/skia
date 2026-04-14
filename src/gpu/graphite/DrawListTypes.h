@@ -45,7 +45,7 @@ struct LayerKey {
     // NOTE: removing the uniform index on this check decreases stencil lists on desk_samoa
     // from 602 -> 69
     bool operator==(const LayerKey& other) const {
-        return std::bit_cast<uint64_t>(*this) == std::bit_cast<uint64_t>(other);
+        return fPipelineIndex == other.fPipelineIndex && fTextureIndex == other.fTextureIndex;
     }
 
     bool operator!=(const LayerKey& other) const { return !(*this == other); }
