@@ -383,7 +383,7 @@ static void populate_glyph_to_unicode_slow(CTFontRef ctFont, CFIndex glyphCount,
     while (glyphCount > 0) {
         CGGlyph glyph;
         if (CTFontGetGlyphsForCharacters(ctFont, &unichar, &glyph, 1)) {
-            if (out[glyph] == 0) {
+            if (glyph < glyphCount && out[glyph] == 0) {
                 out[glyph] = unichar;
                 --glyphCount;
             }
