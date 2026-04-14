@@ -69,6 +69,24 @@
       "parentUuid": "633999df_9926abbe",
       "revId": "ad2b581e7fd83ac6b83688735dde1f7ff8588f40",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3bd93942_289c419c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-04-14T19:58:57Z",
+      "side": 1,
+      "message": "Actually looking at this more, I understand what Ben was saying and this would actually break the code. We are decrementing the count each time through the loop.",
+      "parentUuid": "f85d085e_6488ec18",
+      "revId": "ad2b581e7fd83ac6b83688735dde1f7ff8588f40",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
