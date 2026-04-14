@@ -33,7 +33,6 @@ var depsOverrides = map[string]depConfig{
 	// This name is important because spirv_tools expects @spirv_headers to exist by that name.
 	"spirv-headers": {bazelNameOverride: "spirv_headers"},
 
-	"dawn":           {needsBazelFile: true},
 	"delaunator-cpp": {bazelNameOverride: "delaunator", needsBazelFile: true},
 	"dng_sdk":        {needsBazelFile: true},
 	"expat": {
