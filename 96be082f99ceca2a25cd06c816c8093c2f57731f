@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c8be62d_9e668a76",
+        "filename": "src/pdf/SkPDFTag.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 493,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-04-15T21:15:25Z",
+      "side": 1,
+      "message": "If we take this branch, it looks like we always take the next one too - can they be combined?\n\n```\n  if (!minFirstAfter.has_value() || childSpans[i].fContentSpan.first() \u003c\u003d minFirstAfter) {\n      // This child span starts before all subsequent child spans, everything is fine.\n      minFirstAfter \u003d childSpans[i].fContentSpan.first();\n      continue;\n  }\n```",
+      "revId": "96be082f99ceca2a25cd06c816c8093c2f57731f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3283bd33_70aa470d",
+        "filename": "src/pdf/SkPDFTag.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 518,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-04-15T21:15:25Z",
+      "side": 1,
+      "message": "SkDEBUGCODE?",
+      "range": {
+        "startLine": 505,
+        "startChar": 0,
+        "endLine": 518,
+        "endChar": 9
+      },
+      "revId": "96be082f99ceca2a25cd06c816c8093c2f57731f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
