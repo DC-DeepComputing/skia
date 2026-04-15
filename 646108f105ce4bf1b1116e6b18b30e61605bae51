@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "66cb2c16_664343c6",
+        "filename": "src/capture/SkCaptureCanvas.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-04-15T17:22:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "89ad5a94_a0401bbd",
+      "range": {
+        "startLine": 209,
+        "startChar": 8,
+        "endLine": 209,
+        "endChar": 16
+      },
+      "revId": "646108f105ce4bf1b1116e6b18b30e61605bae51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "95ec03e9_bed2b79c",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-04-09T19:08:07Z",
       "side": 1,
       "message": "This returns an SkContentID but none of the callers use the returned value.",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 11
+      },
+      "revId": "646108f105ce4bf1b1116e6b18b30e61605bae51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "85768196_80eda226",
+        "filename": "src/capture/SkCaptureManager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-04-15T17:22:57Z",
+      "side": 1,
+      "message": "Good catch, missed a return further down.",
+      "parentUuid": "95ec03e9_bed2b79c",
       "range": {
         "startLine": 29,
         "startChar": 0,
@@ -83,6 +131,54 @@
       "writtenOn": "2026-04-09T19:08:07Z",
       "side": 1,
       "message": "fId?",
+      "range": {
+        "startLine": 25,
+        "startChar": 13,
+        "endLine": 25,
+        "endChar": 15
+      },
+      "revId": "646108f105ce4bf1b1116e6b18b30e61605bae51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7822dad9_a84b7a6b",
+        "filename": "src/capture/SkCaptureManager.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-04-15T17:22:57Z",
+      "side": 1,
+      "message": "Definitely see value in it. Switched to it in the latest patch.",
+      "parentUuid": "eaac0c1b_bebace7d",
+      "range": {
+        "startLine": 25,
+        "startChar": 4,
+        "endLine": 25,
+        "endChar": 20
+      },
+      "revId": "646108f105ce4bf1b1116e6b18b30e61605bae51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04a8d8b0_50325854",
+        "filename": "src/capture/SkCaptureManager.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-04-15T17:22:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d22814ec_aa824892",
       "range": {
         "startLine": 25,
         "startChar": 13,
