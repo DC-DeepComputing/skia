@@ -40,6 +40,30 @@
       ],
       "revId": "08345f575258052f892154b8efd78c552b377048",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a7120d1_deb0dc79",
+        "filename": "src/gpu/graphite/geom/Geometry.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-15T13:42:44Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "612831df_f7f84400",
+      "range": {
+        "startLine": 182,
+        "startChar": 25,
+        "endLine": 182,
+        "endChar": 31
+      },
+      "revId": "08345f575258052f892154b8efd78c552b377048",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
