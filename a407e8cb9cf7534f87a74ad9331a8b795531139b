@@ -50,6 +50,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "34f3ae9c_f973eeb8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-15T18:39:17Z",
+      "side": 1,
+      "message": "Cool, looking back at https://docs.google.com/spreadsheets/d/1QMJ2_r7cb_dAa7LeYUweSClAKAhUNC3v8PfVe4jKrxg/edit?resourcekey\u003d0-TQEzxw3szoDsq0YBt6GZcA\u0026gid\u003d60626584#gid\u003d60626584 and https://skia-review.googlesource.com/c/skia/+/917257, I think this lines up with expectations.\n\nI never put together a suits or suits-clip scenario since there was no clipping in the experiment, but for regular stencil paths, the layer approach had a slight increase in batches compared to the original\u0027s use of the DisjointStencilSetIndex (which achieves the ideal split at high CPU overhead).\n\nSince suits and suits-clip also uses a lot of overlapping stencil-path draws (albeit sometimes as depth-only clips), I think it\u0027s a similar situation to the \"random color paths\" scenario from the experiment.",
+      "parentUuid": "85cef23a_30e26cd3",
+      "range": {
+        "startLine": 9,
+        "startChar": 2,
+        "endLine": 11,
+        "endChar": 35
+      },
+      "revId": "a407e8cb9cf7534f87a74ad9331a8b795531139b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "c7a1fcbb_400ce8aa",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 6
