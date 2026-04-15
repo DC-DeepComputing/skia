@@ -327,7 +327,7 @@ public:
 
     /** Resize the memory area pointed to by the current ptr preserving contents. */
     void realloc(size_t count) {
-        fPtr.reset(count ? (T*)sk_realloc_throw(fPtr.release(), count * sizeof(T)) : nullptr);
+        fPtr.reset(count ? (T*)sk_realloc_throw(fPtr.release(), count, sizeof(T)) : nullptr);
     }
 
     /** Resize the memory area pointed to by the current ptr without preserving contents. */
