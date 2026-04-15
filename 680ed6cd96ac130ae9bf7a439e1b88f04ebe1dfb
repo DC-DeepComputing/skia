@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "847c2f3b_4e707d6b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4767819
+      },
+      "writtenOn": "2026-04-15T17:26:17Z",
+      "side": 1,
+      "message": "Hi, this small change makes AutoTMalloc::realloc() use the existing checked allocation helper, matching the constructor and reset(). Please take a look.",
+      "revId": "680ed6cd96ac130ae9bf7a439e1b88f04ebe1dfb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
