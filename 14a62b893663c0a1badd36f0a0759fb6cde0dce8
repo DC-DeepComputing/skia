@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "401f39b2_cda5d47e",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1824,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-04-15T15:05:53Z",
+      "side": 1,
+      "message": "This method is pretty ginormous - Not something necessarily associated with your change, but might be a good candidate to use static helpers to break it up and make the flow / path options more clear. Just an idea 😊",
+      "range": {
+        "startLine": 1533,
+        "startChar": 0,
+        "endLine": 1824,
+        "endChar": 5
+      },
+      "revId": "14a62b893663c0a1badd36f0a0759fb6cde0dce8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
