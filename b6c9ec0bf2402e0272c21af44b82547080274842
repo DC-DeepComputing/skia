@@ -33,6 +33,23 @@
       "message": "Hi Robert,\nCould you please stamp this? (I need 2 owners)",
       "revId": "b6c9ec0bf2402e0272c21af44b82547080274842",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8da0499b_4de53479",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-04-15T00:51:21Z",
+      "side": 1,
+      "message": "Gentle ping ;-)\n\n+ borenet@google.com in case you can unblock me with a stamp.",
+      "revId": "b6c9ec0bf2402e0272c21af44b82547080274842",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
