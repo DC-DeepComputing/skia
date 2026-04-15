@@ -62,7 +62,7 @@ namespace PrecompileColorFilters {
     SK_API sk_sp<PrecompileColorFilter> Blend(); // Prefer the explicit blend mode variant
 
     // This encompasses both variants of SkColorFilters::Matrix
-    SK_API sk_sp<PrecompileColorFilter> Matrix();
+    SK_API sk_sp<PrecompileColorFilter> Matrix(bool clamp=true);
 
     // This encompasses both variants of SkColorFilters::HSLAMatrix
     SK_API sk_sp<PrecompileColorFilter> HSLAMatrix();
