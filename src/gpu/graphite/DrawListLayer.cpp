@@ -71,8 +71,9 @@ void DrawListLayer::recordBackwards(int stepIndex,
         }
     } else {
         current = fLayers.tail();
+        uint32_t limit = 0;
         auto processLayer = [&](BindingList* boundary) -> bool {
-            auto result =
+            auto [overlapType, match] =
                     isStencil
                             ? current->test</*kIsStencil=*/true, kIsDepthOnly, /*kForwards=*/false>(
                                       drawParams->drawBounds(), key, requiresBarrier, boundary)
@@ -81,7 +82,7 @@ void DrawListLayer::recordBackwards(int stepIndex,
                                             /*kForwards=*/false>(
                                       drawParams->drawBounds(), key, requiresBarrier, boundary);
 
-            if (result.first == BoundsTest::kIncompatibleOverlap) {
+            if (overlapType == BoundsTest::kIncompatibleOverlap) {
                 // If we need to read the dst, we cannot go earlier than this layer.
                 if (dependsOnDst) {
                     // Forward merging attempts to pull an earlier, compatible draw out of the
@@ -134,11 +135,11 @@ void DrawListLayer::recordBackwards(int stepIndex,
                     //        clipped draw to execute before Clip B's mask is rendered. Restricting
                     //        forward merges to the tail guarantees our assigned ordering is always
                     //        valid.
-                    if (result.second && current == fLayers.tail() && canForwardMerge) {
+                    if (match && current == fLayers.tail() && canForwardMerge) {
                         if (current->fBindings.head() != current->fBindings.tail()
                             && (!requiresBarrier ||
-                                !result.second->fBounds.intersects(drawParams->drawBounds()))) {
-                            forwardMerge = result.second;
+                                !match->fBounds.intersects(drawParams->drawBounds()))) {
+                            forwardMerge = match;
                             targetMatch = forwardMerge;
                         }
                     }
@@ -151,15 +152,20 @@ void DrawListLayer::recordBackwards(int stepIndex,
             } else {
                 // Found a valid layer (Compatible or Disjoint)
                 targetLayer = current;
-                targetMatch = result.second;
-
-                // If it was compatible, we expect a match. If disjoint, match is nullptr.
-                return result.first == BoundsTest::kCompatibleOverlap;
+                targetMatch = match;
+                if (overlapType == BoundsTest::kCompatibleOverlap) {
+                    if (isStencil) {
+                        limit += kMaxSearchLimit >> 1;
+                    } else {
+                        return true;
+                    }
+                }
+                return false;
             }
             SkUNREACHABLE;
         };
 
-        for (uint32_t limit = 0; limit < kMaxSearchLimit && current != stop.fLayer; ++limit) {
+        for (; limit < kMaxSearchLimit && current != stop.fLayer; ++limit) {
             if (processLayer(nullptr)) {
                 break;
             }
