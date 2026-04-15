@@ -57,6 +57,30 @@
       },
       "revId": "b91a05aedccc30ce6e1efa986d2d17c8198d0cb9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "468db26f_9091ef4c",
+        "filename": "src/text/gpu/SubRunAllocator.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 4764846
+      },
+      "writtenOn": "2026-04-15T15:21:44Z",
+      "side": 1,
+      "message": "Yes",
+      "parentUuid": "01235a81_277d2501",
+      "range": {
+        "startLine": 129,
+        "startChar": 25,
+        "endLine": 129,
+        "endChar": 80
+      },
+      "revId": "b91a05aedccc30ce6e1efa986d2d17c8198d0cb9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
