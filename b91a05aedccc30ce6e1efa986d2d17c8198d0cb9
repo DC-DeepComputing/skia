@@ -34,6 +34,29 @@
       "parentUuid": "094251c3_b8e5d848",
       "revId": "b91a05aedccc30ce6e1efa986d2d17c8198d0cb9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "01235a81_277d2501",
+        "filename": "src/text/gpu/SubRunAllocator.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-04-15T15:03:15Z",
+      "side": 1,
+      "message": "So this just `WillCountFit\u003c?\u003e(n)` where `?` is a fake type with size `Size`.",
+      "range": {
+        "startLine": 129,
+        "startChar": 25,
+        "endLine": 129,
+        "endChar": 80
+      },
+      "revId": "b91a05aedccc30ce6e1efa986d2d17c8198d0cb9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
