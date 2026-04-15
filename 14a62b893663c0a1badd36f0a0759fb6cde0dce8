@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c899e1db_29e86c55",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1800,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-15T16:53:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "771091ae_d46c8c84",
+      "range": {
+        "startLine": 1800,
+        "startChar": 93,
+        "endLine": 1800,
+        "endChar": 95
+      },
+      "revId": "14a62b893663c0a1badd36f0a0759fb6cde0dce8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "401f39b2_cda5d47e",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-04-15T15:05:53Z",
       "side": 1,
       "message": "This method is pretty ginormous - Not something necessarily associated with your change, but might be a good candidate to use static helpers to break it up and make the flow / path options more clear. Just an idea 😊",
+      "range": {
+        "startLine": 1533,
+        "startChar": 0,
+        "endLine": 1824,
+        "endChar": 5
+      },
+      "revId": "14a62b893663c0a1badd36f0a0759fb6cde0dce8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9b05a26_75396c13",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1824,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-15T16:53:34Z",
+      "side": 1,
+      "message": "Agreed, it would be good to make this smaller or broken up into several pieces. That will partially happen as the draw list layer changes replace the older system (which consume a lot more code inside drawGeometry than the layers approach), but it\u0027ll also require changes to how path atlases are resolved and handle flushing (all things I\u0027m working towards as part of the PathRendererStrategy cleanup).",
+      "parentUuid": "401f39b2_cda5d47e",
       "range": {
         "startLine": 1533,
         "startChar": 0,
@@ -104,6 +152,30 @@
           ]
         }
       ],
+      "revId": "14a62b893663c0a1badd36f0a0759fb6cde0dce8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "836f5b9f_20e44aaf",
+        "filename": "src/gpu/graphite/render/CoverageMaskRenderStep.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-15T16:53:34Z",
+      "side": 1,
+      "message": "I want to do that as part of b/351923375, since it\u0027ll apply to SubRunData and CoverBounds as well as CoverageMask.",
+      "parentUuid": "63d0a29b_c88e8bd1",
+      "range": {
+        "startLine": 206,
+        "startChar": 4,
+        "endLine": 206,
+        "endChar": 68
+      },
       "revId": "14a62b893663c0a1badd36f0a0759fb6cde0dce8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
