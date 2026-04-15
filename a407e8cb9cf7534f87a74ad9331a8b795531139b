@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1cf2b8c_8964904f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-15T17:03:51Z",
+      "side": 1,
+      "message": "Out of curiosity, what are the pipeline changes for these two cases when layering is disabled?",
+      "range": {
+        "startLine": 9,
+        "startChar": 2,
+        "endLine": 11,
+        "endChar": 35
+      },
+      "revId": "a407e8cb9cf7534f87a74ad9331a8b795531139b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "c7a1fcbb_400ce8aa",
@@ -14,6 +37,75 @@
       "writtenOn": "2026-04-15T14:50:12Z",
       "side": 1,
       "message": "PTAL, last one",
+      "revId": "a407e8cb9cf7534f87a74ad9331a8b795531139b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb455d35_a18f4e2b",
+        "filename": "src/gpu/graphite/Caps.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-15T17:03:51Z",
+      "side": 1,
+      "message": "blocker",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 58,
+        "endChar": 26
+      },
+      "revId": "a407e8cb9cf7534f87a74ad9331a8b795531139b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2b480bf_738d30a4",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-15T17:03:51Z",
+      "side": 1,
+      "message": "So if are stencil and compatible, we adjust the `limit` counter (to effectively reduce the number of iterations searching backwards). Can you add a comment for how this leads to fewer pipeline changes?",
+      "range": {
+        "startLine": 158,
+        "startChar": 0,
+        "endLine": 158,
+        "endChar": 54
+      },
+      "revId": "a407e8cb9cf7534f87a74ad9331a8b795531139b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81aef975_c885d7db",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-15T17:03:51Z",
+      "side": 1,
+      "message": "If we set `limit \u003d kMaxSearchLimit` and then subtract `kMaxSearchLimit \u003e\u003e 1` in the compatible stencil case, and always compare to \u003e 0 here, does that help with the naming ambiguity and preserve the more fixed loop limit?",
+      "range": {
+        "startLine": 168,
+        "startChar": 0,
+        "endLine": 168,
+        "endChar": 76
+      },
       "revId": "a407e8cb9cf7534f87a74ad9331a8b795531139b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
