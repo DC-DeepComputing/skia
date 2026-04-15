@@ -71,8 +71,9 @@ void DrawListLayer::recordBackwards(int stepIndex,
         }
     } else {
         current = fLayers.tail();
+        int32_t limit = kMaxSearchLimit;
         auto processLayer = [&](BindingList* boundary) -> bool {
-            auto result =
+            auto [overlapType, match] =
                     isStencil
                             ? current->test</*kIsStencil=*/true, kIsDepthOnly, /*kForwards=*/false>(
                                       drawParams->drawBounds(), key, requiresBarrier, boundary)
@@ -81,7 +82,7 @@ void DrawListLayer::recordBackwards(int stepIndex,
                                             /*kForwards=*/false>(
                                       drawParams->drawBounds(), key, requiresBarrier, boundary);
 
-            if (result.first == BoundsTest::kIncompatibleOverlap) {
+            if (overlapType == BoundsTest::kIncompatibleOverlap) {
                 // If we need to read the dst, we cannot go earlier than this layer.
                 if (dependsOnDst) {
                     // Forward merging attempts to pull an earlier, compatible draw out of the
@@ -134,11 +135,11 @@ void DrawListLayer::recordBackwards(int stepIndex,
                     //        clipped draw to execute before Clip B's mask is rendered. Restricting
                     //        forward merges to the tail guarantees our assigned ordering is always
                     //        valid.
-                    if (result.second && current == fLayers.tail() && canForwardMerge) {
+                    if (match && current == fLayers.tail() && canForwardMerge) {
                         if (current->fBindings.head() != current->fBindings.tail()
                             && (!requiresBarrier ||
-                                !result.second->fBounds.intersects(drawParams->drawBounds()))) {
-                            forwardMerge = result.second;
+                                !match->fBounds.intersects(drawParams->drawBounds()))) {
+                            forwardMerge = match;
                             targetMatch = forwardMerge;
                         }
                     }
@@ -151,16 +152,40 @@ void DrawListLayer::recordBackwards(int stepIndex,
             } else {
                 // Found a valid layer (Compatible or Disjoint)
                 targetLayer = current;
-                targetMatch = result.second;
+                targetMatch = match;
 
-                // If it was compatible, we expect a match. If disjoint, match is nullptr.
-                return result.first == BoundsTest::kCompatibleOverlap;
+                // In stencil-heavy scenes, we want to search deeper into the list than the first
+                // compatible overlap we encounter. An earlier match likely contains fewer draws and
+                // less draw coverage, while a later match is likely denser. Stopping at the first
+                // match minimizes search time but fragments batching. Inserting early carries a
+                // dual penalty: it 1) blocks subsequent draws from reaching those denser, later
+                // candidates, and it 2) consumes draw space in the early layer that a succeeding
+                // draw could have utilized.
+                //
+                // To mitigate this, we allow stencils to continue searching even after finding a
+                // CompatibleOverlap, but we penalize the remaining search limit by subtracting half
+                // of kMaxSearchLimit. This heuristic ensures:
+                //  1) The search typically isn't blocked by the first compatible overlap, unless
+                //     the match was found deep (over half the limit) into the search.
+                //  2) If two matches are found, the search halts.
+                //
+                // Ultimately, this is an imprecise heuristic. In an ideal world, we would maximize
+                // batching by exhaustively searching to the end of the list, but that would degrade
+                // insertion performance to O(n^2).
+                if (overlapType == BoundsTest::kCompatibleOverlap) {
+                    if (isStencil) {
+                        limit -= kMaxSearchLimit >> 1;
+                    } else {
+                        return true;
+                    }
+                }
+                return false;
             }
             SkUNREACHABLE;
         };
 
-        for (uint32_t limit = 0; limit < kMaxSearchLimit && current != stop.fLayer; ++limit) {
-            if (processLayer(nullptr)) {
+        for (; limit >= 0; --limit) {
+            if (current == stop.fLayer || processLayer(nullptr)) {
                 break;
             }
             current = current->fPrev;
