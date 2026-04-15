@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "771091ae_d46c8c84",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1800,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-15T15:16:25Z",
+      "side": 1,
+      "message": "space?",
+      "range": {
+        "startLine": 1800,
+        "startChar": 93,
+        "endLine": 1800,
+        "endChar": 95
+      },
+      "revId": "14a62b893663c0a1badd36f0a0759fb6cde0dce8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "401f39b2_cda5d47e",
         "filename": "src/gpu/graphite/Device.cpp",
         "patchSetId": 10
@@ -20,6 +43,67 @@
         "endLine": 1824,
         "endChar": 5
       },
+      "revId": "14a62b893663c0a1badd36f0a0759fb6cde0dce8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63d0a29b_c88e8bd1",
+        "filename": "src/gpu/graphite/render/CoverageMaskRenderStep.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-15T15:16:25Z",
+      "side": 1,
+      "message": "Can we invert here? Inverting per vertex invocation is not bad, but I think doing it on the CPU will still be better?",
+      "range": {
+        "startLine": 206,
+        "startChar": 4,
+        "endLine": 206,
+        "endChar": 68
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "4a08b372_8d61898c",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/render/CoverageMaskRenderStep.cpp",
+              "range": {
+                "startLine": 1,
+                "startChar": 0,
+                "endLine": 1,
+                "endChar": 0
+              },
+              "replacement": "                      // \u0027invert\u0027 is 0.f to use unmodified coverage, and 1.f for \"1-c\".\n                      {\"invert\", VertexAttribType::kFloat, SkSLType::kFloat},\n"
+            },
+            {
+              "path": "src/gpu/graphite/render/CoverageMaskRenderStep.cpp",
+              "range": {
+                "startLine": 98,
+                "startChar": 0,
+                "endLine": 99,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "src/gpu/graphite/render/CoverageMaskRenderStep.cpp",
+              "range": {
+                "startLine": 208,
+                "startChar": 0,
+                "endLine": 209,
+                "endChar": 0
+              },
+              "replacement": "                        \u003c\u003c params.order().depthAsFloat() \u003c\u003c ssboIndex \u003c\u003c (float)coverageMask.inverted()\n"
+            }
+          ]
+        }
+      ],
       "revId": "14a62b893663c0a1badd36f0a0759fb6cde0dce8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
