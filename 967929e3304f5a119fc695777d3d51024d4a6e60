@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4c39f4b_d0ea8e71",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-15T03:17:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d6eaa52b_1d54629d",
+      "revId": "967929e3304f5a119fc695777d3d51024d4a6e60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "499ecbe8_d0b5d060",
@@ -48,6 +66,30 @@
       "writtenOn": "2026-04-14T13:50:03Z",
       "side": 1,
       "message": "Not fDa ?",
+      "range": {
+        "startLine": 16,
+        "startChar": 11,
+        "endLine": 16,
+        "endChar": 14
+      },
+      "revId": "967929e3304f5a119fc695777d3d51024d4a6e60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d9dade4_ecefc3d9",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-15T03:17:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "499ecbe8_d0b5d060",
       "range": {
         "startLine": 16,
         "startChar": 11,
@@ -81,6 +123,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e58f6d91_0907e9c8",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-15T03:17:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d12fbe19_d94b17fa",
+      "range": {
+        "startLine": 76,
+        "startChar": 11,
+        "endLine": 76,
+        "endChar": 20
+      },
+      "revId": "967929e3304f5a119fc695777d3d51024d4a6e60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8330c0ae_0e5e307d",
@@ -94,6 +160,30 @@
       "writtenOn": "2026-04-14T13:50:03Z",
       "side": 1,
       "message": "// - see #3 above ?",
+      "range": {
+        "startLine": 78,
+        "startChar": 13,
+        "endLine": 78,
+        "endChar": 29
+      },
+      "revId": "967929e3304f5a119fc695777d3d51024d4a6e60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7bdf49b6_07df93ed",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-15T03:17:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8330c0ae_0e5e307d",
       "range": {
         "startLine": 78,
         "startChar": 13,
@@ -127,6 +217,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2072c1d2_e8091488",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-15T03:17:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "669c5012_df0b99f9",
+      "range": {
+        "startLine": 82,
+        "startChar": 12,
+        "endLine": 82,
+        "endChar": 16
+      },
+      "revId": "967929e3304f5a119fc695777d3d51024d4a6e60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8dd7053f_bf4abe8f",
@@ -140,6 +254,30 @@
       "writtenOn": "2026-04-14T13:50:03Z",
       "side": 1,
       "message": "errSq ?",
+      "range": {
+        "startLine": 87,
+        "startChar": 11,
+        "endLine": 87,
+        "endChar": 14
+      },
+      "revId": "967929e3304f5a119fc695777d3d51024d4a6e60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "67c38615_32d42704",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-15T03:17:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8dd7053f_bf4abe8f",
       "range": {
         "startLine": 87,
         "startChar": 11,
@@ -173,6 +311,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9da35a2_8734680a",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-15T03:17:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ce844a4b_6fd1ec22",
+      "range": {
+        "startLine": 45,
+        "startChar": 7,
+        "endLine": 45,
+        "endChar": 22
+      },
+      "revId": "967929e3304f5a119fc695777d3d51024d4a6e60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "277e64ff_afea814c",
@@ -186,6 +348,30 @@
       "writtenOn": "2026-04-14T13:50:03Z",
       "side": 1,
       "message": "estimate_subdiv ?",
+      "range": {
+        "startLine": 52,
+        "startChar": 7,
+        "endLine": 52,
+        "endChar": 25
+      },
+      "revId": "967929e3304f5a119fc695777d3d51024d4a6e60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5b03c01_5c5de854",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-15T03:17:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "277e64ff_afea814c",
       "range": {
         "startLine": 52,
         "startChar": 7,
@@ -213,6 +399,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9359b84c_77e28abd",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-15T03:17:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "612dfe85_014dcab0",
+      "revId": "967929e3304f5a119fc695777d3d51024d4a6e60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c0863653_4e6a8349",
@@ -226,6 +430,24 @@
       "writtenOn": "2026-04-14T13:50:03Z",
       "side": 1,
       "message": "kQuadErrTolerance2 ?",
+      "revId": "967929e3304f5a119fc695777d3d51024d4a6e60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d55cb88_6e23efb2",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-15T03:17:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c0863653_4e6a8349",
       "revId": "967929e3304f5a119fc695777d3d51024d4a6e60",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -253,6 +475,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d1598d7_523f3882",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-15T03:17:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0b17fe49_66086372",
+      "range": {
+        "startLine": 108,
+        "startChar": 33,
+        "endLine": 108,
+        "endChar": 88
+      },
+      "revId": "967929e3304f5a119fc695777d3d51024d4a6e60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c4aa14c9_d7ed464d",
@@ -266,6 +512,24 @@
       "writtenOn": "2026-04-14T13:50:03Z",
       "side": 1,
       "message": "This struct caches the intermediate results of a single XXX invocation:\n the subdivided quads (from XXX and YYY) are stored in fEvenPts and fOddPts\n the parameters for subdividing (fA0, fDa, fU0 and fUScale) are stored in the call to ZZZ and used in AAA.\n ...",
+      "revId": "967929e3304f5a119fc695777d3d51024d4a6e60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "01a457d7_2a71d80d",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-15T03:17:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c4aa14c9_d7ed464d",
       "revId": "967929e3304f5a119fc695777d3d51024d4a6e60",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -287,6 +551,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0b03bfa_d34030d9",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-15T03:17:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cc7e492e_02e04bce",
+      "revId": "967929e3304f5a119fc695777d3d51024d4a6e60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4fd2ef0c_0403a21e",
@@ -304,6 +586,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "45badf12_c9002d70",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-15T03:17:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4fd2ef0c_0403a21e",
+      "revId": "967929e3304f5a119fc695777d3d51024d4a6e60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "37410035_b14dc193",
@@ -317,6 +617,30 @@
       "writtenOn": "2026-04-14T13:50:03Z",
       "side": 1,
       "message": "numPts ?",
+      "range": {
+        "startLine": 155,
+        "startChar": 53,
+        "endLine": 155,
+        "endChar": 54
+      },
+      "revId": "967929e3304f5a119fc695777d3d51024d4a6e60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "efd9161a_a4433ad2",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-15T03:17:59Z",
+      "side": 1,
+      "message": "These should be handled on the SIMD CL, or I can remove these parameters from the stubs on this CL.",
+      "parentUuid": "37410035_b14dc193",
       "range": {
         "startLine": 155,
         "startChar": 53,
@@ -363,6 +687,54 @@
       "writtenOn": "2026-04-14T13:50:03Z",
       "side": 1,
       "message": "startIdx",
+      "range": {
+        "startLine": 157,
+        "startChar": 72,
+        "endLine": 157,
+        "endChar": 81
+      },
+      "revId": "967929e3304f5a119fc695777d3d51024d4a6e60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c1a7a60_7e76937c",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-15T03:17:59Z",
+      "side": 1,
+      "message": "Same as comment directly above.",
+      "parentUuid": "725c0d2a_e4d01bb3",
+      "range": {
+        "startLine": 157,
+        "startChar": 32,
+        "endLine": 157,
+        "endChar": 63
+      },
+      "revId": "967929e3304f5a119fc695777d3d51024d4a6e60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1bdf0225_500e51f2",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-15T03:17:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c4adc417_a7b513c2",
       "range": {
         "startLine": 157,
         "startChar": 72,
