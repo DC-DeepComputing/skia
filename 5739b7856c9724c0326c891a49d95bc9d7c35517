@@ -16,6 +16,24 @@
       "message": "While this prevents strange collisions, it does not actually put the child spans in order. It is possible that the user lists the children in one order and then draws them in the opposite order. Possible other approaches:\n\n1. Scan from last child to first child and ensure each span starts at the minimum seen so far. Then emit kids \"in order\".\n\n2. The simple approach of emit any kid that \"comes before\" the next child.",
       "revId": "5739b7856c9724c0326c891a49d95bc9d7c35517",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea7d173a_81e09a08",
+        "filename": "src/pdf/SkPDFTag.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 524,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-04-16T13:45:56Z",
+      "side": 1,
+      "message": "Went with approach 1 for now. Ideally the user always draws everything in more or less logical order and there is no re-ordering ever needed, but we should make some attempt to handle arbitrary orders in a way that doesn\u0027t fall over too badly. However, we also don\u0027t want to do a lot of work to figure out the original intent. If that is ever wanted there will need to be some way for the user to explicitly state where they want each draw to end up in the structure tree explicitly.",
+      "parentUuid": "fa2378fc_81e28eb1",
+      "revId": "5739b7856c9724c0326c891a49d95bc9d7c35517",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
