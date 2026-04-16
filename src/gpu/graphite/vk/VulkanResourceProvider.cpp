@@ -405,7 +405,7 @@ void update_uniform_descriptor_set(SkSpan<DescriptorData> requestedDescriptors,
 
 } // anonymous namespace
 
-sk_sp<VulkanDescriptorSet> VulkanResourceProvider::findOrCreateUniformBuffersDescriptorSet(
+sk_sp<VulkanDescriptorSet> VulkanResourceProvider::findOrCreateUniformDesSet(
         SkSpan<DescriptorData> requestedDescriptors,
         SkSpan<BindBufferInfo> bindUniformBufferInfo) {
     SkASSERT(requestedDescriptors.size() <= VulkanGraphicsPipeline::kNumUniformBuffers);

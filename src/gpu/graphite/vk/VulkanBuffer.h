@@ -12,6 +12,8 @@
 #include "src/gpu/graphite/Buffer.h"
 #include "src/gpu/graphite/vk/VulkanSharedContext.h"
 
+#include <map>
+
 namespace skgpu::graphite {
 
 class VulkanCommandBuffer;
@@ -61,6 +63,11 @@ private:
     skgpu::VulkanAlloc fAlloc;
     const VkBufferUsageFlags fBufferUsageFlags;
     mutable VkAccessFlags fCurrentAccess = 0;
+
+    // If the VulkanBuffer is a uniform buffer, it can be performant to cache a descriptor set
+    // that works per a provided size. Otherwise, this can be ignored. Could later be used to also
+    // cache descriptor sets for storage buffers or dynamic buffers once supported.
+    std::map<size_t, sk_sp<VulkanDescriptorSet>> fCachedSingleUniformDescriptorSets;
 
     /**
      * Buffers can either be mapped for:

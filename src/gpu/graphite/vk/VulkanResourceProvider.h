@@ -46,7 +46,7 @@ public:
             VK_SHADER_STAGE_VERTEX_BIT;
 
 
-    using UniformBindGroupKey = FixedSizeKey<2 * VulkanGraphicsPipeline::kNumUniformBuffers>;
+    // using UniformBindGroupKey = FixedSizeKey<2 * VulkanGraphicsPipeline::kNumUniformBuffers>;
 
     VulkanResourceProvider(SharedContext* sharedContext,
                            SingleOwner*,
@@ -117,9 +117,6 @@ private:
     skia_private::TArray<std::pair<uint32_t, sk_sp<VulkanGraphicsPipeline>>> fLoadMSAAPipelines;
     // The shader modules and pipeline layout can be shared for all loadMSAA pipelines.
     std::unique_ptr<VulkanProgramInfo> fLoadMSAAProgram;
-
-    SkLRUCache<UniformBindGroupKey, sk_sp<VulkanDescriptorSet>,
-               UniformBindGroupKey::Hash> fUniformBufferDescSetCache;
 
     skia_private::TArray<std::pair<GraphiteResourceKey, uint32_t>> fCurrentPoolSizes;
 };
