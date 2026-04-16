@@ -653,6 +653,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ff066ea8_51d9e957",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-16T13:35:21Z",
+      "side": 1,
+      "message": "What will it be named in the SIMD CL or does it just go away?",
+      "parentUuid": "efd9161a_a4433ad2",
+      "range": {
+        "startLine": 155,
+        "startChar": 53,
+        "endLine": 155,
+        "endChar": 54
+      },
+      "revId": "967929e3304f5a119fc695777d3d51024d4a6e60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "725c0d2a_e4d01bb3",
         "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
         "patchSetId": 4
