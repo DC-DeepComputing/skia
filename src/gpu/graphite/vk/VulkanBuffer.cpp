@@ -9,6 +9,7 @@
 
 #include "include/gpu/vk/VulkanMemoryAllocator.h"
 #include "src/gpu/graphite/vk/VulkanCommandBuffer.h"
+#include "src/gpu/graphite/vk/VulkanDescriptorSet.h"
 #include "src/gpu/graphite/vk/VulkanGraphiteUtils.h"
 #include "src/gpu/vk/VulkanMemory.h"
 
@@ -403,6 +404,11 @@ void VulkanBuffer::setBufferAccess(VulkanCommandBuffer* cmdBuffer,
     }
 
     fCurrentAccess = dstAccess;
+}
+
+sk_sp<VulkanDescriptorSet> VulkanBuffer::getCachedSingleUboDescSet(size_t bufferSize) {
+
+    return nullptr;
 }
 
 } // namespace skgpu::graphite

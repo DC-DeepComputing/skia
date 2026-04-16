@@ -1321,54 +1321,72 @@ void VulkanCommandBuffer::syncDescriptorSets() {
 
 void VulkanCommandBuffer::bindUniformBuffers() {
     fBindUniformBuffers = false;
+    namespace Pipeline = VulkanGraphicsPipeline;
 
-    // Define a container with size reserved for up to kNumUniformBuffers descriptors. Only add
-    // DescriptorData for uniforms that actually are used and need to be bound.
-    STArray<VulkanGraphicsPipeline::kNumUniformBuffers, DescriptorData> descriptors;
-
-    // Up to kNumUniformBuffers can be used and require rebinding depending upon render pass info.
     DescriptorType uniformBufferType =
             fSharedContext->caps()->storageBufferSupport() ? DescriptorType::kStorageBuffer
                                                            : DescriptorType::kUniformBuffer;
-    if (fActiveGraphicsPipeline->hasCombinedUniforms() &&
-        fUniformBuffersToBind[VulkanGraphicsPipeline::kCombinedUniformIndex].fBuffer) {
-        descriptors.push_back({
-                uniformBufferType,
-                /*count=*/1,
-                VulkanGraphicsPipeline::kCombinedUniformIndex,
-                PipelineStageFlags::kVertexShader | PipelineStageFlags::kFragmentShader });
-    }
+    const bool hasCombinedUbo =
+            fActiveGraphicsPipeline->hasCombinedUniforms() &&
+            fUniformBuffersToBind[Pipeline::kCombinedUniformIndex].fBuffer;
+    const bool hasGradientBuffer =
+            fActiveGraphicsPipeline->hasGradientBuffer() &&
+            fUniformBuffersToBind[Pipeline::kGradientBufferIndex].fBuffer;
 
-    if (fActiveGraphicsPipeline->hasGradientBuffer() &&
-        fUniformBuffersToBind[VulkanGraphicsPipeline::kGradientBufferIndex].fBuffer) {
-        SkASSERT(fSharedContext->caps()->gradientBufferSupport() &&
-                 fSharedContext->caps()->storageBufferSupport());
-        descriptors.push_back({ DescriptorType::kStorageBuffer, /*count=*/1,
-                                VulkanGraphicsPipeline::kGradientBufferIndex,
-                                PipelineStageFlags::kFragmentShader });
-    }
+    // We should never have a gradient buffer without having a combined uniform buffer as well.
+    SkASSERT(!hasGradientBuffer || hasCombinedUbo);
 
     // If no uniforms are used, we can go ahead and return since no descriptors need to be bound.
-    if (descriptors.empty()) {
+    if (!hasCombinedUbo) {
         return;
     }
 
-    skia_private::AutoSTMalloc<VulkanGraphicsPipeline::kNumUniformBuffers, uint32_t>
-            dynamicOffsets(descriptors.size());
-    for (int i = 0; i < descriptors.size(); i++) {
-        int descriptorBindingIndex = descriptors[i].fBindingIndex;
-        SkASSERT(static_cast<unsigned long>(descriptorBindingIndex) < fUniformBuffersToBind.size());
-        const auto& bindInfo = fUniformBuffersToBind[descriptorBindingIndex];
-#ifdef SK_DEBUG
-        if (descriptors[i].fPipelineStageFlags & PipelineStageFlags::kVertexShader) {
-            SkASSERT(bindInfo.fBuffer->isProtected() == Protected::kNo);
-        }
-#endif
-        dynamicOffsets[i] = bindInfo.fOffset;
+    // Obtain a descriptor set and populate dynamic offset information. Iff we are using a single
+    // UBO, get a single-uniform descriptor set cached on the VulkanBuffer object. Otherwise,
+    // query the resource provider for a set.
+    const int numBuffers = hasGradientBuffer ? 2 : 1;
+
+    if (hasCombinedUbo && !hasGradientBuffer) {
+
+    } else {
+
     }
 
-    sk_sp<VulkanDescriptorSet> descSet = fResourceProvider->findOrCreateUniformBuffersDescriptorSet(
-            descriptors, fUniformBuffersToBind);
+    // skia_private::AutoSTMalloc<Pipeline::kNumUniformBuffers, uint32_t> dynamicOffsets(numBuffers);
+    sk_sp<VulkanDescriptorSet> descSet;
+
+    // Define a container with size reserved for up to kNumUniformBuffers descriptors. Only add
+    // DescriptorData for uniforms that actually are used and need to be bound.
+    // STArray<Pipeline::kNumUniformBuffers, DescriptorData> descriptors;
+    if (hasCombinedUbo && !hasGradientBuffer) {
+        const auto& uboInfo = fUniformBuffersToBind[Pipeline::kCombinedUniformIndex];
+
+        auto vkBuffer =
+                const_cast<VulkanBuffer*>(static_cast<const VulkanBuffer*>(uboInfo.fBuffer));
+
+        descSet = vkBuffer->getCachedSingleUboDescSet(uboInfo.fSize);
+
+        dynamicOffsets[0] = uboInfo.fOffset;
+    } else {
+        SkASSERT(fSharedContext->caps()->gradientBufferSupport() &&
+                 fSharedContext->caps()->storageBufferSupport());
+
+        descriptors.push_back({ uniformBufferType, /*count=*/1,
+                                Pipeline::kCombinedUniformIndex,
+                                PipelineStageFlags::kVertexShader |
+                                PipelineStageFlags::kFragmentShader });
+
+        descriptors.push_back({ DescriptorType::kStorageBuffer, /*count=*/1,
+                                Pipeline::kGradientBufferIndex,
+                                PipelineStageFlags::kFragmentShader });
+
+        dynamicOffsets[0] = fUniformBuffersToBind[Pipeline::kCombinedUniformIndex].fOffset;
+        dynamicOffsets[1] = fUniformBuffersToBind[Pipeline::kGradientBufferIndex].fOffset;
+
+        descSet = fResourceProvider->findOrCreateUniformBuffersDescriptorSet(descriptors,
+                                                                             fUniformBuffersToBind);
+    }
+
     if (!descSet) {
         SKGPU_LOG_E("Unable to find or create uniform descriptor set");
         return;
@@ -1378,11 +1396,12 @@ void VulkanCommandBuffer::bindUniformBuffers() {
                 CmdBindDescriptorSets(fPrimaryCommandBuffer,
                                       VK_PIPELINE_BIND_POINT_GRAPHICS,
                                       fActiveGraphicsPipeline->layout(),
-                                      VulkanGraphicsPipeline::kUniformBufferDescSetIndex,
+                                      Pipeline::kUniformBufferDescSetIndex,
                                       /*setCount=*/1,
                                       descSet->descriptorSet(),
                                       descriptors.size(),
                                       dynamicOffsets.get()));
+
     this->trackResource(std::move(descSet));
 }
 
