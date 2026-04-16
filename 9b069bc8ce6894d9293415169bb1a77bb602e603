@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a08219e_0811ea79",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-16T13:16:06Z",
+      "side": 1,
+      "message": "Also possible merge conflict with https://skia-review.git.corp.google.com/c/skia/+/1209896, sorry!",
+      "revId": "9b069bc8ce6894d9293415169bb1a77bb602e603",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0c42306e_256d79d9",
