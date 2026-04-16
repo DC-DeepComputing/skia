@@ -1094,7 +1094,6 @@ float4 text_vertex_fn(float2 baseCoords,
                       // Uniforms
                       float4x4 maskToDevice,
                       float4x4 localToDevice,
-                      float2 atlasSizeInv,
                       // Instance Attributes
                       float2 size,
                       float2 uvPos,
@@ -1102,8 +1101,7 @@ float4 text_vertex_fn(float2 baseCoords,
                       float strikeToSourceScale,
                       float depth,
                       // Varyings
-                      out float2 textureCoords,
-                      out float2 unormTexCoords,  // used as varying in SDFText
+                      out float2 unormTexCoords,
                       // Render Step
                       out float2 stepLocalCoords) {
     baseCoords.xy *= float2(size);
@@ -1120,7 +1118,6 @@ float4 text_vertex_fn(float2 baseCoords,
     stepLocalCoords = (inverse(localToDevice) * position).xy;
 
     unormTexCoords = baseCoords + uvPos;
-    textureCoords = unormTexCoords * atlasSizeInv;
 
     return float4(position.xy, depth*position.w, position.w);
 }
