@@ -33,6 +33,23 @@
       "message": "This seems fine to me, but I\u0027m not confident in my C++ skills.",
       "revId": "950eb6142ccd0142dc9fe9b269694df4b626f50d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "638e408a_0bd4020c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 31
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-16T18:47:42Z",
+      "side": 1,
+      "message": "There were significant performance changes to enabling PartitionAlloc in Skia (which presumably is just hooking in `operator new` and `malloc`): https://skia-perf.luci.app/t/?begin\u003d1776000370\u0026end\u003d1776000371\u0026subset\u003dall\n\nWhile there were definite performance improvements, how can we convey the regressions to PartitionAlloc maintainers to address the significant regressions?\n\nLastly, I noticed that blink is explicitly not allowed to use raw_ptr for performance reasons. Why is Skia not in the same exception? We are effectively at the bottom of the stack and a performance hot spot.\n\nWhile raw_ptr can be helpful for somewhat documenting the assumptions about a pointer\u0027s lifetime (and verifying that those are not broken), I think we need to proceed very carefully with introducing raw_ptr into Skia and pay attention to benchmarks.  If the majority of our pointers end up with the exclusion flag, particularly in Graphite since it expects things to be trivially destructible, will we roll these changes back?",
+      "revId": "950eb6142ccd0142dc9fe9b269694df4b626f50d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
