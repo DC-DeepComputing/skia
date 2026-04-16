@@ -605,6 +605,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a5764c8b_ec24c3f3",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-04-16T18:46:54Z",
+      "side": 1,
+      "message": "\u003e These are methods used in the Blink/Chromium functionality.\n\u003e Blink\u0027s ICORustImageDecoder::HotSpotAtIndex() calls both isCursor() and getHotSpot() to support .CUR files (CSS custom cursors)\n\nAck - thanks for explaining.\n\n\u003e Would you like me to split this out from the initial implementation?\n\nYes, please.  I understand that this requires more work, but I think it will help us in the long-term.  In particular, I think that a separate CL (and/or a mini design-doc or email) may help us have a discussion for figuring out how to expose the hotspot-finding-API from Skia: `blink::SkiaImageDecoderBase` is codec-agnostic (i.e. built on top of the generic `SkCodec` API rather than `SkIcoRustCodec`), so we probably should add a new public API to `SkCodec` for this.",
+      "parentUuid": "ebaeddbc_bb3008c8",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 69,
+        "endChar": 5
+      },
+      "revId": "d4d0e17c808a976522af0eb1516bcaa3b682aaf8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5d266f27_34323b0e",
         "filename": "include/codec/SkCodec.h",
         "patchSetId": 10
@@ -640,6 +664,30 @@
       "side": 1,
       "message": "Based on my understanding the friend for SkIcoRustCodec isn\u0027t needed for overriding or for this-\u003e access to protected members. It\u0027s needed because ICO codecs contain other codec instances and need to call protected/private methods on those inner codecs (not on themselves).\n\nIf this is wrong, then I can remove them.",
       "parentUuid": "5d266f27_34323b0e",
+      "range": {
+        "startLine": 1140,
+        "startChar": 4,
+        "endLine": 1140,
+        "endChar": 55
+      },
+      "revId": "d4d0e17c808a976522af0eb1516bcaa3b682aaf8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2df3058_3a054377",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 1140,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-04-16T18:46:54Z",
+      "side": 1,
+      "message": "Oh, I see.  Thanks for pointing out that the call doesn\u0027t happen through `this`.  In this case `friend` declaration LGTM.",
+      "parentUuid": "28a06bed_a16fe662",
       "range": {
         "startLine": 1140,
         "startChar": 4,
