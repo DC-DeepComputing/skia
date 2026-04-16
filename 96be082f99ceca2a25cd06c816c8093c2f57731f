@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6e5cf2b_82ba0c81",
+        "filename": "src/pdf/SkPDFTag.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 493,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-04-16T13:42:22Z",
+      "side": 1,
+      "message": "Yes, I suppose the comment is even still true (the first non-empty child does in fact start before all subsequent child spans). When writing this I had the mental model of \"first handle the first non-empty child, then check the order\".",
+      "parentUuid": "8c8be62d_9e668a76",
+      "revId": "96be082f99ceca2a25cd06c816c8093c2f57731f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3283bd33_70aa470d",
@@ -31,6 +49,30 @@
       "writtenOn": "2026-04-15T21:15:25Z",
       "side": 1,
       "message": "SkDEBUGCODE?",
+      "range": {
+        "startLine": 505,
+        "startChar": 0,
+        "endLine": 518,
+        "endChar": 9
+      },
+      "revId": "96be082f99ceca2a25cd06c816c8093c2f57731f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6a17920_1b29c2dc",
+        "filename": "src/pdf/SkPDFTag.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 518,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2026-04-16T13:42:22Z",
+      "side": 1,
+      "message": "Yeah, in theory SSA will see that this doesn\u0027t do anything when the SkASSERT turns into nothing, but that isn\u0027t super obvious to the reader. Marked as SkDEBUGCODE to show this is something of an inline test.",
+      "parentUuid": "3283bd33_70aa470d",
       "range": {
         "startLine": 505,
         "startChar": 0,
