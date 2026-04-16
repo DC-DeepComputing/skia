@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c42306e_256d79d9",
+        "filename": "src/sksl/sksl_graphite_vert.sksl",
+        "patchSetId": 4
+      },
+      "lineNbr": 1104,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-16T13:14:18Z",
+      "side": 1,
+      "message": "I know this was the original name, but given `unorm` can also mean \"unsigned-normalized\" and this usage is for \"unnormalized\", can we name this something like \"maskCoords\" and have a comment next to it that says it\u0027s unnormalized?",
+      "range": {
+        "startLine": 1104,
+        "startChar": 33,
+        "endLine": 1104,
+        "endChar": 47
+      },
+      "revId": "9b069bc8ce6894d9293415169bb1a77bb602e603",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
