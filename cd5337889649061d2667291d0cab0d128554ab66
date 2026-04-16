@@ -463,6 +463,235 @@
       },
       "revId": "cd5337889649061d2667291d0cab0d128554ab66",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad48306f_5a1192a8",
+        "filename": "tests/graphite/sparse_strips/FlattenTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-16T14:54:31Z",
+      "side": 1,
+      "message": "snake case - here and below",
+      "range": {
+        "startLine": 31,
+        "startChar": 12,
+        "endLine": 31,
+        "endChar": 24
+      },
+      "revId": "cd5337889649061d2667291d0cab0d128554ab66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "884f2f12_1f809210",
+        "filename": "tests/graphite/sparse_strips/FlattenTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-16T14:54:31Z",
+      "side": 1,
+      "message": "// Returns false to early out if the tolerance has been met\n?",
+      "revId": "cd5337889649061d2667291d0cab0d128554ab66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3a87bfd_46da4d44",
+        "filename": "tests/graphite/sparse_strips/FlattenTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-16T14:54:31Z",
+      "side": 1,
+      "message": "-\u003e bool ?",
+      "revId": "cd5337889649061d2667291d0cab0d128554ab66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3e7630f_3fff4130",
+        "filename": "tests/graphite/sparse_strips/FlattenTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-16T14:54:31Z",
+      "side": 1,
+      "message": "anonymous namespace ?",
+      "range": {
+        "startLine": 196,
+        "startChar": 6,
+        "endLine": 196,
+        "endChar": 15
+      },
+      "revId": "cd5337889649061d2667291d0cab0d128554ab66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "268a39a8_30b876cf",
+        "filename": "tests/graphite/sparse_strips/FlattenTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-16T14:54:31Z",
+      "side": 1,
+      "message": "Caps",
+      "range": {
+        "startLine": 199,
+        "startChar": 17,
+        "endLine": 199,
+        "endChar": 34
+      },
+      "revId": "cd5337889649061d2667291d0cab0d128554ab66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "052b001b_9a1d1c6b",
+        "filename": "tests/graphite/sparse_strips/FlattenTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-16T14:54:31Z",
+      "side": 1,
+      "message": "Is this only grabbing \u0027pt\u0027 and \u0027earlyOutTolSq\u0027? If so, wdyt about explicitly putting them in there ?",
+      "range": {
+        "startLine": 209,
+        "startChar": 17,
+        "endLine": 209,
+        "endChar": 18
+      },
+      "revId": "cd5337889649061d2667291d0cab0d128554ab66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b8717a3_1412d20b",
+        "filename": "tests/graphite/sparse_strips/FlattenTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-16T14:54:31Z",
+      "side": 1,
+      "message": "Maybe jam this in a code block to remove indicate the scope of these temporaries ?",
+      "revId": "cd5337889649061d2667291d0cab0d128554ab66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3c72f47_7b550139",
+        "filename": "tests/graphite/sparse_strips/FlattenTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-16T14:54:31Z",
+      "side": 1,
+      "message": "kAllowedTolSq ? Can this be constexpr ?",
+      "range": {
+        "startLine": 277,
+        "startChar": 20,
+        "endLine": 277,
+        "endChar": 32
+      },
+      "revId": "cd5337889649061d2667291d0cab0d128554ab66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94f8e554_51878b40",
+        "filename": "tests/graphite/sparse_strips/FlattenTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-16T14:54:31Z",
+      "side": 1,
+      "message": "// We\u0027re going to check that each line segment in the flatted polyline is within the expected tolerance of the original path.\n\n?",
+      "revId": "cd5337889649061d2667291d0cab0d128554ab66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2958b4a_6520fe2b",
+        "filename": "tests/graphite/sparse_strips/FlattenTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 283,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-16T14:54:31Z",
+      "side": 1,
+      "message": "kLineSampleStep ?",
+      "range": {
+        "startLine": 283,
+        "startChar": 20,
+        "endLine": 283,
+        "endChar": 26
+      },
+      "revId": "cd5337889649061d2667291d0cab0d128554ab66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96af5330_17c9f67b",
+        "filename": "tests/graphite/sparse_strips/FlattenTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 388,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-16T14:54:31Z",
+      "side": 1,
+      "message": "Caps",
+      "range": {
+        "startLine": 388,
+        "startChar": 16,
+        "endLine": 388,
+        "endChar": 27
+      },
+      "revId": "cd5337889649061d2667291d0cab0d128554ab66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
