@@ -5549,8 +5549,8 @@ SI I32 if_then_else(I32 c, I32 t, I32 e) {
     return (t & c) | (e & ~c);
 }
 #if defined(SKRP_CPU_ML4)
-SI I32 max(I32 x, I32 y) { return if_then_else(x < y, y, x); }
-SI I32 min(I32 x, I32 y) { return if_then_else(x < y, x, y); }
+SI I32 max(I32 x, I32 y) { return (I32)_mm512_max_epi32((__m512i)x, (__m512i)y); }
+SI I32 min(I32 x, I32 y) { return (I32)_mm512_min_epi32((__m512i)x, (__m512i)y); }
 #elif defined(SKRP_CPU_AVX2)
 SI I32 max(I32 x, I32 y) {
     __m256i x_lo, x_hi, y_lo, y_hi;
