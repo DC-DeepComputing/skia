@@ -178,6 +178,30 @@
       },
       "revId": "14a62b893663c0a1badd36f0a0759fb6cde0dce8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d257469_113d0ede",
+        "filename": "src/gpu/graphite/render/CoverageMaskRenderStep.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-16T13:20:44Z",
+      "side": 1,
+      "message": "There was a very slight regression from this CL that could be related to this: https://skia-perf.luci.app/t/?begin\u003d1776277691\u0026end\u003d1776277692\u0026subset\u003dall",
+      "parentUuid": "836f5b9f_20e44aaf",
+      "range": {
+        "startLine": 206,
+        "startChar": 4,
+        "endLine": 206,
+        "endChar": 68
+      },
+      "revId": "14a62b893663c0a1badd36f0a0759fb6cde0dce8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
