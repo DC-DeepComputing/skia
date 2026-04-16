@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "3422f957_c5ee3189",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 4569768
+      },
+      "writtenOn": "2026-04-16T15:42:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6df9b5df_0887e03e",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 1
+      },
+      "revId": "d4d0e17c808a976522af0eb1516bcaa3b682aaf8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "a1625332_7ff77550",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 10
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "be555950_a95d327b",
+        "filename": "MODULE.bazel",
+        "patchSetId": 10
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 4569768
+      },
+      "writtenOn": "2026-04-16T15:42:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "81a0caa9_ad04dabe",
+      "range": {
+        "startLine": 145,
+        "startChar": 12,
+        "endLine": 145,
+        "endChar": 13
+      },
+      "revId": "d4d0e17c808a976522af0eb1516bcaa3b682aaf8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8b6bb402_26ee943d",
@@ -77,6 +125,30 @@
       "writtenOn": "2026-03-12T00:31:30Z",
       "side": 1,
       "message": "Can some of these dependencies be removed?  AFAIU `experimental/rust_ico/decoder/SkIcoRustDecoder.cpp` (nor the `.h` file) use `skcms` or the `cxx`/FFI stuff.  It may also be worth trying to remove other dependencies (if things continue to build without them).",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 26
+      },
+      "revId": "d4d0e17c808a976522af0eb1516bcaa3b682aaf8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7830e0fd_ed0e65c6",
+        "filename": "experimental/rust_ico/decoder/BUILD.bazel",
+        "patchSetId": 10
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 4569768
+      },
+      "writtenOn": "2026-04-16T15:42:54Z",
+      "side": 1,
+      "message": "You\u0027re right. I removed the unnecessary ones and moved some usages around to have better consistency.",
+      "parentUuid": "8b6bb402_26ee943d",
       "range": {
         "startLine": 33,
         "startChar": 0,
@@ -156,6 +228,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c592a72_55280772",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 4569768
+      },
+      "writtenOn": "2026-04-16T15:42:54Z",
+      "side": 1,
+      "message": "I added a check for partial entries in the code as well as some unit tests for this scenario.",
+      "parentUuid": "22835cae_5bb4c099",
+      "range": {
+        "startLine": 151,
+        "startChar": 0,
+        "endLine": 156,
+        "endChar": 9
+      },
+      "revId": "d4d0e17c808a976522af0eb1516bcaa3b682aaf8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5e31949b_70ec249c",
@@ -169,6 +265,30 @@
       "writtenOn": "2026-03-12T00:31:30Z",
       "side": 1,
       "message": "Is `size` potentially redundant wrt `entryStream-\u003eget length()`?  If so, then is it possible to remove this parameter?",
+      "range": {
+        "startLine": 176,
+        "startChar": 0,
+        "endLine": 176,
+        "endChar": 21
+      },
+      "revId": "d4d0e17c808a976522af0eb1516bcaa3b682aaf8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a22d5f3_b0efcdca",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 4569768
+      },
+      "writtenOn": "2026-04-16T15:42:54Z",
+      "side": 1,
+      "message": "Yes, size and embeddedData-\u003eSize() is the same now, so it\u0027s redundant.",
+      "parentUuid": "5e31949b_70ec249c",
       "range": {
         "startLine": 176,
         "startChar": 0,
@@ -202,6 +322,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3c1b764_9e661ea5",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 4569768
+      },
+      "writtenOn": "2026-04-16T15:42:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0e05a89e_fbfb394e",
+      "range": {
+        "startLine": 233,
+        "startChar": 10,
+        "endLine": 233,
+        "endChar": 19
+      },
+      "revId": "d4d0e17c808a976522af0eb1516bcaa3b682aaf8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9cc7ea5b_60f6cbae",
@@ -215,6 +359,30 @@
       "writtenOn": "2026-03-12T00:31:30Z",
       "side": 1,
       "message": "IIUC ICO \"frames\" are independent from each other (can you confirm please?).  If so, then it seems that `kRestoreBGColor` may be more correct and efficient (e.g. by letting the embedder / client code know that it can discard the previous frame).",
+      "range": {
+        "startLine": 282,
+        "startChar": 66,
+        "endLine": 282,
+        "endChar": 71
+      },
+      "revId": "d4d0e17c808a976522af0eb1516bcaa3b682aaf8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "34fd45c2_ca68b221",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 4569768
+      },
+      "writtenOn": "2026-04-16T15:42:54Z",
+      "side": 1,
+      "message": "Yes, ICO \"frames\" are fully independent.\n\nI changed kKeep to kRestoreBGColor. Combined with fRequiredFrame \u003d kNoFrame and fBlend \u003d kSrc, this correctly communicates that each ICO entry is fully independent and prior frame buffers can be discarded.",
+      "parentUuid": "9cc7ea5b_60f6cbae",
       "range": {
         "startLine": 282,
         "startChar": 66,
@@ -248,6 +416,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "72962e3b_645ffb74",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 4569768
+      },
+      "writtenOn": "2026-04-16T15:42:54Z",
+      "side": 1,
+      "message": "You\u0027re right, thanks!\nThe prior frame could be something else, like 3, which is meaningless. We should set prior frame to kNoFrame.",
+      "parentUuid": "80e01f77_08fbf2f6",
+      "range": {
+        "startLine": 324,
+        "startChar": 12,
+        "endLine": 324,
+        "endChar": 41
+      },
+      "revId": "d4d0e17c808a976522af0eb1516bcaa3b682aaf8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c096493b_efbbdd48",
@@ -261,6 +453,30 @@
       "writtenOn": "2026-03-12T00:31:30Z",
       "side": 1,
       "message": "I wonder if we should also check that `rowsDecoded` is non-null (here and in other places where it is dereferenced and written to).  FWIW I see that `SkPngRustCodec.cpp` does such checks and I vaguely remember that I had to add them after running into some errors in tests.",
+      "range": {
+        "startLine": 327,
+        "startChar": 0,
+        "endLine": 327,
+        "endChar": 67
+      },
+      "revId": "d4d0e17c808a976522af0eb1516bcaa3b682aaf8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a313e94d_54331450",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 327,
+      "author": {
+        "id": 4569768
+      },
+      "writtenOn": "2026-04-16T15:42:54Z",
+      "side": 1,
+      "message": "I\u0027d rather be safe than sorry, so I\u0027ll add null guard on both rows before derefencing.",
+      "parentUuid": "c096493b_efbbdd48",
       "range": {
         "startLine": 327,
         "startChar": 0,
@@ -365,6 +581,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ebaeddbc_bb3008c8",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 4569768
+      },
+      "writtenOn": "2026-04-16T15:42:54Z",
+      "side": 1,
+      "message": "These are methods used in the Blink/Chromium functionality.\nBlink\u0027s ICORustImageDecoder::HotSpotAtIndex() calls both isCursor() and getHotSpot() to support .CUR files (CSS custom cursors)\n\nWould you like me to split this out from the initial implementation?",
+      "parentUuid": "5a12a459_b6172b91",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 69,
+        "endChar": 5
+      },
+      "revId": "d4d0e17c808a976522af0eb1516bcaa3b682aaf8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5d266f27_34323b0e",
         "filename": "include/codec/SkCodec.h",
         "patchSetId": 10
@@ -376,6 +616,30 @@
       "writtenOn": "2026-03-12T00:31:30Z",
       "side": 1,
       "message": "Why are these `friend` declarations needed?  IIUC `SkCodec::getEncodedInfo` is a `protected` member, so it should be visible-to/usable-from `SkIcoRustCodec`, right?  `getSampler` is `private`, but it [seems](https://source.chromium.org/search?q\u003df:skia%20%5CbgetSampler%5Cb.*override\u0026sq\u003d\u0026ss\u003dchromium) that somehow is can still be overriden in derived classes.",
+      "range": {
+        "startLine": 1140,
+        "startChar": 4,
+        "endLine": 1140,
+        "endChar": 55
+      },
+      "revId": "d4d0e17c808a976522af0eb1516bcaa3b682aaf8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28a06bed_a16fe662",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 1140,
+      "author": {
+        "id": 4569768
+      },
+      "writtenOn": "2026-04-16T15:42:54Z",
+      "side": 1,
+      "message": "Based on my understanding the friend for SkIcoRustCodec isn\u0027t needed for overriding or for this-\u003e access to protected members. It\u0027s needed because ICO codecs contain other codec instances and need to call protected/private methods on those inner codecs (not on themselves).\n\nIf this is wrong, then I can remove them.",
+      "parentUuid": "5d266f27_34323b0e",
       "range": {
         "startLine": 1140,
         "startChar": 4,
