@@ -2,12 +2,6 @@
   "!note": "DO NOT MODIFY BY HAND. Instead, bazelisk run //bazel/deps_parser",
   "direct": [
     {
-      "build_file": "//bazel/external/dawn:BUILD.bazel",
-      "commit": "d2eac07e6a1abd38cf6d3d13d6d587b6c763b672",
-      "name": "dawn",
-      "remote": "https://dawn.googlesource.com/dawn.git"
-    },
-    {
       "build_file": "//bazel/external/delaunator:BUILD.bazel",
       "commit": "98305ef6c4e862f7d48df9cc647b690d796fec68",
       "name": "delaunator",
