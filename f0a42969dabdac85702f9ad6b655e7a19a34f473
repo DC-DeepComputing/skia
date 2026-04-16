@@ -16,6 +16,24 @@
       "message": "To avoid this function from becoming giant and unmaintainable as we add to this, we should refactor this into smaller helper functions. `drawPicture` `drawMetadata` and `drawCommandHistory` should be good.",
       "revId": "f0a42969dabdac85702f9ad6b655e7a19a34f473",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "570a8a08_45da9d10",
+        "filename": "tools/viewer/CaptureSlide.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-04-16T14:33:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bf6c8baf_a857d822",
+      "revId": "f0a42969dabdac85702f9ad6b655e7a19a34f473",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

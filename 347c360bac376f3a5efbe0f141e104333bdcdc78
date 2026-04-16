@@ -16,6 +16,24 @@
       "message": "Format git messages as if they are a command, best practice is to do so as if filling in the blank for \"This CL will...\"\n\nAlso try to make it specific to SkCaptureSlide and add `[skcapture]` to tag the work.",
       "revId": "347c360bac376f3a5efbe0f141e104333bdcdc78",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2061df94_f9eea45b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-04-16T14:33:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "981ba78b_a081bbcc",
+      "revId": "347c360bac376f3a5efbe0f141e104333bdcdc78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
