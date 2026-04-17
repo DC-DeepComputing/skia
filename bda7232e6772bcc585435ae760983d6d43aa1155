@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3036206_7b65a8ec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-04-17T13:49:36Z",
+      "side": 1,
+      "message": "PERFORMANCE BENCHMARKS OUTPUT\n\nBEFORE PERFORMANCE OPTIMIZATIONS\nalexisdavidc@:~/skia_work/skia$ ninja -C out/Release/\nninja: Entering directory \u0027out/Release/\u0027\n[33/33] link viewer\nalexisdavidc@:~/skia_work/skia$ ./out/Release/nanobench     --skps ~/skia_skps     --match \"desk_micrographygirlsvg.skp\"     --config 8888     \nTimer overhead: 32.7ns\ncurr/maxrss     loops   min     median  mean    max     stddev  samples         config  bench\n  42/44  MB     1       46.2ms  47.1ms  47ms    47.3ms  1%      ▇▂▆▇█▁▆▆█▇      8888    desk_micrographygirlsvg.skp_1\nalexisdavidc@:~/skia_work/skia$ ./out/Release/nanobench     --skps ~/skia_skps     --match \"desk_micrographygirlsvg.skp\"     --config 8888     \nTimer overhead: 22.7ns\ncurr/maxrss     loops   min     median  mean    max     stddev  samples         config  bench\n  42/44  MB     1       46.5ms  47.6ms  47.5ms  49.2ms  2%      █▂▄▅▅▂▄▂▃▁      8888    desk_micrographygirlsvg.skp_1\n\n\nAFTER PERFORMANCE OPTIMIZATIONS\nalexisdavidc@:~/skia_work/skia$ ninja -C out/Release/\nninja: Entering directory \u0027out/Release/\u0027\n[33/33] link skqp\nalexisdavidc@:~/skia_work/skia$ ./out/Release/nanobench     --skps ~/skia_skps     --match \"desk_micrographygirlsvg.skp\"     --config 8888     \nTimer overhead: 33.6ns\ncurr/maxrss     loops   min     median  mean    max     stddev  samples         config  bench\n  42/44  MB     1       43.8ms  44.6ms  44.4ms  44.7ms  1%      ▃▆▇▇▁▆▇▄██      8888    desk_micrographygirlsvg.skp_1\nalexisdavidc@:~/skia_work/skia$ ./out/Release/nanobench     --skps ~/skia_skps     --match \"desk_micrographygirlsvg.skp\"     --config 8888     \nTimer overhead: 23.7ns\ncurr/maxrss     loops   min     median  mean    max     stddev  samples         config  bench\n  42/44  MB     1       43.8ms  44.6ms  44.6ms  45.7ms  2%      ▆▁▂█▇▂▂▄▃▅      8888    desk_micrographygirlsvg.skp_1\nalexisdavidc@:~/skia_work/skia$",
+      "revId": "bda7232e6772bcc585435ae760983d6d43aa1155",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
