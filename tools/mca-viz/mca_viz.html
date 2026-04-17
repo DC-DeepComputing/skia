@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLVM-MCA Timeline Visualizer</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f5f7;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            color: #1d1d1f; /* Dark Gray */
+        }
+        header {
+            background-color: #1d1d1f; /* Dark Gray */
+            color: white;
+            padding: 0.4rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+        .version {
+            font-size: 0.7rem;
+            font-weight: 400;
+            opacity: 0.5;
+            margin-left: 8px;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            padding: 0;
+            gap: 0;
+            overflow: hidden;
+        }
+        #input-section {
+            padding: 10px;
+            background: #f5f5f7;
+            border-bottom: 1px solid #d2d2d7;
+            transition: all 0.3s ease;
+        }
+        #input-section.collapsed textarea {
+            height: 0;
+            padding: 0;
+            border: none;
+            opacity: 0;
+            margin-bottom: 0;
+        }
+        textarea {
+            width: 100%;
+            height: 80px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 11px;
+            padding: 8px;
+            border: 1px solid #d2d2d7;
+            border-radius: 6px;
+            margin-bottom: 8px;
+        }
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        button {
+            padding: 4px 12px;
+            background-color: #0071e3; /* Blue */
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        button.secondary {
+            background-color: #e5e5ea; /* Light Gray */
+            color: #0071e3; /* Blue */
+        }
+        #viz-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: #fff;
+        }
+        .viz-pane {
+            display: flex;
+            flex-direction: row;
+            border-bottom: 1px solid #d2d2d7;
+            overflow: hidden;
+        }
+        #timeline-pane { height: 70%; }
+        #heatmap-pane { height: 25%; }
+        
+        .label-column {
+            width: 350px;
+            flex-shrink: 0;
+            border-right: 1px solid #d2d2d7;
+            overflow-y: hidden;
+            background: #f9f9f9;
+        }
+        .data-column {
+            flex: 1;
+            overflow: auto;
+            position: relative;
+        }
+        
+        svg { display: block; }
+        
+        .tooltip {
+            position: fixed;
+            background: rgba(0,0,0,0.92);
+            color: white;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 11px;
+            pointer-events: none;
+            display: none;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            max-width: 450px;
+            line-height: 1.5;
+        }
+        .stats-bar {
+            display: flex;
+            gap: 1rem;
+            font-size: 11px;
+            background: #2c2c2e; /* Darker Gray */
+            padding: 2px 10px;
+            border-radius: 4px;
+            color: #ffffff;
+            font-family: 'Roboto Mono', monospace;
+        }
+        .instr-label { fill: #1d1d1f; font-family: 'Roboto Mono', monospace; }
+
+        .legend-bar {
+            background: #f5f5f7;
+            padding: 6px 15px;
+            border-top: 1px solid #d2d2d7;
+            display: flex;
+            justify-content: flex-start;
+            gap: 20px;
+        }
+        .legend {
+            display: flex;
+            gap: 12px;
+            font-size: 10.5px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            cursor: help;
+        }
+        .swatch {
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div>
+            <span style="font-size: 0.9rem; font-weight: 700;">llvm-mca Timeline Viz</span>
+            <span class="version">v1.21</span>
+        </div>
+        <div id="stats" class="stats-bar" style="display:none;"></div>
+    </header>
+
+    <div class="container">
+        <div id="input-section">
+            <textarea id="mca-input" placeholder="Paste llvm-mca --timeline output here..."></textarea>
+            <div class="btn-group">
+                <button onclick="visualize()">Render</button>
+                <button id="toggle-input" class="secondary" onclick="toggleInput()" style="display:none;">Input</button>
+                
+                <div style="font-size: 11px; display:flex; gap:8px; background:#e5e5ea; padding:2px 8px; border-radius:8px;">
+                    <label style="cursor:pointer; display:flex; align-items:center; gap:4px;">
+                        <input type="checkbox" id="show-all-deps" onchange="visualize()"> All Deps
+                    </label>
+                </div>
+
+                <div class="legend">
+                    <div class="legend-item" title="Instruction added to scheduler."><div class="swatch" style="background:#ffd60a"></div> Dispatch</div>
+                    <div class="legend-item" title="Waiting for registers to be ready."><div class="swatch" style="background:#ff9f0a"></div> Waiting</div>
+                    <div class="legend-item" title="Waiting for a free execution port."><div class="swatch" style="background:#ff453a"></div> Ready</div>
+                    <div class="legend-item" title="Actively executing."><div class="swatch" style="background:#30d158"></div> Executing</div>
+                    <div class="legend-item" title="Writing result to register file."><div class="swatch" style="background:#5e5ce6"></div> Writeback</div>
+                    <div class="legend-item" title="Finished, waiting for older instructions to retire."><div class="swatch" style="background:#a2845e"></div> WaitRetire</div>
+                    <div class="legend-item" title="Instruction committed."><div class="swatch" style="background:#8e8e93"></div> Retire</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="viz-area">
+            <div id="timeline-pane" class="viz-pane">
+                <div id="timeline-labels" class="label-column">
+                    <svg id="timeline-labels-svg"></svg>
+                </div>
+                <div id="timeline-data" class="data-column">
+                    <svg id="timeline-data-svg"></svg>
+                </div>
+            </div>
+            <div id="heatmap-pane" class="viz-pane">
+                <div id="heatmap-labels" class="label-column">
+                    <svg id="heatmap-labels-svg"></svg>
+                </div>
+                <div id="heatmap-data" class="data-column">
+                    <svg id="heatmap-data-svg"></svg>
+                </div>
+            </div>
+            <div class="legend-bar">
+                <div class="legend">
+                    <span style="font-size: 11px; color:#8e8e93; font-weight:600;">PORT BACKLOG (Queue Depth):</span>
+                    <div class="legend-item" title="Low backlog (<= 1 cycle)."><div class="swatch" style="background:rgba(94, 92, 230, 0.3)"></div> Low</div>
+                    <div class="legend-item" title="High backlog (10+ cycles)."><div class="swatch" style="background:rgba(94, 92, 230, 1.0)"></div> High</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="tooltip" class="tooltip"></div>
+
+    <script>
+        const ROW_HEIGHT = 26;
+        const COL_WIDTH = 20;
+        const LABEL_WIDTH = 350;
+        const HEADER_HEIGHT = 30;
+
+        function toggleInput() {
+            document.getElementById('input-section').classList.toggle('collapsed');
+        }
+
+        /* SYNC SCROLLING: Ensures Timeline and Heatmap remain horizontally aligned */
+        const td = document.getElementById('timeline-data');
+        const tl = document.getElementById('timeline-labels');
+        const hd = document.getElementById('heatmap-data');
+        const hl = document.getElementById('heatmap-labels');
+
+        td.onscroll = () => { hd.scrollLeft = td.scrollLeft; tl.scrollTop = td.scrollTop; };
+        hd.onscroll = () => { td.scrollLeft = hd.scrollLeft; hl.scrollTop = hd.scrollTop; };
+
+        function visualize() {
+            const input = document.getElementById('mca-input').value;
+            const data = parseMCA(input);
+            if (!data) return;
+            document.getElementById('input-section').classList.add('collapsed');
+            document.getElementById('toggle-input').style.display = 'block';
+            renderStats(data.stats);
+            renderTimeline(data);
+            renderHeatmap(data);
+        }
+
+        /* Identifies implicit register usage for stack operations */
+        function getImplicitRegs(instrText) {
+            const op = instrText.split(/\s+/)[0].toLowerCase();
+            const stackOps = ['push', 'pop', 'call', 'ret', 'leave', 'enter'];
+            if (stackOps.some(s => op.startsWith(s))) return ['%rsp'];
+            return [];
+        }
+
+        /**
+         * parseMCA extracts simulation data from raw llvm-mca output strings.
+         * 
+         * Matched Patterns:
+         * 1. Stats:
+         *    "IPC:               1.49" -> stats.ipc = 1.49
+         *    "Total Cycles:      248"  -> stats.cycles = 248
+         * 
+         * 2. Resources:
+         *    "[7]   - HWPort5" -> resources[7] = "HWPort5"
+         * 
+         * 3. Resource Pressure by Instruction:
+         *    Matches lines after "Resource pressure by instruction:"
+         *    Example: " -  -  -  -  -  -  -  1.00  -  -  vmovd %edx, %xmm5"
+         * 
+         * 4. Timeline View:
+         *    Matches lines inside the "Timeline view:" block.
+         *    Example: "[0,14] . . DeE-------R . . vmovd %edx, %xmm5"
+         *    - [0,14] -> Iteration 0, Instruction 14
+         *    - "DeE-------R" -> The cycle-by-cycle lifecycle (Parsed into 'stages' array)
+         *    - "vmovd %edx, %xmm5" -> Final instruction text
+         */
+        function parseMCA(text) {
+            const lines = text.split('\n');
+            let timelineStart = -1, timelineEnd = -1, resourceStart = -1;
+            let stats = {};
+            const resources = [];
+            const ipcMatch = text.match(/IPC:\s+([\d.]+)/);
+            if (ipcMatch) stats.ipc = ipcMatch[1];
+            const cycleMatch = text.match(/Total Cycles:\s+(\d+)/);
+            if (cycleMatch) stats.cycles = cycleMatch[1];
+            for (let i = 0; i < lines.length; i++) {
+                if (lines[i].startsWith('Resources:')) resourceStart = i + 1;
+                if (resourceStart !== -1 && lines[i].includes('Resource pressure per iteration:')) {
+                    for (let j = resourceStart; j < i; j++) {
+                        const rMatch = lines[j].match(/\[(\d+)\]\s+-\s+(.*)/);
+                        if (rMatch) resources.push(rMatch[2].trim());
+                    }
+                    resourceStart = -1;
+                }
+                if (lines[i].includes('Timeline view:')) timelineStart = i + 4;
+                if (timelineStart !== -1 && lines[i].trim() === '' && i > timelineStart) {
+                    timelineEnd = i;
+                    break;
+                }
+            }
+            const pressureIdx = lines.findIndex(l => l.includes('Resource pressure by instruction:'));
+            const instrPressure = {};
+            if (pressureIdx !== -1) {
+                for (let i = pressureIdx + 2; i < lines.length; i++) {
+                    const line = lines[i];
+                    if (line.trim() === '' || line.includes('Timeline view:')) break;
+                    const match = line.match(/^((\s*[\d.-]+\s+)+)\s+(.*)$/);
+                    if (match) {
+                        const values = match[1].trim().split(/\s+/).map(v => v === '-' ? 0 : parseFloat(v));
+                        instrPressure[match[3].trim()] = values;
+                    }
+                }
+            }
+            if (timelineStart === -1) { alert("Timeline view not found!"); return null; }
+            const instructions = [];
+            for (let i = timelineStart; i < timelineEnd; i++) {
+                const line = lines[i];
+                if (!line.includes('[') || !line.includes(']')) continue;
+                const match = line.match(/\[(\d+),(\d+)\]\s+([\.DeE=R\s-]+)\s+(.*)/);
+                if (match) {
+                    const timelineStr = match[3];
+                    const stages = [];
+                    for (let c = 0; c < timelineStr.length; c++) {
+                        const char = timelineStr[c];
+                        if (char !== '.' && char !== ' ') stages.push({cycle: c, type: char});
+                    }
+                    instructions.push({ index: instructions.length, text: match[4].trim(), stages, pressure: instrPressure[match[4].trim()] || [], waitReasons: [] });
+                }
+            }
+            return { instructions, maxCycle: Math.max(...instructions.flatMap(i => i.stages.map(s => s.cycle))), stats, resources };
+        }
+
+        function renderStats(stats) {
+            const bar = document.getElementById('stats');
+            bar.style.display = 'flex';
+            bar.innerHTML = `<span>IPC: ${stats.ipc || 'N/A'}</span><span>Cycles: ${stats.cycles || 'N/A'}</span>`;
+        }
+
+        function renderTimeline(data) {
+            const lSvg = document.getElementById('timeline-labels-svg'), dSvg = document.getElementById('timeline-data-svg');
+            const totalWidth = (data.maxCycle + 5) * COL_WIDTH, totalHeight = HEADER_HEIGHT + data.instructions.length * ROW_HEIGHT;
+            lSvg.setAttribute('width', LABEL_WIDTH); lSvg.setAttribute('height', totalHeight); lSvg.innerHTML = '';
+            dSvg.setAttribute('width', totalWidth); dSvg.setAttribute('height', totalHeight); dSvg.innerHTML = '';
+            const tooltip = document.getElementById('tooltip');
+            for (let c = 0; c <= data.maxCycle; c++) {
+                if (c % 5 === 0) {
+                    const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                    text.setAttribute('x', c * COL_WIDTH); text.setAttribute('y', 20);
+                    text.setAttribute('font-size', '10px'); text.setAttribute('fill', '#8e8e93');
+                    text.setAttribute('font-family', 'Roboto Mono, monospace');
+                    text.textContent = c; dSvg.appendChild(text);
+                }
+                const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                line.setAttribute('x1', c * COL_WIDTH); line.setAttribute('y1', HEADER_HEIGHT);
+                line.setAttribute('x2', c * COL_WIDTH); line.setAttribute('y2', totalHeight);
+                line.setAttribute('stroke', '#f2f2f7'); dSvg.appendChild(line);
+            }
+            drawDependencyArrows(data, null); 
+            data.instructions.forEach((instr, i) => {
+                const y = HEADER_HEIGHT + i * ROW_HEIGHT;
+                const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                label.setAttribute('x', 10); label.setAttribute('y', y + 18);
+                label.setAttribute('font-size', '11px');
+                label.setAttribute('class', 'instr-label');
+                label.textContent = `[${i}] ${instr.text}`;
+                lSvg.appendChild(label);
+                const execCycles = instr.stages.filter(s => s.type === 'e').map(s => s.cycle);
+                const hasExecution = execCycles.length > 0;
+                const firstExec = hasExecution ? Math.min(...execCycles) : 999999;
+                instr.stages.forEach(stage => {
+                    const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                    rect.setAttribute('x', stage.cycle * COL_WIDTH); rect.setAttribute('y', y + 4);
+                    rect.setAttribute('width', COL_WIDTH - 1); rect.setAttribute('height', ROW_HEIGHT - 8);
+                    rect.setAttribute('rx', 2);
+                    let color = '#ccc', title = '', details = '';
+                    switch(stage.type) {
+                        case 'D': color = '#ffd60a'; break; // Dispatch
+                        case '=': color = '#ff9f0a'; title = 'Waiting (Data Dependency)'; break; // Stall
+                        case '-': 
+                            // State Machine for '-': If before first execution 'e', it's Port-Ready. If after 'e', it's WaitRetire.
+                            if (!hasExecution || stage.cycle < firstExec) {
+                                if (!hasExecution) {
+                                    color = '#a2845e'; title = 'WaitRetire';
+                                    details = 'Zero-latency instruction. Effective immediately, waiting for older instructions to retire.';
+                                } else {
+                                    color = '#ff453a'; title = 'Ready (Resource Contention)'; 
+                                    const ports = instr.pressure.map((v, idx) => v > 0 ? data.resources[idx] : null).filter(n => n);
+                                    details = ports.length > 0 ? 'Operands ready. Waiting for port:<br><span style="color:#ff453a"><strong>' + ports.join(', ') + '</strong></span>' : 'Operands ready. Waiting for a free execution port.';
+                                }
+                            } else {
+                                color = '#a2845e'; title = 'WaitRetire';
+                                details = 'Execution and writeback complete. Instruction staying in Reorder Buffer until older instructions retire.';
+                            }
+                            break;
+                        case 'e': color = '#30d158'; break; // Executing
+                        case 'E': color = '#5e5ce6'; break; // Writeback
+                        case 'R': color = '#8e8e93'; break; // Retired
+                    }
+                    rect.setAttribute('fill', color);
+                    if (stage.type === '=' || stage.type === '-') {
+                        rect.onmouseover = (e) => {
+                            tooltip.style.display = 'block';
+                            let waitHtml = (color === '#ff9f0a' && instr.waitReasons.length > 0) ? `<br><span style="color:#ff9f0a"><strong>Data Dependencies:</strong></span><br>` + instr.waitReasons.join('<br>') : '';
+                            tooltip.innerHTML = `<strong>Cycle ${stage.cycle}</strong>: ${title}<br>${instr.text}${waitHtml}<br><span style="color:#ccc"><strong>Status:</strong></span><br>${details || title}`;
+                            updateTooltipPos(e);
+                        };
+                        rect.onmousemove = updateTooltipPos;
+                        rect.onmouseout = () => { tooltip.style.display = 'none'; };
+                    }
+                    dSvg.appendChild(rect);
+                });
+            });
+            drawDependencyArrows(data, dSvg);
+        }
+
+        /* BACKLOG MODEL: Each cycle, port processes 1 unit. New work (Resource Pressure) is added to the bucket. */
+        function renderHeatmap(data) {
+            const lSvg = document.getElementById('heatmap-labels-svg'), dSvg = document.getElementById('heatmap-data-svg');
+            const tooltip = document.getElementById('tooltip'), totalWidth = (data.maxCycle + 5) * COL_WIDTH, totalHeight = (data.resources.length * ROW_HEIGHT) + 20;
+            lSvg.setAttribute('width', LABEL_WIDTH); lSvg.setAttribute('height', totalHeight); lSvg.innerHTML = '';
+            dSvg.setAttribute('width', totalWidth); dSvg.setAttribute('height', totalHeight); dSvg.innerHTML = '';
+            const newUsage = Array.from({length: data.resources.length}, () => Array(data.maxCycle + 1).fill(null));
+            data.instructions.forEach((instr, idx) => {
+                const firstExec = instr.stages.find(s => s.type === 'e');
+                if (firstExec) instr.pressure.forEach((v, rIdx) => { if (v > 0) {
+                    if (!newUsage[rIdx][firstExec.cycle]) newUsage[rIdx][firstExec.cycle] = {val: 0, instrs: []};
+                    newUsage[rIdx][firstExec.cycle].val += v; newUsage[rIdx][firstExec.cycle].instrs.push(idx);
+                }});
+            });
+            const backlog = Array.from({length: data.resources.length}, () => Array(data.maxCycle + 1).fill(0));
+            const currentOwner = Array.from({length: data.resources.length}, () => Array(data.maxCycle + 1).fill(null));
+            data.resources.forEach((resName, rIdx) => {
+                const y = 10 + rIdx * ROW_HEIGHT;
+                const rLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                rLabel.setAttribute('x', 10); rLabel.setAttribute('y', y + 16);
+                rLabel.setAttribute('font-size', '11px'); rLabel.setAttribute('font-weight', '600');
+                rLabel.setAttribute('font-family', 'Roboto, sans-serif');
+                rLabel.textContent = resName; lSvg.appendChild(rLabel);
+                let activeOwner = null;
+                for (let c = 0; c <= data.maxCycle; c++) {
+                    const prevBacklog = c > 0 ? backlog[rIdx][c-1] : 0, incoming = newUsage[rIdx][c];
+                    backlog[rIdx][c] = Math.max(0, prevBacklog - 1) + (incoming ? incoming.val : 0);
+                    if (incoming) activeOwner = incoming.instrs[0];
+                    if (backlog[rIdx][c] === 0) activeOwner = null;
+                    currentOwner[rIdx][c] = activeOwner;
+                    const usage = backlog[rIdx][c];
+                    if (usage > 0) {
+                        const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                        rect.setAttribute('x', c * COL_WIDTH); rect.setAttribute('y', y + 4);
+                        rect.setAttribute('width', COL_WIDTH - 1); rect.setAttribute('height', ROW_HEIGHT - 8);
+                        rect.setAttribute('rx', 2);
+                        const alpha = usage <= 1 ? 0.3 : 0.3 + (0.7 * Math.min(1, (usage - 1) / 9));
+                        rect.setAttribute('fill', `rgba(94, 92, 230, ${alpha})`);
+                        const ownerText = currentOwner[rIdx][c] !== null ? `<br><span style="color:#5e5ce6"><strong>Running Instruction:</strong></span> [${currentOwner[rIdx][c]}]` : "";
+                        rect.onmouseover = (e) => {
+                            tooltip.style.display = 'block';
+                            tooltip.innerHTML = `<strong>Cycle ${c}</strong>: ${resName}<br>Backlog: <strong>${usage.toFixed(2)} cycles</strong> left${ownerText}`;
+                            updateTooltipPos(e);
+                        };
+                        rect.onmousemove = updateTooltipPos;
+                        rect.onmouseout = () => { tooltip.style.display = 'none'; };
+                        dSvg.appendChild(rect);
+                    }
+                }
+            });
+        }
+
+        function drawDependencyArrows(data, svg) {
+            const producers = {};
+            const showAll = document.getElementById('show-all-deps') ? document.getElementById('show-all-deps').checked : false;
+            data.instructions.forEach((instr, i) => {
+                if (!svg) instr.waitReasons = [];
+                const explicitRegs = instr.text.split(/[\s,()#]+/).filter(p => p.startsWith('%')), implicitRegs = getImplicitRegs(instr.text), allRegs = [...new Set([...explicitRegs, ...implicitRegs])];
+                const execStage = instr.stages.find(s => s.type === 'e'), waitStage = instr.stages.find(s => s.type === '='), dispatchStage = instr.stages.find(s => s.type === 'D'), waitStartCycle = waitStage ? waitStage.cycle : (dispatchStage ? dispatchStage.cycle : 0);
+                allRegs.forEach(reg => {
+                    if (producers[reg]) {
+                        const prod = producers[reg], prodE = data.instructions[prod.index].stages.find(s => s.type === 'E');
+                        if (prodE) {
+                            const isActualStall = prodE.cycle >= waitStartCycle;
+                            if (isActualStall) {
+                                const reason = `Waiting for <strong>${reg}</strong> from [${prod.index}]`;
+                                if (!instr.waitReasons.includes(reason)) instr.waitReasons.push(reason);
+                            }
+                            if (svg && (showAll || (waitStage && isActualStall))) drawArrow(svg, prod.index, prodE.cycle, i, execStage ? execStage.cycle : waitStartCycle, reg);
+                        }
+                    }
+                });
+                allRegs.forEach(reg => producers[reg] = {index: i});
+            });
+        }
+
+        function drawArrow(svg, fromRow, fromCol, toRow, toCol, label) {
+            const x1 = fromCol * COL_WIDTH + COL_WIDTH/2, y1 = HEADER_HEIGHT + fromRow * ROW_HEIGHT + ROW_HEIGHT/2, x2 = toCol * COL_WIDTH + (fromCol === toCol ? COL_WIDTH/2 : 0), y2 = HEADER_HEIGHT + toRow * ROW_HEIGHT + 4;
+            const isVertical = fromCol === toCol, dx = Math.abs(x2 - x1), ctrlX1 = x1 + (isVertical ? 0 : Math.min(dx * 0.5, 50)), ctrlX2 = x2 - (isVertical ? 0 : Math.min(dx * 0.5, 50));
+            const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            path.setAttribute('d', `M ${x1} ${y1} C ${ctrlX1} ${y1}, ${ctrlX2} ${y2}, ${x2} ${y2}`);
+            path.setAttribute('stroke', 'rgba(0,113,227,0.5)'); path.setAttribute('stroke-width', '2');
+            path.setAttribute('fill', 'none'); path.setAttribute('marker-end', 'url(#arrowhead)');
+            path.style.cursor = 'pointer';
+            const tooltip = document.getElementById('tooltip');
+            path.onmouseover = (e) => {
+                path.setAttribute('stroke', 'rgba(0,113,227,1)'); path.setAttribute('stroke-width', '4');
+                tooltip.style.display = 'block'; tooltip.innerHTML = `<strong>Dependency: ${label}</strong><br>Instr [${fromRow}] &rarr; [${toRow}]`;
+                updateTooltipPos(e);
+            };
+            path.onmousemove = updateTooltipPos;
+            path.onmouseout = () => { path.setAttribute('stroke', 'rgba(0,113,227,0.5)'); path.setAttribute('stroke-width', '2'); tooltip.style.display = 'none'; };
+            svg.appendChild(path);
+            if (!document.getElementById('arrowhead')) {
+                const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs"), marker = document.createElementNS("http://www.w3.org/2000/svg", "marker");
+                marker.setAttribute('id', 'arrowhead'); marker.setAttribute('markerWidth', '8'); marker.setAttribute('markerHeight', '8');
+                marker.setAttribute('refX', '8'); marker.setAttribute('refY', '4'); marker.setAttribute('orient', 'auto');
+                const polygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+                polygon.setAttribute('points', '0 0, 8 4, 0 8'); polygon.setAttribute('fill', 'rgba(0,113,227,0.8)');
+                marker.appendChild(polygon); defs.appendChild(marker); svg.appendChild(defs);
+            }
+        }
+
+        function updateTooltipPos(e) {
+            const tooltip = document.getElementById('tooltip');
+            tooltip.style.left = (e.clientX + 15) + 'px';
+            tooltip.style.top = (e.clientY + 15) + 'px';
+        }
+    </script>
+</body>
+</html>
