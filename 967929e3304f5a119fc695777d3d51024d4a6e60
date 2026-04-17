@@ -677,6 +677,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fb0c7f4e_d126eae7",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-17T17:20:06Z",
+      "side": 1,
+      "message": "I haven\u0027t decided yet. But what I meant is that we shouldn\u0027t be naming the functions without the context of the actual function body.",
+      "parentUuid": "ff066ea8_51d9e957",
+      "range": {
+        "startLine": 155,
+        "startChar": 53,
+        "endLine": 155,
+        "endChar": 54
+      },
+      "revId": "967929e3304f5a119fc695777d3d51024d4a6e60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "725c0d2a_e4d01bb3",
         "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
         "patchSetId": 4
