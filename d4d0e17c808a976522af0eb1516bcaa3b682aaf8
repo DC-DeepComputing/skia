@@ -182,6 +182,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "be8f7dda_2406f070",
+        "filename": "experimental/rust_ico/decoder/SkIcoRustDecoder.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 4569768
+      },
+      "writtenOn": "2026-04-17T12:02:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6a631760_bcb19cc0",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 1
+      },
+      "revId": "d4d0e17c808a976522af0eb1516bcaa3b682aaf8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1078952b_8f957d64",
@@ -195,6 +219,30 @@
       "writtenOn": "2026-03-12T00:31:30Z",
       "side": 1,
       "message": "I wonder if this should probably say `ico` (based on the comment at https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/include/codec/SkCodec.h;l\u003d1154-1155;drc\u003daf6927a3ff251d63093086932feb8fce181e9b91 and the fact that `SkPngRustDecoder.h` uses `png` here: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/include/codec/SkPngRustDecoder.h;l\u003d26;drc\u003d4a50bc3386e511462806d01f8e6f8be1aa0c1cb7\n\nI think that at the same time we may also want to change `s/ rust_bmp / bmp /` here: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/experimental/rust_bmp/decoder/SkBmpRustDecoder.h;l\u003d37;drc\u003d7d71b1f65a394a430450347c253f8b4ae9fd8a91 (sorry for not catching this earlier).",
+      "range": {
+        "startLine": 40,
+        "startChar": 14,
+        "endLine": 40,
+        "endChar": 22
+      },
+      "revId": "d4d0e17c808a976522af0eb1516bcaa3b682aaf8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3588c390_a9b0b6a9",
+        "filename": "experimental/rust_ico/decoder/SkIcoRustDecoder.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 4569768
+      },
+      "writtenOn": "2026-04-17T12:02:07Z",
+      "side": 1,
+      "message": "I see, I didn\u0027t know that png was just called png, so I followed the bmp header.\nI\u0027ve changed both bmp and ico to not have the rust_ name.",
+      "parentUuid": "1078952b_8f957d64",
       "range": {
         "startLine": 40,
         "startChar": 14,
@@ -500,6 +548,30 @@
       "writtenOn": "2026-03-12T00:31:30Z",
       "side": 1,
       "message": "This snippet seems quite similar to lines 321-329 above.  Can this be deduplicated somehow?  (somehow \u003d maybe just hoisting `embeddedOpts` higher?  but maybe a separate private helper method is also needed?)",
+      "range": {
+        "startLine": 344,
+        "startChar": 0,
+        "endLine": 357,
+        "endChar": 0
+      },
+      "revId": "d4d0e17c808a976522af0eb1516bcaa3b682aaf8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "441d6e2f_4fb229e8",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 357,
+      "author": {
+        "id": 4569768
+      },
+      "writtenOn": "2026-04-17T12:02:07Z",
+      "side": 1,
+      "message": "That\u0027s true, I can create a lambda for this higher up instead.",
+      "parentUuid": "416dd422_4a94a31a",
       "range": {
         "startLine": 344,
         "startChar": 0,
