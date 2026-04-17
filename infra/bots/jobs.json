@@ -1072,6 +1072,9 @@
     "name": "Perf-ChromeOS-Clang-Octopus-GPU-IntelUHDGraphics600-x86_64-Release-All"
   },
   {
+    "name": "Perf-ChromeOS-Clang-Rauru-GPU-MT8196-arm64-Release-All"
+  },
+  {
     "name": "Perf-ChromeOS-Clang-Trogdor-GPU-Adreno618-arm64-Release-All"
   },
   {
@@ -1686,6 +1689,12 @@
   },
   {
     "name": "Test-ChromeOS-Clang-Octopus-GPU-IntelUHDGraphics600-x86_64-Release-All"
+  },
+  {
+    "name": "Test-ChromeOS-Clang-Rauru-GPU-MT8196-arm64-Debug-All"
+  },
+  {
+    "name": "Test-ChromeOS-Clang-Rauru-GPU-MT8196-arm64-Release-All"
   },
   {
     "name": "Test-ChromeOS-Clang-Trogdor-GPU-Adreno618-arm64-Debug-All"
