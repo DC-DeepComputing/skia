@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3cd676f2_6f558f34",
+        "filename": "modules/skparagraph/tests/SkParagraphTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 8621,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-04-17T13:12:48Z",
+      "side": 1,
+      "message": "Actually, you check the line\u0027s hyphen state but it does not matter. Works either way.",
+      "fixSuggestions": [
+        {
+          "fixId": "0beb593a_6d8f9a5c",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "modules/skparagraph/tests/SkParagraphTest.cpp",
+              "range": {
+                "startLine": 8621,
+                "startChar": 0,
+                "endLine": 8622,
+                "endChar": 0
+              },
+              "replacement": "    // verify the feature works by checking that a hyphen run is present and has a positive advance width.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "fb1ed6a9a84099970af2320bb0e336e1636c5d37",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
