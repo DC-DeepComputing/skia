@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7967c3e_420cffe3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4729114
+      },
+      "writtenOn": "2026-04-17T05:05:22Z",
+      "side": 1,
+      "message": "LGTM but I don\u0027t have voting permission on Skia.",
+      "revId": "cd70a383f804177981f600ca8cb1fc73744be51e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
