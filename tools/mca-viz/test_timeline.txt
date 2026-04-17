@@ -1,0 +1,1537 @@
+Iterations:        1
+Instructions:      370
+Total Cycles:      248
+Total uOps:        744
+
+Dispatch Width:    4
+uOps Per Cycle:    3.00
+IPC:               1.49
+Block RThroughput: 186.0
+
+
+Instruction Info:
+[1]: #uOps
+[2]: Latency
+[3]: RThroughput
+[4]: MayLoad
+[5]: MayStore
+[6]: HasSideEffects (U)
+
+[1]    [2]    [3]    [4]    [5]    [6]    Instructions:
+ 3      2     1.00           *            pushq	%r13
+ 1      1     0.33                        vmovdqa	%ymm0, %ymm8
+ 1      1     0.25                        movq	%rdx, %r8
+ 1      1     0.25                        movl	$32768, %edx
+ 1      1     0.25                        addq	$16, %rdi
+ 1      1     0.50                        leaq	16(%rsp), %r13
+ 1      1     0.25                        andq	$-64, %rsp
+ 4      7     1.00    *      *            pushq	-8(%r13)
+ 3      2     1.00           *            pushq	%rbp
+ 1      1     0.25                        movq	%rsp, %rbp
+ 3      2     1.00           *            pushq	%r13
+ 1      1     0.25                        subq	$1776, %rsp
+ 2      1     1.00           *            vmovdqa	%ymm6, -1872(%rbp)
+ 2      1     1.00           *            vmovdqa	%ymm5, -1840(%rbp)
+ 1      1     1.00                        vmovd	%edx, %xmm5
+ 1      7     0.50    *                   vbroadcastss	9808327(%rip), %ymm6
+ 1      3     1.00                        vpbroadcastd	%xmm5, %ymm5
+ 1      7     0.50    *                   vbroadcastss	8898077(%rip), %ymm0
+ 2      1     1.00           *            vmovdqa	%ymm4, -1808(%rbp)
+ 1      5     0.50    *                   movq	-8(%rdi), %rax
+ 2      1     1.00           *            vmovdqa	%ymm7, -1904(%rbp)
+ 1      5     0.50                        vfmadd132ps	%ymm0, %ymm6, %ymm2
+ 1      5     0.50                        vfmadd132ps	%ymm0, %ymm6, %ymm8
+ 1      5     0.50                        vfmadd132ps	%ymm0, %ymm6, %ymm1
+ 1      5     0.50                        vfmadd132ps	%ymm3, %ymm6, %ymm0
+ 1      0     0.25                        vpxor	%xmm3, %xmm3, %xmm3
+ 2      1     1.00           *            vmovdqa	%ymm8, -1264(%rbp)
+ 2      6     2.00                        vroundps	$1, %ymm8, %ymm8
+ 1      3     1.00                        vcvttps2dq	%ymm8, %ymm4
+ 1      1     0.50                        vpsubd	%ymm5, %ymm4, %ymm4
+ 2      1     1.00           *            vmovdqa	%ymm1, -1232(%rbp)
+ 2      6     2.00                        vroundps	$1, %ymm1, %ymm1
+ 1      3     1.00                        vcvttps2dq	%ymm1, %ymm1
+ 1      1     0.50                        vpsubd	%ymm5, %ymm1, %ymm1
+ 2      1     1.00           *            vmovaps	%ymm2, -1392(%rbp)
+ 1      1     1.00                        vpsrad	$16, %ymm4, %ymm10
+ 1      1     1.00                        vpsrad	$16, %ymm1, %ymm14
+ 1      1     0.33                        vpxor	%ymm5, %ymm4, %ymm4
+ 2      1     1.00           *            vmovaps	%ymm0, -1360(%rbp)
+ 1      1     0.33                        vpxor	%ymm5, %ymm1, %ymm1
+ 1      1     1.00                        vpblendw	$85, %ymm4, %ymm3, %ymm4
+ 2      1     1.00           *            vmovdqa	%ymm2, -1200(%rbp)
+ 2      6     2.00                        vroundps	$1, %ymm2, %ymm2
+ 1      3     1.00                        vcvttps2dq	%ymm2, %ymm2
+ 1      1     0.50                        vpsubd	%ymm5, %ymm2, %ymm2
+ 2      1     1.00           *            vmovdqa	%ymm0, -1168(%rbp)
+ 2      6     2.00                        vroundps	$1, %ymm0, %ymm0
+ 1      3     1.00                        vcvttps2dq	%ymm0, %ymm0
+ 1      1     0.50                        vpsubd	%ymm5, %ymm0, %ymm0
+ 1      1     1.00                        vpsrad	$16, %ymm0, %ymm12
+ 1      1     1.00                        vpsrad	$16, %ymm2, %ymm11
+ 1      1     0.33                        vpxor	%ymm5, %ymm0, %ymm0
+ 2      1     1.00           *            vmovdqa	%ymm10, -1136(%rbp)
+ 1      1     0.33                        vpxor	%ymm5, %ymm2, %ymm2
+ 1      1     1.00                        vpblendw	$85, %ymm1, %ymm3, %ymm1
+ 2      1     1.00           *            vmovdqa	%ymm14, -1104(%rbp)
+ 1      1     1.00                        vpblendw	$85, %ymm2, %ymm3, %ymm2
+ 1      1     1.00                        vpblendw	$85, %ymm0, %ymm3, %ymm3
+ 1      1     1.00                        vpackusdw	%ymm1, %ymm4, %ymm4
+ 2      1     1.00           *            vmovdqa	%ymm11, -1456(%rbp)
+ 1      1     1.00                        vpackusdw	%ymm3, %ymm2, %ymm2
+ 2      1     1.00           *            vmovdqa	%ymm12, -1424(%rbp)
+ 1      3     1.00                        vpermq	$216, %ymm4, %ymm13
+ 1      3     1.00                        vpermq	$216, %ymm2, %ymm1
+ 2      1     1.00           *            vmovdqa	%ymm11, -1072(%rbp)
+ 2      1     1.00           *            vmovdqa	%ymm12, -1040(%rbp)
+ 1      5     0.50    *                   vmovss	12(%rax), %xmm0
+ 2      1     1.00           *            vmovdqa	%ymm1, -1776(%rbp)
+ 1      5     0.50    *                   vmovss	9807981(%rip), %xmm1
+ 2      1     1.00           *            vmovdqa	%ymm12, -1552(%rbp)
+ 1      3     1.00                        vsubss	%xmm1, %xmm0, %xmm0
+ 2      4     1.00                        vcvttss2si	%xmm0, %edx
+ 1      5     0.50    *                   vmovss	16(%rax), %xmm0
+ 1      3     1.00                        vsubss	%xmm1, %xmm0, %xmm0
+ 1      0     0.25                        vpxor	%xmm1, %xmm1, %xmm1
+ 1      1     0.50                        vpmaxsd	%ymm12, %ymm1, %ymm4
+ 1      1     0.50                        vpmaxsd	%ymm11, %ymm1, %ymm8
+ 1      1     0.50                        vpcmpeqd	%ymm12, %ymm12, %ymm12
+ 1      1     1.00                        vmovd	%edx, %xmm15
+ 1      1     0.50                        vpmaxsd	%ymm14, %ymm1, %ymm2
+ 1      1     0.33                        vmovdqa	%ymm12, %ymm5
+ 2      4     1.00                        vcvttss2si	%xmm0, %edx
+ 1      3     1.00                        vpbroadcastd	%xmm15, %ymm15
+ 1      1     0.50                        vpmaxsd	%ymm10, %ymm1, %ymm0
+ 1      1     0.50                        vpminsd	%ymm15, %ymm0, %ymm6
+ 1      1     0.50                        vpminsd	%ymm15, %ymm2, %ymm7
+ 1      1     1.00                        vmovd	%edx, %xmm3
+ 1      5     0.50    *                   movq	(%rax), %rdx
+ 1      5     0.50    *                   movl	8(%rax), %eax
+ 1      3     1.00                        vpbroadcastd	%xmm3, %ymm3
+ 1      1     1.00           *            movl	%eax, -1456(%rbp)
+ 1      1     0.50                        vpminsd	%ymm3, %ymm4, %ymm4
+ 1      1     0.50                        vpminsd	%ymm3, %ymm8, %ymm8
+ 1      1     1.00           *            movl	%eax, -1452(%rbp)
+ 1      1     1.00           *            movl	%eax, -1448(%rbp)
+ 1      1     1.00           *            movl	%eax, -1444(%rbp)
+ 1      1     1.00           *            movl	%eax, -1440(%rbp)
+ 1      1     1.00           *            movl	%eax, -1436(%rbp)
+ 1      1     1.00           *            movl	%eax, -1432(%rbp)
+ 1      1     1.00           *            movl	%eax, -1428(%rbp)
+ 1      7     0.50    *                   vmovdqa	-1456(%rbp), %ymm0
+ 1      1     1.00           *            movl	%eax, -1424(%rbp)
+ 1      1     1.00           *            movl	%eax, -1420(%rbp)
+ 1      1     1.00           *            movl	%eax, -1416(%rbp)
+ 1      1     1.00           *            movl	%eax, -1412(%rbp)
+ 1      1     1.00           *            movl	%eax, -1408(%rbp)
+ 1      1     1.00           *            movl	%eax, -1404(%rbp)
+ 1      1     1.00           *            movl	%eax, -1400(%rbp)
+ 1      1     1.00           *            movl	%eax, -1396(%rbp)
+ 1      1     0.25                        movl	$8388736, %eax
+ 2      1     1.00           *            vmovdqa	%ymm3, -1584(%rbp)
+ 1      7     0.50    *                   vmovdqa	-1424(%rbp), %ymm3
+ 2      1     1.00           *            vmovdqa	%ymm0, -1488(%rbp)
+ 3      17    2.00    *                   vpmulld	-1488(%rbp), %ymm8, %ymm2
+ 1      1     0.50                        vpaddd	%ymm6, %ymm2, %ymm2
+ 2      1     1.00           *            vmovdqa	%ymm8, -1328(%rbp)
+ 2      1     1.00           *            vmovdqa	%ymm4, -1296(%rbp)
+ 2      1     1.00           *            vmovdqa	%ymm0, -1008(%rbp)
+ 2      1     1.00           *            vmovdqa	%ymm3, -976(%rbp)
+ 2      1     1.00           *            vmovdqa	%ymm6, -1648(%rbp)
+ 2      8     0.50    *                   vpaddd	9808001(%rip), %ymm10, %ymm10
+ 1      1     0.33                        vmovdqa	%ymm12, %ymm6
+ 2      8     0.50    *                   vpaddd	9807989(%rip), %ymm14, %ymm14
+ 2      1     1.00           *            vmovdqa	%ymm3, -1520(%rbp)
+ 3      17    2.00    *                   vpmulld	-1520(%rbp), %ymm4, %ymm0
+ 1      1     0.50                        vpaddd	%ymm7, %ymm0, %ymm0
+ 3      17    2.00    *                   vpmulld	-1488(%rbp), %ymm8, %ymm8
+ 2      1     1.00           *            vmovdqa	%ymm2, -1456(%rbp)
+ 3      17    2.00    *                   vpmulld	-1520(%rbp), %ymm4, %ymm4
+ 2      1     1.00           *            vmovdqa	%ymm7, -1616(%rbp)
+ 2      1     1.00           *            vmovdqa	%ymm0, -1424(%rbp)
+ 2      1     1.00           *            vmovdqa	%ymm2, -944(%rbp)
+ 2      1     1.00           *            vmovdqa	%ymm0, -912(%rbp)
+ 34     22    6.50    *                   vpgatherdd	%ymm5, (%rdx,%ymm0,4), %ymm2
+ 1      7     0.50    *                   vmovdqa	-944(%rbp), %ymm5
+ 34     22    6.50    *                   vpgatherdd	%ymm6, (%rdx,%ymm5,4), %ymm0
+ 2      1     1.00           *            vmovdqa	%ymm10, -752(%rbp)
+ 1      1     0.50                        vpmaxsd	%ymm10, %ymm1, %ymm10
+ 2      1     1.00           *            vmovdqa	%ymm14, -720(%rbp)
+ 1      1     0.50                        vpmaxsd	%ymm14, %ymm1, %ymm14
+ 1      3     1.00                        vperm2i128	$32, %ymm2, %ymm0, %ymm3
+ 1      3     1.00                        vperm2i128	$49, %ymm2, %ymm0, %ymm0
+ 1      1     0.50                        vpminsd	%ymm15, %ymm14, %ymm14
+ 1      1     1.00                        vpsrld	$16, %ymm12, %ymm2
+ 1      1     0.50                        vpminsd	%ymm15, %ymm10, %ymm15
+ 1      1     0.33                        vpand	%ymm2, %ymm0, %ymm6
+ 1      1     0.50                        vpaddd	%ymm4, %ymm14, %ymm4
+ 1      1     0.33                        vpand	%ymm2, %ymm3, %ymm5
+ 2      1     1.00           *            vmovdqa	%ymm15, -1712(%rbp)
+ 1      1     0.50                        vpaddd	%ymm15, %ymm8, %ymm8
+ 1      1     1.00                        vpsrld	$16, %ymm3, %ymm3
+ 2      1     1.00           *            vmovdqa	%ymm5, -880(%rbp)
+ 1      1     0.33                        vmovdqa	%ymm12, %ymm10
+ 1      1     1.00                        vpsrld	$16, %ymm0, %ymm0
+ 2      1     1.00           *            vmovdqa	%ymm6, -848(%rbp)
+ 1      1     1.00                        vpackusdw	%ymm6, %ymm5, %ymm5
+ 1      1     0.50                        vpcmpeqd	%ymm6, %ymm6, %ymm6
+ 2      1     1.00           *            vmovdqa	%ymm3, -816(%rbp)
+ 1      1     1.00                        vpsrlw	$8, %ymm6, %ymm7
+ 1      1     1.00                        vpsrlw	$15, %ymm6, %ymm6
+ 2      1     1.00           *            vmovdqa	%ymm0, -784(%rbp)
+ 1      1     0.33                        vpand	%ymm7, %ymm5, %ymm9
+ 1      1     1.00                        vpsrlw	$8, %ymm5, %ymm5
+ 1      1     1.00                        vpackusdw	%ymm0, %ymm3, %ymm0
+ 2      1     1.00           *            vmovdqa	%ymm14, -1680(%rbp)
+ 1      1     0.33                        vpand	%ymm7, %ymm0, %ymm3
+ 1      1     1.00                        vpsrlw	$8, %ymm0, %ymm0
+ 2      1     1.00           *            vmovdqa	%ymm8, -688(%rbp)
+ 1      7     0.50    *                   vmovdqa	-688(%rbp), %ymm14
+ 2      1     1.00           *            vmovdqa	%ymm8, -1456(%rbp)
+ 2      1     1.00           *            vmovdqa	%ymm4, -1424(%rbp)
+ 2      1     1.00           *            vmovdqa	%ymm4, -656(%rbp)
+ 34     22    6.50    *                   vpgatherdd	%ymm10, (%rdx,%ymm4,4), %ymm8
+ 1      1     0.33                        vmovdqa	%ymm12, %ymm10
+ 34     22    6.50    *                   vpgatherdd	%ymm10, (%rdx,%ymm14,4), %ymm4
+ 2      8     0.50    *                   vpaddd	9807648(%rip), %ymm11, %ymm11
+ 1      3     1.00                        vperm2i128	$32, %ymm8, %ymm4, %ymm10
+ 1      3     1.00                        vperm2i128	$49, %ymm8, %ymm4, %ymm4
+ 1      1     0.33                        vpand	%ymm2, %ymm4, %ymm14
+ 1      1     0.33                        vpand	%ymm2, %ymm10, %ymm8
+ 2      1     1.00           *            vmovdqa	%ymm11, -496(%rbp)
+ 2      1     1.00           *            vmovdqa	%ymm8, -624(%rbp)
+ 1      1     1.00                        vpackusdw	%ymm14, %ymm8, %ymm8
+ 1      1     1.00                        vpsrld	$16, %ymm10, %ymm10
+ 1      1     0.33                        vpand	%ymm7, %ymm8, %ymm15
+ 1      1     1.00                        vpsrld	$16, %ymm4, %ymm4
+ 2      1     1.00           *            vmovdqa	%ymm10, -560(%rbp)
+ 2      1     1.00           *            vmovdqa	%ymm4, -528(%rbp)
+ 1      1     1.00                        vpackusdw	%ymm4, %ymm10, %ymm4
+ 1      1     0.50                        vpsubw	%ymm9, %ymm15, %ymm10
+ 1      1     0.50                        vpaddw	%ymm15, %ymm9, %ymm9
+ 1      1     1.00                        vpsllw	$7, %ymm10, %ymm10
+ 1      1     1.00                        vpsllw	$7, %ymm9, %ymm9
+ 2      1     1.00           *            vmovdqa	%ymm14, -592(%rbp)
+ 1      1     0.33                        vpand	%ymm7, %ymm4, %ymm14
+ 1      5     1.00                        vpmulhrsw	%ymm10, %ymm13, %ymm10
+ 1      1     1.00                        vpsrlw	$8, %ymm8, %ymm8
+ 1      1     1.00                        vpsrlw	$8, %ymm4, %ymm4
+ 1      1     0.50                        vpaddw	%ymm6, %ymm10, %ymm10
+ 1      1     0.50                        vpaddw	%ymm10, %ymm9, %ymm9
+ 1      1     1.00                        vpsrlw	$1, %ymm9, %ymm10
+ 1      1     0.50                        vpsubw	%ymm5, %ymm8, %ymm9
+ 1      1     0.50                        vpaddw	%ymm5, %ymm8, %ymm5
+ 1      1     1.00                        vpsllw	$7, %ymm9, %ymm9
+ 1      1     1.00                        vpsllw	$7, %ymm5, %ymm5
+ 2      1     1.00           *            vmovdqa	%ymm10, -1744(%rbp)
+ 1      5     1.00                        vpmulhrsw	%ymm9, %ymm13, %ymm9
+ 1      1     0.50                        vpaddw	%ymm6, %ymm9, %ymm9
+ 1      1     0.50                        vpaddw	%ymm5, %ymm9, %ymm5
+ 1      7     0.50    *                   vmovdqa	-1552(%rbp), %ymm9
+ 1      1     1.00                        vpsrlw	$1, %ymm5, %ymm15
+ 1      1     0.50                        vpsubw	%ymm3, %ymm14, %ymm5
+ 1      1     0.50                        vpaddw	%ymm3, %ymm14, %ymm3
+ 1      7     0.50    *                   vmovdqa	-1520(%rbp), %ymm14
+ 1      1     1.00                        vpsllw	$7, %ymm5, %ymm5
+ 1      1     1.00                        vpsllw	$7, %ymm3, %ymm3
+ 1      5     1.00                        vpmulhrsw	%ymm5, %ymm13, %ymm5
+ 1      1     0.50                        vpaddw	%ymm6, %ymm5, %ymm5
+ 1      1     0.50                        vpaddw	%ymm5, %ymm3, %ymm3
+ 1      1     1.00                        vpsrlw	$1, %ymm3, %ymm5
+ 1      1     0.50                        vpsubw	%ymm0, %ymm4, %ymm3
+ 1      1     0.50                        vpaddw	%ymm4, %ymm0, %ymm0
+ 1      1     1.00                        vpsllw	$7, %ymm3, %ymm3
+ 2      8     0.50    *                   vpaddd	9807385(%rip), %ymm9, %ymm4
+ 1      7     0.50    *                   vmovdqa	-1584(%rbp), %ymm9
+ 1      5     1.00                        vpmulhrsw	%ymm3, %ymm13, %ymm3
+ 1      1     1.00                        vpsllw	$7, %ymm0, %ymm0
+ 2      1     1.00           *            vmovdqa	%ymm4, -464(%rbp)
+ 1      1     0.50                        vpmaxsd	%ymm4, %ymm1, %ymm4
+ 1      1     0.50                        vpmaxsd	%ymm11, %ymm1, %ymm1
+ 1      7     0.50    *                   vmovdqa	-1488(%rbp), %ymm11
+ 1      1     0.50                        vpminsd	%ymm9, %ymm4, %ymm4
+ 1      1     0.50                        vpminsd	%ymm9, %ymm1, %ymm1
+ 1      1     0.33                        vmovdqa	%ymm12, %ymm9
+ 2      10    2.00                        vpmulld	%ymm11, %ymm1, %ymm8
+ 2      1     1.00           *            vmovdqa	%ymm1, -1328(%rbp)
+ 2      10    2.00                        vpmulld	%ymm11, %ymm1, %ymm1
+ 2      8     0.50    *                   vpaddd	-1648(%rbp), %ymm8, %ymm8
+ 2      1     1.00           *            vmovdqa	%ymm4, -1296(%rbp)
+ 2      8     0.50    *                   vpaddd	-1712(%rbp), %ymm1, %ymm1
+ 1      1     0.50                        vpaddw	%ymm6, %ymm3, %ymm3
+ 1      1     0.50                        vpaddw	%ymm3, %ymm0, %ymm0
+ 2      10    2.00                        vpmulld	%ymm14, %ymm4, %ymm3
+ 2      1     1.00           *            vmovdqa	%ymm8, -432(%rbp)
+ 1      7     0.50    *                   vmovdqa	-432(%rbp), %ymm10
+ 2      8     0.50    *                   vpaddd	-1616(%rbp), %ymm3, %ymm3
+ 2      1     1.00           *            vmovdqa	%ymm8, -1456(%rbp)
+ 2      10    2.00                        vpmulld	%ymm14, %ymm4, %ymm4
+ 1      1     0.33                        vmovdqa	%ymm12, %ymm14
+ 1      1     1.00                        vpsrlw	$1, %ymm0, %ymm0
+ 2      1     1.00           *            vmovdqa	%ymm3, -1424(%rbp)
+ 2      1     1.00           *            vmovdqa	%ymm3, -400(%rbp)
+ 34     22    6.50    *                   vpgatherdd	%ymm9, (%rdx,%ymm3,4), %ymm8
+ 1      1     0.33                        vmovdqa	%ymm12, %ymm9
+ 34     22    6.50    *                   vpgatherdd	%ymm9, (%rdx,%ymm10,4), %ymm3
+ 1      3     1.00                        vperm2i128	$32, %ymm8, %ymm3, %ymm10
+ 1      3     1.00                        vperm2i128	$49, %ymm8, %ymm3, %ymm3
+ 1      1     0.33                        vpand	%ymm2, %ymm3, %ymm9
+ 1      1     1.00                        vpsrld	$16, %ymm3, %ymm3
+ 1      1     0.33                        vpand	%ymm2, %ymm10, %ymm8
+ 1      1     1.00                        vpsrld	$16, %ymm10, %ymm10
+ 2      1     1.00           *            vmovdqa	%ymm8, -368(%rbp)
+ 1      1     1.00                        vpackusdw	%ymm9, %ymm8, %ymm8
+ 2      1     1.00           *            vmovdqa	%ymm9, -336(%rbp)
+ 1      1     0.33                        vpand	%ymm7, %ymm8, %ymm9
+ 1      1     1.00                        vpsrlw	$8, %ymm8, %ymm8
+ 2      1     1.00           *            vmovdqa	%ymm10, -304(%rbp)
+ 2      1     1.00           *            vmovdqa	%ymm3, -272(%rbp)
+ 1      1     1.00                        vpackusdw	%ymm3, %ymm10, %ymm3
+ 2      1     1.00           *            vmovdqa	%ymm1, -1456(%rbp)
+ 2      8     0.50    *                   vpaddd	-1680(%rbp), %ymm4, %ymm4
+ 1      1     0.33                        vpand	%ymm7, %ymm3, %ymm10
+ 2      1     1.00           *            vmovdqa	%ymm1, -240(%rbp)
+ 1      1     1.00                        vpsrlw	$8, %ymm3, %ymm3
+ 2      1     1.00           *            vmovdqa	%ymm4, -1424(%rbp)
+ 2      1     1.00           *            vmovdqa	%ymm4, -208(%rbp)
+ 34     22    6.50    *                   vpgatherdd	%ymm14, (%rdx,%ymm4,4), %ymm1
+ 1      7     0.50    *                   vmovdqa	-240(%rbp), %ymm14
+ 34     22    6.50    *                   vpgatherdd	%ymm12, (%rdx,%ymm14,4), %ymm11
+ 1      1     0.25                        movq	%r8, %rdx
+ 1      3     1.00                        vperm2i128	$32, %ymm1, %ymm11, %ymm4
+ 1      3     1.00                        vperm2i128	$49, %ymm1, %ymm11, %ymm1
+ 1      1     0.33                        vpand	%ymm4, %ymm2, %ymm11
+ 1      1     0.33                        vpand	%ymm1, %ymm2, %ymm2
+ 2      1     1.00           *            vmovdqa	%ymm4, -1328(%rbp)
+ 2      1     1.00           *            vmovdqa	%ymm2, -144(%rbp)
+ 1      1     1.00                        vpackusdw	%ymm2, %ymm11, %ymm2
+ 1      1     1.00                        vpsrld	$16, %ymm4, %ymm4
+ 2      1     1.00           *            vmovdqa	%ymm1, -1296(%rbp)
+ 1      1     1.00                        vpsrld	$16, %ymm1, %ymm1
+ 2      1     1.00           *            vmovdqa	%ymm11, -176(%rbp)
+ 1      1     0.33                        vpand	%ymm7, %ymm2, %ymm11
+ 1      1     1.00                        vpsrlw	$8, %ymm2, %ymm2
+ 2      1     1.00           *            vmovdqa	%ymm4, -1456(%rbp)
+ 2      1     1.00           *            vmovdqa	%ymm1, -1424(%rbp)
+ 2      1     1.00           *            vmovdqa	%ymm4, -112(%rbp)
+ 2      1     1.00           *            vmovdqa	%ymm1, -80(%rbp)
+ 1      1     1.00                        vpackusdw	%ymm1, %ymm4, %ymm1
+ 1      1     0.50                        vpsubw	%ymm9, %ymm11, %ymm4
+ 1      1     0.50                        vpaddw	%ymm11, %ymm9, %ymm9
+ 1      1     1.00                        vpsllw	$7, %ymm4, %ymm4
+ 1      1     0.33                        vpand	%ymm7, %ymm1, %ymm7
+ 1      7     0.50    *                   vmovdqa	-1744(%rbp), %ymm11
+ 1      5     1.00                        vpmulhrsw	%ymm4, %ymm13, %ymm4
+ 1      1     1.00                        vpsllw	$7, %ymm9, %ymm9
+ 1      1     1.00                        vpsrlw	$8, %ymm1, %ymm1
+ 1      1     0.50                        vpaddw	%ymm6, %ymm4, %ymm4
+ 1      1     0.50                        vpaddw	%ymm4, %ymm9, %ymm9
+ 1      1     0.50                        vpsubw	%ymm8, %ymm2, %ymm4
+ 1      1     1.00                        vpsllw	$7, %ymm4, %ymm4
+ 1      1     1.00                        vpsrlw	$1, %ymm9, %ymm9
+ 1      1     0.50                        vpaddw	%ymm2, %ymm8, %ymm8
+ 1      5     1.00                        vpmulhrsw	%ymm4, %ymm13, %ymm4
+ 1      1     1.00                        vpsllw	$7, %ymm8, %ymm8
+ 1      1     0.50                        vpsubw	%ymm10, %ymm7, %ymm2
+ 1      1     1.00                        vpsllw	$7, %ymm2, %ymm2
+ 1      1     0.50                        vpaddw	%ymm7, %ymm10, %ymm10
+ 1      1     1.00                        vmovd	%eax, %xmm7
+ 1      5     0.50    *                   movq	(%rdi), %rax
+ 1      5     1.00                        vpmulhrsw	%ymm2, %ymm13, %ymm2
+ 1      1     1.00                        vpsllw	$7, %ymm10, %ymm10
+ 1      3     1.00                        vpbroadcastd	%xmm7, %ymm7
+ 1      1     0.50                        vpaddw	%ymm6, %ymm4, %ymm4
+ 1      1     0.50                        vpaddw	%ymm4, %ymm8, %ymm8
+ 1      1     0.50                        vpsubw	%ymm11, %ymm9, %ymm4
+ 1      1     0.50                        vpaddw	%ymm6, %ymm2, %ymm2
+ 1      1     1.00                        vpsrlw	$1, %ymm8, %ymm8
+ 1      1     0.50                        vpaddw	%ymm2, %ymm10, %ymm10
+ 1      1     0.50                        vpsubw	%ymm3, %ymm1, %ymm2
+ 1      1     1.00                        vpsllw	$7, %ymm2, %ymm2
+ 1      1     1.00                        vpsrlw	$1, %ymm10, %ymm10
+ 1      1     0.50                        vpaddw	%ymm1, %ymm3, %ymm3
+ 1      5     1.00                        vpmulhrsw	%ymm2, %ymm13, %ymm2
+ 1      1     1.00                        vpsllw	$7, %ymm3, %ymm3
+ 1      1     0.50                        vpsubw	%ymm5, %ymm10, %ymm1
+ 1      7     0.50    *                   vmovdqa	-1776(%rbp), %ymm13
+ 1      1     0.50                        vpaddw	%ymm5, %ymm10, %ymm5
+ 1      5     1.00                        vpmulhrsw	%ymm13, %ymm1, %ymm1
+ 1      5     1.00                        vpmulhrsw	%ymm13, %ymm4, %ymm4
+ 1      1     0.50                        vpaddw	%ymm6, %ymm2, %ymm2
+ 1      1     0.50                        vpsubw	%ymm15, %ymm8, %ymm6
+ 1      1     0.50                        vpaddw	%ymm2, %ymm3, %ymm3
+ 1      5     1.00                        vpmulhrsw	%ymm13, %ymm6, %ymm6
+ 1      1     1.00                        vpsrlw	$1, %ymm3, %ymm3
+ 1      1     0.50                        vpaddw	%ymm7, %ymm1, %ymm1
+ 1      1     0.50                        vpaddw	%ymm7, %ymm4, %ymm4
+ 1      1     0.50                        vpsubw	%ymm0, %ymm3, %ymm2
+ 1      1     0.50                        vpaddw	%ymm3, %ymm0, %ymm3
+ 1      5     1.00                        vpmulhrsw	%ymm13, %ymm2, %ymm2
+ 1      1     0.50                        vpaddw	%ymm11, %ymm9, %ymm0
+ 1      1     0.50                        vpaddw	%ymm4, %ymm0, %ymm0
+ 1      7     0.50    *                   vmovdqa	-1808(%rbp), %ymm4
+ 1      1     0.50                        vpaddw	%ymm7, %ymm6, %ymm6
+ 1      1     1.00                        vpsrlw	$8, %ymm0, %ymm0
+ 1      1     0.50                        vpaddw	%ymm7, %ymm2, %ymm2
+ 1      7     0.50    *                   vmovdqa	-1904(%rbp), %ymm7
+ 1      1     0.50                        vpaddw	%ymm2, %ymm3, %ymm3
+ 1      1     0.50                        vpaddw	%ymm1, %ymm5, %ymm2
+ 1      7     0.50    *                   vmovdqa	-1840(%rbp), %ymm5
+ 1      1     1.00                        vpsrlw	$8, %ymm3, %ymm3
+ 1      1     1.00                        vpsrlw	$8, %ymm2, %ymm2
+ 1      1     0.50                        vpaddw	%ymm8, %ymm15, %ymm1
+ 1      1     0.50                        vpaddw	%ymm6, %ymm1, %ymm1
+ 1      7     0.50    *                   vmovdqa	-1872(%rbp), %ymm6
+ 1      1     1.00                        vpsrlw	$8, %ymm1, %ymm1
+ 1      5     0.50    *                   movq	-8(%rbp), %r13
+ 3      7     0.50    *                   leave
+ 1      1     0.50                        leaq	-16(%r13), %rsp
+ 2      6     0.50    *                   popq	%r13
+ 1      1     1.00                        jmpq	*%rax
+
+
+Resources:
+[0]   - HWDivider
+[1]   - HWFPDivider
+[2]   - HWPort0
+[3]   - HWPort1
+[4]   - HWPort2
+[5]   - HWPort3
+[6]   - HWPort4
+[7]   - HWPort5
+[8]   - HWPort6
+[9]   - HWPort7
+
+
+Resource pressure per iteration:
+[0]    [1]    [2]    [3]    [4]    [5]    [6]    [7]    [8]    [9]
+ -      -     133.00 88.00  73.00  79.00  92.00  103.00 73.00  45.00
+
+Resource pressure by instruction:
+[0]    [1]    [2]    [3]    [4]    [5]    [6]    [7]    [8]    [9]    Instructions:
+ -      -      -      -      -      -     1.00    -     1.00   1.00   pushq	%r13
+ -      -      -      -      -      -      -     1.00    -      -     vmovdqa	%ymm0, %ymm8
+ -      -      -     1.00    -      -      -      -      -      -     movq	%rdx, %r8
+ -      -     1.00    -      -      -      -      -      -      -     movl	$32768, %edx
+ -      -      -      -      -      -      -      -     1.00    -     addq	$16, %rdi
+ -      -      -      -      -      -      -     1.00    -      -     leaq	16(%rsp), %r13
+ -      -      -     1.00    -      -      -      -      -      -     andq	$-64, %rsp
+ -      -     1.00    -     1.00   1.00   1.00    -      -      -     pushq	-8(%r13)
+ -      -      -      -      -      -     1.00    -     1.00   1.00   pushq	%rbp
+ -      -      -     1.00    -      -      -      -      -      -     movq	%rsp, %rbp
+ -      -     1.00    -      -      -     1.00    -      -     1.00   pushq	%r13
+ -      -      -      -      -      -      -      -     1.00    -     subq	$1776, %rsp
+ -      -      -      -      -     1.00   1.00    -      -      -     vmovdqa	%ymm6, -1872(%rbp)
+ -      -      -      -     1.00    -     1.00    -      -      -     vmovdqa	%ymm5, -1840(%rbp)
+ -      -      -      -      -      -      -     1.00    -      -     vmovd	%edx, %xmm5
+ -      -      -      -      -     1.00    -      -      -      -     vbroadcastss	9808327(%rip), %ymm6
+ -      -      -      -      -      -      -     1.00    -      -     vpbroadcastd	%xmm5, %ymm5
+ -      -      -      -     1.00    -      -      -      -      -     vbroadcastss	8898077(%rip), %ymm0
+ -      -      -      -      -      -     1.00    -      -     1.00   vmovdqa	%ymm4, -1808(%rbp)
+ -      -      -      -      -     1.00    -      -      -      -     movq	-8(%rdi), %rax
+ -      -      -      -      -     1.00   1.00    -      -      -     vmovdqa	%ymm7, -1904(%rbp)
+ -      -      -     1.00    -      -      -      -      -      -     vfmadd132ps	%ymm0, %ymm6, %ymm2
+ -      -     1.00    -      -      -      -      -      -      -     vfmadd132ps	%ymm0, %ymm6, %ymm8
+ -      -      -     1.00    -      -      -      -      -      -     vfmadd132ps	%ymm0, %ymm6, %ymm1
+ -      -     1.00    -      -      -      -      -      -      -     vfmadd132ps	%ymm3, %ymm6, %ymm0
+ -      -      -      -      -      -      -      -      -      -     vpxor	%xmm3, %xmm3, %xmm3
+ -      -      -      -     1.00    -     1.00    -      -      -     vmovdqa	%ymm8, -1264(%rbp)
+ -      -      -     2.00    -      -      -      -      -      -     vroundps	$1, %ymm8, %ymm8
+ -      -      -     1.00    -      -      -      -      -      -     vcvttps2dq	%ymm8, %ymm4
+ -      -      -      -      -      -      -     1.00    -      -     vpsubd	%ymm5, %ymm4, %ymm4
+ -      -      -      -      -      -     1.00    -      -     1.00   vmovdqa	%ymm1, -1232(%rbp)
+ -      -      -     2.00    -      -      -      -      -      -     vroundps	$1, %ymm1, %ymm1
+ -      -      -     1.00    -      -      -      -      -      -     vcvttps2dq	%ymm1, %ymm1
+ -      -      -      -      -      -      -     1.00    -      -     vpsubd	%ymm5, %ymm1, %ymm1
+ -      -      -      -      -     1.00   1.00    -      -      -     vmovaps	%ymm2, -1392(%rbp)
+ -      -     1.00    -      -      -      -      -      -      -     vpsrad	$16, %ymm4, %ymm10
+ -      -     1.00    -      -      -      -      -      -      -     vpsrad	$16, %ymm1, %ymm14
+ -      -      -      -      -      -      -     1.00    -      -     vpxor	%ymm5, %ymm4, %ymm4
+ -      -      -      -     1.00    -     1.00    -      -      -     vmovaps	%ymm0, -1360(%rbp)
+ -      -      -      -      -      -      -     1.00    -      -     vpxor	%ymm5, %ymm1, %ymm1
+ -      -      -      -      -      -      -     1.00    -      -     vpblendw	$85, %ymm4, %ymm3, %ymm4
+ -      -      -      -      -      -     1.00    -      -     1.00   vmovdqa	%ymm2, -1200(%rbp)
+ -      -      -     2.00    -      -      -      -      -      -     vroundps	$1, %ymm2, %ymm2
+ -      -      -     1.00    -      -      -      -      -      -     vcvttps2dq	%ymm2, %ymm2
+ -      -      -     1.00    -      -      -      -      -      -     vpsubd	%ymm5, %ymm2, %ymm2
+ -      -      -      -      -     1.00   1.00    -      -      -     vmovdqa	%ymm0, -1168(%rbp)
+ -      -      -     2.00    -      -      -      -      -      -     vroundps	$1, %ymm0, %ymm0
+ -      -      -     1.00    -      -      -      -      -      -     vcvttps2dq	%ymm0, %ymm0
+ -      -      -      -      -      -      -     1.00    -      -     vpsubd	%ymm5, %ymm0, %ymm0
+ -      -     1.00    -      -      -      -      -      -      -     vpsrad	$16, %ymm0, %ymm12
+ -      -     1.00    -      -      -      -      -      -      -     vpsrad	$16, %ymm2, %ymm11
+ -      -      -      -      -      -      -     1.00    -      -     vpxor	%ymm5, %ymm0, %ymm0
+ -      -      -      -      -      -     1.00    -      -     1.00   vmovdqa	%ymm10, -1136(%rbp)
+ -      -      -      -      -      -      -     1.00    -      -     vpxor	%ymm5, %ymm2, %ymm2
+ -      -      -      -      -      -      -     1.00    -      -     vpblendw	$85, %ymm1, %ymm3, %ymm1
+ -      -      -      -      -      -     1.00    -      -     1.00   vmovdqa	%ymm14, -1104(%rbp)
+ -      -      -      -      -      -      -     1.00    -      -     vpblendw	$85, %ymm2, %ymm3, %ymm2
+ -      -      -      -      -      -      -     1.00    -      -     vpblendw	$85, %ymm0, %ymm3, %ymm3
+ -      -      -      -      -      -      -     1.00    -      -     vpackusdw	%ymm1, %ymm4, %ymm4
+ -      -      -      -      -      -     1.00    -      -     1.00   vmovdqa	%ymm11, -1456(%rbp)
+ -      -      -      -      -      -      -     1.00    -      -     vpackusdw	%ymm3, %ymm2, %ymm2
+ -      -      -      -      -     1.00   1.00    -      -      -     vmovdqa	%ymm12, -1424(%rbp)
+ -      -      -      -      -      -      -     1.00    -      -     vpermq	$216, %ymm4, %ymm13
+ -      -      -      -      -      -      -     1.00    -      -     vpermq	$216, %ymm2, %ymm1
+ -      -      -      -      -      -     1.00    -      -     1.00   vmovdqa	%ymm11, -1072(%rbp)
+ -      -      -      -      -     1.00   1.00    -      -      -     vmovdqa	%ymm12, -1040(%rbp)
+ -      -      -      -     1.00    -      -      -      -      -     vmovss	12(%rax), %xmm0
+ -      -      -      -      -      -     1.00    -      -     1.00   vmovdqa	%ymm1, -1776(%rbp)
+ -      -      -      -     1.00    -      -      -      -      -     vmovss	9807981(%rip), %xmm1
+ -      -      -      -      -      -     1.00    -      -     1.00   vmovdqa	%ymm12, -1552(%rbp)
+ -      -      -     1.00    -      -      -      -      -      -     vsubss	%xmm1, %xmm0, %xmm0
+ -      -     1.00   1.00    -      -      -      -      -      -     vcvttss2si	%xmm0, %edx
+ -      -      -      -      -     1.00    -      -      -      -     vmovss	16(%rax), %xmm0
+ -      -      -     1.00    -      -      -      -      -      -     vsubss	%xmm1, %xmm0, %xmm0
+ -      -      -      -      -      -      -      -      -      -     vpxor	%xmm1, %xmm1, %xmm1
+ -      -      -     1.00    -      -      -      -      -      -     vpmaxsd	%ymm12, %ymm1, %ymm4
+ -      -      -     1.00    -      -      -      -      -      -     vpmaxsd	%ymm11, %ymm1, %ymm8
+ -      -      -     1.00    -      -      -      -      -      -     vpcmpeqd	%ymm12, %ymm12, %ymm12
+ -      -      -      -      -      -      -     1.00    -      -     vmovd	%edx, %xmm15
+ -      -      -     1.00    -      -      -      -      -      -     vpmaxsd	%ymm14, %ymm1, %ymm2
+ -      -     1.00    -      -      -      -      -      -      -     vmovdqa	%ymm12, %ymm5
+ -      -     1.00   1.00    -      -      -      -      -      -     vcvttss2si	%xmm0, %edx
+ -      -      -      -      -      -      -     1.00    -      -     vpbroadcastd	%xmm15, %ymm15
+ -      -      -     1.00    -      -      -      -      -      -     vpmaxsd	%ymm10, %ymm1, %ymm0
+ -      -      -     1.00    -      -      -      -      -      -     vpminsd	%ymm15, %ymm0, %ymm6
+ -      -      -      -      -      -      -     1.00    -      -     vpminsd	%ymm15, %ymm2, %ymm7
+ -      -      -      -      -      -      -     1.00    -      -     vmovd	%edx, %xmm3
+ -      -      -      -     1.00    -      -      -      -      -     movq	(%rax), %rdx
+ -      -      -      -      -     1.00    -      -      -      -     movl	8(%rax), %eax
+ -      -      -      -      -      -      -     1.00    -      -     vpbroadcastd	%xmm3, %ymm3
+ -      -      -      -      -     1.00   1.00    -      -      -     movl	%eax, -1456(%rbp)
+ -      -      -     1.00    -      -      -      -      -      -     vpminsd	%ymm3, %ymm4, %ymm4
+ -      -      -      -      -      -      -     1.00    -      -     vpminsd	%ymm3, %ymm8, %ymm8
+ -      -      -      -     1.00    -     1.00    -      -      -     movl	%eax, -1452(%rbp)
+ -      -      -      -      -      -     1.00    -      -     1.00   movl	%eax, -1448(%rbp)
+ -      -      -      -      -     1.00   1.00    -      -      -     movl	%eax, -1444(%rbp)
+ -      -      -      -      -      -     1.00    -      -     1.00   movl	%eax, -1440(%rbp)
+ -      -      -      -      -     1.00   1.00    -      -      -     movl	%eax, -1436(%rbp)
+ -      -      -      -      -      -     1.00    -      -     1.00   movl	%eax, -1432(%rbp)
+ -      -      -      -      -     1.00   1.00    -      -      -     movl	%eax, -1428(%rbp)
+ -      -      -      -     1.00    -      -      -      -      -     vmovdqa	-1456(%rbp), %ymm0
+ -      -      -      -      -      -     1.00    -      -     1.00   movl	%eax, -1424(%rbp)
+ -      -      -      -      -     1.00   1.00    -      -      -     movl	%eax, -1420(%rbp)
+ -      -      -      -      -      -     1.00    -      -     1.00   movl	%eax, -1416(%rbp)
+ -      -      -      -      -     1.00   1.00    -      -      -     movl	%eax, -1412(%rbp)
+ -      -      -      -     1.00    -     1.00    -      -      -     movl	%eax, -1408(%rbp)
+ -      -      -      -      -      -     1.00    -      -     1.00   movl	%eax, -1404(%rbp)
+ -      -      -      -      -     1.00   1.00    -      -      -     movl	%eax, -1400(%rbp)
+ -      -      -      -      -      -     1.00    -      -     1.00   movl	%eax, -1396(%rbp)
+ -      -      -      -      -      -      -      -     1.00    -     movl	$8388736, %eax
+ -      -      -      -      -     1.00   1.00    -      -      -     vmovdqa	%ymm3, -1584(%rbp)
+ -      -      -      -     1.00    -      -      -      -      -     vmovdqa	-1424(%rbp), %ymm3
+ -      -      -      -     1.00    -     1.00    -      -      -     vmovdqa	%ymm0, -1488(%rbp)
+ -      -     2.00    -     1.00    -      -      -      -      -     vpmulld	-1488(%rbp), %ymm8, %ymm2
+ -      -      -     1.00    -      -      -      -      -      -     vpaddd	%ymm6, %ymm2, %ymm2
+ -      -      -      -      -      -     1.00    -      -     1.00   vmovdqa	%ymm8, -1328(%rbp)
+ -      -      -      -      -     1.00   1.00    -      -      -     vmovdqa	%ymm4, -1296(%rbp)
+ -      -      -      -     1.00    -     1.00    -      -      -     vmovdqa	%ymm0, -1008(%rbp)
+ -      -      -      -      -      -     1.00    -      -     1.00   vmovdqa	%ymm3, -976(%rbp)
+ -      -      -      -      -     1.00   1.00    -      -      -     vmovdqa	%ymm6, -1648(%rbp)
+ -      -      -     1.00   1.00    -      -      -      -      -     vpaddd	9808001(%rip), %ymm10, %ymm10
+ -      -     1.00    -      -      -      -      -      -      -     vmovdqa	%ymm12, %ymm6
+ -      -      -     1.00    -     1.00    -      -      -      -     vpaddd	9807989(%rip), %ymm14, %ymm14
+ -      -      -      -      -      -     1.00    -      -     1.00   vmovdqa	%ymm3, -1520(%rbp)
+ -      -     2.00    -     1.00    -      -      -      -      -     vpmulld	-1520(%rbp), %ymm4, %ymm0
+ -      -      -      -      -      -      -     1.00    -      -     vpaddd	%ymm7, %ymm0, %ymm0
+ -      -     2.00    -     1.00    -      -      -      -      -     vpmulld	-1488(%rbp), %ymm8, %ymm8
+ -      -      -      -      -     1.00   1.00    -      -      -     vmovdqa	%ymm2, -1456(%rbp)
+ -      -     2.00    -     1.00    -      -      -      -      -     vpmulld	-1520(%rbp), %ymm4, %ymm4
+ -      -      -      -      -      -     1.00    -      -     1.00   vmovdqa	%ymm7, -1616(%rbp)
+ -      -      -      -      -     1.00   1.00    -      -      -     vmovdqa	%ymm0, -1424(%rbp)
+ -      -      -      -      -      -     1.00    -      -     1.00   vmovdqa	%ymm2, -944(%rbp)
+ -      -      -      -      -     1.00   1.00    -      -      -     vmovdqa	%ymm0, -912(%rbp)
+ -      -     5.00   1.00   8.00    -      -     3.00   8.00    -     vpgatherdd	%ymm5, (%rdx,%ymm0,4), %ymm2
+ -      -      -      -     1.00    -      -      -      -      -     vmovdqa	-944(%rbp), %ymm5
+ -      -     5.00   1.00   8.00    -      -     3.00   8.00    -     vpgatherdd	%ymm6, (%rdx,%ymm5,4), %ymm0
+ -      -      -      -      -      -     1.00    -      -     1.00   vmovdqa	%ymm10, -752(%rbp)
+ -      -      -     1.00    -      -      -      -      -      -     vpmaxsd	%ymm10, %ymm1, %ymm10
+ -      -      -      -      -     1.00   1.00    -      -      -     vmovdqa	%ymm14, -720(%rbp)
+ -      -      -      -      -      -      -     1.00    -      -     vpmaxsd	%ymm14, %ymm1, %ymm14
+ -      -      -      -      -      -      -     1.00    -      -     vperm2i128	$32, %ymm2, %ymm0, %ymm3
+ -      -      -      -      -      -      -     1.00    -      -     vperm2i128	$49, %ymm2, %ymm0, %ymm0
+ -      -      -     1.00    -      -      -      -      -      -     vpminsd	%ymm15, %ymm14, %ymm14
+ -      -     1.00    -      -      -      -      -      -      -     vpsrld	$16, %ymm12, %ymm2
+ -      -      -      -      -      -      -     1.00    -      -     vpminsd	%ymm15, %ymm10, %ymm15
+ -      -     1.00    -      -      -      -      -      -      -     vpand	%ymm2, %ymm0, %ymm6
+ -      -      -     1.00    -      -      -      -      -      -     vpaddd	%ymm4, %ymm14, %ymm4
+ -      -      -     1.00    -      -      -      -      -      -     vpand	%ymm2, %ymm3, %ymm5
+ -      -      -      -     1.00    -     1.00    -      -      -     vmovdqa	%ymm15, -1712(%rbp)
+ -      -      -      -      -      -      -     1.00    -      -     vpaddd	%ymm15, %ymm8, %ymm8
+ -      -     1.00    -      -      -      -      -      -      -     vpsrld	$16, %ymm3, %ymm3
+ -      -      -      -      -      -     1.00    -      -     1.00   vmovdqa	%ymm5, -880(%rbp)
+ -      -     1.00    -      -      -      -      -      -      -     vmovdqa	%ymm12, %ymm10
+ -      -     1.00    -      -      -      -      -      -      -     vpsrld	$16, %ymm0, %ymm0
+ -      -      -      -      -      -     1.00    -      -     1.00   vmovdqa	%ymm6, -848(%rbp)
+ -      -      -      -      -      -      -     1.00    -      -     vpackusdw	%ymm6, %ymm5, %ymm5
+ -      -      -     1.00    -      -      -      -      -      -     vpcmpeqd	%ymm6, %ymm6, %ymm6
+ -      -      -      -      -     1.00   1.00    -      -      -     vmovdqa	%ymm3, -816(%rbp)
+ -      -     1.00    -      -      -      -      -      -      -     vpsrlw	$8, %ymm6, %ymm7
+ -      -     1.00    -      -      -      -      -      -      -     vpsrlw	$15, %ymm6, %ymm6
+ -      -      -      -      -      -     1.00    -      -     1.00   vmovdqa	%ymm0, -784(%rbp)
+ -      -      -      -      -      -      -     1.00    -      -     vpand	%ymm7, %ymm5, %ymm9
+ -      -     1.00    -      -      -      -      -      -      -     vpsrlw	$8, %ymm5, %ymm5
+ -      -      -      -      -      -      -     1.00    -      -     vpackusdw	%ymm0, %ymm3, %ymm0
+ -      -      -      -      -     1.00   1.00    -      -      -     vmovdqa	%ymm14, -1680(%rbp)
+ -      -      -     1.00    -      -      -      -      -      -     vpand	%ymm7, %ymm0, %ymm3
+ -      -     1.00    -      -      -      -      -      -      -     vpsrlw	$8, %ymm0, %ymm0
+ -      -      -      -      -      -     1.00    -      -     1.00   vmovdqa	%ymm8, -688(%rbp)
+ -      -      -      -      -     1.00    -      -      -      -     vmovdqa	-688(%rbp), %ymm14
+ -      -      -      -      -     1.00   1.00    -      -      -     vmovdqa	%ymm8, -1456(%rbp)
+ -      -      -      -      -      -     1.00    -      -     1.00   vmovdqa	%ymm4, -1424(%rbp)
+ -      -      -      -      -     1.00   1.00    -      -      -     vmovdqa	%ymm4, -656(%rbp)
+ -      -     5.00   1.00    -     8.00    -     3.00   8.00    -     vpgatherdd	%ymm10, (%rdx,%ymm4,4), %ymm8
+ -      -     1.00    -      -      -      -      -      -      -     vmovdqa	%ymm12, %ymm10
+ -      -     5.00   1.00    -     8.00    -     3.00   8.00    -     vpgatherdd	%ymm10, (%rdx,%ymm14,4), %ymm4
+ -      -      -     1.00   1.00    -      -      -      -      -     vpaddd	9807648(%rip), %ymm11, %ymm11
+ -      -      -      -      -      -      -     1.00    -      -     vperm2i128	$32, %ymm8, %ymm4, %ymm10
+ -      -      -      -      -      -      -     1.00    -      -     vperm2i128	$49, %ymm8, %ymm4, %ymm4
+ -      -     1.00    -      -      -      -      -      -      -     vpand	%ymm2, %ymm4, %ymm14
+ -      -      -     1.00    -      -      -      -      -      -     vpand	%ymm2, %ymm10, %ymm8
+ -      -      -      -     1.00    -     1.00    -      -      -     vmovdqa	%ymm11, -496(%rbp)
+ -      -      -      -      -      -     1.00    -      -     1.00   vmovdqa	%ymm8, -624(%rbp)
+ -      -      -      -      -      -      -     1.00    -      -     vpackusdw	%ymm14, %ymm8, %ymm8
+ -      -     1.00    -      -      -      -      -      -      -     vpsrld	$16, %ymm10, %ymm10
+ -      -      -     1.00    -      -      -      -      -      -     vpand	%ymm7, %ymm8, %ymm15
+ -      -     1.00    -      -      -      -      -      -      -     vpsrld	$16, %ymm4, %ymm4
+ -      -      -      -      -      -     1.00    -      -     1.00   vmovdqa	%ymm10, -560(%rbp)
+ -      -      -      -      -     1.00   1.00    -      -      -     vmovdqa	%ymm4, -528(%rbp)
+ -      -      -      -      -      -      -     1.00    -      -     vpackusdw	%ymm4, %ymm10, %ymm4
+ -      -      -     1.00    -      -      -      -      -      -     vpsubw	%ymm9, %ymm15, %ymm10
+ -      -      -      -      -      -      -     1.00    -      -     vpaddw	%ymm15, %ymm9, %ymm9
+ -      -     1.00    -      -      -      -      -      -      -     vpsllw	$7, %ymm10, %ymm10
+ -      -     1.00    -      -      -      -      -      -      -     vpsllw	$7, %ymm9, %ymm9
+ -      -      -      -      -      -     1.00    -      -     1.00   vmovdqa	%ymm14, -592(%rbp)
+ -      -      -     1.00    -      -      -      -      -      -     vpand	%ymm7, %ymm4, %ymm14
+ -      -     1.00    -      -      -      -      -      -      -     vpmulhrsw	%ymm10, %ymm13, %ymm10
+ -      -     1.00    -      -      -      -      -      -      -     vpsrlw	$8, %ymm8, %ymm8
+ -      -     1.00    -      -      -      -      -      -      -     vpsrlw	$8, %ymm4, %ymm4
+ -      -      -     1.00    -      -      -      -      -      -     vpaddw	%ymm6, %ymm10, %ymm10
+ -      -      -      -      -      -      -     1.00    -      -     vpaddw	%ymm10, %ymm9, %ymm9
+ -      -     1.00    -      -      -      -      -      -      -     vpsrlw	$1, %ymm9, %ymm10
+ -      -      -      -      -      -      -     1.00    -      -     vpsubw	%ymm5, %ymm8, %ymm9
+ -      -      -     1.00    -      -      -      -      -      -     vpaddw	%ymm5, %ymm8, %ymm5
+ -      -     1.00    -      -      -      -      -      -      -     vpsllw	$7, %ymm9, %ymm9
+ -      -     1.00    -      -      -      -      -      -      -     vpsllw	$7, %ymm5, %ymm5
+ -      -      -      -      -     1.00   1.00    -      -      -     vmovdqa	%ymm10, -1744(%rbp)
+ -      -     1.00    -      -      -      -      -      -      -     vpmulhrsw	%ymm9, %ymm13, %ymm9
+ -      -      -     1.00    -      -      -      -      -      -     vpaddw	%ymm6, %ymm9, %ymm9
+ -      -      -      -      -      -      -     1.00    -      -     vpaddw	%ymm5, %ymm9, %ymm5
+ -      -      -      -     1.00    -      -      -      -      -     vmovdqa	-1552(%rbp), %ymm9
+ -      -     1.00    -      -      -      -      -      -      -     vpsrlw	$1, %ymm5, %ymm15
+ -      -      -      -      -      -      -     1.00    -      -     vpsubw	%ymm3, %ymm14, %ymm5
+ -      -      -     1.00    -      -      -      -      -      -     vpaddw	%ymm3, %ymm14, %ymm3
+ -      -      -      -      -     1.00    -      -      -      -     vmovdqa	-1520(%rbp), %ymm14
+ -      -     1.00    -      -      -      -      -      -      -     vpsllw	$7, %ymm5, %ymm5
+ -      -     1.00    -      -      -      -      -      -      -     vpsllw	$7, %ymm3, %ymm3
+ -      -     1.00    -      -      -      -      -      -      -     vpmulhrsw	%ymm5, %ymm13, %ymm5
+ -      -      -     1.00    -      -      -      -      -      -     vpaddw	%ymm6, %ymm5, %ymm5
+ -      -      -      -      -      -      -     1.00    -      -     vpaddw	%ymm5, %ymm3, %ymm3
+ -      -     1.00    -      -      -      -      -      -      -     vpsrlw	$1, %ymm3, %ymm5
+ -      -      -     1.00    -      -      -      -      -      -     vpsubw	%ymm0, %ymm4, %ymm3
+ -      -      -      -      -      -      -     1.00    -      -     vpaddw	%ymm4, %ymm0, %ymm0
+ -      -     1.00    -      -      -      -      -      -      -     vpsllw	$7, %ymm3, %ymm3
+ -      -      -     1.00   1.00    -      -      -      -      -     vpaddd	9807385(%rip), %ymm9, %ymm4
+ -      -      -      -     1.00    -      -      -      -      -     vmovdqa	-1584(%rbp), %ymm9
+ -      -     1.00    -      -      -      -      -      -      -     vpmulhrsw	%ymm3, %ymm13, %ymm3
+ -      -     1.00    -      -      -      -      -      -      -     vpsllw	$7, %ymm0, %ymm0
+ -      -      -      -     1.00    -     1.00    -      -      -     vmovdqa	%ymm4, -464(%rbp)
+ -      -      -      -      -      -      -     1.00    -      -     vpmaxsd	%ymm4, %ymm1, %ymm4
+ -      -      -      -      -      -      -     1.00    -      -     vpmaxsd	%ymm11, %ymm1, %ymm1
+ -      -      -      -     1.00    -      -      -      -      -     vmovdqa	-1488(%rbp), %ymm11
+ -      -      -      -      -      -      -     1.00    -      -     vpminsd	%ymm9, %ymm4, %ymm4
+ -      -      -     1.00    -      -      -      -      -      -     vpminsd	%ymm9, %ymm1, %ymm1
+ -      -      -     1.00    -      -      -      -      -      -     vmovdqa	%ymm12, %ymm9
+ -      -     2.00    -      -      -      -      -      -      -     vpmulld	%ymm11, %ymm1, %ymm8
+ -      -      -      -      -      -     1.00    -      -     1.00   vmovdqa	%ymm1, -1328(%rbp)
+ -      -     2.00    -      -      -      -      -      -      -     vpmulld	%ymm11, %ymm1, %ymm1
+ -      -      -      -      -     1.00    -     1.00    -      -     vpaddd	-1648(%rbp), %ymm8, %ymm8
+ -      -      -      -      -     1.00   1.00    -      -      -     vmovdqa	%ymm4, -1296(%rbp)
+ -      -      -     1.00   1.00    -      -      -      -      -     vpaddd	-1712(%rbp), %ymm1, %ymm1
+ -      -      -     1.00    -      -      -      -      -      -     vpaddw	%ymm6, %ymm3, %ymm3
+ -      -      -      -      -      -      -     1.00    -      -     vpaddw	%ymm3, %ymm0, %ymm0
+ -      -     2.00    -      -      -      -      -      -      -     vpmulld	%ymm14, %ymm4, %ymm3
+ -      -      -      -     1.00    -     1.00    -      -      -     vmovdqa	%ymm8, -432(%rbp)
+ -      -      -      -     1.00    -      -      -      -      -     vmovdqa	-432(%rbp), %ymm10
+ -      -      -     1.00   1.00    -      -      -      -      -     vpaddd	-1616(%rbp), %ymm3, %ymm3
+ -      -      -      -      -      -     1.00    -      -     1.00   vmovdqa	%ymm8, -1456(%rbp)
+ -      -     2.00    -      -      -      -      -      -      -     vpmulld	%ymm14, %ymm4, %ymm4
+ -      -      -     1.00    -      -      -      -      -      -     vmovdqa	%ymm12, %ymm14
+ -      -     1.00    -      -      -      -      -      -      -     vpsrlw	$1, %ymm0, %ymm0
+ -      -      -      -      -      -     1.00    -      -     1.00   vmovdqa	%ymm3, -1424(%rbp)
+ -      -      -      -      -     1.00   1.00    -      -      -     vmovdqa	%ymm3, -400(%rbp)
+ -      -     5.00   1.00   8.00    -      -     3.00   8.00    -     vpgatherdd	%ymm9, (%rdx,%ymm3,4), %ymm8
+ -      -      -      -      -      -      -     1.00    -      -     vmovdqa	%ymm12, %ymm9
+ -      -     5.00   1.00   8.00    -      -     3.00   8.00    -     vpgatherdd	%ymm9, (%rdx,%ymm10,4), %ymm3
+ -      -      -      -      -      -      -     1.00    -      -     vperm2i128	$32, %ymm8, %ymm3, %ymm10
+ -      -      -      -      -      -      -     1.00    -      -     vperm2i128	$49, %ymm8, %ymm3, %ymm3
+ -      -      -     1.00    -      -      -      -      -      -     vpand	%ymm2, %ymm3, %ymm9
+ -      -     1.00    -      -      -      -      -      -      -     vpsrld	$16, %ymm3, %ymm3
+ -      -      -     1.00    -      -      -      -      -      -     vpand	%ymm2, %ymm10, %ymm8
+ -      -     1.00    -      -      -      -      -      -      -     vpsrld	$16, %ymm10, %ymm10
+ -      -      -      -      -      -     1.00    -      -     1.00   vmovdqa	%ymm8, -368(%rbp)
+ -      -      -      -      -      -      -     1.00    -      -     vpackusdw	%ymm9, %ymm8, %ymm8
+ -      -      -      -      -      -     1.00    -      -     1.00   vmovdqa	%ymm9, -336(%rbp)
+ -      -      -     1.00    -      -      -      -      -      -     vpand	%ymm7, %ymm8, %ymm9
+ -      -     1.00    -      -      -      -      -      -      -     vpsrlw	$8, %ymm8, %ymm8
+ -      -      -      -      -     1.00   1.00    -      -      -     vmovdqa	%ymm10, -304(%rbp)
+ -      -      -      -     1.00    -     1.00    -      -      -     vmovdqa	%ymm3, -272(%rbp)
+ -      -      -      -      -      -      -     1.00    -      -     vpackusdw	%ymm3, %ymm10, %ymm3
+ -      -      -      -      -      -     1.00    -      -     1.00   vmovdqa	%ymm1, -1456(%rbp)
+ -      -      -      -      -     1.00    -     1.00    -      -     vpaddd	-1680(%rbp), %ymm4, %ymm4
+ -      -      -     1.00    -      -      -      -      -      -     vpand	%ymm7, %ymm3, %ymm10
+ -      -      -      -     1.00    -     1.00    -      -      -     vmovdqa	%ymm1, -240(%rbp)
+ -      -     1.00    -      -      -      -      -      -      -     vpsrlw	$8, %ymm3, %ymm3
+ -      -      -      -      -      -     1.00    -      -     1.00   vmovdqa	%ymm4, -1424(%rbp)
+ -      -      -      -      -     1.00   1.00    -      -      -     vmovdqa	%ymm4, -208(%rbp)
+ -      -     5.00   1.00    -     8.00    -     3.00   8.00    -     vpgatherdd	%ymm14, (%rdx,%ymm4,4), %ymm1
+ -      -      -      -      -     1.00    -      -      -      -     vmovdqa	-240(%rbp), %ymm14
+ -      -     5.00   1.00    -     8.00    -     3.00   8.00    -     vpgatherdd	%ymm12, (%rdx,%ymm14,4), %ymm11
+ -      -      -      -      -      -      -     1.00    -      -     movq	%r8, %rdx
+ -      -      -      -      -      -      -     1.00    -      -     vperm2i128	$32, %ymm1, %ymm11, %ymm4
+ -      -      -      -      -      -      -     1.00    -      -     vperm2i128	$49, %ymm1, %ymm11, %ymm1
+ -      -      -     1.00    -      -      -      -      -      -     vpand	%ymm4, %ymm2, %ymm11
+ -      -      -     1.00    -      -      -      -      -      -     vpand	%ymm1, %ymm2, %ymm2
+ -      -      -      -     1.00    -     1.00    -      -      -     vmovdqa	%ymm4, -1328(%rbp)
+ -      -      -      -      -      -     1.00    -      -     1.00   vmovdqa	%ymm2, -144(%rbp)
+ -      -      -      -      -      -      -     1.00    -      -     vpackusdw	%ymm2, %ymm11, %ymm2
+ -      -     1.00    -      -      -      -      -      -      -     vpsrld	$16, %ymm4, %ymm4
+ -      -      -      -     1.00    -     1.00    -      -      -     vmovdqa	%ymm1, -1296(%rbp)
+ -      -     1.00    -      -      -      -      -      -      -     vpsrld	$16, %ymm1, %ymm1
+ -      -      -      -      -      -     1.00    -      -     1.00   vmovdqa	%ymm11, -176(%rbp)
+ -      -      -     1.00    -      -      -      -      -      -     vpand	%ymm7, %ymm2, %ymm11
+ -      -     1.00    -      -      -      -      -      -      -     vpsrlw	$8, %ymm2, %ymm2
+ -      -      -      -      -      -     1.00    -      -     1.00   vmovdqa	%ymm4, -1456(%rbp)
+ -      -      -      -      -     1.00   1.00    -      -      -     vmovdqa	%ymm1, -1424(%rbp)
+ -      -      -      -      -      -     1.00    -      -     1.00   vmovdqa	%ymm4, -112(%rbp)
+ -      -      -      -      -      -     1.00    -      -     1.00   vmovdqa	%ymm1, -80(%rbp)
+ -      -      -      -      -      -      -     1.00    -      -     vpackusdw	%ymm1, %ymm4, %ymm1
+ -      -      -     1.00    -      -      -      -      -      -     vpsubw	%ymm9, %ymm11, %ymm4
+ -      -      -      -      -      -      -     1.00    -      -     vpaddw	%ymm11, %ymm9, %ymm9
+ -      -     1.00    -      -      -      -      -      -      -     vpsllw	$7, %ymm4, %ymm4
+ -      -     1.00    -      -      -      -      -      -      -     vpand	%ymm7, %ymm1, %ymm7
+ -      -      -      -     1.00    -      -      -      -      -     vmovdqa	-1744(%rbp), %ymm11
+ -      -     1.00    -      -      -      -      -      -      -     vpmulhrsw	%ymm4, %ymm13, %ymm4
+ -      -     1.00    -      -      -      -      -      -      -     vpsllw	$7, %ymm9, %ymm9
+ -      -     1.00    -      -      -      -      -      -      -     vpsrlw	$8, %ymm1, %ymm1
+ -      -      -     1.00    -      -      -      -      -      -     vpaddw	%ymm6, %ymm4, %ymm4
+ -      -      -      -      -      -      -     1.00    -      -     vpaddw	%ymm4, %ymm9, %ymm9
+ -      -      -     1.00    -      -      -      -      -      -     vpsubw	%ymm8, %ymm2, %ymm4
+ -      -     1.00    -      -      -      -      -      -      -     vpsllw	$7, %ymm4, %ymm4
+ -      -     1.00    -      -      -      -      -      -      -     vpsrlw	$1, %ymm9, %ymm9
+ -      -      -      -      -      -      -     1.00    -      -     vpaddw	%ymm2, %ymm8, %ymm8
+ -      -     1.00    -      -      -      -      -      -      -     vpmulhrsw	%ymm4, %ymm13, %ymm4
+ -      -     1.00    -      -      -      -      -      -      -     vpsllw	$7, %ymm8, %ymm8
+ -      -      -     1.00    -      -      -      -      -      -     vpsubw	%ymm10, %ymm7, %ymm2
+ -      -     1.00    -      -      -      -      -      -      -     vpsllw	$7, %ymm2, %ymm2
+ -      -      -      -      -      -      -     1.00    -      -     vpaddw	%ymm7, %ymm10, %ymm10
+ -      -      -      -      -      -      -     1.00    -      -     vmovd	%eax, %xmm7
+ -      -      -      -     1.00    -      -      -      -      -     movq	(%rdi), %rax
+ -      -     1.00    -      -      -      -      -      -      -     vpmulhrsw	%ymm2, %ymm13, %ymm2
+ -      -     1.00    -      -      -      -      -      -      -     vpsllw	$7, %ymm10, %ymm10
+ -      -      -      -      -      -      -     1.00    -      -     vpbroadcastd	%xmm7, %ymm7
+ -      -      -      -      -      -      -     1.00    -      -     vpaddw	%ymm6, %ymm4, %ymm4
+ -      -      -     1.00    -      -      -      -      -      -     vpaddw	%ymm4, %ymm8, %ymm8
+ -      -      -      -      -      -      -     1.00    -      -     vpsubw	%ymm11, %ymm9, %ymm4
+ -      -      -      -      -      -      -     1.00    -      -     vpaddw	%ymm6, %ymm2, %ymm2
+ -      -     1.00    -      -      -      -      -      -      -     vpsrlw	$1, %ymm8, %ymm8
+ -      -      -     1.00    -      -      -      -      -      -     vpaddw	%ymm2, %ymm10, %ymm10
+ -      -      -     1.00    -      -      -      -      -      -     vpsubw	%ymm3, %ymm1, %ymm2
+ -      -     1.00    -      -      -      -      -      -      -     vpsllw	$7, %ymm2, %ymm2
+ -      -     1.00    -      -      -      -      -      -      -     vpsrlw	$1, %ymm10, %ymm10
+ -      -      -      -      -      -      -     1.00    -      -     vpaddw	%ymm1, %ymm3, %ymm3
+ -      -     1.00    -      -      -      -      -      -      -     vpmulhrsw	%ymm2, %ymm13, %ymm2
+ -      -     1.00    -      -      -      -      -      -      -     vpsllw	$7, %ymm3, %ymm3
+ -      -      -      -      -      -      -     1.00    -      -     vpsubw	%ymm5, %ymm10, %ymm1
+ -      -      -      -      -     1.00    -      -      -      -     vmovdqa	-1776(%rbp), %ymm13
+ -      -      -     1.00    -      -      -      -      -      -     vpaddw	%ymm5, %ymm10, %ymm5
+ -      -     1.00    -      -      -      -      -      -      -     vpmulhrsw	%ymm13, %ymm1, %ymm1
+ -      -     1.00    -      -      -      -      -      -      -     vpmulhrsw	%ymm13, %ymm4, %ymm4
+ -      -      -      -      -      -      -     1.00    -      -     vpaddw	%ymm6, %ymm2, %ymm2
+ -      -      -      -      -      -      -     1.00    -      -     vpsubw	%ymm15, %ymm8, %ymm6
+ -      -      -     1.00    -      -      -      -      -      -     vpaddw	%ymm2, %ymm3, %ymm3
+ -      -     1.00    -      -      -      -      -      -      -     vpmulhrsw	%ymm13, %ymm6, %ymm6
+ -      -     1.00    -      -      -      -      -      -      -     vpsrlw	$1, %ymm3, %ymm3
+ -      -      -     1.00    -      -      -      -      -      -     vpaddw	%ymm7, %ymm1, %ymm1
+ -      -      -      -      -      -      -     1.00    -      -     vpaddw	%ymm7, %ymm4, %ymm4
+ -      -      -     1.00    -      -      -      -      -      -     vpsubw	%ymm0, %ymm3, %ymm2
+ -      -      -      -      -      -      -     1.00    -      -     vpaddw	%ymm3, %ymm0, %ymm3
+ -      -     1.00    -      -      -      -      -      -      -     vpmulhrsw	%ymm13, %ymm2, %ymm2
+ -      -      -     1.00    -      -      -      -      -      -     vpaddw	%ymm11, %ymm9, %ymm0
+ -      -      -     1.00    -      -      -      -      -      -     vpaddw	%ymm4, %ymm0, %ymm0
+ -      -      -      -      -     1.00    -      -      -      -     vmovdqa	-1808(%rbp), %ymm4
+ -      -      -      -      -      -      -     1.00    -      -     vpaddw	%ymm7, %ymm6, %ymm6
+ -      -     1.00    -      -      -      -      -      -      -     vpsrlw	$8, %ymm0, %ymm0
+ -      -      -      -      -      -      -     1.00    -      -     vpaddw	%ymm7, %ymm2, %ymm2
+ -      -      -      -      -     1.00    -      -      -      -     vmovdqa	-1904(%rbp), %ymm7
+ -      -      -     1.00    -      -      -      -      -      -     vpaddw	%ymm2, %ymm3, %ymm3
+ -      -      -     1.00    -      -      -      -      -      -     vpaddw	%ymm1, %ymm5, %ymm2
+ -      -      -      -     1.00    -      -      -      -      -     vmovdqa	-1840(%rbp), %ymm5
+ -      -     1.00    -      -      -      -      -      -      -     vpsrlw	$8, %ymm3, %ymm3
+ -      -     1.00    -      -      -      -      -      -      -     vpsrlw	$8, %ymm2, %ymm2
+ -      -      -     1.00    -      -      -      -      -      -     vpaddw	%ymm8, %ymm15, %ymm1
+ -      -      -      -      -      -      -     1.00    -      -     vpaddw	%ymm6, %ymm1, %ymm1
+ -      -      -      -     1.00    -      -      -      -      -     vmovdqa	-1872(%rbp), %ymm6
+ -      -     1.00    -      -      -      -      -      -      -     vpsrlw	$8, %ymm1, %ymm1
+ -      -      -      -      -     1.00    -      -      -      -     movq	-8(%rbp), %r13
+ -      -      -      -     1.00    -      -      -     2.00    -     leave
+ -      -      -     1.00    -      -      -      -      -      -     leaq	-16(%r13), %rsp
+ -      -      -      -      -     1.00    -      -     1.00    -     popq	%r13
+ -      -      -      -      -      -      -      -     1.00    -     jmpq	*%rax
+
+
+Timeline view:
+                    0123456789          0123456789          0123456789          0123456789          0123456789          0123456789          0123456789          0123456789          0123456789          0123456789          0123456789          0123456789
+Index     0123456789          0123456789          0123456789          0123456789          0123456789          0123456789          0123456789          0123456789          0123456789          0123456789          0123456789          0123456789          01234567
+
+[0,0]     DeeER.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   pushq	%r13
+[0,1]     DeE-R.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm0, %ymm8
+[0,2]     .DeER.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   movq	%rdx, %r8
+[0,3]     .DeER.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   movl	$32768, %edx
+[0,4]     .DeER.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   addq	$16, %rdi
+[0,5]     .D=eER    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   leaq	16(%rsp), %r13
+[0,6]     . DeER    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   andq	$-64, %rsp
+[0,7]     .  DeeeeeeeER  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   pushq	-8(%r13)
+[0,8]     .   D======eeER.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   pushq	%rbp
+[0,9]     .   D========eER    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   movq	%rsp, %rbp
+[0,10]    .    D=======eeER   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   pushq	%r13
+[0,11]    .    D=========eER  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   subq	$1776, %rsp
+[0,12]    .    .D=======eE-R  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm6, -1872(%rbp)
+[0,13]    .    .D========eER  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm5, -1840(%rbp)
+[0,14]    .    . DeE-------R  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovd	%edx, %xmm5
+[0,15]    .    . DeeeeeeeE-R  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vbroadcastss	9808327(%rip), %ymm6
+[0,16]    .    . D=eeeE----R  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpbroadcastd	%xmm5, %ymm5
+[0,17]    .    . DeeeeeeeE-R  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vbroadcastss	8898077(%rip), %ymm0
+[0,18]    .    .  D=======eER .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm4, -1808(%rbp)
+[0,19]    .    .  DeeeeeE---R .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   movq	-8(%rdi), %rax
+[0,20]    .    .   D=======eER.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm7, -1904(%rbp)
+[0,21]    .    .   D=====eeeeeER   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vfmadd132ps	%ymm0, %ymm6, %ymm2
+[0,22]    .    .   D=====eeeeeER   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vfmadd132ps	%ymm0, %ymm6, %ymm8
+[0,23]    .    .    D=====eeeeeER  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vfmadd132ps	%ymm0, %ymm6, %ymm1
+[0,24]    .    .    D=====eeeeeER  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vfmadd132ps	%ymm3, %ymm6, %ymm0
+[0,25]    .    .    D-----------R  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpxor	%xmm3, %xmm3, %xmm3
+[0,26]    .    .    .D========eER  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm8, -1264(%rbp)
+[0,27]    .    .    .D========eeeeeeER  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vroundps	$1, %ymm8, %ymm8
+[0,28]    .    .    . D=============eeeER    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vcvttps2dq	%ymm8, %ymm4
+[0,29]    .    .    . D================eER   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpsubd	%ymm5, %ymm4, %ymm4
+[0,30]    .    .    . D========eE--------R   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm1, -1232(%rbp)
+[0,31]    .    .    .  D========eeeeeeE--R   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vroundps	$1, %ymm1, %ymm1
+[0,32]    .    .    .  D===============eeeER .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vcvttps2dq	%ymm1, %ymm1
+[0,33]    .    .    .  D==================eER.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpsubd	%ymm5, %ymm1, %ymm1
+[0,34]    .    .    .   D=======eE----------R.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovaps	%ymm2, -1392(%rbp)
+[0,35]    .    .    .   D===============eE--R.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpsrad	$16, %ymm4, %ymm10
+[0,36]    .    .    .   D==================eER    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpsrad	$16, %ymm1, %ymm14
+[0,37]    .    .    .    D==============eE---R    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpxor	%ymm5, %ymm4, %ymm4
+[0,38]    .    .    .    D=======eE----------R    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovaps	%ymm0, -1360(%rbp)
+[0,39]    .    .    .    D=================eER    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpxor	%ymm5, %ymm1, %ymm1
+[0,40]    .    .    .    .D==============eE--R    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpblendw	$85, %ymm4, %ymm3, %ymm4
+[0,41]    .    .    .    .D=======eE---------R    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm2, -1200(%rbp)
+[0,42]    .    .    .    . D======eeeeeeE----R    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vroundps	$1, %ymm2, %ymm2
+[0,43]    .    .    .    . D============eeeE-R    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vcvttps2dq	%ymm2, %ymm2
+[0,44]    .    .    .    . D===============eER    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpsubd	%ymm5, %ymm2, %ymm2
+[0,45]    .    .    .    .  D======eE--------R    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm0, -1168(%rbp)
+[0,46]    .    .    .    .  D========eeeeeeE-R    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vroundps	$1, %ymm0, %ymm0
+[0,47]    .    .    .    .   D==============eeeER .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vcvttps2dq	%ymm0, %ymm0
+[0,48]    .    .    .    .   D=================eER.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpsubd	%ymm5, %ymm0, %ymm0
+[0,49]    .    .    .    .   D==================eER    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpsrad	$16, %ymm0, %ymm12
+[0,50]    .    .    .    .   D==============eE----R    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpsrad	$16, %ymm2, %ymm11
+[0,51]    .    .    .    .    D=================eER    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpxor	%ymm5, %ymm0, %ymm0
+[0,52]    .    .    .    .    D==========eE-------R    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm10, -1136(%rbp)
+[0,53]    .    .    .    .    D=============eE----R    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpxor	%ymm5, %ymm2, %ymm2
+[0,54]    .    .    .    .    .D=============eE---R    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpblendw	$85, %ymm1, %ymm3, %ymm1
+[0,55]    .    .    .    .    .D============eE----R    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm14, -1104(%rbp)
+[0,56]    .    .    .    .    .D==============eE--R    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpblendw	$85, %ymm2, %ymm3, %ymm2
+[0,57]    .    .    .    .    . D================eER   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpblendw	$85, %ymm0, %ymm3, %ymm3
+[0,58]    .    .    .    .    . D=================eER  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpackusdw	%ymm1, %ymm4, %ymm4
+[0,59]    .    .    .    .    . D============eE-----R  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm11, -1456(%rbp)
+[0,60]    .    .    .    .    .  D=================eER .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpackusdw	%ymm3, %ymm2, %ymm2
+[0,61]    .    .    .    .    .  D===============eE--R .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm12, -1424(%rbp)
+[0,62]    .    .    .    .    .  D==================eeeER   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpermq	$216, %ymm4, %ymm13
+[0,63]    .    .    .    .    .   D==================eeeER  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpermq	$216, %ymm2, %ymm1
+[0,64]    .    .    .    .    .   D===============eE-----R  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm11, -1072(%rbp)
+[0,65]    .    .    .    .    .    D===============eE----R  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm12, -1040(%rbp)
+[0,66]    .    .    .    .    .    DeeeeeE---------------R  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovss	12(%rax), %xmm0
+[0,67]    .    .    .    .    .    .D===================eER .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm1, -1776(%rbp)
+[0,68]    .    .    .    .    .    .DeeeeeE---------------R .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovss	9807981(%rip), %xmm1
+[0,69]    .    .    .    .    .    . D===================eER.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm12, -1552(%rbp)
+[0,70]    .    .    .    .    .    . D====eeeE-------------R.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vsubss	%xmm1, %xmm0, %xmm0
+[0,71]    .    .    .    .    .    .  D======eeeeE---------R.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vcvttss2si	%xmm0, %edx
+[0,72]    .    .    .    .    .    .  DeeeeeE--------------R.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovss	16(%rax), %xmm0
+[0,73]    .    .    .    .    .    .  D=======eeeE---------R.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vsubss	%xmm1, %xmm0, %xmm0
+[0,74]    .    .    .    .    .    .   D-------------------R.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpxor	%xmm1, %xmm1, %xmm1
+[0,75]    .    .    .    .    .    .   D=========eE--------R.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpmaxsd	%ymm12, %ymm1, %ymm4
+[0,76]    .    .    .    .    .    .   D=======eE----------R.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpmaxsd	%ymm11, %ymm1, %ymm8
+[0,77]    .    .    .    .    .    .   D==========eE-------R.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpcmpeqd	%ymm12, %ymm12, %ymm12
+[0,78]    .    .    .    .    .    .    D=============eE---R.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovd	%edx, %xmm15
+[0,79]    .    .    .    .    .    .    D=======eE---------R.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpmaxsd	%ymm14, %ymm1, %ymm2
+[0,80]    .    .    .    .    .    .    D==========eE------R.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm12, %ymm5
+[0,81]    .    .    .    .    .    .    .D==========eeeeE--R.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vcvttss2si	%xmm0, %edx
+[0,82]    .    .    .    .    .    .    .D=============eeeER.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpbroadcastd	%xmm15, %ymm15
+[0,83]    .    .    .    .    .    .    .D=========eE------R.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpmaxsd	%ymm10, %ymm1, %ymm0
+[0,84]    .    .    .    .    .    .    . D===============eER    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpminsd	%ymm15, %ymm0, %ymm6
+[0,85]    .    .    .    .    .    .    . D===============eER    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpminsd	%ymm15, %ymm2, %ymm7
+[0,86]    .    .    .    .    .    .    . D=============eE--R    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovd	%edx, %xmm3
+[0,87]    .    .    .    .    .    .    . DeeeeeE-----------R    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   movq	(%rax), %rdx
+[0,88]    .    .    .    .    .    .    .  DeeeeeE----------R    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   movl	8(%rax), %eax
+[0,89]    .    .    .    .    .    .    .  D=============eeeER   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpbroadcastd	%xmm3, %ymm3
+[0,90]    .    .    .    .    .    .    .  D==============eE-R   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   movl	%eax, -1456(%rbp)
+[0,91]    .    .    .    .    .    .    .  D================eER  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpminsd	%ymm3, %ymm4, %ymm4
+[0,92]    .    .    .    .    .    .    .   D===============eER  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpminsd	%ymm3, %ymm8, %ymm8
+[0,93]    .    .    .    .    .    .    .   D==============eE-R  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   movl	%eax, -1452(%rbp)
+[0,94]    .    .    .    .    .    .    .   D===============eER  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   movl	%eax, -1448(%rbp)
+[0,95]    .    .    .    .    .    .    .   D================eER .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   movl	%eax, -1444(%rbp)
+[0,96]    .    .    .    .    .    .    .    D================eER.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   movl	%eax, -1440(%rbp)
+[0,97]    .    .    .    .    .    .    .    D=================eER    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   movl	%eax, -1436(%rbp)
+[0,98]    .    .    .    .    .    .    .    D==================eER   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   movl	%eax, -1432(%rbp)
+[0,99]    .    .    .    .    .    .    .    D===================eER  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   movl	%eax, -1428(%rbp)
+[0,100]   .    .    .    .    .    .    .    .DeeeeeeeE------------R  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	-1456(%rbp), %ymm0
+[0,101]   .    .    .    .    .    .    .    .D===================eER .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   movl	%eax, -1424(%rbp)
+[0,102]   .    .    .    .    .    .    .    .D====================eER.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   movl	%eax, -1420(%rbp)
+[0,103]   .    .    .    .    .    .    .    .D=====================eER    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   movl	%eax, -1416(%rbp)
+[0,104]   .    .    .    .    .    .    .    . D=====================eER   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   movl	%eax, -1412(%rbp)
+[0,105]   .    .    .    .    .    .    .    . D======================eER  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   movl	%eax, -1408(%rbp)
+[0,106]   .    .    .    .    .    .    .    . D=======================eER .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   movl	%eax, -1404(%rbp)
+[0,107]   .    .    .    .    .    .    .    . D========================eER.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   movl	%eax, -1400(%rbp)
+[0,108]   .    .    .    .    .    .    .    .  D========================eER    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   movl	%eax, -1396(%rbp)
+[0,109]   .    .    .    .    .    .    .    .  DeE------------------------R    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   movl	$8388736, %eax
+[0,110]   .    .    .    .    .    .    .    .  D=========================eER   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm3, -1584(%rbp)
+[0,111]   .    .    .    .    .    .    .    .   DeeeeeeeE------------------R   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	-1424(%rbp), %ymm3
+[0,112]   .    .    .    .    .    .    .    .   D=========================eER  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm0, -1488(%rbp)
+[0,113]   .    .    .    .    .    .    .    .    D=========eeeeeeeeeeeeeeeeeER .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpmulld	-1488(%rbp), %ymm8, %ymm2
+[0,114]   .    .    .    .    .    .    .    .    D==========================eER.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpaddd	%ymm6, %ymm2, %ymm2
+[0,115]   .    .    .    .    .    .    .    .    .D========================eE-R.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm8, -1328(%rbp)
+[0,116]   .    .    .    .    .    .    .    .    .D=========================eER.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm4, -1296(%rbp)
+[0,117]   .    .    .    .    .    .    .    .    . D=========================eER    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm0, -1008(%rbp)
+[0,118]   .    .    .    .    .    .    .    .    . D==========================eER   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm3, -976(%rbp)
+[0,119]   .    .    .    .    .    .    .    .    .  D==========================eER  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm6, -1648(%rbp)
+[0,120]   .    .    .    .    .    .    .    .    .  DeeeeeeeeE-------------------R  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpaddd	9808001(%rip), %ymm10, %ymm10
+[0,121]   .    .    .    .    .    .    .    .    .   DeE-------------------------R  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm12, %ymm6
+[0,122]   .    .    .    .    .    .    .    .    .   DeeeeeeeeE------------------R  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpaddd	9807989(%rip), %ymm14, %ymm14
+[0,123]   .    .    .    .    .    .    .    .    .    D=========================eER .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm3, -1520(%rbp)
+[0,124]   .    .    .    .    .    .    .    .    .    .D=====eeeeeeeeeeeeeeeeeE---R .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpmulld	-1520(%rbp), %ymm4, %ymm0
+[0,125]   .    .    .    .    .    .    .    .    .    .D======================eE--R .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpaddd	%ymm7, %ymm0, %ymm0
+[0,126]   .    .    .    .    .    .    .    .    .    . D======eeeeeeeeeeeeeeeeeE-R .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpmulld	-1488(%rbp), %ymm8, %ymm8
+[0,127]   .    .    .    .    .    .    .    .    .    .  D=======================eER.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm2, -1456(%rbp)
+[0,128]   .    .    .    .    .    .    .    .    .    .   D======eeeeeeeeeeeeeeeeeER.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpmulld	-1520(%rbp), %ymm4, %ymm4
+[0,129]   .    .    .    .    .    .    .    .    .    .    D======================eER    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm7, -1616(%rbp)
+[0,130]   .    .    .    .    .    .    .    .    .    .    D=======================eER   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm0, -1424(%rbp)
+[0,131]   .    .    .    .    .    .    .    .    .    .    .D=======================eER  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm2, -944(%rbp)
+[0,132]   .    .    .    .    .    .    .    .    .    .    .D========================eER .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm0, -912(%rbp)
+[0,133]   .    .    .    .    .    .    .    .    .    .    . D=================eeeeeeeeeeeeeeeeeeeeeeER .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpgatherdd	%ymm5, (%rdx,%ymm0,4), %ymm2
+[0,134]   .    .    .    .    .    .    .    .    .    .    .    .    DeeeeeeeE------------------------R .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	-944(%rbp), %ymm5
+[0,135]   .    .    .    .    .    .    .    .    .    .    .    .    .D=================eeeeeeeeeeeeeeeeeeeeeeER  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpgatherdd	%ymm6, (%rdx,%ymm5,4), %ymm0
+[0,136]   .    .    .    .    .    .    .    .    .    .    .    .    .    .   D=========eE---------------------R  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm10, -752(%rbp)
+[0,137]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    D=================eE------------R  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpmaxsd	%ymm10, %ymm1, %ymm10
+[0,138]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    D=========eE--------------------R  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm14, -720(%rbp)
+[0,139]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    D=================eE------------R  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpmaxsd	%ymm14, %ymm1, %ymm14
+[0,140]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .D=============================eeeER    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vperm2i128	$32, %ymm2, %ymm0, %ymm3
+[0,141]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .D==============================eeeER   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vperm2i128	$49, %ymm2, %ymm0, %ymm0
+[0,142]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .D=================eE---------------R   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpminsd	%ymm15, %ymm14, %ymm14
+[0,143]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .D================eE----------------R   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpsrld	$16, %ymm12, %ymm2
+[0,144]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    . D================eE---------------R   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpminsd	%ymm15, %ymm10, %ymm15
+[0,145]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    . D=======================================eER.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpand	%ymm2, %ymm0, %ymm6
+[0,146]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    . D=================eE----------------------R.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpaddd	%ymm4, %ymm14, %ymm4
+[0,147]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    . D=======================================eER.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpand	%ymm2, %ymm3, %ymm5
+[0,148]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .  D================eE----------------------R.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm15, -1712(%rbp)
+[0,149]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .  D================eE----------------------R.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpaddd	%ymm15, %ymm8, %ymm8
+[0,150]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .  D=======================================eER    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpsrld	$16, %ymm3, %ymm3
+[0,151]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .   D======================================eER    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm5, -880(%rbp)
+[0,152]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .   D==============eE------------------------R    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm12, %ymm10
+[0,153]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .   D=======================================eER   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpsrld	$16, %ymm0, %ymm0
+[0,154]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    D======================================eER   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm6, -848(%rbp)
+[0,155]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    D=====================================eE-R   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpackusdw	%ymm6, %ymm5, %ymm5
+[0,156]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    D=====================================eE-R   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpcmpeqd	%ymm6, %ymm6, %ymm6
+[0,157]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .D======================================eER  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm3, -816(%rbp)
+[0,158]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .D======================================eER  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpsrlw	$8, %ymm6, %ymm7
+[0,159]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .D=======================================eER .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpsrlw	$15, %ymm6, %ymm6
+[0,160]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . D======================================eER .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm0, -784(%rbp)
+[0,161]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . D======================================eER .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpand	%ymm7, %ymm5, %ymm9
+[0,162]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . D=======================================eER.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpsrlw	$8, %ymm5, %ymm5
+[0,163]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .  D====================================eE--R.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpackusdw	%ymm0, %ymm3, %ymm0
+[0,164]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .  D======================================eER.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm14, -1680(%rbp)
+[0,165]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .  D=====================================eE-R.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpand	%ymm7, %ymm0, %ymm3
+[0,166]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .   D======================================eER    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpsrlw	$8, %ymm0, %ymm0
+[0,167]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .   D======================================eER    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm8, -688(%rbp)
+[0,168]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .   D=eeeeeeeE-------------------------------R    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	-688(%rbp), %ymm14
+[0,169]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    D======================================eER   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm8, -1456(%rbp)
+[0,170]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    D=======================================eER  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm4, -1424(%rbp)
+[0,171]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .D=======================================eER .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm4, -656(%rbp)
+[0,172]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . D========eeeeeeeeeeeeeeeeeeeeeeE---------R .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpgatherdd	%ymm10, (%rdx,%ymm4,4), %ymm8
+[0,173]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    D=========eE---------------------R .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm12, %ymm10
+[0,174]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .D===========eeeeeeeeeeeeeeeeeeeeeeER   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpgatherdd	%ymm10, (%rdx,%ymm14,4), %ymm4
+[0,175]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .   DeeeeeeeeE-----------------R   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpaddd	9807648(%rip), %ymm11, %ymm11
+[0,176]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    D========================eeeER.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vperm2i128	$32, %ymm8, %ymm4, %ymm10
+[0,177]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    D=========================eeeER    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vperm2i128	$49, %ymm8, %ymm4, %ymm4
+[0,178]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    D============================eER   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpand	%ymm2, %ymm4, %ymm14
+[0,179]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    D===========================eE-R   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpand	%ymm2, %ymm10, %ymm8
+[0,180]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .D====================eE-------R   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm11, -496(%rbp)
+[0,181]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .D===========================eER   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm8, -624(%rbp)
+[0,182]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . D===========================eER  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpackusdw	%ymm14, %ymm8, %ymm8
+[0,183]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . D===========================eER  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpsrld	$16, %ymm10, %ymm10
+[0,184]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . D============================eER .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpand	%ymm7, %ymm8, %ymm15
+[0,185]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . D============================eER .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpsrld	$16, %ymm4, %ymm4
+[0,186]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .  D===========================eER .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm10, -560(%rbp)
+[0,187]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .  D============================eER.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm4, -528(%rbp)
+[0,188]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .   D===========================eER.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpackusdw	%ymm4, %ymm10, %ymm4
+[0,189]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .   D===========================eER.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpsubw	%ymm9, %ymm15, %ymm10
+[0,190]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .   D============================eER    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpaddw	%ymm15, %ymm9, %ymm9
+[0,191]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .   D============================eER    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpsllw	$7, %ymm10, %ymm10
+[0,192]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    D============================eER   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpsllw	$7, %ymm9, %ymm9
+[0,193]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    D===========================eE-R   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm14, -592(%rbp)
+[0,194]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    D===========================eE-R   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpand	%ymm7, %ymm4, %ymm14
+[0,195]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .D============================eeeeeER   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpmulhrsw	%ymm10, %ymm13, %ymm10
+[0,196]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .D=========================eE-------R   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpsrlw	$8, %ymm8, %ymm8
+[0,197]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .D=============================eE---R   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpsrlw	$8, %ymm4, %ymm4
+[0,198]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .D=================================eER  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpaddw	%ymm6, %ymm10, %ymm10
+[0,199]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . D=================================eER .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpaddw	%ymm10, %ymm9, %ymm9
+[0,200]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . D==================================eER.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpsrlw	$1, %ymm9, %ymm10
+[0,201]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . D==========================eE--------R.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpsubw	%ymm5, %ymm8, %ymm9
+[0,202]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . D==========================eE--------R.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpaddw	%ymm5, %ymm8, %ymm5
+[0,203]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .  D============================eE-----R.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpsllw	$7, %ymm9, %ymm9
+[0,204]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .  D=============================eE----R.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpsllw	$7, %ymm5, %ymm5
+[0,205]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .  D==================================eER    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm10, -1744(%rbp)
+[0,206]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .   D=============================eeeeeER    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpmulhrsw	%ymm9, %ymm13, %ymm9
+[0,207]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .   D==================================eER   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpaddw	%ymm6, %ymm9, %ymm9
+[0,208]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .   D===================================eER  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpaddw	%ymm5, %ymm9, %ymm5
+[0,209]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .   DeeeeeeeE-----------------------------R  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	-1552(%rbp), %ymm9
+[0,210]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    D===================================eER .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpsrlw	$1, %ymm5, %ymm15
+[0,211]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    D========================eE-----------R .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpsubw	%ymm3, %ymm14, %ymm5
+[0,212]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    D========================eE-----------R .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpaddw	%ymm3, %ymm14, %ymm3
+[0,213]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    DeeeeeeeE-----------------------------R .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	-1520(%rbp), %ymm14
+[0,214]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .D============================eE------R .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpsllw	$7, %ymm5, %ymm5
+[0,215]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .D=============================eE-----R .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpsllw	$7, %ymm3, %ymm3
+[0,216]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . D==============================eeeeeER.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpmulhrsw	%ymm5, %ymm13, %ymm5
+[0,217]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . D===================================eER    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpaddw	%ymm6, %ymm5, %ymm5
+[0,218]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .  D===================================eER   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpaddw	%ymm5, %ymm3, %ymm3
+[0,219]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .  D====================================eER  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpsrlw	$1, %ymm3, %ymm5
+[0,220]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .  D=======================eE-------------R  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpsubw	%ymm0, %ymm4, %ymm3
+[0,221]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .  D=======================eE-------------R  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpaddw	%ymm4, %ymm0, %ymm0
+[0,222]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .   D=============================eE------R  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpsllw	$7, %ymm3, %ymm3
+[0,223]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .   DeeeeeeeeE----------------------------R  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpaddd	9807385(%rip), %ymm9, %ymm4
+[0,224]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    DeeeeeeeE----------------------------R  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	-1584(%rbp), %ymm9
+[0,225]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    D=============================eeeeeE-R  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpmulhrsw	%ymm3, %ymm13, %ymm3
+[0,226]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    D===============================eE---R  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpsllw	$7, %ymm0, %ymm0
+[0,227]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .D===========================eE------R  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm4, -464(%rbp)
+[0,228]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .D======eE---------------------------R  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpmaxsd	%ymm4, %ymm1, %ymm4
+[0,229]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .DeE---------------------------------R  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpmaxsd	%ymm11, %ymm1, %ymm1
+[0,230]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . DeeeeeeeE--------------------------R  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	-1488(%rbp), %ymm11
+[0,231]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . D======eE--------------------------R  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpminsd	%ymm9, %ymm4, %ymm4
+[0,232]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . D=====eE---------------------------R  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpminsd	%ymm9, %ymm1, %ymm1
+[0,233]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . DeE--------------------------------R  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm12, %ymm9
+[0,234]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .  D======eeeeeeeeeeE----------------R  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpmulld	%ymm11, %ymm1, %ymm8
+[0,235]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .  D==========================eE-----R  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm1, -1328(%rbp)
+[0,236]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .   D=======eeeeeeeeeeE--------------R  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpmulld	%ymm11, %ymm1, %ymm1
+[0,237]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .   D========eeeeeeeeE---------------R  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpaddd	-1648(%rbp), %ymm8, %ymm8
+[0,238]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    D=========================eE----R  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm4, -1296(%rbp)
+[0,239]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    D=========eeeeeeeeE-------------R  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpaddd	-1712(%rbp), %ymm1, %ymm1
+[0,240]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .D============================eER  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpaddw	%ymm6, %ymm3, %ymm3
+[0,241]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .D=============================eER .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpaddw	%ymm3, %ymm0, %ymm0
+[0,242]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .D==========================eeeeeeeeeeER.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpmulld	%ymm14, %ymm4, %ymm3
+[0,243]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . D========================eE----------R.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm8, -432(%rbp)
+[0,244]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .  DeeeeeeeE---------------------------R.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	-432(%rbp), %ymm10
+[0,245]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .  D===========================eeeeeeeeER    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpaddd	-1616(%rbp), %ymm3, %ymm3
+[0,246]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .   D==========================eE-------R    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm8, -1456(%rbp)
+[0,247]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .   D==========================eeeeeeeeeeER  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpmulld	%ymm14, %ymm4, %ymm4
+[0,248]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    DeE----------------------------------R  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm12, %ymm14
+[0,249]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    D===========================eE-------R  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vpsrlw	$1, %ymm0, %ymm0
+[0,250]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .D================================eE-R  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm3, -1424(%rbp)
+[0,251]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .D=================================eER  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm3, -400(%rbp)
+[0,252]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . D===============================eeeeeeeeeeeeeeeeeeeeeeER  .    .    .    .    .    .    .    .    .    .    .    .    . .   vpgatherdd	%ymm9, (%rdx,%ymm3,4), %ymm8
+[0,253]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    DeE--------------------------------------------R  .    .    .    .    .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm12, %ymm9
+[0,254]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .D===============================eeeeeeeeeeeeeeeeeeeeeeER   .    .    .    .    .    .    .    .    .    .    . .   vpgatherdd	%ymm9, (%rdx,%ymm10,4), %ymm3
+[0,255]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .   D==================================================eeeER.    .    .    .    .    .    .    .    .    . .   vperm2i128	$32, %ymm8, %ymm3, %ymm10
+[0,256]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .   D===================================================eeeER    .    .    .    .    .    .    .    .    . .   vperm2i128	$49, %ymm8, %ymm3, %ymm3
+[0,257]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    D=====================================================eER   .    .    .    .    .    .    .    .    . .   vpand	%ymm2, %ymm3, %ymm9
+[0,258]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    D=====================================================eER   .    .    .    .    .    .    .    .    . .   vpsrld	$16, %ymm3, %ymm3
+[0,259]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    D====================================================eE-R   .    .    .    .    .    .    .    .    . .   vpand	%ymm2, %ymm10, %ymm8
+[0,260]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    D====================================================eE-R   .    .    .    .    .    .    .    .    . .   vpsrld	$16, %ymm10, %ymm10
+[0,261]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .D====================================================eER   .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm8, -368(%rbp)
+[0,262]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .D=====================================================eER  .    .    .    .    .    .    .    .    . .   vpackusdw	%ymm9, %ymm8, %ymm8
+[0,263]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . D====================================================eER  .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm9, -336(%rbp)
+[0,264]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . D=====================================================eER .    .    .    .    .    .    .    .    . .   vpand	%ymm7, %ymm8, %ymm9
+[0,265]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . D=====================================================eER .    .    .    .    .    .    .    .    . .   vpsrlw	$8, %ymm8, %ymm8
+[0,266]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .  D====================================================eER .    .    .    .    .    .    .    .    . .   vmovdqa	%ymm10, -304(%rbp)
+[0,267]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .  D=====================================================eER.    .    .    .    .    .    .    .    . .   vmovdqa	%ymm3, -272(%rbp)
+[0,268]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .   D===================================================eE-R.    .    .    .    .    .    .    .    . .   vpackusdw	%ymm3, %ymm10, %ymm3
+[0,269]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .   D=====================================================eER    .    .    .    .    .    .    .    . .   vmovdqa	%ymm1, -1456(%rbp)
+[0,270]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    D===eeeeeeeeE------------------------------------------R    .    .    .    .    .    .    .    . .   vpaddd	-1680(%rbp), %ymm4, %ymm4
+[0,271]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    D===================================================eE-R    .    .    .    .    .    .    .    . .   vpand	%ymm7, %ymm3, %ymm10
+[0,272]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .D====================================================eER   .    .    .    .    .    .    .    . .   vmovdqa	%ymm1, -240(%rbp)
+[0,273]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .D==================================================eE--R   .    .    .    .    .    .    .    . .   vpsrlw	$8, %ymm3, %ymm3
+[0,274]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . D====================================================eER  .    .    .    .    .    .    .    . .   vmovdqa	%ymm4, -1424(%rbp)
+[0,275]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . D=====================================================eER .    .    .    .    .    .    .    . .   vmovdqa	%ymm4, -208(%rbp)
+[0,276]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .  D=======================eeeeeeeeeeeeeeeeeeeeeeE--------R .    .    .    .    .    .    .    . .   vpgatherdd	%ymm14, (%rdx,%ymm4,4), %ymm1
+[0,277]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .DeeeeeeeE--------------------------------------R .    .    .    .    .    .    .    . .   vmovdqa	-240(%rbp), %ymm14
+[0,278]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . D=======================eeeeeeeeeeeeeeeeeeeeeeER.    .    .    .    .    .    .    . .   vpgatherdd	%ymm12, (%rdx,%ymm14,4), %ymm11
+[0,279]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    DeE------------------------------------R.    .    .    .    .    .    .    . .   movq	%r8, %rdx
+[0,280]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    D=====================================eeeER  .    .    .    .    .    .    . .   vperm2i128	$32, %ymm1, %ymm11, %ymm4
+[0,281]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .D=====================================eeeER .    .    .    .    .    .    . .   vperm2i128	$49, %ymm1, %ymm11, %ymm1
+[0,282]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .D=======================================eER .    .    .    .    .    .    . .   vpand	%ymm4, %ymm2, %ymm11
+[0,283]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .D========================================eER.    .    .    .    .    .    . .   vpand	%ymm1, %ymm2, %ymm2
+[0,284]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . D======================================eE-R.    .    .    .    .    .    . .   vmovdqa	%ymm4, -1328(%rbp)
+[0,285]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . D========================================eER    .    .    .    .    .    . .   vmovdqa	%ymm2, -144(%rbp)
+[0,286]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .  D=======================================eER    .    .    .    .    .    . .   vpackusdw	%ymm2, %ymm11, %ymm2
+[0,287]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .  D=====================================eE--R    .    .    .    .    .    . .   vpsrld	$16, %ymm4, %ymm4
+[0,288]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .  D========================================eER   .    .    .    .    .    . .   vmovdqa	%ymm1, -1296(%rbp)
+[0,289]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .   D=====================================eE--R   .    .    .    .    .    . .   vpsrld	$16, %ymm1, %ymm1
+[0,290]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .   D========================================eER  .    .    .    .    .    . .   vmovdqa	%ymm11, -176(%rbp)
+[0,291]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .   D=======================================eE-R  .    .    .    .    .    . .   vpand	%ymm7, %ymm2, %ymm11
+[0,292]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    D======================================eE-R  .    .    .    .    .    . .   vpsrlw	$8, %ymm2, %ymm2
+[0,293]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    D========================================eER .    .    .    .    .    . .   vmovdqa	%ymm4, -1456(%rbp)
+[0,294]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .D========================================eER.    .    .    .    .    . .   vmovdqa	%ymm1, -1424(%rbp)
+[0,295]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .D=========================================eER    .    .    .    .    . .   vmovdqa	%ymm4, -112(%rbp)
+[0,296]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . D====================================eER   .    .    .    .    . .   vmovdqa	%ymm1, -80(%rbp)
+[0,297]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . D===============================eE-----R   .    .    .    .    . .   vpackusdw	%ymm1, %ymm4, %ymm1
+[0,298]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . D================================eE----R   .    .    .    .    . .   vpsubw	%ymm9, %ymm11, %ymm4
+[0,299]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .  D===============================eE----R   .    .    .    .    . .   vpaddw	%ymm11, %ymm9, %ymm9
+[0,300]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .  D================================eE---R   .    .    .    .    . .   vpsllw	$7, %ymm4, %ymm4
+[0,301]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .  D===============================eE----R   .    .    .    .    . .   vpand	%ymm7, %ymm1, %ymm7
+[0,302]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .  DeeeeeeeE-----------------------------R   .    .    .    .    . .   vmovdqa	-1744(%rbp), %ymm11
+[0,303]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .   D================================eeeeeER .    .    .    .    . .   vpmulhrsw	%ymm4, %ymm13, %ymm4
+[0,304]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .   D=================================eE---R .    .    .    .    . .   vpsllw	$7, %ymm9, %ymm9
+[0,305]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .   D==================================eE--R .    .    .    .    . .   vpsrlw	$8, %ymm1, %ymm1
+[0,306]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .   D=====================================eER.    .    .    .    . .   vpaddw	%ymm6, %ymm4, %ymm4
+[0,307]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    D=====================================eER    .    .    .    . .   vpaddw	%ymm4, %ymm9, %ymm9
+[0,308]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    D==============================eE-------R    .    .    .    . .   vpsubw	%ymm8, %ymm2, %ymm4
+[0,309]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    D==================================eE---R    .    .    .    . .   vpsllw	$7, %ymm4, %ymm4
+[0,310]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    D======================================eER   .    .    .    . .   vpsrlw	$1, %ymm9, %ymm9
+[0,311]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .D=============================eE--------R   .    .    .    . .   vpaddw	%ymm2, %ymm8, %ymm8
+[0,312]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .D==================================eeeeeER  .    .    .    . .   vpmulhrsw	%ymm4, %ymm13, %ymm4
+[0,313]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .D===================================eE---R  .    .    .    . .   vpsllw	$7, %ymm8, %ymm8
+[0,314]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .D==============================eE--------R  .    .    .    . .   vpsubw	%ymm10, %ymm7, %ymm2
+[0,315]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . D===================================eE--R  .    .    .    . .   vpsllw	$7, %ymm2, %ymm2
+[0,316]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . D=============================eE--------R  .    .    .    . .   vpaddw	%ymm7, %ymm10, %ymm10
+[0,317]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . D=========eE----------------------------R  .    .    .    . .   vmovd	%eax, %xmm7
+[0,318]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . DeeeeeE---------------------------------R  .    .    .    . .   movq	(%rdi), %rax
+[0,319]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .  D====================================eeeeeER   .    .    . .   vpmulhrsw	%ymm2, %ymm13, %ymm2
+[0,320]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .  D=====================================eE---R   .    .    . .   vpsllw	$7, %ymm10, %ymm10
+[0,321]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .  D=========eeeE-----------------------------R   .    .    . .   vpbroadcastd	%xmm7, %ymm7
+[0,322]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    D==============================eE---R   .    .    . .   vpaddw	%ymm6, %ymm4, %ymm4
+[0,323]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .D==============================eE--R   .    .    . .   vpaddw	%ymm4, %ymm8, %ymm8
+[0,324]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . D===========================eE----R   .    .    . .   vpsubw	%ymm11, %ymm9, %ymm4
+[0,325]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .  D===============================eER  .    .    . .   vpaddw	%ymm6, %ymm2, %ymm2
+[0,326]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .  D=============================eE--R  .    .    . .   vpsrlw	$1, %ymm8, %ymm8
+[0,327]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .  D================================eER .    .    . .   vpaddw	%ymm2, %ymm10, %ymm10
+[0,328]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .   D====================eE-----------R .    .    . .   vpsubw	%ymm3, %ymm1, %ymm2
+[0,329]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .   D===========================eE----R .    .    . .   vpsllw	$7, %ymm2, %ymm2
+[0,330]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .   D================================eER.    .    . .   vpsrlw	$1, %ymm10, %ymm10
+[0,331]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    D===================eE------------R.    .    . .   vpaddw	%ymm1, %ymm3, %ymm3
+[0,332]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    D============================eeeeeER    .    . .   vpmulhrsw	%ymm2, %ymm13, %ymm2
+[0,333]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .D============================eE---R    .    . .   vpsllw	$7, %ymm3, %ymm3
+[0,334]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .D===============================eER    .    . .   vpsubw	%ymm5, %ymm10, %ymm1
+[0,335]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .DeeeeeeeE-------------------------R    .    . .   vmovdqa	-1776(%rbp), %ymm13
+[0,336]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .D===============================eER    .    . .   vpaddw	%ymm5, %ymm10, %ymm5
+[0,337]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . D===============================eeeeeER    . .   vpmulhrsw	%ymm13, %ymm1, %ymm1
+[0,338]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . D============================eeeeeE---R    . .   vpmulhrsw	%ymm13, %ymm4, %ymm4
+[0,339]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . D===============================eE----R    . .   vpaddw	%ymm6, %ymm2, %ymm2
+[0,340]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . D==========================eE---------R    . .   vpsubw	%ymm15, %ymm8, %ymm6
+[0,341]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .  D===============================eE---R    . .   vpaddw	%ymm2, %ymm3, %ymm3
+[0,342]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .   D============================eeeeeE-R    . .   vpmulhrsw	%ymm13, %ymm6, %ymm6
+[0,343]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    D==============================eE--R    . .   vpsrlw	$1, %ymm3, %ymm3
+[0,344]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .D================================eER   . .   vpaddw	%ymm7, %ymm1, %ymm1
+[0,345]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .  D===========================eE---R   . .   vpaddw	%ymm7, %ymm4, %ymm4
+[0,346]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .   D===========================eE--R   . .   vpsubw	%ymm0, %ymm3, %ymm2
+[0,347]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .D=========================eE--R   . .   vpaddw	%ymm3, %ymm0, %ymm3
+[0,348]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .D==========================eeeeeER. .   vpmulhrsw	%ymm13, %ymm2, %ymm2
+[0,349]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .D=============eE-----------------R. .   vpaddw	%ymm11, %ymm9, %ymm0
+[0,350]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . D=========================eE----R. .   vpaddw	%ymm4, %ymm0, %ymm0
+[0,351]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . DeeeeeeeE-----------------------R. .   vmovdqa	-1808(%rbp), %ymm4
+[0,352]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .  D========================eE----R. .   vpaddw	%ymm7, %ymm6, %ymm6
+[0,353]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .  D=========================eE---R. .   vpsrlw	$8, %ymm0, %ymm0
+[0,354]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .  D=============================eER .   vpaddw	%ymm7, %ymm2, %ymm2
+[0,355]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .   DeeeeeeeE----------------------R .   vmovdqa	-1904(%rbp), %ymm7
+[0,356]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .   D=============================eER.   vpaddw	%ymm2, %ymm3, %ymm3
+[0,357]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .   D=========================eE----R.   vpaddw	%ymm1, %ymm5, %ymm2
+[0,358]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .   DeeeeeeeE-----------------------R.   vmovdqa	-1840(%rbp), %ymm5
+[0,359]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    D=============================eER   vpsrlw	$8, %ymm3, %ymm3
+[0,360]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    D=========================eE----R   vpsrlw	$8, %ymm2, %ymm2
+[0,361]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    D=============eE----------------R   vpaddw	%ymm8, %ymm15, %ymm1
+[0,362]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    D=======================eE------R   vpaddw	%ymm6, %ymm1, %ymm1
+[0,363]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .DeeeeeeeE----------------------R   vmovdqa	-1872(%rbp), %ymm6
+[0,364]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .D=======================eE-----R   vpsrlw	$8, %ymm1, %ymm1
+[0,365]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .D=eeeeeE-----------------------R   movq	-8(%rbp), %r13
+[0,366]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . DeeeeeeeE---------------------R   leave
+[0,367]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . D=====eE----------------------R   leaq	-16(%r13), %rsp
+[0,368]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .  D=====eeeeeeE----------------R   popq	%r13
+[0,369]   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .  D=eE-------------------------R   jmpq	*%rax
+
+
+Average Wait times (based on the timeline view):
+[0]: Executions
+[1]: Average time spent waiting in a scheduler's queue
+[2]: Average time spent waiting in a scheduler's queue while ready
+[3]: Average time elapsed from WB until retire stage
+
+      [0]    [1]    [2]    [3]
+0.     1     1.0    1.0    0.0       pushq	%r13
+1.     1     1.0    1.0    1.0       vmovdqa	%ymm0, %ymm8
+2.     1     1.0    1.0    0.0       movq	%rdx, %r8
+3.     1     1.0    1.0    0.0       movl	$32768, %edx
+4.     1     1.0    1.0    0.0       addq	$16, %rdi
+5.     1     2.0    0.0    0.0       leaq	16(%rsp), %r13
+6.     1     1.0    0.0    0.0       andq	$-64, %rsp
+7.     1     1.0    0.0    0.0       pushq	-8(%r13)
+8.     1     7.0    0.0    0.0       pushq	%rbp
+9.     1     9.0    0.0    0.0       movq	%rsp, %rbp
+10.    1     8.0    0.0    0.0       pushq	%r13
+11.    1     10.0   0.0    0.0       subq	$1776, %rsp
+12.    1     8.0    0.0    1.0       vmovdqa	%ymm6, -1872(%rbp)
+13.    1     9.0    1.0    0.0       vmovdqa	%ymm5, -1840(%rbp)
+14.    1     1.0    1.0    7.0       vmovd	%edx, %xmm5
+15.    1     1.0    1.0    1.0       vbroadcastss	9808327(%rip), %ymm6
+16.    1     2.0    0.0    4.0       vpbroadcastd	%xmm5, %ymm5
+17.    1     1.0    1.0    1.0       vbroadcastss	8898077(%rip), %ymm0
+18.    1     8.0    1.0    0.0       vmovdqa	%ymm4, -1808(%rbp)
+19.    1     1.0    1.0    3.0       movq	-8(%rdi), %rax
+20.    1     8.0    1.0    0.0       vmovdqa	%ymm7, -1904(%rbp)
+21.    1     6.0    0.0    0.0       vfmadd132ps	%ymm0, %ymm6, %ymm2
+22.    1     6.0    0.0    0.0       vfmadd132ps	%ymm0, %ymm6, %ymm8
+23.    1     6.0    1.0    0.0       vfmadd132ps	%ymm0, %ymm6, %ymm1
+24.    1     6.0    1.0    0.0       vfmadd132ps	%ymm3, %ymm6, %ymm0
+25.    1     0.0    0.0    11.0      vpxor	%xmm3, %xmm3, %xmm3
+26.    1     9.0    0.0    0.0       vmovdqa	%ymm8, -1264(%rbp)
+27.    1     9.0    0.0    0.0       vroundps	$1, %ymm8, %ymm8
+28.    1     14.0   0.0    0.0       vcvttps2dq	%ymm8, %ymm4
+29.    1     17.0   0.0    0.0       vpsubd	%ymm5, %ymm4, %ymm4
+30.    1     9.0    0.0    8.0       vmovdqa	%ymm1, -1232(%rbp)
+31.    1     9.0    1.0    2.0       vroundps	$1, %ymm1, %ymm1
+32.    1     16.0   1.0    0.0       vcvttps2dq	%ymm1, %ymm1
+33.    1     19.0   0.0    0.0       vpsubd	%ymm5, %ymm1, %ymm1
+34.    1     8.0    1.0    10.0      vmovaps	%ymm2, -1392(%rbp)
+35.    1     16.0   0.0    2.0       vpsrad	$16, %ymm4, %ymm10
+36.    1     19.0   0.0    0.0       vpsrad	$16, %ymm1, %ymm14
+37.    1     15.0   0.0    3.0       vpxor	%ymm5, %ymm4, %ymm4
+38.    1     8.0    1.0    10.0      vmovaps	%ymm0, -1360(%rbp)
+39.    1     18.0   0.0    0.0       vpxor	%ymm5, %ymm1, %ymm1
+40.    1     15.0   0.0    2.0       vpblendw	$85, %ymm4, %ymm3, %ymm4
+41.    1     8.0    1.0    9.0       vmovdqa	%ymm2, -1200(%rbp)
+42.    1     7.0    4.0    4.0       vroundps	$1, %ymm2, %ymm2
+43.    1     13.0   0.0    1.0       vcvttps2dq	%ymm2, %ymm2
+44.    1     16.0   0.0    0.0       vpsubd	%ymm5, %ymm2, %ymm2
+45.    1     7.0    1.0    8.0       vmovdqa	%ymm0, -1168(%rbp)
+46.    1     9.0    6.0    1.0       vroundps	$1, %ymm0, %ymm0
+47.    1     15.0   1.0    0.0       vcvttps2dq	%ymm0, %ymm0
+48.    1     18.0   0.0    0.0       vpsubd	%ymm5, %ymm0, %ymm0
+49.    1     19.0   0.0    0.0       vpsrad	$16, %ymm0, %ymm12
+50.    1     15.0   0.0    4.0       vpsrad	$16, %ymm2, %ymm11
+51.    1     18.0   0.0    0.0       vpxor	%ymm5, %ymm0, %ymm0
+52.    1     11.0   0.0    7.0       vmovdqa	%ymm10, -1136(%rbp)
+53.    1     14.0   0.0    4.0       vpxor	%ymm5, %ymm2, %ymm2
+54.    1     14.0   1.0    3.0       vpblendw	$85, %ymm1, %ymm3, %ymm1
+55.    1     13.0   0.0    4.0       vmovdqa	%ymm14, -1104(%rbp)
+56.    1     15.0   1.0    2.0       vpblendw	$85, %ymm2, %ymm3, %ymm2
+57.    1     17.0   0.0    0.0       vpblendw	$85, %ymm0, %ymm3, %ymm3
+58.    1     18.0   4.0    0.0       vpackusdw	%ymm1, %ymm4, %ymm4
+59.    1     13.0   0.0    5.0       vmovdqa	%ymm11, -1456(%rbp)
+60.    1     18.0   1.0    0.0       vpackusdw	%ymm3, %ymm2, %ymm2
+61.    1     16.0   0.0    2.0       vmovdqa	%ymm12, -1424(%rbp)
+62.    1     19.0   1.0    0.0       vpermq	$216, %ymm4, %ymm13
+63.    1     19.0   1.0    0.0       vpermq	$216, %ymm2, %ymm1
+64.    1     16.0   1.0    5.0       vmovdqa	%ymm11, -1072(%rbp)
+65.    1     16.0   1.0    4.0       vmovdqa	%ymm12, -1040(%rbp)
+66.    1     1.0    1.0    15.0      vmovss	12(%rax), %xmm0
+67.    1     20.0   0.0    0.0       vmovdqa	%ymm1, -1776(%rbp)
+68.    1     1.0    1.0    15.0      vmovss	9807981(%rip), %xmm1
+69.    1     20.0   1.0    0.0       vmovdqa	%ymm12, -1552(%rbp)
+70.    1     5.0    0.0    13.0      vsubss	%xmm1, %xmm0, %xmm0
+71.    1     7.0    0.0    9.0       vcvttss2si	%xmm0, %edx
+72.    1     1.0    1.0    14.0      vmovss	16(%rax), %xmm0
+73.    1     8.0    2.0    9.0       vsubss	%xmm1, %xmm0, %xmm0
+74.    1     0.0    0.0    19.0      vpxor	%xmm1, %xmm1, %xmm1
+75.    1     10.0   0.0    8.0       vpmaxsd	%ymm12, %ymm1, %ymm4
+76.    1     8.0    2.0    10.0      vpmaxsd	%ymm11, %ymm1, %ymm8
+77.    1     11.0   1.0    7.0       vpcmpeqd	%ymm12, %ymm12, %ymm12
+78.    1     14.0   5.0    3.0       vmovd	%edx, %xmm15
+79.    1     8.0    4.0    9.0       vpmaxsd	%ymm14, %ymm1, %ymm2
+80.    1     11.0   0.0    6.0       vmovdqa	%ymm12, %ymm5
+81.    1     11.0   3.0    2.0       vcvttss2si	%xmm0, %edx
+82.    1     14.0   0.0    0.0       vpbroadcastd	%xmm15, %ymm15
+83.    1     10.0   10.0   6.0       vpmaxsd	%ymm10, %ymm1, %ymm0
+84.    1     16.0   0.0    0.0       vpminsd	%ymm15, %ymm0, %ymm6
+85.    1     16.0   0.0    0.0       vpminsd	%ymm15, %ymm2, %ymm7
+86.    1     14.0   0.0    2.0       vmovd	%edx, %xmm3
+87.    1     1.0    1.0    11.0      movq	(%rax), %rdx
+88.    1     1.0    1.0    10.0      movl	8(%rax), %eax
+89.    1     14.0   0.0    0.0       vpbroadcastd	%xmm3, %ymm3
+90.    1     15.0   1.0    1.0       movl	%eax, -1456(%rbp)
+91.    1     17.0   0.0    0.0       vpminsd	%ymm3, %ymm4, %ymm4
+92.    1     16.0   0.0    0.0       vpminsd	%ymm3, %ymm8, %ymm8
+93.    1     15.0   1.0    1.0       movl	%eax, -1452(%rbp)
+94.    1     16.0   1.0    0.0       movl	%eax, -1448(%rbp)
+95.    1     17.0   1.0    0.0       movl	%eax, -1444(%rbp)
+96.    1     17.0   1.0    0.0       movl	%eax, -1440(%rbp)
+97.    1     18.0   1.0    0.0       movl	%eax, -1436(%rbp)
+98.    1     19.0   1.0    0.0       movl	%eax, -1432(%rbp)
+99.    1     20.0   1.0    0.0       movl	%eax, -1428(%rbp)
+100.   1     1.0    1.0    12.0      vmovdqa	-1456(%rbp), %ymm0
+101.   1     20.0   1.0    0.0       movl	%eax, -1424(%rbp)
+102.   1     21.0   1.0    0.0       movl	%eax, -1420(%rbp)
+103.   1     22.0   1.0    0.0       movl	%eax, -1416(%rbp)
+104.   1     22.0   1.0    0.0       movl	%eax, -1412(%rbp)
+105.   1     23.0   1.0    0.0       movl	%eax, -1408(%rbp)
+106.   1     24.0   1.0    0.0       movl	%eax, -1404(%rbp)
+107.   1     25.0   1.0    0.0       movl	%eax, -1400(%rbp)
+108.   1     25.0   1.0    0.0       movl	%eax, -1396(%rbp)
+109.   1     1.0    1.0    24.0      movl	$8388736, %eax
+110.   1     26.0   1.0    0.0       vmovdqa	%ymm3, -1584(%rbp)
+111.   1     1.0    1.0    18.0      vmovdqa	-1424(%rbp), %ymm3
+112.   1     26.0   1.0    0.0       vmovdqa	%ymm0, -1488(%rbp)
+113.   1     10.0   0.0    0.0       vpmulld	-1488(%rbp), %ymm8, %ymm2
+114.   1     27.0   0.0    0.0       vpaddd	%ymm6, %ymm2, %ymm2
+115.   1     25.0   1.0    1.0       vmovdqa	%ymm8, -1328(%rbp)
+116.   1     26.0   1.0    0.0       vmovdqa	%ymm4, -1296(%rbp)
+117.   1     26.0   1.0    0.0       vmovdqa	%ymm0, -1008(%rbp)
+118.   1     27.0   1.0    0.0       vmovdqa	%ymm3, -976(%rbp)
+119.   1     27.0   1.0    0.0       vmovdqa	%ymm6, -1648(%rbp)
+120.   1     1.0    1.0    19.0      vpaddd	9808001(%rip), %ymm10, %ymm10
+121.   1     1.0    1.0    25.0      vmovdqa	%ymm12, %ymm6
+122.   1     1.0    1.0    18.0      vpaddd	9807989(%rip), %ymm14, %ymm14
+123.   1     26.0   1.0    0.0       vmovdqa	%ymm3, -1520(%rbp)
+124.   1     6.0    2.0    3.0       vpmulld	-1520(%rbp), %ymm4, %ymm0
+125.   1     23.0   0.0    2.0       vpaddd	%ymm7, %ymm0, %ymm0
+126.   1     7.0    4.0    1.0       vpmulld	-1488(%rbp), %ymm8, %ymm8
+127.   1     24.0   1.0    0.0       vmovdqa	%ymm2, -1456(%rbp)
+128.   1     7.0    6.0    0.0       vpmulld	-1520(%rbp), %ymm4, %ymm4
+129.   1     23.0   1.0    0.0       vmovdqa	%ymm7, -1616(%rbp)
+130.   1     24.0   1.0    0.0       vmovdqa	%ymm0, -1424(%rbp)
+131.   1     24.0   1.0    0.0       vmovdqa	%ymm2, -944(%rbp)
+132.   1     25.0   1.0    0.0       vmovdqa	%ymm0, -912(%rbp)
+133.   1     18.0   0.0    0.0       vpgatherdd	%ymm5, (%rdx,%ymm0,4), %ymm2
+134.   1     1.0    1.0    24.0      vmovdqa	-944(%rbp), %ymm5
+135.   1     18.0   9.0    0.0       vpgatherdd	%ymm6, (%rdx,%ymm5,4), %ymm0
+136.   1     10.0   0.0    21.0      vmovdqa	%ymm10, -752(%rbp)
+137.   1     18.0   18.0   12.0      vpmaxsd	%ymm10, %ymm1, %ymm10
+138.   1     10.0   1.0    20.0      vmovdqa	%ymm14, -720(%rbp)
+139.   1     18.0   18.0   12.0      vpmaxsd	%ymm14, %ymm1, %ymm14
+140.   1     30.0   0.0    0.0       vperm2i128	$32, %ymm2, %ymm0, %ymm3
+141.   1     31.0   1.0    0.0       vperm2i128	$49, %ymm2, %ymm0, %ymm0
+142.   1     18.0   0.0    15.0      vpminsd	%ymm15, %ymm14, %ymm14
+143.   1     17.0   17.0   16.0      vpsrld	$16, %ymm12, %ymm2
+144.   1     17.0   0.0    15.0      vpminsd	%ymm15, %ymm10, %ymm15
+145.   1     40.0   7.0    0.0       vpand	%ymm2, %ymm0, %ymm6
+146.   1     18.0   0.0    22.0      vpaddd	%ymm4, %ymm14, %ymm4
+147.   1     40.0   8.0    0.0       vpand	%ymm2, %ymm3, %ymm5
+148.   1     17.0   0.0    22.0      vmovdqa	%ymm15, -1712(%rbp)
+149.   1     17.0   0.0    22.0      vpaddd	%ymm15, %ymm8, %ymm8
+150.   1     40.0   9.0    0.0       vpsrld	$16, %ymm3, %ymm3
+151.   1     39.0   0.0    0.0       vmovdqa	%ymm5, -880(%rbp)
+152.   1     15.0   15.0   24.0      vmovdqa	%ymm12, %ymm10
+153.   1     40.0   9.0    0.0       vpsrld	$16, %ymm0, %ymm0
+154.   1     39.0   1.0    0.0       vmovdqa	%ymm6, -848(%rbp)
+155.   1     38.0   0.0    1.0       vpackusdw	%ymm6, %ymm5, %ymm5
+156.   1     38.0   0.0    1.0       vpcmpeqd	%ymm6, %ymm6, %ymm6
+157.   1     39.0   1.0    0.0       vmovdqa	%ymm3, -816(%rbp)
+158.   1     39.0   1.0    0.0       vpsrlw	$8, %ymm6, %ymm7
+159.   1     40.0   2.0    0.0       vpsrlw	$15, %ymm6, %ymm6
+160.   1     39.0   1.0    0.0       vmovdqa	%ymm0, -784(%rbp)
+161.   1     39.0   0.0    0.0       vpand	%ymm7, %ymm5, %ymm9
+162.   1     40.0   3.0    0.0       vpsrlw	$8, %ymm5, %ymm5
+163.   1     37.0   0.0    2.0       vpackusdw	%ymm0, %ymm3, %ymm0
+164.   1     39.0   1.0    0.0       vmovdqa	%ymm14, -1680(%rbp)
+165.   1     38.0   0.0    1.0       vpand	%ymm7, %ymm0, %ymm3
+166.   1     39.0   2.0    0.0       vpsrlw	$8, %ymm0, %ymm0
+167.   1     39.0   1.0    0.0       vmovdqa	%ymm8, -688(%rbp)
+168.   1     2.0    2.0    31.0      vmovdqa	-688(%rbp), %ymm14
+169.   1     39.0   1.0    0.0       vmovdqa	%ymm8, -1456(%rbp)
+170.   1     40.0   1.0    0.0       vmovdqa	%ymm4, -1424(%rbp)
+171.   1     40.0   1.0    0.0       vmovdqa	%ymm4, -656(%rbp)
+172.   1     9.0    0.0    9.0       vpgatherdd	%ymm10, (%rdx,%ymm4,4), %ymm8
+173.   1     10.0   10.0   21.0      vmovdqa	%ymm12, %ymm10
+174.   1     12.0   2.0    0.0       vpgatherdd	%ymm10, (%rdx,%ymm14,4), %ymm4
+175.   1     1.0    1.0    17.0      vpaddd	9807648(%rip), %ymm11, %ymm11
+176.   1     25.0   0.0    0.0       vperm2i128	$32, %ymm8, %ymm4, %ymm10
+177.   1     26.0   1.0    0.0       vperm2i128	$49, %ymm8, %ymm4, %ymm4
+178.   1     29.0   0.0    0.0       vpand	%ymm2, %ymm4, %ymm14
+179.   1     28.0   0.0    1.0       vpand	%ymm2, %ymm10, %ymm8
+180.   1     21.0   1.0    7.0       vmovdqa	%ymm11, -496(%rbp)
+181.   1     28.0   0.0    0.0       vmovdqa	%ymm8, -624(%rbp)
+182.   1     28.0   0.0    0.0       vpackusdw	%ymm14, %ymm8, %ymm8
+183.   1     28.0   2.0    0.0       vpsrld	$16, %ymm10, %ymm10
+184.   1     29.0   0.0    0.0       vpand	%ymm7, %ymm8, %ymm15
+185.   1     29.0   2.0    0.0       vpsrld	$16, %ymm4, %ymm4
+186.   1     28.0   0.0    0.0       vmovdqa	%ymm10, -560(%rbp)
+187.   1     29.0   0.0    0.0       vmovdqa	%ymm4, -528(%rbp)
+188.   1     28.0   0.0    0.0       vpackusdw	%ymm4, %ymm10, %ymm4
+189.   1     28.0   0.0    0.0       vpsubw	%ymm9, %ymm15, %ymm10
+190.   1     29.0   1.0    0.0       vpaddw	%ymm15, %ymm9, %ymm9
+191.   1     29.0   0.0    0.0       vpsllw	$7, %ymm10, %ymm10
+192.   1     29.0   0.0    0.0       vpsllw	$7, %ymm9, %ymm9
+193.   1     28.0   1.0    1.0       vmovdqa	%ymm14, -592(%rbp)
+194.   1     28.0   0.0    1.0       vpand	%ymm7, %ymm4, %ymm14
+195.   1     29.0   1.0    0.0       vpmulhrsw	%ymm10, %ymm13, %ymm10
+196.   1     26.0   1.0    7.0       vpsrlw	$8, %ymm8, %ymm8
+197.   1     30.0   3.0    3.0       vpsrlw	$8, %ymm4, %ymm4
+198.   1     34.0   0.0    0.0       vpaddw	%ymm6, %ymm10, %ymm10
+199.   1     34.0   0.0    0.0       vpaddw	%ymm10, %ymm9, %ymm9
+200.   1     35.0   0.0    0.0       vpsrlw	$1, %ymm9, %ymm10
+201.   1     27.0   1.0    8.0       vpsubw	%ymm5, %ymm8, %ymm9
+202.   1     27.0   1.0    8.0       vpaddw	%ymm5, %ymm8, %ymm5
+203.   1     29.0   2.0    5.0       vpsllw	$7, %ymm9, %ymm9
+204.   1     30.0   3.0    4.0       vpsllw	$7, %ymm5, %ymm5
+205.   1     35.0   0.0    0.0       vmovdqa	%ymm10, -1744(%rbp)
+206.   1     30.0   1.0    0.0       vpmulhrsw	%ymm9, %ymm13, %ymm9
+207.   1     35.0   0.0    0.0       vpaddw	%ymm6, %ymm9, %ymm9
+208.   1     36.0   0.0    0.0       vpaddw	%ymm5, %ymm9, %ymm5
+209.   1     1.0    1.0    29.0      vmovdqa	-1552(%rbp), %ymm9
+210.   1     36.0   0.0    0.0       vpsrlw	$1, %ymm5, %ymm15
+211.   1     25.0   1.0    11.0      vpsubw	%ymm3, %ymm14, %ymm5
+212.   1     25.0   1.0    11.0      vpaddw	%ymm3, %ymm14, %ymm3
+213.   1     1.0    1.0    29.0      vmovdqa	-1520(%rbp), %ymm14
+214.   1     29.0   4.0    6.0       vpsllw	$7, %ymm5, %ymm5
+215.   1     30.0   5.0    5.0       vpsllw	$7, %ymm3, %ymm3
+216.   1     31.0   2.0    0.0       vpmulhrsw	%ymm5, %ymm13, %ymm5
+217.   1     36.0   0.0    0.0       vpaddw	%ymm6, %ymm5, %ymm5
+218.   1     36.0   0.0    0.0       vpaddw	%ymm5, %ymm3, %ymm3
+219.   1     37.0   0.0    0.0       vpsrlw	$1, %ymm3, %ymm5
+220.   1     24.0   0.0    13.0      vpsubw	%ymm0, %ymm4, %ymm3
+221.   1     24.0   0.0    13.0      vpaddw	%ymm4, %ymm0, %ymm0
+222.   1     30.0   6.0    6.0       vpsllw	$7, %ymm3, %ymm3
+223.   1     1.0    1.0    28.0      vpaddd	9807385(%rip), %ymm9, %ymm4
+224.   1     1.0    1.0    28.0      vmovdqa	-1584(%rbp), %ymm9
+225.   1     30.0   0.0    1.0       vpmulhrsw	%ymm3, %ymm13, %ymm3
+226.   1     32.0   9.0    3.0       vpsllw	$7, %ymm0, %ymm0
+227.   1     28.0   1.0    6.0       vmovdqa	%ymm4, -464(%rbp)
+228.   1     7.0    0.0    27.0      vpmaxsd	%ymm4, %ymm1, %ymm4
+229.   1     1.0    1.0    33.0      vpmaxsd	%ymm11, %ymm1, %ymm1
+230.   1     1.0    1.0    26.0      vmovdqa	-1488(%rbp), %ymm11
+231.   1     7.0    0.0    26.0      vpminsd	%ymm9, %ymm4, %ymm4
+232.   1     6.0    0.0    27.0      vpminsd	%ymm9, %ymm1, %ymm1
+233.   1     1.0    1.0    32.0      vmovdqa	%ymm12, %ymm9
+234.   1     7.0    0.0    16.0      vpmulld	%ymm11, %ymm1, %ymm8
+235.   1     27.0   1.0    5.0       vmovdqa	%ymm1, -1328(%rbp)
+236.   1     8.0    2.0    14.0      vpmulld	%ymm11, %ymm1, %ymm1
+237.   1     9.0    0.0    15.0      vpaddd	-1648(%rbp), %ymm8, %ymm8
+238.   1     26.0   1.0    4.0       vmovdqa	%ymm4, -1296(%rbp)
+239.   1     10.0   0.0    13.0      vpaddd	-1712(%rbp), %ymm1, %ymm1
+240.   1     29.0   0.0    0.0       vpaddw	%ymm6, %ymm3, %ymm3
+241.   1     30.0   0.0    0.0       vpaddw	%ymm3, %ymm0, %ymm0
+242.   1     27.0   23.0   0.0       vpmulld	%ymm14, %ymm4, %ymm3
+243.   1     25.0   1.0    10.0      vmovdqa	%ymm8, -432(%rbp)
+244.   1     1.0    1.0    27.0      vmovdqa	-432(%rbp), %ymm10
+245.   1     28.0   0.0    0.0       vpaddd	-1616(%rbp), %ymm3, %ymm3
+246.   1     27.0   0.0    7.0       vmovdqa	%ymm8, -1456(%rbp)
+247.   1     27.0   26.0   0.0       vpmulld	%ymm14, %ymm4, %ymm4
+248.   1     1.0    1.0    34.0      vmovdqa	%ymm12, %ymm14
+249.   1     28.0   1.0    7.0       vpsrlw	$1, %ymm0, %ymm0
+250.   1     33.0   0.0    1.0       vmovdqa	%ymm3, -1424(%rbp)
+251.   1     34.0   1.0    0.0       vmovdqa	%ymm3, -400(%rbp)
+252.   1     32.0   0.0    0.0       vpgatherdd	%ymm9, (%rdx,%ymm3,4), %ymm8
+253.   1     1.0    1.0    44.0      vmovdqa	%ymm12, %ymm9
+254.   1     32.0   9.0    0.0       vpgatherdd	%ymm9, (%rdx,%ymm10,4), %ymm3
+255.   1     51.0   5.0    0.0       vperm2i128	$32, %ymm8, %ymm3, %ymm10
+256.   1     52.0   6.0    0.0       vperm2i128	$49, %ymm8, %ymm3, %ymm3
+257.   1     54.0   0.0    0.0       vpand	%ymm2, %ymm3, %ymm9
+258.   1     54.0   0.0    0.0       vpsrld	$16, %ymm3, %ymm3
+259.   1     53.0   0.0    1.0       vpand	%ymm2, %ymm10, %ymm8
+260.   1     53.0   0.0    1.0       vpsrld	$16, %ymm10, %ymm10
+261.   1     53.0   0.0    0.0       vmovdqa	%ymm8, -368(%rbp)
+262.   1     54.0   0.0    0.0       vpackusdw	%ymm9, %ymm8, %ymm8
+263.   1     53.0   0.0    0.0       vmovdqa	%ymm9, -336(%rbp)
+264.   1     54.0   0.0    0.0       vpand	%ymm7, %ymm8, %ymm9
+265.   1     54.0   0.0    0.0       vpsrlw	$8, %ymm8, %ymm8
+266.   1     53.0   1.0    0.0       vmovdqa	%ymm10, -304(%rbp)
+267.   1     54.0   1.0    0.0       vmovdqa	%ymm3, -272(%rbp)
+268.   1     52.0   1.0    1.0       vpackusdw	%ymm3, %ymm10, %ymm3
+269.   1     54.0   1.0    0.0       vmovdqa	%ymm1, -1456(%rbp)
+270.   1     4.0    0.0    42.0      vpaddd	-1680(%rbp), %ymm4, %ymm4
+271.   1     52.0   0.0    1.0       vpand	%ymm7, %ymm3, %ymm10
+272.   1     53.0   1.0    0.0       vmovdqa	%ymm1, -240(%rbp)
+273.   1     51.0   0.0    2.0       vpsrlw	$8, %ymm3, %ymm3
+274.   1     53.0   1.0    0.0       vmovdqa	%ymm4, -1424(%rbp)
+275.   1     54.0   1.0    0.0       vmovdqa	%ymm4, -208(%rbp)
+276.   1     24.0   15.0   8.0       vpgatherdd	%ymm14, (%rdx,%ymm4,4), %ymm1
+277.   1     1.0    1.0    38.0      vmovdqa	-240(%rbp), %ymm14
+278.   1     24.0   17.0   0.0       vpgatherdd	%ymm12, (%rdx,%ymm14,4), %ymm11
+279.   1     1.0    1.0    36.0      movq	%r8, %rdx
+280.   1     38.0   0.0    0.0       vperm2i128	$32, %ymm1, %ymm11, %ymm4
+281.   1     38.0   1.0    0.0       vperm2i128	$49, %ymm1, %ymm11, %ymm1
+282.   1     40.0   0.0    0.0       vpand	%ymm4, %ymm2, %ymm11
+283.   1     41.0   0.0    0.0       vpand	%ymm1, %ymm2, %ymm2
+284.   1     39.0   0.0    1.0       vmovdqa	%ymm4, -1328(%rbp)
+285.   1     41.0   0.0    0.0       vmovdqa	%ymm2, -144(%rbp)
+286.   1     40.0   0.0    0.0       vpackusdw	%ymm2, %ymm11, %ymm2
+287.   1     38.0   0.0    2.0       vpsrld	$16, %ymm4, %ymm4
+288.   1     41.0   1.0    0.0       vmovdqa	%ymm1, -1296(%rbp)
+289.   1     38.0   0.0    2.0       vpsrld	$16, %ymm1, %ymm1
+290.   1     41.0   1.0    0.0       vmovdqa	%ymm11, -176(%rbp)
+291.   1     40.0   0.0    1.0       vpand	%ymm7, %ymm2, %ymm11
+292.   1     39.0   0.0    1.0       vpsrlw	$8, %ymm2, %ymm2
+293.   1     41.0   1.0    0.0       vmovdqa	%ymm4, -1456(%rbp)
+294.   1     41.0   1.0    0.0       vmovdqa	%ymm1, -1424(%rbp)
+295.   1     42.0   1.0    0.0       vmovdqa	%ymm4, -112(%rbp)
+296.   1     37.0   1.0    0.0       vmovdqa	%ymm1, -80(%rbp)
+297.   1     32.0   1.0    5.0       vpackusdw	%ymm1, %ymm4, %ymm1
+298.   1     33.0   0.0    4.0       vpsubw	%ymm9, %ymm11, %ymm4
+299.   1     32.0   0.0    4.0       vpaddw	%ymm11, %ymm9, %ymm9
+300.   1     33.0   0.0    3.0       vpsllw	$7, %ymm4, %ymm4
+301.   1     32.0   0.0    4.0       vpand	%ymm7, %ymm1, %ymm7
+302.   1     1.0    1.0    29.0      vmovdqa	-1744(%rbp), %ymm11
+303.   1     33.0   0.0    0.0       vpmulhrsw	%ymm4, %ymm13, %ymm4
+304.   1     34.0   2.0    3.0       vpsllw	$7, %ymm9, %ymm9
+305.   1     35.0   4.0    2.0       vpsrlw	$8, %ymm1, %ymm1
+306.   1     38.0   0.0    0.0       vpaddw	%ymm6, %ymm4, %ymm4
+307.   1     38.0   0.0    0.0       vpaddw	%ymm4, %ymm9, %ymm9
+308.   1     31.0   1.0    7.0       vpsubw	%ymm8, %ymm2, %ymm4
+309.   1     35.0   3.0    3.0       vpsllw	$7, %ymm4, %ymm4
+310.   1     39.0   0.0    0.0       vpsrlw	$1, %ymm9, %ymm9
+311.   1     30.0   1.0    8.0       vpaddw	%ymm2, %ymm8, %ymm8
+312.   1     35.0   0.0    0.0       vpmulhrsw	%ymm4, %ymm13, %ymm4
+313.   1     36.0   5.0    3.0       vpsllw	$7, %ymm8, %ymm8
+314.   1     31.0   1.0    8.0       vpsubw	%ymm10, %ymm7, %ymm2
+315.   1     36.0   5.0    2.0       vpsllw	$7, %ymm2, %ymm2
+316.   1     30.0   1.0    8.0       vpaddw	%ymm7, %ymm10, %ymm10
+317.   1     10.0   10.0   28.0      vmovd	%eax, %xmm7
+318.   1     1.0    1.0    33.0      movq	(%rdi), %rax
+319.   1     37.0   1.0    0.0       vpmulhrsw	%ymm2, %ymm13, %ymm2
+320.   1     38.0   8.0    3.0       vpsllw	$7, %ymm10, %ymm10
+321.   1     10.0   0.0    29.0      vpbroadcastd	%xmm7, %ymm7
+322.   1     31.0   0.0    3.0       vpaddw	%ymm6, %ymm4, %ymm4
+323.   1     31.0   0.0    2.0       vpaddw	%ymm4, %ymm8, %ymm8
+324.   1     28.0   0.0    4.0       vpsubw	%ymm11, %ymm9, %ymm4
+325.   1     32.0   0.0    0.0       vpaddw	%ymm6, %ymm2, %ymm2
+326.   1     30.0   0.0    2.0       vpsrlw	$1, %ymm8, %ymm8
+327.   1     33.0   0.0    0.0       vpaddw	%ymm2, %ymm10, %ymm10
+328.   1     21.0   0.0    11.0      vpsubw	%ymm3, %ymm1, %ymm2
+329.   1     28.0   6.0    4.0       vpsllw	$7, %ymm2, %ymm2
+330.   1     33.0   0.0    0.0       vpsrlw	$1, %ymm10, %ymm10
+331.   1     20.0   0.0    12.0      vpaddw	%ymm1, %ymm3, %ymm3
+332.   1     29.0   1.0    0.0       vpmulhrsw	%ymm2, %ymm13, %ymm2
+333.   1     29.0   9.0    3.0       vpsllw	$7, %ymm3, %ymm3
+334.   1     32.0   0.0    0.0       vpsubw	%ymm5, %ymm10, %ymm1
+335.   1     1.0    1.0    25.0      vmovdqa	-1776(%rbp), %ymm13
+336.   1     32.0   0.0    0.0       vpaddw	%ymm5, %ymm10, %ymm5
+337.   1     32.0   0.0    0.0       vpmulhrsw	%ymm13, %ymm1, %ymm1
+338.   1     29.0   5.0    3.0       vpmulhrsw	%ymm13, %ymm4, %ymm4
+339.   1     32.0   0.0    4.0       vpaddw	%ymm6, %ymm2, %ymm2
+340.   1     27.0   0.0    9.0       vpsubw	%ymm15, %ymm8, %ymm6
+341.   1     32.0   0.0    3.0       vpaddw	%ymm2, %ymm3, %ymm3
+342.   1     29.0   3.0    1.0       vpmulhrsw	%ymm13, %ymm6, %ymm6
+343.   1     31.0   0.0    2.0       vpsrlw	$1, %ymm3, %ymm3
+344.   1     33.0   0.0    0.0       vpaddw	%ymm7, %ymm1, %ymm1
+345.   1     28.0   0.0    3.0       vpaddw	%ymm7, %ymm4, %ymm4
+346.   1     28.0   0.0    2.0       vpsubw	%ymm0, %ymm3, %ymm2
+347.   1     26.0   0.0    2.0       vpaddw	%ymm3, %ymm0, %ymm3
+348.   1     27.0   0.0    0.0       vpmulhrsw	%ymm13, %ymm2, %ymm2
+349.   1     14.0   0.0    17.0      vpaddw	%ymm11, %ymm9, %ymm0
+350.   1     26.0   1.0    4.0       vpaddw	%ymm4, %ymm0, %ymm0
+351.   1     1.0    1.0    23.0      vmovdqa	-1808(%rbp), %ymm4
+352.   1     25.0   0.0    4.0       vpaddw	%ymm7, %ymm6, %ymm6
+353.   1     26.0   0.0    3.0       vpsrlw	$8, %ymm0, %ymm0
+354.   1     30.0   0.0    0.0       vpaddw	%ymm7, %ymm2, %ymm2
+355.   1     1.0    1.0    22.0      vmovdqa	-1904(%rbp), %ymm7
+356.   1     30.0   0.0    0.0       vpaddw	%ymm2, %ymm3, %ymm3
+357.   1     26.0   0.0    4.0       vpaddw	%ymm1, %ymm5, %ymm2
+358.   1     1.0    1.0    23.0      vmovdqa	-1840(%rbp), %ymm5
+359.   1     30.0   0.0    0.0       vpsrlw	$8, %ymm3, %ymm3
+360.   1     26.0   0.0    4.0       vpsrlw	$8, %ymm2, %ymm2
+361.   1     14.0   0.0    16.0      vpaddw	%ymm8, %ymm15, %ymm1
+362.   1     24.0   0.0    6.0       vpaddw	%ymm6, %ymm1, %ymm1
+363.   1     1.0    1.0    22.0      vmovdqa	-1872(%rbp), %ymm6
+364.   1     24.0   0.0    5.0       vpsrlw	$8, %ymm1, %ymm1
+365.   1     2.0    2.0    23.0      movq	-8(%rbp), %r13
+366.   1     1.0    1.0    21.0      leave
+367.   1     6.0    0.0    22.0      leaq	-16(%r13), %rsp
+368.   1     6.0    0.0    16.0      popq	%r13
+369.   1     2.0    2.0    25.0      jmpq	*%rax
+       1     22.5   1.4    5.4       <total>
