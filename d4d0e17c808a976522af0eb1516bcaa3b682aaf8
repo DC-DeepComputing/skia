@@ -747,6 +747,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "56f4b143_e55975b4",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 4569768
+      },
+      "writtenOn": "2026-04-17T15:10:48Z",
+      "side": 1,
+      "message": "I removed all the Blink-specific code for a later CL.",
+      "parentUuid": "a5764c8b_ec24c3f3",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 69,
+        "endChar": 5
+      },
+      "revId": "d4d0e17c808a976522af0eb1516bcaa3b682aaf8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5d266f27_34323b0e",
