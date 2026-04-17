@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "181197ec_8b16349e",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 5573,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-17T14:14:50Z",
+      "side": 1,
+      "message": "Can this be folded into the `SKRP_CPU_ML4` define? Or will this get it\u0027s own specialized code in the future?",
+      "range": {
+        "startLine": 5567,
+        "startChar": 0,
+        "endLine": 5573,
+        "endChar": 6
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "d4481bbd_c1e90a7c",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/opts/SkRasterPipeline_opts.h",
+              "range": {
+                "startLine": 5567,
+                "startChar": 0,
+                "endLine": 5570,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "090a76c59e67d1c2acb6de12ce564383bce9cab4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
