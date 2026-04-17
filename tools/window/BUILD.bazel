@@ -156,6 +156,14 @@ skia_filegroup(
 )
 
 skia_filegroup(
+    name = "common_graphite_dawn_srcs",
+    srcs = [
+        "GraphiteDawnWindowContext.cpp",
+        "GraphiteDawnWindowContext.h",
+    ],
+)
+
+skia_filegroup(
     name = "public_unix_graphite_vulkan_hdrs",
     srcs = [
         "unix/GraphiteNativeVulkanWindowContext_unix.h",
@@ -163,9 +171,23 @@ skia_filegroup(
 )
 
 skia_filegroup(
+    name = "public_unix_graphite_dawn_hdrs",
+    srcs = [
+        "unix/GraphiteDawnXlibWindowContext_unix.h",
+    ],
+)
+
+skia_filegroup(
     name = "unix_graphite_vulkan_srcs",
     srcs = [
         "unix/GraphiteNativeVulkanWindowContext_unix.cpp",
+    ],
+)
+
+skia_filegroup(
+    name = "unix_graphite_dawn_srcs",
+    srcs = [
+        "unix/GraphiteDawnXlibWindowContext_unix.cpp",
     ],
 )
 
@@ -206,12 +228,14 @@ skia_cc_library(
     testonly = True,
     srcs = [
         ":common_ganesh_gl_srcs",
+        ":common_graphite_dawn_srcs",
         ":common_graphite_vulkan_srcs",
         ":common_srcs",
         ":common_unix_srcs",
         ":common_vulkan_srcs",
         ":unix_ganesh_gl_srcs",
         ":unix_ganesh_vulkan_srcs",
+        ":unix_graphite_dawn_srcs",
         ":unix_graphite_vulkan_srcs",
     ],
     hdrs = [
@@ -219,8 +243,10 @@ skia_cc_library(
         ":public_hdrs",
         ":public_unix_ganesh_gl_hdrs",
         ":public_unix_ganesh_vulkan_hdrs",
+        ":public_unix_graphite_dawn_hdrs",
         ":public_unix_graphite_vulkan_hdrs",
         ":public_unix_hdrs",
+        "//tools/sk_app:hdrs",
     ],
     linkopts = [
         "-lX11",
@@ -231,7 +257,10 @@ skia_cc_library(
     ],
     deps = [
         "//:core",
+        "//tools:tool_utils",
         "//tools/gpu/vk:testutils",
+        "//tools/skui",
+        "//tools/timer",
         "//src/gpu/vk/vulkanmemoryallocator",
         # Ganesh Support
         "//src/gpu/ganesh:ganesh_TEST_UTIL",
@@ -240,8 +269,11 @@ skia_cc_library(
         "//src/gpu/ganesh/vk:ganesh_vulkan_TEST_UTIL",
         # Graphite Support
         "//tools/graphite:graphite_utils",
+        "//tools/graphite/dawn:graphite_dawn_testutils",
         "//src/gpu/graphite:graphite_TEST_UTIL",
+        "//src/gpu/graphite/dawn:graphite_native_dawn_TEST_UTIL",
         "//src/gpu/graphite/vk:graphite_native_vulkan_TEST_UTIL",
+        "@dawn",
     ],
 )
 
