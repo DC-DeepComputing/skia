@@ -605,6 +605,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd9bf4dd_dbcb954c",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 400,
+      "author": {
+        "id": 4569768
+      },
+      "writtenOn": "2026-04-17T12:30:14Z",
+      "side": 1,
+      "message": "Sure, I\u0027ve deduped it into a helper instead.",
+      "parentUuid": "09c5814c_f9b64db8",
+      "range": {
+        "startLine": 394,
+        "startChar": 0,
+        "endLine": 400,
+        "endChar": 9
+      },
+      "revId": "d4d0e17c808a976522af0eb1516bcaa3b682aaf8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d8758747_b599a75f",
@@ -618,6 +642,30 @@
       "writtenOn": "2026-03-12T00:31:30Z",
       "side": 1,
       "message": "IIRC `third_party/skia/experimental/rust_bmp/decoder/impl/SkBmpRustCodec.h` started by only implementing \"scanline\" decode but AFAICT it has since been refactored and now does *not* implement a \"scanline\" decode and instead implements the \"incremental\" decode API.",
+      "range": {
+        "startLine": 408,
+        "startChar": 0,
+        "endLine": 411,
+        "endChar": 17
+      },
+      "revId": "d4d0e17c808a976522af0eb1516bcaa3b682aaf8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "62769ca0_ff39d734",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 411,
+      "author": {
+        "id": 4569768
+      },
+      "writtenOn": "2026-04-17T12:30:14Z",
+      "side": 1,
+      "message": "This is true, it supports incremental decoding, so I\u0027ll remove this case.",
+      "parentUuid": "d8758747_b599a75f",
       "range": {
         "startLine": 408,
         "startChar": 0,
