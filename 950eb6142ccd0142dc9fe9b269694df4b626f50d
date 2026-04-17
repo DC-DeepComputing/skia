@@ -50,6 +50,24 @@
       "message": "There were significant performance changes to enabling PartitionAlloc in Skia (which presumably is just hooking in `operator new` and `malloc`): https://skia-perf.luci.app/t/?begin\u003d1776000370\u0026end\u003d1776000371\u0026subset\u003dall\n\nWhile there were definite performance improvements, how can we convey the regressions to PartitionAlloc maintainers to address the significant regressions?\n\nLastly, I noticed that blink is explicitly not allowed to use raw_ptr for performance reasons. Why is Skia not in the same exception? We are effectively at the bottom of the stack and a performance hot spot.\n\nWhile raw_ptr can be helpful for somewhat documenting the assumptions about a pointer\u0027s lifetime (and verifying that those are not broken), I think we need to proceed very carefully with introducing raw_ptr into Skia and pay attention to benchmarks.  If the majority of our pointers end up with the exclusion flag, particularly in Graphite since it expects things to be trivially destructible, will we roll these changes back?",
       "revId": "950eb6142ccd0142dc9fe9b269694df4b626f50d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9a99969_d37e5d15",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 31
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-04-17T13:12:35Z",
+      "side": 1,
+      "message": "Hello Michael!\n\nI’d love to see the perf data, but that link didn\u0027t allowed me to capture anything meaningful. Could I schedule a quick sync so you can walk me through it?\n\nEnabling PA in Skia benchmarks gets us closer to how it actually runs in Chrome (assuming Chrome is an optimization target here).  Previously, V8 asked for something equivalent for their benchmark, even if we won\u0027t rewrite their pointers.\n\nTo escalate regressions to PA maintainers, you can reach out to `chrome-memory-safety@` (126 member) or `chrome-cpp-runtime-safety@` (16 members). Alternatively, just email `arthursonzogni@` or `nusko@` directly and we’ll loop in the right folks.\n\nRegarding Blink: the info you saw might be from outdated docs? Blink is already rewritten and enforced. GC memory pointers don\u0027t use `raw_ptr` as it would be useless, but the rest do. `third_party/blink` has ~600 `raw_ptr` instances and 26 exclusions. We also disabled specific directories for perf: `third_party/blink/renderer/{core,platform/{heap,wtf,fonts}}`.\n\nFully agree on proceeding carefully. We should aim for zero regressions and not being worried to revert quickly if we hit any. Every `raw_ptr` can be opted out, so nothing is irreversible. \n\nIn Chrome, before landing patches, I find hotspot by diffing profiling data locally, Pinpoint to find additional benchmark / platforms with differences. After landing the patches, I check Stack Sampled Metrics to find what minor hotspot appears on real users.\nI heard Skia doesn\u0027t have a Pinpoint equivalent. How do you usually track these down reliably in general? Happy to learn more about your workflow.",
+      "parentUuid": "638e408a_0bd4020c",
+      "revId": "950eb6142ccd0142dc9fe9b269694df4b626f50d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
