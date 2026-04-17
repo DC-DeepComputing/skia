@@ -154,7 +154,7 @@ var deps = deps_parser.DepsEntries{
 	},
 	"chromium.googlesource.com/vulkan-deps": {
 		Id:      "chromium.googlesource.com/vulkan-deps",
-		Version: "859ad1479ce2dd117d4bffa868ad5c59b8fd9a1c",
+		Version: "a4ae63ef58f28f7f3f53473d6f77d73fe5fe4370",
 		Path:    "third_party/externals/vulkan-deps",
 	},
 	"chromium.googlesource.com/webm/libwebp": {
