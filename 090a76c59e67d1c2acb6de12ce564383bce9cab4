@@ -40,6 +40,30 @@
       ],
       "revId": "090a76c59e67d1c2acb6de12ce564383bce9cab4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7220e42_ad790b37",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 5573,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-04-17T14:30:48Z",
+      "side": 1,
+      "message": "Done. I experimented with AVX512 but the compiler I was using was doing a Good Job (tm), so I folded that into the #else. I\u0027d like to keep NEON separate until I confirm or refute how it\u0027s doing.",
+      "parentUuid": "181197ec_8b16349e",
+      "range": {
+        "startLine": 5567,
+        "startChar": 0,
+        "endLine": 5573,
+        "endChar": 6
+      },
+      "revId": "090a76c59e67d1c2acb6de12ce564383bce9cab4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
