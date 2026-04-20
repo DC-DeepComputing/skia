@@ -8,9 +8,12 @@
 #ifndef skgpu_graphite_KeyContext_DEFINED
 #define skgpu_graphite_KeyContext_DEFINED
 
+#include <optional>
+
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkM44.h"
 #include "include/core/SkMatrix.h"
+#include "include/core/SkRect.h"
 #include "src/base/SkEnumBitMask.h"
 #include "src/core/SkColorData.h"
 #include "src/core/SkColorSpaceXformSteps.h"
@@ -59,7 +62,8 @@ public:
                PipelineDataGatherer*,
                ShaderCodeDictionary*,
                sk_sp<RuntimeEffectDictionary>,
-               const SkColorInfo& dstColorInfo);
+               const SkColorInfo& dstColorInfo,
+               const std::optional<SkRect>& clipDrawBounds = std::nullopt);
 
     // Constructor for the ExtractPaintData code path (i.e., with a Recorder)
     KeyContext(Recorder*,
@@ -70,7 +74,8 @@ public:
                const SkM44& local2Dev,
                const SkColorInfo& dstColorInfo,
                SkEnumBitMask<KeyGenFlags> initialFlags,
-               const SkColor4f& paintColor);
+               const SkColor4f& paintColor,
+               const std::optional<SkRect>& clipDrawBounds = std::nullopt);
 
     KeyContext(const KeyContext&, SkEnumBitMask<KeyGenFlags> xtraFlags=KeyGenFlags::kDefault);
     ~KeyContext();
@@ -119,6 +124,8 @@ public:
 
     SkEnumBitMask<KeyGenFlags> flags() const { return fKeyGenFlags; }
 
+    const std::optional<SkRect>& clipDrawBounds() const { return fClipDrawBounds; }
+
 private:
     // Fields which will not change over the course of building a paint key
     const Caps* fCaps;
@@ -140,6 +147,7 @@ protected:
     // together to reduce the number of uniforms.
     SkPMColor4f fPaintColor = SK_PMColor4fBLACK;
     SkEnumBitMask<KeyGenFlags> fKeyGenFlags = KeyGenFlags::kDefault;
+    std::optional<SkRect> fClipDrawBounds;
 };
 
 class KeyContextWithLocalMatrix : public KeyContext {
