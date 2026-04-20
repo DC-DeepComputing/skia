@@ -78,7 +78,9 @@ std::string SDFTextLCDRenderStep::vertexSkSL() const {
     // Returns the body of a vertex function, which must define a float4 devPosition variable and
     // must write to an already-defined float2 stepLocalCoords variable.
     return "texIndex = half(indexAndFlags.x);"
-           "float4 devPosition = text_vertex_fn(float2(sk_VertexID >> 1, sk_VertexID & 1), "
+           "float2 textureCoords;" // unused
+           "float4 devPosition = text_vertex_fn(sdf_atlas_0, "
+                                               "float2(sk_VertexID >> 1, sk_VertexID & 1), "
                                                "maskToDevice, "
                                                "localToDevice, "
                                                "float2(size), "
@@ -87,6 +89,7 @@ std::string SDFTextLCDRenderStep::vertexSkSL() const {
                                                "strikeToSourceScale, "
                                                "depth, "
                                                "unormTexCoords, "
+                                               "textureCoords, "
                                                "stepLocalCoords);";
 }
 
