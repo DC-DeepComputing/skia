@@ -5,8 +5,13 @@ load("@rules_cc//cc:cc_library.bzl", "cc_library")
 
 cc_library(
     name = "vulkan_utility_libraries",
-    hdrs = [
-        "include/vulkan/utility/vk_struct_helper.hpp",
-    ],
+    hdrs = glob(
+        [
+            "include/**/*.h",
+            "include/**/*.hpp",
+        ],
+        allow_empty = False,
+    ),
+    includes = ["include"],
     visibility = ["//visibility:public"],
 )
