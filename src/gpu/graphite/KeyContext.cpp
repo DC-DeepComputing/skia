@@ -22,7 +22,8 @@ KeyContext::KeyContext(const Caps* caps,
                        PipelineDataGatherer* pipelineDataGatherer,
                        ShaderCodeDictionary* dict,
                        sk_sp<RuntimeEffectDictionary> rtEffectDict,
-                       const SkColorInfo& dstColorInfo)
+                       const SkColorInfo& dstColorInfo,
+                       const std::optional<SkRect>& clipDrawBounds)
         : fCaps(caps)
         , fRecorder(nullptr)
         , fFloatStorageManager(floatStorageManager)
@@ -30,7 +31,8 @@ KeyContext::KeyContext(const Caps* caps,
         , fPipelineDataGatherer(pipelineDataGatherer)
         , fDictionary(dict)
         , fRTEffectDict(std::move(rtEffectDict))
-        , fDstColorInfo(dstColorInfo) {}
+        , fDstColorInfo(dstColorInfo)
+        , fClipDrawBounds(clipDrawBounds) {}
 
 KeyContext::KeyContext(skgpu::graphite::Recorder* recorder,
                        DrawContext* drawContext,
@@ -40,7 +42,8 @@ KeyContext::KeyContext(skgpu::graphite::Recorder* recorder,
                        const SkM44& local2Dev,
                        const SkColorInfo& dstColorInfo,
                        SkEnumBitMask<KeyGenFlags> initialFlags,
-                       const SkColor4f& paintColor)
+                       const SkColor4f& paintColor,
+                       const std::optional<SkRect>& clipDrawBounds)
         : fCaps(recorder->priv().caps())
         , fRecorder(recorder)
         , fDC(drawContext)
@@ -53,6 +56,7 @@ KeyContext::KeyContext(skgpu::graphite::Recorder* recorder,
         , fLocalMatrix(nullptr)
         , fDstColorInfo(dstColorInfo)
         , fKeyGenFlags(initialFlags) {
+        , fClipDrawBounds(clipDrawBounds) {
     fPaintColor = PaintParams::Color4fPrepForDst(paintColor, fDstColorInfo).makeOpaque().premul();
     fPaintColor.fA = paintColor.fA;
 }
@@ -71,7 +75,8 @@ KeyContext::KeyContext(const KeyContext& other,
         , fLocalMatrix(other.fLocalMatrix)
         , fDstColorInfo(other.fDstColorInfo)
         , fPaintColor(other.fPaintColor)
-        , fKeyGenFlags(other.fKeyGenFlags | xtraFlags) {}
+        , fKeyGenFlags(other.fKeyGenFlags | xtraFlags)
+        , fClipDrawBounds(other.fClipDrawBounds) {}
 
 KeyContext::~KeyContext() {}
 

@@ -1648,6 +1648,7 @@ void Device::drawGeometry(const Transform& localToDevice,
                           fDC->colorInfo(),
                           keyGenFlags,
                           paint.color()};
+                          clip.drawBounds().asSkRect()};
     auto keyResult = shading.toKey(keyContext);
     if (!keyResult) {
         // Converting the SkPaint to a pipeline and set of uniform values + sampled textures failed.
