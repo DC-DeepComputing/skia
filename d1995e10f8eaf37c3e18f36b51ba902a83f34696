@@ -57,6 +57,54 @@
       ],
       "revId": "d1995e10f8eaf37c3e18f36b51ba902a83f34696",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "757f4715_05eeb208",
+        "filename": "src/gpu/graphite/dawn/DawnGraphiteUtils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-20T18:33:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1fca9ba0_c61c5208",
+      "range": {
+        "startLine": 105,
+        "startChar": 33,
+        "endLine": 105,
+        "endChar": 39
+      },
+      "revId": "d1995e10f8eaf37c3e18f36b51ba902a83f34696",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d26813d4_a93f075d",
+        "filename": "src/gpu/graphite/dawn/DawnGraphiteUtils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-20T18:33:22Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "1fca9ba0_c61c5208",
+      "range": {
+        "startLine": 105,
+        "startChar": 33,
+        "endLine": 105,
+        "endChar": 39
+      },
+      "revId": "d1995e10f8eaf37c3e18f36b51ba902a83f34696",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
