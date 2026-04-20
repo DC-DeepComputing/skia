@@ -761,7 +761,8 @@ struct ShaderInfo::SharedGeneratorData {
                         UniquePaintParamsID paintID,
                         const char* uniformSsboIndex)
             : fRootNodes(SkSpan<const ShaderNode*>())
-            , fHasStepUniforms(step->numUniforms() > 0) {
+            , fHasStepUniforms(step->numUniforms() > 0)
+            , fStepTextureBindingStart(0) {
 
         // Decompress Root Nodes & Determine Local Coords
         if (paintID.isValid()) {
@@ -855,6 +856,7 @@ struct ShaderInfo::SharedGeneratorData {
     bool fHasStepUniforms;
     bool fHasPaintUniforms;
     bool fHasLiftedPaintUniforms;
+    int  fStepTextureBindingStart;
 
     // Buffer usage flags needed by generators
     bool fUseUniformStorageBufferVS;
@@ -897,6 +899,7 @@ std::unique_ptr<ShaderInfo> ShaderInfo::Make(const Caps* caps,
                                      rpDesc.fColorAttachment.fFormat,
                                      rpDesc.fWriteSwizzle,
                                      outDescs,
+                                     &sharedData.fStepTextureBindingStart,
                                      sharedData);
     } else {
         result->fBlendInfo.fWritesColor = false;
@@ -960,6 +963,7 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
                                       TextureFormat targetFormat,
                                       Swizzle writeSwizzle,
                                       skia_private::TArray<SamplerDesc>* outDescs,
+                                      int* stepTextureStart,
                                       const SharedGeneratorData& sharedData) {
 #if defined(SK_DEBUG)
     // Validate the root node structure of the key.
@@ -1070,6 +1074,8 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
         fsPreamble += emit_textures_and_samplers(bindingReqs, sharedData.fRootNodes, &binding,
                                                outDescs);
         int paintTextureCount = binding;
+        // Cache the paint textures end, so the vertex shader knows where the step textures begin
+        *stepTextureStart = binding;
         if (step->hasTextures()) {
             fsPreamble += step->texturesAndSamplersSkSL(bindingReqs, &binding);
             if (outDescs) {
@@ -1287,6 +1293,12 @@ void ShaderInfo::generateVertexSkSL(const Caps* caps,
     // Fixed program header (intrinsics are always declared as an uniform interface block)
     const ResourceBindingRequirements& bindingReqs = caps->resourceBindingRequirements();
     vsPreamble = emit_intrinsic_constants(bindingReqs);
+
+    if (step->hasTextures()) {
+        int binding = sharedData.fStepTextureBindingStart;
+        vsPreamble += step->texturesAndSamplersSkSL(bindingReqs, &binding);
+    }
+
     // Varyings needed by RenderStep and potentially lifted expressions
     vsPreamble += emit_varyings(step, "out",
                                 sharedData.fLiftedExpr,

@@ -108,11 +108,23 @@ public:
             fCurrentTexture[index] = texture;
         }
     }
-    void setFragmentSamplerState(id<MTLSamplerState> sampler, NSUInteger index) {
+    void setFragVertTexture(id<MTLTexture> texture, NSUInteger index) {
+        SkASSERT(index < kMaxExpectedTextures);
+        if (fCurrentTexture[index] != texture) {
+            [(*fCommandEncoder) setFragmentTexture:texture
+                                           atIndex:index];
+            [(*fCommandEncoder) setVertexTexture:texture
+                                         atIndex:index];
+            fCurrentTexture[index] = texture;
+        }
+    }
+    void setFragVertSamplerState(id<MTLSamplerState> sampler, NSUInteger index) {
         SkASSERT(index < kMaxExpectedTextures);
         if (fCurrentSampler[index] != sampler) {
             [(*fCommandEncoder) setFragmentSamplerState:sampler
                                                 atIndex:index];
+            [(*fCommandEncoder) setVertexSamplerState:nil
+                                              atIndex:index];
             fCurrentSampler[index] = sampler;
         }
     }
