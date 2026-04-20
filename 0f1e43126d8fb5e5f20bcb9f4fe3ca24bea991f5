@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd096edd_44eaa727",
+        "filename": "tools/SkSharingProc.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-04-20T18:53:52Z",
+      "side": 1,
+      "message": "Do we have to sleep in this loop? Or is it not a busy loop?",
+      "range": {
+        "startLine": 69,
+        "startChar": 14,
+        "endLine": 69,
+        "endChar": 38
+      },
+      "revId": "0f1e43126d8fb5e5f20bcb9f4fe3ca24bea991f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c090e1ea_e5832c22",
+        "filename": "tools/SkSharingProc.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-04-20T18:53:52Z",
+      "side": 1,
+      "message": "nit: indentation",
+      "range": {
+        "startLine": 85,
+        "startChar": 0,
+        "endLine": 85,
+        "endChar": 59
+      },
+      "revId": "0f1e43126d8fb5e5f20bcb9f4fe3ca24bea991f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
