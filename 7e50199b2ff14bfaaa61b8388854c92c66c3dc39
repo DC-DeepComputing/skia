@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "655705e1_e7b7590e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-20T19:35:47Z",
+      "side": 1,
+      "message": "Can you also add the guard on the SPIRVCodeGenerator::writeOpCode? We should assert_release if we get a bad op code?",
+      "revId": "7e50199b2ff14bfaaa61b8388854c92c66c3dc39",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
