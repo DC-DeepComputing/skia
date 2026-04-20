@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b490136e_513ac85f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-20T17:55:49Z",
+      "side": 1,
+      "message": "Need to make a second pass, but here are some comments",
+      "revId": "e2576480a70b40c33e6b39117a0daeda02b64ad0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75da143a_b954f0fb",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-20T17:55:49Z",
+      "side": 1,
+      "message": "nit: can you update this comments? I think they should be reversed?",
+      "range": {
+        "startLine": 94,
+        "startChar": 16,
+        "endLine": 97,
+        "endChar": 91
+      },
+      "revId": "e2576480a70b40c33e6b39117a0daeda02b64ad0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41da0621_396356a0",
+        "filename": "tests/graphite/InnerFillTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-20T17:55:49Z",
+      "side": 1,
+      "message": "nit: typo",
+      "range": {
+        "startLine": 83,
+        "startChar": 26,
+        "endLine": 83,
+        "endChar": 35
+      },
+      "revId": "e2576480a70b40c33e6b39117a0daeda02b64ad0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
