@@ -3127,6 +3127,7 @@ if (skia_enable_tools) {
         "fuzz/oss_fuzz/FuzzPathDeserialize.cpp",
         "fuzz/oss_fuzz/FuzzRegionDeserialize.cpp",
         "fuzz/oss_fuzz/FuzzRegionSetPath.cpp",
+        "fuzz/oss_fuzz/FuzzRenameFont.cpp",
         "fuzz/oss_fuzz/FuzzSKP.cpp",
         "fuzz/oss_fuzz/FuzzSKSL2GLSL.cpp",
         "fuzz/oss_fuzz/FuzzSKSL2Metal.cpp",
@@ -3603,6 +3604,11 @@ if (skia_build_fuzzers) {
 
   libfuzzer_app("image_decode") {
     sources = [ "fuzz/oss_fuzz/FuzzImage.cpp" ]
+    deps = []
+  }
+
+  libfuzzer_app("rename_font") {
+    sources = [ "fuzz/oss_fuzz/FuzzRenameFont.cpp" ]
     deps = []
   }
 

@@ -82,7 +82,13 @@ SkData* SkOTUtils::RenameFont(SkStreamAsset* fontData, const char* fontName, int
     size_t oldNameTableOffset = SkEndian_SwapBE32(tableEntry.offset);
 
     //originalDataSize is the size of the original data without the name table.
+    if (oldNameTablePhysicalSize > fontData->getLength()) {
+        return nullptr;
+    }
     size_t originalDataSize = fontData->getLength() - oldNameTablePhysicalSize;
+    if (oldNameTableOffset > originalDataSize) {
+        return nullptr;
+    }
     size_t newDataSize = originalDataSize + nameTablePhysicalSize;
 
     auto rewrittenFontData = SkData::MakeUninitialized(newDataSize);
