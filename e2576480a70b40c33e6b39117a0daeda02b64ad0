@@ -112,6 +112,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "416d940c_35ecc3ee",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-20T18:16:52Z",
+      "side": 1,
+      "message": "Ah I misread it, this isn\u0027t doing the re-adding or removing, *it is the initial optimistic adding/removing.*",
+      "parentUuid": "7bf57f70_64eb2d23",
+      "range": {
+        "startLine": 94,
+        "startChar": 16,
+        "endLine": 97,
+        "endChar": 91
+      },
+      "revId": "e2576480a70b40c33e6b39117a0daeda02b64ad0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "41da0621_396356a0",
