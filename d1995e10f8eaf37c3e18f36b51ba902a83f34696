@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "860e1062_0c40039c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-20T15:49:39Z",
+      "side": 1,
+      "message": "Gold diffs are because now the 416 YUV config is rendering on those devices.",
+      "revId": "d1995e10f8eaf37c3e18f36b51ba902a83f34696",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
