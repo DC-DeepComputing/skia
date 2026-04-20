@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ec56814_220ee761",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4789436
+      },
+      "writtenOn": "2026-04-20T07:55:08Z",
+      "side": 1,
+      "message": "This is a patch for https://issuetracker.google.com/u/2/issues/504423275.",
+      "revId": "78fcf93a20060334923b66110670c507d3dd5a9d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
