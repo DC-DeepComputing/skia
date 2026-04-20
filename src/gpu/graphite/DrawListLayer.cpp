@@ -67,7 +67,8 @@ void DrawListLayer::recordBackwards(int stepIndex,
         // it drew into.
         targetLayer = stop.fLayer ? stop.fLayer : fLayers.head();
         if (targetLayer) {
-            targetMatch = targetLayer->searchBinding</*kForwards=*/false>(key, stop.fList);
+            targetMatch =
+                targetLayer->searchBinding</*kForwards=*/false>(key, stop.fList, fMatchUniforms);
         }
     } else {
         current = fLayers.tail();
@@ -76,11 +77,11 @@ void DrawListLayer::recordBackwards(int stepIndex,
             auto [overlapType, match] =
                     isStencil
                             ? current->test</*kIsStencil=*/true, kIsDepthOnly, /*kForwards=*/false>(
-                                      drawParams->drawBounds(), key, requiresBarrier, boundary)
+                                      drawParams->drawBounds(), key, requiresBarrier, boundary, fMatchUniforms)
                             : current->test</*kIsStencil=*/false,
                                             kIsDepthOnly,
                                             /*kForwards=*/false>(
-                                      drawParams->drawBounds(), key, requiresBarrier, boundary);
+                                      drawParams->drawBounds(), key, requiresBarrier, boundary, fMatchUniforms);
 
             if (overlapType == BoundsTest::kIncompatibleOverlap) {
                 // If we need to read the dst, we cannot go earlier than this layer.
@@ -243,7 +244,7 @@ void DrawListLayer::recordForwards(int stepIndex,
     SkASSERT(start.fList);
     BindingList* targetMatch = nullptr;
     if (start.fList->fNext) {
-        targetMatch = start.fLayer->searchBinding</*kForwards=*/true>(key, start.fList->fNext);
+        targetMatch = start.fLayer->searchBinding</*kForwards=*/true>(key, start.fList->fNext, fMatchUniforms);
     }
     Draw* draw = fStorage.make<Draw>(drawParams, uniformIndex);
     // Because depth-only draws exclusively `recordBackwards`, it is safe to pass false for
@@ -336,7 +337,7 @@ std::pair<DrawParams*, Insertion> DrawListLayer::recordDraw(const Renderer* rend
                     requiresBarrier,
                     step,
                     uniformIndex,
-                    LayerKey{pipelineIndex, textureBindingIndex},
+                    LayerKey{pipelineIndex, textureBindingIndex, uniformIndex},
                     drawParams,
                     /*stop=*/{},
                     &stepInsertion,
@@ -350,7 +351,7 @@ std::pair<DrawParams*, Insertion> DrawListLayer::recordDraw(const Renderer* rend
                         requiresBarrier,
                         step,
                         uniformIndex,
-                        LayerKey{pipelineIndex, textureBindingIndex},
+                        LayerKey{pipelineIndex, textureBindingIndex, uniformIndex},
                         drawParams,
                         latestInsertion,
                         &stepInsertion,
@@ -362,7 +363,7 @@ std::pair<DrawParams*, Insertion> DrawListLayer::recordDraw(const Renderer* rend
                                      requiresBarrier,
                                      step,
                                      uniformIndex,
-                                     LayerKey{pipelineIndex, textureBindingIndex},
+                                     LayerKey{pipelineIndex, textureBindingIndex, uniformIndex},
                                      drawParams,
                                      stepInsertion);
             }
