@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bcb1c6f7_89bb54cc",
+        "filename": "src/gpu/graphite/KeyContext.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-20T18:02:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "38d48ceb_9a65a980",
+      "range": {
+        "startLine": 55,
+        "startChar": 38,
+        "endLine": 55,
+        "endChar": 39
+      },
+      "revId": "e2576480a70b40c33e6b39117a0daeda02b64ad0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "75da143a_b954f0fb",
@@ -66,6 +90,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7bf57f70_64eb2d23",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-20T18:02:05Z",
+      "side": 1,
+      "message": "No, I don\u0027t think they are reversed (at least from what I\u0027d intended the brief comments to mean). I expanded them so hopefully it\u0027s clearer now.",
+      "parentUuid": "75da143a_b954f0fb",
+      "range": {
+        "startLine": 94,
+        "startChar": 16,
+        "endLine": 97,
+        "endChar": 91
+      },
+      "revId": "e2576480a70b40c33e6b39117a0daeda02b64ad0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "41da0621_396356a0",
         "filename": "tests/graphite/InnerFillTest.cpp",
         "patchSetId": 7
@@ -77,6 +125,30 @@
       "writtenOn": "2026-04-20T17:55:49Z",
       "side": 1,
       "message": "nit: typo",
+      "range": {
+        "startLine": 83,
+        "startChar": 26,
+        "endLine": 83,
+        "endChar": 35
+      },
+      "revId": "e2576480a70b40c33e6b39117a0daeda02b64ad0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97df26ee_cb95035b",
+        "filename": "tests/graphite/InnerFillTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-20T18:02:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "41da0621_396356a0",
       "range": {
         "startLine": 83,
         "startChar": 26,
