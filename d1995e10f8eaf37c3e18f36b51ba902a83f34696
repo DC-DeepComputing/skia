@@ -16,6 +16,47 @@
       "message": "Gold diffs are because now the 416 YUV config is rendering on those devices.",
       "revId": "d1995e10f8eaf37c3e18f36b51ba902a83f34696",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1fca9ba0_c61c5208",
+        "filename": "src/gpu/graphite/dawn/DawnGraphiteUtils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-20T18:15:26Z",
+      "side": 1,
+      "message": "nit: static_cast",
+      "range": {
+        "startLine": 105,
+        "startChar": 33,
+        "endLine": 105,
+        "endChar": 39
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "622cf756_4f7a95e8",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/dawn/DawnGraphiteUtils.cpp",
+              "range": {
+                "startLine": 105,
+                "startChar": 0,
+                "endLine": 106,
+                "endChar": 0
+              },
+              "replacement": "        SkASSERT(fFormatFeatures[static_cast\u003cint\u003e(TextureFormat::kUnsupported)].empty());\n"
+            }
+          ]
+        }
+      ],
+      "revId": "d1995e10f8eaf37c3e18f36b51ba902a83f34696",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
