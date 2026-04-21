@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "61b9d843_e805e2dc",
+        "filename": "tools/SkSharingProc.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-04-21T15:41:47Z",
+      "side": 1,
+      "message": "I don\u0027t think we need a sleep, I was basing this off a similar usage in ReadWritePixelsGPUTest. And when testing on Android I didn\u0027t notice and jank during capture that indicated this call was too expensive.",
+      "parentUuid": "bd096edd_44eaa727",
+      "range": {
+        "startLine": 69,
+        "startChar": 14,
+        "endLine": 69,
+        "endChar": 38
+      },
+      "revId": "0f1e43126d8fb5e5f20bcb9f4fe3ca24bea991f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c090e1ea_e5832c22",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-04-20T18:53:52Z",
       "side": 1,
       "message": "nit: indentation",
+      "range": {
+        "startLine": 85,
+        "startChar": 0,
+        "endLine": 85,
+        "endChar": 59
+      },
+      "revId": "0f1e43126d8fb5e5f20bcb9f4fe3ca24bea991f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd18c338_264100d7",
+        "filename": "tools/SkSharingProc.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-04-21T15:41:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c090e1ea_e5832c22",
       "range": {
         "startLine": 85,
         "startChar": 0,
