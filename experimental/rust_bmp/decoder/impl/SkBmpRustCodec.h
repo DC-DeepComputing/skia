@@ -29,6 +29,10 @@ class SkBmpRustCodec final : public SkCodec {
 public:
     static std::unique_ptr<SkBmpRustCodec> MakeFromStream(std::unique_ptr<SkStream>, Result*);
 
+    /// Create a codec for a BMP embedded in an ICO file.
+    /// Uses image crate's ICO-aware metadata parsing (no file header, halved height, alpha).
+    static std::unique_ptr<SkBmpRustCodec> MakeFromIcoStream(std::unique_ptr<SkStream>, Result*);
+
     ~SkBmpRustCodec() override;
 
 protected:
@@ -85,6 +89,9 @@ private:
     rust::Box<rust_bmp::Reader> fReader;
     std::unique_ptr<SkStream> fPrivStream;
     std::unique_ptr<SkSwizzler> fSwizzler;
+
+    // True if this codec was created via MakeFromIcoStream.
+    bool fIsIcoMode = false;
 
     // Using 4-bytes-wide `uint32_t` for each pixel, because
     // `kXformSrcColorType = kRGBA_8888_SkColorType`.
