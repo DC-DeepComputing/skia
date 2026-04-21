@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12d25d7b_d0ee5022",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 4
+      },
+      "lineNbr": 590,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-21T15:06:18Z",
+      "side": 0,
+      "message": "These APIs are meant to match the Objective-C APIs, so we should add a setVertexTexture and setVertexSamplerState function instead.",
+      "range": {
+        "startLine": 590,
+        "startChar": 33,
+        "endLine": 590,
+        "endChar": 51
+      },
+      "revId": "914e945319ef52ff1ea06432de44a3ab5c7b82cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
