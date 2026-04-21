@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "31298fd4_2ac26e98",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-04-21T19:11:19Z",
+      "side": 1,
+      "message": "Addressed some comments, will look at more of them once I\u0027m working from home!",
+      "revId": "a79b0fcf743194e17f8cc06ecb8cfdcc87edc943",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d7504bad_3809d272",
@@ -41,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "41496cd5_becb7d0b",
+        "filename": "src/gpu/graphite/vk/VulkanBuffer.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 420,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-04-21T19:11:19Z",
+      "side": 1,
+      "message": "Good idea; added!",
+      "parentUuid": "d7504bad_3809d272",
+      "range": {
+        "startLine": 419,
+        "startChar": 0,
+        "endLine": 420,
+        "endChar": 18
+      },
+      "revId": "a79b0fcf743194e17f8cc06ecb8cfdcc87edc943",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5e5f4f71_07e81df7",
@@ -54,6 +95,30 @@
       "writtenOn": "2026-04-21T18:52:24Z",
       "side": 1,
       "message": "nit: VulkanTexture spells out DescriptorSet in its similar functions, so lets match that convention",
+      "range": {
+        "startLine": 42,
+        "startChar": 49,
+        "endLine": 42,
+        "endChar": 56
+      },
+      "revId": "a79b0fcf743194e17f8cc06ecb8cfdcc87edc943",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7910723b_27f07d91",
+        "filename": "src/gpu/graphite/vk/VulkanBuffer.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-04-21T19:11:19Z",
+      "side": 1,
+      "message": "I might argue that one should also be shorthanded as well instead, but I see what you mean. Changed to match!",
+      "parentUuid": "5e5f4f71_07e81df7",
       "range": {
         "startLine": 42,
         "startChar": 49,
@@ -123,6 +188,30 @@
       "writtenOn": "2026-04-21T18:52:24Z",
       "side": 1,
       "message": "This should be an `STArray\u003c2, uint32_t\u003e` since we know its max size and can keep it on the stack.",
+      "range": {
+        "startLine": 1421,
+        "startChar": 0,
+        "endLine": 1421,
+        "endChar": 62
+      },
+      "revId": "a79b0fcf743194e17f8cc06ecb8cfdcc87edc943",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "36738fca_2f02b015",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1421,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-04-21T19:11:19Z",
+      "side": 1,
+      "message": "Yeah that makes sense. My thinking was that pre-allocating room for more elements than we may end up needing would be suboptimal, but it\u0027s a 1 v. 2 item difference and I see the value of doing it that way. Used `Pipeline::kNumUniformBuffers` instead of `2` to avoid magic (even if simple) number.",
+      "parentUuid": "de26f492_b446e52d",
       "range": {
         "startLine": 1421,
         "startChar": 0,
