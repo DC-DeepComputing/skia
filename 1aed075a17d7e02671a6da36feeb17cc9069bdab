@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3544e24a_2724369c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-21T20:13:18Z",
+      "side": 1,
+      "message": "Thanks Saif!",
+      "revId": "1aed075a17d7e02671a6da36feeb17cc9069bdab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e598bc5_b985ca5e",
+        "filename": "src/gpu/graphite/KeyContext.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-21T20:13:18Z",
+      "side": 1,
+      "message": "I don\u0027t think we need to make it an optional (since we are currently always passing it in, and the behavior is guarded by a KeyGenFlag still).\n\nnit: Can you move it to be right after `local2Dev`?",
+      "range": {
+        "startLine": 77,
+        "startChar": 16,
+        "endLine": 77,
+        "endChar": 73
+      },
+      "revId": "1aed075a17d7e02671a6da36feeb17cc9069bdab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9fd683c_17ec0261",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 2032,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-21T20:13:18Z",
+      "side": 1,
+      "message": "I think we should move this logic up as well and just set `newSampling \u003d SkFilterMode::kNearest` inside the if statement so that it applies to YUV images as well.",
+      "range": {
+        "startLine": 2032,
+        "startChar": 0,
+        "endLine": 2032,
+        "endChar": 83
+      },
+      "revId": "1aed075a17d7e02671a6da36feeb17cc9069bdab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

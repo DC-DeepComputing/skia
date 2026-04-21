@@ -57,6 +57,30 @@
       ],
       "revId": "0fd75396341fecb2612688be2ba9921217378cd1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "701a6b70_3dbb343b",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 2009,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-21T20:13:18Z",
+      "side": 1,
+      "message": "Yes, that is the right math. Since we know the total matrix transform is just a translation matrix, that offset is the same as mapping it by the inverse (device-to-local-to-shader) and can be compared to the subset bounds.",
+      "parentUuid": "b66eef35_7af72617",
+      "range": {
+        "startLine": 2005,
+        "startChar": 12,
+        "endLine": 2009,
+        "endChar": 13
+      },
+      "revId": "0fd75396341fecb2612688be2ba9921217378cd1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
