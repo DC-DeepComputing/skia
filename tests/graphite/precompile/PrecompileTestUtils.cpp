@@ -138,7 +138,10 @@ PipelineLabelInfoCollector::PipelineLabelInfoCollector(SkSpan<const PipelineLabe
         if (skip(testStr)) {
             fMap.insert({ testStr, PipelineLabelInfo(i, PipelineLabelInfo::kSkipped) });
         } else {
-            fMap.insert({ testStr, PipelineLabelInfo(i) });
+            auto [iter, added] = fMap.insert({ testStr, PipelineLabelInfo(i) });
+            if (!added) {
+                SkDebugf("------ %zu is a duplicate of %d\n", i, iter->second.fCasesIndex);
+            }
         }
     }
 }
@@ -181,7 +184,7 @@ int PipelineLabelInfoCollector::numNotCovered() const {
 }
 
 void PipelineLabelInfoCollector::finalReport() {
-    std::vector<int> skipped, missed;
+    std::vector<int> skipped, missed, covered;
     int numCovered = 0, numIntentionallySkipped = 0, numMissed = 0;
 
     for (const auto& iter : fMap) {
@@ -194,6 +197,7 @@ void PipelineLabelInfoCollector::finalReport() {
         } else {
             SkASSERT(iter.second.fPrecompileCase >= 0);
             ++numCovered;
+            covered.push_back(iter.second.fCasesIndex);
         }
     }
 
@@ -201,6 +205,13 @@ void PipelineLabelInfoCollector::finalReport() {
     SkASSERT(numIntentionallySkipped == (int) skipped.size());
 
     SkDebugf("-----------------------\n");
+    sort(covered.begin(), covered.end());
+    SkDebugf("covered: ");
+    for (int i : covered) {
+        SkDebugf("%d, ", i);
+    }
+    SkDebugf("\n");
+
     sort(missed.begin(), missed.end());
     SkDebugf("not covered: ");
     for (int i : missed) {
@@ -338,7 +349,9 @@ void PrecompileTest(skiatest::Reporter* reporter,
                     bool checkPipelineLabelCoverage) {
     using namespace skgpu::graphite;
 
-//    find_duplicates(labels);
+    SkDebugf("---------- %zu\n", labels.size());
+
+    find_duplicates(labels);
 
 #if defined(SK_VULKAN)
     // Use this call to map back from a HardwareImage sub-string to a VulkanYcbcrConversionInfo
