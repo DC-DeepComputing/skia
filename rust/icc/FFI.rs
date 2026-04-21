@@ -423,11 +423,22 @@ fn convert_grid_data(clut: &moxcms::LutStore) -> (Vec<u8>, bool) {
         LutStore::Store16(data) => (u16_vec_to_bytes(data), true),
     };
 
-    // Padded to a 4-byte boundary per ICC.1:2022 §7.1.2(c): "all tagged element
-    // data [...] shall be padded by no more than three following pad bytes to
-    // reach a 4-byte boundary".
+    // ICC.1:2022 §7.1.2(c) requires tagged element data to be padded to a 4-byte
+    // boundary: "all tagged element data [...] shall be padded by no more than
+    // three following pad bytes to reach a 4-byte boundary".
     // Spec: https://www.color.org/specification/ICC.1-2022-05.pdf
-    grid_data.resize(grid_data.len().next_multiple_of(4), 0);
+    //
+    // skcms gather functions load wider than one CLUT entry:
+    //   - gather_24 (8-bit 3-channel): loads 4 bytes per 3-byte entry → 1 byte overread
+    //   - gather_48 (16-bit 3-channel): loads 8 bytes per 6-byte entry → 2 bytes overread
+    // Unlike skcms's C++ parser, which points grid_16/grid_8 into the full ICC
+    // profile buffer (where trailing tag data provides natural padding), the Rust
+    // bridge copies CLUT data into an isolated Vec. Add the overread bytes so the
+    // last gather stays within the allocation, then align to a 4-byte boundary per
+    // ICC.1:2022 §7.1.2(c).
+    // See modules/skcms/src/Transform_inl.h for gather implementations.
+    let overread: usize = if is_16bit_grid { 2 } else { 1 };
+    grid_data.resize((grid_data.len() + overread).next_multiple_of(4), 0);
 
     (grid_data, is_16bit_grid)
 }
