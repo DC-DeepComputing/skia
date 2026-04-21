@@ -62,6 +62,29 @@
       },
       "revId": "a90985b7a64a806eabb7987d8d1e421dc6fe04e9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0317a92_2b0f38b2",
+        "filename": "src/gpu/graphite/mtl/MtlRenderCommandEncoder.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-21T17:40:00Z",
+      "side": 1,
+      "message": "You\u0027re right this isn\u0027t great. I think we should either do state tracking for vertex and fragment stages separately (shouldn\u0027t be expensive), or we go back to the combined setter (if we can get away with setting them on the vertex shader for paint textures that aren\u0027t declared there)",
+      "range": {
+        "startLine": 120,
+        "startChar": 4,
+        "endLine": 136,
+        "endChar": 0
+      },
+      "revId": "a90985b7a64a806eabb7987d8d1e421dc6fe04e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
