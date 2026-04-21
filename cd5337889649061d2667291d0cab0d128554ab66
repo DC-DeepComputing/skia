@@ -663,6 +663,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2524ac64_03b3703c",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 520,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-21T13:13:20Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "3f0cb591_a5bc156c",
+      "revId": "cd5337889649061d2667291d0cab0d128554ab66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9e06fca1_216d4f5f",
