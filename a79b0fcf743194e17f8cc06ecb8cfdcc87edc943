@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "48bb5217_d349b455",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-04-21T18:36:11Z",
+      "side": 1,
+      "message": "Passed CQ, but issuing a disclaimer that I have not done detailed local testing or confirmation of performance changes. However, my brain has hit a plateau of progress in staring at this on my own, so wanted to get your eyes on it now anyhow. Thanks!",
+      "revId": "a79b0fcf743194e17f8cc06ecb8cfdcc87edc943",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eff4ac0b_3169ba62",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1367,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-04-21T18:36:11Z",
+      "side": 1,
+      "message": "Note: This helper is simply relocated from the VulkanResourceProvider.\nThe helper below is a streamlined version for updating one UBO desc set (accepting native Vk objects rather than abstractions).",
+      "range": {
+        "startLine": 1323,
+        "startChar": 0,
+        "endLine": 1367,
+        "endChar": 1
+      },
+      "revId": "a79b0fcf743194e17f8cc06ecb8cfdcc87edc943",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
