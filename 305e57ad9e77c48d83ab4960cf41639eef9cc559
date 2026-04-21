@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "54acb7b5_a146eb43",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 349,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-21T15:25:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "513bcb81_6bfeb93b",
+      "range": {
+        "startLine": 349,
+        "startChar": 37,
+        "endLine": 349,
+        "endChar": 39
+      },
+      "revId": "305e57ad9e77c48d83ab4960cf41639eef9cc559",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3c7b8f0c_bf0e6121",
@@ -37,6 +61,24 @@
       "writtenOn": "2026-04-21T13:13:20Z",
       "side": 1,
       "message": "tab left one - overlength",
+      "revId": "305e57ad9e77c48d83ab4960cf41639eef9cc559",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "03c88fc5_849d426d",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 389,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-21T15:25:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3c7b8f0c_bf0e6121",
       "revId": "305e57ad9e77c48d83ab4960cf41639eef9cc559",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -64,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c8fcf8a_6d07d2c1",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 509,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-21T15:25:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "64907c46_8497ccbf",
+      "range": {
+        "startLine": 509,
+        "startChar": 21,
+        "endLine": 509,
+        "endChar": 24
+      },
+      "revId": "305e57ad9e77c48d83ab4960cf41639eef9cc559",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "23c835e6_16391e68",
@@ -77,6 +143,24 @@
       "writtenOn": "2026-04-21T13:13:20Z",
       "side": 1,
       "message": "Can we just predeclare Polyline ?",
+      "revId": "305e57ad9e77c48d83ab4960cf41639eef9cc559",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "586c891d_db3d8704",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-21T15:25:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "23c835e6_16391e68",
       "revId": "305e57ad9e77c48d83ab4960cf41639eef9cc559",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -98,6 +182,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "86d1b0e4_206317b8",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-21T15:25:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "80be1952_18b62a77",
+      "revId": "305e57ad9e77c48d83ab4960cf41639eef9cc559",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "85d26b92_f451f66c",
@@ -115,6 +217,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb79f0f7_e4000169",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-21T15:25:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "85d26b92_f451f66c",
+      "revId": "305e57ad9e77c48d83ab4960cf41639eef9cc559",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "70719814_ecae696c",
@@ -128,6 +248,30 @@
       "writtenOn": "2026-04-21T13:13:20Z",
       "side": 1,
       "message": "have to ?",
+      "range": {
+        "startLine": 84,
+        "startChar": 36,
+        "endLine": 84,
+        "endChar": 40
+      },
+      "revId": "305e57ad9e77c48d83ab4960cf41639eef9cc559",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a425e64_baaabab7",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-21T15:25:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "70719814_ecae696c",
       "range": {
         "startLine": 84,
         "startChar": 36,
@@ -161,6 +305,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f966ed6_430a7853",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-21T15:25:21Z",
+      "side": 1,
+      "message": "I would keep as is? This name is meant to distinguish from the standard kQuadErrTolerance, and clue in that it\u0027s specific to the lowering from cubics to quads.",
+      "parentUuid": "c136aed6_4cc6b231",
+      "range": {
+        "startLine": 88,
+        "startChar": 30,
+        "endLine": 88,
+        "endChar": 47
+      },
+      "revId": "305e57ad9e77c48d83ab4960cf41639eef9cc559",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1d854a01_251227a2",
@@ -174,6 +342,24 @@
       "writtenOn": "2026-04-21T13:13:20Z",
       "side": 1,
       "message": "Do we need this ?",
+      "revId": "305e57ad9e77c48d83ab4960cf41639eef9cc559",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ecc76bda_a2f23900",
+        "filename": "tests/graphite/sparse_strips/FlattenTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-21T15:25:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1d854a01_251227a2",
       "revId": "305e57ad9e77c48d83ab4960cf41639eef9cc559",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -195,6 +381,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1f1425f_70f39fe1",
+        "filename": "tests/graphite/sparse_strips/FlattenTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-21T15:25:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8615e577_7a1e18c9",
+      "revId": "305e57ad9e77c48d83ab4960cf41639eef9cc559",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "13d2e12d_81aa1aa6",
@@ -212,6 +416,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1b0721b_93737314",
+        "filename": "tests/graphite/sparse_strips/FlattenTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-21T15:25:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "13d2e12d_81aa1aa6",
+      "revId": "305e57ad9e77c48d83ab4960cf41639eef9cc559",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "733b6080_f58b780d",
@@ -225,6 +447,24 @@
       "writtenOn": "2026-04-21T13:13:20Z",
       "side": 1,
       "message": "I would tab these all left one to avoid this wrapping",
+      "revId": "305e57ad9e77c48d83ab4960cf41639eef9cc559",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "48a242b8_7e73bcdb",
+        "filename": "tests/graphite/sparse_strips/FlattenTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 464,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-21T15:25:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "733b6080_f58b780d",
       "revId": "305e57ad9e77c48d83ab4960cf41639eef9cc559",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -252,6 +492,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8ddd34b_bccb878c",
+        "filename": "tests/graphite/sparse_strips/FlattenTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 500,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-21T15:25:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2a1246c6_31bbbc44",
+      "range": {
+        "startLine": 500,
+        "startChar": 45,
+        "endLine": 500,
+        "endChar": 58
+      },
+      "revId": "305e57ad9e77c48d83ab4960cf41639eef9cc559",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2047e3ab_30c5101d",
@@ -269,6 +533,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dfdd46aa_9c44f3d1",
+        "filename": "tests/graphite/sparse_strips/PolylineTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-21T15:25:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2047e3ab_30c5101d",
+      "revId": "305e57ad9e77c48d83ab4960cf41639eef9cc559",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f7eeec62_1f3eff93",
@@ -282,6 +564,24 @@
       "writtenOn": "2026-04-21T13:13:20Z",
       "side": 1,
       "message": "... to a line due to culling ?",
+      "revId": "305e57ad9e77c48d83ab4960cf41639eef9cc559",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f35ecdd_5762d365",
+        "filename": "tests/graphite/sparse_strips/PolylineTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-21T15:25:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f7eeec62_1f3eff93",
       "revId": "305e57ad9e77c48d83ab4960cf41639eef9cc559",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
