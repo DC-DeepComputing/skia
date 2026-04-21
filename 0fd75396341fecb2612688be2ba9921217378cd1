@@ -1,0 +1,62 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "550a8100_81424ce7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18114
+      },
+      "writtenOn": "2026-04-21T15:55:24Z",
+      "side": 1,
+      "message": "Please take a look.",
+      "revId": "0fd75396341fecb2612688be2ba9921217378cd1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b66eef35_7af72617",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 2009,
+      "author": {
+        "id": 18114
+      },
+      "writtenOn": "2026-04-21T15:55:24Z",
+      "side": 1,
+      "message": "I\u0027m not sure if this is proper. Michael, what do you think?",
+      "range": {
+        "startLine": 2005,
+        "startChar": 12,
+        "endLine": 2009,
+        "endChar": 13
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "58571ee7_f63014e9",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/KeyHelpers.cpp",
+              "range": {
+                "startLine": 1,
+                "startChar": 0,
+                "endLine": 1,
+                "endChar": 0
+              },
+              "replacement": "            // Offset the clip bounds to be in the same local space as the subset.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "0fd75396341fecb2612688be2ba9921217378cd1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
