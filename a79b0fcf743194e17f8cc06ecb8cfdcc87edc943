@@ -20,6 +20,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d7504bad_3809d272",
+        "filename": "src/gpu/graphite/vk/VulkanBuffer.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 420,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-21T18:52:24Z",
+      "side": 1,
+      "message": "We could do `SkASSERT(!this-\u003egetCachedSingleUboDescSet(...))` here.",
+      "range": {
+        "startLine": 419,
+        "startChar": 0,
+        "endLine": 420,
+        "endChar": 18
+      },
+      "revId": "a79b0fcf743194e17f8cc06ecb8cfdcc87edc943",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e5f4f71_07e81df7",
+        "filename": "src/gpu/graphite/vk/VulkanBuffer.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-21T18:52:24Z",
+      "side": 1,
+      "message": "nit: VulkanTexture spells out DescriptorSet in its similar functions, so lets match that convention",
+      "range": {
+        "startLine": 42,
+        "startChar": 49,
+        "endLine": 42,
+        "endChar": 56
+      },
+      "revId": "a79b0fcf743194e17f8cc06ecb8cfdcc87edc943",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "eff4ac0b_3169ba62",
         "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
         "patchSetId": 12
@@ -36,6 +82,98 @@
         "startChar": 0,
         "endLine": 1367,
         "endChar": 1
+      },
+      "revId": "a79b0fcf743194e17f8cc06ecb8cfdcc87edc943",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7234da00_1892d054",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1369,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-21T18:52:24Z",
+      "side": 1,
+      "message": "I would be that the flexible `update_uniform_descriptor_set` is fast enough when passing in spans with 1 element each that we can avoid having code that so similarly modifies the the VkDescriptorBufferInfo",
+      "range": {
+        "startLine": 1369,
+        "startChar": 5,
+        "endLine": 1369,
+        "endChar": 41
+      },
+      "revId": "a79b0fcf743194e17f8cc06ecb8cfdcc87edc943",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de26f492_b446e52d",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1421,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-21T18:52:24Z",
+      "side": 1,
+      "message": "This should be an `STArray\u003c2, uint32_t\u003e` since we know its max size and can keep it on the stack.",
+      "range": {
+        "startLine": 1421,
+        "startChar": 0,
+        "endLine": 1421,
+        "endChar": 62
+      },
+      "revId": "a79b0fcf743194e17f8cc06ecb8cfdcc87edc943",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b80fcfd_246cdfab",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1433,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-21T18:52:24Z",
+      "side": 1,
+      "message": "This is right now hardcoded to use a uniform buffer type in its created descriptor, but we can get into this if when `uniformBufferType` is for SSBOs. \n\nWe should either check that in the if, or have `bindUniformBuffers()` handle building the single Descriptor and use the selected uniform buffer type.",
+      "range": {
+        "startLine": 1433,
+        "startChar": 41,
+        "endLine": 1433,
+        "endChar": 69
+      },
+      "revId": "a79b0fcf743194e17f8cc06ecb8cfdcc87edc943",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68a5adcc_649fb48a",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-21T18:52:24Z",
+      "side": 1,
+      "message": "Can we move this to VulkanCommandBuffer and have it infer the descriptor type from the VulkanBuffer\u0027s type? \n\nEven though we aren\u0027t enabling SSBOs right now at the VulkanCaps level, caching the single SSBO binding that would most typically be used for those would be good.",
+      "range": {
+        "startLine": 317,
+        "startChar": 0,
+        "endLine": 323,
+        "endChar": 68
       },
       "revId": "a79b0fcf743194e17f8cc06ecb8cfdcc87edc943",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
