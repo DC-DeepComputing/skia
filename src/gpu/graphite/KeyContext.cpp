@@ -40,7 +40,8 @@ KeyContext::KeyContext(skgpu::graphite::Recorder* recorder,
                        const SkM44& local2Dev,
                        const SkColorInfo& dstColorInfo,
                        SkEnumBitMask<KeyGenFlags> initialFlags,
-                       const SkColor4f& paintColor)
+                       const SkColor4f& paintColor,
+                       const std::optional<SkRect>& clipDrawBounds)
         : fCaps(recorder->priv().caps())
         , fRecorder(recorder)
         , fDC(drawContext)
@@ -52,7 +53,8 @@ KeyContext::KeyContext(skgpu::graphite::Recorder* recorder,
         , fLocal2Dev(local2Dev)
         , fLocalMatrix(nullptr)
         , fDstColorInfo(dstColorInfo)
-        , fKeyGenFlags(initialFlags) {\
+        , fKeyGenFlags(initialFlags)
+        , fClipDrawBounds(clipDrawBounds) {
     fPaintColor = PaintParams::Color4fPrepForDst(paintColor, fDstColorInfo).makeOpaque().premul();
     fPaintColor.fA = paintColor.fA;
 }
@@ -71,7 +73,8 @@ KeyContext::KeyContext(const KeyContext& other,
         , fLocalMatrix(other.fLocalMatrix)
         , fDstColorInfo(other.fDstColorInfo)
         , fPaintColor(other.fPaintColor)
-        , fKeyGenFlags(other.fKeyGenFlags | xtraFlags) {}
+        , fKeyGenFlags(other.fKeyGenFlags | xtraFlags)
+        , fClipDrawBounds(other.fClipDrawBounds) {}
 
 KeyContext::~KeyContext() {}
 
