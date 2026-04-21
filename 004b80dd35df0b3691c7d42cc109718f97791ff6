@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4fb0aaaf_1aee3126",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 4
+      },
+      "lineNbr": 1369,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-21T17:19:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "21b67d98_e40c7d5b",
+      "range": {
+        "startLine": 1365,
+        "startChar": 36,
+        "endLine": 1369,
+        "endChar": 55
+      },
+      "revId": "004b80dd35df0b3691c7d42cc109718f97791ff6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "59cff664_f5a7970f",
@@ -71,6 +95,30 @@
       "writtenOn": "2026-04-21T15:06:18Z",
       "side": 1,
       "message": "If you pass in `textureCoords` here and remove the normalization of the pixelGeometryDelta on the CPU, then it should work out to the same offset calculations and we won\u0027t need to pass down `unormTexCoords` anymore.",
+      "range": {
+        "startLine": 1481,
+        "startChar": 0,
+        "endLine": 1481,
+        "endChar": 77
+      },
+      "revId": "004b80dd35df0b3691c7d42cc109718f97791ff6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "893837ff_a1b5e279",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 4
+      },
+      "lineNbr": 1481,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-21T17:19:19Z",
+      "side": 1,
+      "message": "See comment below.",
+      "parentUuid": "59cff664_f5a7970f",
       "range": {
         "startLine": 1481,
         "startChar": 0,
@@ -106,6 +154,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "68955647_fec4941e",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 4
+      },
+      "lineNbr": 1514,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-21T17:19:19Z",
+      "side": 1,
+      "message": "Can we apply these changes in a separate patch to isolate it\u0027s performance impact?\n\nI think the regression we are getting is not from inversion multiplication, but instead from loading the texture size.\n\nIf that is the case, then any call to `textureSize` in the frag shader will produce the slowdown, and will obfuscate the impact of moving to the vertex shader.",
+      "parentUuid": "a87bfac6_5371baf7",
+      "range": {
+        "startLine": 1514,
+        "startChar": 23,
+        "endLine": 1514,
+        "endChar": 31
+      },
+      "revId": "004b80dd35df0b3691c7d42cc109718f97791ff6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e7e46d3a_0fed97ce",
         "filename": "src/sksl/sksl_graphite_vert.sksl",
         "patchSetId": 4
@@ -117,6 +189,30 @@
       "writtenOn": "2026-04-21T15:06:18Z",
       "side": 1,
       "message": "Put this in the `//Uniforms` section.",
+      "range": {
+        "startLine": 1093,
+        "startChar": 22,
+        "endLine": 1093,
+        "endChar": 45
+      },
+      "revId": "004b80dd35df0b3691c7d42cc109718f97791ff6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "37ec8e53_3c18698e",
+        "filename": "src/sksl/sksl_graphite_vert.sksl",
+        "patchSetId": 4
+      },
+      "lineNbr": 1093,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-21T17:19:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e7e46d3a_0fed97ce",
       "range": {
         "startLine": 1093,
         "startChar": 22,

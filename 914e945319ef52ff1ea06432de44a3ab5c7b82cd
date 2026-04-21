@@ -22,6 +22,30 @@
       },
       "revId": "914e945319ef52ff1ea06432de44a3ab5c7b82cd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c272c072_19a21cd3",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 4
+      },
+      "lineNbr": 590,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-21T17:19:19Z",
+      "side": 0,
+      "message": "Done but note slight awkwardness: the vertex functions only make the texture and sampler visible to the vertex shader, they do not set it. So these functions should always be called after the fragment ones.\n\nPerhaps we could make it so that the vertex overwrites what is in `fCurrent*`, but that risks the vertex stomping on a valid binding if it does not match what the fragment set.",
+      "parentUuid": "12d25d7b_d0ee5022",
+      "range": {
+        "startLine": 590,
+        "startChar": 33,
+        "endLine": 590,
+        "endChar": 51
+      },
+      "revId": "914e945319ef52ff1ea06432de44a3ab5c7b82cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
