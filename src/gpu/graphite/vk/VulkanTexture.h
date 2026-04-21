@@ -96,7 +96,7 @@ public:
 
     sk_sp<VulkanDescriptorSet> getCachedSingleTextureDescriptorSet(const Sampler*) const;
     void addCachedSingleTextureDescriptorSet(sk_sp<VulkanDescriptorSet>,
-                                            sk_sp<const Sampler>) const;
+                                             sk_sp<const Sampler>) const;
 
     sk_sp<VulkanFramebuffer> getCachedFramebuffer(const RenderPassDesc& renderPassDesc,
                                                   const VulkanTexture* msaaTexture,
