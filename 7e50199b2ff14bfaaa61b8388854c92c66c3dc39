@@ -16,6 +16,24 @@
       "message": "Can you also add the guard on the SPIRVCodeGenerator::writeOpCode? We should assert_release if we get a bad op code?",
       "revId": "7e50199b2ff14bfaaa61b8388854c92c66c3dc39",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d66f8f11_895d833a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-21T15:08:04Z",
+      "side": 1,
+      "message": "I will do that as a follow-up, it should be caught earlier during SkSL compilation.",
+      "parentUuid": "655705e1_e7b7590e",
+      "revId": "7e50199b2ff14bfaaa61b8388854c92c66c3dc39",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
