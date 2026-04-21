@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ec5c302_8b29ed1c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-21T18:28:32Z",
+      "side": 1,
+      "message": "I lost the +1\u0027s. I had to tweak a RP test that was confirming that downstream generated RP slot counts would fail during appendStages, but it produced a struct with more than 1024 fields originally.\n\nSwitching to a synthetic struct with 1000 fields to successfully compile still triggers the appendStages rejection.",
+      "revId": "de6e2ff3617e95775cf3642840d7e2be809cd83d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
