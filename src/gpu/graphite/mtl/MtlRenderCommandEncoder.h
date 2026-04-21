@@ -117,6 +117,23 @@ public:
         }
     }
 
+    // Note, vertex functions do NOT set the texture at the current index, they only make it visible
+    // to the vertex shader. Thus, they should always be called *after* the fragment shader has run.
+    void setVertexTexture(id<MTLTexture> texture, NSUInteger index) {
+        SkASSERT(index < kMaxExpectedTextures);
+        if (fCurrentTexture[index] == texture) {
+            [(*fCommandEncoder) setVertexTexture:texture
+                                         atIndex:index];
+        }
+    }
+    void setVertexSamplerState(id<MTLSamplerState> sampler, NSUInteger index) {
+        SkASSERT(index < kMaxExpectedTextures);
+        if (fCurrentSampler[index] == sampler) {
+            [(*fCommandEncoder) setVertexSamplerState:sampler
+                                              atIndex:index];
+        }
+    }
+
     void setBlendColor(std::array<float, 4> blendConst) {
         [(*fCommandEncoder) setBlendColorRed: blendConst[0]
                                        green: blendConst[1]

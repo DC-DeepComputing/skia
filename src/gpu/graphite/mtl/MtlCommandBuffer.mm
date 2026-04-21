@@ -587,8 +587,13 @@ void MtlCommandBuffer::bindTextureAndSampler(const Texture* texture,
 
     id<MTLTexture> mtlTexture = ((const MtlTexture*)texture)->mtlTexture();
     id<MTLSamplerState> mtlSamplerState = ((const MtlSampler*)sampler)->mtlSamplerState();
+
     fActiveRenderCommandEncoder->setFragmentTexture(mtlTexture, bindIndex);
     fActiveRenderCommandEncoder->setFragmentSamplerState(mtlSamplerState, bindIndex);
+
+    // Must come after setting fragment
+    fActiveRenderCommandEncoder->setVertexTexture(mtlTexture, bindIndex);
+    fActiveRenderCommandEncoder->setVertexSamplerState(mtlSamplerState, bindIndex);
 }
 
 void MtlCommandBuffer::setScissor(const Scissor& scissor) {
