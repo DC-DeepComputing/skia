@@ -45,9 +45,6 @@ public:
     static constexpr VkShaderStageFlagBits kLoadMSAAPushConstantStageFlags =
             VK_SHADER_STAGE_VERTEX_BIT;
 
-
-    using UniformBindGroupKey = FixedSizeKey<2 * VulkanGraphicsPipeline::kNumUniformBuffers>;
-
     VulkanResourceProvider(SharedContext* sharedContext,
                            SingleOwner*,
                            uint32_t recorderID,
@@ -60,9 +57,7 @@ public:
 
     sk_sp<VulkanDescriptorSet> findOrCreateDescriptorSet(SkSpan<DescriptorData>);
 
-    sk_sp<VulkanDescriptorSet> findOrCreateUniformBuffersDescriptorSet(
-            SkSpan<DescriptorData> requestedDescriptors,
-            SkSpan<BindBufferInfo> bindUniformBufferInfo);
+    sk_sp<VulkanDescriptorSet> findOrCreateSingleUboDescSet();
 
     sk_sp<VulkanGraphicsPipeline> findOrCreateLoadMSAAPipeline(const RenderPassDesc&);
 
@@ -117,9 +112,6 @@ private:
     skia_private::TArray<std::pair<uint32_t, sk_sp<VulkanGraphicsPipeline>>> fLoadMSAAPipelines;
     // The shader modules and pipeline layout can be shared for all loadMSAA pipelines.
     std::unique_ptr<VulkanProgramInfo> fLoadMSAAProgram;
-
-    SkLRUCache<UniformBindGroupKey, sk_sp<VulkanDescriptorSet>,
-               UniformBindGroupKey::Hash> fUniformBufferDescSetCache;
 
     skia_private::TArray<std::pair<GraphiteResourceKey, uint32_t>> fCurrentPoolSizes;
 };

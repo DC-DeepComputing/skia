@@ -8,13 +8,18 @@
 #ifndef skgpu_graphite_VulkanBuffer_DEFINED
 #define skgpu_graphite_VulkanBuffer_DEFINED
 
+#include "include/core/SkRefCnt.h"
 #include "include/gpu/vk/VulkanMemoryAllocator.h"
+#include "include/private/base/SkTArray.h"
 #include "src/gpu/graphite/Buffer.h"
 #include "src/gpu/graphite/vk/VulkanSharedContext.h"
+
+#include <utility>
 
 namespace skgpu::graphite {
 
 class VulkanCommandBuffer;
+class VulkanDescriptorSet;
 
 class VulkanBuffer final : public Buffer {
 public:
@@ -33,6 +38,10 @@ public:
                          VkPipelineStageFlags dstStageMask) const;
 
     bool bufferUsedForCpuRead() const { return fBufferUsedForCPURead; }
+
+    sk_sp<VulkanDescriptorSet> getCachedSingleUboDescSet(size_t bufferSize);
+
+    void addCachedSingleUboDescSet(size_t bufferSize, sk_sp<VulkanDescriptorSet>);
 
 private:
     VulkanBuffer(const VulkanSharedContext*,
@@ -61,6 +70,12 @@ private:
     skgpu::VulkanAlloc fAlloc;
     const VkBufferUsageFlags fBufferUsageFlags;
     mutable VkAccessFlags fCurrentAccess = 0;
+
+    // If the underlying VkBuffer is a uniform buffer, cache single-uniform descriptor sets for
+    // each encountered binding size. Otherwise, this can be ignored (though could later be adapted
+    // to cache, say, storage buffer descriptor sets).
+    using SizeAndSet = std::pair<size_t, sk_sp<VulkanDescriptorSet>>;
+    skia_private::TArray<SizeAndSet> fCachedSingleUniformDescriptorSets;
 
     /**
      * Buffers can either be mapped for:
