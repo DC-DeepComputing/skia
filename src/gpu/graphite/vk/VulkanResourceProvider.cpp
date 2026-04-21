@@ -91,8 +91,7 @@ VulkanResourceProvider::VulkanResourceProvider(SharedContext* sharedContext,
                                                size_t resourceBudget)
         : ResourceProvider(sharedContext, singleOwner, recorderID, resourceBudget)
         , fMockPipelineLayout(
-                create_mock_layout(static_cast<const VulkanSharedContext*>(sharedContext)))
-        , fUniformBufferDescSetCache(kMaxNumberOfCachedBufferDescSets) {}
+                create_mock_layout(static_cast<const VulkanSharedContext*>(sharedContext))) {}
 
 VulkanResourceProvider::~VulkanResourceProvider() {
     if (fMockPipelineLayout) {
@@ -322,40 +321,40 @@ sk_sp<VulkanDescriptorSet> VulkanResourceProvider::findOrCreateDescriptorSet(
 
 namespace {
 
-VulkanResourceProvider::UniformBindGroupKey make_ubo_bind_group_key(
-        SkSpan<DescriptorData> requestedDescriptors,
-        SkSpan<BindBufferInfo> bindUniformBufferInfo) {
-    VulkanResourceProvider::UniformBindGroupKey uniqueKey;
-    {
-        // Each entry in the bind group needs 2 uint32_t in the key:
-        //  - buffer's unique ID: 32 bits.
-        //  - buffer's binding size: 32 bits.
-        // We need total of 4 entries in the uniform buffer bind group.
-        // Unused entries will be assigned zero values.
-        VulkanResourceProvider::UniformBindGroupKey::Builder builder(&uniqueKey);
+// VulkanResourceProvider::UniformBindGroupKey make_ubo_bind_group_key(
+//         SkSpan<DescriptorData> requestedDescriptors,
+//         SkSpan<BindBufferInfo> bindUniformBufferInfo) {
+//     VulkanResourceProvider::UniformBindGroupKey uniqueKey;
+//     {
+//         // Each entry in the bind group needs 2 uint32_t in the key:
+//         //  - buffer's unique ID: 32 bits.
+//         //  - buffer's binding size: 32 bits.
+//         // We need total of 4 entries in the uniform buffer bind group.
+//         // Unused entries will be assigned zero values.
+//         VulkanResourceProvider::UniformBindGroupKey::Builder builder(&uniqueKey);
 
-        for (uint32_t i = 0; i < VulkanGraphicsPipeline::kNumUniformBuffers; ++i) {
-            builder[2 * i] = 0;
-            builder[2 * i + 1] = 0;
-        }
+//         for (uint32_t i = 0; i < VulkanGraphicsPipeline::kNumUniformBuffers; ++i) {
+//             builder[2 * i] = 0;
+//             builder[2 * i + 1] = 0;
+//         }
 
-        for (uint32_t i = 0; i < requestedDescriptors.size(); ++i) {
-            int descriptorBindingIndex = requestedDescriptors[i].fBindingIndex;
-            SkASSERT(SkTo<unsigned long>(descriptorBindingIndex) < bindUniformBufferInfo.size());
-            SkASSERT(SkTo<unsigned long>(descriptorBindingIndex) <
-                     VulkanGraphicsPipeline::kNumUniformBuffers);
-            const auto& bindInfo = bindUniformBufferInfo[descriptorBindingIndex];
-            const VulkanBuffer* boundBuffer = static_cast<const VulkanBuffer*>(bindInfo.fBuffer);
-            SkASSERT(boundBuffer);
-            builder[2 * descriptorBindingIndex] = boundBuffer->uniqueID().asUInt();
-            builder[2 * descriptorBindingIndex + 1] = bindInfo.fSize;
-        }
+//         for (uint32_t i = 0; i < requestedDescriptors.size(); ++i) {
+//             int descriptorBindingIndex = requestedDescriptors[i].fBindingIndex;
+//             SkASSERT(SkTo<unsigned long>(descriptorBindingIndex) < bindUniformBufferInfo.size());
+//             SkASSERT(SkTo<unsigned long>(descriptorBindingIndex) <
+//                      VulkanGraphicsPipeline::kNumUniformBuffers);
+//             const auto& bindInfo = bindUniformBufferInfo[descriptorBindingIndex];
+//             const VulkanBuffer* boundBuffer = static_cast<const VulkanBuffer*>(bindInfo.fBuffer);
+//             SkASSERT(boundBuffer);
+//             builder[2 * descriptorBindingIndex] = boundBuffer->uniqueID().asUInt();
+//             builder[2 * descriptorBindingIndex + 1] = bindInfo.fSize;
+//         }
 
-        builder.finish();
-    }
+//         builder.finish();
+//     }
 
-    return uniqueKey;
-}
+//     return uniqueKey;
+// }
 
 void update_uniform_descriptor_set(SkSpan<DescriptorData> requestedDescriptors,
                                    SkSpan<BindBufferInfo> bindUniformBufferInfo,
@@ -405,27 +404,70 @@ void update_uniform_descriptor_set(SkSpan<DescriptorData> requestedDescriptors,
 
 } // anonymous namespace
 
-sk_sp<VulkanDescriptorSet> VulkanResourceProvider::findOrCreateUniformBuffersDescriptorSet(
-        SkSpan<DescriptorData> requestedDescriptors,
-        SkSpan<BindBufferInfo> bindUniformBufferInfo) {
-    SkASSERT(requestedDescriptors.size() <= VulkanGraphicsPipeline::kNumUniformBuffers);
+// sk_sp<VulkanDescriptorSet> VulkanResourceProvider::createSingleUboDescriptorSet() {
+//     // If we did not find an existing avilable desc set, allocate sets with the appropriate layout
+//     // and add them to the cache.
+//     VkDescriptorSetLayout layout;
+//     const VulkanSharedContext* context = this->vulkanSharedContext();
 
-    auto key = make_ubo_bind_group_key(requestedDescriptors, bindUniformBufferInfo);
-    auto* existingDescSet = fUniformBufferDescSetCache.find(key);
-    if (existingDescSet) {
-        return *existingDescSet;
-    }
-    sk_sp<VulkanDescriptorSet> newDS = this->findOrCreateDescriptorSet(requestedDescriptors);
-    if (!newDS) {
-        return nullptr;
-    }
+//     VkDescriptorSetLayout setLayout = {};
 
-    update_uniform_descriptor_set(requestedDescriptors,
-                                  bindUniformBufferInfo,
-                                  *newDS->descriptorSet(),
-                                  this->vulkanSharedContext());
-    return *fUniformBufferDescSetCache.insert(key, newDS);
+//     VkDescriptorSetLayoutBinding setLayoutBinding = {};
+//     setLayoutBinding.binding = VulkanGraphicsPipeline::kCombinedUniformIndex;
+//     setLayoutBinding.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC;
+//     setLayoutBinding.descriptorCount = 1;
+//     setLayoutBinding.stageFlags =
+//             VK_PIPELINE_STAGE_VERTEX_SHADER_BIT | VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
+
+//     auto pool = VulkanDescriptorPool::Make(context, requestedDescriptors, layout, numSets);
+
+//     VulkanDescriptorSet::Make(context, pool);
+
+//     if (!pool) {
+//         VULKAN_CALL(context->interface(), DestroyDescriptorSetLayout(context->device(),
+//                                                                      layout,
+//                                                                      nullptr));
+//         return nullptr;
+//     }
+
+//     // Once the pipeline layout is created, we can clean up the VkDescriptorSetLayout.
+//     VULKAN_CALL(context->interface(),
+//                 DestroyDescriptorSetLayout(sharedContext->device(), setLayout, nullptr));
+// }
+
+sk_sp<VulkanDescriptorSet> VulkanResourceProvider::findOrCreateSingleUboDescSet() {
+    DescriptorData singleUniformDesc = {
+            DescriptorType::kUniformBuffer, /*count=*/1,
+            VulkanGraphicsPipeline::kCombinedUniformIndex,
+            PipelineStageFlags::kVertexShader | PipelineStageFlags::kFragmentShader};
+
+    return this->findOrCreateDescriptorSet({&singleUniformDesc, 1});
 }
+
+// sk_sp<VulkanDescriptorSet> VulkanResourceProvider::findOrCreateUniformDescSet(
+//         SkSpan<DescriptorData> requestedDescriptors,
+//         SkSpan<BindBufferInfo> bindUniformBufferInfo) {
+//     SkASSERT(requestedDescriptors.size() <= VulkanGraphicsPipeline::kNumUniformBuffers);
+
+//     // auto key = make_ubo_bind_group_key(requestedDescriptors, bindUniformBufferInfo);
+//     auto* existingDescSet = fUniformBufferDescSetCache.find(key);
+//     if (existingDescSet) {
+//         return *existingDescSet;
+//     }
+//     sk_sp<VulkanDescriptorSet> newDS = this->findOrCreateDescriptorSet(requestedDescriptors);
+
+//     return newDS;
+
+//     // if (!newDS) {
+//     //     return nullptr;
+//     // }
+
+//     // update_uniform_descriptor_set(requestedDescriptors,
+//     //                               bindUniformBufferInfo,
+//     //                               *newDS->descriptorSet(),
+//     //                               this->vulkanSharedContext());
+//     // return *fUniformBufferDescSetCache.insert(key, newDS);
+// }
 
 sk_sp<VulkanRenderPass> VulkanResourceProvider::findOrCreateRenderPass(
         const RenderPassDesc& originalRenderPassDesc, bool compatibleOnly) {
