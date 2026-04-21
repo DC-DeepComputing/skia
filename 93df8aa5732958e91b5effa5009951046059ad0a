@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bbbeda6d_6d186edd",
+        "filename": "experimental/rust_bmp/ffi/FFI.rs",
+        "patchSetId": 30
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-04-21T15:38:58Z",
+      "side": 1,
+      "message": "The method looks really similar to read_metadata with only difference of called function. Maybe it could be extracted a common method that receives function as parameter:\n\n```\npub fn read_metadata(\u0026mut self) -\u003e DecodingResult {\n    self.read_metadata_impl(|d| d.read_metadata())\n}\n\npub fn read_metadata_for_ico(\u0026mut self) -\u003e DecodingResult {\n    self.read_metadata_impl(|d| d.read_metadata_in_ico_format())\n}\n```",
+      "revId": "93df8aa5732958e91b5effa5009951046059ad0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
