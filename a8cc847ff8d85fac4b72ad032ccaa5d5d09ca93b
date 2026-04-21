@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "19834916_5338e92d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4569768
+      },
+      "writtenOn": "2026-04-21T14:34:07Z",
+      "side": 1,
+      "message": "It\u0027s been very helpful so far. I apologize for taking so long to resolve most of them!",
+      "parentUuid": "377e50f9_08a6d208",
+      "revId": "a8cc847ff8d85fac4b72ad032ccaa5d5d09ca93b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c4a226fe_1203d811",
@@ -55,6 +73,30 @@
       "side": 1,
       "message": "For BMP not using `SkBmpRustCodec` would mean not supporting the embedded ICC color profile. While `BmpDecoder` from image crate supports handling the BMP from a ICO file, currently it is quite coupled with its own ico implementation. However I see that `pub fn read_metadata_in_ico_format(\u0026mut self) -\u003e ImageResult\u003c()\u003e` function is public, so maybe it can be used from rust_bmp FFI to expose handling of ico.",
       "parentUuid": "c4a226fe_1203d811",
+      "range": {
+        "startLine": 79,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 78
+      },
+      "revId": "a8cc847ff8d85fac4b72ad032ccaa5d5d09ca93b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b88c23f2_1c7550c7",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoEntryCodec.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 4569768
+      },
+      "writtenOn": "2026-04-21T14:34:07Z",
+      "side": 1,
+      "message": "I\u0027ve changed the ICO to use SkPngRustCodec and SkBmpRustCodec, but it will need another review to make sure it\u0027s sufficient.\n\nI had to add AND masking for Bmp in Ico, so Bmp has minimal changes.\n@sergiog@microsoft.com, if you could check the Bmp changes.",
+      "parentUuid": "5aa3a70d_74114806",
       "range": {
         "startLine": 79,
         "startChar": 0,
