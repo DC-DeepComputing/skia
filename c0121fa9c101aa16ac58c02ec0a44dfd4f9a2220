@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "82f9ca77_3b72c05a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-21T15:41:57Z",
+      "side": 1,
+      "message": "PTAL, +1 got wiped out.",
+      "revId": "c0121fa9c101aa16ac58c02ec0a44dfd4f9a2220",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
