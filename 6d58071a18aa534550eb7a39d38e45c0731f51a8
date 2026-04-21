@@ -16,6 +16,52 @@
       "message": "PTAL",
       "revId": "6d58071a18aa534550eb7a39d38e45c0731f51a8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08395772_922fa6c2",
+        "filename": "src/gpu/graphite/Caps.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-21T14:51:43Z",
+      "side": 1,
+      "message": "guard",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 58,
+        "endChar": 26
+      },
+      "revId": "6d58071a18aa534550eb7a39d38e45c0731f51a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba93a16c_18c98fbe",
+        "filename": "src/gpu/graphite/DrawListLayer.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-21T14:51:43Z",
+      "side": 1,
+      "message": "`storageBufferSupport`?",
+      "range": {
+        "startLine": 41,
+        "startChar": 32,
+        "endLine": 41,
+        "endChar": 45
+      },
+      "revId": "6d58071a18aa534550eb7a39d38e45c0731f51a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
