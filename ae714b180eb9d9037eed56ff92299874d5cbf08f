@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6de4ae6a_0a20ba0e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3621349
+      },
+      "writtenOn": "2026-04-21T17:23:03Z",
+      "side": 1,
+      "message": "The bug was approved for M144 LTS. PTAL.",
+      "revId": "ae714b180eb9d9037eed56ff92299874d5cbf08f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
