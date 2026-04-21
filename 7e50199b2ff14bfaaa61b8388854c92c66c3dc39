@@ -80,6 +80,30 @@
       },
       "revId": "7e50199b2ff14bfaaa61b8388854c92c66c3dc39",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17f76c33_0015f55f",
+        "filename": "tests/SkGlyphTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 473,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-21T17:49:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6dcc72be_60ccf583",
+      "range": {
+        "startLine": 473,
+        "startChar": 16,
+        "endLine": 473,
+        "endChar": 31
+      },
+      "revId": "7e50199b2ff14bfaaa61b8388854c92c66c3dc39",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
