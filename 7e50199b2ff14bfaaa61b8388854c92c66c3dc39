@@ -34,6 +34,52 @@
       "parentUuid": "655705e1_e7b7590e",
       "revId": "7e50199b2ff14bfaaa61b8388854c92c66c3dc39",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c915a9f1_5482e259",
+        "filename": "src/effects/imagefilters/SkRuntimeImageFilter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-04-21T15:53:02Z",
+      "side": 1,
+      "message": "note to myself: this is disabled in the SkChromeRemoteGlyphCache.",
+      "range": {
+        "startLine": 160,
+        "startChar": 32,
+        "endLine": 160,
+        "endChar": 41
+      },
+      "revId": "7e50199b2ff14bfaaa61b8388854c92c66c3dc39",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6dcc72be_60ccf583",
+        "filename": "tests/SkGlyphTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 473,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-04-21T15:53:02Z",
+      "side": 1,
+      "message": "suggestion: can we use `skiatest::ReporterContext` to encode the source, drawable, allow params? Might make debugging any failed assertions easier.",
+      "range": {
+        "startLine": 473,
+        "startChar": 16,
+        "endLine": 473,
+        "endChar": 31
+      },
+      "revId": "7e50199b2ff14bfaaa61b8388854c92c66c3dc39",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
