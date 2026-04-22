@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c73f38d2_c4489e49",
+        "filename": "bench/graphite/sparse_strips/FlattenBench.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-22T18:55:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dbe02e1a_bef2ba3d",
+      "revId": "a746da699d293cca60d92b848f2e5e568116cfc4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "70cc3bc5_e79253f4",
@@ -48,6 +66,24 @@
       "writtenOn": "2026-04-22T18:41:28Z",
       "side": 1,
       "message": "rm ?",
+      "revId": "a746da699d293cca60d92b848f2e5e568116cfc4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e34ebeca_7a298b3a",
+        "filename": "bench/graphite/sparse_strips/FlattenBench.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-22T18:55:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "70cc3bc5_e79253f4",
       "revId": "a746da699d293cca60d92b848f2e5e568116cfc4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -69,6 +105,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d916d602_4e880462",
+        "filename": "bench/graphite/sparse_strips/FlattenBench.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-22T18:55:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f1b26e53_eb10147d",
+      "revId": "a746da699d293cca60d92b848f2e5e568116cfc4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d3181341_c33c8c38",
@@ -86,6 +140,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "061383ca_c5745677",
+        "filename": "bench/graphite/sparse_strips/FlattenBench.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-22T18:55:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d3181341_c33c8c38",
+      "revId": "a746da699d293cca60d92b848f2e5e568116cfc4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "69cba144_ec13404a",
@@ -99,6 +171,30 @@
       "writtenOn": "2026-04-22T18:41:28Z",
       "side": 1,
       "message": "Pass by pointer since it is being changed",
+      "range": {
+        "startLine": 120,
+        "startChar": 72,
+        "endLine": 120,
+        "endChar": 74
+      },
+      "revId": "a746da699d293cca60d92b848f2e5e568116cfc4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "13258d8a_284e47d4",
+        "filename": "bench/graphite/sparse_strips/FlattenBench.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-22T18:55:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "69cba144_ec13404a",
       "range": {
         "startLine": 120,
         "startChar": 72,
