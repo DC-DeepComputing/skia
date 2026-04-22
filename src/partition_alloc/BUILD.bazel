@@ -1,0 +1,38 @@
+# Copyright 2026 Google LLC.
+#
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# Provide the MiraclePtr "raw_ptr" definitions. Depending on the configuration,
+# this is either:
+# 1. Delegated to the `partition_alloc` library.
+# 2. Provided by Skia a simple "no-op" pointer wrapper (in construction).
+
+load("//bazel:skia_rules.bzl", "skia_cc_library")
+
+package(default_applicable_licenses = ["//:license"])
+
+licenses(["notice"])
+
+# A simple no-op implementation of raw_ptr/raw_ref.
+# This is used when PartitionAlloc is not enabled.
+skia_cc_library(
+    name = "raw_ptr_noop",
+    hdrs = [
+        "partition_alloc/pointers/raw_ptr.h",
+        "partition_alloc/pointers/raw_ptr_exclusion.h",
+        "partition_alloc/pointers/raw_ref.h",
+    ],
+    includes = ["."],
+    visibility = ["//visibility:public"],
+)
+
+alias(
+    name = "raw_ptr",
+    # TODO(b/352223023) Add bazel support for PartitionAlloc and select the
+    # right implementation based on the configuration. For now, since
+    # PartitionAlloc is not yet supported in Bazel so the "raw_ptr_noop" is
+    # always used.
+    actual = "raw_ptr_noop",
+    visibility = ["//visibility:public"],
+)
