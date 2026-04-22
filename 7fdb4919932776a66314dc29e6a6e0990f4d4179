@@ -16,6 +16,52 @@
       "message": "PTAL",
       "revId": "7fdb4919932776a66314dc29e6a6e0990f4d4179",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe37c6a3_e71df215",
+        "filename": "bench/graphite/sparse_strips/FlattenBench.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-22T19:01:45Z",
+      "side": 1,
+      "message": "I think this can just be and anonymous namespace. I guess you would need to add a \"using skgpu::graphite;\" though.",
+      "range": {
+        "startLine": 18,
+        "startChar": 10,
+        "endLine": 18,
+        "endChar": 25
+      },
+      "revId": "7fdb4919932776a66314dc29e6a6e0990f4d4179",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6371a56_36fad998",
+        "filename": "bench/graphite/sparse_strips/FlattenBench.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-22T19:01:45Z",
+      "side": 1,
+      "message": "const - fwiw",
+      "range": {
+        "startLine": 115,
+        "startChar": 87,
+        "endLine": 115,
+        "endChar": 88
+      },
+      "revId": "7fdb4919932776a66314dc29e6a6e0990f4d4179",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
