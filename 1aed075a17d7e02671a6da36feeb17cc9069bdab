@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9fe25fbd_19f616f7",
+        "filename": "src/gpu/graphite/KeyContext.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 18114
+      },
+      "writtenOn": "2026-04-22T13:54:49Z",
+      "side": 1,
+      "message": "That sounds good, updated to not be optional and moved it right after local2Dev.",
+      "parentUuid": "8e598bc5_b985ca5e",
+      "range": {
+        "startLine": 77,
+        "startChar": 16,
+        "endLine": 77,
+        "endChar": 73
+      },
+      "revId": "1aed075a17d7e02671a6da36feeb17cc9069bdab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e9fd683c_17ec0261",
@@ -54,6 +78,30 @@
       "writtenOn": "2026-04-21T20:13:18Z",
       "side": 1,
       "message": "I think we should move this logic up as well and just set `newSampling \u003d SkFilterMode::kNearest` inside the if statement so that it applies to YUV images as well.",
+      "range": {
+        "startLine": 2032,
+        "startChar": 0,
+        "endLine": 2032,
+        "endChar": 83
+      },
+      "revId": "1aed075a17d7e02671a6da36feeb17cc9069bdab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8c61141_03ff7853",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 2032,
+      "author": {
+        "id": 18114
+      },
+      "writtenOn": "2026-04-22T13:54:49Z",
+      "side": 1,
+      "message": "That makes sense, updated to do this.",
+      "parentUuid": "e9fd683c_17ec0261",
       "range": {
         "startLine": 2032,
         "startChar": 0,
