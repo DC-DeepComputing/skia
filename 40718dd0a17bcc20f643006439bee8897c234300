@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e443c30_0eb45e57",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-04-22T12:57:26Z",
+      "side": 1,
+      "message": "Also Bug: 503958940",
+      "revId": "40718dd0a17bcc20f643006439bee8897c234300",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09edc16e_62147cc1",
+        "filename": "rust/icc/FFI.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-04-22T12:57:26Z",
+      "side": 1,
+      "message": "Will this leave `out_skcms-\u003einput_channels` uninitialized if `rust_a2b.input_channels` is 0 (and the other conditions hold)?",
+      "revId": "40718dd0a17bcc20f643006439bee8897c234300",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d079a5fe_cf6525f0",
+        "filename": "rust/icc/FFI.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-04-22T12:57:26Z",
+      "side": 1,
+      "message": "Ditto.",
+      "revId": "40718dd0a17bcc20f643006439bee8897c234300",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
