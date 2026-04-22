@@ -16,6 +16,52 @@
       "message": "Addressed feedback, PTAL.",
       "revId": "2d0a8b7627ce4fe0b626699ef759d0ee711a281a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a21c406_7eb05bb2",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 2009,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-22T14:31:19Z",
+      "side": 1,
+      "message": "Sorry, this assignment should happen if `samplingHasNoEffect` is true, regardless of whether or not we drop the subset.",
+      "range": {
+        "startLine": 2009,
+        "startChar": 0,
+        "endLine": 2009,
+        "endChar": 53
+      },
+      "revId": "2d0a8b7627ce4fe0b626699ef759d0ee711a281a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5dd06726_bb7f2439",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 2033,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-22T14:31:19Z",
+      "side": 1,
+      "message": "Since we are passing in `newSampling` to the imgData constructor, we can delete this.",
+      "range": {
+        "startLine": 2033,
+        "startChar": 0,
+        "endLine": 2033,
+        "endChar": 36
+      },
+      "revId": "2d0a8b7627ce4fe0b626699ef759d0ee711a281a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
