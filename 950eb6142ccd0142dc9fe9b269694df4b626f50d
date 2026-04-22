@@ -104,6 +104,24 @@
       "parentUuid": "62fad686_89d70b46",
       "revId": "950eb6142ccd0142dc9fe9b269694df4b626f50d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5062297_cd3d2438",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 31
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-22T13:39:49Z",
+      "side": 1,
+      "message": "Thanks for investigating already! FWIW, our nanobench program reports times after a warmup timing period so generally shouldn\u0027t reflect initialization overhead unless something was triggering PA re-init in the timed loop (seems unlikely to me).\n\nI also want to emphasize that in the context of graphics performance, anything taking greater than several milliseconds is usually a slow benchmark since the goal is to ideally fit into 16ms (for SW rasterization, this is much more challenging, hence the ~300ms times shown in the graph I linked), but it is still a helpful frame of mind.  nanobench also has many microbenchmarks that report times for things that are on the order of 10s to hundreds of microseconds.  These typically hold less general value, so we don\u0027t run the auto-regression reporting on them.",
+      "parentUuid": "e540a264_a2ca8508",
+      "revId": "950eb6142ccd0142dc9fe9b269694df4b626f50d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
