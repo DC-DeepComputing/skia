@@ -10,6 +10,7 @@
 #include "include/core/SkSpan.h"
 #include "include/private/base/SkTArray.h"
 #include "include/sksl/SkSLVersion.h"
+#include "partition_alloc/pointers/raw_ptr.h"
 #include "src/base/SkEnumBitMask.h"
 #include "src/base/SkNoDestructor.h"
 #include "src/core/SkTHash.h"
@@ -121,7 +122,7 @@ public:
     }
 
 private:
-    Parser* fParser;
+    raw_ptr<Parser> fParser;
     int fDepth;
 };
 
