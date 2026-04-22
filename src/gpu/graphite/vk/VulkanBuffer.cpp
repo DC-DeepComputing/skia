@@ -9,6 +9,7 @@
 
 #include "include/gpu/vk/VulkanMemoryAllocator.h"
 #include "src/gpu/graphite/vk/VulkanCommandBuffer.h"
+#include "src/gpu/graphite/vk/VulkanDescriptorSet.h"
 #include "src/gpu/graphite/vk/VulkanGraphiteUtils.h"
 #include "src/gpu/vk/VulkanMemory.h"
 
@@ -403,6 +404,23 @@ void VulkanBuffer::setBufferAccess(VulkanCommandBuffer* cmdBuffer,
     }
 
     fCurrentAccess = dstAccess;
+}
+
+sk_sp<VulkanDescriptorSet> VulkanBuffer::getCachedSingleUniformDescriptorSet(size_t bufferSize) {
+    for (auto& sizeAndSet : fCachedSingleUniformDescriptorSets) {
+        if (bufferSize == sizeAndSet.first) {
+            return sizeAndSet.second;
+        }
+    }
+    return nullptr;
+}
+
+void VulkanBuffer::addCachedSingleUniformDescriptorSet(size_t bufferSize,
+                                                       sk_sp<VulkanDescriptorSet> set) {
+    // We should already have confirmed we do not have a cached set for the provided bufferSize.
+    SkASSERT(!this->getCachedSingleUniformDescriptorSet(bufferSize));
+
+    fCachedSingleUniformDescriptorSets.push_back(std::make_pair(bufferSize, std::move(set)));
 }
 
 } // namespace skgpu::graphite
