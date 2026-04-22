@@ -16,6 +16,24 @@
       "message": "lgtm, adding a chrome canary try job just to make sure we don\u0027t have to stage this",
       "revId": "661ba79863f081fa9268fe283e4e219b9e6325c9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bbee1311_9fe04e5e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18114
+      },
+      "writtenOn": "2026-04-22T17:28:42Z",
+      "side": 1,
+      "message": "Thanks, looks like the canary roll failed - https://chromium-review.googlesource.com/c/chromium/src/+/7786201?tab\u003dchecks\n\nIt feels like those test images need rebaseline.",
+      "parentUuid": "82ae7f9b_7a4e3d08",
+      "revId": "661ba79863f081fa9268fe283e4e219b9e6325c9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
