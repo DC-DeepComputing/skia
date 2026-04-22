@@ -22,6 +22,30 @@
       },
       "revId": "757309dce9725393b0cd798ff892695abe829fb8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b656831_1dc9684d",
+        "filename": "bench/TriangulatorBench.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 589,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-22T15:19:54Z",
+      "side": 0,
+      "message": "I don\u0027t think it\u0027s needed by the users of Tiger, as they only care about the path returned by the pathbuilder.",
+      "parentUuid": "b23f4c61_f3aaafe6",
+      "range": {
+        "startLine": 589,
+        "startChar": 0,
+        "endLine": 589,
+        "endChar": 49
+      },
+      "revId": "757309dce9725393b0cd798ff892695abe829fb8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
