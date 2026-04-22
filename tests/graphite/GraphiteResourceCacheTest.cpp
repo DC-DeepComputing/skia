@@ -941,7 +941,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteTimeLimitedPurgeTest,
     // Record how long it takes to completely purge all kLargeResourceCount resources.
     auto timeBeforeFullPurge = skgpu::StdSteadyClock::now();
     recorder->performDeferredCleanup(kZeroMs, kNoPurgingTimeLimit);
-    auto timeAfterFullPurge = skgpu::StdSteadyClock::now();
+    auto timeAfterFullPurge = force_newer_timepoint(skgpu::StdSteadyClock::now());
     REPORTER_ASSERT(reporter, resourceCache->getResourceCount() == 0);
     auto actualFullPurgeDuration = timeAfterFullPurge - timeBeforeFullPurge;
     REPORTER_ASSERT(reporter, actualFullPurgeDuration.count() > 0);
@@ -962,7 +962,8 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteTimeLimitedPurgeTest,
     auto smallDuration =
             std::chrono::duration_cast<std::chrono::microseconds>(actualFullPurgeDuration / 5);
     recorder->performDeferredCleanup(kZeroMs, {smallDuration});
-    auto actualPartialPurgeDuration = skgpu::StdSteadyClock::now() - timeBeforePartialPurge;
+    auto actualPartialPurgeDuration =
+            force_newer_timepoint(skgpu::StdSteadyClock::now()) - timeBeforePartialPurge;
 
     // The actual duration should be >0. We expect resources to be purged until we have *exceeded*
     // the duration given. However, we should be able to see that not *all* purgeable resources were
