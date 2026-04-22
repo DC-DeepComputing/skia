@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b09d88ca_6510276e",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 1400,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-04-22T19:09:26Z",
+      "side": 1,
+      "message": "Nah I feel this LOL I don\u0027t mind micro-optimizing! Thanks for the callout.",
+      "parentUuid": "75604a7d_17230aa8",
+      "range": {
+        "startLine": 1400,
+        "startChar": 27,
+        "endLine": 1400,
+        "endChar": 52
+      },
+      "revId": "750643407d189f3a4c708931f509d26639861f28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "af5333c4_d7a9c469",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-04-22T15:20:54Z",
       "side": 1,
       "message": "This check seems unnecessary since we already would have returned if this was false",
+      "range": {
+        "startLine": 1405,
+        "startChar": 8,
+        "endLine": 1405,
+        "endChar": 22
+      },
+      "revId": "750643407d189f3a4c708931f509d26639861f28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "74ecbfb0_7f3c5a30",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 1405,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-04-22T19:09:26Z",
+      "side": 1,
+      "message": "Yep, not actually needed. Removed",
+      "parentUuid": "af5333c4_d7a9c469",
       "range": {
         "startLine": 1405,
         "startChar": 8,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4498caa8_e85b9fca",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 1436,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-04-22T19:09:26Z",
+      "side": 1,
+      "message": "Ah, do you mean that if the pipeline one day could have - say - another uniform buffer descriptor in a different set, such that the maximum number of uniform buffers for *within this set* could differ from the max number the pipeline supports? In that case, I am in agreement. This aligns for now with graphite\u0027s model of all uniforms being colocated within one set, but I can see not wanting to rely on that knowledge for this logic. \n\nRemoved/replaced",
+      "parentUuid": "718c78ef_04b3532b",
+      "range": {
+        "startLine": 1436,
+        "startChar": 30,
+        "endLine": 1436,
+        "endChar": 58
+      },
+      "revId": "750643407d189f3a4c708931f509d26639861f28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a8e5cd61_5a9f53e7",
@@ -83,6 +155,30 @@
       "writtenOn": "2026-04-22T15:20:54Z",
       "side": 1,
       "message": "I know it allows us to preallocate the STArray for the exact sizes needed here and in the if above, but this call is basically just duplicated from the if block above. Could we not just always prealloc an array of size 2 before the if statement and then have this code once outside the if/else block?\n\nIn that world I am actually more okay using the Pipeline::kNumUnformBuffers above since we are preallocating for the max size. Though it does make me think that cost value should be renamed to something like Pipeline::kMaxUniformBuffers.",
+      "range": {
+        "startLine": 1452,
+        "startChar": 8,
+        "endLine": 1455,
+        "endChar": 54
+      },
+      "revId": "750643407d189f3a4c708931f509d26639861f28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d19ed313_dd3275df",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 1455,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-04-22T19:09:26Z",
+      "side": 1,
+      "message": "I agree w.r.t. the rename. Went ahead and did that with this change, and rearranged some of the logic switching in a way that I think is improved. LMKWYT!",
+      "parentUuid": "a8e5cd61_5a9f53e7",
       "range": {
         "startLine": 1452,
         "startChar": 8,

@@ -46,6 +46,30 @@
       },
       "revId": "ded25ae4da3bf0c1517f205bc222bf129d04c40f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "83dcdcd1_c57a6233",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-04-22T19:09:26Z",
+      "side": 0,
+      "message": "Yes, so we rely on generic descriptor set keying rather than specialized bind buffer info keying for sets with \u003e1 buffer now (which we do expect to be the less common case).",
+      "parentUuid": "0e0231dd_2e3dc305",
+      "range": {
+        "startLine": 63,
+        "startChar": 31,
+        "endLine": 63,
+        "endChar": 70
+      },
+      "revId": "ded25ae4da3bf0c1517f205bc222bf129d04c40f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

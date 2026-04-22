@@ -152,6 +152,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "406542a5_6a03b686",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1367,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-04-22T19:09:26Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "eff4ac0b_3169ba62",
+      "range": {
+        "startLine": 1323,
+        "startChar": 0,
+        "endLine": 1367,
+        "endChar": 1
+      },
+      "revId": "a79b0fcf743194e17f8cc06ecb8cfdcc87edc943",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7234da00_1892d054",
@@ -165,6 +189,30 @@
       "writtenOn": "2026-04-21T18:52:24Z",
       "side": 1,
       "message": "I would be that the flexible `update_uniform_descriptor_set` is fast enough when passing in spans with 1 element each that we can avoid having code that so similarly modifies the the VkDescriptorBufferInfo",
+      "range": {
+        "startLine": 1369,
+        "startChar": 5,
+        "endLine": 1369,
+        "endChar": 41
+      },
+      "revId": "a79b0fcf743194e17f8cc06ecb8cfdcc87edc943",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5428ce4c_b956b64b",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1369,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-04-22T19:09:26Z",
+      "side": 1,
+      "message": "Yeah, it isn\u0027t necessary; just was more convenient to pass in the Vulkan-specific types + objects in the case where we already had the native objects but is quite repetitive. Easier now, too, with relocating the DescriptorData logic into the command buffer per your other comment. Thanks! :D",
+      "parentUuid": "7234da00_1892d054",
       "range": {
         "startLine": 1369,
         "startChar": 5,
@@ -245,6 +293,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aeecf3d7_0a0ed50c",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1433,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-04-22T19:09:26Z",
+      "side": 1,
+      "message": "Went with the latter.  Thanks for the callout! I had concerns about storage buffer usage as well (but defaulted to \"optimizing\" around the current state, but in retrospect it makes sense to stay more flexible since it isn\u0027t hard to do here). I updated `VulkanBuffer` single-uniform methods to instead be more like single-buffer, with the descriptor type being determined by the Caps\u0027s determination of buffer type",
+      "parentUuid": "7b80fcfd_246cdfab",
+      "range": {
+        "startLine": 1433,
+        "startChar": 41,
+        "endLine": 1433,
+        "endChar": 69
+      },
+      "revId": "a79b0fcf743194e17f8cc06ecb8cfdcc87edc943",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "68a5adcc_649fb48a",
@@ -258,6 +330,30 @@
       "writtenOn": "2026-04-21T18:52:24Z",
       "side": 1,
       "message": "Can we move this to VulkanCommandBuffer and have it infer the descriptor type from the VulkanBuffer\u0027s type? \n\nEven though we aren\u0027t enabling SSBOs right now at the VulkanCaps level, caching the single SSBO binding that would most typically be used for those would be good.",
+      "range": {
+        "startLine": 317,
+        "startChar": 0,
+        "endLine": 323,
+        "endChar": 68
+      },
+      "revId": "a79b0fcf743194e17f8cc06ecb8cfdcc87edc943",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c444082_c89797a0",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-04-22T19:09:26Z",
+      "side": 1,
+      "message": "Yeah, that is fine - I could see an argument for this logic being located in either place, and this may make more sense (we also do similar-but-separate logic in graphicspipeline - there\u0027s an opportunity to share more code there later on IMO). Anyhow, moved this (and accounted for that it could later be a storage buffer descriptor type) into command buffer.",
+      "parentUuid": "68a5adcc_649fb48a",
       "range": {
         "startLine": 317,
         "startChar": 0,
