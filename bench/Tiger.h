@@ -16,6 +16,8 @@ class SkPath;
 namespace Tiger {
     static constexpr uint16_t kTigerWidth = 500;
     static constexpr uint16_t kTigerHeight = 600;
+    static constexpr float kTigerWidthF = static_cast<float>(kTigerWidth);
+    static constexpr float kTigerHeightF = static_cast<float>(kTigerHeight);
 
     std::vector<SkPath> GetTigerPaths();
 }
