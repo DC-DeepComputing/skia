@@ -86,6 +86,24 @@
       "parentUuid": "e9a99969_d37e5d15",
       "revId": "950eb6142ccd0142dc9fe9b269694df4b626f50d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e540a264_a2ca8508",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 31
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-04-22T08:31:45Z",
+      "side": 1,
+      "message": "Thanks for sharing the updated link, Michael! The data is really interesting. \n\n@nusko@chromium.org took a look and noticed a distinct pattern: the regressions are heavily concentrated in short-running benchmarks (sub-20ms), while we are seeing solid improvements in the longer ones (~350ms). \n\nFor context:\n- Improvements: ~350ms \u003d\u003e ~330ms (-20ms)\n- Regressions: ~14ms \u003d\u003e ~17ms (+3ms)\n\nIt looks like we might be trading a fixed initialization cost (+3ms) for a general throughput improvement (~6-7%). \n\nTo get a more accurate picture, my next step is to update the [initialization function](https://source.chromium.org/chromium/chromium/src/+/main:base/allocator/partition_allocator/src/partition_alloc/shim/allocator_shim_default_dispatch_to_partition_alloc.h;l\u003d212-216?q\u003dConfigurePartitionsForTesting%20-f:third_party\u0026ss\u003dchromium%2Fchromium%2Fsrc) to more closely mirror the behavior we\u0027d see in the renderer process. V8 previously tweaked similar parameters to match the renderer a bit more and saw improved benchmarks. They did this locally, but I plan to internalize this globally for all standalone embedders. This will likely shift the numbers in some direction, we will see data post-commit.\n\nBeyond that, here is my plan moving forward:\n1.  I\u0027m going to profile locally to find as many hotspots as I can. If you have any educated guesses based on your knowledge of Skia\u0027s architecture, let me know and I can add some speculative exclusions. \n2.  I will submit the rewrite in very large chunks. This should amplify any regressions so the Skia perf bots catch them clearly, making it easy for us to revert if anything is observable. We don\u0027t want to ignore some accumulation of tiny regressions.  I will likely have to land/revert/reland many times.",
+      "parentUuid": "62fad686_89d70b46",
+      "revId": "950eb6142ccd0142dc9fe9b269694df4b626f50d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
