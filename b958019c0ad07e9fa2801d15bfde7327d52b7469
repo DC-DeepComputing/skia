@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "6dd2c80a_0c2ab73d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-22T14:56:03Z",
+      "side": 1,
+      "message": "Make tiger dataset shareable ?",
+      "range": {
+        "startLine": 7,
+        "startChar": 11,
+        "endLine": 7,
+        "endChar": 40
+      },
+      "revId": "b958019c0ad07e9fa2801d15bfde7327d52b7469",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "e17e9fb5_432de9c5",
@@ -14,6 +37,126 @@
       "writtenOn": "2026-04-22T14:46:19Z",
       "side": 1,
       "message": "PTAL",
+      "revId": "b958019c0ad07e9fa2801d15bfde7327d52b7469",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b29927b2_e54cc331",
+        "filename": "bench/Tiger.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-22T14:56:03Z",
+      "side": 1,
+      "message": "I don\u0027t think you even need to name this. You can just directly chain it to kTigerPaths.",
+      "range": {
+        "startLine": 13,
+        "startChar": 7,
+        "endLine": 13,
+        "endChar": 16
+      },
+      "revId": "b958019c0ad07e9fa2801d15bfde7327d52b7469",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d11b51cb_c9013a76",
+        "filename": "bench/Tiger.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-22T14:56:03Z",
+      "side": 1,
+      "message": "rm ?",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 6
+      },
+      "revId": "b958019c0ad07e9fa2801d15bfde7327d52b7469",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d95cb355_001eecb4",
+        "filename": "bench/Tiger.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-22T14:56:03Z",
+      "side": 1,
+      "message": "Is this needed ?",
+      "revId": "b958019c0ad07e9fa2801d15bfde7327d52b7469",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "adf239c1_3d018ea2",
+        "filename": "bench/Tiger.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-22T14:56:03Z",
+      "side": 1,
+      "message": "Can this just be a namespace ?",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 5
+      },
+      "revId": "b958019c0ad07e9fa2801d15bfde7327d52b7469",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c31b0849_a9d93d59",
+        "filename": "bench/Tiger.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-22T14:56:03Z",
+      "side": 1,
+      "message": "// The bounds of the tiger\u0027s paths ?",
+      "revId": "b958019c0ad07e9fa2801d15bfde7327d52b7469",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d604e8c3_f8353e2d",
+        "filename": "bench/Tiger.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-22T14:56:03Z",
+      "side": 1,
+      "message": "kTigerWidth ?",
       "revId": "b958019c0ad07e9fa2801d15bfde7327d52b7469",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }

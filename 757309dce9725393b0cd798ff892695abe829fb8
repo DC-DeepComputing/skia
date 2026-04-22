@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b23f4c61_f3aaafe6",
+        "filename": "bench/TriangulatorBench.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 589,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-22T14:56:03Z",
+      "side": 0,
+      "message": "You could keep this and put in the anonymous namespace",
+      "range": {
+        "startLine": 589,
+        "startChar": 0,
+        "endLine": 589,
+        "endChar": 49
+      },
+      "revId": "757309dce9725393b0cd798ff892695abe829fb8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
