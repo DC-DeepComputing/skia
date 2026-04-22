@@ -22,6 +22,30 @@
       },
       "revId": "f765937d063923a3d456909b976fc280da08b782",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8adaf380_7d66d6df",
+        "filename": "src/partition_alloc/noop/raw_ptr.h",
+        "patchSetId": 32
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 4641039
+      },
+      "writtenOn": "2026-04-22T13:19:50Z",
+      "side": 1,
+      "message": "`SK_ALWAYS_INLINE` and `SK_TRIVIAL_ABI` macro.\n\nThe G3 config seems to be autogenerate from Bazel config. The problem is likely I didn\u0027t declare the dependency. I am unsure why the Skia Bazel config doesn\u0027t fail locally or on Skia CQ.",
+      "parentUuid": "57dde32f_ddb2f0dc",
+      "range": {
+        "startLine": 23,
+        "startChar": 31,
+        "endLine": 23,
+        "endChar": 43
+      },
+      "revId": "f765937d063923a3d456909b976fc280da08b782",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
