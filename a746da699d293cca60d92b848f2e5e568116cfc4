@@ -16,6 +16,97 @@
       "message": "PTAL",
       "revId": "a746da699d293cca60d92b848f2e5e568116cfc4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dbe02e1a_bef2ba3d",
+        "filename": "bench/graphite/sparse_strips/FlattenBench.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-22T18:41:28Z",
+      "side": 1,
+      "message": "Can we just predeclare this since it isn\u0027t used ?",
+      "revId": "a746da699d293cca60d92b848f2e5e568116cfc4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70cc3bc5_e79253f4",
+        "filename": "bench/graphite/sparse_strips/FlattenBench.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-22T18:41:28Z",
+      "side": 1,
+      "message": "rm ?",
+      "revId": "a746da699d293cca60d92b848f2e5e568116cfc4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1b26e53_eb10147d",
+        "filename": "bench/graphite/sparse_strips/FlattenBench.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-22T18:41:28Z",
+      "side": 1,
+      "message": "I don\u0027t think we\u0027re using this",
+      "revId": "a746da699d293cca60d92b848f2e5e568116cfc4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3181341_c33c8c38",
+        "filename": "bench/graphite/sparse_strips/FlattenBench.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-22T18:41:28Z",
+      "side": 1,
+      "message": "Can we pull this out of the loop ?",
+      "revId": "a746da699d293cca60d92b848f2e5e568116cfc4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69cba144_ec13404a",
+        "filename": "bench/graphite/sparse_strips/FlattenBench.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-22T18:41:28Z",
+      "side": 1,
+      "message": "Pass by pointer since it is being changed",
+      "range": {
+        "startLine": 120,
+        "startChar": 72,
+        "endLine": 120,
+        "endChar": 74
+      },
+      "revId": "a746da699d293cca60d92b848f2e5e568116cfc4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
