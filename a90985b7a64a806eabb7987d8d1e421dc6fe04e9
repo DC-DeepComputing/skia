@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c955e4b2_ba314663",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1300,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-22T20:44:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1d42a236_62dc9d75",
+      "range": {
+        "startLine": 1297,
+        "startChar": 0,
+        "endLine": 1300,
+        "endChar": 5
+      },
+      "revId": "a90985b7a64a806eabb7987d8d1e421dc6fe04e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fda3e085_d5a91d77",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4be8215_6deb9c7d",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 520,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-22T20:44:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fda3e085_d5a91d77",
+      "range": {
+        "startLine": 520,
+        "startChar": 0,
+        "endLine": 520,
+        "endChar": 100
+      },
+      "revId": "a90985b7a64a806eabb7987d8d1e421dc6fe04e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e0317a92_2b0f38b2",
@@ -77,6 +125,30 @@
       "writtenOn": "2026-04-21T17:40:00Z",
       "side": 1,
       "message": "You\u0027re right this isn\u0027t great. I think we should either do state tracking for vertex and fragment stages separately (shouldn\u0027t be expensive), or we go back to the combined setter (if we can get away with setting them on the vertex shader for paint textures that aren\u0027t declared there)",
+      "range": {
+        "startLine": 120,
+        "startChar": 4,
+        "endLine": 136,
+        "endChar": 0
+      },
+      "revId": "a90985b7a64a806eabb7987d8d1e421dc6fe04e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "64a93052_db6cafd0",
+        "filename": "src/gpu/graphite/mtl/MtlRenderCommandEncoder.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-22T20:44:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e0317a92_2b0f38b2",
       "range": {
         "startLine": 120,
         "startChar": 4,
