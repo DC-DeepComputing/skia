@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75604a7d_17230aa8",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 1400,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-04-22T15:20:54Z",
+      "side": 1,
+      "message": "This is probably micro optimizing and the compiler is most likely smart enough to not do the check twice, but immediately below this we then have another if else block based on hasGradientBuffer. So we could just set numBuffers in those blocks to make sure we avoid the extra conditional check.",
+      "range": {
+        "startLine": 1400,
+        "startChar": 27,
+        "endLine": 1400,
+        "endChar": 52
+      },
+      "revId": "750643407d189f3a4c708931f509d26639861f28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af5333c4_d7a9c469",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 1405,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-04-22T15:20:54Z",
+      "side": 1,
+      "message": "This check seems unnecessary since we already would have returned if this was false",
+      "range": {
+        "startLine": 1405,
+        "startChar": 8,
+        "endLine": 1405,
+        "endChar": 22
+      },
+      "revId": "750643407d189f3a4c708931f509d26639861f28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "718c78ef_04b3532b",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 1436,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-04-22T15:20:54Z",
+      "side": 1,
+      "message": "I\u0027m torn on using this to hid the magic number. Like Pipeline::kNumUniformBuffers is just saying the max number of UBO slots a pipeline could have. I know that is what must be the case here and you have the asserts above, but something seems slightly off using that value here.\n\nLike say we end up with wanting 3 UBOs in the future. In the case we have 2 UBOs there we would have something inline like `static constexpr size_t numUniformBuffers \u003d 2;` But then for the case of 3 you use the max size on the pipeline again?\n\nNot going to force any changes here if others are okay with this, but it just seems like using a value that has slightly different meaning but happens to match what we want.",
+      "range": {
+        "startLine": 1436,
+        "startChar": 30,
+        "endLine": 1436,
+        "endChar": 58
+      },
+      "revId": "750643407d189f3a4c708931f509d26639861f28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8e5cd61_5a9f53e7",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 1455,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-04-22T15:20:54Z",
+      "side": 1,
+      "message": "I know it allows us to preallocate the STArray for the exact sizes needed here and in the if above, but this call is basically just duplicated from the if block above. Could we not just always prealloc an array of size 2 before the if statement and then have this code once outside the if/else block?\n\nIn that world I am actually more okay using the Pipeline::kNumUnformBuffers above since we are preallocating for the max size. Though it does make me think that cost value should be renamed to something like Pipeline::kMaxUniformBuffers.",
+      "range": {
+        "startLine": 1452,
+        "startChar": 8,
+        "endLine": 1455,
+        "endChar": 54
+      },
+      "revId": "750643407d189f3a4c708931f509d26639861f28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
