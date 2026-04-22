@@ -253,8 +253,7 @@ DEF_TEST(SkSLRasterPipelineCodeGeneratorComparisonIntrinsicTest, r) {
 }
 
 DEF_TEST(SkSLRasterPipelineSlotOverflow_355465305, r) {
-    // Structs can only have 1024 fields
-    constexpr int kStructMembers1 = 1000;
+    constexpr int kStructMembers1 = 6200;
     constexpr int kStructMembers2 = 433;
     std::stringstream str;
     str << "struct M { float4x4 m";
