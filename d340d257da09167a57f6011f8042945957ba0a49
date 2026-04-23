@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4156e4af_952b3597",
+        "filename": "src/gpu/graphite/dawn/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-04-23T13:51:39Z",
+      "side": 1,
+      "message": "So these get propagated somehow to the other targets that `graphite_native_dawn` depends on?  Or just to the targets that depend on `graphite_native_dawn`?",
+      "range": {
+        "startLine": 46,
+        "startChar": 12,
+        "endLine": 46,
+        "endChar": 32
+      },
+      "revId": "d340d257da09167a57f6011f8042945957ba0a49",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
