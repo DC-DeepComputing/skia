@@ -1,0 +1,58 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4778dbb1_902aebd9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4714569
+      },
+      "writtenOn": "2026-04-23T18:53:59Z",
+      "side": 1,
+      "message": "Done in PS12. The three new tests now use structural checks (firstLine.hyphen() !\u003d nullptr + rect/position assertions) instead of impl-\u003elines().size() \u003d\u003d 2. Width bumped from 60 to 80 to match main.",
+      "parentUuid": "60ca204e_ead2b8c6",
+      "revId": "d8b3ed11a164d3e6abd08c911a74a73de4161082",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d9b836e_32a04353",
+        "filename": "modules/skparagraph/src/TextLine.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 652,
+      "author": {
+        "id": 4714569
+      },
+      "writtenOn": "2026-04-23T18:53:59Z",
+      "side": 1,
+      "message": "Done in PS12. shapeEllipsis() now takes an isHyphen bool parameter (default false), and the ShapeHandler sets fRun-\u003efHyphen \u003d fIsHyphen in commitRunBuffer alongside fEllipsis. createSoftHyphen() no longer needs the post-shape setting.\n\nLeft fClusterStart in the caller because createEllipsis() uses a different cluster than the one passed to shapeEllipsis() (the loop advances), so moving it would change ellipsis behavior.",
+      "parentUuid": "26d133ea_b4907e15",
+      "revId": "d8b3ed11a164d3e6abd08c911a74a73de4161082",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "536f34b9_bd36032f",
+        "filename": "modules/skparagraph/src/TextLine.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1225,
+      "author": {
+        "id": 4714569
+      },
+      "writtenOn": "2026-04-23T18:53:59Z",
+      "side": 1,
+      "message": "Already addressed in PS5; thread marking resolved.",
+      "parentUuid": "67d7b870_be865ba1",
+      "revId": "d8b3ed11a164d3e6abd08c911a74a73de4161082",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
