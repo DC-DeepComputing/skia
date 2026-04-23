@@ -39,6 +39,30 @@
       },
       "revId": "5e7825c3e1dd094dd865c627d15ae79248761046",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "90bdb277_87c5d108",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 859,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-23T19:27:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "da93e78e_6f081d3d",
+      "range": {
+        "startLine": 859,
+        "startChar": 0,
+        "endLine": 859,
+        "endChar": 41
+      },
+      "revId": "5e7825c3e1dd094dd865c627d15ae79248761046",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
