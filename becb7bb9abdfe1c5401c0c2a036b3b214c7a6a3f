@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "018a4303_495ee0b2",
+        "filename": "src/core/SkRegion.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1241,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-04-23T20:39:55Z",
+      "side": 1,
+      "message": "Should we start with a `true` value?  I don\u0027t think regions are ever supposed to begin with an empty strip.",
+      "range": {
+        "startLine": 1241,
+        "startChar": 24,
+        "endLine": 1241,
+        "endChar": 29
+      },
+      "revId": "becb7bb9abdfe1c5401c0c2a036b3b214c7a6a3f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
