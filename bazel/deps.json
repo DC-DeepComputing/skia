@@ -5,7 +5,37 @@
       "build_file": "//bazel/external/dawn:BUILD.bazel",
       "commit": "219c6e1eb50077f4c25036796e7b08a2224d54de",
       "name": "dawn",
+      "patch_args": [
+        "-p1"
+      ],
+      "patches": [
+        "//bazel/external/dawn:fix_tint_conditional_deps.patch"
+      ],
       "remote": "https://dawn.googlesource.com/dawn.git"
+    },
+    {
+      "build_file": "//bazel/external/jinja2:BUILD.bazel",
+      "commit": "c3027d884967773057bf74b957e3fea87e5df4d7",
+      "name": "jinja2",
+      "patch_cmds": [
+        "mkdir tmp_jinja2",
+        "mv * tmp_jinja2 || true",
+        "mv tmp_jinja2 jinja2",
+        "mv jinja2/BUILD.bazel ."
+      ],
+      "remote": "https://chromium.googlesource.com/chromium/src/third_party/jinja2"
+    },
+    {
+      "build_file": "//bazel/external/markupsafe:BUILD.bazel",
+      "commit": "4256084ae14175d38a3ff7d739dca83ae49ccec6",
+      "name": "markupsafe",
+      "patch_cmds": [
+        "mkdir tmp_markupsafe",
+        "mv * tmp_markupsafe || true",
+        "mv tmp_markupsafe markupsafe",
+        "mv markupsafe/BUILD.bazel ."
+      ],
+      "remote": "https://chromium.googlesource.com/chromium/src/third_party/markupsafe"
     },
     {
       "build_file": "//bazel/external/delaunator:BUILD.bazel",
@@ -18,6 +48,12 @@
       "commit": "dbe0a676450d9b8c71bf00688bb306409b779e90",
       "name": "dng_sdk",
       "remote": "https://android.googlesource.com/platform/external/dng_sdk.git"
+    },
+    {
+      "build_file": "//bazel/external/egl_registry:BUILD.bazel",
+      "commit": "b055c9b483e70ecd57b3cf7204db21f5a06f9ffe",
+      "name": "egl_registry",
+      "remote": "https://skia.googlesource.com/external/github.com/KhronosGroup/EGL-Registry"
     },
     {
       "build_file": "//bazel/external/expat:BUILD.bazel",
@@ -118,6 +154,12 @@
       "commit": "d248929c059ff7629a85333699717d7a677d8d96",
       "name": "libyuv",
       "remote": "https://chromium.googlesource.com/libyuv/libyuv.git"
+    },
+    {
+      "build_file": "//bazel/external/opengl_registry:BUILD.bazel",
+      "commit": "14b80ebeab022b2c78f84a573f01028c96075553",
+      "name": "opengl_registry",
+      "remote": "https://skia.googlesource.com/external/github.com/KhronosGroup/OpenGL-Registry"
     },
     {
       "build_file": "//bazel/external/perfetto:BUILD.bazel",
