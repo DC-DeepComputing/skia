@@ -63,6 +63,30 @@
       ],
       "revId": "090d0180db5ef4ea37dc407c88098ac88bc42dc0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5da32ee7_e05492e0",
+        "filename": "bazel/external/dawn/BUILD.bazel",
+        "patchSetId": 23
+      },
+      "lineNbr": 1031,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-04-23T14:47:08Z",
+      "side": 1,
+      "message": "Done. Wasn\u0027t sure if buildifier would like that, but apparently it\u0027s chill with it.",
+      "parentUuid": "38cfa180_858700c1",
+      "range": {
+        "startLine": 1031,
+        "startChar": 0,
+        "endLine": 1031,
+        "endChar": 176
+      },
+      "revId": "090d0180db5ef4ea37dc407c88098ac88bc42dc0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
