@@ -1,0 +1,68 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c458a38e_0ef6a0b9",
+        "filename": "bazel/deps_parser/deps_parser.go",
+        "patchSetId": 23
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-04-23T13:46:47Z",
+      "side": 1,
+      "message": "I\u0027m idly wondering at what point it makes sense to generate DEPS from Bazel as opposed to the other way around.",
+      "range": {
+        "startLine": 29,
+        "startChar": 4,
+        "endLine": 29,
+        "endChar": 17
+      },
+      "revId": "090d0180db5ef4ea37dc407c88098ac88bc42dc0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38cfa180_858700c1",
+        "filename": "bazel/external/dawn/BUILD.bazel",
+        "patchSetId": 23
+      },
+      "lineNbr": 1031,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-04-23T13:46:47Z",
+      "side": 1,
+      "message": "Nit: this would be easier to read with line breaks.",
+      "range": {
+        "startLine": 1031,
+        "startChar": 0,
+        "endLine": 1031,
+        "endChar": 176
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "57f9e09e_15b6e68b",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "bazel/external/dawn/BUILD.bazel",
+              "range": {
+                "startLine": 1031,
+                "startChar": 0,
+                "endLine": 1032,
+                "endChar": 0
+              },
+              "replacement": "    hdrs \u003d DAWN_COMMON_HDRS +\n           DAWN_NATIVE_HDRS +\n           DAWN_NATIVE_PUBLIC_HDRS +\n           DAWN_PUBLIC_HDRS +\n           DAWN_GENERATED_HDRS +\n           DAWN_UTILS_HDRS +\n           DAWN_NATIVE_UTILS_HDRS +\n           TINT_PUBLIC_HDRS,\n"
+            }
+          ]
+        }
+      ],
+      "revId": "090d0180db5ef4ea37dc407c88098ac88bc42dc0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
