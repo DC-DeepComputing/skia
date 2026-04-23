@@ -33,7 +33,7 @@ static void Union(SkRegion* rgn, const SkIRect& rect) {
 #define TEST_INTERSECT(rgn, rect)       REPORTER_ASSERT(reporter, rgn.intersects(rect))
 #define TEST_NO_CONTAINS(rgn, rect)     REPORTER_ASSERT(reporter, !rgn.contains(rect))
 
-// inspired by http://code.google.com/p/skia/issues/detail?id=958
+// inspired by https://issues.skia.org/issues/40032017
 //
 static void test_fromchrome(skiatest::Reporter* reporter) {
     SkRegion r;
@@ -587,4 +587,53 @@ DEF_TEST(region_very_large, reporter) {
     REPORTER_ASSERT(reporter, smallRegion.contains(0, 499));
     REPORTER_ASSERT(reporter, smallRegion.contains(499, 0));
     REPORTER_ASSERT(reporter, smallRegion.contains(499, 499));
+}
+
+DEF_TEST(SkRegion_Iterator_StepsThroughAllScanlines, reporter) {
+    SkRegion rgn1;
+    rgn1.op({12, 10, 17, 20}, SkRegion::kUnion_Op);
+    rgn1.op({31, 10, 39, 25}, SkRegion::kUnion_Op);
+    rgn1.op({16, 30, 23, 40}, SkRegion::kUnion_Op);
+
+    uint8_t buffer[128];
+    memset(&buffer, 0, 128);
+    size_t len = rgn1.writeToMemory(&buffer);
+    SkASSERT_RELEASE(len < 128);
+    SkRegion rgn2;
+    size_t len2 = rgn2.readFromMemory(&buffer, len);
+    REPORTER_ASSERT(reporter, len == len2);
+    // TODO(kjlubick)
+    // 22 0 0 0 12 0 0 0 10 0 0 0 39 0 0 0 40 0 0 0 4 0 0 0 4 0 0 0 10 0 0 0 20 0 0 0 2 0 0 0 12 0 0 0 17 0 0 0 31 0 0 0 39 0 0 0 255 255 255 127 25 0 0 0 1 0 0 0 31 0 0 0 39 0 0 0 255 255 255 127 30 0 0 0 0 0 0 0 255 255 255 127 40 0 0 0 1 0 0 0 16 0 0 0 23 0 0 0 255 255 255 127 255 255 255 127 0 0 0 0 0 0 0 0 0 0 0 0
+
+    // TODO(kjlubick) make sure fuzzer uses the iterators
+
+    for(auto rgn : {rgn1, rgn2}) {
+        SkRegion::Iterator iter(rgn);
+
+        // The first scanline strip starts at Y=10 and ends at Y=20.
+        //   The first rectangle there starts at X=12 and ends at X=17
+        REPORTER_ASSERT(reporter, !iter.done());
+        REPORTER_ASSERT(reporter, iter.rect() == SkIRect::MakeLTRB(12, 10, 17, 20));
+
+        //    There's a second rectangle in that section from X=31 to X=39.
+        iter.next();
+        REPORTER_ASSERT(reporter, !iter.done());
+        REPORTER_ASSERT(reporter, iter.rect() == SkIRect::MakeLTRB(31, 10, 39, 20));
+
+        // The next scanline strip continues at Y=20 and goes til Y=25
+        //     The one and only rectangle here starts at X=31 and goes to X=39
+        iter.next();
+        REPORTER_ASSERT(reporter, !iter.done());
+        REPORTER_ASSERT(reporter, iter.rect() == SkIRect::MakeLTRB(31, 20, 39, 25));
+
+        // There's a jump to the final scanline strip from Y=30 to Y=40
+        //     The one and only rectangle here starts at X=16 and goes to X=23
+        iter.next();
+        REPORTER_ASSERT(reporter, !iter.done());
+        REPORTER_ASSERT(reporter, iter.rect() == SkIRect::MakeLTRB(16, 30, 23, 40));
+
+        // Call next() -> no more rectangles
+        iter.next();
+        REPORTER_ASSERT(reporter, iter.done());
+    }
 }

@@ -23,14 +23,30 @@
 
 using namespace skia_private;
 
-/* Region Layout
+/* SkRegion Run-Length Encoding (RLE) Format:
  *
- *  TOP
+ * A region is stored as a series of non-overlapping horizontal strips (scanlines).
+ * All rectangles in a strip share the same Top and Bottom Y-coordinates.
  *
- *  [ Bottom, X-Intervals, [Left, Right]..., X-Sentinel ]
- *  ...
+ * Data layout:
+ * [Top-Y]
+ *    [Bottom-Y, Interval-Count (N), Left-1, Right-1, ..., Left-N, Right-N, X-Sentinel]
+ *    [Bottom-Y, Interval-Count (M), Left-1, Right-1, ..., Left-M, Right-M, X-Sentinel]
+ *    ...
+ * [Y-Sentinel]
  *
- *  Y-Sentinel
+ * - Sentinels are 0x7FFFFFFF (SkRegion_kRunTypeSentinel).
+ * - Interval-Count can be 0 (representing a vertical gap between strips).
+ * - Strips are sorted by Y; Intervals within a strip are sorted by X.
+ *
+ * Example: Two rects [10, 10, 20, 20] and [30, 10, 40, 20] on one line,
+ *          then a gap until Y=30, then [15, 30, 25, 40] would be:
+ *
+ *          10                       // Global Top-Y
+ *          20, 2, 10, 20, 30, 40, S // Strip 1: Y 10-20, 2 rects, X-Sentinel
+ *          30, 0, S                 // Strip 2: Y 20-30, 0 rects (gap), X-Sentinel
+ *          40, 1, 15, 25, S         // Strip 3: Y 30-40, 1 rect, X-Sentinel
+ *          S                        // Y-Sentinel
  */
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1050,20 +1066,18 @@ bool SkRegion::Oper(const SkRegion& rgnaOrig, const SkRegion& rgnbOrig, Op op,
     // swith to using pointers, so we can swap them as needed
     const SkRegion* rgna = &rgnaOrig;
     const SkRegion* rgnb = &rgnbOrig;
-    // after this point, do not refer to rgnaOrig or rgnbOrig!!!
 
-    // collaps difference and reverse-difference into just difference
+    // collapse difference and reverse-difference into just difference
     if (kReverseDifference_Op == op) {
-        using std::swap;
-        swap(rgna, rgnb);
+        std::swap(rgna, rgnb);
         op = kDifference_Op;
     }
 
     SkIRect bounds;
-    bool    a_empty = rgna->isEmpty();
-    bool    b_empty = rgnb->isEmpty();
-    bool    a_rect = rgna->isRect();
-    bool    b_rect = rgnb->isRect();
+    bool a_empty = rgna->isEmpty();
+    bool b_empty = rgnb->isEmpty();
+    bool a_rect = rgna->isRect();
+    bool b_rect = rgnb->isRect();
 
     switch (op) {
     case kDifference_Op:
@@ -1350,6 +1364,24 @@ void SkRegion::dump() const {
         }
         SkDebugf("\n");
     }
+}
+
+void SkRegion::Iterator::dump() const {
+    SkDebugf("  iter: done %d, rect [%d %d %d %d]",
+             fDone, fRect.fLeft, fRect.fTop, fRect.fRight, fRect.fBottom);
+    if (fRgn && fRgn->isComplex()) {
+        const RunType* runs = fRgn->fRunHead->readonly_runs();
+        int count = fRgn->fRunHead->fRunCount;
+        SkDebugf(" runs (%p, count %d):", runs, count);
+        for (int i = 0; i < count; i++) {
+            SkDebugf(" %d", runs[i]);
+        }
+    } else if (fRgn && fRgn->isRect()) {
+        SkDebugf(" runs: (rect)");
+    } else {
+        SkDebugf(" runs: (empty)");
+    }
+    SkDebugf("\n");
 }
 
 #endif
