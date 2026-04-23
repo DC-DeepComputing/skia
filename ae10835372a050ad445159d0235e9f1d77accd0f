@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5625a729_01a975b0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-23T15:46:29Z",
+      "side": 1,
+      "message": "PTAL! I forgot that I had disabled culling when I originally wrote the code to make writing the tests easer. Then, when you reviewed it made it look like the checks were grouped incorrectly. This fixes that, and adds more testing.",
+      "revId": "ae10835372a050ad445159d0235e9f1d77accd0f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
