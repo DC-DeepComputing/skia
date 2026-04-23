@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60ca204e_ead2b8c6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-04-23T15:09:21Z",
+      "side": 1,
+      "message": "I assume it\u0027s the same problem as in the previous CL: you cannot rely on absolute numbers and positioning. Better test the structures.",
+      "revId": "e1aaaf665f3718cc9a883261baea8291c572a934",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
