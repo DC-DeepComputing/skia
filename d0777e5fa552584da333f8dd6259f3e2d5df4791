@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26d133ea_b4907e15",
+        "filename": "modules/skparagraph/src/TextLine.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 652,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-04-23T14:37:10Z",
+      "side": 1,
+      "message": "I would rather see this setting inside shapeEllipsis method. Seems safe (no need to remember setting that). Same probably foes for the other two settings?",
+      "revId": "d0777e5fa552584da333f8dd6259f3e2d5df4791",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
