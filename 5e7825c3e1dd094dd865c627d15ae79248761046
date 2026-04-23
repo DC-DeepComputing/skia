@@ -16,6 +16,29 @@
       "message": "PTAL",
       "revId": "5e7825c3e1dd094dd865c627d15ae79248761046",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da93e78e_6f081d3d",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 859,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-23T18:29:21Z",
+      "side": 1,
+      "message": "Can this be by the preamble with a comment that it\u0027s the texture portion of the preamble?",
+      "range": {
+        "startLine": 859,
+        "startChar": 0,
+        "endLine": 859,
+        "endChar": 41
+      },
+      "revId": "5e7825c3e1dd094dd865c627d15ae79248761046",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
