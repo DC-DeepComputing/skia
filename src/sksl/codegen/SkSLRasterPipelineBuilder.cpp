@@ -296,9 +296,9 @@ void Builder::pad_stack(int32_t count) {
     }
 }
 
-bool Builder::simplifyImmediateUnmaskedOp() {
+int Builder::simplifyImmediateUnmaskedOp() {
     if (fInstructions.size() < 3) {
-        return false;
+        return 0;
     }
 
     // If we detect a pattern of 'push, immediate-op, unmasked pop', then we can
@@ -327,17 +327,18 @@ bool Builder::simplifyImmediateUnmaskedOp() {
                     if (immSlot == pushSlot) {
                         // ... we can shrink the push, eliminate the pop, and perform the immediate
                         // op in-place instead.
-                        pushInstruction->fImmA -= immInstruction->fImmA;
-                        immInstruction->fSlotA = immSlot - immInstruction->fImmA;
+                        int numOptimizedSlots = immInstruction->fImmA;
+                        pushInstruction->fImmA -= numOptimizedSlots;
+                        immInstruction->fSlotA = immSlot - numOptimizedSlots;
                         fInstructions.pop_back();
-                        return true;
+                        return numOptimizedSlots;
                     }
                 }
             }
         }
     }
 
-    return false;
+    return 0;
 }
 
 void Builder::discard_stack(int32_t count, int stackID) {
@@ -388,7 +389,13 @@ void Builder::discard_stack(int32_t count, int stackID) {
                 // Look for a pattern of `push, immediate-ops, pop` and simplify it down to an
                 // immediate-op directly to the value slot.
                 if (count == 1) {
-                    if (this->simplifyImmediateUnmaskedOp()) {
+                    if (int optimized = this->simplifyImmediateUnmaskedOp()) {
+                        // If we optimized more than one slot, we need to add a pad-stack
+                        // instruction to maintain stack balance. This should get optimized out
+                        // on the next call to discard_stack.
+                        if (optimized > 1) {
+                            this->pad_stack(optimized - 1);
+                        }
                         return;
                     }
                 }
@@ -1374,7 +1381,7 @@ Program::StackDepths Program::tempStackMaxDepths() const {
         current[stackID] += stack_usage(inst);
         largest[stackID] = std::max(current[stackID], largest[stackID]);
         // If we assert here, the generated program has popped off the top of the stack.
-        SkASSERTF(current[stackID] >= 0, "unbalanced temp stack push/pop on stack %d", stackID);
+        SkASSERTF_RELEASE(current[stackID] >= 0, "unbalanced temp stack push/pop on stack");
     }
 
     // Ensure that when the program is complete, our stacks are fully balanced.
