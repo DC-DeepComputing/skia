@@ -151,10 +151,12 @@ skia_cc_library(
     testonly = True,
     srcs = [
         "SkMetaData.cpp",
+        "SkSurfaceSpy.cpp",
         "ToolUtils.cpp",
     ],
     hdrs = [
         "SkMetaData.h",
+        "SkSurfaceSpy.h",
         "ToolUtils.h",
     ],
     visibility = [
