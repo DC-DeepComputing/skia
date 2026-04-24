@@ -2590,6 +2590,8 @@ if (skia_enable_tools) {
       "tools/RuntimeBlendUtils.h",
       "tools/SkMetaData.cpp",
       "tools/SkMetaData.h",
+      "tools/SkSurfaceSpy.cpp",
+      "tools/SkSurfaceSpy.h",
       "tools/Stats.h",
       "tools/TestFontDataProvider.cpp",
       "tools/TestFontDataProvider.h",
