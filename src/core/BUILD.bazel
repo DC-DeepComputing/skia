@@ -420,6 +420,7 @@ skia_filegroup(
         "SkStrike.cpp",
         "SkStrikeCache.cpp",
         "SkStrikeSpec.cpp",
+        "SkStrikeRef.cpp",
         "SkString.cpp",
         "SkStringUtils.cpp",
         "SkStroke.cpp",
