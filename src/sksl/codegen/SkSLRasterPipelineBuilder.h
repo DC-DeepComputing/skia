@@ -722,7 +722,7 @@ private:
     Instruction* lastInstruction(int fromBack = 0);
     Instruction* lastInstructionOnAnyStack(int fromBack = 0);
     void simplifyPopSlotsUnmasked(SlotRange* dst);
-    bool simplifyImmediateUnmaskedOp();
+    int simplifyImmediateUnmaskedOp();
 
     skia_private::TArray<Instruction> fInstructions;
     int fNumLabels = 0;
