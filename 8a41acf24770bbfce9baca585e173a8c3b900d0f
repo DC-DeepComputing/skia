@@ -54,6 +54,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1291d870_b860c932",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-24T20:25:18Z",
+      "side": 1,
+      "message": "Yes I could improve accuracy by adding more newton-raphson steps, but that is likely to regress performance more. I\u0027ll abandon this, and if it comes up in the future we can resuscitate this patch. \n\n(Since my local benching is on my M4, which is NEON, I tried removing the newton-raphson step, and benchmarking on the 8-bit precision. Even then it still regressed performance.)",
+      "parentUuid": "818efe03_78fedccd",
+      "revId": "8a41acf24770bbfce9baca585e173a8c3b900d0f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9ba45b00_51c6b91b",
