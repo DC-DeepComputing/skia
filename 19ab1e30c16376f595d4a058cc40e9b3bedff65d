@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29977780_a90c784a",
+        "filename": "fuzz/oss_fuzz/FuzzRegionDeserialize.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-04-24T13:25:14Z",
+      "side": 0,
+      "message": "is this draw no longer adding value withe the updated test?",
+      "range": {
+        "startLine": 32,
+        "startChar": 4,
+        "endLine": 32,
+        "endChar": 50
+      },
+      "revId": "19ab1e30c16376f595d4a058cc40e9b3bedff65d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
