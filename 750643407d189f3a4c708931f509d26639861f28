@@ -187,6 +187,30 @@
       },
       "revId": "750643407d189f3a4c708931f509d26639861f28",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b23a43e1_3b856599",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 1455,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-04-24T15:07:37Z",
+      "side": 1,
+      "message": "Yes I definitely think the overall structure and logic of this code is much better and easier to follow what\u0027s going on",
+      "parentUuid": "d19ed313_dd3275df",
+      "range": {
+        "startLine": 1452,
+        "startChar": 8,
+        "endLine": 1455,
+        "endChar": 54
+      },
+      "revId": "750643407d189f3a4c708931f509d26639861f28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
