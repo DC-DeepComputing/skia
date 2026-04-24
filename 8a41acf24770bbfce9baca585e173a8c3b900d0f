@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ba45b00_51c6b91b",
+        "filename": "src/base/SkVx.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 735,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-04-24T19:37:26Z",
+      "side": 1,
+      "message": "nit: typo",
+      "range": {
+        "startLine": 735,
+        "startChar": 43,
+        "endLine": 735,
+        "endChar": 57
+      },
+      "revId": "8a41acf24770bbfce9baca585e173a8c3b900d0f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "785885ec_61e71da7",
+        "filename": "tests/SkVxTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 453,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-04-24T19:37:26Z",
+      "side": 1,
+      "message": "nit: break these into two different tests, one for ok values, one for the pathological cases.",
+      "range": {
+        "startLine": 453,
+        "startChar": 4,
+        "endLine": 453,
+        "endChar": 5
+      },
+      "revId": "8a41acf24770bbfce9baca585e173a8c3b900d0f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9326da6b_10cf2a53",
+        "filename": "tests/SkVxTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 454,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-04-24T19:37:26Z",
+      "side": 1,
+      "message": "Since skvx::float8 has to be broken down into 2 float4s even on AVX2, that\u0027s probably worth testing also.",
+      "range": {
+        "startLine": 454,
+        "startChar": 14,
+        "endLine": 454,
+        "endChar": 20
+      },
+      "revId": "8a41acf24770bbfce9baca585e173a8c3b900d0f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54d18841_12e515c1",
+        "filename": "tests/SkVxTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 491,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-04-24T19:37:26Z",
+      "side": 1,
+      "message": "What does NEON do? Do we need an #else?",
+      "range": {
+        "startLine": 491,
+        "startChar": 1,
+        "endLine": 491,
+        "endChar": 6
+      },
+      "revId": "8a41acf24770bbfce9baca585e173a8c3b900d0f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
