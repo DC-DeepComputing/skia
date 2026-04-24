@@ -540,10 +540,10 @@ fn convert_to_a2b(
             // 4 elements for input_curves[] and grid_points[], so we can
             // only represent device spaces with 1-4 channels (up to CMYK).
             // Reject anything outside that range (crbug.com/504160794).
-            if mdt.num_input_channels > 4
-                || mdt.num_output_channels == 0
-                || mdt.num_output_channels > 4
-            {
+            // skcms requires exactly 3 output channels for A2B and at most
+            // 4 input channels.  clut() only handles 3 or 4 output channels;
+            // other values cause OOB reads (crbug.com/506010945).
+            if mdt.num_input_channels > 4 || mdt.num_output_channels != 3 {
                 return None;
             }
 
@@ -622,10 +622,8 @@ fn convert_to_a2b(
             // Similar structure to Multidimensional, but uses uniform grid size
 
             // Same channel-count constraint as Multidimensional above.
-            if ldt.num_input_channels > 4
-                || ldt.num_output_channels == 0
-                || ldt.num_output_channels > 4
-            {
+            // Same channel constraints as Multidimensional (crbug.com/506010945).
+            if ldt.num_input_channels > 4 || ldt.num_output_channels != 3 {
                 return None;
             }
 
