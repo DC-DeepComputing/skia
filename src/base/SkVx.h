@@ -714,6 +714,41 @@ SIN Vec<N,float>   fma(const Vec<N,float>& x,
     return map(fn, x,y,z);
 }
 
+SIN Vec<N,float> approx_rsqrt(const Vec<N,float>& x) {
+    // For both `_mm_rsqrt_ps` and `_mm256_rsqrt_ps` the Intel Intrinsics Guide v3.6.9 states:
+    // "The maximum relative error for this approximation is less than 1.5*2^-12."
+#if SKVX_USE_SIMD && SK_CPU_X64_LEVEL >= SK_CPU_X64_LEVEL_AVX
+    if constexpr (N == 8) {
+        return sk_bit_cast<Vec<8,float>>(_mm256_rsqrt_ps(sk_bit_cast<__m256>(x)));
+    } else
+#endif
+#if SKVX_USE_SIMD && SK_CPU_X64_LEVEL >= SK_CPU_X64_LEVEL_SSE1
+    if constexpr (N == 4) {
+        return sk_bit_cast<Vec<4,float>>(_mm_rsqrt_ps(sk_bit_cast<__m128>(x)));
+    } else
+#endif
+#if SKVX_USE_SIMD && defined(SK_ARM_HAS_NEON)
+    if constexpr (N == 4) {
+        // The arm NEON guide doesn't explicitly say that `vrsqrteq_f32` only has 8-bits of
+        // precision:
+        // https://developer.arm.com/architectures/instruction-sets/intrinsics/vrsqrteq_f32
+        // but going off the previous neon imlpementaiton:
+        // https://chromium.googlesource.com/skia/+/chrome/m69/src/opts/SkNx_neon.h
+        // we should do at least one Newton-Raphson step to bring it into parity with x86 12 bit
+        // precision.
+        float32x4_t raw = sk_bit_cast<float32x4_t>(x);
+        float32x4_t estimate = vrsqrteq_f32(raw);
+        float32x4_t step = vrsqrtsq_f32(raw, estimate * estimate);
+        return sk_bit_cast<Vec<4, float>>(estimate * step);
+    } else
+#endif
+    if constexpr (N > 1) {
+        return join(approx_rsqrt(x.lo), approx_rsqrt(x.hi));
+    } else {
+        return 1.0f / skvx::sqrt(x);
+    }
+}
+
 SI Vec<1,int> lrint(const Vec<1,float>& x) {
     return (int)lrintf(x.val);
 }

@@ -448,4 +448,49 @@ DEF_TEST(SkVx_isfinite, r) {
     }
 }
 
+DEF_TEST(SkVx_approx_rsqrt, r) {
+    // Reasonable values
+    {
+        skvx::float4 vals = {0.25f, 1.0f, 2.0f, 100.0f};
+        skvx::float4 approx = skvx::approx_rsqrt(vals);
+        skvx::float4 exact  = 1.0f / skvx::sqrt(vals);
+
+        skvx::float4 relError = skvx::abs(approx - exact) / exact;
+
+        // 1.5 * 2^-12 is approx 0.000366. We use 0.0004f for a safe floating-point margin.
+        REPORTER_ASSERT(r, all(relError <= 0.0004f));
+
+        skvx::float2 basic = {4.0f, 9.0f};
+        skvx::float2 basicRes = skvx::approx_rsqrt(basic);
+        REPORTER_ASSERT(r, basicRes[0] > 0.49f && basicRes[0] < 0.51f);
+        REPORTER_ASSERT(r, basicRes[1] > 0.33f && basicRes[1] < 0.34f);
+    }
+
+    // Pathological cases
+    {
+        skvx::float8 nasty = {
+            NAN,
+            -1.0f,
+            -INFINITY,
+            -0.0f,
+            +0.0f,
+            INFINITY,
+            std::numeric_limits<float>::denorm_min(),
+            std::numeric_limits<float>::max()
+        };
+
+        skvx::float8 res = skvx::approx_rsqrt(nasty);
+        REPORTER_ASSERT(r, std::isnan(res[0]));
+        REPORTER_ASSERT(r, std::isnan(res[1]));
+        REPORTER_ASSERT(r, std::isnan(res[2]));
+        REPORTER_ASSERT(r, std::isinf(res[3]) && res[3] < 0.0f);
+        REPORTER_ASSERT(r, std::isinf(res[4]) && res[4] > 0.0f);
+        REPORTER_ASSERT(r, res[5] == 0.0f);
+#ifndef SK_ARM_HAS_NEON
+        REPORTER_ASSERT(r, res[6] > 0.0f); //:^) just don't call on denormals on neon!
+#endif
+        REPORTER_ASSERT(r, res[7] > 0.0f && res[7] < 1.0f);
+    }
+}
+
 }  // namespace skvx
