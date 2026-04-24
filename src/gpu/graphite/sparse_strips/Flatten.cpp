@@ -192,6 +192,28 @@ SK_ALWAYS_INLINE SkPoint eval_cubic_scalar(const SkPoint pts[4], float t) {
            pts[3] * (t2 * t);
 }
 
+template <int N>
+SK_ALWAYS_INLINE bool is_completely_culled(const SkPoint pts[N], float width, float height) {
+    bool top = true;
+    bool right = true;
+    bool bottom = true;
+    for (int i = 0; i < N; ++i) {
+        top    &= (pts[i].fY < 0.0f);
+        right  &= (pts[i].fX > width);
+        bottom &= (pts[i].fY > height);
+    }
+    return top || right || bottom;
+}
+
+template <int N>
+SK_ALWAYS_INLINE bool is_completely_left(const SkPoint pts[N]) {
+    bool left = true;
+    for (int i = 0; i < N; ++i) {
+        left &= (pts[i].fX < 0.0f);
+    }
+    return left;
+}
+
 SK_ALWAYS_INLINE bool is_within_dist_sq(SkPoint p, SkPoint a, SkPoint b, float kErrTolerance) {
     SkPoint ab = b - a;
     SkPoint ap = p - a;
@@ -467,44 +489,48 @@ void Flatten::processPathsScalar(
     fContext.fFlattenedCubics.clear();
 
     auto processQuad = [this, width, height, polyline](const SkPoint pts[3]) {
-        // Is the quad completely outside of the viewport?
-        bool culled = (pts[0].fX > width && pts[1].fX > width && pts[2].fX > width) ||
-                      (pts[0].fX < 0.0f && pts[1].fX < 0.0f && pts[2].fX < 0.0f) ||
-                      (pts[0].fY > height && pts[1].fY > height && pts[2].fY > height) ||
-                      (pts[0].fY < 0.0f && pts[1].fY < 0.0f && pts[2].fY < 0.0f);
-        // Is the quad sufficiently similar to a line?
-        bool isLine = is_within_dist_sq(pts[1], pts[0], pts[2], kQuadSubdivThreshold);
-        if (culled || isLine) {
+        if (is_completely_culled<3>(pts, width, height)) {
+            // If the quad is completely top, right, or bottom of the viewport, cull.
+            return;
+        }
+        if (is_completely_left<3>(pts) ||
+            is_within_dist_sq(pts[1], pts[0], pts[2], kQuadSubdivThreshold)) {
+            // If the quad is visually a line or completely left of the viewport, simplify.
             polyline->appendPoint(pts[2]);
         } else {
             this->flattenQuadScalar(pts, polyline);
         }
     };
 
-    auto processConic = [this, &processQuad](const SkPoint pts[3], float weight) {
-        const SkPoint* quadPts = fConicToQuad.computeQuads(pts, weight, kQuadErrTolerance);
-        int quadCount = fConicToQuad.countQuads();
-
-        for (int i = 0; i < quadCount; ++i) {
-            processQuad(&quadPts[i * 2]);
+    auto processConic = [this, width, height, polyline](const SkPoint pts[3], float weight) {
+        if (is_completely_culled<3>(pts, width, height)) {
+            // If the conic is completely top, right, or bottom of the viewport, cull.
+            return;
+        }
+        if (is_completely_left<3>(pts) ||
+            is_within_dist_sq(pts[1], pts[0], pts[2], kQuadSubdivThreshold)) {
+            // If the conic is visually a line or completely left of the viewport, simplify.
+            // Note: A low weight can produce a visually flat conic even if the control point is far
+            // away, causing a false negative. This is acceptable as we fall back to subdivision.
+            polyline->appendPoint(pts[2]);
+        } else {
+            const SkPoint* quadPts = fConicToQuad.computeQuads(pts, weight, kQuadErrTolerance);
+            int quadCount = fConicToQuad.countQuads();
+            for (int i = 0; i < quadCount; ++i) {
+                this->flattenQuadScalar(&quadPts[i * 2], polyline);
+            }
         }
     };
 
     auto processCubic = [this, width, height, polyline](const SkPoint pts[4]) {
-        // Is the cubic completely outside of the viewport?
-        bool culled =
-                (pts[0].fX > width && pts[1].fX > width && pts[2].fX > width &&
-                 pts[3].fX > width) ||
-                (pts[0].fX < 0.0f && pts[1].fX < 0.0f && pts[2].fX < 0.0f && pts[3].fX < 0.0f) ||
-                (pts[0].fY > height && pts[1].fY > height && pts[2].fY > height &&
-                 pts[3].fY > height) ||
-                (pts[0].fY < 0.0f && pts[1].fY < 0.0f && pts[2].fY < 0.0f && pts[3].fY < 0.0f);
-        // Is the cubic sufficiently similar to a line?
-        bool isLine =
-                (is_within_dist_sq(pts[1], pts[0], pts[3], kCubicSubdivThreshold) &&
-                 is_within_dist_sq(pts[2], pts[0], pts[3], kCubicSubdivThreshold));
-
-        if (culled || isLine) {
+        if (is_completely_culled<4>(pts, width, height)) {
+            // If the cubic is completely top, right, or bottom of the viewport, cull.
+            return;
+        }
+        if (is_completely_left<4>(pts) ||
+            (is_within_dist_sq(pts[1], pts[0], pts[3], kCubicSubdivThreshold) &&
+             is_within_dist_sq(pts[2], pts[0], pts[3], kCubicSubdivThreshold))) {
+            // If the cubic is visually a line or completely left of the viewport, simplify.
             polyline->appendPoint(pts[3]);
         } else {
             uint32_t numSegments = this->flattenCubicScalar(pts);
