@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8654fb7a_a8ef2211",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-04-24T16:13:21Z",
+      "side": 1,
+      "message": "New tests: https://imgur.com/a/ujzM9i5\n\n(compared to non-randomized version: https://imgur.com/a/FZmKWBf)",
+      "revId": "aeafea590a65fcc680e320d4a13308a3cfaa4f87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
