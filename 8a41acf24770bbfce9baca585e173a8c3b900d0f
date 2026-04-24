@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "818efe03_78fedccd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-24T20:21:10Z",
+      "side": 1,
+      "message": "I\u0027m inclined to say we don\u0027t land these. Historically we have opted to remove rsqrt and other low precision instructions: https://skia-review.git.corp.google.com/c/skia/+/396723 and in raster pipeline it uses the precise rsqrt when it\u0027s SK_CPU_X64_LEVEL_SSE2\n\nI think there is something to be said about consistency across platforms, in particular for CPU rasterization. Since your plan for rsqrt is more for geometry processing in prep for GPU rendering, one could argue that that consistency is less necessary because the GPU is going to make GPU diffs more unpredictable anyways.  But I could also see surprise precision issues creeping into geometry calculations that are hard to debug if it depends on a specific lower-precision rsqrt on a user\u0027s device compared to the one we are trying to repro on.",
+      "parentUuid": "7be27cd3_8df707e1",
+      "revId": "8a41acf24770bbfce9baca585e173a8c3b900d0f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9ba45b00_51c6b91b",
         "filename": "src/base/SkVx.h",
         "patchSetId": 1
