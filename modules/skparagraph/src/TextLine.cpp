@@ -710,7 +710,11 @@ std::unique_ptr<Run> TextLine::shapeEllipsis(const SkString& ellipsis, const Clu
         std::unique_ptr<SkShaper> shaper = SkShapers::HB::ShapeDontWrapOrReorder(
                 fOwner->getUnicode(), fallback ? fallback : SkFontMgr::RefEmpty());
 
-        const SkBidiIterator::Level defaultLevel = SkBidiIterator::kLTR;
+        // Shape the affix with the surrounding run's bidi level so strong-directional
+        // custom strings (e.g., an Arabic letter used as a "hyphen") and non-neutral
+        // ellipses resolve correctly. The default "-" (ES-class) and "…" (ON-class)
+        // produce the same glyphs regardless of the level.
+        const SkBidiIterator::Level defaultLevel = cluster->run().fBidiLevel;
         const char* utf8 = ellipsis.c_str();
         size_t utf8Bytes = ellipsis.size();
 
