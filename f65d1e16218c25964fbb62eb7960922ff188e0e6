@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ad05312_5867bf20",
+        "filename": "tests/graphite/GraphiteResourceCacheTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 948,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-24T18:02:09Z",
+      "side": 1,
+      "message": "I\u0027m still seeing this flake on the tree and I think the issue is related to how the last access time is set on a resource.\n\nWhen a resource loses all of its external refs, it goes into the return queue. At some later point, the return queue is processed and the resource gets marked as purgeable.  When it\u0027s marked as purgeable is when its last access time is updated.\n\nIn this test, there is nothing to trigger processing the return queue after l944 until we get inside the ResourceCache in the call to `performDeferredCleanup`. We may have been processing the return queue as we added purgeable resources, but at least one iteration would be left without the return queue processed. \n\nSince the purge time is calculated in performDeferredCleanup before we process the return queue, any resource that was returned there would not be eligible for this cleanup because it would have the same or newer timestamp. \n\nWe could opt to convert a 0ms age request into a nullopt so that there isn\u0027t any purge age threshold in that case, or in this test, we can add a call to force processing the return queue before we do the cleanup.",
+      "range": {
+        "startLine": 948,
+        "startChar": 0,
+        "endLine": 948,
+        "endChar": 67
+      },
+      "revId": "f65d1e16218c25964fbb62eb7960922ff188e0e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
