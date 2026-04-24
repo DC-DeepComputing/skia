@@ -69,6 +69,24 @@
       "parentUuid": "bbee1311_9fe04e5e",
       "revId": "661ba79863f081fa9268fe283e4e219b9e6325c9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a164033_2683c613",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-24T17:14:03Z",
+      "side": 1,
+      "message": "Canary passed, thanks!",
+      "parentUuid": "9acc5cc7_0793db14",
+      "revId": "661ba79863f081fa9268fe283e4e219b9e6325c9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
