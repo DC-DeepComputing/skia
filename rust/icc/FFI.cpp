@@ -279,7 +279,9 @@ bool ToSkcmsIccProfile(const IccProfile& rust_profile, skcms_ICCProfile* out_skc
     out_skcms->has_B2A = rust_profile.has_b2a;
     if (rust_profile.has_b2a) {
         if (!ToSkcmsB2A(rust_profile.b2a, &out_skcms->B2A)) {
-            return false;
+            // Non-fatal: a2b_to_b2a() can produce invalid channel counts
+            // for CMYK and curve-only B2A profiles. Profile is still usable via A2B.
+            out_skcms->has_B2A = false;
         }
     }
 
