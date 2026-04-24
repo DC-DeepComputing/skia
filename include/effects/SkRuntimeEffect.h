@@ -367,7 +367,7 @@ public:
             , fChildren(fEffect->children().size()) {}
     explicit SkRuntimeEffectBuilder(sk_sp<SkRuntimeEffect> effect, sk_sp<SkData> uniforms)
             : fEffect(std::move(effect))
-            , fUniforms(std::move(uniforms))
+            , fUniforms(SanitizeUniformData(fEffect.get(), std::move(uniforms)))
             , fChildren(fEffect->children().size()) {}
 
     // This is currently required by Android Framework but may go away if that dependency
@@ -479,6 +479,24 @@ protected:
     SkRuntimeEffectBuilder& operator=(const SkRuntimeEffectBuilder&) = delete;
 
 private:
+    static sk_sp<SkData> SanitizeUniformData(const SkRuntimeEffect* effect, sk_sp<SkData> uniforms) {
+        const size_t expectedSize = effect ? effect->uniformSize() : 0;
+        if (uniforms && uniforms->size() == expectedSize) {
+            return uniforms;
+        }
+
+        sk_sp<SkData> resized = SkData::MakeZeroInitialized(expectedSize);
+        if (uniforms) {
+            const size_t bytesToCopy =
+                    uniforms->size() < expectedSize ? uniforms->size() : expectedSize;
+            if (bytesToCopy) {
+                memcpy(resized->writable_data(), uniforms->data(), bytesToCopy);
+            }
+            SkDEBUGFAIL("Uniform data size must match effect->uniformSize()");
+        }
+        return resized;
+    }
+
     void* writableUniformData() {
         if (!fUniforms->unique()) {
             fUniforms = SkData::MakeWithCopy(fUniforms->data(), fUniforms->size());

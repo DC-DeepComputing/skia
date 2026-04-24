@@ -193,6 +193,28 @@ DEF_TEST(SkRuntimeEffectUniformFlags, r) {
                                              SkRuntimeEffect::Uniform::kHalfPrecision_Flag));
 }
 
+DEF_TEST(SkRuntimeEffectBuilderNormalizesUniformBlobSize, r) {
+    auto [effect, errorText] = SkRuntimeEffect::MakeForShader(SkString(R"(
+        uniform float4 color;
+        half4 main(float2 p) {
+            return half4(color);
+        }
+    )"));
+    REPORTER_ASSERT(r, effect, "%s", errorText.c_str());
+
+    uint8_t seed = 0xA5;
+    sk_sp<SkData> tiny = SkData::MakeWithCopy(&seed, sizeof(seed));
+    SkRuntimeShaderBuilder builder(effect, std::move(tiny));
+
+    sk_sp<const SkData> uniforms = builder.uniforms();
+    REPORTER_ASSERT(r, uniforms->size() == effect->uniformSize());
+    REPORTER_ASSERT(r, static_cast<const uint8_t*>(uniforms->data())[0] == seed);
+
+    float rgba[4] = {1.f, 2.f, 3.f, 4.f};
+    REPORTER_ASSERT(r, builder.uniform("color").set(rgba, 4));
+    REPORTER_ASSERT(r, builder.uniforms()->size() == effect->uniformSize());
+}
+
 DEF_TEST(SkRuntimeEffectValidation, r) {
     auto es2Effect = SkRuntimeEffect::MakeForShader(SkString("#version 100\n" EMPTY_MAIN)).effect;
     auto es3Effect = SkRuntimeEffect::MakeForShader(SkString("#version 300\n" EMPTY_MAIN)).effect;
