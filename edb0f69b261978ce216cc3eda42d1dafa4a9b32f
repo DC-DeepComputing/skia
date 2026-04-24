@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9cd12503_17be3baf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 19
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-24T15:41:15Z",
+      "side": 1,
+      "message": "This CL is now the SIMD CL. (All the downstream CLs point at it)",
+      "revId": "edb0f69b261978ce216cc3eda42d1dafa4a9b32f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
