@@ -22,6 +22,30 @@
       },
       "revId": "19ab1e30c16376f595d4a058cc40e9b3bedff65d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b62fbc5_feaf9f2e",
+        "filename": "fuzz/oss_fuzz/FuzzRegionDeserialize.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-04-24T14:08:17Z",
+      "side": 0,
+      "message": "I\u0027m not sure it was ever really adding value. I recall adding it so we were doing *something* with regions. I think the new test will be more focused on region-based logic.",
+      "parentUuid": "29977780_a90c784a",
+      "range": {
+        "startLine": 32,
+        "startChar": 4,
+        "endLine": 32,
+        "endChar": 50
+      },
+      "revId": "19ab1e30c16376f595d4a058cc40e9b3bedff65d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
