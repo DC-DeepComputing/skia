@@ -632,4 +632,8 @@ DEF_TEST(SparseStrips_Flatten_Scalar, reporter) {
     skgpu::graphite::FlattenTestRunner<FlattenMode::kScalar>::RunAll(reporter);
 }
 
+DEF_TEST(SparseStrips_Flatten_SIMD, reporter) {
+    skgpu::graphite::FlattenTestRunner<FlattenMode::kSimd>::RunAll(reporter);
+}
+
 }  // namespace skgpu::graphite
