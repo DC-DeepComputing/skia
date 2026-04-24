@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e7db854_940875da",
+        "filename": "src/gpu/graphite/vk/VulkanBuffer.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-24T15:04:00Z",
+      "side": 1,
+      "message": "nit line length",
+      "range": {
+        "startLine": 409,
+        "startChar": 0,
+        "endLine": 409,
+        "endChar": 100
+      },
+      "revId": "caa4c8bec35843d27e672a3e8e93762d4f93f5d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
