@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "049adeba_5dfdad79",
+        "filename": "src/text/gpu/GlyphVector.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-27T19:52:31Z",
+      "side": 1,
+      "message": "Technically we don\u0027t need to modify this if we got past the WillCountFit, since GlyphBytes is larger than uint32_t. We could instead do a static_assert that sizeof(GlyphBytes) \u003e\u003d sizeof(SkPackedGlyphID).",
+      "range": {
+        "startLine": 83,
+        "startChar": 26,
+        "endLine": 83,
+        "endChar": 88
+      },
+      "revId": "fa2d444d0fb5ae0e71e2b771f50cf66890bac3a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
