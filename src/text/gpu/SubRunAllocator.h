@@ -9,6 +9,7 @@
 #define sktext_gpu_SubRunAllocator_DEFINED
 
 #include "include/core/SkSpan.h"
+#include "include/private/base/SkAlign.h"
 #include "include/private/base/SkAssert.h"
 #include "include/private/base/SkMath.h"
 #include "include/private/base/SkTLogic.h"
@@ -34,20 +35,21 @@ namespace sktext::gpu {
 class BagOfBytes {
     // The maximum alignment supported by GrBagOfBytes. 16 seems to be a good number for alignment.
     // If a use case for larger alignments is found, we can turn this into a template parameter.
-    inline static constexpr int kMaxAlignment = std::max(16, (int)alignof(std::max_align_t));
+    inline static constexpr size_t kMaxAlignment = std::max<size_t>(16, alignof(std::max_align_t));
     // The largest size that can be allocated. In larger sizes, the block is rounded up to 4K
     // chunks. Leave a 4K of slop.
-    inline static constexpr int k4K = (1 << 12);
+    inline static constexpr size_t k4K = (1 << 12);
     // This should never overflow with the calculations done on the code.
-    inline static constexpr int kMaxByteSize = std::numeric_limits<int>::max() - k4K;
+    // Use the maximum value of int32_t to maintain compatibility with SkReadBuffer/SkWriteBuffer.
+    inline static constexpr size_t kMaxByteSize = std::numeric_limits<int32_t>::max() - k4K;
     // The assumed alignment of new char[] given the platform.
     // There is a bug in Emscripten's allocator that make alignment different than max_align_t.
     // kAllocationAlignment accounts for this difference. For more information see:
     // https://github.com/emscripten-core/emscripten/issues/10072
 #if !defined(SK_FORCE_8_BYTE_ALIGNMENT)
-    static constexpr int kAllocationAlignment = alignof(std::max_align_t);
+    static constexpr size_t kAllocationAlignment = alignof(std::max_align_t);
 #else
-    static constexpr int kAllocationAlignment = 8;
+    static constexpr size_t kAllocationAlignment = 8;
 #endif
 
 public:
@@ -68,18 +70,19 @@ public:
     ~BagOfBytes();
 
     // Given a requestedSize round up to the smallest size that accounts for all the per block
-    // overhead and alignment. It crashes if requestedSize is negative or too big.
-    static constexpr int PlatformMinimumSizeWithOverhead(int requestedSize, int assumedAlignment) {
+    // overhead and alignment. It crashes if requestedSize is too big.
+    static constexpr size_t PlatformMinimumSizeWithOverhead(size_t requestedSize,
+                                                            size_t assumedAlignment) {
         return MinimumSizeWithOverhead(
                 requestedSize, assumedAlignment, sizeof(Block), kMaxAlignment);
     }
 
-    static constexpr int MinimumSizeWithOverhead(
-            int requestedSize, int assumedAlignment, int blockSize, int maxAlignment) {
-        SkASSERT_RELEASE(0 <= requestedSize && requestedSize < kMaxByteSize);
+    static constexpr size_t MinimumSizeWithOverhead(
+            size_t requestedSize, size_t assumedAlignment, size_t blockSize, size_t maxAlignment) {
+        SkASSERT_RELEASE(requestedSize < kMaxByteSize);
         SkASSERT_RELEASE(SkIsPow2(assumedAlignment) && SkIsPow2(maxAlignment));
 
-        const int minAlignment = std::min(maxAlignment, assumedAlignment);
+        const size_t minAlignment = std::min(maxAlignment, assumedAlignment);
         // There are two cases, one easy and one subtle. The easy case is when minAlignment ==
         // maxAlignment. When that happens, the term maxAlignment - minAlignment is zero, and the
         // block will be placed at the proper alignment because alignUp is properly
@@ -98,50 +101,46 @@ public:
         // Following this logic, the equation for the additional bytes is
         //   (maxAlignment/minAlignment - 1) * minAlignment
         //     = maxAlignment - minAlignment.
-        int minimumSize = SkToInt(AlignUp(requestedSize, minAlignment))
-                          + blockSize
-                          + maxAlignment - minAlignment;
+        size_t minimumSize = SkAlignTo(requestedSize, minAlignment)
+                             + blockSize
+                             + maxAlignment - minAlignment;
 
         // If minimumSize is > 32k then round to a 4K boundary unless it is too close to the
         // maximum int. The > 32K heuristic is from the JEMalloc behavior.
-        constexpr int k32K = (1 << 15);
-        if (minimumSize >= k32K && minimumSize < std::numeric_limits<int>::max() - k4K) {
-            minimumSize = SkToInt(AlignUp(minimumSize, k4K));
+        constexpr size_t k32K = (1 << 15);
+        if (minimumSize >= k32K && minimumSize < std::numeric_limits<uint32_t>::max() - k4K) {
+            minimumSize = SkAlignTo(minimumSize, k4K);
         }
 
         return minimumSize;
     }
 
-    template <int size>
+    template <size_t size>
     using Storage = std::array<char, PlatformMinimumSizeWithOverhead(size, 1)>;
 
     // Returns true if n * sizeof(T) will fit in an allocation block.
     template <typename T>
-    static bool WillCountFit(int n) {
-        constexpr int kMaxN = kMaxByteSize / sizeof(T);
-        return 0 <= n && n < kMaxN;
+    static bool WillCountFit(size_t n) {
+        size_t kMaxN = kMaxByteSize / sizeof(T);
+        return n < kMaxN;
     }
 
     // Returns a pointer to memory suitable for holding n values each with Size and Alignment.
     // Allocates 1 aligned byte if n == 0.
-    template <size_t Size, size_t Alignment> char* allocateBytesFor(int n = 1)
+    template <size_t Size, size_t Alignment> char* allocateBytesFor(size_t n)
         requires (Alignment <= kMaxAlignment && Size < kMaxByteSize && Size % Alignment == 0) {
-        SkASSERT_RELEASE(0 <= n && static_cast<size_t>(n) <= kMaxByteSize / Size);
-        int size = n ? n * Size : 1;
+        SkASSERT_RELEASE(n <= kMaxByteSize / Size);
+        size_t size = n ? n * Size : 1;
         return this->allocateBytes(size, Alignment);
     }
 
-    template <typename T> char* allocateBytesFor(int n = 1) {
+    template <typename T> char* allocateBytesFor(size_t n) {
         return allocateBytesFor<sizeof(T), alignof(T)>(n);
     }
 
-    void* alignedBytes(int unsafeSize, int unsafeAlignment);
+    void* alignedBytes(size_t size, size_t alignment);
 
 private:
-    static constexpr size_t AlignUp(int size, int alignment) {
-        return (size + (alignment - 1)) & -alignment;
-    }
-
     // The Block starts at the location pointed to by fEndByte.
     // Beware. Order is important here. The destructor for fPrevious must be called first because
     // the Block is embedded in fBlockStart. Destructors are run in reverse order.
@@ -154,23 +153,23 @@ private:
 
     // Note: fCapacity is the number of bytes remaining, and is subtracted from fEndByte to
     // generate the location of the object.
-    char* allocateBytes(int size, int alignment) {
-        fCapacity = fCapacity & -alignment;
+    char* allocateBytes(size_t size, size_t alignment) {
+        fCapacity = fCapacity & ~(alignment - 1);
         if (fCapacity < size) {
             this->needMoreBytes(size, alignment);
         }
         char* const ptr = fEndByte - fCapacity;
-        SkASSERT(((intptr_t)ptr & (alignment - 1)) == 0);
+        SkASSERT(((uintptr_t)ptr & (alignment - 1)) == 0);
         SkASSERT(fCapacity >= size);
         fCapacity -= size;
         return ptr;
     }
 
     // Adjust fEndByte and fCapacity give a new block starting at bytes with size.
-    void setupBytesAndCapacity(char* bytes, int size);
+    void setupBytesAndCapacity(char* bytes, size_t size);
 
     // Adjust fEndByte and fCapacity to satisfy the size and alignment request.
-    void needMoreBytes(int size, int alignment);
+    void needMoreBytes(size_t size, size_t alignment);
 
     // This points to the highest kMaxAlignment address in the allocated block. The address of
     // the current end of allocated data is given by fEndByte - fCapacity. While the negative side
@@ -180,9 +179,9 @@ private:
     char* fEndByte{nullptr};
 
     // The number of bytes remaining in this block.
-    int fCapacity{0};
+    size_t fCapacity{0};
 
-    SkFibBlockSizes<kMaxByteSize> fFibProgression;
+    SkFibBlockSizes<static_cast<uint32_t>(kMaxByteSize)> fFibProgression;
 };
 
 template <typename T>
@@ -216,33 +215,32 @@ public:
     };
 
     struct ArrayDestroyer {
-        int n;
+        size_t n;
         template <typename T>
         void operator()(T* ptr) {
-            for (int i = 0; i < n; i++) { ptr[i].~T(); }
+            for (size_t i = 0; i < n; i++) { ptr[i].~T(); }
         }
     };
 
     template<class T>
     inline static constexpr bool HasNoDestructor = std::is_trivially_destructible<T>::value;
 
-    SubRunAllocator(char* block, int blockSize, int firstHeapAllocation);
-    explicit SubRunAllocator(int firstHeapAllocation = 0);
+    SubRunAllocator(char* block, size_t blockSize, size_t firstHeapAllocation);
+    explicit SubRunAllocator(size_t firstHeapAllocation = 0);
     SubRunAllocator(const SubRunAllocator&) = delete;
     SubRunAllocator& operator=(const SubRunAllocator&) = delete;
     SubRunAllocator(SubRunAllocator&&) = default;
     SubRunAllocator& operator=(SubRunAllocator&&) = default;
 
     template <typename T>
-    static std::tuple<SubRunInitializer<T>, int, SubRunAllocator>
-    AllocateClassMemoryAndArena(int allocSizeHint) {
-        SkASSERT_RELEASE(allocSizeHint >= 0);
+    static std::tuple<SubRunInitializer<T>, size_t, SubRunAllocator>
+    AllocateClassMemoryAndArena(size_t allocSizeHint) {
         // Round the size after the object the optimal amount.
-        int extraSize = BagOfBytes::PlatformMinimumSizeWithOverhead(allocSizeHint, alignof(T));
+        size_t extraSize = BagOfBytes::PlatformMinimumSizeWithOverhead(allocSizeHint, alignof(T));
 
         // Don't overflow or die.
-        SkASSERT_RELEASE(INT_MAX - SkTo<int>(sizeof(T)) > extraSize);
-        int totalMemorySize = sizeof(T) + extraSize;
+        SkASSERT_RELEASE(std::numeric_limits<size_t>::max() - sizeof(T) > extraSize);
+        size_t totalMemorySize = sizeof(T) + extraSize;
 
         void* memory = ::operator new (totalMemorySize);
         SubRunAllocator alloc{SkTAddOffset<char>(memory, sizeof(T)), extraSize, extraSize/2};
@@ -251,18 +249,18 @@ public:
 
     template <typename T, typename... Args> T* makePOD(Args&&... args) {
         static_assert(HasNoDestructor<T>, "This is not POD. Use makeUnique.");
-        char* bytes = fAlloc.template allocateBytesFor<T>();
+        char* bytes = fAlloc.template allocateBytesFor<T>(1);
         return new (bytes) T(std::forward<Args>(args)...);
     }
 
     template <typename T, typename... Args>
     std::unique_ptr<T, Destroyer> makeUnique(Args&&... args) {
         static_assert(!HasNoDestructor<T>, "This is POD. Use makePOD.");
-        char* bytes = fAlloc.template allocateBytesFor<T>();
+        char* bytes = fAlloc.template allocateBytesFor<T>(1);
         return std::unique_ptr<T, Destroyer>{new (bytes) T(std::forward<Args>(args)...)};
     }
 
-    template<typename T, size_t Alignment = alignof(T)> T* makePODArray(int n)
+    template<typename T, size_t Alignment = alignof(T)> T* makePODArray(size_t n)
         requires (sizeof(T) % Alignment == 0) {
         static_assert(HasNoDestructor<T>, "This is not POD. Use makeUniqueArray.");
         return reinterpret_cast<T*>(fAlloc.template allocateBytesFor<sizeof(T), Alignment>(n));
@@ -275,7 +273,7 @@ public:
             return SkSpan<T>{};
         }
 
-        T* result = this->makePODArray<T>(SkTo<int>(s.size()));
+        T* result = this->makePODArray<T>(s.size());
         memcpy(result, s.data(), s.size_bytes());
         return {result, s.size()};
     }
@@ -283,29 +281,29 @@ public:
     template<typename T, typename Src, typename Map>
     SkSpan<T> makePODArray(const Src& src, Map map) {
         static_assert(HasNoDestructor<T>, "This is not POD. Use makeUniqueArray.");
-        int size = SkTo<int>(src.size());
+        size_t size = src.size();
         T* result = this->template makePODArray<T>(size);
-        for (int i = 0; i < size; i++) {
+        for (size_t i = 0; i < size; i++) {
             new (&result[i]) T(map(src[i]));
         }
         return {result, src.size()};
     }
 
     template<typename T>
-    std::unique_ptr<T[], ArrayDestroyer> makeUniqueArray(int n) {
+    std::unique_ptr<T[], ArrayDestroyer> makeUniqueArray(size_t n) {
         static_assert(!HasNoDestructor<T>, "This is POD. Use makePODArray.");
         T* array = reinterpret_cast<T*>(fAlloc.template allocateBytesFor<T>(n));
-        for (int i = 0; i < n; i++) {
+        for (size_t i = 0; i < n; i++) {
             new (&array[i]) T{};
         }
         return std::unique_ptr<T[], ArrayDestroyer>{array, ArrayDestroyer{n}};
     }
 
     template<typename T, typename I>
-    std::unique_ptr<T[], ArrayDestroyer> makeUniqueArray(int n, I initializer) {
+    std::unique_ptr<T[], ArrayDestroyer> makeUniqueArray(size_t n, I initializer) {
         static_assert(!HasNoDestructor<T>, "This is POD. Use makePODArray.");
         T* array = reinterpret_cast<T*>(fAlloc.template allocateBytesFor<T>(n));
-        for (int i = 0; i < n; i++) {
+        for (size_t i = 0; i < n; i++) {
             new (&array[i]) T(initializer(i));
         }
         return std::unique_ptr<T[], ArrayDestroyer>{array, ArrayDestroyer{n}};
@@ -314,15 +312,15 @@ public:
     template<typename T, typename U, typename Map>
     std::unique_ptr<T[], ArrayDestroyer> makeUniqueArray(SkSpan<const U> src, Map map) {
         static_assert(!HasNoDestructor<T>, "This is POD. Use makePODArray.");
-        int count = SkCount(src);
-        T* array = reinterpret_cast<T*>(fAlloc.template allocateBytesFor<T>(src.size()));
-        for (int i = 0; i < count; ++i) {
+        size_t count = src.size();
+        T* array = reinterpret_cast<T*>(fAlloc.template allocateBytesFor<T>(count));
+        for (size_t i = 0; i < count; ++i) {
             new (&array[i]) T(map(src[i]));
         }
         return std::unique_ptr<T[], ArrayDestroyer>{array, ArrayDestroyer{count}};
     }
 
-    void* alignedBytes(int size, int alignment);
+    void* alignedBytes(size_t size, size_t alignment);
 
 private:
     BagOfBytes fAlloc;
@@ -340,7 +338,7 @@ class STSubRunAllocator : private std::array<char,
                           public SubRunAllocator {
 public:
     explicit STSubRunAllocator(size_t firstHeapAllocation = InlineStorageSize)
-            : SubRunAllocator{this->data(), SkToInt(this->size()), SkToInt(firstHeapAllocation)} {}
+            : SubRunAllocator{this->data(), this->size(), firstHeapAllocation} {}
 };
 }  // namespace sktext::gpu
 

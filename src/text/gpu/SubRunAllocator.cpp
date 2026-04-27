@@ -18,7 +18,7 @@ namespace sktext::gpu {
 
 // -- BagOfBytes ---------------------------------------------------------------------------------
 BagOfBytes::BagOfBytes(char* bytes, size_t size, size_t firstHeapAllocation)
-        : fFibProgression(size, firstHeapAllocation) {
+        : fFibProgression(static_cast<uint32_t>(size), static_cast<uint32_t>(firstHeapAllocation)) {
     SkASSERT_RELEASE(size < kMaxByteSize);
     SkASSERT_RELEASE(firstHeapAllocation < kMaxByteSize);
 
@@ -46,7 +46,7 @@ BagOfBytes::Block::Block(char* previous, char* startOfBlock)
         : fBlockStart{startOfBlock}
         , fPrevious{reinterpret_cast<Block*>(previous)} {}
 
-void* BagOfBytes::alignedBytes(int size, int alignment) {
+void* BagOfBytes::alignedBytes(size_t size, size_t alignment) {
     SkASSERT_RELEASE(0 < size && size < kMaxByteSize);
     SkASSERT_RELEASE(0 < alignment && alignment <= kMaxAlignment);
     SkASSERT_RELEASE(SkIsPow2(alignment));
@@ -54,18 +54,18 @@ void* BagOfBytes::alignedBytes(int size, int alignment) {
     return this->allocateBytes(size, alignment);
 }
 
-void BagOfBytes::setupBytesAndCapacity(char* bytes, int size) {
+void BagOfBytes::setupBytesAndCapacity(char* bytes, size_t size) {
     // endByte must be aligned to the maximum alignment to allow tracking alignment using capacity;
     // capacity and endByte are both aligned to max alignment.
-    intptr_t endByte = reinterpret_cast<intptr_t>(bytes + size - sizeof(Block)) & -kMaxAlignment;
+    uintptr_t endByte = reinterpret_cast<uintptr_t>(bytes + size - sizeof(Block)) & ~(kMaxAlignment - 1);
     fEndByte  = reinterpret_cast<char*>(endByte);
-    fCapacity = fEndByte - bytes;
+    fCapacity = static_cast<size_t>(fEndByte - bytes);
 }
 
-void BagOfBytes::needMoreBytes(int requestedSize, int alignment) {
-    int nextBlockSize = fFibProgression.nextBlockSize();
-    const int size = PlatformMinimumSizeWithOverhead(
-            std::max(requestedSize, nextBlockSize), kAllocationAlignment);
+void BagOfBytes::needMoreBytes(size_t requestedSize, size_t alignment) {
+    uint32_t nextBlockSize = fFibProgression.nextBlockSize();
+    const size_t size = PlatformMinimumSizeWithOverhead(
+            std::max<size_t>(requestedSize, nextBlockSize), kAllocationAlignment);
     char* const bytes = new char[size];
     // fEndByte is changed by setupBytesAndCapacity. Remember it to link back to.
     char* const previousBlock = fEndByte;
@@ -75,21 +75,18 @@ void BagOfBytes::needMoreBytes(int requestedSize, int alignment) {
     new (fEndByte) Block{previousBlock, bytes};
 
     // Make fCapacity the alignment for the requested object.
-    fCapacity = fCapacity & -alignment;
+    fCapacity = fCapacity & ~(alignment - 1);
     SkASSERT(fCapacity >= requestedSize);
 }
 
 // -- SubRunAllocator ----------------------------------------------------------------------------
-SubRunAllocator::SubRunAllocator(char* bytes, int size, int firstHeapAllocation)
-        : fAlloc{bytes, SkTo<size_t>(size), SkTo<size_t>(firstHeapAllocation)} {
-    SkASSERT_RELEASE(SkTFitsIn<size_t>(size));
-    SkASSERT_RELEASE(SkTFitsIn<size_t>(firstHeapAllocation));
-}
+SubRunAllocator::SubRunAllocator(char* bytes, size_t size, size_t firstHeapAllocation)
+        : fAlloc{bytes, size, firstHeapAllocation} { }
 
-SubRunAllocator::SubRunAllocator(int firstHeapAllocation)
+SubRunAllocator::SubRunAllocator(size_t firstHeapAllocation)
         : SubRunAllocator(nullptr, 0, firstHeapAllocation) { }
 
-void* SubRunAllocator::alignedBytes(int unsafeSize, int unsafeAlignment) {
+void* SubRunAllocator::alignedBytes(size_t unsafeSize, size_t unsafeAlignment) {
     return fAlloc.alignedBytes(unsafeSize, unsafeAlignment);
 }
 
