@@ -631,6 +631,7 @@ var gniExportDescs = []exporter.GNIExportDesc{
 		{Var: "sksl_settings_tests", Rules: []string{"//resources/sksl:sksl_settings_tests"}},
 		{Var: "sksl_rte_tests", Rules: []string{"//resources/sksl:sksl_rte_tests"}},
 		{Var: "sksl_rte_error_tests", Rules: []string{"//resources/sksl:sksl_rte_error_tests"}},
+		{Var: "sksl_skrp_tests", Rules: []string{"//resources/sksl:sksl_skrp_tests"}},
 	}},
 	{GNI: "gn/utils.gni", Vars: []exporter.GNIFileListExportDesc{
 		{Var: "skia_utils_public",
