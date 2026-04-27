@@ -55,12 +55,13 @@ public:
     ~DebugCanvas() override;
 
     /**
-     * Provide a DebugLayerManager for mskp files containing layer information
-     * when set this DebugCanvas will attempt to parse layer info from annotations.
-     * it will store layer pictures to the layer manager, and interpret some drawImageRects
-     * as layer draws, deferring to the layer manager for images.
-     * Provide a frame number that will be passed to all layer manager functions to identify this
-     * DebugCanvas.
+     * Provide a DebugLayerManager for mskp files that contain layer
+     * information. When set, this DebugCanvas will attempt to parse the layer
+     * information from the mskp annotations. It will store layer images to the
+     * DebugLayerManager. It will also interpret some drawImageRects as layer
+     * commands, deferring to the layer manager for images. You may provide a
+     * frame number that will be passed to all DebugLayerManager functions to
+     * identify this DebugCanvas.
      *
      * Used only in wasm debugger animations.
      */
@@ -77,7 +78,8 @@ public:
     bool getOverdrawViz() const { return fOverdrawViz; }
 
     /**
-     * Set the color of the clip visualization. An alpha of zero renders the clip invisible.
+     * Set the color of the clip visualization. An alpha of zero renders the
+     * clip invisible.
      */
     void setClipVizColor(SkColor clipVizColor) { this->fClipVizColor = clipVizColor; }
 
@@ -155,10 +157,10 @@ public:
     std::map<int, std::vector<int>> getImageIdToCommandMap(UrlDataManager& udm) const;
 
 protected:
-    void              willSave() override;
+    void willSave() override;
     SaveLayerStrategy getSaveLayerStrategy(const SaveLayerRec&) override;
-    bool              onDoSaveBehind(const SkRect*) override;
-    void              willRestore() override;
+    bool onDoSaveBehind(const SkRect*) override;
+    void willRestore() override;
 
     void didConcat44(const SkM44&) override;
     void didSetM44(const SkM44&) override;
@@ -168,9 +170,9 @@ protected:
     void onDrawAnnotation(const SkRect&, const char[], SkData*) override;
     void onDrawDRRect(const SkRRect&, const SkRRect&, const SkPaint&) override;
     void onDrawTextBlob(const SkTextBlob* blob,
-                        SkScalar          x,
-                        SkScalar          y,
-                        const SkPaint&    paint) override;
+                        SkScalar x,
+                        SkScalar y,
+                        const SkPaint& paint) override;
 
     void onDrawPatch(const SkPoint cubics[12],
                      const SkColor colors[4],
@@ -189,14 +191,25 @@ protected:
     void onDrawPath(const SkPath&, const SkPaint&) override;
     void onDrawRegion(const SkRegion&, const SkPaint&) override;
 
-    void onDrawImage2(const SkImage*, SkScalar, SkScalar, const SkSamplingOptions&,
+    void onDrawImage2(
+            const SkImage*, SkScalar, SkScalar, const SkSamplingOptions&, const SkPaint*) override;
+    void onDrawImageRect2(const SkImage*,
+                          const SkRect&,
+                          const SkRect&,
+                          const SkSamplingOptions&,
+                          const SkPaint*,
+                          SrcRectConstraint) override;
+    void onDrawImageLattice2(
+            const SkImage*, const Lattice&, const SkRect&, SkFilterMode, const SkPaint*) override;
+    void onDrawAtlas2(const SkImage*,
+                      const SkRSXform[],
+                      const SkRect[],
+                      const SkColor[],
+                      int,
+                      SkBlendMode,
+                      const SkSamplingOptions&,
+                      const SkRect*,
                       const SkPaint*) override;
-    void onDrawImageRect2(const SkImage*, const SkRect&, const SkRect&, const SkSamplingOptions&,
-                          const SkPaint*, SrcRectConstraint) override;
-    void onDrawImageLattice2(const SkImage*, const Lattice&, const SkRect&, SkFilterMode,
-                             const SkPaint*) override;
-    void onDrawAtlas2(const SkImage*, const SkRSXform[], const SkRect[], const SkColor[], int,
-                     SkBlendMode, const SkSamplingOptions&, const SkRect*, const SkPaint*) override;
 
     void onClipRect(const SkRect&, SkClipOp, ClipEdgeStyle) override;
     void onClipRRect(const SkRRect&, SkClipOp, ClipEdgeStyle) override;
@@ -209,11 +222,8 @@ protected:
     void onDrawDrawable(SkDrawable*, const SkMatrix*) override;
     void onDrawPicture(const SkPicture*, const SkMatrix*, const SkPaint*) override;
 
-    void onDrawEdgeAAQuad(const SkRect&,
-                          const SkPoint[4],
-                          QuadAAFlags,
-                          const SkColor4f&,
-                          SkBlendMode) override;
+    void onDrawEdgeAAQuad(
+            const SkRect&, const SkPoint[4], QuadAAFlags, const SkColor4f&, SkBlendMode) override;
     void onDrawEdgeAAImageSet2(const ImageSetEntry[],
                                int count,
                                const SkPoint[],
@@ -224,20 +234,20 @@ protected:
 
 private:
     SkTDArray<DrawCommand*> fCommandVector;
-    SkM44                   fMatrix;
-    SkIRect                 fClip;
+    SkM44 fMatrix;
+    SkIRect fClip;
 
-    bool    fOverdrawViz = false;
+    bool fOverdrawViz = false;
     SkColor fClipVizColor;
-    bool    fDrawGpuOpBounds = false;
-    bool    fShowAndroidClip = false;
-    bool    fShowOrigin = false;
+    bool fDrawGpuOpBounds = false;
+    bool fShowAndroidClip = false;
+    bool fShowOrigin = false;
 
-    // When not negative, indicates the render node id of the layer represented by the next
-    // drawPicture call.
-    int         fnextDrawPictureLayerId = -1;
-    int         fnextDrawImageRectLayerId = -1;
-    SkIRect     fnextDrawPictureDirtyRect;
+    // When not negative, indicates the render node id of the layer represented
+    // by the next drawPicture call.
+    int fnextDrawPictureLayerId = -1;
+    int fnextDrawImageRectLayerId = -1;
+    SkIRect fnextDrawPictureDirtyRect;
     // may be null, in which case layer annotations are ignored.
     DebugLayerManager* fLayerManager = nullptr;
     // May be set when DebugCanvas is used in playing back an animation.
