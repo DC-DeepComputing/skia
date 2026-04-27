@@ -73,15 +73,14 @@ std::optional<GlyphVector> GlyphVector::MakeFromBuffer(SkReadBuffer& buffer,
         return std::nullopt;
     }
 
-    // Make sure we can multiply without overflow in the check below.
-    static constexpr int kMaxCount = (int)(INT_MAX / sizeof(uint32_t));
-    if (!buffer.validate(glyphCount <= kMaxCount)) {
+    // Make sure we won't overflow the allocation below
+    if (!buffer.validate(BagOfBytes::WillCountFit<GlyphBytes>(glyphCount))) {
         return std::nullopt;
     }
 
     // Check for enough bytes to populate the packedGlyphID array. If not enough something has
     // gone wrong.
-    if (!buffer.validate(glyphCount * sizeof(uint32_t) <= buffer.available())) {
+    if (!buffer.validate(((size_t)glyphCount) <= (buffer.available() / sizeof(uint32_t)))) {
         return std::nullopt;
     }
 
