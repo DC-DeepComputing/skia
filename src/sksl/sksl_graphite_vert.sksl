@@ -328,7 +328,7 @@ $pure float4 tessellate_stroked_curve(float edgeID, float maxEdges,
         // Don't let tan0 become zero. The code as-is isn't built to handle that case. tan0=0
         // means the join is disabled, and to disable it with the existing code we can leave
         // tan0 equal to tan1.
-        if (lastControlPoint != p0) {
+        if (lastControlPoint != p0 && tan0 == float2(0)) {
             tan0 = prevTan;
         }
         turn = cross_length_2d(tan0, tan1);
