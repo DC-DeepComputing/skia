@@ -22,6 +22,30 @@
       },
       "revId": "e35cd1829eec6a3384396906aebd2d1e71296255",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4c83f76_6af12f59",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-04-27T16:37:44Z",
+      "side": 1,
+      "message": "`bazel build //tools/skslc \u0026\u0026 bazel-bin/tools/skslc/skslc input.sksl output.skrp`\n\nI put it in the commit message for Future Kaylee to reference also.",
+      "parentUuid": "d4847709_d891bfe4",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 65
+      },
+      "revId": "e35cd1829eec6a3384396906aebd2d1e71296255",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
