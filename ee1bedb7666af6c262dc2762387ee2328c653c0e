@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3079a183_7327f57f",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 543,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-04-27T13:08:43Z",
+      "side": 1,
+      "message": "skcms docs say the output of A2B must also be 3 channels\nhttps://skia.googlesource.com/skcms/+/a7a3b15f06355692d86a3b8373c579a521598f4c/src/skcms_public.h#196",
+      "range": {
+        "startLine": 543,
+        "startChar": 60,
+        "endLine": 543,
+        "endChar": 73
+      },
+      "revId": "ee1bedb7666af6c262dc2762387ee2328c653c0e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
