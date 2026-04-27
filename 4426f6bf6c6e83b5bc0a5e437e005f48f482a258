@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68d1d9a4_4c3cf0ff",
+        "filename": "example/external_client/src/graphite_vulkan_capture.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-04-27T16:27:56Z",
+      "side": 1,
+      "message": "2026",
+      "revId": "4426f6bf6c6e83b5bc0a5e437e005f48f482a258",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93daaae7_f3f77f2b",
+        "filename": "example/external_client/src/graphite_vulkan_capture.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-04-27T16:27:56Z",
+      "side": 1,
+      "message": "Someone else should probably review all the Vulkan set up code. Either way, that should maybe be in a separate file to keep this one semi clean? I\u0027ll defer to others.",
+      "revId": "4426f6bf6c6e83b5bc0a5e437e005f48f482a258",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9491697b_89e1bf4a",
+        "filename": "example/external_client/src/graphite_vulkan_capture.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 567,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-04-27T16:27:56Z",
+      "side": 1,
+      "message": "All the surface and set-up code should now be centralized into a separate SkCaptureUtils file. So we only have to maintain one set of draws. It should accept a Graphite context and do all the draws currently in the metal version of the capture script.\n\nSomething called `drawCaptureTest` or something.",
+      "revId": "4426f6bf6c6e83b5bc0a5e437e005f48f482a258",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
