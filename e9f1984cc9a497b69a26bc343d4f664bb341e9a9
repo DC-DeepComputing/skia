@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad0a73c7_c190aeb1",
+        "filename": "tests/RustIccTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 940,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-04-27T13:13:38Z",
+      "side": 1,
+      "message": "Can we have a specialized test case for this unique situation? I don\u0027t like making the assertion logic more complicated - it\u0027s not clear which of the test cases are expected to go down which of the various control flow paths.",
+      "range": {
+        "startLine": 940,
+        "startChar": 20,
+        "endLine": 940,
+        "endChar": 27
+      },
+      "revId": "e9f1984cc9a497b69a26bc343d4f664bb341e9a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
