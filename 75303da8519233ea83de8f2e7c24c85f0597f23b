@@ -22,6 +22,30 @@
       },
       "revId": "75303da8519233ea83de8f2e7c24c85f0597f23b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d3722d9_723fea59",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-04-27T18:24:39Z",
+      "side": 1,
+      "message": "Made both debug assertions. I try to avoid just warnings since (at least for me) they are easy to ignore/miss.",
+      "parentUuid": "16417b29_da1e0bd6",
+      "range": {
+        "startLine": 246,
+        "startChar": 0,
+        "endLine": 247,
+        "endChar": 80
+      },
+      "revId": "75303da8519233ea83de8f2e7c24c85f0597f23b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
