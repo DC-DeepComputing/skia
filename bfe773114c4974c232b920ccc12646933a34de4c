@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "216ed44d_ec59c373",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 395,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-04-27T15:12:55Z",
+      "side": 1,
+      "message": "Is this guaranteed to happen though?  What if there are following instructions that actually make use of the 3 remaining slots (`func((v\u003dabs(v)).xyz))`) - won\u0027t this produce incorrect results?\n\nRemoving more than we were asked for and then patching up the state seems fragile, can we gate the `simplifyImmediateUnmaskedOp()` call on `lastInstruction-\u003efImmA \u003d\u003d 1` or such?\n\n(tangentially, why is the optimization limited to `count \u003d\u003d 1`?  maybe we can explore a `count \u003d\u003d lastInstruction-\u003efImmA` expansion separately)",
+      "range": {
+        "startLine": 394,
+        "startChar": 66,
+        "endLine": 395,
+        "endChar": 61
+      },
+      "revId": "bfe773114c4974c232b920ccc12646933a34de4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
