@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4bd2021_296e3426",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 14
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-04-27T18:51:56Z",
+      "side": 1,
+      "message": "Changed it. On my side it looks okay but let me know if you think the cut off is too short",
+      "parentUuid": "b5cd9743_f87df398",
+      "revId": "64c12b0426f457caf4a6fb1af97948a71ce81ff6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b8694d41_d81c84ad",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-04-27T16:19:16Z",
       "side": 1,
       "message": "A lot of these format changes are incorrect. Based on this change in particular, I\u0027m thinking you may have your column max at 80 instead of 100 (see https://skia.org/docs/dev/contrib/style/).\n\nIf some of these do turn out to be needed, we can review this in a separate CL since it looks like the logic is untouched here. If there is any function header changes or other logic, keep that for review.",
+      "revId": "64c12b0426f457caf4a6fb1af97948a71ce81ff6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "347ac808_1e3916df",
+        "filename": "tools/debugger/DebugCanvas.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-04-27T18:51:56Z",
+      "side": 1,
+      "message": "you\u0027re right. I had it set to 80 instead of 100. Patched it! I left a change I made to a comment to improve the documentation.",
+      "parentUuid": "b8694d41_d81c84ad",
       "revId": "64c12b0426f457caf4a6fb1af97948a71ce81ff6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -52,6 +88,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "617dc865_793fe3f1",
+        "filename": "tools/viewer/CaptureSlide.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-04-27T18:51:56Z",
+      "side": 1,
+      "message": "From what I\u0027ve researched, this seems like the only way to get the drawing commands using the current implementation of DebugCanvas. As we move further with development, we can consider refactoring DebugCanvas so there is a more stream lined way to do it",
+      "parentUuid": "1648c334_77277d72",
+      "revId": "64c12b0426f457caf4a6fb1af97948a71ce81ff6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d42b7a17_35b350c1",
@@ -69,6 +123,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1fe52568_333aafeb",
+        "filename": "tools/viewer/CaptureSlide.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-04-27T18:51:56Z",
+      "side": 1,
+      "message": "I added ImGui::Combo functionality for the drawCommandHistory function. So far, it has drop down menus for each draw command, but it doesn\u0027t have it for the internal components of each draw command. We can resolve this in a later cl though",
+      "parentUuid": "d42b7a17_35b350c1",
+      "revId": "64c12b0426f457caf4a6fb1af97948a71ce81ff6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0f8dcc66_0a0fe71c",
@@ -82,6 +154,24 @@
       "writtenOn": "2026-04-27T16:19:16Z",
       "side": 1,
       "message": "nit: Thank you for these formatting drive-bys. Cases should be indented. However the 80 vs 100 column width issue is showing here.",
+      "revId": "64c12b0426f457caf4a6fb1af97948a71ce81ff6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c49b9c5_93b2adef",
+        "filename": "tools/viewer/CaptureSlide.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-04-27T18:51:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0f8dcc66_0a0fe71c",
       "revId": "64c12b0426f457caf4a6fb1af97948a71ce81ff6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
