@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cca1f12f_fa268bf9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 14
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-04-27T19:08:48Z",
+      "side": 1,
+      "message": "The message looks unchanged to me.",
+      "parentUuid": "b4bd2021_296e3426",
+      "revId": "64c12b0426f457caf4a6fb1af97948a71ce81ff6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b8694d41_d81c84ad",
         "filename": "tools/debugger/DebugCanvas.h",
         "patchSetId": 14
