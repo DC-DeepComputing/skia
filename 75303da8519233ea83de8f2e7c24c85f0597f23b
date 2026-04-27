@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16417b29_da1e0bd6",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-27T17:36:43Z",
+      "side": 1,
+      "message": "I think we should log a warning or assert if either of these things occur; it seems unexpected to have this recompilation fail.\n\n - It seems more benign to have the inlining/optimizing steps fail in which case maybe a warning is fine.\n - But if we are here, we should have confirmed there\u0027s a main function and inlining/optimizing shouldn\u0027t have removed it, so that would be a hard failure.",
+      "range": {
+        "startLine": 246,
+        "startChar": 0,
+        "endLine": 247,
+        "endChar": 80
+      },
+      "revId": "75303da8519233ea83de8f2e7c24c85f0597f23b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
