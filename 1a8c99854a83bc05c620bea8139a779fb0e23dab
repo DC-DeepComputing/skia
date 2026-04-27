@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a496214_2f8eb8a4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-27T19:54:10Z",
+      "side": 1,
+      "message": "g3 style has historically promoted the use of signed integers over unsigned integers. Having a negative number can be quite useful. The main issue is that the integer was being promoted/converted to a size_t without any warning.  See https://g3doc.corp.google.com/devtools/library_club/g3doc/totw/159.md?cl\u003dhead",
+      "revId": "1a8c99854a83bc05c620bea8139a779fb0e23dab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
