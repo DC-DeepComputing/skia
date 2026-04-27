@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1682f34f_85b87618",
+        "filename": "experimental/rust_bmp/ffi/FFI.rs",
+        "patchSetId": 31
+      },
+      "lineNbr": 303,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-04-27T14:38:06Z",
+      "side": 1,
+      "message": "BmpDecoder may return L8 in one of the paths as color type:\n\nhttps://github.com/image-rs/image/blob/85f1b98b60e13354a3e9f1cb5e0c3a3a0f494029/src/codecs/bmp/decoder.rs#L2184\n\nIn theory this should only happen if consumer of BmpDecoder has called `set_indexed_color` to true which avoids conversion to plaette color and keeps just index. This is something that shouldn\u0027t happen so we may panic here as it seems that this would indicate a missuse of BMPDecoder.",
+      "revId": "5540eadbb59f59d519e59b0674329a03a51d312f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
