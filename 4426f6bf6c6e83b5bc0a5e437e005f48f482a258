@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ebc97d5_a7a73cf9",
+        "filename": "example/external_client/src/graphite_vulkan_capture.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-04-27T19:02:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "68d1d9a4_4c3cf0ff",
+      "revId": "4426f6bf6c6e83b5bc0a5e437e005f48f482a258",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "93daaae7_f3f77f2b",
@@ -35,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0a69a32_d23d3b2e",
+        "filename": "example/external_client/src/graphite_vulkan_capture.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-04-27T19:02:46Z",
+      "side": 1,
+      "message": "Yep, I cc\u0027d nicolettep@google.com to review the Vulkan backend context setup. I agree, it should probably be in it\u0027s own file, but just wanted to send this as a rough draft since I\u0027m not familiar with Vulkan conventions.",
+      "parentUuid": "93daaae7_f3f77f2b",
+      "revId": "4426f6bf6c6e83b5bc0a5e437e005f48f482a258",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9491697b_89e1bf4a",
@@ -48,6 +84,24 @@
       "writtenOn": "2026-04-27T16:27:56Z",
       "side": 1,
       "message": "All the surface and set-up code should now be centralized into a separate SkCaptureUtils file. So we only have to maintain one set of draws. It should accept a Graphite context and do all the draws currently in the metal version of the capture script.\n\nSomething called `drawCaptureTest` or something.",
+      "revId": "4426f6bf6c6e83b5bc0a5e437e005f48f482a258",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "041f7ef5_10f626d5",
+        "filename": "example/external_client/src/graphite_vulkan_capture.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 567,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-04-27T19:02:46Z",
+      "side": 1,
+      "message": "Nice! Where is the functionality for that? I tried looking for SkCaptureUtils but nothing turned up (https://source.corp.google.com/search?q\u003dskcapture\u0026sq\u003d). I also tried looking for drawCaptureTest and similar names.",
+      "parentUuid": "9491697b_89e1bf4a",
       "revId": "4426f6bf6c6e83b5bc0a5e437e005f48f482a258",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
