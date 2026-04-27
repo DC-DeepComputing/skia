@@ -22,6 +22,30 @@
       },
       "revId": "fa2d444d0fb5ae0e71e2b771f50cf66890bac3a1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "66b6619c_7eaf4491",
+        "filename": "src/text/gpu/GlyphVector.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-04-27T19:58:27Z",
+      "side": 1,
+      "message": "Overflow on me 1 time? Shame on you. Overflow on me -2,147,483,648 times? Shame on me.\n\nDone",
+      "parentUuid": "049adeba_5dfdad79",
+      "range": {
+        "startLine": 83,
+        "startChar": 26,
+        "endLine": 83,
+        "endChar": 88
+      },
+      "revId": "fa2d444d0fb5ae0e71e2b771f50cf66890bac3a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
