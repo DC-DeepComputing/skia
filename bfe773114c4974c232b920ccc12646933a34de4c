@@ -22,6 +22,30 @@
       },
       "revId": "bfe773114c4974c232b920ccc12646933a34de4c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "921992d0_04755877",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 395,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-04-27T16:18:04Z",
+      "side": 1,
+      "message": "Good point. \nSome SKSL like the following\n```\nhalf4 main(float2 xy) {\n    float4 v \u003d float4(-1.0, -2.0, -3.0, -4.0);\n    float3 poison \u003d float3(10.0, 20.0, 30.0);\n    float3 result \u003d poison + (v \u003d abs(v)).xyz;\n    return half4(result, 1.0);\n}\n```\nshowed how the stack padding I tried caused issues (uninitialized stack values were used accidentally)\n\nAfter thinking about it more, I think the `count \u003d\u003d lastInstruction-\u003efImmA` is the right way to go in general here. I got confused with the example from the bug because I missed the fact that we were dropping the .w value with the swizzle.",
+      "parentUuid": "216ed44d_ec59c373",
+      "range": {
+        "startLine": 394,
+        "startChar": 66,
+        "endLine": 395,
+        "endChar": 61
+      },
+      "revId": "bfe773114c4974c232b920ccc12646933a34de4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
