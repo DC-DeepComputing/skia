@@ -1172,3 +1172,55 @@ DEF_TEST(RustIcc_trc_table_passthrough, r) {
                                      rp.trc[c], skcms_prof.trc[c]);
     }
 }
+
+// Regression test for the non-fatal B2A rejection path.
+//
+// pq_hdr.icc is an ICCv4 PQ HDR profile with an A2B tag and a curve-only B2A
+// tag.  The Rust path reuses convert_to_a2b() for B2A, then a2b_to_b2a()
+// swaps input/output channels.  Curve-only B2A profiles yield invalid channel
+// counts so ToSkcmsB2A rejects them.  ToSkcmsIccProfile must treat this
+// rejection as non-fatal: has_B2A is left false while A2B (and the rest of
+// the profile) is still usable.
+DEF_TEST(RustIcc_pq_hdr_b2a_absent, r) {
+    auto data = GetResourceAsData("icc_profiles/pq_hdr.icc");
+    if (!data) {
+        ERRORF(r, "Failed to load icc_profiles/pq_hdr.icc");
+        return;
+    }
+
+    auto rust_profile  = SkCodecs::MakeICCProfileWithRust(data);
+    auto skcms_profile = SkCodecs::ColorProfile::MakeICCProfileWithSkCMS(data);
+
+    if (!rust_profile) {
+        ERRORF(r, "Rust parser failed for pq_hdr.icc");
+        return;
+    }
+    if (!skcms_profile) {
+        ERRORF(r, "SkCMS parser failed for pq_hdr.icc");
+        return;
+    }
+
+    const auto& rust  = *rust_profile->profile();
+    const auto& skcms = *skcms_profile->profile();
+
+    // Both parsers must expose the A2B tag.
+    REPORTER_ASSERT(r, rust.has_A2B,  "Rust must expose A2B for pq_hdr.icc");
+    REPORTER_ASSERT(r, skcms.has_A2B, "skcms must expose A2B for pq_hdr.icc");
+
+    // skcms parses the curve-only B2A tag; the Rust path correctly rejects it
+    // because a2b_to_b2a() cannot handle curve-only B2A.  has_B2A must be
+    // false in the Rust profile and the parse must not have failed entirely.
+    REPORTER_ASSERT(r,  skcms.has_B2A, "skcms must expose B2A for pq_hdr.icc");
+    REPORTER_ASSERT(r, !rust.has_B2A,
+                    "Rust must not expose B2A for curve-only B2A (pq_hdr.icc); "
+                    "if this now passes, a2b_to_b2a() handles curve-only B2A and "
+                    "pq_hdr.icc can be added to RustIcc_equivalence_with_skcms_resource_files");
+
+    // The profiles should be approximately equal on everything except B2A.
+    // Temporarily clear has_B2A on the skcms copy so the comparison is fair.
+    skcms_ICCProfile skcms_no_b2a = skcms;
+    skcms_no_b2a.has_B2A = false;
+    if (!skcms_ApproximatelyEqualProfiles(&rust, &skcms_no_b2a)) {
+        ERRORF(r, "[pq_hdr.icc] profiles not approximately equal (ignoring B2A)");
+    }
+}
