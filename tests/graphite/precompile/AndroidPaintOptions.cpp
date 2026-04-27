@@ -278,7 +278,7 @@ skgpu::graphite::PaintOptions BlurFilterMix(RuntimeEffectManager& effectManager)
 
     PaintOptions paintOptions;
     paintOptions.setShaders({{ std::move(mix) }});
-    paintOptions.setBlendModes(SKSPAN_INIT_ONE( SkBlendMode::kSrc ));
+    paintOptions.setBlendModes({ SkBlendMode::kSrc, SkBlendMode::kSrcOver });
     return paintOptions;
 }
 
@@ -918,7 +918,7 @@ void VisitAndroidPrecompileSettings_Old(
           DrawTypeFlags::kNonAAFillRect,
           kRGBA16F_1_D_Linear },
 
-        // 27: 100% (2/2) handles 49 99
+        // 27: 100% (4/4) handles: 49 99 201 333
         { BlurFilterMix(effectManager),
           kRRectAndNonAARect,
           kRGBA_1_D },
@@ -1192,7 +1192,7 @@ void VisitAndroidPrecompileSettings_Old(
           DrawTypeFlags::kNonAAFillRect,
           kRGBA_1_D_SRGB },
 
-        // 63: 100% (1/1) handles 180
+        // 63: 75% (3/4) handles: 180 200 244
         // Just 62 w/ and opaque Paint color
         { LinearEffect(k0x188a0000__DISPLAY_P3__false__0x90a0000__Shader,
                        create_hw_image_precompile_shader(),
@@ -1202,7 +1202,8 @@ void VisitAndroidPrecompileSettings_Old(
                        /* dither= */ false,
                        SkColorSpace::MakeSRGBLinear()),
           DrawTypeFlags::kNonAAFillRect,
-          kRGBA_1_D_SRGB },
+          kCombo_RGBA_1D_4DS_SRGB,
+          kWithAnalyticClip },
 
         // 64: 75% (3/4) handles: 178 181 188
         // This is just 24 wrapped in a very specific LinearEffect
@@ -1321,6 +1322,18 @@ void VisitAndroidPrecompileSettings_Old(
         { GainMap(effectManager),
           DrawTypeFlags::kNonAAFillRect,
           kRGBA_1_D_Linear  },
+
+        // 75: 100% (2/2) handles: 199 258
+        // Just 63 but for rrects & no clip
+        { LinearEffect(k0x188a0000__DISPLAY_P3__false__0x90a0000__Shader,
+                       create_hw_image_precompile_shader(),
+                       SkBlendMode::kSrcOver,
+                       /* paintColorIsOpaque= */ true,
+                       /* matrixColorFilter= */ false,
+                       /* dither= */ false,
+                       SkColorSpace::MakeSRGBLinear()),
+          DrawTypeFlags::kAnalyticRRect,
+          kCombo_RGBA_1D_4DS_SRGB  },
 
 #if defined(SK_VULKAN) && defined(SK_BUILD_FOR_ANDROID)
 
