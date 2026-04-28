@@ -171,6 +171,10 @@ void TessellateStrokesRenderStep::writeVertices(DrawWriter* dw,
 
             case SkPathVerb::kLine:
                 writer.writeLine(pts[0], pts[1]);
+                if (!SkScalarNearlyZero(pts[0].fX - pts[1].fX) ||
+                    !SkScalarNearlyZero(pts[0].fY - pts[1].fY)) {
+                    writer.writeLine(pts[0], pts[1]);
+                }
                 break;
 
             case SkPathVerb::kQuad:
