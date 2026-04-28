@@ -16,6 +16,24 @@
       "message": "A lot of red? Is this intentional?",
       "revId": "7efbd00d8a4d9d86a020a93c1aac09236f949f39",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a830764_192b2120",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-28T20:07:53Z",
+      "side": 1,
+      "message": "That\u0027s an infra issue, claiming CL is not mergeable, which I\u0027m not following as to why it\u0027s not mergeable (since it\u0027s not claiming there was a merge conflict) but they are requesting this land ASAP",
+      "parentUuid": "26945568_c2f38a39",
+      "revId": "7efbd00d8a4d9d86a020a93c1aac09236f949f39",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
