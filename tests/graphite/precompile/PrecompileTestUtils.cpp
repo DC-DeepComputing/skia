@@ -338,7 +338,7 @@ void PrecompileTest(skiatest::Reporter* reporter,
                     bool checkPipelineLabelCoverage) {
     using namespace skgpu::graphite;
 
-//    find_duplicates(labels);
+    find_duplicates(labels);
 
 #if defined(SK_VULKAN)
     // Use this call to map back from a HardwareImage sub-string to a VulkanYcbcrConversionInfo
