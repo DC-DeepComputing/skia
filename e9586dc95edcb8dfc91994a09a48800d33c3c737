@@ -16,6 +16,23 @@
       "message": "PTAL. Note, although I\u0027ve replicated the issue and confirmed that this patch fixes it, it also breaks strokerect.",
       "revId": "e9586dc95edcb8dfc91994a09a48800d33c3c737",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d5bc649_5908f758",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-28T19:53:53Z",
+      "side": 1,
+      "message": "You can disregard this. Upon closer inspection I think the actual cause of the bug is the path generation inside blink, which is producing these miter joins with no distance between them.",
+      "revId": "e9586dc95edcb8dfc91994a09a48800d33c3c737",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
