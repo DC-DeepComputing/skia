@@ -104,6 +104,24 @@
       "parentUuid": "9491697b_89e1bf4a",
       "revId": "4426f6bf6c6e83b5bc0a5e437e005f48f482a258",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5272e04_d27396d8",
+        "filename": "example/external_client/src/graphite_vulkan_capture.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 567,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-04-28T15:59:40Z",
+      "side": 1,
+      "message": "This doesn\u0027t exist yet and would need to be added.",
+      "parentUuid": "041f7ef5_10f626d5",
+      "revId": "4426f6bf6c6e83b5bc0a5e437e005f48f482a258",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
