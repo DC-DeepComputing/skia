@@ -46,6 +46,30 @@
       },
       "revId": "d9487443c8013d87b0489f7489f78de504bea57e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4fd993c_41446838",
+        "filename": "src/gpu/graphite/mtl/MtlGraphiteUtils.mm",
+        "patchSetId": 4
+      },
+      "lineNbr": 477,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-28T14:55:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "792b8ad9_99246b89",
+      "range": {
+        "startLine": 477,
+        "startChar": 4,
+        "endLine": 477,
+        "endChar": 63
+      },
+      "revId": "d9487443c8013d87b0489f7489f78de504bea57e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
