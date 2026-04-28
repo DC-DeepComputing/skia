@@ -22,6 +22,30 @@
       },
       "revId": "d9487443c8013d87b0489f7489f78de504bea57e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "792b8ad9_99246b89",
+        "filename": "src/gpu/graphite/mtl/MtlGraphiteUtils.mm",
+        "patchSetId": 4
+      },
+      "lineNbr": 477,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-28T14:55:22Z",
+      "side": 1,
+      "message": "Oops, that one should have been `x422` since it\u0027s the 10-bit format.",
+      "parentUuid": "1d6a6289_c695305f",
+      "range": {
+        "startLine": 477,
+        "startChar": 4,
+        "endLine": 477,
+        "endChar": 63
+      },
+      "revId": "d9487443c8013d87b0489f7489f78de504bea57e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
