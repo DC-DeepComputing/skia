@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "96688d32_3b4285cd",
+        "filename": "tests/graphite/ImageProviderTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 456,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-28T15:47:38Z",
+      "side": 1,
+      "message": "According to the format capabilities table at https://gpuweb.github.io/gpuweb/#plain-color-formats, RGBA16F is renderable but not multisampleable when in compat.\n\nThis meant we were returning a valid TextureInfo from this call to getDefaultSampledTextureInfo but then failing the path renderer strategy compatibility check inside Device::Make (defaulting to tessellation and needing to be able to create an MSAA attachment).\n\nThat revealed a limitation of the current universal path strategy system in the context of these internal surfaces that are only going to be drawn to once via something that definitely won\u0027t trigger MSAA.  I filed b/507427401 to track the goal of adding a lightweight internal device/drawcontext to avoid that, but for now I added MSAA sample count validation.\n\nThe unit test was written to return kUnknown_SkColorType when the alternate colors were not supported, but it never then chose to skip the tests, so I added that `continue` logic. I also added an additional 1010102 alternate if 16f isn\u0027t available.  On GLES, either of skipping the test or hitting 1010102 is sufficient to avoid failing, but I opted to have both to maximize devices being able to call into makeColorTypeAndColorSpace.",
+      "range": {
+        "startLine": 456,
+        "startChar": 0,
+        "endLine": 456,
+        "endChar": 87
+      },
+      "revId": "65b8a63e97eeaefbb033fb1955bdaff9ce23b1fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
