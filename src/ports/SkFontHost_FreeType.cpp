@@ -1137,7 +1137,7 @@ FT_Error SkScalerContext_FreeType::setupSize() {
 
 bool SkScalerContext_FreeType::getBoundsOfCurrentOutlineGlyph(FT_GlyphSlot glyph, SkRect* bounds) {
     if (glyph->format != FT_GLYPH_FORMAT_OUTLINE) {
-        SkASSERT(false);
+        SkDEBUGFAIL("unexpected format type");
         return false;
     }
     if (0 == glyph->outline.n_contours) {
@@ -1146,6 +1146,16 @@ bool SkScalerContext_FreeType::getBoundsOfCurrentOutlineGlyph(FT_GlyphSlot glyph
 
     FT_BBox bbox;
     FT_Outline_Get_CBox(&glyph->outline, &bbox);
+    if (bbox.xMin >= bbox.xMax || bbox.yMin >= bbox.yMax) {
+        return false;
+    }
+
+    // The FreeType docs say these will be 32 bits at most.
+    if (bbox.xMin < SK_MinS32 || bbox.yMin < SK_MinS32 ||
+        bbox.xMax > SK_MaxS32 || bbox.yMax > SK_MaxS32) {
+        return false;
+    }
+
     *bounds = SkRect::MakeLTRB(SkFDot6ToScalar(bbox.xMin), -SkFDot6ToScalar(bbox.yMax),
                                SkFDot6ToScalar(bbox.xMax), -SkFDot6ToScalar(bbox.yMin));
     return true;
