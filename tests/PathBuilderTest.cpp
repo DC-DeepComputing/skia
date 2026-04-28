@@ -1016,6 +1016,32 @@ DEF_TEST(SkPathBuilder_dump, reporter) {
     REPORTER_ASSERT(reporter, str.equals(expected));
 }
 
+DEF_TEST(SkPathBuilder_trailingmove_addpath, reporter) {
+    auto test_with_matrix = [&reporter](const SkMatrix& m) {
+        {
+            const SkPath src = SkPath();
+            SkPathBuilder b = SkPathBuilder().lineTo(10, 10).moveTo(20, 20);
+
+            const SkPath res = b.addPath(src, m).detach();
+            REPORTER_ASSERT(reporter, !res.isEmpty());
+            REPORTER_ASSERT(reporter, (res.points().back() == SkPoint{20, 20}));
+        }
+
+        {
+            const SkPath src = SkPathBuilder().lineTo(100, 100).detach();
+            SkPathBuilder b = SkPathBuilder().lineTo(10, 10).moveTo(20, 20);
+
+            const SkPath res = b.addPath(src, m).detach();
+            REPORTER_ASSERT(reporter, !res.isEmpty());
+            REPORTER_ASSERT(reporter, (res.points().back() != SkPoint{20, 20}));
+        }
+    };
+
+    test_with_matrix(SkMatrix::I());
+    // Perspective matrices trigger a different append code path.
+    test_with_matrix(SkMatrix::MakeAll(1,0,0, 0,1,0, .005f,.001f,1));
+}
+
 DEF_TEST(SkPathBuilder_b_463584612, reporter) {
     SkPathBuilder b;
 #ifdef SK_SUPPORT_LEGACY_PATHBUILDER_SETLASTPT

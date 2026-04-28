@@ -843,6 +843,13 @@ SkPathBuilder& SkPathBuilder::addPath(const SkPath& src, const SkMatrix& matrix,
     fConvexity = SkPathConvexity::kUnknown;
 
     if (SkPath::AddPathMode::kAppend_AddPathMode == mode && !matrix.hasPerspective()) {
+        // Avoid sequential moveTos.
+        if (!fVerbs.empty() && fVerbs.back() == SkPathVerb::kMove && !src.isEmpty()) {
+            SkASSERT(src.verbs().front() == SkPathVerb::kMove);
+            fVerbs.pop_back();
+            fPts.pop_back();
+        }
+
         const int lastMoveToIndex = SkPathPriv::FindLastMoveToIndex(src.verbs(), src.points().size());
         SkASSERT(lastMoveToIndex >= 0);
         fLastMoveIndex = lastMoveToIndex + this->countPoints();
