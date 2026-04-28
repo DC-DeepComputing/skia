@@ -278,7 +278,7 @@ skgpu::graphite::PaintOptions BlurFilterMix(RuntimeEffectManager& effectManager)
 
     PaintOptions paintOptions;
     paintOptions.setShaders({{ std::move(mix) }});
-    paintOptions.setBlendModes(SKSPAN_INIT_ONE( SkBlendMode::kSrc ));
+    paintOptions.setBlendModes({ SkBlendMode::kSrc, SkBlendMode::kSrcOver });
     return paintOptions;
 }
 
@@ -729,6 +729,15 @@ void VisitAndroidPrecompileSettings_Old(
                     /* type= */ shaders::LinearEffect::SkSLType::Shader,
             });
 
+    const auto kBT2020_HLG__UNKNOWN__false__UNKNOWN__Shader =
+            effectManager.getOrCreateLinearRuntimeEffect({
+                    /* inputDataspace= */ ui::Dataspace::BT2020_HLG,
+                    /* outputDataspace= */ ui::Dataspace::UNKNOWN,
+                    /* undoPremultipliedAlpha= */ false,
+                    /* fakeOutputDataspace= */ ui::Dataspace::UNKNOWN, // Default
+                    /* type= */ shaders::LinearEffect::SkSLType::Shader,
+            });
+
     const auto kV0_SRGB__V0_SRGB__true__UNKNOWN__Shader =
             effectManager.getOrCreateLinearRuntimeEffect({
                     /* inputDataspace= */ ui::Dataspace::V0_SRGB,
@@ -839,9 +848,9 @@ void VisitAndroidPrecompileSettings_Old(
           kRGBA_1_D,
           kWithAnalyticClip },
 
-        // 100% (2/2) handles 14 30
+        // 12: 100% (1/1) handles: 14
         { Builder().transparent().hwImg(kPremul).matrixCF().dither().srcOver(),
-          kRRectAndNonAARect,
+          DrawTypeFlags::kAnalyticRRect,
           kRGBA_1_D },
 
         // 100% (2/2) handles 68 (+1 matching synthetic)
@@ -918,7 +927,7 @@ void VisitAndroidPrecompileSettings_Old(
           DrawTypeFlags::kNonAAFillRect,
           kRGBA16F_1_D_Linear },
 
-        // 27: 100% (2/2) handles 49 99
+        // 27: 100% (4/4) handles: 49 99 201 333
         { BlurFilterMix(effectManager),
           kRRectAndNonAARect,
           kRGBA_1_D },
@@ -1105,7 +1114,7 @@ void VisitAndroidPrecompileSettings_Old(
           DrawTypeFlags::kNonAAFillRect,
           kRGBA_1_D },
 
-        // 100% (2/2) handles 137 138
+        // 52: 100% (2/2) handles 137 138
         { EdgeExtensionPassthroughSrcover(effectManager),
           DrawTypeFlags::kNonAAFillRect,
           kRGBA_1_D,
@@ -1181,7 +1190,7 @@ void VisitAndroidPrecompileSettings_Old(
           kRRectAndNonAARect,
           kRGBA_1_D_SRGB },
 
-        // 62: 100% (1/1) handles 176
+        // 62: 75% (3/4) handles: 176 209 259
         { LinearEffect(k0x188a0000__DISPLAY_P3__false__0x90a0000__Shader,
                        create_hw_image_precompile_shader(),
                        SkBlendMode::kSrcOver,
@@ -1190,9 +1199,10 @@ void VisitAndroidPrecompileSettings_Old(
                        /* dither= */ false,
                        SkColorSpace::MakeSRGBLinear()),
           DrawTypeFlags::kNonAAFillRect,
-          kRGBA_1_D_SRGB },
+          kCombo_RGBA_1D_4DS_SRGB,
+          kWithAnalyticClip},
 
-        // 63: 100% (1/1) handles 180
+        // 63: 75% (3/4) handles: 180 200 244
         // Just 62 w/ and opaque Paint color
         { LinearEffect(k0x188a0000__DISPLAY_P3__false__0x90a0000__Shader,
                        create_hw_image_precompile_shader(),
@@ -1202,7 +1212,8 @@ void VisitAndroidPrecompileSettings_Old(
                        /* dither= */ false,
                        SkColorSpace::MakeSRGBLinear()),
           DrawTypeFlags::kNonAAFillRect,
-          kRGBA_1_D_SRGB },
+          kCombo_RGBA_1D_4DS_SRGB,
+          kWithAnalyticClip },
 
         // 64: 75% (3/4) handles: 178 181 188
         // This is just 24 wrapped in a very specific LinearEffect
@@ -1321,6 +1332,140 @@ void VisitAndroidPrecompileSettings_Old(
         { GainMap(effectManager),
           DrawTypeFlags::kNonAAFillRect,
           kRGBA_1_D_Linear  },
+
+        // 75: 100% (2/2) handles: 199 258
+        // Just 63 but for rrects & no clip
+        { LinearEffect(k0x188a0000__DISPLAY_P3__false__0x90a0000__Shader,
+                       create_hw_image_precompile_shader(),
+                       SkBlendMode::kSrcOver,
+                       /* paintColorIsOpaque= */ true,
+                       /* matrixColorFilter= */ false,
+                       /* dither= */ false,
+                       SkColorSpace::MakeSRGBLinear()),
+          DrawTypeFlags::kAnalyticRRect,
+          kCombo_RGBA_1D_4DS_SRGB  },
+
+        // 76: 100% (2/2) handles: 203 253
+        // Just 63 but for rrects w/o a clip
+        { LinearEffect(k0x188a0000__DISPLAY_P3__false__0x90a0000__Shader,
+                       create_hw_image_precompile_shader(),
+                       SkBlendMode::kSrcOver,
+                       /* paintColorIsOpaque= */ false,
+                       /* matrixColorFilter= */ false,
+                       /* dither= */ false,
+                       SkColorSpace::MakeSRGBLinear()),
+          DrawTypeFlags::kAnalyticRRect,
+          kCombo_RGBA_1D_4DS_SRGB },
+
+        // 77: 100% (1/1) handles: 204
+        // Just 65 w/ a different LinearEffect and destination
+        { LinearEffect(kBT2020_HLG__UNKNOWN__false__UNKNOWN__Shader,
+                       PrecompileShaders::Color(),
+                       SkBlendMode::kSrc,
+                       /* paintColorIsOpaque= */ true,
+                       /* matrixColorFilter= */ false,
+                       /* dither= */ false,
+                       SkColorSpace::MakeSRGBLinear()),
+          DrawTypeFlags::kNonAAFillRect,
+          kRGBA_1_D },
+
+        // 78: 100% (1/1) handles: 268
+        // Just 65 w/ a different LinearEffect and destination
+        { LinearEffect(kBT2020_ITU_PQ__BT2020__false__UNKNOWN__Shader,
+                       PrecompileShaders::Color(),
+                       SkBlendMode::kSrc,
+                       /* paintColorIsOpaque= */ true,
+                       /* matrixColorFilter= */ false,
+                       /* dither= */ false,
+                       SkColorSpace::MakeSRGBLinear()),
+          DrawTypeFlags::kNonAAFillRect,
+          kRGBA_1_D },
+
+        // 79: 100% (1/1) handles: 297
+        // Just 65 w/ a different LinearEffect and destination
+        { LinearEffect(k0x188a0000__DISPLAY_P3__false__0x90a0000__Shader,
+                       PrecompileShaders::Color(),
+                       SkBlendMode::kSrc,
+                       /* paintColorIsOpaque= */ true,
+                       /* matrixColorFilter= */ false,
+                       /* dither= */ false,
+                       SkColorSpace::MakeSRGBLinear()),
+          DrawTypeFlags::kNonAAFillRect,
+          kRGBA_1_D },
+
+        // 80: 100% (1/1) handles: 205
+        // Just 52 but for RRects w/o clips
+        { EdgeExtensionPassthroughSrcover(effectManager),
+          DrawTypeFlags::kAnalyticRRect,
+          kRGBA_1_D, },
+
+        // 81: 100% (1/1) handles: 206
+        { LinearEffect(kUNKNOWN__SRGB__false__UNKNOWN__Shader,
+                       create_tone_map(effectManager),
+                       SkBlendMode::kSrcOver,
+                       /* paintColorIsOpaque= */ false,
+                       /* matrixColorFilter= */ false,
+                       /* dither= */ false,
+                       SkColorSpace::MakeSRGBLinear()),
+          DrawTypeFlags::kNonAAFillRect,
+          kRGBA_1_D },
+
+
+        // 82: 100% (2/2) handles: 30 207
+        // Just 12 for rects with and w/o clips
+        { Builder().transparent().hwImg(kPremul).matrixCF().dither().srcOver(),
+          DrawTypeFlags::kNonAAFillRect,
+          kRGBA_1_D,
+          kWithAnalyticClip},
+
+        // 83: 75% (3/4) handles: 211 231 244
+        { LinearEffect(k0x188a0000__V0_SRGB__true__0x9010000__Shader,
+                       create_hw_image_precompile_shader(),
+                       SkBlendMode::kSrcOver,
+                       /* paintColorIsOpaque= */ true,
+                       /* matrixColorFilter= */ false,
+                       /* dither= */ false,
+                       SkColorSpace::MakeSRGBLinear()),
+          DrawTypeFlags::kNonAAFillRect,
+          kCombo_RGBA_1D_4DS_SRGB,
+          kWithAnalyticClip },
+
+        // 84: 50% (1/2) handles: 208
+        { LinearEffect(k0x188a0000__V0_SRGB__true__0x9010000__Shader,
+                       create_hw_image_precompile_shader(),
+                       SkBlendMode::kSrcOver,
+                       /* paintColorIsOpaque= */ true,
+                       /* matrixColorFilter= */ false,
+                       /* dither= */ false,
+                       SkColorSpace::MakeSRGBLinear()),
+          DrawTypeFlags::kAnalyticRRect,
+          kCombo_RGBA_1D_4DS_SRGB  },
+
+
+        // 85: 75% (3/4) handles: 210 318 329
+        { LinearEffect(kV0_SRGB__V0_SRGB__true__UNKNOWN__Shader,
+                       create_hw_image_precompile_shader(),
+                       SkBlendMode::kSrcOver,
+                       /* paintColorIsOpaque= */ true,
+                       /* matrixColorFilter= */ false,
+                       /* dither= */ false,
+                       SkColorSpace::MakeSRGBLinear()),
+          DrawTypeFlags::kNonAAFillRect,
+          kCombo_RGBA_1D_4DS_SRGB,
+          kWithAnalyticClip },
+
+        // 86: 50% (1/2) handles: 243
+        { LinearEffect(kV0_SRGB__V0_SRGB__true__UNKNOWN__Shader,
+                       create_hw_image_precompile_shader(),
+                       SkBlendMode::kSrcOver,
+                       /* paintColorIsOpaque= */ true,
+                       /* matrixColorFilter= */ false,
+                       /* dither= */ false,
+                       SkColorSpace::MakeSRGBLinear()),
+          DrawTypeFlags::kAnalyticRRect,
+          kCombo_RGBA_1D_4DS_SRGB  },
+
+                 //$$
 
 #if defined(SK_VULKAN) && defined(SK_BUILD_FOR_ANDROID)
 
