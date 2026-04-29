@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4305bd10_9ee5278f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-29T09:49:19Z",
+      "side": 1,
+      "message": "It seems like some unit test or GM should\u0027ve caught these. Can we adapt the OP\u0027s demonstration images (from the e-mail)?",
+      "revId": "dbbe1ba2d1632072c692dc87ed019b703b06ad1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
