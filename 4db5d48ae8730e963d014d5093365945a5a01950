@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2585ed32_42d8c6ee",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-29T17:26:43Z",
+      "side": 1,
+      "message": "I lowered the ok-threshold since, on the Macs, the \"w/ msaa load\" Pipelines were gumming things up. Usually, I would add artificial labels but I don\u0027t think that is sustainable.",
+      "revId": "4db5d48ae8730e963d014d5093365945a5a01950",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
