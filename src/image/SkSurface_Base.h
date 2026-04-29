@@ -60,10 +60,7 @@ public:
         kRaster,
     };
 
-    // TODO(kjlubick) Android directly subclasses SkSurface_Base for tests, so we
-    // cannot make this a pure virtual. They seem to want a surface that is spy-able
-    // or mockable, so maybe we should provide something like that.
-    virtual Type type() const { return Type::kNull; }
+    virtual Type type() const = 0;
 
     // True for surfaces instantiated by pixels in CPU memory
     bool isRasterBacked() const { return this->type() == Type::kRaster; }
@@ -168,9 +165,7 @@ public:
     virtual bool onCharacterize(GrSurfaceCharacterization*) const { return false; }
     virtual bool onIsCompatible(const GrSurfaceCharacterization&) const { return false; }
 
-    // TODO: Remove this (make it pure virtual) after updating Android (which has a class derived
-    // from SkSurface_Base).
-    virtual sk_sp<const SkCapabilities> onCapabilities();
+    virtual sk_sp<const SkCapabilities> onCapabilities() = 0;
 
     virtual uint32_t getPixelStorageID() const = 0;
 

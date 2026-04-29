@@ -134,10 +134,6 @@ uint32_t SkSurface_Base::newGenerationID() {
     return nextID.fetch_add(1, std::memory_order_relaxed);
 }
 
-sk_sp<const SkCapabilities> SkSurface_Base::onCapabilities() {
-    return SkCapabilities::RasterBackend();
-}
-
 SkContentID SkSurface_Base::createCaptureBreakpoint() {
     if (this->baseRecorder()) {
         return this->baseRecorder()->createCaptureBreakpoint(this);
