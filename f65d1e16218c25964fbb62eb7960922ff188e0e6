@@ -22,6 +22,30 @@
       },
       "revId": "f65d1e16218c25964fbb62eb7960922ff188e0e6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b431d5c2_c37716c5",
+        "filename": "tests/graphite/GraphiteResourceCacheTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 948,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-04-29T14:27:46Z",
+      "side": 1,
+      "message": "Yeah, I will get to this eventually as backburner task - I agree and was concerned about the resource usage time being an issue. Thanks!",
+      "parentUuid": "6ad05312_5867bf20",
+      "range": {
+        "startLine": 948,
+        "startChar": 0,
+        "endLine": 948,
+        "endChar": 67
+      },
+      "revId": "f65d1e16218c25964fbb62eb7960922ff188e0e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
