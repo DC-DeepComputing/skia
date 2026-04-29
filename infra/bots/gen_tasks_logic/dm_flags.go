@@ -661,7 +661,7 @@ func (b *TaskBuilder) dmFlags(internalHardwareLabel string) {
 					// many other tasks are executing them.
 					skip(ALL, "test", ALL, "FilterResult")
 				}
-				if b.MatchGpu("GTX1660", "QuadroP400") {
+				if b.MatchGpu("GTX1660", "QuadroP400", "RTX3060") { // all nVidia GPUs
 					skip(ALL, "test", ALL, "SkSLReturnsValueOnEveryPathES3_Ganesh")
 				}
 			} else if b.MatchOs("Mac") {
