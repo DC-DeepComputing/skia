@@ -22,6 +22,48 @@
       },
       "revId": "e976e10a21d1d291e9bf2a1fcc199e150d65f30f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "43d1847e_b86e5175",
+        "filename": "tests/graphite/precompile/CombinationBuilderTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-29T13:44:17Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "fe71f43e_6802497c",
+      "range": {
+        "startLine": 106,
+        "startChar": 72,
+        "endLine": 106,
+        "endChar": 90
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "555bbd2e_a62c173c",
+          "description": "GET_AI_FIX_FOR_COMMENT prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tests/graphite/precompile/CombinationBuilderTest.cpp",
+              "range": {
+                "startLine": 106,
+                "startChar": 0,
+                "endLine": 107,
+                "endChar": 0
+              },
+              "replacement": "    // when adding to `precompileIDs` here, we can assert the total is `expectedNumOptions`.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "e976e10a21d1d291e9bf2a1fcc199e150d65f30f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
