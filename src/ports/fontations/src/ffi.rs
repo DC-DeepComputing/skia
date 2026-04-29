@@ -21,7 +21,9 @@ use crate::{
         variation_position, BridgeFontRef, BridgeMappingIndex, BridgeNormalizedCoords,
         BridgeOutlineCollection,
     },
-    bitmap::{bitmap_glyph, bitmap_metrics, has_bitmap_glyph, png_data, BridgeBitmapGlyph},
+    bitmap::{bitmap_glyph, bitmap_metrics, has_bitmap_glyph, png_data,
+             has_decoded_alpha, decoded_alpha_data, decoded_alpha_width, decoded_alpha_height,
+             BridgeBitmapGlyph},
     colr::{
         draw_colr_glyph, get_colrv1_clip_box, has_colrv0_glyph, has_colrv1_glyph, next_color_stop,
         num_color_stops, resolve_palette, BridgeColorStops,
@@ -301,6 +303,10 @@ pub mod ffi {
         ) -> Box<BridgeBitmapGlyph<'a>>;
         unsafe fn png_data<'a>(bitmap_glyph: &'a BridgeBitmapGlyph) -> &'a [u8];
         unsafe fn bitmap_metrics<'a>(bitmap_glyph: &'a BridgeBitmapGlyph) -> &'a BitmapMetrics;
+        fn has_decoded_alpha(bitmap_glyph: &BridgeBitmapGlyph) -> bool;
+        unsafe fn decoded_alpha_data<'a>(bitmap_glyph: &'a BridgeBitmapGlyph) -> &'a [u8];
+        fn decoded_alpha_width(bitmap_glyph: &BridgeBitmapGlyph) -> u32;
+        fn decoded_alpha_height(bitmap_glyph: &BridgeBitmapGlyph) -> u32;
 
         fn table_data(font_ref: &BridgeFontRef, tag: u32, offset: usize, data: &mut [u8]) -> usize;
         fn table_tags(font_ref: &BridgeFontRef, tags: &mut [u32]) -> u16;
