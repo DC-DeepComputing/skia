@@ -661,8 +661,8 @@ func (b *TaskBuilder) dmFlags(internalHardwareLabel string) {
 					// many other tasks are executing them.
 					skip(ALL, "test", ALL, "FilterResult")
 				}
-				if b.MatchGpu("GTX1660", "QuadroP400") {
-					skip(ALL, "test", ALL, "SkSLReturnsValueOnEveryPathES3_Ganesh")
+				if b.MatchGpu("GTX1660", "QuadroP400", "RTX3060") {  // all nVidia GPUs
+					skip("angle_gl_es3", "test", ALL, "SkSLReturnsValueOnEveryPathES3_Ganesh")
 				}
 			} else if b.MatchOs("Mac") {
 				configs = []string{"angle_mtl_es3"}
