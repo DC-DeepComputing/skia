@@ -16,6 +16,23 @@
       "message": "Hi, this adds Adreno 621 to the existing 6xx caps detection, and applies the MSAA workaround, fixing a crash in AtlasRenderTask::onExecute. Picked you as reviewers based on your recent authoring and reviewing in the area. Thanks!",
       "revId": "ad8a1117c46a32298fc4b619c2420f37a6ae5007",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab3ea1e2_cbbd4279",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-04-30T13:44:07Z",
+      "side": 1,
+      "message": "Needs second googler +1",
+      "revId": "ad8a1117c46a32298fc4b619c2420f37a6ae5007",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
