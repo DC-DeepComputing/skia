@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff9a1ee9_79f7da7c",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 526,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-30T18:52:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a06e7c4_56113b8c",
+      "range": {
+        "startLine": 525,
+        "startChar": 0,
+        "endLine": 526,
+        "endChar": 21
+      },
+      "revId": "5f66c6c67dbd768e2f5682dd7c705ae86dc26758",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4b2759ed_e69cb633",
@@ -37,6 +61,24 @@
       "writtenOn": "2026-04-30T13:03:48Z",
       "side": 1,
       "message": "Can this not be a SIMD call ?",
+      "revId": "5f66c6c67dbd768e2f5682dd7c705ae86dc26758",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c1263c6_0f693a70",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 730,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-30T18:52:58Z",
+      "side": 1,
+      "message": "Added comment about scalar performance as discussed.",
+      "parentUuid": "4b2759ed_e69cb633",
       "revId": "5f66c6c67dbd768e2f5682dd7c705ae86dc26758",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -64,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8cf9522_bbf071a1",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-30T18:52:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b2c2b970_559fac2b",
+      "range": {
+        "startLine": 169,
+        "startChar": 42,
+        "endLine": 169,
+        "endChar": 43
+      },
+      "revId": "5f66c6c67dbd768e2f5682dd7c705ae86dc26758",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "939f7c49_df07ea65",
@@ -77,6 +143,24 @@
       "writtenOn": "2026-04-30T13:03:48Z",
       "side": 1,
       "message": "startIdx",
+      "revId": "5f66c6c67dbd768e2f5682dd7c705ae86dc26758",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1081d259_60522485",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-04-30T18:52:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "939f7c49_df07ea65",
       "revId": "5f66c6c67dbd768e2f5682dd7c705ae86dc26758",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
