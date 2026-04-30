@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c82e928_0ebabda3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2026-04-30T14:27:42Z",
+      "side": 1,
+      "message": "LGTM from an Android PoV, but IDK if this might impact Chromium.",
+      "revId": "671cd5c30f083509b0d3a67f8577e718dabc1ecd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
