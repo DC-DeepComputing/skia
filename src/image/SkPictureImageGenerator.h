@@ -21,17 +21,23 @@ struct SkImageInfo;
 
 class SkPictureImageGenerator : public SkImageGenerator {
 public:
-    SkPictureImageGenerator(const SkImageInfo&, sk_sp<SkPicture>, const SkMatrix*,
-                            const SkPaint*, const SkSurfaceProps&);
+    SkPictureImageGenerator(const SkImageInfo&,
+                            sk_sp<SkPicture>,
+                            const SkMatrix*,
+                            const SkPaint*,
+                            uint32_t,
+                            const SkSurfaceProps&);
 
 protected:
     bool onGetPixels(const SkImageInfo&, void* pixels, size_t rowBytes, const Options&) override;
+    uint32_t getContentID() const { return contentID; }
 
 private:
-    sk_sp<SkPicture>        fPicture;
-    SkMatrix                fMatrix;
-    std::optional<SkPaint>  fPaint;
-    const SkSurfaceProps    fProps;
+    sk_sp<SkPicture> fPicture;
+    SkMatrix fMatrix;
+    std::optional<SkPaint> fPaint;
+    const SkSurfaceProps fProps;
+    uint32_t contentID;
 
     friend class SkImage_Picture;
 };

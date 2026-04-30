@@ -25,14 +25,14 @@
 #include <utility>
 
 namespace SkImageGenerators {
-std::unique_ptr<SkImageGenerator> MakeFromPicture(
-        const SkISize& size,
-        sk_sp<SkPicture> picture,
-        const SkMatrix* matrix,
-        const SkPaint* paint,
-        SkImages::BitDepth bitDepth,
-        sk_sp<SkColorSpace> colorSpace) {
-    return MakeFromPicture(size, picture, matrix, paint, bitDepth, colorSpace, {});
+std::unique_ptr<SkImageGenerator> MakeFromPicture(const SkISize& size,
+                                                  sk_sp<SkPicture> picture,
+                                                  const SkMatrix* matrix,
+                                                  const SkPaint* paint,
+                                                  SkImages::BitDepth bitDepth,
+                                                  sk_sp<SkColorSpace> colorSpace,
+                                                  uint32_t contentID) {
+    return MakeFromPicture(size, picture, matrix, paint, bitDepth, colorSpace, contentID, {});
 }
 
 std::unique_ptr<SkImageGenerator> MakeFromPicture(const SkISize& size,
@@ -41,6 +41,7 @@ std::unique_ptr<SkImageGenerator> MakeFromPicture(const SkISize& size,
                                                   const SkPaint* paint,
                                                   SkImages::BitDepth bitDepth,
                                                   sk_sp<SkColorSpace> colorSpace,
+                                                  uint32_t contentID,
                                                   SkSurfaceProps props) {
     if (!picture || !colorSpace || size.isEmpty()) {
         return nullptr;
@@ -54,19 +55,19 @@ std::unique_ptr<SkImageGenerator> MakeFromPicture(const SkISize& size,
     SkImageInfo info =
             SkImageInfo::Make(size, colorType, kPremul_SkAlphaType, std::move(colorSpace));
     return std::unique_ptr<SkImageGenerator>(
-        new SkPictureImageGenerator(info, std::move(picture), matrix, paint, props));
+        new SkPictureImageGenerator(info, std::move(picture), matrix, paint,contentID, props));
 }
-} // SkImageGenerators
+}  // namespace SkImageGenerators
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-SkPictureImageGenerator::SkPictureImageGenerator(const SkImageInfo& info, sk_sp<SkPicture> picture,
-                                                 const SkMatrix* matrix, const SkPaint* paint,
+SkPictureImageGenerator::SkPictureImageGenerator(const SkImageInfo& info,
+                                                 sk_sp<SkPicture> picture,
+                                                 const SkMatrix* matrix,
+                                                 const SkPaint* paint,
+                                                 uint32_t contentID,
                                                  const SkSurfaceProps& props)
-        : SkImageGenerator(info)
-        , fPicture(std::move(picture))
-        , fProps(props) {
-
+        : SkImageGenerator(info), fPicture(std::move(picture)), fProps(props), fContentID(contentID) {
     if (matrix) {
         fMatrix = *matrix;
     } else {

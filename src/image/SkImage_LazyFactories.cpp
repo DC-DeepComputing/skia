@@ -25,9 +25,16 @@ sk_sp<SkImage> DeferredFromPicture(sk_sp<SkPicture> picture,
                                    const SkMatrix* matrix,
                                    const SkPaint* paint,
                                    BitDepth bitDepth,
-                                   sk_sp<SkColorSpace> colorSpace) {
-    return SkImage_Picture::Make(std::move(picture), dimensions, matrix, paint, bitDepth,
-                                 std::move(colorSpace), {});
+                                   sk_sp<SkColorSpace> colorSpace,
+                                   uint32_t contentID) {
+    return SkImage_Picture::Make(std::move(picture),
+                                 dimensions,
+                                 matrix,
+                                 paint,
+                                 bitDepth,
+                                 std::move(colorSpace),
+                                 contentID,
+                                 {});
 }
 
 sk_sp<SkImage> DeferredFromPicture(sk_sp<SkPicture> picture,
@@ -36,9 +43,16 @@ sk_sp<SkImage> DeferredFromPicture(sk_sp<SkPicture> picture,
                                    const SkPaint* paint,
                                    BitDepth bitDepth,
                                    sk_sp<SkColorSpace> colorSpace,
+                                   uint32_t contentID,
                                    SkSurfaceProps props) {
-    return SkImage_Picture::Make(std::move(picture), dimensions, matrix, paint, bitDepth,
-                                 std::move(colorSpace), props);
+    return SkImage_Picture::Make(std::move(picture),
+                                 dimensions,
+                                 matrix,
+                                 paint,
+                                 bitDepth,
+                                 std::move(colorSpace),
+                                 contentID,
+                                 props);
 }
 
 }  // namespace SkImages

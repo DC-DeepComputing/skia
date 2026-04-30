@@ -148,13 +148,15 @@ SK_API sk_sp<SkImage> DeferredFromPicture(sk_sp<SkPicture> picture,
                                           const SkPaint* paint,
                                           BitDepth bitDepth,
                                           sk_sp<SkColorSpace> colorSpace,
+                                          uint32_t contentID,
                                           SkSurfaceProps props);
 SK_API sk_sp<SkImage> DeferredFromPicture(sk_sp<SkPicture> picture,
                                           const SkISize& dimensions,
                                           const SkMatrix* matrix,
                                           const SkPaint* paint,
                                           BitDepth bitDepth,
-                                          sk_sp<SkColorSpace> colorSpace);
+                                          sk_sp<SkColorSpace> colorSpace,
+                                          uint32_t contentID);
 
 /** Creates a CPU-backed SkImage from pixmap, copying the pixel data.
     As a result, pixmap pixels may be modified or deleted without affecting SkImage.

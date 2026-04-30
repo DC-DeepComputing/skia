@@ -36,6 +36,7 @@ std::unique_ptr<SkImageGenerator> MakeFromPicture(const SkISize&,
                                                   const SkPaint*,
                                                   SkImages::BitDepth,
                                                   sk_sp<SkColorSpace>,
+                                                  uint32_t,
                                                   SkSurfaceProps props);
 
 std::unique_ptr<SkImageGenerator> MakeFromPicture(const SkISize&,
@@ -43,6 +44,7 @@ std::unique_ptr<SkImageGenerator> MakeFromPicture(const SkISize&,
                                                   const SkMatrix*,
                                                   const SkPaint*,
                                                   SkImages::BitDepth,
+                                                  uint32_t,
                                                   sk_sp<SkColorSpace>);
 
 /**

@@ -29,9 +29,13 @@ namespace SkImages { enum class BitDepth; }
 
 class SkImage_Picture : public SkImage_Lazy {
 public:
-    static sk_sp<SkImage> Make(sk_sp<SkPicture> picture, const SkISize& dimensions,
-                               const SkMatrix* matrix, const SkPaint* paint,
-                               SkImages::BitDepth bitDepth, sk_sp<SkColorSpace> colorSpace,
+    static sk_sp<SkImage> Make(sk_sp<SkPicture> picture,
+                               const SkISize& dimensions,
+                               const SkMatrix* matrix,
+                               const SkPaint* paint,
+                               SkImages::BitDepth bitDepth,
+                               sk_sp<SkColorSpace> colorSpace,
+                               uint32_t contentID,
                                SkSurfaceProps props);
 
     explicit SkImage_Picture(Validator* validator) : SkImage_Lazy(validator) {}

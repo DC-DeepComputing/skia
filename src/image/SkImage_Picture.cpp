@@ -33,12 +33,16 @@
 class SkPaint;
 struct SkISize;
 
-sk_sp<SkImage> SkImage_Picture::Make(sk_sp<SkPicture> picture, const SkISize& dimensions,
-                                     const SkMatrix* matrix, const SkPaint* paint,
-                                     SkImages::BitDepth bitDepth, sk_sp<SkColorSpace> colorSpace,
+sk_sp<SkImage> SkImage_Picture::Make(sk_sp<SkPicture> picture,
+                                     const SkISize& dimensions,
+                                     const SkMatrix* matrix,
+                                     const SkPaint* paint,
+                                     SkImages::BitDepth bitDepth,
+                                     sk_sp<SkColorSpace> colorSpace,
+                                     uint32_t contentID,
                                      SkSurfaceProps props) {
     auto gen = SkImageGenerators::MakeFromPicture(dimensions, std::move(picture), matrix, paint,
-                                                  bitDepth, std::move(colorSpace), props);
+                                                  bitDepth, std::move(colorSpace), contentID, props);
 
     SkImage_Lazy::Validator validator(
             SharedGenerator::Make(std::move(gen)), nullptr, nullptr);
@@ -76,7 +80,7 @@ sk_sp<SkImage> SkImage_Picture::onMakeSubset(SkRecorder*,
 
     return SkImage_Picture::Make(pictureIG->fPicture, subset.size(),
                                  &matrix, SkOptAddressOrNull(pictureIG->fPaint),
-                                 bitDepth, this->refColorSpace(), pictureIG->fProps);
+                                 bitDepth, this->refColorSpace(), 0, pictureIG->fProps);
 }
 
 bool SkImage_Picture::getImageKeyValues(
