@@ -10,7 +10,6 @@
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPath.h"
 #include "include/private/base/SkTDArray.h"
-#include "src/base/SkVx.h"
 #include "src/core/SkGeometry.h"
 #include "src/gpu/graphite/sparse_strips/SparseStripsTypes.h"
 
@@ -161,14 +160,15 @@ private:
     void processPathsScalar(const SkPath& path, const SkMatrix& ctm, float width, float height,
                             Polyline* polyline);
 
-    void flattenQuadSimd();
+    void flattenQuadSimd(const SkPoint pts[3], Polyline* polyline);
     void flattenQuadScalar(const SkPoint pts[3], Polyline* polyline);
     uint32_t flattenCubicScalar(const SkPoint pts[4]);
 
-    void evalCubicsSimd();
+    void evalCubicsSimd(const SkPoint pts[4], uint32_t numQuads);
     void estimateLinesFromQuadSimd();
-    void outputLinesFromQuadSimd();
-    uint32_t flattenCubicSimd();
+    void outputLinesFromQuadSimd(uint32_t quadIdx, float x0, float dx, uint32_t numSegments,
+                                 uint32_t startIdx);
+    uint32_t flattenCubicSimd(const SkPoint pts[4]);
 
     CubicFlattenCtx fContext;
     SkAutoConicToQuads fConicToQuad;
