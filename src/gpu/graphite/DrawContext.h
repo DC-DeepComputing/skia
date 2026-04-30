@@ -88,12 +88,8 @@ public:
             const Insertion& latestInsertion);
 
     bool recordUpload(Recorder* recorder,
-                      const TextureProxyView& dstView,
-                      const SkColorInfo& srcColorInfo,
-                      const SkColorInfo& dstColorInfo,
                       const UploadSource& source,
-                      const SkIRect& dstRect,
-                      std::unique_ptr<ConditionalUploadContext>);
+                      std::unique_ptr<ConditionalUploadContext> = nullptr);
 
     // Add a Task that will be executed *before* any of the pending draws and uploads are
     // executed as part of the next flush().
