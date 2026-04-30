@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a06e7c4_56113b8c",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 526,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-30T13:03:48Z",
+      "side": 1,
+      "message": "Move out of the loop?",
+      "range": {
+        "startLine": 525,
+        "startChar": 0,
+        "endLine": 526,
+        "endChar": 21
+      },
+      "revId": "5f66c6c67dbd768e2f5682dd7c705ae86dc26758",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b2759ed_e69cb633",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 730,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-30T13:03:48Z",
+      "side": 1,
+      "message": "Can this not be a SIMD call ?",
+      "revId": "5f66c6c67dbd768e2f5682dd7c705ae86dc26758",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2c2b970_559fac2b",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-30T13:03:48Z",
+      "side": 1,
+      "message": "quadIndex ?",
+      "range": {
+        "startLine": 169,
+        "startChar": 42,
+        "endLine": 169,
+        "endChar": 43
+      },
+      "revId": "5f66c6c67dbd768e2f5682dd7c705ae86dc26758",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "939f7c49_df07ea65",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-04-30T13:03:48Z",
+      "side": 1,
+      "message": "startIdx",
+      "revId": "5f66c6c67dbd768e2f5682dd7c705ae86dc26758",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
