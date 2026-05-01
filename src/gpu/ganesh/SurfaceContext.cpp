@@ -26,6 +26,7 @@
 #include "include/private/base/SkTemplates.h"
 #include "include/private/base/SkTo.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
+#include "src/base/SkSafeMath.h"
 #include "src/core/SkColorSpaceXformSteps.h"
 #include "src/core/SkMipmap.h"
 #include "src/core/SkTraceEvent.h"
@@ -276,7 +277,11 @@ bool SurfaceContext::readPixels(GrDirectContext* dContext, GrPixmap dst, SkIPoin
                             this->colorInfo().refColorSpace(),
                             dst.dimensions());
         size_t tmpRB = tmpInfo.minRowBytes();
-        size_t size = tmpRB * tmpInfo.height();
+        SkSafeMath safe;
+        size_t size = safe.mul(tmpRB, tmpInfo.height());
+        if (!safe.ok()) {
+            return false;
+        }
         // Chrome MSAN bots require the data to be initialized (hence the ()).
         tmpPixels = std::make_unique<char[]>(size);
         tmp = {tmpInfo, tmpPixels.get(), tmpRB};
@@ -536,11 +541,16 @@ bool SurfaceContext::internalWritePixels(GrDirectContext* dContext,
     bool mustBeTight = !caps->writePixelsRowBytesSupport();
     size_t tmpSize = 0;
     if (mustBeTight || convertAll) {
+        SkSafeMath safe;
         for (int i = 0; i < numLevels; ++i) {
             if (convertAll || (mustBeTight && src[i].rowBytes() != src[i].info().minRowBytes())) {
-                tmpSize += src[i].info().makeColorType(allowedColorType).minRowBytes()*
-                           src[i].height();
+                size_t levelSize = safe.mul(src[i].info().makeColorType(allowedColorType).minRowBytes(),
+                                            src[i].height());
+                tmpSize = safe.add(tmpSize, levelSize);
             }
+        }
+        if (!safe.ok()) {
+            return false;
         }
     }
 
@@ -558,7 +568,12 @@ bool SurfaceContext::internalWritePixels(GrDirectContext* dContext,
             GrPixmap tmpPM(tmpInfo, tmp, tmpRB);
             SkAssertResult(GrConvertPixels(tmpPM, src[i], flip));
             srcLevels[i] = {tmpPM.addr(), tmpPM.rowBytes(), tmpData};
-            tmp = SkTAddOffset<void>(tmp, tmpRB*tmpPM.height());
+            SkSafeMath safe;
+            size_t levelSize = safe.mul(tmpRB, tmpPM.height());
+            if (!safe.ok()) {
+                return false;
+            }
+            tmp = SkTAddOffset<void>(tmp, levelSize);
         } else {
             srcLevels[i] = {src[i].addr(), src[i].rowBytes(), src[i].pixelStorage()};
             ownAllStorage &= src[i].ownsPixels();
