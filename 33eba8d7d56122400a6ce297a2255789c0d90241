@@ -74,6 +74,30 @@
       },
       "revId": "33eba8d7d56122400a6ce297a2255789c0d90241",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3113ac57_78d8cafe",
+        "filename": "src/gpu/ganesh/ops/AAHairLinePathRenderer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 691,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-05-01T15:06:59Z",
+      "side": 1,
+      "message": "Ignore that last part about fQuadCoord not being used. It is used in set_uv_quad, but offsetting vert by size of SkPoint.\n\nBut yeah given the above we do need to initialize more that just the klm values",
+      "parentUuid": "d3b896b4_215a9350",
+      "range": {
+        "startLine": 684,
+        "startChar": 0,
+        "endLine": 691,
+        "endChar": 0
+      },
+      "revId": "33eba8d7d56122400a6ce297a2255789c0d90241",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
