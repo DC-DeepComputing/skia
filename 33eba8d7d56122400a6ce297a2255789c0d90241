@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e917dec_72ad01d3",
+        "filename": "src/gpu/ganesh/ops/AAHairLinePathRenderer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 691,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-01T14:48:18Z",
+      "side": 1,
+      "message": "I think this leaves the rest of the union uninitialized? Maybe:\n```\nstatic void backfill_degenerate_bezier(BezierVertex** vert) {\n    memset(*vert, 0, kQuadNumVertices * sizeof(BezierVertex));\n    for (int i \u003d 0; i \u003c kQuadNumVertices; ++i) {\n        (*vert)[i].fPos.set(SK_ScalarMax, SK_ScalarMax);\n    }\n    *vert +\u003d kQuadNumVertices;\n}\n```",
+      "range": {
+        "startLine": 684,
+        "startChar": 0,
+        "endLine": 691,
+        "endChar": 0
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "d5df50df_ebeed5fc",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/ganesh/ops/AAHairLinePathRenderer.cpp",
+              "range": {
+                "startLine": 1,
+                "startChar": 0,
+                "endLine": 1,
+                "endChar": 0
+              },
+              "replacement": "    memset(*vert, 0, kQuadNumVertices * sizeof(BezierVertex));\n"
+            },
+            {
+              "path": "src/gpu/ganesh/ops/AAHairLinePathRenderer.cpp",
+              "range": {
+                "startLine": 687,
+                "startChar": 0,
+                "endLine": 688,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "33eba8d7d56122400a6ce297a2255789c0d90241",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
