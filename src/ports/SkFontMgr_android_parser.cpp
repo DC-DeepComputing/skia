@@ -28,6 +28,7 @@
 
 using namespace skia_private;
 
+#define MODERN_SYSTEM_FONTS_FILE "/system/etc/font_fallback.xml"
 #define LMP_SYSTEM_FONTS_FILE "/system/etc/fonts.xml"
 #define OLD_SYSTEM_FONTS_FILE "/system/etc/system_fonts.xml"
 #define FALLBACK_FONTS_FILE "/system/etc/fallback_fonts.xml"
@@ -596,6 +597,11 @@ static const TagHandler topLevelHandler = {
     /*tag*/[](FamilyData* self, const char* tag, const char** attributes) -> const TagHandler* {
         size_t len = strlen(tag);
         if (MEMEQ("familyset", tag, len)) {
+            // Force modern parsing for the auto-generated system config which may omit the explicit version tag.
+            if (self->fFilename && strcmp(self->fFilename, MODERN_SYSTEM_FONTS_FILE) == 0) {
+                self->fVersion = 21;
+                return &lmpParser::familySetHandler;
+            }
             // 'version' (non-negative integer) [default 0]
             for (size_t i = 0; ATTS_NON_NULL(attributes, i); i += 2) {
                 const char* name = attributes[i];
@@ -774,8 +780,17 @@ static int append_system_font_families(std::vector<std::unique_ptr<FontFamily>>&
                                        const SkString& basePath)
 {
     size_t initialCount = fontFamilies.size();
-    int version = parse_config_file(LMP_SYSTEM_FONTS_FILE, fontFamilies, basePath, false);
+    SkDebugf(SK_FONTMGR_ANDROID_PARSER_PREFIX "Attempting to parse modern config file: %s\n", MODERN_SYSTEM_FONTS_FILE);
+    int version = parse_config_file(MODERN_SYSTEM_FONTS_FILE, fontFamilies, basePath, false);
+    if (version >= 0 && fontFamilies.size() > initialCount) {
+        SkDebugf(SK_FONTMGR_ANDROID_PARSER_PREFIX "Successfully loaded %d modern system families.\n", (int)(fontFamilies.size() - initialCount));
+        return version;
+    }
+    
+    SkDebugf(SK_FONTMGR_ANDROID_PARSER_PREFIX "Modern config failed, falling back to LMP file: %s\n", LMP_SYSTEM_FONTS_FILE);
+    version = parse_config_file(LMP_SYSTEM_FONTS_FILE, fontFamilies, basePath, false);
     if (version < 0 || fontFamilies.size() == initialCount) {
+        SkDebugf(SK_FONTMGR_ANDROID_PARSER_PREFIX "LMP config failed, falling back to OLD file: %s\n", OLD_SYSTEM_FONTS_FILE);
         version = parse_config_file(OLD_SYSTEM_FONTS_FILE, fontFamilies, basePath, false);
     }
     return version;
