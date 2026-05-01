@@ -119,6 +119,7 @@ void SkTDStorage::reserve(int newCapacity) {
 
         fCapacity = expandedReserve;
         size_t newStorageSize = this->bytes(fCapacity);
+        SkASSERT_RELEASE(newStorageSize < static_cast<size_t>(INT_MAX));
         fStorage = static_cast<std::byte*>(sk_realloc_throw(fStorage, newStorageSize));
     }
 }

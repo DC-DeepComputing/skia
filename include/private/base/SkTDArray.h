@@ -76,7 +76,7 @@ public:
     }
 
 private:
-    size_t bytes(int n) const { return SkToSizeT(n * fSizeOfT); }
+    size_t bytes(int n) const { return SkToSizeT(n) * SkToSizeT(fSizeOfT); }
     void* address(int n) { return fStorage + this->bytes(n); }
 
     // Adds delta to fSize. Crash if outside [0, INT_MAX]
