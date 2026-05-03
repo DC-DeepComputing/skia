@@ -10,16 +10,14 @@
 #include "tests/Test.h"
 
 #include <cmath>
-#include <sstream>
-#include <vector>
 
 namespace skgpu::graphite {
 
 namespace {
 
-std::vector<Line> scale_lines(const std::vector<Line>& input, float scale) {
+SkTDArray<Line> scale_lines(const SkTDArray<Line>& input, float scale) {
     if (scale == 1.0f) return input;
-    std::vector<Line> scaled;
+    SkTDArray<Line> scaled;
     scaled.reserve(input.size());
     for (const auto& l : input) {
         scaled.push_back({{l.p0.fX * scale, l.p0.fY * scale}, {l.p1.fX * scale, l.p1.fY * scale}});
@@ -27,7 +25,7 @@ std::vector<Line> scale_lines(const std::vector<Line>& input, float scale) {
     return scaled;
 }
 
-Polyline make_polyline(const std::vector<Line>& lines) {
+Polyline make_polyline(const SkTDArray<Line>& lines) {
     Polyline p;
     for (const auto& l : lines) {
         p.appendPoint({l.p0.fX, l.p0.fY});
@@ -37,7 +35,7 @@ Polyline make_polyline(const std::vector<Line>& lines) {
     return p;
 }
 
-void build_polyline_and_mapping(const std::vector<Line>& lines,
+void build_polyline_and_mapping(const SkTDArray<Line>& lines,
                                 Polyline& outPolyline,
                                 std::vector<uint32_t>& outMapping) {
     outPolyline.reset();
@@ -54,14 +52,13 @@ void build_polyline_and_mapping(const std::vector<Line>& lines,
 template <uint16_t kTileWidth, uint16_t kTileHeight>
 void check_tiles_match(skiatest::Reporter* reporter,
                        Tiles<kTileWidth, kTileHeight>& tiles,
-                       const std::vector<Line>& rawLines,
+                       const SkTDArray<Line>& rawLines,
                        const SkTDArray<Tile>& expected,
                        const char* testName,
                        float scale) {
-
     Polyline polyline;
     std::vector<uint32_t> expectedToActualIdx;
-    std::vector<Line> lines = scale_lines(rawLines, scale);
+    SkTDArray<Line> lines = scale_lines(rawLines, scale);
     build_polyline_and_mapping(lines, polyline, expectedToActualIdx);
 
     uint16_t kScaledDim = static_cast<uint16_t>(100.0f * scale);
@@ -76,7 +73,7 @@ void check_tiles_match(skiatest::Reporter* reporter,
         dump.appendf("\n--- [%s] TEST CASE DUMP ---\n", testName);
 
         dump.append("Lines:\n{\n");
-        for (size_t i = 0; i < rawLines.size(); ++i) {
+        for (int32_t i = 0; i < rawLines.size(); ++i) {
             const auto& l = rawLines[i];
             dump.appendf("    {{%gf, %gf}, {%gf, %gf}}%s\n",
                          l.p0.fX,
@@ -87,37 +84,36 @@ void check_tiles_match(skiatest::Reporter* reporter,
         }
         dump.append("}\n\n");
 
-        auto dumpTiles =
-                [&](const SkTDArray<Tile>& tileArray, const char* label, bool isActual) {
-                    dump.appendf("%s:\n", label);
-                    for (int32_t i = 0; i < tileArray.size(); ++i) {
-                        const auto& t = tileArray[i];
-                        uint32_t rawLine = t.packedWindingLineIdx >> Tile::INT_MASK_SHIFT;
-                        uint32_t mask = t.packedWindingLineIdx & Tile::INTERSECTION_MASK;
+        auto dumpTiles = [&](const SkTDArray<Tile>& tileArray, const char* label, bool isActual) {
+            dump.appendf("%s:\n", label);
+            for (int32_t i = 0; i < tileArray.size(); ++i) {
+                const auto& t = tileArray[i];
+                uint32_t rawLine = t.packedWindingLineIdx >> Tile::INT_MASK_SHIFT;
+                uint32_t mask = t.packedWindingLineIdx & Tile::INTERSECTION_MASK;
 
-                        uint32_t logicalLine = rawLine;
-                        if (isActual) {
-                            for (size_t j = 0; j < expectedToActualIdx.size(); ++j) {
-                                if (expectedToActualIdx[j] == rawLine) {
-                                    logicalLine = static_cast<uint32_t>(j);
-                                    break;
-                                }
-                            }
+                uint32_t logicalLine = rawLine;
+                if (isActual) {
+                    for (size_t j = 0; j < expectedToActualIdx.size(); ++j) {
+                        if (expectedToActualIdx[j] == rawLine) {
+                            logicalLine = static_cast<uint32_t>(j);
+                            break;
                         }
-
-                        std::string maskStr = IntersectionBits::maskToString(mask);
-                        if (maskStr.empty()) {
-                            maskStr = "0";
-                        }
-
-                        dump.appendf("    Tile (%u,%u) LineId %u IntersectionMask : %s\n",
-                                     t.x,
-                                     t.y,
-                                     logicalLine,
-                                     maskStr.c_str());
                     }
-                    dump.append("\n");
-                };
+                }
+
+                std::string maskStr = IntersectionBits::maskToString(mask);
+                if (maskStr.empty()) {
+                    maskStr = "0";
+                }
+
+                dump.appendf("    Tile (%u,%u) LineId %u IntersectionMask : %s\n",
+                             t.x,
+                             t.y,
+                             logicalLine,
+                             maskStr.c_str());
+            }
+            dump.append("\n");
+        };
 
         dumpTiles(expected, "Expected", false);
         dumpTiles(actual, "Actual", true);
@@ -208,22 +204,21 @@ void check_sorted(skiatest::Reporter* reporter, const SkTDArray<Tile>& buf) {
 
 }  // namespace
 
-template <uint16_t kTileWidth, uint16_t kTileHeight>
-class TileTestRunner : IntersectionBits {
+template <uint16_t kTileWidth, uint16_t kTileHeight> class TileTestRunner : IntersectionBits {
 public:
     using TilesType = Tiles<kTileWidth, kTileHeight>;
 
     static_assert(kTileWidth == kTileHeight);  // only support square tiles for now
-    static constexpr float    kScale        = static_cast<float>(kTileWidth) / 4.0f;
-    static constexpr float    kUnscaledDim  = 100.0f;
-    static constexpr uint16_t kScaledDim    = static_cast<uint16_t>(kUnscaledDim * kScale);
-    static constexpr float    kScaledDimF   = static_cast<float>(kScaledDim);
+    static constexpr float kScale = static_cast<float>(kTileWidth) / 4.0f;
+    static constexpr float kUnscaledDim = 100.0f;
+    static constexpr uint16_t kScaledDim = static_cast<uint16_t>(kUnscaledDim * kScale);
+    static constexpr float kScaledDimF = static_cast<float>(kScaledDim);
 
     static void runAll(skiatest::Reporter* reporter) {
         TilesType tiles;
 
         {
-            std::vector<Line> lines = {
+            SkTDArray<Line> lines = {
                     {{1.0f, -7.0f}, {3.0f, -1.0f}},
                     {{1.0f, -11.0f}, {3.0f, -1.0f}},
                     {{kUnscaledDim + 1.0f, 50.0f}, {kUnscaledDim + 3.0f, 70.0f}},
@@ -235,7 +230,7 @@ public:
         }
 
         {
-            std::vector<Line> lines = {
+            SkTDArray<Line> lines = {
                     {{-2.0f, -3.0f}, {2.0f, 1.0f}},
                     {{6.0f, -1.0f}, {5.0f, 2.0f}},
                     {{9.0f, -10.0f}, {10.0f, 3.0f}},
@@ -252,7 +247,7 @@ public:
         }
 
         {
-            std::vector<Line> lines = {
+            SkTDArray<Line> lines = {
                     {{5.0f, kUnscaledDim + 3.0f}, {6.0f, kUnscaledDim - 2.0f}},
                     {{10.0f, kUnscaledDim + 1.0f}, {9.0f, kUnscaledDim - 1.0f}},
                     {{2.0f, kUnscaledDim - 2.0f}, {3.0f, kUnscaledDim + 3.0f}},
@@ -267,7 +262,7 @@ public:
         }
 
         {
-            std::vector<Line> lines = {
+            SkTDArray<Line> lines = {
                     {{1.0f, -5.0f}, {6.0f, 7.0f}},
                     {{2.5f, -10.0f}, {3.5f, 6.0f}},
             };
@@ -283,7 +278,7 @@ public:
         }
 
         {
-            std::vector<Line> lines = {
+            SkTDArray<Line> lines = {
                     {{12.0f, kUnscaledDim + 10.0f}, {2.0f, 94.0f}},
                     {{1.5f, kUnscaledDim + 5.0f}, {3.5f, 94.0f}},
             };
@@ -299,7 +294,7 @@ public:
         }
 
         {
-            std::vector<Line> lines = {
+            SkTDArray<Line> lines = {
                     {{97.0f, 1.0f}, {kUnscaledDim + 1.0f, 2.0f}},
                     {{93.0f, 1.0f}, {kUnscaledDim + 5.0f, 2.0f}},
             };
@@ -313,7 +308,7 @@ public:
         }
 
         {
-            std::vector<Line> lines = {
+            SkTDArray<Line> lines = {
                     {{-5.0f, 1.0f}, {1.0f, 2.0f}},
                     {{-5.0f, 1.0f}, {5.0f, 2.0f}},
                     {{-5.0f, 1.0f}, {13.0f, 9.0f}},
@@ -334,20 +329,19 @@ public:
         }
 
         {
-            std::vector<Line> lines = {{{10.0f, -5.0f}, {90.0f, -5.0f}}};
+            SkTDArray<Line> lines = {{{10.0f, -5.0f}, {90.0f, -5.0f}}};
             check_tiles_match<kTileWidth, kTileHeight>(
                     reporter, tiles, lines, {}, "HorizontalLineAboveViewport", kScale);
         }
 
         {
-            std::vector<Line> lines = {
-                    {{10.0f, kUnscaledDim + 5.0f}, {90.0f, kUnscaledDim + 5.0f}}};
+            SkTDArray<Line> lines = {{{10.0f, kUnscaledDim + 5.0f}, {90.0f, kUnscaledDim + 5.0f}}};
             check_tiles_match<kTileWidth, kTileHeight>(
                     reporter, tiles, lines, {}, "HorizontalLineBelowViewport", kScale);
         }
 
         {
-            std::vector<Line> lines = {{{-10.0f, 10.0f}, {10.0f, 10.0f}}};
+            SkTDArray<Line> lines = {{{-10.0f, 10.0f}, {10.0f, 10.0f}}};
             SkTDArray<Tile> expected = {
                     Tile(0, 2, 0, L | R),
                     Tile(1, 2, 0, L | R),
@@ -358,15 +352,18 @@ public:
         }
 
         {
-            std::vector<Line> lines = {
-                    {{kUnscaledDim - 5.0f, 10.0f}, {kUnscaledDim + 5.0f, 10.0f}}};
+            SkTDArray<Line> lines = {{{kUnscaledDim - 5.0f, 10.0f}, {kUnscaledDim + 5.0f, 10.0f}}};
             SkTDArray<Tile> expected = {Tile(23, 2, 0, R), Tile(24, 2, 0, L | R)};
-            check_tiles_match<kTileWidth, kTileHeight>(
-                    reporter, tiles, lines, expected, "HorizontalLineCrossingRightViewport", kScale);
+            check_tiles_match<kTileWidth, kTileHeight>(reporter,
+                                                       tiles,
+                                                       lines,
+                                                       expected,
+                                                       "HorizontalLineCrossingRightViewport",
+                                                       kScale);
         }
 
         {
-            std::vector<Line> lines = {
+            SkTDArray<Line> lines = {
                     {{1.0f, -5.0f}, {1.0f, -1.0f}},
                     {{1.0f, kUnscaledDim + 1.0f}, {1.0f, kUnscaledDim + 5.0f}},
             };
@@ -375,7 +372,7 @@ public:
         }
 
         {
-            std::vector<Line> lines = {
+            SkTDArray<Line> lines = {
                     {{1.0f, -7.0f}, {1.0f, 3.0f}},
                     {{1.0f, -7.0f}, {1.0f, 7.0f}},
                     {{1.0f, -7.0f}, {1.0f, 8.0f}},
@@ -392,7 +389,7 @@ public:
         }
 
         {
-            std::vector<Line> lines = {
+            SkTDArray<Line> lines = {
                     {{1.0f, kUnscaledDim - 1.0f}, {1.0f, kUnscaledDim + 5.0f}},
                     {{1.0f, kUnscaledDim - 5.0f}, {1.0f, kUnscaledDim + 5.0f}},
             };
@@ -406,14 +403,14 @@ public:
         }
 
         {
-            std::vector<Line> lines = {{{-1.0f, 2.0f}, {2.0f, -1.0f}}};
+            SkTDArray<Line> lines = {{{-1.0f, 2.0f}, {2.0f, -1.0f}}};
             SkTDArray<Tile> expected = {Tile(0, 0, 0, W | L | T)};
             check_tiles_match<kTileWidth, kTileHeight>(
                     reporter, tiles, lines, expected, "ClipTopLeftCorner", kScale);
         }
         {
-            std::vector<Line> lines = {{{kUnscaledDim + 1.0f, kUnscaledDim - 2.0f},
-                                        {kUnscaledDim - 2.0f, kUnscaledDim + 1.0f}}};
+            SkTDArray<Line> lines = {{{kUnscaledDim + 1.0f, kUnscaledDim - 2.0f},
+                                      {kUnscaledDim - 2.0f, kUnscaledDim + 1.0f}}};
             SkTDArray<Tile> expected = {Tile(24, 24, 0, R | B)};
             check_tiles_match<kTileWidth, kTileHeight>(
                     reporter, tiles, lines, expected, "ClipBottomRightCorner", kScale);
@@ -820,7 +817,7 @@ public:
         }
 
         {
-            std::vector<Line> lines = {
+            SkTDArray<Line> lines = {
                     {{22.0f * kScale, 552.0f * kScale}, {224.0f * kScale, 388.0f * kScale}}};
             tiles.reset();
             tiles.makeTilesMSAA(
