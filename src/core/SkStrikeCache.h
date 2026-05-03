@@ -33,7 +33,7 @@ struct SkFontMetrics;
 #endif
 
 #ifndef SK_DEFAULT_FONT_CACHE_LIMIT
-    #define SK_DEFAULT_FONT_CACHE_LIMIT     (2 * 1024 * 1024)
+    #define SK_DEFAULT_FONT_CACHE_LIMIT     (16 * 1024 * 1024)
 #endif
 
 ///////////////////////////////////////////////////////////////////////////////
