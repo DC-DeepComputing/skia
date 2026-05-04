@@ -22,6 +22,30 @@
       },
       "revId": "b93bec0c8811b25fbd400b360e9e27b867f9c19a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b0b667e_34e1ea8b",
+        "filename": "src/gpu/ganesh/SurfaceContext.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1369,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-05-04T16:13:33Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "9b5ee881_dd1a9ff6",
+      "range": {
+        "startLine": 1369,
+        "startChar": 4,
+        "endLine": 1369,
+        "endChar": 15
+      },
+      "revId": "b93bec0c8811b25fbd400b360e9e27b867f9c19a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
