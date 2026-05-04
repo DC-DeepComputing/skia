@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b5ee881_dd1a9ff6",
+        "filename": "src/gpu/ganesh/SurfaceContext.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1369,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-05-04T16:06:24Z",
+      "side": 1,
+      "message": "note, I also added this to make transferPixels also safe",
+      "range": {
+        "startLine": 1369,
+        "startChar": 4,
+        "endLine": 1369,
+        "endChar": 15
+      },
+      "revId": "b93bec0c8811b25fbd400b360e9e27b867f9c19a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
