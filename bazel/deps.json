@@ -3,7 +3,7 @@
   "direct": [
     {
       "build_file": "//bazel/external/dawn:BUILD.bazel",
-      "commit": "b64fc1768c2d857a80ceb59d47051cf0bab4f03e",
+      "commit": "7bd3e6712cde5f69b2053839ab949313e194a57c",
       "name": "dawn",
       "patch_args": [
         "-p1"
