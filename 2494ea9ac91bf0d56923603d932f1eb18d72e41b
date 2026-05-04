@@ -22,6 +22,30 @@
       },
       "revId": "2494ea9ac91bf0d56923603d932f1eb18d72e41b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e35c27a_77b8ee37",
+        "filename": "tests/SkRuntimeEffectTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1850,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-05-04T17:19:43Z",
+      "side": 1,
+      "message": "When I tried to compile this via skslc, it failed because blend_src_over had a conflicting name. So that\u0027s what I looked into before deciding to stop.",
+      "parentUuid": "901f90b1_84936bab",
+      "range": {
+        "startLine": 1850,
+        "startChar": 0,
+        "endLine": 1850,
+        "endChar": 86
+      },
+      "revId": "2494ea9ac91bf0d56923603d932f1eb18d72e41b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
