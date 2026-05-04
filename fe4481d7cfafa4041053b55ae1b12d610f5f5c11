@@ -39,6 +39,30 @@
       },
       "revId": "fe4481d7cfafa4041053b55ae1b12d610f5f5c11",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2205f81_f15c6d57",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-05-04T20:21:26Z",
+      "side": 1,
+      "message": "It\u0027s part of the legacy API docs, not sure if required by any particular spec.\n\nI don\u0027t have a strong opinion on whether the behavior itself makes sense, but a) it\u0027s what we used to do before (so possibly expected by clients), and b) it happens to filter out degenerate cases.\n\nI guess we could technically filter out degenerates without conversion, but that\u0027s kind of odd in SkPathBuilder because we don\u0027t validate/filter any other inputs at this level.  If we decide we don\u0027t want to the legacy non-finite behavior it would make more sense to push the validation down to SkPathData creation time, similar to the other input checks - but that\u0027s potentially even more disruptive for existing clients (empty path result for any non-finite weight).",
+      "parentUuid": "579441e7_6661583a",
+      "range": {
+        "startLine": 215,
+        "startChar": 6,
+        "endLine": 215,
+        "endChar": 10
+      },
+      "revId": "fe4481d7cfafa4041053b55ae1b12d610f5f5c11",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
