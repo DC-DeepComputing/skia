@@ -138,4 +138,6 @@
 // #define SKVX_DISABLE_SIMD
 // #define SKRP_CPU_SCALAR
 
+#define SK_AVOID_SLOW_RASTER_PIPELINE_BLURS
+
 #endif

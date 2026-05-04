@@ -25,6 +25,7 @@
 #include "include/core/SkSize.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkTypes.h"
+#include "include/effects/SkImageFilters.h"
 #include "include/effects/SkPerlinNoiseShader.h"
 #include "include/gpu/GpuTypes.h"
 #include "include/private/base/SkTPin.h"
@@ -666,3 +667,122 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(BlurPointCircle,
 }
 
 #endif // SK_GRAPHITE
+namespace {
+constexpr int kCanvasSize = 64;
+constexpr int kMaxChainDepth = 16;
+
+// Minimal port of FuzzedDataProvider — consumes from the BACK of the
+// buffer (matches Chromium's third_party/compiler-rt FuzzedDataProvider.h).
+class TinyFDP {
+ public:
+  TinyFDP(const uint8_t* data, size_t size) : data_(data), remaining_(size) {}
+  size_t remaining_bytes() const { return remaining_; }
+  template <typename T>
+  T ConsumeIntegralInRange(T min, T max) {
+    uint64_t range = static_cast<uint64_t>(max) - static_cast<uint64_t>(min);
+    uint64_t result = 0;
+    size_t offset = 0;
+    while (offset < sizeof(T) * 8 && (range >> offset) > 0 && remaining_ != 0) {
+      --remaining_;
+      result = (result << 8) | data_[remaining_];
+      offset += 8;
+    }
+    if (range != UINT64_MAX) result = result % (range + 1);
+    return static_cast<T>(static_cast<uint64_t>(min) + result);
+  }
+  template <typename T> T ConsumeIntegral() {
+    return ConsumeIntegralInRange<T>(0, static_cast<T>(~T{0}));
+  }
+  float ConsumeProbabilityFloat() {
+    uint32_t v = ConsumeIntegral<uint32_t>();
+    return static_cast<float>(v) / static_cast<float>(UINT32_MAX);
+  }
+  float ConsumeFloatingPointInRange(float min, float max) {
+    return min + (max - min) * ConsumeProbabilityFloat();
+  }
+ private:
+  const uint8_t* data_;
+  size_t remaining_;
+};
+
+sk_sp<SkImageFilter> MakeRandomFilter(TinyFDP& fdp, int depth) {
+  if (depth >= kMaxChainDepth || fdp.remaining_bytes() < 4) return nullptr;
+  uint8_t filter_type = fdp.ConsumeIntegral<uint8_t>();
+  switch (filter_type % 8) {
+    case 0: {
+      // Blur
+      float sx = fdp.ConsumeFloatingPointInRange(0.0f, 100.0f);
+      float sy = fdp.ConsumeFloatingPointInRange(0.0f, 100.0f);
+      return SkImageFilters::Blur(sx, sy, MakeRandomFilter(fdp, depth + 1));
+    }
+    case 1: {
+      // Compose
+      auto outer = MakeRandomFilter(fdp, depth + 1);
+      auto inner = MakeRandomFilter(fdp, depth + 1);
+      return SkImageFilters::Compose(std::move(outer), std::move(inner));
+    }
+    case 2: {
+      // Offset
+      float dx = fdp.ConsumeFloatingPointInRange(-100.0f, 100.0f);
+      float dy = fdp.ConsumeFloatingPointInRange(-100.0f, 100.0f);
+      return SkImageFilters::Offset(dx, dy, MakeRandomFilter(fdp, depth + 1));
+    }
+    case 3: {
+      // DropShadow
+      float dx = fdp.ConsumeFloatingPointInRange(-50.0f, 50.0f);
+      float dy = fdp.ConsumeFloatingPointInRange(-50.0f, 50.0f);
+      float sx = fdp.ConsumeFloatingPointInRange(0.0f, 50.0f);
+      float sy = fdp.ConsumeFloatingPointInRange(0.0f, 50.0f);
+      return SkImageFilters::DropShadow(dx, dy, sx, sy, SK_ColorBLACK, MakeRandomFilter(fdp, depth + 1));
+    }
+    case 4: {
+      // Crop
+      float l = fdp.ConsumeFloatingPointInRange(-100.0f, 100.0f);
+      float t = fdp.ConsumeFloatingPointInRange(-100.0f, 100.0f);
+      float r = fdp.ConsumeFloatingPointInRange(-100.0f, 100.0f);
+      float b = fdp.ConsumeFloatingPointInRange(-100.0f, 100.0f);
+      return SkImageFilters::Crop(SkRect::MakeLTRB(l, t, r, b), MakeRandomFilter(fdp, depth + 1));
+    }
+    case 5: {
+      // Merge (2 inputs)
+      auto first = MakeRandomFilter(fdp, depth + 1);
+      auto second = MakeRandomFilter(fdp, depth + 1);
+      sk_sp<SkImageFilter> inputs[] = {std::move(first), std::move(second)};
+      return SkImageFilters::Merge(inputs, 2);
+    }
+    case 6: {
+      // MatrixTransform
+      SkMatrix matrix;
+      float values[9];
+      for (int i = 0; i < 9; i++) {
+        values[i] = fdp.ConsumeFloatingPointInRange(-10.0f, 10.0f);
+      }
+      matrix.set9(values);
+      return SkImageFilters::MatrixTransform(matrix, SkSamplingOptions(), MakeRandomFilter(fdp, depth + 1));
+    }
+    case 7: {
+      // Empty (null filter)
+      return SkImageFilters::Empty();
+    }
+    default: return nullptr;
+  }
+}
+}  // namespace
+
+DEF_TEST(blur_b508075339, reporter) {
+    const uint8_t poc[] = {
+    0xff, 0x00, 0xfb, 0xfe, 0x01, 0x2c, 0x92, 0x49,
+    0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x00,
+    0x00,
+    };
+    TinyFDP fdp(poc, sizeof(poc));
+    sk_sp<SkImageFilter> filter = MakeRandomFilter(fdp, 0);
+    REPORTER_ASSERT(reporter, filter);
+
+    auto surface = SkSurfaces::Raster(SkImageInfo::MakeN32Premul(kCanvasSize, kCanvasSize));
+    REPORTER_ASSERT(reporter, surface);
+    SkCanvas* canvas = surface->getCanvas();
+    SkPaint paint;
+    paint.setImageFilter(std::move(filter));
+    canvas->drawRect(SkRect::MakeWH(kCanvasSize, kCanvasSize), paint);
+}
