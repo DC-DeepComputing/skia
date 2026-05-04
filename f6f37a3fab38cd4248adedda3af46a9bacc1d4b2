@@ -33,6 +33,23 @@
       "message": "Hi Ben and Dominik, here is the Skia change requested in https://chromium-review.googlesource.com/c/chromium/src/+/7747693. Please take a look at both changes and let me know if you have any suggestions.",
       "revId": "f6f37a3fab38cd4248adedda3af46a9bacc1d4b2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "06dbc1d0_24c2e1e6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2026-05-04T08:50:30Z",
+      "side": 1,
+      "message": "It looks to me like what we discussed as an option in the CL you referenced, non owner LGTM from my side, but I am not a Skia owner.",
+      "revId": "f6f37a3fab38cd4248adedda3af46a9bacc1d4b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
