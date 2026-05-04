@@ -22,6 +22,30 @@
       },
       "revId": "84e97950eb63070a9cd36582459366c554276df3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d788feb9_e6981f56",
+        "filename": "src/gpu/ganesh/SurfaceContext.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 575,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-05-04T15:02:28Z",
+      "side": 1,
+      "message": "but we may have not actually calculated tmpSize, right?",
+      "parentUuid": "4ab5c363_9beeaa6f",
+      "range": {
+        "startLine": 571,
+        "startChar": 0,
+        "endLine": 575,
+        "endChar": 13
+      },
+      "revId": "84e97950eb63070a9cd36582459366c554276df3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
