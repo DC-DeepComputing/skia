@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3dc3881_1680ff4a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-05-04T14:41:40Z",
+      "side": 1,
+      "message": "This didn\u0027t actually generate new images (gold seems confused in its report link on the CL), and the canary red seems to be a windows compile flake in chrome.",
+      "revId": "bd6991175b5a4407eb5967be7c6dc81c9b4ae58f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
