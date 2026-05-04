@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "98940eb3_eae5596c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-05-04T17:58:56Z",
+      "side": 1,
+      "message": "My first thought was to add validation somewhere in the SkPathData instantiation logic, similar to how we handle points validation.  But since we have this documented behavior (which was likely lost with the SkPathBuilder migration), I guess it makes sense to handle in the builder.",
+      "revId": "fe4481d7cfafa4041053b55ae1b12d610f5f5c11",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
