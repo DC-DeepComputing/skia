@@ -941,3 +941,4 @@ fn new_writer(
 fn finish_encoding(stream_writer: Box<StreamWriter>) -> ffi::EncodingResult {
     stream_writer.0.finish().as_ref().err().into()
 }
+// TODO(kjlubick)
