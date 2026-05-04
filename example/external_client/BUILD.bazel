@@ -233,6 +233,20 @@ cc_binary(
     ],
 )
 
+cc_binary(
+    name = "use_graphite_vulkan_capture",
+    srcs = ["src/graphite_vulkan_capture.cpp"],
+    linkopts = [
+        "-lpthread",
+        "-ldl",
+    ],
+    deps = [
+        "@skia//:core",
+        "@skia//:graphite_native_vulkan",
+        "@vulkan_headers",
+    ],
+)
+
 objc_library(
     name = "graphite_metal_context_helper",
     srcs = ["src/graphite_metal_context_helper.mm"],

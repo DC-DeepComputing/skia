@@ -30,6 +30,11 @@ public:
         uint32_t numPictures;
     };
 
+    struct ImageMetadata {
+        uint32_t contentID;
+        uint32_t derivedSurfaceID;
+    };
+
     static sk_sp<SkCapture> MakeFromData(sk_sp<const SkData>);
     // TODO: instead of a make from pictures factory, the CaptureManager might just need hooks into
     // the to build it over time. Move the SkPictures (fPictures) here and just maintain that in one
@@ -39,22 +44,24 @@ public:
 
     // TODO: Pictures being grabbed by index is not intuitive and leave the capture disorganized.
     // This should be deleted once SkPictures are organized by Surface and grouped by Recording.
-    sk_sp<SkPicture> getPicture(int i) const;
+    sk_sp<SkPicture> getPicture(int i);
     Metadata getMetadata() const;
 
 private:
     // TODO: add more awareness of the image meta data to a SkCaptureContext object
     static SkSerialReturnType serializeImageProc(SkImage* img, void* ctx);
     static sk_sp<SkImage> deserializeImageProc(sk_sp<SkData>,
-                                               std::optional<SkAlphaType>, void* ctx);
+                                               std::optional<SkAlphaType>,
+                                               void* ctx);
 
     Metadata fMetadata;
-    //TODO(b/412351769): Replace pictures with SkCapturePicture structs that also include
-    // picture metadata
+    // TODO(b/412351769): Replace pictures with SkCapturePicture structs that also include
+    //  picture metadata
     skia_private::TArray<sk_sp<SkPicture>> fPictures;
+    skia_private::TArray<sk_sp<SkData>> fPictureDatas;
 
-    static const uint32_t kVersion = 0; // Until this version is 1 or greater, active development
-                                        // will make this unstable.
+    static const uint32_t kVersion = 0;  // Until this version is 1 or greater, active development
+                                         // will make this unstable.
 };
 
-#endif //SkCapture_DEFINED
+#endif  // SkCapture_DEFINED
