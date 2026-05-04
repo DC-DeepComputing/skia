@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "901f90b1_84936bab",
+        "filename": "tests/SkRuntimeEffectTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1850,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-05-04T17:09:52Z",
+      "side": 1,
+      "message": "Naively I\u0027d expect the inlining to result in the equivalent of:\n```\nhalf4 main(half4, half4) {\n float a; return (a)/half4(0);\n}\n```\n\nIs the inlining failing because we are detecting that we\u0027d produce a division by zero, and we choose to push that to the driver behavior (on the GPU) instead of pre-failing for producing non-finite constants?",
+      "range": {
+        "startLine": 1850,
+        "startChar": 0,
+        "endLine": 1850,
+        "endChar": 86
+      },
+      "revId": "2494ea9ac91bf0d56923603d932f1eb18d72e41b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
