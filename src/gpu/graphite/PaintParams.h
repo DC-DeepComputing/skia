@@ -89,6 +89,11 @@ public:
     /** Converts an SkColor4f to the destination color space. */
     static SkColor4f Color4fPrepForDst(SkColor4f srgb, const SkColorInfo& dstColorInfo);
 
+#if defined(SK_DEBUG)
+    // Creates a new PaintParams that is opaque and won't depend on the dst
+    static PaintParams MakeOpaque(const PaintParams& paint);
+#endif
+
 private:
     PaintParams(const SkPaint&,
                 const SimpleImage* imageOverride,
@@ -132,6 +137,14 @@ public:
 
     using Result = std::tuple<UniquePaintParamsID, SkEnumBitMask<DstUsage>>;
     std::optional<Result> toKey(const KeyContext&) const;
+
+    // Quickly produce a new paint ID that is the same paint effects described by `origPaint`
+    // except that it will be combined with a RenderStep that has Coverage::kNone.
+    //
+    // This must *only* be called if the prior call to toKey() returned kDstOnlyUsedByRenderer.
+    // The KeyContext's PaintParamsKeyBuilder must not have been modified after toKey() returned
+    // the key producing `origPaint`.
+    UniquePaintParamsID optimizeForOpacity(const KeyContext&, UniquePaintParamsID origPaint) const;
 
 private:
     bool addPaintColorToKey(const KeyContext&) const;
