@@ -16,6 +16,29 @@
       "message": "PTAL, dropped the +!",
       "revId": "1960d89cf5eb65f38669279115718621b66eeea9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5d0f30d_4dfdd916",
+        "filename": "src/gpu/ganesh/geometry/GrAAConvexTessellator.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-05-04T15:23:13Z",
+      "side": 1,
+      "message": "LGTM - if this larger number is safe, then the smaller one is also safe.",
+      "range": {
+        "startLine": 409,
+        "startChar": 8,
+        "endLine": 409,
+        "endChar": 25
+      },
+      "revId": "1960d89cf5eb65f38669279115718621b66eeea9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
