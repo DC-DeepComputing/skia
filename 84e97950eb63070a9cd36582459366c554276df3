@@ -70,6 +70,30 @@
       },
       "revId": "84e97950eb63070a9cd36582459366c554276df3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "638fb9de_0c86d800",
+        "filename": "src/gpu/ganesh/SurfaceContext.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 575,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-05-04T15:11:16Z",
+      "side": 1,
+      "message": "okay yeah you\u0027re right all the other values going into the calculation look to be identiacal to the calculation of tmpSize",
+      "parentUuid": "001a5465_29b17dee",
+      "range": {
+        "startLine": 571,
+        "startChar": 0,
+        "endLine": 575,
+        "endChar": 13
+      },
+      "revId": "84e97950eb63070a9cd36582459366c554276df3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
