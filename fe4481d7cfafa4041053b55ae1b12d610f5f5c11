@@ -63,6 +63,30 @@
       },
       "revId": "fe4481d7cfafa4041053b55ae1b12d610f5f5c11",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "abd284f4_f72f0fe3",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-05-04T23:50:34Z",
+      "side": 1,
+      "message": "Sounds good to me.",
+      "parentUuid": "b2205f81_f15c6d57",
+      "range": {
+        "startLine": 215,
+        "startChar": 6,
+        "endLine": 215,
+        "endChar": 10
+      },
+      "revId": "fe4481d7cfafa4041053b55ae1b12d610f5f5c11",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
