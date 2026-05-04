@@ -62,6 +62,7 @@ BitmapTextRenderStep::BitmapTextRenderStep(Layout layout, skgpu::MaskFormat vari
                      Flags(variant) | Flags::kAppendInstances,
                      /*uniforms=*/{{"maskToDevice", SkSLType::kFloat4x4},
                                    {"localToDevice", SkSLType::kFloat4x4}},
+                     /*textures=*/{},
                      PrimitiveType::kTriangleStrip,
                      kDirectDepthLEqualPass,
                      /*staticAttrs=*/ {},
@@ -114,17 +115,17 @@ std::string BitmapTextRenderStep::vertexSkSL() const {
                                                "stepLocalCoords);";
 }
 
-std::string BitmapTextRenderStep::texturesAndSamplersSkSL(
-        const ResourceBindingRequirements& bindingReqs, int* nextBindingIndex) const {
-    std::string result;
+// std::string BitmapTextRenderStep::texturesAndSamplersSkSL(
+//         const ResourceBindingRequirements& bindingReqs, int* nextBindingIndex) const {
+//     std::string result;
 
-    for (unsigned int i = 0; i < kNumTextAtlasTextures; ++i) {
-        result += EmitSamplerLayout(bindingReqs, nextBindingIndex);
-        SkSL::String::appendf(&result, " sampler2D text_atlas_%u;\n", i);
-    }
+//     for (unsigned int i = 0; i < kNumTextAtlasTextures; ++i) {
+//         result += EmitSamplerLayout(bindingReqs, nextBindingIndex);
+//         SkSL::String::appendf(&result, " sampler2D text_atlas_%u;\n", i);
+//     }
 
-    return result;
-}
+//     return result;
+// }
 
 
 const char* BitmapTextRenderStep::fragmentColorSkSL() const {

@@ -370,7 +370,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
 
     const std::string& fsSkSL = shaderInfo->fragmentSkSL();
     const BlendInfo& blendInfo = shaderInfo->blendInfo();
-    const int numTexturesAndSamplers = shaderInfo->numFragmentTexturesAndSamplers();
+    const int numTexturesAndSamplers = shaderInfo->numTexturesAndSamplers();
 
     const bool hasFragmentSkSL = !fsSkSL.empty();
     if (hasFragmentSkSL) {

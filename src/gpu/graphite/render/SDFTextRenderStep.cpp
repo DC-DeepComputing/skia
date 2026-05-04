@@ -59,6 +59,7 @@ SDFTextRenderStep::SDFTextRenderStep(Layout layout)
                      /*uniforms=*/{{"maskToDevice", SkSLType::kFloat4x4},
                                    {"localToDevice", SkSLType::kFloat4x4},
                                    {"gammaParams", SkSLType::kHalf2}},
+                     /*textures=*/{},
                      PrimitiveType::kTriangleStrip,
                      kDirectDepthLEqualPass,
                      /*staticAttrs=*/ {},
@@ -95,17 +96,17 @@ std::string SDFTextRenderStep::vertexSkSL() const {
                                                "stepLocalCoords);";
 }
 
-std::string SDFTextRenderStep::texturesAndSamplersSkSL(
-        const ResourceBindingRequirements& bindingReqs, int* nextBindingIndex) const {
-    std::string result;
+// std::string SDFTextRenderStep::texturesAndSamplersSkSL(
+//         const ResourceBindingRequirements& bindingReqs, int* nextBindingIndex) const {
+//     std::string result;
 
-    for (unsigned int i = 0; i < kNumSDFAtlasTextures; ++i) {
-        result += EmitSamplerLayout(bindingReqs, nextBindingIndex);
-        SkSL::String::appendf(&result, " sampler2D sdf_atlas_%u;\n", i);
-    }
+//     for (unsigned int i = 0; i < kNumSDFAtlasTextures; ++i) {
+//         result += EmitSamplerLayout(bindingReqs, nextBindingIndex);
+//         SkSL::String::appendf(&result, " sampler2D sdf_atlas_%u;\n", i);
+//     }
 
-    return result;
-}
+//     return result;
+// }
 
 const char* SDFTextRenderStep::fragmentCoverageSkSL() const {
     // The returned SkSL must write its coverage into a 'half4 outputCoverage' variable (defined in

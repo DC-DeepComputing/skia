@@ -41,6 +41,7 @@ AnalyticBlurRenderStep::AnalyticBlurRenderStep(Layout layout)
                       {"blurData", SkSLType::kHalf2},
                       {"shapeType", SkSLType::kInt},
                       {"depth", SkSLType::kFloat}},
+                     /*textures=*/{},
                      PrimitiveType::kTriangles,
                      kDirectDepthLessPass,
                      /*staticAttrs=*/ {},
@@ -59,10 +60,10 @@ std::string AnalyticBlurRenderStep::vertexSkSL() const {
         "scaledShapeCoords = (deviceToScaledShape * devPosition.xy1).xy;\n";
 }
 
-std::string AnalyticBlurRenderStep::texturesAndSamplersSkSL(
-        const ResourceBindingRequirements& bindingReqs, int* nextBindingIndex) const {
-    return EmitSamplerLayout(bindingReqs, nextBindingIndex) + " sampler2D s;";
-}
+// std::string AnalyticBlurRenderStep::texturesAndSamplersSkSL(
+//         const ResourceBindingRequirements& bindingReqs, int* nextBindingIndex) const {
+//     return EmitSamplerLayout(bindingReqs, nextBindingIndex) + " sampler2D s;";
+// }
 
 const char* AnalyticBlurRenderStep::fragmentCoverageSkSL() const {
     return "outputCoverage = blur_coverage_fn(scaledShapeCoords, "

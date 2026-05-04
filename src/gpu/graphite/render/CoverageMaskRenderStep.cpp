@@ -68,6 +68,7 @@ CoverageMaskRenderStep::CoverageMaskRenderStep(Layout layout)
                      Flags::kInverseFillsScissor |
                      Flags::kAppendInstances,
                      /*uniforms=*/{{"maskToDeviceRemainder", SkSLType::kFloat3x3}},
+                     /*textures=*/{},
                      PrimitiveType::kTriangleStrip,
                      kDirectDepthLessPass,
                      /*staticAttrs=*/ {},
@@ -108,10 +109,10 @@ std::string CoverageMaskRenderStep::vertexSkSL() const {
                     "maskBounds, textureCoords, invert, stepLocalCoords);\n";
 }
 
-std::string CoverageMaskRenderStep::texturesAndSamplersSkSL(
-        const ResourceBindingRequirements& bindingReqs, int* nextBindingIndex) const {
-    return EmitSamplerLayout(bindingReqs, nextBindingIndex) + " sampler2D pathAtlas;";
-}
+// std::string CoverageMaskRenderStep::texturesAndSamplersSkSL(
+//         const ResourceBindingRequirements& bindingReqs, int* nextBindingIndex) const {
+//     return EmitSamplerLayout(bindingReqs, nextBindingIndex) + " sampler2D pathAtlas;";
+// }
 
 const char* CoverageMaskRenderStep::fragmentCoverageSkSL() const {
     return

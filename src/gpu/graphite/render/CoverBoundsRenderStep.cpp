@@ -35,6 +35,7 @@ CoverBoundsRenderStep::CoverBoundsRenderStep(Layout layout,
                      Flags::kAppendInstances |
                      Flags::kInverseFillsScissor,
                      /*uniforms=*/{},
+                     /*textures=*/{},
                      PrimitiveType::kTriangleStrip,
                      dsSettings,
                      /*staticAttrs=*/ {},
