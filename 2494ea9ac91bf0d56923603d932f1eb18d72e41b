@@ -46,6 +46,30 @@
       },
       "revId": "2494ea9ac91bf0d56923603d932f1eb18d72e41b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "939cf6e5_4d38c4f4",
+        "filename": "tests/SkRuntimeEffectTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1850,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-05-04T17:42:01Z",
+      "side": 1,
+      "message": "Ah it\u0027s probably picking up the provided built-ins, and your local function is shadowing it.  Normally in the GPU pipeline generation, we add name mangles to all the declarations of the runtime effect to make it unique to its position in the whole pipeline, which would mitigate this conflict.\n\nI don\u0027t think that\u0027s trivial to do unless we built it into `convertProgram` when it was creating its symbol table.",
+      "parentUuid": "6e35c27a_77b8ee37",
+      "range": {
+        "startLine": 1850,
+        "startChar": 0,
+        "endLine": 1850,
+        "endChar": 86
+      },
+      "revId": "2494ea9ac91bf0d56923603d932f1eb18d72e41b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
