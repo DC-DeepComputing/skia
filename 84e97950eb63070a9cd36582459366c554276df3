@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ab5c363_9beeaa6f",
+        "filename": "src/gpu/ganesh/SurfaceContext.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 575,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-05-04T14:43:51Z",
+      "side": 1,
+      "message": "Why do we need safe math here? Presumably since we succeeded in calculating `tmpSize` which is the whole size, we should be safe when doing the actual level offsets?",
+      "range": {
+        "startLine": 571,
+        "startChar": 0,
+        "endLine": 575,
+        "endChar": 13
+      },
+      "revId": "84e97950eb63070a9cd36582459366c554276df3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
