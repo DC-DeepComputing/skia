@@ -33,6 +33,24 @@
       "message": "I like this as a defense-in-depth strategy. Can we also patch GrAAConvexTessellator::extractFromPath (from the original bug) to avoid the overflow before calling reserve? I\u0027d prefer to fail more gracefully than an assert if we can help it.",
       "revId": "0ebd0014d90926d5769300e8e92bcfef823e12fa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f7b80ac_62952a3d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-04T15:14:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "25caf304_fcacfec1",
+      "revId": "0ebd0014d90926d5769300e8e92bcfef823e12fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
