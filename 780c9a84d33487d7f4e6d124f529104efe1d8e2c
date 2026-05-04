@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a64caf83_8059c770",
+        "filename": "src/gpu/graphite/task/UploadTask.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-04T19:07:50Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 128,
+        "startChar": 73,
+        "endLine": 128,
+        "endChar": 81
+      },
+      "revId": "780c9a84d33487d7f4e6d124f529104efe1d8e2c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
