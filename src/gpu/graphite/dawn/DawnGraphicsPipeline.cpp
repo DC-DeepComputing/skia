@@ -370,7 +370,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
 
     const std::string& fsSkSL = shaderInfo->fragmentSkSL();
     const BlendInfo& blendInfo = shaderInfo->blendInfo();
-    const int numTexturesAndSamplers = shaderInfo->numFragmentTexturesAndSamplers();
+    const int numTexturesAndSamplers = shaderInfo->numTexturesAndSamplers();
 
     const bool hasFragmentSkSL = !fsSkSL.empty();
     if (hasFragmentSkSL) {
@@ -517,7 +517,15 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
 
                 for (int i = 0; i < numTexturesAndSamplers;) {
                     entries[i].binding = i;
-                    entries[i].visibility = wgpu::ShaderStage::Fragment | wgpu::ShaderStage::Vertex;
+                    ShaderStageFlags vis = shaderInfo->textureVisibility(i);
+                    wgpu::ShaderStage dawnVis = wgpu::ShaderStage::None;
+                    if (SkToBool(vis & ShaderStageFlags::kVertex)) {
+                        dawnVis |= wgpu::ShaderStage::Vertex;
+                    }
+                    if (SkToBool(vis & ShaderStageFlags::kFragment)) {
+                        dawnVis |= wgpu::ShaderStage::Fragment;
+                    }
+                    entries[i].visibility = dawnVis;
 #if !defined(__EMSCRIPTEN__)
                     // Index of sampler information = 1/2 of cumulative texture and sampler index.
                     // If we have a non-default-initialized SamplerDesc at that index,
@@ -554,7 +562,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
                     ++i;
 
                     entries[i].binding = i;
-                    entries[i].visibility = wgpu::ShaderStage::Fragment | wgpu::ShaderStage::Vertex;
+                    entries[i].visibility = dawnVis;
                     entries[i].texture.sampleType = wgpu::TextureSampleType::Float;
                     entries[i].texture.viewDimension = wgpu::TextureViewDimension::e2D;
                     entries[i].texture.multisampled = false;

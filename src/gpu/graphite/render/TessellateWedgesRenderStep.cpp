@@ -92,6 +92,7 @@ TessellateWedgesRenderStep::TessellateWedgesRenderStep(Layout layout,
                      (depthStencilSettings.fDepthWriteEnabled ? Flags::kPerformsShading
                                                               : Flags::kNone),
                      /*uniforms=*/{{"localToDevice", SkSLType::kFloat4x4}},
+                     /*textures=*/{},
                      PrimitiveType::kTriangles,
                      depthStencilSettings,
                      /*staticAttrs=*/{{{"resolveLevel_and_idx",

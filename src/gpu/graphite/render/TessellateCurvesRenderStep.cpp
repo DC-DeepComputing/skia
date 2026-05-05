@@ -88,6 +88,7 @@ TessellateCurvesRenderStep::TessellateCurvesRenderStep(Layout layout,
                      Flags::kAppendDynamicInstances |
                      Flags::kIgnoreInverseFill,
                      /*uniforms=*/{{"localToDevice", SkSLType::kFloat4x4}},
+                     /*textures=*/{},
                      PrimitiveType::kTriangles,
                      evenOdd ? kEvenOddStencilPass : kWindingStencilPass,
                      /*staticAttrs=*/{{{"resolveLevel_and_idx",

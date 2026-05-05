@@ -33,6 +33,7 @@ MiddleOutFanRenderStep::MiddleOutFanRenderStep(Layout layout, bool evenOdd)
                              : RenderStepID::kMiddleOutFan_Winding,
                      Flags::kRequiresMSAA | Flags::kAppendVertices,
                      /*uniforms=*/{{"localToDevice", SkSLType::kFloat4x4}},
+                     /*textures=*/{},
                      PrimitiveType::kTriangles,
                      evenOdd ? kEvenOddStencilPass : kWindingStencilPass,
                      /*staticAttrs=*/ {},

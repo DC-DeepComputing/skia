@@ -57,6 +57,10 @@ SDFTextLCDRenderStep::SDFTextLCDRenderStep(Layout layout)
                                    {"localToDevice", SkSLType::kFloat4x4},
                                    {"pixelGeometryDelta", SkSLType::kHalf2},
                                    {"gammaParams", SkSLType::kHalf4}},
+                     /*textures=*/{{"sdf_atlas_0", ShaderStageFlags::kBoth},
+                                   {"sdf_atlas_1", ShaderStageFlags::kFragment},
+                                   {"sdf_atlas_2", ShaderStageFlags::kFragment},
+                                   {"sdf_atlas_3", ShaderStageFlags::kFragment}},
                      PrimitiveType::kTriangleStrip,
                      kDirectDepthLEqualPass,
                      /*staticAttrs=*/ {},
@@ -93,18 +97,6 @@ std::string SDFTextLCDRenderStep::vertexSkSL() const {
                                                "stepLocalCoords);";
 }
 
-std::string SDFTextLCDRenderStep::texturesAndSamplersSkSL(
-        const ResourceBindingRequirements& bindingReqs, int* nextBindingIndex) const {
-    std::string result;
-
-    for (unsigned int i = 0; i < kNumSDFAtlasTextures; ++i) {
-        result += EmitSamplerLayout(bindingReqs, nextBindingIndex);
-        SkSL::String::appendf(&result, " sampler2D sdf_atlas_%u;\n", i);
-    }
-
-    return result;
-}
-
 const char* SDFTextLCDRenderStep::fragmentCoverageSkSL() const {
     // The returned SkSL must write its coverage into a 'half4 outputCoverage' variable (defined in
     // the calling code) with the actual coverage splatted out into all four channels.
@@ -115,6 +107,7 @@ const char* SDFTextLCDRenderStep::fragmentCoverageSkSL() const {
     // TODO: Need to add 565 support.
     // TODO: Need aliased and possibly sRGB support.
     static_assert(kNumSDFAtlasTextures == 4);
+    SkASSERT(this->textures().size() == kNumSDFAtlasTextures);
     return "outputCoverage = sdf_text_lcd_coverage_fn(pixelGeometryDelta, "
                                                      "gammaParams, "
                                                      "unormTexCoords, "

@@ -873,12 +873,12 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
     // binding index within the descriptor set. Initialize all values to nullptr, which represents a
     // "regular", dynamic sampler at that index.
     skia_private::TArray<sk_sp<VulkanSampler>> immutableSamplers;
-    immutableSamplers.push_back_n(shaderInfo->numFragmentTexturesAndSamplers());
+    immutableSamplers.push_back_n(shaderInfo->numTexturesAndSamplers());
 
     // This logic relies upon Vulkan using combined texture/sampler bindings, which is necessary for
     // ycbcr samplers per the Vulkan spec.
     SkASSERT(!sharedContext->caps()->resourceBindingRequirements().fSeparateTextureAndSamplerBinding
-             && shaderInfo->numFragmentTexturesAndSamplers() == descContainer.size());
+             && shaderInfo->numTexturesAndSamplers() == descContainer.size());
     for (int i = 0; i < descContainer.size(); i++) {
         // If a SamplerDesc is not equivalent to the default-initialized SamplerDesc, that indicates
         // the usage of an immutable sampler. That sampler desc should then be used to obtain an
@@ -955,7 +955,7 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
                 VulkanResourceProvider::kIntrinsicConstantStageFlags,
                 shaderInfo->hasCombinedUniforms(),
                 shaderInfo->hasGradientBuffer(),
-                shaderInfo->numFragmentTexturesAndSamplers(),
+                shaderInfo->numTexturesAndSamplers(),
                 /*loadMsaaFromResolve=*/false,
                 SkSpan<sk_sp<VulkanSampler>>(immutableSamplers)))) {
         return nullptr;

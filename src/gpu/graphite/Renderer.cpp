@@ -16,6 +16,7 @@ RenderStep::RenderStep(Layout layout,
                        RenderStepID renderStepID,
                        SkEnumBitMask<Flags> flags,
                        std::initializer_list<Uniform> uniforms,
+                       std::initializer_list<TextureAndSampler> textures,
                        PrimitiveType primitiveType,
                        DepthStencilSettings depthStencilSettings,
                        SkSpan<const Attribute> staticAttrs,
@@ -26,6 +27,7 @@ RenderStep::RenderStep(Layout layout,
         , fPrimitiveType(primitiveType)
         , fDepthStencilSettings(depthStencilSettings)
         , fUniforms(uniforms)
+        , fTextures(textures)
         , fStaticAttrs(staticAttrs.begin(), staticAttrs.end())
         , fAppendAttrs(appendAttrs.begin(), appendAttrs.end())
         , fVaryings(varyings.begin(), varyings.end())

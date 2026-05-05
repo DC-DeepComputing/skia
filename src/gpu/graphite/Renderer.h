@@ -18,6 +18,7 @@
 #include "src/gpu/graphite/Attribute.h"
 #include "src/gpu/graphite/DrawTypes.h"
 #include "src/gpu/graphite/ResourceTypes.h"
+#include "src/gpu/graphite/ShaderCodeDictionary.h"
 #include "src/gpu/graphite/Uniform.h"
 
 #include <array>
@@ -143,11 +144,8 @@ public:
     // and then including the function bodies returned here.
     virtual std::string vertexSkSL() const = 0;
 
-    // Emits code to set up textures and samplers. Should only be defined if hasTextures is true.
-    virtual std::string texturesAndSamplersSkSL(const ResourceBindingRequirements&,
-                                                int* nextBindingIndex) const {
-        return "";
-    }
+    // The textures and samplers required by this RenderStep. Should only be non-empty if hasTextures is true.
+    SkSpan<const TextureAndSampler> textures() const { return SkSpan(fTextures); }
 
     // Emits code to set up coverage value. Should only be defined if overridesCoverage is true.
     // When implemented the returned SkSL fragment should write its coverage into a
@@ -257,7 +255,7 @@ enum class Flags : unsigned {
     kAppendDynamicInstances = 0x0008, // Appends instances with a flexible vertex count
     kRequiresMSAA           = 0x0010, // MSAA is required for anti-aliasing
     kPerformsShading        = 0x0020, // This step is responsible for shading/color output
-    kHasTextures            = 0x0040, // Adds textures via overridden texturesAndSamplersSkSL()
+    kHasTextures            = 0x0040, // Has textures inside fTextures()
     kEmitsCoverage          = 0x0080, // Adds analytic coverage via fragmentCoverageSkSL()
     kLCDCoverage            = 0x0100, // The added analytic coverage is LCD, not single channel
     kEmitsPrimitiveColor    = 0x0200, // Injects primitive color via fragmentColorSkSL()
@@ -275,6 +273,7 @@ SK_DECL_BITMASK_OPS_FRIENDS(Flags)
                RenderStepID renderStepID,
                SkEnumBitMask<Flags> flags,
                std::initializer_list<Uniform> uniforms,
+               std::initializer_list<TextureAndSampler> textures,
                PrimitiveType primitiveType,
                DepthStencilSettings depthStencilSettings,
                SkSpan<const Attribute> staticAttrs,
@@ -302,10 +301,11 @@ private:
     // could just have this be std::array and keep all attributes inline with the RenderStep memory.
     // On the other hand, the attributes are only needed when creating a new pipeline so it's not
     // that performance sensitive.
-    std::vector<Uniform>   fUniforms;
-    std::vector<Attribute> fStaticAttrs;
-    std::vector<Attribute> fAppendAttrs;
-    std::vector<Varying>   fVaryings;
+    std::vector<Uniform>           fUniforms;
+    std::vector<TextureAndSampler> fTextures;
+    std::vector<Attribute>         fStaticAttrs;
+    std::vector<Attribute>         fAppendAttrs;
+    std::vector<Varying>           fVaryings;
 
     int    fUniformAlignment; // derived from the renderstep uniforms
     size_t fStaticDataStride; // derived from vertex attribute set

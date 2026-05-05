@@ -32,8 +32,6 @@ public:
     ~BitmapTextRenderStep() override;
 
     std::string vertexSkSL() const override;
-    std::string texturesAndSamplersSkSL(const ResourceBindingRequirements&,
-                                        int* nextBindingIndex) const override;
     // For a given BitmapTextRenderStep instance,
     // we will only use either fragmentColorSkSL() (for color text)
     // or fragmentCoverageSKSL() (for grayscale and LCD masks), never both.

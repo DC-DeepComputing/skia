@@ -62,6 +62,10 @@ BitmapTextRenderStep::BitmapTextRenderStep(Layout layout, skgpu::MaskFormat vari
                      Flags(variant) | Flags::kAppendInstances,
                      /*uniforms=*/{{"maskToDevice", SkSLType::kFloat4x4},
                                    {"localToDevice", SkSLType::kFloat4x4}},
+                     /*textures=*/{{"text_atlas_0", ShaderStageFlags::kBoth},
+                                   {"text_atlas_1", ShaderStageFlags::kFragment},
+                                   {"text_atlas_2", ShaderStageFlags::kFragment},
+                                   {"text_atlas_3", ShaderStageFlags::kFragment}},
                      PrimitiveType::kTriangleStrip,
                      kDirectDepthLEqualPass,
                      /*staticAttrs=*/ {},
@@ -114,23 +118,11 @@ std::string BitmapTextRenderStep::vertexSkSL() const {
                                                "stepLocalCoords);";
 }
 
-std::string BitmapTextRenderStep::texturesAndSamplersSkSL(
-        const ResourceBindingRequirements& bindingReqs, int* nextBindingIndex) const {
-    std::string result;
-
-    for (unsigned int i = 0; i < kNumTextAtlasTextures; ++i) {
-        result += EmitSamplerLayout(bindingReqs, nextBindingIndex);
-        SkSL::String::appendf(&result, " sampler2D text_atlas_%u;\n", i);
-    }
-
-    return result;
-}
-
-
 const char* BitmapTextRenderStep::fragmentColorSkSL() const {
     // The returned SkSL must write its color into a 'half4 primitiveColor' variable
     // (defined in the calling code).
     static_assert(kNumTextAtlasTextures == 4);
+    SkASSERT(this->textures().size() == kNumTextAtlasTextures);
     return "primitiveColor = sample_indexed_atlas(textureCoords, "
                                                  "int(texIndex), "
                                                  "text_atlas_0, "
@@ -143,6 +135,7 @@ const char* BitmapTextRenderStep::fragmentCoverageSkSL() const {
     // The returned SkSL must write its coverage into a 'half4 outputCoverage' variable (defined in
     // the calling code) with the actual coverage splatted out into all four channels.
     static_assert(kNumTextAtlasTextures == 4);
+    SkASSERT(this->textures().size() == kNumTextAtlasTextures);
     return "outputCoverage = bitmap_text_coverage_fn(sample_indexed_atlas(textureCoords, "
                                                                          "int(texIndex), "
                                                                          "text_atlas_0, "
