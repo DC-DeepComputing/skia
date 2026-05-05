@@ -411,7 +411,7 @@ sk_sp<Device> Device::Make(Recorder* recorder,
                            SkBackingFit backingFit,
                            const SkSurfaceProps& props,
                            LoadOp initialLoadOp,
-                           std::string_view label,
+                           ScratchUsageFlags usage,
                            bool registerWithRecorder) {
     SkASSERT(!(mipmapped == Mipmapped::kYes && backingFit == SkBackingFit::kApprox));
     if (!recorder) {
@@ -428,7 +428,7 @@ sk_sp<Device> Device::Make(Recorder* recorder,
 
     return Make(recorder,
                 TextureProxy::Make(caps, recorder->priv().resourceProvider(),
-                                   backingDimensions, textureInfo, label, budgeted),
+                                   backingDimensions, textureInfo, usage, budgeted),
                 ii.dimensions(),
                 ii.colorInfo(),
                 props,
@@ -647,12 +647,12 @@ sk_sp<SkDevice> Device::createDevice(const CreateInfo& info, const SkPaint*) {
     // Skia's convention is to only clear a device if it is non-opaque.
     LoadOp initialLoadOp = info.fInfo.isOpaque() ? LoadOp::kDiscard : LoadOp::kClear;
 
-    std::string label = fDC->target().proxy()->label();
-    if (label.empty()) {
-        label = "ChildDevice";
-    } else {
-        label += "_ChildDevice";
-    }
+    // std::string label = fDC->target().proxy()->label();
+    // if (label.empty()) {
+    //     label = "ChildDevice";
+    // } else {
+    //     label += "_ChildDevice";
+    // }
 
     return Make(fRecorder,
                 info.fInfo,
@@ -661,7 +661,7 @@ sk_sp<SkDevice> Device::createDevice(const CreateInfo& info, const SkPaint*) {
                 SkBackingFit::kApprox,
                 props,
                 initialLoadOp,
-                label);
+                ScratchUsageFlags::kChildDevice);
 }
 
 sk_sp<SkSurface> Device::makeSurface(const SkImageInfo& ii, const SkSurfaceProps& props) {
@@ -677,12 +677,12 @@ sk_sp<Image> Device::makeImageCopy(const SkIRect& subset,
     // Image::Copy so that tasks end up on the root task list.
     this->flushPendingWork(/*drawContext=*/nullptr);
 
-    std::string label = fDC->target().proxy()->label();
-    if (label.empty()) {
-        label = "CopyDeviceTexture";
-    } else {
-        label += "_DeviceCopy";
-    }
+    // std::string label = fDC->target().proxy()->label();
+    // if (label.empty()) {
+    //     label = "CopyDeviceTexture";
+    // } else {
+    //     label += "_DeviceCopy";
+    // }
 
     return Image::Copy(fRecorder,
                        /*drawContext=*/nullptr,
@@ -692,7 +692,7 @@ sk_sp<Image> Device::makeImageCopy(const SkIRect& subset,
                        budgeted,
                        mipmapped,
                        backingFit,
-                       label);
+                       {ScratchUsageFlags::kCopyDeviceTexture});
 }
 
 bool Device::onReadPixels(const SkPixmap& pm, int srcX, int srcY) {

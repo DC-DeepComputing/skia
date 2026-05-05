@@ -35,7 +35,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(InnerFillTest, reporter, context,
                                         SkBackingFit::kExact,
                                         /*surfaceProps=*/{},
                                         LoadOp::kClear,
-                                        "inner-fill");
+                                        ScratchUsageFlags::kInnerFill);
 
     // Default rrect size is sufficient to avoid the small-size exclusion criteria
     auto testRRect = [&](const SkPaint& paint, bool innerFillExpected, float rrectSize = 128.f) {

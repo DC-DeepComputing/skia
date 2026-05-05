@@ -274,16 +274,15 @@ void DrawContext::flush(Recorder* recorder) {
             drawPassDstReadStrategy == DstReadStrategy::kTextureCopy) {
             TRACE_EVENT_INSTANT0("skia.gpu", "DrawPass requires dst copy",
                                  TRACE_EVENT_SCOPE_THREAD);
-            sk_sp<Image> imageCopy = Image::Copy(
-                    recorder,
-                    this,
-                    fTarget,
-                    fImageInfo.colorInfo(),
-                    dstReadPixelBounds,
-                    Budgeted::kYes,
-                    Mipmapped::kNo,
-                    SkBackingFit::kApprox,
-                    "DstCopy");
+            sk_sp<Image> imageCopy = Image::Copy(recorder,
+                                                 this,
+                                                 fTarget,
+                                                 fImageInfo.colorInfo(),
+                                                 dstReadPixelBounds,
+                                                 Budgeted::kYes,
+                                                 Mipmapped::kNo,
+                                                 SkBackingFit::kApprox,
+                                                 ScratchUsageFlags::kDstCopy);
             if (!imageCopy) {
                 SKGPU_LOG_W("DrawContext::flush Image::Copy failed, draw pass dropped!");
                 return;

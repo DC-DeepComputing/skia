@@ -89,7 +89,8 @@ sk_sp<Image> Image::Copy(Recorder* recorder,
                          Budgeted budgeted,
                          Mipmapped mipmapped,
                          SkBackingFit backingFit,
-                         std::string_view label) {
+                         ScratchUsageFlags usage) {
+                         //std::string_view label) {
     SkASSERT(!drawContext || budgeted == Budgeted::kYes);
     SkASSERT(!(mipmapped == Mipmapped::kYes && backingFit == SkBackingFit::kApprox));
     if (!srcView) {
@@ -107,7 +108,7 @@ sk_sp<Image> Image::Copy(Recorder* recorder,
         // Copy-as-draw
         sk_sp<Image> srcImage(new Image(srcView, srcColorInfo));
         return CopyAsDraw(recorder, drawContext, srcImage.get(), subset, srcColorInfo,
-                          budgeted, mipmapped, backingFit, label);
+                          budgeted, mipmapped, backingFit, usage);
     }
 
     skgpu::graphite::TextureInfo textureInfo =
@@ -119,7 +120,7 @@ sk_sp<Image> Image::Copy(Recorder* recorder,
             recorder->priv().resourceProvider(),
             backingFit == SkBackingFit::kApprox ? GetApproxSize(subset.size()) : subset.size(),
             textureInfo,
-            label,
+            usage,
             budgeted);
     if (!dst) {
         return nullptr;
@@ -163,11 +164,11 @@ sk_sp<Image> Image::copyImage(Recorder* recorder,
                               Budgeted budgeted,
                               Mipmapped mipmapped,
                               SkBackingFit backingFit,
-                              std::string_view label) const {
+                              ScratchUsageFlags usage) const {
     this->notifyInUse(recorder, /*drawContext=*/nullptr);
     return Image::Copy(recorder, /*drawContext=*/nullptr,
                        fTextureProxyView, this->imageInfo().colorInfo(),
-                       subset, budgeted, mipmapped, backingFit, label);
+                       subset, budgeted, mipmapped, backingFit, usage);
 }
 
 sk_sp<SkImage> Image::onReinterpretColorSpace(sk_sp<SkColorSpace> newCS) const {

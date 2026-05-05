@@ -85,6 +85,8 @@ public:
 
     void dumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump) const;
 
+    void updateLabels();
+
     void forceProcessReturnedResources();
 
 #if defined(GPU_TEST_UTILS)
@@ -109,7 +111,11 @@ public:
     bool returnResource(Resource*);
 
     // Registers the Resource with the cache; can only be called at the time of creation.
-    void insertResource(Resource*, const GraphiteResourceKey&, Budgeted, Shareable);
+    void insertResource(Resource*,
+                        const GraphiteResourceKey&,
+                        Budgeted,
+                        Shareable,
+                        std::string_view label = {});
 
 private:
     ResourceCache(SingleOwner*, uint32_t recorderID, size_t maxBytes);

@@ -48,7 +48,8 @@ public:
                              Budgeted,
                              Mipmapped,
                              SkBackingFit,
-                             std::string_view label);
+                             ScratchUsageFlags);
+                             // label
 
     const TextureProxyView& textureProxyView() const { return fTextureProxyView; }
 
@@ -69,7 +70,8 @@ public:
                            Budgeted,
                            Mipmapped,
                            SkBackingFit,
-                           std::string_view label) const override;
+                        //    std::string_view label) const override;
+                           ScratchUsageFlags) const override;
 
     sk_sp<SkImage> onReinterpretColorSpace(sk_sp<SkColorSpace>) const override;
 
