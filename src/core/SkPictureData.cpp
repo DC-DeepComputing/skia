@@ -405,7 +405,7 @@ bool SkPictureData::parseStreamTag(SkStream* stream,
             while (!buffer.eof() && buffer.isValid()) {
                 tag = buffer.readUInt();
                 size = buffer.readUInt();
-                this->parseBufferTag(buffer, tag, size);
+                this->parseBufferTag(buffer, tag, size, recursionLimit - 1);
             }
             if (!buffer.isValid()) {
                 return false;
@@ -423,10 +423,13 @@ static sk_sp<SkDrawable> create_drawable_from_buffer(SkReadBuffer& buffer) {
     return sk_sp<SkDrawable>((SkDrawable*)buffer.readFlattenable(SkFlattenable::kSkDrawable_Type));
 }
 
+template <typename U> using FactoryFn = sk_sp<U> (*)(SkReadBuffer&);
 // We need two types 'cause SkDrawable is const-variant.
 template <typename T, typename U>
-bool new_array_from_buffer(SkReadBuffer& buffer, uint32_t inCount,
-                           TArray<sk_sp<T>>& array, sk_sp<U> (*factory)(SkReadBuffer&)) {
+bool new_array_from_buffer(SkReadBuffer& buffer,
+                           uint32_t inCount,
+                           TArray<sk_sp<T>>& array,
+                           FactoryFn<U> factory) {
     if (!buffer.validate(array.empty() && SkTFitsIn<int>(inCount))) {
         return false;
     }
@@ -448,7 +451,37 @@ bool new_array_from_buffer(SkReadBuffer& buffer, uint32_t inCount,
     return true;
 }
 
-void SkPictureData::parseBufferTag(SkReadBuffer& buffer, uint32_t tag, uint32_t size) {
+using LimitedFactoryFn = sk_sp<SkPicture> (*)(SkReadBuffer&, int);
+bool new_array_from_buffer(SkReadBuffer& buffer,
+                           uint32_t inCount,
+                           TArray<sk_sp<const SkPicture>>& array,
+                           LimitedFactoryFn factory,
+                           int recursionLimit) {
+    if (!buffer.validate(array.empty() && SkTFitsIn<int>(inCount))) {
+        return false;
+    }
+    if (0 == inCount) {
+        return true;
+    }
+
+    for (uint32_t i = 0; i < inCount; ++i) {
+        auto obj = factory(buffer, recursionLimit);
+
+        if (!buffer.validate(obj != nullptr)) {
+            array.clear();
+            return false;
+        }
+
+        array.push_back(std::move(obj));
+    }
+
+    return true;
+}
+
+void SkPictureData::parseBufferTag(SkReadBuffer& buffer,
+                                   uint32_t tag,
+                                   uint32_t size,
+                                   int recursionLimit) {
     switch (tag) {
         case SK_PICT_PAINT_BUFFER_TAG: {
             if (!buffer.validate(SkTFitsIn<int>(size))) {
@@ -506,7 +539,8 @@ void SkPictureData::parseBufferTag(SkReadBuffer& buffer, uint32_t tag, uint32_t 
             fOpData = std::move(data);
         } break;
         case SK_PICT_PICTURE_TAG:
-            new_array_from_buffer(buffer, size, fPictures, SkPicturePriv::MakeFromBuffer);
+            new_array_from_buffer(
+                    buffer, size, fPictures, SkPicturePriv::MakeFromBuffer, recursionLimit - 1);
             break;
         case SK_PICT_DRAWABLE_TAG:
             new_array_from_buffer(buffer, size, fDrawables, create_drawable_from_buffer);
@@ -534,11 +568,15 @@ SkPictureData* SkPictureData::CreateFromStream(SkStream* stream,
 }
 
 SkPictureData* SkPictureData::CreateFromBuffer(SkReadBuffer& buffer,
-                                               const SkPictInfo& info) {
+                                               const SkPictInfo& info,
+                                               int recursionLimit) {
+    if (recursionLimit <= 0) {
+        return nullptr;
+    }
     std::unique_ptr<SkPictureData> data(new SkPictureData(info));
     buffer.setVersion(info.getVersion());
 
-    if (!data->parseBuffer(buffer)) {
+    if (!data->parseBuffer(buffer, recursionLimit)) {
         return nullptr;
     }
     return data.release();
@@ -564,13 +602,13 @@ bool SkPictureData::parseStream(SkStream* stream,
     return true;
 }
 
-bool SkPictureData::parseBuffer(SkReadBuffer& buffer) {
+bool SkPictureData::parseBuffer(SkReadBuffer& buffer, int recursionLimit) {
     while (buffer.isValid()) {
         uint32_t tag = buffer.readUInt();
         if (SK_PICT_EOF_TAG == tag) {
             break;
         }
-        this->parseBufferTag(buffer, tag, buffer.readUInt());
+        this->parseBufferTag(buffer, tag, buffer.readUInt(), recursionLimit);
     }
 
     // Check that we encountered required tags
