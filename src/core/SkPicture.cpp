@@ -142,7 +142,7 @@ sk_sp<SkPicture> SkPicture::Forwardport(const SkPictInfo& info,
     return r.finishRecordingAsPicture();
 }
 
-static const int kNestedSKPLimit = 100; // Arbitrarily set
+static constexpr int kNestedSKPLimit = 100; // Arbitrarily set
 
 sk_sp<SkPicture> SkPicture::MakeFromStream(SkStream* stream, const SkDeserialProcs* procs) {
     return MakeFromStreamPriv(stream, procs, nullptr, kNestedSKPLimit);
@@ -211,6 +211,13 @@ sk_sp<SkPicture> SkPicture::MakeFromStreamPriv(SkStream* stream, const SkDeseria
 }
 
 sk_sp<SkPicture> SkPicturePriv::MakeFromBuffer(SkReadBuffer& buffer) {
+    return SkPicturePriv::MakeFromBufferLimit(buffer, kNestedSKPLimit);
+}
+
+sk_sp<SkPicture> SkPicturePriv::MakeFromBufferLimit(SkReadBuffer& buffer, int recursionLimit) {
+    if (recursionLimit <= 0) {
+        return nullptr;
+    }
     SkPictInfo info;
     if (!SkPicture::BufferIsSKP(&buffer, &info)) {
         return nullptr;
@@ -229,7 +236,8 @@ sk_sp<SkPicture> SkPicturePriv::MakeFromBuffer(SkReadBuffer& buffer) {
         // 1 is the magic 'size' that means SkPictureData follows
         return nullptr;
     }
-   std::unique_ptr<SkPictureData> data(SkPictureData::CreateFromBuffer(buffer, info));
+    std::unique_ptr<SkPictureData> data(
+        SkPictureData::CreateFromBuffer(buffer, info, recursionLimit));
     return SkPicture::Forwardport(info, data.get(), &buffer);
 }
 

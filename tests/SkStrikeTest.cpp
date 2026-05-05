@@ -291,3 +291,41 @@ DEF_TEST(SkStrike_FlattenByType, reporter) {
     REPORTER_ASSERT(reporter, dstDrawableGlyph->setDrawableHasBeenCalled());
     REPORTER_ASSERT(reporter, dstDrawableGlyph->drawable() != nullptr);
 }
+
+DEF_TEST(SkStrike_MergeFromBuffer_Avoid_Overflow, reporter) {
+    sk_sp<SkData> evil = nullptr;
+    {
+        SkBinaryWriteBuffer buffer({});
+        buffer.writeInt(0);  // images.size()
+        buffer.writeInt(0);  // paths.size()
+        auto payload = SkData::MakeFromFileName("tests/data/deep_nest.skp");
+        REPORTER_ASSERT(reporter, payload);
+        // Write 1 fake drawable glyph carrying the malicious SkPicture.
+        buffer.writeInt(1);
+        // Glyph metrics (must pass SkGlyph::MakeFromBuffer validation):
+        buffer.writeUInt(0xFFFEu);              // packedID (high, unlikely collision)
+        buffer.writePoint({0.0f, 0.0f});        // advance
+        buffer.writeUInt((1u << 16) | 1u);      // dimensions: width=1, height=1
+        buffer.writeUInt(0u);                   // leftTop: 0,0
+        buffer.writeUInt(0u);                   // format: kBW_Format = 0
+        // The malicious SkPicture bytes — these reach the GPU process via
+        // font_shm and are passed to SkPicture::MakeFromData inside
+        // SkPictureBackedGlyphDrawable::MakeFromBuffer.
+        buffer.writeDataAsByteArray(payload.get());
+
+        evil = buffer.snapshotAsData();
+    }
+
+    REPORTER_ASSERT(reporter, evil);
+    SkReadBuffer input(evil->data(), evil->size());
+
+    SkStrikeCache strikeCache;
+    auto dstTypeface = ToolUtils::CreateTestTypeface("monospace", SkFontStyle());
+    SkFont font{dstTypeface};
+    SkStrikeSpec spec = SkStrikeSpec::MakeWithNoDevice(font);
+    sk_sp<SkStrike> strike = spec.findOrCreateStrike(&strikeCache);
+    REPORTER_ASSERT(reporter, strike);
+
+    bool ok = strike->mergeFromBuffer(input);
+    REPORTER_ASSERT(reporter, !ok);
+}

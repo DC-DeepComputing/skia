@@ -32,6 +32,7 @@ public:
      *          invalid.
      */
     static sk_sp<SkPicture> MakeFromBuffer(SkReadBuffer& buffer);
+    static sk_sp<SkPicture> MakeFromBufferLimit(SkReadBuffer& buffer, int recursionLimit);
 
     /**
      *  Serialize to a buffer.
