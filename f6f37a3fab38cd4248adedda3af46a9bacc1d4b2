@@ -50,6 +50,51 @@
       "message": "It looks to me like what we discussed as an option in the CL you referenced, non owner LGTM from my side, but I am not a Skia owner.",
       "revId": "f6f37a3fab38cd4248adedda3af46a9bacc1d4b2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0b1df38_525d0e05",
+        "filename": "gn/core.gni",
+        "patchSetId": 7
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-05-05T20:26:24Z",
+      "side": 1,
+      "message": "I think that presubmit check wants this line to be in alphabetical order (before SkString.h)",
+      "fixSuggestions": [
+        {
+          "fixId": "516c4b7d_2fe97e4f",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "gn/core.gni",
+              "range": {
+                "startLine": 107,
+                "startChar": 0,
+                "endLine": 108,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "gn/core.gni",
+              "range": {
+                "startLine": 1,
+                "startChar": 0,
+                "endLine": 1,
+                "endChar": 0
+              },
+              "replacement": "  \"$_include/core/SkString.h\",\n"
+            }
+          ]
+        }
+      ],
+      "revId": "f6f37a3fab38cd4248adedda3af46a9bacc1d4b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
