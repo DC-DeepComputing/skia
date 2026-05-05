@@ -52,6 +52,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6fec8646_23729363",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-05-05T20:34:57Z",
+      "side": 1,
+      "message": "LGTM modulo presubmit nits.",
+      "revId": "f6f37a3fab38cd4248adedda3af46a9bacc1d4b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c0b1df38_525d0e05",
@@ -89,6 +106,47 @@
                 "endChar": 0
               },
               "replacement": "  \"$_include/core/SkString.h\",\n"
+            }
+          ]
+        }
+      ],
+      "revId": "f6f37a3fab38cd4248adedda3af46a9bacc1d4b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a9f03e1_5eb5ee76",
+        "filename": "src/core/SkFont.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-05-05T20:34:57Z",
+      "side": 1,
+      "message": "nit: can omit",
+      "range": {
+        "startLine": 241,
+        "startChar": 84,
+        "endLine": 241,
+        "endChar": 91
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "ca0f5bce_ae60a53a",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/core/SkFont.cpp",
+              "range": {
+                "startLine": 241,
+                "startChar": 0,
+                "endLine": 242,
+                "endChar": 0
+              },
+              "replacement": "    auto [strikeSpec, strikeToSourceScale] \u003d SkStrikeSpec::MakeCanonicalized(*this);\n"
             }
           ]
         }
