@@ -16,6 +16,320 @@
       "message": "PTAL",
       "revId": "e790746d8d0e94e82abbc78661962d5e8b1dd748",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdbd67b1_4ab16b07",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-05T13:00:56Z",
+      "side": 1,
+      "message": "// These are used to specify which edges of a tile a given line segment touches ?",
+      "revId": "e790746d8d0e94e82abbc78661962d5e8b1dd748",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63b67a21_e71684cb",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-05T13:00:56Z",
+      "side": 1,
+      "message": "The more usual order for this in Skia would be LRTB (from SkRect).",
+      "revId": "e790746d8d0e94e82abbc78661962d5e8b1dd748",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d087843_4732bb70",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-05T13:00:56Z",
+      "side": 1,
+      "message": "// Tracks whether the line touched the top edge of the tile. ?",
+      "revId": "e790746d8d0e94e82abbc78661962d5e8b1dd748",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "576d3379_d8fb518f",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-05T13:00:56Z",
+      "side": 1,
+      "message": "I\u0027m a bit surprised you didn\u0027t do this in WRLBT order",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 54
+      },
+      "revId": "e790746d8d0e94e82abbc78661962d5e8b1dd748",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d8c3e59_40cdab0e",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-05T13:00:56Z",
+      "side": 1,
+      "message": "// It is crucial that this struct be 64bits bc ...",
+      "revId": "e790746d8d0e94e82abbc78661962d5e8b1dd748",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17c03e13_a1aa8b85",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-05T13:00:56Z",
+      "side": 1,
+      "message": "Why do we need this inheritance? Can\u0027t we just access INT_MASK_SHIFT from IntersectionBits directly?",
+      "range": {
+        "startLine": 57,
+        "startChar": 14,
+        "endLine": 57,
+        "endChar": 37
+      },
+      "revId": "e790746d8d0e94e82abbc78661962d5e8b1dd748",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9a06fc2_de90199d",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-05T13:00:56Z",
+      "side": 1,
+      "message": "fPackedWindingLineIdxMask ? fDesc ?",
+      "revId": "e790746d8d0e94e82abbc78661962d5e8b1dd748",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1d89ede_19543492",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-05T13:00:56Z",
+      "side": 1,
+      "message": "Add a kAll \u003d 0b11111 constant and use it to ensure there are no stray bits in \u0027intersectionMask\u0027.",
+      "range": {
+        "startLine": 65,
+        "startChar": 77,
+        "endLine": 65,
+        "endChar": 93
+      },
+      "revId": "e790746d8d0e94e82abbc78661962d5e8b1dd748",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e84274a_5c99bfad",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-05T13:00:56Z",
+      "side": 1,
+      "message": "Would it be any better, perf-wise, to just have this be the representation and have accessors that would shift and mask to return the desired value ?",
+      "range": {
+        "startLine": 72,
+        "startChar": 0,
+        "endLine": 73,
+        "endChar": 59
+      },
+      "revId": "e790746d8d0e94e82abbc78661962d5e8b1dd748",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4dc396d2_abc97e5e",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-05T13:00:56Z",
+      "side": 1,
+      "message": "One \u0027n\u0027 ?",
+      "range": {
+        "startLine": 104,
+        "startChar": 56,
+        "endLine": 104,
+        "endChar": 58
+      },
+      "revId": "e790746d8d0e94e82abbc78661962d5e8b1dd748",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ecc508d1_8b822627",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-05T13:00:56Z",
+      "side": 1,
+      "message": "succeeding ?",
+      "range": {
+        "startLine": 112,
+        "startChar": 12,
+        "endLine": 112,
+        "endChar": 21
+      },
+      "revId": "e790746d8d0e94e82abbc78661962d5e8b1dd748",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24c45728_64dd7252",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-05T13:00:56Z",
+      "side": 1,
+      "message": "Make possessive ?",
+      "range": {
+        "startLine": 116,
+        "startChar": 11,
+        "endLine": 116,
+        "endChar": 24
+      },
+      "revId": "e790746d8d0e94e82abbc78661962d5e8b1dd748",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4215a125_aa090b4f",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-05T13:00:56Z",
+      "side": 1,
+      "message": "This doesn\u0027t seem to be used.",
+      "revId": "e790746d8d0e94e82abbc78661962d5e8b1dd748",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0875ff46_346a4858",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-05T13:00:56Z",
+      "side": 1,
+      "message": "// What does this do? What is it for? There seems to be a lot here.",
+      "revId": "e790746d8d0e94e82abbc78661962d5e8b1dd748",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62b60e2a_07fa41b5",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-05T13:00:56Z",
+      "side": 1,
+      "message": "This seems like it is teetering on the edge of where you should use the \u0027f\u0027 prefix.",
+      "revId": "e790746d8d0e94e82abbc78661962d5e8b1dd748",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55b1a193_339ed498",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-05T13:00:56Z",
+      "side": 1,
+      "message": "div_ceil ? Also, given the name, I expected a ceil call in here.\n\nThis is a bit of a weird case. It is class-static so it should be DivCeil but it seems like something that would be a helper function if this weren\u0027t templated.",
+      "revId": "e790746d8d0e94e82abbc78661962d5e8b1dd748",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
