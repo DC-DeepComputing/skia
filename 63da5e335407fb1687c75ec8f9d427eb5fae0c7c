@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c42c41b0_ce89a6ee",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-05-05T16:04:05Z",
+      "side": 1,
+      "message": "This lgtm, but I want to dig deeper into how the inputs to the test lead to this disjoint src and dst rect. I filed https://g-issues.skia.org/issues/509927747 to capture that and the general work to remove the legacy code in SkBlurEngine that\u0027s not needed anymore.",
+      "revId": "63da5e335407fb1687c75ec8f9d427eb5fae0c7c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
