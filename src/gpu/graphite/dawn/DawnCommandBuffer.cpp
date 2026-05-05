@@ -864,7 +864,7 @@ void DawnCommandBuffer::bindTextureAndSamplers(
     if (fActiveGraphicsPipeline->dstReadStrategy() == DstReadStrategy::kTextureCopy) {
         numTexturesAndSamplers++;
     }
-    SkASSERT(fActiveGraphicsPipeline->numFragTexturesAndSamplers() == 2*numTexturesAndSamplers);
+    SkASSERT(fActiveGraphicsPipeline->numFragTexturesAndSamplers() == numTexturesAndSamplers);
 
     // If possible, it's ideal to optimize for the common case of using a single texture with one
     // dynamic sampler. When using only one sampler, determine whether it is static or dynamic.
@@ -882,7 +882,7 @@ void DawnCommandBuffer::bindTextureAndSamplers(
     wgpu::BindGroup bindGroup;
     // Optimize for single texture with dynamic sampling.
     if (numTexturesAndSamplers == 1 && !usingSingleStaticSampler) {
-        SkASSERT(fActiveGraphicsPipeline->numFragTexturesAndSamplers() == 2);
+        SkASSERT(fActiveGraphicsPipeline->numFragTexturesAndSamplers() == 1);
         SkASSERT(fActiveGraphicsPipeline->dstReadStrategy() != DstReadStrategy::kTextureCopy);
 
         const auto* texture = static_cast<const DawnTexture*>(command.fTextures[0]->texture());

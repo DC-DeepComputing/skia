@@ -1073,38 +1073,46 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
                                fDstReadStrategy == DstReadStrategy::kTextureSample;
     {
         int binding = 0;
-        // Cache the texture and fragment sksl so we can add it to the vertex shader
-        *textureAndSamplerSkSL = emit_textures_and_samplers(bindingReqs, sharedData.fRootNodes,
-                                                            &binding, outDescs);
-        int paintTextureCount = binding;
+
+        // 1. Paint Textures (Always Fragment visibility)
+        fsPreamble += emit_textures_and_samplers(bindingReqs, sharedData.fRootNodes, &binding, outDescs);
+        fPaintTextureCount = bindingReqs.fSeparateTextureAndSamplerBinding ? binding / 2 : binding;
+
+        for (int i = 0; i < fPaintTextureCount; ++i) {
+            fTextureVisibilities.push_back(ShaderStageFlags::kFragment);
+        }
+
+        // 2. RenderStep Textures (Data-driven visibility!)
         if (step->hasTextures()) {
-            *textureAndSamplerSkSL += step->texturesAndSamplersSkSL(bindingReqs, &binding);
-            if (outDescs) {
-                // Determine how many render step samplers were used by comparing the binding value
-                // against paintTextureCount, taking into account the binding requirements. We
-                // assume and do not anticipate the render steps to use immutable samplers.
-                int renderStepSamplerCount = bindingReqs.fSeparateTextureAndSamplerBinding
-                                                     ? (binding - paintTextureCount) / 2
-                                                     : binding - paintTextureCount;
-                // Add default SamplerDescs for all the dynamic samplers used by the render step so
-                // the size of outDescs will be equivalent to the total number of samplers.
-                outDescs->push_back_n(renderStepSamplerCount);
+            for (const TextureAndSampler& tex : step->textures()) {
+                fTextureVisibilities.push_back(tex.visibility());
+
+                if (tex.visibility() & ShaderStageFlags::kFragment) {
+                    fsPreamble += EmitSamplerLayout(bindingReqs, &binding);
+                    SkSL::String::appendf(&fsPreamble, " sampler2D %s;\n", tex.name());
+                } else {
+                    // Not in Fragment SkSL, but we MUST advance the binding index for Dawn's layout
+                    int advance = bindingReqs.fSeparateTextureAndSamplerBinding ? 2 : 1;
+                    binding += advance;
+                }
+
+                if (outDescs) {
+                    // Add default SamplerDescs for dynamic samplers
+                    int renderStepSamplerCount = bindingReqs.fSeparateTextureAndSamplerBinding ? 1 : 1;
+                    outDescs->push_back_n(renderStepSamplerCount);
+                }
             }
         }
+
+        // 3. Dst Read Texture (Always Fragment visibility)
         if (useDstSampler) {
-            *textureAndSamplerSkSL += EmitSamplerLayout(bindingReqs, &binding);
-            *textureAndSamplerSkSL += " sampler2D dstSampler;";
-            // Add default SamplerDesc for the intrinsic dstSampler to stay consistent with
-            // `fNumFragmentTexturesAndSamplers`.
+            fTextureVisibilities.push_back(ShaderStageFlags::kFragment);
+            fsPreamble += EmitSamplerLayout(bindingReqs, &binding);
+            fsPreamble += " sampler2D dstSampler;";
             if (outDescs) {
                 outDescs->push_back({});
             }
         }
-
-        fsPreamble += *textureAndSamplerSkSL;
-
-        // Record how many textures and samplers are used.
-        fNumFragmentTexturesAndSamplers = binding;
     }
 
     // Emit preamble declarations and helper functions required for snippets. In the default case
@@ -1298,7 +1306,23 @@ void ShaderInfo::generateVertexSkSL(const Caps* caps,
     vsPreamble = emit_intrinsic_constants(bindingReqs);
 
     if (step->hasTextures()) {
-        vsPreamble += sharedData.fTexturesAndSamplersSkSL;
+        int vsBinding = 0;
+        int advance = bindingReqs.fSeparateTextureAndSamplerBinding ? 2 : 1;
+
+        // 1. Fast-forward the binding index past the Paint textures
+        vsBinding += fPaintTextureCount * advance;
+
+        // 2. Emit RenderStep textures that requested Vertex visibility
+        for (const TextureAndSampler& tex : step->textures()) {
+            if (tex.visibility() & ShaderStageFlags::kVertex) {
+                vsPreamble += EmitSamplerLayout(bindingReqs, &vsBinding);
+                //TODO make this go away
+                SkSL::String::appendf(&vsPreamble, " sampler2D %s;\n", tex.name());
+            } else {
+                // Not in Vertex SkSL, keep the layout perfectly synced
+                vsBinding += advance;
+            }
+        }
     }
 
     // Varyings needed by RenderStep and potentially lifted expressions
