@@ -319,6 +319,10 @@ protected:
     using TakeRefFunc = void (*)(void* ctx);
 
 private:
+    // TODO(b/387505250): Remove this friendship relationship once we migrate scratch texture
+    // management policies to align with the Resource Thread Safe Labeling Model outlined above.
+    friend class ResourceProvider;
+
     ///////////////////////////////////////////////////////////////////////////////////////////////
     // The following set of functions are only meant to be called by the [Global|Proxy]Cache. We
     // don't want them public general users of a Resource, but they also aren't purely internal.
@@ -390,7 +394,11 @@ private:
     virtual bool prepareForReturnToCache(TakeRefFunc takeRef, void* takeRefCtx) { return false; }
 
     // Adds a cache ref to the resource. May only be called once.
-    void registerWithCache(sk_sp<ResourceCache>, const GraphiteResourceKey&, Budgeted, Shareable);
+    void registerWithCache(sk_sp<ResourceCache>,
+                           const GraphiteResourceKey&,
+                           Budgeted,
+                           Shareable,
+                           std::string_view label);
 
     // This version of ref allows adding a ref when the usage count is 0. This should only be called
     // from the ResourceCache.
