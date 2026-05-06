@@ -106,6 +106,7 @@ void MtlCommandBuffer::onResetCommandBuffer() {
     fActiveRenderCommandEncoder.reset();
     fActiveComputeCommandEncoder.reset();
     fActiveBlitCommandEncoder.reset();
+    fActiveGraphicsPipeline = nil;
     fCurrentIndexBuffer = nil;
     fCurrentIndexBufferOffset = 0;
 }
@@ -421,6 +422,7 @@ bool MtlCommandBuffer::addDrawPass(DrawPass* drawPass) {
                 for (int j = 0; j < bts->fNumTexSamplers; ++j) {
                     // immutable samplers don't exist in metal
                     SkASSERT(!bts->fSamplers[j].isImmutable());
+                    // anchor comment
                     this->bindTextureAndSampler(bts->fTextures[j]->texture(),
                                                 fSharedContext->globalCache()->getDynamicSampler(
                                                         bts->fSamplers[j]),
@@ -513,6 +515,7 @@ void MtlCommandBuffer::bindGraphicsPipeline(const GraphicsPipeline* graphicsPipe
     SkASSERT(fActiveRenderCommandEncoder);
 
     auto mtlPipeline = static_cast<const MtlGraphicsPipeline*>(graphicsPipeline);
+    fActiveGraphicsPipeline = mtlPipeline;
     auto pipelineState = mtlPipeline->mtlPipelineState();
     fActiveRenderCommandEncoder->setRenderPipelineState(pipelineState);
     auto depthStencilState = mtlPipeline->mtlDepthStencilState();
@@ -525,7 +528,8 @@ void MtlCommandBuffer::bindGraphicsPipeline(const GraphicsPipeline* graphicsPipe
         // the list on each BindTexturesAndSamplers command. We can set it once now and any
         // subsequent BindTexturesAndSamplers commands in a DrawPass will set the other N-1.
         SkASSERT(fDstCopy.first && fDstCopy.second);
-        const int textureIndex = graphicsPipeline->numFragTexturesAndSamplers() - 1;
+        const int textureIndex = graphicsPipeline->numTexturesAndSamplers() - 1;
+        // anchor comment
         this->bindTextureAndSampler(fDstCopy.first, fDstCopy.second, textureIndex);
     }
 }
@@ -587,8 +591,13 @@ void MtlCommandBuffer::bindTextureAndSampler(const Texture* texture,
 
     id<MTLTexture> mtlTexture = ((const MtlTexture*)texture)->mtlTexture();
     id<MTLSamplerState> mtlSamplerState = ((const MtlSampler*)sampler)->mtlSamplerState();
-    fActiveRenderCommandEncoder->setFragmentTexture(mtlTexture, bindIndex);
-    fActiveRenderCommandEncoder->setFragmentSamplerState(mtlSamplerState, bindIndex);
+
+    SkASSERT(fActiveGraphicsPipeline);
+    ShaderStageFlags vis = fActiveGraphicsPipeline->textureVisibility(bindIndex);
+    bool fragVis = SkToBool(vis & ShaderStageFlags::kFragment);
+    bool vertVis = SkToBool(vis & ShaderStageFlags::kVertex);
+    fActiveRenderCommandEncoder->setTexture(mtlTexture, bindIndex, fragVis, vertVis);
+    fActiveRenderCommandEncoder->setSamplerState(mtlSamplerState, bindIndex, fragVis, vertVis);
 }
 
 void MtlCommandBuffer::setScissor(const Scissor& scissor) {
