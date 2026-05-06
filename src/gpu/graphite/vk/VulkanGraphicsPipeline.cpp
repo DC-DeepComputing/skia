@@ -559,11 +559,12 @@ static bool texture_sampler_desc_set_layout(VkDescriptorSetLayout& outLayout,
         if (!immutableSamplers.empty() && immutableSamplers[i]) {
             immutableSampler = immutableSamplers[i].get();
         }
-        textureSamplerDescs.push_back({DescriptorType::kCombinedTextureSampler,
-                                       /*count=*/1,
-                                       /*bindingIdx=*/i,
-                                       PipelineStageFlags::kFragmentShader,
-                                       immutableSampler});
+        textureSamplerDescs.push_back(
+                {DescriptorType::kCombinedTextureSampler,
+                 /*count=*/1,
+                 /*bindingIdx=*/i,
+                 PipelineStageFlags::kVertexShader | PipelineStageFlags::kFragmentShader,
+                 immutableSampler});
     }
 
     // If no texture/samplers are used, a mock VkDescriptorSetLayout handle by passing in the
@@ -872,12 +873,12 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
     // binding index within the descriptor set. Initialize all values to nullptr, which represents a
     // "regular", dynamic sampler at that index.
     skia_private::TArray<sk_sp<VulkanSampler>> immutableSamplers;
-    immutableSamplers.push_back_n(shaderInfo->numFragmentTexturesAndSamplers());
+    immutableSamplers.push_back_n(shaderInfo->numTexturesAndSamplers());
 
     // This logic relies upon Vulkan using combined texture/sampler bindings, which is necessary for
     // ycbcr samplers per the Vulkan spec.
     SkASSERT(!sharedContext->caps()->resourceBindingRequirements().fSeparateTextureAndSamplerBinding
-             && shaderInfo->numFragmentTexturesAndSamplers() == descContainer.size());
+             && shaderInfo->numTexturesAndSamplers() == descContainer.size());
     for (int i = 0; i < descContainer.size(); i++) {
         // If a SamplerDesc is not equivalent to the default-initialized SamplerDesc, that indicates
         // the usage of an immutable sampler. That sampler desc should then be used to obtain an
@@ -954,7 +955,7 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
                 VulkanResourceProvider::kIntrinsicConstantStageFlags,
                 shaderInfo->hasCombinedUniforms(),
                 shaderInfo->hasGradientBuffer(),
-                shaderInfo->numFragmentTexturesAndSamplers(),
+                shaderInfo->numTexturesAndSamplers(),
                 /*loadMsaaFromResolve=*/false,
                 SkSpan<sk_sp<VulkanSampler>>(immutableSamplers)))) {
         return nullptr;
@@ -984,8 +985,10 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
 
     sk_sp<VulkanGraphicsPipeline> pipeline;
     if (vkPipeline) {
+        // Doesn't need the textureVisibility flags baked in
         PipelineInfo pipelineInfo{ *shaderInfo, pipelineCreationFlags,
-                                    pipelineKey.hash(), compilationID };
+                                   pipelineKey.hash(), compilationID,
+                                   /*textureVisFlags=*/{} };
 #if defined(GPU_TEST_UTILS)
         pipelineInfo.fNativeVertexShader = SkShaderUtils::SpirvAsHexStream(vsSPIRV.fBinary);
         pipelineInfo.fNativeFragmentShader = SkShaderUtils::SpirvAsHexStream(fsSPIRV.fBinary);

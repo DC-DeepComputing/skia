@@ -462,7 +462,7 @@ void DawnCaps::initShaderCaps(const wgpu::Device& device) {
     }
 #if !defined(__EMSCRIPTEN__)
     if (device.HasFeature(wgpu::FeatureName::FramebufferFetch)) {
-        shaderCaps->fFBFetchSupport = true;
+        shaderCaps->fFBFetchSupport = false;
     }
 #endif
 }
