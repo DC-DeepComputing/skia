@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fea1c016_6d998f82",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-05-06T16:42:58Z",
+      "side": 1,
+      "message": "\u003e I guess that could also overflow the stack on serialization, so maybe not a good idea.\n\n(...which is why I\u0027m generally reluctant when it comes to imposing arbitrary recursion limits in Skia.  There is no single good value, and too many code paths to address systemically.  Clients are in a better position to limit complexity if they so desire, otherwise stack exhaustion is just another form of system resource exhaustion, and should trigger a controlled crash on all sane platforms, similar to sk_malloc_throw OOM/heap allocation failures.)",
+      "parentUuid": "abce3ff7_f36fa97b",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 39
+      },
+      "revId": "9f5534b828f6b800eb2272c413c7cbd8db46bd6b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7c81de11_7b96d781",
