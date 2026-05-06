@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5fc8488a_c4df5093",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 33
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-05-06T22:28:01Z",
+      "side": 1,
+      "message": "Sending some initial feedback - I started reviewing the CL, but was unable to finish today/Wednesday.  I\u0027ll try to continue on Thursday.",
+      "revId": "f2215d155aac68d279ac9fe18700343a980c29fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b036f5a_470cfff5",
+        "filename": "BUILD.gn",
+        "patchSetId": 33
+      },
+      "lineNbr": 1851,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-05-06T22:28:01Z",
+      "side": 1,
+      "message": "I am a bit surprised that this works without listing `:png_decode_rust` and `:bmp_decode_rust` as an explicit dependency (because AFAICT `SkIcoRustDecoder.cpp` `#include`s and uses those other codecs).  Can you please comment on that?  Maybe GN/ninja don\u0027t sufficiently track dependencies and this is why things happen to work?  But we probably do want to declare those dependencies, right?",
+      "range": {
+        "startLine": 1851,
+        "startChar": 2,
+        "endLine": 1851,
+        "endChar": 3
+      },
+      "revId": "f2215d155aac68d279ac9fe18700343a980c29fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47633ffa_b6ac2102",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 33
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-05-06T22:28:01Z",
+      "side": 1,
+      "message": "This should be `kInvalidParameters` to indicate a bug in the caller.  IIUC `kInvalidInput` should be reserved for malformed input stream.",
+      "range": {
+        "startLine": 189,
+        "startChar": 18,
+        "endLine": 189,
+        "endChar": 31
+      },
+      "revId": "f2215d155aac68d279ac9fe18700343a980c29fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0e595bd_a91f9943",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 33
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-05-06T22:28:01Z",
+      "side": 1,
+      "message": "It seems that there is some duplicated code: 1) here and 2) in `MakeFromStream`.  In particular, the code for extracting `width`, `height`, `color`, `alpha`, and `colorProfile` out of a `reader` (but also maybe `bytesPerPixel` and `srcRowBytes` checks).\n\nWould it be possible to deduplicate this code please?",
+      "range": {
+        "startLine": 227,
+        "startChar": 4,
+        "endLine": 227,
+        "endChar": 5
+      },
+      "revId": "f2215d155aac68d279ac9fe18700343a980c29fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
