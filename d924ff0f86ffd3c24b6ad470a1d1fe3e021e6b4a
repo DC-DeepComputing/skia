@@ -1,0 +1,245 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86ac5420_6f81866e",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-06T12:09:56Z",
+      "side": 1,
+      "message": "drive ?",
+      "range": {
+        "startLine": 31,
+        "startChar": 70,
+        "endLine": 31,
+        "endChar": 90
+      },
+      "revId": "d924ff0f86ffd3c24b6ad470a1d1fe3e021e6b4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14a20c20_60bc6259",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-06T12:09:56Z",
+      "side": 1,
+      "message": "(W) ?",
+      "range": {
+        "startLine": 62,
+        "startChar": 33,
+        "endLine": 62,
+        "endChar": 37
+      },
+      "revId": "d924ff0f86ffd3c24b6ad470a1d1fe3e021e6b4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "678cfbee_ee6e386b",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-06T12:09:56Z",
+      "side": 1,
+      "message": "(LRTB) ?",
+      "range": {
+        "startLine": 63,
+        "startChar": 36,
+        "endLine": 63,
+        "endChar": 40
+      },
+      "revId": "d924ff0f86ffd3c24b6ad470a1d1fe3e021e6b4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7577cb2_b46b85de",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-06T12:09:56Z",
+      "side": 1,
+      "message": "rm ?",
+      "range": {
+        "startLine": 73,
+        "startChar": 31,
+        "endLine": 73,
+        "endChar": 41
+      },
+      "revId": "d924ff0f86ffd3c24b6ad470a1d1fe3e021e6b4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c23a24f8_a63ab567",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-06T12:09:56Z",
+      "side": 1,
+      "message": "Don\u0027t you actually want \"sizeof(Tile)\" here ?",
+      "range": {
+        "startLine": 74,
+        "startChar": 18,
+        "endLine": 74,
+        "endChar": 80
+      },
+      "revId": "d924ff0f86ffd3c24b6ad470a1d1fe3e021e6b4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b45abc2f_ae7b7a6a",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-06T12:09:56Z",
+      "side": 1,
+      "message": "In this case I would ditch the \"this-\u003e\". DivCeil is static after all.",
+      "range": {
+        "startLine": 158,
+        "startChar": 31,
+        "endLine": 158,
+        "endChar": 37
+      },
+      "revId": "d924ff0f86ffd3c24b6ad470a1d1fe3e021e6b4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65a4f27f_3ec1c8a7",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-06T12:09:56Z",
+      "side": 1,
+      "message": "// map into tile coordinates ?",
+      "revId": "d924ff0f86ffd3c24b6ad470a1d1fe3e021e6b4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04df3920_be243570",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-06T12:09:56Z",
+      "side": 1,
+      "message": "1 \u0027n\u0027 ?",
+      "range": {
+        "startLine": 183,
+        "startChar": 44,
+        "endLine": 183,
+        "endChar": 46
+      },
+      "revId": "d924ff0f86ffd3c24b6ad470a1d1fe3e021e6b4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ade90fb_b198ddf8",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-06T12:09:56Z",
+      "side": 1,
+      "message": "rm since static ?",
+      "range": {
+        "startLine": 204,
+        "startChar": 42,
+        "endLine": 204,
+        "endChar": 48
+      },
+      "revId": "d924ff0f86ffd3c24b6ad470a1d1fe3e021e6b4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a43fd4f9_5f7ed633",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-06T12:09:56Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 267,
+        "startChar": 62,
+        "endLine": 267,
+        "endChar": 68
+      },
+      "revId": "d924ff0f86ffd3c24b6ad470a1d1fe3e021e6b4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb2e1be3_1d0e62c6",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-06T12:09:56Z",
+      "side": 1,
+      "message": "Got to here",
+      "revId": "d924ff0f86ffd3c24b6ad470a1d1fe3e021e6b4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
