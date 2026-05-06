@@ -25,9 +25,11 @@ class SkContentID {
     public:
         SkContentID() = default;
 
-        explicit SkContentID(uint32_t id) : fId(id) {}
+        SkContentID(uint32_t id) : fId(id) {}
 
         uint32_t asUInt() const { return fId; }
+
+        operator uint32_t() const { return fId; }
 
         bool operator==(const SkContentID& other) const { return fId == other.fId; }
         bool operator!=(const SkContentID& other) const { return !(*this == other); }

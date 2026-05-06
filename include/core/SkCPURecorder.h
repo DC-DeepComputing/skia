@@ -18,6 +18,7 @@ class SkContentID;
 class SkSurface;
 class SkSurfaceProps;
 struct SkImageInfo;
+class SkContentID;
 
 #include <cstddef>
 
