@@ -1,6 +1,46 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "abce3ff7_f36fa97b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-05-06T15:39:25Z",
+      "side": 1,
+      "message": "Is this something we can generate programmatically? PictureShader-in-PictureShader-in-PictureShader...?\n\nI guess that could also overflow the stack on serialization, so maybe not a good idea.",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 39
+      },
+      "revId": "9f5534b828f6b800eb2272c413c7cbd8db46bd6b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c81de11_7b96d781",
+        "filename": "src/core/SkPictureData.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 458,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-05-06T15:39:25Z",
+      "side": 1,
+      "message": "We might be able to avoid helper duplication if we pass factory lambdas instead of factory functors.  Would something like this work?\n\n\n```\n        case SK_PICT_IMAGE_BUFFER_TAG:\n            new_array_from_buffer(buffer, size, fImages, [](SkReadBuffer\u0026 buf) {\n                return create_image_from_buffer(buf);\n            });\n        case SK_PICT_PICTURE_TAG:\n            new_array_from_buffer(buffer, size, fPictures, [recursionLimit](SkReadBuffer\u0026 buf) {\n                return SkPicturePriv::MakeFromBuffer(buf, recursionLimit - 1);\n            });\n```",
+      "revId": "9f5534b828f6b800eb2272c413c7cbd8db46bd6b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eb1e4ec8_8252e702",
