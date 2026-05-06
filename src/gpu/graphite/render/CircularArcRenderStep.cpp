@@ -132,6 +132,7 @@ CircularArcRenderStep::CircularArcRenderStep(Layout layout, StaticBufferManager*
                      Flags::kPerformsShading | Flags::kEmitsCoverage | Flags::kOutsetBoundsForAA |
                      Flags::kAppendInstances,
                      /*uniforms=*/{},
+                     /*textures=*/{},
                      PrimitiveType::kTriangleStrip,
                      kDirectDepthLessPass,
                      /*staticAttrs=*/{{

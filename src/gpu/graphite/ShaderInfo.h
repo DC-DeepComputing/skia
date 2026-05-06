@@ -16,12 +16,15 @@
 #include "src/gpu/graphite/ResourceTypes.h"
 #include "src/gpu/graphite/UniquePaintParamsID.h"
 
+#include <vector>
+
 namespace skgpu::graphite {
 
 class RenderStep;
 class RuntimeEffectDictionary;
 class ShaderCodeDictionary;
 class ShaderNode;
+enum class ShaderStageFlags : uint8_t;
 enum class TextureFormat : uint8_t;
 
 // ShaderInfo holds all root ShaderNodes defined for a PaintParams as well as the extracted fixed
@@ -72,7 +75,9 @@ public:
     // Matches ContextUtils::GetPipelineLabel() for the same args that were passed to Make()
     const std::string& pipelineLabel() const { return fPipelineLabel; }
 
-    int numFragmentTexturesAndSamplers() const { return fNumFragmentTexturesAndSamplers; }
+    // NOTE: Must be doubled for backends which bind textures and samplers separately (dawn)!
+    int numTexturesAndSamplers() const { return fTextureVisibilities.size(); }
+    ShaderStageFlags textureVisibility(int index) const { return fTextureVisibilities[index]; }
     bool hasCombinedUniforms() const { return fHasCombinedUniforms; }
     bool hasGradientBuffer() const { return fHasGradientBuffer; }
 
@@ -98,6 +103,7 @@ private:
                               TextureFormat targetFormat,
                               skgpu::Swizzle writeSwizzle,
                               skia_private::TArray<SamplerDesc>* outDescs,
+                              std::string* textureAndSamplerSkSL,
                               const SharedGeneratorData&);
 
     void generateVertexSkSL(const Caps*,
@@ -119,7 +125,9 @@ private:
     std::string fFSLabel;
     std::string fPipelineLabel;
 
-    int fNumFragmentTexturesAndSamplers = 0;
+    std::vector<ShaderStageFlags> fTextureVisibilities;
+    int fPaintTextureCount = 0; // Tracks the offset between paint and step textures
+
     bool fHasCombinedUniforms = false;
     bool fHasGradientBuffer = false;
 };

@@ -525,7 +525,7 @@ void MtlCommandBuffer::bindGraphicsPipeline(const GraphicsPipeline* graphicsPipe
         // the list on each BindTexturesAndSamplers command. We can set it once now and any
         // subsequent BindTexturesAndSamplers commands in a DrawPass will set the other N-1.
         SkASSERT(fDstCopy.first && fDstCopy.second);
-        const int textureIndex = graphicsPipeline->numFragTexturesAndSamplers() - 1;
+        const int textureIndex = graphicsPipeline->numTexturesAndSamplers() - 1;
         this->bindTextureAndSampler(fDstCopy.first, fDstCopy.second, textureIndex);
     }
 }
@@ -587,8 +587,9 @@ void MtlCommandBuffer::bindTextureAndSampler(const Texture* texture,
 
     id<MTLTexture> mtlTexture = ((const MtlTexture*)texture)->mtlTexture();
     id<MTLSamplerState> mtlSamplerState = ((const MtlSampler*)sampler)->mtlSamplerState();
-    fActiveRenderCommandEncoder->setFragmentTexture(mtlTexture, bindIndex);
-    fActiveRenderCommandEncoder->setFragmentSamplerState(mtlSamplerState, bindIndex);
+
+    fActiveRenderCommandEncoder->setTexture(mtlTexture, bindIndex);
+    fActiveRenderCommandEncoder->setSamplerState(mtlSamplerState, bindIndex);
 }
 
 void MtlCommandBuffer::setScissor(const Scissor& scissor) {

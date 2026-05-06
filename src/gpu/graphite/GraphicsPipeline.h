@@ -45,9 +45,9 @@ public:
 
     DstReadStrategy dstReadStrategy() const { return fPipelineInfo.fDstReadStrategy; }
 
-    int  numFragTexturesAndSamplers() const { return fPipelineInfo.fNumFragTexturesAndSamplers; }
-    bool hasCombinedUniforms()        const { return fPipelineInfo.fHasCombinedUniforms;        }
-    bool hasGradientBuffer()          const { return fPipelineInfo.fHasGradientBuffer;          }
+    int  numTexturesAndSamplers() const { return fPipelineInfo.fNumTexturesAndSamplers; }
+    bool hasCombinedUniforms()    const { return fPipelineInfo.fHasCombinedUniforms;    }
+    bool hasGradientBuffer()      const { return fPipelineInfo.fHasGradientBuffer;      }
 
     struct PipelineInfo {
         PipelineInfo() = default;
@@ -57,7 +57,7 @@ public:
                      uint32_t uniqueKeyHash, uint32_t compilationID);
 
         DstReadStrategy fDstReadStrategy = DstReadStrategy::kNoneRequired;
-        int  fNumFragTexturesAndSamplers = 0;
+        int  fNumTexturesAndSamplers = 0;
         bool fHasCombinedUniforms = false;
         bool fHasGradientBuffer = false;
 

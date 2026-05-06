@@ -112,6 +112,7 @@ VerticesRenderStep::VerticesRenderStep(Layout layout, PrimitiveType type, bool h
                      Flags::kPerformsShading | Flags::kAppendVertices,
                      /*uniforms=*/{{"localToDevice", SkSLType::kFloat4x4},
                                    {"depth", SkSLType::kFloat}},
+                     /*textures=*/{},
                      type,
                      kDirectDepthLEqualPass,
                      /*staticAttrs=*/ {},

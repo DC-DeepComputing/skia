@@ -44,7 +44,7 @@ GraphicsPipeline::PipelineInfo::PipelineInfo(
             uint32_t uniqueKeyHash,
             uint32_t compilationID)
         : fDstReadStrategy(shaderInfo.dstReadStrategy())
-        , fNumFragTexturesAndSamplers(shaderInfo.numFragmentTexturesAndSamplers())
+        , fNumTexturesAndSamplers(shaderInfo.numTexturesAndSamplers())
         , fHasCombinedUniforms(shaderInfo.hasCombinedUniforms())
         , fHasGradientBuffer(shaderInfo.hasGradientBuffer())
         , fUniqueKeyHash(uniqueKeyHash)
