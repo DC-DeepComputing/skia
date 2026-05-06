@@ -152,7 +152,7 @@ protected:
         DrawAtlasMgr(size_t width, size_t height,
                      size_t plotWidth, size_t plotHeight,
                      DrawAtlas::UseStorageTextures useStorageTextures,
-                     std::string_view label, const Caps*);
+                     ScratchUsageFlags usage, const Caps*);
 
         bool virtual onAddToAtlas(const Shape&,
                                   const Transform& localToDevice,

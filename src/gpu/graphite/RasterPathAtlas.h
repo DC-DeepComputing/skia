@@ -12,6 +12,8 @@
 
 namespace skgpu::graphite {
 
+enum class ScratchUsageFlags : uint32_t;
+
 /**
  * PathAtlas class that rasterizes coverage masks on the CPU.
  *
@@ -62,7 +64,7 @@ private:
                        const Caps* caps)
             : PathAtlas::DrawAtlasMgr(width, height, plotWidth, plotHeight,
                                       DrawAtlas::UseStorageTextures::kNo,
-                                      /*label=*/"RasterPathAtlas", caps) {}
+                                      ScratchUsageFlags::kRasterPathAtlas, caps) {}
 
     protected:
         bool onAddToAtlas(const Shape&,

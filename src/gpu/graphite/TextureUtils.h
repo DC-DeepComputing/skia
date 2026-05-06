@@ -45,7 +45,7 @@ TextureProxyView MakeBitmapProxyView(Recorder*,
                                      sk_sp<SkMipmap>,
                                      Mipmapped,
                                      skgpu::Budgeted,
-                                     std::string_view label);
+                                     ScratchUsageFlags);
 
 sk_sp<TextureProxy> MakePromiseImageLazyProxy(const Caps*,
                                               SkISize dimensions,
@@ -68,7 +68,8 @@ sk_sp<Image> CopyAsDraw(Recorder*,
                         Budgeted,
                         Mipmapped,
                         SkBackingFit,
-                        std::string_view label);
+                        ScratchUsageFlags);
+                        // std::string_view label);
 
 sk_sp<Image> RescaleImage(Recorder*,
                           const Image_Base* srcImage,

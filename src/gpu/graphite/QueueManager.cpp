@@ -182,6 +182,9 @@ InsertStatus QueueManager::addRecording(const InsertRecordingInfo& info, Context
 
     SIMULATE_FAIL(InsertStatus::kPromiseImageInstantiationFailed);
 
+    // Before inserting the recording, update any resource labels that need it.
+    // Compare bitmasks of scratch usages between a proxy's usage and its prior usage.
+
     if (activeStatsFlags != GpuStatsFlags::kNone) {
         if (!fCurrentCommandBuffer->startStatsQuery(activeStatsFlags)) {
             activeStatsFlags = GpuStatsFlags::kNone;

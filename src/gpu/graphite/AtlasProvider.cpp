@@ -17,6 +17,7 @@
 #include "src/gpu/graphite/RasterPathAtlas.h"
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/RendererProvider.h"
+#include "src/gpu/graphite/ResourceTypes.h"
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/text/TextAtlasManager.h"
 
@@ -82,7 +83,7 @@ sk_sp<TextureProxy> AtlasProvider::getAtlasTexture(Recorder* recorder,
                                                    recorder->priv().resourceProvider(),
                                                    SkISize::Make((int32_t) width, (int32_t) height),
                                                    textureInfo,
-                                                   "AtlasProviderTexture",
+                                                   ScratchUsageFlags::kAtlasProviderTexture,
                                                    Budgeted::kYes);
     if (!proxy) {
         return nullptr;

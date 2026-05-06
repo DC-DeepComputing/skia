@@ -29,6 +29,7 @@ class Caps;
 class DrawContext;
 class Recorder;
 class TextureProxy;
+enum class ScratchUsageFlags : uint32_t;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 /** The ClipAtlasManager manages the lifetime of and access to rasterized clip masks.
@@ -57,7 +58,7 @@ private:
         DrawAtlasMgr(size_t width, size_t height,
                      size_t plotWidth, size_t plotHeight,
                      DrawAtlas::UseStorageTextures useStorageTextures,
-                     std::string_view label, const Caps*);
+                     ScratchUsageFlags usage, const Caps*);
 
         sk_sp<TextureProxy> findOrCreateEntry(Recorder* recorder,
                                               const skgpu::UniqueKey&,
