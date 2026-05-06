@@ -21,6 +21,7 @@
 #include "src/gpu/graphite/ProxyCache.h"
 #include "src/gpu/graphite/RasterPathUtils.h"
 #include "src/gpu/graphite/RecorderPriv.h"
+#include "src/gpu/graphite/ResourceTypes.h"
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/geom/Shape.h"
 
@@ -34,13 +35,14 @@ ClipAtlasManager::ClipAtlasManager(Recorder* recorder)
         , fPathKeyAtlasMgr(kClipAtlasWidth, kClipAtlasHeight,
                            /*plotWidth=*/kClipAtlasWidth/2, /*plotHeight=*/kClipAtlasHeight/2,
                            DrawAtlas::UseStorageTextures::kNo,
-                           "PathKeyClipAtlas", recorder->priv().caps())
+                           ScratchUsageFlags::kPathKeyClipAtlas, recorder->priv().caps())
         // Examining the results from the top 20 or so webpages, the SaveRecord keyed clips
         // tend to be considerably smaller and rarer, so we use a smaller atlas here.
         , fSaveRecordKeyAtlasMgr(kClipAtlasWidth/2, kClipAtlasHeight/2,
                                  /*plotWidth=*/kClipAtlasWidth/2, /*plotHeight=*/kClipAtlasHeight/2,
                                  DrawAtlas::UseStorageTextures::kNo,
-                                 "SaveRecordKeyClipAtlas", recorder->priv().caps()) {}
+                                 ScratchUsageFlags::kSaveRecordKeyClipAtlas,
+                                 recorder->priv().caps()) {}
 
 namespace {
 // Needed to ensure that we have surrounding context, e.g. for inverse clips this would be solid.
@@ -176,7 +178,7 @@ void ClipAtlasManager::evictAtlases() {
 ClipAtlasManager::DrawAtlasMgr::DrawAtlasMgr(size_t width, size_t height,
                                              size_t plotWidth, size_t plotHeight,
                                              DrawAtlas::UseStorageTextures useStorageTextures,
-                                             std::string_view label, const Caps* caps) {
+                                             ScratchUsageFlags usage, const Caps* caps) {
     static constexpr auto kMaskFormat = MaskFormat::kA8;
 
     fDrawAtlas = DrawAtlas::Make(kMaskFormat,
@@ -188,7 +190,7 @@ ClipAtlasManager::DrawAtlasMgr::DrawAtlasMgr(size_t width, size_t height,
                                          : DrawAtlas::AllowMultitexturing::kNo,
                                  useStorageTextures,
                                  /*evictor=*/this,
-                                 label);
+                                 usage);
     SkASSERT(fDrawAtlas);
     fKeyLists.resize(fDrawAtlas->numPlots() * fDrawAtlas->maxPages());
     for (int i = 0; i < fKeyLists.size(); ++i) {

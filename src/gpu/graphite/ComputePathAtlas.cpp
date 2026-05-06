@@ -152,7 +152,7 @@ private:
         VelloAtlasMgr(size_t width, size_t height, const Caps* caps)
             : PathAtlas::DrawAtlasMgr(width, height, width, height,
                                       DrawAtlas::UseStorageTextures::kYes,
-                                      /*label=*/"VelloPathAtlas", caps) {}
+                                      ScratchUsageFlags::kVelloPathAtlas, caps) {}
 
         bool recordDispatches(Recorder* recorder, ComputeTask::DispatchGroupList* dispatches) const;
 

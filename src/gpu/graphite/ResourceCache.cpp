@@ -169,6 +169,8 @@ Resource* ResourceCache::findAndRefResource(const GraphiteResourceKey& key,
 
     SkASSERT(key.isValid());
     SkASSERT(shareable == Shareable::kNo || budgeted == Budgeted::kYes);
+    // TODO(b/387505250): Once shareable resources migrate to using bitmask label mappings, enforce
+    // that no label is passed in for finding and refing shareable resources.
     SkASSERT(shareable != Shareable::kScratch || SkToBool(unavailable));
 
     auto shareablePredicate = [shareable, unavailable](Resource* r) {

@@ -373,7 +373,7 @@ bool TextAtlasManager::initAtlas(MaskFormat format) {
                                           fAllowMultitexturing,
                                           DrawAtlas::UseStorageTextures::kNo,
                                           /*evictor=*/nullptr,
-                                          /*label=*/"TextAtlas");
+                                          ScratchUsageFlags::kTextAtlas);
         if (!fAtlases[index]) {
             return false;
         }

@@ -10,6 +10,7 @@
 
 #include "include/core/SkSize.h"
 #include "include/core/SkTileMode.h"
+#include "src/base/SkEnumBitMask.h"
 #include "src/core/SkLRUCache.h"
 #include "src/gpu/ResourceKey.h"
 #include "src/gpu/graphite/CommandBuffer.h"
@@ -47,6 +48,7 @@ class Sampler;
 class SharedContext;
 class Texture;
 class TextureInfo;
+enum class ScratchUsageFlags : uint32_t;
 
 class ResourceProvider {
 public:
@@ -72,7 +74,7 @@ public:
                                                    Budgeted);
     sk_sp<Texture> findOrCreateScratchTexture(SkISize,
                                               const TextureInfo&,
-                                              std::string_view label,
+                                              SkEnumBitMask<ScratchUsageFlags> scratchUsageMask,
                                               const ResourceCache::ScratchResourceSet& unavailable);
 
     sk_sp<Texture> createWrappedTexture(const BackendTexture&, std::string_view label);
@@ -84,10 +86,7 @@ public:
     sk_sp<Buffer> findOrCreateScratchBuffer(size_t,
                                             BufferType,
                                             AccessPattern,
-                                            std::string_view label,
                                             const ResourceCache::ScratchResourceSet& unavailable);
-
-
     sk_sp<Sampler> findOrCreateCompatibleSampler(const SamplerDesc&);
 
     BackendTexture createBackendTexture(SkISize dimensions, const TextureInfo&);
@@ -113,6 +112,8 @@ public:
             StdSteadyClock::time_point purgeTime,
             std::optional<std::chrono::microseconds> microsMaxPurgingDur);
     void forceProcessReturnedResources() { fResourceCache->forceProcessReturnedResources(); }
+    // Should this / these be non-public?
+    void updateCachedResourceLabels() { fResourceCache->updateLabels(); }
 
 #if defined(GPU_TEST_UTILS) || defined(SK_DEBUG)
     ResourceCache* resourceCache() { return fResourceCache.get(); }

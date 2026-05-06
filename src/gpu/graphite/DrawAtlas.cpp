@@ -65,14 +65,14 @@ std::unique_ptr<DrawAtlas> DrawAtlas::Make(MaskFormat maskFormat,
                                            AllowMultitexturing allowMultitexturing,
                                            UseStorageTextures useStorageTextures,
                                            PlotEvictionCallback* evictor,
-                                           std::string_view label) {
+                                           ScratchUsageFlags usage) {
     std::unique_ptr<DrawAtlas> atlas(new DrawAtlas(maskFormat,
                                                    width, height,
                                                    plotWidth, plotHeight,
                                                    generationCounter,
                                                    allowMultitexturing,
                                                    useStorageTextures,
-                                                   label));
+                                                   usage));
 
     if (evictor != nullptr) {
         atlas->fEvictionCallbacks.emplace_back(evictor);
@@ -95,14 +95,14 @@ DrawAtlas::DrawAtlas(MaskFormat maskFormat,
                      GenerationCounter* generationCounter,
                      AllowMultitexturing allowMultitexturing,
                      UseStorageTextures useStorageTextures,
-                     std::string_view label)
+                     ScratchUsageFlags usage)
         : fMaskFormat(maskFormat)
         , fTextureWidth(width)
         , fTextureHeight(height)
         , fPlotWidth(plotWidth)
         , fPlotHeight(plotHeight)
         , fUseStorageTextures(useStorageTextures)
-        , fLabel(label)
+        , fUsage(usage)
         , fAtlasID(next_id())
         , fGenerationCounter(generationCounter)
         , fAtlasGeneration(fGenerationCounter->next())
@@ -499,7 +499,7 @@ bool DrawAtlas::activateNewPage(Recorder* recorder) {
                                                    recorder->priv().resourceProvider(),
                                                    {fTextureWidth, fTextureHeight},
                                                    textureInfo,
-                                                   fLabel,
+                                                   fUsage,
                                                    skgpu::Budgeted::kYes);
     if (!fProxies[fNumActivePages]) {
         return false;

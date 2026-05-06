@@ -253,7 +253,7 @@ TextureProxyView MakeBitmapProxyView(Recorder* recorder,
                                      sk_sp<SkMipmap> mipmapsIn,
                                      Mipmapped mipmapped,
                                      Budgeted budgeted,
-                                     std::string_view label) {
+                                     ScratchUsageFlags usage) {
     // Adjust params based on input and Caps
     const Caps* caps = recorder->priv().caps();
     const SkColorType ct = bitmap.info().colorType();
@@ -297,7 +297,7 @@ TextureProxyView MakeBitmapProxyView(Recorder* recorder,
                                                    recorder->priv().resourceProvider(),
                                                    bitmap.dimensions(),
                                                    textureInfo,
-                                                   label,
+                                                   usage,
                                                    budgeted);
     if (!proxy) {
         return {};
@@ -397,7 +397,7 @@ sk_sp<Image> CopyAsDraw(Recorder* recorder,
                         Budgeted budgeted,
                         Mipmapped mipmapped,
                         SkBackingFit backingFit,
-                        std::string_view label) {
+                        ScratchUsageFlags usage) {
     // NOTE: This info may not exactly match `dstColorInfo` but will be castable back to
     // `dstColorInfo` when we create the Image view.
     SkImageInfo dstInfo = SkImageInfo::Make(
@@ -406,7 +406,7 @@ sk_sp<Image> CopyAsDraw(Recorder* recorder,
     // The surface goes out of scope when we return, so it can be scratch, but it may or may
     // not be budgeted depending on how the copied image is used (or returned to the client).
     sk_sp<Surface> surface =
-            Surface::MakeScratch(recorder, dstInfo, label, budgeted, mipmapped, backingFit);
+            Surface::MakeScratch(recorder, dstInfo, usage, budgeted, mipmapped, backingFit);
     if (!surface) {
         return nullptr;
     }
@@ -738,14 +738,15 @@ public:
                                                   this->colorType(),
                                                   kPremul_SkAlphaType,
                                                   std::move(colorSpace));
-        return skgpu::graphite::Device::Make(fRecorder,
-                                             imageInfo,
-                                             skgpu::Budgeted::kYes,
-                                             skgpu::Mipmapped::kNo,
-                                             SkBackingFit::kApprox,
-                                             props ? *props : this->surfaceProps(),
-                                             skgpu::graphite::LoadOp::kDiscard,
-                                             "ImageFilterResult");
+        return skgpu::graphite::Device::Make(
+                fRecorder,
+                imageInfo,
+                skgpu::Budgeted::kYes,
+                skgpu::Mipmapped::kNo,
+                SkBackingFit::kApprox,
+                props ? *props : this->surfaceProps(),
+                skgpu::graphite::LoadOp::kDiscard,
+                skgpu::graphite::ScratchUsageFlags::kImageFilterResult);
     }
 
     sk_sp<SkSpecialImage> makeImage(const SkIRect& subset, sk_sp<SkImage> image) const override {
@@ -785,7 +786,7 @@ public:
                                              SkBackingFit::kApprox,
                                              this->surfaceProps(),
                                              skgpu::graphite::LoadOp::kDiscard,
-                                             "EvalBlurTexture");
+                                             skgpu::graphite::ScratchUsageFlags::kEvalBlurTexture);
     }
 
 private:

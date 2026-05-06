@@ -98,27 +98,28 @@ sk_sp<Image> Image_Base::copyImage(Recorder* recorder,
                                    Budgeted budgeted,
                                    Mipmapped mipmapped,
                                    SkBackingFit backingFit,
-                                   std::string_view label) const {
+                                   ScratchUsageFlags usage) const {
+                                //    std::string_view label) const {
     return CopyAsDraw(recorder,
                       /*drawContext=*/nullptr, this, subset, this->imageInfo().colorInfo(),
-                      budgeted, mipmapped, backingFit, label);
+                      budgeted, mipmapped, backingFit, usage);
 }
 
-namespace {
+// namespace {
 
-TextureProxy* get_base_proxy_for_label(const Image_Base* baseImage) {
-    if (baseImage->type() == SkImage_Base::Type::kGraphite) {
-        const Image* img = static_cast<const Image*>(baseImage);
-        return img->textureProxyView().proxy();
-    }
-    SkASSERT(baseImage->type() == SkImage_Base::Type::kGraphiteYUVA);
-    // We will end up flattening to RGBA for a YUVA image when we get a subset. We just grab
-    // the label off of the first channel's proxy and use that to be the stand in label.
-    const Image_YUVA* img = static_cast<const Image_YUVA*>(baseImage);
-    return img->proxyView(0).proxy();
-}
+// TextureProxy* get_base_proxy_for_label(const Image_Base* baseImage) {
+//     if (baseImage->type() == SkImage_Base::Type::kGraphite) {
+//         const Image* img = static_cast<const Image*>(baseImage);
+//         return img->textureProxyView().proxy();
+//     }
+//     SkASSERT(baseImage->type() == SkImage_Base::Type::kGraphiteYUVA);
+//     // We will end up flattening to RGBA for a YUVA image when we get a subset. We just grab
+//     // the label off of the first channel's proxy and use that to be the stand in label.
+//     const Image_YUVA* img = static_cast<const Image_YUVA*>(baseImage);
+//     return img->proxyView(0).proxy();
+// }
 
-} // anonymous namespace
+// } // anonymous namespace
 
 sk_sp<SkImage> Image_Base::onMakeSubset(SkRecorder* recorder,
                                         const SkIRect& subset,
@@ -135,14 +136,14 @@ sk_sp<SkImage> Image_Base::onMakeSubset(SkRecorder* recorder,
         return sk_ref_sp(this);
     }
 
-    TextureProxy* proxy = get_base_proxy_for_label(this);
-    SkASSERT(proxy);
-    std::string label = proxy->label();
-    if (label.empty()) {
-        label = "ImageSubsetTexture";
-    } else {
-        label += "_Subset";
-    }
+    // TextureProxy* proxy = get_base_proxy_for_label(this);
+    // SkASSERT(proxy);
+    // std::string label = proxy->label();
+    // if (label.empty()) {
+    //     label = "ImageSubsetTexture";
+    // } else {
+    //     label += "_Subset";
+    // }
 
     // The copied image is not considered budgeted because this is a client-invoked API and they
     // will own the image.
@@ -151,7 +152,7 @@ sk_sp<SkImage> Image_Base::onMakeSubset(SkRecorder* recorder,
                            Budgeted::kNo,
                            requiredProps.fMipmapped ? Mipmapped::kYes : Mipmapped::kNo,
                            SkBackingFit::kExact,
-                           label);
+                           ScratchUsageFlags::kImageSubsetTexture);
 }
 
 sk_sp<SkSurface> Image_Base::onMakeSurface(SkRecorder* recorder, const SkImageInfo& info) const {
@@ -178,14 +179,14 @@ sk_sp<SkImage> Image_Base::makeColorTypeAndColorSpace(SkRecorder* recorder,
         return sk_ref_sp(this);
     }
 
-    TextureProxy* proxy = get_base_proxy_for_label(this);
-    SkASSERT(proxy);
-    std::string label = proxy->label();
-    if (label.empty()) {
-        label = "ImageMakeCTandCSTexture";
-    } else {
-        label += "_CTandCSConversion";
-    }
+    // TextureProxy* proxy = get_base_proxy_for_label(this);
+    // SkASSERT(proxy);
+    // std::string label = proxy->label();
+    // if (label.empty()) {
+    //     label = "ImageMakeCTandCSTexture";
+    // } else {
+    //     label += "_CTandCSConversion";
+    // }
 
     // Use CopyAsDraw directly to perform the color space changes. The copied image is not
     // considered budgeted because this is a client-invoked API and they will own the image.
@@ -197,7 +198,7 @@ sk_sp<SkImage> Image_Base::makeColorTypeAndColorSpace(SkRecorder* recorder,
                       Budgeted::kNo,
                       requiredProps.fMipmapped ? Mipmapped::kYes : Mipmapped::kNo,
                       SkBackingFit::kExact,
-                      label);
+                      ScratchUsageFlags::kImageMakeCTandCSTexture);
 }
 
 // Ganesh APIs are no-ops

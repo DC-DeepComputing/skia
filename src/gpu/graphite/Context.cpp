@@ -242,6 +242,10 @@ std::unique_ptr<Recorder> Context::makeInternalRecorder() const {
 InsertStatus Context::insertRecording(const InsertRecordingInfo& info) {
     ASSERT_SINGLE_OWNER
 
+    // Before inserting the recording, update any resource labels that need it.
+    // Compare bitmasks of scratch usages between a proxy's usage and its prior usage.
+    fSharedContext->updateCachedResourceLabels();
+
     return fQueueManager->addRecording(info, this);
 }
 
@@ -399,7 +403,7 @@ void Context::asyncReadPixels(std::unique_ptr<Recorder> recorder,
                                               Budgeted::kYes,
                                               Mipmapped::kNo,
                                               SkBackingFit::kApprox,
-                                              "AsyncReadPixelsFallbackTexture");
+                                              ScratchUsageFlags::kAsyncReadPixelsFallbackTexture);
         if (!flattened) {
             SKGPU_LOG_W("AsyncRead failed because copy-as-drawing into a readable format failed");
             return params.fail();

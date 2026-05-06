@@ -83,7 +83,7 @@ std::pair<const Renderer*, std::optional<CoverageMaskShape>> PathAtlas::addShape
 PathAtlas::DrawAtlasMgr::DrawAtlasMgr(size_t width, size_t height,
                                       size_t plotWidth, size_t plotHeight,
                                       DrawAtlas::UseStorageTextures useStorageTextures,
-                                      std::string_view label,
+                                      ScratchUsageFlags usage,
                                       const Caps* caps) {
     static constexpr auto kMaskFormat = MaskFormat::kA8;
 
@@ -96,7 +96,7 @@ PathAtlas::DrawAtlasMgr::DrawAtlasMgr(size_t width, size_t height,
                                          : DrawAtlas::AllowMultitexturing::kNo,
                                  useStorageTextures,
                                  /*evictor=*/this,
-                                 label);
+                                 usage);
     SkASSERT(fDrawAtlas);
     fKeyLists.resize(fDrawAtlas->numPlots() * fDrawAtlas->maxPages());
     for (int i = 0; i < fKeyLists.size(); ++i) {

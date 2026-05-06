@@ -26,6 +26,7 @@ class DrawContext;
 class Image;
 class Recorder;
 class TextureProxy;
+enum class ScratchUsageFlags : uint32_t;
 
 class Image_Base : public SkImage_Base {
 public:
@@ -45,7 +46,8 @@ public:
                                    Budgeted,
                                    Mipmapped,
                                    SkBackingFit,
-                                   std::string_view label) const;
+                                   ScratchUsageFlags) const;
+                                   //std::string_view label) const;
 
     // From SkImage.h
     bool isValid(SkRecorder* recorder) const final {

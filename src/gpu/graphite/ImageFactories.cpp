@@ -440,9 +440,9 @@ sk_sp<SkImage> make_from_bitmap(Recorder* recorder,
                                 sk_sp<SkMipmap> mipmaps,
                                 skgpu::Budgeted budgeted,
                                 SkImage::RequiredProperties requiredProps,
-                                std::string_view label) {
+                                ScratchUsageFlags usage) {
     auto mm = requiredProps.fMipmapped ? skgpu::Mipmapped::kYes : skgpu::Mipmapped::kNo;
-    auto view = MakeBitmapProxyView(recorder, bitmap, std::move(mipmaps), mm, budgeted, label);
+    auto view = MakeBitmapProxyView(recorder, bitmap, std::move(mipmaps), mm, budgeted, usage);
     if (!view) {
         return nullptr;
     }
@@ -490,7 +490,7 @@ static sk_sp<SkImage> make_texture_image_from_lazy(Recorder* recorder,
                                     nullptr,
                                     skgpu::Budgeted::kNo,
                                     requiredProps,
-                                    "LazySkImageBitmapTexture");
+                                    ScratchUsageFlags::kLazySkImageBitmapTexture);
         }
     }
 
@@ -518,7 +518,7 @@ sk_sp<SkImage> TextureFromImage(Recorder* recorder,
                                 raster->refMips(),
                                 skgpu::Budgeted::kNo,
                                 requiredProps,
-                                "RasterBitmapTexture");
+                                ScratchUsageFlags::kRasterBitmapTexture);
     }
     if (ib->isLazyGenerated()) {
         return make_texture_image_from_lazy(
@@ -558,6 +558,7 @@ sk_sp<SkImage> TextureFromYUVAPixmaps(Recorder* recorder,
 
     std::string labelStr(label);
     if (labelStr.empty()) {
+        // If no custom label is provided, use Graphite's statically-defined scratch usage bit instead
         labelStr = "YUVRasterBitmapPlane";
     } else {
         labelStr += "_YUVBitmapPlane";
