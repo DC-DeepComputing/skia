@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40b4d93c_20c90591",
+        "filename": "src/core/SkRecordedDrawable.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-05-06T15:28:00Z",
+      "side": 1,
+      "message": "Does this effectively reset the recursion limit each time we encounter a `SkRecordedDrawable`? Could we nest SkRecordedDrawables with SkPictures holding SkRecordedDrawables with SkPictures holding... to also trigger a stack overflow?\n\nWould tracking the recursion depth on the SkReadBuffer make this easier? That would also let us generalize this to other nesting scenarios like an SkImageFilters::Picture that has an SkPicture with an SkImageFilters::Picture, etc. or even adding recursion depth to image filters in general (since they can also stack overflow).",
+      "range": {
+        "startLine": 98,
+        "startChar": 57,
+        "endLine": 98,
+        "endChar": 96
+      },
+      "revId": "9f5534b828f6b800eb2272c413c7cbd8db46bd6b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
