@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "eb1e4ec8_8252e702",
+        "filename": "src/core/SkPictureData.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 481,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-05-06T15:32:38Z",
+      "side": 1,
+      "message": "We should be able to merge this with some extra templating:\n```\ntemplate \u003ctypename U, typename... Args\u003e using FactoryFn \u003d sk_sp\u003cU\u003e (*)(SkReadBuffer\u0026, Args...);\ntemplate \u003ctypename T, typename U, typename... Args\u003e\nbool new_array_from_buffer(SkReadBuffer\u0026 buffer,\n                           uint32_t inCount,\n                           TArray\u003csk_sp\u003cT\u003e\u003e\u0026 array,\n                           FactoryFn\u003cU, Args...\u003e factory,\n                           Args... extraFactoryArgs) {\n    if (!buffer.validate(array.empty() \u0026\u0026 SkTFitsIn\u003cint\u003e(inCount))) {\n        return false;\n    }\n    if (0 \u003d\u003d inCount) {\n        return true;\n    }\n\n    for (uint32_t i \u003d 0; i \u003c inCount; ++i) {\n        auto obj \u003d factory(buffer, std::forward(extraFactoryArgs...));\n\n        if (!buffer.validate(obj !\u003d nullptr)) {\n            array.clear();\n            return false;\n        }\n\n        array.push_back(std::move(obj));\n    }\n\n    return true;\n}",
+      "range": {
+        "startLine": 429,
+        "startChar": 0,
+        "endLine": 481,
+        "endChar": 7
+      },
+      "revId": "9f5534b828f6b800eb2272c413c7cbd8db46bd6b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "40b4d93c_20c90591",
         "filename": "src/core/SkRecordedDrawable.cpp",
         "patchSetId": 8
