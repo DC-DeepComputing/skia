@@ -240,6 +240,46 @@
       "message": "Got to here",
       "revId": "d924ff0f86ffd3c24b6ad470a1d1fe3e021e6b4a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8526e225_435df7c7",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-06T12:42:58Z",
+      "side": 1,
+      "message": "Are these template parameters really yielding that much perf benefit?",
+      "revId": "d924ff0f86ffd3c24b6ad470a1d1fe3e021e6b4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5828d2ce_1a070fd0",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-06T12:42:58Z",
+      "side": 1,
+      "message": "It seems like you could have these be bools w/o sacrificing performance.",
+      "range": {
+        "startLine": 332,
+        "startChar": 8,
+        "endLine": 332,
+        "endChar": 16
+      },
+      "revId": "d924ff0f86ffd3c24b6ad470a1d1fe3e021e6b4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
