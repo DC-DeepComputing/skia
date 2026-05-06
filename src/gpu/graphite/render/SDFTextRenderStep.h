@@ -27,8 +27,6 @@ public:
     ~SDFTextRenderStep() override;
 
     std::string vertexSkSL() const override;
-    std::string texturesAndSamplersSkSL(const ResourceBindingRequirements&,
-                                        int* nextBindingIndex) const override;
     const char* fragmentCoverageSkSL() const override;
 
     void writeVertices(DrawWriter*, const DrawParams&, uint32_t ssboIndex) const override;

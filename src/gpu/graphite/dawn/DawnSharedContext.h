@@ -55,6 +55,8 @@ public:
     const wgpu::BindGroupLayout& getUniformBuffersBindGroupLayout() const {
         return fUniformBuffersBindGroupLayout;
     }
+    // TODO update me to take  vertex shader visibility into account?
+    // maybe have two separate bgls?
     const wgpu::BindGroupLayout& getSingleTextureSamplerBindGroupLayout() const {
         return fSingleTextureSamplerBindGroupLayout;
     }
