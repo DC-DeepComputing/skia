@@ -24,6 +24,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "70267f30_2f3e1059",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-06T15:42:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "86ac5420_6f81866e",
+      "range": {
+        "startLine": 31,
+        "startChar": 70,
+        "endLine": 31,
+        "endChar": 90
+      },
+      "revId": "d924ff0f86ffd3c24b6ad470a1d1fe3e021e6b4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed5de998_30431c9f",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-06T15:42:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "86ac5420_6f81866e",
+      "range": {
+        "startLine": 31,
+        "startChar": 70,
+        "endLine": 31,
+        "endChar": 90
+      },
+      "revId": "d924ff0f86ffd3c24b6ad470a1d1fe3e021e6b4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "14a20c20_60bc6259",
@@ -37,6 +85,54 @@
       "writtenOn": "2026-05-06T12:09:56Z",
       "side": 1,
       "message": "(W) ?",
+      "range": {
+        "startLine": 62,
+        "startChar": 33,
+        "endLine": 62,
+        "endChar": 37
+      },
+      "revId": "d924ff0f86ffd3c24b6ad470a1d1fe3e021e6b4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "18001a74_501b4a23",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-06T15:42:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "14a20c20_60bc6259",
+      "range": {
+        "startLine": 62,
+        "startChar": 33,
+        "endLine": 62,
+        "endChar": 37
+      },
+      "revId": "d924ff0f86ffd3c24b6ad470a1d1fe3e021e6b4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "11772411_6afc938d",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-06T15:42:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "14a20c20_60bc6259",
       "range": {
         "startLine": 62,
         "startChar": 33,
@@ -70,6 +166,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d93ce65_a894091b",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-06T15:42:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "678cfbee_ee6e386b",
+      "range": {
+        "startLine": 63,
+        "startChar": 36,
+        "endLine": 63,
+        "endChar": 40
+      },
+      "revId": "d924ff0f86ffd3c24b6ad470a1d1fe3e021e6b4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "032ade82_86e792fe",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-06T15:42:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "678cfbee_ee6e386b",
+      "range": {
+        "startLine": 63,
+        "startChar": 36,
+        "endLine": 63,
+        "endChar": 40
+      },
+      "revId": "d924ff0f86ffd3c24b6ad470a1d1fe3e021e6b4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d7577cb2_b46b85de",
@@ -83,6 +227,54 @@
       "writtenOn": "2026-05-06T12:09:56Z",
       "side": 1,
       "message": "rm ?",
+      "range": {
+        "startLine": 73,
+        "startChar": 31,
+        "endLine": 73,
+        "endChar": 41
+      },
+      "revId": "d924ff0f86ffd3c24b6ad470a1d1fe3e021e6b4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "35353462_0c3eeafa",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-06T15:42:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d7577cb2_b46b85de",
+      "range": {
+        "startLine": 73,
+        "startChar": 31,
+        "endLine": 73,
+        "endChar": 41
+      },
+      "revId": "d924ff0f86ffd3c24b6ad470a1d1fe3e021e6b4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2196c133_a4d7cf64",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-06T15:42:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d7577cb2_b46b85de",
       "range": {
         "startLine": 73,
         "startChar": 31,
@@ -116,6 +308,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa798f9a_19d44913",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-06T15:42:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c23a24f8_a63ab567",
+      "range": {
+        "startLine": 74,
+        "startChar": 18,
+        "endLine": 74,
+        "endChar": 80
+      },
+      "revId": "d924ff0f86ffd3c24b6ad470a1d1fe3e021e6b4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b45abc2f_ae7b7a6a",
@@ -129,6 +345,30 @@
       "writtenOn": "2026-05-06T12:09:56Z",
       "side": 1,
       "message": "In this case I would ditch the \"this-\u003e\". DivCeil is static after all.",
+      "range": {
+        "startLine": 158,
+        "startChar": 31,
+        "endLine": 158,
+        "endChar": 37
+      },
+      "revId": "d924ff0f86ffd3c24b6ad470a1d1fe3e021e6b4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed12a56b_0d7e272f",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-06T15:42:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b45abc2f_ae7b7a6a",
       "range": {
         "startLine": 158,
         "startChar": 31,
@@ -156,6 +396,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "732aa749_10022230",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-06T15:42:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "65a4f27f_3ec1c8a7",
+      "revId": "d924ff0f86ffd3c24b6ad470a1d1fe3e021e6b4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "04df3920_be243570",
@@ -169,6 +427,30 @@
       "writtenOn": "2026-05-06T12:09:56Z",
       "side": 1,
       "message": "1 \u0027n\u0027 ?",
+      "range": {
+        "startLine": 183,
+        "startChar": 44,
+        "endLine": 183,
+        "endChar": 46
+      },
+      "revId": "d924ff0f86ffd3c24b6ad470a1d1fe3e021e6b4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "acdf4a99_f2ce588c",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-06T15:42:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "04df3920_be243570",
       "range": {
         "startLine": 183,
         "startChar": 44,
@@ -202,6 +484,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f582bb3_c783cc38",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-06T15:42:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1ade90fb_b198ddf8",
+      "range": {
+        "startLine": 204,
+        "startChar": 42,
+        "endLine": 204,
+        "endChar": 48
+      },
+      "revId": "d924ff0f86ffd3c24b6ad470a1d1fe3e021e6b4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a43fd4f9_5f7ed633",
@@ -215,6 +521,30 @@
       "writtenOn": "2026-05-06T12:09:56Z",
       "side": 1,
       "message": "typo",
+      "range": {
+        "startLine": 267,
+        "startChar": 62,
+        "endLine": 267,
+        "endChar": 68
+      },
+      "revId": "d924ff0f86ffd3c24b6ad470a1d1fe3e021e6b4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5207cbda_33d75794",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-06T15:42:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a43fd4f9_5f7ed633",
       "range": {
         "startLine": 267,
         "startChar": 62,
@@ -259,6 +589,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "183c21a2_d995a7a3",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-06T15:42:27Z",
+      "side": 1,
+      "message": "After doing more testing, xDir is worthwhile (~10%), the checks no.",
+      "parentUuid": "8526e225_435df7c7",
+      "revId": "d924ff0f86ffd3c24b6ad470a1d1fe3e021e6b4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5828d2ce_1a070fd0",
@@ -272,6 +620,30 @@
       "writtenOn": "2026-05-06T12:42:58Z",
       "side": 1,
       "message": "It seems like you could have these be bools w/o sacrificing performance.",
+      "range": {
+        "startLine": 332,
+        "startChar": 8,
+        "endLine": 332,
+        "endChar": 16
+      },
+      "revId": "d924ff0f86ffd3c24b6ad470a1d1fe3e021e6b4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5fccdd95_cd6fd97f",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-06T15:42:27Z",
+      "side": 1,
+      "message": "used for creating the intersection so it\u0027s more convenient to leave as u32.",
+      "parentUuid": "5828d2ce_1a070fd0",
       "range": {
         "startLine": 332,
         "startChar": 8,

@@ -705,6 +705,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d0686ea_c231209b",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-06T15:42:27Z",
+      "side": 1,
+      "message": "Edit: testing shows that make LineContext a class member regresses performance by ~10% so keeping as is.",
+      "parentUuid": "b6f055a7_aef18aac",
+      "revId": "e790746d8d0e94e82abbc78661962d5e8b1dd748",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "55b1a193_339ed498",
