@@ -109,6 +109,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "67f062f8_f56f8c26",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoEntryCodec.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 4569768
+      },
+      "writtenOn": "2026-05-06T13:10:26Z",
+      "side": 1,
+      "message": "I\u0027ve resolved all comments and awaiting further review.\nI added @lukasza@google.com as a reviewer for a second round.",
+      "parentUuid": "b88c23f2_1c7550c7",
+      "range": {
+        "startLine": 79,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 78
+      },
+      "revId": "a8cc847ff8d85fac4b72ad032ccaa5d5d09ca93b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0765a402_caf954c2",
         "filename": "experimental/rust_ico/ffi/FFI.rs",
         "patchSetId": 11
