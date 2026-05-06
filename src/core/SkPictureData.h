@@ -94,7 +94,7 @@ public:
                                            const SkDeserialProcs&,
                                            SkTypefacePlayback*,
                                            int recursionLimit);
-    static SkPictureData* CreateFromBuffer(SkReadBuffer&, const SkPictInfo&);
+    static SkPictureData* CreateFromBuffer(SkReadBuffer&, const SkPictInfo&, int recursionLimit);
 
     void serialize(SkWStream*, const SkSerialProcs&, SkRefCntSet*, bool textBlobsOnly=false) const;
     void flatten(SkWriteBuffer&) const;
@@ -109,7 +109,7 @@ protected:
     // Does not affect ownership of SkStream.
     bool parseStream(SkStream*, const SkDeserialProcs&, SkTypefacePlayback*,
                      int recursionLimit);
-    bool parseBuffer(SkReadBuffer& buffer);
+    bool parseBuffer(SkReadBuffer& buffer, int recursionLimit);
 
 public:
     const SkImage* getImage(SkReadBuffer* reader) const {
@@ -157,7 +157,7 @@ private:
     bool parseStreamTag(SkStream*, uint32_t tag, uint32_t size,
                         const SkDeserialProcs&, SkTypefacePlayback*,
                         int recursionLimit);
-    void parseBufferTag(SkReadBuffer&, uint32_t tag, uint32_t size);
+    void parseBufferTag(SkReadBuffer&, uint32_t tag, uint32_t size, int recursionLimit);
     void flattenToBuffer(SkWriteBuffer&, bool textBlobsOnly) const;
 
     skia_private::TArray<SkPaint> fPaints;
