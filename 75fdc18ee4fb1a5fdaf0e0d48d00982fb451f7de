@@ -16,6 +16,24 @@
       "message": "PTAL, remove image layout flag as",
       "revId": "75fdc18ee4fb1a5fdaf0e0d48d00982fb451f7de",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "019f7848_66c9a58d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-07T20:17:16Z",
+      "side": 1,
+      "message": "Oops! PTAL removed vertex image layout flag as discussed.",
+      "parentUuid": "48008709_3a0914ff",
+      "revId": "75fdc18ee4fb1a5fdaf0e0d48d00982fb451f7de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
