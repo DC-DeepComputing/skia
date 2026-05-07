@@ -55,8 +55,9 @@ public:
     const wgpu::BindGroupLayout& getUniformBuffersBindGroupLayout() const {
         return fUniformBuffersBindGroupLayout;
     }
+
     const wgpu::BindGroupLayout& getSingleTextureSamplerBindGroupLayout() const {
-        return fSingleTextureSamplerBindGroupLayout;
+        return fFragOnlySingleTextureSamplerBGL;
     }
 
 private:
@@ -67,7 +68,7 @@ private:
                       SkSpan<sk_sp<SkRuntimeEffect>> userDefinedKnownRuntimeEffects);
 
     void createUniformBuffersBindGroupLayout();
-    void createSingleTextureSamplerBindGroupLayout();
+    void createFragOnlySingleTextureSamplerBGL();
 
     sk_sp<GraphicsPipeline> createGraphicsPipeline(const RuntimeEffectDictionary*,
                                                    const UniqueKey&,
@@ -85,7 +86,7 @@ private:
     wgpu::ShaderModule fNoopFragment;
 
     wgpu::BindGroupLayout fUniformBuffersBindGroupLayout;
-    wgpu::BindGroupLayout fSingleTextureSamplerBindGroupLayout;
+    wgpu::BindGroupLayout fFragOnlySingleTextureSamplerBGL;
 };
 
 } // namespace skgpu::graphite
