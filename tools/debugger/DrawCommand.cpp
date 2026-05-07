@@ -47,6 +47,7 @@
 #include "src/core/SkTextBlobPriv.h"
 #include "src/core/SkWriteBuffer.h"
 #include "src/image/SkImage_Base.h"
+#include "src/image/SkImage_Picture.h"
 #include "src/utils/SkJSONWriter.h"
 #include "tools/UrlDataManager.h"
 #include "tools/debugger/DebugLayerManager.h"
@@ -62,6 +63,7 @@ class GrDirectContext;
 #include "include/gpu/ganesh/GrRecordingContext.h"
 #include "include/private/gpu/ganesh/GrImageContext.h"
 #endif
+
 
 #define DEBUGCANVAS_ATTRIBUTE_DUMP "dump"
 #define DEBUGCANVAS_ATTRIBUTE_COMMAND "command"
@@ -644,6 +646,13 @@ bool DrawCommand::flatten(const SkImage&  image,
         return true;
     }
 
+    if (image.isLazyGenerated()) {
+        writer.beginObject(DEBUGCANVAS_ATTRIBUTE_CONTENTID);
+        writer.appendU32(DEBUGCANVAS_ATTRIBUTE_CONTENTID, as_IB(&image)->getContentID());
+        writer.endObject();
+        return true;
+    }
+
     writer.beginObject(DEBUGCANVAS_ATTRIBUTE_IMAGE);
     size_t       rowBytes = 4 * image.width();
     SkAutoMalloc buffer(rowBytes * image.height());
@@ -654,6 +663,8 @@ bool DrawCommand::flatten(const SkImage&  image,
 #if defined(SK_GANESH)
     dContext = GrAsDirectContext(as_IB(&image)->context());
 #endif
+
+
     if (!image.readPixels(dContext, dstInfo, buffer.get(), rowBytes, 0, 0)) {
         SkDebugf("DrawCommand::flatten SkImage: readPixels failed\n");
         writer.endObject();
