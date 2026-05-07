@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8af83fb_e7499c27",
+        "filename": "src/core/SkPictureData.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 520,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-05-07T14:53:52Z",
+      "side": 1,
+      "message": "Do we need recursion limiting here as well?\n\nKinda makes me wonder whether there\u0027s a better/centralized location to enforce this...  E.g. would it make sense to have a general Flattenable nesting limit in `readRawFlattenable`?",
+      "range": {
+        "startLine": 520,
+        "startChar": 13,
+        "endLine": 520,
+        "endChar": 33
+      },
+      "revId": "f066d884e87300032d0ee13a8697bcfd82b05680",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5befbe12_3e75bede",
+        "filename": "src/core/SkReadBuffer.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-05-07T14:53:52Z",
+      "side": 1,
+      "message": "It reads a bit odd to mix recursion limit checks with general validity checks.  Is this needed?\n\nAlso, since we invalidate the buffer when reaching the limit, clients could just check isValid() instead.",
+      "range": {
+        "startLine": 233,
+        "startChar": 40,
+        "endLine": 233,
+        "endChar": 53
+      },
+      "revId": "f066d884e87300032d0ee13a8697bcfd82b05680",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5d2b8e1_ef56b942",
+        "filename": "src/core/SkReadBuffer.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-05-07T14:53:52Z",
+      "side": 1,
+      "message": "Is there anything preventing `setRecursionLimit(0)`?",
+      "range": {
+        "startLine": 244,
+        "startChar": 26,
+        "endLine": 244,
+        "endChar": 27
+      },
+      "revId": "f066d884e87300032d0ee13a8697bcfd82b05680",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
