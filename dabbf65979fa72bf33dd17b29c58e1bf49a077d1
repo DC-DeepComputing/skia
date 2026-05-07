@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec81eec6_eaea4005",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 633,
+      "author": {
+        "id": 3916209
+      },
+      "writtenOn": "2026-05-07T19:38:40Z",
+      "side": 1,
+      "message": "Updated. Thanks.",
+      "parentUuid": "47e581df_528f6b4b",
+      "revId": "dabbf65979fa72bf33dd17b29c58e1bf49a077d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c52f8d3f_de94a20b",
@@ -48,6 +66,30 @@
       "writtenOn": "2026-05-07T07:57:02Z",
       "side": 1,
       "message": "Decoded is sort of implicit, can we find a better name here? `AlphaMask` maybe?",
+      "range": {
+        "startLine": 24,
+        "startChar": 4,
+        "endLine": 24,
+        "endChar": 16
+      },
+      "revId": "dabbf65979fa72bf33dd17b29c58e1bf49a077d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "29cddd18_13e53720",
+        "filename": "src/ports/fontations/src/bitmap.rs",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 3916209
+      },
+      "writtenOn": "2026-05-07T19:38:40Z",
+      "side": 1,
+      "message": "Yeah, that makes sense. Updated.",
+      "parentUuid": "c52f8d3f_de94a20b",
       "range": {
         "startLine": 24,
         "startChar": 4,
@@ -81,6 +123,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e6bf562_0dd548e5",
+        "filename": "src/ports/fontations/src/bitmap.rs",
+        "patchSetId": 2
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 3916209
+      },
+      "writtenOn": "2026-05-07T19:38:40Z",
+      "side": 1,
+      "message": "Updated.",
+      "parentUuid": "1d31fb70_36c2d2fa",
+      "range": {
+        "startLine": 132,
+        "startChar": 2,
+        "endLine": 132,
+        "endChar": 19
+      },
+      "revId": "dabbf65979fa72bf33dd17b29c58e1bf49a077d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "41a3dd1e_16ebaa76",
@@ -94,6 +160,24 @@
       "writtenOn": "2026-05-07T07:57:02Z",
       "side": 1,
       "message": "Let\u0027s combine the two metrics functions and return a struct `AlphaBitmapSize`.",
+      "revId": "dabbf65979fa72bf33dd17b29c58e1bf49a077d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa180ae1_909b63c3",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 2
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 3916209
+      },
+      "writtenOn": "2026-05-07T19:38:40Z",
+      "side": 1,
+      "message": "Updated. Thanks.",
+      "parentUuid": "41a3dd1e_16ebaa76",
       "revId": "dabbf65979fa72bf33dd17b29c58e1bf49a077d1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
