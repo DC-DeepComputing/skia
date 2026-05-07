@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0fc4874d_3306a22a",
+        "filename": "src/core/SkPictureData.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 520,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-05-07T20:27:03Z",
+      "side": 1,
+      "message": "Also it\u0027s not necessarily about valid nesting at the public API level, but dealing with potentially-corrupt deserialization inputs that could cause recursion at this level:\n\n```\n    SkPictureData::parseBufferTag(SK_PICT_DRAWABLE_TAG)\n      SkReadBuffer::readRawFlattenable\n        SkRecordedDrawable::CreateProc\n          SkPictureData::CreateFromBuffer\n            SkPictureData::parseBufferTag\n              ...\n    \n```",
+      "parentUuid": "d1e83215_cfc35e23",
+      "range": {
+        "startLine": 520,
+        "startChar": 13,
+        "endLine": 520,
+        "endChar": 33
+      },
+      "revId": "f066d884e87300032d0ee13a8697bcfd82b05680",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5befbe12_3e75bede",
         "filename": "src/core/SkReadBuffer.h",
         "patchSetId": 11
