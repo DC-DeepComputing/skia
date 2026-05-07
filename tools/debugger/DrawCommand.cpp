@@ -65,93 +65,93 @@ class GrDirectContext;
 #endif
 
 
-#define DEBUGCANVAS_ATTRIBUTE_DUMP "dump"
-#define DEBUGCANVAS_ATTRIBUTE_COMMAND "command"
-#define DEBUGCANVAS_ATTRIBUTE_VISIBLE "visible"
-#define DEBUGCANVAS_ATTRIBUTE_MATRIX "matrix"
-#define DEBUGCANVAS_ATTRIBUTE_COORDS "coords"
-#define DEBUGCANVAS_ATTRIBUTE_EDGING "edging"
-#define DEBUGCANVAS_ATTRIBUTE_HINTING "hinting"
-#define DEBUGCANVAS_ATTRIBUTE_BOUNDS "bounds"
-#define DEBUGCANVAS_ATTRIBUTE_PAINT "paint"
-#define DEBUGCANVAS_ATTRIBUTE_OUTER "outer"
-#define DEBUGCANVAS_ATTRIBUTE_INNER "inner"
-#define DEBUGCANVAS_ATTRIBUTE_MODE "mode"
-#define DEBUGCANVAS_ATTRIBUTE_POINTS "points"
-#define DEBUGCANVAS_ATTRIBUTE_PATH "path"
-#define DEBUGCANVAS_ATTRIBUTE_CLUSTERS "clusters"
-#define DEBUGCANVAS_ATTRIBUTE_TEXT "text"
-#define DEBUGCANVAS_ATTRIBUTE_COLOR "color"
-#define DEBUGCANVAS_ATTRIBUTE_BLENDMODE "blendMode"
-#define DEBUGCANVAS_ATTRIBUTE_SAMPLING "sampling"
-#define DEBUGCANVAS_ATTRIBUTE_STYLE "style"
-#define DEBUGCANVAS_ATTRIBUTE_STROKEWIDTH "strokeWidth"
-#define DEBUGCANVAS_ATTRIBUTE_STROKEMITER "strokeMiter"
-#define DEBUGCANVAS_ATTRIBUTE_STROKEJOIN "strokeJoin"
-#define DEBUGCANVAS_ATTRIBUTE_CAP "cap"
+#define DEBUGCANVAS_ATTRIBUTE_ALPHA "alpha"
+#define DEBUGCANVAS_ATTRIBUTE_AMBIENTCOLOR "ambientColor"
 #define DEBUGCANVAS_ATTRIBUTE_ANTIALIAS "antiAlias"
-#define DEBUGCANVAS_ATTRIBUTE_DITHER "dither"
-#define DEBUGCANVAS_ATTRIBUTE_FAKEBOLDTEXT "fakeBoldText"
-#define DEBUGCANVAS_ATTRIBUTE_LINEARTEXT "linearText"
-#define DEBUGCANVAS_ATTRIBUTE_SUBPIXELTEXT "subpixelText"
-#define DEBUGCANVAS_ATTRIBUTE_EMBEDDEDBITMAPTEXT "embeddedBitmapText"
 #define DEBUGCANVAS_ATTRIBUTE_AUTOHINTING "forceAutoHinting"
-#define DEBUGCANVAS_ATTRIBUTE_REGION "region"
-#define DEBUGCANVAS_ATTRIBUTE_REGIONOP "op"
-#define DEBUGCANVAS_ATTRIBUTE_BLUR "blur"
-#define DEBUGCANVAS_ATTRIBUTE_SIGMA "sigma"
-#define DEBUGCANVAS_ATTRIBUTE_TEXTSIZE "textSize"
-#define DEBUGCANVAS_ATTRIBUTE_TEXTSCALEX "textScaleX"
-#define DEBUGCANVAS_ATTRIBUTE_DASHING "dashing"
-#define DEBUGCANVAS_ATTRIBUTE_INTERVALS "intervals"
-#define DEBUGCANVAS_ATTRIBUTE_PHASE "phase"
-#define DEBUGCANVAS_ATTRIBUTE_FILLTYPE "fillType"
-#define DEBUGCANVAS_ATTRIBUTE_VERBS "verbs"
-#define DEBUGCANVAS_ATTRIBUTE_NAME "name"
-#define DEBUGCANVAS_ATTRIBUTE_DATA "data"
-#define DEBUGCANVAS_ATTRIBUTE_VALUES "values"
-#define DEBUGCANVAS_ATTRIBUTE_SHADER "shader"
-#define DEBUGCANVAS_ATTRIBUTE_PATHEFFECT "pathEffect"
-#define DEBUGCANVAS_ATTRIBUTE_MASKFILTER "maskFilter"
 #define DEBUGCANVAS_ATTRIBUTE_BACKDROP "backdrop"
+#define DEBUGCANVAS_ATTRIBUTE_BLENDMODE "blendMode"
+#define DEBUGCANVAS_ATTRIBUTE_BLUR "blur"
+#define DEBUGCANVAS_ATTRIBUTE_BOUNDS "bounds"
+#define DEBUGCANVAS_ATTRIBUTE_CAP "cap"
+#define DEBUGCANVAS_ATTRIBUTE_CLUSTERS "clusters"
+#define DEBUGCANVAS_ATTRIBUTE_COLOR "color"
 #define DEBUGCANVAS_ATTRIBUTE_COLORFILTER "colorfilter"
-#define DEBUGCANVAS_ATTRIBUTE_IMAGEFILTER "imagefilter"
+#define DEBUGCANVAS_ATTRIBUTE_COLORS "colors"
+#define DEBUGCANVAS_ATTRIBUTE_COMMAND "command"
+#define DEBUGCANVAS_ATTRIBUTE_CONTENTID "contentID"
+#define DEBUGCANVAS_ATTRIBUTE_COORDS "coords"
+#define DEBUGCANVAS_ATTRIBUTE_CUBICS "cubics"
+#define DEBUGCANVAS_ATTRIBUTE_DASHING "dashing"
+#define DEBUGCANVAS_ATTRIBUTE_DATA "data"
+#define DEBUGCANVAS_ATTRIBUTE_DITHER "dither"
+#define DEBUGCANVAS_ATTRIBUTE_DST "dst"
+#define DEBUGCANVAS_ATTRIBUTE_DUMP "dump"
+#define DEBUGCANVAS_ATTRIBUTE_EDGING "edging"
+#define DEBUGCANVAS_ATTRIBUTE_EMBEDDEDBITMAPTEXT "embeddedBitmapText"
+#define DEBUGCANVAS_ATTRIBUTE_FAKEBOLDTEXT "fakeBoldText"
+#define DEBUGCANVAS_ATTRIBUTE_FILLTYPE "fillType"
+#define DEBUGCANVAS_ATTRIBUTE_FONT "font"
+#define DEBUGCANVAS_ATTRIBUTE_GLYPHS "glyphs"
+#define DEBUGCANVAS_ATTRIBUTE_HEIGHT "height"
+#define DEBUGCANVAS_ATTRIBUTE_HINTING "hinting"
 #define DEBUGCANVAS_ATTRIBUTE_IMAGE "image"
 #define DEBUGCANVAS_ATTRIBUTE_IMAGE_INDEX "imageIndex"
-#define DEBUGCANVAS_ATTRIBUTE_CONTENTID "contentID"
+#define DEBUGCANVAS_ATTRIBUTE_IMAGEFILTER "imagefilter"
+#define DEBUGCANVAS_ATTRIBUTE_INNER "inner"
+#define DEBUGCANVAS_ATTRIBUTE_INTERVALS "intervals"
+#define DEBUGCANVAS_ATTRIBUTE_LATTICE "lattice"
+#define DEBUGCANVAS_ATTRIBUTE_LATTICEFLAGS "flags"
+#define DEBUGCANVAS_ATTRIBUTE_LATTICEXCOUNT "xCount"
+#define DEBUGCANVAS_ATTRIBUTE_LATTICEXDIVS "xDivs"
+#define DEBUGCANVAS_ATTRIBUTE_LATTICEYCOUNT "yCount"
+#define DEBUGCANVAS_ATTRIBUTE_LATTICEYDIVS "yDivs"
+#define DEBUGCANVAS_ATTRIBUTE_LAYERNODEID "layerNodeId"
+#define DEBUGCANVAS_ATTRIBUTE_LIGHTPOSITION "lightPositions"
+#define DEBUGCANVAS_ATTRIBUTE_LIGHTRADIUS "lightRadius"
+#define DEBUGCANVAS_ATTRIBUTE_LINEARTEXT "linearText"
+#define DEBUGCANVAS_ATTRIBUTE_MASKFILTER "maskFilter"
+#define DEBUGCANVAS_ATTRIBUTE_MATRIX "matrix"
+#define DEBUGCANVAS_ATTRIBUTE_MODE "mode"
+#define DEBUGCANVAS_ATTRIBUTE_NAME "name"
+#define DEBUGCANVAS_ATTRIBUTE_OUTER "outer"
+#define DEBUGCANVAS_ATTRIBUTE_PAINT "paint"
+#define DEBUGCANVAS_ATTRIBUTE_PATH "path"
+#define DEBUGCANVAS_ATTRIBUTE_PATHEFFECT "pathEffect"
+#define DEBUGCANVAS_ATTRIBUTE_PHASE "phase"
+#define DEBUGCANVAS_ATTRIBUTE_POINTS "points"
+#define DEBUGCANVAS_ATTRIBUTE_POSITIONS "positions"
+#define DEBUGCANVAS_ATTRIBUTE_REGION "region"
+#define DEBUGCANVAS_ATTRIBUTE_REGIONOP "op"
+#define DEBUGCANVAS_ATTRIBUTE_RUNS "runs"
+#define DEBUGCANVAS_ATTRIBUTE_SAMPLING "sampling"
+#define DEBUGCANVAS_ATTRIBUTE_SHADER "shader"
+#define DEBUGCANVAS_ATTRIBUTE_SHORTDESC "shortDesc"
+#define DEBUGCANVAS_ATTRIBUTE_SIGMA "sigma"
+#define DEBUGCANVAS_ATTRIBUTE_SPOTCOLOR "spotColor"
 #define DEBUGCANVAS_ATTRIBUTE_SRC "src"
-#define DEBUGCANVAS_ATTRIBUTE_DST "dst"
+#define DEBUGCANVAS_ATTRIBUTE_STARTANGLE "startAngle"
 #define DEBUGCANVAS_ATTRIBUTE_STRICT "strict"
+#define DEBUGCANVAS_ATTRIBUTE_STROKEJOIN "strokeJoin"
+#define DEBUGCANVAS_ATTRIBUTE_STROKEMITER "strokeMiter"
+#define DEBUGCANVAS_ATTRIBUTE_STROKEWIDTH "strokeWidth"
+#define DEBUGCANVAS_ATTRIBUTE_STYLE "style"
+#define DEBUGCANVAS_ATTRIBUTE_SUBPIXELTEXT "subpixelText"
+#define DEBUGCANVAS_ATTRIBUTE_SWEEPANGLE "sweepAngle"
+#define DEBUGCANVAS_ATTRIBUTE_TEXT "text"
+#define DEBUGCANVAS_ATTRIBUTE_TEXTSCALEX "textScaleX"
+#define DEBUGCANVAS_ATTRIBUTE_TEXTSIZE "textSize"
+#define DEBUGCANVAS_ATTRIBUTE_TEXTURECOORDS "textureCoords"
+#define DEBUGCANVAS_ATTRIBUTE_TYPEFACE "typeface"
+#define DEBUGCANVAS_ATTRIBUTE_UNIQUE_ID "uniqueID"
+#define DEBUGCANVAS_ATTRIBUTE_USECENTER "useCenter"
+#define DEBUGCANVAS_ATTRIBUTE_VALUES "values"
+#define DEBUGCANVAS_ATTRIBUTE_VERBS "verbs"
+#define DEBUGCANVAS_ATTRIBUTE_VISIBLE "visible"
+#define DEBUGCANVAS_ATTRIBUTE_WIDTH "width"
 #define DEBUGCANVAS_ATTRIBUTE_X "x"
 #define DEBUGCANVAS_ATTRIBUTE_Y "y"
-#define DEBUGCANVAS_ATTRIBUTE_RUNS "runs"
-#define DEBUGCANVAS_ATTRIBUTE_POSITIONS "positions"
-#define DEBUGCANVAS_ATTRIBUTE_GLYPHS "glyphs"
-#define DEBUGCANVAS_ATTRIBUTE_FONT "font"
-#define DEBUGCANVAS_ATTRIBUTE_TYPEFACE "typeface"
-#define DEBUGCANVAS_ATTRIBUTE_CUBICS "cubics"
-#define DEBUGCANVAS_ATTRIBUTE_COLORS "colors"
-#define DEBUGCANVAS_ATTRIBUTE_TEXTURECOORDS "textureCoords"
-#define DEBUGCANVAS_ATTRIBUTE_STARTANGLE "startAngle"
-#define DEBUGCANVAS_ATTRIBUTE_SWEEPANGLE "sweepAngle"
-#define DEBUGCANVAS_ATTRIBUTE_USECENTER "useCenter"
-#define DEBUGCANVAS_ATTRIBUTE_SHORTDESC "shortDesc"
-#define DEBUGCANVAS_ATTRIBUTE_UNIQUE_ID "uniqueID"
-#define DEBUGCANVAS_ATTRIBUTE_WIDTH "width"
-#define DEBUGCANVAS_ATTRIBUTE_HEIGHT "height"
-#define DEBUGCANVAS_ATTRIBUTE_ALPHA "alpha"
-#define DEBUGCANVAS_ATTRIBUTE_LATTICE "lattice"
-#define DEBUGCANVAS_ATTRIBUTE_LATTICEXCOUNT "xCount"
-#define DEBUGCANVAS_ATTRIBUTE_LATTICEYCOUNT "yCount"
-#define DEBUGCANVAS_ATTRIBUTE_LATTICEXDIVS "xDivs"
-#define DEBUGCANVAS_ATTRIBUTE_LATTICEYDIVS "yDivs"
-#define DEBUGCANVAS_ATTRIBUTE_LATTICEFLAGS "flags"
 #define DEBUGCANVAS_ATTRIBUTE_ZPLANE "zPlane"
-#define DEBUGCANVAS_ATTRIBUTE_LIGHTPOSITION "lightPositions"
-#define DEBUGCANVAS_ATTRIBUTE_AMBIENTCOLOR "ambientColor"
-#define DEBUGCANVAS_ATTRIBUTE_SPOTCOLOR "spotColor"
-#define DEBUGCANVAS_ATTRIBUTE_LIGHTRADIUS "lightRadius"
-#define DEBUGCANVAS_ATTRIBUTE_LAYERNODEID "layerNodeId"
 
 #define DEBUGCANVAS_VERB_MOVE "move"
 #define DEBUGCANVAS_VERB_LINE "line"
@@ -224,16 +224,20 @@ const char* DrawCommand::GetCommandString(OpType type) {
         case kBeginDrawPicture_OpType: return "BeginDrawPicture";
         case kClear_OpType: return "DrawClear";
         case kClipPath_OpType: return "ClipPath";
-        case kClipRegion_OpType: return "ClipRegion";
         case kClipRect_OpType: return "ClipRect";
+        case kClipRegion_OpType: return "ClipRegion";
         case kClipRRect_OpType: return "ClipRRect";
-        case kResetClip_OpType: return "ResetClip";
         case kConcat_OpType: return "Concat";
         case kConcat44_OpType: return "Concat44";
         case kDrawAnnotation_OpType: return "DrawAnnotation";
+        case kDrawArc_OpType: return "DrawArc";
+        case kDrawAtlas_OpType: return "DrawAtlas";
         case kDrawBitmap_OpType: return "DrawBitmap";
         case kDrawBitmapRect_OpType: return "DrawBitmapRect";
+        case kDrawDrawable_OpType: return "DrawDrawable";
         case kDrawDRRect_OpType: return "DrawDRRect";
+        case kDrawEdgeAAImageSet_OpType: return "DrawEdgeAAImageSet";
+        case kDrawEdgeAAQuad_OpType: return "DrawEdgeAAQuad";
         case kDrawImage_OpType: return "DrawImage";
         case kDrawImageLattice_OpType: return "DrawImageLattice";
         case kDrawImageRect_OpType: return "DrawImageRect";
@@ -242,24 +246,20 @@ const char* DrawCommand::GetCommandString(OpType type) {
         case kDrawPaint_OpType: return "DrawPaint";
         case kDrawPatch_OpType: return "DrawPatch";
         case kDrawPath_OpType: return "DrawPath";
-        case kDrawArc_OpType: return "DrawArc";
         case kDrawPoints_OpType: return "DrawPoints";
         case kDrawRect_OpType: return "DrawRect";
-        case kDrawRRect_OpType: return "DrawRRect";
         case kDrawRegion_OpType: return "DrawRegion";
+        case kDrawRRect_OpType: return "DrawRRect";
         case kDrawShadow_OpType: return "DrawShadow";
         case kDrawTextBlob_OpType: return "DrawTextBlob";
         case kDrawVertices_OpType: return "DrawVertices";
-        case kDrawAtlas_OpType: return "DrawAtlas";
-        case kDrawDrawable_OpType: return "DrawDrawable";
-        case kDrawEdgeAAQuad_OpType: return "DrawEdgeAAQuad";
-        case kDrawEdgeAAImageSet_OpType: return "DrawEdgeAAImageSet";
         case kEndDrawPicture_OpType: return "EndDrawPicture";
+        case kResetClip_OpType: return "ResetClip";
         case kRestore_OpType: return "Restore";
         case kSave_OpType: return "Save";
         case kSaveLayer_OpType: return "SaveLayer";
-        case kSetMatrix_OpType: return "SetMatrix";
         case kSetM44_OpType: return "SetM44";
+        case kSetMatrix_OpType: return "SetMatrix";
         default:
             SkDebugf("OpType error 0x%08x\n", type);
             SkASSERT(0);

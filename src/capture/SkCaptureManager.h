@@ -8,13 +8,13 @@
 #ifndef SkCaptureManager_DEFINED
 #define SkCaptureManager_DEFINED
 
-#include "include/core/SkPicture.h"
-#include "include/core/SkRefCnt.h"
-#include "include/private/base/SkTArray.h"
-
 #include <atomic>
 #include <cstdint>
 #include <map>
+
+#include "include/core/SkPicture.h"
+#include "include/core/SkRefCnt.h"
+#include "include/private/base/SkTArray.h"
 
 class SkCanvas;
 class SkCapture;
@@ -22,33 +22,33 @@ class SkCaptureCanvas;
 class SkSurface;
 
 class SkContentID {
-    public:
-        SkContentID() = default;
+public:
+    SkContentID() = default;
 
-        SkContentID(uint32_t id) : fId(id) {}
+    SkContentID(uint32_t id) : fId(id) {}
 
-        uint32_t asUInt() const { return fId; }
+    uint32_t asUInt() const { return fId; }
 
-        operator uint32_t() const { return fId; }
+    operator uint32_t() const { return fId; }
 
-        bool operator==(const SkContentID& other) const { return fId == other.fId; }
-        bool operator!=(const SkContentID& other) const { return !(*this == other); }
-        operator bool() const { return fId != 0; }
+    bool operator==(const SkContentID& other) const { return fId == other.fId; }
+    bool operator!=(const SkContentID& other) const { return !(*this == other); }
+    operator bool() const { return fId != 0; }
 
-        SkContentID operator++() {
-            ++fId;
-            return *this;
-        }
+    SkContentID operator++() {
+        ++fId;
+        return *this;
+    }
 
-        SkContentID operator++(int) {
-            SkContentID temp = *this;
-            ++fId;
-            return temp;
-        }
+    SkContentID operator++(int) {
+        SkContentID temp = *this;
+        ++fId;
+        return temp;
+    }
 
-    private:
-        uint32_t fId = 0;
-    };
+private:
+    uint32_t fId = 0;
+};
 
 /**
  * SkCaptureManager is in charge of knowing the current state of capture, handling the creation of
@@ -64,9 +64,7 @@ public:
 
     void toggleCapture(bool capturing);
 
-    bool isCurrentlyCapturing() const {
-        return fIsCurrentlyCapturing;
-    }
+    bool isCurrentlyCapturing() const { return fIsCurrentlyCapturing; }
 
     sk_sp<SkCapture> getLastCapture() const;
 
@@ -75,7 +73,7 @@ private:
 
     std::atomic<bool> fIsCurrentlyCapturing = false;
     skia_private::TArray<std::unique_ptr<SkCaptureCanvas>> fTrackedCanvases;
-    skia_private::TArray<sk_sp<SkPicture>>  fPictures;
+    skia_private::TArray<sk_sp<SkPicture>> fPictures;
 
     sk_sp<SkCapture> fLastCapture;
     std::map<uint32_t, SkContentID> fSurfaceContentCounters;

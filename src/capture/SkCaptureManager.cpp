@@ -7,6 +7,8 @@
 
 #include "src/capture/SkCaptureManager.h"
 
+#include <memory>
+
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPicture.h"
 #include "include/core/SkRefCnt.h"
@@ -14,8 +16,6 @@
 #include "src/capture/SkCapture.h"
 #include "src/capture/SkCaptureCanvas.h"
 #include "src/image/SkSurface_Base.h"
-
-#include <memory>
 
 SkCaptureManager::SkCaptureManager() {}
 
@@ -49,7 +49,7 @@ void SkCaptureManager::toggleCapture(bool capturing) {
     if (capturing != fIsCurrentlyCapturing && !capturing) {
         // on capture stop, save the capture and reset
         this->snapPictures();
-    fLastCapture = SkCapture::MakeFromPictures(fPictures);
+        fLastCapture = SkCapture::MakeFromPictures(fPictures);
         fPictures.clear();
         fSurfaceContentCounters.clear();
     }
@@ -67,6 +67,4 @@ SkContentID SkCaptureManager::snapPicture(SkSurface* surface) {
     return SkContentID();
 }
 
-sk_sp<SkCapture> SkCaptureManager::getLastCapture() const {
-   return fLastCapture;
-}
+sk_sp<SkCapture> SkCaptureManager::getLastCapture() const { return fLastCapture; }
