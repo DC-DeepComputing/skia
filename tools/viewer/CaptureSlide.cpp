@@ -44,8 +44,17 @@ CaptureSlide::CaptureSlide(const SkString& name, const SkString& path) {
 
 CaptureSlide::~CaptureSlide() {}
 
-void drawCommandHistory(const DebugCanvas* debugCanvas) {
+void drawCommandHistory(const DebugCanvas* debugCanvas, int pictureIndex) {
+    static int lastPictureIndex = -1;
     static int currentCommandIdx = 0;
+    static int lastSelectedIdx = -1;
+    static std::string cachedJson;
+
+    if (pictureIndex != lastPictureIndex) {
+        currentCommandIdx = 0;
+        lastSelectedIdx = -1;
+        lastPictureIndex = pictureIndex;
+    }
 
     ImGui::SetNextWindowSize(ImVec2(800, 600), ImGuiCond_Appearing);
     if (!ImGui::Begin("Command History")) {
@@ -63,45 +72,52 @@ void drawCommandHistory(const DebugCanvas* debugCanvas) {
     }
 
     if (ImGui::BeginCombo("Select Command", previewValue)) {
-        for (int i = 0; i < debugCanvas->getSize(); ++i) {
-            const bool isSelected = (currentCommandIdx == i);
+        ImGuiListClipper clipper;
+        clipper.Begin(debugCanvas->getSize());
+        while (clipper.Step()) {
+            for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; ++i) {
+                ImGui::PushID(i);
+                const bool isSelected = (currentCommandIdx == i);
+                DrawCommand* cmd = debugCanvas->getDrawCommandAt(i);
+                const char* commandName = DrawCommand::GetCommandString(cmd->getOpType());
 
-            DrawCommand* cmd = debugCanvas->getDrawCommandAt(i);
-            const char* commandName = DrawCommand::GetCommandString(cmd->getOpType());
+                if (ImGui::Selectable(commandName, isSelected)) {
+                    currentCommandIdx = i;
+                }
 
-            if (ImGui::Selectable(commandName, isSelected)) {
-                currentCommandIdx = i;
-            }
-
-            if (isSelected) {
-                ImGui::SetItemDefaultFocus();
+                if (isSelected) {
+                    ImGui::SetItemDefaultFocus();
+                }
+                ImGui::PopID();
             }
         }
         ImGui::EndCombo();
     }
 
     if (currentCommandIdx >= 0 && currentCommandIdx < debugCanvas->getSize()) {
+        if (currentCommandIdx != lastSelectedIdx) {
+            DrawCommand* cmd = debugCanvas->getDrawCommandAt(currentCommandIdx);
+
+            SkDynamicMemoryWStream stream;
+            SkJSONWriter writer(&stream, SkJSONWriter::Mode::kPretty);
+            UrlDataManager urlDataManager(SkString("data"));
+            writer.beginObject();
+            cmd->toJSON(writer, urlDataManager);
+            writer.endObject();
+            writer.flush();
+
+            stream.write8(0);
+            sk_sp<SkData> data = stream.detachAsData();
+            cachedJson = static_cast<const char*>(data->data());
+            lastSelectedIdx = currentCommandIdx;
+        }
+
         ImGui::Separator();
         ImGui::Text("JSON for Command #%d:", currentCommandIdx);
 
-        DrawCommand* cmd = debugCanvas->getDrawCommandAt(currentCommandIdx);
-
-        SkDynamicMemoryWStream stream;
-        SkJSONWriter writer(&stream, SkJSONWriter::Mode::kPretty);
-        UrlDataManager urlDataManager(SkString("data"));
-        writer.beginObject();
-        cmd->toJSON(writer, urlDataManager);
-        writer.endObject();
-
-        writer.flush();
-
-        stream.write8(0);
-        sk_sp<SkData> data = stream.detachAsData();
-        char* dataString = const_cast<char*>(static_cast<const char*>(data->data()));
-
         ImGui::InputTextMultiline("###json_output",
-                                  dataString,
-                                  data->size(),
+                                  &cachedJson[0],
+                                  cachedJson.size(),
                                   ImVec2(-1, -1),
                                   ImGuiInputTextFlags_ReadOnly);
     }
@@ -130,7 +146,7 @@ void CaptureSlide::draw(SkCanvas* canvas) {
 
     drawMetadata(fCurrentPictureIndex);
 
-    drawCommandHistory(&debugCanvas);
+    drawCommandHistory(&debugCanvas, fCurrentPictureIndex);
 }
 
 bool CaptureSlide::animate(double) {
