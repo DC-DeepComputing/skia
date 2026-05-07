@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d1e83215_cfc35e23",
+        "filename": "src/core/SkPictureData.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 520,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-05-07T20:10:03Z",
+      "side": 1,
+      "message": "Isn\u0027t an SkDrawable just a user-defined function that runs on a canvas, so it could always end up calling drawPicture or drawDrawable(). You can make a SkRecordedDrawable from an SkPictureRecorder with `finishRecordingAsDrawable` instead of `finishRecordingAsPicture`, so you could craft such a situation I think.",
+      "parentUuid": "e81481fd_a6c0a3c8",
+      "range": {
+        "startLine": 520,
+        "startChar": 13,
+        "endLine": 520,
+        "endChar": 33
+      },
+      "revId": "f066d884e87300032d0ee13a8697bcfd82b05680",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5befbe12_3e75bede",
         "filename": "src/core/SkReadBuffer.h",
         "patchSetId": 11
