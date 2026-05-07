@@ -544,8 +544,9 @@ static bool uniform_desc_set_layout(VkDescriptorSetLayout& outLayout,
 
 static bool texture_sampler_desc_set_layout(VkDescriptorSetLayout& outLayout,
                                             const VulkanSharedContext* sharedContext,
-                                            const int numTextureSamplers,
-                                            SkSpan<sk_sp<VulkanSampler>> immutableSamplers) {
+                                            SkSpan<sk_sp<VulkanSampler>> immutableSamplers,
+                                            SkSpan<const ShaderStageFlags> textureVisibility) {
+    int numTextureSamplers = static_cast<int>(textureVisibility.size());
     SkASSERT(numTextureSamplers >= 0);
     // The immutable sampler span size must be = the total number of texture/samplers such that
     // we can use the index of a sampler as its binding index (or we just have none, which
@@ -559,11 +560,20 @@ static bool texture_sampler_desc_set_layout(VkDescriptorSetLayout& outLayout,
         if (!immutableSamplers.empty() && immutableSamplers[i]) {
             immutableSampler = immutableSamplers[i].get();
         }
+        // TODO (thomsmit): can the visibility flags be cast directly into pipeline stage flags?
+        SkEnumBitMask<PipelineStageFlags> stageFlags = PipelineStageFlags::kNone;
+        ShaderStageFlags vis = textureVisibility[i];
+        if (SkToBool(vis & ShaderStageFlags::kVertex)) {
+            stageFlags |= PipelineStageFlags::kVertexShader;
+        }
+        if (SkToBool(vis & ShaderStageFlags::kFragment)) {
+            stageFlags |= PipelineStageFlags::kFragmentShader;
+        }
         textureSamplerDescs.push_back(
                 {DescriptorType::kCombinedTextureSampler,
                  /*count=*/1,
                  /*bindingIdx=*/i,
-                 PipelineStageFlags::kVertexShader | PipelineStageFlags::kFragmentShader,
+                 stageFlags,
                  immutableSampler});
     }
 
@@ -578,9 +588,9 @@ static VkPipelineLayout setup_pipeline_layout(const VulkanSharedContext* sharedC
                                               VkShaderStageFlagBits pushConstantPipelineStageFlags,
                                               bool hasCombinedUniforms,
                                               bool hasGradientBuffer,
-                                              int numTextureSamplers,
                                               bool loadMsaaFromResolve,
-                                              SkSpan<sk_sp<VulkanSampler>> immutableSamplers) {
+                                              SkSpan<sk_sp<VulkanSampler>> immutableSamplers,
+                                              SkSpan<const ShaderStageFlags> textureVisibility) {
     // Create a container with the max anticipated amount (kMaxNumDescSets) of VkDescriptorSetLayout
     // handles which will be used to create the pipeline layout.
     skia_private::STArray<
@@ -607,8 +617,8 @@ static VkPipelineLayout setup_pipeline_layout(const VulkanSharedContext* sharedC
         !texture_sampler_desc_set_layout(
                 setLayouts[VulkanGraphicsPipeline::kTextureBindDescSetIndex],
                 sharedContext,
-                numTextureSamplers,
-                immutableSamplers) ||
+                immutableSamplers,
+                textureVisibility) ||
         !input_attachment_desc_set_layout(
                 setLayouts[VulkanGraphicsPipeline::kLoadMsaaFromResolveInputDescSetIndex],
                 sharedContext,
@@ -873,12 +883,12 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
     // binding index within the descriptor set. Initialize all values to nullptr, which represents a
     // "regular", dynamic sampler at that index.
     skia_private::TArray<sk_sp<VulkanSampler>> immutableSamplers;
-    immutableSamplers.push_back_n(shaderInfo->numFragmentTexturesAndSamplers());
+    immutableSamplers.push_back_n(shaderInfo->numTexturesAndSamplers());
 
     // This logic relies upon Vulkan using combined texture/sampler bindings, which is necessary for
     // ycbcr samplers per the Vulkan spec.
     SkASSERT(!sharedContext->caps()->resourceBindingRequirements().fSeparateTextureAndSamplerBinding
-             && shaderInfo->numFragmentTexturesAndSamplers() == descContainer.size());
+             && shaderInfo->numTexturesAndSamplers() == descContainer.size());
     for (int i = 0; i < descContainer.size(); i++) {
         // If a SamplerDesc is not equivalent to the default-initialized SamplerDesc, that indicates
         // the usage of an immutable sampler. That sampler desc should then be used to obtain an
@@ -955,9 +965,9 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
                 VulkanResourceProvider::kIntrinsicConstantStageFlags,
                 shaderInfo->hasCombinedUniforms(),
                 shaderInfo->hasGradientBuffer(),
-                shaderInfo->numFragmentTexturesAndSamplers(),
                 /*loadMsaaFromResolve=*/false,
-                SkSpan<sk_sp<VulkanSampler>>(immutableSamplers)))) {
+                SkSpan<sk_sp<VulkanSampler>>(immutableSamplers),
+                shaderInfo->getTextureVisibility()))) {
         return nullptr;
     }
 
@@ -985,8 +995,10 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
 
     sk_sp<VulkanGraphicsPipeline> pipeline;
     if (vkPipeline) {
+        // Needs the texture visibility flags
         PipelineInfo pipelineInfo{ *shaderInfo, pipelineCreationFlags,
-                                    pipelineKey.hash(), compilationID };
+                                   pipelineKey.hash(), compilationID,
+                                   shaderInfo->getTextureVisibility() };
 #if defined(GPU_TEST_UTILS)
         pipelineInfo.fNativeVertexShader = SkShaderUtils::SpirvAsHexStream(vsSPIRV.fBinary);
         pipelineInfo.fNativeFragmentShader = SkShaderUtils::SpirvAsHexStream(fsSPIRV.fBinary);
@@ -1225,9 +1237,9 @@ std::unique_ptr<VulkanProgramInfo> VulkanGraphicsPipeline::CreateLoadMSAAProgram
                 (VkShaderStageFlagBits)VK_SHADER_STAGE_VERTEX_BIT,
                 /*hasCombinedUniforms=*/false,
                 /*hasGradientBuffer=*/false,
-                /*numTextureSamplers=*/0,
                 /*loadMsaaFromResolve=*/true,
-                /*immutableSamplers=*/{}))) {
+                /*immutableSamplers=*/{},
+                /*textureVisibility=*/{}))) {
         return nullptr;
     }
 

@@ -38,22 +38,34 @@ GraphicsPipeline::~GraphicsPipeline() {
 #endif
 }
 
+// Although textureVisibilityFlags is already on shaderInfo, pass them directly to avoid copying on
+// backends that dont need it (vulkan, dawn). Since some backends discard these flags, we
+// additionally store fNumTexturesAndSamplers instead of relying on fTextureVisFlags.size().
 GraphicsPipeline::PipelineInfo::PipelineInfo(
             const ShaderInfo& shaderInfo,
             SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags,
             uint32_t uniqueKeyHash,
-            uint32_t compilationID)
+            uint32_t compilationID,
+            SkTDArray<ShaderStageFlags> textureVisFlags)
         : fDstReadStrategy(shaderInfo.dstReadStrategy())
-        , fNumFragTexturesAndSamplers(shaderInfo.numFragmentTexturesAndSamplers())
+        , fNumTexturesAndSamplers(shaderInfo.numTexturesAndSamplers())
         , fHasCombinedUniforms(shaderInfo.hasCombinedUniforms())
         , fHasGradientBuffer(shaderInfo.hasGradientBuffer())
         , fUniqueKeyHash(uniqueKeyHash)
         , fCompilationID(compilationID)
-        , fFromPrecompile(pipelineCreationFlags & PipelineCreationFlags::kForPrecompilation) {
+        , fFromPrecompile(pipelineCreationFlags & PipelineCreationFlags::kForPrecompilation)
+        , fTextureVisFlags(textureVisFlags) {
 #if defined(GPU_TEST_UTILS)
     fSkSLVertexShader = SkShaderUtils::PrettyPrint(shaderInfo.vertexSkSL());
     fSkSLFragmentShader = SkShaderUtils::PrettyPrint(shaderInfo.fragmentSkSL());
 #endif
+}
+
+ShaderStageFlags GraphicsPipeline::textureVisibility(int index) const {
+    if (index < fPipelineInfo.fTextureVisFlags.size()) {
+        return fPipelineInfo.fTextureVisFlags[index];
+    }
+    return ShaderStageFlags::kFragment;
 }
 
 #if defined(GPU_TEST_UTILS)
