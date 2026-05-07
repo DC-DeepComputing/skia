@@ -206,9 +206,9 @@ void SkCaptureCanvas::onDrawImage2(const SkImage* image,
         SkRect bounds = SkRect::MakeXYWH(left, top, image->width(), image->height());
         this->drawAnnotation(bounds, "SkCapture_DerivedSurfaceID",
                              SkData::MakeWithCopy(&id, sizeof(id)).get());
-        SkContentID contentID = as_IB(image)->getContentID();
+        uint32_t contentID = as_IB(image)->getContentID();
         SKIA_LOG_D("SkCaptureCanvas::onDrawImage2: DerivedSurfaceID=%u, ContentID=%u\n",
-                   id, contentID.asUInt());
+                   id, contentID);
         if (contentID) {
             this->drawAnnotation(bounds, "SkCapture_ContentID",
                                  SkData::MakeWithCopy(&contentID, sizeof(contentID)).get());
@@ -227,9 +227,9 @@ void SkCaptureCanvas::onDrawImageRect2(const SkImage* image,
     if (uint32_t id = as_IB(image)->getDerivedSurfaceID()) {
         this->drawAnnotation(dst, "SkCapture_DerivedSurfaceID",
                              SkData::MakeWithCopy(&id, sizeof(id)).get());
-        SkContentID contentID = as_IB(image)->getContentID();
+        uint32_t contentID = as_IB(image)->getContentID();
         SKIA_LOG_D("SkCaptureCanvas::onDrawImageRect2: DerivedSurfaceID=%u, ContentID=%u\n",
-                   id, contentID.asUInt());
+                   id, contentID);
         if (contentID) {
             this->drawAnnotation(dst, "SkCapture_ContentID",
                                  SkData::MakeWithCopy(&contentID, sizeof(contentID)).get());
@@ -247,9 +247,9 @@ void SkCaptureCanvas::onDrawImageLattice2(const SkImage* image,
     if (uint32_t id = as_IB(image)->getDerivedSurfaceID()) {
         this->drawAnnotation(dst, "SkCapture_DerivedSurfaceID",
                              SkData::MakeWithCopy(&id, sizeof(id)).get());
-        SkContentID contentID = as_IB(image)->getContentID();
+        uint32_t contentID = as_IB(image)->getContentID();
         SKIA_LOG_D("SkCaptureCanvas::onDrawImageLattice2: DerivedSurfaceID=%u, ContentID=%u\n",
-                   id, contentID.asUInt());
+                   id, contentID);
         if (contentID) {
             this->drawAnnotation(dst, "SkCapture_ContentID",
                                  SkData::MakeWithCopy(&contentID, sizeof(contentID)).get());
@@ -272,9 +272,9 @@ void SkCaptureCanvas::onDrawAtlas2(const SkImage* image,
         SkRect bounds = cull ? *cull : SkRect::MakeEmpty();
         this->drawAnnotation(bounds, "SkCapture_DerivedSurfaceID",
                              SkData::MakeWithCopy(&id, sizeof(id)).get());
-        SkContentID contentID = as_IB(image)->getContentID();
+        uint32_t contentID = as_IB(image)->getContentID();
         SKIA_LOG_D("SkCaptureCanvas::onDrawAtlas2: DerivedSurfaceID=%u, ContentID=%u\n",
-                   id, contentID.asUInt());
+                   id, contentID);
         if (contentID) {
             this->drawAnnotation(bounds, "SkCapture_ContentID",
                                  SkData::MakeWithCopy(&contentID, sizeof(contentID)).get());
@@ -361,9 +361,9 @@ void SkCaptureCanvas::onDrawEdgeAAImageSet2(const ImageSetEntry set[],
         if (uint32_t id = as_IB(set[i].fImage.get())->getDerivedSurfaceID()) {
             this->drawAnnotation(set[i].fDstRect, "SkCapture_DerivedSurfaceID",
                                  SkData::MakeWithCopy(&id, sizeof(id)).get());
-            SkContentID contentID = as_IB(set[i].fImage.get())->getContentID();
+            uint32_t contentID = as_IB(set[i].fImage.get())->getContentID();
             SKIA_LOG_D("SkCaptureCanvas::onDrawEdgeAAImageSet[%d]: DerivedSurface=%u, Content=%u\n",
-                       i, id, contentID.asUInt());
+                       i, id, contentID);
             if (contentID) {
                 this->drawAnnotation(set[i].fDstRect, "SkCapture_ContentID",
                                      SkData::MakeWithCopy(&contentID, sizeof(contentID)).get());
