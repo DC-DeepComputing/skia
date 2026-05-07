@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c93023c3_bf6c9edf",
+        "filename": "src/core/SkPicture.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-05-07T20:46:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1f063d62_d8c3f8f7",
+      "revId": "38d16a7bd0473d872bf95540743c73cf88cf92cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "13c2e183_a31f5342",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-05-07T20:31:14Z",
       "side": 1,
       "message": "No longer needed.",
+      "revId": "38d16a7bd0473d872bf95540743c73cf88cf92cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0fb5eb7a_1d41121b",
+        "filename": "src/core/SkReadBuffer.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-05-07T20:46:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "13c2e183_a31f5342",
       "revId": "38d16a7bd0473d872bf95540743c73cf88cf92cd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
