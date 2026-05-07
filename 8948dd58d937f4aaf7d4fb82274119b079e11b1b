@@ -20,6 +20,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ee18a720_b4a04887",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-07T18:50:23Z",
+      "side": 1,
+      "message": "yBottomTiles ?",
+      "range": {
+        "startLine": 210,
+        "startChar": 33,
+        "endLine": 210,
+        "endChar": 47
+      },
+      "revId": "8948dd58d937f4aaf7d4fb82274119b079e11b1b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4ad5ea5_fad992a7",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-07T18:50:23Z",
+      "side": 1,
+      "message": "yTopTiles ?",
+      "range": {
+        "startLine": 210,
+        "startChar": 18,
+        "endLine": 210,
+        "endChar": 29
+      },
+      "revId": "8948dd58d937f4aaf7d4fb82274119b079e11b1b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e70d5700_376a6fa0",
         "filename": "tests/graphite/sparse_strips/TilerTest.cpp",
         "patchSetId": 22
