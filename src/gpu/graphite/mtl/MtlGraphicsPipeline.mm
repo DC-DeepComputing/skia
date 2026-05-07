@@ -291,8 +291,10 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(
     sk_cfp<id<MTLDepthStencilState>> dss =
             sharedContext->getCompatibleDepthStencilState(step->depthStencilSettings());
 
+    // Needs the texture visibility flags
     PipelineInfo pipelineInfo{ *shaderInfo, pipelineCreationFlags,
-                               pipelineKey.hash(), compilationID };
+                               pipelineKey.hash(), compilationID,
+                               shaderInfo->getTextureVisibility() };
 #if defined(GPU_TEST_UTILS)
     pipelineInfo.fNativeVertexShader = std::move(vsMSL.fText);
     pipelineInfo.fNativeFragmentShader = std::move(fsMSL.fText);
@@ -353,7 +355,7 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::MakeLoadMSAAPipeline(
     pipelineLabel += renderPassDesc.toString().c_str();
 
     PipelineInfo pipelineInfo;
-    pipelineInfo.fNumFragTexturesAndSamplers = 1;
+    pipelineInfo.fNumTexturesAndSamplers = 1;
     // This is an internal shader, leave off filling out the test-utils shader code
     return Make(sharedContext,
                 pipelineLabel,

@@ -1067,35 +1067,44 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
                                fDstReadStrategy == DstReadStrategy::kTextureSample;
     {
         int binding = 0;
-        fsPreamble += emit_textures_and_samplers(bindingReqs, sharedData.fRootNodes, &binding,
-                                               outDescs);
-        int paintTextureCount = binding;
+
+        fsPreamble +=
+                emit_textures_and_samplers(bindingReqs, sharedData.fRootNodes, &binding, outDescs);
+        SkASSERT(!bindingReqs.fSeparateTextureAndSamplerBinding || !(binding & 1));
+
+        fPaintTextureCount = bindingReqs.fSeparateTextureAndSamplerBinding ? binding / 2 : binding;
+
+        for (int i = 0; i < fPaintTextureCount; ++i) {
+            fTextureVisibilities.push_back(ShaderStageFlags::kFragment);
+        }
+
         if (step->hasTextures()) {
-            fsPreamble += step->texturesAndSamplersSkSL(bindingReqs, &binding);
+            for (const TextureAndSampler& tex : step->textures()) {
+                fTextureVisibilities.push_back(tex.visibility());
+
+                if (tex.visibility() & ShaderStageFlags::kFragment) {
+                    fsPreamble += EmitSamplerLayout(bindingReqs, &binding);
+                    SkSL::String::appendf(&fsPreamble, " sampler2D %s;\n", tex.name());
+                } else {
+                    // Not in Fragment SkSL, but we MUST advance the binding index for Dawn's layout
+                    int advance = bindingReqs.fSeparateTextureAndSamplerBinding ? 2 : 1;
+                    binding += advance;
+                }
+            }
             if (outDescs) {
-                // Determine how many render step samplers were used by comparing the binding value
-                // against paintTextureCount, taking into account the binding requirements. We
-                // assume and do not anticipate the render steps to use immutable samplers.
-                int renderStepSamplerCount = bindingReqs.fSeparateTextureAndSamplerBinding
-                                                     ? (binding - paintTextureCount) / 2
-                                                     : binding - paintTextureCount;
-                // Add default SamplerDescs for all the dynamic samplers used by the render step so
-                // the size of outDescs will be equivalent to the total number of samplers.
-                outDescs->push_back_n(renderStepSamplerCount);
+                // Bulk add default SamplerDescs
+                outDescs->push_back_n(step->textures().size());
             }
         }
+
         if (useDstSampler) {
+            fTextureVisibilities.push_back(ShaderStageFlags::kFragment);
             fsPreamble += EmitSamplerLayout(bindingReqs, &binding);
             fsPreamble += " sampler2D dstSampler;";
-            // Add default SamplerDesc for the intrinsic dstSampler to stay consistent with
-            // `fNumFragmentTexturesAndSamplers`.
             if (outDescs) {
                 outDescs->push_back({});
             }
         }
-
-        // Record how many textures and samplers are used.
-        fNumFragmentTexturesAndSamplers = binding;
     }
 
     // Emit preamble declarations and helper functions required for snippets. In the default case
@@ -1287,6 +1296,22 @@ void ShaderInfo::generateVertexSkSL(const Caps* caps,
     // Fixed program header (intrinsics are always declared as an uniform interface block)
     const ResourceBindingRequirements& bindingReqs = caps->resourceBindingRequirements();
     vsPreamble = emit_intrinsic_constants(bindingReqs);
+
+    if (step->hasTextures()) {
+        int vsBinding = 0;
+        int advance = bindingReqs.fSeparateTextureAndSamplerBinding ? 2 : 1;
+        vsBinding += fPaintTextureCount * advance;
+        for (const TextureAndSampler& tex : step->textures()) {
+            if (tex.visibility() & ShaderStageFlags::kVertex) {
+                vsPreamble += EmitSamplerLayout(bindingReqs, &vsBinding);
+                SkSL::String::appendf(&vsPreamble, " sampler2D %s;\n", tex.name());
+            } else {
+                // Not in the vertex shader, but advance to keep the binding indexes synced
+                vsBinding += advance;
+            }
+        }
+    }
+
     // Varyings needed by RenderStep and potentially lifted expressions
     vsPreamble += emit_varyings(step, "out",
                                 sharedData.fLiftedExpr,
