@@ -212,6 +212,30 @@
       },
       "revId": "f066d884e87300032d0ee13a8697bcfd82b05680",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d473f19_db391574",
+        "filename": "src/core/SkReadBuffer.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-05-07T20:39:36Z",
+      "side": 1,
+      "message": "(and I think that would be fine, if we drop the assert and invalidate the buffer instead)",
+      "parentUuid": "91a28019_66927da1",
+      "range": {
+        "startLine": 244,
+        "startChar": 26,
+        "endLine": 244,
+        "endChar": 27
+      },
+      "revId": "f066d884e87300032d0ee13a8697bcfd82b05680",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
