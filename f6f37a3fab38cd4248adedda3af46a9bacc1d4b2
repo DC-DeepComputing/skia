@@ -114,6 +114,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5f34a2c_25172f4b",
+        "filename": "gn/core.gni",
+        "patchSetId": 7
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 20059
+      },
+      "writtenOn": "2026-05-07T22:27:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c0b1df38_525d0e05",
+      "revId": "f6f37a3fab38cd4248adedda3af46a9bacc1d4b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1a9f03e1_5eb5ee76",
@@ -151,6 +169,30 @@
           ]
         }
       ],
+      "revId": "f6f37a3fab38cd4248adedda3af46a9bacc1d4b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2a913c1_3e507baa",
+        "filename": "src/core/SkFont.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 20059
+      },
+      "writtenOn": "2026-05-07T22:27:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9f03e1_5eb5ee76",
+      "range": {
+        "startLine": 241,
+        "startChar": 84,
+        "endLine": 241,
+        "endChar": 91
+      },
       "revId": "f6f37a3fab38cd4248adedda3af46a9bacc1d4b2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
