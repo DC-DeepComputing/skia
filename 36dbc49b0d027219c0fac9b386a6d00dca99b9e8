@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5250d4a_d2524fec",
+        "filename": "src/core/SkReadBuffer.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-05-07T13:36:33Z",
+      "side": 1,
+      "message": "I think we also need a way to pop up the recursion level when we\u0027re holding it on the buffer, but agree that this is simpler than passing the parameter through the various functions.",
+      "range": {
+        "startLine": 235,
+        "startChar": 0,
+        "endLine": 238,
+        "endChar": 5
+      },
+      "revId": "36dbc49b0d027219c0fac9b386a6d00dca99b9e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
