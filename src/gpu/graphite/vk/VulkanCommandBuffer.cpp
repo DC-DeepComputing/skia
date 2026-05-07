@@ -618,14 +618,19 @@ bool VulkanCommandBuffer::onAddRenderPass(const RenderPassDesc& rpDesc,
         // Our current implementation of setting texture image layouts does not allow layout changes
         // once we have already begun a render pass, so prior to any other commands, set the layout
         // of all sampled textures from the drawpass so they can be sampled from the shader.
+
         for (const sk_sp<TextureProxy>& textureProxy : drawPass->sampledTextures()) {
             VulkanTexture* vulkanTexture = const_cast<VulkanTexture*>(
                                            static_cast<const VulkanTexture*>(
                                            textureProxy->texture()));
-            vulkanTexture->setImageLayout(this,
-                                          VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
-                                          VK_ACCESS_SHADER_READ_BIT,
-                                          VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT);
+            // NOTE: In the case that we are reading the texture size in the vertex shader, we
+            // assume that changing to the required image layout will not affect the texture size,
+            // and so we skip setting the vertex pipeline stage bit here.
+            vulkanTexture->setImageLayout(
+                    this,
+                    VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
+                    VK_ACCESS_SHADER_READ_BIT,
+                    VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT);
         }
     }
     if (fDstCopy.first) {
@@ -1537,11 +1542,12 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
                 // active graphics pipeline and can be indexed directly with `i`.
                 const Sampler* immutableSampler = fActiveGraphicsPipeline->immutableSampler(i);
                 SkASSERT(SkToBool(immutableSampler) == command->fSamplers[i].isImmutable());
-                descriptors.push_back({DescriptorType::kCombinedTextureSampler,
-                                       /*count=*/1,
-                                       /*bindingIdx=*/i,
-                                       PipelineStageFlags::kFragmentShader,
-                                       immutableSampler});
+                descriptors.push_back(
+                        {DescriptorType::kCombinedTextureSampler,
+                         /*count=*/1,
+                         /*bindingIdx=*/i,
+                         PipelineStageFlags::kFragmentShader | PipelineStageFlags::kVertexShader,
+                         immutableSampler});
             }
         }
         // If required the dst copy texture+sampler is the last one in the descriptor set
