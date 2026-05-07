@@ -797,8 +797,18 @@ bool DawnCommandBuffer::bindGraphicsPipeline(const GraphicsPipeline* graphicsPip
         // not also every other time the textures are changed).
         const auto* texture = static_cast<const DawnTexture*>(fDstCopy.first);
         const auto* sampler = static_cast<const DawnSampler*>(fDstCopy.second);
-        wgpu::BindGroup bindGroup =
-                fResourceProvider->findOrCreateSingleTextureSamplerBindGroup(sampler, texture);
+
+        std::array<wgpu::BindGroupEntry, 2> entries;
+        entries[0].binding = 0;
+        entries[0].sampler = sampler->dawnSampler();
+        entries[1].binding = 1;
+        entries[1].textureView = texture->sampleTextureView();
+
+        const auto& groupLayouts = fActiveGraphicsPipeline->dawnGroupLayouts();
+        wgpu::BindGroup bindGroup = fResourceProvider->createBindGroup(
+            entries,
+            groupLayouts[DawnGraphicsPipeline::kTextureBindGroupIndex]);
+
         fActiveRenderPassEncoder.SetBindGroup(
                 DawnGraphicsPipeline::kTextureBindGroupIndex, bindGroup);
     }
@@ -879,6 +889,9 @@ void DawnCommandBuffer::bindTextureAndSamplers(
     }
 #endif
 
+    const auto& groupLayouts = fActiveGraphicsPipeline->dawnGroupLayouts();
+    wgpu::BindGroupLayout groupLayout = groupLayouts[DawnGraphicsPipeline::kTextureBindGroupIndex];
+
     wgpu::BindGroup bindGroup;
     // Optimize for single texture with dynamic sampling.
     if (numTexturesAndSamplers == 1 && !usingSingleStaticSampler) {
@@ -887,7 +900,14 @@ void DawnCommandBuffer::bindTextureAndSamplers(
 
         const auto* texture = static_cast<const DawnTexture*>(command.fTextures[0]->texture());
         const auto* sampler = this->getSampler(command, 0);
-        bindGroup = fResourceProvider->findOrCreateSingleTextureSamplerBindGroup(sampler, texture);
+
+        std::array<wgpu::BindGroupEntry, 2> entries;
+        entries[0].binding = 0;
+        entries[0].sampler = sampler->dawnSampler();
+        entries[1].binding = 1;
+        entries[1].textureView = texture->sampleTextureView();
+
+        bindGroup = fResourceProvider->createBindGroup(entries, groupLayout);
     } else {
         std::vector<wgpu::BindGroupEntry> entries;
 
@@ -938,7 +958,7 @@ void DawnCommandBuffer::bindTextureAndSamplers(
             entries.push_back(textureEntry);
         }
 
-        const auto& groupLayouts = fActiveGraphicsPipeline->dawnGroupLayouts();
+
         bindGroup = fResourceProvider->createBindGroup(
                 entries, groupLayouts[DawnGraphicsPipeline::kTextureBindGroupIndex]);
     }

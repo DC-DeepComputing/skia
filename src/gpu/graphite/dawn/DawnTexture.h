@@ -51,6 +51,9 @@ public:
         return TextureInfoPriv::Get<DawnTextureInfo>(this->textureInfo());
     }
 
+    const wgpu::BindGroup* getCachedSingleTextureBindGroup(const Sampler*) const;
+    void addCachedSingleTextureBindGroup(sk_sp<wgpu::BindGroup>, sk_sp<const Sampler>);
+
 private:
     DawnTexture(const DawnSharedContext*,
                 SkISize dimensions,
@@ -71,6 +74,9 @@ private:
     wgpu::Texture     fTexture;
     wgpu::TextureView fSampleTextureView;
     wgpu::TextureView fRenderTextureView;
+
+    using CachedTextureDescSet = std::pair<sk_sp<const Sampler>, wgpu::BindGroup>;
+    skia_private::STArray<3, CachedTextureDescSet> fCachedSingleTextureDescSets;
 };
 
 }  // namespace skgpu::graphite
