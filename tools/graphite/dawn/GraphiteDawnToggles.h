@@ -22,7 +22,9 @@ wgpu::DawnTogglesDescriptor GetAdapterToggles();
 
 // Appends preferred features that the adapter lists as available that aren't already included
 // in `features`.
-void AddPreferredFeatures(const wgpu::Adapter& adapter, std::vector<wgpu::FeatureName>& features);
+void AddPreferredFeatures(const wgpu::Adapter& adapter,
+                          wgpu::BackendType backend,
+                          std::vector<wgpu::FeatureName>& features);
 
 }  // namespace skiatest::graphite
 

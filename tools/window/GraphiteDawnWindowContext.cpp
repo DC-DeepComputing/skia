@@ -150,7 +150,7 @@ wgpu::Device GraphiteDawnWindowContext::createDevice(wgpu::BackendType type) {
     wgpu::Adapter adapter = adapters[0].Get();
 
     std::vector<wgpu::FeatureName> features;
-    skiatest::graphite::AddPreferredFeatures(adapter, features);
+    skiatest::graphite::AddPreferredFeatures(adapter, type, features);
 
     wgpu::DeviceDescriptor deviceDescriptor;
     deviceDescriptor.requiredFeatures = features.data();

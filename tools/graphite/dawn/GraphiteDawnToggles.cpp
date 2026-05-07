@@ -43,7 +43,7 @@ wgpu::DawnTogglesDescriptor GetAdapterToggles() {
     return togglesDesc;
 }
 
-void AddPreferredFeatures(const wgpu::Adapter& adapter, std::vector<wgpu::FeatureName>& features) {
+void AddPreferredFeatures(const wgpu::Adapter& adapter, wgpu::BackendType backend, std::vector<wgpu::FeatureName>& features) {
     auto addFeature = [&](wgpu::FeatureName feature) {
         if (adapter.HasFeature(feature)) {
             for (auto existing : features) {
@@ -60,10 +60,10 @@ void AddPreferredFeatures(const wgpu::Adapter& adapter, std::vector<wgpu::Featur
     addFeature(wgpu::FeatureName::DawnPartialLoadResolveTexture);
     addFeature(wgpu::FeatureName::DawnTexelCopyBufferRowAlignment);
     addFeature(wgpu::FeatureName::DualSourceBlending);
-#ifndef SK_BUILD_FOR_ANDROID
-    // TODO(crbug.com/493892934): Enable FramebufferFetch again once Tint supports it with f16.
-    addFeature(wgpu::FeatureName::FramebufferFetch);
-#endif
+    if (backend != wgpu::BackendType::Vulkan) {
+        // TODO(crbug.com/493892934): Enable FramebufferFetch again once Tint supports it with f16.
+        addFeature(wgpu::FeatureName::FramebufferFetch);
+    }
     addFeature(wgpu::FeatureName::ImplicitDeviceSynchronization);
     addFeature(wgpu::FeatureName::MSAARenderToSingleSampled);
     addFeature(wgpu::FeatureName::ShaderF16);

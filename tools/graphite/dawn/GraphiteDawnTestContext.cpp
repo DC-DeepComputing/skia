@@ -88,7 +88,7 @@ std::unique_ptr<GraphiteTestContext> DawnTestContext::Make(wgpu::BackendType bac
 
     std::vector<wgpu::FeatureName> features;
     wgpu::Adapter adapter = matchedAdaptor.Get();
-    skiatest::graphite::AddPreferredFeatures(adapter, features);
+    skiatest::graphite::AddPreferredFeatures(adapter, backend, features);
 
     wgpu::DeviceDescriptor desc;
     desc.requiredFeatureCount  = features.size();
