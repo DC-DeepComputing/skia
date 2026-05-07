@@ -50,6 +50,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "8338e75e_d032b96c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-07T14:57:17Z",
+      "side": 1,
+      "message": "Actually yea let me create the reland, and chain the cls together.",
+      "parentUuid": "ceee4552_c9dc0ec6",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 108
+      },
+      "revId": "6d018b8b5138b4f3febeb351078562b8043b69f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "21c58068_429c17f1",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 10
