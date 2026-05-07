@@ -9,6 +9,7 @@
 #define skgpu_graphite_ShaderInfo_DEFINED
 
 #include "include/private/base/SkTArray.h"
+#include "include/private/base/SkTDArray.h"
 #include "src/base/SkArenaAlloc.h"
 #include "src/gpu/Blend.h"
 #include "src/gpu/Swizzle.h"
@@ -16,12 +17,15 @@
 #include "src/gpu/graphite/ResourceTypes.h"
 #include "src/gpu/graphite/UniquePaintParamsID.h"
 
+#include <vector>
+
 namespace skgpu::graphite {
 
 class RenderStep;
 class RuntimeEffectDictionary;
 class ShaderCodeDictionary;
 class ShaderNode;
+enum class ShaderStageFlags : uint8_t;
 enum class TextureFormat : uint8_t;
 
 // ShaderInfo holds all root ShaderNodes defined for a PaintParams as well as the extracted fixed
@@ -72,7 +76,14 @@ public:
     // Matches ContextUtils::GetPipelineLabel() for the same args that were passed to Make()
     const std::string& pipelineLabel() const { return fPipelineLabel; }
 
-    int numFragmentTexturesAndSamplers() const { return fNumFragmentTexturesAndSamplers; }
+    // NOTE: Must be doubled for backends which bind textures and samplers separately (dawn)!
+    int numTexturesAndSamplers() const { return fTextureVisibilities.size(); }
+    ShaderStageFlags textureVisibility(int index) const {
+        SkASSERT(index >= 0 && index < fTextureVisibilities.size());
+        return fTextureVisibilities[index];
+    }
+    const SkTDArray<ShaderStageFlags>& getTextureVisibility() const { return fTextureVisibilities; }
+
     bool hasCombinedUniforms() const { return fHasCombinedUniforms; }
     bool hasGradientBuffer() const { return fHasGradientBuffer; }
 
@@ -119,7 +130,9 @@ private:
     std::string fFSLabel;
     std::string fPipelineLabel;
 
-    int fNumFragmentTexturesAndSamplers = 0;
+    SkTDArray<ShaderStageFlags> fTextureVisibilities;
+    int fPaintTextureCount = 0; // Tracks the offset between paint and step textures
+
     bool fHasCombinedUniforms = false;
     bool fHasGradientBuffer = false;
 };

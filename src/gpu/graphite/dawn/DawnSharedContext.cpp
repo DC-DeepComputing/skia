@@ -77,7 +77,7 @@ DawnSharedContext::DawnSharedContext(const DawnBackendContext& backendContext,
                                    kThreadedSafeResourceBudget));
 
     this->createUniformBuffersBindGroupLayout();
-    this->createSingleTextureSamplerBindGroupLayout();
+    this->createFragOnlySingleTextureSamplerBGL();
 }
 
 DawnSharedContext::~DawnSharedContext() {
@@ -147,7 +147,7 @@ void DawnSharedContext::createUniformBuffersBindGroupLayout() {
     fUniformBuffersBindGroupLayout = this->device().CreateBindGroupLayout(&groupLayoutDesc);
 }
 
-void DawnSharedContext::createSingleTextureSamplerBindGroupLayout() {
+void DawnSharedContext::createFragOnlySingleTextureSamplerBGL() {
     const Caps* caps = this->caps();
 
     std::array<wgpu::BindGroupLayoutEntry, 2> entries;
@@ -169,7 +169,7 @@ void DawnSharedContext::createSingleTextureSamplerBindGroupLayout() {
 
     groupLayoutDesc.entryCount = entries.size();
     groupLayoutDesc.entries = entries.data();
-    fSingleTextureSamplerBindGroupLayout = this->device().CreateBindGroupLayout(&groupLayoutDesc);
+    fFragOnlySingleTextureSamplerBGL = this->device().CreateBindGroupLayout(&groupLayoutDesc);
 }
 
 sk_sp<GraphicsPipeline> DawnSharedContext::createGraphicsPipeline(
