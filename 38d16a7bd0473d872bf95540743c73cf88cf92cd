@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f063d62_d8c3f8f7",
+        "filename": "src/core/SkPicture.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-05-07T20:31:14Z",
+      "side": 1,
+      "message": "!valid",
+      "revId": "38d16a7bd0473d872bf95540743c73cf88cf92cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13c2e183_a31f5342",
+        "filename": "src/core/SkReadBuffer.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-05-07T20:31:14Z",
+      "side": 1,
+      "message": "No longer needed.",
+      "revId": "38d16a7bd0473d872bf95540743c73cf88cf92cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
