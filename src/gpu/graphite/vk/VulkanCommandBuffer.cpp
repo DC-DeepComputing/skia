@@ -622,10 +622,13 @@ bool VulkanCommandBuffer::onAddRenderPass(const RenderPassDesc& rpDesc,
             VulkanTexture* vulkanTexture = const_cast<VulkanTexture*>(
                                            static_cast<const VulkanTexture*>(
                                            textureProxy->texture()));
-            vulkanTexture->setImageLayout(this,
-                                          VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
-                                          VK_ACCESS_SHADER_READ_BIT,
-                                          VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT);
+            // NOTE: In the case that we are reading the texture size in the vertex shader, we
+            // assume that changing to the required image layout will not affect the texture size.
+            vulkanTexture->setImageLayout(
+                    this,
+                    VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
+                    VK_ACCESS_SHADER_READ_BIT,
+                    VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT);
         }
     }
     if (fDstCopy.first) {
@@ -1537,11 +1540,20 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
                 // active graphics pipeline and can be indexed directly with `i`.
                 const Sampler* immutableSampler = fActiveGraphicsPipeline->immutableSampler(i);
                 SkASSERT(SkToBool(immutableSampler) == command->fSamplers[i].isImmutable());
-                descriptors.push_back({DescriptorType::kCombinedTextureSampler,
-                                       /*count=*/1,
-                                       /*bindingIdx=*/i,
-                                       PipelineStageFlags::kFragmentShader,
-                                       immutableSampler});
+                ShaderStageFlags vis = fActiveGraphicsPipeline->textureVisibility(i);
+                SkEnumBitMask<PipelineStageFlags> stageFlags = PipelineStageFlags::kNone;
+                if (SkToBool(vis & ShaderStageFlags::kVertex)) {
+                    stageFlags |= PipelineStageFlags::kVertexShader;
+                }
+                if (SkToBool(vis & ShaderStageFlags::kFragment)) {
+                    stageFlags |= PipelineStageFlags::kFragmentShader;
+                }
+                descriptors.push_back(
+                        {DescriptorType::kCombinedTextureSampler,
+                         /*count=*/1,
+                         /*bindingIdx=*/i,
+                         stageFlags,
+                         immutableSampler});
             }
         }
         // If required the dst copy texture+sampler is the last one in the descriptor set
@@ -1633,7 +1645,7 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
 void VulkanCommandBuffer::bindTextureSamplers() {
     fBindTextureSamplers = false;
     if (fTextureSamplerDescSetToBind != VK_NULL_HANDLE &&
-        fActiveGraphicsPipeline->numFragTexturesAndSamplers() == fNumTextureSamplers) {
+        fActiveGraphicsPipeline->numTexturesAndSamplers() == fNumTextureSamplers) {
         VULKAN_CALL(fSharedContext->interface(),
                     CmdBindDescriptorSets(fPrimaryCommandBuffer,
                                           VK_PIPELINE_BIND_POINT_GRAPHICS,
