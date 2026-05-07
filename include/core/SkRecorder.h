@@ -12,6 +12,7 @@
 class SkCanvas;
 class SkContentID;
 class SkSurface;
+class SkContentID;
 
 namespace skcpu {
 class Recorder;
