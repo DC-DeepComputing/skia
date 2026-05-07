@@ -188,6 +188,30 @@
       },
       "revId": "f066d884e87300032d0ee13a8697bcfd82b05680",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91a28019_66927da1",
+        "filename": "src/core/SkReadBuffer.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-05-07T20:36:58Z",
+      "side": 1,
+      "message": "```buffer.setRecursionLimit(recursionLimit - 1);```\n\nI meant this part, looks like we could set the limit to zero from `ParseStreamTag`.",
+      "parentUuid": "1a427019_a1575ecc",
+      "range": {
+        "startLine": 244,
+        "startChar": 26,
+        "endLine": 244,
+        "endChar": 27
+      },
+      "revId": "f066d884e87300032d0ee13a8697bcfd82b05680",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
