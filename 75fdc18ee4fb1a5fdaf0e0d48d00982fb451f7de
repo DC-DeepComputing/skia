@@ -34,6 +34,23 @@
       "parentUuid": "48008709_3a0914ff",
       "revId": "75fdc18ee4fb1a5fdaf0e0d48d00982fb451f7de",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2703b93_6957e934",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 14669
+      },
+      "writtenOn": "2026-05-08T13:48:39Z",
+      "side": 1,
+      "message": "This caused a 25% regression in graphite dawn_to_swap time on css_value_type_shadow.",
+      "revId": "75fdc18ee4fb1a5fdaf0e0d48d00982fb451f7de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
