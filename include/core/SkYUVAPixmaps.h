@@ -129,10 +129,21 @@ public:
      * Row bytes for the ith plane. Returns zero if i >= numPlanes() or this SkYUVAPixmapInfo is
      * invalid.
      */
-    size_t rowBytes(int i) const { return fRowBytes[static_cast<size_t>(i)]; }
+    size_t rowBytes(int i) const {
+        if (!this->isValid() || i < 0 || i >= this->numPlanes()) {
+            return 0;
+        }
+        return fRowBytes[static_cast<size_t>(i)];
+    }
 
     /** Image info for the ith plane, or default SkImageInfo if i >= numPlanes() */
-    const SkImageInfo& planeInfo(int i) const { return fPlaneInfos[static_cast<size_t>(i)]; }
+    const SkImageInfo& planeInfo(int i) const {
+        if (!this->isValid() || i < 0 || i >= this->numPlanes()) {
+            static const SkImageInfo kEmptyInfo = SkImageInfo::MakeUnknown();
+            return kEmptyInfo;
+        }
+        return fPlaneInfos[static_cast<size_t>(i)];
+    }
 
     /**
      * Determine size to allocate for all planes. Optionally retrieves the per-plane sizes in
@@ -237,7 +248,13 @@ public:
      * Get the ith SkPixmap plane. SkPixmap will be default initialized if i >= numPlanes or this
      * SkYUVAPixmaps is invalid.
      */
-    const SkPixmap& plane(int i) const { return fPlanes[SkToSizeT(i)]; }
+    const SkPixmap& plane(int i) const {
+        if (!this->isValid() || i < 0 || i >= this->numPlanes()) {
+            static const SkPixmap kEmptyPixmap;
+            return kEmptyPixmap;
+        }
+        return fPlanes[static_cast<size_t>(i)];
+    }
 
     /**
      * Computes a YUVALocations representation of the planar layout. The result is guaranteed to be
