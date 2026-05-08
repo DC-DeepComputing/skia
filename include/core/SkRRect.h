@@ -293,7 +293,10 @@ public:
 
         @return        x-axis and y-axis radii for one corner
     */
-    SkVector radii(Corner corner) const { return fRadii[corner]; }
+    SkVector radii(Corner corner) const {
+        return (corner > kLowerLeft_Corner || corner < kUpperLeft_Corner) ?
+               SkVector{0, 0} : fRadii[corner];
+    }
     /**
      * Returns the corner radii for all four corners, in the same order as `Corner`.
      */
