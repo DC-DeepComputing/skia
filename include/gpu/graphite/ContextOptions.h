@@ -222,6 +222,9 @@ struct SK_API ContextOptions {
      */
      bool fEnableCapture = false;
 
+     // XXX
+     bool fAvoidDepthMode = false;
+
     /**
      * Private options that are only meant for testing within Skia's tools.
      */
