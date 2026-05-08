@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "003c0e59_4dde30d9",
+        "filename": "tests/graphite/sparse_strips/TilerTest.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-08T12:08:17Z",
+      "side": 1,
+      "message": "\\n before this ?",
+      "range": {
+        "startLine": 209,
+        "startChar": 53,
+        "endLine": 209,
+        "endChar": 58
+      },
+      "revId": "e0f8ff16df1414267d2658aa1f704368e900eb86",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4b0eae4_f9e219bc",
+        "filename": "tests/graphite/sparse_strips/TilerTest.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-08T12:08:17Z",
+      "side": 1,
+      "message": "I guess, shouldn\u0027t all these guys be const too ?",
+      "revId": "e0f8ff16df1414267d2658aa1f704368e900eb86",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
