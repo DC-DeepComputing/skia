@@ -133,6 +133,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0f7f6126_2d8c467f",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoEntryCodec.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-05-08T22:07:18Z",
+      "side": 1,
+      "message": "\u003e I\u0027ve changed the ICO to use SkPngRustCodec and SkBmpRustCodec, but it will need another review to make sure it\u0027s sufficient.\n\nI see that `SkIcoRustCodec` now directly uses `SkPngRustCodec` and/or `SkBmpRustCodec` - thanks!  Does it mean that the `SkIcoEntryCodec.cpp`, `.h`, and corresponding `BUILD` entries can be deleted now?",
+      "parentUuid": "67f062f8_f56f8c26",
+      "range": {
+        "startLine": 79,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 78
+      },
+      "revId": "a8cc847ff8d85fac4b72ad032ccaa5d5d09ca93b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0765a402_caf954c2",
         "filename": "experimental/rust_ico/ffi/FFI.rs",
         "patchSetId": 11

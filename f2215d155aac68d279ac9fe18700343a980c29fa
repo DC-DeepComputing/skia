@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ea5698b_e6248898",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 33
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-05-08T22:07:18Z",
+      "side": 1,
+      "message": "Ok - I finished my 2nd review pass.  I have a few comments below, including a question to @sergiog.",
+      "revId": "f2215d155aac68d279ac9fe18700343a980c29fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3b036f5a_470cfff5",
@@ -82,6 +99,121 @@
         "startChar": 4,
         "endLine": 227,
         "endChar": 5
+      },
+      "revId": "f2215d155aac68d279ac9fe18700343a980c29fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "edab3682_a304ba33",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 33
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-05-08T22:07:18Z",
+      "side": 1,
+      "message": "optional nit: Should this just say `Fn`?  IIUC the rule of thumb that `\u0026\u0026` is only needed in this position for arguments passed later to `std::forward`.",
+      "range": {
+        "startLine": 314,
+        "startChar": 50,
+        "endLine": 314,
+        "endChar": 54
+      },
+      "revId": "f2215d155aac68d279ac9fe18700343a980c29fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f40090b9_5245ad9f",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.h",
+        "patchSetId": 33
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-05-08T22:07:18Z",
+      "side": 1,
+      "message": "Can you please help me understand why this `override` is present here?  IIUC neither `SkPngRustCodec` nor `SkBmpRustCodec` provide this method.\n\nSame question for `usesColorXform` and `conversionSupported`",
+      "range": {
+        "startLine": 64,
+        "startChar": 20,
+        "endLine": 64,
+        "endChar": 38
+      },
+      "revId": "f2215d155aac68d279ac9fe18700343a980c29fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f85bc84_17e1e5ee",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.h",
+        "patchSetId": 33
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-05-08T22:07:18Z",
+      "side": 1,
+      "message": "Perceived problem: I think that there is an implicit assumption that all of the following things are equal: 1) the length of the array in `fEmbeddedCodecs`, 2) the length of the `fBmpEntryData` vector, and 3) the number of frames entries in `fFrameHolder`.\n\nWould it make sense to move `sk_sp\u003cSkData\u003e` and `std::unique_ptr\u003cSkCodec\u003e` into a shared struct?  For example, I see that `SkPngRustCodec` defines `PngFrame` which holds additional fields, on top of the ones inherited from `SkFrame` - maybe it would be appropriate to define `SkIcoRustCodec::FrameHolder::IcoFrame` with fields for holding the frame-specific-data and the frame-specific-codec.\n\nSince frame fields would probably need to be populated in the `SkIcoRustCodec` constructor, we may run into a similar concern there.  Maybe the `codecs` and `bmpEntryData` parameters (of the constructor) can be replaced with a single parameter types like `std::vector\u003cstd::pair\u003cstd::unique_ptr\u003cSkCodec\u003e, sk_sp\u003cSkData\u003e\u003e\u003e`?\n\nWDYT?  Does that make sense?  Do you think it would make things slightly cleaner and less likely to get out-of-sync?",
+      "range": {
+        "startLine": 187,
+        "startChar": 0,
+        "endLine": 191,
+        "endChar": 29
+      },
+      "revId": "f2215d155aac68d279ac9fe18700343a980c29fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb4bac0d_5c5d5f2e",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.h",
+        "patchSetId": 33
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-05-08T22:07:18Z",
+      "side": 1,
+      "message": "Perceived problem: it seems slightly fragile that before de-indexing, we have to check (i.e. in the current `SkIcoRustCodec::onIncrementalDecode`) whether the index is valid or not.  Would it be possible / make sense to use a more explicit ownership here - maybe holding `sk_sp\u003cSkData\u003e`?\n\n(OTOH maybe this will be N/A if @sergiog says that `SkBmpRustCodec` can already internally handle the mask (?).)",
+      "range": {
+        "startLine": 196,
+        "startChar": 8,
+        "endLine": 196,
+        "endChar": 23
+      },
+      "revId": "f2215d155aac68d279ac9fe18700343a980c29fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41717c4b_25caaa9e",
+        "filename": "experimental/rust_ico/ffi/FFI.rs",
+        "patchSetId": 33
+      },
+      "lineNbr": 536,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-05-08T22:07:18Z",
+      "side": 1,
+      "message": "@sergiog, does `SkBmpRustCodec` or the `image` crate already handle masks embedded in BMP images?",
+      "range": {
+        "startLine": 536,
+        "startChar": 7,
+        "endLine": 536,
+        "endChar": 21
       },
       "revId": "f2215d155aac68d279ac9fe18700343a980c29fa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
