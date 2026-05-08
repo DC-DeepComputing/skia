@@ -16,6 +16,184 @@
       "message": "Thanks for reviewing the changes. I have addressed the comments, please review again.\nPlease help trigger the CQ dry run, I don\u0027t have the permission for it.\nThanks.",
       "revId": "b4b0746d64520c8ddd6b63fb98e30472ac9615b5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "699df303_9a1f0570",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2026-05-08T06:15:23Z",
+      "side": 1,
+      "message": "Thanks, a few more comments.",
+      "revId": "b4b0746d64520c8ddd6b63fb98e30472ac9615b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51a63298_2884c7ea",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 631,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2026-05-08T06:15:23Z",
+      "side": 1,
+      "message": "Would prefer to keep the original bounds from imageInfo here. \n\nSkImageInfo info \u003d img-\u003eimageInfo();\nSkRect bounds \u003d SkRect::Make(info.bounds());",
+      "range": {
+        "startLine": 631,
+        "startChar": 16,
+        "endLine": 631,
+        "endChar": 69
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "5aac61de_fc92be7e",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/ports/SkTypeface_fontations.cpp",
+              "range": {
+                "startLine": 631,
+                "startChar": 0,
+                "endLine": 632,
+                "endChar": 0
+              },
+              "replacement": "                SkImageInfo info \u003d img-\u003eimageInfo();\n                bounds \u003d SkRect::Make(info.bounds());\n"
+            }
+          ]
+        }
+      ],
+      "revId": "b4b0746d64520c8ddd6b63fb98e30472ac9615b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e4c8189_23d50a14",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 642,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2026-05-08T06:15:23Z",
+      "side": 1,
+      "message": "Why is this needed?",
+      "range": {
+        "startLine": 642,
+        "startChar": 16,
+        "endLine": 642,
+        "endChar": 40
+      },
+      "revId": "b4b0746d64520c8ddd6b63fb98e30472ac9615b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "235d3faf_afe53007",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 704,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2026-05-08T06:15:23Z",
+      "side": 1,
+      "message": "Now that we prefer the PNG, let\u0027s be consistent and move this block up before A8_format, and swap the order, so A8_Format follows after ARGB32_Format.",
+      "range": {
+        "startLine": 704,
+        "startChar": 8,
+        "endLine": 704,
+        "endChar": 66
+      },
+      "revId": "b4b0746d64520c8ddd6b63fb98e30472ac9615b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a2cecd9_9ba5bd3d",
+        "filename": "src/ports/fontations/src/bitmap.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2026-05-08T06:15:23Z",
+      "side": 1,
+      "message": "I think you can further combine that.\n\n```\nlet (width, height) \u003d match metrics {\n    BitmapMetrics::Small(m) | BitmapMetrics::Big(m) \n        if m.width !\u003d 0 \u0026\u0026 m.height !\u003d 0 \u003d\u003e (m.width as u32, m.height as u32),\n    _ \u003d\u003e return None,\n};\n```",
+      "range": {
+        "startLine": 142,
+        "startChar": 0,
+        "endLine": 148,
+        "endChar": 5
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "feaf84c8_43ccad94",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/ports/fontations/src/bitmap.rs",
+              "range": {
+                "startLine": 143,
+                "startChar": 0,
+                "endLine": 145,
+                "endChar": 0
+              },
+              "replacement": "        BitmapMetrics::Small(m) | BitmapMetrics::Big(m) if m.width !\u003d 0 \u0026\u0026 m.height !\u003d 0 \u003d\u003e {\n            (m.width as u32, m.height as u32)\n        }\n        _ \u003d\u003e return None,\n"
+            },
+            {
+              "path": "src/ports/fontations/src/bitmap.rs",
+              "range": {
+                "startLine": 146,
+                "startChar": 0,
+                "endLine": 149,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "b4b0746d64520c8ddd6b63fb98e30472ac9615b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44b89ab9_d0795283",
+        "filename": "src/ports/fontations/src/bitmap.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2026-05-08T06:15:23Z",
+      "side": 1,
+      "message": "Thanks, good to work with the question mark operator here.",
+      "range": {
+        "startLine": 150,
+        "startChar": 0,
+        "endLine": 154,
+        "endChar": 29
+      },
+      "revId": "b4b0746d64520c8ddd6b63fb98e30472ac9615b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
