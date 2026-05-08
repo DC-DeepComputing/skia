@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "88925985_1fb564bc",
+        "filename": "tests/graphite/sparse_strips/TilerTest.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-08T16:57:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "003c0e59_4dde30d9",
+      "range": {
+        "startLine": 209,
+        "startChar": 53,
+        "endLine": 209,
+        "endChar": 58
+      },
+      "revId": "e0f8ff16df1414267d2658aa1f704368e900eb86",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a4b0eae4_f9e219bc",
@@ -37,6 +61,24 @@
       "writtenOn": "2026-05-08T12:08:17Z",
       "side": 1,
       "message": "I guess, shouldn\u0027t all these guys be const too ?",
+      "revId": "e0f8ff16df1414267d2658aa1f704368e900eb86",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c22ca34_88fff2ea",
+        "filename": "tests/graphite/sparse_strips/TilerTest.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-08T16:57:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a4b0eae4_f9e219bc",
       "revId": "e0f8ff16df1414267d2658aa1f704368e900eb86",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
