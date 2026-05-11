@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2da66d95_ffd7cb37",
+        "filename": "src/capture/SkCapture.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-05-11T17:36:47Z",
+      "side": 1,
+      "message": "nit: Set your column length to 100",
+      "revId": "a6d7523e075b955242e8305d99fe62f6f6cbecb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd5350a6_917bcb40",
+        "filename": "src/capture/SkCapture.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-05-11T17:36:47Z",
+      "side": 1,
+      "message": "nit: while here, add the bug b/412351769 to this TODO.",
+      "revId": "a6d7523e075b955242e8305d99fe62f6f6cbecb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a80179b_fc72cd09",
+        "filename": "src/capture/SkCapture.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-05-11T17:36:47Z",
+      "side": 1,
+      "message": "nit: spacing",
+      "revId": "a6d7523e075b955242e8305d99fe62f6f6cbecb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "baf78cdd_30618967",
+        "filename": "src/capture/SkCaptureCanvas.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-05-11T17:36:47Z",
+      "side": 1,
+      "message": "column length 100",
+      "revId": "a6d7523e075b955242e8305d99fe62f6f6cbecb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
