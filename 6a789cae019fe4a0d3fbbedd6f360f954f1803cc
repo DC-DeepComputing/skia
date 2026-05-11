@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b4c6ce7_e0dea804",
+        "filename": "bench/graphite/sparse_strips/TilerBench.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-11T19:16:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ce9deb1c_d4590551",
+      "range": {
+        "startLine": 44,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 49
+      },
+      "revId": "6a789cae019fe4a0d3fbbedd6f360f954f1803cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8967ec03_a3543a01",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-05-07T18:58:54Z",
       "side": 1,
       "message": "Can/should we pull this out of the loop ?",
+      "range": {
+        "startLine": 80,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 49
+      },
+      "revId": "6a789cae019fe4a0d3fbbedd6f360f954f1803cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2e6bde0_628c1037",
+        "filename": "bench/graphite/sparse_strips/TilerBench.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-11T19:16:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8967ec03_a3543a01",
       "range": {
         "startLine": 80,
         "startChar": 0,
