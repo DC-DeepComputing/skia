@@ -177,6 +177,91 @@ std::unique_ptr<SkBmpRustCodec> SkBmpRustCodec::MakeFromStream(std::unique_ptr<S
     ));
 }
 
+std::unique_ptr<SkBmpRustCodec> SkBmpRustCodec::MakeFromIcoStream(
+        std::unique_ptr<SkStream> stream,
+        Result* result) {
+    Result resultStorage;
+    if (!result) {
+        result = &resultStorage;
+    }
+
+    if (!stream) {
+        *result = kInvalidParameters;
+        return nullptr;
+    }
+
+    auto inputAdapter = std::make_unique<rust::stream::SkStreamAdapter>(stream.get());
+    rust::Box<rust_bmp::ResultOfReader> resultOfReader =
+            rust_bmp::new_reader(std::move(inputAdapter));
+
+    rust_bmp::DecodingResult rustResult = resultOfReader->err();
+    if (rustResult != rust_bmp::DecodingResult::Success) {
+        *result = MapDecodingResult(rustResult);
+        return nullptr;
+    }
+
+    rust::Box<rust_bmp::Reader> reader = resultOfReader->unwrap();
+
+    // Use ICO-aware metadata parsing: handles no file header, halved height, alpha channel.
+    rust_bmp::DecodingResult metadataResult = reader->read_metadata_for_ico();
+    if (metadataResult != rust_bmp::DecodingResult::Success) {
+        *result = MapDecodingResult(metadataResult);
+        return nullptr;
+    }
+
+    uint32_t width = reader->width();
+    uint32_t height = reader->height();
+    rust_bmp::BmpColor rustColor = reader->color();
+    rust_bmp::BmpAlpha rustAlpha = reader->alpha();
+
+    SkEncodedInfo::Color color = static_cast<SkEncodedInfo::Color>(rustColor);
+    SkEncodedInfo::Alpha alpha = static_cast<SkEncodedInfo::Alpha>(rustAlpha);
+    constexpr int kBitsPerComponent = 8;
+
+    // Extract and parse ICC profile if present
+    std::unique_ptr<SkCodecs::ColorProfile> colorProfile;
+    rust::Vec<uint8_t> profileData = reader->icc_profile();
+    if (!profileData.empty()) {
+        sk_sp<SkData> iccData = SkData::MakeWithCopy(profileData.data(), profileData.size());
+        colorProfile = SkCodecs::ColorProfile::MakeICCProfile(std::move(iccData));
+    }
+
+    SkEncodedInfo encodedInfo = SkEncodedInfo::Make(
+        width, height, color, alpha, kBitsPerComponent, std::move(colorProfile));
+
+    size_t bytesPerPixel;
+    switch (color) {
+        case SkEncodedInfo::kRGB_Color:
+        case SkEncodedInfo::kBGR_Color:
+            bytesPerPixel = 3;
+            break;
+        case SkEncodedInfo::kRGBA_Color:
+        case SkEncodedInfo::kBGRA_Color:
+        case SkEncodedInfo::kBGRX_Color:
+            bytesPerPixel = 4;
+            break;
+        default:
+            *result = kInvalidInput;
+            return nullptr;
+    }
+    SkSafeMath safe;
+    size_t srcRowBytes = safe.mul(safe.castTo<size_t>(width), bytesPerPixel);
+    (void)safe.mul(safe.castTo<size_t>(height), srcRowBytes);
+    if (!safe.ok()) {
+        *result = kInternalError;
+        return nullptr;
+    }
+
+    *result = kSuccess;
+    auto codec = std::unique_ptr<SkBmpRustCodec>(new SkBmpRustCodec(
+        std::move(encodedInfo),
+        std::move(stream),
+        std::move(reader)
+    ));
+    codec->fIsIcoMode = true;
+    return codec;
+}
+
 SkBmpRustCodec::SkBmpRustCodec(SkEncodedInfo&& encodedInfo,
                                std::unique_ptr<SkStream> stream,
                                rust::Box<rust_bmp::Reader> reader)
@@ -240,9 +325,12 @@ bool SkBmpRustCodec::onRewind() {
 
     fReader = resultOfReader->unwrap();
 
-    // Read metadata for the new reader (required before read_image_data can work)
+    // Read metadata for the new reader (required before read_image_data can work).
+    // Use ICO-aware metadata parsing if this codec was created from an ICO stream.
     if (!fReader->metadata_loaded()) {
-        rust_bmp::DecodingResult metadataResult = fReader->read_metadata();
+        rust_bmp::DecodingResult metadataResult = fIsIcoMode
+                ? fReader->read_metadata_for_ico()
+                : fReader->read_metadata();
         if (metadataResult != rust_bmp::DecodingResult::Success) {
             return false;
         }
