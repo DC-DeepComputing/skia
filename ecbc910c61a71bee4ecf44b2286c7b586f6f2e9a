@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd56942a_86976fdb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-05-11T15:59:02Z",
+      "side": 1,
+      "message": "I just copy/paste the configs we currently run on IntelIrisXe.  Happy to make changes if necessary.\n\nThese are currently failing with:\n```\nskia/src/gpu/graphite/vk/VulkanDescriptorSet.cpp(27): fatal error: \"check(VK_SUCCESS \u003d\u003d result || VK_ERROR_DEVICE_LOST \u003d\u003d result)\"\n```",
+      "revId": "ecbc910c61a71bee4ecf44b2286c7b586f6f2e9a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
