@@ -96,6 +96,57 @@
       },
       "revId": "4488b5406eb0e6003e783c4cfec04a71f7e7b0bb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0e08728_5fe542a3",
+        "filename": "tests/graphite/sparse_strips/ClipTest.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-11T18:48:08Z",
+      "side": 1,
+      "message": "wdyt about adding sparse_strips/SparseStripsUtils.h/.cpp and sharing this ?",
+      "revId": "4488b5406eb0e6003e783c4cfec04a71f7e7b0bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb345671_92f1e136",
+        "filename": "tests/graphite/sparse_strips/ClipTest.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-11T18:48:08Z",
+      "side": 1,
+      "message": "// If there exists a clipped segment of \u0027line\u0027 returns the segment\u0027s endpoints (in tile space)\n?",
+      "revId": "4488b5406eb0e6003e783c4cfec04a71f7e7b0bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1647c71_7c45efcb",
+        "filename": "tests/graphite/sparse_strips/ClipTest.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-11T18:48:08Z",
+      "side": 1,
+      "message": "Got to here",
+      "revId": "4488b5406eb0e6003e783c4cfec04a71f7e7b0bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
