@@ -152,6 +152,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "48b99051_69f338b3",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 33
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 4569768
+      },
+      "writtenOn": "2026-05-11T19:52:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b0e595bd_a91f9943",
+      "range": {
+        "startLine": 227,
+        "startChar": 4,
+        "endLine": 227,
+        "endChar": 5
+      },
+      "revId": "f2215d155aac68d279ac9fe18700343a980c29fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "edab3682_a304ba33",
