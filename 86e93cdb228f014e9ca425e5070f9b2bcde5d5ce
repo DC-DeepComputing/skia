@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "928ce98d_88bb6f9a",
+        "filename": "src/gpu/graphite/precompile/PrecompileShader.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-11T13:50:36Z",
+      "side": 1,
+      "message": "These seem flipped",
+      "range": {
+        "startLine": 178,
+        "startChar": 0,
+        "endLine": 179,
+        "endChar": 74
+      },
+      "revId": "86e93cdb228f014e9ca425e5070f9b2bcde5d5ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae0c6ccb_31ac44fc",
+        "filename": "tests/graphite/precompile/CombinationBuilderTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-11T13:50:36Z",
+      "side": 1,
+      "message": "Oh boy",
+      "revId": "86e93cdb228f014e9ca425e5070f9b2bcde5d5ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
