@@ -1,0 +1,101 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e89f1e8_c397d9ba",
+        "filename": "src/gpu/graphite/sparse_strips/Strip.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-11T18:38:37Z",
+      "side": 1,
+      "message": "// The Strip class is an awesome abstraction that force multiples the shareholder value by ...\n?\n\nIs this going to fill out in later CLs? Right now it look like just a method.",
+      "revId": "4488b5406eb0e6003e783c4cfec04a71f7e7b0bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67451d55_fc4a0d26",
+        "filename": "src/gpu/graphite/sparse_strips/Strip.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-11T18:38:37Z",
+      "side": 1,
+      "message": "ClipToTile since static ?",
+      "revId": "4488b5406eb0e6003e783c4cfec04a71f7e7b0bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "842e31b4_e0b85047",
+        "filename": "src/gpu/graphite/sparse_strips/Strip.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-11T18:38:37Z",
+      "side": 1,
+      "message": "// This clips the provide Line to the tile specified by \u0027bounds\u0027. The x, y, z parameters serve to ...\nIt returns the clipped line segment points in tile coordinates.\n?",
+      "revId": "4488b5406eb0e6003e783c4cfec04a71f7e7b0bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec71b6c5_a2bdd3bf",
+        "filename": "src/gpu/graphite/sparse_strips/Strip.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-11T18:38:37Z",
+      "side": 1,
+      "message": "Line up the \u0027:\u0027s better ?",
+      "range": {
+        "startLine": 77,
+        "startChar": 0,
+        "endLine": 79,
+        "endChar": 56
+      },
+      "revId": "4488b5406eb0e6003e783c4cfec04a71f7e7b0bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a345616_936b3717",
+        "filename": "src/gpu/graphite/sparse_strips/Strip.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-11T18:38:37Z",
+      "side": 1,
+      "message": "same",
+      "range": {
+        "startLine": 98,
+        "startChar": 0,
+        "endLine": 100,
+        "endChar": 57
+      },
+      "revId": "4488b5406eb0e6003e783c4cfec04a71f7e7b0bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
