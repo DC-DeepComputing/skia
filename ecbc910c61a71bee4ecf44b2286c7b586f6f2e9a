@@ -16,6 +16,23 @@
       "message": "I just copy/paste the configs we currently run on IntelIrisXe.  Happy to make changes if necessary.\n\nThese are currently failing with:\n```\nskia/src/gpu/graphite/vk/VulkanDescriptorSet.cpp(27): fatal error: \"check(VK_SUCCESS \u003d\u003d result || VK_ERROR_DEVICE_LOST \u003d\u003d result)\"\n```",
       "revId": "ecbc910c61a71bee4ecf44b2286c7b586f6f2e9a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8cb0569_b108a77d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-05-11T19:37:07Z",
+      "side": 1,
+      "message": "Thanks Eric! I\u0027ll need to do some printf debugging to see what the error result is on the ycbcr test (it at least doesn\u0027t crash on release). The other unit test failures with bad color values are more concerning, particularly since the gold images don\u0027t have any standout failures from a quick review.",
+      "revId": "ecbc910c61a71bee4ecf44b2286c7b586f6f2e9a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
