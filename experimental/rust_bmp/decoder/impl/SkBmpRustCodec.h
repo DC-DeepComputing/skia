@@ -29,6 +29,10 @@ class SkBmpRustCodec final : public SkCodec {
 public:
     static std::unique_ptr<SkBmpRustCodec> MakeFromStream(std::unique_ptr<SkStream>, Result*);
 
+    /// Create a codec for a BMP embedded in an ICO file.
+    /// Uses image crate's ICO-aware metadata parsing (no file header, halved height, alpha).
+    static std::unique_ptr<SkBmpRustCodec> MakeFromIcoStream(std::unique_ptr<SkStream>, Result*);
+
     ~SkBmpRustCodec() override;
 
 protected:
@@ -71,6 +75,13 @@ private:
     Result initializeSwizzler(const SkImageInfo& dstInfo, const Options& opts);
     void swizzleRow(const uint8_t* srcRow, void* dstRow);
 
+    // Build a codec from a metadata-loaded Reader. Extracts dimensions, color
+    // info, and ICC profile from `reader`, validates the pixel format, and
+    // constructs the codec. Sets `*result` to the appropriate status.
+    static std::unique_ptr<SkBmpRustCodec> MakeFromReader(std::unique_ptr<SkStream> stream,
+                                                          rust::Box<rust_bmp::Reader> reader,
+                                                          Result* result);
+
     // Internal state for incremental decoding
     struct DecodingState {
         SkSpan<uint8_t> fDst;
@@ -85,6 +96,9 @@ private:
     rust::Box<rust_bmp::Reader> fReader;
     std::unique_ptr<SkStream> fPrivStream;
     std::unique_ptr<SkSwizzler> fSwizzler;
+
+    // True if this codec was created via MakeFromIcoStream.
+    bool fIsIcoMode = false;
 
     // Using 4-bytes-wide `uint32_t` for each pixel, because
     // `kXformSrcColorType = kRGBA_8888_SkColorType`.
