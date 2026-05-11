@@ -221,6 +221,9 @@ SkYUVAPixmaps SkYUVAPixmaps::FromExternalMemory(const SkYUVAPixmapInfo& yuvaPixm
 
 SkYUVAPixmaps SkYUVAPixmaps::FromExternalPixmaps(const SkYUVAInfo& yuvaInfo,
                                                  const SkPixmap pixmaps[kMaxPlanes]) {
+    if (!yuvaPixmapInfo.isValid()) {
+        return {};
+    }
     SkColorType colorTypes[kMaxPlanes] = {};
     size_t rowBytes[kMaxPlanes] = {};
     int numPlanes = yuvaInfo.numPlanes();
@@ -229,9 +232,6 @@ SkYUVAPixmaps SkYUVAPixmaps::FromExternalPixmaps(const SkYUVAInfo& yuvaInfo,
         rowBytes[i] = pixmaps[i].rowBytes();
     }
     SkYUVAPixmapInfo yuvaPixmapInfo(yuvaInfo, colorTypes, rowBytes);
-    if (!yuvaPixmapInfo.isValid()) {
-        return {};
-    }
     return SkYUVAPixmaps(yuvaInfo, yuvaPixmapInfo.dataType(), pixmaps);
 }
 
