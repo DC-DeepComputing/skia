@@ -223,16 +223,17 @@ std::optional<GpuStats> VulkanCommandBuffer::gpuStats() {
     if (fTimestampQueryPool != VK_NULL_HANDLE) {
         uint64_t timestamps[2];
         VkResult result;
-        VULKAN_CALL_RESULT(fSharedContext,
-                           result,
-                           GetQueryPoolResults(fSharedContext->device(),
-                                               fTimestampQueryPool,
-                                               0,
-                                               2,
-                                               sizeof(timestamps),
-                                               timestamps,
-                                               sizeof(uint64_t),
-                                               VK_QUERY_RESULT_64_BIT | VK_QUERY_RESULT_WAIT_BIT));
+        VULKAN_CALL_RESULT_NOCHECK(
+                fSharedContext->interface(),
+                result,
+                GetQueryPoolResults(fSharedContext->device(),
+                                    fTimestampQueryPool,
+                                    0,
+                                    2,
+                                    sizeof(timestamps),
+                                    timestamps,
+                                    sizeof(uint64_t),
+                                    VK_QUERY_RESULT_64_BIT | VK_QUERY_RESULT_WAIT_BIT));
         if (result == VK_SUCCESS) {
             // kElapsedTime is only exposed if timestampComputeAndGraphics, which guarantees
             // timestampValidBits >= 36 on GRAPHICS and COMPUTE queues. We only ever use
@@ -251,16 +252,17 @@ std::optional<GpuStats> VulkanCommandBuffer::gpuStats() {
     if (fOcclusionQueryPool != VK_NULL_HANDLE) {
         uint64_t occlusion = 0;
         VkResult result;
-        VULKAN_CALL_RESULT(fSharedContext,
-                           result,
-                           GetQueryPoolResults(fSharedContext->device(),
-                                               fOcclusionQueryPool,
-                                               0,
-                                               1,
-                                               sizeof(occlusion),
-                                               &occlusion,
-                                               sizeof(uint64_t),
-                                               VK_QUERY_RESULT_64_BIT | VK_QUERY_RESULT_WAIT_BIT));
+        VULKAN_CALL_RESULT_NOCHECK(
+                fSharedContext->interface(),
+                result,
+                GetQueryPoolResults(fSharedContext->device(),
+                                    fOcclusionQueryPool,
+                                    0,
+                                    1,
+                                    sizeof(occlusion),
+                                    &occlusion,
+                                    sizeof(uint64_t),
+                                    VK_QUERY_RESULT_64_BIT | VK_QUERY_RESULT_WAIT_BIT));
         if (result == VK_SUCCESS) {
             stats.numOcclusionPassSamples = occlusion;
         }
