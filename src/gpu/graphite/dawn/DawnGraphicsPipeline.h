@@ -47,7 +47,7 @@ public:
     inline static constexpr unsigned int kIntrinsicUniformBufferIndex = 0;
     inline static constexpr unsigned int kCombinedUniformIndex = 1;
     inline static constexpr unsigned int kGradientBufferIndex = 2;
-    inline static constexpr unsigned int kNumUniformBuffers = 3;
+    inline static constexpr unsigned int kMaxNumUniformBuffers = 3;
 
     inline static constexpr unsigned int kIntrinsicUniformSize = 32;
 
