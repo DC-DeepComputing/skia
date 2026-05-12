@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "03d02471_0c5e09e4",
+        "filename": "src/capture/SkCapture.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-05-12T15:36:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2da66d95_ffd7cb37",
+      "revId": "a6d7523e075b955242e8305d99fe62f6f6cbecb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dd5350a6_917bcb40",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-05-11T17:36:47Z",
       "side": 1,
       "message": "nit: while here, add the bug b/412351769 to this TODO.",
+      "revId": "a6d7523e075b955242e8305d99fe62f6f6cbecb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d149f807_0f93f66a",
+        "filename": "src/capture/SkCapture.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-05-12T15:36:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dd5350a6_917bcb40",
       "revId": "a6d7523e075b955242e8305d99fe62f6f6cbecb1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -52,6 +88,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f490090_bb8a173a",
+        "filename": "src/capture/SkCapture.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-05-12T15:36:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a80179b_fc72cd09",
+      "revId": "a6d7523e075b955242e8305d99fe62f6f6cbecb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "baf78cdd_30618967",
@@ -65,6 +119,24 @@
       "writtenOn": "2026-05-11T17:36:47Z",
       "side": 1,
       "message": "column length 100",
+      "revId": "a6d7523e075b955242e8305d99fe62f6f6cbecb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6fcd61ae_7e10d284",
+        "filename": "src/capture/SkCaptureCanvas.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-05-12T15:36:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "baf78cdd_30618967",
       "revId": "a6d7523e075b955242e8305d99fe62f6f6cbecb1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
