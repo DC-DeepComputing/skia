@@ -21,6 +21,8 @@ vars = {
 
   # Pre-built task drivers from this repo, used for CI.
   'task_drivers_revision': 'git_revision:b5d31abb7bc772a69f800de45783768768437675',
+
+  'checkout_agents_internal': False,
 }
 
 # If you modify this file, you will need to regenerate the Bazel version of this file (bazel/deps.bzl).
@@ -84,7 +86,7 @@ deps = {
   #"third_party/externals/v8"                     : "https://chromium.googlesource.com/v8/v8.git@5f1ae66d5634e43563b2d25ea652dfb94c31a3b4",
   "third_party/externals/wuffs"                  : "https://skia.googlesource.com/external/github.com/google/wuffs-mirror-release-c.git@e3f919ccfe3ef542cfc983a82146070258fb57f8",
   "third_party/externals/zlib"                   : "https://chromium.googlesource.com/chromium/src/third_party/zlib@646b7f569718921d7d4b5b8e22572ff6c76f2596",
-
+  
   'bin': {
     'packages': [
       {
@@ -112,6 +114,16 @@ deps = {
 
   'infra/skia-infra': {
     'url': 'https://skia.googlesource.com/buildbot.git@' + Var('infra_revision'),
+    'condition': 'False',
+  },
+
+  'agents/shared': {
+    'url': 'https://chromium.googlesource.com/chromium/agents/@0bad974b43c404aee61bba2127b27b4cc51bb92b',
+    'condition': 'False',
+  },
+
+  'agents/internal': {
+    'url': 'https://chrome-internal.googlesource.com/chrome/agents-internal/@3ff44a5f835785f3edfafed10dd249c2102b4319',
     'condition': 'False',
   },
 }
