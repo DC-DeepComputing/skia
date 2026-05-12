@@ -76,6 +76,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f00e4eb4_06ad5a38",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 631,
+      "author": {
+        "id": 3916209
+      },
+      "writtenOn": "2026-05-12T10:15:50Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "51a63298_2884c7ea",
+      "range": {
+        "startLine": 631,
+        "startChar": 16,
+        "endLine": 631,
+        "endChar": 69
+      },
+      "revId": "b4b0746d64520c8ddd6b63fb98e30472ac9615b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1e4c8189_23d50a14",
@@ -99,6 +123,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1517605f_b3b3da52",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 642,
+      "author": {
+        "id": 3916209
+      },
+      "writtenOn": "2026-05-12T10:15:50Z",
+      "side": 1,
+      "message": "Removed, as it is set above. Thanks.",
+      "parentUuid": "1e4c8189_23d50a14",
+      "range": {
+        "startLine": 642,
+        "startChar": 16,
+        "endLine": 642,
+        "endChar": 40
+      },
+      "revId": "b4b0746d64520c8ddd6b63fb98e30472ac9615b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "235d3faf_afe53007",
@@ -112,6 +160,30 @@
       "writtenOn": "2026-05-08T06:15:23Z",
       "side": 1,
       "message": "Now that we prefer the PNG, let\u0027s be consistent and move this block up before A8_format, and swap the order, so A8_Format follows after ARGB32_Format.",
+      "range": {
+        "startLine": 704,
+        "startChar": 8,
+        "endLine": 704,
+        "endChar": 66
+      },
+      "revId": "b4b0746d64520c8ddd6b63fb98e30472ac9615b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba61fa4e_326b0136",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 704,
+      "author": {
+        "id": 3916209
+      },
+      "writtenOn": "2026-05-12T10:15:50Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "235d3faf_afe53007",
       "range": {
         "startLine": 704,
         "startChar": 8,
@@ -173,6 +245,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7c34dd8_d8b3fce6",
+        "filename": "src/ports/fontations/src/bitmap.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 3916209
+      },
+      "writtenOn": "2026-05-12T10:15:50Z",
+      "side": 1,
+      "message": "Thanks for the suggestion! \nUnfortunately the literal OR-pattern doesn\u0027t compile — BitmapMetrics::Small and BitmapMetrics::Big wrap distinct types (SmallGlyphMetrics / BigGlyphMetrics), and Rust\nrequires a binding in a | pattern to resolve to a single type. \nI\u0027ve kept the original split (match to extract dimensions, separate if for the zero check) for readability — happy to switch to two guarded arms with duplicated bodies if you\u0027d prefer.",
+      "parentUuid": "3a2cecd9_9ba5bd3d",
+      "range": {
+        "startLine": 142,
+        "startChar": 0,
+        "endLine": 148,
+        "endChar": 5
+      },
+      "revId": "b4b0746d64520c8ddd6b63fb98e30472ac9615b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "44b89ab9_d0795283",
@@ -186,6 +282,30 @@
       "writtenOn": "2026-05-08T06:15:23Z",
       "side": 1,
       "message": "Thanks, good to work with the question mark operator here.",
+      "range": {
+        "startLine": 150,
+        "startChar": 0,
+        "endLine": 154,
+        "endChar": 29
+      },
+      "revId": "b4b0746d64520c8ddd6b63fb98e30472ac9615b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fac019c5_3d10516d",
+        "filename": "src/ports/fontations/src/bitmap.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 3916209
+      },
+      "writtenOn": "2026-05-12T10:15:50Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "44b89ab9_d0795283",
       "range": {
         "startLine": 150,
         "startChar": 0,
