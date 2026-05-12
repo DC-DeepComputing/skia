@@ -253,8 +253,22 @@ GrBackendTexture MakeGLBackendTexture(GrDirectContext* dContext,
         return GrBackendTexture();
     }
 
-    return make_gl_backend_texture(dContext, hardwareBuffer, width, height, deleteProc,
-                                   updateProc, imageCtx, isProtectedContent, backendFormat);
+    GrBackendTexture tex =
+            make_gl_backend_texture(dContext, hardwareBuffer, width, height, deleteProc,
+                                    updateProc, imageCtx, isProtectedContent, backendFormat);
+    if (!tex && !isRenderable && format.textureType() != GrTextureType::kExternal) {
+        // Even when the format is known, an AHB can fail to be imported as a regular GL_TEXTURE_2D
+        // for reasons hidden from the GL API (e.g. lossless compression for swapchain buffers).
+        // Retry if we can still fallback external texture target.
+        // NOTE: We exclude this fallback when `isRenderable == true` since we never treat
+        // external formats as renderable. If we instead called MakeGLBackendTexture, we'd just fail
+        // the renderable validation check above.
+        tex = make_gl_backend_texture(dContext, hardwareBuffer, width, height, deleteProc,
+                                      updateProc, imageCtx, isProtectedContent,
+                                      GrBackendFormats::MakeGLExternal());
+    }
+
+    return tex;
 }
 
 }  // namespace GrAHardwareBufferUtils
