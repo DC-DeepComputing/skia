@@ -117,6 +117,30 @@
       },
       "revId": "f6a6447bd7c6c341fa69bf9e7485b3f640e45b3a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4c03a5a_4eff461c",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 918,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-05-12T18:58:17Z",
+      "side": 1,
+      "message": "Yeah, I like putting it into the resource provider for checking for a cached set. That also made somewhat less sense in Vulkan where we didn\u0027t have single-texture/buffer descriptor set methods defined already. Done!",
+      "parentUuid": "5eb6ff55_240c7649",
+      "range": {
+        "startLine": 906,
+        "startChar": 0,
+        "endLine": 918,
+        "endChar": 9
+      },
+      "revId": "f6a6447bd7c6c341fa69bf9e7485b3f640e45b3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
