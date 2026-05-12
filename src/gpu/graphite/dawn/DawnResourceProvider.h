@@ -76,10 +76,6 @@ public:
     wgpu::BindGroup findOrCreateUniformBuffersBindGroup(const std::array<
             std::pair<const DawnBuffer*, uint32_t>, kNumUniformEntries>& boundBuffersAndSizes);
 
-    // Find or create a bind group containing the given sampler & texture.
-    wgpu::BindGroup findOrCreateSingleTextureSamplerBindGroup(const DawnSampler*,
-                                                              const DawnTexture*);
-
     // Find the cached bind buffer info, or create a new one for the given intrinsic values.
     BindBufferInfo findOrCreateIntrinsicBindBufferInfo(DawnCommandBuffer* cb,
                                                        UniformDataBlock intrinsicValues);
@@ -118,7 +114,6 @@ private:
                                       typename BindGroupKey<NumEntries>::Hash>;
 
     BindGroupCache<kNumUniformEntries> fUniformBufferBindGroupCache;
-    BindGroupCache<1> fSingleTextureSamplerBindGroups;
 
     class IntrinsicBuffer;
     class IntrinsicConstantsManager;
