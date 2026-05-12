@@ -105,6 +105,9 @@ string "SkDevice" has appeared in the last 10 commits:
 - Ensure that all AutoRollers listed on the
   [status page](https://status.skia.org) are successfully landing.
 
+- If you notice an auto-roller is failing to land, and you believe you are not well equipped to resolve the issue, feel free to reach out for help. For example, if you are ill-equipped to resolve an ANGLE issue, you should rope in the GPU gardener. 
+
+
 <a name="gold_and_perf"></a>
 
 ### Gold and Perf
@@ -116,7 +119,35 @@ string "SkDevice" has appeared in the last 10 commits:
   images or new perf regressions, that they are aware of what happened, and they
   use these tools to take appropriate action.
 
+#### Basic workflow for triaging Perf issues
+
+1. Look for the regressions link within the Skia Status page
+![screenshot of status skia emphasizing perf regressions](image-2.png)
+
+2. Once you are at the regressions page, you can see a list of all current regression issues. This list only has 1.
+It will tell you information about the CL that might have introduced a regression. In this case, the CL was an autoroll.
+
+![screenshot of perf list of regressions](image-3.png)
 <a name="skia_gardener_doc"></a>
+
+3. Look at the ? symbols underneath the performance "pillars". Each of these pillars will have a low and a high section referring to possible performance decreases or increases respectively. As we can never be sure whether a smaller number is positive or a larger number is positive, we track changes in either direction.
+
+![screenshot of perf with the ? symbols](image-4.png)
+
+4. Once you click on any of the ? symbols, you will see a snapshot of what the regression looks like. There will be a lot of information in this window, such as the Least Squares Error (to show the confidence in whether this is not noise) and step size. You will also see the exact CL again, which you can copy the CL ID and search for it in Gerrit. This can help you investigate whether the CL actually might have caused the issue or, in the case of rolls, dig deeper in which CL it might have been.
+
+![screenshot of perf regression window](image-5.png)
+
+
+5. You can click "view on dashboard" to get a better picture of what the issue looks like. This will also provide better context into what the preceding trend was before this CL. Make sure to expand the window range when viewing, as the regression could be transient. Make sure to look out for changes that impact a lot of devices, as this is a good indicator for a true regression. The red line here in this diagram indicates when the "problem" CL was introduced. Each line are tests run on different devices. The vertical refers to some metric in performance (e.g seconds) and the horizontal represents time (e.g. CLs). You may click the right hand check boxes to view or hide a line.
+
+![alt text](image-7.png)
+
+6. Once you confident in whether it looks like a regression or not, mark the corresponding check (for "not an issue") or x (for "this is an issue"). Fill out the justification text box. If you select the x, you will be taken to buganizer to file a bug related to this regression.
+
+![alt text](image-6.png)
+
+
 
 ### Documentation
 
@@ -215,6 +246,25 @@ accordingly.
 See the revert documentation [here](https://skia.org/docs/dev/contrib/revert).
 
 <a name="deps_roll_failures"></a>
+
+### Perf Tips
+
+It's kind of the same as with gold, if you see a performance regression from a change, you usually want to notify the person who made the patch.
+
+Perf will already do statistical anlysis in order to trigger the regression alert, so you can usually be confident that the regression it flags is real
+
+Although the performance on some devices can be flaky, a regression will not regress only a single device, so pay attention to all the different devices.
+
+For notifying someone of a regression:
+- gpu driver -> notify gpu team
+- if it's somebodies patch -> notify them
+- if it's a roll from another google team -> investigate further
+
+Sometimes perf will find a regression that is very tiny; you can ignore these
+but use prudence.
+
+Remember to zoom out and look at the overall trend of Perf, to see whether or not the issue is transient. Sometimes a Perf regression will be unrelated to the CL it is associated with, and the regression will actually come from flakiness or thermal throttling or a variety of other reasons.
+
 
 ### What to do if DEPS roll fails to land
 
