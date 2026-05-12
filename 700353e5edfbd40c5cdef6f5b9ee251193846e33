@@ -22,6 +22,30 @@
       },
       "revId": "700353e5edfbd40c5cdef6f5b9ee251193846e33",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "326dd9be_943bea58",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-05-12T18:45:30Z",
+      "side": 1,
+      "message": "I think we were thinking that most images are probably drawn with a small number of sampling strategies focused on zooming in, zooming out, and maybe 1:1 scaling. Most likely we\u0027d only actually see one strategy but 1 vs. 3 isn\u0027t a lot of memory overhead and helps avoid heap allocations.",
+      "parentUuid": "67fe1844_c413a633",
+      "range": {
+        "startLine": 84,
+        "startChar": 34,
+        "endLine": 84,
+        "endChar": 35
+      },
+      "revId": "700353e5edfbd40c5cdef6f5b9ee251193846e33",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
