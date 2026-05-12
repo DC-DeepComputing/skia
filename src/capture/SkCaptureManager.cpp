@@ -29,9 +29,7 @@ SkCanvas* SkCaptureManager::makeCaptureCanvas(SkCanvas* canvas) {
 SkContentID SkCaptureManager::processCanvasContent(SkCaptureCanvas* canvas) {
     auto picture = canvas->snapPicture();
     if (picture) {
-        uint32_t surfaceID = asSB(canvas->getBaseCanvasSurface())->getPixelStorageID();
-        SkContentID contentID = fSurfaceContentCounters[surfaceID];
-        contentID++;
+        SkContentID contentID = fPictures.size() + 1;
         fPictures.emplace_back(picture);
         return contentID;
     }
@@ -51,7 +49,7 @@ void SkCaptureManager::toggleCapture(bool capturing) {
     if (capturing != fIsCurrentlyCapturing && !capturing) {
         // on capture stop, save the capture and reset
         this->snapPictures();
-        fLastCapture = SkCapture::MakeFromPictures(fPictures);
+    fLastCapture = SkCapture::MakeFromPictures(fPictures);
         fPictures.clear();
         fSurfaceContentCounters.clear();
     }

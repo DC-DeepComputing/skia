@@ -47,6 +47,7 @@
 #include "src/core/SkTextBlobPriv.h"
 #include "src/core/SkWriteBuffer.h"
 #include "src/image/SkImage_Base.h"
+#include "src/image/SkImage_Picture.h"
 #include "src/utils/SkJSONWriter.h"
 #include "tools/UrlDataManager.h"
 #include "tools/debugger/DebugLayerManager.h"
@@ -62,6 +63,7 @@ class GrDirectContext;
 #include "include/gpu/ganesh/GrRecordingContext.h"
 #include "include/private/gpu/ganesh/GrImageContext.h"
 #endif
+
 
 #define DEBUGCANVAS_ATTRIBUTE_DUMP "dump"
 #define DEBUGCANVAS_ATTRIBUTE_COMMAND "command"
@@ -116,6 +118,7 @@ class GrDirectContext;
 #define DEBUGCANVAS_ATTRIBUTE_IMAGEFILTER "imagefilter"
 #define DEBUGCANVAS_ATTRIBUTE_IMAGE "image"
 #define DEBUGCANVAS_ATTRIBUTE_IMAGE_INDEX "imageIndex"
+#define DEBUGCANVAS_ATTRIBUTE_CONTENTID "contentID"
 #define DEBUGCANVAS_ATTRIBUTE_SRC "src"
 #define DEBUGCANVAS_ATTRIBUTE_DST "dst"
 #define DEBUGCANVAS_ATTRIBUTE_STRICT "strict"
@@ -644,38 +647,36 @@ bool DrawCommand::flatten(const SkImage&  image,
         return true;
     }
 
+    if (image.isLazyGenerated()) {
+        writer.beginObject(DEBUGCANVAS_ATTRIBUTE_CONTENTID);
+        writer.appendU32(DEBUGCANVAS_ATTRIBUTE_CONTENTID, as_IB(&image)->getContentID());
+        writer.endObject();
+        return true;
+    }
+
     writer.beginObject(DEBUGCANVAS_ATTRIBUTE_IMAGE);
-    size_t       rowBytes = 4 * image.width();
-    SkAutoMalloc buffer(rowBytes * image.height());
-    SkImageInfo  dstInfo =
+    SkImageInfo dstInfo =
             SkImageInfo::Make(image.dimensions(), kN32_SkColorType, kPremul_SkAlphaType);
-    // "cheat" for this debug tool and use image's context
-    GrDirectContext* dContext = nullptr;
-#if defined(SK_GANESH)
-    dContext = GrAsDirectContext(as_IB(&image)->context());
-#endif
-    if (!image.readPixels(dContext, dstInfo, buffer.get(), rowBytes, 0, 0)) {
-        SkDebugf("DrawCommand::flatten SkImage: readPixels failed\n");
+    SkBitmap bm;
+    if (!bm.tryAllocPixels(dstInfo)) {
+        SkDebugf("DrawCommand::flatten SkImage: tryAllocPixels failed\n");
         writer.endObject();
         return false;
     }
 
-    SkBitmap bm;
-    bm.installPixels(dstInfo, buffer.get(), rowBytes);
+    SkCanvas canvas(bm);
+    canvas.clear(SK_ColorTRANSPARENT);
+    canvas.drawImage(&image, 0, 0);
 
     SkDynamicMemoryWStream out;
     DrawCommand::WritePNG(bm, out);
     sk_sp<SkData> encoded = out.detachAsData();
-    if (encoded == nullptr) {
+    if (encoded == nullptr || encoded->size() == 0) {
         SkDebugf("DrawCommand::flatten SkImage: could not encode image as PNG\n");
         writer.endObject();
         return false;
     }
-    if (!encoded->data()) {
-      SkDebugf("DrawCommand::flatten SkImage: encoding as PNG produced zero length data\n");
-      writer.endObject();
-      return false;
-    }
+
     SkString url = encode_data(encoded.get(), "image/png", urlDataManager);
     writer.appendString(DEBUGCANVAS_ATTRIBUTE_DATA, url);
     writer.endObject();
