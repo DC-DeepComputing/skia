@@ -72,13 +72,8 @@ public:
     wgpu::BindGroup findOrCreateSingleTextureSamplerBindGroup(const DawnSampler*,
                                                               const DawnTexture*);
 
-    // Find the cached bind group or create a new one based on the bound buffers and their
-    // binding sizes (boundBuffersAndSizes) for these uniforms (in order):
-    // - Intrinsic constants.
-    // - Render step uniforms.
-    // - Paint uniforms.
-    wgpu::BindGroup findOrCreateUniformBuffersBindGroup(const std::array<
-            std::pair<const DawnBuffer*, uint32_t>, kNumUniformEntries>& boundBuffersAndSizes);
+    // Find or create a bind group containing the given buffer.
+    wgpu::BindGroup findOrCreateSingleUniformBindGroup(const BindBufferInfo&);
 
     // Find the cached bind buffer info, or create a new one for the given intrinsic values.
     BindBufferInfo findOrCreateIntrinsicBindBufferInfo(DawnCommandBuffer* cb,
@@ -111,13 +106,6 @@ private:
     skia_private::THashMap<uint32_t, wgpu::RenderPipeline> fBlitWithDrawPipelines;
 
     wgpu::Buffer fNullBuffer;
-
-    template <size_t NumEntries>
-    using BindGroupCache = SkLRUCache<BindGroupKey<NumEntries>,
-                                      wgpu::BindGroup,
-                                      typename BindGroupKey<NumEntries>::Hash>;
-
-    BindGroupCache<kNumUniformEntries> fUniformBufferBindGroupCache;
 
     class IntrinsicBuffer;
     class IntrinsicConstantsManager;
