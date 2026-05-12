@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f32f960a_86eb29fb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-05-12T15:29:15Z",
+      "side": 1,
+      "message": "Hello,\nCould you please take a look?\n\nNote that I haven\u0027t wait for the CQ to pass before leaving the office, but since this is a pure reland, this is likely not failing.",
+      "revId": "4df8dd11a66b87c3bbd2e68c0b9416aefa003cf0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
