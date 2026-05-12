@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5b5cc5d_61e57f07",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-05-12T19:14:05Z",
+      "side": 1,
+      "message": "minor nit: we can reduce the CL diff size if we put this back to below the `findOrCreateUniformBuffersBindGroup` function.",
+      "range": {
+        "startLine": 71,
+        "startChar": 0,
+        "endLine": 73,
+        "endChar": 82
+      },
+      "revId": "56a7657bbf3c6e5272dcfbcb2dacf9cd3798bfff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64d8e4f3_427bb718",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 268,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-05-12T19:14:05Z",
+      "side": 1,
+      "message": "This can simplify to `push_back({sampler. bindGroup})`. I personally prefer using `{}` for creating simple tuples and we dont need to move `sampler` since it\u0027s not an sk_sp.",
+      "range": {
+        "startLine": 268,
+        "startChar": 45,
+        "endLine": 268,
+        "endChar": 91
+      },
+      "revId": "56a7657bbf3c6e5272dcfbcb2dacf9cd3798bfff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
