@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3c02452_1cdf8d92",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 892,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-05-12T18:13:14Z",
+      "side": 1,
+      "message": "That is done in the follow-up CL which actually removes that method",
+      "parentUuid": "5b716698_6b5d076e",
+      "range": {
+        "startLine": 884,
+        "startChar": 4,
+        "endLine": 892,
+        "endChar": 15
+      },
+      "revId": "c2ba72328e053dbb8d350ed76d4cc5cfe5b30da1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "04dc20ac_12e5c513",
@@ -54,6 +78,30 @@
       "writtenOn": "2026-05-12T16:26:32Z",
       "side": 1,
       "message": "This needs to be inserted into `fSingleTextureSamplerBindGroups` for now still",
+      "range": {
+        "startLine": 750,
+        "startChar": 4,
+        "endLine": 751,
+        "endChar": 90
+      },
+      "revId": "c2ba72328e053dbb8d350ed76d4cc5cfe5b30da1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "42a06d0c_d7fa3ad8",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 751,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-05-12T18:13:14Z",
+      "side": 1,
+      "message": "whoops; TY for catching this! That\u0027s what I get for making this change from its follow-up originally.",
+      "parentUuid": "04dc20ac_12e5c513",
       "range": {
         "startLine": 750,
         "startChar": 4,
