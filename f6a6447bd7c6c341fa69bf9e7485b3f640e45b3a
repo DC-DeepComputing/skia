@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be1a5e43_a2ca1bdd",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 810,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-05-12T16:33:38Z",
+      "side": 1,
+      "message": "We should be able to get the cached bind group off of `fDstCopy` right?",
+      "range": {
+        "startLine": 801,
+        "startChar": 8,
+        "endLine": 810,
+        "endChar": 72
+      },
+      "revId": "f6a6447bd7c6c341fa69bf9e7485b3f640e45b3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5de779d2_503602a2",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 918,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-05-12T16:33:38Z",
+      "side": 1,
+      "message": "If we have the dst copy call into `getCachedSingleTextureBindGroup`, then it might make sense to have this `entries` logic and the call to create/addBindGroup move into `getCachedSingleTextureBindGroup`.",
+      "range": {
+        "startLine": 906,
+        "startChar": 0,
+        "endLine": 918,
+        "endChar": 9
+      },
+      "revId": "f6a6447bd7c6c341fa69bf9e7485b3f640e45b3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
