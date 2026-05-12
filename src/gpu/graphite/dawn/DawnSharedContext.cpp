@@ -77,7 +77,7 @@ DawnSharedContext::DawnSharedContext(const DawnBackendContext& backendContext,
                                    kThreadedSafeResourceBudget));
 
     this->createUniformBuffersBindGroupLayout();
-    this->createSingleTextureSamplerBindGroupLayout();
+    this->createFragOnlySingleTextureSamplerBGL();
 }
 
 DawnSharedContext::~DawnSharedContext() {
@@ -147,17 +147,17 @@ void DawnSharedContext::createUniformBuffersBindGroupLayout() {
     fUniformBuffersBindGroupLayout = this->device().CreateBindGroupLayout(&groupLayoutDesc);
 }
 
-void DawnSharedContext::createSingleTextureSamplerBindGroupLayout() {
+void DawnSharedContext::createFragOnlySingleTextureSamplerBGL() {
     const Caps* caps = this->caps();
 
     std::array<wgpu::BindGroupLayoutEntry, 2> entries;
 
     entries[0].binding = 0;
-    entries[0].visibility = wgpu::ShaderStage::Fragment | wgpu::ShaderStage::Vertex;
+    entries[0].visibility = wgpu::ShaderStage::Fragment;
     entries[0].sampler.type = wgpu::SamplerBindingType::Filtering;
 
     entries[1].binding = 1;
-    entries[1].visibility = wgpu::ShaderStage::Fragment | wgpu::ShaderStage::Vertex;
+    entries[1].visibility = wgpu::ShaderStage::Fragment;
     entries[1].texture.sampleType = wgpu::TextureSampleType::Float;
     entries[1].texture.viewDimension = wgpu::TextureViewDimension::e2D;
     entries[1].texture.multisampled = false;
@@ -169,7 +169,7 @@ void DawnSharedContext::createSingleTextureSamplerBindGroupLayout() {
 
     groupLayoutDesc.entryCount = entries.size();
     groupLayoutDesc.entries = entries.data();
-    fSingleTextureSamplerBindGroupLayout = this->device().CreateBindGroupLayout(&groupLayoutDesc);
+    fFragOnlySingleTextureSamplerBGL = this->device().CreateBindGroupLayout(&groupLayoutDesc);
 }
 
 sk_sp<GraphicsPipeline> DawnSharedContext::createGraphicsPipeline(
