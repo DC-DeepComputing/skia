@@ -981,43 +981,69 @@ void DawnCommandBuffer::bindTextureAndSamplers(
 }
 
 void DawnCommandBuffer::syncUniformBuffers() {
-    static constexpr int kNumBuffers = DawnGraphicsPipeline::kNumUniformBuffers;
-
-    if (fBoundUniformBuffersDirty) {
-        fBoundUniformBuffersDirty = false;
-
-        std::array<uint32_t, kNumBuffers> dynamicOffsets;
-        std::array<std::pair<const DawnBuffer*, uint32_t>, kNumBuffers> boundBuffersAndSizes;
-
-        std::array<bool, kNumBuffers> enabled = {
-                !fSharedContext->dawnCaps()
-                         ->resourceBindingRequirements()
-                         .fUsePushConstantsForIntrinsicConstants,  // intrinsic uniforms
-                fActiveGraphicsPipeline->hasCombinedUniforms(),    // paint AND renderstep uniforms!
-                fActiveGraphicsPipeline->hasGradientBuffer(),      // gradient SSBO
-        };
-
-        for (int i = 0; i < kNumBuffers; ++i) {
-            if (enabled[i] && fBoundUniforms[i]) {
-                boundBuffersAndSizes[i].first =
-                        static_cast<const DawnBuffer*>(fBoundUniforms[i].fBuffer);
-                boundBuffersAndSizes[i].second = fBoundUniforms[i].fSize;
-                dynamicOffsets[i] = fBoundUniforms[i].fOffset;
-            } else {
-                // Unused or null binding
-                boundBuffersAndSizes[i].first = nullptr;
-                dynamicOffsets[i] = 0;
-            }
-        }
-
-        auto bindGroup =
-                fResourceProvider->findOrCreateUniformBuffersBindGroup(boundBuffersAndSizes);
-
-        fActiveRenderPassEncoder.SetBindGroup(DawnGraphicsPipeline::kUniformBufferBindGroupIndex,
-                                              bindGroup,
-                                              dynamicOffsets.size(),
-                                              dynamicOffsets.data());
+    if (!fBoundUniformBuffersDirty) {
+        return;
     }
+    fBoundUniformBuffersDirty = false;
+
+    bool usePushConstants = fSharedContext->dawnCaps()->
+            resourceBindingRequirements().fUsePushConstantsForIntrinsicConstants;
+    // Return early if there are no uniforms to bind.
+    if (usePushConstants &&
+        !fActiveGraphicsPipeline->hasCombinedUniforms() &&
+        !fActiveGraphicsPipeline->hasGradientBuffer()) {
+        return;
+    }
+
+    wgpu::BindGroup bindGroup;
+
+    // Check if we can use an optimized route for single-uniform buffer bindgroups:
+    bool singleUniform = usePushConstants && !fActiveGraphicsPipeline->hasGradientBuffer();
+    // Store combined uniform buffer pointer for subsequent logic to check for and use or add a
+    // cached single-buffer bindgroup where possible.
+    auto combinedUboBuffer = static_cast<const DawnBuffer*>(
+                fBoundUniforms[DawnGraphicsPipeline::kCombinedUniformIndex].fBuffer);
+
+    if (singleUniform) {
+        size_t bindingSize = fBoundUniforms[DawnGraphicsPipeline::kCombinedUniformIndex].fSize;
+
+        // First, check if the buffer has a cached bindgroup with the appropriate binding size:
+        auto cachedBindGroup = combinedUboBuffer->getCachedSingleBufferBindGroup(bindingSize);
+
+        if (cachedBindGroup) {
+            bindGroup = *cachedBindGroup;
+        }
+    }
+
+    static constexpr int kMaxNumUbos = DawnGraphicsPipeline::kMaxNumUniformBuffers;
+    std::array<bool, kMaxNumUbos> enabled = {
+            !usePushConstants,                              // intrinsic uniforms
+            fActiveGraphicsPipeline->hasCombinedUniforms(), // paint AND renderstep uniforms!
+            fActiveGraphicsPipeline->hasGradientBuffer(),   // gradient SSBO
+    };
+    skia_private::STArray<3, wgpu::BindGroupEntry> bindGroupEntries;
+    for (int i = 0; i < kMaxNumUbos; ++i) {
+        if (enabled[i] && fBoundUniforms[i]) {
+            bindGroupEntries[i].binding = kBindingIndices[i];
+            bindGroupEntries[i].size = fBoundUniforms[i].fSize;
+            bindGroupEntries[i].buffer = static_cast<const DawnBuffer*>(fBoundUniforms[i].fBuffer);
+            dynamicOffsets[i] = fBoundUniforms[i].fOffset;
+        } else {
+            // Unused or null binding
+            bindGroupEntries[i].buffer = nullptr;
+            dynamicOffsets[i] = 0;
+        }
+    }
+
+    bindGroup = fResourceProvider->createBindGroup(bindGroupEntries, layout);
+    if (singleUniform) {
+        combinedUboBuffer->addCachedSingleBufferBindGroup(bindGroup, bindingSize);
+    }
+
+    fActiveRenderPassEncoder.SetBindGroup(DawnGraphicsPipeline::kUniformBufferBindGroupIndex,
+                                          bindGroup,
+                                          dynamicOffsets.size(),
+                                          dynamicOffsets.data());
 }
 
 void DawnCommandBuffer::setScissor(const Scissor& scissor) {
