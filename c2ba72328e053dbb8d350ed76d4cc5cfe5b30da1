@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5b716698_6b5d076e",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 892,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-12T17:12:53Z",
+      "side": 1,
+      "message": "This should be removed here if we\u0027re getting rid of findOrCreateSingleTextureSamplerBG?",
+      "range": {
+        "startLine": 884,
+        "startChar": 4,
+        "endLine": 892,
+        "endChar": 15
+      },
+      "revId": "c2ba72328e053dbb8d350ed76d4cc5cfe5b30da1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "04dc20ac_12e5c513",
         "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
         "patchSetId": 4
