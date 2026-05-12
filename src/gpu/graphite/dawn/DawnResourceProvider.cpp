@@ -443,7 +443,7 @@ DawnResourceProvider::DawnResourceProvider(SharedContext* sharedContext,
                                            uint32_t recorderID,
                                            size_t resourceBudget)
         : ResourceProvider(sharedContext, singleOwner, recorderID, resourceBudget)
-        , fUniformBufferBindGroupCache(kMaxNumberOfCachedBufferBindGroups)
+        // , fUniformBufferBindGroupCache(kMaxNumberOfCachedBufferBindGroups)
         , fSingleTextureSamplerBindGroups(kMaxNumberOfCachedTextureBindGroups)
         , fSingleOwner(singleOwner) {
     fIntrinsicConstantsManager = std::make_unique<IntrinsicConstantsManager>(this);
@@ -681,12 +681,12 @@ const wgpu::BindGroup& DawnResourceProvider::findOrCreateUniformBuffersBindGroup
                 boundBuffersAndSizes) {
     SKGPU_ASSERT_SINGLE_OWNER(fSingleOwner)
 
-    auto key = make_ubo_bind_group_key(boundBuffersAndSizes);
-    auto* existingBindGroup = fUniformBufferBindGroupCache.find(key);
-    if (existingBindGroup) {
-        // cache hit.
-        return *existingBindGroup;
-    }
+    // auto key = make_ubo_bind_group_key(boundBuffersAndSizes);
+    // auto* existingBindGroup = fUniformBufferBindGroupCache.find(key);
+    // if (existingBindGroup) {
+    //     // cache hit.
+    //     return *existingBindGroup;
+    // }
 
     // Translate to wgpu::BindGroupDescriptor
     std::array<wgpu::BindGroupEntry, kNumUniformEntries> entries;
@@ -720,7 +720,8 @@ const wgpu::BindGroup& DawnResourceProvider::findOrCreateUniformBuffersBindGroup
     const auto& device = this->dawnSharedContext()->device();
     auto bindGroup = device.CreateBindGroup(&desc);
 
-    return *fUniformBufferBindGroupCache.insert(key, bindGroup);
+    return bindGroup;
+    // return *fUniformBufferBindGroupCache.insert(key, bindGroup);
 }
 
 const wgpu::BindGroup& DawnResourceProvider::findOrCreateSingleTextureSamplerBindGroup(
@@ -760,7 +761,7 @@ void DawnResourceProvider::onFreeGpuResources() {
     // when the DawnTexture and DawnBuffer is destroyed, but removing the bind groups themselves
     // helps reduce CPU memory periodically.
     fSingleTextureSamplerBindGroups.reset();
-    fUniformBufferBindGroupCache.reset();
+    // fUniformBufferBindGroupCache.reset();
 }
 
 void DawnResourceProvider::onPurgeResourcesNotUsedSince(

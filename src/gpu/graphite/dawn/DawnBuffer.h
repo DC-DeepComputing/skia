@@ -60,6 +60,8 @@ private:
 
     // Ensure that only one thread can access fAsyncMapCallbacks.
     [[maybe_unused]] SingleOwner fSingleAsyncMapCallbacksOwner;
+
+    skia_private::TArray<std::pair<size_t, wgpu::BindGroup>> fCachedSingleBufferBindGroups;
 };
 
 } // namespace skgpu::graphite
