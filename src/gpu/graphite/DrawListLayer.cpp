@@ -223,7 +223,7 @@ void DrawListLayer::recordBackwards(int stepIndex,
     // We pass `isDepthOnly` so that depth lists are prepended and shading lists are appended,
     // guaranteeing that depth draws always come before shading draws within a layer.
     BindingList* insertedList = targetLayer->add(
-            isDepthOnly, &fStorage, targetMatch, key, draw, step, !dependsOnDst && notParentList);
+            false, isDepthOnly, &fStorage, targetMatch, nullptr, key, draw, step, !dependsOnDst && notParentList);
 
     if (capture) {
         SkASSERT(insertedList);
@@ -240,6 +240,7 @@ void DrawListLayer::recordBackwards(int stepIndex,
 
 void DrawListLayer::recordForwards(int stepIndex,
                                    bool isStencil,
+                                   bool isDepthOnly,
                                    bool dependsOnDst,
                                    bool requiresBarrier,
                                    const RenderStep* step,
@@ -260,7 +261,7 @@ void DrawListLayer::recordForwards(int stepIndex,
     // `isDepthOnly`. This guarantees that new BindingLists append to the end of the layer and
     // draws after their parent.
     BindingList* insertedList = start.fLayer->add(
-            /*isDepthOnly=*/false, &fStorage, targetMatch, key, draw, step, true);
+            true, isDepthOnly, &fStorage, targetMatch, start.fList, key, draw, step, true);
     start.fList = insertedList;
 }
 
@@ -338,8 +339,11 @@ std::pair<DrawParams*, Insertion> DrawListLayer::recordDraw(const Renderer* rend
                 combinedTextures ? fTextureDataCache.insert(combinedTextures)
                                  : TextureDataCache::kInvalidIndex;
 
-        if (paintID == UniquePaintParamsID::Invalid()) {  // Invalid ID implies depth only draw
-            this->recordBackwards(
+        // Invalid ID implies depth only draw
+        bool isDepthOnly = paintID == UniquePaintParamsID::Invalid();
+        if (isDepthOnly) {
+            if (stepIndex == 0) {
+                this->recordBackwards(
                     stepIndex,
                     rendererIsStencil,
                     /*isDepthOnly=*/true,
@@ -352,6 +356,18 @@ std::pair<DrawParams*, Insertion> DrawListLayer::recordDraw(const Renderer* rend
                     /*stop=*/{},
                     &stepInsertion,
                     /*canForwardMerge=*/false);
+            } else {
+                this->recordForwards(stepIndex,
+                                     rendererIsStencil,
+                                     true,
+                                     true,
+                                     requiresBarrier,
+                                     step,
+                                     uniformIndex,
+                                     LayerKey{pipelineIndex, textureBindingIndex, uniformIndex},
+                                     drawParams,
+                                     stepInsertion);
+            }
         } else {
             if (stepIndex == 0) {
                 this->recordBackwards(
@@ -370,6 +386,7 @@ std::pair<DrawParams*, Insertion> DrawListLayer::recordDraw(const Renderer* rend
             } else {
                 this->recordForwards(stepIndex,
                                      rendererIsStencil,
+                                     /*isDepthOnly=*/false,
                                      false,
                                      requiresBarrier,
                                      step,
