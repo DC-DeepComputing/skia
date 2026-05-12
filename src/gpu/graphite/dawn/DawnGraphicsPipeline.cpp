@@ -370,7 +370,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
 
     const std::string& fsSkSL = shaderInfo->fragmentSkSL();
     const BlendInfo& blendInfo = shaderInfo->blendInfo();
-    const int numTexturesAndSamplers = shaderInfo->numFragmentTexturesAndSamplers();
+    const int numTexturesAndSamplers = shaderInfo->numTexturesAndSamplers();
 
     const bool hasFragmentSkSL = !fsSkSL.empty();
     if (hasFragmentSkSL) {
@@ -494,36 +494,40 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
 
         bool hasFragmentSamplers = hasFragmentSkSL && numTexturesAndSamplers > 0;
         if (hasFragmentSamplers) {
-            // Check if we can optimize for the common case of a single texture + 1 dynamic sampler
-            if (numTexturesAndSamplers == 2 &&
+            if (numTexturesAndSamplers == 1 &&
+                shaderInfo->textureVisibility(0) == ShaderStageFlags::kFragment &&
                 !(samplerDescArrPtr && samplerDescArrPtr->at(0).isImmutable())) {
                 groupLayouts[1] = sharedContext->getSingleTextureSamplerBindGroupLayout();
             } else {
-                std::vector<wgpu::BindGroupLayoutEntry> entries(numTexturesAndSamplers);
+                std::vector<wgpu::BindGroupLayoutEntry> entries(numTexturesAndSamplers * 2);
+
 #if !defined(__EMSCRIPTEN__)
                 // Static sampler layouts are passed into Dawn by address and therefore must stay
                 // alive until the BindGroupLayoutDescriptor is created. So, store them outside of
                 // the loop that iterates over each BindGroupLayoutEntry.
                 skia_private::TArray<wgpu::StaticSamplerBindingLayout> staticSamplerLayouts;
 
-                // Note that the number of samplers is equivalent to numTexturesAndSamplers / 2. So,
-                // a sampler's index within any container that only pertains to sampler information
-                // (as in, excludes textures) is equivalent to 1/2 of that sampler's binding index
-                // within the BindGroupLayout. Assert that we have analyzed the appropriate number
-                // of samplers by equating samplerDescArr size to sampler quantity.
-                SkASSERT(samplerDescArrPtr && samplerDescArr.size() == numTexturesAndSamplers / 2);
-                immutableSamplers.reset(samplerDescArr.size());
+                // No more dividing by 2! The array sizes map 1-to-1.
+                SkASSERT(samplerDescArrPtr && samplerDescArr.size() == numTexturesAndSamplers);
+                immutableSamplers.reset(numTexturesAndSamplers);
 #endif
 
-                for (int i = 0; i < numTexturesAndSamplers;) {
-                    entries[i].binding = i;
-                    entries[i].visibility = wgpu::ShaderStage::Fragment | wgpu::ShaderStage::Vertex;
-#if !defined(__EMSCRIPTEN__)
-                    // Index of sampler information = 1/2 of cumulative texture and sampler index.
-                    // If we have a non-default-initialized SamplerDesc at that index,
-                    // fetch an immutable sampler that matches that description to include in the
-                    // pipeline layout.
-                    const SamplerDesc& samplerDesc = samplerDescArr.at(i/2);
+                for (int i = 0; i < numTexturesAndSamplers; ++i) {
+                    ShaderStageFlags vis = shaderInfo->textureVisibility(i);
+                    wgpu::ShaderStage dawnVis = wgpu::ShaderStage::None;
+                    if (SkToBool(vis & ShaderStageFlags::kVertex)) {
+                        dawnVis |= wgpu::ShaderStage::Vertex;
+                    }
+                    if (SkToBool(vis & ShaderStageFlags::kFragment)) {
+                        dawnVis |= wgpu::ShaderStage::Fragment;
+                    }
+
+                    int bindIndex = i * 2;
+                    entries[bindIndex].binding = bindIndex;
+                    entries[bindIndex].visibility = dawnVis;
+
+        #if !defined(__EMSCRIPTEN__)
+                    const SamplerDesc& samplerDesc = samplerDescArr.at(i);
                     if (samplerDesc.isImmutable()) {
                         DawnThreadSafeResourceProvider* resourceProvider =
                                 sharedContext->threadSafeResourceProvider();
@@ -540,25 +544,22 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
                         wgpu::StaticSamplerBindingLayout& immutableSamplerBinding =
                                 staticSamplerLayouts.emplace_back();
                         immutableSamplerBinding.sampler = dawnImmutableSampler->dawnSampler();
-                        // Static samplers sample from the subsequent texture in the BindGroupLayout
-                        immutableSamplerBinding.sampledTextureBinding = i + 1;
+                        immutableSamplerBinding.sampledTextureBinding = bindIndex + 1;
 
-                        immutableSamplers[i/2] = std::move(dawnImmutableSampler);
-                        entries[i].nextInChain = &immutableSamplerBinding;
+                        immutableSamplers[i] = std::move(dawnImmutableSampler);
+                        entries[bindIndex].nextInChain = &immutableSamplerBinding;
                     } else {
-#endif
-                        entries[i].sampler.type = wgpu::SamplerBindingType::Filtering;
-#if !defined(__EMSCRIPTEN__)
+        #endif
+                        entries[bindIndex].sampler.type = wgpu::SamplerBindingType::Filtering;
+        #if !defined(__EMSCRIPTEN__)
                     }
-#endif
-                    ++i;
+        #endif
 
-                    entries[i].binding = i;
-                    entries[i].visibility = wgpu::ShaderStage::Fragment | wgpu::ShaderStage::Vertex;
-                    entries[i].texture.sampleType = wgpu::TextureSampleType::Float;
-                    entries[i].texture.viewDimension = wgpu::TextureViewDimension::e2D;
-                    entries[i].texture.multisampled = false;
-                    ++i;
+                    entries[bindIndex + 1].binding = bindIndex + 1;
+                    entries[bindIndex + 1].visibility = dawnVis;
+                    entries[bindIndex + 1].texture.sampleType = wgpu::TextureSampleType::Float;
+                    entries[bindIndex + 1].texture.viewDimension = wgpu::TextureViewDimension::e2D;
+                    entries[bindIndex + 1].texture.multisampled = false;
                 }
 
                 wgpu::BindGroupLayoutDescriptor groupLayoutDesc;
@@ -737,8 +738,10 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
         log_pipeline_creation(asyncCreation.get());
     }
 
+    // Doesn't need the textureVisibility flags baked in
     PipelineInfo pipelineInfo{ *shaderInfo, pipelineCreationFlags,
-                               pipelineKey.hash(), compilationID };
+                               pipelineKey.hash(), compilationID,
+                               /*textureVisFlags=*/{} };
 #if defined(GPU_TEST_UTILS)
     pipelineInfo.fNativeVertexShader = std::move(vsCode.fText);
     pipelineInfo.fNativeFragmentShader = std::move(fsCode.fText);

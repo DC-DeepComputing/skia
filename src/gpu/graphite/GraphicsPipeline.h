@@ -8,6 +8,7 @@
 #ifndef skgpu_graphite_GraphicsPipeline_DEFINED
 #define skgpu_graphite_GraphicsPipeline_DEFINED
 
+#include "include/private/base/SkTDArray.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/Resource.h"
 #include "src/gpu/graphite/UniquePaintParamsID.h"
@@ -19,6 +20,7 @@ namespace skgpu::graphite {
 
 class ShaderInfo;
 class RenderStep;
+enum class ShaderStageFlags : uint8_t;
 
 enum class PipelineCreationFlags : uint8_t {
     kNone             = 0b000,
@@ -45,21 +47,21 @@ public:
 
     DstReadStrategy dstReadStrategy() const { return fPipelineInfo.fDstReadStrategy; }
 
-    int  numFragTexturesAndSamplers() const { return fPipelineInfo.fNumFragTexturesAndSamplers; }
-    bool hasCombinedUniforms()        const { return fPipelineInfo.fHasCombinedUniforms;        }
-    bool hasGradientBuffer()          const { return fPipelineInfo.fHasGradientBuffer;          }
+    int  numTexturesAndSamplers() const { return fPipelineInfo.fNumTexturesAndSamplers; }
+    bool hasCombinedUniforms()    const { return fPipelineInfo.fHasCombinedUniforms;    }
+    bool hasGradientBuffer()      const { return fPipelineInfo.fHasGradientBuffer;      }
 
     struct PipelineInfo {
         PipelineInfo() = default;
 
         // NOTE: Subclasses must manually fill in native shader code in GPU_TEST_UTILS builds.
         PipelineInfo(const ShaderInfo&, SkEnumBitMask<PipelineCreationFlags>,
-                     uint32_t uniqueKeyHash, uint32_t compilationID);
+                     uint32_t uniqueKeyHash, uint32_t compilationID, SkTDArray<ShaderStageFlags>);
 
         DstReadStrategy fDstReadStrategy = DstReadStrategy::kNoneRequired;
-        int  fNumFragTexturesAndSamplers = 0;
-        bool fHasCombinedUniforms = false;
-        bool fHasGradientBuffer = false;
+        int  fNumTexturesAndSamplers     = 0;
+        bool fHasCombinedUniforms        = false;
+        bool fHasGradientBuffer          = false;
 
         // In test-enabled builds, we preserve the generated shader code to display in the viewer
         // slide UI. This is not quite enough information to fully recreate the pipeline, as the
@@ -77,6 +79,7 @@ public:
         const bool fFromPrecompile = false;
         bool fWasUsed = false;
         uint16_t fEpoch = 0;   // the last epoch in which this Pipeline was touched
+        SkTDArray<ShaderStageFlags> fTextureVisFlags;
     };
 
     const PipelineInfo& getPipelineInfo() const { return fPipelineInfo; }
@@ -92,6 +95,8 @@ public:
     // asynchronously, we may create a GraphicsPipeline object that later "fails".
     // If the compilation failed, this will return an error message.
     virtual std::optional<std::string> didAsyncCompilationFail() const { return std::nullopt; }
+
+    ShaderStageFlags textureVisibility(int index) const;
 
 protected:
     // GraphicsPipeline labels are often provided to the description of what needs to be compiled,

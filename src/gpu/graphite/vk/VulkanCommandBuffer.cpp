@@ -1542,11 +1542,19 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
                 // active graphics pipeline and can be indexed directly with `i`.
                 const Sampler* immutableSampler = fActiveGraphicsPipeline->immutableSampler(i);
                 SkASSERT(SkToBool(immutableSampler) == command->fSamplers[i].isImmutable());
+                ShaderStageFlags vis = fActiveGraphicsPipeline->textureVisibility(i);
+                SkEnumBitMask<PipelineStageFlags> stageFlags = PipelineStageFlags::kNone;
+                if (SkToBool(vis & ShaderStageFlags::kVertex)) {
+                    stageFlags |= PipelineStageFlags::kVertexShader;
+                }
+                if (SkToBool(vis & ShaderStageFlags::kFragment)) {
+                    stageFlags |= PipelineStageFlags::kFragmentShader;
+                }
                 descriptors.push_back(
                         {DescriptorType::kCombinedTextureSampler,
                          /*count=*/1,
                          /*bindingIdx=*/i,
-                         PipelineStageFlags::kFragmentShader | PipelineStageFlags::kVertexShader,
+                         stageFlags,
                          immutableSampler});
             }
         }
@@ -1639,7 +1647,7 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
 void VulkanCommandBuffer::bindTextureSamplers() {
     fBindTextureSamplers = false;
     if (fTextureSamplerDescSetToBind != VK_NULL_HANDLE &&
-        fActiveGraphicsPipeline->numFragTexturesAndSamplers() == fNumTextureSamplers) {
+        fActiveGraphicsPipeline->numTexturesAndSamplers() == fNumTextureSamplers) {
         VULKAN_CALL(fSharedContext->interface(),
                     CmdBindDescriptorSets(fPrimaryCommandBuffer,
                                           VK_PIPELINE_BIND_POINT_GRAPHICS,

@@ -35,15 +35,27 @@ class SkRuntimeEffect;
 
 namespace skgpu::graphite {
 
+enum class ShaderStageFlags : uint8_t {
+    kNone     = 0b00,
+    kVertex   = 0b01,
+    kFragment = 0b10,
+    kBoth     = 0b11
+};
+SK_MAKE_BITMASK_OPS(ShaderStageFlags)
+
 // TODO: How to represent the type (e.g., 2D) of texture being sampled?
 class TextureAndSampler {
 public:
-    constexpr TextureAndSampler(const char* name) : fName(name) {}
+    constexpr TextureAndSampler(const char* name,
+                                ShaderStageFlags visibility = ShaderStageFlags::kFragment)
+        : fName(name), fVisibility(visibility) {}
 
     const char* name() const { return fName; }
+    ShaderStageFlags visibility() const { return fVisibility; }
 
 private:
     const char* fName;
+    ShaderStageFlags fVisibility;
 };
 
 enum class SnippetRequirementFlags : uint32_t {

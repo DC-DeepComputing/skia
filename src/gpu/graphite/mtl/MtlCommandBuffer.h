@@ -160,6 +160,8 @@ private:
     sk_sp<MtlRenderCommandEncoder> fActiveRenderCommandEncoder;
     sk_sp<MtlComputeCommandEncoder> fActiveComputeCommandEncoder;
     sk_sp<MtlBlitCommandEncoder> fActiveBlitCommandEncoder;
+    // Shouldn't need a shared ptr for now, as it's used internally?
+    const MtlGraphicsPipeline* fActiveGraphicsPipeline = nil;
 
     id<MTLBuffer> fCurrentIndexBuffer;
     id<MTLBuffer> fCurrentIndirectBuffer;
