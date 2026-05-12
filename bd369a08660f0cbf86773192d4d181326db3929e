@@ -1,0 +1,66 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a250d2c_ef734a08",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3666274
+      },
+      "writtenOn": "2026-05-12T22:26:40Z",
+      "side": 1,
+      "message": "SGTM, but Noelle should approve",
+      "revId": "bd369a08660f0cbf86773192d4d181326db3929e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef4abb40_42ca7b0a",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 3666274
+      },
+      "writtenOn": "2026-05-12T22:26:40Z",
+      "side": 1,
+      "message": "nit: This could use a formatter run.",
+      "fixSuggestions": [
+        {
+          "fixId": "729344a6_71fd2ab5",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+              "range": {
+                "startLine": 227,
+                "startChar": 0,
+                "endLine": 236,
+                "endChar": 0
+              },
+              "replacement": "                                   result,\n                                   GetQueryPoolResults(fSharedContext-\u003edevice(),\n                                                       fTimestampQueryPool,\n                                                       0,\n                                                       2,\n                                                       sizeof(timestamps),\n                                                       timestamps,\n                                                       sizeof(uint64_t),\n                                                       VK_QUERY_RESULT_64_BIT |\n                                                           VK_QUERY_RESULT_WAIT_BIT));\n"
+            },
+            {
+              "path": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+              "range": {
+                "startLine": 255,
+                "startChar": 0,
+                "endLine": 264,
+                "endChar": 0
+              },
+              "replacement": "                                   result,\n                                   GetQueryPoolResults(fSharedContext-\u003edevice(),\n                                                       fOcclusionQueryPool,\n                                                       0,\n                                                       1,\n                                                       sizeof(occlusion),\n                                                       \u0026occlusion,\n                                                       sizeof(uint64_t),\n                                                       VK_QUERY_RESULT_64_BIT |\n                                                           VK_QUERY_RESULT_WAIT_BIT));\n"
+            }
+          ]
+        }
+      ],
+      "revId": "bd369a08660f0cbf86773192d4d181326db3929e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
