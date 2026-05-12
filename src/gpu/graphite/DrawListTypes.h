@@ -107,7 +107,7 @@ struct Layer {
         BindingList* end;
 
         if constexpr (kForwards) {
-            list = startList ? startList : fBindings.head();
+            list = startList ? startList->fNext : fBindings.head();
             end = nullptr;
         } else {
             list = fBindings.tail();
@@ -143,7 +143,7 @@ struct Layer {
         BindingList* list;
         BindingList* end;
         if constexpr (kForwards) {
-            list = startList ? startList : fBindings.head();
+            list = startList ? startList->fNext : fBindings.head();
             end = nullptr;
         } else {
             list = fBindings.tail();
@@ -183,9 +183,9 @@ struct Layer {
                     // process !list->fIsDepthOnly as true. Even though the overlapping geometry
                     // is purely depth, the traversal sees a shading intersection and prematurely
                     // halts, and potentially breaking batching with earlier extant depth draws.
-                    if (list->fIsDepthOnly == isDepthOnly) {
-                        foundMatch = list;
-                    }
+
+                    // Do bad things!
+                    foundMatch = list;
                 }
             }
 
@@ -221,9 +221,11 @@ struct Layer {
         return {foundMatch ? BoundsTest::kCompatibleOverlap : BoundsTest::kDisjoint, foundMatch};
     }
 
-    SK_ALWAYS_INLINE BindingList* add(bool isDepthOnly,
+    SK_ALWAYS_INLINE BindingList* add(bool isChild,
+                                      bool isDepthOnly,
                                       SkArenaAllocWithReset* alloc,
                                       BindingList* list,
+                                      BindingList* parentList,
                                       const LayerKey& key,
                                       Draw* draw,
                                       const RenderStep* step,
@@ -237,7 +239,12 @@ struct Layer {
             list->fStep = const_cast<RenderStep*>(step);
             list->fBounds = draw->fDrawParams->drawBounds();
             if (isDepthOnly) {
-                fBindings.addToHead(list);
+                if (isChild) {
+                    SkASSERT(parentList);
+                    fBindings.addAfter(list, parentList);
+                } else {
+                    fBindings.addToHead(list);
+                }
             } else {
                 fBindings.addToTail(list);
             }
