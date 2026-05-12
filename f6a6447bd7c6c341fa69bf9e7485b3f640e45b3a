@@ -93,6 +93,30 @@
       },
       "revId": "f6a6447bd7c6c341fa69bf9e7485b3f640e45b3a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5eb6ff55_240c7649",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 918,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-05-12T18:44:03Z",
+      "side": 1,
+      "message": "It didn\u0027t stand out to me in Vulkan since there\u0027s only one call site to getCachedSingleTextureBindGroup that I saw (no dst copy), whereas the DawnCommandBuffer has two.\n\nI don\u0027t mind passing in a ResourceProvider to DawnTexture::getCached..., but we could also just move this block of code into `ResourceProvider` where it is responsible for checking the cache on the DawnTexture, creating, and storing it as needed.  This fits well with the provider\u0027s model for other bigger resources except it\u0027s using the DawnTexture as the \"cache\" instead of the main ResourceCache.",
+      "parentUuid": "79125dc9_387235fb",
+      "range": {
+        "startLine": 906,
+        "startChar": 0,
+        "endLine": 918,
+        "endChar": 9
+      },
+      "revId": "f6a6447bd7c6c341fa69bf9e7485b3f640e45b3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
