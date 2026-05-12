@@ -166,7 +166,6 @@ SkSerialReturnType SkCapture::serializeImageProc(SkImage* img, void* ctx) {
 sk_sp<SkImage> SkCapture::deserializeImageProc(sk_sp<SkData> data,
                                                std::optional<SkAlphaType> type,
                                                void* ctx) {
-
     if (!ctx || data->size() != sizeof(ImageMetadata)) return nullptr;
 
     SkCapture* capture = static_cast<SkCapture*>(ctx);
@@ -178,13 +177,12 @@ sk_sp<SkImage> SkCapture::deserializeImageProc(sk_sp<SkData> data,
     SkISize dimensions = {(int)picture->cullRect().width(), (int)picture->cullRect().height()};
 
     if (picture) {
-        sk_sp<SkImage> image =
-                SkImages::DeferredFromPicture(std::move(picture),
-                                              dimensions,
-                                              nullptr,
-                                              nullptr,
-                                              SkImages::BitDepth::kU8,
-                                              SkColorSpace::MakeSRGB());
+        sk_sp<SkImage> image = SkImages::DeferredFromPicture(std::move(picture),
+                                                             dimensions,
+                                                             nullptr,
+                                                             nullptr,
+                                                             SkImages::BitDepth::kU8,
+                                                             SkColorSpace::MakeSRGB());
 
         as_IB(image.get())->setContentID(SkContentID(imgMD->contentID));
         as_IB(image.get())->setDerivedSurfaceID(imgMD->derivedSurfaceID);
