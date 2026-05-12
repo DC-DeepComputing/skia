@@ -22,6 +22,30 @@
       },
       "revId": "4bc5d5fc60d043f7e93270bec582471c047adb77",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4a4ad96_26912757",
+        "filename": "tests/graphite/sparse_strips/TilerTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-12T14:02:51Z",
+      "side": 1,
+      "message": "std::vector::size is in `size_t` but SkTDArray::size is in `int32_t`",
+      "parentUuid": "9ee7a18d_00e1803c",
+      "range": {
+        "startLine": 73,
+        "startChar": 4,
+        "endLine": 73,
+        "endChar": 11
+      },
+      "revId": "4bc5d5fc60d043f7e93270bec582471c047adb77",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
