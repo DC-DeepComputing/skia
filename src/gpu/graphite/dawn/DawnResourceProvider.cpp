@@ -31,7 +31,6 @@ namespace skgpu::graphite {
 namespace {
 
 constexpr uint32_t kBufferBindingSizeAlignment = 16;
-constexpr int kMaxNumberOfCachedBufferBindGroups = 1024;
 
 wgpu::ShaderModule create_shader_module(const wgpu::Device& device, const char* source) {
 #if defined(__EMSCRIPTEN__)
@@ -107,42 +106,7 @@ wgpu::RenderPipeline create_blit_render_pipeline(const DawnSharedContext* shared
 
     return pipeline;
 }
-
-template <size_t NumEntries>
-using BindGroupKey = typename DawnResourceProvider::BindGroupKey<NumEntries>;
-using UniformBindGroupKey = BindGroupKey<DawnResourceProvider::kNumUniformEntries>;
-
-UniformBindGroupKey make_ubo_bind_group_key(
-        const std::array<std::pair<const DawnBuffer*, uint32_t>,
-                         DawnResourceProvider::kNumUniformEntries>& boundBuffersAndSizes) {
-    UniformBindGroupKey uniqueKey;
-    {
-        // Each entry in the bind group needs 2 uint32_t in the key:
-        //  - buffer's unique ID: 32 bits.
-        //  - buffer's binding size: 32 bits.
-        // We need total of 4 entries in the uniform buffer bind group.
-        // Unused entries will be assigned zero values.
-        UniformBindGroupKey::Builder builder(&uniqueKey);
-
-        for (uint32_t i = 0; i < boundBuffersAndSizes.size(); ++i) {
-            const DawnBuffer* boundBuffer = boundBuffersAndSizes[i].first;
-            const uint32_t bindingSize = boundBuffersAndSizes[i].second;
-            if (boundBuffer) {
-                builder[2 * i] = boundBuffer->uniqueID().asUInt();
-                builder[2 * i + 1] = bindingSize;
-            } else {
-                builder[2 * i] = 0;
-                builder[2 * i + 1] = 0;
-            }
-        }
-
-        builder.finish();
-    }
-
-    return uniqueKey;
-}
-}  // namespace
-
+} // anonymous
 
 // Wraps a Dawn buffer, and tracks the intrinsic blocks residing in this buffer.
 class DawnResourceProvider::IntrinsicBuffer final {
@@ -427,7 +391,6 @@ DawnResourceProvider::DawnResourceProvider(SharedContext* sharedContext,
                                            uint32_t recorderID,
                                            size_t resourceBudget)
         : ResourceProvider(sharedContext, singleOwner, recorderID, resourceBudget)
-        , fUniformBufferBindGroupCache(kMaxNumberOfCachedBufferBindGroups)
         , fSingleOwner(singleOwner) {
     fIntrinsicConstantsManager = std::make_unique<IntrinsicConstantsManager>(this);
 
@@ -676,13 +639,6 @@ const wgpu::BindGroup DawnResourceProvider::findOrCreateUniformBuffersBindGroup(
                 boundBuffersAndSizes) {
     SKGPU_ASSERT_SINGLE_OWNER(fSingleOwner)
 
-    auto key = make_ubo_bind_group_key(boundBuffersAndSizes);
-    auto* existingBindGroup = fUniformBufferBindGroupCache.find(key);
-    if (existingBindGroup) {
-        // cache hit.
-        return *existingBindGroup;
-    }
-
     // Translate to wgpu::BindGroupDescriptor
     std::array<wgpu::BindGroupEntry, kNumUniformEntries> entries;
 
@@ -710,17 +666,13 @@ const wgpu::BindGroup DawnResourceProvider::findOrCreateUniformBuffersBindGroup(
     wgpu::BindGroup bindGroup = this->createBindGroup(
             entries, this->dawnSharedContext()->getUniformBuffersBindGroupLayout());
 
-    return *fUniformBufferBindGroupCache.insert(key, bindGroup);
+    return bindGroup;
 }
 
 void DawnResourceProvider::onFreeGpuResources() {
     SKGPU_ASSERT_SINGLE_OWNER(fSingleOwner)
 
     fIntrinsicConstantsManager->freeGpuResources();
-    // The wgpu::Textures and wgpu::Buffers held by the BindGroups should be explicitly destroyed
-    // when the DawnTexture and DawnBuffer is destroyed, but removing the bind groups themselves
-    // helps reduce CPU memory periodically.
-    fUniformBufferBindGroupCache.reset();
 }
 
 void DawnResourceProvider::onPurgeResourcesNotUsedSince(

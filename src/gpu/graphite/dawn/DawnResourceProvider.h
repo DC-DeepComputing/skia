@@ -110,13 +110,6 @@ private:
 
     wgpu::Buffer fNullBuffer;
 
-    template <size_t NumEntries>
-    using BindGroupCache = SkLRUCache<BindGroupKey<NumEntries>,
-                                      wgpu::BindGroup,
-                                      typename BindGroupKey<NumEntries>::Hash>;
-
-    BindGroupCache<kNumUniformEntries> fUniformBufferBindGroupCache;
-
     class IntrinsicBuffer;
     class IntrinsicConstantsManager;
     std::unique_ptr<IntrinsicConstantsManager> fIntrinsicConstantsManager;
