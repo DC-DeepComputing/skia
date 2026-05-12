@@ -16,6 +16,29 @@
       "message": "Adding Michael for his context and Thomas to spread team knowledge because sharing is caring",
       "revId": "c2ba72328e053dbb8d350ed76d4cc5cfe5b30da1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04dc20ac_12e5c513",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 751,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-05-12T16:26:32Z",
+      "side": 1,
+      "message": "This needs to be inserted into `fSingleTextureSamplerBindGroups` for now still",
+      "range": {
+        "startLine": 750,
+        "startChar": 4,
+        "endLine": 751,
+        "endChar": 90
+      },
+      "revId": "c2ba72328e053dbb8d350ed76d4cc5cfe5b30da1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
