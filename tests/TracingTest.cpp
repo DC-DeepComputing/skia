@@ -83,13 +83,13 @@ struct TracingRect : public TracingShape {
 
 }  // namespace
 
-static SkScalar gTracingTestWorkSink = 1.0f;
-
 static void do_work(int howMuchWork) {
+    static SkScalar tracingTestWorkSink = 1.0f;
+
     // Do busy work so the trace marker durations are large enough to be readable in trace viewer
     if (FLAGS_slowTracingTest) {
         for (int i = 0; i < howMuchWork * 100; ++i) {
-            gTracingTestWorkSink += SkScalarSin(i);
+            tracingTestWorkSink += SkScalarSin(i);
         }
     }
 }
