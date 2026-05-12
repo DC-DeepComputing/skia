@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "da8433cf_c1226733",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 810,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-05-12T18:28:59Z",
+      "side": 1,
+      "message": "Good call; done!",
+      "parentUuid": "be1a5e43_a2ca1bdd",
+      "range": {
+        "startLine": 801,
+        "startChar": 8,
+        "endLine": 810,
+        "endChar": 72
+      },
+      "revId": "f6a6447bd7c6c341fa69bf9e7485b3f640e45b3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5de779d2_503602a2",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-05-12T16:33:38Z",
       "side": 1,
       "message": "If we have the dst copy call into `getCachedSingleTextureBindGroup`, then it might make sense to have this `entries` logic and the call to create/addBindGroup move into `getCachedSingleTextureBindGroup`.",
+      "range": {
+        "startLine": 906,
+        "startChar": 0,
+        "endLine": 918,
+        "endChar": 9
+      },
+      "revId": "f6a6447bd7c6c341fa69bf9e7485b3f640e45b3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79125dc9_387235fb",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 918,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-05-12T18:28:59Z",
+      "side": 1,
+      "message": "Yeah, I considered this - it just requires passing in a resource provider to the call such that the bind group can be created if it doesn\u0027t exist already (assuming we want all resources to go through the resource provider for its child resources; e.g. for the DawnBuffer to get a BindGroup).\n\nOn the Vulkan side, we had decided to have the set layout and creation/caching on the resource logic to be handled from within the command buffer. This would have us migrate to a `findOrCreateCachedBindGroup` style like the ResourceProvider originally used, but just moving that logic into the Dawn[Texture/Buffer]. \n\nWDYT?",
+      "parentUuid": "5de779d2_503602a2",
       "range": {
         "startLine": 906,
         "startChar": 0,

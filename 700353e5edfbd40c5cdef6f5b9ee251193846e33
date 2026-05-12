@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67fe1844_c413a633",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-05-12T18:28:59Z",
+      "side": 1,
+      "message": "This was the number used for Vulkan, though I am not sure why. Any insight there?",
+      "range": {
+        "startLine": 84,
+        "startChar": 34,
+        "endLine": 84,
+        "endChar": 35
+      },
+      "revId": "700353e5edfbd40c5cdef6f5b9ee251193846e33",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
