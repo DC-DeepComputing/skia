@@ -223,7 +223,7 @@ std::optional<GpuStats> VulkanCommandBuffer::gpuStats() {
     if (fTimestampQueryPool != VK_NULL_HANDLE) {
         uint64_t timestamps[2];
         VkResult result;
-        VULKAN_CALL_RESULT(fSharedContext,
+        VULKAN_CALL_RESULT_NOCHECK(fSharedContext->interface(),
                            result,
                            GetQueryPoolResults(fSharedContext->device(),
                                                fTimestampQueryPool,
@@ -251,7 +251,7 @@ std::optional<GpuStats> VulkanCommandBuffer::gpuStats() {
     if (fOcclusionQueryPool != VK_NULL_HANDLE) {
         uint64_t occlusion = 0;
         VkResult result;
-        VULKAN_CALL_RESULT(fSharedContext,
+        VULKAN_CALL_RESULT_NOCHECK(fSharedContext->interface(),
                            result,
                            GetQueryPoolResults(fSharedContext->device(),
                                                fOcclusionQueryPool,
