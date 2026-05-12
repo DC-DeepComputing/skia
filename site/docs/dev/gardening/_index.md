@@ -105,6 +105,9 @@ string "SkDevice" has appeared in the last 10 commits:
 - Ensure that all AutoRollers listed on the
   [status page](https://status.skia.org) are successfully landing.
 
+- If you notice an auto-roller is failing to land, and you believe you are not well equipped to resolve the issue, feel free to reach out for help. For example, if you are ill-equipped to resolve an ANGLE issue, you should rope in the GPU gardener. 
+
+
 <a name="gold_and_perf"></a>
 
 ### Gold and Perf
@@ -215,6 +218,25 @@ accordingly.
 See the revert documentation [here](https://skia.org/docs/dev/contrib/revert).
 
 <a name="deps_roll_failures"></a>
+
+### Perf Tips
+
+It's kind of the same as with gold, if you see a performance regression from a change, you usually want to notify the person who made the patch.
+
+Perf will already do statistical anlysis in order to trigger the regression alert, so you can usually be confident that the regression it flags is real
+
+Although the performance on some devices can be flaky, a regression will not regress only a single device, so pay attention to all the different devices.
+
+For notifying someone of a regression:
+- gpu driver -> notify gpu team
+- if it's somebodies patch -> notify them
+- if it's a roll from another google team -> investigate further
+
+Sometimes perf will find a regression that is very tiny; you can ignore these
+but use prudence.
+
+Remember to zoom out and look at the overall trend of Perf, to see whether or not the issue is transient. Sometimes a Perf regression will be unrelated to the CL it is associated with, and the regression will actually come from flakiness or thermal throttling or a variety of other reasons.
+
 
 ### What to do if DEPS roll fails to land
 
