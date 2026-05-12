@@ -785,7 +785,7 @@ bool DawnCommandBuffer::bindGraphicsPipeline(const GraphicsPipeline* graphicsPip
     fBoundUniformBuffersDirty = true;
 
     if (fActiveGraphicsPipeline->dstReadStrategy() == DstReadStrategy::kTextureCopy &&
-        fActiveGraphicsPipeline->numFragTexturesAndSamplers() == 2) {
+        fActiveGraphicsPipeline->numTexturesAndSamplers() == 1) {
         // The pipeline has a single paired texture+sampler and uses texture copies for dst reads.
         // This situation comes about when the program requires complex blending but otherwise
         // is not referencing any images. Since there are no other images in play, the DrawPass
@@ -864,7 +864,7 @@ void DawnCommandBuffer::bindTextureAndSamplers(
     if (fActiveGraphicsPipeline->dstReadStrategy() == DstReadStrategy::kTextureCopy) {
         numTexturesAndSamplers++;
     }
-    SkASSERT(fActiveGraphicsPipeline->numFragTexturesAndSamplers() == 2*numTexturesAndSamplers);
+    SkASSERT(fActiveGraphicsPipeline->numTexturesAndSamplers() == numTexturesAndSamplers);
 
     // If possible, it's ideal to optimize for the common case of using a single texture with one
     // dynamic sampler. When using only one sampler, determine whether it is static or dynamic.
@@ -882,7 +882,7 @@ void DawnCommandBuffer::bindTextureAndSamplers(
     wgpu::BindGroup bindGroup;
     // Optimize for single texture with dynamic sampling.
     if (numTexturesAndSamplers == 1 && !usingSingleStaticSampler) {
-        SkASSERT(fActiveGraphicsPipeline->numFragTexturesAndSamplers() == 2);
+        SkASSERT(fActiveGraphicsPipeline->numTexturesAndSamplers() == 1);
         SkASSERT(fActiveGraphicsPipeline->dstReadStrategy() != DstReadStrategy::kTextureCopy);
 
         const auto* texture = static_cast<const DawnTexture*>(command.fTextures[0]->texture());

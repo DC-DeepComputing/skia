@@ -96,6 +96,7 @@ TessellateStrokesRenderStep::TessellateStrokesRenderStep(Layout layout, bool inf
                      /*uniforms=*/{{"affineMatrix", SkSLType::kFloat4},
                                    {"translate", SkSLType::kFloat2},
                                    {"maxScale", SkSLType::kFloat}},
+                     /*textures=*/{},
                      PrimitiveType::kTriangleStrip,
                      kDirectDepthLessPass,
                      /*staticAttrs=*/ {},
