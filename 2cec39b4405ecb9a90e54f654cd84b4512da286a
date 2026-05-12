@@ -16,6 +16,226 @@
       "message": "Florin\u0027s going to be our main Skia codec reviewer",
       "revId": "2cec39b4405ecb9a90e54f654cd84b4512da286a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6bde025f_e4770ba9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-05-12T17:29:40Z",
+      "side": 1,
+      "message": "Some initial comments inline.\n\nA couple of high-level concerns:\n\n1) No \"true\" incremental decoding: while we do satisfy the interface, it looks like we\u0027re re-decoding the whole image on every iteration.  Hopefully this is something that can be addressed upstream?\n\n2) No scanline decoding support: we\u0027re forced to buffer the whole image, which increases memory pressure.  Is this something that could be retrofitted to Zune?",
+      "revId": "2cec39b4405ecb9a90e54f654cd84b4512da286a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc6fc93d_ff0f7a7b",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-05-12T17:29:40Z",
+      "side": 1,
+      "message": "Is this needed?  `MapDecodingResult` seems to handle `IncompleteInput` correctly.",
+      "range": {
+        "startLine": 105,
+        "startChar": 0,
+        "endLine": 107,
+        "endChar": 27
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "65335384_e8f4d2ec",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+              "range": {
+                "startLine": 105,
+                "startChar": 0,
+                "endLine": 109,
+                "endChar": 0
+              },
+              "replacement": "        if (metadataResult !\u003d rust_jpeg::DecodingResult::Success) {\n"
+            }
+          ]
+        }
+      ],
+      "revId": "2cec39b4405ecb9a90e54f654cd84b4512da286a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8608d77_1ac1a880",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-05-12T17:29:40Z",
+      "side": 1,
+      "message": "That\u0027s annoying: SkExif::Parse doesn\u0027t take ownership of the data, we should not have to wrap it in SkData just to pass basically a span.  Making a note for myself to tweak the Parse interface and simplify this.",
+      "range": {
+        "startLine": 161,
+        "startChar": 28,
+        "endLine": 161,
+        "endChar": 48
+      },
+      "revId": "2cec39b4405ecb9a90e54f654cd84b4512da286a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e7c3981_79e0c0a6",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-05-12T17:29:40Z",
+      "side": 1,
+      "message": "nit: line break",
+      "revId": "2cec39b4405ecb9a90e54f654cd84b4512da286a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c9f6ed2_4439ea34",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-05-12T17:29:40Z",
+      "side": 1,
+      "message": "If `mpIdx` is 1-based, shouldn\u0027t this be `\u003c\u003d`?  Otherwise is looks like we\u0027re only processing mpfCount-1 entries.",
+      "range": {
+        "startLine": 336,
+        "startChar": 29,
+        "endLine": 336,
+        "endChar": 45
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "e88197d5_f9c307f9",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+              "range": {
+                "startLine": 336,
+                "startChar": 0,
+                "endLine": 337,
+                "endChar": 0
+              },
+              "replacement": "    for (uint32_t mpIdx \u003d 1; mpIdx \u003c\u003d mpfCount; ++mpIdx) {\n"
+            }
+          ]
+        }
+      ],
+      "revId": "2cec39b4405ecb9a90e54f654cd84b4512da286a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54f1ce4c_f85e7595",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 417,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-05-12T17:29:40Z",
+      "side": 1,
+      "message": "nit: if we move this before the first return, we could drop the #else branch.",
+      "revId": "2cec39b4405ecb9a90e54f654cd84b4512da286a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eaa689fb_d9a99fb9",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 590,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-05-12T17:29:40Z",
+      "side": 1,
+      "message": "I think we can omit this part and always reset for `result !\u003d kIncomplete`.",
+      "range": {
+        "startLine": 590,
+        "startChar": 8,
+        "endLine": 590,
+        "endChar": 29
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "76dd8da6_d162a4a1",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+              "range": {
+                "startLine": 590,
+                "startChar": 0,
+                "endLine": 591,
+                "endChar": 0
+              },
+              "replacement": "    if (result !\u003d kIncompleteInput) {\n"
+            }
+          ]
+        }
+      ],
+      "revId": "2cec39b4405ecb9a90e54f654cd84b4512da286a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d66856c3_f485cb70",
+        "filename": "experimental/rust_jpeg/encoder/SkJpegRustEncoder.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-05-12T17:29:40Z",
+      "side": 1,
+      "message": "nit: `SkToU32(SkTPin(options.fQuality, 0, 100))`",
+      "range": {
+        "startLine": 62,
+        "startChar": 29,
+        "endLine": 63,
+        "endChar": 54
+      },
+      "revId": "2cec39b4405ecb9a90e54f654cd84b4512da286a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
