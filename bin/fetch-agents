@@ -1,0 +1,68 @@
+#!/usr/bin/python3
+# Copyright 2026 Google LLC
+#
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import os
+import subprocess
+import sys
+
+def parse_file_to_dict(path):
+  dictionary = {}
+  with open(path) as f:
+    exec('def Var(x): return vars[x]\n' + f.read(), dictionary)
+  return dictionary
+
+def main():
+  deps_file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir, 'DEPS'))
+  if not os.path.exists(deps_file_path):
+    print(f"Error: DEPS file not found at {deps_file_path}", file=sys.stderr)
+    sys.exit(1)
+
+  deps_file = parse_file_to_dict(deps_file_path)
+  deps = deps_file.get('deps', {})
+
+  for name in ['agents/shared', 'agents/internal']:
+    if name not in deps:
+      print(f"Warning: {name} not found in DEPS")
+      continue
+
+    dep = deps[name]
+    if not isinstance(dep, dict):
+      print(f"Error: Expected dictionary for {name}, got {type(dep)}")
+      continue
+
+    url_with_commit = dep.get('url')
+    if not url_with_commit:
+      print(f"Error: No URL found for {name}")
+      continue
+
+    if '@' not in url_with_commit:
+      print(f"Error: Invalid URL format (missing @): {url_with_commit}")
+      continue
+
+    repo, commithash = url_with_commit.split('@', 1)
+
+    directory = os.path.abspath(os.path.join(os.path.dirname(deps_file_path), name))
+
+    print(f"Syncing {name} to {commithash}...")
+
+    try:
+      if not os.path.isdir(directory):
+        print(f"Cloning {repo} to {directory}...")
+        subprocess.check_call(['git', 'clone', '--no-checkout', repo, directory])
+
+      subprocess.check_call(['git', 'remote', 'set-url', 'origin', repo], cwd=directory)
+      subprocess.check_call(['git', 'fetch', 'origin', '--quiet'], cwd=directory)
+      subprocess.check_call(['git', 'checkout', '--quiet', commithash], cwd=directory)
+      print(f"Successfully synced {name}")
+    except subprocess.CalledProcessError as e:
+      if name == 'agents/internal':
+        print(f"Warning: Failed to sync {name}. This is expected if you are not a Googler. Error: {e}")
+      else:
+        print(f"Error: Failed to sync {name}: {e}", file=sys.stderr)
+        sys.exit(1)
+
+if __name__ == '__main__':
+  main()

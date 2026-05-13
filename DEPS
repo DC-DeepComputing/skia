@@ -114,4 +114,14 @@ deps = {
     'url': 'https://skia.googlesource.com/buildbot.git@' + Var('infra_revision'),
     'condition': 'False',
   },
+
+  'agents/shared': {
+    'url': 'https://chromium.googlesource.com/chromium/agents/@0bad974b43c404aee61bba2127b27b4cc51bb92b',
+    'condition': 'False',
+  },
+
+  'agents/internal': {
+    'url': 'https://chrome-internal.googlesource.com/chrome/agents-internal/@3ff44a5f835785f3edfafed10dd249c2102b4319',
+    'condition': 'False',
+  },
 }
