@@ -216,14 +216,11 @@ struct Layer {
                                       Draw* draw,
                                       const RenderStep* step,
                                       bool insertBefore) {
-        if (list) {
-            list->fBounds.join(draw->fDrawParams->drawBounds());
-        } else {
+        if (!list) {
             fListOrder = fListOrder.next();
             list = alloc->make<BindingList>(fListOrder, isDepthOnly);
             list->fKey = key;
             list->fStep = const_cast<RenderStep*>(step);
-            list->fBounds = draw->fDrawParams->drawBounds();
             if (isDepthOnly) {
                 if (isChild) {
                     SkASSERT(parentList);
@@ -234,6 +231,9 @@ struct Layer {
             } else {
                 fBindings.addToTail(list);
             }
+        }
+        if (!isChild) {
+            list->fBounds.join(draw->fDrawParams->drawBounds());
         }
 
         if (insertBefore) {
