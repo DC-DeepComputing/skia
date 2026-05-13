@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "dde27235_706ce6bc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-13T18:45:38Z",
+      "side": 1,
+      "message": "image and Image-1 are unused but are being uploaded?\n\nPlease rewrite this with more professional tone, grammar, and punctuation. I have made some grammar corrections, but this should be rewritten.",
+      "revId": "268cd07164474673bb0ebf9907052406939b115d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "965aed53_dbfde263",
         "filename": "site/docs/dev/gardening/_index.md",
         "patchSetId": 7
@@ -14,6 +31,57 @@
       "writtenOn": "2026-05-13T18:45:19Z",
       "side": 1,
       "message": "Are image.png and image-1.png even used ?",
+      "revId": "268cd07164474673bb0ebf9907052406939b115d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6bc6a00_a60fe37d",
+        "filename": "site/docs/dev/gardening/_index.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-13T18:45:38Z",
+      "side": 1,
+      "message": "This needs to be on the line directly above `### Documentation`",
+      "range": {
+        "startLine": 131,
+        "startChar": 0,
+        "endLine": 131,
+        "endChar": 32
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "f86ea18f_ef936ab4",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "site/docs/dev/gardening/_index.md",
+              "range": {
+                "startLine": 131,
+                "startChar": 0,
+                "endLine": 132,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "site/docs/dev/gardening/_index.md",
+              "range": {
+                "startLine": 150,
+                "startChar": 0,
+                "endLine": 151,
+                "endChar": 0
+              },
+              "replacement": "\u003ca name\u003d\"skia_gardener_doc\"\u003e\u003c/a\u003e\n"
+            }
+          ]
+        }
+      ],
       "revId": "268cd07164474673bb0ebf9907052406939b115d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -181,6 +249,111 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "86a8b3df_db144a0f",
+        "filename": "site/docs/dev/gardening/_index.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-13T18:45:38Z",
+      "side": 1,
+      "message": "Missing image description?",
+      "range": {
+        "startLine": 144,
+        "startChar": 2,
+        "endLine": 144,
+        "endChar": 10
+      },
+      "revId": "268cd07164474673bb0ebf9907052406939b115d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95600525_65485c85",
+        "filename": "site/docs/dev/gardening/_index.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-13T18:45:38Z",
+      "side": 1,
+      "message": "you are confident?",
+      "range": {
+        "startLine": 146,
+        "startChar": 3,
+        "endLine": 146,
+        "endChar": 21
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "607dbb94_ad8f7a00",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "site/docs/dev/gardening/_index.md",
+              "range": {
+                "startLine": 146,
+                "startChar": 0,
+                "endLine": 147,
+                "endChar": 0
+              },
+              "replacement": "6. Once you are confident in whether it looks like a regression or not, mark the corresponding check (for \"not an issue\") or x (for \"this is an issue\"). Fill out the justification text box. If you select the x, you will be taken to buganizer to file a bug related to this regression.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "268cd07164474673bb0ebf9907052406939b115d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b20b9477_cb1e2814",
+        "filename": "site/docs/dev/gardening/_index.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-13T18:45:38Z",
+      "side": 1,
+      "message": "Missing image description?",
+      "range": {
+        "startLine": 148,
+        "startChar": 2,
+        "endLine": 148,
+        "endChar": 10
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "39af659e_87545949",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "site/docs/dev/gardening/_index.md",
+              "range": {
+                "startLine": 148,
+                "startChar": 0,
+                "endLine": 149,
+                "endChar": 0
+              },
+              "replacement": "![Screenshot of the Perf regression window with options to mark as not an issue or file a bug](image-6.png)\n"
+            }
+          ]
+        }
+      ],
+      "revId": "268cd07164474673bb0ebf9907052406939b115d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dd60d0b6_33c4b02d",
         "filename": "site/docs/dev/gardening/_index.md",
         "patchSetId": 7
@@ -227,6 +400,88 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3762a179_197d3bf6",
+        "filename": "site/docs/dev/gardening/_index.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-13T18:45:38Z",
+      "side": 1,
+      "message": "analysis",
+      "range": {
+        "startLine": 254,
+        "startChar": 33,
+        "endLine": 254,
+        "endChar": 41
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "3b705ca1_ae9d9164",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "site/docs/dev/gardening/_index.md",
+              "range": {
+                "startLine": 254,
+                "startChar": 0,
+                "endLine": 255,
+                "endChar": 0
+              },
+              "replacement": "Perf will already do statistical analysis in order to trigger the regression alert, so you can usually be confident that the regression it flags is real\n"
+            }
+          ]
+        }
+      ],
+      "revId": "268cd07164474673bb0ebf9907052406939b115d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c8e5a79_a9b8f0b2",
+        "filename": "site/docs/dev/gardening/_index.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-13T18:45:38Z",
+      "side": 1,
+      "message": "Period?",
+      "range": {
+        "startLine": 254,
+        "startChar": 148,
+        "endLine": 254,
+        "endChar": 151
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "6b537aee_3eee8001",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "site/docs/dev/gardening/_index.md",
+              "range": {
+                "startLine": 254,
+                "startChar": 0,
+                "endLine": 255,
+                "endChar": 0
+              },
+              "replacement": "Perf will already do statistical anlysis in order to trigger the regression alert, so you can usually be confident that the regression it flags is real.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "268cd07164474673bb0ebf9907052406939b115d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "87b4a953_654614ba",
         "filename": "site/docs/dev/gardening/_index.md",
         "patchSetId": 7
@@ -266,6 +521,29 @@
         "startChar": 22,
         "endLine": 259,
         "endChar": 31
+      },
+      "revId": "268cd07164474673bb0ebf9907052406939b115d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eda74830_90852a92",
+        "filename": "site/docs/dev/gardening/_index.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 261,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-13T18:45:38Z",
+      "side": 1,
+      "message": "Capitalization and punctuation?\n\nSomebody\u0027s patch? \nThis should be, if there is the patch owner is a skia team member -\u003e",
+      "range": {
+        "startLine": 258,
+        "startChar": 0,
+        "endLine": 261,
+        "endChar": 64
       },
       "revId": "268cd07164474673bb0ebf9907052406939b115d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
