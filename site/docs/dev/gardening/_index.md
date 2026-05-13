@@ -105,6 +105,9 @@ string "SkDevice" has appeared in the last 10 commits:
 - Ensure that all AutoRollers listed on the
   [status page](https://status.skia.org) are successfully landing.
 
+- If you notice an auto-roller is failing to land, and you believe you are not well equipped to resolve the issue, feel free to reach out for help. For example, if you are ill-equipped to resolve an ANGLE issue, you should rope in the GPU gardener.
+
+
 <a name="gold_and_perf"></a>
 
 ### Gold and Perf
@@ -116,8 +119,36 @@ string "SkDevice" has appeared in the last 10 commits:
   images or new perf regressions, that they are aware of what happened, and they
   use these tools to take appropriate action.
 
-<a name="skia_gardener_doc"></a>
+#### Basic workflow for triaging Perf issues
 
+1. Look for the regressions link within the Skia Status page
+![screenshot of status skia emphasizing perf regressions](skia_status_view.png)
+
+2. Once you are at the regressions page, you can see a list of all current regression issues. This list only has 1.
+It will tell you information about the CL that might have introduced a regression. In this case, the CL was an autoroll.
+
+![screenshot of perf list of regressions](skia_perf_view.png)
+
+
+3. Look at the ? symbols underneath the performance columns. Each of these columns will have a low and a high section referring to possible performance decreases or increases respectively.
+
+![screenshot of perf with the ? symbols](skia_perf_columns.png)
+
+4. Once you click on any of the ? symbols, you will see a snapshot of what the regression looks like. There will be a lot of information in this window, such as the Least Squares Error (to show the confidence in whether this is not noise) and step size. You will also see the exact CL again with its CL ID. You can visit the CL by clicking the underlined linked number (the underlined 79169 in this example). This can help you investigate whether the CL actually might have caused the issue or, in the case of rolls, dig deeper in which CL it might have been.
+
+![screenshot of perf regression window](skia_perf_mini_graph.png)
+
+
+5. You can click "view on dashboard" to get a better picture of what the issue looks like. This will also provide better context into what the preceding trend was before this CL. Make sure to expand the window range when viewing, as the regression could be transient. Make sure to look out for changes that impact a lot of devices, as this is a good indicator for a true regression. The red line here in this diagram indicates when the "problem" CL was introduced. Each line is the test run on different devices. The vertical refers to some metric in performance (e.g. seconds) and the horizontal represents time (i.e. CLs). You may click the right hand check boxes to view or hide a line.
+
+![the main skia perf graph showcasing the test under scrutiny across multiple devices.](skia_perf_graph.png)
+
+6. Once you are confident in whether it looks like a regression or not, mark the corresponding check (for "not an issue") or x (for "this is an issue"). Fill out the justification text box. If you select the x, you will be taken to buganizer to file a bug related to this regression.
+
+![Screenshot of the Perf regression window with options to mark as not an issue or file a bug](skia_perf_mini_graph_triaged.png)
+
+
+<a name="skia_gardener_doc"></a>
 ### Documentation
 
 - Improve/update this documentation page for future gardeners, especially the
@@ -215,6 +246,25 @@ accordingly.
 See the revert documentation [here](https://skia.org/docs/dev/contrib/revert).
 
 <a name="deps_roll_failures"></a>
+
+### Perf Tips
+
+Responding to performance regesssions is similar to responding to Gold regressions. If you see a performance regression from a change, you usually want to notify the person who made the patch.
+
+Perf will do statistical analysis in order to trigger the regression alert, but be warned that Skia's performance data can be very noisy so, often, a regression is simply noise or, on Android devices, thermal throttling.
+
+Although the performance on some devices can be flaky, a regression will rarely regress only a single device, so pay attention to all the different devices.
+
+For notifying someone of a regression:
+- If it's a GPU driver issue -> notify the current GPU gardener
+- If it's a patch from a SKIA team member -> notify them
+- If it's a roll from another google team -> investigate further
+
+Sometimes perf will find a regression that is very tiny; you can ignore these
+but use prudence.
+
+Remember to zoom out and look at the overall trend of Perf, to see whether or not the issue is transient.
+
 
 ### What to do if DEPS roll fails to land
 
