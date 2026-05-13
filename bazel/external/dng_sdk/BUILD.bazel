@@ -66,6 +66,7 @@ cc_library(
         "source/dng_tile_iterator.cpp",
         "source/dng_tone_curve.cpp",
         "source/dng_utils.cpp",
+        "source/dng_xmp_sdk.cpp",
         "source/dng_xy_coord.cpp",
     ],
     hdrs = [
@@ -145,6 +146,7 @@ cc_library(
         "source/dng_types.h",
         "source/dng_uncopyable.h",
         "source/dng_utils.h",
+        "source/dng_xmp_sdk.h",
         "source/dng_xy_coord.h",
     ],
     defines = [
