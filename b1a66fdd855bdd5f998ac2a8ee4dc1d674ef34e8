@@ -33,6 +33,23 @@
       "message": "@drott@google.com Can you please run the TryJobs, I dont have permission for it. Thanks.",
       "revId": "b1a66fdd855bdd5f998ac2a8ee4dc1d674ef34e8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "866810b1_c3c1a590",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2026-05-13T08:47:39Z",
+      "side": 1,
+      "message": "Please add fontations bot to your cq-include-trybots line in the commit message for CLs that touch fontations:\n```\nCq-Include-Trybots: luci.skia.skia.primary:BazelBuild-fontations-release-linux_x64,Build-Mac-Clang-x86_64-Debug-Fontations,Build-Ubuntu24.04-Clang-x86_64-Debug-Fontations,Test-Mac14-Clang-MacMini8.1-CPU-AVX2-x86_64-Debug-All-NativeFonts_Fontations,Test-Mac15-Clang-MacBookPro15.1-CPU-AppleIntel-x86_64-Debug-All-NativeFonts_Fontations,Test-Ubuntu24.04-Clang-GCE-CPU-AVX2-x86_64-Debug-All-NativeFonts_Fontations\n```",
+      "revId": "b1a66fdd855bdd5f998ac2a8ee4dc1d674ef34e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
