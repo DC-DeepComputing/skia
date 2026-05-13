@@ -148,6 +148,21 @@ namespace SK_OPTS_NS {
     SI F   sqrt_ (F v)          { return sqrtf(v); }
     SI F   rcp_precise (F v)    { return 1.0f / v; }
 
+    // This implementation is only used when SIMD is disabled or not available.
+    // It mirrors the logic of the vectorized helpers to ensure consistent behavior.
+    SI I32 div_vectorized(I32 dst, I32 divisor) {
+        // Handle division by zero.
+        divisor |= (divisor == 0 ? -1 : 0);
+        // Handle INT_MIN / -1 overflow.
+        divisor += (divisor == -1 && dst == std::numeric_limits<int32_t>::lowest() ? -1 : 0);
+        return dst / divisor;
+    }
+    SI U32 div_u_vectorized(U32 dst, U32 divisor) {
+        // Handle division by zero.
+        divisor |= (divisor == 0 ? 0xFFFFFFFF : 0);
+        return dst / divisor;
+    }
+
     SI I32 iround(F v)          { return (I32)(v + 0.5f); }
     SI U32 round(F v)           { return (U32)(v + 0.5f); }
     SI U16 pack(U32 v)          { return (U16)v; }
@@ -223,6 +238,21 @@ namespace SK_OPTS_NS {
     SI I32 abs_  (I32 v)     { return vabsq_s32(v); }
     SI F   rcp_approx(F v)   { auto e = vrecpeq_f32(v);  return vrecpsq_f32 (v,e  ) * e; }
     SI F   rcp_precise(F v)  { auto e = rcp_approx(v);   return vrecpsq_f32 (v,e  ) * e; }
+
+    // Standard SIMD division is used here.
+    SI I32 div_vectorized(I32 dst, I32 divisor) {
+        // Handle division by zero.
+        divisor |= (divisor == 0);
+        // Handle INT_MIN / -1 overflow.
+        divisor += (divisor == -1 && dst == std::numeric_limits<int32_t>::lowest());
+        return dst / divisor;
+    }
+    SI U32 div_u_vectorized(U32 dst, U32 divisor) {
+        // Handle division by zero.
+        divisor |= sk_bit_cast<U32>(divisor == 0);
+        return dst / divisor;
+    }
+
     SI F   rsqrt_approx(F v) { auto e = vrsqrteq_f32(v); return vrsqrtsq_f32(v,e*e) * e; }
 
     SI U16 pack(U32 v)       { return __builtin_convertvector(v, U16); }
@@ -430,6 +460,57 @@ namespace SK_OPTS_NS {
         dst[ix[13]] = after[13];
         dst[ix[14]] = after[14];
         dst[ix[15]] = after[15];
+    }
+
+    // Integer division is notoriously slow on x86, often causing the compiler to scalarize
+    // vectorized loops into scalar idiv loops.
+    // We can avoid this by performing the division in double precision.
+    // A 64-bit double has 53 bits of mantissa, which is enough to represent any 32-bit integer
+    // exactly. The division result is also bit-exact with the integer quotient for all valid
+    // inputs.
+    SI I32 div_vectorized(I32 dst, I32 divisor) {
+        // Handle division by zero. We OR with -1 (all bits set) if the divisor is zero.
+        divisor |= (divisor == 0);
+        // Handle INT_MIN / -1 overflow. Adding -1 (all bits set) shifts the divisor to -2
+        // in this specific case, avoiding a crash while the result remains non-sensical.
+        divisor += (divisor == -1 && dst == std::numeric_limits<int32_t>::lowest());
+
+        __m512i d = (__m512i)dst;
+        __m512i s = (__m512i)divisor;
+
+        // Convert to double, divide, and convert back to integer (truncating toward zero).
+        __m512d fd_lo = _mm512_cvtepi32_pd(_mm512_castsi512_si256(d));
+        __m512d fs_lo = _mm512_cvtepi32_pd(_mm512_castsi512_si256(s));
+        __m512d fr_lo = _mm512_div_pd(fd_lo, fs_lo);
+        __m256i r_lo = _mm512_cvttpd_epi32(fr_lo);
+
+        __m512d fd_hi = _mm512_cvtepi32_pd(_mm512_extracti64x4_epi64(d, 1));
+        __m512d fs_hi = _mm512_cvtepi32_pd(_mm512_extracti64x4_epi64(s, 1));
+        __m512d fr_hi = _mm512_div_pd(fd_hi, fs_hi);
+        __m256i r_hi = _mm512_cvttpd_epi32(fr_hi);
+
+        return (I32)_mm512_inserti64x4(_mm512_castsi256_si512(r_lo), r_hi, 1);
+    }
+
+    SI U32 div_u_vectorized(U32 dst, U32 divisor) {
+        // Handle division by zero.
+        divisor |= sk_bit_cast<U32>(divisor == 0);
+
+        __m512i d = (__m512i)dst;
+        __m512i s = (__m512i)divisor;
+
+        // Unsigned bit-exact double division trick (ML4 provides native vcvtudq2pd).
+        __m512d fd_lo = _mm512_cvtepu32_pd(_mm512_castsi512_si256(d));
+        __m512d fs_lo = _mm512_cvtepu32_pd(_mm512_castsi512_si256(s));
+        __m512d fr_lo = _mm512_div_pd(fd_lo, fs_lo);
+        __m256i r_lo = _mm512_cvttpd_epu32(fr_lo);
+
+        __m512d fd_hi = _mm512_cvtepu32_pd(_mm512_extracti64x4_epi64(d, 1));
+        __m512d fs_hi = _mm512_cvtepu32_pd(_mm512_extracti64x4_epi64(s, 1));
+        __m512d fr_hi = _mm512_div_pd(fd_hi, fs_hi);
+        __m256i r_hi = _mm512_cvttpd_epu32(fr_hi);
+
+        return (U32)_mm512_inserti64x4(_mm512_castsi256_si512(r_lo), r_hi, 1);
     }
 
     SI void load2(const uint16_t* ptr, U16* r, U16* g) {
@@ -666,6 +747,42 @@ namespace SK_OPTS_NS {
         dst[ix[7]] = after[7];
     }
 
+    // Integer division is notoriously slow on x86, often causing the compiler to scalarize
+    // vectorized loops into scalar idiv loops.
+    // We can avoid this by performing the division in double precision.
+    // A 64-bit double has 53 bits of mantissa, which is enough to represent any 32-bit integer
+    // exactly. The division result is also bit-exact with the integer quotient for all valid
+    // inputs.
+    SI I32 div_vectorized(I32 dst, I32 divisor) {
+        // Handle division by zero. We OR with -1 (all bits set) if the divisor is zero.
+        divisor |= (divisor == 0);
+        // Handle INT_MIN / -1 overflow. Adding -1 (all bits set) shifts the divisor to -2
+        // in this specific case, avoiding a crash while the result remains non-sensical.
+        divisor += (divisor == -1 && dst == std::numeric_limits<int32_t>::lowest());
+
+        __m256i d = (__m256i)dst;
+        __m256i s = (__m256i)divisor;
+
+        // Convert to double, divide, and convert back to integer (truncating toward zero).
+        __m256d fd_lo = _mm256_cvtepi32_pd(_mm256_castsi256_si128(d));
+        __m256d fs_lo = _mm256_cvtepi32_pd(_mm256_castsi256_si128(s));
+        __m256d fr_lo = _mm256_div_pd(fd_lo, fs_lo);
+        __m128i r_lo = _mm256_cvttpd_epi32(fr_lo);
+
+        __m256d fd_hi = _mm256_cvtepi32_pd(_mm256_extractf128_si256(d, 1));
+        __m256d fs_hi = _mm256_cvtepi32_pd(_mm256_extractf128_si256(s, 1));
+        __m256d fr_hi = _mm256_div_pd(fd_hi, fs_hi);
+        __m128i r_hi = _mm256_cvttpd_epi32(fr_hi);
+
+        return (I32)_mm256_insertf128_si256(_mm256_castsi128_si256(r_lo), r_hi, 1);
+    }
+
+    SI U32 div_u_vectorized(U32 dst, U32 divisor) {
+        // Handle division by zero.
+        divisor |= sk_bit_cast<U32>(divisor == 0);
+        return dst / divisor;
+    }
+
     SI void load2(const uint16_t* ptr, U16* r, U16* g) {
         __m128i _0123 = _mm_loadu_si128(((const __m128i*)ptr) + 0),
                 _4567 = _mm_loadu_si128(((const __m128i*)ptr) + 1);
@@ -807,6 +924,42 @@ namespace SK_OPTS_NS {
     SI F   rcp_precise (F v)   { F e = rcp_approx(v); return e * (2.0f - v * e); }
     SI F   rsqrt_approx(F v)   { return _mm_rsqrt_ps(v);    }
     SI F    sqrt_(F v)         { return _mm_sqrt_ps (v);    }
+
+    // Integer division is notoriously slow on x86, often causing the compiler to scalarize
+    // vectorized loops into scalar idiv loops.
+    // We can avoid this by performing the division in double precision.
+    // A 64-bit double has 53 bits of mantissa, which is enough to represent any 32-bit integer
+    // exactly. The division result is also bit-exact with the integer quotient for all valid
+    // inputs.
+    SI I32 div_vectorized(I32 dst, I32 divisor) {
+        // Handle division by zero. We OR with -1 (all bits set) if the divisor is zero.
+        divisor |= (divisor == 0);
+        // Handle INT_MIN / -1 overflow. Adding -1 (all bits set) shifts the divisor to -2
+        // in this specific case, avoiding a crash while the result remains non-sensical.
+        divisor += (divisor == -1 && dst == std::numeric_limits<int32_t>::lowest());
+
+        __m128i d = (__m128i)dst;
+        __m128i s = (__m128i)divisor;
+
+        // Convert to double, divide, and convert back to integer (truncating toward zero).
+        // SSE2 can only process 2 doubles at a time, so we do two passes for the 4-wide vector.
+        __m128d fd_lo = _mm_cvtepi32_pd(d);
+        __m128d fs_lo = _mm_cvtepi32_pd(s);
+        __m128d fr_lo = _mm_div_pd(fd_lo, fs_lo);
+        __m128i r_lo = _mm_cvttpd_epi32(fr_lo);
+
+        __m128d fd_hi = _mm_cvtepi32_pd(_mm_srli_si128(d, 8));
+        __m128d fs_hi = _mm_cvtepi32_pd(_mm_srli_si128(s, 8));
+        __m128d fr_hi = _mm_div_pd(fd_hi, fs_hi);
+        __m128i r_hi = _mm_cvttpd_epi32(fr_hi);
+
+        return (I32)_mm_unpacklo_epi64(r_lo, r_hi);
+    }
+    SI U32 div_u_vectorized(U32 dst, U32 divisor) {
+        // Handle division by zero.
+        divisor |= sk_bit_cast<U32>(divisor == 0);
+        return dst / divisor;
+    }
 
     SI I32 iround(F v)         { return (I32)_mm_cvtps_epi32(v); }
     SI U32 round(F v)          { return (U32)_mm_cvtps_epi32(v); }
@@ -973,6 +1126,20 @@ namespace SK_OPTS_NS {
     SI F   rcp_precise (F v)    { F e = rcp_approx(v); return e * nmad(v, e, F() + 2.0f); }
     SI F   rsqrt_approx (F v)   { return __lasx_xvfrsqrt_s(v);           }
     SI F    sqrt_(F v)          { return __lasx_xvfsqrt_s(v);            }
+
+    // Standard SIMD division is used here.
+    SI I32 div_vectorized(I32 dst, I32 divisor) {
+        // Handle division by zero.
+        divisor |= (divisor == 0);
+        // Handle INT_MIN / -1 overflow.
+        divisor += (divisor == -1 && dst == std::numeric_limits<int32_t>::lowest());
+        return dst / divisor;
+    }
+    SI U32 div_u_vectorized(U32 dst, U32 divisor) {
+        // Handle division by zero.
+        divisor |= sk_bit_cast<U32>(divisor == 0);
+        return dst / divisor;
+    }
 
     SI U32 iround(F v) {
         F t = F() + 0.5f;
@@ -1176,6 +1343,20 @@ namespace SK_OPTS_NS {
     SI F   rcp_precise (F v)    { F e = rcp_approx(v); return e * nmad(v, e, F() + 2.0f); }
     SI F   rsqrt_approx (F v)   { return __lsx_vfrsqrt_s(v);             }
     SI F    sqrt_(F v)          { return __lsx_vfsqrt_s (v);             }
+
+    // Standard SIMD division is used here.
+    SI I32 div_vectorized(I32 dst, I32 divisor) {
+        // Handle division by zero.
+        divisor |= (divisor == 0);
+        // Handle INT_MIN / -1 overflow.
+        divisor += (divisor == -1 && dst == std::numeric_limits<int32_t>::lowest());
+        return dst / divisor;
+    }
+    SI U32 div_u_vectorized(U32 dst, U32 divisor) {
+        // Handle division by zero.
+        divisor |= sk_bit_cast<U32>(divisor == 0);
+        return dst / divisor;
+    }
 
     SI U32 iround(F v) {
         F t = F() + 0.5f;
@@ -4710,28 +4891,57 @@ SI void mul_fn(T* dst, T* src) {
     *dst *= *src;
 }
 
-SI void div_fn(I32* dst, I32* src) {
-    I32 divisor = *src;
-    // Integer division crashes when we divide by 0, but we can divide by -1 to not crash (the
-    // result will be non-sensical). The mask will be 0xFFFFFFF if true, which happens to be -1.
-    divisor |= ((I32)cond_to_mask(divisor == 0));
-    // Dividing by -1 works for all numerators *except* INT_MIN, so we can add -1 once more if
-    // we are in that case.
-    divisor += ((I32)cond_to_mask(divisor == -1 && *dst == std::numeric_limits<int32_t>::lowest()));
-    *dst /= divisor;
-}
-
-SI void div_fn(U32* dst, U32* src) {
-    U32 divisor = *src;
-    // Integer division crashes when we divide by 0, but we can divide by something else to not
-    // crash (the result will be non-sensical). The mask will be 0xFFFFFFF if true.
-    divisor |= ((U32)cond_to_mask(divisor == 0));
-    *dst /= divisor;
-}
-
 SI void div_fn(F* dst, F* src) {
     *dst /= *src;
 }
+
+// We provide specialized DECLARE_DIV_BINARY macros for integer division to ensure that the
+// compiler does not hit optimization barriers in the generic apply_adjacent_binary templates.
+// This is critical for keeping the division vectorized using the double-precision trick,
+// which significantly out-performs scalar idiv loops.
+#define DECLARE_DIV_BINARY_INT()                                                           \
+    HIGHP_TAIL_STAGE(div_n_ints, SkRasterPipelineContexts::BinaryOpCtx* packed) {          \
+        auto ctx = SkRPCtxUtils::Unpack(packed);                                           \
+        I32* dst = (I32*)(base + ctx.dst);                                                 \
+        I32* src = (I32*)(base + ctx.src);                                                 \
+        I32* end = src;                                                                    \
+        do {                                                                               \
+            *dst = div_vectorized(*dst, *src);                                             \
+            dst++; src++;                                                                  \
+        } while (dst != end);                                                              \
+    }                                                                                      \
+    HIGHP_TAIL_STAGE(div_int,   I32* dst) { dst[0] = div_vectorized(dst[0], dst[1]); }     \
+    HIGHP_TAIL_STAGE(div_2_ints, I32* dst) { dst[0] = div_vectorized(dst[0], dst[2]);      \
+                                             dst[1] = div_vectorized(dst[1], dst[3]); }    \
+    HIGHP_TAIL_STAGE(div_3_ints, I32* dst) { dst[0] = div_vectorized(dst[0], dst[3]);      \
+                                             dst[1] = div_vectorized(dst[1], dst[4]);      \
+                                             dst[2] = div_vectorized(dst[2], dst[5]); }    \
+    HIGHP_TAIL_STAGE(div_4_ints, I32* dst) { dst[0] = div_vectorized(dst[0], dst[4]);      \
+                                             dst[1] = div_vectorized(dst[1], dst[5]);      \
+                                             dst[2] = div_vectorized(dst[2], dst[6]);      \
+                                             dst[3] = div_vectorized(dst[3], dst[7]); }
+
+#define DECLARE_DIV_BINARY_UINT()                                                          \
+    HIGHP_TAIL_STAGE(div_n_uints, SkRasterPipelineContexts::BinaryOpCtx* packed) {         \
+        auto ctx = SkRPCtxUtils::Unpack(packed);                                           \
+        U32* dst = (U32*)(base + ctx.dst);                                                 \
+        U32* src = (U32*)(base + ctx.src);                                                 \
+        U32* end = src;                                                                    \
+        do {                                                                               \
+            *dst = div_u_vectorized(*dst, *src);                                           \
+            dst++; src++;                                                                  \
+        } while (dst != end);                                                              \
+    }                                                                                      \
+    HIGHP_TAIL_STAGE(div_uint,   U32* dst) { dst[0] = div_u_vectorized(dst[0], dst[1]); }  \
+    HIGHP_TAIL_STAGE(div_2_uints, U32* dst) { dst[0] = div_u_vectorized(dst[0], dst[2]);   \
+                                              dst[1] = div_u_vectorized(dst[1], dst[3]); } \
+    HIGHP_TAIL_STAGE(div_3_uints, U32* dst) { dst[0] = div_u_vectorized(dst[0], dst[3]);   \
+                                              dst[1] = div_u_vectorized(dst[1], dst[4]);   \
+                                              dst[2] = div_u_vectorized(dst[2], dst[5]); } \
+    HIGHP_TAIL_STAGE(div_4_uints, U32* dst) { dst[0] = div_u_vectorized(dst[0], dst[4]);   \
+                                              dst[1] = div_u_vectorized(dst[1], dst[5]);   \
+                                              dst[2] = div_u_vectorized(dst[2], dst[6]);   \
+                                              dst[3] = div_u_vectorized(dst[3], dst[7]); }
 
 SI void bitwise_and_fn(I32* dst, I32* src) {
     *dst &= *src;
@@ -4836,7 +5046,7 @@ SI void mod_fn(F* dst, F* src) {
 DECLARE_BINARY_FLOAT(add)    DECLARE_BINARY_INT(add)
 DECLARE_BINARY_FLOAT(sub)    DECLARE_BINARY_INT(sub)
 DECLARE_BINARY_FLOAT(mul)    DECLARE_BINARY_INT(mul)
-DECLARE_BINARY_FLOAT(div)    DECLARE_BINARY_INT(div)    DECLARE_BINARY_UINT(div)
+DECLARE_BINARY_FLOAT(div)    DECLARE_DIV_BINARY_INT()    DECLARE_DIV_BINARY_UINT()
                              DECLARE_BINARY_INT(bitwise_and)
                              DECLARE_BINARY_INT(bitwise_or)
                              DECLARE_BINARY_INT(bitwise_xor)
