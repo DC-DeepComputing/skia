@@ -16,6 +16,24 @@
       "message": "// These all return true if the resulting PaintOption is known to be opaque; false otherwise.\n?",
       "revId": "7843834cc11c562a2f06712b85226b3469b4ad7a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "29e36d8a_edc4cab1",
+        "filename": "src/gpu/graphite/precompile/PaintOption.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-05-13T15:21:28Z",
+      "side": 1,
+      "message": "Yep",
+      "parentUuid": "b68706f8_8c07e6a7",
+      "revId": "7843834cc11c562a2f06712b85226b3469b4ad7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
