@@ -101,6 +101,72 @@ sk_sp<Texture> ResourceProvider::findOrCreateNonShareableTexture(SkISize dimensi
     return this->findOrCreateTexture(dimensions, info, label, budgeted, Shareable::kNo);
 }
 
+namespace {
+// TODO(nicolettep): Alphabetize this switch statement once done adding usages (before landing)
+std::string usage_to_str(SkEnumBitMask<ScratchUsageFlags> usageMask) {
+    std::string allUsagesLabel;
+
+    // A scratch resource is either a texture or a buffer. Buffers are not expected to have
+    // other usages.
+    if ((usageMask & ScratchUsageFlags::kScratchBuffer)) {
+        allUsagesLabel = "Texture";
+    } else {
+        allUsagesLabel = "Buffer";
+        SkASSERT(usageMask == SkEnumBitMask<ScratchUsageFlags>(ScratchUsageFlags::kScratchBuffer));
+    }
+
+    if (usageMask & ScratchUsageFlags::kAsyncReadPixelsFallbackTexture) {
+        allUsagesLabel += "_AsyncReadPixelsFallback";
+    }
+    if (usageMask & ScratchUsageFlags::kCopyDeviceTexture) {
+        allUsagesLabel += "_DeviceCopy";
+    }
+    if (usageMask & ScratchUsageFlags::kDiscardableLoadMSAATexture) {
+        allUsagesLabel += "_DiscardableLoadMSAA";
+    }
+    if (usageMask & ScratchUsageFlags::kDispatchWriteOnlyStorageTexture) {
+        allUsagesLabel += "_DispatchWriteOnlyStorage";
+    }
+    if (usageMask & ScratchUsageFlags::kDstCopy) {
+        allUsagesLabel += "_DstCopy";
+    }
+    if (usageMask & ScratchUsageFlags::kEvalBlurTexture) {
+        allUsagesLabel += "_EvalBlur";
+    }
+    if (usageMask & ScratchUsageFlags::kImageFilterCachedBitmap) {
+        allUsagesLabel += "_ImageFilterCachedBitmap";
+    }
+    if (usageMask & ScratchUsageFlags::kImageFilterResult) {
+        allUsagesLabel += "_ImageFilterResult";
+    }
+    if (usageMask & ScratchUsageFlags::kImageMakeCTandCSTexture) {
+        allUsagesLabel += "_CTandCSConversion";
+    }
+    if (usageMask & ScratchUsageFlags::kImageSubsetTexture) {
+        allUsagesLabel += "_Subset";
+    }
+    if (usageMask & ScratchUsageFlags::kRescaleDstTexture) {
+        allUsagesLabel += "_RescaleDst";
+    }
+    if (usageMask & ScratchUsageFlags::kRescaleImageTempTexture) {
+        allUsagesLabel += "_RescaleImageTemp";
+    }
+    if (usageMask & ScratchUsageFlags::kRescaleLinearGammaTexture) {
+        allUsagesLabel += "_RescaleLinearGamma";
+    }
+    if (usageMask & ScratchUsageFlags::kYUVRasterBitmapPlane) {
+        allUsagesLabel += "_YUVRasterBitmapPlane";
+    }
+    if (usageMask & ScratchUsageFlags::kRasterBitmapTexture) {
+        allUsagesLabel += "_RasterBitmapTexture";
+    }
+    if (usageMask & ScratchUsageFlags::kLazySkImageBitmapTexture) {
+        allUsagesLabel += "_LazySkImageBitmapTexture";
+    }
+    return allUsagesLabel;
+}
+} // anonymous
+
 sk_sp<Texture> ResourceProvider::findOrCreateScratchTexture(
         SkISize dimensions,
         const TextureInfo& info,
@@ -108,6 +174,15 @@ sk_sp<Texture> ResourceProvider::findOrCreateScratchTexture(
         const ResourceCache::ScratchResourceSet& unavailable) {
     return this->findOrCreateTexture(
             dimensions, info, label, Budgeted::kYes, Shareable::kScratch, &unavailable);
+}
+
+sk_sp<Texture> ResourceProvider::findOrCreateScratchTexture(
+        SkISize dimensions,
+        const TextureInfo& info,
+        ScratchUsageFlags usage,
+        const ResourceCache::ScratchResourceSet& unavailable) {
+    return this->findOrCreateTexture(
+            dimensions, info, usage, Budgeted::kYes, Shareable::kScratch, &unavailable);
 }
 
 sk_sp<Texture> ResourceProvider::findOrCreateTexture(

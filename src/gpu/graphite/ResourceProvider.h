@@ -113,6 +113,8 @@ public:
             StdSteadyClock::time_point purgeTime,
             std::optional<std::chrono::microseconds> microsMaxPurgingDur);
     void forceProcessReturnedResources() { fResourceCache->forceProcessReturnedResources(); }
+    // Should this / these be non-public?
+    void updateCachedResourceLabels() { fResourceCache->updateLabels(); }
 
 #if defined(GPU_TEST_UTILS) || defined(SK_DEBUG)
     ResourceCache* resourceCache() { return fResourceCache.get(); }
