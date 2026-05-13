@@ -16,6 +16,24 @@
       "message": "This LGTM; the failed Canary roll seems like it\u0027s actually fine (at least so far).",
       "revId": "391b0e5cf2d3a942f60871a1328e51101682c465",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d47cf2a_360a8263",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-05-13T15:35:48Z",
+      "side": 1,
+      "message": "Agreed, the canary failure seems unrelated.",
+      "parentUuid": "72550f65_0161c7cf",
+      "revId": "391b0e5cf2d3a942f60871a1328e51101682c465",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
