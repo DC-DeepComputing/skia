@@ -33,6 +33,24 @@
       "message": "Thanks Eric! I\u0027ll need to do some printf debugging to see what the error result is on the ycbcr test (it at least doesn\u0027t crash on release). The other unit test failures with bad color values are more concerning, particularly since the gold images don\u0027t have any standout failures from a quick review.",
       "revId": "ecbc910c61a71bee4ecf44b2286c7b586f6f2e9a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8af6c56a_69bc9fe4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-05-13T17:02:39Z",
+      "side": 1,
+      "message": "SGTM, do you want to stamp this or would you prefer to fix before this lands?",
+      "parentUuid": "f8cb0569_b108a77d",
+      "revId": "ecbc910c61a71bee4ecf44b2286c7b586f6f2e9a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
