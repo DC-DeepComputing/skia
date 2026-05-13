@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "72550f65_0161c7cf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-05-13T14:53:33Z",
+      "side": 1,
+      "message": "This LGTM; the failed Canary roll seems like it\u0027s actually fine (at least so far).",
+      "revId": "391b0e5cf2d3a942f60871a1328e51101682c465",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
