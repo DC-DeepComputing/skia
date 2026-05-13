@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80560704_64a7ba99",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 649,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-05-13T14:45:27Z",
+      "side": 1,
+      "message": "We could instead opt to pass in the binding index with the BindBufferInfo, but we would have to also pass in \"knowledge\" of other entries (perhaps pass in a quantity of uniform entries, the index of the singular buffer, and fill the rest with null buffer bindgroupentries?).\n\nLMKWYT!",
+      "range": {
+        "startLine": 646,
+        "startChar": 0,
+        "endLine": 649,
+        "endChar": 19
+      },
+      "revId": "07e7718e922246589a04d35f8a350ad8932ae12a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
