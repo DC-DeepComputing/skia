@@ -298,6 +298,33 @@ static bool isRunCountEmpty(int count) {
     return count <= 2;
 }
 
+bool SkRegion::setRuns(RunType runs[], int count, const SkIRect& bounds,
+                       int ySpanCount, int intervalCount) {
+    /**
+     *  This version takes pre-computed metadata, allowing it to bypass the expensive
+     *  O(N) walk normally performed in computeRunBounds.
+     */
+    SkDEBUGCODE(SkRegionPriv::Validate(*this));
+    SkASSERT(count >= kRectRegionRuns);
+
+    if (SkRegion::RunsAreARect(runs, count, &fBounds)) {
+        return this->setRect(fBounds);
+    }
+
+    if (!this->isComplex() || fRunHead->fRunCount != count) {
+        this->freeRuns();
+        this->allocateRuns(count, ySpanCount, intervalCount);
+        SkASSERT(this->isComplex());
+    }
+
+    fRunHead = fRunHead->ensureWritable();
+    memcpy(fRunHead->writable_runs(), runs, count * sizeof(RunType));
+    fBounds = bounds;
+
+    SkDEBUGCODE(SkRegionPriv::Validate(*this));
+    return true;
+}
+
 bool SkRegion::setRuns(RunType runs[], int count) {
     SkDEBUGCODE(SkRegionPriv::Validate(*this));
     SkASSERT(count > 0);
@@ -678,14 +705,16 @@ void SkRegion::translate(int dx, int dy, SkRegion* dst) const {
 
 bool SkRegion::setRects(const SkIRect rects[], int count) {
     if (0 == count) {
-        this->setEmpty();
-    } else {
-        this->setRect(rects[0]);
-        for (int i = 1; i < count; i++) {
-            this->op(rects[i], kUnion_Op);
-        }
+        return this->setEmpty();
     }
-    return !this->isEmpty();
+    if (1 == count) {
+        return this->setRect(rects[0]);
+    }
+    int mid = count / 2;
+    SkRegion left, right;
+    left.setRects(rects, mid);
+    right.setRects(rects + mid, count - mid);
+    return this->op(left, right, kUnion_Op);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1059,6 +1088,61 @@ static bool setRegionCheck(SkRegion* result, const SkRegion& rgn) {
     return result ? result->setRegion(rgn) : !rgn.isEmpty();
 }
 
+/**
+ *  Optimized fast-path for unioning two regions that are vertically disjoint.
+ *  This case is common when building regions from tiles in a row-major order.
+ *  Instead of the O(N+M) state-machine walk, we perform an O(N+M) memcpy,
+ *  which is significantly faster.
+ */
+static bool append_below(const SkRegion& a, const SkRegion& b, SkRegion* result) {
+    SkASSERT(a.getBounds().fBottom <= b.getBounds().fTop);
+    SkASSERT(result);
+
+    int a_intervals, b_intervals;
+    SkRegionPriv::RunType tmpA[256];
+    SkRegionPriv::RunType tmpB[256];
+
+    const SkRegionPriv::RunType* a_runs = SkRegionPriv::GetRuns(a, tmpA, &a_intervals);
+    const SkRegionPriv::RunType* b_runs = SkRegionPriv::GetRuns(b, tmpB, &b_intervals);
+
+    int a_count = SkRegionPriv::GetRunCount(a);
+    int b_count = SkRegionPriv::GetRunCount(b);
+
+    bool add_gap = a.getBounds().fBottom < b_runs[0];
+    // a_count-1 (A's top + spans) + gap + (b_count-2) (B's spans) + 1 (final Y-sentinel)
+    int total_count = (a_count - 1) + (add_gap ? 3 : 0) + (b_count - 2) + 1;
+
+    SkIRect new_bounds = a.getBounds();
+    new_bounds.join(b.getBounds());
+
+    int new_yspan =
+            SkRegionPriv::GetYSpanCount(a) + (add_gap ? 1 : 0) + SkRegionPriv::GetYSpanCount(b);
+    int new_interval = SkRegionPriv::GetIntervalCount(a) + SkRegionPriv::GetIntervalCount(b);
+
+    RunArray array;
+    array.resizeToAtLeast(total_count);
+    SkRegionPriv::RunType* dst = &array[0];
+
+    // Copy A's top and all its spans (exclude Y-sentinel at a_runs[a_count-1])
+    memcpy(dst, a_runs, (a_count - 1) * sizeof(SkRegionPriv::RunType));
+    dst += (a_count - 1);
+
+    if (add_gap) {
+        *dst++ = b_runs[0];  // bottom of gap
+        *dst++ = 0;          // zero intervals
+        *dst++ = SkRegion_kRunTypeSentinel;
+    }
+
+    // Copy B's spans (skip B's top-Y and Y-sentinel)
+    memcpy(dst, &b_runs[1], (b_count - 2) * sizeof(SkRegionPriv::RunType));
+    dst += (b_count - 2);
+
+    *dst++ = SkRegion_kRunTypeSentinel;  // final Y-Sentinel
+
+    SkASSERT(dst - &array[0] == total_count);
+    return SkRegionPriv::SetRuns(*result, &array[0], total_count, new_bounds, new_yspan, new_interval);
+}
+
 bool SkRegion::Oper(const SkRegion& rgnaOrig, const SkRegion& rgnbOrig, Op op,
                     SkRegion* result) {
     SkASSERT((unsigned)op < kOpCount);
@@ -1119,6 +1203,15 @@ bool SkRegion::Oper(const SkRegion& rgnaOrig, const SkRegion& rgnbOrig, Op op,
         if (b_empty) {
             return setRegionCheck(result, *rgna);
         }
+
+        // Fast-path for vertically disjoint unions
+        if (result && rgna->fBounds.fBottom <= rgnb->fBounds.fTop) {
+            return append_below(*rgna, *rgnb, result);
+        }
+        if (result && rgnb->fBounds.fBottom <= rgna->fBounds.fTop) {
+            return append_below(*rgnb, *rgna, result);
+        }
+
         if (a_rect && rgna->fBounds.contains(rgnb->fBounds)) {
             return setRegionCheck(result, *rgna);
         }
@@ -1615,5 +1708,23 @@ void SkRegionPriv::VisitSpans(const SkRegion& rgn,
             bot = *p++;
         } while (!SkRegionValueIsSentinel(bot));
     }
+}
+
+int SkRegionPriv::GetRunCount(const SkRegion& rgn) {
+    if (rgn.isEmpty()) return 0;
+    if (rgn.isRect()) return SkRegion::kRectRegionRuns;
+    return rgn.fRunHead->fRunCount;
+}
+
+int SkRegionPriv::GetYSpanCount(const SkRegion& rgn) {
+    if (rgn.isEmpty()) return 0;
+    if (rgn.isRect()) return 1;
+    return rgn.fRunHead->getYSpanCount();
+}
+
+int SkRegionPriv::GetIntervalCount(const SkRegion& rgn) {
+    if (rgn.isEmpty()) return 0;
+    if (rgn.isRect()) return 1;
+    return rgn.fRunHead->getIntervalCount();
 }
 

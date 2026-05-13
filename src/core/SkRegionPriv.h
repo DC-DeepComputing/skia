@@ -27,6 +27,47 @@ public:
     // of the rect may be 1. It should never be empty.
     static void VisitSpans(const SkRegion& rgn, const std::function<void(const SkIRect&)>&);
 
+    static const RunType* GetRuns(const SkRegion& rgn, RunType tmpStorage[], int* intervals) {
+        return rgn.getRuns(tmpStorage, intervals);
+    }
+
+    static bool SetRuns(SkRegion& rgn, RunType runs[], int count) {
+        return rgn.setRuns(runs, count);
+    }
+
+    /**
+     *  Finalize a region using pre-computed metadata. This is a high-performance
+     *  bypass that avoids an O(N) walk.
+     */
+    static bool SetRuns(SkRegion& rgn, RunType runs[], int count,
+                        const SkIRect& bounds, int ySpanCount, int intervalCount) {
+        return rgn.setRuns(runs, count, bounds, ySpanCount, intervalCount);
+    }
+
+    /**
+     *  Returns the total number of RunType elements in the region's RLE array.
+     *  Returns 0 for empty regions, and kRectRegionRuns for simple rectangles.
+     */
+    static int GetRunCount(const SkRegion&);
+
+    /**
+     *  Returns the number of unique Y-spans (horizontal strips) in the region.
+     */
+    static int GetYSpanCount(const SkRegion&);
+
+    /**
+     *  Returns the total number of rectangles in the region.
+     */
+    static int GetIntervalCount(const SkRegion&);
+
+    static bool Oper(const SkRegion& a, const SkRegion& b, SkRegion::Op op, SkRegion* res) {
+        return SkRegion::Oper(a, b, op, res);
+    }
+
+    static void Dump(const SkRegion& rgn) {
+        SkDEBUGCODE(rgn.dump();)
+    }
+
 #ifdef SK_DEBUG
     static void Validate(const SkRegion& rgn);
 #endif

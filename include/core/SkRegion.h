@@ -666,6 +666,14 @@ private:
     // (inside ComputeRunBounds).
     bool setRuns(RunType runs[], int count);
 
+    /**
+     *  This is called with pre-computed metadata, allowing it to bypass the O(N)
+     *  validation and bounds-computation walk. This is used by high-performance
+     *  fast-paths like disjoint union.
+     */
+    bool setRuns(RunType runs[], int count, const SkIRect& bounds,
+                 int ySpanCount, int intervalCount);
+
     int count_runtype_values(int* itop, int* ibot) const;
 
     bool isValid() const;

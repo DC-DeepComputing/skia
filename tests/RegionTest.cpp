@@ -24,6 +24,7 @@
 #include <array>
 #include <cstddef>
 #include <cstdint>
+#include <vector>
 
 static void Union(SkRegion* rgn, const SkIRect& rect) {
     rgn->op(rect, SkRegion::kUnion_Op);
@@ -697,3 +698,75 @@ DEF_TEST(SkRegion_ReadFromMemory_SingleEmptySlice_Valid, reporter) {
         iter.next();
     }
 }
+
+DEF_TEST(Region_ExtremeComplexity, reporter) {
+    auto benchmark = [&](int N) {
+        std::vector<SkIRect> rects;
+        rects.reserve(N);
+        for (int i = 0; i < N; ++i) {
+            rects.push_back({0, 2 * i, 100, 2 * i + 1});
+        }
+
+        SkRegion rgn;
+        rgn.setRects(rects.data(), N);
+
+        // Perform a single Union that intersects all strips (O(N) operation).
+        rgn.op({50, -1, 60, 2 * N + 1}, SkRegion::kUnion_Op);
+    };
+
+    const int scales[] = {1000, 10000, 50000};
+    for (int n : scales) {
+        benchmark(n);
+    }
+}
+
+
+DEF_TEST(Region_PathologicalComplexity, reporter) {
+    auto benchmark = [&](int total_rects, int intervals_per_scanline, int iterations) {
+        int num_scanlines = total_rects / intervals_per_scanline;
+        if (num_scanlines < 1) num_scanlines = 1;
+        std::vector<SkIRect> rects;
+        rects.reserve(total_rects);
+
+        for (int y = 0; y < num_scanlines; ++y) {
+            for (int x = 0; x < intervals_per_scanline; ++x) {
+                // Every scanline is unique because of the +y offset
+                rects.push_back({x * 20 + y, y * 2, x * 20 + y + 10, y * 2 + 1});
+            }
+        }
+
+        SkRegion rgn;
+        rgn.setRects(rects.data(), (int)rects.size());
+
+        // Simulate cc::TilingSetCoverageIterator loop
+        for (int i = 0; i < iterations; ++i) {
+            rgn.op({i, 0, i + 5, num_scanlines * 2}, SkRegion::kUnion_Op);
+        }
+    };
+
+    benchmark(250000, 8000, 50);
+}
+
+DEF_TEST(Region_DisjointUnionComplexity, reporter) {
+    auto benchmark = [&](int initial_rects, int append_count) {
+        std::vector<SkIRect> rects;
+        rects.reserve(initial_rects);
+        for (int i = 0; i < initial_rects; ++i) {
+            rects.push_back({0, i * 2, 100, i * 2 + 1});
+        }
+        SkRegion rgn;
+        rgn.setRects(rects.data(), initial_rects);
+
+        for (int i = 0; i < append_count; ++i) {
+            // Append a new rectangle ENTIRELY BELOW the current region
+            int y = (initial_rects + i) * 2;
+            rgn.op({0, y, 100, y + 1}, SkRegion::kUnion_Op);
+        }
+    };
+
+    benchmark(250000, 1000);
+}
+
+
+
+
