@@ -22,6 +22,30 @@
       },
       "revId": "07e7718e922246589a04d35f8a350ad8932ae12a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40fe5194_90d6dcd5",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 649,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-05-13T15:35:09Z",
+      "side": 1,
+      "message": "Since we won\u0027t use the gradient buffer without a combined buffer, we don\u0027t have to worry about creaitng a single UBO bind group for just the gradient buffer entry. With your TODO to split up the buffer bindings for intrinsic constants w/o push constants, that entry will just go away.\n\nSo I think the current signature is acceptable. We should assert that we\u0027re using push constants however.",
+      "parentUuid": "80560704_64a7ba99",
+      "range": {
+        "startLine": 646,
+        "startChar": 0,
+        "endLine": 649,
+        "endChar": 19
+      },
+      "revId": "07e7718e922246589a04d35f8a350ad8932ae12a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

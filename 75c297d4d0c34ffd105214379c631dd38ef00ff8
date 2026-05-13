@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2f09de4_5f5c28c8",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-05-13T15:35:09Z",
+      "side": 1,
+      "message": "Can you add a comment here outlining why `mutable` is needed (since we don\u0027t get a non-const Buffer* from BindBufferInfo).?",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 99
+      },
+      "revId": "75c297d4d0c34ffd105214379c631dd38ef00ff8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e52b6dd_bcfea446",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 656,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-05-13T15:35:09Z",
+      "side": 1,
+      "message": "We still want this to be 0 and use a dynamic offset, this might explain the gold diffs",
+      "range": {
+        "startLine": 656,
+        "startChar": 0,
+        "endLine": 656,
+        "endChar": 54
+      },
+      "revId": "75c297d4d0c34ffd105214379c631dd38ef00ff8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
