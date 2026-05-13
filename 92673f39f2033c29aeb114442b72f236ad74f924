@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e22bf34d_021181fd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-13T15:26:55Z",
+      "side": 1,
+      "message": "PTAL, micro-optimization.",
+      "revId": "92673f39f2033c29aeb114442b72f236ad74f924",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
