@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98e38f52_9e3a291f",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 662,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-13T18:35:38Z",
+      "side": 1,
+      "message": "Still needs to be aligned?",
+      "range": {
+        "startLine": 662,
+        "startChar": 35,
+        "endLine": 662,
+        "endChar": 52
+      },
+      "revId": "340dd1c9fbeca0239815e3d06b89343528ec4b62",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
