@@ -1,0 +1,297 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "965aed53_dbfde263",
+        "filename": "site/docs/dev/gardening/_index.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-13T18:45:19Z",
+      "side": 1,
+      "message": "Are image.png and image-1.png even used ?",
+      "revId": "268cd07164474673bb0ebf9907052406939b115d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f45428f3_71b8cf7d",
+        "filename": "site/docs/dev/gardening/_index.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-13T18:45:19Z",
+      "side": 1,
+      "message": "columns ?",
+      "range": {
+        "startLine": 133,
+        "startChar": 53,
+        "endLine": 133,
+        "endChar": 60
+      },
+      "revId": "268cd07164474673bb0ebf9907052406939b115d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc430805_7409a712",
+        "filename": "site/docs/dev/gardening/_index.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-13T18:45:19Z",
+      "side": 1,
+      "message": "I would remove this sentence. We want to track both so we can see performance wins in addition to losses.",
+      "range": {
+        "startLine": 133,
+        "startChar": 191,
+        "endLine": 133,
+        "endChar": 321
+      },
+      "revId": "268cd07164474673bb0ebf9907052406939b115d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff0e5eb3_d3adc8e8",
+        "filename": "site/docs/dev/gardening/_index.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-13T18:45:19Z",
+      "side": 1,
+      "message": "column ?",
+      "range": {
+        "startLine": 133,
+        "startChar": 77,
+        "endLine": 133,
+        "endChar": 84
+      },
+      "revId": "268cd07164474673bb0ebf9907052406939b115d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd4164d5_afc0816e",
+        "filename": "site/docs/dev/gardening/_index.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-13T18:45:19Z",
+      "side": 1,
+      "message": "I would probably just click the number - 79169 in your example.",
+      "range": {
+        "startLine": 137,
+        "startChar": 292,
+        "endLine": 137,
+        "endChar": 348
+      },
+      "revId": "268cd07164474673bb0ebf9907052406939b115d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "debbeb26_ed8b7957",
+        "filename": "site/docs/dev/gardening/_index.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-13T18:45:19Z",
+      "side": 1,
+      "message": "i.e., ?",
+      "range": {
+        "startLine": 142,
+        "startChar": 611,
+        "endLine": 142,
+        "endChar": 615
+      },
+      "revId": "268cd07164474673bb0ebf9907052406939b115d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23c292a7_a7142c26",
+        "filename": "site/docs/dev/gardening/_index.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-13T18:45:19Z",
+      "side": 1,
+      "message": "is the test ?",
+      "range": {
+        "startLine": 142,
+        "startChar": 475,
+        "endLine": 142,
+        "endChar": 484
+      },
+      "revId": "268cd07164474673bb0ebf9907052406939b115d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d40a4b83_7c9a59f5",
+        "filename": "site/docs/dev/gardening/_index.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-13T18:45:19Z",
+      "side": 1,
+      "message": "e.g. ?",
+      "range": {
+        "startLine": 142,
+        "startChar": 562,
+        "endLine": 142,
+        "endChar": 566
+      },
+      "revId": "268cd07164474673bb0ebf9907052406939b115d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd60d0b6_33c4b02d",
+        "filename": "site/docs/dev/gardening/_index.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-13T18:45:19Z",
+      "side": 1,
+      "message": "Responding to performance regesssions is similar to responding to Gold regressions. ?",
+      "range": {
+        "startLine": 252,
+        "startChar": 0,
+        "endLine": 252,
+        "endChar": 13
+      },
+      "revId": "268cd07164474673bb0ebf9907052406939b115d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e2ed158_d628d776",
+        "filename": "site/docs/dev/gardening/_index.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-13T18:45:19Z",
+      "side": 1,
+      "message": "Be warned that Skia\u0027s performance data can be very noisy so, often, a regression is simply noise or, on Android devices, thermal throttling.\n\n?",
+      "range": {
+        "startLine": 253,
+        "startChar": 0,
+        "endLine": 254,
+        "endChar": 151
+      },
+      "revId": "268cd07164474673bb0ebf9907052406939b115d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87b4a953_654614ba",
+        "filename": "site/docs/dev/gardening/_index.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-13T18:45:19Z",
+      "side": 1,
+      "message": "rarely ?",
+      "range": {
+        "startLine": 256,
+        "startChar": 73,
+        "endLine": 256,
+        "endChar": 76
+      },
+      "revId": "268cd07164474673bb0ebf9907052406939b115d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d0f1183_f2706409",
+        "filename": "site/docs/dev/gardening/_index.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-13T18:45:19Z",
+      "side": 1,
+      "message": "the current GPU Gardener",
+      "range": {
+        "startLine": 259,
+        "startChar": 22,
+        "endLine": 259,
+        "endChar": 31
+      },
+      "revId": "268cd07164474673bb0ebf9907052406939b115d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c29a0d4c_5a137eb7",
+        "filename": "site/docs/dev/gardening/_index.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-13T18:45:19Z",
+      "side": 1,
+      "message": "Remove ? Moved earlier.",
+      "range": {
+        "startLine": 266,
+        "startChar": 106,
+        "endLine": 266,
+        "endChar": 282
+      },
+      "revId": "268cd07164474673bb0ebf9907052406939b115d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
