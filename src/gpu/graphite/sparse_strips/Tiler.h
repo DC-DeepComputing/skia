@@ -5,8 +5,8 @@
  * found in the LICENSE file.
  */
 
-#ifndef skgpu_graphite_Tiler_DEFINED
-#define skgpu_graphite_Tiler_DEFINED
+#ifndef skgpu_graphite_sparse_strips_Tiler_DEFINED
+#define skgpu_graphite_sparse_strips_Tiler_DEFINED
 
 #include "include/private/base/SkAssert.h"
 #include "include/private/base/SkTDArray.h"
@@ -102,6 +102,12 @@ struct Tile {
     }
     uint32_t intersectionMask() const {
         return fPackedLineIdxIntersectionMask & IntersectionBits::INTERSECTION_MASK;
+    }
+    bool coarseWinding() const {
+        return (fPackedLineIdxIntersectionMask & IntersectionBits::W) != 0;
+    }
+    bool left() const {
+        return (fPackedLineIdxIntersectionMask & IntersectionBits::L) != 0;
     }
 };
 
@@ -503,4 +509,4 @@ private:
 
 }  // namespace skgpu::graphite
 
-#endif  // skgpu_graphite_Tiler_DEFINED
+#endif  // skgpu_graphite_sparse_strips_Tiler_DEFINED
