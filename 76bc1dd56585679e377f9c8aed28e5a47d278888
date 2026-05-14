@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "80c34b9a_62cdd1f2",
+        "filename": "src/pdf/SkPDFUtils.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-05-14T19:14:44Z",
+      "side": 1,
+      "message": "Technically this is also no longer needed, but we\u0027ll need buffering when reimplementing this shortly, so might as well keep it.",
+      "range": {
+        "startLine": 159,
+        "startChar": 27,
+        "endLine": 159,
+        "endChar": 41
+      },
+      "revId": "76bc1dd56585679e377f9c8aed28e5a47d278888",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
