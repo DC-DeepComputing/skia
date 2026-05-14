@@ -242,6 +242,61 @@ Resource* ResourceCache::findAndRefResource(const GraphiteResourceKey& key,
     return resource;
 }
 
+Resource* ResourceCache::findAndRefResourceWithScratchUsage(const GraphiteResourceKey& key,
+                                                            SkEnumBitMask<ScratchUsageFlags> usage,
+                                                            const ScratchResourceSet* unavailable) {
+    ASSERT_SINGLE_OWNER
+    if (!SkToBool(unavailable)) {
+        // SKGPU_LOG_E? Or SkASSERT?
+        return nullptr;
+    }
+
+    SkASSERT(key.isValid());
+
+    // Any found resources must also be Shareable::kScratch, and cannot be contained within the
+    // list of unavailable scratch resources.
+    auto shareablePredicate = [shareable, unavailable](Resource* r) {
+        return r->shareable() == Shareable::kScratch && !unavailable->contains(r);
+    };
+
+    Resource* resource = fResourceMap.find(key, shareablePredicate);
+    if (!resource) {
+        // The main reason to call processReturnedResources in this call is to see if there are any
+        // resources that we could match with the key. However, there is overhead into calling it.
+        // So we only call it if we first failed to find a matching resource.
+        if (this->processReturnedResources()) {
+            resource = fResourceMap.find(key, shareablePredicate);
+        }
+    }
+    if (resource) {
+        SkASSERT(resource->budgeted() == Budgeted::kYes);
+        SkASSERT(resource->key() == key);
+
+        // TODO(b/387505250): Update scratch usage here?
+        // resource->setLabel(label);
+        // resource->synchronizeBackendLabel();
+
+        // TODO(nikipre): Is this necessary?
+        // resource->setShareable(Shareable::kScratch);
+        this->refAndMakeResourceMRU(resource);
+        this->validate();
+    }
+
+    // processReturnedResources may have added resources back into our budget if they were being
+    // using in an SkImage or SkSurface previously. However, instead of calling purgeAsNeeded in
+    // processReturnedResources, we delay calling it until now so we don't end up purging a resource
+    // we're looking for in this function.
+    //
+    // We could avoid calling this if we didn't return any resources from processReturnedResources.
+    // However, when not overbudget purgeAsNeeded is very cheap. When overbudget there may be some
+    // really niche usage patterns that could cause us to never actually return resources to the
+    // cache, but still be overbudget due to shared resources. So to be safe we just always call it
+    // here.
+    this->purgeAsNeeded();
+
+    return resource;
+}
+
 void ResourceCache::refAndMakeResourceMRU(Resource* resource) {
     SkASSERT(resource);
     SkASSERT(this->isInCache(resource));

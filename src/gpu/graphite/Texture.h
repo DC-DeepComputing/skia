@@ -24,6 +24,7 @@ enum class Budgeted : bool;
 namespace skgpu::graphite {
 
 class UploadSource;
+enum class ScratchUsageFlags : uint32_t;
 
 class Texture : public Resource {
 public:
@@ -55,6 +56,7 @@ protected:
             sk_sp<MutableTextureState>,
             Ownership,
             std::string_view label);
+    // usage instantiation equivalent?
 
     MutableTextureState* mutableState() const;
 
@@ -68,6 +70,11 @@ private:
     TextureInfo fInfo;
     sk_sp<MutableTextureState> fMutableState;
     sk_sp<RefCntedCallback> fReleaseCallback;
+
+    // For scratch textures, keep track of their intended usages as a bitmask. Whenever a scratch
+    // texture is instantiated from a proxy, that proxy's intended usage will be OR'd with any of
+    // the existing texture's usages.
+    SkEnumBitMask<ScratchUsageFlags> fScratchUsage;
 };
 
 } // namespace skgpu::graphite
