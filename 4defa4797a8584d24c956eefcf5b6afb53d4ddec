@@ -69,6 +69,24 @@
       "parentUuid": "c6ac6a97_0d185339",
       "revId": "4defa4797a8584d24c956eefcf5b6afb53d4ddec",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b95f0ba_dadb52fe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-05-14T14:54:49Z",
+      "side": 1,
+      "message": "Kaylee, can you take a closer look? You also brought back some AVX512 recently so if our support and testing is actually coming back around, I will retract my opposition.",
+      "parentUuid": "56e74448_227b80ff",
+      "revId": "4defa4797a8584d24c956eefcf5b6afb53d4ddec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
