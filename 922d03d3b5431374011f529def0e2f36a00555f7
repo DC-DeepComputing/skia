@@ -16,6 +16,24 @@
       "message": "nit: please add a comment explaining why we initialize explicitly",
       "revId": "922d03d3b5431374011f529def0e2f36a00555f7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df6a0ecd_0f44a0ee",
+        "filename": "src/codec/SkRawCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 627,
+      "author": {
+        "id": 4485838
+      },
+      "writtenOn": "2026-05-14T18:30:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ca4839df_bd92c1af",
+      "revId": "922d03d3b5431374011f529def0e2f36a00555f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
