@@ -116,6 +116,60 @@ private:
     using INHERITED = Benchmark;
 };
 
+class RegionSetRectsBench : public Benchmark {
+public:
+    SkString fName;
+    SkIRect* fRects;
+    int      fCount;
+
+    RegionSetRectsBench(int count, bool sorted) : fCount(count) {
+        fName.printf("region_setRects_%d%s", count, sorted ? "_sorted" : "");
+        fRects = new SkIRect[count];
+
+        if (sorted) {
+            // A grid of non-overlapping rectangles, naturally ordered by Y then X.
+            int side = 1;
+            while (side * side < count) side++;
+            for (int i = 0; i < count; i++) {
+                int x = i % side;
+                int y = i / side;
+                fRects[i] = SkIRect::MakeXYWH(x * 20, y * 20, 10, 10);
+            }
+        } else {
+            // Random rectangles, likely overlapping and in arbitrary order.
+            SkRandom rand;
+            for (int i = 0; i < count; i++) {
+                int x = rand.nextU() % 1024;
+                int y = rand.nextU() % 768;
+                int w = rand.nextU() % 1024;
+                int h = rand.nextU() % 768;
+                fRects[i] = SkIRect::MakeXYWH(x, y, w >> 1, h >> 1);
+            }
+        }
+    }
+
+    ~RegionSetRectsBench() override {
+        delete[] fRects;
+    }
+
+    bool isSuitableFor(Backend backend) override {
+        return backend == Backend::kNonRendering;
+    }
+
+protected:
+    const char* onGetName() override { return fName.c_str(); }
+
+    void onDraw(int loops, SkCanvas* canvas) override {
+        for (int i = 0; i < loops; ++i) {
+            SkRegion rgn;
+            rgn.setRects(fRects, fCount);
+        }
+    }
+
+private:
+    using INHERITED = Benchmark;
+};
+
 ///////////////////////////////////////////////////////////////////////////////
 
 #define SMALL   16
@@ -129,3 +183,12 @@ DEF_BENCH(return new RegionBench(SMALL, containsrect_proc, "containsrect");)
 DEF_BENCH(return new RegionBench(SMALL, sectsrgn_proc, "intersectsrgn");)
 DEF_BENCH(return new RegionBench(SMALL, sectsrect_proc, "intersectsrect");)
 DEF_BENCH(return new RegionBench(SMALL, containsxy_proc, "containsxy");)
+
+DEF_BENCH(return new RegionSetRectsBench(50, false);)
+DEF_BENCH(return new RegionSetRectsBench(500, false);)
+DEF_BENCH(return new RegionSetRectsBench(2500, false);)
+DEF_BENCH(return new RegionSetRectsBench(10000, false);)
+DEF_BENCH(return new RegionSetRectsBench(50, true);)
+DEF_BENCH(return new RegionSetRectsBench(500, true);)
+DEF_BENCH(return new RegionSetRectsBench(2500, true);)
+DEF_BENCH(return new RegionSetRectsBench(10000, true);)
