@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d781326_9af78ee8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3916209
+      },
+      "writtenOn": "2026-05-14T21:58:32Z",
+      "side": 1,
+      "message": "@jlavrova@google.com, @drott@google.com The vote got reset during rebasing. \nPlease review again. PS9(latest) is same as PS6(final reviewed PS).\n\nThanks.",
+      "revId": "45dfc62b3c74b461270701e689568ad74bd7ea35",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
