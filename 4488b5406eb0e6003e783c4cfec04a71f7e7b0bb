@@ -267,6 +267,24 @@
       "message": "Got to here",
       "revId": "4488b5406eb0e6003e783c4cfec04a71f7e7b0bb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a3b63ce_8250c557",
+        "filename": "tests/graphite/sparse_strips/ClipTest.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-14T14:40:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f1647c71_7c45efcb",
+      "revId": "4488b5406eb0e6003e783c4cfec04a71f7e7b0bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

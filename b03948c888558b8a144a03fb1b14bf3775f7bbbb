@@ -16,6 +16,161 @@
       "message": "PTAL",
       "revId": "b03948c888558b8a144a03fb1b14bf3775f7bbbb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da8285f3_6a6f61c5",
+        "filename": "src/gpu/graphite/sparse_strips/Strip.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-14T14:40:29Z",
+      "side": 1,
+      "message": "rm ?",
+      "range": {
+        "startLine": 43,
+        "startChar": 78,
+        "endLine": 43,
+        "endChar": 82
+      },
+      "revId": "b03948c888558b8a144a03fb1b14bf3775f7bbbb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c3b540f_40bd8acb",
+        "filename": "src/gpu/graphite/sparse_strips/Strip.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-14T14:40:29Z",
+      "side": 1,
+      "message": "It seems unlikely that this would be inlined",
+      "revId": "b03948c888558b8a144a03fb1b14bf3775f7bbbb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07803e3c_2b466bf7",
+        "filename": "src/gpu/graphite/sparse_strips/Strip.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-14T14:40:29Z",
+      "side": 1,
+      "message": "This should probably go up a line",
+      "range": {
+        "startLine": 56,
+        "startChar": 0,
+        "endLine": 56,
+        "endChar": 7
+      },
+      "revId": "b03948c888558b8a144a03fb1b14bf3775f7bbbb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8da5b16c_710cdc84",
+        "filename": "tests/graphite/sparse_strips/ClipTest.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-14T14:40:29Z",
+      "side": 1,
+      "message": "Is this out of date ? wdym ?",
+      "range": {
+        "startLine": 79,
+        "startChar": 0,
+        "endLine": 79,
+        "endChar": 87
+      },
+      "revId": "b03948c888558b8a144a03fb1b14bf3775f7bbbb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc695388_27145d56",
+        "filename": "tests/graphite/sparse_strips/ClipTest.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-14T14:40:29Z",
+      "side": 1,
+      "message": "Is there a better name ? optionalExpectedClip ?",
+      "range": {
+        "startLine": 108,
+        "startChar": 13,
+        "endLine": 108,
+        "endChar": 18
+      },
+      "revId": "b03948c888558b8a144a03fb1b14bf3775f7bbbb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e22dd91_542aabad",
+        "filename": "tests/graphite/sparse_strips/ClipTest.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-14T14:40:29Z",
+      "side": 1,
+      "message": "fallbackExpectedClip ?",
+      "range": {
+        "startLine": 123,
+        "startChar": 31,
+        "endLine": 123,
+        "endChar": 42
+      },
+      "revId": "b03948c888558b8a144a03fb1b14bf3775f7bbbb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4473ecf_5683b5ca",
+        "filename": "tests/graphite/sparse_strips/ClipTest.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-14T14:40:29Z",
+      "side": 1,
+      "message": "Should probably go with LB since they\u0027re both proper names",
+      "range": {
+        "startLine": 137,
+        "startChar": 17,
+        "endLine": 137,
+        "endChar": 26
+      },
+      "revId": "b03948c888558b8a144a03fb1b14bf3775f7bbbb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
