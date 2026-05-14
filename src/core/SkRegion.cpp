@@ -65,7 +65,17 @@ constexpr int kRunArrayStackCount = 256;
 // Measurement:  for the `region_union_16` benchmark, this is 6% faster.
 class RunArray {
 public:
-    RunArray() { fPtr = fStack; }
+    RunArray() : fCount(kRunArrayStackCount), fPtr(fStack) {}
+    RunArray(int initialCount) {
+        if (initialCount > kRunArrayStackCount) {
+            fMalloc.reset(initialCount);
+            fPtr = fMalloc.get();
+            fCount = initialCount;
+        } else {
+            fCount = kRunArrayStackCount;
+            fPtr = fStack;
+        }
+    }
     #ifdef SK_DEBUG
     int count() const { return fCount; }
     #endif
@@ -678,14 +688,17 @@ void SkRegion::translate(int dx, int dy, SkRegion* dst) const {
 
 bool SkRegion::setRects(const SkIRect rects[], int count) {
     if (0 == count) {
-        this->setEmpty();
-    } else {
-        this->setRect(rects[0]);
-        for (int i = 1; i < count; i++) {
-            this->op(rects[i], kUnion_Op);
-        }
+        return this->setEmpty();
     }
-    return !this->isEmpty();
+    if (1 == count) {
+        return this->setRect(rects[0]);
+    }
+    // The depth here is O(log_2(count)) so we shouldn't run out of stackframes.
+    int mid = count / 2;
+    SkRegion left, right;
+    left.setRects(rects, mid);
+    right.setRects(rects + mid, count - mid);
+    return this->op(left, right, kUnion_Op);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -796,9 +809,9 @@ struct spanRec {
 };
 
 static int distance_to_sentinel(const SkRegionPriv::RunType* runs) {
-    const SkRegionPriv::RunType* ptr = runs;
-    while (*ptr != SkRegion_kRunTypeSentinel) { ptr += 2; }
-    return ptr - runs;
+    int intervals = runs[-1];
+    SkASSERT_RELEASE(runs[intervals * 2] == SkRegion_kRunTypeSentinel);
+    return intervals * 2;
 }
 
 static int operate_on_span(const SkRegionPriv::RunType a_runs[],
@@ -1147,7 +1160,17 @@ bool SkRegion::Oper(const SkRegion& rgnaOrig, const SkRegion& rgnbOrig, Op op,
     const RunType* a_runs = rgna->getRuns(tmpA, &a_intervals);
     const RunType* b_runs = rgnb->getRuns(tmpB, &b_intervals);
 
-    RunArray array;
+    auto get_run_count = [](const SkRegion* rgn) {
+        if (rgn->isEmpty()) {
+            return 1;
+        }
+        if (rgn->isRect()) {
+            return (int)kRectRegionRuns;
+        }
+        return rgn->fRunHead->fRunCount;
+    };
+
+    RunArray array(get_run_count(rgna) + get_run_count(rgnb));
     int count = operate(a_runs, b_runs, &array, op, nullptr == result);
     SkASSERT(count <= array.count());
 
