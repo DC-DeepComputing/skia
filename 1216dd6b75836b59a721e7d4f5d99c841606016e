@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b054138b_de998eae",
+        "filename": "tests/graphite/sparse_strips/TileTestCases.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-14T12:01:09Z",
+      "side": 1,
+      "message": "Can we forward declare Line and Tile ? It might require moving the ctor to the .cpp file.",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 49
+      },
+      "revId": "1216dd6b75836b59a721e7d4f5d99c841606016e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3161c0c_05ecbefe",
+        "filename": "tests/graphite/sparse_strips/TileTestCases.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-14T12:01:09Z",
+      "side": 1,
+      "message": "name ?",
+      "range": {
+        "startLine": 22,
+        "startChar": 33,
+        "endLine": 22,
+        "endChar": 34
+      },
+      "revId": "1216dd6b75836b59a721e7d4f5d99c841606016e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f02c6ff_f1a8d424",
+        "filename": "tests/graphite/sparse_strips/TileTestCases.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-14T12:01:09Z",
+      "side": 1,
+      "message": "Add a \u0027 \u0027 ?",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 32
+      },
+      "revId": "1216dd6b75836b59a721e7d4f5d99c841606016e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
