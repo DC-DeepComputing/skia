@@ -51,6 +51,24 @@
       "parentUuid": "c6ac6a97_0d185339",
       "revId": "4defa4797a8584d24c956eefcf5b6afb53d4ddec",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56e74448_227b80ff",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4730391
+      },
+      "writtenOn": "2026-05-14T14:41:26Z",
+      "side": 1,
+      "message": "AVX512 is well supported on all AMD CPUs for the last few years and this change shows notable benefits across the whole product stack from low-end client to workstation (and server level) CPUs. The performance/clcok concerns raised in the response are definitely not applicable to AMD\u0027s CPU portfolio and should not be generalized. The performance benefits of this change can be readily demonstrated on any recent AMD based platform and on competing x86 platforms.",
+      "parentUuid": "c6ac6a97_0d185339",
+      "revId": "4defa4797a8584d24c956eefcf5b6afb53d4ddec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
