@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df141c2b_93507c21",
+        "filename": "bench/RegionBench.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-05-14T17:57:04Z",
+      "side": 1,
+      "message": "nit: Could be `std::unique_ptr\u003cSkIRect[]\u003e`, but I don\u0027t think explicit allocation is worth the hassle.  Simpler to use `std::vector\u003cSkIRect\u003e` instead, then we don\u0027t need to store a count.  Also, private fields.",
+      "revId": "5992d8c29d071adc1f768b4f4f8b4c6f18e90af8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c436a5c9_0beef77d",
+        "filename": "src/core/SkRegion.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 679,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-05-14T17:57:04Z",
+      "side": 1,
+      "message": "Would be nice to spanify this at some point.",
+      "range": {
+        "startLine": 679,
+        "startChar": 24,
+        "endLine": 679,
+        "endChar": 56
+      },
+      "revId": "5992d8c29d071adc1f768b4f4f8b4c6f18e90af8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43d4e3a5_7be1a598",
+        "filename": "src/core/SkRegion.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 690,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-05-14T17:57:04Z",
+      "side": 1,
+      "message": "Neat!\n\nI had a knee jerk reaction to suggest refactoring using a heap-based stack to avoid recursion.  Then I realized the depth is log N, so this should be fine.  Maybe add a comment pointing that out.",
+      "range": {
+        "startLine": 686,
+        "startChar": 0,
+        "endLine": 690,
+        "endChar": 44
+      },
+      "revId": "5992d8c29d071adc1f768b4f4f8b4c6f18e90af8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ba0d9ab_37fc12e5",
+        "filename": "tests/RegionTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 646,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-05-14T17:57:04Z",
+      "side": 1,
+      "message": "nit: `std::span\u003cconst SkIRect\u003e`",
+      "range": {
+        "startLine": 646,
+        "startChar": 23,
+        "endLine": 646,
+        "endChar": 54
+      },
+      "revId": "5992d8c29d071adc1f768b4f4f8b4c6f18e90af8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
