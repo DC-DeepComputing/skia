@@ -21,6 +21,8 @@ vars = {
 
   # Pre-built task drivers from this repo, used for CI.
   'task_drivers_revision': 'git_revision:b5d31abb7bc772a69f800de45783768768437675',
+
+  'checkout_agents_internal': False,
 }
 
 # If you modify this file, you will need to regenerate the Bazel version of this file (bazel/deps.bzl).
@@ -113,5 +115,15 @@ deps = {
   'infra/skia-infra': {
     'url': 'https://skia.googlesource.com/buildbot.git@' + Var('infra_revision'),
     'condition': 'False',
+  },
+
+  'agents/shared': {
+    'url': 'https://chromium.googlesource.com/chromium/agents/@0bad974b43c404aee61bba2127b27b4cc51bb92b',
+    'condition': 'True',
+  },
+
+  'agents/internal': {
+    'url': 'https://chrome-internal.googlesource.com/chrome/agents-internal/@3ff44a5f835785f3edfafed10dd249c2102b4319',
+    'condition': 'checkout_agents_internal',
   },
 }
