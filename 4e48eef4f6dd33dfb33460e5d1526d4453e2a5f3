@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8cff4771_f44e0f19",
+        "filename": "bin/fetch-agents",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-05-14T01:19:13Z",
+      "side": 1,
+      "message": "Why are we using this separate script instead of syncing using gclient itself?  The internal dep could be guarded behind a variable of some kind.",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 18
+      },
+      "revId": "4e48eef4f6dd33dfb33460e5d1526d4453e2a5f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
