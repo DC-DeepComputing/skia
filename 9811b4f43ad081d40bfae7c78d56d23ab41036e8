@@ -1,0 +1,62 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a7270b1_04a63ec6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-05-14T18:01:07Z",
+      "side": 1,
+      "message": "LGTM with nit",
+      "revId": "9811b4f43ad081d40bfae7c78d56d23ab41036e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80572751_28cfee7f",
+        "filename": "DEPS",
+        "patchSetId": 5
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-05-14T18:01:07Z",
+      "side": 1,
+      "message": "Nit: we don\u0027t need a condition here, so it can just be:\n\n```\n  \"agents/shared\": \"https://chromium.googlesource.com/chromium/agents/@695fa86c87e68f1abd80e8a103d2111eace5a0be\",\n```",
+      "range": {
+        "startLine": 120,
+        "startChar": 0,
+        "endLine": 123,
+        "endChar": 4
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "bfab945f_f924e0db",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "DEPS",
+              "range": {
+                "startLine": 120,
+                "startChar": 0,
+                "endLine": 124,
+                "endChar": 0
+              },
+              "replacement": "  \u0027agents/shared\u0027: \"https://chromium.googlesource.com/chromium/agents/@695fa86c87e68f1abd80e8a103d2111eace5a0be\",\n"
+            }
+          ]
+        }
+      ],
+      "revId": "9811b4f43ad081d40bfae7c78d56d23ab41036e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
