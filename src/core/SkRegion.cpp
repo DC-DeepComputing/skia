@@ -678,14 +678,16 @@ void SkRegion::translate(int dx, int dy, SkRegion* dst) const {
 
 bool SkRegion::setRects(const SkIRect rects[], int count) {
     if (0 == count) {
-        this->setEmpty();
-    } else {
-        this->setRect(rects[0]);
-        for (int i = 1; i < count; i++) {
-            this->op(rects[i], kUnion_Op);
-        }
+        return this->setEmpty();
     }
-    return !this->isEmpty();
+    if (1 == count) {
+        return this->setRect(rects[0]);
+    }
+    int mid = count / 2;
+    SkRegion left, right;
+    left.setRects(rects, mid);
+    right.setRects(rects + mid, count - mid);
+    return this->op(left, right, kUnion_Op);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
