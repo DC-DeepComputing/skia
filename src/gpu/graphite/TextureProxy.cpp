@@ -21,6 +21,18 @@ namespace skgpu::graphite {
 
 TextureProxy::TextureProxy(SkISize dimensions,
                            const TextureInfo& info,
+                           ScratchUsageFlags usage,
+                           skgpu::Budgeted budgeted)
+        : fDimensions(dimensions)
+        , fInfo(info)
+        , fScratchUsageMask(usage) // TODO: Start with singular uasge upon creation?
+        , fBudgeted(budgeted)
+        , fVolatile(Volatile::kNo) {
+    SkASSERT(fInfo.isValid());
+}
+
+TextureProxy::TextureProxy(SkISize dimensions,
+                           const TextureInfo& info,
                            std::string_view label,
                            skgpu::Budgeted budgeted)
         : fDimensions(dimensions)
@@ -135,13 +147,24 @@ bool TextureProxy::InstantiateIfNotLazy(ScratchResourceManager* scratchManager,
         return true;
     }
 
-    textureProxy->fTexture = scratchManager->getScratchTexture(textureProxy->dimensions(),
-                                                               textureProxy->textureInfo(),
-                                                               textureProxy->fLabel);
+    bool hasCustomLabel = !textureProxy->fLabel.empty();
+    if (hasCustomLabel) {
+        textureProxy->fTexture = scratchManager->getScratchTexture(
+                textureProxy->dimensions(),
+                textureProxy->textureInfo(),
+                textureProxy->label());
+    } else {
+        textureProxy->fTexture = scratchManager->getScratchTexture(
+                textureProxy->dimensions(),
+                textureProxy->textureInfo(),
+                textureProxy->scratchUsageMask());
+    }
+
     if (!textureProxy->fTexture) {
         return false;
     }
     SkDEBUGCODE(textureProxy->validateTexture(textureProxy->fTexture.get()));
+
     return true;
 }
 

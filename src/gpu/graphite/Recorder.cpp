@@ -254,6 +254,10 @@ std::unique_ptr<Recording> Recorder::snap() {
         fAtlasProvider->invalidateAtlases();
     }
 
+    // Once resources have been prepared, any scratch textures should be instantiated. We can make
+    // the label map immutable from here onwards, relocating it on to the Recording.
+    // recording.getScratchLabelMap(scratchManager);
+
     // Process the return queue at least once to keep it from growing too large, as otherwise
     // it's only processed during an explicit cleanup or a cache miss.
     fResourceProvider->forceProcessReturnedResources();

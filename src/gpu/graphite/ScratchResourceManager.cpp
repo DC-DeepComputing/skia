@@ -50,6 +50,19 @@ sk_sp<Texture> ScratchResourceManager::getScratchTexture(SkISize dimensions,
     return scratchTexture;
 }
 
+sk_sp<Texture> ScratchResourceManager::getScratchTexture(SkISize dimensions,
+                                                         const TextureInfo& info,
+                                                         SkEnumBitMask<ScratchUsageFlags> usage) {
+    sk_sp<Texture> scratchTexture = fResourceProvider->findOrCreateScratchTexture(
+            dimensions, info, usage, fUnavailable);
+    // Store the returned scratch texture into fUnavailable so that it is filtered from the
+    // ResourceCache when going through *this* ScratchResourceManager. But the scratch texture will
+    // remain visible to other Recorders.
+    SkASSERT(!fUnavailable.contains(scratchTexture.get()));
+    fUnavailable.add(scratchTexture.get());
+    return scratchTexture;
+}
+
 void ScratchResourceManager::returnTexture(sk_sp<Texture> texture) {
     // Fails if trying to return a resource that didn't come from getScratchTexture()
     SkASSERT(fUnavailable.contains(texture.get()));

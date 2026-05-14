@@ -72,6 +72,10 @@ public:
                                                    Budgeted);
     sk_sp<Texture> findOrCreateScratchTexture(SkISize,
                                               const TextureInfo&,
+                                              SkEnumBitMask<ScratchUsageFlags> usage,
+                                              const ResourceCache::ScratchResourceSet& unavailable);
+    sk_sp<Texture> findOrCreateScratchTexture(SkISize,
+                                              const TextureInfo&,
                                               std::string_view label,
                                               const ResourceCache::ScratchResourceSet& unavailable);
 
@@ -113,6 +117,8 @@ public:
             StdSteadyClock::time_point purgeTime,
             std::optional<std::chrono::microseconds> microsMaxPurgingDur);
     void forceProcessReturnedResources() { fResourceCache->forceProcessReturnedResources(); }
+    // Should this / these be non-public?
+    void updateCachedScratchLabels() {}; //{ fResourceCache->updateLabels(); }
 
 #if defined(GPU_TEST_UTILS) || defined(SK_DEBUG)
     ResourceCache* resourceCache() { return fResourceCache.get(); }
