@@ -39,6 +39,7 @@
 #include "src/base/SkTLazy.h"
 #include "src/base/SkTSort.h"
 #include "src/base/SkUTF.h"
+#include "src/capture/SkCapture.h"
 #include "src/core/SkAutoPixmapStorage.h"
 #include "src/core/SkColorPriv.h"
 #include "src/core/SkLRUCache.h"
@@ -277,6 +278,8 @@ static DEFINE_string(mskps  , PATH_PREFIX "mskps"  , "Directory to read mskps fr
 static DEFINE_string(lotties, PATH_PREFIX "lotties", "Directory to read (Bodymovin) jsons from.");
 static DEFINE_string(captures, PATH_PREFIX "captures", "Directory to read SkCaptures from.");
 #undef PATH_PREFIX
+
+static DEFINE_string2(writePath, w, "", "Directory to write captures (SKP/SkCapture) to.");
 
 static DEFINE_string(svgs, "", "Directory to read SVGs from, or a single SVG file.");
 
@@ -630,6 +633,7 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
         , fZoomWindowLocation{0.0f, 0.0f}
         , fLastImage(nullptr)
         , fZoomUI(false)
+        , fImGuiScale(1.0f)
         , fBackendType(sk_app::Window::BackendType::kNativeGL)
         , fColorMode(ColorMode::kLegacy)
         , fColorSpacePrimaries(gSrgbPrimaries)
@@ -712,8 +716,9 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
     fWindow->setRequestedDisplayParams(fDisplay->clone());
     fRefresh = FLAGS_redraw;
 
-    fImGuiLayer.setScaleFactor(fWindow->scaleFactor());
-    fStatsLayer.setDisplayScale((fZoomUI ? 2.0f : 1.0f) * fWindow->scaleFactor());
+    fImGuiLayer.setScaleFactor(fImGuiScale * fWindow->scaleFactor());
+    fStatsLayer.setDisplayScale(fImGuiScale * fWindow->scaleFactor());
+    fCommands.setHelpFontSize(16.0f * fImGuiScale);
 
     // Configure timers
     fStatsLayer.setActive(FLAGS_stats);
@@ -997,9 +1002,23 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
     fCommands.addCommand('a', "Transform", "Toggle Animation", [this]() {
         fAnimTimer.togglePauseResume();
     });
-    fCommands.addCommand('u', "GUI", "Zoom Stats UI", [this]() {
+    fCommands.addCommand('u', "GUI", "Toggle Stats Zoom", [this]() {
         fZoomUI = !fZoomUI;
-        fStatsLayer.setDisplayScale((fZoomUI ? 2.0f : 1.0f) * fWindow->scaleFactor());
+        fStatsLayer.setDisplayScale((fZoomUI ? 2.0f : 1.0f) * fImGuiScale * fWindow->scaleFactor());
+        fWindow->inval();
+    });
+    fCommands.addCommand('f', "GUI", "Decrease UI scale", [this]() {
+        fImGuiScale = std::max(0.1f, fImGuiScale - 0.1f);
+        fImGuiLayer.setScaleFactor(fImGuiScale * fWindow->scaleFactor());
+        fStatsLayer.setDisplayScale((fZoomUI ? 2.0f : 1.0f) * fImGuiScale * fWindow->scaleFactor());
+        fCommands.setHelpFontSize(16.0f * fImGuiScale);
+        fWindow->inval();
+    });
+    fCommands.addCommand('F', "GUI", "Increase UI scale", [this]() {
+        fImGuiScale += 0.1f;
+        fImGuiLayer.setScaleFactor(fImGuiScale * fWindow->scaleFactor());
+        fStatsLayer.setDisplayScale((fZoomUI ? 2.0f : 1.0f) * fImGuiScale * fWindow->scaleFactor());
+        fCommands.setHelpFontSize(16.0f * fImGuiScale);
         fWindow->inval();
     });
     fCommands.addCommand('=', "Transform", "Apply Backing Scale", [this]() {
@@ -1912,6 +1931,8 @@ static SkSerialProcs serial_procs_using_png() {
     return sProcs;
 }
 
+////////////////////////////////////////////////////////
+
 void Viewer::drawSlide(SkSurface* surface) {
     if (fCurrentSlide < 0) {
         return;
@@ -1932,14 +1953,49 @@ void Viewer::drawSlide(SkSurface* surface) {
         colorSpace = SkColorSpace::MakeRGB(fColorSpaceTransferFn, toXYZ);
     }
 
+    //. TODO ok this looks really simple, like we draw onto the skpicturealredy and now we just have
+    // to use our skcapture logic to convert this SKP into a seriazed capture? maybe? we'll see
     if (fSaveToSKP) {
         SkPictureRecorder recorder;
         SkCanvas* recorderCanvas = recorder.beginRecording(SkRect::Make(this->currentSlideSize()));
         fSlides[fCurrentSlide]->draw(recorderCanvas);
         sk_sp<SkPicture> picture(recorder.finishRecordingAsPicture());
-        SkFILEWStream stream("sample_app.skp");
-        SkSerialProcs sProcs = serial_procs_using_png();
-        picture->serialize(&stream, &sProcs);
+
+        SkString captPath("sample_app.capt");
+        SkString skpPath("sample_app.skp");
+        if (!FLAGS_writePath.isEmpty()) {
+            captPath = SkOSPath::Join(FLAGS_writePath[0], "sample_app.capt");
+            skpPath = SkOSPath::Join(FLAGS_writePath[0], "sample_app.skp");
+            if (!sk_mkdir(FLAGS_writePath[0])) {
+                SkDebugf("Failed to create directory %s\n", FLAGS_writePath[0]);
+            }
+        }
+
+        // Save as SkCapture (.capt)
+        {
+            skia_private::TArray<sk_sp<SkPicture>> pictures;
+            pictures.push_back(picture);
+            sk_sp<SkCapture> capt = SkCapture::MakeFromPictures(std::move(pictures));
+            SkSerialProcs sProcs = serial_procs_using_png();
+            sk_sp<SkData> data = capt->serializeCapture(&sProcs);
+            SkFILEWStream captStream(captPath.c_str());
+            if (captStream.isValid()) {
+                captStream.write(data->data(), data->size());
+            } else {
+                SkDebugf("Failed to write to %s\n", captPath.c_str());
+            }
+        }
+
+        // Save as standard SKP (.skp)
+        {
+            SkFILEWStream skpStream(skpPath.c_str());
+            if (skpStream.isValid()) {
+                SkSerialProcs sProcs = serial_procs_using_png();
+                picture->serialize(&skpStream, &sProcs);
+            } else {
+                SkDebugf("Failed to write to %s\n", skpPath.c_str());
+            }
+        }
         fSaveToSKP = false;
     }
 
@@ -2097,6 +2153,9 @@ void Viewer::drawSlide(SkSurface* surface) {
     this->updateGestureTransLimit();
 }
 
+
+////////////////////////////////////////////////////////
+
 void Viewer::onBackendCreated() {
     this->setupCurrentSlide();
     fWindow->show();
@@ -2135,8 +2194,9 @@ void Viewer::resizeCurrentSlide(int width, int height) {
 
 void Viewer::onResize(int width, int height) {
     this->resizeCurrentSlide(width, height);
-    fImGuiLayer.setScaleFactor(fWindow->scaleFactor());
-    fStatsLayer.setDisplayScale((fZoomUI ? 2.0f : 1.0f) * fWindow->scaleFactor());
+    fImGuiLayer.setScaleFactor(fImGuiScale * fWindow->scaleFactor());
+    fStatsLayer.setDisplayScale((fZoomUI ? 2.0f : 1.0f) * fImGuiScale * fWindow->scaleFactor());
+    fCommands.setHelpFontSize(16.0f * fImGuiScale);
 }
 
 SkPoint Viewer::mapEvent(float x, float y) {
