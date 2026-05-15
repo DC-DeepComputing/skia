@@ -1,0 +1,277 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d076d695_90eead51",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-15T19:48:45Z",
+      "side": 1,
+      "message": "LGTM",
+      "revId": "b6e7d598651e00f68566685c20f15db296adff58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "449d179f_b2f28cc8",
+        "filename": "site/docs/dev/gardening/_index.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-15T19:48:45Z",
+      "side": 1,
+      "message": "Instead of writing: There will be a lot of information . . .\n\nCan we instead do something like:\n\"Clicking a ? opens a window that displays the statistical analysis of the performance change, and tools for investigating the change further:\n- **Gauge the noise**: Use the provided Least Squares Error and step size to determine if the change is a true regression or just statistical noise.\n\n- **Investigate the CL**: Click the linked CL ID (e.g., 79169) to review the exact commit and see if it\u0027s the root cause or, in the case of a roll, to dig into the upstream changes.\n\"",
+      "range": {
+        "startLine": 133,
+        "startChar": 0,
+        "endLine": 133,
+        "endChar": 602
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "dbccadb1_13d61504",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "site/docs/dev/gardening/_index.md",
+              "range": {
+                "startLine": 133,
+                "startChar": 0,
+                "endLine": 134,
+                "endChar": 0
+              },
+              "replacement": "4. Clicking a ? opens a window that displays the statistical analysis of the performance change, and tools for investigating the change further:\n    - **Gauge the noise**: Use the provided Least Squares Error and step size to determine if the change is a true regression or just statistical noise.\n\n    - **Investigate the CL**: Click the linked CL ID (e.g., 79169) to review the exact commit and see if it\u0027s the root cause or, in the case of a roll, to dig into the upstream changes.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "b6e7d598651e00f68566685c20f15db296adff58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eff5acd5_584c5f07",
+        "filename": "site/docs/dev/gardening/_index.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-15T19:48:45Z",
+      "side": 1,
+      "message": "Buganizer",
+      "range": {
+        "startLine": 147,
+        "startChar": 213,
+        "endLine": 147,
+        "endChar": 222
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "0d53a9cf_c63ba97d",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "site/docs/dev/gardening/_index.md",
+              "range": {
+                "startLine": 147,
+                "startChar": 0,
+                "endLine": 148,
+                "endChar": 0
+              },
+              "replacement": "6. Once confident that a CL is truly regressing or not, mark the corresponding check ✓ (for \"not an issue\") or x (for \"this is an issue\") and fill out the justification text box. Selecting x will also take you to Buganizer to file a bug for the regression.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "b6e7d598651e00f68566685c20f15db296adff58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "102f6647_90b277f6",
+        "filename": "site/docs/dev/gardening/_index.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-15T19:48:45Z",
+      "side": 1,
+      "message": "Move back above `### What to do if DEPS roll fails to land`",
+      "range": {
+        "startLine": 249,
+        "startChar": 0,
+        "endLine": 249,
+        "endChar": 33
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "2422ee6a_1475aa68",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "site/docs/dev/gardening/_index.md",
+              "range": {
+                "startLine": 249,
+                "startChar": 0,
+                "endLine": 251,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "site/docs/dev/gardening/_index.md",
+              "range": {
+                "startLine": 1,
+                "startChar": 0,
+                "endLine": 1,
+                "endChar": 0
+              },
+              "replacement": "\u003ca name\u003d\"deps_roll_failures\"\u003e\u003c/a\u003e\n\n"
+            }
+          ]
+        }
+      ],
+      "revId": "b6e7d598651e00f68566685c20f15db296adff58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f03bdc1_515e6338",
+        "filename": "site/docs/dev/gardening/_index.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-15T19:48:45Z",
+      "side": 1,
+      "message": "regressions",
+      "range": {
+        "startLine": 253,
+        "startChar": 26,
+        "endLine": 253,
+        "endChar": 37
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "062a4c32_fe67facc",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "site/docs/dev/gardening/_index.md",
+              "range": {
+                "startLine": 253,
+                "startChar": 0,
+                "endLine": 254,
+                "endChar": 0
+              },
+              "replacement": "Responding to performance regressions is similar to responding to Gold regressions. If you see a performance regression from a change, you usually want to notify the person who made the patch.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "b6e7d598651e00f68566685c20f15db296adff58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70990d4d_bf660d7c",
+        "filename": "site/docs/dev/gardening/_index.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 261,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-15T19:48:45Z",
+      "side": 1,
+      "message": "Skia",
+      "range": {
+        "startLine": 261,
+        "startChar": 25,
+        "endLine": 261,
+        "endChar": 29
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "8b6d1439_ef2f60ec",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "site/docs/dev/gardening/_index.md",
+              "range": {
+                "startLine": 261,
+                "startChar": 0,
+                "endLine": 262,
+                "endChar": 0
+              },
+              "replacement": "- If it\u0027s a patch from a Skia team member -\u003e notify them\n"
+            }
+          ]
+        }
+      ],
+      "revId": "b6e7d598651e00f68566685c20f15db296adff58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7af405d8_53712015",
+        "filename": "site/docs/dev/gardening/_index.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-15T19:48:45Z",
+      "side": 1,
+      "message": "Google",
+      "range": {
+        "startLine": 262,
+        "startChar": 30,
+        "endLine": 262,
+        "endChar": 36
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "c462b8e3_16ecb419",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "site/docs/dev/gardening/_index.md",
+              "range": {
+                "startLine": 262,
+                "startChar": 0,
+                "endLine": 263,
+                "endChar": 0
+              },
+              "replacement": "- If it\u0027s a roll from another Google team -\u003e investigate further\n"
+            }
+          ]
+        }
+      ],
+      "revId": "b6e7d598651e00f68566685c20f15db296adff58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
