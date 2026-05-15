@@ -59,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "276f4cde_8032743f",
+        "filename": "site/docs/dev/gardening/_index.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-05-15T20:04:03Z",
+      "side": 1,
+      "message": "sounds good",
+      "parentUuid": "449d179f_b2f28cc8",
+      "range": {
+        "startLine": 133,
+        "startChar": 0,
+        "endLine": 133,
+        "endChar": 602
+      },
+      "revId": "b6e7d598651e00f68566685c20f15db296adff58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eff5acd5_584c5f07",
@@ -96,6 +120,30 @@
           ]
         }
       ],
+      "revId": "b6e7d598651e00f68566685c20f15db296adff58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc41e57a_9bb4df7b",
+        "filename": "site/docs/dev/gardening/_index.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-05-15T20:04:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eff5acd5_584c5f07",
+      "range": {
+        "startLine": 147,
+        "startChar": 213,
+        "endLine": 147,
+        "endChar": 222
+      },
       "revId": "b6e7d598651e00f68566685c20f15db296adff58",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -151,6 +199,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4edb47c_2a08d418",
+        "filename": "site/docs/dev/gardening/_index.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-05-15T20:04:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "102f6647_90b277f6",
+      "range": {
+        "startLine": 249,
+        "startChar": 0,
+        "endLine": 249,
+        "endChar": 33
+      },
+      "revId": "b6e7d598651e00f68566685c20f15db296adff58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d7ee8944_e7e36376",
@@ -164,6 +236,30 @@
       "writtenOn": "2026-05-15T19:50:06Z",
       "side": 1,
       "message": "Move this section to below `#### Basic workflow for triaging Perf issues`",
+      "range": {
+        "startLine": 250,
+        "startChar": 0,
+        "endLine": 251,
+        "endChar": 13
+      },
+      "revId": "b6e7d598651e00f68566685c20f15db296adff58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce8e4ca7_cf524d67",
+        "filename": "site/docs/dev/gardening/_index.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-05-15T20:04:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d7ee8944_e7e36376",
       "range": {
         "startLine": 250,
         "startChar": 0,
@@ -215,6 +311,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "55f15205_a9bcd27e",
+        "filename": "site/docs/dev/gardening/_index.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-05-15T20:04:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9f03bdc1_515e6338",
+      "range": {
+        "startLine": 253,
+        "startChar": 26,
+        "endLine": 253,
+        "endChar": 37
+      },
+      "revId": "b6e7d598651e00f68566685c20f15db296adff58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "70990d4d_bf660d7c",
@@ -256,6 +376,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "48a0ed70_ec244310",
+        "filename": "site/docs/dev/gardening/_index.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 261,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-05-15T20:04:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "70990d4d_bf660d7c",
+      "range": {
+        "startLine": 261,
+        "startChar": 25,
+        "endLine": 261,
+        "endChar": 29
+      },
+      "revId": "b6e7d598651e00f68566685c20f15db296adff58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7af405d8_53712015",
@@ -293,6 +437,30 @@
           ]
         }
       ],
+      "revId": "b6e7d598651e00f68566685c20f15db296adff58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe2d4178_be29c254",
+        "filename": "site/docs/dev/gardening/_index.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-05-15T20:04:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7af405d8_53712015",
+      "range": {
+        "startLine": 262,
+        "startChar": 30,
+        "endLine": 262,
+        "endChar": 36
+      },
       "revId": "b6e7d598651e00f68566685c20f15db296adff58",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
