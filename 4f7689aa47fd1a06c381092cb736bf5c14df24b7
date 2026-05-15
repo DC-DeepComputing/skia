@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dfa3c830_8741ee60",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-05-15T18:50:35Z",
+      "side": 1,
+      "message": "Discussion offline is to allow the MSVC builds to go red on the tree for now until we have a chance to upgrade our toolchain.",
+      "revId": "4f7689aa47fd1a06c381092cb736bf5c14df24b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
