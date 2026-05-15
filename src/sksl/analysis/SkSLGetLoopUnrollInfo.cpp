@@ -35,13 +35,39 @@ class Context;
 // Loops that run for 100000+ iterations will exceed our program size limit.
 static constexpr int kLoopTerminationLimit = 100000;
 
-static int calculate_count(double start, double end, double delta, bool forwards, bool inclusive) {
+static int calculate_count(double start, double end, double delta, bool forwards, bool inclusive,
+                           bool isInt32) {
     if ((forwards && start > end) || (!forwards && start < end)) {
         // The loop starts in a completed state (the start has already advanced past the end).
         return 0;
     }
     if ((delta == 0.0) || forwards != (delta > 0.0)) {
         // The loop does not progress toward a completed state, and will never terminate.
+        return kLoopTerminationLimit;
+    }
+    if (isInt32) {
+        int32_t i = (int32_t)start;
+        int32_t iEnd = (int32_t)end;
+        int32_t iDelta = (int32_t)delta;
+        int count = 0;
+        while (count < kLoopTerminationLimit) {
+            if (forwards) {
+                if (inclusive ? (i > iEnd) : (i >= iEnd)) {
+                    return count;
+                }
+            } else {
+                if (inclusive ? (i < iEnd) : (i <= iEnd)) {
+                    return count;
+                }
+            }
+            count++;
+            int32_t nextI = i + iDelta;
+            // Check for wraparound
+            if (forwards ? (nextI <= i) : (nextI >= i)) {
+                return kLoopTerminationLimit;
+            }
+            i = nextI;
+        }
         return kLoopTerminationLimit;
     }
     double iterations = sk_ieee_double_divide(end - start, delta);
@@ -226,34 +252,63 @@ std::unique_ptr<LoopUnrollInfo> Analysis::GetLoopUnrollInfo(const Context& conte
     // Finally, compute the iteration count, based on the bounds, and the termination operator.
     loopInfo->fCount = 0;
 
+    // Strict ES2 requires loop induction variables to be either 'int' or 'float'. For 'int'
+    // variables, we simulate the loop using 32-bit signed math to correctly detect the integer
+    // wraparound behavior that would occur at runtime on the GPU. (For 'float' variables,
+    // the existing double-precision calculation is sufficient.)
+    bool isInt32 = initDecl.baseType().isSigned() && initDecl.baseType().bitWidth() == 32;
+
     switch (cond->getOperator().kind()) {
         case Operator::Kind::LT:
             loopInfo->fCount = calculate_count(loopInfo->fStart, loopEnd, loopInfo->fDelta,
-                                              /*forwards=*/true, /*inclusive=*/false);
+                                              /*forwards=*/true, /*inclusive=*/false, isInt32);
             break;
 
         case Operator::Kind::GT:
             loopInfo->fCount = calculate_count(loopInfo->fStart, loopEnd, loopInfo->fDelta,
-                                              /*forwards=*/false, /*inclusive=*/false);
+                                              /*forwards=*/false, /*inclusive=*/false, isInt32);
             break;
 
         case Operator::Kind::LTEQ:
             loopInfo->fCount = calculate_count(loopInfo->fStart, loopEnd, loopInfo->fDelta,
-                                              /*forwards=*/true, /*inclusive=*/true);
+                                              /*forwards=*/true, /*inclusive=*/true, isInt32);
             break;
 
         case Operator::Kind::GTEQ:
             loopInfo->fCount = calculate_count(loopInfo->fStart, loopEnd, loopInfo->fDelta,
-                                              /*forwards=*/false, /*inclusive=*/true);
+                                              /*forwards=*/false, /*inclusive=*/true, isInt32);
             break;
 
         case Operator::Kind::NEQ: {
-            float iterations = sk_ieee_double_divide(loopEnd - loopInfo->fStart, loopInfo->fDelta);
-            loopInfo->fCount = std::ceil(iterations);
-            if (loopInfo->fCount < 0 || loopInfo->fCount != iterations ||
-                !std::isfinite(iterations)) {
-                // The loop doesn't reach the exact endpoint and so will never terminate.
-                loopInfo->fCount = kLoopTerminationLimit;
+            if (isInt32) {
+                int32_t i = (int32_t)loopInfo->fStart;
+                int32_t iEnd = (int32_t)loopEnd;
+                int32_t iDelta = (int32_t)loopInfo->fDelta;
+                int count = 0;
+                while (count < kLoopTerminationLimit) {
+                    if (i == iEnd) {
+                        loopInfo->fCount = count;
+                        break;
+                    }
+                    count++;
+                    int32_t nextI = i + iDelta;
+                    if ((iDelta > 0 && nextI <= i) || (iDelta < 0 && nextI >= i) || iDelta == 0) {
+                        loopInfo->fCount = kLoopTerminationLimit;
+                        break;
+                    }
+                    i = nextI;
+                }
+                if (count >= kLoopTerminationLimit) {
+                    loopInfo->fCount = kLoopTerminationLimit;
+                }
+            } else {
+                float iterations = sk_ieee_double_divide(loopEnd - loopInfo->fStart, loopInfo->fDelta);
+                loopInfo->fCount = std::ceil(iterations);
+                if (loopInfo->fCount < 0 || loopInfo->fCount != iterations ||
+                    !std::isfinite(iterations)) {
+                    // The loop doesn't reach the exact endpoint and so will never terminate.
+                    loopInfo->fCount = kLoopTerminationLimit;
+                }
             }
             if (loopInfo->fIndex->type().componentType().isFloat()) {
                 // Rewrite `x != n` tests as `x < n` or `x > n` depending on the loop direction.

@@ -164,11 +164,18 @@ static void test_expect_fail(skiatest::Reporter* r, const char* testFile, SkSL::
 static void iterate_dir(const char* directory,
                         const char* extension,
                         const std::function<void(const char*)>& run) {
+    // To run a single test file, for easier debugging, set kOnlyRunThisFile to the desired
+    // filename (e.g. "ForLoopOverflow.rts")
+    static constexpr char kOnlyRunThisFile[] = "";
+
     SkString resourceDirectory = GetResourcePath(directory);
     SkOSFile::Iter iter(resourceDirectory.c_str(), extension);
     SkString name;
 
     while (iter.next(&name, /*getDir=*/false)) {
+        if (kOnlyRunThisFile[0] != '\0' && !name.equals(kOnlyRunThisFile)) {
+            continue;
+        }
         SkString path(SkOSPath::Join(directory, name.c_str()));
         run(path.c_str());
     }
