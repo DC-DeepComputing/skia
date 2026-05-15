@@ -155,6 +155,10 @@ protected:
         SkRect srcR = { 0.5f, 0.5f, 2.5f, 2.5f };
         SkRect dstR = { 100, 100, 300, 200 };
 
+
+        // TODO figure out why this isn't wo0rking
+        // its prolly cuz of like the texture image and it not having a contentid
+
         canvas->drawImageRect(ToolUtils::MakeTextureImage(canvas, bitmap.asImage()),
                               srcR, dstR, SkSamplingOptions(),
                               nullptr, SkCanvas::kStrict_SrcRectConstraint);

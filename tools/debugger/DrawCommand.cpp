@@ -648,8 +648,14 @@ bool DrawCommand::flatten(const SkImage&  image,
     }
 
     if (image.isLazyGenerated()) {
+        uint32_t contentID = as_IB(&image)->getContentID();
         writer.beginObject(DEBUGCANVAS_ATTRIBUTE_CONTENTID);
-        writer.appendU32(DEBUGCANVAS_ATTRIBUTE_CONTENTID, as_IB(&image)->getContentID());
+        if (contentID) {
+            writer.appendU32(DEBUGCANVAS_ATTRIBUTE_CONTENTID, contentID);
+        } else {
+            writer.appendCString(DEBUGCANVAS_ATTRIBUTE_CONTENTID,
+                                 "not applicable, image created within canvas");
+        }
         writer.endObject();
         return true;
     }
