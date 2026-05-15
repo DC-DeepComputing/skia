@@ -1,0 +1,273 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84aff5dc_710ac556",
+        "filename": "site/docs/dev/gardening/_index.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-15T16:51:45Z",
+      "side": 1,
+      "message": "Move to different CL? Maybe make an autoroller guide?",
+      "range": {
+        "startLine": 108,
+        "startChar": 0,
+        "endLine": 108,
+        "endChar": 248
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "f6e82e9b_717b3834",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "site/docs/dev/gardening/_index.md",
+              "range": {
+                "startLine": 108,
+                "startChar": 0,
+                "endLine": 111,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "c0a12b74d8854d70716a9aff75941896be83f407",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14629345_3e0236d7",
+        "filename": "site/docs/dev/gardening/_index.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-15T16:51:45Z",
+      "side": 1,
+      "message": "\"Click on the regressions link on the Skia Status page to navigate to Perf\u0027s regressions page.\"",
+      "range": {
+        "startLine": 124,
+        "startChar": 3,
+        "endLine": 124,
+        "endChar": 60
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "6af45e1e_e0d5fdf1",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "site/docs/dev/gardening/_index.md",
+              "range": {
+                "startLine": 124,
+                "startChar": 0,
+                "endLine": 125,
+                "endChar": 0
+              },
+              "replacement": "1. Click on the regressions link on the Skia Status page to navigate to Perf\u0027s regressions page.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "c0a12b74d8854d70716a9aff75941896be83f407",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b56c319e_3579e557",
+        "filename": "site/docs/dev/gardening/_index.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-15T16:51:45Z",
+      "side": 1,
+      "message": "\"The regressions page lists all currently untriaged regressing CLs. In this example, there is only one, an autoroll.\"",
+      "range": {
+        "startLine": 127,
+        "startChar": 0,
+        "endLine": 128,
+        "endChar": 120
+      },
+      "revId": "c0a12b74d8854d70716a9aff75941896be83f407",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3dc7490_ca640ee8",
+        "filename": "site/docs/dev/gardening/_index.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-15T16:51:45Z",
+      "side": 1,
+      "message": "\"The columns to the right of each CL record its performance impact. A ∅ indicates no change, while a ? in the high or low column indicates a potential improvement or regression.\"",
+      "range": {
+        "startLine": 133,
+        "startChar": 2,
+        "endLine": 133,
+        "endChar": 188
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "897f090a_945560f8",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "site/docs/dev/gardening/_index.md",
+              "range": {
+                "startLine": 133,
+                "startChar": 0,
+                "endLine": 134,
+                "endChar": 0
+              },
+              "replacement": "3. The columns to the right of each CL record its performance impact. A ∅ indicates no change, while a ? in the high or low column indicates a potential improvement or regression.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "c0a12b74d8854d70716a9aff75941896be83f407",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15bdfdc3_8c638072",
+        "filename": "site/docs/dev/gardening/_index.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-15T16:51:45Z",
+      "side": 1,
+      "message": "\"Clicking a ? opens a window that displays the statistical analysis of the performance change, and tools for investigating the change further.\"",
+      "range": {
+        "startLine": 137,
+        "startChar": 0,
+        "endLine": 137,
+        "endChar": 559
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "abb1e8c4_b2394697",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "site/docs/dev/gardening/_index.md",
+              "range": {
+                "startLine": 137,
+                "startChar": 0,
+                "endLine": 138,
+                "endChar": 0
+              },
+              "replacement": "4. Clicking a ? opens a window that displays the statistical analysis of the performance change, and tools for investigating the change further. There will be a lot of information in this window, such as the Least Squares Error (to show the confidence in whether this is not noise) and step size. You will also see the exact CL again with its CL ID. You can visit the CL by clicking the underlined linked number (the underlined 79169 in this example). This can help you investigate whether the CL actually might have caused the issue or, in the case of rolls, dig deeper in which CL it might have been.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "c0a12b74d8854d70716a9aff75941896be83f407",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b4d6d21_1e1ba4f0",
+        "filename": "site/docs/dev/gardening/_index.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-15T16:51:45Z",
+      "side": 1,
+      "message": "The \"View on Dashboard\" link is one of the most important tools for triaging performance regressions. Perf will automatically filter which benchmarks are affected by a CL; \"View on Dashboard\" graphs the performance of these benchmarks at each merged CL, marking the regressing CL with a red line.\n\nWhen looking at this graph, keep the following in mind:\n- Expand the window range: Considering trend helps determine if the regression is a true change or just a transient spike.\n\n- Look for broad impact: A true regression usually impacts multiple benchmarks.",
+      "range": {
+        "startLine": 142,
+        "startChar": 3,
+        "endLine": 142,
+        "endChar": 689
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "017d4bae_63895ab5",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "site/docs/dev/gardening/_index.md",
+              "range": {
+                "startLine": 142,
+                "startChar": 0,
+                "endLine": 143,
+                "endChar": 0
+              },
+              "replacement": "5.  The \"View on Dashboard\" link is one of the most important tools for triaging performance regressions. Perf will automatically filter which benchmarks are affected by a CL; \"View on Dashboard\" graphs the performance of these benchmarks at each merged CL, marking the regressing CL with a red line.\n\n    When looking at this graph, keep the following in mind:\n    -   **Expand the window range:** Considering trend helps determine if the regression is a true change or just a transient spike.\n\n    -   **Look for broad impact:** A true regression usually impacts multiple benchmarks.\n\n    The vertical refers to some metric in performance (e.g. seconds) and the horizontal represents time (i.e. CLs). You may click the right hand check boxes to view or hide a line.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "c0a12b74d8854d70716a9aff75941896be83f407",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e94e37b8_413d85d0",
+        "filename": "site/docs/dev/gardening/_index.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-15T16:51:45Z",
+      "side": 1,
+      "message": "Although statistical analysis triggers the Perf alerts,the underlying data can be very noisy. Often, a regression is simply noise or, on Android devices, thermal throttling.",
+      "range": {
+        "startLine": 254,
+        "startChar": 0,
+        "endLine": 254,
+        "endChar": 220
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "ce52be4e_3d4c8516",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "site/docs/dev/gardening/_index.md",
+              "range": {
+                "startLine": 254,
+                "startChar": 0,
+                "endLine": 255,
+                "endChar": 0
+              },
+              "replacement": "Although statistical analysis triggers the Perf alerts,the underlying data can be very noisy. Often, a regression is simply noise or, on Android devices, thermal throttling.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "c0a12b74d8854d70716a9aff75941896be83f407",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
