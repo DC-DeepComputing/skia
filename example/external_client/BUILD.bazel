@@ -268,6 +268,33 @@ cc_binary(
 )
 
 cc_binary(
+    name = "use_graphite_vulkan_capture",
+    srcs = ["src/graphite_vulkan_capture.cpp"],
+    linkopts = [
+        "-lpthread",
+        "-ldl",
+    ],
+    deps = [
+        ":vulkan_context_helper",
+        "@skia//:core",
+        "@skia//:graphite_native_vulkan",
+        "@vulkan_headers",
+    ],
+)
+
+cc_library(
+    name = "vulkan_context_helper",
+    srcs = ["src/vulkan_context_helper.cpp"],
+    hdrs = ["src/vulkan_context_helper.h"],
+    includes = ["src"],
+    deps = [
+        "@skia//:core",
+        "@skia//:graphite_native_vulkan",
+        "@vulkan_headers",
+    ],
+)
+
+cc_binary(
     name = "use_skresources",
     srcs = ["src/use_skresources.cpp"],
     linkopts = [
