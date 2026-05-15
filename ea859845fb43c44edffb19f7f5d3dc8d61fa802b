@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ef7fcf3_6ed3e32a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-15T18:10:48Z",
+      "side": 1,
+      "message": "PTAL, added some tricky test cases for clipping, but they were synthetic and didn\u0027t match the output of the tiler.",
+      "revId": "ea859845fb43c44edffb19f7f5d3dc8d61fa802b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
