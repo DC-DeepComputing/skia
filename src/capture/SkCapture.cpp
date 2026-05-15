@@ -111,7 +111,7 @@ sk_sp<SkPicture> SkCapture::getPicture(int i) {
 
 SkCapture::Metadata SkCapture::getMetadata() const { return fMetadata; }
 
-sk_sp<SkData> SkCapture::serializeCapture() {
+sk_sp<SkData> SkCapture::serializeCapture(const SkSerialProcs* fallbackProcs) {
     SkDynamicMemoryWStream stream;
 
     stream.write32(kMagic1);
@@ -125,6 +125,11 @@ sk_sp<SkData> SkCapture::serializeCapture() {
     // when we have multiple SkPictures per canvas and we want to track which ones are drawn into
     // each other.
 
+    struct CaptureSerializeCtx {
+        SkCapture* fCapture;
+        const SkSerialProcs* fFallbackProcs;
+    } ctx = {this, fallbackProcs};
+
     for (int i = 0; i < fPictures.size(); ++i) {
         sk_sp<SkPicture> picture = this->getPicture(i);
         if (!picture) {
@@ -135,7 +140,7 @@ sk_sp<SkData> SkCapture::serializeCapture() {
         SkDynamicMemoryWStream pictureStream;
         SkSerialProcs procs;
         procs.fImageProc = SkCapture::serializeImageProc;
-        procs.fImageCtx = this;
+        procs.fImageCtx = &ctx;
         picture->serialize(&pictureStream, &procs);
         sk_sp<SkData> pictureData = pictureStream.detachAsData();
 
@@ -155,42 +160,60 @@ sk_sp<SkData> SkCapture::serializeCapture() {
 // corresponding SkPicture. This means that we need to create a context for the proc to track these
 // contentIDs.
 SkSerialReturnType SkCapture::serializeImageProc(SkImage* img, void* ctx) {
-    ImageMetadata imgMD = {
-            .contentID = as_IB(img)->getContentID(),
-            .derivedSurfaceID = as_IB(img)->getDerivedSurfaceID(),
+    struct CaptureSerializeCtx {
+        SkCapture* fCapture;
+        const SkSerialProcs* fFallbackProcs;
     };
+    CaptureSerializeCtx* cCtx = static_cast<CaptureSerializeCtx*>(ctx);
 
-    return SkData::MakeWithCopy(&imgMD, sizeof(ImageMetadata));
+    uint32_t contentID = as_IB(img)->getContentID();
+    uint32_t derivedSurfaceID = as_IB(img)->getDerivedSurfaceID();
+
+    if (contentID || derivedSurfaceID) {
+        ImageMetadata imgMD = {
+                .contentID = contentID,
+                .derivedSurfaceID = derivedSurfaceID,
+        };
+        return SkData::MakeWithCopy(&imgMD, sizeof(ImageMetadata));
+    }
+
+    if (cCtx && cCtx->fFallbackProcs && cCtx->fFallbackProcs->fImageProc) {
+        return cCtx->fFallbackProcs->fImageProc(img, cCtx->fFallbackProcs->fImageCtx);
+    }
+
+    return img->refEncodedData();
 }
 
 sk_sp<SkImage> SkCapture::deserializeImageProc(sk_sp<SkData> data,
                                                std::optional<SkAlphaType> type,
                                                void* ctx) {
 
-    if (!ctx || data->size() != sizeof(ImageMetadata)) return nullptr;
+    if (!ctx || !data) return nullptr;
 
-    SkCapture* capture = static_cast<SkCapture*>(ctx);
-    const ImageMetadata* imgMD = reinterpret_cast<const ImageMetadata*>(data->data());
+    if (data->size() == sizeof(ImageMetadata)) {
+        SkCapture* capture = static_cast<SkCapture*>(ctx);
+        const ImageMetadata* imgMD = reinterpret_cast<const ImageMetadata*>(data->data());
 
-    int pictureIndex = static_cast<int>(imgMD->contentID) - 1;
+        int pictureIndex = static_cast<int>(imgMD->contentID) - 1;
 
-    sk_sp<SkPicture> picture = capture->getPicture(pictureIndex);
+        sk_sp<SkPicture> picture = capture->getPicture(pictureIndex);
 
-    if (picture) {
-        SkISize dimensions = {(int)picture->cullRect().width(), (int)picture->cullRect().height()};
-        sk_sp<SkImage> image =
-                SkImages::DeferredFromPicture(std::move(picture),
-                                              dimensions,
-                                              nullptr,
-                                              nullptr,
-                                              SkImages::BitDepth::kU8,
-                                              SkColorSpace::MakeSRGB());
+        if (picture) {
+            SkISize dimensions = {(int)picture->cullRect().width(), (int)picture->cullRect().height()};
+            sk_sp<SkImage> image =
+                    SkImages::DeferredFromPicture(std::move(picture),
+                                                  dimensions,
+                                                  nullptr,
+                                                  nullptr,
+                                                  SkImages::BitDepth::kU8,
+                                                  SkColorSpace::MakeSRGB());
 
-        as_IB(image.get())->setContentID(SkContentID(imgMD->contentID));
-        as_IB(image.get())->setDerivedSurfaceID(imgMD->derivedSurfaceID);
+            as_IB(image.get())->setContentID(SkContentID(imgMD->contentID));
+            as_IB(image.get())->setDerivedSurfaceID(imgMD->derivedSurfaceID);
 
-        return image;
+            return image;
+        }
     }
 
-    return nullptr;
+    return SkImages::DeferredFromEncodedData(std::move(data));
 }

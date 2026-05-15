@@ -21,7 +21,8 @@
 namespace sk_app {
 
 CommandSet::CommandSet()
-    : fHelpMode(kNone_HelpMode) {
+    : fHelpMode(kNone_HelpMode)
+    , fHelpFontSize(16.0f) {
     this->addCommand('h', "Overlays", "Show help screen", [this]() {
         switch (this->fHelpMode) {
             case kNone_HelpMode:
@@ -104,10 +105,10 @@ void CommandSet::drawHelp(SkCanvas* canvas) {
                      kAlphabetical_HelpMode == fHelpMode ? compareCommandKey : compareCommandGroup);
 
     SkFont font = ToolUtils::DefaultPortableFont();
-    font.setSize(16);
+    font.setSize(fHelpFontSize);
 
     SkFont groupFont;
-    groupFont.setSize(18);
+    groupFont.setSize(fHelpFontSize * 1.125f);
 
     SkPaint bgPaint;
     bgPaint.setColor(0xC0000000);
