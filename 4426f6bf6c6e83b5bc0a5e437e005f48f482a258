@@ -122,6 +122,24 @@
       "parentUuid": "041f7ef5_10f626d5",
       "revId": "4426f6bf6c6e83b5bc0a5e437e005f48f482a258",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd7a733e_9520f3e0",
+        "filename": "example/external_client/src/graphite_vulkan_capture.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 567,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-05-15T19:36:53Z",
+      "side": 1,
+      "message": "I separated out the Vulkan backend context into a helper class. We can create a separate SkCaptureUtils file in a follow up CL just to get this CL pushed and ready.\n\nI also ran gemini on the back end setup code to see if we could shorten.",
+      "parentUuid": "a5272e04_d27396d8",
+      "revId": "4426f6bf6c6e83b5bc0a5e437e005f48f482a258",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
