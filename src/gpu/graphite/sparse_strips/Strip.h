@@ -72,7 +72,19 @@ public:
                                    , MsaaExactMaskObserver observer = nullptr
 #endif
     ) {
-        // STUB
+        Dispatch(fillType, [&](auto isWindingTag, bool isInverse) {
+            constexpr bool kIsWinding = decltype(isWindingTag)::value;
+            MakeStripsSimdImpl<kTileWidth, kTileHeight, kIsWinding>(tileContainer,
+                                                                    stripBuf,
+                                                                    alphaBuf,
+                                                                    isInverse,
+                                                                    polyline,
+                                                                    maskLut
+#if defined(GPU_TEST_UTILS)
+                                                                    , observer
+#endif
+            );
+        });
     }
 
 private:
@@ -109,6 +121,18 @@ private:
                                      const SkTDArray<uint8_t>& maskLut
 #if defined(GPU_TEST_UTILS)
                                      , MsaaExactMaskObserver observer = nullptr
+#endif
+    );
+
+    template <uint16_t TileWidth, uint16_t TileHeight, bool kIsWinding>
+    static void MakeStripsSimdImpl(const Tiles<TileWidth, TileHeight>& tileContainer,
+                                   SkTDArray<Strip>& stripBuf,
+                                   SkTDArray<uint8_t>& alphaBuf,
+                                   bool isInverse,
+                                   const Polyline& polyline,
+                                   const SkTDArray<uint8_t>& maskLut
+#if defined(GPU_TEST_UTILS)
+                                   , MsaaExactMaskObserver observer = nullptr
 #endif
     );
 
@@ -293,5 +317,6 @@ private:
 } // namespace skgpu::graphite
 
 #include "src/gpu/graphite/sparse_strips/MakeStripsScalar_impl.h"
+#include "src/gpu/graphite/sparse_strips/MakeStripsSimd_impl.h"
 
 #endif // skgpu_graphite_sparse_strips_Strip_DEFINED
