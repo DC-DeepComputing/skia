@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "09844601_fda9f48f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-05-18T14:53:49Z",
+      "side": 1,
+      "message": "Rephrased.",
+      "parentUuid": "bde7b3b7_e7541528",
+      "range": {
+        "startLine": 10,
+        "startChar": 13,
+        "endLine": 10,
+        "endChar": 24
+      },
+      "revId": "8b76f7b827adfd29d0d902c845b5bb6b96802619",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e47ff59a_de088a18",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-05-18T13:04:06Z",
       "side": 1,
       "message": "nit: typo",
+      "range": {
+        "startLine": 141,
+        "startChar": 80,
+        "endLine": 141,
+        "endChar": 94
+      },
+      "revId": "8b76f7b827adfd29d0d902c845b5bb6b96802619",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f211ee89_e1de48af",
+        "filename": "src/pdf/SkPDFUtils.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-05-18T14:53:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e47ff59a_de088a18",
       "range": {
         "startLine": 141,
         "startChar": 80,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5013e09_a343b174",
+        "filename": "src/pdf/SkPDFUtils.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-05-18T14:53:49Z",
+      "side": 1,
+      "message": "We need to reset state regardless of whether we discard or not, hence the explicit buffer reset below.  Resetting here too would make future Florin scratch his head over why we\u0027re doing it twice :)",
+      "parentUuid": "01896996_a645cf5c",
+      "range": {
+        "startLine": 194,
+        "startChar": 20,
+        "endLine": 194,
+        "endChar": 33
+      },
+      "revId": "8b76f7b827adfd29d0d902c845b5bb6b96802619",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3acb1dd8_2d225365",
@@ -93,6 +165,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "09a5f18f_def22f70",
+        "filename": "src/pdf/SkPDFUtils.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-05-18T14:53:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3acb1dd8_2d225365",
+      "range": {
+        "startLine": 211,
+        "startChar": 33,
+        "endLine": 211,
+        "endChar": 56
+      },
+      "revId": "8b76f7b827adfd29d0d902c845b5bb6b96802619",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5b3d25cc_fbed8ead",
@@ -106,6 +202,30 @@
       "writtenOn": "2026-05-18T13:04:06Z",
       "side": 1,
       "message": "nit: move this down below the #ifdef with the rest of them",
+      "range": {
+        "startLine": 8,
+        "startChar": 10,
+        "endLine": 8,
+        "endChar": 17
+      },
+      "revId": "8b76f7b827adfd29d0d902c845b5bb6b96802619",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e3a8adc_0866891b",
+        "filename": "tests/PDFPrimitivesTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-05-18T14:53:49Z",
+      "side": 1,
+      "message": "Doh, I need to figure out how to teach vscode not to do that.  Done.",
+      "parentUuid": "5b3d25cc_fbed8ead",
       "range": {
         "startLine": 8,
         "startChar": 10,
