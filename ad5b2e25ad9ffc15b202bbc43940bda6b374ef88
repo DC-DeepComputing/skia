@@ -45,6 +45,29 @@
       },
       "revId": "ad5b2e25ad9ffc15b202bbc43940bda6b374ef88",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78e99680_98f9ba72",
+        "filename": "src/sksl/analysis/SkSLGetLoopUnrollInfo.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-05-18T15:46:35Z",
+      "side": 1,
+      "message": "Same comment here I guess.",
+      "range": {
+        "startLine": 118,
+        "startChar": 0,
+        "endLine": 122,
+        "endChar": 9
+      },
+      "revId": "ad5b2e25ad9ffc15b202bbc43940bda6b374ef88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
