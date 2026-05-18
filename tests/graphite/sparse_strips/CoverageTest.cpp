@@ -74,8 +74,8 @@ public:
                                const Polyline& polyline,
                                const SkTDArray<uint8_t>& maskLut,
                                MsaaExactMaskObserver observer) {
-        // Strip::MakeStripsSimdImpl<TileW, TileH, /*kIsWinding=*/true>(
-        //         tileContainer, stripBuf, alphaBuf, isInverse, polyline, maskLut, observer);
+        Strip::MakeStripsSimdImpl<TileW, TileH, /*kIsWinding=*/true>(
+                tileContainer, stripBuf, alphaBuf, isInverse, polyline, maskLut, observer);
     }
 
     CoverageTestRunner(StripFunc func, const char* implName) : fFunc(func), fImplName(implName) {}

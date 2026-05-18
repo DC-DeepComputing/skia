@@ -68,3 +68,7 @@ private:
 
 DEF_BENCH(return (new skgpu::graphite::CoverageBench<4, 4>(
         "CoverageBench", &skgpu::graphite::Strip::MakeStripsMsaaScalar));)
+DEF_BENCH(return (new skgpu::graphite::CoverageBench<4, 4>(
+        "CoverageBenchSimd", &skgpu::graphite::Strip::MakeStripsMsaaSimd));)
+DEF_BENCH(return (new skgpu::graphite::CoverageBench<8, 8>(
+        "CoverageBenchSimd", &skgpu::graphite::Strip::MakeStripsMsaaSimd));)
