@@ -5,8 +5,8 @@
  * found in the LICENSE file.
  */
 
-#ifndef skgpu_graphite_Tiler_DEFINED
-#define skgpu_graphite_Tiler_DEFINED
+#ifndef skgpu_graphite_sparse_strips_Tiler_DEFINED
+#define skgpu_graphite_sparse_strips_Tiler_DEFINED
 
 #include "include/private/base/SkAssert.h"
 #include "include/private/base/SkTDArray.h"
@@ -63,6 +63,8 @@ struct IntersectionBits {
 //  3) The intersection mask (R | L | T | B) of the tile
 //  4) The index of their parent line in the array backing polyline
 struct Tile {
+    static constexpr uint16_t kSentinelCoord = UINT16_MAX;
+
     uint16_t x;
     uint16_t y;
     /// Contains the parent line's index and the intersection/winding mask.
@@ -102,6 +104,12 @@ struct Tile {
     }
     uint32_t intersectionMask() const {
         return fPackedLineIdxIntersectionMask & IntersectionBits::INTERSECTION_MASK;
+    }
+    bool coarseWinding() const {
+        return (fPackedLineIdxIntersectionMask & IntersectionBits::W) != 0;
+    }
+    bool left() const {
+        return (fPackedLineIdxIntersectionMask & IntersectionBits::L) != 0;
     }
 };
 
@@ -503,4 +511,4 @@ private:
 
 }  // namespace skgpu::graphite
 
-#endif  // skgpu_graphite_Tiler_DEFINED
+#endif  // skgpu_graphite_sparse_strips_Tiler_DEFINED

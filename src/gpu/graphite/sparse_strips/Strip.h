@@ -4,28 +4,126 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
-#ifndef skgpu_graphite_Strip_DEFINED
-#define skgpu_graphite_Strip_DEFINED
+#ifndef skgpu_graphite_sparse_strips_Strip_DEFINED
+#define skgpu_graphite_sparse_strips_Strip_DEFINED
 
+#include "include/core/SkPathTypes.h"
+#include "include/private/base/SkTDArray.h"
+#include "src/base/SkVx.h"
+#include "src/gpu/graphite/sparse_strips/Polyline.h"
 #include "src/gpu/graphite/sparse_strips/SparseStripsTypes.h"
 #include "src/gpu/graphite/sparse_strips/Tiler.h"
 
 #include <algorithm>
 #include <array>
+#include <cmath>
 #include <cstdint>
+#include <cstring>
+#include <functional>
+#include <optional>
 
 namespace skgpu::graphite {
 
-// RLE representation of the final filled path. Currently, this class is a stub and will be
-// implemented in a downstream patch.
+#if defined(GPU_TEST_UTILS)
+using MsaaExactMaskObserver = std::function<void(uint8_t exactMask)>;
+#endif
+
 class Strip : IntersectionBits {
 public:
-    Strip() {}
+    Strip(uint16_t x, uint16_t y, uint32_t alphaIdx, bool shouldFill)
+            : x(x)
+            , y(y)
+            , fFillAlphaIdx(alphaIdx | (static_cast<uint32_t>(shouldFill) << FILL_SHIFT)) {}
+
+    template <uint16_t kTileWidth, uint16_t kTileHeight>
+    static void MakeStripsMsaaScalar(const Tiles<kTileWidth, kTileHeight>& tileContainer,
+                                     SkTDArray<Strip>& stripBuf,
+                                     SkTDArray<uint8_t>& alphaBuf,
+                                     SkPathFillType fillType,
+                                     const Polyline& polyline,
+                                     const SkTDArray<uint8_t>& maskLut
+#if defined(GPU_TEST_UTILS)
+                                     , MsaaExactMaskObserver observer = nullptr
+#endif
+    ) {
+        Dispatch(fillType, [&](auto isWindingTag, bool isInverse) {
+            constexpr bool kIsWinding = decltype(isWindingTag)::value;
+            MakeStripsScalarImpl<kTileWidth, kTileHeight, kIsWinding>(tileContainer,
+                                                                    stripBuf,
+                                                                    alphaBuf,
+                                                                    isInverse,
+                                                                    polyline,
+                                                                    maskLut
+#if defined(GPU_TEST_UTILS)
+                                                                    , observer
+#endif
+            );
+        });
+    }
+
+    template <uint16_t kTileWidth, uint16_t kTileHeight>
+    static void MakeStripsMsaaSimd(const Tiles<kTileWidth, kTileHeight>& tileContainer,
+                                   SkTDArray<Strip>& stripBuf,
+                                   SkTDArray<uint8_t>& alphaBuf,
+                                   SkPathFillType fillType,
+                                   const Polyline& polyline,
+                                   const SkTDArray<uint8_t>& maskLut
+#if defined(GPU_TEST_UTILS)
+                                   , MsaaExactMaskObserver observer = nullptr
+#endif
+    ) {
+        // STUB
+    }
 
 private:
 #if defined(GPU_TEST_UTILS)
     template <uint16_t, uint16_t> friend class ClipTestRunner;
+    template <uint16_t, uint16_t> friend class CoverageTestRunner;
 #endif
+    template <uint16_t, uint16_t> friend class StripGenerator;
+
+    template <typename F> static void Dispatch(SkPathFillType fillType, F&& f) {
+        switch (fillType) {
+            case SkPathFillType::kWinding:
+                f(std::bool_constant<true>{}, /*isInverse=*/false);
+                return;
+            case SkPathFillType::kInverseWinding:
+                f(std::bool_constant<true>{}, /*isInverse=*/true);
+                return;
+            case SkPathFillType::kEvenOdd:
+                f(std::bool_constant<false>{}, /*isInverse=*/false);
+                return;
+            case SkPathFillType::kInverseEvenOdd:
+                f(std::bool_constant<false>{}, /*isInverse=*/true);
+                return;
+        }
+        SkUNREACHABLE;
+    }
+
+    template <uint16_t TileWidth, uint16_t TileHeight, bool kIsWinding>
+    static void MakeStripsScalarImpl(const Tiles<TileWidth, TileHeight>& tileContainer,
+                                     SkTDArray<Strip>& stripBuf,
+                                     SkTDArray<uint8_t>& alphaBuf,
+                                     bool isInverse,
+                                     const Polyline& polyline,
+                                     const SkTDArray<uint8_t>& maskLut
+#if defined(GPU_TEST_UTILS)
+                                     , MsaaExactMaskObserver observer = nullptr
+#endif
+    );
+
+    static constexpr uint32_t FILL_SHIFT = 31;
+
+    static constexpr int kNumSubSamples  = 8;
+    static constexpr float kPackingScale = 0.5f;
+    static constexpr int kMaskWidth      = 64;
+    static constexpr int kMaskHeight     = 64;
+    static constexpr float kMaskWidthF   = static_cast<float>(kMaskWidth);
+    static constexpr float kMaskHeightF  = static_cast<float>(kMaskHeight);
+    static constexpr int kMaskWidthExcl  = kMaskWidth - 1;
+    static constexpr int kMaskHeightExcl = kMaskHeight - 1;
+
+    static constexpr float kStripEpsilon = 1e-5f;
 
     // Responsible for consuming the tile coordinates and intersection mask produced by the Tiler
     // and producing the exact points at which the parent line intersects the edges of the tile.
@@ -186,8 +284,14 @@ private:
 
         return result;
     }
+
+    uint16_t x;
+    uint16_t y;
+    uint32_t fFillAlphaIdx;
 };
 
 } // namespace skgpu::graphite
 
-#endif // skgpu_graphite_Strip_DEFINED
+#include "src/gpu/graphite/sparse_strips/MakeStripsScalar_impl.h"
+
+#endif // skgpu_graphite_sparse_strips_Strip_DEFINED
