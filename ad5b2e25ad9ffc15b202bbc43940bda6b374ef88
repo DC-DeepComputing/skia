@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "22399506_ca336f0c",
+        "filename": "src/sksl/analysis/SkSLGetLoopUnrollInfo.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-05-18T19:35:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "344ab4e6_ad7876cd",
+      "range": {
+        "startLine": 82,
+        "startChar": 16,
+        "endLine": 82,
+        "endChar": 33
+      },
+      "revId": "ad5b2e25ad9ffc15b202bbc43940bda6b374ef88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "db874d84_276c5974",
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0f8cb808_cbf547e0",
+        "filename": "src/sksl/analysis/SkSLGetLoopUnrollInfo.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-05-18T19:35:49Z",
+      "side": 1,
+      "message": "Hmmm... I tried an analytical solution but it has the same problems as the original float version. We miss out on detecting overflow during the looping itself. The whole point of this fix is to avoid writing ES2 loops that will overflow.\n\nInstead, I swapped this out for SkMath and it\u0027s much cleaner. WDYT?",
+      "parentUuid": "db874d84_276c5974",
+      "range": {
+        "startLine": 81,
+        "startChar": 0,
+        "endLine": 86,
+        "endChar": 9
+      },
+      "revId": "ad5b2e25ad9ffc15b202bbc43940bda6b374ef88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "78e99680_98f9ba72",
         "filename": "src/sksl/analysis/SkSLGetLoopUnrollInfo.cpp",
         "patchSetId": 10
@@ -60,6 +108,30 @@
       "writtenOn": "2026-05-18T15:46:35Z",
       "side": 1,
       "message": "Same comment here I guess.",
+      "range": {
+        "startLine": 118,
+        "startChar": 0,
+        "endLine": 122,
+        "endChar": 9
+      },
+      "revId": "ad5b2e25ad9ffc15b202bbc43940bda6b374ef88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9674d8ab_0d5a1da3",
+        "filename": "src/sksl/analysis/SkSLGetLoopUnrollInfo.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-05-18T19:35:49Z",
+      "side": 1,
+      "message": "Same approach as above.",
+      "parentUuid": "78e99680_98f9ba72",
       "range": {
         "startLine": 118,
         "startChar": 0,
