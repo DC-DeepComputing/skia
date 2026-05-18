@@ -432,7 +432,7 @@ SI void store_4(P* p, const T& v) {
 }
 
 
-SI U8 gather_8(const uint8_t* p, I32 ix) {
+SI U8 gather_8(const uint8_t* p, U32 ix) {
 #if N == 1
     U8 v = p[ix];
 #elif N == 4
@@ -449,10 +449,10 @@ SI U8 gather_8(const uint8_t* p, I32 ix) {
     return v;
 }
 
-SI U16 gather_16(const uint8_t* p, I32 ix) {
+SI U16 gather_16(const uint8_t* p, U32 ix) {
     // Load the i'th 16-bit value from p.
-    auto load_16 = [p](int i) {
-        return load<uint16_t>(p + 2*i);
+    auto load_16 = [p](uint32_t i) {
+        return load<uint16_t>(p + (size_t)2 * i);
     };
 #if N == 1
     U16 v = load_16(ix);
@@ -470,10 +470,10 @@ SI U16 gather_16(const uint8_t* p, I32 ix) {
     return v;
 }
 
-SI U32 gather_32(const uint8_t* p, I32 ix) {
+SI U32 gather_32(const uint8_t* p, U32 ix) {
     // Load the i'th 32-bit value from p.
-    auto load_32 = [p](int i) {
-        return load<uint32_t>(p + 4*i);
+    auto load_32 = [p](uint32_t i) {
+        return load<uint32_t>(p + (size_t)4 * i);
     };
 #if N == 1
     U32 v = load_32(ix);
@@ -492,10 +492,10 @@ SI U32 gather_32(const uint8_t* p, I32 ix) {
     return v;
 }
 
-SI U32 gather_24(const uint8_t* p, I32 ix) {
+SI U32 gather_24(const uint8_t* p, U32 ix) {
     // Load the i'th 24-bit value from p, and 1 extra byte.
-    auto load_24_32 = [p](int i) {
-        return load<uint32_t>(p + 3*i);
+    auto load_24_32 = [p](uint32_t i) {
+        return load<uint32_t>(p + (size_t)3 * i);
     };
 
     // Now load multiples of 4 bytes (r,g,b, then a junk byte).
@@ -514,16 +514,16 @@ SI U32 gather_24(const uint8_t* p, I32 ix) {
     I32 zero = { 0, 0, 0, 0,  0, 0, 0, 0},
         mask = {-1,-1,-1,-1, -1,-1,-1,-1};
     #if defined(__clang__)
-        U32 v = (U32)__builtin_ia32_gatherd_d256(zero, p4, 3*ix, mask, 1);
+        U32 v = (U32)__builtin_ia32_gatherd_d256(zero, p4, cast<I32>(3u*ix), mask, 1);
     #elif defined(__GNUC__)
-        U32 v = (U32)__builtin_ia32_gathersiv8si(zero, p4, 3*ix, mask, 1);
+        U32 v = (U32)__builtin_ia32_gathersiv8si(zero, p4, cast<I32>(3u*ix), mask, 1);
     #endif
 #elif N == 16
     (void)load_24_32;
     // The intrinsic is supposed to take const void* now, but it takes const int*, just like AVX2.
     // And AVX-512 swapped the order of arguments.  :/
     const int* p4 = bit_pun<const int*>(p);
-    U32 v = (U32)_mm512_i32gather_epi32((__m512i)(3*ix), p4, 1);
+    U32 v = (U32)_mm512_i32gather_epi32((__m512i)cast<I32>(3u*ix), p4, 1);
 #endif
 
     // Mask off the junk byte, leaving r,g,b in low 24 bits.
@@ -531,10 +531,10 @@ SI U32 gather_24(const uint8_t* p, I32 ix) {
 }
 
 #if !defined(__arm__)
-    SI void gather_48(const uint8_t* p, I32 ix, U64* v) {
+    SI void gather_48(const uint8_t* p, U32 ix, U64* v) {
         // Load the i'th 48-bit value from p, and 2 extra bytes.
-        auto load_48_64 = [p](int i) {
-            return load<uint64_t>(p + 6*i);
+        auto load_48_64 = [p](uint32_t i) {
+            return load<uint64_t>(p + (size_t)6 * i);
         };
 
     #if N == 1
@@ -560,9 +560,9 @@ SI U32 gather_24(const uint8_t* p, I32 ix) {
         Half_I64 zero = { 0, 0, 0, 0},
                  mask = {-1,-1,-1,-1};
 
-        ix *= 6;
-        Half_I32 ix_lo = { ix[0], ix[1], ix[2], ix[3] },
-                 ix_hi = { ix[4], ix[5], ix[6], ix[7] };
+        U32 i6 = 6u * ix;
+        Half_I32 ix_lo = { (int32_t)i6[0], (int32_t)i6[1], (int32_t)i6[2], (int32_t)i6[3] },
+                 ix_hi = { (int32_t)i6[4], (int32_t)i6[5], (int32_t)i6[6], (int32_t)i6[7] };
 
         #if defined(__clang__)
             Half_I64 lo = (Half_I64)__builtin_ia32_gatherd_q256(zero, p8, ix_lo, mask, 1),
@@ -576,8 +576,9 @@ SI U32 gather_24(const uint8_t* p, I32 ix) {
     #elif N == 16
         (void)load_48_64;
         const long long int* p8 = bit_pun<const long long int*>(p);
-        __m512i lo = _mm512_i32gather_epi64(_mm512_extracti32x8_epi32((__m512i)(6*ix), 0), p8, 1),
-                hi = _mm512_i32gather_epi64(_mm512_extracti32x8_epi32((__m512i)(6*ix), 1), p8, 1);
+        U32 i6 = 6u * ix;
+        __m512i lo = _mm512_i32gather_epi64(_mm512_extracti32x8_epi32((__m512i)cast<I32>(i6), 0), p8, 1),
+                hi = _mm512_i32gather_epi64(_mm512_extracti32x8_epi32((__m512i)cast<I32>(i6), 1), p8, 1);
         store((char*)v +  0, lo);
         store((char*)v + 64, hi);
     #endif
@@ -622,16 +623,16 @@ SI F table(const skcms_Curve* curve, F v) {
     // (it'd be junk, but always safe to read).  Not sure how to lerp yet.
     F l,h;
     if (curve->table_8) {
-        l = F_from_U8(gather_8(curve->table_8, lo));
-        h = F_from_U8(gather_8(curve->table_8, hi));
+        l = F_from_U8(gather_8(curve->table_8, cast<U32>(lo)));
+        h = F_from_U8(gather_8(curve->table_8, cast<U32>(hi)));
     } else {
-        l = F_from_U16_BE(gather_16(curve->table_16, lo));
-        h = F_from_U16_BE(gather_16(curve->table_16, hi));
+        l = F_from_U16_BE(gather_16(curve->table_16, cast<U32>(lo)));
+        h = F_from_U16_BE(gather_16(curve->table_16, cast<U32>(hi)));
     }
     return l + (h-l)*t;
 }
 
-SI void sample_clut_8(const uint8_t* grid_8, I32 ix, F* r, F* g, F* b) {
+SI void sample_clut_8(const uint8_t* grid_8, U32 ix, F* r, F* g, F* b) {
     U32 rgb = gather_24(grid_8, ix);
 
     *r = cast<F>((rgb >>  0) & 0xff) * (1/255.0f);
@@ -639,7 +640,7 @@ SI void sample_clut_8(const uint8_t* grid_8, I32 ix, F* r, F* g, F* b) {
     *b = cast<F>((rgb >> 16) & 0xff) * (1/255.0f);
 }
 
-SI void sample_clut_8(const uint8_t* grid_8, I32 ix, F* r, F* g, F* b, F* a) {
+SI void sample_clut_8(const uint8_t* grid_8, U32 ix, F* r, F* g, F* b, F* a) {
     // TODO: don't forget to optimize gather_32().
     U32 rgba = gather_32(grid_8, ix);
 
@@ -649,12 +650,12 @@ SI void sample_clut_8(const uint8_t* grid_8, I32 ix, F* r, F* g, F* b, F* a) {
     *a = cast<F>((rgba >> 24) & 0xff) * (1/255.0f);
 }
 
-SI void sample_clut_16(const uint8_t* grid_16, I32 ix, F* r, F* g, F* b) {
+SI void sample_clut_16(const uint8_t* grid_16, U32 ix, F* r, F* g, F* b) {
 #if defined(__arm__) || defined(__loongarch_sx)
     // This is up to 2x faster on 32-bit ARM than the #else-case fast path.
-    *r = F_from_U16_BE(gather_16(grid_16, 3*ix+0));
-    *g = F_from_U16_BE(gather_16(grid_16, 3*ix+1));
-    *b = F_from_U16_BE(gather_16(grid_16, 3*ix+2));
+    *r = F_from_U16_BE(gather_16(grid_16, 3u*ix+0));
+    *g = F_from_U16_BE(gather_16(grid_16, 3u*ix+1));
+    *b = F_from_U16_BE(gather_16(grid_16, 3u*ix+2));
 #else
     // This strategy is much faster for 64-bit builds, and fine for 32-bit x86 too.
     U64 rgb;
@@ -667,12 +668,12 @@ SI void sample_clut_16(const uint8_t* grid_16, I32 ix, F* r, F* g, F* b) {
 #endif
 }
 
-SI void sample_clut_16(const uint8_t* grid_16, I32 ix, F* r, F* g, F* b, F* a) {
+SI void sample_clut_16(const uint8_t* grid_16, U32 ix, F* r, F* g, F* b, F* a) {
     // TODO: gather_64()-based fast path?
-    *r = F_from_U16_BE(gather_16(grid_16, 4*ix+0));
-    *g = F_from_U16_BE(gather_16(grid_16, 4*ix+1));
-    *b = F_from_U16_BE(gather_16(grid_16, 4*ix+2));
-    *a = F_from_U16_BE(gather_16(grid_16, 4*ix+3));
+    *r = F_from_U16_BE(gather_16(grid_16, 4u*ix+0));
+    *g = F_from_U16_BE(gather_16(grid_16, 4u*ix+1));
+    *b = F_from_U16_BE(gather_16(grid_16, 4u*ix+2));
+    *a = F_from_U16_BE(gather_16(grid_16, 4u*ix+3));
 }
 
 static void clut(uint32_t input_channels, uint32_t output_channels,
@@ -680,27 +681,30 @@ static void clut(uint32_t input_channels, uint32_t output_channels,
                  F* r, F* g, F* b, F* a) {
 
     const int dim = (int)input_channels;
-    assert (0 < dim && dim <= 4);
+    if (dim <= 0 || dim > 4) {
+        return;
+    }
     assert (output_channels == 3 ||
             output_channels == 4);
 
     // For each of these arrays, think foo[2*dim], but we use foo[8] since we know dim <= 4.
-    I32 index [8];  // Index contribution by dimension, first low from 0, then high from 4.
-    F   weight[8];  // Weight for each contribution, again first low, then high.
+    U32 index [8] = {0,0,0,0, 0,0,0,0};  // Index contribution by dimension, first low from 0, then high from 4.
+    F   weight[8] = {F0,F0,F0,F0, F0,F0,F0,F0};  // Weight for each contribution, again first low, then high.
 
     // O(dim) work first: calculate index,weight from r,g,b,a.
     const F inputs[] = { *r,*g,*b,*a };
     for (int i = dim-1, stride = 1; i >= 0; i--) {
         // x is where we logically want to sample the grid in the i-th dimension.
-        F x = inputs[i] * (float)(grid_points[i] - 1);
+        // We MUST clamp to [0,1] here to avoid negative indices.
+        F x = max_(F0, min_(inputs[i], F1)) * (float)(grid_points[i] - 1);
 
         // But we can't index at floats.  lo and hi are the two integer grid points surrounding x.
         I32 lo = cast<I32>(            x      ),   // i.e. trunc(x) == floor(x) here.
             hi = cast<I32>(minus_1_ulp(x+1.0f));
         // Notice how we fold in the accumulated stride across previous dimensions here.
-        index[i+0] = lo * stride;
-        index[i+4] = hi * stride;
-        stride *= grid_points[i];
+        index[i+0] = cast<U32>(lo) * (uint32_t)stride;
+        index[i+4] = cast<U32>(hi) * (uint32_t)stride;
+        stride = (int)((uint32_t)stride * grid_points[i]);
 
         // We'll interpolate between those two integer grid points by t.
         F t = x - cast<F>(lo);  // i.e. fract(x)
@@ -723,7 +727,7 @@ static void clut(uint32_t input_channels, uint32_t output_channels,
 
         // Since 0<dim≤4, we can always just start off with the 0-th channel,
         // then handle the others conditionally.
-        I32 ix = index [0 + (combo&1)*4];
+        U32 ix = index [0 + (combo&1)*4];
         F    w = weight[0 + (combo&1)*4];
 
         switch ((dim-1)&3) {  // This lets the compiler know there are no other cases to handle.
