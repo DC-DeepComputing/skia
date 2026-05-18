@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bde7b3b7_e7541528",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-05-18T13:04:06Z",
+      "side": 1,
+      "message": "Do the parens here mean something special?",
+      "range": {
+        "startLine": 10,
+        "startChar": 13,
+        "endLine": 10,
+        "endChar": 24
+      },
+      "revId": "8b76f7b827adfd29d0d902c845b5bb6b96802619",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e47ff59a_de088a18",
+        "filename": "src/pdf/SkPDFUtils.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-05-18T13:04:06Z",
+      "side": 1,
+      "message": "nit: typo",
+      "range": {
+        "startLine": 141,
+        "startChar": 80,
+        "endLine": 141,
+        "endChar": 94
+      },
+      "revId": "8b76f7b827adfd29d0d902c845b5bb6b96802619",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01896996_a645cf5c",
+        "filename": "src/pdf/SkPDFUtils.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-05-18T13:04:06Z",
+      "side": 1,
+      "message": "writeToAndReset?",
+      "range": {
+        "startLine": 194,
+        "startChar": 20,
+        "endLine": 194,
+        "endChar": 33
+      },
+      "revId": "8b76f7b827adfd29d0d902c845b5bb6b96802619",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3acb1dd8_2d225365",
+        "filename": "src/pdf/SkPDFUtils.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-05-18T13:04:06Z",
+      "side": 1,
+      "message": "suggestion: two distinct points in the list or return nullopt if all points are the same. ...",
+      "range": {
+        "startLine": 211,
+        "startChar": 33,
+        "endLine": 211,
+        "endChar": 56
+      },
+      "revId": "8b76f7b827adfd29d0d902c845b5bb6b96802619",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b3d25cc_fbed8ead",
+        "filename": "tests/PDFPrimitivesTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-05-18T13:04:06Z",
+      "side": 1,
+      "message": "nit: move this down below the #ifdef with the rest of them",
+      "range": {
+        "startLine": 8,
+        "startChar": 10,
+        "endLine": 8,
+        "endChar": 17
+      },
+      "revId": "8b76f7b827adfd29d0d902c845b5bb6b96802619",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
