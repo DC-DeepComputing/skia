@@ -26,12 +26,12 @@ class SkDiscardableMemory;
     This class is the smart container for pixel memory, and is used with SkBitmap.
     This class can be shared/accessed between multiple threads.
 */
-class SK_API SkPixelRef : public SkPixelStorage, public SkRefCnt {
+class SK_API SkPixelRef : public SkRefCnt {
 public:
     SkPixelRef(int width, int height, void* addr, size_t rowBytes);
     ~SkPixelRef() override;
 
-    Type type() const override;
+    sk_sp<SkPixelStorage> refPixelStorage() const { return fPixelStorage; }
 
     SkISize dimensions() const { return {fWidth, fHeight}; }
     int width() const { return fWidth; }
@@ -115,6 +115,8 @@ private:
 
     void setImmutableWithID(uint32_t genID);
     friend void SkBitmapCache_setImmutableWithID(SkPixelRef*, uint32_t);
+
+    sk_sp<SkPixelStorage> fPixelStorage;
 
     using INHERITED = SkRefCnt;
 };

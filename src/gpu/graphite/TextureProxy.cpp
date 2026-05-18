@@ -27,7 +27,8 @@ TextureProxy::TextureProxy(SkISize dimensions,
         , fInfo(info)
         , fLabel(label)
         , fBudgeted(budgeted)
-        , fVolatile(Volatile::kNo) {
+        , fVolatile(Volatile::kNo)
+        , fPixelStorage(sk_make_sp<SkPixelStorage>(SkPixelStorage::kTextureProxy)) {
     SkASSERT(fInfo.isValid());
 }
 
@@ -37,7 +38,8 @@ TextureProxy::TextureProxy(sk_sp<Texture> texture)
         , fLabel(texture->getLabel())
         , fBudgeted(texture->budgeted())
         , fVolatile(Volatile::kNo)
-        , fTexture(std::move(texture)) {
+        , fTexture(std::move(texture))
+        , fPixelStorage(sk_make_sp<SkPixelStorage>(SkPixelStorage::kTextureProxy)) {
     SkASSERT(fInfo.isValid());
 }
 
@@ -50,16 +52,13 @@ TextureProxy::TextureProxy(SkISize dimensions,
         , fInfo(textureInfo)
         , fBudgeted(budgeted)
         , fVolatile(isVolatile)
-        , fLazyInstantiateCallback(std::move(callback)) {
+        , fLazyInstantiateCallback(std::move(callback))
+        , fPixelStorage(sk_make_sp<SkPixelStorage>(SkPixelStorage::kTextureProxy)) {
     SkASSERT(fInfo.isValid());
     SkASSERT(fLazyInstantiateCallback);
 }
 
 TextureProxy::~TextureProxy() {}
-
-SkPixelStorage::Type TextureProxy::type() const {
-    return SkPixelStorage::Type::kTextureProxy;
-}
 
 SkISize TextureProxy::dimensions() const {
     SkASSERT(!this->isFullyLazy() || this->isInstantiated());

@@ -53,16 +53,18 @@ SkImage_Raster::SkImage_Raster(const SkImageInfo& info,
                                size_t rowBytes,
                                sk_sp<SkMipmap> mips,
                                uint32_t id)
-        : SkImage_Base(info, id), fMips(mips) {
+        : SkImage_Base(info, id, nullptr), fMips(mips) {
     void* addr = const_cast<void*>(data->data());
 
     fBitmap.installPixels(info, addr, rowBytes, release_data, data.release());
     fBitmap.setImmutable();
+    fPixelStorage.push_back(fBitmap.pixelRef()->refPixelStorage());
 }
 
 SkImage_Raster::SkImage_Raster(const SkBitmap& bm, sk_sp<SkMipmap> mips, bool bitmapMayBeMutable)
         : SkImage_Base(bm.info(),
-                       is_not_subset(bm) ? bm.getGenerationID() : (uint32_t)kNeedNewImageUniqueID)
+                       is_not_subset(bm) ? bm.getGenerationID() : (uint32_t)kNeedNewImageUniqueID,
+                       bm.pixelRef()->refPixelStorage())
         , fBitmap(bm)
         , fMips(mips) {
     SkASSERT(bitmapMayBeMutable || fBitmap.isImmutable());

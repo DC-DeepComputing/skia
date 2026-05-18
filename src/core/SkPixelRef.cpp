@@ -36,6 +36,7 @@ SkPixelRef::SkPixelRef(int width, int height, void* pixels, size_t rowBytes)
     , fPixels(pixels)
     , fRowBytes(rowBytes)
     , fAddedToCache(false)
+    , fPixelStorage(sk_make_sp<SkPixelStorage>(SkPixelStorage::kPixelRef))
 {
     this->needsNewGenID();
     fMutability = kMutable;
@@ -43,10 +44,6 @@ SkPixelRef::SkPixelRef(int width, int height, void* pixels, size_t rowBytes)
 
 SkPixelRef::~SkPixelRef() {
     this->callGenIDChangeListeners();
-}
-
-SkPixelStorage::Type SkPixelRef::type() const {
-    return SkPixelStorage::Type::kPixelRef;
 }
 
 // This is undefined if there are clients in-flight trying to use us

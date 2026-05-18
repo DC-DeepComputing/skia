@@ -28,13 +28,13 @@ class ScratchResourceManager;
 class Texture;
 enum class TextureFormat : uint8_t;
 
-class TextureProxy : public SkPixelStorage, public SkRefCnt {
+class TextureProxy : public SkRefCnt {
 public:
     TextureProxy() = delete;
 
     ~TextureProxy() override;
 
-    Type type() const override;
+    sk_sp<SkPixelStorage> refPixelStorage() const { return fPixelStorage; }
 
     SampleCount sampleCount() const { return fInfo.sampleCount(); }
     Mipmapped mipmapped() const { return fInfo.mipmapped(); }
@@ -141,6 +141,8 @@ private:
     sk_sp<Texture> fTexture;
 
     const LazyInstantiateCallback fLazyInstantiateCallback;
+
+    sk_sp<SkPixelStorage> fPixelStorage;
 };
 
 // Volatile texture proxy that deinstantiates itself on destruction.
