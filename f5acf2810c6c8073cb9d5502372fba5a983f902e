@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e3a32b4_99535158",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-18T17:09:36Z",
+      "side": 1,
+      "message": "PTAL, although the reproduction for this is a little shaky as it relies on exhausting GPU memory, the fix requires no additional branching costs, so I think it should be added.",
+      "revId": "f5acf2810c6c8073cb9d5502372fba5a983f902e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
