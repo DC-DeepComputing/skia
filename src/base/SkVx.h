@@ -714,6 +714,49 @@ SIN Vec<N,float>   fma(const Vec<N,float>& x,
     return map(fn, x,y,z);
 }
 
+SIN Vec<N,float> approx_rcp(const Vec<N,float>& x) {
+    if constexpr (N == 1) {
+        return 1.0f / x.val;
+    } else {
+#if SKVX_USE_SIMD && SK_CPU_X64_LEVEL >= SK_CPU_X64_LEVEL_AVX
+        if constexpr (N == 8) {
+            // From Intel intrinsics guide:
+            // "The maximum relative error for this approximation is less than 1.5*2^-12."
+            return sk_bit_cast<Vec<8,float>>(_mm256_rcp_ps(sk_bit_cast<__m256>(x)));
+        }
+#endif
+#if SKVX_USE_SIMD && SK_CPU_X64_LEVEL >= SK_CPU_X64_LEVEL_SSE1
+        if constexpr (N == 4) {
+            // From Intel intrinsics guide:
+            // "The maximum relative error for this approximation is less than 1.5*2^-12."
+            return sk_bit_cast<Vec<4,float>>(_mm_rcp_ps(sk_bit_cast<__m128>(x)));
+        }
+#endif
+#if SKVX_USE_SIMD && defined(SK_ARM_HAS_NEON)
+        // ARM Neon documentation does not list the maximum error, but assume that, like fast rsqrt
+        // instruction, it's around 1*2^-8
+        if constexpr (N == 4) {
+            return sk_bit_cast<Vec<4,float>>(vrecpeq_f32(sk_bit_cast<float32x4_t>(x)));
+        } else if constexpr (N == 2) {
+            return sk_bit_cast<Vec<2,float>>(vrecpe_f32(sk_bit_cast<float32x2_t>(x)));
+        }
+#endif
+#if SKVX_USE_SIMD && SK_CPU_LSX_LEVEL >= SK_CPU_LSX_LEVEL_LASX
+        // Loongarch unofficial guide lists no maximum error.
+        if constexpr (N == 8) {
+            return sk_bit_cast<Vec<8,float>>(__lasx_xvfrecip_s(sk_bit_cast<__m256>(x)));
+        }
+#endif
+#if SKVX_USE_SIMD && SK_CPU_LSX_LEVEL >= SK_CPU_LSX_LEVEL_LSX
+        // Loongarch unofficial guide lists no maximum error.
+        if constexpr (N == 4) {
+            return sk_bit_cast<Vec<4,float>>(__lsx_vfrecip_s(sk_bit_cast<__m128>(x)));
+        }
+#endif
+        return join(approx_rcp(x.lo), approx_rcp(x.hi));
+    }
+}
+
 SI Vec<1,int> lrint(const Vec<1,float>& x) {
     return (int)lrintf(x.val);
 }
