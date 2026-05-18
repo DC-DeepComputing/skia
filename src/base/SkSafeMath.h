@@ -41,6 +41,7 @@ public:
      *  be set to false, and it is undefined what this returns.
      */
     int addInt(int a, int b) {
+        static_assert(sizeof(int) == 4, "int is not 4 bytes");
         if (b < 0 && a < std::numeric_limits<int>::min() - b) {
             fOK = false;
             return a;
