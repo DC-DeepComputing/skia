@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "344ab4e6_ad7876cd",
+        "filename": "src/sksl/analysis/SkSLGetLoopUnrollInfo.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-05-18T15:45:57Z",
+      "side": 1,
+      "message": "This would trigger UBSAN on overflow, no?",
+      "range": {
+        "startLine": 82,
+        "startChar": 16,
+        "endLine": 82,
+        "endChar": 33
+      },
+      "revId": "ad5b2e25ad9ffc15b202bbc43940bda6b374ef88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db874d84_276c5974",
+        "filename": "src/sksl/analysis/SkSLGetLoopUnrollInfo.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-05-18T15:45:57Z",
+      "side": 1,
+      "message": "Since overflow/underflow is undefined behavior in ES2, can\u0027t we use `SkSafeMath` and an analytical approach similar to `calculate_count_float` to detect?",
+      "range": {
+        "startLine": 81,
+        "startChar": 0,
+        "endLine": 86,
+        "endChar": 9
+      },
+      "revId": "ad5b2e25ad9ffc15b202bbc43940bda6b374ef88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
