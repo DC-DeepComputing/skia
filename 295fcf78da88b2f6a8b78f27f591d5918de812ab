@@ -16,6 +16,24 @@
       "message": "I will need to wait here too. A dawn roll broke Skia CQ since yesterday:\nhttps://status.skia.org/?filter\u003dSearch\u0026repo\u003dskia\u0026search\u003dBuild-Win-MSVC-x86_64-Debug-Graphite_Dawn_D3D12\n\n```\ncmake_dawn\\gen\\include\\dawn/webgpu_cpp.h(4277): error C2061: syntax error: identifier \u0027type\u0027\ncmake_dawn\\gen\\include\\dawn/webgpu_cpp.h(4289): error C2061: syntax error: identifier \u0027type\u0027\ncmake_dawn\\gen\\include\\dawn/webgpu_cpp.h(4491): error C2338: static_assert failed: \u0027capturing lambdas aren\u0027t supported for repeatable callbacks\u0027\n```",
       "revId": "295fcf78da88b2f6a8b78f27f591d5918de812ab",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "075c5ac9_47cb3be3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-05-19T15:11:31Z",
+      "side": 1,
+      "message": "That job has been removed from the CQ. If those are the only failures, we can land.",
+      "parentUuid": "77bd963c_abef5148",
+      "revId": "295fcf78da88b2f6a8b78f27f591d5918de812ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
