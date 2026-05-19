@@ -11,6 +11,8 @@
 #include "include/gpu/graphite/Image.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "include/gpu/graphite/Surface.h"
+#include "include/private/SkPixelStorage.h"
+#include "include/private/base/SkSpan_impl.h"
 #include "src/gpu/graphite/Device.h"
 #include "src/gpu/graphite/DrawContext.h"
 #include "src/gpu/graphite/Image_Graphite.h"
@@ -23,8 +25,8 @@
 
 namespace skgpu::graphite {
 
-Image_Base::Image_Base(const SkImageInfo& info, uint32_t uniqueID)
-    : SkImage_Base(info, uniqueID) {}
+Image_Base::Image_Base(const SkImageInfo& info, uint32_t uniqueID, sk_sp<SkPixelStorage> storage)
+    : SkImage_Base(info, uniqueID, std::move(storage)) {}
 
 Image_Base::~Image_Base() = default;
 
