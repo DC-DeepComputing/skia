@@ -33,6 +33,24 @@
       "message": "Can we add a test for this? https://crbug.com/513836996 has an example repro that might be usable here.",
       "revId": "04c45acd300a077bcc2758b560ae5899fd5899e0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "50d8c19a_87a96b99",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-19T15:05:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "331dcbe1_baa4db7a",
+      "revId": "04c45acd300a077bcc2758b560ae5899fd5899e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
