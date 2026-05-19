@@ -14,3 +14,10 @@
 # build flag changes.
 per-file */include/config/SkUserConfig.h=set noparent
 per-file */include/config/SkUserConfig.h=file:OWNERS_build_files.android
+
+# Temporary exlusive lock on the (now manually curated) Android.bp file, until
+# its canonical source can be moved to the Android framework's copy of Skia.
+# Locked to avoid synchronization issues.
+# TODO(b/514746338): remove this restriction.
+per-file Android.bp=set noparent
+per-file Android.bp=nscobie

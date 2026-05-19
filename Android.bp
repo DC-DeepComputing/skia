@@ -1,0 +1,283 @@
+package {
+    default_applicable_licenses: ["external_skia_license"],
+}
+
+// Added automatically by a large-scale-change that took the approach of
+// 'apply every license found to every target'. While this makes sure we respect
+// every license restriction, it may not be entirely correct.
+//
+// e.g. GPL in an MIT project might only apply to the contrib/ directory.
+//
+// Please consider splitting the single license below into multiple licenses,
+// taking care not to lose any license_kind information, and overriding the
+// default license using the 'licenses: [...]' property on targets as needed.
+//
+// For unused files, consider creating a 'fileGroup' with "//visibility:private"
+// to attach the license to, and including a comment whether the files may be
+// used in the current project.
+//
+// large-scale-change included anything that looked like it might be a license
+// text as a license_text. e.g. LICENSE, NOTICE, COPYING etc.
+//
+// Please consider removing redundant or irrelevant files from 'license_text:'.
+//
+// large-scale-change filtered out the below license kinds as false-positives:
+//   SPDX-license-identifier-CC-BY-NC
+//   SPDX-license-identifier-GPL-2.0
+//   SPDX-license-identifier-LGPL-2.1
+//   SPDX-license-identifier-OFL:by_exception_only
+// See: http://go/android-license-faq
+license {
+    name: "external_skia_license",
+    visibility: [":__subpackages__"],
+    license_kinds: [
+        "SPDX-license-identifier-Apache-2.0",
+        "SPDX-license-identifier-BSD",
+        "SPDX-license-identifier-CC0-1.0",
+        "SPDX-license-identifier-FTL",
+        "SPDX-license-identifier-MIT",
+        "legacy_unencumbered",
+    ],
+    license_text: [
+        "LICENSE",
+        "NOTICE",
+    ],
+}
+
+build = [
+  "Android.gen.bp",
+]
+
+cc_library_static {
+    // Smaller version of Skia, without e.g. codecs, intended for use by RenderEngine.
+    name: "libskia_renderengine",
+    defaults: ["skia_defaults",
+               "skia_renderengine_deps"],
+    srcs: [
+      ":libskia_renderengine_srcs",
+    ],
+    local_include_dirs: [
+        "renderengine",
+    ],
+    export_include_dirs: [
+        "renderengine",
+    ],
+}
+
+// Skia's ffi.rs pulls in a number of additional rust sources.
+// There isn't anywhere to explicitly mention them here, but the dependency
+// should be tracked by the Soong build. If not, it will be necessary to find
+// some means of adding them as dependencies here.
+rust_ffi_static {
+    name: "libskia_rust_ffi",
+    host_supported: true,
+    crate_name: "skia",
+    srcs: ["src/ports/fontations/src/ffi.rs"],
+    include_dirs: ["src/ports/fontations/src"],
+    rustlibs: [
+      "libcxx",
+      "libskrifa",
+      "libread_fonts",
+      "libfont_types",
+    ],
+    features: [ "cxx" ],
+    target: {
+        windows: {
+            enabled: true,
+        },
+    },
+}
+
+gensrcs {
+    name: "libskia_cxx_bridge_code",
+    tools: ["cxxbridge"],
+    cmd: "$(location cxxbridge) $(in) >> $(out)",
+    srcs: ["src/ports/fontations/src/ffi.rs"],
+    output_extension: "cpp",
+}
+
+gensrcs {
+    name: "libskia_cxx_bridge_header",
+    tools: ["cxxbridge"],
+    cmd: "$(location cxxbridge) $(in) --header >> $(out)",
+    srcs: ["src/ports/fontations/src/ffi.rs"],
+    output_extension: "rs.h",
+    export_include_dirs: ["."]
+}
+
+cc_library_static {
+    name: "libskia_skcms",
+    host_supported: true,
+    sdk_version: "current",
+    srcs: [
+        ":libskia_skcms_srcs",
+    ],
+    export_include_dirs: [
+        "modules/skcms",
+    ],
+}
+
+cc_library_static {
+    name: "libskia",
+    host_supported: true,
+    cppflags:[
+        // Exceptions are necessary for SkRawCodec.
+        // FIXME: Should we split SkRawCodec into a separate target so the rest
+        // of Skia need not be compiled with exceptions?
+        "-fexceptions",
+    ],
+    srcs: [
+      ":libskia_srcs",
+    ],
+    generated_headers: [
+      "libskia_cxx_bridge_header",
+    ],
+    generated_sources: [
+      "libskia_cxx_bridge_code",
+    ],
+    target: {
+      android: {
+        srcs: [
+          ":libskia_android_srcs",
+        ],
+        local_include_dirs: [
+          "android",
+        ],
+        export_include_dirs: [
+          "android",
+        ],
+      },
+      host_linux: {
+        srcs: [
+          ":libskia_linux_srcs",
+        ],
+        local_include_dirs: [
+          "linux",
+        ],
+        export_include_dirs: [
+          "linux",
+        ],
+      },
+      darwin: {
+        srcs: [
+          ":libskia_mac_srcs",
+        ],
+        local_include_dirs: [
+          "mac",
+        ],
+        export_include_dirs: [
+          "mac",
+        ],
+      },
+      windows: {
+        enabled: true,
+        cflags: [
+          "-Wno-unknown-pragmas",
+        ],
+        srcs: [
+          ":libskia_win_srcs",
+        ],
+        local_include_dirs: [
+          "win",
+        ],
+        export_include_dirs: [
+          "win",
+        ],
+      },
+    },
+    defaults: ["skia_deps",
+               "skia_defaults",
+    ],
+}
+
+cc_defaults {
+    // Subset of the larger "skia_deps", which includes only the dependencies
+    // needed for libskia_renderengine. Note that it includes libpng and libz
+    // for the purposes of MSKP captures, but we could instead leave it up to
+    // RenderEngine to provide its own SkSerializerProcs if another client
+    // wants an even smaller version of libskia.
+    name: "skia_renderengine_deps",
+    shared_libs: [
+        "libcutils",
+        "liblog",
+        "libpng",
+        "libz",
+    ],
+    static_libs: [
+        "libarect",
+    ],
+    target: {
+      android: {
+        shared_libs: [
+            "libEGL",
+            "libGLESv2",
+            "libvulkan",
+            "libnativewindow",
+        ],
+        static_libs: [
+            "libperfetto_client_experimental",
+        ],
+        export_shared_lib_headers: [
+            "libvulkan",
+        ],
+      },
+    },
+}
+
+cc_defaults {
+    name: "skia_deps",
+    defaults: ["skia_renderengine_deps"],
+    shared_libs: [
+        "libjpeg",
+        "libpiex",
+        "libexpat",
+        "libft2",
+        "libharfbuzz_subset",
+    ],
+    static_libs: [
+        "libwebp-decode",
+        "libwebp-encode",
+        "libwuffs_mirror_release_c",
+    ],
+    cflags: [
+        "-DSK_PDF_USE_HARFBUZZ_SUBSET",
+    ],
+    whole_static_libs: [
+        "libskia_rust_ffi",
+        "libskrifa",
+    ],
+    target: {
+      android: {
+        shared_libs: [
+            "libmediandk", // Needed to link libcrabbyavif_ffi in some configurations.
+            "libdng_sdk",
+        ],
+        whole_static_libs: [
+            "libcrabbyavif_ffi",
+        ],
+      },
+      host_linux: {
+        static_libs: [
+          "libdng_sdk",
+        ],
+      },
+      darwin: {
+        host_ldlibs: [
+            "-framework AppKit",
+        ],
+        static_libs: [
+          "libdng_sdk",
+        ],
+      },
+      windows: {
+        host_ldlibs: [
+            "-lgdi32",
+            "-loleaut32",
+            "-lole32",
+            "-lopengl32",
+            "-luuid",
+            "-lwindowscodecs",
+        ],
+      },
+    },
+}
