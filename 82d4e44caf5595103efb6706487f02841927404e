@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d482c44c_08655a52",
+        "filename": "src/gpu/ganesh/vk/GrVkOpsRenderPass.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 627,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-05-19T20:13:04Z",
+      "side": 1,
+      "message": "my only worry with this is that we\u0027re not reporting anywhere that the upload failed. So the draw will still continue on and may trigger a read of uninitialized texture memory.\n\nIIRC we already have code way higher up to make sure we don\u0027t do any text draws so these inline uploads wouldn\u0027t trigger from text. Historically this was the only thing that could trigger these type of uploads. However, after this was added, we added use of atlases for path drawing to. I think that now could also trigger inline uploads as well. This is a much harder problem to solve since we don\u0027t want to ban all paths and we don\u0027t know when a path high up will need an inline upload.\n\nMaybe we could see when we add the token to do an inline upload and drop the draw there? Or maybe we can have this return false and then drop connected draws (though not sure if we know where follow up draws use this upload).",
+      "range": {
+        "startLine": 627,
+        "startChar": 4,
+        "endLine": 627,
+        "endChar": 46
+      },
+      "revId": "82d4e44caf5595103efb6706487f02841927404e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
