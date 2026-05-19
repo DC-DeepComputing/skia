@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f6c1d644_68621be8",
+        "filename": "src/core/SkRegion.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1176,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-05-19T13:41:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b0671cda_00fb888e",
+      "range": {
+        "startLine": 1174,
+        "startChar": 0,
+        "endLine": 1176,
+        "endChar": 9
+      },
+      "revId": "49ffae2efc375d4ea432c19ca8c1df6585dc6cb0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cf1f684d_62b06297",
@@ -37,6 +61,24 @@
       "writtenOn": "2026-05-15T14:50:30Z",
       "side": 1,
       "message": "I guess this optimizes for the case where the result needs more than 256 runs, like the added bench.  But there are other cases that can reduce complexity (intersection, difference, possibly even union with overlaps) such that count(result) \u003c 256 even if count(a) + count(b) \u003e 256.\n\nIf the performance gains are not major, I\u0027m kinda hesitant to make this tradeoff without also measuring the impact for some of those cases.\n\nEven for the gnarly case, we\u0027re focusing solely on construction but in practice the result will probably be used for some queries.  As a related benchmark, it would be interesting to take the resulting grid region and measure the cost of intersecting a simple rect against it.",
+      "revId": "49ffae2efc375d4ea432c19ca8c1df6585dc6cb0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4f59a98_fc065c1b",
+        "filename": "src/core/SkRegion.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1183,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-05-19T13:41:21Z",
+      "side": 1,
+      "message": "Undid this change as it was actually a slight regression in some cases (which was masked by the larger improvement to distance_to_sentinel)",
+      "parentUuid": "cf1f684d_62b06297",
       "revId": "49ffae2efc375d4ea432c19ca8c1df6585dc6cb0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
