@@ -22,6 +22,30 @@
       },
       "revId": "d4189ff7048ea48e68cd2d72fe6b5db65e0c8b2c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b823a50_603424d7",
+        "filename": "src/pathops/SkPathWriter.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-05-19T15:43:01Z",
+      "side": 0,
+      "message": "These were both private getters used zero times and one time respectively.",
+      "parentUuid": "9d1659ac_d97c7758",
+      "range": {
+        "startLine": 45,
+        "startChar": 4,
+        "endLine": 45,
+        "endChar": 85
+      },
+      "revId": "d4189ff7048ea48e68cd2d72fe6b5db65e0c8b2c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
