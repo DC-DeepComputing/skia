@@ -39,6 +39,30 @@
       },
       "revId": "917bb56cc06dcd3716dee8da89f45b5b9f44b913",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "359e6762_97e0cd19",
+        "filename": "src/gpu/ganesh/vk/GrVkOpsRenderPass.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 629,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-05-19T15:49:41Z",
+      "side": 1,
+      "message": "Yeah this was kinda my question re: expected behavior. I am on board with that plan - I modified the comment and now return early, and `SkASSERT(false)` for easier pinpointing on debug builds.",
+      "parentUuid": "b2303c6f_e9db027a",
+      "range": {
+        "startLine": 629,
+        "startChar": 8,
+        "endLine": 629,
+        "endChar": 74
+      },
+      "revId": "917bb56cc06dcd3716dee8da89f45b5b9f44b913",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
