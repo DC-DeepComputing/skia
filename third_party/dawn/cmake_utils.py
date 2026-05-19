@@ -293,6 +293,7 @@ def get_windows_settings(args):
       "-D_HAS_EXCEPTIONS=0",
       "/GR-",
       "/w",  # Dawn's warnings are noisy
+      "/wd9025",  # Disable override warning from overriding /w with /W4
   ]
 
   # Skia uses a hermetic toolchain, so we need to tell clang where to
