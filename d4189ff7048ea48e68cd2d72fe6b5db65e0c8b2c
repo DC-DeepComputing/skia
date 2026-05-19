@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d1659ac_d97c7758",
+        "filename": "src/pathops/SkPathWriter.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-19T15:40:34Z",
+      "side": 0,
+      "message": "I\u0027m assuming this getter isn\u0027t being used anymore?",
+      "range": {
+        "startLine": 45,
+        "startChar": 4,
+        "endLine": 45,
+        "endChar": 85
+      },
+      "revId": "d4189ff7048ea48e68cd2d72fe6b5db65e0c8b2c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
