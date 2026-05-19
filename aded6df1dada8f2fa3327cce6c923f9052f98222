@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7363981_68ee8950",
+        "filename": "src/base/SkSafeMath.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-05-19T19:37:21Z",
+      "side": 1,
+      "message": "I initially went with a mirrored version of addInt but this was shorter (at the expense of not being able to subtract the most negative integer). WDYT?",
+      "range": {
+        "startLine": 55,
+        "startChar": 8,
+        "endLine": 55,
+        "endChar": 14
+      },
+      "revId": "aded6df1dada8f2fa3327cce6c923f9052f98222",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
