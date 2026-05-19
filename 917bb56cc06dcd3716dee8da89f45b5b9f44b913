@@ -16,6 +16,29 @@
       "message": "Salutations Gregory, I am *not* well-versed in the usage of secondary command buffers, so I\u0027d like your opinion here. \n\nThe described problem of Skia potentially calling end(...) on a VkCommandBuffer we do not own makes sense to me, but I\u0027m less sure if this proposed solution actually makes sense in terms of expected behavior. LMKWYT please!",
       "revId": "917bb56cc06dcd3716dee8da89f45b5b9f44b913",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2303c6f_e9db027a",
+        "filename": "src/gpu/ganesh/vk/GrVkOpsRenderPass.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 629,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-05-19T15:31:07Z",
+      "side": 1,
+      "message": "is this right? I don\u0027t think we want to be doing any uploads if we\u0027re wrapping a secondary command buffer. Like I think if anything this if block should assert/fail and then return without doing anything.",
+      "range": {
+        "startLine": 629,
+        "startChar": 8,
+        "endLine": 629,
+        "endChar": 74
+      },
+      "revId": "917bb56cc06dcd3716dee8da89f45b5b9f44b913",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
