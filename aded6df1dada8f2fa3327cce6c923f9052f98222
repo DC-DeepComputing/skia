@@ -22,6 +22,30 @@
       },
       "revId": "aded6df1dada8f2fa3327cce6c923f9052f98222",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9a65084_dccf3883",
+        "filename": "src/base/SkSafeMath.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-05-19T21:01:33Z",
+      "side": 1,
+      "message": "Yeah, this looks nicer.\n\nTangentially, I always found SafeMath annoyingly verbose.  Chromium\u0027s [`CheckedNumeric`](https://source.chromium.org/chromium/chromium/src/+/main:base/numerics/checked_math.h;drc\u003d419f713d2e6100884095980a3fc33c034059261f;l\u003d22) seems so much better as it wraps the type and implements the actual operators:\n\n```\nint foo(int i) {\n    auto res \u003d (CheckedNumeric\u003cint\u003e(i) + 10000) * 1000000;\n    \n    return res.ValueOrDefault(42);\n}\n```\n\nI\u0027d like try something like that if I get some spare cycles.",
+      "parentUuid": "d7363981_68ee8950",
+      "range": {
+        "startLine": 55,
+        "startChar": 8,
+        "endLine": 55,
+        "endChar": 14
+      },
+      "revId": "aded6df1dada8f2fa3327cce6c923f9052f98222",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

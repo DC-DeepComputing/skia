@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf0b55da_c3a4cfdc",
+        "filename": "src/base/SkSafeMath.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-05-19T21:01:33Z",
+      "side": 1,
+      "message": "(not new)\n\nI wonder if we have unit tests with int_min/int_max edge cases.  Off hand, it looks like this would be UB if b \u003d\u003d int_min.",
+      "range": {
+        "startLine": 45,
+        "startChar": 57,
+        "endLine": 45,
+        "endChar": 60
+      },
+      "revId": "ff7a7b85c1017d0971d879efd229f8891a6af853",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

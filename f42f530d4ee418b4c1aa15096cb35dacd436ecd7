@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc393d40_e5775bd5",
+        "filename": "src/sksl/analysis/SkSLGetLoopUnrollInfo.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-05-19T21:01:33Z",
+      "side": 1,
+      "message": "Old code was using `std::ceil`, do we need to round this up?",
+      "revId": "f42f530d4ee418b4c1aa15096cb35dacd436ecd7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b736664_59da7791",
+        "filename": "src/sksl/analysis/SkSLGetLoopUnrollInfo.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-05-19T21:01:33Z",
+      "side": 1,
+      "message": "This can truncate to zero, I think we need to push the zero check down to the typed functions.",
+      "range": {
+        "startLine": 130,
+        "startChar": 69,
+        "endLine": 130,
+        "endChar": 83
+      },
+      "revId": "f42f530d4ee418b4c1aa15096cb35dacd436ecd7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
