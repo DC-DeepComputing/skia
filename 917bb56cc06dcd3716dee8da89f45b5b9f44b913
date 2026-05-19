@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2fd5f5d8_2060141b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-05-19T15:17:15Z",
+      "side": 1,
+      "message": "Salutations Gregory, I am *not* well-versed in the usage of secondary command buffers, so I\u0027d like your opinion here. \n\nThe described problem of Skia potentially calling end(...) on a VkCommandBuffer we do not own makes sense to me, but I\u0027m less sure if this proposed solution actually makes sense in terms of expected behavior. LMKWYT please!",
+      "revId": "917bb56cc06dcd3716dee8da89f45b5b9f44b913",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
