@@ -16,6 +16,23 @@
       "message": "PTAL, note this is correctness bug that got flagged as a security bug?",
       "revId": "04c45acd300a077bcc2758b560ae5899fd5899e0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "331dcbe1_baa4db7a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-05-19T14:26:44Z",
+      "side": 1,
+      "message": "Can we add a test for this? https://crbug.com/513836996 has an example repro that might be usable here.",
+      "revId": "04c45acd300a077bcc2758b560ae5899fd5899e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
