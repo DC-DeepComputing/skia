@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b773f687_048eefc6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-19T19:35:00Z",
+      "side": 1,
+      "message": "PTAL moved test from gm to graphite test, as it turned into a headless graphite only gm.",
+      "revId": "952bde9976b173d0033d7072933b12da514fc204",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
