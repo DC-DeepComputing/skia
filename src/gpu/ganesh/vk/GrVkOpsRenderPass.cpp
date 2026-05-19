@@ -621,6 +621,14 @@ void GrVkOpsRenderPass::inlineUpload(GrOpFlushState* state, GrDeferredTextureUpl
         SkASSERT(fGpu->isDeviceLost());
         return;
     }
+
+    // Return early if an inline upload is requested for an externally-owned (wrapped) secondary
+    // command buffer.
+    if (this->wrapsSecondaryCommandBuffer()) {
+        SkASSERT(false); // Trigger a failure in debug builds.
+        return;
+    }
+
     if (fCurrentSecondaryCommandBuffer) {
         fCurrentSecondaryCommandBuffer->end(fGpu);
         fGpu->submitSecondaryCommandBuffer(std::move(fCurrentSecondaryCommandBuffer));
@@ -629,7 +637,7 @@ void GrVkOpsRenderPass::inlineUpload(GrOpFlushState* state, GrDeferredTextureUpl
 
     // We pass in true here to signal that after the upload we need to set the upload textures
     // layout back to VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL.
-    state->doUpload(upload, true);
+    state->doUpload(upload, /*shouldPrepareSurfaceForSampling=*/true);
 
     this->addAdditionalRenderPass(false);
 }
