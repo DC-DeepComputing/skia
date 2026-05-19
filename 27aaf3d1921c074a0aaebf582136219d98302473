@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6fe9a02e_3db5cad0",
+        "filename": "src/gpu/ganesh/GrDeferredDisplayListRecorder.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-19T20:53:21Z",
+      "side": 0,
+      "message": "Because the TextureProxies now have a reffed pointer to the GrUniquelyKeyedProxyRegistry, we no longer need to orphan them when the Recorder goes away.",
+      "revId": "27aaf3d1921c074a0aaebf582136219d98302473",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "48b38dc5_de7add5d",
+        "filename": "src/gpu/ganesh/GrProxyProvider.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 965,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-19T20:53:21Z",
+      "side": 0,
+      "message": "This split was only needed bc removeAllUniqueKeys was calling processInvalidUniqueKeyImpl w/ RemoveTableEntry::kNo. W/o removeAllUniqueKeys both processInvalidUniqueKeyImpl and RemoveTableEntry can go away.",
+      "revId": "27aaf3d1921c074a0aaebf582136219d98302473",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "89fb42ac_610bd49d",
+        "filename": "src/gpu/ganesh/GrResourceCache.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-19T20:53:21Z",
+      "side": 0,
+      "message": "The uniquely keyed texture proxies no longer have a back pointer to GrResourceCache (through the ProxyProvider\u0027s GrImageContext*) so we don\u0027t need to clear the unique keys when it gets deleted.",
+      "revId": "27aaf3d1921c074a0aaebf582136219d98302473",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
