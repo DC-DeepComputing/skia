@@ -57,6 +57,30 @@
       ],
       "revId": "3a99d8bed26cb5afef373aa59b0f7b736101b770",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "27b3d749_a049f100",
+        "filename": "tests/PathOpsSimplifyTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 9989,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-05-19T00:25:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "16144efb_1a623c9c",
+      "range": {
+        "startLine": 9989,
+        "startChar": 9,
+        "endLine": 9989,
+        "endChar": 22
+      },
+      "revId": "3a99d8bed26cb5afef373aa59b0f7b736101b770",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
