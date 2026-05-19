@@ -97,6 +97,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5c1c48b8_c1b9a3f1",
+        "filename": "src/sksl/analysis/SkSLGetLoopUnrollInfo.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-05-19T15:34:16Z",
+      "side": 1,
+      "message": "\u003e I tried an analytical solution but it has the same problems as the original float version. We miss out on detecting overflow during the looping itself. The whole point of this fix is to avoid writing ES2 loops that will overflow.\n\nI don\u0027t quite follow I guess: if we have a start/end/delta, we can compute the number of iterations, and then check whether `start + count*delta` overflows - is that not sufficient to catch those cases?  (if any iteration overflows, I would expect the total to also overflow).",
+      "parentUuid": "0f8cb808_cbf547e0",
+      "range": {
+        "startLine": 81,
+        "startChar": 0,
+        "endLine": 86,
+        "endChar": 9
+      },
+      "revId": "ad5b2e25ad9ffc15b202bbc43940bda6b374ef88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "78e99680_98f9ba72",
         "filename": "src/sksl/analysis/SkSLGetLoopUnrollInfo.cpp",
         "patchSetId": 10
