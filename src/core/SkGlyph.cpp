@@ -7,6 +7,11 @@
 
 #include "src/core/SkGlyph.h"
 
+#include <cstring>
+#include <optional>
+#include <tuple>
+#include <utility>
+
 #include "include/core/SkCanvas.h"
 #include "include/core/SkData.h"
 #include "include/core/SkDrawable.h"
@@ -19,15 +24,12 @@
 #include "include/private/base/SkTo.h"
 #include "src/base/SkArenaAlloc.h"
 #include "src/base/SkBezierCurves.h"
+#include "src/core/SkBigPicture.h"
 #include "src/core/SkReadBuffer.h"
+#include "src/core/SkRecord.h"
 #include "src/core/SkScalerContext.h"
 #include "src/core/SkWriteBuffer.h"
 #include "src/text/StrikeForGPU.h"
-
-#include <cstring>
-#include <optional>
-#include <tuple>
-#include <utility>
 
 using namespace skglyph;
 using namespace sktext;
@@ -49,6 +51,29 @@ SkPictureBackedGlyphDrawable::MakeFromBuffer(SkReadBuffer& buffer) {
     SkDeserialProcs procs;
     procs.fAllowSkSL = false;
     sk_sp<SkPicture> picture = SkPicture::MakeFromData(pictureData.get(), &procs);
+
+    bool hasProhibitedOp = false;
+    if (const SkBigPicture* bigPicture = SkPicturePriv::AsSkBigPicture(picture)) {
+        const SkRecord* record = bigPicture->record();
+        for (int i = 0; i < record->count(); ++i) {
+            record->visit(i, [&](const auto& op) {
+                using OpType = std::decay_t<decltype(op)>;
+                if constexpr (OpType::kTags &
+                              (SkRecords::kHasImage_Tag | SkRecords::kHasText_Tag)) {
+                    hasProhibitedOp = true;
+                }
+                if constexpr (std::is_same_v<OpType, SkRecords::DrawPicture> ||
+                              std::is_same_v<OpType, SkRecords::DrawDrawable>) {
+                    hasProhibitedOp = true;
+                }
+            });
+        }
+    }
+
+    if (hasProhibitedOp) {
+        return nullptr;
+    }
+
     if (!buffer.validate(picture != nullptr)) {
         return nullptr;
     }
