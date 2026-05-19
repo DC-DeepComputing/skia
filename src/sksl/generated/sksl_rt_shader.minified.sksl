@@ -3,7 +3,7 @@ static constexpr char SKSL_MINIFIED_sksl_rt_shader[] =
 ",0.,0.,saturate(dot(half3(.2126,.7152,.0722),a)));}half4 sk_decal(shader a,"
 "float2 b,float4 c){half4 e=half4(c-b.xyxy)*half4(-1.,-1.,1.,1.);e=saturate("
 "e+.5);return(((e.x*e.y)*e.z)*e.w)*a.eval(b);}half4 sk_displacement(shader a"
-",shader b,float2 c,half2 d,half4 e,half4 f){half4 g=unpremul(a.eval(c));half2"
+",shader b,float2 c,half2 d,half4 e,half4 f){half4 g=saturate(unpremul(a.eval(c)));half2"
 " h=half2(dot(g,e),dot(g,f));h=d*(h-.5);return b.eval(c+float2(h));}half4 sk_magnifier"
 "(shader a,float2 b,float4 c,float4 d,float2 e){float2 f=d.xy+d.zw*b;float2 g"
 "=min(b-c.xy,c.zw-b)*e;float h=all(lessThan(g,2..xx))?2.-length(2.-g):min(g."

@@ -59,7 +59,7 @@ std::unique_ptr<GrFragmentProcessor::ProgramImpl> ColorTableEffect::onMakeProgra
             SkString g = this->invokeChild(kTexEffectFPIndex, args, "half2(coord.g, 2.5)");
             SkString b = this->invokeChild(kTexEffectFPIndex, args, "half2(coord.b, 3.5)");
             fragBuilder->codeAppendf(
-                    "half4 coord = 255 * unpremul(%s) + 0.5;\n"
+                    "half4 coord = 255 * unpremul(%s) + 0.5;\n" // Does this need saturate as well?
                     "half4 color = half4(%s.a, %s.a, %s.a, 1);\n"
                     "return color * %s.a;\n",
                     inputColor.c_str(),
