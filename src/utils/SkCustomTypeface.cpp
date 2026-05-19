@@ -34,9 +34,13 @@
 #include "include/private/base/SkMalloc.h"
 #include "include/private/base/SkTo.h"
 #include "src/core/SkAdvancedTypefaceMetrics.h" // IWYU pragma: keep
+#include "src/core/SkBigPicture.h"
 #include "src/core/SkFontDescriptor.h"
 #include "src/core/SkGlyph.h"
 #include "src/core/SkMask.h"
+#include "src/core/SkPicturePriv.h"
+#include "src/core/SkRecord.h"
+#include "src/core/SkRecords.h"
 #include "src/core/SkScalerContext.h"
 #include "src/core/SkStreamPriv.h"
 
@@ -178,6 +182,40 @@ void SkCustomTypefaceBuilder::setGlyph(SkGlyphID index, float advance,
     auto& rec = this->ensureStorage(index);
     rec.fAdvance  = advance;
     rec.fDrawable = std::move(drawable);
+
+    // In order to prevent reentrant calls from a drawTextBlob (e.g. by drawing a text blob backed
+    // by an SkDrawable that contains a drawTextBlob command), we go through each command in the
+    // SkDrawable to verify it does not contain an Image, Text, a Picture, or a Drawable. If it
+    // does, we simply do not draw the glyph.
+    if (rec.fDrawable) {
+        bool hasProhibitedOp = false;
+        sk_sp<SkPicture> pic = rec.fDrawable->makePictureSnapshot();
+        if (const SkBigPicture* bigPicture = SkPicturePriv::AsSkBigPicture(pic)) {
+            const SkRecord* record = bigPicture->record();
+            for (int i = 0; i < record->count(); ++i) {
+                record->visit(i, [&](const auto& op) {
+                    using OpType = std::decay_t<decltype(op)>;
+                    if constexpr (OpType::kTags &
+                                  (SkRecords::kHasImage_Tag | SkRecords::kHasText_Tag)) {
+                        hasProhibitedOp = true;
+                    }
+                    if constexpr (std::is_same_v<OpType, SkRecords::DrawPicture> ||
+                                  std::is_same_v<OpType, SkRecords::DrawDrawable>) {
+                        hasProhibitedOp = true;
+                    }
+                });
+
+                if (hasProhibitedOp) {
+                    break;
+                }
+            }
+        }
+
+        if (hasProhibitedOp) {
+            rec.fDrawable = nullptr;
+        }
+    }
+
     rec.fBounds   = bounds;
     rec.fPath     = SkPath();
 }
