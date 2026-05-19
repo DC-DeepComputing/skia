@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a58b1d2a_21e52e7b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-05-19T13:33:30Z",
+      "side": 1,
+      "message": "I will need to wait. A dawn roll broke Skia CQ since yesterday:\nhttps://status.skia.org/?filter\u003dSearch\u0026repo\u003dskia\u0026search\u003dBuild-Win-MSVC-x86_64-Debug-Graphite_Dawn_D3D12\n\n\n```\n\ncmake_dawn\\gen\\include\\dawn/webgpu_cpp.h(4277): error C2061: syntax error: identifier \u0027type\u0027\ncmake_dawn\\gen\\include\\dawn/webgpu_cpp.h(4289): error C2061: syntax error: identifier \u0027type\u0027\ncmake_dawn\\gen\\include\\dawn/webgpu_cpp.h(4491): error C2338: static_assert failed: \u0027capturing lambdas aren\u0027t supported for repeatable callbacks\u0027\n```",
+      "revId": "b1299904bc8423307bd25ff8de0321f8a2d990f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
