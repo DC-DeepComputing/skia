@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3b3daa7_abd8a0b7",
+        "filename": "src/gpu/ganesh/effects/GrColorTableEffect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-05-19T16:49:39Z",
+      "side": 1,
+      "message": "See other comment",
+      "parentUuid": "cb0e18c2_2e9e2c9b",
+      "revId": "baea01a7a3988284fe5cd5465f841c7bf2af65d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "901955ca_8297d6a2",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-05-19T16:04:25Z",
       "side": 1,
       "message": "I asked Gemini to scan for other places where we sample in SkSL that might also need to be clamped. Is this another spot that needs a saturate?",
+      "revId": "baea01a7a3988284fe5cd5465f841c7bf2af65d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ababbe07_7998cc15",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 1350,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-05-19T16:49:39Z",
+      "side": 1,
+      "message": "Neither this nor the Ganesh version need to be guarded because the texture being sampled is one that we build directly. It\u0027s a 256-wide 1D texture. If the unpremul value blows up, we\u0027ll have a coordinate outside [0,1] but that is clamped during sampling to [0,1] and everything is fine.",
+      "parentUuid": "901955ca_8297d6a2",
       "revId": "baea01a7a3988284fe5cd5465f841c7bf2af65d8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
