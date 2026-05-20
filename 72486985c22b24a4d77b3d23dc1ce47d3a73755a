@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "faf674ab_2d0d79e3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-05-20T14:35:07Z",
+      "side": 1,
+      "message": "This could have performance impacts for our collection allocations (other mallocs and arenas didn\u0027t use this API so the blast radius is fairly small). I\u0027ll pay attention for regressions and re-evaluate as needed.",
+      "revId": "72486985c22b24a4d77b3d23dc1ce47d3a73755a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
