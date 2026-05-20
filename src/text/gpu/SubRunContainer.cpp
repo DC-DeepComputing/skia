@@ -106,6 +106,37 @@ SkSpan<const SkPoint> get_positions(SkZip<U, const SkPoint> accepted) {
     return accepted.template get<1>();
 }
 
+SkRect reconstruct_creation_bounds(const VertexFiller& vf,
+                                 GlyphVector& glyphVector,
+                                 skglyph::ActionType actionType) {
+    SkRect boundingRect = SkRect::MakeEmpty();
+    SkSpan<const SkPoint> topLefts = vf.topLefts();
+    int count = vf.count();
+
+    StrikeForGPU* strike = glyphVector.strikePromise().strike();
+    if (!strike) {
+        return boundingRect;
+    }
+
+    for (int i = 0; i < count; ++i) {
+        SkPackedGlyphID packedID = glyphVector.packedIDAt(i);
+        SkGlyphDigest digest = strike->digestFor(actionType, packedID);
+        SkGlyphRect glyphRect = digest.bounds();
+        if (actionType == skglyph::kSDFT) {
+            glyphRect = glyphRect.inset(SK_DistanceFieldInset, SK_DistanceFieldInset);
+        }
+        SkPoint offset = {topLefts[i].x() - glyphRect.leftTop().x(),
+                          topLefts[i].y() - glyphRect.leftTop().y()};
+        SkRect r = glyphRect.rect().makeOffset(offset.x(), offset.y());
+        if (i == 0) {
+            boundingRect = r;
+        } else {
+            boundingRect.join(r);
+        }
+    }
+    return boundingRect;
+}
+
 // -- PathOpSubmitter ------------------------------------------------------------------------------
 // PathOpSubmitter holds glyph ids until ready to draw. During drawing, the glyph ids are
 // converted to SkPaths. PathOpSubmitter can only be serialized when it is holding glyph ids;
@@ -628,8 +659,10 @@ public:
             return nullptr;
         }
 
+        SkRect safeCreationBounds = reconstruct_creation_bounds(*vertexFiller, *glyphVector, skglyph::kDirectMask);
+
         SkASSERT(buffer.isValid());
-        return alloc->makeUnique<DirectMaskSubRun>(std::move(*vertexFiller),
+        return alloc->makeUnique<DirectMaskSubRun>(vertexFiller->withCreationBounds(safeCreationBounds),
                                                    std::move(*glyphVector));
     }
 
@@ -725,9 +758,12 @@ public:
         if (!buffer.validate(glyphVector->glyphCount() == vertexFiller->count())) {
             return nullptr;
         }
+
+        SkRect safeCreationBounds = reconstruct_creation_bounds(*vertexFiller, *glyphVector, skglyph::kMask);
+
         const bool isBigEnough = buffer.readBool();
         return alloc->makeUnique<TransformedMaskSubRun>(
-                isBigEnough, std::move(*vertexFiller), std::move(*glyphVector));
+                isBigEnough, vertexFiller->withCreationBounds(safeCreationBounds), std::move(*glyphVector));
     }
 
     int unflattenSize() const override {
@@ -858,10 +894,13 @@ public:
         if (!buffer.validate(glyphVector->glyphCount() == vertexFiller->count())) {
             return nullptr;
         }
+
+        SkRect safeCreationBounds = reconstruct_creation_bounds(*vertexFiller, *glyphVector, skglyph::kSDFT);
+
         return alloc->makeUnique<SDFTSubRun>(useLCD,
                                              isAntiAliased,
                                              matrixRange,
-                                             std::move(*vertexFiller),
+                                             vertexFiller->withCreationBounds(safeCreationBounds),
                                              std::move(*glyphVector));
     }
 

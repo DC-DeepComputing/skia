@@ -40,6 +40,8 @@
 #include "src/core/SkTHash.h"
 #include "src/core/SkTypeface_remote.h"
 #include "src/core/SkWriteBuffer.h"
+#include "src/text/gpu/SlugImpl.h"
+#include "src/text/gpu/SubRunContainer.h"
 #include "src/text/gpu/SubRunControl.h"
 #include "tests/CtsEnforcement.h"
 #include "tests/Test.h"
@@ -47,6 +49,7 @@
 #include "tools/ToolUtils.h"
 #include "tools/fonts/FontToolUtils.h"
 #include "tools/fonts/TestEmptyTypeface.h"
+#include "tools/text/gpu/TextBlobTools.h"
 
 #if defined(SK_GANESH)
 #include "include/gpu/ganesh/GrContextOptions.h"
@@ -440,6 +443,119 @@ DEF_GANESH_TEST_FOR_CONTEXTS(SkRemoteGlyphCache_SlugSerialization,
     REPORTER_ASSERT(reporter, !discardableManager->hasCacheMiss());
 
     // Must unlock everything on termination, otherwise memory leaks can be reported.
+    discardableManager->unlockAndDeleteAll();
+}
+
+DEF_GANESH_TEST_FOR_CONTEXTS(SkRemoteGlyphCache_SlugSanitizeMaliciousBounds,
+                             skgpu::IsRenderingContext,
+                             reporter,
+                             ctxInfo,
+                             use_padding_options,
+                             CtsEnforcement::kNever) {
+    auto dContext = ctxInfo.directContext();
+    sk_sp<DiscardableManager> discardableManager = sk_make_sp<DiscardableManager>();
+    SkStrikeServer server(discardableManager.get());
+    SkStrikeClient client(discardableManager, false);
+    const SkPaint paint;
+
+    auto serverTypeface = ToolUtils::CreateTestTypeface("monospace", SkFontStyle());
+
+    int glyphCount = 10;
+    auto serverBlob = buildTextBlob(serverTypeface, glyphCount);
+    auto props = FindSurfaceProps(dContext);
+    std::unique_ptr<SkCanvas> analysisCanvas = server.makeAnalysisCanvas(
+            100, 100, props, nullptr, dContext->supportsDistanceFieldText(),
+            !dContext->priv().caps()->disablePerspectiveSDFText());
+
+    auto srcSlug = Slug::ConvertBlob(analysisCanvas.get(), *serverBlob, {10.f, 10.f}, paint);
+    auto dstSlugData = srcSlug->serialize();
+
+    std::vector<uint8_t> serverStrikeData;
+    server.writeStrikeData(&serverStrikeData);
+
+    REPORTER_ASSERT(reporter,
+                    client.readStrikeData(serverStrikeData.data(), serverStrikeData.size()));
+
+    // Find the original creationBounds of the first atlas subrun
+    auto* srcSlugImpl = static_cast<sktext::gpu::SlugImpl*>(srcSlug.get());
+    const sktext::gpu::AtlasSubRun* srcAtlasSubRun =
+            sktext::gpu::TextBlobTools::FirstSubRun(srcSlugImpl->subRuns().get());
+    REPORTER_ASSERT(reporter, srcAtlasSubRun != nullptr, "Could not find atlas subrun in source slug");
+    SkRect origBounds = srcAtlasSubRun->vertexFiller().creationBounds();
+
+    // Verify that the stream does not contain the 4 floats of origBounds (proves we do not package them)
+    float targetFloats[4] = { origBounds.fLeft, origBounds.fTop, origBounds.fRight, origBounds.fBottom };
+    for (size_t i = 0; i + sizeof(targetFloats) <= dstSlugData->size(); i += 4) {
+        REPORTER_ASSERT(reporter, memcmp(dstSlugData->bytes() + i, targetFloats, sizeof(targetFloats)) != 0,
+                        "Stream must not package creation bounds!");
+    }
+
+    // Deserialize the data.
+    auto dstSlug = client.deserializeSlugForTest(dstSlugData->data(), dstSlugData->size());
+    REPORTER_ASSERT(reporter, dstSlug != nullptr);
+
+    // Verify that the deserialized subrun's bounds were safely reconstructed!
+    auto* dstSlugImpl = static_cast<sktext::gpu::SlugImpl*>(dstSlug.get());
+    const sktext::gpu::AtlasSubRun* dstAtlasSubRun =
+            sktext::gpu::TextBlobTools::FirstSubRun(dstSlugImpl->subRuns().get());
+    REPORTER_ASSERT(reporter, dstAtlasSubRun != nullptr, "No atlas subrun found in deserialized slug");
+    SkRect deserializedBounds = dstAtlasSubRun->vertexFiller().creationBounds();
+    REPORTER_ASSERT(reporter, deserializedBounds.fLeft >= origBounds.fLeft - 1.f &&
+                              deserializedBounds.fRight <= origBounds.fRight + 1.f);
+
+    // Must unlock everything on termination, otherwise memory leaks can be reported.
+    discardableManager->unlockAndDeleteAll();
+}
+
+DEF_GANESH_TEST_FOR_CONTEXTS(SkRemoteGlyphCache_SlugSerialization_LargeOffset,
+                             skgpu::IsRenderingContext,
+                             reporter,
+                             ctxInfo,
+                             use_padding_options,
+                             CtsEnforcement::kNever) {
+    auto dContext = ctxInfo.directContext();
+    sk_sp<DiscardableManager> discardableManager = sk_make_sp<DiscardableManager>();
+    SkStrikeServer server(discardableManager.get());
+    SkStrikeClient client(discardableManager, false);
+    const SkPaint paint;
+
+    auto serverTypeface = ToolUtils::CreateTestTypeface("monospace", SkFontStyle());
+
+    int glyphCount = 10;
+    auto serverBlob = buildTextBlob(serverTypeface, glyphCount);
+    auto props = FindSurfaceProps(dContext);
+    std::unique_ptr<SkCanvas> analysisCanvas = server.makeAnalysisCanvas(
+            200, 200, props, nullptr, dContext->supportsDistanceFieldText(),
+            !dContext->priv().caps()->disablePerspectiveSDFText());
+
+    // Generate slug with a large offset (e.g., 100, 100)
+    auto srcSlug = Slug::ConvertBlob(analysisCanvas.get(), *serverBlob, {100.f, 100.f}, paint);
+    auto dstSlugData = srcSlug->serialize();
+
+    std::vector<uint8_t> serverStrikeData;
+    server.writeStrikeData(&serverStrikeData);
+
+    REPORTER_ASSERT(reporter,
+                    client.readStrikeData(serverStrikeData.data(), serverStrikeData.size()));
+
+    auto draw_with_clip = [&](sk_sp<Slug> slug) {
+        auto surface = MakeSurface(200, 200, dContext);
+        auto canvas = surface->getCanvas();
+        canvas->clipRect(SkRect::MakeLTRB(90, 90, 200, 200));
+        slug->draw(canvas, paint);
+        SkBitmap bitmap;
+        bitmap.allocN32Pixels(200, 200);
+        surface->readPixels(bitmap, 0, 0);
+        return bitmap;
+    };
+
+    SkBitmap expected = draw_with_clip(srcSlug);
+    auto dstSlug = client.deserializeSlugForTest(dstSlugData->data(), dstSlugData->size());
+    REPORTER_ASSERT(reporter, dstSlug != nullptr);
+    SkBitmap actual = draw_with_clip(dstSlug);
+
+    compare_blobs(expected, actual, reporter);
+
     discardableManager->unlockAndDeleteAll();
 }
 

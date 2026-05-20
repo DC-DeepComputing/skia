@@ -78,11 +78,15 @@ public:
 
     skgpu::MaskFormat maskFormat() const { return fMaskFormat; }
 
+    const SkMatrix& creationMatrix() const { return fCreationMatrix; }
+
     bool isLCD() const;
 
     int count() const { return SkCount(fLeftTop); }
 
     SkSpan<const SkPoint> topLefts() const { return fLeftTop; }
+
+    SkRect creationBounds() const { return fCreationBounds; }
 
     bool canDrawDirect() const { return fCanDrawDirect; }
 
@@ -91,6 +95,8 @@ public:
     }
 
     SkMatrix viewDifference(const SkMatrix& positionMatrix) const;
+
+    VertexFiller withCreationBounds(SkRect bounds) const;
 
 private:
     static std::tuple<bool, SkVector> CanUseDirect(const SkMatrix& creationMatrix,
