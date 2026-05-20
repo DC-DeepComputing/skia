@@ -53,27 +53,41 @@ void GrOpFlushState::executeDrawsAndUploadsForMeshDrawOp(
 
     while (fCurrDraw != fDraws.end() && fCurrDraw->fOp == op) {
         skgpu::Token drawToken = fTokenTracker->nextFlushToken();
+
+        bool drawUploadsSucceed = true;
         while (fCurrUpload != fInlineUploads.end() &&
                fCurrUpload->fUploadBeforeToken == drawToken) {
-            this->opsRenderPass()->inlineUpload(this, fCurrUpload->fUpload);
+            if (!this->opsRenderPass()->inlineUpload(this, fCurrUpload->fUpload)) {
+                if (drawUploadsSucceed) {
+                    // Only increase the draw failure count once even if multiple uploads fail.
+                    fGpu->stats()->incNumFailedDraws();
+                }
+                drawUploadsSucceed = false;
+            }
+            // Attempt subsequent uploads even if one fails (future draws may depend upon them).
             ++fCurrUpload;
         }
 
-        GrProgramInfo programInfo(this->caps(),
-                                  this->writeView(),
-                                  this->usesMSAASurface(),
-                                  pipeline,
-                                  userStencilSettings,
-                                  fCurrDraw->fGeometryProcessor,
-                                  fCurrDraw->fPrimitiveType,
-                                  this->renderPassBarriers(),
-                                  this->colorLoadOp());
+        // If not all of the uploads succeeded, do not attempt to execute the draw and relevant
+        // preparations. Continue on to the next draw operation (which may also fail if subsequent
+        // draw calls depended upon these uploads, but we cannot know that at this point).
+        if (drawUploadsSucceed) {
+            GrProgramInfo programInfo(this->caps(),
+                                      this->writeView(),
+                                      this->usesMSAASurface(),
+                                      pipeline,
+                                      userStencilSettings,
+                                      fCurrDraw->fGeometryProcessor,
+                                      fCurrDraw->fPrimitiveType,
+                                      this->renderPassBarriers(),
+                                      this->colorLoadOp());
 
-        this->bindPipelineAndScissorClip(programInfo, chainBounds);
-        this->bindTextures(programInfo.geomProc(), fCurrDraw->fGeomProcProxies,
-                           programInfo.pipeline());
-        for (int i = 0; i < fCurrDraw->fMeshCnt; ++i) {
-            this->drawMesh(fCurrDraw->fMeshes[i]);
+            this->bindPipelineAndScissorClip(programInfo, chainBounds);
+            this->bindTextures(programInfo.geomProc(), fCurrDraw->fGeomProcProxies,
+                            programInfo.pipeline());
+            for (int i = 0; i < fCurrDraw->fMeshCnt; ++i) {
+                this->drawMesh(fCurrDraw->fMeshes[i]);
+            }
         }
 
         fTokenTracker->issueFlushToken();
