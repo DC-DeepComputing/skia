@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d4810dd_ad1882ec",
+        "filename": "src/gpu/ganesh/mtl/GrMtlOpsRenderPass.mm",
+        "patchSetId": 9
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-05-20T15:33:51Z",
+      "side": 1,
+      "message": "Do you think a failure to set up resolve should lead to a failure where we do not attempt the associated draw call? I could see an argument for yes, personally, but would like your opinion.",
+      "range": {
+        "startLine": 199,
+        "startChar": 8,
+        "endLine": 199,
+        "endChar": 21
+      },
+      "revId": "aa9181d9bf6ce8b56f4f5e478d23433e3a851f8e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

@@ -22,6 +22,30 @@
       },
       "revId": "82d4e44caf5595103efb6706487f02841927404e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1fd865b0_114dafc8",
+        "filename": "src/gpu/ganesh/vk/GrVkOpsRenderPass.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 627,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-05-20T15:33:51Z",
+      "side": 1,
+      "message": "Talking offline, yes, went ahead and bubbled up this failure to the calling method where we can abort a draw and report its failure if an upload is unsuccessful.",
+      "parentUuid": "d482c44c_08655a52",
+      "range": {
+        "startLine": 627,
+        "startChar": 4,
+        "endLine": 627,
+        "endChar": 46
+      },
+      "revId": "82d4e44caf5595103efb6706487f02841927404e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
