@@ -16,6 +16,23 @@
       "message": "The bug was approved for M144 LTS. PTAL.",
       "revId": "4ceb76946e6489a8a4f0392180d99c8ab34058a1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "af77bacd_c24959a7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 14529
+      },
+      "writtenOn": "2026-05-20T08:06:37Z",
+      "side": 1,
+      "message": "[LTS sheriff] LGTM",
+      "revId": "4ceb76946e6489a8a4f0392180d99c8ab34058a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
