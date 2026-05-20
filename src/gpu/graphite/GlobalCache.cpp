@@ -35,6 +35,7 @@ uint32_t next_compilation_id() {
     return nextId.fetch_add(1, std::memory_order_relaxed);
 }
 
+// test
 #if defined(GPU_TEST_UTILS)
 // TODO(b/391403921): get rid of this special case once we've got color space transform shader
 // specialization more under control
