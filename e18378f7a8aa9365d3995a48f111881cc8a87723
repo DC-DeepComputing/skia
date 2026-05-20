@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c36c1a2_ab599c6a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-20T15:01:00Z",
+      "side": 1,
+      "message": "I have added the uniform and child data to the hash, but I am unsure whether we should upgrade the size of the hash to u64 to guard against a brute force attack. At a u32 only ~65k shaders are required to get a collision. Now, how useful that collision will be is the question?\n\nAdding the u64 hash is possible it just requires more plumbing",
+      "revId": "e18378f7a8aa9365d3995a48f111881cc8a87723",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
