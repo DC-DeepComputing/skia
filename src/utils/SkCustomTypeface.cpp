@@ -7,6 +7,14 @@
 
 #include "include/utils/SkCustomTypeface.h"
 
+#include <algorithm>
+#include <cstdint>
+#include <cstring>
+#include <memory>
+#include <optional>
+#include <utility>
+#include <vector>
+
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkData.h"
@@ -33,20 +41,15 @@
 #include "include/private/base/SkFixed.h"
 #include "include/private/base/SkMalloc.h"
 #include "include/private/base/SkTo.h"
-#include "src/core/SkAdvancedTypefaceMetrics.h" // IWYU pragma: keep
+#include "src/core/SkAdvancedTypefaceMetrics.h"  // IWYU pragma: keep
+#include "src/core/SkBigPicture.h"
 #include "src/core/SkFontDescriptor.h"
 #include "src/core/SkGlyph.h"
 #include "src/core/SkMask.h"
+#include "src/core/SkPicturePriv.h"
+#include "src/core/SkRecord.h"
 #include "src/core/SkScalerContext.h"
 #include "src/core/SkStreamPriv.h"
-
-#include <algorithm>
-#include <cstdint>
-#include <cstring>
-#include <memory>
-#include <optional>
-#include <utility>
-#include <vector>
 
 class SkArenaAlloc;
 class SkDescriptor;
@@ -433,6 +436,30 @@ public:
     void markDone() { fStream = nullptr; }
 };
 
+bool hasProhibitedOp(sk_sp<SkDrawable> drawable) {
+    bool result = false;
+    sk_sp<SkPicture> pic = drawable->makePictureSnapshot();
+    auto detectImageAndTextTags = [&](const auto& record) {
+        using RecordType = std::decay_t<decltype(record)>;
+        if constexpr (std::is_same_v<RecordType, SkRecords::DrawPicture> ||
+                      std::is_same_v<RecordType, SkRecords::DrawDrawable>) {
+            result = true;
+        }
+
+        if constexpr (RecordType::kTags & (SkRecords::kHasImage_Tag | SkRecords::kHasText_Tag)) {
+            result = true;
+        }
+    };
+    if (const SkBigPicture* bigPicture = SkPicturePriv::AsSkBigPicture(pic)) {
+        const SkRecord* record = bigPicture->record();
+        for (int commandIndex = 0; commandIndex < record->count(); ++commandIndex) {
+            record->visit(commandIndex, detectImageAndTextTags);
+            if (result) break;
+        }
+    }
+    return result;
+}
+
 sk_sp<SkTypeface> SkCustomTypefaceBuilder::Deserialize(SkStream* stream) {
     AutoRestorePosition arp(stream);
 
@@ -503,6 +530,9 @@ sk_sp<SkTypeface> SkCustomTypefaceBuilder::Deserialize(SkStream* stream) {
                 procs.fAllowSkSL = false;
                 auto drawable = SkDrawable::Deserialize(data->data(), data->size(), &procs);
                 if (!drawable) {
+                    return nullptr;
+                }
+                if (hasProhibitedOp(drawable)) {
                     return nullptr;
                 }
                 builder.setGlyph(i, advance, std::move(drawable), bounds);
