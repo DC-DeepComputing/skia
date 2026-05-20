@@ -89,17 +89,17 @@ var deps = deps_parser.DepsEntries{
 	},
 	"chromium.googlesource.com/external/github.com/KhronosGroup/Vulkan-Headers": {
 		Id:      "chromium.googlesource.com/external/github.com/KhronosGroup/Vulkan-Headers",
-		Version: "8cfaaa1d4deedc865e52a42e654c5ec0d7d75eb0",
+		Version: "015e25c3c91b70eb1a754d36fb14c4ba6ad9b0b9",
 		Path:    "third_party/externals/vulkan-headers",
 	},
 	"chromium.googlesource.com/external/github.com/KhronosGroup/Vulkan-Tools": {
 		Id:      "chromium.googlesource.com/external/github.com/KhronosGroup/Vulkan-Tools",
-		Version: "225242ea4847b36e4642064cc4b1b041ed11c2de",
+		Version: "e3d18f90c0b8ef1f52539e0674a42f0adfe30381",
 		Path:    "third_party/externals/vulkan-tools",
 	},
 	"chromium.googlesource.com/external/github.com/KhronosGroup/Vulkan-Utility-Libraries": {
 		Id:      "chromium.googlesource.com/external/github.com/KhronosGroup/Vulkan-Utility-Libraries",
-		Version: "ca09359985d967d1a6c81d11c2aa28d6ada89cf6",
+		Version: "28d3b5930a6da0e4f15040679d8b51dda0b29c86",
 		Path:    "third_party/externals/vulkan-utility-libraries",
 	},
 	"chromium.googlesource.com/external/github.com/KhronosGroup/glslang": {
@@ -154,7 +154,7 @@ var deps = deps_parser.DepsEntries{
 	},
 	"chromium.googlesource.com/vulkan-deps": {
 		Id:      "chromium.googlesource.com/vulkan-deps",
-		Version: "41728e9eef28c61924ab5d015d3e78a3006956a9",
+		Version: "6906a740f23070569066aa6565c9c2d5ddeedf63",
 		Path:    "third_party/externals/vulkan-deps",
 	},
 	"chromium.googlesource.com/webm/libwebp": {
@@ -204,12 +204,12 @@ var deps = deps_parser.DepsEntries{
 	},
 	"skia.googlesource.com/external/github.com/KhronosGroup/SPIRV-Headers": {
 		Id:      "skia.googlesource.com/external/github.com/KhronosGroup/SPIRV-Headers",
-		Version: "82dfca37143878c848d8df1f9e4d746f65e6827e",
+		Version: "8c5559c134abcf432ec59db842404087b9906c1a",
 		Path:    "third_party/externals/spirv-headers",
 	},
 	"skia.googlesource.com/external/github.com/KhronosGroup/SPIRV-Tools": {
 		Id:      "skia.googlesource.com/external/github.com/KhronosGroup/SPIRV-Tools",
-		Version: "83876d92207829cc16f1c93d7354ee376d9c8241",
+		Version: "21c81e0a649fdfc14f35a3eb243e42adff9e40bf",
 		Path:    "third_party/externals/spirv-tools",
 	},
 	"skia.googlesource.com/external/github.com/emscripten-core/emsdk": {
