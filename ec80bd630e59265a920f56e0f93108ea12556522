@@ -16,6 +16,24 @@
       "message": "PTAL? I think I\u0027m doing this correctly?",
       "revId": "ec80bd630e59265a920f56e0f93108ea12556522",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd96905b_4296ac05",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-05-20T17:55:48Z",
+      "side": 1,
+      "message": "You should just need to go to the original CL (https://skia-review.googlesource.com/1238257), click the 3 vertical dots, pick Cherry-Pick and then type in `chrome/m148` for the branch.  This should then preserve in the metadata that it\u0027s a cherry pick of the original CL, which this does not have",
+      "parentUuid": "fff3c60d_a0d622af",
+      "revId": "ec80bd630e59265a920f56e0f93108ea12556522",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
