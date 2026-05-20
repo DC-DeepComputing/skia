@@ -798,6 +798,24 @@ SkRuntimeEffect::SkRuntimeEffect(std::unique_ptr<SkSL::Program> baseProgram,
                                sizeof(options.fStableKey), fHash);
     fHash = SkChecksum::Hash32(&options.maxVersionAllowed,
                                sizeof(options.maxVersionAllowed), fHash);
+
+    for (const Uniform& u : fUniforms) {
+        uint32_t uniformMetadata[] = {
+            static_cast<uint32_t>(u.type),
+            static_cast<uint32_t>(u.count),
+            u.flags,
+            static_cast<uint32_t>(u.offset)
+        };
+        fHash = SkChecksum::Hash32(uniformMetadata, sizeof(uniformMetadata), fHash);
+    }
+
+    for (const Child& c : fChildren) {
+        uint32_t childMetadata[] = {
+            static_cast<uint32_t>(c.type),
+            static_cast<uint32_t>(c.index)
+        };
+        fHash = SkChecksum::Hash32(childMetadata, sizeof(childMetadata), fHash);
+    }
 }
 
 SkRuntimeEffect::~SkRuntimeEffect() = default;
