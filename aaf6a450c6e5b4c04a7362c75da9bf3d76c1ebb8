@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac70878a_bef9f881",
+        "filename": "modules/skcms/src/Transform_inl.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 435,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-05-20T12:46:35Z",
+      "side": 0,
+      "message": "I don\u0027t think this is a good idea. go/unsigned\n\nIf a negative did get here, the casting to unsigned wouldn\u0027t help any - it would just turn into a big number. It\u0027s better to catch negative numbers higher up stack.",
+      "range": {
+        "startLine": 435,
+        "startChar": 33,
+        "endLine": 435,
+        "endChar": 36
+      },
+      "revId": "aaf6a450c6e5b4c04a7362c75da9bf3d76c1ebb8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
