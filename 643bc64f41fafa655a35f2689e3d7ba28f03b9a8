@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "775a58ec_7bd5933d",
+        "filename": "src/gpu/ganesh/GrProxyProvider.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-05-20T14:52:42Z",
+      "side": 1,
+      "message": "nit: line length and prefer `using` syntax.",
+      "range": {
+        "startLine": 88,
+        "startChar": 0,
+        "endLine": 88,
+        "endChar": 114
+      },
+      "revId": "643bc64f41fafa655a35f2689e3d7ba28f03b9a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
