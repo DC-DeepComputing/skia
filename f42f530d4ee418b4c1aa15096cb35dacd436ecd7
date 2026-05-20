@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "59a4c080_790a51c1",
+        "filename": "src/sksl/analysis/SkSLGetLoopUnrollInfo.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-05-20T12:23:57Z",
+      "side": 1,
+      "message": "I don\u0027t think so? If it\u0027s not evenly divisible, we won\u0027t exactly hit the end condition anyway. \n\nExample: \nstart \u003d 0, end \u003d 9, delta \u003d 3; (9-0)/3 \u003d\u003d 3; 0 + 3*3 \u003d\u003d 9 (good)\nstart \u003d 0, end \u003d 8, delta \u003d 3; (8-0)/3 \u003d\u003d 2; 0 + 3*2 !\u003d 9 (does not terminate)\n\nThe ceil() on the second case doesn\u0027t seem necessary.",
+      "parentUuid": "cc393d40_e5775bd5",
+      "revId": "f42f530d4ee418b4c1aa15096cb35dacd436ecd7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4b736664_59da7791",
@@ -31,6 +49,30 @@
       "writtenOn": "2026-05-19T21:01:33Z",
       "side": 1,
       "message": "This can truncate to zero, I think we need to push the zero check down to the typed functions.",
+      "range": {
+        "startLine": 130,
+        "startChar": 69,
+        "endLine": 130,
+        "endChar": 83
+      },
+      "revId": "f42f530d4ee418b4c1aa15096cb35dacd436ecd7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6477562_f75061b5",
+        "filename": "src/sksl/analysis/SkSLGetLoopUnrollInfo.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-05-20T12:23:57Z",
+      "side": 1,
+      "message": "Good catch!",
+      "parentUuid": "4b736664_59da7791",
       "range": {
         "startLine": 130,
         "startChar": 69,
