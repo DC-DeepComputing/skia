@@ -287,6 +287,530 @@ static unsigned clamp(SkFixed fx, int max) {
     return SkTPin(fx >> 16, 0, max);
 }
 
+// Clamp/Clamp and Repeat/Repeat have NEON or portable implementations.
+#if defined(SK_ARM_HAS_NEON)
+    #include <arm_neon.h>
+
+    // TODO: this is a fine drop-in for decal_nofilter_scale() generally.
+    static void decal_nofilter_scale_neon(uint32_t dst[], SkFixed fx, SkFixed dx, int count) {
+        if (count >= 8) {
+            // SkFixed is 16.16 fixed point
+            SkFixed dx8 = dx * 8;
+            int32x4_t vdx8 = vdupq_n_s32(dx8);
+
+            // setup lbase and hbase
+            int32x4_t lbase, hbase;
+            lbase = vdupq_n_s32(fx);
+            lbase = vsetq_lane_s32(fx + dx, lbase, 1);
+            lbase = vsetq_lane_s32(fx + dx + dx, lbase, 2);
+            lbase = vsetq_lane_s32(fx + dx + dx + dx, lbase, 3);
+            hbase = lbase + vdupq_n_s32(4 * dx);
+
+            do {
+                // store the upper 16 bits
+                vst1q_u32(dst, vreinterpretq_u32_s16(
+                    vuzpq_s16(vreinterpretq_s16_s32(lbase), vreinterpretq_s16_s32(hbase)).val[1]
+                ));
+
+                // on to the next group of 8
+                lbase += vdx8;
+                hbase += vdx8;
+                dst += 4; // we did 8 elements but the result is twice smaller
+                count -= 8;
+                fx += dx8;
+            } while (count >= 8);
+        }
+
+        uint16_t* xx = (uint16_t*)dst;
+        for (int i = count; i > 0; --i) {
+            *xx++ = SkToU16(fx >> 16); fx += dx;
+        }
+    }
+
+    static void decal_filter_scale_neon(uint32_t dst[], SkFixed fx, SkFixed dx, int count) {
+#ifndef __ARM_64BIT_STATE
+        SkASSERT(((fx + (count-1) * dx) >> (16 + 14)) == 0);
+        fx = (fx << 2) + 1;
+        dx <<= 2;
+        while (((uintptr_t) dst & 0xf) && --count >= 0) {
+            *dst++ = (fx & 0xffffc001) + (fx >> 18);
+            fx += dx;
+        }
+        if ((count -= 4) >= 0) {
+            uint32_t tmp;
+            __asm__ (
+                    "adr         %[tmp], 1f                  \n\t"
+                    "vmvn.i32    q10, #0x3fff                \n\t"
+                    "vld1.32     {q11}, [%[tmp]]             \n\t"
+                    "vdup.32     q8, %[fx]                   \n\t"
+                    "vdup.32     q9, %[dx]                   \n\t"
+                    "vsra.u32    q10, #31                    \n\t"
+                    "vmla.u32    q8, q9, q11                 \n\t"
+                    "vshl.u32    q9, #2                      \n\t"
+                    "b           2f                          \n\t"
+                    "1:                                      \n\t"
+                    ".long       0                           \n\t"
+                    ".long       1                           \n\t"
+                    ".long       2                           \n\t"
+                    ".long       3                           \n\t"
+                    "2:                                      \n\t"
+                    "vand        q11, q8, q10                \n\t"
+                    "vshr.u32    q12, q8, #18                \n\t"
+                    "vadd.i32    q11, q12                    \n\t"
+                    "vadd.i32    q8, q9                      \n\t"
+                    "subs        %[count], #4                \n\t"
+                    "vst1.32     {q11}, [%[dst]:128]!        \n\t"
+                    "bpl         2b                          \n\t"
+                    "vmov.32     %[fx], d16[0]               \n\t"
+            : // Outputs
+                    [count]"+l"(count),
+                      [dst]"+r"(dst),
+                       [fx]"+r"(fx),
+                      [tmp]"=&r"(tmp)
+            : // Inputs
+                    [dx]"r"(dx)
+            : // Clobbers
+                    "cc", "memory", "q8", "q9", "q10", "q11", "q12"
+            );
+        }
+        if ((count += 4-1) >= 0) {
+            do {
+                *dst++ = (fx & 0xffffc001) + (fx >> 18);
+                fx += dx;
+            } while (--count >= 0);
+        }
+#else // !defined(__ARM_64BIT_STATE)
+        if (count >= 8) {
+            SkFixed dx8 = dx * 8;
+            int32x4_t vdx8 = vdupq_n_s32(dx8);
+
+            int32x4_t wide_fx, wide_fx2;
+            wide_fx = vdupq_n_s32(fx);
+            wide_fx = vsetq_lane_s32(fx + dx, wide_fx, 1);
+            wide_fx = vsetq_lane_s32(fx + dx + dx, wide_fx, 2);
+            wide_fx = vsetq_lane_s32(fx + dx + dx + dx, wide_fx, 3);
+
+            wide_fx2 = vaddq_s32(wide_fx, vdupq_n_s32(4 * dx));
+
+            while (count >= 8) {
+                int32x4_t wide_out;
+                int32x4_t wide_out2;
+
+                wide_out = vshlq_n_s32(vshrq_n_s32(wide_fx, 12), 14);
+                wide_out = wide_out | (vshrq_n_s32(wide_fx,16) + vdupq_n_s32(1));
+
+                wide_out2 = vshlq_n_s32(vshrq_n_s32(wide_fx2, 12), 14);
+                wide_out2 = wide_out2 | (vshrq_n_s32(wide_fx2,16) + vdupq_n_s32(1));
+
+                vst1q_u32(dst, vreinterpretq_u32_s32(wide_out));
+                vst1q_u32(dst+4, vreinterpretq_u32_s32(wide_out2));
+
+                dst += 8;
+                fx += dx8;
+                wide_fx += vdx8;
+                wide_fx2 += vdx8;
+                count -= 8;
+            }
+        }
+
+        if (count & 1)
+        {
+            SkASSERT((fx >> (16 + 14)) == 0);
+            *dst++ = (fx >> 12 << 14) | ((fx >> 16) + 1);
+            fx += dx;
+        }
+        while ((count -= 2) >= 0)
+        {
+            SkASSERT((fx >> (16 + 14)) == 0);
+            *dst++ = (fx >> 12 << 14) | ((fx >> 16) + 1);
+            fx += dx;
+
+            *dst++ = (fx >> 12 << 14) | ((fx >> 16) + 1);
+            fx += dx;
+        }
+#endif
+    }
+
+    static inline int16x8_t clamp8(int32x4_t low, int32x4_t high, unsigned max) {
+        int16x8_t res;
+
+        // get the hi 16s of all those 32s
+        res = vuzpq_s16(vreinterpretq_s16_s32(low), vreinterpretq_s16_s32(high)).val[1];
+
+        // clamp
+        res = vmaxq_s16(res, vdupq_n_s16(0));
+        res = vminq_s16(res, vdupq_n_s16(max));
+
+        return res;
+    }
+
+    static inline int32x4_t clamp4(int32x4_t f, unsigned max) {
+        int32x4_t res;
+
+        // get the hi 16s of all those 32s
+        res = vshrq_n_s32(f, 16);
+
+        // clamp
+        res = vmaxq_s32(res, vdupq_n_s32(0));
+        res = vminq_s32(res, vdupq_n_s32(max));
+
+        return res;
+    }
+
+    static inline int32x4_t extract_low_bits_clamp4(int32x4_t fx, unsigned) {
+        int32x4_t ret;
+
+        ret = vshrq_n_s32(fx, 12);
+
+        /* We don't need the mask below because the caller will
+         * overwrite the non-masked bits
+         */
+        //ret = vandq_s32(ret, vdupq_n_s32(0xF));
+
+        return ret;
+    }
+
+    static inline int16x8_t repeat8(int32x4_t low, int32x4_t high, unsigned max) {
+        uint16x8_t res;
+        uint32x4_t tmpl, tmph;
+
+        // get the lower 16 bits
+        res = vuzpq_u16(vreinterpretq_u16_s32(low), vreinterpretq_u16_s32(high)).val[0];
+
+        // bare multiplication, not SkFixedMul
+        tmpl = vmull_u16(vget_low_u16(res), vdup_n_u16(max+1));
+        tmph = vmull_u16(vget_high_u16(res), vdup_n_u16(max+1));
+
+        // extraction of the 16 upper bits
+        res = vuzpq_u16(vreinterpretq_u16_u32(tmpl), vreinterpretq_u16_u32(tmph)).val[1];
+
+        return vreinterpretq_s16_u16(res);
+    }
+
+    static inline int32x4_t repeat4(int32x4_t f, unsigned max) {
+        uint16x4_t res;
+        uint32x4_t tmp;
+
+        // get the lower 16 bits
+        res = vmovn_u32(vreinterpretq_u32_s32(f));
+
+        // bare multiplication, not SkFixedMul
+        tmp = vmull_u16(res, vdup_n_u16(max+1));
+
+        // extraction of the 16 upper bits
+        tmp = vshrq_n_u32(tmp, 16);
+
+        return vreinterpretq_s32_u32(tmp);
+    }
+
+    static inline int32x4_t extract_low_bits_repeat_mirror4(int32x4_t fx, unsigned max) {
+        uint16x4_t res;
+        uint32x4_t tmp;
+        int32x4_t ret;
+
+        // get the lower 16 bits
+        res = vmovn_u32(vreinterpretq_u32_s32(fx));
+
+        // bare multiplication, not SkFixedMul
+        tmp = vmull_u16(res, vdup_n_u16(max + 1));
+
+        // shift and mask
+        ret = vshrq_n_s32(vreinterpretq_s32_u32(tmp), 12);
+
+        /* We don't need the mask below because the caller will
+         * overwrite the non-masked bits
+         */
+        //ret = vandq_s32(ret, vdupq_n_s32(0xF));
+
+        return ret;
+    }
+
+    template <unsigned   (*tile)(SkFixed, int),
+              int16x8_t (*tile8)(int32x4_t, int32x4_t, unsigned),
+             bool tryDecal>
+    static void nofilter_scale_neon(const SkBitmapProcState& s,
+                                    uint32_t xy[], int count, int x, int y) {
+
+        // we store y, x, x, x, x, x
+        const unsigned maxX = s.fPixmap.width() - 1;
+        SkFixed3232 fx;
+        {
+            const SkBitmapProcStateAutoMapper mapper(s, x, y);
+            const unsigned maxY = s.fPixmap.height() - 1;
+            *xy++ = tile(mapper.fixedY(), maxY);
+            fx = mapper.fixed3232X();
+        }
+
+        if (0 == maxX) {
+            // all of the following X values must be 0
+            memset(xy, 0, count * sizeof(uint16_t));
+            return;
+        }
+
+        const SkFixed3232 dx = s.fInvSx;
+
+        // test if we don't need to apply the tile proc
+        const SkFixed fixedFx = SkFixed3232ToFixed(fx);
+        const SkFixed fixedDx = SkFixed3232ToFixed(dx);
+        if (tryDecal && can_truncate_to_fixed_for_decal(fixedFx, fixedDx, count, maxX)) {
+            decal_nofilter_scale_neon(xy, fixedFx, fixedDx, count);
+            return;
+        }
+
+        if (count >= 8) {
+            SkFixed3232 dx2 = dx+dx;
+            SkFixed3232 dx4 = dx2+dx2;
+            SkFixed3232 dx8 = dx4+dx4;
+
+            // now build fx/fx+dx/fx+2dx/fx+3dx
+            SkFixed3232 fx1, fx2, fx3;
+            int32x4_t lbase, hbase;
+            int16_t *dst16 = (int16_t *)xy;
+
+            fx1 = fx+dx;
+            fx2 = fx1+dx;
+            fx3 = fx2+dx;
+
+            lbase = vdupq_n_s32(SkFixed3232ToFixed(fx));
+            lbase = vsetq_lane_s32(SkFixed3232ToFixed(fx1), lbase, 1);
+            lbase = vsetq_lane_s32(SkFixed3232ToFixed(fx2), lbase, 2);
+            lbase = vsetq_lane_s32(SkFixed3232ToFixed(fx3), lbase, 3);
+            hbase = vaddq_s32(lbase, vdupq_n_s32(SkFixed3232ToFixed(dx4)));
+
+            // store & bump
+            while (count >= 8) {
+
+                int16x8_t fx8;
+
+                fx8 = tile8(lbase, hbase, maxX);
+
+                vst1q_s16(dst16, fx8);
+
+                // but preserving base & on to the next
+                lbase = vaddq_s32 (lbase, vdupq_n_s32(SkFixed3232ToFixed(dx8)));
+                hbase = vaddq_s32 (hbase, vdupq_n_s32(SkFixed3232ToFixed(dx8)));
+                dst16 += 8;
+                count -= 8;
+                fx += dx8;
+            }
+            xy = (uint32_t *) dst16;
+        }
+
+        uint16_t* xx = (uint16_t*)xy;
+        for (int i = count; i > 0; --i) {
+            *xx++ = tile(SkFixed3232ToFixed(fx), maxX);
+            fx += dx;
+        }
+    }
+
+    template <unsigned              (*tile )(SkFixed, int),
+              int32x4_t             (*tile4)(int32x4_t, unsigned),
+              unsigned  (*extract_low_bits )(SkFixed, int),
+              int32x4_t (*extract_low_bits4)(int32x4_t, unsigned),
+              bool tryDecal>
+    static void filter_scale_neon(const SkBitmapProcState& s,
+                                  unsigned int * xy, int count, int x, int y) {
+
+        auto pack = [&](SkFixed f, unsigned max, SkFixed one) {
+            unsigned i = tile(f, max);
+            i = (i << 4) | extract_low_bits(f, max);
+            return (i << 14) | (tile((f + one), max));
+        };
+
+        auto pack4 = [&](int32x4_t f, unsigned max, SkFixed one) {
+            int32x4_t ret, res;
+
+            res = tile4(f, max);
+
+            ret = extract_low_bits4(f, max);
+            ret = vsliq_n_s32(ret, res, 4);
+
+            res = tile4(f + vdupq_n_s32(one), max);
+            ret = vorrq_s32(vshlq_n_s32(ret, 14), res);
+
+            return ret;
+        };
+
+        const unsigned maxX = s.fPixmap.width() - 1;
+        const SkFixed one = s.fFilterOneX;
+        const SkFixed3232 dx = s.fInvSx;
+        SkFixed3232 fx;
+
+        {
+            const SkBitmapProcStateAutoMapper mapper(s, x, y);
+            const SkFixed fy = mapper.fixedY();
+            const unsigned maxY = s.fPixmap.height() - 1;
+            // compute our two Y values up front
+            *xy++ = pack(fy, maxY, s.fFilterOneY);
+            // now initialize fx
+            fx = mapper.fixed3232X();
+        }
+
+        // test if we don't need to apply the tile proc
+        const SkFixed fixedFx = SkFixed3232ToFixed(fx);
+        const SkFixed fixedDx = SkFixed3232ToFixed(dx);
+        if (tryDecal && can_truncate_to_fixed_for_decal(fixedFx, fixedDx, count, maxX)) {
+            decal_filter_scale_neon(xy, fixedFx, fixedDx, count);
+            return;
+        }
+
+#ifndef __ARM_64BIT_STATE
+        if (tile == clamp && one == SK_Fixed1) {
+            SkASSERT(maxX < (1<<14)-1);
+            if (dx >= 0) {
+                --count;
+                while (count >= 0 && fx < 0) {
+                    *xy++ = 0;
+                    fx += dx;
+                    --count;
+                }
+                while (count >= 0 && ((uintptr_t) xy & 0xf) && fx < ((SkFixed3232) maxX << 32)) {
+                    *xy++ = ((uint32_t)(fx >> 14) & 0xffffc000) + (uint32_t)(fx >> 32) + 1;
+                    fx += dx;
+                    --count;
+                }
+                if ((count -= 8-1) >= 0 && fx + 7*dx < ((SkFixed3232) maxX << 32)) {
+                    SkFixed3232 rem = (((SkFixed3232) maxX << 32) - 7*dx - fx - 1) / 8;
+                    int32_t rem_hi = rem >> 32;
+                    uint32_t rem_lo = (uint32_t) rem;
+                    int32_t fx_hi = fx >> 32;
+                    uint32_t fx_lo = (uint32_t) fx;
+                    __asm__ (
+                            "vmov        d16, %[fx_lo], %[fx_hi]     \n\t"
+                            "vmov        d24, %[dx_lo], %[dx_hi]     \n\t"
+                            "vadd.i64    d17, d16, d24               \n\t"
+                            "vmov        d25, %[dx_lo], %[dx_hi]     \n\t"
+                            "vmvn.i32    q13, #0x3fff                \n\t"
+                            "vadd.i64    d18, d17, d24               \n\t"
+                            "vmov.i32    q14, #1                     \n\t"
+                            "vadd.i64    d19, d18, d24               \n\t"
+                            "vshl.i64    q12, #2                     \n\t"
+                            "b           2f                          \n\t"
+                            "1:                                      \n\t"
+                            "vadd.i64    q8, q10, q12                \n\t"
+                            "vadd.i64    q9, q11, q12                \n\t"
+                            "2:                                      \n\t"
+                            "vadd.i64    q10, q8, q12                \n\t"
+                            "vadd.i64    q11, q9, q12                \n\t"
+                            "vshrn.i64   d16, q8, #14                \n\t"
+                            "vshrn.i64   d17, q9, #14                \n\t"
+                            "vand        q8, q13                     \n\t"
+                            "vorr        q8, q14                     \n\t"
+                            "vshrn.i64   d18, q10, #14               \n\t"
+                            "vshrn.i64   d19, q11, #14               \n\t"
+                            "vand        q9, q13                     \n\t"
+                            "subs        %[rem_lo], %[dx_lo]         \n\t"
+                            "vorr        q9, q14                     \n\t"
+                            "sbcs        %[rem_hi], %[dx_hi]         \n\t"
+                            "vsra.u32    q8, #18                     \n\t"
+                            "subs        %[count], #8                \n\t"
+                            "vsra.u32    q9, #18                     \n\t"
+                            "it          pl                          \n\t"
+                            "teqpl       %[rem_hi], #0               \n\t"
+                            "vst1.32     {q8-q9}, [%[dst]:128]!      \n\t"
+                            "bpl         1b                          \n\t"
+                            "vadd.i64    d16, d20, d24               \n\t"
+                            "vmov        %[fx_lo], %[fx_hi], d16     \n\t"
+                    : // Outputs
+                             [count]"+l"(count),
+                               [dst]"+r"(xy),
+                            [rem_hi]"+l"(rem_hi),
+                            [rem_lo]"+l"(rem_lo),
+                             [fx_hi]"+r"(fx_hi),
+                             [fx_lo]"+r"(fx_lo)
+                    : // Inputs
+                            [dx_hi]"l"((int32_t) (dx >> 32)),
+                            [dx_lo]"l"((uint32_t) dx)
+                    : // Clobbers
+                            "cc", "memory", "q8", "q9", "q10", "q11", "q12", "q13", "q14"
+                    );
+                    fx = ((SkFixed3232) fx_hi << 32) | fx_lo;
+                }
+                count += 8-1;
+                while (count >= 0 && fx < ((SkFixed3232) maxX << 32)) {
+                    *xy++ = ((uint32_t)(fx >> 14) & 0xffffc000) + (uint32_t)(fx >> 32) + 1;
+                    fx += dx;
+                    --count;
+                }
+                while (count >= 0) {
+                    *xy++ = (maxX << 18) + maxX;
+                    --count;
+                }
+            } else {
+                // Reflection case. Don't bother to optimize this as much -
+                // not even sure if it's used!
+                while (count >= 1 && fx >= ((SkFixed3232) maxX << 32)) {
+                    *xy++ = (maxX << 18) + maxX;
+                    fx += dx;
+                    --count;
+                }
+                while (count >= 1 && fx >= 0) {
+                    *xy++ = ((uint32_t)(fx >> 14) & 0xffffc000) + (uint32_t)(fx >> 32) + 1;
+                    fx += dx;
+                    --count;
+                }
+                while (count >= 1) {
+                    *xy++ = 0;
+                    --count;
+                }
+            }
+        }
+        else
+        {
+        // Drop back to old code for repeat or other values of 'one'
+#endif
+        if (count >= 4) {
+            int32x4_t wide_fx;
+
+            wide_fx = vdupq_n_s32(SkFixed3232ToFixed(fx));
+            wide_fx = vsetq_lane_s32(SkFixed3232ToFixed(fx+dx), wide_fx, 1);
+            wide_fx = vsetq_lane_s32(SkFixed3232ToFixed(fx+dx+dx), wide_fx, 2);
+            wide_fx = vsetq_lane_s32(SkFixed3232ToFixed(fx+dx+dx+dx), wide_fx, 3);
+
+            while (count >= 4) {
+                int32x4_t res;
+
+                res = pack4(wide_fx, maxX, one);
+
+                vst1q_u32(xy, vreinterpretq_u32_s32(res));
+
+                wide_fx += vdupq_n_s32(SkFixed3232ToFixed(dx+dx+dx+dx));
+                fx += dx+dx+dx+dx;
+                xy += 4;
+                count -= 4;
+            }
+        }
+
+        while (--count >= 0) {
+            *xy++ = pack(SkFixed3232ToFixed(fx), maxX, one);
+            fx += dx;
+        }
+#ifndef __ARM_64BIT_STATE
+        }
+#endif
+    }
+
+    static const SkBitmapProcState::MatrixProc ClampX_ClampY_Procs[] = {
+        nofilter_scale_neon<clamp, clamp8, true>,
+        filter_scale_neon<clamp,
+                          clamp4,
+                          extract_low_bits_clamp_clamp,
+                          extract_low_bits_clamp4,
+                          true>,
+        nofilter_affine<clamp, clamp>,       filter_affine<clamp, clamp, extract_low_bits_clamp_clamp>,
+    };
+
+    static const SkBitmapProcState::MatrixProc RepeatX_RepeatY_Procs[] = {
+        nofilter_scale_neon<repeat, repeat8, false>,
+        filter_scale_neon<repeat,
+                          repeat4,
+                          extract_low_bits_general,
+                          extract_low_bits_repeat_mirror4,
+                          false>,
+        nofilter_affine<repeat, repeat>,        filter_affine<repeat, repeat, extract_low_bits_general>
+    };
+#else
+
 static const SkBitmapProcState::MatrixProc ClampX_ClampY_Procs[] = {
     nofilter_scale <clamp, clamp, true>, filter_scale <clamp, clamp, extract_low_bits_clamp_clamp, true>,
     nofilter_affine<clamp, clamp>,       filter_affine<clamp, clamp, extract_low_bits_clamp_clamp>,
@@ -295,6 +819,9 @@ static const SkBitmapProcState::MatrixProc RepeatX_RepeatY_Procs[] = {
     nofilter_scale <repeat, repeat, false>, filter_scale <repeat, repeat, extract_low_bits_general, false>,
     nofilter_affine<repeat, repeat>,        filter_affine<repeat, repeat, extract_low_bits_general>
 };
+
+#endif
+
 static const SkBitmapProcState::MatrixProc MirrorX_MirrorY_Procs[] = {
     nofilter_scale <mirror, mirror,  false>, filter_scale <mirror, mirror, extract_low_bits_general, false>,
     nofilter_affine<mirror, mirror>,         filter_affine<mirror, mirror, extract_low_bits_general>,

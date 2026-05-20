@@ -211,6 +211,10 @@ namespace SkOpts {
     extern void (*S32_alpha_D32_filter_DXDY)(const SkBitmapProcState&,
                                              const uint32_t* xy, int count, SkPMColor*);
 
+#if defined(SK_ARM_HAS_NEON) && !defined(__ARM_64BIT_STATE)
+    extern void (*S32_opaque_D32_filter_DX)(const SkBitmapProcState&,
+                                           const uint32_t* xy, int count, SkPMColor*);
+#endif
     void Init_BitmapProcState();
 }  // namespace SkOpts
 

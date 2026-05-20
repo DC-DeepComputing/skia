@@ -20,6 +20,9 @@
 namespace SkOpts {
     DEFINE_DEFAULT(S32_alpha_D32_filter_DX);
     DEFINE_DEFAULT(S32_alpha_D32_filter_DXDY);
+#if defined(SK_ARM_HAS_NEON) && !defined(__ARM_64BIT_STATE)
+    DEFINE_DEFAULT(S32_opaque_D32_filter_DX);
+#endif
 
     void Init_BitmapProcState_ssse3();
     void Init_BitmapProcState_lasx();

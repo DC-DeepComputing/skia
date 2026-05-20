@@ -428,6 +428,253 @@ static void decode_packed_coordinates_and_weight(U32 packed, Out* v0, Out* v1, O
                                                            __lsx_vsat_hu(sum, 8)), 0);
         }
     }
+#elif defined(SK_ARM_HAS_NEON) && !defined(__ARM_64BIT_STATE)
+
+#define S32_ALPHA_D32_FILTER_DX_1PIX_NEON(opt)               \
+            "ldr         %[x], [%[xy]], #4           \n\t"   \
+            "uxth        %[tmp2], %[x], ror #16      \n\t"   \
+            "lsl         %[tmp3], %[x], #2           \n\t"   \
+            "bic         %[tmp2], #3                 \n\t"   \
+            "uxth        %[tmp3], %[tmp3]            \n\t"   \
+            "add         %[tmp0], %[row0], %[tmp2]   \n\t"   \
+            "add         %[tmp1], %[row0], %[tmp3]   \n\t"   \
+            "add         %[tmp2], %[row1], %[tmp2]   \n\t"   \
+            "add         %[tmp3], %[row1], %[tmp3]   \n\t"   \
+            "lsr         %[x], #14                   \n\t"   \
+            "vldr        s0, [%[tmp0]]               \n\t"   \
+            "and         %[x], #0xf                  \n\t"   \
+            "vldr        s1, [%[tmp1]]               \n\t"   \
+            "vldr        s2, [%[tmp2]]               \n\t"   \
+            "vldr        s3, [%[tmp3]]               \n\t"   \
+            "vdup.16     d2, %[x]                    \n\t"   \
+            "vsub.i16    d3, d23, d2                 \n\t"   \
+            "vmull.u8    q2, d0, d31                 \n\t"   \
+            "vmlal.u8    q2, d1, d30                 \n\t"   \
+            "vmul.u16    d0, d4, d3                  \n\t"   \
+            "vmla.u16    d0, d5, d2                  \n\t"   \
+            "vshr.u16    d0, #8                      \n\t"   \
+            "vmul.u16    d0, d10                     \n\t"   \
+            opt"                                     \n\t"   \
+            "vshrn.u16   d0, q0, #8                  \n\t"   \
+            "vst1.32     {d0[0]}, [%[dst]:32]!       \n\t"   \
+
+void S32_alpha_D32_filter_DX(const SkBitmapProcState& s,
+                             const uint32_t* SK_RESTRICT xy,
+                             int count, SkPMColor* SK_RESTRICT colors) {
+    SkASSERT(count > 0 && colors != nullptr);
+    SkASSERT(4 == s.fPixmap.info().bytesPerPixel());
+    SkASSERT(s.fAlphaScale <= 256);
+
+    int y0, y1, wy;
+    decode_packed_coordinates_and_weight(*xy++, &y0, &y1, &wy);
+
+    auto row0 = (const uint32_t*)( (const char*)s.fPixmap.addr() + y0 * s.fPixmap.rowBytes() ),
+         row1 = (const uint32_t*)( (const char*)s.fPixmap.addr() + y1 * s.fPixmap.rowBytes() );
+
+    uint32_t tmp0, tmp1, tmp2, tmp3, x;
+    __asm__ volatile (
+            "vmov.i16    d22, #0xf                   \n\t"
+            "vmov.i16    d23, #0x10                  \n\t"
+            "vmov.i32    q12, #0x3fff                \n\t"
+            "vdup.32     q13, %[row0]                \n\t"
+            "vdup.32     q14, %[row1]                \n\t"
+            "vdup.i8     d30, %[subY]                \n\t"
+            "vmov.i8     d31, #16                    \n\t"
+            "vdup.16     q5, %[alpha]                \n\t"
+            "vshl.i32    q12, #2                     \n\t"
+            "tst         %[dst], #0xc                \n\t"
+            "vsub.i8     d31, d30                    \n\t"
+            "beq         2f                          \n\t"
+
+            "1:                                      \n\t"
+            S32_ALPHA_D32_FILTER_DX_1PIX_NEON(
+            "add         %[tmp0], %[dst], #4         \n\t"
+            "subs        %[len], #1                  \n\t"
+            "it          ne                          \n\t"
+            "tstne       %[tmp0], #0xc"
+            )
+            "bne         1b                          \n\t"
+
+            "2:"
+            "subs        %[len], #4                  \n\t"
+            "bmi         13f                         \n\t"
+
+            "vld1.32     {q8}, [%[xy]]!              \n\t"
+            "vshr.u32    q9, q8, #16                 \n\t"
+            "vand        q9, q12                     \n\t"
+            "vadd.i32    q1, q13, q9                 \n\t"
+            "vshl.i32    q0, q8, #2                  \n\t"
+            "vand        q0, q12                     \n\t"
+            "vadd.i32    q2, q13, q0                 \n\t"
+            "vmov        %[tmp0], s4                 \n\t"
+            "vmov        %[tmp1], s5                 \n\t"
+            "vadd.i32    q3, q14, q9                 \n\t"
+            "vmov        %[tmp2], %[tmp3], d3        \n\t"
+
+            "11:                                     \n\t"
+            "vadd.i32    q4, q14, q0                 \n\t"
+            "vldr        s4, [%[tmp0]]               \n\t"
+            "vmov        %[tmp0], s8                 \n\t"
+            "vldr        s5, [%[tmp1]]               \n\t"
+            "vmov        %[tmp1], s9                 \n\t"
+            "vldr        s6, [%[tmp2]]               \n\t"
+            "vmov        %[tmp2], s10                \n\t"
+            "vldr        s7, [%[tmp3]]               \n\t"
+            "vmov        %[tmp3], s11                \n\t"
+            "vldr        s8, [%[tmp0]]               \n\t"
+            "vmov        %[tmp0], s12                \n\t"
+            "vldr        s9, [%[tmp1]]               \n\t"
+            "vmov        %[tmp1], s13                \n\t"
+            "vldr        s10, [%[tmp2]]              \n\t"
+            "vmov        %[tmp2], s14                \n\t"
+            "vldr        s11, [%[tmp3]]              \n\t"
+            "vmov        %[tmp3], s15                \n\t"
+            "vldr        s12, [%[tmp0]]              \n\t"
+            "vmov        %[tmp0], s16                \n\t"
+            "vldr        s13, [%[tmp1]]              \n\t"
+            "vmov        %[tmp1], s17                \n\t"
+            "vldr        s14, [%[tmp2]]              \n\t"
+            "vmov        %[tmp2], s18                \n\t"
+            "vldr        s15, [%[tmp3]]              \n\t"
+            "vmov        %[tmp3], s19                \n\t"
+            "vldr        s16, [%[tmp0]]              \n\t"
+            "vshrn.i32   d1, q8, #14                 \n\t"
+            "vldr        s17, [%[tmp1]]              \n\t"
+            "vand        d1, d22                     \n\t"
+            "vldr        s18, [%[tmp2]]              \n\t"
+            "vsub.i16    d0, d23, d1                 \n\t"
+            "vldr        s19, [%[tmp3]]              \n\t"
+            "vmull.u8    q10, d2, d31                \n\t"
+            "vmlal.u8    q10, d6, d30                \n\t"
+            "vmull.u8    q1, d3, d31                 \n\t"
+            "vmlal.u8    q1, d7, d30                 \n\t"
+            "vmull.u8    q3, d4, d31                 \n\t"
+            "subs        %[len], #4                  \n\t"
+            "vmlal.u8    q3, d8, d30                 \n\t"
+            "bmi         12f                         \n\t"
+
+            "  vld1.32     {q8}, [%[xy]]!            \n\t"
+            "vmull.u8    q2, d5, d31                 \n\t"
+            "vmlal.u8    q2, d9, d30                 \n\t"
+            "vmul.u16    d8, d20, d0[0]              \n\t"
+            "  vshr.u32    d18, d16, #16             \n\t"
+            "vmul.u16    d9, d21, d0[1]              \n\t"
+            "  vshr.u32    d19, d17, #16             \n\t"
+            "vmul.u16    d20, d2, d0[2]              \n\t"
+            "  vand        d18, d24                  \n\t"
+            "vmul.u16    d21, d3, d0[3]              \n\t"
+            "  vand        d19, d25                  \n\t"
+            "vmla.u16    d8, d6, d1[0]               \n\t"
+            "  vadd.i32    d2, d26, d18              \n\t"
+            "vmla.u16    d9, d7, d1[1]               \n\t"
+            "  vadd.i32    d3, d27, d19              \n\t"
+            "vmla.u16    d20, d4, d1[2]              \n\t"
+            "  vshl.i32    d0, d16, #2               \n\t"
+            "vmla.u16    d21, d5, d1[3]              \n\t"
+            "  vshl.i32    d1, d17, #2               \n\t"
+            "  vand        q0, q12                   \n\t"
+            "  vadd.i32    q2, q13, q0               \n\t"
+            "vshr.u16    q4, #8                      \n\t"
+            "vshr.u16    q10, #8                     \n\t"
+            "vmul.u16    q4, q5                      \n\t"
+            "vmul.u16    q10, q5                     \n\t"
+            "  vmov        %[tmp0], %[tmp1], d2      \n\t"
+            "  vadd.i32    q3, q14, q9               \n\t"
+            "  vmov        %[tmp2], %[tmp3], d3      \n\t"
+            "vshrn.u16   d8, q4, #8                  \n\t"
+            "vshrn.u16   d9, q10, #8                 \n\t"
+            "vst1.32     {q4}, [%[dst]:128]!         \n\t"
+            "b           11b                         \n\t"
+
+            "12:                                     \n\t"
+            "vmull.u8    q2, d5, d31                 \n\t"
+            "vmlal.u8    q2, d9, d30                 \n\t"
+            "vmul.u16    d8, d20, d0[0]              \n\t"
+            "vmul.u16    d9, d21, d0[1]              \n\t"
+            "vmul.u16    d20, d2, d0[2]              \n\t"
+            "vmul.u16    d21, d3, d0[3]              \n\t"
+            "vmla.u16    d8, d6, d1[0]               \n\t"
+            "vmla.u16    d9, d7, d1[1]               \n\t"
+            "vmla.u16    d20, d4, d1[2]              \n\t"
+            "vmla.u16    d21, d5, d1[3]              \n\t"
+            "vshr.u16    q4, #8                      \n\t"
+            "vshr.u16    q10, #8                     \n\t"
+            "vmul.u16    q4, q5                      \n\t"
+            "vmul.u16    q10, q5                     \n\t"
+            "vshrn.u16   d8, q4, #8                  \n\t"
+            "vshrn.u16   d9, q10, #8                 \n\t"
+            "vst1.32     {q4}, [%[dst]:128]!         \n\t"
+
+            "13:                                     \n\t"
+            "adds        %[len], #4-1                \n\t"
+            "bmi         22f                         \n\t"
+
+            "21:                                     \n\t"
+            S32_ALPHA_D32_FILTER_DX_1PIX_NEON("subs %[len], #1")
+            "bpl         21b                         \n\t"
+
+            "22:                                     \n\t"
+    : // Outputs
+             [dst]"+r"(colors),
+              [xy]"+r"(xy),
+             [len]"+r"(count),
+            [tmp0]"=&r"(tmp0),
+            [tmp1]"=&r"(tmp1),
+            [tmp2]"=&r"(tmp2),
+            [tmp3]"=&r"(tmp3),
+               [x]"=&r"(x)
+    : // Inputs
+            [alpha]"r"(s.fAlphaScale),
+             [row0]"r"(row0),
+             [row1]"r"(row1),
+             [subY]"r"(wy)
+    : // Clobbers
+            "cc", "memory", "q0", "q1", "q2", "q3", "q4", "q5", "q8", "q9", "q10", "q11", "q12", "q13", "q14"
+    );
+}
+#if 1
+        // Copied from just below
+        static void filter_and_scale_by_alpha(unsigned x, unsigned y,
+                                              SkPMColor a00, SkPMColor a01,
+                                              SkPMColor a10, SkPMColor a11,
+                                              SkPMColor *dst,
+                                              uint16_t scale) {
+            uint8x8_t vy, vconst16_8, v16_y, vres;
+            uint16x4_t vx, vconst16_16, v16_x, tmp, vscale;
+            uint32x2_t va0, va1;
+            uint16x8_t tmp1, tmp2;
+
+            vy = vdup_n_u8(y);                // duplicate y into vy
+            vconst16_8 = vmov_n_u8(16);       // set up constant in vconst16_8
+            v16_y = vsub_u8(vconst16_8, vy);  // v16_y = 16-y
+
+            va0 = vdup_n_u32(a00);            // duplicate a00
+            va1 = vdup_n_u32(a10);            // duplicate a10
+            va0 = vset_lane_u32(a01, va0, 1); // set top to a01
+            va1 = vset_lane_u32(a11, va1, 1); // set top to a11
+
+            tmp1 = vmull_u8(vreinterpret_u8_u32(va0), v16_y); // tmp1 = [a01|a00] * (16-y)
+            tmp2 = vmull_u8(vreinterpret_u8_u32(va1), vy);    // tmp2 = [a11|a10] * y
+
+            vx = vdup_n_u16(x);                // duplicate x into vx
+            vconst16_16 = vmov_n_u16(16);      // set up constant in vconst16_16
+            v16_x = vsub_u16(vconst16_16, vx); // v16_x = 16-x
+
+            tmp = vmul_u16(vget_high_u16(tmp1), vx);        // tmp  = a01 * x
+            tmp = vmla_u16(tmp, vget_high_u16(tmp2), vx);   // tmp += a11 * x
+            tmp = vmla_u16(tmp, vget_low_u16(tmp1), v16_x); // tmp += a00 * (16-x)
+            tmp = vmla_u16(tmp, vget_low_u16(tmp2), v16_x); // tmp += a10 * (16-x)
+
+            if (scale < 256) {
+                vscale = vdup_n_u16(scale);        // duplicate scale
+                tmp = vshr_n_u16(tmp, 8);          // shift down result by 8
+                tmp = vmul_u16(tmp, vscale);       // multiply result by scale
+            }
+
+            vres = vshrn_n_u16(vcombine_u16(tmp, vcreate_u16(0)), 8); // shift down result by 8
+            vst1_lane_u32(dst, vreinterpret_u32_u8(vres), 0);         // store result
+        }
+#endif
 
 #else
 
@@ -573,6 +820,200 @@ static void decode_packed_coordinates_and_weight(U32 packed, Out* v0, Out* v1, O
     // It's not yet clear whether it's worthwhile specializing for other architectures.
     constexpr static void (*S32_alpha_D32_filter_DXDY)(const SkBitmapProcState&,
                                                        const uint32_t*, int, SkPMColor*) = nullptr;
+#endif
+
+#if defined(SK_ARM_HAS_NEON) && !defined(__ARM_64BIT_STATE)
+
+#define S32_OPAQUE_D32_FILTER_DX_1PIX_NEON(opt)              \
+            "ldr         %[x], [%[xy]], #4           \n\t"   \
+            "uxth        %[tmp2], %[x], ror #16      \n\t"   \
+            "lsl         %[tmp3], %[x], #2           \n\t"   \
+            "bic         %[tmp2], #3                 \n\t"   \
+            "uxth        %[tmp3], %[tmp3]            \n\t"   \
+            "add         %[tmp0], %[row0], %[tmp2]   \n\t"   \
+            "add         %[tmp1], %[row0], %[tmp3]   \n\t"   \
+            "add         %[tmp2], %[row1], %[tmp2]   \n\t"   \
+            "add         %[tmp3], %[row1], %[tmp3]   \n\t"   \
+            "lsr         %[x], #14                   \n\t"   \
+            "vldr        s0, [%[tmp0]]               \n\t"   \
+            "and         %[x], #0xf                  \n\t"   \
+            "vldr        s1, [%[tmp1]]               \n\t"   \
+            "vldr        s2, [%[tmp2]]               \n\t"   \
+            "vldr        s3, [%[tmp3]]               \n\t"   \
+            "vdup.16     d2, %[x]                    \n\t"   \
+            "vsub.i16    d3, d23, d2                 \n\t"   \
+            "vmull.u8    q2, d0, d31                 \n\t"   \
+            "vmlal.u8    q2, d1, d30                 \n\t"   \
+            "vmul.u16    d0, d4, d3                  \n\t"   \
+            "vmla.u16    d0, d5, d2                  \n\t"   \
+            opt"                                     \n\t"   \
+            "vshrn.u16   d0, q0, #8                  \n\t"   \
+            "vst1.32     {d0[0]}, [%[dst]:32]!       \n\t"   \
+
+void S32_opaque_D32_filter_DX(const SkBitmapProcState& s,
+                              const uint32_t* SK_RESTRICT xy,
+                              int count, SkPMColor* SK_RESTRICT colors) {
+    SkASSERT(count > 0 && colors != nullptr);
+    SkASSERT(4 == s.fPixmap.info().bytesPerPixel());
+    SkASSERT(s.fAlphaScale == 256);
+
+    int y0, y1, wy;
+    decode_packed_coordinates_and_weight(*xy++, &y0, &y1, &wy);
+
+    auto row0 = (const uint32_t*)( (const char*)s.fPixmap.addr() + y0 * s.fPixmap.rowBytes() ),
+         row1 = (const uint32_t*)( (const char*)s.fPixmap.addr() + y1 * s.fPixmap.rowBytes() );
+
+    uint32_t tmp0, tmp1, tmp2, tmp3, x;
+    __asm__ volatile (
+            "vmov.i16    d22, #0xf                   \n\t"
+            "vmov.i16    d23, #0x10                  \n\t"
+            "vmov.i32    q12, #0x3fff                \n\t"
+            "vdup.32     q13, %[row0]                \n\t"
+            "vdup.32     q14, %[row1]                \n\t"
+            "vdup.i8     d30, %[subY]                \n\t"
+            "vmov.i8     d31, #16                    \n\t"
+            "vshl.i32    q12, #2                     \n\t"
+            "tst         %[dst], #0xc                \n\t"
+            "vsub.i8     d31, d30                    \n\t"
+            "beq         2f                          \n\t"
+
+            "1:                                      \n\t"
+            S32_OPAQUE_D32_FILTER_DX_1PIX_NEON(
+            "add         %[tmp0], %[dst], #4         \n\t"
+            "subs        %[len], #1                  \n\t"
+            "it          ne                          \n\t"
+            "tstne       %[tmp0], #0xc"
+            )
+            "bne         1b                          \n\t"
+
+            "2:"
+            "subs        %[len], #4                  \n\t"
+            "bmi         13f                         \n\t"
+
+            "vld1.32     {q8}, [%[xy]]!              \n\t"
+            "vshr.u32    q9, q8, #16                 \n\t"
+            "vand        q9, q12                     \n\t"
+            "vadd.i32    q1, q13, q9                 \n\t"
+            "vshl.i32    q0, q8, #2                  \n\t"
+            "vand        q0, q12                     \n\t"
+            "vadd.i32    q2, q13, q0                 \n\t"
+            "vmov        %[tmp0], s4                 \n\t"
+            "vmov        %[tmp1], s5                 \n\t"
+
+            "11:                                     \n\t"
+            "vadd.i32    q3, q14, q9                 \n\t"
+            "vmov        %[tmp2], %[tmp3], d3        \n\t"
+            "vadd.i32    q4, q14, q0                 \n\t"
+            "vldr        s4, [%[tmp0]]               \n\t"
+            "vmov        %[tmp0], s8                 \n\t"
+            "vldr        s5, [%[tmp1]]               \n\t"
+            "vmov        %[tmp1], s9                 \n\t"
+            "vldr        s6, [%[tmp2]]               \n\t"
+            "vmov        %[tmp2], s10                \n\t"
+            "vldr        s7, [%[tmp3]]               \n\t"
+            "vmov        %[tmp3], s11                \n\t"
+            "vldr        s8, [%[tmp0]]               \n\t"
+            "vmov        %[tmp0], s12                \n\t"
+            "vldr        s9, [%[tmp1]]               \n\t"
+            "vmov        %[tmp1], s13                \n\t"
+            "vldr        s10, [%[tmp2]]              \n\t"
+            "vmov        %[tmp2], s14                \n\t"
+            "vldr        s11, [%[tmp3]]              \n\t"
+            "vmov        %[tmp3], s15                \n\t"
+            "vldr        s12, [%[tmp0]]              \n\t"
+            "vmov        %[tmp0], s16                \n\t"
+            "vldr        s13, [%[tmp1]]              \n\t"
+            "vmov        %[tmp1], s17                \n\t"
+            "vldr        s14, [%[tmp2]]              \n\t"
+            "vmov        %[tmp2], s18                \n\t"
+            "vldr        s15, [%[tmp3]]              \n\t"
+            "vmov        %[tmp3], s19                \n\t"
+            "vldr        s16, [%[tmp0]]              \n\t"
+            "vshrn.i32   d1, q8, #14                 \n\t"
+            "vldr        s17, [%[tmp1]]              \n\t"
+            "vand        d1, d22                     \n\t"
+            "vldr        s18, [%[tmp2]]              \n\t"
+            "vsub.i16    d0, d23, d1                 \n\t"
+            "vldr        s19, [%[tmp3]]              \n\t"
+            "vmull.u8    q10, d2, d31                \n\t"
+            "vmlal.u8    q10, d6, d30                \n\t"
+            "vmull.u8    q1, d3, d31                 \n\t"
+            "vmlal.u8    q1, d7, d30                 \n\t"
+            "vmull.u8    q3, d4, d31                 \n\t"
+            "subs        %[len], #4                  \n\t"
+            "vmlal.u8    q3, d8, d30                 \n\t"
+            "bmi         12f                         \n\t"
+
+            "  vld1.32     {q8}, [%[xy]]!            \n\t"
+            "vmull.u8    q2, d5, d31                 \n\t"
+            "vmlal.u8    q2, d9, d30                 \n\t"
+            "vmul.u16    d8, d20, d0[0]              \n\t"
+            "  vshr.u32    d18, d16, #16             \n\t"
+            "vmul.u16    d9, d21, d0[1]              \n\t"
+            "  vshr.u32    d19, d17, #16             \n\t"
+            "vmul.u16    d20, d2, d0[2]              \n\t"
+            "  vand        d18, d24                  \n\t"
+            "vmul.u16    d21, d3, d0[3]              \n\t"
+            "  vand        d19, d25                  \n\t"
+            "vmla.u16    d8, d6, d1[0]               \n\t"
+            "  vadd.i32    d2, d26, d18              \n\t"
+            "vmla.u16    d9, d7, d1[1]               \n\t"
+            "  vadd.i32    d3, d27, d19              \n\t"
+            "vmla.u16    d20, d4, d1[2]              \n\t"
+            "  vshl.i32    d0, d16, #2               \n\t"
+            "vmla.u16    d21, d5, d1[3]              \n\t"
+            "  vshl.i32    d1, d17, #2               \n\t"
+            "  vand        q0, q12                   \n\t"
+            "  vadd.i32    q2, q13, q0               \n\t"
+            "  vmov        %[tmp0], s4               \n\t"
+            "  vmov        %[tmp1], s5               \n\t"
+            "vshrn.u16   d8, q4, #8                  \n\t"
+            "vshrn.u16   d9, q10, #8                 \n\t"
+            "vst1.32     {q4}, [%[dst]:128]!         \n\t"
+            "b           11b                         \n\t"
+
+            "12:                                     \n\t"
+            "vmull.u8    q2, d5, d31                 \n\t"
+            "vmlal.u8    q2, d9, d30                 \n\t"
+            "vmul.u16    d8, d20, d0[0]              \n\t"
+            "vmul.u16    d9, d21, d0[1]              \n\t"
+            "vmul.u16    d20, d2, d0[2]              \n\t"
+            "vmul.u16    d21, d3, d0[3]              \n\t"
+            "vmla.u16    d8, d6, d1[0]               \n\t"
+            "vmla.u16    d9, d7, d1[1]               \n\t"
+            "vmla.u16    d20, d4, d1[2]              \n\t"
+            "vmla.u16    d21, d5, d1[3]              \n\t"
+            "vshrn.u16   d8, q4, #8                  \n\t"
+            "vshrn.u16   d9, q10, #8                 \n\t"
+            "vst1.32     {q4}, [%[dst]:128]!         \n\t"
+
+            "13:                                     \n\t"
+            "adds        %[len], #4-1                \n\t"
+            "bmi         22f                         \n\t"
+
+            "21:                                     \n\t"
+            S32_OPAQUE_D32_FILTER_DX_1PIX_NEON("subs %[len], #1")
+            "bpl         21b                         \n\t"
+
+            "22:                                     \n\t"
+    : // Outputs
+             [dst]"+r"(colors),
+              [xy]"+r"(xy),
+             [len]"+r"(count),
+            [tmp0]"=&r"(tmp0),
+            [tmp1]"=&r"(tmp1),
+            [tmp2]"=&r"(tmp2),
+            [tmp3]"=&r"(tmp3),
+               [x]"=&r"(x)
+    : // Inputs
+            [row0]"r"(row0),
+            [row1]"r"(row1),
+            [subY]"r"(wy)
+    : // Clobbers
+            "cc", "memory", "q0", "q1", "q2", "q3", "q4", "q5", "q8", "q9", "q10", "q11", "q12", "q13", "q14"
+    );
+}
+
 #endif
 
 }  // namespace SK_OPTS_NS

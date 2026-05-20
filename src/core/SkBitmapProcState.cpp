@@ -25,6 +25,7 @@
 class SkImage;
 class SkImage_Base;
 
+#if !defined(SK_ARM_HAS_NEON) || defined(__ARM_64BIT_STATE)
 // One-stop-shop shader for,
 //   - nearest-neighbor sampling (_nofilter_),
 //   - clamp tiling in X and Y both (Clamp_),
@@ -80,6 +81,199 @@ static void Clamp_S32_opaque_D32_nofilter_DX_shaderproc(const void* sIn, int x, 
         }
     }
 }
+#endif
+
+// We define two variants of this: one for 32-bit ARM NEON, and one generic C:
+
+#if defined(SK_ARM_HAS_NEON) && !defined(__ARM_64BIT_STATE)
+static inline void Clamp_S32_opaque_D32_nofilter_DX_shaderproc_core_neon(SkPMColor* __restrict__ &dst, const SkPMColor* __restrict__ src, int core, SkFixed3232 fx, const SkFixed3232 dx)
+{
+    const SkPMColor*p = src + (int32_t)(fx >> 32);
+    uint32_t accum = (uint32_t) fx;
+    const SkPMColor *p2;
+    __asm__ volatile (
+            "cmp     %[core], #0           \n\t"
+            "it      ne                    \n\t"
+            "tstne   %[dst], #0xc          \n\t"
+            "beq     2f                    \n\t"
+            "1:                            \n\t"
+            "vldr    s0, [%[p]]            \n\t"
+            "adds    %[accum], %[dx]       \n\t"
+            "ite     cc                    \n\t"
+            "addcc   %[p], %[inc1]         \n\t"
+            "addcs   %[p], %[inc2]         \n\t"
+            "vstm    %[dst]!, {s0}         \n\t"
+            "subs    %[core], #1           \n\t"
+            "it      ne                    \n\t"
+            "tstne   %[dst], #0xc          \n\t"
+            "bne     1b                    \n\t"
+            "2:                            \n\t"
+            "adds    %[accum], %[dx]       \n\t"
+            "ite     cc                    \n\t"
+            "addcc   %[p2], %[p], %[inc1]  \n\t"
+            "addcs   %[p2], %[p], %[inc2]  \n\t"
+            "subs    %[core], #4           \n\t"
+            "bcc     4f                    \n\t"
+            "3:                            \n\t"
+            "vldr    s0, [%[p]]            \n\t"
+            "adds    %[accum], %[dx]       \n\t"
+            "ite     cc                    \n\t"
+            "addcc   %[p], %[p2], %[inc1]  \n\t"
+            "addcs   %[p], %[p2], %[inc2]  \n\t"
+            "vldr    s1, [%[p2]]           \n\t"
+            "adds    %[accum], %[dx]       \n\t"
+            "ite     cc                    \n\t"
+            "addcc   %[p2], %[p], %[inc1]  \n\t"
+            "addcs   %[p2], %[p], %[inc2]  \n\t"
+            "vldr    s2, [%[p]]            \n\t"
+            "adds    %[accum], %[dx]       \n\t"
+            "ite     cc                    \n\t"
+            "addcc   %[p], %[p2], %[inc1]  \n\t"
+            "addcs   %[p], %[p2], %[inc2]  \n\t"
+            "vldr    s3, [%[p2]]           \n\t"
+            "adds    %[accum], %[dx]       \n\t"
+            "ite     cc                    \n\t"
+            "addcc   %[p2], %[p], %[inc1]  \n\t"
+            "addcs   %[p2], %[p], %[inc2]  \n\t"
+            "vst1.32 {q0}, [%[dst] :128]!  \n\t"
+            "subs    %[core], #4           \n\t"
+            "bcs     3b                    \n\t"
+            "4:                            \n\t"
+            "adds    %[core], #4           \n\t"
+            "beq     6f                    \n\t"
+            "5:                            \n\t"
+            "vldr    s0, [%[p]]            \n\t"
+            "mov     %[p], %[p2]           \n\t"
+            "adds    %[accum], %[dx]       \n\t"
+            "ite     cc                    \n\t"
+            "addcc   %[p2], %[p], %[inc1]  \n\t"
+            "addcs   %[p2], %[p], %[inc2]  \n\t"
+            "vstm    %[dst]!, {s0}         \n\t"
+            "subs    %[core], #1           \n\t"
+            "bne     5b                    \n\t"
+            "6:                            \n\t"
+    : // Outputs
+            [accum]"+r"(accum),
+             [core]"+r"(core),
+              [dst]"+r"(dst),
+                [p]"+r"(p),
+               [p2]"=&r"(p2)
+    : // Inputs
+              [dx]"r"((int32_t) dx),
+            [inc1]"r"((int32_t)(dx >> 32) * 4),
+            [inc2]"r"(((int32_t)(dx >> 32) + 1) * 4)
+    : // Clobbers
+            "cc", "memory", "q0"
+    );
+}
+#endif
+
+#if 0
+static inline void Clamp_S32_opaque_D32_nofilter_DX_shaderproc_core(SkPMColor* __restrict__ &dst, const SkPMColor* __restrict__ src, int core, SkFixed3232 fx, const SkFixed3232 dx)
+{
+    const SkPMColor*p = src + (int32_t)(fx >> 32);
+    uint32_t accum = (uint32_t) fx;
+    for (; core > 0; --core) {
+        *dst++ = *p;
+        uint32_t prev_accum = accum;
+        accum += (int32_t) dx;
+        if (accum < prev_accum) /* i.e. carry set */
+            p += (int32_t)(dx >> 32) + 1;
+        else
+            p += (int32_t)(dx >> 32);
+    }
+}
+#endif
+
+#define Clamp_S32_opaque_D32_nofilter_DX_shaderproc_template(SUFFIX)                               \
+static void Clamp_S32_opaque_D32_nofilter_DX_shaderproc(const void* sIn, int x, int y,             \
+                                                        SkPMColor* SK_RESTRICT dst,  int count) {  \
+    const SkBitmapProcState& s = *static_cast<const SkBitmapProcState*>(sIn);                      \
+    SkASSERT(s.fAlphaScale == 256);                                                                \
+                                                                                                   \
+    const unsigned maxX = s.fPixmap.width() - 1;                                                   \
+    SkFixed3232 fx;                                                                            \
+    int dstY;                                                                                      \
+    {                                                                                              \
+        const SkBitmapProcStateAutoMapper mapper(s, x, y);                                         \
+        const unsigned maxY = s.fPixmap.height() - 1;                                              \
+        dstY = SkTPin(mapper.intY(), 0, (int)maxY);                                                    \
+        fx = mapper.fixed3232X();                                                              \
+    }                                                                                              \
+                                                                                                   \
+    const SkPMColor* SK_RESTRICT src = s.fPixmap.addr32(0, dstY);                                  \
+    const SkFixed3232 dx = s.fInvSx;                                              \
+                                                                                                   \
+    int core;                                                                                      \
+                                                                                                   \
+    /* The unscaled case is easily common enough to be worth special-casing.                       \
+     * The system memcpy() is typically already heavily optimized, so just use that.               \
+     */                                                                                            \
+    if (dx == 0x100000000ll) {                                                                     \
+        int32_t fx_integer = fx >> 32;                                                             \
+        if (fx_integer < 0) {                                                                      \
+            int left = std::min(-fx_integer, count);                                                \
+            fx_integer += left;                                                                    \
+            count -= left;                                                                         \
+            for (; left > 0; --left)                                                               \
+                *dst++ = src[0];                                                                   \
+        }                                                                                          \
+        if (fx_integer < (int)maxX) {                                                              \
+            core = std::min((int)maxX + 1 - fx_integer, count);                                     \
+            memcpy(dst, src + fx_integer, core * sizeof (uint32_t));                               \
+            dst += core;                                                                           \
+            count -= core;                                                                         \
+        }                                                                                          \
+        for (; count > 0; --count) {                                                               \
+            *dst++ = src[maxX];                                                                    \
+        }                                                                                          \
+    }                                                                                              \
+                                                                                                   \
+    /* Handle other non-reflected scale factors. */                                                \
+    else if (dx >= 0) {                                                                            \
+        for (; fx < 0 && count > 0; --count) {                                                     \
+            *dst++ = src[0];                                                                       \
+            fx += dx;                                                                              \
+        }                                                                                          \
+        if ((int32_t)(fx >> 32) > (int)maxX)                                                       \
+            core = 0;                                                                              \
+        else if ((int32_t)((fx + (count - 1) * dx) >> 32) <= (int)maxX)                            \
+            core = count;                                                                          \
+        else                                                                                       \
+            core = (int32_t)(((((SkFixed3232) maxX) << 32) + 0xffffffff - fx) / dx) + 1;       \
+        Clamp_S32_opaque_D32_nofilter_DX_shaderproc_core##SUFFIX(dst, src, core, fx, dx);          \
+        count -= core;                                                                             \
+        for (; count > 0; --count) {                                                               \
+            *dst++ = src[maxX];                                                                    \
+        }                                                                                          \
+    }                                                                                              \
+                                                                                                   \
+    /* It's not clear if reflection is used, but it's a relatively                                 \
+     * simple variation on the non-reflected case. */                                              \
+    else                                                                                           \
+    {                                                                                              \
+        for (; (int32_t)(fx >> 32) > (int)maxX && count > 0; --count) {                            \
+            *dst++ = src[maxX];                                                                    \
+            fx += dx;                                                                              \
+        }                                                                                          \
+        if (fx < 0)                                                                                \
+            core = 0;                                                                              \
+        else if (fx + (count - 1) * dx >= 0)                                                       \
+            core = count;                                                                          \
+        else                                                                                       \
+            core = (int32_t)(fx / -dx) + 1;                                                        \
+        Clamp_S32_opaque_D32_nofilter_DX_shaderproc_core##SUFFIX(dst, src, core, fx, dx);          \
+        count -= core;                                                                             \
+        for (; count > 0; --count) {                                                               \
+            *dst++ = src[0];                                                                       \
+        }                                                                                          \
+    }                                                                                              \
+}
+
+#if defined(SK_ARM_HAS_NEON) && !defined(__ARM_64BIT_STATE)
+Clamp_S32_opaque_D32_nofilter_DX_shaderproc_template(_neon)
+#endif
+
 
 static void S32_alpha_D32_nofilter_DX(const SkBitmapProcState& s,
                                       const uint32_t* xy, int count, SkPMColor* colors) {
@@ -279,7 +473,11 @@ bool SkBitmapProcState::chooseProcs() {
     SkASSERT(fMatrixProc);
 
     if (fInvMatrix.isScaleTranslate()) {
+#if defined(SK_ARM_HAS_NEON) && !defined(__ARM_64BIT_STATE)
+        fSampleProc32 = fBilerp ? (fAlphaScale == 256 ? SkOpts::S32_opaque_D32_filter_DX : SkOpts::S32_alpha_D32_filter_DX) : S32_alpha_D32_nofilter_DX  ;
+#else
         fSampleProc32 = fBilerp ? SkOpts::S32_alpha_D32_filter_DX   : S32_alpha_D32_nofilter_DX  ;
+#endif
     } else {
         fSampleProc32 = fBilerp ? SkOpts::S32_alpha_D32_filter_DXDY : S32_alpha_D32_nofilter_DXDY;
     }
