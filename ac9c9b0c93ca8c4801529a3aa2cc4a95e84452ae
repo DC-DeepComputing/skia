@@ -67,6 +67,24 @@
       "message": "+sergio, we\u0027ll want to make sure the moxcms parsing also doesn\u0027t give us too many points for this potential overflow.",
       "revId": "ac9c9b0c93ca8c4801529a3aa2cc4a95e84452ae",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a4a685d_7dc1f387",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-05-20T19:23:36Z",
+      "side": 1,
+      "message": "I prepared this CL adding also equivalent validation on rust icc:\n\nhttps://skia-review.googlesource.com/c/skia/+/1241196",
+      "parentUuid": "cf9b9305_5ba74f5b",
+      "revId": "ac9c9b0c93ca8c4801529a3aa2cc4a95e84452ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
