@@ -47,7 +47,8 @@ VertexFiller VertexFiller::Make(MaskFormat maskType,
 }
 
 std::optional<VertexFiller> VertexFiller::MakeFromBuffer(SkReadBuffer &buffer,
-                                                         SubRunAllocator *alloc) {
+                                                         SubRunAllocator *alloc,
+                                                         SkRect creationBounds) {
     int checkingMaskType = buffer.readInt();
     if (!buffer.validate(
             0 <= checkingMaskType && checkingMaskType < skgpu::kMaskFormatCount)) {
@@ -60,7 +61,8 @@ std::optional<VertexFiller> VertexFiller::MakeFromBuffer(SkReadBuffer &buffer,
     SkMatrix creationMatrix;
     buffer.readMatrix(&creationMatrix);
 
-    SkRect creationBounds = buffer.readRect();
+    // Read and discard the creation bounds from the buffer to keep the stream aligned
+    buffer.readRect();
 
     SkSpan<SkPoint> leftTop = MakePointsFromBuffer(buffer, alloc);
     if (leftTop.empty()) { return std::nullopt; }

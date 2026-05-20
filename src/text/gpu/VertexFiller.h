@@ -62,7 +62,8 @@ public:
                              FillerType fillerType);
 
     static std::optional<VertexFiller> MakeFromBuffer(SkReadBuffer &buffer,
-                                                      SubRunAllocator *alloc);
+                                                      SubRunAllocator *alloc,
+                                                      SkRect creationBounds);
 
     int unflattenSize() const { return fLeftTop.size_bytes(); }
 
@@ -77,6 +78,8 @@ public:
     std::tuple<bool, SkRect> deviceRectAndCheckTransform(const SkMatrix &positionMatrix) const;
 
     skgpu::MaskFormat maskFormat() const { return fMaskFormat; }
+
+    const SkMatrix& creationMatrix() const { return fCreationMatrix; }
 
     bool isLCD() const;
 
