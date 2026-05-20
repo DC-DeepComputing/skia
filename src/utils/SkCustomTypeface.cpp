@@ -7,6 +7,14 @@
 
 #include "include/utils/SkCustomTypeface.h"
 
+#include <algorithm>
+#include <cstdint>
+#include <cstring>
+#include <memory>
+#include <optional>
+#include <utility>
+#include <vector>
+
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkData.h"
@@ -33,20 +41,15 @@
 #include "include/private/base/SkFixed.h"
 #include "include/private/base/SkMalloc.h"
 #include "include/private/base/SkTo.h"
-#include "src/core/SkAdvancedTypefaceMetrics.h" // IWYU pragma: keep
+#include "src/core/SkAdvancedTypefaceMetrics.h"  // IWYU pragma: keep
+#include "src/core/SkBigPicture.h"
 #include "src/core/SkFontDescriptor.h"
 #include "src/core/SkGlyph.h"
 #include "src/core/SkMask.h"
+#include "src/core/SkPicturePriv.h"
+#include "src/core/SkRecord.h"
 #include "src/core/SkScalerContext.h"
 #include "src/core/SkStreamPriv.h"
-
-#include <algorithm>
-#include <cstdint>
-#include <cstring>
-#include <memory>
-#include <optional>
-#include <utility>
-#include <vector>
 
 class SkArenaAlloc;
 class SkDescriptor;
@@ -502,6 +505,29 @@ sk_sp<SkTypeface> SkCustomTypefaceBuilder::Deserialize(SkStream* stream) {
                 SkDeserialProcs procs;
                 procs.fAllowSkSL = false;
                 auto drawable = SkDrawable::Deserialize(data->data(), data->size(), &procs);
+                if (drawable) {
+                    bool hasProhibitedOp = false;
+                    sk_sp<SkPicture> pic = drawable->makePictureSnapshot();
+                    auto detectImageTextTags = [&](const auto& record) {
+                        if (record.kTags & (SkRecords::kHasImage_Tag | SkRecords::kHasText_Tag)) {
+                            hasProhibitedOp = true;
+                        }
+                    };
+                    if (const SkBigPicture* bigPicture = SkPicturePriv::AsSkBigPicture(pic)) {
+                        const SkRecord* record = bigPicture->record();
+                        for (int commandIndex = 0; commandIndex < record->count(); ++commandIndex) {
+                            record->visit(i, detectImageTextTags);
+                            if (hasProhibitedOp) {
+                                break;
+                            }
+                        }
+                    }
+
+                    if (hasProhibitedOp) {
+                        return nullptr;
+                    }
+                }
+
                 if (!drawable) {
                     return nullptr;
                 }
