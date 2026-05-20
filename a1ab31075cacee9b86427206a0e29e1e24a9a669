@@ -16,6 +16,29 @@
       "message": "NOTE that the failing task is failing for an unrelated reason. See status page: https://task-scheduler.skia.org/jobs/search?name\u003dTest-Win11-MSVC-Golo-GPU-QuadroP400-x86_64-Debug-All-Graphite_Dawn_D3D11",
       "revId": "a1ab31075cacee9b86427206a0e29e1e24a9a669",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b42ff05_256bba27",
+        "filename": "tests/graphite/GraphiteResourceCacheTest.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 929,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-05-20T16:09:29Z",
+      "side": 1,
+      "message": "Should we flip these two statements?",
+      "range": {
+        "startLine": 924,
+        "startChar": 0,
+        "endLine": 929,
+        "endChar": 51
+      },
+      "revId": "a1ab31075cacee9b86427206a0e29e1e24a9a669",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
