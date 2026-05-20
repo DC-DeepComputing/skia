@@ -33,6 +33,23 @@
       "message": "[LTS sheriff] LGTM",
       "revId": "4ceb76946e6489a8a4f0392180d99c8ab34058a1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c48cd9d2_7fdb8367",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3621349
+      },
+      "writtenOn": "2026-05-20T08:25:28Z",
+      "side": 1,
+      "message": "kjlubick@google.com jmbetancourt@google.com michaelludwig@google.com Could you please land this CL instead of me? I don\u0027t have permission to land it.",
+      "revId": "4ceb76946e6489a8a4f0392180d99c8ab34058a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
