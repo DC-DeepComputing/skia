@@ -22,6 +22,30 @@
       },
       "revId": "aa9181d9bf6ce8b56f4f5e478d23433e3a851f8e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0bc77475_7f7f0830",
+        "filename": "src/gpu/ganesh/mtl/GrMtlOpsRenderPass.mm",
+        "patchSetId": 9
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-05-20T15:41:54Z",
+      "side": 1,
+      "message": "I think this code is trying to just create a whole new encoder and then just continue on with things. So I don\u0027t think this is a case where we skip the draw operation. But I would need to understand all this code more to really answer.\n\nRegardless the old version didn\u0027t skip the draw for a failed setupResolve so I don\u0027t think we should add there here now for this security fix.",
+      "parentUuid": "4d4810dd_ad1882ec",
+      "range": {
+        "startLine": 199,
+        "startChar": 8,
+        "endLine": 199,
+        "endChar": 21
+      },
+      "revId": "aa9181d9bf6ce8b56f4f5e478d23433e3a851f8e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

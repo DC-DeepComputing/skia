@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7fbb2720_0675b86b",
+        "filename": "src/gpu/ganesh/GrOpFlushState.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-05-20T15:41:54Z",
+      "side": 1,
+      "message": "I don\u0027t think we want this in the loop for uploads since there could be multiple uploads per draw. I think we just do this inc as in else to the skipping of the draw you added below.",
+      "range": {
+        "startLine": 61,
+        "startChar": 16,
+        "endLine": 64,
+        "endChar": 17
+      },
+      "revId": "afa24b1249957748374573bd2bed5b77847d4ed7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
