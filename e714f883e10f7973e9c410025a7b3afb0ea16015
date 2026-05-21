@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d536685a_680de591",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2026-05-21T20:29:28Z",
+      "side": 1,
+      "message": "Note: this relies on https://skia-review.git.corp.google.com/c/skia-autoroll-internal-config/+/1242082",
+      "revId": "e714f883e10f7973e9c410025a7b3afb0ea16015",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
