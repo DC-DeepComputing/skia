@@ -734,11 +734,28 @@ PathRenderer::CanDrawPath SmallPathRenderer::onCanDrawPath(const CanDrawPathArgs
         return CanDrawPath::kNo;
     }
 
+    const SkRect bounds = args.fShape->styledBounds();
+
     SkScalar scaleFactors[2] = { 1, 1 };
-    // TODO: handle perspective distortion
-    if (!args.fViewMatrix->hasPerspective() && !args.fViewMatrix->getMinMaxScales(scaleFactors)) {
-        return CanDrawPath::kNo;
+    if (args.fViewMatrix->hasPerspective()) {
+        if (bounds.isEmpty()) {
+            return CanDrawPath::kNo;
+        }
+        const SkRect xformed_bounds = args.fViewMatrix->mapRect(bounds);
+        const float sx = xformed_bounds.width()  / bounds.width(),
+                    sy = xformed_bounds.height() / bounds.height();
+        scaleFactors[0] = std::min(sx, sy);
+        scaleFactors[1] = std::max(sx, sy);
+        const auto& m = *args.fViewMatrix;
+
+        printf("*** M: %f %f %f %f %f %f %f %f %f\n",
+          m[0], m[1], m[2], m[3], m[4], m[5], m[6], m[7], m[8]);
+    } else {
+        if (!args.fViewMatrix->getMinMaxScales(scaleFactors)) {
+            return CanDrawPath::kNo;
+        }
     }
+
     // For affine transformations, too much shear can produce artifacts.
     if (!scaleFactors[0] || scaleFactors[1]/scaleFactors[0] > 4) {
         return CanDrawPath::kNo;
@@ -746,7 +763,6 @@ PathRenderer::CanDrawPath SmallPathRenderer::onCanDrawPath(const CanDrawPathArgs
     // Only support paths with bounds within kMaxDim by kMaxDim,
     // scaled to have bounds within kMaxSize by kMaxSize.
     // The goal is to accelerate rendering of lots of small paths that may be scaling.
-    SkRect bounds = args.fShape->styledBounds();
     SkScalar minDim = std::min(bounds.width(), bounds.height());
     SkScalar maxDim = std::max(bounds.width(), bounds.height());
     SkScalar minSize = minDim * SkScalarAbs(scaleFactors[0]);
