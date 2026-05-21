@@ -1507,8 +1507,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
                                            const SkPaint* paint) -> void {
                           const SkRect* src = reinterpret_cast<const SkRect*>(srcPtr);
                           const SkRect* dst = reinterpret_cast<const SkRect*>(dstPtr);
-                          auto constraint =
-                                  SkCanvas::kStrict_SrcRectConstraint;  // TODO: get from caller
+                          auto constraint = SkCanvas::kFast_SrcRectConstraint;  // TODO: get from caller
                           self.drawImageRect(image.get(),
                                              *src,
                                              *dst,
@@ -1527,8 +1526,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
                                            const SkPaint* paint) -> void {
                           const SkRect* src = reinterpret_cast<const SkRect*>(srcPtr);
                           const SkRect* dst = reinterpret_cast<const SkRect*>(dstPtr);
-                          auto constraint =
-                                  SkCanvas::kStrict_SrcRectConstraint;  // TODO: get from caller
+                          auto constraint = SkCanvas::kFast_SrcRectConstraint;  // TODO: get from caller
                           self.drawImageRect(
                                   image.get(), *src, *dst, {filter, mipmap}, paint, constraint);
                       }),
