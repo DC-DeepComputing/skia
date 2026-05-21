@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6132bbe4_0220885e",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1511,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-05-21T18:34:47Z",
+      "side": 0,
+      "message": "You know, I\u0027m ok just changing this default to be fast.",
+      "range": {
+        "startLine": 1511,
+        "startChar": 44,
+        "endLine": 1511,
+        "endChar": 69
+      },
+      "revId": "125526e0d3ab87ee21451b1f3c611dda98d701cb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
