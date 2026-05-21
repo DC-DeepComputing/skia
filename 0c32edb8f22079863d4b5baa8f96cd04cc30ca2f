@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd15d762_6f37cf50",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-05-21T18:27:03Z",
+      "side": 1,
+      "message": "nit: If this is going to be submitted, change from \"Attempt to\" to more definitive descriptor. (if its just a test then ignore me)",
+      "revId": "0c32edb8f22079863d4b5baa8f96cd04cc30ca2f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
