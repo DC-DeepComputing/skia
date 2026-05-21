@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3913ad3d_e5ce996b",
+        "filename": "src/capture/SkCaptureCanvas.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-05-21T18:35:23Z",
+      "side": 0,
+      "message": "do you not want this drawAnnonations anymore?",
+      "range": {
+        "startLine": 213,
+        "startChar": 18,
+        "endLine": 213,
+        "endChar": 32
+      },
+      "revId": "2610b2e8cb2335ed931ea62529518c29f4486e0c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
