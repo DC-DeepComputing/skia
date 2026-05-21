@@ -640,7 +640,7 @@ CanvasKit.onRuntimeInitialized = function() {
     this._drawImageRect(img, _scratchFourFloatsAPtr, _scratchFourFloatsBPtr, paint, !!fastSample);
   };
 
-  CanvasKit.Canvas.prototype.drawImageRectCubic = function(img, src, dest, B, C, paint) {
+  CanvasKit.Canvas.prototype.drawImageRectCubic = function(img, src, dest, B, C, paint, fastSample) {
     CanvasKit.setCurrentContext(this._context);
     copyRectToWasm(src,  _scratchFourFloatsAPtr);
     copyRectToWasm(dest, _scratchFourFloatsBPtr);
@@ -648,7 +648,7 @@ CanvasKit.onRuntimeInitialized = function() {
       paint || null);
   };
 
-  CanvasKit.Canvas.prototype.drawImageRectOptions = function(img, src, dest, filter, mipmap, paint) {
+  CanvasKit.Canvas.prototype.drawImageRectOptions = function(img, src, dest, filter, mipmap, paint, fastSample) {
     CanvasKit.setCurrentContext(this._context);
     copyRectToWasm(src,  _scratchFourFloatsAPtr);
     copyRectToWasm(dest, _scratchFourFloatsBPtr);

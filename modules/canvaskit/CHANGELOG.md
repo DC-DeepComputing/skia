@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## Added
+- `fastSample` argument to `Canvas.drawImageCubic` and `Canvas.drawImageOptions` which
+  specifies how CanvasKit will sample the image for filters.
+
 ## [0.41.1] - 2026-04-07
 
 ### Fixed

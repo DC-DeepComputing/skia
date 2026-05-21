@@ -1504,11 +1504,12 @@ EMSCRIPTEN_BINDINGS(Skia) {
                                            WASMPointerF32 dstPtr,
                                            float B,
                                            float C,  // See SkSamplingOptions.h for docs.
-                                           const SkPaint* paint) -> void {
+                                           const SkPaint* paint,
+					   bool fastSample) -> void {
                           const SkRect* src = reinterpret_cast<const SkRect*>(srcPtr);
                           const SkRect* dst = reinterpret_cast<const SkRect*>(dstPtr);
-                          auto constraint =
-                                  SkCanvas::kStrict_SrcRectConstraint;  // TODO: get from caller
+                          auto constraint = fastSample ? SkCanvas::kFast_SrcRectConstraint
+                                                       : SkCanvas::kStrict_SrcRectConstraint;
                           self.drawImageRect(image.get(),
                                              *src,
                                              *dst,
@@ -1524,11 +1525,12 @@ EMSCRIPTEN_BINDINGS(Skia) {
                                            WASMPointerF32 dstPtr,
                                            SkFilterMode filter,
                                            SkMipmapMode mipmap,
-                                           const SkPaint* paint) -> void {
+                                           const SkPaint* paint,
+					   bool fastSample) -> void {
                           const SkRect* src = reinterpret_cast<const SkRect*>(srcPtr);
                           const SkRect* dst = reinterpret_cast<const SkRect*>(dstPtr);
-                          auto constraint =
-                                  SkCanvas::kStrict_SrcRectConstraint;  // TODO: get from caller
+                          auto constraint = fastSample ? SkCanvas::kFast_SrcRectConstraint
+                                                       : SkCanvas::kStrict_SrcRectConstraint;
                           self.drawImageRect(
                                   image.get(), *src, *dst, {filter, mipmap}, paint, constraint);
                       }),
