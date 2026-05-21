@@ -16,6 +16,24 @@
       "message": "nit: If this is going to be submitted, change from \"Attempt to\" to more definitive descriptor. (if its just a test then ignore me)",
       "revId": "0c32edb8f22079863d4b5baa8f96cd04cc30ca2f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f7b4aab_b9446c5a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2026-05-21T18:56:21Z",
+      "side": 1,
+      "message": "Good point, updated",
+      "parentUuid": "fd15d762_6f37cf50",
+      "revId": "0c32edb8f22079863d4b5baa8f96cd04cc30ca2f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
