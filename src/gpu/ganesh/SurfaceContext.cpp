@@ -713,29 +713,54 @@ void SurfaceContext::asyncReadPixels(GrDirectContext* dContext,
         SkISize fSize;
         GrClientMappedBufferManager* fMappedBufferManager;
         PixelTransferResult fTransferResult;
+        bool fSubmitted = false; // set in submit proc on success
     };
     // Assumption is that the caller would like to flush. We could take a parameter or require an
     // explicit flush from the caller. We'd have to have a way to defer attaching the finish
     // callback to GrGpu until after the next flush that flushes our op list, though.
+    //
+    // We use a submitted proc to confirm that the commands to write to the buffer were submitted to
+    // the GPU. The finish proc then completes the process by notifying the async result callback.
     auto* finishContext = new FinishContext{callback,
                                             callbackContext,
                                             rect.size(),
                                             mappedBufferManager,
                                             std::move(transferResult)};
+    auto submittedCallback = [](GrGpuSubmittedContext c, bool success) {
+        auto* context = reinterpret_cast<FinishContext*>(c);
+        if (success) {
+            context->fSubmitted = true;
+        }
+        // else the finish proc will still be invoked to clean everything up, we just won't call
+        // the async result callback with the buffer
+    };
     auto finishCallback = [](GrGpuFinishedContext c) {
         const auto* context = reinterpret_cast<const FinishContext*>(c);
         auto manager = context->fMappedBufferManager;
-        auto result = std::make_unique<AsyncReadResult>(manager->ownerID());
-        if (!result->addTransferResult(context->fTransferResult,
-                                       context->fSize,
-                                       context->fTransferResult.fRowBytes,
-                                       manager)) {
+
+        std::unique_ptr<AsyncReadResult> result;
+        if (context->fSubmitted) {
+            result = std::make_unique<AsyncReadResult>(manager->ownerID());
+        }
+
+        if (result && !result->addTransferResult(context->fTransferResult,
+                                                 context->fSize,
+                                                 context->fTransferResult.fRowBytes,
+                                                 manager)) {
             result.reset();
         }
+        if (!result && context->fTransferResult.fTransferBuffer->isMapped()) {
+            // unmap the transfer buffer if we didn't stick into the ClientMappedBufferManager
+            context->fTransferResult.fTransferBuffer->unmap();
+        }
         (*context->fClientCallback)(context->fClientContext, std::move(result));
+
         delete context;
     };
+
     GrFlushInfo flushInfo;
+    flushInfo.fSubmittedContext = finishContext;
+    flushInfo.fSubmittedProc = submittedCallback;
     flushInfo.fFinishedContext = finishContext;
     flushInfo.fFinishedProc = finishCallback;
 
@@ -986,7 +1011,9 @@ void SurfaceContext::asyncRescaleAndReadPixelsYUV420(GrDirectContext* dContext,
         PixelTransferResult fUTransfer;
         PixelTransferResult fVTransfer;
         PixelTransferResult fATransfer;
+        bool fSubmitted = false;
     };
+
     // Assumption is that the caller would like to flush. We could take a parameter or require an
     // explicit flush from the caller. We'd have to have a way to defer attaching the finish
     // callback to GrGpu until after the next flush that flushes our op list, though.
@@ -998,48 +1025,47 @@ void SurfaceContext::asyncRescaleAndReadPixelsYUV420(GrDirectContext* dContext,
                                             std::move(uTransfer),
                                             std::move(vTransfer),
                                             std::move(aTransfer)};
+    auto submittedCallback = [](GrGpuSubmittedContext c, bool success) {
+        auto* context = reinterpret_cast<FinishContext*>(c);
+        if (success) {
+            context->fSubmitted = true;
+        }
+        // else the finish proc will still be invoked to clean everything up, we just won't call
+        // the async result callback with the buffer
+    };
     auto finishCallback = [](GrGpuFinishedContext c) {
         const auto* context = reinterpret_cast<const FinishContext*>(c);
         auto manager = context->fMappedBufferManager;
-        auto result = std::make_unique<AsyncReadResult>(manager->ownerID());
-        if (!result->addTransferResult(context->fYTransfer,
-                                       context->fSize,
-                                       context->fYTransfer.fRowBytes,
-                                       manager)) {
-            (*context->fClientCallback)(context->fClientContext, nullptr);
-            delete context;
-            return;
+        std::unique_ptr<AsyncReadResult> result;
+        if (context->fSubmitted) {
+            result = std::make_unique<AsyncReadResult>(manager->ownerID());
         }
+
+        using Plane = std::pair<const PixelTransferResult*, SkISize>;
         SkISize uvSize = {context->fSize.width() / 2, context->fSize.height() / 2};
-        if (!result->addTransferResult(context->fUTransfer,
-                                       uvSize,
-                                       context->fUTransfer.fRowBytes,
-                                       manager)) {
-            (*context->fClientCallback)(context->fClientContext, nullptr);
-            delete context;
-            return;
-        }
-        if (!result->addTransferResult(context->fVTransfer,
-                                       uvSize,
-                                       context->fVTransfer.fRowBytes,
-                                       manager)) {
-            (*context->fClientCallback)(context->fClientContext, nullptr);
-            delete context;
-            return;
-        }
-        if (context->fATransfer.fTransferBuffer &&
-            !result->addTransferResult(context->fATransfer,
-                                       context->fSize,
-                                       context->fATransfer.fRowBytes,
-                                       manager)) {
-            (*context->fClientCallback)(context->fClientContext, nullptr);
-            delete context;
-            return;
+        for (auto [transfer, size] : {Plane{&context->fYTransfer, context->fSize},
+                                      Plane{&context->fUTransfer, uvSize},
+                                      Plane{&context->fVTransfer, uvSize},
+                                      Plane{&context->fATransfer, context->fSize}}) {
+            if (!transfer->fTransferBuffer) {
+                break;
+            }
+            if (result && !result->addTransferResult(*transfer,
+                                                     size,
+                                                     transfer->fRowBytes,
+                                                     manager)) {
+                result.reset();
+            }
+            if (!result && transfer->fTransferBuffer->isMapped()) {
+                transfer->fTransferBuffer->unmap();
+            }
         }
         (*context->fClientCallback)(context->fClientContext, std::move(result));
         delete context;
     };
     GrFlushInfo flushInfo;
+    flushInfo.fSubmittedContext = finishContext;
+    flushInfo.fSubmittedProc = submittedCallback;
     flushInfo.fFinishedContext = finishContext;
     flushInfo.fFinishedProc = finishCallback;
     dContext->priv().flushSurface(
