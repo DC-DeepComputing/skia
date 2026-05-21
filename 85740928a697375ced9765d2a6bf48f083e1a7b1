@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b38e40ee_8939a274",
+        "filename": "include/private/base/SkAssert.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2026-05-21T21:24:06Z",
+      "side": 1,
+      "message": "FWIW, from a client POV I think it would be really nice to be able to get a callback when SK_ABORT is invoked as well.\n\nDo you think it would be feasible to support that? One option could be to have it be the same logging callback, if we maintain some fatal/abort logging level. Or maybe it should be a different callback? Unsure... :/",
+      "range": {
+        "startLine": 73,
+        "startChar": 8,
+        "endLine": 73,
+        "endChar": 18
+      },
+      "revId": "85740928a697375ced9765d2a6bf48f083e1a7b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24f1f761_c51a9d5c",
+        "filename": "src/gpu/graphite/QueueManager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2026-05-21T21:24:06Z",
+      "side": 1,
+      "message": "Nit: missing space",
+      "range": {
+        "startLine": 45,
+        "startChar": 95,
+        "endLine": 45,
+        "endChar": 96
+      },
+      "revId": "85740928a697375ced9765d2a6bf48f083e1a7b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d018e777_c6d515fe",
+        "filename": "src/gpu/graphite/TextureFormatXferFn.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2026-05-21T21:24:06Z",
+      "side": 1,
+      "message": "Looks like Michael was suggesting we might want to just omit these `[graphite]` prefixes?",
+      "range": {
+        "startLine": 136,
+        "startChar": 19,
+        "endLine": 136,
+        "endChar": 27
+      },
+      "revId": "85740928a697375ced9765d2a6bf48f083e1a7b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
