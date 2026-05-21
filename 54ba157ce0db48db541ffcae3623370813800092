@@ -22,6 +22,30 @@
       },
       "revId": "54ba157ce0db48db541ffcae3623370813800092",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bde63f79_00894857",
+        "filename": "third_party/dawn/cmake_utils.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 19800
+      },
+      "writtenOn": "2026-05-21T21:05:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a76fbe19_0a14b46d",
+      "range": {
+        "startLine": 296,
+        "startChar": 8,
+        "endLine": 296,
+        "endChar": 14
+      },
+      "revId": "54ba157ce0db48db541ffcae3623370813800092",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
