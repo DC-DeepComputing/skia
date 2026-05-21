@@ -22,6 +22,30 @@
       },
       "revId": "125526e0d3ab87ee21451b1f3c611dda98d701cb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "594f943e_fff426a4",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1511,
+      "author": {
+        "id": 10154
+      },
+      "writtenOn": "2026-05-21T18:50:34Z",
+      "side": 0,
+      "message": "Great! That also saves me the trouble of fixing the bug where I forgot to wire up the fastSample argument in interface.js :)",
+      "parentUuid": "6132bbe4_0220885e",
+      "range": {
+        "startLine": 1511,
+        "startChar": 44,
+        "endLine": 1511,
+        "endChar": 69
+      },
+      "revId": "125526e0d3ab87ee21451b1f3c611dda98d701cb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
