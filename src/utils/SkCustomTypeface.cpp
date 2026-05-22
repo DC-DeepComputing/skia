@@ -7,6 +7,15 @@
 
 #include "include/utils/SkCustomTypeface.h"
 
+#include <algorithm>
+#include <cstdint>
+#include <cstring>
+#include <memory>
+#include <optional>
+#include <utility>
+#include <vector>
+
+#include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkData.h"
@@ -33,20 +42,15 @@
 #include "include/private/base/SkFixed.h"
 #include "include/private/base/SkMalloc.h"
 #include "include/private/base/SkTo.h"
-#include "src/core/SkAdvancedTypefaceMetrics.h" // IWYU pragma: keep
+#include "src/core/SkAdvancedTypefaceMetrics.h"  // IWYU pragma: keep
+#include "src/core/SkBigPicture.h"
 #include "src/core/SkFontDescriptor.h"
 #include "src/core/SkGlyph.h"
 #include "src/core/SkMask.h"
+#include "src/core/SkPicturePriv.h"
+#include "src/core/SkRecord.h"
 #include "src/core/SkScalerContext.h"
 #include "src/core/SkStreamPriv.h"
-
-#include <algorithm>
-#include <cstdint>
-#include <cstring>
-#include <memory>
-#include <optional>
-#include <utility>
-#include <vector>
 
 class SkArenaAlloc;
 class SkDescriptor;
@@ -501,6 +505,9 @@ sk_sp<SkTypeface> SkCustomTypefaceBuilder::Deserialize(SkStream* stream) {
             case GlyphType::kDrawable: {
                 SkDeserialProcs procs;
                 procs.fAllowSkSL = false;
+                // procs.fAllowDrawables = true;
+                // procs.fAllowPictures = true;
+                // procs.fAllowTextBlobs = false;
                 auto drawable = SkDrawable::Deserialize(data->data(), data->size(), &procs);
                 if (!drawable) {
                     return nullptr;

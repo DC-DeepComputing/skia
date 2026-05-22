@@ -115,6 +115,9 @@ struct SK_API SkDeserialProcs {
     // parameters and returns a bool). Given that there are only two valid implementations of that
     // proc, we just insert the bool directly.
     bool                         fAllowSkSL = true;
+    bool                         fAllowDrawables = true;
+    bool                         fAllowPictures = true;
+    bool                         fAllowTextBlobs = true;
 };
 
 #endif

@@ -487,6 +487,7 @@ void SkPictureData::parseBufferTag(SkReadBuffer& buffer, uint32_t tag, uint32_t 
                 }
             } break;
         case SK_PICT_TEXTBLOB_BUFFER_TAG:
+            if (!buffer.allowTextBlobs()) break;
             new_array_from_buffer(buffer, size, fTextBlobs, SkTextBlobPriv::MakeFromBuffer);
             break;
         case SK_PICT_SLUG_BUFFER_TAG:
@@ -513,11 +514,13 @@ void SkPictureData::parseBufferTag(SkReadBuffer& buffer, uint32_t tag, uint32_t 
             fOpData = std::move(data);
         } break;
         case SK_PICT_PICTURE_TAG:
+            if (!buffer.allowPictures()) break;
             buffer.downLevel();
             new_array_from_buffer(buffer, size, fPictures, SkPicturePriv::MakeFromBuffer);
             buffer.upLevel();
             break;
         case SK_PICT_DRAWABLE_TAG:
+            if (!buffer.allowDrawables()) break;
             buffer.downLevel();  // Drawables could contain pictures in theory
             new_array_from_buffer(buffer, size, fDrawables, create_drawable_from_buffer);
             buffer.upLevel();
