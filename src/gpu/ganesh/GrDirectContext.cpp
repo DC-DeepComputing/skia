@@ -434,11 +434,11 @@ skgpu::GpuStatsFlags GrDirectContext::supportedGpuStats() const {
 GrSemaphoresSubmitted GrDirectContext::flush(const GrFlushInfo& info) {
     ASSERT_SINGLE_OWNER
     if (this->abandoned()) {
-        if (info.fFinishedProc) {
-            info.fFinishedProc(info.fFinishedContext);
-        }
         if (info.fSubmittedProc) {
             info.fSubmittedProc(info.fSubmittedContext, false);
+        }
+        if (info.fFinishedProc) {
+            info.fFinishedProc(info.fFinishedContext);
         }
         return GrSemaphoresSubmitted::kNo;
     }

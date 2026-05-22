@@ -800,6 +800,7 @@ bool GrGpu::checkAndResetOOMed() {
 }
 
 void GrGpu::callSubmittedProcs(bool success) {
+    SkDebugf("calling submitted procs: %d\n", fSubmittedProcs.size());
     for (int i = 0; i < fSubmittedProcs.size(); ++i) {
         fSubmittedProcs[i].fProc(fSubmittedProcs[i].fContext, success);
     }

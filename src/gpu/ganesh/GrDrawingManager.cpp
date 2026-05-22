@@ -835,12 +835,13 @@ void GrDrawingManager::newWaitRenderTask(const sk_sp<GrSurfaceProxy>& proxy,
     SkDEBUGCODE(this->validate());
 }
 
-void GrDrawingManager::newTransferFromRenderTask(const sk_sp<GrSurfaceProxy>& srcProxy,
-                                                 const SkIRect& srcRect,
-                                                 GrColorType surfaceColorType,
-                                                 GrColorType dstColorType,
-                                                 sk_sp<GrGpuBuffer> dstBuffer,
-                                                 size_t dstOffset) {
+sk_sp<GrTransferFromRenderTask> GrDrawingManager::newTransferFromRenderTask(
+        const sk_sp<GrSurfaceProxy>& srcProxy,
+        const SkIRect& srcRect,
+        GrColorType surfaceColorType,
+        GrColorType dstColorType,
+        sk_sp<GrGpuBuffer> dstBuffer,
+        size_t dstOffset) {
     SkDEBUGCODE(this->validate());
     SkASSERT(fContext);
     this->closeActiveOpsTask();
@@ -861,6 +862,8 @@ void GrDrawingManager::newTransferFromRenderTask(const sk_sp<GrSurfaceProxy>& sr
     // shouldn't be an active one.
     SkASSERT(!fActiveOpsTask);
     SkDEBUGCODE(this->validate());
+
+    return sk_ref_sp(static_cast<GrTransferFromRenderTask*>(task));
 }
 
 void GrDrawingManager::newBufferTransferTask(sk_sp<GrGpuBuffer> src,

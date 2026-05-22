@@ -4330,13 +4330,16 @@ void GrGLGpu::prepareSurfacesForBackendAccessAndStateUpdates(
 }
 
 bool GrGLGpu::onSubmitToGpu(const GrSubmitInfo& info) {
+    SkDebugf("onSubmitToGpu called sync = %d\n", (int) info.fSync);
     if (info.fSync == GrSyncCpu::kYes ||
         (!fFinishCallbacks.empty() && !this->glCaps().fenceSyncSupport())) {
         this->finishOutstandingGpuWork();
         fFinishCallbacks.callAll(true);
     } else {
+        SkDebugf("flushing now\n");
         this->flush();
         // See if any previously inserted finish procs are good to go.
+        SkDebugf("checking previously inserted finish callbacks\n");
         fFinishCallbacks.check();
     }
     if (!this->glCaps().skipErrorChecks()) {

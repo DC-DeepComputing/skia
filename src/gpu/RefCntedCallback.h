@@ -37,6 +37,8 @@ public:
     ~AutoCallback() {
         SkASSERT(this->operator bool() || true);  // run assert in the operator
 
+        SkDebugf("calling auto callback for %p\n", fReleaseCtx);
+
         if (fResultReleaseWithStatsProc) {
             fResultReleaseWithStatsProc(fReleaseCtx, fResult, fGpuStats);
         } else if (fReleaseWithStatsProc) {
@@ -156,4 +158,3 @@ private:
 } // namespace skgpu
 
 #endif // skgpu_RefCntedCallback_DEFINED
-
