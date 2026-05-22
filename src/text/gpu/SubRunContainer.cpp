@@ -106,6 +106,34 @@ SkSpan<const SkPoint> get_positions(SkZip<U, const SkPoint> accepted) {
     return accepted.template get<1>();
 }
 
+void set_safe_creation_bounds(VertexFiller* vf,
+                              GlyphVector* glyphVector,
+                              skglyph::ActionType actionType,
+                              int inset) {
+    SkRect boundingRect = SkRect::MakeEmpty();
+    SkSpan<const SkPoint> topLefts = vf->topLefts();
+    int count = vf->count();
+
+    StrikeForGPU* strike = glyphVector->strikePromise().strike();
+    if (!strike) {
+        return;
+    }
+
+    for (int i = 0; i < count; ++i) {
+        SkPackedGlyphID packedID = glyphVector->getPackedGlyphID(i);
+        SkGlyphDigest digest = strike->digestFor(actionType, packedID);
+        SkGlyphRect glyphRect = digest.bounds().inset(inset, inset);
+        SkPoint wh = glyphRect.widthHeight();
+        SkRect r = SkRect::MakeXYWH(topLefts[i].x(), topLefts[i].y(), wh.x(), wh.y());
+        if (i == 0) {
+            boundingRect = r;
+        } else {
+            boundingRect.join(r);
+        }
+    }
+    vf->setSafeCreationBounds(boundingRect);
+}
+
 // -- PathOpSubmitter ------------------------------------------------------------------------------
 // PathOpSubmitter holds glyph ids until ready to draw. During drawing, the glyph ids are
 // converted to SkPaths. PathOpSubmitter can only be serialized when it is holding glyph ids;
@@ -629,6 +657,8 @@ public:
         }
 
         SkASSERT(buffer.isValid());
+        set_safe_creation_bounds(&vertexFiller.value(), &glyphVector.value(), skglyph::kDirectMask,
+                                 kGlyphSrcPadding);
         return alloc->makeUnique<DirectMaskSubRun>(std::move(*vertexFiller),
                                                    std::move(*glyphVector));
     }
@@ -651,7 +681,7 @@ public:
              + fVertexFiller.unflattenSize();
     }
 
-    int glyphSrcPadding() const override { return 0; }
+    int glyphSrcPadding() const override { return kGlyphSrcPadding; }
 
     std::tuple<bool, SkRect> deviceRectAndNeedsTransform(
             const SkMatrix &positionMatrix) const override {
@@ -683,6 +713,8 @@ protected:
         fVertexFiller.flatten(buffer);
         fGlyphVector.flatten(buffer);
     }
+private:
+    static constexpr int kGlyphSrcPadding = 0;
 };
 
 // -- TransformedMaskSubRun ------------------------------------------------------------------------
@@ -726,6 +758,8 @@ public:
             return nullptr;
         }
         const bool isBigEnough = buffer.readBool();
+        set_safe_creation_bounds(&vertexFiller.value(), &glyphVector.value(), skglyph::kMask,
+                                 kGlyphSrcPadding);
         return alloc->makeUnique<TransformedMaskSubRun>(
                 isBigEnough, std::move(*vertexFiller), std::move(*glyphVector));
     }
@@ -744,7 +778,7 @@ public:
 
     const AtlasSubRun* testingOnly_atlasSubRun() const override { return this; }
 
-    int glyphSrcPadding() const override { return 1; }
+    int glyphSrcPadding() const override { return kGlyphSrcPadding; }
 
     void draw(SkCanvas*,
               SkPoint drawOrigin,
@@ -781,6 +815,7 @@ protected:
     }
 
 private:
+    static constexpr int kGlyphSrcPadding = 1;
     const bool fIsBigEnough;
 };  // class TransformedMaskSubRun
 
@@ -858,6 +893,9 @@ public:
         if (!buffer.validate(glyphVector->glyphCount() == vertexFiller->count())) {
             return nullptr;
         }
+
+        set_safe_creation_bounds(&vertexFiller.value(), &glyphVector.value(), skglyph::kSDFT,
+                                 kGlyphSrcPadding);
         return alloc->makeUnique<SDFTSubRun>(useLCD,
                                              isAntiAliased,
                                              matrixRange,
@@ -877,7 +915,7 @@ public:
 
     const AtlasSubRun* testingOnly_atlasSubRun() const override { return this; }
 
-    int glyphSrcPadding() const override { return SK_DistanceFieldInset; }
+    int glyphSrcPadding() const override { return kGlyphSrcPadding; }
 
     void draw(SkCanvas*,
               SkPoint drawOrigin,
@@ -909,6 +947,7 @@ protected:
     }
 
 private:
+    static constexpr int kGlyphSrcPadding = SK_DistanceFieldInset;
     const bool fUseLCDText;
     const bool fAntiAliased;
     const SDFTMatrixRange fMatrixRange;

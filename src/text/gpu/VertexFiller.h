@@ -92,6 +92,7 @@ public:
 
     SkMatrix viewDifference(const SkMatrix& positionMatrix) const;
 
+    void setSafeCreationBounds(SkRect safeCreationBounds);
 private:
     static std::tuple<bool, SkVector> CanUseDirect(const SkMatrix& creationMatrix,
                                                    const SkMatrix& positionMatrix);
@@ -99,7 +100,7 @@ private:
     const skgpu::MaskFormat fMaskFormat;
     const bool fCanDrawDirect;
     const SkMatrix fCreationMatrix;
-    const SkRect fCreationBounds;
+    SkRect fCreationBounds;
     const SkSpan<const SkPoint> fLeftTop;
 };
 
