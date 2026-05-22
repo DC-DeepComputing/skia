@@ -24,6 +24,7 @@
 #include "src/gpu/ganesh/GrSurfaceProxy.h"
 #include "src/gpu/ganesh/GrSurfaceProxyView.h"
 #include "src/gpu/ganesh/GrTextureProxy.h"  // IWYU pragma: keep
+#include "src/gpu/ganesh/GrTransferFromRenderTask.h"
 
 #include <cstddef>
 #include <functional>
@@ -206,6 +207,8 @@ protected:
         // If null then the transfer could not be performed. Otherwise this buffer will contain
         // the pixel data when the transfer is complete.
         sk_sp<GrGpuBuffer> fTransferBuffer;
+        // Must check task's wasSubmitted() to confirm that fTransferBuffer was written to
+        sk_sp<GrTransferFromRenderTask> fTransferTask;
         // RowBytes for transfer buffer data
         size_t fRowBytes;
         // If this is null then the transfer buffer will contain the data in the requested

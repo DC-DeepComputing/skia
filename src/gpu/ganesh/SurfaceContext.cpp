@@ -725,16 +725,28 @@ void SurfaceContext::asyncReadPixels(GrDirectContext* dContext,
     auto finishCallback = [](GrGpuFinishedContext c) {
         const auto* context = reinterpret_cast<const FinishContext*>(c);
         auto manager = context->fMappedBufferManager;
-        auto result = std::make_unique<AsyncReadResult>(manager->ownerID());
-        if (!result->addTransferResult(context->fTransferResult,
-                                       context->fSize,
-                                       context->fTransferResult.fRowBytes,
-                                       manager)) {
+
+        std::unique_ptr<AsyncReadResult> result;
+        if (context->fTransferResult.fTransferTask->wasSubmitted()) {
+            result = std::make_unique<AsyncReadResult>(manager->ownerID());
+        }
+
+        if (result && !result->addTransferResult(context->fTransferResult,
+                                                 context->fSize,
+                                                 context->fTransferResult.fRowBytes,
+                                                 manager)) {
             result.reset();
         }
+        if (!result && context->fTransferResult.fTransferBuffer->isMapped()) {
+            // unmap the transfer buffer if we didn't stick into the ClientMappedBufferManager
+            context->fTransferResult.fTransferBuffer->unmap();
+        }
+
         (*context->fClientCallback)(context->fClientContext, std::move(result));
+
         delete context;
     };
+
     GrFlushInfo flushInfo;
     flushInfo.fFinishedContext = finishContext;
     flushInfo.fFinishedProc = finishCallback;
@@ -987,6 +999,7 @@ void SurfaceContext::asyncRescaleAndReadPixelsYUV420(GrDirectContext* dContext,
         PixelTransferResult fVTransfer;
         PixelTransferResult fATransfer;
     };
+
     // Assumption is that the caller would like to flush. We could take a parameter or require an
     // explicit flush from the caller. We'd have to have a way to defer attaching the finish
     // callback to GrGpu until after the next flush that flushes our op list, though.
@@ -1002,39 +1015,28 @@ void SurfaceContext::asyncRescaleAndReadPixelsYUV420(GrDirectContext* dContext,
         const auto* context = reinterpret_cast<const FinishContext*>(c);
         auto manager = context->fMappedBufferManager;
         auto result = std::make_unique<AsyncReadResult>(manager->ownerID());
-        if (!result->addTransferResult(context->fYTransfer,
-                                       context->fSize,
-                                       context->fYTransfer.fRowBytes,
-                                       manager)) {
-            (*context->fClientCallback)(context->fClientContext, nullptr);
-            delete context;
-            return;
-        }
+
+        using Plane = std::pair<const PixelTransferResult*, SkISize>;
         SkISize uvSize = {context->fSize.width() / 2, context->fSize.height() / 2};
-        if (!result->addTransferResult(context->fUTransfer,
-                                       uvSize,
-                                       context->fUTransfer.fRowBytes,
-                                       manager)) {
-            (*context->fClientCallback)(context->fClientContext, nullptr);
-            delete context;
-            return;
-        }
-        if (!result->addTransferResult(context->fVTransfer,
-                                       uvSize,
-                                       context->fVTransfer.fRowBytes,
-                                       manager)) {
-            (*context->fClientCallback)(context->fClientContext, nullptr);
-            delete context;
-            return;
-        }
-        if (context->fATransfer.fTransferBuffer &&
-            !result->addTransferResult(context->fATransfer,
-                                       context->fSize,
-                                       context->fATransfer.fRowBytes,
-                                       manager)) {
-            (*context->fClientCallback)(context->fClientContext, nullptr);
-            delete context;
-            return;
+        for (auto [transfer, size] : {Plane{&context->fYTransfer, context->fSize},
+                                      Plane{&context->fUTransfer, uvSize},
+                                      Plane{&context->fVTransfer, uvSize},
+                                      Plane{&context->fATransfer, context->fSize}}) {
+            if (!transfer->fTransferBuffer) {
+                break; // no planes to transfer
+            }
+            if (!transfer->fTransferTask->wasSubmitted()) {
+                result.reset();
+            }
+            if (result && !result->addTransferResult(*transfer,
+                                                     size,
+                                                     transfer->fRowBytes,
+                                                     manager)) {
+                result.reset();
+            }
+            if (!result && transfer->fTransferBuffer->isMapped()) {
+                transfer->fTransferBuffer->unmap();
+            }
         }
         (*context->fClientCallback)(context->fClientContext, std::move(result));
         delete context;
@@ -1392,10 +1394,15 @@ SurfaceContext::PixelTransferResult SurfaceContext::transferPixels(GrColorType d
         srcRect = SkIRect::MakeLTRB(rect.fLeft, this->height() - rect.fBottom, rect.fRight,
                                     this->height() - rect.fTop);
     }
-    this->drawingManager()->newTransferFromRenderTask(this->asSurfaceProxyRef(), srcRect,
-                                                      this->colorInfo().colorType(),
-                                                      supportedRead.fColorType, buffer, 0);
+
+    auto task = this->drawingManager()->newTransferFromRenderTask(this->asSurfaceProxyRef(),
+                                                                  srcRect,
+                                                                  this->colorInfo().colorType(),
+                                                                  supportedRead.fColorType,
+                                                                  buffer,
+                                                                  0);
     PixelTransferResult result;
+    result.fTransferTask = std::move(task);
     result.fTransferBuffer = std::move(buffer);
     auto at = this->colorInfo().alphaType();
     if (supportedRead.fColorType != dstCT || flip) {
