@@ -16,6 +16,24 @@
       "message": "LGTM. Can you add some performance metrics of how much faster this is than real division? What was the impact in your sparse strips stuff?",
       "revId": "d7351575c7b5a8561833c5c03bb9f1e1dcb95de7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2db36d5_660ba59c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-05-22T17:16:27Z",
+      "side": 1,
+      "message": "I would also like to see the perf benefits before we land this. I recall `rcp` and `rsqrt` both having similar accuracy issues that we ended up removing in favor of correctness/consistency.",
+      "parentUuid": "54803b0f_e0654920",
+      "revId": "d7351575c7b5a8561833c5c03bb9f1e1dcb95de7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
