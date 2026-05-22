@@ -45,6 +45,30 @@
       },
       "revId": "15e8322f9e317ec201f405e6850960a2b5c9d9f4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f24207fb_129aad3a",
+        "filename": "src/gpu/ganesh/GrTransferFromRenderTask.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-05-22T19:35:47Z",
+      "side": 1,
+      "message": "I think in the abstract sense, yes, in which case maybe using a submit proc would be better. \n\nIf we do add it to the command buffer, we\u0027re not using this value until we\u0027ve also run the finish proc. It\u0027s a little coupled to the calling logic, but since we call flushSurface() right after adding the task, if there were bad commands before this task we\u0027d never set fSubmitted to true. This means we\u0027ll have added the finish proc to the current command buffer.  But if something causes the command buffer to be deleted before it\u0027s submitted, then the finish proc would still be invoked without actually sending it to the GPU. \n\nI was thinking too much in the GL sense with the flushSurface call, but this approach won\u0027t work for command buffer oriented backends.",
+      "parentUuid": "6b198f8e_660c7d5b",
+      "range": {
+        "startLine": 28,
+        "startChar": 8,
+        "endLine": 28,
+        "endChar": 18
+      },
+      "revId": "15e8322f9e317ec201f405e6850960a2b5c9d9f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
