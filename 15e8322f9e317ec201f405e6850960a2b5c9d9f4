@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2872659_9fdfca5c",
+        "filename": "src/gpu/ganesh/GrDrawingManager.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-05-22T19:07:08Z",
+      "side": 1,
+      "message": "nit: tabs here",
+      "range": {
+        "startLine": 112,
+        "startChar": 0,
+        "endLine": 112,
+        "endChar": 1
+      },
+      "revId": "15e8322f9e317ec201f405e6850960a2b5c9d9f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b198f8e_660c7d5b",
+        "filename": "src/gpu/ganesh/GrTransferFromRenderTask.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-05-22T19:07:08Z",
+      "side": 1,
+      "message": "isn\u0027t this just saying that we\u0027ve flushed the copy task to a command buffer? It has nothing to do with whether we actually successfully submitting that command buffer to the GPU, right?",
+      "range": {
+        "startLine": 28,
+        "startChar": 8,
+        "endLine": 28,
+        "endChar": 18
+      },
+      "revId": "15e8322f9e317ec201f405e6850960a2b5c9d9f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
