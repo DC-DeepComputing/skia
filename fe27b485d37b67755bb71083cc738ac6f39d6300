@@ -67,6 +67,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ecb6d3aa_de427591",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-05-22T19:50:39Z",
+      "side": 1,
+      "message": "That would also be a possible follow-up. For other issues I was wanting a few spare bits to pack in the amount of source padding and sub run type chosen for the glyph. That wouldn\u0027t work if we used up all the 32-bits with this size packing.\n\nAnother idea I had was that 4px granularity wouldn\u0027t be good for placing the glyphs in the atlas since we\u0027d waste too much space. However, it might be acceptable for bounds checks for the draw. Or it could be used to validate that the provided creation bounds is valid (e.g. compute the 4px aligned creation bounds from packed IDs, then make sure that the creation bounds are contained within it?). \n\nAnother another idea would be that we pack the bounds of the direct glyphs exactly up to 64x64. At 64x64, we detect that all 1 bit pattern and then look up the glyph digest to get the bounds. We\u0027d still be required to validate that the packed bounds match the atlas dimensions in the atlas\u0027s plot locator returned from glyph cache hits.",
+      "parentUuid": "5b50bc1c_d0e157c7",
+      "range": {
+        "startLine": 124,
+        "startChar": 0,
+        "endLine": 124,
+        "endChar": 71
+      },
+      "revId": "fe27b485d37b67755bb71083cc738ac6f39d6300",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0c865419_77abffd0",
         "filename": "src/text/gpu/SubRunContainer.cpp",
         "patchSetId": 10
