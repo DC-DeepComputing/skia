@@ -1475,9 +1475,11 @@ DEF_GANESH_TEST_FOR_GL_CONTEXT(GLReadPixelsUnbindPBO,
     ctxInfo.directContext()->flushAndSubmit(GrSyncCpu::kYes);
     if (!asyncContext.fCalled) {
         ERRORF(reporter, "async_callback not called.");
+        return;
     }
     if (!asyncContext.fResult) {
         ERRORF(reporter, "async read failed.");
+        return;
     }
 
     SkPixmap asyncResult(info, asyncContext.fResult->data(0), asyncContext.fResult->rowBytes(0));

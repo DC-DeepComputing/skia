@@ -41,6 +41,8 @@ public:
             , fDstBuffer(std::move(dstBuffer))
             , fDstOffset(dstOffset) {}
 
+    bool wasSubmitted() const { return fSubmitted; }
+
 private:
     bool onIsUsed(GrSurfaceProxy* proxy) const override {
         SkASSERT(0 == this->numTargets());
@@ -69,6 +71,7 @@ private:
     GrColorType fDstColorType;
     sk_sp<GrGpuBuffer> fDstBuffer;
     size_t fDstOffset;
+    bool fSubmitted = false;
 
 };
 

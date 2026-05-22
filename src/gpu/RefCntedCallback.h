@@ -156,4 +156,3 @@ private:
 } // namespace skgpu
 
 #endif // skgpu_RefCntedCallback_DEFINED
-
