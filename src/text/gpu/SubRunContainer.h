@@ -144,6 +144,10 @@ protected:
     // Initially packed-ID span, converted to backend specific per-Glyph atlas location
     // information.
     mutable GlyphVector fGlyphVector;
+
+    static void SetSafeCreationBounds(VertexFiller* filler, SkRect bounds) {
+        filler->setSafeCreationBounds(bounds);
+    }
 };
 
 // -- SubRunList -----------------------------------------------------------------------------------
