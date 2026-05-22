@@ -16,6 +16,121 @@
       "message": "PTAL",
       "revId": "fe27b485d37b67755bb71083cc738ac6f39d6300",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f198b73a_0adc3853",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-05-22T19:05:10Z",
+      "side": 1,
+      "message": "I was hopeful that looping over glyphs to union their bounds together wouldn\u0027t really be noticeable. I suspect that this call out to `digestFor` is going to be costly because it has to acquire a lock.\n\nCurrently SkPackedGlyphID uses 20 bits out of its 32 bit storage. That includes 4 bits of subpixel positioning information that could impact the final hinted glyph image. The actual placement of the glyph within the subrun is stored separately. These subpixel positions are dependent on the subrun justification hinting and layout of the entire text, not just the glyph ID.\n\nHowever, the size of the glyph should only be dependent on the glyph ID. If we were able to embed that into the packed ID we wouldn\u0027t be changing any sort of keying based on the SkPackedGlyphID but we could avoid calling out to the SkStrike for calculating bounds. This would require each backend to validate that the glyph size embedded in its packed glyph ID matches the size used when it placed it in the atlas, but that is a more straight forward check. And if it were ever violated we would be entitled to hard crash.\n\nIn order to pack the glyph size, we could store 6 bits each for width and height. But this only represents values up to 64. We need to be able to represent dimensions up to the glyph size allowed to fit in the atlas (hopping out to the digest for drawable and path glyphs seems more acceptable for performance). Glyphs going into the atlas are required to pass SkGlyphDigest::fitsInAtlasDirect or fitsInAtlasInterpolated, which checks `kSkSideTooBigForAtlas`.  \n\nUnfortunately that is 256. If we could get away with a granularity of 4 pixels, we could encode it into the packed glyph ID. Given this mismatch, I think we don\u0027t go this route and see how bad performance regressions are from chrome with calling digestFor for each glyph.",
+      "range": {
+        "startLine": 124,
+        "startChar": 0,
+        "endLine": 124,
+        "endChar": 71
+      },
+      "revId": "fe27b485d37b67755bb71083cc738ac6f39d6300",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c865419_77abffd0",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-05-22T19:05:10Z",
+      "side": 1,
+      "message": "SkGlyphRect is basically like Graphite\u0027s Rect that is optimized for SIMD accumulation and intersection tests.  Instead of jumping back to SkPoint and SkRect for this loop, we should just use `SkGlyphRect(skglyph::rect_union(SkGlyphRect, SkGlyphRect);`. SkGyphRect also has an offset function so we can account for the top left point of the run.\n\nIf we initialize `boundingRect` to be the inverted infinite, then the first loop through\u0027s union will be no different and we avoid a branch.  We can just convert to SkRect at the end.",
+      "range": {
+        "startLine": 126,
+        "startChar": 0,
+        "endLine": 132,
+        "endChar": 9
+      },
+      "revId": "fe27b485d37b67755bb71083cc738ac6f39d6300",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1476725_95cd106b",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 762,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-05-22T19:05:10Z",
+      "side": 1,
+      "message": "I think this should be fine for TransformedMaskSubRun, since I believe it\u0027s just a DirectMaskSubRun with a more general transform applied *after* sampling the glyph (so the glyph has some padding).  This means that bounds reported by the SkGlyphs and what we want to accumulate here should always match the bounds we want to accumulate for the sub run.  We should double check with the old implementation that filled out the old creation bounds.",
+      "range": {
+        "startLine": 760,
+        "startChar": 0,
+        "endLine": 762,
+        "endChar": 51
+      },
+      "revId": "fe27b485d37b67755bb71083cc738ac6f39d6300",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7aa0adf7_e0e1f6d4",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 898,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-05-22T19:05:10Z",
+      "side": 1,
+      "message": "I also think that we\u0027ll be fine here, after looking at `prepare_for_SDFT_drawing`. It would be good if we could share more of the logic between those prepare functions that calculate the creation bounds and these safe reconstruction functions.  They aren\u0027t exactly the same because our safe bounds use the top-left corners from the sub runs, but the prepare_for_X functions are responsible for calculating those top-left corners in the first place.",
+      "range": {
+        "startLine": 897,
+        "startChar": 1,
+        "endLine": 898,
+        "endChar": 51
+      },
+      "revId": "fe27b485d37b67755bb71083cc738ac6f39d6300",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8aa1462e_dc0a3801",
+        "filename": "src/text/gpu/VertexFiller.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-05-22T19:05:10Z",
+      "side": 1,
+      "message": "This should be private or protected and then use a friend access so that only the deserializer and factory functions can set the bounds. We should also have a comment explaining what \"safe\" means in this context (e.g. it\u0027s post deserialization computed from the inputs).",
+      "range": {
+        "startLine": 95,
+        "startChar": 0,
+        "endLine": 95,
+        "endChar": 58
+      },
+      "revId": "fe27b485d37b67755bb71083cc738ac6f39d6300",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
