@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b021c96_8860cfee",
+        "filename": "src/shaders/SkShaderBase.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-05-22T20:47:10Z",
+      "side": 0,
+      "message": "This load bearing comment was not as load bearing as hoped, moving forward with the alternative outlined in https://skia-review.git.corp.google.com/c/skia/+/1036197/comment/dd800905_8bb73efe/",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 51
+      },
+      "revId": "84a81baebdde4964b59eed58518c5f7576e83091",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
