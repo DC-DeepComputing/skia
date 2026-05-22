@@ -7,6 +7,12 @@
 
 #include "src/core/SkGlyph.h"
 
+#include <cstring>
+#include <optional>
+#include <tuple>
+#include <utility>
+
+#include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkData.h"
 #include "include/core/SkDrawable.h"
@@ -19,15 +25,12 @@
 #include "include/private/base/SkTo.h"
 #include "src/base/SkArenaAlloc.h"
 #include "src/base/SkBezierCurves.h"
+#include "src/core/SkBigPicture.h"
 #include "src/core/SkReadBuffer.h"
+#include "src/core/SkRecord.h"
 #include "src/core/SkScalerContext.h"
 #include "src/core/SkWriteBuffer.h"
 #include "src/text/StrikeForGPU.h"
-
-#include <cstring>
-#include <optional>
-#include <tuple>
-#include <utility>
 
 using namespace skglyph;
 using namespace sktext;
@@ -48,7 +51,9 @@ SkPictureBackedGlyphDrawable::MakeFromBuffer(SkReadBuffer& buffer) {
     // purposes (see b/40064011, b/40064341)
     SkDeserialProcs procs;
     procs.fAllowSkSL = false;
+    procs.fAllowDrawables = false;
     sk_sp<SkPicture> picture = SkPicture::MakeFromData(pictureData.get(), &procs);
+
     if (!buffer.validate(picture != nullptr)) {
         return nullptr;
     }

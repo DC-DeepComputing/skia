@@ -702,6 +702,10 @@ void SkTextBlobPriv::Flatten(const SkTextBlob& blob, SkWriteBuffer& buffer) {
 }
 
 sk_sp<SkTextBlob> SkTextBlobPriv::MakeFromBuffer(SkReadBuffer& reader) {
+    if (!reader.allowTextBlobs()) {
+        return nullptr;
+    }
+
     SkRect bounds;
     reader.readRect(&bounds);
 
@@ -855,6 +859,7 @@ sk_sp<SkTextBlob> SkTextBlob::Deserialize(const void* data, size_t length,
                                           const SkDeserialProcs& procs) {
     SkReadBuffer buffer(data, length);
     buffer.setDeserialProcs(procs);
+
     return SkTextBlobPriv::MakeFromBuffer(buffer);
 }
 

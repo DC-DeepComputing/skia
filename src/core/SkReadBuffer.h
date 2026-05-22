@@ -186,6 +186,15 @@ public:
     bool allowSkSL() const { return fAllowSkSL; }
     void setAllowSkSL(bool allow) { fAllowSkSL = allow; }
 
+    bool allowDrawables() const { return fAllowDrawables; }
+    void setAllowDrawables(bool allow) { fAllowDrawables = allow; }
+
+    bool allowPictures() const { return fAllowPictures; }
+    void setAllowPictures(bool allow) { fAllowPictures = allow; }
+
+    bool allowTextBlobs() const { return fAllowTextBlobs; }
+    void setAllowTextBlobs(bool allow) { fAllowTextBlobs = allow; }
+
     /**
      *  If isValid is false, sets the buffer to be "invalid". Returns true if the buffer
      *  is still valid.
@@ -274,6 +283,9 @@ private:
     int fRecursionLimit = 100;
 
     bool fAllowSkSL = true;
+    bool fAllowDrawables = true;
+    bool fAllowPictures = true;
+    bool fAllowTextBlobs = true;
     bool fError = false;
 };
 
