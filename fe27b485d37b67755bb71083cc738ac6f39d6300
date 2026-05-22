@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5b50bc1c_d0e157c7",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-22T19:23:43Z",
+      "side": 1,
+      "message": "We could alternatively up the GlyphID size to u64/struct and move around that way? That would hurt a little on memory, but would be far more performant I think?\n\nPossibly on a followup CL?",
+      "parentUuid": "f198b73a_0adc3853",
+      "range": {
+        "startLine": 124,
+        "startChar": 0,
+        "endLine": 124,
+        "endChar": 71
+      },
+      "revId": "fe27b485d37b67755bb71083cc738ac6f39d6300",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0c865419_77abffd0",
         "filename": "src/text/gpu/SubRunContainer.cpp",
         "patchSetId": 10
@@ -77,6 +101,30 @@
       "writtenOn": "2026-05-22T19:05:10Z",
       "side": 1,
       "message": "I think this should be fine for TransformedMaskSubRun, since I believe it\u0027s just a DirectMaskSubRun with a more general transform applied *after* sampling the glyph (so the glyph has some padding).  This means that bounds reported by the SkGlyphs and what we want to accumulate here should always match the bounds we want to accumulate for the sub run.  We should double check with the old implementation that filled out the old creation bounds.",
+      "range": {
+        "startLine": 760,
+        "startChar": 0,
+        "endLine": 762,
+        "endChar": 51
+      },
+      "revId": "fe27b485d37b67755bb71083cc738ac6f39d6300",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27a6116e_3f7cad11",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 762,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-22T19:23:43Z",
+      "side": 1,
+      "message": "Note: `pepare_for_mask_drawing` does not inset at all, but the overload of the `glyphSrcPadding()` did return a padding of 1. I think this is to account for rounding/floating point noise on the transform?\n\nHence why I passed the inset into `safe_creation_bounds`",
+      "parentUuid": "a1476725_95cd106b",
       "range": {
         "startLine": 760,
         "startChar": 0,
