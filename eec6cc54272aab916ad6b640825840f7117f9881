@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5410ff3_0bdd1eb6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-05-22T15:16:47Z",
+      "side": 1,
+      "message": "Some bench numbers.\n\nBefore:\n\nmin\tmedian\tmean\tmax\tbench\n178ns\t180ns\t187ns\t254ns\tpathmaker_builder_from_rect\n333ns\t334ns\t352ns\t506ns\tpathmaker_builder_from_oval\n427ns\t428ns\t431ns\t450ns\tpathmaker_builder_from_rrect\n\nAfter:\n\nmin\tmedian\tmean\tmax\tbench\n167ns\t167ns\t175ns\t240ns\tpathmaker_builder_from_rect\n237ns\t237ns\t237ns\t238ns\tpathmaker_builder_from_oval\n293ns\t293ns\t305ns\t401ns\tpathmaker_builder_from_rrect",
+      "revId": "eec6cc54272aab916ad6b640825840f7117f9881",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
