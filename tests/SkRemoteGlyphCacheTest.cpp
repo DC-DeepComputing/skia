@@ -40,6 +40,9 @@
 #include "src/core/SkTHash.h"
 #include "src/core/SkTypeface_remote.h"
 #include "src/core/SkWriteBuffer.h"
+#include "src/text/StrikeForGPU.h"
+#include "src/text/gpu/SlugImpl.h"
+#include "src/text/gpu/SubRunContainer.h"
 #include "src/text/gpu/SubRunControl.h"
 #include "tests/CtsEnforcement.h"
 #include "tests/Test.h"
@@ -47,6 +50,7 @@
 #include "tools/ToolUtils.h"
 #include "tools/fonts/FontToolUtils.h"
 #include "tools/fonts/TestEmptyTypeface.h"
+#include "tools/text/gpu/TextBlobTools.h"
 
 #if defined(SK_GANESH)
 #include "include/gpu/ganesh/GrContextOptions.h"
@@ -440,6 +444,58 @@ DEF_GANESH_TEST_FOR_CONTEXTS(SkRemoteGlyphCache_SlugSerialization,
     REPORTER_ASSERT(reporter, !discardableManager->hasCacheMiss());
 
     // Must unlock everything on termination, otherwise memory leaks can be reported.
+    discardableManager->unlockAndDeleteAll();
+}
+
+DEF_GANESH_TEST_FOR_CONTEXTS(SkRemoteGlyphCache_SlugSerialization_LargeOffset,
+                             skgpu::IsRenderingContext,
+                             reporter,
+                             ctxInfo,
+                             use_padding_options,
+                             CtsEnforcement::kNever) {
+    auto dContext = ctxInfo.directContext();
+    sk_sp<DiscardableManager> discardableManager = sk_make_sp<DiscardableManager>();
+    SkStrikeServer server(discardableManager.get());
+    SkStrikeClient client(discardableManager, false);
+    const SkPaint paint;
+
+    auto serverTypeface = ToolUtils::CreateTestTypeface("monospace", SkFontStyle());
+
+    int glyphCount = 10;
+    auto serverBlob = buildTextBlob(serverTypeface, glyphCount);
+    auto props = FindSurfaceProps(dContext);
+    std::unique_ptr<SkCanvas> analysisCanvas = server.makeAnalysisCanvas(
+            200, 200, props, nullptr, dContext->supportsDistanceFieldText(),
+            !dContext->priv().caps()->disablePerspectiveSDFText());
+
+    // Generate slug with a large offset (e.g., 100, 100)
+    auto srcSlug = Slug::ConvertBlob(analysisCanvas.get(), *serverBlob, {100.f, 100.f}, paint);
+    auto dstSlugData = srcSlug->serialize();
+
+    std::vector<uint8_t> serverStrikeData;
+    server.writeStrikeData(&serverStrikeData);
+
+    REPORTER_ASSERT(reporter,
+                    client.readStrikeData(serverStrikeData.data(), serverStrikeData.size()));
+
+    auto draw_with_clip = [&](sk_sp<Slug> slug) {
+        auto surface = MakeSurface(200, 200, dContext);
+        auto canvas = surface->getCanvas();
+        canvas->clipRect(SkRect::MakeLTRB(90, 90, 200, 200));
+        slug->draw(canvas, paint);
+        SkBitmap bitmap;
+        bitmap.allocN32Pixels(200, 200);
+        surface->readPixels(bitmap, 0, 0);
+        return bitmap;
+    };
+
+    SkBitmap expected = draw_with_clip(srcSlug);
+    auto dstSlug = client.deserializeSlugForTest(dstSlugData->data(), dstSlugData->size());
+    REPORTER_ASSERT(reporter, dstSlug != nullptr);
+    SkBitmap actual = draw_with_clip(dstSlug);
+
+    compare_blobs(expected, actual, reporter);
+
     discardableManager->unlockAndDeleteAll();
 }
 

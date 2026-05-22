@@ -37,13 +37,12 @@ VertexFiller::VertexFiller(MaskFormat maskFormat,
 
 VertexFiller VertexFiller::Make(MaskFormat maskType,
                                 const SkMatrix &creationMatrix,
-                                SkRect creationBounds,
                                 SkSpan<const SkPoint> positions,
                                 SubRunAllocator *alloc,
                                 FillerType fillerType) {
     SkSpan<SkPoint> leftTop = alloc->makePODSpan<SkPoint>(positions);
     return VertexFiller{
-            maskType, creationMatrix, creationBounds, leftTop, fillerType == kIsDirect};
+            maskType, creationMatrix, SkRect::MakeEmpty(), leftTop, fillerType == kIsDirect};
 }
 
 std::optional<VertexFiller> VertexFiller::MakeFromBuffer(SkReadBuffer &buffer,
@@ -60,20 +59,17 @@ std::optional<VertexFiller> VertexFiller::MakeFromBuffer(SkReadBuffer &buffer,
     SkMatrix creationMatrix;
     buffer.readMatrix(&creationMatrix);
 
-    SkRect creationBounds = buffer.readRect();
-
     SkSpan<SkPoint> leftTop = MakePointsFromBuffer(buffer, alloc);
     if (leftTop.empty()) { return std::nullopt; }
 
     SkASSERT(buffer.isValid());
-    return VertexFiller{maskType, creationMatrix, creationBounds, leftTop, canDrawDirect};
+    return VertexFiller{maskType, creationMatrix, SkRect::MakeEmpty(), leftTop, canDrawDirect};
 }
 
 void VertexFiller::flatten(SkWriteBuffer &buffer) const {
     buffer.writeInt(static_cast<int>(fMaskFormat));
     buffer.writeBool(fCanDrawDirect);
     buffer.writeMatrix(fCreationMatrix);
-    buffer.writeRect(fCreationBounds);
     buffer.writePointArray(fLeftTop);
 }
 
@@ -160,6 +156,12 @@ std::tuple<SkRect, SkMatrix> VertexFiller::boundsAndDeviceMatrix(const SkMatrix&
     positionMatrix.preTranslate(drawOrigin.x(), drawOrigin.y());
     const SkMatrix viewDifference = this->viewDifference(positionMatrix);
     return {fCreationBounds, viewDifference};
+}
+
+void VertexFiller::setSafeCreationBounds(SkRect safeCreationBounds) {
+    // Should not be overwriting
+    SkASSERT(fCreationBounds.isEmpty());
+    fCreationBounds = safeCreationBounds;
 }
 
 }  // namespace sktext::gpu
