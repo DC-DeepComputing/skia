@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "547ecb07_2572d246",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-05-22T15:50:44Z",
+      "side": 1,
+      "message": "This fixes the bad gold diffs like in https://gold.skia.org/detail?grouping\u003dname%3Dslug%26source_type%3Dgm\u0026digest\u003d44779a3ccb4b21d2bc182d5e69439393",
+      "revId": "78c97fc0a21f3e94585632e791caf4f0a1243f3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
