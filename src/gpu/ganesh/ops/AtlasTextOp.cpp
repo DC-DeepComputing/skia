@@ -473,8 +473,25 @@ void AtlasTextOp::onPrepareDraws(GrMeshDrawTarget* target) {
     } else
 #endif
     {
+<<<<<<< HEAD   (c0f65c1afea8f548d95e4c05affbbdc7014685a1 [M144-LTS] Reject SkRegions with multiple empty slices in a )
         auto filter = fNeedsGlyphTransform ? GrSamplerState::Filter::kLinear
                                            : GrSamplerState::Filter::kNearest;
+||||||| BASE   (1220fd63f1649faffa1f491b41574a1165645241 Manual roll Dawn from 910f580897ff to 2389260fad26 (10 revis)
+        // Only use linear padding if the glyphs were also padded for it. If we somehow get a direct
+        // subrun with a corrupted transform, we should still use nearest neighbor since it was
+        // packed tightly.
+        const bool hasGlyphPadding = fHead->fSubRun.glyphSrcPadding() > 0;
+        auto filter = fNeedsGlyphTransform && hasGlyphPadding ? GrSamplerState::Filter::kLinear
+                                                              : GrSamplerState::Filter::kNearest;
+=======
+        // Only use linear padding if the glyphs were also padded for it. If we somehow get a direct
+        // subrun with a corrupted transform, we should still use nearest neighbor since it was
+        // packed tightly.
+        const bool hasGlyphPadding = atlasManager->supportsBilerp() ||
+                                     fHead->fSubRun.glyphSrcPadding() > 0;
+        auto filter = fNeedsGlyphTransform && hasGlyphPadding ? GrSamplerState::Filter::kLinear
+                                                              : GrSamplerState::Filter::kNearest;
+>>>>>>> CHANGE (6fdb013d19530339f40cd03dc254e838c7ba2eac [ganesh] Fix direct mask filtering when fSupportBilerpFromGl)
         // Bitmap text uses a single color, combineIfPossible ensures all geometries have the same
         // color, so we can use the first's without worry.
         flushInfo.fGeometryProcessor = GrBitmapTextGeoProc::Make(
@@ -650,6 +667,24 @@ GrOp::CombineResult AtlasTextOp::onCombineIfPossible(GrOp* t, SkArenaAlloc*, con
         return CombineResult::kCannotCombine;
     }
 
+<<<<<<< HEAD   (c0f65c1afea8f548d95e4c05affbbdc7014685a1 [M144-LTS] Reject SkRegions with multiple empty slices in a )
+||||||| BASE   (1220fd63f1649faffa1f491b41574a1165645241 Manual roll Dawn from 910f580897ff to 2389260fad26 (10 revis)
+    // We use the same filter for every Geometry that is combined, but the filter choice only looks
+    // at the head's src padding, so we can only combine if we are consistent with that.
+    if (fHead->fSubRun.glyphSrcPadding() != that->fHead->fSubRun.glyphSrcPadding()) {
+        return CombineResult::kCannotCombine;
+    }
+
+=======
+    // We use the same filter for every Geometry that is combined, but the filter choice only looks
+    // at the head's src padding, so we can only combine if we are consistent with that.
+    // NOTE: We don't have access to the context or atlas manager to check if it's always adding
+    // padding (even when the glyphs don't add it themselves), so this is conservative.
+    if (fHead->fSubRun.glyphSrcPadding() != that->fHead->fSubRun.glyphSrcPadding()) {
+        return CombineResult::kCannotCombine;
+    }
+
+>>>>>>> CHANGE (6fdb013d19530339f40cd03dc254e838c7ba2eac [ganesh] Fix direct mask filtering when fSupportBilerpFromGl)
     if (fProcessors != that->fProcessors) {
         return CombineResult::kCannotCombine;
     }
