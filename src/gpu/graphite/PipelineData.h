@@ -463,9 +463,13 @@ private:
  */
 class FloatStorageManager : public SkRefCnt {
 public:
-    FloatStorageManager() = default;
+    FloatStorageManager() { this->reset(); }
 
     void reset() {
+        // Remove the manually added refs on the keys in fGradientOffsetCache
+        for (auto [k, _] : fGradientOffsetCache) {
+            k->unref(); // k might be deleted at this point but we won't use it anymore
+        }
         fGradientStorage.clear();
         fGradientOffsetCache.reset();
     }
@@ -475,12 +479,45 @@ public:
     // and returns a pointer to the start of the new data and the calculated offset.
     std::pair<float*, int> allocateGradientData(int numStops, const SkGradientBaseShader* shader) {
         SkASSERT(!this->isFinalized());
+<<<<<<< HEAD   (c34bb09814208ea4930883cb6291d83948ce0217 [graphite] Use stable collection for static bindings)
         int* existingOffset = fGradientOffsetCache.find(shader->uniqueID());
+||||||| BASE   (5ecba665f5d1cf8b0fadd5986f7eaf579cca282e [graphite] Drop excessively large gradient draws)
+        if (numStops > kMaxGradientStops) {
+            return {nullptr, -1};
+        }
+
+        int* existingOffset = fGradientOffsetCache.find(shader->uniqueID());
+=======
+        if (numStops > kMaxGradientStops) {
+            return {nullptr, -1};
+        }
+
+        int* existingOffset = fGradientOffsetCache.find(shader);
+>>>>>>> CHANGE (2e4a568f6f0d854b27dfbb2c8c8723a196071d65 [graphite] Ref count large gradient shaders in FloatStorageM)
         if (existingOffset) {
             return {nullptr, *existingOffset};
         }
         auto [ptr, offset] = this->allocateFloatData(numStops * 5); // 4 for color, 1 for offset
+<<<<<<< HEAD   (c34bb09814208ea4930883cb6291d83948ce0217 [graphite] Use stable collection for static bindings)
         fGradientOffsetCache.set(shader->uniqueID(), offset);
+||||||| BASE   (5ecba665f5d1cf8b0fadd5986f7eaf579cca282e [graphite] Drop excessively large gradient draws)
+
+        // Only cache the storage if it was allocated successfully.
+        if (ptr) {
+            SkASSERT(offset >= 0);
+            fGradientOffsetCache.set(shader->uniqueID(), offset);
+        }
+=======
+
+        // Only cache the storage if it was allocated successfully.
+        if (ptr) {
+            SkASSERT(offset >= 0);
+            // Since FloatStorageManager is single threaded, adding a ref and then storing in the
+            // map should be fine.
+            shader->ref();
+            fGradientOffsetCache.set(shader, offset);
+        }
+>>>>>>> CHANGE (2e4a568f6f0d854b27dfbb2c8c8723a196071d65 [graphite] Ref count large gradient shaders in FloatStorageM)
 
         return {ptr, offset};
     }
@@ -522,8 +559,18 @@ private:
     // storage buffer can be bound once and accessed at random.
     SkTDArray<float> fGradientStorage;
 
-    // We use the shader's unique ID as a key to de-duplicate gradient data.
-    skia_private::THashMap<uint32_t, int> fGradientOffsetCache;
+    // We use the shader's address as a key to de-duplicate gradient data. Each key has a ref added
+    // when it's first put in the map. The map does not key off of sk_sp<SkGradientBaseShader> to as
+    // that is not compatible with SkGoodHash. These refs are dropped in reset(). While this extends
+    // the lifetime of the SkShaders, it only applies to large gradients. Hopefully clients are
+    // trying to reuse such shaders across frames already.
+    //
+    // If we didn't keep the shaders alive, we'd have to worry about cache collisions from
+    // re-allocations using the same address. Using a unique ID can wrap, leading to potential
+    // mismatches. Adding sufficient data to eliminate this risk (e.g. keying off the unique ID, the
+    // address, the number of color stops, AND a hash of the color data) is likely more expensive
+    // than taking a ref.
+    skia_private::THashMap<const SkGradientBaseShader*, int> fGradientOffsetCache;
 
     std::optional<BindBufferInfo> fBufferInfo = std::nullopt;
 };
