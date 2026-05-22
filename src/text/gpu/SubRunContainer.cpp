@@ -106,6 +106,38 @@ SkSpan<const SkPoint> get_positions(SkZip<U, const SkPoint> accepted) {
     return accepted.template get<1>();
 }
 
+SkGlyphRect glyph_bounds(SkGlyphDigest digest, int inset, SkPoint origin) {
+    return digest.bounds().inset(inset, inset).offset(origin);
+}
+
+SkGlyphRect glyph_bounds_from_left_top(SkGlyphDigest digest, int inset, SkPoint leftTop) {
+    SkGlyphRect glyphRect = digest.bounds().inset(inset, inset);
+    return glyphRect.offset(leftTop - glyphRect.leftTop());
+}
+
+SkRect get_safe_creation_bounds(const VertexFiller& vf,
+                              GlyphVector* glyphVector,
+                              skglyph::ActionType actionType,
+                              int inset) {
+    SkSpan<const SkPoint> topLefts = vf.topLefts();
+    int count = vf.count();
+
+    StrikeForGPU* strike = glyphVector->strikePromise().strike();
+    StrikeMutationMonitor m{strike};
+    if (!strike) {
+        return SkRect::MakeEmpty();
+    }
+
+    SkGlyphRect boundingRect = skglyph::empty_rect();
+    for (int i = 0; i < count; ++i) {
+        SkPackedGlyphID packedID = glyphVector->getPackedGlyphID(i);
+        SkGlyphDigest digest = strike->digestFor(actionType, packedID);
+        boundingRect = skglyph::rect_union(
+                boundingRect, glyph_bounds_from_left_top(digest, inset, topLefts[i]));
+    }
+    return boundingRect.empty() ? SkRect::MakeEmpty() : boundingRect.rect();
+}
+
 // -- PathOpSubmitter ------------------------------------------------------------------------------
 // PathOpSubmitter holds glyph ids until ready to draw. During drawing, the glyph ids are
 // converted to SkPaths. PathOpSubmitter can only be serialized when it is holding glyph ids;
@@ -651,7 +683,9 @@ public:
              + fVertexFiller.unflattenSize();
     }
 
-    int glyphSrcPadding() const override { return 0; }
+    int glyphSrcPadding() const override { return kGlyphSrcPadding; }
+
+    skglyph::ActionType actionType() const override { return skglyph::kDirectMask; }
 
     std::tuple<bool, SkRect> deviceRectAndNeedsTransform(
             const SkMatrix &positionMatrix) const override {
@@ -683,6 +717,8 @@ protected:
         fVertexFiller.flatten(buffer);
         fGlyphVector.flatten(buffer);
     }
+private:
+    static constexpr int kGlyphSrcPadding = 0;
 };
 
 // -- TransformedMaskSubRun ------------------------------------------------------------------------
@@ -744,7 +780,9 @@ public:
 
     const AtlasSubRun* testingOnly_atlasSubRun() const override { return this; }
 
-    int glyphSrcPadding() const override { return 1; }
+    int glyphSrcPadding() const override { return kGlyphSrcPadding; }
+
+    skglyph::ActionType actionType() const override { return skglyph::kMask; }
 
     void draw(SkCanvas*,
               SkPoint drawOrigin,
@@ -781,6 +819,7 @@ protected:
     }
 
 private:
+    static constexpr int kGlyphSrcPadding = 1;
     const bool fIsBigEnough;
 };  // class TransformedMaskSubRun
 
@@ -858,6 +897,7 @@ public:
         if (!buffer.validate(glyphVector->glyphCount() == vertexFiller->count())) {
             return nullptr;
         }
+
         return alloc->makeUnique<SDFTSubRun>(useLCD,
                                              isAntiAliased,
                                              matrixRange,
@@ -877,7 +917,9 @@ public:
 
     const AtlasSubRun* testingOnly_atlasSubRun() const override { return this; }
 
-    int glyphSrcPadding() const override { return SK_DistanceFieldInset; }
+    int glyphSrcPadding() const override { return kGlyphSrcPadding; }
+
+    skglyph::ActionType actionType() const override { return skglyph::kSDFT; }
 
     void draw(SkCanvas*,
               SkPoint drawOrigin,
@@ -909,6 +951,7 @@ protected:
     }
 
 private:
+    static constexpr int kGlyphSrcPadding = SK_DistanceFieldInset;
     const bool fUseLCDText;
     const bool fAntiAliased;
     const SDFTMatrixRange fMatrixRange;
@@ -947,6 +990,12 @@ void add_multi_mask_format(
 
 namespace sktext::gpu {
 SubRun::~SubRun() = default;
+
+void AtlasSubRun::reconstructSafeCreationBounds() const {
+    SkRect safeBounds = get_safe_creation_bounds(fVertexFiller, &fGlyphVector,
+                                                 this->actionType(), this->glyphSrcPadding());
+    fVertexFiller.setSafeCreationBounds(safeBounds);
+}
 void SubRun::flatten(SkWriteBuffer& buffer) const {
     buffer.writeInt(this->subRunStreamTag());
     this->doFlatten(buffer);
@@ -975,7 +1024,11 @@ SubRunOwner SubRun::MakeFromBuffer(SkReadBuffer& buffer,
     }
     auto maker = makers[subRunTypeInt];
     if (!buffer.validate(maker != nullptr)) { return nullptr; }
-    return maker(buffer, alloc, client);
+    auto subRun = maker(buffer, alloc, client);
+    if (subRun) {
+        subRun->reconstructSafeCreationBounds();
+    }
+    return subRun;
 }
 
 // -- SubRunContainer ------------------------------------------------------------------------------
@@ -1078,11 +1131,7 @@ prepare_for_SDFT_drawing(StrikeForGPU* strike,
             case GlyphAction::kAccept: {
                 SkPoint mappedPos = creationMatrix.mapPoint(pos);
                 const SkGlyphRect glyphBounds =
-                    digest.bounds()
-                        // The SDFT glyphs have 2-pixel wide padding that should
-                        // not be used in calculating the source rectangle.
-                        .inset(SK_DistanceFieldInset, SK_DistanceFieldInset)
-                        .offset(mappedPos);
+                        glyph_bounds(digest, SK_DistanceFieldInset, mappedPos);
                 boundingRect = skglyph::rect_union(boundingRect, glyphBounds);
                 acceptedBuffer[acceptedSize++] = std::make_tuple(packedID, glyphBounds.leftTop());
                 break;
@@ -1133,7 +1182,7 @@ prepare_for_direct_mask_drawing(StrikeForGPU* strike,
             case GlyphAction::kAccept: {
                 const SkPoint roundedPos{SkScalarFloorToScalar(mappedPos.x()),
                                          SkScalarFloorToScalar(mappedPos.y())};
-                const SkGlyphRect glyphBounds = digest.bounds().offset(roundedPos);
+                const SkGlyphRect glyphBounds = glyph_bounds(digest, 0, roundedPos);
                 boundingRect = skglyph::rect_union(boundingRect, glyphBounds);
                 acceptedBuffer[acceptedSize++] =
                         std::make_tuple(packedID, glyphBounds.leftTop(), digest.maskFormat());
@@ -1174,7 +1223,7 @@ prepare_for_mask_drawing(StrikeForGPU* strike,
                 digest.actionFor(kMask)) {
             case GlyphAction::kAccept: {
                 const SkPoint mappedPos = creationMatrix.mapPoint(pos);
-                const SkGlyphRect glyphBounds = digest.bounds().offset(mappedPos);
+                const SkGlyphRect glyphBounds = glyph_bounds(digest, 0, mappedPos);
                 boundingRect = skglyph::rect_union(boundingRect, glyphBounds);
                 acceptedBuffer[acceptedSize++] =
                         std::make_tuple(packedID, glyphBounds.leftTop(), digest.maskFormat());
