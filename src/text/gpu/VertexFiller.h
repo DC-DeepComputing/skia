@@ -30,6 +30,7 @@ enum class MaskFormat : int;
 
 namespace sktext::gpu {
 class SubRunAllocator;
+class AtlasSubRun;
 
 enum FillerType {
     kIsDirect,
@@ -89,17 +90,19 @@ public:
     std::tuple<bool, SkVector> canUseDirect(const SkMatrix& positionMatrix) const {
         return CanUseDirect(fCreationMatrix, positionMatrix);
     }
-
     SkMatrix viewDifference(const SkMatrix& positionMatrix) const;
 
 private:
+    friend class AtlasSubRun;
+    void setSafeCreationBounds(SkRect safeCreationBounds);
+
     static std::tuple<bool, SkVector> CanUseDirect(const SkMatrix& creationMatrix,
                                                    const SkMatrix& positionMatrix);
 
     const skgpu::MaskFormat fMaskFormat;
     const bool fCanDrawDirect;
     const SkMatrix fCreationMatrix;
-    const SkRect fCreationBounds;
+    SkRect fCreationBounds;
     const SkSpan<const SkPoint> fLeftTop;
 };
 
