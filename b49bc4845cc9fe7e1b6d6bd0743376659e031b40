@@ -50,6 +50,23 @@
       "message": "ccameron@ gently reminder 😊 PTAL",
       "revId": "b49bc4845cc9fe7e1b6d6bd0743376659e031b40",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "405c708d_0ee68f47",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4746751
+      },
+      "writtenOn": "2026-05-25T17:50:33Z",
+      "side": 1,
+      "message": "The bug was approved for M144 LTS. PTAL.",
+      "revId": "b49bc4845cc9fe7e1b6d6bd0743376659e031b40",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
