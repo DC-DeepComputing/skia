@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca71d1c2_ac2cefea",
+        "filename": "include/private/base/SkAssert.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-05-26T17:12:53Z",
+      "side": 1,
+      "message": "Heard, we can add something here *and* at the Log level\n\nSKIA_LOG_E will have its own callback (onLog?)\nThen we can add another callback here (onAbort?)",
+      "parentUuid": "413b2d58_80fa7de3",
+      "range": {
+        "startLine": 73,
+        "startChar": 8,
+        "endLine": 73,
+        "endChar": 18
+      },
+      "revId": "85740928a697375ced9765d2a6bf48f083e1a7b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "76e27dc3_2e0a2348",
@@ -85,6 +109,24 @@
       "writtenOn": "2026-05-26T15:49:25Z",
       "side": 1,
       "message": "Callback could go here (or in Android\u0027s specific implementation in SkLog_android.cpp)",
+      "revId": "85740928a697375ced9765d2a6bf48f083e1a7b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c9b42c2_7fc231e8",
+        "filename": "include/private/base/SkLog.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-05-26T17:12:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "76e27dc3_2e0a2348",
       "revId": "85740928a697375ced9765d2a6bf48f083e1a7b1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
