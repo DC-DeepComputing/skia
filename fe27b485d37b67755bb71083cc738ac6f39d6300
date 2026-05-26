@@ -89,6 +89,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f591cb8_df9be54a",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-26T16:36:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ecb6d3aa_de427591",
+      "range": {
+        "startLine": 124,
+        "startChar": 0,
+        "endLine": 124,
+        "endChar": 71
+      },
+      "revId": "fe27b485d37b67755bb71083cc738ac6f39d6300",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0c865419_77abffd0",
@@ -102,6 +126,30 @@
       "writtenOn": "2026-05-22T19:05:10Z",
       "side": 1,
       "message": "SkGlyphRect is basically like Graphite\u0027s Rect that is optimized for SIMD accumulation and intersection tests.  Instead of jumping back to SkPoint and SkRect for this loop, we should just use `SkGlyphRect(skglyph::rect_union(SkGlyphRect, SkGlyphRect);`. SkGyphRect also has an offset function so we can account for the top left point of the run.\n\nIf we initialize `boundingRect` to be the inverted infinite, then the first loop through\u0027s union will be no different and we avoid a branch.  We can just convert to SkRect at the end.",
+      "range": {
+        "startLine": 126,
+        "startChar": 0,
+        "endLine": 132,
+        "endChar": 9
+      },
+      "revId": "fe27b485d37b67755bb71083cc738ac6f39d6300",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d0a5204_b3c6dc10",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-26T16:36:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0c865419_77abffd0",
       "range": {
         "startLine": 126,
         "startChar": 0,
@@ -159,6 +207,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7852322_10236869",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 762,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-26T16:36:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "27a6116e_3f7cad11",
+      "range": {
+        "startLine": 760,
+        "startChar": 0,
+        "endLine": 762,
+        "endChar": 51
+      },
+      "revId": "fe27b485d37b67755bb71083cc738ac6f39d6300",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7aa0adf7_e0e1f6d4",
@@ -182,6 +254,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e3c9c9b_323b94b2",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 898,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-26T16:36:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7aa0adf7_e0e1f6d4",
+      "range": {
+        "startLine": 897,
+        "startChar": 1,
+        "endLine": 898,
+        "endChar": 51
+      },
+      "revId": "fe27b485d37b67755bb71083cc738ac6f39d6300",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8aa1462e_dc0a3801",
@@ -195,6 +291,30 @@
       "writtenOn": "2026-05-22T19:05:10Z",
       "side": 1,
       "message": "This should be private or protected and then use a friend access so that only the deserializer and factory functions can set the bounds. We should also have a comment explaining what \"safe\" means in this context (e.g. it\u0027s post deserialization computed from the inputs).",
+      "range": {
+        "startLine": 95,
+        "startChar": 0,
+        "endLine": 95,
+        "endChar": 58
+      },
+      "revId": "fe27b485d37b67755bb71083cc738ac6f39d6300",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "84b24c30_7cf823e9",
+        "filename": "src/text/gpu/VertexFiller.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-26T16:36:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8aa1462e_dc0a3801",
       "range": {
         "startLine": 95,
         "startChar": 0,
