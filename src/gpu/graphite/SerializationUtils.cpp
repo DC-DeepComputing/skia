@@ -73,7 +73,7 @@ constexpr bool is_valid_samplecount(uint32_t sampleCount) {
         return true;
     }
 
-    const SkSpan<const int32_t> keySpan = key.data();
+    const SkSpan<const int32_t> keySpan = key.data1();
 
     if (!key.isSerializable(shaderCodeDictionary)) {
         return false;
@@ -351,7 +351,7 @@ void DumpPipelineDesc(const Caps* caps,
                       ShaderCodeDictionary* shaderCodeDictionary,
                       const GraphicsPipelineDesc& pipelineDesc,
                       const RenderPassDesc& renderPassDesc) {
-    SkString pipelineStr = pipelineDesc.toString(caps, shaderCodeDictionary);
+    SkString pipelineStr = pipelineDesc.toString2(caps, shaderCodeDictionary);
     SkString renderPassStr = renderPassDesc.toPipelineLabel();
     SkDebugf("%s: %s - %s\n", label, pipelineStr.c_str(), renderPassStr.c_str());
 }

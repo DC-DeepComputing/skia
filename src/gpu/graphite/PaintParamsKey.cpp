@@ -33,6 +33,7 @@ void PaintParamsKeyBuilder::checkReset() {
     SkASSERT(fData.empty());
     SkASSERT(fStack.empty());
     SkASSERT(!fHasError);
+    SkASSERT(!fContainsExternalFormat1);
 }
 
 void PaintParamsKeyBuilder::pushStack(int32_t codeSnippetID) {
@@ -267,7 +268,8 @@ static int key_to_string(const Caps* caps,
                          const ShaderCodeDictionary* dict,
                          SkSpan<const int32_t> keyData,
                          int currentIndex,
-                         int indent) {
+                         int indent,
+                         bool* containsExt) {
     SkASSERT(currentIndex < SkTo<int>(keyData.size()));
 
     const bool multiline = indent >= 0;
@@ -315,6 +317,11 @@ static int key_to_string(const Caps* caps,
                           keyData[currentIndex+1],
                           /* extFormatMSB= */ dataIndexCount == 3 ? keyData[currentIndex+2] : 0);
 
+            bool usesExtFmt = s.usesExternalFormat();
+            if (usesExtFmt && containsExt) {
+                *containsExt = true;
+            }
+
             if (s.isImmutable()) {
                 std::string tmp = caps->toString(s.immutableSamplerInfo());
                 if (!tmp.empty()) {
@@ -343,7 +350,7 @@ static int key_to_string(const Caps* caps,
         }
 
         for (int i = 0; i < entry->fNumChildren; ++i) {
-            currentIndex = key_to_string(caps, str, dict, keyData, currentIndex, indent);
+            currentIndex = key_to_string(caps, str, dict, keyData, currentIndex, indent, containsExt);
         }
 
         if (!multiline) {
@@ -359,21 +366,23 @@ static int key_to_string(const Caps* caps,
     return currentIndex;
 }
 
-SkString PaintParamsKey::toString(const Caps* caps,
-                                  const ShaderCodeDictionary* dict) const {
+SkString PaintParamsKey::toString1(const Caps* caps,
+                                  const ShaderCodeDictionary* dict,
+                                  bool* containsExt) const {
     SkString str;
     const int keySize = SkTo<int>(fData.size());
     for (int currentIndex = 0; currentIndex < keySize;) {
-        currentIndex = key_to_string(caps, &str, dict, fData, currentIndex, /*indent=*/-1);
+        currentIndex = key_to_string(caps, &str, dict, fData, currentIndex, /*indent=*/-1, containsExt);
     }
     return str.isEmpty() ? SkString("(empty)") : str;
 }
 
 #ifdef SK_DEBUG
 
-void PaintParamsKey::dump(const Caps* caps,
+void PaintParamsKey::dump1(const Caps* caps,
                           const ShaderCodeDictionary* dict,
-                          UniquePaintParamsID id) const {
+                          UniquePaintParamsID id,
+                          bool* containsExt) const {
     const int keySize = SkTo<int>(fData.size());
 
     SkDebugf("--------------------------------------\n");
@@ -387,7 +396,7 @@ void PaintParamsKey::dump(const Caps* caps,
     int currentIndex = 0;
     while (currentIndex < keySize) {
         SkString nodeStr;
-        currentIndex = key_to_string(caps, &nodeStr, dict, fData, currentIndex, /*indent=*/1);
+        currentIndex = key_to_string(caps, &nodeStr, dict, fData, currentIndex, /*indent=*/1, containsExt);
         SkDebugf("%s", nodeStr.c_str());
     }
 }

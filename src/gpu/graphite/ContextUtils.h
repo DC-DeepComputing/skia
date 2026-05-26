@@ -68,11 +68,12 @@ void CollectIntrinsicUniforms(const Caps* caps,
 // the shader. If an SkBlender is used instead of an SkBlendMode, it can never use hardware blending
 bool CanUseHardwareBlending(const Caps*, TextureFormat, SkBlendMode, Coverage);
 
-std::string GetPipelineLabel(const Caps*,
+std::string GetPipelineLabel1(const Caps*,
                              const ShaderCodeDictionary*,
                              const RenderPassDesc& renderPassDesc,
                              const RenderStep* renderStep,
-                             UniquePaintParamsID paintID);
+                             UniquePaintParamsID paintID,
+                             bool* containsExt = nullptr);
 
 // TODO(b/396420770): Right now, BuildComputeSkSL must consider the backend in order to make certain
 // decisions. It would be ideal if we could make this more backend-agnostic, perhaps by having a

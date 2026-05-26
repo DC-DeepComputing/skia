@@ -887,7 +887,7 @@ std::unique_ptr<ShaderInfo> ShaderInfo::Make(const Caps* caps,
             caps, dict, &shaderNodeAlloc, step, paintID, result->uniformSsboIndex());
     result->fHasCombinedUniforms = sharedData.fHasStepUniforms || sharedData.fHasPaintUniforms;
 
-    SkString paintLabel = dict->idToString(caps, paintID);
+    SkString paintLabel = dict->idToString1(caps, paintID);
     if (hasFragShader) {
         result->generateFragmentSkSL(caps,
                                      dict,

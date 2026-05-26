@@ -73,7 +73,8 @@ public:
      * @return                        A human-readable version of the provided key; "" on failure.
      */
     std::string getPipelineLabel(sk_sp<SkData> serializedPipelineKey,
-                                 uint32_t* uniqueHash = nullptr);
+                                 uint32_t* uniqueHash /* = nullptr */,
+                                 bool* containsExt);
 
     // Provides access to functions that aren't part of the public API.
     PrecompileContextPriv priv();

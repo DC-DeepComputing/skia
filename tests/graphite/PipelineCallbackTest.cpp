@@ -84,6 +84,9 @@ void pipeline_normal_callback(void* context,
     SkASSERT(!label.empty());
     SkASSERT(!fromPrecompile);
     SkASSERT(serializedKey);
+
+
+
     data->push_back(std::move(serializedKey));
 }
 
@@ -287,7 +290,8 @@ void run_checking_test(skiatest::Reporter* reporter,
     // up 'verificationData'
     for (const sk_sp<SkData>& key : origKeys) {
         uint32_t uniqueHash;
-        precompileContext->getPipelineLabel(key, &uniqueHash);
+        bool containsExt = false;
+        precompileContext->getPipelineLabel(key, &uniqueHash, &containsExt);
 
         verificationData->push_back({key, uniqueHash, false, false});
     }

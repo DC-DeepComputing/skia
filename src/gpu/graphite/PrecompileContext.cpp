@@ -91,8 +91,11 @@ bool PrecompileContext::precompile(sk_sp<SkData> serializedPipelineKey) {
 }
 
 std::string PrecompileContext::getPipelineLabel(sk_sp<SkData> serializedPipelineKey,
-                                                uint32_t* uniqueHash) {
+                                                uint32_t* uniqueHash,
+                                                bool* containsExt) {
     if (uniqueHash) { *uniqueHash = 0; }
+    if (containsExt) { *containsExt = false; }
+
 #if defined(SK_ENABLE_PRECOMPILE)
     GraphicsPipelineDesc pipelineDesc;
     RenderPassDesc renderPassDesc;
@@ -124,11 +127,12 @@ std::string PrecompileContext::getPipelineLabel(sk_sp<SkData> serializedPipeline
         *uniqueHash = pipelineKey.hash();
     }
 
-    return GetPipelineLabel(fSharedContext->caps(),
+    return GetPipelineLabel1(fSharedContext->caps(),
                             fSharedContext->shaderCodeDictionary(),
                             renderPassDesc,
                             renderStep,
-                            pipelineDesc.paintParamsID());
+                            pipelineDesc.paintParamsID(),
+                            containsExt);
 #else
     return "";
 #endif
