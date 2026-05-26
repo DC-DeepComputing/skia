@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a39d774_cef0e41c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-26T15:36:01Z",
+      "side": 1,
+      "message": "LGTM? Is the shader ref guaranteed to have no collisions? I vaguely recall we discussed using this as an alternative to atomic counts when we did this implementation.",
+      "revId": "fe570388a76834588b170436ef7c89194113af8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
