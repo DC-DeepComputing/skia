@@ -88,6 +88,8 @@ public:
     // * Don't use this API. It is only to support testing.
     virtual const AtlasSubRun* testingOnly_atlasSubRun() const = 0;
 
+    virtual void reconstructSafeCreationBounds() const {}
+
 protected:
     enum SubRunStreamTag : int;
     virtual SubRunStreamTag subRunStreamTag() const = 0;
@@ -95,6 +97,7 @@ protected:
 
 private:
     friend class SubRunList;
+    friend class TextBlobTools;
     SubRunOwner fNext;
 };
 
@@ -122,6 +125,7 @@ public:
     int glyphCount() const { return fGlyphVector.glyphCount(); }
     skgpu::MaskFormat maskFormat() const { return fVertexFiller.maskFormat(); }
     virtual int glyphSrcPadding() const = 0;
+    virtual skglyph::ActionType actionType() const = 0;
     unsigned short instanceFlags() const { return (unsigned short)this->maskFormat(); }
 
     virtual std::tuple<bool, SkRect> deviceRectAndNeedsTransform(
@@ -138,12 +142,18 @@ public:
 
     GlyphVector& glyphVector() const { return fGlyphVector; }
 
+    void reconstructSafeCreationBounds() const override;
+
 protected:
     const VertexFiller fVertexFiller;
 
     // Initially packed-ID span, converted to backend specific per-Glyph atlas location
     // information.
     mutable GlyphVector fGlyphVector;
+
+    static void SetSafeCreationBounds(VertexFiller* filler, SkRect bounds) {
+        filler->setSafeCreationBounds(bounds);
+    }
 };
 
 // -- SubRunList -----------------------------------------------------------------------------------
