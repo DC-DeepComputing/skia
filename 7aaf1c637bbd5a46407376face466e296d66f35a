@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "774c5ba6_a94b59bd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-05-26T12:29:52Z",
+      "side": 1,
+      "message": "This seems fine for now. How difficult would it be to simplify the offending gradient to just be two stops?",
+      "revId": "7aaf1c637bbd5a46407376face466e296d66f35a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
