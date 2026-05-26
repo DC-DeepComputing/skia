@@ -117,10 +117,10 @@ deps = {
     'condition': 'False',
   },
 
-  'agents/shared': 'https://chromium.googlesource.com/chromium/agents/@695fa86c87e68f1abd80e8a103d2111eace5a0be',
+  'agents/shared': 'https://chromium.googlesource.com/chromium/agents/@36edcee9526c18e12da08de3c432bd89429cbf8b',
 
   'agents/internal': {
-    'url': 'https://chrome-internal.googlesource.com/chrome/agents-internal/@464ca2551647693eb9521cb5e1f8445d27de4cfe',
+    'url': 'https://chrome-internal.googlesource.com/chrome/agents-internal/@99f7008eeb11de7f1f822b4bbe6e2f6622699098',
     'condition': 'checkout_agents_internal',
   },
 }
