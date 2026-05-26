@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c73f0c1_47dd3fdf",
+        "filename": "src/gpu/ganesh/SurfaceContext.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 710,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-05-26T16:53:47Z",
+      "side": 1,
+      "message": "Since this is a more a generic context now and not just for finish callbacks, maybe something just like AsyncReadPixelsContext?",
+      "range": {
+        "startLine": 710,
+        "startChar": 11,
+        "endLine": 710,
+        "endChar": 24
+      },
+      "revId": "565600ef32d93877e416dcbbac1ff580207b9a78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dce6c466_af5fab39",
+        "filename": "src/gpu/ganesh/SurfaceContext.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 717,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-05-26T16:53:47Z",
+      "side": 1,
+      "message": "I really don\u0027t care, but I always wonder if situations like there where you actually just have a tri-state (Unsubmitted, Success, Failure), if its best to just use a 3 valued enum instead of std::optional. Like I feel like std::optional\u003cbool\u003e has a lot more traps of making sure you comparing the correct values in if statements.\n\nBut like I said don\u0027t really mind whatever approach you think works better here.",
+      "range": {
+        "startLine": 717,
+        "startChar": 8,
+        "endLine": 717,
+        "endChar": 27
+      },
+      "revId": "565600ef32d93877e416dcbbac1ff580207b9a78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a068934b_1f2d447f",
+        "filename": "src/gpu/ganesh/SurfaceContext.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 733,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-05-26T16:53:47Z",
+      "side": 1,
+      "message": "do you just add the has_value() here to try to be explicit and clearer on intent? Like you could just do !fSubmitted.",
+      "range": {
+        "startLine": 733,
+        "startChar": 41,
+        "endLine": 733,
+        "endChar": 53
+      },
+      "revId": "565600ef32d93877e416dcbbac1ff580207b9a78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d444ecf_35ed11f6",
+        "filename": "src/gpu/ganesh/SurfaceContext.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1019,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-05-26T16:53:47Z",
+      "side": 1,
+      "message": "Maybe not worth it being in Ganesh, but with the increased logic in this, there could be value in make a base class for AsyncReadPixelContext and then have the normal and yuv just override their special stuff in runClientCallbackMaybe",
+      "range": {
+        "startLine": 1019,
+        "startChar": 11,
+        "endLine": 1019,
+        "endChar": 24
+      },
+      "revId": "565600ef32d93877e416dcbbac1ff580207b9a78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
