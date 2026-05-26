@@ -96,6 +96,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "43439592_479ff2f6",
+        "filename": "include/private/base/SkAssert.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2026-05-26T17:16:19Z",
+      "side": 1,
+      "message": "SGTM :-)",
+      "parentUuid": "ca71d1c2_ac2cefea",
+      "range": {
+        "startLine": 73,
+        "startChar": 8,
+        "endLine": 73,
+        "endChar": 18
+      },
+      "revId": "85740928a697375ced9765d2a6bf48f083e1a7b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "76e27dc3_2e0a2348",
