@@ -46,6 +46,30 @@
       },
       "revId": "3471ebf5af0cc82c45df7e2c60ef40a4d5de27f5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6f3e7be_8efe3cd8",
+        "filename": "src/sksl/lex/LexUtil.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2026-05-26T16:59:32Z",
+      "side": 0,
+      "message": "`SK_ABORT` is redefined on line 15 of src/sksl/lex/LexUtil.h, mapping directly to `fprintf` without a trailing newline",
+      "parentUuid": "ab681569_88de77ae",
+      "range": {
+        "startLine": 17,
+        "startChar": 55,
+        "endLine": 17,
+        "endChar": 57
+      },
+      "revId": "3471ebf5af0cc82c45df7e2c60ef40a4d5de27f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
