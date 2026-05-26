@@ -1261,6 +1261,7 @@ func (b *TaskBuilder) dmFlags(internalHardwareLabel string) {
 	badSerializeGMs = append(badSerializeGMs, "runtime_effect_image")
 	badSerializeGMs = append(badSerializeGMs, "ctmpatheffect")
 	badSerializeGMs = append(badSerializeGMs, "image_out_of_gamut")
+	badSerializeGMs = append(badSerializeGMs, "user_typeface")
 
 	// This GM forces a path to be convex. That property doesn't survive
 	// serialization.

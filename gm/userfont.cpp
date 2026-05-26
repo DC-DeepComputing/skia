@@ -92,7 +92,7 @@ public:
     void onOnceBeforeDraw() override {
         fTF = make_tf();
         // test serialization
-        fTF = round_trip(fTF);
+        SkASSERT(round_trip(fTF));
     }
 
     static sk_sp<SkTextBlob> make_blob(sk_sp<SkTypeface> tf, float size, float* spacing) {
