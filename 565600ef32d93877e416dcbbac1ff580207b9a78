@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c08d16a5_62710524",
+        "filename": "src/gpu/ganesh/SurfaceContext.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 710,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-05-26T17:27:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5c73f0c1_47dd3fdf",
+      "range": {
+        "startLine": 710,
+        "startChar": 11,
+        "endLine": 710,
+        "endChar": 24
+      },
+      "revId": "565600ef32d93877e416dcbbac1ff580207b9a78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dce6c466_af5fab39",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-05-26T16:53:47Z",
       "side": 1,
       "message": "I really don\u0027t care, but I always wonder if situations like there where you actually just have a tri-state (Unsubmitted, Success, Failure), if its best to just use a 3 valued enum instead of std::optional. Like I feel like std::optional\u003cbool\u003e has a lot more traps of making sure you comparing the correct values in if statements.\n\nBut like I said don\u0027t really mind whatever approach you think works better here.",
+      "range": {
+        "startLine": 717,
+        "startChar": 8,
+        "endLine": 717,
+        "endChar": 27
+      },
+      "revId": "565600ef32d93877e416dcbbac1ff580207b9a78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "246a7f66_4c20eb26",
+        "filename": "src/gpu/ganesh/SurfaceContext.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 717,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-05-26T17:27:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dce6c466_af5fab39",
       "range": {
         "startLine": 717,
         "startChar": 8,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "266962f8_cec9c142",
+        "filename": "src/gpu/ganesh/SurfaceContext.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 733,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-05-26T17:27:01Z",
+      "side": 1,
+      "message": "Yeah, I didn\u0027t want `!fSubmitted` to be confused with `!*fSubmitted`.",
+      "parentUuid": "a068934b_1f2d447f",
+      "range": {
+        "startLine": 733,
+        "startChar": 41,
+        "endLine": 733,
+        "endChar": 53
+      },
+      "revId": "565600ef32d93877e416dcbbac1ff580207b9a78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4d444ecf_35ed11f6",
@@ -83,6 +155,30 @@
       "writtenOn": "2026-05-26T16:53:47Z",
       "side": 1,
       "message": "Maybe not worth it being in Ganesh, but with the increased logic in this, there could be value in make a base class for AsyncReadPixelContext and then have the normal and yuv just override their special stuff in runClientCallbackMaybe",
+      "range": {
+        "startLine": 1019,
+        "startChar": 11,
+        "endLine": 1019,
+        "endChar": 24
+      },
+      "revId": "565600ef32d93877e416dcbbac1ff580207b9a78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c619f7d6_9a26c8b8",
+        "filename": "src/gpu/ganesh/SurfaceContext.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1019,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-05-26T17:27:01Z",
+      "side": 1,
+      "message": "I moved everything to a shared class between YUV and RGB (rgb just leaves some empty PixelTransferResults), since having the separate class made it convenient to hide the trinary enum as well.",
+      "parentUuid": "4d444ecf_35ed11f6",
       "range": {
         "startLine": 1019,
         "startChar": 11,
