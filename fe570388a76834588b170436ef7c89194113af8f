@@ -16,6 +16,24 @@
       "message": "LGTM? Is the shader ref guaranteed to have no collisions? I vaguely recall we discussed using this as an alternative to atomic counts when we did this implementation.",
       "revId": "fe570388a76834588b170436ef7c89194113af8f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "35b59a6e_d9a1741c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-05-26T15:52:52Z",
+      "side": 1,
+      "message": "Yep, my other comment on this CL links to that discussion.  But also yes, this should guarantee no collisions because we keep cached shaders alive until snap() is finished. Even if a caller is dropping their refs and recreating new large gradient shaders, malloc won\u0027t be reusing the previous address since we didn\u0027t allow it to be deleted.",
+      "parentUuid": "7a39d774_cef0e41c",
+      "revId": "fe570388a76834588b170436ef7c89194113af8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
