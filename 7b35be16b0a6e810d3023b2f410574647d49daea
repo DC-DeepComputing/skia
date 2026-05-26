@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa811b0e_4731c19c",
+        "filename": "gm/userfont.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-05-26T20:14:46Z",
+      "side": 1,
+      "message": "Let\u0027s keep the round-trip version, this may break silently if deserialization succeeds but it would draw differently.\n\nmaybe\n```\n    fTF \u003d round_trip(make_tf());\n    SkASSERT(fTf);\n```",
+      "revId": "7b35be16b0a6e810d3023b2f410574647d49daea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9a19594_436762b8",
+        "filename": "src/utils/SkCustomTypeface.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 407,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-05-26T20:14:46Z",
+      "side": 1,
+      "message": "Doesn\u0027t have to be this CL, but if drawables are not used, I\u0027m inclined to drop them from SkCustomTypeface completely.",
+      "revId": "7b35be16b0a6e810d3023b2f410574647d49daea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb511b4b_bba5e29c",
+        "filename": "src/utils/SkCustomTypeface.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 408,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-05-26T20:14:46Z",
+      "side": 1,
+      "message": "`SkPath::Rect(rec.fBounds)`",
+      "range": {
+        "startLine": 408,
+        "startChar": 27,
+        "endLine": 408,
+        "endChar": 72
+      },
+      "revId": "7b35be16b0a6e810d3023b2f410574647d49daea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
