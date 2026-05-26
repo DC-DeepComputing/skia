@@ -64,10 +64,6 @@ def filter_toolchain_files(dirname, files):
 
 
 def main():
-  if sys.platform != 'win32':
-    print('This script only runs on Windows.', file=sys.stderr)
-    sys.exit(1)
-
   parser = argparse.ArgumentParser()
   parser.add_argument('--target_dir', '-t', required=True)
   args = parser.parse_args()
