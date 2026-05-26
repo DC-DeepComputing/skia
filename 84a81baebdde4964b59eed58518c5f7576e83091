@@ -16,6 +16,23 @@
       "message": "An alternate policy is that we impose a limit on the number of gradient color stops at the factory, regardless of the backend doing the rendering.",
       "revId": "84a81baebdde4964b59eed58518c5f7576e83091",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "492c1ddc_cb894614",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-05-26T13:37:05Z",
+      "side": 1,
+      "message": "From the abandon\u0027ed CL (identical to this one), Rob asked\n\n```\nThis seems fine for now. How difficult would it be to simplify the offending gradient to just be two stops?\n```\n\nI think that that is possible if we just grabbed the first and last color. Perhaps it is better to draw something that touches all the same pixels, but dropping the draw is consistent with other error handling.  I should at least add a warning message",
+      "revId": "84a81baebdde4964b59eed58518c5f7576e83091",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
