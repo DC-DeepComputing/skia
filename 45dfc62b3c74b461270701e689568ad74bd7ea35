@@ -16,6 +16,24 @@
       "message": "@jlavrova@google.com, @drott@google.com The vote got reset during rebasing. \nPlease review again. PS9(latest) is same as PS6(final reviewed PS).\n\nThanks.",
       "revId": "45dfc62b3c74b461270701e689568ad74bd7ea35",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f98f58bd_520a9492",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3916209
+      },
+      "writtenOn": "2026-05-26T15:02:37Z",
+      "side": 1,
+      "message": "@jlavrova@google.com, \nThere was a flaky job (Test-Mac14-Clang-MacMini8.1-CPU-AVX2-x86_64-Debug-All-NativeFonts_Fontations) which was blocking the CL merge not related to the changes done. \n\nCan you please approve again.(No change has been done from your last approved change).\n\nApologies for multiple iteration getting your approval. \nThanks.",
+      "parentUuid": "8d781326_9af78ee8",
+      "revId": "45dfc62b3c74b461270701e689568ad74bd7ea35",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
