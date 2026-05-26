@@ -37,6 +37,7 @@
 #include "src/core/SkFontDescriptor.h"
 #include "src/core/SkGlyph.h"
 #include "src/core/SkMask.h"
+#include "src/core/SkPictureData.h"
 #include "src/core/SkScalerContext.h"
 #include "src/core/SkStreamPriv.h"
 
@@ -501,6 +502,16 @@ sk_sp<SkTypeface> SkCustomTypefaceBuilder::Deserialize(SkStream* stream) {
             case GlyphType::kDrawable: {
                 SkDeserialProcs procs;
                 procs.fAllowSkSL = false;
+                procs.fAllowTagsProc = [](SkFourByteTag tag, void*) -> bool {
+                    return tag == SK_PICT_BUFFER_SIZE_TAG ||
+                           tag == SK_PICT_DRAWABLE_TAG ||
+                           tag == SK_PICT_FACTORY_TAG ||
+                           tag == SK_PICT_IMAGE_BUFFER_TAG ||
+                           tag == SK_PICT_PAINT_BUFFER_TAG ||
+                           tag == SK_PICT_PATH_BUFFER_TAG ||
+                           tag == SK_PICT_READER_TAG ||
+                           tag == SK_PICT_VERTICES_BUFFER_TAG;
+                };
                 auto drawable = SkDrawable::Deserialize(data->data(), data->size(), &procs);
                 if (!drawable) {
                     return nullptr;
