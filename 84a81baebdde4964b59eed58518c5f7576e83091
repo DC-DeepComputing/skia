@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "76c9bbc5_e04e55d3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-05-26T13:33:28Z",
+      "side": 1,
+      "message": "An alternate policy is that we impose a limit on the number of gradient color stops at the factory, regardless of the backend doing the rendering.",
+      "revId": "84a81baebdde4964b59eed58518c5f7576e83091",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
