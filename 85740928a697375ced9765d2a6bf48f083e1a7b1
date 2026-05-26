@@ -26,6 +26,47 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d105a01c_7db66d23",
+        "filename": "include/private/base/SkAssert.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-05-26T15:49:25Z",
+      "side": 1,
+      "message": "My thinking was that with SK_ABORT calling into SKIA_LOG_E, if we put the callback in SKIA_LOG, it would hit whatever callback we make.",
+      "parentUuid": "b38e40ee_8939a274",
+      "range": {
+        "startLine": 73,
+        "startChar": 8,
+        "endLine": 73,
+        "endChar": 18
+      },
+      "revId": "85740928a697375ced9765d2a6bf48f083e1a7b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76e27dc3_2e0a2348",
+        "filename": "include/private/base/SkLog.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-05-26T15:49:25Z",
+      "side": 1,
+      "message": "Callback could go here (or in Android\u0027s specific implementation in SkLog_android.cpp)",
+      "revId": "85740928a697375ced9765d2a6bf48f083e1a7b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "24f1f761_c51a9d5c",
         "filename": "src/gpu/graphite/QueueManager.cpp",
         "patchSetId": 6
@@ -37,6 +78,30 @@
       "writtenOn": "2026-05-21T21:24:06Z",
       "side": 1,
       "message": "Nit: missing space",
+      "range": {
+        "startLine": 45,
+        "startChar": 95,
+        "endLine": 45,
+        "endChar": 96
+      },
+      "revId": "85740928a697375ced9765d2a6bf48f083e1a7b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "59272f5e_363e14e8",
+        "filename": "src/gpu/graphite/QueueManager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-05-26T15:49:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "24f1f761_c51a9d5c",
       "range": {
         "startLine": 45,
         "startChar": 95,
@@ -60,6 +125,30 @@
       "writtenOn": "2026-05-21T21:24:06Z",
       "side": 1,
       "message": "Looks like Michael was suggesting we might want to just omit these `[graphite]` prefixes?",
+      "range": {
+        "startLine": 136,
+        "startChar": 19,
+        "endLine": 136,
+        "endChar": 27
+      },
+      "revId": "85740928a697375ced9765d2a6bf48f083e1a7b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f182016_a8b6fe19",
+        "filename": "src/gpu/graphite/TextureFormatXferFn.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-05-26T15:49:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d018e777_c6d515fe",
       "range": {
         "startLine": 136,
         "startChar": 19,

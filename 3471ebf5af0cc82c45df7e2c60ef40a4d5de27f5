@@ -22,6 +22,30 @@
       },
       "revId": "3471ebf5af0cc82c45df7e2c60ef40a4d5de27f5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab681569_88de77ae",
+        "filename": "src/sksl/lex/LexUtil.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-05-26T15:49:25Z",
+      "side": 0,
+      "message": "SK_ABORT does contain a new line, it calls SKIA_LOG which in turn adds the new line. Marking as \u0027Resolved\u0027 but reopen if you\u0027re talking about something else.",
+      "parentUuid": "7f234342_71638ab1",
+      "range": {
+        "startLine": 17,
+        "startChar": 55,
+        "endLine": 17,
+        "endChar": 57
+      },
+      "revId": "3471ebf5af0cc82c45df7e2c60ef40a4d5de27f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
