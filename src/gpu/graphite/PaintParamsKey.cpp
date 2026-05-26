@@ -33,6 +33,7 @@ void PaintParamsKeyBuilder::checkReset() {
     SkASSERT(fData.empty());
     SkASSERT(fStack.empty());
     SkASSERT(!fHasError);
+    SkASSERT(!fContainsExternalFormat1);
 }
 
 void PaintParamsKeyBuilder::pushStack(int32_t codeSnippetID) {
@@ -314,6 +315,8 @@ static int key_to_string(const Caps* caps,
             SamplerDesc s(keyData[currentIndex],
                           keyData[currentIndex+1],
                           /* extFormatMSB= */ dataIndexCount == 3 ? keyData[currentIndex+2] : 0);
+
+            bool usesExtFmt = s.usesExternalFormat();
 
             if (s.isImmutable()) {
                 std::string tmp = caps->toString(s.immutableSamplerInfo());

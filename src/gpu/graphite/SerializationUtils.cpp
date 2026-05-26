@@ -73,7 +73,7 @@ constexpr bool is_valid_samplecount(uint32_t sampleCount) {
         return true;
     }
 
-    const SkSpan<const int32_t> keySpan = key.data();
+    const SkSpan<const int32_t> keySpan = key.data1();
 
     if (!key.isSerializable(shaderCodeDictionary)) {
         return false;

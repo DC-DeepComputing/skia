@@ -84,6 +84,9 @@ void pipeline_normal_callback(void* context,
     SkASSERT(!label.empty());
     SkASSERT(!fromPrecompile);
     SkASSERT(serializedKey);
+
+
+
     data->push_back(std::move(serializedKey));
 }
 
