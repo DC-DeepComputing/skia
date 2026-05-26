@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2dca4bd3_ce7404c4",
+        "filename": "include/private/SkPixelStorage.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-05-26T19:39:03Z",
+      "side": 1,
+      "message": "do we want to rename this? Bump feels too informal",
+      "range": {
+        "startLine": 34,
+        "startChar": 13,
+        "endLine": 34,
+        "endChar": 26
+      },
+      "revId": "0e043e4d1598d195c1a29b8d691fccba777197dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "45592477_e1f70ec3",
         "filename": "include/private/SkPixelStorage.h",
         "patchSetId": 5
