@@ -309,6 +309,12 @@ bool SkPictureData::parseStreamTag(SkStream* stream,
                                    const SkDeserialProcs& procs,
                                    SkTypefacePlayback* topLevelTFPlayback,
                                    int recursionLimit) {
+    if (size == 0) {
+        return true;
+    }
+    if (procs.fAllowTagsProc && !procs.fAllowTagsProc(tag, procs.fAllowTagsCtx)) {
+        return false;
+    }
     switch (tag) {
         case SK_PICT_READER_TAG:
             SkASSERT(nullptr == fOpData);
@@ -456,6 +462,13 @@ bool new_array_from_buffer(SkReadBuffer& buffer,
 }
 
 void SkPictureData::parseBufferTag(SkReadBuffer& buffer, uint32_t tag, uint32_t size) {
+    if (size == 0) {
+        return;
+    }
+    if (!buffer.allowTags(tag)) {
+        buffer.validate(false);
+        return;
+    }
     switch (tag) {
         case SK_PICT_PAINT_BUFFER_TAG: {
             if (!buffer.validate(SkTFitsIn<int>(size))) {
