@@ -90,6 +90,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e6be9794_aa855193",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 1229,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-05-27T15:52:39Z",
+      "side": 1,
+      "message": "I believe it is intentional. At the moment an SDF glyph is generated into a distance mask that includes the padding already, so its visual bounds that need to be tracked should be inset from what the glyph reports.\n\nFor transformed glyph sub runs, it needs 1px of padding once it\u0027s in the atlas so that bilerp reads transparent at the edges, but otherwise the glyph is reporting the same bounds as it would if it were a direct mask sub run, e.g. matching the visual bounds we\u0027d use for clipping already.",
+      "parentUuid": "92957a97_50911099",
+      "range": {
+        "startLine": 1229,
+        "startChar": 0,
+        "endLine": 1229,
+        "endChar": 97
+      },
+      "revId": "852395b2e2a2cf49f3b8a3a207e0d8845182d12f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "85945418_2fbbb2c4",
         "filename": "src/text/gpu/SubRunContainer.h",
         "patchSetId": 21
@@ -172,6 +196,30 @@
       "side": 1,
       "message": "Or are you saying get the raw glyph bounds from GlyphVector and pass that into VertexFiller::MakeFromBuffer? That may be tricky because we are acquiring a mutex from strikeMutationMonitor? Maybe we can combine these into a single function call like `makeComponentsFromBuffer`",
       "parentUuid": "dae84f65_abacc97d",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 65,
+        "endChar": 75
+      },
+      "revId": "852395b2e2a2cf49f3b8a3a207e0d8845182d12f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aba5411b_e61d8670",
+        "filename": "src/text/gpu/VertexFiller.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-05-27T15:52:39Z",
+      "side": 1,
+      "message": "Oh shoot, I missed that it was responsible for holding the top-left span.\n\nMaybe a bit more radical of an approach, but we could just remove `MakeFromBuffer()` and `flatten()` from `VertexFiller` so that the serialized and derived pieces can be determined by the SubRun factory in the right dependency order.",
+      "parentUuid": "a5b64940_214e996c",
       "range": {
         "startLine": 65,
         "startChar": 0,
