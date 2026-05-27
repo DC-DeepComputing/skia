@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "73ddb017_20cc1ac1",
+        "filename": "bazel/external/dawn/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 359,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-05-27T18:33:29Z",
+      "side": 1,
+      "message": "TIL about https://dawn.googlesource.com/dawn.git/+/refs/heads/main/src/utils/BUILD.bazel",
+      "range": {
+        "startLine": 359,
+        "startChar": 13,
+        "endLine": 359,
+        "endChar": 24
+      },
+      "revId": "f9e1173eba93d034d27adccdb8e659c7b56ebbc5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
