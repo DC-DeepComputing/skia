@@ -258,7 +258,9 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(
                              runtimeDict,
                              renderPassDesc,
                              step,
-                             paintID);
+                             paintID,
+                             nullptr,
+                             true); //$$
 
     const std::string& fsSkSL = shaderInfo->fragmentSkSL();
     const BlendInfo& blendInfo = shaderInfo->blendInfo();
@@ -292,7 +294,7 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(
             sharedContext->getCompatibleDepthStencilState(step->depthStencilSettings());
 
     PipelineInfo pipelineInfo{ *shaderInfo, pipelineCreationFlags,
-                               pipelineKey.hash(), compilationID };
+                               pipelineKey.hash(), compilationID, false }; //$$
 #if defined(GPU_TEST_UTILS)
     pipelineInfo.fNativeVertexShader = std::move(vsMSL.fText);
     pipelineInfo.fNativeFragmentShader = std::move(fsMSL.fText);

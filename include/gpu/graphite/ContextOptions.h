@@ -153,7 +153,9 @@ struct SK_API ContextOptions {
                                              const std::string& label,
                                              uint32_t uniqueKeyHash,
                                              bool fromPrecompile,
-                                             sk_sp<SkData> pipelineData);
+                                             sk_sp<SkData> pipelineData,
+                                             bool containsExtFmt,
+                                             bool foo);
 
     /**
      * This member variable allows a client to register a callback that will be invoked

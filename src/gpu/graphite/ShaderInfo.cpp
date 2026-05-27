@@ -867,7 +867,8 @@ std::unique_ptr<ShaderInfo> ShaderInfo::Make(const Caps* caps,
                                              const RenderPassDesc& rpDesc,
                                              const RenderStep* step,
                                              UniquePaintParamsID paintID,
-                                             skia_private::TArray<SamplerDesc>* outDescs) {
+                                             skia_private::TArray<SamplerDesc>* outDescs,
+                                             bool bar) {
     // Determine if an SSBO index is needed at all (by either stage)
     bool needsSsboIndex =
         caps->storageBufferSupport() && (step->performsShading() || step->numUniforms() > 0);
@@ -887,7 +888,7 @@ std::unique_ptr<ShaderInfo> ShaderInfo::Make(const Caps* caps,
             caps, dict, &shaderNodeAlloc, step, paintID, result->uniformSsboIndex());
     result->fHasCombinedUniforms = sharedData.fHasStepUniforms || sharedData.fHasPaintUniforms;
 
-    SkString paintLabel = dict->idToString(caps, paintID);
+    SkString paintLabel = dict->idToString1(caps, paintID);
     if (hasFragShader) {
         result->generateFragmentSkSL(caps,
                                      dict,
@@ -1060,7 +1061,7 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
                               bindingReqs.fUniformsSetIdx,
                               bindingReqs.fGradientBufferBinding,
                               ShaderInfo::kGradientBufferName);
-        fHasGradientBuffer = true;
+        fHasGradientBuffer1 = true;
     }
 
     const bool useDstSampler = fDstReadStrategy == DstReadStrategy::kTextureCopy ||

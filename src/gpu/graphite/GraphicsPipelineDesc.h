@@ -43,7 +43,7 @@ public:
     UniquePaintParamsID paintParamsID() const { return fPaintID; }
 
 #if defined(GPU_TEST_UTILS)
-    SkString toString(const Caps*, ShaderCodeDictionary*) const;
+    SkString toString2(const Caps*, ShaderCodeDictionary*) const;
 #endif
 
 private:

@@ -7,6 +7,8 @@
 
 #include "src/gpu/graphite/GraphicsPipeline.h"
 
+#include <set>
+
 #include "src/core/SkTraceEvent.h"
 #include "src/gpu/graphite/ContextUtils.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
@@ -42,7 +44,7 @@ GraphicsPipeline::PipelineInfo::PipelineInfo(
             const ShaderInfo& shaderInfo,
             SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags,
             uint32_t uniqueKeyHash,
-            uint32_t compilationID)
+            uint32_t compilationID, bool foo)
         : fDstReadStrategy(shaderInfo.dstReadStrategy())
         , fNumFragTexturesAndSamplers(shaderInfo.numFragmentTexturesAndSamplers())
         , fHasCombinedUniforms(shaderInfo.hasCombinedUniforms())
@@ -57,7 +59,7 @@ GraphicsPipeline::PipelineInfo::PipelineInfo(
 }
 
 #if defined(GPU_TEST_UTILS)
-SkString GraphicsPipelineDesc::toString(const Caps* caps, ShaderCodeDictionary* dict) const {
+SkString GraphicsPipelineDesc::toString2(const Caps* caps, ShaderCodeDictionary* dict) const {
     SkString tmp;
 
     tmp.append(RenderStep::RenderStepName(fRenderStepID));
@@ -65,7 +67,7 @@ SkString GraphicsPipelineDesc::toString(const Caps* caps, ShaderCodeDictionary* 
 
     PaintParamsKey key = dict->lookup(fPaintID);
 
-    tmp.append(key.toString(caps, dict));
+    tmp.append(key.toString1(caps, dict));
 
     return tmp;
 }

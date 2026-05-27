@@ -138,7 +138,9 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ShaderInfoDetectsFixedFunctionBlend, reporter
                                  /*rteDict=*/nullptr,
                                  rpDesc,
                                  renderStep,
-                                 paintID);
+                                 paintID,
+                                 nullptr,
+                                 true); //$$
 
         SkBlendMode expectedBM = mode;
         if (expectedBM == SkBlendMode::kPlus &&

@@ -78,12 +78,16 @@ void pipeline_normal_callback(void* context,
                               const std::string& label,
                               uint32_t uniqueKeyHash,
                               bool fromPrecompile,
-                              sk_sp<SkData> serializedKey) {
+                              sk_sp<SkData> serializedKey,
+                              bool foo) {
     std::vector<sk_sp<SkData>>* data = static_cast<std::vector<sk_sp<SkData>>*>(context);
 
     SkASSERT(!label.empty());
     SkASSERT(!fromPrecompile);
     SkASSERT(serializedKey);
+
+
+
     data->push_back(std::move(serializedKey));
 }
 
@@ -105,7 +109,8 @@ void pipeline_precompile_callback(void* context,
                                   const std::string& label,
                                   uint32_t uniqueKeyHash,
                                   bool fromPrecompile,
-                                  sk_sp<SkData> serializedKey) {
+                                  sk_sp<SkData> serializedKey,
+                                  bool foo) {
     std::vector<sk_sp<SkData>>* data = static_cast<std::vector<sk_sp<SkData>>*>(context);
 
     SkASSERT(!label.empty());
@@ -231,6 +236,7 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_CONTEXTS(PipelineCallbackTest_Precompile,
 struct PipelineCheckData {
     sk_sp<SkData> fData;
     uint32_t fUniqueHash = 0;
+    bool fContainsExt = false;
     bool fSeen = false;
     bool fMatched = false;
 };
@@ -242,7 +248,8 @@ void pipeline_checking_callback(void* context,
                                 const std::string& label,
                                 uint32_t uniqueKeyHash,
                                 bool fromPrecompile,
-                                sk_sp<SkData> serializedKey) {
+                                sk_sp<SkData> serializedKey,
+                                bool foo) {
     std::vector<PipelineCheckData> *data = static_cast<std::vector<PipelineCheckData>*>(context);
 
     SkASSERT(!label.empty());
@@ -283,13 +290,14 @@ void run_checking_test(skiatest::Reporter* reporter,
 
     std::unique_ptr<PrecompileContext> precompileContext = newContext->makePrecompileContext();
 
-    // First get the label and uniqueHash for each serialized key in 'origKeys' and fill
-    // up 'verificationData'
+    // First get the label, uniqueHash and extFmt flag for each serialized key in 'origKeys' and
+    // fill up 'verificationData'
     for (const sk_sp<SkData>& key : origKeys) {
         uint32_t uniqueHash;
-        precompileContext->getPipelineLabel(key, &uniqueHash);
+        bool containsExt = false;
+        precompileContext->getPipelineLabel7(key, &uniqueHash, &containsExt);
 
-        verificationData->push_back({key, uniqueHash, false, false});
+        verificationData->push_back({key, uniqueHash, containsExt, false, false});
     }
 
     // Next, precompile the Pipelines like usual but the uniqueHashes will be checked in
