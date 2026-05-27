@@ -22,6 +22,30 @@
       },
       "revId": "f9e1173eba93d034d27adccdb8e659c7b56ebbc5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b0678d0_53033e6b",
+        "filename": "bazel/external/dawn/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 359,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-05-27T18:37:38Z",
+      "side": 1,
+      "message": "I found out the hard way, trying to add the headers to our lists and getting denied by bazel (already in a subpackage or something).  Pleasant surprise, looks like bazel support is coming.",
+      "parentUuid": "73ddb017_20cc1ac1",
+      "range": {
+        "startLine": 359,
+        "startChar": 13,
+        "endLine": 359,
+        "endChar": 24
+      },
+      "revId": "f9e1173eba93d034d27adccdb8e659c7b56ebbc5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
