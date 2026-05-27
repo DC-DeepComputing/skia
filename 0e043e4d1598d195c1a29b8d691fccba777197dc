@@ -142,6 +142,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "19dcb16f_9ee2f798",
+        "filename": "src/capture/SkCaptureCanvas.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-05-27T17:34:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c856dcf6_1b0e60ba",
+      "range": {
+        "startLine": 205,
+        "startChar": 4,
+        "endLine": 205,
+        "endChar": 30
+      },
+      "revId": "0e043e4d1598d195c1a29b8d691fccba777197dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c2f7f32f_c663481f",
