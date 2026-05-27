@@ -16,6 +16,23 @@
       "message": "Could you take a look? Thanks",
       "revId": "6adbc5e5c3b7ee87dd754d66d0fddad7494deeb1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "770b7cf3_a6cc48e5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-05-27T13:25:36Z",
+      "side": 1,
+      "message": "Thank you for tracking this down!\n\nChris, can you check my understanding here? We are running into this problem because these SkYUVColorSpace enums for 10bit and 12bit are still storing the planar data with DataFormat::kUnorm16 (there is no DataFormat::kUnorm12 or 10). That means that when we load the values and convert to floating point, it has the 16-bit denominator.\n\nSpot-checking the matrices, it looks like the 10bit and 12bit versions are identical to their 16bit. I think it would be better to just compute the values statically and explain the derivation in comments.  I also think that this issue applies for both rgb-\u003eyuv and yuv-\u003ergb, with the reciprocal scale factor.\n\nDo you know what would happen, however, if we used a 10bit yuv color space with planar data coming from DataFormat::kUnorm10_Unorm2? That should be loading correctly and not need one of these scale factors, which complicates things.\n\nLastly, I noticed there are full and limited versions of these colorspaces. I am assuming the limited range here is not referring to the same issue (i.e. the fix for storing 10 or 12 bit data in a 16 bit data isn\u0027t just switching to the limited colorspace)?",
+      "revId": "6adbc5e5c3b7ee87dd754d66d0fddad7494deeb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
