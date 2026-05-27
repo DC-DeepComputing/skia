@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "0038c205_9e9a0696",
+        "filename": "gm/userfont.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-05-27T12:49:31Z",
+      "side": 1,
+      "message": "Ok. It does draw differently but I guess we don\u0027t care if we are pulling out drawable entirely.",
+      "parentUuid": "fa811b0e_4731c19c",
+      "revId": "7b35be16b0a6e810d3023b2f410574647d49daea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "f9a19594_436762b8",
         "filename": "src/utils/SkCustomTypeface.cpp",
         "patchSetId": 1
@@ -31,6 +49,24 @@
       "writtenOn": "2026-05-26T20:14:46Z",
       "side": 1,
       "message": "Doesn\u0027t have to be this CL, but if drawables are not used, I\u0027m inclined to drop them from SkCustomTypeface completely.",
+      "revId": "7b35be16b0a6e810d3023b2f410574647d49daea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0f85770_dd18eae4",
+        "filename": "src/utils/SkCustomTypeface.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 407,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-05-27T12:49:31Z",
+      "side": 1,
+      "message": "Ack.",
+      "parentUuid": "f9a19594_436762b8",
       "revId": "7b35be16b0a6e810d3023b2f410574647d49daea",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -48,6 +84,30 @@
       "writtenOn": "2026-05-26T20:14:46Z",
       "side": 1,
       "message": "`SkPath::Rect(rec.fBounds)`",
+      "range": {
+        "startLine": 408,
+        "startChar": 27,
+        "endLine": 408,
+        "endChar": 72
+      },
+      "revId": "7b35be16b0a6e810d3023b2f410574647d49daea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a21edcef_c021ce85",
+        "filename": "src/utils/SkCustomTypeface.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 408,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-05-27T12:49:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bb511b4b_bba5e29c",
       "range": {
         "startLine": 408,
         "startChar": 27,
