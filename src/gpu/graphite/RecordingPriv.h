@@ -11,6 +11,7 @@
 #include "include/core/SkPoint.h"
 #include "include/core/SkRefCnt.h"  // IWYU pragma: keep
 #include "include/gpu/graphite/Recording.h"
+#include "src/gpu/graphite/ScratchResourceManager.h"
 
 #include <cstdint>
 #include <memory>
@@ -24,7 +25,7 @@ class Context;
 class Resource;
 class ResourceProvider;
 class RuntimeEffectDictionary;
-class ScratchResourceManager;
+// class ScratchResourceManager;
 class Surface;
 class TaskList;
 class Texture;
@@ -66,6 +67,15 @@ public:
 
     uint32_t recorderID() const { return fRecording->fRecorderID; }
     uint32_t uniqueID() const { return fRecording->fUniqueID; }
+    void storeScratchTextureUsageUpdateList(
+            ScratchResourceManager::ResourceUsagesToUpdate texturesToUpdate) {
+        // TODO nicolettep make sure this performs a deep copy or actual ownership transfer
+        fResourcesRequiringUsageUpdates = texturesToUpdate;
+    }
+    // TODO nicolettep copy ownership poor !! fix
+    ScratchResourceManager::ResourceUsagesToUpdate resourcesRequiringUsageUpdates() {
+        return fResourcesRequiringUsageUpdates;
+    }
 
 #if defined(GPU_TEST_UTILS)
     bool isTargetProxyInstantiated() const;
@@ -81,6 +91,8 @@ private:
     // No taking addresses of this type.
     const RecordingPriv* operator&() const = delete;
     RecordingPriv* operator&() = delete;
+
+    ScratchResourceManager::ResourceUsagesToUpdate fResourcesRequiringUsageUpdates;
 
     Recording* fRecording;
 

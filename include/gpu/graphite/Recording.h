@@ -41,9 +41,14 @@ public:
 
     RecordingPriv priv();
 
+    // TODO nicolettep: Is this the best spot for this ???
+    void updateScratchLabels(ResourceProvider*);
+
 private:
     friend class Recorder;  // for ctor and LazyProxyData
     friend class RecordingPriv;
+    friend class Context; // TODO nicolettep: remove; add method to public Recording which can
+    // return the list of resources to update?
 
     // LazyProxyData is used if this recording should be replayed to a target that is provided on
     // replay, and it handles the target proxy's instantiation with the provided target.

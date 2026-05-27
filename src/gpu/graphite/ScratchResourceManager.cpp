@@ -50,6 +50,34 @@ sk_sp<Texture> ScratchResourceManager::getScratchTexture(SkISize dimensions,
     return scratchTexture;
 }
 
+sk_sp<Texture> ScratchResourceManager::getScratchTexture(SkISize dimensions,
+                                                         const TextureInfo& info,
+                                                         ScratchUsageFlags usage) {
+    sk_sp<Texture> scratchTexture = fResourceProvider->findOrCreateScratchTexture(
+            dimensions, info, usage, fUnavailable);
+    // Store the returned scratch texture into fUnavailable so that it is filtered from the
+    // ResourceCache when going through *this* ScratchResourceManager. But the scratch texture will
+    // remain visible to other Recorders.
+    SkASSERT(!fUnavailable.contains(scratchTexture.get()));
+    fUnavailable.add(scratchTexture.get());
+
+    // If the texture's usages do not currently contain the flags passed in to this call, then
+    // record that its usages and label must be updated upon recording insertion when it is
+    // safe to do so.
+    if (!(scratchTexture->scratchUsages() & usage)) {
+        for (auto resourceAndUsages : fResourcesRequiringUsageUpdates) {
+            // If the texture already is listed as needing an update, then simply add to its
+            // associated bitmask of required updates.
+            if (scratchTexture.get() == resourceAndUsages.first) {
+                resourceAndUsages.second |= usage;
+            }
+        }
+        fResourcesRequiringUsageUpdates.push_back({scratchTexture.get(), {scratchTexture->scratchUsages() | usage}});
+    }
+
+    return scratchTexture;
+}
+
 void ScratchResourceManager::returnTexture(sk_sp<Texture> texture) {
     // Fails if trying to return a resource that didn't come from getScratchTexture()
     SkASSERT(fUnavailable.contains(texture.get()));

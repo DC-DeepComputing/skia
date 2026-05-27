@@ -340,6 +340,8 @@ private:
     // want them public general users of a Resource, but they also aren't purely internal calls.
     ///////////////////////////////////////////////////////////////////////////////////////////////
     friend class ResourceCache;
+    // TODO nicolettep remove this friendship and instead have resource cache perform updates?
+    // friend class ResourceProvider;
 
     void setBudgeted(Budgeted budgeted) {
         SkASSERT(budgeted == Budgeted::kNo || fOwnership == Ownership::kOwned);

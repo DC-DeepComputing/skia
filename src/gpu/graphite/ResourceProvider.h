@@ -16,6 +16,7 @@
 #include "src/gpu/graphite/GraphicsPipeline.h"
 #include "src/gpu/graphite/ResourceCache.h"
 #include "src/gpu/graphite/ResourceTypes.h"
+#include "src/gpu/graphite/ScratchResourceManager.h"
 
 struct AHardwareBuffer;
 struct SkSamplingOptions;
@@ -72,6 +73,10 @@ public:
                                                    Budgeted);
     sk_sp<Texture> findOrCreateScratchTexture(SkISize,
                                               const TextureInfo&,
+                                              ScratchUsageFlags usage,
+                                              const ResourceCache::ScratchResourceSet& unavailable);
+    sk_sp<Texture> findOrCreateScratchTexture(SkISize,
+                                              const TextureInfo&,
                                               std::string_view label,
                                               const ResourceCache::ScratchResourceSet& unavailable);
 
@@ -113,6 +118,11 @@ public:
             StdSteadyClock::time_point purgeTime,
             std::optional<std::chrono::microseconds> microsMaxPurgingDur);
     void forceProcessReturnedResources() { fResourceCache->forceProcessReturnedResources(); }
+    // Should this / these be non-public?
+    // void updateCachedScratchLabels() { fResourceCache->updateCachedScratchLabels(); }
+    void updateCachedScratchLabels(ScratchResourceManager::ResourceUsagesToUpdate toUpdate) {
+        fResourceCache->updateCachedScratchLabels(toUpdate);
+    }
 
 #if defined(GPU_TEST_UTILS) || defined(SK_DEBUG)
     ResourceCache* resourceCache() { return fResourceCache.get(); }

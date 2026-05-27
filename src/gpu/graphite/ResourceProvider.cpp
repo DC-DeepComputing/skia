@@ -101,6 +101,95 @@ sk_sp<Texture> ResourceProvider::findOrCreateNonShareableTexture(SkISize dimensi
     return this->findOrCreateTexture(dimensions, info, label, budgeted, Shareable::kNo);
 }
 
+namespace {
+// // TODO(nicolettep): Alphabetize this switch statement once done adding usages (before landing)
+// std::string usage_to_str(SkEnumBitMask<ScratchUsageFlags> usageMask) {
+//     std::string allUsagesLabel = "Texture";
+
+//     if (usageMask & ScratchUsageFlags::kAsyncReadPixelsFallbackTexture) {
+//         allUsagesLabel += "_AsyncReadPixelsFallback";
+//     }
+//     if (usageMask & ScratchUsageFlags::kCopyDeviceTexture) {
+//         allUsagesLabel += "_DeviceCopy";
+//     }
+//     if (usageMask & ScratchUsageFlags::kDiscardableLoadMSAATexture) {
+//         allUsagesLabel += "_DiscardableLoadMSAA";
+//     }
+//     if (usageMask & ScratchUsageFlags::kDispatchWriteOnlyStorageTexture) {
+//         allUsagesLabel += "_DispatchWriteOnlyStorage";
+//     }
+//     if (usageMask & ScratchUsageFlags::kDstCopy) {
+//         allUsagesLabel += "_DstCopy";
+//     }
+//     if (usageMask & ScratchUsageFlags::kEvalBlurTexture) {
+//         allUsagesLabel += "_EvalBlur";
+//     }
+//     if (usageMask & ScratchUsageFlags::kImageFilterCachedBitmap) {
+//         allUsagesLabel += "_ImageFilterCachedBitmap";
+//     }
+//     if (usageMask & ScratchUsageFlags::kImageFilterResult) {
+//         allUsagesLabel += "_ImageFilterResult";
+//     }
+//     if (usageMask & ScratchUsageFlags::kImageMakeCTandCSTexture) {
+//         allUsagesLabel += "_CTandCSConversion";
+//     }
+//     if (usageMask & ScratchUsageFlags::kImageSubsetTexture) {
+//         allUsagesLabel += "_Subset";
+//     }
+//     if (usageMask & ScratchUsageFlags::kRescaleDstTexture) {
+//         allUsagesLabel += "_RescaleDst";
+//     }
+//     if (usageMask & ScratchUsageFlags::kRescaleImageTempTexture) {
+//         allUsagesLabel += "_RescaleImageTemp";
+//     }
+//     if (usageMask & ScratchUsageFlags::kRescaleLinearGammaTexture) {
+//         allUsagesLabel += "_RescaleLinearGamma";
+//     }
+//     if (usageMask & ScratchUsageFlags::kYUVRasterBitmapPlane) {
+//         allUsagesLabel += "_YUVRasterBitmapPlane";
+//     }
+//     if (usageMask & ScratchUsageFlags::kRasterBitmapTexture) {
+//         allUsagesLabel += "_RasterBitmapTexture";
+//     }
+//     if (usageMask & ScratchUsageFlags::kLazySkImageBitmapTexture) {
+//         allUsagesLabel += "_LazySkImageBitmapTexture";
+//     }
+//     return allUsagesLabel;
+// }
+
+// Define a helper which generates Texture keys. This way scratch textures and non-scratch textures
+// can share the same static ResourceType.
+void populate_texture_key(
+        const Caps* caps, SkISize dimensions, const TextureInfo& info, GraphiteResourceKey* key) {
+    static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
+    caps->buildKeyForTexture(dimensions, info, kType, key);
+}
+} // anonymous
+
+sk_sp<Texture> ResourceProvider::findOrCreateScratchTexture(
+        SkISize dimensions,
+        const TextureInfo& info,
+        ScratchUsageFlags usage,
+        const ResourceCache::ScratchResourceSet& unavailable) {
+    // Instead, call findAndRefResourceWithScratchUsage ... ?
+    // TODO nicolettep
+    // return this->findOrCreateTexture(dimensions,
+    //                                  info,
+    //                                  usage_to_str(usage),
+    //                                  Budgeted::kYes,
+    //                                  Shareable::kScratch,
+    //                                  &unavailable);
+
+    GraphiteResourceKey key;
+    // fSharedContext->caps()->buildKeyForTexture(dimensions, info, kType, &key);
+    populate_texture_key(fSharedContext->caps(), dimensions, info, &key);
+
+    Resource* resource =
+            fResourceCache->findAndRefScratchTextureWithUsage(key, {usage}, &unavailable);
+
+    return sk_sp<Texture>(static_cast<Texture*>(resource));
+}
+
 sk_sp<Texture> ResourceProvider::findOrCreateScratchTexture(
         SkISize dimensions,
         const TextureInfo& info,
@@ -122,8 +211,6 @@ sk_sp<Texture> ResourceProvider::findOrCreateTexture(
     SkASSERT(shareable == Shareable::kNo || budgeted == Budgeted::kYes);
     SkASSERT(shareable != Shareable::kScratch || SkToBool(unavailable));
 
-    static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
-
     if (!info.isValid()) {
         // Checking for a valid TextureInfo here allows callers to consolidate error checking for
         // both TextureInfo and Texture creation to checking for a null returned Texture.
@@ -131,7 +218,8 @@ sk_sp<Texture> ResourceProvider::findOrCreateTexture(
     }
 
     GraphiteResourceKey key;
-    fSharedContext->caps()->buildKeyForTexture(dimensions, info, kType, &key);
+    // fSharedContext->caps()->buildKeyForTexture(dimensions, info, kType, &key);
+    populate_texture_key(fSharedContext->caps(), dimensions, info, &key);
 
     if (Resource* resource =
                 fResourceCache->findAndRefResource(key, budgeted, shareable, label, unavailable)) {

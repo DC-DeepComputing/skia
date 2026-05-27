@@ -254,6 +254,11 @@ std::unique_ptr<Recording> Recorder::snap() {
         fAtlasProvider->invalidateAtlases();
     }
 
+    // After preparing resources, obtain the stored map of scratch texture resources and their
+    // updated usages from the ScratchResourceManager and transfer this map to the Recording.
+    recording->priv().storeScratchTextureUsageUpdateList(
+            scratchManager.resourcesRequiringUsageUpdates());
+
     // Process the return queue at least once to keep it from growing too large, as otherwise
     // it's only processed during an explicit cleanup or a cache miss.
     fResourceProvider->forceProcessReturnedResources();

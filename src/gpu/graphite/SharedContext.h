@@ -94,6 +94,8 @@ public:
     void purgeResourcesNotUsedSince(StdSteadyClock::time_point purgeTime);
     void forceProcessReturnedResources();
 
+    // void updateCachedScratchLabels();
+
 protected:
     SharedContext(std::unique_ptr<const Caps>,
                   BackendApi,
