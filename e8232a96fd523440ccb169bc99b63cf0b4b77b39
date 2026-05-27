@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa531fc7_8a38c34d",
+        "filename": "src/gpu/graphite/Image_YUVA_Graphite.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-05-27T19:26:27Z",
+      "side": 1,
+      "message": "you already std::moved proxies above so you can\u0027t access it again here. Should this be fProxies?",
+      "range": {
+        "startLine": 67,
+        "startChar": 23,
+        "endLine": 67,
+        "endChar": 30
+      },
+      "revId": "e8232a96fd523440ccb169bc99b63cf0b4b77b39",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ab0f9ee_a45a5aaf",
+        "filename": "src/gpu/graphite/TextureProxy.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-05-27T19:26:27Z",
+      "side": 1,
+      "message": "nit: extra \\n",
+      "revId": "e8232a96fd523440ccb169bc99b63cf0b4b77b39",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "efb5181a_06cadf82",
+        "filename": "src/image/SkImage_Base.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-05-27T19:26:27Z",
+      "side": 1,
+      "message": "nit: 100 chars",
+      "range": {
+        "startLine": 26,
+        "startChar": 93,
+        "endLine": 26,
+        "endChar": 100
+      },
+      "revId": "e8232a96fd523440ccb169bc99b63cf0b4b77b39",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd92944c_7c205b2d",
+        "filename": "src/image/SkImage_Base.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-05-27T19:26:27Z",
+      "side": 1,
+      "message": "nit: 100 chars",
+      "range": {
+        "startLine": 187,
+        "startChar": 68,
+        "endLine": 187,
+        "endChar": 70
+      },
+      "revId": "e8232a96fd523440ccb169bc99b63cf0b4b77b39",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ee24269_b920be19",
+        "filename": "src/image/SkSurface_Base.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-05-27T19:26:27Z",
+      "side": 1,
+      "message": "100 chars",
+      "range": {
+        "startLine": 34,
+        "startChar": 102,
+        "endLine": 34,
+        "endChar": 113
+      },
+      "revId": "e8232a96fd523440ccb169bc99b63cf0b4b77b39",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71e1b0e9_3bcdc514",
+        "filename": "src/image/SkSurface_Base.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-05-27T19:26:27Z",
+      "side": 1,
+      "message": "100",
+      "range": {
+        "startLine": 37,
+        "startChar": 101,
+        "endLine": 37,
+        "endChar": 115
+      },
+      "revId": "e8232a96fd523440ccb169bc99b63cf0b4b77b39",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
