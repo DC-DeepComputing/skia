@@ -33,6 +33,23 @@
       "message": "LTS Sherriff LGTM (no voting right here)",
       "revId": "6d9f1b03f2de2fd2a5ff7e85f265a8ed706947f4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d425de4f_ec73cdca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4746751
+      },
+      "writtenOn": "2026-05-27T19:34:45Z",
+      "side": 1,
+      "message": "Hi. We don\u0027t have permission to submit this to `chrome/m144`. Could you handle it please?",
+      "revId": "6d9f1b03f2de2fd2a5ff7e85f265a8ed706947f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
