@@ -41,6 +41,8 @@ public:
 
     RecordingPriv priv();
 
+    void updateScratchLabels(ResourceProvider*);
+
 private:
     friend class Recorder;  // for ctor and LazyProxyData
     friend class RecordingPriv;
