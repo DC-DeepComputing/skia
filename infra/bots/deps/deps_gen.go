@@ -24,7 +24,7 @@ var deps = deps_parser.DepsEntries{
 	},
 	"chromium.googlesource.com/angle/angle": {
 		Id:      "chromium.googlesource.com/angle/angle",
-		Version: "82be364307a40af9f16e74d1a69c61f075714a3d",
+		Version: "6f2c0162c12f50ec9c32fef603a86d332d46f8e9",
 		Path:    "third_party/externals/angle2",
 	},
 	"chromium.googlesource.com/chromium/deps/icu": {
@@ -39,7 +39,7 @@ var deps = deps_parser.DepsEntries{
 	},
 	"chromium.googlesource.com/chromium/src/base/allocator/partition_allocator": {
 		Id:      "chromium.googlesource.com/chromium/src/base/allocator/partition_allocator",
-		Version: "b5258e200dc8fc3ea0a3c02730258fda7633a9e4",
+		Version: "a6fd7d15807e10a2c17e9854bc28e714ad43ce4b",
 		Path:    "third_party/externals/partition_alloc",
 	},
 	"chromium.googlesource.com/chromium/src/buildtools": {
