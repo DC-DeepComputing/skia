@@ -50,7 +50,8 @@ public:
                                             const RenderPassDesc& rpDesc,
                                             const RenderStep*,
                                             UniquePaintParamsID,
-                                            skia_private::TArray<SamplerDesc>* outDescs = nullptr);
+                                            skia_private::TArray<SamplerDesc>* outDescs /* = nullptr */,
+                                            bool bar);
 
     const ShaderCodeDictionary* shaderCodeDictionary() const {
         return fShaderCodeDictionary;
@@ -74,7 +75,7 @@ public:
 
     int numFragmentTexturesAndSamplers() const { return fNumFragmentTexturesAndSamplers; }
     bool hasCombinedUniforms() const { return fHasCombinedUniforms; }
-    bool hasGradientBuffer() const { return fHasGradientBuffer; }
+    bool hasGradientBuffer() const { return fHasGradientBuffer1; }
 
     // Name used in-shader for gradient buffer uniform.
     static constexpr char kGradientBufferName[] = "fsGradientBuffer";
@@ -121,7 +122,7 @@ private:
 
     int fNumFragmentTexturesAndSamplers = 0;
     bool fHasCombinedUniforms = false;
-    bool fHasGradientBuffer = false;
+    bool fHasGradientBuffer1 = false;
 };
 
 }  // namespace skgpu::graphite

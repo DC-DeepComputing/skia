@@ -141,18 +141,19 @@ std::string EmitSamplerLayout(const ResourceBindingRequirements& bindingReqs, in
     return result;
 }
 
-std::string GetPipelineLabel(const Caps* caps,
+std::string GetPipelineLabel1(const Caps* caps,
                              const ShaderCodeDictionary* dict,
                              const RenderPassDesc& renderPassDesc,
                              const RenderStep* renderStep,
-                             UniquePaintParamsID paintID) {
+                             UniquePaintParamsID paintID,
+                             bool* containsExt) {
     // KEEP IN SYNC with ShaderInfo::pipelineLabel()
     std::string label = renderPassDesc.toPipelineLabel().c_str(); // includes the write swizzle
     label += " + ";
     label += renderStep->name();
     label += " + ";
     // the shader portion will be "(empty)" for depth-only draws
-    label += dict->idToString(caps, paintID).c_str();
+    label += dict->idToString1(caps, paintID, containsExt).c_str();
     return label;
 }
 

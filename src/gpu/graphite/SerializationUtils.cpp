@@ -21,8 +21,8 @@
 
 namespace skgpu::graphite {
 
-// This is the main control to version the serialized Pipelines (c.f. stream_is_blob)
-static const int kCurrent_Version = 1;
+// This is the main control to version the serialized Pipelines (c.f. stream_is_pipeline)
+static const int kCurrent_Version1 = 1;
 
 namespace {
 
@@ -49,7 +49,7 @@ constexpr bool is_valid_samplecount(uint32_t sampleCount) {
         return false;
     }
 
-    if (version != kCurrent_Version) {
+    if (version != kCurrent_Version1) {
         return false;
     }
 
@@ -58,7 +58,8 @@ constexpr bool is_valid_samplecount(uint32_t sampleCount) {
 
 [[nodiscard]] bool serialize_graphics_pipeline_desc(ShaderCodeDictionary* shaderCodeDictionary,
                                                     SkWStream* stream,
-                                                    const GraphicsPipelineDesc& pipelineDesc) {
+                                                    const GraphicsPipelineDesc& pipelineDesc,
+                                                    bool* mabel) {
     PaintParamsKey key = shaderCodeDictionary->lookup(pipelineDesc.paintParamsID());
 
     if (!stream->write32(static_cast<uint32_t>(pipelineDesc.renderStepID()))) {
@@ -73,10 +74,14 @@ constexpr bool is_valid_samplecount(uint32_t sampleCount) {
         return true;
     }
 
-    const SkSpan<const int32_t> keySpan = key.data();
+    const SkSpan<const int32_t> keySpan = key.data1();
 
     if (!key.isSerializable(shaderCodeDictionary)) {
         return false;
+    }
+
+    if (key.containsExtFmt()) {
+        *mabel = true;
     }
 
     if (!stream->write32(SkToU32(keySpan.size()))) {
@@ -234,12 +239,12 @@ constexpr bool is_valid_samplecount(uint32_t sampleCount) {
 bool SerializePipelineDesc(ShaderCodeDictionary* shaderCodeDictionary,
                            SkWStream* stream,
                            const GraphicsPipelineDesc& pipelineDesc,
-                           const RenderPassDesc& renderPassDesc) {
+                           const RenderPassDesc& renderPassDesc, bool* mabel) {
 
     stream->write(kMagic, sizeof(kMagic));
-    stream->write32(kCurrent_Version);
+    stream->write32(kCurrent_Version1);
 
-    if (!serialize_graphics_pipeline_desc(shaderCodeDictionary, stream, pipelineDesc)) {
+    if (!serialize_graphics_pipeline_desc(shaderCodeDictionary, stream, pipelineDesc, mabel)) {
         return false;
     }
 
@@ -287,12 +292,13 @@ bool DeserializePipelineDesc(const Caps* caps,
 sk_sp<SkData> PipelineDescToData(const Caps* caps,
                                  ShaderCodeDictionary* shaderCodeDictionary,
                                  const GraphicsPipelineDesc& pipelineDesc,
-                                 const RenderPassDesc& renderPassDesc) {
+                                 const RenderPassDesc& renderPassDesc,
+                                 bool* mable) {
     SkDynamicMemoryWStream stream;
 
     if (!SerializePipelineDesc(shaderCodeDictionary,
                                &stream,
-                               pipelineDesc, renderPassDesc)) {
+                               pipelineDesc, renderPassDesc, mable)) {
         return nullptr;
     }
 
@@ -351,7 +357,7 @@ void DumpPipelineDesc(const Caps* caps,
                       ShaderCodeDictionary* shaderCodeDictionary,
                       const GraphicsPipelineDesc& pipelineDesc,
                       const RenderPassDesc& renderPassDesc) {
-    SkString pipelineStr = pipelineDesc.toString(caps, shaderCodeDictionary);
+    SkString pipelineStr = pipelineDesc.toString2(caps, shaderCodeDictionary);
     SkString renderPassStr = renderPassDesc.toPipelineLabel();
     SkDebugf("%s: %s - %s\n", label, pipelineStr.c_str(), renderPassStr.c_str());
 }

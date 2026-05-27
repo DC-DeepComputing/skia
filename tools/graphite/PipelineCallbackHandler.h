@@ -35,7 +35,7 @@ public:
                          const std::string& label,
                          uint32_t uniqueKeyHash,
                          bool fromPrecompile,
-                         sk_sp<SkData> androidStyleKey) {
+                         sk_sp<SkData> androidStyleKey, bool foo) {
         PipelineCallBackHandler* handler = reinterpret_cast<PipelineCallBackHandler*>(context);
 
         handler->add(op, label, uniqueKeyHash, fromPrecompile, std::move(androidStyleKey));

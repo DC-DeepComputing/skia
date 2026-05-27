@@ -540,11 +540,12 @@ bool can_do_tiling_in_hw(const ImageShaderBlock::ImageData& imgData, const Caps*
 
 void add_sampler_data_to_key(const KeyContext& keyContext, const SamplerDesc& samplerDesc) {
     if (samplerDesc.isImmutable()) {
-        keyContext.paintParamsKeyBuilder()->addData(samplerDesc.asSpan());
+        keyContext.paintParamsKeyBuilder()->addData1(samplerDesc.asSpan(),
+                                                     samplerDesc.usesExternalFormat());
     } else {
         // Means we have a regular dynamic sampler. Append a default SamplerDesc to convey this,
         // allowing the key to maintain and convey sampler binding order.
-        keyContext.paintParamsKeyBuilder()->addData({});
+        keyContext.paintParamsKeyBuilder()->addData1({}, false);
     }
 }
 

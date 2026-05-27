@@ -64,7 +64,7 @@ void SharedContext::setCaptureManager(sk_sp<SkCaptureManager> captureManager) {
                                            const RenderPassDesc& rpDesc) {
     const ShaderCodeDictionary* dict = ctx->shaderCodeDictionary();
     const RenderStep* step = ctx->rendererProvider()->lookup(gpDesc.renderStepID());
-    return GetPipelineLabel(ctx->caps(), dict, rpDesc, step, gpDesc.paintParamsID());
+    return GetPipelineLabel1(ctx->caps(), dict, rpDesc, step, gpDesc.paintParamsID());
 }
 
 sk_sp<GraphicsPipeline> SharedContext::findOrCreateGraphicsPipeline(
@@ -115,10 +115,11 @@ sk_sp<GraphicsPipeline> SharedContext::findOrCreateGraphicsPipeline(
                                                                                 pipeline);
 
             if (addedToCache && globalCache->hasPipelineCallback()) {
+                bool mable;
                 sk_sp<SkData> data = PipelineDescToData(this->caps(),
                                                         this->shaderCodeDictionary(),
                                                         pipelineDesc,
-                                                        renderPassDesc);
+                                                        renderPassDesc, &mable);
                 globalCache->invokePipelineCallback(
                     ContextOptions::PipelineCacheOp::kAddingPipeline,
                     pipeline.get(),

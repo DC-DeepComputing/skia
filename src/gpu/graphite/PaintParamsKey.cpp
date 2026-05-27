@@ -33,6 +33,7 @@ void PaintParamsKeyBuilder::checkReset() {
     SkASSERT(fData.empty());
     SkASSERT(fStack.empty());
     SkASSERT(!fHasError);
+    SkASSERT(!fContainsExternalFormat1);
 }
 
 void PaintParamsKeyBuilder::pushStack(int32_t codeSnippetID) {
@@ -267,7 +268,8 @@ static int key_to_string(const Caps* caps,
                          const ShaderCodeDictionary* dict,
                          SkSpan<const int32_t> keyData,
                          int currentIndex,
-                         int indent) {
+                         int indent,
+                         bool* containsExt) {
     SkASSERT(currentIndex < SkTo<int>(keyData.size()));
 
     const bool multiline = indent >= 0;
@@ -315,6 +317,11 @@ static int key_to_string(const Caps* caps,
                           keyData[currentIndex+1],
                           /* extFormatMSB= */ dataIndexCount == 3 ? keyData[currentIndex+2] : 0);
 
+            bool usesExtFmt = s.usesExternalFormat();
+            if (usesExtFmt && containsExt) {
+                *containsExt = true;
+            }
+
             if (s.isImmutable()) {
                 std::string tmp = caps->toString(s.immutableSamplerInfo());
                 if (!tmp.empty()) {
@@ -343,7 +350,7 @@ static int key_to_string(const Caps* caps,
         }
 
         for (int i = 0; i < entry->fNumChildren; ++i) {
-            currentIndex = key_to_string(caps, str, dict, keyData, currentIndex, indent);
+            currentIndex = key_to_string(caps, str, dict, keyData, currentIndex, indent, containsExt);
         }
 
         if (!multiline) {
@@ -359,12 +366,13 @@ static int key_to_string(const Caps* caps,
     return currentIndex;
 }
 
-SkString PaintParamsKey::toString(const Caps* caps,
-                                  const ShaderCodeDictionary* dict) const {
+SkString PaintParamsKey::toString1(const Caps* caps,
+                                  const ShaderCodeDictionary* dict,
+                                  bool* containsExt) const {
     SkString str;
     const int keySize = SkTo<int>(fData.size());
     for (int currentIndex = 0; currentIndex < keySize;) {
-        currentIndex = key_to_string(caps, &str, dict, fData, currentIndex, /*indent=*/-1);
+        currentIndex = key_to_string(caps, &str, dict, fData, currentIndex, /*indent=*/-1, containsExt);
     }
     return str.isEmpty() ? SkString("(empty)") : str;
 }
@@ -387,7 +395,7 @@ void PaintParamsKey::dump(const Caps* caps,
     int currentIndex = 0;
     while (currentIndex < keySize) {
         SkString nodeStr;
-        currentIndex = key_to_string(caps, &nodeStr, dict, fData, currentIndex, /*indent=*/1);
+        currentIndex = key_to_string(caps, &nodeStr, dict, fData, currentIndex, /*indent=*/1, nullptr);
         SkDebugf("%s", nodeStr.c_str());
     }
 }
@@ -465,5 +473,71 @@ bool PaintParamsKey::isSerializable(const ShaderCodeDictionary* dict) const {
 
     return true;
 }
+
+
+namespace {
+
+static int key_to_string1(const ShaderCodeDictionary* dict,
+                         SkSpan<const int32_t> keyData,
+                         int currentIndex,
+                         bool* containsExt) {
+    SkASSERT(currentIndex < SkTo<int>(keyData.size()));
+
+    int32_t id = keyData[currentIndex++];
+    auto entry = dict->getEntry(id);
+    if (!entry) {
+        return currentIndex;
+    }
+
+    if (entry->storesSamplerDescData()) {
+        SkASSERT(currentIndex + 1 < SkTo<int>(keyData.size()));
+
+        // If an entry stores data, then the next key value reports the quantity of key indices that
+        // are used to house the data for this snippet. This way, we know how many indices to
+        // iterate over in order to capture the snippet's data before we may encounter another
+        // snippet ID.
+        // For example:
+        // [snippetId using 2 indices worth of data] [2] [dataValue0] [dataValue1] [next snippet ID]
+        const int dataIndexCount = PaintParamsKey::EncodeDataSize(keyData[currentIndex++]);
+        // Printing keys is assumed to be done for keys that were built by PaintParamsKeyBuilder or
+        // already validated for deserialization, so we consider them trusted.
+        SkASSERT(dataIndexCount >= 0 && dataIndexCount <= kEmbeddedDataSizeLimit);
+        SkASSERT(currentIndex + dataIndexCount < SkTo<int>(keyData.size()));
+
+        if (dataIndexCount != 0) {
+            SkASSERTF(dataIndexCount == 2 || dataIndexCount == 3, "count %d", dataIndexCount);
+
+            // Attempt to append the sampler data as human-readable YCbCr information
+            SamplerDesc s(keyData[currentIndex],
+                          keyData[currentIndex+1],
+                          /* extFormatMSB= */ dataIndexCount == 3 ? keyData[currentIndex+2] : 0);
+
+            bool usesExtFmt = s.usesExternalFormat();
+            if (usesExtFmt && containsExt) {
+                *containsExt = true;
+            }
+        }
+
+        // Increment current index past the indices which contain data
+        currentIndex += dataIndexCount;
+    }
+
+    for (int i = 0; i < entry->fNumChildren; ++i) {
+        currentIndex = key_to_string1(dict, keyData, currentIndex, containsExt);
+    }
+
+    return currentIndex;
+}
+
+} // anonymous namespace
+
+void PaintParamsKey::containsExtFmt(const ShaderCodeDictionary* dict,
+                                  bool* containsExt) const {
+    const int keySize = SkTo<int>(fData.size());
+    for (int currentIndex = 0; currentIndex < keySize;) {
+        currentIndex = key_to_string1(dict, fData, currentIndex, containsExt);
+    }
+}
+
 
 } // namespace skgpu::graphite

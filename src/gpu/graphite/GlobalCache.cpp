@@ -83,6 +83,8 @@ void GlobalCache::setPipelineCallback(PipelineCallbackContext context,
 void GlobalCache::invokePipelineCallback(ContextOptions::PipelineCacheOp op,
                                          const GraphicsPipeline* pipeline,
                                          sk_sp<SkData> serializedKey) {
+    bool baz = false;
+
     // If both callbacks are provided the new version preempts the old version
     if (fPipelineCallback) {
         (*fPipelineCallback)(fPipelineCallbackContext,
@@ -90,7 +92,8 @@ void GlobalCache::invokePipelineCallback(ContextOptions::PipelineCacheOp op,
                              pipeline->getLabel(),
                              pipeline->getPipelineInfo().fUniqueKeyHash,
                              pipeline->fromPrecompile(),
-                             std::move(serializedKey));
+                             std::move(serializedKey),
+                             baz, true); //$$
     } else if (fDeprecatedPipelineCallback && serializedKey) {
         (*fDeprecatedPipelineCallback)(fPipelineCallbackContext, std::move(serializedKey));
     }

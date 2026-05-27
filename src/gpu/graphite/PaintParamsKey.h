@@ -104,7 +104,9 @@ public:
 
     // Converts the key to a structured list of snippet information for debugging or labeling
     // purposes.
-    SkString toString(const Caps*, const ShaderCodeDictionary*) const;
+    SkString toString1(const Caps*, const ShaderCodeDictionary*, bool* containsExt = nullptr) const;
+
+    void containsExtFmt(const ShaderCodeDictionary* dict, bool* containsExt) const;
 
 #ifdef SK_DEBUG
     void dump(const Caps*, const ShaderCodeDictionary*, UniquePaintParamsID) const;
@@ -122,7 +124,7 @@ public:
         }
     };
 
-    SkSpan<const int32_t> data() const { return fData; }
+    SkSpan<const int32_t> data1() const { return fData; }
 
     // Checks that a given key is viable for serialization and, also, that a deserialized
     // key is, at least, correctly formed. Other than that all the sizes make sense, this method
@@ -196,11 +198,14 @@ public:
         this->endBlock();
     }
 
-    void addData(SkSpan<const uint32_t> data) {
+    void addData1(SkSpan<const uint32_t> data, bool usesExternalFormat) {
         // First push the data size followed by the actual data.
         SkDEBUGCODE(this->validateData(data.size()));
         fData.push_back(PaintParamsKey::EncodeDataSize(SkTo<int32_t>(data.size())));
         fData.push_back_n(data.size(), reinterpret_cast<const int32_t*>(data.data()));
+        if (usesExternalFormat) {
+            fContainsExternalFormat1 = true;
+        }
     }
 
     void addErrorBlock() {
@@ -219,11 +224,14 @@ public:
         }
     }
 
+    bool containsExternalFormat() const { return fContainsExternalFormat1; }
+
     // Reset to an empty key
     void resetForDraw() {
         SkASSERT(!fLocked);
         fData.clear();
         fHasError = false;
+        fContainsExternalFormat1 = false;
 
         SkDEBUGCODE(fStack.clear();)
         SkDEBUGCODE(this->checkReset();)
@@ -253,6 +261,7 @@ private:
     // builder will hit a high-water mark and avoid lots of allocations when recording draws.
     skia_private::TArray<int32_t> fData;
     bool fHasError = false; // if true, fData may not encode a valid/complete ShaderNode tree.
+    bool fContainsExternalFormat1 = false;
     int fDataHighWaterMark = 0;
 
 #ifdef SK_DEBUG

@@ -366,7 +366,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
                              renderPassDesc,
                              step,
                              paintID,
-                             samplerDescArrPtr);
+                             samplerDescArrPtr, true);
 
     const std::string& fsSkSL = shaderInfo->fragmentSkSL();
     const BlendInfo& blendInfo = shaderInfo->blendInfo();
@@ -738,7 +738,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
     }
 
     PipelineInfo pipelineInfo{ *shaderInfo, pipelineCreationFlags,
-                               pipelineKey.hash(), compilationID };
+                               pipelineKey.hash(), compilationID, false }; //$$
 #if defined(GPU_TEST_UTILS)
     pipelineInfo.fNativeVertexShader = std::move(vsCode.fText);
     pipelineInfo.fNativeFragmentShader = std::move(fsCode.fText);
