@@ -263,6 +263,13 @@ void BufferSubAllocator::reset() {
     if (fBuffer) {
         SkASSERT(fOwner);
 
+        if (fOwner->fMappingFailed) {
+            fBuffer = nullptr;
+            fRemaining = 0;
+            fTransferBuffer = {};
+            return;
+        }
+
         DrawBufferManager::BufferState& state = fOwner->fCurrentBuffers[fStateIndex];
         if (fBuffer->shareable() == Shareable::kScratch) {
             // TODO: Merge this reuse of scratch resources with the ScratchResourceManager, but
