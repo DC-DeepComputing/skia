@@ -59,7 +59,7 @@ public:
 private:
     // TODO (b/412351769): Implement this so we can capture from a CPU Recorder.
     SkCanvas* makeCaptureCanvas(SkCanvas*) final { return nullptr; }
-    SkContentID createCaptureBreakpoint(SkSurface*) final;
+    void createCaptureBreakpoint(SkSurface*) final;
 };
 
 inline Recorder* AsRecorder(SkRecorder* recorder) {

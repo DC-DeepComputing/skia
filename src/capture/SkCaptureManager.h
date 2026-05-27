@@ -58,7 +58,7 @@ public:
 
     SkCanvas* makeCaptureCanvas(SkCanvas* canvas);
     void snapPictures();
-    SkContentID snapPicture(SkSurface*);
+    void snapPicture(SkSurface*);
 
     void toggleCapture(bool capturing);
 
@@ -69,14 +69,13 @@ public:
     sk_sp<SkCapture> getLastCapture() const;
 
 private:
-    SkContentID processCanvasContent(SkCaptureCanvas*);
+    void processCanvasContent(SkCaptureCanvas*);
 
     std::atomic<bool> fIsCurrentlyCapturing = false;
     skia_private::TArray<std::unique_ptr<SkCaptureCanvas>> fTrackedCanvases;
     skia_private::TArray<sk_sp<SkPicture>>  fPictures;
 
     sk_sp<SkCapture> fLastCapture;
-    std::map<uint32_t, SkContentID> fSurfaceContentCounters;
 };
 
 #endif  // SkCaptureManager_DEFINED
