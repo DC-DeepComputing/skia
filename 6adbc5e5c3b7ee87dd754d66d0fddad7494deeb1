@@ -33,6 +33,24 @@
       "message": "Thank you for tracking this down!\n\nChris, can you check my understanding here? We are running into this problem because these SkYUVColorSpace enums for 10bit and 12bit are still storing the planar data with DataFormat::kUnorm16 (there is no DataFormat::kUnorm12 or 10). That means that when we load the values and convert to floating point, it has the 16-bit denominator.\n\nSpot-checking the matrices, it looks like the 10bit and 12bit versions are identical to their 16bit. I think it would be better to just compute the values statically and explain the derivation in comments.  I also think that this issue applies for both rgb-\u003eyuv and yuv-\u003ergb, with the reciprocal scale factor.\n\nDo you know what would happen, however, if we used a 10bit yuv color space with planar data coming from DataFormat::kUnorm10_Unorm2? That should be loading correctly and not need one of these scale factors, which complicates things.\n\nLastly, I noticed there are full and limited versions of these colorspaces. I am assuming the limited range here is not referring to the same issue (i.e. the fix for storing 10 or 12 bit data in a 16 bit data isn\u0027t just switching to the limited colorspace)?",
       "revId": "6adbc5e5c3b7ee87dd754d66d0fddad7494deeb1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7cf13cac_a2085f74",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4871879
+      },
+      "writtenOn": "2026-05-27T14:30:06Z",
+      "side": 1,
+      "message": "Hi, I want to add a bit of clarification and also check my understanding.\n\nFor limited range YUV, I believe the matrices for 8,10,12,16 bit are slightly different because they also do the limited to full range scaling. And this scaling depends on the input video bit depth. E.g. for luma, limited range Y has a 219/255 scale for 8 bit and 876/1023 scale for 10 bit\n\nFor full range YUV, the matrices for 8,10,12,16 are still slightly different because the neutral U, V points is at 128/255 and 512/1023 etc.\n\nRegarding the DataFormat::kUnorm10_Unorm2. My understanding is that Nvidia samples the 10 bit video in a 16 bit texture, causing the current green tint bug and hence needing correction. While Apple GPUs sample the 10 bit video directly so is already correct? So a fix would need to use the modified 10,12 bit matrices for Nvidia, while Apple will still use the unmodified 10 bit matrix for a 10 bit video?\n\nRegarding full vs limited range. This is because video files can be full (0-1023 for Y) or limited range (64-940 for Y). This is a 10 bit video example. U and V also have their defined ranges for full and limited. I observed the green tint bug for 10 bit limited range on Nvidia, but I believe it will also occur for full range. So both the full and limited range matrices need to be modified for the cases like Nvidia, where 10, 12 bit video is sampled in a 16 bit texture.",
+      "parentUuid": "770b7cf3_a6cc48e5",
+      "revId": "6adbc5e5c3b7ee87dd754d66d0fddad7494deeb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
