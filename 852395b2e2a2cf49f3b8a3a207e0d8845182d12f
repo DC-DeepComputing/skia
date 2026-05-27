@@ -66,6 +66,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "92957a97_50911099",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 1229,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-27T15:34:08Z",
+      "side": 1,
+      "message": "Yes, as I mentioned in the earlier comment, I\u0027m not sure if that was the intended behavior or not? I can remove this regardless.",
+      "parentUuid": "617977e2_7292d708",
+      "range": {
+        "startLine": 1229,
+        "startChar": 0,
+        "endLine": 1229,
+        "endChar": 97
+      },
+      "revId": "852395b2e2a2cf49f3b8a3a207e0d8845182d12f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "85945418_2fbbb2c4",
         "filename": "src/text/gpu/SubRunContainer.h",
         "patchSetId": 21
@@ -100,6 +124,30 @@
       "writtenOn": "2026-05-27T15:27:29Z",
       "side": 1,
       "message": "If we added a creationBounds parameter here, then we could get rid of the late mutation and friending.",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 65,
+        "endChar": 75
+      },
+      "revId": "852395b2e2a2cf49f3b8a3a207e0d8845182d12f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dae84f65_abacc97d",
+        "filename": "src/text/gpu/VertexFiller.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-27T15:34:08Z",
+      "side": 1,
+      "message": "Don\u0027t we need both the glyph width and height (from GlyphVector) and the topleft offset of the glyph (from VertexFiller) to reconstruct the bounds, so there\u0027s no other option than late mutation?",
+      "parentUuid": "316e90d9_bc561be8",
       "range": {
         "startLine": 65,
         "startChar": 0,
