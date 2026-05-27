@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "acddfa70_cb3419f0",
+        "filename": "agents/skills/skia-gn-workflow/references/dm_usage.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-05-27T13:11:36Z",
+      "side": 1,
+      "message": "Note to self, add some docs about Vias",
+      "range": {
+        "startLine": 31,
+        "startChar": 11,
+        "endLine": 31,
+        "endChar": 20
+      },
+      "revId": "d1330f758a8de333c90782bea771e70dbf69dd0e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

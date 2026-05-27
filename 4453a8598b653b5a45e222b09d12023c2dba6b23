@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7bc37902_5d023a5f",
+        "filename": "DEPS",
+        "patchSetId": 3
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-05-27T13:11:36Z",
+      "side": 0,
+      "message": "Please update the DEPS in a different CL",
+      "range": {
+        "startLine": 120,
+        "startChar": 71,
+        "endLine": 120,
+        "endChar": 111
+      },
+      "revId": "4453a8598b653b5a45e222b09d12023c2dba6b23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
