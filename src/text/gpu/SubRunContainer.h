@@ -88,6 +88,7 @@ public:
     // * Don't use this API. It is only to support testing.
     virtual const AtlasSubRun* testingOnly_atlasSubRun() const = 0;
 
+
 protected:
     enum SubRunStreamTag : int;
     virtual SubRunStreamTag subRunStreamTag() const = 0;
@@ -95,6 +96,7 @@ protected:
 
 private:
     friend class SubRunList;
+    friend class TextBlobTools;
     SubRunOwner fNext;
 };
 
@@ -119,9 +121,14 @@ public:
 
     ~AtlasSubRun() override = default;
 
+    static bool IsBigEnough(const SkMatrix& matrix) {
+        return matrix.getMaxScale() >= 1.f;
+    }
+
     int glyphCount() const { return fGlyphVector.glyphCount(); }
     skgpu::MaskFormat maskFormat() const { return fVertexFiller.maskFormat(); }
     virtual int glyphSrcPadding() const = 0;
+    virtual skglyph::ActionType actionType() const = 0;
     unsigned short instanceFlags() const { return (unsigned short)this->maskFormat(); }
 
     virtual std::tuple<bool, SkRect> deviceRectAndNeedsTransform(
