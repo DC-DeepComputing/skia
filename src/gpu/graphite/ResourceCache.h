@@ -17,6 +17,7 @@
 #include "src/gpu/GpuTypesPriv.h"
 #include "src/gpu/graphite/Resource.h"
 #include "src/gpu/graphite/ResourceTypes.h"
+#include "src/gpu/graphite/ScratchResourceManager.h"
 
 #if defined(GPU_TEST_UTILS)
 #include <functional>
@@ -54,6 +55,15 @@ public:
                                  Budgeted, Shareable,
                                  std::string_view label = {},
                                  const ScratchResourceSet* unavailable = nullptr);
+    // Equivalent to above, except for Scratch resources only; accepting a bitmask of scratch
+    // resource usages instead of a string label. `unavailable` must be non-null in order to
+    // properly filter the scratch resources that can fulfill this request. All scratch resources
+    // are expected to be budgeted.
+    // TODO nicolettep: Allow multiple usages to be requested?
+    Resource* findAndRefScratchTextureWithUsage(const GraphiteResourceKey& key,
+                                                SkEnumBitMask<ScratchUsageFlags> usage,
+                                                const ScratchResourceSet* unavailable = nullptr);
+
 
     // Purge resources not used since the passed point in time. Resources that have a gpu memory
     // size of zero will not be purged.
@@ -86,6 +96,8 @@ public:
     void dumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump) const;
 
     void forceProcessReturnedResources();
+
+    void updateCachedScratchLabels(ScratchResourceManager::ResourceUsagesToUpdate);
 
 #if defined(GPU_TEST_UTILS)
     void forcePurgeAsNeeded() { this->purgeAsNeeded(); }

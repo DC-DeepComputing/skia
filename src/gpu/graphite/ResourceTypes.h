@@ -189,6 +189,38 @@ enum class Shareable : uint8_t {
     kYes,     // The resource is always visible in the ResourceCache
 };
 
+/**
+  * How is this resource used if it's a scratch texture?
+  * Use an enum to map to scratch texture usages for easier usage comparisons to cut down on label
+  * string concatenation logic.
+  */
+ // TODO(nicolettep): Alphabetize this switch statement once done adding usages (before landing)
+ // also clean up comment (improve)
+enum class ScratchUsageFlags : uint32_t {
+    kNone                            = 0,
+    kAsyncReadPixelsFallbackTexture  = 1,
+    kChildDevice                     = 1 <<  1,
+    kCopyDeviceTexture               = 1 <<  2,
+    kDiscardableLoadMSAATexture      = 1 <<  3,
+    kDispatchWriteOnlyStorageTexture = 1 <<  4,
+    kDstCopy                         = 1 <<  5,
+    kEvalBlurTexture                 = 1 <<  6,
+    kGenerateMipmapsScratchTexture   = 1 <<  7,
+    kImageFilterCachedBitmap         = 1 <<  8,
+    kImageFilterResult               = 1 <<  9,
+    kImageMakeCTandCSTexture         = 1 << 10,
+    kImageSubsetTexture              = 1 << 11,
+    kRescaleDstTexture               = 1 << 13,
+    kRescaleImageTempTexture         = 1 << 14,
+    kRescaleLinearGammaTexture       = 1 << 15,
+    kYUVRasterBitmapPlane            = 1 << 16,
+    kRasterBitmapTexture             = 1 << 17,
+    kLazySkImageBitmapTexture        = 1 << 18,
+};
+SK_MAKE_BITMASK_OPS(ScratchUsageFlags)
+// Store this to later be added to by passing in custom labels?
+// static constexpr int kLastBitshiftValue = 18;
+
 /*
  * Struct that can be passed into bind buffer calls on the CommandBuffer. The ownership of the
  * buffer and its usage in command submission must be tracked by the caller (e.g. as with

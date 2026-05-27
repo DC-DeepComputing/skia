@@ -988,4 +988,69 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteTimeLimitedPurgeTest,
     REPORTER_ASSERT(reporter, resourceCache->getResourceCount() < kLargeResourceCount);
 }
 
+DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(
+        GraphiteScratchTextureLabelTest, reporter, context, CtsEnforcement::kNextRelease) {
+    // words
+    const Caps* caps = context->priv().caps();
+    std::unique_ptr<Recorder> recorder = context->makeRecorder();
+    ResourceProvider* resourceProvider = recorder->priv().resourceProvider();
+    ResourceCache* resourceCache = resourceProvider->resourceCache();
+
+    // todo (nicolettep) test with other texture info parameters
+    auto texInfo = caps->getDefaultSampledTextureInfo(
+            SkColorType::kRGBA_8888_SkColorType, Mipmapped::kNo, Protected::kNo, Renderable::kYes);
+    static constexpr SkISize kDimensions {150, 150};
+
+    // Make sure there's no resources stored in the cache at this point.
+    REPORTER_ASSERT(reporter, resourceCache->getResourceCount() == 0);
+
+    // Only *lazy* proxies will be imstantiated by the ScratchResourceManager.
+
+    // Create a texture proxy with a scratch usage
+    const Volatile isVolatile = Volatile::kNo; // only fulfilled once
+    // todo (nicolettep): test with volatile::kYes - fulfilled every time?
+
+    auto nullCallback = [](ResourceProvider*) -> sk_sp<Texture> { return nullptr; };
+    // auto callback = [texture](ResourceProvider*) -> sk_sp<Texture> { return texture; };
+
+    auto textureProxy1 =
+            TextureProxy::MakeLazyWithScratchUsage(caps,
+                                                   kDimensions,
+                                                   texInfo,
+                                                   ScratchUsageFlags::kCopyDeviceTexture,
+                                                   isVolatile,
+                                                   nullCallback);
+
+    // Create an identical texture proxy, differing only in its scratch usage
+    auto textureProxy2 =
+            TextureProxy::MakeLazyWithScratchUsage(caps,
+                                                   kDimensions,
+                                                   texInfo,
+                                                   ScratchUsageFlags::kChildDevice,
+                                                   isVolatile,
+                                                   nullCallback);
+
+    // There should still be no resources stored in the cache at this point.
+    REPORTER_ASSERT(reporter, resourceCache->getResourceCount() == 0);
+
+    // Force instantiation of the texture proxies. This can be accomplished by making the recording
+    // issue a DrawTask, RenderPassTask, ComputeTask.
+
+
+    // Snap recording and insert it
+    std::unique_ptr<Recording> recording = recorder->snap();
+    if (!recording) {
+        ERRORF(reporter, "Failed to make recording");
+        return;
+    }
+    InsertRecordingInfo insertInfo;
+    insertInfo.fRecording = recording.get();
+    context->insertRecording(insertInfo);
+
+    // We should only have instantiated one texture from these two nearly-identical proxies.
+    REPORTER_ASSERT(reporter, resourceCache->getResourceCount() == 1);
+    // Check the resulting Texture's label.
+    // resourceCache->visitTextures()
+}
+
 }  // namespace skgpu::graphite
