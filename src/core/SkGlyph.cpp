@@ -19,6 +19,7 @@
 #include "include/private/base/SkTo.h"
 #include "src/base/SkArenaAlloc.h"
 #include "src/base/SkBezierCurves.h"
+#include "src/core/SkPictureData.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkScalerContext.h"
 #include "src/core/SkWriteBuffer.h"
@@ -47,7 +48,20 @@ SkPictureBackedGlyphDrawable::MakeFromBuffer(SkReadBuffer& buffer) {
     // Propagate the outer buffer's allow-SkSL setting to the picture decoder, using the flag on
     // the deserial procs.
     SkDeserialProcs procs;
+<<<<<<< HEAD   (41e2659ee6b2c74a726c2cef24cb966400f2323d [M149] Remove serialization of drawables from SkCustomTypefa)
     procs.fAllowSkSL = buffer.allowSkSL();
+||||||| BASE   (dae9ee6987e61b5df9598f0883d1ae82cb87c216 [bzl] Fix viewer build after Dawn roll)
+    procs.fAllowSkSL = false;
+=======
+    procs.fAllowSkSL = false;
+    procs.fAllowTagsProc = [](SkFourByteTag tag, void*) -> bool {
+        return tag == SK_PICT_BUFFER_SIZE_TAG ||
+               tag == SK_PICT_FACTORY_TAG ||
+               tag == SK_PICT_PAINT_BUFFER_TAG ||
+               tag == SK_PICT_PATH_BUFFER_TAG ||
+               tag == SK_PICT_READER_TAG;
+    };
+>>>>>>> CHANGE (f1b8ba877c07cccc080451fc4f6b17c27fa76581 Restrict deserial types further in SkGlyph and SkCustomTypef)
     sk_sp<SkPicture> picture = SkPicture::MakeFromData(pictureData.get(), &procs);
     if (!buffer.validate(picture != nullptr)) {
         return nullptr;
