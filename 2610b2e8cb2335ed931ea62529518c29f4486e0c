@@ -22,6 +22,30 @@
       },
       "revId": "2610b2e8cb2335ed931ea62529518c29f4486e0c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d9e01da_8372e812",
+        "filename": "src/capture/SkCaptureCanvas.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-05-27T15:13:23Z",
+      "side": 0,
+      "message": "I don\u0027t think annotations is the best mechanism for tracking this metadata. I\u0027m working on a cl that tracks this info outside of them.",
+      "parentUuid": "3913ad3d_e5ce996b",
+      "range": {
+        "startLine": 213,
+        "startChar": 18,
+        "endLine": 213,
+        "endChar": 32
+      },
+      "revId": "2610b2e8cb2335ed931ea62529518c29f4486e0c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
