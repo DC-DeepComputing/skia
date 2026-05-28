@@ -30,6 +30,9 @@ ScratchResourceManager::ScratchResourceManager(ResourceProvider* resourceProvide
         , fProxyReadCounts(std::move(proxyCounts)) {
     SkASSERT(resourceProvider);
     SkASSERT(fProxyReadCounts);
+    // TODO(nicolettep): Why wouldn't this work in initializer list?
+    fResourcesRequiringUsageUpdates = std::make_unique<ResourceUsagesToUpdate>();
+    SkASSERT(fResourcesRequiringUsageUpdates);
 }
 
 ScratchResourceManager::~ScratchResourceManager() {
@@ -47,6 +50,40 @@ sk_sp<Texture> ScratchResourceManager::getScratchTexture(SkISize dimensions,
     // remain visible to other Recorders.
     SkASSERT(!fUnavailable.contains(scratchTexture.get()));
     fUnavailable.add(scratchTexture.get());
+    return scratchTexture;
+}
+
+sk_sp<Texture> ScratchResourceManager::getScratchTexture(SkISize dimensions,
+                                                         const TextureInfo& info,
+                                                         ScratchUsageFlags usage) {
+    sk_sp<Texture> scratchTexture =
+            fResourceProvider->findOrCreateScratchTexture(dimensions, info, usage, fUnavailable);
+    // Store the returned scratch texture into fUnavailable so that it is filtered from the
+    // ResourceCache when going through *this* ScratchResourceManager. But the scratch texture will
+    // remain visible to other Recorders.
+    SkASSERT(!fUnavailable.contains(scratchTexture.get()));
+    fUnavailable.add(scratchTexture.get());
+
+    // We only expect ownership of fResourcesRequiringUsageUpdates to be transferred once per
+    // instantiated ScratchResourceManager, at which point scratch resource management should be
+    // completed. Therefore, it should always be non-null when this method is called.
+    SkASSERT(fResourcesRequiringUsageUpdates);
+
+    // If the texture's usages do not currently contain the flags passed in to this call, then
+    // record that its usages and label must be updated upon recording insertion when it is
+    // safe to do so.
+    if (!(scratchTexture->scratchUsages() & usage)) {
+        for (auto resourceAndUsages : *fResourcesRequiringUsageUpdates) {
+            // If the texture already is listed as needing an update, then simply add to its
+            // associated bitmask of required updates.
+            if (scratchTexture.get() == resourceAndUsages.first) {
+                resourceAndUsages.second |= usage;
+            }
+        }
+        fResourcesRequiringUsageUpdates->push_back(
+                {scratchTexture.get(), {scratchTexture->scratchUsages() | usage}});
+    }
+
     return scratchTexture;
 }
 

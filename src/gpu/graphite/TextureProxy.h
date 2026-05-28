@@ -13,6 +13,7 @@
 #include "include/gpu/graphite/TextureInfo.h"
 #include "include/private/SkPixelStorage.h"
 #include "include/private/base/SkTo.h"
+#include "src/base/SkEnumBitMask.h"
 #include "src/gpu/graphite/TextureInfoPriv.h"
 
 #include <functional>
@@ -27,6 +28,7 @@ class ResourceProvider;
 class ScratchResourceManager;
 class Texture;
 enum class TextureFormat : uint8_t;
+enum class ScratchUsageFlags : uint32_t;
 
 class TextureProxy : public SkPixelStorage, public SkRefCnt {
 public:
@@ -43,6 +45,9 @@ public:
     const TextureInfo& textureInfo() const { return fInfo; }
 
     const char* label() const { return fLabel.c_str(); }
+    // The only proxies which should have scratch usage mask are those used to used to instantiate a
+    // ScratchTexture. If a proxy has a custom string label, it should not a have usage mask.
+    ScratchUsageFlags scratchUsage() const { return fUsage; }
 
     bool isLazy() const;
     bool isFullyLazy() const;
@@ -94,6 +99,11 @@ public:
                                     const TextureInfo&,
                                     std::string_view label,
                                     skgpu::Budgeted);
+    static sk_sp<TextureProxy> Make(const Caps*,
+                                    ResourceProvider*,
+                                    SkISize dimensions,
+                                    const TextureInfo&,
+                                    ScratchUsageFlags);
 
     using LazyInstantiateCallback = std::function<sk_sp<Texture> (ResourceProvider*)>;
 
@@ -103,6 +113,12 @@ public:
                                         skgpu::Budgeted,
                                         Volatile,
                                         LazyInstantiateCallback&&);
+    static sk_sp<TextureProxy> MakeLazyWithScratchUsage(const Caps*,
+                                                        SkISize dimensions,
+                                                        const TextureInfo&,
+                                                        ScratchUsageFlags,
+                                                        Volatile,
+                                                        LazyInstantiateCallback&&);
     static sk_sp<TextureProxy> MakeFullyLazy(const TextureInfo&,
                                              skgpu::Budgeted,
                                              Volatile,
@@ -111,13 +127,24 @@ public:
     static sk_sp<TextureProxy> Wrap(sk_sp<Texture>);
 
 private:
+    // todo (nicolettep) is this one needed?
     TextureProxy(SkISize dimensions,
-                 const TextureInfo& info,
+                 const TextureInfo&,
+                 ScratchUsageFlags usage,
+                 skgpu::Budgeted);
+    TextureProxy(SkISize dimensions,
+                 const TextureInfo&,
                  std::string_view label,
-                 skgpu::Budgeted budgeted);
+                 skgpu::Budgeted);
     TextureProxy(SkISize dimensions,
                  const TextureInfo&,
                  skgpu::Budgeted,
+                 Volatile,
+                 LazyInstantiateCallback&&);
+    TextureProxy(SkISize dimensions,
+                 const TextureInfo&,
+                 skgpu::Budgeted,
+                 ScratchUsageFlags usage,
                  Volatile,
                  LazyInstantiateCallback&&);
     TextureProxy(sk_sp<Texture>);
@@ -134,6 +161,16 @@ private:
     // String used to describe the current use of this TextureProxy. It will be set on its
     // Texture object when the proxy gets instantiated.
     std::string fLabel;
+    // If the proxy represents / is instantiated as a scratch Texture, its usages for label
+    // generation may be tracked as a bitmask of potential usages rather than as a string. This
+    // makes for easier comparison between scratch textures and consolidates string concatenation
+    // until all usages of a scratch texture are finalized (upon snapping and later inserting a
+    // Recording). Should be 0 for texture proxies instantiated as non-scratch.
+    ScratchUsageFlags fUsage;
+    // Track prior scratch usage flags so that we can compare a proxy's current usages against its
+    // past ones. This allows us to determine whether or not we actually need to generate a string
+    // label and update the resource's label or not.
+    // SkEnumBitMask<ScratchUsageFlags> fPriorScratchUsageMask;
 
     skgpu::Budgeted fBudgeted;
     const Volatile fVolatile;

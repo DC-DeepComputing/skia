@@ -242,6 +242,10 @@ std::unique_ptr<Recorder> Context::makeInternalRecorder() const {
 InsertStatus Context::insertRecording(const InsertRecordingInfo& info) {
     ASSERT_SINGLE_OWNER
 
+    // Now is the appropriate time to check the recording's scratch label mappings and update
+    // them accordingly.
+    info.fRecording->updateScratchLabels(fResourceProvider.get());
+
     return fQueueManager->addRecording(info, this);
 }
 
