@@ -52,6 +52,23 @@
       "parentUuid": "bbac67f8_ea0d1131",
       "revId": "891baa1256dda9cfd1316af9504b0e2d498a0cb8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ca5b530_fe15c917",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4871981
+      },
+      "writtenOn": "2026-05-28T08:28:46Z",
+      "side": 1,
+      "message": "LTS Sherriff LGTM",
+      "revId": "891baa1256dda9cfd1316af9504b0e2d498a0cb8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
