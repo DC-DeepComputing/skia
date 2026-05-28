@@ -16,6 +16,23 @@
       "message": "The bug was approved for M144 LTS. PTAL.",
       "revId": "d071af874ecc8368ee13fb0c86a5b3f4ef88500b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "814eaafd_efb11f40",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4107972
+      },
+      "writtenOn": "2026-05-28T05:20:30Z",
+      "side": 1,
+      "message": "Textual LGTM to move me out of the attention set --- I don\u0027t have any voting rights for Skia 😞\n\nGreg, would you PTAL?",
+      "revId": "d071af874ecc8368ee13fb0c86a5b3f4ef88500b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
