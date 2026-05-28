@@ -24,6 +24,7 @@
 #include "src/gpu/graphite/Resource.h"
 #include "src/gpu/graphite/ResourceCache.h"
 #include "src/gpu/graphite/ResourceProvider.h"
+#include "src/gpu/graphite/ScratchResourceManager.h"
 #include "src/gpu/graphite/SharedContext.h"
 #include "src/gpu/graphite/Texture.h"
 #include "src/gpu/graphite/TextureProxyView.h"
@@ -32,6 +33,7 @@
 #include "tools/Resources.h"
 #include "tools/graphite/GraphiteTestContext.h"
 
+#include <string> // nicolettep relocate if moving scratch test
 namespace skgpu::graphite {
 
 class TestResource : public Resource {
@@ -986,6 +988,86 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteTimeLimitedPurgeTest,
 
     REPORTER_ASSERT(reporter, resourceCache->getResourceCount() > 0);
     REPORTER_ASSERT(reporter, resourceCache->getResourceCount() < kLargeResourceCount);
+}
+
+// move this to proxy test? (nicolettep todo)
+DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(
+        GraphiteScratchTextureLabelTest, reporter, context, CtsEnforcement::kNextRelease) {
+    const Caps* caps = context->priv().caps();
+    std::unique_ptr<Recorder> recorder = context->makeRecorder();
+    ResourceProvider* resourceProvider = recorder->priv().resourceProvider();
+
+    auto emptyReadCount = std::make_unique<ProxyReadCountMap>();
+    ScratchResourceManager scratchManager{resourceProvider, std::move(emptyReadCount)};
+
+    // todo (nicolettep) test with other texture info parameters
+    auto texInfo = caps->getDefaultSampledTextureInfo(
+            SkColorType::kRGBA_8888_SkColorType, Mipmapped::kNo, Protected::kNo, Renderable::kYes);
+    static constexpr SkISize kDimensions {150, 150};
+
+    // Create two texture proxies with identical parameters save for their scratch usage.
+    sk_sp<TextureProxy> textureProxy1 = TextureProxy::Make(caps,
+                                                           resourceProvider,
+                                                           kDimensions,
+                                                           texInfo,
+                                                           ScratchUsageFlags::kCopyDeviceTexture);
+
+    // Create an identical texture proxy, differing only in its scratch usage
+    sk_sp<TextureProxy> textureProxy2 = TextureProxy::Make(caps,
+                                                           resourceProvider,
+                                                           kDimensions,
+                                                           texInfo,
+                                                           ScratchUsageFlags::kChildDevice);
+    // Instantiate both proxies
+    REPORTER_ASSERT(reporter,
+                    TextureProxy::InstantiateIfNotLazy(&scratchManager, textureProxy1.get()));
+    REPORTER_ASSERT(reporter,
+                    TextureProxy::InstantiateIfNotLazy(&scratchManager, textureProxy2.get()));
+
+    auto texture1 = textureProxy1->refTexture();
+    // Force the ScratchResourceManager to see texture1's Texture as available (simulating different
+    // recorders requesting a scratch texture).
+    scratchManager.returnTexture(texture1);
+
+    auto texture2 = textureProxy2->refTexture();
+    // Return the texture again - ScratchResourceManager's dtor expects fUnavailable to be empty.
+    scratchManager.returnTexture(texture2);
+    REPORTER_ASSERT(reporter, texture1 && texture1 == texture2);
+
+    // Normally scratch label updates get triggered upon recording insertion, so we need to
+    // simulate that.
+    auto toUpdate = scratchManager.transferResourceUsageUpdateList();
+    resourceProvider->updateCachedScratchLabels(toUpdate.get());
+
+    std::string texLabel = texture1->getLabel();
+    std::string expectedLabelOption1 = "ScratchTexture_DeviceCopy_ChildDevice";
+    std::string expectedLabelOption2 = "ScratchTexture_ChildDevice_DeviceCopy";
+
+    REPORTER_ASSERT(reporter, texLabel == expectedLabelOption1 || texLabel == expectedLabelOption2);
+    // scratchManager.returnTexture(textureProxy1->texture());
+    // std::string::compare(texLabel, "ScratchTexture_DeviceCopy_ChildDevice") ||
+
+    // // There should still be no resources stored in the cache at this point.
+    // REPORTER_ASSERT(reporter, resourceCache->getResourceCount() == 0);
+
+    // Force instantiation of the texture proxies. This can be accomplished by making the recording
+    // issue a DrawTask, RenderPassTask, ComputeTask.
+
+
+    // // Snap recording and insert it
+    // std::unique_ptr<Recording> recording = recorder->snap();
+    // if (!recording) {
+    //     ERRORF(reporter, "Failed to make recording");
+    //     return;
+    // }
+    // InsertRecordingInfo insertInfo;
+    // insertInfo.fRecording = recording.get();
+    // context->insertRecording(insertInfo);
+
+    // // We should only have instantiated one texture from these two nearly-identical proxies.
+    // REPORTER_ASSERT(reporter, resourceCache->getResourceCount() == 1);
+    // Check the resulting Texture's label.
+    // resourceCache->visitTextures()
 }
 
 }  // namespace skgpu::graphite
