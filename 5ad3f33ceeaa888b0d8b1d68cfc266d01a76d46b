@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af9fbeab_fbfe077d",
+        "filename": "src/base/SkSafeMath.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-05-28T14:20:13Z",
+      "side": 1,
+      "message": "Let\u0027s use static_casts and/or brace initialization instead of C-style casts (https://google.github.io/styleguide/cppguide.html#Casting).",
+      "range": {
+        "startLine": 40,
+        "startChar": 25,
+        "endLine": 40,
+        "endChar": 34
+      },
+      "revId": "5ad3f33ceeaa888b0d8b1d68cfc266d01a76d46b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
