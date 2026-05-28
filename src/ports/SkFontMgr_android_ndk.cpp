@@ -722,7 +722,7 @@ public:
         uint32_t fHash;
     };
     sk_sp<SkTypeface> find(const Request& request) {
-        SkAutoSharedMutexShared lock(fMutex);
+        SkAutoSharedMutexExclusive lock(fMutex);  // SkLRUCache::find() is mutating
         sk_sp<SkTypeface>* typeface = fRequests.find(request);
         if (typeface) {
             return *typeface;
