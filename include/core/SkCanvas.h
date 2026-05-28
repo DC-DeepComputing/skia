@@ -2704,7 +2704,27 @@ private:
     class AutoUpdateQRBounds;
     void validateClip() const;
 
-    std::unique_ptr<sktext::GlyphRunBuilder> fScratchGlyphRunBuilder;
+    static constexpr int kMaxScratchGlyphRunBuilders = 3;
+
+    class AutoGlyphRunBuilder {
+    public:
+        AutoGlyphRunBuilder(SkCanvas* canvas)
+                : fCanvas(canvas), fGlyphRunBuilder(canvas->obtainGlyphRunBuilder()) {}
+        ~AutoGlyphRunBuilder() { fCanvas->releaseGlyphRunBuilder(); }
+
+        sktext::GlyphRunBuilder* operator->() { return fGlyphRunBuilder; }
+
+    private:
+        SkCanvas* fCanvas;
+        sktext::GlyphRunBuilder* fGlyphRunBuilder;
+    };
+
+    sktext::GlyphRunBuilder* obtainGlyphRunBuilder();
+
+    void releaseGlyphRunBuilder();
+
+    skia_private::STArray<1, std::unique_ptr<sktext::GlyphRunBuilder>> fScratchGlyphRunBuilders;
+    int fScratchGlyphRunBuilderCountInUse = 0;
 };
 
 /** \class SkAutoCanvasRestore
