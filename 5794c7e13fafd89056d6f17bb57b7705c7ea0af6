@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7145107_44019edd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-05-28T21:50:49Z",
+      "side": 1,
+      "message": "Hey Tom, do you happen to have any performance numbers that would help support this CL?\n\nOff hand, it\u0027s a massive dump of impenetrable arm assembly code that is likely to cause maintainability issues down the road.  I don\u0027t think we have arm experts on the team that would be comfortable taking ownership of this, at least in its current form.\n\nThere is also the question of how much we should prioritize armv7 these days - I don\u0027t have an intuition for that.\n\nKaylee/Michael WDYT?",
+      "revId": "5794c7e13fafd89056d6f17bb57b7705c7ea0af6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
