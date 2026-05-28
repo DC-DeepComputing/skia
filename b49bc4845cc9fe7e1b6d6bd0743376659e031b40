@@ -101,6 +101,23 @@
       "message": "LTS Sherriff LGTM",
       "revId": "b49bc4845cc9fe7e1b6d6bd0743376659e031b40",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b670299_99c4874c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4746751
+      },
+      "writtenOn": "2026-05-28T19:11:47Z",
+      "side": 1,
+      "message": "Thank you. Could you submit (as I don\u0027t have permissions for doing so)? Thank you very much.",
+      "revId": "b49bc4845cc9fe7e1b6d6bd0743376659e031b40",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
