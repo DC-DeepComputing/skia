@@ -365,6 +365,7 @@ gm_sources = [
   "$_gm/stroke_rect_shader.cpp",
   "$_gm/strokedlines.cpp",
   "$_gm/strokefill.cpp",
+  "$_gm/strokeoutset.cpp",
   "$_gm/strokerect.cpp",
   "$_gm/strokerect_anisotropic.cpp",
   "$_gm/strokerects.cpp",

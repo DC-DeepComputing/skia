@@ -188,7 +188,7 @@ public:
     SkPathStroker(const SkPath& src,
                   SkScalar radius, SkScalar miterLimit, SkPaint::Cap,
                   SkPaint::Join, SkScalar resScale,
-                  bool canIgnoreCenter);
+                  bool canIgnoreCenter, bool outsetMode = false, bool isCCW = false);
 
     bool hasOnlyMoveTo() const { return 0 == fSegmentCount; }
     SkPoint moveToPt() const { return fFirstPt; }
@@ -227,6 +227,8 @@ private:
     int         fSegmentCount;
     bool        fPrevIsLine;
     bool        fCanIgnoreCenter;
+    bool        fOutsetMode;
+    bool        fCurrentContourIsCCW;
 
     SkStrokerPriv::CapProc  fCapper;
     SkStrokerPriv::JoinProc fJoiner;
@@ -359,7 +361,11 @@ void SkPathStroker::finishContour(bool close, bool currIsLine) {
                     fPrevIsLine, currIsLine);
             fOuter.close();
 
-            if (fCanIgnoreCenter) {
+            if (fOutsetMode) {
+                if (fCurrentContourIsCCW) {
+                    fOuter = fInner;
+                }
+            } else if (fCanIgnoreCenter) {
                 // If we can ignore the center just make sure the larger of the two paths
                 // is preserved and don't add the smaller one.
                 if (fInner.computeBounds().contains(fOuter.computeBounds())) {
@@ -397,10 +403,12 @@ void SkPathStroker::finishContour(bool close, bool currIsLine) {
 SkPathStroker::SkPathStroker(const SkPath& src,
                              SkScalar radius, SkScalar miterLimit,
                              SkPaint::Cap cap, SkPaint::Join join, SkScalar resScale,
-                             bool canIgnoreCenter)
+                             bool canIgnoreCenter, bool outsetMode, bool isCCW)
         : fRadius(radius)
         , fResScale(resScale)
-        , fCanIgnoreCenter(canIgnoreCenter) {
+        , fCanIgnoreCenter(canIgnoreCenter)
+        , fOutsetMode(outsetMode)
+        , fCurrentContourIsCCW(isCCW) {
 
     /*  This is only used when join is miter_join, but we initialize it here
         so that it is always defined, to fix sanitizer warnings.
@@ -1549,6 +1557,115 @@ void SkStroke::strokePath(const SkPath& src, SkPathBuilder* dst) const {
     }
 }
 
+void SkStroke::outsetPath(const SkPath& src, SkPathBuilder* dst) const {
+    SkASSERT(dst);
+    dst->reset();
+
+    SkPath::Iter iter(src, false);
+    SkPathBuilder contourBuilder;
+    bool hasMove = false;
+
+    auto processContour = [&]() {
+        SkPath contour = contourBuilder.detach();
+        if (contour.isEmpty()) {
+            return;
+        }
+
+        // If contour is a closed rect, we can optimize it by outsetting directly.
+        SkRect rect;
+        bool isClosed = false;
+        SkPathDirection dir;
+        SkScalar radius = SkScalarHalf(fWidth);
+        if (radius <= 0) {
+            return;
+        }
+        if (contour.isRect(&rect, &isClosed, &dir) && isClosed) {
+            SkRect r = rect;
+            r.outset(radius, radius);
+            if (this->getJoin() == SkPaint::kRound_Join) {
+                dst->addRRect(SkRRect::MakeRectXY(r, radius, radius), dir);
+            } else if (this->getJoin() == SkPaint::kMiter_Join) {
+                dst->addRect(r, dir);
+            } else {
+                this->strokeRect(rect, dst, dir, true);
+            }
+            return;
+        }
+
+        SkPathFirstDirection firstDir = SkPathPriv::ComputeFirstDirection(contour);
+        bool isCCW = (firstDir == SkPathFirstDirection::kCCW);
+
+        // Stroke the single contour using our special outset parameters
+        SkPathStroker stroker(contour, radius, fMiterLimit, this->getCap(), this->getJoin(),
+                              fResScale, /* ignoreCenter */ false, /* outsetMode */ true, isCCW);
+
+        SkPath::Iter contourIter(contour, false);
+        SkPathVerb lastSegment = SkPathVerb::kMove;
+        while (auto rec = contourIter.next()) {
+            SkSpan<const SkPoint> recPts = rec->fPoints;
+            switch (rec->fVerb) {
+                case SkPathVerb::kMove:
+                    stroker.moveTo(recPts[0]);
+                    break;
+                case SkPathVerb::kLine:
+                    stroker.lineTo(recPts[1], &contourIter);
+                    lastSegment = SkPathVerb::kLine;
+                    break;
+                case SkPathVerb::kQuad:
+                    stroker.quadTo(recPts[1], recPts[2]);
+                    lastSegment = SkPathVerb::kQuad;
+                    break;
+                case SkPathVerb::kConic:
+                    stroker.conicTo(recPts[1], recPts[2], rec->conicWeight());
+                    lastSegment = SkPathVerb::kConic;
+                    break;
+                case SkPathVerb::kCubic:
+                    stroker.cubicTo(recPts[1], recPts[2], recPts[3]);
+                    lastSegment = SkPathVerb::kCubic;
+                    break;
+                case SkPathVerb::kClose:
+                    stroker.close(lastSegment == SkPathVerb::kLine);
+                    break;
+            }
+        }
+
+        SkPathBuilder finishedContourBuilder;
+        stroker.done(&finishedContourBuilder, lastSegment == SkPathVerb::kLine);
+        dst->addPath(finishedContourBuilder.detach());
+    };
+
+    while (auto rec = iter.next()) {
+        SkSpan<const SkPoint> recPts = rec->fPoints;
+        switch (rec->fVerb) {
+            case SkPathVerb::kMove:
+                if (hasMove) {
+                    processContour();
+                }
+                contourBuilder.moveTo(recPts[0]);
+                hasMove = true;
+                break;
+            case SkPathVerb::kLine:
+                contourBuilder.lineTo(recPts[1]);
+                break;
+            case SkPathVerb::kQuad:
+                contourBuilder.quadTo(recPts[1], recPts[2]);
+                break;
+            case SkPathVerb::kConic:
+                contourBuilder.conicTo(recPts[1], recPts[2], rec->conicWeight());
+                break;
+            case SkPathVerb::kCubic:
+                contourBuilder.cubicTo(recPts[1], recPts[2], recPts[3]);
+                break;
+            case SkPathVerb::kClose:
+                contourBuilder.close();
+                break;
+        }
+    }
+    if (hasMove) {
+        processContour();
+    }
+}
+
 static SkPathDirection reverse_direction(SkPathDirection dir) {
     static const SkPathDirection gOpposite[] = { SkPathDirection::kCCW, SkPathDirection::kCW };
     return gOpposite[(int)dir];
@@ -1582,6 +1699,11 @@ static void addBevel(SkPathBuilder* path, const SkRect& r, const SkRect& outer,
 
 void SkStroke::strokeRect(const SkRect& origRect, SkPathBuilder* dst,
                           SkPathDirection dir) const {
+    this->strokeRect(origRect, dst, dir, false);
+}
+
+void SkStroke::strokeRect(const SkRect& origRect, SkPathBuilder* dst,
+                          SkPathDirection dir, bool isOutset) const {
     SkASSERT(dst != nullptr);
     dst->reset();
 
@@ -1623,7 +1745,7 @@ void SkStroke::strokeRect(const SkRect& origRect, SkPathBuilder* dst,
             break;
     }
 
-    if (fWidth < std::min(rw, rh) && !fDoFill) {
+    if (!isOutset && fWidth < std::min(rw, rh) && !fDoFill) {
         r = rect;
         r.inset(radius, radius);
         dst->addRect(r, reverse_direction(dir));
