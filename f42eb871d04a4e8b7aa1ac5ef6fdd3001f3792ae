@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88591da4_7040a8b4",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 579,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-05-28T20:03:37Z",
+      "side": 1,
+      "message": "If we use an intermediate buffer, this is prolly redundant: the transfer functions below (pack*) should fully initialize `dstMask`.  I think this can be moved to the else branch above.",
+      "revId": "f42eb871d04a4e8b7aa1ac5ef6fdd3001f3792ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e0652f1_562e5fdd",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 603,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-05-28T20:03:37Z",
+      "side": 1,
+      "message": "Maybe add `SkUNREACHABLE` to harden the format invariants.",
+      "revId": "f42eb871d04a4e8b7aa1ac5ef6fdd3001f3792ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
