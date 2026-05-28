@@ -3796,12 +3796,12 @@ std::string WGSLCodeGenerator::assembleFunctionCall(const FunctionCall& call,
                 writeback.push_back(std::move(lvalue));
                 needsWriteback = true;
             } else {
-                substituteArgument.push_back(std::string());
-                writeback.push_back(nullptr);
+                substituteArgument.push_back();
+                writeback.push_back();
             }
         } else {
-            substituteArgument.push_back(std::string());
-            writeback.push_back(nullptr);
+            substituteArgument.push_back();
+            writeback.push_back();
         }
     }
 
