@@ -137,6 +137,24 @@
       "message": "@qkim@google.com, this may not be submitting because of a Flow in place which only the code owner can edit.",
       "revId": "6d9f1b03f2de2fd2a5ff7e85f265a8ed706947f4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "096a16ef_3abcb291",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-05-28T19:50:20Z",
+      "side": 1,
+      "message": "Marking this as resolved so this comment itself isn\u0027t a holdup and I can try force submitting again.",
+      "parentUuid": "d1d40224_f8775eb6",
+      "revId": "6d9f1b03f2de2fd2a5ff7e85f265a8ed706947f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
