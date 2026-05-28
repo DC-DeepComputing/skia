@@ -689,3 +689,9 @@ DEF_TEST(TArray_ASANPoisoning, reporter) {
 }
 
 #endif
+
+DEF_TEST(TArray_UniquePtrRelocationCrash, reporter) {
+    skia_private::STArray<1, std::unique_ptr<int>> writeback;
+    writeback.push_back(std::make_unique<int>(42));
+    writeback.push_back(nullptr);
+}
