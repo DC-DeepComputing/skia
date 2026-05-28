@@ -16,6 +16,24 @@
       "message": "In hindsight, I\u0027m wondering if these need clarification as to why they\u0027re needed (or rather, why they are being added in this CL specifically).\nEither way, Autosubmit went through and it\u0027s not a pressing issue.",
       "revId": "aaa004023ab7edc2ed0c0e0bed7395f2f7d29d57",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "07d8bd3d_018c1d9e",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 14
+      },
+      "lineNbr": 552,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-05-28T14:58:07Z",
+      "side": 1,
+      "message": "From the commit message:\n```\nThis new compiler brought some new warnings, some of which I\nsquashed and others which I fixed.\n```",
+      "parentUuid": "7176dcc9_3420dcbc",
+      "revId": "aaa004023ab7edc2ed0c0e0bed7395f2f7d29d57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
