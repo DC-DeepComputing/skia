@@ -9,6 +9,7 @@
 
 #include "include/core/SkPath.h"
 #include "include/core/SkPathBuilder.h"
+#include "include/core/SkPathIter.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRRect.h"
 #include "include/core/SkRect.h"
@@ -188,7 +189,7 @@ public:
     SkPathStroker(const SkPath& src,
                   SkScalar radius, SkScalar miterLimit, SkPaint::Cap,
                   SkPaint::Join, SkScalar resScale,
-                  bool canIgnoreCenter);
+                  bool canIgnoreCenter, bool outsetMode = false, bool isCCW = false);
 
     bool hasOnlyMoveTo() const { return 0 == fSegmentCount; }
     SkPoint moveToPt() const { return fFirstPt; }
@@ -227,6 +228,8 @@ private:
     int         fSegmentCount;
     bool        fPrevIsLine;
     bool        fCanIgnoreCenter;
+    bool        fOutsetMode;
+    bool        fCurrentContourIsCCW;
 
     SkStrokerPriv::CapProc  fCapper;
     SkStrokerPriv::JoinProc fJoiner;
@@ -359,7 +362,11 @@ void SkPathStroker::finishContour(bool close, bool currIsLine) {
                     fPrevIsLine, currIsLine);
             fOuter.close();
 
-            if (fCanIgnoreCenter) {
+            if (fOutsetMode) {
+                if (fCurrentContourIsCCW) {
+                    fOuter = fInner;
+                }
+            } else if (fCanIgnoreCenter) {
                 // If we can ignore the center just make sure the larger of the two paths
                 // is preserved and don't add the smaller one.
                 if (fInner.computeBounds().contains(fOuter.computeBounds())) {
@@ -397,10 +404,12 @@ void SkPathStroker::finishContour(bool close, bool currIsLine) {
 SkPathStroker::SkPathStroker(const SkPath& src,
                              SkScalar radius, SkScalar miterLimit,
                              SkPaint::Cap cap, SkPaint::Join join, SkScalar resScale,
-                             bool canIgnoreCenter)
+                             bool canIgnoreCenter, bool outsetMode, bool isCCW)
         : fRadius(radius)
         , fResScale(resScale)
-        , fCanIgnoreCenter(canIgnoreCenter) {
+        , fCanIgnoreCenter(canIgnoreCenter)
+        , fOutsetMode(outsetMode)
+        , fCurrentContourIsCCW(isCCW) {
 
     /*  This is only used when join is miter_join, but we initialize it here
         so that it is always defined, to fix sanitizer warnings.
@@ -1428,6 +1437,10 @@ void SkStroke::setJoin(SkPaint::Join join) {
 ///////////////////////////////////////////////////////////////////////////////
 
 void SkStroke::strokePath(const SkPath& src, SkPathBuilder* dst) const {
+    this->strokePath(src, dst, false, false);
+}
+
+void SkStroke::strokePath(const SkPath& src, SkPathBuilder* dst, bool outsetMode, bool isCCW) const {
     SkASSERT(dst);
 
     SkScalar radius = SkScalarHalf(fWidth);
@@ -1463,7 +1476,7 @@ void SkStroke::strokePath(const SkPath& src, SkPathBuilder* dst) const {
                         src.isLastContourClosed() && src.isConvex();
 
     SkPathStroker   stroker(src, radius, fMiterLimit, this->getCap(), this->getJoin(),
-                            fResScale, ignoreCenter);
+                            fResScale, ignoreCenter, outsetMode, isCCW);
 
     SkPath::Iter iter(src, false);
     SkPathVerb   lastSegment = SkPathVerb::kMove;
@@ -1549,6 +1562,53 @@ void SkStroke::strokePath(const SkPath& src, SkPathBuilder* dst) const {
     }
 }
 
+void SkStroke::outsetPath(const SkPath& src, SkPathBuilder* dst) const {
+    SkASSERT(dst);
+    dst->reset();
+
+    const auto raw = SkPathPriv::Raw(src, SkResolveConvexity::kNo);
+    if (!raw) {
+        return;
+    }
+
+    SkPathContourIter iter(raw->points(), raw->verbs(), raw->conics());
+    while (auto rec = iter.next()) {
+        SkSpan<const uint8_t> verbs(reinterpret_cast<const uint8_t*>(rec->fVerbs.data()), rec->fVerbs.size());
+        SkPath contour = SkPath::Make(rec->fPoints, verbs, rec->fConics, src.getFillType());
+        if (contour.isEmpty()) {
+            continue;
+        }
+
+        // If contour is a closed rect, optimize by outsetting directly
+        SkRect rect;
+        bool isClosed = false;
+        SkPathDirection dir;
+        SkScalar radius = SkScalarHalf(fWidth);
+        if (radius <= 0) {
+            return;
+        }
+        if (contour.isRect(&rect, &isClosed, &dir) && isClosed) {
+            SkRect r = rect;
+            r.outset(radius, radius);
+            if (this->getJoin() == SkPaint::kRound_Join) {
+                dst->addRRect(SkRRect::MakeRectXY(r, radius, radius), dir);
+            } else if (this->getJoin() == SkPaint::kMiter_Join) {
+                dst->addRect(r, dir);
+            } else {
+                this->strokeRect(rect, dst, dir, true);
+            }
+            continue;
+        }
+
+        SkPathFirstDirection firstDir = SkPathPriv::ComputeFirstDirection(contour);
+        bool isCCW = (firstDir == SkPathFirstDirection::kCCW);
+
+        SkPathBuilder finishedContourBuilder;
+        this->strokePath(contour, &finishedContourBuilder, /*outsetMode=*/true, isCCW);
+        dst->addPath(finishedContourBuilder.detach());
+    }
+}
+
 static SkPathDirection reverse_direction(SkPathDirection dir) {
     static const SkPathDirection gOpposite[] = { SkPathDirection::kCCW, SkPathDirection::kCW };
     return gOpposite[(int)dir];
@@ -1582,6 +1642,11 @@ static void addBevel(SkPathBuilder* path, const SkRect& r, const SkRect& outer,
 
 void SkStroke::strokeRect(const SkRect& origRect, SkPathBuilder* dst,
                           SkPathDirection dir) const {
+    this->strokeRect(origRect, dst, dir, false);
+}
+
+void SkStroke::strokeRect(const SkRect& origRect, SkPathBuilder* dst,
+                          SkPathDirection dir, bool isOutset) const {
     SkASSERT(dst != nullptr);
     dst->reset();
 
@@ -1623,7 +1688,7 @@ void SkStroke::strokeRect(const SkRect& origRect, SkPathBuilder* dst,
             break;
     }
 
-    if (fWidth < std::min(rw, rh) && !fDoFill) {
+    if (!isOutset && fWidth < std::min(rw, rh) && !fDoFill) {
         r = rect;
         r.inset(radius, radius);
         dst->addRect(r, reverse_direction(dir));
