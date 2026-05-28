@@ -135,4 +135,13 @@ std::string PrecompileContext::getPipelineLabel(sk_sp<SkData> serializedPipeline
 }
 
 
+bool PrecompileContext::containsExternalFormat(sk_sp<SkData> serializedPipelineKey) const {
+#if defined(SK_ENABLE_PRECOMPILE)
+    return DataContainsExternalFormat(fSharedContext->shaderCodeDictionary(),
+                                      serializedPipelineKey.get());
+#else
+    return false;
+#endif
+}
+
 } // namespace skgpu::graphite
