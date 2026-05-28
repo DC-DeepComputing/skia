@@ -34,6 +34,24 @@
       "parentUuid": "44a0d0bc_2de31409",
       "revId": "891baa1256dda9cfd1316af9504b0e2d498a0cb8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4a85631_3fc21360",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3621349
+      },
+      "writtenOn": "2026-05-28T07:35:39Z",
+      "side": 1,
+      "message": "The bug was approved for M144 LTS. But we should land this cherry-pick CL after fahadmansoor@ approves this. Please land this after fahadmansoor@ approves.",
+      "parentUuid": "bbac67f8_ea0d1131",
+      "revId": "891baa1256dda9cfd1316af9504b0e2d498a0cb8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
