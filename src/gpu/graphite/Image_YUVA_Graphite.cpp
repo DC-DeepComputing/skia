@@ -16,6 +16,8 @@
 #include "include/gpu/graphite/Image.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "include/gpu/graphite/Surface.h"
+#include "include/private/SkPixelStorage.h"
+#include "include/private/base/SkSpan_impl.h"
 #include "src/core/SkYUVAInfoLocation.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/Image_Graphite.h"
@@ -57,10 +59,16 @@ Image_YUVA::Image_YUVA(const YUVAProxies& proxies,
                                        kAssumedColorType,
                                        yuva_alpha_type(yuvaInfo),
                                        std::move(imageColorSpace)),
-                     kNeedNewImageUniqueID)
+                     kNeedNewImageUniqueID,
+                     /*backingStorage=*/nullptr)
         , fProxies(std::move(proxies))
         , fYUVAInfo(yuvaInfo)
         , fUVSubsampleFactors(SkYUVAInfo::SubsamplingFactors(yuvaInfo.subsampling())) {
+    for (auto &proxy : fProxies) {
+        if (proxy) {
+            fPixelStorages.push_back(proxy.refProxy());
+        }
+    }
     // The caller should have checked this, just verifying.
     SkASSERT(fYUVAInfo.isValid());
     for (int i = 0; i < SkYUVAInfo::kYUVAChannelCount; ++i) {
