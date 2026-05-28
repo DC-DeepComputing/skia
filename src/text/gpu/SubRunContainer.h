@@ -95,6 +95,7 @@ protected:
 
 private:
     friend class SubRunList;
+    friend class TextBlobTools;
     SubRunOwner fNext;
 };
 
@@ -119,9 +120,14 @@ public:
 
     ~AtlasSubRun() override = default;
 
+    static bool IsBigEnough(const SkMatrix& matrix) {
+        return matrix.getMaxScale() >= 1.f;
+    }
+
     int glyphCount() const { return fGlyphVector.glyphCount(); }
     skgpu::MaskFormat maskFormat() const { return fVertexFiller.maskFormat(); }
     virtual int glyphSrcPadding() const = 0;
+    virtual skglyph::ActionType actionType() const = 0;
     unsigned short instanceFlags() const { return (unsigned short)this->maskFormat(); }
 
     virtual std::tuple<bool, SkRect> deviceRectAndNeedsTransform(
@@ -232,9 +238,6 @@ private:
     const SkMatrix fInitialPositionMatrix;
     SubRunList fSubRuns;
 };
-
-// Returns the empty span if there is a problem reading the positions.
-SkSpan<SkPoint> MakePointsFromBuffer(SkReadBuffer&, SubRunAllocator*);
 
 }  // namespace sktext::gpu
 
