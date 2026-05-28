@@ -106,6 +106,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cc0cb1ca_16a653be",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 752,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-05-28T15:54:47Z",
+      "side": 1,
+      "message": "I agree that it is yucky, but the insetting is also required for `prepare_*_for_drawing`. It should really be a virtual function, like `glyphSrcPadding()` but there is no instance of the SubRun when calling `prepare_*_for_drawing`, hence the awkwardness.",
+      "parentUuid": "a5b6aa9e_4b7c7844",
+      "range": {
+        "startLine": 752,
+        "startChar": 0,
+        "endLine": 752,
+        "endChar": 45
+      },
+      "revId": "974c06f41a6d4c4092c2cb1c1dec7a0114b7b263",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3b874f6e_3cdee877",
         "filename": "src/text/gpu/SubRunContainer.cpp",
         "patchSetId": 26
