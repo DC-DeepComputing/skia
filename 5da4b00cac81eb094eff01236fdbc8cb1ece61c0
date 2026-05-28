@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63637e34_a1948669",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 776,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-05-28T13:55:55Z",
+      "side": 1,
+      "message": "Also this one.",
+      "revId": "5da4b00cac81eb094eff01236fdbc8cb1ece61c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
