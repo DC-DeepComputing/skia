@@ -97,10 +97,11 @@ for file_path in to_rewrite():
       file_path.endswith('.cc') or
       file_path.endswith('.cpp')):
     # Read the whole file into memory.
-    lines = open(file_path).readlines()
+    lines = open(file_path, encoding='utf-8').readlines()
 
     # Write it back out again line by line with substitutions for #includes.
-    output = StringIO() if args.dry_run else open(file_path, 'w', newline='\n')
+    output = (StringIO() if args.dry_run else
+              open(file_path, 'w', encoding='utf-8', newline='\n'))
 
     includes = []
     for line in lines:
@@ -136,7 +137,7 @@ for file_path in to_rewrite():
     # Fix any straggling includes, e.g. in a file that only includes something else.
     for inc in sorted(includes):
       output.write(inc.strip('\n') + '\n')
-    if args.dry_run and output.getvalue() != open(file_path).read():
+    if args.dry_run and output.getvalue() != open(file_path, encoding='utf-8').read():
       need_rewriting.append(file_path)
     output.close()
 

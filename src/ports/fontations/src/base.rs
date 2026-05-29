@@ -317,7 +317,11 @@ pub fn make_font_ref<'a>(font_data: &'a [u8], index: u32) -> Box<BridgeFontRef<'
             f.sbix().is_ok() ||
             // ColorGlyphCollection::get_with_format() first thing checks for presence of colr(),
             // so we do the same:
-            f.colr().is_ok()
+            f.colr().is_ok() ||
+            // EBDT is a monochrome embedded bitmap table, not a color table, but
+            // it is the rendering source for these glyphs and is gated by the same
+            // C++ check as the color tables (`has_any_color_table` -> `has_bitmap_glyph`).
+            f.ebdt().is_ok()
         })
         .unwrap_or_default();
 
