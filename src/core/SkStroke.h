@@ -67,15 +67,20 @@ public:
     }
 
     /**
-     *  Stroke the specified rect, winding it in the specified direction..
+     *  Stroke the specified rect, winding it in the specified direction.
      */
     void    strokeRect(const SkRect& rect, SkPathBuilder* result,
                        SkPathDirection = SkPathDirection::kCW) const;
     void    strokePath(const SkPath& path, SkPathBuilder*) const;
+    void    outsetPath(const SkPath& path, SkPathBuilder*) const;
 
     ////////////////////////////////////////////////////////////////
 
 private:
+    void    strokePath(const SkPath& path, SkPathBuilder*, bool outsetMode, bool isCCW) const;
+    void    strokeRect(const SkRect& rect, SkPathBuilder* result,
+                       SkPathDirection, bool isOutset) const;
+
     SkScalar    fWidth, fMiterLimit;
     SkScalar    fResScale;
     uint8_t     fCap, fJoin;
