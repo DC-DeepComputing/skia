@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "095243ca_f1f409b1",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 579,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-05-29T19:23:57Z",
+      "side": 1,
+      "message": "Technically the padding bytes should not be read, but I agree it\u0027s not trivial to prove that it\u0027s safe.  Keeping the clear sgtm.",
+      "parentUuid": "d206c36a_f37c52be",
+      "revId": "f42eb871d04a4e8b7aa1ac5ef6fdd3001f3792ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3e0652f1_562e5fdd",
