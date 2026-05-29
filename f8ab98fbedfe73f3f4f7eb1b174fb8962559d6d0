@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "20306367_f0845118",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-05-29T12:28:18Z",
+      "side": 1,
+      "message": "What specifically is the problem this is solving? I like my commit messages to very clearly outline what the problem is and what the fix is. Right now, there seem to be a lot of words but not a lot of helpful context for someone a year from now reading this and wondering what the code is here for.",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 28
+      },
+      "revId": "f8ab98fbedfe73f3f4f7eb1b174fb8962559d6d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "607da385_8b3bb60d",
         "filename": "bench/GlyphRunRSXformBench.cpp",
         "patchSetId": 6
