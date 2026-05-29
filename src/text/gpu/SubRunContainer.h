@@ -101,6 +101,7 @@ protected:
 
 private:
     friend class SubRunList;
+    friend class TextBlobTools;
     SubRunOwner fNext;
 };
 
@@ -125,9 +126,21 @@ public:
             , fGlyphs{std::move(glyphs)} {}
     ~AtlasSubRun() override = default;
 
+<<<<<<< HEAD   (c0f65c1afea8f548d95e4c05affbbdc7014685a1 [M144-LTS] Reject SkRegions with multiple empty slices in a )
     SkSpan<const Glyph*> glyphs() const { return fGlyphs.glyphs(); }
     int glyphCount() const { return SkCount(fGlyphs.glyphs()); }
     skgpu::MaskFormat maskFormat() const { return fVertexFiller.grMaskType(); }
+||||||| BASE   (c329e877d1848877d459999a4ed43b3728892b7b Revert "[graphite] BufferSubAllocator respects failed mappin)
+    int glyphCount() const { return fGlyphVector.glyphCount(); }
+    skgpu::MaskFormat maskFormat() const { return fVertexFiller.maskFormat(); }
+=======
+    static bool IsBigEnough(const SkMatrix& matrix) {
+        return matrix.getMaxScale() >= 1.f;
+    }
+
+    int glyphCount() const { return fGlyphVector.glyphCount(); }
+    skgpu::MaskFormat maskFormat() const { return fVertexFiller.maskFormat(); }
+>>>>>>> CHANGE (b854499783643689c608a113a340d7c75460e215 Reland "Reconstruct subRun bounds from glyphs")
     virtual int glyphSrcPadding() const = 0;
     unsigned short instanceFlags() const { return (unsigned short)this->maskFormat(); }
 
@@ -263,9 +276,6 @@ private:
     const SkMatrix fInitialPositionMatrix;
     SubRunList fSubRuns;
 };
-
-// Returns the empty span if there is a problem reading the positions.
-SkSpan<SkPoint> MakePointsFromBuffer(SkReadBuffer&, SubRunAllocator*);
 
 }  // namespace sktext::gpu
 

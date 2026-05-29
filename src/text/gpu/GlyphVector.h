@@ -68,7 +68,31 @@ public:
     // the sub runs.
     int unflattenSize() const { return GlyphVectorSize(fGlyphs.size()); }
 
+<<<<<<< HEAD   (c0f65c1afea8f548d95e4c05affbbdc7014685a1 [M144-LTS] Reject SkRegions with multiple empty slices in a )
     void packedGlyphIDToGlyph(StrikeCache* cache, skgpu::MaskFormat);
+||||||| BASE   (c329e877d1848877d459999a4ed43b3728892b7b Revert "[graphite] BufferSubAllocator respects failed mappin)
+    bool hasBackendData() const {
+        SkASSERT(SkToBool(fBackendDataReleaser) == SkToBool(fGetGlyphID));
+        return SkToBool(fBackendDataReleaser);
+    }
+=======
+    SkPackedGlyphID getPackedGlyphID(int index) const {
+        SkASSERT(index >= 0 && index < this->glyphCount());
+        if (this->hasBackendData()) {
+            return fGetGlyphID(fGlyphs[index].data());
+        } else {
+            return *reinterpret_cast<const SkPackedGlyphID*>(fGlyphs[index].data());
+        }
+    }
+
+    SkStrikePromise& strikePromise() { return fStrikePromise; }
+    const SkStrikePromise& strikePromise() const { return fStrikePromise; }
+
+    bool hasBackendData() const {
+        SkASSERT(SkToBool(fBackendDataReleaser) == SkToBool(fGetGlyphID));
+        return SkToBool(fBackendDataReleaser);
+    }
+>>>>>>> CHANGE (b854499783643689c608a113a340d7c75460e215 Reland "Reconstruct subRun bounds from glyphs")
 
     static size_t GlyphVectorSize(size_t count) {
         return sizeof(Variant) * count;

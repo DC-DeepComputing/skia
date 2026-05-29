@@ -37,6 +37,7 @@ class Transform;
 namespace sktext::gpu {
 class Glyph;
 class SubRunAllocator;
+class AtlasSubRun;
 
 enum FillerType {
     kIsDirect,
@@ -68,11 +69,9 @@ public:
                              SubRunAllocator *alloc,
                              FillerType fillerType);
 
-    static std::optional<VertexFiller> MakeFromBuffer(SkReadBuffer &buffer,
-                                                      SubRunAllocator *alloc);
-
     int unflattenSize() const { return fLeftTop.size_bytes(); }
 
+<<<<<<< HEAD   (c0f65c1afea8f548d95e4c05affbbdc7014685a1 [M144-LTS] Reject SkRegions with multiple empty slices in a )
     void flatten(SkWriteBuffer &buffer) const;
 
     // These are only available if the Ganesh backend is compiled in (see GaneshVertexFiller.cpp)
@@ -94,6 +93,15 @@ public:
 
     std::tuple<skgpu::graphite::Rect, skgpu::graphite::Transform> boundsAndDeviceMatrix(
             const skgpu::graphite::Transform& localToDevice, SkPoint drawOrigin) const;
+||||||| BASE   (c329e877d1848877d459999a4ed43b3728892b7b Revert "[graphite] BufferSubAllocator respects failed mappin)
+    void flatten(SkWriteBuffer &buffer) const;
+
+    std::tuple<SkRect, SkMatrix> boundsAndDeviceMatrix(const SkMatrix& localToDevice,
+                                                       SkPoint drawOrigin) const;
+=======
+    std::tuple<SkRect, SkMatrix> boundsAndDeviceMatrix(const SkMatrix& localToDevice,
+                                                       SkPoint drawOrigin) const;
+>>>>>>> CHANGE (b854499783643689c608a113a340d7c75460e215 Reland "Reconstruct subRun bounds from glyphs")
 
     // Return true if the positionMatrix represents an integer translation. Return the device
     // bounding box of all the glyphs. If the bounding box is empty, then something went singular
@@ -105,7 +113,34 @@ public:
 
     int count() const { return SkCount(fLeftTop); }
 
+<<<<<<< HEAD   (c0f65c1afea8f548d95e4c05affbbdc7014685a1 [M144-LTS] Reject SkRegions with multiple empty slices in a )
+||||||| BASE   (c329e877d1848877d459999a4ed43b3728892b7b Revert "[graphite] BufferSubAllocator respects failed mappin)
+    SkSpan<const SkPoint> topLefts() const { return fLeftTop; }
+
+    bool canDrawDirect() const { return fCanDrawDirect; }
+
+    std::tuple<bool, SkVector> canUseDirect(const SkMatrix& positionMatrix) const {
+        return CanUseDirect(fCreationMatrix, positionMatrix);
+    }
+
+    SkMatrix viewDifference(const SkMatrix& positionMatrix) const;
+
+=======
+    SkSpan<const SkPoint> topLefts() const { return fLeftTop; }
+
+    bool canDrawDirect() const { return fCanDrawDirect; }
+
+    const SkMatrix& creationMatrix() const { return fCreationMatrix; }
+
+    std::tuple<bool, SkVector> canUseDirect(const SkMatrix& positionMatrix) const {
+        return CanUseDirect(fCreationMatrix, positionMatrix);
+    }
+    SkMatrix viewDifference(const SkMatrix& positionMatrix) const;
+
+>>>>>>> CHANGE (b854499783643689c608a113a340d7c75460e215 Reland "Reconstruct subRun bounds from glyphs")
 private:
+    friend class AtlasSubRun;
+
     static std::tuple<bool, SkVector> CanUseDirect(const SkMatrix& creationMatrix,
                                                    const SkMatrix& positionMatrix);
 

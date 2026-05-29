@@ -44,6 +44,7 @@ VertexFiller VertexFiller::Make(MaskFormat maskType,
             maskType, creationMatrix, creationBounds, leftTop, fillerType == kIsDirect};
 }
 
+<<<<<<< HEAD   (c0f65c1afea8f548d95e4c05affbbdc7014685a1 [M144-LTS] Reject SkRegions with multiple empty slices in a )
 std::optional<VertexFiller> VertexFiller::MakeFromBuffer(SkReadBuffer &buffer,
                                                          SubRunAllocator *alloc) {
     int checkingMaskType = buffer.readInt();
@@ -75,6 +76,40 @@ void VertexFiller::flatten(SkWriteBuffer &buffer) const {
     buffer.writePointArray(fLeftTop);
 }
 
+||||||| BASE   (c329e877d1848877d459999a4ed43b3728892b7b Revert "[graphite] BufferSubAllocator respects failed mappin)
+std::optional<VertexFiller> VertexFiller::MakeFromBuffer(SkReadBuffer &buffer,
+                                                         SubRunAllocator *alloc) {
+    int checkingMaskType = buffer.readInt();
+    if (!buffer.validate(
+            0 <= checkingMaskType && checkingMaskType < skgpu::kMaskFormatCount)) {
+        return std::nullopt;
+    }
+    MaskFormat maskType = (MaskFormat) checkingMaskType;
+
+    const bool canDrawDirect = buffer.readBool();
+
+    SkMatrix creationMatrix;
+    buffer.readMatrix(&creationMatrix);
+
+    SkRect creationBounds = buffer.readRect();
+
+    SkSpan<SkPoint> leftTop = MakePointsFromBuffer(buffer, alloc);
+    if (leftTop.empty()) { return std::nullopt; }
+
+    SkASSERT(buffer.isValid());
+    return VertexFiller{maskType, creationMatrix, creationBounds, leftTop, canDrawDirect};
+}
+
+void VertexFiller::flatten(SkWriteBuffer &buffer) const {
+    buffer.writeInt(static_cast<int>(fMaskFormat));
+    buffer.writeBool(fCanDrawDirect);
+    buffer.writeMatrix(fCreationMatrix);
+    buffer.writeRect(fCreationBounds);
+    buffer.writePointArray(fLeftTop);
+}
+
+=======
+>>>>>>> CHANGE (b854499783643689c608a113a340d7c75460e215 Reland "Reconstruct subRun bounds from glyphs")
 SkMatrix VertexFiller::viewDifference(const SkMatrix &positionMatrix) const {
     if (SkMatrix inverse; fCreationMatrix.invert(&inverse)) {
         return SkMatrix::Concat(positionMatrix, inverse);
