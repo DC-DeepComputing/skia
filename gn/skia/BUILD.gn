@@ -665,7 +665,7 @@ config("debug_symbols") {
       cflags += [ "-gcodeview-ghash" ]
       ldflags = [ "/DEBUG:GHASH" ]
     } else {
-      ldflags = [ "/DEBUG:FASTLINK" ]
+      ldflags = [ "/DEBUG:FULL" ]
     }
   } else {
     cflags = [
