@@ -1003,9 +1003,18 @@ SIN Vec<N, double> normalize(const Vec<N, double>& v) {
 }
 
 SINT bool isfinite(const Vec<N, T>& v) {
+    // Newer versions of MSVC seem to optimize a dot product such that if the first
+    // value is dot({NAN,0,0,0}) => 0 in some cases.
+#if defined(_MSC_VER)
+     for (int i = 0; i < N; ++i) {
+         if (!std::isfinite(v[i])) return false;
+     }
+     return true;
+#else
     // Multiply all values together with 0. If they were all finite, the output is
     // 0 (also finite). If any were not, we'll get nan.
     return SkIsFinite(dot(v, Vec<N, T>(0)));
+#endif
 }
 
 // De-interleaving load of 4 vectors.
