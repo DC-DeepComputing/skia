@@ -37,6 +37,7 @@ class Transform;
 namespace sktext::gpu {
 class Glyph;
 class SubRunAllocator;
+class AtlasSubRun;
 
 enum FillerType {
     kIsDirect,
@@ -68,12 +69,7 @@ public:
                              SubRunAllocator *alloc,
                              FillerType fillerType);
 
-    static std::optional<VertexFiller> MakeFromBuffer(SkReadBuffer &buffer,
-                                                      SubRunAllocator *alloc);
-
     int unflattenSize() const { return fLeftTop.size_bytes(); }
-
-    void flatten(SkWriteBuffer &buffer) const;
 
     // These are only available if the Ganesh backend is compiled in (see GaneshVertexFiller.cpp)
     size_t vertexStride(const SkMatrix &matrix) const;
@@ -105,7 +101,11 @@ public:
 
     int count() const { return SkCount(fLeftTop); }
 
+    const SkMatrix& creationMatrix() const { return fCreationMatrix; }
+
 private:
+    friend class AtlasSubRun;
+
     static std::tuple<bool, SkVector> CanUseDirect(const SkMatrix& creationMatrix,
                                                    const SkMatrix& positionMatrix);
 

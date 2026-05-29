@@ -68,6 +68,18 @@ public:
     // the sub runs.
     int unflattenSize() const { return GlyphVectorSize(fGlyphs.size()); }
 
+    SkPackedGlyphID getPackedGlyphID(int index) const {
+        SkASSERT(index >= 0 && index < this->glyphCount());
+        if (this->hasBackendData()) {
+            return fGetGlyphID(fGlyphs[index].data());
+        } else {
+            return *reinterpret_cast<const SkPackedGlyphID*>(fGlyphs[index].data());
+        }
+    }
+
+    SkStrikePromise& strikePromise() { return fStrikePromise; }
+    const SkStrikePromise& strikePromise() const { return fStrikePromise; }
+
     void packedGlyphIDToGlyph(StrikeCache* cache, skgpu::MaskFormat);
 
     static size_t GlyphVectorSize(size_t count) {
