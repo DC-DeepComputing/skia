@@ -1749,13 +1749,15 @@ void Device::drawGeometry(const Transform& localToDevice,
         // the stencil attachment, we compute a secondary sorting field to allow disjoint draws to
         // reorder the RenderSteps across draws instead of in sequence for each draw.
         if (renderer->depthStencilFlags() & DepthStencilFlags::kStencil) {
+            SkASSERT(!fRecorder->priv().caps()->avoidDepthMode());
             DisjointStencilIndex setIndex = fDisjointStencilSet->add(order.paintOrder(),
                                                                     clip.drawBounds());
             order.dependsOnStencil(setIndex);
         } else if (!(dstUsage & DstUsage::kDependsOnDst) &&
                    styleType == SkStrokeRec::kFill_Style &&
                    ((geometry.isEdgeAAQuad() && geometry.edgeAAQuad().isRect()) ||
-                    (geometry.isShape() && geometry.shape().isRect()))) {
+                    (geometry.isShape() && geometry.shape().isRect())) &&
+                   !fRecorder->priv().caps()->avoidDepthMode()) {
             // Sort this draw front to back since it will not blend against what came before it. We
             // could do this for all opaque/non-blending draws but that can hurt the performance of
             // the std::sort in DrawPass::Make if it has to effectively reverse a large list. For
@@ -1773,7 +1775,8 @@ void Device::drawGeometry(const Transform& localToDevice,
                                 : renderer,
                         localToDevice, geometry, clip, order, paintID, dstUsage,
                         scopedDrawBuilder.gatherer(), &stroke, latestInsertion);
-    } else if ((dstUsage & DstUsage::kDstOnlyUsedByRenderer) && renderer->useNonAAInnerFill()) {
+    } else if ((dstUsage & DstUsage::kDstOnlyUsedByRenderer) && renderer->useNonAAInnerFill() &&
+               !fRecorder->priv().caps()->avoidDepthMode()) {
         // Possibly record an additional draw using the non-AA bounds renderer to fill the
         // interior with a renderer that can disable blending entirely.
         Rect innerFillBounds = get_inner_bounds(geometry, localToDevice);
@@ -1829,6 +1832,7 @@ void Device::drawClipShape(const Transform& localToDevice,
         return;
     } else if (!fRecorder->priv().caps()->useDrawListLayer() &&
                (renderer->depthStencilFlags() & DepthStencilFlags::kStencil)) {
+        SkASSERT(!fRecorder->priv().caps()->avoidDepthMode());
         DisjointStencilIndex setIndex = fDisjointStencilSet->add(order.paintOrder(),
                                                                  clip.drawBounds());
         order.dependsOnStencil(setIndex);

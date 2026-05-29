@@ -129,6 +129,11 @@ Task::Status RenderPassTask::prepareResources(ResourceProvider* resourceProvider
                                               ScratchResourceManager* scratchManager,
                                               sk_sp<const RuntimeEffectDictionary> runtimeDict) {
     SkASSERT(fTarget);
+    SkASSERT(resourceProvider);
+
+    if (resourceProvider->caps()->avoidDepthMode()) {
+        fRenderPassDesc.fDepthStencilAttachment.fFormat = TextureFormat::kUnsupported;
+    }
 
     bool instantiated;
     if (scratchManager->pendingReadCount(fTarget.get()) == 0) {
@@ -220,7 +225,9 @@ Task::Status RenderPassTask::addCommands(Context* context,
     }
 
     sk_sp<Texture> depthStencilAttachment;
+SKIA_LOG_E("boliu avoid:%d depthstencil:%d", context->priv().caps()->avoidDepthMode(), fRenderPassDesc.fDepthStencilAttachment.fFormat != TextureFormat::kUnsupported);
     if (fRenderPassDesc.fDepthStencilAttachment.fFormat != TextureFormat::kUnsupported) {
+        SkASSERT(!context->priv().caps()->avoidDepthMode());
         // We always make depth and stencil attachments shareable. Between any render pass the
         // values are reset. Thus it is safe to be used by multiple different render passes without
         // worry of stomping on each other's data.
