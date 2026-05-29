@@ -1,0 +1,165 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "607da385_8b3bb60d",
+        "filename": "bench/GlyphRunRSXformBench.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-05-29T12:26:29Z",
+      "side": 1,
+      "message": "Could this be simpler as just having a helper to make a textblob instead of a parent class?",
+      "range": {
+        "startLine": 21,
+        "startChar": 6,
+        "endLine": 21,
+        "endChar": 26
+      },
+      "revId": "f8ab98fbedfe73f3f4f7eb1b174fb8962559d6d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b745d41_a64b860d",
+        "filename": "bench/GlyphRunRSXformBench.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-05-29T12:26:29Z",
+      "side": 1,
+      "message": "If you add a benchmark, please include the numbers without and with your change in the commit message. I don\u0027t know much about textblobs, but why is it important to have the two different benchmarks?",
+      "range": {
+        "startLine": 95,
+        "startChar": 47,
+        "endLine": 95,
+        "endChar": 72
+      },
+      "revId": "f8ab98fbedfe73f3f4f7eb1b174fb8962559d6d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6fef1cda_583bcb10",
+        "filename": "include/core/SkCanvas.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 2709,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-05-29T12:26:29Z",
+      "side": 1,
+      "message": "Let\u0027s move this out of the public header if we can (might need to use a friend class)",
+      "range": {
+        "startLine": 2709,
+        "startChar": 10,
+        "endLine": 2709,
+        "endChar": 29
+      },
+      "revId": "f8ab98fbedfe73f3f4f7eb1b174fb8962559d6d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "520a71c6_0f5de916",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 2416,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-05-29T12:26:29Z",
+      "side": 1,
+      "message": "Can you explain the thought process behind this being a debug-only thing?",
+      "range": {
+        "startLine": 2416,
+        "startChar": 49,
+        "endLine": 2416,
+        "endChar": 76
+      },
+      "revId": "f8ab98fbedfe73f3f4f7eb1b174fb8962559d6d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1db5a06a_b1516596",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 2420,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-05-29T12:26:29Z",
+      "side": 1,
+      "message": "I\u0027m not a huge fan of nesting ++ into other things. I think it\u0027s error prone (and at least makes me think harder).",
+      "range": {
+        "startLine": 2420,
+        "startChar": 36,
+        "endLine": 2420,
+        "endChar": 69
+      },
+      "revId": "f8ab98fbedfe73f3f4f7eb1b174fb8962559d6d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "958d4036_ec60e07a",
+        "filename": "tests/GlyphRunUAFTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-05-29T12:26:29Z",
+      "side": 1,
+      "message": "style nit: I tend to prefer not having an anonymous namespace and things like\n`static make_path_typeface`. It\u0027s less mental work to see `make_path_typeface` and know it\u0027s from this file rather than seeing MakePathTypeface and needing to think about it more. Especially in tests.",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 9
+      },
+      "revId": "f8ab98fbedfe73f3f4f7eb1b174fb8962559d6d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11c75855_a611a93d",
+        "filename": "tests/GlyphRunUAFTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-05-29T12:26:29Z",
+      "side": 1,
+      "message": "Some comments would be appreciated here, giving some context for the unusual setup. I tend not to include UAF or such in the test name, but instead might do something like SkCanvas_drawTextBlob_b513820666 (as a reference to the original bug). Now that things are fixed, there shouldn\u0027t be a UAF, right? So including it in the name feels a bit odd.",
+      "range": {
+        "startLine": 95,
+        "startChar": 9,
+        "endLine": 95,
+        "endChar": 24
+      },
+      "revId": "f8ab98fbedfe73f3f4f7eb1b174fb8962559d6d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
