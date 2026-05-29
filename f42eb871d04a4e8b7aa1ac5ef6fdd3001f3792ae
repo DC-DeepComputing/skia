@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d206c36a_f37c52be",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 579,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-05-29T19:17:26Z",
+      "side": 1,
+      "message": "I had (have) a hard time proving to myself that\u0027s the case (especially if there\u0027s padding bytes on the end of a row). I feel better leaving this in to be safe given it should be a pretty fast operation.",
+      "parentUuid": "88591da4_7040a8b4",
+      "revId": "f42eb871d04a4e8b7aa1ac5ef6fdd3001f3792ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3e0652f1_562e5fdd",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-05-28T20:03:37Z",
       "side": 1,
       "message": "Maybe add `SkUNREACHABLE` to harden the format invariants.",
+      "revId": "f42eb871d04a4e8b7aa1ac5ef6fdd3001f3792ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "18125254_6b22ad7e",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 603,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-05-29T19:17:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3e0652f1_562e5fdd",
       "revId": "f42eb871d04a4e8b7aa1ac5ef6fdd3001f3792ae",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
