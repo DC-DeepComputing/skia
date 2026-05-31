@@ -51,6 +51,23 @@
       "parentUuid": "770b7cf3_a6cc48e5",
       "revId": "6adbc5e5c3b7ee87dd754d66d0fddad7494deeb1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3466f429_7bd8fda1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4871879
+      },
+      "writtenOn": "2026-05-31T03:14:18Z",
+      "side": 1,
+      "message": "Hi Chris and Michael, I am proposing \n- creating new matrices and enums in `SkYUVMath.cpp` for matrices that include the correction for 10/12 bit in 16 bit sampling. The enums and matrices will say `SampledAs16` e.g. kBT2020_10bitSampledAs16_Limited_SkYUVColorSpace and BT2020_10bitSampledAs16_limited_yuv_to_rgb\t\n- editing the `shared_image_representation.cc` file in the Chromium source to set the appropriate enum based on Apple and Non Apple build flag. The proposed code example is in https://skia-review.googlesource.com/c/skia/+/1246536/2/PROPOSED_CHROMIUM_CL_shared_image_representations.cc#12\n\nCould you help take a look? Thanks",
+      "revId": "6adbc5e5c3b7ee87dd754d66d0fddad7494deeb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
