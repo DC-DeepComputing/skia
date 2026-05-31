@@ -185,6 +185,9 @@ constexpr float BT2020_10bit_full_rgb_to_yuv[] = {
           0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
 #endif
 };
+// Note: The Y, U, and V columns of this matrix are scaled at runtime in
+// SkColorMatrix_YUV2RGB by (65535 / 65472) to correct for P010 UNORM texture
+// sampling normalization mismatch (max pixel value is 1023*64=65472 instead of the max 65535 in 16 bit).
 constexpr float BT2020_10bit_full_yuv_to_rgb[] = {
 #if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
             0x1p+0f,  -0x1.1b1682p-30f,    0x1.797f62p+0f,           0x0p+0f,   -0x1.79dddap-1f,
@@ -211,6 +214,9 @@ constexpr float BT2020_10bit_limited_rgb_to_yuv[] = {
           0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
 #endif
 };
+// Note: The Y, U, and V columns of this matrix are scaled at runtime in
+// SkColorMatrix_YUV2RGB by (65535 / 65472) to correct for P010 UNORM texture
+// sampling normalization mismatch (max pixel value is 1023*64=65472 instead of the max 65535 in 16 bit).
 constexpr float BT2020_10bit_limited_yuv_to_rgb[] = {
 #if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
      0x1.2af57ap+0f,  -0x1.641122p-27f,    0x1.af0126p+0f,           0x0p+0f,   -0x1.d4d50ap-1f,
@@ -237,6 +243,9 @@ constexpr float BT2020_12bit_full_rgb_to_yuv[] = {
           0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
 #endif
 };
+// Note: The Y, U, and V columns of this matrix are scaled at runtime in
+// SkColorMatrix_YUV2RGB by (65535 / 65520) to correct for P012 UNORM texture
+// sampling normalization mismatch (max pixel value is 4095*16=65520 instead of the max 65535 in 16 bit).
 constexpr float BT2020_12bit_full_yuv_to_rgb[] = {
 #if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
             0x1p+0f,  -0x1.1b1682p-30f,    0x1.797f62p+0f,           0x0p+0f,   -0x1.7996fep-1f,
@@ -263,6 +272,9 @@ constexpr float BT2020_12bit_limited_rgb_to_yuv[] = {
           0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
 #endif
 };
+// Note: The Y, U, and V columns of this matrix are scaled at runtime in
+// SkColorMatrix_YUV2RGB by (65535 / 65520) to correct for P012 UNORM texture
+// sampling normalization mismatch (max pixel value is 4095*16=65520 instead of the max 65535 in 16 bit).
 constexpr float BT2020_12bit_limited_yuv_to_rgb[] = {
 #if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
      0x1.2b2d96p+0f,   -0x1.e313dp-28f,    0x1.af520ap+0f,           0x0p+0f,   -0x1.d4d50cp-1f,
@@ -601,6 +613,9 @@ constexpr float YCgCo_10bit_full_rgb_to_yuv[] = {
           0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
 #endif
 };
+// Note: The Y, U, and V columns of this matrix are scaled at runtime in
+// SkColorMatrix_YUV2RGB by (65535 / 65472) to correct for P010 UNORM texture
+// sampling normalization mismatch (max pixel value is 1023*64=65472 instead of the max 65535 in 16 bit).
 constexpr float YCgCo_10bit_full_yuv_to_rgb[] = {
 #if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
             0x1p+0f,          -0x1p+0f,           0x1p+0f,           0x0p+0f,           0x0p+0f,
@@ -627,6 +642,9 @@ constexpr float YCgCo_10bit_limited_rgb_to_yuv[] = {
           0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
 #endif
 };
+// Note: The Y, U, and V columns of this matrix are scaled at runtime in
+// SkColorMatrix_YUV2RGB by (65535 / 65472) to correct for P010 UNORM texture
+// sampling normalization mismatch (max pixel value is 1023*64=65472 instead of the max 65535 in 16 bit).
 constexpr float YCgCo_10bit_limited_yuv_to_rgb[] = {
 #if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
      0x1.2af57ap+0f,   -0x1.2af57ap+0f,    0x1.2af57ap+0f,           0x0p+0f,   -0x1.2b404ap-4f,
@@ -653,6 +671,9 @@ constexpr float YCgCo_12bit_full_rgb_to_yuv[] = {
           0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
 #endif
 };
+// Note: The Y, U, and V columns of this matrix are scaled at runtime in
+// SkColorMatrix_YUV2RGB by (65535 / 65520) to correct for P012 UNORM texture
+// sampling normalization mismatch (max pixel value is 4095*16=65520 instead of the max 65535 in 16 bit).
 constexpr float YCgCo_12bit_full_yuv_to_rgb[] = {
 #if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
             0x1p+0f,          -0x1p+0f,           0x1p+0f,           0x0p+0f,           0x0p+0f,
@@ -679,6 +700,9 @@ constexpr float YCgCo_12bit_limited_rgb_to_yuv[] = {
           0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
 #endif
 };
+// Note: The Y, U, and V columns of this matrix are scaled at runtime in
+// SkColorMatrix_YUV2RGB by (65535 / 65520) to correct for P012 UNORM texture
+// sampling normalization mismatch (max pixel value is 4095*16=65520 instead of the max 65535 in 16 bit).
 constexpr float YCgCo_12bit_limited_yuv_to_rgb[] = {
 #if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
      0x1.2b2d96p+0f,   -0x1.2b2d96p+0f,    0x1.2b2d96p+0f,           0x0p+0f,   -0x1.2b404cp-4f,
@@ -850,6 +874,29 @@ void SkColorMatrix_RGB2YUV(SkYUVColorSpace cs, float m[20]) {
 void SkColorMatrix_YUV2RGB(SkYUVColorSpace cs, float m[20]) {
     if ((unsigned)cs < (unsigned)kIdentity_SkYUVColorSpace) {
         memcpy(m, yuv_to_rgb_array[(unsigned)cs], kSizeOfColorMatrix);
+
+        // Apply correction for P010/P012 UNORM normalization mismatch.
+        float scale = 1.0f;
+        if (cs == kBT2020_10bit_Full_SkYUVColorSpace ||
+            cs == kBT2020_10bit_Limited_SkYUVColorSpace ||
+            cs == kYCgCo_10bit_Full_SkYUVColorSpace ||
+            cs == kYCgCo_10bit_Limited_SkYUVColorSpace) {
+            scale = 65535.f / 65472.f;
+        } else if (cs == kBT2020_12bit_Full_SkYUVColorSpace ||
+                   cs == kBT2020_12bit_Limited_SkYUVColorSpace ||
+                   cs == kYCgCo_12bit_Full_SkYUVColorSpace ||
+                   cs == kYCgCo_12bit_Limited_SkYUVColorSpace) {
+            scale = 65535.f / 65520.f;
+        }
+
+        //the yuv to rgb matrix is 4x5 (RGBA x YUVA1). scale the coefficients in the YUV columns, for the RGB rows
+        if (scale != 1.0f) {
+            for (int row = 0; row < 3; ++row) {
+                m[row * 5 + 0] *= scale;
+                m[row * 5 + 1] *= scale;
+                m[row * 5 + 2] *= scale;
+            }
+        }
     } else {
         memset(m, 0, kSizeOfColorMatrix);
         m[0] = m[6] = m[12] = m[18] = 1;
