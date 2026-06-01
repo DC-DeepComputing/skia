@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "13d9bf2a_3d4c38f0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4729114
+      },
+      "writtenOn": "2026-06-01T02:00:37Z",
+      "side": 1,
+      "message": "I don\u0027t have voting powers.",
+      "revId": "4f11312086b4fb6bea09c1d03e107f1feca3ff3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
