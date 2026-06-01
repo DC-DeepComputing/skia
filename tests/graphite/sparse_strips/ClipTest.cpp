@@ -103,8 +103,8 @@ class ClipTestRunner {
         bool canonicalXDir = (dx >= 0);
         bool canonicalYDir = (dy >= 0);
 
-        std::array<SkPoint, 2> result =
-                Strip::ClipToTile(line, bounds, derivatives, mask, canonicalXDir, canonicalYDir);
+        std::array<SkPoint, 2> result = Strip::ClipToTile<kWidth, kHeight>(
+                line, bounds, derivatives, mask, canonicalXDir, canonicalYDir);
 
         // Get the expected clip using Liang-Barsky
         auto expectedClipLb = reference_clip(line, tileMinX, tileMinY, tileMaxX, tileMaxY);

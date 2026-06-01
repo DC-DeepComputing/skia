@@ -5,8 +5,8 @@
  * found in the LICENSE file.
  */
 
-#ifndef skgpu_graphite_Tiler_DEFINED
-#define skgpu_graphite_Tiler_DEFINED
+#ifndef skgpu_graphite_sparse_strips_Tiler_DEFINED
+#define skgpu_graphite_sparse_strips_Tiler_DEFINED
 
 #include "include/private/base/SkAssert.h"
 #include "include/private/base/SkTDArray.h"
@@ -20,49 +20,14 @@
 
 namespace skgpu::graphite {
 
-// Helper struct for the intersection bits. These will be consolidated into a header in the future.
-struct IntersectionBits {
-    // TODO (thomsmit): reorder these into more orthodox LRTB
-    //
-    // Generally speaking, these record which edges a line "touches" within its tile, and whether
-    // the tile contributes to coarse winding. However, due to tie-breaking for corner cases and
-    // differing inclusive/exclusive rules for lines ending exactly on tile boundaries, these do not
-    // always represent literal touches. Similarly, while coarse Winding and a Top edge touch are
-    // related, they are not always identical. Ultimately, these bits are a driver for
-    // rasterization, not an intuitive description of the line.
-    static constexpr uint32_t T = 0b00001;
-    static constexpr uint32_t B = 0b00010;
-    static constexpr uint32_t L = 0b00100;
-    static constexpr uint32_t R = 0b01000;
-    static constexpr uint32_t W = 0b10000;
-
-    static constexpr uint32_t BOT_SHIFT      = 1;
-    static constexpr uint32_t LEFT_SHIFT     = 2;
-    static constexpr uint32_t RIGHT_SHIFT    = 3;
-    static constexpr uint32_t WINDING_SHIFT  = 4;
-    static constexpr uint32_t INT_MASK_SHIFT = 5;
-
-    static constexpr uint32_t INTERSECTION_MASK = W | R | L | B | T;
-    static constexpr uint32_t MAX_LINES_PER_PATH = 1 << (32 - INT_MASK_SHIFT);
-
-    static std::string maskToString(uint32_t mask) {
-        std::string s;
-        if (mask & W) s += "W";
-        if (mask & T) s += (s.empty() ? "T" : " | T");
-        if (mask & B) s += (s.empty() ? "B" : " | B");
-        if (mask & L) s += (s.empty() ? "L" : " | L");
-        if (mask & R) s += (s.empty() ? "R" : " | R");
-        if (mask == 0) return "empty";
-        return s;
-    }
-};
-
 // A sparse strips tile, contains:
 //  1) The top left corner of the tile in device space, in tile sized units.
 //  2) The coarse winding (W) of the tile
 //  3) The intersection mask (R | L | T | B) of the tile
 //  4) The index of their parent line in the array backing polyline
 struct Tile {
+    static constexpr uint16_t kSentinelCoord = UINT16_MAX;
+
     uint16_t x;
     uint16_t y;
     /// Contains the parent line's index and the intersection/winding mask.
@@ -103,6 +68,12 @@ struct Tile {
     uint32_t intersectionMask() const {
         return fPackedLineIdxIntersectionMask & IntersectionBits::INTERSECTION_MASK;
     }
+    bool coarseWinding() const {
+        return (fPackedLineIdxIntersectionMask & IntersectionBits::W) != 0;
+    }
+    bool left() const {
+        return (fPackedLineIdxIntersectionMask & IntersectionBits::L) != 0;
+    }
 };
 
 // Make sure the struct is a size convenient to move around, as tiles will be sorted.
@@ -131,16 +102,16 @@ public:
 
     // This function has two purposes:
     //     1) The viewport is divided into tiles, whose dimensions are given by the template
-    //     parameters. For each line produced by flattening---contained inside Polyline---find which
-    //     tiles this line intersects. Tiles act as a "coarse rasterization stage," which elides
-    //     carrying a scanline for each MSAA subsample point. (Without this technique, we would
-    //     require 64 scanlines for an 8 tall tile with 8xMSAA). Tile edge touches are vertical
-    //     exclusive, horizontal inclusive. This is because: A) In the vertical case, inclusivity
-    //     would cause the coarse winding to be double counted or negated by the single-point tile
-    //     produced by the touch, and the tile produced by the succeeding line B) In the horizontal
-    //     case, the inclusivity is necessary because the tile produced by the succeeding line will
-    //     not consider itself left touching, and so the single-point tile is necessary to carry
-    //     over the left-edge winding.
+    //     parameters. Tiles act as a "coarse rasterization stage," which elides carrying a scanline
+    //     for each MSAA subsample point. (Without this technique, we would require 64 scanlines for
+    //     an 8 tall tile with 8xMSAA). So for each line produced by flattening---contained inside
+    //     Polyline---we need to find which tiles this line intersects.  Tile edge touches are
+    //     vertical exclusive, horizontal inclusive. This is because: A) In the vertical case,
+    //     inclusivity would cause the coarse winding to be double counted or negated by the
+    //     single-point tile produced by the touch, and the tile produced by the succeeding line B)
+    //     In the horizontal case, the inclusivity is necessary because the tile produced by the
+    //     succeeding line will not consider itself left touching, and so the single-point tile is
+    //     necessary to carry over the left-edge winding.
     //
     //     2) To enable parallel rasterization, we need to establish a source of truth for the line
     //     intersection points on tiles, such that adjacent tiles agree where intersections occur.
@@ -503,4 +474,4 @@ private:
 
 }  // namespace skgpu::graphite
 
-#endif  // skgpu_graphite_Tiler_DEFINED
+#endif  // skgpu_graphite_sparse_strips_Tiler_DEFINED
