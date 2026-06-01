@@ -1,0 +1,175 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0cfc2e79_bafc3877",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-01T15:00:12Z",
+      "side": 1,
+      "message": "This CL allows us to XXX ?",
+      "revId": "79e894587ceb52f69db879166d05a487bf621fc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af702c84_b4717071",
+        "filename": "src/gpu/graphite/sparse_strips/MakeStripsScalar_impl.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-01T15:00:12Z",
+      "side": 1,
+      "message": "// Maybe something about what this class is or does ?",
+      "revId": "79e894587ceb52f69db879166d05a487bf621fc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "437f0eb5_8bf43287",
+        "filename": "src/gpu/graphite/sparse_strips/MakeStripsScalar_impl.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-01T15:00:12Z",
+      "side": 1,
+      "message": "If these are output parameters they need to be pointers rather than references.",
+      "range": {
+        "startLine": 15,
+        "startChar": 26,
+        "endLine": 16,
+        "endChar": 55
+      },
+      "revId": "79e894587ceb52f69db879166d05a487bf621fc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e44e8af7_235b25d3",
+        "filename": "src/gpu/graphite/sparse_strips/MakeStripsScalar_impl.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-01T15:00:12Z",
+      "side": 1,
+      "message": "this-\u003e ? Here and below ?",
+      "revId": "79e894587ceb52f69db879166d05a487bf621fc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "056e15c8_150ac34f",
+        "filename": "src/gpu/graphite/sparse_strips/MakeStripsScalar_impl.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-01T15:00:12Z",
+      "side": 1,
+      "message": "// even/odd ?",
+      "range": {
+        "startLine": 60,
+        "startChar": 31,
+        "endLine": 60,
+        "endChar": 32
+      },
+      "revId": "79e894587ceb52f69db879166d05a487bf621fc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5547494f_ae9f6842",
+        "filename": "src/gpu/graphite/sparse_strips/MakeStripsScalar_impl.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-01T15:00:12Z",
+      "side": 1,
+      "message": "this-\u003e ? Here and below ?",
+      "range": {
+        "startLine": 83,
+        "startChar": 24,
+        "endLine": 83,
+        "endChar": 34
+      },
+      "revId": "79e894587ceb52f69db879166d05a487bf621fc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14bec632_0a9129ca",
+        "filename": "src/gpu/graphite/sparse_strips/MakeStripsScalar_impl.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-01T15:00:12Z",
+      "side": 1,
+      "message": "Add \u0027 \u0027s ?",
+      "revId": "79e894587ceb52f69db879166d05a487bf621fc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac9d7272_2ac51c63",
+        "filename": "src/gpu/graphite/sparse_strips/MakeStripsScalar_impl.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-01T15:00:12Z",
+      "side": 1,
+      "message": "overlength - here and below",
+      "revId": "79e894587ceb52f69db879166d05a487bf621fc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bdafa407_70cc4980",
+        "filename": "src/gpu/graphite/sparse_strips/MakeStripsScalar_impl.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-01T15:00:12Z",
+      "side": 1,
+      "message": "const ?",
+      "revId": "79e894587ceb52f69db879166d05a487bf621fc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
