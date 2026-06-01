@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "690ced86_0a9b6d2e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-01T20:11:53Z",
+      "side": 1,
+      "message": "Yep, none of the text shaders use derivatives to adjust the sample coordinate",
+      "parentUuid": "5afc7229_057cad89",
+      "revId": "827c755d2f9e757a4ed9678562f5c882f1584582",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "86195d0e_04ede5db",
@@ -55,6 +73,30 @@
           ]
         }
       ],
+      "revId": "827c755d2f9e757a4ed9678562f5c882f1584582",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd1a25bb_af9875f3",
+        "filename": "src/gpu/graphite/render/SDFTextLCDRenderStep.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-01T20:11:53Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "86195d0e_04ede5db",
+      "range": {
+        "startLine": 161,
+        "startChar": 56,
+        "endLine": 161,
+        "endChar": 86
+      },
       "revId": "827c755d2f9e757a4ed9678562f5c882f1584582",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
