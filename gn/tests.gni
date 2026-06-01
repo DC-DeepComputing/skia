@@ -211,6 +211,7 @@ tests_sources = [
   "$_tests/SizeTest.cpp",
   "$_tests/SkBase64Test.cpp",
   "$_tests/SkBlockAllocatorTest.cpp",
+  "$_tests/SkCanvasReentrantDrawTextBlob.cpp",
   "$_tests/SkColor4fTest.cpp",
   "$_tests/SkColorSpaceXformStepsTest.cpp",
   "$_tests/SkContainersTest.cpp",
