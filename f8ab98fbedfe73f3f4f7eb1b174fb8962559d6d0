@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8432989d_45906bc7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-01T21:30:19Z",
+      "side": 1,
+      "message": "updated the header comment, PTAL. added the benchmark, and explanation of the original bug",
+      "parentUuid": "20306367_f0845118",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 28
+      },
+      "revId": "f8ab98fbedfe73f3f4f7eb1b174fb8962559d6d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "607da385_8b3bb60d",
         "filename": "bench/GlyphRunRSXformBench.cpp",
         "patchSetId": 6
@@ -37,6 +61,30 @@
       "writtenOn": "2026-05-29T12:26:29Z",
       "side": 1,
       "message": "Could this be simpler as just having a helper to make a textblob instead of a parent class?",
+      "range": {
+        "startLine": 21,
+        "startChar": 6,
+        "endLine": 21,
+        "endChar": 26
+      },
+      "revId": "f8ab98fbedfe73f3f4f7eb1b174fb8962559d6d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c395a424_44eb6e0b",
+        "filename": "bench/GlyphRunRSXformBench.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-01T21:30:19Z",
+      "side": 1,
+      "message": "replaced with helper function",
+      "parentUuid": "607da385_8b3bb60d",
       "range": {
         "startLine": 21,
         "startChar": 6,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1cbd7b92_3479dc51",
+        "filename": "bench/GlyphRunRSXformBench.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-01T21:30:19Z",
+      "side": 1,
+      "message": "I realized that the GlyphRunRSXform_firsttime benchmark was a bit redudant and also not as good of a benchmark for text blobs. My idea was to have a benchmark that used a \"cached\" text blob (cached) and one that made it on the spot randomly each time (firsttime).\n\n\nI realized that a lot of the work being done in the firsttime benchmark had to do with instantiating the text blob (make_text_blob) rather than focusing on the drawTextBlob. I removed the firsttime as such.\n\nI added the numbers for the benchmark",
+      "parentUuid": "3b745d41_a64b860d",
+      "range": {
+        "startLine": 95,
+        "startChar": 47,
+        "endLine": 95,
+        "endChar": 72
+      },
+      "revId": "f8ab98fbedfe73f3f4f7eb1b174fb8962559d6d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6fef1cda_583bcb10",
@@ -83,6 +155,30 @@
       "writtenOn": "2026-05-29T12:26:29Z",
       "side": 1,
       "message": "Let\u0027s move this out of the public header if we can (might need to use a friend class)",
+      "range": {
+        "startLine": 2709,
+        "startChar": 10,
+        "endLine": 2709,
+        "endChar": 29
+      },
+      "revId": "f8ab98fbedfe73f3f4f7eb1b174fb8962559d6d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a45a4fb_d5e83564",
+        "filename": "include/core/SkCanvas.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 2709,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-01T21:30:19Z",
+      "side": 1,
+      "message": "moved out of the header and into cpp, let me know if this looks right",
+      "parentUuid": "6fef1cda_583bcb10",
       "range": {
         "startLine": 2709,
         "startChar": 10,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "62ec629f_a9380a64",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 2416,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-01T21:30:19Z",
+      "side": 1,
+      "message": "minor oversight, meant to make it skassert_release",
+      "parentUuid": "520a71c6_0f5de916",
+      "range": {
+        "startLine": 2416,
+        "startChar": 49,
+        "endLine": 2416,
+        "endChar": 76
+      },
+      "revId": "f8ab98fbedfe73f3f4f7eb1b174fb8962559d6d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1db5a06a_b1516596",
@@ -129,6 +249,30 @@
       "writtenOn": "2026-05-29T12:26:29Z",
       "side": 1,
       "message": "I\u0027m not a huge fan of nesting ++ into other things. I think it\u0027s error prone (and at least makes me think harder).",
+      "range": {
+        "startLine": 2420,
+        "startChar": 36,
+        "endLine": 2420,
+        "endChar": 69
+      },
+      "revId": "f8ab98fbedfe73f3f4f7eb1b174fb8962559d6d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf69aeea_7c5e8da6",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 2420,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-01T21:30:19Z",
+      "side": 1,
+      "message": "that makes sense. I isolated it",
+      "parentUuid": "1db5a06a_b1516596",
       "range": {
         "startLine": 2420,
         "startChar": 36,
@@ -162,6 +306,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "db1a6f41_9f6b45ff",
+        "filename": "tests/GlyphRunUAFTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-01T21:30:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "958d4036_ec60e07a",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 9
+      },
+      "revId": "f8ab98fbedfe73f3f4f7eb1b174fb8962559d6d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "11c75855_a611a93d",
@@ -175,6 +343,30 @@
       "writtenOn": "2026-05-29T12:26:29Z",
       "side": 1,
       "message": "Some comments would be appreciated here, giving some context for the unusual setup. I tend not to include UAF or such in the test name, but instead might do something like SkCanvas_drawTextBlob_b513820666 (as a reference to the original bug). Now that things are fixed, there shouldn\u0027t be a UAF, right? So including it in the name feels a bit odd.",
+      "range": {
+        "startLine": 95,
+        "startChar": 9,
+        "endLine": 95,
+        "endChar": 24
+      },
+      "revId": "f8ab98fbedfe73f3f4f7eb1b174fb8962559d6d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7ece789_42f09de1",
+        "filename": "tests/GlyphRunUAFTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-01T21:30:19Z",
+      "side": 1,
+      "message": "wrote some comments, let me know what you think about this test.",
+      "parentUuid": "11c75855_a611a93d",
       "range": {
         "startLine": 95,
         "startChar": 9,
