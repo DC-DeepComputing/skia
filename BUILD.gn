@@ -1889,6 +1889,10 @@ skia_component("skia") {
   public_configs = [ ":skia_public" ]
   configs = skia_library_configs
 
+  if (is_win && sanitize == "ASAN") {
+    deps = [ "gn/skia:copy_asan_runtime" ]
+  }
+
   public_deps = [
     ":core",
     ":fontmgr_FontConfigInterface",
