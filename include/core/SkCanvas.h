@@ -2421,6 +2421,8 @@ private:
     friend constexpr SkEnumBitMask<PredrawFlags> operator^(PredrawFlags, PredrawFlags);
     friend constexpr SkEnumBitMask<PredrawFlags> operator~(PredrawFlags);
 
+    friend class AutoGlyphRunBuilder;
+
     // notify our surface (if we have one) that we are about to draw, so it
     // can perform copy-on-write or invalidate any cached images
     // returns false if the copy failed
@@ -2704,7 +2706,14 @@ private:
     class AutoUpdateQRBounds;
     void validateClip() const;
 
-    std::unique_ptr<sktext::GlyphRunBuilder> fScratchGlyphRunBuilder;
+    static constexpr int kMaxScratchGlyphRunBuilders = 3;
+
+    sktext::GlyphRunBuilder* obtainGlyphRunBuilder();
+
+    void releaseGlyphRunBuilder();
+
+    skia_private::STArray<1, std::unique_ptr<sktext::GlyphRunBuilder>> fScratchGlyphRunBuilders;
+    int fScratchGlyphRunBuilderCountInUse = 0;
 };
 
 /** \class SkAutoCanvasRestore
