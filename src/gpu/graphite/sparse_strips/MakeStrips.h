@@ -13,6 +13,7 @@
 #include "src/gpu/graphite/sparse_strips/SparseStripsTypes.h"
 #include "src/gpu/graphite/sparse_strips/Strip.h"
 #include "src/gpu/graphite/sparse_strips/StripProcessorScalar.h"
+#include "src/gpu/graphite/sparse_strips/StripProcessorSimd.h"
 #include "src/gpu/graphite/sparse_strips/Tiler.h"
 
 #include <utility>
@@ -99,7 +100,7 @@ namespace skgpu::graphite {
  *               x: 1                                            x: 5
  *               alphaIdx: 32                                    alphaIdx: 64
  *               shouldFill: 1 (true)                            shouldFill: 0 (false)
- */
+ *   */
 class MakeStrips {
 public:
     template <uint16_t kTileWidth, uint16_t kTileHeight>
@@ -145,7 +146,25 @@ public:
                          , MsaaExactMaskObserver observer = nullptr
 #endif
     ) {
-        // Stub
+        const auto& tiles = tileContainer.getTiles();
+        if (tiles.empty()) {
+            return;
+        }
+        Dispatch(fillType, [&](auto isWindingTag, bool isInverse) {
+            constexpr bool kIsWinding = decltype(isWindingTag)::value;
+            int32_t localAlphaIdx = alphaBuf->size();
+            constexpr int32_t kTileAlphaCount = kTileWidth * kTileHeight;
+            alphaBuf->reserve(localAlphaIdx + tiles.size() * kTileAlphaCount * 2);
+
+            StripProcessorSimd<kTileWidth, kTileHeight, kIsWinding> processor(
+                    stripBuf, alphaBuf, isInverse, polyline, maskLut, localAlphaIdx
+#if defined(GPU_TEST_UTILS)
+                    , observer
+#endif
+            );
+
+            TraverseCPU<kTileWidth, kTileHeight>(tileContainer, stripBuf, alphaBuf, processor);
+        });
     }
 
 private:
