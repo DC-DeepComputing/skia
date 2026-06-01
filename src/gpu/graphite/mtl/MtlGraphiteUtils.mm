@@ -66,6 +66,10 @@ sk_cfp<id<MTLLibrary>> MtlCompileShaderLibrary(const MtlSharedContext* sharedCon
         options.languageVersion = MTLLanguageVersion2_2;
     }
 
+    // We advertise support for infinity/nan, which requires at least relaxed mode, not "fast".
+    // Relaxed is the default on Apple silicon, but not for Intel/AMD so we always set it.
+    options.mathMode = MTLMathModeRelaxed;
+
     NSError* error = nil;
     // TODO: do we need a version with a timeout?
     sk_cfp<id<MTLLibrary>> compiledLibrary(
