@@ -1,0 +1,62 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5afc7229_057cad89",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-01T20:08:25Z",
+      "side": 1,
+      "message": "LGTM! I guess SDF LCD is the only vulnerable path because of the offsetting? Just double checking",
+      "revId": "827c755d2f9e757a4ed9678562f5c882f1584582",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86195d0e_04ede5db",
+        "filename": "src/gpu/graphite/render/SDFTextLCDRenderStep.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-01T20:08:25Z",
+      "side": 1,
+      "message": "nit typo",
+      "range": {
+        "startLine": 161,
+        "startChar": 56,
+        "endLine": 161,
+        "endChar": 86
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "f396483d_464611d8",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/render/SDFTextLCDRenderStep.cpp",
+              "range": {
+                "startLine": 161,
+                "startChar": 0,
+                "endLine": 162,
+                "endChar": 0
+              },
+              "replacement": "    // instances? We can derive it from the Transform\u0027s existing 4x4 inverse.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "827c755d2f9e757a4ed9678562f5c882f1584582",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
