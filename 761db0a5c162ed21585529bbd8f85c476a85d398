@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "36cf7393_3c67bbb8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-01T14:19:11Z",
+      "side": 1,
+      "message": "It looks like: https://skia-review.git.corp.google.com/c/skia/+/1251096 will make this irrelevant.",
+      "revId": "761db0a5c162ed21585529bbd8f85c476a85d398",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
