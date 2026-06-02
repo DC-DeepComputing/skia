@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bbfac0ba_9d949506",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-02T13:31:35Z",
+      "side": 1,
+      "message": "The gold diffs are from grvk now detecting that it can use SDF/LCD text",
+      "revId": "b517066d0b28219417ca59170ed432ab8fafbdbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
