@@ -8,9 +8,9 @@
 #ifndef SkDebug_DEFINED
 #define SkDebug_DEFINED
 
-#include "include/private/base/SkAPI.h"
-#include "include/private/base/SkAttributes.h"
-#include "include/private/base/SkLoadUserConfig.h" // IWYU pragma: keep
+#include "include/private/SkAPI.h"
+#include "include/private/SkAttributes.h"
+#include "include/private/SkLoadUserConfig.h" // IWYU pragma: keep
 
 #if !defined(SkDebugf)
     void SK_SPI SkDebugf(const char format[], ...) SK_PRINTF_LIKE(1, 2);

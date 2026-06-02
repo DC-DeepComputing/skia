@@ -17,7 +17,7 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkShader.h"
 #include "include/core/SkTileMode.h"
-#include "include/private/base/SkMath.h"
+#include "include/private/SkMath.h"
 #include "modules/skcms/skcms.h"
 #include "src/base/SkArenaAlloc.h"
 #include "src/core/SkBitmapProcState.h"

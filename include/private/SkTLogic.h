@@ -14,7 +14,7 @@
 
 #include <iterator>
 #include <type_traits>
-#include "include/private/base/SkTo.h"
+#include "include/private/SkTo.h"
 
 // The sknonstd namespace contains things we would like to be proposed and feel std-ish.
 namespace sknonstd {

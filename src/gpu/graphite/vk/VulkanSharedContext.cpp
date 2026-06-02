@@ -12,7 +12,7 @@
 #include "include/gpu/graphite/PersistentPipelineStorage.h"
 #include "include/gpu/vk/VulkanBackendContext.h"
 #include "include/gpu/vk/VulkanExtensions.h"
-#include "include/private/base/SkMutex.h"
+#include "include/private/SkMutex.h"
 #include "src/gpu/GpuTypesPriv.h"
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/ResourceTypes.h"

@@ -8,7 +8,7 @@
 #ifndef SkThreadAnnotations_DEFINED
 #define SkThreadAnnotations_DEFINED
 
-#include "include/private/base/SkFeatures.h"  // IWYU pragma: keep
+#include "include/private/SkFeatures.h"  // IWYU pragma: keep
 
 // The bulk of this code is cribbed from:
 // http://clang.llvm.org/docs/ThreadSafetyAnalysis.html

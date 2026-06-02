@@ -9,8 +9,8 @@
 
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
-#include "include/private/base/SkAssert.h"
-#include "include/private/base/SkTDArray.h"
+#include "include/private/SkAssert.h"
+#include "include/private/SkTDArray.h"
 #include "src/base/SkArenaAlloc.h"
 
 #include <cstddef>
