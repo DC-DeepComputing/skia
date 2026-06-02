@@ -189,6 +189,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "60576b9d_d1ef59dc",
+        "filename": "src/core/SkFlattenable.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-02T19:45:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4506dc56_297809e7",
+      "range": {
+        "startLine": 105,
+        "startChar": 9,
+        "endLine": 105,
+        "endChar": 15
+      },
+      "revId": "da6c79fb5a38dd6d91eb8d1f429818c018929c12",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e44530c7_d7ea4a79",

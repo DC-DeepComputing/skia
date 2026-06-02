@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff6f1c77_a4ee0430",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-02T19:45:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fbe43aa5_a3965385",
+      "revId": "2b11682353f721f6b5e84b79e230fc851928a002",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e07a0596_153a771c",
@@ -35,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f60f1d2e_2bbb928d",
+        "filename": "src/core/SkFlattenable.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-02T19:45:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e07a0596_153a771c",
+      "revId": "2b11682353f721f6b5e84b79e230fc851928a002",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "155bc518_798f0dd6",
@@ -48,6 +84,30 @@
       "writtenOn": "2026-06-02T19:23:33Z",
       "side": 1,
       "message": "We need Exclusive for writing (shared is fine for reading). Check the other places too.",
+      "range": {
+        "startLine": 91,
+        "startChar": 4,
+        "endLine": 91,
+        "endChar": 27
+      },
+      "revId": "2b11682353f721f6b5e84b79e230fc851928a002",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "010f5fb5_2cd1fd90",
+        "filename": "src/core/SkFlattenable.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-02T19:45:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "155bc518_798f0dd6",
       "range": {
         "startLine": 91,
         "startChar": 4,
@@ -81,6 +141,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6abb353d_32e98ebc",
+        "filename": "src/core/SkFlattenable.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-02T19:45:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ed5397ca_da62eeee",
+      "range": {
+        "startLine": 105,
+        "startChar": 61,
+        "endLine": 105,
+        "endChar": 67
+      },
+      "revId": "2b11682353f721f6b5e84b79e230fc851928a002",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "93b5e5ec_810c247e",
@@ -94,6 +178,30 @@
       "writtenOn": "2026-06-02T19:23:33Z",
       "side": 1,
       "message": "I would find a worked example easier to follow than this.",
+      "range": {
+        "startLine": 110,
+        "startChar": 6,
+        "endLine": 113,
+        "endChar": 13
+      },
+      "revId": "2b11682353f721f6b5e84b79e230fc851928a002",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ced10e8_fc0221cd",
+        "filename": "src/core/SkFlattenable.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-02T19:45:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "93b5e5ec_810c247e",
       "range": {
         "startLine": 110,
         "startChar": 6,
