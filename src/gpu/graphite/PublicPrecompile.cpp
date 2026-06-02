@@ -123,7 +123,7 @@ void Precompile(PrecompileContext* precompileContext,
 
         for (int loadOpIndex = 0; loadOpIndex < numLoadOps; ++loadOpIndex) {
             const RenderPassDesc renderPassDesc =
-                    RenderPassDesc::Make(caps,
+                    RenderPassDesc::Make1(caps,
                                          info,
                                          kLoadOps[loadOpIndex],
                                          StoreOp::kStore,

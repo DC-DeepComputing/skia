@@ -301,7 +301,7 @@ void DrawContext::flush(Recorder* recorder) {
             SKGPU_LOG_W("No valid write swizzle for color type %d with format %s",
                         (int) this->colorInfo().colorType(), TextureFormatName(format));
         }
-        RenderPassDesc desc = RenderPassDesc::Make(caps, fTarget.proxy()->textureInfo(),
+        RenderPassDesc desc = RenderPassDesc::Make1(caps, fTarget.proxy()->textureInfo(),
                                                    loadOp, storeOp,
                                                    dsFlags,
                                                    pass->clearColor(),

@@ -36,7 +36,7 @@ const char* to_str(StoreOp op) {
 
 } // anonymous namespace
 
-RenderPassDesc RenderPassDesc::Make(const Caps* caps,
+RenderPassDesc RenderPassDesc::Make1(const Caps* caps,
                                     const TextureInfo& targetInfo,
                                     LoadOp loadOp,
                                     StoreOp storeOp,
