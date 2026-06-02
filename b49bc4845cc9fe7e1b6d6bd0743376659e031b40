@@ -118,6 +118,23 @@
       "message": "Thank you. Could you submit (as I don\u0027t have permissions for doing so)? Thank you very much.",
       "revId": "b49bc4845cc9fe7e1b6d6bd0743376659e031b40",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bddc29ed_86d720fb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4746751
+      },
+      "writtenOn": "2026-06-02T18:40:50Z",
+      "side": 1,
+      "message": "Hi again. Can someone please submit this? As fair as I understand, CQ is not present in chrome/m144 and I don\u0027t have permissions to submit directly.",
+      "revId": "b49bc4845cc9fe7e1b6d6bd0743376659e031b40",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
