@@ -19,11 +19,16 @@ namespace skgpu::graphite {
 std::tuple<SkBitmap, RasterMaskHelper> RasterMaskHelper::Allocate(SkISize size,
                                                                   SkIVector translation,
                                                                   int padding,
-                                                                  SkAlpha initialAlpha) {
+                                                                  SkAlpha initialAlpha,
+                                                                  SkBackingFit fit) {
     SkASSERT(padding >= 0);
     SkASSERT(!size.isEmpty());
 
     SkISize paddedSize{size.width() + 2 * padding, size.height() + 2 * padding};
+    if (fit == SkBackingFit::kApprox) {
+        paddedSize = GetApproxSize(paddedSize);
+    }
+
     SkBitmap bitmap;
     bitmap.allocPixels(SkImageInfo::MakeA8(paddedSize));
     memset(bitmap.getAddr(0, 0), initialAlpha, bitmap.computeByteSize());

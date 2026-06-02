@@ -14,6 +14,7 @@
 #include "src/core/SkDraw.h"
 #include "src/core/SkRasterClip.h"
 #include "src/gpu/ResourceKey.h"
+#include "src/gpu/SkBackingFit.h"
 #include "src/gpu/graphite/ClipStack.h"
 
 namespace skgpu::graphite {
@@ -41,17 +42,20 @@ class Transform;
 
 class RasterMaskHelper : SkNoncopyable {
 public:
-    // Let RasterMaskHelper allocate the backing store (A8). The caller can optionally
-    // provide a padding and a translation applied to each draw. The padding is added to
-    // the size on all four sides but excluded from the area rendered to. That is, (0,0)
-    // will refer to the top-left pixel *inside* the padding. Since each draw method
-    // takes a Transform, the translation is just a convenience to save repeated
-    // concatenations when the caller already has prebuilt Transforms. The entire
-    // allocation (including the padding) is initialized to initialAlpha.
+    // Let RasterMaskHelper allocate the backing store (A8). The caller can optionally provide a
+    // padding and a translation applied to each draw. The padding is added to the size on all four
+    // sides but excluded from the area rendered to. That is, (0,0) will refer to the top-left pixel
+    // *inside* the padding. Since each draw method takes a Transform, the translation is just a
+    // convenience to save repeated concatenations when the caller already has prebuilt Transforms.
+    // The entire allocation (including the padding) is initialized to initialAlpha.
+    //
+    // The returned SkBitmap will be rounded up in size depending on `backingFit`. If it is approx
+    // fit, the excess will be beyond the `padding` and also be initialized to `initialAlpha`.
     static std::tuple<SkBitmap, RasterMaskHelper> Allocate(SkISize size,
                                                            SkIVector translation = {0, 0},
                                                            int padding = 0,
-                                                           SkAlpha initialAlpha = 0);
+                                                           SkAlpha initialAlpha = 0,
+                                                           SkBackingFit fit = SkBackingFit::kExact);
     // The caller provides the storage, which must be A8.
     explicit RasterMaskHelper(SkPixmap pixmap, SkIVector translation = {0, 0});
 

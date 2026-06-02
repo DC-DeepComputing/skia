@@ -140,7 +140,8 @@ sk_sp<TextureProxy> ClipAtlasManager::findOrCreateEntry(uint32_t stackRecordID,
                         RasterMaskHelper::Allocate(cdc->fMaskDeviceBounds.size(),
                                                    translate,
                                                    kEntryPadding,
-                                                   initial_alpha_for_elements(*cdc->fElementList));
+                                                   initial_alpha_for_elements(*cdc->fElementList),
+                                                   SkBackingFit::kApprox);
 
                 render_elements(&helper, *cdc->fElementList);
                 bm.setImmutable();

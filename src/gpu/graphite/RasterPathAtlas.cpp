@@ -117,7 +117,9 @@ sk_sp<TextureProxy> RasterPathAtlas::onAddShape(const Shape& shape,
                 auto [bm, helper] = RasterMaskHelper::Allocate(
                         pdc->fShapeBounds.size(),
                         -pdc->fTransformedMaskOffset,
-                        kEntryPadding);
+                        kEntryPadding,
+                        /*initialAlpha=*/0,
+                        SkBackingFit::kApprox);
                 helper.drawShape(pdc->fShape, pdc->fLocalToDevice, pdc->fStrokeRec);
                 bm.setImmutable();
                 return bm;
