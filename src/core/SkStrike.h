@@ -10,6 +10,7 @@
 #include "include/core/SkFontMetrics.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkStrikeRef.h"
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkMutex.h"
 #include "include/private/base/SkSpan_impl.h"
@@ -89,6 +90,11 @@ public:
 
     SkSpan<const SkGlyph*> metrics(
             SkSpan<const SkGlyphID> glyphIDs, const SkGlyph* results[]) SK_EXCLUDES(fStrikeLock);
+
+    void getWidths(int count,
+                   const uint32_t* glyphs, size_t stride,
+                   SkStrikeRef::WidthsCallback callback,
+                   SkScalar scale) SK_EXCLUDES(fStrikeLock);
 
     SkSpan<const SkGlyph*> preparePaths(
             SkSpan<const SkGlyphID> glyphIDs, const SkGlyph* results[]) SK_EXCLUDES(fStrikeLock);

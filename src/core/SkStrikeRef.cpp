@@ -42,6 +42,11 @@ void SkStrikeRef::getWidths(SkSpan<const SkGlyphID> glyphs, SkSpan<SkScalar> wid
     this->getWidthsBounds(glyphs, widths, {});
 }
 
+void SkStrikeRef::getWidths(int count, const uint32_t* glyphs, size_t stride, WidthsCallback callback) const {
+    SkASSERT(fStrike);
+    fStrike->getWidths(count, glyphs, stride, std::move(callback), fStrikeToSourceScale);
+}
+
 SkScalar SkStrikeRef::getWidth(SkGlyphID glyph) const {
     SkScalar width;
     this->getWidths({&glyph, 1}, {&width, 1});
