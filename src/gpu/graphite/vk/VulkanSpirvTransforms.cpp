@@ -7,7 +7,7 @@
 
 #include "src/gpu/graphite/vk/VulkanSpirvTransforms.h"
 
-#include "include/private/base/SkAssert.h"
+#include "include/private/SkAssert.h"
 #include "src/sksl/codegen/SkSLCodeGenTypes.h"
 #include "src/sksl/spirv.h"
 

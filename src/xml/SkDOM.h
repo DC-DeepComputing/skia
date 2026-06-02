@@ -10,8 +10,8 @@
 
 #include "include/core/SkScalar.h"
 #include "include/core/SkTypes.h"
-#include "include/private/base/SkNoncopyable.h"
-#include "include/private/base/SkTemplates.h"
+#include "include/private/SkNoncopyable.h"
+#include "include/private/SkTemplates.h"
 #include "src/base/SkArenaAlloc.h"
 
 struct SkDOMNode;

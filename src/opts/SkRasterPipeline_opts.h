@@ -9,9 +9,9 @@
 #define SkRasterPipeline_opts_DEFINED
 
 #include "include/core/SkTypes.h"
-#include "include/private/base/SkMalloc.h"
-#include "include/private/base/SkSpan_impl.h"
-#include "include/private/base/SkTemplates.h"
+#include "include/private/SkMalloc.h"
+#include "include/private/SkSpan_impl.h"
+#include "include/private/SkTemplates.h"
 #include "modules/skcms/skcms.h"
 #include "src/base/SkUtils.h"  // unaligned_{load,store}
 #include "src/core/SkRasterPipeline.h"

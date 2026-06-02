@@ -11,7 +11,7 @@
 #include "include/core/SkSize.h"
 #include "include/core/SkTileMode.h"
 #include "include/gpu/graphite/TextureInfo.h"
-#include "include/private/base/SkDebug.h"
+#include "include/private/SkDebug.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/gpu/RefCntedCallback.h"
 #include "src/gpu/graphite/Buffer.h"

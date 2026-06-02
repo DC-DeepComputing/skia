@@ -12,7 +12,7 @@
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
-#include "include/private/base/SkFloatingPoint.h"
+#include "include/private/SkFloatingPoint.h"
 #include "src/base/SkArenaAlloc.h"
 #include "src/core/SkBitmapCache.h"
 #include "src/core/SkMipmap.h"

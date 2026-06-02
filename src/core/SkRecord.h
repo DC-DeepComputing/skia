@@ -9,8 +9,8 @@
 #define SkRecord_DEFINED
 
 #include "include/core/SkRefCnt.h"
-#include "include/private/base/SkAssert.h"
-#include "include/private/base/SkTemplates.h"
+#include "include/private/SkAssert.h"
+#include "include/private/SkTemplates.h"
 #include "src/base/SkArenaAlloc.h"
 #include "src/core/SkRecords.h"
 

@@ -17,7 +17,7 @@
 #include "include/core/SkSize.h"
 #include "include/core/SkTypes.h"
 #include "include/effects/SkRuntimeEffect.h"
-#include "include/private/base/SkSpan_impl.h"
+#include "include/private/SkSpan_impl.h"
 #include "src/core/SkImageFilterTypes.h"
 #include "src/core/SkImageFilter_Base.h"
 #include "src/core/SkKnownRuntimeEffects.h"

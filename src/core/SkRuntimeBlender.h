@@ -11,7 +11,7 @@
 #include "include/core/SkFlattenable.h"
 #include "include/core/SkRefCnt.h"
 #include "include/effects/SkRuntimeEffect.h"
-#include "include/private/base/SkSpan_impl.h"
+#include "include/private/SkSpan_impl.h"
 #include "src/core/SkBlenderBase.h"
 
 #include <utility>

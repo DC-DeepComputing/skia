@@ -8,8 +8,8 @@
 #ifndef SkTFixedArray_DEFINED
 #define SkTFixedArray_DEFINED
 
-#include "include/private/base/SkAssert.h"
-#include "include/private/base/SkSpan_impl.h"
+#include "include/private/SkAssert.h"
+#include "include/private/SkSpan_impl.h"
 
 #include <cstdint>
 #include <cstring>

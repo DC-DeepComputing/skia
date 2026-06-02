@@ -13,7 +13,7 @@
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
-#include "include/private/base/SkAssert.h"
+#include "include/private/SkAssert.h"
 #include "modules/skcms/skcms.h"
 #include "src/base/SkArenaAlloc.h"
 #include "src/core/SkColorFilterPriv.h"
