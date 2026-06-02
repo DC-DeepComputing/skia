@@ -20,6 +20,7 @@
 #include "src/gpu/graphite/CommandBuffer.h"
 #include "src/gpu/graphite/RecordingPriv.h"
 #include "src/gpu/graphite/Resource.h"
+#include "src/gpu/graphite/ResourceProvider.h"
 #include "src/gpu/graphite/RuntimeEffectDictionary.h"
 #include "src/gpu/graphite/Surface_Graphite.h"
 #include "src/gpu/graphite/Texture.h"
@@ -51,6 +52,11 @@ Recording::Recording(uint32_t uniqueID,
 Recording::~Recording() {
     // Any finished procs that haven't been passed to a CommandBuffer fail
     this->priv().setFailureResultForFinishedProcs();
+}
+
+void Recording::updateScratchLabels(ResourceProvider* resourceProvider) {
+    SkASSERT(resourceProvider);
+    resourceProvider->updateCachedScratchLabels(this->priv().scratchTextureUsageMap());
 }
 
 std::size_t Recording::ProxyHash::operator()(const sk_sp<TextureProxy> &proxy) const {
@@ -216,6 +222,11 @@ bool RecordingPriv::prepareResources(ResourceProvider* resourceProvider,
             return true;
         }, /*readsOnly=*/false);
     }
+
+    // After preparing resources, transfer ownership of the ScratchResourceManager's list of scratch
+    // textures with updated usages on to the Recording (which outlives the scratch resource
+    // manager). The Recording can then issue label updates upon insertion.
+    fScratchTextureUsageMap = scratchManager->snapResourceUsageUpdateList();
 
     return status != Task::Status::kFail;
 }

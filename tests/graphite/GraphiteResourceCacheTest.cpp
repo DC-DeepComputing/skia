@@ -24,6 +24,7 @@
 #include "src/gpu/graphite/Resource.h"
 #include "src/gpu/graphite/ResourceCache.h"
 #include "src/gpu/graphite/ResourceProvider.h"
+#include "src/gpu/graphite/ScratchResourceManager.h"
 #include "src/gpu/graphite/SharedContext.h"
 #include "src/gpu/graphite/Texture.h"
 #include "src/gpu/graphite/TextureProxyView.h"
@@ -32,6 +33,7 @@
 #include "tools/Resources.h"
 #include "tools/graphite/GraphiteTestContext.h"
 
+#include <string>
 namespace skgpu::graphite {
 
 class TestResource : public Resource {
@@ -986,6 +988,59 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteTimeLimitedPurgeTest,
 
     REPORTER_ASSERT(reporter, resourceCache->getResourceCount() > 0);
     REPORTER_ASSERT(reporter, resourceCache->getResourceCount() < kLargeResourceCount);
+}
+
+// Confirm that scratch texture proxies that differ only in their usage are instantiated by the
+// ScratchResourceManager as the same scratch texture, and that its resulting label is a union of
+// all its usages.
+DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteScratchTextureLabelTest,
+                                   reporter,
+                                   context,
+                                   CtsEnforcement::kNextRelease) {
+    const Caps* caps = context->priv().caps();
+    std::unique_ptr<Recorder> recorder = context->makeRecorder();
+    ResourceProvider* resourceProvider = recorder->priv().resourceProvider();
+    ScratchResourceManager scratchManager{resourceProvider, std::make_unique<ProxyReadCountMap>()};
+
+    // Certain texture parameters do not matter so long as the proxies share them.
+    auto texInfo = caps->getDefaultSampledTextureInfo(
+            SkColorType::kRGBA_8888_SkColorType, Mipmapped::kNo, Protected::kNo, Renderable::kYes);
+    static constexpr SkISize kDimensions {150, 150};
+
+    // Define two scratch texture proxies with different usages (arbitrarily chosen):
+    ScratchUsageFlags proxyAUsage = ScratchUsageFlags::kCopyDeviceTexture;
+    ScratchUsageFlags proxyBUsage = ScratchUsageFlags::kChildDevice;
+    auto textureProxyA =
+            TextureProxy::Make(caps,resourceProvider, kDimensions, texInfo, proxyAUsage);
+    auto textureProxyB =
+            TextureProxy::Make(caps,resourceProvider, kDimensions, texInfo, proxyBUsage);
+
+    // Instantiate each proxy in sequence, taking care to force the ScratchResourceManager to see
+    // the Texture associated with the proxies as available between instantiations:
+    REPORTER_ASSERT(reporter,
+                    TextureProxy::InstantiateIfNotLazy(&scratchManager, textureProxyA.get()));
+    auto textureFromProxyA = textureProxyA->refTexture();
+    scratchManager.returnTexture(textureFromProxyA);
+
+    REPORTER_ASSERT(reporter,
+                    TextureProxy::InstantiateIfNotLazy(&scratchManager, textureProxyB.get()));
+    auto textureFromProxyB = textureProxyB->refTexture();
+    // Even if we do not have more proxies to instantiate, the ScratchResourceManager expects
+    // fUnavailable to be empty upon destruction.
+    scratchManager.returnTexture(textureFromProxyB);
+
+    // Confirm that the proxies were instantiated with the same underlying Texture:
+    REPORTER_ASSERT(reporter, textureFromProxyA && textureFromProxyA == textureFromProxyB);
+
+    // In actual use, scratch label updates get triggered upon recording insertion. Simulate that
+    // logic here.
+    resourceProvider->updateCachedScratchLabels(scratchManager.snapResourceUsageUpdateList());
+
+    // Check that the resulting texture's label aligns with the expected union of usages.
+    SkEnumBitMask<ScratchUsageFlags> useMask = { proxyAUsage | proxyBUsage };
+    REPORTER_ASSERT(
+            reporter,
+            textureFromProxyA->getLabel() == ResourceCache::StringLabelFromScratchUsages(useMask));
 }
 
 }  // namespace skgpu::graphite

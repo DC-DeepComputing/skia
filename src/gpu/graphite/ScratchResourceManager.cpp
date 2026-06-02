@@ -27,9 +27,11 @@ bool ProxyReadCountMap::hasPendingReads() const {
 ScratchResourceManager::ScratchResourceManager(ResourceProvider* resourceProvider,
                                                std::unique_ptr<ProxyReadCountMap> proxyCounts)
         : fResourceProvider(resourceProvider)
-        , fProxyReadCounts(std::move(proxyCounts)) {
+        , fProxyReadCounts(std::move(proxyCounts))
+        , fScratchTextureUsageMap(std::make_unique<ScratchTextureUsageMap>()) {
     SkASSERT(resourceProvider);
     SkASSERT(fProxyReadCounts);
+    SkASSERT(fScratchTextureUsageMap);
 }
 
 ScratchResourceManager::~ScratchResourceManager() {
@@ -47,6 +49,31 @@ sk_sp<Texture> ScratchResourceManager::getScratchTexture(SkISize dimensions,
     // remain visible to other Recorders.
     SkASSERT(!fUnavailable.contains(scratchTexture.get()));
     fUnavailable.add(scratchTexture.get());
+    return scratchTexture;
+}
+
+sk_sp<Texture> ScratchResourceManager::getScratchTexture(SkISize dimensions,
+                                                         const TextureInfo& info,
+                                                         ScratchUsageFlags usage) {
+    sk_sp<Texture> scratchTexture =
+            fResourceProvider->findOrCreateScratchTexture(dimensions, info, usage, fUnavailable);
+    // Store the returned scratch texture into fUnavailable so that it is filtered from the
+    // ResourceCache when going through *this* ScratchResourceManager. But the scratch texture will
+    // remain visible to other Recorders.
+    SkASSERT(!fUnavailable.contains(scratchTexture.get()));
+    fUnavailable.add(scratchTexture.get());
+
+    for (auto& resourceAndUsages : *fScratchTextureUsageMap) {
+        if (scratchTexture.get() == resourceAndUsages.first) {
+            resourceAndUsages.second |= usage;
+            return scratchTexture;
+        }
+    }
+
+    // Note that we do not want to include the scratch texture's existing usage flags, which will be
+    // used as a point of comparison against the mask stored here to determine whether label updates
+    // are needed.
+    fScratchTextureUsageMap->push_back({scratchTexture.get(), {usage}});
     return scratchTexture;
 }
 
