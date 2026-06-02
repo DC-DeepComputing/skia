@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "db144c63_11dbeb54",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4746751
+      },
+      "writtenOn": "2026-06-02T18:32:21Z",
+      "side": 1,
+      "message": "kjlubick@: I\u0027ve built locally and it was fine. \n\nThe bug (P0) was approved for M144 LTS. PTAL.",
+      "revId": "d4d215fc90e22480a0dfa2730e46aa63c1c146b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
