@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a22b2eb_327d8677",
+        "filename": "src/core/SkFlattenable.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-02T19:20:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f50ab0c6_919e0a79",
+      "range": {
+        "startLine": 16,
+        "startChar": 10,
+        "endLine": 16,
+        "endChar": 17
+      },
+      "revId": "da6c79fb5a38dd6d91eb8d1f429818c018929c12",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "782ddc2c_8b02d758",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d6badf5_3ce7b810",
+        "filename": "src/core/SkFlattenable.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-02T19:20:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "782ddc2c_8b02d758",
+      "range": {
+        "startLine": 20,
+        "startChar": 19,
+        "endLine": 20,
+        "endChar": 32
+      },
+      "revId": "da6c79fb5a38dd6d91eb8d1f429818c018929c12",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2351a8d6_14f16a2f",
@@ -60,6 +108,30 @@
       "writtenOn": "2026-06-02T18:28:52Z",
       "side": 1,
       "message": "We can get rid of this if Register auto sorts",
+      "range": {
+        "startLine": 89,
+        "startChar": 0,
+        "endLine": 89,
+        "endChar": 4
+      },
+      "revId": "da6c79fb5a38dd6d91eb8d1f429818c018929c12",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "16996411_bb62ec5d",
+        "filename": "src/core/SkFlattenable.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-02T19:20:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2351a8d6_14f16a2f",
       "range": {
         "startLine": 89,
         "startChar": 0,
@@ -95,6 +167,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4506dc56_297809e7",
+        "filename": "src/core/SkFlattenable.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-02T19:20:31Z",
+      "side": 1,
+      "message": "It was so confusing for me too lol. I drew it out. I added a comment to explain it better",
+      "parentUuid": "03f58341_002224a2",
+      "range": {
+        "startLine": 105,
+        "startChar": 9,
+        "endLine": 105,
+        "endChar": 15
+      },
+      "revId": "da6c79fb5a38dd6d91eb8d1f429818c018929c12",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e44530c7_d7ea4a79",
         "filename": "src/core/SkFlattenable.cpp",
         "patchSetId": 3
@@ -106,6 +202,30 @@
       "writtenOn": "2026-06-02T18:28:52Z",
       "side": 1,
       "message": "This wouldn\u0027t need to be exclusive with a shared lock.",
+      "range": {
+        "startLine": 110,
+        "startChar": 4,
+        "endLine": 110,
+        "endChar": 24
+      },
+      "revId": "da6c79fb5a38dd6d91eb8d1f429818c018929c12",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a35dfde_afc5a60c",
+        "filename": "src/core/SkFlattenable.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-02T19:20:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e44530c7_d7ea4a79",
       "range": {
         "startLine": 110,
         "startChar": 4,
@@ -129,6 +249,30 @@
       "writtenOn": "2026-06-02T18:28:52Z",
       "side": 1,
       "message": "This needs a mutex access",
+      "range": {
+        "startLine": 121,
+        "startChar": 12,
+        "endLine": 121,
+        "endChar": 25
+      },
+      "revId": "da6c79fb5a38dd6d91eb8d1f429818c018929c12",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15f6244b_d0a421bd",
+        "filename": "src/core/SkFlattenable.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-02T19:20:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5c799765_e90c73c5",
       "range": {
         "startLine": 121,
         "startChar": 12,
