@@ -101,6 +101,46 @@ sk_sp<Texture> ResourceProvider::findOrCreateNonShareableTexture(SkISize dimensi
     return this->findOrCreateTexture(dimensions, info, label, budgeted, Shareable::kNo);
 }
 
+namespace {
+// Helper to generate Texture keys, sharing a resource type for scratch and non-scratch textures.
+void populate_texture_key(
+        const Caps* caps, SkISize dimensions, const TextureInfo& info, GraphiteResourceKey* key) {
+    static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
+    caps->buildKeyForTexture(dimensions, info, kType, key);
+}
+} // anonymous
+
+sk_sp<Texture> ResourceProvider::findOrCreateScratchTexture(
+        SkISize dimensions,
+        const TextureInfo& info,
+        ScratchUsageFlags usage,
+        const ResourceCache::ScratchResourceSet& unavailable) {
+    // TODO(nicolettep) consolidate this check by putting into populate_texture_key helper
+    if (!info.isValid()) {
+        // Checking for a valid TextureInfo here allows callers to consolidate error checking for
+        // both TextureInfo and Texture creation to checking for a null returned Texture.
+        return nullptr;
+    }
+
+    GraphiteResourceKey key;
+    populate_texture_key(fSharedContext->caps(), dimensions, info, &key);
+
+    if (Resource* resource =
+            fResourceCache->findAndRefScratchTextureWithUsage(key, usage, &unavailable)) {
+        return sk_sp<Texture>(static_cast<Texture*>(resource));
+    }
+
+    // Do not pass in a label to scratch texture creation if we are using ScratchUsageFlags (as
+    // opposed to custom string labels). Scratch texture label generation from usages is handled
+    // upon Recording insertion.
+    if (auto tex = this->createTexture(dimensions, info, /*label=*/"")) {
+        fResourceCache->insertResource(tex.get(), key, Budgeted::kYes, Shareable::kScratch);
+        return tex;
+    }
+
+    return nullptr;
+}
+
 sk_sp<Texture> ResourceProvider::findOrCreateScratchTexture(
         SkISize dimensions,
         const TextureInfo& info,
@@ -122,8 +162,6 @@ sk_sp<Texture> ResourceProvider::findOrCreateTexture(
     SkASSERT(shareable == Shareable::kNo || budgeted == Budgeted::kYes);
     SkASSERT(shareable != Shareable::kScratch || SkToBool(unavailable));
 
-    static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
-
     if (!info.isValid()) {
         // Checking for a valid TextureInfo here allows callers to consolidate error checking for
         // both TextureInfo and Texture creation to checking for a null returned Texture.
@@ -131,7 +169,7 @@ sk_sp<Texture> ResourceProvider::findOrCreateTexture(
     }
 
     GraphiteResourceKey key;
-    fSharedContext->caps()->buildKeyForTexture(dimensions, info, kType, &key);
+    populate_texture_key(fSharedContext->caps(), dimensions, info, &key);
 
     if (Resource* resource =
                 fResourceCache->findAndRefResource(key, budgeted, shareable, label, unavailable)) {

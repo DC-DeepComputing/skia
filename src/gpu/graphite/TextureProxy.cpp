@@ -21,6 +21,18 @@ namespace skgpu::graphite {
 
 TextureProxy::TextureProxy(SkISize dimensions,
                            const TextureInfo& info,
+                           ScratchUsageFlags usage,
+                           skgpu::Budgeted budgeted)
+        : fDimensions(dimensions)
+        , fInfo(info)
+        , fUsage(usage)
+        , fBudgeted(budgeted)
+        , fVolatile(Volatile::kNo) {
+    SkASSERT(fInfo.isValid());
+}
+
+TextureProxy::TextureProxy(SkISize dimensions,
+                           const TextureInfo& info,
                            std::string_view label,
                            skgpu::Budgeted budgeted)
         : fDimensions(dimensions)
@@ -48,6 +60,22 @@ TextureProxy::TextureProxy(SkISize dimensions,
                            LazyInstantiateCallback&& callback)
         : fDimensions(dimensions)
         , fInfo(textureInfo)
+        , fBudgeted(budgeted)
+        , fVolatile(isVolatile)
+        , fLazyInstantiateCallback(std::move(callback)) {
+    SkASSERT(fInfo.isValid());
+    SkASSERT(fLazyInstantiateCallback);
+}
+
+TextureProxy::TextureProxy(SkISize dimensions,
+                           const TextureInfo& textureInfo,
+                           skgpu::Budgeted budgeted,
+                           ScratchUsageFlags usage,
+                           Volatile isVolatile,
+                           LazyInstantiateCallback&& callback)
+        : fDimensions(dimensions)
+        , fInfo(textureInfo)
+        , fUsage(usage)
         , fBudgeted(budgeted)
         , fVolatile(isVolatile)
         , fLazyInstantiateCallback(std::move(callback)) {
@@ -135,13 +163,24 @@ bool TextureProxy::InstantiateIfNotLazy(ScratchResourceManager* scratchManager,
         return true;
     }
 
-    textureProxy->fTexture = scratchManager->getScratchTexture(textureProxy->dimensions(),
-                                                               textureProxy->textureInfo(),
-                                                               textureProxy->fLabel);
+    bool hasCustomLabel = !textureProxy->fLabel.empty();
+    if (hasCustomLabel) {
+        textureProxy->fTexture = scratchManager->getScratchTexture(
+                textureProxy->dimensions(),
+                textureProxy->textureInfo(),
+                textureProxy->label());
+    } else {
+        textureProxy->fTexture = scratchManager->getScratchTexture(
+                textureProxy->dimensions(),
+                textureProxy->textureInfo(),
+                textureProxy->scratchUsage());
+    }
+
     if (!textureProxy->fTexture) {
         return false;
     }
     SkDEBUGCODE(textureProxy->validateTexture(textureProxy->fTexture.get()));
+
     return true;
 }
 
@@ -182,6 +221,44 @@ sk_sp<TextureProxy> TextureProxy::Make(const Caps* caps,
         }
     }
     return proxy;
+}
+
+sk_sp<TextureProxy> TextureProxy::Make(const Caps* caps,
+                                       ResourceProvider* resourceProvider,
+                                       SkISize dimensions,
+                                       const TextureInfo& textureInfo,
+                                       ScratchUsageFlags usage) {
+    if (dimensions.width() < 1 || dimensions.height() < 1 ||
+        dimensions.width() > caps->maxTextureSize() ||
+        dimensions.height() > caps->maxTextureSize() ||
+        !textureInfo.isValid()) {
+        return nullptr;
+    }
+
+    // If a proxy has a ScratchUsage, then we know it will be for scratch texture which will be
+    // budgeted.
+    sk_sp<TextureProxy> proxy {new TextureProxy(dimensions, textureInfo, usage, Budgeted::kYes)};
+    return proxy;
+}
+
+sk_sp<TextureProxy> TextureProxy::MakeLazyWithScratchUsage(const Caps* caps,
+                                                           SkISize dimensions,
+                                                           const TextureInfo& textureInfo,
+                                                           ScratchUsageFlags usage,
+                                                           Volatile isVolatile,
+                                                           LazyInstantiateCallback&& callback) {
+    SkASSERT(textureInfo.isValid());
+    if (dimensions.width() < 1 || dimensions.height() < 1 ||
+        dimensions.width() > caps->maxTextureSize() ||
+        dimensions.height() > caps->maxTextureSize()) {
+        return nullptr;
+    }
+
+    return sk_sp<TextureProxy>(new TextureProxy(dimensions,
+                                                textureInfo,
+                                                Budgeted::kYes,
+                                                isVolatile,
+                                                std::move(callback)));
 }
 
 sk_sp<TextureProxy> TextureProxy::MakeLazy(const Caps* caps,

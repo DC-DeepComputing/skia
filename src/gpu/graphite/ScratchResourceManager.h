@@ -11,8 +11,11 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
 #include "include/private/base/SkTArray.h"
+#include "src/base/SkEnumBitMask.h"
 #include "src/core/SkTHash.h"
+#include "src/gpu/graphite/ResourceTypes.h"
 
+#include <memory>
 #include <string_view>
 
 namespace skgpu::graphite {
@@ -80,15 +83,17 @@ public:
                            std::unique_ptr<ProxyReadCountMap>);
     ~ScratchResourceManager();
 
-    // Get a scratch texture with the given size and texture info. The returned texture will
-    // not be reusable until the caller invokes `returnResource()`. At that point, subsequent
-    // compatible calls to getScratchTexture() may return the texture. If there is no compatible
-    // available texture to be reused, the ResourceProvider will be used to find or create one.
+    // Get a scratch texture with the given size, texture info, and label or usage. The returned
+    // texture will not be reusable until the caller invokes `returnResource()`. At that point,
+    // subsequent compatible calls to getScratchTexture() may return the texture. If there is no
+    // compatible available texture to be reused, the ResourceProvider will be used to find or
+    // create one.
     //
     // It is the caller's responsibility to determine when it's acceptable to return a resource.
     // That said, it's not mandatory that the scratch resources be returned. In that case, they just
     // stop being available for reuse for later tasks in a Recording.
     sk_sp<Texture> getScratchTexture(SkISize, const TextureInfo&, std::string_view label);
+    sk_sp<Texture> getScratchTexture(SkISize, const TextureInfo&, ScratchUsageFlags usage);
 
     // TODO: Eventually update BufferSubAllocator and DrawBufferManager to leverage the
     // BufferSubAllocator. There are a few open issues to address first:
@@ -173,6 +178,15 @@ public:
         return fProxyReadCounts->decrement(proxy);
     }
 
+    // Track which scratch texture resources will require label updates upon Recording insertion due
+    // to having newly-added usages. We can use bare pointers because the resources are kept alive
+    // by the proxies and tasks that query the ScratchResourceManager.
+    using ResourceUsagesToUpdate =
+            skia_private::TArray<std::pair<Texture*, SkEnumBitMask<ScratchUsageFlags>>>;
+    std::unique_ptr<ResourceUsagesToUpdate> transferResourceUsageUpdateList() {
+        return std::move(fResourcesRequiringUsageUpdates);
+    }
+
 private:
     ResourceProvider* fResourceProvider;
 
@@ -190,6 +204,11 @@ private:
     skia_private::TArray<PendingUseListener*> fListenerStack;
 
     std::unique_ptr<ProxyReadCountMap> fProxyReadCounts;
+
+    // A scratch texture can have multiple different usages across frames. Keep track of any scratch
+    // resources that have updated usages so we can perform the relevant label updates upon
+    // recording insertion when it is safe to do so.
+    std::unique_ptr<ResourceUsagesToUpdate> fResourcesRequiringUsageUpdates;
 };
 
 } // namespace skgpu::graphite
