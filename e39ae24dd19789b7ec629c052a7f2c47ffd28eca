@@ -1,0 +1,135 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9874dcf4_63a997ed",
+        "filename": "src/gpu/graphite/sparse_strips/MakeStrips.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-02T14:41:52Z",
+      "side": 1,
+      "message": "tiles that might possibly be filled ?",
+      "range": {
+        "startLine": 60,
+        "startChar": 60,
+        "endLine": 60,
+        "endChar": 96
+      },
+      "revId": "e39ae24dd19789b7ec629c052a7f2c47ffd28eca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ffc53da_00a7e69f",
+        "filename": "src/gpu/graphite/sparse_strips/MakeStrips.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-02T14:41:52Z",
+      "side": 1,
+      "message": "?",
+      "revId": "e39ae24dd19789b7ec629c052a7f2c47ffd28eca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b03cad8_955de3eb",
+        "filename": "src/gpu/graphite/sparse_strips/MakeStrips.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-02T14:41:52Z",
+      "side": 1,
+      "message": "?",
+      "revId": "e39ae24dd19789b7ec629c052a7f2c47ffd28eca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7ac3a39_6a027979",
+        "filename": "src/gpu/graphite/sparse_strips/MakeStrips.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-02T14:41:52Z",
+      "side": 1,
+      "message": "/* isWindingTag\u003d */ ? Here and below ?",
+      "revId": "e39ae24dd19789b7ec629c052a7f2c47ffd28eca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1004f240_ae572a2c",
+        "filename": "src/gpu/graphite/sparse_strips/MakeStrips.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-02T14:41:52Z",
+      "side": 1,
+      "message": "/* ??\u003d */ ?",
+      "range": {
+        "startLine": 207,
+        "startChar": 54,
+        "endLine": 207,
+        "endChar": 59
+      },
+      "revId": "e39ae24dd19789b7ec629c052a7f2c47ffd28eca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9586513_06fb4323",
+        "filename": "src/gpu/graphite/sparse_strips/MakeStrips.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-02T14:41:52Z",
+      "side": 1,
+      "message": "Add \u0027 \u0027s ?",
+      "revId": "e39ae24dd19789b7ec629c052a7f2c47ffd28eca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1dd712a6_dbbeb442",
+        "filename": "src/gpu/graphite/sparse_strips/MakeStrips.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-02T14:41:52Z",
+      "side": 1,
+      "message": "line up ?",
+      "revId": "e39ae24dd19789b7ec629c052a7f2c47ffd28eca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
