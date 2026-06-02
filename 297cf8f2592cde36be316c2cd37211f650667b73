@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8b28868_58599953",
+        "filename": "include/private/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-02T17:28:27Z",
+      "side": 1,
+      "message": "Let\u0027s move the contents of SkPoint_impl.h and SkSpan_impl.h into their non impl versions",
+      "range": {
+        "startLine": 60,
+        "startChar": 5,
+        "endLine": 60,
+        "endChar": 16
+      },
+      "revId": "297cf8f2592cde36be316c2cd37211f650667b73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07d9540a_fdfa4442",
+        "filename": "include/private/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-02T17:28:27Z",
+      "side": 1,
+      "message": "Delete this",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 5
+      },
+      "revId": "297cf8f2592cde36be316c2cd37211f650667b73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
