@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f50ab0c6_919e0a79",
+        "filename": "src/core/SkFlattenable.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-02T18:28:52Z",
+      "side": 1,
+      "message": "Don\u0027t move these down here. They already were in a good spot.",
+      "range": {
+        "startLine": 16,
+        "startChar": 10,
+        "endLine": 16,
+        "endChar": 17
+      },
+      "revId": "da6c79fb5a38dd6d91eb8d1f429818c018929c12",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "782ddc2c_8b02d758",
+        "filename": "src/core/SkFlattenable.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-02T18:28:52Z",
+      "side": 1,
+      "message": "You imported SharedMutex but then used a normal mutex. I think we should use a shared mutex because we almost never have writers.",
+      "range": {
+        "startLine": 20,
+        "startChar": 19,
+        "endLine": 20,
+        "endChar": 32
+      },
+      "revId": "da6c79fb5a38dd6d91eb8d1f429818c018929c12",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2351a8d6_14f16a2f",
+        "filename": "src/core/SkFlattenable.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-02T18:28:52Z",
+      "side": 1,
+      "message": "We can get rid of this if Register auto sorts",
+      "range": {
+        "startLine": 89,
+        "startChar": 0,
+        "endLine": 89,
+        "endChar": 4
+      },
+      "revId": "da6c79fb5a38dd6d91eb8d1f429818c018929c12",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03f58341_002224a2",
+        "filename": "src/core/SkFlattenable.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-02T18:28:52Z",
+      "side": 1,
+      "message": "Please add a comment here. I didn\u0027t find the standard docs particularly approachable here and it took a while to verify that this correctly takes the last element and puts it before insertion_element",
+      "range": {
+        "startLine": 105,
+        "startChar": 9,
+        "endLine": 105,
+        "endChar": 15
+      },
+      "revId": "da6c79fb5a38dd6d91eb8d1f429818c018929c12",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e44530c7_d7ea4a79",
+        "filename": "src/core/SkFlattenable.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-02T18:28:52Z",
+      "side": 1,
+      "message": "This wouldn\u0027t need to be exclusive with a shared lock.",
+      "range": {
+        "startLine": 110,
+        "startChar": 4,
+        "endLine": 110,
+        "endChar": 24
+      },
+      "revId": "da6c79fb5a38dd6d91eb8d1f429818c018929c12",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c799765_e90c73c5",
+        "filename": "src/core/SkFlattenable.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-02T18:28:52Z",
+      "side": 1,
+      "message": "This needs a mutex access",
+      "range": {
+        "startLine": 121,
+        "startChar": 12,
+        "endLine": 121,
+        "endChar": 25
+      },
+      "revId": "da6c79fb5a38dd6d91eb8d1f429818c018929c12",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
