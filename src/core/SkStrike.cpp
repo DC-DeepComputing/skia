@@ -221,6 +221,20 @@ SkSpan<const SkGlyph*> SkStrike::metrics(
     return this->internalPrepare(glyphIDs, kMetricsOnly, results);
 }
 
+void SkStrike::getWidths(int count,
+                         const uint32_t* glyphs, size_t stride,
+                         SkStrikeRef::WidthsCallback callback,
+                         SkScalar scale) {
+    Monitor m{this};
+    for (int i = 0; i < count; ++i) {
+        uint32_t glyphID = *glyphs;
+        glyphs = reinterpret_cast<const uint32_t*>(
+                reinterpret_cast<const uint8_t*>(glyphs) + stride);
+        SkGlyph* glyph = this->glyph(SkPackedGlyphID{static_cast<SkGlyphID>(glyphID)});
+        callback(static_cast<SkGlyphID>(glyphID), glyph->advanceX() * scale);
+    }
+}
+
 SkSpan<const SkGlyph*> SkStrike::preparePaths(
         SkSpan<const SkGlyphID> glyphIDs, const SkGlyph* results[]) {
     Monitor m{this};

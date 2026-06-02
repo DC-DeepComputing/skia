@@ -12,6 +12,7 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
+#include <functional>
 
 class SkFont;
 class SkStrike;
@@ -49,6 +50,9 @@ public:
         @param widths  returns text advances for each glyph, in font units
     */
     void getWidths(SkSpan<const SkGlyphID> glyphs, SkSpan<SkScalar> widths) const;
+
+    using WidthsCallback = std::function<void(SkGlyphID glyphID, SkScalar width)>;
+    void getWidths(int count, const uint32_t* glyphs, size_t stride, WidthsCallback callback) const;
 
     /** Retrieves the advance width for a single glyph.
 
