@@ -125,6 +125,75 @@ constexpr bool is_valid_samplecount(uint32_t sampleCount) {
     return true;
 }
 
+// check a single block and, recursively, all its children
+[[nodiscard]] bool block_contains_ext_format(const ShaderCodeDictionary* dict,
+                                             SkStream* stream) {
+    uint32_t codeSnippetID;
+    if (!stream->readU32(&codeSnippetID)) {
+        return false;
+    }
+
+    auto entry = dict->getEntry(codeSnippetID);
+    if (!entry) {
+        return false;
+    }
+
+    if (entry->storesSamplerDescData()) {
+        int32_t dataLengthEncoded;
+        if (!stream->readS32(&dataLengthEncoded)) {
+            return false;
+        }
+
+        int32_t dataLength = PaintParamsKey::EncodeDataSize(dataLengthEncoded);
+        SkASSERT(dataLength >= 0 && dataLength <= PaintParamsKey::kEmbeddedDataSizeLimit);
+
+        if (dataLength == 3) {
+            return true;
+        }
+
+        if (!stream->skip(dataLength)) {
+            return false;
+        }
+    }
+
+    for (int i = 0; i < entry->fNumChildren; ++i) {
+        if (block_contains_ext_format(dict, stream)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+[[nodiscard]] bool graphics_pipeline_desc_contains_ext_format(
+        const ShaderCodeDictionary* shaderCodeDictionary,
+        SkMemoryStream* stream) {
+    uint32_t renderStepID;
+    if (!stream->readU32(&renderStepID)) {
+        return false;
+    }
+
+    uint32_t keySize;
+    if (!stream->readU32(&keySize)) {
+        return false;
+    }
+
+    if (keySize) {
+        uint32_t endOfKey = static_cast<uint32_t>(stream->getPosition()) + 4 * keySize;
+        if (endOfKey > stream->getLength()) {
+            return false;
+        }
+
+        while (stream->getPosition() < endOfKey) {
+            if (block_contains_ext_format(shaderCodeDictionary, stream)) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
 [[nodiscard]] bool serialize_attachment_desc(SkWStream* stream,
                                              const AttachmentDesc& attachmentDesc) {
     uint32_t tag = attachmentDesc.fFormat == TextureFormat::kUnsupported
@@ -229,6 +298,42 @@ constexpr bool is_valid_samplecount(uint32_t sampleCount) {
     return true;
 }
 
+[[nodiscard]] bool render_pass_contains_ext_format(SkMemoryStream* stream) {
+    AttachmentDesc tmp;
+    if (!deserialize_attachment_desc(stream, &tmp)) {
+        return false;
+    }
+    if (tmp.fFormat == TextureFormat::kExternal) {
+        return true;
+    }
+
+    if (!deserialize_attachment_desc(stream, &tmp)) {
+        return false;
+    }
+    if (tmp.fFormat == TextureFormat::kExternal) {
+        return true;
+    }
+
+    if (!deserialize_attachment_desc(stream, &tmp)) {
+        return false;
+    }
+    if (tmp.fFormat == TextureFormat::kExternal) {
+        return true;
+    }
+
+    uint16_t swizzle;
+    if (!stream->readU16(&swizzle)) {
+        return false;
+    }
+
+    uint8_t sampleCount;
+    if (!stream->readU8(&sampleCount) || !is_valid_samplecount(sampleCount)) {
+        return false;
+    }
+
+    return false;
+}
+
 #define SK_BLOB_END_TAG SkSetFourByteTag('e', 'n', 'd', ' ')
 
 bool SerializePipelineDesc(ShaderCodeDictionary* shaderCodeDictionary,
@@ -280,6 +385,27 @@ bool DeserializePipelineDesc(const Caps* caps,
     }
 
     return true;
+}
+
+bool serialized_key_contains_ext_format(const ShaderCodeDictionary* shaderCodeDictionary,
+                                        SkMemoryStream* stream) {
+    SkASSERT(stream);
+
+    if (!stream_is_pipeline(stream)) {
+        return false;
+    }
+
+    if (graphics_pipeline_desc_contains_ext_format(shaderCodeDictionary, stream)) {
+        return true;
+    }
+
+    // It seems implausible that the RenderPass would contain an external format.
+    // Just return 'false' from here?
+    if (render_pass_contains_ext_format(stream)) {
+        return true;
+    }
+
+    return false;
 }
 
 } // anonymous namespace
@@ -343,6 +469,16 @@ bool DataToPipelineDesc(const Caps* caps,
     }
 
     return true;
+}
+
+bool DataContainsExternalFormat(const ShaderCodeDictionary* shaderCodeDictionary,
+                                const SkData* data) {
+    if (!data) {
+        return false;
+    }
+    SkMemoryStream stream(data->data(), data->size());
+
+    return serialized_key_contains_ext_format(shaderCodeDictionary, &stream);
 }
 
 #if defined(GPU_TEST_UTILS)
