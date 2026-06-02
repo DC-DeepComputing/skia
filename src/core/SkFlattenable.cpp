@@ -6,20 +6,21 @@
  */
 #include "include/core/SkFlattenable.h"
 
-#include "include/core/SkData.h"
-#include "include/core/SkRefCnt.h"
-#include "include/core/SkSerialProcs.h"
-#include "include/core/SkTypes.h"
-#include "include/private/base/SkTDArray.h"
-#include "src/core/SkPtrRecorder.h"
-#include "src/core/SkReadBuffer.h"
-#include "src/core/SkWriteBuffer.h"
-
 #include <algorithm>
 #include <cstdint>
 #include <cstring>
 #include <iterator>
 #include <utility>
+
+#include "include/core/SkData.h"
+#include "include/core/SkRefCnt.h"
+#include "include/core/SkSerialProcs.h"
+#include "include/core/SkTypes.h"
+#include "include/private/base/SkTDArray.h"
+#include "src/base/SkSharedMutex.h"
+#include "src/core/SkPtrRecorder.h"
+#include "src/core/SkReadBuffer.h"
+#include "src/core/SkWriteBuffer.h"
 
 SkNamedFactorySet::SkNamedFactorySet() : fNextAddedFactory(0) {}
 
@@ -80,25 +81,33 @@ struct EntryComparator {
 };
 
 int gCount = 0;
-Entry gEntries[128];
+Entry gEntries[128] = {};
+SkSharedMutex gEntriesMutex;
 
 }  // namespace
 
 void SkFlattenable::Finalize() {
+    SkAutoSharedMutexExclusive mut(gEntriesMutex);
     std::sort(gEntries, gEntries + gCount, EntryComparator());
 }
 
 void SkFlattenable::Register(const char name[], Factory factory) {
+    SkAutoSharedMutexExclusive mut(gEntriesMutex);
     SkASSERT(name);
     SkASSERT(factory);
     SkASSERT(gCount < (int)std::size(gEntries));
 
+    Entry* insertion_element =
+            std::upper_bound(gEntries, gEntries + gCount, name, EntryComparator());
     gEntries[gCount].fName = name;
     gEntries[gCount].fFactory = factory;
+
+    std::rotate(insertion_element, gEntries + gCount, gEntries + gCount + 1);
     gCount += 1;
 }
 
 SkFlattenable::Factory SkFlattenable::NameToFactory(const char name[]) {
+    SkAutoSharedMutexExclusive mut(gEntriesMutex);
     RegisterFlattenablesIfNeeded();
 
     SkASSERT(std::is_sorted(gEntries, gEntries + gCount, EntryComparator()));
