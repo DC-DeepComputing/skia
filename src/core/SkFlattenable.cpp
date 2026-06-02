@@ -11,6 +11,7 @@
 #include "include/core/SkSerialProcs.h"
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkTDArray.h"
+#include "src/base/SkSharedMutex.h"
 #include "src/core/SkPtrRecorder.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkWriteBuffer.h"
@@ -80,25 +81,59 @@ struct EntryComparator {
 };
 
 int gCount = 0;
-Entry gEntries[128];
+Entry gEntries[128] = {};
+SkSharedMutex gEntriesMutex;
 
 }  // namespace
 
-void SkFlattenable::Finalize() {
-    std::sort(gEntries, gEntries + gCount, EntryComparator());
-}
-
 void SkFlattenable::Register(const char name[], Factory factory) {
+    SkAutoSharedMutexExclusive lock(gEntriesMutex);
     SkASSERT(name);
     SkASSERT(factory);
     SkASSERT(gCount < (int)std::size(gEntries));
 
+    /**
+     * We add the new Entry to gEntries using a sorted insertion
+     *
+     * We first find the position at which we must insert the new Entry (insertion_element =
+     * std::upper_bound(gEntries, gEntries + gCount, name, EntryComparator());
+     *
+     * Then we add our new Entry to gEntries[gCount]
+     *
+     * Then we call std::rotate(first, middle, last)
+     * - first will be the beginning of the range we want to operate on
+     * - middle will be the element that, once we are done, will be at the
+     * beginning of the range
+     * - last will be the (non-inclusive) end of the range we want to operate on
+     * - This will effectively swap [first, middle) and [middle, last) in the array
+     *
+     * As an example, let's insert name = 'Efact' into
+     * gEntries = ['Afact', 'Bfact', 'Cfact', 'Dfact', 'Ffact', 'Gfact', ...] with
+     * gCount = 6
+     *
+     * After upper_bound, insertion_element points to 'Ffact'
+     *
+     * After gEntries[gCount] = name, gEntries + gCount points to 'Efact'
+     *
+     * now we have gEntries = ['Afact', 'Bfact', 'Cfact', 'Dfact', 'Ffact', 'Gfact', 'Efact', ...]
+     *
+     * so std::rotate(insertion_element, gEntries + gCount, gEntries + gCount + 1); will result in
+     * gEntries = ['Afact', 'Bfact', 'Cfact', 'Dfact', 'Efact', 'Ffact', 'Gfact',  ...]
+     *
+     * This will effectively move the new Entry to the insertion_element position, while maintaing
+     * the order of the other elements
+     */
+    Entry* insertion_element =
+            std::upper_bound(gEntries, gEntries + gCount, name, EntryComparator());
     gEntries[gCount].fName = name;
     gEntries[gCount].fFactory = factory;
+
+    std::rotate(insertion_element, gEntries + gCount, gEntries + gCount + 1);
     gCount += 1;
 }
 
 SkFlattenable::Factory SkFlattenable::NameToFactory(const char name[]) {
+    SkAutoSharedMutexShared lock(gEntriesMutex);
     RegisterFlattenablesIfNeeded();
 
     SkASSERT(std::is_sorted(gEntries, gEntries + gCount, EntryComparator()));
@@ -110,6 +145,7 @@ SkFlattenable::Factory SkFlattenable::NameToFactory(const char name[]) {
 }
 
 const char* SkFlattenable::FactoryToName(Factory fact) {
+    SkAutoSharedMutexShared lock(gEntriesMutex);
     RegisterFlattenablesIfNeeded();
 
     const Entry* entries = gEntries;
