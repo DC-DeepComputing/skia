@@ -33,6 +33,24 @@
       "message": "On the blink side, this would look like: https://chromium-review.googlesource.com/c/chromium/src/+/7894077",
       "revId": "ae5bfdfc7a1ca7a42f575ae23708ffeaa0570be2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e555347_b1cd8de2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-06-02T15:25:41Z",
+      "side": 1,
+      "message": "Thanks Dominik.\n\nLooking at the bug profiles, is the buffer allocation problematic or just the `memset` part?  If the latter, would it be sufficient to use uninitialized storage instead?\n\nE.g. replace the `Vector` buffer with something like\n\n```\n  std::array\u003cGlyph, 512\u003e glyph_stack_storage;\n  std::unique_ptr\u003cGlyph[]\u003e glyph_heap_storage;\n  SkSpan\u003cGlyph\u003e glyph_array;\n  if (count \u003e std::size(glyph_stack_storage)) {\n    glyph_heap_storage \u003d std::make_unique_for_overwrite\u003cGlyph[]\u003e(count);\n    glyph_array \u003d { glyph_heap_storage.get(), count };\n  } else {\n    glyph_array \u003d { glyph_stack_storage.data(), count };\n  }\n  ...\n```\n\nI\u0027m also not opposed to adding the callback if needed, although a callback per glyph is also kinda chatty (but hopefully not in a measurable way).",
+      "parentUuid": "759cac5a_359d477a",
+      "revId": "ae5bfdfc7a1ca7a42f575ae23708ffeaa0570be2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
