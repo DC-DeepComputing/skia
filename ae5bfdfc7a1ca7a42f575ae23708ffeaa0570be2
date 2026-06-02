@@ -16,6 +16,23 @@
       "message": "This is a proposal for an API shape the reduces friction between Blink and Skia for the very hot code path of glyph advances retrieval. Having a write-converter passed in as a callback really helps avoiding moving from 2 temporary 500 glyphs long vector allocations and initilizations on the Blink side, and moving to straight to the passed-in HarfBuzz buffer. Please see bug for details. \n\nI appreciate your feedback - hope something like this works as an extension to the StrikeRef API.",
       "revId": "ae5bfdfc7a1ca7a42f575ae23708ffeaa0570be2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "759cac5a_359d477a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2026-06-02T14:21:42Z",
+      "side": 1,
+      "message": "On the blink side, this would look like: https://chromium-review.googlesource.com/c/chromium/src/+/7894077",
+      "revId": "ae5bfdfc7a1ca7a42f575ae23708ffeaa0570be2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
