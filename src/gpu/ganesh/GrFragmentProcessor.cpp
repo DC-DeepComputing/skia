@@ -13,7 +13,7 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkTypes.h"
 #include "include/effects/SkRuntimeEffect.h"
-#include "include/private/base/SkPoint_impl.h"
+#include "include/private/SkPoint_impl.h"
 #include "src/core/SkRuntimeEffectPriv.h"
 #include "src/core/SkSLTypeShared.h"
 #include "src/gpu/KeyBuilder.h"

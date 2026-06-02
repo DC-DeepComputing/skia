@@ -12,8 +12,8 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSpan.h"
-#include "include/private/base/SkPoint_impl.h"
-#include "include/private/base/SkTLogic.h"
+#include "include/private/SkPoint_impl.h"
+#include "include/private/SkTLogic.h"
 #include "src/core/SkColorData.h"  // IWYU pragma: keep
 #include "src/text/gpu/GlyphVector.h"
 #include "src/text/gpu/SubRunAllocator.h"

@@ -18,7 +18,7 @@
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/ganesh/GrDirectContext.h"
 #include "include/gpu/ganesh/SkSurfaceGanesh.h"
-#include "include/private/base/SkTDArray.h"
+#include "include/private/SkTDArray.h"
 #include "include/private/chromium/Slug.h"
 #include "tests/CtsEnforcement.h"
 #include "tests/Test.h"

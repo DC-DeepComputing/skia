@@ -8,7 +8,7 @@
 #ifndef skgpu_graphite_Log_DEFINED
 #define skgpu_graphite_Log_DEFINED
 
-#include "include/private/base/SkLog.h"
+#include "include/private/SkLog.h"
 
 #define SKGPU_LOG(priority, fmt, ...) \
     SKIA_LOG((SkLogPriority)priority, "[graphite] " fmt, ##__VA_ARGS__)

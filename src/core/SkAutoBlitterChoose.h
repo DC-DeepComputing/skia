@@ -8,7 +8,7 @@
 #ifndef SkAutoBlitterChoose_DEFINED
 #define SkAutoBlitterChoose_DEFINED
 
-#include "include/private/base/SkMacros.h"
+#include "include/private/SkMacros.h"
 #include "src/base/SkArenaAlloc.h"
 #include "src/core/SkBlitter.h"
 #include "src/core/SkDraw.h"

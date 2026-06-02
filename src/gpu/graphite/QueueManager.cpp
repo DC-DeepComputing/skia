@@ -9,7 +9,7 @@
 
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/graphite/Recording.h"
-#include "include/private/base/SkAssert.h"
+#include "include/private/SkAssert.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/gpu/GpuTypesPriv.h"
 #include "src/gpu/RefCntedCallback.h"

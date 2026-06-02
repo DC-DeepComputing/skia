@@ -14,7 +14,7 @@
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkTileMode.h"
-#include "include/private/base/SkTDArray.h"
+#include "include/private/SkTDArray.h"
 #include "src/base/SkArenaAlloc.h"
 #include "src/core/SkColorData.h"
 #include "src/core/SkTHash.h"

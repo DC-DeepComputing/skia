@@ -5,8 +5,8 @@
  * found in the LICENSE file.
  */
 
-#include "include/private/base/SkFloatingPoint.h"
-#include "include/private/base/SkSpan_impl.h"
+#include "include/private/SkFloatingPoint.h"
+#include "include/private/SkSpan_impl.h"
 #include "src/base/SkBezierCurves.h"
 #include "src/base/SkQuads.h"
 #include "tests/Test.h"

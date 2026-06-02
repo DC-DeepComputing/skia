@@ -8,11 +8,11 @@
 #ifndef SkArenaAlloc_DEFINED
 #define SkArenaAlloc_DEFINED
 
-#include "include/private/base/SkASAN.h"
-#include "include/private/base/SkAssert.h"
-#include "include/private/base/SkSpan_impl.h"
-#include "include/private/base/SkTFitsIn.h"
-#include "include/private/base/SkTo.h"
+#include "include/private/SkASAN.h"
+#include "include/private/SkAssert.h"
+#include "include/private/SkSpan_impl.h"
+#include "include/private/SkTFitsIn.h"
+#include "include/private/SkTo.h"
 
 #include <algorithm>
 #include <array>

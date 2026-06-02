@@ -10,9 +10,9 @@
 
 #include "include/core/SkColor.h"
 #include "include/core/SkTypes.h"
-#include "include/private/base/SkMacros.h"
-#include "include/private/base/SkSpan_impl.h"
-#include "include/private/base/SkTArray.h"
+#include "include/private/SkMacros.h"
+#include "include/private/SkSpan_impl.h"
+#include "include/private/SkTArray.h"
 #include "src/base/SkArenaAlloc.h"
 #include "src/core/SkRasterPipelineOpContexts.h"
 

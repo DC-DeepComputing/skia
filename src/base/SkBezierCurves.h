@@ -7,7 +7,7 @@
 #ifndef SkBezierCurves_DEFINED
 #define SkBezierCurves_DEFINED
 
-#include "include/private/base/SkSpan_impl.h"
+#include "include/private/SkSpan_impl.h"
 
 #include <array>
 
