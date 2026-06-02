@@ -1,0 +1,234 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b06a0e38_a434762f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 13
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-02T14:33:26Z",
+      "side": 1,
+      "message": "This is kind of a lot of extra overhead. Do you know why?\n\nI\u0027d expect it to be almost none given we should be allocating the new builder on the first text blob and reusing it on every other drawTextBlob.",
+      "range": {
+        "startLine": 29,
+        "startChar": 23,
+        "endLine": 29,
+        "endChar": 28
+      },
+      "revId": "909c5b12bc0a10f664f6a313f5b64609c5c744b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "454c68bf_0634d172",
+        "filename": "include/core/SkCanvas.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 2424,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-02T14:33:26Z",
+      "side": 1,
+      "message": "put this with other friend classes, around line 2550 or so.",
+      "range": {
+        "startLine": 2424,
+        "startChar": 4,
+        "endLine": 2424,
+        "endChar": 10
+      },
+      "revId": "909c5b12bc0a10f664f6a313f5b64609c5c744b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb580968_b7f5287d",
+        "filename": "include/core/SkCanvas.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 2715,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-02T14:33:26Z",
+      "side": 1,
+      "message": "Why do we need a STArray that contains unique_ptrs? It seems a bit overkill, especially that we always use .get() to borrow the builder anyway.\n\nI\u0027d also like a comment that says these are reused across text drawing commands.",
+      "range": {
+        "startLine": 2715,
+        "startChar": 4,
+        "endLine": 2715,
+        "endChar": 16
+      },
+      "revId": "909c5b12bc0a10f664f6a313f5b64609c5c744b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "768f385a_656df706",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 2421,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-02T14:33:26Z",
+      "side": 1,
+      "message": "These names are a bit long and unwieldy. What do you have that\u0027s shorter? Could we make fScratchGlyphRunBuilders -\u003e fRunBuilders (those other words don\u0027t seem super helpful given we can look at the type and maybe a comment above the field to learn more). Then `fRunBuildersUsed`?",
+      "range": {
+        "startLine": 2421,
+        "startChar": 37,
+        "endLine": 2421,
+        "endChar": 70
+      },
+      "revId": "909c5b12bc0a10f664f6a313f5b64609c5c744b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "067bbe20_b32b8082",
+        "filename": "tests/SkCanvasReentrantDrawTextBlob.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-02T14:33:26Z",
+      "side": 1,
+      "message": "Can this all live in tests/TextBlobTest.cpp? Does it have to be a new file?",
+      "range": {
+        "startLine": 3,
+        "startChar": 3,
+        "endLine": 3,
+        "endChar": 12
+      },
+      "revId": "909c5b12bc0a10f664f6a313f5b64609c5c744b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f25e32f4_9333ac70",
+        "filename": "tests/SkCanvasReentrantDrawTextBlob.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-02T14:33:26Z",
+      "side": 1,
+      "message": "Why this specific number? Are we going through `SubRunContainer::MakeInAlloc` and need to be big enough for drawables (instead of masks) or something else?",
+      "range": {
+        "startLine": 54,
+        "startChar": 41,
+        "endLine": 54,
+        "endChar": 47
+      },
+      "revId": "909c5b12bc0a10f664f6a313f5b64609c5c744b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1cf6a2f_f707c209",
+        "filename": "tests/SkCanvasReentrantDrawTextBlob.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-02T14:33:26Z",
+      "side": 1,
+      "message": "Might want to SkASSERT this works",
+      "range": {
+        "startLine": 75,
+        "startChar": 28,
+        "endLine": 75,
+        "endChar": 39
+      },
+      "revId": "909c5b12bc0a10f664f6a313f5b64609c5c744b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e4ca95f_73971cf6",
+        "filename": "tests/SkCanvasReentrantDrawTextBlob.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-02T14:33:26Z",
+      "side": 1,
+      "message": "I\u0027d prefer these be an explicit SkSerialProcs (and above too). It makes it easier to do code search for SkSerialProcs and SkDeserialProcs which has been helpful when making sure we specified image procs etc appropriately. Add a comment that the default procs are fine because we don\u0027t have any embedded images or such.",
+      "range": {
+        "startLine": 79,
+        "startChar": 38,
+        "endLine": 79,
+        "endChar": 40
+      },
+      "revId": "909c5b12bc0a10f664f6a313f5b64609c5c744b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "295b10b3_3f9b7ad1",
+        "filename": "tests/SkCanvasReentrantDrawTextBlob.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-02T14:33:26Z",
+      "side": 1,
+      "message": "The failing test appears to be hitting an assert on `SkASSERT(std::is_sorted(gEntries, gEntries + gCount, EntryComparator()));`\nThere\u0027s a Finalize which sorts the list but it\u0027s private. Let\u0027s make `SkFlattenable::Register` do a sorted insertion instead of an append. I\u0027m a bit worried that could cause some threading issues with other tests, so let\u0027s add a SkSharedMutex to guard that flattenable list. We\u0027ll want to spin that off in its own CL.",
+      "range": {
+        "startLine": 110,
+        "startChar": 19,
+        "endLine": 110,
+        "endChar": 27
+      },
+      "revId": "909c5b12bc0a10f664f6a313f5b64609c5c744b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e8adfb9_2c555124",
+        "filename": "tests/SkCanvasReentrantDrawTextBlob.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-02T14:33:26Z",
+      "side": 1,
+      "message": "This is big enough that my ASAN build fails to allocate space. Can it be smaller? (or is my ASAN build messed up?)",
+      "range": {
+        "startLine": 116,
+        "startChar": 35,
+        "endLine": 116,
+        "endChar": 39
+      },
+      "revId": "909c5b12bc0a10f664f6a313f5b64609c5c744b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
