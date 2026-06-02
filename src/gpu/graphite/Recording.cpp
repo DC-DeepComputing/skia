@@ -20,6 +20,7 @@
 #include "src/gpu/graphite/CommandBuffer.h"
 #include "src/gpu/graphite/RecordingPriv.h"
 #include "src/gpu/graphite/Resource.h"
+#include "src/gpu/graphite/ResourceProvider.h"
 #include "src/gpu/graphite/RuntimeEffectDictionary.h"
 #include "src/gpu/graphite/Surface_Graphite.h"
 #include "src/gpu/graphite/Texture.h"
@@ -51,6 +52,16 @@ Recording::Recording(uint32_t uniqueID,
 Recording::~Recording() {
     // Any finished procs that haven't been passed to a CommandBuffer fail
     this->priv().setFailureResultForFinishedProcs();
+}
+
+void Recording::updateScratchLabels(ResourceProvider* resourceProvider) {
+    SkASSERT(resourceProvider);
+    if (auto toUpdate = this->priv().resourcesRequiringUsageUpdates()) {
+        resourceProvider->updateCachedScratchLabels(toUpdate);
+        // Empty the list of textures needing updates once the updates are completed.
+        // TODO(nicolettep): Necessary?
+        toUpdate->clear();
+    }
 }
 
 std::size_t Recording::ProxyHash::operator()(const sk_sp<TextureProxy> &proxy) const {
@@ -216,6 +227,16 @@ bool RecordingPriv::prepareResources(ResourceProvider* resourceProvider,
             return true;
         }, /*readsOnly=*/false);
     }
+
+    // After preparing resources, obtain the stored map of scratch texture resources and their
+    // updated usages from the ScratchResourceManager and transfer this map to the Recording.
+    fResourcesRequiringUsageUpdates = scratchManager->transferResourceUsageUpdateList();
+
+    // debugging only; remove (nicolettep)
+    // for (auto rsrcAndUsage : *fResourcesRequiringUsageUpdates) {
+    //     Resource* rsrcPtr = rsrcAndUsage.first;
+    //     auto& usage = rsrcAndUsage.second;
+    // }
 
     return status != Task::Status::kFail;
 }

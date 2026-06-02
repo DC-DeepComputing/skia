@@ -64,5 +64,10 @@ void ThreadSafeResourceProvider::forceProcessReturnedResources() {
     fWrappedProvider->forceProcessReturnedResources();
 }
 
+// void ThreadSafeResourceProvider::updateCachedScratchLabels() {
+//     SkAutoSpinlock lock{fSpinLock};
+//     fWrappedProvider->updateCachedScratchLabels();
+// }
+
 } // namespace skgpu::graphite
 
