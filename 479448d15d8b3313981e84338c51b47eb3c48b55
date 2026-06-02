@@ -283,6 +283,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "37cf2ca1_19d81c49",
+        "filename": "src/core/SkFlattenable.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-02T20:45:14Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "2c16c261_1aa8eafd",
+      "range": {
+        "startLine": 112,
+        "startChar": 7,
+        "endLine": 112,
+        "endChar": 16
+      },
+      "revId": "479448d15d8b3313981e84338c51b47eb3c48b55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "75d97fd2_b93583e4",
@@ -367,6 +391,30 @@
       "side": 1,
       "message": "I like this, but I think you might have gotten confused about the order of the arguments.\n\nit would be \n\nstd::rotate(\u0027elderberry\u0027, \u0027dragonfruit\u0027, \u0027dragonfruit\u0027+1);\n\n     * After gEntries[gCount] \u003d name, gEntries + gCount points to \u0027dragonfruit\u0027\n     *\n     * now we have gEntries \u003d [\u0027apple\u0027, \u0027blueberry\u0027, \u0027coconut\u0027, \u0027elderberry\u0027, \u0027fig\u0027, \u0027dragonfruit\u0027]\n     *\n     * so std::rotate(\u0027elderberry\u0027, \u0027dragonfruit\u0027, \u0027dragonfruit\u0027+1); will result in\n     * gEntries \u003d [\u0027apple\u0027, \u0027blueberry\u0027, \u0027coconut\u0027, \u0027dragonfruit\u0027, \u0027elderberry\u0027, \u0027fig\u0027]",
       "parentUuid": "452cfaf7_c08871d6",
+      "range": {
+        "startLine": 120,
+        "startChar": 10,
+        "endLine": 120,
+        "endChar": 82
+      },
+      "revId": "479448d15d8b3313981e84338c51b47eb3c48b55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7e4b3ff_c7abb021",
+        "filename": "src/core/SkFlattenable.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-02T20:45:14Z",
+      "side": 1,
+      "message": "Indeed, I had gotten turned around.",
+      "parentUuid": "1abe83b3_92751dc2",
       "range": {
         "startLine": 120,
         "startChar": 10,
