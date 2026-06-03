@@ -122,6 +122,14 @@ out/Debug/fuzz --bytes <path_to_testcase>
 ```
 For the full workflow (including writing reproduction unit tests), see [Fuzz Debugging](references/fuzz.md).
 
+### 6. Debugging Fuzz Cases & Writing Reproduction Tests
+To build and run a fuzzer (like Clusterfuzz or oss-fuzz) to reproduce a crash:
+```bash
+ninja -C out/Debug fuzz
+out/Debug/fuzz --bytes <path_to_testcase>
+```
+For the full workflow (including writing reproduction unit tests), see [Fuzz Debugging](references/fuzz.md).
+
 ## Available Resources
 - [Build Arguments](references/build_args.md)
 - [dm Usage](references/dm_usage.md)
