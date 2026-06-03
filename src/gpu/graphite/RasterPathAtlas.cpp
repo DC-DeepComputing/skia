@@ -11,11 +11,13 @@
 #include "include/core/SkColorSpace.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "include/private/base/SkLog.h"
+#include "src/core/SkMipmap.h"
 #include "src/gpu/graphite/AtlasProvider.h"
 #include "src/gpu/graphite/DrawContext.h"
 #include "src/gpu/graphite/ProxyCache.h"
 #include "src/gpu/graphite/RasterPathUtils.h"
 #include "src/gpu/graphite/RecorderPriv.h"
+#include "src/gpu/graphite/TextureUtils.h"
 
 namespace skgpu::graphite {
 
@@ -97,31 +99,19 @@ sk_sp<TextureProxy> RasterPathAtlas::onAddShape(const Shape& shape,
         return proxy;
     }
 
-    // Failed to add to atlases, try to add to ProxyCache
-    skgpu::UniqueKey maskKey = GeneratePathMaskKey(shape, localToDevice, strokeRec,
-                                                   maskOrigin, maskSize);
-    struct PathDrawContext {
-        const Shape& fShape;
-        const Transform& fLocalToDevice;
-        const SkStrokeRec& fStrokeRec;
-        SkIRect fShapeBounds;
-        SkIVector fTransformedMaskOffset;
-    } context = { shape, localToDevice, strokeRec,
-                  SkIRect::MakeSize({maskSize.x(), maskSize.y()}).makeOffset(kEntryPadding,
-                                                                             kEntryPadding),
-                  transformedMaskOffset };
-    sk_sp<TextureProxy> cachedProxy = fRecorder->priv().proxyCache()->findOrCreateCachedProxy(
-            fRecorder, maskKey, &context,
-            [](const void* ctx) {
-                const PathDrawContext* pdc = static_cast<const PathDrawContext*>(ctx);
-                auto [bm, helper] = RasterMaskHelper::Allocate(
-                        pdc->fShapeBounds.size(),
-                        -pdc->fTransformedMaskOffset,
-                        kEntryPadding);
-                helper.drawShape(pdc->fShape, pdc->fLocalToDevice, pdc->fStrokeRec);
-                bm.setImmutable();
-                return bm;
-            });
+    // Failed to add to atlases, create a standalone mask (not cached)
+    auto [bm, helper] = RasterMaskHelper::Allocate(
+            {maskSize.x(), maskSize.y()},
+            -transformedMaskOffset,
+            kEntryPadding,
+            /*initialAlpha=*/0,
+            SkBackingFit::kApprox);
+    helper.drawShape(shape, localToDevice, strokeRec);
+    bm.setImmutable();
+
+    sk_sp<TextureProxy> cachedProxy =
+            MakeBitmapProxyView(fRecorder, bm, nullptr, Mipmapped::kNo,
+                                Budgeted::kYes, "Path Mask").refProxy();
 
     *outPos = { kEntryPadding, kEntryPadding };
     return cachedProxy;

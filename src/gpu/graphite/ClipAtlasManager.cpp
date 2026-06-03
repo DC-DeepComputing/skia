@@ -17,11 +17,13 @@
 #include "include/private/base/SkPoint_impl.h"
 #include "include/private/base/SkTArray.h"
 #include "src/core/SkAutoPixmapStorage.h"
+#include "src/core/SkMipmap.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/ProxyCache.h"
 #include "src/gpu/graphite/RasterPathUtils.h"
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/TextureProxy.h"
+#include "src/gpu/graphite/TextureUtils.h"
 #include "src/gpu/graphite/geom/Shape.h"
 
 namespace skgpu::graphite {
@@ -122,30 +124,23 @@ sk_sp<TextureProxy> ClipAtlasManager::findOrCreateEntry(uint32_t stackRecordID,
         return atlasProxy;
     }
 
-    // We need to include the bounds in the key when using the ProxyCache
-    maskKey = GenerateClipMaskKey(stackRecordID, elementList, maskDeviceBounds,
-                                  /*includeBounds=*/true, &keyBounds, &usesPathKey);
+    // Create an uncached standalone mask
+    auto translate =
+            -maskDeviceBounds.topLeft() + SkIVector{kEntryPadding, kEntryPadding};
+    auto [bm, helper] =
+            RasterMaskHelper::Allocate(maskDeviceBounds.size(),
+                                        translate,
+                                        kEntryPadding,
+                                        initial_alpha_for_elements(*elementList),
+                                        SkBackingFit::kApprox);
 
-    const struct ClipDrawContext {
-        const ClipStack::ElementList* fElementList;
-        SkIRect fMaskDeviceBounds;
-    } context = {elementList, maskDeviceBounds};
-    sk_sp<TextureProxy> proxy = fRecorder->priv().proxyCache()->findOrCreateCachedProxy(
-            fRecorder, maskKey, &context,
-            [](const void* ctx) {
-                const ClipDrawContext* cdc = static_cast<const ClipDrawContext*>(ctx);
-                auto translate =
-                        -cdc->fMaskDeviceBounds.topLeft() + SkIVector{kEntryPadding, kEntryPadding};
-                auto [bm, helper] =
-                        RasterMaskHelper::Allocate(cdc->fMaskDeviceBounds.size(),
-                                                   translate,
-                                                   kEntryPadding,
-                                                   initial_alpha_for_elements(*cdc->fElementList));
+    render_elements(&helper, *elementList);
+    bm.setImmutable();
 
-                render_elements(&helper, *cdc->fElementList);
-                bm.setImmutable();
-                return bm;
-            });
+    sk_sp<TextureProxy> proxy =
+            MakeBitmapProxyView(fRecorder, bm, nullptr, Mipmapped::kNo,
+                                Budgeted::kYes, "Clip Mask").refProxy();
+
     *outPos = { kEntryPadding, kEntryPadding };
 
     return proxy;
