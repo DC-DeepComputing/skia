@@ -1560,3 +1560,31 @@ DEF_TEST(RRect_fuzzer_regressions, r) {
         REPORTER_ASSERT(r, sizeof(buf) == SkRRect{}.readFromMemory(buf, sizeof(buf)));
     }
 }
+
+DEF_TEST(RRect_b511391129, r) {
+    {
+        SkRect rect = SkRect::MakeLTRB(0.0f, 0.0f, 0x1.969696p+23f, 0x1.969696p+23f);
+        SkRRect rrect;
+        rrect.setRectXY(rect, 0x1.969694p+23f, 0x1.969694p+23f);
+        REPORTER_ASSERT(r, rrect.isValid());
+    }
+
+    {
+        SkRect rect = SkRect::MakeLTRB(0.0f, 0.0f, 0x1.969696p+23f, 0x1.969696p+23f);
+        SkRRect rrect;
+        rrect.setNinePatch(
+                rect, 0x1.969694p+23f, 0x1.969694p+23f, 0x1.969694p+23f, 0x1.969694p+23f);
+        REPORTER_ASSERT(r, rrect.isValid());
+    }
+
+    {
+        SkRect rect = SkRect::MakeLTRB(0.0f, 0.0f, 0x1.969696p+23f, 0x1.969696p+23f);
+        SkVector radii[4] = {{0x1.969694p+23f, 0x1.969694p+23f},
+                             {0x1.969694p+23f, 0x1.969694p+23f},
+                             {0x1.969694p+23f, 0x1.969694p+23f},
+                             {0x1.969694p+23f, 0x1.969694p+23f}};
+        SkRRect rrect;
+        rrect.setRectRadii(rect, radii);
+        REPORTER_ASSERT(r, rrect.isValid());
+    }
+}
