@@ -39,6 +39,30 @@
       },
       "revId": "30358ccf196ebba2e340f3e2fb5166a6b94333ae",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ff02fa6_920704f0",
+        "filename": "src/gpu/ganesh/ops/SmallPathRenderer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 744,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-06-03T12:55:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "885134e1_d6b54c74",
+      "range": {
+        "startLine": 744,
+        "startChar": 21,
+        "endLine": 744,
+        "endChar": 35
+      },
+      "revId": "30358ccf196ebba2e340f3e2fb5166a6b94333ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
