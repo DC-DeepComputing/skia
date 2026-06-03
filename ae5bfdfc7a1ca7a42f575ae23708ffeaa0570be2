@@ -51,6 +51,24 @@
       "parentUuid": "759cac5a_359d477a",
       "revId": "ae5bfdfc7a1ca7a42f575ae23708ffeaa0570be2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8b25450_4ee5bf23",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2026-06-03T11:00:44Z",
+      "side": 1,
+      "message": "It depends on the input. In `CJK-article.html`, which is one of `blink_perf` benchmarks we were measuring, the inputs are short and realloc\u0027s don\u0027t really happen to the extent they\u0027d show in the profile. The initialisation is more prominent. However, what we run into here is also an extra collection of glyphs into the glyph buffer, and an extra copy of advances from the collection buffer to the HarfBuzz advances output buffer. I would like to reduce those, too. \n\nI am locally experimenting with a different signature that does not take a callback (which I was hoping to have the compiler inline), but with a function that supports striding for the output, too.",
+      "parentUuid": "0e555347_b1cd8de2",
+      "revId": "ae5bfdfc7a1ca7a42f575ae23708ffeaa0570be2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
