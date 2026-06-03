@@ -212,11 +212,10 @@ public:
                          .detach(),
                  "Circle"});
 
-        // TODO FIX ME! :)
-        // baseGeometries.push_back({
-        //     SkPathBuilder().addOval(SkRect::MakeWH(kTileWidth * 4.0f, 0.5f)).detach(),
-        //     "ThinOval"
-        // });
+        baseGeometries.push_back({
+            SkPathBuilder().addOval(SkRect::MakeWH(kTileWidth * 4.0f, 0.5f)).detach(),
+            "ThinOval"
+        });
 
         SkPathBuilder inset;
         inset.addRect(SkRect::MakeWH(kTileWidth * 3.0f, kTileHeight * 3.0f), SkPathDirection::kCW);

@@ -193,7 +193,7 @@ public:
     //     slope and intercept of the line relative to the pixel.
     //  2. Hierarchical Winding: (Explain)
     //
-    SK_ALWAYS_INLINE void rasterizeLineToTile(const Tile& tile, std::array<float, 4> tileBounds) {
+    SK_ALWAYS_INLINE void rasterizeLineToTile(const Tile& tile, std::array<SkPoint, 2> tileBounds) {
         Line line = fPolyline.getLine(tile.lineIdx());
         bool canonicalXDir = line.p1.fX >= line.p0.fX;
         bool canonicalYDir = line.p1.fY >= line.p0.fY;
@@ -222,10 +222,10 @@ public:
 
         std::array<float, 4> derivs = {dx, dy, idx, idy};
 
-        auto clipped = Tile::ClipToTile<kTileWidth, kTileHeight>(
+        auto [clippedLine, entersLeft, exitsLeft] = Tile::ClipToTile<kTileWidth, kTileHeight>(
                 line, tileBounds, derivs, tile.intersectionMask(), canonicalXDir, canonicalYDir);
-        SkPoint pTop = clipped[0];
-        SkPoint pBot = clipped[1];
+        SkPoint pTop = clippedLine.p0;
+        SkPoint pBot = clippedLine.p1;
 
         // Fill left
         if (tile.left()) {
@@ -285,7 +285,7 @@ public:
             uint8_t startMaskVal = 0xff;
             bool startBumped = defaultBumped;
             if (isStartY) {
-                startBumped = (pTopX == 0.0f && pixelTopTouch);
+                startBumped = (entersLeft && pixelTopTouch);
                 if (!startBumped) {
                     // Truncate subsamples above the segment's starting y.
                     uint32_t shift = static_cast<uint32_t>(
@@ -295,7 +295,7 @@ public:
             }
 
             uint8_t endMaskVal = 0xff;
-            if (isEndYMinus1 && pBotX != 0.0f) {
+            if (isEndYMinus1 && !exitsLeft) {
                 // Truncate subsamples below the segment's ending y.
                 uint32_t shift = static_cast<uint32_t>(
                         std::round(8.0f * (pBotY - static_cast<float>(row))));

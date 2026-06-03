@@ -116,11 +116,7 @@ public:
         }
     }
 
-    SK_ALWAYS_INLINE void rasterizeLineToTile(const Tile& tile, std::array<float, 4> tileBounds) {
-        float tileMinX = tileBounds[0];
-        float tileMinY = tileBounds[1];
-        float tileMaxX = tileBounds[2];
-        float tileMaxY = tileBounds[3];
+    SK_ALWAYS_INLINE void rasterizeLineToTile(const Tile& tile, std::array<SkPoint, 2> tileBounds) {
         Line line = fPolyline.getLine(tile.lineIdx());
         bool canonicalXDir = line.p1.fX >= line.p0.fX;
         bool canonicalYDir = line.p1.fY >= line.p0.fY;
@@ -144,13 +140,12 @@ public:
         float idy = (std::abs(dy) <= Strip::kStripEpsilon) ? 0.0f : 1.0f / dy;
         float dxdy = dx * idy;
 
-        std::array<float, 4> bounds = {tileMinX, tileMinY, tileMaxX, tileMaxY};
         std::array<float, 4> derivs = {dx, dy, idx, idy};
 
-        auto clipped = Tile::ClipToTile<kTileWidth, kTileHeight>(
-                line, bounds, derivs, tile.intersectionMask(), canonicalXDir, canonicalYDir);
-        SkPoint pTop = clipped[0];
-        SkPoint pBot = clipped[1];
+        auto [clippedLine, entersLeft, exitsLeft] = Tile::ClipToTile<kTileWidth, kTileHeight>(
+                line, tileBounds, derivs, tile.intersectionMask(), canonicalXDir, canonicalYDir);
+        SkPoint pTop = clippedLine.p0;
+        SkPoint pBot = clippedLine.p1;
 
         if (tile.left()) {
             float yEdge = (pTop.fX < pBot.fX) ? pTop.fY : pBot.fY;
@@ -173,7 +168,7 @@ public:
             float pBotY = isOnlyRow ? pBot.fY : static_cast<float>(startY + 1);
 
             uint8_t startMaskVal = 0xff;
-            bool startBumped = (edgeX[startY] == 0.0f && stepParams.firstRowTopTouch);
+            bool startBumped = (entersLeft && stepParams.firstRowTopTouch);
 
             if (!startBumped) {
                 uint32_t shift = static_cast<uint32_t>(
@@ -182,7 +177,7 @@ public:
             }
 
             uint8_t endMaskVal = 0xff;
-            if (isOnlyRow && edgeX[startY + 1] != 0.0f) {
+            if (isOnlyRow && !exitsLeft) {
                 uint32_t shift = static_cast<uint32_t>(
                         std::round(8.0f * (pBotY - static_cast<float>(startY))));
                 endMaskVal = static_cast<uint8_t>(~(0xff << shift));
@@ -208,7 +203,7 @@ public:
                 float pBotYLast = pBot.fY;
 
                 uint8_t endMaskLast = 0xff;
-                if (edgeX[lastY + 1] != 0.0f) {
+                if (!exitsLeft) {
                     uint32_t shift = static_cast<uint32_t>(
                             std::round(8.0f * (pBotYLast - static_cast<float>(lastY))));
                     endMaskLast = static_cast<uint8_t>(~(0xff << shift));

@@ -222,14 +222,14 @@ private:
         Strip currentStrip(prevTile.x * kTileWidth, prevTile.y * kTileHeight,
                            processor.localAlphaIdx(), /*shouldFill*/false);
 
-        float tileMinX = static_cast<float>(prevTile.x * kTileWidth);
-        float tileMinY = static_cast<float>(prevTile.y * kTileHeight);
-        std::array<float, 4> tileBounds = {
-                tileMinX,
-                tileMinY,
-                tileMinX + static_cast<float>(kTileWidth),
-                tileMinY + static_cast<float>(kTileHeight)
+        float prevX = static_cast<float>(prevTile.x * kTileWidth);
+        float prevY = static_cast<float>(prevTile.y * kTileHeight);
+        std::array<SkPoint, 2> tileBounds = {
+                SkPoint::Make(prevX, prevY),
+                SkPoint::Make(prevX + static_cast<float>(kTileWidth),
+                              prevY + static_cast<float>(kTileHeight))
         };
+
 
         for (size_t i = 0; i < totalCount; ++i) {
             Tile tile = tiles[i];
@@ -283,8 +283,9 @@ private:
                 float x = static_cast<float>(tile.x * kTileWidth);
                 float y = static_cast<float>(tile.y * kTileHeight);
                 tileBounds = {
-                        x, y,
-                        x + static_cast<float>(kTileWidth), y + static_cast<float>(kTileHeight)
+                        SkPoint::Make(x, y),
+                        SkPoint::Make(x + static_cast<float>(kTileWidth),
+                                      y + static_cast<float>(kTileHeight))
                 };
             }
 
