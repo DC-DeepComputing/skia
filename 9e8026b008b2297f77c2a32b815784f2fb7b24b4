@@ -16,6 +16,24 @@
       "message": "Let\u0027s move the check to the common `computeQuads` above.  I don\u0027t think anyone is calling that directly, but in theory they could (and may in the future).",
       "revId": "9e8026b008b2297f77c2a32b815784f2fb7b24b4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fdb03231_3f6cfafa",
+        "filename": "src/core/SkGeometry.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 530,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-03T20:17:08Z",
+      "side": 1,
+      "message": "The assert happens in `conic.set(pts.data(), weight)` so if we move the check there, it\u0027s already too late.",
+      "parentUuid": "66d80a9e_0dc02c58",
+      "revId": "9e8026b008b2297f77c2a32b815784f2fb7b24b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
