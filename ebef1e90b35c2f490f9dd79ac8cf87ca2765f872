@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9757feb0_e1aae1e3",
+        "filename": "agents/skills/skia-gn-workflow/references/fuzz.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-06-03T19:08:11Z",
+      "side": 1,
+      "message": "SKIA_LOG_D",
+      "revId": "ebef1e90b35c2f490f9dd79ac8cf87ca2765f872",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aaf75009_780b17b3",
+        "filename": "agents/skills/skia-gn-workflow/references/fuzz.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-06-03T19:08:11Z",
+      "side": 1,
+      "message": "SKIA_LOG_D",
+      "range": {
+        "startLine": 48,
+        "startChar": 43,
+        "endLine": 48,
+        "endChar": 51
+      },
+      "revId": "ebef1e90b35c2f490f9dd79ac8cf87ca2765f872",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
