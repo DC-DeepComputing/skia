@@ -33,6 +33,24 @@
       "message": "I have a reproduction DM that successfully triggers the ASAN, but it\u0027s probably too heavy to add to testing? I can also check the overflow more directly, but I think a test here is unnecessary",
       "revId": "2c1db513478f66670c8416d801811d9f783e3d0b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1ebcb1b_e2b7e425",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-03T16:42:38Z",
+      "side": 1,
+      "message": "Yeah, I think those tests hold little value and would not add it.",
+      "parentUuid": "ad8cf3de_0109ad34",
+      "revId": "2c1db513478f66670c8416d801811d9f783e3d0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
