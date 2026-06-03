@@ -25,6 +25,8 @@
 #include "src/gpu/ganesh/GrUserStencilSettings.h"
 #include "src/gpu/ganesh/tessellate/GrStrokeTessellationShader.h"
 
+#include "src/base/SkSafeMath.h"
+
 #include <utility>
 
 namespace skgpu::ganesh {
@@ -93,7 +95,10 @@ GrOp::CombineResult StrokeTessellateOp::onCombineIfPossible(GrOp* grOp, SkArenaA
     SkASSERT(fProcessors.isFinalized());
     SkASSERT(op->fProcessors.isFinalized());
 
-    if (fNeedsStencil ||
+    SkSafeMath safe;
+    int combinedVerbCnt = safe.addInt(fTotalCombinedVerbCnt, op->fTotalCombinedVerbCnt);
+    if (!safe.ok() ||
+        fNeedsStencil ||
         op->fNeedsStencil ||
         fViewMatrix != op->fViewMatrix ||
         fAAType != op->fAAType ||
@@ -138,7 +143,7 @@ GrOp::CombineResult StrokeTessellateOp::onCombineIfPossible(GrOp* grOp, SkArenaA
     fPathStrokeTail = (op->fPathStrokeTail == &op->fPathStrokeList.fNext) ? &headCopy->fNext
                                                                           : op->fPathStrokeTail;
 
-    fTotalCombinedVerbCnt += op->fTotalCombinedVerbCnt;
+    fTotalCombinedVerbCnt = combinedVerbCnt;
     return CombineResult::kMerged;
 }
 
