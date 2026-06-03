@@ -19,6 +19,7 @@
 #include <cstdint>
 #include <limits>
 #include <string>
+#include <tuple>
 
 namespace skgpu::graphite {
 
@@ -103,23 +104,22 @@ struct Tile : public IntersectionBits {
     //     will be set to zero.
     //  2) Only two bits are ever set in the mask. (Expects that perfect corner touches are tie
     //     broken by the Tiler.)
-    //
-    // TODO: needs updating, we should be snapping to bounds before we subtract them from the line
     template <uint16_t kWidth, uint16_t kHeight>
-    static SK_ALWAYS_INLINE std::array<SkPoint, 2> ClipToTile(
-        const Line& line,
-        const std::array<float, 4>& bounds,
-        const std::array<float, 4>& derivatives,
-        uint32_t intersectionMask,
-        bool canonicalXDir,
-        bool canonicalYDir) {
-        SkPoint pEntry = line.p0;
-        SkPoint pExit  = line.p1;
+    static SK_ALWAYS_INLINE std::tuple<Line, bool, bool> ClipToTile(
+            const Line& line,
+            std::array<SkPoint, 2> tileBounds,
+            const std::array<float, 4>& derivatives,
+            uint32_t intersectionMask,
+            bool canonicalXDir,
+            bool canonicalYDir) {
+        constexpr float width = static_cast<float>(kWidth);
+        constexpr float height = static_cast<float>(kHeight);
 
-        const float tileMinX = bounds[0];
-        const float tileMinY = bounds[1];
-        const float tileMaxX = bounds[2];
-        const float tileMaxY = bounds[3];
+        const SkPoint topLeft = tileBounds[0];
+        const float tileMinX = tileBounds[0].fX;
+        const float tileMinY = tileBounds[0].fY;
+        const float tileMaxX = tileBounds[1].fX;
+        const float tileMaxY = tileBounds[1].fY;
 
         const float dx = derivatives[0];
         const float dy = derivatives[1];
@@ -132,29 +132,29 @@ struct Tile : public IntersectionBits {
         uint32_t maskVIn, maskVOut;
         float boundVIn, boundVOut;
         if (canonicalXDir) {
-            maskVIn  = L;
+            maskVIn = L;
             boundVIn = tileMinX;
             maskVOut = R;
-            boundVOut= tileMaxX;
+            boundVOut = tileMaxX;
         } else {
-            maskVIn  = R;
+            maskVIn = R;
             boundVIn = tileMaxX;
             maskVOut = L;
-            boundVOut= tileMinX;
+            boundVOut = tileMinX;
         }
 
         uint32_t maskHIn, maskHOut;
         float boundHIn, boundHOut;
         if (canonicalYDir) {
-            maskHIn  = T;
+            maskHIn = T;
             boundHIn = tileMinY;
             maskHOut = B;
-            boundHOut= tileMaxY;
+            boundHOut = tileMaxY;
         } else {
-            maskHIn  = B;
+            maskHIn = B;
             boundHIn = tileMaxY;
             maskHOut = T;
-            boundHOut= tileMinY;
+            boundHOut = tileMinY;
         }
 
         const float idx = derivatives[2];
@@ -162,84 +162,52 @@ struct Tile : public IntersectionBits {
 
         // Check the candidate edges against the intersection mask
         const uint32_t entryHits = intersectionMask & (maskVIn | maskHIn);
-        if (entryHits != 0) {
-            // Since the Tiler guarantees strict tie-breaking upstream (never outputting conflicting
-            // entry bits for a perfect corner hit), we can safely isolate the specific entry axis.
-            const bool useH = (intersectionMask & maskHIn) != 0;
-
-            const float bound = useH ? boundHIn   : boundVIn;
-            const float start = useH ? line.p0.fY : line.p0.fX;
-            const float invD  = useH ? idy        : idx;
-
-            // Evaluate the parametric equation t = (bound - start) * (1 / delta)
-            const float t = (bound - start) * invD;
-
-            pEntry.fX = line.p0.fX + t * dx;
-            pEntry.fY = line.p0.fY + t * dy;
-
-            // Explicitly snap the specific axis to the bound to eliminate floating point drift
-            if (useH) {
-                pEntry.fY = bound;
-            } else {
-                pEntry.fX = bound;
-            }
-        }
-
-        // Repeat for exit
         const uint32_t exitHits = intersectionMask & (maskVOut | maskHOut);
-        if (exitHits != 0) {
-            const bool useH = (intersectionMask & maskHOut) != 0;
 
-            const float bound = useH ? boundHOut   : boundVOut;
-            const float start = useH ? line.p0.fY  : line.p0.fX;
-            const float invD  = useH ? idy         : idx;
+        auto clipPt = [&](SkPoint p, uint32_t hits, uint32_t maskH, float boundH, float boundV)
+                -> std::pair<SkPoint, bool> {
+            bool isLeft = false;
+            if (hits != 0) {
+                const bool useH = (intersectionMask & maskH) != 0;
+                const float bound = useH ? boundH : boundV;
+                const float start = useH ? line.p0.fY : line.p0.fX;
+                const float invD = useH ? idy : idx;
 
-            const float t = (bound - start) * invD;
+                const float t = (bound - start) * invD;
 
-            pExit.fX = line.p0.fX + t * dx;
-            pExit.fY = line.p0.fY + t * dy;
+                p.fX = line.p0.fX + t * dx;
+                p.fY = line.p0.fY + t * dy;
 
-            // Explicitly snap the specific axis to the bound
-            if (useH) {
-                pExit.fY = bound;
+                if (useH) {
+                    p.fY = bound;
+                    p.fX -= topLeft.fX;
+                    p.fY -= topLeft.fY;
+                    p.fX = std::clamp(p.fX, 0.0f, width);
+                } else {
+                    p.fX = bound;
+                    p.fX -= topLeft.fX;
+                    p.fY -= topLeft.fY;
+                    p.fY = std::clamp(p.fY, 0.0f, height);
+                    isLeft = (bound == tileMinX);
+                }
             } else {
-                pExit.fX = bound;
+                p.fX -= topLeft.fX;
+                p.fY -= topLeft.fY;
+                p.fX = std::clamp(p.fX, 0.0f, width);
+                p.fY = std::clamp(p.fY, 0.0f, height);
             }
-        }
+            return {p, isLeft};
+        };
+
+        auto [pEntry, entryLeft] = clipPt(line.p0, entryHits, maskHIn, boundHIn, boundVIn);
+        auto [pExit, exitLeft] = clipPt(line.p1, exitHits, maskHOut, boundHOut, boundVOut);
 
         // Guarantee predictable winding order for downstream rasterization stages.
-        std::array<SkPoint, 2> result;
-        if (pExit.fY >= pEntry.fY) {
-            result = {pEntry, pExit};
+        if (canonicalYDir) {
+            return {{pEntry, pExit}, entryLeft, exitLeft};
         } else {
-            result = {pExit, pEntry};
+            return {{pExit, pEntry}, exitLeft, entryLeft};
         }
-
-        // Shift from global viewport coordinates into tile-local space.
-        result[0].fX -= tileMinX;
-        result[0].fY -= tileMinY;
-        result[1].fX -= tileMinX;
-        result[1].fY -= tileMinY;
-
-        // Clamping serves three functions here:
-        //  1) Floating-Point Correction: Points which are slightly outside the tile due to floating
-        //     point error are coerced inside.
-        //  2) Confinement: Upstream logic sets reciprocal derivatives to 0 for perfectly horizontal
-        //     or vertical lines. This causes the parametric math above to return the original
-        //     unclipped coordinate. Clamping confines this "free" axis to the tile boundaries.
-        //  3) Zero-Width Degenerates: If there is only a single edge crossing (e.g., a tie-broken
-        //     corner hit or an inclusive touch), the opposing uncalculated endpoint is forced onto
-        //     that same edge. This flattens the segment into zero-width geometry that the
-        //     downstream coverage calculation will safely ignore.
-        constexpr float width  = static_cast<float>(kWidth);
-        constexpr float height = static_cast<float>(kHeight);
-
-        result[0].fX = std::clamp(result[0].fX, 0.0f, width);
-        result[0].fY = std::clamp(result[0].fY, 0.0f, height);
-        result[1].fX = std::clamp(result[1].fX, 0.0f, width);
-        result[1].fY = std::clamp(result[1].fY, 0.0f, height);
-
-        return result;
     }
 };
 
