@@ -69,6 +69,24 @@
       "parentUuid": "0e555347_b1cd8de2",
       "revId": "ae5bfdfc7a1ca7a42f575ae23708ffeaa0570be2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7671863_94844ef5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2026-06-03T14:47:16Z",
+      "side": 1,
+      "message": "Currently running Pinpoint perf tests on the CL and Skia change in https://chromium-review.git.corp.google.com/c/chromium/src/+/7894625/4/strided_widths.patch (I added a Blink side script to patch Skia so I could run it all through Pinpoint without depending on Skia DEPS changes).",
+      "parentUuid": "d8b25450_4ee5bf23",
+      "revId": "ae5bfdfc7a1ca7a42f575ae23708ffeaa0570be2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
