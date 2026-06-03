@@ -12,8 +12,7 @@
 #include "include/core/SkSize.h"
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/graphite/Recorder.h"
-#include "include/private/base/SkAssert.h"
-#include "include/private/base/SkLog.h"
+#include "include/private/SkAssert.h"
 #include "src/base/SkEnumBitMask.h"
 #include "src/core/SkColorData.h"
 #include "src/core/SkTraceEvent.h"
@@ -29,6 +28,7 @@
 #include "src/gpu/graphite/DrawParams.h"
 #include "src/gpu/graphite/DrawPass.h"
 #include "src/gpu/graphite/Image_Graphite.h"
+#include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/RenderPassDesc.h"
 #include "src/gpu/graphite/ResourceTypes.h"
@@ -285,7 +285,7 @@ void DrawContext::flush(Recorder* recorder) {
                     SkBackingFit::kApprox,
                     "DstCopy");
             if (!imageCopy) {
-                SKIA_LOG_W("DrawContext::flush Image::Copy failed, draw pass dropped!");
+                SKGPU_LOG_W("DrawContext::flush Image::Copy failed, draw pass dropped!");
                 return;
             }
             dstCopy = imageCopy->textureProxyView().refProxy();
@@ -298,7 +298,7 @@ void DrawContext::flush(Recorder* recorder) {
         auto writeSwizzle = WriteSwizzleForColorType(this->colorInfo().colorType(), format);
         if (!writeSwizzle.has_value()) {
             writeSwizzle = Swizzle::RGBA(); // Fall back to rgba in release builds
-            SKIA_LOG_W("No valid write swizzle for color type %d with format %s",
+            SKGPU_LOG_W("No valid write swizzle for color type %d with format %s",
                         (int) this->colorInfo().colorType(), TextureFormatName(format));
         }
         RenderPassDesc desc = RenderPassDesc::Make(caps, fTarget.proxy()->textureInfo(),
@@ -315,7 +315,7 @@ void DrawContext::flush(Recorder* recorder) {
                                                        std::move(dstCopy), dstReadPixelBounds));
         if (fTarget.mipmapped() == Mipmapped::kYes) {
             if (!GenerateMipmaps(recorder, this, fTarget.refProxy())) {
-                SKIA_LOG_W("DrawContext::flush GenerateMipmaps failed, draw pass dropped!");
+                SKGPU_LOG_W("DrawContext::flush GenerateMipmaps failed, draw pass dropped!");
                 return;
             }
         }

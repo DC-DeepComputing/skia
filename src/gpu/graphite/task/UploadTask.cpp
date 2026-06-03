@@ -15,11 +15,10 @@
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "include/gpu/graphite/TextureInfo.h"
-#include "include/private/base/SkAlign.h"
-#include "include/private/base/SkAssert.h"
-#include "include/private/base/SkDebug.h"
-#include "include/private/base/SkLog.h"
-#include "include/private/base/SkTemplates.h"
+#include "include/private/SkAlign.h"
+#include "include/private/SkAssert.h"
+#include "include/private/SkDebug.h"
+#include "include/private/SkTemplates.h"
 #include "src/core/SkAutoPixmapStorage.h"
 #include "src/core/SkColorSpaceXformSteps.h"
 #include "src/core/SkCompressedDataUtils.h"
@@ -29,6 +28,7 @@
 #include "src/gpu/DataUtils.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/CommandBuffer.h"
+#include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/Texture.h"  // IWYU pragma: keep
 #include "src/gpu/graphite/TextureFormat.h"
@@ -249,7 +249,7 @@ UploadInstance UploadInstance::Make(Recorder* recorder,
     auto [writer, bufferInfo] = bufferMgr->getTextureUploadWriter(combinedBufferSize, minAlignment);
 
     if (!bufferInfo.fBuffer) {
-        SKIA_LOG_W("Failed to get write-mapped buffer for texture upload of size %zu",
+        SKGPU_LOG_W("Failed to get write-mapped buffer for texture upload of size %zu",
                     combinedBufferSize);
         return Invalid();
     }
@@ -315,7 +315,7 @@ bool UploadInstance::prepareResources(ResourceProvider* resourceProvider) {
     // same time, it could still go through the ScratchResourceManager and just never return them,
     // which is no different from instantiating them directly with the ResourceProvider.
     if (!TextureProxy::InstantiateIfNotLazy(resourceProvider, fTextureProxy.get())) {
-        SKIA_LOG_E("Could not instantiate texture proxy for UploadTask!");
+        SKGPU_LOG_E("Could not instantiate texture proxy for UploadTask!");
         return false;
     }
     return true;

@@ -8,9 +8,9 @@
 #ifndef SkZip_DEFINED
 #define SkZip_DEFINED
 
-#include "include/private/base/SkAssert.h"
-#include "include/private/base/SkDebug.h"
-#include "include/private/base/SkSpan_impl.h"
+#include "include/core/SkSpan.h"
+#include "include/private/SkAssert.h"
+#include "include/private/SkDebug.h"
 
 #include <algorithm>
 #include <cstddef>
