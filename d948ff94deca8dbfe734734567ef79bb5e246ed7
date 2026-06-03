@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3721ab72_814eac1f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-06-03T14:43:13Z",
+      "side": 1,
+      "message": "I\u0027ll wait for the try job to finish, but we seem to have gotten past the Go version error that\u0027s currently causing the tasks to fail.",
+      "revId": "d948ff94deca8dbfe734734567ef79bb5e246ed7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
