@@ -34,6 +34,24 @@
       "parentUuid": "66d80a9e_0dc02c58",
       "revId": "9e8026b008b2297f77c2a32b815784f2fb7b24b4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3567d82_22c5ca06",
+        "filename": "src/core/SkGeometry.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 530,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-06-03T20:18:57Z",
+      "side": 1,
+      "message": "Ah, got it.",
+      "parentUuid": "fdb03231_3f6cfafa",
+      "revId": "9e8026b008b2297f77c2a32b815784f2fb7b24b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
