@@ -10,9 +10,9 @@
 #include <optional>
 
 #include "include/core/SkStream.h"
-#include "include/private/base/SkMalloc.h"
-#include "include/private/base/SkTFitsIn.h"
-#include "include/private/base/SkTo.h"
+#include "include/private/SkMalloc.h"
+#include "include/private/SkTFitsIn.h"
+#include "include/private/SkTo.h"
 #include "src/base/SkArenaAlloc.h"
 #include "src/base/SkSafeMath.h"
 #include "src/core/SkOpts.h"

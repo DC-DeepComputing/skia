@@ -14,7 +14,7 @@
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkScalar.h"
-#include "include/private/base/SkAssert.h"
+#include "include/private/SkAssert.h"
 #include "src/base/SkArenaAlloc.h"
 #include "src/gpu/BufferWriter.h"
 
