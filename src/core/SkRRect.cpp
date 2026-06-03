@@ -62,8 +62,8 @@ void SkRRect::setRectXY(const SkRect& rect, SkScalar xRad, SkScalar yRad) {
 
     if (fRect.width() < xRad+xRad || fRect.height() < yRad+yRad) {
         // At most one of these two divides will be by zero, and neither numerator is zero.
-        SkScalar scale = std::min(sk_ieee_float_divide(fRect. width(), xRad + xRad),
-                                     sk_ieee_float_divide(fRect.height(), yRad + yRad));
+        float scale = std::min(sk_ieee_float_divide(fRect.width(), xRad + xRad),
+                               sk_ieee_float_divide(fRect.height(), yRad + yRad));
         SkASSERT(scale < SK_Scalar1);
         xRad *= scale;
         yRad *= scale;
@@ -79,9 +79,13 @@ void SkRRect::setRectXY(const SkRect& rect, SkScalar xRad, SkScalar yRad) {
         fRadii[i].set(xRad, yRad);
     }
     fType = kSimple_Type;
-    if (xRad >= SkScalarHalf(fRect.width()) && yRad >= SkScalarHalf(fRect.height())) {
+    if (xRad >= (fRect.width() / 2) && yRad >= (fRect.height() / 2)) {
         fType = kOval_Type;
-        // TODO: assert that all the x&y radii are already W/2 & H/2
+        xRad = SkRectPriv::HalfWidth(fRect);
+        yRad = SkRectPriv::HalfHeight(fRect);
+        for (int i = 0; i < 4; ++i) {
+            fRadii[i].set(xRad, yRad);
+        }
     }
 
     SkASSERT(this->isValid());
@@ -130,7 +134,7 @@ void SkRRect::setNinePatch(const SkRect& rect, SkScalar leftRad, SkScalar topRad
     rightRad = std::max(rightRad, 0.0f);
     bottomRad = std::max(bottomRad, 0.0f);
 
-    SkScalar scale = SK_Scalar1;
+    float scale = 1.0f;
     if (leftRad + rightRad > fRect.width()) {
         scale = fRect.width() / (leftRad + rightRad);
     }
@@ -138,7 +142,7 @@ void SkRRect::setNinePatch(const SkRect& rect, SkScalar leftRad, SkScalar topRad
         scale = std::min(scale, fRect.height() / (topRad + bottomRad));
     }
 
-    if (scale < SK_Scalar1) {
+    if (scale < 1.0f) {
         leftRad *= scale;
         topRad *= scale;
         rightRad *= scale;
@@ -146,8 +150,10 @@ void SkRRect::setNinePatch(const SkRect& rect, SkScalar leftRad, SkScalar topRad
     }
 
     if (leftRad == rightRad && topRad == bottomRad) {
-        if (leftRad >= SkScalarHalf(fRect.width()) && topRad >= SkScalarHalf(fRect.height())) {
+        if (leftRad >= (fRect.width() / 2) && topRad >= (fRect.height() / 2)) {
             fType = kOval_Type;
+            leftRad = rightRad = SkRectPriv::HalfWidth(fRect);
+            topRad = bottomRad = SkRectPriv::HalfHeight(fRect);
         } else if (0 == leftRad || 0 == topRad) {
             // If the left and (by equality check above) right radii are zero then it is a rect.
             // Same goes for top/bottom.
@@ -427,9 +433,11 @@ void SkRRect::computeType() {
     }
 
     if (allRadiiEqual) {
-        if (fRadii[0].fX >= SkScalarHalf(fRect.width()) &&
-            fRadii[0].fY >= SkScalarHalf(fRect.height())) {
+        if (fRadii[0].fX >= (fRect.width() / 2) && fRadii[0].fY >= (fRect.height() / 2)) {
             fType = kOval_Type;
+            for (int i = 0; i < 4; ++i) {
+                fRadii[i].set(SkRectPriv::HalfWidth(fRect), SkRectPriv::HalfHeight(fRect));
+            }
         } else {
             fType = kSimple_Type;
         }
