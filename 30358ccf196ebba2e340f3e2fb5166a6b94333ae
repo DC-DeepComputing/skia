@@ -16,6 +16,29 @@
       "message": "I guess we could also reject perspective instead.",
       "revId": "30358ccf196ebba2e340f3e2fb5166a6b94333ae",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "885134e1_d6b54c74",
+        "filename": "src/gpu/ganesh/ops/SmallPathRenderer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 744,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-03T12:43:10Z",
+      "side": 1,
+      "message": "xformedBounds ?",
+      "range": {
+        "startLine": 744,
+        "startChar": 21,
+        "endLine": 744,
+        "endChar": 35
+      },
+      "revId": "30358ccf196ebba2e340f3e2fb5166a6b94333ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
