@@ -12,7 +12,7 @@
 #include "include/core/SkSize.h"
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/graphite/Recorder.h"
-#include "include/private/base/SkAssert.h"
+#include "include/private/SkAssert.h"
 #include "src/base/SkEnumBitMask.h"
 #include "src/core/SkColorData.h"
 #include "src/core/SkTraceEvent.h"

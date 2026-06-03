@@ -10,10 +10,10 @@
 
 #include <cstdarg>
 
-#include "include/private/base/SkAPI.h"
-#include "include/private/base/SkAttributes.h"
-#include "include/private/base/SkLoadUserConfig.h" // IWYU pragma: keep
-#include "include/private/base/SkLogPriority.h"
+#include "include/private/SkAPI.h"
+#include "include/private/SkAttributes.h"
+#include "include/private/SkLoadUserConfig.h" // IWYU pragma: keep
+#include "include/private/SkLogPriority.h"
 
 #if !defined(SkLog)
 // To be implemented per platform.

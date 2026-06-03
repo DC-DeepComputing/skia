@@ -10,7 +10,7 @@
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkRect.h"
-#include "include/private/base/SkMath.h"
+#include "include/private/SkMath.h"
 #include "src/base/SkArenaAlloc.h"
 #include "src/base/SkVx.h"
 #include "src/core/SkSLTypeShared.h"

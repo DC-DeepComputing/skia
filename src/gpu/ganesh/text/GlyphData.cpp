@@ -7,7 +7,7 @@
 
 #include "src/gpu/ganesh/text/GlyphData.h"
 
-#include "include/private/base/SkAssert.h"
+#include "include/private/SkAssert.h"
 #include "src/base/SkZip.h"
 #include "src/core/SkGlyph.h"
 #include "src/core/SkStrike.h"

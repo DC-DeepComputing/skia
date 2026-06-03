@@ -13,7 +13,7 @@
 #include "include/core/SkPaint.h"
 #include "include/core/SkSurface.h"
 #include "include/effects/SkRuntimeEffect.h"
-#include "include/private/base/SkTArray.h"
+#include "include/private/SkTArray.h"
 #include "src/core/SkBlurEngine.h"
 #include "src/core/SkCompressedDataUtils.h"
 #include "src/core/SkDevice.h"

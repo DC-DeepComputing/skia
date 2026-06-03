@@ -8,12 +8,12 @@
 #ifndef SkTemplates_DEFINED
 #define SkTemplates_DEFINED
 
-#include "include/private/base/SkAlign.h"
-#include "include/private/base/SkAssert.h"
-#include "include/private/base/SkDebug.h"
-#include "include/private/base/SkMalloc.h"
-#include "include/private/base/SkTLogic.h"
-#include "include/private/base/SkTo.h"
+#include "include/private/SkAlign.h"
+#include "include/private/SkAssert.h"
+#include "include/private/SkDebug.h"
+#include "include/private/SkMalloc.h"
+#include "include/private/SkTLogic.h"
+#include "include/private/SkTo.h"
 
 #include <algorithm>
 #include <array>

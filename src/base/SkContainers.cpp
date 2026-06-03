@@ -1,12 +1,12 @@
 // Copyright 2019 Google LLC
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 
-#include "include/private/base/SkContainers.h"
+#include "include/private/SkContainers.h"
 
-#include "include/private/base/SkAlign.h"
-#include "include/private/base/SkAssert.h"
-#include "include/private/base/SkMalloc.h"
-#include "include/private/base/SkTo.h"
+#include "include/private/SkAlign.h"
+#include "include/private/SkAssert.h"
+#include "include/private/SkMalloc.h"
+#include "include/private/SkTo.h"
 
 #include <algorithm>
 #include <cstddef>

@@ -8,7 +8,7 @@
 #ifndef SkAnySubclass_DEFINED
 #define SkAnySubclass_DEFINED
 
-#include "include/private/base/SkAssert.h"
+#include "include/private/SkAssert.h"
 
 #include <cstddef>
 #include <new>
