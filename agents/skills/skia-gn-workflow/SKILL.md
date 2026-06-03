@@ -65,6 +65,14 @@ Use `viewer` to inspect GMs, SKPs, and SVGs interactively.
 - **Unit Tests**: Use `DEF_TEST` in `tests/`. See [Testing](references/testing.md).
 - **GMs**: Use `DEF_GM` in `gm/`. See [GMs](references/gms.md).
 
+### 6. Debugging Fuzz Cases & Writing Reproduction Tests
+To build and run a fuzzer (like Clusterfuzz or oss-fuzz) to reproduce a crash:
+```bash
+ninja -C out/Debug fuzz
+out/Debug/fuzz --bytes <path_to_testcase>
+```
+For the full workflow (including writing reproduction unit tests), see [Fuzz Debugging](references/fuzz.md).
+
 ## Available Resources
 - [Build Arguments](references/build_args.md)
 - [dm Usage](references/dm_usage.md)
@@ -72,4 +80,5 @@ Use `viewer` to inspect GMs, SKPs, and SVGs interactively.
 - [viewer Usage](references/viewer_usage.md)
 - [Testing](references/testing.md)
 - [GMs](references/gms.md)
+- [Fuzz Debugging](references/fuzz.md)
 - [Other Tools](references/other_tools.md)
