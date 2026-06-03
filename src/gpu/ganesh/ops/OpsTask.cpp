@@ -6,11 +6,11 @@
  */
 #include "src/gpu/ganesh/ops/OpsTask.h"
 
+#include "include/core/SkPoint.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkString.h"
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/ganesh/GrRecordingContext.h"
-#include "include/private/base/SkPoint_impl.h"
 #include "src/base/SkArenaAlloc.h"
 #include "src/base/SkScopeExit.h"
 #include "src/core/SkRectPriv.h"

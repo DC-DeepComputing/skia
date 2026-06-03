@@ -7,7 +7,7 @@
 
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSpan.h"
-#include "include/private/base/SkTemplates.h"
+#include "include/private/SkTemplates.h"
 #include "src/base/SkRandom.h"
 #include "src/base/SkTSearch.h"
 #include "src/base/SkTSort.h"

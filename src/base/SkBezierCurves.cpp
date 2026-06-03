@@ -7,10 +7,10 @@
 
 #include "src/base/SkBezierCurves.h"
 
-#include "include/private/base/SkAssert.h"
-#include "include/private/base/SkFloatingPoint.h"
-#include "include/private/base/SkPoint_impl.h"
-#include "include/private/base/SkSpan_impl.h"
+#include "include/core/SkPoint.h"
+#include "include/core/SkSpan.h"
+#include "include/private/SkAssert.h"
+#include "include/private/SkFloatingPoint.h"
 #include "src/base/SkCubics.h"
 #include "src/base/SkQuads.h"
 

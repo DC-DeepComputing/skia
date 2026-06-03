@@ -7,7 +7,7 @@
 
 #include "src/gpu/graphite/PaintParamsKey.h"
 
-#include "include/private/base/SkLog.h"
+#include "include/private/SkLog.h"
 #include "src/base/SkArenaAlloc.h"
 #include "src/base/SkAutoMalloc.h"
 #include "src/base/SkBase64.h"
