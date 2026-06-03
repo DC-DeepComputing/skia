@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b710552c_60ca7e1f",
+        "filename": "src/gpu/graphite/SerializationUtils.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-03T20:45:00Z",
+      "side": 1,
+      "message": "Is this not already handled autmoatically as part of validation during the stream\u0027s read functions?",
+      "range": {
+        "startLine": 131,
+        "startChar": 0,
+        "endLine": 133,
+        "endChar": 5
+      },
+      "revId": "1fcb292499328ca45283d1ffad4bfe3d31bdef1c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b50999fc_abc6f411",
+        "filename": "src/gpu/graphite/SerializationUtils.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-03T20:45:00Z",
+      "side": 1,
+      "message": "Technically the key holds signed data, but we\u0027re just expecting that the block value that we start with will be positive since it should be a code snippet ID. I suspect getEntry() would return null in any case.",
+      "range": {
+        "startLine": 135,
+        "startChar": 0,
+        "endLine": 136,
+        "endChar": 43
+      },
+      "revId": "1fcb292499328ca45283d1ffad4bfe3d31bdef1c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1c25e9a_c71fa07f",
+        "filename": "src/gpu/graphite/SerializationUtils.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-03T20:45:00Z",
+      "side": 1,
+      "message": "This deserves a big comment for why it\u0027s sufficient to detect external formats.",
+      "range": {
+        "startLine": 167,
+        "startChar": 0,
+        "endLine": 167,
+        "endChar": 30
+      },
+      "revId": "1fcb292499328ca45283d1ffad4bfe3d31bdef1c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a144a01_f7fe06d9",
+        "filename": "src/gpu/graphite/SerializationUtils.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 357,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-03T20:45:00Z",
+      "side": 1,
+      "message": "I think this would read simpler if we just called deserialize_render_pass_desc, and if that returns true, we return an || of all the attachment formats \u003d\u003d kExternal.",
+      "range": {
+        "startLine": 325,
+        "startChar": 0,
+        "endLine": 357,
+        "endChar": 16
+      },
+      "revId": "1fcb292499328ca45283d1ffad4bfe3d31bdef1c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
