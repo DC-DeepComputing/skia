@@ -9,10 +9,10 @@
 #define GrThreadSafeCache_DEFINED
 
 #include "include/core/SkRefCnt.h"
-#include "include/private/base/SkAssert.h"
-#include "include/private/base/SkDebug.h"
-#include "include/private/base/SkMalloc.h"
-#include "include/private/base/SkThreadAnnotations.h"
+#include "include/private/SkAssert.h"
+#include "include/private/SkDebug.h"
+#include "include/private/SkMalloc.h"
+#include "include/private/SkThreadAnnotations.h"
 #include "src/base/SkArenaAlloc.h"
 #include "src/base/SkSpinlock.h"
 #include "src/base/SkTInternalLList.h"

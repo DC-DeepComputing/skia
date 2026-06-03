@@ -11,11 +11,11 @@
 #include "include/gpu/graphite/BackendSemaphore.h"
 #include "include/gpu/graphite/vk/VulkanGraphiteTypes.h"
 #include "include/gpu/vk/VulkanMutableTextureState.h"
-#include "include/private/base/SkLog.h"
-#include "include/private/base/SkTArray.h"
+#include "include/private/SkTArray.h"
 #include "src/gpu/DataUtils.h"
 #include "src/gpu/graphite/ContextUtils.h"
 #include "src/gpu/graphite/DescriptorData.h"
+#include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/PipelineData.h"
 #include "src/gpu/graphite/RenderPassDesc.h"
 #include "src/gpu/graphite/Surface_Graphite.h"
@@ -131,7 +131,7 @@ VulkanCommandBuffer::~VulkanCommandBuffer() {
 
 bool VulkanCommandBuffer::startStatsQuery(GpuStatsFlags flags) {
     if (fHasStatsQuery) {
-        SKIA_LOG_W(
+        SKGPU_LOG_W(
                 "startTimerQuery called more than once for the same command "
                 "buffer. Currently, stats queries are only supported when "
                 "each recording gets its own submission.");
@@ -744,7 +744,7 @@ bool VulkanCommandBuffer::loadMSAAFromResolve(const RenderPassDesc& rpDesc,
     sk_sp<VulkanGraphicsPipeline> loadPipeline =
             fResourceProvider->findOrCreateLoadMSAAPipeline(rpDesc);
     if (!loadPipeline) {
-        SKIA_LOG_E("Unable to create pipeline to load resolve texture into MSAA attachment");
+        SKGPU_LOG_E("Unable to create pipeline to load resolve texture into MSAA attachment");
         return false;
     }
 
@@ -783,7 +783,7 @@ bool VulkanCommandBuffer::loadMSAAFromResolve(const RenderPassDesc& rpDesc,
             resolveTexture,
             VulkanGraphicsPipeline::kLoadMsaaFromResolveInputDescSetIndex,
             fActiveGraphicsPipeline->layout())) {
-        SKIA_LOG_E("Unable to update and bind an input attachment descriptor for loading MSAA "
+        SKGPU_LOG_E("Unable to update and bind an input attachment descriptor for loading MSAA "
                     "from resolve");
         return false;
     }
@@ -1004,7 +1004,7 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& rpDesc,
     const bool loadMSAAFromResolve = RenderPassDescWillLoadMSAAFromResolve(rpDesc);
     if (loadMSAAFromResolve && (!vulkanResolveTexture || !fTargetTexture ||
                                 !vulkanResolveTexture->supportsInputAttachmentUsage())) {
-        SKIA_LOG_E("Cannot begin render pass. In order to load MSAA from resolve, the color "
+        SKGPU_LOG_E("Cannot begin render pass. In order to load MSAA from resolve, the color "
                     "attachment must have input attachment usage and both the color and resolve "
                     "attachments must be valid.");
         return false;
@@ -1027,7 +1027,7 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& rpDesc,
     sk_sp<VulkanRenderPass> vulkanRenderPass =
             fResourceProvider->findOrCreateRenderPass(rpDesc, /*compatibleOnly=*/false);
     if (!vulkanRenderPass) {
-        SKIA_LOG_W("Could not create Vulkan RenderPass");
+        SKGPU_LOG_W("Could not create Vulkan RenderPass");
         return false;
     }
     this->submitPipelineBarriers();
@@ -1052,7 +1052,7 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& rpDesc,
                                                        frameBufferWidth,
                                                        frameBufferHeight);
     if (!framebuffer) {
-        SKIA_LOG_W("Could not find or create Vulkan Framebuffer");
+        SKGPU_LOG_W("Could not find or create Vulkan Framebuffer");
         return false;
     }
 
@@ -1093,7 +1093,7 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& rpDesc,
                                                           *vulkanResolveTexture,
                                                           fTargetTexture->dimensions(),
                                                           nativeBounds)) {
-        SKIA_LOG_E("Failed to load MSAA from resolve");
+        SKGPU_LOG_E("Failed to load MSAA from resolve");
         this->endRenderPass();
         return false;
     }
@@ -1431,7 +1431,7 @@ void VulkanCommandBuffer::bindUniformBuffers() {
 
         descSet = fResourceProvider->findOrCreateDescriptorSet(uniformDescriptorData);
         if (!descSet) {
-            SKIA_LOG_E("Unable to find or create uniform descriptor set");
+            SKGPU_LOG_E("Unable to find or create uniform descriptor set");
             return;
         }
 
@@ -1556,7 +1556,7 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
         set = fResourceProvider->findOrCreateDescriptorSet(
                 {&descriptors.front(), (size_t)descriptors.size()});
         if (!set) {
-            SKIA_LOG_E("Unable to find or create descriptor set");
+            SKGPU_LOG_E("Unable to find or create descriptor set");
             resetTextureAndSamplerState();
             return;
         }
@@ -1569,7 +1569,7 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
                 // TODO(b/294198324): Investigate the root cause for null texture or samplers on
                 // Ubuntu QuadP400 GPU
                 if (!texture) {
-                    SKIA_LOG_E("Invalid texture in BindTexturesAndSamplers command.");
+                    SKGPU_LOG_E("Invalid texture in BindTexturesAndSamplers command.");
                     resetTextureAndSamplerState();
                     return;
                 }
@@ -1583,7 +1583,7 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
                                     command->fSamplers[i]));
                     // b/294198324, see above
                     if (!sampler) {
-                        SKIA_LOG_E("Invalid dynamic sampler.");
+                        SKGPU_LOG_E("Invalid dynamic sampler.");
                         resetTextureAndSamplerState();
                         return;
                     }
@@ -1598,7 +1598,7 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
             auto sampler = static_cast<const VulkanSampler*>(fDstCopy.second);
             // b/294198324, see above
             if (!texture || !sampler) {
-                SKIA_LOG_E("Invalid texture or sampler for dst-copy path.");
+                SKGPU_LOG_E("Invalid texture or sampler for dst-copy path.");
                 resetTextureAndSamplerState();
                 return;
             }

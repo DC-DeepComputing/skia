@@ -8,7 +8,7 @@
 #ifndef SkArenaAllocList_DEFINED
 #define SkArenaAllocList_DEFINED
 
-#include "include/private/base/SkAssert.h"
+#include "include/private/SkAssert.h"
 #include "src/base/SkArenaAlloc.h" // IWYU pragma: keep
 
 #include <utility>

@@ -9,7 +9,7 @@
 #include "include/core/SkPaint.h"
 #include "include/core/SkPixmap.h"
 #include "include/core/SkTypes.h"
-#include "include/private/base/SkCPUTypes.h"
+#include "include/private/SkCPUTypes.h"
 #include "src/base/SkArenaAlloc.h"
 #include "src/core/SkBlitRow.h"
 #include "src/core/SkSpriteBlitter.h"

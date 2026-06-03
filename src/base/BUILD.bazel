@@ -104,7 +104,7 @@ skia_cc_library(
     ],
     hdrs = [
         ":private_hdrs",
-        "//include/private/base:private_hdrs",
+        "//include/private:private_hdrs",
     ],
     features = ["layering_check"],
     visibility = [

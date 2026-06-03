@@ -11,7 +11,7 @@
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPaint.h"
 #include "include/effects/SkGradient.h"
-#include "include/private/base/SkAssert.h"
+#include "include/private/SkAssert.h"
 #include "src/base/SkArenaAlloc.h"
 #include "src/core/SkBlitter.h"
 #include "src/core/SkCoreBlitters.h"
