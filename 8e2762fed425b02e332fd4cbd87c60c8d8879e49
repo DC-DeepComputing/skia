@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5dc177b_0651e469",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-06-03T14:29:56Z",
+      "side": 1,
+      "message": "LGTM; the two failing tasks are failing on the tree already anyhow",
+      "revId": "8e2762fed425b02e332fd4cbd87c60c8d8879e49",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
