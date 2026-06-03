@@ -27,9 +27,12 @@ bool ProxyReadCountMap::hasPendingReads() const {
 ScratchResourceManager::ScratchResourceManager(ResourceProvider* resourceProvider,
                                                std::unique_ptr<ProxyReadCountMap> proxyCounts)
         : fResourceProvider(resourceProvider)
-        , fProxyReadCounts(std::move(proxyCounts)) {
+        , fProxyReadCounts(std::move(proxyCounts))
+        , fScratchTextureUsageMap(std::make_unique<ScratchTextureUsageMap>())
+        , fScratchTextureLabelMap(std::make_unique<ScratchTextureLabelMap>()) {
     SkASSERT(resourceProvider);
     SkASSERT(fProxyReadCounts);
+    SkASSERT(fScratchTextureUsageMap && fScratchTextureLabelMap);
 }
 
 ScratchResourceManager::~ScratchResourceManager() {
@@ -47,7 +50,69 @@ sk_sp<Texture> ScratchResourceManager::getScratchTexture(SkISize dimensions,
     // remain visible to other Recorders.
     SkASSERT(!fUnavailable.contains(scratchTexture.get()));
     fUnavailable.add(scratchTexture.get());
+
+    std::string kBaseLabel = "ScratchTexture";
+    for (auto& resourceAndLabel : *fScratchTextureLabelMap) {
+        if (scratchTexture.get() == resourceAndLabel.first) {
+            if (resourceAndLabel.second.empty()) {
+                resourceAndLabel.second = kBaseLabel;
+            }
+            resourceAndLabel.second += "_";
+            resourceAndLabel.second.append(label);
+
+            return scratchTexture;
+        }
+    }
+
+    // Note that we do not want to include the scratch texture's existing label, which will be
+    // used as a point of comparison against the label stored here to determine whether updates
+    // are needed.
+    std::string combinedLabel = "ScratchTexture_";
+    combinedLabel.append(label);
+    fScratchTextureLabelMap->push_back({scratchTexture.get(), combinedLabel});
     return scratchTexture;
+}
+
+sk_sp<Texture> ScratchResourceManager::getScratchTexture(SkISize dimensions,
+                                                         const TextureInfo& info,
+                                                         ScratchUsageFlags usage) {
+    sk_sp<Texture> scratchTexture =
+            fResourceProvider->findOrCreateScratchTexture(dimensions, info, usage, fUnavailable);
+    // Store the returned scratch texture into fUnavailable so that it is filtered from the
+    // ResourceCache when going through *this* ScratchResourceManager. But the scratch texture will
+    // remain visible to other Recorders.
+    SkASSERT(!fUnavailable.contains(scratchTexture.get()));
+    fUnavailable.add(scratchTexture.get());
+
+    for (auto& resourceAndUsages : *fScratchTextureUsageMap) {
+        if (scratchTexture.get() == resourceAndUsages.first) {
+            resourceAndUsages.second |= usage;
+            return scratchTexture;
+        }
+    }
+
+    // Note that we do not want to include the scratch texture's existing usage flags, which will be
+    // used as a point of comparison against the mask stored here to determine whether label updates
+    // are needed.
+    fScratchTextureUsageMap->push_back({scratchTexture.get(), {usage}});
+    return scratchTexture;
+}
+
+void ScratchResourceManager::snapScratchTextureMaps(
+        std::unique_ptr<const ScratchTextureUsageMap>& usageMap,
+        std::unique_ptr<const ScratchTextureLabelMap>& labelMap) {
+    SkASSERT(fScratchTextureUsageMap && fScratchTextureLabelMap);
+
+    usageMap = std::make_unique<const ScratchTextureUsageMap>(*fScratchTextureUsageMap);
+    labelMap = std::make_unique<const ScratchTextureLabelMap>(*fScratchTextureLabelMap);
+
+    // Upon snapping the label/usage information for scratch textures, clear out their mappings
+    for (auto& textureAndUsageMask : *fScratchTextureUsageMap) {
+        textureAndUsageMask.second = {};
+    }
+    for (auto& textureAndLabel : *fScratchTextureLabelMap) {
+        textureAndLabel.second = {};
+    }
 }
 
 void ScratchResourceManager::returnTexture(sk_sp<Texture> texture) {

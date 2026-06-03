@@ -16,6 +16,7 @@
 #include "src/gpu/graphite/GraphicsPipeline.h"
 #include "src/gpu/graphite/ResourceCache.h"
 #include "src/gpu/graphite/ResourceTypes.h"
+#include "src/gpu/graphite/ScratchResourceManager.h"
 
 struct AHardwareBuffer;
 struct SkSamplingOptions;
@@ -72,6 +73,10 @@ public:
                                                    Budgeted);
     sk_sp<Texture> findOrCreateScratchTexture(SkISize,
                                               const TextureInfo&,
+                                              ScratchUsageFlags usage,
+                                              const ResourceCache::ScratchResourceSet& unavailable);
+    sk_sp<Texture> findOrCreateScratchTexture(SkISize,
+                                              const TextureInfo&,
                                               std::string_view label,
                                               const ResourceCache::ScratchResourceSet& unavailable);
 
@@ -113,6 +118,14 @@ public:
             StdSteadyClock::time_point purgeTime,
             std::optional<std::chrono::microseconds> microsMaxPurgingDur);
     void forceProcessReturnedResources() { fResourceCache->forceProcessReturnedResources(); }
+
+    // This should only be called on the Context thread when inserting a Recording (the point at
+    // which it is safe to update scratch resource labels).
+    void updateCachedScratchLabels(
+            const ScratchResourceManager::ScratchTextureUsageMap* scratchTextureUsageMap,
+            const ScratchResourceManager::ScratchTextureLabelMap* scratchTextureLabelMap) {
+        fResourceCache->updateCachedScratchLabels(scratchTextureUsageMap, scratchTextureLabelMap);
+    }
 
 #if defined(GPU_TEST_UTILS) || defined(SK_DEBUG)
     ResourceCache* resourceCache() { return fResourceCache.get(); }
