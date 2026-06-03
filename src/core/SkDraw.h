@@ -16,7 +16,7 @@
 #include "include/core/SkSpan.h"
 #include "include/core/SkStrokeRec.h"
 #include "include/core/SkSurfaceProps.h"
-#include "include/private/base/SkDebug.h"
+#include "include/private/SkDebug.h"
 #include "src/base/SkZip.h"
 #include "src/core/SkDrawTypes.h"
 #include "src/core/SkMask.h"

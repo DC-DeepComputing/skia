@@ -11,12 +11,12 @@
 #include "include/core/SkSize.h"
 #include "include/core/SkTileMode.h"
 #include "include/gpu/graphite/TextureInfo.h"
-#include "include/private/base/SkDebug.h"
-#include "include/private/base/SkLog.h"
+#include "include/private/SkDebug.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/gpu/RefCntedCallback.h"
 #include "src/gpu/graphite/Buffer.h"
 #include "src/gpu/graphite/DrawPass.h"
+#include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/RenderPassDesc.h"
 #include "src/gpu/graphite/Resource.h"
 #include "src/gpu/graphite/ResourceProvider.h"
@@ -267,7 +267,7 @@ bool CommandBuffer::copyTextureToTexture(sk_sp<Texture> src,
     SkASSERT(dst);
     if (src->textureInfo().isProtected() == Protected::kYes &&
         dst->textureInfo().isProtected() != Protected::kYes) {
-        SKIA_LOG_E("Can't copy from protected memory to non-protected");
+        SKGPU_LOG_E("Can't copy from protected memory to non-protected");
         return false;
     }
 
