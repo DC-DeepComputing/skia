@@ -17,6 +17,7 @@
 #include "src/gpu/GpuTypesPriv.h"
 #include "src/gpu/graphite/Resource.h"
 #include "src/gpu/graphite/ResourceTypes.h"
+#include "src/gpu/graphite/ScratchResourceManager.h"
 
 #if defined(GPU_TEST_UTILS)
 #include <functional>
@@ -54,6 +55,12 @@ public:
                                  Budgeted, Shareable,
                                  std::string_view label = {},
                                  const ScratchResourceSet* unavailable = nullptr);
+    // The following is a specialization of the above method exclusively for Scratch Texture
+    // resources. As above, `unavailable` must be non-null. All scratch resources are expected to be
+    // budgeted.
+    // TODO(nicolettep): consolidate w/ other method.
+    Resource* findAndRefScratchTexture(const GraphiteResourceKey& key,
+                                       const ScratchResourceSet* unavailable = nullptr);
 
     // Purge resources not used since the passed point in time. Resources that have a gpu memory
     // size of zero will not be purged.
@@ -87,6 +94,12 @@ public:
 
     void forceProcessReturnedResources();
 
+    // Takes in lists of scratch texture resources and their associated custom string label or
+    // usage bitmask and updates their labels accordingly. This should only be called upon Recording
+    // insertion, at which point all usages are known and it is safe to update backend labels.
+    void updateCachedScratchLabels(const ScratchResourceManager::ScratchTextureUsageMap*,
+                                   const ScratchResourceManager::ScratchTextureLabelMap*);
+
 #if defined(GPU_TEST_UTILS)
     void forcePurgeAsNeeded() { this->purgeAsNeeded(); }
 
@@ -101,6 +114,8 @@ public:
     bool testingInReturnQueue(Resource* resource) { return resource->inReturnQueue(); }
 
     void visitTextures(const std::function<void(const Texture*, bool purgeable)>&) const;
+
+    static std::string GenerateUsageLabel(SkEnumBitMask<ScratchUsageFlags>);
 #endif
 
     // This is a thread safe call and is a no-op if the cache has been shut down already. This

@@ -104,10 +104,60 @@ sk_sp<Texture> ResourceProvider::findOrCreateNonShareableTexture(SkISize dimensi
 sk_sp<Texture> ResourceProvider::findOrCreateScratchTexture(
         SkISize dimensions,
         const TextureInfo& info,
+        ScratchUsageFlags usage,
+        const ResourceCache::ScratchResourceSet& unavailable) {
+    if (!info.isValid()) {
+        return nullptr;
+    }
+
+    // Use a different resource type for scratch textures which rely upon statically-defined
+    // usage flag tracking rather than custom labels. This way, we will not intermingle Textures
+    // which use usage flags with those that use custom labels.
+    static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
+    GraphiteResourceKey key;
+    fSharedContext->caps()->buildKeyForTexture(dimensions, info, kType, &key);
+
+    if (Resource* resource = fResourceCache->findAndRefScratchTexture(key, &unavailable)) {
+        return sk_sp<Texture>(static_cast<Texture*>(resource));
+    }
+
+    // Do not pass in a label to scratch texture creation if we are using ScratchUsageFlags (as
+    // opposed to custom string labels). Scratch texture label generation from usages is handled
+    // upon Recording insertion.
+    if (auto tex = this->createTexture(dimensions, info, /*label=*/"")) {
+        fResourceCache->insertResource(tex.get(), key, Budgeted::kYes, Shareable::kScratch);
+        return tex;
+    }
+
+    return nullptr;
+}
+
+sk_sp<Texture> ResourceProvider::findOrCreateScratchTexture(
+        SkISize dimensions,
+        const TextureInfo& info,
         std::string_view label,
         const ResourceCache::ScratchResourceSet& unavailable) {
-    return this->findOrCreateTexture(
-            dimensions, info, label, Budgeted::kYes, Shareable::kScratch, &unavailable);
+    if (!info.isValid()) {
+        return nullptr;
+    }
+    // Use a different resource type for scratch textures which use custom labels. This way, we will
+    // not intermingle Textures  which use usage flags with those that use custom labels.
+    static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
+    GraphiteResourceKey key;
+    fSharedContext->caps()->buildKeyForTexture(dimensions, info, kType, &key);
+
+    if (Resource* resource = fResourceCache->findAndRefScratchTexture(key, &unavailable)) {
+        return sk_sp<Texture>(static_cast<Texture*>(resource));
+    }
+
+    // Do not pass in a label to scratch texture creation. Scratch texture label updates are handled
+    // upon Recording insertion.
+    if (auto tex = this->createTexture(dimensions, info, /*label=*/"")) {
+        fResourceCache->insertResource(tex.get(), key, Budgeted::kYes, Shareable::kScratch);
+        return tex;
+    }
+
+    return nullptr;
 }
 
 sk_sp<Texture> ResourceProvider::findOrCreateTexture(
@@ -122,14 +172,11 @@ sk_sp<Texture> ResourceProvider::findOrCreateTexture(
     SkASSERT(shareable == Shareable::kNo || budgeted == Budgeted::kYes);
     SkASSERT(shareable != Shareable::kScratch || SkToBool(unavailable));
 
-    static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
-
     if (!info.isValid()) {
-        // Checking for a valid TextureInfo here allows callers to consolidate error checking for
-        // both TextureInfo and Texture creation to checking for a null returned Texture.
         return nullptr;
     }
 
+    static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
     GraphiteResourceKey key;
     fSharedContext->caps()->buildKeyForTexture(dimensions, info, kType, &key);
 

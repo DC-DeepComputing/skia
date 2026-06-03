@@ -16,9 +16,9 @@
 #include "src/gpu/graphite/ProxyCache.h"
 #include "src/gpu/graphite/Resource.h"
 
-#if defined(GPU_TEST_UTILS)
+// #if defined(GPU_TEST_UTILS)
 #include "src/gpu/graphite/Texture.h"
-#endif
+// #endif
 
 namespace skgpu::graphite {
 
@@ -209,20 +209,63 @@ Resource* ResourceCache::findAndRefResource(const GraphiteResourceKey& key,
         } else {
             // Shareable and scratch resources should never be requested as non-budgeted
             SkASSERT(budgeted == Budgeted::kYes);
+            SkASSERT(shareable != Shareable::kYes || resource->getLabel() == label);
 
-            // TODO(b/387505250): Eventually, scratch resource label updates will be uniquely
-            // handled per the threadsafe label update model outlined in Resource.h. For now,
-            // maintain original functionality by allowing label reassignment here.
-            if (shareable == Shareable::kScratch) {
-                resource->setLabel(label);
-                resource->synchronizeBackendLabel();
-            } else {
-                // Shareable resource labels should never change after initial creation.
-                SkASSERT(shareable == Shareable::kYes && resource->getLabel() == label);
-            }
+            // TODO(nicolettep): Handle custom scratch label updates here!?
 
             resource->setShareable(shareable);
         }
+        this->refAndMakeResourceMRU(resource);
+        this->validate();
+    }
+
+    // processReturnedResources may have added resources back into our budget if they were being
+    // using in an SkImage or SkSurface previously. However, instead of calling purgeAsNeeded in
+    // processReturnedResources, we delay calling it until now so we don't end up purging a resource
+    // we're looking for in this function.
+    //
+    // We could avoid calling this if we didn't return any resources from processReturnedResources.
+    // However, when not overbudget purgeAsNeeded is very cheap. When overbudget there may be some
+    // really niche usage patterns that could cause us to never actually return resources to the
+    // cache, but still be overbudget due to shared resources. So to be safe we just always call it
+    // here.
+    this->purgeAsNeeded();
+
+    return resource;
+}
+
+// TODO(nicolettep): Consolidate this with regular method?
+Resource* ResourceCache::findAndRefScratchTexture(const GraphiteResourceKey& key,
+                                                  const ScratchResourceSet* unavailable) {
+    ASSERT_SINGLE_OWNER
+    if (!SkToBool(unavailable)) {
+        // TODO(nicolettep): SKGPU_LOG_E? Or SkASSERT perhaps?
+        return nullptr;
+    }
+
+    SkASSERT(key.isValid());
+
+    // Any matching resources must also be Shareable::kScratch and cannot be contained within the
+    // list of unavailable scratch resources.
+    auto scratchResourceIsAvailable = [unavailable](Resource* r) {
+        return r->shareable() == Shareable::kScratch && !unavailable->contains(r);
+    };
+
+    Resource* resource = fResourceMap.find(key, scratchResourceIsAvailable);
+    if (!resource && this->processReturnedResources()) {
+        // The main reason to call processReturnedResources in this call is to see if there are any
+        // resources that we could match with the key. However, there is overhead into calling it.
+        // So we only call it if we first failed to find a matching resource.
+        resource = fResourceMap.find(key, scratchResourceIsAvailable);
+    }
+
+    if (resource) {
+        SkASSERT(resource->budgeted() == Budgeted::kYes);
+        SkASSERT(resource->key() == key);
+
+        // We do not update the Texture's scratch usage or label here. This is instead handled from
+        // within the ScratchResourceManager.
+
         this->refAndMakeResourceMRU(resource);
         this->validate();
     }
@@ -260,6 +303,98 @@ void ResourceCache::refAndMakeResourceMRU(Resource* resource) {
 void ResourceCache::forceProcessReturnedResources() {
     ASSERT_SINGLE_OWNER
     this->processReturnedResources();
+}
+
+namespace {
+std::string generate_label_from_scratch_usages(SkEnumBitMask<ScratchUsageFlags> usageMask) {
+    std::string allUsagesLabel = "ScratchTexture";
+
+    if (SkToBool(usageMask & ScratchUsageFlags::kAsyncReadPixelsFallbackTexture)) {
+        allUsagesLabel += "_AsyncReadPixelsFallback";
+    }
+    if (SkToBool(usageMask & ScratchUsageFlags::kChildDevice)) {
+        allUsagesLabel += "_ChildDevice";
+    }
+    if (SkToBool(usageMask & ScratchUsageFlags::kCopyDeviceTexture)) {
+        allUsagesLabel += "_DeviceCopy";
+    }
+    if (SkToBool(usageMask & ScratchUsageFlags::kDiscardableLoadMSAATexture)) {
+        allUsagesLabel += "_DiscardableLoadMSAA";
+    }
+    if (SkToBool(usageMask & ScratchUsageFlags::kDispatchWriteOnlyStorageTexture)) {
+        allUsagesLabel += "_DispatchWriteOnlyStorage";
+    }
+    if (SkToBool(usageMask & ScratchUsageFlags::kDstCopy)) {
+        allUsagesLabel += "_DstCopy";
+    }
+    if (SkToBool(usageMask & ScratchUsageFlags::kEvalBlurTexture)) {
+        allUsagesLabel += "_EvalBlur";
+    }
+    if (SkToBool(usageMask & ScratchUsageFlags::kGenerateMipmapsScratchTexture)) {
+        allUsagesLabel += "_GenerateMipmaps";
+    }
+    if (SkToBool(usageMask & ScratchUsageFlags::kImageFilterCachedBitmap)) {
+        allUsagesLabel += "_ImageFilterCachedBitmap";
+    }
+    if (SkToBool(usageMask & ScratchUsageFlags::kImageFilterResult)) {
+        allUsagesLabel += "_ImageFilterResult";
+    }
+    if (SkToBool(usageMask & ScratchUsageFlags::kImageMakeCTandCSTexture)) {
+        allUsagesLabel += "_CTandCSConversion";
+    }
+    if (SkToBool(usageMask & ScratchUsageFlags::kImageSubsetTexture)) {
+        allUsagesLabel += "_Subset";
+    }
+    if (SkToBool(usageMask & ScratchUsageFlags::kLazySkImageBitmapTexture)) {
+        allUsagesLabel += "_LazySkImageBitmap";
+    }
+    if (SkToBool(usageMask & ScratchUsageFlags::kRasterBitmapTexture)) {
+        allUsagesLabel += "_RasterBitmap";
+    }
+    if (SkToBool(usageMask & ScratchUsageFlags::kRescaleDstTexture)) {
+        allUsagesLabel += "_RescaleDst";
+    }
+    if (SkToBool(usageMask & ScratchUsageFlags::kRescaleImageTempTexture)) {
+        allUsagesLabel += "_RescaleImageTemp";
+    }
+    if (SkToBool(usageMask & ScratchUsageFlags::kRescaleLinearGammaTexture)) {
+        allUsagesLabel += "_RescaleLinearGamma";
+    }
+    if (SkToBool(usageMask & ScratchUsageFlags::kYUVRasterBitmapPlane)) {
+        allUsagesLabel += "_YUVRasterBitmapPlane";
+    }
+
+    return allUsagesLabel;
+}
+} // anonymous
+
+void ResourceCache::updateCachedScratchLabels(
+        const ScratchResourceManager::ScratchTextureUsageMap* scratchTextureUsageMap,
+        const ScratchResourceManager::ScratchTextureLabelMap* scratchTextureLabelMap) {
+    ASSERT_SINGLE_OWNER
+    if (!scratchTextureUsageMap) {
+        return;
+    }
+
+    // Compare the scratch usages of each scratch texture stored within the usage map to the usages
+    // actually recorded on the texture. If they are not identical, issue an update to the scratch
+    // texture's recorded usages and update its label.
+    for (auto& resourceAndUsage : *scratchTextureUsageMap) {
+        Texture* scratchTexture = resourceAndUsage.first;
+        if (scratchTexture->scratchUsages() != resourceAndUsage.second) {
+            scratchTexture->updateScratchUsages(resourceAndUsage.second);
+            scratchTexture->setLabel(
+                generate_label_from_scratch_usages(scratchTexture->scratchUsages()));
+            scratchTexture->synchronizeBackendLabel();
+        }
+    }
+
+    // Issue any custom label updates for scratch textures.
+    for (auto& resourceAndLabel : *scratchTextureLabelMap) {
+        Texture* scratchTexture = resourceAndLabel.first;
+        scratchTexture->setLabel(resourceAndLabel.second); // no-op if label already matches
+        scratchTexture->synchronizeBackendLabel();
+    }
 }
 
 bool ResourceCache::returnResource(Resource* resource) {
@@ -918,6 +1053,10 @@ void ResourceCache::visitTextures(
             func(tex, /* purgeable= */ true);
         }
     }
+}
+
+std::string ResourceCache::GenerateUsageLabel(SkEnumBitMask<ScratchUsageFlags> usages) {
+    return generate_label_from_scratch_usages(usages);
 }
 
 #endif // defined(GPU_TEST_UTILS)
