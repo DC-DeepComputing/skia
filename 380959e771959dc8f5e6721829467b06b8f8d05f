@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a38317ec_bb5b6918",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2026-06-04T21:35:01Z",
+      "side": 1,
+      "message": "\u003e org.skia.skqp.SkQPFailure: external/skia/tests/graphite/precompile/PrecompileTestUtils.cpp:302\t125: utilization: 0.000000 [Vulkan]: utilization \u003e\u003d 0.3f",
+      "revId": "380959e771959dc8f5e6721829467b06b8f8d05f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
