@@ -81,11 +81,15 @@ public:
      * The stroke-and-fill style is drawn as a single combined coverage mask containing the stroke
      * and the fill.
      */
-    std::pair<const Renderer*, std::optional<CoverageMaskShape>> addShape(
-            const Rect& transformedShapeBounds,
-            const Shape& shape,
-            const Transform& localToDevice,
-            const SkStrokeRec& style);
+    using AddShapeResult = std::optional<std::tuple<
+        CoverageMaskShape,
+        SkIPoint,
+        const Renderer*
+    >>;
+    AddShapeResult addShape(const Rect& transformedShapeBounds,
+                            const Shape& shape,
+                            const Transform& localToDevice,
+                            const SkStrokeRec& style);
 
     /**
      * Returns true if a path coverage mask with the given device-space bounds is sufficiently
@@ -106,43 +110,51 @@ public:
     uint32_t height() const { return fHeight; }
 
 protected:
+    // When adding a shape to an atlas we also return the unpadded origin of the shape as half2.
+    using AtlasResult = std::optional<std::tuple<sk_sp<TextureProxy>,
+                                                 skvx::half2>>;
+
     // The 'transform' has been adjusted to draw the Shape into a logical image from (0,0) to
     // 'maskSize'. The actual rendering into the returned TextureProxy will need to be further
     // translated by the value written to 'outPos', which is the responsibility of subclasses.
-    virtual sk_sp<TextureProxy> onAddShape(const Shape&,
-                                           const Transform& localToDevice,
-                                           const SkStrokeRec&,
-                                           skvx::half2 maskOrigin,
-                                           skvx::half2 maskSize,
-                                           SkIVector transformedMaskOffset,
-                                           skvx::half2* outPos) = 0;
+    virtual AtlasResult onAddShape(const Shape&,
+                                   const Transform& localToDevice,
+                                   const SkStrokeRec&,
+                                   skvx::half2 maskOrigin,
+                                   skvx::half2 maskSize,
+                                   SkIVector transformedMaskOffset) = 0;
 
     // Wrapper class to manage DrawAtlas and associated caching operations
-    class DrawAtlasMgr : public DrawAtlas::GenerationCounter,
-                         public DrawAtlas::PlotEvictionCallback {
+    class DrawAtlasMgr : public DrawAtlas::EvictionCallback {
     public:
+        struct AtlasEntry {
+            DrawAtlas::Record fRecord;
+            SkIPoint16        fAtlasPosition{};
+            uint8_t           fPageIdx;
+        };
+
         // Adds to the DrawAtlas and shape cache.
-        // If successful, returns a ref for the caller to use.
-        sk_sp<TextureProxy> findOrCreateEntry(Recorder* recorder,
-                                              const Shape&,
-                                              const Transform& localToDevice,
-                                              const SkStrokeRec&,
-                                              skvx::half2 maskOrigin,
-                                              skvx::half2 maskSize,
-                                              SkIVector transformedMaskOffset,
-                                              skvx::half2* outPos);
+        // If successful, returns a ref to the texture pos and offset to the top left corner
+        // of the shape within the texture.
+        AtlasResult findOrCreateEntry(Recorder* recorder,
+                                      const Shape&,
+                                      const Transform& localToDevice,
+                                      const SkStrokeRec&,
+                                      skvx::half2 maskOrigin,
+                                      skvx::half2 maskSize,
+                                      SkIVector transformedMaskOffset);
         // Adds to DrawAtlas but not the cache.
-        // If successful, returns a ref for the caller to use.
-        sk_sp<TextureProxy> addToAtlas(Recorder* recorder,
-                                       const Shape&,
-                                       const Transform& localToDevice,
-                                       const SkStrokeRec&,
-                                       skvx::half2 maskSize,
-                                       SkIVector transformedMaskOffset,
-                                       skvx::half2* outPos,
-                                       DrawAtlas::AtlasLocator* locator);
+        // If successful, returns a ref to the texture pos and offset to the top left corner
+        // of the shape within the texture.
+        AtlasResult addToAtlas(Recorder* recorder,
+                               const Shape&,
+                               const Transform& localToDevice,
+                               const SkStrokeRec&,
+                               skvx::half2 maskSize,
+                               SkIVector transformedMaskOffset);
+
         bool recordUploads(DrawContext*, Recorder*);
-        void evict(DrawAtlas::PlotLocator) override;
+        void evict(const DrawAtlas::RecordVisitor&) override;
         void compact(Recorder*);
         void freeGpuResources(Recorder*);
 
@@ -154,12 +166,21 @@ protected:
                      DrawAtlas::UseStorageTextures useStorageTextures,
                      std::string_view label, const Caps*);
 
+        AtlasResult::value_type makeAtlasResult(const AtlasEntry&);
+
+        std::optional<AtlasEntry> internalAddToAtlas(Recorder* recorder,
+                                                     const Shape&,
+                                                     const Transform& localToDevice,
+                                                     const SkStrokeRec&,
+                                                     skvx::half2 maskSize,
+                                                     SkIVector transformedMaskOffset);
+
         bool virtual onAddToAtlas(const Shape&,
                                   const Transform& localToDevice,
                                   const SkStrokeRec&,
                                   SkIRect shapeBounds,
                                   SkIVector transformedMaskOffset,
-                                  const DrawAtlas::AtlasLocator&) = 0;
+                                  const AtlasEntry&) = 0;
 
         std::unique_ptr<DrawAtlas> fDrawAtlas;
 
@@ -168,21 +189,12 @@ protected:
         struct UniqueKeyHash {
             uint32_t operator()(const UniqueKey& key) const { return key.hash(); }
         };
-        using ShapeCache = skia_private::THashMap<UniqueKey,
-                                                  DrawAtlas::AtlasLocator,
-                                                  UniqueKeyHash>;
+        using ShapeCache = skia_private::THashMap<UniqueKey, AtlasEntry, UniqueKeyHash>;
         ShapeCache fShapeCache;
 
-        // List of stored keys per Plot, used to invalidate cache entries.
-        // When a Plot is invalidated via evict(), we'll get its index and Page index from the
-        // PlotLocator, index into the fKeyLists array to get the ShapeKeyList for that Plot,
-        // then iterate through the list and remove entries matching those keys from the ShapeCache.
-        struct ShapeKeyEntry {
-            UniqueKey fKey;
-            SK_DECLARE_INTERNAL_LLIST_INTERFACE(ShapeKeyEntry);
-        };
-        using ShapeKeyList = SkTInternalLList<ShapeKeyEntry>;
-        SkTDArray<ShapeKeyList> fKeyLists;
+        // Reverse map (AtlasRecord -> UniqueKey) that is used to remove evicted items from
+        // fShapeCache
+        skia_private::THashMap<DrawAtlas::Record, UniqueKey> fAtlasRecordMap;
     };
 
     // The Recorder that created and owns this Atlas.

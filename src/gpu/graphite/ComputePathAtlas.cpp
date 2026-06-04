@@ -133,13 +133,12 @@ public:
     bool recordDispatches(Recorder*, ComputeTask::DispatchGroupList*) const override;
 
 private:
-    sk_sp<TextureProxy> onAddShape(const Shape&,
-                                   const Transform& localToDevice,
-                                   const SkStrokeRec&,
-                                   skvx::half2 maskOrigin,
-                                   skvx::half2 maskSize,
-                                   SkIVector transformedMaskOffset,
-                                   skvx::half2* outPos) override;
+    AtlasResult onAddShape(const Shape&,
+                           const Transform& localToDevice,
+                           const SkStrokeRec&,
+                           skvx::half2 maskOrigin,
+                           skvx::half2 maskSize,
+                           SkIVector transformedMaskOffset) override;
     void onReset() override {
         fCachedAtlasMgr.onReset();
 
@@ -170,7 +169,7 @@ private:
                           const SkStrokeRec&,
                           SkIRect shapeBounds,
                           SkIVector transformedMaskOffset,
-                          const AtlasLocator&) override;
+                          const AtlasEntry&) override;
 
     private:
         VelloScene fScenes[PlotLocator::kMaxMultitexturePages];
@@ -312,28 +311,25 @@ bool VelloComputePathAtlas::recordDispatches(Recorder* recorder,
     return addedDispatches;
 }
 
-sk_sp<TextureProxy> VelloComputePathAtlas::onAddShape(
+ComputePathAtlas::AtlasResult VelloComputePathAtlas::onAddShape(
         const Shape& shape,
         const Transform& localToDevice,
         const SkStrokeRec& style,
         skvx::half2 maskOrigin,
         skvx::half2 maskSize,
-        SkIVector transformedMaskOffset,
-        skvx::half2* outPos) {
+        SkIVector transformedMaskOffset) {
 
-    skgpu::UniqueKey maskKey;
     if (!shape.isVolatilePath()) {
         // Try to locate or add to cached DrawAtlas
-        sk_sp<TextureProxy> proxy = fCachedAtlasMgr.findOrCreateEntry(fRecorder,
-                                                                      shape,
-                                                                      localToDevice,
-                                                                      style,
-                                                                      maskOrigin,
-                                                                      maskSize,
-                                                                      transformedMaskOffset,
-                                                                      outPos);
-        if (proxy) {
-            return proxy;
+        auto result = fCachedAtlasMgr.findOrCreateEntry(fRecorder,
+                                                        shape,
+                                                        localToDevice,
+                                                        style,
+                                                        maskOrigin,
+                                                        maskSize,
+                                                        transformedMaskOffset);
+        if (result.has_value()) {
+            return result;
         }
     }
 
@@ -341,14 +337,14 @@ sk_sp<TextureProxy> VelloComputePathAtlas::onAddShape(
     SkIPoint16 iPos;
     sk_sp<TextureProxy> texProxy = this->addRect(maskSize, &iPos);
     if (!texProxy) {
-        return nullptr;
+        return {};
     }
-    *outPos = skvx::half2(iPos.x(), iPos.y());
+    skvx::half2 outPos = skvx::half2(iPos.x(), iPos.y());
     // If the mask is empty, just return.
     // TODO: This may not be needed if we can handle clipped out bounds with inverse fills
     // another way. See PathAtlas::addShape().
     if (!all(maskSize)) {
-        return texProxy;
+        return std::make_tuple(std::move(texProxy), outPos);
     }
 
     // TODO: The compute renderer doesn't support perspective yet. We assume that the path has been
@@ -362,7 +358,7 @@ sk_sp<TextureProxy> VelloComputePathAtlas::onAddShape(
     add_shape_to_scene(shape, localToDevice, style, atlasBounds, transformedMaskOffset,
                        &fUncachedScene, &fUncachedOccupiedArea);
 
-    return texProxy;
+    return std::make_tuple(std::move(texProxy), outPos);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -372,8 +368,8 @@ bool VelloComputePathAtlas::VelloAtlasMgr::onAddToAtlas(const Shape& shape,
                                                         const SkStrokeRec& style,
                                                         SkIRect shapeBounds,
                                                         SkIVector transformedMaskOffset,
-                                                        const AtlasLocator& locator) {
-    uint32_t index = locator.pageIndex();
+                                                        const AtlasEntry& entry) {
+    uint32_t index = entry.fPageIdx;
     const TextureProxy* texProxy = fDrawAtlas->getProxies()[index].get();
     if (!texProxy) {
         return false;
@@ -385,7 +381,7 @@ bool VelloComputePathAtlas::VelloAtlasMgr::onAddToAtlas(const Shape& shape,
 
     // Restrict the render to the occupied area of the atlas, including entry padding so that the
     // padded row/column is cleared when Vello renders.
-    SkIPoint iPos = locator.topLeft();
+    SkIPoint iPos{entry.fAtlasPosition.fX, entry.fAtlasPosition.fY};
     Rect atlasBounds = Rect::XYWH(skvx::float2(iPos.x() + kEntryPadding, iPos.y() + kEntryPadding),
                                   skvx::float2(shapeBounds.width(), shapeBounds.height()));
 

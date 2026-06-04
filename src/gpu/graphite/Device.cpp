@@ -1666,6 +1666,7 @@ void Device::drawGeometry(const Transform& localToDevice,
 
     // If an atlas path renderer was chosen we need to insert the shape into the atlas and schedule
     // it to be drawn.
+    SkIPoint pos;
     if (pathAtlas != nullptr) {
         Rect clippedShapeBounds = clip.transformedShapeBounds().makeIntersect(clip.scissor());
         if (clippedShapeBounds.area() >= 0.8f * clip.transformedShapeBounds().area()) {
@@ -1673,29 +1674,29 @@ void Device::drawGeometry(const Transform& localToDevice,
             // in the atlas to avoid redundant entries with slightly different clips.
             clippedShapeBounds = clip.transformedShapeBounds();
         }
-        std::optional<CoverageMaskShape> atlasMask;
-        std::tie(renderer, atlasMask) = pathAtlas->addShape(clippedShapeBounds,
-                                                            geometry.shape(),
-                                                            localToDevice,
-                                                            style);
+        PathAtlas::AddShapeResult shapeResult;
+        shapeResult = pathAtlas->addShape(clippedShapeBounds,
+                                          geometry.shape(),
+                                          localToDevice,
+                                          style);
 
         // If there was no space in the atlas and we haven't flushed already, then flush pending
         // work to clear up space in the atlas. If we had already flushed once (which would have
         // cleared the atlas) then the atlas is too small for this shape.
-        if (!atlasMask && !needsFlush) {
+        if (!shapeResult && !needsFlush) {
             // We need to flush work for all devices associated with the current Recorder.
             // Otherwise we may end up with outstanding draws that depend on past atlas state.
             fRecorder->priv().flushTrackedDevices(
                     SK_DUMP_TASKS_CODE("Device::drawGeometry Atlas Flush"));
 
             // Try inserting the shape again.
-            std::tie(renderer, atlasMask) = pathAtlas->addShape(clippedShapeBounds,
-                                                                geometry.shape(),
-                                                                localToDevice,
-                                                                style);
+            shapeResult = pathAtlas->addShape(clippedShapeBounds,
+                                              geometry.shape(),
+                                              localToDevice,
+                                              style);
         }
 
-        if (!atlasMask) {
+        if (!shapeResult) {
             SKIA_LOG_E("Failed to add shape to atlas!");
             // TODO(b/285195175): This can happen if the atlas is not large enough or a compatible
             // atlas texture cannot be created. Handle the first case in `chooseRenderer` and make
@@ -1706,9 +1707,10 @@ void Device::drawGeometry(const Transform& localToDevice,
         // Since addShape() was successful we should have a valid Renderer now. The atlas also
         // has handled the original `geometry` and `style` so update the local variables to match
         // what needs to be recorded to sample the atlas mask.
+        geometry.setCoverageMaskShape(std::get<0>(*shapeResult));
+        pos      = std::get<1>(*shapeResult);
+        renderer = std::get<2>(*shapeResult);
         SkASSERT(renderer && renderer->numRenderSteps() == 1 && !renderer->emitsPrimitiveColor());
-        geometry.setCoverageMaskShape(*atlasMask);
-        styleType = SkStrokeRec::kFill_Style;
         fAtlasedPathCount++;
     }
 
@@ -1766,39 +1768,53 @@ void Device::drawGeometry(const Transform& localToDevice,
         }
     }
 
-    if (styleType != SkStrokeRec::kFill_Style) {
-        // For stroke-and-fill, 'renderer' is used for the fill and we always use the
-        // TessellatedStrokes renderer; for stroke and hairline, 'renderer' is used.
-        StrokeStyle stroke(style.getWidth(), style.getMiter(), style.getJoin(), style.getCap());
-        fDC->recordDraw(styleType == SkStrokeRec::kStrokeAndFill_Style
-                                ? fRecorder->priv().rendererProvider()->tessellatedStrokes()
-                                : renderer,
-                        localToDevice, geometry, clip, order, paintID, dstUsage,
-                        scopedDrawBuilder.gatherer(), &stroke, latestInsertion);
-    } else if ((dstUsage & DstUsage::kDstOnlyUsedByRenderer) && renderer->useNonAAInnerFill()) {
-        // Possibly record an additional draw using the non-AA bounds renderer to fill the
-        // interior with a renderer that can disable blending entirely.
-        Rect innerFillBounds = get_inner_bounds(geometry, localToDevice);
-        if (!innerFillBounds.isEmptyNegativeOrNaN()) {
-            DrawOrder orderWithoutCoverage{order.depth()};
-            orderWithoutCoverage.dependsOnPaintersOrder(clipOrder);
-            // The regular draw has analytic coverage, so isn't being sorted front to back, but
-            // we do want to sort the inner fill to maximize overdraw reduction
-            orderWithoutCoverage.reverseDepthAsStencil();
-            fDC->recordDraw(fRecorder->priv().rendererProvider()->nonAABounds(), localToDevice,
-                            Geometry(Shape(innerFillBounds)), clip, orderWithoutCoverage,
-                            paintID, dstUsage, scopedDrawBuilder.gatherer(),
-                            /*stroke=*/nullptr, latestInsertion);
-            // Force the coverage draw to come after the non-AA draw in order to benefit from
-            // early depth testing.
-            order.dependsOnPaintersOrder(orderWithoutCoverage.paintOrder());
+    if (pathAtlas != nullptr) {
+        // Record the draw as a fill since stroking is handled by the atlas render/upload.
+        fDC->recordDraw(renderer,
+                        Transform::Translate(pos.fX, pos.fY),
+                        geometry,
+                        clip,
+                        order,
+                        paintID,
+                        dstUsage,
+                        scopedDrawBuilder.gatherer(),
+                        /*stroke=*/nullptr,
+                        latestInsertion);
+    } else {
+        if (styleType != SkStrokeRec::kFill_Style) {
+            // For stroke-and-fill, 'renderer' is used for the fill and we always use the
+            // TessellatedStrokes renderer; for stroke and hairline, 'renderer' is used.
+            StrokeStyle stroke(style.getWidth(), style.getMiter(), style.getJoin(), style.getCap());
+            fDC->recordDraw(styleType == SkStrokeRec::kStrokeAndFill_Style
+                                    ? fRecorder->priv().rendererProvider()->tessellatedStrokes()
+                                    : renderer,
+                            localToDevice, geometry, clip, order, paintID, dstUsage,
+                            scopedDrawBuilder.gatherer(), &stroke, latestInsertion);
+        } else if ((dstUsage & DstUsage::kDstOnlyUsedByRenderer) && renderer->useNonAAInnerFill()) {
+            // Possibly record an additional draw using the non-AA bounds renderer to fill the
+            // interior with a renderer that can disable blending entirely.
+            Rect innerFillBounds = get_inner_bounds(geometry, localToDevice);
+            if (!innerFillBounds.isEmptyNegativeOrNaN()) {
+                DrawOrder orderWithoutCoverage{order.depth()};
+                orderWithoutCoverage.dependsOnPaintersOrder(clipOrder);
+                // The regular draw has analytic coverage, so isn't being sorted front to back, but
+                // we do want to sort the inner fill to maximize overdraw reduction
+                orderWithoutCoverage.reverseDepthAsStencil();
+                fDC->recordDraw(fRecorder->priv().rendererProvider()->nonAABounds(), localToDevice,
+                                Geometry(Shape(innerFillBounds)), clip, orderWithoutCoverage,
+                                paintID, dstUsage, scopedDrawBuilder.gatherer(),
+                                /*stroke=*/nullptr, latestInsertion);
+                // Force the coverage draw to come after the non-AA draw in order to benefit from
+                // early depth testing.
+                order.dependsOnPaintersOrder(orderWithoutCoverage.paintOrder());
+            }
         }
-    }
 
-    if (styleType == SkStrokeRec::kFill_Style ||
-        styleType == SkStrokeRec::kStrokeAndFill_Style) {
-        fDC->recordDraw(renderer, localToDevice, geometry, clip, order, paintID, dstUsage,
-                        scopedDrawBuilder.gatherer(), /*stroke=*/nullptr, latestInsertion);
+        if (styleType == SkStrokeRec::kFill_Style ||
+            styleType == SkStrokeRec::kStrokeAndFill_Style) {
+            fDC->recordDraw(renderer, localToDevice, geometry, clip, order, paintID, dstUsage,
+                            scopedDrawBuilder.gatherer(), /*stroke=*/nullptr, latestInsertion);
+        }
     }
 
     if (!useDrawListLayer) {

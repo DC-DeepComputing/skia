@@ -8,6 +8,7 @@
 #include "src/gpu/graphite/PathAtlas.h"
 
 #include "include/gpu/graphite/Recorder.h"
+#include "include/private/base/SkLog.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/RasterPathUtils.h"
 #include "src/gpu/graphite/RecorderPriv.h"
@@ -35,11 +36,10 @@ PathAtlas::PathAtlas(Recorder* recorder, uint32_t requestedWidth, uint32_t reque
 
 PathAtlas::~PathAtlas() = default;
 
-std::pair<const Renderer*, std::optional<CoverageMaskShape>> PathAtlas::addShape(
-        const Rect& transformedShapeBounds,
-        const Shape& shape,
-        const Transform& localToDevice,
-        const SkStrokeRec& style) {
+PathAtlas::AddShapeResult PathAtlas::addShape(const Rect& transformedShapeBounds,
+                                              const Shape& shape,
+                                              const Transform& localToDevice,
+                                              const SkStrokeRec& style) {
     // It is possible for the transformed shape bounds to be fully clipped out while the draw still
     // produces coverage due to an inverse fill. In this case, don't render any mask;
     // CoverageMaskShapeRenderStep will automatically handle the simple fill. We'll handle this
@@ -61,21 +61,22 @@ std::pair<const Renderer*, std::optional<CoverageMaskShape>> PathAtlas::addShape
     skvx::float2 clippedMaskOrigin = maskBounds.topLeft() - shapeDevBounds.topLeft();
     SkIVector transformedMaskOffset = SkIVector::Make(maskBounds.topLeft().x(),
                                                       maskBounds.topLeft().y());
-    sk_sp<TextureProxy> atlasProxy = this->onAddShape(shape,
-                                                      localToDevice,
-                                                      style,
-                                                      skvx::cast<uint16_t>(clippedMaskOrigin),
-                                                      maskInfo.fMaskSize,
-                                                      transformedMaskOffset,
-                                                      &maskInfo.fTextureOrigin);
-    if (!atlasProxy) {
-        return std::make_pair(nullptr, std::nullopt);
+    auto atlasResult = this->onAddShape(shape,
+                                        localToDevice,
+                                        style,
+                                        skvx::cast<uint16_t>(clippedMaskOrigin),
+                                        maskInfo.fMaskSize,
+                                        transformedMaskOffset);
+    if (!atlasResult.has_value()) {
+        return {};
     }
-    return std::make_pair(fRecorder->priv().rendererProvider()->coverageMask(),
-                          CoverageMaskShape(shape,
-                                            std::move(atlasProxy),
-                                            SkM44::Translate(maskBounds.left(), maskBounds.top()),
-                                            maskInfo));
+    auto& [proxy, pos] = *atlasResult;
+    maskInfo.fTextureOrigin = pos;
+
+    return std::make_tuple(
+            CoverageMaskShape(shape, std::move(proxy), localToDevice.inverse(), maskInfo),
+            SkIPoint{(int)maskBounds.left(), (int)maskBounds.top()},
+            fRecorder->priv().rendererProvider()->coverageMask());
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -90,7 +91,6 @@ PathAtlas::DrawAtlasMgr::DrawAtlasMgr(size_t width, size_t height,
     fDrawAtlas = DrawAtlas::Make(kMaskFormat,
                                  width, height,
                                  plotWidth, plotHeight,
-                                 /*generationCounter=*/this,
                                  caps->allowMultipleAtlasTextures()
                                          ? DrawAtlas::AllowMultitexturing::kYes
                                          : DrawAtlas::AllowMultitexturing::kNo,
@@ -98,115 +98,138 @@ PathAtlas::DrawAtlasMgr::DrawAtlasMgr(size_t width, size_t height,
                                  /*evictor=*/this,
                                  label);
     SkASSERT(fDrawAtlas);
-    fKeyLists.resize(fDrawAtlas->numPlots() * fDrawAtlas->maxPages());
-    for (int i = 0; i < fKeyLists.size(); ++i) {
-        fKeyLists[i].reset();
-    }
 }
 
-sk_sp<TextureProxy> PathAtlas::DrawAtlasMgr::findOrCreateEntry(Recorder* recorder,
-                                                               const Shape& shape,
-                                                               const Transform& localToDevice,
-                                                               const SkStrokeRec& strokeRec,
-                                                               skvx::half2 maskOrigin,
-                                                               skvx::half2 maskSize,
-                                                               SkIVector transformedMaskOffset,
-                                                               skvx::half2* outPos) {
+inline PathAtlas::AtlasResult::value_type PathAtlas::DrawAtlasMgr::makeAtlasResult(
+        const AtlasEntry& entry) {
+    SkIPoint topLeft{entry.fAtlasPosition.fX, entry.fAtlasPosition.fY};
+    skvx::half2 pos(topLeft.fX + kEntryPadding, topLeft.fY + kEntryPadding);
+
+    const auto& proxy = fDrawAtlas->getProxies()[entry.fPageIdx];
+
+    return std::make_tuple(proxy, pos);
+}
+
+PathAtlas::AtlasResult PathAtlas::DrawAtlasMgr::findOrCreateEntry(Recorder* recorder,
+                                                                  const Shape& shape,
+                                                                  const Transform& localToDevice,
+                                                                  const SkStrokeRec& strokeRec,
+                                                                  skvx::half2 maskOrigin,
+                                                                  skvx::half2 maskSize,
+                                                                  SkIVector transformedMaskOffset) {
     // TODO: pull this out so we don't have to recalculate it for each atlas?
     skgpu::UniqueKey maskKey = GeneratePathMaskKey(shape, localToDevice, strokeRec,
                                                    maskOrigin, maskSize);
-    DrawAtlas::AtlasLocator* cachedLocator = fShapeCache.find(maskKey);
-    if (cachedLocator) {
-        SkIPoint topLeft = cachedLocator->topLeft();
-        *outPos = skvx::half2(topLeft.x() + kEntryPadding, topLeft.y() + kEntryPadding);
-        fDrawAtlas->setLastUseToken(*cachedLocator,
+    AtlasEntry* cachedEntry = fShapeCache.find(maskKey);
+    if (cachedEntry) {
+        fDrawAtlas->setLastUseToken(cachedEntry->fRecord,
                                     recorder->priv().tokenTracker()->nextFlushToken());
-        return fDrawAtlas->getProxies()[cachedLocator->pageIndex()];
+        return makeAtlasResult(*cachedEntry);
     }
 
-    DrawAtlas::AtlasLocator locator;
-    sk_sp<TextureProxy> proxy = this->addToAtlas(recorder, shape, localToDevice, strokeRec,
-                                                 maskSize, transformedMaskOffset, outPos, &locator);
-    if (!proxy) {
-        return nullptr;
+    auto entry = this->internalAddToAtlas(recorder,
+                                          shape,
+                                          localToDevice,
+                                          strokeRec,
+                                          maskSize,
+                                          transformedMaskOffset);
+    if (!entry.has_value()) {
+        return {};
     }
 
-    // Add locator to ShapeCache.
-    fShapeCache.set(maskKey, locator);
-    // Add key to Plot's ShapeKeyList.
-    uint32_t index = fDrawAtlas->getListIndex(locator.plotLocator());
-    ShapeKeyEntry* keyEntry = new ShapeKeyEntry();
-    keyEntry->fKey = maskKey;
-    fKeyLists[index].addToTail(keyEntry);
+    // Add entry to ShapeCache.
+    fShapeCache.set(maskKey, *entry);
+    // Add to reverse map so we can get look up in fShapeCache on eviction.
+    fAtlasRecordMap.set(entry->fRecord, maskKey);
 
-    return proxy;
+    return makeAtlasResult(*entry);
 }
 
-sk_sp<TextureProxy> PathAtlas::DrawAtlasMgr::addToAtlas(Recorder* recorder,
-                                                        const Shape& shape,
-                                                        const Transform& localToDevice,
-                                                        const SkStrokeRec& strokeRec,
-                                                        skvx::half2 maskSize,
-                                                        SkIVector transformedMaskOffset,
-                                                        skvx::half2* outPos,
-                                                        DrawAtlas::AtlasLocator* locator) {
+PathAtlas::AtlasResult PathAtlas::DrawAtlasMgr::addToAtlas(Recorder* recorder,
+                                                           const Shape& shape,
+                                                           const Transform& localToDevice,
+                                                           const SkStrokeRec& strokeRec,
+                                                           skvx::half2 maskSize,
+                                                           SkIVector transformedMaskOffset) {
+    auto record = this->internalAddToAtlas(recorder,
+                                           shape,
+                                           localToDevice,
+                                           strokeRec,
+                                           maskSize,
+                                           transformedMaskOffset);
+    if (!record.has_value()) {
+        return {};
+    }
+    return makeAtlasResult(*record);
+}
+
+std::optional<PathAtlas::DrawAtlasMgr::AtlasEntry>
+PathAtlas::DrawAtlasMgr::internalAddToAtlas(Recorder* recorder,
+                                            const Shape& shape,
+                                            const Transform& localToDevice,
+                                            const SkStrokeRec& strokeRec,
+                                            skvx::half2 maskSize,
+                                            SkIVector transformedMaskOffset) {
     // Render mask.
     SkIRect iShapeBounds = SkIRect::MakeXYWH(0, 0, maskSize.x(), maskSize.y());
     // Outset to take padding into account
     SkIRect iAtlasBounds = iShapeBounds.makeOutset(kEntryPadding, kEntryPadding);
 
-    // Request space in DrawAtlas.
-    DrawAtlas::ErrorCode errorCode = fDrawAtlas->addRect(recorder,
-                                                         iAtlasBounds.width(),
-                                                         iAtlasBounds.height(),
-                                                         locator);
-    if (errorCode != DrawAtlas::ErrorCode::kSucceeded) {
-        return nullptr;
+    DrawAtlas::AddResult addResult;
+    if (fDrawAtlas->addRect(recorder, iAtlasBounds.size(), &addResult) !=
+        DrawAtlas::ErrorCode::kSucceeded) {
+        return {};
     }
-    SkIPoint topLeft = locator->topLeft();
-    *outPos = skvx::half2(topLeft.x()+kEntryPadding, topLeft.y()+kEntryPadding);
+    AtlasEntry entry{
+            .fRecord        = addResult.fRecord,
+            .fAtlasPosition = {SkToS16(addResult.fPosition.fX), SkToS16(addResult.fPosition.fY)},
+            .fPageIdx       = SkToU8(addResult.fPageIdx)
+    };
 
     // If the mask is empty, just return.
     // TODO: this may not be needed if we can handle clipped out bounds with inverse fills
     // another way. See PathAtlas::addShape().
     if (!all(maskSize)) {
-        fDrawAtlas->setLastUseToken(*locator,
+        // Access the pixmap to ensure the entry is cleared.
+        fDrawAtlas->entryPixmap(addResult.fRecord);
+        fDrawAtlas->setLastUseToken(entry.fRecord,
                                     recorder->priv().tokenTracker()->nextFlushToken());
-        return fDrawAtlas->getProxies()[locator->pageIndex()];
+        return entry;
     }
 
-    if (!this->onAddToAtlas(shape, localToDevice, strokeRec, iShapeBounds, transformedMaskOffset,
-                            *locator)) {
-        return nullptr;
+    if (!this->onAddToAtlas(shape,
+                            localToDevice,
+                            strokeRec,
+                            iShapeBounds,
+                            transformedMaskOffset,
+                            entry)) {
+        return {};
     }
 
-    fDrawAtlas->setLastUseToken(*locator,
-                                recorder->priv().tokenTracker()->nextFlushToken());
-
-    return fDrawAtlas->getProxies()[locator->pageIndex()];
+    fDrawAtlas->setLastUseToken(entry.fRecord, recorder->priv().tokenTracker()->nextFlushToken());
+    return entry;
 }
 
 bool PathAtlas::DrawAtlasMgr::recordUploads(DrawContext* dc, Recorder* recorder) {
     return fDrawAtlas->recordUploads(dc, recorder);
 }
 
-void PathAtlas::DrawAtlasMgr::evict(DrawAtlas::PlotLocator plotLocator) {
+void PathAtlas::DrawAtlasMgr::evict(const DrawAtlas::RecordVisitor& visitor) {
     // Remove all entries for this Plot from the ShapeCache
-    uint32_t index = fDrawAtlas->getListIndex(plotLocator);
-    ShapeKeyList::Iter iter;
-    iter.init(fKeyLists[index], ShapeKeyList::Iter::kHead_IterStart);
-    ShapeKeyEntry* currEntry;
-    while ((currEntry = iter.get())) {
-        iter.next();
-        fShapeCache.remove(currEntry->fKey);
-        fKeyLists[index].remove(currEntry);
-        delete currEntry;
-    }
+    visitor.visitRecords([&](DrawAtlas::Record record) {
+        if (auto* key = fAtlasRecordMap.find(record)) {
+            fShapeCache.remove(*key);
+            fAtlasRecordMap.remove(record);
+        } else {
+            SKIA_LOG_W("Evicted entry not in cache!");
+        }
+    });
 }
 
 void PathAtlas::DrawAtlasMgr::evictAll() {
     fDrawAtlas->evictAllPlots();
     SkASSERT(fShapeCache.empty());
+    SkASSERT(fAtlasRecordMap.empty());
 }
 
 void PathAtlas::DrawAtlasMgr::compact(Recorder* recorder) {

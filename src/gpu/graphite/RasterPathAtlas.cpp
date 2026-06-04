@@ -47,54 +47,48 @@ void RasterPathAtlas::recordUploads(DrawContext* dc) {
     fUncachedAtlasMgr.recordUploads(dc, fRecorder);
 }
 
-sk_sp<TextureProxy> RasterPathAtlas::onAddShape(const Shape& shape,
-                                                const Transform& localToDevice,
-                                                const SkStrokeRec& strokeRec,
-                                                skvx::half2 maskOrigin,
-                                                skvx::half2 maskSize,
-                                                SkIVector transformedMaskOffset,
-                                                skvx::half2* outPos) {
-    sk_sp<TextureProxy> proxy;
+RasterPathAtlas::AtlasResult RasterPathAtlas::onAddShape(const Shape& shape,
+                                                         const Transform& localToDevice,
+                                                         const SkStrokeRec& strokeRec,
+                                                         skvx::half2 maskOrigin,
+                                                         skvx::half2 maskSize,
+                                                         SkIVector transformedMaskOffset) {
+    AtlasResult result;
 
     if (!shape.isVolatilePath()) {
         constexpr int kMaxSmallPathSize = 162;
         // Try to locate or add to cached DrawAtlas
         if (maskSize.x() <= kMaxSmallPathSize && maskSize.y() <= kMaxSmallPathSize) {
-            proxy = fSmallPathAtlasMgr.findOrCreateEntry(fRecorder,
-                                                         shape,
-                                                         localToDevice,
-                                                         strokeRec,
-                                                         maskOrigin,
-                                                         maskSize,
-                                                         transformedMaskOffset,
-                                                         outPos);
+            result = fSmallPathAtlasMgr.findOrCreateEntry(fRecorder,
+                                                          shape,
+                                                          localToDevice,
+                                                          strokeRec,
+                                                          maskOrigin,
+                                                          maskSize,
+                                                          transformedMaskOffset);
         }
-        if (!proxy) {
-            proxy = fCachedAtlasMgr.findOrCreateEntry(fRecorder,
-                                                      shape,
-                                                      localToDevice,
-                                                      strokeRec,
-                                                      maskOrigin,
-                                                      maskSize,
-                                                      transformedMaskOffset,
-                                                      outPos);
+        if (!result.has_value()) {
+            result = fCachedAtlasMgr.findOrCreateEntry(fRecorder,
+                                                       shape,
+                                                       localToDevice,
+                                                       strokeRec,
+                                                       maskOrigin,
+                                                       maskSize,
+                                                       transformedMaskOffset);
         }
     }
 
     // Try to add to uncached DrawAtlas
-    if (!proxy) {
-        DrawAtlas::AtlasLocator loc;
-        proxy = fUncachedAtlasMgr.addToAtlas(fRecorder,
-                                             shape,
-                                             localToDevice,
-                                             strokeRec,
-                                             maskSize,
-                                             transformedMaskOffset,
-                                             outPos,
-                                             &loc);
+    if (!result.has_value()) {
+        result = fUncachedAtlasMgr.addToAtlas(fRecorder,
+                                              shape,
+                                              localToDevice,
+                                              strokeRec,
+                                              maskSize,
+                                              transformedMaskOffset);
     }
-    if (proxy) {
-        return proxy;
+    if (result.has_value()) {
+        return result;
     }
 
     // Failed to add to atlases, try to add to ProxyCache
@@ -123,8 +117,8 @@ sk_sp<TextureProxy> RasterPathAtlas::onAddShape(const Shape& shape,
                 return bm;
             });
 
-    *outPos = { kEntryPadding, kEntryPadding };
-    return cachedProxy;
+    skvx::half2 origin{kEntryPadding, kEntryPadding};
+    return std::make_tuple(std::move(cachedProxy), origin);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -134,10 +128,11 @@ bool RasterPathAtlas::RasterAtlasMgr::onAddToAtlas(const Shape& shape,
                                                    const SkStrokeRec& strokeRec,
                                                    SkIRect shapeBounds,
                                                    SkIVector transformedMaskOffset,
-                                                   const DrawAtlas::AtlasLocator& locator) {
-    SkPixmap pixmap = fDrawAtlas->prepForRender(locator, kEntryPadding);
+                                                   const AtlasEntry& entry) {
+    auto pixmap = fDrawAtlas->entryPixmap(entry.fRecord, kEntryPadding);
+    SkASSERT(pixmap);
 
-    RasterMaskHelper helper(pixmap, -transformedMaskOffset);
+    RasterMaskHelper helper(*pixmap, -transformedMaskOffset);
     helper.drawShape(shape, localToDevice, strokeRec);
 
     return true;
