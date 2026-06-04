@@ -463,9 +463,12 @@ public:
         fUVs[3] = SkToU16(rect.fBottom);
     }
 
+    void updateRecord(Record r) { fRecord = r; }
+    Record record() const { return fRecord; }
+
 private:
     PlotLocator fPlotLocator{0, 0, GenerationCounter::kInvalidGeneration};
-
+    Record fRecord;
     // The inset padded bounds in the atlas in the lower 13 bits, and page index in bits 13 &
     // 14 of the Us.
     std::array<uint16_t, 4> fUVs{0, 0, 0, 0};
@@ -536,13 +539,17 @@ class DrawAtlas::Plot final {
     SK_DECLARE_INTERNAL_LLIST_INTERFACE(Plot);
     friend class DrawAtlas;
 
-    Plot(int pageIndex,
-         int plotIndex,
-         GenerationCounter* generationCounter,
-         int offX,
-         int offY,
-         int width,
-         int height,
+public:
+    struct PlotCoord {
+        int fPageIdx;
+        int fX;
+        int fY;
+    };
+
+private:
+    Plot(PlotCoord plotCoord,
+         uint32_t plotIndex,
+         SkISize plotDimensions,
          MaskFormat);
 
     Plot(const Plot&) = delete;
@@ -552,43 +559,44 @@ class DrawAtlas::Plot final {
     Plot& operator=(Plot&&) = delete;
 
 public:
-    static std::unique_ptr<Plot> Make(int pageIndex,
-                                      int plotIndex,
-                                      GenerationCounter* generationCounter,
-                                      int offX,
-                                      int offY,
-                                      int width,
-                                      int height,
+
+    static std::unique_ptr<Plot> Make(PlotCoord plotCoord,
+                                      uint32_t plotIndex,
+                                      SkISize plotDimensions,
                                       MaskFormat format) {
-        return std::unique_ptr<Plot>{new Plot{
-                pageIndex, plotIndex, generationCounter, offX, offY, width, height, format}};
+        return std::unique_ptr<Plot>{new Plot{plotCoord, plotIndex, plotDimensions, format}};
     }
 
     ~Plot();
 
-    uint32_t pageIndex() const { return this->plotLocator().pageIndex(); }
+    uint32_t pageIndex() const { return fPlotCoord.fPageIdx; }
 
-    PlotID plotID() const { return static_cast<PlotID>(this->genID()); }
-    void visitEntries(std::invocable<EntryID> auto&& fn) const {}
+    PlotID plotID() const { return fPlotID; }
+    void visitEntries(std::invocable<EntryID> auto&& fn) const {
+        fEntries.foreach([&fn](EntryID eid, const Rect16*) {
+            std::invoke(fn, eid);
+        });
+    }
 
-    /**
-     * genID() is incremented when the plot is evicted due to a atlas spill. It is used to
-     * know if a particular subimage is still present in the atlas.
-     */
-    uint64_t genID() const { return fGenID; }
+    uint64_t genID() const { return static_cast<uint64_t>(fPlotID); }
     PlotLocator plotLocator() const {
-        SkASSERT(fPlotLocator.isValid());
-        return fPlotLocator;
+        return PlotLocator(fPlotCoord.fPageIdx, fPlotIndex, this->genID());
     }
 
     size_t bpp() const { return MaskFormatBytesPerPixel(fMaskFormat); }
-    size_t rowBytes() const { return fWidth * this->bpp(); }
+    size_t rowBytes() const { return fPlotDimensions.width() * this->bpp(); }
 
-    /**
-     * To add data to the Plot, first call addRect to see if it's possible. If successful,
-     * use the atlasLocator to copy data to the location using copySubImage() or use
-     * prepForRender() to software rasterize to the location.
-     */
+    struct AddResult {
+        EntryID fEntryID;
+        SkIPoint fPositionInAtlas;
+    };
+
+    std::optional<AddResult> addRect(SkISize size, const std::byte* image);
+    std::optional<SkIRect> entryAtlasRect(EntryID entryID) const;
+    std::optional<SkPixmap> entryPixmap(EntryID entryID,
+                                         int padding,
+                                         std::optional<SkColor> clearColor);
+
     bool addRect(int width, int height, AtlasLocator* atlasLocator);
 
     void copySubImage(const AtlasLocator& atlasLocator, const void* image);
@@ -618,15 +626,17 @@ public:
 
     bool needsUpload() { return !fDirtyRect.isEmpty(); }
     std::pair<const void*, SkIRect> prepareForUpload();
-    // Re-initialize Plot. The client should ensure that they process any eviction callbacks
-    // before calling this, otherwise any cached references will point to invalid data.
-    // If freeData is true, this will free the backing data as well. This should only be used
-    // when we know we won't be adding to the Plot immediately afterwards.
-    void resetRects(bool freeData);
+
+    void recycle(bool freeData);
 
     void markFullIfUsed() { fIsFull = !fDirtyRect.isEmpty(); }
     bool isEmpty() const { return fRectanizer.percentFull() == 0; }
     bool hasAllocation() const { return fData != nullptr; }
+
+    PlotCoord plotCoord() const { return fPlotCoord; }
+    SkIPoint topLeftInAtlas() const {
+        return {fPlotCoord.fX * fPlotDimensions.width(), fPlotCoord.fY * fPlotDimensions.height()};
+    }
 
 #ifdef SK_DEBUG
     void resetListPtrs() {
@@ -636,24 +646,43 @@ public:
 #endif
 
 private:
-    void* dataAt(SkIPoint atlasPoint);
+    std::byte* dataAt(SkIPoint atlasPoint);
 
-    Token fLastUse;
-    int fFlushesSinceLastUse;
+    std::optional<std::pair<EntryID, SkIPoint>> makeEntry(SkISize size) {
+        SkIPoint16 loc;
+        if (!fRectanizer.addRect(size.width(), size.height(), &loc)) {
+            return std::nullopt;
+        }
+        fPrevEntryID = NextEntryID(fPrevEntryID);
+        SkASSERT(!fEntries.find(fPrevEntryID));
+        auto rect = SkIRect::MakePtSize({loc.fX, loc.fY}, size);
+        fEntries[fPrevEntryID] = rect;
+        return std::make_pair(fPrevEntryID, SkIPoint{loc.fX, loc.fY});
+    }
 
-    GenerationCounter* const fGenerationCounter;
-    uint64_t fGenID;
-    PlotLocator fPlotLocator;
+    static PlotID NextPlotID();
+    static EntryID NextEntryID(EntryID entryID);
+
     std::unique_ptr<std::byte[]> fData;
-    const int fWidth;
-    const int fHeight;
-    const int fX;
-    const int fY;
+    skia_private::THashMap<EntryID, Rect16> fEntries;
     RectanizerSkyline fRectanizer;
-    const SkIPoint16 fOffset;  // the offset of the plot in the backing texture
-    const MaskFormat fMaskFormat;
-    SkIRect fDirtyRect;  // area in the Plot that needs to be uploaded
-    bool fIsFull;
+    Token fLastUse             = Token::InvalidToken();
+    int   fFlushesSinceLastUse = 0;
+    PlotID fPlotID = NextPlotID();
+    EntryID fPrevEntryID = EntryID::kInvalid;
+    const SkISize fPlotDimensions;
+    const uint32_t fPlotIndex;
+    PlotCoord fPlotCoord;
+    MaskFormat fMaskFormat;
+    SkIRect fDirtyRect = SkIRect::MakeEmpty();
+    bool fIsFull = false;
+    SkIRect alignedDirtyRect() const {
+        SkIRect aligned = fDirtyRect;
+        // Align to 4 bytes for faster upload
+        aligned.fLeft &= ~0x3;
+        aligned.fRight = (aligned.fRight + 3) & ~0x3;
+        return aligned;
+    }
 };
 
 inline uint32_t DrawAtlas::getListIndex(const PlotLocator& locator) {
