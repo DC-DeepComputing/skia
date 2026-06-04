@@ -8,11 +8,11 @@
 
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/graphite/Recording.h"
-#include "include/private/base/SkAlign.h"
-#include "include/private/base/SkAssert.h"
-#include "include/private/base/SkLog.h"
-#include "include/private/base/SkMath.h"
-#include "include/private/base/SkTo.h"
+#include "include/private/SkAlign.h"
+#include "include/private/SkAssert.h"
+#include "include/private/SkLog.h"
+#include "include/private/SkMath.h"
+#include "include/private/SkTo.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/GlobalCache.h"
@@ -263,13 +263,6 @@ void BufferSubAllocator::reset() {
     if (fBuffer) {
         SkASSERT(fOwner);
 
-        if (fOwner->fMappingFailed) {
-            fBuffer = nullptr;
-            fRemaining = 0;
-            fTransferBuffer = {};
-            return;
-        }
-
         DrawBufferManager::BufferState& state = fOwner->fCurrentBuffers[fStateIndex];
         if (fBuffer->shareable() == Shareable::kScratch) {
             // TODO: Merge this reuse of scratch resources with the ScratchResourceManager, but
@@ -278,8 +271,11 @@ void BufferSubAllocator::reset() {
             // The scratch buffer's availability for reuse (scoped to the owning DrawBufferManager)
             // was tied to this BufferSubAllocator, so when that is reset, we just remove the buffer
             // from the set of unavailable buffers.
-            SkASSERT(state.fUnavailableScratchBuffers.contains(fBuffer.get()));
-            state.fUnavailableScratchBuffers.remove(fBuffer.get());
+            SkASSERT((fOwner->fMappingFailed && state.fUnavailableScratchBuffers.empty()) ||
+                     state.fUnavailableScratchBuffers.contains(fBuffer.get()));
+            if (!fOwner->fMappingFailed) {
+                state.fUnavailableScratchBuffers.remove(fBuffer.get());
+            }
 
             SkASSERT(!fTransferBuffer); // Scratch buffers shouldn't be using transfer buffers
             fOwner->fUsedBuffers.emplace_back(std::move(fBuffer), BindBufferInfo{});
