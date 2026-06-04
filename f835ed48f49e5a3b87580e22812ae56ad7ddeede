@@ -39,6 +39,30 @@
       },
       "revId": "f835ed48f49e5a3b87580e22812ae56ad7ddeede",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2ad88c4_3edcbd35",
+        "filename": "src/gpu/graphite/PrecompileContext.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-04T14:42:43Z",
+      "side": 1,
+      "message": "I originally had it that way (where it would early out on error or if it found an external format). I switched it, since the containsExternalFormat call is part of the public API, to validate the serializedkey as much as possible during its traversal.",
+      "parentUuid": "3620d4c5_9a78e2c7",
+      "range": {
+        "startLine": 141,
+        "startChar": 9,
+        "endLine": 141,
+        "endChar": 35
+      },
+      "revId": "f835ed48f49e5a3b87580e22812ae56ad7ddeede",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
