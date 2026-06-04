@@ -540,8 +540,8 @@ bool SkRRect::transform(const SkMatrix& matrix, SkRRect* dst) const {
     }
     if (kOval_Type == fType) {
         for (int i = 0; i < 4; ++i) {
-            dst->fRadii[i].fX = SkScalarHalf(newRect.width());
-            dst->fRadii[i].fY = SkScalarHalf(newRect.height());
+            dst->fRadii[i].fX = newRect.width() / 2.f;
+            dst->fRadii[i].fY = newRect.height() / 2.f;
         }
         SkASSERT(dst->isValid());
         return true;
