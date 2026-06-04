@@ -20,6 +20,7 @@
 #include "src/gpu/graphite/CommandBuffer.h"
 #include "src/gpu/graphite/RecordingPriv.h"
 #include "src/gpu/graphite/Resource.h"
+#include "src/gpu/graphite/ResourceProvider.h"
 #include "src/gpu/graphite/RuntimeEffectDictionary.h"
 #include "src/gpu/graphite/Surface_Graphite.h"
 #include "src/gpu/graphite/Texture.h"
@@ -217,6 +218,11 @@ bool RecordingPriv::prepareResources(ResourceProvider* resourceProvider,
         }, /*readsOnly=*/false);
     }
 
+    // After preparing resources, transfer ownership of the ScratchResourceManager's list of scratch
+    // textures and their associated usage flags OR custom label on to the Recording. Once inserted,
+    // that recording can then safely issue label updates upon insertion.
+    scratchManager->snapScratchTextureMaps(fScratchTextureUsageMap, fScratchTextureLabelMap);
+
     return status != Task::Status::kFail;
 }
 
@@ -247,6 +253,12 @@ bool RecordingPriv::addCommands(Context* context,
 
 void RecordingPriv::addResourceRef(sk_sp<Resource> resource) {
     fRecording->fExtraResourceRefs.push_back(std::move(resource));
+}
+
+void RecordingPriv::updateScratchLabels(ResourceProvider* resourceProvider) {
+    SkASSERT(resourceProvider);
+    resourceProvider->updateCachedScratchLabels(fScratchTextureUsageMap.get(),
+                                                fScratchTextureLabelMap.get());
 }
 
 #if defined(GPU_TEST_UTILS)
