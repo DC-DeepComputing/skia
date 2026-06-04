@@ -136,6 +136,14 @@ private:
 
 class GlyphRunBuilder {
 public:
+    // GlyphRunBuilder(GlyphRunBuilder&&) = default;
+    // GlyphRunBuilder& operator=(GlyphRunBuilder&&) = default;
+    // GlyphRunBuilder(const GlyphRunBuilder&) = delete;
+    // GlyphRunBuilder& operator=(const GlyphRunBuilder&) = delete;
+
+    // GlyphRunBuilder() = default;
+    // ~GlyphRunBuilder() = default;
+
     GlyphRunList makeGlyphRunList(const GlyphRun& run, const SkPaint& paint, SkPoint origin);
     const GlyphRunList& textToGlyphRunList(const SkFont& font,
                                            const SkPaint& paint,
