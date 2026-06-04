@@ -324,9 +324,15 @@ private:
     }
 #endif
 
-    // If freeData is true, this will free the backing data as well. This should only be used
-    // when we know we won't be adding to the Plot immediately afterwards.
     void processEvictionAndResetRects(Plot* plot, bool freeData);
+    enum class EvictionType {
+        kReuse_FreeData,
+        kReuse_KeepData,
+        kWillBeRemoved
+    };
+    void processEvictionAndResetRects(Plot* plot, EvictionType type);
+    Plot* findPlot(PlotID id) const;
+    Plot* findPlot(Record record) const;
 
     MaskFormat         fMaskFormat;
     int                fTextureWidth;
@@ -355,6 +361,9 @@ private:
     int fFlushesSinceLastUse;
 
     std::vector<PlotEvictionCallback*> fEvictionCallbacks;
+    std::vector<EvictionCallback*> fRecordEvictionCallbacks;
+    skia_private::THashMap<PlotID, Plot*> fPlotMap;
+    uint32_t fEvictionCounter = 0;
 
     struct Page {
         // allocated array of Plots
