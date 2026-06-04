@@ -68,6 +68,24 @@
       "message": "Passing over to Nicolette and Rob to investigate the graphite unit test failures.",
       "revId": "ecbc910c61a71bee4ecf44b2286c7b586f6f2e9a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "24fa50ff_e34eeb21",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-04T18:15:10Z",
+      "side": 1,
+      "message": "For the PersistentPipelineStorageTest failure, I believe we need to add another suppression here:\n\nhttps://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/infra/bots/gen_tasks_logic/dm_flags.go;l\u003d615\n\nfor, yet another, Win11/Intel-GPU.",
+      "parentUuid": "105663d1_c7b7daf4",
+      "revId": "ecbc910c61a71bee4ecf44b2286c7b586f6f2e9a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
