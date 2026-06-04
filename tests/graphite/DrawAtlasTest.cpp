@@ -26,7 +26,7 @@ namespace {
 const int kNumPlots = 2;
 const int kPlotSize = 32;
 const int kAtlasSize = kNumPlots * kPlotSize;
-uint32_t gEvictCount = 0;
+int gEvictCount = 0;
 
 class PlotEvictionCounter : public DrawAtlas::PlotEvictionCallback {
 public:
@@ -34,7 +34,7 @@ public:
 };
 
 void check(skiatest::Reporter* r, DrawAtlas* atlas,
-           uint32_t expectedActive, uint32_t expectedEvictCount) {
+           int expectedActive, int expectedEvictCount) {
     REPORTER_ASSERT(r, atlas->numActivePages() == expectedActive);
     REPORTER_ASSERT(r, gEvictCount == expectedEvictCount);
     REPORTER_ASSERT(r, atlas->maxPages() == DrawAtlas::kMaxMultitexturePages);
