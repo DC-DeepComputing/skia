@@ -603,7 +603,11 @@ bool OpsTask::onExecute(GrOpFlushState* flushState) {
             }
             if (!stencil->hasPerformedInitialClear()) {
                 stencilLoadOp = GrLoadOp::kClear;
-                markStencilCleared = true;
+                // Only mark the stencil - which may be used for render targets with differing
+                // clipped bounds - as clear if the entire attachment will be cleared within this
+                // renderpass's clipped bounds.
+                markStencilCleared =
+                        fClippedContentBounds.contains(SkIRect::MakeSize(stencil->dimensions()));
                 break;
             }
             // SurfaceDrawContexts are required to leave the user stencil bits in a cleared state
