@@ -28,7 +28,7 @@ class TextureProxy;
 //////////////////////////////////////////////////////////////////////////////////////////////////
 /** The TextAtlasManager manages the lifetime of and access to DrawAtlases used in glyph rendering.
  */
-class TextAtlasManager : public DrawAtlas::GenerationCounter {
+class TextAtlasManager {
 public:
     // For text there are three atlases (A8, 565, ARGB) that are kept in relation with one another.
     // In general, because A8 is the most frequently used mask format its dimensions are 2x the 565
@@ -77,16 +77,22 @@ public:
 
     bool hasGlyph(MaskFormat, const GlyphEntry&);
 
-    DrawAtlas::ErrorCode addGlyphToAtlas(const SkGlyph&, GlyphEntry*, int srcPadding);
+    enum class AddGlyphResult {
+        kSuccess,  // The Glyph was added to the atlas.
+        kFull,     // There isn't free space in the atlas for the glyph.
+        kError,    // Failed for another reason (i.e. texture creation failed,
+                   // can't fit in a plot, glyph has no pixels, ...).
+    };
+    AddGlyphResult addGlyphToAtlas(const SkGlyph&, GlyphEntry*, int srcPadding);
 
     // To ensure the DrawAtlas does not evict the Glyph Mask from its texture backing store,
     // the client must pass in the current draw token along with the Glyph.
-    // A BulkUsePlotUpdater is used to manage bulk last use token updating in the Atlas.
+    // A BulkRecordUseUpdater is used to manage bulk last use token updating in the Atlas.
     // For convenience, this function will also set the use token for the current glyph if required
     // NOTE: the bulk uploader is only valid if the subrun has a valid atlasGeneration
-    void addGlyphToBulkAndSetUseToken(DrawAtlas::BulkUsePlotUpdater*, MaskFormat, const GlyphEntry&, Token);
+    void addGlyphToBulkAndSetUseToken(DrawAtlas::BulkRecordUseUpdater*, MaskFormat, const GlyphEntry&, Token);
 
-    void setUseTokenBulk(const DrawAtlas::BulkUsePlotUpdater& updater,
+    void setUseTokenBulk(const DrawAtlas::BulkRecordUseUpdater& updater,
                          Token token,
                          MaskFormat format) {
         this->getAtlas(format)->setLastUseTokenBulk(updater, token);
@@ -105,10 +111,10 @@ public:
     void compact();
 
     // Some clients may wish to verify the integrity of the texture backing store of the
-    // DrawAtlas. The atlasGeneration returned below is a monotonically increasing number which
+    // DrawAtlas. The evictionCounter returned below is a monotonically increasing number which
     // changes every time something is removed from the texture backing store.
-    uint64_t atlasGeneration(skgpu::MaskFormat format) const {
-        return this->getAtlas(format)->atlasGeneration();
+    auto evictionCounter(MaskFormat format) const {
+        return this->getAtlas(format)->evictionCounter();
     }
 
     ///////////////////////////////////////////////////////////////////////////

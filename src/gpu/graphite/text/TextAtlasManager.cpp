@@ -124,7 +124,19 @@ void TextAtlasManager::freeGpuResources() {
 }
 
 bool TextAtlasManager::hasGlyph(MaskFormat format, const GlyphEntry& glyph) {
-    return this->getAtlas(format)->hasID(glyph.fAtlasLocator.plotLocator());
+    auto result = this->getAtlas(format)->hasRecord(glyph.fAtlasRecord);
+#if defined(SK_DEBUG)
+    if (result) {
+        // Ensure our page and rect data are correct.
+        auto location = this->getAtlas(format)->entryLocation(glyph.fAtlasRecord);
+        SkASSERT(location);
+        auto [pageIdx, rect] = *location;
+        SkASSERT(glyph.fPageIdx == pageIdx);
+        // Containment to account for the possible padding inset in Glyph's rect.
+        SkASSERT(rect.contains(SkIRect(glyph.fRect)));
+    }
+#endif
+    return result;
 }
 
 template <typename INT_TYPE>
@@ -247,9 +259,9 @@ MaskFormat TextAtlasManager::resolveMaskFormat(MaskFormat format) const {
 
 // Returns kSucceeded if glyph successfully added to texture atlas, kTryAgain if a RenderPassTask
 // needs to be snapped before adding the glyph, and kError if it can't be added at all.
-DrawAtlas::ErrorCode TextAtlasManager::addGlyphToAtlas(const SkGlyph& skGlyph,
-                                                       GlyphEntry* glyph,
-                                                       int srcPadding) {
+TextAtlasManager::AddGlyphResult TextAtlasManager::addGlyphToAtlas(const SkGlyph& skGlyph,
+                                                                   GlyphEntry* glyph,
+                                                                   int srcPadding) {
 #if !defined(SK_DISABLE_SDF_TEXT)
     SkASSERT(0 <= srcPadding && srcPadding <= SK_DistanceFieldInset);
 #else
@@ -257,7 +269,7 @@ DrawAtlas::ErrorCode TextAtlasManager::addGlyphToAtlas(const SkGlyph& skGlyph,
 #endif
 
     if (skGlyph.image() == nullptr) {
-        return DrawAtlas::ErrorCode::kError;
+        return AddGlyphResult::kError;
     }
     SkASSERT(glyph != nullptr);
 
@@ -289,8 +301,8 @@ DrawAtlas::ErrorCode TextAtlasManager::addGlyphToAtlas(const SkGlyph& skGlyph,
             break;
 #endif
         default:
-            // The padding is not one of the know forms.
-            return DrawAtlas::ErrorCode::kError;
+            // The padding is not one of the known forms.
+            return AddGlyphResult::kError;
     }
 
     const int width = skGlyph.width() + 2*padding;
@@ -318,17 +330,28 @@ DrawAtlas::ErrorCode TextAtlasManager::addGlyphToAtlas(const SkGlyph& skGlyph,
     get_packed_glyph_image(skGlyph, rowBytes, expectedMaskFormat, dataPtr);
 
     DrawAtlas* atlas = this->getAtlas(expectedMaskFormat);
-    auto errorCode = atlas->addToAtlas(fRecorder,
-                                       width,
-                                       height,
-                                       storage.get(),
-                                       &glyph->fAtlasLocator);
+    DrawAtlas::AddResult addResult;
+    DrawAtlas::ErrorCode errorCode = atlas->addRect(fRecorder,
+                                                    {width, height},
+                                                    &addResult,
+                                                    static_cast<const std::byte*>(storage.get()));
 
-    if (errorCode == DrawAtlas::ErrorCode::kSucceeded) {
-        glyph->fAtlasLocator.insetSrc(srcPadding);
+    switch (errorCode) {
+        case DrawAtlas::ErrorCode::kError:
+            return AddGlyphResult::kError;
+
+        case DrawAtlas::ErrorCode::kTryAgain:
+            return AddGlyphResult::kFull;
+
+        case DrawAtlas::ErrorCode::kSucceeded:
+            glyph->fAtlasRecord = addResult.fRecord;
+            // Apply our padding to the rect.
+            auto atlasRect  = SkIRect::MakePtSize(addResult.fPosition, {width, height});
+            glyph->fRect    = atlasRect.makeInset(srcPadding, srcPadding);
+            glyph->fPageIdx = addResult.fPageIdx;
+            return AddGlyphResult::kSuccess;
     }
-
-    return errorCode;
+    SkUNREACHABLE;
 }
 
 bool TextAtlasManager::recordUploads(DrawContext* dc) {
@@ -341,12 +364,12 @@ bool TextAtlasManager::recordUploads(DrawContext* dc) {
     return true;
 }
 
-void TextAtlasManager::addGlyphToBulkAndSetUseToken(DrawAtlas::BulkUsePlotUpdater* updater,
+void TextAtlasManager::addGlyphToBulkAndSetUseToken(DrawAtlas::BulkRecordUseUpdater* updater,
                                                     MaskFormat format,
                                                     const GlyphEntry& glyph,
                                                     Token token) {
-    if (updater->add(glyph.fAtlasLocator)) {
-        this->getAtlas(format)->setLastUseToken(glyph.fAtlasLocator, token);
+    if (updater->add(glyph.fAtlasRecord)) {
+        this->getAtlas(format)->setLastUseToken(glyph.fAtlasRecord, token);
     }
 }
 
@@ -369,7 +392,6 @@ bool TextAtlasManager::initAtlas(MaskFormat format) {
         fAtlases[index] = DrawAtlas::Make(format,
                                           atlasDimensions.width(), atlasDimensions.height(),
                                           plotDimensions.width(), plotDimensions.height(),
-                                          /*generationCounter=*/this,
                                           fAllowMultitexturing,
                                           DrawAtlas::UseStorageTextures::kNo,
                                           /*evictor=*/nullptr,
