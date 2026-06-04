@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a05070b_127b4dd7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 13
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-04T20:35:35Z",
+      "side": 1,
+      "message": "Always use Release mode. Let\u0027s use pprof to see if we know where the 0.4 us are coming from",
+      "parentUuid": "505d6ac1_b24f6a04",
+      "range": {
+        "startLine": 29,
+        "startChar": 23,
+        "endLine": 29,
+        "endChar": 28
+      },
+      "revId": "909c5b12bc0a10f664f6a313f5b64609c5c744b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "454c68bf_0634d172",
@@ -97,6 +121,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ed9a75df_39f0c104",
+        "filename": "include/core/SkCanvas.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 2424,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-04T20:35:35Z",
+      "side": 1,
+      "message": "This wasn\u0027t moved.",
+      "parentUuid": "9f12b9d2_801355aa",
+      "range": {
+        "startLine": 2424,
+        "startChar": 4,
+        "endLine": 2424,
+        "endChar": 10
+      },
+      "revId": "909c5b12bc0a10f664f6a313f5b64609c5c744b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "eb580968_b7f5287d",
         "filename": "include/core/SkCanvas.h",
         "patchSetId": 13
@@ -132,6 +180,30 @@
       "side": 1,
       "message": "I switched it over to raw GlyphRunBuilders so \n\nskia_private::STArray\u003c1, sktext::GlyphRunBuilder\u003e fScratchGlyphRunBuilders;\n\nI also added \n\n    /**\n     * fScratchGlyphRunBuilders will be reused across text drawing commands\n     */",
       "parentUuid": "eb580968_b7f5287d",
+      "range": {
+        "startLine": 2715,
+        "startChar": 4,
+        "endLine": 2715,
+        "endChar": 16
+      },
+      "revId": "909c5b12bc0a10f664f6a313f5b64609c5c744b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff0f81f8_9ca48d9e",
+        "filename": "include/core/SkCanvas.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 2715,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-04T20:35:35Z",
+      "side": 1,
+      "message": "I see the comment but the type is still wrong?",
+      "parentUuid": "18f67135_b0734631",
       "range": {
         "startLine": 2715,
         "startChar": 4,
