@@ -16,6 +16,24 @@
       "message": "So the root cause is those oval [asserts](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/core/SkRRect.cpp;drc\u003db5df365d97e652034ba62118eb7742f939d160fa;l\u003d778) in SkRRect::isValid() run into precision issues for large values.  We already use loose comparisons (SkScalarNearlyEqual), but unfortunately with a fixed/absolute epsilon.  For very large values, that epsilon can easily be smaller than the ULP difference.  For the values in the test, we might as well use \u003d\u003d, as SkScalarNearlyEquals doesn\u0027t allow for any slack.\n\nInstead of trying to force bit-exact radii, which seems fragile, can we make the actual comparison logic robust?  We have `SkFloatingPoint\u003cT, ULPs\u003e::AlmostEquals` which should in theory do the right thing.\n\n(https://randomascii.wordpress.com/2012/02/25/comparing-floating-point-numbers-2012-edition/)\n\n(SkFloatingPoint is kinda showing its age and could use some cleanup at some point)",
       "revId": "788865c36417766f1acddc63114f233a2d73c21f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d5786d3_d1598c6a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-04T19:13:21Z",
+      "side": 1,
+      "message": "Cool! I didn\u0027t know about that helper. Done.",
+      "parentUuid": "0e5ced5e_e0fcc515",
+      "revId": "788865c36417766f1acddc63114f233a2d73c21f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
