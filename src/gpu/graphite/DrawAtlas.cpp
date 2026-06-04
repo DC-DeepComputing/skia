@@ -133,7 +133,7 @@ inline void DrawAtlas::processEvictionAndResetRects(Plot* plot, bool freeData) {
         fAtlasGeneration = fGenerationCounter->next();
     }
 
-    plot->resetRects(freeData);
+    plot->recycle(freeData);
 }
 
 inline void DrawAtlas::updatePlot(Plot* plot, AtlasLocator* atlasLocator) {
@@ -465,11 +465,9 @@ bool DrawAtlas::createPages(GenerationCounter* generationCounter) {
         for (int y = numPlotsY - 1, r = 0; y >= 0; --y, ++r) {
             for (int x = numPlotsX - 1, c = 0; x >= 0; --x, ++c) {
                 uint32_t plotIndex = r * numPlotsX + c;
-                *currPlot = Plot::Make(i,
+                *currPlot = Plot::Make({(int)i, x, y},
                                        plotIndex,
-                                       generationCounter,
-                                       x, y,
-                                       fPlotWidth, fPlotHeight,
+                                       {fPlotWidth, fPlotHeight},
                                        fMaskFormat);
 
                 // build LRU list
@@ -594,87 +592,127 @@ int DrawAtlas::numNonEmptyPlots() const {
 }
 #endif
 
-DrawAtlas::Plot::Plot(int pageIndex,
-                      int plotIndex,
-                      GenerationCounter* generationCounter,
-                      int offX, int offY,
-                      int width, int height,
+DrawAtlas::PlotID DrawAtlas::Plot::NextPlotID() {
+    static std::atomic<uint32_t> gNextPlotID{1};
+    uint32_t id;
+    do {
+        id = gNextPlotID.fetch_add(1, std::memory_order_relaxed);
+    } while (id == static_cast<uint32_t>(PlotID::kInvalid));
+    return static_cast<PlotID>(id);
+}
+
+DrawAtlas::EntryID DrawAtlas::Plot::NextEntryID(DrawAtlas::EntryID entryID) {
+    auto value = static_cast<std::underlying_type_t<EntryID>>(entryID);
+    if (value == std::numeric_limits<std::underlying_type_t<EntryID>>::max()) {
+        return static_cast<EntryID>(1);
+    }
+    value++;
+    if (value == static_cast<std::underlying_type_t<EntryID>>(EntryID::kInvalid)) {
+        value++;
+    }
+    return static_cast<EntryID>(value);
+}
+
+DrawAtlas::Plot::Plot(PlotCoord plotCoord,
+                      uint32_t plotIndex,
+                      SkISize plotDimensions,
                       MaskFormat maskFormat)
-        : fLastUse(Token::InvalidToken())
-        , fFlushesSinceLastUse(0)
-        , fGenerationCounter(generationCounter)
-        , fGenID(fGenerationCounter->next())
-        , fPlotLocator(pageIndex, plotIndex, fGenID)
-        , fData(nullptr)
-        , fWidth(width)
-        , fHeight(height)
-        , fX(offX)
-        , fY(offY)
-        , fRectanizer(width, height)
-        , fOffset(SkIPoint16::Make(fX * fWidth, fY * fHeight))
-        , fMaskFormat(maskFormat)
-        , fIsFull(false) {
-    // We expect the allocated dimensions to be a multiple of 4 bytes
-    SkASSERT(((width * this->bpp()) & 0x3) == 0);
-    // The padding for faster uploads only works for 1, 2 and 4 byte texels
+        : fRectanizer(plotDimensions.width(), plotDimensions.height())
+        , fPlotDimensions(plotDimensions)
+        , fPlotIndex(plotIndex)
+        , fPlotCoord(plotCoord)
+        , fMaskFormat(maskFormat) {
+    SkASSERT(((plotDimensions.width() * this->bpp()) & 0x3) == 0);
     SkASSERT(this->bpp() == 1 || this->bpp() == 2 || this->bpp() == 4);
     fDirtyRect.setEmpty();
 }
 
 DrawAtlas::Plot::~Plot() = default;
 
-bool DrawAtlas::Plot::addRect(int width, int height, AtlasLocator* atlasLocator) {
-    SkASSERT(width <= fWidth && height <= fHeight);
+std::optional<DrawAtlas::Plot::AddResult> DrawAtlas::Plot::addRect(SkISize size, const std::byte* image) {
+    auto entryOpt = this->makeEntry(size);
+    if (!entryOpt) {
+        return std::nullopt;
+    }
+    auto [entryID, pos] = *entryOpt;
+    auto offset = this->topLeftInAtlas();
+    SkIPoint absPos = pos + offset;
 
-    SkIPoint16 loc;
-    if (!fRectanizer.addRect(width, height, &loc)) {
-        return false;
+    if (image) {
+        unsigned char* dataPtr = (unsigned char*)this->dataAt(absPos);
+        const unsigned char* imagePtr = (const unsigned char*)image;
+        auto bpp = this->bpp();
+        size_t imageRB = size.width() * bpp;
+        size_t plotRB = this->rowBytes();
+
+        constexpr bool kBGRAIsNative = kN32_SkColorType == kBGRA_8888_SkColorType;
+        if (bpp == 4 && kBGRAIsNative) {
+            for (int i = 0; i < size.height(); ++i) {
+                SkOpts::RGBA_to_BGRA((uint32_t*)dataPtr, (const uint32_t*)imagePtr, size.width());
+                dataPtr += plotRB;
+                imagePtr += imageRB;
+            }
+        } else {
+            for (int i = 0; i < size.height(); ++i) {
+                memcpy(dataPtr, imagePtr, imageRB);
+                dataPtr += plotRB;
+                imagePtr += imageRB;
+            }
+        }
     }
 
-    auto rect = SkIRect::MakeXYWH(loc.fX, loc.fY, width, height);
-    fDirtyRect.join(rect);
+    SkIRect localRect = SkIRect::MakePtSize(pos, size);
+    fDirtyRect.join(localRect);
 
-    rect.offset(fOffset.fX, fOffset.fY);
-    atlasLocator->updateRect(rect);
-
-    return true;
+    return AddResult{entryID, absPos};
 }
 
-void* DrawAtlas::Plot::dataAt(SkIPoint atlasPoint) {
-    if (!fData) {
-        // make_unique will init the data to zeros.
-        // This is of particular importance when a caller uses padding with prepForRender().
-        fData = std::make_unique<std::byte[]>(this->rowBytes() * fHeight);
+std::optional<SkIRect> DrawAtlas::Plot::entryAtlasRect(EntryID entryID) const {
+    const Rect16* rect = fEntries.find(entryID);
+    if (!rect) {
+        return std::nullopt;
     }
-
-    auto localPoint = atlasPoint - SkIPoint{fOffset.fX, fOffset.fY};
-    SkASSERT(localPoint.fX >= 0 && localPoint.fX < fWidth);
-    SkASSERT(localPoint.fY >= 0 && localPoint.fY < fHeight);
-
-    size_t offset = this->bpp() * (localPoint.fY * fWidth + localPoint.fX);
-
-    return fData.get() + offset;
+    SkIRect r = *rect;
+    r.offset(this->topLeftInAtlas());
+    return r;
 }
 
-SkPixmap DrawAtlas::Plot::prepForRender(const AtlasLocator& al,
-                                        int padding,
-                                        std::optional<SkColor> initialColor) {
+std::optional<SkPixmap> DrawAtlas::Plot::entryPixmap(EntryID entryID,
+                                                     int padding,
+                                                     std::optional<SkColor> clearColor) {
+    auto rOpt = this->entryAtlasRect(entryID);
+    if (!rOpt) {
+        return std::nullopt;
+    }
+    SkIRect r = *rOpt;
     SkASSERT(padding >= 0);
     auto info = SkImageInfo::Make(
-            al.dimensions(), MaskFormatToColorType(fMaskFormat), kOpaque_SkAlphaType);
-    SkPixmap outerPM{info, this->dataAt(al.topLeft()), this->rowBytes()};
-    if (initialColor) {
+            r.size(), MaskFormatToColorType(fMaskFormat), kOpaque_SkAlphaType);
+    SkPixmap outerPM{info, this->dataAt(r.topLeft()), this->rowBytes()};
+    if (clearColor) {
 #if defined(SK_DEBUG)
-        if (*initialColor == 0) {
+        if (*clearColor == 0) {
             SkDebugf("Plot Data: potential redudant clear of Plot to zero.");
         }
 #endif
-        outerPM.erase(*initialColor);
+        outerPM.erase(*clearColor);
     }
     SkPixmap innerPM;
     SkIRect rect = SkIRect::MakeSize(outerPM.dimensions()).makeInset(padding, padding);
     SkAssertResult(outerPM.extractSubset(&innerPM, rect));
     return innerPM;
+}
+
+bool DrawAtlas::Plot::addRect(int width, int height, AtlasLocator* atlasLocator) {
+    auto res = this->addRect({width, height}, nullptr);
+    if (!res) {
+        return false;
+    }
+    auto rect = SkIRect::MakePtSize(res->fPositionInAtlas, {width, height});
+    atlasLocator->updateRect(rect);
+    atlasLocator->updatePlotLocator(this->plotLocator());
+    atlasLocator->updateRecord(Record(fPlotID, res->fEntryID));
+    return true;
 }
 
 void DrawAtlas::Plot::copySubImage(const AtlasLocator& al, const void* image) {
@@ -701,6 +739,45 @@ void DrawAtlas::Plot::copySubImage(const AtlasLocator& al, const void* image) {
             imagePtr += imageRB;
         }
     }
+
+    SkIRect localRect = SkIRect::MakePtSize(al.topLeft() - this->topLeftInAtlas(), {width, height});
+    fDirtyRect.join(localRect);
+}
+
+std::byte* DrawAtlas::Plot::dataAt(SkIPoint atlasPoint) {
+    if (!fData) {
+        fData = std::make_unique<std::byte[]>(this->bpp() * fPlotDimensions.area());
+    }
+
+    auto localPoint = atlasPoint - this->topLeftInAtlas();
+    SkASSERT(localPoint.fX >= 0 && localPoint.fX < fPlotDimensions.width());
+    SkASSERT(localPoint.fY >= 0 && localPoint.fY < fPlotDimensions.height());
+
+    size_t offset = this->bpp() * (localPoint.fY * fPlotDimensions.width() + localPoint.fX);
+    return fData.get() + offset;
+}
+
+SkPixmap DrawAtlas::Plot::prepForRender(const AtlasLocator& al,
+                                        int padding,
+                                        std::optional<SkColor> initialColor) {
+    Record r = al.record();
+    if (r.fPlotID != PlotID::kInvalid && r.fEntryID != EntryID::kInvalid) {
+        auto pmOpt = this->entryPixmap(r.fEntryID, padding, initialColor);
+        if (pmOpt) {
+            return *pmOpt;
+        }
+    }
+    SkASSERT(padding >= 0);
+    auto info = SkImageInfo::Make(
+            al.dimensions(), MaskFormatToColorType(fMaskFormat), kOpaque_SkAlphaType);
+    SkPixmap outerPM{info, this->dataAt(al.topLeft()), this->rowBytes()};
+    if (initialColor) {
+        outerPM.erase(*initialColor);
+    }
+    SkPixmap innerPM;
+    SkIRect rect = SkIRect::MakeSize(outerPM.dimensions()).makeInset(padding, padding);
+    SkAssertResult(outerPM.extractSubset(&innerPM, rect));
+    return innerPM;
 }
 
 std::pair<const void*, SkIRect> DrawAtlas::Plot::prepareForUpload() {
@@ -709,20 +786,13 @@ std::pair<const void*, SkIRect> DrawAtlas::Plot::prepareForUpload() {
     if (!fData) {
         return {nullptr, {}};
     }
-    const std::byte* dataPtr;
-    SkIRect offsetRect;
-    // Clamp to 4-byte aligned boundaries
-    auto bpp = this->bpp();
-    unsigned int clearBits = 0x3 / bpp;
-    fDirtyRect.fLeft &= ~clearBits;
-    fDirtyRect.fRight += clearBits;
-    fDirtyRect.fRight &= ~clearBits;
-    SkASSERT(fDirtyRect.fRight <= fWidth);
-    // Set up dataPtr
-    dataPtr = fData.get();
-    dataPtr += this->rowBytes() * fDirtyRect.fTop;
-    dataPtr += bpp * fDirtyRect.fLeft;
-    offsetRect = fDirtyRect.makeOffset(fOffset.fX, fOffset.fY);
+    auto aligned = this->alignedDirtyRect();
+
+    const std::byte* dataPtr = fData.get();
+    dataPtr += this->rowBytes() * aligned.fTop;
+    dataPtr += this->bpp() * aligned.fLeft;
+
+    SkIRect offsetRect = aligned.makeOffset(this->topLeftInAtlas().fX, this->topLeftInAtlas().fY);
 
     fDirtyRect.setEmpty();
     fIsFull = false;
@@ -730,23 +800,19 @@ std::pair<const void*, SkIRect> DrawAtlas::Plot::prepareForUpload() {
     return {dataPtr, offsetRect};
 }
 
-void DrawAtlas::Plot::resetRects(bool freeData) {
+void DrawAtlas::Plot::recycle(bool freeData) {
+    fEntries.reset();
     fRectanizer.reset();
-    fGenID = fGenerationCounter->next();
-    auto pageIndex = fPlotLocator.pageIndex();
-    auto plotIndex = fPlotLocator.plotIndex();
-    fPlotLocator = PlotLocator(pageIndex, plotIndex, fGenID);
+    fPlotID = NextPlotID();
     fLastUse = Token::InvalidToken();
-
-    if (freeData) {
-        fData = {};
-    } else if (fData) {
-        // zero out the plot
-        sk_bzero(fData.get(), this->rowBytes() * fHeight);
-    }
-
+    fFlushesSinceLastUse = 0;
     fDirtyRect.setEmpty();
     fIsFull = false;
+    if (freeData) {
+        fData.reset();
+    } else if (fData) {
+        sk_bzero(fData.get(), this->rowBytes() * fPlotDimensions.height());
+    }
 }
 
 }  // namespace skgpu::graphite
