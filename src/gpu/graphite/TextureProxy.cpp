@@ -21,6 +21,18 @@ namespace skgpu::graphite {
 
 TextureProxy::TextureProxy(SkISize dimensions,
                            const TextureInfo& info,
+                           ScratchUsageFlags usage,
+                           skgpu::Budgeted budgeted)
+        : fDimensions(dimensions)
+        , fInfo(info)
+        , fUsage(usage)
+        , fBudgeted(budgeted)
+        , fVolatile(Volatile::kNo) {
+    SkASSERT(fInfo.isValid());
+}
+
+TextureProxy::TextureProxy(SkISize dimensions,
+                           const TextureInfo& info,
                            std::string_view label,
                            skgpu::Budgeted budgeted)
         : fDimensions(dimensions)
@@ -135,13 +147,24 @@ bool TextureProxy::InstantiateIfNotLazy(ScratchResourceManager* scratchManager,
         return true;
     }
 
-    textureProxy->fTexture = scratchManager->getScratchTexture(textureProxy->dimensions(),
-                                                               textureProxy->textureInfo(),
-                                                               textureProxy->fLabel);
+    bool hasCustomLabel = !textureProxy->fLabel.empty();
+    if (hasCustomLabel) {
+        textureProxy->fTexture = scratchManager->getScratchTexture(
+                textureProxy->dimensions(),
+                textureProxy->textureInfo(),
+                textureProxy->label());
+    } else {
+        textureProxy->fTexture = scratchManager->getScratchTexture(
+                textureProxy->dimensions(),
+                textureProxy->textureInfo(),
+                textureProxy->scratchUsage());
+    }
+
     if (!textureProxy->fTexture) {
         return false;
     }
     SkDEBUGCODE(textureProxy->validateTexture(textureProxy->fTexture.get()));
+
     return true;
 }
 
@@ -160,16 +183,23 @@ const Texture* TextureProxy::texture() const {
     return fTexture.get();
 }
 
+namespace {
+bool texture_info_and_size_are_valid(
+        SkISize dimensions, const TextureInfo& textureInfo, int maxTextureSize) {
+    return dimensions.width() >= 1  &&
+           dimensions.height() >= 1 &&
+           dimensions.width() <= maxTextureSize  &&
+           dimensions.height() <= maxTextureSize &&
+           textureInfo.isValid();
+}
+} // anonymous
 sk_sp<TextureProxy> TextureProxy::Make(const Caps* caps,
                                        ResourceProvider* resourceProvider,
                                        SkISize dimensions,
                                        const TextureInfo& textureInfo,
                                        std::string_view label,
                                        skgpu::Budgeted budgeted) {
-    if (dimensions.width() < 1 || dimensions.height() < 1 ||
-        dimensions.width() > caps->maxTextureSize() ||
-        dimensions.height() > caps->maxTextureSize() ||
-        !textureInfo.isValid()) {
+    if (!texture_info_and_size_are_valid(dimensions, textureInfo, caps->maxTextureSize())) {
         return nullptr;
     }
 
@@ -184,16 +214,28 @@ sk_sp<TextureProxy> TextureProxy::Make(const Caps* caps,
     return proxy;
 }
 
+sk_sp<TextureProxy> TextureProxy::Make(const Caps* caps,
+                                       ResourceProvider* resourceProvider,
+                                       SkISize dimensions,
+                                       const TextureInfo& textureInfo,
+                                       ScratchUsageFlags usage) {
+    if (!texture_info_and_size_are_valid(dimensions, textureInfo, caps->maxTextureSize())) {
+        return nullptr;
+    }
+
+    // If a proxy has a ScratchUsage, then we know it will be for scratch texture which will be
+    // budgeted.
+    sk_sp<TextureProxy> proxy {new TextureProxy(dimensions, textureInfo, usage, Budgeted::kYes)};
+    return proxy;
+}
+
 sk_sp<TextureProxy> TextureProxy::MakeLazy(const Caps* caps,
                                            SkISize dimensions,
                                            const TextureInfo& textureInfo,
                                            skgpu::Budgeted budgeted,
                                            Volatile isVolatile,
                                            LazyInstantiateCallback&& callback) {
-    SkASSERT(textureInfo.isValid());
-    if (dimensions.width() < 1 || dimensions.height() < 1 ||
-        dimensions.width() > caps->maxTextureSize() ||
-        dimensions.height() > caps->maxTextureSize()) {
+    if (!texture_info_and_size_are_valid(dimensions, textureInfo, caps->maxTextureSize())) {
         return nullptr;
     }
 
