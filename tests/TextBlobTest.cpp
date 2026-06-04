@@ -571,6 +571,8 @@ static sk_sp<SkTextBlob> make_inner_blob(sk_sp<SkTypeface> tf) {
 
 static sk_sp<SkTextBlob> make_outer_blob(sk_sp<SkTypeface> drawable_tf, sk_sp<SkTypeface> path_tf) {
     SkTextBlobBuilder builder;
+    // The font size must be >256 in order to trigger SubRunContainer::MakeInAlloc and have this
+    // SkDrawable drawn rather than the SkPath
     SkFont font0(std::move(drawable_tf), 257.0f);
     {
         const auto& run = builder.allocRunPos(font0, 1);
@@ -589,17 +591,6 @@ static sk_sp<SkTextBlob> make_outer_blob(sk_sp<SkTypeface> drawable_tf, sk_sp<Sk
 class ReentrantDrawable final : public SkDrawable {
 public:
     explicit ReentrantDrawable(sk_sp<SkTextBlob> inner) : inner_(std::move(inner)) {}
-    static sk_sp<SkFlattenable> CreateProc(SkReadBuffer& buffer) {
-        auto data = buffer.readByteArrayAsData();
-        sk_sp<SkTextBlob> tb = SkTextBlob::Deserialize(data->data(), data->size(), {});
-        SkASSERT(tb);
-        return sk_make_sp<ReentrantDrawable>(tb);
-    }
-    const char* getTypeName() const override { return "ReentrantDrawable"; }
-    void flatten(SkWriteBuffer& buffer) const override {
-        auto data = inner_->serialize({});
-        buffer.writeByteArray(data->data(), data->size());
-    }
 
 protected:
     SkRect onGetBounds() override { return SkRect::MakeLTRB(0, -1, 1, 0); }
