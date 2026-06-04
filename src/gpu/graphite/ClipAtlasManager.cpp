@@ -10,13 +10,14 @@
 #include "include/core/SkClipOp.h"
 #include "include/core/SkColorType.h"
 #include "include/core/SkImageInfo.h"
+#include "include/core/SkPixmap.h"
 #include "include/core/SkSize.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "include/private/base/SkAssert.h"
+#include "include/private/base/SkLog.h"
 #include "include/private/base/SkMalloc.h"
 #include "include/private/base/SkPoint_impl.h"
 #include "include/private/base/SkTArray.h"
-#include "src/core/SkAutoPixmapStorage.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/ProxyCache.h"
 #include "src/gpu/graphite/RasterPathUtils.h"
@@ -95,10 +96,10 @@ void render_elements(RasterMaskHelper* helper, const ClipStack::ElementList& ele
 
 } // anonymous namespace
 
-sk_sp<TextureProxy> ClipAtlasManager::findOrCreateEntry(uint32_t stackRecordID,
-                                                        const ClipStack::ElementList* elementList,
-                                                        SkIRect maskDeviceBounds,
-                                                        SkIPoint* outPos) {
+ClipAtlasManager::Result
+ClipAtlasManager::findOrCreateEntry(uint32_t stackRecordID,
+                                    const ClipStack::ElementList* elementList,
+                                    SkIRect maskDeviceBounds) {
     // For the ClipAtlas cache, we don't include the bounds in the key
     skgpu::UniqueKey maskKey;
     bool usesPathKey;
@@ -110,16 +111,24 @@ sk_sp<TextureProxy> ClipAtlasManager::findOrCreateEntry(uint32_t stackRecordID,
     maskKey = GenerateClipMaskKey(stackRecordID, elementList, maskDeviceBounds,
                                   /*includeBounds=*/false, &keyBounds, &usesPathKey);
 
-    sk_sp<TextureProxy> atlasProxy;
+    sk_sp<TextureProxy> proxy;
+    SkIPoint position;
+
     if (usesPathKey) {
-        atlasProxy = fPathKeyAtlasMgr.findOrCreateEntry(fRecorder, maskKey, elementList,
-                                                        maskDeviceBounds, keyBounds, outPos);
+        std::tie(proxy, position) = fPathKeyAtlasMgr.findOrCreateEntry(fRecorder,
+                                                                       maskKey,
+                                                                       elementList,
+                                                                       maskDeviceBounds,
+                                                                       keyBounds);
     } else {
-        atlasProxy = fSaveRecordKeyAtlasMgr.findOrCreateEntry(fRecorder, maskKey, elementList,
-                                                              maskDeviceBounds, keyBounds, outPos);
+        std::tie(proxy, position) = fSaveRecordKeyAtlasMgr.findOrCreateEntry(fRecorder,
+                                                                             maskKey,
+                                                                             elementList,
+                                                                             maskDeviceBounds,
+                                                                             keyBounds);
     }
-    if (atlasProxy) {
-        return atlasProxy;
+    if (proxy) {
+        return {std::move(proxy), position};
     }
 
     // We need to include the bounds in the key when using the ProxyCache
@@ -130,7 +139,7 @@ sk_sp<TextureProxy> ClipAtlasManager::findOrCreateEntry(uint32_t stackRecordID,
         const ClipStack::ElementList* fElementList;
         SkIRect fMaskDeviceBounds;
     } context = {elementList, maskDeviceBounds};
-    sk_sp<TextureProxy> proxy = fRecorder->priv().proxyCache()->findOrCreateCachedProxy(
+    proxy = fRecorder->priv().proxyCache()->findOrCreateCachedProxy(
             fRecorder, maskKey, &context,
             [](const void* ctx) {
                 const ClipDrawContext* cdc = static_cast<const ClipDrawContext*>(ctx);
@@ -146,9 +155,9 @@ sk_sp<TextureProxy> ClipAtlasManager::findOrCreateEntry(uint32_t stackRecordID,
                 bm.setImmutable();
                 return bm;
             });
-    *outPos = { kEntryPadding, kEntryPadding };
+    position = {kEntryPadding, kEntryPadding};
 
-    return proxy;
+    return {proxy, position};
 }
 
 bool ClipAtlasManager::recordUploads(DrawContext* dc) {
@@ -182,7 +191,6 @@ ClipAtlasManager::DrawAtlasMgr::DrawAtlasMgr(size_t width, size_t height,
     fDrawAtlas = DrawAtlas::Make(kMaskFormat,
                                  width, height,
                                  plotWidth, plotHeight,
-                                 /*generationCounter=*/this,
                                  caps->allowMultipleAtlasTextures()
                                          ? DrawAtlas::AllowMultitexturing::kYes
                                          : DrawAtlas::AllowMultitexturing::kNo,
@@ -190,46 +198,44 @@ ClipAtlasManager::DrawAtlasMgr::DrawAtlasMgr(size_t width, size_t height,
                                  /*evictor=*/this,
                                  label);
     SkASSERT(fDrawAtlas);
-    fKeyLists.resize(fDrawAtlas->numPlots() * fDrawAtlas->maxPages());
-    for (int i = 0; i < fKeyLists.size(); ++i) {
-        fKeyLists[i].reset();
-    }
 }
 
-sk_sp<TextureProxy> ClipAtlasManager::DrawAtlasMgr::findOrCreateEntry(
-            Recorder* recorder,
-            const skgpu::UniqueKey& maskKey,
-            const ClipStack::ElementList* elementList,
-            SkIRect maskDeviceBounds,
-            SkIRect keyBounds,
-            SkIPoint* outPos) {
+ClipAtlasManager::Result ClipAtlasManager::DrawAtlasMgr::findOrCreateEntry(
+        Recorder* recorder,
+        const UniqueKey& maskKey,
+        const ClipStack::ElementList* elementList,
+        SkIRect maskDeviceBounds,
+        SkIRect keyBounds) {
     MaskHashEntry* entry = fMaskCache.find(maskKey);
     while (entry) {
-        // If this entry is large enough to contain the clip, use it
-        if (entry->fBounds.contains(keyBounds)) {
-            SkIPoint topLeft = entry->fLocator.topLeft();
-            // We need to adjust the returned outPos to reflect the subset we're using
-            SkIPoint subsetRelativePos = keyBounds.topLeft() - entry->fBounds.topLeft();
-            *outPos = SkIPoint::Make(topLeft.x() + kEntryPadding + subsetRelativePos.x(),
-                                     topLeft.y() + kEntryPadding + subsetRelativePos.y());
-            fDrawAtlas->setLastUseToken(entry->fLocator,
+        // If this entry contains the subset of the clip we require, use it
+        SkIRect maskRelativeBounds = entry->fMaskRelativeBounds;
+        SkASSERT(maskDeviceBounds.isEmpty() == keyBounds.isEmpty());
+        if (maskRelativeBounds.contains(keyBounds)) {
+            // Adjust the atlas position to account for the bounds we require.
+            SkIVector offset = keyBounds.topLeft() - maskRelativeBounds.topLeft();
+            auto atlasPos = SkIPoint{entry->fAtlasPos.fX, entry->fAtlasPos.fY} + offset;
+            fDrawAtlas->setLastUseToken(entry->fRecord,
                                         recorder->priv().tokenTracker()->nextFlushToken());
-            return fDrawAtlas->getProxies()[entry->fLocator.pageIndex()];
+            auto proxy = fDrawAtlas->getProxy(entry->fPageIdx);
+            return {proxy, atlasPos};
         }
         entry = entry->fNext;
     }
 
-    DrawAtlas::AtlasLocator locator;
-    sk_sp<TextureProxy> proxy = this->addToAtlas(recorder, elementList, maskDeviceBounds, outPos,
-                                                 &locator);
-    if (!proxy) {
-        return nullptr;
+    auto result = this->addToAtlas(recorder, elementList, maskDeviceBounds);
+    if (!result.has_value()) {
+        return {};
     }
+
+    const auto& [record, pageIdx, pos] = *result;
 
     // Look up again (in case this entry got purged during addToAtlas())
     MaskHashEntry* entryList = fMaskCache.find(maskKey);
 
+    SkIPoint16 pos16{SkToS16(pos.fX), SkToS16(pos.fY)};
     // Add locator and bounds to MaskCache.
+    MaskHashEntry e{nullptr, record, keyBounds, pos16, SkToU8(pageIdx)};
     if (entryList) {
         // Add new list entry to the end. This will sort them from smallest bounds to largest,
         // so that when we search above we'll pick the one with the smallest bounds that contains
@@ -240,122 +246,98 @@ sk_sp<TextureProxy> ClipAtlasManager::DrawAtlasMgr::findOrCreateEntry(
         }
         SkASSERT(currEntry);
         SkASSERT(currEntry->fNext == nullptr); // Should be at the end
-        currEntry->fNext = new MaskHashEntry{keyBounds, locator, nullptr};
-        ++fHashEntryCount;
+        currEntry->fNext = new MaskHashEntry{e};
     } else {
-        MaskHashEntry newEntry{keyBounds, locator, nullptr};
-        fMaskCache.set(maskKey, newEntry);
-        ++fHashEntryCount;
+        fMaskCache.set(maskKey, e);
     }
 
-    // Add key to Plot's MaskKeyList.
-    uint32_t index = fDrawAtlas->getListIndex(locator.plotLocator());
-    MaskKeyEntry* keyEntry = new MaskKeyEntry{maskKey, keyBounds};
-    fKeyLists[index].addToTail(keyEntry);
-    ++fListEntryCount;
+    fAtlasRecordMap.set(record, maskKey);
 
-    SkASSERTF_RELEASE(fHashEntryCount == fListEntryCount,
-                      "=ClipAtlas=: Entry counts don't match after add: %d %d",
-                      fHashEntryCount, fListEntryCount);
-
-    return proxy;
+    return {fDrawAtlas->getProxy(pageIdx), pos};
 }
 
-sk_sp<TextureProxy> ClipAtlasManager::DrawAtlasMgr::addToAtlas(
-        Recorder* recorder,
-        const ClipStack::ElementList* elementsForMask,
-        SkIRect maskDeviceBounds,
-        SkIPoint* outPos,
-        DrawAtlas::AtlasLocator* locator) {
+std::optional<DrawAtlas::AddResult>
+ClipAtlasManager::DrawAtlasMgr::addToAtlas(Recorder* recorder,
+                                           const ClipStack::ElementList* elementsForMask,
+                                           SkIRect maskDeviceBounds) {
     // Render mask.
     SkISize maskSize = maskDeviceBounds.size();
     if (maskSize.isEmpty()) {
-        return nullptr;
+        return {};
     }
     // Expand to include padding as well (so we clear correctly for inverse clip)
     maskSize.fWidth += 2*kEntryPadding;
     maskSize.fHeight += 2*kEntryPadding;
 
     // Request space in DrawAtlas, including padding
-    DrawAtlas::ErrorCode errorCode = fDrawAtlas->addRect(recorder,
-                                                         maskSize.width(),
-                                                         maskSize.height(),
-                                                         locator);
-    if (errorCode != DrawAtlas::ErrorCode::kSucceeded) {
-        return nullptr;
+    DrawAtlas::AddResult addResult;
+    DrawAtlas::ErrorCode ec = fDrawAtlas->addRect(recorder, maskSize, &addResult);
+    if (ec != DrawAtlas::ErrorCode::kSucceeded) {
+        return {};
     }
+    const auto& record = addResult.fRecord;
 
     // Rasterize path to the record's pixmap with an inset.
     std::optional<SkColor> clearColor;
     if (SkAlpha alpha =  initial_alpha_for_elements(*elementsForMask); alpha != 0) {
         clearColor = alpha << 24;
     }
-    SkPixmap pixmap = fDrawAtlas->prepForRender(*locator, 0, clearColor);
+    auto pixmap = fDrawAtlas->entryPixmap(record, 0, clearColor);
+    SkASSERT(pixmap);
 
     auto translate = -maskDeviceBounds.topLeft() + SkIVector{kEntryPadding, kEntryPadding};
-    RasterMaskHelper helper(pixmap, translate);
+    RasterMaskHelper helper(*pixmap, translate);
     render_elements(&helper, *elementsForMask);
 
-    *outPos = locator->topLeft() + SkIVector{kEntryPadding, kEntryPadding};
+    addResult.fPosition += SkIVector{kEntryPadding, kEntryPadding};
 
-    fDrawAtlas->setLastUseToken(*locator,
-                                recorder->priv().tokenTracker()->nextFlushToken());
+    fDrawAtlas->setLastUseToken(record, recorder->priv().tokenTracker()->nextFlushToken());
 
-    return fDrawAtlas->getProxies()[locator->pageIndex()];
+    return addResult;
 }
 
 bool ClipAtlasManager::DrawAtlasMgr::recordUploads(DrawContext* dc, Recorder* recorder) {
     return (fDrawAtlas && !fDrawAtlas->recordUploads(dc, recorder));
 }
 
-void ClipAtlasManager::DrawAtlasMgr::evict(DrawAtlas::PlotLocator plotLocator) {
-    // Remove all entries for this Plot from the MaskCache
-    uint32_t index = fDrawAtlas->getListIndex(plotLocator);
-    MaskKeyList::Iter iter;
-    iter.init(fKeyLists[index], MaskKeyList::Iter::kHead_IterStart);
-    MaskKeyEntry* currKeyEntry;
-    while ((currKeyEntry = iter.get())) {
-        iter.next();
-        MaskHashEntry* currHashEntry = fMaskCache.find(currKeyEntry->fKey);
-        SkASSERT(currHashEntry);
-        MaskHashEntry* prevHashEntry = nullptr;
-        while (currHashEntry) {
-            if (currHashEntry->fBounds == currKeyEntry->fBounds) {
-                // Remove entry from hash list
-                if (prevHashEntry) {
-                    prevHashEntry->fNext = currHashEntry->fNext;
-                    delete currHashEntry;
-                    --fHashEntryCount;
-                } else if (currHashEntry->fNext) {
-                    MaskHashEntry* next = currHashEntry->fNext;
-                    currHashEntry->fBounds = next->fBounds;
-                    currHashEntry->fLocator = next->fLocator;
-                    currHashEntry->fNext = next->fNext;
+void ClipAtlasManager::DrawAtlasMgr::evict(const DrawAtlas::RecordVisitor& visitor) {
+    visitor.visitRecords([&](DrawAtlas::Record record) {
+        auto* maskKey = fAtlasRecordMap.find(record);
+        SkASSERT(maskKey);
+        auto* curr = fMaskCache.find(*maskKey);
+        SkASSERT(curr);
+        MaskHashEntry* prev = nullptr;
+        while (true) {
+            if (curr->fRecord == record) {
+                if (prev) {
+                    prev->fNext = curr->fNext;
+                    delete curr;
+                } else if (auto* next = curr->fNext) {
+                    // curr is not on the heap, it is stored in fMaskCache.
+                    // Let it take over next's role and then delete next.
+                    *curr = *next;
                     delete next;
-                    --fHashEntryCount;
                 } else {
-                    // Remove hash entry itself
-                    fMaskCache.remove(currKeyEntry->fKey);
-                    --fHashEntryCount;
+                    // The list in fMaskCache would now be empty, so remove it.
+                    fMaskCache.remove(*maskKey);
                 }
                 break;
             }
-            prevHashEntry = currHashEntry;
-            currHashEntry = currHashEntry->fNext;
+            prev = curr;
+            curr = curr->fNext;
+            if (!curr) {
+                SKIA_LOG_W("Could not find AtlasRecord in mask cache");
+                break;
+            }
         }
-
-        fKeyLists[index].remove(currKeyEntry);
-        delete currKeyEntry;
-        --fListEntryCount;
-        SkASSERTF_RELEASE(fHashEntryCount == fListEntryCount,
-                          "=ClipAtlas=: Entry counts don't match after delete: %d %d",
-                          fHashEntryCount, fListEntryCount);
-    }
+        fAtlasRecordMap.remove(record);
+    });
 }
 
 void ClipAtlasManager::DrawAtlasMgr::evictAll() {
     fDrawAtlas->evictAllPlots();
     SkASSERT(fMaskCache.empty());
+    SkASSERT(fAtlasRecordMap.empty());
 }
 
 void ClipAtlasManager::DrawAtlasMgr::compact(Recorder* recorder) {
