@@ -194,6 +194,14 @@ public:
                                            PlotEvictionCallback* evictor,
                                            std::string_view label);
 
+    static std::unique_ptr<DrawAtlas> Make(MaskFormat maskFormat,
+                                           int width, int height,
+                                           int plotWidth, int plotHeight,
+                                           AllowMultitexturing allowMultitexturing,
+                                           UseStorageTextures useStorageTextures,
+                                           EvictionCallback* evictor,
+                                           std::string_view label);
+
     /**
      * Adds a width x height subimage to the atlas. Upon success it returns 'kSucceeded' and returns
      * the ID and the subimage's coordinates in the backing texture. 'kTryAgain' is returned if
@@ -223,6 +231,13 @@ public:
 
     ErrorCode addToAtlas(Recorder*, int width, int height, const void* image, AtlasLocator*);
     ErrorCode addRect(Recorder*, int width, int height, AtlasLocator*);
+    struct AddResult {
+        Record fRecord;
+        int fPageIdx;
+        SkIPoint fPosition;
+    };
+    ErrorCode addRect(Recorder*, SkISize, AddResult*, const std::byte* image = nullptr);
+
     // Returns a Pixmap pointing to the backing data for the locator. Optionally, the caller can
     // provide an inset that is applied to all four sides. This is useful for use cases that need
     // to leave space between items in the atlas. The pixmap will exclude the padding. The entire
@@ -231,6 +246,10 @@ public:
     SkPixmap prepForRender(const AtlasLocator&,
                            int padding = 0,
                            std::optional<SkColor> initialColor = {});
+    bool hasRecord(Record) const;
+    std::optional<SkPixmap> entryPixmap(Record, int padding = 0, std::optional<SkColor> clearColor = {});
+    std::optional<std::tuple<int /*pageIdx*/, SkIRect>> entryLocation(Record) const;
+
     bool recordUploads(DrawContext*, Recorder*);
 
     const sk_sp<TextureProxy>* getProxies() const { return fProxies; }
@@ -246,8 +265,10 @@ public:
 
     /** To ensure the atlas does not evict a given entry, the client must set the last use token. */
     void setLastUseToken(const AtlasLocator& atlasLocator, Token token);
+    void setLastUseToken(Record, Token);
 
     void setLastUseTokenBulk(const BulkUsePlotUpdater& updater, Token token);
+    void setLastUseTokenBulk(const BulkRecordUseUpdater&, Token token);
 
     void compact(Token startTokenForNextFlush);
 
@@ -284,6 +305,7 @@ private:
               std::string_view label);
 
     bool addRectToPage(unsigned int pageIdx, int width, int height, AtlasLocator*);
+    std::optional<AddResult> addRectToPage(int pageIdx, SkISize size, const std::byte* image);
 
     void updatePlot(Plot* plot, AtlasLocator*);
 
@@ -298,10 +320,12 @@ private:
         // No MRU update for pages -- since we will always try to add from
         // the front and remove from the back there is no need for MRU.
     }
+    void makeMRU(Plot* plot);
 
     Plot* findPlot(const AtlasLocator& atlasLocator);
 
     void internalSetLastUseToken(Plot* plot, uint32_t pageIdx, Token token);
+    void internalSetLastUseToken(Plot* plot, Token token);
 
     bool createPages(GenerationCounter*);
     bool activateNewPage(Recorder*);
@@ -582,7 +606,7 @@ public:
 
     PlotID plotID() const { return fPlotID; }
     void visitEntries(std::invocable<EntryID> auto&& fn) const {
-        fEntries.foreach([&fn](EntryID eid, const Rect16*) {
+        fEntries.foreach([&fn](EntryID eid, const Rect16& rect) {
             std::invoke(fn, eid);
         });
     }
@@ -735,9 +759,25 @@ inline DrawAtlas::Plot* DrawAtlas::findPlot(const AtlasLocator& atlasLocator) {
     return fPages[pageIdx].fPlotArray[plotIdx].get();
 }
 
+inline void DrawAtlas::makeMRU(Plot* plot) {
+    int pageIdx = plot->plotCoord().fPageIdx;
+    this->makeMRU(plot, pageIdx);
+}
+
 inline void DrawAtlas::internalSetLastUseToken(Plot* plot, uint32_t pageIdx, Token token) {
     this->makeMRU(plot, pageIdx);
     plot->setLastUseToken(token);
+}
+
+inline void DrawAtlas::internalSetLastUseToken(Plot* plot, Token token) {
+    this->makeMRU(plot);
+    plot->setLastUseToken(token);
+}
+
+inline void DrawAtlas::setLastUseToken(Record record, Token token) {
+    if (Plot* plot = this->findPlot(record.fPlotID)) {
+        this->internalSetLastUseToken(plot, token);
+    }
 }
 
 class DrawAtlas::BulkRecordUseUpdater final {
@@ -764,6 +804,14 @@ public:
 private:
     skia_private::THashSet<PlotID> fPlotsToUpdate;
 };
+
+inline void DrawAtlas::setLastUseTokenBulk(const BulkRecordUseUpdater& updater, Token token) {
+    updater.foreach([&](PlotID pid) {
+        if (Plot* plot = this->findPlot(pid)) {
+            this->internalSetLastUseToken(plot, token);
+        }
+    });
+}
 
 inline void DrawAtlas::RecordVisitor::visitRecords(std::invocable<Record> auto&& fn) const {
     fPlot->visitEntries([fn, pid = fPlot->plotID()](EntryID eid) {
