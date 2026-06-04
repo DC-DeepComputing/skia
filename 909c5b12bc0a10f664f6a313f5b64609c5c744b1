@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "505d6ac1_b24f6a04",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 13
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-04T19:11:13Z",
+      "side": 1,
+      "message": "reran the benchmark with out/Release, I was accidentally running with out/Debug mode (though not sure if that plays a huge role). Let me know if these results look good",
+      "parentUuid": "b06a0e38_a434762f",
+      "range": {
+        "startLine": 29,
+        "startChar": 23,
+        "endLine": 29,
+        "endChar": 28
+      },
+      "revId": "909c5b12bc0a10f664f6a313f5b64609c5c744b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "454c68bf_0634d172",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-06-02T14:33:26Z",
       "side": 1,
       "message": "put this with other friend classes, around line 2550 or so.",
+      "range": {
+        "startLine": 2424,
+        "startChar": 4,
+        "endLine": 2424,
+        "endChar": 10
+      },
+      "revId": "909c5b12bc0a10f664f6a313f5b64609c5c744b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f12b9d2_801355aa",
+        "filename": "include/core/SkCanvas.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 2424,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-04T19:11:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "454c68bf_0634d172",
       "range": {
         "startLine": 2424,
         "startChar": 4,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "18f67135_b0734631",
+        "filename": "include/core/SkCanvas.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 2715,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-04T19:11:13Z",
+      "side": 1,
+      "message": "I switched it over to raw GlyphRunBuilders so \n\nskia_private::STArray\u003c1, sktext::GlyphRunBuilder\u003e fScratchGlyphRunBuilders;\n\nI also added \n\n    /**\n     * fScratchGlyphRunBuilders will be reused across text drawing commands\n     */",
+      "parentUuid": "eb580968_b7f5287d",
+      "range": {
+        "startLine": 2715,
+        "startChar": 4,
+        "endLine": 2715,
+        "endChar": 16
+      },
+      "revId": "909c5b12bc0a10f664f6a313f5b64609c5c744b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "768f385a_656df706",
@@ -83,6 +155,30 @@
       "writtenOn": "2026-06-02T14:33:26Z",
       "side": 1,
       "message": "These names are a bit long and unwieldy. What do you have that\u0027s shorter? Could we make fScratchGlyphRunBuilders -\u003e fRunBuilders (those other words don\u0027t seem super helpful given we can look at the type and maybe a comment above the field to learn more). Then `fRunBuildersUsed`?",
+      "range": {
+        "startLine": 2421,
+        "startChar": 37,
+        "endLine": 2421,
+        "endChar": 70
+      },
+      "revId": "909c5b12bc0a10f664f6a313f5b64609c5c744b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c39471ad_a0abe090",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 2421,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-04T19:11:13Z",
+      "side": 1,
+      "message": "I switched to fRunBuilders and fRunBuildersUsed",
+      "parentUuid": "768f385a_656df706",
       "range": {
         "startLine": 2421,
         "startChar": 37,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f7c7a2d_b14451ac",
+        "filename": "tests/SkCanvasReentrantDrawTextBlob.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-04T19:11:13Z",
+      "side": 1,
+      "message": "moved",
+      "parentUuid": "067bbe20_b32b8082",
+      "range": {
+        "startLine": 3,
+        "startChar": 3,
+        "endLine": 3,
+        "endChar": 12
+      },
+      "revId": "909c5b12bc0a10f664f6a313f5b64609c5c744b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f25e32f4_9333ac70",
@@ -129,6 +249,30 @@
       "writtenOn": "2026-06-02T14:33:26Z",
       "side": 1,
       "message": "Why this specific number? Are we going through `SubRunContainer::MakeInAlloc` and need to be big enough for drawables (instead of masks) or something else?",
+      "range": {
+        "startLine": 54,
+        "startChar": 41,
+        "endLine": 54,
+        "endChar": 47
+      },
+      "revId": "909c5b12bc0a10f664f6a313f5b64609c5c744b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bdf97754_43a5ddaf",
+        "filename": "tests/SkCanvasReentrantDrawTextBlob.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-04T19:11:13Z",
+      "side": 1,
+      "message": "Pretty much, the original size in the test given by project fortify was 400.0f, and I just binary searched for the lowest number that would make this fail. It turns out 257 is 1 more than 256 which coincides (i think) with the const SkScalar maxMaskSize.\n\nI added a comment for clarity",
+      "parentUuid": "f25e32f4_9333ac70",
       "range": {
         "startLine": 54,
         "startChar": 41,
@@ -162,6 +306,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "17d38337_c9a60d21",
+        "filename": "tests/SkCanvasReentrantDrawTextBlob.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-04T19:11:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f1cf6a2f_f707c209",
+      "range": {
+        "startLine": 75,
+        "startChar": 28,
+        "endLine": 75,
+        "endChar": 39
+      },
+      "revId": "909c5b12bc0a10f664f6a313f5b64609c5c744b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0e4ca95f_73971cf6",
@@ -175,6 +343,30 @@
       "writtenOn": "2026-06-02T14:33:26Z",
       "side": 1,
       "message": "I\u0027d prefer these be an explicit SkSerialProcs (and above too). It makes it easier to do code search for SkSerialProcs and SkDeserialProcs which has been helpful when making sure we specified image procs etc appropriately. Add a comment that the default procs are fine because we don\u0027t have any embedded images or such.",
+      "range": {
+        "startLine": 79,
+        "startChar": 38,
+        "endLine": 79,
+        "endChar": 40
+      },
+      "revId": "909c5b12bc0a10f664f6a313f5b64609c5c744b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bffc8da6_f31d2b87",
+        "filename": "tests/SkCanvasReentrantDrawTextBlob.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-04T19:11:13Z",
+      "side": 1,
+      "message": "I made use of the SerializeTypeface proc used in other parts of TextBlobTest.cpp. I think this promotes consistency and also omits the need for registering the ReentrantDrawable. Not needing to register the drawable means that we won\u0027t have to deal with the failing tests.",
+      "parentUuid": "0e4ca95f_73971cf6",
       "range": {
         "startLine": 79,
         "startChar": 38,
@@ -208,6 +400,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9035cbb_5c467303",
+        "filename": "tests/SkCanvasReentrantDrawTextBlob.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-04T19:11:13Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "295b10b3_3f9b7ad1",
+      "range": {
+        "startLine": 110,
+        "startChar": 19,
+        "endLine": 110,
+        "endChar": 27
+      },
+      "revId": "909c5b12bc0a10f664f6a313f5b64609c5c744b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4e8adfb9_2c555124",
@@ -221,6 +437,30 @@
       "writtenOn": "2026-06-02T14:33:26Z",
       "side": 1,
       "message": "This is big enough that my ASAN build fails to allocate space. Can it be smaller? (or is my ASAN build messed up?)",
+      "range": {
+        "startLine": 116,
+        "startChar": 35,
+        "endLine": 116,
+        "endChar": 39
+      },
+      "revId": "909c5b12bc0a10f664f6a313f5b64609c5c744b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0468a4e7_41e892cc",
+        "filename": "tests/SkCanvasReentrantDrawTextBlob.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-04T19:11:13Z",
+      "side": 1,
+      "message": "My asan build works fine\n\nalexisdavidc@alexisdavidc2:~/skia/skia$ ninja -C out/asan \u0026\u0026  out/asan/dm --match SkCanvas_drawTextBlob_b513820666\nninja: Entering directory `out/asan\u0027\n[0/1] Regenerating ninja files\n[1184/1185] link viewer\nSkipping config nonrendering: Don\u0027t understand \u0027nonrendering\u0027.\n0 srcs * 2 sinks + 1 tests \u003d\u003d 1 tasks\n\n[1/1] 392MB RAM, 381MB peak, 0 queued, 1 threads:\n        unit test  SkCanvas_drawTextBlob_b513820666  done\nFinished!\n\n\nLet me know if you still are having issues with this test.",
+      "parentUuid": "4e8adfb9_2c555124",
       "range": {
         "startLine": 116,
         "startChar": 35,

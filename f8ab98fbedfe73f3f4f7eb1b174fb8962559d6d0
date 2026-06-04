@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4912b2b0_c8b46150",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-04T19:11:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8432989d_45906bc7",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 28
+      },
+      "revId": "f8ab98fbedfe73f3f4f7eb1b174fb8962559d6d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "607da385_8b3bb60d",
@@ -250,6 +274,30 @@
       "side": 1,
       "message": "Instead of making this be a release assert, how much more work would it be to fail gracefully and return nullptr here? Moreover, *why* is there a limit and the limit is 3?",
       "parentUuid": "62ec629f_a9380a64",
+      "range": {
+        "startLine": 2416,
+        "startChar": 49,
+        "endLine": 2416,
+        "endChar": 76
+      },
+      "revId": "f8ab98fbedfe73f3f4f7eb1b174fb8962559d6d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1053b43_bca26951",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 2416,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-04T19:11:13Z",
+      "side": 1,
+      "message": "This limit was kind of set in place as a preventative measure towards any attacks that might try to allocate a lot of GlyphRunBuilders. I spoke with Greg and he said that STArray has a maximum allowed size (in bytes) by default. I think it might be good to have a default limitation, as I\u0027m not sure if we should allow an excessive amount of nested drawTextBlobs\n\nthe number 3 was chosen because I like the number 3 😋 but also because I thought it would be a good low number for recursive drawTextBlobs\n\nlet me know what you think. I have edited the logic to fail gracefully",
+      "parentUuid": "e34aa1fe_779433de",
       "range": {
         "startLine": 2416,
         "startChar": 49,
