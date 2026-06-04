@@ -11,8 +11,8 @@
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkSurfaceProps.h"
 #include "include/core/SkTypes.h"
-#include "include/private/base/SkDebug.h"
-#include "include/private/base/SkTArray.h"
+#include "include/private/SkDebug.h"
+#include "include/private/SkTArray.h"
 #include "src/base/SkArenaAlloc.h"
 #include "src/core/SkDistanceFieldGen.h"
 #include "src/core/SkMatrixPriv.h"
@@ -47,7 +47,7 @@
 #include "src/text/gpu/SubRunContainer.h"
 
 #if defined(SK_GAMMA_APPLY_TO_A8)
-#include "include/private/base/SkCPUTypes.h"
+#include "include/private/SkCPUTypes.h"
 #include "src/core/SkMaskGamma.h"
 #endif
 

@@ -8,10 +8,10 @@
 #ifndef SkTDArray_DEFINED
 #define SkTDArray_DEFINED
 
-#include "include/private/base/SkAPI.h"
-#include "include/private/base/SkAssert.h"
-#include "include/private/base/SkDebug.h"
-#include "include/private/base/SkTo.h"
+#include "include/private/SkAPI.h"
+#include "include/private/SkAssert.h"
+#include "include/private/SkDebug.h"
+#include "include/private/SkTo.h"
 
 #include <cstddef>
 #include <initializer_list>
