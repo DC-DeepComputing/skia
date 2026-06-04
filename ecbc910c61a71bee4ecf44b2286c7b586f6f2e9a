@@ -86,6 +86,24 @@
       "parentUuid": "105663d1_c7b7daf4",
       "revId": "ecbc910c61a71bee4ecf44b2286c7b586f6f2e9a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df8c583a_48112e11",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-04T18:20:11Z",
+      "side": 1,
+      "message": "For the SimplifyPaintTest_Graphite failure we should file a bug (targeted at me) and add a suppression.",
+      "parentUuid": "24fa50ff_e34eeb21",
+      "revId": "ecbc910c61a71bee4ecf44b2286c7b586f6f2e9a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
