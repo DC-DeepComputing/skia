@@ -106,6 +106,173 @@ SkSpan<const SkPoint> get_positions(SkZip<U, const SkPoint> accepted) {
     return accepted.template get<1>();
 }
 
+<<<<<<< HEAD   (2ac66cfda097720cd8d3e481c45b68b4ba096ef7 [m148] Restrict deserial types further in SkGlyph and SkCust)
+||||||| BASE   (9eecbdc30f7da675edab96974b23174a9d521e0c Manual roll ANGLE from 1184faa057e3 to 0bcdad042d68 (8 revis)
+SkGlyphRect glyph_bounds(SkGlyphDigest digest, int inset, SkPoint origin) {
+    return digest.bounds().inset(inset, inset).offset(origin);
+}
+
+SkGlyphRect glyph_bounds_from_left_top(SkGlyphDigest digest, int inset, SkPoint leftTop) {
+    SkGlyphRect bounds = digest.bounds();
+    SkPoint offset = leftTop - bounds.leftTop() - SkPoint{SkIntToScalar(inset),
+                                                          SkIntToScalar(inset)};
+    return glyph_bounds(digest, inset, offset);
+}
+
+// Returns the empty span if there is a problem reading the positions.
+SkSpan<SkPoint> make_points_from_buffer(SkReadBuffer& buffer, SubRunAllocator* alloc) {
+    uint32_t glyphCount = buffer.getArrayCount();
+
+    // Zero indicates a problem with serialization.
+    if (!buffer.validate(glyphCount != 0)) { return {}; }
+
+    // Check that the count will not overflow the arena.
+    if (!buffer.validate(glyphCount <= INT_MAX &&
+                         BagOfBytes::WillCountFit<SkPoint>(glyphCount))) { return {}; }
+
+    SkPoint* positionsData = alloc->makePODArray<SkPoint>(glyphCount);
+    if (!buffer.readPointArray({positionsData, glyphCount})) { return {}; }
+    return {positionsData, glyphCount};
+}
+
+SkRect reconstruct_safe_bounds(SkSpan<const SkPoint> leftTop,
+                               GlyphVector* glyphVector,
+                               skglyph::ActionType actionType,
+                               int inset) {
+    int count = leftTop.size();
+
+    StrikeForGPU* strike = glyphVector->strikePromise().strike();
+    StrikeMutationMonitor m{strike};
+
+    SkGlyphRect boundingRect = skglyph::empty_rect();
+    for (int i = 0; i < count; ++i) {
+        SkPackedGlyphID packedID = glyphVector->getPackedGlyphID(i);
+        SkGlyphDigest digest = strike->digestFor(actionType, packedID);
+        boundingRect = skglyph::rect_union(
+                boundingRect, glyph_bounds_from_left_top(digest, inset, leftTop[i]));
+    }
+    return boundingRect.empty() ? SkRect::MakeEmpty() : boundingRect.rect();
+}
+
+void flatten_vertex_filler(SkWriteBuffer &buffer, const VertexFiller& vf) {
+    buffer.writeInt(static_cast<int>(vf.maskFormat()));
+    buffer.writeBool(vf.canDrawDirect());
+    buffer.writeMatrix(vf.creationMatrix());
+    buffer.writePointArray(vf.topLefts());
+}
+
+std::optional<VertexFiller> make_vertex_filler_from_buffer(SkReadBuffer& buffer,
+                                                           SubRunAllocator* alloc,
+                                                           GlyphVector* glyphVector,
+                                                           skglyph::ActionType actionType,
+                                                           int inset) {
+    MaskFormat maskFormat = buffer.read32LE(MaskFormat::kLast);
+
+    const bool canDrawDirect = buffer.readBool();
+
+    SkMatrix creationMatrix;
+    buffer.readMatrix(&creationMatrix);
+
+    SkSpan<SkPoint> leftTop = make_points_from_buffer(buffer, alloc);
+    if (leftTop.empty()) {
+        return std::nullopt;
+    }
+
+    if (!buffer.validate(glyphVector->glyphCount() == (int)leftTop.size())) {
+        return std::nullopt;
+    }
+
+    SkRect safeBounds = reconstruct_safe_bounds(leftTop, glyphVector, actionType, inset);
+
+    return VertexFiller{maskFormat, creationMatrix, safeBounds, leftTop, canDrawDirect};
+}
+
+=======
+SkGlyphRect glyph_bounds(SkGlyphDigest digest, int inset, SkPoint origin) {
+    return digest.bounds().inset(inset, inset).offset(origin);
+}
+
+SkGlyphRect glyph_bounds_from_left_top(SkGlyphDigest digest, int inset, SkPoint leftTop) {
+    SkGlyphRect bounds = digest.bounds();
+    SkPoint offset = leftTop - bounds.leftTop() - SkPoint{SkIntToScalar(inset),
+                                                          SkIntToScalar(inset)};
+    return glyph_bounds(digest, inset, offset);
+}
+
+// Returns the empty span if there is a problem reading the positions.
+SkSpan<SkPoint> make_points_from_buffer(SkReadBuffer& buffer, SubRunAllocator* alloc) {
+    uint32_t glyphCount = buffer.getArrayCount();
+
+    // Zero indicates a problem with serialization.
+    if (!buffer.validate(glyphCount != 0)) { return {}; }
+
+    // Check that the count will not overflow the arena.
+    if (!buffer.validate(glyphCount <= INT_MAX &&
+                         BagOfBytes::WillCountFit<SkPoint>(glyphCount))) { return {}; }
+
+    SkPoint* positionsData = alloc->makePODArray<SkPoint>(glyphCount);
+    if (!buffer.readPointArray({positionsData, glyphCount})) { return {}; }
+    return {positionsData, glyphCount};
+}
+
+SkRect reconstruct_safe_bounds(SkSpan<const SkPoint> leftTop,
+                               GlyphVector* glyphVector,
+                               skglyph::ActionType actionType,
+                               int inset) {
+    int count = leftTop.size();
+
+    StrikeForGPU* strike = glyphVector->strikePromise().strike();
+    StrikeMutationMonitor m{strike};
+
+    SkGlyphRect boundingRect = skglyph::empty_rect();
+    for (int i = 0; i < count; ++i) {
+        SkPackedGlyphID packedID = glyphVector->getPackedGlyphID(i);
+        SkGlyphDigest digest = strike->digestFor(actionType, packedID);
+        boundingRect = skglyph::rect_union(
+                boundingRect, glyph_bounds_from_left_top(digest, inset, leftTop[i]));
+    }
+    return boundingRect.empty() ? SkRect::MakeEmpty() : boundingRect.rect();
+}
+
+void flatten_vertex_filler(SkWriteBuffer &buffer, const VertexFiller& vf) {
+    buffer.writeInt(static_cast<int>(vf.maskFormat()));
+    buffer.writeBool(vf.canDrawDirect());
+    buffer.writeMatrix(vf.creationMatrix());
+    buffer.writePointArray(vf.topLefts());
+}
+
+std::optional<VertexFiller> make_vertex_filler_from_buffer(SkReadBuffer& buffer,
+                                                           SubRunAllocator* alloc,
+                                                           GlyphVector* glyphVector,
+                                                           skglyph::ActionType actionType,
+                                                           int inset) {
+    MaskFormat maskFormat = buffer.read32LE(MaskFormat::kLast);
+
+    const bool canDrawDirect = buffer.readBool();
+
+    SkMatrix creationMatrix;
+    buffer.readMatrix(&creationMatrix);
+    // The only valid creationMatrices do not have perspective and many rendering parts assume
+    // they are non-affine, so reject any malformed matrices here.
+    if (!buffer.validate(!creationMatrix.hasPerspective())) {
+        return std::nullopt;
+    }
+
+    SkSpan<SkPoint> leftTop = make_points_from_buffer(buffer, alloc);
+    if (leftTop.empty()) {
+        return std::nullopt;
+    }
+
+    if (!buffer.validate(glyphVector->glyphCount() == (int)leftTop.size())) {
+        return std::nullopt;
+    }
+
+    SkRect safeBounds = reconstruct_safe_bounds(leftTop, glyphVector, actionType, inset);
+
+    return VertexFiller{maskFormat, creationMatrix, safeBounds, leftTop, canDrawDirect};
+}
+
+>>>>>>> CHANGE (a145861ad1c2650c58dd3ff0dbd92ae6f41f1e1b Reject Slugs that have creationMatrix with perspective)
 // -- PathOpSubmitter ------------------------------------------------------------------------------
 // PathOpSubmitter holds glyph ids until ready to draw. During drawing, the glyph ids are
 // converted to SkPaths. PathOpSubmitter can only be serialized when it is holding glyph ids;
