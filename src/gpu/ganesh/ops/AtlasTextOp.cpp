@@ -458,6 +458,7 @@ GrProcessorSet::Analysis AtlasTextOp::finalize(const GrCaps& caps,
 }
 
 void AtlasTextOp::onPrepareDraws(GrMeshDrawTarget* target) {
+    SkDebugf("[DEBUG] AtlasTextOp::onPrepareDraws: fNumGlyphs=%d, usesDistanceFields=%d\n", fNumGlyphs, (int)this->usesDistanceFields());
     auto resourceProvider = target->resourceProvider();
 
     // If we need local coordinates, compute an inverse view matrix. If this is solid color, the
@@ -567,6 +568,7 @@ void AtlasTextOp::onPrepareDraws(GrMeshDrawTarget* target) {
 
         SkDEBUGCODE(int strideCheck = SkToInt(glyphData.vertexStride(subRun.maskFormat(),
                                                                      geo->fDrawMatrix)));
+        SkDebugf("[DEBUG] AtlasTextOp::onPrepareDraws Loop: strideCheck=%d, vertexStride=%d\n", strideCheck, vertexStride);
         SkASSERTF(strideCheck == vertexStride,
                    "subRun stride: %d vertex buffer stride: %d\n",
                    strideCheck, vertexStride);

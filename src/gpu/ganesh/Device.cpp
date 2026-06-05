@@ -1426,6 +1426,7 @@ static bool valid_slug_matrices(const SkMatrix& creationMatrix, const SkMatrix& 
 
 
 void Device::drawSlug(SkCanvas* canvas, const sktext::gpu::Slug* slug, const SkPaint& paint) {
+    SkDebugf("[DEBUG] Device::drawSlug entered\n");
     SkASSERT(canvas);
     SkASSERT(slug);
     const sktext::gpu::SlugImpl* slugImpl = static_cast<const sktext::gpu::SlugImpl*>(slug);
@@ -1445,12 +1446,16 @@ void Device::drawSlug(SkCanvas* canvas, const sktext::gpu::Slug* slug, const SkP
                              const SkPaint& paint,
                              sk_sp<SkRefCnt> subRunStorage,
                              sktext::gpu::RendererData) {
+        SkDebugf("[DEBUG] Device::drawSlug: atlasDelegate called\n");
         auto[drawingClip, op] = AtlasTextOp::Make(
                 fSurfaceDrawContext.get(), subRun,
                 this->clip(), this->localToDevice(), drawOrigin, paint,
                 std::move(subRunStorage));
         if (op != nullptr) {
+            SkDebugf("[DEBUG] Device::drawSlug: adding DrawOp to surfaceDrawContext\n");
             fSurfaceDrawContext->addDrawOp(drawingClip, std::move(op));
+        } else {
+            SkDebugf("[DEBUG] Device::drawSlug: op is nullptr\n");
         }
     };
 

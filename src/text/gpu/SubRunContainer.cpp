@@ -417,6 +417,7 @@ public:
               const SkPaint& paint,
               sk_sp<SkRefCnt>,
               const AtlasDrawDelegate&) const override {
+        SkDebugf("[DEBUG] PathSubRun/DrawableSubRun::draw entered\n");
         fPathDrawing.submitDraws(canvas, drawOrigin, paint);
     }
 
@@ -628,6 +629,7 @@ public:
               const SkPaint& paint,
               sk_sp<SkRefCnt>,
               const AtlasDrawDelegate&) const override {
+        SkDebugf("[DEBUG] DrawableSubRun::draw entered\n");
         fDrawingDrawing.submitDraws(canvas, drawOrigin, paint);
     }
 
@@ -716,6 +718,7 @@ public:
               const SkPaint& paint,
               sk_sp<SkRefCnt> subRunStorage,
               const AtlasDrawDelegate& drawAtlas) const override {
+        SkDebugf("[DEBUG] DirectMaskSubRun/TransformedMaskSubRun::draw entered\n");
         drawAtlas(this,
                   drawOrigin,
                   paint,
@@ -832,6 +835,7 @@ public:
               const SkPaint& paint,
               sk_sp<SkRefCnt> subRunStorage,
               const AtlasDrawDelegate& drawAtlas) const override {
+        SkDebugf("[DEBUG] DirectMaskSubRun/TransformedMaskSubRun::draw entered\n");
         drawAtlas(this,
                   drawOrigin,
                   paint,
@@ -964,6 +968,7 @@ public:
               const SkPaint& paint,
               sk_sp<SkRefCnt> subRunStorage,
               const AtlasDrawDelegate& drawAtlas) const override {
+        SkDebugf("[DEBUG] SDFTSubRun::draw entered\n");
         drawAtlas(this, drawOrigin, paint, std::move(subRunStorage),
                   {/* isSDF = */true, /* isLCD = */fUseLCDText, skgpu::MaskFormat::kA8});
     }
@@ -1433,12 +1438,16 @@ SubRunContainerOwner SubRunContainer::MakeInAlloc(
 
         // Atlas mask cases - SDFT and direct mask
         // Only consider using direct or SDFT drawing if not drawing hairlines and not too big.
+        SkDebugf("[DEBUG] MakeInAlloc: runPaint.getStyle()=%d, approximateDeviceTextSize=%f, maxMaskSize=%f\n",
+                  (int)runPaint.getStyle(), approximateDeviceTextSize, maxMaskSize);
         if ((runPaint.getStyle() != SkPaint::kStroke_Style || runPaint.getStrokeWidth() != 0) &&
                 approximateDeviceTextSize < maxMaskSize) {
 
 #if !defined(SK_DISABLE_SDF_TEXT)
             // SDFT case
-            if (subRunControl->isSDFT(approximateDeviceTextSize, runPaint, positionMatrix)) {
+            bool canUseSDFT = subRunControl->isSDFT(approximateDeviceTextSize, runPaint, positionMatrix);
+            SkDebugf("[DEBUG] MakeInAlloc: isSDFT evaluation=%d\n", canUseSDFT);
+            if (canUseSDFT) {
                 // Process SDFT - This should be the .009% case.
                 const auto& [strikeSpec, strikeToSourceScale, matrixRange] =
                         make_sdft_strike_spec(
@@ -1675,7 +1684,9 @@ void SubRunContainer::draw(SkCanvas* canvas,
                            const SkPaint& paint,
                            const SkRefCnt* subRunStorage,
                            const AtlasDrawDelegate& atlasDelegate) const {
+    SkDebugf("[DEBUG] SubRunContainer::draw entered, subRuns empty=%d\n", fSubRuns.isEmpty());
     for (auto& subRun : fSubRuns) {
+        SkDebugf("[DEBUG] SubRunContainer::draw: drawing subRun\n");
         subRun.draw(canvas, drawOrigin, paint, sk_ref_sp(subRunStorage), atlasDelegate);
     }
 }

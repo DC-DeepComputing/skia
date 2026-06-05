@@ -1900,6 +1900,7 @@ void SurfaceDrawContext::drawShapeUsingPathRenderer(const GrClip* clip,
 void SurfaceDrawContext::addDrawOp(const GrClip* clip,
                                    GrOp::Owner op,
                                    const std::function<WillAddOpFn>& willAddFn) {
+    SkDebugf("[DEBUG] SurfaceDrawContext::addDrawOp: drawOp uniqueID=%u, name=%s\n", op->uniqueID(), op->name());
     ASSERT_SINGLE_OWNER
     if (fContext->abandoned()) {
         return;
