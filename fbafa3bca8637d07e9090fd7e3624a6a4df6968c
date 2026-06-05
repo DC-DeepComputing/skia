@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d9f75563_949b53a3",
+        "filename": "include/core/SkStrikeRef.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2026-06-05T13:46:22Z",
+      "side": 1,
+      "message": "`first_glyph` is pointing to the first glyph code of the array of `hb_glyph_info_t`  of an `hb_buffer_t`, but the members of `hb_glyph_info_t` are other parts, not glyphs. I think this generally does not fit or squeeze well into an `SkSpan\u003cuint32_t\u003e` as the `Span` bounds checking expects contiguous memory regions. So we would have to massage the size of the SkSpan to artificially be as large as the array of `hb_glyph_info_t`, which is not really accurate. The API would look more like `Span`\u0027s but practically isn\u0027t, IMO, and would require cheats on the caller side.",
+      "parentUuid": "3c35b119_9c5f517f",
+      "range": {
+        "startLine": 69,
+        "startChar": 26,
+        "endLine": 73,
+        "endChar": 49
+      },
+      "revId": "fbafa3bca8637d07e9090fd7e3624a6a4df6968c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a52817ed_cfacd6cb",
         "filename": "src/core/SkStrike.cpp",
         "patchSetId": 4
@@ -54,6 +78,30 @@
       "writtenOn": "2026-06-05T13:15:38Z",
       "side": 1,
       "message": "`SkTAddOffset`\n\nAlso, aren\u0027t the strides always 4-byte aligned (I think unaligned uint32 access would be problematic otherwise)?  If so it seems they could be uint32/float offsets and we could use simple pointer arithmetic (e.g. `g_ptr +\u003d glyph_stride`).",
+      "range": {
+        "startLine": 236,
+        "startChar": 0,
+        "endLine": 239,
+        "endChar": 64
+      },
+      "revId": "fbafa3bca8637d07e9090fd7e3624a6a4df6968c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "907d2fba_49c701c3",
+        "filename": "src/core/SkStrike.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2026-06-05T13:46:22Z",
+      "side": 1,
+      "message": "Will rephrase and attempt to use 32bit aligned strides.",
+      "parentUuid": "a52817ed_cfacd6cb",
       "range": {
         "startLine": 236,
         "startChar": 0,
