@@ -169,6 +169,9 @@ std::optional<VertexFiller> make_vertex_filler_from_buffer(SkReadBuffer& buffer,
 
     SkMatrix creationMatrix;
     buffer.readMatrix(&creationMatrix);
+    if (!buffer.validate(!creationMatrix.hasPerspective())) {
+        return std::nullopt;
+    }
 
     SkSpan<SkPoint> leftTop = make_points_from_buffer(buffer, alloc);
     if (leftTop.empty()) {
