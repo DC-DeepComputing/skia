@@ -1866,14 +1866,14 @@ Clip ClipStack::visitClipStackForDraw(const Transform& localToDevice,
         AtlasClip* atlasClip = &nonMSAAClip.fAtlasClip;
 
         SkIRect iMaskBounds = cs.outerBounds().makeRoundOut().asSkIRect();
-        sk_sp<TextureProxy> proxy = clipAtlas->findOrCreateEntry(cs.genID(),
-                                                                 outEffectiveElements,
-                                                                 iMaskBounds,
-                                                                 &atlasClip->fOutPos);
+        auto [proxy, position] = clipAtlas->findOrCreateEntry(cs.genID(),
+                                                              outEffectiveElements,
+                                                              iMaskBounds);
         if (proxy) {
             // Add to Clip
             atlasClip->fMaskBounds = iMaskBounds;
             atlasClip->fAtlasTexture = std::move(proxy);
+            atlasClip->fOutPos = position;
 
             // Elements are represented in the clip atlas, discard.
             outEffectiveElements->clear();
