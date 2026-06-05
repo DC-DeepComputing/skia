@@ -3,35 +3,31 @@ load("@rules_cc//cc:objc_library.bzl", "objc_library")
 load("@rules_python//python:defs.bzl", "py_binary")
 load(
     ":dawn_files.bzl",
-    "DAWN_COMMON_HDRS",
-    "DAWN_COMMON_OBJC_HDRS",
-    "DAWN_COMMON_OBJC_SRCS",
+    "DAWN_COMMON_APPLE_SRCS",
     "DAWN_COMMON_SRCS",
     "DAWN_NATIVE_HDRS",
     "DAWN_NATIVE_METAL_HDRS",
     "DAWN_NATIVE_METAL_SRCS",
     "DAWN_NATIVE_OPENGL_HDRS",
     "DAWN_NATIVE_OPENGL_SRCS",
-    "DAWN_NATIVE_RENDERDOC_SRCS",
+    "DAWN_NATIVE_D3D12_OR_VULKAN_SRCS",
     "DAWN_NATIVE_SRCS",
-    "DAWN_NATIVE_UTILS_HDRS",
-    "DAWN_NATIVE_UTILS_SRCS",
     "DAWN_NATIVE_VULKAN_HDRS",
-    "DAWN_NATIVE_VULKAN_LINUX_HDRS",
-    "DAWN_NATIVE_VULKAN_LINUX_SRCS",
+    "DAWN_COMMON_NOT_EMSCRIPTEN_SRCS",
+    "DAWN_NATIVE_VULKAN_UNIX_AND_NOT_APPLE_SRCS",
     "DAWN_NATIVE_VULKAN_SRCS",
-    "DAWN_NATIVE_X11_HDRS",
-    "DAWN_NATIVE_X11_SRCS",
-    "DAWN_PARTITION_ALLOC_HDRS",
-    "DAWN_PLATFORM_HDRS",
-    "DAWN_PLATFORM_SRCS",
-    "DAWN_UTILS_HDRS",
-    "DAWN_UTILS_OBJC_HDRS",
-    "DAWN_UTILS_OBJC_SRCS",
-    "DAWN_UTILS_POSIX_SRCS",
+    "DAWN_NATIVE_USE_X11_SRCS",
+    "DAWN_UTILS_NOT_WIN32_AND_NOT_WINDOWS_STORE_SRCS",
+    "DAWN_UTILS_UNIX_SRCS",
     "DAWN_UTILS_SRCS",
     "DAWN_WIRE_HDRS",
     "DAWN_WIRE_SRCS",
+    "DAWN_NATIVE_D3D11_HDRS",
+    "DAWN_NATIVE_D3D11_OR_D3D12_HDRS",
+    "DAWN_NATIVE_NULL_HDRS",
+    "DAWN_UTILS_APPLE_SRCS",
+    "DAWN_PLATFORM_SRCS",
+    "DAWN_PARTITION_ALLOC_HDRS",
 )
 
 config_setting(
@@ -50,15 +46,15 @@ DAWN_PUBLIC_HDRS = [
 ]
 
 DAWN_GENERATED_HDRS = [
-    "include/dawn/dawn_proc_table.h",
-    "include/dawn/dawn_version.h",
     "include/dawn/webgpu.h",
+    "include/dawn/dawn_version.h",
+    "include/dawn/dawn_proc_table.h",
     "include/dawn/webgpu_cpp.h",
+    "include/webgpu/webgpu_cpp_chained_struct.h",
     "include/dawn/webgpu_cpp_print.h",
     "include/dawn/wire/client/webgpu.h",
     "include/dawn/wire/client/webgpu_cpp.h",
     "include/dawn/wire/client/webgpu_cpp_print.h",
-    "include/webgpu/webgpu_cpp_chained_struct.h",
     "src/dawn/common/GPUInfo_autogen.h",
     "src/dawn/common/Version_autogen.h",
     "src/dawn/native/ChainUtils_autogen.h",
@@ -80,19 +76,6 @@ DAWN_GENERATED_HDRS = [
     "src/dawn/wire/client/ClientPrototypes_autogen.inc",
     "src/dawn/wire/server/ServerPrototypes_autogen.inc",
     "src/dawn/native/Features_autogen.inl",
-]
-
-DAWN_NATIVE_PUBLIC_HDRS = [
-    "include/dawn/native/D3D11Backend.h",
-    "include/dawn/native/D3D12Backend.h",
-    "include/dawn/native/D3DBackend.h",
-    "include/dawn/native/dawn_native_export.h",
-    "include/dawn/native/DawnNative.h",
-    "include/dawn/native/MetalBackend.h",
-    "include/dawn/native/NullBackend.h",
-    "include/dawn/native/OpenGLBackend.h",
-    "include/dawn/native/VulkanBackend.h",
-    "include/dawn/native/WebGPUBackend.h",
 ]
 
 TINT_PUBLIC_HDRS = [
@@ -344,14 +327,19 @@ DAWN_COPTS = [
 # objc_library targets.
 cc_library(
     name = "dawn_headers",
-    hdrs = DAWN_COMMON_HDRS +
+    hdrs = DAWN_GENERATED_HDRS +
            DAWN_NATIVE_HDRS +
-           DAWN_NATIVE_PUBLIC_HDRS +
            DAWN_PUBLIC_HDRS +
-           DAWN_GENERATED_HDRS +
-           DAWN_UTILS_HDRS +
-           DAWN_NATIVE_UTILS_HDRS +
-           TINT_PUBLIC_HDRS,
+        #   DAWN_NATIVE_NULL_HDRS +
+           TINT_PUBLIC_HDRS + select({
+               "@platforms//os:linux":
+                                       DAWN_NATIVE_OPENGL_HDRS +
+                                       DAWN_NATIVE_VULKAN_HDRS,
+               "@platforms//os:android": [],  # TODO(kjlubick)
+               "@platforms//os:macos": DAWN_NATIVE_METAL_HDRS,  # See dawn_native_objc
+               "@platforms//os:ios": DAWN_NATIVE_METAL_HDRS,  # See dawn_native_objc
+               "@platforms//os:windows": DAWN_NATIVE_D3D11_HDRS + DAWN_NATIVE_D3D11_OR_D3D12_HDRS,
+           }),
     includes = [
         "include",
         "src",
@@ -382,7 +370,7 @@ cc_library(
 
 cc_library(
     name = "dawn_common",
-    srcs = DAWN_COMMON_SRCS,
+    srcs = DAWN_COMMON_SRCS + DAWN_COMMON_NOT_EMSCRIPTEN_SRCS,
     copts = DAWN_COPTS,
     defines = DAWN_DEBUG_DEFINES,
     deps = [
@@ -399,8 +387,7 @@ cc_library(
 
 objc_library(
     name = "dawn_common_objc",
-    srcs = DAWN_COMMON_OBJC_SRCS,
-    hdrs = DAWN_COMMON_OBJC_HDRS,
+    srcs = DAWN_COMMON_APPLE_SRCS,
     copts = DAWN_COPTS,
     defines = DAWN_DEBUG_DEFINES,
     sdk_frameworks = [
@@ -432,8 +419,15 @@ cc_library(
 
 cc_library(
     name = "dawn_system_utils",
-    srcs = DAWN_UTILS_SRCS + DAWN_UTILS_POSIX_SRCS,
-    hdrs = DAWN_UTILS_HDRS + DAWN_PUBLIC_HDRS + DAWN_GENERATED_HDRS,
+    srcs = DAWN_UTILS_SRCS +
+    select({
+        "@platforms//os:linux": DAWN_UTILS_NOT_WIN32_AND_NOT_WINDOWS_STORE_SRCS + DAWN_UTILS_UNIX_SRCS,
+        "@platforms//os:ios": DAWN_UTILS_NOT_WIN32_AND_NOT_WINDOWS_STORE_SRCS + DAWN_UTILS_UNIX_SRCS,
+        "@platforms//os:macos": DAWN_UTILS_NOT_WIN32_AND_NOT_WINDOWS_STORE_SRCS + DAWN_UTILS_UNIX_SRCS,
+        "@platforms//os:windows": [],
+        "//conditions:default": [],
+        }),
+    hdrs = DAWN_PUBLIC_HDRS + DAWN_GENERATED_HDRS,
     copts = DAWN_COPTS,
     deps = [
         ":dawn_common",
@@ -446,8 +440,7 @@ cc_library(
 
 objc_library(
     name = "dawn_system_utils_objc",
-    srcs = DAWN_UTILS_OBJC_SRCS,
-    hdrs = DAWN_UTILS_OBJC_HDRS,
+    srcs = DAWN_UTILS_APPLE_SRCS,
     copts = DAWN_COPTS,
     deps = [
         ":dawn_common",
@@ -458,7 +451,7 @@ objc_library(
 cc_library(
     name = "dawn_platform",
     srcs = DAWN_PLATFORM_SRCS,
-    hdrs = DAWN_PLATFORM_HDRS + DAWN_PUBLIC_HDRS + DAWN_GENERATED_HDRS,
+    hdrs = DAWN_PUBLIC_HDRS + DAWN_GENERATED_HDRS,
     copts = DAWN_COPTS,
     deps = [
         ":dawn_common",
@@ -468,30 +461,20 @@ cc_library(
 
 cc_library(
     name = "dawn_native",
-    srcs = DAWN_NATIVE_SRCS + DAWN_NATIVE_UTILS_SRCS + select({
-        "@platforms//os:linux": DAWN_NATIVE_X11_SRCS +
+    srcs = DAWN_NATIVE_SRCS + select({
+        "@platforms//os:linux": DAWN_NATIVE_USE_X11_SRCS +
                                 DAWN_NATIVE_OPENGL_SRCS +
                                 DAWN_NATIVE_VULKAN_SRCS +
-                                DAWN_NATIVE_VULKAN_LINUX_SRCS +
-                                DAWN_NATIVE_RENDERDOC_SRCS,
+                                DAWN_NATIVE_VULKAN_UNIX_AND_NOT_APPLE_SRCS +
+                                DAWN_NATIVE_D3D12_OR_VULKAN_SRCS,
         "@platforms//os:android": [],  # TODO(kjlubick)
         "@platforms//os:macos": [],  # See dawn_native_objc
         "@platforms//os:ios": [],  # See dawn_native_objc
         "@platforms//os:windows": [],  # TODO(kjlubick)
     }),
-    hdrs = DAWN_NATIVE_HDRS + select({
-               "@platforms//os:linux": DAWN_NATIVE_X11_HDRS +
-                                       DAWN_NATIVE_OPENGL_HDRS +
-                                       DAWN_NATIVE_VULKAN_HDRS +
-                                       DAWN_NATIVE_VULKAN_LINUX_HDRS,
-               "@platforms//os:android": [],  # TODO(kjlubick)
-               "@platforms//os:macos": [],  # See dawn_native_objc
-               "@platforms//os:ios": [],  # See dawn_native_objc
-               "@platforms//os:windows": [],  # TODO(kjlubick)
-           }) +
+    hdrs = DAWN_NATIVE_HDRS +
            DAWN_PUBLIC_HDRS +
-           DAWN_GENERATED_HDRS +
-           DAWN_NATIVE_PUBLIC_HDRS,
+           DAWN_GENERATED_HDRS,
     copts = DAWN_COPTS,
     defines = TINT_WGSL_DEFINES + select({
         "@platforms//os:linux": DAWN_LINUX_DEFINES,
