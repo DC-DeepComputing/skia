@@ -519,9 +519,42 @@ void AtlasTextOp::onPrepareDraws(GrMeshDrawTarget* target) {
 
     for (const Geometry* geo = fHead; geo != nullptr; geo = geo->fNext) {
         const sktext::gpu::AtlasSubRun& subRun = geo->fSubRun;
+<<<<<<< HEAD   (c0f65c1afea8f548d95e4c05affbbdc7014685a1 [M144-LTS] Reject SkRegions with multiple empty slices in a )
         SkASSERTF((int) subRun.vertexStride(geo->fDrawMatrix) == vertexStride,
                   "subRun stride: %d vertex buffer stride: %d\n",
                   (int)subRun.vertexStride(geo->fDrawMatrix), vertexStride);
+||||||| BASE   (9eecbdc30f7da675edab96974b23174a9d521e0c Manual roll ANGLE from 1184faa057e3 to 0bcdad042d68 (8 revis)
+
+        if (!subRun.glyphVector().hasBackendData()) {
+            subRun.glyphVector().initBackendData<GlyphData>(target->strikeCache(), maskFormat);
+        }
+
+        auto& glyphData = subRun.glyphVector().accessBackendData<GlyphData>();
+
+        SkDEBUGCODE(int strideCheck = SkToInt(glyphData.vertexStride(subRun.maskFormat(),
+                                                                     geo->fDrawMatrix)));
+        SkASSERTF(strideCheck == vertexStride,
+                   "subRun stride: %d vertex buffer stride: %d\n",
+                   strideCheck, vertexStride);
+=======
+
+        if (!subRun.glyphVector().hasBackendData()) {
+            subRun.glyphVector().initBackendData<GlyphData>(target->strikeCache(), maskFormat);
+        }
+
+        auto& glyphData = subRun.glyphVector().accessBackendData<GlyphData>();
+
+        int strideCheck = SkToInt(glyphData.vertexStride(subRun.maskFormat(), geo->fDrawMatrix));
+        if (strideCheck != vertexStride) {
+            // We (unexpectedly) have buffers of different sizes between CPU and GPU. Bail out.
+            SKIA_LOG_D(
+                    "Warning: stride mismatch detected (subrun stride: %d vertex buffer stride: "
+                    "%d). Aborting draw.\n",
+                    strideCheck,
+                    vertexStride);
+            return;
+        }
+>>>>>>> CHANGE (a145861ad1c2650c58dd3ff0dbd92ae6f41f1e1b Reject Slugs that have creationMatrix with perspective)
 
         const int subRunEnd = subRun.glyphCount();
         auto regenerateDelegate = [&](sktext::gpu::GlyphVector* glyphs,
