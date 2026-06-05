@@ -16,6 +16,24 @@
       "message": "LGTM, if I\u0027m understanding right, the guard inside SubRunContainer should be sufficient to catch this?",
       "revId": "4d4f390ecd2522a1e11d535920f5f29a702f0c91",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2815c923_80c1a233",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-05T21:01:47Z",
+      "side": 1,
+      "message": "Yes, rejecting them there should be sufficient but I added the check in AtlasTextOp to catch if there\u0027s a similar issue elsewhere.",
+      "parentUuid": "74e61d2c_c2791979",
+      "revId": "4d4f390ecd2522a1e11d535920f5f29a702f0c91",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
