@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "60f59c75_99375541",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2026-06-05T12:14:28Z",
+      "side": 1,
+      "message": "Blink investigation in: https://crrev.com/c/7894625",
+      "revId": "fbafa3bca8637d07e9090fd7e3624a6a4df6968c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
