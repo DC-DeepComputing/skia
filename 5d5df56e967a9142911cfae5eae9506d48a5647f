@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0269f2e_49c7d3a7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-05T14:58:01Z",
+      "side": 1,
+      "message": "PTAL, I have further chopped up the DrawAtlas changes to make it easier to follow. This is the first in that series, and as the CL comment states, this CL has no functional impact.",
+      "revId": "5d5df56e967a9142911cfae5eae9506d48a5647f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
