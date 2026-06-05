@@ -80,6 +80,29 @@ std::unique_ptr<DrawAtlas> DrawAtlas::Make(MaskFormat maskFormat,
     return atlas;
 }
 
+std::unique_ptr<DrawAtlas> DrawAtlas::Make(MaskFormat maskFormat,
+                                           int width, int height,
+                                           int plotWidth, int plotHeight,
+                                           AllowMultitexturing allowMultitexturing,
+                                           UseStorageTextures useStorageTextures,
+                                           EvictionCallback* evictor,
+                                           std::string_view label) {
+    // Generate a temporary counter since we don't need it externally
+    static GenerationCounter gTempCounter;
+    std::unique_ptr<DrawAtlas> atlas(new DrawAtlas(maskFormat,
+                                                   width, height,
+                                                   plotWidth, plotHeight,
+                                                   &gTempCounter,
+                                                   allowMultitexturing,
+                                                   useStorageTextures,
+                                                   label));
+
+    if (evictor != nullptr) {
+        atlas->fRecordEvictionCallbacks.emplace_back(evictor);
+    }
+    return atlas;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 static uint32_t next_id() {
     static std::atomic<uint32_t> nextID{1};
@@ -238,62 +261,75 @@ static constexpr auto kAtlasRecentlyUsedCount = 128;
 DrawAtlas::ErrorCode DrawAtlas::addRect(Recorder* recorder,
                                         int width, int height,
                                         AtlasLocator* atlasLocator) {
-    if (width > fPlotWidth || height > fPlotHeight || width < 0 || height < 0) {
+    AddResult res;
+    ErrorCode ec = this->addRect(recorder, {width, height}, &res);
+    if (ec == ErrorCode::kSucceeded) {
+        if (width == 0 || height == 0) {
+            atlasLocator->updateRect(SkIRect::MakeEmpty());
+            atlasLocator->updatePlotLocator(fPages[0].fPlotList.head()->plotLocator());
+            return ErrorCode::kSucceeded;
+        }
+        auto locOpt = this->entryLocation(res.fRecord);
+        SkASSERT(locOpt);
+        auto [pageIdx, rect] = *locOpt;
+        atlasLocator->updateRect(rect);
+        Plot* plot = this->findPlot(res.fRecord);
+        atlasLocator->updatePlotLocator(plot->plotLocator());
+        atlasLocator->updateRecord(res.fRecord);
+    }
+    return ec;
+}
+
+DrawAtlas::ErrorCode DrawAtlas::addRect(Recorder* recorder,
+                                        SkISize size,
+                                        AddResult* addResult,
+                                        const std::byte* image) {
+    if (size.width() > fPlotWidth || size.height() > fPlotHeight || size.width() < 0 || size.height() < 0) {
         return ErrorCode::kError;
     }
 
-    // We permit zero-sized rects to allow inverse fills in the PathAtlases to work,
-    // but we don't want to enter them in the Rectanizer. So we handle this special case here.
-    // For text this should be caught at a higher level, but if not the only end result
-    // will be rendering a degenerate quad.
-    if (width == 0 || height == 0) {
+    if (size.isEmpty()) {
         if (fNumActivePages == 0) {
-            // Make sure we have a Page for the AtlasLocator to refer to
             this->activateNewPage(recorder);
         }
-        atlasLocator->updateRect(SkIRect::MakeEmpty());
-        // Use the MRU Plot from the first Page
-        atlasLocator->updatePlotLocator(fPages[0].fPlotList.head()->plotLocator());
+        addResult->fRecord = Record();
+        addResult->fPageIdx = 0;
+        addResult->fPosition = SkIPoint::Make(0, 0);
         return ErrorCode::kSucceeded;
     }
 
-    // Look through each page to see if we can upload without having to flush
-    // We prioritize this upload to the first pages, not the most recently used, to make it easier
-    // to remove unused pages in reverse page order.
     for (unsigned int pageIdx = 0; pageIdx < fNumActivePages; ++pageIdx) {
-        if (this->addRectToPage(pageIdx, width, height, atlasLocator)) {
+        auto plotResult = this->addRectToPage(pageIdx, size, image);
+        if (plotResult) {
+            *addResult = *plotResult;
             return ErrorCode::kSucceeded;
         }
     }
 
-    // If the above fails, then see if the least recently used plot per page has already been
-    // queued for upload if we're at max page allocation, or if the plot has aged out otherwise.
-    // We wait until we've grown to the full number of pages to begin evicting already queued
-    // plots so that we can maximize the opportunity for reuse.
-    // As before we prioritize this upload to the first pages, not the most recently used.
     if (fNumActivePages == this->maxPages()) {
         for (unsigned int pageIdx = 0; pageIdx < fNumActivePages; ++pageIdx) {
             Plot* plot = fPages[pageIdx].fPlotList.tail();
             SkASSERT(plot);
             if (plot->lastUseToken() < recorder->priv().tokenTracker()->nextFlushToken()) {
-                this->processEvictionAndResetRects(plot, /*freeData=*/false);
-                SkDEBUGCODE(bool verify = )plot->addRect(width, height, atlasLocator);
-                SkASSERT(verify);
-                this->updatePlot(plot, atlasLocator);
+                this->processEvictionAndResetRects(plot, EvictionType::kReuse_KeepData);
+                auto plotResult = plot->addRect(size, image);
+                SkASSERT(plotResult);
+                this->makeMRU(plot);
+                addResult->fRecord = Record{plot->plotID(), plotResult->fEntryID};
+                addResult->fPageIdx = pageIdx;
+                addResult->fPosition = plotResult->fPositionInAtlas;
                 return ErrorCode::kSucceeded;
             }
         }
     } else {
-        // If we haven't activated all the available pages, try to create a new one and add to it
         if (!this->activateNewPage(recorder)) {
             return ErrorCode::kError;
         }
-
-        if (this->addRectToPage(fNumActivePages-1, width, height, atlasLocator)) {
+        auto plotResult = this->addRectToPage(fNumActivePages - 1, size, image);
+        if (plotResult) {
+            *addResult = *plotResult;
             return ErrorCode::kSucceeded;
         } else {
-            // If we fail to upload to a newly activated page then something has gone terribly
-            // wrong - return an error
             return ErrorCode::kError;
         }
     }
@@ -302,30 +338,86 @@ DrawAtlas::ErrorCode DrawAtlas::addRect(Recorder* recorder,
         return ErrorCode::kError;
     }
 
-    // All plots are currently in use by the current set of draws, so we need to fail. This
-    // gives the Device a chance to snap the current set of uploads and draws, advance the draw
-    // token, and call back into this function. The subsequent call will have plots available
-    // for fresh uploads.
     return ErrorCode::kTryAgain;
+}
+
+std::optional<DrawAtlas::AddResult> DrawAtlas::addRectToPage(int pageIdx, SkISize size, const std::byte* image) {
+    SkASSERT(fProxies[pageIdx]);
+
+    PlotList::Iter plotIter;
+    plotIter.init(fPages[pageIdx].fPlotList, PlotList::Iter::kHead_IterStart);
+
+    for (Plot* plot = plotIter.get(); plot; plot = plotIter.next()) {
+        auto plotResult = plot->addRect(size, image);
+        if (plotResult) {
+            this->makeMRU(plot);
+            return AddResult{
+                Record{plot->plotID(), plotResult->fEntryID},
+                pageIdx,
+                plotResult->fPositionInAtlas
+            };
+        }
+    }
+
+    return std::nullopt;
 }
 
 DrawAtlas::ErrorCode DrawAtlas::addToAtlas(Recorder* recorder,
                                            int width, int height, const void* image,
                                            AtlasLocator* atlasLocator) {
-    ErrorCode ec = this->addRect(recorder, width, height, atlasLocator);
+    AddResult res;
+    ErrorCode ec = this->addRect(recorder, {width, height}, &res, (const std::byte*)image);
     if (ec == ErrorCode::kSucceeded) {
-        Plot* plot = this->findPlot(*atlasLocator);
-        plot->copySubImage(*atlasLocator, image);
+        if (width == 0 || height == 0) {
+            atlasLocator->updateRect(SkIRect::MakeEmpty());
+            atlasLocator->updatePlotLocator(fPages[0].fPlotList.head()->plotLocator());
+            return ErrorCode::kSucceeded;
+        }
+        auto locOpt = this->entryLocation(res.fRecord);
+        SkASSERT(locOpt);
+        auto [pageIdx, rect] = *locOpt;
+        atlasLocator->updateRect(rect);
+        Plot* plot = this->findPlot(res.fRecord);
+        atlasLocator->updatePlotLocator(plot->plotLocator());
+        atlasLocator->updateRecord(res.fRecord);
     }
-
     return ec;
 }
 
 SkPixmap DrawAtlas::prepForRender(const AtlasLocator& locator,
                                   int padding,
                                   std::optional<SkColor> initialColor) {
-    Plot* plot = this->findPlot(locator);
-    return plot->prepForRender(locator, padding, initialColor);
+    auto pmOpt = this->entryPixmap(locator.record(), padding, initialColor);
+    SkASSERT(pmOpt);
+    return *pmOpt;
+}
+
+bool DrawAtlas::hasRecord(Record record) const {
+    Plot* plot = this->findPlot(record.fPlotID);
+    if (!plot) {
+        return false;
+    }
+    return plot->entryAtlasRect(record.fEntryID).has_value();
+}
+
+std::optional<SkPixmap> DrawAtlas::entryPixmap(Record record, int padding, std::optional<SkColor> clearColor) {
+    Plot* plot = this->findPlot(record.fPlotID);
+    if (!plot) {
+        return std::nullopt;
+    }
+    return plot->entryPixmap(record.fEntryID, padding, clearColor);
+}
+
+std::optional<std::tuple<int, SkIRect>> DrawAtlas::entryLocation(Record record) const {
+    Plot* plot = this->findPlot(record.fPlotID);
+    if (!plot) {
+        return std::nullopt;
+    }
+    auto rectOpt = plot->entryAtlasRect(record.fEntryID);
+    if (!rectOpt) {
+        return std::nullopt;
+    }
+    return std::make_tuple(plot->plotCoord().fPageIdx, *rectOpt);
 }
 
 void DrawAtlas::compact(Token startTokenForNextFlush) {

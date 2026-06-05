@@ -396,3 +396,86 @@ DEF_GRAPHITE_TEST(DrawAtlasConfig_Basic, reporter, CtsEnforcement::kNever) {
     test_draw_atlas_config(reporter, 65536, 0, MaskFormat::kA8,
                            { 512, 512 }, { 256, 256 });
 }
+
+class TestRecordEvictor : public DrawAtlas::EvictionCallback {
+public:
+    void evict(const DrawAtlas::RecordVisitor& visitor) override {
+        visitor.visitRecords([this](DrawAtlas::Record r) {
+            fEvicted.push_back(r);
+        });
+    }
+
+    std::vector<DrawAtlas::Record> fEvicted;
+};
+
+DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(RecordDrawAtlas,
+                                         reporter,
+                                         context,
+                                         CtsEnforcement::kNever) {
+    auto recorder = context->makeRecorder();
+
+    MaskFormat atlasMaskFormat = MaskFormat::kA8;
+    TestRecordEvictor evictor;
+    std::unique_ptr<DrawAtlas> atlas = DrawAtlas::Make(atlasMaskFormat,
+                                                       kAtlasSize, kAtlasSize,
+                                                       kAtlasSize/kNumPlots, kAtlasSize/kNumPlots,
+                                                       DrawAtlas::AllowMultitexturing::kYes,
+                                                       DrawAtlas::UseStorageTextures::kNo,
+                                                       &evictor,
+                                                       /*label=*/"RecordDrawAtlasTest");
+
+    // Add items and query them
+    DrawAtlas::AddResult res1, res2;
+    std::vector<std::byte> dummyData(32 * 32, std::byte{128});
+    DrawAtlas::ErrorCode code;
+
+    code = atlas->addRect(recorder.get(), {32, 32}, &res1, dummyData.data());
+    REPORTER_ASSERT(reporter, code == DrawAtlas::ErrorCode::kSucceeded);
+    REPORTER_ASSERT(reporter, atlas->hasRecord(res1.fRecord));
+
+    auto locOpt = atlas->entryLocation(res1.fRecord);
+    REPORTER_ASSERT(reporter, locOpt.has_value());
+    auto [pageIdx, rect] = *locOpt;
+    REPORTER_ASSERT(reporter, pageIdx == 0);
+    REPORTER_ASSERT(reporter, rect.width() == 32 && rect.height() == 32);
+
+    auto pmOpt = atlas->entryPixmap(res1.fRecord);
+    REPORTER_ASSERT(reporter, pmOpt.has_value());
+    REPORTER_ASSERT(reporter, pmOpt->width() == 32 && pmOpt->height() == 32);
+    REPORTER_ASSERT(reporter, ((const std::byte*)pmOpt->addr())[0] == std::byte{128});
+
+    // Fill the page (there are 4 plots of 32x32)
+    DrawAtlas::AddResult resTemp;
+    for (int i = 0; i < 3; ++i) {
+        code = atlas->addRect(recorder.get(), {32, 32}, &resTemp, dummyData.data());
+        REPORTER_ASSERT(reporter, code == DrawAtlas::ErrorCode::kSucceeded);
+    }
+
+    // Now fill another page to see if evictions happen correctly when we compact.
+    // Force creation of a second page by adding a 5th rect.
+    code = atlas->addRect(recorder.get(), {32, 32}, &res2, dummyData.data());
+    REPORTER_ASSERT(reporter, code == DrawAtlas::ErrorCode::kSucceeded);
+    REPORTER_ASSERT(reporter, res2.fPageIdx == 1);
+
+    // Simulate compaction of the atlas
+    // Before compact, let's mark res1 last use token to next token
+    atlas->setLastUseToken(res1.fRecord, recorder->priv().tokenTracker()->nextFlushToken());
+    recorder->priv().issueFlushToken();
+    atlas->compact(recorder->priv().tokenTracker()->nextFlushToken());
+
+    // We shouldn't have evicted res1 because we set its last use token.
+    REPORTER_ASSERT(reporter, evictor.fEvicted.empty());
+
+    // Now let's test evicting by filling up all pages (maxPages = 4)
+    int count = 0;
+    while (count < 100) {
+        code = atlas->addRect(recorder.get(), {32, 32}, &resTemp, dummyData.data());
+        if (code == DrawAtlas::ErrorCode::kTryAgain) {
+            break;
+        }
+        REPORTER_ASSERT(reporter, code == DrawAtlas::ErrorCode::kSucceeded);
+        atlas->setLastUseToken(resTemp.fRecord, recorder->priv().tokenTracker()->nextFlushToken());
+        count++;
+    }
+    REPORTER_ASSERT(reporter, code == DrawAtlas::ErrorCode::kTryAgain);
+}
