@@ -169,6 +169,9 @@ std::optional<VertexFiller> make_vertex_filler_from_buffer(SkReadBuffer& buffer,
 
     SkMatrix creationMatrix;
     buffer.readMatrix(&creationMatrix);
+    if (!buffer.validate(!creationMatrix.hasPerspective())) {
+        return std::nullopt;
+    }
 
     SkSpan<SkPoint> leftTop = make_points_from_buffer(buffer, alloc);
     if (leftTop.empty()) {
@@ -628,6 +631,7 @@ public:
               const SkPaint& paint,
               sk_sp<SkRefCnt>,
               const AtlasDrawDelegate&) const override {
+        SkDebugf("[DEBUG] DrawableSubRun::draw entered\n");
         fDrawingDrawing.submitDraws(canvas, drawOrigin, paint);
     }
 
@@ -716,6 +720,7 @@ public:
               const SkPaint& paint,
               sk_sp<SkRefCnt> subRunStorage,
               const AtlasDrawDelegate& drawAtlas) const override {
+        SkDebugf("[DEBUG] DirectMaskSubRun/TransformedMaskSubRun::draw entered\n");
         drawAtlas(this,
                   drawOrigin,
                   paint,
@@ -832,6 +837,7 @@ public:
               const SkPaint& paint,
               sk_sp<SkRefCnt> subRunStorage,
               const AtlasDrawDelegate& drawAtlas) const override {
+        SkDebugf("[DEBUG] DirectMaskSubRun/TransformedMaskSubRun::draw entered\n");
         drawAtlas(this,
                   drawOrigin,
                   paint,
@@ -964,6 +970,7 @@ public:
               const SkPaint& paint,
               sk_sp<SkRefCnt> subRunStorage,
               const AtlasDrawDelegate& drawAtlas) const override {
+        SkDebugf("[DEBUG] SDFTSubRun::draw entered\n");
         drawAtlas(this, drawOrigin, paint, std::move(subRunStorage),
                   {/* isSDF = */true, /* isLCD = */fUseLCDText, skgpu::MaskFormat::kA8});
     }
@@ -1438,7 +1445,9 @@ SubRunContainerOwner SubRunContainer::MakeInAlloc(
 
 #if !defined(SK_DISABLE_SDF_TEXT)
             // SDFT case
-            if (subRunControl->isSDFT(approximateDeviceTextSize, runPaint, positionMatrix)) {
+            bool canUseSDFT =
+                    subRunControl->isSDFT(approximateDeviceTextSize, runPaint, positionMatrix);
+            if (canUseSDFT) {
                 // Process SDFT - This should be the .009% case.
                 const auto& [strikeSpec, strikeToSourceScale, matrixRange] =
                         make_sdft_strike_spec(
@@ -1675,7 +1684,9 @@ void SubRunContainer::draw(SkCanvas* canvas,
                            const SkPaint& paint,
                            const SkRefCnt* subRunStorage,
                            const AtlasDrawDelegate& atlasDelegate) const {
+    SkDebugf("[DEBUG] SubRunContainer::draw entered, subRuns empty=%d\n", fSubRuns.isEmpty());
     for (auto& subRun : fSubRuns) {
+        SkDebugf("[DEBUG] SubRunContainer::draw: drawing subRun\n");
         subRun.draw(canvas, drawOrigin, paint, sk_ref_sp(subRunStorage), atlasDelegate);
     }
 }
