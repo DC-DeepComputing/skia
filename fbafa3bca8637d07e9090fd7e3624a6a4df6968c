@@ -16,6 +16,52 @@
       "message": "Blink investigation in: https://crrev.com/c/7894625",
       "revId": "fbafa3bca8637d07e9090fd7e3624a6a4df6968c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c35b119_9c5f517f",
+        "filename": "include/core/SkStrikeRef.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-06-05T13:15:38Z",
+      "side": 1,
+      "message": "Not a perfect fit for spanification, but how much friction would it add to use\n\n```\n  size_t getWidthsStrided(SkSpan\u003cconst uint32_t\u003e glyphs, size_t glyph_stride,\n                          SkSpan\u003cfloat\u003e advances, size_t advance_stride) const;\n```\n(where we return the number of advances written, since the stop condition is now more complex)\n\nThat would allow us to perform bounds checks on both buffers and is better aligned with the other APIs.",
+      "range": {
+        "startLine": 69,
+        "startChar": 26,
+        "endLine": 73,
+        "endChar": 49
+      },
+      "revId": "fbafa3bca8637d07e9090fd7e3624a6a4df6968c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a52817ed_cfacd6cb",
+        "filename": "src/core/SkStrike.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-06-05T13:15:38Z",
+      "side": 1,
+      "message": "`SkTAddOffset`\n\nAlso, aren\u0027t the strides always 4-byte aligned (I think unaligned uint32 access would be problematic otherwise)?  If so it seems they could be uint32/float offsets and we could use simple pointer arithmetic (e.g. `g_ptr +\u003d glyph_stride`).",
+      "range": {
+        "startLine": 236,
+        "startChar": 0,
+        "endLine": 239,
+        "endChar": 64
+      },
+      "revId": "fbafa3bca8637d07e9090fd7e3624a6a4df6968c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
