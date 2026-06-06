@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa957575_2bfb7771",
+        "filename": "src/gpu/ganesh/ops/AtlasTextOp.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 577,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-06T21:08:59Z",
+      "side": 1,
+      "message": "I think this should be an assert release if we\u0027re going to be including the branch in release builds. It\u0027s either a newly introduced programmer error or a compromised renderer, so crashing is a good signal.",
+      "range": {
+        "startLine": 569,
+        "startChar": 0,
+        "endLine": 577,
+        "endChar": 9
+      },
+      "revId": "a145861ad1c2650c58dd3ff0dbd92ae6f41f1e1b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
