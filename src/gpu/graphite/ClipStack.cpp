@@ -1648,90 +1648,86 @@ void ClipStack::clipShape(const Transform& localToDevice,
 namespace {
 
 AnalyticClip can_apply_analytic_clip(const Shape& shape, const Transform& localToDevice) {
-    if (localToDevice.type() != Transform::Type::kIdentity) {
+    if (localToDevice.type() > Transform::Type::kAffine) {
         return {};
     }
 
-    // The circular rrect clip only handles rrect radii >= kRadiusMin, circular radii less than
-    // this are coerced to be rectangular.
-    static constexpr float kRadiusMin = SK_ScalarHalf;
+    // Since the transformation is affine, it can be represented as a 2x2 matrix and a translation.
+    // To minimize data sent to the GPU, the translation is pre-applied to the rectangle coordinates
+    // and only the 2x2 needs to be sent. The analytic clip is invoked with device coordinates so
+    // the inverse's 2x2 is used.
+    const SkM44& devToLocal = localToDevice.inverse();
+    SkV4 xform = {devToLocal.rc(0,0), devToLocal.rc(1,0), // column-major
+                  devToLocal.rc(0,1), devToLocal.rc(1,1)};
+    // Applying this translation to the local rrect geometry moves it into a new coordinate space
+    // where just the 2x2 of localToDevice is needed to map to device space (conversely, where
+    // just `xform` is needed to map device coords to the rrect's new space).
+    float tx = xform.x*localToDevice.matrix().rc(0,3) + xform.z*localToDevice.matrix().rc(1,3);
+    float ty = xform.y*localToDevice.matrix().rc(0,3) + xform.w*localToDevice.matrix().rc(1,3);
+
+    const float tolerance =
+            localToDevice.localAARadius(shape.bounds()) * Shape::kDefaultPixelTolerance;
 
     // Can handle Rect directly.
     if (shape.isRect()) {
-        return {shape.rect(), kRadiusMin, AnalyticClip::kNone_EdgeFlag, shape.inverted()};
+        return {shape.rect().makeOffset({tx,ty}).asSkRect(),
+                SkV4{0.f, 0.f, 0.f, 0.f},
+                xform,
+                shape.inverted()};
     }
 
-    // Otherwise we only handle certain kinds of RRects, specifically only approximately simple
-    // circular rrects (e.g. all 4 corners can be described by a single radius value).
+    // Otherwise we only handle certain kinds of RRects, specifically only rrects with circular
+    // corners (although each corner can differ). We don't just check AllCornersRelativelyCircular
+    // because we can fold an Y-axis scale factor into the 2x2 transform if that non-uniform scaling
+    // could make all corners effectively circular.
     if (!shape.isRRect()) {
         return {};
     }
 
     const SkRRect& rrect = shape.rrect();
-    if (rrect.isOval() || rrect.isSimple()) {
-        SkVector radii = SkRRectPriv::GetSimpleRadii(rrect);
-        if (radii.fX < kRadiusMin || radii.fY < kRadiusMin) {
-            // In this case the corners are extremely close to rectangular and we collapse the
-            // clip to a rectangular clip.
-            return {rrect.rect(), kRadiusMin, AnalyticClip::kNone_EdgeFlag, shape.inverted()};
-        }
-        if (SkRRectPriv::IsRelativelyCircular(radii.fX, radii.fY, Shape::kDefaultPixelTolerance)) {
-            return {rrect.rect(), radii.fX, AnalyticClip::kAll_EdgeFlag, shape.inverted()};
+    std::optional<float> scaleYAxis;
+    SkV4 radii;
+    for (int i = 0; i < 4; ++i) {
+        SkVector r = rrect.radii((SkRRect::Corner) i);
+        float cornerScale = SkRRectPriv::IsRelativelyCircular(r.fX, r.fY, tolerance)
+                ? 1.f : sk_ieee_float_divide(r.fX, r.fY);
+
+        if (r.fX < tolerance || r.fY < tolerance) {
+            radii[i] = 0.f; // Clamp to a square corner, so doesn't impact scale factor
+        } else if (!scaleYAxis.has_value()) {
+            // We haven't encountered a non-circular corner yet. Set the scale factor to the
+            // current radii ratio (which will be 1 if it's already circular).
+            scaleYAxis = cornerScale;
+            radii[i] = r.fX;
         } else {
-            return {};
+            // We already have a scale factor from some other corner, so we need to agree.
+            if (!SkScalarNearlyEqual(cornerScale, *scaleYAxis, tolerance)) {
+                return {}; // Would not pass AllCornersRelativelyCircular after scaling
+            }
+            radii[i] = r.fX;
         }
     }
 
-    // If rrect is not an oval or simple, it's either empty, rect, 9-patch, or complex. However,
-    // empty should have been handled by the clip stack, and rect ought to have been simplified
-    // into an explicit Rect shape (already handled above). That leaves 9-patch and complex,
-    // so we check for the "tab" cases - two adjacent circular corners and two square corners.
-    // It just so happens that if a rect RRect slipped through the cracks, we detect it here too.
-    constexpr uint32_t kCornerFlags[4] = {
-        AnalyticClip::kTop_EdgeFlag | AnalyticClip::kLeft_EdgeFlag,
-        AnalyticClip::kTop_EdgeFlag | AnalyticClip::kRight_EdgeFlag,
-        AnalyticClip::kBottom_EdgeFlag | AnalyticClip::kRight_EdgeFlag,
-        AnalyticClip::kBottom_EdgeFlag | AnalyticClip::kLeft_EdgeFlag,
-    };
-    SkScalar circularRadius = 0;
-    uint32_t edgeFlags = 0;
-    int squareCount = 0;
-    for (int corner = 0; corner < 4; ++corner) {
-        SkVector radii = rrect.radii((SkRRect::Corner)corner);
-        // Can only handle circular radii.
-        // Also applies to corners with both zero and non-zero radii.
-        if (!SkRRectPriv::IsRelativelyCircular(radii.fX, radii.fY, Shape::kDefaultPixelTolerance)) {
-            return {};
-        }
-        if (radii.fX < kRadiusMin || radii.fY < kRadiusMin) {
-            // The corner is square, so no need to flag as circular.
-            squareCount++;
-            continue;
-        }
-        // First circular corner seen
-        if (!edgeFlags) {
-            circularRadius = radii.fX;
-        } else if (!SkRRectPriv::IsRelativelyCircular(radii.fX,
-                                                      circularRadius,
-                                                      Shape::kDefaultPixelTolerance)) {
-            // Radius doesn't match previously seen circular radius
-            return {};
-        }
-        edgeFlags |= kCornerFlags[corner];
-    }
+    Rect rect = rrect.rect().makeOffset(tx, ty);
+    if (scaleYAxis.has_value() && !SkScalarNearlyEqual(*scaleYAxis, 1.f, tolerance)) {
+        const float s = *scaleYAxis;
+        rect.setTop(rect.top() * s);
+        rect.setBot(rect.bot() * s);
 
-    if (edgeFlags == AnalyticClip::kNone_EdgeFlag) {
-        // It's a rect (or coerced to a rect)
-        return {rrect.rect(), kRadiusMin, edgeFlags, shape.inverted()};
-    } else if (edgeFlags == AnalyticClip::kAll_EdgeFlag && squareCount != 0) {
-        // If any rounded corner pairs are non-adjacent or if there are three rounded corners all
-        // edge flags will be set, which is not valid.
-        return {};
+        // Since we scaled the rrect by s, we should scale its local-to-device matrix by 1/s to
+        // remain the same shape. However, `xform` is the device-to-local matrix so as the inverse,
+        // we also just have to multiply by s.
+        xform.y *= s;
+        xform.w *= s;
+        SkASSERT(SkRRectPriv::AllCornersRelativelyCircular(
+                *rrect.transform(SkMatrix::Scale(1.f, s)), tolerance));
     } else {
-        // At least one corner is rounded, or two adjacent corners are rounded, or all corners
-        // are approximately the same (but not classified as simple due to inexactness).
-        return {rrect.rect(), circularRadius, edgeFlags, shape.inverted()};
+        // The loop above should work out to be equivalent to this function if we didn't encounter
+        // a non-uniform scale factor to push into `xform`.
+        SkASSERT(SkRRectPriv::AllCornersRelativelyCircular(rrect, tolerance));
     }
+
+    return {rect.asSkRect(), radii, xform, shape.inverted()};
 }
 
 }  // anonymous namespace

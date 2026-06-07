@@ -250,15 +250,18 @@ bool PaintOption::handleDithering(const KeyContext& keyContext) const {
 
 void PaintOption::handleClipping(const KeyContext& keyContext) const {
     if (fAnalyticClip) {
-        NonMSAAClipBlock::NonMSAAClipData data(
-                /* rect= */ {},
-                /* radiusPlusHalf= */ {},
-                /* edgeSelect= */ {},
-                /* texCoordOffset= */ {},
-                /* maskBounds= */ {},
-                // TODO: the kAnalyticAndAtlasClip vs. kAnalyticClip decision is based on this
-                // being a valid TextureProxy.
-                /* atlasTexture= */ nullptr);
+        NonMSAAClip clip{
+            .fAnalyticClip = {
+                .fBounds = {0, 0, 1, 1}, // just needs to be non-empty
+            },
+            // TODO: kAnalyticAndAtlasClip vs. kAnalyticClip decision is based on this being
+            // a valid TextureProxy
+            .fAtlasClip = {
+                .fAtlasTexture = nullptr,
+                .fMaskBounds = {},
+                .fOutPos = {},
+            },
+        };
         if (fClipShader.first) {
             // For both an analytic clip and clip shader, we need to compose them together into
             // a single clipping root node.
@@ -267,14 +270,14 @@ void PaintOption::handleClipping(const KeyContext& keyContext) const {
                         AddFixedBlendMode(keyContext, SkBlendMode::kModulate);
                     },
                     /* addSrcToKey= */ [&]() -> void {
-                        NonMSAAClipBlock::AddBlock(keyContext, data);
+                        AddAnalyticClip(keyContext, clip);
                     },
                     /* addDstToKey= */ [&]() -> void {
                         fClipShader.first->priv().addToKey(keyContext, fClipShader.second);
                     });
         } else {
             // Without a clip shader, the analytic clip can be the clipping root node.
-            NonMSAAClipBlock::AddBlock(keyContext, data);
+            AddAnalyticClip(keyContext, clip);
         }
     } else if (fClipShader.first) {
         // Since there's no analytic clip, the clipping root node can be fClipShader directly.
