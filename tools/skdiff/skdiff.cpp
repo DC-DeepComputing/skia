@@ -5,8 +5,10 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColor.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "src/core/SkColorPriv.h"
 #include "tools/skdiff/skdiff.h"
@@ -29,7 +31,7 @@ DiffRecord::Result DiffRecord::getResultByName(const char *name) {
     return DiffRecord::kResultCount;
 }
 
-static char const * const ResultDescriptions[DiffRecord::kResultCount] = {
+static const std::array<const char *, DiffRecord::kResultCount> ResultDescriptions ={
     "contain exactly the same bits",
     "contain the same pixel values, but not the same bits",
     "have identical dimensions but some differing pixels",
@@ -67,7 +69,7 @@ DiffResource::Status DiffResource::getStatusByName(const char *name) {
     return DiffResource::kStatusCount;
 }
 
-static char const * const StatusDescriptions[DiffResource::kStatusCount] = {
+static const std::array<const char *, DiffResource::kStatusCount> StatusDescriptions ={
     "decoded",
     "could not be decoded",
 
@@ -95,7 +97,7 @@ bool DiffResource::isStatusFailed(DiffResource::Status status) {
            DiffResource::kUnknown_Status == status;
 }
 
-bool DiffResource::getMatchingStatuses(char* selector, bool statuses[kStatusCount]) {
+bool DiffResource::getMatchingStatuses(char* selector, SkSpan<bool> statuses) {
     if (!strcmp(selector, "any")) {
         for (int statusIndex = 0; statusIndex < kStatusCount; ++statusIndex) {
             statuses[statusIndex] = true;

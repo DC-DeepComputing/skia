@@ -6,6 +6,8 @@
  */
 
 #ifndef SkMD5_DEFINED
+#include <array>
+
 #define SkMD5_DEFINED
 
 #include "include/core/SkStream.h"
@@ -45,7 +47,7 @@ public:
 private:
     uint64_t byteCount;  // number of bytes, modulo 2^64
     uint32_t state[4];   // state (ABCD)
-    uint8_t buffer[64];  // input buffer
+    std::array<uint8_t, 64> buffer;  // input buffer
 };
 
 #endif

@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -24,7 +25,7 @@ static void make_transparency(SkCanvas* canvas, SkScalar width, SkScalar height)
     SkPoint pts[2];
     pts[0] = SkPoint::Make(0, 0);
     pts[1] = SkPoint::Make(width, 0);
-    const SkColor kColors[] = {
+    const auto kColors = std::to_array<SkColor>({
             SK_ColorBLACK,
             SK_ColorGRAY,
             SK_ColorWHITE,
@@ -34,7 +35,7 @@ static void make_transparency(SkCanvas* canvas, SkScalar width, SkScalar height)
             SK_ColorCYAN,
             SK_ColorBLUE,
             SK_ColorMAGENTA,
-    };
+    });
     const SkScalar kRowHeight = height / std::size(kColors);
     for (size_t i = 0; i < std::size(kColors); ++i) {
         SkColor4f shaderColors[] = {

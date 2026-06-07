@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkFont.h"
@@ -23,15 +24,15 @@ constexpr int kWidth  = 500;
 constexpr int kHeight = 500;
 
 DEF_SIMPLE_GM(imageblur2, canvas, kWidth, kHeight) {
-    constexpr float kBlurSigmas[] = { 0.0, 0.3f, 0.5f, 2.0f, 32.0f, 80.0f };
-    const char* kTestStrings[] = {
+    constexpr auto kBlurSigmas = std::to_array<float>({ 0.0, 0.3f, 0.5f, 2.0f, 32.0f, 80.0f });
+    auto kTestStrings = std::to_array<const char *>({
         "The quick`~",
         "brown fox[]",
         "jumped over",
         "the lazy@#$",
         "dog.{}!%^&",
         "*()+=-\\'\"/",
-    };
+    });
     constexpr int sigmaCount = std::size(kBlurSigmas);
     constexpr int testStringCount = std::size(kTestStrings);
     constexpr SkScalar dx = kWidth / sigmaCount;

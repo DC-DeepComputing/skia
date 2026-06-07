@@ -1,6 +1,7 @@
 // Copyright 2019 Google LLC
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkImage.h"
@@ -19,7 +20,7 @@ DEF_SIMPLE_GM(tilemodes_alpha, canvas, 512, 512) {
     if (!image) {
         return;
     }
-    constexpr SkTileMode kModes[4] = {
+    constexpr std::array<SkTileMode, 4> kModes ={
         SkTileMode::kClamp,
         SkTileMode::kRepeat,
         SkTileMode::kMirror,

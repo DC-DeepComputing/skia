@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkRegion.h"
 
 #include "include/private/base/SkMacros.h"
@@ -856,15 +857,15 @@ static int operate_on_span(const SkRegionPriv::RunType a_runs[],
 #pragma warning ( pop )
 #endif
 
-static const struct {
+struct GOpMinMax{
     uint8_t fMin;
     uint8_t fMax;
-} gOpMinMax[] = {
+}; static const auto gOpMinMax = std::to_array<GOpMinMax>({
     { 1, 1 },   // Difference
     { 3, 3 },   // Intersection
     { 1, 3 },   // Union
     { 1, 2 }    // XOR
-};
+,});
 // need to ensure that the op enum lines up with our minmax array
 static_assert(0 == SkRegion::kDifference_Op, "");
 static_assert(1 == SkRegion::kIntersect_Op,  "");

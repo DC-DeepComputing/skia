@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColorFilter.h"
@@ -87,7 +88,7 @@ DEF_TEST(HdrMetadata_Agtm_Cubic, r) {
     };
     skhdr::AgtmHelpers::PopulateSlopeFromPCHIP(cubic);
 
-    const float mExpected[10] = { 2.03242568f, 0.f,         0.f,         0.14042951f, 0.14250506f,
+    const std::array<float, 10> mExpected ={ 2.03242568f, 0.f,         0.f,         0.14042951f, 0.14250506f,
                                   1.82245618f, 1.35855757f, 1.43703564f, 3.18918733f, 3.74186390f};
     for (size_t i = 0; i < 10; ++i) {
         REPORTER_ASSERT(r, SkScalarNearlyEqual(cubic.fControlPoints[i].fM, mExpected[i], 0.0001f));

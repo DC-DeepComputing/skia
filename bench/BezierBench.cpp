@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "bench/Benchmark.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPaint.h"
@@ -54,12 +55,12 @@ class BezierBench : public Benchmark {
     SkScalar fWidth;
 public:
     BezierBench(SkPaint::Cap c, SkPaint::Join j, SkScalar w, DrawProc proc) {
-        static const char* gCapName[] = {
+        static auto gCapName = std::to_array<const char *>({
             "butt", "round", "square"
-        };
-        static const char* gJoinName[] = {
+        ,});
+        static auto gJoinName = std::to_array<const char *>({
             "miter", "round", "bevel"
-        };
+        ,});
 
         fCap = c;
         fJoin = j;

@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "src/sksl/codegen/SkSLGLSLCodeGenerator.h"
 
 #include "include/core/SkSpan.h"
@@ -237,7 +238,7 @@ protected:
     bool fWrittenAbsEmulation = false;
     bool fWrittenDeterminant2 = false, fWrittenDeterminant3 = false, fWrittenDeterminant4 = false;
     bool fWrittenInverse2 = false, fWrittenInverse3 = false, fWrittenInverse4 = false;
-    bool fWrittenTranspose[3][3] = {};
+    std::array<std::array<bool, 3>, 3> fWrittenTranspose ={};
 };
 
 void GLSLCodeGenerator::write(std::string_view s) {

@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -43,12 +44,12 @@ constexpr SkColor4f gColors[] = {
     SkColors::kRed, SkColors::kGreen, SkColors::kBlue, SkColors::kWhite,
 };
 
-constexpr GradData gGradData[] = {
+constexpr auto gGradData = std::to_array<GradData>({
     { 1, gColors, nullptr },
     { 2, gColors, nullptr },
     { 3, gColors, nullptr },
     { 4, gColors, nullptr },
-};
+});
 
 static sk_sp<SkShader> MakeLinear(const SkPoint pts[2], const GradData& grad, SkTileMode tm) {
     return SkShaders::LinearGradient(pts, grad(tm));
@@ -92,9 +93,9 @@ static sk_sp<SkShader> Make2Conical(const SkPoint pts[2], const GradData& grad, 
 
 typedef sk_sp<SkShader> (*GradMaker)(const SkPoint pts[2], const GradData& data, SkTileMode tm);
 
-constexpr GradMaker gGradMakers[] = {
+constexpr auto gGradMakers = std::to_array<GradMaker>({
     MakeLinear, MakeRadial, MakeSweep, Make2Radial, Make2Conical,
-};
+});
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -121,7 +122,7 @@ protected:
         paint.setDither(fDither);
 
         canvas->translate(SkIntToScalar(20), SkIntToScalar(20));
-        constexpr uint8_t kAlphas[] = { 0xff, 0x40 };
+        constexpr auto kAlphas = std::to_array<uint8_t>({ 0xff, 0x40 });
         for (size_t a = 0; a < std::size(kAlphas); ++a) {
             for (size_t i = 0; i < std::size(gGradData); ++i) {
                 canvas->save();
@@ -190,14 +191,14 @@ height: 30px;
         0xFF3267ff, 0xFF3267ff, 0xFF9d47d1, 0xFF9d47d1, 0xFF3267ff, 0xFF3267ff, 0xFF5cdd9d, 0xFF5cdd9d,
         0xFF3267ff, 0xFF3267ff, 0xFF9d47d1, 0xFF9d47d1, 0xFF3267ff, 0xFF3267ff, 0xFFe3d082, 0xFFe3d082
     };
-    const double percent[] = {
+    const auto percent = std::to_array<double>({
         1, 0.9510157507590116, 2.9510157507590113, 23.695886056604927,
         25.695886056604927, 25.39321881940624, 27.39321881940624, 31.849399922570655,
         33.849399922570655, 44.57735802921938, 46.57735802921938, 53.27185850805876,
         55.27185850805876, 61.95718972227316, 63.95718972227316, 69.89166004442,
         71.89166004442, 74.45795382765857, 76.45795382765857, 82.78364610713776,
         84.78364610713776, 94.52743647737229, 96.52743647737229, 96.03934633331295,
-    };
+    });
     const int N = std::size(percent);
     SkScalar pos[N];
     for (int i = 0; i < N; ++i) {
@@ -257,9 +258,9 @@ protected:
     SkISize getISize() override { return SkISize::Make(880, 400); }
 
     void onDraw(SkCanvas* canvas) override {
-        const Proc procs[] = {
+        const auto procs = std::to_array<Proc>({
             make0, make1, make2, make3,
-        };
+        });
         const SkPoint pts[] = {
             { 0, 0 },
             { SkIntToScalar(W), 0 },

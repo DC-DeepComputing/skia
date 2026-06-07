@@ -1,9 +1,11 @@
+#include <array>
+
 // Copyright 2019 Google LLC
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 #include "tools/fiddle/examples.h"
 REG_FIDDLE(Path_IsLineDegenerate, 256, 256, true, 0) {
 void draw(SkCanvas* canvas) {
-    SkPoint points[] = { {100, 100}, {100.000001f, 100.000001f}, {100.0001f, 100.0001f} };
+    auto points = std::to_array<SkPoint>({ {100, 100}, {100.000001f, 100.000001f}, {100.0001f, 100.0001f} ,});
     for (size_t i = 0; i < std::size(points) - 1; ++i) {
         for (bool exact : { false, true } ) {
             SkDebugf("line from (%1.8g,%1.8g) to (%1.8g,%1.8g) is %s" "degenerate, %s\n",

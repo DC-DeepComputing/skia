@@ -6,6 +6,8 @@
  */
 
 #ifndef GrDrawOpAtlas_DEFINED
+#include <array>
+
 #define GrDrawOpAtlas_DEFINED
 
 #include "include/core/SkRefCnt.h"
@@ -257,7 +259,7 @@ private:
     };
     // proxies kept separate to make it easier to pass them up to client
     GrSurfaceProxyView fViews[GrPlotLocator::kMaxMultitexturePages];
-    Page fPages[GrPlotLocator::kMaxMultitexturePages];
+    std::array<Page, GrPlotLocator::kMaxMultitexturePages> fPages;
     uint32_t fMaxPages;
 
     uint32_t fNumActivePages;

@@ -6,6 +6,8 @@
  */
 
 #ifndef SkYUVAPixmaps_DEFINED
+#include "include/core/SkSpan.h"
+
 #define SkYUVAPixmaps_DEFINED
 
 #include "include/core/SkColorType.h"
@@ -100,7 +102,7 @@ public:
      * If rowBytes is nullptr then bpp*width is assumed for each plane.
      */
     SkYUVAPixmapInfo(const SkYUVAInfo&,
-                     const SkColorType[kMaxPlanes],
+                     SkSpan<const SkColorType>,
                      const size_t rowBytes[kMaxPlanes]);
     /**
      * Like above but uses DefaultColorTypeForDataType to determine each plane's SkColorType. If
