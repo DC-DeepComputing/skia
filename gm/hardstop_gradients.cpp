@@ -36,6 +36,7 @@
  * 0, 0, 1 and 0, 1, 1). The final row has a single off-center hard stop.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -117,7 +118,7 @@ protected:
         SkScalar row7[] = {0.00f, 1.00f, 1.00f};
         SkScalar row8[] = {0.00f, 0.30f, 0.30f, 1.00f};
 
-        SkScalar* positions[NUM_ROWS] = {
+        std::array<SkScalar *, NUM_ROWS> positions ={
             nullptr,
             nullptr,
             row3,
@@ -128,7 +129,7 @@ protected:
             row8,
         };
 
-        int numGradientColors[NUM_ROWS] = {
+        std::array<int, NUM_ROWS> numGradientColors ={
             2,
             3,
             3,
@@ -139,7 +140,7 @@ protected:
             4,
         };
 
-        SkTileMode tilemodes[NUM_COLS] = {
+        std::array<SkTileMode, NUM_COLS> tilemodes ={
             SkTileMode::kClamp,
             SkTileMode::kRepeat,
             SkTileMode::kMirror,

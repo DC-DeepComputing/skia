@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -290,7 +291,7 @@ static void run_color_space_xform_test(
 
     const struct Rec {
         sk_sp<SkColorSpace> src_cs = nullptr;
-        float src_rgba[4] = {0.f, 0.f, 0.f, 0.f};
+        std::array<float, 4> src_rgba ={0.f, 0.f, 0.f, 0.f};
         sk_sp<SkColorSpace> dst_cs = nullptr;
         float expected_rgba[4] = {0.f, 0.f, 0.f, 0.f};
     } recs[] = {

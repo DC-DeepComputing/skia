@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -46,7 +47,7 @@ static void draw_row(SkCanvas* canvas, const SkBitmap& bm, const SkMatrix& mat, 
 
 class FilterIndiaBoxGM : public skiagm::GM {
     SkBitmap    fBM;
-    SkMatrix    fMatrix[2];
+    std::array<SkMatrix, 2> fMatrix;
 
     void onOnceBeforeDraw() override {
         constexpr char kResource[] = "images/box.gif";

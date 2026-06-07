@@ -239,11 +239,11 @@ static void testCubicExtrema(skiatest::Reporter* reporter, const std::string& na
 
     {
         skiatest::ReporterContext subsubtest(reporter, "Pathops Implementation");
-        double extrema[2] = {0, 0};
+        std::array<double, 2> extrema ={0, 0};
         // This implementation expects the coefficients to be (X, Y), (X, Y), (X, Y), (X, Y)
         // but it ignores the values at odd indices.
         const double inputs[8] = {A, 0, B, 0, C, 0, D, 0};
-        int extremaCount = SkDCubic::FindExtrema(&inputs[0], extrema);
+        int extremaCount = SkDCubic::FindExtrema(&inputs[0], extrema.data());
         REPORTER_ASSERT(reporter, expectedExtrema.size() == size_t(extremaCount),
                         "Wrong number of extrema returned %zu != %d",
                         expectedExtrema.size(), extremaCount);

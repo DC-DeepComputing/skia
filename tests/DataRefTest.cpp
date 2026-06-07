@@ -68,16 +68,16 @@ static void test_simpletable(skiatest::Reporter* reporter) {
 }
 
 static void test_vartable(skiatest::Reporter* reporter) {
-    const char* str[] = {
+    auto str = std::to_array<const char *>({
         "", "a", "be", "see", "deigh", "ef", "ggggggggggggggggggggggggggg"
-    };
+    ,});
     int count = std::size(str);
-    size_t sizes[std::size(str)];
+    std::array<size_t, std::size(str)> sizes;
     for (int i = 0; i < count; ++i) {
         sizes[i] = strlen(str[i]) + 1;
     }
 
-    sk_sp<SkDataTable> table(SkDataTable::MakeCopyArrays((const void*const*)str, sizes, count));
+    sk_sp<SkDataTable> table(SkDataTable::MakeCopyArrays((const void*const*)str.data(), sizes.data(), count));
 
     REPORTER_ASSERT(reporter, table->count() == count);
     for (int i = 0; i < count; ++i) {
@@ -287,14 +287,14 @@ DEF_TEST(Data, reporter) {
 }
 
 DEF_TEST(Data_empty, reporter) {
-    sk_sp<SkData> array[] = {
+    auto array = std::to_array<sk_sp<SkData>>({
         SkData::MakeEmpty(),
         SkData::MakeUninitialized(0),
         SkData::MakeFromMalloc(sk_malloc_throw(0), 0),
         SkData::MakeWithCopy("", 0),
         SkData::MakeWithProc(nullptr, 0, [](const void*, void*){}, nullptr),
         SkData::MakeWithoutCopy(nullptr, 0),
-    };
+    });
     constexpr int N = std::size(array);
 
     for (int i = 0; i < N; ++i) {

@@ -13,6 +13,7 @@
 //SK_CPU_LENDIAN allows 32 bit <=> 8 bit conversions without copies (if alligned).
 //SK_CPU_FAST_UNALIGNED_ACCESS allows 32 bit <=> 8 bit conversions without copies if SK_CPU_LENDIAN.
 
+#include "include/core/SkSpan.h"
 #include "src/base/SkUtils.h"
 #include "src/core/SkMD5.h"
 
@@ -29,7 +30,7 @@ static void encode(uint8_t output[16], const uint32_t input[4]);
 static void encode(uint8_t output[8], uint64_t input);
 
 /** Decodes input (4 little endian 32 bit values) into storage, if required. */
-static const uint32_t* decode(uint32_t storage[16], const uint8_t input[64]);
+static const uint32_t* decode(SkSpan<uint32_t> storage, const uint8_t input[64]);
 
 SkMD5::SkMD5() : byteCount(0) {
     // These are magic numbers from the specification.
@@ -48,7 +49,7 @@ bool SkMD5::write(const void* buf, size_t inputLength) {
     if (inputLength >= bufferAvailable) {
         if (bufferIndex) {
             sk_careful_memcpy(&this->buffer[bufferIndex], input, bufferAvailable);
-            transform(this->state, this->buffer);
+            transform(this->state, this->buffer.data());
             inputIndex = bufferAvailable;
         } else {
             inputIndex = 0;
@@ -261,7 +262,7 @@ static inline bool is_aligned(const void *pointer, size_t byte_count) {
     return reinterpret_cast<uintptr_t>(pointer) % byte_count == 0;
 }
 
-static const uint32_t* decode(uint32_t storage[16], const uint8_t input[64]) {
+static const uint32_t* decode(SkSpan<uint32_t> storage, const uint8_t input[64]) {
 #if defined(SK_CPU_LENDIAN) && defined(SK_CPU_FAST_UNALIGNED_ACCESS)
    return reinterpret_cast<const uint32_t*>(input);
 #else
@@ -276,6 +277,6 @@ static const uint32_t* decode(uint32_t storage[16], const uint8_t input[64]) {
                      (((uint32_t)input[j+2]) << 16) |
                      (((uint32_t)input[j+3]) << 24);
     }
-    return storage;
+    return storage.data();
 #endif
 }

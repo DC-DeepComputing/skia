@@ -1,4 +1,6 @@
 /*
+#include <array>
+
  * Copyright 2019 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
@@ -213,14 +215,14 @@ struct ShapeGenerator {
     }
 };
 
-static constexpr ShapeInfo gShapeInfo[] = {
+static constexpr auto gShapeInfo = std::to_array<ShapeInfo>({
     { {0  ,0  }, {1  ,1}, 0                       , 1               , 0.0f }, // Shape::kSquare
     { {0  ,0  }, {1  ,1}, 0                       , SK_FloatInfinity, 1.0f }, // Shape::kRampUp
     { {0  ,0  }, {1  ,1}, SK_FloatNegativeInfinity, 1               , 1.0f }, // Shape::kRampDown
     { {0  ,0  }, {1  ,1}, 0                       , 1               , 0.5f }, // Shape::kTriangle
     { {0  ,.5f}, {.5f,1}, 0                       , 1               , 0.5f }, // Shape::kRound
     { {.5f,0  }, {.5f,1}, 0                       , 1               , 0.5f }, // Shape::kSmooth
-};
+});
 
 } // namespace
 

@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkColor.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPath.h"
@@ -262,28 +263,28 @@ void SkRgnBuilder::copyToRgn(SkRegion::RunType runs[]) const {
 }
 
 static unsigned verb_to_initial_last_index(SkPathVerb verb) {
-    static const uint8_t gPathVerbToInitialLastIndex[] = {
+    static const auto gPathVerbToInitialLastIndex = std::to_array<uint8_t>({
         0,  //  kMove_Verb
         1,  //  kLine_Verb
         2,  //  kQuad_Verb
         2,  //  kConic_Verb
         3,  //  kCubic_Verb
         0,  //  kClose_Verb
-    };
+    });
     const unsigned index = static_cast<unsigned>(verb);
     SkASSERT(index < std::size(gPathVerbToInitialLastIndex));
     return gPathVerbToInitialLastIndex[index];
 }
 
 static unsigned verb_to_max_edges(SkPathVerb verb) {
-    static const uint8_t gPathVerbToMaxEdges[] = {
+    static const auto gPathVerbToMaxEdges = std::to_array<uint8_t>({
         0,  //  kMove_Verb
         1,  //  kLine_Verb
         2,  //  kQuad_VerbB
         2,  //  kConic_VerbB
         3,  //  kCubic_Verb
         0,  //  kClose_Verb
-    };
+    });
     const unsigned index = static_cast<unsigned>(verb);
     SkASSERT(index < std::size(gPathVerbToMaxEdges));
     return gPathVerbToMaxEdges[index];

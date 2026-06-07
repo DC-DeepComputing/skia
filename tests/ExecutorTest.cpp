@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkExecutor.h"
 #include "src/base/SkSpinlock.h"
 #include "src/core/SkTaskGroup.h"
@@ -72,7 +73,7 @@ private:
     mutable SkSpinlock fSpinLock;
 
     int fCount SK_GUARDED_BY(fSpinLock) = 0;
-    int fData[kMaxCount] SK_GUARDED_BY(fSpinLock);
+    std::array<int, kMaxCount> fData SK_GUARDED_BY(fSpinLock);
 };
 
 // Make sure all high priority work is started before the low priority work is begun

@@ -1,4 +1,6 @@
 /*
+#include <array>
+
  * Copyright 2012 Google Inc.
  *
  * Use of this source code is governed by a BSD-style license that can be
@@ -14,10 +16,10 @@
 void SkDRect::setBounds(const SkDQuad& curve, const SkDQuad& sub, double startT, double endT) {
     set(sub[0]);
     add(sub[2]);
-    double tValues[2];
+    std::array<double, 2> tValues;
     int roots = 0;
     if (!sub.monotonicInX()) {
-        roots = SkDQuad::FindExtrema(&sub[0].fX, tValues);
+        roots = SkDQuad::FindExtrema(&sub[0].fX, tValues.data());
     }
     if (!sub.monotonicInY()) {
         roots += SkDQuad::FindExtrema(&sub[0].fY, &tValues[roots]);
@@ -48,10 +50,10 @@ void SkDRect::setBounds(const SkDConic& curve, const SkDConic& sub, double start
 void SkDRect::setBounds(const SkDCubic& curve, const SkDCubic& sub, double startT, double endT) {
     set(sub[0]);
     add(sub[3]);
-    double tValues[4];
+    std::array<double, 4> tValues;
     int roots = 0;
     if (!sub.monotonicInX()) {
-        roots = SkDCubic::FindExtrema(&sub[0].fX, tValues);
+        roots = SkDCubic::FindExtrema(&sub[0].fX, tValues.data());
     }
     if (!sub.monotonicInY()) {
         roots += SkDCubic::FindExtrema(&sub[0].fY, &tValues[roots]);

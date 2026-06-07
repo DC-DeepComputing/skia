@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "bench/Benchmark.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPaint.h"
@@ -24,12 +25,12 @@ enum Flags {
 #define FLAGS10 Flags(kAA_Flag)
 #define FLAGS11 Flags(kBig_Flag | kAA_Flag)
 
-static const int points[] = {
+static const auto points = std::to_array<int>({
     10, 10, 15, 5, 20, 20,
     30, 5, 25, 20, 15, 12,
     21, 21, 30, 30, 12, 4,
     32, 28, 20, 18, 12, 10
-};
+,});
 
 static const int kMaxPathSize = 10;
 

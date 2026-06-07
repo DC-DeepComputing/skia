@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPaint.h"
@@ -79,7 +80,7 @@ private:
         float x, y, size, speed;
     };
 
-    AnimatedRect fRect[kNumRects];
+    std::array<AnimatedRect, kNumRects> fRect;
     SkRandom fRand;
     SkPaint fStrokePaint, fFillPaint;
     float fLastTime = 0.0f;

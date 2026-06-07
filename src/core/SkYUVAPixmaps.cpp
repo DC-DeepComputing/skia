@@ -5,9 +5,11 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkYUVAPixmaps.h"
 
 #include "include/core/SkAlphaType.h"
+#include "include/core/SkSpan.h"
 #include "include/private/base/SkDebug.h"
 #include "src/base/SkRectMemcpy.h"
 #include "src/core/SkImageInfoPriv.h"
@@ -58,7 +60,7 @@ std::tuple<int, SkYUVAPixmapInfo::DataType> SkYUVAPixmapInfo::NumChannelsAndData
 }
 
 SkYUVAPixmapInfo::SkYUVAPixmapInfo(const SkYUVAInfo& yuvaInfo,
-                                   const SkColorType colorTypes[kMaxPlanes],
+                                   SkSpan<const SkColorType> colorTypes,
                                    const size_t rowBytes[kMaxPlanes])
         : fYUVAInfo(yuvaInfo) {
     if (!yuvaInfo.isValid()) {
@@ -66,7 +68,7 @@ SkYUVAPixmapInfo::SkYUVAPixmapInfo(const SkYUVAInfo& yuvaInfo,
         SkASSERT(!this->isValid());
         return;
     }
-    SkISize planeDimensions[4];
+    std::array<SkISize, 4> planeDimensions;
     int n = yuvaInfo.planeDimensions(planeDimensions);
     size_t tempRowBytes[kMaxPlanes];
     if (!rowBytes) {
@@ -101,7 +103,7 @@ SkYUVAPixmapInfo::SkYUVAPixmapInfo(const SkYUVAInfo& yuvaInfo,
 SkYUVAPixmapInfo::SkYUVAPixmapInfo(const SkYUVAInfo& yuvaInfo,
                                    DataType dataType,
                                    const size_t rowBytes[kMaxPlanes]) {
-    SkColorType colorTypes[kMaxPlanes] = {};
+    std::array<SkColorType, kMaxPlanes> colorTypes ={};
     int numPlanes = yuvaInfo.numPlanes();
     for (int i = 0; i < numPlanes; ++i) {
         int numChannels = yuvaInfo.numChannelsInPlane(i);
@@ -221,7 +223,7 @@ SkYUVAPixmaps SkYUVAPixmaps::FromExternalMemory(const SkYUVAPixmapInfo& yuvaPixm
 
 SkYUVAPixmaps SkYUVAPixmaps::FromExternalPixmaps(const SkYUVAInfo& yuvaInfo,
                                                  const SkPixmap pixmaps[kMaxPlanes]) {
-    SkColorType colorTypes[kMaxPlanes] = {};
+    std::array<SkColorType, kMaxPlanes> colorTypes ={};
     size_t rowBytes[kMaxPlanes] = {};
     int numPlanes = yuvaInfo.numPlanes();
     for (int i = 0; i < numPlanes; ++i) {
@@ -256,7 +258,7 @@ SkYUVAPixmapInfo SkYUVAPixmaps::pixmapsInfo() const {
     if (!this->isValid()) {
         return {};
     }
-    SkColorType colorTypes[kMaxPlanes] = {};
+    std::array<SkColorType, kMaxPlanes> colorTypes ={};
     size_t rowBytes[kMaxPlanes] = {};
     int numPlanes = this->numPlanes();
     for (int i = 0; i < numPlanes; ++i) {

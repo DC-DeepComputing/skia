@@ -38,7 +38,7 @@
 struct GrShaderCaps;
 
 static void border_colors(const GrYUVATextureProxies& yuvaProxies, float planeBorders[4][4]) {
-    float m[20];
+    std::array<float, 20> m;
     SkColorMatrix_RGB2YUV(yuvaProxies.yuvaInfo().yuvColorSpace(), m);
     for (int i = 0; i < SkYUVAInfo::kYUVAChannelCount; ++i) {
         auto [plane, channel] = yuvaProxies.yuvaLocations()[i];

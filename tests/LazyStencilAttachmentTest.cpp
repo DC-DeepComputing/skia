@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -44,7 +45,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(crbug_1271431,
                                        kRGBA_8888_SkColorType,
                                        kPremul_SkAlphaType,
                                        nullptr);
-    sk_sp<SkSurface> surfs[2]{SkSurfaces::RenderTarget(dc, skgpu::Budgeted::kYes, ii, 1, nullptr),
+    std::array<sk_sp<SkSurface>, 2> surfs ={SkSurfaces::RenderTarget(dc, skgpu::Budgeted::kYes, ii, 1, nullptr),
                               SkSurfaces::RenderTarget(dc, skgpu::Budgeted::kYes, ii, 1, nullptr)};
 
     // Make sure the surfaces' proxies are instantiated without stencil. Creating textures lazily

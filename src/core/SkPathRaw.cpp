@@ -5,19 +5,20 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkPathTypes.h"
 #include "include/private/base/SkAssert.h"
 #include "src/core/SkPathPriv.h"
 #include "src/core/SkPathRaw.h"
 
-const uint8_t gVerbToSegmentMask[] = {
+const auto gVerbToSegmentMask = std::to_array<uint8_t>({
     0,  // move
     kLine_SkPathSegmentMask,
     kQuad_SkPathSegmentMask,
     kConic_SkPathSegmentMask,
     kCubic_SkPathSegmentMask,
     0,  // close
-};
+});
 
 uint8_t SkPathPriv::ComputeSegmentMask(SkSpan<const SkPathVerb> verbs) {
     unsigned mask = 0;

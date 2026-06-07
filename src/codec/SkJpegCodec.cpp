@@ -845,7 +845,7 @@ static bool is_yuv_supported(const jpeg_decompress_struct* dinfo,
         return false;
     }
     if (yuvaPixmapInfo) {
-        SkColorType colorTypes[SkYUVAPixmapInfo::kMaxPlanes];
+        std::array<SkColorType, SkYUVAPixmapInfo::kMaxPlanes> colorTypes;
         size_t rowBytes[SkYUVAPixmapInfo::kMaxPlanes];
         for (int i = 0; i < 3; ++i) {
             colorTypes[i] = kAlpha_8_SkColorType;

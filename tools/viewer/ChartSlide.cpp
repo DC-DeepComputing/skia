@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPathBuilder.h"
@@ -114,7 +115,7 @@ public:
         canvas->clear(0xFFE0F0E0);
 
         static SkRandom colorRand;
-        static SkColor gColors[kNumGraphs] = { 0x0 };
+        static std::array<SkColor, kNumGraphs> gColors ={ 0x0 };
         if (0 == gColors[0]) {
             for (int i = 0; i < kNumGraphs; ++i) {
                 gColors[i] = colorRand.nextU() | 0xff000000;

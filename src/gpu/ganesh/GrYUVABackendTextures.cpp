@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/gpu/ganesh/GrYUVABackendTextures.h"
 
 #include "include/core/SkColor.h"
@@ -90,7 +91,7 @@ GrYUVABackendTextures::GrYUVABackendTextures(
     if (!fYUVAInfo.isValid()) {
         return;
     }
-    SkISize planeDimensions[SkYUVAInfo::kMaxPlanes];
+    std::array<SkISize, SkYUVAInfo::kMaxPlanes> planeDimensions;
     int numPlanes = yuvaInfo.planeDimensions(planeDimensions);
     for (int i = 0; i < numPlanes; ++i) {
         int numRequiredChannels = fYUVAInfo.numChannelsInPlane(i);
