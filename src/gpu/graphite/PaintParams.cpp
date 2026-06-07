@@ -369,38 +369,6 @@ bool ShadingParams::handleDithering(const KeyContext& keyContext) const {
 
 void ShadingParams::handleClipping(const KeyContext& keyContext) const {
     if (!fNonMSAAClip.isEmpty()) {
-        const AnalyticClip& analyticClip = fNonMSAAClip.fAnalyticClip;
-        SkPoint radiusPair;
-        SkRect analyticBounds;
-        if (!analyticClip.isEmpty()) {
-            float radius = analyticClip.fRadius + 0.5f;
-            // N.B.: Because the clip data is normally used with depth-based clipping,
-            // the shape is inverted from its usual state. We re-invert here to
-            // match what the shader snippet expects.
-            radiusPair = {(analyticClip.fInverted) ? radius : -radius, 1.0f/radius};
-            analyticBounds = analyticClip.fBounds.makeOutset(0.5f).asSkRect();
-        } else {
-            // This will generate no analytic clip.
-            radiusPair = { -0.5f, 1.f };
-            analyticBounds = { 0, 0, 0, 0 };
-        }
-
-        const AtlasClip& atlasClip = fNonMSAAClip.fAtlasClip;
-        SkISize maskSize = atlasClip.fMaskBounds.size();
-        SkRect texMaskBounds = SkRect::MakeXYWH(atlasClip.fOutPos.x(), atlasClip.fOutPos.y(),
-                                                maskSize.width(), maskSize.height());
-        // Outset bounds to capture some of the padding (necessary for inverse clip)
-        texMaskBounds.outset(0.5f, 0.5f);
-        SkPoint texCoordOffset = SkPoint::Make(atlasClip.fOutPos.x() - atlasClip.fMaskBounds.left(),
-                                               atlasClip.fOutPos.y() - atlasClip.fMaskBounds.top());
-
-        NonMSAAClipBlock::NonMSAAClipData data(
-                analyticBounds,
-                radiusPair,
-                analyticClip.edgeSelectRect(),
-                texCoordOffset,
-                texMaskBounds,
-                atlasClip.fAtlasTexture);
         if (fClipShader) {
             // For both an analytic clip and clip shader, we need to compose them together into
             // a single clipping root node.
@@ -409,14 +377,14 @@ void ShadingParams::handleClipping(const KeyContext& keyContext) const {
                       AddFixedBlendMode(keyContext, SkBlendMode::kModulate);
                   },
                   /* addSrcToKey= */ [&]() -> void {
-                      NonMSAAClipBlock::AddBlock(keyContext, data);
+                      AddAnalyticClip(keyContext, fNonMSAAClip);
                   },
                   /* addDstToKey= */ [&]() -> void {
                       AddToKey(keyContext, fClipShader);
                   });
         } else {
             // Without a clip shader, the analytic clip can be the clipping root node.
-            NonMSAAClipBlock::AddBlock(keyContext, data);
+            AddAnalyticClip(keyContext, fNonMSAAClip);
         }
     } else if (fClipShader) {
         // Since there's no analytic clip, the clipping root node can be fClipShader directly.

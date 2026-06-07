@@ -1259,49 +1259,61 @@ void ColorSpaceTransformBlock::AddBlock(const KeyContext& keyContext,
 //--------------------------------------------------------------------------------------------------
 namespace {
 
-void add_analytic_clip_data(const KeyContext& keyContext,
-                            const NonMSAAClipBlock::NonMSAAClipData& data) {
-    BEGIN_WRITE_UNIFORMS(keyContext, BuiltInCodeSnippetID::kAnalyticClip)
-    keyContext.pipelineDataGatherer()->write(data.fRect);
-    keyContext.pipelineDataGatherer()->write(data.fRadiusPlusHalf);
-    keyContext.pipelineDataGatherer()->writeHalf(data.fEdgeSelect);
+void add_analytic_clip_data(const KeyContext& keyContext, const AnalyticClip& clip) {
+    keyContext.pipelineDataGatherer()->write(clip.fXform);
+    keyContext.pipelineDataGatherer()->write(clip.fBounds);
+
+    SkV4 radiiWithInverse= clip.fRadii + SkV4{1.0f, 1.0f, 1.0f, 1.0f};
+
+    // See sk_analytic_clip comment in SkSL module file.
+    static constexpr SkV4 kIntersectEncode  = {1.f, 1.f, -1.f, 1.f};
+    static constexpr SkV4 kDifferenceEncode = {-1.f, 1.f, 1.f, 1.f};
+    radiiWithInverse = radiiWithInverse * (clip.fInverted ? kIntersectEncode : kDifferenceEncode);
+
+    keyContext.pipelineDataGatherer()->write(radiiWithInverse);
 }
 
-void add_analytic_and_atlas_clip_data(const KeyContext& keyContext,
-                                      const NonMSAAClipBlock::NonMSAAClipData& data) {
-    BEGIN_WRITE_UNIFORMS(keyContext, BuiltInCodeSnippetID::kAnalyticAndAtlasClip)
-    keyContext.pipelineDataGatherer()->write(data.fRect);
-    keyContext.pipelineDataGatherer()->write(data.fRadiusPlusHalf);
-    keyContext.pipelineDataGatherer()->writeHalf(data.fEdgeSelect);
-    keyContext.pipelineDataGatherer()->write(data.fTexCoordOffset);
-    keyContext.pipelineDataGatherer()->write(data.fMaskBounds);
-    if (data.fAtlasTexture) {
-        keyContext.pipelineDataGatherer()->write(
-                SkSize::Make(1.f/data.fAtlasTexture->dimensions().width(),
-                             1.f/data.fAtlasTexture->dimensions().height()));
-    } else {
-        keyContext.pipelineDataGatherer()->write(SkSize::Make(0, 0));
-    }
+void add_atlas_clip_data(const KeyContext& keyContext, const AtlasClip& atlasClip) {
+    SkASSERT(atlasClip.fAtlasTexture);
+
+    SkISize maskSize = atlasClip.fMaskBounds.size();
+    SkRect texMaskBounds = SkRect::MakeXYWH(atlasClip.fOutPos.x(), atlasClip.fOutPos.y(),
+                                            maskSize.width(), maskSize.height());
+    // Outset bounds to capture some of the padding (necessary for inverse clip)
+    texMaskBounds.outset(0.5f, 0.5f);
+    SkPoint texCoordOffset = SkPoint::Make(atlasClip.fOutPos.x() - atlasClip.fMaskBounds.left(),
+                                           atlasClip.fOutPos.y() - atlasClip.fMaskBounds.top());
+
+    keyContext.pipelineDataGatherer()->write(texMaskBounds);
+    keyContext.pipelineDataGatherer()->write(texCoordOffset);
+    keyContext.pipelineDataGatherer()->write(
+            SkSize::Make(1.f/atlasClip.fAtlasTexture->dimensions().width(),
+                         1.f/atlasClip.fAtlasTexture->dimensions().height()));
 }
 
 }  // anonymous namespace
 
-void NonMSAAClipBlock::AddBlock(const KeyContext& keyContext, const NonMSAAClipData& data) {
-    if (data.fAtlasTexture) {
-        add_analytic_and_atlas_clip_data(keyContext, data);
-        keyContext.paintParamsKeyBuilder()->beginBlock(BuiltInCodeSnippetID::kAnalyticAndAtlasClip);
+void AddAnalyticClip(const KeyContext& keyContext, const NonMSAAClip& clip) {
+    SkASSERT(!clip.isEmpty());
 
-        const Caps* caps = keyContext.caps();
+    sk_sp<TextureProxy> atlasTexture = clip.fAtlasClip.fAtlasTexture;
+    if (atlasTexture) {
+        BEGIN_WRITE_UNIFORMS(keyContext, BuiltInCodeSnippetID::kAnalyticAndAtlasClip)
+        add_analytic_clip_data(keyContext, clip.fAnalyticClip);
+        add_atlas_clip_data(keyContext, clip.fAtlasClip);
+
+        keyContext.paintParamsKeyBuilder()->beginBlock(BuiltInCodeSnippetID::kAnalyticAndAtlasClip);
         ImmutableSamplerInfo info =
-                caps->getImmutableSamplerInfo(data.fAtlasTexture->textureInfo());
+                keyContext.caps()->getImmutableSamplerInfo(atlasTexture->textureInfo());
         SamplerDesc samplerDesc {SkSamplingOptions(SkFilterMode::kNearest, SkMipmapMode::kNone),
                                  {SkTileMode::kClamp, SkTileMode::kClamp},
                                  info};
-        keyContext.pipelineDataGatherer()->add(data.fAtlasTexture, samplerDesc);
+        keyContext.pipelineDataGatherer()->add(std::move(atlasTexture), samplerDesc);
 
         keyContext.paintParamsKeyBuilder()->endBlock();
     } else {
-        add_analytic_clip_data(keyContext, data);
+        BEGIN_WRITE_UNIFORMS(keyContext, BuiltInCodeSnippetID::kAnalyticClip)
+        add_analytic_clip_data(keyContext, clip.fAnalyticClip);
         keyContext.paintParamsKeyBuilder()->addBlock(BuiltInCodeSnippetID::kAnalyticClip);
     }
 }
