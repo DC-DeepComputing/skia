@@ -6,6 +6,8 @@
  */
 
 #ifndef SkPathOpsCubic_DEFINED
+#include <array>
+
 #define SkPathOpsCubic_DEFINED
 
 #include "include/core/SkPoint.h"
@@ -190,7 +192,7 @@ struct SkDCubicPair {
         return (const SkDCubic&) pts[3];
 #endif
     }
-    SkDPoint pts[7];
+    std::array<SkDPoint, 7> pts;
 };
 
 class SkTCubic : public SkTCurve {

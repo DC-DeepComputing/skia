@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkData.h"
@@ -64,7 +65,7 @@ DEF_TEST(serial_procs_image, reporter) {
     auto src_img = ToolUtils::GetResourceAsImage("images/mandrill_128.png");
     const char magic_str[] = "magic signature";
 
-    const SkSerialImageProc sprocs[] = {
+    const auto sprocs = std::to_array<SkSerialImageProc>({
             [](SkImage* img, void* ctx) -> sk_sp<const SkData> {
 #if defined(SK_CODEC_ENCODES_PNG_WITH_RUST)
                 return SkPngRustEncoder::Encode(nullptr, img, SkPngRustEncoder::Options{});
@@ -75,8 +76,8 @@ DEF_TEST(serial_procs_image, reporter) {
             [](SkImage* img, void* ctx) -> sk_sp<const SkData> {
                 return SkData::MakeWithCString(((State*)ctx)->fStr);
             },
-    };
-    const SkDeserialImageFromDataProc dprocs[] = {
+    });
+    const auto dprocs = std::to_array<SkDeserialImageFromDataProc>({
             [](sk_sp<SkData> data, std::optional<SkAlphaType> alphaType, void*) -> sk_sp<SkImage> {
 #if defined(SK_CODEC_DECODES_PNG_WITH_RUST)
                 std::unique_ptr<SkStream> stream = SkMemoryStream::Make(data);
@@ -94,7 +95,7 @@ DEF_TEST(serial_procs_image, reporter) {
                 }
                 return sk_ref_sp(state->fImg);
             },
-    };
+    });
 
     sk_sp<SkPicture> pic;
     {

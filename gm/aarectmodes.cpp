@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkBlendMode.h"
@@ -133,7 +134,7 @@ DEF_SIMPLE_GM(aarectmodes, canvas, 640, 480) {
                 test4(canvas);
             }
             const SkRect bounds = SkRect::MakeWH(W, H);
-            constexpr SkAlpha gAlphaValue[] = { 0xFF, 0x88, 0x88 };
+            constexpr auto gAlphaValue = std::to_array<SkAlpha>({ 0xFF, 0x88, 0x88 });
 
             canvas->translate(SkIntToScalar(4), SkIntToScalar(4));
 

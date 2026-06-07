@@ -1,3 +1,5 @@
+#include <array>
+
 // Copyright 2020 Google LLC
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 #include "tools/fiddle/examples.h"
@@ -6,11 +8,11 @@
 REG_FIDDLE(strokerect_gm, 1400, 740, false, 0) {
 void draw(SkCanvas* canvas) {
     constexpr SkScalar kStrokeWidth = 20;
-    constexpr SkPaint::Join gJoins[] = {SkPaint::kMiter_Join, SkPaint::kRound_Join,
-                                        SkPaint::kBevel_Join};
+    constexpr auto gJoins = std::to_array<SkPaint::Join>({SkPaint::kMiter_Join, SkPaint::kRound_Join,
+                                        SkPaint::kBevel_Join,});
     constexpr SkScalar W = 80;
     constexpr SkScalar H = 80;
-    constexpr SkRect gRects[] = {
+    constexpr auto gRects = std::to_array<SkRect>({
             {0, 0, W, H},
             {W, 0, 0, H},
             {0, H, W, 0},
@@ -23,7 +25,7 @@ void draw(SkCanvas* canvas) {
             {0, 0, W, FLT_EPSILON},
             {0, 0, FLT_EPSILON, H},
             {0, 0, FLT_EPSILON, FLT_EPSILON},
-    };
+    });
     canvas->translate(kStrokeWidth * 3 / 2, kStrokeWidth * 3 / 2);
     for (int doFill = 0; doFill <= 1; ++doFill) {
         SkPaint::Style style = doFill ? SkPaint::kStrokeAndFill_Style : SkPaint::kStroke_Style;

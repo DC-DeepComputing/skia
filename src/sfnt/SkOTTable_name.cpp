@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "src/sfnt/SkOTTable_name.h"
 
 #include "src/base/SkEndian.h"
@@ -63,7 +64,7 @@ static void SkString_from_UTF16BE(const uint8_t* utf16be, size_t length, SkStrin
  *  In MacRoman the first 128 code points match ASCII code points.
  *  This maps the second 128 MacRoman code points to unicode code points.
  */
-static const uint16_t UnicodeFromMacRoman[0x80] = {
+static const std::array<uint16_t, 0x80> UnicodeFromMacRoman ={
     0x00C4, 0x00C5, 0x00C7, 0x00C9, 0x00D1, 0x00D6, 0x00DC, 0x00E1,
     0x00E0, 0x00E2, 0x00E4, 0x00E3, 0x00E5, 0x00E7, 0x00E9, 0x00E8,
     0x00EA, 0x00EB, 0x00ED, 0x00EC, 0x00EE, 0x00EF, 0x00F1, 0x00F3,
@@ -90,12 +91,10 @@ static void SkStringFromMacRoman(const uint8_t* macRoman, size_t length, SkStrin
     }
 }
 
-static const struct BCP47FromLanguageId {
+struct BCP47FromLanguageId{
     uint16_t languageID;
     const char* bcp47;
-}
-/** The Mac and Windows values do not conflict, so this is currently one single table. */
-BCP47FromLanguageID[] = {
+}; static const auto BCP47FromLanguageID = std::to_array<BCP47FromLanguageId>({
     /** A mapping from Mac Language Designators to BCP 47 codes.
      *  The following list was constructed more or less manually.
      *  Apple now uses BCP 47 (post OSX10.4), so there will be no new entries.
@@ -446,7 +445,7 @@ BCP47FromLanguageID[] = {
     { 0x4c0a, "es-NI" }, //Spanish
     { 0x500a, "es-PR" }, //Spanish
     { 0x540a, "es-US" }, //Spanish
-};
+});
 
 namespace {
 bool BCP47FromLanguageIdLess(const BCP47FromLanguageId& a, const BCP47FromLanguageId& b) {
@@ -574,7 +573,7 @@ bool SkOTTableName::Iterator::next(SkOTTableName::Iterator::Record& record) {
     // Handle format 0 languages, translating them into BCP 47.
     const BCP47FromLanguageId target = { languageID, "" };
     int languageIndex = SkTSearch<BCP47FromLanguageId, BCP47FromLanguageIdLess>(
-        BCP47FromLanguageID, std::size(BCP47FromLanguageID), target, sizeof(target));
+        BCP47FromLanguageID.data(), std::size(BCP47FromLanguageID), target, sizeof(target));
     if (languageIndex >= 0) {
         record.language = BCP47FromLanguageID[languageIndex].bcp47;
         return true;

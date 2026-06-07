@@ -64,18 +64,18 @@ static void test_empty_crbug_458524(skiatest::Reporter* reporter) {
 // Test that all the SkRRect entry points correctly handle un-sorted and
 // zero-sized input rects
 static void test_empty(skiatest::Reporter* reporter) {
-    static const SkRect oooRects[] = {  // out of order
+    static const auto oooRects = std::to_array<SkRect>({  // out of order
         { 100, 0, 0, 100 },  // ooo horizontal
         { 0, 100, 100, 0 },  // ooo vertical
         { 100, 100, 0, 0 },  // ooo both
-    };
+    });
 
-    static const SkRect emptyRects[] = {
+    static const auto emptyRects = std::to_array<SkRect>({
         { 100, 100, 100, 200 }, // empty horizontal
         { 100, 100, 200, 100 }, // empty vertical
         { 100, 100, 100, 100 }, // empty both
         { 0, 0, 0, 0 }          // setEmpty-empty
-    };
+    ,});
 
     static const SkVector radii[4] = { { 0, 1 }, { 2, 3 }, { 4, 5 }, { 6, 7 } };
 
@@ -418,14 +418,14 @@ static void test_round_rect_contains_rect(skiatest::Reporter* reporter) {
         { {  0,  0 }, { 20, 20 }, { 10, 10 }, { 30, 30 } }   // complex
     };
 
-    SkRRect rrects[kNumRRects];
+    std::array<SkRRect, kNumRRects> rrects;
     for (int i = 0; i < kNumRRects; ++i) {
         rrects[i].setRectRadii(SkRect::MakeWH(40, 40), gRadii[i]);
     }
 
     // First test easy outs - boxes that are obviously out on
     // each corner and edge
-    static const SkRect easyOuts[] = {
+    static const auto easyOuts = std::to_array<SkRect>({
         { -5, -5,  5,  5 }, // NW
         { 15, -5, 20,  5 }, // N
         { 35, -5, 45,  5 }, // NE
@@ -434,7 +434,7 @@ static void test_round_rect_contains_rect(skiatest::Reporter* reporter) {
         { 15, 35, 20, 45 }, // S
         { -5, 35,  5, 45 }, // SW
         { -5, 15,  5, 20 }  // W
-    };
+    ,});
 
     for (int i = 0; i < kNumRRects; ++i) {
         for (size_t j = 0; j < std::size(easyOuts); ++j) {

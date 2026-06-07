@@ -5,10 +5,12 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkCanvas.h"
 #include "include/core/SkM44.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkRRect.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkVertices.h"
 #include "include/private/base/SkTPin.h"
 #include "tools/viewer/ClickHandlerSlide.h"
@@ -213,7 +215,7 @@ struct LocalCornerVert {
 
 static constexpr float kHR2 = SK_ScalarRoot2Over2; // "half root 2"
 
-static constexpr LocalCornerVert kCornerTemplate[19] = {
+static constexpr std::array<LocalCornerVert, 19> kCornerTemplate = {{
     // Stroke-scale should be -1, 0, or 1.
     // Mirror-scale should be 0 or 1.
     // Center-weight should be -2 to never snap to center, -1 to snap when stroke coords would
@@ -249,9 +251,9 @@ static constexpr LocalCornerVert kCornerTemplate[19] = {
     // Center filling vertices (equal to inner AA insets unless center-weight = 1)
     { {0.5f, 0.5f}, {-kHR2, -kHR2}, -1.0f,          1.0f,            0.f  },
     { {1.0f, 0.0f}, {-1.0f,  0.0f}, -1.0f,          0.0f,            0.f  },
-};
+}};
 
-static void compute_corner(SkV3 devPts[19], const SkM44& m, const SkV4& cornerMapping,
+static void compute_corner(SkSpan<SkV3> devPts, const SkM44& m, const SkV4& cornerMapping,
                            const SkV2& cornerPt, const SkV2& cornerRadii, const SkV4& center,
                            float centerWeight, float localAARadius, float strokeRadius,
                            SkPaint::Join join) {
@@ -288,7 +290,7 @@ static const uint16_t kTR = 1*std::size(kCornerTemplate);
 static const uint16_t kTL = 2*std::size(kCornerTemplate);
 static const uint16_t kBL = 3*std::size(kCornerTemplate);
 static const size_t kVertexCount = 4*std::size(kCornerTemplate);
-static void compute_vertices(SkV3 devPts[kVertexCount],
+static void compute_vertices(SkSpan<SkV3> devPts,
                              const SkM44& m,
                              const SkRRect& rrect,
                              float strokeRadius,
@@ -338,25 +340,25 @@ static void compute_vertices(SkV3 devPts[kVertexCount],
     static constexpr SkV4 kTLBasis = {-1.f,  0.f,  0.f, -1.f};
     static constexpr SkV4 kBLBasis = { 0.f, -1.f,  1.f,  0.f};
 
-    compute_corner(devPts + kBR, m, kBRBasis,
+    compute_corner(SkSpan<SkV3>(devPts ).subspan( kBR), m, kBRBasis,
                    {rrect.getBounds().fRight,
                     rrect.getBounds().fBottom},
                    {rrect.radii(SkRRect::kLowerRight_Corner).fX,
                     rrect.radii(SkRRect::kLowerRight_Corner).fY},
                    devCenter, centerWeight, localAARadius, strokeRadius, join);
-    compute_corner(devPts + kTR, m, kTRBasis,
+    compute_corner(SkSpan<SkV3>(devPts ).subspan( kTR), m, kTRBasis,
                    {rrect.getBounds().fRight,
                     rrect.getBounds().fTop},
                    {rrect.radii(SkRRect::kUpperRight_Corner).fY,
                     rrect.radii(SkRRect::kUpperRight_Corner).fX},
                    devCenter, centerWeight, localAARadius,strokeRadius, join);
-    compute_corner(devPts + kTL, m, kTLBasis,
+    compute_corner(SkSpan<SkV3>(devPts ).subspan( kTL), m, kTLBasis,
                    {rrect.getBounds().fLeft,
                     rrect.getBounds().fTop},
                    {rrect.radii(SkRRect::kUpperLeft_Corner).fX,
                     rrect.radii(SkRRect::kUpperLeft_Corner).fY},
                    devCenter, centerWeight, localAARadius,strokeRadius, join);
-    compute_corner(devPts + kBL, m, kBLBasis,
+    compute_corner(SkSpan<SkV3>(devPts ).subspan( kBL), m, kBLBasis,
                    {rrect.getBounds().fLeft,
                     rrect.getBounds().fBottom},
                    {rrect.radii(SkRRect::kLowerLeft_Corner).fY,
@@ -563,7 +565,7 @@ private:
         SkRRect rrect = this->primitiveShape();
         float strokeRadius = 0.5f * this->strokeWidth();
 
-        SkV3 points[kVertexCount];
+        std::array<SkV3, kVertexCount> points;
         SkPoint vertices[kVertexCount];
         compute_vertices(points, ctm, rrect, strokeRadius, fJoinMode);
         // SkCanvas::drawVertices() wants SkPoint, but normally we'd let the GPU handle the

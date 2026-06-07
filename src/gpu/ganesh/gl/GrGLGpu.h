@@ -750,7 +750,7 @@ private:
         GrGLVertexArray*     fCoreProfileVertexArray;
     } fHWVertexArrayState;
 
-    struct {
+    struct FHWBufferState{
         GrGLenum                fGLTarget;
         GrGpuResource::UniqueID fBoundBufferUniqueID;
         bool                    fBufferZeroKnownBound;
@@ -759,7 +759,7 @@ private:
             fBoundBufferUniqueID.makeInvalid();
             fBufferZeroKnownBound = false;
         }
-    }                                       fHWBufferState[kGrGpuBufferTypeCount];
+    }; std::array<FHWBufferState, kGrGpuBufferTypeCount> fHWBufferState;
 
     auto* hwBufferState(GrGpuBufferType type) {
         unsigned typeAsUInt = static_cast<unsigned>(type);

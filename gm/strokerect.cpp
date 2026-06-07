@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -69,13 +70,13 @@ protected:
         paint.setStyle(SkPaint::kStroke_Style);
         paint.setStrokeWidth(STROKE_WIDTH);
 
-        constexpr SkPaint::Join gJoins[] = {
+        constexpr auto gJoins = std::to_array<SkPaint::Join>({
             SkPaint::kMiter_Join, SkPaint::kRound_Join, SkPaint::kBevel_Join
-        };
+        ,});
 
         constexpr SkScalar W = 80;
         constexpr SkScalar H = 80;
-        constexpr SkRect gRects[] = {
+        constexpr auto gRects = std::to_array<SkRect>({
             { 0, 0, W, H },
             { W, 0, 0, H },
             { 0, H, W, 0 },
@@ -88,7 +89,7 @@ protected:
             { 0, 0, W, FLT_EPSILON },
             { 0, 0, FLT_EPSILON, H },
             { 0, 0, FLT_EPSILON, FLT_EPSILON },
-        };
+        });
 
         for (int doFill = 0; doFill <= 1; ++doFill) {
             for (size_t i = 0; i < std::size(gJoins); ++i) {

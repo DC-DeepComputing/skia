@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkImageInfo.h"
@@ -22,12 +23,12 @@ DEF_SIMPLE_GM(tablemaskfilter, canvas, 400, 400) {
 
     // Add a table mask filter that defines half coverage for all coverage values
     // except pixels with full coverage.
-    uint8_t table[256];
+    std::array<uint8_t, 256> table;
     for (int i = 0; i < 256; ++i) {
         table[i] = 128;
     }
     table[255] = 255;
-    paint.setMaskFilter(sk_sp<SkMaskFilter>(SkTableMaskFilter::Create(table)));
+    paint.setMaskFilter(sk_sp<SkMaskFilter>(SkTableMaskFilter::Create(table.data())));
 
     SkPath path = SkPathBuilder()
                   .addRect({38.f, 38.f, 218.f, 218.f})

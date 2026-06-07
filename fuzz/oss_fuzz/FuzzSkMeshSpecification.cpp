@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkMesh.h"
 #include "include/private/base/SkTArray.h"
 
@@ -70,7 +71,7 @@ void FuzzSkMeshSpecification(const uint8_t *fuzzData, size_t fuzzSize) {
         // Replace the remaining high-ASCII bytes with valid SkSL operators and keywords in order to
         // improve our chances of generating a program. (We omit single-character operators since
         // single-byte versions of those already exist in the low-ASCII space.)
-        static constexpr std::string_view kSkSLData[] = {
+        static constexpr auto kSkSLData = std::to_array<std::string_view>({
                 " true ",
                 " false ",
                 " if ",
@@ -144,7 +145,7 @@ void FuzzSkMeshSpecification(const uint8_t *fuzzData, size_t fuzzSize) {
                 " mat",
                 " Attributes ",
                 " Varyings ",
-        };
+        });
 
         c %= std::size(kSkSLData);
         str->append(kSkSLData[c]);

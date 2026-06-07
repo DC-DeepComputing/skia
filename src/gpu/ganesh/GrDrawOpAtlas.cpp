@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "src/gpu/ganesh/GrDrawOpAtlas.h"
 
 #include "include/core/SkRect.h"
@@ -576,14 +577,14 @@ inline void GrDrawOpAtlas::deactivateLastPage() {
 }
 
 GrDrawOpAtlasConfig::GrDrawOpAtlasConfig(int maxTextureSize, size_t maxBytes) {
-    static const SkISize kARGBDimensions[] = {
+    static const auto kARGBDimensions = std::to_array<SkISize>({
         {256, 256},   // maxBytes < 2^19
         {512, 256},   // 2^19 <= maxBytes < 2^20
         {512, 512},   // 2^20 <= maxBytes < 2^21
         {1024, 512},  // 2^21 <= maxBytes < 2^22
         {1024, 1024}, // 2^22 <= maxBytes < 2^23
         {2048, 1024}, // 2^23 <= maxBytes
-    };
+    });
 
     // Index 0 corresponds to maxBytes of 2^18, so start by dividing it by that
     maxBytes >>= 18;

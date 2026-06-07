@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "src/sksl/SkSLConstantFolder.h"
 
 #include "include/core/SkTypes.h"
@@ -121,14 +122,14 @@ static std::unique_ptr<Expression> simplify_matrix_multiplication(const Context&
     SkASSERT(componentType.matches(right.type().componentType()));
 
     // Fetch the left matrix.
-    double leftVals[4][4];
+    std::array<std::array<double, 4>, 4> leftVals;
     for (int c = 0; c < leftColumns; ++c) {
         for (int r = 0; r < leftRows; ++r) {
             leftVals[c][r] = *left.getConstantValue((c * leftRows) + r);
         }
     }
     // Fetch the right matrix.
-    double rightVals[4][4];
+    std::array<std::array<double, 4>, 4> rightVals;
     for (int c = 0; c < rightColumns; ++c) {
         for (int r = 0; r < rightRows; ++r) {
             rightVals[c][r] = *right.getConstantValue((c * rightRows) + r);

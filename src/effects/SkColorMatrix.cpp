@@ -12,7 +12,7 @@ enum SkYUVColorSpace : int;
 
 SkColorMatrix SkColorMatrix::RGBtoYUV(SkYUVColorSpace cs) {
     SkColorMatrix m;
-    SkColorMatrix_RGB2YUV(cs, m.fMat.data());
+    SkColorMatrix_RGB2YUV(cs, m.fMat);
     return m;
 }
 

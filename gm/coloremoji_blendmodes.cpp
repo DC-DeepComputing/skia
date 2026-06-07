@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkBlendMode.h"
@@ -80,7 +81,7 @@ protected:
 
         canvas->translate(SkIntToScalar(10), SkIntToScalar(20));
 
-        const SkBlendMode gModes[] = {
+        const auto gModes = std::to_array<SkBlendMode>({
             SkBlendMode::kClear,
             SkBlendMode::kSrc,
             SkBlendMode::kDst,
@@ -111,7 +112,7 @@ protected:
             SkBlendMode::kSaturation,
             SkBlendMode::kColor,
             SkBlendMode::kLuminosity,
-        };
+        });
 
         const SkScalar w = SkIntToScalar(W);
         const SkScalar h = SkIntToScalar(H);

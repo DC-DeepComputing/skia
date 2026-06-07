@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRegion.h"
@@ -44,7 +45,7 @@ static void call_hline_blitter(SkBlitter* blitter, int x, int y, int count,
                                U8CPU alpha) {
     SkASSERT(count > 0);
 
-    int16_t runs[HLINE_STACK_BUFFER + 1];
+    std::array<int16_t, HLINE_STACK_BUFFER + 1> runs;
     uint8_t  aa[HLINE_STACK_BUFFER];
 
     do {
@@ -61,7 +62,7 @@ static void call_hline_blitter(SkBlitter* blitter, int x, int y, int count,
         }
         runs[0] = SkToS16(n);
         runs[n] = 0;
-        blitter->blitAntiH(x, y, aa, runs);
+        blitter->blitAntiH(x, y, aa, runs.data());
         x += n;
         count -= n;
     } while (count > 0);

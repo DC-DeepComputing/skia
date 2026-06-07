@@ -68,7 +68,7 @@ bool YUVABackendTextureInfo::operator==(const YUVABackendTextureInfo& that) cons
 }
 
 SkYUVAInfo::YUVALocations YUVABackendTextureInfo::toYUVALocations() const {
-    auto result = fYUVAInfo.toYUVALocations(fPlaneChannelMasks.data());
+    auto result = fYUVAInfo.toYUVALocations(fPlaneChannelMasks);
     SkDEBUGCODE(int numPlanes;)
     SkASSERT(SkYUVAInfo::YUVALocation::AreValidLocations(result, &numPlanes));
     SkASSERT(numPlanes == this->numPlanes());
@@ -108,7 +108,7 @@ YUVABackendTextures::YUVABackendTextures(const SkYUVAInfo& yuvaInfo,
 }
 
 SkYUVAInfo::YUVALocations YUVABackendTextures::toYUVALocations() const {
-    auto result = fYUVAInfo.toYUVALocations(fPlaneChannelMasks.data());
+    auto result = fYUVAInfo.toYUVALocations(fPlaneChannelMasks);
     SkDEBUGCODE(int numPlanes;)
     SkASSERT(SkYUVAInfo::YUVALocation::AreValidLocations(result, &numPlanes));
     SkASSERT(numPlanes == this->numPlanes());
