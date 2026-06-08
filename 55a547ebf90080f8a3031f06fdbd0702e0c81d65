@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "254baf72_f9d8d740",
+        "filename": "gm/clip_rrects.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-08T13:35:13Z",
+      "side": 1,
+      "message": "Time warp!",
+      "range": {
+        "startLine": 2,
+        "startChar": 13,
+        "endLine": 2,
+        "endChar": 17
+      },
+      "revId": "55a547ebf90080f8a3031f06fdbd0702e0c81d65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
