@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a34b16b8_30369109",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-06-08T13:42:09Z",
+      "side": 1,
+      "message": "Hello,\nCould you please take a look? This is a pure reland.",
+      "revId": "fafc04a26b1e4efc7170cb4e67b0a749388e72e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
