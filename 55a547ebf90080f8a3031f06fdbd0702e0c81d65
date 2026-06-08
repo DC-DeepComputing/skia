@@ -22,6 +22,30 @@
       },
       "revId": "55a547ebf90080f8a3031f06fdbd0702e0c81d65",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dcbc343e_d2bc239a",
+        "filename": "gm/clip_rrects.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-08T14:24:42Z",
+      "side": 1,
+      "message": "Haha, I wanted to see what AI could do from this comment and it guessed 2024",
+      "parentUuid": "254baf72_f9d8d740",
+      "range": {
+        "startLine": 2,
+        "startChar": 13,
+        "endLine": 2,
+        "endChar": 17
+      },
+      "revId": "55a547ebf90080f8a3031f06fdbd0702e0c81d65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
