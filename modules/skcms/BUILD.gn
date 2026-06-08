@@ -5,8 +5,8 @@
 
 import("skcms.gni")
 
-# Use for CPU-specific skcms transform code that needs particular compiler flags.
-# (This is patterned after `opts` in Skia's BUILD.gn.)
+# Use for CPU-specific skcms transform code that needs particular compiler
+# flags. (This is patterned after `opts` in Skia's BUILD.gn.)
 template("arch") {
   if (invoker.enabled) {
     source_set(target_name) {
@@ -15,7 +15,8 @@ template("arch") {
       forward_variables_from(invoker, "*")
     }
   } else {
-    # If not enabled, a phony empty target that swallows all otherwise unused variables.
+    # If not enabled, a phony empty target that swallows all otherwise unused
+    # variables.
     source_set(target_name) {
       visibility = [ ":*" ]
       check_includes = false

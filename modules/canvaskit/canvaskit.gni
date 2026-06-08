@@ -29,7 +29,8 @@ assert(
     !skia_canvaskit_profile_build || !is_debug,
     "If you set `skia_canvaskit_profile_build=true` you must set `is_debug=false`.")
 
-# Assert that skia_canvaskit_enable_embedded_font implies skia_canvaskit_enable_font.
+# Assert that skia_canvaskit_enable_embedded_font implies
+# skia_canvaskit_enable_font.
 assert(
     !skia_canvaskit_enable_embedded_font || skia_canvaskit_enable_font,
     "If you set `skia_canvaskit_enable_embedded_font=true` you must set `skia_canvaskit_enable_font=true`.")

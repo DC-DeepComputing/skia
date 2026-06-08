@@ -196,8 +196,8 @@ skia_use_direct3d = skia_use_direct3d && skia_enable_ganesh
 skia_enable_tools = skia_enable_tools && !is_component_build
 
 # We used to not build any of the tools without Ganesh. Then we enabled building
-# viewer with Graphite but not Ganesh. The remaining tools and supporting libs have
-# not been audited for building without Ganesh
+# viewer with Graphite but not Ganesh. The remaining tools and supporting libs
+# have not been audited for building without Ganesh
 skia_enable_tools_that_might_need_ganesh =
     skia_enable_tools && skia_enable_ganesh
 

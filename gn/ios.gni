@@ -136,7 +136,8 @@ if (is_ios) {
       bundle_data("${app_name}_bundle_resources_and_skps") {
         sources = invoker.data_sources
 
-        # iOS reserves the folders 'Resources' and 'resources' so store one level deeper
+        # iOS reserves the folders 'Resources' and 'resources' so store one
+        # level deeper
         outputs = [ "{{bundle_resources_dir}}/data/{{source_file_part}}" ]
       }
     }

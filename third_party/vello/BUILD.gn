@@ -6,9 +6,10 @@
 import("../../gn/skia.gni")
 import("../third_party.gni")
 
-# The following shells out to bazelisk to compile static library dependencies that bridge the
-# vello_cpp crate Rust code and its C++ FFI symbols. This produces a single static library target
-# that is reachable via the ":vello" target.
+# The following shells out to bazelisk to compile static library dependencies
+# that bridge the vello_cpp crate Rust code and its C++ FFI symbols. This
+# produces a single static library target that is reachable via the ":vello"
+# target.
 #
 # Pre-compiled shader dependencies:
 #
@@ -51,8 +52,8 @@ if (skia_enable_vello_shaders) {
              rebase_path("//bazel-bin/third_party/vello/libvello_ffi.a",
                          root_build_dir),
 
-             # we want the header to not simply be copied into the output directory,
-             # but in the same path as the Bazel build uses.
+             # we want the header to not simply be copied into the output
+             # directory, but in the same path as the Bazel build uses.
              rebase_path("//bazel-bin/third_party/vello/src/lib.rs.h",
                          root_build_dir) + "=third_party/vello/src/lib.rs.h",
            ] + bazel_args

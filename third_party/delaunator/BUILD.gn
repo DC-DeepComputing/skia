@@ -5,8 +5,8 @@
 
 import("../third_party.gni")
 
-# Note that the version we sync and build was slightly modified to remove exceptions
-# (which Skia does not build with) and other lint errors.
+# Note that the version we sync and build was slightly modified to remove
+# exceptions (which Skia does not build with) and other lint errors.
 third_party("delaunator") {
   public_include_dirs = [ "../externals/delaunator-cpp/include/" ]
 

@@ -126,7 +126,8 @@ config("skia_private") {
   defines += [ "SK_ENABLE_AVX512_OPTS" ]
 }
 
-# Any code that's linked into Skia-the-library should use this config via += skia_library_configs.
+# Any code that's linked into Skia-the-library should use this config via +=
+# skia_library_configs.
 config("skia_library") {
   visibility = [ "./*" ]
   defines = [ "SKIA_IMPLEMENTATION=1" ]
@@ -151,7 +152,8 @@ template("opts") {
       }
     }
   } else {
-    # If not enabled, a phony empty target that swallows all otherwise unused variables.
+    # If not enabled, a phony empty target that swallows all otherwise unused
+    # variables.
     skia_source_set(target_name) {
       visibility = [ ":*" ]
       check_includes = false
@@ -201,7 +203,8 @@ opts("lasx") {
   cflags = [ "-mlasx" ]
 }
 
-# Any feature of Skia that requires third-party code should be optional and use this template.
+# Any feature of Skia that requires third-party code should be optional and use
+# this template.
 template("optional") {
   if (invoker.enabled) {
     config(target_name + "_public") {
@@ -532,12 +535,14 @@ if (skia_lex) {
     deps = [ ":sksllex(//gn/toolchain:$host_toolchain)" ]
     sources = [ "src/sksl/lex/sksl.lex" ]
 
-    # GN insists its outputs should go somewhere underneath target_out_dir, so we trick it with a
-    # path that starts with target_out_dir and then uses ".." to back up into the src dir.
+    # GN insists its outputs should go somewhere underneath target_out_dir, so
+    # we trick it with a path that starts with target_out_dir and then uses ".."
+    # to back up into the src dir.
     outputs = [
       "$target_out_dir/" + rebase_path("src/sksl/SkSLLexer.h", target_out_dir),
-      # the script also modifies the corresponding .cpp file, but if we tell GN that it gets
-      # confused due to the same file being named by two different paths
+      # the script also modifies the corresponding .cpp file, but if we tell GN
+      # that it gets confused due to the same file being named by two different
+      # paths
     ]
     sksllex_path = "$root_out_dir/"
     if (host_toolchain != default_toolchain_name) {
@@ -630,8 +635,9 @@ if (skia_compile_modules) {
   foreach(src, minify_sksl_sources) {
     name = get_path_info(src, "name")
 
-    # GN insists its outputs should go somewhere underneath target_out_dir, so we trick it with a
-    # path that starts with target_out_dir and then uses ".." to back up into the src dir.
+    # GN insists its outputs should go somewhere underneath target_out_dir, so
+    # we trick it with a path that starts with target_out_dir and then uses ".."
+    # to back up into the src dir.
     minify_sksl_outputs += [ "$target_out_dir/" + rebase_path(
                                  "src/sksl/generated/$name.minified.sksl",
                                  target_out_dir) ]
@@ -764,7 +770,8 @@ if (skia_compile_sksl_tests) {
   # Build the test files using skslc.
   import("gn/sksl_tests.gni")
   template("compile_sksl") {
-    # Compile the passed-in `sources` into `outputs` using skslc, with the given language/settings.
+    # Compile the passed-in `sources` into `outputs` using skslc, with the given
+    # language/settings.
     action("compile_sksl_${target_name}") {
       script = "gn/compile_sksl_tests.py"
       deps = [
@@ -1112,8 +1119,8 @@ optional("jpeg_decode") {
     "src/codec/SkJpegUtility.cpp",
   ]
   if (skia_use_jpeg_gainmaps) {
-    # Theoretically this doesn't need to be public, but this allows gn_to_bp.py to see it, and seems
-    # to align with other codec support. See b/265939413
+    # Theoretically this doesn't need to be public, but this allows gn_to_bp.py
+    # to see it, and seems to align with other codec support. See b/265939413
     public_defines += [ "SK_CODEC_DECODES_JPEG_GAINMAPS" ]
     deps += [
       ":jpeg_mpf",
@@ -1525,7 +1532,8 @@ if (skia_use_fontations || skia_use_rust_png_decode ||
     args = _rust_targets + _rust_output_mappings + bazel_args
   }
 
-  # This group collects all Rust static libraries that should be linked together.
+  # This group collects all Rust static libraries that should be linked
+  # together.
   group("rust_ffi_libs") {
     deps = [ ":rust_all_ffi_bazel_build" ]
 
@@ -1847,8 +1855,9 @@ if (skia_enable_ganesh && skia_generate_workarounds) {
 
     inputs = [ "src/gpu/gpu_workaround_list.txt" ]
 
-    # GN insists its outputs should go somewhere underneath root_out_dir, so we trick it with a
-    # path that starts with root_out_dir and then uses ".." to back up into the src dir.
+    # GN insists its outputs should go somewhere underneath root_out_dir, so we
+    # trick it with a path that starts with root_out_dir and then uses ".." to
+    # back up into the src dir.
     output_file =
         rebase_path("include/gpu/ganesh/GrDriverBugWorkaroundsAutogen.h",
                     root_out_dir)
@@ -1873,7 +1882,8 @@ skia_source_set("core") {
   public = skia_core_public
   sources = skia_core_sources
 
-  # These deps don't belong to :core, but they are currently needed to support (de)serialization.
+  # These deps don't belong to :core, but they are currently needed to support
+  # (de)serialization.
   deps = [
     ":fontmgr_mac_ct",
     ":fontmgr_win",
@@ -3346,8 +3356,8 @@ if (skia_enable_tools) {
     }
   }
 
-  # viewer requires at least one of Ganesh or Graphite. Raster is presented via Ganesh and
-  # therefore cannot stand alone.
+  # viewer requires at least one of Ganesh or Graphite. Raster is presented via
+  # Ganesh and therefore cannot stand alone.
   if (skia_enable_ganesh || skia_enable_graphite) {
     test_app("viewer") {
       is_shared_library = is_android

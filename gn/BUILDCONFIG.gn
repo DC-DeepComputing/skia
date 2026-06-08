@@ -5,7 +5,8 @@
 
 is_skia_standalone = true
 
-# It's best to keep the names and defaults of is_foo flags consistent with Chrome.
+# It's best to keep the names and defaults of is_foo flags consistent with
+# Chrome.
 
 declare_args() {
   is_official_build = false
@@ -74,11 +75,12 @@ is_win = current_os == "win"
 # Dawn has references to fuchsia, but Skia's GN rules do not
 is_fuchsia = false
 
-# This is just to make the Dawn build files happy. Skia itself uses target_os = "linux"
-# for ChromeOS, so this variable will not affect Skia proper.
+# This is just to make the Dawn build files happy. Skia itself uses target_os =
+# "linux" for ChromeOS, so this variable will not affect Skia proper.
 is_chromeos = false
 
-# This is to make the ANGLE build files happy. Skia always uses is_mac and/or is_ios.
+# This is to make the ANGLE build files happy. Skia always uses is_mac and/or
+# is_ios.
 is_apple = is_mac || is_ios
 
 if (target_cpu == "") {
@@ -129,8 +131,9 @@ if (is_android) {
 }
 
 if (target_os == "win") {
-  # By default we look for 2017 (Enterprise, Pro, and Community), then 2015. If MSVC is installed in a
-  # non-default location, you can set win_vc to inform us where it is.
+  # By default we look for 2017 (Enterprise, Pro, and Community), then 2015. If
+  # MSVC is installed in a non-default location, you can set win_vc to inform us
+  # where it is.
 
   if (win_vc == "") {
     win_vc = exec_script("//gn/find_msvc.py", [], "trim string")

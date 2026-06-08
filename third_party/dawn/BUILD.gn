@@ -47,14 +47,15 @@ config("tint_api_config") {
     "TINT_BUILD_WGSL_WRITER=1",
   ]
 
-  # The build script produces a static library for tint in the root output directory.
+  # The build script produces a static library for tint in the root output
+  # directory.
   libs = [ "$root_out_dir/$_tint_lib_name" ]
 }
 
-# This version of tint is used by skslc, which is used to compile our sksl tests.
-# Thus, we do *not* want to pass in the sanitizer args to this target. When
-# we build the dawn target below, that will build a new version of tint which
-# does use the passed in sanitizer flags.
+# This version of tint is used by skslc, which is used to compile our sksl
+# tests. Thus, we do *not* want to pass in the sanitizer args to this target.
+# When we build the dawn target below, that will build a new version of tint
+# which does use the passed in sanitizer flags.
 action("tint_cmake") {
   script = "build_tint.py"
 
@@ -109,8 +110,9 @@ action("tint_cmake") {
     ]
   }
 
-  # While we don't need to build tint with our sanitizers, we do need to adjust our target version
-  # of tint to be built with libc++ if we have set the rest of Skia to be using that.
+  # While we don't need to build tint with our sanitizers, we do need to adjust
+  # our target version of tint to be built with libc++ if we have set the rest
+  # of Skia to be using that.
   if (get_label_info(current_toolchain, "name") != host_toolchain) {
     if (is_linux && sanitize != "") {
       args += [

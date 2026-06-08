@@ -81,9 +81,10 @@ template("msvc_toolchain") {
 
     if (clang_win != "") {
       if (toolchain_target_cpu == "x86") {
-        # cl.exe knows implicitly by the choice of executable that it's targeting
-        # x86, but clang-cl.exe needs to be told when targeting non-host
-        # platforms. (All our builders are x86-64, so x86 is always non-host.)
+        # cl.exe knows implicitly by the choice of executable that it's
+        # targeting x86, but clang-cl.exe needs to be told when targeting
+        # non-host platforms. (All our builders are x86-64, so x86 is always
+        # non-host.)
         cl_m32_flag = "-m32"
       }
       if (host_os == "win") {

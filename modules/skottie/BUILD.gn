@@ -128,7 +128,8 @@ if (skia_enable_skottie) {
         ]
       }
 
-      # A couple of backend specific targets, to facilitate binary size experiments.
+      # A couple of backend specific targets, to facilitate binary size
+      # experiments.
       skia_source_set("tool_cpu") {
         check_includes = false
         testonly = true

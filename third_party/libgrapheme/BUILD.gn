@@ -18,8 +18,8 @@ config("c99") {
   }
 }
 
-# Header generation only happens on the host.
-# Ensure it will not be built for non-host even when implicitly building all targets.
+# Header generation only happens on the host. Ensure it will not be built for
+# non-host even when implicitly building all targets.
 if (current_toolchain == "//gn/toolchain:$host_toolchain") {
   copy("copy_unicode_data") {
     unicode_tools_dir =
@@ -117,7 +117,8 @@ if (current_toolchain == "//gn/toolchain:$host_toolchain") {
   }
 }
 
-# libgrapheme is built for the target and so must be able to always see headers and headers_config.
+# libgrapheme is built for the target and so must be able to always see headers
+# and headers_config.
 config("headers_config") {
   if (current_toolchain == "//gn/toolchain:$host_toolchain") {
     include_dirs = [ "$root_gen_dir/third_party/libgrapheme/gen" ]

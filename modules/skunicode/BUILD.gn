@@ -100,10 +100,11 @@ if (skia_use_icu || skia_use_client_icu || skia_use_libgrapheme ||
         "../../third_party/icu/config:no_cxx",
       ]
       defines = [
-        # In order to use the bidi_subset at the same time as "full ICU", we must have
-        # compiled icu with the given defines also being set. This is to make sure the functions
-        # we call are given a suffix of "_skia" to prevent ODR violations if this "subset of ICU"
-        # is compiled alongside a full ICU build also.
+        # In order to use the bidi_subset at the same time as "full ICU", we
+        # must have compiled icu with the given defines also being set. This is
+        # to make sure the functions we call are given a suffix of "_skia" to
+        # prevent ODR violations if this "subset of ICU" is compiled alongside a
+        # full ICU build also.
         # See https://chromium.googlesource.com/chromium/deps/icu.git/+/d94ab131bc8fef3bc17f356a628d8e4cd44d65d9/source/common/unicode/uversion.h
         # for how these are used.
         "U_DISABLE_RENAMING=0",
@@ -133,10 +134,11 @@ if (skia_use_icu || skia_use_client_icu || skia_use_libgrapheme ||
         "../../third_party/icu/config:no_cxx",
       ]
       defines = [
-        # In order to use the bidi_subset at the same time as "full ICU", we must have
-        # compiled icu with the given defines also being set. This is to make sure the functions
-        # we call are given a suffix of "_skia" to prevent ODR violations if this "subset of ICU"
-        # is compiled alongside a full ICU build also.
+        # In order to use the bidi_subset at the same time as "full ICU", we
+        # must have compiled icu with the given defines also being set. This is
+        # to make sure the functions we call are given a suffix of "_skia" to
+        # prevent ODR violations if this "subset of ICU" is compiled alongside a
+        # full ICU build also.
         # See https://chromium.googlesource.com/chromium/deps/icu.git/+/d94ab131bc8fef3bc17f356a628d8e4cd44d65d9/source/common/unicode/uversion.h
         # for how these are used.
         "U_DISABLE_RENAMING=0",
@@ -207,8 +209,8 @@ if (skia_use_icu || skia_use_client_icu || skia_use_libgrapheme ||
     public_configs = [ ":public_config" ]
     public_deps = [ ":skunicode_core" ]
 
-    # We have these different flavors of skunicode as independent components because
-    # we have to set different defines for different builds of ICU.
+    # We have these different flavors of skunicode as independent components
+    # because we have to set different defines for different builds of ICU.
     if (skia_use_icu) {
       public_deps += [ ":skunicode_icu" ]
     }

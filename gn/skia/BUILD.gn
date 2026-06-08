@@ -37,10 +37,10 @@ if (is_ios && xcode_sysroot == "") {
       exec_script("../find_xcode_sysroot.py", [ sdk ], "trim string")
 }
 
-# If building for mac on a mac then lookup all the system includes so that goma and the clang
-# shipped with chrome can find them. When the gn_to_bp.py tool is run, then the host_os != mac.
-# In this case leave the xcode_sysroot empty, and the cc/c++ that come with XCode will be able to
-# find needed include paths.
+# If building for mac on a mac then lookup all the system includes so that goma
+# and the clang shipped with chrome can find them. When the gn_to_bp.py tool is
+# run, then the host_os != mac. In this case leave the xcode_sysroot empty, and
+# the cc/c++ that come with XCode will be able to find needed include paths.
 if (is_mac && host_os == "mac" && xcode_sysroot == "") {
   xcode_sysroot =
       exec_script("../find_xcode_sysroot.py", [ "macosx" ], "trim string")
@@ -69,8 +69,8 @@ config("default") {
   }
 
   if (is_clang && !is_win) {
-    # In Clang 14, this default was changed. We turn this off to (hopefully) make our
-    # GMs more consistent in the transition.
+    # In Clang 14, this default was changed. We turn this off to (hopefully)
+    # make our GMs more consistent in the transition.
     cflags += [ "-ffp-contract=off" ]
   }
 
@@ -82,7 +82,8 @@ config("default") {
       "/bigobj",  # Some of our files are bigger than the regular limits.
       "/utf-8",  # Set Source and Executable character sets to UTF-8.
 
-      # Without fp:precise, MSVC makes some assumptions about NANs and Infinities that break us.
+      # Without fp:precise, MSVC makes some assumptions about NANs and
+      # Infinities that break us.
       # https://learn.microsoft.com/en-us/cpp/build/reference/fp-specify-floating-point-behavior
       "/fp:precise",
     ]
@@ -249,8 +250,8 @@ config("default") {
   }
 
   if (is_mac) {
-    # If there was a xcode_sysroot set in args or calculated then use it, else don't set anything
-    # because the XCode cc/c++ already know all this stuff.
+    # If there was a xcode_sysroot set in args or calculated then use it, else
+    # don't set anything because the XCode cc/c++ already know all this stuff.
     if (xcode_sysroot != "") {
       asmflags += [
         "-isysroot",
@@ -274,7 +275,8 @@ config("default") {
     ldflags += [ "-Wl,-w" ]
 
     # As of 11/2020, gn is an x86 binary and defaults the host_cpu to x86_64.
-    # This allows you to build arm64 mac binaries by setting target_cpu = "arm64"
+    # This allows you to build arm64 mac binaries by setting target_cpu =
+    # "arm64"
     if (current_cpu == "arm64") {
       asmflags += [
         "-target",
@@ -362,9 +364,11 @@ config("default") {
       # They use clang_rt.asan_dynamic-x86_64.dll.
       # https://chromium.googlesource.com/chromium/src/+/85202d981e0c257f8f941e24b9baae38000d5019
       #
-      # We do what they do and link against the dynamic runtime (clang_rt.asan_dynamic-x86_64.lib)
-      # and its associated thunk. Then, we copy the .dll into the out/ASAN (or whatever) directory.
-      # We use /WHOLEARCHIVE for the thunk to ensure all ASan hooks are correctly linked.
+      # We do what they do and link against the dynamic runtime
+      # (clang_rt.asan_dynamic-x86_64.lib) and its associated thunk. Then, we
+      # copy the .dll into the out/ASAN (or whatever) directory. We use
+      # /WHOLEARCHIVE for the thunk to ensure all ASan hooks are correctly
+      # linked.
       libs += [ "$clang_win/lib/clang/$clang_win_version/lib/windows/clang_rt.asan_dynamic-x86_64.lib" ]
       if (is_component_build) {
         ldflags += [ "/WHOLEARCHIVE:$clang_win/lib/clang/$clang_win_version/lib/windows/clang_rt.asan_dynamic_runtime_thunk-x86_64.lib" ]
@@ -507,18 +511,20 @@ config("warnings") {
     }
 
     if (current_cpu == "arm" && is_ios) {
-      # Clang seems to think new/malloc will only be 4-byte aligned on 32-bit iOS.
-      # We're pretty sure it's actually 8-byte alignment.
+      # Clang seems to think new/malloc will only be 4-byte aligned on 32-bit
+      # iOS. We're pretty sure it's actually 8-byte alignment.
       cflags += [ "-Wno-over-aligned" ]
     }
     if (current_cpu == "x86" && is_android) {
-      # Clang seems to think new/malloc will only be 4-byte aligned on 32-bit x86 Android builds.
-      # We're pretty sure it's actually 8-byte alignment.  See OverAlignedTest.cpp for more info.
+      # Clang seems to think new/malloc will only be 4-byte aligned on 32-bit
+      # x86 Android builds. We're pretty sure it's actually 8-byte alignment.
+      # See OverAlignedTest.cpp for more info.
       cflags += [ "-Wno-over-aligned" ]
     }
 
-    # Shouldn't be necessary for local builds. With distributed Windows builds, files may lose
-    # their case during copy, causing case-sensitivity mismatch on remote machines.
+    # Shouldn't be necessary for local builds. With distributed Windows builds,
+    # files may lose their case during copy, causing case-sensitivity mismatch
+    # on remote machines.
     cflags += [
       "-Wno-nonportable-include-path",
       "-Wno-nonportable-system-include-path",
@@ -587,8 +593,9 @@ config("warnings") {
       # https://quuxplusone.github.io/blog/2020/08/26/wrange-loop-analysis/
       # https://bugzilla.mozilla.org/show_bug.cgi?id=1683213
       # https://reviews.llvm.org/D73007
-      # May be re-enabled once clang > 12 or XCode > 12 are required.
-      # When this line is removed the -Wrange-loop-construct line below can also be removed.
+      # May be re-enabled once clang > 12 or XCode > 12 are required. When this
+      # line is removed the -Wrange-loop-construct line below can also be
+      # removed.
       "-Wno-range-loop-analysis",
     ]
     cflags_cc += [
@@ -607,14 +614,16 @@ config("warnings") {
       "-Wno-objcc-interface-ivars",
     ]
 
-    # Wno-range-loop-analysis turns off the whole group, but this warning was later split into
-    # range-loop-construct and range-loop-bind-reference. We want the former but not the latter.
-    # Created from clang/include/clang/Basic/DiagnosticGroups.td
+    # Wno-range-loop-analysis turns off the whole group, but this warning was
+    # later split into range-loop-construct and range-loop-bind-reference. We
+    # want the former but not the latter. Created from
+    # clang/include/clang/Basic/DiagnosticGroups.td
     cflags += [ "-Wrange-loop-construct" ]
 
-    # Wno-deprecated turns off the whole group, but also has its own warnings like
-    # out-of-line definition of constexpr static data member is redundant in C++17 and is deprecated [-Werror,-Wdeprecated]
-    # but we would like others. Created from clang/include/clang/Basic/DiagnosticGroups.td
+    # Wno-deprecated turns off the whole group, but also has its own warnings
+    # like out-of-line definition of constexpr static data member is redundant
+    # in C++17 and is deprecated [-Werror,-Wdeprecated] but we would like
+    # others. Created from clang/include/clang/Basic/DiagnosticGroups.td
     cflags += [
       "-Wdeprecated-anon-enum-enum-conversion",
       "-Wdeprecated-array-compare",

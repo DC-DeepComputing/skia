@@ -137,9 +137,9 @@ if (skia_use_system_libjpeg_turbo) {
     defines = [
       "TURBO_FOR_WINDOWS",
 
-      # Add support for arithmetic encoding (C_) and decoding (D_).
-      # This matches Android. Note that such JPEGs are likely rare, given lack of
-      # support by major browsers.
+      # Add support for arithmetic encoding (C_) and decoding (D_). This matches
+      # Android. Note that such JPEGs are likely rare, given lack of support by
+      # major browsers.
       "C_ARITH_CODING_SUPPORTED=1",
       "D_ARITH_CODING_SUPPORTED=1",
     ]

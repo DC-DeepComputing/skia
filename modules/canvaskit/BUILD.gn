@@ -54,7 +54,7 @@ if (skia_enable_tools) {
     deps = [
       "../..:hash_and_encode",
       "../..:tool_utils",
-      "../../modules/svg:svg",
+      "../../modules/svg",
     ]
     defines = [ "SK_GANESH" ]
   }
@@ -97,18 +97,18 @@ skia_wasm_lib("canvaskit") {
   deps = [ "../..:skia" ]
   if (skia_canvaskit_enable_paragraph) {
     deps += [
-      "../../modules/skparagraph:skparagraph",
-      "../../modules/skunicode:skunicode",
+      "../../modules/skparagraph",
+      "../../modules/skunicode",
     ]
   }
   if (skia_canvaskit_enable_bidi) {
-    deps += [ "../../modules/skunicode:skunicode" ]
+    deps += [ "../../modules/skunicode" ]
   }
   if (skia_enable_skottie) {
     deps += [
-      "../../modules/skottie:skottie",
-      "../../modules/skresources:skresources",
-      "../../modules/sksg:sksg",
+      "../../modules/skottie",
+      "../../modules/skresources",
+      "../../modules/sksg",
     ]
   }
   if (skia_canvaskit_include_viewer) {
@@ -202,7 +202,8 @@ skia_wasm_lib("canvaskit") {
       # Modules from html5_webgpu for JS<->WASM interop
       "-sEXPORTED_RUNTIME_METHODS=WebGPU,JsValStore",
 
-      # TODO(skbug.com/40044518): The closure compiler doesn't play well with optimized builds and ASYNCIFY.
+      # TODO(skbug.com/40044518): The closure compiler doesn't play well with
+      # optimized builds and ASYNCIFY.
       "--closure=0",
     ]
   } else if (skia_canvaskit_enable_webgl) {
