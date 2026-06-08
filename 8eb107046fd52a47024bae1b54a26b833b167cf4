@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "436c8441_c6a71d49",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-08T19:31:49Z",
+      "side": 0,
+      "message": "Maybe we can initialize the first builder here to save the cast later on the drawTextBlob?",
+      "range": {
+        "startLine": 321,
+        "startChar": 55,
+        "endLine": 321,
+        "endChar": 70
+      },
+      "revId": "8eb107046fd52a47024bae1b54a26b833b167cf4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
