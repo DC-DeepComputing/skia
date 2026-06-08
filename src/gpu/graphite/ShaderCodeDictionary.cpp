@@ -1424,21 +1424,21 @@ ShaderCodeDictionary::ShaderCodeDictionary(
             /*name=*/"AnalyticClip",
             /*staticFn=*/"sk_analytic_clip",
             SnippetRequirementFlags::kLocalCoords,
-            /*uniforms=*/{{{ "rect",           SkSLType::kFloat4 },
-                           { "radiusPlusHalf", SkSLType::kFloat2 },
-                           { "edgeSelect",     SkSLType::kHalf4 }}}
+            /*uniforms=*/{{{ "xform",            SkSLType::kFloat4 },
+                           { "rect",             SkSLType::kFloat4 },
+                           { "radiiWithInverse", SkSLType::kFloat4 }}}
     };
 
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kAnalyticAndAtlasClip] = {
             /*name=*/"AnalyticAndAtlasClip",
             /*staticFn=*/"sk_analytic_and_atlas_clip",
             SnippetRequirementFlags::kLocalCoords,
-            /*uniforms=*/{{{ "rect",           SkSLType::kFloat4 },
-                           { "radiusPlusHalf", SkSLType::kFloat2 },
-                           { "edgeSelect",     SkSLType::kHalf4 },
-                           { "texCoordOffset", SkSLType::kFloat2 },
-                           { "maskBounds",     SkSLType::kFloat4 },
-                           { "invAtlasSize",   SkSLType::kFloat2 }}},
+            /*uniforms=*/{{{ "xform",            SkSLType::kFloat4 },
+                           { "rect",             SkSLType::kFloat4 },
+                           { "radiiWithInverse", SkSLType::kFloat4 },
+                           { "maskBounds",       SkSLType::kFloat4 },
+                           { "texCoordOffset",   SkSLType::kFloat2 },
+                           { "invAtlasSize",     SkSLType::kFloat2 }}},
             /*texturesAndSamplers=*/{{"atlasSampler"}}
     };
 
