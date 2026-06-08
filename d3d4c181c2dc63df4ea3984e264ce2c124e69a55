@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "120671a6_77ac38db",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-08T19:08:11Z",
+      "side": 1,
+      "message": "I contemplated splitting this into stages to test shader updates separately from enabling the new transform classes, but opted to keep it together for easier cherry picking.",
+      "revId": "d3d4c181c2dc63df4ea3984e264ce2c124e69a55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
