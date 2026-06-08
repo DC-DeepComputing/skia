@@ -1174,6 +1174,11 @@ bool SkRegion::Oper(const SkRegion& rgnaOrig, const SkRegion& rgnbOrig, Op op,
 
 bool SkRegion::op(const SkRegion& rgna, const SkRegion& rgnb, Op op) {
     SkDEBUGCODE(SkRegionPriv::Validate(*this));
+    volatile int dummy = 0;
+    for (int i = 0; i < 100000; ++i) {
+      dummy = i;
+    }
+    (void) dummy;
     return SkRegion::Oper(rgna, rgnb, op, this);
 }
 
