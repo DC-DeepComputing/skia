@@ -1382,7 +1382,6 @@ func (b *jobBuilder) recreateSKPs() {
 			"gce:1",
 			fmt.Sprintf("os:%s", DEFAULT_OS_LINUX_GCE),
 		)
-		b.usesGo()
 		b.cache(CACHES_WORKDIR...)
 		b.timeout(8 * time.Hour)
 		b.usesPython()
