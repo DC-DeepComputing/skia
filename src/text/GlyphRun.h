@@ -136,6 +136,7 @@ private:
 
 class GlyphRunBuilder {
 public:
+
     GlyphRunList makeGlyphRunList(const GlyphRun& run, const SkPaint& paint, SkPoint origin);
     const GlyphRunList& textToGlyphRunList(const SkFont& font,
                                            const SkPaint& paint,
