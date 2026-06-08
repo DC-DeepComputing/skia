@@ -33,6 +33,24 @@
       "message": "Do you know why the CTS test was failing, though? I agree that something like this shouldn\u0027t be in the CTS but it\u0027s also a little surprising for it to fail if it passes normally.",
       "revId": "04dafc451b8d7c133317c78d3f33dfa3fd3aae32",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1561528b_ef170f00",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-08T18:18:05Z",
+      "side": 1,
+      "message": "If you dig into the error log, only the PaintOptions that only generated labels with the prefix \"RP((RGBA8+D24_S8 x4-\u003e1).rgba)\" were failing. I\u0027m guessing that whatever device SkQP is run on doesn\u0027t support MSAA.\n\nThe PaintOptions that generated mixed \"D24_S8 x4-\u003e1\"/\"D16 x1\" labels probably squeaked by since, at least, half of the anticipated labels would be generated and matched.",
+      "parentUuid": "c5fc9bc4_5e035375",
+      "revId": "04dafc451b8d7c133317c78d3f33dfa3fd3aae32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
