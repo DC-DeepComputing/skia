@@ -356,6 +356,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb7189b5_25a4e853",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 2416,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-08T19:27:19Z",
+      "side": 1,
+      "message": "Sounds good! I will remove the limits",
+      "parentUuid": "e8b857ae_5f5c2a39",
+      "range": {
+        "startLine": 2416,
+        "startChar": 49,
+        "endLine": 2416,
+        "endChar": 76
+      },
+      "revId": "f8ab98fbedfe73f3f4f7eb1b174fb8962559d6d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1db5a06a_b1516596",

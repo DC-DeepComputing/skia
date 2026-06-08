@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10c698cd_690b6ff9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 24
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-08T19:27:19Z",
+      "side": 1,
+      "message": "I updated the commit header with the new benchmark numbers. It looks like, after some of the changes we made, it is a lot closer to what it was before. \n\nMy main confusion now though is how the updated code is (occasionally) faster than the previous code. I `git pulled` everything just to make sure it was all in order. I double checked that the git branches were the right one. I even looked at the flame graphs to see where any performance improvement might be (here it is https://pprof.corp.google.com/?id\u003de7ac72515bf4bead43709d43d29f5e06\u0026id0\u003d4aaf688e7c79b23cca2150b58010f9d2\u0026tab\u003dflame). Not sure what it could be. I added two runs of the benchmark for before and after",
+      "revId": "f9b942eca0e76e6150b9df308fbc27246ab620c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

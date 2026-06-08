@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4fd1a376_06f69eb8",
+        "filename": "include/core/SkCanvas.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 2712,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-08T19:27:19Z",
+      "side": 1,
+      "message": "sg, will remove the inline",
+      "parentUuid": "ed6ce39e_9c9338bb",
+      "range": {
+        "startLine": 2712,
+        "startChar": 4,
+        "endLine": 2712,
+        "endChar": 10
+      },
+      "revId": "b35efaa16cc84d1fcdd07aec22543eda5cd164a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a5a3095b_0b3fc9ba",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a166febc_d0fce2c2",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 2416,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-08T19:27:19Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "a5a3095b_0b3fc9ba",
+      "range": {
+        "startLine": 2416,
+        "startChar": 28,
+        "endLine": 2416,
+        "endChar": 55
+      },
+      "revId": "b35efaa16cc84d1fcdd07aec22543eda5cd164a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "da812d88_70c4af9c",
@@ -60,6 +108,30 @@
       "writtenOn": "2026-06-08T17:47:53Z",
       "side": 1,
       "message": "Delete",
+      "range": {
+        "startLine": 139,
+        "startChar": 7,
+        "endLine": 139,
+        "endChar": 22
+      },
+      "revId": "b35efaa16cc84d1fcdd07aec22543eda5cd164a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f21462d6_59886de9",
+        "filename": "src/text/GlyphRun.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-08T19:27:19Z",
+      "side": 1,
+      "message": "my bad!",
+      "parentUuid": "da812d88_70c4af9c",
       "range": {
         "startLine": 139,
         "startChar": 7,
