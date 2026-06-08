@@ -364,6 +364,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "035a2044_9f837d07",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.h",
+        "patchSetId": 33
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-06-08T16:55:38Z",
+      "side": 1,
+      "message": "I think the explicit `sk_sp\u003cSkData\u003e` ownership is useful here. Since we are not using `image::IcoDecoder` end-to-end, the ICO layer still owns the trailing AND-mask postprocess. Holding the selected entry’s `SkData` in `fIncrementalBmpEntryData` makes the incremental path independent of re-looking-up the frame index and keeps the raw BMP entry payload alive for the duration of decode. If we later move the whole ICO decode into Rust/image, this can go away, but with the current split between `SkIcoRustCodec` and `SkBmpRustCodec`, this seems like the right shape.",
+      "parentUuid": "b49496b8_4a7b159c",
+      "range": {
+        "startLine": 196,
+        "startChar": 8,
+        "endLine": 196,
+        "endChar": 23
+      },
+      "revId": "f2215d155aac68d279ac9fe18700343a980c29fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "41717c4b_25caaa9e",
@@ -377,6 +401,30 @@
       "writtenOn": "2026-05-08T22:07:18Z",
       "side": 1,
       "message": "@sergiog, does `SkBmpRustCodec` or the `image` crate already handle masks embedded in BMP images?",
+      "range": {
+        "startLine": 536,
+        "startChar": 7,
+        "endLine": 536,
+        "endChar": 21
+      },
+      "revId": "f2215d155aac68d279ac9fe18700343a980c29fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae85f343_8cdab9bd",
+        "filename": "experimental/rust_ico/ffi/FFI.rs",
+        "patchSetId": 33
+      },
+      "lineNbr": 536,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-06-08T16:55:38Z",
+      "side": 1,
+      "message": "`image::BmpDecoder` handles BMP-native masks: `BI_BITFIELDS` / `BI_ALPHABITFIELDS` channel masks, `V4/V5` alpha masks, and in ICO mode it handles the DIB-specific differences like no file header, doubled height, and forcing RGBA output.\n\nThe trailing ICO 1bpp AND mask is different: in `image`, that is handled by `IcoDecoder`, not by `BmpDecoder`. `IcoDecoder` decodes the embedded BMP via `BmpDecoder::new_with_ico_format()` and then reads/applies the trailing AND mask itself. So `SkBmpRustCodec::MakeFromIcoStream()` gets us most of the BMP-in-ICO behavior, but it does not by itself apply the ICO AND mask unless we route through `image::IcoDecoder` end-to-end or keep a Skia-side postprocess.",
+      "parentUuid": "41717c4b_25caaa9e",
       "range": {
         "startLine": 536,
         "startChar": 7,
