@@ -248,6 +248,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bc7ec2ba_4d92f445",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.h",
+        "patchSetId": 33
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 4569768
+      },
+      "writtenOn": "2026-06-08T14:34:31Z",
+      "side": 1,
+      "message": "In this case I added an override that currently defaults to the SkCodec for all cases, but the code specifies that if either SkPngRustCodec or SkBmpRustCodec want their own handling of scanlines in the future, then it should be determined on the decoder level, not the inherited level.\n\nFor now, it\u0027s redundant as both SkPngRustCodec and SkBmpRustCodec default to the SkCodec method.\n\nFor the other two, xform/conversion overrides are semantically important because the ICO wrapper’s metadata can differ from the embedded codec that actually performs decode.\n\nIf this is a bit to overworked for the current implementation, then I can just fall back to the SkCoded implementation.",
+      "parentUuid": "f40090b9_5245ad9f",
+      "range": {
+        "startLine": 64,
+        "startChar": 20,
+        "endLine": 64,
+        "endChar": 38
+      },
+      "revId": "f2215d155aac68d279ac9fe18700343a980c29fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8f85bc84_17e1e5ee",
         "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.h",
         "patchSetId": 33
@@ -259,6 +283,30 @@
       "writtenOn": "2026-05-08T22:07:18Z",
       "side": 1,
       "message": "Perceived problem: I think that there is an implicit assumption that all of the following things are equal: 1) the length of the array in `fEmbeddedCodecs`, 2) the length of the `fBmpEntryData` vector, and 3) the number of frames entries in `fFrameHolder`.\n\nWould it make sense to move `sk_sp\u003cSkData\u003e` and `std::unique_ptr\u003cSkCodec\u003e` into a shared struct?  For example, I see that `SkPngRustCodec` defines `PngFrame` which holds additional fields, on top of the ones inherited from `SkFrame` - maybe it would be appropriate to define `SkIcoRustCodec::FrameHolder::IcoFrame` with fields for holding the frame-specific-data and the frame-specific-codec.\n\nSince frame fields would probably need to be populated in the `SkIcoRustCodec` constructor, we may run into a similar concern there.  Maybe the `codecs` and `bmpEntryData` parameters (of the constructor) can be replaced with a single parameter types like `std::vector\u003cstd::pair\u003cstd::unique_ptr\u003cSkCodec\u003e, sk_sp\u003cSkData\u003e\u003e\u003e`?\n\nWDYT?  Does that make sense?  Do you think it would make things slightly cleaner and less likely to get out-of-sync?",
+      "range": {
+        "startLine": 187,
+        "startChar": 0,
+        "endLine": 191,
+        "endChar": 29
+      },
+      "revId": "f2215d155aac68d279ac9fe18700343a980c29fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f79ee904_4dc9230f",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.h",
+        "patchSetId": 33
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 4569768
+      },
+      "writtenOn": "2026-06-08T14:34:31Z",
+      "side": 1,
+      "message": "I do think that replacing the constructor’s separate codecs + bmpEntryData parameters with a single vector of entry records is cleaner and less likely to get out of sync.\n\nI\u0027ll do a rewrite of this and move it to a shared struct.",
+      "parentUuid": "8f85bc84_17e1e5ee",
       "range": {
         "startLine": 187,
         "startChar": 0,
