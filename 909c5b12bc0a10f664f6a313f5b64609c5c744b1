@@ -143,6 +143,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "39564201_6dbd9e43",
+        "filename": "include/core/SkCanvas.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 2424,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-08T15:04:38Z",
+      "side": 1,
+      "message": "my bad, updated it.",
+      "parentUuid": "ed9a75df_39f0c104",
+      "range": {
+        "startLine": 2424,
+        "startChar": 4,
+        "endLine": 2424,
+        "endChar": 10
+      },
+      "revId": "909c5b12bc0a10f664f6a313f5b64609c5c744b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eb580968_b7f5287d",
@@ -204,6 +228,30 @@
       "side": 1,
       "message": "I see the comment but the type is still wrong?",
       "parentUuid": "18f67135_b0734631",
+      "range": {
+        "startLine": 2715,
+        "startChar": 4,
+        "endLine": 2715,
+        "endChar": 16
+      },
+      "revId": "909c5b12bc0a10f664f6a313f5b64609c5c744b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ac40ef8_32fe6123",
+        "filename": "include/core/SkCanvas.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 2715,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-08T15:04:38Z",
+      "side": 1,
+      "message": "sorry my mistake, I realized I forgot to update this comment. \n\n\nI had originally switched over to raw GlyphRunBuilders, but then I was running into memory issues. It turns out that `GlyphRunList`s need to store pointers to a `GlyphRunBuilder` to use\n\n\n```C++\n// In GlyphRun.h\nclass GlyphRunList {\n...\nGlyphRunBuilder* const fBuilder; // Points to the owner builder\n};\n```\n\n\nSo using unique_ptrs is necessary here in order to maintain a constant reference to the `GlyphRunBuilder`s. \n\n\n\nWhen I was using raw `GlyphRunBuilder`s within the STArray, whenever the STArray would grow it would shift the address of the internal `GlyphRunBuilders` (by my understanding). Then, when a `GlyphRunList` tried to access it\u0027s `GlyphRunBuilder`, the pointer would be invalid, causing a memory issue.\n\n\nI wrote about it here in this doc\n\nhttps://docs.google.com/document/d/1Aisr5XCbT7iNy3cFXU74T9Rutyne8AbJPSYViSif95I/edit?resourcekey\u003d0-R52cnqiFZigp7VZMfZ9FWQ\u0026tab\u003dt.0#heading\u003dh.in55ppba17ea",
+      "parentUuid": "ff0f81f8_9ca48d9e",
       "range": {
         "startLine": 2715,
         "startChar": 4,

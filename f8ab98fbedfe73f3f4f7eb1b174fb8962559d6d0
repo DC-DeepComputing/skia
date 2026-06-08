@@ -310,6 +310,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5204c0bb_9b121a50",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 2416,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-08T15:04:38Z",
+      "side": 1,
+      "message": "wanted to get your opinion on this.",
+      "parentUuid": "b1053b43_bca26951",
+      "range": {
+        "startLine": 2416,
+        "startChar": 49,
+        "endLine": 2416,
+        "endChar": 76
+      },
+      "revId": "f8ab98fbedfe73f3f4f7eb1b174fb8962559d6d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1db5a06a_b1516596",
         "filename": "src/core/SkCanvas.cpp",
         "patchSetId": 6
