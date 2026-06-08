@@ -1696,6 +1696,7 @@ void SkCanvas::drawPaint(const SkPaint& paint) {
 
 void SkCanvas::drawRect(const SkRect& r, const SkPaint& paint) {
     TRACE_EVENT0("skia", TRACE_FUNC);
+    for (volatile int i = 0; i < 1000000; ++i) {}
     // To avoid redundant logic in our culling code and various backends, we always sort rects
     // before passing them along.
     this->onDrawRect(r.makeSorted(), paint);
