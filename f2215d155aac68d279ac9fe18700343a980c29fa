@@ -270,6 +270,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff1100d7_f50f43af",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.h",
+        "patchSetId": 33
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-06-08T19:06:23Z",
+      "side": 1,
+      "message": "I see - thank you for explaining this.  Mimicking this aspect of `SkIcoCodec` LGTM - I was mostly wondering if this is load-bearing and it confused me for a moment.",
+      "parentUuid": "bc7ec2ba_4d92f445",
+      "range": {
+        "startLine": 64,
+        "startChar": 20,
+        "endLine": 64,
+        "endChar": 38
+      },
+      "revId": "f2215d155aac68d279ac9fe18700343a980c29fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8f85bc84_17e1e5ee",
@@ -425,6 +449,30 @@
       "side": 1,
       "message": "`image::BmpDecoder` handles BMP-native masks: `BI_BITFIELDS` / `BI_ALPHABITFIELDS` channel masks, `V4/V5` alpha masks, and in ICO mode it handles the DIB-specific differences like no file header, doubled height, and forcing RGBA output.\n\nThe trailing ICO 1bpp AND mask is different: in `image`, that is handled by `IcoDecoder`, not by `BmpDecoder`. `IcoDecoder` decodes the embedded BMP via `BmpDecoder::new_with_ico_format()` and then reads/applies the trailing AND mask itself. So `SkBmpRustCodec::MakeFromIcoStream()` gets us most of the BMP-in-ICO behavior, but it does not by itself apply the ICO AND mask unless we route through `image::IcoDecoder` end-to-end or keep a Skia-side postprocess.",
       "parentUuid": "41717c4b_25caaa9e",
+      "range": {
+        "startLine": 536,
+        "startChar": 7,
+        "endLine": 536,
+        "endChar": 21
+      },
+      "revId": "f2215d155aac68d279ac9fe18700343a980c29fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bcac7c14_e63dcb03",
+        "filename": "experimental/rust_ico/ffi/FFI.rs",
+        "patchSetId": 33
+      },
+      "lineNbr": 536,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-06-08T19:06:23Z",
+      "side": 1,
+      "message": "Ack - thank you for explaining.",
+      "parentUuid": "ae85f343_8cdab9bd",
       "range": {
         "startLine": 536,
         "startChar": 7,
