@@ -110,6 +110,30 @@
       },
       "revId": "fbafa3bca8637d07e9090fd7e3624a6a4df6968c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "47e5a672_5ebcb318",
+        "filename": "src/core/SkStrike.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2026-06-08T11:47:03Z",
+      "side": 1,
+      "message": "Done, now using 32bit strides and requiring less casts for the stride advancing.",
+      "parentUuid": "907d2fba_49c701c3",
+      "range": {
+        "startLine": 236,
+        "startChar": 0,
+        "endLine": 239,
+        "endChar": 64
+      },
+      "revId": "fbafa3bca8637d07e9090fd7e3624a6a4df6968c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
