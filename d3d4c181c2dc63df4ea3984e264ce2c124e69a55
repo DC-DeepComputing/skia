@@ -16,6 +16,63 @@
       "message": "I contemplated splitting this into stages to test shader updates separately from enabling the new transform classes, but opted to keep it together for easier cherry picking.",
       "revId": "d3d4c181c2dc63df4ea3984e264ce2c124e69a55",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ffc9b59_cd68aead",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1668,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-08T19:48:58Z",
+      "side": 1,
+      "message": "Can we move this down to ~line 1686 ?",
+      "revId": "d3d4c181c2dc63df4ea3984e264ce2c124e69a55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9494900_7a28f797",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1723,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-08T19:48:58Z",
+      "side": 1,
+      "message": "Add a \u0027 \u0027 to line up ?",
+      "revId": "d3d4c181c2dc63df4ea3984e264ce2c124e69a55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac2951c4_fbb35ff0",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 4
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-08T19:48:58Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 234,
+        "startChar": 13,
+        "endLine": 234,
+        "endChar": 19
+      },
+      "revId": "d3d4c181c2dc63df4ea3984e264ce2c124e69a55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
