@@ -1,6 +1,9 @@
 {
   "entries": [
     {
+      "path": "agents/internal/skills/history-rag"
+    },
+    {
       "path": "agents/shared/skills/skill-creation"
     },
     {
