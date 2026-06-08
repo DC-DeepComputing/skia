@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "60f9670c_e84dce7a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-08T17:36:27Z",
+      "side": 1,
+      "message": "PTAL - the Android Canary failure is just due to approvals.",
+      "revId": "04dafc451b8d7c133317c78d3f33dfa3fd3aae32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
