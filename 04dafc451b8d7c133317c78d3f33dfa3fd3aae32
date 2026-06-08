@@ -16,6 +16,23 @@
       "message": "PTAL - the Android Canary failure is just due to approvals.",
       "revId": "04dafc451b8d7c133317c78d3f33dfa3fd3aae32",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5fc9bc4_5e035375",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-08T17:45:38Z",
+      "side": 1,
+      "message": "Do you know why the CTS test was failing, though? I agree that something like this shouldn\u0027t be in the CTS but it\u0027s also a little surprising for it to fail if it passes normally.",
+      "revId": "04dafc451b8d7c133317c78d3f33dfa3fd3aae32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
