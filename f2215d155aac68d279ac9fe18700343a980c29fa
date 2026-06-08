@@ -340,6 +340,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b49496b8_4a7b159c",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.h",
+        "patchSetId": 33
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 4569768
+      },
+      "writtenOn": "2026-06-08T15:23:30Z",
+      "side": 1,
+      "message": "I agree that this can be better with sk_sp\u003cSkData\u003e instead of using index count.",
+      "parentUuid": "bb4bac0d_5c5d5f2e",
+      "range": {
+        "startLine": 196,
+        "startChar": 8,
+        "endLine": 196,
+        "endChar": 23
+      },
+      "revId": "f2215d155aac68d279ac9fe18700343a980c29fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "41717c4b_25caaa9e",
