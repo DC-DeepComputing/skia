@@ -1,0 +1,245 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc25792a_0a9db8b9",
+        "filename": "src/gpu/graphite/sparse_strips/MakeStrips.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-08T16:10:59Z",
+      "side": 1,
+      "message": "Can this be const ? If not, ...",
+      "range": {
+        "startLine": 198,
+        "startChar": 12,
+        "endLine": 198,
+        "endChar": 32
+      },
+      "revId": "7216e1d132d7a9c35d496545928e19cb91848bc1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8b7cfa3_6b42f779",
+        "filename": "src/gpu/graphite/sparse_strips/SparseStripsTypes.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-08T16:10:59Z",
+      "side": 1,
+      "message": "MaskToString since static",
+      "range": {
+        "startLine": 46,
+        "startChar": 23,
+        "endLine": 46,
+        "endChar": 35
+      },
+      "revId": "7216e1d132d7a9c35d496545928e19cb91848bc1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c257d002_b57d9b0c",
+        "filename": "src/gpu/graphite/sparse_strips/SparseStripsTypes.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-08T16:10:59Z",
+      "side": 1,
+      "message": "wdyt about putting this at the start of the function ?",
+      "revId": "7216e1d132d7a9c35d496545928e19cb91848bc1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b36035a0_77f83b6a",
+        "filename": "src/gpu/graphite/sparse_strips/Strip.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-08T16:10:59Z",
+      "side": 1,
+      "message": "wdyt about fFillAndAlphaIdx ?",
+      "range": {
+        "startLine": 56,
+        "startChar": 13,
+        "endLine": 56,
+        "endChar": 26
+      },
+      "revId": "7216e1d132d7a9c35d496545928e19cb91848bc1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5513ac4_1d61488b",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorScalar.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-08T16:10:59Z",
+      "side": 1,
+      "message": "?",
+      "range": {
+        "startLine": 192,
+        "startChar": 0,
+        "endLine": 194,
+        "endChar": 42
+      },
+      "revId": "7216e1d132d7a9c35d496545928e19cb91848bc1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1764bcd7_e85decae",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorScalar.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 383,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-08T16:10:59Z",
+      "side": 1,
+      "message": "f prefixes ?",
+      "range": {
+        "startLine": 379,
+        "startChar": 0,
+        "endLine": 383,
+        "endChar": 27
+      },
+      "revId": "7216e1d132d7a9c35d496545928e19cb91848bc1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "207e4d33_9a60adbb",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorScalar.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 387,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-08T16:10:59Z",
+      "side": 1,
+      "message": "We don\u0027t need these \"this\"s",
+      "range": {
+        "startLine": 387,
+        "startChar": 12,
+        "endLine": 387,
+        "endChar": 18
+      },
+      "revId": "7216e1d132d7a9c35d496545928e19cb91848bc1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf98cad4_1b0dbfce",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorScalar.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 412,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-08T16:10:59Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 412,
+        "startChar": 60,
+        "endLine": 412,
+        "endChar": 67
+      },
+      "revId": "7216e1d132d7a9c35d496545928e19cb91848bc1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "559febe2_d66c46e5",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorScalar.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 417,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-08T16:10:59Z",
+      "side": 1,
+      "message": "needs to be an \u0027int*\u0027 or pull the increment up into resolveTileToAlpha and just pass an int",
+      "range": {
+        "startLine": 417,
+        "startChar": 39,
+        "endLine": 417,
+        "endChar": 43
+      },
+      "revId": "7216e1d132d7a9c35d496545928e19cb91848bc1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea8ff252_eda2f3a3",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorScalar.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 435,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-08T16:10:59Z",
+      "side": 1,
+      "message": "Should this be kNumSubSamples and the \u00274\u0027 be a kNumSubSamples/2 ?",
+      "range": {
+        "startLine": 435,
+        "startChar": 73,
+        "endLine": 435,
+        "endChar": 74
+      },
+      "revId": "7216e1d132d7a9c35d496545928e19cb91848bc1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6f13b27_7ac71848",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorScalar.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 462,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-08T16:10:59Z",
+      "side": 1,
+      "message": "Got to here",
+      "revId": "7216e1d132d7a9c35d496545928e19cb91848bc1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

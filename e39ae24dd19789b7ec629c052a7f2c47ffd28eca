@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d35f9869_1b6d878d",
+        "filename": "src/gpu/graphite/sparse_strips/MakeStrips.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-08T16:10:59Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "0072c11b_33eadfd8",
+      "range": {
+        "startLine": 60,
+        "startChar": 60,
+        "endLine": 60,
+        "endChar": 96
+      },
+      "revId": "e39ae24dd19789b7ec629c052a7f2c47ffd28eca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4ffc53da_00a7e69f",
