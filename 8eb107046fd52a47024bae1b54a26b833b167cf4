@@ -22,6 +22,30 @@
       },
       "revId": "8eb107046fd52a47024bae1b54a26b833b167cf4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "44e8004a_da03e8e1",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-08T19:50:27Z",
+      "side": 0,
+      "message": "that sounds like a good idea. will do",
+      "parentUuid": "436c8441_c6a71d49",
+      "range": {
+        "startLine": 321,
+        "startChar": 55,
+        "endLine": 321,
+        "endChar": 70
+      },
+      "revId": "8eb107046fd52a47024bae1b54a26b833b167cf4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
