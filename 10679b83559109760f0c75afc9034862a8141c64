@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d922fd05_9eb70c0d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-09T15:14:36Z",
+      "side": 1,
+      "message": "Updated everything to have staging, so the old code exists behind SK_GRAPHITE_USE_LEGACY_RRECT_CLIP_SHADER",
+      "revId": "10679b83559109760f0c75afc9034862a8141c64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

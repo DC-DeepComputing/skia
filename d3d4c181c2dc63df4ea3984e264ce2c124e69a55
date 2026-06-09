@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "96eb4650_cb341a2c",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1668,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-09T15:14:36Z",
+      "side": 1,
+      "message": "Yep, it used to be used in the rect case in an old version of the code but lower down is better.",
+      "parentUuid": "2ffc9b59_cd68aead",
+      "revId": "d3d4c181c2dc63df4ea3984e264ce2c124e69a55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c9494900_7a28f797",
@@ -52,6 +70,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7dcbf5f8_ad1212c0",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1723,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-09T15:14:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c9494900_7a28f797",
+      "revId": "d3d4c181c2dc63df4ea3984e264ce2c124e69a55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ac2951c4_fbb35ff0",
@@ -65,6 +101,30 @@
       "writtenOn": "2026-06-08T19:48:58Z",
       "side": 1,
       "message": "typo",
+      "range": {
+        "startLine": 234,
+        "startChar": 13,
+        "endLine": 234,
+        "endChar": 19
+      },
+      "revId": "d3d4c181c2dc63df4ea3984e264ce2c124e69a55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aed0f011_a70af245",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 4
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-09T15:14:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ac2951c4_fbb35ff0",
       "range": {
         "startLine": 234,
         "startChar": 13,
