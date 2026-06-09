@@ -64,6 +64,7 @@
 #include "src/gpu/graphite/Image_Graphite.h"
 #include "src/gpu/graphite/QueueManager.h"
 #include "src/gpu/graphite/RecorderPriv.h"
+#include "src/gpu/graphite/RecordingPriv.h"
 #include "src/gpu/graphite/RendererProvider.h"
 #include "src/gpu/graphite/ResourceProvider.h"
 #include "src/gpu/graphite/ResourceTypes.h"
@@ -241,6 +242,10 @@ std::unique_ptr<Recorder> Context::makeInternalRecorder() const {
 
 InsertStatus Context::insertRecording(const InsertRecordingInfo& info) {
     ASSERT_SINGLE_OWNER
+
+    // Now is a safe time to perform any scratch texture label updates (while a Recording's scratch
+    // texture usages and labels are known and finalized, and before playback).
+    info.fRecording->priv().updateScratchLabels(fResourceProvider.get());
 
     return fQueueManager->addRecording(info, this);
 }
