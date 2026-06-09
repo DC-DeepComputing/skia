@@ -36,8 +36,7 @@ static sk_sp<SkImage> make_raster_image(SkImage* img, GrDirectContext* dctx,
     if (!gctx) {
         return nullptr;
     }
-    SkImageInfo info = img->imageInfo().makeColorType(kRGBA_8888_SkColorType)
-                                       .makeAlphaType(kPremul_SkAlphaType);
+    SkImageInfo info = img->imageInfo();
     SkBitmap bitmap;
     if (!bitmap.tryAllocPixels(info)) {
         return nullptr;
@@ -45,7 +44,6 @@ static sk_sp<SkImage> make_raster_image(SkImage* img, GrDirectContext* dctx,
 
     struct AsyncContext {
         SkBitmap fBitmap;
-        bool fCalled = false;
         bool fSuccess = false;
     } asyncContext;
     asyncContext.fBitmap = bitmap;
@@ -58,16 +56,12 @@ static sk_sp<SkImage> make_raster_image(SkImage* img, GrDirectContext* dctx,
             ctx->fBitmap.writePixels(src);
             ctx->fSuccess = true;
         }
-        ctx->fCalled = true;
     };
     gctx->asyncRescaleAndReadPixels(img, info, img->bounds(),
                                     SkImage::RescaleGamma::kSrc,
                                     SkImage::RescaleMode::kNearest,
                                     callback, &asyncContext);
     gctx->submit(skgpu::graphite::SyncToCpu::kYes);
-    while (!asyncContext.fCalled) {
-        gctx->checkAsyncWorkCompletion();
-    }
     if (asyncContext.fSuccess) {
         return asyncContext.fBitmap.asImage();
     }
@@ -122,23 +116,27 @@ SkSerialReturnType serializeImage(SkImage* img, void* ctx) {
             img = replacementImage->get();
         } else {
             raster = make_raster_image(img, context->fDirectContext, context->fGraphiteContext);
-            if (raster) {
-                img = raster.get();
-            }
+            img = raster.get();
         }
         sk_sp<SkData> data;
         if (img) {
-            data = SkPngEncoder::Encode(context->fDirectContext, img, {});
+            // At this point a non-null `img` came from make_raster_image from this function or
+            // from `collectNonTextureImagesFromPicture`, so there's no ned to pass a context
+            // into Encode to get the pixel data.
+            data = SkPngEncoder::Encode(/*ctx=*/nullptr, img, {});
         }
         if (!data) {
             // If encoding fails, we must return something. If we return null then SkWriteBuffer's
             // serialize_image which calls this proc will continue to try writing to the mskp file.
+            // In case the color type was part of why encoding failed, the fallback always uses
+            // 8888, but the fallback preserves the original alpha type metadata.
             SKIA_LOG_W("SkSharingContext::serializeImage failed. Encoding magenta placeholder.\n");
             SkBitmap bm;
-            bm.allocPixels(SkImageInfo::Make(10, 10, kRGBA_8888_SkColorType, kPremul_SkAlphaType));
-            SkCanvas canvas = SkCanvas(bm);
-            canvas.clear(SK_ColorMAGENTA);
-            data = SkPngEncoder::Encode(context->fDirectContext, bm.asImage().get(), {});
+            bm.allocPixels(SkImageInfo::Make(10, 10, kRGBA_8888_SkColorType, img->alphaType()));
+            // Embed some aspect of the alpha type into the pixel data.
+            const float alpha = img->alphaType() == kOpaque_SkAlphaType ? 1.f : 0.5f;
+            bm.eraseColor({1.f, 0.f, 1.f, alpha});
+            data = SkPngEncoder::Encode(bm.pixmap(), {});
         }
         context->fImageMap[id] = context->fImageMap.count(); // Next in-file id
         return data;
