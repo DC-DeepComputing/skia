@@ -1,0 +1,139 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16012856_42a2d3e5",
+        "filename": "tools/fonts/TestSVGTypeface.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1307,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2026-06-09T12:35:49Z",
+      "side": 1,
+      "message": "Suggest to use a Skia container here, or ideally a Skia array with known size upfront.",
+      "range": {
+        "startLine": 1307,
+        "startChar": 12,
+        "endLine": 1307,
+        "endChar": 40
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "57f08a08_f4ca13b3",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tools/fonts/TestSVGTypeface.cpp",
+              "range": {
+                "startLine": 1307,
+                "startChar": 0,
+                "endLine": 1308,
+                "endChar": 0
+              },
+              "replacement": "            skia_private::TArray\u003cuint8_t\u003e packed;\n"
+            },
+            {
+              "path": "tools/fonts/TestSVGTypeface.cpp",
+              "range": {
+                "startLine": 1310,
+                "startChar": 0,
+                "endLine": 1311,
+                "endChar": 0
+              },
+              "replacement": "                packed.resize_erase((totalBits + 7) / 8);\n"
+            },
+            {
+              "path": "tools/fonts/TestSVGTypeface.cpp",
+              "range": {
+                "startLine": 1322,
+                "startChar": 0,
+                "endLine": 1323,
+                "endChar": 0
+              },
+              "replacement": "                packed.resize_erase(rowBytes * bmpH);\n"
+            },
+            {
+              "path": "tools/fonts/TestSVGTypeface.cpp",
+              "range": {
+                "startLine": 1325,
+                "startChar": 0,
+                "endLine": 1326,
+                "endChar": 0
+              },
+              "replacement": "                    uint8_t* out_row \u003d packed.begin() + y * rowBytes;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "618238cf08b9beed10f679a27db48302ecabd2d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "35e3fdf4_ebca7a2f",
+        "filename": "tools/fonts/TestSVGTypeface.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1354,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2026-06-09T12:35:49Z",
+      "side": 1,
+      "message": "Prefer C++ style casts over C-Style casts.",
+      "range": {
+        "startLine": 1354,
+        "startChar": 16,
+        "endLine": 1354,
+        "endChar": 50
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "f99490de_b692cdf3",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tools/fonts/TestSVGTypeface.cpp",
+              "range": {
+                "startLine": 1090,
+                "startChar": 0,
+                "endLine": 1091,
+                "endChar": 0
+              },
+              "replacement": "                out-\u003ewriteDecAsText(static_cast\u003cint\u003e(advance));\n"
+            }
+          ]
+        }
+      ],
+      "revId": "618238cf08b9beed10f679a27db48302ecabd2d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5d04427_515d3f83",
+        "filename": "tools/fonts/TestSVGTypeface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2026-06-09T12:35:49Z",
+      "side": 1,
+      "message": "Suggest to use an enumeration for ebdt format, instead of an int.",
+      "range": {
+        "startLine": 64,
+        "startChar": 48,
+        "endLine": 64,
+        "endChar": 67
+      },
+      "revId": "618238cf08b9beed10f679a27db48302ecabd2d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
