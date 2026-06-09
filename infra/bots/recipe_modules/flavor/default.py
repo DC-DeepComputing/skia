@@ -100,6 +100,10 @@ class DefaultFlavor(object):
     """Reads the specified file."""
     return self.m.file.read_text('read %s' % path, path)
 
+  def path_exists(self, path):
+    """Check if the specified path exists."""
+    return self.m.path.exists(path)
+
   def remove_file_on_device(self, path):
     """Removes the specified file."""
     return self.m.file.remove('remove %s' % path, path)

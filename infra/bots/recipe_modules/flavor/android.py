@@ -424,6 +424,16 @@ class AndroidFlavor(default.DefaultFlavor):
                    **kwargs)
     return rv.stdout.decode('utf-8').rstrip() if rv and rv.stdout else None
 
+  def path_exists(self, path):
+    testKwargs = {
+      'attempts': 1,
+      'abort_on_failure': False,
+      'fail_build_on_failure': False,
+    }
+    rv = self._adb('check if %s exists' % path,
+                   'shell', 'test', '-e', path, **testKwargs)
+    return bool(rv)
+
   def remove_file_on_device(self, path):
     script = self.module.resource('remove_file_on_device.py')
     self.m.run.with_retry(self.m.step, 'rm %s' % path, 3,

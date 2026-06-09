@@ -77,6 +77,36 @@
       "-i",
       "[CLEANUP]/chromite_tmp_1/chromite/ssh_keys/testing_rsa",
       "root@variable_chromeos_device_hostname",
+      "test",
+      "-e",
+      "file.txt"
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "check if file.txt exists"
+  },
+  {
+    "cmd": [
+      "ssh",
+      "-oConnectTimeout=15",
+      "-oBatchMode=yes",
+      "-t",
+      "-t",
+      "-oConnectTimeout=30",
+      "-oConnectionAttempts=4",
+      "-oNumberOfPasswordPrompts=0",
+      "-oProtocol=2",
+      "-oServerAliveInterval=15",
+      "-oServerAliveCountMax=8",
+      "-oStrictHostKeyChecking=no",
+      "-oUserKnownHostsFile=/dev/null",
+      "-oIdentitiesOnly=yes",
+      "-i",
+      "[CLEANUP]/chromite_tmp_1/chromite/ssh_keys/testing_rsa",
+      "root@variable_chromeos_device_hostname",
       "rm",
       "-f",
       "file.txt"

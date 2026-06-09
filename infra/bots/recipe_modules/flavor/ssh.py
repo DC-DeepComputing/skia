@@ -81,6 +81,15 @@ class SSHFlavor(default.DefaultFlavor):
                    **kwargs)
     return rv.stdout.decode('utf-8').rstrip() if rv and rv.stdout else None
 
+  def path_exists(self, path):
+    testKwargs = {
+      'abort_on_failure': False,
+      'fail_build_on_failure': False,
+    }
+    rv = self.ssh('check if %s exists' % path,
+                  'test', '-e', path, **testKwargs)
+    return bool(rv)
+
   def remove_file_on_device(self, path):
     # use -f to silently return if path doesn't exist
     self.ssh('rm %s' % path, 'rm', '-f', path)

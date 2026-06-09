@@ -88,6 +88,9 @@ class SkiaFlavorApi(recipe_api.RecipeApi):
   def read_file_on_device(self, path, **kwargs):
     return self._f.read_file_on_device(path, **kwargs)
 
+  def path_exists(self, path):
+    return self._f.path_exists(path)
+
   def remove_file_on_device(self, path):
     return self._f.remove_file_on_device(path)
 
@@ -127,7 +130,7 @@ class SkiaFlavorApi(recipe_api.RecipeApi):
                                                 fail_build_on_failure=False)
       if not device_version:
         device_version = VERSION_NONE
-      if device_version != host_version:
+      if device_version != host_version or not self.path_exists(device_path):
         self.remove_file_on_device(device_version_file)
         self.create_clean_device_dir(device_path)
         self.copy_directory_contents_to_device(

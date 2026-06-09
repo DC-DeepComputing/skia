@@ -47,6 +47,7 @@ def RunSteps(api):
   try:
     api.flavor.copy_file_to_device('file.txt', 'file.txt')
     api.flavor.read_file_on_device('file.txt')
+    api.flavor.path_exists('file.txt')
     api.flavor.remove_file_on_device('file.txt')
     api.flavor.create_clean_host_dir('results_dir')
     api.flavor.create_clean_device_dir('device_results_dir')
@@ -269,4 +270,32 @@ def GenTests(api):
     api.properties(**(
         defaultProps(internalBuilder) | {'internal_hardware_label': '6'}
     ))
+  )
+
+  builder = ('Perf-Android-Clang-Nexus5x-GPU-Adreno418-arm64-Debug-All'
+             '-Android')
+  yield (
+      api.test('android_images_present') +
+      api.properties(buildername=builder,
+                     repository='https://skia.googlesource.com/skia.git',
+                     revision='abc123',
+                     path_config='kitchen',
+                     swarm_out_dir='[SWARM_OUT_DIR]') +
+      api.step_data('read /sdcard/revenge_of_the_skiabot/SK_IMAGE_VERSION',
+                    stdout=api.raw_io.output('42')) +
+      api.step_data('check if /sdcard/revenge_of_the_skiabot/images exists',
+                    retcode=0)
+  )
+
+  yield (
+      api.test('android_images_missing') +
+      api.properties(buildername=builder,
+                     repository='https://skia.googlesource.com/skia.git',
+                     revision='abc123',
+                     path_config='kitchen',
+                     swarm_out_dir='[SWARM_OUT_DIR]') +
+      api.step_data('read /sdcard/revenge_of_the_skiabot/SK_IMAGE_VERSION',
+                    stdout=api.raw_io.output('42')) +
+      api.step_data('check if /sdcard/revenge_of_the_skiabot/images exists',
+                    retcode=1)
   )
