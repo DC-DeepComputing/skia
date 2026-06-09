@@ -10,6 +10,9 @@
 
 #if defined(SK_USE_PARTITION_ALLOC)
 #include "partition_alloc/pointers/raw_ptr.h"
+#if !defined(PARTITION_ALLOC_POINTERS_RAW_PTR_H_)
+#error "Expected PartitionAlloc raw_ptr"
+#endif
 #else
 #include "src/partition_alloc/noop/raw_ptr.h"
 #endif
