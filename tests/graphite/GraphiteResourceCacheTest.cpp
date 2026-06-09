@@ -24,6 +24,7 @@
 #include "src/gpu/graphite/Resource.h"
 #include "src/gpu/graphite/ResourceCache.h"
 #include "src/gpu/graphite/ResourceProvider.h"
+#include "src/gpu/graphite/ScratchResourceManager.h"
 #include "src/gpu/graphite/SharedContext.h"
 #include "src/gpu/graphite/Texture.h"
 #include "src/gpu/graphite/TextureProxyView.h"
@@ -32,6 +33,7 @@
 #include "tools/Resources.h"
 #include "tools/graphite/GraphiteTestContext.h"
 
+#include <string>
 namespace skgpu::graphite {
 
 class TestResource : public Resource {
@@ -986,6 +988,136 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteTimeLimitedPurgeTest,
 
     REPORTER_ASSERT(reporter, resourceCache->getResourceCount() > 0);
     REPORTER_ASSERT(reporter, resourceCache->getResourceCount() < kLargeResourceCount);
+}
+
+// Confirm that scratch texture proxies that differ only in their usage are instantiated by the
+// ScratchResourceManager as the same scratch texture, and that its resulting label is a union of
+// all its usages.
+DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteScratchTextureLabelTest,
+                                   reporter,
+                                   context,
+                                   CtsEnforcement::kNextRelease) {
+    const Caps* caps = context->priv().caps();
+    std::unique_ptr<Recorder> recorder = context->makeRecorder();
+    ResourceProvider* resourceProvider = recorder->priv().resourceProvider();
+    ScratchResourceManager scratchManager{resourceProvider, std::make_unique<ProxyReadCountMap>()};
+
+    // Define arbitrary shared texture parameters for the texture proxies:
+    auto texInfo = caps->getDefaultSampledTextureInfo(
+            SkColorType::kRGBA_8888_SkColorType, Mipmapped::kNo, Protected::kNo, Renderable::kYes);
+    static constexpr SkISize kDimensions {150, 150};
+
+    // Define two scratch texture proxies, identical save for different (arbitrarily chosen) usages:
+    ScratchUsageFlags proxyAUsage = ScratchUsageFlags::kCopyDeviceTexture;
+    ScratchUsageFlags proxyBUsage = ScratchUsageFlags::kChildDevice;
+    auto textureProxyA =
+            TextureProxy::Make(caps, resourceProvider, kDimensions, texInfo, proxyAUsage);
+    auto textureProxyB =
+            TextureProxy::Make(caps, resourceProvider, kDimensions, texInfo, proxyBUsage);
+
+    // Instantiate each proxy in sequence, taking care to force the ScratchResourceManager to see
+    // the Texture associated with the proxies as available between instantiations:
+    REPORTER_ASSERT(reporter,
+                    TextureProxy::InstantiateIfNotLazy(&scratchManager, textureProxyA.get()));
+    auto textureFromProxyA = textureProxyA->refTexture();
+    scratchManager.returnTexture(textureFromProxyA);
+
+    REPORTER_ASSERT(reporter,
+                    TextureProxy::InstantiateIfNotLazy(&scratchManager, textureProxyB.get()));
+    auto textureFromProxyB = textureProxyB->refTexture();
+    scratchManager.returnTexture(textureFromProxyB);
+
+    // Confirm that the proxies were instantiated with the same underlying Texture:
+    REPORTER_ASSERT(reporter, textureFromProxyA && textureFromProxyA == textureFromProxyB);
+
+    // Simulate Recording snapping and insertion:
+    std::unique_ptr<const ScratchResourceManager::ScratchTextureUsageMap> usageMap;
+    std::unique_ptr<const ScratchResourceManager::ScratchTextureLabelMap> labelMap;
+    scratchManager.snapScratchTextureMaps(usageMap, labelMap);
+    resourceProvider->updateCachedScratchLabels(usageMap.get(), labelMap.get());
+
+    // Check that the resulting texture's label aligns with the expected union of usages.
+    SkEnumBitMask<ScratchUsageFlags> useMask = { proxyAUsage | proxyBUsage };
+    REPORTER_ASSERT(
+            reporter,
+            textureFromProxyA->getLabel() == ResourceCache::GenerateUsageLabel(useMask));
+
+    // Now validate behavior while simulating a new Recording using the same ScratchResourceManager
+    // and the same Texture object. Define a proxy identical to proxy A and B, but with a distinct
+    // usage.
+    ScratchUsageFlags proxyCUsage = ScratchUsageFlags::kYUVRasterBitmapPlane;
+    auto textureProxyC =
+            TextureProxy::Make(caps, resourceProvider, kDimensions, texInfo, proxyCUsage);
+
+    // Instantiate proxy C, verifying that it is instantiated with the same Texture resource.
+    REPORTER_ASSERT(reporter,
+                    TextureProxy::InstantiateIfNotLazy(&scratchManager, textureProxyC.get()));
+    auto textureFromProxyC = textureProxyC->refTexture();
+    scratchManager.returnTexture(textureFromProxyC);
+    // Verify it is instantiated with the same Texture as before
+    REPORTER_ASSERT(reporter, textureFromProxyC && textureFromProxyB == textureFromProxyC);
+
+    // Simulate snapping and inserting a new Recording
+    scratchManager.snapScratchTextureMaps(usageMap, labelMap);
+    resourceProvider->updateCachedScratchLabels(usageMap.get(), labelMap.get());
+
+    // Verify the Texture's label reflects only the usage defined by this "Recorder" (proxyCUsage).
+    REPORTER_ASSERT(
+            reporter,
+            textureFromProxyC->getLabel() == ResourceCache::GenerateUsageLabel(proxyCUsage));
+
+    // Now define a proxy that does not rely upon statically-defined usage flags but uses a custom
+    // label.
+    auto customLabelProxyA =
+            TextureProxy::Make(caps, resourceProvider, kDimensions, texInfo, "A", Budgeted::kYes);
+    // Instantiate the labeled proxy. Even though it is identical to the proxies above outside of
+    // its label, it should be instantiated with a different Texture because we separate Textures
+    // that have custom labels from those relying upon usage flags.
+    REPORTER_ASSERT(reporter,
+                    TextureProxy::InstantiateIfNotLazy(&scratchManager, customLabelProxyA.get()));
+    auto customLabelTextureA = customLabelProxyA->refTexture();
+    scratchManager.returnTexture(customLabelTextureA);
+    REPORTER_ASSERT(reporter, customLabelTextureA && textureFromProxyC != customLabelTextureA);
+
+    // Simulate snapping and inserting a new Recording
+    scratchManager.snapScratchTextureMaps(usageMap, labelMap);
+    resourceProvider->updateCachedScratchLabels(usageMap.get(), labelMap.get());
+
+    // Verify the Texture's label reflects only the custom label.
+    REPORTER_ASSERT(reporter,
+                    strcmp(customLabelTextureA->getLabel(), "ScratchTexture_A") == 0);
+
+    // Now see if we can reuse the same scratch texture within one Recording, instantiated via
+    // two proxies with different labels. This is set up such that it also verifies we can reuse the
+    // same custom-label scratch texture across Recordings as expected.
+    auto customLabelProxyB =
+            TextureProxy::Make(caps, resourceProvider, kDimensions, texInfo, "B", Budgeted::kYes);
+
+    // Instantiate customLabelProxyB, mark it as available, and then instantiate customLabelProxyA.
+    REPORTER_ASSERT(reporter,
+                    TextureProxy::InstantiateIfNotLazy(&scratchManager, customLabelProxyB.get()));
+    auto customLabelTextureB = customLabelProxyB->refTexture();
+    scratchManager.returnTexture(customLabelTextureB);
+
+    // customLabelProxyA is not volatile and therefore cannot be de-instantiated, so to instantiate
+    // a texture with label "A", just create a new, identical proxy.
+    customLabelProxyA =
+            TextureProxy::Make(caps, resourceProvider, kDimensions, texInfo, "A", Budgeted::kYes);
+    REPORTER_ASSERT(reporter,
+                    TextureProxy::InstantiateIfNotLazy(&scratchManager, customLabelProxyA.get()));
+    customLabelTextureA = customLabelProxyA->refTexture();
+    scratchManager.returnTexture(customLabelTextureA);
+
+    REPORTER_ASSERT(reporter,
+                    customLabelTextureB && customLabelTextureA == customLabelTextureB);
+
+    // Simulate snapping and inserting a new Recording
+    scratchManager.snapScratchTextureMaps(usageMap, labelMap);
+    resourceProvider->updateCachedScratchLabels(usageMap.get(), labelMap.get());
+
+    // Verify the texture's label is as expected
+    REPORTER_ASSERT(reporter,
+                    strcmp(customLabelTextureA->getLabel(),"ScratchTexture_B_A") == 0);
 }
 
 }  // namespace skgpu::graphite
