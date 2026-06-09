@@ -16,6 +16,24 @@
       "message": "Resurrecting to see what other folks think about this.\n\nThere are some ergonomics friction points (that I consider minor).  Alternatively we could start using `std::span` in parallel, as needed (public APIs, fixed extent cases), but I suspect sooner or later we\u0027ll want to converge on a single span impl.",
       "revId": "390aec55dfa238c207d17b5abb91bfac9d2c664c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bef35ab0_7362f970",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-09T14:44:19Z",
+      "side": 1,
+      "message": "It\u0027s also worth retrying this now that I\u0027ve updated Clang on Linux and Windows to be 22+. Maybe some shortcomings with the syntax were improved?",
+      "parentUuid": "869292ed_554176e4",
+      "revId": "390aec55dfa238c207d17b5abb91bfac9d2c664c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
