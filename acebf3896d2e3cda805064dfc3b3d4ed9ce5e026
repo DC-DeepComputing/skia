@@ -16,6 +16,229 @@
       "message": "Thanks!  LGTM.  Let me add @kjlubick and @fmalita for reviewing from Skia side.",
       "revId": "acebf3896d2e3cda805064dfc3b3d4ed9ce5e026",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a10bff2a_642e23c5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 39
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-06-09T19:14:11Z",
+      "side": 1,
+      "message": "Thanks, Johan!",
+      "revId": "acebf3896d2e3cda805064dfc3b3d4ed9ce5e026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd5460dc_16f601d1",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 39
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-06-09T19:14:11Z",
+      "side": 1,
+      "message": "There\u0027s quite a bit of duplication between `MakeFromStream` and `MakeFromIcoStream`.  Would it make sense to merge and pass an additional param to discriminate them?  Maybe `enum class StreamType { kBMP, kICO }`?",
+      "range": {
+        "startLine": 190,
+        "startChar": 0,
+        "endLine": 210,
+        "endChar": 66
+      },
+      "revId": "acebf3896d2e3cda805064dfc3b3d4ed9ce5e026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a03b962_9582e058",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 39
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-06-09T19:14:11Z",
+      "side": 1,
+      "message": "In the BMP version, reading metadata is guarded by `if (!reader-\u003emetadata_loaded())`.  Is something similar needed for ICO mode here?",
+      "range": {
+        "startLine": 213,
+        "startChar": 0,
+        "endLine": 217,
+        "endChar": 5
+      },
+      "revId": "acebf3896d2e3cda805064dfc3b3d4ed9ce5e026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c70e3f3_98dfb313",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.h",
+        "patchSetId": 39
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-06-09T19:14:11Z",
+      "side": 1,
+      "message": "naming nit: `fIsFromIco`?\n\nAlso I think this should be const (and set in the constructor).",
+      "range": {
+        "startLine": 101,
+        "startChar": 9,
+        "endLine": 101,
+        "endChar": 19
+      },
+      "revId": "acebf3896d2e3cda805064dfc3b3d4ed9ce5e026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a59c4820_05099606",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 39
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-06-09T19:14:11Z",
+      "side": 1,
+      "message": "No need for these to be heap-allocated, right?\n\n```\n    SkMemoryStream stream(buffer, bytesRead, /*copyData \u003d */ false);\n```",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 68
+      },
+      "revId": "acebf3896d2e3cda805064dfc3b3d4ed9ce5e026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f76b7dae_e7e02637",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 39
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-06-09T19:14:11Z",
+      "side": 1,
+      "message": "I guess this could also be stack allocated if we change the FFI signature?",
+      "revId": "acebf3896d2e3cda805064dfc3b3d4ed9ce5e026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01ccda66_43654136",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 39
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-06-09T19:14:11Z",
+      "side": 1,
+      "message": "If the input stream is already a memory stream, why do we need to make a copy?",
+      "revId": "acebf3896d2e3cda805064dfc3b3d4ed9ce5e026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b0410f4_5c901818",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 39
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-06-09T19:14:11Z",
+      "side": 1,
+      "message": "This is only used for sorting, right?  I\u0027m thinking we could almost sort the EmbeddedImage vector directly, except for `bitCount`... we could query the codec with SkEncodedInfo::getColorDepth, but I\u0027m not sure that it reflects the original bit depth necessarily.\n\nNo actionable suggestion, just bringing it up in case you think there\u0027s a way to make it work.",
+      "range": {
+        "startLine": 112,
+        "startChar": 0,
+        "endLine": 117,
+        "endChar": 36
+      },
+      "revId": "acebf3896d2e3cda805064dfc3b3d4ed9ce5e026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0aaaea3_ff5f2e03",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 39
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-06-09T19:14:11Z",
+      "side": 1,
+      "message": "Hmm, can we avoid all these copies if we force everything into SkData upfront, and then slice/subset as needed?  Something like this\n\n```\n    sk_sp\u003cSkData\u003e data \u003d stream-\u003egetData();\n    if (!data) {\n        data \u003d SkStreamPriv::CopyStreamToData(stream.get());\n        ...\n    }\n    SkMemoryStream dataStream(data);\n    ...\n    ...\n\n    auto entryData \u003d data-\u003eshareSubset(offset, size);\n    auto entryStream \u003d std::make_unique\u003cSkMemoryStream\u003e(entryData);\n```",
+      "revId": "acebf3896d2e3cda805064dfc3b3d4ed9ce5e026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5671be64_58400f2a",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 39
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-06-09T19:14:11Z",
+      "side": 1,
+      "message": "This could also be elided with\n\n```\n    bmpData \u003d entryData;\n```",
+      "revId": "acebf3896d2e3cda805064dfc3b3d4ed9ce5e026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "111cb9f2_29857f41",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 39
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-06-09T19:14:11Z",
+      "side": 1,
+      "message": "nit (here and elsewhere): `SkToInt`",
+      "range": {
+        "startLine": 280,
+        "startChar": 24,
+        "endLine": 280,
+        "endChar": 40
+      },
+      "revId": "acebf3896d2e3cda805064dfc3b3d4ed9ce5e026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
