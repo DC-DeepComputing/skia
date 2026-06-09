@@ -22,6 +22,30 @@
       },
       "revId": "952d95b2c1700b4614ab1d1404474ec6703307ad",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "99dadb04_d3f72d02",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-06-09T18:31:34Z",
+      "side": 1,
+      "message": "Yes. Done in PS7 of https://skia-review.git.corp.google.com/c/buildbot/+/1255779.  That generated https://skia-review.git.corp.google.com/c/skia/+/1259596",
+      "parentUuid": "bf58021d_52d001bf",
+      "range": {
+        "startLine": 7,
+        "startChar": 49,
+        "endLine": 7,
+        "endChar": 55
+      },
+      "revId": "952d95b2c1700b4614ab1d1404474ec6703307ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
