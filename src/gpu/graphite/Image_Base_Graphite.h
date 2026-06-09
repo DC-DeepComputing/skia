@@ -10,7 +10,7 @@
 
 #include "include/core/SkRecorder.h"
 #include "include/gpu/GpuTypes.h"
-#include "include/private/base/SkTArray.h"
+#include "include/private/SkTArray.h"
 #include "src/base/SkSpinlock.h"
 #include "src/image/SkImage_Base.h"
 
