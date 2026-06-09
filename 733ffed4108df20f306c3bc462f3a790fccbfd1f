@@ -16,6 +16,23 @@
       "message": "Still lgtm w/ staging changes",
       "revId": "733ffed4108df20f306c3bc462f3a790fccbfd1f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3781c730_741c5425",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-09T15:59:02Z",
+      "side": 1,
+      "message": "https://chromium-review.git.corp.google.com/c/chromium/src/+/7911722 has landed, so should be okay in chrome now.",
+      "revId": "733ffed4108df20f306c3bc462f3a790fccbfd1f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
