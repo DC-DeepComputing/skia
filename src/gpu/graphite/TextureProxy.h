@@ -13,6 +13,7 @@
 #include "include/gpu/graphite/TextureInfo.h"
 #include "include/private/SkPixelStorage.h"
 #include "include/private/base/SkTo.h"
+#include "src/base/SkEnumBitMask.h"
 #include "src/gpu/graphite/TextureInfoPriv.h"
 
 #include <functional>
@@ -27,6 +28,7 @@ class ResourceProvider;
 class ScratchResourceManager;
 class Texture;
 enum class TextureFormat : uint8_t;
+enum class ScratchUsageFlags : uint32_t;
 
 class TextureProxy : public SkPixelStorage, public SkRefCnt {
 public:
@@ -43,6 +45,9 @@ public:
     const TextureInfo& textureInfo() const { return fInfo; }
 
     const char* label() const { return fLabel.c_str(); }
+    // The only proxies which should have scratch usage mask are those used to used to instantiate a
+    // ScratchTexture. If a proxy has a custom string label, it should not a have usage mask.
+    ScratchUsageFlags scratchUsage() const { return fUsage; }
 
     bool isLazy() const;
     bool isFullyLazy() const;
@@ -94,6 +99,11 @@ public:
                                     const TextureInfo&,
                                     std::string_view label,
                                     skgpu::Budgeted);
+    static sk_sp<TextureProxy> Make(const Caps*,
+                                    ResourceProvider*,
+                                    SkISize dimensions,
+                                    const TextureInfo&,
+                                    ScratchUsageFlags);
 
     using LazyInstantiateCallback = std::function<sk_sp<Texture> (ResourceProvider*)>;
 
@@ -112,9 +122,13 @@ public:
 
 private:
     TextureProxy(SkISize dimensions,
-                 const TextureInfo& info,
+                 const TextureInfo&,
+                 ScratchUsageFlags usage,
+                 skgpu::Budgeted);
+    TextureProxy(SkISize dimensions,
+                 const TextureInfo&,
                  std::string_view label,
-                 skgpu::Budgeted budgeted);
+                 skgpu::Budgeted);
     TextureProxy(SkISize dimensions,
                  const TextureInfo&,
                  skgpu::Budgeted,
@@ -134,6 +148,14 @@ private:
     // String used to describe the current use of this TextureProxy. It will be set on its
     // Texture object when the proxy gets instantiated.
     std::string fLabel;
+    // If the proxy represents and is instantiated as a scratch Texture, rather than storing a
+    // string label, it may instead store a bitmask of usages which is later used to generate a
+    // comprehensive string label. This makes it easier to determine whether the texture's label
+    // needs to be updated and allows us to only generate the label for that texture once all its
+    // usages are known (upon snapping and later inserting a Recording). Should be 0 for texture
+    // proxies instantiated as non-scratch and for scratch resources which use a custom label not
+    // represented by a ScratchUsageFlag.
+    ScratchUsageFlags fUsage;
 
     skgpu::Budgeted fBudgeted;
     const Volatile fVolatile;
