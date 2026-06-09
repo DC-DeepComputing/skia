@@ -240,6 +240,179 @@
       "message": "Got to here",
       "revId": "7216e1d132d7a9c35d496545928e19cb91848bc1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bcc740e0_be3a9e50",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorScalar.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 462,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-09T13:22:38Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "c6f13b27_7ac71848",
+      "revId": "7216e1d132d7a9c35d496545928e19cb91848bc1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e64f4cad_59352559",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorScalar.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 525,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-09T13:22:38Z",
+      "side": 1,
+      "message": "Should this be named something else: fWindings, fWindingValues, ... ?",
+      "range": {
+        "startLine": 525,
+        "startChar": 12,
+        "endLine": 525,
+        "endChar": 25
+      },
+      "revId": "7216e1d132d7a9c35d496545928e19cb91848bc1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51549db6_79f36963",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-09T13:22:38Z",
+      "side": 1,
+      "message": "// This is used as the XXX for Strips that cap the final Strip of a row ?",
+      "revId": "7216e1d132d7a9c35d496545928e19cb91848bc1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dcd1a116_aeae777e",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-09T13:22:38Z",
+      "side": 1,
+      "message": "hasXXX ?",
+      "range": {
+        "startLine": 75,
+        "startChar": 9,
+        "endLine": 75,
+        "endChar": 22
+      },
+      "revId": "7216e1d132d7a9c35d496545928e19cb91848bc1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e7353f1_57c10a99",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-09T13:22:38Z",
+      "side": 1,
+      "message": "hasLeftIntersection ?",
+      "range": {
+        "startLine": 78,
+        "startChar": 9,
+        "endLine": 78,
+        "endChar": 13
+      },
+      "revId": "7216e1d132d7a9c35d496545928e19cb91848bc1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dce63b7a_c6878f07",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-09T13:22:38Z",
+      "side": 1,
+      "message": "Tab these right one to distinguish from the function body code ?",
+      "range": {
+        "startLine": 110,
+        "startChar": 0,
+        "endLine": 115,
+        "endChar": 29
+      },
+      "revId": "7216e1d132d7a9c35d496545928e19cb91848bc1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c33b926b_e8ac1109",
+        "filename": "tests/graphite/sparse_strips/CoverageTest.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-09T13:22:38Z",
+      "side": 1,
+      "message": "kErrorLimit ?",
+      "range": {
+        "startLine": 185,
+        "startChar": 22,
+        "endLine": 185,
+        "endChar": 32
+      },
+      "revId": "7216e1d132d7a9c35d496545928e19cb91848bc1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "992dd9b1_0c90336e",
+        "filename": "tests/graphite/sparse_strips/CoverageTest.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-09T13:22:38Z",
+      "side": 1,
+      "message": "These \"* 1.0f\"s seem odd",
+      "range": {
+        "startLine": 220,
+        "startChar": 49,
+        "endLine": 220,
+        "endChar": 56
+      },
+      "revId": "7216e1d132d7a9c35d496545928e19cb91848bc1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
