@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "842809c4_d0650152",
+        "filename": "src/gpu/ganesh/GrAttachment.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-06-09T20:31:33Z",
+      "side": 1,
+      "message": "Sorry drive by comment before you sent this out to be reviewed. This doesn\u0027t really work in all cases. If you have two disjoint render areas this will join the two rects into a large rect, but will claim the area in between is cleared when it has not been.\n\nWe maybe have to look into doing a full initial clear, since the alternatives are either tracking all the clear regions or if doing a clear expand the bounds to be the join of the two rects. Tracking the individual regions and comparing seems overly complex. So that leaves either the immediate full clear or updating the draw bounds to be the full join of the clears.",
+      "range": {
+        "startLine": 59,
+        "startChar": 48,
+        "endLine": 59,
+        "endChar": 78
+      },
+      "revId": "ce944eaca8df0d3a93edb42f62df31941f6729c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
