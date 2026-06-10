@@ -74,49 +74,10 @@ SkCodec::Result MapDecodingResult(rust_bmp::DecodingResult rustResult) {
 
 }  // namespace
 
-std::unique_ptr<SkBmpRustCodec> SkBmpRustCodec::MakeFromStream(std::unique_ptr<SkStream> stream,
-                                                               Result* result) {
-    Result resultStorage;
-    if (!result) {
-        result = &resultStorage;
-    }
-
-    if (!stream) {
-        *result = kInvalidInput;
-        return nullptr;
-    }
-
-    auto inputAdapter = std::make_unique<rust::stream::SkStreamAdapter>(stream.get());
-    rust::Box<rust_bmp::ResultOfReader> resultOfReader =
-            rust_bmp::new_reader(std::move(inputAdapter));
-
-    rust_bmp::DecodingResult rustResult = resultOfReader->err();
-    if (rustResult != rust_bmp::DecodingResult::Success) {
-        *result = MapDecodingResult(rustResult);
-        return nullptr;
-    }
-
-    rust::Box<rust_bmp::Reader> reader = resultOfReader->unwrap();
-
-    // In streaming mode, metadata might not be available yet if the stream
-    // doesn't have enough data. Try to read metadata explicitly.
-    if (!reader->metadata_loaded()) {
-        rust_bmp::DecodingResult metadataResult = reader->read_metadata();
-
-        if (metadataResult == rust_bmp::DecodingResult::IncompleteInput) {
-            // Need more data for metadata
-            *result = kIncompleteInput;
-            return nullptr;
-        } else if (metadataResult != rust_bmp::DecodingResult::Success) {
-            // Error during metadata read
-            *result = MapDecodingResult(metadataResult);
-            return nullptr;
-        }
-
-        // If read_metadata() returned Success, metadata must be loaded.
-        SkASSERT_RELEASE(reader->metadata_loaded());
-    }
-
+std::unique_ptr<SkBmpRustCodec> SkBmpRustCodec::MakeFromReader(
+        std::unique_ptr<SkStream> stream,
+        rust::Box<rust_bmp::Reader> reader,
+        Result* result) {
     uint32_t width = reader->width();
     uint32_t height = reader->height();
     rust_bmp::BmpColor rustColor = reader->color();
@@ -175,6 +136,54 @@ std::unique_ptr<SkBmpRustCodec> SkBmpRustCodec::MakeFromStream(std::unique_ptr<S
         std::move(stream),
         std::move(reader)
     ));
+}
+
+std::unique_ptr<SkBmpRustCodec> SkBmpRustCodec::MakeFromStream(std::unique_ptr<SkStream> stream,
+                                                               Result* result,
+                                                               StreamType type) {
+    Result resultStorage;
+    if (!result) {
+        result = &resultStorage;
+    }
+
+    if (!stream) {
+        *result = (type == StreamType::kICO) ? kInvalidParameters : kInvalidInput;
+        return nullptr;
+    }
+
+    auto inputAdapter = std::make_unique<rust::stream::SkStreamAdapter>(stream.get());
+    rust::Box<rust_bmp::ResultOfReader> resultOfReader =
+            rust_bmp::new_reader(std::move(inputAdapter));
+
+    rust_bmp::DecodingResult rustResult = resultOfReader->err();
+    if (rustResult != rust_bmp::DecodingResult::Success) {
+        *result = MapDecodingResult(rustResult);
+        return nullptr;
+    }
+
+    rust::Box<rust_bmp::Reader> reader = resultOfReader->unwrap();
+
+    // Read metadata explicitly. In streaming mode it might not be available yet
+    // if the stream lacks enough data (mapped to kIncompleteInput so the caller
+    // can retry). ICO streams are fully buffered, so this resolves immediately.
+    // ICO uses ICO-aware parsing: no file header, halved height, alpha channel.
+    if (!reader->metadata_loaded()) {
+        rust_bmp::DecodingResult metadataResult = (type == StreamType::kICO)
+                ? reader->read_metadata_for_ico()
+                : reader->read_metadata();
+        if (metadataResult != rust_bmp::DecodingResult::Success) {
+            *result = MapDecodingResult(metadataResult);
+            return nullptr;
+        }
+        // If metadata reading returned Success, metadata must be loaded.
+        SkASSERT_RELEASE(reader->metadata_loaded());
+    }
+
+    auto codec = MakeFromReader(std::move(stream), std::move(reader), result);
+    if (codec) {
+        codec->fIsFromIco = (type == StreamType::kICO);
+    }
+    return codec;
 }
 
 SkBmpRustCodec::SkBmpRustCodec(SkEncodedInfo&& encodedInfo,
@@ -240,9 +249,12 @@ bool SkBmpRustCodec::onRewind() {
 
     fReader = resultOfReader->unwrap();
 
-    // Read metadata for the new reader (required before read_image_data can work)
+    // Read metadata for the new reader (required before read_image_data can work).
+    // Use ICO-aware metadata parsing if this codec was created from an ICO stream.
     if (!fReader->metadata_loaded()) {
-        rust_bmp::DecodingResult metadataResult = fReader->read_metadata();
+        rust_bmp::DecodingResult metadataResult = fIsFromIco
+                ? fReader->read_metadata_for_ico()
+                : fReader->read_metadata();
         if (metadataResult != rust_bmp::DecodingResult::Success) {
             return false;
         }
