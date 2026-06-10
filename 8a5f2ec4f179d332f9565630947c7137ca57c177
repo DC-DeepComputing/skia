@@ -62,6 +62,24 @@
       "message": "Note: This is taken from:\nhttps://source.chromium.org/chromium/chromium/src/+/main:build/config/compiler/BUILD.gn;l\u003d3124-3147?q\u003dbuild%2Fconfig%2Fcompiler%2FBUILD.gn\u0026ss\u003dchromium%2Fchromium%2Fsrc",
       "revId": "8a5f2ec4f179d332f9565630947c7137ca57c177",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c80fbc0b_d4aa8da3",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 14
+      },
+      "lineNbr": 860,
+      "author": {
+        "id": 4641039
+      },
+      "writtenOn": "2026-06-10T16:01:03Z",
+      "side": 1,
+      "message": "With\n\ns/Chrome/Skia",
+      "parentUuid": "26d9195d_2859d831",
+      "revId": "8a5f2ec4f179d332f9565630947c7137ca57c177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
