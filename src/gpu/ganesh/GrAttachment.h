@@ -53,8 +53,16 @@ public:
 
     skgpu::Mipmapped mipmapped() const { return fMipmapped; }
 
-    bool hasPerformedInitialClear() const { return fHasPerformedInitialClear; }
-    void markHasPerformedInitialClear() { fHasPerformedInitialClear = true; }
+    bool areaHasBeenCleared(SkIRect attachmentArea) const {
+        return fClearedArea.contains(attachmentArea);
+    }
+
+    void setClearedArea(SkIRect clearedArea) {
+        // We should not reassign the cleared area if it already contains the passed-in area.
+        SkASSERT(!this->areaHasBeenCleared(clearedArea));
+
+        fClearedArea = clearedArea;
+    }
 
     // This unique key is used for attachments of the same dimensions, usage, and sample cnt which
     // are shared between multiple render targets at the same time. Only one usage flag may be
@@ -117,7 +125,12 @@ private:
     UsageFlags fSupportedUsages;
     int fSampleCnt;
     skgpu::Mipmapped fMipmapped;
-    bool fHasPerformedInitialClear = false;
+    // Track which area of the attachment has already been cleared to cut down on unnecessary clear
+    // operations, which can be more expensive on desktop GPUs than loads. To reduce tracking
+    // overhead, we do not perform precise area tracking within the attachment but instead simply
+    // store which portion of the attachment was most recently cleared. This value should be updated
+    // iff the newly-cleared area is not already contained within fClearedArea.
+    SkIRect fClearedArea = SkIRect::MakeEmpty();
     GrMemoryless fMemoryless;
 
     using INHERITED = GrSurface;
