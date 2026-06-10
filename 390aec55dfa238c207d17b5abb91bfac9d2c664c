@@ -34,6 +34,24 @@
       "parentUuid": "869292ed_554176e4",
       "revId": "390aec55dfa238c207d17b5abb91bfac9d2c664c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "06174c2c_f6bdcee8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-10T13:41:00Z",
+      "side": 1,
+      "message": "I would be in favor of biting the bullet and getting to just one span type so don\u0027t introduce inconsistencies in the codebase.",
+      "parentUuid": "bef35ab0_7362f970",
+      "revId": "390aec55dfa238c207d17b5abb91bfac9d2c664c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
