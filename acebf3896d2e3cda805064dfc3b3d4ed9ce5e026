@@ -129,6 +129,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "da7b8757_d7764de0",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 39
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-06-10T16:52:39Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "ee814f79_526fe9c7",
+      "range": {
+        "startLine": 213,
+        "startChar": 0,
+        "endLine": 217,
+        "endChar": 5
+      },
+      "revId": "acebf3896d2e3cda805064dfc3b3d4ed9ce5e026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9c70e3f3_98dfb313",
@@ -330,6 +354,30 @@
       "side": 1,
       "message": "I think the issue is that there would be no good, clean way to drop this without either losing the correct tiebreaking or widening the runtime struct in this case.\n\nThe bitCount is also construction-only sorting metadata that shouldn\u0027t leak into the long-lived structs.\n\nI don\u0027t think there\u0027s a really nice a neat way to do that, though.\n\nAlso, as you mentioned, getColorDepth is computed from the decoded image, not the source.",
       "parentUuid": "7b0410f4_5c901818",
+      "range": {
+        "startLine": 112,
+        "startChar": 0,
+        "endLine": 117,
+        "endChar": 36
+      },
+      "revId": "acebf3896d2e3cda805064dfc3b3d4ed9ce5e026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "682909ad_2c50a74c",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 39
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-06-10T16:52:39Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "5ddb5146_dede87c5",
       "range": {
         "startLine": 112,
         "startChar": 0,
