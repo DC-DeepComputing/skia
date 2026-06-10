@@ -22,6 +22,30 @@
       },
       "revId": "ce944eaca8df0d3a93edb42f62df31941f6729c3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "20c5c56c_6c6d7045",
+        "filename": "src/gpu/ganesh/GrAttachment.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-06-10T16:05:22Z",
+      "side": 1,
+      "message": "Oof, you\u0027re so right, the join is more rudimentary than I thought. I\u0027ve updated this to instead store only the most recently cleared area (or the last cleared area that contained any subsequent cleared areas). I\u0027ve added comment docs explaining why we do this (skip clear operations on desktop GPUs when possible without having to do the overhead of performing any fancy bounds tracking). Going through some GMs in viewer, the complex clip GMs show that we do utilize this optimization path, and occasionally also update the cleared area.",
+      "parentUuid": "842809c4_d0650152",
+      "range": {
+        "startLine": 59,
+        "startChar": 48,
+        "endLine": 59,
+        "endChar": 78
+      },
+      "revId": "ce944eaca8df0d3a93edb42f62df31941f6729c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
