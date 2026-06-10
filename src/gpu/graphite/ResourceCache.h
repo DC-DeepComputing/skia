@@ -102,6 +102,8 @@ public:
 
     void visitTextures(const std::function<void(const Texture*, bool purgeable)>&) const;
 #endif
+    // TODO(): This can become a test-only utility.
+    static std::string GenerateUsageLabel(SkEnumBitMask<ScratchUsageFlags>);
 
     // This is a thread safe call and is a no-op if the cache has been shut down already. This
     // should only be called by Resource. Returns true if the resource was successfully added to

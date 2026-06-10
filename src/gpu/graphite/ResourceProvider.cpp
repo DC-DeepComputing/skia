@@ -104,6 +104,15 @@ sk_sp<Texture> ResourceProvider::findOrCreateNonShareableTexture(SkISize dimensi
 sk_sp<Texture> ResourceProvider::findOrCreateScratchTexture(
         SkISize dimensions,
         const TextureInfo& info,
+        ScratchUsageFlags usage,
+        const ResourceCache::ScratchResourceSet& unavailable) {
+    return this->findOrCreateScratchTexture(
+            dimensions, info, ResourceCache::GenerateUsageLabel({usage}), unavailable);
+}
+
+sk_sp<Texture> ResourceProvider::findOrCreateScratchTexture(
+        SkISize dimensions,
+        const TextureInfo& info,
         std::string_view label,
         const ResourceCache::ScratchResourceSet& unavailable) {
     return this->findOrCreateTexture(

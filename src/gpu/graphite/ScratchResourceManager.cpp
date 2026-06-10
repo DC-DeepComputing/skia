@@ -50,6 +50,12 @@ sk_sp<Texture> ScratchResourceManager::getScratchTexture(SkISize dimensions,
     return scratchTexture;
 }
 
+sk_sp<Texture> ScratchResourceManager::getScratchTexture(SkISize dimensions,
+                                                         const TextureInfo& info,
+                                                         ScratchUsageFlags usage) {
+    this->getScratchTexture(dimensions, info, ResourceCache::GenerateUsageLabel({usage}));
+}
+
 void ScratchResourceManager::returnTexture(sk_sp<Texture> texture) {
     // Fails if trying to return a resource that didn't come from getScratchTexture()
     SkASSERT(fUnavailable.contains(texture.get()));

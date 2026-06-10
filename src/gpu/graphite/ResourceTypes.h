@@ -189,6 +189,39 @@ enum class Shareable : uint8_t {
     kYes,     // The resource is always visible in the ResourceCache
 };
 
+
+
+/**
+  * Scratch textures can be used in multiple different ways within one Recording. Their labels
+  * should convey all the ways it is used across the Recording. Rather than having to perform string
+  * comparison + concatenation logic at multiple points, we instead can express expected
+  * possible usages as statically-defined flags. This allows for easier comparison when determining
+  * if a scratch texture's label needs to be updated. Upon Recording insertion, we then generate
+  * a string label from the texture's usage flags.
+  */
+enum class ScratchUsageFlags : uint32_t {
+    kNone                            = 0,
+    kAsyncReadPixelsFallbackTexture  = 1,
+    kChildDevice                     = 1 <<  1,
+    kCopyDeviceTexture               = 1 <<  2,
+    kDiscardableLoadMSAATexture      = 1 <<  3,
+    kDispatchWriteOnlyStorageTexture = 1 <<  4,
+    kDstCopy                         = 1 <<  5,
+    kEvalBlurTexture                 = 1 <<  6,
+    kGenerateMipmapsScratchTexture   = 1 <<  7,
+    kImageFilterCachedBitmap         = 1 <<  8,
+    kImageFilterResult               = 1 <<  9,
+    kImageMakeCTandCSTexture         = 1 << 10,
+    kImageSubsetTexture              = 1 << 11,
+    kLazySkImageBitmapTexture        = 1 << 12,
+    kRasterBitmapTexture             = 1 << 13,
+    kRescaleDstTexture               = 1 << 14,
+    kRescaleImageTempTexture         = 1 << 15,
+    kRescaleLinearGammaTexture       = 1 << 16,
+    kYUVRasterBitmapPlane            = 1 << 17,
+};
+SK_MAKE_BITMASK_OPS(ScratchUsageFlags)
+
 /*
  * Struct that can be passed into bind buffer calls on the CommandBuffer. The ownership of the
  * buffer and its usage in command submission must be tracked by the caller (e.g. as with

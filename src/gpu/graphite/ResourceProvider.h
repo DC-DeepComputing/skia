@@ -72,6 +72,10 @@ public:
                                                    Budgeted);
     sk_sp<Texture> findOrCreateScratchTexture(SkISize,
                                               const TextureInfo&,
+                                              ScratchUsageFlags usage,
+                                              const ResourceCache::ScratchResourceSet& unavailable);
+    sk_sp<Texture> findOrCreateScratchTexture(SkISize,
+                                              const TextureInfo&,
                                               std::string_view label,
                                               const ResourceCache::ScratchResourceSet& unavailable);
 
