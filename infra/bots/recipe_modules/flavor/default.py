@@ -108,6 +108,10 @@ class DefaultFlavor(object):
     """Run device-specific installation steps."""
     pass
 
+  def list_device_dir(self, path):
+    """Recursively list contents of a directory on the device."""
+    pass
+
   def cleanup_steps(self):
     """Run any device-specific cleanup steps."""
     pass

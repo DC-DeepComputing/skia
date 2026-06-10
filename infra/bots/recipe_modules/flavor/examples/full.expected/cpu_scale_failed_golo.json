@@ -58,6 +58,23 @@
   },
   {
     "cmd": [
+      "/opt/infra-android/tools/adb",
+      "shell",
+      "ls",
+      "-R",
+      "results_dir"
+    ],
+    "cwd": "[START_DIR]/skia",
+    "env": {
+      "ADB_VENDOR_KEYS": "/home/chrome-bot/.android/chrome_infrastructure_adbkey",
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "list results_dir"
+  },
+  {
+    "cmd": [
       "python3",
       "RECIPE_MODULE[skia::flavor]/resources/remove_file_on_device.py",
       "/opt/infra-android/tools/adb",
