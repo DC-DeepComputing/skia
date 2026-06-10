@@ -585,7 +585,7 @@ bool OpsTask::onExecute(GrOpFlushState* flushState) {
         stencil = renderTarget->getStencilAttachment(fUsesMSAASurface);
     }
 
-    bool markStencilCleared = false;
+    bool updateClearedStencilArea = false;
     GrLoadOp stencilLoadOp;
     switch (fInitialStencilContent) {
         case StencilContent::kDontCare:
@@ -594,18 +594,20 @@ bool OpsTask::onExecute(GrOpFlushState* flushState) {
         case StencilContent::kUserBitsCleared:
             SkASSERT(!caps.performStencilClearsAsDraws());
             SkASSERT(stencil);
-            if (caps.discardStencilValuesAfterRenderPass()) {
-                // Always clear the stencil if it is being discarded after render passes. This is
-                // also an optimization because we are on a tiler and it avoids loading the values
-                // from memory.
+
+            // Use a clear op for the stencil whenever:
+            // A) its values will always be discarded after each render pass (an optimization on
+            //    tiler GPUs as it avoids loading the values from memory), or
+            // B) the area of the stencil being used (this renderpass's clipped bounds) has not
+            //    already been cleared.
+            if (caps.discardStencilValuesAfterRenderPass() ||
+                !stencil->areaHasBeenCleared(fClippedContentBounds)) {
                 stencilLoadOp = GrLoadOp::kClear;
+                // We do not need to track the cleared area if we always discard stencil values.
+                updateClearedStencilArea = !caps.discardStencilValuesAfterRenderPass();
                 break;
             }
-            if (!stencil->hasPerformedInitialClear()) {
-                stencilLoadOp = GrLoadOp::kClear;
-                markStencilCleared = true;
-                break;
-            }
+
             // SurfaceDrawContexts are required to leave the user stencil bits in a cleared state
             // once finished, meaning the stencil values will always remain cleared after the
             // initial clear. Just fall through to reloading the existing (cleared) stencil values
@@ -644,8 +646,8 @@ bool OpsTask::onExecute(GrOpFlushState* flushState) {
     if (!renderPass) {
         return false;
     }
-    if (markStencilCleared) {
-        stencil->markHasPerformedInitialClear();
+    if (updateClearedStencilArea) {
+        stencil->setClearedArea(fClippedContentBounds);
     }
     flushState->setOpsRenderPass(renderPass);
     renderPass->begin();
