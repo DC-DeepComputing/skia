@@ -46,7 +46,7 @@ _supported_build_type = !is_win || (!is_component_build && !is_debug)
 
 # TODO(351867706): Resolve compile assertions issues on Mac, and add `is_mac`
 # here.
-_supported_platform = is_android || is_chromeos || is_linux || is_win
+_supported_platform = true
 
 # Sanitizers replace the allocator, don't replace it ourselves with
 # partition_alloc.
