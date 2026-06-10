@@ -46,6 +46,30 @@
       },
       "revId": "ce944eaca8df0d3a93edb42f62df31941f6729c3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38b34a37_8a34c2b8",
+        "filename": "src/gpu/ganesh/GrAttachment.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-06-10T17:17:47Z",
+      "side": 1,
+      "message": "Hmm I\u0027m not sure this is really that much better. What would happen if we went back to the join version and the passed the joined rect into create_render_pass as the bounds? I think that would be okay.\n\nAlso I don\u0027t see any changes in here involving doing something different on tiled vs non-tiled gpus.",
+      "parentUuid": "20c5c56c_6c6d7045",
+      "range": {
+        "startLine": 59,
+        "startChar": 48,
+        "endLine": 59,
+        "endChar": 78
+      },
+      "revId": "ce944eaca8df0d3a93edb42f62df31941f6729c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
