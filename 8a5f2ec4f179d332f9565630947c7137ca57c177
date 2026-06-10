@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f51aafc_a1ee5f6d",
+        "filename": "build_overrides/partition_alloc.gni",
+        "patchSetId": 14
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 4641039
+      },
+      "writtenOn": "2026-06-10T15:31:42Z",
+      "side": 1,
+      "message": "@kjlubick@chromium.org: Do you know if we have builders on macOS using vanilla Clang instead of the system one?",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 54
+      },
+      "revId": "8a5f2ec4f179d332f9565630947c7137ca57c177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8bb6e44_8dfa5e78",
+        "filename": "build_overrides/partition_alloc.gni",
+        "patchSetId": 14
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 4641039
+      },
+      "writtenOn": "2026-06-10T15:31:42Z",
+      "side": 1,
+      "message": "Note: I am not super proud of this condition.\n\nAlternatively, we could run `\"clang --version | grep Apple\"`, but I assumed this would be a bit costly to run everytime \"partition_alloc.gni\" is included somewhere.",
+      "range": {
+        "startLine": 59,
+        "startChar": 21,
+        "endLine": 59,
+        "endChar": 80
+      },
+      "revId": "8a5f2ec4f179d332f9565630947c7137ca57c177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
