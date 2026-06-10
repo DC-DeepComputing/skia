@@ -3,6 +3,23 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "b131cb3a_5712a714",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-10T22:43:20Z",
+      "side": 1,
+      "message": "Nice cleanup!",
+      "revId": "d87060287eec8fdfe4d97c8d61df4466daf81c8a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "342fbab9_14efc4cb",
         "filename": "infra/bots/recipe_modules/flavor/android.py",
         "patchSetId": 9
