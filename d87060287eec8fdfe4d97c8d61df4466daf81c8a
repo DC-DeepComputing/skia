@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "342fbab9_14efc4cb",
+        "filename": "infra/bots/recipe_modules/flavor/android.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-06-10T20:06:32Z",
+      "side": 1,
+      "message": "These needed to change to match the host-side basenames, because of the way that `copy_directory_contents_to_device` now works.",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 50
+      },
+      "revId": "d87060287eec8fdfe4d97c8d61df4466daf81c8a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a28a31af_d17b5dff",
+        "filename": "infra/bots/recipes/perf_skottietrace.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-06-10T20:06:32Z",
+      "side": 1,
+      "message": "This needed to change so that the host and device-side directory basenames match, because of the way that the android implementation of `copy_directory_contents_to_device` now works.",
+      "range": {
+        "startLine": 52,
+        "startChar": 60,
+        "endLine": 52,
+        "endChar": 79
+      },
+      "revId": "d87060287eec8fdfe4d97c8d61df4466daf81c8a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
