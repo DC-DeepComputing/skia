@@ -183,3 +183,15 @@ class iOSFlavor(default.DefaultFlavor):
                       infra_step=True,
                       **kwargs)
       return rv.stdout.decode('utf-8').rstrip() if rv and rv.stdout else None
+
+  def path_exists(self, path):
+    with self.context():
+      full = self.m.path.start_dir.joinpath(
+          'skia', 'platform_tools', 'ios', 'bin', 'ios_path_exists')
+      rv = self.m.run(self.m.step,
+                      name = 'path_exists %s' % path,
+                      cmd = [full, path],
+                      infra_step=True,
+                      abort_on_failure=False,
+                      fail_build_on_failure=False)
+      return bool(rv)
