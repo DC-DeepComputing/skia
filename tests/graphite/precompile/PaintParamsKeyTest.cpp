@@ -391,11 +391,11 @@ void precompile_vs_real_draws_subtest(skiatest::Reporter* reporter,
 
     const SkColorType kColorType = kBGRA_8888_SkColorType;
 
-    static const RenderPassProperties kDepth_Stencil_4 { DepthStencilFlags::kDepthStencil,
+    static const RenderPassProperties kDepth_Stencil_4 { DepthStencilFlags::kNone,
                                                          kColorType,
                                                          /* dstColorSpace= */ nullptr,
                                                          /* requiresMSAA= */ true };
-    static const RenderPassProperties kDepth_1 { DepthStencilFlags::kDepth,
+    static const RenderPassProperties kDepth_1 { DepthStencilFlags::kNone,
                                                  kColorType,
                                                  /* dstColorSpace= */ nullptr,
                                                  /* requiresMSAA= */ false };

@@ -197,7 +197,7 @@ void reset_and_recreate_pipelines_with_normal_precompile_api(
     REPORTER_ASSERT(reporter, androidStyleKeys.size() == 1);
 
     RenderPassProperties renderPassProps;
-    renderPassProps.fDSFlags = DepthStencilFlags::kDepth;
+    renderPassProps.fDSFlags = DepthStencilFlags::kNone;
 
     Precompile(precompileContext,
                paintOptions,
