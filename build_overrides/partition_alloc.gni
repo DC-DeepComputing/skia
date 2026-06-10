@@ -27,6 +27,10 @@ build_with_chromium = false
 # See https://crbug.com/379844655 for more details.
 partition_alloc_remove_configs = [ "//gn/skia:strict_aliasing" ]
 partition_alloc_add_configs = [ "//gn/skia:no_strict_aliasing" ]
+if (is_apple) {
+  partition_alloc_add_configs += [ "//gn/skia:enable_arc" ]
+}
+partition_alloc_enable_arc_config = "//gn/skia:enable_arc"
 
 # partition_alloc is performance critical and it should generally be optimized
 # for speed, even in debug mode.
@@ -37,23 +41,27 @@ if (is_debug) {
   ]
 }
 
-# MSVC's cl.exe compiler is not supported.
-_supported_compiler = is_clang || !is_win
+_is_compiler_msvc = !is_clang && is_win
+_is_compiler_xcode = (is_mac || is_ios) && !build_with_chromium
+
+_supported_compiler =
+    is_clang &&
+    # PartitionAlloc does not support MSVC's cl.exe compiler.
+    !_is_compiler_msvc &&
+    # Standalone Skia on Apple platforms relies on Xcode Clang, which lacks
+    # specific Clang visibility flags and builtins needed by PartitionAlloc.
+    !_is_compiler_xcode
 
 # Windows: debug CRT is not yet compatible with the allocator shim.
 # https://learn.microsoft.com/en-us/cpp/c-runtime-library/reference/free-dbg
 _supported_build_type = !is_win || (!is_component_build && !is_debug)
 
-# TODO(351867706): Resolve compile assertions issues on Mac, and add `is_mac`
-# here.
-_supported_platform = is_android || is_chromeos || is_linux || is_win
-
 # Sanitizers replace the allocator, don't replace it ourselves with
 # partition_alloc.
 _is_using_sanitizers = sanitize != ""
 
-_supported = _supported_compiler && _supported_build_type &&
-             _supported_platform && !_is_using_sanitizers
+_supported =
+    _supported_compiler && _supported_build_type && !_is_using_sanitizers
 
 use_partition_alloc_as_malloc_default = _supported
 use_allocator_shim_default = _supported
