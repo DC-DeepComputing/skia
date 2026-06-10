@@ -834,3 +834,8 @@ if (is_wasm) {
     }
   }
 }
+
+# Dummy config added so PartitionAlloc's `configs -= [ partition_alloc_enable_arc_config ]`
+# list subtraction succeeds on macOS/iOS without an item-not-found error.
+config("dummy_arc") {
+}
