@@ -392,6 +392,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7757e793_13afe695",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 39
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 4569768
+      },
+      "writtenOn": "2026-06-10T14:25:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5671be64_58400f2a",
+      "revId": "acebf3896d2e3cda805064dfc3b3d4ed9ce5e026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "111cb9f2_29857f41",
