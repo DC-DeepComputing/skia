@@ -834,3 +834,6 @@ if (is_wasm) {
     }
   }
 }
+
+config("dummy_arc") {
+}
