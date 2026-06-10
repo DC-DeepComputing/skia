@@ -101,13 +101,69 @@ sk_sp<Texture> ResourceProvider::findOrCreateNonShareableTexture(SkISize dimensi
     return this->findOrCreateTexture(dimensions, info, label, budgeted, Shareable::kNo);
 }
 
+sk_sp<Texture> ResourceProvider::findOrCreateCachedTexture(
+        ResourceType type,
+        SkISize dimensions,
+        const TextureInfo& info,
+        std::string_view label,
+        Budgeted budgeted,
+        Shareable shareable,
+        const ResourceCache::ScratchResourceSet* unavailable) {
+    if (!info.isValid()) {
+        return nullptr;
+    }
+
+    GraphiteResourceKey key;
+    fSharedContext->caps()->buildKeyForTexture(dimensions, info, type, &key);
+
+    if (Resource* resource = fResourceCache->findAndRefResource(key,
+                                                                Budgeted::kYes,
+                                                                Shareable::kScratch,
+                                                                label,
+                                                                unavailable)) {
+        return sk_sp<Texture>(static_cast<Texture*>(resource));
+    }
+
+    if (auto tex = this->createTexture(dimensions, info, label)) {
+        fResourceCache->insertResource(tex.get(), key, Budgeted::kYes, Shareable::kScratch);
+        return tex;
+    }
+    return nullptr;
+}
+
+sk_sp<Texture> ResourceProvider::findOrCreateScratchTexture(
+        SkISize dimensions,
+        const TextureInfo& info,
+        ScratchUsageFlags usage,
+        const ResourceCache::ScratchResourceSet& unavailable) {
+    // Use a different resource type for scratch textures which rely upon statically-defined usage
+    // flags rather than custom labels. This allows us to easily separate scratch textures with
+    // usage flags from those with custom labels and non-scratch textures.
+    static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
+
+    // TODO(b/431796811; b/476118698): Once scratch texture usage updates are tracked by the
+    // ScratchResourceManager and label updates are performed upon Recording insertion, scratch
+    // textures should pass in empty strings as their labels.
+    std::string label = ResourceCache::GenerateUsageLabel({usage});
+    return this->findOrCreateCachedTexture(
+                kType, dimensions, info, label, Budgeted::kYes, Shareable::kScratch, &unavailable);
+}
+
 sk_sp<Texture> ResourceProvider::findOrCreateScratchTexture(
         SkISize dimensions,
         const TextureInfo& info,
         std::string_view label,
         const ResourceCache::ScratchResourceSet& unavailable) {
-    return this->findOrCreateTexture(
-            dimensions, info, label, Budgeted::kYes, Shareable::kScratch, &unavailable);
+    // Use a different resource type for scratch textures which use custom labels. This allows us to
+    // easily separate scratch textures with custom labels from those with usage flags and
+    // non-scratch textures.
+    static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
+
+    // TODO(476118698): Once scratch texture label updates are tracked by the ScratchResourceManager
+    // and performed upon Recording insertion, scratch textures should pass in empty strings as
+    // their labels.
+    return this->findOrCreateCachedTexture(
+                kType, dimensions, info, label, Budgeted::kYes, Shareable::kScratch, &unavailable);
 }
 
 sk_sp<Texture> ResourceProvider::findOrCreateTexture(
@@ -124,26 +180,8 @@ sk_sp<Texture> ResourceProvider::findOrCreateTexture(
 
     static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
 
-    if (!info.isValid()) {
-        // Checking for a valid TextureInfo here allows callers to consolidate error checking for
-        // both TextureInfo and Texture creation to checking for a null returned Texture.
-        return nullptr;
-    }
-
-    GraphiteResourceKey key;
-    fSharedContext->caps()->buildKeyForTexture(dimensions, info, kType, &key);
-
-    if (Resource* resource =
-                fResourceCache->findAndRefResource(key, budgeted, shareable, label, unavailable)) {
-        return sk_sp<Texture>(static_cast<Texture*>(resource));
-    }
-
-    if (auto tex = this->createTexture(dimensions, info, label)) {
-        fResourceCache->insertResource(tex.get(), key, budgeted, shareable);
-        return tex;
-    }
-
-    return nullptr;
+    return this->findOrCreateCachedTexture(
+            kType, dimensions, info, label, budgeted, shareable, unavailable);
 }
 
 sk_sp<Texture> ResourceProvider::createWrappedTexture(const BackendTexture& backendTexture,

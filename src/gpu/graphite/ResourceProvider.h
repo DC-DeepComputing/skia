@@ -72,6 +72,10 @@ public:
                                                    Budgeted);
     sk_sp<Texture> findOrCreateScratchTexture(SkISize,
                                               const TextureInfo&,
+                                              ScratchUsageFlags usage,
+                                              const ResourceCache::ScratchResourceSet& unavailable);
+    sk_sp<Texture> findOrCreateScratchTexture(SkISize,
+                                              const TextureInfo&,
                                               std::string_view label,
                                               const ResourceCache::ScratchResourceSet& unavailable);
 
@@ -155,6 +159,15 @@ private:
                                        Budgeted,
                                        Shareable,
                                        const ResourceCache::ScratchResourceSet* = nullptr);
+    // Helper method for other Texture creation methods to query the ResourceCache once that
+    // Texture's ResourceType has been generated.
+    sk_sp<Texture> findOrCreateCachedTexture(ResourceType,
+                                             SkISize dimensions,
+                                             const TextureInfo& info,
+                                             std::string_view label,
+                                             Budgeted budgeted,
+                                             Shareable shareable,
+                                             const ResourceCache::ScratchResourceSet* = nullptr);
 
     sk_sp<Buffer> findOrCreateBuffer(size_t,
                                      BufferType,
