@@ -26,7 +26,11 @@ build_with_chromium = false
 # optimization and this breaks PartitionAlloc.
 # See https://crbug.com/379844655 for more details.
 partition_alloc_remove_configs = [ "//gn/skia:strict_aliasing" ]
-partition_alloc_add_configs = [ "//gn/skia:no_strict_aliasing" ]
+partition_alloc_add_configs = [
+  "//gn/skia:no_strict_aliasing",
+  "//gn/skia:dummy_arc",
+]
+partition_alloc_enable_arc_config = "//gn/skia:dummy_arc"
 
 # partition_alloc is performance critical and it should generally be optimized
 # for speed, even in debug mode.
@@ -46,7 +50,7 @@ _supported_build_type = !is_win || (!is_component_build && !is_debug)
 
 # TODO(351867706): Resolve compile assertions issues on Mac, and add `is_mac`
 # here.
-_supported_platform = is_android || is_chromeos || is_linux || is_win
+_supported_platform = true
 
 # Sanitizers replace the allocator, don't replace it ourselves with
 # partition_alloc.
@@ -55,8 +59,11 @@ _is_using_sanitizers = sanitize != ""
 _supported = _supported_compiler && _supported_build_type &&
              _supported_platform && !_is_using_sanitizers
 
-use_partition_alloc_as_malloc_default = _supported
-use_allocator_shim_default = _supported
+# macOS system malloc interception via zone allocators requires Clang flags
+# unsupported by Xcode Clang on bots. Disable malloc replacement on Mac.
+_replace_malloc = _supported && !is_mac
+use_partition_alloc_as_malloc_default = _replace_malloc
+use_allocator_shim_default = _replace_malloc
 enable_backup_ref_ptr_support_default = _supported
 put_ref_count_in_previous_slot_default = true
 enable_backup_ref_ptr_slow_checks_default = false
