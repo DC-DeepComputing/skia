@@ -58,6 +58,23 @@
   },
   {
     "cmd": [
+      "/usr/bin/adb.1.0.35",
+      "shell",
+      "test",
+      "-e",
+      "file.txt"
+    ],
+    "cwd": "[START_DIR]/skia",
+    "env": {
+      "ADB_VENDOR_KEYS": "/home/chrome-bot/.android/adbkey",
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "check if file.txt exists (2)"
+  },
+  {
+    "cmd": [
       "python3",
       "RECIPE_MODULE[skia::flavor]/resources/remove_file_on_device.py",
       "/usr/bin/adb.1.0.35",

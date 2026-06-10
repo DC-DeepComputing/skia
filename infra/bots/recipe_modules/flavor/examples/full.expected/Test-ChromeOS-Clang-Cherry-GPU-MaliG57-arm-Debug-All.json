@@ -77,6 +77,36 @@
       "-i",
       "[CLEANUP]/chromite_tmp_1/chromite/ssh_keys/testing_rsa",
       "root@variable_chromeos_device_hostname",
+      "test",
+      "-e",
+      "file.txt"
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "check if file.txt exists"
+  },
+  {
+    "cmd": [
+      "ssh",
+      "-oConnectTimeout=15",
+      "-oBatchMode=yes",
+      "-t",
+      "-t",
+      "-oConnectTimeout=30",
+      "-oConnectionAttempts=4",
+      "-oNumberOfPasswordPrompts=0",
+      "-oProtocol=2",
+      "-oServerAliveInterval=15",
+      "-oServerAliveCountMax=8",
+      "-oStrictHostKeyChecking=no",
+      "-oUserKnownHostsFile=/dev/null",
+      "-oIdentitiesOnly=yes",
+      "-i",
+      "[CLEANUP]/chromite_tmp_1/chromite/ssh_keys/testing_rsa",
+      "root@variable_chromeos_device_hostname",
       "rm",
       "-f",
       "file.txt"
@@ -412,125 +442,6 @@
   },
   {
     "cmd": [
-      "ssh",
-      "-oConnectTimeout=15",
-      "-oBatchMode=yes",
-      "-t",
-      "-t",
-      "-oConnectTimeout=30",
-      "-oConnectionAttempts=4",
-      "-oNumberOfPasswordPrompts=0",
-      "-oProtocol=2",
-      "-oServerAliveInterval=15",
-      "-oServerAliveCountMax=8",
-      "-oStrictHostKeyChecking=no",
-      "-oUserKnownHostsFile=/dev/null",
-      "-oIdentitiesOnly=yes",
-      "-i",
-      "[CLEANUP]/chromite_tmp_1/chromite/ssh_keys/testing_rsa",
-      "root@variable_chromeos_device_hostname",
-      "cat",
-      "/home/chronos/user/SKP_VERSION"
-    ],
-    "env": {
-      "CHROME_HEADLESS": "1",
-      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
-    },
-    "infra_step": true,
-    "name": "read /home/chronos/user/SKP_VERSION"
-  },
-  {
-    "cmd": [
-      "ssh",
-      "-oConnectTimeout=15",
-      "-oBatchMode=yes",
-      "-t",
-      "-t",
-      "-oConnectTimeout=30",
-      "-oConnectionAttempts=4",
-      "-oNumberOfPasswordPrompts=0",
-      "-oProtocol=2",
-      "-oServerAliveInterval=15",
-      "-oServerAliveCountMax=8",
-      "-oStrictHostKeyChecking=no",
-      "-oUserKnownHostsFile=/dev/null",
-      "-oIdentitiesOnly=yes",
-      "-i",
-      "[CLEANUP]/chromite_tmp_1/chromite/ssh_keys/testing_rsa",
-      "root@variable_chromeos_device_hostname",
-      "rm",
-      "-f",
-      "/home/chronos/user/SKP_VERSION"
-    ],
-    "env": {
-      "CHROME_HEADLESS": "1",
-      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
-    },
-    "infra_step": true,
-    "name": "rm /home/chronos/user/SKP_VERSION"
-  },
-  {
-    "cmd": [
-      "ssh",
-      "-oConnectTimeout=15",
-      "-oBatchMode=yes",
-      "-t",
-      "-t",
-      "-oConnectTimeout=30",
-      "-oConnectionAttempts=4",
-      "-oNumberOfPasswordPrompts=0",
-      "-oProtocol=2",
-      "-oServerAliveInterval=15",
-      "-oServerAliveCountMax=8",
-      "-oStrictHostKeyChecking=no",
-      "-oUserKnownHostsFile=/dev/null",
-      "-oIdentitiesOnly=yes",
-      "-i",
-      "[CLEANUP]/chromite_tmp_1/chromite/ssh_keys/testing_rsa",
-      "root@variable_chromeos_device_hostname",
-      "rm",
-      "-rf",
-      "/home/chronos/user/skps"
-    ],
-    "env": {
-      "CHROME_HEADLESS": "1",
-      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
-    },
-    "infra_step": true,
-    "name": "rm /home/chronos/user/skps"
-  },
-  {
-    "cmd": [
-      "ssh",
-      "-oConnectTimeout=15",
-      "-oBatchMode=yes",
-      "-t",
-      "-t",
-      "-oConnectTimeout=30",
-      "-oConnectionAttempts=4",
-      "-oNumberOfPasswordPrompts=0",
-      "-oProtocol=2",
-      "-oServerAliveInterval=15",
-      "-oServerAliveCountMax=8",
-      "-oStrictHostKeyChecking=no",
-      "-oUserKnownHostsFile=/dev/null",
-      "-oIdentitiesOnly=yes",
-      "-i",
-      "[CLEANUP]/chromite_tmp_1/chromite/ssh_keys/testing_rsa",
-      "root@variable_chromeos_device_hostname",
-      "mkdir",
-      "-p",
-      "/home/chronos/user/skps"
-    ],
-    "env": {
-      "CHROME_HEADLESS": "1",
-      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
-    },
-    "infra_step": true,
-    "name": "mkdir /home/chronos/user/skps"
-  },
-  {
-    "cmd": [
       "python3",
       "RECIPE_MODULE[skia::flavor]/resources/scp.py",
       "-oConnectTimeout=30",
@@ -549,30 +460,6 @@
     ],
     "infra_step": true,
     "name": "scp -r [START_DIR]/skp root@variable_chromeos_device_hostname:/home/chronos/user/skps"
-  },
-  {
-    "cmd": [
-      "scp",
-      "-oConnectTimeout=30",
-      "-oConnectionAttempts=4",
-      "-oNumberOfPasswordPrompts=0",
-      "-oProtocol=2",
-      "-oServerAliveInterval=15",
-      "-oServerAliveCountMax=8",
-      "-oStrictHostKeyChecking=no",
-      "-oUserKnownHostsFile=/dev/null",
-      "-oIdentitiesOnly=yes",
-      "-i",
-      "[CLEANUP]/chromite_tmp_1/chromite/ssh_keys/testing_rsa",
-      "[START_DIR]/tmp/SKP_VERSION",
-      "root@variable_chromeos_device_hostname:/home/chronos/user/SKP_VERSION"
-    ],
-    "env": {
-      "CHROME_HEADLESS": "1",
-      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
-    },
-    "infra_step": true,
-    "name": "scp [START_DIR]/tmp/SKP_VERSION root@variable_chromeos_device_hostname:/home/chronos/user/SKP_VERSION"
   },
   {
     "cmd": [
@@ -612,125 +499,6 @@
   },
   {
     "cmd": [
-      "ssh",
-      "-oConnectTimeout=15",
-      "-oBatchMode=yes",
-      "-t",
-      "-t",
-      "-oConnectTimeout=30",
-      "-oConnectionAttempts=4",
-      "-oNumberOfPasswordPrompts=0",
-      "-oProtocol=2",
-      "-oServerAliveInterval=15",
-      "-oServerAliveCountMax=8",
-      "-oStrictHostKeyChecking=no",
-      "-oUserKnownHostsFile=/dev/null",
-      "-oIdentitiesOnly=yes",
-      "-i",
-      "[CLEANUP]/chromite_tmp_1/chromite/ssh_keys/testing_rsa",
-      "root@variable_chromeos_device_hostname",
-      "cat",
-      "/home/chronos/user/SK_IMAGE_VERSION"
-    ],
-    "env": {
-      "CHROME_HEADLESS": "1",
-      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
-    },
-    "infra_step": true,
-    "name": "read /home/chronos/user/SK_IMAGE_VERSION"
-  },
-  {
-    "cmd": [
-      "ssh",
-      "-oConnectTimeout=15",
-      "-oBatchMode=yes",
-      "-t",
-      "-t",
-      "-oConnectTimeout=30",
-      "-oConnectionAttempts=4",
-      "-oNumberOfPasswordPrompts=0",
-      "-oProtocol=2",
-      "-oServerAliveInterval=15",
-      "-oServerAliveCountMax=8",
-      "-oStrictHostKeyChecking=no",
-      "-oUserKnownHostsFile=/dev/null",
-      "-oIdentitiesOnly=yes",
-      "-i",
-      "[CLEANUP]/chromite_tmp_1/chromite/ssh_keys/testing_rsa",
-      "root@variable_chromeos_device_hostname",
-      "rm",
-      "-f",
-      "/home/chronos/user/SK_IMAGE_VERSION"
-    ],
-    "env": {
-      "CHROME_HEADLESS": "1",
-      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
-    },
-    "infra_step": true,
-    "name": "rm /home/chronos/user/SK_IMAGE_VERSION"
-  },
-  {
-    "cmd": [
-      "ssh",
-      "-oConnectTimeout=15",
-      "-oBatchMode=yes",
-      "-t",
-      "-t",
-      "-oConnectTimeout=30",
-      "-oConnectionAttempts=4",
-      "-oNumberOfPasswordPrompts=0",
-      "-oProtocol=2",
-      "-oServerAliveInterval=15",
-      "-oServerAliveCountMax=8",
-      "-oStrictHostKeyChecking=no",
-      "-oUserKnownHostsFile=/dev/null",
-      "-oIdentitiesOnly=yes",
-      "-i",
-      "[CLEANUP]/chromite_tmp_1/chromite/ssh_keys/testing_rsa",
-      "root@variable_chromeos_device_hostname",
-      "rm",
-      "-rf",
-      "/home/chronos/user/images"
-    ],
-    "env": {
-      "CHROME_HEADLESS": "1",
-      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
-    },
-    "infra_step": true,
-    "name": "rm /home/chronos/user/images"
-  },
-  {
-    "cmd": [
-      "ssh",
-      "-oConnectTimeout=15",
-      "-oBatchMode=yes",
-      "-t",
-      "-t",
-      "-oConnectTimeout=30",
-      "-oConnectionAttempts=4",
-      "-oNumberOfPasswordPrompts=0",
-      "-oProtocol=2",
-      "-oServerAliveInterval=15",
-      "-oServerAliveCountMax=8",
-      "-oStrictHostKeyChecking=no",
-      "-oUserKnownHostsFile=/dev/null",
-      "-oIdentitiesOnly=yes",
-      "-i",
-      "[CLEANUP]/chromite_tmp_1/chromite/ssh_keys/testing_rsa",
-      "root@variable_chromeos_device_hostname",
-      "mkdir",
-      "-p",
-      "/home/chronos/user/images"
-    ],
-    "env": {
-      "CHROME_HEADLESS": "1",
-      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
-    },
-    "infra_step": true,
-    "name": "mkdir /home/chronos/user/images"
-  },
-  {
-    "cmd": [
       "python3",
       "RECIPE_MODULE[skia::flavor]/resources/scp.py",
       "-oConnectTimeout=30",
@@ -749,30 +517,6 @@
     ],
     "infra_step": true,
     "name": "scp -r [START_DIR]/skimage root@variable_chromeos_device_hostname:/home/chronos/user/images"
-  },
-  {
-    "cmd": [
-      "scp",
-      "-oConnectTimeout=30",
-      "-oConnectionAttempts=4",
-      "-oNumberOfPasswordPrompts=0",
-      "-oProtocol=2",
-      "-oServerAliveInterval=15",
-      "-oServerAliveCountMax=8",
-      "-oStrictHostKeyChecking=no",
-      "-oUserKnownHostsFile=/dev/null",
-      "-oIdentitiesOnly=yes",
-      "-i",
-      "[CLEANUP]/chromite_tmp_1/chromite/ssh_keys/testing_rsa",
-      "[START_DIR]/tmp/SK_IMAGE_VERSION",
-      "root@variable_chromeos_device_hostname:/home/chronos/user/SK_IMAGE_VERSION"
-    ],
-    "env": {
-      "CHROME_HEADLESS": "1",
-      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
-    },
-    "infra_step": true,
-    "name": "scp [START_DIR]/tmp/SK_IMAGE_VERSION root@variable_chromeos_device_hostname:/home/chronos/user/SK_IMAGE_VERSION"
   },
   {
     "cmd": [
@@ -812,125 +556,6 @@
   },
   {
     "cmd": [
-      "ssh",
-      "-oConnectTimeout=15",
-      "-oBatchMode=yes",
-      "-t",
-      "-t",
-      "-oConnectTimeout=30",
-      "-oConnectionAttempts=4",
-      "-oNumberOfPasswordPrompts=0",
-      "-oProtocol=2",
-      "-oServerAliveInterval=15",
-      "-oServerAliveCountMax=8",
-      "-oStrictHostKeyChecking=no",
-      "-oUserKnownHostsFile=/dev/null",
-      "-oIdentitiesOnly=yes",
-      "-i",
-      "[CLEANUP]/chromite_tmp_1/chromite/ssh_keys/testing_rsa",
-      "root@variable_chromeos_device_hostname",
-      "cat",
-      "/home/chronos/user/SVG_VERSION"
-    ],
-    "env": {
-      "CHROME_HEADLESS": "1",
-      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
-    },
-    "infra_step": true,
-    "name": "read /home/chronos/user/SVG_VERSION"
-  },
-  {
-    "cmd": [
-      "ssh",
-      "-oConnectTimeout=15",
-      "-oBatchMode=yes",
-      "-t",
-      "-t",
-      "-oConnectTimeout=30",
-      "-oConnectionAttempts=4",
-      "-oNumberOfPasswordPrompts=0",
-      "-oProtocol=2",
-      "-oServerAliveInterval=15",
-      "-oServerAliveCountMax=8",
-      "-oStrictHostKeyChecking=no",
-      "-oUserKnownHostsFile=/dev/null",
-      "-oIdentitiesOnly=yes",
-      "-i",
-      "[CLEANUP]/chromite_tmp_1/chromite/ssh_keys/testing_rsa",
-      "root@variable_chromeos_device_hostname",
-      "rm",
-      "-f",
-      "/home/chronos/user/SVG_VERSION"
-    ],
-    "env": {
-      "CHROME_HEADLESS": "1",
-      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
-    },
-    "infra_step": true,
-    "name": "rm /home/chronos/user/SVG_VERSION"
-  },
-  {
-    "cmd": [
-      "ssh",
-      "-oConnectTimeout=15",
-      "-oBatchMode=yes",
-      "-t",
-      "-t",
-      "-oConnectTimeout=30",
-      "-oConnectionAttempts=4",
-      "-oNumberOfPasswordPrompts=0",
-      "-oProtocol=2",
-      "-oServerAliveInterval=15",
-      "-oServerAliveCountMax=8",
-      "-oStrictHostKeyChecking=no",
-      "-oUserKnownHostsFile=/dev/null",
-      "-oIdentitiesOnly=yes",
-      "-i",
-      "[CLEANUP]/chromite_tmp_1/chromite/ssh_keys/testing_rsa",
-      "root@variable_chromeos_device_hostname",
-      "rm",
-      "-rf",
-      "/home/chronos/user/svgs"
-    ],
-    "env": {
-      "CHROME_HEADLESS": "1",
-      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
-    },
-    "infra_step": true,
-    "name": "rm /home/chronos/user/svgs"
-  },
-  {
-    "cmd": [
-      "ssh",
-      "-oConnectTimeout=15",
-      "-oBatchMode=yes",
-      "-t",
-      "-t",
-      "-oConnectTimeout=30",
-      "-oConnectionAttempts=4",
-      "-oNumberOfPasswordPrompts=0",
-      "-oProtocol=2",
-      "-oServerAliveInterval=15",
-      "-oServerAliveCountMax=8",
-      "-oStrictHostKeyChecking=no",
-      "-oUserKnownHostsFile=/dev/null",
-      "-oIdentitiesOnly=yes",
-      "-i",
-      "[CLEANUP]/chromite_tmp_1/chromite/ssh_keys/testing_rsa",
-      "root@variable_chromeos_device_hostname",
-      "mkdir",
-      "-p",
-      "/home/chronos/user/svgs"
-    ],
-    "env": {
-      "CHROME_HEADLESS": "1",
-      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
-    },
-    "infra_step": true,
-    "name": "mkdir /home/chronos/user/svgs"
-  },
-  {
-    "cmd": [
       "python3",
       "RECIPE_MODULE[skia::flavor]/resources/scp.py",
       "-oConnectTimeout=30",
@@ -949,30 +574,6 @@
     ],
     "infra_step": true,
     "name": "scp -r [START_DIR]/svg root@variable_chromeos_device_hostname:/home/chronos/user/svgs"
-  },
-  {
-    "cmd": [
-      "scp",
-      "-oConnectTimeout=30",
-      "-oConnectionAttempts=4",
-      "-oNumberOfPasswordPrompts=0",
-      "-oProtocol=2",
-      "-oServerAliveInterval=15",
-      "-oServerAliveCountMax=8",
-      "-oStrictHostKeyChecking=no",
-      "-oUserKnownHostsFile=/dev/null",
-      "-oIdentitiesOnly=yes",
-      "-i",
-      "[CLEANUP]/chromite_tmp_1/chromite/ssh_keys/testing_rsa",
-      "[START_DIR]/tmp/SVG_VERSION",
-      "root@variable_chromeos_device_hostname:/home/chronos/user/SVG_VERSION"
-    ],
-    "env": {
-      "CHROME_HEADLESS": "1",
-      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
-    },
-    "infra_step": true,
-    "name": "scp [START_DIR]/tmp/SVG_VERSION root@variable_chromeos_device_hostname:/home/chronos/user/SVG_VERSION"
   },
   {
     "cmd": [

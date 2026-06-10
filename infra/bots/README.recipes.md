@@ -133,7 +133,7 @@ Run the steps to perform a pure-git checkout without DEPS.
 
 #### **class [SkiaFlavorApi](/infra/bots/recipe_modules/flavor/api.py#49)([RecipeApi][recipe_engine/wkt/RecipeApi]):**
 
-&mdash; **def [cleanup\_steps](/infra/bots/recipe_modules/flavor/api.py#115)(self):**
+&mdash; **def [cleanup\_steps](/infra/bots/recipe_modules/flavor/api.py#118)(self):**
 
 &mdash; **def [copy\_directory\_contents\_to\_device](/infra/bots/recipe_modules/flavor/api.py#73)(self, host_dir, device_dir):**
 
@@ -151,11 +151,13 @@ Run the steps to perform a pure-git checkout without DEPS.
 
 Return a flavor utils object specific to the given builder.
 
-&mdash; **def [install](/infra/bots/recipe_modules/flavor/api.py#94)(self, skps=False, images=False, lotties=False, svgs=False, resources=False, texttraces=False):**
+&mdash; **def [install](/infra/bots/recipe_modules/flavor/api.py#97)(self, skps=False, images=False, lotties=False, svgs=False, resources=False, texttraces=False):**
+
+&mdash; **def [path\_exists](/infra/bots/recipe_modules/flavor/api.py#91)(self, path):**
 
 &mdash; **def [read\_file\_on\_device](/infra/bots/recipe_modules/flavor/api.py#88)(self, path, \*\*kwargs):**
 
-&mdash; **def [remove\_file\_on\_device](/infra/bots/recipe_modules/flavor/api.py#91)(self, path):**
+&mdash; **def [remove\_file\_on\_device](/infra/bots/recipe_modules/flavor/api.py#94)(self, path):**
 
 &mdash; **def [setup](/infra/bots/recipe_modules/flavor/api.py#61)(self, app_name):**
 
