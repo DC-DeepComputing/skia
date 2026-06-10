@@ -20,6 +20,23 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "15d27d3c_01ff6979",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-06-10T16:35:58Z",
+      "side": 1,
+      "message": "LGTM after comments are addressed",
+      "revId": "10f91880cafd6f07263865416e3e1bbb547af134",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "6021e835_d10212ba",
         "filename": "src/gpu/graphite/Device.cpp",
         "patchSetId": 11
