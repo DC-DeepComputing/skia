@@ -36,10 +36,10 @@ class AndroidFlavor(default.DefaultFlavor):
         perf_data_dir  = android_data_dir + 'perf',
         resource_dir   = android_data_dir + 'resources',
         fonts_dir      = 'NOT_SUPPORTED',
-        images_dir     = android_data_dir + 'images',
-        lotties_dir    = android_data_dir + 'lotties',
-        skp_dir        = android_data_dir + 'skps',
-        svg_dir        = android_data_dir + 'svgs',
+        images_dir     = android_data_dir + 'skimage',
+        lotties_dir    = android_data_dir + 'lottie-samples',
+        skp_dir        = android_data_dir + 'skp',
+        svg_dir        = android_data_dir + 'svg',
         tmp_dir        = android_data_dir,
         texttraces_dir = android_data_dir + 'text_blob_traces')
 
@@ -387,12 +387,8 @@ class AndroidFlavor(default.DefaultFlavor):
     self._adb('push %s %s' % (host, device), 'push', host, device)
 
   def copy_directory_contents_to_device(self, host, device):
-    with self.m.step.nest('copy %s %s' % (host, device)):
-      contents = self.m.file.glob_paths('ls %s/*' % host,
-                                        host, '*',
-                                        test_data=['foo.png', 'bar.jpg'])
-      for file in contents:
-        self._adb('push %s %s' % (file, device), 'push', file, device)
+    host_src = str(host).rstrip('/') + '/'
+    self._adb('push %s %s' % (host_src, device), 'push', '--sync', host_src, device)
 
   def copy_directory_contents_to_host(self, device, host):
     # TODO(borenet): When all of our devices are on Android 6.0 and up, we can
@@ -423,6 +419,16 @@ class AndroidFlavor(default.DefaultFlavor):
                    'shell', 'cat', path, stdout=self.m.raw_io.output(),
                    **kwargs)
     return rv.stdout.decode('utf-8').rstrip() if rv and rv.stdout else None
+
+  def path_exists(self, path):
+    testKwargs = {
+      'attempts': 1,
+      'abort_on_failure': False,
+      'fail_build_on_failure': False,
+    }
+    rv = self._adb('check if %s exists' % path,
+                   'shell', 'test', '-e', path, **testKwargs)
+    return bool(rv)
 
   def remove_file_on_device(self, path):
     script = self.module.resource('remove_file_on_device.py')
