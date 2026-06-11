@@ -69,7 +69,7 @@ public:
                             SkBlendMode,
                             GrAAType,
                             DrawQuad*,
-                            const SkRect* subset = nullptr);
+                            const SkRect* subset, bool foo);
 
     // Automatically falls back to using one FillRectOp per entry if dynamic states are not
     // supported, or if the blend mode is not src-over. 'cnt' is the size of the entry array.
@@ -87,7 +87,8 @@ public:
                                  GrAAType,
                                  SkCanvas::SrcRectConstraint,
                                  const SkMatrix& viewMatrix,
-                                 sk_sp<GrColorSpaceXform> textureXform);
+                                 sk_sp<GrColorSpaceXform> textureXform,
+                                 bool noPersp);
 
 #if defined(GPU_TEST_UTILS)
     static uint32_t ClassID();
