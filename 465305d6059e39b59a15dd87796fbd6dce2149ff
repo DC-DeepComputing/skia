@@ -87,6 +87,24 @@
       "parentUuid": "644a2580_c62a5a03",
       "revId": "465305d6059e39b59a15dd87796fbd6dce2149ff",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "21dc0532_61bc0290",
+        "filename": "PROPOSED_CHROMIUM_CL_shared_image_representations.cc",
+        "patchSetId": 2
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 4871879
+      },
+      "writtenOn": "2026-06-11T13:41:03Z",
+      "side": 1,
+      "message": "Thanks. With ` --disable-features\u003dCoreAnimationRenderer,CoreAnimationHDRUnderlays`, on the Macbook Air, the PQ 100 nits video shows as 0.395,0.401,0.395 EDR Linear Display Native Gamut. So the green tint is present.",
+      "parentUuid": "34cc6fff_748e59f2",
+      "revId": "465305d6059e39b59a15dd87796fbd6dce2149ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
