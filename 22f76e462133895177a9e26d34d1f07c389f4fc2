@@ -16,6 +16,24 @@
       "message": "Alternatively, if this makes things simpler, I can update partition_alloc with:\n```\nusing sk_is_trivially_relocatable \u003d std::true_type;\n```",
       "revId": "22f76e462133895177a9e26d34d1f07c389f4fc2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2955834a_f00de0b8",
+        "filename": "src/partition_alloc/raw_ptr.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-11T15:51:14Z",
+      "side": 1,
+      "message": "I think for this SFINAE model, we need it to be a struct template that can get matched when T \u003d raw_ptr.  If we have it be a using here, it will start to conflict with other `struct sk_is_trivially_relocatable` definitions.",
+      "parentUuid": "b9518166_c1032839",
+      "revId": "22f76e462133895177a9e26d34d1f07c389f4fc2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
