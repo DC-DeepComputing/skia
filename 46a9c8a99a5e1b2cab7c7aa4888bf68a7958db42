@@ -46,6 +46,30 @@
       },
       "revId": "46a9c8a99a5e1b2cab7c7aa4888bf68a7958db42",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "52cf17d2_1b229090",
+        "filename": "tests/RawPtrTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-11T13:11:52Z",
+      "side": 1,
+      "message": "I feel better about DEF_SERIAL_TEST",
+      "parentUuid": "9a4a8906_4ae36b02",
+      "range": {
+        "startLine": 49,
+        "startChar": 9,
+        "endLine": 49,
+        "endChar": 39
+      },
+      "revId": "46a9c8a99a5e1b2cab7c7aa4888bf68a7958db42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
