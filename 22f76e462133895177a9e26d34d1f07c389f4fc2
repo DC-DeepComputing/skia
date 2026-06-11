@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9518166_c1032839",
+        "filename": "src/partition_alloc/raw_ptr.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-06-11T15:33:57Z",
+      "side": 1,
+      "message": "Alternatively, if this makes things simpler, I can update partition_alloc with:\n```\nusing sk_is_trivially_relocatable \u003d std::true_type;\n```",
+      "revId": "22f76e462133895177a9e26d34d1f07c389f4fc2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
