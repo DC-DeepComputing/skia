@@ -105,7 +105,7 @@ static GrOp::Owner create_op(GrDirectContext* dContext, SkRect rect,
                            isAA ? GrAAType::kCoverage
                                 : GrAAType::kNone,
                            &quad,
-                           nullptr);
+                           nullptr, false);
 }
 
 // This unit test exercises the crbug.com/1112259 case.

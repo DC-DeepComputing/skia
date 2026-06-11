@@ -237,10 +237,10 @@ public:
                             Saturate saturate,
                             GrAAType aaType,
                             DrawQuad* quad,
-                            const SkRect* subset) {
+                            const SkRect* subset, bool foo) {
 
         return GrOp::Make<TextureOpImpl>(context, std::move(proxyView), std::move(textureXform),
-                                         filter, mm, color, saturate, aaType, quad, subset);
+                                         filter, mm, color, saturate, aaType, quad, subset, foo);
     }
 
     static GrOp::Owner Make(GrRecordingContext* context,
@@ -253,13 +253,13 @@ public:
                             GrAAType aaType,
                             SkCanvas::SrcRectConstraint constraint,
                             const SkMatrix& viewMatrix,
-                            sk_sp<GrColorSpaceXform> textureColorSpaceXform) {
+                            sk_sp<GrColorSpaceXform> textureColorSpaceXform, bool foo) {
         // Allocate size based on proxyRunCnt, since that determines number of ViewCountPairs.
         SkASSERT(proxyRunCnt <= cnt);
         return GrOp::MakeWithExtraMemory<TextureOpImpl>(
                 context, sizeof(ViewCountPair) * (proxyRunCnt - 1),
                 set, cnt, proxyRunCnt, filter, mm, saturate, aaType, constraint,
-                viewMatrix, std::move(textureColorSpaceXform));
+                viewMatrix, std::move(textureColorSpaceXform), foo, foo); //$$
     }
 
     ~TextureOpImpl() override {
@@ -297,7 +297,7 @@ public:
     GrProcessorSet::Analysis finalize(const GrCaps& caps, const GrAppliedClip*,
                                       GrClampType clampType) override {
         SkASSERT(fMetadata.colorType() == ColorType::kNone);
-        auto iter = fQuads.metadata();
+        auto iter = fQuads1.metadata();
         while(iter.next()) {
             auto colorType = skgpu::ganesh::QuadPerEdgeAA::MinColorType(iter->fColor);
             colorType = std::max(static_cast<ColorType>(fMetadata.fColorType),
@@ -442,9 +442,9 @@ private:
                   Saturate saturate,
                   GrAAType aaType,
                   DrawQuad* quad,
-                  const SkRect* subsetRect)
+                  const SkRect* subsetRect, bool)
             : INHERITED(ClassID())
-            , fQuads(1, true /* includes locals */)
+            , fQuads1(1, true /* includes locals */)
             , fTextureColorSpaceXform(std::move(textureColorSpaceXform))
             , fDesc(nullptr)
             , fMetadata(proxyView.swizzle(), filter, mm, Subset(!!subsetRect), saturate) {
@@ -491,9 +491,9 @@ private:
                   const GrAAType aaType,
                   const SkCanvas::SrcRectConstraint constraint,
                   const SkMatrix& viewMatrix,
-                  sk_sp<GrColorSpaceXform> textureColorSpaceXform)
+                  sk_sp<GrColorSpaceXform> textureColorSpaceXform, bool, bool)
             : INHERITED(ClassID())
-            , fQuads(cnt, true /* includes locals */)
+            , fQuads1(cnt, true /* includes locals */)
             , fTextureColorSpaceXform(std::move(textureColorSpaceXform))
             , fDesc(nullptr)
             , fMetadata(set[0].fProxyView.swizzle(),
@@ -540,8 +540,8 @@ private:
             } // else another quad referencing the same proxy
 
             SkMatrix ctm = viewMatrix;
-            if (set[q].fPreViewMatrix) {
-                ctm.preConcat(*set[q].fPreViewMatrix);
+            if (set[q].fPreViewMatrix1) {
+                ctm.preConcat(*set[q].fPreViewMatrix1);
             }
 
             // Use dstRect/srcRect unless dstClip is provided, in which case derive new source
@@ -625,7 +625,7 @@ private:
         // The # of proxy switches should match what was provided (+1 because we incremented p
         // when a new proxy was encountered).
         SkASSERT((p + 1) == fMetadata.fProxyCount);
-        SkASSERT(fQuads.count() == fMetadata.fTotalQuadCount);
+        SkASSERT(fQuads1.count() == fMetadata.fTotalQuadCount);
 
         fMetadata.fAAType = static_cast<uint16_t>(netAAType);
         fMetadata.fFilter = static_cast<uint16_t>(netFilter);
@@ -645,11 +645,13 @@ private:
             quad->fEdgeFlags = GrQuadAAFlags::kNone;
             quadCount = 1;
         }
-        fQuads.append(quad->fDevice, {color, subset, quad->fEdgeFlags},  &quad->fLocal);
+        fQuads1.append(quad->fDevice, {color, subset, quad->fEdgeFlags},  &quad->fLocal);
         if (quadCount > 1) {
-            fQuads.append(extra.fDevice, {color, subset, extra.fEdgeFlags}, &extra.fLocal);
+            fQuads1.append(extra.fDevice, {color, subset, extra.fEdgeFlags}, &extra.fLocal);
             fMetadata.fTotalQuadCount++;
         }
+        SkDebugf("appendQuad: added %d to quadCount = %d\n", quadCount, fQuads1.count());
+        SkAssertResult(fQuads1.count() < GrResourceProvider::MaxNumNonAAQuads());
         return quadCount;
     }
 
@@ -733,7 +735,7 @@ private:
                                 skgpu::ganesh::QuadPerEdgeAA::Tessellator tessellator(
                                         desc->fVertexSpec, vertexData);
         for (const auto& op : ChainRange<TextureOpImpl>(texOp)) {
-            auto iter = op.fQuads.iterator();
+            auto iter = op.fQuads1.iterator();
             for (unsigned p = 0; p < op.fMetadata.fProxyCount; ++p) {
                 const int quadCnt = op.fViewCountPairs[p].fQuadCnt;
                 SkDEBUGCODE(int meshVertexCnt = quadCnt * desc->fVertexSpec.verticesPerQuad());
@@ -824,11 +826,11 @@ private:
         int maxQuadsPerMesh = 0;
 
         for (const auto& op : ChainRange<TextureOpImpl>(this)) {
-            if (op.fQuads.deviceQuadType() > quadType) {
-                quadType = op.fQuads.deviceQuadType();
+            if (op.fQuads1.deviceQuadType() > quadType) {
+                quadType = op.fQuads1.deviceQuadType();
             }
-            if (op.fQuads.localQuadType() > srcQuadType) {
-                srcQuadType = op.fQuads.localQuadType();
+            if (op.fQuads1.localQuadType() > srcQuadType) {
+                srcQuadType = op.fQuads1.localQuadType();
             }
             if (op.fMetadata.subset() == Subset::kYes) {
                 subset = Subset::kYes;
@@ -850,7 +852,7 @@ private:
 
         SkASSERT(!CombinedQuadCountWillOverflow(overallAAType, false, desc->fNumTotalQuads));
 
-        auto indexBufferOption =
+        QuadPerEdgeAA::IndexBufferOption indexBufferOption =
                 skgpu::ganesh::QuadPerEdgeAA::CalcIndexBufferOption(overallAAType, maxQuadsPerMesh);
 
         desc->fVertexSpec = VertexSpec(quadType, colorType, srcQuadType, /* hasLocal */ true,
@@ -1062,9 +1064,9 @@ private:
         fMetadata.fColorType = std::max(fMetadata.fColorType, that->fMetadata.fColorType);
 
         // Concatenate quad lists together
-        fQuads.concat(that->fQuads);
-        fViewCountPairs[0].fQuadCnt += that->fQuads.count();
-        fMetadata.fTotalQuadCount += that->fQuads.count();
+        fQuads1.concat(that->fQuads1);
+        fViewCountPairs[0].fQuadCnt += that->fQuads1.count();
+        fMetadata.fTotalQuadCount += that->fQuads1.count();
 
         if (upgradeToCoverageAAOnMerge) {
             // This merger may be the start of a concatenation of two chains. When one
@@ -1086,8 +1088,8 @@ private:
 
 #if defined(GPU_TEST_UTILS)
     SkString onDumpInfo() const override {
-        SkString str = SkStringPrintf("# draws: %d\n", fQuads.count());
-        auto iter = fQuads.iterator();
+        SkString str = SkStringPrintf("# draws: %d\n", fQuads1.count());
+        auto iter = fQuads1.iterator();
         for (unsigned p = 0; p < fMetadata.fProxyCount; ++p) {
             SkString proxyStr = fViewCountPairs[p].fProxy->dump();
             str.append(proxyStr);
@@ -1114,7 +1116,7 @@ private:
     }
 #endif
 
-    GrQuadBuffer<ColorSubsetAndAA> fQuads;
+    GrQuadBuffer<ColorSubsetAndAA> fQuads1;
     sk_sp<GrColorSpaceXform> fTextureColorSpaceXform;
     // Most state of TextureOp is packed into these two field to minimize the op's size.
     // Historically, increasing the size of TextureOp has caused surprising perf regressions, so
@@ -1186,7 +1188,7 @@ GrOp::Owner TextureOp::Make(GrRecordingContext* context,
                             SkBlendMode blendMode,
                             GrAAType aaType,
                             DrawQuad* quad,
-                            const SkRect* subset) {
+                            const SkRect* subset, bool foo) {
     // Apply optimizations that are valid whether or not using TextureOp or FillRectOp
     if (subset && subset->contains(proxyView.proxy()->backingStoreBoundsRect())) {
         // No need for a shader-based subset if hardware clamping achieves the same effect
@@ -1205,7 +1207,7 @@ GrOp::Owner TextureOp::Make(GrRecordingContext* context,
 
     if (blendMode == SkBlendMode::kSrcOver) {
         return TextureOpImpl::Make(context, std::move(proxyView), std::move(textureXform), filter,
-                                   mm, color, saturate, aaType, std::move(quad), subset);
+                                   mm, color, saturate, aaType, std::move(quad), subset, foo);
     } else {
         // Emulate complex blending using FillRectOp
         GrSamplerState samplerState(GrSamplerState::WrapMode::kClamp, filter, mm);
@@ -1262,7 +1264,29 @@ public:
             , fTextureColorSpaceXform(textureColorSpaceXform)
             , fNumLeft(numEntries) {}
 
-    void createOp(GrTextureSetEntry set[], int clumpSize, GrAAType aaType) {
+    int determineClumpSize(const GrTextureSetEntry set[], int quadLimit) const {
+        bool hasPersp = fViewMatrix.hasPerspective();
+
+        int conservativeNumQuads = 0;
+        for (int i = 0; i < fNumLeft; ++i) {
+            int absIndex = this->baseIndex() + i;
+
+            bool hasPrePersp = false;
+            if (set[absIndex].fPreViewMatrix1) {
+                hasPrePersp = set[absIndex].fPreViewMatrix1->hasPerspective();
+            }
+
+            // A perspective quad could split into two quads
+            conservativeNumQuads += hasPersp || hasPrePersp ? 2 : 1;
+            if (conservativeNumQuads >= quadLimit) {
+                return i-1;
+            }
+        }
+
+        return fNumLeft;
+    }
+
+    void createOp1(GrTextureSetEntry set[], int clumpSize, GrAAType aaType, bool foo) {
 
         int clumpProxyCount = proxy_run_count(&set[fNumClumped], clumpSize);
         GrOp::Owner op = TextureOpImpl::Make(fContext,
@@ -1275,7 +1299,7 @@ public:
                                              aaType,
                                              fConstraint,
                                              fViewMatrix,
-                                             fTextureColorSpaceXform);
+                                             fTextureColorSpaceXform, foo);
         fSDC->addDrawOp(fClip, std::move(op));
 
         fNumLeft -= clumpSize;
@@ -1314,7 +1338,8 @@ void TextureOp::AddTextureSetOps(ganesh::SurfaceDrawContext* sdc,
                                  GrAAType aaType,
                                  SkCanvas::SrcRectConstraint constraint,
                                  const SkMatrix& viewMatrix,
-                                 sk_sp<GrColorSpaceXform> textureColorSpaceXform) {
+                                 sk_sp<GrColorSpaceXform> textureColorSpaceXform,
+                                 bool setMayHavePersp) {
     // Ensure that the index buffer limits are lower than the proxy and quad count limits of
     // the op's metadata so we don't need to worry about overflow.
     SkDEBUGCODE(TextureOpImpl::ValidateResourceLimits();)
@@ -1329,8 +1354,8 @@ void TextureOp::AddTextureSetOps(ganesh::SurfaceDrawContext* sdc,
         SkMatrix ctm;
         for (int i = 0; i < cnt; ++i) {
             ctm = viewMatrix;
-            if (set[i].fPreViewMatrix) {
-                ctm.preConcat(*set[i].fPreViewMatrix);
+            if (set[i].fPreViewMatrix1) {
+                ctm.preConcat(*set[i].fPreViewMatrix1);
             }
 
             DrawQuad quad;
@@ -1350,18 +1375,21 @@ void TextureOp::AddTextureSetOps(ganesh::SurfaceDrawContext* sdc,
                     ? &set[i].fSrcRect : nullptr;
 
             auto op = Make(context, set[i].fProxyView, set[i].fSrcAlphaType, textureColorSpaceXform,
-                           filter, mm, set[i].fColor, saturate, blendMode, aaType, &quad, subset);
+                           filter, mm, set[i].fColor, saturate, blendMode, aaType, &quad, subset, true);
             sdc->addDrawOp(clip, std::move(op));
         }
         return;
     }
 
+
+
     // Second check if we can always just make a single op and avoid the extra iteration
     // needed to clump things together.
-    if (cnt <= std::min(GrResourceProvider::MaxNumNonAAQuads(),
-                      GrResourceProvider::MaxNumAAQuads())) {
+    if (!setMayHavePersp && cnt <= std::min(GrResourceProvider::MaxNumNonAAQuads(),
+                                            GrResourceProvider::MaxNumAAQuads())) {
+        //$$
         auto op = TextureOpImpl::Make(context, set, cnt, proxyRunCnt, filter, mm, saturate, aaType,
-                                      constraint, viewMatrix, std::move(textureColorSpaceXform));
+                                      constraint, viewMatrix, std::move(textureColorSpaceXform), true);
         sdc->addDrawOp(clip, std::move(op));
         return;
     }
@@ -1373,9 +1401,9 @@ void TextureOp::AddTextureSetOps(ganesh::SurfaceDrawContext* sdc,
     if (aaType == GrAAType::kNone || aaType == GrAAType::kMSAA) {
         // Clump these into series of MaxNumNonAAQuads-sized GrTextureOps
         while (state.numLeft() > 0) {
-            int clumpSize = std::min(state.numLeft(), GrResourceProvider::MaxNumNonAAQuads());
+            int clumpSize = state.determineClumpSize(set, GrResourceProvider::MaxNumNonAAQuads());
 
-            state.createOp(set, clumpSize, aaType);
+            state.createOp1(set, clumpSize, aaType, true); //$$
         }
     } else {
         // kCoverage can be downgraded to kNone. Note that the following is conservative. kCoverage
@@ -1383,25 +1411,36 @@ void TextureOp::AddTextureSetOps(ganesh::SurfaceDrawContext* sdc,
         // axis-aligned.
         SkASSERT(aaType == GrAAType::kCoverage);
 
+        bool hasPersp = viewMatrix.hasPerspective();
+
         while (state.numLeft() > 0) {
             GrAAType runningAA = GrAAType::kNone;
             bool clumped = false;
 
+            int conservativeNumQuads = 0;
+
             for (int i = 0; i < state.numLeft(); ++i) {
                 int absIndex = state.baseIndex() + i;
+
+                bool hasPrePersp = false;
+                if (set[absIndex].fPreViewMatrix1) {
+                    hasPrePersp = set[absIndex].fPreViewMatrix1->hasPerspective();
+                }
+
+                // A perspective quad could split into two quads
+                conservativeNumQuads += hasPersp || hasPrePersp ? 2 : 1;
 
                 if (set[absIndex].fAAFlags != GrQuadAAFlags::kNone ||
                     runningAA == GrAAType::kCoverage) {
 
-                    if (i >= GrResourceProvider::MaxNumAAQuads()) {
+                    if (conservativeNumQuads >= GrResourceProvider::MaxNumAAQuads()) {
                         // Here we either need to boost the AA type to kCoverage, but doing so with
                         // all the accumulated quads would overflow, or we have a set of AA quads
                         // that has just gotten too large. In either case, calve off the existing
                         // quads as their own TextureOp.
-                        state.createOp(
-                            set,
-                            runningAA == GrAAType::kNone ? i : GrResourceProvider::MaxNumAAQuads(),
-                            runningAA); // maybe downgrading AA here
+                        state.createOp1(
+                            set, i-1,
+                            runningAA, true /* //$$ */); // maybe downgrading AA here
                         clumped = true;
                         break;
                     }
@@ -1409,11 +1448,13 @@ void TextureOp::AddTextureSetOps(ganesh::SurfaceDrawContext* sdc,
                     runningAA = GrAAType::kCoverage;
                 } else if (runningAA == GrAAType::kNone) {
 
-                    if (i >= GrResourceProvider::MaxNumNonAAQuads()) {
+                    if (conservativeNumQuads >= GrResourceProvider::MaxNumNonAAQuads()) {
                         // Here we've found a consistent batch of non-AA quads that has gotten too
                         // large. Calve it off as its own TextureOp.
-                        state.createOp(set, GrResourceProvider::MaxNumNonAAQuads(),
-                                       GrAAType::kNone); // definitely downgrading AA here
+                        // The last increment of 'i' drove it over the edge so exclude the
+                        // current quad.
+                        state.createOp1(set, i-1,
+                                       GrAAType::kNone, true /* //$$ */); // definitely downgrading AA here
                         clumped = true;
                         break;
                     }
@@ -1423,7 +1464,7 @@ void TextureOp::AddTextureSetOps(ganesh::SurfaceDrawContext* sdc,
             if (!clumped) {
                 // We ran through the above loop w/o hitting a limit. Spit out this last clump of
                 // quads and call it a day.
-                state.createOp(set, state.numLeft(), runningAA); // maybe downgrading AA here
+                state.createOp1(set, state.numLeft(), runningAA, true /* //$$ */); // maybe downgrading AA here
             }
         }
     }
@@ -1497,7 +1538,7 @@ GR_DRAW_OP_TEST_DEFINE(TextureOpImpl) {
     return TextureOp::Make(context, std::move(proxyView), alphaType,
                            std::move(texXform), filter, mm, color, saturate,
                            SkBlendMode::kSrcOver, aaType, &quad,
-                           useSubset ? &srcRect : nullptr);
+                           useSubset ? &srcRect : nullptr, true);
 }
 
 #endif // defined(GPU_TEST_UTILS)
