@@ -24,6 +24,7 @@ enum class Budgeted : bool;
 namespace skgpu::graphite {
 
 class UploadSource;
+enum class ScratchUsageFlags : uint32_t;
 
 class Texture : public Resource {
 public:
@@ -47,6 +48,12 @@ public:
     // texture on the host directly. Returns `false` only if driver calls fail.
     virtual bool uploadDataOnHost(const UploadSource& source);
 
+    // Scratch textures may store a bitmask of usages rather than a string label. Note that its
+    // usages only align with the texture's label after Recording insertion, at which point these
+    // usages can be used to generate a string.
+    SkEnumBitMask<ScratchUsageFlags> scratchUsages() { return fScratchUsage; }
+    void updateScratchUsages(SkEnumBitMask<ScratchUsageFlags> usages) { fScratchUsage = usages; }
+
 protected:
     Texture(const SharedContext*,
             SkISize dimensions,
@@ -68,6 +75,12 @@ private:
     TextureInfo fInfo;
     sk_sp<MutableTextureState> fMutableState;
     sk_sp<RefCntedCallback> fReleaseCallback;
+
+    // Scratch texture labels should always reflect all its usages and labels across a Recording. If
+    // a scratch texture is instantiated via proxies that report a statically-defined scratch
+    // usage rather than a custom label, track all instantiated proxy usages as a bitmask. This
+    // allows us to more easily determine whether label updates are needed upon Recording insertion.
+    SkEnumBitMask<ScratchUsageFlags> fScratchUsage;
 };
 
 } // namespace skgpu::graphite
