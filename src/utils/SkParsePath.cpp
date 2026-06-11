@@ -245,8 +245,23 @@ std::optional<SkPath> SkParsePath::FromSVGString(const char data[]) {
 SkString SkParsePath::ToSVGString(const SkPath& path, PathEncoding encoding) {
     SkDynamicMemoryWStream  stream;
 
-    SkPoint current_point{0,0};
+    SkPoint current_point{0, 0};
+    SkPoint subpath_start{0, 0};
     const auto rel_selector = encoding == PathEncoding::Relative;
+
+    // Used to draw optimized zero-length lines when moving points or ending the path.
+    SkScalar draw_length = -1.0;
+
+    const auto add_draw_length = [&](SkScalar length) {
+      draw_length = (draw_length < 0.0 ? 0.0 : draw_length) + length;
+    };
+
+    const auto flush_zero_draw = [&]() {
+      if (rel_selector && draw_length == 0.0) {
+        stream.write("v0", 2);
+      }
+      draw_length = -1.0;
+    };
 
     const auto append_command = [&](char cmd, const SkPoint pts[], size_t count) {
         // Use lower case cmds for relative encoding.
@@ -272,32 +287,66 @@ SkString SkParsePath::ToSVGString(const SkPath& path, PathEncoding encoding) {
 
     while (auto rec = iter.next()) {
         SkSpan<const SkPoint> pts = rec->fPoints;
+
         switch (rec->fVerb) {
             case SkPathVerb::kConic: {
-                const SkScalar tol = SK_Scalar1 / 1024; // how close to a quad
+                const SkScalar tol = SK_Scalar1 / 1024;  // how close to a quad
                 SkAutoConicToQuads quadder;
                 const SkPoint* quadPts = quadder.computeQuads(pts.data(), rec->conicWeight(), tol);
                 for (int i = 0; i < quadder.countQuads(); ++i) {
-                    append_command('Q', &quadPts[i*2 + 1], 2);
+                    append_command('Q', &quadPts[i * 2 + 1], 2);
                 }
             } break;
             case SkPathVerb::kMove:
+	        flush_zero_draw();
                 append_command('M', &pts[0], 1);
+                subpath_start = pts[0];
                 break;
-            case SkPathVerb::kLine:
-                append_command('L', &pts[1], 1);
-                break;
+            case SkPathVerb::kLine: {
+		auto delta = pts[1] - current_point;
+		add_draw_length(delta.length());
+                // Check for flat- or zero-line optimizations in relative encoding mode.
+		// This uses exact zero, assuming that intentionally flat lines will
+		// also use the same consecutive floating-point representation.
+		if (rel_selector && delta.fX == 0.0) {
+		    // Don't draw a pure zero line. We do want it to draw, but it can be
+		    // collapsed with another draw call so we only draw it on a move or
+		    // end of path.
+		    if (delta.fY != 0.0) {
+	                stream.write("v", 1);
+	                stream.writeScalarAsText(delta.fY);
+		    }
+		    current_point = pts[1] * rel_selector;
+		} else if (rel_selector && delta.fY == 0.0) {
+	            stream.write("h", 1);
+		    // We already know from the vertical line that fX is non-zero.
+	            stream.writeScalarAsText(delta.fX);
+		    current_point = pts[1] * rel_selector;
+		} else {
+		  // Fallback to regular line.
+                  append_command('L', &pts[1], 1);
+		}
+            } break;
             case SkPathVerb::kQuad:
+		add_draw_length((pts[1] - current_point).length());
+		add_draw_length((pts[2] - pts[1]).length());
                 append_command('Q', &pts[1], 2);
                 break;
             case SkPathVerb::kCubic:
+		add_draw_length((pts[1] - current_point).length());
+		add_draw_length((pts[2] - pts[1]).length());
+		add_draw_length((pts[3] - pts[2]).length());
                 append_command('C', &pts[1], 3);
                 break;
             case SkPathVerb::kClose:
+		draw_length = -1.0;
                 stream.write("Z", 1);
+                current_point = subpath_start * rel_selector;
+                subpath_start = {0, 0};
                 break;
         }
     }
+    flush_zero_draw();
 
     SkString str;
     str.resize(stream.bytesWritten());
