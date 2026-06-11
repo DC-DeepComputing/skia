@@ -691,11 +691,12 @@ DEF_TEST(SVGDevice_relative_path_encoding, reporter) {
     {
         auto svgCanvas = MakeDOMCanvas(&dom, SkSVGCanvas::kRelativePathEncoding_Flag);
         SkPath path = SkPathBuilder()
-                      .moveTo(100, 50)
-                      .lineTo(200, 50)
-                      .lineTo(200, 150)
-                      .close()
-                      .detach();
+                              .moveTo(100, 50)
+                              .lineTo(200, 50)   // Horizontal line
+                              .lineTo(200, 150)  // Vertical line
+                              .lineTo(100, 100)  // Regular line
+                              .close()
+                              .detach();
 
         svgCanvas->drawPath(path, SkPaint());
     }
@@ -705,7 +706,7 @@ DEF_TEST(SVGDevice_relative_path_encoding, reporter) {
     const auto* pathElement = dom.getFirstChild(rootElement, "path");
     REPORTER_ASSERT(reporter, pathElement, "path element not found");
     const auto* d = dom.findAttr(pathElement, "d");
-    REPORTER_ASSERT(reporter, !strcmp(d, "m100 50l100 0l0 100l-100 -100Z"));
+    REPORTER_ASSERT(reporter, !strcmp(d, "m100 50h100v100l-100 -50Z"), "got: %s", d);
 }
 
 DEF_TEST(SVGDevice_color_shader, reporter) {
