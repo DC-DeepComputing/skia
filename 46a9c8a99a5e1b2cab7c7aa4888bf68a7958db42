@@ -22,6 +22,30 @@
       },
       "revId": "46a9c8a99a5e1b2cab7c7aa4888bf68a7958db42",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a4a8906_4ae36b02",
+        "filename": "tests/RawPtrTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 4641039
+      },
+      "writtenOn": "2026-06-11T13:04:07Z",
+      "side": 1,
+      "message": "I confirm.\nI am guessing you mean \"all tests in parallel with threads\"?\n\nYes, if skia supports multiples threads in parallel, we can\u0027t update the handler in the middle of one tests. This works today, but it won\u0027t in the future.\n\nI see Skia has \"DEF_SERIAL_TEST\", is this the expected solution to keep this test?",
+      "parentUuid": "9046c8e9_2b536ba1",
+      "range": {
+        "startLine": 49,
+        "startChar": 9,
+        "endLine": 49,
+        "endChar": 39
+      },
+      "revId": "46a9c8a99a5e1b2cab7c7aa4888bf68a7958db42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
