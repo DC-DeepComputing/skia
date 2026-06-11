@@ -33,6 +33,24 @@
       "message": "Might as well store a `StreamType` now instead of a bool.  Let\u0027s also initialize it in the constructor, if it\u0027s not too much to plumb.  Then it can be const and we won\u0027t need up mutate it after construction.",
       "revId": "48fa72a19d8d6c51279c0106b99a03a5425ce0f7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4957d931_c8813421",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.h",
+        "patchSetId": 46
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 4569768
+      },
+      "writtenOn": "2026-06-11T08:19:00Z",
+      "side": 1,
+      "message": "True, I can change it to fStreamType.\nI\u0027ve added a parameter to the structs to handle this.",
+      "parentUuid": "b391d2d7_bd34d348",
+      "revId": "48fa72a19d8d6c51279c0106b99a03a5425ce0f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
