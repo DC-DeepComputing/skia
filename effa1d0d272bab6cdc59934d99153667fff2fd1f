@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ee17979_ed56fa83",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-06-11T14:42:43Z",
+      "side": 1,
+      "message": "PS1 is a pure reland, subsequent patch sets include the fix for ChromeOS (switching to rsync).",
+      "revId": "effa1d0d272bab6cdc59934d99153667fff2fd1f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
