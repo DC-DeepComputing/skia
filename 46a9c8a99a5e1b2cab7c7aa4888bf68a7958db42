@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9046c8e9_2b536ba1",
+        "filename": "tests/RawPtrTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-11T12:35:18Z",
+      "side": 1,
+      "message": "We can\u0027t land this test because we try to run all tests. Can you confirm we detect it?",
+      "range": {
+        "startLine": 49,
+        "startChar": 9,
+        "endLine": 49,
+        "endChar": 39
+      },
+      "revId": "46a9c8a99a5e1b2cab7c7aa4888bf68a7958db42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
