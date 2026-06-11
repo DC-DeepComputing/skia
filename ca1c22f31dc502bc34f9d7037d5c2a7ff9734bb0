@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b89090a_164c03c6",
+        "filename": "bazel/external/dawn/generate_dawn_files.py",
+        "patchSetId": 23
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-06-11T14:45:27Z",
+      "side": 1,
+      "message": "This is a pretty complicated script.  I\u0027d love to see some tests.",
+      "range": {
+        "startLine": 1,
+        "startChar": 11,
+        "endLine": 1,
+        "endChar": 14
+      },
+      "revId": "ca1c22f31dc502bc34f9d7037d5c2a7ff9734bb0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
