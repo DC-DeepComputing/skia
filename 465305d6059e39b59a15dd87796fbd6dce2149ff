@@ -69,6 +69,24 @@
       "parentUuid": "18e44135_dd8be4d7",
       "revId": "465305d6059e39b59a15dd87796fbd6dce2149ff",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "34cc6fff_748e59f2",
+        "filename": "PROPOSED_CHROMIUM_CL_shared_image_representations.cc",
+        "patchSetId": 2
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-06-11T13:31:34Z",
+      "side": 1,
+      "message": "On macOS the command line flag is ` --disable-features\u003dCoreAnimationRenderer,CoreAnimationHDRUnderlays`.\n\nYou can use `--show-mac-overlay-borders` to see where the overlays end up.",
+      "parentUuid": "644a2580_c62a5a03",
+      "revId": "465305d6059e39b59a15dd87796fbd6dce2149ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
