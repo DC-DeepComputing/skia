@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d58f7fe_662844ba",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-06-11T14:22:17Z",
+      "side": 1,
+      "message": "Thanks!\n\nSorry, I lose your votes due to a comment explaining why DEF_SERIAL_TEST was added:\nhttps://skia-review.googlesource.com/c/skia/+/1261957/5..6",
+      "revId": "3b201f9cd803cdc9d60741107a1dac479e384a44",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
