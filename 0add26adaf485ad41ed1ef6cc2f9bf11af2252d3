@@ -1,0 +1,165 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36a768e2_7af3ed55",
+        "filename": "src/gpu/graphite/Recording.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-11T15:48:24Z",
+      "side": 1,
+      "message": "Just a note from what I saw in the mega CL, is that these should be stored on the Recording itself even if RecordingPriv is used to access them. They can\u0027t be stored on the Priv object since those go away immediately after calling something on it.",
+      "range": {
+        "startLine": 220,
+        "startChar": 0,
+        "endLine": 222,
+        "endChar": 100
+      },
+      "revId": "0add26adaf485ad41ed1ef6cc2f9bf11af2252d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91c37e25_c13758e6",
+        "filename": "src/gpu/graphite/ResourceCache.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-11T15:48:24Z",
+      "side": 1,
+      "message": "If you like the generalized usage mask plan, this may still need to remain a public function unless it gets called automatically in ResourceCache for non-shareable resources too.",
+      "range": {
+        "startLine": 105,
+        "startChar": 0,
+        "endLine": 107,
+        "endChar": 27
+      },
+      "revId": "0add26adaf485ad41ed1ef6cc2f9bf11af2252d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12a7533a_79a319b9",
+        "filename": "src/gpu/graphite/ResourceProvider.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-11T15:48:24Z",
+      "side": 1,
+      "message": "If we generalized to the usage mask, then I think `findOrCreateTexture` and the ResourceCache APIs would just take in a label and a usage flag bitmask. Then we wouldn\u0027t have to worry about keeping the custom label vs. usage-flag cases separate since we\u0027d just string concat the two together.  A benefit here is that we aren\u0027t then splitting the texture pool up (if we have these new resource types we\u0027ll lose the ability to recycle a non-shareable texture into a scratch texture).",
+      "range": {
+        "startLine": 109,
+        "startChar": 0,
+        "endLine": 112,
+        "endChar": 82
+      },
+      "revId": "0add26adaf485ad41ed1ef6cc2f9bf11af2252d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb2fbd4c_3bf7ba8a",
+        "filename": "src/gpu/graphite/ResourceProvider.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-11T15:48:24Z",
+      "side": 1,
+      "message": "These should be passing in `budgeted` and `shareable` if we keep this.",
+      "range": {
+        "startLine": 173,
+        "startChar": 64,
+        "endLine": 181,
+        "endChar": 92
+      },
+      "revId": "0add26adaf485ad41ed1ef6cc2f9bf11af2252d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33fc7bbd_4c0e5837",
+        "filename": "src/gpu/graphite/ResourceProvider.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-11T15:48:24Z",
+      "side": 1,
+      "message": "This should be be a `SkEnumBitMask\u003cScratchUsageFlags\u003e`",
+      "range": {
+        "startLine": 75,
+        "startChar": 0,
+        "endLine": 75,
+        "endChar": 70
+      },
+      "revId": "0add26adaf485ad41ed1ef6cc2f9bf11af2252d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2fc4a24_2ce8a19d",
+        "filename": "src/gpu/graphite/ResourceTypes.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-11T15:48:24Z",
+      "side": 1,
+      "message": "Some of these ScratchUsageFlags are more like the default labels we use in the factory, such as RasterBitmapTexture, LazySkImageBitmapTexture, or YUVRasterBitmapPlane. However, depending on who calls these factories, the actual proxy may or may not be scratch.\n\nSimilarly, the flags like \"ChildDevice\" and \"CopyDeviceTexture\" may or may not be scratch but do represent a derived label from the original proxy\u0027s label. I think this points us to a bit of a generalization of `ScratchUsageFlags` to just be `TextureUsageFlags`.  Any texture can have these bits and the effective label of the proxy and/or Texture is the custom label + the usage flags.\n\nWhen we then make a child device copy or a subset texture, we dont\u0027 have to perform string concatenation right then and there, we just set the usage flag + old label.\n\nHowever, we do then need to set the labels at the right time. I think this would be in TextureProxy::instantiate() for non-scratch textures, we\u0027d construct the full label and set it when calling into the ResourceProvider. For scratch textures, it would continue to go through the scratch manager which does the aggregation logic that you have before setting the full label from all the proxies that share the texture.",
+      "range": {
+        "startLine": 215,
+        "startChar": 0,
+        "endLine": 215,
+        "endChar": 47
+      },
+      "revId": "0add26adaf485ad41ed1ef6cc2f9bf11af2252d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4832c278_fc07beb8",
+        "filename": "src/gpu/graphite/Texture.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-11T15:48:24Z",
+      "side": 1,
+      "message": "This should only be called by the Context during `insertRecording` right? Can we add a note here (or on the `fScratchUsage` field) that that is why it doesn\u0027t need to be thread-safe?",
+      "range": {
+        "startLine": 54,
+        "startChar": 0,
+        "endLine": 55,
+        "endChar": 97
+      },
+      "revId": "0add26adaf485ad41ed1ef6cc2f9bf11af2252d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
