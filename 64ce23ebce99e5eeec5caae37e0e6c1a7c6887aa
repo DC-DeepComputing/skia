@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "332882f2_d544b3cc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2026-06-11T10:55:27Z",
+      "side": 1,
+      "message": "Deferring to a Skia reviewer.",
+      "revId": "64ce23ebce99e5eeec5caae37e0e6c1a7c6887aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
