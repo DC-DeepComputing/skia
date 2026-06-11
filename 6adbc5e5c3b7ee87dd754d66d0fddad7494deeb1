@@ -86,6 +86,42 @@
       "parentUuid": "3466f429_7bd8fda1",
       "revId": "6adbc5e5c3b7ee87dd754d66d0fddad7494deeb1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "504a949d_262ffa9b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-06-11T10:02:08Z",
+      "side": 1,
+      "message": "Thanks for tracking this down, this is great work!\n\nThe YUV\u003c-\u003eRGB matrices returned by `SkColorMatrix_YUV2RGB` assume that the inputs have already been normalized to [0,1]. And, as you\u0027ve noticed, the GPU will often be providing values normalized to [0, 65535/65472] \u003d [0, 0.999], because they\u0027re using the upper 10 bits of the 16-bit format.\n\nThis is unfortunately not universal. Hardware-based codecs tend to use the upper 10 bits of the 16-bit pixel, but software-based codecs tend to use the lower 10 bits of the 16-bit pixel. So I think having a parameter (like what Michael suggested) would be best.",
+      "parentUuid": "7cf13cac_a2085f74",
+      "revId": "6adbc5e5c3b7ee87dd754d66d0fddad7494deeb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76711c5d_f5a5baaf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-06-11T10:02:08Z",
+      "side": 1,
+      "message": "Yes, I think that\u0027s the best solution.\n\nThe `SkYUVAPixmaps::DataType` is scoped to the `SkYUVAPixmaps`, cause it needs to go to some non-pixmap places (`GrYUVABackendTextures` and `skgpu::graphite::YUVABackendTextures`), which may be a bit messy, but is probably fine.\n\nIt also may be that we\u0027ll want to consider having both R10_X6 and X6_R10, since almost all software codecs output into the lower 10 bits (we do a bunch of extra swizzling [here](https://source.chromium.org/chromium/chromium/src/+/main:media/renderers/video_resource_updater.cc;l\u003d1059;drc\u003d55b4406172819a511f5f2be5e3191af91154fda3) for that).",
+      "parentUuid": "fe5a41e5_a3607c72",
+      "revId": "6adbc5e5c3b7ee87dd754d66d0fddad7494deeb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

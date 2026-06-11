@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c597f629_311ea852",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-06-11T10:02:08Z",
+      "side": 1,
+      "message": "Thanks for the great investigation!",
+      "revId": "465305d6059e39b59a15dd87796fbd6dce2149ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb55f47f_ade37f4d",
+        "filename": "PROPOSED_CHROMIUM_CL_shared_image_representations.cc",
+        "patchSetId": 2
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-06-11T10:02:08Z",
+      "side": 1,
+      "message": "So if we have a `MTLPixelFormatR16Unorm` texture that\u0027s backed by an `x420` IOSurface, it will be sampled differently than a `MTLPixelFormatR16Unorm` that isn\u0027t?\n\nThat\u0027s fairly shocking... it would have been better to have had a dedicated pixel format for this sort of thing (like `VK_FORMAT_R10X6_UNORM_PACK16`). That also really complicates the implementation. If we could infer behavior from the pixel format then the fix would be simpler.",
+      "revId": "465305d6059e39b59a15dd87796fbd6dce2149ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
