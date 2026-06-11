@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9cd75e60_fe117a1a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4329740
+      },
+      "writtenOn": "2026-06-11T15:56:37Z",
+      "side": 1,
+      "message": "@kjlubick@google.com — thanks in advance for your time. Could you help with the review so I can move forward on the assigned Chromium-side bug? Please let me know if you\u0027d like me to address anything. I\u0027m pretty new to Skia, so I\u0027m grateful for any guidance.",
+      "revId": "13d33fdb544c4d7c8abc1cb276aad2077aef2fa9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
