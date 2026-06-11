@@ -51,6 +51,24 @@
       "parentUuid": "eb55f47f_ade37f4d",
       "revId": "465305d6059e39b59a15dd87796fbd6dce2149ff",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "644a2580_c62a5a03",
+        "filename": "PROPOSED_CHROMIUM_CL_shared_image_representations.cc",
+        "patchSetId": 2
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 4871879
+      },
+      "writtenOn": "2026-06-11T13:29:47Z",
+      "side": 1,
+      "message": "Thanks for doing the test! I went to read Apple\u0027s documentation again and indeed there is no source suggesting that MTLPixelFormatR16Unorm is sampled as float with a different denominator than 65535.\n\nSo I made a mistake in PROPOSED_CHROMIUM_CL_shared_image_representations.cc, please disregard the statements about Apple in that doc. Sorry about that.\n\nmacOS Chromium does not suffer from the green tint issue probably because they support overlays for a greater number of videos. I have tested a webpage with 4 videos (https://andrewkeyanzhe.github.io/100_203_nits_PQ_HLG_patterns/4_compare.html) on an M1 Macbook Air (macOS Tahoe) and 100 nits PQ is not shown with a green tint. 100 nits PQ is shown with Display Native EDR Linear 0.462,0.462,0.462 when brightness is at 8/16 (140 nits). Readings from Digital Color Meter.\n\nChris, is there a way to turn overlays on or off on Windows and macOS Chromium? On my RTX 2080 + Windows I can test the no overlay (Skia) behaviour by having \u003e\u003d 2 videos on one HTML. (With Windows HDR ON + RTX 2080, Special K reports only 1 MPO plane available)",
+      "parentUuid": "18e44135_dd8be4d7",
+      "revId": "465305d6059e39b59a15dd87796fbd6dce2149ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
