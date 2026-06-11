@@ -142,26 +142,24 @@ GrRenderTask::ExpectedOutcome AtlasRenderTask::onMakeClosed(GrRecordingContext* 
     const GrUserStencilSettings* stencil;
     if (caps.discardStencilValuesAfterRenderPass()) {
         constexpr static GrUserStencilSettings kTestStencil(
-            GrUserStencilSettings::StaticInit<
-                0x0000,
-                GrUserStencilTest::kNotEqual,
-                0xffff,
-                GrUserStencilOp::kKeep,
-                GrUserStencilOp::kKeep,
-                0xffff>());
+            GrUserStencilSettings::StaticInit</*Ref*/0x0000,
+                                              /*GrUserStencilTest*/GrUserStencilTest::kNotEqual,
+                                              /*TestMask*/0xffff,
+                                              /*PassOp*/GrUserStencilOp::kKeep,
+                                              /*FailOp*/GrUserStencilOp::kKeep,
+                                              /*WriteMask*/0xffff>());
 
         // This is the final op in the task. Since Ganesh is planning to discard the stencil values
         // anyway, there is no need to reset the stencil values back to 0.
         stencil = &kTestStencil;
     } else {
         constexpr static GrUserStencilSettings kTestAndResetStencil(
-            GrUserStencilSettings::StaticInit<
-                0x0000,
-                GrUserStencilTest::kNotEqual,
-                0xffff,
-                GrUserStencilOp::kZero,
-                GrUserStencilOp::kKeep,
-                0xffff>());
+            GrUserStencilSettings::StaticInit</*Ref*/0x0000,
+                                              /*GrUserStencilTest*/GrUserStencilTest::kNotEqual,
+                                              /*TestMask*/0xffff,
+                                              /*PassOp*/GrUserStencilOp::kZero,
+                                              /*FailOp*/GrUserStencilOp::kKeep,
+                                              /*WriteMask*/0xffff>());
 
         // Outset the cover rect to make extra sure we clear every stencil value touched by the
         // atlas.
