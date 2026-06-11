@@ -70,6 +70,30 @@
       },
       "revId": "46a9c8a99a5e1b2cab7c7aa4888bf68a7958db42",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0373c017_ff439263",
+        "filename": "tests/RawPtrTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-11T13:53:14Z",
+      "side": 1,
+      "message": "Yep, DEF_SERIAL_TEST is the right thing to use for these situations.",
+      "parentUuid": "52cf17d2_1b229090",
+      "range": {
+        "startLine": 49,
+        "startChar": 9,
+        "endLine": 49,
+        "endChar": 39
+      },
+      "revId": "46a9c8a99a5e1b2cab7c7aa4888bf68a7958db42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
