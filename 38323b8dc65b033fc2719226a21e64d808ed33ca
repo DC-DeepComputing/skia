@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa742e72_f5f7e681",
+        "filename": "tools/fonts/create_test_font_color.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 3916209
+      },
+      "writtenOn": "2026-06-11T15:08:55Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "59c05a91_3ba4291f",
+      "range": {
+        "startLine": 39,
+        "startChar": 26,
+        "endLine": 39,
+        "endChar": 43
+      },
+      "revId": "38323b8dc65b033fc2719226a21e64d808ed33ca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bd8ef67b_57c78f00",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-06-11T13:54:40Z",
       "side": 1,
       "message": "Remove comment after renaming enum.",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 80
+      },
+      "revId": "38323b8dc65b033fc2719226a21e64d808ed33ca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0ed9976_43363a97",
+        "filename": "tools/fonts/create_test_font_color.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 3916209
+      },
+      "writtenOn": "2026-06-11T15:08:55Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "bd8ef67b_57c78f00",
       "range": {
         "startLine": 50,
         "startChar": 0,
