@@ -84,7 +84,7 @@ skia_filegroup(
     name = "private_hdrs",
     srcs = BASE_PRIVATE_HDRS,
     visibility = [
-        "//src/base:__pkg__",
+        "//src/core:__pkg__",
         "//src/opts:__pkg__",
     ],
 )
@@ -111,6 +111,23 @@ skia_filegroup(
     name = "jpeg_decode_srcs",
     srcs = JPEG_DECODE_SRCS_HDRS,
     visibility = ["//src/codec:__pkg__"],
+)
+
+skia_filegroup(
+    name = "opts_srcs",
+    srcs = [
+        "SkAPI.h",
+        "SkAssert.h",
+        "SkAttributes.h",
+        "SkDebug.h",
+        "SkFeatures.h",
+        "SkLoadUserConfig.h",
+        "SkLog.h",
+        "SkLogPriority.h",
+        "SkTFitsIn.h",
+        "SkTo.h",
+    ],
+    visibility = ["//src/opts:__pkg__"],
 )
 
 generate_cpp_files_for_headers(
