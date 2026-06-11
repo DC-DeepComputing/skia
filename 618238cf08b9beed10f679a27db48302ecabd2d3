@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "78431a01_9e338fdd",
+        "filename": "tools/fonts/TestSVGTypeface.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1307,
+      "author": {
+        "id": 3916209
+      },
+      "writtenOn": "2026-06-11T08:11:47Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "16012856_42a2d3e5",
+      "range": {
+        "startLine": 1307,
+        "startChar": 12,
+        "endLine": 1307,
+        "endChar": 40
+      },
+      "revId": "618238cf08b9beed10f679a27db48302ecabd2d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "35e3fdf4_ebca7a2f",
@@ -113,6 +137,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce706173_d9d96a0c",
+        "filename": "tools/fonts/TestSVGTypeface.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1354,
+      "author": {
+        "id": 3916209
+      },
+      "writtenOn": "2026-06-11T08:11:47Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "35e3fdf4_ebca7a2f",
+      "range": {
+        "startLine": 1354,
+        "startChar": 16,
+        "endLine": 1354,
+        "endChar": 50
+      },
+      "revId": "618238cf08b9beed10f679a27db48302ecabd2d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b5d04427_515d3f83",
@@ -126,6 +174,30 @@
       "writtenOn": "2026-06-09T12:35:49Z",
       "side": 1,
       "message": "Suggest to use an enumeration for ebdt format, instead of an int.",
+      "range": {
+        "startLine": 64,
+        "startChar": 48,
+        "endLine": 64,
+        "endChar": 67
+      },
+      "revId": "618238cf08b9beed10f679a27db48302ecabd2d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0def8c9_559a04a8",
+        "filename": "tools/fonts/TestSVGTypeface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 3916209
+      },
+      "writtenOn": "2026-06-11T08:11:47Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "b5d04427_515d3f83",
       "range": {
         "startLine": 64,
         "startChar": 48,
