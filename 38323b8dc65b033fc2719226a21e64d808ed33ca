@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59c05a91_3ba4291f",
+        "filename": "tools/fonts/create_test_font_color.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2026-06-11T13:54:40Z",
+      "side": 1,
+      "message": "If you\u0027re using this for CBDT, too, then the enumeration should be renamed to a name that\u0027s suitable for both, without specific EBDT in the same.",
+      "range": {
+        "startLine": 39,
+        "startChar": 26,
+        "endLine": 39,
+        "endChar": 43
+      },
+      "revId": "38323b8dc65b033fc2719226a21e64d808ed33ca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd8ef67b_57c78f00",
+        "filename": "tools/fonts/create_test_font_color.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2026-06-11T13:54:40Z",
+      "side": 1,
+      "message": "Remove comment after renaming enum.",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 80
+      },
+      "revId": "38323b8dc65b033fc2719226a21e64d808ed33ca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
