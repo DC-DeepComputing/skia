@@ -1,0 +1,14 @@
+{
+  "format_version": "1.1",
+  "package_name": "skia/tools/sk/mac-arm64",
+  "install_mode": "copy",
+  "actual_install_mode": "copy",
+  "files": [
+    {
+      "name": "sk",
+      "size": 22628946,
+      "executable": true,
+      "hash": "bf5dTHBPDdFzxXnLjt9J2vKfisPX26YMurjZyx_TQfsC"
+    }
+  ]
+}
