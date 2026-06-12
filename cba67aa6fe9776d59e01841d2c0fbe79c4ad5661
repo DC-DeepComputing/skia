@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef1e7965_d0c45cc3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-12T17:18:05Z",
+      "side": 1,
+      "message": "uber mega ultra nit?",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 4
+      },
+      "revId": "cba67aa6fe9776d59e01841d2c0fbe79c4ad5661",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "13fe516e_72a256b9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-12T17:18:05Z",
+      "side": 1,
+      "message": "LGTM",
+      "revId": "cba67aa6fe9776d59e01841d2c0fbe79c4ad5661",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
