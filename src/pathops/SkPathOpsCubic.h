@@ -17,6 +17,8 @@
 #include "src/pathops/SkPathOpsDebug.h"
 #include "src/pathops/SkPathOpsPoint.h"
 #include "src/pathops/SkPathOpsTCurve.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 class SkIntersections;
 class SkOpGlobalState;
@@ -150,7 +152,7 @@ struct SkDCubic {
 
     static const int gPrecisionUnit;
     SkDPoint fPts[kPointCount];
-    SkDEBUGCODE(SkOpGlobalState* fDebugGlobalState;)
+    SkDEBUGCODE(RAW_PTR_EXCLUSION SkOpGlobalState* fDebugGlobalState;)
 };
 
 /* Given the set [0, 1, 2, 3], and two of the four members, compute an XOR mask

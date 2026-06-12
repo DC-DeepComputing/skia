@@ -6,6 +6,7 @@
  */
 #include "src/gpu/ganesh/ops/DrawAtlasOp.h"
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRSXform.h"
@@ -121,8 +122,8 @@ private:
     int fQuadCount;
     bool fHasColors;
 
-    GrSimpleMesh* fMesh = nullptr;
-    GrProgramInfo* fProgramInfo = nullptr;
+    raw_ptr<GrSimpleMesh> fMesh = nullptr;
+    raw_ptr<GrProgramInfo> fProgramInfo = nullptr;
 };
 
 GrGeometryProcessor* make_gp(SkArenaAlloc* arena,

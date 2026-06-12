@@ -5,7 +5,11 @@
  * found in the LICENSE file.
  */
 
+#include "src/partition_alloc/raw_ref.h"
+
 #ifndef skgpu_tessellate_MidpointContourParser_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define skgpu_tessellate_MidpointContourParser_DEFINED
 
 #include "include/core/SkPath.h"
@@ -30,10 +34,10 @@ class MidpointContourParser {
 public:
     MidpointContourParser(const SkPath& path)
             : fPath(path)
-            , fVerbs(fPath.verbs().data())
-            , fNumRemainingVerbs(fPath.countVerbs())
-            , fPoints(fPath.points().data())
-            , fWeights(fPath.conicWeights().data()) {}
+            , fVerbs(fPath->verbs().data())
+            , fNumRemainingVerbs(fPath->countVerbs())
+            , fPoints(fPath->points().data())
+            , fWeights(fPath->conicWeights().data()) {}
     // Advances the internal state to the next contour in the path. Returns false if there are no
     // more contours.
     bool parseNextContour() {
@@ -83,7 +87,7 @@ public:
 
     // Allows for iterating the current contour using a range-for loop.
     SkPathPriv::Iterate currentContour() {
-        return SkPathPriv::Iterate({fVerbs, (size_t)fVerbsIdx}, fPoints, fWeights);
+        return SkPathPriv::Iterate({fVerbs.get(), (size_t)fVerbsIdx}, fPoints, fWeights);
     }
 
     SkPoint currentMidpoint() { return fMidpoint * (1.f / fMidpointWeight); }
@@ -99,16 +103,16 @@ private:
         fWtsIdx = 0;
     }
 
-    const SkPath& fPath;
+    const raw_ref<const SkPath> fPath;
 
-    const SkPathVerb* fVerbs;
+    raw_ptr<const SkPathVerb, AllowPtrArithmetic> fVerbs;
     int fNumRemainingVerbs = 0;
     int fVerbsIdx = 0;
 
-    const SkPoint* fPoints;
+    raw_ptr<const SkPoint, AllowPtrArithmetic> fPoints;
     int fPtsIdx = 0;
 
-    const float* fWeights;
+    raw_ptr<const float, AllowPtrArithmetic> fWeights;
     int fWtsIdx = 0;
 
     SkPoint fMidpoint;

@@ -5,7 +5,11 @@
  * found in the LICENSE file.
  */
 
+#include "src/partition_alloc/raw_ref.h"
+
 #ifndef SKSL_VARDECLARATIONS
+#include "src/partition_alloc/raw_ptr.h"
+
 #define SKSL_VARDECLARATIONS
 
 #include "include/core/SkTypes.h"
@@ -88,7 +92,7 @@ public:
                                                 int arraySize,
                                                 std::unique_ptr<Expression> value);
     const Type& baseType() const {
-        return fBaseType;
+        return *fBaseType;
     }
 
     Variable* var() const {
@@ -119,8 +123,8 @@ private:
                                     const Type* baseType,
                                     std::unique_ptr<Expression>& value);
 
-    Variable* fVar;
-    const Type& fBaseType;
+    raw_ptr<Variable> fVar;
+    const raw_ref<const Type> fBaseType;
     int fArraySize;  // zero means "not an array"
     std::unique_ptr<Expression> fValue;
 

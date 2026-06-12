@@ -66,7 +66,7 @@ public:
 private:
     void onEmitCode(EmitArgs& args, GrGPArgs* gpArgs) override{
         const GrDistanceFieldA8TextGeoProc& dfTexEffect =
-                args.fGeomProc.cast<GrDistanceFieldA8TextGeoProc>();
+                args.fGeomProc->cast<GrDistanceFieldA8TextGeoProc>();
         GrGLSLFPFragmentBuilder* fragBuilder = args.fFragBuilder;
 
         GrGLSLVertexBuilder* vertBuilder = args.fVertBuilder;
@@ -351,7 +351,7 @@ public:
 private:
     void onEmitCode(EmitArgs& args, GrGPArgs* gpArgs) override{
         const GrDistanceFieldPathGeoProc& dfPathEffect =
-                args.fGeomProc.cast<GrDistanceFieldPathGeoProc>();
+                args.fGeomProc->cast<GrDistanceFieldPathGeoProc>();
 
         GrGLSLFPFragmentBuilder* fragBuilder = args.fFragBuilder;
 
@@ -605,7 +605,7 @@ public:
 private:
     void onEmitCode(EmitArgs& args, GrGPArgs* gpArgs) override {
         const GrDistanceFieldLCDTextGeoProc& dfTexEffect =
-                args.fGeomProc.cast<GrDistanceFieldLCDTextGeoProc>();
+                args.fGeomProc->cast<GrDistanceFieldLCDTextGeoProc>();
 
         GrGLSLVertexBuilder* vertBuilder = args.fVertBuilder;
         GrGLSLVaryingHandler* varyingHandler = args.fVaryingHandler;

@@ -14,6 +14,8 @@
 #include <stdint.h>
 
 #ifdef __cplusplus
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 extern "C" {
 #endif
 
