@@ -21,6 +21,7 @@
 #include "src/core/SkMessageBus.h"
 #include "src/core/SkSynchronizedResourceCache.h"
 #include "src/core/SkTHash.h"
+#include "src/core/SkTraceEvent.h"
 
 #if defined(SK_USE_DISCARDABLE_SCALEDIMAGECACHE)
 #include "include/private/chromium/SkDiscardableMemory.h"
@@ -170,6 +171,12 @@ void SkResourceCache::add(Rec* rec, void* payload) {
         }
     }
 
+    TRACE_EVENT2("skia", "SkResourceCache::add",
+                 "category", rec->getCategory(),
+                 "total_and_size", TRACE_STR_COPY(SkStringPrintf("total: %zu, size: %zu",
+                                                                  fTotalBytesUsed + rec->bytesUsed(),
+                                                                  rec->bytesUsed()).c_str()));
+
     this->addToHead(rec);
     fHash->set(rec);
     rec->postAddInstall(payload);
@@ -190,6 +197,12 @@ void SkResourceCache::remove(Rec* rec) {
     SkASSERT(rec->canBePurged());
     size_t used = rec->bytesUsed();
     SkASSERT(used <= fTotalBytesUsed);
+
+    TRACE_EVENT2("skia", "SkResourceCache::remove",
+                 "category", rec->getCategory(),
+                 "total_and_size", TRACE_STR_COPY(SkStringPrintf("total: %zu, size: %zu",
+                                                                  fTotalBytesUsed - used,
+                                                                  used).c_str()));
 
     this->release(rec);
     fHash->remove(rec->getKey());
