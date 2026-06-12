@@ -92,8 +92,8 @@ SkScalerContext::SkScalerContext(SkTypeface& typeface, const SkScalerContextEffe
                                  const SkDescriptor* desc)
     : fRec(PreprocessRec(typeface, effects, *desc))
     , fTypeface(typeface)
-    , fPathEffect(sk_ref_sp(effects.fPathEffect))
-    , fMaskFilter(sk_ref_sp(effects.fMaskFilter))
+    , fPathEffect(sk_ref_sp(effects.fPathEffect.get()))
+    , fMaskFilter(sk_ref_sp(effects.fMaskFilter.get()))
       // Initialize based on our settings. Subclasses can also force this.
     , fGenerateImageFromPath(fRec.fFrameWidth >= 0 || fPathEffect != nullptr)
 

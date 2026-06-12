@@ -7,6 +7,7 @@
 
 #include "include/core/SkOverdrawCanvas.h"
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkColorType.h"
@@ -95,7 +96,7 @@ public:
     }
 
 private:
-    SkCanvas* const fOverdrawCanvas;
+    const raw_ptr<SkCanvas> fOverdrawCanvas;
     skcpu::GlyphRunListPainter fPainter;
 };
 }  // namespace

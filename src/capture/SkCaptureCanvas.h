@@ -6,6 +6,8 @@
  */
 
 #ifndef SkCaptureCanvas_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define SkCaptureCanvas_DEFINED
 
 #include <cstddef>
@@ -117,8 +119,8 @@ private:
 
     bool fCapturing = false;
     SkPictureRecorder fRecorder;
-    SkCanvas* fBaseCanvas = nullptr;
-    SkCaptureManager* fManager = nullptr;
+    raw_ptr<SkCanvas> fBaseCanvas = nullptr;
+    raw_ptr<SkCaptureManager> fManager = nullptr;
 
     // Hide NWay management functions as clients shouldn't be using these directly.
     void addCanvas(SkCanvas* canvas) override {SkNWayCanvas::addCanvas(canvas);}

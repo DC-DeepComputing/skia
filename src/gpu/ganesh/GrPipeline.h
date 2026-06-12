@@ -6,6 +6,8 @@
  */
 
 #ifndef GrPipeline_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define GrPipeline_DEFINED
 
 #include "include/core/SkPoint.h"
@@ -76,7 +78,7 @@ public:
 
     struct InitArgs {
         InputFlags fInputFlags = InputFlags::kNone;
-        const GrCaps* fCaps = nullptr;
+        raw_ptr<const GrCaps> fCaps = nullptr;
         GrDstProxyView fDstProxyView;
         skgpu::Swizzle fWriteSwizzle;
     };

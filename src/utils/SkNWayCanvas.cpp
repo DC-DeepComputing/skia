@@ -7,6 +7,8 @@
 
 #include "include/utils/SkNWayCanvas.h"
 
+#include "src/partition_alloc/raw_ref.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkMatrix.h"
@@ -81,8 +83,8 @@ public:
         fIndex = 0;
     }
     bool next() {
-        if (fIndex < fList.size()) {
-            fCanvas = fList[fIndex++];
+        if (fIndex < fList->size()) {
+            fCanvas = (*fList)[fIndex++];
             return true;
         }
         return false;
@@ -91,9 +93,9 @@ public:
     SkCanvas* get() const { return fCanvas; }
 
 private:
-    const SkTDArray<SkCanvas*>& fList;
+    const raw_ref<const SkTDArray<SkCanvas *>> fList;
     int fIndex;
-    SkCanvas* fCanvas;
+    raw_ptr<SkCanvas> fCanvas;
 };
 
 void SkNWayCanvas::willSave() {

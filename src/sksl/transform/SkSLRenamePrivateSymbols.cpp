@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 
+#include "src/partition_alloc/raw_ref.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkEnumBitMask.h"
@@ -128,7 +130,7 @@ void Transform::RenamePrivateSymbols(Context& context,
 
             // Update the symbol's name.
             const std::string* ownedName = symbols->takeOwnershipOfString(std::move(shortName));
-            symbols->renameSymbol(fContext, mutableSym, *ownedName);
+            symbols->renameSymbol(*fContext, mutableSym, *ownedName);
         }
 
         void minifyFunctionName(const FunctionDeclaration* funcDecl) {
@@ -144,7 +146,7 @@ void Transform::RenamePrivateSymbols(Context& context,
                 // of them at once.)
                 Symbol* mutableSym = symbols->findMutable(funcDecl->name());
                 const std::string* ownedName = symbols->takeOwnershipOfString(std::move(shortName));
-                symbols->renameSymbol(fContext, mutableSym, *ownedName);
+                symbols->renameSymbol(*fContext, mutableSym, *ownedName);
             }
         }
 
@@ -216,8 +218,8 @@ void Transform::RenamePrivateSymbols(Context& context,
             return INHERITED::visitStatementPtr(stmt);
         }
 
-        Context& fContext;
-        ProgramUsage* fUsage;
+        const raw_ref<Context> fContext;
+        raw_ptr<ProgramUsage> fUsage;
         std::vector<SymbolTable*> fSymbolTableStack;
         ProgramKind fKind;
         using INHERITED = ProgramWriter;

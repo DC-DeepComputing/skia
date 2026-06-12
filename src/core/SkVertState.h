@@ -6,6 +6,8 @@
  */
 
 #ifndef SkVertState_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define SkVertState_DEFINED
 
 #include "include/core/SkVertices.h"
@@ -47,7 +49,7 @@ struct VertState {
 private:
     int             fCount;
     int             fCurrIndex;
-    const uint16_t* fIndices;
+    raw_ptr<const uint16_t> fIndices;
 
     static bool Triangles(VertState*);
     static bool TrianglesX(VertState*);

@@ -41,7 +41,7 @@ public:
 
     // Makes a literal of $floatLiteral type.
     static std::unique_ptr<Literal> MakeFloat(const Context& context, Position pos, float value) {
-        return std::make_unique<Literal>(pos, value, context.fTypes.fFloatLiteral.get());
+        return std::make_unique<Literal>(pos, value, context.fTypes->fFloatLiteral.get());
     }
 
     // Makes a float literal of the specified type.
@@ -52,7 +52,7 @@ public:
 
     // Makes a literal of $intLiteral type.
     static std::unique_ptr<Literal> MakeInt(const Context& context, Position pos, SKSL_INT value) {
-        return std::make_unique<Literal>(pos, value, context.fTypes.fIntLiteral.get());
+        return std::make_unique<Literal>(pos, value, context.fTypes->fIntLiteral.get());
     }
 
     // Makes an int literal of the specified type.
@@ -67,7 +67,7 @@ public:
 
     // Makes a literal of boolean type.
     static std::unique_ptr<Literal> MakeBool(const Context& context, Position pos, bool value) {
-        return std::make_unique<Literal>(pos, value, context.fTypes.fBool.get());
+        return std::make_unique<Literal>(pos, value, context.fTypes->fBool.get());
     }
 
     // Makes a literal of boolean type. (Functionally identical to the above, but useful if you

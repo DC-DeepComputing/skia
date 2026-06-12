@@ -5,7 +5,11 @@
  * found in the LICENSE file.
  */
 
+#include "src/partition_alloc/raw_ref.h"
+
 #ifndef SKSL_CODEGENERATOR
+#include "src/partition_alloc/raw_ptr.h"
+
 #define SKSL_CODEGENERATOR
 
 #include "src/sksl/SkSLContext.h"
@@ -27,12 +31,12 @@ public:
                   const Program* program,
                   OutputStream* stream)
             : fProgram(*program)
-            , fContext(fProgram.fContext->fTypes, *fProgram.fContext->fErrors)
+            , fContext(*fProgram->fContext->fTypes, *fProgram->fContext->fErrors)
             , fCaps(*caps)
             , fOut(stream) {
-        fContext.fConfig = fProgram.fConfig.get();
-        fContext.fModule = fProgram.fContext->fModule;
-        fContext.fSymbolTable = fProgram.fSymbols.get();
+        fContext.fConfig = fProgram->fConfig.get();
+        fContext.fModule = fProgram->fContext->fModule;
+        fContext.fSymbolTable = fProgram->fSymbols.get();
     }
 
     virtual ~CodeGenerator() = default;
@@ -55,10 +59,10 @@ protected:
     // this time the bias is not implemented in the MSL codegen and so iOS/Metal was not tested.
     static constexpr float kSharpenTexturesBias = -.475f;
 
-    const Program& fProgram;
+    const raw_ref<const Program> fProgram;
     Context fContext;
-    const ShaderCaps& fCaps;
-    OutputStream* fOut;
+    const raw_ref<const ShaderCaps> fCaps;
+    raw_ptr<OutputStream> fOut;
 };
 
 class AutoOutputStream {
@@ -86,9 +90,9 @@ public:
     }
 
 private:
-    CodeGenerator* fCodeGen = nullptr;
-    OutputStream* fOldOutput = nullptr;
-    int *fIndentationPtr = nullptr;
+    raw_ptr<CodeGenerator> fCodeGen = nullptr;
+    raw_ptr<OutputStream> fOldOutput = nullptr;
+    raw_ptr<int> fIndentationPtr = nullptr;
     int fOldIndentation = 0;
 };
 

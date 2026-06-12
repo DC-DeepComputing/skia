@@ -7,6 +7,7 @@
 
 #include "modules/jsonreader/SkJSONReader.h"
 
+#include "src/partition_alloc/raw_ref.h"
 #include "include/core/SkData.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkStream.h"
@@ -502,7 +503,7 @@ public:
     }
 
 private:
-    SkArenaAlloc&         fAlloc;
+    const raw_ref<SkArenaAlloc> fAlloc;
 
     // Pending values stack.
     inline static constexpr size_t kValueStackReserve = 256;
@@ -560,7 +561,7 @@ private:
         // and instantiate as a vector of values in scope.
         auto& placeholder = fValueStack[scope_start - 1];
         fScopeIndex = *static_cast<RawValue<intptr_t>&>(placeholder);
-        placeholder = VectorT(begin, count, fAlloc);
+        placeholder = VectorT(begin, count, *fAlloc);
 
         // Drop the (consumed) values in scope.
         fValueStack.resize(scope_start);
@@ -619,7 +620,7 @@ private:
     void pushNull() { fValueStack.push_back(NullValue()); }
 
     void pushString(const char* s, size_t size, const char* eos) {
-        fValueStack.push_back(FastString(s, size, eos, fAlloc));
+        fValueStack.push_back(FastString(s, size, eos, *fAlloc));
     }
 
     void pushInt32(int32_t i) { fValueStack.push_back(NumberValue(i)); }
