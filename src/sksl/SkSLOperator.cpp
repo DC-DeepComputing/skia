@@ -248,14 +248,14 @@ bool Operator::determineBinaryType(const Context& context,
                 if (rightToLeft.isPossible(allowNarrowing)) {
                     *outLeftType = &left;
                     *outRightType = &left;
-                    *outResultType = context.fTypes.fBool.get();
+                    *outResultType = context.fTypes->fBool.get();
                     return true;
                 }
             } else {
                 if (leftToRight.isPossible(allowNarrowing)) {
                     *outLeftType = &right;
                     *outRightType = &right;
-                    *outResultType = context.fTypes.fBool.get();
+                    *outResultType = context.fTypes->fBool.get();
                     return true;
                 }
             }
@@ -264,11 +264,11 @@ bool Operator::determineBinaryType(const Context& context,
         case Kind::LOGICALOR:   // left || right
         case Kind::LOGICALAND:  // left && right
         case Kind::LOGICALXOR:  // left ^^ right
-            *outLeftType = context.fTypes.fBool.get();
-            *outRightType = context.fTypes.fBool.get();
-            *outResultType = context.fTypes.fBool.get();
-            return left.canCoerceTo(*context.fTypes.fBool, allowNarrowing) &&
-                   right.canCoerceTo(*context.fTypes.fBool, allowNarrowing);
+            *outLeftType = context.fTypes->fBool.get();
+            *outRightType = context.fTypes->fBool.get();
+            *outResultType = context.fTypes->fBool.get();
+            return left.canCoerceTo(*context.fTypes->fBool, allowNarrowing) &&
+                   right.canCoerceTo(*context.fTypes->fBool, allowNarrowing);
 
         case Operator::Kind::COMMA:  // left, right
             if (left.isOpaque() || right.isOpaque()) {
@@ -378,7 +378,7 @@ bool Operator::determineBinaryType(const Context& context,
             return false;
         }
         if (this->isRelational()) {
-            *outResultType = context.fTypes.fBool.get();
+            *outResultType = context.fTypes->fBool.get();
         }
         return true;
     }

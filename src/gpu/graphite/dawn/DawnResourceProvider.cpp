@@ -7,6 +7,7 @@
 
 #include "src/gpu/graphite/dawn/DawnResourceProvider.h"
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkString.h"
 #include "include/gpu/graphite/BackendTexture.h"
 #include "include/gpu/graphite/TextureInfo.h"
@@ -211,9 +212,9 @@ private:
     // them are purged OR until `pred` returns false.
     template<typename T> void purgeBuffersUntilDoneOrFalse(T pred);
 
-    DawnResourceProvider* const fResourceProvider;
+    const raw_ptr<DawnResourceProvider> fResourceProvider;
     // The current buffer being filled up, as well as the how much of it has been written to.
-    IntrinsicBuffer* fCurrentBuffer = nullptr;
+    raw_ptr<IntrinsicBuffer> fCurrentBuffer = nullptr;
 
     // All cached intrinsic buffers, in LRU order.
     SkTInternalLList<IntrinsicBuffer> fIntrinsicBuffersLRU;
@@ -281,7 +282,7 @@ BindBufferInfo DawnResourceProvider::IntrinsicConstantsManager::add(
         }
 
         fCurrentBuffer = new IntrinsicBuffer(dawnBuffer);
-        fIntrinsicBuffersLRU.addToHead(fCurrentBuffer);
+        fIntrinsicBuffersLRU.addToHead(fCurrentBuffer.get());
         fNumBuffers++;
         // If we have too many buffers, remove the least used one.
         if (fNumBuffers > kMaxNumBuffers) {

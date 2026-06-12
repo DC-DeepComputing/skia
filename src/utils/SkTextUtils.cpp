@@ -7,6 +7,7 @@
 
 #include "include/utils/SkTextUtils.h"
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkFont.h"
 #include "include/core/SkMatrix.h"
@@ -44,7 +45,7 @@ void SkTextUtils::GetPath(const void* text, size_t length, SkTextEncoding encodi
 
     struct Rec {
         SkPathBuilder fDst;
-        const SkPoint* fPos;
+        raw_ptr<const SkPoint, AllowPtrArithmetic> fPos;
     } rec = { {}, pos.get() };
 
     font.getPaths(ag.glyphs(), [](const SkPath* src, const SkMatrix& mx, void* ctx) {

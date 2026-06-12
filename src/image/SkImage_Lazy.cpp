@@ -7,6 +7,7 @@
 
 #include "src/image/SkImage_Lazy.h"
 
+#include "src/partition_alloc/raw_ref.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCPURecorder.h"
 #include "include/core/SkColorSpace.h"
@@ -86,17 +87,17 @@ public:
       , fAutoAcquire(gen->fMutex) {}
 
     SkImageGenerator* operator->() const {
-        fSharedGenerator->fMutex.assertHeld();
-        return fSharedGenerator->fGenerator.get();
+        (*fSharedGenerator)->fMutex.assertHeld();
+        return (*fSharedGenerator)->fGenerator.get();
     }
 
     operator SkImageGenerator*() const {
-        fSharedGenerator->fMutex.assertHeld();
-        return fSharedGenerator->fGenerator.get();
+        (*fSharedGenerator)->fMutex.assertHeld();
+        return (*fSharedGenerator)->fGenerator.get();
     }
 
 private:
-    const sk_sp<SharedGenerator>& fSharedGenerator;
+    const raw_ref<const sk_sp<SharedGenerator>> fSharedGenerator;
     SkAutoMutexExclusive          fAutoAcquire;
 };
 

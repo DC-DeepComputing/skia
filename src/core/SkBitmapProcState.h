@@ -6,6 +6,8 @@
  */
 
 #ifndef SkBitmapProcState_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define SkBitmapProcState_DEFINED
 
 #include "include/core/SkColor.h"
@@ -46,7 +48,7 @@ struct SkBitmapProcState {
                                   int count,
                                   SkPMColor colors[]);
 
-    const SkImage_Base*     fImage;
+    raw_ptr<const SkImage_Base> fImage;
 
     SkPixmap                fPixmap;
     SkMatrix                fInvMatrix;         // This changes based on tile mode.

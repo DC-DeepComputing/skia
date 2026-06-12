@@ -6,6 +6,8 @@
  */
 
 #ifndef SkJpegSourceMgr_codec_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define SkJpegSourceMgr_codec_DEFINED
 
 #include "include/core/SkTypes.h"
@@ -66,7 +68,7 @@ public:
 
 protected:
     explicit SkJpegSourceMgr(SkStream* stream);
-    SkStream* const fStream;  // unowned
+    const raw_ptr<SkStream> fStream;  // unowned
 
 #ifdef SK_CODEC_DECODES_JPEG_GAINMAPS
     // The segment scanner is lazily creatd only when needed.

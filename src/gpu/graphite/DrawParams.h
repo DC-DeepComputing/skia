@@ -6,6 +6,9 @@
  */
 
 #ifndef skgpu_graphite_DrawParams_DEFINED
+#include "src/partition_alloc/raw_ref.h"
+#include "src/partition_alloc/raw_ptr.h"
+
 #define skgpu_graphite_DrawParams_DEFINED
 
 #include "include/core/SkPaint.h"
@@ -132,7 +135,7 @@ private:
     Rect              fTransformedShapeBounds;
     SkIRect           fScissor;
     NonMSAAClip       fNonMSAAClip;
-    const SkShader*   fShader;
+    raw_ptr<const SkShader> fShader;
 };
 
 // Encapsulates all geometric state for a single high-level draw call. RenderSteps are responsible
@@ -154,7 +157,7 @@ public:
             , fBarrierBeforeDraws(barrierBeforeDraws)
             , fStroke(stroke ? std::optional<StrokeStyle>(*stroke) : std::nullopt) {}
 
-    const Transform& transform() const { return fTransform; }
+    const Transform& transform() const { return *fTransform; }
     const Geometry&  geometry()  const { return fGeometry;  }
     DrawOrder        order()     const { return fOrder;     }
 
@@ -175,7 +178,7 @@ public:
 private:
     friend class ClipStack; // For updating clip and order components on depth only draws
 
-    const Transform& fTransform; // Lifetime of the transform must be held longer than the geometry
+    const raw_ref<const Transform> fTransform; // Lifetime of the transform must be held longer than the geometry
     Geometry         fGeometry;
     Rect             fDrawBounds;
     Rect             fTransformedShapeBounds;

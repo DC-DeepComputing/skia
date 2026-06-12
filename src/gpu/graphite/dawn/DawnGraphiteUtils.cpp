@@ -7,6 +7,7 @@
 
 #include "src/gpu/graphite/dawn/DawnGraphiteUtils.h"
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/gpu/ShaderErrorHandler.h"
 #include "include/gpu/graphite/Context.h"
 #include "include/gpu/graphite/dawn/DawnBackendContext.h"
@@ -454,7 +455,7 @@ static bool check_shader_module([[maybe_unused]] const DawnSharedContext* shared
         }
 
         const char* fShaderText;
-        ShaderErrorHandler* fErrorHandler;
+        raw_ptr<ShaderErrorHandler> fErrorHandler;
         bool fSuccess = false;
     };
 

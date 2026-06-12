@@ -6,6 +6,9 @@
  */
 
 #ifndef skgpu_graphite_DrawPassCommands_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
+
 #define skgpu_graphite_DrawPassCommands_DEFINED
 
 #include "include/core/SkRect.h"
@@ -93,7 +96,7 @@ public:
 
     ACT_AS_PTR(fPtr)
 private:
-    T* fPtr;
+    RAW_PTR_EXCLUSION T* fPtr;
 };
 
 #undef ACT_AS_PTR

@@ -6,6 +6,8 @@
  */
 
 #ifndef GrTextureResolveManager_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define GrTextureResolveManager_DEFINED
 
 #include "include/core/SkRefCnt.h"
@@ -31,7 +33,7 @@ public:
     }
 
 private:
-    GrDrawingManager* fDrawingManager;
+    raw_ptr<GrDrawingManager> fDrawingManager;
 };
 
 #endif

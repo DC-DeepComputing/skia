@@ -7,6 +7,7 @@
  */
 #include "src/gpu/ganesh/ops/SmallPathRenderer.h"
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPaint.h"
@@ -164,8 +165,8 @@ private:
     struct FlushInfo {
         sk_sp<const GrBuffer> fVertexBuffer;
         sk_sp<const GrBuffer> fIndexBuffer;
-        GrGeometryProcessor*  fGeometryProcessor;
-        const GrSurfaceProxy** fPrimProcProxies;
+        raw_ptr<GrGeometryProcessor> fGeometryProcessor;
+        raw_ptr<const GrSurfaceProxy *, AllowPtrArithmetic> fPrimProcProxies;
         int fVertexOffset;
         int fInstancesToFlush;
     };
