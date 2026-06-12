@@ -6,6 +6,8 @@
  */
 
 #ifndef SKSL_TYPE
+#include "src/partition_alloc/raw_ptr.h"
+
 #define SKSL_TYPE
 
 #include "include/core/SkSpan.h"
@@ -91,7 +93,7 @@ struct Field {
     Layout fLayout;
     ModifierFlags fModifierFlags;
     std::string_view fName;
-    const Type* fType;
+    raw_ptr<const Type> fType;
 };
 
 /**

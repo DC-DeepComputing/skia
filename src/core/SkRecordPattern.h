@@ -6,6 +6,8 @@
  */
 
 #ifndef SkRecordPattern_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define SkRecordPattern_DEFINED
 
 #include "include/private/SkTLogic.h"
@@ -37,7 +39,7 @@ public:
     }
 
 private:
-    type* fPtr;
+    raw_ptr<type> fPtr;
 };
 
 // Matches any command that draws, and stores its paint.
@@ -71,7 +73,7 @@ private:
     template <typename T> static T* AsPtr(SkRecords::Optional<T>& x) { return x; }
     template <typename T> static T* AsPtr(T& x) { return &x; }
 
-    SkPaint* fPaint;
+    raw_ptr<SkPaint> fPaint;
 };
 
 // Matches any command that draws *once* (logically), and stores its paint.
@@ -111,7 +113,7 @@ private:
     template <typename T> static T* AsPtr(SkRecords::Optional<T>& x) { return x; }
     template <typename T> static T* AsPtr(T& x) { return &x; }
 
-    SkPaint* fPaint;
+    raw_ptr<SkPaint> fPaint;
 };
 
 // Matches if Matcher doesn't.  Stores nothing.

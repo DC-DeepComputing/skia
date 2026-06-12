@@ -109,7 +109,7 @@ std::unique_ptr<GrXferProcessor::ProgramImpl> PorterDuffXferProcessor::makeProgr
     class Impl : public ProgramImpl {
     private:
         void emitOutputsForBlendState(const EmitArgs& args) override {
-            const PorterDuffXferProcessor& xp = args.fXP.cast<PorterDuffXferProcessor>();
+            const PorterDuffXferProcessor& xp = args.fXP->cast<PorterDuffXferProcessor>();
             GrGLSLXPFragmentBuilder* fragBuilder = args.fXPFragBuilder;
 
             const BlendFormula& blendFormula = xp.fBlendFormula;

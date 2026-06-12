@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 #ifndef SkIntersectionHelper_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define SkIntersectionHelper_DEFINED
 
 #include "include/core/SkPath.h"
@@ -107,7 +109,7 @@ public:
     }
 
 private:
-    SkOpSegment* fSegment;
+    raw_ptr<SkOpSegment> fSegment;
 };
 
 #endif

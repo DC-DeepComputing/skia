@@ -6,6 +6,8 @@
  */
 
 #ifndef GrSimpleMeshDrawOpHelper_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define GrSimpleMeshDrawOpHelper_DEFINED
 
 #include "include/core/SkString.h"
@@ -207,7 +209,7 @@ protected:
                                                 GrProcessorAnalysisCoverage geometryCoverage,
                                                 GrProcessorAnalysisColor* geometryColor);
 
-    GrProcessorSet* fProcessors;
+    raw_ptr<GrProcessorSet> fProcessors;
     GrPipeline::InputFlags fPipelineFlags;
     unsigned fAAType : 2;
     unsigned fUsesLocalCoords : 1;

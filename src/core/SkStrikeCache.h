@@ -6,6 +6,8 @@
  */
 
 #ifndef SkStrikeCache_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define SkStrikeCache_DEFINED
 
 #include "include/core/SkRefCnt.h"
@@ -98,8 +100,8 @@ private:
     void forEachStrike(std::function<void(const SkStrike&)> visitor) const SK_EXCLUDES(fLock);
 
     mutable SkMutex fLock;
-    SkStrike* fHead SK_GUARDED_BY(fLock) {nullptr};
-    SkStrike* fTail SK_GUARDED_BY(fLock) {nullptr};
+    raw_ptr<SkStrike> fHead SK_GUARDED_BY(fLock) {nullptr};
+    raw_ptr<SkStrike> fTail SK_GUARDED_BY(fLock) {nullptr};
     struct StrikeTraits {
         static const SkDescriptor& GetKey(const sk_sp<SkStrike>& strike);
         static uint32_t Hash(const SkDescriptor& descriptor);

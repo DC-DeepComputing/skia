@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "src/partition_alloc/raw_ref.h"
 #include "include/core/SkTypes.h"
 #include "src/core/SkTHash.h"
 #include "src/sksl/SkSLAnalysis.h"
@@ -56,7 +57,7 @@ bool Analysis::CheckProgramStructure(const Program& program) {
                             }
                         }
                         msg = "potential recursion (function call cycle) not allowed:" + msg;
-                        fContext.fErrors->error(pe.fPosition, std::move(msg));
+                        fContext->fErrors->error(pe.fPosition, std::move(msg));
                         *funcState = FunctionState::kVisited;
                         return true;
                     }
@@ -70,7 +71,7 @@ bool Analysis::CheckProgramStructure(const Program& program) {
                         msg += "\n\t" + (*unwind)->description();
                     }
                     msg += "\n\t" + decl->description();
-                    fContext.fErrors->error(pe.fPosition, std::move(msg));
+                    fContext->fErrors->error(pe.fPosition, std::move(msg));
                     fFunctionMap.set(decl, FunctionState::kVisited);
                     return true;
                 }
@@ -109,7 +110,7 @@ bool Analysis::CheckProgramStructure(const Program& program) {
             kVisited,
         };
 
-        const Context& fContext;
+        const raw_ref<const Context> fContext;
         skia_private::THashMap<const FunctionDeclaration*, FunctionState> fFunctionMap;
         std::vector<const FunctionDeclaration*> fStack;
     };

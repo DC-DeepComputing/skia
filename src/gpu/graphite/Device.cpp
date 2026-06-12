@@ -6,6 +6,7 @@
  */
 #include "src/gpu/graphite/Device.h"
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkArc.h"
 #include "include/core/SkBlendMode.h"
@@ -346,7 +347,7 @@ public:
     ScopedDrawBuilder& operator=(const ScopedDrawBuilder&) = delete;
 
 private:
-    Recorder* fRecorder;
+    raw_ptr<Recorder> fRecorder;
     std::unique_ptr<KeyAndDataBuilder> fKeyAndDataBuilder;
 };
 

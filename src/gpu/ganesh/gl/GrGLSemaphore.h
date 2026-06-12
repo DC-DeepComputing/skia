@@ -6,6 +6,8 @@
  */
 
 #ifndef GrGLSemaphore_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define GrGLSemaphore_DEFINED
 
 #include "include/gpu/ganesh/GrBackendSemaphore.h"
@@ -39,7 +41,7 @@ private:
         fIsOwned = true;
     }
 
-    GrGLGpu* fGpu;
+    raw_ptr<GrGLGpu> fGpu;
     GrGLsync fSync;
     bool     fIsOwned;
 

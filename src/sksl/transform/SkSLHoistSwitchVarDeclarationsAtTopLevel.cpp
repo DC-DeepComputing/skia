@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "src/partition_alloc/raw_ref.h"
 #include "include/private/SkAssert.h"
 #include "include/private/SkTArray.h"
 #include "src/sksl/SkSLAnalysis.h"
@@ -71,7 +72,7 @@ std::unique_ptr<Block> Transform::HoistSwitchVarDeclarationsAtTopLevel(const Con
             return false;
         }
 
-        const Context& fContext;
+        const raw_ref<const Context> fContext;
         TArray<std::unique_ptr<Statement>*> fVarDeclarations;
 
         using INHERITED = ProgramWriter;

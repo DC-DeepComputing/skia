@@ -6,6 +6,8 @@
  */
 
 #ifndef skgpu_graphite_PathAtlas_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define skgpu_graphite_PathAtlas_DEFINED
 
 #include "include/core/SkStrokeRec.h"
@@ -186,7 +188,7 @@ protected:
     };
 
     // The Recorder that created and owns this Atlas.
-    Recorder* fRecorder;
+    raw_ptr<Recorder> fRecorder;
 
     uint32_t fWidth = 0;
     uint32_t fHeight = 0;

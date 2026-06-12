@@ -6,6 +6,8 @@
  */
 
 #ifndef GrGLSLVarying_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define GrGLSLVarying_DEFINED
 
 #include "include/core/SkString.h"
@@ -163,7 +165,7 @@ protected:
     VarArray       fFragOutputs;
 
     // This is not owned by the class
-    GrGLSLProgramBuilder* fProgramBuilder;
+    raw_ptr<GrGLSLProgramBuilder> fProgramBuilder;
 
 private:
     void addAttribute(const GrShaderVar& var);

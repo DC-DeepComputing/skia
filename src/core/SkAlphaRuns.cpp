@@ -12,7 +12,7 @@ void SkAlphaRuns::reset(int width) {
     SkASSERT(width > 0);
 
 #ifdef SK_DEBUG
-    SkOpts::memset16((uint16_t*)fRuns, (uint16_t)(-42), width);
+    SkOpts::memset16((uint16_t*)fRuns.get(), (uint16_t)(-42), width);
 #endif
     fRuns[0] = SkToS16(width);
     fRuns[width] = 0;
