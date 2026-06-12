@@ -33,6 +33,23 @@
       "message": "Please remember to add \n```\nCq-Include-Trybots: luci.skia.skia.primary:Build-Mac-Clang-x86_64-Debug-Fontations,Build-Ubuntu24.04-Clang-x86_64-Debug-Fontations,Test-Mac14-Clang-MacMini8.1-CPU-AVX2-x86_64-Debug-All-NativeFonts_Fontations,Test-Mac15-Clang-MacBookPro15.1-CPU-AppleIntel-x86_64-Debug-All-NativeFonts_Fontations,Test-Ubuntu24.04-Clang-GCE-CPU-AVX2-x86_64-Debug-All-NativeFonts_Fontations\n```\nto the commit message to add Fontations bots.",
       "revId": "73fa533518ece0596de6a5dbe1b9ecd40107b74d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "83fc6697_67ce49a2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2026-06-12T08:36:15Z",
+      "side": 1,
+      "message": "I will have to hold reviewing this until I see Skia gold results.",
+      "revId": "73fa533518ece0596de6a5dbe1b9ecd40107b74d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
