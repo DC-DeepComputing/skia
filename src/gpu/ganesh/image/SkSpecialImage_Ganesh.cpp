@@ -7,6 +7,7 @@
 
 #include "src/gpu/ganesh/image/SkSpecialImage_Ganesh.h"
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkColorSpace.h"  // IWYU pragma: keep
 #include "include/core/SkImage.h"
 #include "include/core/SkImageInfo.h"
@@ -60,11 +61,11 @@ public:
     sk_sp<SkImage> asImage() const override {
         fView.proxy()->priv().exactify();
         return sk_make_sp<SkImage_Ganesh>(
-                sk_ref_sp(fContext), this->uniqueID(), fView, this->colorInfo());
+                sk_ref_sp(fContext.get()), this->uniqueID(), fView, this->colorInfo());
     }
 
 private:
-    GrRecordingContext* fContext;
+    raw_ptr<GrRecordingContext> fContext;
     GrSurfaceProxyView fView;
 };
 

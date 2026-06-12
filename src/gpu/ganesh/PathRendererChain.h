@@ -6,6 +6,8 @@
  */
 
 #ifndef PathRendererChain_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define PathRendererChain_DEFINED
 
 #include "include/core/SkRefCnt.h"
@@ -68,8 +70,8 @@ private:
     static constexpr size_t kPreAllocCount = 8;
 
     skia_private::STArray<kPreAllocCount, sk_sp<PathRenderer>> fChain;
-    AtlasPathRenderer* fAtlasPathRenderer = nullptr;
-    PathRenderer* fTessellationPathRenderer = nullptr;
+    raw_ptr<AtlasPathRenderer> fAtlasPathRenderer = nullptr;
+    raw_ptr<PathRenderer> fTessellationPathRenderer = nullptr;
 };
 
 }  // namespace skgpu::ganesh

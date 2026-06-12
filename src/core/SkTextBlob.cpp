@@ -7,6 +7,7 @@
 
 #include "include/core/SkTextBlob.h"
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkData.h"
 #include "include/core/SkMaskFilter.h"
 #include "include/core/SkMatrix.h"
@@ -39,7 +40,7 @@ using namespace skia_private;
 namespace {
 struct RunFontStorageEquivalent {
     SkScalar fSize, fScaleX;
-    void*    fTypeface;
+    raw_ptr<void> fTypeface;
     SkScalar fSkewX;
     uint32_t fFlags;
 };

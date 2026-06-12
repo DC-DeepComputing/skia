@@ -6,6 +6,7 @@
  */
 #include "src/gpu/ganesh/ops/RegionOp.h"
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
@@ -226,8 +227,8 @@ private:
     STArray<1, RegionInfo, true> fRegions;
     bool fWideColor;
 
-    GrSimpleMesh*  fMesh = nullptr;
-    GrProgramInfo* fProgramInfo = nullptr;
+    raw_ptr<GrSimpleMesh> fMesh = nullptr;
+    raw_ptr<GrProgramInfo> fProgramInfo = nullptr;
 
     using INHERITED = GrMeshDrawOp;
 };

@@ -6,6 +6,8 @@
  */
 
 #ifndef skgpu_graphite_compute_DispatchGroup_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define skgpu_graphite_compute_DispatchGroup_DEFINED
 
 #include "include/core/SkRefCnt.h"
@@ -202,7 +204,7 @@ private:
     // The object under construction.
     std::unique_ptr<DispatchGroup> fObj;
 
-    Recorder* fRecorder;
+    raw_ptr<Recorder> fRecorder;
     OutputTable fOutputTable;
 };
 

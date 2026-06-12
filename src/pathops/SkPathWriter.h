@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 #ifndef SkPathWriter_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define SkPathWriter_DEFINED
 
 #include "include/core/SkPath.h"
@@ -48,7 +50,7 @@ private:
     skia_private::TArray<SkPathBuilder> fPartials;   // contours with mismatched starts and ends
     skia_private::TArray<const SkOpPtT*> fEndPtTs;  // possible pt values for partial starts and ends
     const SkOpPtT* fDefer[2];  // [0] deferred move, [1] deferred line
-    const SkOpPtT* fFirstPtT;  // first in current contour
+    raw_ptr<const SkOpPtT> fFirstPtT;  // first in current contour
 };
 
 #endif /* defined(__PathOps__SkPathWriter__) */

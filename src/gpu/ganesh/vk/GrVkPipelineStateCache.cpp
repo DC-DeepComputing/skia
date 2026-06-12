@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/gpu/ganesh/GrContextOptions.h"
 #include "include/gpu/ganesh/GrDirectContext.h"
 #include "include/private/SkAssert.h"
@@ -41,7 +42,7 @@ struct GrVkResourceProvider::PipelineStateCache::Entry {
         }
     }
 
-    GrVkGpu* fGpu;
+    raw_ptr<GrVkGpu> fGpu;
     std::unique_ptr<GrVkPipelineState> fPipelineState;
 };
 

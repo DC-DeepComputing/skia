@@ -6,6 +6,8 @@
 */
 
 #ifndef GrOpsRenderPass_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define GrOpsRenderPass_DEFINED
 
 #include "include/core/SkDrawable.h"
@@ -165,7 +167,7 @@ protected:
     }
 
     GrSurfaceOrigin fOrigin;
-    GrRenderTarget* fRenderTarget;
+    raw_ptr<GrRenderTarget> fRenderTarget;
 
     // Backends may defer binding of certain buffers if their draw API requires a buffer, or if
     // their bind methods don't support base values.

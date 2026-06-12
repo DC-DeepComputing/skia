@@ -6,6 +6,9 @@
  */
 
 #ifndef PathRenderer_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
+
 #define PathRenderer_DEFINED
 
 #include "include/core/SkRefCnt.h"
@@ -90,13 +93,20 @@ public:
     struct CanDrawPathArgs {
         SkDEBUGCODE(CanDrawPathArgs() { memset(this, 0, sizeof(*this)); }) // For validation.
 
-        const GrCaps*               fCaps;
-        const GrRenderTargetProxy*  fProxy;
-        const SkIRect*              fClipConservativeBounds;
-        const SkMatrix*             fViewMatrix;
-        const GrStyledShape*        fShape;
-        const GrPaint*              fPaint;
-        const SkSurfaceProps*       fSurfaceProps;
+        // RAW_PTR_EXCLUSION: Struct is subject to raw memset in debug constructor
+        RAW_PTR_EXCLUSION const GrCaps* fCaps;
+        // RAW_PTR_EXCLUSION: Struct is subject to raw memset in debug constructor
+        RAW_PTR_EXCLUSION const GrRenderTargetProxy* fProxy;
+        // RAW_PTR_EXCLUSION: Struct is subject to raw memset in debug constructor
+        RAW_PTR_EXCLUSION const SkIRect* fClipConservativeBounds;
+        // RAW_PTR_EXCLUSION: Struct is subject to raw memset in debug constructor
+        RAW_PTR_EXCLUSION const SkMatrix* fViewMatrix;
+        // RAW_PTR_EXCLUSION: Struct is subject to raw memset in debug constructor
+        RAW_PTR_EXCLUSION const GrStyledShape* fShape;
+        // RAW_PTR_EXCLUSION: Struct is subject to raw memset in debug constructor
+        RAW_PTR_EXCLUSION const GrPaint* fPaint;
+        // RAW_PTR_EXCLUSION: Struct is subject to raw memset in debug constructor
+        RAW_PTR_EXCLUSION const SkSurfaceProps* fSurfaceProps;
         GrAAType                    fAAType;
 
         // This is only used by TessellationPathRenderer
@@ -125,14 +135,14 @@ public:
     }
 
     struct DrawPathArgs {
-        GrRecordingContext*          fContext;
-        GrPaint&&                    fPaint;
-        const GrUserStencilSettings* fUserStencilSettings;
-        SurfaceDrawContext*          fSurfaceDrawContext;
-        const GrClip*                fClip;
-        const SkIRect*               fClipConservativeBounds;
-        const SkMatrix*              fViewMatrix;
-        const GrStyledShape*         fShape;
+        raw_ptr<GrRecordingContext> fContext;
+        RAW_PTR_EXCLUSION GrPaint&&  fPaint;
+        raw_ptr<const GrUserStencilSettings> fUserStencilSettings;
+        raw_ptr<SurfaceDrawContext> fSurfaceDrawContext;
+        raw_ptr<const GrClip> fClip;
+        raw_ptr<const SkIRect> fClipConservativeBounds;
+        raw_ptr<const SkMatrix> fViewMatrix;
+        raw_ptr<const GrStyledShape> fShape;
         GrAAType                     fAAType;
         bool                         fGammaCorrect;
 #ifdef SK_DEBUG
@@ -158,12 +168,18 @@ public:
     struct StencilPathArgs {
         SkDEBUGCODE(StencilPathArgs() { memset(this, 0, sizeof(*this)); }) // For validation.
 
-        GrRecordingContext*  fContext;
-        SurfaceDrawContext*  fSurfaceDrawContext;
-        const GrHardClip*    fClip;
-        const SkIRect*       fClipConservativeBounds;
-        const SkMatrix*      fViewMatrix;
-        const GrStyledShape* fShape;
+        // RAW_PTR_EXCLUSION: Struct is subject to raw memset in debug constructor
+        RAW_PTR_EXCLUSION GrRecordingContext* fContext;
+        // RAW_PTR_EXCLUSION: Struct is subject to raw memset in debug constructor
+        RAW_PTR_EXCLUSION SurfaceDrawContext* fSurfaceDrawContext;
+        // RAW_PTR_EXCLUSION: Struct is subject to raw memset in debug constructor
+        RAW_PTR_EXCLUSION const GrHardClip* fClip;
+        // RAW_PTR_EXCLUSION: Struct is subject to raw memset in debug constructor
+        RAW_PTR_EXCLUSION const SkIRect* fClipConservativeBounds;
+        // RAW_PTR_EXCLUSION: Struct is subject to raw memset in debug constructor
+        RAW_PTR_EXCLUSION const SkMatrix* fViewMatrix;
+        // RAW_PTR_EXCLUSION: Struct is subject to raw memset in debug constructor
+        RAW_PTR_EXCLUSION const GrStyledShape* fShape;
         GrAA                 fDoStencilMSAA;
 
         SkDEBUGCODE(void validate() const;)

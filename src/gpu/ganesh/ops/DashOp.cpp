@@ -6,6 +6,7 @@
  */
 #include "src/gpu/ganesh/ops/DashOp.h"
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPoint.h"
@@ -730,9 +731,9 @@ private:
     SkPaint::Cap cap() const { return fCap; }
 
     STArray<1, LineData, true> fLines;
-    const GrUserStencilSettings* fStencilSettings;
-    GrSimpleMesh*  fMesh = nullptr;
-    GrProgramInfo* fProgramInfo = nullptr;
+    raw_ptr<const GrUserStencilSettings> fStencilSettings;
+    raw_ptr<GrSimpleMesh> fMesh = nullptr;
+    raw_ptr<GrProgramInfo> fProgramInfo = nullptr;
 
     SkPMColor4f fColor;
     SkPaint::Cap fCap;
@@ -807,7 +808,7 @@ private:
 };
 
 void DashingCircleEffect::Impl::onEmitCode(EmitArgs& args, GrGPArgs* gpArgs) {
-    const DashingCircleEffect& dce = args.fGeomProc.cast<DashingCircleEffect>();
+    const DashingCircleEffect& dce = args.fGeomProc->cast<DashingCircleEffect>();
     GrGLSLVertexBuilder* vertBuilder = args.fVertBuilder;
     GrGLSLVaryingHandler* varyingHandler = args.fVaryingHandler;
     GrGLSLUniformHandler* uniformHandler = args.fUniformHandler;
@@ -995,7 +996,7 @@ private:
 };
 
 void DashingLineEffect::Impl::onEmitCode(EmitArgs& args, GrGPArgs* gpArgs) {
-    const DashingLineEffect& de = args.fGeomProc.cast<DashingLineEffect>();
+    const DashingLineEffect& de = args.fGeomProc->cast<DashingLineEffect>();
 
     GrGLSLVertexBuilder* vertBuilder = args.fVertBuilder;
     GrGLSLVaryingHandler* varyingHandler = args.fVaryingHandler;

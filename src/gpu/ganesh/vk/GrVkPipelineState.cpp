@@ -7,6 +7,7 @@
 
 #include "src/gpu/ganesh/vk/GrVkPipelineState.h"
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkSamplingOptions.h"
 #include "include/gpu/ganesh/GrTypes.h"
 #include "include/private/SkAssert.h"
@@ -140,7 +141,7 @@ bool GrVkPipelineState::setAndBindTextures(GrVkGpu* gpu,
     }
     struct SamplerBindings {
         GrSamplerState fState;
-        GrVkTexture* fTexture;
+        raw_ptr<GrVkTexture> fTexture;
     };
     AutoSTArray<8, SamplerBindings> samplerBindings(fNumSamplers);
     int currTextureBinding = 0;

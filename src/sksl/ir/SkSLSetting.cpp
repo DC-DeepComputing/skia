@@ -82,7 +82,7 @@ std::unique_ptr<Expression> Setting::Convert(const Context& context,
 std::unique_ptr<Expression> Setting::Make(const Context& context, Position pos, CapsPtr capsPtr) {
     SkASSERT(ProgramConfig::AllowsPrivateIdentifiers(context.fConfig->fKind));
 
-    return std::make_unique<Setting>(pos, capsPtr, context.fTypes.fBool.get());
+    return std::make_unique<Setting>(pos, capsPtr, context.fTypes->fBool.get());
 }
 
 std::unique_ptr<Expression> Setting::toLiteral(const ShaderCaps& caps) const {

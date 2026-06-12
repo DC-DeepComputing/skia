@@ -7,6 +7,8 @@
 
 
 #ifndef SkQuadClipper_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define SkQuadClipper_DEFINED
 
 #include "include/core/SkPath.h"
@@ -45,8 +47,8 @@ public:
     SkPath::Verb next(SkPoint pts[]);
 
 private:
-    SkPoint*        fCurrPoint;
-    SkPath::Verb*   fCurrVerb;
+    raw_ptr<SkPoint> fCurrPoint;
+    raw_ptr<SkPath::Verb> fCurrVerb;
 
     enum {
         kMaxVerbs = 13,

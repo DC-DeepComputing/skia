@@ -6,6 +6,7 @@
  */
 #include "src/gpu/ganesh/ops/LatticeOp.h"
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkCanvas.h"
@@ -112,7 +113,7 @@ public:
         private:
             void onEmitCode(EmitArgs& args, GrGPArgs* gpArgs) override {
                 using Interpolation = GrGLSLVaryingHandler::Interpolation;
-                const auto& latticeGP = args.fGeomProc.cast<LatticeGP>();
+                const auto& latticeGP = args.fGeomProc->cast<LatticeGP>();
                 fColorSpaceXformHelper.emitCode(args.fUniformHandler,
                                                 latticeGP.fColorSpaceXform.get());
 
@@ -441,8 +442,8 @@ private:
     GrSamplerState::Filter fFilter;
     bool fWideColor;
 
-    GrSimpleMesh*  fMesh = nullptr;
-    GrProgramInfo* fProgramInfo = nullptr;
+    raw_ptr<GrSimpleMesh> fMesh = nullptr;
+    raw_ptr<GrProgramInfo> fProgramInfo = nullptr;
 
     using INHERITED = GrMeshDrawOp;
 };

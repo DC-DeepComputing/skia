@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 #ifndef GrQuadBuffer_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define GrQuadBuffer_DEFINED
 
 #include "include/core/SkRect.h"
@@ -99,7 +101,7 @@ public:
         GrQuad fDeviceQuad;
         GrQuad fLocalQuad;
 
-        const GrQuadBuffer<T>* fBuffer;
+        raw_ptr<const GrQuadBuffer<T>> fBuffer;
         // The pointer to the current entry to read metadata/header details from
         const char* fCurrentEntry;
         // The pointer to replace fCurrentEntry when next() is called, cached since it is calculated
@@ -133,8 +135,8 @@ public:
         T* operator->() { this->validate(); return fBuffer->metadata(fCurrentEntry); }
 
     private:
-        GrQuadBuffer<T>* fBuffer;
-        char* fCurrentEntry;
+        raw_ptr<GrQuadBuffer<T>> fBuffer;
+        raw_ptr<char, AllowPtrArithmetic> fCurrentEntry;
 
         SkDEBUGCODE(int fExpectedCount;)
 

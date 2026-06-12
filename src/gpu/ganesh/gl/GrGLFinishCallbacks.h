@@ -6,6 +6,8 @@
  */
 
 #ifndef GrGLFinishCallbacks_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define GrGLFinishCallbacks_DEFINED
 
 #include "include/gpu/ganesh/gl/GrGLTypes.h"
@@ -58,7 +60,7 @@ private:
         GrGLint             fTimerQuery;
     };
 
-    GrGLGpu*                  fGpu;
+    raw_ptr<GrGLGpu> fGpu;
     std::list<FinishCallback> fCallbacks;
 };
 
