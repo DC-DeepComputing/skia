@@ -6,6 +6,7 @@
  */
 #include "src/gpu/ganesh/ops/AALinearizingConvexPathRenderer.h"
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
@@ -369,7 +370,7 @@ private:
     bool fWideColor;
 
     SkTDArray<GrSimpleMesh*> fMeshes;
-    GrProgramInfo*           fProgramInfo = nullptr;
+    raw_ptr<GrProgramInfo> fProgramInfo = nullptr;
 
     using INHERITED = GrMeshDrawOp;
 };

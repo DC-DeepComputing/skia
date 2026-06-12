@@ -6,6 +6,8 @@
  */
 
 #ifndef skgpu_graphite_QueueManager_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define skgpu_graphite_QueueManager_DEFINED
 
 #include "include/core/SkRefCnt.h"
@@ -84,7 +86,7 @@ protected:
 
     using OutstandingSubmission = std::unique_ptr<GpuWorkSubmission>;
 
-    const SharedContext* fSharedContext;
+    raw_ptr<const SharedContext> fSharedContext;
     std::unique_ptr<CommandBuffer> fCurrentCommandBuffer;
 
 private:

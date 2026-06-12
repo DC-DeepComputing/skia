@@ -6,6 +6,8 @@
  */
 
 #ifndef SkAutoMalloc_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define SkAutoMalloc_DEFINED
 
 #include "include/private/SkAlign.h"
@@ -169,7 +171,7 @@ private:
     static const size_t kSize = kSizeAlign4;
 #endif
 
-    void*       fPtr;
+    raw_ptr<void> fPtr;
     size_t      fSize;  // can be larger than the requested size (see kReuse)
     uint32_t    fStorage[kSize >> 2];
 };

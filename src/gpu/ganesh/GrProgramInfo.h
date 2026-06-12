@@ -6,6 +6,8 @@
  */
 
 #ifndef GrProgramInfo_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define GrProgramInfo_DEFINED
 
 #include "include/gpu/ganesh/GrBackendSurface.h"
@@ -85,9 +87,9 @@ private:
     GrSurfaceOrigin                       fOrigin;
     bool                                  fTargetHasVkResolveAttachmentWithInput;
     int                                   fTargetsNumSamples;
-    const GrPipeline*                     fPipeline;
-    const GrUserStencilSettings*          fUserStencilSettings;
-    const GrGeometryProcessor*            fGeomProc;
+    raw_ptr<const GrPipeline> fPipeline;
+    raw_ptr<const GrUserStencilSettings> fUserStencilSettings;
+    raw_ptr<const GrGeometryProcessor> fGeomProc;
     GrPrimitiveType                       fPrimitiveType;
     GrXferBarrierFlags                    fRenderPassXferBarriers;
     GrLoadOp                              fColorLoadOp;

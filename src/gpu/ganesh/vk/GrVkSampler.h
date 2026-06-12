@@ -6,6 +6,8 @@
  */
 
 #ifndef GrVkSampler_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define GrVkSampler_DEFINED
 
 #include "include/core/SkTypes.h"
@@ -82,7 +84,7 @@ private:
     static uint32_t GenID();
 
     VkSampler                   fSampler;
-    GrVkSamplerYcbcrConversion* fYcbcrConversion;
+    raw_ptr<GrVkSamplerYcbcrConversion> fYcbcrConversion;
     Key                         fKey;
     uint32_t                    fUniqueID;
 

@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRegion.h"
@@ -86,7 +87,7 @@ public:
     virtual SkFixed drawLine(int x, int stopx, SkFixed fy, SkFixed slope) = 0;
 
 private:
-    SkBlitter*  fBlitter;
+    raw_ptr<SkBlitter> fBlitter;
 };
 
 // This class is responsible for drawing perfectly horizontal hairlines.

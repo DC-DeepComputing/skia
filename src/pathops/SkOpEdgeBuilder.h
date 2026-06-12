@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 #ifndef SkOpEdgeBuilder_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define SkOpEdgeBuilder_DEFINED
 
 #include "include/core/SkPoint.h"
@@ -56,13 +58,13 @@ private:
     int preFetch();
     bool walk();
 
-    SkOpGlobalState* fGlobalState;
-    const SkPath* fPath;
+    raw_ptr<SkOpGlobalState> fGlobalState;
+    raw_ptr<const SkPath> fPath;
     SkTDArray<SkPoint> fPathPts;
     SkTDArray<SkScalar> fWeights;
     SkTDArray<uint8_t> fPathVerbs;
     SkOpContourBuilder fContourBuilder;
-    SkOpContourHead* fContoursHead;
+    raw_ptr<SkOpContourHead> fContoursHead;
     SkPathOpsMask fXorMask[2];
     int fSecondHalf;
     bool fOperand;

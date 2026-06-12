@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkColor.h"
@@ -181,8 +182,8 @@ public:
     }
 
 private:
-    SkArenaAlloc*              fAlloc;
-    SkBlitter*                 fBlitter;
+    raw_ptr<SkArenaAlloc> fAlloc;
+    raw_ptr<SkBlitter> fBlitter;
     SkRasterPipelineContexts::MemoryCtx fSrcPtr;
     SkColor4f                  fPaintColor;
     sk_sp<SkShader>            fClipShader;

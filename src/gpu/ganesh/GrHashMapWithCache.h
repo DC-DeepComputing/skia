@@ -6,6 +6,8 @@
  */
 
 #ifndef GrHashMapWithCache_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define GrHashMapWithCache_DEFINED
 
 #include "include/private/SkNoncopyable.h"
@@ -78,7 +80,7 @@ public:
 private:
     skia_private::THashMap<K, V, HashT> fMap;
     mutable K                           fLastKey   = KeyTraits::GetInvalidKey();
-    mutable V*                          fLastValue = nullptr;
+    mutable raw_ptr<V> fLastValue = nullptr;
 };
 
 #endif

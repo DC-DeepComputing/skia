@@ -6,6 +6,7 @@
  */
 #include "src/gpu/ganesh/ops/AAConvexPathRenderer.h"
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkPoint.h"
@@ -655,7 +656,7 @@ std::unique_ptr<GrGeometryProcessor::ProgramImpl> QuadEdgeEffect::makeProgramImp
 
     private:
         void onEmitCode(EmitArgs& args, GrGPArgs* gpArgs) override {
-            const QuadEdgeEffect& qe = args.fGeomProc.cast<QuadEdgeEffect>();
+            const QuadEdgeEffect& qe = args.fGeomProc->cast<QuadEdgeEffect>();
             GrGLSLVertexBuilder* vertBuilder = args.fVertBuilder;
             GrGLSLFPFragmentBuilder* fragBuilder = args.fFragBuilder;
             GrGLSLVaryingHandler* varyingHandler = args.fVaryingHandler;
@@ -937,12 +938,12 @@ private:
     bool fWideColor;
 
     struct MeshDraw {
-        GrSimpleMesh* fMeshes;
+        raw_ptr<GrSimpleMesh, AllowPtrArithmetic> fMeshes;
         int fMeshCount;
     };
 
     SkTDArray<MeshDraw> fDraws;
-    GrProgramInfo*      fProgramInfo = nullptr;
+    raw_ptr<GrProgramInfo> fProgramInfo = nullptr;
 
     using INHERITED = GrMeshDrawOp;
 };

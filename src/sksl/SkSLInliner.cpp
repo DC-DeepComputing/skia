@@ -7,6 +7,8 @@
 
 #include "src/sksl/SkSLInliner.h"
 
+#include "src/partition_alloc/raw_ptr.h"
+
 #ifndef SK_ENABLE_OPTIMIZE_SIZE
 
 #include "include/core/SkSpan.h"
@@ -696,11 +698,11 @@ bool Inliner::isSafeToInline(const FunctionDefinition* functionDef, const Progra
 
 // A candidate function for inlining, containing everything that `inlineCall` needs.
 struct InlineCandidate {
-    SymbolTable* fSymbols;                        // the SymbolTable of the candidate
-    std::unique_ptr<Statement>* fParentStmt;      // the parent Statement of the enclosing stmt
-    std::unique_ptr<Statement>* fEnclosingStmt;   // the Statement containing the candidate
-    std::unique_ptr<Expression>* fCandidateExpr;  // the candidate FunctionCall to be inlined
-    FunctionDefinition* fEnclosingFunction;       // the Function containing the candidate
+    raw_ptr<SymbolTable> fSymbols;                        // the SymbolTable of the candidate
+    raw_ptr<std::unique_ptr<Statement>> fParentStmt;      // the parent Statement of the enclosing stmt
+    raw_ptr<std::unique_ptr<Statement>> fEnclosingStmt;   // the Statement containing the candidate
+    raw_ptr<std::unique_ptr<Expression>> fCandidateExpr;  // the candidate FunctionCall to be inlined
+    raw_ptr<FunctionDefinition> fEnclosingFunction;       // the Function containing the candidate
 };
 
 struct InlineCandidateList {
@@ -710,7 +712,7 @@ struct InlineCandidateList {
 class InlineCandidateAnalyzer {
 public:
     // A list of all the inlining candidates we found during analysis.
-    InlineCandidateList* fCandidateList;
+    raw_ptr<InlineCandidateList> fCandidateList;
 
     // A stack of the symbol tables; since most nodes don't have one, expected to be shallower than
     // the enclosing-statement stack.
@@ -720,7 +722,7 @@ public:
     // inliner might replace a statement with a block containing the statement.
     std::vector<std::unique_ptr<Statement>*> fEnclosingStmtStack;
     // The function that we're currently processing (i.e. inlining into).
-    FunctionDefinition* fEnclosingFunction = nullptr;
+    raw_ptr<FunctionDefinition> fEnclosingFunction = nullptr;
 
     void visit(const std::vector<std::unique_ptr<ProgramElement>>& elements,
                SymbolTable* symbols,

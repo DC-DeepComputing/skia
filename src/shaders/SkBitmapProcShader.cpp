@@ -7,6 +7,7 @@
 
 #include "src/shaders/SkBitmapProcShader.h"
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPixmap.h"
@@ -65,7 +66,7 @@ public:
     }
 
 private:
-    SkBitmapProcState*  fState;
+    raw_ptr<SkBitmapProcState> fState;
     uint32_t            fFlags;
 
     using INHERITED = SkShaderBase::Context;

@@ -7,6 +7,8 @@
 
 #include "include/core/SkStream.h"
 
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 #include "include/core/SkData.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
@@ -471,9 +473,9 @@ static inline void sk_memcpy_4bytes(void* dst, const void* src, size_t size) {
 #define SkDynamicMemoryWStream_MinBlockSize   4096
 
 struct SkDynamicMemoryWStream::Block {
-    Block*  fNext;
-    char*   fCurr;
-    char*   fStop;
+    RAW_PTR_EXCLUSION Block* fNext;
+    RAW_PTR_EXCLUSION char* fCurr;
+    RAW_PTR_EXCLUSION char* fStop;
 
     const char* start() const { return (const char*)(this + 1); }
     char*   start() { return (char*)(this + 1); }
@@ -767,7 +769,7 @@ public:
         }
     }
 
-    SkDynamicMemoryWStream::Block* const fHead;
+    const raw_ptr<SkDynamicMemoryWStream::Block> fHead;
 };
 
 class SkBlockMemoryStream : public SkStreamAsset {
@@ -884,7 +886,7 @@ public:
 
 private:
     sk_sp<SkBlockMemoryRefCnt> const fBlockMemory;
-    SkDynamicMemoryWStream::Block const * fCurrent;
+    raw_ptr<const SkDynamicMemoryWStream::Block> fCurrent;
     size_t const fSize;
     size_t fOffset;
     size_t fCurrentOffset;

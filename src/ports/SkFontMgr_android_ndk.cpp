@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 
+#include "src/partition_alloc/raw_ref.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkFontArguments.h"
 #include "include/core/SkFontMgr.h"
 #include "include/core/SkFontScanner.h"
@@ -439,44 +441,44 @@ struct SkAFont {
     ~SkAFont() {
         if (fFont) {
             if constexpr (kSkFontMgrVerbose) { SkDebugf("SKIA: AFont_close\n"); }
-            fAPI.AFont_close(fFont);
+            fAPI->AFont_close(fFont);
         }
     }
     explicit operator bool() { return fFont; }
 
-    const char* getFontFilePath() const { return fAPI.AFont_getFontFilePath(fFont); }
-    uint16_t getWeight() const { return fAPI.AFont_getWeight(fFont); }
-    bool isItalic() const { return fAPI.AFont_isItalic(fFont); }
-    const char* getLocale() const { return fAPI.AFont_getLocale(fFont); }
-    size_t getCollectionIndex() const { return fAPI.AFont_getCollectionIndex(fFont); }
-    size_t getAxisCount() const { return fAPI.AFont_getAxisCount(fFont); }
-    uint32_t getAxisTag(uint32_t index) const { return fAPI.AFont_getAxisTag(fFont, index); }
-    float getAxisValue(uint32_t index) const { return fAPI.AFont_getAxisValue(fFont, index); }
+    const char* getFontFilePath() const { return fAPI->AFont_getFontFilePath(fFont); }
+    uint16_t getWeight() const { return fAPI->AFont_getWeight(fFont); }
+    bool isItalic() const { return fAPI->AFont_isItalic(fFont); }
+    const char* getLocale() const { return fAPI->AFont_getLocale(fFont); }
+    size_t getCollectionIndex() const { return fAPI->AFont_getCollectionIndex(fFont); }
+    size_t getAxisCount() const { return fAPI->AFont_getAxisCount(fFont); }
+    uint32_t getAxisTag(uint32_t index) const { return fAPI->AFont_getAxisTag(fFont, index); }
+    float getAxisValue(uint32_t index) const { return fAPI->AFont_getAxisValue(fFont, index); }
 
 private:
-    const AndroidFontAPI& fAPI;
-    AFont* fFont;
+    const raw_ref<const AndroidFontAPI> fAPI;
+    raw_ptr<AFont> fFont;
 };
 
 struct SkASystemFontIterator {
     SkASystemFontIterator(const AndroidFontAPI& api)
         : fAPI(api)
-        , fIterator(fAPI.ASystemFontIterator_open())
+        , fIterator(fAPI->ASystemFontIterator_open())
     {
         if constexpr (kSkFontMgrVerbose) { SkDebugf("SKIA: ASystemFontIterator_open\n"); }
     }
     SkASystemFontIterator(SkASystemFontIterator&&) = default;
     ~SkASystemFontIterator() {
         if constexpr (kSkFontMgrVerbose) { SkDebugf("SKIA: ASystemFontIterator_close\n"); }
-        fAPI.ASystemFontIterator_close(fIterator);
+        fAPI->ASystemFontIterator_close(fIterator);
     }
     explicit operator bool() { return fIterator; }
 
-    SkAFont next() { return SkAFont(fAPI, fAPI.ASystemFontIterator_next(fIterator)); }
+    SkAFont next() { return SkAFont(*fAPI, fAPI->ASystemFontIterator_next(fIterator)); }
 
 private:
-    const AndroidFontAPI& fAPI;
-    ASystemFontIterator* const fIterator;
+    const raw_ref<const AndroidFontAPI> fAPI;
+    const raw_ptr<ASystemFontIterator> fIterator;
 };
 
 class SkALanguage {
@@ -672,7 +674,7 @@ private:
         private:
             sk_sp<SkTypeface_AndroidNDK> fTypeface;
             sk_sp<SkTypeface::LocalizedStrings> fBase;
-            const SkString* fExtraFamilyName;
+            raw_ptr<const SkString, AllowPtrArithmetic> fExtraFamilyName;
 
             bool next(LocalizedString* localizedString) override {
                 if (!fExtraFamilyName) {
@@ -945,7 +947,7 @@ private:
 struct NameToFamily {
     SkString name;
     SkString normalizedName;
-    SkFontStyleSet_AndroidNDK* styleSet;
+    raw_ptr<SkFontStyleSet_AndroidNDK> styleSet;
 
     using sk_is_trivially_relocatable = std::true_type;
     static_assert(::sk_is_trivially_relocatable<decltype(name)>::value);
@@ -1095,7 +1097,7 @@ protected:
         if (index < 0 || fNameToFamilyMap.size() <= index) {
             return nullptr;
         }
-        return sk_ref_sp(fNameToFamilyMap[index].styleSet);
+        return sk_ref_sp(fNameToFamilyMap[index].styleSet.get());
     }
 
     sk_sp<SkFontStyleSet_AndroidNDK> onMatchAFamily(const char familyName[]) const {
@@ -1105,7 +1107,7 @@ protected:
         SkString normalizedFamilyName(fICU.casefold({familyName, strlen(familyName)}));
         for (const NameToFamily& nameToFamily : fNameToFamilyMap) {
             if (nameToFamily.normalizedName == normalizedFamilyName) {
-                return sk_ref_sp(nameToFamily.styleSet);
+                return sk_ref_sp(nameToFamily.styleSet.get());
             }
         }
         return nullptr;
@@ -1264,7 +1266,7 @@ protected:
         variation::Storage variationStorage;
         SkSpan<variation::Coordinate> variation = variation::Get(*proxy, variationStorage);
         SkTypeface_AndroidNDK::AutoAxis autoAxis(variation);
-        autoAxis.remove(SkTypeface_AndroidNDK::AutoAxis(SkSpan(requestedPosition.coordinates,
+        autoAxis.remove(SkTypeface_AndroidNDK::AutoAxis(SkSpan(requestedPosition.coordinates.get(),
                                                                requestedPosition.coordinateCount)));
 
         SkFontStyle style = proxy->fontStyle();

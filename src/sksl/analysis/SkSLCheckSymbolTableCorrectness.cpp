@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "src/partition_alloc/raw_ref.h"
 #include "include/core/SkTypes.h"
 #include "src/core/SkTHash.h"
 #include "src/sksl/SkSLAnalysis.h"
@@ -58,7 +59,7 @@ void Analysis::CheckSymbolTableCorrectness(const Program& program) {
                     }
                 });
                 if (!containsSymbol) {
-                    fContext.fErrors->error(vardecl.position(), "internal error (variable '" +
+                    fContext->fErrors->error(vardecl.position(), "internal error (variable '" +
                                                                 std::string(vardecl.var()->name()) +
                                                                 "' is incorrectly scoped)");
                 }
@@ -73,7 +74,7 @@ void Analysis::CheckSymbolTableCorrectness(const Program& program) {
     private:
         using INHERITED = ProgramVisitor;
 
-        const Context& fContext;
+        const raw_ref<const Context> fContext;
         std::vector<SymbolTable*> fSymbolTableStack;
     };
 

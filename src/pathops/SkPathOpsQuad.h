@@ -17,6 +17,8 @@
 #include "src/pathops/SkPathOpsDebug.h"
 #include "src/pathops/SkPathOpsPoint.h"
 #include "src/pathops/SkPathOpsTCurve.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 class SkIntersections;
 class SkOpGlobalState;
@@ -132,7 +134,7 @@ struct SkDQuad {
     void dumpID(int id) const;
     void dumpInner() const;
 
-    SkDEBUGCODE(SkOpGlobalState* fDebugGlobalState;)
+    SkDEBUGCODE(RAW_PTR_EXCLUSION SkOpGlobalState* fDebugGlobalState;)
 };
 
 

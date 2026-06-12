@@ -8,6 +8,7 @@
 #ifndef SkRTree_DEFINED
 #define SkRTree_DEFINED
 
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 #include "include/core/SkBBHFactory.h"
 #include "include/core/SkRect.h"
 
@@ -55,7 +56,8 @@ private:
 
     struct Branch {
         union {
-            Node* fSubtree;
+            // RAW_PTR_EXCLUSION: inside a union
+            RAW_PTR_EXCLUSION Node* fSubtree;
             int fOpIndex;
         };
         SkRect fBounds;

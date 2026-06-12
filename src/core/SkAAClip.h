@@ -6,6 +6,9 @@
  */
 
 #ifndef SkAAClip_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
+
 #define SkAAClip_DEFINED
 
 #include "include/core/SkColor.h"
@@ -72,7 +75,7 @@ private:
     friend class SkAAClipBlitter;
 
     SkIRect  fBounds;
-    RunHead* fRunHead;
+    raw_ptr<RunHead> fRunHead;
 
     void freeRuns();
 
@@ -108,19 +111,19 @@ public:
     void blitMask(const SkMask&, const SkIRect& clip) override;
 
 private:
-    SkBlitter*      fBlitter;
-    const SkAAClip* fAAClip;
+    raw_ptr<SkBlitter> fBlitter;
+    raw_ptr<const SkAAClip> fAAClip;
     SkIRect         fAAClipBounds;
 
     // point into fScanlineScratch
-    int16_t*        fRuns;
-    SkAlpha*        fAA;
+    RAW_PTR_EXCLUSION int16_t* fRuns;
+    RAW_PTR_EXCLUSION SkAlpha* fAA;
 
     enum {
         kSize = 32 * 32
     };
     SkAutoSMalloc<kSize> fGrayMaskScratch;  // used for blitMask
-    void* fScanlineScratch;  // enough for a mask at 32bit, or runs+aa
+    RAW_PTR_EXCLUSION void* fScanlineScratch;  // enough for a mask at 32bit, or runs+aa
 
     void ensureRunsAndAA();
 };

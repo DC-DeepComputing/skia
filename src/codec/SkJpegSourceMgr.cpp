@@ -7,6 +7,7 @@
 
 #include "src/codec/SkJpegSourceMgr.h"
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkData.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkStream.h"
@@ -41,7 +42,7 @@ public:
     }
 
 private:
-    SkStream* const fStream;
+    const raw_ptr<SkStream> fStream;
     const size_t fPosition;
 };
 

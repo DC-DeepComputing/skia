@@ -6,6 +6,8 @@
  */
 
 #ifndef SKSL_FUNCTIONDECLARATION
+#include "src/partition_alloc/raw_ptr.h"
+
 #define SKSL_FUNCTIONDECLARATION
 
 #include "include/core/SkSpan.h"
@@ -155,10 +157,10 @@ public:
                              const Type** outReturnType) const;
 
 private:
-    const FunctionDefinition* fDefinition;
-    FunctionDeclaration* fNextOverload = nullptr;
+    raw_ptr<const FunctionDefinition> fDefinition;
+    raw_ptr<FunctionDeclaration> fNextOverload = nullptr;
     skia_private::TArray<Variable*> fParameters;
-    const Type* fReturnType = nullptr;
+    raw_ptr<const Type> fReturnType = nullptr;
     ModifierFlags fModifierFlags;
     mutable IntrinsicKind fIntrinsicKind = kNotIntrinsic;
     ModuleType fModuleType = ModuleType::unknown;

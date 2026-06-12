@@ -7,6 +7,7 @@
 
 #include "src/pdf/SkPDFTag.h"
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkScalar.h"
 #include "include/private/SkAssert.h"
@@ -63,7 +64,7 @@ struct SkPDFStructElem {
         return elemIdString;
     }
 
-    SkPDFStructElem* fParent = nullptr;
+    raw_ptr<SkPDFStructElem> fParent = nullptr;
     SkSpan<SkPDFStructElem> fChildren;
     struct MarkedContentInfo {
         Location fLocation;

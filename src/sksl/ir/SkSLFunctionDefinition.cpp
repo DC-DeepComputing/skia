@@ -7,6 +7,8 @@
 
 #include "src/sksl/ir/SkSLFunctionDefinition.h"
 
+#include "src/partition_alloc/raw_ref.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "src/core/SkSafeMath.h"
@@ -50,7 +52,7 @@ static void append_rtadjust_fixup_to_vertex_main(const Context& context,
             AppendRTAdjustFixupHelper(const Context& ctx, const SkSL::Symbol* rtAdjust)
                     : IRHelpers(ctx)
                     , fRTAdjust(rtAdjust) {
-                fSkPositionField = &fContext.fSymbolTable->find(Compiler::POSITION_NAME)
+                fSkPositionField = &fContext->fSymbolTable->find(Compiler::POSITION_NAME)
                                                          ->as<FieldSymbol>();
             }
 
@@ -59,7 +61,7 @@ static void append_rtadjust_fixup_to_vertex_main(const Context& context,
             }
 
             std::unique_ptr<Expression> Adjust() const {
-                return fRTAdjust->instantiate(fContext, Position());
+                return fRTAdjust->instantiate(*fContext, Position());
             }
 
             std::unique_ptr<Statement> makeFixupStmt() const {
@@ -76,8 +78,8 @@ static void append_rtadjust_fixup_to_vertex_main(const Context& context,
                             Swizzle(Pos(), {SwizzleComponent::W})));
             }
 
-            const FieldSymbol* fSkPositionField;
-            const SkSL::Symbol* fRTAdjust;
+            raw_ptr<const FieldSymbol> fSkPositionField;
+            raw_ptr<const SkSL::Symbol> fRTAdjust;
         };
 
         AppendRTAdjustFixupHelper helper(context, rtAdjust);
@@ -108,7 +110,7 @@ std::unique_ptr<FunctionDefinition> FunctionDefinition::Convert(const Context& c
         void addLocalVariable(const Variable* var, Position pos) {
             if (var->type().isOrContainsUnsizedArray()) {
                 if (var->storage() != Variable::Storage::kParameter) {
-                    fContext.fErrors->error(pos, "unsized arrays are not permitted here");
+                    fContext->fErrors->error(pos, "unsized arrays are not permitted here");
                 }
                 // Number of slots does not apply to unsized arrays since they are
                 // dynamically sized.
@@ -123,7 +125,7 @@ std::unique_ptr<FunctionDefinition> FunctionDefinition::Convert(const Context& c
             // To avoid overzealous error reporting, only trigger the error at the first
             // place where the stack limit is exceeded.
             if (prevSlotsUsed < kVariableSlotLimit && fSlotsUsed >= kVariableSlotLimit) {
-                fContext.fErrors->error(pos, "variable '" + std::string(var->name()) +
+                fContext->fErrors->error(pos, "variable '" + std::string(var->name()) +
                                              "' exceeds the stack size limit");
             }
         }
@@ -197,7 +199,7 @@ std::unique_ptr<FunctionDefinition> FunctionDefinition::Convert(const Context& c
         }
 
         bool functionReturnsValue() const {
-            return !fFunction.returnType().isVoid();
+            return !fFunction->returnType().isVoid();
         }
 
         bool visitExpressionPtr(std::unique_ptr<Expression>& expr) override {
@@ -209,7 +211,7 @@ std::unique_ptr<FunctionDefinition> FunctionDefinition::Convert(const Context& c
             // When the optimizer is on, we look for variable declarations that are immediately
             // followed by an initialization expression, and fuse them into one statement.
             // (e.g.: `int i; i = 1;` can become `int i = 1;`)
-            if (fContext.fConfig->fSettings.fOptimize) {
+            if (fContext->fConfig->fSettings.fOptimize) {
                 this->fuseVariableDeclarationsWithInitialization(stmt);
             }
 
@@ -223,8 +225,8 @@ std::unique_ptr<FunctionDefinition> FunctionDefinition::Convert(const Context& c
                     // Early returns from a vertex main() function will bypass sk_Position
                     // normalization, so SkASSERT that we aren't doing that. If this becomes an
                     // issue, we can add normalization before each return statement.
-                    if (ProgramConfig::IsVertex(fContext.fConfig->fKind) && fFunction.isMain()) {
-                        fContext.fErrors->error(
+                    if (ProgramConfig::IsVertex(fContext->fConfig->fKind) && fFunction->isMain()) {
+                        fContext->fErrors->error(
                                 stmt->fPosition,
                                 "early returns from vertex programs are not supported");
                     }
@@ -234,20 +236,20 @@ std::unique_ptr<FunctionDefinition> FunctionDefinition::Convert(const Context& c
                     if (returnStmt.expression()) {
                         if (this->functionReturnsValue()) {
                             // Coerce return expression to the function's return type.
-                            returnStmt.setExpression(fFunction.returnType().coerceExpression(
-                                    std::move(returnStmt.expression()), fContext));
+                            returnStmt.setExpression(fFunction->returnType().coerceExpression(
+                                    std::move(returnStmt.expression()), *fContext));
                         } else {
                             // Returning something from a function with a void return type.
-                            fContext.fErrors->error(returnStmt.expression()->fPosition,
+                            fContext->fErrors->error(returnStmt.expression()->fPosition,
                                                     "may not return a value from a void function");
                             returnStmt.setExpression(nullptr);
                         }
                     } else {
                         if (this->functionReturnsValue()) {
                             // Returning nothing from a function with a non-void return type.
-                            fContext.fErrors->error(returnStmt.fPosition,
+                            fContext->fErrors->error(returnStmt.fPosition,
                                                     "expected function to return '" +
-                                                    fFunction.returnType().displayName() + "'");
+                                                    fFunction->returnType().displayName() + "'");
                         }
                     }
                     break;
@@ -271,7 +273,7 @@ std::unique_ptr<FunctionDefinition> FunctionDefinition::Convert(const Context& c
                 }
                 case Statement::Kind::kBreak:
                     if (fBreakableLevel == 0) {
-                        fContext.fErrors->error(stmt->fPosition,
+                        fContext->fErrors->error(stmt->fPosition,
                                                 "break statement must be inside a loop or switch");
                     }
                     break;
@@ -281,10 +283,10 @@ std::unique_ptr<FunctionDefinition> FunctionDefinition::Convert(const Context& c
                         if (std::any_of(fContinuableLevel.begin(),
                                         fContinuableLevel.end(),
                                         [](int level) { return level > 0; })) {
-                            fContext.fErrors->error(stmt->fPosition,
+                            fContext->fErrors->error(stmt->fPosition,
                                                    "continue statement cannot be used in a switch");
                         } else {
-                            fContext.fErrors->error(stmt->fPosition,
+                            fContext->fErrors->error(stmt->fPosition,
                                                     "continue statement must be inside a loop");
                         }
                     }
@@ -297,8 +299,8 @@ std::unique_ptr<FunctionDefinition> FunctionDefinition::Convert(const Context& c
         }
 
     private:
-        const Context& fContext;
-        const FunctionDeclaration& fFunction;
+        const raw_ref<const Context> fContext;
+        const raw_ref<const FunctionDeclaration> fFunction;
         // how deeply nested we are in breakable constructs (for, do, switch).
         int fBreakableLevel = 0;
         // number of slots consumed by all variables declared in the function
@@ -308,7 +310,7 @@ std::unique_ptr<FunctionDefinition> FunctionDefinition::Convert(const Context& c
         std::forward_list<int> fContinuableLevel{0};
         // We track uninitialized variable declarations, and if they are immediately assigned-to,
         // we can move the assignment directly into the decl.
-        VarDeclaration* fUninitializedVarDecl = nullptr;
+        raw_ptr<VarDeclaration> fUninitializedVarDecl = nullptr;
 
         using INHERITED = ProgramWriter;
     };

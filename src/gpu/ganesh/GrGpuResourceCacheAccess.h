@@ -6,6 +6,8 @@
  */
 
 #ifndef GrGpuResourceCacheAccess_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define GrGpuResourceCacheAccess_DEFINED
 
 #include "include/private/SkAssert.h"
@@ -100,7 +102,7 @@ private:
     const CacheAccess* operator&() const = delete;
     CacheAccess* operator&() = delete;
 
-    GrGpuResource* fResource;
+    raw_ptr<GrGpuResource> fResource;
 
     friend class GrGpuResource; // to construct/copy this type.
     friend class GrResourceCache; // to use this type

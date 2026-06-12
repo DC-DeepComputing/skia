@@ -6,6 +6,8 @@
  */
 
 #ifndef SkBlitter_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define SkBlitter_DEFINED
 
 #include "include/core/SkColor.h"
@@ -209,7 +211,7 @@ public:
     }
 
 private:
-    SkBlitter*  fBlitter;
+    raw_ptr<SkBlitter> fBlitter;
     SkIRect     fClipRect;
 };
 
@@ -242,8 +244,8 @@ public:
     }
 
 private:
-    SkBlitter*      fBlitter;
-    const SkRegion* fRgn;
+    raw_ptr<SkBlitter> fBlitter;
+    raw_ptr<const SkRegion> fRgn;
 };
 
 #ifdef SK_DEBUG
@@ -275,7 +277,7 @@ public:
     }
 
 private:
-    SkBlitter*  fBlitter;
+    raw_ptr<SkBlitter> fBlitter;
     SkIRect     fClipRect;
 };
 #endif

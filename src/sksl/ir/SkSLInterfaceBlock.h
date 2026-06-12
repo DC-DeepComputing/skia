@@ -6,6 +6,8 @@
  */
 
 #ifndef SKSL_INTERFACEBLOCK
+#include "src/partition_alloc/raw_ptr.h"
+
 #define SKSL_INTERFACEBLOCK
 
 #include "include/core/SkTypes.h"
@@ -92,7 +94,7 @@ public:
     std::string description() const override;
 
 private:
-    Variable* fVariable;
+    raw_ptr<Variable> fVariable;
 
     using INHERITED = ProgramElement;
 };

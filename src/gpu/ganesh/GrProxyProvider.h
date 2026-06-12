@@ -6,6 +6,8 @@
  */
 
 #ifndef GrProxyProvider_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define GrProxyProvider_DEFINED
 
 #include "include/core/SkRefCnt.h"
@@ -361,7 +363,7 @@ private:
 
     sk_sp<GrTextureProxy> createWrapped(sk_sp<GrTexture> tex, UseAllocator useAllocator);
 
-    GrImageContext*        fImageContext;
+    raw_ptr<GrImageContext> fImageContext;
     sk_sp<GrUniquelyKeyedProxyRegistry> fUniquelyKeyedProxyRegistry;
 };
 

@@ -7,6 +7,7 @@
 
 #include "include/utils/SkShadowUtils.h"
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkBlender.h"
 #include "include/core/SkBlurTypes.h"
@@ -311,7 +312,7 @@ template <typename FACTORY>
 struct FindContext {
     FindContext(const SkMatrix* viewMatrix, const FACTORY* factory)
             : fViewMatrix(viewMatrix), fFactory(factory) {}
-    const SkMatrix* const fViewMatrix;
+    const raw_ptr<const SkMatrix> fViewMatrix;
     // If this is valid after Find is called then we found the vertices and they should be drawn
     // with fTranslate applied.
     sk_sp<SkVertices> fVertices;
@@ -321,7 +322,7 @@ struct FindContext {
     // and create a new CachedTessellationsRec and insert it into SkResourceCache.
     sk_sp<CachedTessellations> fTessellationsOnFailure;
 
-    const FACTORY* fFactory;
+    raw_ptr<const FACTORY> fFactory;
 };
 
 /**
@@ -373,8 +374,8 @@ public:
 #endif
 
 private:
-    const SkPath* fPath;
-    const SkMatrix* fViewMatrix;
+    raw_ptr<const SkPath> fPath;
+    raw_ptr<const SkMatrix> fViewMatrix;
 #if defined(SK_GANESH)
     GrStyledShape fShapeForKey;
 #endif

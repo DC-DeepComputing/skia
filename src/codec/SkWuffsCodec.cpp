@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/codec/SkCodec.h"
 #include "include/codec/SkCodecAnimation.h"
 #include "include/codec/SkEncodedImageFormat.h"
@@ -231,7 +232,7 @@ public:
     const SkFrame* onGetFrame(int i) const override;
 
 private:
-    const SkWuffsCodec* fCodec;
+    raw_ptr<const SkWuffsCodec> fCodec;
 
     using INHERITED = SkFrameHolder;
 };
@@ -309,7 +310,7 @@ private:
     wuffs_base__io_buffer    fIOBuffer;
 
     // Incremental decoding state.
-    uint8_t*                fIncrDecDst;
+    raw_ptr<uint8_t> fIncrDecDst;
     size_t                  fIncrDecRowBytes;
     wuffs_base__pixel_blend fIncrDecPixelBlend;
     bool                    fIncrDecOnePass;

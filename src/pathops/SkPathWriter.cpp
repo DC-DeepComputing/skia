@@ -6,6 +6,7 @@
  */
 #include "src/pathops/SkPathWriter.h"
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkPathBuilder.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkMath.h"
@@ -195,7 +196,7 @@ bool SkPathWriter::changedSlopes(const SkOpPtT* ptT) const {
 class DistanceLessThan {
 public:
     DistanceLessThan(double* distances) : fDistances(distances) { }
-    double* fDistances;
+    raw_ptr<double, AllowPtrArithmetic> fDistances;
     bool operator()(const int one, const int two) const {
         return fDistances[one] < fDistances[two];
     }

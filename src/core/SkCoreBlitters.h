@@ -6,6 +6,8 @@
  */
 
 #ifndef SkCoreBlitters_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define SkCoreBlitters_DEFINED
 
 #include "include/core/SkColor.h"
@@ -50,7 +52,7 @@ public:
 
 protected:
     sk_sp<SkShader>         fShader;
-    SkShaderBase::Context* fShaderContext;
+    raw_ptr<SkShaderBase::Context> fShaderContext;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -108,7 +110,7 @@ public:
     void blitMask(const SkMask&, const SkIRect&) override;
 
 private:
-    SkPMColor*          fBuffer;
+    raw_ptr<SkPMColor> fBuffer;
     SkBlitRow::Proc32   fProc32;
     SkBlitRow::Proc32   fProc32Blend;
     bool fShadeDirectlyIntoDevice;

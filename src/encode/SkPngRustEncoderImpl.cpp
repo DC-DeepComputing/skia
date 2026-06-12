@@ -13,6 +13,7 @@
 #include <optional>
 #include <utility>
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkStream.h"
 #include "include/encode/SkPngRustEncoder.h"
@@ -114,7 +115,7 @@ public:
     void flush() override { fStream->flush(); }
 
 private:
-    SkWStream* fStream = nullptr;  // Non-owning pointer.
+    raw_ptr<SkWStream> fStream = nullptr;  // Non-owning pointer.
 };
 
 #ifdef SK_CODEC_USES_PNG_WITH_RUST_FOR_ANDROID
