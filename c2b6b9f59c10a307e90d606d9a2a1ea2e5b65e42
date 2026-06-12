@@ -16,6 +16,23 @@
       "message": "SkBidiFactory_icu_subset.cpp is the only source file in Skia that uses _skia ICU symbols directly.  I\u0027m guessing there must be some reason, possibly related to multi-ICU builds?\n\nMy thinking is:\n\n  * in order for the _skia symbols to be available in the first place, we must have an ICU target with renaming configured in the build\n  * as long as the SkBidiFactory_icu_subset.cpp is using the same ICU config when building, renaming should \"just work\" transparently (ICU sets up macros for regular names -\u003e _skia mapping)\n  * other components that may link against different ICU versions should not be affected as long as they don\u0027t use our ICU config (which they obviously aren\u0027t, otherwise they would be subject to the same -\u003e _skia rename already)\n\nWDYT, are there any tricky clients that we should preflight this with?",
       "revId": "c2b6b9f59c10a307e90d606d9a2a1ea2e5b65e42",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "051b20fc_b7e40686",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-06-12T17:17:14Z",
+      "side": 1,
+      "message": "I am not sure but I think these prefixes were added because of Android solution (using the system ICU lib instead of ours)",
+      "revId": "c2b6b9f59c10a307e90d606d9a2a1ea2e5b65e42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
