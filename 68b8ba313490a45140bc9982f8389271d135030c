@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72be6ed1_52fc57bb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-12T15:43:00Z",
+      "side": 1,
+      "message": "I tracked down the original CL that introduced the issue. https://review.skia.org/204720\nI find it helpful to do that and reference it in the commit message so we can make sure the existing fix is aligned with the original intent (or, in rare cases, find the original intent was wrong)",
+      "range": {
+        "startLine": 12,
+        "startChar": 4,
+        "endLine": 12,
+        "endChar": 9
+      },
+      "revId": "68b8ba313490a45140bc9982f8389271d135030c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc1e16ef_771533c0",
+        "filename": "src/ports/SkTypeface_mac_ct.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 609,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-12T15:43:00Z",
+      "side": 1,
+      "message": "I think we can remove the SkOnce now that we have the mutex. With the mutex held, we can see if we need to initialize, do that, and then return a duplicate of the stream.",
+      "range": {
+        "startLine": 609,
+        "startChar": 4,
+        "endLine": 609,
+        "endChar": 15
+      },
+      "revId": "68b8ba313490a45140bc9982f8389271d135030c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d70467d4_d91b155d",
+        "filename": "tests/TypefaceMacTest.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-12T15:43:00Z",
+      "side": 1,
+      "message": "Let\u0027s remove this test when we land (but include a mention of the test in the older PS in the commit message).",
+      "range": {
+        "startLine": 202,
+        "startChar": 0,
+        "endLine": 202,
+        "endChar": 8
+      },
+      "revId": "68b8ba313490a45140bc9982f8389271d135030c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58399c6f_2f3b1d56",
+        "filename": "tests/TypefaceMacTest.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-12T15:43:00Z",
+      "side": 1,
+      "message": "Could you add a go/paste/ link to the bug that has the logs from the repro case?",
+      "range": {
+        "startLine": 207,
+        "startChar": 4,
+        "endLine": 207,
+        "endChar": 12
+      },
+      "revId": "68b8ba313490a45140bc9982f8389271d135030c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
