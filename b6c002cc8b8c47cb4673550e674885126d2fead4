@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6559b143_383a67b7",
+        "filename": "src/ports/SkTypeface_mac_ct.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 610,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-12T17:15:34Z",
+      "side": 1,
+      "message": "This doesn\u0027t compile - we can\u0027t return void here.",
+      "range": {
+        "startLine": 610,
+        "startChar": 8,
+        "endLine": 610,
+        "endChar": 14
+      },
+      "revId": "b6c002cc8b8c47cb4673550e674885126d2fead4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16e32074_17affbb1",
+        "filename": "src/ports/SkTypeface_mac_ct.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-12T17:15:34Z",
+      "side": 1,
+      "message": "delete",
+      "range": {
+        "startLine": 135,
+        "startChar": 19,
+        "endLine": 135,
+        "endChar": 30
+      },
+      "revId": "b6c002cc8b8c47cb4673550e674885126d2fead4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "158f6031_d1a743cb",
+        "filename": "tests/TypefaceMacTest.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-12T17:15:34Z",
+      "side": 1,
+      "message": "Revert these changes too",
+      "range": {
+        "startLine": 17,
+        "startChar": 16,
+        "endLine": 17,
+        "endChar": 21
+      },
+      "revId": "b6c002cc8b8c47cb4673550e674885126d2fead4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
