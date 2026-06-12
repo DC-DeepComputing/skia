@@ -34,6 +34,24 @@
       "parentUuid": "b9518166_c1032839",
       "revId": "22f76e462133895177a9e26d34d1f07c389f4fc2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "61baec55_3a0bbaa1",
+        "filename": "src/partition_alloc/raw_ptr.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-06-12T11:52:45Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "2955834a_f00de0b8",
+      "revId": "22f76e462133895177a9e26d34d1f07c389f4fc2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
