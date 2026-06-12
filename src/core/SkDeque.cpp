@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/private/SkAssert.h"
 #include "include/private/SkDeque.h"
 #include "include/private/SkMalloc.h"
@@ -12,11 +13,11 @@
 #include <cstddef>
 
 struct SkDeque::Block {
-    Block*  fNext;
-    Block*  fPrev;
-    char*   fBegin; // start of used section in this chunk
-    char*   fEnd;   // end of used section in this chunk
-    char*   fStop;  // end of the allocated chunk
+    raw_ptr<Block> fNext;
+    raw_ptr<Block> fPrev;
+    raw_ptr<char, AllowPtrArithmetic> fBegin; // start of used section in this chunk
+    raw_ptr<char, AllowPtrArithmetic> fEnd;   // end of used section in this chunk
+    raw_ptr<char, AllowPtrArithmetic> fStop;  // end of the allocated chunk
 
     char*       start() { return (char*)(this + 1); }
     const char* start() const { return (const char*)(this + 1); }
@@ -258,7 +259,7 @@ void* SkDeque::Iter::next() {
             do {
                 fCurBlock = fCurBlock->fNext;
             } while (fCurBlock != nullptr && fCurBlock->fBegin == nullptr);
-            next = fCurBlock ? fCurBlock->fBegin : nullptr;
+            next = fCurBlock ? fCurBlock->fBegin.get() : nullptr;
         }
         fPos = next;
     }
@@ -298,7 +299,7 @@ void SkDeque::Iter::reset(const SkDeque& d, IterStart startLoc) {
         while (fCurBlock && nullptr == fCurBlock->fBegin) {
             fCurBlock = fCurBlock->fNext;
         }
-        fPos = fCurBlock ? fCurBlock->fBegin : nullptr;
+        fPos = fCurBlock ? fCurBlock->fBegin.get() : nullptr;
     } else {
         // initialize the iterator to start at the back
         fCurBlock = d.fBackBlock;

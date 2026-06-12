@@ -6,6 +6,8 @@
  */
 
 #ifndef SkRasterPipeline_opts_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define SkRasterPipeline_opts_DEFINED
 
 #include "include/core/SkSpan.h"
@@ -63,7 +65,7 @@ SI Dst widen_cast(const Src& src) {
 }
 
 struct Ctx {
-    SkRasterPipelineStage* fStage;
+    raw_ptr<SkRasterPipelineStage> fStage;
 
     template <typename T>
     operator T*() {
@@ -1472,7 +1474,7 @@ static void patch_memory_contexts(SkSpan<SkRasterPipelineContexts::MemoryCtxPatc
 
         const ptrdiff_t offset = patch.info.bytesPerPixel * (dy * ctx->stride + dx);
         if (patch.info.load) {
-            void* ctxData = SkTAddOffset<void>(ctx->pixels, offset);
+            void* ctxData = SkTAddOffset<void>(ctx->pixels.get(), offset);
             memcpy(patch.scratch, ctxData, patch.info.bytesPerPixel * tail);
         }
 
@@ -1497,7 +1499,7 @@ static void restore_memory_contexts(
 
         const ptrdiff_t offset = patch.info.bytesPerPixel * (dy * ctx->stride + dx);
         if (patch.info.store) {
-            void* ctxData = SkTAddOffset<void>(ctx->pixels, offset);
+            void* ctxData = SkTAddOffset<void>(ctx->pixels.get(), offset);
             memcpy(ctxData, patch.scratch, patch.info.bytesPerPixel * tail);
         }
     }
@@ -3863,9 +3865,9 @@ HIGHP_STAGE(perlin_noise, SkRasterPipelineContexts::PerlinNoiseCtx* ctx) {
         }
 
         U32 latticeLookup = (U32)(iround(floorValX)) & 0xFF;
-        F latticeIdxX = cast(expand(gather(ctx->latticeSelector, latticeLookup)));
+        F latticeIdxX = cast(expand(gather(ctx->latticeSelector.get(), latticeLookup)));
         latticeLookup = (U32)(iround(ceilValX)) & 0xFF;
-        F latticeIdxY = cast(expand(gather(ctx->latticeSelector, latticeLookup)));
+        F latticeIdxY = cast(expand(gather(ctx->latticeSelector.get(), latticeLookup)));
 
         U32 b00 = (U32)(iround(latticeIdxX + floorValY)) & 0xFF;
         U32 b10 = (U32)(iround(latticeIdxY + floorValY)) & 0xFF;
@@ -3878,7 +3880,7 @@ HIGHP_STAGE(perlin_noise, SkRasterPipelineContexts::PerlinNoiseCtx* ctx) {
         F smoothY = fractValY * fractValY * (3.0f - 2.0f * fractValY);
 
         F color[4];
-        const uint32_t* channelNoiseData = reinterpret_cast<const uint32_t*>(ctx->noiseData);
+        const uint32_t* channelNoiseData = reinterpret_cast<const uint32_t*>(ctx->noiseData.get());
         for (int channel = 0; channel < 4; ++channel) {
             U32 sample00 = gather(channelNoiseData, b00);
             U32 sample10 = gather(channelNoiseData, b10);
@@ -4122,7 +4124,7 @@ HIGHP_BRANCH_STAGE(jump, SkRasterPipelineContexts::BranchCtx* ctx) { return ctx-
 
 HIGHP_BRANCH_STAGE(branch_if_no_active_lanes_eq, SkRasterPipelineContexts::BranchIfEqualCtx* ctx) {
     // Compare each lane against the expected value...
-    I32 match = cond_to_mask(*(const I32*)ctx->ptr == ctx->value);
+    I32 match = cond_to_mask(*(const I32*)ctx->ptr.get() == ctx->value);
     // ... but mask off lanes that aren't executing.
     match &= execution_mask();
     // If any lanes matched, don't take the branch.
@@ -4130,21 +4132,21 @@ HIGHP_BRANCH_STAGE(branch_if_no_active_lanes_eq, SkRasterPipelineContexts::Branc
 }
 
 HIGHP_TAIL_STAGE(trace_line, SkRasterPipelineContexts::TraceLineCtx* ctx) {
-    const I32* traceMask = (const I32*)ctx->traceMask;
+    const I32* traceMask = (const I32*)ctx->traceMask.get();
     if (any(execution_mask() & *traceMask)) {
         ctx->traceHook->line(ctx->lineNumber);
     }
 }
 
 HIGHP_TAIL_STAGE(trace_enter, SkRasterPipelineContexts::TraceFuncCtx* ctx) {
-    const I32* traceMask = (const I32*)ctx->traceMask;
+    const I32* traceMask = (const I32*)ctx->traceMask.get();
     if (any(execution_mask() & *traceMask)) {
         ctx->traceHook->enter(ctx->funcIdx);
     }
 }
 
 HIGHP_TAIL_STAGE(trace_exit, SkRasterPipelineContexts::TraceFuncCtx* ctx) {
-    const I32* traceMask = (const I32*)ctx->traceMask;
+    const I32* traceMask = (const I32*)ctx->traceMask.get();
     if (any(execution_mask() & *traceMask)) {
         ctx->traceHook->exit(ctx->funcIdx);
     }
@@ -4154,23 +4156,23 @@ HIGHP_TAIL_STAGE(trace_scope, SkRasterPipelineContexts::TraceScopeCtx* ctx) {
     // Note that trace_scope intentionally does not incorporate the execution mask. Otherwise, the
     // scopes would become unbalanced if the execution mask changed in the middle of a block. The
     // caller is responsible for providing a combined trace- and execution-mask.
-    const I32* traceMask = (const I32*)ctx->traceMask;
+    const I32* traceMask = (const I32*)ctx->traceMask.get();
     if (any(*traceMask)) {
         ctx->traceHook->scope(ctx->delta);
     }
 }
 
 HIGHP_TAIL_STAGE(trace_var, SkRasterPipelineContexts::TraceVarCtx* ctx) {
-    const I32* traceMask = (const I32*)ctx->traceMask;
+    const I32* traceMask = (const I32*)ctx->traceMask.get();
     I32 mask = execution_mask() & *traceMask;
     if (any(mask)) {
         for (size_t lane = 0; lane < N; ++lane) {
             if (select_lane(mask, lane)) {
-                const I32* data = (const I32*)ctx->data;
+                const I32* data = (const I32*)ctx->data.get();
                 int slotIdx = ctx->slotIdx, numSlots = ctx->numSlots;
                 if (ctx->indirectOffset) {
                     // If this was an indirect store, apply the indirect-offset to the data pointer.
-                    uint32_t indirectOffset = select_lane(*(const U32*)ctx->indirectOffset, lane);
+                    uint32_t indirectOffset = select_lane(*(const U32*)ctx->indirectOffset.get(), lane);
                     indirectOffset = std::min<uint32_t>(indirectOffset, ctx->indirectLimit);
                     data += indirectOffset;
                     slotIdx += indirectOffset;
@@ -4188,25 +4190,25 @@ HIGHP_TAIL_STAGE(trace_var, SkRasterPipelineContexts::TraceVarCtx* ctx) {
 
 HIGHP_TAIL_STAGE(copy_uniform, SkRasterPipelineContexts::UniformCtx* ctx) {
     const int* src = ctx->src;
-    I32* dst = (I32*)ctx->dst;
+    I32* dst = (I32*)ctx->dst.get();
     dst[0] = I32_(src[0]);
 }
 HIGHP_TAIL_STAGE(copy_2_uniforms, SkRasterPipelineContexts::UniformCtx* ctx) {
     const int* src = ctx->src;
-    I32* dst = (I32*)ctx->dst;
+    I32* dst = (I32*)ctx->dst.get();
     dst[0] = I32_(src[0]);
     dst[1] = I32_(src[1]);
 }
 HIGHP_TAIL_STAGE(copy_3_uniforms, SkRasterPipelineContexts::UniformCtx* ctx) {
     const int* src = ctx->src;
-    I32* dst = (I32*)ctx->dst;
+    I32* dst = (I32*)ctx->dst.get();
     dst[0] = I32_(src[0]);
     dst[1] = I32_(src[1]);
     dst[2] = I32_(src[2]);
 }
 HIGHP_TAIL_STAGE(copy_4_uniforms, SkRasterPipelineContexts::UniformCtx* ctx) {
     const int* src = ctx->src;
-    I32* dst = (I32*)ctx->dst;
+    I32* dst = (I32*)ctx->dst.get();
     dst[0] = I32_(src[0]);
     dst[1] = I32_(src[1]);
     dst[2] = I32_(src[2]);
@@ -4368,7 +4370,7 @@ HIGHP_TAIL_STAGE(swizzle_4, SkRasterPipelineContexts::SwizzleCtx* packed) {
     small_swizzle_fn<4>(packed, base);
 }
 HIGHP_TAIL_STAGE(shuffle, SkRasterPipelineContexts::ShuffleCtx* ctx) {
-    shuffle_fn<16>((std::byte*)ctx->ptr, ctx->offsets, ctx->count);
+    shuffle_fn<16>((std::byte*)ctx->ptr.get(), ctx->offsets, ctx->count);
 }
 
 template <int NumSlots>
@@ -4383,21 +4385,21 @@ SI void swizzle_copy_masked_fn(I32* dst, const I32* src, uint16_t* offsets, I32 
 }
 
 HIGHP_TAIL_STAGE(swizzle_copy_slot_masked, SkRasterPipelineContexts::SwizzleCopyCtx* ctx) {
-    swizzle_copy_masked_fn<1>((I32*)ctx->dst, (const I32*)ctx->src, ctx->offsets, execution_mask());
+    swizzle_copy_masked_fn<1>((I32*)ctx->dst.get(), (const I32*)ctx->src.get(), ctx->offsets, execution_mask());
 }
 HIGHP_TAIL_STAGE(swizzle_copy_2_slots_masked, SkRasterPipelineContexts::SwizzleCopyCtx* ctx) {
-    swizzle_copy_masked_fn<2>((I32*)ctx->dst, (const I32*)ctx->src, ctx->offsets, execution_mask());
+    swizzle_copy_masked_fn<2>((I32*)ctx->dst.get(), (const I32*)ctx->src.get(), ctx->offsets, execution_mask());
 }
 HIGHP_TAIL_STAGE(swizzle_copy_3_slots_masked, SkRasterPipelineContexts::SwizzleCopyCtx* ctx) {
-    swizzle_copy_masked_fn<3>((I32*)ctx->dst, (const I32*)ctx->src, ctx->offsets, execution_mask());
+    swizzle_copy_masked_fn<3>((I32*)ctx->dst.get(), (const I32*)ctx->src.get(), ctx->offsets, execution_mask());
 }
 HIGHP_TAIL_STAGE(swizzle_copy_4_slots_masked, SkRasterPipelineContexts::SwizzleCopyCtx* ctx) {
-    swizzle_copy_masked_fn<4>((I32*)ctx->dst, (const I32*)ctx->src, ctx->offsets, execution_mask());
+    swizzle_copy_masked_fn<4>((I32*)ctx->dst.get(), (const I32*)ctx->src.get(), ctx->offsets, execution_mask());
 }
 
 HIGHP_TAIL_STAGE(copy_from_indirect_unmasked, SkRasterPipelineContexts::CopyIndirectCtx* ctx) {
     // Clamp the indirect offsets to stay within the limit.
-    U32 offsets = *(const U32*)ctx->indirectOffset;
+    U32 offsets = *(const U32*)ctx->indirectOffset.get();
     offsets = min(offsets, U32_(ctx->indirectLimit));
 
     // Scale up the offsets to account for the N lanes per value.
@@ -4410,7 +4412,7 @@ HIGHP_TAIL_STAGE(copy_from_indirect_unmasked, SkRasterPipelineContexts::CopyIndi
 
     // Use gather to perform indirect lookups; write the results into `dst`.
     const int* src = ctx->src;
-    I32*       dst = (I32*)ctx->dst;
+    I32*       dst = (I32*)ctx->dst.get();
     I32*       end = dst + ctx->slots;
     do {
         *dst = gather(src, offsets);
@@ -4422,12 +4424,12 @@ HIGHP_TAIL_STAGE(copy_from_indirect_unmasked, SkRasterPipelineContexts::CopyIndi
 HIGHP_TAIL_STAGE(copy_from_indirect_uniform_unmasked,
                  SkRasterPipelineContexts::CopyIndirectCtx* ctx) {
     // Clamp the indirect offsets to stay within the limit.
-    U32 offsets = *(const U32*)ctx->indirectOffset;
+    U32 offsets = *(const U32*)ctx->indirectOffset.get();
     offsets = min(offsets, U32_(ctx->indirectLimit));
 
     // Use gather to perform indirect lookups; write the results into `dst`.
     const int* src = ctx->src;
-    I32*       dst = (I32*)ctx->dst;
+    I32*       dst = (I32*)ctx->dst.get();
     I32*       end = dst + ctx->slots;
     do {
         *dst = gather(src, offsets);
@@ -4438,7 +4440,7 @@ HIGHP_TAIL_STAGE(copy_from_indirect_uniform_unmasked,
 
 HIGHP_TAIL_STAGE(copy_to_indirect_masked, SkRasterPipelineContexts::CopyIndirectCtx* ctx) {
     // Clamp the indirect offsets to stay within the limit.
-    U32 offsets = *(const U32*)ctx->indirectOffset;
+    U32 offsets = *(const U32*)ctx->indirectOffset.get();
     offsets = min(offsets, U32_(ctx->indirectLimit));
 
     // Scale up the offsets to account for the N lanes per value.
@@ -4450,7 +4452,7 @@ HIGHP_TAIL_STAGE(copy_to_indirect_masked, SkRasterPipelineContexts::CopyIndirect
     offsets += sk_unaligned_load<U32>(iota);
 
     // Perform indirect, masked writes into `dst`.
-    const I32* src = (const I32*)ctx->src;
+    const I32* src = (const I32*)ctx->src.get();
     const I32* end = src + ctx->slots;
     int*       dst = ctx->dst;
     I32        mask = execution_mask();
@@ -4464,7 +4466,7 @@ HIGHP_TAIL_STAGE(copy_to_indirect_masked, SkRasterPipelineContexts::CopyIndirect
 HIGHP_TAIL_STAGE(swizzle_copy_to_indirect_masked,
                  SkRasterPipelineContexts::SwizzleCopyIndirectCtx* ctx) {
     // Clamp the indirect offsets to stay within the limit.
-    U32 offsets = *(const U32*)ctx->indirectOffset;
+    U32 offsets = *(const U32*)ctx->indirectOffset.get();
     offsets = min(offsets, U32_(ctx->indirectLimit));
 
     // Scale up the offsets to account for the N lanes per value.
@@ -4476,9 +4478,9 @@ HIGHP_TAIL_STAGE(swizzle_copy_to_indirect_masked,
     offsets += sk_unaligned_load<U32>(iota);
 
     // Perform indirect, masked, swizzled writes into `dst`.
-    const I32*      src   = (const I32*)ctx->src;
+    const I32*      src   = (const I32*)ctx->src.get();
     const I32*      end   = src + ctx->slots;
-    std::byte*      dstB    = (std::byte*)ctx->dst;
+    std::byte*      dstB    = (std::byte*)ctx->dst.get();
     const uint16_t* swizzle = ctx->offsets;
     I32             mask    = execution_mask();
     do {

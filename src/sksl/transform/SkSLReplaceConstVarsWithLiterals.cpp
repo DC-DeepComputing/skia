@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkTypes.h"
 #include "src/core/SkTHash.h"
 #include "src/sksl/SkSLConstantFolder.h"
@@ -55,7 +56,7 @@ void Transform::ReplaceConstVarsWithLiterals(Module& module, ProgramUsage* usage
             return INHERITED::visitExpressionPtr(expr);
         }
 
-        ProgramUsage* fUsage;
+        raw_ptr<ProgramUsage> fUsage;
         THashSet<const Variable*> fCandidates;
 
         using INHERITED = ProgramWriter;

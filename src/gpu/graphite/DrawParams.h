@@ -156,7 +156,7 @@ public:
             , fBarrierBeforeDraws(barrierBeforeDraws)
             , fStroke(stroke ? std::optional<StrokeStyle>(*stroke) : std::nullopt) {}
 
-    const Transform& transform() const { return fTransform; }
+    const Transform& transform() const { return *fTransform; }
     const Geometry&  geometry()  const { return fGeometry;  }
     DrawOrder        order()     const { return fOrder;     }
 
@@ -177,7 +177,7 @@ public:
 private:
     friend class ClipStack; // For updating clip and order components on depth only draws
 
-    const Transform& fTransform; // Lifetime of the transform must be held longer than the geometry
+    const raw_ref<const Transform> fTransform; // Lifetime of the transform must be held longer than the geometry
     Geometry         fGeometry;
     Rect             fDrawBounds;
     Rect             fTransformedShapeBounds;

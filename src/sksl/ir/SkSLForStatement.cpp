@@ -7,6 +7,8 @@
 
 #include "src/sksl/ir/SkSLForStatement.h"
 
+#include "src/partition_alloc/raw_ref.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkTypes.h"
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLBuiltinTypes.h"
@@ -85,15 +87,15 @@ static void hoist_vardecl_symbols_into_outer_scope(const Context& context,
                 // ownership, transfer it. (If the variable was owned elsewhere, it can keep its
                 // current owner.)
                 Variable* var = stmt.as<VarDeclaration>().var();
-                fInnerSymbols->moveSymbolTo(fHoistedSymbols, var, fContext);
+                fInnerSymbols->moveSymbolTo(fHoistedSymbols, var, *fContext);
                 return false;
             }
             return ProgramVisitor::visitStatement(stmt);
         }
 
-        const Context& fContext;
-        SymbolTable* fInnerSymbols;
-        SymbolTable* fHoistedSymbols;
+        const raw_ref<const Context> fContext;
+        raw_ptr<SymbolTable> fInnerSymbols;
+        raw_ptr<SymbolTable> fHoistedSymbols;
     };
 
     SymbolHoister{context, innerSymbols, hoistedSymbols}.visitStatement(initBlock);
@@ -117,7 +119,7 @@ std::unique_ptr<Statement> ForStatement::Convert(const Context& context,
     }
 
     if (test) {
-        test = context.fTypes.fBool->coerceExpression(std::move(test), context);
+        test = context.fTypes->fBool->coerceExpression(std::move(test), context);
         if (!test) {
             return nullptr;
         }
@@ -215,7 +217,7 @@ std::unique_ptr<Statement> ForStatement::Make(const Context& context,
                                               std::unique_ptr<SymbolTable> symbolTable) {
     SkASSERT(is_simple_initializer(initializer.get()) ||
              is_vardecl_block_initializer(initializer.get()));
-    SkASSERT(!test || test->type().matches(*context.fTypes.fBool));
+    SkASSERT(!test || test->type().matches(*context.fTypes->fBool));
     SkASSERT(!Analysis::DetectVarDeclarationWithoutScope(*statement));
     SkASSERT(unrollInfo || !context.fConfig->strictES2Mode());
 

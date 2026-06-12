@@ -6,6 +6,8 @@
  */
 #include "src/gpu/ganesh/ops/DrawMeshOp.h"
 
+#include "src/partition_alloc/raw_ref.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkData.h"
 #include "include/core/SkMatrix.h"
@@ -229,10 +231,10 @@ private:
                 }
 
                 SkSLType gpuType;
-                SkAssertResult(SkSL::type_to_sksltype(fContext, *type, &gpuType));
+                SkAssertResult(SkSL::type_to_sksltype(*fContext, *type, &gpuType));
 
                 SkString name(var->name());
-                const SkSpan<const SkMeshSpecification::Uniform> uniforms = fGP.fSpec->uniforms();
+                const SkSpan<const SkMeshSpecification::Uniform> uniforms = fGP->fSpec->uniforms();
                 auto it = std::find_if(uniforms.begin(),
                                        uniforms.end(),
                                        [&name](SkMeshSpecification::Uniform uniform) {
@@ -258,7 +260,7 @@ private:
                 SkASSERT(shaderFlags != kNone_GrShaderFlags);
 
                 const char* mangledName = nullptr;
-                *handle = fUniformHandler->addUniformArray(&fGP,
+                *handle = fUniformHandler->addUniformArray(&*fGP,
                                                            shaderFlags,
                                                            gpuType,
                                                            name.c_str(),
@@ -290,7 +292,7 @@ private:
             }
 
             std::string sampleShader(int index, std::string coords) override {
-                const GrFragmentProcessor* fp = fGP.fChildren[index].get();
+                const GrFragmentProcessor* fp = fGP->fChildren[index].get();
                 if (!fp) {
                     // For a null shader, return transparent black.
                     return "half4(0)";
@@ -305,7 +307,7 @@ private:
             }
 
             std::string sampleColorFilter(int index, std::string color) override {
-                const GrFragmentProcessor* fp = fGP.fChildren[index].get();
+                const GrFragmentProcessor* fp = fGP->fChildren[index].get();
                 if (!fp) {
                     // For a null color filter, return the color as-is.
                     return color;
@@ -320,7 +322,7 @@ private:
             }
 
             std::string sampleBlender(int index, std::string src, std::string dst) override {
-                const GrFragmentProcessor* fp = fGP.fChildren[index].get();
+                const GrFragmentProcessor* fp = fGP->fChildren[index].get();
                 if (!fp) {
                     // For a null blend, perform src-over.
                     return SkSL::String::printf("blend_src_over(%s, %s)", src.c_str(), dst.c_str());
@@ -342,16 +344,16 @@ private:
                 SK_ABORT("Color transform intrinsics not allowed.");
             }
 
-            Impl*                                            fSelf;
-            const MeshGP&                                    fGP;
-            GrGLSLShaderBuilder*                             fBuilder;
-            GrGLSLUniformHandler*                            fUniformHandler;
+            raw_ptr<Impl> fSelf;
+            const raw_ref<const MeshGP> fGP;
+            raw_ptr<GrGLSLShaderBuilder> fBuilder;
+            raw_ptr<GrGLSLUniformHandler> fUniformHandler;
             const char*                                      fMainName;
-            const SkSL::Context&                             fContext;
+            const raw_ref<const SkSL::Context> fContext;
         };
 
         void onEmitCode(EmitArgs& args, GrGPArgs* gpArgs) override {
-            const MeshGP& mgp = args.fGeomProc.cast<MeshGP>();
+            const MeshGP& mgp = args.fGeomProc->cast<MeshGP>();
             GrGLSLVertexBuilder* vertBuilder = args.fVertBuilder;
             GrGLSLFPFragmentBuilder* fragBuilder = args.fFragBuilder;
             GrGLSLVaryingHandler* varyingHandler = args.fVaryingHandler;
@@ -830,8 +832,8 @@ private:
     sk_sp<const SkData>        fUniforms;
     int                        fVertexCount;
     int                        fIndexCount;
-    GrSimpleMesh*              fMesh = nullptr;
-    GrProgramInfo*             fProgramInfo = nullptr;
+    raw_ptr<GrSimpleMesh> fMesh = nullptr;
+    raw_ptr<GrProgramInfo> fProgramInfo = nullptr;
     TArray<std::unique_ptr<GrFragmentProcessor>> fChildren;
 
     using INHERITED = GrMeshDrawOp;

@@ -6,6 +6,8 @@
  */
 
 #ifndef SKSL_VARIABLE
+#include "src/partition_alloc/raw_ptr.h"
+
 #define SKSL_VARIABLE
 
 #include "include/core/SkTypes.h"
@@ -77,7 +79,7 @@ public:
      * Useful when doing IR rewrites, e.g. inlining a function call.
      */
     struct ScratchVariable {
-        const Variable* fVarSymbol;
+        raw_ptr<const Variable> fVarSymbol;
         std::unique_ptr<Statement> fVarDecl;
     };
     static ScratchVariable MakeScratchVariable(const Context& context,
@@ -137,7 +139,7 @@ public:
     }
 
 private:
-    IRNode* fDeclaringElement = nullptr;
+    raw_ptr<IRNode> fDeclaringElement = nullptr;
     ModifierFlags fModifierFlags;
     Position fModifiersPosition;
     VariableStorage fStorage;
@@ -187,7 +189,7 @@ public:
     std::string_view mangledName() const override;
 
 private:
-    InterfaceBlock* fInterfaceBlockElement = nullptr;
+    raw_ptr<InterfaceBlock> fInterfaceBlockElement = nullptr;
     Layout fLayout;
     std::string fMangledName;
 

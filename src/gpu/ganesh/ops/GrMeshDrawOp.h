@@ -6,6 +6,8 @@
  */
 
 #ifndef GrMeshDrawOp_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define GrMeshDrawOp_DEFINED
 
 #include "include/core/SkRefCnt.h"
@@ -81,8 +83,8 @@ protected:
                   int indicesPerRepetition, int repeatCount, int maxRepetitions);
 
     private:
-        void* fVertices = nullptr;
-        GrSimpleMesh* fMesh = nullptr;
+        raw_ptr<void> fVertices = nullptr;
+        raw_ptr<GrSimpleMesh> fMesh = nullptr;
         GrPrimitiveType fPrimitiveType;
     };
 

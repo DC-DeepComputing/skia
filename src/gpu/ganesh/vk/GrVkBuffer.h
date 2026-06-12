@@ -6,6 +6,8 @@
  */
 
 #ifndef GrVkBuffer_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define GrVkBuffer_DEFINED
 
 #include "include/core/SkRefCnt.h"
@@ -72,7 +74,7 @@ private:
     VkBuffer fBuffer;
     skgpu::VulkanAlloc fAlloc;
 
-    const GrVkDescriptorSet* fUniformDescriptorSet;
+    raw_ptr<const GrVkDescriptorSet> fUniformDescriptorSet;
 
     using INHERITED = GrGpuBuffer;
 };

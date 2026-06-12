@@ -9,6 +9,7 @@
 #ifndef SKFONTCONFIGINTERFACE_DIRECT_H_
 #define SKFONTCONFIGINTERFACE_DIRECT_H_
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/ports/SkFontConfigInterface.h"
 
 #include <fontconfig/fontconfig.h>
@@ -34,7 +35,7 @@ protected:
     virtual bool isAccessible(const char* filename);
 
 private:
-    FcConfig * const fFC;
+    raw_ptr<FcConfig> fFC;
     bool isValidPattern(FcPattern* pattern);
     FcPattern* MatchFont(FcFontSet* font_set, const char* post_config_family,
                          const SkString& family);

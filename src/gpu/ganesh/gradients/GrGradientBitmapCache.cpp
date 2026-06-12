@@ -6,6 +6,7 @@
  */
 #include "src/gpu/ganesh/gradients/GrGradientBitmapCache.h"
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkImageInfo.h"
@@ -26,10 +27,10 @@
 using namespace skia_private;
 
 struct GrGradientBitmapCache::Entry {
-    Entry*      fPrev;
-    Entry*      fNext;
+    raw_ptr<Entry> fPrev;
+    raw_ptr<Entry> fNext;
 
-    void*       fBuffer;
+    raw_ptr<void> fBuffer;
     size_t      fSize;
     SkBitmap    fBitmap;
 

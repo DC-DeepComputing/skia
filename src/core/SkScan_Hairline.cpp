@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
@@ -214,10 +215,10 @@ void SkScan::HairLineRgn(SkSpan<const SkPoint> src, const SkRegion* clip, SkBlit
 }
 
 struct DrawingParameters {
-    const SkRegion* clip;
-    const SkRect* insetClip;
-    const SkRect* outsetClip;
-    SkBlitter* blitter;
+    raw_ptr<const SkRegion> clip;
+    raw_ptr<const SkRect> insetClip;
+    raw_ptr<const SkRect> outsetClip;
+    raw_ptr<SkBlitter> blitter;
     SkScan::HairRgnProc lineproc;
 };
 

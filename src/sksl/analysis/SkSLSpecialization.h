@@ -6,6 +6,8 @@
  */
 
 #ifndef SKSL_SPECIALIZATION
+#include "src/partition_alloc/raw_ptr.h"
+
 #define SKSL_SPECIALIZATION
 
 #include "include/private/SkTArray.h"
@@ -50,7 +52,7 @@ using SpecializationMap = skia_private::THashMap<const FunctionDeclaration*, Spe
 struct SpecializedFunctionKey {
     struct Hash {
         size_t operator()(const SpecializedFunctionKey& entry) {
-            return SkGoodHash()(entry.fDeclaration) ^
+            return SkGoodHash()(entry.fDeclaration.get()) ^
                    SkGoodHash()(entry.fSpecializationIndex);
         }
     };
@@ -60,7 +62,7 @@ struct SpecializedFunctionKey {
                fSpecializationIndex == other.fSpecializationIndex;
     }
 
-    const FunctionDeclaration* fDeclaration = nullptr;
+    raw_ptr<const FunctionDeclaration> fDeclaration = nullptr;
     SpecializationIndex fSpecializationIndex = Analysis::kUnspecialized;
 };
 
@@ -68,7 +70,7 @@ struct SpecializedFunctionKey {
 struct SpecializedCallKey {
     struct Hash {
         size_t operator()(const SpecializedCallKey& entry) {
-            return SkGoodHash()(entry.fStablePointer) ^
+            return SkGoodHash()(entry.fStablePointer.get()) ^
                    SkGoodHash()(entry.fParentSpecializationIndex);
         }
     };
@@ -78,7 +80,7 @@ struct SpecializedCallKey {
                fParentSpecializationIndex == other.fParentSpecializationIndex;
     }
 
-    const FunctionCall* fStablePointer = nullptr;
+    raw_ptr<const FunctionCall> fStablePointer = nullptr;
     SpecializationIndex fParentSpecializationIndex = Analysis::kUnspecialized;
 };
 

@@ -21,6 +21,7 @@
 
 // bestXY is initialized by caller with basePt
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
@@ -112,8 +113,8 @@ struct SkOpRayHit {
         return fabs(fSlope.fX) < fabs(fSlope.fY) ? SkOpRayDir::kLeft : SkOpRayDir::kTop;
     }
 
-    SkOpRayHit* fNext;
-    SkOpSpan* fSpan;
+    raw_ptr<SkOpRayHit> fNext;
+    raw_ptr<SkOpSpan> fSpan;
     SkPoint fPt;
     double fT;
     SkDVector fSlope;

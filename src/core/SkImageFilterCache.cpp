@@ -7,6 +7,7 @@
 
 #include "src/core/SkImageFilterCache.h"
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/private/SkMutex.h"
 #include "include/private/SkOnce.h"
 #include "src/core/SkChecksum.h"
@@ -42,7 +43,7 @@ public:
 
         Key fKey;
         skif::FilterResult fImage;
-        const SkImageFilter* fFilter;
+        raw_ptr<const SkImageFilter> fFilter;
         static const Key& GetKey(const Value& v) {
             return v.fKey;
         }

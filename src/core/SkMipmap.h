@@ -6,6 +6,8 @@
  */
 
 #ifndef SkMipmap_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define SkMipmap_DEFINED
 
 #include "include/core/SkPixmap.h"
@@ -93,7 +95,7 @@ protected:
 
 private:
     sk_sp<SkColorSpace> fCS;
-    Level*              fLevels;    // managed by the baseclass, may be null due to onDataChanged.
+    raw_ptr<Level, AllowPtrArithmetic> fLevels;    // managed by the baseclass, may be null due to onDataChanged.
     int                 fCount;
 
     SkMipmap(void* malloc, size_t size);

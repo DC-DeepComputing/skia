@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 
+#include "src/partition_alloc/raw_ref.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkTArray.h"
@@ -53,7 +55,7 @@ public:
 
         // If the input variable has been written-to, then returning `input.a` isn't sufficient to
         // guarantee that alpha is preserved.
-        ProgramUsage::VariableCounts counts = fUsage.get(*fInputVar);
+        ProgramUsage::VariableCounts counts = fUsage->get(*fInputVar);
         if (counts.fWrite != 0) {
             return true;
         }
@@ -115,8 +117,8 @@ public:
     }
 
 private:
-    const ProgramUsage& fUsage;
-    const Variable* fInputVar = nullptr;
+    const raw_ref<const ProgramUsage> fUsage;
+    raw_ptr<const Variable> fInputVar = nullptr;
 
     using INHERITED = ProgramVisitor;
 };

@@ -6,6 +6,7 @@
  */
 #include "src/xml/SkXMLParser.h"
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
@@ -103,7 +104,7 @@ struct ParsingContext {
         fBufferedText.insert(fBufferedText.end(), txt, &txt[len]);
     }
 
-    SkXMLParser* fParser;
+    raw_ptr<SkXMLParser> fParser;
     SkAutoTCallVProc<std::remove_pointer_t<XML_Parser>, XML_ParserFree> fXMLParser;
 
 private:
