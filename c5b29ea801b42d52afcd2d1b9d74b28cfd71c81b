@@ -16,6 +16,24 @@
       "message": "LGTM modulo the error (are our namespaced functions not working appropriately?)",
       "revId": "c5b29ea801b42d52afcd2d1b9d74b28cfd71c81b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a841245_b5f0db74",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-06-12T13:11:07Z",
+      "side": 1,
+      "message": "Yeah I was just looking into that - apparently they\u0027ve [extended this](https://github.com/unicode-org/icu/blob/f0eec0b223ef8b2ac67c6cc6891ae4b7456587eb/icu4c/source/common/unicode/urename.h#L38) to disable symbol renaming with clang-tidy:\n\n```\n// Disable Renaming for Visual Studio\u0027s IntelliSense feature and for LLVM\u0027s Clang-Tidy tool, so that\n// \u0027Go-to-Definition\u0027 (F12) and \u0027include-cleaner\u0027 respectively will work.\n#if !(defined(_MSC_VER) \u0026\u0026 defined(__INTELLISENSE__)) \u0026\u0026 !defined(__clang_analyzer__)\n```\n\nI think I can work around it with some macros, but it makes me think that if ICU can decide to ignore the rename request we should not be calling the suffixed function in the first place.  @Julia do you remember why we\u0027re calling the `*_skia` functions directly, instead of using regular names and letting ICU work its rename magic transparently?",
+      "parentUuid": "a70d8f2b_d0ddb282",
+      "revId": "c5b29ea801b42d52afcd2d1b9d74b28cfd71c81b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
