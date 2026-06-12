@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkTFitsIn.h"
@@ -132,7 +133,7 @@ size_t sk_qread(FILE* file, void* buffer, size_t count, size_t offset) {
 
 struct SkOSFileIterData {
     SkOSFileIterData() : fDIR(nullptr) { }
-    DIR* fDIR;
+    raw_ptr<DIR> fDIR;
     SkString fPath, fSuffix;
 };
 static_assert(sizeof(SkOSFileIterData) <= SkOSFile::Iter::kStorageSize, "not_enough_space");

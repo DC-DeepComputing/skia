@@ -75,7 +75,7 @@ rust::Box<fontations_ffi::BridgeNormalizedCoords> make_normalized_coords(
     // Cast is safe because of static_assert matching the structs above.
     rust::Slice<const fontations_ffi::SkiaDesignCoordinate> coordinates(
             reinterpret_cast<const fontations_ffi::SkiaDesignCoordinate*>(
-                    variationPosition.coordinates),
+                    variationPosition.coordinates.get()),
             variationPosition.coordinateCount);
     return resolve_into_normalized_coords(bridgeFontRef, coordinates);
 }

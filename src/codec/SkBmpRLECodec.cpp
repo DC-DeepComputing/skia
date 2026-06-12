@@ -7,6 +7,7 @@
 
 #include "src/codec/SkBmpRLECodec.h"
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkColorType.h"
@@ -560,7 +561,7 @@ private:
     }
 
     // Unowned pointer. fCodec will delete this class in its destructor.
-    SkBmpRLECodec* fCodec;
+    raw_ptr<SkBmpRLECodec> fCodec;
 };
 
 SkSampler* SkBmpRLECodec::getSampler(bool createIfNecessary) {

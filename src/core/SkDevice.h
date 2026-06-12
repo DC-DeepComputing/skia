@@ -6,6 +6,8 @@
  */
 
 #ifndef SkDevice_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define SkDevice_DEFINED
 
 #include "include/core/SkBlender.h"  // IWYU pragma: keep
@@ -80,7 +82,7 @@ struct SkStrikeDeviceInfo {
     const SkSurfaceProps fSurfaceProps;
     const SkScalerContextFlags fScalerContextFlags;
     // This is a pointer so this can be compiled without SK_GPU_SUPPORT.
-    const sktext::gpu::SubRunControl* const fSubRunControl;
+    const raw_ptr<const sktext::gpu::SubRunControl> fSubRunControl;
 };
 
 /**
@@ -306,7 +308,7 @@ public:
 
         const SkImageInfo        fInfo;
         const SkPixelGeometry    fPixelGeometry;
-        SkRasterHandleAllocator* fAllocator = nullptr;
+        raw_ptr<SkRasterHandleAllocator> fAllocator = nullptr;
     };
 
     /**
@@ -648,7 +650,7 @@ public:
     }
 
 private:
-    SkDevice* fDevice;
+    raw_ptr<SkDevice> fDevice;
     const SkM44   fPrevLocalToDevice;
 };
 

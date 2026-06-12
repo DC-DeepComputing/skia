@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkPathTypes.h"
@@ -148,7 +149,7 @@ public:
     // so we can accelerate blitRect and others. But sometimes we want to return
     // the absolute real blitter (e.g., when we fall back to the old code path).
     SkBlitter* getRealBlitter(bool forceRealBlitter) override {
-        return forceRealBlitter ? fRealBlitter : this;
+        return forceRealBlitter ? fRealBlitter.get() : this;
     }
 
     // Virtual function is slow. So don't use this. Directly add alpha to the mask instead.
@@ -195,13 +196,13 @@ private:
     static const int kMAX_WIDTH   = 32;
     static const int kMAX_STORAGE = 1024;
 
-    SkBlitter* fRealBlitter;
+    raw_ptr<SkBlitter> fRealBlitter;
     SkMaskBuilder fMask;
     SkIRect    fClipRect;
     // we add 2 because we can write 1 extra byte at either end due to precision error
     uint32_t fStorage[(kMAX_STORAGE >> 2) + 2];
 
-    uint8_t* fRow;
+    raw_ptr<uint8_t> fRow;
     int      fY;
 };
 
@@ -303,7 +304,7 @@ public:
     }
 
 protected:
-    SkBlitter* fRealBlitter;
+    raw_ptr<SkBlitter> fRealBlitter;
 
     int fCurrY;  // Current y coordinate.
     int fWidth;  // Widest row of region to be blitted
@@ -315,7 +316,7 @@ protected:
     // ever be updated in advanceRuns(), and fRuns should always point to
     // a valid SkAlphaRuns...
     int         fRunsToBuffer;
-    void*       fRunsBuffer;
+    raw_ptr<void> fRunsBuffer;
     int         fCurrentRun;
     SkAlphaRuns fRuns;
 
@@ -332,9 +333,9 @@ protected:
     void advanceRuns() {
         const size_t kRunsSz = this->getRunsSz();
         fCurrentRun          = (fCurrentRun + 1) % fRunsToBuffer;
-        fRuns.fRuns          = reinterpret_cast<int16_t*>(reinterpret_cast<uint8_t*>(fRunsBuffer) +
+        fRuns.fRuns          = reinterpret_cast<int16_t*>(reinterpret_cast<uint8_t*>(fRunsBuffer.get()) +
                                                  fCurrentRun * kRunsSz);
-        fRuns.fAlpha         = reinterpret_cast<SkAlpha*>(fRuns.fRuns + fWidth + 1);
+        fRuns.fAlpha         = reinterpret_cast<SkAlpha*>(fRuns.fRuns.get() + fWidth + 1);
         fRuns.reset(fWidth);
     }
 

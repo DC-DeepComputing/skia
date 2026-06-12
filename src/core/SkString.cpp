@@ -7,6 +7,7 @@
 
 #include "include/core/SkString.h"
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/private/SkDebug.h"
 #include "include/private/SkFloatingPoint.h"
 #include "include/private/SkMalloc.h"
@@ -27,7 +28,7 @@
 static const size_t kBufferSize = 1024;
 
 struct StringBuffer {
-    char*  fText;
+    raw_ptr<char> fText;
     int    fLength;
 };
 

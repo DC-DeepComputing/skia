@@ -7,6 +7,7 @@
 
 #include "src/gpu/graphite/TextureUtils.h"
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColorSpace.h"
@@ -789,7 +790,7 @@ public:
     }
 
 private:
-    skgpu::graphite::Recorder* fRecorder;
+    raw_ptr<skgpu::graphite::Recorder> fRecorder;
 };
 
 } // anonymous namespace

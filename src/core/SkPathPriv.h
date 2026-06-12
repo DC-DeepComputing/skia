@@ -6,6 +6,8 @@
  */
 
 #ifndef SkPathPriv_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define SkPathPriv_DEFINED
 
 #include "include/core/SkArc.h"
@@ -201,10 +203,10 @@ public:
         SkPath::RangeIter begin() { return {fVerbsBegin, fPoints, fWeights}; }
         SkPath::RangeIter end() { return {fVerbsEnd, nullptr, nullptr}; }
     private:
-        const SkPathVerb* fVerbsBegin;
-        const SkPathVerb* fVerbsEnd;
-        const SkPoint* fPoints;
-        const SkScalar* fWeights;
+        raw_ptr<const SkPathVerb> fVerbsBegin;
+        raw_ptr<const SkPathVerb> fVerbsEnd;
+        raw_ptr<const SkPoint> fPoints;
+        raw_ptr<const SkScalar> fWeights;
     };
 
     // returns Empty() if there are no points
@@ -438,11 +440,11 @@ public:
 // Roughly the same as SkPath::Iter(path, true), but does not return moves or closes
 //
 class SkPathEdgeIter {
-    const SkPathVerb* fVerbs;
-    const SkPathVerb* fVerbsStop;
-    const SkPoint*  fPts;
-    const SkPoint*  fMoveToPtr;
-    const SkScalar* fConicWeights;
+    raw_ptr<const SkPathVerb, AllowPtrArithmetic> fVerbs;
+    raw_ptr<const SkPathVerb, AllowPtrArithmetic> fVerbsStop;
+    raw_ptr<const SkPoint, AllowPtrArithmetic> fPts;
+    raw_ptr<const SkPoint, AllowPtrArithmetic> fMoveToPtr;
+    raw_ptr<const SkScalar, AllowPtrArithmetic> fConicWeights;
     SkPoint         fScratch[2];    // for auto-close lines
     bool            fNeedsCloseLine;
     bool            fNextIsNewContour;
@@ -471,7 +473,7 @@ public:
 
     // todo: return as optional? fPts become span?
     struct Result {
-        const SkPoint*  fPts;   // points for the segment, or null if done
+        raw_ptr<const SkPoint, AllowPtrArithmetic> fPts;   // points for the segment, or null if done
         Edge            fEdge;
         bool            fIsNewContour;
 
