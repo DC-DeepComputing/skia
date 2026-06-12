@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf9b6cd5_0529e2cd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2026-06-12T07:50:19Z",
+      "side": 1,
+      "message": "LGTM, the `*.ttf` test fonts do produce the expected formats.",
+      "revId": "4527c1e18bed5d71fc8434b3d9744c0de89ba5d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
