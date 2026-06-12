@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6efc1431_478c3ad2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-12T16:35:33Z",
+      "side": 1,
+      "message": "added a comment about my understanding of the cl. let me know if you want me to elaborate or rewrite it.",
+      "parentUuid": "72be6ed1_52fc57bb",
+      "range": {
+        "startLine": 12,
+        "startChar": 4,
+        "endLine": 12,
+        "endChar": 9
+      },
+      "revId": "68b8ba313490a45140bc9982f8389271d135030c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fc1e16ef_771533c0",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-06-12T15:43:00Z",
       "side": 1,
       "message": "I think we can remove the SkOnce now that we have the mutex. With the mutex held, we can see if we need to initialize, do that, and then return a duplicate of the stream.",
+      "range": {
+        "startLine": 609,
+        "startChar": 4,
+        "endLine": 609,
+        "endChar": 15
+      },
+      "revId": "68b8ba313490a45140bc9982f8389271d135030c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba3866bd_8313bdd9",
+        "filename": "src/ports/SkTypeface_mac_ct.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 609,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-12T16:35:33Z",
+      "side": 1,
+      "message": "remvoed skonce",
+      "parentUuid": "fc1e16ef_771533c0",
       "range": {
         "startLine": 609,
         "startChar": 4,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd3256bc_f00e5f52",
+        "filename": "tests/TypefaceMacTest.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-12T16:35:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d70467d4_d91b155d",
+      "range": {
+        "startLine": 202,
+        "startChar": 0,
+        "endLine": 202,
+        "endChar": 8
+      },
+      "revId": "68b8ba313490a45140bc9982f8389271d135030c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "58399c6f_2f3b1d56",
@@ -83,6 +155,30 @@
       "writtenOn": "2026-06-12T15:43:00Z",
       "side": 1,
       "message": "Could you add a go/paste/ link to the bug that has the logs from the repro case?",
+      "range": {
+        "startLine": 207,
+        "startChar": 4,
+        "endLine": 207,
+        "endChar": 12
+      },
+      "revId": "68b8ba313490a45140bc9982f8389271d135030c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b56837f2_1a46ced3",
+        "filename": "tests/TypefaceMacTest.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-12T16:35:33Z",
+      "side": 1,
+      "message": "Do you mean like this https://paste.googleplex.com/6171387046789120? I also added a link to the original bug",
+      "parentUuid": "58399c6f_2f3b1d56",
       "range": {
         "startLine": 207,
         "startChar": 4,
