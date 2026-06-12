@@ -8,13 +8,21 @@
 #include "include/core/SkFontMgr.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypeface.h"
+#include "include/ports/SkFontMgr_mac_ct.h"
 #include "include/ports/SkTypeface_mac.h"
 #include "src/core/SkZip.h"
 #include "src/utils/SkFloatUtils.h"
 #include "tests/Test.h"
+#include "tools/fonts/TestFontMgr.h"
+#include "tools/fonts/TestTypeface.h"
+#ifdef SK_BUILD_FOR_MAC
+#import <ApplicationServices/ApplicationServices.h>
+#endif
+#include "include/ports/SkFontMgr_mac_ct.h"
 
 #include <stdarg.h>
 #include <string>
+#include <thread>
 #include <vector>
 
 static void SkMaybeDebugf(const char* fmt, ...) SK_PRINTF_LIKE(1, 2);
