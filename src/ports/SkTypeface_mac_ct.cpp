@@ -605,112 +605,114 @@ static SK_SFNT_ULONG get_font_type_tag(CTFontRef ctFont) {
 std::unique_ptr<SkStreamAsset> SkTypeface_Mac::onOpenStream(int* ttcIndex) const {
     *ttcIndex = 0;
 
+    SkAutoSharedMutexExclusive sm(fStreamMutex);
     fInitStream([this]{
-    if (fStream) {
-        return;
-    }
+        if (fStream) {
+            return;
+        }
 
-    SK_SFNT_ULONG fontType = get_font_type_tag(fFontRef.get());
+        SK_SFNT_ULONG fontType = get_font_type_tag(fFontRef.get());
 
-    // get table tags
-    int numTables = this->countTables();
-    SkTDArray<SkFontTableTag> tableTags;
-    tableTags.resize(numTables);
-    this->readTableTags(tableTags);
+        // get table tags
+        int numTables = this->countTables();
+        SkTDArray<SkFontTableTag> tableTags;
+        tableTags.resize(numTables);
+        this->readTableTags(tableTags);
 
-    // CT seems to be unreliable in being able to obtain the type,
-    // even if all we want is the first four bytes of the font resource.
-    // Just the presence of the FontForge 'FFTM' table seems to throw it off.
-    if (fontType == 0) {
-        fontType = SkSFNTHeader::fontType_WindowsTrueType::TAG;
+        // CT seems to be unreliable in being able to obtain the type,
+        // even if all we want is the first four bytes of the font resource.
+        // Just the presence of the FontForge 'FFTM' table seems to throw it off.
+        if (fontType == 0) {
+            fontType = SkSFNTHeader::fontType_WindowsTrueType::TAG;
 
-        // see https://skbug.com/40038881#c7
-        bool couldBeCFF = false;
-        constexpr SkFontTableTag CFFTag = SkSetFourByteTag('C', 'F', 'F', ' ');
-        constexpr SkFontTableTag CFF2Tag = SkSetFourByteTag('C', 'F', 'F', '2');
-        for (int tableIndex = 0; tableIndex < numTables; ++tableIndex) {
-            if (CFFTag == tableTags[tableIndex] || CFF2Tag == tableTags[tableIndex]) {
-                couldBeCFF = true;
+            // see https://skbug.com/40038881#c7
+            bool couldBeCFF = false;
+            constexpr SkFontTableTag CFFTag = SkSetFourByteTag('C', 'F', 'F', ' ');
+            constexpr SkFontTableTag CFF2Tag = SkSetFourByteTag('C', 'F', 'F', '2');
+            for (int tableIndex = 0; tableIndex < numTables; ++tableIndex) {
+                if (CFFTag == tableTags[tableIndex] || CFF2Tag == tableTags[tableIndex]) {
+                    couldBeCFF = true;
+                }
+            }
+            if (couldBeCFF) {
+                fontType = SkSFNTHeader::fontType_OpenTypeCFF::TAG;
             }
         }
-        if (couldBeCFF) {
-            fontType = SkSFNTHeader::fontType_OpenTypeCFF::TAG;
-        }
-    }
 
-    // Sometimes CoreGraphics incorrectly thinks a font is kCTFontFormatPostScript.
-    // It is exceedingly unlikely that this is the case, so double check
-    // (see https://crbug.com/809763 ).
-    if (fontType == SkSFNTHeader::fontType_PostScript::TAG) {
-        // see if there are any required 'typ1' tables (see Adobe Technical Note #5180)
-        bool couldBeTyp1 = false;
-        constexpr SkFontTableTag TYPE1Tag = SkSetFourByteTag('T', 'Y', 'P', '1');
-        constexpr SkFontTableTag CIDTag = SkSetFourByteTag('C', 'I', 'D', ' ');
-        for (int tableIndex = 0; tableIndex < numTables; ++tableIndex) {
-            if (TYPE1Tag == tableTags[tableIndex] || CIDTag == tableTags[tableIndex]) {
-                couldBeTyp1 = true;
+        // Sometimes CoreGraphics incorrectly thinks a font is kCTFontFormatPostScript.
+        // It is exceedingly unlikely that this is the case, so double check
+        // (see https://crbug.com/809763 ).
+        if (fontType == SkSFNTHeader::fontType_PostScript::TAG) {
+            // see if there are any required 'typ1' tables (see Adobe Technical Note #5180)
+            bool couldBeTyp1 = false;
+            constexpr SkFontTableTag TYPE1Tag = SkSetFourByteTag('T', 'Y', 'P', '1');
+            constexpr SkFontTableTag CIDTag = SkSetFourByteTag('C', 'I', 'D', ' ');
+            for (int tableIndex = 0; tableIndex < numTables; ++tableIndex) {
+                if (TYPE1Tag == tableTags[tableIndex] || CIDTag == tableTags[tableIndex]) {
+                    couldBeTyp1 = true;
+                }
+            }
+            if (!couldBeTyp1) {
+                fontType = SkSFNTHeader::fontType_OpenTypeCFF::TAG;
             }
         }
-        if (!couldBeTyp1) {
-            fontType = SkSFNTHeader::fontType_OpenTypeCFF::TAG;
+
+        // get the table sizes and accumulate the total size of the font
+        SkTDArray<size_t> tableSizes;
+        size_t totalSize = sizeof(SkSFNTHeader) + sizeof(SkSFNTHeader::TableDirectoryEntry) * numTables;
+        for (int tableIndex = 0; tableIndex < numTables; ++tableIndex) {
+            size_t tableSize = this->getTableSize(tableTags[tableIndex]);
+            totalSize += (tableSize + 3) & ~3;
+            *tableSizes.append() = tableSize;
         }
-    }
 
-    // get the table sizes and accumulate the total size of the font
-    SkTDArray<size_t> tableSizes;
-    size_t totalSize = sizeof(SkSFNTHeader) + sizeof(SkSFNTHeader::TableDirectoryEntry) * numTables;
-    for (int tableIndex = 0; tableIndex < numTables; ++tableIndex) {
-        size_t tableSize = this->getTableSize(tableTags[tableIndex]);
-        totalSize += (tableSize + 3) & ~3;
-        *tableSizes.append() = tableSize;
-    }
+        // reserve memory for stream, and zero it (tables must be zero padded)
+        sk_sp<SkData> streamData = SkData::MakeZeroInitialized(totalSize);
+        char* dataStart = (char*)streamData->writable_data();
+        char* dataPtr = dataStart;
 
-    // reserve memory for stream, and zero it (tables must be zero padded)
-    sk_sp<SkData> streamData = SkData::MakeZeroInitialized(totalSize);
-    char* dataStart = (char*)streamData->writable_data();
-    char* dataPtr = dataStart;
+        // compute font header entries
+        uint16_t entrySelector = 0;
+        uint16_t searchRange = 1;
+        while (searchRange < numTables >> 1) {
+            entrySelector++;
+            searchRange <<= 1;
+        }
+        searchRange <<= 4;
+        uint16_t rangeShift = (numTables << 4) - searchRange;
 
-    // compute font header entries
-    uint16_t entrySelector = 0;
-    uint16_t searchRange = 1;
-    while (searchRange < numTables >> 1) {
-        entrySelector++;
-        searchRange <<= 1;
-    }
-    searchRange <<= 4;
-    uint16_t rangeShift = (numTables << 4) - searchRange;
+        // write font header
+        SkSFNTHeader* header = (SkSFNTHeader*)dataPtr;
+        header->fontType = fontType;
+        header->numTables = SkEndian_SwapBE16(numTables);
+        header->searchRange = SkEndian_SwapBE16(searchRange);
+        header->entrySelector = SkEndian_SwapBE16(entrySelector);
+        header->rangeShift = SkEndian_SwapBE16(rangeShift);
+        dataPtr += sizeof(SkSFNTHeader);
 
-    // write font header
-    SkSFNTHeader* header = (SkSFNTHeader*)dataPtr;
-    header->fontType = fontType;
-    header->numTables = SkEndian_SwapBE16(numTables);
-    header->searchRange = SkEndian_SwapBE16(searchRange);
-    header->entrySelector = SkEndian_SwapBE16(entrySelector);
-    header->rangeShift = SkEndian_SwapBE16(rangeShift);
-    dataPtr += sizeof(SkSFNTHeader);
+        // write tables
+        SkSFNTHeader::TableDirectoryEntry* entry = (SkSFNTHeader::TableDirectoryEntry*)dataPtr;
+        dataPtr += sizeof(SkSFNTHeader::TableDirectoryEntry) * numTables;
+        for (int tableIndex = 0; tableIndex < numTables; ++tableIndex) {
+            size_t tableSize = tableSizes[tableIndex];
+            this->getTableData(tableTags[tableIndex], 0, tableSize, dataPtr);
+            entry->tag = SkEndian_SwapBE32(tableTags[tableIndex]);
+            entry->checksum = SkEndian_SwapBE32(SkOTUtils::CalcTableChecksum((SK_OT_ULONG*)dataPtr,
+                                                                            tableSize));
+            entry->offset = SkEndian_SwapBE32(SkToU32(dataPtr - dataStart));
+            entry->logicalLength = SkEndian_SwapBE32(SkToU32(tableSize));
 
-    // write tables
-    SkSFNTHeader::TableDirectoryEntry* entry = (SkSFNTHeader::TableDirectoryEntry*)dataPtr;
-    dataPtr += sizeof(SkSFNTHeader::TableDirectoryEntry) * numTables;
-    for (int tableIndex = 0; tableIndex < numTables; ++tableIndex) {
-        size_t tableSize = tableSizes[tableIndex];
-        this->getTableData(tableTags[tableIndex], 0, tableSize, dataPtr);
-        entry->tag = SkEndian_SwapBE32(tableTags[tableIndex]);
-        entry->checksum = SkEndian_SwapBE32(SkOTUtils::CalcTableChecksum((SK_OT_ULONG*)dataPtr,
-                                                                         tableSize));
-        entry->offset = SkEndian_SwapBE32(SkToU32(dataPtr - dataStart));
-        entry->logicalLength = SkEndian_SwapBE32(SkToU32(tableSize));
-
-        dataPtr += (tableSize + 3) & ~3;
-        ++entry;
-    }
-    fStream = std::make_unique<SkMemoryStream>(std::move(streamData));
+            dataPtr += (tableSize + 3) & ~3;
+            ++entry;
+        }
+        fStream = std::make_unique<SkMemoryStream>(std::move(streamData));
     });
     return fStream->duplicate();
 }
 
 std::unique_ptr<SkStreamAsset> SkTypeface_Mac::onOpenExistingStream(int* ttcIndex) const {
     *ttcIndex = 0;
+    SkAutoSharedMutexShared sm(fStreamMutex);
     return fStream ? fStream->duplicate() : nullptr;
 }
 
@@ -1221,7 +1223,7 @@ sk_sp<SkTypeface> SkTypeface_Mac::onMakeClone(const SkFontArguments& args) const
     if (!ctVariant) {
         return nullptr;
     }
-
+    SkAutoSharedMutexShared sm(fStreamMutex);
     return SkTypeface_Mac::Make(std::move(ctVariant), ctVariation.opsz,
                                 fStream ? fStream->duplicate() : nullptr);
 }

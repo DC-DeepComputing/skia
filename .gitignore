@@ -74,3 +74,4 @@ bazel/user/buildrc
 
 # Coding Agents put workspace state here - we don't want to check that in.
 .gemini
+.cipd/
