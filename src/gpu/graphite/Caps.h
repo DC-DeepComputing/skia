@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 #ifndef skgpu_graphite_Caps_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define skgpu_graphite_Caps_DEFINED
 
 #include "include/core/SkColorType.h"
@@ -485,7 +487,7 @@ protected:
      * If present, use this object to report shader compilation failures. If not, report failures
      * via SkDebugf and assert.
      */
-    ShaderErrorHandler* fShaderErrorHandler = nullptr;
+    raw_ptr<ShaderErrorHandler> fShaderErrorHandler = nullptr;
 
 #if defined(GPU_TEST_UTILS)
     std::string fDeviceName;

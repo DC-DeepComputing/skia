@@ -7,6 +7,7 @@
 
 #include "include/core/SkCanvas.h"
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkBlendMode.h"
@@ -246,7 +247,7 @@ public:
     }
 
 private:
-    SkCanvas* fCanvas;
+    raw_ptr<SkCanvas> fCanvas;
 
     AutoUpdateQRBounds(AutoUpdateQRBounds&&) = delete;
     AutoUpdateQRBounds(const AutoUpdateQRBounds&) = delete;
@@ -2436,8 +2437,8 @@ public:
     sktext::GlyphRunBuilder* operator->() { return fGlyphRunBuilder; }
 
 private:
-    SkCanvas* fCanvas;
-    sktext::GlyphRunBuilder* fGlyphRunBuilder;
+    raw_ptr<SkCanvas> fCanvas;
+    raw_ptr<sktext::GlyphRunBuilder> fGlyphRunBuilder;
 };
 
 void SkCanvas::onDrawTextBlob(const SkTextBlob* blob, SkScalar x, SkScalar y,

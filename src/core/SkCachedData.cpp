@@ -6,6 +6,7 @@
  */
 #include "src/core/SkCachedData.h"
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/private/SkMalloc.h"
 #include "include/private/chromium/SkDiscardableMemory.h"
 
@@ -57,7 +58,7 @@ public:
     SkCachedData* operator->() { return fCD; }
 
 private:
-    SkCachedData* fCD;
+    raw_ptr<SkCachedData> fCD;
 };
 
 void SkCachedData::internalRef(bool fromCache) const {

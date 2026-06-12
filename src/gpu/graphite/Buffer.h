@@ -6,6 +6,8 @@
  */
 
 #ifndef skgpu_graphite_Buffer_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define skgpu_graphite_Buffer_DEFINED
 
 #include "include/gpu/graphite/GraphiteTypes.h"
@@ -58,7 +60,7 @@ protected:
             , fSize(size)
             , fIsProtected(isProtected) {}
 
-    void* fMapPtr = nullptr;
+    raw_ptr<void> fMapPtr = nullptr;
 
 private:
     virtual void onMap() = 0;

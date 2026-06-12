@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkPathTypes.h"
@@ -354,7 +355,7 @@ public:
     }
 
 private:
-    SkBlitter*  fBlitter;
+    raw_ptr<SkBlitter> fBlitter;
     int         fFirstX, fLastX, fPrevX;
 };
 

@@ -7,6 +7,8 @@
 
 #include "src/core/SkAAClip.h"
 
+#include "src/partition_alloc/raw_ref.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkClipOp.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkRegion.h"
@@ -33,13 +35,13 @@ namespace {
 class AutoAAClipValidate {
 public:
     AutoAAClipValidate(const SkAAClip& clip) : fClip(clip) {
-        fClip.validate();
+        fClip->validate();
     }
     ~AutoAAClipValidate() {
-        fClip.validate();
+        fClip->validate();
     }
 private:
-    const SkAAClip& fClip;
+    const raw_ref<const SkAAClip> fClip;
 };
 
 #ifdef SK_DEBUG
@@ -115,7 +117,7 @@ public:
     }
 
 private:
-    const uint8_t*  fRow;
+    raw_ptr<const uint8_t, AllowPtrArithmetic> fRow;
     int             fLeft;
     int             fRight;
     int             fBoundsRight;
@@ -160,9 +162,9 @@ public:
     }
 
 private:
-    const YOffset* fCurrYOff = nullptr;
-    const YOffset* fStopYOff = nullptr;
-    const uint8_t* fData = nullptr;
+    raw_ptr<const YOffset> fCurrYOff = nullptr;
+    raw_ptr<const YOffset> fStopYOff = nullptr;
+    raw_ptr<const uint8_t, AllowPtrArithmetic> fData = nullptr;
 
     int fTop = kMaxInt32;
     int fBottom = kMaxInt32;
@@ -251,10 +253,10 @@ class SkAAClip::Builder {
     struct Row {
         int fY;
         int fWidth;
-        SkTDArray<uint8_t>* fData;
+        raw_ptr<SkTDArray<uint8_t>> fData;
     };
     SkTDArray<Row>  fRows;
-    Row* fCurrRow;
+    raw_ptr<Row> fCurrRow;
     int fPrevY;
     int fWidth;
     int fMinY;
@@ -806,7 +808,7 @@ public:
     }
 
 private:
-    Builder* fBuilder;
+    raw_ptr<Builder> fBuilder;
     int      fLeft; // cache of builder's bounds' left edge
     int      fRight;
     int      fMinY;

@@ -6,6 +6,7 @@
  */
 #include "src/gpu/graphite/ClipAtlasManager.h"
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkClipOp.h"
 #include "include/core/SkColorType.h"
@@ -127,7 +128,7 @@ sk_sp<TextureProxy> ClipAtlasManager::findOrCreateEntry(uint32_t stackRecordID,
                                   /*includeBounds=*/true, &keyBounds, &usesPathKey);
 
     const struct ClipDrawContext {
-        const ClipStack::ElementList* fElementList;
+        raw_ptr<const ClipStack::ElementList> fElementList;
         SkIRect fMaskDeviceBounds;
     } context = {elementList, maskDeviceBounds};
     sk_sp<TextureProxy> proxy = fRecorder->priv().proxyCache()->findOrCreateCachedProxy(

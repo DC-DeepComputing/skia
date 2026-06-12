@@ -1,4 +1,6 @@
 /*
+#include "src/partition_alloc/raw_ptr.h"
+
  * Copyright 2011 Google Inc.
  *
  * Use of this source code is governed by a BSD-style license that can be
@@ -78,7 +80,7 @@ public:
     }
 
 private:
-    SkSharedMutex* fLock;
+    raw_ptr<SkSharedMutex> fLock;
 };
 class SK_SCOPED_CAPABILITY Shared {
 public:
@@ -99,7 +101,7 @@ public:
     }
 
 private:
-    SkSharedMutex* fLock;
+    raw_ptr<SkSharedMutex> fLock;
 };
 
 static bool isLCD(const SkScalerContextRec& rec) {
@@ -1705,7 +1707,7 @@ bool SkScalerContext_DW::generateSVGMetrics(const SkGlyph& glyph, SkRect* bounds
 namespace {
 struct Context {
     SkTScopedComPtr<IDWriteFontFace4> fontFace4;
-    void* glyphDataContext;
+    raw_ptr<void> glyphDataContext;
     Context(IDWriteFontFace4* face4, void* context)
         : fontFace4(SkRefComPtr(face4))
         , glyphDataContext(context)
@@ -2454,7 +2456,7 @@ SkScalerContext_DW::generatePath(const SkGlyph& glyph) {
 
 sk_sp<SkDrawable> SkScalerContext_DW::generateDrawable(const SkGlyph& glyph) {
     struct GlyphDrawable : public SkDrawable {
-        SkScalerContext_DW* fSelf;
+        raw_ptr<SkScalerContext_DW> fSelf;
         SkGlyph fGlyph;
         GlyphDrawable(SkScalerContext_DW* self, const SkGlyph& glyph) : fSelf(self), fGlyph(glyph){}
         SkRect onGetBounds() override { return fGlyph.rect();  }

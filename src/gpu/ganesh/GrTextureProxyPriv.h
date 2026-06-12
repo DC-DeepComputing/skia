@@ -6,6 +6,8 @@
  */
 
 #ifndef GrTextureProxyPriv_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define GrTextureProxyPriv_DEFINED
 
 #include "include/private/SkTo.h"
@@ -39,7 +41,7 @@ private:
     const GrTextureProxyPriv* operator&() const;
     GrTextureProxyPriv* operator&();
 
-    GrTextureProxy* fTextureProxy;
+    raw_ptr<GrTextureProxy> fTextureProxy;
 
     friend class GrTextureProxy;  // to construct/copy this type.
 };

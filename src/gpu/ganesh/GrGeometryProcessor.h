@@ -5,7 +5,11 @@
  * found in the LICENSE file.
  */
 
+#include "src/partition_alloc/raw_ref.h"
+
 #ifndef GrGeometryProcessor_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define GrGeometryProcessor_DEFINED
 
 #include "include/core/SkMatrix.h"
@@ -161,7 +165,7 @@ public:
         private:
             void skipUninitialized();
 
-            const Attribute* fCurr           = nullptr;
+            raw_ptr<const Attribute, AllowPtrArithmetic> fCurr           = nullptr;
             int              fRemaining      = 0;
             size_t           fImplicitOffset = 0;
         };
@@ -182,7 +186,7 @@ public:
         void addToKey(skgpu::KeyBuilder* b) const;
 
     private:
-        const Attribute* fAttributes = nullptr;
+        raw_ptr<const Attribute, AllowPtrArithmetic> fAttributes = nullptr;
         int              fRawCount = 0;
         int              fCount = 0;
         size_t           fStride = 0;
@@ -303,15 +307,15 @@ public:
                 , fOutputColor(outputColor)
                 , fOutputCoverage(outputCoverage)
                 , fTexSamplers(texSamplers) {}
-        GrGLSLVertexBuilder* fVertBuilder;
-        GrGLSLFPFragmentBuilder* fFragBuilder;
-        GrGLSLVaryingHandler* fVaryingHandler;
-        GrGLSLUniformHandler* fUniformHandler;
-        const GrShaderCaps* fShaderCaps;
-        const GrGeometryProcessor& fGeomProc;
+        raw_ptr<GrGLSLVertexBuilder> fVertBuilder;
+        raw_ptr<GrGLSLFPFragmentBuilder> fFragBuilder;
+        raw_ptr<GrGLSLVaryingHandler> fVaryingHandler;
+        raw_ptr<GrGLSLUniformHandler> fUniformHandler;
+        raw_ptr<const GrShaderCaps> fShaderCaps;
+        const raw_ref<const GrGeometryProcessor> fGeomProc;
         const char* fOutputColor;
         const char* fOutputCoverage;
-        const SamplerHandle* fTexSamplers;
+        raw_ptr<const SamplerHandle, AllowPtrArithmetic> fTexSamplers;
     };
 
     /**

@@ -7,6 +7,7 @@
 
 #include "src/gpu/ganesh/vk/GrVkTexture.h"
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkSize.h"
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/MutableTextureState.h"
@@ -185,8 +186,8 @@ struct GrVkTexture::DescriptorCacheEntry {
         }
     }
 
-    const GrVkDescriptorSet* fDescriptorSet;
-    GrVkGpu* fGpu;
+    raw_ptr<const GrVkDescriptorSet> fDescriptorSet;
+    raw_ptr<GrVkGpu> fGpu;
 };
 
 void GrVkTexture::onAbandon() {

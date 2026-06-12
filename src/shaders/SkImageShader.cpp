@@ -7,6 +7,7 @@
 
 #include "src/shaders/SkImageShader.h"
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkBlendMode.h"
@@ -407,10 +408,10 @@ namespace {
 struct MipLevelHelper {
     SkPixmap pm;
     SkMatrix inv;
-    SkRasterPipelineContexts::GatherCtx* gather;
-    SkRasterPipelineContexts::TileCtx* limitX;
-    SkRasterPipelineContexts::TileCtx* limitY;
-    SkRasterPipelineContexts::DecalTileCtx* decalCtx = nullptr;
+    raw_ptr<SkRasterPipelineContexts::GatherCtx> gather;
+    raw_ptr<SkRasterPipelineContexts::TileCtx> limitX;
+    raw_ptr<SkRasterPipelineContexts::TileCtx> limitY;
+    raw_ptr<SkRasterPipelineContexts::DecalTileCtx> decalCtx = nullptr;
 
     void allocAndInit(SkArenaAlloc* alloc,
                       const SkSamplingOptions& sampling,
