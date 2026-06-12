@@ -18,7 +18,14 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkTypeface.h"
+<<<<<<< HEAD   (9f330f1704305686dafa9eeef11de77caa5314b1 [graphite] Use stable collection for static bindings)
 #include "include/private/base/SkOnce.h"
+||||||| BASE   (fc46d066b5b61503e660c9a25a8689f094ee9b04 Move files from src/base to src/core)
+#include "include/private/SkOnce.h"
+=======
+#include "include/private/SkOnce.h"
+#include "src/base/SkSharedMutex.h"
+>>>>>>> CHANGE (ba3ee9b265f06ed1f16e4d7402d29ad7ac583e7a Resolved a Data Race on fStream in SkTypeface_Mac)
 #include "src/utils/mac/SkUniqueCFRef.h"
 
 #ifdef SK_BUILD_FOR_MAC
@@ -129,8 +136,8 @@ protected:
 private:
     mutable std::unique_ptr<SkStreamAsset> fStream;
     mutable SkUniqueCFRef<CFArrayRef> fVariationAxes;
+    mutable SkSharedMutex fStreamMutex;
     bool fIsFromStream;
-    mutable SkOnce fInitStream;
     mutable SkOnce fInitVariationAxes;
 
     using INHERITED = SkTypeface;
