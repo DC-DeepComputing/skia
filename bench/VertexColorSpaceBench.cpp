@@ -62,7 +62,7 @@ public:
 
         private:
             void onEmitCode(EmitArgs& args, GrGPArgs* gpArgs) override {
-                const GP& gp = args.fGeomProc.cast<GP>();
+                const GP& gp = args.fGeomProc->cast<GP>();
                 GrGLSLVertexBuilder* vertBuilder = args.fVertBuilder;
                 GrGLSLFPFragmentBuilder* fragBuilder = args.fFragBuilder;
                 GrGLSLVaryingHandler* varyingHandler = args.fVaryingHandler;
