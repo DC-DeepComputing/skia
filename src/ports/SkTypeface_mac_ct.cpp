@@ -647,6 +647,13 @@ std::unique_ptr<SkStreamAsset> SkTypeface_Mac::onOpenStream(int* ttcIndex) const
         constexpr SkFontTableTag TYPE1Tag = SkSetFourByteTag('T', 'Y', 'P', '1');
         constexpr SkFontTableTag CIDTag = SkSetFourByteTag('C', 'I', 'D', ' ');
         for (int tableIndex = 0; tableIndex < numTables; ++tableIndex) {
+            size_t tableSize = tableSizes[tableIndex];
+            this->getTableData(tableTags[tableIndex], 0, tableSize, dataPtr);
+            entry->tag = SkEndian_SwapBE32(tableTags[tableIndex]);
+            entry->checksum = SkEndian_SwapBE32(SkOTUtils::CalcTableChecksum((SK_OT_ULONG*)dataPtr,
+                                                                            tableSize));
+            entry->offset = SkEndian_SwapBE32(SkToU32(dataPtr - dataStart));
+            entry->logicalLength = SkEndian_SwapBE32(SkToU32(tableSize));
             if (TYPE1Tag == tableTags[tableIndex] || CIDTag == tableTags[tableIndex]) {
                 couldBeTyp1 = true;
             }
