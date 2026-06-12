@@ -35,7 +35,7 @@ bool Expression::isIncomplete(const Context& context) const {
             return true;
 
         case Kind::kVariableReference:
-            if (this->type().matches(*context.fTypes.fSkCaps)) {
+            if (this->type().matches(*context.fTypes->fSkCaps)) {
                 context.fErrors->error(fPosition, "invalid expression");
                 return true;
             }

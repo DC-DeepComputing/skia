@@ -6,6 +6,10 @@
  */
 
 #ifndef PathRenderer_DEFINED
+#include "include/private/SkStackAllocated.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
+
 #define PathRenderer_DEFINED
 
 #include "include/core/SkRefCnt.h"
@@ -126,14 +130,14 @@ public:
     }
 
     struct DrawPathArgs {
-        GrRecordingContext*          fContext;
-        GrPaint&&                    fPaint;
-        const GrUserStencilSettings* fUserStencilSettings;
-        SurfaceDrawContext*          fSurfaceDrawContext;
-        const GrClip*                fClip;
-        const SkIRect*               fClipConservativeBounds;
-        const SkMatrix*              fViewMatrix;
-        const GrStyledShape*         fShape;
+        raw_ptr<GrRecordingContext> fContext;
+        RAW_PTR_EXCLUSION GrPaint&&  fPaint;
+        raw_ptr<const GrUserStencilSettings> fUserStencilSettings;
+        raw_ptr<SurfaceDrawContext> fSurfaceDrawContext;
+        raw_ptr<const GrClip> fClip;
+        raw_ptr<const SkIRect> fClipConservativeBounds;
+        raw_ptr<const SkMatrix> fViewMatrix;
+        raw_ptr<const GrStyledShape> fShape;
         GrAAType                     fAAType;
         bool                         fGammaCorrect;
 #ifdef SK_DEBUG

@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkImage.h"
@@ -254,7 +255,7 @@ private:
         }
     }
 
-    SkWStream*                  fContentStream;
+    raw_ptr<SkWStream> fContentStream;
     const SkPDFUtils::EmptyArea fEmptyArea;
 
     SkDynamicMemoryWStream      fBuffer;

@@ -6,6 +6,8 @@
  */
 
 #ifndef skgpu_graphite_PrecompileBlenderPriv_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define skgpu_graphite_PrecompileBlenderPriv_DEFINED
 
 #include "include/gpu/graphite/precompile/PrecompileBlender.h"
@@ -42,7 +44,7 @@ private:
     const PrecompileBlenderPriv* operator&() const;
     PrecompileBlenderPriv *operator&();
 
-    PrecompileBlender* fPrecompileBlender;
+    raw_ptr<PrecompileBlender> fPrecompileBlender;
 };
 
 inline PrecompileBlenderPriv PrecompileBlender::priv() { return PrecompileBlenderPriv(this); }

@@ -6,6 +6,7 @@
  */
 #include "src/gpu/ganesh/ops/TriangulatingPathRenderer.h"
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkData.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPath.h"
@@ -200,9 +201,9 @@ public:
 private:
     sk_sp<GrThreadSafeCache::VertexData> fVertexData;
     sk_sp<GrGpuBuffer> fVertexBuffer;
-    GrResourceProvider* fResourceProvider;
+    raw_ptr<GrResourceProvider> fResourceProvider;
     bool fCanMapVB;
-    void* fVertices = nullptr;
+    raw_ptr<void> fVertices = nullptr;
     size_t fLockStride = 0;
 };
 
@@ -572,8 +573,8 @@ private:
     SkIRect        fDevClipBounds;
     bool           fAntiAlias;
 
-    GrSimpleMesh*  fMesh = nullptr;
-    GrProgramInfo* fProgramInfo = nullptr;
+    raw_ptr<GrSimpleMesh> fMesh = nullptr;
+    raw_ptr<GrProgramInfo> fProgramInfo = nullptr;
 
     sk_sp<GrThreadSafeCache::VertexData> fVertexData;
 

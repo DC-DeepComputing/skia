@@ -7,6 +7,7 @@
 
 #include "src/gpu/graphite/geom/IntersectionTree.h"
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkTPin.h"
 #include "src/core/SkVx.h"
@@ -54,8 +55,8 @@ private:
     }
 
     float fSplitCoord;
-    Node* fLo;
-    Node* fHi;
+    raw_ptr<Node> fLo;
+    raw_ptr<Node> fHi;
 };
 
 // Leaf node. Rects are kept in a simple list and intersection testing is performed by brute force.

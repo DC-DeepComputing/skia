@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "src/partition_alloc/raw_ref.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkEnumBitMask.h"
@@ -72,7 +73,7 @@ public:
     }
 
     void checkGlobalVariableSizeLimit(const GlobalVarDeclaration& globalDecl) {
-        if (!ProgramConfig::IsRuntimeEffect(fContext.fConfig->fKind)) {
+        if (!ProgramConfig::IsRuntimeEffect(fContext->fConfig->fKind)) {
             return;
         }
         const VarDeclaration& decl = globalDecl.varDeclaration();
@@ -82,7 +83,7 @@ public:
         // To avoid overzealous error reporting, only trigger the error at the first place where the
         // global limit is exceeded.
         if (prevSlotsUsed < kVariableSlotLimit && fGlobalSlotsUsed >= kVariableSlotLimit) {
-            fContext.fErrors->error(decl.fPosition,
+            fContext->fErrors->error(decl.fPosition,
                                     "global variable '" + std::string(decl.var()->name()) +
                                     "' exceeds the size limit");
         }
@@ -101,12 +102,12 @@ public:
                 fBindings.add(key);
             } else {
                 if (set != -1) {
-                    fContext.fErrors->error(block.fPosition,
+                    fContext->fErrors->error(block.fPosition,
                                             "layout(set=" + std::to_string(set) +
                                                     ", binding=" + std::to_string(binding) +
                                                     ") has already been defined");
                 } else {
-                    fContext.fErrors->error(block.fPosition,
+                    fContext->fErrors->error(block.fPosition,
                                             "layout(binding=" + std::to_string(binding) +
                                                     ") has already been defined");
                 }
@@ -123,9 +124,9 @@ public:
             const ModifierFlags paramInout = param->modifierFlags() & (ModifierFlag::kIn |
                                                                        ModifierFlag::kOut);
             if (paramInout == ModifierFlag::kOut) {
-                ProgramUsage::VariableCounts counts = fUsage.get(*param);
+                ProgramUsage::VariableCounts counts = fUsage->get(*param);
                 if (counts.fWrite <= 0) {
-                    fContext.fErrors->error(param->fPosition,
+                    fContext->fErrors->error(param->fPosition,
                                             "function '" + std::string(funcDecl.name()) +
                                             "' never assigns a value to out parameter '" +
                                             std::string(param->name()) + "'");
@@ -137,21 +138,21 @@ public:
     void checkWorkgroupLocalSize(const ModifiersDeclaration& d) {
         if (d.layout().fLocalSizeX >= 0) {
             if (fLocalSizeX >= 0) {
-                fContext.fErrors->error(d.fPosition, "'local_size_x' was specified more than once");
+                fContext->fErrors->error(d.fPosition, "'local_size_x' was specified more than once");
             } else {
                 fLocalSizeX = d.layout().fLocalSizeX;
             }
         }
         if (d.layout().fLocalSizeY >= 0) {
             if (fLocalSizeY >= 0) {
-                fContext.fErrors->error(d.fPosition, "'local_size_y' was specified more than once");
+                fContext->fErrors->error(d.fPosition, "'local_size_y' was specified more than once");
             } else {
                 fLocalSizeY = d.layout().fLocalSizeY;
             }
         }
         if (d.layout().fLocalSizeZ >= 0) {
             if (fLocalSizeZ >= 0) {
-                fContext.fErrors->error(d.fPosition, "'local_size_z' was specified more than once");
+                fContext->fErrors->error(d.fPosition, "'local_size_z' was specified more than once");
             } else {
                 fLocalSizeZ = d.layout().fLocalSizeZ;
             }
@@ -163,7 +164,7 @@ public:
             case Expression::Kind::kFunctionCall: {
                 const FunctionDeclaration& decl = expr.as<FunctionCall>().function();
                 if (!decl.isBuiltin() && !decl.definition()) {
-                    fContext.fErrors->error(expr.fPosition, "function '" + decl.description() +
+                    fContext->fErrors->error(expr.fPosition, "function '" + decl.description() +
                                                             "' is not defined");
                 }
                 break;
@@ -172,11 +173,11 @@ public:
             case Expression::Kind::kMethodReference:
             case Expression::Kind::kTypeReference:
                 SkDEBUGFAIL("invalid reference-expr, should have been reported by coerce()");
-                fContext.fErrors->error(expr.fPosition, "invalid expression");
+                fContext->fErrors->error(expr.fPosition, "invalid expression");
                 break;
             default:
-                if (expr.type().matches(*fContext.fTypes.fInvalid)) {
-                    fContext.fErrors->error(expr.fPosition, "invalid expression");
+                if (expr.type().matches(*fContext->fTypes->fInvalid)) {
+                    fContext->fErrors->error(expr.fPosition, "invalid expression");
                 }
                 break;
         }
@@ -190,8 +191,8 @@ public:
 private:
     using INHERITED = ProgramVisitor;
     size_t fGlobalSlotsUsed = 0;
-    const Context& fContext;
-    const ProgramUsage& fUsage;
+    const raw_ref<const Context> fContext;
+    const raw_ref<const ProgramUsage> fUsage;
     // we pack the set/binding pair into a single 64 bit int
     THashSet<uint64_t> fBindings;
 

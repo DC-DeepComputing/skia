@@ -6,6 +6,8 @@
  */
 
 #ifndef GrGpuResourcePriv_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define GrGpuResourcePriv_DEFINED
 
 #include "include/private/SkAssert.h"
@@ -86,7 +88,7 @@ protected:
     const ResourcePriv* operator&() const;
     ResourcePriv* operator&();
 
-    GrGpuResource* fResource;
+    raw_ptr<GrGpuResource> fResource;
 
     friend class GrGpuResource; // to construct/copy this type.
 };

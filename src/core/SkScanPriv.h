@@ -6,6 +6,8 @@
  */
 
 #ifndef SkScanPriv_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define SkScanPriv_DEFINED
 
 #include "include/core/SkPath.h"
@@ -29,8 +31,8 @@ private:
 #ifdef SK_DEBUG
     SkRectClipCheckBlitter fRectClipCheckBlitter;
 #endif
-    SkBlitter*          fBlitter;
-    const SkIRect*      fClipRect;
+    raw_ptr<SkBlitter> fBlitter;
+    raw_ptr<const SkIRect> fClipRect;
 };
 
 // blit the rects above and below avoid, clipped to clip
