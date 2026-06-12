@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "49e0301c_33c4c04a",
+        "filename": "src/ports/SkTypeface_mac_ct.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 610,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-12T17:29:39Z",
+      "side": 1,
+      "message": "you\u0027re so right, my mistake",
+      "parentUuid": "6559b143_383a67b7",
+      "range": {
+        "startLine": 610,
+        "startChar": 8,
+        "endLine": 610,
+        "endChar": 14
+      },
+      "revId": "b6c002cc8b8c47cb4673550e674885126d2fead4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "16e32074_17affbb1",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ca2e901_f9e9f9c6",
+        "filename": "src/ports/SkTypeface_mac_ct.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-12T17:29:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "16e32074_17affbb1",
+      "range": {
+        "startLine": 135,
+        "startChar": 19,
+        "endLine": 135,
+        "endChar": 30
+      },
+      "revId": "b6c002cc8b8c47cb4673550e674885126d2fead4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "158f6031_d1a743cb",
@@ -60,6 +108,30 @@
       "writtenOn": "2026-06-12T17:15:34Z",
       "side": 1,
       "message": "Revert these changes too",
+      "range": {
+        "startLine": 17,
+        "startChar": 16,
+        "endLine": 17,
+        "endChar": 21
+      },
+      "revId": "b6c002cc8b8c47cb4673550e674885126d2fead4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "64dce870_7e23ce41",
+        "filename": "tests/TypefaceMacTest.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-12T17:29:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "158f6031_d1a743cb",
       "range": {
         "startLine": 17,
         "startChar": 16,
