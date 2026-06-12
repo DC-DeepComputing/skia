@@ -6,6 +6,8 @@
  */
 
 #ifndef GrSurfaceProxyPriv_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define GrSurfaceProxyPriv_DEFINED
 
 #include "include/core/SkRefCnt.h"
@@ -62,7 +64,7 @@ private:
     const GrSurfaceProxyPriv* operator&() const;
     GrSurfaceProxyPriv* operator&();
 
-    GrSurfaceProxy* fProxy;
+    raw_ptr<GrSurfaceProxy> fProxy;
 
     friend class GrSurfaceProxy; // to construct/copy this type.
 };

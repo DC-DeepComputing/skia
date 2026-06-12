@@ -6,6 +6,8 @@
  */
 
 #ifndef SkTLazy_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define SkTLazy_DEFINED
 
 #include "include/private/SkAssert.h"
@@ -158,13 +160,13 @@ public:
 
     SkTCopyOnFirstWrite& operator=(const SkTCopyOnFirstWrite& that) {
         fLazy = that.fLazy;
-        fObj  = fLazy.has_value() ? &fLazy.value() : that.fObj;
+        fObj  = fLazy.has_value() ? &fLazy.value() : that.fObj.get();
         return *this;
     }
 
     SkTCopyOnFirstWrite& operator=(SkTCopyOnFirstWrite&& that) {
         fLazy = std::move(that.fLazy);
-        fObj  = fLazy.has_value() ? &fLazy.value() : that.fObj;
+        fObj  = fLazy.has_value() ? &fLazy.value() : that.fObj.get();
         return *this;
     }
 
@@ -209,7 +211,7 @@ public:
     const T& operator *() const { return *fObj; }
 
 private:
-    const T*         fObj;
+    raw_ptr<const T> fObj;
     std::optional<T> fLazy;
 };
 

@@ -6,6 +6,8 @@
  */
 
 #ifndef skgpu_KeyBuilder_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define skgpu_KeyBuilder_DEFINED
 
 #include "include/core/SkString.h"
@@ -72,7 +74,7 @@ public:
     }
 
 private:
-    skia_private::TArray<uint32_t, true>* fData;
+    raw_ptr<skia_private::TArray<uint32_t, true>> fData;
     uint32_t fCurValue = 0;
     uint32_t fBitsUsed = 0;  // ... in current value
 };

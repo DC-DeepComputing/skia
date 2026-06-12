@@ -2017,7 +2017,7 @@ SkSpan<sk_sp<SkShader>> FilterResult::Builder::createInputShaders(
         // into is being sampled in parameter space. Add the inverse of the layerMatrix() (i.e.
         // layer to parameter space) as a local matrix to convert from the parameter-space coords
         // of the outer shader to the layer-space coords of the FilterResult).
-        layerToParam = fContext.mapping().layerMatrix().asM33().invert().value_or(SkMatrix());
+        layerToParam = fContext->mapping().layerMatrix().asM33().invert().value_or(SkMatrix());
         // Automatically add nonTrivial sampling if the layer-to-parameter space mapping isn't
         // also pixel aligned.
         if (!is_nearly_integer_translation(LayerSpace<SkMatrix>(layerToParam))) {
@@ -2030,7 +2030,7 @@ SkSpan<sk_sp<SkShader>> FilterResult::Builder::createInputShaders(
         // Assume the input shader will be evaluated once per pixel in the output unless otherwise
         // specified when the FilterResult was added to the builder.
         auto sampleBounds = input.fSampleBounds ? *input.fSampleBounds : outputBounds;
-        auto shader = input.fImage.asShader(fContext,
+        auto shader = input.fImage.asShader(*fContext,
                                             input.fSampling,
                                             input.fFlags | xtraFlags,
                                             sampleBounds);
@@ -2045,7 +2045,7 @@ SkSpan<sk_sp<SkShader>> FilterResult::Builder::createInputShaders(
 LayerSpace<SkIRect> FilterResult::Builder::outputBounds(
         std::optional<LayerSpace<SkIRect>> explicitOutput) const {
     // Pessimistically assume output fills the full desired bounds
-    LayerSpace<SkIRect> output = fContext.desiredOutput();
+    LayerSpace<SkIRect> output = fContext->desiredOutput();
     if (explicitOutput.has_value()) {
         // Intersect with the provided explicit bounds
         if (!output.intersect(*explicitOutput)) {
@@ -2063,7 +2063,7 @@ FilterResult FilterResult::Builder::drawShader(sk_sp<SkShader> shader,
         return {};
     }
 
-    AutoSurface surface{fContext, outputBounds, PixelBoundary::kTransparent,
+    AutoSurface surface{*fContext, outputBounds, PixelBoundary::kTransparent,
                         evaluateInParameterSpace};
     if (surface) {
         SkPaint paint;
@@ -2092,14 +2092,14 @@ FilterResult FilterResult::Builder::merge() {
             [this](int i) { return fInputs[i].fImage.layerBounds(); });
     const auto outputBounds = this->outputBounds(mergedBounds);
 
-    AutoSurface surface{fContext, outputBounds, PixelBoundary::kTransparent,
+    AutoSurface surface{*fContext, outputBounds, PixelBoundary::kTransparent,
                         /*renderInParameterSpace=*/false};
     if (surface) {
         for (const SampledFilterResult& input : fInputs) {
             SkASSERT(!input.fSampleBounds.has_value() &&
                      input.fSampling == kDefaultSampling &&
                      input.fFlags == ShaderFlags::kNone);
-            input.fImage.draw(fContext, surface.device(), /*preserveDeviceState=*/true);
+            input.fImage.draw(*fContext, surface.device(), /*preserveDeviceState=*/true);
         }
     }
     return surface.snap();
@@ -2108,11 +2108,11 @@ FilterResult FilterResult::Builder::merge() {
 FilterResult FilterResult::Builder::blur(const LayerSpace<SkSize>& sigma) {
     SkASSERT(fInputs.size() == 1);
 
-    const SkBlurEngine* blurEngine = fContext.backend()->getBlurEngine();
+    const SkBlurEngine* blurEngine = fContext->backend()->getBlurEngine();
     SkASSERT(blurEngine);
 
     const SkBlurEngine::Algorithm* algorithm = blurEngine->findAlgorithm(
-            SkSize(sigma), fContext.backend()->colorType());
+            SkSize(sigma), fContext->backend()->colorType());
     if (!algorithm) {
         return {};
     }
@@ -2143,7 +2143,7 @@ FilterResult FilterResult::Builder::blur(const LayerSpace<SkSize>& sigma) {
     // Always allow overscaling for higher quality filtering, and because we can adjust the blur
     // sigma applied to the low res image to account for any extra scale factor.
     FilterResult lowResImage = fInputs[0].fImage.rescale(
-            fContext.withNewDesiredOutput(sampleBounds),
+            fContext->withNewDesiredOutput(sampleBounds),
             LayerSpace<SkSize>({sx, sy}),
             algorithm->supportsOnlyDecalTiling(),
             /*allowOverscaling=*/true);

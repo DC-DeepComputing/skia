@@ -6,6 +6,8 @@
  */
 
 #ifndef SkPathEffectBase_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define SkPathEffectBase_DEFINED
 
 #include "include/core/SkPath.h"
@@ -54,7 +56,7 @@ public:
         };
 
         uint32_t           fFlags;      // flags that impact the drawing of the points
-        SkPoint*           fPoints;     // the center point of each generated point
+        raw_ptr<SkPoint, AllowPtrArithmetic> fPoints;     // the center point of each generated point
         int                fNumPoints;  // number of points in fPoints
         SkVector           fSize;       // the size to draw the points
         SkRect             fClipRect;   // clip required to draw the points (if kUseClip is set)
@@ -63,7 +65,7 @@ public:
         SkPath             fFirst;      // If not empty, contains geometry for first point
         SkPath             fLast;       // If not empty, contains geometry for last point
 
-        SkSpan<SkPoint> points() { return {fPoints, (size_t)fNumPoints}; }
+        SkSpan<SkPoint> points() { return {fPoints.get(), (size_t)fNumPoints}; }
     };
 
     /**

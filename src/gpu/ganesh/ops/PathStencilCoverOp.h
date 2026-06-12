@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 #ifndef PathStencilCoverOp_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define PathStencilCoverOp_DEFINED
 
 #include "include/core/SkPath.h"
@@ -111,7 +113,7 @@ private:
     void onPrepare(GrOpFlushState*) override;
     void onExecute(GrOpFlushState*, const SkRect& chainBounds) override;
 
-    const PathDrawList* fPathDrawList;
+    raw_ptr<const PathDrawList> fPathDrawList;
     const int fTotalCombinedPathVerbCnt;
     const int fPathCount;
     const FillPathFlags fPathFlags;
@@ -121,10 +123,10 @@ private:
     SkDEBUGCODE(SkRect fOriginalDrawBounds;)
 
     // Decided during prePreparePrograms.
-    PathTessellator* fTessellator = nullptr;
-    const GrProgramInfo* fStencilFanProgram = nullptr;
-    const GrProgramInfo* fStencilPathProgram = nullptr;
-    const GrProgramInfo* fCoverBBoxProgram = nullptr;
+    raw_ptr<PathTessellator> fTessellator = nullptr;
+    raw_ptr<const GrProgramInfo> fStencilFanProgram = nullptr;
+    raw_ptr<const GrProgramInfo> fStencilPathProgram = nullptr;
+    raw_ptr<const GrProgramInfo> fCoverBBoxProgram = nullptr;
 
     // Filled during onPrepare.
     sk_sp<const GrBuffer> fFanBuffer;

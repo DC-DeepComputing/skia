@@ -6,6 +6,8 @@
  */
 
 #ifndef GrContextThreadSafeProxyPriv_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define GrContextThreadSafeProxyPriv_DEFINED
 
 #include "include/gpu/ganesh/GrContextThreadSafeProxy.h"
@@ -58,7 +60,7 @@ private:
     const GrContextThreadSafeProxyPriv* operator&() const = delete;
     GrContextThreadSafeProxyPriv* operator&() = delete;
 
-    GrContextThreadSafeProxy* fProxy;
+    raw_ptr<GrContextThreadSafeProxy> fProxy;
 
     friend class GrContextThreadSafeProxy;  // to construct/copy this type.
 };

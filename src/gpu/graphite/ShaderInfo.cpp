@@ -7,6 +7,7 @@
 
 #include "src/gpu/graphite/ShaderInfo.h"
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/gpu/BlendFormula.h"
 #include "src/gpu/graphite/ContextUtils.h"
 #include "src/gpu/graphite/PaintParamsKey.h"
@@ -26,7 +27,7 @@ namespace {
 
 struct LiftedExpression {
     // The node who's expression should be lifted.
-    const ShaderNode* fNode;
+    raw_ptr<const ShaderNode> fNode;
     // The arguments to use as input to the lifted expression.
     ShaderSnippet::Args fArgs;
     // If true, capture the expression's resolved value in a varying.

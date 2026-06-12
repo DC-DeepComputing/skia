@@ -7,6 +7,7 @@
 
 #include "src/core/SkStrike.h"
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkDrawable.h"
 #include "include/core/SkFontStyle.h"
 #include "include/core/SkMatrix.h"
@@ -69,7 +70,7 @@ public:
     }
 
 private:
-    SkStrike* const fStrike;
+    const raw_ptr<SkStrike> fStrike;
 };
 
 void SkStrike::lock() {
