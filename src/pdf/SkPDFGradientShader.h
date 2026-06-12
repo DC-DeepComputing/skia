@@ -30,6 +30,9 @@ SkPDFIndirectReference Make(SkPDFDocument* doc,
                             const SkMatrix& matrix,
                             const SkIRect& surfaceBBox);
 
+// True when `shader` is a gradient with any non-opaque stop.
+bool HasAlpha(const SkShader* shader);
+
 struct Key {
     SkShaderBase::GradientType fType;
     SkShaderBase::GradientInfo fInfo;

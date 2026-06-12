@@ -340,7 +340,14 @@ SkPDFIndirectReference SkPDFMakeShader(SkPDFDocument* doc,
     SkASSERT(shader);
     SkASSERT(doc);
     if (as_SB(shader)->asGradient() != SkShaderBase::GradientType::kNone) {
-        return SkPDFGradientShader::Make(doc, shader, canvasTransform, surfaceBBox);
+        // Apple's macOS PDF->PostScript converter mishandles the soft-mask +
+        // nested-pattern encoding Skia uses for alpha gradients (rangecheck,
+        // blank page). Optionally rasterize them for print compatibility.
+        if (!doc->metadata().fRasterizeAlphaGradientsForPrinting ||
+            !SkPDFGradientShader::HasAlpha(shader)) {
+            return SkPDFGradientShader::Make(doc, shader, canvasTransform, surfaceBBox);
+        }
+        // else fall through to rasterize.
     }
     if (surfaceBBox.isEmpty()) {
         return SkPDFIndirectReference();

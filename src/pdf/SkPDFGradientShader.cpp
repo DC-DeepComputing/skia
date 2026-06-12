@@ -941,14 +941,37 @@ static std::unique_ptr<SkStreamAsset> create_pattern_fill_content(int gsIndex,
     return content.detachAsStream();
 }
 
-static bool gradient_has_alpha(const SkPDFGradientShader::Key& key) {
-    SkASSERT(key.fType != SkShaderBase::GradientType::kNone);
-    for (int i = 0; i < key.fInfo.fColorCount; i++) {
-        if (!key.fInfo.fColors[i].isOpaque()) {
+static bool colors_have_alpha(const SkShaderBase::GradientInfo& info) {
+    for (int i = 0; i < info.fColorCount; i++) {
+        if (!info.fColors[i].isOpaque()) {
             return true;
         }
     }
     return false;
+}
+
+bool SkPDFGradientShader::HasAlpha(const SkShader* shader) {
+    if (!shader) {
+        return false;
+    }
+    // Query the stop count first, then provide buffers for the second call.
+    // Some gradient implementations require both colors and offsets.
+    SkShaderBase::GradientInfo info = {};
+    SkShaderBase::GradientType type = as_SB(shader)->asGradient(&info);
+    if (type == SkShaderBase::GradientType::kNone || info.fColorCount <= 0) {
+        return false;
+    }
+    AutoSTMalloc<8, SkColor4f> colors(info.fColorCount);
+    AutoSTMalloc<8, SkScalar> offsets(info.fColorCount);
+    info.fColors = colors.get();
+    info.fColorOffsets = offsets.get();
+    as_SB(shader)->asGradient(&info);
+    return colors_have_alpha(info);
+}
+
+static bool gradient_has_alpha(const SkPDFGradientShader::Key& key) {
+    SkASSERT(key.fType != SkShaderBase::GradientType::kNone);
+    return colors_have_alpha(key.fInfo);
 }
 
 // warning: does not set fHash on new key.  (Both callers need to change fields.)
