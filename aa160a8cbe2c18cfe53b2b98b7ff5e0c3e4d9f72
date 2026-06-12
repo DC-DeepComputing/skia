@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad3cad10_f6f89ea3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4186901
+      },
+      "writtenOn": "2026-06-12T04:24:08Z",
+      "side": 1,
+      "message": "Hi @bungeman@google.com, @kjlubick@google.com,\n\nPlease help take a look this change, it is for bug https://issues.chromium.org/issues/365884454\n\nI tested locally with Chromium build, with fRasterizeAlphaGradientsForPrinting \u003d true on macOS. The attached html in the bug (365884454) can be printed without error.",
+      "revId": "aa160a8cbe2c18cfe53b2b98b7ff5e0c3e4d9f72",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
