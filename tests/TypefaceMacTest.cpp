@@ -8,13 +8,21 @@
 #include "include/core/SkFontMgr.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypeface.h"
+#include "include/ports/SkFontMgr_mac_ct.h"
 #include "include/ports/SkTypeface_mac.h"
 #include "src/core/SkZip.h"
 #include "src/utils/SkFloatUtils.h"
 #include "tests/Test.h"
+#include "tools/fonts/TestFontMgr.h"
+#include "tools/fonts/TestTypeface.h"
+#ifdef SK_BUILD_FOR_MAC
+#import <ApplicationServices/ApplicationServices.h>
+#endif
+#include "include/ports/SkFontMgr_mac_ct.h"
 
 #include <stdarg.h>
 #include <string>
+#include <thread>
 #include <vector>
 
 static void SkMaybeDebugf(const char* fmt, ...) SK_PRINTF_LIKE(1, 2);
@@ -189,4 +197,71 @@ DEF_TEST(TypefaceMacVariation, reporter) {
     }
     }
     }
+}
+
+// The output of the test should look something like this
+// https://paste.googleplex.com/6171387046789120
+// The original bug associated with this test was
+// https://buganizer.corp.google.com/issues/520535595
+DEF_TEST(MacTypefacePublicationRace, reporter) {
+    // might need to use SkFontMgr_New_CoreText
+
+#if defined(SK_FONTMGR_CORETEXT_AVAILABLE)
+    SkDebugf("--------------------inside CoreText-------------------------\n");
+    // Run multiple iterations because we need to hit the exact concurrent
+    // window
+    for (int i = 0; i < 1000; ++i) {
+        sk_sp<SkFontMgr> fontMgr = SkFontMgr_New_CoreText(nullptr);
+        int numFamilies = fontMgr->countFamilies();
+        int familyIndex = i % numFamilies;
+
+        // Fetch family name from manager
+        SkString familyName;
+        fontMgr->getFamilyName(familyIndex, &familyName);
+
+        SkFontStyle fontStyle;
+        sk_sp<SkTypeface> typeface =
+                fontMgr->matchFamilyStyle(familyName.c_str(), fontStyle);
+        REPORTER_ASSERT(reporter, typeface);
+
+        std::atomic<bool> insideGate{false};
+        std::atomic<int> readyCount{0};
+
+        // Thread A: The Writer
+        std::thread writer([&]() {
+            readyCount++;
+            while (!insideGate.load()) {
+                std::this_thread::yield();
+            }
+
+            // Public API that triggers internal openStream() -> start fStream
+            // write This triggers internal lazy initialization of the stream
+            sk_sp<SkData> data = typeface->serialize(
+                    SkTypeface::SerializeBehavior::kDoIncludeData);
+        });
+
+        // Thread B: The Reader
+        std::thread reader([&]() {
+            readyCount++;
+            while (!insideGate.load()) {
+                std::this_thread::yield();
+            }
+
+            SkFontArguments args;
+            // Public API that triggers internal onMakeClone -> raw fStream read
+            auto clone = typeface->makeClone(args);
+        });
+
+        // Wait until both threads are spawned and spinning at the gate
+        while (readyCount.load() < 2) {
+            std::this_thread::yield();
+        }
+
+        // Fire both threads simultaneously
+        insideGate.store(true);
+
+        writer.join();
+        reader.join();
+    }
+#endif
 }
