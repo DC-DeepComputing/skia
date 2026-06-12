@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a70d8f2b_d0ddb282",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-12T12:55:55Z",
+      "side": 1,
+      "message": "LGTM modulo the error (are our namespaced functions not working appropriately?)",
+      "revId": "c5b29ea801b42d52afcd2d1b9d74b28cfd71c81b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
