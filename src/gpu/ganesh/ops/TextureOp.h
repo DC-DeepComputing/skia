@@ -58,7 +58,7 @@ public:
      * deconstructed into the texture, filter, modulating color, and blend mode. When blend mode is
      * src over, this will return a FillRectOp with a paint that samples the proxy.
      */
-    static GrOp::Owner Make(GrRecordingContext*,
+    static GrOp::Owner Make1(GrRecordingContext*,
                             GrSurfaceProxyView,
                             SkAlphaType srcAlphaType,
                             sk_sp<GrColorSpaceXform>,
@@ -87,7 +87,8 @@ public:
                                  GrAAType,
                                  SkCanvas::SrcRectConstraint,
                                  const SkMatrix& viewMatrix,
-                                 sk_sp<GrColorSpaceXform> textureXform);
+                                 sk_sp<GrColorSpaceXform> textureXform,
+                                 bool setMayHavePersp);
 
 #if defined(GPU_TEST_UTILS)
     static uint32_t ClassID();
