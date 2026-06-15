@@ -131,6 +131,7 @@ public:
         , fClipShader(std::move(clipShader))
     {}
 
+
     bool setup(const SkPixmap& dst, int left, int top, const SkPaint& paint) override {
         fDst  = dst;
         fLeft = left;
@@ -182,8 +183,8 @@ public:
     }
 
 private:
-    raw_ptr<SkArenaAlloc> fAlloc;
-    raw_ptr<SkBlitter> fBlitter;
+    raw_ptr<SkArenaAlloc, DanglingUntriaged> fAlloc;
+    raw_ptr<SkBlitter, DanglingUntriaged> fBlitter;
     SkRasterPipelineContexts::MemoryCtx fSrcPtr;
     SkColor4f                  fPaintColor;
     sk_sp<SkShader>            fClipShader;

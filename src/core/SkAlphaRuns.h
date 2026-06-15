@@ -25,8 +25,8 @@
 
 class SkAlphaRuns {
 public:
-    raw_ptr<int16_t, AllowPtrArithmetic> fRuns;
-    raw_ptr<uint8_t, AllowPtrArithmetic> fAlpha;
+    raw_ptr<int16_t, AllowPtrArithmetic | DanglingUntriaged> fRuns;
+    raw_ptr<uint8_t, AllowPtrArithmetic | DanglingUntriaged> fAlpha;
 
     // Return 0-255 given 0-256
     static inline SkAlpha CatchOverflow(int alpha) {
