@@ -37,6 +37,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "f17fd3f0_9352433f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-15T19:23:33Z",
+      "side": 1,
+      "message": "I\u0027ve addressed comments and added a unit test, but lost the +1s. The new changes are in PS10-\u003ePS13, which is basically the test file and splitting the opaque paint validation into a separate function.",
+      "parentUuid": "dd5b54e4_6e258fd0",
+      "revId": "10f91880cafd6f07263865416e3e1bbb547af134",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "6021e835_d10212ba",
         "filename": "src/gpu/graphite/Device.cpp",
         "patchSetId": 11
