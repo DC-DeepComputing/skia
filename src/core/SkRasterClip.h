@@ -144,7 +144,7 @@ public:
         fRC->validate();
     }
 private:
-    const raw_ref<const SkRasterClip> fRC;
+    const raw_ref<const SkRasterClip, DanglingUntriaged> fRC;
 };
 
 #ifdef SK_DEBUG
@@ -189,8 +189,8 @@ private:
     SkRegion        fBWRgn;
     SkAAClipBlitter fAABlitter;
     // what we return
-    raw_ptr<const SkRegion> fClipRgn;
-    raw_ptr<SkBlitter> fBlitter;
+    raw_ptr<const SkRegion, DanglingUntriaged> fClipRgn;
+    raw_ptr<SkBlitter, DanglingUntriaged> fBlitter;
 };
 
 #endif

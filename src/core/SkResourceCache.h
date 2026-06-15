@@ -108,8 +108,8 @@ public:
         virtual SkDiscardableMemory* diagnostic_only_getDiscardable() const { return nullptr; }
 
     private:
-        raw_ptr<Rec> fNext;
-        raw_ptr<Rec> fPrev;
+        raw_ptr<Rec, DanglingUntriaged> fNext;
+        raw_ptr<Rec, DanglingUntriaged> fPrev;
 
         friend class SkResourceCache;
     };
@@ -263,11 +263,11 @@ public:
     virtual void dump() const;
 
 private:
-    raw_ptr<Rec> fHead;
-    raw_ptr<Rec> fTail;
+    raw_ptr<Rec, DanglingUntriaged> fHead;
+    raw_ptr<Rec, DanglingUntriaged> fTail;
 
     class Hash;
-    raw_ptr<Hash> fHash;
+    raw_ptr<Hash, DanglingUntriaged> fHash;
 
     DiscardableFactory  fDiscardableFactory;
 
