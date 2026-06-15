@@ -7,13 +7,14 @@
 
 #include "include/core/SkPixelRef.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/private/SkAssert.h"
 #include "include/private/SkDebug.h"
 #include "include/private/SkPixelStorage.h"
 #include "src/core/SkBitmapCache.h"
 #include "src/core/SkNextID.h"
 #include "src/core/SkPixelRefPriv.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <atomic>
 #include <utility>
@@ -145,10 +146,15 @@ sk_sp<SkPixelRef> SkMakePixelRefWithProc(int width, int height, size_t rowBytes,
     }
     struct PixelRef final : public SkPixelRef {
         void (*fReleaseProc)(void*, void*);
-        raw_ptr<void> fReleaseProcContext;
+        // RAW_PTR_EXCLUSION: Type-erased callback context
+        RAW_PTR_EXCLUSION void* fReleaseProcContext;
         PixelRef(int w, int h, void* s, size_t r, void (*proc)(void*, void*), void* ctx)
             : SkPixelRef(w, h, s, r), fReleaseProc(proc), fReleaseProcContext(ctx) {}
-        ~PixelRef() override { fReleaseProc(this->pixels(), fReleaseProcContext); }
+        ~PixelRef() override {
+            void* ctx = fReleaseProcContext;
+            fReleaseProcContext = nullptr;
+            fReleaseProc(this->pixels(), ctx);
+        }
     };
     return sk_sp<SkPixelRef>(new PixelRef(width, height, addr, rowBytes, releaseProc, ctx));
 }

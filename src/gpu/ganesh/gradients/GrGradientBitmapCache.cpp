@@ -6,7 +6,6 @@
  */
 #include "src/gpu/ganesh/gradients/GrGradientBitmapCache.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkImageInfo.h"
@@ -19,6 +18,7 @@
 #include "src/core/SkRasterPipeline.h"
 #include "src/core/SkRasterPipelineOpContexts.h"
 #include "src/core/SkRasterPipelineOpList.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/shaders/gradients/SkGradientBaseShader.h"
 
 #include <cstdint>

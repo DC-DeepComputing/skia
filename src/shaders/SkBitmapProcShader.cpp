@@ -7,13 +7,13 @@
 
 #include "src/shaders/SkBitmapProcShader.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPixmap.h"
 #include "include/private/SkAssert.h"
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkBitmapProcState.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <algorithm>
 #include <cstdint>
@@ -66,7 +66,7 @@ public:
     }
 
 private:
-    raw_ptr<SkBitmapProcState> fState;
+    raw_ptr<SkBitmapProcState, DanglingUntriaged> fState;
     uint32_t            fFlags;
 
     using INHERITED = SkShaderBase::Context;

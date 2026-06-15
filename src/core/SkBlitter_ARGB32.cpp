@@ -1762,7 +1762,9 @@ SkARGB32_Shader_Blitter::SkARGB32_Shader_Blitter(const SkPixmap& device,
 }
 
 SkARGB32_Shader_Blitter::~SkARGB32_Shader_Blitter() {
-    sk_free(fBuffer);
+    void* p = fBuffer;
+    fBuffer = nullptr;
+    sk_free(p);
 }
 
 void SkARGB32_Shader_Blitter::blitH(int x, int y, int width) {

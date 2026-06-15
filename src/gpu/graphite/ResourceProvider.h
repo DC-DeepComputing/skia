@@ -137,7 +137,7 @@ protected:
                      uint32_t recorderID,
                      size_t resourceBudget);
 
-    raw_ptr<SharedContext> fSharedContext;
+    raw_ptr<SharedContext, DanglingUntriaged> fSharedContext;
     // Each ResourceProvider owns one local cache; for some resources it also refers out to the
     // global cache of the SharedContext, which is assumed to outlive the ResourceProvider.
     sk_sp<ResourceCache> fResourceCache;

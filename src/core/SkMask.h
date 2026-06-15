@@ -7,6 +7,7 @@
 
 #ifndef SkMask_DEFINED
 #include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #define SkMask_DEFINED
 
@@ -157,14 +158,14 @@ template <> struct SkMask::AlphaIter<SkMask::kBW_Format> {
         return *this;
     }
     AlphaIter& operator>>=(uint32_t rb) {
-        fPtr = SkTAddOffset<const uint8_t>(fPtr.get(), rb);
+        fPtr = SkTAddOffset<const uint8_t>(fPtr, rb);
         return *this;
     }
     uint8_t operator*() const { return ((*fPtr) >> fOffset) & 1 ? 0xFF : 0; }
     bool operator<(const AlphaIter& that) const {
         return fPtr < that.fPtr || (fPtr == that.fPtr && fOffset > that.fOffset);
     }
-    raw_ptr<const uint8_t, AllowPtrArithmetic> fPtr;
+    RAW_PTR_EXCLUSION const uint8_t* fPtr;
     int fOffset;
 };
 
@@ -174,12 +175,12 @@ template <> struct SkMask::AlphaIter<SkMask::kA8_Format> {
     AlphaIter& operator++() { ++fPtr; return *this; }
     AlphaIter& operator--() { --fPtr; return *this; }
     AlphaIter& operator>>=(uint32_t rb) {
-        fPtr = SkTAddOffset<const uint8_t>(fPtr.get(), rb);
+        fPtr = SkTAddOffset<const uint8_t>(fPtr, rb);
         return *this;
     }
     uint8_t operator*() const { return *fPtr; }
     bool operator<(const AlphaIter& that) const { return fPtr < that.fPtr; }
-    raw_ptr<const uint8_t, AllowPtrArithmetic> fPtr;
+    RAW_PTR_EXCLUSION const uint8_t* fPtr;
 };
 
 template <> struct SkMask::AlphaIter<SkMask::kARGB32_Format> {
@@ -188,12 +189,12 @@ template <> struct SkMask::AlphaIter<SkMask::kARGB32_Format> {
     AlphaIter& operator++() { ++fPtr; return *this; }
     AlphaIter& operator--() { --fPtr; return *this; }
     AlphaIter& operator>>=(uint32_t rb) {
-        fPtr = SkTAddOffset<const uint32_t>(fPtr.get(), rb);
+        fPtr = SkTAddOffset<const uint32_t>(fPtr, rb);
         return *this;
     }
     uint8_t operator*() const { return SkGetPackedA32(*fPtr); }
     bool operator<(const AlphaIter& that) const { return fPtr < that.fPtr; }
-    raw_ptr<const uint32_t, AllowPtrArithmetic> fPtr;
+    RAW_PTR_EXCLUSION const uint32_t* fPtr;
 };
 
 template <> struct SkMask::AlphaIter<SkMask::kLCD16_Format> {
@@ -202,7 +203,7 @@ template <> struct SkMask::AlphaIter<SkMask::kLCD16_Format> {
     AlphaIter& operator++() { ++fPtr; return *this; }
     AlphaIter& operator--() { --fPtr; return *this; }
     AlphaIter& operator>>=(uint32_t rb) {
-        fPtr = SkTAddOffset<const uint16_t>(fPtr.get(), rb);
+        fPtr = SkTAddOffset<const uint16_t>(fPtr, rb);
         return *this;
     }
     uint8_t operator*() const {
@@ -213,7 +214,7 @@ template <> struct SkMask::AlphaIter<SkMask::kLCD16_Format> {
         return (r + g + b) / 3;
     }
     bool operator<(const AlphaIter& that) const { return fPtr < that.fPtr; }
-    raw_ptr<const uint16_t, AllowPtrArithmetic> fPtr;
+    RAW_PTR_EXCLUSION const uint16_t* fPtr;
 };
 
 ///////////////////////////////////////////////////////////////////////////////

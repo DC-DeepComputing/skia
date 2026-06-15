@@ -5,7 +5,6 @@
  * found in the LICENSE file.
  */
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/codec/SkCodec.h"
 #include "include/codec/SkCodecAnimation.h"
 #include "include/codec/SkEncodedImageFormat.h"
@@ -38,6 +37,7 @@
 #include "src/core/SkMipmap.h"
 #include "src/core/SkRasterClip.h"
 #include "src/core/SkStreamPriv.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <climits>
 #include <cstdint>
@@ -310,7 +310,7 @@ private:
     wuffs_base__io_buffer    fIOBuffer;
 
     // Incremental decoding state.
-    raw_ptr<uint8_t> fIncrDecDst;
+    raw_ptr<uint8_t, DanglingUntriaged> fIncrDecDst;
     size_t                  fIncrDecRowBytes;
     wuffs_base__pixel_blend fIncrDecPixelBlend;
     bool                    fIncrDecOnePass;

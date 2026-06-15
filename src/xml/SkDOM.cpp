@@ -9,9 +9,9 @@
 
 #include <memory>
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkStream.h"
 #include "include/private/SkTo.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/xml/SkXMLParser.h"
 #include "src/xml/SkXMLWriter.h"
 
@@ -168,12 +168,12 @@ private:
 
     SkTDArray<SkDOM::Node*> fParentStack;
     raw_ptr<SkArenaAllocWithReset> fAlloc;
-    raw_ptr<SkDOM::Node> fRoot;
+    raw_ptr<SkDOM::Node, DanglingUntriaged> fRoot;
     bool                    fNeedToFlush;
 
     // state needed for flushAttributes()
     SkTDArray<SkDOM::Attr>  fAttrs;
-    raw_ptr<char> fElemName;
+    raw_ptr<char, DanglingUntriaged> fElemName;
     SkDOM::Type             fElemType;
     int                     fLevel;
 };

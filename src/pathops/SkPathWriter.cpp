@@ -6,12 +6,12 @@
  */
 #include "src/pathops/SkPathWriter.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkPathBuilder.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkMath.h"
 #include "src/core/SkPathPriv.h"
 #include "src/core/SkTSort.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/pathops/SkOpSegment.h"
 #include "src/pathops/SkOpSpan.h"
 #include "src/pathops/SkPathOpsDebug.h"

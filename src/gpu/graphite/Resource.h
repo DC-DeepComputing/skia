@@ -691,7 +691,7 @@ private:
 
     // This is not ref'ed but internalDispose() will be called before the Gpu object is destroyed.
     // That call will set this to nullptr.
-    raw_ptr<const SharedContext> fSharedContext;
+    raw_ptr<const SharedContext, DanglingUntriaged> fSharedContext;
 
     const UniqueID fUniqueID;
     const Ownership fOwnership;

@@ -5,27 +5,38 @@
  * found in the LICENSE file.
  */
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/private/SkAssert.h"
 #include "include/private/SkDeque.h"
 #include "include/private/SkMalloc.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <cstddef>
 
 struct SkDeque::Block {
-    raw_ptr<Block> fNext;
-    raw_ptr<Block> fPrev;
-    raw_ptr<char, AllowPtrArithmetic> fBegin; // start of used section in this chunk
-    raw_ptr<char, AllowPtrArithmetic> fEnd;   // end of used section in this chunk
-    raw_ptr<char, AllowPtrArithmetic> fStop;  // end of the allocated chunk
+    raw_ptr<Block, DanglingUntriaged> fNext;
+    raw_ptr<Block, DanglingUntriaged> fPrev;
+    // RAW_PTR_EXCLUSION: Pointer to internal chunk buffer offset
+    RAW_PTR_EXCLUSION char* fBegin; // start of used section in this chunk
+    // RAW_PTR_EXCLUSION: Pointer to internal chunk buffer offset
+    RAW_PTR_EXCLUSION char* fEnd;   // end of used section in this chunk
+    // RAW_PTR_EXCLUSION: Pointer to internal chunk buffer offset
+    RAW_PTR_EXCLUSION char* fStop;  // end of the allocated chunk
 
     char*       start() { return (char*)(this + 1); }
     const char* start() const { return (const char*)(this + 1); }
 
     void init(size_t size) {
-        fNext   = fPrev = nullptr;
-        fBegin  = fEnd = nullptr;
-        fStop   = (char*)this + size;
+        new (&fNext) raw_ptr<Block, DanglingUntriaged>(nullptr);
+        new (&fPrev) raw_ptr<Block, DanglingUntriaged>(nullptr);
+        fBegin = nullptr;
+        fEnd = nullptr;
+        fStop  = (char*)this + size;
+    }
+
+    void destroy() {
+        fNext.~raw_ptr();
+        fPrev.~raw_ptr();
     }
 };
 
@@ -65,6 +76,8 @@ SkDeque::~SkDeque() {
         Block* next = head->fNext;
         if (head != initialHead) {
             this->freeBlock(head);
+        } else {
+            head->destroy();
         }
         head = next;
     }
@@ -236,7 +249,10 @@ SkDeque::Block* SkDeque::allocateBlock(int allocCount) {
 }
 
 void SkDeque::freeBlock(Block* block) {
-    sk_free(block);
+    if (block) {
+        block->destroy();
+        sk_free(block);
+    }
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -259,7 +275,7 @@ void* SkDeque::Iter::next() {
             do {
                 fCurBlock = fCurBlock->fNext;
             } while (fCurBlock != nullptr && fCurBlock->fBegin == nullptr);
-            next = fCurBlock ? fCurBlock->fBegin.get() : nullptr;
+            next = fCurBlock ? fCurBlock->fBegin : nullptr;
         }
         fPos = next;
     }
@@ -299,7 +315,7 @@ void SkDeque::Iter::reset(const SkDeque& d, IterStart startLoc) {
         while (fCurBlock && nullptr == fCurBlock->fBegin) {
             fCurBlock = fCurBlock->fNext;
         }
-        fPos = fCurBlock ? fCurBlock->fBegin.get() : nullptr;
+        fPos = fCurBlock ? fCurBlock->fBegin : nullptr;
     } else {
         // initialize the iterator to start at the back
         fCurBlock = d.fBackBlock;

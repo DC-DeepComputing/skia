@@ -6,7 +6,6 @@
  */
 #include "src/gpu/ganesh/geometry/GrStyledShape.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkArc.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPathEffect.h"
@@ -17,6 +16,7 @@
 #include "include/private/SkIDChangeListener.h"
 #include "include/private/SkMalloc.h"
 #include "include/private/SkTo.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <algorithm>
 #include <cstring>

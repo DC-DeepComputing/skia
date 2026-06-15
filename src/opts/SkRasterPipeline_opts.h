@@ -1705,7 +1705,7 @@ static void patch_memory_contexts(SkSpan<SkRasterPipelineContexts::MemoryCtxPatc
 
         const ptrdiff_t offset = patch.info.bytesPerPixel * (dy * ctx->stride + dx);
         if (patch.info.load) {
-            void* ctxData = SkTAddOffset<void>(ctx->pixels.get(), offset);
+            void* ctxData = SkTAddOffset<void>(ctx->pixels, offset);
             memcpy(patch.scratch, ctxData, patch.info.bytesPerPixel * tail);
         }
 
@@ -1730,7 +1730,7 @@ static void restore_memory_contexts(
 
         const ptrdiff_t offset = patch.info.bytesPerPixel * (dy * ctx->stride + dx);
         if (patch.info.store) {
-            void* ctxData = SkTAddOffset<void>(ctx->pixels.get(), offset);
+            void* ctxData = SkTAddOffset<void>(ctx->pixels, offset);
             memcpy(ctxData, patch.scratch, patch.info.bytesPerPixel * tail);
         }
     }
