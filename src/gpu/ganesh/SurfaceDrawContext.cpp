@@ -677,7 +677,7 @@ void SurfaceDrawContext::drawTexturedQuad(const GrClip* clip,
         // Use the provided subset, although hypothetically we could detect that the cropped local
         // quad is sufficiently inside the subset and the constraint could be dropped.
         this->addDrawOp(finalClip,
-                        ganesh::TextureOp::Make(fContext, std::move(proxyView), srcAlphaType,
+                        ganesh::TextureOp::Make1(fContext, std::move(proxyView), srcAlphaType,
                                                 std::move(textureXform), filter, mm, color,
                                                 saturate, blendMode, aaType, quad, subset));
     }

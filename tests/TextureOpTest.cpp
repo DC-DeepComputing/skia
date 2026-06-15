@@ -93,7 +93,7 @@ static GrOp::Owner create_op(GrDirectContext* dContext, SkRect rect,
     quad.fLocal = GrQuad(rect);
     quad.fEdgeFlags = isAA ? GrQuadAAFlags::kAll : GrQuadAAFlags::kNone;
 
-    return TextureOp::Make(dContext,
+    return TextureOp::Make1(dContext,
                            proxyView,
                            kPremul_SkAlphaType,
                            nullptr,

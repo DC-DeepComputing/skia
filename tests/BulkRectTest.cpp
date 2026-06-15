@@ -206,7 +206,7 @@ static void textureop_creation_test(skiatest::Reporter* reporter, GrDirectContex
             quad.fLocal = GrQuad(set[i].fSrcRect);
             quad.fEdgeFlags = set[i].fAAFlags;
 
-            GrOp::Owner op = TextureOp::Make(dContext,
+            GrOp::Owner op = TextureOp::Make1(dContext,
                                              set[i].fProxyView,
                                              set[i].fSrcAlphaType,
                                              nullptr,
