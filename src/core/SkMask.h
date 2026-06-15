@@ -164,7 +164,7 @@ template <> struct SkMask::AlphaIter<SkMask::kBW_Format> {
     bool operator<(const AlphaIter& that) const {
         return fPtr < that.fPtr || (fPtr == that.fPtr && fOffset > that.fOffset);
     }
-    raw_ptr<const uint8_t, AllowPtrArithmetic> fPtr;
+    raw_ptr<const uint8_t, AllowPtrArithmetic | DanglingUntriaged> fPtr;
     int fOffset;
 };
 
@@ -179,7 +179,7 @@ template <> struct SkMask::AlphaIter<SkMask::kA8_Format> {
     }
     uint8_t operator*() const { return *fPtr; }
     bool operator<(const AlphaIter& that) const { return fPtr < that.fPtr; }
-    raw_ptr<const uint8_t, AllowPtrArithmetic> fPtr;
+    raw_ptr<const uint8_t, AllowPtrArithmetic | DanglingUntriaged> fPtr;
 };
 
 template <> struct SkMask::AlphaIter<SkMask::kARGB32_Format> {
@@ -193,7 +193,7 @@ template <> struct SkMask::AlphaIter<SkMask::kARGB32_Format> {
     }
     uint8_t operator*() const { return SkGetPackedA32(*fPtr); }
     bool operator<(const AlphaIter& that) const { return fPtr < that.fPtr; }
-    raw_ptr<const uint32_t, AllowPtrArithmetic> fPtr;
+    raw_ptr<const uint32_t, AllowPtrArithmetic | DanglingUntriaged> fPtr;
 };
 
 template <> struct SkMask::AlphaIter<SkMask::kLCD16_Format> {
@@ -213,7 +213,7 @@ template <> struct SkMask::AlphaIter<SkMask::kLCD16_Format> {
         return (r + g + b) / 3;
     }
     bool operator<(const AlphaIter& that) const { return fPtr < that.fPtr; }
-    raw_ptr<const uint16_t, AllowPtrArithmetic> fPtr;
+    raw_ptr<const uint16_t, AllowPtrArithmetic | DanglingUntriaged> fPtr;
 };
 
 ///////////////////////////////////////////////////////////////////////////////

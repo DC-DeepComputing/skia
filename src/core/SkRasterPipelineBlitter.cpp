@@ -93,6 +93,7 @@ public:
         , fDirectBlitPaintColor(paint.getColor4f())
     {}
 
+
     void blitH     (int x, int y, int w)                            override;
     void blitAntiH (int x, int y, const SkAlpha[], const int16_t[]) override;
     void blitAntiH2(int x, int y, U8CPU a0, U8CPU a1)               override;
@@ -111,13 +112,13 @@ private:
     void appendClipLerp     (SkRasterPipeline*) const;
 
     SkPixmap               fDst;
-    raw_ptr<SkArenaAlloc> fAlloc;
+    raw_ptr<SkArenaAlloc, DanglingUntriaged> fAlloc;
     SkRasterPipeline       fColorPipeline;
     SkRasterPipeline       fBlendPipeline;
     // If the blender is a blend-mode, we retain that information for late-stage optimizations
     std::optional<SkBlendMode> fBlendMode;
     // set to pipeline storage (for alpha) if we have a clipShader
-    raw_ptr<void> fClipShaderBuffer = nullptr; // "native" : float or U16
+    raw_ptr<void, DanglingUntriaged> fClipShaderBuffer = nullptr; // "native" : float or U16
 
     bool fCanDirectBlit;
     const SkColor4f fDirectBlitPaintColor;
