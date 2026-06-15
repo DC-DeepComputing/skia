@@ -75,7 +75,7 @@ private:
     friend class SkAAClipBlitter;
 
     SkIRect  fBounds;
-    raw_ptr<RunHead> fRunHead;
+    raw_ptr<RunHead, DanglingUntriaged> fRunHead;
 
     void freeRuns();
 
@@ -111,8 +111,8 @@ public:
     void blitMask(const SkMask&, const SkIRect& clip) override;
 
 private:
-    raw_ptr<SkBlitter> fBlitter;
-    raw_ptr<const SkAAClip> fAAClip;
+    raw_ptr<SkBlitter, DanglingUntriaged> fBlitter;
+    raw_ptr<const SkAAClip, DanglingUntriaged> fAAClip;
     SkIRect         fAAClipBounds;
 
     // point into fScanlineScratch

@@ -48,7 +48,7 @@ struct SkBitmapProcState {
                                   int count,
                                   SkPMColor colors[]);
 
-    raw_ptr<const SkImage_Base> fImage;
+    raw_ptr<const SkImage_Base, DanglingUntriaged> fImage;
 
     SkPixmap                fPixmap;
     SkMatrix                fInvMatrix;         // This changes based on tile mode.
@@ -89,7 +89,7 @@ struct SkBitmapProcState {
 
 private:
     // found by inspection. If this is too small, we will allocate on the heap.
-    static constexpr size_t kBMStateSize = 136;
+    static constexpr size_t kBMStateSize = 256;
     SkSTArenaAlloc<kBMStateSize> fAlloc;
 
     ShaderProc32        fShaderProc32;      // chooseProcs

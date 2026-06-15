@@ -171,7 +171,7 @@ private:
     static const size_t kSize = kSizeAlign4;
 #endif
 
-    raw_ptr<void> fPtr;
+    raw_ptr<void, DanglingUntriaged> fPtr;
     size_t      fSize;  // can be larger than the requested size (see kReuse)
     uint32_t    fStorage[kSize >> 2];
 };
