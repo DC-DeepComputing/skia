@@ -64,7 +64,7 @@ constexpr int kRunArrayStackCount = 256;
 //   - Uses sk_realloc_throw()
 //   - Can never be made smaller.
 // Measurement:  for the `region_union_16` benchmark, this is 6% faster.
-class RunArray {
+class RunArray : SkNoncopyable {
 public:
     RunArray() { fPtr = fStack; }
     #ifdef SK_DEBUG
@@ -81,8 +81,10 @@ public:
             SkSafeMath safe;
             int newCount = safe.addInt(count, count >> 1);
             count = safe ? newCount : SK_MaxS32;
+            bool wasStack = (fPtr == fStack);
+            fPtr = nullptr;
             fMalloc.realloc(count);
-            if (fPtr == fStack) {
+            if (wasStack) {
                 memcpy(fMalloc.get(), fStack, fCount * sizeof(SkRegionPriv::RunType));
             }
             fPtr = fMalloc.get();
@@ -93,7 +95,7 @@ private:
     SkRegionPriv::RunType fStack[kRunArrayStackCount];
     AutoTMalloc<SkRegionPriv::RunType> fMalloc;
     int fCount = kRunArrayStackCount;
-    raw_ptr<SkRegionPriv::RunType, AllowPtrArithmetic> fPtr;  // non-owning pointer
+    raw_ptr<SkRegionPriv::RunType, AllowPtrArithmetic | DanglingUntriaged> fPtr;  // non-owning pointer
 };
 
 /*  Pass in the beginning with the intervals.
@@ -184,6 +186,7 @@ void SkRegion::allocateRuns(const RunHead& head) {
                               head.getYSpanCount(),
                               head.getIntervalCount());
 }
+
 
 SkRegion& SkRegion::operator=(const SkRegion& src) {
     (void)this->setRegion(src);
@@ -709,10 +712,11 @@ static void assert_valid_pair(int left, int rite)
 #endif
 
 struct spanRec {
-    raw_ptr<const SkRegionPriv::RunType, AllowPtrArithmetic> fA_runs;
-    raw_ptr<const SkRegionPriv::RunType, AllowPtrArithmetic> fB_runs;
+    raw_ptr<const SkRegionPriv::RunType, AllowPtrArithmetic | DanglingUntriaged> fA_runs;
+    raw_ptr<const SkRegionPriv::RunType, AllowPtrArithmetic | DanglingUntriaged> fB_runs;
     int                         fA_left, fA_rite, fB_left, fB_rite;
     int                         fLeft, fRite, fInside;
+
 
     void init(const SkRegionPriv::RunType a_runs[],
               const SkRegionPriv::RunType b_runs[]) {
@@ -881,6 +885,7 @@ public:
         , fTop((SkRegionPriv::RunType)top)  // just a first guess, we might update this
         { SkASSERT((unsigned)op <= 3); }
 
+
     void addSpan(int bottom, const SkRegionPriv::RunType a_runs[],
                  const SkRegionPriv::RunType b_runs[]) {
         // skip X values and slots for the next Y+intervalCount
@@ -924,7 +929,7 @@ public:
     uint8_t fMin, fMax;
 
 private:
-    raw_ptr<RunArray> fArray;
+    raw_ptr<RunArray, DanglingUntriaged> fArray;
     int fStartDst = 0;
     int fPrevDst = 1;
     size_t fPrevLen = 0;  // will never match a length from operate_on_span

@@ -7,6 +7,7 @@
 
 #ifndef SkTLazy_DEFINED
 #include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #define SkTLazy_DEFINED
 
@@ -160,13 +161,13 @@ public:
 
     SkTCopyOnFirstWrite& operator=(const SkTCopyOnFirstWrite& that) {
         fLazy = that.fLazy;
-        fObj  = fLazy.has_value() ? &fLazy.value() : that.fObj.get();
+        fObj  = fLazy.has_value() ? &fLazy.value() : that.fObj;
         return *this;
     }
 
     SkTCopyOnFirstWrite& operator=(SkTCopyOnFirstWrite&& that) {
         fLazy = std::move(that.fLazy);
-        fObj  = fLazy.has_value() ? &fLazy.value() : that.fObj.get();
+        fObj  = fLazy.has_value() ? &fLazy.value() : that.fObj;
         return *this;
     }
 
@@ -210,8 +211,11 @@ public:
 
     const T& operator *() const { return *fObj; }
 
+    ~SkTCopyOnFirstWrite() { fObj = nullptr; }
+
 private:
-    raw_ptr<const T> fObj;
+    // RAW_PTR_EXCLUSION: Wraps stack variables or interior member storage
+    RAW_PTR_EXCLUSION const T* fObj = nullptr;
     std::optional<T> fLazy;
 };
 

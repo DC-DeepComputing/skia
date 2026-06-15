@@ -617,9 +617,7 @@ SkBlitter* SkBlitterClipper::apply(SkBlitter* blitter, const SkRegion* clip,
 bool SkBlitter::UseLegacyBlitter(const SkPixmap& device,
                                  const SkPaint& paint,
                                  const SkMatrix& matrix) {
-    if (gSkForceRasterPipelineBlitter) {
-        return false;
-    }
+    return false;
 #if defined(SK_FORCE_RASTER_PIPELINE_BLITTER)
     return false;
 #else
