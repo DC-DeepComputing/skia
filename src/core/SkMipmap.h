@@ -95,7 +95,7 @@ protected:
 
 private:
     sk_sp<SkColorSpace> fCS;
-    raw_ptr<Level, AllowPtrArithmetic> fLevels;    // managed by the baseclass, may be null due to onDataChanged.
+    raw_ptr<Level, AllowPtrArithmetic | DanglingUntriaged> fLevels;    // managed by the baseclass, may be null due to onDataChanged.
     int                 fCount;
 
     SkMipmap(void* malloc, size_t size);
