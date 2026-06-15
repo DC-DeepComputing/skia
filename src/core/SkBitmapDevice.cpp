@@ -64,7 +64,7 @@ class SkDrawTiler {
     // 8K is 1 too big, since 8K << supersample == 32768 which is too big for SkFixed
     static constexpr int kMaxDim = 8192 - 1;
 
-    raw_ptr<SkBitmapDevice> fDevice;
+    raw_ptr<SkBitmapDevice, DanglingUntriaged> fDevice;
     SkPixmap        fRootPixmap;
     SkIRect         fSrcBounds;
 
@@ -260,6 +260,8 @@ SkBitmapDevice::SkBitmapDevice(skcpu::RecorderImpl* recorder,
         , fGlyphPainter(this->surfaceProps(), bitmap.colorType(), bitmap.colorSpace()) {
     SkASSERT(valid_for_bitmap_device(bitmap.info(), nullptr));
 }
+
+SkBitmapDevice::~SkBitmapDevice() = default;
 
 sk_sp<SkBitmapDevice> SkBitmapDevice::Create(const SkImageInfo& origInfo,
                                              const SkSurfaceProps& surfaceProps,
