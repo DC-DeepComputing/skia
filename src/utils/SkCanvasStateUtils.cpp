@@ -145,9 +145,11 @@ public:
     SkMCState mcState;
 
     int32_t layerCount;
-    raw_ptr<SkCanvasLayerState, AllowPtrArithmetic> layers;
+    // RAW_PTR_EXCLUSION: C ABI flat struct copied via raw memcpy
+    RAW_PTR_EXCLUSION SkCanvasLayerState* layers;
 private:
-    raw_ptr<SkCanvas> originalCanvas;
+    // RAW_PTR_EXCLUSION: C ABI flat struct copied via raw memcpy
+    RAW_PTR_EXCLUSION SkCanvas* originalCanvas;
     using INHERITED = SkCanvasState;
 };
 
