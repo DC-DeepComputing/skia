@@ -22,6 +22,30 @@
       },
       "revId": "ca1c22f31dc502bc34f9d7037d5c2a7ff9734bb0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "258a689c_548ba081",
+        "filename": "bazel/external/dawn/generate_dawn_files.py",
+        "patchSetId": 23
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-15T12:13:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1b89090a_164c03c6",
+      "range": {
+        "startLine": 1,
+        "startChar": 11,
+        "endLine": 1,
+        "endChar": 14
+      },
+      "revId": "ca1c22f31dc502bc34f9d7037d5c2a7ff9734bb0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
