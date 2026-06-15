@@ -30,12 +30,14 @@
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkColorData.h"
 #include "src/core/SkColorSpacePriv.h"
+#include "src/core/SkHalf.h"
 #include "src/core/SkMathPriv.h"
 #include "src/core/SkRasterPipeline.h"
 #include "src/core/SkRasterPipelineOpContexts.h"
 #include "src/core/SkRasterPipelineOpList.h"
 #include "src/core/SkRuntimeEffectPriv.h"
 #include "src/core/SkVx.h"
+#include "src/gpu/GradientBitmap.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrColorInfo.h"
 #include "src/gpu/ganesh/GrColorSpaceXform.h"
@@ -495,6 +497,144 @@ static std::unique_ptr<GrFragmentProcessor> make_looping_binary_colorizer(const 
     return make_looping_colorizer(intervalCount, scales, biases, thresholds);
 }
 
+// Many-stop analytic colorizer. Interval (scale, bias) pairs and the interval
+// thresholds are all read from a single F16 RGBA texture. The thresholds use the
+// precision-preserving (mantissa, exponent) encoding shared with Graphite's
+// gradient textures (skgpu::EncodeGradientStopToHalf), recovered in the shader
+// as mantissa * exp2(exponent), so the binary-search compare doesn't lose stops
+// to half rounding even though the thresholds live in the texture rather than a
+// uniform array. That removes the fixed uniform-array limit; the gradient is
+// bounded only by the maximum texture width.
+//
+// Texture layout (width = intervalCount):
+//   Row 0: scale[i]
+//   Row 1: bias[i]
+//   Row 2: threshold[i] encoded as (mantissa, exponent, 0, 1)
+static constexpr int kMaxBufferedLoopCount = 24;
+static std::unique_ptr<GrFragmentProcessor> make_buffered_colorizer(const SkPMColor4f* colors,
+                                                                    const SkScalar* positions,
+                                                                    int count,
+                                                                    const GrFPArgs& args) {
+    if (count < 2) {
+        return nullptr;
+    }
+    const int maxTextureSize = args.fSurfaceDrawContext->caps()->maxTextureSize();
+
+    AutoSTArray<256, SkPMColor4f> scales(count);
+    AutoSTArray<256, SkPMColor4f> biases(count);
+    AutoSTArray<256, SkScalar> thresholds(count);
+    int intervalCount = build_intervals(
+            count, colors, positions, count, scales.get(), biases.get(), thresholds.get());
+    if (intervalCount <= 0 || intervalCount > maxTextureSize) {
+        return nullptr;
+    }
+
+    // The binary search runs over a power-of-two index range so it converges in
+    // exactly loopCount iterations. Indices past the real interval count clamp
+    // to the last interval (see the sampler note in the shader).
+    int loopCount = SkNextLog2(intervalCount);
+    if (loopCount > kMaxBufferedLoopCount) {
+        return nullptr;
+    }
+
+    SkImageInfo info =
+            SkImageInfo::Make(intervalCount, 3, kRGBA_F16_SkColorType, kPremul_SkAlphaType);
+    SkBitmap bitmap;
+    if (!bitmap.tryAllocPixels(info)) {
+        return nullptr;
+    }
+    auto storeHalf4 = [](uint16_t* dst, float r, float g, float b, float a) {
+        dst[0] = SkFloatToHalf(r);
+        dst[1] = SkFloatToHalf(g);
+        dst[2] = SkFloatToHalf(b);
+        dst[3] = SkFloatToHalf(a);
+    };
+    uint16_t* scaleRow = static_cast<uint16_t*>(bitmap.getAddr(0, 0));
+    uint16_t* biasRow = static_cast<uint16_t*>(bitmap.getAddr(0, 1));
+    uint16_t* thresholdRow = static_cast<uint16_t*>(bitmap.getAddr(0, 2));
+    for (int i = 0; i < intervalCount; ++i) {
+        const SkPMColor4f& s = scales[i];
+        const SkPMColor4f& b = biases[i];
+        storeHalf4(scaleRow + i * 4, s.fR, s.fG, s.fB, s.fA);
+        storeHalf4(biasRow + i * 4, b.fR, b.fG, b.fB, b.fA);
+
+        float mantissa, exponent;
+        if (!skgpu::EncodeGradientStopToHalf(thresholds[i], &mantissa, &exponent)) {
+            return nullptr;
+        }
+        storeHalf4(thresholdRow + i * 4, mantissa, exponent, 0.f, 1.f);
+    }
+    bitmap.setImmutable();
+
+    auto view =
+            std::get<0>(GrMakeCachedBitmapProxyView(args.fSurfaceDrawContext->recordingContext(),
+                                                    GrMippedBitmap(bitmap),
+                                                    /*label=*/"BufferedGradientColorizer",
+                                                    skgpu::Mipmapped::kNo));
+    if (!view) {
+        return nullptr;
+    }
+    auto coefData = GrTextureEffect::Make(
+            std::move(view), kPremul_SkAlphaType, SkMatrix::I(), GrSamplerState::Filter::kNearest);
+
+    struct EffectCacheEntry {
+        SkOnce once;
+        const SkRuntimeEffect* effect;
+    };
+    static EffectCacheEntry effectCache[kMaxBufferedLoopCount + 1];
+    EffectCacheEntry* cacheEntry = &effectCache[loopCount];
+
+    cacheEntry->once([loopCount, cacheEntry] {
+        // clang-format off
+        SkString sksl = SkStringPrintf(
+        "#version 300\n" // important space to separate token.
+        "uniform shader coefData;"
+
+        "half4 main(float2 coord) {"
+            "float t = coord.x;"
+
+            // Binary search for the first interval whose upper threshold
+            // exceeds t. Thresholds are stored on row 2 as (mantissa, exponent)
+            // and recovered with mantissa * exp2(exponent), keeping full float
+            // precision in the compare.
+            "int low = 0;"
+            "int high = %d;"
+            "for (int loop = 0; loop < %d; ++loop) {"
+                "int mid = (low + high) / 2;"
+                "float2 enc = float2(coefData.eval(float2(float(mid) + 0.5, 2.5)).xy);"
+                "float threshold = enc.x * exp2(enc.y);"
+                "if (t < threshold) {"
+                    "high = mid;"
+                "} else {"
+                    "low = mid + 1;"
+                "}"
+            "}"
+            // `low` may land in [intervalCount, 2^loopCount) when t is past the
+            // last real threshold; the kClamp/kNearest sampler on `coefData`
+            // (width = intervalCount) reads the last real texel for those
+            // coords, which is the value we want.
+            "float x = float(low) + 0.5;"
+            "float4 s = float4(coefData.eval(float2(x, 0.5)));"
+            "float4 b = float4(coefData.eval(float2(x, 1.5)));"
+            "return half4(t * s + b);"
+        "}"
+        , /* high: */ (1 << loopCount) - 1,
+          /* loopCount: */ loopCount);
+        // clang-format on
+
+        auto result = SkRuntimeEffect::MakeForShader(std::move(sksl));
+        SkASSERTF(result.effect, "%s", result.errorText.c_str());
+        cacheEntry->effect = result.effect.release();
+    });
+
+    return GrSkSLFP::Make(cacheEntry->effect,
+                          "BufferedGradientColorizer",
+                          /*inputFP=*/nullptr,
+                          GrSkSLFP::OptFlags::kNone,
+                          "coefData",
+                          std::move(coefData));
+}
+
 // Analyze the shader's color stops and positions and chooses an appropriate colorizer to represent
 // the gradient.
 static std::unique_ptr<GrFragmentProcessor> make_uniform_colorizer(const SkPMColor4f* colors,
@@ -581,6 +721,16 @@ static std::unique_ptr<GrFragmentProcessor> make_uniform_colorizer(const SkPMCol
         colorizer = caps->fNonconstantArrayIndexSupport
                             ? make_looping_binary_colorizer(colors, positions, count)
                             : make_unrolled_binary_colorizer(colors, positions, count);
+        if (colorizer) {
+            return colorizer;
+        }
+    }
+
+    // Too many stops for the uniform-array colorizers; try the texture-backed
+    // analytic path before falling through to the bitmap colorizer.
+    if (count > kMaxLoopingColorCount && caps->fNonconstantArrayIndexSupport &&
+        !intervalsExceedPrecisionLimit()) {
+        auto colorizer = make_buffered_colorizer(colors, positions, count, args);
         if (colorizer) {
             return colorizer;
         }

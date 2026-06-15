@@ -35,6 +35,7 @@
 #include "src/effects/colorfilters/SkWorkingFormatColorFilter.h"
 #include "src/gpu/Blend.h"
 #include "src/gpu/DitherUtils.h"
+#include "src/gpu/GradientBitmap.h"
 #include "src/gpu/Swizzle.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/DrawContext.h"
@@ -2420,26 +2421,15 @@ static SkBitmap create_color_and_offset_bitmap(int numStops,
         float offset = offsets ? offsets[i] : SkIntToFloat(i) / (numStops - 1);
         SkASSERT(offset >= 0.0f && offset <= 1.0f);
 
-        int exponent;
-        float mantissa = frexp(offset, &exponent);
-
-        SkHalf halfE = SkFloatToHalf(exponent);
-        if ((int)SkHalfToFloat(halfE) != exponent) {
+        float mantissa, exponent;
+        if (!skgpu::EncodeGradientStopToHalf(offset, &mantissa, &exponent)) {
             SKIA_LOG_W("Encoding gradient to f16 failed");
             return {};
         }
 
-#if defined(SK_DEBUG)
-        SkHalf halfM = SkFloatToHalf(mantissa);
-
-        float restored = ldexp(SkHalfToFloat(halfM), (int)SkHalfToFloat(halfE));
-        float error = abs(restored - offset);
-        SkASSERT(error < 0.001f);
-#endif
-
         // TODO: we're only using 2 of the f16s here. The encoding could be altered to better
         // preserve precision. This encoding yields < 0.001f error for 2^20 evenly spaced stops.
-        colorsAndOffsetsBitmap.erase(SkColor4f{mantissa, (float)exponent, 0, 1},
+        colorsAndOffsetsBitmap.erase(SkColor4f{mantissa, exponent, 0, 1},
                                      SkIRect::MakeXYWH(i, 1, 1, 1));
     }
 
