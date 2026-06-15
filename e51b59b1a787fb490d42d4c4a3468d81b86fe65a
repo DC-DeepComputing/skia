@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "85837f75_63ba513f",
+        "filename": "src/gpu/ganesh/gradients/GrGradientShader.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 556,
+      "author": {
+        "id": 4329740
+      },
+      "writtenOn": "2026-06-15T20:39:32Z",
+      "side": 1,
+      "message": "Switched the buffered colorizer to store the thresholds in the texture instead of the uniform float4 array, using the same (mantissa, exponent) frexp encoding Graphite already uses for its offsets so we don\u0027t lose precision in the binary-search compare.\n\nThe shader recovers the value with mantissa * exp2(exponent).\n\nI pulled the encoding out into a shared helper, skgpu::EncodeGradientStopToHalf in src/gpu/GradientBitmap.{h,cpp}, and switched Graphite\u0027s create_color_and_offset_bitmap over to it too.\n\nWith the thresholds out of the uniform array, the old fixed cap is gone, the gradient is now bounded only by the max texture width. Texture layout is row 0 \u003d scale, row 1 \u003d bias, row 2 \u003d threshold (mantissa, exponent).\n\nnot a committer, could you trigger bots?",
+      "parentUuid": "af055d5c_a57f8daf",
+      "range": {
+        "startLine": 538,
+        "startChar": 4,
+        "endLine": 556,
+        "endChar": 26
+      },
+      "revId": "e51b59b1a787fb490d42d4c4a3468d81b86fe65a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9c04febc_585c13c1",
         "filename": "src/gpu/ganesh/gradients/GrGradientShader.cpp",
         "patchSetId": 2
@@ -37,6 +61,30 @@
       "writtenOn": "2026-06-15T13:50:12Z",
       "side": 1,
       "message": "This can just be `SkStringPrintf` I think.",
+      "range": {
+        "startLine": 579,
+        "startChar": 8,
+        "endLine": 582,
+        "endChar": 0
+      },
+      "revId": "e51b59b1a787fb490d42d4c4a3468d81b86fe65a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "32d76410_6e50fe59",
+        "filename": "src/gpu/ganesh/gradients/GrGradientShader.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 582,
+      "author": {
+        "id": 4329740
+      },
+      "writtenOn": "2026-06-15T20:39:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9c04febc_585c13c1",
       "range": {
         "startLine": 579,
         "startChar": 8,
