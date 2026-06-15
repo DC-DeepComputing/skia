@@ -410,17 +410,25 @@ SkContourMeasure* SkContourMeasureIter::Impl::buildSegments() {
 
             case SkPathVerb::kConic: {
                 SkASSERT(haveSeenMoveTo);
-                const SkConic conic(pts, *w);
                 SkScalar prevD = distance;
-                distance = this->compute_conic_segs(conic, distance, 0, conic.fPts[0],
-                                                    kMaxTValue, conic.fPts[2], ptIndex);
-                if (distance > prevD) {
-                    // we store the conic weight in our next point, followed by the last 2 pts
-                    // thus to reconstitue a conic, you'd need to say
-                    // SkConic(pts[0], pts[2], pts[3], weight = pts[1].fX)
-                    fPts.append()->set(conic.fW, 0);
-                    fPts.append(2, pts + 1);
-                    ptIndex += 3;
+                if (*w <= 0) {
+                    distance = this->compute_line_seg(pts[0], pts[2], distance, ptIndex);
+                    if (distance > prevD) {
+                        fPts.append(1, pts + 2);
+                        ptIndex++;
+                    }
+                } else {
+                    const SkConic conic(pts, *w);
+                    distance = this->compute_conic_segs(conic, distance, 0, conic.fPts[0],
+                                                        kMaxTValue, conic.fPts[2], ptIndex);
+                    if (distance > prevD) {
+                        // we store the conic weight in our next point, followed by the last 2 pts
+                        // thus to reconstitue a conic, you'd need to say
+                        // SkConic(pts[0], pts[2], pts[3], weight = pts[1].fX)
+                        fPts.append()->set(conic.fW, 0);
+                        fPts.append(2, pts + 1);
+                        ptIndex += 3;
+                    }
                 }
             } break;
 

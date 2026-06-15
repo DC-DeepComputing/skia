@@ -17,6 +17,7 @@
 #include "include/core/SkPath.h"
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkPathUtils.h"
+#include "include/core/SkPathMeasure.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRRect.h"
 #include "include/core/SkRect.h"
@@ -5666,4 +5667,13 @@ DEF_TEST(path_b511244869, reporter) {
     // This should not crash or trigger an assertion in debug builds.
     SkPath transformed = path.makeTransform(m);
     REPORTER_ASSERT(reporter, transformed.isEmpty());
+}
+
+DEF_TEST(path_measure_conic_weight_zero, reporter) {
+    SkPath path = SkPathBuilder()
+                    .moveTo(0, 0)
+                    .conicTo(10, 10, 20, 0, 0.0f)
+                    .detach();
+    SkPathMeasure meas(path, false);
+    (void)meas.getLength(); // This should trigger the assertion failure
 }
