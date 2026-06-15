@@ -243,7 +243,7 @@ public:
                                          filter, mm, color, saturate, aaType, quad, subset);
     }
 
-    static GrOp::Owner Make(GrRecordingContext* context,
+    static GrOp::Owner MakeN(GrRecordingContext* context,
                             GrTextureSetEntry set[],
                             int cnt,
                             int proxyRunCnt,
@@ -650,6 +650,8 @@ private:
             fQuads.append(extra.fDevice, {color, subset, extra.fEdgeFlags}, &extra.fLocal);
             fMetadata.fTotalQuadCount++;
         }
+        SkDebugf("appendQuad: added %d to quadCount = %d\n", quadCount, fQuads.count());
+        SkAssertResult(fQuads.count() < GrResourceProvider::MaxNumNonAAQuads());
         return quadCount;
     }
 
@@ -1262,10 +1264,32 @@ public:
             , fTextureColorSpaceXform(textureColorSpaceXform)
             , fNumLeft(numEntries) {}
 
-    void createOp(GrTextureSetEntry set[], int clumpSize, GrAAType aaType) {
+    int determineClumpSize(const GrTextureSetEntry set[], int quadLimit) const {
+        bool hasPersp = fViewMatrix.hasPerspective();
+
+        int conservativeNumQuads = 0;
+        for (int i = 0; i < fNumLeft; ++i) {
+            int absIndex = this->baseIndex() + i;
+
+            bool hasPrePersp = false;
+            if (set[absIndex].fPreViewMatrix) {
+                hasPrePersp = set[absIndex].fPreViewMatrix->hasPerspective();
+            }
+
+            // A perspective quad could split into two quads
+            conservativeNumQuads += hasPersp || hasPrePersp ? 2 : 1;
+            if (conservativeNumQuads >= quadLimit) {
+                return i-1;
+            }
+        }
+
+        return fNumLeft;
+    }
+
+    void createOpN(GrTextureSetEntry set[], int clumpSize, GrAAType aaType) {
 
         int clumpProxyCount = proxy_run_count(&set[fNumClumped], clumpSize);
-        GrOp::Owner op = TextureOpImpl::Make(fContext,
+        GrOp::Owner op = TextureOpImpl::MakeN(fContext,
                                              &set[fNumClumped],
                                              clumpSize,
                                              clumpProxyCount,
@@ -1314,7 +1338,8 @@ void TextureOp::AddTextureSetOps(ganesh::SurfaceDrawContext* sdc,
                                  GrAAType aaType,
                                  SkCanvas::SrcRectConstraint constraint,
                                  const SkMatrix& viewMatrix,
-                                 sk_sp<GrColorSpaceXform> textureColorSpaceXform) {
+                                 sk_sp<GrColorSpaceXform> textureColorSpaceXform,
+                                 bool setMayHavePersp) {
     // Ensure that the index buffer limits are lower than the proxy and quad count limits of
     // the op's metadata so we don't need to worry about overflow.
     SkDEBUGCODE(TextureOpImpl::ValidateResourceLimits();)
@@ -1358,9 +1383,9 @@ void TextureOp::AddTextureSetOps(ganesh::SurfaceDrawContext* sdc,
 
     // Second check if we can always just make a single op and avoid the extra iteration
     // needed to clump things together.
-    if (cnt <= std::min(GrResourceProvider::MaxNumNonAAQuads(),
-                      GrResourceProvider::MaxNumAAQuads())) {
-        auto op = TextureOpImpl::Make(context, set, cnt, proxyRunCnt, filter, mm, saturate, aaType,
+    if (!setMayHavePersp && cnt <= std::min(GrResourceProvider::MaxNumNonAAQuads(),
+                                            GrResourceProvider::MaxNumAAQuads())) {
+        auto op = TextureOpImpl::MakeN(context, set, cnt, proxyRunCnt, filter, mm, saturate, aaType,
                                       constraint, viewMatrix, std::move(textureColorSpaceXform));
         sdc->addDrawOp(clip, std::move(op));
         return;
@@ -1373,9 +1398,9 @@ void TextureOp::AddTextureSetOps(ganesh::SurfaceDrawContext* sdc,
     if (aaType == GrAAType::kNone || aaType == GrAAType::kMSAA) {
         // Clump these into series of MaxNumNonAAQuads-sized GrTextureOps
         while (state.numLeft() > 0) {
-            int clumpSize = std::min(state.numLeft(), GrResourceProvider::MaxNumNonAAQuads());
+            int clumpSize = state.determineClumpSize(set, GrResourceProvider::MaxNumNonAAQuads());
 
-            state.createOp(set, clumpSize, aaType);
+            state.createOpN(set, clumpSize, aaType);
         }
     } else {
         // kCoverage can be downgraded to kNone. Note that the following is conservative. kCoverage
@@ -1383,25 +1408,34 @@ void TextureOp::AddTextureSetOps(ganesh::SurfaceDrawContext* sdc,
         // axis-aligned.
         SkASSERT(aaType == GrAAType::kCoverage);
 
+        bool hasPersp = viewMatrix.hasPerspective();
+
         while (state.numLeft() > 0) {
             GrAAType runningAA = GrAAType::kNone;
             bool clumped = false;
 
+            int conservativeNumQuads = 0;
+
             for (int i = 0; i < state.numLeft(); ++i) {
                 int absIndex = state.baseIndex() + i;
+
+                bool hasPrePersp = false;
+                if (set[absIndex].fPreViewMatrix) {
+                    hasPrePersp = set[absIndex].fPreViewMatrix->hasPerspective();
+                }
+
+                // A perspective quad could split into two quads
+                conservativeNumQuads += hasPersp || hasPrePersp ? 2 : 1;
 
                 if (set[absIndex].fAAFlags != GrQuadAAFlags::kNone ||
                     runningAA == GrAAType::kCoverage) {
 
-                    if (i >= GrResourceProvider::MaxNumAAQuads()) {
+                    if (conservativeNumQuads >= GrResourceProvider::MaxNumAAQuads()) {
                         // Here we either need to boost the AA type to kCoverage, but doing so with
                         // all the accumulated quads would overflow, or we have a set of AA quads
                         // that has just gotten too large. In either case, calve off the existing
                         // quads as their own TextureOp.
-                        state.createOp(
-                            set,
-                            runningAA == GrAAType::kNone ? i : GrResourceProvider::MaxNumAAQuads(),
-                            runningAA); // maybe downgrading AA here
+                        state.createOpN(set, i-1, runningAA); // maybe downgrading AA here
                         clumped = true;
                         break;
                     }
@@ -1409,11 +1443,12 @@ void TextureOp::AddTextureSetOps(ganesh::SurfaceDrawContext* sdc,
                     runningAA = GrAAType::kCoverage;
                 } else if (runningAA == GrAAType::kNone) {
 
-                    if (i >= GrResourceProvider::MaxNumNonAAQuads()) {
+                    if (conservativeNumQuads >= GrResourceProvider::MaxNumNonAAQuads()) {
                         // Here we've found a consistent batch of non-AA quads that has gotten too
                         // large. Calve it off as its own TextureOp.
-                        state.createOp(set, GrResourceProvider::MaxNumNonAAQuads(),
-                                       GrAAType::kNone); // definitely downgrading AA here
+                        // The last increment of 'i' drove it over the edge so exclude the
+                        // current quad.
+                        state.createOpN(set, i-1, GrAAType::kNone); // definitely downgrading AA here
                         clumped = true;
                         break;
                     }
@@ -1423,7 +1458,7 @@ void TextureOp::AddTextureSetOps(ganesh::SurfaceDrawContext* sdc,
             if (!clumped) {
                 // We ran through the above loop w/o hitting a limit. Spit out this last clump of
                 // quads and call it a day.
-                state.createOp(set, state.numLeft(), runningAA); // maybe downgrading AA here
+                state.createOpN(set, state.numLeft(), runningAA); // maybe downgrading AA here
             }
         }
     }
