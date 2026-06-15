@@ -466,7 +466,7 @@ struct Edge {
     SkRegionPriv::RunType fX;
     SkRegionPriv::RunType fY0, fY1;
     uint8_t fFlags;
-    raw_ptr<Edge> fNext;
+    raw_ptr<Edge, DanglingUntriaged> fNext;
 
     void set(int x, int y0, int y1) {
         SkASSERT(y0 != y1);

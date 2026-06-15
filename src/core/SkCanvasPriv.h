@@ -33,7 +33,7 @@ public:
     ~SkAutoCanvasMatrixPaint();
 
 private:
-    raw_ptr<SkCanvas> fCanvas;
+    raw_ptr<SkCanvas, DanglingUntriaged> fCanvas;
     int         fSaveCount;
 };
 
@@ -162,7 +162,7 @@ private:
     void addLayer(const SkPaint& restorePaint, const SkRect* drawBounds, bool coverageOnly);
 
     SkPaint         fPaint;
-    raw_ptr<SkCanvas> fCanvas;
+    raw_ptr<SkCanvas, DanglingUntriaged> fCanvas;
     int             fTempLayersForFilters;
 
     SkDEBUGCODE(int fSaveCount;)
