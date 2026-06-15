@@ -41,7 +41,7 @@ public:
         fClip->validate();
     }
 private:
-    const raw_ref<const SkAAClip> fClip;
+    const raw_ref<const SkAAClip, DanglingUntriaged> fClip;
 };
 
 #ifdef SK_DEBUG
@@ -78,7 +78,7 @@ struct YOffset {
     uint32_t fOffset;
 };
 
-class RowIter {
+class RowIter : SkNoncopyable {
 public:
     RowIter(const uint8_t* row, const SkIRect& bounds) {
         fRow = row;
@@ -117,7 +117,7 @@ public:
     }
 
 private:
-    raw_ptr<const uint8_t, AllowPtrArithmetic> fRow;
+    raw_ptr<const uint8_t, AllowPtrArithmetic | DanglingUntriaged> fRow;
     int             fLeft;
     int             fRight;
     int             fBoundsRight;
@@ -125,7 +125,7 @@ private:
     uint8_t         fAlpha;
 };
 
-class Iter {
+class Iter : SkNoncopyable {
 public:
     Iter() = default;
 
@@ -162,9 +162,9 @@ public:
     }
 
 private:
-    raw_ptr<const YOffset> fCurrYOff = nullptr;
-    raw_ptr<const YOffset> fStopYOff = nullptr;
-    raw_ptr<const uint8_t, AllowPtrArithmetic> fData = nullptr;
+    raw_ptr<const YOffset, DanglingUntriaged> fCurrYOff = nullptr;
+    raw_ptr<const YOffset, DanglingUntriaged> fStopYOff = nullptr;
+    raw_ptr<const uint8_t, AllowPtrArithmetic | DanglingUntriaged> fData = nullptr;
 
     int fTop = kMaxInt32;
     int fBottom = kMaxInt32;
@@ -253,10 +253,10 @@ class SkAAClip::Builder {
     struct Row {
         int fY;
         int fWidth;
-        raw_ptr<SkTDArray<uint8_t>> fData;
+        raw_ptr<SkTDArray<uint8_t>, DanglingUntriaged> fData;
     };
     SkTDArray<Row>  fRows;
-    raw_ptr<Row> fCurrRow;
+    raw_ptr<Row, DanglingUntriaged> fCurrRow;
     int fPrevY;
     int fWidth;
     int fMinY;
@@ -274,6 +274,7 @@ public:
         Row* stop = fRows.end();
         while (row < stop) {
             delete row->fData;
+            row->fData = nullptr;
             row += 1;
         }
     }
@@ -488,6 +489,7 @@ private:
     }
 
     Row* flushRow(bool readyForAnother) {
+        fCurrRow = nullptr;
         Row* next = nullptr;
         int count = fRows.size();
         if (count > 0) {
@@ -506,18 +508,19 @@ private:
                     next = curr;
                 } else {
                     delete curr->fData;
+                    curr->fData = nullptr;
                     fRows.removeShuffle(count - 1);
                 }
             } else {
                 if (readyForAnother) {
                     next = fRows.append();
-                    next->fData = new SkTDArray<uint8_t>;
+                    new (&next->fData) raw_ptr<SkTDArray<uint8_t>, DanglingUntriaged>(new SkTDArray<uint8_t>);
                 }
             }
         } else {
             if (readyForAnother) {
                 next = fRows.append();
-                next->fData = new SkTDArray<uint8_t>;
+                new (&next->fData) raw_ptr<SkTDArray<uint8_t>, DanglingUntriaged>(new SkTDArray<uint8_t>);
             }
         }
         return next;
@@ -808,7 +811,7 @@ public:
     }
 
 private:
-    raw_ptr<Builder> fBuilder;
+    raw_ptr<Builder, DanglingUntriaged> fBuilder;
     int      fLeft; // cache of builder's bounds' left edge
     int      fRight;
     int      fMinY;
@@ -1551,8 +1554,10 @@ bool SkAAClip::translate(int dx, int dy, SkAAClip* dst) const {
 void SkAAClip::freeRuns() {
     if (fRunHead) {
         SkASSERT(fRunHead->fRefCnt.load() >= 1);
-        if (1 == fRunHead->fRefCnt--) {
-            sk_free(fRunHead);
+        RunHead* head = fRunHead;
+        fRunHead = nullptr;
+        if (1 == head->fRefCnt--) {
+            sk_free(head);
         }
     }
 }
