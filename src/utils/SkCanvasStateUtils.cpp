@@ -6,6 +6,7 @@
  */
 
 #include "include/utils/SkCanvasStateUtils.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBitmap.h"
@@ -62,7 +63,8 @@ struct SkMCState {
     float matrix[9];
     // NOTE: this only works for non-antialiased clips
     int32_t clipRectCount;
-    ClipRect* clipRects;
+    // RAW_PTR_EXCLUSION: Part of a stable C ABI struct copied via raw memcpy.
+    RAW_PTR_EXCLUSION ClipRect* clipRects;
 };
 
 // NOTE: If you add more members, create a new subclass of SkCanvasState with a
@@ -79,7 +81,8 @@ struct SkCanvasLayerState {
         struct {
             RasterConfig config; // pixel format: a value from RasterConfigs.
             uint64_t rowBytes;   // Number of bytes from start of one line to next.
-            void* pixels;        // The pixels, all (height * rowBytes) of them.
+            // RAW_PTR_EXCLUSION: Part of a stable C ABI struct inside a union.
+            RAW_PTR_EXCLUSION void* pixels;        // The pixels, all (height * rowBytes) of them.
         } raster;
         struct {
             int32_t textureID;
