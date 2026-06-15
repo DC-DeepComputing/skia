@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ## Changed
+- `PathBuilder.setFillType` returns a reference to the JavaScript `PathBuilder` and does not make
+  a copy of the underlying SkPathBuilder.
 - `Canvas.drawImageCubic` and `Canvas.drawImageOptions` use
   `Fast_SrcRectConstraint` by default which allows the mipmap and filter options
   passed in to not be overwritten.
