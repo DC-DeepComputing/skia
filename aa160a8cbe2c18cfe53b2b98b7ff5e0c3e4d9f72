@@ -33,6 +33,69 @@
       "message": "Hi @fmalita@google.com, @jlavrova@google.com, could you please help take a look this change? Thanks in advance.",
       "revId": "aa160a8cbe2c18cfe53b2b98b7ff5e0c3e4d9f72",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ded0ec0c_42159709",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-06-15T16:35:37Z",
+      "side": 1,
+      "message": "Thanks, looks good to me with a couple of minor suggestions.",
+      "revId": "aa160a8cbe2c18cfe53b2b98b7ff5e0c3e4d9f72",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9bf5fc49_3b2f9209",
+        "filename": "src/pdf/SkPDFGradientShader.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 969,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-06-15T16:35:37Z",
+      "side": 1,
+      "message": "`SkShader::isOpaque()` would almost work instead, except is always returns false for `kDecal` tiling.  I presume `kDecal` + opaque stops does not run into the same issues, so unfortunately it\u0027s not a perfect substitute, but maybe it could be an early exit (since the gradient shader doesn\u0027t have to scan its stops):\n\n```\n    if (shader-\u003eisOpaque()) {\n        return false;\n    }\n```",
+      "range": {
+        "startLine": 964,
+        "startChar": 0,
+        "endLine": 969,
+        "endChar": 35
+      },
+      "revId": "aa160a8cbe2c18cfe53b2b98b7ff5e0c3e4d9f72",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "35cd9376_21930d07",
+        "filename": "src/pdf/SkPDFShader.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 349,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-06-15T16:35:37Z",
+      "side": 1,
+      "message": "Can we push this down to `SkPDFGradientShader::Make`?  I think it could return an invalid indirect reference for non-opaque stops, and then we fall back here.  That would also provide a general fallback mechanism if gradient conversion fails for whatever other reason (prolly not possible atm).\n\nThen `has_alpha` can be a local static, and we can also be more aggressive with some of the checks (e.g. assert non-null gradient, assert !\u003d kNone gradient type, assert stop count \u003e 0 etc).\n\n```\n    if (SkPDFIndirectReference gradientShader \u003d\n            SkPDFGradientShader::Make(doc, shader, canvasTransform, surfaceBBox)) {\n        return gradientShader;\n    }\n```",
+      "range": {
+        "startLine": 346,
+        "startChar": 0,
+        "endLine": 349,
+        "endChar": 9
+      },
+      "revId": "aa160a8cbe2c18cfe53b2b98b7ff5e0c3e4d9f72",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
