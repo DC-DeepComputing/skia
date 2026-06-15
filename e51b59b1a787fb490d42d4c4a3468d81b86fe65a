@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af055d5c_a57f8daf",
+        "filename": "src/gpu/ganesh/gradients/GrGradientShader.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 556,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-15T13:50:12Z",
+      "side": 1,
+      "message": "I believe Graphite stores an encoded texture that includes the thresholds and colors in a way that doesn\u0027t lose information. This could be shared in a utility function in src/gpu for filling the SkBitmap and mean that the thresholds don\u0027t have to be included in a uniform array. Using the uniform array still imposes an upper limit on the size of the gradient.",
+      "range": {
+        "startLine": 538,
+        "startChar": 4,
+        "endLine": 556,
+        "endChar": 26
+      },
+      "revId": "e51b59b1a787fb490d42d4c4a3468d81b86fe65a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c04febc_585c13c1",
+        "filename": "src/gpu/ganesh/gradients/GrGradientShader.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 582,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-15T13:50:12Z",
+      "side": 1,
+      "message": "This can just be `SkStringPrintf` I think.",
+      "range": {
+        "startLine": 579,
+        "startChar": 8,
+        "endLine": 582,
+        "endChar": 0
+      },
+      "revId": "e51b59b1a787fb490d42d4c4a3468d81b86fe65a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
