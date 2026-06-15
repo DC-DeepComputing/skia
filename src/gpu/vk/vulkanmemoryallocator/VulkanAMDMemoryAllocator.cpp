@@ -62,6 +62,7 @@ sk_sp<VulkanMemoryAllocator> VulkanAMDMemoryAllocator::Make(VkInstance instance,
     SKGPU_COPY_FUNCTION_KHR(BindBufferMemory2);
     SKGPU_COPY_FUNCTION_KHR(BindImageMemory2);
     SKGPU_COPY_FUNCTION_KHR(GetPhysicalDeviceMemoryProperties2);
+    SKGPU_COPY_FUNCTION_KHR(GetPhysicalDeviceProperties2);
 
     VmaAllocatorCreateInfo info;
     info.flags = 0;
