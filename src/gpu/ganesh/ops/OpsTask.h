@@ -278,7 +278,7 @@ private:
     // however, requires that the SDC be able to coordinate with the op list to achieve similar ends
     friend class skgpu::ganesh::SurfaceDrawContext;
 
-    raw_ptr<GrAuditTrail> fAuditTrail;
+    raw_ptr<GrAuditTrail, DanglingUntriaged> fAuditTrail;
 
     bool fUsesMSAASurface;
     skgpu::Swizzle fTargetSwizzle;

@@ -57,7 +57,7 @@ private:
         RAW_PTR_EXCLUSION SkDiscardableMemory*    fDM;
         RAW_PTR_EXCLUSION void*                   fMalloc;
     } fStorage;
-    raw_ptr<void> fData;
+    raw_ptr<void, DanglingUntriaged> fData;
     size_t      fSize;
     int         fRefCnt;    // low-bit means we're owned by the cache
     StorageType fStorageType;

@@ -52,7 +52,7 @@ public:
 
 protected:
     sk_sp<SkShader>         fShader;
-    raw_ptr<SkShaderBase::Context> fShaderContext;
+    raw_ptr<SkShaderBase::Context, DanglingUntriaged> fShaderContext;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -110,7 +110,7 @@ public:
     void blitMask(const SkMask&, const SkIRect&) override;
 
 private:
-    raw_ptr<SkPMColor> fBuffer;
+    raw_ptr<SkPMColor, AllowPtrArithmetic | DanglingUntriaged> fBuffer;
     SkBlitRow::Proc32   fProc32;
     SkBlitRow::Proc32   fProc32Blend;
     bool fShadeDirectlyIntoDevice;
