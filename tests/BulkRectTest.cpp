@@ -193,7 +193,7 @@ static void textureop_creation_test(skiatest::Reporter* reporter, GrDirectContex
         set[i].fSrcRect = SkRect::MakeWH(100.0f, 100.0f);
         set[i].fDstRect = SkRect::MakeWH(100.5f, 100.5f); // prevent the int non-AA optimization
         set[i].fDstClipQuad = nullptr;
-        set[i].fPreViewMatrix = nullptr;
+        set[i].fPreViewMatrix1 = nullptr;
         set[i].fColor = {1.f, 1.f, 1.f, 1.f};
         set[i].fAAFlags = perQuadAA(i);
     }
@@ -206,7 +206,7 @@ static void textureop_creation_test(skiatest::Reporter* reporter, GrDirectContex
             quad.fLocal = GrQuad(set[i].fSrcRect);
             quad.fEdgeFlags = set[i].fAAFlags;
 
-            GrOp::Owner op = TextureOp::Make(dContext,
+            GrOp::Owner op = TextureOp::Make1(dContext,
                                              set[i].fProxyView,
                                              set[i].fSrcAlphaType,
                                              nullptr,
@@ -234,7 +234,8 @@ static void textureop_creation_test(skiatest::Reporter* reporter, GrDirectContex
                                     overallAA,
                                     SkCanvas::kStrict_SrcRectConstraint,
                                     SkMatrix::I(),
-                                    nullptr);
+                                    nullptr,
+                                    /* setMayHavePersp= */ true);
     }
 
     auto opsTask = sdc->testingOnly_PeekLastOpsTask();
