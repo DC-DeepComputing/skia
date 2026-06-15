@@ -29,7 +29,9 @@
 SkMipmap::SkMipmap(void* malloc, size_t size) : SkCachedData(malloc, size) {}
 SkMipmap::SkMipmap(size_t size, SkDiscardableMemory* dm) : SkCachedData(size, dm) {}
 
-SkMipmap::~SkMipmap() = default;
+SkMipmap::~SkMipmap() {
+    fLevels = nullptr;
+}
 
 size_t SkMipmap::AllocLevelsSize(int levelCount, size_t pixelSize) {
     if (levelCount < 0) {
