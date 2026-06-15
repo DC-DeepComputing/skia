@@ -211,7 +211,7 @@ public:
     }
 
 private:
-    raw_ptr<SkBlitter> fBlitter;
+    raw_ptr<SkBlitter, DanglingUntriaged> fBlitter;
     SkIRect     fClipRect;
 };
 
@@ -244,8 +244,8 @@ public:
     }
 
 private:
-    raw_ptr<SkBlitter> fBlitter;
-    raw_ptr<const SkRegion> fRgn;
+    raw_ptr<SkBlitter, DanglingUntriaged> fBlitter;
+    raw_ptr<const SkRegion, DanglingUntriaged> fRgn;
 };
 
 #ifdef SK_DEBUG
@@ -277,7 +277,7 @@ public:
     }
 
 private:
-    raw_ptr<SkBlitter> fBlitter;
+    raw_ptr<SkBlitter, DanglingUntriaged> fBlitter;
     SkIRect     fClipRect;
 };
 #endif

@@ -66,7 +66,7 @@ public:
     }
 
 private:
-    raw_ptr<SkBitmapProcState> fState;
+    raw_ptr<SkBitmapProcState, DanglingUntriaged> fState;
     uint32_t            fFlags;
 
     using INHERITED = SkShaderBase::Context;
