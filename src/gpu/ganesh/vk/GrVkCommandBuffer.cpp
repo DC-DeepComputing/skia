@@ -695,7 +695,15 @@ void GrVkPrimaryCommandBuffer::forceSync(GrVkGpu* gpu) {
     if (fSubmitFence == VK_NULL_HANDLE) {
         return;
     }
-    GR_VK_CALL_ERRCHECK(gpu, WaitForFences(gpu->device(), 1, &fSubmitFence, true, UINT64_MAX));
+    VkResult result = VK_INCOMPLETE;
+    while (VK_INCOMPLETE) {
+        result = GR_VK_CALL(gpu->vkInterface(),
+                            WaitForFences(gpu->device(), 1, &fSubmitFence, true, UINT64_MAX));
+    }
+    if (result != VK_SUCCESS && !gpu->isDeviceLost()) {
+        SkDebugf("vkWaitForFences() failed. Error: %d\n", result);
+    }
+    SkASSERT(VK_SUCCESS == result || VK_ERROR_DEVICE_LOST == result);
 }
 
 bool GrVkPrimaryCommandBuffer::finished(GrVkGpu* gpu) {
