@@ -81,6 +81,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf555bf7_e3537fee",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 549,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-15T19:20:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d25b4292_95b78662",
+      "range": {
+        "startLine": 549,
+        "startChar": 54,
+        "endLine": 549,
+        "endChar": 55
+      },
+      "revId": "10f91880cafd6f07263865416e3e1bbb547af134",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ff70dbd3_39e41ed1",
@@ -104,6 +128,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b4c8f17_70088964",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 581,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-15T19:20:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ff70dbd3_39e41ed1",
+      "range": {
+        "startLine": 581,
+        "startChar": 48,
+        "endLine": 581,
+        "endChar": 60
+      },
+      "revId": "10f91880cafd6f07263865416e3e1bbb547af134",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c7c6970b_6ab0f2ae",
@@ -117,6 +165,30 @@
       "writtenOn": "2026-06-09T15:06:20Z",
       "side": 1,
       "message": "nit: Perhaps have a helper that contains this logic rather than having it live in a release-build method? May help when parsing what each method does by breaking out this validation. Not a requirement though, of course.",
+      "range": {
+        "startLine": 568,
+        "startChar": 0,
+        "endLine": 609,
+        "endChar": 6
+      },
+      "revId": "10f91880cafd6f07263865416e3e1bbb547af134",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8a467c4_f7d0b083",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 609,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-15T19:20:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c7c6970b_6ab0f2ae",
       "range": {
         "startLine": 568,
         "startChar": 0,
