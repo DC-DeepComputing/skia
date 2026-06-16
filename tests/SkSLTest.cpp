@@ -1055,7 +1055,7 @@ constexpr auto kApiLevel_U = CtsEnforcement::kApiLevel_U;
 constexpr auto kApiLevel_202404 = CtsEnforcement::kApiLevel_202404;
 constexpr auto kApiLevel_202504 = CtsEnforcement::kApiLevel_202504;
 constexpr auto kNever = CtsEnforcement::kNever;
-[[maybe_unused]] constexpr auto kNextRelease = CtsEnforcement::kNextRelease;
+[[maybe_unused]] constexpr auto kNextRelease = CtsEnforcement::kApiLevel_202604;
 
 SKSL_TEST(ES3 | GPU_ES3, kApiLevel_T,      ArrayFolding,               "folding/ArrayFolding.sksl")
 SKSL_TEST(CPU | GPU,     kApiLevel_T,      ArraySizeFolding,           "folding/ArraySizeFolding.rts")
