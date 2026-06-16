@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eca0df18_ab216642",
+        "filename": "src/ports/SkScalerContext_win_dw.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1864,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-16T20:43:01Z",
+      "side": 1,
+      "message": "if it failed, should we just return? I\u0027m worried about upem being zero down below.",
+      "range": {
+        "startLine": 1864,
+        "startChar": 28,
+        "endLine": 1864,
+        "endChar": 43
+      },
+      "revId": "253701c3a9a7eb403e04641ed47097f77cb74ea8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
