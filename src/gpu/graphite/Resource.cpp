@@ -142,4 +142,80 @@ void Resource::dumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump,
     //this->setMemoryBacking(traceMemoryDump, resourceName);
 }
 
+void Resource::AppendUsagesToLabel(std::string label, SkEnumBitMask<TextureUsageFlags> usages) {
+    if (usages == TextureUsageFlags::kNone) {
+        return;
+    }
+
+    if (SkToBool(usages & TextureUsageFlags::kAsyncReadPixelsFallbackTexture)) {
+        label += "_AsyncReadPixelsFallback";
+    }
+    if (SkToBool(usages & TextureUsageFlags::kChildDevice)) {
+        label += "_ChildDevice";
+    }
+    if (SkToBool(usages & TextureUsageFlags::kCopyDeviceTexture)) {
+        label += "_DeviceCopy";
+    }
+    if (SkToBool(usages & TextureUsageFlags::kDiscardableLoadMSAATexture)) {
+        label += "_DiscardableLoadMSAA";
+    }
+    if (SkToBool(usages & TextureUsageFlags::kDispatchWriteOnlyStorageTexture)) {
+        label += "_DispatchWriteOnlyStorage";
+    }
+    if (SkToBool(usages & TextureUsageFlags::kDstCopy)) {
+        label += "_DstCopy";
+    }
+    if (SkToBool(usages & TextureUsageFlags::kEvalBlurTexture)) {
+        label += "_EvalBlur";
+    }
+    if (SkToBool(usages & TextureUsageFlags::kGenerateMipmapsScratchTexture)) {
+        label += "_GenerateMipmaps";
+    }
+    if (SkToBool(usages & TextureUsageFlags::kImageFilterCachedBitmap)) {
+        label += "_ImageFilterCachedBitmap";
+    }
+    if (SkToBool(usages & TextureUsageFlags::kImageFilterResult)) {
+        label += "_ImageFilterResult";
+    }
+    if (SkToBool(usages & TextureUsageFlags::kImageMakeCTandCSTexture)) {
+        label += "_CTandCSConversion";
+    }
+    if (SkToBool(usages & TextureUsageFlags::kImageSubsetTexture)) {
+        label += "_Subset";
+    }
+    if (SkToBool(usages & TextureUsageFlags::kLazySkImageBitmapTexture)) {
+        label += "_LazySkImageBitmap";
+    }
+    if (SkToBool(usages & TextureUsageFlags::kRasterBitmapTexture)) {
+        label += "_RasterBitmap";
+    }
+    if (SkToBool(usages & TextureUsageFlags::kRescaleDstTexture)) {
+        label += "_RescaleDst";
+    }
+    if (SkToBool(usages & TextureUsageFlags::kRescaleImageTempTexture)) {
+        label += "_RescaleImageTemp";
+    }
+    if (SkToBool(usages & TextureUsageFlags::kRescaleLinearGammaTexture)) {
+        label += "_RescaleLinearGamma";
+    }
+    if (SkToBool(usages & TextureUsageFlags::kYUVRasterBitmapPlane)) {
+        label += "_YUVRasterBitmapPlane";
+    }
+}
+
+void Resource::setLabel(std::string_view label, SkEnumBitMask<TextureUsageFlags> textureUsages) {
+    if (fLabel == label && textureUsages == fTextureUsages) {
+        return;
+    }
+
+    fTextureUsages = textureUsages;
+    std::string labelWithUsages {label};
+    AppendUsagesToLabel(labelWithUsages, fTextureUsages);
+    fLabel = labelWithUsages;
+
+    // It is not always safe to immediately update the backend GPU resource label. Mark it
+    // as dirty so it can be updated when appropriate.
+    fBackendLabelDirty = true;
+}
+
 } // namespace skgpu::graphite

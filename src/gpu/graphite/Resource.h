@@ -10,6 +10,7 @@
 
 #include "include/gpu/GpuTypes.h"
 #include "include/private/SkMutex.h"
+#include "src/core/SkEnumBitMask.h"
 #include "src/gpu/GpuTypesPriv.h"
 #include "src/gpu/graphite/GraphiteResourceKey.h"
 #include "src/gpu/graphite/ResourceTypes.h"
@@ -28,6 +29,7 @@ class GlobalCache;
 class ResourceCache;
 class SharedContext;
 class Texture;
+enum class TextureUsageFlags : uint32_t;
 
 /**
  * Base class for objects that can be kept in the ResourceCache and created or fetched by a
@@ -315,6 +317,8 @@ protected:
     using TakeRefFunc = void (*)(void* ctx);
 
 private:
+    static void AppendUsagesToLabel(std::string baseLabel, SkEnumBitMask<TextureUsageFlags>);
+
     ///////////////////////////////////////////////////////////////////////////////////////////////
     // The following set of functions are only meant to be called by the [Global|Proxy]Cache. We
     // don't want them public general users of a Resource, but they also aren't purely internal.
@@ -446,19 +450,11 @@ private:
 
     // We allow the label on a Resource to change when used for a different function (e.g. when
     // reusing a scratch Texture, we can change the label to reflect the caller's current usage).
-    // This method is only expected to be called when returning a non-shareable or scratch resource
-    // from the cache.
-    void setLabel(std::string_view label) {
-        if (fLabel == label) {
-            return;
-        }
-
-        fLabel = label;
-
-        // It is not always safe to immediately update the backend GPU resource label. Mark it
-        // as dirty so it can be updated when appropriate.
-        fBackendLabelDirty = true;
-    }
+    // This method is only expected to be called: A) during resource creation, B) when returning a
+    // non-shareable resource from the cache, or C) by the Context thread when updating Scratch
+    // resource labels upon Recording insertion.
+    void setLabel(std::string_view label,
+                  SkEnumBitMask<TextureUsageFlags> textureUsages = {TextureUsageFlags::kNone});
 
 #if defined(SK_DEBUG) || defined(GPU_TEST_UTILS)
     bool hasCacheRef() const {
@@ -748,6 +744,9 @@ private:
 
     // String used to describe the current use of this Resource.
     std::string fLabel;
+    // Flags representing Texture usages. This allows for easier tracking of whether Texture
+    // resources require label updates.
+    SkEnumBitMask<TextureUsageFlags> fTextureUsages = {TextureUsageFlags::kNone};
     // Flag to signal whether this Resource's label has been updated and its backend label is now
     // out of sync. This attribute does not need to be atomic or otherwise explicitly threadsafe
     // because labels will only ever be read from or written to when either:
