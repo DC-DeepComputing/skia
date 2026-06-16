@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd4acf17_93612721",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-06-16T17:27:25Z",
+      "side": 1,
+      "message": "LGTM, just a couple of nits.",
+      "revId": "5c12550014cdc2eab9d6f3747c979b23e91841ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dae8cc3b_e92218d9",
+        "filename": "src/codec/SkPngCodecBase.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-06-16T17:27:25Z",
+      "side": 1,
+      "message": "Naming nit: `kPngSignature` or such.",
+      "range": {
+        "startLine": 62,
+        "startChar": 35,
+        "endLine": 62,
+        "endChar": 47
+      },
+      "revId": "5c12550014cdc2eab9d6f3747c979b23e91841ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58cb1941_05d8b169",
+        "filename": "src/codec/SkPngCodecBase.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-06-16T17:27:25Z",
+      "side": 1,
+      "message": "Can we tag these as final?",
+      "range": {
+        "startLine": 90,
+        "startChar": 0,
+        "endLine": 91,
+        "endChar": 56
+      },
+      "revId": "5c12550014cdc2eab9d6f3747c979b23e91841ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b9b2545_bae5239e",
+        "filename": "src/codec/SkPngRustDecoder.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-06-16T17:27:25Z",
+      "side": 1,
+      "message": "Do we still need this or can we update the references to `SkPngCodecBase::IsPng`?",
+      "revId": "5c12550014cdc2eab9d6f3747c979b23e91841ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
