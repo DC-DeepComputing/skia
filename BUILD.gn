@@ -1943,6 +1943,9 @@ skia_component("skia") {
 
   public = []
   public += skia_codec_public
+  if (skia_use_libpng_decode || skia_use_rust_png_decode) {
+    public += skia_codec_png_public
+  }
   public += skia_utils_public
   public += skia_effects_public
   public += skia_effects_imagefilter_public
