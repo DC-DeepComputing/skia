@@ -208,7 +208,7 @@ SkPathBuilder& SkPathBuilder::conicTo(SkPoint pt1, SkPoint pt2, SkScalar w) {
     if (w == 1) {
         fVerbs.push_back(SkPathVerb::kQuad);
         fSegmentMask |= kQuad_SkPathSegmentMask;
-    } else if (SkIsFinite(w)) {
+    } else if (SkIsFinite(w) && w > 0) {
         fVerbs.push_back(SkPathVerb::kConic);
         fConicWeights.push_back(w);
         fSegmentMask |= kConic_SkPathSegmentMask;
