@@ -46,6 +46,30 @@
       },
       "revId": "253701c3a9a7eb403e04641ed47097f77cb74ea8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59dbd9f6_d19470b0",
+        "filename": "src/ports/SkScalerContext_win_dw.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1864,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-16T21:04:47Z",
+      "side": 1,
+      "message": "I don\u0027t think we should willynilly use the other metrics as \"backup\". I haven\u0027t done research into the various modes but returning 0s feels safer than returning \"wrong\" measures.\n\nWhat do our other font backends do if they fail to get metrics?",
+      "parentUuid": "20cbb832_23c7ea48",
+      "range": {
+        "startLine": 1864,
+        "startChar": 28,
+        "endLine": 1864,
+        "endChar": 43
+      },
+      "revId": "253701c3a9a7eb403e04641ed47097f77cb74ea8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
