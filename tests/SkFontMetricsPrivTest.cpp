@@ -49,5 +49,3 @@ DEF_TEST(SkFontMetricsPriv_Basic, reporter) {
     dstMetrics = SkFontMetricsPriv::MakeFromBuffer(brokenBuffer);
     REPORTER_ASSERT(reporter, !dstMetrics.has_value());
 }
-
-
