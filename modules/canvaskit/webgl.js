@@ -223,17 +223,6 @@
         return img;
       };
 
-      // We try to find the natural media type (for <img> and <video>), display* for
-      // https://developer.mozilla.org/en-US/docs/Web/API/VideoFrame and then fall back to
-      // the height and width (to cover <canvas>, ImageBitmap or ImageData).
-      function getHeight(src) {
-        return src['naturalHeight'] || src['videoHeight'] || src['displayHeight'] || src['height'];
-      }
-
-      function getWidth(src) {
-        return src['naturalWidth'] || src['videoWidth'] || src['displayWidth'] || src['width'];
-      }
-
       function setupTexture(glCtx, newTex, imageInfo, srcIsPremul) {
         glCtx.bindTexture(glCtx.TEXTURE_2D, newTex);
         // See https://github.com/flutter/flutter/issues/106433#issuecomment-1169102945

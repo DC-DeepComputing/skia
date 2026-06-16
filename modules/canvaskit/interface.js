@@ -1292,8 +1292,8 @@ var memoizedCanvas2dElement = null;
 // Expects that the canvasImageSource has already loaded/decoded.
 // CanvasImageSource reference: https://developer.mozilla.org/en-US/docs/Web/API/CanvasImageSource
 CanvasKit.MakeImageFromCanvasImageSource = function(canvasImageSource) {
-  var width = canvasImageSource.width;
-  var height = canvasImageSource.height;
+  var width = getWidth(canvasImageSource);
+  var height = getHeight(canvasImageSource);
 
   if (!memoizedCanvas2dElement) {
     memoizedCanvas2dElement = document.createElement('canvas');
