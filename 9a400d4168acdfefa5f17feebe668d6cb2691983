@@ -16,6 +16,29 @@
       "message": "Hi! \nCould you please take a look?",
       "revId": "9a400d4168acdfefa5f17feebe668d6cb2691983",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b8d18bf_fe7739ea",
+        "filename": "src/utils/SkCanvasStateUtils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-16T15:09:31Z",
+      "side": 1,
+      "message": "nit: remove this whitespace",
+      "range": {
+        "startLine": 85,
+        "startChar": 43,
+        "endLine": 85,
+        "endChar": 50
+      },
+      "revId": "9a400d4168acdfefa5f17feebe668d6cb2691983",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
