@@ -149,6 +149,43 @@ struct RunHandler final : public SkShaper::RunHandler {
     void commitLine() override { fCommitLine = true; }
 };
 
+struct LineCountRunHandler final : public SkShaper::RunHandler {
+    int fLineCount = 0;
+    void beginLine() override { fLineCount++; }
+    void runInfo(const RunInfo&) override {}
+    void commitRunInfo() override {}
+    Buffer runBuffer(const RunInfo& info) override {
+        static SkGlyphID glyphs[100];
+        static SkPoint pos[100];
+        return {glyphs, pos, nullptr, nullptr, {0, 0}};
+    }
+    void commitRunBuffer(const RunInfo&) override {}
+    void commitLine() override {}
+};
+
+class SplitFontRunIterator : public SkShaper::FontRunIterator {
+public:
+    SplitFontRunIterator(size_t splitAt, size_t total, const SkFont& f1, const SkFont& f2)
+        : fSplitAt(splitAt), fTotal(total), fCurrent(0), fAtEnd(false), fF1(f1), fF2(f2) {}
+
+    void consume() override {
+        if (fCurrent == 0) {
+            fCurrent = fSplitAt;
+        } else {
+            fCurrent = fTotal;
+            fAtEnd = true;
+        }
+    }
+    size_t endOfCurrentRun() const override { return fCurrent; }
+    bool atEnd() const override { return fAtEnd; }
+    const SkFont& currentFont() const override { return fCurrent <= fSplitAt ? fF1 : fF2; }
+
+private:
+    size_t fSplitAt, fTotal, fCurrent;
+    bool fAtEnd;
+    SkFont fF1, fF2;
+};
+
 #if defined(SK_SHAPER_HARFBUZZ_AVAILABLE) && defined(SK_SHAPER_UNICODE_AVAILABLE)
 void shaper_test(skiatest::Reporter* reporter, const char* name, SkData* data) {
     skiatest::ReporterContext context(reporter, name);
@@ -270,5 +307,80 @@ SHAPER_TEST(myanmar)
 SHAPER_TEST(taitham)
 SHAPER_TEST(tamil)
 #undef SHAPER_TEST
+
+DEF_TEST(Shaper_MidWordBreak, reporter) {
+    auto unicode = get_unicode();
+    if (!unicode) {
+        return;
+    }
+
+    auto shaper = SkShapers::HB::ShaperDrivenWrapper(unicode, SkFontMgr::RefEmpty());
+    if (!shaper) {
+        return;
+    }
+
+    SkFont font = ToolUtils::DefaultFont();
+    const char* text = "Abcdefgh";
+    size_t len = strlen(text);
+
+    LineCountRunHandler rh;
+
+    SplitFontRunIterator fontRuns(3, len, font, font); // Split "Abc" | "defgh"
+    auto bidi = SkShaper::TrivialBiDiRunIterator(0, len);
+    auto script = SkShaper::TrivialScriptRunIterator(SkSetFourByteTag('L','a','t','n'), len);
+    auto lang = SkShaper::TrivialLanguageRunIterator("en-US", len);
+
+    // Narrow width to force wrapping
+    shaper->shape(text, len, fontRuns, bidi, script, lang, nullptr, 0, 1.0f, &rh);
+
+    REPORTER_ASSERT(reporter, rh.fLineCount == 1, "Word should not be broken at font boundary. Line count: %d", rh.fLineCount);
+}
+
+DEF_TEST(Shaper_MidWordBreak_ShapeThenWrap, reporter) {
+    auto unicode = get_unicode();
+    if (!unicode) {
+        return;
+    }
+
+    auto shaper = SkShapers::HB::ShapeThenWrap(unicode, SkFontMgr::RefEmpty());
+    if (!shaper) {
+        return;
+    }
+
+    SkFont font = ToolUtils::DefaultFont();
+    // "Abc defgh"
+    // index 012345678
+    const char* text = "Abc defgh";
+    size_t len = strlen(text);
+
+    LineCountRunHandler rh;
+
+    // Split at index 3: "Abc" | " defgh"
+    SplitFontRunIterator fontRuns(3, len, font, font);
+    auto bidi = SkShaper::TrivialBiDiRunIterator(0, len);
+    auto script = SkShaper::TrivialScriptRunIterator(SkSetFourByteTag('L','a','t','n'), len);
+    auto lang = SkShaper::TrivialLanguageRunIterator("en-US", len);
+
+    // Set width to fit "Abc " but not "Abc defgh"
+    // A typical character is ~10px, so 45px should fit "Abc " (4 chars)
+    shaper->shape(text, len, fontRuns, bidi, script, lang, nullptr, 0, 45.0f, &rh);
+
+    // If it incorrectly broke at the font boundary (index 3), it would be "Abc" | " defgh"
+    // If it correctly broke at the space (index 4), it would be "Abc " | "defgh"
+    // In both cases, line count is 2.
+    // Wait, this doesn't distinguish.
+
+    // Let's use the "Abcdefgh" (no space) test but with a width that fits "Abc"
+    // If it breaks at 3, it's the bug.
+    // If it doesn't break at 3, it will try to fit more, fail, and then break at index 1 (grapheme).
+    // So Line count: 8 (or > 2) means it IGNORED the break at 3.
+
+    const char* text2 = "Abcdefgh";
+    SplitFontRunIterator fontRuns2(3, 8, font, font);
+    shaper->shape(text2, 8, fontRuns2, bidi, script, lang, nullptr, 0, 45.0f, &rh);
+
+    // Correct behavior: rh.fLineCount != 2. (It should be 1 if it overflows or >2 if it breaks at graphemes)
+    REPORTER_ASSERT(reporter, rh.fLineCount != 2, "Word should not be broken at font boundary (index 3)");
+}
 
 #endif  // #if defined(SK_SHAPER_HARFBUZZ_AVAILABLE) && defined(SK_SHAPER_UNICODE_AVAILABLE)
