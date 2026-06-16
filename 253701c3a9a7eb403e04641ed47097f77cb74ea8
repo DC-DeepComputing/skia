@@ -94,6 +94,30 @@
       },
       "revId": "253701c3a9a7eb403e04641ed47097f77cb74ea8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f24d3bd_0f9aa501",
+        "filename": "src/ports/SkScalerContext_win_dw.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1864,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-16T21:22:03Z",
+      "side": 1,
+      "message": "Sounds good to me to return early.",
+      "parentUuid": "780f5384_13c6c06b",
+      "range": {
+        "startLine": 1864,
+        "startChar": 28,
+        "endLine": 1864,
+        "endChar": 43
+      },
+      "revId": "253701c3a9a7eb403e04641ed47097f77cb74ea8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
