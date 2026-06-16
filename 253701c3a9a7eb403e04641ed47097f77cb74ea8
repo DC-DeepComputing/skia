@@ -22,6 +22,30 @@
       },
       "revId": "253701c3a9a7eb403e04641ed47097f77cb74ea8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20cbb832_23c7ea48",
+        "filename": "src/ports/SkScalerContext_win_dw.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1864,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-16T21:01:22Z",
+      "side": 1,
+      "message": "that is a good point, I was wondering whether falling back to the `fontFace-\u003eGetMetrics()` was a good idea.\n\n\nadding @egdaniel@google.com  to this thread\n\nSome questions to follow up with for this CL\n* If `GetGDICompatibleMetrics` fails, should we fall back to `fontFace-\u003eGetMetrics()`?\n* If we fall back, should we alert the caller about doing so or fallback silently (unless in debug mode)?\n* If we choose to alert the caller, should we convert `SkScalerContext_DW::generateFontMetrics` into a boolean function such that we can return if `metrics` was initialized\n\nLet me know what you folks think. If more context is needed I can look more into the history of `SkScalerContext_DW` and let you know what I find.",
+      "parentUuid": "eca0df18_ab216642",
+      "range": {
+        "startLine": 1864,
+        "startChar": 28,
+        "endLine": 1864,
+        "endChar": 43
+      },
+      "revId": "253701c3a9a7eb403e04641ed47097f77cb74ea8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
