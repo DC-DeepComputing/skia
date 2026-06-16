@@ -16,3 +16,11 @@ function degreesToRadians(deg) {
 function almostEqual(floata, floatb) {
   return Math.abs(floata - floatb) < 0.00001;
 }
+
+function getWidth(src) {
+  return src['naturalWidth'] || src['videoWidth'] || src['displayWidth'] || src['width'];
+}
+
+function getHeight(src) {
+  return src['naturalHeight'] || src['videoHeight'] || src['displayHeight'] || src['height'];
+}
