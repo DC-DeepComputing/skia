@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "07e37291_5e52557d",
+        "filename": "tests/graphite/InnerFillTest.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-16T15:23:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f5311690_b0eb6dc7",
+      "revId": "1e43406a242e7d7269f94bed7d14d7857184a699",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "43ecdfed_de5972d7",
@@ -31,6 +49,30 @@
       "writtenOn": "2026-06-16T11:36:59Z",
       "side": 1,
       "message": "stray \u0027 \u0027 ?",
+      "range": {
+        "startLine": 214,
+        "startChar": 45,
+        "endLine": 214,
+        "endChar": 46
+      },
+      "revId": "1e43406a242e7d7269f94bed7d14d7857184a699",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c567712c_c278d925",
+        "filename": "tests/graphite/InnerFillTest.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-16T15:23:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "43ecdfed_de5972d7",
       "range": {
         "startLine": 214,
         "startChar": 45,

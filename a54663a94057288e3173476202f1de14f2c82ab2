@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "09af72e4_afa8881c",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 481,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-16T15:23:38Z",
+      "side": 1,
+      "message": "This was the bugfix caught by the new unit test; we weren\u0027t converting src+analytic coverage to an optimized final blend node. It was sticking with the PorterDuff node and then wasn\u0027t eligible for replacing.  `\u003d\u003d` in this case would never fire because we\u0027d always add kDependsOnDst and sometimes also added kDstReadRequired.",
+      "range": {
+        "startLine": 480,
+        "startChar": 16,
+        "endLine": 481,
+        "endChar": 78
+      },
+      "revId": "a54663a94057288e3173476202f1de14f2c82ab2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

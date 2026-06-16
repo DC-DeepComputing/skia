@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "645aed92_19f93419",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-16T15:23:38Z",
+      "side": 1,
+      "message": "I also added some more test cases to confirm that having an analytic clip blocks the optimizeForOpacity from applying.",
+      "revId": "842cadaa97d4192dd73c63f5662cb7debec4eb4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
