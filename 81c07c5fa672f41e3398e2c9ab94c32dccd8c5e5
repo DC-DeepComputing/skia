@@ -16,6 +16,24 @@
       "message": "When w \u003d\u003d 0, the cubic should turn into a straight line to pt2.  This maintains continuity with values that are nearly zero, when to conic is almost a straight line.  The two-line (v-shape) degenerate (lineTo pt1 lineTo pt2) corresponds to w \u003d\u003d inf, and preserves continuity in that extreme.\n\nSo I think we should replicate the legacy SkPath logic where for w \u003c\u003d 0 we add a single lineTo (with a single corresponding point).",
       "revId": "81c07c5fa672f41e3398e2c9ab94c32dccd8c5e5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "232fe401_cf891710",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-16T21:00:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cd5e34a8_eb25ad19",
+      "revId": "81c07c5fa672f41e3398e2c9ab94c32dccd8c5e5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
