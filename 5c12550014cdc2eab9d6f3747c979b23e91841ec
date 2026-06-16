@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "70d41914_17d1e4e9",
+        "filename": "src/codec/SkPngCodecBase.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-06-16T17:53:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dae8cc3b_e92218d9",
+      "range": {
+        "startLine": 62,
+        "startChar": 35,
+        "endLine": 62,
+        "endChar": 47
+      },
+      "revId": "5c12550014cdc2eab9d6f3747c979b23e91841ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "58cb1941_05d8b169",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d78e661_17c51738",
+        "filename": "src/codec/SkPngCodecBase.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-06-16T17:53:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "58cb1941_05d8b169",
+      "range": {
+        "startLine": 90,
+        "startChar": 0,
+        "endLine": 91,
+        "endChar": 56
+      },
+      "revId": "5c12550014cdc2eab9d6f3747c979b23e91841ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5b9b2545_bae5239e",
@@ -77,6 +125,24 @@
       "writtenOn": "2026-06-16T17:27:25Z",
       "side": 1,
       "message": "Do we still need this or can we update the references to `SkPngCodecBase::IsPng`?",
+      "revId": "5c12550014cdc2eab9d6f3747c979b23e91841ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46c8d45d_b8a33d19",
+        "filename": "src/codec/SkPngRustDecoder.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-06-16T17:53:22Z",
+      "side": 1,
+      "message": "Yeah I think this may still be needed: it looks like `SkPngDecoder.h` and `SkPngRustDecoder.h` are public headers (so their `IsPng` methods may be used by external callers?), whereas `SkPngCodecBase.h` is private. Is my understanding correct here? Lmk if I missed anything\n\nBut `SkPngCodec::IsPng` was indeed redundant, so I removed that one",
+      "parentUuid": "5b9b2545_bae5239e",
       "revId": "5c12550014cdc2eab9d6f3747c979b23e91841ec",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
