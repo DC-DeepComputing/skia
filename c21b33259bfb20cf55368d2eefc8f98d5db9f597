@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "95c0c800_02497584",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 14669
+      },
+      "writtenOn": "2026-06-16T19:58:21Z",
+      "side": 1,
+      "message": "If we try to use graphite/vulkan on older devices it\u0027d be good but right now it\u0027s probably not needed. I\u0027m happy to add it preemptively if you want?",
+      "parentUuid": "462e37fc_f641ae33",
+      "revId": "c21b33259bfb20cf55368d2eefc8f98d5db9f597",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f8c7bcfa_496f7225",
         "filename": "src/gpu/ganesh/vk/GrVkCommandBuffer.cpp",
         "patchSetId": 5
@@ -31,6 +49,30 @@
       "writtenOn": "2026-06-16T15:19:37Z",
       "side": 1,
       "message": "This ends up losing the call to GPU-\u003echeckVkResult() done in the previous macro. Would GR_VK_CALL_RESULT_NOCHECK work?\n\nI also wonder if GR_VK_CALL_RESULT_NOCHECK should also be calling GR_VK_LOG_IF_NOT_SUCCESS so you could avoid the need to manually log below? Though there might be other call sites where we explicitly don\u0027t want that? I forget all its uses.",
+      "range": {
+        "startLine": 700,
+        "startChar": 17,
+        "endLine": 700,
+        "endChar": 27
+      },
+      "revId": "c21b33259bfb20cf55368d2eefc8f98d5db9f597",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aef4cd38_e0bf4efb",
+        "filename": "src/gpu/ganesh/vk/GrVkCommandBuffer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 700,
+      "author": {
+        "id": 14669
+      },
+      "writtenOn": "2026-06-16T19:58:21Z",
+      "side": 1,
+      "message": "\u003e This ends up losing the call to GPU-\u003echeckVkResult() done in the previous macro. Would GR_VK_CALL_RESULT_NOCHECK work?\n\nYeah that works. checkVkResult() might get called with VK_TMIEOUT before real result call but that is a no-op.\n\n\u003e I also wonder if GR_VK_CALL_RESULT_NOCHECK should also be calling GR_VK_LOG_IF_NOT_SUCCESS so you could avoid the need to manually log below? Though there might be other call sites where we explicitly don\u0027t want that? I forget all its uses.\n\nSome uses have their own logging afterwards already so this is similar. They also pretty much all call checkVkResult() explicitly which I guess isn\u0027t harmful but seems wrong. I\u0027m going to leave it as is?",
+      "parentUuid": "f8c7bcfa_496f7225",
       "range": {
         "startLine": 700,
         "startChar": 17,
@@ -54,6 +96,30 @@
       "writtenOn": "2026-06-16T15:19:37Z",
       "side": 1,
       "message": "I wonder if we should make a call in GrVkCaps like GrVkCaps::mustRecallWaitForFences() and have that only return true for older mali devices. The update this loop do be a do/while loop with the condition being while(vkCaps-\u003emustRecallWaitForFences() \u0026\u0026 result \u003d\u003d VK_TIMEOUT).\n\nThat way we can both comment the need for the workaround in the GrVkCaps file and also serve as a reminder to remove it if we ever stop supporting those old devices.",
+      "range": {
+        "startLine": 699,
+        "startChar": 2,
+        "endLine": 702,
+        "endChar": 5
+      },
+      "revId": "c21b33259bfb20cf55368d2eefc8f98d5db9f597",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e43260e4_fd172e58",
+        "filename": "src/gpu/ganesh/vk/GrVkCommandBuffer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 702,
+      "author": {
+        "id": 14669
+      },
+      "writtenOn": "2026-06-16T19:58:21Z",
+      "side": 1,
+      "message": "\u003e I wonder if we should make a call in GrVkCaps like GrVkCaps::mustRecallWaitForFences() and have that only return true for older mali devices. The update this loop do be a do/while loop with the condition being while(vkCaps-\u003emustRecallWaitForFences() \u0026\u0026 result \u003d\u003d VK_TIMEOUT).\n\nI don\u0027t have a specific driver version to gate this on. Best I could do is just  add the rule for Mali but that doesn\u0027t allow getting rid of it in the future in the same way. IDK if other drivers have the same issue as well since it\u0027s easy to miss required error handling around ppoll() calls.",
+      "parentUuid": "163820de_3b6153ce",
       "range": {
         "startLine": 699,
         "startChar": 2,
