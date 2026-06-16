@@ -75,6 +75,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "05b474ae_96f8ffc8",
+        "filename": "src/pdf/SkPDFGradientShader.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 969,
+      "author": {
+        "id": 4186901
+      },
+      "writtenOn": "2026-06-16T10:10:51Z",
+      "side": 1,
+      "message": "Updated to use isOpaque",
+      "parentUuid": "9bf5fc49_3b2f9209",
+      "range": {
+        "startLine": 964,
+        "startChar": 0,
+        "endLine": 969,
+        "endChar": 35
+      },
+      "revId": "aa160a8cbe2c18cfe53b2b98b7ff5e0c3e4d9f72",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "35cd9376_21930d07",
@@ -88,6 +112,30 @@
       "writtenOn": "2026-06-15T16:35:37Z",
       "side": 1,
       "message": "Can we push this down to `SkPDFGradientShader::Make`?  I think it could return an invalid indirect reference for non-opaque stops, and then we fall back here.  That would also provide a general fallback mechanism if gradient conversion fails for whatever other reason (prolly not possible atm).\n\nThen `has_alpha` can be a local static, and we can also be more aggressive with some of the checks (e.g. assert non-null gradient, assert !\u003d kNone gradient type, assert stop count \u003e 0 etc).\n\n```\n    if (SkPDFIndirectReference gradientShader \u003d\n            SkPDFGradientShader::Make(doc, shader, canvasTransform, surfaceBBox)) {\n        return gradientShader;\n    }\n```",
+      "range": {
+        "startLine": 346,
+        "startChar": 0,
+        "endLine": 349,
+        "endChar": 9
+      },
+      "revId": "aa160a8cbe2c18cfe53b2b98b7ff5e0c3e4d9f72",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1da2f675_f500707e",
+        "filename": "src/pdf/SkPDFShader.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 349,
+      "author": {
+        "id": 4186901
+      },
+      "writtenOn": "2026-06-16T10:10:51Z",
+      "side": 1,
+      "message": "updated to\n```\n        if (SkPDFIndirectReference gradientShader \u003d\n                    SkPDFGradientShader::Make(doc, shader, canvasTransform, surfaceBBox)) {\n            return gradientShader;\n        }\n```\nAnd push fRasterizeAlphaGradientsForPrinting into SkPDFGradientShader::Make",
+      "parentUuid": "35cd9376_21930d07",
       "range": {
         "startLine": 346,
         "startChar": 0,
