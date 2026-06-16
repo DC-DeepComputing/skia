@@ -298,6 +298,7 @@ std::unique_ptr<SkFontScanner> TestFontScanner() {
 }
 
 sk_sp<SkFontMgr> TestFontMgr() {
+    SkDebugf("bruhbruhbruhbruhbruhbruhbruhbruh\n");
     static sk_sp<SkFontMgr> mgr;
     static SkOnce once;
     once([] {
@@ -318,6 +319,7 @@ sk_sp<SkFontMgr> TestFontMgr() {
 #if defined(SK_BUILD_FOR_ANDROID) && defined(SK_FONTMGR_ANDROID_AVAILABLE) && defined(SK_TYPEFACE_SCANNER_AVAILABLE)
             mgr = SkFontMgr_New_Android(nullptr, TestFontScanner());
 #elif defined(SK_BUILD_FOR_WIN) && defined(SK_FONTMGR_DIRECTWRITE_AVAILABLE)
+            SkDebugf("bruhbruhbruhbruhbruhbruhbruhbruh\n");
             mgr = SkFontMgr_New_DirectWrite();
 #elif defined(SK_FONTMGR_CORETEXT_AVAILABLE) && (defined(SK_BUILD_FOR_IOS) || \
                                                 defined(SK_BUILD_FOR_MAC))
