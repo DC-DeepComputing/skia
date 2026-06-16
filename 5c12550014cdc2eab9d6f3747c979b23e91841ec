@@ -145,6 +145,24 @@
       "parentUuid": "5b9b2545_bae5239e",
       "revId": "5c12550014cdc2eab9d6f3747c979b23e91841ec",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7df7f654_8bcc2a67",
+        "filename": "src/codec/SkPngRustDecoder.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-06-16T18:02:42Z",
+      "side": 1,
+      "message": "Ack, I think you\u0027re right.",
+      "parentUuid": "46c8d45d_b8a33d19",
+      "revId": "5c12550014cdc2eab9d6f3747c979b23e91841ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
