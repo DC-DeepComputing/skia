@@ -50,10 +50,13 @@ public:
     using ScratchResourceSet = skia_private::THashSet<const Resource*>;
     // Find a resource that matches a key. If Shareable == kScratch, then `unavailable` must be
     // non-null and is used to filter the scratch resources that can fulfill this request.
-    Resource* findAndRefResource(const GraphiteResourceKey& key,
-                                 Budgeted, Shareable,
-                                 std::string_view label = {},
-                                 const ScratchResourceSet* unavailable = nullptr);
+    Resource* findAndRefResource(
+            const GraphiteResourceKey& key,
+            Budgeted,
+            Shareable,
+            std::string_view label = {},
+            SkEnumBitMask<TextureUsageFlags> = {TextureUsageFlags::kNone},
+            const ScratchResourceSet* unavailable = nullptr);
 
     // Purge resources not used since the passed point in time. Resources that have a gpu memory
     // size of zero will not be purged.
@@ -102,6 +105,10 @@ public:
 
     void visitTextures(const std::function<void(const Texture*, bool purgeable)>&) const;
 #endif
+    // TODO(b/431796811): This can become test-only or private once the ResourceCache is the sole
+    // user of TextureUsageFlags bitmask -> string translation when updating scratch labels upon
+    // Recording insertion.
+    static std::string GenerateUsageLabel(SkEnumBitMask<TextureUsageFlags>);
 
     // This is a thread safe call and is a no-op if the cache has been shut down already. This
     // should only be called by Resource. Returns true if the resource was successfully added to

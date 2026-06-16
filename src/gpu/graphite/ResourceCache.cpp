@@ -164,6 +164,7 @@ Resource* ResourceCache::findAndRefResource(const GraphiteResourceKey& key,
                                             Budgeted budgeted,
                                             Shareable shareable,
                                             std::string_view label,
+                                            SkEnumBitMask<TextureUsageFlags> usages,
                                             const ScratchResourceSet* unavailable) {
     ASSERT_SINGLE_OWNER
 
@@ -260,6 +261,67 @@ void ResourceCache::refAndMakeResourceMRU(Resource* resource) {
 void ResourceCache::forceProcessReturnedResources() {
     ASSERT_SINGLE_OWNER
     this->processReturnedResources();
+}
+
+std::string ResourceCache::GenerateUsageLabel(SkEnumBitMask<TextureUsageFlags> usageMask) {
+    std::string allUsagesLabel = "ScratchTexture";
+
+    if (SkToBool(usageMask & TextureUsageFlags::kAsyncReadPixelsFallbackTexture)) {
+        allUsagesLabel += "_AsyncReadPixelsFallback";
+    }
+    if (SkToBool(usageMask & TextureUsageFlags::kChildDevice)) {
+        allUsagesLabel += "_ChildDevice";
+    }
+    if (SkToBool(usageMask & TextureUsageFlags::kCopyDeviceTexture)) {
+        allUsagesLabel += "_DeviceCopy";
+    }
+    if (SkToBool(usageMask & TextureUsageFlags::kDiscardableLoadMSAATexture)) {
+        allUsagesLabel += "_DiscardableLoadMSAA";
+    }
+    if (SkToBool(usageMask & TextureUsageFlags::kDispatchWriteOnlyStorageTexture)) {
+        allUsagesLabel += "_DispatchWriteOnlyStorage";
+    }
+    if (SkToBool(usageMask & TextureUsageFlags::kDstCopy)) {
+        allUsagesLabel += "_DstCopy";
+    }
+    if (SkToBool(usageMask & TextureUsageFlags::kEvalBlurTexture)) {
+        allUsagesLabel += "_EvalBlur";
+    }
+    if (SkToBool(usageMask & TextureUsageFlags::kGenerateMipmapsScratchTexture)) {
+        allUsagesLabel += "_GenerateMipmaps";
+    }
+    if (SkToBool(usageMask & TextureUsageFlags::kImageFilterCachedBitmap)) {
+        allUsagesLabel += "_ImageFilterCachedBitmap";
+    }
+    if (SkToBool(usageMask & TextureUsageFlags::kImageFilterResult)) {
+        allUsagesLabel += "_ImageFilterResult";
+    }
+    if (SkToBool(usageMask & TextureUsageFlags::kImageMakeCTandCSTexture)) {
+        allUsagesLabel += "_CTandCSConversion";
+    }
+    if (SkToBool(usageMask & TextureUsageFlags::kImageSubsetTexture)) {
+        allUsagesLabel += "_Subset";
+    }
+    if (SkToBool(usageMask & TextureUsageFlags::kLazySkImageBitmapTexture)) {
+        allUsagesLabel += "_LazySkImageBitmap";
+    }
+    if (SkToBool(usageMask & TextureUsageFlags::kRasterBitmapTexture)) {
+        allUsagesLabel += "_RasterBitmap";
+    }
+    if (SkToBool(usageMask & TextureUsageFlags::kRescaleDstTexture)) {
+        allUsagesLabel += "_RescaleDst";
+    }
+    if (SkToBool(usageMask & TextureUsageFlags::kRescaleImageTempTexture)) {
+        allUsagesLabel += "_RescaleImageTemp";
+    }
+    if (SkToBool(usageMask & TextureUsageFlags::kRescaleLinearGammaTexture)) {
+        allUsagesLabel += "_RescaleLinearGamma";
+    }
+    if (SkToBool(usageMask & TextureUsageFlags::kYUVRasterBitmapPlane)) {
+        allUsagesLabel += "_YUVRasterBitmapPlane";
+    }
+
+    return allUsagesLabel;
 }
 
 bool ResourceCache::returnResource(Resource* resource) {
