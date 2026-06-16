@@ -620,6 +620,7 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
         : fCurrentSlide(-1)
         , fRefresh(false)
         , fSaveToSKP(false)
+        , fSaveToCapture(false)
         , fShowSlideDimensions(false)
         , fShowImGuiDebugWindow(false)
         , fShowSlidePicker(false)
@@ -854,6 +855,10 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
     });
     fCommands.addCommand('K', "IO", "Save slide to SKP", [this]() {
         fSaveToSKP = true;
+        fWindow->inval();
+    });
+    fCommands.addCommand(',', "IO", "Save slide to SKP", [this]() {
+        fSaveToCapture = true;
         fWindow->inval();
     });
     fCommands.addCommand('&', "Overlays", "Show slide dimensions", [this]() {
@@ -1941,6 +1946,20 @@ void Viewer::drawSlide(SkSurface* surface) {
         SkSerialProcs sProcs = serial_procs_using_png();
         picture->serialize(&stream, &sProcs);
         fSaveToSKP = false;
+    }
+
+    if (fSaveToCapture) {
+        SkPictureRecorder recorder;
+        SkCanvas* recorderCanvas = recorder.beginRecording(SkRect::Make(this->currentSlideSize()));
+        fSlides[fCurrentSlide]->draw(recorderCanvas);
+        sk_sp<SkPicture> picture(recorder.finishRecordingAsPicture());
+        SkFILEWStream stream("sample_app.capt");
+        skia_private::TArray<sk_sp<SkPicture>> pictures;
+        pictures.push_back(picture);
+        sk_sp<SkCapture> capt = SkCapture::MakeFromPictures(std::move(pictures));
+        sk_sp<SkData> data = capt->serializeCapture();
+        stream.write(data->data(), data->size());
+        fSaveToCapture = false;
     }
 
     // Grab some things we'll need to make surfaces (for tiling or general offscreen rendering)

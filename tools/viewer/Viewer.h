@@ -194,6 +194,7 @@ private:
     bool                   fRefresh; // whether to continuously refresh for measuring render time
 
     bool                   fSaveToSKP;
+    bool                   fSaveToCapture;
     bool                   fShowSlideDimensions;
 
     ImGuiLayer             fImGuiLayer;
