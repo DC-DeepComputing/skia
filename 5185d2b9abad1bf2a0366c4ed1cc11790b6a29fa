@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8a6d7b0_9b22ebc1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-16T13:32:08Z",
+      "side": 1,
+      "message": "Hopefully this fixes G3 for real http://screen/Bq28FwHBddXh2BR",
+      "revId": "5185d2b9abad1bf2a0366c4ed1cc11790b6a29fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
