@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "462e37fc_f641ae33",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-06-16T15:19:37Z",
+      "side": 1,
+      "message": "I wonder if we should land a similar change in Graphite here, https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/gpu/graphite/vk/VulkanCommandBuffer.cpp;l\u003d584. Though I\u0027m not sure how much we care about the old devices or not there.",
+      "revId": "c21b33259bfb20cf55368d2eefc8f98d5db9f597",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8c7bcfa_496f7225",
+        "filename": "src/gpu/ganesh/vk/GrVkCommandBuffer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 700,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-06-16T15:19:37Z",
+      "side": 1,
+      "message": "This ends up losing the call to GPU-\u003echeckVkResult() done in the previous macro. Would GR_VK_CALL_RESULT_NOCHECK work?\n\nI also wonder if GR_VK_CALL_RESULT_NOCHECK should also be calling GR_VK_LOG_IF_NOT_SUCCESS so you could avoid the need to manually log below? Though there might be other call sites where we explicitly don\u0027t want that? I forget all its uses.",
+      "range": {
+        "startLine": 700,
+        "startChar": 17,
+        "endLine": 700,
+        "endChar": 27
+      },
+      "revId": "c21b33259bfb20cf55368d2eefc8f98d5db9f597",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "163820de_3b6153ce",
+        "filename": "src/gpu/ganesh/vk/GrVkCommandBuffer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 702,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-06-16T15:19:37Z",
+      "side": 1,
+      "message": "I wonder if we should make a call in GrVkCaps like GrVkCaps::mustRecallWaitForFences() and have that only return true for older mali devices. The update this loop do be a do/while loop with the condition being while(vkCaps-\u003emustRecallWaitForFences() \u0026\u0026 result \u003d\u003d VK_TIMEOUT).\n\nThat way we can both comment the need for the workaround in the GrVkCaps file and also serve as a reminder to remove it if we ever stop supporting those old devices.",
+      "range": {
+        "startLine": 699,
+        "startChar": 2,
+        "endLine": 702,
+        "endChar": 5
+      },
+      "revId": "c21b33259bfb20cf55368d2eefc8f98d5db9f597",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
