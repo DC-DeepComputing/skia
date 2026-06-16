@@ -23,6 +23,7 @@
 #include "include/core/SkString.h"
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
+#include "include/private/SkAssert.h"
 #include "include/private/SkDebug.h"
 #include "include/private/SkMalloc.h"
 #include "include/private/SkMutex.h"
@@ -43,6 +44,7 @@
 #include <hb-ot.h>
 #include <hb.h>
 
+#include <algorithm>
 #include <cstdint>
 #include <cstring>
 #include <memory>
@@ -353,6 +355,62 @@ HBFont create_sub_hb_font(const SkFont& font, const HBFont& typefaceFont) {
 
     return skFont;
 }
+
+class LineBreaker {
+public:
+    LineBreaker(SkUnicode* unicode, char const * const utf8)
+        : fUnicode(unicode)
+        , fUtf8(utf8)
+    {}
+
+    SkSpan<const SkBreakIterator::Position> currentBreaks() const { return fLineBreaks; }
+
+    bool updateForLanguage(const char* utf8RunStart,
+                           const SkShaper::LanguageRunIterator& language) {
+        if (!fLineBreaks.empty() &&
+            fCurrentLanguage.equals(language.currentLanguage()) &&
+            fCurrentLanguageEndOfRun == language.endOfCurrentRun()) {
+            // Same language run, we've already buffered its breaks.
+            return true;
+        }
+
+        // New language run, grab all its line breaks.
+        fCurrentLanguage         = language.currentLanguage();
+        fCurrentLanguageEndOfRun = language.endOfCurrentRun();
+
+        SkASSERT(utf8RunStart >= fUtf8);
+        const size_t langRunOffset = utf8RunStart - fUtf8;
+        SkASSERT(langRunOffset <= fCurrentLanguageEndOfRun);
+        const size_t langRunLength = fCurrentLanguageEndOfRun - langRunOffset;
+
+        SkUnicodeBreak lb_iter = fUnicode->makeBreakIterator(fCurrentLanguage.c_str(),
+                                                             SkUnicode::BreakType::kLines);
+
+        if (!lb_iter || !lb_iter->setText(utf8RunStart, langRunLength)) {
+            return false;
+        }
+
+        fLineBreaks.clear();
+
+        for (auto pos = lb_iter->next(); !lb_iter->isDone(); pos = lb_iter->next()) {
+            // Adjust positions from local language indices back to global indices.
+            fLineBreaks.push_back(pos + langRunOffset);
+        }
+
+        // Line break iterators are expected to emit at least one position (for end-of-input).
+        SkASSERT(!fLineBreaks.empty());
+
+        return true;
+    }
+
+private:
+    SkUnicode*  const                      fUnicode;
+    const char* const                      fUtf8;
+
+    SkString                               fCurrentLanguage;
+    size_t                                 fCurrentLanguageEndOfRun = 0;
+    STArray<64, SkBreakIterator::Position> fLineBreaks;
+};
 
 /** Replaces invalid utf-8 sequences with REPLACEMENT CHARACTER U+FFFD. */
 static inline SkUnichar utf8_next(const char** ptr, const char* end) {
@@ -830,10 +888,12 @@ void ShaperDrivenWrapper::wrap(char const * const utf8, size_t utf8Bytes,
 {
     ShapedLine line;
 
+    // The current runSegmenter span.
     const char* utf8Start = nullptr;
     const char* utf8End = utf8;
-    SkUnicodeBreak lineBreakIterator;
-    SkString currentLanguage;
+
+    LineBreaker lb(fUnicode.get(), utf8);
+
     while (runSegmenter.advanceRuns()) {  // For each item
         utf8Start = utf8End;
         utf8End = utf8 + runSegmenter.endOfCurrentRun();
@@ -852,6 +912,11 @@ void ShaperDrivenWrapper::wrap(char const * const utf8, size_t utf8Bytes,
         SkVector modelAdvanceOffset = {0, 0};
 
         while (utf8Start < utf8End) {  // While there are still code points left in this item
+            // Refresh line break data if needed.
+            if (!lb.updateForLanguage(utf8Start, language)) {
+                return;
+            }
+
             size_t utf8runLength = utf8End - utf8Start;
             if (modelNeedsRegenerated) {
                 model = shape(utf8, utf8Bytes,
@@ -886,51 +951,45 @@ void ShaperDrivenWrapper::wrap(char const * const utf8, size_t utf8Bytes,
                 modelNeedsRegenerated = false;
             }
 
-            // TODO: break iterator per item, but just reset position if needed?
-            // Maybe break iterator with model?
-            if (!lineBreakIterator || !currentLanguage.equals(language.currentLanguage())) {
-                currentLanguage = language.currentLanguage();
-                lineBreakIterator = fUnicode->makeBreakIterator(currentLanguage.c_str(),
-                                                                SkUnicode::BreakType::kLines);
-                if (!lineBreakIterator) {
-                    return;
-                }
-            }
-            if (!lineBreakIterator->setText(utf8Start, utf8runLength)) {
-                return;
-            }
-            SkBreakIterator& breakIterator = *lineBreakIterator;
-
             ShapedRun best(RunHandler::Range(), SkFont(), 0, 0, {}, nullptr, 0,
                            { SK_ScalarNegativeInfinity, SK_ScalarNegativeInfinity });
             bool bestIsInvalid = true;
             bool bestUsesModelForGlyphs = false;
             SkScalar widthLeft = width - line.fAdvance.fX;
 
-            for (int32_t breakIteratorCurrent = breakIterator.next();
-                 !breakIterator.isDone();
-                 breakIteratorCurrent = breakIterator.next())
-            {
-                // TODO: if past a safe to break, future safe to break will be at least as long
+            int32_t absoluteStart = utf8Start - utf8;
+            int32_t absoluteEnd = utf8End - utf8;
 
-                // TODO: adjust breakIteratorCurrent by ignorable whitespace
+            auto getCandidate = [&](int32_t breakIteratorCurrent, bool& usesModel) {
+                const TextProps& props = modelText[breakIteratorCurrent + modelTextOffset];
+                if (props.glyphLen) {
+                    usesModel = true;
+                    return ShapedRun(RunHandler::Range(utf8Start - utf8, breakIteratorCurrent),
+                                     font.currentFont(), bidi.currentLevel(),
+                                     script.currentScript(), language.currentLanguage(),
+                                     std::unique_ptr<ShapedGlyph[]>(),
+                                     props.glyphLen - modelGlyphOffset,
+                                     props.advance - modelAdvanceOffset);
+                } else {
+                    usesModel = false;
+                    return shape(utf8, utf8Bytes,
+                                 utf8Start, utf8Start + breakIteratorCurrent,
+                                 bidi, language, script, font,
+                                 features, featuresSize);
+                }
+            };
+
+            const auto lineBreaks = lb.currentBreaks();
+            for (const auto pos : lineBreaks) {
+                if (pos <= absoluteStart) {
+                    continue;
+                }
+                if (pos > absoluteEnd) {
+                    break;
+                }
+                int32_t breakIteratorCurrent = pos - absoluteStart;
                 bool candidateUsesModelForGlyphs = false;
-                ShapedRun candidate = [&](const TextProps& props){
-                    if (props.glyphLen) {
-                        candidateUsesModelForGlyphs = true;
-                        return ShapedRun(RunHandler::Range(utf8Start - utf8, breakIteratorCurrent),
-                                         font.currentFont(), bidi.currentLevel(),
-                                         script.currentScript(), language.currentLanguage(),
-                                         std::unique_ptr<ShapedGlyph[]>(),
-                                         props.glyphLen - modelGlyphOffset,
-                                         props.advance - modelAdvanceOffset);
-                    } else {
-                        return shape(utf8, utf8Bytes,
-                                     utf8Start, utf8Start + breakIteratorCurrent,
-                                     bidi, language, script, font,
-                                     features, featuresSize);
-                    }
-                }(modelText[breakIteratorCurrent + modelTextOffset]);
+                ShapedRun candidate = getCandidate(breakIteratorCurrent, candidateUsesModelForGlyphs);
                 auto score = [widthLeft](const ShapedRun& run) -> SkScalar {
                     if (run.fAdvance.fX < widthLeft) {
                         return run.fUtf8Range.size();
@@ -945,8 +1004,18 @@ void ShaperDrivenWrapper::wrap(char const * const utf8, size_t utf8Bytes,
                 }
             }
 
+            if (bestIsInvalid) {
+                best = getCandidate(utf8runLength, bestUsesModelForGlyphs);
+                bestIsInvalid = false;
+            }
+
+            bool isKeepTogether = absoluteStart > 0 &&
+                                  !std::binary_search(lineBreaks.begin(),
+                                                      lineBreaks.end(),
+                                                      absoluteStart);
+
             // If nothing fit (best score is negative) and the line is not empty
-            if (width < line.fAdvance.fX + best.fAdvance.fX && !line.runs.empty()) {
+            if (width < line.fAdvance.fX + best.fAdvance.fX && !line.runs.empty() && !isKeepTogether) {
                 emit(fUnicode.get(), line, handler);
                 line.runs.clear();
                 line.fAdvance = {0, 0};
@@ -1441,6 +1510,7 @@ ShapedRun ShaperHarfBuzz::shape(char const * const utf8,
 
     return run;
 }
+
 }  // namespace
 
 #if !defined(SK_DISABLE_LEGACY_SKSHAPER_FUNCTIONS)
