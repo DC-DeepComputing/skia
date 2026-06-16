@@ -838,7 +838,6 @@ func (b *TaskBuilder) swarmDimensions() {
 var androidDeviceInfos = map[string][]string{
 	"AndroidOne":      {"sprout", "MOB30Q"},
 	"GalaxyS7_G930FD": {"herolte", "R16NW"}, // This is Oreo.
-	"GalaxyS9":        {"exynos9810", "QP1A.190711.020"},
 	"GalaxyS20":       {"exynos990", "QP1A.190711.020"},
 	"GalaxyS24":       {"pineapple", "UP1A.231005.007"},
 	"GalaxyS25Plus":   {"sun", "BP2A.250605.031.A3"},
@@ -858,7 +857,6 @@ var androidDeviceInfos = map[string][]string{
 	"Pixel7":          {"panther", "AP4A.241205.013"},
 	"Pixel7Pro":       {"cheetah", "TD1A.221105.002"},
 	"Pixel9":          {"tokay", "AP4A.241205.013"},
-	"Pixel10":         {"frankel", "BP41.250916.012.A1"},
 	"TecnoSpark3Pro":  {"TECNO-KB8", "PPR1.180610.011"},
 	"Wembley":         {"wembley", "SP2A.220505.008"},
 }
