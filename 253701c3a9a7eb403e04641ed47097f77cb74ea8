@@ -70,6 +70,30 @@
       },
       "revId": "253701c3a9a7eb403e04641ed47097f77cb74ea8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "780f5384_13c6c06b",
+        "filename": "src/ports/SkScalerContext_win_dw.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1864,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-16T21:16:27Z",
+      "side": 1,
+      "message": "I looked at the other `SkScalerContext` children and they seem to be doing some early returning as well\n\nHere is an example from void SkScalerContext_GDI::generateFontMetrics(SkFontMetrics* metrics) {\n```C++\n    uint32_t ret \u003d GetOutlineTextMetrics(fDDC, sizeof(otm), \u0026otm);\n    if (0 \u003d\u003d ret) {\n        LogFontTypeface::EnsureAccessible(this-\u003egetTypeface());\n        ret \u003d GetOutlineTextMetrics(fDDC, sizeof(otm), \u0026otm);\n    }\n    if (0 \u003d\u003d ret) {\n        return;\n    }\n\n```\n\nI guess we should follow suit then, and if `GetGDICompatibleMetrics` fails just return 0s",
+      "parentUuid": "59dbd9f6_d19470b0",
+      "range": {
+        "startLine": 1864,
+        "startChar": 28,
+        "endLine": 1864,
+        "endChar": 43
+      },
+      "revId": "253701c3a9a7eb403e04641ed47097f77cb74ea8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
