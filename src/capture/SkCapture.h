@@ -40,7 +40,7 @@ public:
     // the to build it over time. Move the SkPictures (fPictures) here and just maintain that in one
     // place.
     static sk_sp<SkCapture> MakeFromPictures(skia_private::TArray<sk_sp<SkPicture>>);
-    sk_sp<SkData> serializeCapture();
+    sk_sp<SkData> serializeCapture(const SkSerialProcs* fallbackProcs = nullptr);
 
     // TODO: Pictures being grabbed by index is not intuitive and leave the capture disorganized.
     // This should be deleted once SkPictures are organized by Surface and grouped by Recording.

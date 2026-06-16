@@ -57,6 +57,8 @@ public:
 
     void drawHelp(SkCanvas* canvas);
 
+    void setHelpFontSize(float size) { fHelpFontSize = size; }
+
     std::vector<SkString> getCommandsAsSoftkeys() const;
 
 private:
@@ -115,6 +117,7 @@ private:
     Window*                       fWindow;
     skia_private::TArray<Command> fCommands;
     HelpMode                      fHelpMode;
+    float                         fHelpFontSize;
 };
 
 }   // namespace sk_app

@@ -208,6 +208,7 @@ private:
     SkPoint                fZoomWindowLocation;
     sk_sp<SkImage>         fLastImage;
     bool                   fZoomUI;
+    float                  fImGuiScale;
 
     sk_app::Window::BackendType fBackendType;
 
