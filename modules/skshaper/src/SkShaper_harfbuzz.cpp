@@ -66,8 +66,6 @@ using HBFace   = std::unique_ptr<hb_face_t  , SkFunctionObject<hb_face_destroy> 
 using HBFont   = std::unique_ptr<hb_font_t  , SkFunctionObject<hb_font_destroy>  >;
 using HBBuffer = std::unique_ptr<hb_buffer_t, SkFunctionObject<hb_buffer_destroy>>;
 
-using SkUnicodeBreak = std::unique_ptr<SkBreakIterator>;
-
 hb_position_t skhb_position(SkScalar value) {
     // Treat HarfBuzz hb_position_t as 16.16 fixed-point.
     constexpr int kHbPosition1 = 1 << 16;
@@ -123,6 +121,29 @@ unsigned skhb_nominal_glyphs(hb_font_t *hb_font, void *font_data,
     }
     // return 'done' to allow HarfBuzz to synthesize with NFC and spaces, return 'count' to avoid
     return done;
+}
+
+void analyze_language(SkUnicode* unicode,
+                      const char* utf8,
+                      size_t start,
+                      size_t end,
+                      const char* locale,
+                      TArray<SkUnicode::CodeUnitFlags>& entries) {
+    if (auto lineIter = unicode->makeBreakIterator(locale, SkUnicode::BreakType::kLines)) {
+        lineIter->setText(utf8 + start, end - start);
+        for (auto pos = lineIter->first(); !lineIter->isDone(); pos = lineIter->next()) {
+            SkUnicode::CodeUnitFlags flag = (lineIter->status() >= (int32_t)SkUnicode::LineBreakType::kHardLineBreak)
+                                    ? SkUnicode::kHardLineBreakBefore
+                                    : SkUnicode::kSoftLineBreakBefore;
+            entries[start + pos] = static_cast<SkUnicode::CodeUnitFlags>(entries[start + pos] | flag);
+        }
+    }
+    if (auto graphemeIter = unicode->makeBreakIterator(locale, SkUnicode::BreakType::kGraphemes)) {
+        graphemeIter->setText(utf8 + start, end - start);
+        for (auto pos = graphemeIter->first(); !graphemeIter->isDone(); pos = graphemeIter->next()) {
+            entries[start + pos] = static_cast<SkUnicode::CodeUnitFlags>(entries[start + pos] | SkUnicode::kGraphemeStart);
+        }
+    }
 }
 
 hb_position_t skhb_glyph_h_advance(hb_font_t* hb_font,
@@ -691,7 +712,8 @@ private:
                       RunIteratorQueue& runSegmenter,
                       const Feature*, size_t featuresSize,
                       SkScalar width,
-                      RunHandler*) const = 0;
+                      RunHandler*,
+                      SkSpan<const SkUnicode::CodeUnitFlags> entries) const = 0;
 };
 
 class ShaperDrivenWrapper : public ShaperHarfBuzz {
@@ -706,7 +728,8 @@ private:
               RunIteratorQueue& runSegmenter,
               const Feature*, size_t featuresSize,
               SkScalar width,
-              RunHandler*) const override;
+              RunHandler*,
+              SkSpan<const SkUnicode::CodeUnitFlags> entries) const override;
 };
 
 class ShapeThenWrap : public ShaperHarfBuzz {
@@ -721,7 +744,8 @@ private:
               RunIteratorQueue& runSegmenter,
               const Feature*, size_t featuresSize,
               SkScalar width,
-              RunHandler*) const override;
+              RunHandler*,
+              SkSpan<const SkUnicode::CodeUnitFlags> entries) const override;
 };
 
 class ShapeDontWrapOrReorder : public ShaperHarfBuzz {
@@ -736,7 +760,8 @@ private:
               RunIteratorQueue& runSegmenter,
               const Feature*, size_t featuresSize,
               SkScalar width,
-              RunHandler*) const override;
+              RunHandler*,
+              SkSpan<const SkUnicode::CodeUnitFlags> entries) const override;
 };
 
 ShaperHarfBuzz::ShaperHarfBuzz(sk_sp<SkUnicode> unicode,
@@ -814,8 +839,19 @@ void ShaperHarfBuzz::shape(const char* utf8,
     runSegmenter.insert(&script,   1);
     runSegmenter.insert(&language, 0);
 
+    TArray<SkUnicode::CodeUnitFlags> entries;
+    if (!fUnicode->computeCodeUnitFlags(const_cast<char*>(utf8), utf8Bytes, false, &entries)) {
+        return;
+    }
+    for (auto& entry : entries) {
+        entry = static_cast<SkUnicode::CodeUnitFlags>(
+                entry & ~(SkUnicode::kSoftLineBreakBefore |
+                          SkUnicode::kHardLineBreakBefore |
+                          SkUnicode::kGraphemeStart));
+    }
+
     this->wrap(utf8, utf8Bytes, bidi, language, script, font, runSegmenter,
-               features, featuresSize, width, handler);
+               features, featuresSize, width, handler, entries);
 }
 
 void ShaperDrivenWrapper::wrap(char const * const utf8, size_t utf8Bytes,
@@ -826,15 +862,21 @@ void ShaperDrivenWrapper::wrap(char const * const utf8, size_t utf8Bytes,
                                RunIteratorQueue& runSegmenter,
                                const Feature* features, size_t featuresSize,
                                SkScalar width,
-                               RunHandler* handler) const
+                               RunHandler* handler,
+                               SkSpan<const SkUnicode::CodeUnitFlags> entries) const
 {
+    TArray<SkUnicode::CodeUnitFlags> localEntries(entries.data(), entries.size());
+    size_t analyzedUntil = 0;
     ShapedLine line;
 
     const char* utf8Start = nullptr;
     const char* utf8End = utf8;
-    SkUnicodeBreak lineBreakIterator;
-    SkString currentLanguage;
     while (runSegmenter.advanceRuns()) {  // For each item
+        if (runSegmenter.endOfCurrentRun() > analyzedUntil) {
+            size_t langEnd = language.endOfCurrentRun();
+            analyze_language(fUnicode.get(), utf8, analyzedUntil, langEnd, language.currentLanguage(), localEntries);
+            analyzedUntil = langEnd;
+        }
         utf8Start = utf8End;
         utf8End = utf8 + runSegmenter.endOfCurrentRun();
 
@@ -886,31 +928,21 @@ void ShaperDrivenWrapper::wrap(char const * const utf8, size_t utf8Bytes,
                 modelNeedsRegenerated = false;
             }
 
-            // TODO: break iterator per item, but just reset position if needed?
-            // Maybe break iterator with model?
-            if (!lineBreakIterator || !currentLanguage.equals(language.currentLanguage())) {
-                currentLanguage = language.currentLanguage();
-                lineBreakIterator = fUnicode->makeBreakIterator(currentLanguage.c_str(),
-                                                                SkUnicode::BreakType::kLines);
-                if (!lineBreakIterator) {
-                    return;
-                }
-            }
-            if (!lineBreakIterator->setText(utf8Start, utf8runLength)) {
-                return;
-            }
-            SkBreakIterator& breakIterator = *lineBreakIterator;
-
             ShapedRun best(RunHandler::Range(), SkFont(), 0, 0, {}, nullptr, 0,
                            { SK_ScalarNegativeInfinity, SK_ScalarNegativeInfinity });
             bool bestIsInvalid = true;
             bool bestUsesModelForGlyphs = false;
             SkScalar widthLeft = width - line.fAdvance.fX;
 
-            for (int32_t breakIteratorCurrent = breakIterator.next();
-                 !breakIterator.isDone();
-                 breakIteratorCurrent = breakIterator.next())
-            {
+            for (size_t i = 1; i <= utf8runLength; ++i) {
+                auto flags = localEntries[utf8Start - utf8 + i];
+                bool isHard = (flags & SkUnicode::kHardLineBreakBefore);
+                bool isSoft = (flags & SkUnicode::kSoftLineBreakBefore);
+                if (i < utf8runLength && !isHard && !isSoft) {
+                    continue;
+                }
+                size_t breakIteratorCurrent = i;
+
                 // TODO: if past a safe to break, future safe to break will be at least as long
 
                 // TODO: adjust breakIteratorCurrent by ignorable whitespace
@@ -943,10 +975,16 @@ void ShaperDrivenWrapper::wrap(char const * const utf8, size_t utf8Bytes,
                     bestIsInvalid = false;
                     bestUsesModelForGlyphs = candidateUsesModelForGlyphs;
                 }
+                if (isHard) {
+                    break;
+                }
             }
 
             // If nothing fit (best score is negative) and the line is not empty
-            if (width < line.fAdvance.fX + best.fAdvance.fX && !line.runs.empty()) {
+            const auto kBreakMask = SkUnicode::kSoftLineBreakBefore | SkUnicode::kHardLineBreakBefore;
+            bool isLegalBreak = (localEntries[best.fUtf8Range.begin()] & kBreakMask);
+            bool isHardBreak = (localEntries[best.fUtf8Range.begin()] & SkUnicode::kHardLineBreakBefore);
+            if (!line.runs.empty() && (isHardBreak || (isLegalBreak && width < line.fAdvance.fX + best.fAdvance.fX))) {
                 emit(fUnicode.get(), line, handler);
                 line.runs.clear();
                 line.fAdvance = {0, 0};
@@ -966,7 +1004,7 @@ void ShaperDrivenWrapper::wrap(char const * const utf8, size_t utf8Bytes,
                 line.runs.emplace_back(std::move(best));
 
                 // If item broken, emit line (prevent remainder from accidentally fitting)
-                if (utf8Start != utf8End) {
+                if (utf8Start != utf8End || (localEntries[utf8Start - utf8] & SkUnicode::kHardLineBreakBefore)) {
                     emit(fUnicode.get(), line, handler);
                     line.runs.clear();
                     line.fAdvance = {0, 0};
@@ -985,17 +1023,21 @@ void ShapeThenWrap::wrap(char const * const utf8, size_t utf8Bytes,
                          RunIteratorQueue& runSegmenter,
                          const Feature* features, size_t featuresSize,
                          SkScalar width,
-                         RunHandler* handler) const
+                         RunHandler* handler,
+                         SkSpan<const SkUnicode::CodeUnitFlags> entries) const
 {
+    TArray<SkUnicode::CodeUnitFlags> localEntries(entries.data(), entries.size());
+    size_t analyzedUntil = 0;
     TArray<ShapedRun> runs;
 {
-    SkString currentLanguage;
-    SkUnicodeBreak lineBreakIterator;
-    SkUnicodeBreak graphemeBreakIterator;
-    bool needIteratorInit = true;
     const char* utf8Start = nullptr;
     const char* utf8End = utf8;
     while (runSegmenter.advanceRuns()) {
+        if (runSegmenter.endOfCurrentRun() > analyzedUntil) {
+            size_t langEnd = language.endOfCurrentRun();
+            analyze_language(fUnicode.get(), utf8, analyzedUntil, langEnd, language.currentLanguage(), localEntries);
+            analyzedUntil = langEnd;
+        }
         utf8Start = utf8End;
         utf8End = utf8 + runSegmenter.endOfCurrentRun();
 
@@ -1005,48 +1047,16 @@ void ShapeThenWrap::wrap(char const * const utf8, size_t utf8Bytes,
                                 features, featuresSize));
         ShapedRun& run = runs.back();
 
-        if (needIteratorInit || !currentLanguage.equals(language.currentLanguage())) {
-            currentLanguage = language.currentLanguage();
-            lineBreakIterator = fUnicode->makeBreakIterator(currentLanguage.c_str(),
-                                                            SkUnicode::BreakType::kLines);
-            if (!lineBreakIterator) {
-                return;
-            }
-            graphemeBreakIterator = fUnicode->makeBreakIterator(currentLanguage.c_str(),
-                                                                SkUnicode::BreakType::kGraphemes);
-            if (!graphemeBreakIterator) {
-                return;
-            }
-            needIteratorInit = false;
-        }
-        size_t utf8runLength = utf8End - utf8Start;
-        if (!lineBreakIterator->setText(utf8Start, utf8runLength)) {
-            return;
-        }
-        if (!graphemeBreakIterator->setText(utf8Start, utf8runLength)) {
-            return;
-        }
-
         uint32_t previousCluster = 0xFFFFFFFF;
         for (size_t i = 0; i < run.fNumGlyphs; ++i) {
             ShapedGlyph& glyph = run.fGlyphs[i];
             int32_t glyphCluster = glyph.fCluster;
 
-            int32_t lineBreakIteratorCurrent = lineBreakIterator->current();
-            while (!lineBreakIterator->isDone() && lineBreakIteratorCurrent < glyphCluster)
-            {
-                lineBreakIteratorCurrent = lineBreakIterator->next();
-            }
             glyph.fMayLineBreakBefore = glyph.fCluster != previousCluster &&
-                                        lineBreakIteratorCurrent == glyphCluster;
+                                        (localEntries[glyphCluster] & (SkUnicode::kSoftLineBreakBefore | SkUnicode::kHardLineBreakBefore));
 
-            int32_t graphemeBreakIteratorCurrent = graphemeBreakIterator->current();
-            while (!graphemeBreakIterator->isDone() && graphemeBreakIteratorCurrent < glyphCluster)
-            {
-                graphemeBreakIteratorCurrent = graphemeBreakIterator->next();
-            }
             glyph.fGraphemeBreakBefore = glyph.fCluster != previousCluster &&
-                                         graphemeBreakIteratorCurrent == glyphCluster;
+                                         (localEntries[glyphCluster] & SkUnicode::kGraphemeStart);
 
             previousCluster = glyph.fCluster;
         }
@@ -1216,9 +1226,11 @@ void ShapeDontWrapOrReorder::wrap(char const * const utf8, size_t utf8Bytes,
                                   RunIteratorQueue& runSegmenter,
                                   const Feature* features, size_t featuresSize,
                                   SkScalar width,
-                                  RunHandler* handler) const
+                                  RunHandler* handler,
+                                  SkSpan<const SkUnicode::CodeUnitFlags> entries) const
 {
     sk_ignore_unused_variable(width);
+    sk_ignore_unused_variable(entries);
     TArray<ShapedRun> runs;
 
     const char* utf8Start = nullptr;
