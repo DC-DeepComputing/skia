@@ -22,6 +22,30 @@
       },
       "revId": "84ac409a12379d820efbe084df7ec98e23c940d1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "67193e1c_8e75ba9a",
+        "filename": "src/ports/SkScalerContext_win_dw.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1865,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-16T19:21:59Z",
+      "side": 1,
+      "message": "you\u0027re right, the bool was kind of an intermediate variable. I changed it to an HRESULT",
+      "parentUuid": "07a3597a_4edda3b9",
+      "range": {
+        "startLine": 1865,
+        "startChar": 8,
+        "endLine": 1865,
+        "endChar": 40
+      },
+      "revId": "84ac409a12379d820efbe084df7ec98e23c940d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
