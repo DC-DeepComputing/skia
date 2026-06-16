@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07a3597a_4edda3b9",
+        "filename": "src/ports/SkScalerContext_win_dw.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1865,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-06-16T19:10:14Z",
+      "side": 1,
+      "message": "I\u0027m fine either way, but curious why add this extra bool versus just declaring and checking the HRESULT outside of the if block?",
+      "range": {
+        "startLine": 1865,
+        "startChar": 8,
+        "endLine": 1865,
+        "endChar": 40
+      },
+      "revId": "84ac409a12379d820efbe084df7ec98e23c940d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
