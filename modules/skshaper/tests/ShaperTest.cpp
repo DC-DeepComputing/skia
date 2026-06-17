@@ -271,4 +271,69 @@ SHAPER_TEST(taitham)
 SHAPER_TEST(tamil)
 #undef SHAPER_TEST
 
+struct LineCountRunHandler final : public SkShaper::RunHandler {
+    int fLineCount = 0;
+    void beginLine() override { fLineCount++; }
+    void runInfo(const RunInfo&) override {}
+    void commitRunInfo() override {}
+    Buffer runBuffer(const RunInfo& info) override {
+        static SkGlyphID glyphs[100];
+        static SkPoint pos[100];
+        return {glyphs, pos, nullptr, nullptr, {0, 0}};
+    }
+    void commitRunBuffer(const RunInfo&) override {}
+    void commitLine() override {}
+};
+
+class SplitFontRunIterator : public SkShaper::FontRunIterator {
+public:
+    SplitFontRunIterator(size_t splitAt, size_t total, const SkFont& f1, const SkFont& f2)
+        : fSplitAt(splitAt), fTotal(total), fCurrent(0), fAtEnd(false), fF1(f1), fF2(f2) {}
+
+    void consume() override {
+        if (fCurrent == 0) {
+            fCurrent = fSplitAt;
+        } else {
+            fCurrent = fTotal;
+            fAtEnd = true;
+        }
+    }
+    size_t endOfCurrentRun() const override { return fCurrent; }
+    bool atEnd() const override { return fAtEnd; }
+    const SkFont& currentFont() const override { return fCurrent <= fSplitAt ? fF1 : fF2; }
+
+private:
+    size_t fSplitAt, fTotal, fCurrent;
+    bool fAtEnd;
+    SkFont fF1, fF2;
+};
+
+DEF_TEST(Shaper_MidWordBreak, reporter) {
+    auto unicode = get_unicode();
+    if (!unicode) {
+        return;
+    }
+
+    auto shaper = SkShapers::HB::ShaperDrivenWrapper(unicode, SkFontMgr::RefEmpty());
+    if (!shaper) {
+        return;
+    }
+
+    SkFont font = ToolUtils::DefaultFont();
+    const char* text = "Abcdefgh";
+    size_t len = strlen(text);
+
+    LineCountRunHandler rh;
+
+    SplitFontRunIterator fontRuns(3, len, font, font); // Split "Abc" | "defgh"
+    auto bidi = SkShaper::TrivialBiDiRunIterator(0, len);
+    auto script = SkShaper::TrivialScriptRunIterator(SkSetFourByteTag('L','a','t','n'), len);
+    auto lang = SkShaper::TrivialLanguageRunIterator("en-US", len);
+
+    // Narrow width to force wrapping
+    shaper->shape(text, len, fontRuns, bidi, script, lang, nullptr, 0, 1.0f, &rh);
+
+    REPORTER_ASSERT(reporter, rh.fLineCount == 1, "Word should not be broken at font boundary. Line count: %d", rh.fLineCount);
+}
+
 #endif  // #if defined(SK_SHAPER_HARFBUZZ_AVAILABLE) && defined(SK_SHAPER_UNICODE_AVAILABLE)
