@@ -51,9 +51,21 @@ class iOSFlavor(default.DefaultFlavor):
   def _install(self):
     # We assume a single device is connected.
 
-    # Kill usbmuxd.  This tends to help with connection problems.
+    # Kill usbmuxd, CoreDeviceService, and tunneld to completely reset the iOS connectivity stack.
+    # This is critical for iOS 17+ devices to be discovered by Xcode.
     if self.m.platform.is_mac:
-      self.m.step('killall usbmuxd', ['sudo', '/usr/bin/killall', '-v', 'usbmuxd'])
+      try:
+        self.m.step('killall usbmuxd', ['sudo', '/usr/bin/killall', '-v', 'usbmuxd'])
+      except self.m.step.StepFailure:  # pragma: nocover
+        pass
+      try:
+        self.m.step('killall CoreDeviceService', ['sudo', '/usr/bin/killall', '-v', 'CoreDeviceService'])
+      except self.m.step.StepFailure:  # pragma: nocover
+        pass
+      try:
+        self.m.step('killall tunneld', ['sudo', '/usr/bin/killall', '-v', 'tunneld'])
+      except self.m.step.StepFailure:  # pragma: nocover
+        pass
       self.m.step('sleep 10', ['sleep', '10'])
 
     # Pair the device.
