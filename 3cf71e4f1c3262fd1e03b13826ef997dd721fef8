@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d12ae99_5cf3b79a",
+        "filename": "src/codec/SkPngRustCodec.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 422,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-06-17T17:59:37Z",
+      "side": 1,
+      "message": "Let\u0027s hoist the count out of the loop just in case it matters (I\u0027m not sure how good compilers are at const optimizations across ffi calls).",
+      "range": {
+        "startLine": 422,
+        "startChar": 27,
+        "endLine": 422,
+        "endChar": 60
+      },
+      "revId": "3cf71e4f1c3262fd1e03b13826ef997dd721fef8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6090005_ea4db769",
+        "filename": "src/codec/SkPngRustCodec.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 468,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-06-17T17:59:37Z",
+      "side": 1,
+      "message": "This looks fragile (`compositeReader` potentially used after move), we should grab the gainmap stream and info before the ctor call.",
+      "range": {
+        "startLine": 466,
+        "startChar": 0,
+        "endLine": 468,
+        "endChar": 79
+      },
+      "revId": "3cf71e4f1c3262fd1e03b13826ef997dd721fef8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
