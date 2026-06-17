@@ -77,7 +77,10 @@ public:
     /*
      * Indicate that a draw to this proxy requires stencil.
      */
-    void setNeedsStencil() { fNeedsStencil = true; }
+    void setNeedsStencil() {
+        SkDebugf("GrRenderTargetProxy::setNeedsStencil()\n");
+        fNeedsStencil = true;
+    }
 
     int needsStencil() const { return fNeedsStencil; }
 
