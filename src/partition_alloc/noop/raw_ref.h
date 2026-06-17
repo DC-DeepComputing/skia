@@ -285,4 +285,9 @@ struct pointer_traits<::raw_ref<T, Traits>> {
 
 }  // namespace std
 
+template <typename T> struct sk_is_trivially_relocatable;
+
+template <typename T, RawPtrTraits Traits>
+struct sk_is_trivially_relocatable<raw_ref<T, Traits>> : std::true_type {};
+
 #endif  // SRC_PARTITION_ALLOC_NOOP_RAW_REF_H_
