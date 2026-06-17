@@ -1734,6 +1734,9 @@ optional("rust_exif") {
 
 optional("png_decode_rust") {
   public_defines = [ "SK_CODEC_DECODES_PNG_WITH_RUST" ]
+  if (skia_use_rust_png_unknown_chunks) {
+    public_defines += [ "SK_CODEC_DECODES_PNG_WITH_RUST_UNKNOWN_CHUNKS" ]
+  }
   enabled = skia_use_rust_png_decode
   public = skia_codec_rust_png_public
   sources = skia_codec_rust_png
