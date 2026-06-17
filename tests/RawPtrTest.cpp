@@ -73,3 +73,42 @@ DEF_TEST(RawPtr_DisableDanglingPtrDetection, reporter) {
     std::ignore = ptr;
     owner.reset();
 }
+
+DEF_TEST(RawPtr_PointerBehavior, reporter) {
+    int arr[] = {10, 20, 30};
+    raw_ptr<int, AllowPtrArithmetic> p = arr;
+
+    // Dereference
+    REPORTER_ASSERT(reporter, *p == 10);
+
+    // Pre-increment
+    REPORTER_ASSERT(reporter, &(++p) == &p);
+    REPORTER_ASSERT(reporter, *p == 20);
+
+    // Post-increment
+    raw_ptr<int, AllowPtrArithmetic> p_old = p++;
+    REPORTER_ASSERT(reporter, *p_old == 20);
+    REPORTER_ASSERT(reporter, *p == 30);
+
+    // Pre-decrement
+    REPORTER_ASSERT(reporter, &(--p) == &p);
+    REPORTER_ASSERT(reporter, *p == 20);
+
+    // Post-decrement
+    p_old = p--;
+    REPORTER_ASSERT(reporter, *p_old == 20);
+    REPORTER_ASSERT(reporter, *p == 10);
+
+    // Addition / Subtraction
+    REPORTER_ASSERT(reporter, *(p + 1) == 20);
+    REPORTER_ASSERT(reporter, *(p + 2) == 30);
+
+    raw_ptr<int, AllowPtrArithmetic> p2 = p + 2;
+    REPORTER_ASSERT(reporter, *(p2 - 1) == 20);
+    REPORTER_ASSERT(reporter, *(p2 - 2) == 10);
+
+    // Member access
+    struct Foo { int x; } foo{42};
+    raw_ptr<Foo> pFoo = &foo;
+    REPORTER_ASSERT(reporter, pFoo->x == 42);
+}
