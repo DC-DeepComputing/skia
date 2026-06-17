@@ -11,6 +11,7 @@
 #include "include/core/SkPoint.h"
 #include "include/core/SkRefCnt.h"  // IWYU pragma: keep
 #include "include/gpu/graphite/Recording.h"
+#include "src/gpu/graphite/ScratchResourceManager.h"
 
 #include <cstdint>
 #include <memory>
@@ -24,7 +25,6 @@ class Context;
 class Resource;
 class ResourceProvider;
 class RuntimeEffectDictionary;
-class ScratchResourceManager;
 class Surface;
 class TaskList;
 class Texture;
@@ -67,6 +67,8 @@ public:
     uint32_t recorderID() const { return fRecording->fRecorderID; }
     uint32_t uniqueID() const { return fRecording->fUniqueID; }
 
+    void updateScratchLabels(ResourceProvider*);
+
 #if defined(GPU_TEST_UTILS)
     bool isTargetProxyInstantiated() const;
     int numVolatilePromiseImages() const;
@@ -81,6 +83,12 @@ private:
     // No taking addresses of this type.
     const RecordingPriv* operator&() const = delete;
     RecordingPriv* operator&() = delete;
+
+    // A pointer to each scratch texture used by this Recording will be mapped either to a custom
+    // string label (fScratchTextureLabelMap) or a usage bitmask (fScratchTextureUsageMap). These
+    // are used to issue scratch texture label updates upon Recording insertion.
+    std::unique_ptr<const ScratchResourceManager::ScratchTextureUsageMap> fScratchTextureUsageMap;
+    std::unique_ptr<const ScratchResourceManager::ScratchTextureLabelMap> fScratchTextureLabelMap;
 
     Recording* fRecording;
 

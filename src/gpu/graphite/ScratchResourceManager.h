@@ -13,7 +13,9 @@
 #include "include/private/SkTArray.h"
 #include "src/core/SkEnumBitMask.h"
 #include "src/core/SkTHash.h"
+#include "src/gpu/graphite/ResourceTypes.h"
 
+#include <memory>
 #include <string_view>
 
 namespace skgpu::graphite {
@@ -177,6 +179,12 @@ public:
         return fProxyReadCounts->decrement(proxy);
     }
 
+    using ScratchTextureUsageMap =
+            skia_private::TArray<std::pair<Texture*, SkEnumBitMask<ScratchUsageFlags>>>;
+    using ScratchTextureLabelMap = skia_private::TArray<std::pair<Texture*, std::string>>;
+    void snapScratchTextureMaps(std::unique_ptr<const ScratchTextureUsageMap>& usageMap,
+                                std::unique_ptr<const ScratchTextureLabelMap>& labelMap);
+
 private:
     ResourceProvider* fResourceProvider;
 
@@ -194,6 +202,17 @@ private:
     skia_private::TArray<PendingUseListener*> fListenerStack;
 
     std::unique_ptr<ProxyReadCountMap> fProxyReadCounts;
+
+    // A scratch texture can have multiple different usages across frames. For every scratch texture
+    // instantiated by one or multiple texture proxies which store a static scratch usage rather
+    // than a custom label, keep track of a bitmask containing each proxy's scratch usage. This
+    // way, upon Recording insertion, we can compare a scratch texture's usages against the mask of
+    // usages stored here to determine whether the texture's label requires an update.
+    std::unique_ptr<ScratchTextureUsageMap> fScratchTextureUsageMap;
+
+    // If a scratch texture is instantiated with custom-defined strings rather than scratch usages,
+    // record those values here so they can be safely updated upon Recording insertion.
+    std::unique_ptr<ScratchTextureLabelMap> fScratchTextureLabelMap;
 };
 
 } // namespace skgpu::graphite
