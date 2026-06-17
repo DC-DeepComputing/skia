@@ -145,10 +145,14 @@ public:
         return *this;
     }
     SK_PA_ALWAYS_INLINE constexpr raw_ptr operator++(int /* post_increment */) {
-        return ++wrapped_ptr_;
+        T* tmp = wrapped_ptr_;
+        wrapped_ptr_++;
+        return tmp;
     }
     SK_PA_ALWAYS_INLINE constexpr raw_ptr operator--(int /* post_decrement */) {
-        return --wrapped_ptr_;
+        T* tmp = wrapped_ptr_;
+        wrapped_ptr_--;
+        return tmp;
     }
     template <typename Z, typename = std::enable_if_t<partition_alloc::internal::is_offset_type<Z>>>
     SK_PA_ALWAYS_INLINE constexpr raw_ptr& operator+=(Z delta) {
