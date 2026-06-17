@@ -16,6 +16,24 @@
       "message": "Thanks, LGTM!",
       "revId": "7f14bd0a051ea6ef6a58bcb9c3ec38c8809ad403",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f37d008c_24516983",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-06-17T23:39:02Z",
+      "side": 1,
+      "message": "Thanks! I’ve had to move the patch from `patches/image-png` to `bazel/external/image-png` to pass the `Housekeeper-PerCommit-CheckGeneratedFiles` check and lost your review\n\nLmk if that makes sense",
+      "parentUuid": "62dc9f63_03ee2d94",
+      "revId": "7f14bd0a051ea6ef6a58bcb9c3ec38c8809ad403",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
