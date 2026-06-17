@@ -118,6 +118,30 @@
       },
       "revId": "253701c3a9a7eb403e04641ed47097f77cb74ea8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f91fafd_b7d94547",
+        "filename": "src/ports/SkScalerContext_win_dw.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1864,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-17T13:06:52Z",
+      "side": 1,
+      "message": "sounds good, just updated the CL",
+      "parentUuid": "9f24d3bd_0f9aa501",
+      "range": {
+        "startLine": 1864,
+        "startChar": 28,
+        "endLine": 1864,
+        "endChar": 43
+      },
+      "revId": "253701c3a9a7eb403e04641ed47097f77cb74ea8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
