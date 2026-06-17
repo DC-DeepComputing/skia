@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab6a68f8_2f101eca",
+        "filename": "src/codec/SkPngRustCodec.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 422,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-06-17T18:10:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0d12ae99_5cf3b79a",
+      "range": {
+        "startLine": 422,
+        "startChar": 27,
+        "endLine": 422,
+        "endChar": 60
+      },
+      "revId": "3cf71e4f1c3262fd1e03b13826ef997dd721fef8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f6090005_ea4db769",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-06-17T17:59:37Z",
       "side": 1,
       "message": "This looks fragile (`compositeReader` potentially used after move), we should grab the gainmap stream and info before the ctor call.",
+      "range": {
+        "startLine": 466,
+        "startChar": 0,
+        "endLine": 468,
+        "endChar": 79
+      },
+      "revId": "3cf71e4f1c3262fd1e03b13826ef997dd721fef8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1fbd0d7a_e7b70ceb",
+        "filename": "src/codec/SkPngRustCodec.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 468,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-06-17T18:10:46Z",
+      "side": 1,
+      "message": "Good catch! Sorry that’s a recent patchset… I had it as you suggested before but for some reason I thought this would be cleaner inlined (didn’t realize the move just above)",
+      "parentUuid": "f6090005_ea4db769",
       "range": {
         "startLine": 466,
         "startChar": 0,
