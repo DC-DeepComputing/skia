@@ -73,6 +73,7 @@ public:
     sk_sp<Texture> findOrCreateScratchTexture(SkISize,
                                               const TextureInfo&,
                                               std::string_view label,
+                                              SkEnumBitMask<TextureUsageFlags>,
                                               const ResourceCache::ScratchResourceSet& unavailable);
 
     sk_sp<Texture> createWrappedTexture(const BackendTexture&, std::string_view label);
@@ -149,12 +150,23 @@ private:
                                        std::string_view label) = 0;
     virtual sk_sp<Sampler> createSampler(const SamplerDesc&) = 0;
 
-    sk_sp<Texture> findOrCreateTexture(SkISize dimensions,
-                                       const TextureInfo& info,
-                                       std::string_view label,
-                                       Budgeted,
-                                       Shareable,
-                                       const ResourceCache::ScratchResourceSet* = nullptr);
+    sk_sp<Texture> findOrCreateTexture(
+            SkISize dimensions,
+            const TextureInfo& info,
+            std::string_view label,
+            Budgeted,
+            Shareable,
+            const ResourceCache::ScratchResourceSet* = nullptr,
+            SkEnumBitMask<TextureUsageFlags> = {TextureUsageFlags::kNone});
+    // Helper method for other Texture creation methods to query the ResourceCache once that
+    // Texture's ResourceType has been generated.
+    sk_sp<Texture> findOrCreateCachedTexture(ResourceType,
+                                             SkISize dimensions,
+                                             const TextureInfo& info,
+                                             std::string_view label,
+                                             Budgeted budgeted,
+                                             Shareable shareable,
+                                             const ResourceCache::ScratchResourceSet* = nullptr);
 
     sk_sp<Buffer> findOrCreateBuffer(size_t,
                                      BufferType,
