@@ -73,3 +73,57 @@ DEF_TEST(RawPtr_DisableDanglingPtrDetection, reporter) {
     std::ignore = ptr;
     owner.reset();
 }
+
+DEF_TEST(RawPtr_PointerBehavior, reporter) {
+    int arr[] = {10, 20, 30};
+    int* expected = arr;
+    raw_ptr<int, AllowPtrArithmetic> p = arr;
+
+    // Verify the initial state.
+    REPORTER_ASSERT(reporter, p == expected);
+    REPORTER_ASSERT(reporter, *p == *expected);
+
+    // Test pre-increment.
+    ++expected;
+    raw_ptr<int, AllowPtrArithmetic>& p_ref = ++p;
+    REPORTER_ASSERT(reporter, &p_ref == &p);
+    REPORTER_ASSERT(reporter, p == expected);
+
+    // Test post-increment.
+    int* expected_old = expected++;
+    raw_ptr<int, AllowPtrArithmetic> p_old = p++;
+    REPORTER_ASSERT(reporter, p_old == expected_old);
+    REPORTER_ASSERT(reporter, p == expected);
+
+    // Test pre-decrement.
+    --expected;
+    raw_ptr<int, AllowPtrArithmetic>& p_ref2 = --p;
+    REPORTER_ASSERT(reporter, &p_ref2 == &p);
+    REPORTER_ASSERT(reporter, p == expected);
+
+    // Test post-decrement.
+    expected_old = expected--;
+    p_old = p--;
+    REPORTER_ASSERT(reporter, p_old == expected_old);
+    REPORTER_ASSERT(reporter, p == expected);
+
+    // Test addition.
+    REPORTER_ASSERT(reporter, (p + 1) == (expected + 1));
+    REPORTER_ASSERT(reporter, (p + 2) == (expected + 2));
+
+    // Test subtraction.
+    raw_ptr<int, AllowPtrArithmetic> p2 = p + 2;
+    int* expected2 = expected + 2;
+    REPORTER_ASSERT(reporter, (p2 - 1) == (expected2 - 1));
+    REPORTER_ASSERT(reporter, (p2 - 2) == (expected2 - 2));
+
+    // Test difference.
+    REPORTER_ASSERT(reporter, (p2 - p) == (expected2 - expected));
+
+    // Test member access.
+    struct Foo { int x; } foo{42};
+    Foo* expectedFoo = &foo;
+    raw_ptr<Foo> pFoo = &foo;
+    REPORTER_ASSERT(reporter, pFoo->x == expectedFoo->x);
+    REPORTER_ASSERT(reporter, pFoo.get() == expectedFoo);
+}
