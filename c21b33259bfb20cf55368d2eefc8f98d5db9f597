@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1b0325bb_ffb33a98",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-06-17T14:05:16Z",
+      "side": 1,
+      "message": "I guess to be safe just throw the while loop and comment in graphite was well.",
+      "parentUuid": "95c0c800_02497584",
+      "revId": "c21b33259bfb20cf55368d2eefc8f98d5db9f597",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f8c7bcfa_496f7225",
         "filename": "src/gpu/ganesh/vk/GrVkCommandBuffer.cpp",
         "patchSetId": 5
@@ -120,6 +138,30 @@
       "side": 1,
       "message": "\u003e I wonder if we should make a call in GrVkCaps like GrVkCaps::mustRecallWaitForFences() and have that only return true for older mali devices. The update this loop do be a do/while loop with the condition being while(vkCaps-\u003emustRecallWaitForFences() \u0026\u0026 result \u003d\u003d VK_TIMEOUT).\n\nI don\u0027t have a specific driver version to gate this on. Best I could do is just  add the rule for Mali but that doesn\u0027t allow getting rid of it in the future in the same way. IDK if other drivers have the same issue as well since it\u0027s easy to miss required error handling around ppoll() calls.",
       "parentUuid": "163820de_3b6153ce",
+      "range": {
+        "startLine": 699,
+        "startChar": 2,
+        "endLine": 702,
+        "endChar": 5
+      },
+      "revId": "c21b33259bfb20cf55368d2eefc8f98d5db9f597",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f2ad724_f5dcae95",
+        "filename": "src/gpu/ganesh/vk/GrVkCommandBuffer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 702,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-06-17T14:05:16Z",
+      "side": 1,
+      "message": "I guess this really adds negligible overhead so just leaving it in forever isn\u0027t the worst. So maybe we don\u0027t need to add a specific caps check. But I do think we then need to add a comment in the code here explaining why this loop is here. It is in no way obvious since you would think the WaitForFences call already would wait indefinitely and couldn\u0027t timeout.",
+      "parentUuid": "e43260e4_fd172e58",
       "range": {
         "startLine": 699,
         "startChar": 2,
