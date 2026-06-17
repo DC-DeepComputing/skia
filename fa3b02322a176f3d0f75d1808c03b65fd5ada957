@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5637502d_c951442f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-06-17T14:53:16Z",
+      "side": 1,
+      "message": "Hi Michael,\nCould you please take a look?\n\n+ Greg: I would need a STAMP after Michael review, because I am not a committer.",
+      "revId": "fa3b02322a176f3d0f75d1808c03b65fd5ada957",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
