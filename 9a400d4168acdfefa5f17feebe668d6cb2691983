@@ -39,6 +39,30 @@
       },
       "revId": "9a400d4168acdfefa5f17feebe668d6cb2691983",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b54c50f4_11482046",
+        "filename": "src/utils/SkCanvasStateUtils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-06-17T10:20:19Z",
+      "side": 1,
+      "message": "Done!\n\nI am not a `project-skia-committers`  so I lost the +1.",
+      "parentUuid": "6b8d18bf_fe7739ea",
+      "range": {
+        "startLine": 85,
+        "startChar": 43,
+        "endLine": 85,
+        "endChar": 50
+      },
+      "revId": "9a400d4168acdfefa5f17feebe668d6cb2691983",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
