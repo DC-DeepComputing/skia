@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3b17426_9bb0effd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-17T16:01:05Z",
+      "side": 1,
+      "message": "Note for posterity, I copied the wrong bug ID in the description and I can no longer edit it. It should be bug 524468570",
+      "revId": "066bfbac72820a8b7ec8159aef3c3e630063ee5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
