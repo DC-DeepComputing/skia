@@ -15,10 +15,7 @@
 #include "src/gpu/graphite/GraphiteResourceKey.h"
 #include "src/gpu/graphite/ProxyCache.h"
 #include "src/gpu/graphite/Resource.h"
-
-#if defined(GPU_TEST_UTILS)
 #include "src/gpu/graphite/Texture.h"
-#endif
 
 namespace skgpu::graphite {
 
@@ -232,6 +229,7 @@ Resource* ResourceCache::findAndRefResource(const GraphiteResourceKey& key,
             }
             default: SkUNREACHABLE; break;
         }
+
         this->refAndMakeResourceMRU(resource);
         this->validate();
     }
@@ -269,6 +267,98 @@ void ResourceCache::refAndMakeResourceMRU(Resource* resource) {
 void ResourceCache::forceProcessReturnedResources() {
     ASSERT_SINGLE_OWNER
     this->processReturnedResources();
+}
+
+namespace {
+std::string generate_label_from_scratch_usages(SkEnumBitMask<ScratchUsageFlags> usageMask) {
+    std::string allUsagesLabel = "ScratchTexture";
+
+    if (SkToBool(usageMask & ScratchUsageFlags::kAsyncReadPixelsFallbackTexture)) {
+        allUsagesLabel += "_AsyncReadPixelsFallback";
+    }
+    if (SkToBool(usageMask & ScratchUsageFlags::kChildDevice)) {
+        allUsagesLabel += "_ChildDevice";
+    }
+    if (SkToBool(usageMask & ScratchUsageFlags::kCopyDeviceTexture)) {
+        allUsagesLabel += "_DeviceCopy";
+    }
+    if (SkToBool(usageMask & ScratchUsageFlags::kDiscardableLoadMSAATexture)) {
+        allUsagesLabel += "_DiscardableLoadMSAA";
+    }
+    if (SkToBool(usageMask & ScratchUsageFlags::kDispatchWriteOnlyStorageTexture)) {
+        allUsagesLabel += "_DispatchWriteOnlyStorage";
+    }
+    if (SkToBool(usageMask & ScratchUsageFlags::kDstCopy)) {
+        allUsagesLabel += "_DstCopy";
+    }
+    if (SkToBool(usageMask & ScratchUsageFlags::kEvalBlurTexture)) {
+        allUsagesLabel += "_EvalBlur";
+    }
+    if (SkToBool(usageMask & ScratchUsageFlags::kGenerateMipmapsScratchTexture)) {
+        allUsagesLabel += "_GenerateMipmaps";
+    }
+    if (SkToBool(usageMask & ScratchUsageFlags::kImageFilterCachedBitmap)) {
+        allUsagesLabel += "_ImageFilterCachedBitmap";
+    }
+    if (SkToBool(usageMask & ScratchUsageFlags::kImageFilterResult)) {
+        allUsagesLabel += "_ImageFilterResult";
+    }
+    if (SkToBool(usageMask & ScratchUsageFlags::kImageMakeCTandCSTexture)) {
+        allUsagesLabel += "_CTandCSConversion";
+    }
+    if (SkToBool(usageMask & ScratchUsageFlags::kImageSubsetTexture)) {
+        allUsagesLabel += "_Subset";
+    }
+    if (SkToBool(usageMask & ScratchUsageFlags::kLazySkImageBitmapTexture)) {
+        allUsagesLabel += "_LazySkImageBitmap";
+    }
+    if (SkToBool(usageMask & ScratchUsageFlags::kRasterBitmapTexture)) {
+        allUsagesLabel += "_RasterBitmap";
+    }
+    if (SkToBool(usageMask & ScratchUsageFlags::kRescaleDstTexture)) {
+        allUsagesLabel += "_RescaleDst";
+    }
+    if (SkToBool(usageMask & ScratchUsageFlags::kRescaleImageTempTexture)) {
+        allUsagesLabel += "_RescaleImageTemp";
+    }
+    if (SkToBool(usageMask & ScratchUsageFlags::kRescaleLinearGammaTexture)) {
+        allUsagesLabel += "_RescaleLinearGamma";
+    }
+    if (SkToBool(usageMask & ScratchUsageFlags::kYUVRasterBitmapPlane)) {
+        allUsagesLabel += "_YUVRasterBitmapPlane";
+    }
+
+    return allUsagesLabel;
+}
+} // anonymous namespace
+
+void ResourceCache::updateCachedScratchLabels(
+        const ScratchResourceManager::ScratchTextureUsageMap* scratchTextureUsageMap,
+        const ScratchResourceManager::ScratchTextureLabelMap* scratchTextureLabelMap) {
+    ASSERT_SINGLE_OWNER
+    if (!scratchTextureUsageMap) {
+        return;
+    }
+
+    // Compare the scratch usages of each scratch texture stored within the usage map to the usages
+    // actually recorded on the texture. If they are not identical, issue an update to the scratch
+    // texture's recorded usages and update its label.
+    for (auto& resourceAndUsage : *scratchTextureUsageMap) {
+        Texture* scratchTexture = resourceAndUsage.first;
+        if (scratchTexture->scratchUsages() != resourceAndUsage.second) {
+            scratchTexture->updateScratchUsages(resourceAndUsage.second);
+            scratchTexture->setLabel(
+                generate_label_from_scratch_usages(scratchTexture->scratchUsages()));
+            scratchTexture->synchronizeBackendLabel();
+        }
+    }
+
+    // Issue any custom label updates for scratch textures.
+    for (auto& resourceAndLabel : *scratchTextureLabelMap) {
+        Texture* scratchTexture = resourceAndLabel.first;
+        scratchTexture->setLabel(resourceAndLabel.second); // no-op if label already matches
+        scratchTexture->synchronizeBackendLabel();
+    }
 }
 
 bool ResourceCache::returnResource(Resource* resource) {

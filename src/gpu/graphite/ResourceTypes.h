@@ -189,6 +189,8 @@ enum class Shareable : uint8_t {
     kYes,     // The resource is always visible in the ResourceCache
 };
 
+
+
 /**
   * Scratch textures can be used in multiple different ways within one Recording, and their labels
   * should reflect all the different usages. Rather than having to perform string comparison and
