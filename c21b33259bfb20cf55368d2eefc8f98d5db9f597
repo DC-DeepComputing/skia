@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "117f0969_d2de8954",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-06-17T14:06:52Z",
+      "side": 1,
+      "message": "Also do we need to add something to Dawn as well? Do they use this long wait for fence call anywhere? Or maybe a dawn call we need to wrap in skia graphite",
+      "parentUuid": "1b0325bb_ffb33a98",
+      "revId": "c21b33259bfb20cf55368d2eefc8f98d5db9f597",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f8c7bcfa_496f7225",
         "filename": "src/gpu/ganesh/vk/GrVkCommandBuffer.cpp",
         "patchSetId": 5
