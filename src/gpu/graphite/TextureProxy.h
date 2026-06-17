@@ -144,10 +144,9 @@ private:
     // String used to describe the current use of this TextureProxy. It will be included in its
     // Texture object's label when the proxy gets instantiated.
     std::string fLabel;
-    // Scratch usage flag used to describe the current use of this TextureProxy. It will be included
+    // Texture usage flag used to describe the current use of this TextureProxy. It will be included
     // in its Texture object's usage flag bitmask when the proxy gets instantiated (which is then
-    // used to gernerate the Texture's label). Should only be nonzero when a proxy's usage can be
-    // represented by a scratch usage flag - otherwise, it should simply store a custom fLabel.
+    // used to generate the Texture's label).
     TextureUsageFlags fUsage;
 
     skgpu::Budgeted fBudgeted;

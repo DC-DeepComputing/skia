@@ -15,10 +15,7 @@
 #include "src/gpu/graphite/GraphiteResourceKey.h"
 #include "src/gpu/graphite/ProxyCache.h"
 #include "src/gpu/graphite/Resource.h"
-
-#if defined(GPU_TEST_UTILS)
 #include "src/gpu/graphite/Texture.h"
-#endif
 
 namespace skgpu::graphite {
 
@@ -232,6 +229,7 @@ Resource* ResourceCache::findAndRefResource(const GraphiteResourceKey& key,
             }
             default: SkUNREACHABLE; break;
         }
+
         this->refAndMakeResourceMRU(resource);
         this->validate();
     }
@@ -269,6 +267,24 @@ void ResourceCache::refAndMakeResourceMRU(Resource* resource) {
 void ResourceCache::forceProcessReturnedResources() {
     ASSERT_SINGLE_OWNER
     this->processReturnedResources();
+}
+
+void ResourceCache::updateScratchTextureLabels(
+        const ScratchResourceManager::TextureLabelAndUsageMap* textureLabelAndUsageMap) {
+    ASSERT_SINGLE_OWNER
+    if (!textureLabelAndUsageMap) {
+        return;
+    }
+
+    // Compare the scratch usages of each scratch texture stored within the usage map to the usages
+    // actually recorded on the texture. If they are not identical, issue an update to the scratch
+    // texture's recorded usages and update its label.
+    for (auto& textureLabelAndUsage : *textureLabelAndUsageMap) {
+        Texture* tex = textureLabelAndUsage.first;
+        ScratchResourceManager::LabelAndUsage labelAndUsage = textureLabelAndUsage.second;
+        // This will be a no-op if the texture's existing label already encapsulates this info.
+        tex->setLabel(labelAndUsage.first, labelAndUsage.second);
+    }
 }
 
 bool ResourceCache::returnResource(Resource* resource) {

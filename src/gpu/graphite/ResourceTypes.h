@@ -278,12 +278,12 @@ struct SamplerDesc {
     constexpr SamplerDesc(const SkSamplingOptions& samplingOptions,
                           const std::pair<SkTileMode, SkTileMode> tileModes,
                           const ImmutableSamplerInfo info = {})
-            : fDesc((static_cast<int>(tileModes.first)            << kTileModeXShift           ) |
-                    (static_cast<int>(tileModes.second)           << kTileModeYShift           ) |
-                    (static_cast<int>(samplingOptions.filter)     << kFilterModeShift          ) |
-                    (static_cast<int>(samplingOptions.mipmap)     << kMipmapModeShift          ) |
+            : fDesc((static_cast<uint32_t>(tileModes.first)            << kTileModeXShift      ) |
+                    (static_cast<uint32_t>(tileModes.second)           << kTileModeYShift      ) |
+                    (static_cast<uint32_t>(samplingOptions.filter)     << kFilterModeShift     ) |
+                    (static_cast<uint32_t>(samplingOptions.mipmap)     << kMipmapModeShift     ) |
                     (info.fNonFormatYcbcrConversionInfo           << kImmutableSamplerInfoShift) )
-            , fFormat(info.fFormat)
+            , fFormat(static_cast<uint32_t>(info.fFormat))
             , fExternalFormatMostSignificantBits(info.fFormat >> 32) {
 
         // Cubic sampling is handled in a shader, with the actual texture sampled by with NN,
