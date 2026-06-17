@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0f31b26_af22baf1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-06-17T14:42:39Z",
+      "side": 1,
+      "message": "PS4 includes test suppressions. We still have a fatal error on Test-Win11-Clang-NUC13Pro-GPU-IntelArc140V-x86_64-Debug-All-Graphite_Native_Vulkan.  Try results on PS3.  PTAL.",
+      "revId": "4fb2f453dcd7eddc7607896f4f012750d45e9bc3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
