@@ -5,13 +5,27 @@
  * found in the LICENSE file.
  */
 #include "include/private/SkLog.h"
+#include "include/utils/SkLogHandler.h"
 
 #include <cstdarg>
+#include <cstdio>
 
 #if !defined(SkLog)
 void SkLog(SkLogPriority priority, const char format[], ...) {
     va_list args;
     va_start(args, format);
+
+    char buffer[1024];
+    va_list args_copy;
+    va_copy(args_copy, args);
+    int written = vsnprintf(buffer, sizeof(buffer), format, args_copy);
+    va_end(args_copy);
+
+    // Drops onLog call in the case of encoding errors.
+    if (written >= 0) {
+        SkLogHandler::GetInstance()->onLog(priority, buffer);
+    }
+
     SkLogVAList(priority, format, args);
     va_end(args);
 }
