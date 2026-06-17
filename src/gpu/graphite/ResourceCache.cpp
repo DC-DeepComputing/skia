@@ -206,8 +206,11 @@ Resource* ResourceCache::findAndRefResource(const GraphiteResourceKey& key,
                 // by the ScratchResourceManager, which will handle label updates upon Recording
                 // insertion. For now, determining and updating the label here maintains existing
                 // functionality, which works until moving to use one singular threadsafe cache.
-                resource->setLabel(label, textureUsages);
-                resource->synchronizeBackendLabel();
+                // resource->setLabel(label, textureUsages);
+                // resource->synchronizeBackendLabel();
+
+                // TODO(nicolettep): Update usages?
+                // textureUsages
 
                 resource->setShareable(shareable);
                 break;
@@ -284,6 +287,7 @@ void ResourceCache::updateScratchTextureLabels(
         ScratchResourceManager::LabelAndUsage labelAndUsage = textureLabelAndUsage.second;
         // This will be a no-op if the texture's existing label already encapsulates this info.
         tex->setLabel(labelAndUsage.first, labelAndUsage.second);
+        tex->synchronizeBackendLabel();
     }
 }
 

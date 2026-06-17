@@ -307,6 +307,7 @@ protected:
     using TakeRefFunc = void (*)(void* ctx);
 
     // String used to describe the current use of this Resource.
+    // TODO(nicoletep): Make this private again.
     std::string fLabel;
     // Flag to signal whether this Resource's label has been updated and its backend label is now
     // out of sync. This attribute does not need to be atomic or otherwise explicitly threadsafe
