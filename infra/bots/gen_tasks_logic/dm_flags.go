@@ -625,6 +625,12 @@ func (b *TaskBuilder) dmFlags(internalHardwareLabel string) {
 					}
 				}
 			}
+			// b/??? Graphite (Native|Dawn) Vulkan on IntelArc140V fails the following tests:
+			if b.GPU("IntelArc140V") && b.ExtraConfig("Vulkan") {
+				skip(ALL, "test", ALL, "GraphiteTimeLimitedPurgeTest")
+				skip(ALL, "test", ALL, "PersistentPipelineStorageTest")
+				skip(ALL, "test", ALL, "SimplifyPaintTest")
+			}
 		} else {
 			if b.GPU("QuadroP400") && b.MatchOs("Ubuntu24.04") {
 				if b.ExtraConfig("Vulkan") {
