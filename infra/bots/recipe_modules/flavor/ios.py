@@ -51,10 +51,32 @@ class iOSFlavor(default.DefaultFlavor):
   def _install(self):
     # We assume a single device is connected.
 
-    # Kill usbmuxd.  This tends to help with connection problems.
+    # Kill usbmuxd, CoreDeviceService, and tunneld to completely reset the iOS connectivity stack.
+    # This is critical for iOS 17+ devices to be discovered by Xcode.
     if self.m.platform.is_mac:
-      self.m.step('killall usbmuxd', ['sudo', '/usr/bin/killall', '-v', 'usbmuxd'])
+      try:
+        self.m.step('sudo -l', ['sudo', '-n', '-l'])
+      except self.m.step.StepFailure:  # pragma: nocover
+        pass
+      try:
+        self.m.step('launchctl stop usbmuxd', ['sudo', '/bin/launchctl', 'stop', 'com.apple.usbmuxd'])
+      except self.m.step.StepFailure:  # pragma: nocover
+        pass
+      try:
+        self.m.step('killall usbmuxd', ['sudo', '/usr/bin/killall', '-v', 'usbmuxd'])
+      except self.m.step.StepFailure:  # pragma: nocover
+        pass
+      try:
+        # CoreDeviceService runs as the current logged-in user, so we don't need sudo to kill it.
+        self.m.step('killall CoreDeviceService', ['/usr/bin/killall', '-v', 'CoreDeviceService'])
+      except self.m.step.StepFailure:  # pragma: nocover
+        pass
       self.m.step('sleep 10', ['sleep', '10'])
+      try:
+        # Output exact devices CoreDevice detects for debugging/diagnostics.
+        self.m.step('devicectl list devices', ['xcrun', 'devicectl', 'list', 'devices'])
+      except self.m.step.StepFailure:  # pragma: nocover
+        pass
 
     # Pair the device.
     try:
