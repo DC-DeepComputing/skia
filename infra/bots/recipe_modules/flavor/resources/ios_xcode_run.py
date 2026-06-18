@@ -29,9 +29,26 @@ subprocess.check_call([xcodebuild, '-version'])
 workdir = os.getcwd()
 xctestrun_path = os.path.join(workdir, 'skia_tests.xctestrun')
 module_name = os.path.splitext(os.path.basename(app_path))[0] + '_module'
+
+# Create a dummy .xctest bundle inside the .app package to satisfy Xcode 15/16's strict CoreDevice validation.
+plugins_dir = os.path.join(app_path, 'PlugIns')
+test_bundle_dir = os.path.join(plugins_dir, module_name + '.xctest')
+os.makedirs(test_bundle_dir, exist_ok=True)
+
+test_bundle_info_plist = os.path.join(test_bundle_dir, 'Info.plist')
+info_plist_contents = {
+  'CFBundleIdentifier': bundle_id + '.module',
+  'CFBundleName': module_name,
+  'CFBundlePackageType': 'BNDL',
+  'CFBundleShortVersionString': '1.0',
+  'CFBundleVersion': '1',
+}
+with open(test_bundle_info_plist, 'wb') as f:
+  plistlib.dump(info_plist_contents, f)
+
 contents = {
   module_name: {
-    'TestBundlePath': app_path,
+    'TestBundlePath': test_bundle_dir,
     'TestHostPath': app_path,
     'TestHostBundleIdentifier': bundle_id,
     'TestingEnvironmentVariables': {},
