@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e6acaeb8_0d7fb591",
+        "filename": "src/gpu/graphite/BuiltInCodeSnippetID.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-18T20:48:57Z",
+      "side": 1,
+      "message": "Right now won\u0027t the files be deleted on any OS update? So we technically don\u0027t need to worry about backwards compatibility?\n\nIt\u0027s simple enough to bump the key version for such a large change, it\u0027s more whether or not we find the effort worthwhile for parsing old keys and updating them. Are you imagining a world where if we later bump from version 2 -\u003e 3, we can delete all the 1 -\u003e 2 migration code and replace it with whatever logic is needed for 2-\u003e3?  We could have a unit test that embeds a serialized key we exported from a paint option using v1 code, then deserialize it and make sure it covers the paint keys that we get from the paint options processed using v2 code.",
+      "parentUuid": "00fd0f68_b393f11f",
+      "revId": "f21e05f70bae4604bac76350539cf196259eadcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c9b7045f_6ead71fa",
         "filename": "src/gpu/graphite/BuiltInCodeSnippetID.h",
         "patchSetId": 3
@@ -31,6 +49,30 @@
       "writtenOn": "2026-06-18T18:25:24Z",
       "side": 1,
       "message": "typo",
+      "range": {
+        "startLine": 91,
+        "startChar": 42,
+        "endLine": 91,
+        "endChar": 50
+      },
+      "revId": "f21e05f70bae4604bac76350539cf196259eadcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "26103aa9_d9cbc16c",
+        "filename": "src/gpu/graphite/BuiltInCodeSnippetID.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-18T20:48:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c9b7045f_6ead71fa",
       "range": {
         "startLine": 91,
         "startChar": 42,
@@ -64,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "161107fe_f0089620",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1239,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-18T20:48:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "85a4baae_a5d5bfb1",
+      "range": {
+        "startLine": 1239,
+        "startChar": 6,
+        "endLine": 1239,
+        "endChar": 7
+      },
+      "revId": "f21e05f70bae4604bac76350539cf196259eadcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ba67107c_640d76aa",
@@ -77,6 +143,30 @@
       "writtenOn": "2026-06-18T19:15:22Z",
       "side": 1,
       "message": "xtra \u0027 \u0027 ?",
+      "range": {
+        "startLine": 1300,
+        "startChar": 62,
+        "endLine": 1300,
+        "endChar": 63
+      },
+      "revId": "f21e05f70bae4604bac76350539cf196259eadcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "40059940_7eb71f62",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1300,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-18T20:48:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ba67107c_640d76aa",
       "range": {
         "startLine": 1300,
         "startChar": 62,
@@ -110,6 +200,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d984959_a3f45e75",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1315,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-18T20:48:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7718af7e_d18be537",
+      "range": {
+        "startLine": 1315,
+        "startChar": 20,
+        "endLine": 1315,
+        "endChar": 28
+      },
+      "revId": "f21e05f70bae4604bac76350539cf196259eadcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a2a24ec2_70b6c2f3",
@@ -133,6 +247,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "171c8161_c72c944e",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1324,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-18T20:48:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a2a24ec2_70b6c2f3",
+      "range": {
+        "startLine": 1324,
+        "startChar": 62,
+        "endLine": 1324,
+        "endChar": 63
+      },
+      "revId": "f21e05f70bae4604bac76350539cf196259eadcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bc1e87a7_e6df0021",
@@ -146,6 +284,30 @@
       "writtenOn": "2026-06-18T19:15:22Z",
       "side": 1,
       "message": "a plus ?",
+      "range": {
+        "startLine": 285,
+        "startChar": 51,
+        "endLine": 285,
+        "endChar": 59
+      },
+      "revId": "f21e05f70bae4604bac76350539cf196259eadcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8e39502_e55c3f6b",
+        "filename": "src/gpu/graphite/PaintParamsKey.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-18T20:48:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bc1e87a7_e6df0021",
       "range": {
         "startLine": 285,
         "startChar": 51,
@@ -203,6 +365,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "db27e7c2_a1e92702",
+        "filename": "src/gpu/graphite/PaintParamsKey.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-18T20:48:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "52623fc5_bfdb616c",
+      "range": {
+        "startLine": 286,
+        "startChar": 23,
+        "endLine": 286,
+        "endChar": 25
+      },
+      "revId": "f21e05f70bae4604bac76350539cf196259eadcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f5a4bf85_31055c84",
@@ -220,6 +406,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c5690c7_f825e07e",
+        "filename": "src/gpu/graphite/PaintParamsKey.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-18T20:48:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f5a4bf85_31055c84",
+      "revId": "f21e05f70bae4604bac76350539cf196259eadcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "678626fb_f429a4fd",
@@ -233,6 +437,30 @@
       "writtenOn": "2026-06-18T18:25:24Z",
       "side": 1,
       "message": "linearSRGB instead of csxform ?",
+      "range": {
+        "startLine": 524,
+        "startChar": 14,
+        "endLine": 524,
+        "endChar": 21
+      },
+      "revId": "f21e05f70bae4604bac76350539cf196259eadcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1fa5aa0_6a14a620",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 524,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-18T20:48:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "678626fb_f429a4fd",
       "range": {
         "startLine": 524,
         "startChar": 14,
@@ -266,6 +494,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ecf1bf65_453e74bc",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1436,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-18T20:48:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dc651713_895313b1",
+      "range": {
+        "startLine": 1431,
+        "startChar": 0,
+        "endLine": 1436,
+        "endChar": 6
+      },
+      "revId": "f21e05f70bae4604bac76350539cf196259eadcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6cbb383f_9a593eaf",
@@ -279,6 +531,30 @@
       "writtenOn": "2026-06-18T19:15:22Z",
       "side": 1,
       "message": "Move these guys to after _Gamut to match enum order ?",
+      "range": {
+        "startLine": 1449,
+        "startChar": 0,
+        "endLine": 1462,
+        "endChar": 6
+      },
+      "revId": "f21e05f70bae4604bac76350539cf196259eadcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7926fbbe_78acc767",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1462,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-18T20:48:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6cbb383f_9a593eaf",
       "range": {
         "startLine": 1449,
         "startChar": 0,

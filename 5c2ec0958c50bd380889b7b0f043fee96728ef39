@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8be72777_53da2e24",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-18T20:48:57Z",
+      "side": 1,
+      "message": "The PS3 test failures were from 2 issues that are now fixed;\n- $apply_ootf had been skipping work when w \u003e 0, but the original code (and what needs to happen) is to only skip work when w \u003d 0. Negative w\u0027s are perfectly valid. This was breaking certain HLG conversions because we stopped applying the ootf step when we should have bene.\n- Asserts firing when compiling RTE that used the to/fromLinearSRGB functions: I had said in the commit message and assumed in the assert that we were always specializing these, but RuntimeEffectBlock::HandleIntrinsics needed to be updated to do so so the nodes were containing the unexpected PreAlpha/PostAlpha blocks that are always no-ops for these functions.\n\nAlso addressed all of Rob\u0027s feedback, barring resolving the question about versioning the serialized keys.",
+      "revId": "5c2ec0958c50bd380889b7b0f043fee96728ef39",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
