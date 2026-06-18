@@ -222,8 +222,20 @@ static bool can_import_protected_content(GrDirectContext* dContext) {
     SkASSERT(GrBackendApi::kOpenGL == dContext->backend());
     // Only compute whether the extension is present once the first time this
     // function is called.
-    static bool hasIt = can_import_protected_content_eglimpl();
-    return hasIt;
+    static bool hasExtension = can_import_protected_content_eglimpl();
+    if (!hasExtension) {
+        return false;
+    }
+    EGLDisplay dpy = eglGetCurrentDisplay();
+    EGLContext ctx = eglGetCurrentContext();
+    if (dpy == EGL_NO_DISPLAY || ctx == EGL_NO_CONTEXT) {
+        return false;
+    }
+    EGLint ctxProtected = EGL_FALSE;
+    if (!eglQueryContext(dpy, ctx, EGL_PROTECTED_CONTENT_EXT, &ctxProtected)) {
+        return false;
+    }
+    return ctxProtected == EGL_TRUE;
 }
 
 GrBackendTexture MakeGLBackendTexture(GrDirectContext* dContext,
