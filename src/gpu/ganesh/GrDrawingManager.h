@@ -223,6 +223,8 @@ private:
 
     void sortTasks();
 
+    void foo();
+
     // Attempt to reorder tasks to reduce render passes, and check the memory budget of the
     // resulting intervals. Returns whether the reordering was successful & the memory budget
     // acceptable. If it returns true, fDAG has been updated to reflect the reordered tasks.

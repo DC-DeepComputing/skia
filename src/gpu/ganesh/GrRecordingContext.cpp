@@ -87,6 +87,7 @@ bool GrRecordingContext::init() {
     } else if (GrContextOptions::Enable::kNo == this->options().fReduceOpsTaskSplitting) {
         reduceOpsTaskSplitting = false;
     }
+    reduceOpsTaskSplitting = false;
     fDrawingManager.reset(new GrDrawingManager(this,
                                                prcOptions,
                                                reduceOpsTaskSplitting));
