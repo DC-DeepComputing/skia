@@ -45,7 +45,6 @@ enum GrSurfaceOrigin : int;
 namespace skgpu::ganesh {
 
 class SurfaceDrawContext;
-
 class OpsTask : public GrRenderTask {
 public:
     // Manage the arenas life time by maintaining are reference to it.

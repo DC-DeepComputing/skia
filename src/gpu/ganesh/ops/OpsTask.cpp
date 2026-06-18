@@ -586,7 +586,7 @@ bool OpsTask::onExecute(GrOpFlushState* flushState) {
     }
 
     bool markStencilCleared = false;
-    GrLoadOp stencilLoadOp;
+    GrLoadOp stencilLoadOp = GrLoadOp::kDiscard;
     switch (fInitialStencilContent) {
         case StencilContent::kDontCare:
             stencilLoadOp = GrLoadOp::kDiscard;
@@ -627,6 +627,11 @@ bool OpsTask::onExecute(GrOpFlushState* flushState) {
     GrStoreOp stencilStoreOp = (caps.discardStencilValuesAfterRenderPass() && !fMustPreserveStencil)
             ? GrStoreOp::kDiscard
             : GrStoreOp::kStore;
+
+    SkDebugf("proxyid: %u - stencil-loadOp: %s stencil-storeOp: %s\n",
+             proxy->uniqueID().asUInt(),
+             stencilLoadOp == GrLoadOp::kLoad ? "load" : (stencilLoadOp == GrLoadOp::kClear ? "clear" : "discard"),
+             stencilStoreOp == GrStoreOp::kStore ? "store" : "clear");
 
     GrOpsRenderPass* renderPass = create_render_pass(flushState->gpu(),
                                                      proxy->peekRenderTarget(),
@@ -840,6 +845,7 @@ void OpsTask::dump(const SkString& label,
             SkDebugf("kPreserved\n");
             break;
     }
+    SkDebugf("%sfMustPreserveStencil: %d\n", indent.c_str(), fMustPreserveStencil);
 
     SkDebugf("%s%d ops:\n", indent.c_str(), fOpChains.size());
     for (int i = 0; i < fOpChains.size(); ++i) {
@@ -848,17 +854,17 @@ void OpsTask::dump(const SkString& label,
             SkDebugf("%s%d: <combined forward or failed instantiation>\n", indent.c_str(), i);
         } else {
             SkDebugf("%s%d: %s\n", indent.c_str(), i, fOpChains[i].head()->name());
-            SkRect bounds = fOpChains[i].bounds();
-            SkDebugf("%sClippedBounds: [L: %.2f, T: %.2f, R: %.2f, B: %.2f]\n",
-                     indent.c_str(),
-                     bounds.fLeft, bounds.fTop, bounds.fRight, bounds.fBottom);
+//            SkRect bounds = fOpChains[i].bounds();
+//            SkDebugf("%sClippedBounds: [L: %.2f, T: %.2f, R: %.2f, B: %.2f]\n",
+//                     indent.c_str(),
+//                     bounds.fLeft, bounds.fTop, bounds.fRight, bounds.fBottom);
             for (const auto& op : GrOp::ChainRange<>(fOpChains[i].head())) {
                 SkString info = SkTabString(op.dumpInfo(), 1);
                 SkDebugf("%s%s\n", indent.c_str(), info.c_str());
-                bounds = op.bounds();
-                SkDebugf("%s\tClippedBounds: [L: %.2f, T: %.2f, R: %.2f, B: %.2f]\n",
-                         indent.c_str(),
-                         bounds.fLeft, bounds.fTop, bounds.fRight, bounds.fBottom);
+//                bounds = op.bounds();
+//                SkDebugf("%s\tClippedBounds: [L: %.2f, T: %.2f, R: %.2f, B: %.2f]\n",
+//                         indent.c_str(),
+//                         bounds.fLeft, bounds.fTop, bounds.fRight, bounds.fBottom);
             }
         }
     }
