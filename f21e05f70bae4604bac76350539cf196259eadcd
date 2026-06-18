@@ -16,6 +16,69 @@
       "message": "wdyt about bumping SerializationUtils.cpp::kCurrent_Version to 2, adding a kPrevious_Version (of 1), and allowing both versions to be parsed in stream_is_pipeline?\n\nOld keys that run afoul of this renumbering will be rejected as ill formed but this would, at least, give us some signal re what is going on and, potentially, allow us to remap old keys or reject them out of hand.\n\nWe could also add a check to Android\u0027s precompile so, if all the keys were out of date, we would fallback to prewarming and PaintOption-based precompile.",
       "revId": "f21e05f70bae4604bac76350539cf196259eadcd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9b7045f_6ead71fa",
+        "filename": "src/gpu/graphite/BuiltInCodeSnippetID.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-18T18:25:24Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 91,
+        "startChar": 42,
+        "endLine": 91,
+        "endChar": 50
+      },
+      "revId": "f21e05f70bae4604bac76350539cf196259eadcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5a4bf85_31055c84",
+        "filename": "src/gpu/graphite/PaintParamsKey.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-18T18:25:24Z",
+      "side": 1,
+      "message": "Add another \u0027\\n\u0027 ?",
+      "revId": "f21e05f70bae4604bac76350539cf196259eadcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "678626fb_f429a4fd",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 524,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-18T18:25:24Z",
+      "side": 1,
+      "message": "linearSRGB instead of csxform ?",
+      "range": {
+        "startLine": 524,
+        "startChar": 14,
+        "endLine": 524,
+        "endChar": 21
+      },
+      "revId": "f21e05f70bae4604bac76350539cf196259eadcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
