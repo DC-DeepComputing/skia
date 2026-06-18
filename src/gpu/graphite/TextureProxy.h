@@ -100,6 +100,7 @@ public:
                                     SkISize dimensions,
                                     const TextureInfo&,
                                     TextureUsageFlags);
+                                    // TODO(nicolettep): Budgeted param (default yes?)
 
     using LazyInstantiateCallback = std::function<sk_sp<Texture> (ResourceProvider*)>;
 
