@@ -33,7 +33,34 @@
 
 #include <android/hardware_buffer.h>
 
+<<<<<<< HEAD   (588f849889adea814acf958160d7ed87d75675ed Roll recipe dependencies (trivial).)
 std::unique_ptr<GrAHardwareBufferImageGenerator> GrAHardwareBufferImageGenerator::Make(
+||||||| BASE   (121664bfa633579e3bc0ae94f785e0d81c4debf4 Fix colorspace transform with multitexture color text.)
+#ifdef SK_VULKAN
+#include "src/gpu/ganesh/vk/GrVkGpu.h"
+#endif
+
+#define PROT_CONTENT_EXT_STR "EGL_EXT_protected_content"
+#define EGL_PROTECTED_CONTENT_EXT 0x32C0
+
+std::unique_ptr<SkImageGenerator> GrAHardwareBufferImageGenerator::Make(
+=======
+#ifdef SK_VULKAN
+#include "src/gpu/ganesh/vk/GrVkGpu.h"
+#endif
+
+#include <android/log.h>
+
+#define PROT_CONTENT_EXT_STR "EGL_EXT_protected_content"
+#define EGL_PROTECTED_CONTENT_EXT 0x32C0
+#define LOG_TAG "GrAHardwareBuffer"
+
+#define LOGI(...) __android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__)
+#define LOGE(...) __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__)
+#define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__)
+
+std::unique_ptr<SkImageGenerator> GrAHardwareBufferImageGenerator::Make(
+>>>>>>> CHANGE (03ee59390d8b5fb69a6ec23c21a084556e50584e Fix: do not attempt to import a protected AHardwareBuffer fr)
         AHardwareBuffer* graphicBuffer, SkAlphaType alphaType, sk_sp<SkColorSpace> colorSpace,
         GrSurfaceOrigin surfaceOrigin) {
     AHardwareBuffer_Desc bufferDesc;
@@ -112,8 +139,27 @@ GrSurfaceProxyView GrAHardwareBufferImageGenerator::makeView(GrRecordingContext*
         AHardwareBuffer* fAhb;
     };
 
+    AutoAHBRelease autoHardwareBuffer(hardwareBuffer);
+
+    // Prevent SMMU S1 fault: do not attempt to import a protected AHardwareBuffer
+    // from a non-protected (system_server) OpenGL context.
+    if (fIsProtectedContent) {
+	EGLDisplay dpy = eglGetCurrentDisplay();
+	EGLContext ctx = eglGetCurrentContext();
+        EGLint ctxProtected = EGL_FALSE;
+	LOGI("[GrAHardwareBufferImageGenerator] Protected AHardwareBuffer ");
+
+	if (dpy == EGL_NO_DISPLAY || ctx == EGL_NO_CONTEXT ||
+            !eglQueryContext(dpy, ctx, EGL_PROTECTED_CONTENT_EXT, &ctxProtected) ||
+            ctxProtected != EGL_TRUE) {
+		LOGI("[GrAHardwareBufferImageGenerator] Protected AHardwareBuffer "
+			"requested from non-protected EGL context. Skipping to avoid SMMU fault.");
+	    return {};
+        }
+    }
+
     sk_sp<GrTextureProxy> texProxy = proxyProvider->createLazyProxy(
-            [direct, buffer = AutoAHBRelease(hardwareBuffer)](
+            [direct, buffer = std::move(autoHardwareBuffer)](
                     GrResourceProvider* resourceProvider,
                     const GrSurfaceProxy::LazySurfaceDesc& desc)
                     -> GrSurfaceProxy::LazyCallbackResult {
