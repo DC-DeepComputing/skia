@@ -7,7 +7,6 @@
 
 #include "src/core/SkStrike.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkDrawable.h"
 #include "include/core/SkFontStyle.h"
 #include "include/core/SkMatrix.h"
@@ -23,6 +22,7 @@
 #include "src/core/SkScalerContext.h"
 #include "src/core/SkStrikeCache.h"
 #include "src/core/SkWriteBuffer.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/text/StrikeForGPU.h"
 
 #include <cctype>

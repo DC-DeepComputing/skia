@@ -6,8 +6,6 @@
  */
 #include "src/gpu/ganesh/ops/TextureOp.h"
 
-#include "src/partition_alloc/raw_ref.h"
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkColor.h"
@@ -64,6 +62,8 @@
 #include "src/gpu/ganesh/ops/GrMeshDrawOp.h"
 #include "src/gpu/ganesh/ops/GrSimpleMeshDrawOpHelper.h"
 #include "src/gpu/ganesh/ops/QuadPerEdgeAA.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ref.h"
 
 #if defined(GPU_TEST_UTILS)
 #include "src/core/SkRandom.h"

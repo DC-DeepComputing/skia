@@ -7,8 +7,6 @@
 
 #include "src/utils/SkPolyUtils.h"
 
-#include "src/partition_alloc/raw_ptr.h"
-#include "src/partition_alloc/raw_ptr_exclusion.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkDebug.h"
@@ -22,6 +20,8 @@
 #include "src/core/SkTDPQueue.h"
 #include "src/core/SkTInternalLList.h"
 #include "src/core/SkVx.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <algorithm>
 #include <cstdint>

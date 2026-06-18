@@ -7,8 +7,6 @@
 
 #include "include/core/SkStream.h"
 
-#include "src/partition_alloc/raw_ptr.h"
-#include "src/partition_alloc/raw_ptr_exclusion.h"
 #include "include/core/SkData.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
@@ -22,6 +20,8 @@
 #include "src/core/SkOSFile.h"
 #include "src/core/SkSafeMath.h"
 #include "src/core/SkStreamPriv.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <algorithm>
 #include <cstddef>

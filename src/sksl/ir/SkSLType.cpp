@@ -7,14 +7,14 @@
 
 #include "src/sksl/ir/SkSLType.h"
 
-#include "src/partition_alloc/raw_ref.h"
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/private/SkTo.h"
 #include "src/core/SkEnumBitMask.h"
 #include "src/core/SkHalf.h"
 #include "src/core/SkMathPriv.h"
 #include "src/core/SkSafeMath.h"
 #include "src/core/SkTHash.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ref.h"
 #include "src/sksl/SkSLBuiltinTypes.h"
 #include "src/sksl/SkSLConstantFolder.h"
 #include "src/sksl/SkSLContext.h"

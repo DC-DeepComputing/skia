@@ -7,8 +7,6 @@
 
 #include "src/gpu/ganesh/ops/FillRRectOp.h"
 
-#include "src/partition_alloc/raw_ptr.h"
-#include "src/partition_alloc/raw_ptr_exclusion.h"
 #include "include/core/SkClipOp.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPoint.h"
@@ -55,6 +53,8 @@
 #include "src/gpu/ganesh/ops/GrDrawOp.h"
 #include "src/gpu/ganesh/ops/GrMeshDrawOp.h"
 #include "src/gpu/ganesh/ops/GrSimpleMeshDrawOpHelper.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #if defined(GPU_TEST_UTILS)
 #include "src/core/SkRandom.h"

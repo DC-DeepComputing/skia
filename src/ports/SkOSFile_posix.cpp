@@ -5,12 +5,12 @@
  * found in the LICENSE file.
  */
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkTFitsIn.h"
 #include "include/private/SkTemplates.h"
 #include "src/core/SkOSFile.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <dirent.h>
 #include <new>

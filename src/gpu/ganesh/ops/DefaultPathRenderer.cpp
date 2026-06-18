@@ -6,8 +6,6 @@
  */
 #include "src/gpu/ganesh/ops/DefaultPathRenderer.h"
 
-#include "src/partition_alloc/raw_ptr.h"
-#include "src/partition_alloc/raw_ptr_exclusion.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkPathTypes.h"
@@ -55,6 +53,8 @@
 #include "src/gpu/ganesh/ops/GrOp.h"
 #include "src/gpu/ganesh/ops/GrPathStencilSettings.h"
 #include "src/gpu/ganesh/ops/GrSimpleMeshDrawOpHelperWithStencil.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #if defined(GPU_TEST_UTILS)
 #include "src/core/SkRandom.h"

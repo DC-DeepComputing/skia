@@ -7,7 +7,6 @@
 
 #include "src/svg/SkSVGDevice.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkClipOp.h"
@@ -52,6 +51,7 @@
 #include "src/core/SkTHash.h"
 #include "src/core/SkTLazy.h"
 #include "src/image/SkImage_Base.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/shaders/SkColorShader.h"
 #include "src/shaders/SkShaderBase.h"
 #include "src/text/GlyphRun.h"

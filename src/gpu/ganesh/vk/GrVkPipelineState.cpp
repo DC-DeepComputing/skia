@@ -7,7 +7,6 @@
 
 #include "src/gpu/ganesh/vk/GrVkPipelineState.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkSamplingOptions.h"
 #include "include/gpu/ganesh/GrTypes.h"
 #include "include/private/SkAssert.h"
@@ -37,6 +36,7 @@
 #include "src/gpu/ganesh/vk/GrVkTexture.h"
 #include "src/gpu/ganesh/vk/GrVkUniformHandler.h"
 #include "src/gpu/ganesh/vk/GrVkUtil.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/sksl/SkSLCompiler.h"
 
 #include <string.h>

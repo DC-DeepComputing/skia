@@ -5,7 +5,6 @@
  * found in the LICENSE file.
  */
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/codec/SkCodec.h"
 #include "include/codec/SkCodecAnimation.h"
 #include "include/codec/SkEncodedImageFormat.h"
@@ -38,6 +37,7 @@
 #include "src/core/SkMipmap.h"
 #include "src/core/SkRasterClip.h"
 #include "src/core/SkStreamPriv.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <climits>
 #include <cstdint>

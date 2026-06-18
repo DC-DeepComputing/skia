@@ -6,7 +6,6 @@
  */
 #include "src/gpu/ganesh/ops/AALinearizingConvexPathRenderer.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
@@ -47,6 +46,7 @@
 #include "src/gpu/ganesh/ops/GrMeshDrawOp.h"
 #include "src/gpu/ganesh/ops/GrOp.h"
 #include "src/gpu/ganesh/ops/GrSimpleMeshDrawOpHelperWithStencil.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #if defined(GPU_TEST_UTILS)
 #include "src/core/SkRandom.h"

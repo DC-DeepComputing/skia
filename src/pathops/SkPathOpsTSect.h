@@ -8,8 +8,8 @@
 #define SkPathOpsTSect_DEFINED
 
 #include "src/partition_alloc/raw_ptr.h"
-#include "src/partition_alloc/raw_ref.h"
 #include "src/partition_alloc/raw_ptr_exclusion.h"
+#include "src/partition_alloc/raw_ref.h"
 
 #include "include/core/SkScalar.h"
 #include "include/core/SkTypes.h"

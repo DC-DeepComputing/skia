@@ -6,7 +6,6 @@
  */
 #include "src/gpu/ganesh/ops/ShadowRRectOp.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkMatrix.h"
@@ -44,6 +43,7 @@
 #include "src/gpu/ganesh/image/GrMippedBitmap.h"
 #include "src/gpu/ganesh/ops/GrMeshDrawOp.h"
 #include "src/gpu/ganesh/ops/GrSimpleMeshDrawOpHelper.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #if defined(GPU_TEST_UTILS)
 #include "src/core/SkRandom.h"

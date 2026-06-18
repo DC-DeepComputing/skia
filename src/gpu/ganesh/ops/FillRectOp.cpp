@@ -6,7 +6,6 @@
  */
 #include "src/gpu/ganesh/ops/FillRectOp.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkRect.h"
@@ -37,6 +36,7 @@
 #include "src/gpu/ganesh/ops/GrMeshDrawOp.h"
 #include "src/gpu/ganesh/ops/GrSimpleMeshDrawOpHelperWithStencil.h"
 #include "src/gpu/ganesh/ops/QuadPerEdgeAA.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #if defined(GPU_TEST_UTILS)
 #include "src/core/SkRandom.h"

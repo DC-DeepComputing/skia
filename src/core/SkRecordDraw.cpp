@@ -7,7 +7,6 @@
 
 #include "src/core/SkRecordDraw.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkBBHFactory.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkBlender.h"
@@ -37,6 +36,7 @@
 #include "src/core/SkRecord.h"
 #include "src/core/SkRecords.h"
 #include "src/effects/colorfilters/SkColorFilterBase.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/utils/SkPatchUtils.h"
 
 #include <algorithm>

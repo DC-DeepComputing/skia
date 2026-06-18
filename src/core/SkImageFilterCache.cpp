@@ -7,7 +7,6 @@
 
 #include "src/core/SkImageFilterCache.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/private/SkMutex.h"
 #include "include/private/SkOnce.h"
 #include "src/core/SkChecksum.h"
@@ -16,6 +15,7 @@
 #include "src/core/SkTDynamicHash.h"
 #include "src/core/SkTHash.h"
 #include "src/core/SkTInternalLList.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <vector>
 
