@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1dbc8465_a4d73d08",
+        "filename": "src/gpu/graphite/BuiltInCodeSnippetID.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-18T22:20:48Z",
+      "side": 1,
+      "message": "You\u0027re right. Given the build invalidation is probably won\u0027t be a problem.\n\nLet\u0027s just skip it for now.",
+      "parentUuid": "e6acaeb8_0d7fb591",
+      "revId": "f21e05f70bae4604bac76350539cf196259eadcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c9b7045f_6ead71fa",
