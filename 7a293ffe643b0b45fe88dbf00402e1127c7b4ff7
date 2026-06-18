@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a5255bc_3dc7033f",
+        "filename": "src/image/SkSurface_Base.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-06-18T16:06:57Z",
+      "side": 1,
+      "message": "Do we want this? This means that fCachedCanvas at this point is a CaptureCanvas (or an NWay). Pretty sure we don\u0027t want the wrapper to have its surfaceBase pointing at a surface. What happens if we delete this?\n\nConsidering that we should delete this because CaptureCanvases do not technically have Surfaces, we should probably override `SkCaptureCanvas::getBaseSurface` to emit a warning *and* still return null.",
+      "revId": "7a293ffe643b0b45fe88dbf00402e1127c7b4ff7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1fde64e_f4d46dfc",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1921,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-06-18T16:06:57Z",
+      "side": 1,
+      "message": "Good for now since we can limit to 1 frame viewer slides. We need to figure out the behavior for multiframe slides (Skotties or other animations)",
+      "revId": "7a293ffe643b0b45fe88dbf00402e1127c7b4ff7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d90ea8f_3fa60386",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1999,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-06-18T16:06:57Z",
+      "side": 1,
+      "message": "nit: rename this to something like `checkCaptureAndSerialize`, just not toggle since it does more than that.",
+      "range": {
+        "startLine": 1999,
+        "startChar": 4,
+        "endLine": 1999,
+        "endChar": 17
+      },
+      "revId": "7a293ffe643b0b45fe88dbf00402e1127c7b4ff7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
