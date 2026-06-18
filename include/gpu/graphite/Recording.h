@@ -42,6 +42,7 @@ public:
     RecordingPriv priv();
 
 private:
+    friend class Context; // for updating scratch labels
     friend class Recorder;  // for ctor and LazyProxyData
     friend class RecordingPriv;
 

@@ -17,6 +17,7 @@
 #include "src/gpu/GpuTypesPriv.h"
 #include "src/gpu/graphite/Resource.h"
 #include "src/gpu/graphite/ResourceTypes.h"
+#include "src/gpu/graphite/ScratchResourceManager.h"
 
 #if defined(GPU_TEST_UTILS)
 #include <functional>
@@ -91,6 +92,11 @@ public:
     void dumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump) const;
 
     void forceProcessReturnedResources();
+
+    // Takes in lists of scratch texture resources and their associated custom string label or
+    // usage bitmask and updates their labels accordingly. This should only be called upon Recording
+    // insertion, at which point all usages are known and it is safe to update backend labels.
+    void updateScratchTextureLabels(const ScratchResourceManager::TextureLabelAndUsageMap*);
 
 #if defined(GPU_TEST_UTILS)
     void forcePurgeAsNeeded() { this->purgeAsNeeded(); }

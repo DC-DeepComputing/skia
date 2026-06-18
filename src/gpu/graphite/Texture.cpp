@@ -94,25 +94,11 @@ std::string usage_flag_to_str(TextureUsageFlags flag) {
 } // anonymous namespace
 
 void Texture::setLabel(std::string_view label, SkEnumBitMask<TextureUsageFlags> textureUsages) {
-    // TODO(b/431796811): For now, go through the effort of generating a full label for the texture
-    // and determine if that is identical to the Texture's current label in order to decide whether
-    // an update is needed. Eventually, we will want to optimize this by opting to check equality of
-    // label components - the dynamic strings in `label` and texture usage bitmasks - rather than
-    // doing long string comparisons. Right now, simply equality checking these components would not
-    // be appropriate since `fLabel` may already include textureUsages from past label updates and
-    // would therefore not be considered the same (whereas generating the full string would yield
-    // equality).
-    std::string labelWithUsages {label};
-    AppendUsagesToLabel(labelWithUsages, textureUsages);
-
-    if (fLabel == labelWithUsages) {
-        SkASSERT(fTextureUsages = textureUsages);
+    if (fLabel == label) {
         return;
     }
-
-    fLabel = labelWithUsages;
-
-    fBackendLabelDirty = true;
+    // TODO(nicolettep): consider flags here
+    this->updateLabelInternal(label, textureUsages);
 }
 
 void Texture::AppendUsagesToLabel(std::string label, SkEnumBitMask<TextureUsageFlags> usageMask) {
@@ -128,6 +114,24 @@ void Texture::AppendUsagesToLabel(std::string label, SkEnumBitMask<TextureUsageF
             label += usage_flag_to_str(flag);
         }
     }
+}
+
+void Texture::updateLabelIfProxyInfoDiffers(std::string_view proxyLabelPortion,
+                                            SkEnumBitMask<TextureUsageFlags> textureUsages) {
+    if (textureUsages != fTextureUsages || proxyLabelPortion != fProxyStringLabelPortion) {
+        this->updateLabelInternal(proxyLabelPortion, textureUsages);
+    }
+}
+
+void Texture::updateLabelInternal(std::string_view label,
+                                  SkEnumBitMask<TextureUsageFlags> textureUsages) {
+    fTextureUsages = textureUsages;
+
+    std::string labelWithUsages {label};
+    AppendUsagesToLabel(labelWithUsages, fTextureUsages);
+
+    fLabel = labelWithUsages;
+    fProxyStringLabelPortion = std::string_view(fLabel).substr(0, label.size());
 }
 
 } // namespace skgpu::graphite

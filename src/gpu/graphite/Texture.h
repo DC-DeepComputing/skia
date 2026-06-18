@@ -53,10 +53,15 @@ public:
 
     SkEnumBitMask<TextureUsageFlags> textureUsages() const { return fTextureUsages; }
 
-    // This method should only be called when it is threadsafe to update them (so either at creation
-    // time, by the Context during Recording insertion, or when returning a non-shareable resource
-    // from the cache), so we should not need to worry about thread safety.
+    // This following methods should only be called when it is threadsafe to update them (so either
+    // at creation time, by the Context during Recording insertion, or when returning a
+    // non-shareable resource from the cache), so we should not need to worry about thread safety.
     void updateTextureUsages(SkEnumBitMask<TextureUsageFlags> usages) { fTextureUsages = usages; }
+    // This method allows us to more efficiently determine if a label update is required by checking
+    // if the Texture's label without any texture usage flag string components is equal to that of
+    // `proxyLabelPortion`
+    void updateLabelIfProxyInfoDiffers(std::string_view proxyLabelPortion,
+                                       SkEnumBitMask<TextureUsageFlags>);
 
     static void AppendUsagesToLabel(std::string label, SkEnumBitMask<TextureUsageFlags>);
 
@@ -78,6 +83,10 @@ protected:
                                 const char* dumpName) const override;
 
 private:
+    // This should only be called iff we have already determined that the label (or the components
+    // that would make up the Texture's label) differs and requires an update.
+    void updateLabelInternal(std::string_view label, SkEnumBitMask<TextureUsageFlags>);
+
     SkISize fDimensions;
     TextureInfo fInfo;
     sk_sp<MutableTextureState> fMutableState;
@@ -86,6 +95,16 @@ private:
     // Flags representing Texture usages. This allows for easier tracking of whether Texture
     // resources require label updates.
     SkEnumBitMask<TextureUsageFlags> fTextureUsages;
+    // Note that one Scratch texture may be instantiated from different proxies. The expected label
+    // structure is: "ScratchTexture_X_Y", where X = each proxy's dynamic string label separted with
+    // an underscore, and Y = each proxy's usage flag separated with an underscore.
+    // For example, consider a scratch texture that is instantiated by a proxy with custom label
+    // "A" and by a proxy with TextureUsageFlags::kAsyncReadPixelsFallback. The expected label for
+    // that scratch texture after inserting the Recording would be:
+    // "ScratchTexture_A_AsyncReadPixelsFallback".
+    //
+    // Storing the component of the label that excludes the usage flags allows for easier comparison
+    std::string_view  fProxyStringLabelPortion;
 };
 
 } // namespace skgpu::graphite

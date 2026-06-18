@@ -15,10 +15,7 @@
 #include "src/gpu/graphite/GraphiteResourceKey.h"
 #include "src/gpu/graphite/ProxyCache.h"
 #include "src/gpu/graphite/Resource.h"
-
-#if defined(GPU_TEST_UTILS)
 #include "src/gpu/graphite/Texture.h"
-#endif
 
 namespace skgpu::graphite {
 
@@ -205,13 +202,7 @@ Resource* ResourceCache::findAndRefResource(const GraphiteResourceKey& key,
             }
             case Shareable::kScratch: {
                 SkASSERT(budgeted == Budgeted::kYes);
-                // TODO(b/431796811): Scratch resource label management will eventually be handled
-                // by the ScratchResourceManager, which will handle label updates upon Recording
-                // insertion. For now, determining and updating the label here maintains existing
-                // functionality, which works until moving to use one singular threadsafe cache.
-                resource->setLabel(label, textureUsages);
-                resource->synchronizeBackendLabel();
-
+                // Scratch resource label management is handled by the ScratchResourceManager.
                 resource->setShareable(shareable);
                 break;
             }
@@ -232,6 +223,7 @@ Resource* ResourceCache::findAndRefResource(const GraphiteResourceKey& key,
             }
             default: SkUNREACHABLE; break;
         }
+
         this->refAndMakeResourceMRU(resource);
         this->validate();
     }
@@ -269,6 +261,24 @@ void ResourceCache::refAndMakeResourceMRU(Resource* resource) {
 void ResourceCache::forceProcessReturnedResources() {
     ASSERT_SINGLE_OWNER
     this->processReturnedResources();
+}
+
+void ResourceCache::updateScratchTextureLabels(
+        const ScratchResourceManager::TextureLabelAndUsageMap* textureLabelAndUsageMap) {
+    ASSERT_SINGLE_OWNER
+    if (!textureLabelAndUsageMap) {
+        return;
+    }
+
+    // Compare the scratch usages of each scratch texture stored within the usage map to the usages
+    // actually recorded on the texture. If they are not identical, issue an update to the scratch
+    // texture's recorded usages and update its label.
+    for (auto& textureLabelAndUsage : *textureLabelAndUsageMap) {
+        Texture* tex = textureLabelAndUsage.first;
+        const ScratchResourceManager::LabelAndUsage& labelAndUsage = textureLabelAndUsage.second;
+        tex->updateLabelIfProxyInfoDiffers(labelAndUsage.first, labelAndUsage.second);
+        tex->synchronizeBackendLabel();
+    }
 }
 
 bool ResourceCache::returnResource(Resource* resource) {
