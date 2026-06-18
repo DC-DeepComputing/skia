@@ -40,7 +40,7 @@ public:
 
     const char* getResourceType() const override { return "Metal Compute Command Encoder"; }
 
-    void setLabel(NSString* label) { [(*fCommandEncoder) setLabel:label]; }
+    void setMtlLabel(NSString* label) { [(*fCommandEncoder) setLabel:label]; }
 
     void pushDebugGroup(NSString* string) { [(*fCommandEncoder) pushDebugGroup:string]; }
     void popDebugGroup() { [(*fCommandEncoder) popDebugGroup]; }

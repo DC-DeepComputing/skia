@@ -31,7 +31,7 @@ public:
         return std::unique_ptr<GrMtlRenderCommandEncoder>(new GrMtlRenderCommandEncoder(encoder));
     }
 
-    void setLabel(NSString* label) {
+    void setMtlLabel(NSString* label) {
         [fCommandEncoder setLabel:label];
     }
 
