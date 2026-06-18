@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2435e43b_2124548d",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1746,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-18T15:27:06Z",
+      "side": 1,
+      "message": "If we aren\u0027t using depth, we have to treat every draw as respecting painters order. Opaque draws are not updating their CompressedPaintersOrder and are still sorted to the beginning of the DrawPass. Without the depth attachment, they won\u0027t actually block later rasterization so it\u0027ll appear out of order.",
+      "range": {
+        "startLine": 1744,
+        "startChar": 0,
+        "endLine": 1746,
+        "endChar": 51
+      },
+      "revId": "481111dc0de7cde7a447d131fbc8fe132713deb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
