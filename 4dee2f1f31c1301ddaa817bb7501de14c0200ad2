@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79070ce5_16b284d3",
+        "filename": "include/utils/SkLogHandler.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2026-06-18T17:29:31Z",
+      "side": 1,
+      "message": "Could we let the client call it multiple times if desired?",
+      "range": {
+        "startLine": 31,
+        "startChar": 72,
+        "endLine": 31,
+        "endChar": 91
+      },
+      "revId": "4dee2f1f31c1301ddaa817bb7501de14c0200ad2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5bc00a28_7f352718",
+        "filename": "include/utils/SkLogHandler.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2026-06-18T17:29:31Z",
+      "side": 1,
+      "message": "Could shared ownership be acceptable?",
+      "range": {
+        "startLine": 32,
+        "startChar": 22,
+        "endLine": 32,
+        "endChar": 46
+      },
+      "revId": "4dee2f1f31c1301ddaa817bb7501de14c0200ad2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07485b34_041ed433",
+        "filename": "include/utils/SkLogHandler.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2026-06-18T17:29:31Z",
+      "side": 1,
+      "message": "Could this be a `shared_ptr\u003cSkLogHandler\u003e`? or a `unique_ptr\u003cSkLogHandler\u003e` if we need to enforce the ownership transfer?",
+      "range": {
+        "startLine": 36,
+        "startChar": 28,
+        "endLine": 36,
+        "endChar": 41
+      },
+      "revId": "4dee2f1f31c1301ddaa817bb7501de14c0200ad2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c97bf2b2_208b5ec0",
+        "filename": "src/core/SkLog.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2026-06-18T17:29:31Z",
+      "side": 1,
+      "message": "This work should be avoided if SkLogHandler wasn\u0027t set",
+      "range": {
+        "startLine": 18,
+        "startChar": 4,
+        "endLine": 22,
+        "endChar": 22
+      },
+      "revId": "4dee2f1f31c1301ddaa817bb7501de14c0200ad2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
