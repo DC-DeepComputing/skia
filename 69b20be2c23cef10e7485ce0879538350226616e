@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "002f7ac0_78a9f7c1",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 860,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-18T15:06:56Z",
+      "side": 1,
+      "message": "replaced it with \"shift+T\", let me know if that looks about right",
+      "parentUuid": "c4ea5d74_5bfd838e",
+      "revId": "69b20be2c23cef10e7485ce0879538350226616e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "52176cd7_0be94f09",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-06-17T14:41:50Z",
       "side": 1,
       "message": "We should not be directly building the SkCapture. The capture should ideally be generated purely from the perspective of a client who does not have access to our private headers. We need to go to where the graphite Context is set up and when making one, set captureEnabled to true.\n\nLook at graphite_metal_capture.cpp and look at how we spin up the context and interface with the Context\u0027s APIs (startCapture() and endCapture()).",
+      "revId": "69b20be2c23cef10e7485ce0879538350226616e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "915b76eb_a3c65839",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1959,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-18T15:06:56Z",
+      "side": 1,
+      "message": "addressed, let me know if this is fitting the vision",
+      "parentUuid": "52176cd7_0be94f09",
       "revId": "69b20be2c23cef10e7485ce0879538350226616e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
