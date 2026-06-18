@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb8db897_f1406b48",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-06-18T17:17:29Z",
+      "side": 1,
+      "message": "Please retargeted your CL to target the skia origin/main branch and not the android/u-release branch",
+      "revId": "03ee59390d8b5fb69a6ec23c21a084556e50584e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79dc3294_66119a3a",
+        "filename": "src/gpu/ganesh/GrAHardwareBufferImageGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-06-18T17:17:29Z",
+      "side": 1,
+      "message": "Just to be clear on what you\u0027re trying to do here. If the Skia Context is a protected context, you don\u0027t want to import a non-protected AHardwareBuffer. Is this correct?",
+      "range": {
+        "startLine": 138,
+        "startChar": 3,
+        "endLine": 139,
+        "endChar": 59
+      },
+      "revId": "03ee59390d8b5fb69a6ec23c21a084556e50584e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
