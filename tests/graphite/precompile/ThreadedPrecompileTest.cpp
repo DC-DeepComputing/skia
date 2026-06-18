@@ -29,6 +29,8 @@
 #include <random>
 #include <thread>
 
+extern bool gGraphiteAvoidDepth;
+
 using namespace::skgpu::graphite;
 
 namespace {
@@ -154,7 +156,7 @@ void precompile_gradients(std::unique_ptr<PrecompileContext> precompileContext,
         std::shuffle(combos.begin(), combos.end(), g);
     }
 
-    const RenderPassProperties kProps = { DepthStencilFlags::kDepth,
+    const RenderPassProperties kProps = { gGraphiteAvoidDepth ? DepthStencilFlags::kNone : DepthStencilFlags::kDepth,
                                           kBGRA_8888_SkColorType,
                                           /* dstColorSpace= */ nullptr,
                                           /* requiresMSAA= */ false };
