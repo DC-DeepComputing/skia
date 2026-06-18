@@ -113,6 +113,7 @@ PathRenderer* PathRendererChain::getPathRenderer(const PathRenderer::CanDrawPath
             break;
         }
     }
+    SkDebugf("Got PR: %s\n", bestPathRenderer ? bestPathRenderer->name() : "default");
     return bestPathRenderer;
 }
 
