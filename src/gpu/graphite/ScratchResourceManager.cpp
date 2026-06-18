@@ -61,10 +61,13 @@ sk_sp<Texture> ScratchResourceManager::getScratchTexture(SkISize dimensions,
         }
 
         // Update the texture's mapped string label and texture usage flags (adding, not replacing)
-        ScratchResourceManager::LabelAndUsage labelAndUsage = textureLabelAndUsage.second;
-        if (labelAndUsage.first.empty()) {
-            labelAndUsage.first = label;
-        } else {
+        ScratchResourceManager::LabelAndUsage& labelAndUsage = textureLabelAndUsage.second;
+        // assert that ScratchTexture_ is prepended to label
+        // if (labelAndUsage.first.empty()) {
+        //     labelAndUsage.first = "ScratchTexture_"
+        //     labelAndUsage.first = label;
+        // } else {
+        if (!label.empty()) {
             labelAndUsage.first.append("_");
             labelAndUsage.first.append(label);
         }
@@ -72,12 +75,20 @@ sk_sp<Texture> ScratchResourceManager::getScratchTexture(SkISize dimensions,
         return scratchTexture;
     }
 
+    // TODO(nicolettep): Make all these std::strings that are static into better data type
+    std::string scratchTexLabelPrefix = "ScratchTexture";
+    std::string prefixAndLabel = scratchTexLabelPrefix;
+    if (!label.empty()) {
+        prefixAndLabel.append("_");
+        prefixAndLabel.append(label);
+    }
     // Note that we do not want to include the scratch texture's existing label, which will be
     // used as a point of comparison against the label stored here to determine whether updates
     // are needed.
     // TODO(nicolettep): Consider base label for textures that have no dynamic string labels.
     fTextureLabelAndUsageMap->push_back(
-        std::pair<Texture*, LabelAndUsage>(scratchTexture.get(), LabelAndUsage(label, usages)));
+            std::pair<Texture*, LabelAndUsage>(scratchTexture.get(),
+                                               LabelAndUsage(prefixAndLabel, usages)));
 
     return scratchTexture;
 }

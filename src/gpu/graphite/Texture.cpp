@@ -28,7 +28,7 @@ Texture::Texture(const SharedContext* sharedContext,
                  SkEnumBitMask<TextureUsageFlags> usages)
         // For the initial GPU size, this assumes that a transient texture will not have any actual
         // memory. Over a texture's lifetime this may not stay the case.
-        : Resource(sharedContext, ownership, isTransient ? 0 : ComputeSize(dimensions, info))
+        : Resource(sharedContext, ownership, isTransient ? 0: ComputeSize(dimensions, info))
         , fDimensions(dimensions)
         , fInfo(info)
         , fMutableState(std::move(mutableState)) {
@@ -65,78 +65,80 @@ void Texture::onDumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump,
     traceMemoryDump->dumpStringValue(dumpName, "textureInfo", fInfo.toString().c_str());
 }
 
-void Texture::AppendUsagesToLabel(std::string label, SkEnumBitMask<TextureUsageFlags> usages) {
-    if (usages == TextureUsageFlags::kNone) {
+namespace {
+std::string usage_flag_to_str(TextureUsageFlags flag) {
+    switch (flag) {
+        case TextureUsageFlags::kNone:                     return "";
+        case TextureUsageFlags::kAsyncReadPixelsFallback:  return "AsyncReadPixelsFallback";
+        case TextureUsageFlags::kChildDevice:              return "ChildDevice";
+        case TextureUsageFlags::kCopyDevice:               return "DeviceCopy";
+        case TextureUsageFlags::kDiscardableLoadMSAA:      return "DiscardableLoadMSAA";
+        case TextureUsageFlags::kDispatchWriteOnlyStorage: return "DispatchWriteOnlyStorage";
+        case TextureUsageFlags::kDstCopy:                  return "DstCopy";
+        case TextureUsageFlags::kEvalBlur:                 return "EvalBlur";
+        case TextureUsageFlags::kGenerateMipmapsScratch:   return "GenerateMipmaps";
+        case TextureUsageFlags::kImageFilterCachedBitmap:  return "ImageFilterCachedBitmap";
+        case TextureUsageFlags::kImageFilterResult:        return "ImageFilterResult";
+        case TextureUsageFlags::kImageMakeCTandCS:         return "CTandCSConversion";
+        case TextureUsageFlags::kImageSubset:              return "Subset";
+        case TextureUsageFlags::kLazySkImageBitmap:        return "LazySkImageBitmap";
+        case TextureUsageFlags::kRasterBitmap:             return "RasterBitmap";
+        case TextureUsageFlags::kRescaleDst:               return "RescaleDst";
+        case TextureUsageFlags::kRescaleImageTemp:         return "RescaleImageTemp";
+        case TextureUsageFlags::kRescaleLinearGamma:       return "RescaleLinearGamma";
+        case TextureUsageFlags::kYUVRasterBitmapPlane:     return "YUVRasterBitmapPlane";
+    }
+    SkUNREACHABLE;
+    return "";
+}
+void append_usages_to_label(std::string& label, SkEnumBitMask<TextureUsageFlags> usageMask) {
+    if (usageMask == TextureUsageFlags::kNone) {
         return;
     }
 
-    if (SkToBool(usages & TextureUsageFlags::kAsyncReadPixelsFallbackTexture)) {
-        label += "_AsyncReadPixelsFallback";
+    for (int bitIdx = 0;
+         TextureUsageFlags(1 << bitIdx) <= TextureUsageFlags::kLastUsageFlag; bitIdx++) {
+        auto flag = TextureUsageFlags(1 << bitIdx);
+        if (SkToBool(usageMask & flag)) {
+            label += "_";
+            label += usage_flag_to_str(flag);
+        }
     }
-    if (SkToBool(usages & TextureUsageFlags::kChildDevice)) {
-        label += "_ChildDevice";
+}
+} // anonymous namespace
+void Texture::setLabel(std::string_view label, SkEnumBitMask<TextureUsageFlags> textureUsages) {
+    if (fLabel == label) {
+        return;
     }
-    if (SkToBool(usages & TextureUsageFlags::kCopyDeviceTexture)) {
-        label += "_DeviceCopy";
-    }
-    if (SkToBool(usages & TextureUsageFlags::kDiscardableLoadMSAATexture)) {
-        label += "_DiscardableLoadMSAA";
-    }
-    if (SkToBool(usages & TextureUsageFlags::kDispatchWriteOnlyStorageTexture)) {
-        label += "_DispatchWriteOnlyStorage";
-    }
-    if (SkToBool(usages & TextureUsageFlags::kDstCopy)) {
-        label += "_DstCopy";
-    }
-    if (SkToBool(usages & TextureUsageFlags::kEvalBlurTexture)) {
-        label += "_EvalBlur";
-    }
-    if (SkToBool(usages & TextureUsageFlags::kGenerateMipmapsScratchTexture)) {
-        label += "_GenerateMipmaps";
-    }
-    if (SkToBool(usages & TextureUsageFlags::kImageFilterCachedBitmap)) {
-        label += "_ImageFilterCachedBitmap";
-    }
-    if (SkToBool(usages & TextureUsageFlags::kImageFilterResult)) {
-        label += "_ImageFilterResult";
-    }
-    if (SkToBool(usages & TextureUsageFlags::kImageMakeCTandCSTexture)) {
-        label += "_CTandCSConversion";
-    }
-    if (SkToBool(usages & TextureUsageFlags::kImageSubsetTexture)) {
-        label += "_Subset";
-    }
-    if (SkToBool(usages & TextureUsageFlags::kLazySkImageBitmapTexture)) {
-        label += "_LazySkImageBitmap";
-    }
-    if (SkToBool(usages & TextureUsageFlags::kRasterBitmapTexture)) {
-        label += "_RasterBitmap";
-    }
-    if (SkToBool(usages & TextureUsageFlags::kRescaleDstTexture)) {
-        label += "_RescaleDst";
-    }
-    if (SkToBool(usages & TextureUsageFlags::kRescaleImageTempTexture)) {
-        label += "_RescaleImageTemp";
-    }
-    if (SkToBool(usages & TextureUsageFlags::kRescaleLinearGammaTexture)) {
-        label += "_RescaleLinearGamma";
-    }
-    if (SkToBool(usages & TextureUsageFlags::kYUVRasterBitmapPlane)) {
-        label += "_YUVRasterBitmapPlane";
+
+    this->updateLabelInternal(label, textureUsages);
+}
+
+void Texture::updateLabelIfProxyInfoDiffers(std::string_view proxyLabelPortion,
+                                            SkEnumBitMask<TextureUsageFlags> textureUsages) {
+    if (textureUsages != fTextureUsages || proxyLabelPortion != fProxyStringLabelPortion) {
+        this->updateLabelInternal(proxyLabelPortion, textureUsages);
     }
 }
 
-void Texture::setLabel(std::string_view label, SkEnumBitMask<TextureUsageFlags> textureUsages) {
-    if (fLabel == label && fTextureUsages == textureUsages) {
-        return;
-    }
+#if defined(GPU_TEST_UTILS)
+std::string Texture::textureUsageFlagToStr(TextureUsageFlags usageFlag) {
+    return usage_flag_to_str(usageFlag);
+}
+void Texture::AppendUsagesToLabel(std::string& label, SkEnumBitMask<TextureUsageFlags> usageMask) {
+    append_usages_to_label(label, usageMask);
+}
+#endif
 
+void Texture::updateLabelInternal(std::string_view label,
+                                  SkEnumBitMask<TextureUsageFlags> textureUsages) {
     fTextureUsages = textureUsages;
 
     std::string labelWithUsages {label};
-    AppendUsagesToLabel(labelWithUsages, fTextureUsages);
+    append_usages_to_label(labelWithUsages, fTextureUsages);
 
     fLabel = labelWithUsages;
+    fProxyStringLabelPortion = std::string_view(fLabel).substr(0, label.size());
 
     fBackendLabelDirty = true;
 }
