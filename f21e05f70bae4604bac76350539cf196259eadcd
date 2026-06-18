@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00fd0f68_b393f11f",
+        "filename": "src/gpu/graphite/BuiltInCodeSnippetID.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-18T17:32:18Z",
+      "side": 1,
+      "message": "wdyt about bumping SerializationUtils.cpp::kCurrent_Version to 2, adding a kPrevious_Version (of 1), and allowing both versions to be parsed in stream_is_pipeline?\n\nOld keys that run afoul of this renumbering will be rejected as ill formed but this would, at least, give us some signal re what is going on and, potentially, allow us to remap old keys or reject them out of hand.\n\nWe could also add a check to Android\u0027s precompile so, if all the keys were out of date, we would fallback to prewarming and PaintOption-based precompile.",
+      "revId": "f21e05f70bae4604bac76350539cf196259eadcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
