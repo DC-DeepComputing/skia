@@ -33,6 +33,24 @@
       "message": "Note: I am preparing some unittests that would include coverage for this.",
       "revId": "343520167617c878422f25f23e4b5322dad3a369",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0e8a46a_a5619b22",
+        "filename": "src/partition_alloc/noop/raw_ptr.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-06-18T14:45:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "123180fe_07288748",
+      "revId": "343520167617c878422f25f23e4b5322dad3a369",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
