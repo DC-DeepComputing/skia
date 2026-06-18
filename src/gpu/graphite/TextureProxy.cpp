@@ -18,15 +18,16 @@
 #include "src/gpu/graphite/TextureUtils.h"
 
 namespace skgpu::graphite {
-
 TextureProxy::TextureProxy(SkISize dimensions,
                            const TextureInfo& info,
+                           skgpu::Budgeted budgeted,
                            std::string_view label,
-                           skgpu::Budgeted budgeted)
+                           SkEnumBitMask<TextureUsageFlags> usageFlags)
         : SkPixelStorage(SkPixelStorage::Type::kTextureProxy)
         , fDimensions(dimensions)
         , fInfo(info)
         , fLabel(label)
+        , fTextureUsages(usageFlags)
         , fBudgeted(budgeted)
         , fVolatile(Volatile::kNo) {
     SkASSERT(fInfo.isValid());
@@ -37,6 +38,7 @@ TextureProxy::TextureProxy(sk_sp<Texture> texture)
         , fDimensions(texture->dimensions())
         , fInfo(texture->textureInfo())
         , fLabel(texture->getLabel())
+        , fTextureUsages(texture->textureUsages())
         , fBudgeted(texture->budgeted())
         , fVolatile(Volatile::kNo)
         , fTexture(std::move(texture)) {
@@ -96,7 +98,7 @@ bool TextureProxy::instantiate(ResourceProvider* resourceProvider) {
     // TODO(389908374): Once all tasks use the ScratchResourceManager, this can be updated to just
     // finding and creating a non-shareable AND non-budgeted texture.
     fTexture = resourceProvider->findOrCreateNonShareableTexture(
-            fDimensions, fInfo, fLabel, fBudgeted);
+            fDimensions, fInfo, fBudgeted, fLabel, fTextureUsages);
     if (!fTexture) {
         return false;
     }
@@ -136,7 +138,8 @@ bool TextureProxy::InstantiateIfNotLazy(ScratchResourceManager* scratchManager,
 
     textureProxy->fTexture = scratchManager->getScratchTexture(textureProxy->dimensions(),
                                                                textureProxy->textureInfo(),
-                                                               textureProxy->fLabel);
+                                                               textureProxy->label(),
+                                                               textureProxy->textureUsages());
     if (!textureProxy->fTexture) {
         return false;
     }
@@ -159,20 +162,28 @@ const Texture* TextureProxy::texture() const {
     return fTexture.get();
 }
 
+namespace {
+bool texture_info_and_size_are_valid(
+        SkISize dimensions, const TextureInfo& textureInfo, int maxTextureSize) {
+    return dimensions.width() >= 1  &&
+           dimensions.height() >= 1 &&
+           dimensions.width() <= maxTextureSize  &&
+           dimensions.height() <= maxTextureSize &&
+           textureInfo.isValid();
+}
+} // anonymous namespace
 sk_sp<TextureProxy> TextureProxy::Make(const Caps* caps,
                                        ResourceProvider* resourceProvider,
                                        SkISize dimensions,
                                        const TextureInfo& textureInfo,
+                                       skgpu::Budgeted budgeted,
                                        std::string_view label,
-                                       skgpu::Budgeted budgeted) {
-    if (dimensions.width() < 1 || dimensions.height() < 1 ||
-        dimensions.width() > caps->maxTextureSize() ||
-        dimensions.height() > caps->maxTextureSize() ||
-        !textureInfo.isValid()) {
+                                       SkEnumBitMask<TextureUsageFlags> usages) {
+    if (!texture_info_and_size_are_valid(dimensions, textureInfo, caps->maxTextureSize())) {
         return nullptr;
     }
 
-    sk_sp<TextureProxy> proxy {new TextureProxy(dimensions, textureInfo, label, budgeted)};
+    sk_sp<TextureProxy> proxy {new TextureProxy(dimensions, textureInfo, budgeted, label, usages)};
     if (budgeted == Budgeted::kNo) {
         // Instantiate immediately to avoid races later on if the client starts to use the wrapping
         // object on multiple threads.
@@ -189,10 +200,7 @@ sk_sp<TextureProxy> TextureProxy::MakeLazy(const Caps* caps,
                                            skgpu::Budgeted budgeted,
                                            Volatile isVolatile,
                                            LazyInstantiateCallback&& callback) {
-    SkASSERT(textureInfo.isValid());
-    if (dimensions.width() < 1 || dimensions.height() < 1 ||
-        dimensions.width() > caps->maxTextureSize() ||
-        dimensions.height() > caps->maxTextureSize()) {
+    if (!texture_info_and_size_are_valid(dimensions, textureInfo, caps->maxTextureSize())) {
         return nullptr;
     }
 
