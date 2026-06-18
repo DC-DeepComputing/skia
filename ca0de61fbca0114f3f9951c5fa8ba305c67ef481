@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b5db5bb_719a192a",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-18T18:36:21Z",
+      "side": 1,
+      "message": "Isn\u0027t this already included in the header, do we need it here ?",
+      "revId": "ca0de61fbca0114f3f9951c5fa8ba305c67ef481",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
