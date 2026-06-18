@@ -43,6 +43,144 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "85a4baae_a5d5bfb1",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1239,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-18T19:15:22Z",
+      "side": 1,
+      "message": "support ?",
+      "range": {
+        "startLine": 1239,
+        "startChar": 6,
+        "endLine": 1239,
+        "endChar": 7
+      },
+      "revId": "f21e05f70bae4604bac76350539cf196259eadcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba67107c_640d76aa",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1300,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-18T19:15:22Z",
+      "side": 1,
+      "message": "xtra \u0027 \u0027 ?",
+      "range": {
+        "startLine": 1300,
+        "startChar": 62,
+        "endLine": 1300,
+        "endChar": 63
+      },
+      "revId": "f21e05f70bae4604bac76350539cf196259eadcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7718af7e_d18be537",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1315,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-18T19:15:22Z",
+      "side": 1,
+      "message": "kIdentityGamut ?",
+      "range": {
+        "startLine": 1315,
+        "startChar": 20,
+        "endLine": 1315,
+        "endChar": 28
+      },
+      "revId": "f21e05f70bae4604bac76350539cf196259eadcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2a24ec2_70b6c2f3",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1324,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-18T19:15:22Z",
+      "side": 1,
+      "message": "Here too ?",
+      "range": {
+        "startLine": 1324,
+        "startChar": 62,
+        "endLine": 1324,
+        "endChar": 63
+      },
+      "revId": "f21e05f70bae4604bac76350539cf196259eadcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc1e87a7_e6df0021",
+        "filename": "src/gpu/graphite/PaintParamsKey.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-18T19:15:22Z",
+      "side": 1,
+      "message": "a plus ?",
+      "range": {
+        "startLine": 285,
+        "startChar": 51,
+        "endLine": 285,
+        "endChar": 59
+      },
+      "revId": "f21e05f70bae4604bac76350539cf196259eadcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a04bafb_41218506",
+        "filename": "src/gpu/graphite/PaintParamsKey.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-18T19:15:22Z",
+      "side": 1,
+      "message": "+ ?",
+      "range": {
+        "startLine": 286,
+        "startChar": 23,
+        "endLine": 286,
+        "endChar": 25
+      },
+      "revId": "f21e05f70bae4604bac76350539cf196259eadcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f5a4bf85_31055c84",
         "filename": "src/gpu/graphite/PaintParamsKey.cpp",
         "patchSetId": 3
@@ -77,6 +215,69 @@
         "endLine": 524,
         "endChar": 21
       },
+      "revId": "f21e05f70bae4604bac76350539cf196259eadcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc651713_895313b1",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1436,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-18T19:15:22Z",
+      "side": 1,
+      "message": "Move this block up one to match enum\u0027s order ?",
+      "range": {
+        "startLine": 1431,
+        "startChar": 0,
+        "endLine": 1436,
+        "endChar": 6
+      },
+      "revId": "f21e05f70bae4604bac76350539cf196259eadcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6cbb383f_9a593eaf",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1462,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-18T19:15:22Z",
+      "side": 1,
+      "message": "Move these guys to after _Gamut to match enum order ?",
+      "range": {
+        "startLine": 1449,
+        "startChar": 0,
+        "endLine": 1462,
+        "endChar": 6
+      },
+      "revId": "f21e05f70bae4604bac76350539cf196259eadcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "db29206e_8ba88b30",
+        "filename": "tests/graphite/precompile/AndroidPrecompileTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-18T19:15:22Z",
+      "side": 1,
+      "message": "I just spot checked the labels",
       "revId": "f21e05f70bae4604bac76350539cf196259eadcd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
