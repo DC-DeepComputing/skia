@@ -182,6 +182,7 @@ skgpu::graphite::Context* Window::graphiteContext() const {
     if (!fWindowContext) {
         return nullptr;
     }
+    SkDebugf("Window::graphiteContext\n");
     return fWindowContext->graphiteContext();
 #else
     return nullptr;

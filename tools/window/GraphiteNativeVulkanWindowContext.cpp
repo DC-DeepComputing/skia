@@ -7,6 +7,8 @@
 
 #include "tools/window/GraphiteNativeVulkanWindowContext.h"
 
+#include <algorithm>
+
 #include "include/core/SkSurface.h"
 #include "include/gpu/MutableTextureState.h"
 #include "include/gpu/graphite/BackendSemaphore.h"
@@ -22,16 +24,16 @@
 #include "include/gpu/vk/VulkanExtensions.h"
 #include "include/gpu/vk/VulkanMutableTextureState.h"
 #include "include/gpu/vk/VulkanTypes.h"
+#include "include/private/SkLog.h"
 #include "src/core/SkAutoMalloc.h"
 #include "src/gpu/graphite/ContextOptionsPriv.h"
-#include "include/private/SkLog.h"
 #include "src/gpu/graphite/TextureFormat.h"
 #include "src/gpu/graphite/vk/VulkanGraphiteUtils.h"
 #include "src/gpu/vk/VulkanInterface.h"
 #include "src/gpu/vk/vulkanmemoryallocator/VulkanAMDMemoryAllocator.h"
 #include "tools/graphite/GraphiteToolUtils.h"
-
-#include <algorithm>
+#include "tools/graphite/TestOptions.h"
+#include "tools/window/GraphiteDisplayParams.h"
 
 #ifdef VK_USE_PLATFORM_WIN32_KHR
 // windows wants to define this as CreateSemaphoreA or CreateSemaphoreW
@@ -123,12 +125,16 @@ void GraphiteVulkanWindowContext::initializeContext() {
     GET_DEV_PROC(QueuePresentKHR);
     GET_DEV_PROC(GetDeviceQueue);
 
-    skgpu::graphite::ContextOptions contextOptions;
-    skgpu::graphite::ContextOptionsPriv contextOptionsPriv;
+    SkASSERT(fDisplayParams->graphiteTestOptions());
+    skiatest::graphite::TestOptions opts = *fDisplayParams->graphiteTestOptions();
+
     // Needed to make synchronous readPixels work
-    contextOptionsPriv.fStoreContextRefInRecorder = true;
-    contextOptions.fOptionsPriv = &contextOptionsPriv;
-    fGraphiteContext = skgpu::graphite::ContextFactory::MakeVulkan(backendContext, contextOptions);
+    opts.fOptionsPriv.fStoreContextRefInRecorder = true;
+
+    fDisplayParams =
+            GraphiteDisplayParamsBuilder(fDisplayParams.get()).graphiteTestOptions(opts).detach();
+    fGraphiteContext = skgpu::graphite::ContextFactory::MakeVulkan(
+            backendContext, fDisplayParams->graphiteTestOptions()->fContextOptions);
     fGraphiteRecorder = fGraphiteContext->makeRecorder(ToolUtils::CreateTestingRecorderOptions());
 
     fDeviceSurface = fCreateVkSurfaceFn(fInstance);
