@@ -16,6 +16,23 @@
       "message": "Resolving merge conflicts.",
       "revId": "9751ee36b61b461e1c0c577b2d9438052c49ecd9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "13e8b78e_bf0818ee",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 50
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-06-18T13:34:58Z",
+      "side": 1,
+      "message": "Not sure if you can see the logs:\n\n```\nE0618 05:19:34.163979    5600 helpers.go:308] Expected no changes, but changes were found:\nE0618 05:19:34.163979    5600 helpers.go:308] --- Expected\nE0618 05:19:34.163979    5600 helpers.go:308] +++ Actual\nE0618 05:19:34.163979    5600 helpers.go:308] @@ -92439,6 +92439,10 @@\nE0618 05:19:34.163979    5600 helpers.go:308]          \"skia/experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp\",\nE0618 05:19:34.163979    5600 helpers.go:308]          \"skia/experimental/rust_bmp/decoder/impl/SkBmpRustCodec.h\",\nE0618 05:19:34.163979    5600 helpers.go:308]          \"skia/experimental/rust_cxx/main.cpp\",\nE0618 05:19:34.163979    5600 helpers.go:308] +        \"skia/experimental/rust_ico/decoder/SkIcoRustDecoder.cpp\",\nE0618 05:19:34.163979    5600 helpers.go:308] +        \"skia/experimental/rust_ico/decoder/SkIcoRustDecoder.h\",\nE0618 05:19:34.163979    5600 helpers.go:308] +        \"skia/experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp\",\nE0618 05:19:34.163979    5600 helpers.go:308] +        \"skia/experimental/rust_ico/decoder/impl/SkIcoRustCodec.h\",\nE0618 05:19:34.163979    5600 helpers.go:308]          \"skia/experimental/sktext/BUILD.gn\",\nE0618 05:19:34.163979    5600 helpers.go:308]          \"skia/experimental/tools/coreGraphicsPdf2png.cpp\",\nE0618 05:19:34.163979    5600 helpers.go:308]          \"skia/experimental/tskit/bindings\",\nE0618 05:19:34.163979    5600 helpers.go:308] You may need to run:\nE0618 05:19:34.163979    5600 helpers.go:308] \t$ go run infra/bots/gen_tasks.go\n```\n\nI think you just need to run that command to fix.",
+      "revId": "9751ee36b61b461e1c0c577b2d9438052c49ecd9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
