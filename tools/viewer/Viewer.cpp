@@ -620,6 +620,7 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
         : fCurrentSlide(-1)
         , fRefresh(false)
         , fSaveToSKP(false)
+        , fToggleCapture(false)
         , fShowSlideDimensions(false)
         , fShowImGuiDebugWindow(false)
         , fShowSlidePicker(false)
@@ -702,6 +703,7 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
 #if defined(SK_GRAPHITE)
     skiatest::graphite::TestOptions gto;
     CommonFlags::SetTestOptions(&gto);
+    gto.fContextOptions.fEnableCapture = true;
     gto.fOptionsPriv.fPathRendererStrategy = get_path_renderer_strategy_type(FLAGS_pathstrategy[0]);
     if (FLAGS_msaa <= 0) {
         gto.fContextOptions.fInternalMultisampleCount = skgpu::graphite::SampleCount::k1;
@@ -854,6 +856,10 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
     });
     fCommands.addCommand('K', "IO", "Save slide to SKP", [this]() {
         fSaveToSKP = true;
+        fWindow->inval();
+    });
+    fCommands.addCommand('T', "IO", "Save slide to SKP", [this]() {
+        fToggleCapture = true;
         fWindow->inval();
     });
     fCommands.addCommand('&', "Overlays", "Show slide dimensions", [this]() {
@@ -1912,6 +1918,53 @@ static SkSerialProcs serial_procs_using_png() {
     return sProcs;
 }
 
+void Viewer::handleCapture() {
+    if (!fToggleCapture) {
+        return;
+    }
+
+    skgpu::graphite::Context* gctx = fWindow->graphiteContext();
+    if (!gctx) {
+        SkDebugf("Failed to acquire graphite context\n");
+        fToggleCapture = false;
+        return;
+    }
+
+    if (fCurrentlyCapturing) {
+        SkDebugf("Ending Capture\n");
+        sk_sp<SkCapture> capt = gctx->endCapture();
+
+        if (!capt) {
+            SkDebugf("Error: gctx->endCapture() returned null.\n");
+            return;
+        }
+
+        sk_sp<SkData> data = capt->serializeCapture();
+        if (!data) {
+            SkDebugf("Error: capt->serializeCapture() returned null.\n");
+            return;
+        }
+
+        SkFILEWStream stream("sample_app.capt");
+        if (!stream.isValid()) {
+            SkDebugf("Error: Failed to open SkFILEWStream for 'sample_app.capt'.\n");
+            return;
+        }
+
+        if (stream.write(data->data(), data->size())) {
+            SkDebugf("Successfully wrote capture to 'sample_app.capt'.\n");
+        } else {
+            SkDebugf("Error: Failed to write data to the stream.\n");
+        }
+        fCurrentlyCapturing = false;
+    } else {
+        SkDebugf("Starting Capture\n");
+        gctx->startCapture();
+        fCurrentlyCapturing = true;
+    }
+    fToggleCapture = false;
+}
+
 void Viewer::drawSlide(SkSurface* surface) {
     if (fCurrentSlide < 0) {
         return;
@@ -1942,6 +1995,8 @@ void Viewer::drawSlide(SkSurface* surface) {
         picture->serialize(&stream, &sProcs);
         fSaveToSKP = false;
     }
+
+    handleCapture();
 
     // Grab some things we'll need to make surfaces (for tiling or general offscreen rendering)
     SkColorType colorType;
