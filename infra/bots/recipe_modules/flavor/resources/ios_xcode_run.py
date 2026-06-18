@@ -26,8 +26,10 @@ xcodebuild = os.path.join(
 subprocess.check_call([xcodebuild, '-version'])
 
 # Write the .xctestrun file.
-workdir = os.getcwd()
-xctestrun_path = os.path.join(workdir, 'skia_tests.xctestrun')
+# Xcode 15/16 CoreDevice requires the .xctestrun file to reside in the exact same directory
+# as the .app / build products directory in order to successfully locate the local build directory.
+app_dir = os.path.dirname(app_path)
+xctestrun_path = os.path.join(app_dir, 'skia_tests.xctestrun')
 module_name = os.path.splitext(os.path.basename(app_path))[0] + '_module'
 contents = {
   module_name: {
@@ -57,6 +59,7 @@ result = subprocess.call([
   '-test-enumeration-format', 'json',
   '-test-enumeration-output-path', output_json_path,
 ])
+print('xcodebuild exited with code %d' % result)
 
 # Dump the JSON result.
 if os.path.exists(output_json_path):
