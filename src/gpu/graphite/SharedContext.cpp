@@ -91,6 +91,8 @@ sk_sp<GraphicsPipeline> SharedContext::findOrCreateGraphicsPipeline(
                 "skia.shaders", "createGraphicsPipeline", "desc",
                 TRACE_STR_COPY(to_str(this, pipelineDesc, renderPassDesc).c_str()));
 
+        SkDebugf("compile pipeline %s\n", fShaderDictionary.idToString(fCaps.get(), pipelineDesc.paintParamsID()).c_str());
+
 #if defined(SK_PIPELINE_LIFETIME_LOGGING)
         bool forPrecompile =
                 SkToBool(pipelineCreationFlags & PipelineCreationFlags::kForPrecompilation);
