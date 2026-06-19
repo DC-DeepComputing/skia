@@ -7,8 +7,6 @@
 
 #include "src/sksl/codegen/SkSLSPIRVCodeGenerator.h"
 
-#include "src/partition_alloc/raw_ref.h"
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkEnumBitMask.h"
@@ -17,6 +15,8 @@
 #include "src/core/SkChecksum.h"
 #include "src/core/SkTHash.h"
 #include "src/core/SkTraceEvent.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ref.h"
 #include "src/sksl/GLSL.std.450.h"
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLBuiltinTypes.h"
@@ -2575,10 +2575,10 @@ SpvId SPIRVCodeGenerator::writeSpecialIntrinsic(const FunctionCall& c, SpecialIn
         case kWorkgroupUniformLoad_SpecialIntrinsic: {
             SkASSERT(arguments.size() == 1);
             SpvId scopeId =
-                    this->writeOpConstant(*fContext.fTypes.fUInt, (int32_t)SpvScopeWorkgroup);
+                    this->writeOpConstant(*fContext.fTypes->fUInt, (int32_t)SpvScopeWorkgroup);
             int32_t memSemMask = SpvMemorySemanticsAcquireReleaseMask |
                                   SpvMemorySemanticsWorkgroupMemoryMask;
-            SpvId memorySemanticsId = this->writeOpConstant(*fContext.fTypes.fUInt, memSemMask);
+            SpvId memorySemanticsId = this->writeOpConstant(*fContext.fTypes->fUInt, memSemMask);
             this->writeInstruction(SpvOpControlBarrier, scopeId, scopeId, memorySemanticsId, out);
             result = this->getLValue(*arguments[0], out)->load(out);
             this->writeInstruction(SpvOpControlBarrier, scopeId, scopeId, memorySemanticsId, out);

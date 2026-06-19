@@ -7,7 +7,6 @@
 
 #include "src/gpu/graphite/ResourceCache.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/private/SingleOwner.h"
 #include "src/core/SkNoDestructor.h"
 #include "src/core/SkRandom.h"
@@ -16,6 +15,7 @@
 #include "src/gpu/graphite/GraphiteResourceKey.h"
 #include "src/gpu/graphite/ProxyCache.h"
 #include "src/gpu/graphite/Resource.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #if defined(GPU_TEST_UTILS)
 #include "src/gpu/graphite/Texture.h"

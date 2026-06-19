@@ -140,7 +140,7 @@ public:
     ~AutoSymbolTable() {
         if (fParser) {
             raw_ptr<SymbolTable>& ctxSymbols = this->contextSymbolTable();
-            ctxSymbols = ctxSymbols->fParent;
+            ctxSymbols = ctxSymbols->fParent.get();
         }
     }
 

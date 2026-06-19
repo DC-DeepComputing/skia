@@ -56,7 +56,7 @@ public:
         };
 
         uint32_t           fFlags;      // flags that impact the drawing of the points
-        raw_ptr<SkPoint, AllowPtrArithmetic> fPoints;     // the center point of each generated point
+        raw_ptr<SkPoint, AllowPtrArithmetic | DanglingUntriaged> fPoints;     // the center point of each generated point
         int                fNumPoints;  // number of points in fPoints
         SkVector           fSize;       // the size to draw the points
         SkRect             fClipRect;   // clip required to draw the points (if kUseClip is set)
