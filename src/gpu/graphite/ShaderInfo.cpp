@@ -7,7 +7,6 @@
 
 #include "src/gpu/graphite/ShaderInfo.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "src/gpu/BlendFormula.h"
 #include "src/gpu/graphite/ContextUtils.h"
 #include "src/gpu/graphite/PaintParamsKey.h"
@@ -16,6 +15,7 @@
 #include "src/gpu/graphite/ShaderCodeDictionary.h"
 #include "src/gpu/graphite/TextureFormat.h"
 #include "src/gpu/graphite/UniformManager.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/sksl/SkSLString.h"
 #include "src/sksl/SkSLUtil.h"
 

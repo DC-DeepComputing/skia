@@ -108,7 +108,7 @@ public:
 
         void fillVertexData(void* dst, int offset, int count) const;
 
-        const raw_ref<const sktext::gpu::AtlasSubRun> fSubRun;
+        const raw_ref<const sktext::gpu::AtlasSubRun, DanglingUntriaged> fSubRun;
 
         // Keep the TextBlob or Slug alive until the op is deleted.
         sk_sp<SkRefCnt> fSupportDataKeepAlive;

@@ -5,7 +5,6 @@
  * found in the LICENSE file.
  */
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkColor.h"
@@ -26,6 +25,7 @@
 #include "src/core/SkRasterPipelineOpContexts.h"
 #include "src/core/SkRasterPipelineOpList.h"
 #include "src/core/SkSpriteBlitter.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <cstdint>
 #include <cstring>

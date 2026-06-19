@@ -7,7 +7,6 @@
 
 #include "include/docs/SkMultiPictureDocument.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkData.h"
 #include "include/core/SkDocument.h"
@@ -21,6 +20,7 @@
 #include "include/private/SkTArray.h"
 #include "include/private/SkTo.h"
 #include "include/utils/SkNWayCanvas.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/utils/SkMultiPictureDocumentPriv.h"
 
 #include <algorithm>

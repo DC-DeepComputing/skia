@@ -7,7 +7,6 @@
 
 #include "include/private/chromium/SkChromeRemoteGlyphCache.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkData.h"
@@ -41,6 +40,7 @@
 #include "src/core/SkTraceEvent.h"
 #include "src/core/SkTypeface_remote.h"
 #include "src/core/SkWriteBuffer.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/text/GlyphRun.h"
 #include "src/text/StrikeForGPU.h"
 #include "src/text/gpu/SubRunAllocator.h"
