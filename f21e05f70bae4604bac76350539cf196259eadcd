@@ -54,6 +54,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b746e92_e2c603f5",
+        "filename": "src/gpu/graphite/BuiltInCodeSnippetID.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-19T00:41:31Z",
+      "side": 1,
+      "message": "I opted to bump the version number, a follow-up CL can add a backwards migration for 1-\u003e2 and a unit test.",
+      "parentUuid": "1dbc8465_a4d73d08",
+      "revId": "f21e05f70bae4604bac76350539cf196259eadcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c9b7045f_6ead71fa",

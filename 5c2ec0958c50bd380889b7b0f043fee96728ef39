@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "85e78112_0546b95b",
+        "filename": "src/gpu/graphite/SharedContext.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-19T00:41:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3d2d3add_1427e5f3",
+      "revId": "5c2ec0958c50bd380889b7b0f043fee96728ef39",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e4b08608_35af7b5f",
@@ -48,6 +66,24 @@
       "writtenOn": "2026-06-18T22:18:58Z",
       "side": 1,
       "message": "And this?",
+      "revId": "5c2ec0958c50bd380889b7b0f043fee96728ef39",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "69c6e179_789fd4f4",
+        "filename": "tools/graphite/dawn/GraphiteDawnToggles.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-19T00:41:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e4b08608_35af7b5f",
       "revId": "5c2ec0958c50bd380889b7b0f043fee96728ef39",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
