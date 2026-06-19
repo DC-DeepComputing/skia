@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e4026a7_bc1c7c36",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-19T01:32:59Z",
+      "side": 1,
+      "message": "The chrome canary was actually created: https://chromium-review.git.corp.google.com/c/7961532, and seems fine",
+      "revId": "a50c4e7e4b2a81cb9dc2463587422a0994feaa6e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
