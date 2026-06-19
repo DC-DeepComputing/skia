@@ -14,6 +14,8 @@
 #include "src/gpu/graphite/BufferManager.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/ContextPriv.h"
+#include "src/gpu/graphite/DrawCommands.h"
+#include "src/gpu/graphite/DrawWriter.h"
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/RecordingPriv.h"
 
@@ -109,6 +111,40 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(BufferManagerStaleAllocatorTest, report
 
     auto successRecording = recorder->snap();
     REPORTER_ASSERT(reporter, successRecording);
+}
+
+DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(BufferManagerMappedVertexStorageTest, reporter, context,
+                                         CtsEnforcement::kNever) {
+    std::unique_ptr<Recorder> recorder = context->makeRecorder();
+    DrawBufferManager* mgr = recorder->priv().drawBufferManager();
+
+    // Test mapping
+    auto [vsWriter, mappedVs, allocVs] =
+            mgr->getMappedVertexStorageBuffer(/*count=*/10, /*stride=*/4);
+    REPORTER_ASSERT(reporter, allocVs.isValid());
+    REPORTER_ASSERT(reporter, mappedVs.fBuffer != nullptr);
+    REPORTER_ASSERT(reporter,
+                    std::string_view(mappedVs.fBuffer->getLabel()) == "MappedVertexStorageBuffer");
+
+    // Test render state flags
+    DrawPassCommands::List commandList;
+    DrawWriter writer(&commandList, mgr);
+    writer.newPipelineState(PrimitiveType::kTriangles,
+                            /*staticStride=*/0,
+                            /*appendStride=*/4,
+                            RenderStateFlags::kAppendInstances |
+                            RenderStateFlags::kAppendsVertexStorage,
+                            BarrierType::kNone);
+    {
+        DrawWriter::Instances appender(writer, {}, {}, 3);
+        appender.append(2);
+    }
+    writer.flush();
+
+    BindBufferInfo lastBuffer = writer.getLastAppendedBuffer();
+    REPORTER_ASSERT(reporter, lastBuffer.fBuffer != nullptr);
+    REPORTER_ASSERT(reporter,
+                    std::string_view(mappedVs.fBuffer->getLabel()) == "MappedVertexStorageBuffer");
 }
 
 }  // namespace skgpu::graphite
