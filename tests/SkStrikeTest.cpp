@@ -220,7 +220,7 @@ DEF_TEST(SkStrike_FlattenByType, reporter) {
             {X,X,X,X,X,X,X,X},
     };
     maskGlyph.setImage(&alloc, imageData);
-    imagesToSend.emplace_back(maskGlyph);
+    imagesToSend.emplace_back(std::move(maskGlyph));
 
     // Make a path glyph and put it in the glyphs to send.
     const SkPackedGlyphID pathPackedGlyphID((SkGlyphID)11);
@@ -228,7 +228,7 @@ DEF_TEST(SkStrike_FlattenByType, reporter) {
     SkGlyphTestPeer::SetGlyph(&pathGlyph);
     SkPath path = SkPath::Rect(pathGlyph.rect());
     pathGlyph.setPath(&alloc, &path, false, false);
-    pathsToSend.emplace_back(pathGlyph);
+    pathsToSend.emplace_back(std::move(pathGlyph));
 
     // Make a drawable glyph and put it in the glyphs to send.
     const SkPackedGlyphID drawablePackedGlyphID((SkGlyphID)12);
@@ -255,7 +255,7 @@ DEF_TEST(SkStrike_FlattenByType, reporter) {
     drawableGlyph.setDrawable(&alloc, drawable);
     REPORTER_ASSERT(reporter, drawableGlyph.setDrawableHasBeenCalled());
     REPORTER_ASSERT(reporter, drawableGlyph.drawable() != nullptr);
-    drawablesToSend.emplace_back(drawableGlyph);
+    drawablesToSend.emplace_back(std::move(drawableGlyph));
 
     // Test the FlattenGlyphsByType method.
     SkBinaryWriteBuffer writeBuffer({});

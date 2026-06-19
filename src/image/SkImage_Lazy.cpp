@@ -7,7 +7,6 @@
 
 #include "src/image/SkImage_Lazy.h"
 
-#include "src/partition_alloc/raw_ref.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCPURecorder.h"
 #include "include/core/SkColorSpace.h"
@@ -23,6 +22,7 @@
 #include "src/core/SkNextID.h"
 #include "src/core/SkResourceCache.h"
 #include "src/core/SkYUVPlanesCache.h"
+#include "src/partition_alloc/raw_ref.h"
 
 #include <utility>
 

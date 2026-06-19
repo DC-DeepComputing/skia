@@ -6,7 +6,6 @@
  */
 #include "src/gpu/graphite/ClipAtlasManager.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkClipOp.h"
 #include "include/core/SkColorType.h"
@@ -24,6 +23,7 @@
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/geom/Shape.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 namespace skgpu::graphite {
 

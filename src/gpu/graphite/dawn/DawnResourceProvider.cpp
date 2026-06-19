@@ -7,7 +7,6 @@
 
 #include "src/gpu/graphite/dawn/DawnResourceProvider.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkString.h"
 #include "include/gpu/graphite/BackendTexture.h"
 #include "include/gpu/graphite/TextureInfo.h"
@@ -25,6 +24,7 @@
 #include "src/gpu/graphite/dawn/DawnSampler.h"
 #include "src/gpu/graphite/dawn/DawnSharedContext.h"
 #include "src/gpu/graphite/dawn/DawnTexture.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/sksl/SkSLCompiler.h"
 
 namespace skgpu::graphite {

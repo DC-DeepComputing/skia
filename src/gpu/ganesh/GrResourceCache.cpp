@@ -7,7 +7,6 @@
 
 #include "src/gpu/ganesh/GrResourceCache.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkString.h"
 #include "include/gpu/ganesh/GrDirectContext.h"
 #include "include/gpu/ganesh/GrTypes.h"
@@ -23,6 +22,7 @@
 #include "src/gpu/ganesh/GrGpuResourceCacheAccess.h"
 #include "src/gpu/ganesh/GrProxyProvider.h"
 #include "src/gpu/ganesh/GrThreadSafeCache.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <algorithm>
 #include <chrono>
