@@ -6,7 +6,6 @@
  */
 #include "src/xml/SkXMLParser.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
@@ -15,6 +14,7 @@
 #include "src/core/SkRandom.h"
 #include "src/core/SkTime.h"
 #include "src/core/SkUtils.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <expat.h>
 

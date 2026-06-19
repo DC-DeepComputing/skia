@@ -39,7 +39,7 @@ public:
     void scope(int delta) override;
 
 private:
-    raw_ptr<std::vector<TraceInfo>> fTraceInfo;
+    raw_ptr<std::vector<TraceInfo>, DanglingUntriaged> fTraceInfo;
 };
 
 }  // namespace SkSL

@@ -199,7 +199,7 @@ private:
         SkDEBUGCODE(uint32_t uniqueID() const { return fUniqueID; })
 
     private:
-        raw_ptr<GrSurfaceProxy> fOriginatingProxy;
+        raw_ptr<GrSurfaceProxy, DanglingUntriaged> fOriginatingProxy;
         skgpu::ScratchKey fScratchKey; // free pool wants a reference to this.
         sk_sp<GrSurface>  fExistingSurface; // queried from resource cache. may be null.
         bool              fAccountedForInBudget = false;
@@ -258,12 +258,12 @@ private:
         SkDEBUGCODE(uint32_t uniqueID() const { return fUniqueID; })
 
     private:
-        raw_ptr<GrSurfaceProxy> fProxy;
+        raw_ptr<GrSurfaceProxy, DanglingUntriaged> fProxy;
         unsigned int     fStart;
         unsigned int     fEnd;
-        raw_ptr<Interval> fNext = nullptr;
+        raw_ptr<Interval, DanglingUntriaged> fNext = nullptr;
         unsigned int     fUses = 0;
-        raw_ptr<Register> fRegister = nullptr;
+        raw_ptr<Register, DanglingUntriaged> fRegister = nullptr;
         AllowRecycling   fAllowRecycling = AllowRecycling::kYes;
 
 #ifdef SK_DEBUG

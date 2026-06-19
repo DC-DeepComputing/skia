@@ -7,7 +7,6 @@
 
 #include "src/gpu/ganesh/vk/GrVkTexture.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkSize.h"
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/MutableTextureState.h"
@@ -23,6 +22,7 @@
 #include "src/gpu/ganesh/vk/GrVkGpu.h"
 #include "src/gpu/ganesh/vk/GrVkUtil.h"
 #include "src/gpu/vk/VulkanUtilsPriv.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #define VK_CALL(GPU, X) GR_VK_CALL(GPU->vkInterface(), X)
 

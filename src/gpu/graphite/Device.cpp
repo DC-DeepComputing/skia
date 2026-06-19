@@ -6,7 +6,6 @@
  */
 #include "src/gpu/graphite/Device.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkArc.h"
 #include "include/core/SkBlendMode.h"
@@ -99,6 +98,7 @@
 #include "src/gpu/graphite/task/UploadTask.h"
 #include "src/gpu/graphite/text/GlyphData.h"
 #include "src/image/SkImage_Base.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/text/gpu/SlugImpl.h"
 #include "src/text/gpu/SubRunContainer.h"
 #include "src/text/gpu/TextBlobRedrawCoordinator.h"
