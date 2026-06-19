@@ -7,8 +7,6 @@
 
 #include "src/core/SkAAClip.h"
 
-#include "src/partition_alloc/raw_ref.h"
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkClipOp.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkRegion.h"
@@ -25,6 +23,8 @@
 #include "src/core/SkMask.h"
 #include "src/core/SkPathPriv.h"
 #include "src/core/SkScan.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ref.h"
 
 #include <algorithm>
 #include <atomic>

@@ -5,7 +5,6 @@
  * found in the LICENSE file.
  */
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
@@ -30,6 +29,7 @@
 #include "src/core/SkScan.h"
 #include "src/core/SkUtils.h"
 #include "src/core/SkVx.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <algorithm>
 #include <array>
