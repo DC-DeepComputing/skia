@@ -5,10 +5,10 @@
  * found in the LICENSE file.
  */
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkTArray.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/sksl/SkSLDefines.h"
 #include "src/sksl/SkSLModule.h"
 #include "src/sksl/analysis/SkSLProgramUsage.h"

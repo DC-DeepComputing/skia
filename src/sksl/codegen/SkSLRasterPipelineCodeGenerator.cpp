@@ -7,8 +7,6 @@
 
 #include "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.h"
 
-#include "src/partition_alloc/raw_ref.h"
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkSpan.h"
 #include "include/private/SkEnumBitMask.h"
@@ -17,6 +15,8 @@
 #include "src/core/SkStringView.h"
 #include "src/core/SkTHash.h"
 #include "src/core/SkUtils.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ref.h"
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLBuiltinTypes.h"
 #include "src/sksl/SkSLCompiler.h"
@@ -998,7 +998,7 @@ public:
     }
 
 protected:
-    raw_ptr<LValue> fParent;
+    raw_ptr<LValue, DanglingUntriaged> fParent;
 
 private:
     int fInitialSlot = 0;

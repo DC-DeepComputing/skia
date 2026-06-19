@@ -6,13 +6,13 @@
  */
 #include "src/core/SkFontStream.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkFourByteTag.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkMalloc.h"
 #include "src/core/SkAutoMalloc.h"
 #include "src/core/SkEndian.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <algorithm>
 #include <cstdint>
@@ -138,7 +138,7 @@ struct SfntHeader {
     }
 
     int             fCount;
-    raw_ptr<SkSFNTDirEntry, AllowPtrArithmetic> fDir;
+    raw_ptr<SkSFNTDirEntry, AllowPtrArithmetic | DanglingUntriaged> fDir;
 };
 
 ///////////////////////////////////////////////////////////////////////////////

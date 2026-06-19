@@ -7,7 +7,6 @@
 
 #include "src/core/SkBitmapDevice.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBlender.h"
 #include "include/core/SkCPURecorder.h"
@@ -38,6 +37,7 @@
 #include "src/core/SkSpecialImage.h"
 #include "src/image/SkImage_Base.h"
 #include "src/image/SkImage_Raster.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/shaders/SkImageShader.h"
 #include "src/text/GlyphRun.h"
 

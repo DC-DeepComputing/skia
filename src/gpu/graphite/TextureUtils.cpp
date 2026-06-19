@@ -7,7 +7,6 @@
 
 #include "src/gpu/graphite/TextureUtils.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColorSpace.h"
@@ -24,6 +23,7 @@
 #include "src/core/SkSamplingPriv.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/image/SkImage_Base.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/gpu/graphite/BackendTexture.h"
 #include "include/gpu/graphite/Context.h"

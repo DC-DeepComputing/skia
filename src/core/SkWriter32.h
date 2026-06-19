@@ -256,11 +256,11 @@ public:
 private:
     void growToAtLeast(size_t size);
 
-    raw_ptr<uint8_t, AllowPtrArithmetic> fData;                    // Points to either fInternal or fExternal.
+    skia_private::AutoTMalloc<uint8_t> fInternal;  // Managed memory block.
+    raw_ptr<uint8_t, AllowPtrArithmetic | DanglingUntriaged> fData;                    // Points to either fInternal or fExternal.
     size_t fCapacity;                  // Number of bytes we can write to fData.
     size_t fUsed;                      // Number of bytes written.
     raw_ptr<void> fExternal;                   // Unmanaged memory block.
-    skia_private::AutoTMalloc<uint8_t> fInternal;  // Managed memory block.
 };
 
 /**
@@ -272,6 +272,7 @@ private:
 template <size_t SIZE> class SkSWriter32 : public SkWriter32 {
 public:
     SkSWriter32() { this->reset(); }
+    ~SkSWriter32() { this->INHERITED::reset(); }
 
     void reset() {this->INHERITED::reset(fData.fStorage, SIZE); }
 

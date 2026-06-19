@@ -293,7 +293,7 @@ private:
     int fNumTempStackSlots = 0;
     int fNumLabels = 0;
     StackDepths fTempStackMaxDepths;
-    raw_ptr<DebugTracePriv> fDebugTrace = nullptr;
+    raw_ptr<DebugTracePriv, DanglingUntriaged> fDebugTrace = nullptr;
     std::unique_ptr<SkSL::TraceHook> fTraceHook;
 };
 
