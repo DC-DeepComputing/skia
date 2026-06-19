@@ -207,8 +207,8 @@ private:
     SkArenaAlloc            fAlloc SK_GUARDED_BY(fStrikeLock) {kMinAllocAmount};
 
     // The following are protected by the SkStrikeCache's mutex.
-    raw_ptr<SkStrike> fNext{nullptr};
-    raw_ptr<SkStrike> fPrev{nullptr};
+    raw_ptr<SkStrike, DanglingUntriaged> fNext{nullptr};
+    raw_ptr<SkStrike, DanglingUntriaged> fPrev{nullptr};
     std::unique_ptr<SkStrikePinner> fPinner;
     size_t                          fMemoryUsed{sizeof(SkStrike)};
     bool                            fRemoved{false};

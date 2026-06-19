@@ -7,7 +7,6 @@
 
 #include "src/core/SkRecordDraw.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkBBHFactory.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkBlender.h"
@@ -28,6 +27,7 @@
 #include "include/core/SkTextBlob.h"
 #include "include/core/SkVertices.h"
 #include "include/private/SkAssert.h"
+#include "include/private/SkTArray.h"
 #include "include/private/SkTDArray.h"
 #include "include/private/SkTemplates.h"
 #include "include/private/chromium/Slug.h"
@@ -37,6 +37,7 @@
 #include "src/core/SkRecord.h"
 #include "src/core/SkRecords.h"
 #include "src/effects/colorfilters/SkColorFilterBase.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/utils/SkPatchUtils.h"
 
 #include <algorithm>
@@ -578,7 +579,7 @@ private:
     SkMatrix fCTM;
 
     // Used to track the bounds of Save/Restore blocks and the control ops inside them.
-    SkTDArray<SaveBounds> fSaveStack;
+    skia_private::TArray<SaveBounds> fSaveStack;
     SkTDArray<int>   fControlIndices;
 };
 

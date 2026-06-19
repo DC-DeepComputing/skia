@@ -7,8 +7,6 @@
 
 // Despite the name and location, this is portable code.
 
-#include "src/partition_alloc/raw_ref.h"
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkFontMgr.h"
 #include "include/core/SkStream.h"
 #include "include/private/SkFixed.h"
@@ -18,6 +16,8 @@
 #include "include/private/SkTemplates.h"
 #include "src/core/SkOSFile.h"
 #include "src/core/SkTSearch.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ref.h"
 #include "src/ports/SkFontMgr_android_parser.h"
 
 #include <expat.h>
@@ -280,6 +280,7 @@ static const TagHandler fontHandler = {
     },
     /*end*/[](FamilyData* self, const char* tag) {
         trim_string(&self->fCurrentFontInfo->fFileName);
+        self->fCurrentFontInfo = nullptr;
     },
     /*tag*/[](FamilyData* self, const char* tag, const char** attributes) -> const TagHandler* {
         size_t len = strlen(tag);

@@ -5,12 +5,12 @@
  * found in the LICENSE file.
  */
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkTFitsIn.h"
 #include "include/private/SkTemplates.h"
 #include "src/core/SkOSFile.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <dirent.h>
 #include <new>
@@ -148,7 +148,9 @@ SkOSFile::Iter::Iter(const char path[], const char suffix[]) {
 SkOSFile::Iter::~Iter() {
     SkOSFileIterData& self = *reinterpret_cast<SkOSFileIterData*>(fSelf);
     if (self.fDIR) {
-        ::closedir(self.fDIR);
+        DIR* dir = self.fDIR;
+        self.fDIR = nullptr;
+        ::closedir(dir);
     }
     self.~SkOSFileIterData();
 }
@@ -156,8 +158,9 @@ SkOSFile::Iter::~Iter() {
 void SkOSFile::Iter::reset(const char path[], const char suffix[]) {
     SkOSFileIterData& self = *reinterpret_cast<SkOSFileIterData*>(fSelf);
     if (self.fDIR) {
-        ::closedir(self.fDIR);
+        DIR* dir = self.fDIR;
         self.fDIR = nullptr;
+        ::closedir(dir);
     }
     self.fPath.set(path);
 

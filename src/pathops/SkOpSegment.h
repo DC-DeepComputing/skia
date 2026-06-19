@@ -444,7 +444,7 @@ private:
     raw_ptr<SkOpContour> fContour;
     raw_ptr<SkOpSegment> fNext;  // forward-only linked list used by contour to walk the segments
     raw_ptr<const SkOpSegment> fPrev;
-    raw_ptr<SkPoint, AllowPtrArithmetic> fPts;  // pointer into array of points owned by edge builder that may be tweaked
+    raw_ptr<SkPoint, DanglingUntriaged | AllowPtrArithmetic> fPts;  // pointer into array of points owned by edge builder that may be tweaked
     SkPathOpsBounds fBounds;  // tight bounds
     SkScalar fWeight;
     int fCount;  // number of spans (one for a non-intersecting segment)

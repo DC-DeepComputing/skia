@@ -699,9 +699,9 @@ bool Inliner::isSafeToInline(const FunctionDefinition* functionDef, const Progra
 // A candidate function for inlining, containing everything that `inlineCall` needs.
 struct InlineCandidate {
     raw_ptr<SymbolTable> fSymbols;                        // the SymbolTable of the candidate
-    raw_ptr<std::unique_ptr<Statement>> fParentStmt;      // the parent Statement of the enclosing stmt
-    raw_ptr<std::unique_ptr<Statement>> fEnclosingStmt;   // the Statement containing the candidate
-    raw_ptr<std::unique_ptr<Expression>> fCandidateExpr;  // the candidate FunctionCall to be inlined
+    raw_ptr<std::unique_ptr<Statement>, DanglingUntriaged> fParentStmt;      // the parent Statement of the enclosing stmt
+    raw_ptr<std::unique_ptr<Statement>, DanglingUntriaged> fEnclosingStmt;   // the Statement containing the candidate
+    raw_ptr<std::unique_ptr<Expression>, DanglingUntriaged> fCandidateExpr;  // the candidate FunctionCall to be inlined
     raw_ptr<FunctionDefinition> fEnclosingFunction;       // the Function containing the candidate
 };
 
