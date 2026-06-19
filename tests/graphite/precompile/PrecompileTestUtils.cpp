@@ -300,6 +300,7 @@ void RunTest(skgpu::graphite::PrecompileContext* precompileContext,
                         "%d: num matches: %zu", precompileSettingsIndex, matchesInCases.size());
         REPORTER_ASSERT(reporter, utilization >= 0.3f,         // This tests requirement 2, above
                         "%d: utilization: %f", precompileSettingsIndex, utilization);
+        SkASSERT(matchesInCases.size() >= 1 && utilization >= 0.3f);
     }
 
 #if defined(PRINT_COVERAGE)
