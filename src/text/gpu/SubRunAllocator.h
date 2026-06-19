@@ -179,7 +179,7 @@ private:
     // of this pointer are the bytes to be allocated. The positive side points to the Block for
     // this memory. In other words, the pointer to the Block structure for these bytes is
     // reinterpret_cast<Block*>(fEndByte).
-    raw_ptr<char, AllowPtrArithmetic> fEndByte{nullptr};
+    raw_ptr<char, AllowPtrArithmetic | DanglingUntriaged> fEndByte{nullptr};
 
     // The number of bytes remaining in this block.
     int fCapacity{0};

@@ -6,7 +6,6 @@
  */
 #include "src/gpu/graphite/ClipStack.h"
 
-#include "src/partition_alloc/raw_ref.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkClipOp.h"
 #include "include/core/SkM44.h"
@@ -38,6 +37,7 @@
 #include "src/gpu/graphite/geom/EdgeAAQuad.h"
 #include "src/gpu/graphite/geom/Geometry.h"
 #include "src/gpu/graphite/geom/NonMSAAClip.h"
+#include "src/partition_alloc/raw_ref.h"
 
 #include <algorithm>
 #include <atomic>

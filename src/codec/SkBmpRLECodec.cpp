@@ -7,7 +7,6 @@
 
 #include "src/codec/SkBmpRLECodec.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkColorType.h"
@@ -21,6 +20,7 @@
 #include "src/codec/SkCodecPriv.h"
 #include "src/core/SkColorData.h"
 #include "src/core/SkColorPriv.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <algorithm>
 #include <cstring>

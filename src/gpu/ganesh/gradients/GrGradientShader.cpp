@@ -6,7 +6,6 @@
  */
 #include "src/gpu/ganesh/gradients/GrGradientShader.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColorSpace.h"
@@ -51,6 +50,7 @@
 #include "src/gpu/ganesh/effects/GrTextureEffect.h"
 #include "src/gpu/ganesh/gradients/GrGradientBitmapCache.h"
 #include "src/gpu/ganesh/image/GrMippedBitmap.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/shaders/SkShaderBase.h"
 #include "src/shaders/gradients/SkGradientBaseShader.h"
 

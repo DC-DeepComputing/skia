@@ -9,8 +9,8 @@
 #ifndef SKFONTCONFIGINTERFACE_DIRECT_H_
 #define SKFONTCONFIGINTERFACE_DIRECT_H_
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/ports/SkFontConfigInterface.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <fontconfig/fontconfig.h>
 

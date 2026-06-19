@@ -7,7 +7,6 @@
 
 #include "include/utils/SkTextUtils.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkFont.h"
 #include "include/core/SkMatrix.h"
@@ -18,6 +17,7 @@
 #include "include/core/SkTextBlob.h"
 #include "include/private/SkTemplates.h"
 #include "src/core/SkFontPriv.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 using namespace skia_private;
 

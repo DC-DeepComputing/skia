@@ -7,7 +7,6 @@
 
 #include "include/core/SkString.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/private/SkDebug.h"
 #include "include/private/SkFloatingPoint.h"
 #include "include/private/SkMalloc.h"
@@ -16,6 +15,7 @@
 #include "src/core/SkSafeMath.h"
 #include "src/core/SkUTF.h"
 #include "src/core/SkUtils.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <algorithm>
 #include <cstdio>
