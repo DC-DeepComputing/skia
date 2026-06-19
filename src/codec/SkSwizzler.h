@@ -141,7 +141,7 @@ private:
     // whether or not we are sampling.
     RowProc             fActualProc;
 
-    raw_ptr<const SkPMColor> fColorTable;      // Unowned pointer
+    raw_ptr<const SkPMColor, DanglingUntriaged> fColorTable;      // Unowned pointer
 
     // Subset Swizzles
     // There are two types of subset swizzles that we support.  We do not

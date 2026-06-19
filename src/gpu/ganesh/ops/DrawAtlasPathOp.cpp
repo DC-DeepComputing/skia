@@ -7,7 +7,6 @@
 
 #include "src/gpu/ganesh/ops/DrawAtlasPathOp.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkSamplingOptions.h"
 #include "include/gpu/ganesh/GrRecordingContext.h"
@@ -42,6 +41,7 @@
 #include "src/gpu/ganesh/glsl/GrGLSLUniformHandler.h"
 #include "src/gpu/ganesh/glsl/GrGLSLVarying.h"
 #include "src/gpu/ganesh/glsl/GrGLSLVertexGeoBuilder.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <memory>
 

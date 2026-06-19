@@ -178,6 +178,10 @@ public:
     SkRasterPipeline_()
         : SkRasterPipeline(&fBuiltinAlloc) {}
 
+    ~SkRasterPipeline_() {
+        this->reset();
+    }
+
 private:
     SkSTArenaAlloc<bytes> fBuiltinAlloc;
 };

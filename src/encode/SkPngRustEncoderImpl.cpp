@@ -12,12 +12,12 @@
 #include <optional>
 #include <utility>
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkStream.h"
 #include "include/encode/SkPngRustEncoder.h"
 #include "include/private/SkAssert.h"
 #include "include/private/SkEncodedInfo.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "rust/png/FFI.rs.h"
 #include "rust/common/SpanUtils.h"
 #include "src/core/SkSafeMath.h"

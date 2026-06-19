@@ -7,7 +7,6 @@
 
 #include "src/core/SkMaskCache.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkRRect.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkSize.h"
@@ -16,6 +15,7 @@
 #include "src/core/SkMask.h"
 #include "src/core/SkResourceCache.h"
 #include "src/core/SkTLazy.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <cstddef>
 #include <cstdint>
@@ -28,7 +28,7 @@ enum SkBlurStyle : int;
 
 struct MaskValue {
     SkMask          fMask;
-    raw_ptr<SkCachedData> fData;
+    raw_ptr<SkCachedData, DanglingUntriaged> fData;
 };
 
 namespace {
