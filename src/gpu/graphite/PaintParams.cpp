@@ -595,7 +595,7 @@ UniquePaintParamsID ShadingParams::validateOpacityOptimization(const KeyContext&
     // Validate that the modified paint ID matches what we would have reached with a ShadingParams
     // and PaintParams adjusted to use kSrc blending and have no renderer coverage. These extracted
     // uniforms should match what was originally extracted as well.
-    PaintParams opaquePaint = PaintParams::MakeOpaque(fPaint);
+    PaintParams opaquePaint = PaintParams::MakeOpaque(*fPaint);
     NonMSAAClip emptyClip{};
     ShadingParams opaqueShading{keyContext.recorder()->priv().caps(),
                                 opaquePaint,
@@ -622,7 +622,7 @@ UniquePaintParamsID ShadingParams::validateOpacityOptimization(const KeyContext&
                              keyContext.clipDrawBounds(),
                              keyContext.dstColorInfo(),
                              keyContext.flags(),
-                             opaqueShading.fPaint.color()};
+                             opaqueShading.fPaint->color()};
 
     auto result = opaqueShading.toKey(opaqueContext);
     SkASSERT(result.has_value());

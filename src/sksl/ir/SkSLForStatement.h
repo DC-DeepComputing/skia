@@ -29,7 +29,7 @@ class Variable;
  * The unrollability information for an ES2-compatible loop.
  */
 struct LoopUnrollInfo {
-    raw_ptr<const Variable> fIndex;
+    raw_ptr<const Variable, DanglingUntriaged> fIndex;
     double fStart;
     double fDelta;
     int fCount;

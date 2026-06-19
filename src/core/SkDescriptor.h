@@ -112,7 +112,7 @@ private:
               + sizeof(SkDescriptor::Entry) + sizeof(void*)              // for typeface
               + 32;   // slop for occasional small extras
 
-    raw_ptr<SkDescriptor> fDesc{nullptr};
+    raw_ptr<SkDescriptor, DanglingUntriaged> fDesc{nullptr};
     alignas(uint32_t) char fStorage[kStorageSize];
 };
 

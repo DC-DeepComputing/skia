@@ -7,10 +7,10 @@
 
 #include "src/sksl/SkSLCompiler.h"
 
-#include "src/partition_alloc/raw_ref.h"
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/private/SkDebug.h"
 #include "src/core/SkTraceEvent.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ref.h"
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLContext.h"
 #include "src/sksl/SkSLDefines.h"
@@ -54,7 +54,7 @@ public:
     }
 
     const raw_ref<Context> fContext;
-    raw_ptr<ProgramConfig> fOldConfig;
+    raw_ptr<ProgramConfig, DanglingUntriaged> fOldConfig;
 };
 
 Compiler::Compiler() : fErrorReporter(this) {
