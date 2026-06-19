@@ -13,8 +13,8 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSurfaceProps.h"
 #include "src/gpu/graphite/geom/Rect.h"
-#include "src/text/gpu/SubRunContainer.h"
 #include "src/partition_alloc/raw_ptr.h"
+#include "src/text/gpu/SubRunContainer.h"
 
 #include <utility>
 

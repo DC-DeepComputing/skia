@@ -396,7 +396,7 @@ private:
     const raw_ptr<GrAtlasGenerationCounter> fGenerationCounter;
     uint64_t fGenID;
     GrPlotLocator fPlotLocator;
-    raw_ptr<std::byte, AllowPtrArithmetic> fData;
+    raw_ptr<std::byte, DanglingUntriaged | AllowPtrArithmetic> fData;
     const int fWidth;
     const int fHeight;
     const int fX;

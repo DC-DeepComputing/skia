@@ -186,7 +186,7 @@ public:
         void addToKey(skgpu::KeyBuilder* b) const;
 
     private:
-        raw_ptr<const Attribute, AllowPtrArithmetic> fAttributes = nullptr;
+        raw_ptr<const Attribute, AllowPtrArithmetic | DanglingUntriaged> fAttributes = nullptr;
         int              fRawCount = 0;
         int              fCount = 0;
         size_t           fStride = 0;

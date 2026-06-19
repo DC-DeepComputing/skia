@@ -95,7 +95,7 @@ private:
 
     // The stable pointer uniquely identifies this FunctionCall across an entire SkSL program.
     // This allows us to clone() a FunctionCall but still find that call in a hash-map.
-    raw_ptr<const FunctionCall> fStablePointer = nullptr;
+    raw_ptr<const FunctionCall, DanglingUntriaged> fStablePointer = nullptr;
 
     using INHERITED = Expression;
 };

@@ -249,8 +249,8 @@ public:
                                                //   of fColors/fColorOffsets on input, and
                                                //   actual number of colors/offsets on
                                                //   output.
-        raw_ptr<SkColor4f, AllowPtrArithmetic> fColors        = nullptr;  //!< The colors in the gradient.
-        raw_ptr<SkScalar, AllowPtrArithmetic> fColorOffsets  = nullptr;  //!< The unit offset for color transitions.
+        raw_ptr<SkColor4f, AllowPtrArithmetic | DanglingUntriaged> fColors        = nullptr;  //!< The colors in the gradient.
+        raw_ptr<SkScalar, AllowPtrArithmetic | DanglingUntriaged> fColorOffsets  = nullptr;  //!< The unit offset for color transitions.
         SkPoint     fPoint[2];                 //!< Type specific, see above.
         SkScalar    fRadius[2];                //!< Type specific, see above.
         SkTileMode  fTileMode;
