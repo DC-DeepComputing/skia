@@ -16,6 +16,24 @@
       "message": "The chrome canary was actually created: https://chromium-review.git.corp.google.com/c/7961532, and seems fine",
       "revId": "a50c4e7e4b2a81cb9dc2463587422a0994feaa6e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c2697ea_814fb329",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-19T15:30:14Z",
+      "side": 1,
+      "message": "actually looks like there\u0027s one layout test on mac-rel that will need to be rebased :/\n\nI\u0027m suppressing the test in chrome since it\u0027s just a single one: https://chromium-review.git.corp.google.com/c/chromium/src/+/7964732",
+      "parentUuid": "5e4026a7_bc1c7c36",
+      "revId": "a50c4e7e4b2a81cb9dc2463587422a0994feaa6e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
