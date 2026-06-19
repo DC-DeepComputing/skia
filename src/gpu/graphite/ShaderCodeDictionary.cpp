@@ -7,8 +7,6 @@
 
 #include "src/gpu/graphite/ShaderCodeDictionary.h"
 
-#include "src/partition_alloc/raw_ref.h"
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkTileMode.h"
 #include "include/effects/SkRuntimeEffect.h"
 #include "include/private/SkLog.h"
@@ -21,6 +19,8 @@
 #include "src/gpu/graphite/RuntimeEffectDictionary.h"
 #include "src/gpu/graphite/ShaderInfo.h"
 #include "src/gpu/graphite/UniformManager.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ref.h"
 #include "src/sksl/SkSLString.h"
 #include "src/sksl/codegen/SkSLPipelineStageCodeGenerator.h"
 #include "src/sksl/ir/SkSLVarDeclarations.h"

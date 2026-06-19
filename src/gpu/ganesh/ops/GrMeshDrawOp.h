@@ -84,7 +84,7 @@ protected:
 
     private:
         raw_ptr<void> fVertices = nullptr;
-        raw_ptr<GrSimpleMesh> fMesh = nullptr;
+        raw_ptr<GrSimpleMesh, DanglingUntriaged> fMesh = nullptr;
         GrPrimitiveType fPrimitiveType;
     };
 

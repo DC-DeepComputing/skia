@@ -113,7 +113,7 @@ private:
     void onPrepare(GrOpFlushState*) override;
     void onExecute(GrOpFlushState*, const SkRect& chainBounds) override;
 
-    raw_ptr<const PathDrawList> fPathDrawList;
+    raw_ptr<const PathDrawList, DanglingUntriaged> fPathDrawList;
     const int fTotalCombinedPathVerbCnt;
     const int fPathCount;
     const FillPathFlags fPathFlags;
@@ -123,10 +123,10 @@ private:
     SkDEBUGCODE(SkRect fOriginalDrawBounds;)
 
     // Decided during prePreparePrograms.
-    raw_ptr<PathTessellator> fTessellator = nullptr;
-    raw_ptr<const GrProgramInfo> fStencilFanProgram = nullptr;
-    raw_ptr<const GrProgramInfo> fStencilPathProgram = nullptr;
-    raw_ptr<const GrProgramInfo> fCoverBBoxProgram = nullptr;
+    raw_ptr<PathTessellator, DanglingUntriaged> fTessellator = nullptr;
+    raw_ptr<const GrProgramInfo, DanglingUntriaged> fStencilFanProgram = nullptr;
+    raw_ptr<const GrProgramInfo, DanglingUntriaged> fStencilPathProgram = nullptr;
+    raw_ptr<const GrProgramInfo, DanglingUntriaged> fCoverBBoxProgram = nullptr;
 
     // Filled during onPrepare.
     sk_sp<const GrBuffer> fFanBuffer;

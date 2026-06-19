@@ -7,7 +7,6 @@
 
 #include "src/gpu/graphite/dawn/DawnGraphiteUtils.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/gpu/ShaderErrorHandler.h"
 #include "include/gpu/graphite/Context.h"
 #include "include/gpu/graphite/dawn/DawnBackendContext.h"
@@ -16,6 +15,7 @@
 #include "src/gpu/graphite/TextureFormat.h"
 #include "src/gpu/graphite/dawn/DawnQueueManager.h"
 #include "src/gpu/graphite/dawn/DawnSharedContext.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 using namespace skia_private;
 

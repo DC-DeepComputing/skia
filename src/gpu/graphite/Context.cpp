@@ -6,7 +6,6 @@
  */
 #include "include/gpu/graphite/Context.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkCanvas.h"
@@ -80,6 +79,7 @@
 #include "src/gpu/graphite/task/SynchronizeToCpuTask.h"
 #include "src/gpu/graphite/task/Task.h"
 #include "src/image/SkSurface_Base.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/sksl/SkSLGraphiteModules.h"
 
 #include <algorithm>

@@ -749,7 +749,7 @@ private:
         GrGLAttribArrayState fDefaultVertexArrayAttribState;
 
         // This is used when we're using a core profile.
-        raw_ptr<GrGLVertexArray> fCoreProfileVertexArray;
+        raw_ptr<GrGLVertexArray, DanglingUntriaged> fCoreProfileVertexArray;
     } fHWVertexArrayState;
 
     struct {

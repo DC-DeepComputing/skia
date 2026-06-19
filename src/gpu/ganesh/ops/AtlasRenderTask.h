@@ -116,7 +116,7 @@ private:
         int pathCount() const { return fPathCount; }
 
     private:
-        raw_ptr<PathDrawList> fPathDrawList = nullptr;
+        raw_ptr<PathDrawList, DanglingUntriaged> fPathDrawList = nullptr;
         int fTotalCombinedPathVerbCnt = 0;
         int fPathCount = 0;
     };

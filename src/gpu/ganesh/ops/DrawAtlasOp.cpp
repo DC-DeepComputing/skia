@@ -6,7 +6,6 @@
  */
 #include "src/gpu/ganesh/ops/DrawAtlasOp.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRSXform.h"
@@ -40,6 +39,7 @@
 #include "src/gpu/ganesh/ops/GrDrawOp.h"
 #include "src/gpu/ganesh/ops/GrMeshDrawOp.h"
 #include "src/gpu/ganesh/ops/GrSimpleMeshDrawOpHelper.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <cstdint>
 #include <cstring>
@@ -122,8 +122,8 @@ private:
     int fQuadCount;
     bool fHasColors;
 
-    raw_ptr<GrSimpleMesh> fMesh = nullptr;
-    raw_ptr<GrProgramInfo> fProgramInfo = nullptr;
+    raw_ptr<GrSimpleMesh, DanglingUntriaged> fMesh = nullptr;
+    raw_ptr<GrProgramInfo, DanglingUntriaged> fProgramInfo = nullptr;
 };
 
 GrGeometryProcessor* make_gp(SkArenaAlloc* arena,

@@ -7,7 +7,6 @@
 
 #include "include/utils/SkCustomTypeface.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkData.h"
@@ -41,6 +40,7 @@
 #include "src/core/SkMask.h"
 #include "src/core/SkScalerContext.h"
 #include "src/core/SkStreamPriv.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <algorithm>
 #include <cstdint>

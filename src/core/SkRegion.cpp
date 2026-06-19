@@ -7,7 +7,6 @@
 
 #include "include/core/SkRegion.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/private/SkMacros.h"
 #include "include/private/SkMalloc.h"
 #include "include/private/SkMath.h"
@@ -16,6 +15,7 @@
 #include "src/core/SkBuffer.h"
 #include "src/core/SkRegionPriv.h"
 #include "src/core/SkSafeMath.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <algorithm>
 #include <atomic>

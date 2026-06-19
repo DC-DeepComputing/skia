@@ -5,8 +5,6 @@
  * found in the LICENSE file.
  */
 
-#include "src/partition_alloc/raw_ptr.h"
-#include "src/partition_alloc/raw_ptr_exclusion.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPath.h"

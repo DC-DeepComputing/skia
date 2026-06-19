@@ -58,8 +58,8 @@ private:
         T fT;
         raw_ptr<Node> fNext = nullptr;
     };
-    raw_ptr<Node> fHead = nullptr;
-    raw_ptr<Node> fTail = nullptr;
+    raw_ptr<Node, DanglingUntriaged> fHead = nullptr;
+    raw_ptr<Node, DanglingUntriaged> fTail = nullptr;
 };
 
 template <typename T>

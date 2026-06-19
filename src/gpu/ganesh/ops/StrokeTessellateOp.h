@@ -96,10 +96,10 @@ private:
     GrProcessorSet fProcessors;
     bool fNeedsStencil;
 
-    raw_ptr<StrokeTessellator> fTessellator = nullptr;
+    raw_ptr<StrokeTessellator, DanglingUntriaged> fTessellator = nullptr;
     raw_ptr<GrStrokeTessellationShader> fTessellationShader;
-    raw_ptr<const GrProgramInfo> fStencilProgram = nullptr;  // Only used if the stroke has transparency.
-    raw_ptr<const GrProgramInfo> fFillProgram = nullptr;
+    raw_ptr<const GrProgramInfo, DanglingUntriaged> fStencilProgram = nullptr;  // Only used if the stroke has transparency.
+    raw_ptr<const GrProgramInfo, DanglingUntriaged> fFillProgram = nullptr;
 };
 
 }  // namespace skgpu::ganesh
