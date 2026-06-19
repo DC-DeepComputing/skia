@@ -89,7 +89,7 @@ protected:
     }
 
 private:
-    raw_ptr<T> fAddr = nullptr;
+    raw_ptr<T, DanglingUntriaged> fAddr = nullptr;
     size_t fRowBytes = 0;
     GrImageInfo fInfo;
     sk_sp<SkData> fPixelStorage;

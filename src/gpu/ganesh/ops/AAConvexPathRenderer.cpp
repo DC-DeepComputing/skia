@@ -6,7 +6,6 @@
  */
 #include "src/gpu/ganesh/ops/AAConvexPathRenderer.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkPoint.h"
@@ -57,6 +56,7 @@
 #include "src/gpu/ganesh/ops/GrMeshDrawOp.h"
 #include "src/gpu/ganesh/ops/GrOp.h"
 #include "src/gpu/ganesh/ops/GrSimpleMeshDrawOpHelperWithStencil.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #if defined(GPU_TEST_UTILS)
 #include "src/core/SkRandom.h"
@@ -943,7 +943,7 @@ private:
     };
 
     SkTDArray<MeshDraw> fDraws;
-    raw_ptr<GrProgramInfo> fProgramInfo = nullptr;
+    raw_ptr<GrProgramInfo, DanglingUntriaged> fProgramInfo = nullptr;
 
     using INHERITED = GrMeshDrawOp;
 };

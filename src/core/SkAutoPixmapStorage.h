@@ -86,7 +86,7 @@ public:
     }
 
 private:
-    raw_ptr<void> fStorage;
+    raw_ptr<void, DanglingUntriaged> fStorage;
 
     void freeStorage() {
         sk_free(fStorage);

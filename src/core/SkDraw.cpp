@@ -7,7 +7,6 @@
 
 #include "src/core/SkDraw.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColorType.h"
 #include "include/core/SkImageInfo.h"
@@ -56,6 +55,7 @@
 #include "src/core/SkTLazy.h"
 #include "src/core/SkZip.h"
 #include "src/image/SkImage_Raster.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/shaders/SkImageShader.h"
 
 #include <algorithm>

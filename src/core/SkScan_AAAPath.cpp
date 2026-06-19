@@ -5,7 +5,6 @@
  * found in the LICENSE file.
  */
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkPathTypes.h"
@@ -26,6 +25,7 @@
 #include "src/core/SkScan.h"
 #include "src/core/SkScanPriv.h"
 #include "src/core/SkTSort.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <algorithm>
 #include <cstdint>

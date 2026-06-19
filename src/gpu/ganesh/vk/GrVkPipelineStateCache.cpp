@@ -5,7 +5,6 @@
  * found in the LICENSE file.
  */
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/gpu/ganesh/GrContextOptions.h"
 #include "include/gpu/ganesh/GrDirectContext.h"
 #include "include/private/SkAssert.h"
@@ -23,6 +22,7 @@
 #include "src/gpu/ganesh/vk/GrVkPipelineState.h"
 #include "src/gpu/ganesh/vk/GrVkPipelineStateBuilder.h"
 #include "src/gpu/ganesh/vk/GrVkResourceProvider.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <memory>
 

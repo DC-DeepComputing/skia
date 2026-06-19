@@ -7,7 +7,6 @@
 
 #include "src/core/SkBitmapCache.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkFourByteTag.h"
 #include "include/core/SkImage.h"
@@ -24,6 +23,7 @@
 #include "src/core/SkNextID.h"
 #include "src/core/SkResourceCache.h"
 #include "src/image/SkImage_Base.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <cstddef>
 #include <utility>
