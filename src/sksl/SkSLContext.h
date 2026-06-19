@@ -34,7 +34,7 @@ public:
     const raw_ref<const BuiltinTypes> fTypes;
 
     // The Context holds a pointer to the configuration of the program being compiled.
-    raw_ptr<ProgramConfig> fConfig = nullptr;
+    raw_ptr<ProgramConfig, DanglingUntriaged> fConfig = nullptr;
 
     // The Context holds a pointer to our error reporter.
     raw_ptr<ErrorReporter> fErrors;

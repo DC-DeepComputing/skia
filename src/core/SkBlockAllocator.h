@@ -145,6 +145,8 @@ public:
         bool isScratch() const { return fCursor < 0; }
         void markAsScratch() {
             fCursor = -1;
+            fNext = nullptr;
+            fPrev = nullptr;
             this->poisonRange(kDataStart, fSize);
         }
 
@@ -728,7 +730,7 @@ public:
             SkASSERT(!fNext || !fNext->isScratch());
         }
 
-        raw_ptr<BlockT> fBlock;
+        raw_ptr<BlockT, DanglingUntriaged> fBlock;
         // Cache this before operator++ so that fBlock can be released during iteration
         raw_ptr<BlockT> fNext;
     };

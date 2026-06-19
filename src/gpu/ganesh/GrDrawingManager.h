@@ -254,7 +254,7 @@ private:
 
     skia_private::TArray<sk_sp<GrRenderTask>>  fDAG;
     std::vector<int>                           fReorderBlockerTaskIndices;
-    raw_ptr<skgpu::ganesh::OpsTask> fActiveOpsTask = nullptr;
+    raw_ptr<skgpu::ganesh::OpsTask, DanglingUntriaged> fActiveOpsTask = nullptr;
 
     PathRendererChain::Options                 fOptionsForPathRendererChain;
     std::unique_ptr<PathRendererChain>         fPathRendererChain;

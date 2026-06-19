@@ -5,8 +5,8 @@
  * found in the LICENSE file.
  */
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkTypes.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkData.h"
 #include "include/core/SkFontMgr.h"

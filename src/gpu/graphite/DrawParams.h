@@ -6,8 +6,8 @@
  */
 
 #ifndef skgpu_graphite_DrawParams_DEFINED
-#include "src/partition_alloc/raw_ref.h"
 #include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ref.h"
 
 #define skgpu_graphite_DrawParams_DEFINED
 
