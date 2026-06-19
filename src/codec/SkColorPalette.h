@@ -44,7 +44,7 @@ public:
     const SkPMColor* readColors() const { return fColors; }
 
 private:
-    raw_ptr<SkPMColor, AllowPtrArithmetic> fColors;
+    raw_ptr<SkPMColor, DanglingUntriaged | AllowPtrArithmetic> fColors;
     int         fCount;
 
     using INHERITED = SkRefCnt;

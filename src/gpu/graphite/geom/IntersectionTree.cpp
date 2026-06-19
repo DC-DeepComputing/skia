@@ -7,10 +7,10 @@
 
 #include "src/gpu/graphite/geom/IntersectionTree.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkTPin.h"
 #include "src/core/SkVx.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <algorithm>
 #include <limits>
