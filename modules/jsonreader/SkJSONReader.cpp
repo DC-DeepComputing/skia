@@ -7,7 +7,6 @@
 
 #include "modules/jsonreader/SkJSONReader.h"
 
-#include "src/partition_alloc/raw_ref.h"
 #include "include/core/SkData.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkStream.h"
@@ -19,6 +18,7 @@
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkAutoLocaleSetter.h"
 #include "src/core/SkUTF.h"
+#include "src/partition_alloc/raw_ref.h"
 
 #include <charconv>
 #include <cmath>

@@ -8,13 +8,13 @@
 #include "src/sksl/ir/SkSLType.h"
 
 #include "include/private/SkEnumBitMask.h"
-#include "src/partition_alloc/raw_ref.h"
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/private/SkTo.h"
 #include "src/core/SkHalf.h"
 #include "src/core/SkMathPriv.h"
 #include "src/core/SkSafeMath.h"
 #include "src/core/SkTHash.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ref.h"
 #include "src/sksl/SkSLBuiltinTypes.h"
 #include "src/sksl/SkSLConstantFolder.h"
 #include "src/sksl/SkSLContext.h"
@@ -241,7 +241,7 @@ public:
 private:
     using INHERITED = Type;
 
-    const raw_ref<const Type> fComponentType;
+    const raw_ref<const Type, DanglingUntriaged> fComponentType;
     int fCount;
     bool fIsBuiltin;
 };

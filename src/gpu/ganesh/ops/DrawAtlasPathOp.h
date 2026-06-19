@@ -107,7 +107,7 @@ private:
 
     int fInstanceCount = 1;
 
-    raw_ptr<GrProgramInfo> fProgram = nullptr;
+    raw_ptr<GrProgramInfo, DanglingUntriaged> fProgram = nullptr;
 
     sk_sp<const GrBuffer> fInstanceBuffer;
     int fBaseInstance;
