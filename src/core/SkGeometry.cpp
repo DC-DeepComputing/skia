@@ -7,7 +7,6 @@
 
 #include "src/core/SkGeometry.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPoint3.h"
 #include "include/core/SkRect.h"
@@ -21,6 +20,7 @@
 #include "src/core/SkPointPriv.h"
 #include "src/core/SkUtils.h"
 #include "src/core/SkVx.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <algorithm>
 #include <array>

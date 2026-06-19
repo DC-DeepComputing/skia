@@ -145,7 +145,7 @@ protected:
         SkASSERT(!fEnd || Mark(fPtr, bytesToWrite) <= fEnd);
     }
 
-    raw_ptr<void> fPtr = nullptr;
+    raw_ptr<void, DanglingUntriaged> fPtr = nullptr;
     SkDEBUGCODE(mutable Mark fEnd = {};)
 };
 

@@ -90,14 +90,14 @@ private:
     const raw_ptr<const GrUserStencilSettings> fStencil;
     int fTotalCombinedPathVerbCnt;
     PatchAttribs fPatchAttribs = PatchAttribs::kNone;
-    const raw_ptr<PathDrawList> fPathDrawList;
+    const raw_ptr<PathDrawList, DanglingUntriaged> fPathDrawList;
     raw_ptr<PathDrawList *> fPathDrawTail;
     GrProcessorSet fProcessors;
     SkMatrix fShaderMatrix;
 
     // Decided during prepareTessellator.
-    raw_ptr<PathTessellator> fTessellator = nullptr;
-    raw_ptr<const GrProgramInfo> fTessellationProgram = nullptr;
+    raw_ptr<PathTessellator, DanglingUntriaged> fTessellator = nullptr;
+    raw_ptr<const GrProgramInfo, DanglingUntriaged> fTessellationProgram = nullptr;
 
     friend class GrOp;  // For ctor.
 };

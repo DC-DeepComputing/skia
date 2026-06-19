@@ -7,7 +7,6 @@
 
 #include "src/pdf/SkPDFDevice.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/codec/SkCodec.h"
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBitmap.h"
@@ -66,6 +65,7 @@
 #include "src/core/SkStrikeSpec.h"
 #include "src/core/SkTLazy.h"
 #include "src/core/SkUTF.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/pdf/SkBitmapKey.h"
 #include "src/pdf/SkClusterator.h"
 #include "src/pdf/SkKeyedImage.h"

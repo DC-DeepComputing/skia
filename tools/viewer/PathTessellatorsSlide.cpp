@@ -5,9 +5,9 @@
  * found in the LICENSE file.
  */
 
-#include "src/partition_alloc/raw_ref.h"
 #include "include/core/SkCanvas.h"
 #include "src/core/SkPathPriv.h"
+#include "src/partition_alloc/raw_ref.h"
 #include "tools/viewer/ClickHandlerSlide.h"
 
 #if defined(SK_GANESH)

@@ -91,7 +91,7 @@ public:
 
 private:
     SkArenaAllocWithReset        fAlloc;
-    raw_ptr<Node> fRoot;
+    raw_ptr<Node, DanglingUntriaged> fRoot;
     std::unique_ptr<SkDOMParser> fParser;
 
     using INHERITED = SkNoncopyable;

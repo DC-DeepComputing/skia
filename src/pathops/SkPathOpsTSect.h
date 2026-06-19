@@ -8,8 +8,8 @@
 #define SkPathOpsTSect_DEFINED
 
 #include "src/partition_alloc/raw_ptr.h"
-#include "src/partition_alloc/raw_ref.h"
 #include "src/partition_alloc/raw_ptr_exclusion.h"
+#include "src/partition_alloc/raw_ref.h"
 
 #include "include/core/SkScalar.h"
 #include "include/core/SkTypes.h"
@@ -86,8 +86,8 @@ private:
 };
 
 struct SkTSpanBounded {
-    raw_ptr<SkTSpan> fBounded;
-    raw_ptr<SkTSpanBounded> fNext;
+    raw_ptr<SkTSpan, DanglingUntriaged> fBounded;
+    raw_ptr<SkTSpanBounded, DanglingUntriaged> fNext;
 };
 
 class SkTSpan {
@@ -225,11 +225,11 @@ private:
     void validatePerpT(double oppT) const;
     void validatePerpPt(double t, const SkDPoint& ) const;
 
-    raw_ptr<SkTCurve> fPart;
+    raw_ptr<SkTCurve, DanglingUntriaged> fPart;
     SkTCoincident fCoinStart;
     SkTCoincident fCoinEnd;
-    raw_ptr<SkTSpanBounded> fBounded;
-    raw_ptr<SkTSpan> fPrev;
+    raw_ptr<SkTSpanBounded, DanglingUntriaged> fBounded;
+    raw_ptr<SkTSpan, DanglingUntriaged> fPrev;
     RAW_PTR_EXCLUSION SkTSpan* fNext;
     SkDRect fBounds;
     double fStartT;

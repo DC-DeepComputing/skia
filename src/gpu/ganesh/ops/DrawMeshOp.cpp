@@ -6,8 +6,6 @@
  */
 #include "src/gpu/ganesh/ops/DrawMeshOp.h"
 
-#include "src/partition_alloc/raw_ref.h"
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkData.h"
 #include "include/core/SkMatrix.h"
@@ -60,6 +58,8 @@
 #include "src/gpu/ganesh/ops/GrDrawOp.h"
 #include "src/gpu/ganesh/ops/GrMeshDrawOp.h"
 #include "src/gpu/ganesh/ops/GrSimpleMeshDrawOpHelper.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ref.h"
 #include "src/sksl/SkSLString.h"
 #include "src/sksl/SkSLUtil.h"
 #include "src/sksl/codegen/SkSLPipelineStageCodeGenerator.h"
@@ -832,8 +832,8 @@ private:
     sk_sp<const SkData>        fUniforms;
     int                        fVertexCount;
     int                        fIndexCount;
-    raw_ptr<GrSimpleMesh> fMesh = nullptr;
-    raw_ptr<GrProgramInfo> fProgramInfo = nullptr;
+    raw_ptr<GrSimpleMesh, DanglingUntriaged> fMesh = nullptr;
+    raw_ptr<GrProgramInfo, DanglingUntriaged> fProgramInfo = nullptr;
     TArray<std::unique_ptr<GrFragmentProcessor>> fChildren;
 
     using INHERITED = GrMeshDrawOp;

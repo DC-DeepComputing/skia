@@ -7,11 +7,11 @@
 
 #include "src/core/SkYUVPlanesCache.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkYUVAPixmaps.h"
 #include "src/core/SkBitmapCache.h"
 #include "src/core/SkCachedData.h"
 #include "src/core/SkResourceCache.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <cstddef>
 
