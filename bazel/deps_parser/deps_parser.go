@@ -29,7 +29,7 @@ type depConfig struct {
 var depsOverrides = map[string]depConfig{
 	"abseil-cpp":  {bazelNameOverride: "abseil_cpp", isIndirect: true},
 	"brotli":      {isIndirect: true},
-	"highway":     {isIndirect: true},
+	"highway":       {isIndirect: true},
 	"spirv-tools": {bazelNameOverride: "spirv_tools"},
 	// This name is important because spirv_tools expects @spirv_headers to exist by that name.
 	"spirv-headers": {bazelNameOverride: "spirv_headers"},
@@ -78,7 +78,15 @@ var depsOverrides = map[string]depConfig{
 	"libavif":       {needsBazelFile: true},
 	"libgav1":       {needsBazelFile: true},
 	"libjpeg-turbo": {bazelNameOverride: "libjpeg_turbo", needsBazelFile: true},
-	"libjxl":        {needsBazelFile: true},
+	"libjxl": {
+		needsBazelFile: true,
+		patchCmds: []string{
+			"rm -f lib/BUILD tools/BUILD",
+		},
+		patchCmdsWin: []string{
+			"del /f /q lib\\BUILD tools\\BUILD",
+		},
+	},
 	"libpng":        {needsBazelFile: true},
 	"libwebp":       {needsBazelFile: true},
 	"libyuv":        {needsBazelFile: true},
