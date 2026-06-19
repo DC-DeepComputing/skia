@@ -6,7 +6,6 @@
  */
 #include "src/gpu/ganesh/ops/LatticeOp.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkCanvas.h"
@@ -53,6 +52,7 @@
 #include "src/gpu/ganesh/glsl/GrGLSLVarying.h"
 #include "src/gpu/ganesh/ops/GrMeshDrawOp.h"
 #include "src/gpu/ganesh/ops/GrSimpleMeshDrawOpHelper.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #if defined(GPU_TEST_UTILS)
 #include "src/core/SkRandom.h"
@@ -442,8 +442,8 @@ private:
     GrSamplerState::Filter fFilter;
     bool fWideColor;
 
-    raw_ptr<GrSimpleMesh> fMesh = nullptr;
-    raw_ptr<GrProgramInfo> fProgramInfo = nullptr;
+    raw_ptr<GrSimpleMesh, DanglingUntriaged> fMesh = nullptr;
+    raw_ptr<GrProgramInfo, DanglingUntriaged> fProgramInfo = nullptr;
 
     using INHERITED = GrMeshDrawOp;
 };

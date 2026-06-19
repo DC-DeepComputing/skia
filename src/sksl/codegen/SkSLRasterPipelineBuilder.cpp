@@ -9,7 +9,6 @@
 #include <cstdint>
 #include <optional>
 
-#include "src/partition_alloc/raw_ref.h"
 #include "include/core/SkStream.h"
 #include "include/private/SkMalloc.h"
 #include "include/private/SkTFitsIn.h"
@@ -21,6 +20,7 @@
 #include "src/core/SkRasterPipelineOpList.h"
 #include "src/core/SkSafeMath.h"
 #include "src/core/SkTHash.h"
+#include "src/partition_alloc/raw_ref.h"
 #include "src/sksl/SkSLPosition.h"
 #include "src/sksl/SkSLString.h"
 #include "src/sksl/tracing/SkSLDebugTracePriv.h"

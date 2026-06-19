@@ -7,7 +7,6 @@
 
 #include "src/gpu/graphite/RasterPathAtlas.h"
 
-#include "src/partition_alloc/raw_ref.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColorSpace.h"
 #include "include/gpu/graphite/Recorder.h"
@@ -17,6 +16,7 @@
 #include "src/gpu/graphite/ProxyCache.h"
 #include "src/gpu/graphite/RasterPathUtils.h"
 #include "src/gpu/graphite/RecorderPriv.h"
+#include "src/partition_alloc/raw_ref.h"
 
 namespace skgpu::graphite {
 
