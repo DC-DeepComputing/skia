@@ -7,13 +7,13 @@
 
 #include "src/pdf/SkPDFTag.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkScalar.h"
 #include "include/private/SkAssert.h"
 #include "include/private/SkDebug.h"
 #include "include/private/SkTo.h"
 #include "src/core/SkZip.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/pdf/SkPDFDocumentPriv.h"
 
 #include <algorithm>

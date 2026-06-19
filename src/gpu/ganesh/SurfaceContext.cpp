@@ -6,7 +6,6 @@
  */
 #include "src/gpu/ganesh/SurfaceContext.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkColorType.h"
@@ -57,6 +56,7 @@
 #include "src/gpu/ganesh/effects/GrBicubicEffect.h"
 #include "src/gpu/ganesh/effects/GrTextureEffect.h"
 #include "src/gpu/ganesh/geometry/GrRect.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <algorithm>
 #include <cstdint>

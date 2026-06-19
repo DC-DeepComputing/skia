@@ -8,7 +8,6 @@
 
 #include "src/ports/SkFontHost_FreeType_common.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -25,6 +24,7 @@
 #include "src/core/SkFDot6.h"
 #include "src/core/SkSwizzlePriv.h"
 #include "src/core/SkTHash.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <algorithm>
 #include <optional>

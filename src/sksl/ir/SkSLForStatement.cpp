@@ -7,9 +7,9 @@
 
 #include "src/sksl/ir/SkSLForStatement.h"
 
-#include "src/partition_alloc/raw_ref.h"
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkTypes.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ref.h"
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLBuiltinTypes.h"
 #include "src/sksl/SkSLContext.h"

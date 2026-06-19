@@ -7,7 +7,6 @@
 
 #include "include/utils/SkShadowUtils.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkBlender.h"
 #include "include/core/SkBlurTypes.h"
@@ -36,6 +35,7 @@
 #include "src/core/SkRandom.h"
 #include "src/core/SkResourceCache.h"
 #include "src/core/SkVerticesPriv.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #if !defined(SK_ENABLE_OPTIMIZE_SIZE)
 #include "src/utils/SkShadowTessellator.h"

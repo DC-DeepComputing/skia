@@ -5,8 +5,6 @@
  * found in the LICENSE file.
  */
 
-#include "src/partition_alloc/raw_ref.h"
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkFontArguments.h"
 #include "include/core/SkFontMgr.h"
 #include "include/core/SkFontScanner.h"
@@ -26,6 +24,8 @@
 #include "src/core/SkTHash.h"
 #include "src/core/SkTSort.h"
 #include "src/core/SkUTF.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ref.h"
 #include "src/ports/SkFontMgr_android_parser.h"
 #include "src/ports/SkTypeface_proxy.h"
 
@@ -1266,7 +1266,7 @@ protected:
         variation::Storage variationStorage;
         SkSpan<variation::Coordinate> variation = variation::Get(*proxy, variationStorage);
         SkTypeface_AndroidNDK::AutoAxis autoAxis(variation);
-        autoAxis.remove(SkTypeface_AndroidNDK::AutoAxis(SkSpan(requestedPosition.coordinates.get(),
+        autoAxis.remove(SkTypeface_AndroidNDK::AutoAxis(SkSpan(requestedPosition.coordinates,
                                                                requestedPosition.coordinateCount)));
 
         SkFontStyle style = proxy->fontStyle();
