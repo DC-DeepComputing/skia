@@ -7,7 +7,6 @@
 
 #include "src/gpu/ganesh/GrResourceCache.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkString.h"
 #include "include/gpu/ganesh/GrDirectContext.h"
 #include "include/gpu/ganesh/GrTypes.h"
@@ -23,6 +22,7 @@
 #include "src/gpu/ganesh/GrGpuResourceCacheAccess.h"
 #include "src/gpu/ganesh/GrProxyProvider.h"
 #include "src/gpu/ganesh/GrThreadSafeCache.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <algorithm>
 #include <chrono>
@@ -765,21 +765,19 @@ void GrResourceCache::validate() const {
     }
 
     struct Stats {
-        size_t fBytes;
-        int fBudgetedCount;
-        size_t fBudgetedBytes;
-        int fLocked;
-        int fScratch;
-        int fCouldBeScratch;
-        int fContent;
+        size_t fBytes = 0;
+        int fBudgetedCount = 0;
+        size_t fBudgetedBytes = 0;
+        int fLocked = 0;
+        int fScratch = 0;
+        int fCouldBeScratch = 0;
+        int fContent = 0;
         raw_ptr<const ScratchMap> fScratchMap;
         raw_ptr<const UniqueHash> fUniqueHash;
 
-        Stats(const GrResourceCache* cache) {
-            memset(this, 0, sizeof(*this));
-            fScratchMap = &cache->fScratchMap;
-            fUniqueHash = &cache->fUniqueHash;
-        }
+        Stats(const GrResourceCache* cache)
+                : fScratchMap(&cache->fScratchMap)
+                , fUniqueHash(&cache->fUniqueHash) {}
 
         void update(GrGpuResource* resource) {
             fBytes += resource->gpuMemorySize();

@@ -7,7 +7,6 @@
 
 #include "include/core/SkTextBlob.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkData.h"
 #include "include/core/SkMaskFilter.h"
 #include "include/core/SkMatrix.h"
@@ -27,6 +26,7 @@
 #include "src/core/SkStrikeSpec.h"
 #include "src/core/SkTextBlobPriv.h"
 #include "src/core/SkWriteBuffer.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/text/GlyphRun.h"
 
 #include <algorithm>

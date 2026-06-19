@@ -227,7 +227,7 @@ public:
 
 private:
     int fCount;
-    raw_ptr<SkFlattenable::Factory> fArray;
+    raw_ptr<SkFlattenable::Factory, DanglingUntriaged> fArray;
 };
 
 #endif
