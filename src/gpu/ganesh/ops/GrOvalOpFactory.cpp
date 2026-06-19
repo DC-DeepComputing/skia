@@ -6,7 +6,6 @@
  */
 #include "src/gpu/ganesh/ops/GrOvalOpFactory.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPathEffect.h"
@@ -54,6 +53,7 @@
 #include "src/gpu/ganesh/glsl/GrGLSLVertexGeoBuilder.h"
 #include "src/gpu/ganesh/ops/GrMeshDrawOp.h"
 #include "src/gpu/ganesh/ops/GrSimpleMeshDrawOpHelper.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #if defined(GPU_TEST_UTILS)
 #include "src/core/SkRandom.h"
@@ -1536,7 +1536,7 @@ private:
     bool fWideColor;
 
     raw_ptr<GrSimpleMesh> fMesh = nullptr;
-    raw_ptr<GrProgramInfo> fProgramInfo = nullptr;
+    raw_ptr<GrProgramInfo, DanglingUntriaged> fProgramInfo = nullptr;
 
     using INHERITED = GrMeshDrawOp;
 };
@@ -1855,7 +1855,7 @@ private:
     bool fWideColor;
 
     raw_ptr<GrSimpleMesh> fMesh = nullptr;
-    raw_ptr<GrProgramInfo> fProgramInfo = nullptr;
+    raw_ptr<GrProgramInfo, DanglingUntriaged> fProgramInfo = nullptr;
 
     using INHERITED = GrMeshDrawOp;
 };
@@ -2146,7 +2146,7 @@ private:
     STArray<1, Ellipse, true> fEllipses;
 
     raw_ptr<GrSimpleMesh> fMesh = nullptr;
-    raw_ptr<GrProgramInfo> fProgramInfo = nullptr;
+    raw_ptr<GrProgramInfo, DanglingUntriaged> fProgramInfo = nullptr;
 
     using INHERITED = GrMeshDrawOp;
 };
@@ -2424,7 +2424,7 @@ private:
     STArray<1, Ellipse, true> fEllipses;
 
     raw_ptr<GrSimpleMesh> fMesh = nullptr;
-    raw_ptr<GrProgramInfo> fProgramInfo = nullptr;
+    raw_ptr<GrProgramInfo, DanglingUntriaged> fProgramInfo = nullptr;
 
     using INHERITED = GrMeshDrawOp;
 };
@@ -2892,7 +2892,7 @@ private:
     STArray<1, RRect, true> fRRects;
 
     raw_ptr<GrSimpleMesh> fMesh = nullptr;
-    raw_ptr<GrProgramInfo> fProgramInfo = nullptr;
+    raw_ptr<GrProgramInfo, DanglingUntriaged> fProgramInfo = nullptr;
 
     using INHERITED = GrMeshDrawOp;
 };
@@ -3211,7 +3211,7 @@ private:
     STArray<1, RRect, true> fRRects;
 
     raw_ptr<GrSimpleMesh> fMesh = nullptr;
-    raw_ptr<GrProgramInfo> fProgramInfo = nullptr;
+    raw_ptr<GrProgramInfo, DanglingUntriaged> fProgramInfo = nullptr;
 
     using INHERITED = GrMeshDrawOp;
 };

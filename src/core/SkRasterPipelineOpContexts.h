@@ -36,7 +36,7 @@ inline static constexpr size_t kMaxScratchPerPatch =
 
 // These structs hold the context data for many of the Raster Pipeline ops.
 struct MemoryCtx {
-    raw_ptr<void> pixels;
+    RAW_PTR_EXCLUSION void* pixels;
     int   stride;
 };
 
@@ -274,7 +274,7 @@ struct BranchCtx {
 };
 
 struct BranchIfAllLanesActiveCtx : public BranchCtx {
-    raw_ptr<uint8_t> tail = nullptr;  // lanes past the tail are _never_ active, so we need to exclude them
+    raw_ptr<uint8_t, DanglingUntriaged> tail = nullptr;  // lanes past the tail are _never_ active, so we need to exclude them
 };
 
 struct BranchIfEqualCtx : public BranchCtx {
@@ -289,25 +289,25 @@ struct CaseOpCtx {
 
 struct TraceFuncCtx {
     raw_ptr<const int> traceMask;
-    raw_ptr<SkSL::TraceHook> traceHook;
+    raw_ptr<SkSL::TraceHook, DanglingUntriaged> traceHook;
     int funcIdx;
 };
 
 struct TraceScopeCtx {
     raw_ptr<const int> traceMask;
-    raw_ptr<SkSL::TraceHook> traceHook;
+    raw_ptr<SkSL::TraceHook, DanglingUntriaged> traceHook;
     int delta;
 };
 
 struct TraceLineCtx {
     raw_ptr<const int> traceMask;
-    raw_ptr<SkSL::TraceHook> traceHook;
+    raw_ptr<SkSL::TraceHook, DanglingUntriaged> traceHook;
     int lineNumber;
 };
 
 struct TraceVarCtx {
     raw_ptr<const int> traceMask;
-    raw_ptr<SkSL::TraceHook> traceHook;
+    raw_ptr<SkSL::TraceHook, DanglingUntriaged> traceHook;
     int slotIdx, numSlots;
     raw_ptr<const int> data;
     raw_ptr<const uint32_t> indirectOffset;  // can be null; if set, an offset applied to `data`

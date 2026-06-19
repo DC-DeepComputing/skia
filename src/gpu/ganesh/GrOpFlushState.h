@@ -350,7 +350,7 @@ private:
     raw_ptr<GrGpu> fGpu;
     raw_ptr<GrResourceProvider> fResourceProvider;
     raw_ptr<skgpu::TokenTracker> fTokenTracker;
-    raw_ptr<GrOpsRenderPass> fOpsRenderPass = nullptr;
+    raw_ptr<GrOpsRenderPass, DanglingUntriaged> fOpsRenderPass = nullptr;
 
     // Variables that are used to track where we are in lists as ops are executed
     SkArenaAllocList<Draw>::Iter fCurrDraw;

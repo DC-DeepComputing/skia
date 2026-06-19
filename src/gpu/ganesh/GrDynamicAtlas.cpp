@@ -7,7 +7,6 @@
 
 #include "src/gpu/ganesh/GrDynamicAtlas.h"
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkTypes.h"
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/ganesh/GrBackendSurface.h"
@@ -25,6 +24,7 @@
 #include "src/gpu/ganesh/GrSurfaceProxyPriv.h"
 #include "src/gpu/ganesh/GrSurfaceProxyView.h"
 #include "src/gpu/ganesh/GrTexture.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <algorithm>
 #include <functional>

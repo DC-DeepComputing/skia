@@ -39,7 +39,7 @@ public:
     }
 
 private:
-    raw_ptr<type> fPtr;
+    raw_ptr<type, DanglingUntriaged> fPtr;
 };
 
 // Matches any command that draws, and stores its paint.
@@ -73,7 +73,7 @@ private:
     template <typename T> static T* AsPtr(SkRecords::Optional<T>& x) { return x; }
     template <typename T> static T* AsPtr(T& x) { return &x; }
 
-    raw_ptr<SkPaint> fPaint;
+    raw_ptr<SkPaint, DanglingUntriaged> fPaint;
 };
 
 // Matches any command that draws *once* (logically), and stores its paint.
@@ -113,7 +113,7 @@ private:
     template <typename T> static T* AsPtr(SkRecords::Optional<T>& x) { return x; }
     template <typename T> static T* AsPtr(T& x) { return &x; }
 
-    raw_ptr<SkPaint> fPaint;
+    raw_ptr<SkPaint, DanglingUntriaged> fPaint;
 };
 
 // Matches if Matcher doesn't.  Stores nothing.

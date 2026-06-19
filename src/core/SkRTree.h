@@ -8,9 +8,9 @@
 #ifndef SkRTree_DEFINED
 #define SkRTree_DEFINED
 
-#include "src/partition_alloc/raw_ptr_exclusion.h"
 #include "include/core/SkBBHFactory.h"
 #include "include/core/SkRect.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <cstddef>
 #include <cstdint>

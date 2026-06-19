@@ -5,7 +5,6 @@
  * found in the LICENSE file.
  */
 
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkPathTypes.h"
 #include "include/private/SkPathRef.h"
 #include "include/private/SkTDArray.h"
@@ -13,6 +12,7 @@
 #include "src/core/SkGeometry.h"
 #include "src/core/SkPathPriv.h"
 #include "src/core/SkPointPriv.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include <algorithm>
 #include <array>
 #include <cstdint>

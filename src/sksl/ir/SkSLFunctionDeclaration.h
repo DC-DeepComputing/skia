@@ -157,10 +157,10 @@ public:
                              const Type** outReturnType) const;
 
 private:
-    raw_ptr<const FunctionDefinition> fDefinition;
-    raw_ptr<FunctionDeclaration> fNextOverload = nullptr;
+    raw_ptr<const FunctionDefinition, DanglingUntriaged> fDefinition;
+    raw_ptr<FunctionDeclaration, DanglingUntriaged> fNextOverload = nullptr;
     skia_private::TArray<Variable*> fParameters;
-    raw_ptr<const Type> fReturnType = nullptr;
+    raw_ptr<const Type, DanglingUntriaged> fReturnType = nullptr;
     ModifierFlags fModifierFlags;
     mutable IntrinsicKind fIntrinsicKind = kNotIntrinsic;
     ModuleType fModuleType = ModuleType::unknown;
