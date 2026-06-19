@@ -34,6 +34,24 @@
       "parentUuid": "5e4026a7_bc1c7c36",
       "revId": "a50c4e7e4b2a81cb9dc2463587422a0994feaa6e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5313dcbc_22ee3736",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-19T15:33:49Z",
+      "side": 1,
+      "message": "Looks to be fp difference or something? The images look identical?",
+      "parentUuid": "3c2697ea_814fb329",
+      "revId": "a50c4e7e4b2a81cb9dc2463587422a0994feaa6e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
