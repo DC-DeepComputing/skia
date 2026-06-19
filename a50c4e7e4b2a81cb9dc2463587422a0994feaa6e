@@ -52,6 +52,47 @@
       "parentUuid": "3c2697ea_814fb329",
       "revId": "a50c4e7e4b2a81cb9dc2463587422a0994feaa6e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c525d60_dfacce65",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-19T16:00:27Z",
+      "side": 1,
+      "message": "Yeah I\u0027m guessing it\u0027s something along those lines.",
+      "parentUuid": "5313dcbc_22ee3736",
+      "revId": "a50c4e7e4b2a81cb9dc2463587422a0994feaa6e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d01f1117_83cd0976",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1447,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-19T16:00:27Z",
+      "side": 1,
+      "message": "FYI, this was the cause of the crash in librenderengine_test, which triggered a `ForceOpaque` pipeline compile. `sk_rgb_opaque` doesn\u0027t have uniform parameters but since the snippet entry declared one, we generated bad SkSL (since RE wasn\u0027t a debug build, we didn\u0027t catch it in the uniform expectations that weren\u0027t writing \"mode\" (which is technically correct bout counter to what the snippet declared)).\n\nRE crashed because the Recorder::snap() failed and then it passed a null Recording into `insertRecording`. This should have returned an invalid status result back to RE, but QueueManager had a bug. That is fixed in https://skia-review.git.corp.google.com/c/skia/+/1272576.",
+      "range": {
+        "startLine": 1447,
+        "startChar": 12,
+        "endLine": 1447,
+        "endChar": 56
+      },
+      "revId": "a50c4e7e4b2a81cb9dc2463587422a0994feaa6e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
