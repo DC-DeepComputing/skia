@@ -426,8 +426,8 @@ public:
     static std::optional<SkGlyph> MakeFromBuffer(SkReadBuffer&);
     // SkGlyph() is used for testing.
     constexpr SkGlyph() : SkGlyph{SkPackedGlyphID()} { }
-    SkGlyph(const SkGlyph&) = default;
-    SkGlyph& operator=(const SkGlyph&) = default;
+    SkGlyph(const SkGlyph&) = delete;
+    SkGlyph& operator=(const SkGlyph&) = delete;
     SkGlyph(SkGlyph&&) = default;
     SkGlyph& operator=(SkGlyph&&) = default;
     ~SkGlyph() = default;
@@ -630,13 +630,13 @@ private:
               fLeft = 0;
 
     // fImage must remain null if the glyph is empty or if width > kMaxGlyphWidth.
-    raw_ptr<void> fImage    = nullptr;
+    raw_ptr<void, DanglingUntriaged> fImage    = nullptr;
 
     // Path data has tricky state. If the glyph isEmpty, then fPathData should always be nullptr,
     // else if fPathData is not null, then a path has been requested. The fPath field of fPathData
     // may still be null after the request meaning that there is no path for this glyph.
-    raw_ptr<PathData> fPathData = nullptr;
-    raw_ptr<DrawableData> fDrawableData = nullptr;
+    raw_ptr<PathData, DanglingUntriaged> fPathData = nullptr;
+    raw_ptr<DrawableData, DanglingUntriaged> fDrawableData = nullptr;
 
     // The advance for this glyph.
     float     fAdvanceX = 0,

@@ -194,7 +194,7 @@ private:
     template <typename T, typename... Args> void append(Args&&...);
 
     size_t fApproxBytesUsedBySubPictures;
-    raw_ptr<SkRecord> fRecord;
+    raw_ptr<SkRecord, DanglingUntriaged> fRecord;
     std::unique_ptr<SkDrawableList> fDrawableList;
 };
 

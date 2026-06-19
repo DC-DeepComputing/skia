@@ -7,8 +7,6 @@
 
 #include "include/core/SkMesh.h"
 
-#include "src/partition_alloc/raw_ref.h"
-#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkData.h"
@@ -22,6 +20,8 @@
 #include "src/core/SkMeshPriv.h"
 #include "src/core/SkRuntimeEffectPriv.h"
 #include "src/core/SkSafeMath.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ref.h"
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLBuiltinTypes.h"
 #include "src/sksl/SkSLCompiler.h"

@@ -14,8 +14,8 @@
 #include "src/partition_alloc/noop/raw_ptr.h"
 #endif
 
-#include "src/partition_alloc/raw_ref.h"
 #include "include/private/SkTypeTraits.h"
+#include "src/partition_alloc/raw_ref.h"
 
 #if !defined(SK_USE_PARTITION_ALLOC)
 template <typename T, auto Traits>

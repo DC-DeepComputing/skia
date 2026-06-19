@@ -203,10 +203,10 @@ public:
         SkPath::RangeIter begin() { return {fVerbsBegin, fPoints, fWeights}; }
         SkPath::RangeIter end() { return {fVerbsEnd, nullptr, nullptr}; }
     private:
-        raw_ptr<const SkPathVerb> fVerbsBegin;
-        raw_ptr<const SkPathVerb> fVerbsEnd;
-        raw_ptr<const SkPoint> fPoints;
-        raw_ptr<const SkScalar> fWeights;
+        raw_ptr<const SkPathVerb, DanglingUntriaged> fVerbsBegin;
+        raw_ptr<const SkPathVerb, DanglingUntriaged> fVerbsEnd;
+        raw_ptr<const SkPoint, DanglingUntriaged> fPoints;
+        raw_ptr<const SkScalar, DanglingUntriaged> fWeights;
     };
 
     // returns Empty() if there are no points
