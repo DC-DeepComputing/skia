@@ -24,6 +24,7 @@
 #include "include/gpu/ganesh/GrTypes.h"
 #include "include/gpu/ganesh/SkSurfaceGanesh.h"
 #include "include/private/SkTemplates.h"
+#include "src/core/SkBlendModePriv.h"
 #include "tests/CtsEnforcement.h"
 #include "tests/Test.h"
 #include "tools/gpu/BackendSurfaceFactory.h"
@@ -59,6 +60,37 @@ static Results test(Fn&& multiply) {
         }
     }}
     return r;
+}
+
+DEF_TEST(Blend_PlusDarker, r) {
+    struct TestCase {
+        SkPMColor4f src;
+        SkPMColor4f dst;
+        SkPMColor4f expected;
+    };
+    const TestCase tests[] = {
+            {{0.0f, 0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 1.0f, 1.0f},
+             {0.0f, 0.0f, 1.0f, 1.0f}},
+            {{0.5f, 0.0f, 0.0f, 0.5f}, {0.0f, 0.0f, 0.5f, 0.5f},
+             {0.5f, 0.0f, 0.5f, 1.0f}},
+            {{0.5f, 0.5f, 0.5f, 1.0f}, {0.0f, 0.0f, 0.0f, 1.0f},
+             {0.0f, 0.0f, 0.0f, 1.0f}},
+    };
+
+    for (const TestCase& test : tests) {
+        SkPMColor4f result =
+                SkBlendMode_Apply(SkBlendMode::kPlusDarker, test.src, test.dst);
+        REPORTER_ASSERT(r, result == test.expected,
+                        "expected (%g, %g, %g, %g), got (%g, %g, %g, %g)",
+                        test.expected.fR,
+                        test.expected.fG,
+                        test.expected.fB,
+                        test.expected.fA,
+                        result.fR,
+                        result.fG,
+                        result.fB,
+                        result.fA);
+    }
 }
 
 DEF_TEST(Blend_byte_multiply, r) {

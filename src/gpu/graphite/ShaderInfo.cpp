@@ -704,6 +704,8 @@ constexpr skgpu::BlendEquation get_advanced_blend_equation(SkBlendMode mode) {
                   (int)SkBlendMode::kColor + kEqOffset);
     static_assert((int)skgpu::BlendEquation::kHSLLuminosity ==
                   (int)SkBlendMode::kLuminosity + kEqOffset);
+    static_assert((int)skgpu::BlendEquation::kPlusDarker ==
+                  (int)SkBlendMode::kPlusDarker + kEqOffset);
     // There's an illegal BlendEquation that corresponds to no SkBlendMode, hence the extra +1.
     static_assert(skgpu::kBlendEquationCnt == (int)SkBlendMode::kLastMode + 1 + 1 + kEqOffset);
 
@@ -748,7 +750,8 @@ static constexpr skgpu::BlendInfo gBlendTable[kSkBlendModeCount] = {
         make_hardware_advanced_blendInfo(SkBlendMode::kHue),
         make_hardware_advanced_blendInfo(SkBlendMode::kSaturation),
         make_hardware_advanced_blendInfo(SkBlendMode::kColor),
-        make_hardware_advanced_blendInfo(SkBlendMode::kLuminosity)
+        make_hardware_advanced_blendInfo(SkBlendMode::kLuminosity),
+        make_hardware_advanced_blendInfo(SkBlendMode::kPlusDarker)
 };
 
 }  // anonymous namespace

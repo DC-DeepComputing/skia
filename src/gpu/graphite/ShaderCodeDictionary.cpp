@@ -1666,6 +1666,7 @@ static_assert((int)SkBlendMode::kHue        == (int)BuiltInCodeSnippetID::kFixed
 static_assert((int)SkBlendMode::kSaturation == (int)BuiltInCodeSnippetID::kFixedBlend_Saturation - kFixedBlendIDOffset);
 static_assert((int)SkBlendMode::kColor      == (int)BuiltInCodeSnippetID::kFixedBlend_Color      - kFixedBlendIDOffset);
 static_assert((int)SkBlendMode::kLuminosity == (int)BuiltInCodeSnippetID::kFixedBlend_Luminosity - kFixedBlendIDOffset);
+static_assert((int)SkBlendMode::kPlusDarker == (int)BuiltInCodeSnippetID::kFixedBlend_PlusDarker - kFixedBlendIDOffset);
 
 static_assert(0 == static_cast<int>(SkTileMode::kClamp),  "ImageShader code depends on SkTileMode");
 static_assert(1 == static_cast<int>(SkTileMode::kRepeat), "ImageShader code depends on SkTileMode");

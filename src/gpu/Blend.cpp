@@ -30,6 +30,7 @@ const char* BlendFuncName(SkBlendMode mode) {
         case SkBlendMode::kDstATop:    return "blend_dst_atop";
         case SkBlendMode::kXor:        return "blend_xor";
         case SkBlendMode::kPlus:       return "blend_plus";
+        case SkBlendMode::kPlusDarker: return "blend_plus_darker";
         case SkBlendMode::kModulate:   return "blend_modulate";
         case SkBlendMode::kScreen:     return "blend_screen";
         case SkBlendMode::kOverlay:    return "blend_overlay";
@@ -149,6 +150,7 @@ const char *equation_string(skgpu::BlendEquation eq) {
         case skgpu::BlendEquation::kHSLSaturation:   return "hsl_saturation";
         case skgpu::BlendEquation::kHSLColor:        return "hsl_color";
         case skgpu::BlendEquation::kHSLLuminosity:   return "hsl_luminosity";
+        case skgpu::BlendEquation::kPlusDarker:      return "plus_darker";
         case skgpu::BlendEquation::kIllegal:
             SkASSERT(false);
             return "<illegal>";

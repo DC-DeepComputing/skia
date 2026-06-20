@@ -137,6 +137,7 @@ private:
             case SkBlendMode::kSrcOver:
             case SkBlendMode::kDstOver:
             case SkBlendMode::kPlus:
+            case SkBlendMode::kPlusDarker:
             case SkBlendMode::kOverlay:
             case SkBlendMode::kDarken:
             case SkBlendMode::kLighten:

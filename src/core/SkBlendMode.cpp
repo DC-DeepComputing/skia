@@ -108,8 +108,9 @@ void SkBlendMode_AppendStages(SkBlendMode mode, SkRasterPipeline* p) {
         case SkBlendMode::kSrcATop:  p->append(SkRasterPipelineOp::srcatop); return;
         case SkBlendMode::kDstATop:  p->append(SkRasterPipelineOp::dstatop); return;
         case SkBlendMode::kXor:      p->append(SkRasterPipelineOp::xor_); return;
-        case SkBlendMode::kPlus:     p->append(SkRasterPipelineOp::plus_); return;
-        case SkBlendMode::kModulate: p->append(SkRasterPipelineOp::modulate); return;
+        case SkBlendMode::kPlus:       p->append(SkRasterPipelineOp::plus_); return;
+        case SkBlendMode::kPlusDarker: p->append(SkRasterPipelineOp::plus_darker); return;
+        case SkBlendMode::kModulate:   p->append(SkRasterPipelineOp::modulate); return;
 
         case SkBlendMode::kScreen:     p->append(SkRasterPipelineOp::screen); return;
         case SkBlendMode::kOverlay:    p->append(SkRasterPipelineOp::overlay); return;
@@ -196,6 +197,7 @@ const char* SkBlendMode_Name(SkBlendMode bm) {
         case SkBlendMode::kSaturation: return "Saturation";
         case SkBlendMode::kColor:      return "Color";
         case SkBlendMode::kLuminosity: return "Luminosity";
+        case SkBlendMode::kPlusDarker: return "PlusDarker";
     }
     SkUNREACHABLE;
 }

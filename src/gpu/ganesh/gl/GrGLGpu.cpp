@@ -128,6 +128,7 @@ static const GrGLenum gXfermodeEquation2Blend[] = {
     GR_GL_HSL_SATURATION,
     GR_GL_HSL_COLOR,
     GR_GL_HSL_LUMINOSITY,
+    GR_GL_FUNC_ADD,
 
     // Illegal... needs to map to something.
     GR_GL_FUNC_ADD,
@@ -150,6 +151,7 @@ static_assert(14 == (int)skgpu::BlendEquation::kHSLHue);
 static_assert(15 == (int)skgpu::BlendEquation::kHSLSaturation);
 static_assert(16 == (int)skgpu::BlendEquation::kHSLColor);
 static_assert(17 == (int)skgpu::BlendEquation::kHSLLuminosity);
+static_assert(18 == (int)skgpu::BlendEquation::kPlusDarker);
 static_assert(std::size(gXfermodeEquation2Blend) == skgpu::kBlendEquationCnt);
 
 static const GrGLenum gXfermodeCoeff2Blend[] = {

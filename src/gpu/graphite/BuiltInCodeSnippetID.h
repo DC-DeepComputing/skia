@@ -166,15 +166,16 @@ enum class BuiltInCodeSnippetID : uint32_t {
     kFixedBlend_Saturation,
     kFixedBlend_Color,
     kFixedBlend_Luminosity,
+    kFixedBlend_PlusDarker,
 
     kFirstFixedBlend = kFixedBlend_Clear,
-    kLast = kFixedBlend_Luminosity
+    kLast = kFixedBlend_PlusDarker
 };
 static constexpr int kBuiltInCodeSnippetIDCount = static_cast<int>(BuiltInCodeSnippetID::kLast)+1;
 static constexpr int kFixedBlendIDOffset =
         static_cast<int>(BuiltInCodeSnippetID::kFirstFixedBlend);
 
-static_assert(BuiltInCodeSnippetID::kLast == BuiltInCodeSnippetID::kFixedBlend_Luminosity);
+static_assert(BuiltInCodeSnippetID::kLast == BuiltInCodeSnippetID::kFixedBlend_PlusDarker);
 
 }  // namespace skgpu::graphite
 
