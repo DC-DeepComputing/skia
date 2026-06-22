@@ -11,6 +11,7 @@
 #include "include/core/SkPaint.h"
 #include "include/core/SkRect.h"
 #include "include/private/SkAssert.h"
+#include "include/private/SkStackAllocated.h"
 #include "include/private/SkTo.h"
 #include "src/gpu/graphite/DrawOrder.h"
 #include "src/gpu/graphite/DrawTypes.h"
@@ -69,6 +70,7 @@ private:
 // TBD: Separate DashParams extracted from an SkDashPathEffect? Or folded into StrokeStyle?
 
 class Clip {
+    SK_STACK_ALLOCATED();
 public:
     Clip() = default;
     Clip(const Rect& drawBounds,
