@@ -3604,6 +3604,8 @@ std::string WGSLCodeGenerator::assembleIntrinsicCall(const FunctionCall& call,
         case k_asin_IntrinsicKind:
         case k_atomicAdd_IntrinsicKind:
         case k_atomicLoad_IntrinsicKind:
+        case k_atomicMax_IntrinsicKind:
+        case k_atomicMin_IntrinsicKind:
         case k_atomicStore_IntrinsicKind:
         case k_ceil_IntrinsicKind:
         case k_cos_IntrinsicKind:
