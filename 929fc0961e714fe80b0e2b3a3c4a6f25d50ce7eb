@@ -16,6 +16,23 @@
       "message": "Adding lukasza@google.com as well now that he’s back from OOO\n\n@lukasza@google.com would appreciate your help in reviewing these changes since you have a lot of context on the Rust codec\n\nThanks!",
       "revId": "929fc0961e714fe80b0e2b3a3c4a6f25d50ce7eb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7c425a7_9d6d3c69",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-06-22T13:11:05Z",
+      "side": 1,
+      "message": "LGTM, Łukasz should also take a look.",
+      "revId": "929fc0961e714fe80b0e2b3a3c4a6f25d50ce7eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
