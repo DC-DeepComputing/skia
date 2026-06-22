@@ -56,6 +56,7 @@ BASE_PRIVATE_HDRS = [
     "SkMath.h",
     "SkMutex.h",
     "SkNoncopyable.h",
+    "SkStackAllocated.h",
     "SkOnce.h",
     "SkSafe32.h",
     "SkTArray.h",
@@ -87,6 +88,7 @@ skia_filegroup(
     visibility = [
         "//src/core:__pkg__",
         "//src/opts:__pkg__",
+        "//src/partition_alloc:__pkg__",
     ],
 )
 
