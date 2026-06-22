@@ -1828,9 +1828,17 @@ SpvId SPIRVCodeGenerator::getType(const Type& rawType,
                                                 Words{Word::KeyedResult(stride), typeId, countId},
                                                 fConstantBuffer);
             }
-            this->writeInstruction(SpvOpDecorate,
-                                   {result, SpvDecorationArrayStride, Word::Number(stride)},
-                                   fDecorationBuffer);
+            // Uniforms, StorageBuffers, Physical StorageBuffers, and Push Constants must explicitly
+            // declare their layout, so that there is agreement between the graphics API and the
+            // shader compiler. Workgroup memory is explicitly disallowed from having this
+            // decoration unless SPV_KHR_workgroup_memory_explicit_layout (SPIR-V >= 1.4) is
+            // enabled.
+            if (arrayMemoryLayout.getStandard() == MemoryLayout::Standard::k140 ||
+                arrayMemoryLayout.getStandard() == MemoryLayout::Standard::k430) {
+                this->writeInstruction(SpvOpDecorate,
+                                       {result, SpvDecorationArrayStride, Word::Number(stride)},
+                                       fDecorationBuffer);
+            }
             return result;
         }
         case Type::TypeKind::kStruct: {
