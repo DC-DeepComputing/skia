@@ -221,6 +221,9 @@ SkCanvas* SkSurface_Base::getCachedCanvas() {
         if (!fCachedCanvas) {
             fCachedCanvas = fOwnedBaseCanvas.get();
         }
+        // else {
+        //     fCachedCanvas->setSurfaceBase(this);
+        // }
     }
     return fCachedCanvas;
 }
