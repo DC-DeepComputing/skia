@@ -193,6 +193,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c61bced7_8d3b0380",
+        "filename": "rust/png/FFI.rs",
+        "patchSetId": 11
+      },
+      "lineNbr": 435,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-06-22T16:43:32Z",
+      "side": 1,
+      "message": "AI generated comment, I’ve answered in the other thread, feel free to ignore (it has a bit more details about the potential overflow issue, although I’m still not quite sure if it’s a real concern)",
+      "parentUuid": "2076b169_df4a25b4",
+      "revId": "929fc0961e714fe80b0e2b3a3c4a6f25d50ce7eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "91a6549a_f1021fc6",
