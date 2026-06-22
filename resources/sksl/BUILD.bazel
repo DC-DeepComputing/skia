@@ -194,7 +194,7 @@ skia_filegroup(
         "compute/ModuleStructInVariable.compute",
         "compute/Raytrace.compute",
         "compute/Uniforms.compute",
-        #"compute/Workgroup.compute",
+        "compute/Workgroup.compute",
     ],
 )
 
