@@ -1,0 +1,291 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe3920a0_8fccba36",
+        "filename": "src/gpu/graphite/sparse_strips/MSAA_LUT.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-22T17:13:08Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 83,
+        "startChar": 13,
+        "endLine": 83,
+        "endChar": 21
+      },
+      "revId": "da94fe3d5502391c0cefd6e19379eaf87b5899ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17cecebe_c3dbc5e9",
+        "filename": "src/gpu/graphite/sparse_strips/MSAA_LUT.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-22T17:13:08Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 83,
+        "startChar": 52,
+        "endLine": 83,
+        "endChar": 60
+      },
+      "revId": "da94fe3d5502391c0cefd6e19379eaf87b5899ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "749df823_2751f7b7",
+        "filename": "src/gpu/graphite/sparse_strips/MSAA_LUT.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-22T17:13:08Z",
+      "side": 1,
+      "message": "duplication",
+      "range": {
+        "startLine": 88,
+        "startChar": 70,
+        "endLine": 88,
+        "endChar": 80
+      },
+      "revId": "da94fe3d5502391c0cefd6e19379eaf87b5899ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c317924d_b195d112",
+        "filename": "src/gpu/graphite/sparse_strips/Strip.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-22T17:13:08Z",
+      "side": 1,
+      "message": "fX, fY ?",
+      "range": {
+        "startLine": 61,
+        "startChar": 0,
+        "endLine": 62,
+        "endChar": 15
+      },
+      "revId": "da94fe3d5502391c0cefd6e19379eaf87b5899ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4fc61c2_cd5ae816",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorScalar.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-22T17:13:08Z",
+      "side": 1,
+      "message": "this-\u003e",
+      "range": {
+        "startLine": 58,
+        "startChar": 49,
+        "endLine": 58,
+        "endChar": 58
+      },
+      "revId": "da94fe3d5502391c0cefd6e19379eaf87b5899ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46ee71f6_30102c8c",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorScalar.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-22T17:13:08Z",
+      "side": 1,
+      "message": "Add a \u0027\\n\u0027 ?",
+      "revId": "da94fe3d5502391c0cefd6e19379eaf87b5899ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9471fc31_e0d0c81d",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorScalar.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 630,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-22T17:13:08Z",
+      "side": 1,
+      "message": "invDx, invDy ?",
+      "range": {
+        "startLine": 630,
+        "startChar": 14,
+        "endLine": 630,
+        "endChar": 17
+      },
+      "revId": "da94fe3d5502391c0cefd6e19379eaf87b5899ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3c17af0_198a849c",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorScalar.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 739,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-22T17:13:08Z",
+      "side": 1,
+      "message": "wdyt about encapsulating this somewhere? Like lut_lookup ?",
+      "range": {
+        "startLine": 735,
+        "startChar": 0,
+        "endLine": 739,
+        "endChar": 86
+      },
+      "revId": "da94fe3d5502391c0cefd6e19379eaf87b5899ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8ca2603_899f0b0f",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorScalar.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 962,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-22T17:13:08Z",
+      "side": 1,
+      "message": "line up ?",
+      "range": {
+        "startLine": 960,
+        "startChar": 0,
+        "endLine": 962,
+        "endChar": 71
+      },
+      "revId": "da94fe3d5502391c0cefd6e19379eaf87b5899ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5326121c_b4b7446c",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-22T17:13:08Z",
+      "side": 1,
+      "message": "Maybe invDx \u0026 invDy ?",
+      "revId": "da94fe3d5502391c0cefd6e19379eaf87b5899ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2d3e626_d76e5c51",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-22T17:13:08Z",
+      "side": 1,
+      "message": "wdyt about adding \\n\u0027s before A) and B) ?",
+      "range": {
+        "startLine": 246,
+        "startChar": 70,
+        "endLine": 246,
+        "endChar": 72
+      },
+      "revId": "da94fe3d5502391c0cefd6e19379eaf87b5899ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96ec525e_b82d8df9",
+        "filename": "tests/graphite/sparse_strips/CoverageTest.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-22T17:13:08Z",
+      "side": 1,
+      "message": "This should probably have a parameter name for clarity. Same w/ the bool and the \"SkTDArray\u003cuint8_t\u003e*\" above.",
+      "range": {
+        "startLine": 158,
+        "startChar": 31,
+        "endLine": 158,
+        "endChar": 56
+      },
+      "revId": "da94fe3d5502391c0cefd6e19379eaf87b5899ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e34115d_ab92e4e7",
+        "filename": "tests/graphite/sparse_strips/CoverageTest.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-22T17:13:08Z",
+      "side": 1,
+      "message": "Are these two supposed to be constexpr and/or named kReq* ?",
+      "range": {
+        "startLine": 252,
+        "startChar": 0,
+        "endLine": 254,
+        "endChar": 0
+      },
+      "revId": "da94fe3d5502391c0cefd6e19379eaf87b5899ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
