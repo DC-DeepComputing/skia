@@ -39,7 +39,7 @@ public:
 
     // TODO: Pictures being grabbed by index is not intuitive and leave the capture disorganized.
     // This should be deleted once SkPictures are organized by Surface and grouped by Recording.
-    sk_sp<SkPicture> getPicture(int i) const;
+    sk_sp<SkPicture> getPicture(int i);
     Metadata getMetadata() const;
 
 private:
@@ -52,6 +52,7 @@ private:
     //TODO(b/412351769): Replace pictures with SkCapturePicture structs that also include
     // picture metadata
     skia_private::TArray<sk_sp<SkPicture>> fPictures;
+    skia_private::TArray<sk_sp<SkData>> fPictureDatas;
 
     static const uint32_t kVersion = 0; // Until this version is 1 or greater, active development
                                         // will make this unstable.

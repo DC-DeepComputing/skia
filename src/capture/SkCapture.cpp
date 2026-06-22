@@ -18,6 +18,7 @@
 #include "include/core/SkStream.h"
 #include "include/private/SkTArray.h"
 #include "src/capture/SkCaptureManager.h"
+#include "src/image/SkImage_Base.h"
 
 constexpr SkFourByteTag kMagic1  = SkSetFourByteTag('s','k','i','a');
 constexpr SkFourByteTag kMagic2  = SkSetFourByteTag('c','a','p','t');
@@ -56,7 +57,7 @@ sk_sp<SkCapture> SkCapture::MakeFromData(sk_sp<const SkData> data) {
     auto capture = sk_make_sp<SkCapture>();
     capture->fMetadata = {version, pictureCount};
 
-    // 5. Loop and Deserialize Each Picture
+    // 5. Loop and Read Each Picture's raw data
     for (uint32_t i = 0; i < pictureCount; ++i) {
         uint32_t pictureDataSize;
         if (!stream.readU32(&pictureDataSize)) {
@@ -74,17 +75,8 @@ sk_sp<SkCapture> SkCapture::MakeFromData(sk_sp<const SkData> data) {
             return nullptr;
         }
 
-        // Deserialize the SkPicture from its raw data
-        SkDeserialProcs procs;
-        procs.fImageDataProc = SkCapture::deserializeImageProc;
-        sk_sp<SkPicture> picture = SkPicture::MakeFromData(pictureData.get(), &procs);
-        if (!picture) {
-            SkDebugf("Failed to deserialize SkPicture for picture %u.\n", i);
-            return nullptr;
-        }
-
-        // Add the deserialized picture to the SkCapture object
-        capture->fPictures.emplace_back(std::move(picture));
+        capture->fPictureDatas.emplace_back(std::move(pictureData));
+        capture->fPictures.emplace_back(nullptr);
     }
 
     SkDebugf("Successfully read %d pictures into SkCapture.\n", capture->fPictures.size());
@@ -99,9 +91,19 @@ sk_sp<SkCapture> SkCapture::MakeFromPictures(skia_private::TArray<sk_sp<SkPictur
     return capture;
 }
 
-sk_sp<SkPicture> SkCapture::getPicture(int i) const {
+sk_sp<SkPicture> SkCapture::getPicture(int i) {
     if (i >= 0 && i < fPictures.size()) {
-        return fPictures[i];
+        if (fPictures[i]) {
+            return fPictures[i];
+        }
+        if (i < fPictureDatas.size() && fPictureDatas[i]) {
+            // Deserialize the SkPicture from its raw data on demand
+            SkDeserialProcs procs;
+            procs.fImageDataProc = SkCapture::deserializeImageProc;
+            procs.fImageCtx = this;
+            fPictures[i] = SkPicture::MakeFromData(fPictureDatas[i].get(), &procs);
+            return fPictures[i];
+        }
     }
     return nullptr;
 }
@@ -124,10 +126,16 @@ sk_sp<SkData> SkCapture::serializeCapture() {
     // when we have multiple SkPictures per canvas and we want to track which ones are drawn into
     // each other.
 
-    for (const auto& picture : fPictures) {
+    for (int i = 0; i < fPictures.size(); ++i) {
+        sk_sp<SkPicture> picture = this->getPicture(i);
+        if (!picture) {
+            stream.write32(0);
+            continue;
+        }
         SkDynamicMemoryWStream pictureStream;
         SkSerialProcs procs;
         procs.fImageProc = SkCapture::serializeImageProc;
+        procs.fImageCtx = this;
         picture->serialize(&pictureStream, &procs);
         sk_sp<SkData> pictureData = pictureStream.detachAsData();
 
@@ -147,15 +155,32 @@ sk_sp<SkData> SkCapture::serializeCapture() {
 // corresponding SkPicture. This means that we need to create a context for the proc to track these
 // contentIDs.
 SkSerialReturnType SkCapture::serializeImageProc(SkImage* img, void* ctx) {
-    const int contentID = -1; // TODO: replace with real content ID.
-    return SkData::MakeWithCopy(&contentID, sizeof(int));
+    uint32_t contentID = as_IB(img)->getPixelStorages().front()->getContentId();
+    return SkData::MakeWithCopy(&contentID, sizeof(contentID));
 }
 
-sk_sp<SkImage> SkCapture::deserializeImageProc(sk_sp<SkData>, std::optional<SkAlphaType>, void*) {
+sk_sp<SkImage> SkCapture::deserializeImageProc(sk_sp<SkData> data,
+                                               std::optional<SkAlphaType> type,
+                                               void* ctx) {
     // TODO: set up the SkCapture context and inspect it to grab SkPictures and pass them as images.
-    SkBitmap b;
-    b.allocN32Pixels(5, 5);
-    SkCanvas canvas(b);
-    canvas.drawColor(SK_ColorMAGENTA);
-    return b.asImage();
+    if (!ctx || data->size() != sizeof(uint32_t)) return nullptr;
+
+    SkCapture* capture = static_cast<SkCapture*>(ctx);
+    const uint32_t* contentID = reinterpret_cast<const uint32_t*>(data->data());
+    int pictureIndex = *contentID - 1;
+
+    sk_sp<SkPicture> picture = capture->getPicture(pictureIndex);
+
+    if (picture) {
+        SkISize dimensions = {(int)picture->cullRect().width(), (int)picture->cullRect().height()};
+        sk_sp<SkImage> image = SkImages::DeferredFromPicture(std::move(picture),
+                                                             dimensions,
+                                                             nullptr,
+                                                             nullptr,
+                                                             SkImages::BitDepth::kU8,
+                                                             SkColorSpace::MakeSRGB());
+        return image;
+    }
+
+    return nullptr;
 }
