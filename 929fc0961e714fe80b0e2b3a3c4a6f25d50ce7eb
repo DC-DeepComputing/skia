@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "efecea5e_db8b9bd5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-06-22T23:25:11Z",
+      "side": 1,
+      "message": "\u003e I’ve updated the CL description to stay more ambiguous w.r.t. future of this flag.\n\nAck - thanks.\n\n\u003e Do you have any thoughts on the `finish_decoding` fix being gated by this \"for_android\" flag too? I’ve done that initially out of caution to avoid breaking downstream callers, but perhaps this one is OK to do unflagged?\n\nYeah, I was wondering about this as well.  I think that unconditionally calling `finish_decoding` should have quite a small risk - mostly related to the performance or stability cost of processing PNG chunks between the last `IDAT` (or `fdAT`) chunk and `IEND` chunk (there may be some `itXT` or similar chunks).\n\nBut maybe this risk can be reduced even further by moving the `finish_decoding` call from `incrementalDecode` (and/or `incrementalDecodeXForm`) to the destructor of `SkPngRustCodec` (the former may be called once per each animation loop, but the latter only once).  I haven\u0027t worked with this code in a long time, so I am not 100% sure, but I _think_ that `fFrameAtCurrentStreamPosition` can still be used for `isLastFrame`-like checks (even when not inside/actively decoding a frame).\n\nPS. Leaving this as unresolved so you see this comment, but I guess this is not blocking and can be addressed in a follow-up CL (since for now this behavior is Android-only).",
+      "parentUuid": "bf09903e_b61e910f",
+      "range": {
+        "startLine": 29,
+        "startChar": 17,
+        "endLine": 30,
+        "endChar": 22
+      },
+      "revId": "929fc0961e714fe80b0e2b3a3c4a6f25d50ce7eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "0106b7e7_0be5d0ab",
@@ -207,6 +231,30 @@
       "side": 1,
       "message": "AI generated comment, I’ve answered in the other thread, feel free to ignore (it has a bit more details about the potential overflow issue, although I’m still not quite sure if it’s a real concern)",
       "parentUuid": "2076b169_df4a25b4",
+      "revId": "929fc0961e714fe80b0e2b3a3c4a6f25d50ce7eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aec1f64b_4260b8ec",
+        "filename": "rust/png/FFI.rs",
+        "patchSetId": 11
+      },
+      "lineNbr": 435,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-06-22T23:25:11Z",
+      "side": 1,
+      "message": "Makes sense - thank you for explaining.  I wonder if you could leave a short comment to help retain this knowledge for future readers / maintainers?",
+      "parentUuid": "baab6245_3914cc85",
+      "range": {
+        "startLine": 435,
+        "startChar": 19,
+        "endLine": 435,
+        "endChar": 22
+      },
       "revId": "929fc0961e714fe80b0e2b3a3c4a6f25d50ce7eb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
