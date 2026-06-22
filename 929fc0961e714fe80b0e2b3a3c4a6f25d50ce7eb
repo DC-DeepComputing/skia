@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf09903e_b61e910f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-06-22T16:40:08Z",
+      "side": 1,
+      "message": "I’ve updated the CL description to stay more ambiguous w.r.t. future of this flag.\n\nDo you have any thoughts on the `finish_decoding` fix being gated by this \"for_android\" flag too? I’ve done that initially out of caution to avoid breaking downstream callers, but perhaps this one is OK to do unflagged?",
+      "parentUuid": "d5a302ed_a7f50e5e",
+      "range": {
+        "startLine": 29,
+        "startChar": 17,
+        "endLine": 30,
+        "endChar": 22
+      },
+      "revId": "929fc0961e714fe80b0e2b3a3c4a6f25d50ce7eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "0106b7e7_0be5d0ab",
@@ -81,6 +105,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5fcc9cf5_c4adf3fd",
+        "filename": "rust/png/FFI.rs",
+        "patchSetId": 11
+      },
+      "lineNbr": 427,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-06-22T16:40:08Z",
+      "side": 1,
+      "message": "Nice suggestion, done",
+      "parentUuid": "d5781ff7_5a9a0168",
+      "range": {
+        "startLine": 427,
+        "startChar": 20,
+        "endLine": 427,
+        "endChar": 39
+      },
+      "revId": "929fc0961e714fe80b0e2b3a3c4a6f25d50ce7eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b3e930d0_564b2862",
@@ -100,6 +148,47 @@
         "endLine": 435,
         "endChar": 22
       },
+      "revId": "929fc0961e714fe80b0e2b3a3c4a6f25d50ce7eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "baab6245_3914cc85",
+        "filename": "rust/png/FFI.rs",
+        "patchSetId": 11
+      },
+      "lineNbr": 435,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-06-22T16:40:08Z",
+      "side": 1,
+      "message": "I guess I did that because:\n\n1) The `length + 4` operation could potentially overflow\n2) `Take::set_limit` takes a `u64` as an input, so exposing that felt more natural\n\nFor 1), while the spec mentions that the length \"shall not exceed 2^31-1 bytes\", I wonder if a malformed PNG could potentially contain a `u32::MAX` length? \n\nWhile a malformed PNG should be caught by the decoder, considering this state machine is sitting in the middle, I wonder if that could create potential issues?",
+      "parentUuid": "b3e930d0_564b2862",
+      "range": {
+        "startLine": 435,
+        "startChar": 19,
+        "endLine": 435,
+        "endChar": 22
+      },
+      "revId": "929fc0961e714fe80b0e2b3a3c4a6f25d50ce7eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2076b169_df4a25b4",
+        "filename": "rust/png/FFI.rs",
+        "patchSetId": 11
+      },
+      "lineNbr": 435,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-06-22T16:40:08Z",
+      "side": 1,
+      "message": "I used `u64` here for a couple of reasons:\n\n1) **Overflow safety with `length + 4`:** While the PNG spec says chunk length \"shall not exceed 2^31-1 bytes\", a malformed/malicious PNG could contain a `u32::MAX` length.\n2) **API Alignment:** `Take::set_limit` takes a `u64`, so using `u64` felt more natural.\n\nMore importantly, if we were to use `u32` with `saturating_add(4)`, a malformed PNG with `length \u003d u32::MAX` would cause `remaining` to saturate to `u32::MAX`. This would cause our state machine (`PngStateMachine`) to desynchronize from the actual stream:\n- It would think the chunk is finished after reading `u32::MAX` bytes (believing it read the CRC too, which it hasn\u0027t).\n- It would then prematurely transition to `ChunkHeader` and interpret the actual 4-byte CRC of the giant chunk as the start of the next chunk\u0027s header.\n- This desynchronization would corrupt the limits for all subsequent chunks, potentially causing premature EOFs or failing to limit them.\n\nBy keeping `remaining` as `u64`, we can represent `length + 4` exactly even for `u32::MAX`, ensuring the state machine stays in sync and the decoder fails safely with an unexpected EOF when it tries to read the missing CRC.",
       "revId": "929fc0961e714fe80b0e2b3a3c4a6f25d50ce7eb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -127,6 +216,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e47bfdd_d84940d5",
+        "filename": "rust/png/FFI.rs",
+        "patchSetId": 11
+      },
+      "lineNbr": 469,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-06-22T16:40:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "91a6549a_f1021fc6",
+      "range": {
+        "startLine": 468,
+        "startChar": 0,
+        "endLine": 469,
+        "endChar": 93
+      },
+      "revId": "929fc0961e714fe80b0e2b3a3c4a6f25d50ce7eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b94d06ed_75785c7a",
@@ -140,6 +253,30 @@
       "writtenOn": "2026-06-22T16:00:28Z",
       "side": 1,
       "message": "This LGTM, but I wanted to share some context FYI - feel free to just ack this comment and move on.\n\nIn theory animation frames can be read in any order and having a `Seek` ability could avoid sequential scanning here: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/codec/SkPngRustCodec.cpp;l\u003d535-537;drc\u003dec7a1e1ff8797407185211eb64151b1bee15bc3a.  OTOH, we launched Rust PNG in Chromium as-is (i.e. with sequential scanning), so maybe the `Seek` bound is indeed unnecessary.",
+      "range": {
+        "startLine": 533,
+        "startChar": 0,
+        "endLine": 535,
+        "endChar": 78
+      },
+      "revId": "929fc0961e714fe80b0e2b3a3c4a6f25d50ce7eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "989565ee_d2548c43",
+        "filename": "rust/png/FFI.rs",
+        "patchSetId": 11
+      },
+      "lineNbr": 535,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-06-22T16:40:08Z",
+      "side": 1,
+      "message": "Ack, if `Seek` support ends up being necessary, I think it might make sense to keep the \"for_android\" flag then; updated the CL description to reflect that.\n\nIdeally, `Seek` should not be implemented for AOSP because it looks like the ability to decode from pipes is a CTS requirement, and IIUC they’re not genuinely seekable.",
+      "parentUuid": "b94d06ed_75785c7a",
       "range": {
         "startLine": 533,
         "startChar": 0,
