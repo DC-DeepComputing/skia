@@ -223,6 +223,8 @@ protected:
 
     void writeOuterProduct();
 
+    void writeWorkgroupUniformLoad();
+
     void writeMatrixTimesEqualHelper(const Type& left, const Type& right, const Type& result);
 
     void writeMatrixDivisionHelpers(const Type& type);
@@ -375,6 +377,7 @@ protected:
     bool fWrittenInverse2 = false, fWrittenInverse3 = false, fWrittenInverse4 = false;
     bool fWrittenMatrixCompMult = false;
     bool fWrittenOuterProduct = false;
+    bool fWrittenWorkgroupUniformLoad = false;
 };
 
 static const char* operator_name(Operator op) {
@@ -854,6 +857,21 @@ void MetalCodeGenerator::writeOuterProduct() {
     if (!fWrittenOuterProduct) {
         fWrittenOuterProduct = true;
         fExtraFunctions.writeText(kOuterProduct);
+    }
+}
+
+void MetalCodeGenerator::writeWorkgroupUniformLoad() {
+    static constexpr char kWorkgroupUniformLoad[] =
+"template <typename T>\n"
+"T workgroupUniformLoad(threadgroup const T* p) {\n"
+"    threadgroup_barrier(mem_flags::mem_threadgroup);\n"
+"    T result = *p;\n"
+"    threadgroup_barrier(mem_flags::mem_threadgroup);\n"
+"    return result;\n"
+"}\n";
+    if (!fWrittenWorkgroupUniformLoad) {
+        fWrittenWorkgroupUniformLoad = true;
+        fExtraFunctions.writeText(kWorkgroupUniformLoad);
     }
 }
 
@@ -1359,6 +1377,37 @@ bool MetalCodeGenerator::writeIntrinsicCall(const FunctionCall& c, IntrinsicKind
         case k_workgroupBarrier_IntrinsicKind:
             this->write("threadgroup_barrier(mem_flags::mem_threadgroup)");
             return true;
+        case k_workgroupUniformLoad_IntrinsicKind: {
+#if defined(SK_DEBUG)
+            const Expression* expr = c.arguments()[0].get();
+            const Variable* rootVar = nullptr;
+            while (expr) {
+                if (expr->is<VariableReference>()) {
+                    rootVar = expr->as<VariableReference>().variable();
+                    break;
+                }
+                if (expr->is<FieldAccess>()) {
+                    expr = expr->as<FieldAccess>().base().get();
+                    continue;
+                }
+                if (expr->is<IndexExpression>()) {
+                    const IndexExpression& indexExpr = expr->as<IndexExpression>();
+                    if (indexExpr.base()->type().isVector()) {
+                        break;
+                    }
+                    expr = indexExpr.base().get();
+                    continue;
+                }
+                break;
+            }
+            SkASSERT(rootVar && rootVar->modifierFlags().isWorkgroup());
+#endif
+            this->writeWorkgroupUniformLoad();
+            this->write("workgroupUniformLoad(&");
+            this->writeExpression(*c.arguments()[0], Precedence::kSequence);
+            this->write(")");
+            return true;
+        }
         case k_atomicAdd_IntrinsicKind:
             this->write("atomic_fetch_add_explicit(&");
             this->writeExpression(*c.arguments()[0], Precedence::kSequence);
