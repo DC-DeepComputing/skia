@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6e178ec2_591ff471",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 869,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-22T16:07:35Z",
+      "side": 1,
+      "message": "This is the correct behavior; it prevents the race condition where, without a barrier after the assignment, some threads may assign `result` proceed, and overwrite `p` before all threads in the workgroup have made their assignment to `result`.",
+      "parentUuid": "a456f6a1_c01feb05",
+      "range": {
+        "startLine": 869,
+        "startChar": 0,
+        "endLine": 869,
+        "endChar": 56
+      },
+      "revId": "732f7d3f146592f64a405e8190ff8be647b38b5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3a6898cb_4d44190a",
         "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
         "patchSetId": 3
@@ -54,6 +78,30 @@
       "writtenOn": "2026-06-22T15:24:55Z",
       "side": 1,
       "message": "This seems brittle, I don\u0027t believe there is any sksl syntax that is preventing us from passing in a more complex expression than just a variable reference. Does wgsl require this to be an lvalue?",
+      "range": {
+        "startLine": 3246,
+        "startChar": 0,
+        "endLine": 3246,
+        "endChar": 61
+      },
+      "revId": "732f7d3f146592f64a405e8190ff8be647b38b5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a064552d_fa1e3ca6",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 3246,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-22T16:07:35Z",
+      "side": 1,
+      "message": "Yes, WGSL expects:\n`fn workgroupUniformLoad(p : ptr\u003cworkgroup, T\u003e) -\u003e T`\n\nI have added debug checking on the expression and assertions that the variable is workgroup memory.\n\nWDYT?",
+      "parentUuid": "3a6898cb_4d44190a",
       "range": {
         "startLine": 3246,
         "startChar": 0,

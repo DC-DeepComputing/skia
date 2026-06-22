@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "35d2d1df_73c0b0cc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-22T16:07:35Z",
+      "side": 1,
+      "message": "Note: the failures on the the housekeeper check are unrelated. Previously to this CL, the `workgroup.compute` test was not being built, I suspect because of the issue with array stride that the housekeeper check is picking up.\n\nI will make an upstream fix for that as well.",
+      "revId": "82cc9620e84406e4248c7c8382c43465df42151b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
