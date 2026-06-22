@@ -58,6 +58,7 @@ BASE_PRIVATE_HDRS = [
     "SkNoncopyable.h",
     "SkOnce.h",
     "SkSafe32.h",
+    "SkStackAllocated.h",
     "SkTArray.h",
     "SkTFitsIn.h",
     "SkTLogic.h",
