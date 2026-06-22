@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5a302ed_a7f50e5e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-06-22T16:00:28Z",
+      "side": 1,
+      "message": "This sounds reasonable.  I defer to @fmalita whether this would require some sort of A/B testing to double-check the performance impact:\n\n* The microbenchmarks from the PR seem to indicate a slow-down of around 1.1% (looking only at non-artificial non-compress benchmarks) which doesn\u0027t seem that bad.\n* OTOH the complexity of having a `for_android` config doesn\u0027t seem that bad - I am not sure if unifying this is sufficient to justify a potential regression (even if it is just 1% of decoding time, which will probably translate into a smaller impact to guardrail metrics like first-contentful-pain etc.).",
+      "range": {
+        "startLine": 29,
+        "startChar": 17,
+        "endLine": 30,
+        "endChar": 22
+      },
+      "revId": "929fc0961e714fe80b0e2b3a3c4a6f25d50ce7eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "0106b7e7_0be5d0ab",
@@ -31,6 +54,98 @@
       "writtenOn": "2026-06-22T13:11:05Z",
       "side": 1,
       "message": "LGTM, Łukasz should also take a look.",
+      "revId": "929fc0961e714fe80b0e2b3a3c4a6f25d50ce7eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5781ff7_5a9a0168",
+        "filename": "rust/png/FFI.rs",
+        "patchSetId": 11
+      },
+      "lineNbr": 427,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-06-22T16:00:28Z",
+      "side": 1,
+      "message": "I wonder if using `is_last_chunk: bool` would be a desirable simplification here (hiding/encapsulating the `IEND` detection within `fn process_bytes` and avoiding unnecessarily storing/exposing chunk type in/from `PngState`).",
+      "range": {
+        "startLine": 427,
+        "startChar": 20,
+        "endLine": 427,
+        "endChar": 39
+      },
+      "revId": "929fc0961e714fe80b0e2b3a3c4a6f25d50ce7eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3e930d0_564b2862",
+        "filename": "rust/png/FFI.rs",
+        "patchSetId": 11
+      },
+      "lineNbr": 435,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-06-22T16:00:28Z",
+      "side": 1,
+      "message": "Why `u64`?  Can this be `u32`?  [The spec](https://www.w3.org/TR/png-3/#5Chunk-layout) uses 4 bytes for chunk length (and even augments this further by saying \"Although encoders and decoders should treat the length as unsigned, its value shall not exceed 2^31-1 bytes.\")",
+      "range": {
+        "startLine": 435,
+        "startChar": 19,
+        "endLine": 435,
+        "endChar": 22
+      },
+      "revId": "929fc0961e714fe80b0e2b3a3c4a6f25d50ce7eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91a6549a_f1021fc6",
+        "filename": "rust/png/FFI.rs",
+        "patchSetId": 11
+      },
+      "lineNbr": 469,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-06-22T16:00:28Z",
+      "side": 1,
+      "message": "Switching to `is_last_chunk`-based approach (see another comment above) would make this something like: `let is_last_chunk \u003d (header_buf[4..8] \u003d\u003d b\"IEND\");`.",
+      "range": {
+        "startLine": 468,
+        "startChar": 0,
+        "endLine": 469,
+        "endChar": 93
+      },
+      "revId": "929fc0961e714fe80b0e2b3a3c4a6f25d50ce7eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b94d06ed_75785c7a",
+        "filename": "rust/png/FFI.rs",
+        "patchSetId": 11
+      },
+      "lineNbr": 535,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-06-22T16:00:28Z",
+      "side": 1,
+      "message": "This LGTM, but I wanted to share some context FYI - feel free to just ack this comment and move on.\n\nIn theory animation frames can be read in any order and having a `Seek` ability could avoid sequential scanning here: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/codec/SkPngRustCodec.cpp;l\u003d535-537;drc\u003dec7a1e1ff8797407185211eb64151b1bee15bc3a.  OTOH, we launched Rust PNG in Chromium as-is (i.e. with sequential scanning), so maybe the `Seek` bound is indeed unnecessary.",
+      "range": {
+        "startLine": 533,
+        "startChar": 0,
+        "endLine": 535,
+        "endChar": 78
+      },
       "revId": "929fc0961e714fe80b0e2b3a3c4a6f25d50ce7eb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
