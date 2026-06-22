@@ -15,6 +15,7 @@
 #include "include/core/SkRect.h"
 #endif
 
+#include "include/private/SkStackAllocated.h"
 #include "src/gpu/graphite/TextureProxy.h"
 
 namespace skgpu::graphite {
@@ -77,6 +78,8 @@ struct AtlasClip {
  * Combined non-MSAA clip structure
  */
 struct NonMSAAClip {
+    SK_STACK_ALLOCATED();
+
     AnalyticClip fAnalyticClip;
     AtlasClip    fAtlasClip;
 
