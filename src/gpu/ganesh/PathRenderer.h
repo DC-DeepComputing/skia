@@ -11,6 +11,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkAssert.h"
 #include "include/private/SkDebug.h"
+#include "include/private/SkStackAllocated.h"
 #include "src/gpu/ganesh/GrPaint.h"
 
 #include <string.h>
@@ -87,7 +88,7 @@ public:
         kYes
     };
 
-    struct CanDrawPathArgs {
+    struct CanDrawPathArgs : public SkStackAllocated {
         SkDEBUGCODE(CanDrawPathArgs() { memset(this, 0, sizeof(*this)); }) // For validation.
 
         const GrCaps*               fCaps;
@@ -155,7 +156,7 @@ public:
     /**
      * Args to stencilPath(). fAAType cannot be kCoverage.
      */
-    struct StencilPathArgs {
+    struct StencilPathArgs : public SkStackAllocated {
         SkDEBUGCODE(StencilPathArgs() { memset(this, 0, sizeof(*this)); }) // For validation.
 
         GrRecordingContext*  fContext;
