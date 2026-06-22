@@ -1,0 +1,62 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b3ebf2c_0ab137c6",
+        "filename": "modules/skshaper/src/SkShaper_harfbuzz.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 358,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-06-22T14:49:22Z",
+      "side": 1,
+      "message": "You know that you could put LanguageBasedLineBreaker in SkUnicode? It probably belongs there but I do not insist.",
+      "fixSuggestions": [
+        {
+          "fixId": "62222f78_b0122da6",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "modules/skshaper/src/SkShaper_harfbuzz.cpp",
+              "range": {
+                "startLine": 1,
+                "startChar": 0,
+                "endLine": 1,
+                "endChar": 0
+              },
+              "replacement": "#include \u003coptional\u003e\n"
+            }
+          ]
+        }
+      ],
+      "revId": "b2214e4adcf23c82f250a159f83dd063ab1041d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "036a4d93_b3e45601",
+        "filename": "modules/skshaper/src/SkShaper_harfbuzz.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 418,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-06-22T14:49:22Z",
+      "side": 1,
+      "message": "Just counted - we have 5 copies of this function in Skia code :). Nothing you could do about it, just saying...",
+      "range": {
+        "startLine": 418,
+        "startChar": 24,
+        "endLine": 418,
+        "endChar": 33
+      },
+      "revId": "b2214e4adcf23c82f250a159f83dd063ab1041d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
