@@ -6,6 +6,8 @@
  */
 
 #ifndef GrPixmap_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define GrPixmap_DEFINED
 
 #include "include/core/SkData.h"
@@ -87,7 +89,7 @@ protected:
     }
 
 private:
-    T* fAddr = nullptr;
+    raw_ptr<T> fAddr = nullptr;
     size_t fRowBytes = 0;
     GrImageInfo fInfo;
     sk_sp<SkData> fPixelStorage;

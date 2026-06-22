@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "src/partition_alloc/raw_ref.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "src/core/SkTHash.h"
@@ -75,10 +76,10 @@ public:
             }
             const FunctionDefinition& funcDef = pe->as<FunctionDefinition>();
             if (funcDef.declaration().isMain()) {
-                if (funcDef.declaration().returnType().matches(*fContext.fTypes.fHalf4)) {
+                if (funcDef.declaration().returnType().matches(*fContext->fTypes->fHalf4)) {
                     // We synthesize writes to sk_FragColor if main() returns a color, even if it's
                     // otherwise unreferenced.
-                    this->addDeclaringElement(fSymbols.findBuiltinSymbol(Compiler::FRAGCOLOR_NAME));
+                    this->addDeclaringElement(fSymbols->findBuiltinSymbol(Compiler::FRAGCOLOR_NAME));
                 }
                 // Now that main() has been found, we can stop scanning.
                 break;
@@ -117,8 +118,8 @@ public:
                   });
     }
 
-    const Context& fContext;
-    const SymbolTable& fSymbols;
+    const raw_ref<const Context> fContext;
+    const raw_ref<const SymbolTable> fSymbols;
     std::vector<const ProgramElement*> fNewElements;
 };
 

@@ -6,6 +6,8 @@
  */
 
 #ifndef skcpu_Draw_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define skcpu_Draw_DEFINED
 
 #include "include/core/SkCanvas.h"
@@ -247,11 +249,11 @@ private:
 public:
     SkPixmap fDst;
     BlitterChooser* fBlitterChooser{nullptr};  // required
-    const SkMatrix* fCTM{nullptr};             // required
-    const SkRasterClip* fRC{nullptr};          // required
-    const SkSurfaceProps* fProps{nullptr};     // optional
+    raw_ptr<const SkMatrix> fCTM{nullptr};             // required
+    raw_ptr<const SkRasterClip> fRC{nullptr};          // required
+    raw_ptr<const SkSurfaceProps> fProps{nullptr};     // optional
 
-    const ContextImpl* fCtx{nullptr};  // optional for now
+    raw_ptr<const ContextImpl> fCtx{nullptr};  // optional for now
 
 #ifdef SK_DEBUG
     void validate() const;

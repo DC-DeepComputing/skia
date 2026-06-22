@@ -6,6 +6,8 @@
  */
 
 #ifndef skgpu_graphite_task_CopyTask_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define skgpu_graphite_task_CopyTask_DEFINED
 
 #include "include/core/SkPoint.h"
@@ -63,7 +65,7 @@ private:
                            size_t dstOffset,
                            size_t size);
 
-    const Buffer* fSrcBuffer;
+    raw_ptr<const Buffer> fSrcBuffer;
     size_t        fSrcOffset;
     sk_sp<Buffer> fDstBuffer;
     size_t        fDstOffset;

@@ -7,6 +7,7 @@
 
 #include "src/sksl/analysis/SkSLSpecialization.h"
 
+#include "src/partition_alloc/raw_ref.h"
 #include "include/core/SkSpan.h"
 #include "include/private/SkAssert.h"
 #include "src/sksl/SkSLAnalysis.h"
@@ -91,7 +92,7 @@ void FindFunctionsToSpecialize(const Program& program,
                         const Variable* param = decl.parameters()[i];
 
                         // Check that this parameter fits the criteria to create a specialization.
-                        if (!fParameterMatchesFn(*param)) {
+                        if (!(*fParameterMatchesFn)(*param)) {
                             continue;
                         }
 
@@ -112,7 +113,7 @@ void FindFunctionsToSpecialize(const Program& program,
                     // Only create a specialization for this function if there are
                     // variables to specialize on.
                     if (specialization.count() > 0) {
-                        Specializations& specializations = fSpecializationMap[&decl];
+                        Specializations& specializations = (*fSpecializationMap)[&decl];
                         SpecializedCallKey callKey{call.stablePointer(),
                                                    fInheritedSpecializationIndex};
 
@@ -120,7 +121,7 @@ void FindFunctionsToSpecialize(const Program& program,
                             const SpecializedParameters& entry = specializations[i];
                             if (parameter_mappings_are_equal(specialization, entry)) {
                                 // This specialization has already been tracked.
-                                fSpecializedCallMap[callKey] = i;
+                                (*fSpecializedCallMap)[callKey] = i;
                                 return INHERITED::visitExpression(expr);
                             }
                         }
@@ -129,7 +130,7 @@ void FindFunctionsToSpecialize(const Program& program,
                         // requires, also tracking the inherited specialization this function
                         // call is in so the right specialized function can be called.
                         SpecializationIndex specializationIndex = specializations.size();
-                        fSpecializedCallMap[callKey] = specializationIndex;
+                        (*fSpecializedCallMap)[callKey] = specializationIndex;
                         specializations.push_back(specialization);
 
                         // We swap so we don't lose when our last inherited specializations were
@@ -156,9 +157,9 @@ void FindFunctionsToSpecialize(const Program& program,
         }
 
     private:
-        SpecializationMap& fSpecializationMap;
-        SpecializedCallMap& fSpecializedCallMap;
-        const ParameterMatchesFn& fParameterMatchesFn;
+        const raw_ref<SpecializationMap> fSpecializationMap;
+        const raw_ref<SpecializedCallMap> fSpecializedCallMap;
+        const raw_ref<const ParameterMatchesFn> fParameterMatchesFn;
         THashSet<const FunctionDeclaration*> fVisitedFunctions;
 
         SpecializedParameters fInheritedSpecializations;

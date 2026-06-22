@@ -6,6 +6,8 @@
  */
 
 #ifndef GrResourceAllocator_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define GrResourceAllocator_DEFINED
 
 #include "include/core/SkRefCnt.h"
@@ -197,7 +199,7 @@ private:
         SkDEBUGCODE(uint32_t uniqueID() const { return fUniqueID; })
 
     private:
-        GrSurfaceProxy*   fOriginatingProxy;
+        raw_ptr<GrSurfaceProxy> fOriginatingProxy;
         skgpu::ScratchKey fScratchKey; // free pool wants a reference to this.
         sk_sp<GrSurface>  fExistingSurface; // queried from resource cache. may be null.
         bool              fAccountedForInBudget = false;
@@ -256,12 +258,12 @@ private:
         SkDEBUGCODE(uint32_t uniqueID() const { return fUniqueID; })
 
     private:
-        GrSurfaceProxy*  fProxy;
+        raw_ptr<GrSurfaceProxy> fProxy;
         unsigned int     fStart;
         unsigned int     fEnd;
-        Interval*        fNext = nullptr;
+        raw_ptr<Interval> fNext = nullptr;
         unsigned int     fUses = 0;
-        Register*        fRegister = nullptr;
+        raw_ptr<Register> fRegister = nullptr;
         AllowRecycling   fAllowRecycling = AllowRecycling::kYes;
 
 #ifdef SK_DEBUG
@@ -289,14 +291,14 @@ private:
     private:
         SkDEBUGCODE(void validate() const;)
 
-        Interval* fHead = nullptr;
-        Interval* fTail = nullptr;
+        raw_ptr<Interval> fHead = nullptr;
+        raw_ptr<Interval> fTail = nullptr;
     };
 
     // Compositing use cases can create > 80 intervals.
     static const int kInitialArenaSize = 128 * sizeof(Interval);
 
-    GrDirectContext*             fDContext;
+    raw_ptr<GrDirectContext> fDContext;
     FreePoolMultiMap             fFreePool;          // Recently created/used GrSurfaces
     IntvlHash                    fIntvlHash;         // All the intervals, hashed by proxyID
 

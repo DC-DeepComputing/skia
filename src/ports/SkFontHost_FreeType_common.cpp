@@ -8,6 +8,7 @@
 
 #include "src/ports/SkFontHost_FreeType_common.h"
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -1902,7 +1903,7 @@ void SkScalerContextFTUtils::generateGlyphImage(FT_Face face, const SkGlyph& gly
 namespace {
 
 class SkFTGeometrySink {
-    SkPathBuilder* fBuilder;
+    raw_ptr<SkPathBuilder> fBuilder;
     bool fStarted;
     FT_Vector fCurrent;
 

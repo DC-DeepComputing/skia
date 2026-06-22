@@ -7,6 +7,8 @@
 
 #include "src/sksl/SkSLAnalysis.h"
 
+#include "src/partition_alloc/raw_ref.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkEnumBitMask.h"
@@ -83,9 +85,9 @@ public:
     int elidedSampleCoordCount() const { return fElidedSampleCoordCount; }
 
 protected:
-    const Context& fContext;
-    const Variable& fChild;
-    const Variable* fMainCoordsParam = nullptr;
+    const raw_ref<const Context> fContext;
+    const raw_ref<const Variable> fChild;
+    raw_ptr<const Variable> fMainCoordsParam = nullptr;
     const bool fWritesToSampleCoords;
     SampleUsage fUsage;
     int fElidedSampleCoordCount = 0;
@@ -101,14 +103,14 @@ protected:
         switch (e.kind()) {
             case ExpressionKind::kChildCall: {
                 const ChildCall& cc = e.as<ChildCall>();
-                if (&cc.child() == &fChild) {
+                if (&cc.child() == &*fChild) {
                     // Determine the type of call at this site, and merge it with the accumulated
                     // state
                     const ExpressionArray& arguments = cc.arguments();
                     SkASSERT(!arguments.empty());
 
                     const Expression* maybeCoords = arguments[0].get();
-                    if (maybeCoords->type().matches(*fContext.fTypes.fFloat2)) {
+                    if (maybeCoords->type().matches(*fContext->fTypes->fFloat2)) {
                         // If the coords are a direct reference to the program's sample-coords, and
                         // those coords are never modified, we can conservatively turn this into
                         // PassThrough sampling. In all other cases, we consider it Explicit.
@@ -131,7 +133,7 @@ protected:
                 const FunctionCall& call = e.as<FunctionCall>();
                 for (const std::unique_ptr<Expression>& arg : call.arguments()) {
                     if (arg->is<VariableReference>() &&
-                        arg->as<VariableReference>().variable() == &fChild) {
+                        arg->as<VariableReference>().variable() == &*fChild) {
                         // ... we must treat it as explicitly sampled, since the program's
                         // sample-coords only exist as a parameter to `main`.
                         fUsage.merge(SampleUsage::Explicit());
@@ -250,7 +252,7 @@ public:
     }
 
 private:
-    const Variable* fVar;
+    raw_ptr<const Variable> fVar;
 
     using INHERITED = ProgramVisitor;
 };
@@ -332,8 +334,8 @@ private:
         }
     }
 
-    ErrorReporter* fErrors;
-    VariableReference* fAssignedVar = nullptr;
+    raw_ptr<ErrorReporter> fErrors;
+    raw_ptr<VariableReference> fAssignedVar = nullptr;
 
     using INHERITED = ProgramVisitor;
 };
@@ -440,7 +442,7 @@ bool Analysis::ContainsVariable(const Expression& expr, const Variable& var) {
         }
 
         using INHERITED = ProgramVisitor;
-        const Variable* fVariable;
+        raw_ptr<const Variable> fVariable;
     };
 
     ContainsVariableVisitor visitor{&var};

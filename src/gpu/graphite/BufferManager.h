@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 #ifndef skgpu_graphite_BufferManager_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define skgpu_graphite_BufferManager_DEFINED
 
 #include "include/core/SkRefCnt.h"
@@ -208,7 +210,7 @@ private:
         SkASSERT(fMappedPtr);
         SkASSERT(fBuffer);
         SkASSERT(fOffset >= size && fOffset - size >= offset);
-        return BufferWriter(SkTAddOffset<void>(fMappedPtr, offset), size);
+        return BufferWriter(SkTAddOffset<void>(fMappedPtr.get(), offset), size);
     }
 
     std::pair<BufferWriter, BindBufferInfo> getWriterAndBinding(
@@ -217,7 +219,7 @@ private:
     }
 
     // Non-null when valid and not already returned to the pool
-    DrawBufferManager* fOwner = nullptr;
+    raw_ptr<DrawBufferManager> fOwner = nullptr;
     int fStateIndex = 0;
 
     sk_sp<Buffer> fBuffer;
@@ -227,7 +229,7 @@ private:
      // buffer is returned to the DrawBufferManager, only the bytes after fOffset can be reused.
      // If there is no mapped buffer pointer, it's assumed the GPU buffer is reusable for another
      // BufferSubAllocator instance (this default reuse policy can be revisited if needed).
-    void* fMappedPtr = nullptr;
+    raw_ptr<void> fMappedPtr = nullptr;
     uint32_t fOffset = 0;    // Next suballocation can start at fOffset at the earliest
     uint32_t fStride = 1;    // The byte count of blocks for the optimized append() function
     uint32_t fRemaining = 0; // The number of `fStride` contiguous blocks fitting after fOffset
@@ -420,9 +422,9 @@ private:
     // Marks manager in a failed state, unmaps any previously collected buffers.
     void onFailedBuffer();
 
-    ResourceProvider* const fResourceProvider;
-    const Caps* const fCaps;
-    UploadBufferManager* fUploadManager;
+    const raw_ptr<ResourceProvider> fResourceProvider;
+    const raw_ptr<const Caps> fCaps;
+    raw_ptr<UploadBufferManager> fUploadManager;
 
     static constexpr size_t kVertexBufferIndex          = 0;
     static constexpr size_t kIndexBufferIndex           = 1;
@@ -485,7 +487,7 @@ public:
 private:
     struct CopyRange {
         BindBufferInfo  fSource;            // The CPU-to-GPU buffer and offset for the source of the copy
-        BindBufferInfo* fTarget;            // The late-assigned destination of the copy
+        raw_ptr<BindBufferInfo> fTarget;            // The late-assigned destination of the copy
         uint32_t        fRequiredAlignment; // The requested stride of the data.
 #if defined(GPU_TEST_UTILS)
         uint32_t        fUnalignedSize;     // The requested size without count-4 alignment
@@ -515,7 +517,7 @@ private:
                             size_t requiredAlignment,
                             BindBufferInfo* target);
 
-    ResourceProvider* const fResourceProvider;
+    const raw_ptr<ResourceProvider> fResourceProvider;
     UploadBufferManager fUploadManager;
     const uint32_t fRequiredTransferAlignment;
 

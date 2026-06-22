@@ -6,6 +6,7 @@
  */
 #include "src/gpu/ganesh/ops/FillRectOp.h"
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkRect.h"
@@ -479,9 +480,9 @@ private:
 
     Helper fHelper;
     GrQuadBuffer<ColorAndAA> fQuads;
-    char* fPrePreparedVertices = nullptr;
+    raw_ptr<char> fPrePreparedVertices = nullptr;
 
-    GrProgramInfo* fProgramInfo = nullptr;
+    raw_ptr<GrProgramInfo> fProgramInfo = nullptr;
     ColorType      fColorType;
 
     sk_sp<const GrBuffer> fVertexBuffer;

@@ -7,6 +7,7 @@
 
 #include "src/pdf/SkDeflate.h"
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/private/SkAssert.h"
 #include "include/private/SkDebug.h"
 #include "include/private/SkMalloc.h"
@@ -69,7 +70,7 @@ static void do_deflate(int flush,
 
 // Hide all zlib impl details.
 struct SkDeflateWStream::Impl {
-    SkWStream* fOut;
+    raw_ptr<SkWStream> fOut;
     unsigned char fInBuffer[SKDEFLATEWSTREAM_INPUT_BUFFER_SIZE];
     size_t fInBufferIndex;
     z_stream fZStream;

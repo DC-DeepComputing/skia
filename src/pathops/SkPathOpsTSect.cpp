@@ -7,6 +7,7 @@
 
 #include "src/pathops/SkPathOpsTSect.h"
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/private/SkFloatingPoint.h"
 #include "include/private/SkMacros.h"
 #include "include/private/SkTArray.h"
@@ -85,7 +86,7 @@ SkTSpan* SkTSect::addFollowing(
     if (next) {
         next->fPrev = result;
     }
-    result->resetBounds(fCurve);
+    result->resetBounds(*fCurve);
     // world may not be consistent to call validate here
     result->validate();
     return result;
@@ -508,7 +509,7 @@ void SkTSpan::validatePerpT(double oppT) const {
 }
 
 void SkTSpan::validatePerpPt(double t, const SkDPoint& pt) const {
-    SkASSERT(fDebugSect->fOppSect->fCurve.ptAtT(t) == pt);
+    SkASSERT(fDebugSect->fOppSect->fCurve->ptAtT(t) == pt);
 }
 
 SkTSect::SkTSect(const SkTCurve& c
@@ -537,7 +538,7 @@ SkTSpan* SkTSect::addOne() {
         result = fDeleted;
         fDeleted = result->fNext;
     } else {
-        result = fHeap.make<SkTSpan>(fCurve, fHeap);
+        result = fHeap.make<SkTSpan>(*fCurve, fHeap);
 #if DEBUG_T_SECT
         ++fDebugAllocatedCount;
 #endif
@@ -549,7 +550,7 @@ SkTSpan* SkTSect::addOne() {
     PATH_OPS_DEBUG_T_SECT_CODE(result->fID = fDebugCount++ * 2 + fID);
     SkDEBUGCODE(result->fDebugSect = this);
 #ifdef SK_DEBUG
-    result->debugInit(fCurve, fHeap);
+    result->debugInit(*fCurve, fHeap);
     result->fCoinStart.debugInit();
     result->fCoinEnd.debugInit();
     result->fPrev = result->fNext = nullptr;
@@ -562,15 +563,15 @@ SkTSpan* SkTSect::addOne() {
 
 bool SkTSect::binarySearchCoin(SkTSect* sect2, double tStart,
         double tStep, double* resultT, double* oppT, SkTSpan** oppFirst) {
-    SkTSpan work(fCurve, fHeap);
+    SkTSpan work(*fCurve, fHeap);
     double result = work.fStartT = work.fEndT = tStart;
     SkDEBUGCODE(work.fDebugSect = this);
-    SkDPoint last = fCurve.ptAtT(tStart);
+    SkDPoint last = fCurve->ptAtT(tStart);
     SkDPoint oppPt;
     bool flip = false;
     bool contained = false;
     bool down = tStep < 0;
-    const SkTCurve& opp = sect2->fCurve;
+    const SkTCurve& opp = *sect2->fCurve;
     do {
         tStep *= 0.5;
         work.fStartT += tStep;
@@ -578,7 +579,7 @@ bool SkTSect::binarySearchCoin(SkTSect* sect2, double tStart,
             tStep = -tStep;
             flip = false;
         }
-        work.initBounds(fCurve);
+        work.initBounds(*fCurve);
         if (work.fCollapsed) {
             return false;
         }
@@ -586,7 +587,7 @@ bool SkTSect::binarySearchCoin(SkTSect* sect2, double tStart,
             break;
         }
         last = work.pointFirst();
-        work.fCoinStart.setPerp(fCurve, work.fStartT, last, opp);
+        work.fCoinStart.setPerp(*fCurve, work.fStartT, last, opp);
         if (work.fCoinStart.isMatch()) {
 #if DEBUG_T_SECT
             work.validatePerpPt(work.fCoinStart.perpT(), work.fCoinStart.perpPt());
@@ -610,7 +611,7 @@ bool SkTSect::binarySearchCoin(SkTSect* sect2, double tStart,
     if (!contained) {
         return false;
     }
-    if (last.approximatelyEqual(fCurve[0])) {
+    if (last.approximatelyEqual((*fCurve)[0])) {
         result = 0;
     } else if (last.approximatelyEqual(this->pointLast())) {
         result = 1;
@@ -698,9 +699,9 @@ void SkTSect::coincidentForce(SkTSect* sect2,
     sect2->removeSpanRange(oppFirst, oppLast);
     first->fStartT = start1s;
     first->fEndT = start1e;
-    first->resetBounds(fCurve);
-    first->fCoinStart.setPerp(fCurve, start1s, fCurve[0], sect2->fCurve);
-    first->fCoinEnd.setPerp(fCurve, start1e, this->pointLast(), sect2->fCurve);
+    first->resetBounds(*fCurve);
+    first->fCoinStart.setPerp(*fCurve, start1s, (*fCurve)[0], *sect2->fCurve);
+    first->fCoinEnd.setPerp(*fCurve, start1e, this->pointLast(), *sect2->fCurve);
     bool oppMatched = first->fCoinStart.perpT() < first->fCoinEnd.perpT();
     double oppStartT = first->fCoinStart.perpT() == -1 ? 0 : std::max(0., first->fCoinStart.perpT());
     double oppEndT = first->fCoinEnd.perpT() == -1 ? 1 : std::min(1., first->fCoinEnd.perpT());
@@ -710,7 +711,7 @@ void SkTSect::coincidentForce(SkTSect* sect2,
     }
     oppFirst->fStartT = oppStartT;
     oppFirst->fEndT = oppEndT;
-    oppFirst->resetBounds(sect2->fCurve);
+    oppFirst->resetBounds(*sect2->fCurve);
     this->removeCoincident(first, false);
     sect2->removeCoincident(oppFirst, true);
     if (deleteEmptySpans) {
@@ -747,7 +748,7 @@ void SkTSect::computePerpendiculars(SkTSect* sect2,
     if (!last) {
         return;
     }
-    const SkTCurve& opp = sect2->fCurve;
+    const SkTCurve& opp = *sect2->fCurve;
     SkTSpan* work = first;
     SkTSpan* prior = nullptr;
     do {
@@ -755,7 +756,7 @@ void SkTSect::computePerpendiculars(SkTSect* sect2,
             if (prior) {
                 work->fCoinStart = prior->fCoinEnd;
             } else {
-                work->fCoinStart.setPerp(fCurve, work->fStartT, work->pointFirst(), opp);
+                work->fCoinStart.setPerp(*fCurve, work->fStartT, work->pointFirst(), opp);
             }
             if (work->fCoinStart.isMatch()) {
                 double perpT = work->fCoinStart.perpT();
@@ -765,7 +766,7 @@ void SkTSect::computePerpendiculars(SkTSect* sect2,
                     sect2->addForPerp(work, perpT);
                 }
             }
-            work->fCoinEnd.setPerp(fCurve, work->fEndT, work->pointLast(), opp);
+            work->fCoinEnd.setPerp(*fCurve, work->fEndT, work->pointLast(), opp);
             if (work->fCoinEnd.isMatch()) {
                 double perpT = work->fCoinEnd.perpT();
                 if (sect2->coincidentHasT(perpT)) {
@@ -919,9 +920,9 @@ bool SkTSect::extractCoincident(
     this->removeSpanRange(first, last);
     sect2->removeSpanRange(oppFirst, oppLast);
     first->fEndT = last->fEndT;
-    first->resetBounds(this->fCurve);
-    first->fCoinStart.setPerp(fCurve, first->fStartT, first->pointFirst(), sect2->fCurve);
-    first->fCoinEnd.setPerp(fCurve, first->fEndT, first->pointLast(), sect2->fCurve);
+    first->resetBounds(*this->fCurve);
+    first->fCoinStart.setPerp(*fCurve, first->fStartT, first->pointFirst(), *sect2->fCurve);
+    first->fCoinEnd.setPerp(*fCurve, first->fEndT, first->pointLast(), *sect2->fCurve);
     oppStartT = first->fCoinStart.perpT();
     oppEndT = first->fCoinEnd.perpT();
     if (between(0, oppStartT, 1) && between(0, oppEndT, 1)) {
@@ -931,7 +932,7 @@ bool SkTSect::extractCoincident(
         }
         oppFirst->fStartT = oppStartT;
         oppFirst->fEndT = oppEndT;
-        oppFirst->resetBounds(sect2->fCurve);
+        oppFirst->resetBounds(*sect2->fCurve);
     }
     this->validateBounded();
     sect2->validateBounded();
@@ -1089,10 +1090,10 @@ int SkTSect::linesIntersect(SkTSpan* span,
     SkDLine oppLine = {{ oppSpan->pointFirst(), oppSpan->pointLast() }};
     int loopCount = 0;
     double bestDistSq = DBL_MAX;
-    if (!thisRayI.intersectRay(opp->fCurve, thisLine)) {
+    if (!thisRayI.intersectRay(*opp->fCurve, thisLine)) {
         return 0;
     }
-    if (!oppRayI.intersectRay(this->fCurve, oppLine)) {
+    if (!oppRayI.intersectRay(*this->fCurve, oppLine)) {
         return 0;
     }
     // if the ends of each line intersect the opposite curve, the lines are coincident
@@ -1103,7 +1104,7 @@ int SkTSect::linesIntersect(SkTSpan* span,
                 ptMatches += thisRayI.pt(tIndex).approximatelyEqual(thisLine.fPts[lIndex]);
             }
         }
-        if (ptMatches == 2 || is_parallel(thisLine, opp->fCurve)) {
+        if (ptMatches == 2 || is_parallel(thisLine, *opp->fCurve)) {
             return 2;
         }
     }
@@ -1114,7 +1115,7 @@ int SkTSect::linesIntersect(SkTSpan* span,
                 ptMatches += oppRayI.pt(oIndex).approximatelyEqual(oppLine.fPts[lIndex]);
             }
         }
-        if (ptMatches == 2|| is_parallel(oppLine, this->fCurve)) {
+        if (ptMatches == 2|| is_parallel(oppLine, *this->fCurve)) {
             return 2;
         }
     }
@@ -1156,22 +1157,22 @@ int SkTSect::linesIntersect(SkTSpan* span,
         }
         bestDistSq = distSq;
         double oppStart = oppRayI[0][closeIndex];
-        thisLine[0] = fCurve.ptAtT(oppStart);
-        thisLine[1] = thisLine[0] + fCurve.dxdyAtT(oppStart);
-        if (!thisRayI.intersectRay(opp->fCurve, thisLine)) {
+        thisLine[0] = fCurve->ptAtT(oppStart);
+        thisLine[1] = thisLine[0] + fCurve->dxdyAtT(oppStart);
+        if (!thisRayI.intersectRay(*opp->fCurve, thisLine)) {
             break;
         }
         double start = thisRayI[0][oppCloseIndex];
-        oppLine[0] = opp->fCurve.ptAtT(start);
-        oppLine[1] = oppLine[0] + opp->fCurve.dxdyAtT(start);
-        if (!oppRayI.intersectRay(this->fCurve, oppLine)) {
+        oppLine[0] = opp->fCurve->ptAtT(start);
+        oppLine[1] = oppLine[0] + opp->fCurve->dxdyAtT(start);
+        if (!oppRayI.intersectRay(*this->fCurve, oppLine)) {
             break;
         }
     } while (true);
     // convergence may fail if the curves are nearly coincident
     SkTCoincident oCoinS, oCoinE;
-    oCoinS.setPerp(opp->fCurve, oppSpan->fStartT, oppSpan->pointFirst(), fCurve);
-    oCoinE.setPerp(opp->fCurve, oppSpan->fEndT, oppSpan->pointLast(), fCurve);
+    oCoinS.setPerp(*opp->fCurve, oppSpan->fStartT, oppSpan->pointFirst(), *fCurve);
+    oCoinE.setPerp(*opp->fCurve, oppSpan->fEndT, oppSpan->pointLast(), *fCurve);
     double tStart = oCoinS.perpT();
     double tEnd = oCoinE.perpT();
     bool swap = tStart > tEnd;
@@ -1187,7 +1188,7 @@ int SkTSect::linesIntersect(SkTSpan* span,
     SkDVector perpS, perpE;
     if (tStart == span->fStartT) {
         SkTCoincident coinS;
-        coinS.setPerp(fCurve, span->fStartT, span->pointFirst(), opp->fCurve);
+        coinS.setPerp(*fCurve, span->fStartT, span->pointFirst(), *opp->fCurve);
         perpS = span->pointFirst() - coinS.perpPt();
     } else if (swap) {
         perpS = oCoinE.perpPt() - oppSpan->pointLast();
@@ -1196,7 +1197,7 @@ int SkTSect::linesIntersect(SkTSpan* span,
     }
     if (tEnd == span->fEndT) {
         SkTCoincident coinE;
-        coinE.setPerp(fCurve, span->fEndT, span->pointLast(), opp->fCurve);
+        coinE.setPerp(*fCurve, span->fEndT, span->pointLast(), *opp->fCurve);
         perpE = span->pointLast() - coinE.perpPt();
     } else if (swap) {
         perpE = oCoinS.perpPt() - oppSpan->pointFirst();
@@ -1216,8 +1217,8 @@ int SkTSect::linesIntersect(SkTSpan* span,
             return 0;
         }
         workT += tStep;
-        workPt = fCurve.ptAtT(workT);
-        coinW.setPerp(fCurve, workT, workPt, opp->fCurve);
+        workPt = fCurve->ptAtT(workT);
+        coinW.setPerp(*fCurve, workT, workPt, *opp->fCurve);
         double perpT = coinW.perpT();
         if (coinW.isMatch() ? !between(oppSpan->fStartT, perpT, oppSpan->fEndT) : perpT < 0) {
             continue;
@@ -1252,8 +1253,8 @@ bool SkTSect::markSpanGone(SkTSpan* span) {
 
 bool SkTSect::matchedDirection(double t, const SkTSect* sect2,
         double t2) const {
-    SkDVector dxdy = this->fCurve.dxdyAtT(t);
-    SkDVector dxdy2 = sect2->fCurve.dxdyAtT(t2);
+    SkDVector dxdy = this->fCurve->dxdyAtT(t);
+    SkDVector dxdy2 = sect2->fCurve->dxdyAtT(t2);
     return dxdy.dot(dxdy2) >= 0;
 }
 
@@ -1310,9 +1311,9 @@ void SkTSect::mergeCoincidence(SkTSect* sect2) {
         }
         // check middle t value to see if it is coincident as well
         double midT = (smaller->fEndT + larger->fStartT) / 2;
-        SkDPoint midPt = fCurve.ptAtT(midT);
+        SkDPoint midPt = fCurve->ptAtT(midT);
         SkTCoincident coin;
-        coin.setPerp(fCurve, midT, midPt, sect2->fCurve);
+        coin.setPerp(*fCurve, midT, midPt, *sect2->fCurve);
         if (coin.isMatch()) {
             smaller->fEndT = larger->fEndT;
             smaller->fCoinEnd = larger->fCoinEnd;
@@ -1502,7 +1503,7 @@ SkTSpan* SkTSect::tail() {
 
 bool SkTSect::trim(SkTSpan* span,
         SkTSect* opp) {
-    FAIL_IF(!span->initBounds(fCurve));
+    FAIL_IF(!span->initBounds(*fCurve));
     const SkTSpanBounded* testBounded = span->fBounded;
     while (testBounded) {
         SkTSpan* test = testBounded->fBounded;
@@ -1510,11 +1511,11 @@ bool SkTSect::trim(SkTSpan* span,
         int oppSects, sects = this->intersects(span, opp, test, &oppSects);
         if (sects >= 1) {
             if (oppSects == 2) {
-                test->initBounds(opp->fCurve);
+                test->initBounds(*opp->fCurve);
                 opp->removeAllBut(span, test, this);
             }
             if (sects == 2) {
-                span->initBounds(fCurve);
+                span->initBounds(*fCurve);
                 this->removeAllBut(test, span, opp);
                 return true;
             }
@@ -1618,15 +1619,15 @@ void SkTSect::validateBounded() const {
 int SkTSect::EndsEqual(const SkTSect* sect1,
         const SkTSect* sect2, SkIntersections* intersections) {
     int zeroOneSet = 0;
-    if (sect1->fCurve[0] == sect2->fCurve[0]) {
+    if ((*sect1->fCurve)[0] == (*sect2->fCurve)[0]) {
         zeroOneSet |= kZeroS1Set | kZeroS2Set;
-        intersections->insert(0, 0, sect1->fCurve[0]);
+        intersections->insert(0, 0, (*sect1->fCurve)[0]);
     }
-    if (sect1->fCurve[0] == sect2->pointLast()) {
+    if ((*sect1->fCurve)[0] == sect2->pointLast()) {
         zeroOneSet |= kZeroS1Set | kOneS2Set;
-        intersections->insert(0, 1, sect1->fCurve[0]);
+        intersections->insert(0, 1, (*sect1->fCurve)[0]);
     }
-    if (sect1->pointLast() == sect2->fCurve[0]) {
+    if (sect1->pointLast() == (*sect2->fCurve)[0]) {
         zeroOneSet |= kOneS1Set | kZeroS2Set;
         intersections->insert(1, 0, sect1->pointLast());
     }
@@ -1636,20 +1637,20 @@ int SkTSect::EndsEqual(const SkTSect* sect1,
     }
     // check for zero
     if (!(zeroOneSet & (kZeroS1Set | kZeroS2Set))
-            && sect1->fCurve[0].approximatelyEqual(sect2->fCurve[0])) {
+            && (*sect1->fCurve)[0].approximatelyEqual((*sect2->fCurve)[0])) {
         zeroOneSet |= kZeroS1Set | kZeroS2Set;
-        intersections->insertNear(0, 0, sect1->fCurve[0], sect2->fCurve[0]);
+        intersections->insertNear(0, 0, (*sect1->fCurve)[0], (*sect2->fCurve)[0]);
     }
     if (!(zeroOneSet & (kZeroS1Set | kOneS2Set))
-            && sect1->fCurve[0].approximatelyEqual(sect2->pointLast())) {
+            && (*sect1->fCurve)[0].approximatelyEqual(sect2->pointLast())) {
         zeroOneSet |= kZeroS1Set | kOneS2Set;
-        intersections->insertNear(0, 1, sect1->fCurve[0], sect2->pointLast());
+        intersections->insertNear(0, 1, (*sect1->fCurve)[0], sect2->pointLast());
     }
     // check for one
     if (!(zeroOneSet & (kOneS1Set | kZeroS2Set))
-            && sect1->pointLast().approximatelyEqual(sect2->fCurve[0])) {
+            && sect1->pointLast().approximatelyEqual((*sect2->fCurve)[0])) {
         zeroOneSet |= kOneS1Set | kZeroS2Set;
-        intersections->insertNear(1, 0, sect1->pointLast(), sect2->fCurve[0]);
+        intersections->insertNear(1, 0, sect1->pointLast(), (*sect2->fCurve)[0]);
     }
     if (!(zeroOneSet & (kOneS1Set | kOneS2Set))
             && sect1->pointLast().approximatelyEqual(sect2->pointLast())) {
@@ -1726,8 +1727,8 @@ struct SkClosestRecord {
         fC2EndT = std::max(fC2EndT, mate.fC2EndT);
     }
 
-    const SkTSpan* fC1Span;
-    const SkTSpan* fC2Span;
+    raw_ptr<const SkTSpan> fC1Span;
+    raw_ptr<const SkTSpan> fC2Span;
     double fC1StartT;
     double fC1EndT;
     double fC2StartT;
@@ -1797,7 +1798,7 @@ void SkTSect::BinarySearch(SkTSect* sect1,
     SkDEBUGCODE(sect1->fOppSect = sect2);
     SkDEBUGCODE(sect2->fOppSect = sect1);
     intersections->reset();
-    intersections->setMax(sect1->fCurve.maxIntersections() + 4);  // give extra for slop
+    intersections->setMax(sect1->fCurve->maxIntersections() + 4);  // give extra for slop
     SkTSpan* span1 = sect1->fHead;
     SkTSpan* span2 = sect2->fHead;
     int oppSect, sect = sect1->intersects(span1, sect2, span2, &oppSect);
@@ -1920,7 +1921,7 @@ void SkTSect::BinarySearch(SkTSect* sect1,
 #if DEBUG_T_SECT_LOOP_COUNT
             intersections->debugBumpLoopCount(SkIntersections::kComputePerp_DebugLoop);
 #endif
-            if (sect1->collapsed() > sect1->fCurve.maxIntersections()) {
+            if (sect1->collapsed() > sect1->fCurve->maxIntersections()) {
                 break;
             }
         }
@@ -1967,28 +1968,28 @@ void SkTSect::BinarySearch(SkTSect* sect1,
         // if the final iteration contains an end (0 or 1),
         if (sect1->fRemovedStartT && !(zeroOneSet & kZeroS1Set)) {
             SkTCoincident perp;   // intersect perpendicular with opposite curve
-            perp.setPerp(sect1->fCurve, 0, sect1->fCurve[0], sect2->fCurve);
+            perp.setPerp(*sect1->fCurve, 0, (*sect1->fCurve)[0], *sect2->fCurve);
             if (perp.isMatch()) {
                 intersections->insert(0, perp.perpT(), perp.perpPt());
             }
         }
         if (sect1->fRemovedEndT && !(zeroOneSet & kOneS1Set)) {
             SkTCoincident perp;
-            perp.setPerp(sect1->fCurve, 1, sect1->pointLast(), sect2->fCurve);
+            perp.setPerp(*sect1->fCurve, 1, sect1->pointLast(), *sect2->fCurve);
             if (perp.isMatch()) {
                 intersections->insert(1, perp.perpT(), perp.perpPt());
             }
         }
         if (sect2->fRemovedStartT && !(zeroOneSet & kZeroS2Set)) {
             SkTCoincident perp;
-            perp.setPerp(sect2->fCurve, 0, sect2->fCurve[0], sect1->fCurve);
+            perp.setPerp(*sect2->fCurve, 0, (*sect2->fCurve)[0], *sect1->fCurve);
             if (perp.isMatch()) {
                 intersections->insert(perp.perpT(), 0, perp.perpPt());
             }
         }
         if (sect2->fRemovedEndT && !(zeroOneSet & kOneS2Set)) {
             SkTCoincident perp;
-            perp.setPerp(sect2->fCurve, 1, sect2->pointLast(), sect1->fCurve);
+            perp.setPerp(*sect2->fCurve, 1, sect2->pointLast(), *sect1->fCurve);
             if (perp.isMatch()) {
                 intersections->insert(perp.perpT(), 1, perp.perpPt());
             }
@@ -2003,20 +2004,20 @@ void SkTSect::BinarySearch(SkTSect* sect1,
     // check heads and tails for zero and ones and insert them if we haven't already done so
     const SkTSpan* head1 = result1;
     if (!(zeroOneSet & kZeroS1Set) && approximately_less_than_zero(head1->fStartT)) {
-        const SkDPoint& start1 = sect1->fCurve[0];
+        const SkDPoint& start1 = (*sect1->fCurve)[0];
         if (head1->isBounded()) {
             double t = head1->closestBoundedT(start1);
-            if (sect2->fCurve.ptAtT(t).approximatelyEqual(start1)) {
+            if (sect2->fCurve->ptAtT(t).approximatelyEqual(start1)) {
                 intersections->insert(0, t, start1);
             }
         }
     }
     const SkTSpan* head2 = sect2->fHead;
     if (!(zeroOneSet & kZeroS2Set) && approximately_less_than_zero(head2->fStartT)) {
-        const SkDPoint& start2 = sect2->fCurve[0];
+        const SkDPoint& start2 = (*sect2->fCurve)[0];
         if (head2->isBounded()) {
             double t = head2->closestBoundedT(start2);
-            if (sect1->fCurve.ptAtT(t).approximatelyEqual(start2)) {
+            if (sect1->fCurve->ptAtT(t).approximatelyEqual(start2)) {
                 intersections->insert(t, 0, start2);
             }
         }
@@ -2030,7 +2031,7 @@ void SkTSect::BinarySearch(SkTSect* sect1,
             const SkDPoint& end1 = sect1->pointLast();
             if (tail1->isBounded()) {
                 double t = tail1->closestBoundedT(end1);
-                if (sect2->fCurve.ptAtT(t).approximatelyEqual(end1)) {
+                if (sect2->fCurve->ptAtT(t).approximatelyEqual(end1)) {
                     intersections->insert(1, t, end1);
                 }
             }
@@ -2045,7 +2046,7 @@ void SkTSect::BinarySearch(SkTSect* sect1,
             const SkDPoint& end2 = sect2->pointLast();
             if (tail2->isBounded()) {
                 double t = tail2->closestBoundedT(end2);
-                if (sect1->fCurve.ptAtT(t).approximatelyEqual(end2)) {
+                if (sect1->fCurve->ptAtT(t).approximatelyEqual(end2)) {
                     intersections->insert(t, 1, end2);
                 }
             }
@@ -2074,10 +2075,10 @@ void SkTSect::BinarySearch(SkTSect* sect1,
             continue;
         }
         double midT = ((*intersections)[0][index] + (*intersections)[0][index + 1]) / 2;
-        SkDPoint midPt = sect1->fCurve.ptAtT(midT);
+        SkDPoint midPt = sect1->fCurve->ptAtT(midT);
         // intersect perpendicular with opposite curve
         SkTCoincident perp;
-        perp.setPerp(sect1->fCurve, midT, midPt, sect2->fCurve);
+        perp.setPerp(*sect1->fCurve, midT, midPt, *sect2->fCurve);
         if (!perp.isMatch()) {
             ++index;
             continue;
@@ -2093,7 +2094,7 @@ void SkTSect::BinarySearch(SkTSect* sect1,
         }
         intersections->setCoincident(index);
     }
-    SkOPOBJASSERT(intersections, intersections->used() <= sect1->fCurve.maxIntersections());
+    SkOPOBJASSERT(intersections, intersections->used() <= sect1->fCurve->maxIntersections());
 }
 
 int SkIntersections::intersect(const SkDQuad& q1, const SkDQuad& q2) {

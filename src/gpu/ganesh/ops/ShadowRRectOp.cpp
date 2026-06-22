@@ -6,6 +6,7 @@
  */
 #include "src/gpu/ganesh/ops/ShadowRRectOp.h"
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkMatrix.h"
@@ -715,8 +716,8 @@ private:
     int fIndexCount;
     GrSurfaceProxyView fFalloffView;
 
-    GrSimpleMesh*      fMesh = nullptr;
-    GrProgramInfo*     fProgramInfo = nullptr;
+    raw_ptr<GrSimpleMesh> fMesh = nullptr;
+    raw_ptr<GrProgramInfo> fProgramInfo = nullptr;
 
     using INHERITED = GrMeshDrawOp;
 };

@@ -6,6 +6,7 @@
  */
 #include "src/gpu/ganesh/geometry/GrStyledShape.h"
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkArc.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPathEffect.h"
@@ -530,7 +531,7 @@ public:
     }
 
 private:
-    GrShape* fShape;
+    raw_ptr<GrShape> fShape;
     bool fInverted;
 };
 

@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 
+#include "src/partition_alloc/raw_ref.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkTypes.h"
 #include "src/core/SkTHash.h"
 #include "src/sksl/SkSLAnalysis.h"
@@ -109,7 +111,7 @@ public:
     }
 
 private:
-    const THashSet<const Variable*>* fLoopIndices;
+    raw_ptr<const THashSet<const Variable *>> fLoopIndices;
     using INHERITED = ProgramVisitor;
 };
 
@@ -137,7 +139,7 @@ public:
         if (e.is<IndexExpression>()) {
             const IndexExpression& i = e.as<IndexExpression>();
             if (ConstantExpressionVisitor{&fLoopIndices}.visitExpression(*i.index())) {
-                fErrors.error(i.fPosition, "index expression must be constant");
+                fErrors->error(i.fPosition, "index expression must be constant");
                 return true;
             }
         }
@@ -147,7 +149,7 @@ public:
     using ProgramVisitor::visitProgramElement;
 
 private:
-    ErrorReporter& fErrors;
+    const raw_ref<ErrorReporter> fErrors;
     THashSet<const Variable*> fLoopIndices;
     using INHERITED = ProgramVisitor;
 };

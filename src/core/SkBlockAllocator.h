@@ -6,6 +6,8 @@
  */
 
 #ifndef SkBlockAllocator_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define SkBlockAllocator_DEFINED
 
 #include "include/private/SkASAN.h"
@@ -148,8 +150,8 @@ public:
 
         SkDEBUGCODE(uint32_t fSentinel;)  // known value to check for bad back pointers to blocks
 
-        Block*          fNext;      // doubly-linked list of blocks
-        Block*          fPrev;
+        raw_ptr<Block> fNext;      // doubly-linked list of blocks
+        raw_ptr<Block> fPrev;
 
         // Each block tracks its own cursor because as later blocks are released, an older block
         // may become the active tail again.
@@ -167,7 +169,7 @@ public:
     // Tuple representing a range of bytes, marking the unaligned start, the first aligned point
     // after any padding, and the upper limit depending on requested size.
     struct ByteRange {
-        Block* fBlock;         // Owning block
+        raw_ptr<Block> fBlock;         // Owning block
         int    fStart;         // Inclusive byte lower limit of byte range
         int    fAlignedOffset; // >= start, matching alignment requirement (i.e. first real byte)
         int    fEnd;           // Exclusive upper limit of byte range
@@ -446,7 +448,7 @@ private:
 
     int scratchBlockSize() const { return fHead.fPrev ? fHead.fPrev->fSize : 0; }
 
-    Block* fTail; // All non-head blocks are heap allocated; tail will never be null.
+    raw_ptr<Block> fTail; // All non-head blocks are heap allocated; tail will never be null.
 
     // All remaining state is packed into 64 bits to keep SkBlockAllocator at 16 bytes + head block
     // (on a 64-bit system).
@@ -717,7 +719,7 @@ public:
 
         void advance(BlockT* block) {
             fBlock = block;
-            fNext = block ? (Forward ? block->fNext : block->fPrev) : nullptr;
+            fNext = block ? (Forward ? block->fNext.get() : block->fPrev.get()) : nullptr;
             if (!Forward && fNext && fNext->isScratch()) {
                 // For reverse-iteration only, we need to stop at the head, not the scratch block
                 // possibly stashed in head->prev.
@@ -726,16 +728,16 @@ public:
             SkASSERT(!fNext || !fNext->isScratch());
         }
 
-        BlockT* fBlock;
+        raw_ptr<BlockT> fBlock;
         // Cache this before operator++ so that fBlock can be released during iteration
-        BlockT* fNext;
+        raw_ptr<BlockT> fNext;
     };
 
-    Item begin() const { return Item(Forward ? &fAllocator->fHead : fAllocator->fTail); }
+    Item begin() const { return Item(Forward ? &fAllocator->fHead : fAllocator->fTail.get()); }
     Item end() const { return Item(nullptr); }
 
 private:
-    AllocatorT* fAllocator;
+    raw_ptr<AllocatorT> fAllocator;
 };
 
 SkBlockAllocator::BlockIter<true, false> SkBlockAllocator::blocks() {

@@ -6,6 +6,8 @@
  */
 
 #ifndef SKSL_SYMBOL
+#include "src/partition_alloc/raw_ptr.h"
+
 #define SKSL_SYMBOL
 
 #include "include/private/SkAssert.h"
@@ -61,7 +63,7 @@ public:
 
 private:
     std::string_view fName;
-    const Type* fType;
+    raw_ptr<const Type> fType;
 
     using INHERITED = IRNode;
 };

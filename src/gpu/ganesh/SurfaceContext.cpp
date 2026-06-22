@@ -6,6 +6,7 @@
  */
 #include "src/gpu/ganesh/SurfaceContext.h"
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkColorType.h"
@@ -681,7 +682,7 @@ struct SurfaceContext::AsyncReadPixelContext {
     ReadPixelsCallback* fClientCallback;
     ReadPixelsContext fClientContext;
     SkISize fSize;
-    GrClientMappedBufferManager* fMappedBufferManager;
+    raw_ptr<GrClientMappedBufferManager> fMappedBufferManager;
 
     PixelTransferResult fPrimaryTransfer; // RGBA or Y
     PixelTransferResult fUTransfer = {};
@@ -774,7 +775,7 @@ struct SurfaceContext::AsyncReadPixelContext {
             if (result && !result->addTransferResult(*transfer,
                                                      size,
                                                      transfer->fRowBytes,
-                                                     fMappedBufferManager)) {
+                                                     fMappedBufferManager.get())) {
                 result.reset();
             }
             if (!result && transfer->fTransferBuffer->isMapped()) {

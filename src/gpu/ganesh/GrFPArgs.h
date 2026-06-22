@@ -5,7 +5,11 @@
  * found in the LICENSE file.
  */
 
+#include "src/partition_alloc/raw_ref.h"
+
 #ifndef GrFPArgs_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define GrFPArgs_DEFINED
 
 #include "include/private/SkAssert.h"
@@ -31,11 +35,11 @@ struct GrFPArgs {
         SkASSERT(fSurfaceDrawContext);
     }
 
-    skgpu::ganesh::SurfaceDrawContext* fSurfaceDrawContext;
+    raw_ptr<skgpu::ganesh::SurfaceDrawContext> fSurfaceDrawContext;
 
-    const GrColorInfo* fDstColorInfo;
+    raw_ptr<const GrColorInfo> fDstColorInfo;
 
-    const SkSurfaceProps& fSurfaceProps;
+    const raw_ref<const SkSurfaceProps> fSurfaceProps;
 
     Scope fScope;
 };

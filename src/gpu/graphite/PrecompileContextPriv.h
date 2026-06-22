@@ -6,6 +6,8 @@
  */
 
 #ifndef skgpu_graphite_PrecompileContextPriv_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define skgpu_graphite_PrecompileContextPriv_DEFINED
 
 #include "include/gpu/graphite/PrecompileContext.h"
@@ -56,7 +58,7 @@ private:
     const PrecompileContextPriv* operator&() const;
     PrecompileContextPriv *operator&();
 
-    PrecompileContext* fPrecompileContext;
+    raw_ptr<PrecompileContext> fPrecompileContext;
 };
 
 inline PrecompileContextPriv PrecompileContext::priv() { return PrecompileContextPriv(this); }

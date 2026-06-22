@@ -6,6 +6,8 @@
  */
 
 #ifndef SkBitmapDevice_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define SkBitmapDevice_DEFINED
 
 #include "include/core/SkBitmap.h"
@@ -153,8 +155,8 @@ private:
                     const SkPaint&,
                     sk_sp<SkMipmap>);
 
-    void* fRasterHandle = nullptr;
-    skcpu::RecorderImpl* fRecorder = nullptr;
+    raw_ptr<void> fRasterHandle = nullptr;
+    raw_ptr<skcpu::RecorderImpl> fRecorder = nullptr;
     SkBitmap fBitmap;
     SkRasterClipStack fRCStack;
     skcpu::GlyphRunListPainter fGlyphPainter;

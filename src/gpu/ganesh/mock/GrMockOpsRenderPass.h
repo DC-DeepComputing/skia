@@ -6,6 +6,8 @@
  */
 
 #ifndef GrMockOpsRenderPass_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define GrMockOpsRenderPass_DEFINED
 
 #include "include/core/SkRefCnt.h"
@@ -81,7 +83,7 @@ private:
         }
     }
 
-    GrMockGpu* fGpu;
+    raw_ptr<GrMockGpu> fGpu;
     GrLoadOp fColorLoadOp;
     int fNumDraws = 0;
 

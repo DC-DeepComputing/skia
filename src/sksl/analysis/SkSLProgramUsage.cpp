@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkDebug.h"
@@ -135,7 +136,7 @@ public:
     using ProgramVisitor::visitProgramElement;
     using ProgramVisitor::visitStatement;
 
-    ProgramUsage* fUsage;
+    raw_ptr<ProgramUsage> fUsage;
     int fDelta;
     using INHERITED = ProgramVisitor;
 };

@@ -7,6 +7,7 @@
 
 #include "src/core/SkDraw.h"
 
+#include "src/partition_alloc/raw_ptr.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColorType.h"
 #include "include/core/SkImageInfo.h"
@@ -92,9 +93,9 @@ Draw::Draw() { fBlitterChooser = SkBlitter::Choose; }
 
 struct PtProcRec {
     SkCanvas::PointMode fMode;
-    const SkPaint*  fPaint;
-    const SkRegion* fClip;
-    const SkRasterClip* fRC;
+    raw_ptr<const SkPaint> fPaint;
+    raw_ptr<const SkRegion> fClip;
+    raw_ptr<const SkRasterClip> fRC;
 
     // computed values
     SkRect   fClipBounds;
@@ -719,7 +720,7 @@ void Draw::drawRect(const SkRect& prePaintRect,
         return;
     }
 
-    SkTCopyOnFirstWrite<SkMatrix> matrix(fCTM);
+    SkTCopyOnFirstWrite<SkMatrix> matrix(fCTM.get());
     if (paintMatrix) {
         SkASSERT(postPaintRect);
         matrix.writable()->preConcat(*paintMatrix);

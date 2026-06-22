@@ -6,6 +6,8 @@
  */
 
 #ifndef skgpu_graphite_PrecompileShaderPriv_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define skgpu_graphite_PrecompileShaderPriv_DEFINED
 
 #include "include/gpu/graphite/precompile/PrecompileShader.h"
@@ -49,7 +51,7 @@ private:
     const PrecompileShaderPriv* operator&() const;
     PrecompileShaderPriv *operator&();
 
-    PrecompileShader* fPrecompileShader;
+    raw_ptr<PrecompileShader> fPrecompileShader;
 };
 
 inline PrecompileShaderPriv PrecompileShader::priv() { return PrecompileShaderPriv(this); }
