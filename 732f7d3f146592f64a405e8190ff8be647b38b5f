@@ -16,6 +16,52 @@
       "message": "PTAL",
       "revId": "732f7d3f146592f64a405e8190ff8be647b38b5f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a456f6a1_c01feb05",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 869,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-22T15:24:55Z",
+      "side": 1,
+      "message": "Why do we need another barrier after we\u0027ve assigned it?",
+      "range": {
+        "startLine": 869,
+        "startChar": 0,
+        "endLine": 869,
+        "endChar": 56
+      },
+      "revId": "732f7d3f146592f64a405e8190ff8be647b38b5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a6898cb_4d44190a",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 3246,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-22T15:24:55Z",
+      "side": 1,
+      "message": "This seems brittle, I don\u0027t believe there is any sksl syntax that is preventing us from passing in a more complex expression than just a variable reference. Does wgsl require this to be an lvalue?",
+      "range": {
+        "startLine": 3246,
+        "startChar": 0,
+        "endLine": 3246,
+        "endChar": 61
+      },
+      "revId": "732f7d3f146592f64a405e8190ff8be647b38b5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
