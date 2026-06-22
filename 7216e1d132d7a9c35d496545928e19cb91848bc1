@@ -517,6 +517,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "76ffac27_5a9dfbcc",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorScalar.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 525,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-22T19:39:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e64f4cad_59352559",
+      "range": {
+        "startLine": 525,
+        "startChar": 12,
+        "endLine": 525,
+        "endChar": 25
+      },
+      "revId": "7216e1d132d7a9c35d496545928e19cb91848bc1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "51549db6_79f36963",
@@ -589,6 +613,30 @@
       "side": 1,
       "message": "explained by the tiling code?",
       "parentUuid": "dcd1a116_aeae777e",
+      "range": {
+        "startLine": 75,
+        "startChar": 9,
+        "endLine": 75,
+        "endChar": 22
+      },
+      "revId": "7216e1d132d7a9c35d496545928e19cb91848bc1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f09d5a1b_f7f693ce",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-22T19:39:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "660fbff2_b2d956b2",
       "range": {
         "startLine": 75,
         "startChar": 9,
