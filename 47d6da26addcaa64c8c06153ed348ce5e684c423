@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ebb66f7_147bff50",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 52
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4569768
+      },
+      "writtenOn": "2026-06-22T08:00:32Z",
+      "side": 1,
+      "message": "I\u0027ve added the Rust ICO decoder to infra tasks.json and I\u0027ve rerun the presubmit tests on my machine with them passing.\n\nHopefully all tests should be green now and with no merge conflicts.",
+      "revId": "47d6da26addcaa64c8c06153ed348ce5e684c423",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
