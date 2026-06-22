@@ -3241,6 +3241,11 @@ std::string WGSLCodeGenerator::assembleIntrinsicCall(const FunctionCall& call,
 
     const ExpressionArray& arguments = call.arguments();
     switch (kind) {
+        case k_workgroupUniformLoad_IntrinsicKind: {
+            std::string argument = this->assembleExpression(*arguments[0], Precedence::kSequence);
+            return "workgroupUniformLoad(&" + argument + ")";
+        }
+
         case k_atan_IntrinsicKind: {
             const char* name = (arguments.size() == 1) ? "atan" : "atan2";
             return this->assembleSimpleIntrinsic(name, call);
