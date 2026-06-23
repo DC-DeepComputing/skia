@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96495261_cc7e3fb6",
+        "filename": "src/core/SkResourceCache.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 466,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-06-23T19:55:33Z",
+      "side": 1,
+      "message": "nit: 100 chars. Depending on how you want to break and make this them most readable, you could try putting the \"static SkSyncResourceCache* gResourceCache \u003d\" outside the defined statement and just have the two new\u0027s inside? Now sure how that will look off the top of my head so your call.",
+      "range": {
+        "startLine": 466,
+        "startChar": 101,
+        "endLine": 466,
+        "endChar": 116
+      },
+      "revId": "1e753e13e93009f898851d976135e2ba7c40216a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79f45232_91d611c8",
+        "filename": "src/core/SkResourceCache.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 468,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-06-23T19:55:33Z",
+      "side": 1,
+      "message": "nit: 100 chars",
+      "range": {
+        "startLine": 468,
+        "startChar": 100,
+        "endLine": 468,
+        "endChar": 117
+      },
+      "revId": "1e753e13e93009f898851d976135e2ba7c40216a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
