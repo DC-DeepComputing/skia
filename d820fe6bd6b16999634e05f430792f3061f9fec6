@@ -16,6 +16,97 @@
       "message": "PTAL",
       "revId": "d820fe6bd6b16999634e05f430792f3061f9fec6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47a2a64e_8ef45ba2",
+        "filename": "bench/graphite/sparse_strips/CoverageBench.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-23T14:50:26Z",
+      "side": 1,
+      "message": "It seems like this should have \"scalar\" somewhere in its name.",
+      "revId": "d820fe6bd6b16999634e05f430792f3061f9fec6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d4b40b2_3292493a",
+        "filename": "bench/graphite/sparse_strips/CoverageBench.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-23T14:50:26Z",
+      "side": 1,
+      "message": "tigerPaths ?",
+      "range": {
+        "startLine": 41,
+        "startChar": 28,
+        "endLine": 41,
+        "endChar": 37
+      },
+      "revId": "d820fe6bd6b16999634e05f430792f3061f9fec6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fba874b6_3e33f653",
+        "filename": "bench/graphite/sparse_strips/CoverageBench.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-23T14:50:26Z",
+      "side": 1,
+      "message": "subPath ?",
+      "revId": "d820fe6bd6b16999634e05f430792f3061f9fec6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5111ba6e_f45e9be5",
+        "filename": "bench/graphite/sparse_strips/CoverageBench.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-23T14:50:26Z",
+      "side": 1,
+      "message": "Surround param name with /* */ ?",
+      "revId": "d820fe6bd6b16999634e05f430792f3061f9fec6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71ea7484_c3dee4cb",
+        "filename": "bench/graphite/sparse_strips/CoverageBench.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-23T14:50:26Z",
+      "side": 1,
+      "message": "Should we be calling clear on both \u0027strips\u0027 and \u0027alphas\u0027 each iteration?\n\nIf so should we call make them member variables and call \u0027fFunc\u0027 once in \u0027onDelayedSetup\u0027 to preallocate the memory?",
+      "revId": "d820fe6bd6b16999634e05f430792f3061f9fec6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
