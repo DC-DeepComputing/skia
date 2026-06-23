@@ -598,10 +598,12 @@ void SkPngRustCodec::getSubsetFromFullImage(SkSpan<const uint8_t> fullImageBuffe
     // otherwise we can decode row by row.
     SkASSERT_RELEASE(fReader->interlaced());
     SkASSERT_RELEASE(this->options().fSubset);
-    SkASSERT_RELEASE(fullImageBuffer.size() >= dst.size());
+    const size_t encodedRowBytes = this->getEncodedRowBytes();
+    SkASSERT_RELEASE(fullImageBuffer.size() >=
+                     offset + static_cast<size_t>(this->options().fSubset->height()) *
+                                      encodedRowBytes);
     // We want the whole row and applyXformRow does the rest, so only offset to correct y value.
     fullImageBuffer = fullImageBuffer.subspan(offset);
-    const size_t encodedRowBytes = this->getEncodedRowBytes();
 
     for (int i = 0; i < this->options().fSubset->height(); ++i) {
         SkSpan<const uint8_t> srcRow = fullImageBuffer.first(encodedRowBytes);
@@ -750,10 +752,11 @@ void SkPngRustCodec::expandDecodedInterlacedRow(SkSpan<uint8_t> dstFrame,
                                             rust::Slice<const uint8_t>(xformedInterlacedRow),
                                             dstBytesPerPixel * 8u);
     } else {
-        fReader->expand_last_interlaced_row(rust::Slice<uint8_t>(dstFrame),
-                                            dstRowStride,
-                                            rust::Slice<const uint8_t>(srcRow),
-                                            dstBytesPerPixel * 8u);
+        fReader->expand_last_interlaced_row(
+                rust::Slice<uint8_t>(dstFrame),
+                dstRowStride,
+                rust::Slice<const uint8_t>(srcRow),
+                static_cast<uint8_t>(this->getEncodedInfo().bitsPerPixel()));
     }
 }
 
