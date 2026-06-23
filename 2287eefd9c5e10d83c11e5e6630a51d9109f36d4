@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52f839c9_8e607e11",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-06-23T16:50:17Z",
+      "side": 1,
+      "message": "Hey both!\n\nJust a heads up for this change (and the WIP change https://skia-review.git.corp.google.com/c/skia/+/1274036): I have only surface-level context and understanding of the subset and sampling handling in the PNG codecs. As such, I’d appreciate if you could help review them carefully.\n\nI’ve used some inspiration from https://skia-review.git.corp.google.com/c/skia/+/919097 and Gemini was able to help also; but I don’t feel I have a strong enough understanding of the existing code to be confident that these changes are fully correct.\n\n@lukasza@google.com: I would be keen to hear your thoughts regarding potentially guarding some of these changes with the \"for_android\" build flag. Right now they are unflagged but if you feel they are risky please let me know and I’ll be happy to add this.",
+      "revId": "2287eefd9c5e10d83c11e5e6630a51d9109f36d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15bfdb39_2abf9ab8",
+        "filename": "src/codec/SkPngCodecBase.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-06-23T16:50:17Z",
+      "side": 1,
+      "message": "This is a drive-by cleanup as it looks equivalent to the previous calculation, but let me know if it isn’t / if you’d rather avoid making this (somewhat unrelated) change",
+      "range": {
+        "startLine": 123,
+        "startChar": 40,
+        "endLine": 123,
+        "endChar": 55
+      },
+      "revId": "2287eefd9c5e10d83c11e5e6630a51d9109f36d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8b262f5_edaaa70c",
+        "filename": "tests/SkPngRustDecoderTest.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 814,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-06-23T16:50:17Z",
+      "side": 1,
+      "message": "@fmalita@google.com can you confirm if this is actually valid? I couldn’t find other existing Skia tests doing this, but it looks like this may used by e.g. [BitmapRegionDecoder](https://source.corp.google.com/h/googleplex-android/platform/superproject/main/+/main:external/skia/client_utils/android/BitmapRegionDecoder.cpp)",
+      "range": {
+        "startLine": 807,
+        "startChar": 16,
+        "endLine": 814,
+        "endChar": 73
+      },
+      "revId": "2287eefd9c5e10d83c11e5e6630a51d9109f36d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
