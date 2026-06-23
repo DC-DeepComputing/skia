@@ -819,6 +819,7 @@ DEF_TEST(RustPngCodec_subset, r) {
     // those each separately, then comparing to the full image decoded.
     test_subset_decode(r, "images/baby_tux.png");
     test_subset_decode(r, "images/plane_interlaced.png");
+    test_subset_decode(r, "images/basi3p01.png");
 }
 
 DEF_TEST(RustPngCodec_interlaced_animated_blending, r) {
@@ -1076,6 +1077,62 @@ DEF_TEST(RustPngCodec_exactRead_overshoot, r) {
         } else {
             // We expect failure on the second iteration because the first decode overshot.
             REPORTER_ASSERT(r, !codec);
+        }
+    }
+}
+#endif
+
+#ifdef SK_CODEC_DECODES_PNG_WITH_LIBPNG
+#include "include/codec/SkPngDecoder.h"
+
+DEF_TEST(RustPngCodec_low_bit_depth_parity_comparison, r) {
+    std::unique_ptr<SkStream> streamRust(GetResourceAsStream("images/basi3p01.png"));
+    std::unique_ptr<SkStream> streamClassic(GetResourceAsStream("images/basi3p01.png"));
+    REPORTER_ASSERT(r, streamRust && streamClassic);
+
+    SkCodec::Result result;
+    std::unique_ptr<SkCodec> codecRust = SkPngRustDecoder::Decode(std::move(streamRust), &result);
+    std::unique_ptr<SkCodec> codecClassic = SkPngDecoder::Decode(std::move(streamClassic), &result);
+    REPORTER_ASSERT(r, codecRust && codecClassic);
+
+    const SkImageInfo info = codecRust->getInfo();
+    const int stripeHeight = info.height() / 4;
+    const int stripeWidth = info.width() / 2;
+
+    for (int y = 0; y < info.height(); y += stripeHeight) {
+        for (int x = 0; x < info.width(); x += stripeWidth) {
+            SkIRect subset = SkIRect::MakeXYWH(x,
+                                               y,
+                                               std::min(stripeWidth, info.width() - x),
+                                               std::min(stripeHeight, info.height() - y));
+            SkCodec::Options options;
+            options.fSubset = &subset;
+
+            SkBitmap bmRust;
+            bmRust.allocPixels(info.makeDimensions(subset.size()));
+            bmRust.eraseColor(SK_ColorTRANSPARENT);
+
+            SkBitmap bmClassic;
+            bmClassic.allocPixels(info.makeDimensions(subset.size()));
+            bmClassic.eraseColor(SK_ColorTRANSPARENT);
+
+            // Decode Rust subset
+            REPORTER_ASSERT(r,
+                            SkCodec::kSuccess ==
+                                    codecRust->startIncrementalDecode(
+                                            info, bmRust.getPixels(), bmRust.rowBytes(), &options));
+            REPORTER_ASSERT(r, SkCodec::kSuccess == codecRust->incrementalDecode());
+
+            // Decode Classic subset
+            REPORTER_ASSERT(
+                    r,
+                    SkCodec::kSuccess ==
+                            codecClassic->startIncrementalDecode(
+                                    info, bmClassic.getPixels(), bmClassic.rowBytes(), &options));
+            REPORTER_ASSERT(r, SkCodec::kSuccess == codecClassic->incrementalDecode());
+
+            // Compare bit-by-bit
+            REPORTER_ASSERT(r, bitmaps_equal(bmRust, bmClassic));
         }
     }
 }
