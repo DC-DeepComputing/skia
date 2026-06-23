@@ -270,7 +270,7 @@ def split_srcs_and_hdrs(name, files, visibility = None):
         visibility = visibility,
     )
 
-_ALLOWED_TEST_UTIL_NAMES = set([
+_ALLOWED_TEST_UTIL_NAMES = [
     "ganesh",
     "ganesh_gl",
     "ganesh_vulkan",
@@ -280,7 +280,7 @@ _ALLOWED_TEST_UTIL_NAMES = set([
     "graphite_native_metal",
     "graphite_native_vulkan",
     "precompile",
-])
+]
 
 _REWRITE_TEST_UTIL_DEPS = {
     "//:ganesh_gl": "//src/gpu/ganesh/gl:ganesh_gl_TEST_UTIL",
