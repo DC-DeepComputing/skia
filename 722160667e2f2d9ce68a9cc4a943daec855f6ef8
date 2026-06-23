@@ -22,6 +22,30 @@
       },
       "revId": "722160667e2f2d9ce68a9cc4a943daec855f6ef8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "312dd0b5_475b7678",
+        "filename": "modules/canvaskit/util.js",
+        "patchSetId": 6
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 10154
+      },
+      "writtenOn": "2026-06-23T16:30:15Z",
+      "side": 1,
+      "message": "At first I tried just having `_getWidth` and `_getHeight` in scope but it wasn\u0027t visible in webgl.js when I did that. I think because webgl.js is an optional module it gets linked in differently and it doesn\u0027t see these functions.",
+      "parentUuid": "5e67bd71_ae30018b",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 9
+      },
+      "revId": "722160667e2f2d9ce68a9cc4a943daec855f6ef8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
