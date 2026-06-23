@@ -97,6 +97,30 @@
       },
       "revId": "3cc8df20131e60c78de1608ac0500952a19cbfda",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c7c3adf_5b504c09",
+        "filename": "bazel/external/libjxl/BUILD.bazel",
+        "patchSetId": 7
+      },
+      "lineNbr": 401,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-23T17:50:44Z",
+      "side": 1,
+      "message": "skcms is fine, I\u0027m just not thrilled about it.",
+      "parentUuid": "e71e9d9a_ffaa957a",
+      "range": {
+        "startLine": 401,
+        "startChar": 20,
+        "endLine": 401,
+        "endChar": 25
+      },
+      "revId": "3cc8df20131e60c78de1608ac0500952a19cbfda",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
