@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6040abfc_28e10f98",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 2593,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-23T15:26:45Z",
+      "side": 1,
+      "message": "Can we split these? Use just acquiare on the read barrier at the start and release after the write?",
+      "range": {
+        "startLine": 2592,
+        "startChar": 0,
+        "endLine": 2593,
+        "endChar": 72
+      },
+      "revId": "922698e36084a03b66c942b36fb0716b39eb58e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

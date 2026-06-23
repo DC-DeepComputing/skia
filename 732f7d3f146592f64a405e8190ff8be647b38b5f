@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d9b379c_c73794f5",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 869,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-23T15:26:45Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "6e178ec2_591ff471",
+      "range": {
+        "startLine": 869,
+        "startChar": 0,
+        "endLine": 869,
+        "endChar": 56
+      },
+      "revId": "732f7d3f146592f64a405e8190ff8be647b38b5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3a6898cb_4d44190a",
@@ -102,6 +126,30 @@
       "side": 1,
       "message": "Yes, WGSL expects:\n`fn workgroupUniformLoad(p : ptr\u003cworkgroup, T\u003e) -\u003e T`\n\nI have added debug checking on the expression and assertions that the variable is workgroup memory.\n\nWDYT?",
       "parentUuid": "3a6898cb_4d44190a",
+      "range": {
+        "startLine": 3246,
+        "startChar": 0,
+        "endLine": 3246,
+        "endChar": 61
+      },
+      "revId": "732f7d3f146592f64a405e8190ff8be647b38b5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "44b92a9e_96541cd4",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 3246,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-23T15:26:45Z",
+      "side": 1,
+      "message": "I think that is reasonable for now; a compiler error would be \"nice\" but doesn\u0027t really change what we\u0027d do if we ever tripped on this assert.",
+      "parentUuid": "a064552d_fa1e3ca6",
       "range": {
         "startLine": 3246,
         "startChar": 0,
