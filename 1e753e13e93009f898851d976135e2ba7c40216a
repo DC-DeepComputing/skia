@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a05c5dd_3ab7968f",
+        "filename": "src/core/SkResourceCache.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 466,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-23T20:05:00Z",
+      "side": 1,
+      "message": "Done. I just did `git clang-format origin/main` and it LGTM",
+      "parentUuid": "96495261_cc7e3fb6",
+      "range": {
+        "startLine": 466,
+        "startChar": 101,
+        "endLine": 466,
+        "endChar": 116
+      },
+      "revId": "1e753e13e93009f898851d976135e2ba7c40216a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "79f45232_91d611c8",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-06-23T19:55:33Z",
       "side": 1,
       "message": "nit: 100 chars",
+      "range": {
+        "startLine": 468,
+        "startChar": 100,
+        "endLine": 468,
+        "endChar": 117
+      },
+      "revId": "1e753e13e93009f898851d976135e2ba7c40216a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "02695adc_f953af1e",
+        "filename": "src/core/SkResourceCache.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 468,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-23T20:05:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "79f45232_91d611c8",
       "range": {
         "startLine": 468,
         "startChar": 100,
