@@ -73,6 +73,30 @@
       },
       "revId": "3cc8df20131e60c78de1608ac0500952a19cbfda",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e71e9d9a_ffaa957a",
+        "filename": "bazel/external/libjxl/BUILD.bazel",
+        "patchSetId": 7
+      },
+      "lineNbr": 401,
+      "author": {
+        "id": 6270
+      },
+      "writtenOn": "2026-06-23T17:37:30Z",
+      "side": 1,
+      "message": "https://github.com/libjxl/libjxl/blob/0ab0617c6542e16e6b1a8b05d155e5fbae4a6176/.gitmodules#L13\n\nupstream needs either skcms or lcms. Given skcms is literally right here whereas lcms would be another third_party dep, using the skcms choice seemed like the obvious one to me? Would you prefer lcms?",
+      "parentUuid": "0ee40f6b_497962a0",
+      "range": {
+        "startLine": 401,
+        "startChar": 20,
+        "endLine": 401,
+        "endChar": 25
+      },
+      "revId": "3cc8df20131e60c78de1608ac0500952a19cbfda",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
