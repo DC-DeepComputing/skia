@@ -105,6 +105,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "95626557_02f677e4",
+        "filename": "src/codec/SkPngCodecBase.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-06-23T18:34:41Z",
+      "side": 1,
+      "message": "Looks good, thanks for cleaning up!",
+      "parentUuid": "15bfdb39_2abf9ab8",
+      "range": {
+        "startLine": 123,
+        "startChar": 40,
+        "endLine": 123,
+        "endChar": 55
+      },
+      "revId": "2287eefd9c5e10d83c11e5e6630a51d9109f36d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b7106b25_4c7b71e8",
@@ -187,6 +211,30 @@
       "writtenOn": "2026-06-23T16:50:17Z",
       "side": 1,
       "message": "@fmalita@google.com can you confirm if this is actually valid? I couldn’t find other existing Skia tests doing this, but it looks like this may used by e.g. [BitmapRegionDecoder](https://source.corp.google.com/h/googleplex-android/platform/superproject/main/+/main:external/skia/client_utils/android/BitmapRegionDecoder.cpp)",
+      "range": {
+        "startLine": 807,
+        "startChar": 16,
+        "endLine": 814,
+        "endChar": 73
+      },
+      "revId": "2287eefd9c5e10d83c11e5e6630a51d9109f36d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9cdf3ae7_0ca7af5c",
+        "filename": "tests/SkPngRustDecoderTest.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 814,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-06-23T18:34:41Z",
+      "side": 1,
+      "message": "Yes, looks valid to me.",
+      "parentUuid": "c8b262f5_edaaa70c",
       "range": {
         "startLine": 807,
         "startChar": 16,
