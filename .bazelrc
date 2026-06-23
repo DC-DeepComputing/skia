@@ -32,8 +32,6 @@ build --extra_toolchains=//toolchain:clang_mac_arm64_toolchain
 build --extra_toolchains=//toolchain:clang_host_mac_x64_target_mac_arm64_toolchain
 build --extra_toolchains=//toolchain:clang_host_mac_arm64_target_mac_x64_toolchain
 build --extra_toolchains=//toolchain:clang_windows_x64_toolchain
-build --extra_toolchains=//toolchain:linux_amd64_ndk_arm64_toolchain
-build --extra_toolchains=//toolchain:linux_amd64_ndk_arm32_toolchain
 
 # Hide DEBUG messages from Bazel.
 # Many of these are things related to the git checkouts that are not relevent to devs.
