@@ -45,6 +45,30 @@
       },
       "revId": "3d26e1ee38dc592042602ae90a278816bb79a1aa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa1e8c89_a11844e3",
+        "filename": "src/codec/SkAvifCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-23T15:38:45Z",
+      "side": 1,
+      "message": "I suppose it\u0027s just 10-bit and 12-bit. How common is this and would it be better to lift it to 16 bit unorm so we don\u0027t lose precision? It shouldn\u0027t take too much work to add a kGray16 format, although gray is an awkward colortype since it\u0027s not renderable.  \n\nSkia\u0027s SkYUVInfo is also likely going to add support for 10-bit and 12-bit values stored in 16 bits. Can the codecs produce YUV 400 as SkYUV metadata instead of having to go to a flattened SkImageInfo?",
+      "parentUuid": "e3048b7e_db35b5d9",
+      "range": {
+        "startLine": 252,
+        "startChar": 25,
+        "endLine": 252,
+        "endChar": 54
+      },
+      "revId": "3d26e1ee38dc592042602ae90a278816bb79a1aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
