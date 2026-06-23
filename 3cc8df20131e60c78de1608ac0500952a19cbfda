@@ -16,6 +16,23 @@
       "message": "I think Noelle would be the best for the gn_to_bp changes and Florin for the codec changes.",
       "revId": "3cc8df20131e60c78de1608ac0500952a19cbfda",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a058de90_b1f25090",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6270
+      },
+      "writtenOn": "2026-06-23T15:45:11Z",
+      "side": 1,
+      "message": "for reference the `include/jxl/` header files are the same as what\u0027s in AOSP: https://cs.android.com/android/platform/superproject/+/android-latest-release:external/libjxl/gen/include/jxl/\n\nand were created by just running a \"normal\" cmake build of jxl and using that result as a check-in. Seems overkill to generate these given what\u0027s in them, but that\u0027s what upstream does so",
+      "revId": "3cc8df20131e60c78de1608ac0500952a19cbfda",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
