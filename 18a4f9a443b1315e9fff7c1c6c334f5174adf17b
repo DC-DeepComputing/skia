@@ -33,6 +33,23 @@
       "message": "Build failures look unrelated WDYT Michael?",
       "revId": "18a4f9a443b1315e9fff7c1c6c334f5174adf17b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97fe91d9_fd95973e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 14529
+      },
+      "writtenOn": "2026-06-23T08:25:56Z",
+      "side": 1,
+      "message": "[LTS sheriff] LGTM",
+      "revId": "18a4f9a443b1315e9fff7c1c6c334f5174adf17b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
