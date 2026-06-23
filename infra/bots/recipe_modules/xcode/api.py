@@ -8,7 +8,7 @@ from recipe_engine import recipe_api
 
 
 class SkiaXCodeApi(recipe_api.RecipeApi):
-  XCODE_BUILD_VERSION = '16a242d' # Xcode 16.0
+  XCODE_BUILD_VERSION = '16e140' # Xcode 16.3
 
   @property
   def version(self):
@@ -64,3 +64,12 @@ class SkiaXCodeApi(recipe_api.RecipeApi):
       self.m.step('install xcode', install_xcode_cmd)
       self.m.step('select xcode', [
           'sudo', 'xcode-select', '-switch', xcode_app_path])
+      try:
+        self.m.step('xcode accept license script', [
+            'sudo', '/usr/local/bin/xcode_accept_license.sh', xcode_app_path, self.version])
+      except self.m.step.StepFailure:  # pragma: nocover
+        pass
+      self.m.step('xcodebuild accept license', [
+          'sudo', '/usr/bin/xcodebuild', '-license', 'accept'])
+      self.m.step('xcodebuild run first launch', [
+          'sudo', '/usr/bin/xcodebuild', '-runFirstLaunch'])
