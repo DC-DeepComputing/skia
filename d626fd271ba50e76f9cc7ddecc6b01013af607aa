@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4208e34_41e7e1fe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3833718
+      },
+      "writtenOn": "2026-06-23T12:10:12Z",
+      "side": 1,
+      "message": "This is failing because the version of `VulkanMemoryAllocator` used in the CI is too old. This fix is for a newer version of `VulkanMemoryAllocator`. Can we update `VulkanMemoryAllocator` with that fix?",
+      "revId": "d626fd271ba50e76f9cc7ddecc6b01013af607aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
