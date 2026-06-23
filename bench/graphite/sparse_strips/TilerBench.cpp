@@ -32,9 +32,9 @@ protected:
 
     void onDelayedSetup() override {
         Flatten flattener;
-        std::vector<SkPath> tigerPath = Tiger::GetTigerPaths();
-        for (auto& verb : tigerPath) {
-            flattener.processPaths<FlattenMode::kSimd>(verb, SkMatrix(),
+        std::vector<SkPath> tigerPaths = Tiger::GetTigerPaths();
+        for (auto& subPath : tigerPaths) {
+            flattener.processPaths<FlattenMode::kSimd>(subPath, SkMatrix(),
                                                        Tiger::kTigerWidthF, Tiger::kTigerHeightF,
                                                        &fPolyline);
         }
