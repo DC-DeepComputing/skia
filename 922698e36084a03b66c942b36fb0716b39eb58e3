@@ -46,6 +46,30 @@
       },
       "revId": "922698e36084a03b66c942b36fb0716b39eb58e3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5df315c_bf091b4f",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 2593,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-23T21:00:14Z",
+      "side": 1,
+      "message": "Assuming C++\u0027s memory order semantics.\n\nbarrier 1\u0027s acquire means that \"no memory reads or writes in the current thread can be reordered before this load.\" This would be fine by itself if we assume that any other thread\u0027s modification of the variable was followed by a release of its own.\n\nRephrasing what you said, what\u0027s happening here is that `workgroupUniformLoad` is acting as the release of any write to that variable, so the code doesn\u0027t have to add the other releases to other stores. Is that right?",
+      "parentUuid": "8a0a4071_af76e0cd",
+      "range": {
+        "startLine": 2592,
+        "startChar": 0,
+        "endLine": 2593,
+        "endChar": 72
+      },
+      "revId": "922698e36084a03b66c942b36fb0716b39eb58e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
