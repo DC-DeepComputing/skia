@@ -16,6 +16,24 @@
       "message": "Removed Graphite_Dawn_Vulkan in PS5",
       "revId": "7006d2f01670ce53e7bae27fa5e2e7ca02fbc1f4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f14b4ede_c389dd0c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-23T18:23:08Z",
+      "side": 1,
+      "message": "Can we suppress `GM_ycbcrimage` for Graphite_Native_Vulkan? It might actually be blocking the dm uploads for Windows and `grvk`.",
+      "parentUuid": "36f20c01_0ff21e49",
+      "revId": "7006d2f01670ce53e7bae27fa5e2e7ca02fbc1f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
