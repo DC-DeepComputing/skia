@@ -362,7 +362,7 @@ public:
 #if defined(GPU_TEST_UTILS)
     int32_t testingOnly_getBackingRefCnt() const;
     GrInternalSurfaceFlags testingOnly_getFlags() const;
-    SkString dump() const;
+    virtual SkString dump() const;
 #endif
 
 #ifdef SK_DEBUG
