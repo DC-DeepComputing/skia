@@ -3241,6 +3241,43 @@ std::string WGSLCodeGenerator::assembleIntrinsicCall(const FunctionCall& call,
 
     const ExpressionArray& arguments = call.arguments();
     switch (kind) {
+        case k_workgroupUniformLoad_IntrinsicKind: {
+            // WGSL 17.11.4: workgroupUniformLoad(p : ptr<workgroup, T>) -> T
+            // The argument must be a pointer-addressable reference expression (variable reference,
+            // struct field, or array element) rooted in a variable declared in the 'workgroup'
+            // address space. Vector components (swizzles or indexed vector elements) and rvalues
+            // are not addressable.
+            // Note (thomsmit): Consider promoting this check to a compile error via
+            // fContext.fErrors->error() (or in frontend finalization checks) if non-workgroup
+            // lvalues are passed.
+#if defined(SK_DEBUG)
+            const Expression* expr = arguments[0].get();
+            const Variable* rootVar = nullptr;
+            while (expr) {
+                if (expr->is<VariableReference>()) {
+                    rootVar = expr->as<VariableReference>().variable();
+                    break;
+                }
+                if (expr->is<FieldAccess>()) {
+                    expr = expr->as<FieldAccess>().base().get();
+                    continue;
+                }
+                if (expr->is<IndexExpression>()) {
+                    const IndexExpression& indexExpr = expr->as<IndexExpression>();
+                    if (indexExpr.base()->type().isVector()) {
+                        break;
+                    }
+                    expr = indexExpr.base().get();
+                    continue;
+                }
+                break;
+            }
+            SkASSERT(rootVar && rootVar->modifierFlags().isWorkgroup());
+#endif
+            std::string argument = this->assembleExpression(*arguments[0], Precedence::kSequence);
+            return "workgroupUniformLoad(&" + argument + ")";
+        }
+
         case k_atan_IntrinsicKind: {
             const char* name = (arguments.size() == 1) ? "atan" : "atan2";
             return this->assembleSimpleIntrinsic(name, call);
