@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "48ef417a_ecdf5ff4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2026-06-23T22:26:31Z",
+      "side": 1,
+      "message": "@kjlubick@google.com it wasn\u0027t immediately clear to me why those bots were failing.  Any thoughts?",
+      "revId": "4ec96fe8d07472a59a5bd34431d5408be7542b0f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
