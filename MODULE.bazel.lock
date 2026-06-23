@@ -268,34 +268,20 @@
         ]
       }
     },
-    "//toolchain:download_ndk_linux_amd64_toolchain.bzl%download_ndk_linux_amd64_toolchain": {
+    "//bazel:ndk_downloader.bzl%ndk_ext": {
       "general": {
-        "bzlTransitiveDigest": "HRwayyrBTWgp5/ZDjirtTA5JGjW1jZZTN8apfZxE3ew=",
-        "usagesDigest": "fw3MUpU5hvK9gQcq+mMn8blWwG3G04cq2/bnJ5kyL9Y=",
+        "bzlTransitiveDigest": "qNuijCg8gxSENX/45b1MIQwIRHIj4sS0OdigOrZ+9qw=",
+        "usagesDigest": "rAaHBWWGwGB4niLkrrRmB4x5lK8RN325+wQB+KvVhYg=",
         "recordedFileInputs": {},
         "recordedDirentsInputs": {},
         "envVariables": {},
         "generatedRepoSpecs": {
           "ndk_linux_amd64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_archive",
-            "attributes": {
-              "urls": [
-                "https://dl.google.com/android/repository/android-ndk-r21e-linux-x86_64.zip",
-                "https://cdn.skia.org/bazel/ad7ce5467e18d40050dc51b8e7affc3e635c85bd8c59be62de32352328ed467e.zip"
-              ],
-              "sha256": "ad7ce5467e18d40050dc51b8e7affc3e635c85bd8c59be62de32352328ed467e",
-              "strip_prefix": "android-ndk-r21e",
-              "build_file": "@@//toolchain:ndk.BUILD"
-            }
+            "repoRuleId": "@@//bazel:ndk_downloader.bzl%ndk_repository",
+            "attributes": {}
           }
         },
-        "recordedRepoMappingEntries": [
-          [
-            "",
-            "bazel_tools",
-            "bazel_tools"
-          ]
-        ]
+        "recordedRepoMappingEntries": []
       }
     },
     "@@apple_support+//crosstool:setup.bzl%apple_cc_configure_extension": {

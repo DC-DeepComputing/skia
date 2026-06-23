@@ -309,8 +309,13 @@ download_clang_mac_toolchain = use_repo_rule("//toolchain:download_mac_toolchain
 
 download_clang_mac_toolchain(name = "clang_mac")
 
-download_ndk_linux_amd64_toolchain = use_extension("//toolchain:download_ndk_linux_amd64_toolchain.bzl", "download_ndk_linux_amd64_toolchain")
-use_repo(download_ndk_linux_amd64_toolchain, "ndk_linux_amd64")
+ndk_ext = use_extension("//bazel:ndk_downloader.bzl", "ndk_ext")
+use_repo(ndk_ext, "ndk_linux_amd64")
+
+register_toolchains(
+    "@ndk_linux_amd64//:ndk_arm64_v8a_toolchain",
+    "@ndk_linux_amd64//:ndk_armeabi_v7a_toolchain",
+)
 
 #toolchain_names = ["clang_windows_amd64", "clang_ios"],
 
