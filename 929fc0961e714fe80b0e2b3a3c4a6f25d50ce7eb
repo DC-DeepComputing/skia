@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "93e496b0_55ea5540",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-06-23T00:03:37Z",
+      "side": 1,
+      "message": "I’d rather punt exploring this later if that’s good with you; I’ll leave this as-is and flagged for now\n\nI remember using the destructor approach before but decided against it because: \n\n- Need to potentially handle cases where we aborted early (e.g. if the decode failed halfway), and avoid calling `finish_decoding` in this case\n\n- `finish_decoding` returns a result (which could be an error), IIUC this error would be swallowed in the destructor rather than propagated back up\n\n- That could potentially be doing I/O in the destructor which I’m not entirely sure is recommended? (my hunch is that it’s somewhat implicit and blocking calls should ideally be explicit, but perhaps that’s a common accepted pattern here?)\n\nI’ve opened an umbrella bug to track Android-specific fixes that could be ported over to every caller: http://b/526739158",
+      "parentUuid": "efecea5e_db8b9bd5",
+      "range": {
+        "startLine": 29,
+        "startChar": 17,
+        "endLine": 30,
+        "endChar": 22
+      },
+      "revId": "929fc0961e714fe80b0e2b3a3c4a6f25d50ce7eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "0106b7e7_0be5d0ab",
@@ -249,6 +273,30 @@
       "side": 1,
       "message": "Makes sense - thank you for explaining.  I wonder if you could leave a short comment to help retain this knowledge for future readers / maintainers?",
       "parentUuid": "baab6245_3914cc85",
+      "range": {
+        "startLine": 435,
+        "startChar": 19,
+        "endLine": 435,
+        "endChar": 22
+      },
+      "revId": "929fc0961e714fe80b0e2b3a3c4a6f25d50ce7eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "68bba965_fd73879e",
+        "filename": "rust/png/FFI.rs",
+        "patchSetId": 11
+      },
+      "lineNbr": 435,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-06-23T00:03:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aec1f64b_4260b8ec",
       "range": {
         "startLine": 435,
         "startChar": 19,
