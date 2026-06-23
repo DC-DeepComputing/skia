@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e0003f7_5c2f61ea",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-06-23T18:24:03Z",
+      "side": 1,
+      "message": "Yes, this is very nice - thanks!",
+      "range": {
+        "startLine": 27,
+        "startChar": 59,
+        "endLine": 28,
+        "endChar": 40
+      },
+      "revId": "2287eefd9c5e10d83c11e5e6630a51d9109f36d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "52f839c9_8e607e11",
@@ -14,6 +37,23 @@
       "writtenOn": "2026-06-23T16:50:17Z",
       "side": 1,
       "message": "Hey both!\n\nJust a heads up for this change (and the WIP change https://skia-review.git.corp.google.com/c/skia/+/1274036): I have only surface-level context and understanding of the subset and sampling handling in the PNG codecs. As such, I’d appreciate if you could help review them carefully.\n\nI’ve used some inspiration from https://skia-review.git.corp.google.com/c/skia/+/919097 and Gemini was able to help also; but I don’t feel I have a strong enough understanding of the existing code to be confident that these changes are fully correct.\n\n@lukasza@google.com: I would be keen to hear your thoughts regarding potentially guarding some of these changes with the \"for_android\" build flag. Right now they are unflagged but if you feel they are risky please let me know and I’ll be happy to add this.",
+      "revId": "2287eefd9c5e10d83c11e5e6630a51d9109f36d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "479e3301_b5b962d8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-06-23T18:24:03Z",
+      "side": 1,
+      "message": "Thank you very much for the CL!",
       "revId": "2287eefd9c5e10d83c11e5e6630a51d9109f36d4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -36,6 +76,99 @@
         "startChar": 40,
         "endLine": 123,
         "endChar": 55
+      },
+      "revId": "2287eefd9c5e10d83c11e5e6630a51d9109f36d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24987271_b7ef3604",
+        "filename": "src/codec/SkPngCodecBase.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-06-23T18:24:03Z",
+      "side": 1,
+      "message": "LGTM",
+      "parentUuid": "15bfdb39_2abf9ab8",
+      "range": {
+        "startLine": 123,
+        "startChar": 40,
+        "endLine": 123,
+        "endChar": 55
+      },
+      "revId": "2287eefd9c5e10d83c11e5e6630a51d9109f36d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7106b25_4c7b71e8",
+        "filename": "src/codec/SkPngCodecBase.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-06-23T18:24:03Z",
+      "side": 1,
+      "message": "Could this also potentially also use `SkCodecPriv::ComputeRowBytesBytesPerPixel`?",
+      "range": {
+        "startLine": 191,
+        "startChar": 23,
+        "endLine": 191,
+        "endChar": 74
+      },
+      "revId": "2287eefd9c5e10d83c11e5e6630a51d9109f36d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "050fd558_71b5bc9d",
+        "filename": "src/codec/SkPngCodecBase.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-06-23T18:24:03Z",
+      "side": 1,
+      "message": "I would lean toward using `SkASSERT_RELEASE` here to match the Chromium guidance here: https://source.chromium.org/chromium/chromium/src/+/main:styleguide/c++/c++.md;l\u003d356-372;drc\u003dbb0a8cec818c2c45184779ae0245f2b2b923f0a7\n\nIn my experience the performance hit is negligible (well-designed `CHECK`-like macros will indicate to the compiler that crashing is a cold path) and having `SkASSERT_RELEASE` has \"saved us\" by transforming what would otherwise be a security bug into a mere stability bug.\n\n(This comment also applies to one other new `SkASSERT` above)",
+      "range": {
+        "startLine": 307,
+        "startChar": 12,
+        "endLine": 307,
+        "endChar": 20
+      },
+      "revId": "2287eefd9c5e10d83c11e5e6630a51d9109f36d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31cc6466_b83a8c66",
+        "filename": "src/codec/SkPngRustCodec.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 604,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-06-23T18:24:03Z",
+      "side": 1,
+      "message": "Maybe this is a bit silly / overboard, but would it be possible to avoid the risk of multiplication (and/or addition) overflow here somehow?  I wasn\u0027t very strict with this in my initial `SkPngRustCodec` code and it caused some preventable issues down that fuzzers found later on... :-(\n\nUsing `SkSafeMath` is one option.  Rearranging may be another (+ adding some comment).  So maybe:\n\n```suggestion\n    SkASSERT_RELEASE(fullImageBuffer.size() \u003e\u003d offset);  // Preventing subtraction underflow.\n    size_t fullRowsInFullImageBuffer \u003d (fullImageBuffer.size() - offset) / encodedRowBytes;\n    SkASSERT_RELEASE(numRows \u003e 0);  // Preventing div-by-zero and size_t-cast-overflow\n    SkASSERT_RELEASE(fullRowsInFullImageBuffer \u003e\u003d static_cast\u003csize_t\u003e(numRows));\n```",
+      "range": {
+        "startLine": 603,
+        "startChar": 0,
+        "endLine": 604,
+        "endChar": 78
       },
       "revId": "2287eefd9c5e10d83c11e5e6630a51d9109f36d4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
