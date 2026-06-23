@@ -373,6 +373,14 @@ void GrDrawingManager::sortTasks() {
         }
 #endif
     }
+
+    SkString label("");
+    SkDebugf("%d tasks\n", fDAG.size());
+    for (const sk_sp<GrRenderTask>& d : fDAG) {
+        SkDebugf("RenderTask: %u\n", d->uniqueID());
+        d->dump(label, label, false, true);
+    }
+
 }
 
 // Reorder the array to match the llist without reffing & unreffing sk_sp's.
@@ -387,6 +395,10 @@ static void reorder_array_by_llist(const SkTInternalLList<T>& llist, TArray<sk_s
         array->at(i++).reset(t);
     }
     SkASSERT(i == array->size());
+}
+
+void GrDrawingManager::foo() {
+
 }
 
 bool GrDrawingManager::reorderTasks(GrResourceAllocator* resourceAllocator) {
