@@ -58,6 +58,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "27483c1e_b9130ef9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-06-23T18:51:25Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "52f839c9_8e607e11",
+      "revId": "2287eefd9c5e10d83c11e5e6630a51d9109f36d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "15bfdb39_2abf9ab8",
@@ -152,6 +170,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "96809e2e_e7485268",
+        "filename": "src/codec/SkPngCodecBase.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-06-23T18:51:25Z",
+      "side": 1,
+      "message": "Ah yes, missed that, thanks!",
+      "parentUuid": "b7106b25_4c7b71e8",
+      "range": {
+        "startLine": 191,
+        "startChar": 23,
+        "endLine": 191,
+        "endChar": 74
+      },
+      "revId": "2287eefd9c5e10d83c11e5e6630a51d9109f36d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "050fd558_71b5bc9d",
@@ -175,6 +217,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "13272fef_2d610e3c",
+        "filename": "src/codec/SkPngCodecBase.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-06-23T18:51:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "050fd558_71b5bc9d",
+      "range": {
+        "startLine": 307,
+        "startChar": 12,
+        "endLine": 307,
+        "endChar": 20
+      },
+      "revId": "2287eefd9c5e10d83c11e5e6630a51d9109f36d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "31cc6466_b83a8c66",
@@ -188,6 +254,30 @@
       "writtenOn": "2026-06-23T18:24:03Z",
       "side": 1,
       "message": "Maybe this is a bit silly / overboard, but would it be possible to avoid the risk of multiplication (and/or addition) overflow here somehow?  I wasn\u0027t very strict with this in my initial `SkPngRustCodec` code and it caused some preventable issues down that fuzzers found later on... :-(\n\nUsing `SkSafeMath` is one option.  Rearranging may be another (+ adding some comment).  So maybe:\n\n```suggestion\n    SkASSERT_RELEASE(fullImageBuffer.size() \u003e\u003d offset);  // Preventing subtraction underflow.\n    size_t fullRowsInFullImageBuffer \u003d (fullImageBuffer.size() - offset) / encodedRowBytes;\n    SkASSERT_RELEASE(numRows \u003e 0);  // Preventing div-by-zero and size_t-cast-overflow\n    SkASSERT_RELEASE(fullRowsInFullImageBuffer \u003e\u003d static_cast\u003csize_t\u003e(numRows));\n```",
+      "range": {
+        "startLine": 603,
+        "startChar": 0,
+        "endLine": 604,
+        "endChar": 78
+      },
+      "revId": "2287eefd9c5e10d83c11e5e6630a51d9109f36d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9c5b1a4_56b84628",
+        "filename": "src/codec/SkPngRustCodec.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 604,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-06-23T18:51:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "31cc6466_b83a8c66",
       "range": {
         "startLine": 603,
         "startChar": 0,
