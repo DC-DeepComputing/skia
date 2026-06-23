@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "96922eb3_77b4713d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-23T15:09:27Z",
+      "side": 1,
+      "message": "The golden images look ok. The build failure is:\n```\nclang++ -MD -MF obj/tests/tests.GradientTest.o.d -DSK_TRIVIAL_ABI\u003d\\[\\[clang::trivial_abi\\]\\] -DSK_GAMMA_APPLY_TO_A8 -DSK_ALLOW_STATIC_GLOBAL_INITIALIZERS\u003d1 -DGPU_TEST_UTILS\u003d1 -DSK_USE_PARTITION_ALLOC -DSK_ENABLE_AVX512_OPTS -DSK_TYPEFACE_FACTORY_CORETEXT -DSK_FONTMGR_CORETEXT_AVAILABLE -DSK_CODEC_DECODES_ICO -DSK_CODEC_DECODES_PNG -DSK_CODEC_DECODES_PNG_WITH_LIBPNG -DSK_CODEC_ENCODES_PNG -DSK_CODEC_ENCODES_PNG_WITH_LIBPNG -DSK_METAL -DSK_ENABLE_MTL_DEBUG_INFO -DSK_PIPELINE_LIFETIME_LOGGING -DSK_CODEC_ENCODES_JPEG -DSK_SUPPORT_PDF -DSK_CODEC_DECODES_JPEG -DSK_CODEC_DECODES_JPEG_GAINMAPS -DSK_XML -DSK_CODEC_ENCODES_WEBP -DSK_ENABLE_ANDROID_UTILS -DSK_CODEC_DECODES_RAW -DSK_CODEC_DECODES_WEBP -DSK_HAS_WUFFS_LIBRARY -DSK_CODEC_DECODES_GIF -DSK_USE_INTERNAL_VULKAN_HEADERS -DSK_CODEC_DECODES_BMP -DSK_CODEC_DECODES_WBMP -DSK_ENABLE_PRECOMPILE -DSK_ASSUME_GL\u003d1 -DSK_GRAPHITE -DSK_USE_PERFETTO -DSK_ENABLE_API_AVAILABLE -DSK_SHAPER_PRIMITIVE_AVAILABLE -DSK_SHAPER_CORETEXT_AVAILABLE -DSK_SHAPER_HARFBUZZ_AVAILABLE -DSK_SHAPER_UNICODE_AVAILABLE -I../../../../../skia/include/third_party/vulkan -I../../../../../skia -I../../../../../skia/modules/skshaper/include -I../../../../../skia/third_party/externals/partition_alloc/src -Igen/third_party/externals/partition_alloc/src -Wno-attributes -ffp-contract\u003doff -fPIC -fvisibility\u003dhidden -isysroot /Volumes/Work/s/w/ir/cache/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.0.sdk -target arm64-apple-macos11 -fstrict-aliasing -g -gdwarf-4 -DREBUILD_IF_CHANGED_xcode_build_version\u003d16a242d -O1 -Werror -Wall -Wextra -Winit-self -Wpointer-arith -Wsign-compare -Wvla -Wno-deprecated-declarations -Wno-maybe-uninitialized -Wno-psabi -Wno-switch-default -Wno-unused-parameter -fcolor-diagnostics -Weverything -Wno-unknown-warning-option -Wno-weak-template-vtables -Wno-nonportable-include-path -Wno-nonportable-system-include-path -Wno-cast-align -Wno-conversion -Wno-disabled-macro-expansion -Wno-documentation -Wno-documentation-unknown-command -Wno-double-promotion -Wno-exit-time-destructors -Wno-float-equal -Wno-global-constructors -Wno-missing-prototypes -Wno-missing-variable-declarations -Wno-pedantic -Wno-reserved-id-macro -Wno-reserved-identifier -Wno-signed-enum-bitfield -Wno-switch-enum -Wno-thread-safety-negative -Wno-undef -Wno-unreachable-code-break -Wno-unreachable-code-return -Wno-unused-macros -Wno-unused-member-function -Wno-non-c-typedef-for-linkage -Wno-lifetime-safety -Wno-lifetime-safety-suggestions -Wno-lifetime-safety-validations -Wno-cast-function-type-strict -Wno-covered-switch-default -Wno-deprecated -Wno-missing-noreturn -Wno-newline-eof -Wno-old-style-cast -Wno-padded -Wno-pessimizing-move -Wno-nrvo -Wno-unique-object-duplication -Wno-return-std-move-in-c++11 -Wno-shadow-field-in-constructor -Wno-shadow-uncaptured-local -Wno-zero-as-null-pointer-constant -Wno-declaration-after-statement -Wno-unsafe-buffer-usage -Wno-range-loop-analysis -Wrange-loop-construct -Wdeprecated-anon-enum-enum-conversion -Wdeprecated-array-compare -Wdeprecated-attributes -Wdeprecated-comma-subscript -Wdeprecated-copy -Wdeprecated-copy-dtor -Wdeprecated-dynamic-exception-spec -Wdeprecated-enum-compare -Wdeprecated-enum-compare-conditional -Wdeprecated-enum-enum-conversion -Wdeprecated-enum-float-conversion -Wdeprecated-increment-bool -Wdeprecated-register -Wdeprecated-this-capture -Wdeprecated-volatile -Wdeprecated-writable-str -Wextra-semi -isystem /Volumes/Work/s/w/ir/skia/third_party/libpng -isystem /Volumes/Work/s/w/ir/skia/third_party/externals/libpng -isystem /Volumes/Work/s/w/ir/skia/third_party/externals/libwebp/src -isystem /Volumes/Work/s/w/ir/skia/third_party/externals/libwebp -isystem /Volumes/Work/s/w/ir/skia/third_party/externals/zlib -fvisibility-inlines-hidden -std\u003dc++20 -fno-exceptions -fno-rtti -Wnon-virtual-dtor -Wno-noexcept-type -Wno-abstract-vbase-init -Wno-weak-vtables -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-undefined-func-template -Wc++98-compat-extra-semi -Wno-c++20-compat -c ../../../../../skia/tests/GradientTest.cpp -o obj/tests/tests.GradientTest.o\n../../../../../skia/tests/GradientTest.cpp:579:13: error: unused function \u0027test_many_stop_linear_hardstops\u0027 [-Werror,-Wunused-function]\n  579 | static void test_many_stop_linear_hardstops(skiatest::Reporter* reporter, SkSurface* surface) {\n      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n      ```",
+      "revId": "c55a3137409a22276b2f4e33f6e1c78b315e6b58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a6a5a5f_0687d2e1",
+        "filename": "src/gpu/ganesh/gradients/GrGradientShader.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 550,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-23T15:09:27Z",
+      "side": 1,
+      "message": "This can be `to_half(skvx::float4{r, g, b, a}).store(dst);`",
+      "range": {
+        "startLine": 547,
+        "startChar": 0,
+        "endLine": 550,
+        "endChar": 34
+      },
+      "revId": "c55a3137409a22276b2f4e33f6e1c78b315e6b58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9fca2ba3_bb0d899e",
+        "filename": "src/gpu/ganesh/gradients/GrGradientShader.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 567,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-23T15:09:27Z",
+      "side": 1,
+      "message": "While the other ganesh shaders are structured to be based on scale + bias parameters, if we upload only the colors and offsets, then we can have the `EncodeGradientStopToHalf` build the entire SkBitmap that should be uploaded.  I think that consolidation between the two is valuable, and it will mean that the SkSL for the ganesh and graphite shaders is also much closer to the same.",
+      "range": {
+        "startLine": 555,
+        "startChar": 0,
+        "endLine": 567,
+        "endChar": 26
+      },
+      "revId": "c55a3137409a22276b2f4e33f6e1c78b315e6b58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
