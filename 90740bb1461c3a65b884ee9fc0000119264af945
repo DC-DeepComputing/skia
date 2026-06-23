@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "16751b35_d7ef17f7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-23T14:54:22Z",
+      "side": 1,
+      "message": "I do not think Skia should add this new blend mode. Skia provides runtime SkBlender effects that can be used by Chromium to implement this feature. SkBlendMode\u0027s primary benefit is to describe blend functions that have a chance of mapping to hardware acceleration. \n\nGreg, are you inclined to agree with that stance?",
+      "revId": "90740bb1461c3a65b884ee9fc0000119264af945",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
