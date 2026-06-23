@@ -240,6 +240,9 @@ class CMakeParser:
             extra_params.extend([
                 "--dawn-json", "src/dawn/dawn.json",
                 "--wire-json", "src/dawn/dawn_wire.json",
+                "--native-json", "src/dawn/dawn_native.json",
+                "--kotlin-json", "src/dawn/dawn_kotlin.json",
+                "--webgpu-kt-docs", "src/dawn/webgpu_kt_docs.json",
             ])
 
         i = 0

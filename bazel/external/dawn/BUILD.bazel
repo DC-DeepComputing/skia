@@ -140,12 +140,18 @@ DAWN_GENERATOR_TEMPLATES = glob(
 DAWN_JSON_GENERATOR_SRCS = DAWN_GENERATOR_TEMPLATES + [
     "src/dawn/dawn.json",
     "src/dawn/dawn_wire.json",
+    "src/dawn/dawn_native.json",
+    "src/dawn/dawn_kotlin.json",
+    "src/dawn/webgpu_kt_docs.json",
 ]
 
 DAWN_JSON_GENERATOR_CMD = (
     "$(location :dawn_json_generator) " +
     "--dawn-json $(location src/dawn/dawn.json) " +
     "--wire-json $(location src/dawn/dawn_wire.json) " +
+    "--native-json $(location src/dawn/dawn_native.json) " +
+    "--kotlin-json $(location src/dawn/dawn_kotlin.json) " +
+    "--webgpu-kt-docs $(location src/dawn/webgpu_kt_docs.json) " +
     DAWN_TEMPLATE_DIR_FLAG
 )
 
