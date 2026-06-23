@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8f52050_14855572",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-23T13:37:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "34c98b9e_5e099dc8",
+      "revId": "5b3adfc93b935441a13a05000c4ac0d919d7432f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c0aab644_8a93bc67",
@@ -31,6 +49,30 @@
       "writtenOn": "2026-06-17T20:51:17Z",
       "side": 1,
       "message": "For 32 bit architectures we need something different.",
+      "range": {
+        "startLine": 75,
+        "startChar": 57,
+        "endLine": 75,
+        "endChar": 70
+      },
+      "revId": "5b3adfc93b935441a13a05000c4ac0d919d7432f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "71e40bb6_45964633",
+        "filename": "src/xml/SkXMLParser.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-23T13:37:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c0aab644_8a93bc67",
       "range": {
         "startLine": 75,
         "startChar": 57,
