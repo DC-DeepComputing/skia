@@ -22,6 +22,30 @@
       },
       "revId": "922698e36084a03b66c942b36fb0716b39eb58e3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a0a4071_af76e0cd",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 2593,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-23T20:21:21Z",
+      "side": 1,
+      "message": "Both are necessary:\nBarrier 1, acquire: Is necessary so that the subsequent load is not reordered prior to the barrier (which would cause it to read stale data before other threads finish writing).\nBarrier 1, release: Is necessary so that prior writes to shared memory are fully flushed and not reordered after the barrier.\nBarrier 2, acquire: Is necessary so that subsequent writes are not reordered prior to the barrier (which would cause other threads to overwrite the data before the load happens).\nBarrier 2, release: Is necessary so that the prior load completes and is not reordered after the barrier.\n\nAt a meta-level, we also want uniform behavior across the backends. (I.e. workgroupUniformLoad() can be used somewhat creatively if you can also assume that it\u0027s a normal barrier). Tint simply adds their the workgroupBarrier, which we could maybe do here for clarity?\nhttps://crsrc.org/c/third_party/angle/third_party/dawn/src/tint/lang/wgsl/reader/lower/lower.cc;drc\u003dd372be1054684effe1d593ce4f8255fe05e27a65;l\u003d233",
+      "parentUuid": "6040abfc_28e10f98",
+      "range": {
+        "startLine": 2592,
+        "startChar": 0,
+        "endLine": 2593,
+        "endChar": 72
+      },
+      "revId": "922698e36084a03b66c942b36fb0716b39eb58e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
