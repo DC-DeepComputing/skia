@@ -12,6 +12,7 @@ bazel_dep(name = "platforms", version = "1.0.0")
 bazel_dep(name = "rules_cc", version = "0.1.5")
 bazel_dep(name = "rules_license", version = "1.0.0")
 bazel_dep(name = "rules_python", version = "1.3.0")
+bazel_dep(name = "rules_android_ndk", version = "0.1.5")
 bazel_dep(name = "rules_rust", version = "0.60.0")
 bazel_dep(name = "rules_shell", version = "0.4.1")
 
@@ -309,8 +310,12 @@ download_clang_mac_toolchain = use_repo_rule("//toolchain:download_mac_toolchain
 
 download_clang_mac_toolchain(name = "clang_mac")
 
-download_ndk_linux_amd64_toolchain = use_extension("//toolchain:download_ndk_linux_amd64_toolchain.bzl", "download_ndk_linux_amd64_toolchain")
-use_repo(download_ndk_linux_amd64_toolchain, "ndk_linux_amd64")
+ndk_ext = use_extension("//bazel:ndk_downloader.bzl", "ndk_ext")
+use_repo(ndk_ext, "androidndk")
+
+register_toolchains(
+    "@androidndk//:all",
+)
 
 #toolchain_names = ["clang_windows_amd64", "clang_ios"],
 
