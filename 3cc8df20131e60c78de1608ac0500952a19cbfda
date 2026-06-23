@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3034a95_c52f9139",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-23T15:30:43Z",
+      "side": 1,
+      "message": "I think Noelle would be the best for the gn_to_bp changes and Florin for the codec changes.",
+      "revId": "3cc8df20131e60c78de1608ac0500952a19cbfda",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
