@@ -170,6 +170,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "82a0541c_5734075b",
+        "filename": "bench/graphite/sparse_strips/CoverageBench.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-23T20:31:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "60124bf9_51d3bba8",
+      "revId": "d820fe6bd6b16999634e05f430792f3061f9fec6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "71ea7484_c3dee4cb",
