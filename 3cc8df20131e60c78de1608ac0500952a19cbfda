@@ -50,6 +50,29 @@
       "message": "+Kaylee for Bazel.",
       "revId": "3cc8df20131e60c78de1608ac0500952a19cbfda",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ee40f6b_497962a0",
+        "filename": "bazel/external/libjxl/BUILD.bazel",
+        "patchSetId": 7
+      },
+      "lineNbr": 401,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-23T17:15:55Z",
+      "side": 1,
+      "message": "Why does libjxl depend on skcms? This dep should probably go elsewhere",
+      "range": {
+        "startLine": 401,
+        "startChar": 20,
+        "endLine": 401,
+        "endChar": 25
+      },
+      "revId": "3cc8df20131e60c78de1608ac0500952a19cbfda",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
