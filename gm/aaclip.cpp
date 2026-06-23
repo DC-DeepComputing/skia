@@ -20,201 +20,157 @@
 #include "src/core/SkCanvasPriv.h"
 #include "tools/ToolUtils.h"
 
-/** Draw a 2px border around the target, then red behind the target;
-    set the clip to match the target, then draw >> the target in blue.
-*/
+#include <span>
 
-static void draw(SkCanvas* canvas, SkRect& target, int x, int y) {
-    SkPaint borderPaint;
-    borderPaint.setColor(SkColorSetRGB(0x0, 0xDD, 0x0));
-    borderPaint.setAntiAlias(true);
-    SkPaint backgroundPaint;
-    backgroundPaint.setColor(SkColorSetRGB(0xDD, 0x0, 0x0));
-    backgroundPaint.setAntiAlias(true);
-    SkPaint foregroundPaint;
-    foregroundPaint.setColor(SkColorSetRGB(0x0, 0x0, 0xDD));
-    foregroundPaint.setAntiAlias(true);
+#include "src/gpu/graphite/DrawCommands.h"
+#include "src/sksl/ir/SkSLType.h"
 
-    canvas->save();
-    canvas->translate(SkIntToScalar(x), SkIntToScalar(y));
-    target.inset(SkIntToScalar(-2), SkIntToScalar(-2));
-    canvas->drawRect(target, borderPaint);
-    target.inset(SkIntToScalar(2), SkIntToScalar(2));
-    canvas->drawRect(target, backgroundPaint);
-    canvas->clipRect(target, true);
-    target.inset(SkIntToScalar(-4), SkIntToScalar(-4));
-    canvas->drawRect(target, foregroundPaint);
-    canvas->restore();
-}
-
-static void draw_square(SkCanvas* canvas, int x, int y) {
-    SkRect target (SkRect::MakeWH(10 * SK_Scalar1, 10 * SK_Scalar1));
-    draw(canvas, target, x, y);
-}
-
-static void draw_column(SkCanvas* canvas, int x, int y) {
-    SkRect target (SkRect::MakeWH(1 * SK_Scalar1, 10 * SK_Scalar1));
-    draw(canvas, target, x, y);
-}
-
-static void draw_bar(SkCanvas* canvas, int x, int y) {
-    SkRect target (SkRect::MakeWH(10 * SK_Scalar1, 1 * SK_Scalar1));
-    draw(canvas, target, x, y);
-}
-
-static void draw_rect_tests(SkCanvas* canvas) {
-    draw_square(canvas, 10, 10);
-    draw_column(canvas, 30, 10);
-    draw_bar(canvas, 10, 30);
-}
-
-/**
-   Test a set of clipping problems discovered while writing blitAntiRect,
-   and test all the code paths through the clipping blitters.
-   Each region should show as a blue center surrounded by a 2px green
-   border, with no red.
-*/
-DEF_SIMPLE_GM(aaclip, canvas, 240, 120) {
-        // Initial pixel-boundary-aligned draw
-        draw_rect_tests(canvas);
-
-        // Repeat 4x with .2, .4, .6, .8 px offsets
-        canvas->translate(SK_Scalar1 / 5, SK_Scalar1 / 5);
-        canvas->translate(SkIntToScalar(50), 0);
-        draw_rect_tests(canvas);
-
-        canvas->translate(SK_Scalar1 / 5, SK_Scalar1 / 5);
-        canvas->translate(SkIntToScalar(50), 0);
-        draw_rect_tests(canvas);
-
-        canvas->translate(SK_Scalar1 / 5, SK_Scalar1 / 5);
-        canvas->translate(SkIntToScalar(50), 0);
-        draw_rect_tests(canvas);
-
-        canvas->translate(SK_Scalar1 / 5, SK_Scalar1 / 5);
-        canvas->translate(SkIntToScalar(50), 0);
-        draw_rect_tests(canvas);
-}
-
-/////////////////////////////////////////////////////////////////////////
-
-#ifdef SK_BUILD_FOR_MAC
-
-#include "include/utils/mac/SkCGUtils.h"
-
-static std::unique_ptr<SkCanvas> make_canvas(const SkBitmap& bm) {
-    return SkCanvas::MakeRasterDirect(bm.info(), bm.getPixels(), bm.rowBytes());
-}
-
-static void test_image(SkCanvas* canvas, const SkImageInfo& info) {
-    SkBitmap bm;
-    bm.allocPixels(info);
-
-    if (info.isOpaque()) {
-        bm.eraseColor(SK_ColorGREEN);
-    } else {
-        bm.eraseColor(0);
-    }
-
-    SkPaint paint;
-    paint.setAntiAlias(true);
-    paint.setColor(SK_ColorBLUE);
-    make_canvas(bm)->drawCircle(50, 50, 49, paint);
-    canvas->drawImage(bm.asImage(), 10, 10);
-
-    CGImageRef image = SkCreateCGImageRefWithColorspace(bm, nullptr);
-
-    SkBitmap bm2;
-    SkCreateBitmapFromCGImage(&bm2, image);
-    canvas->drawImage(bm2.asImage(), 10, 120);
-    canvas->drawImage(SkMakeImageFromCGImage(image), 10, 120 + bm2.height() + 10);
-
-    CGImageRelease(image);
-}
-
-DEF_SIMPLE_GM(cgimage, canvas, 800, 250) {
-        const struct {
-            SkColorType fCT;
-            SkAlphaType fAT;
-        } rec[] = {
-            { kRGB_565_SkColorType, kOpaque_SkAlphaType },
-
-            { kRGBA_8888_SkColorType, kPremul_SkAlphaType },
-            { kRGBA_8888_SkColorType, kUnpremul_SkAlphaType },
-            { kRGBA_8888_SkColorType, kOpaque_SkAlphaType },
-
-            { kBGRA_8888_SkColorType, kPremul_SkAlphaType },
-            { kBGRA_8888_SkColorType, kUnpremul_SkAlphaType },
-            { kBGRA_8888_SkColorType, kOpaque_SkAlphaType },
-        };
-
-        for (size_t i = 0; i < std::size(rec); ++i) {
-            SkImageInfo info = SkImageInfo::Make(100, 100, rec[i].fCT, rec[i].fAT);
-            test_image(canvas, info);
-            canvas->translate(info.width() + 10, 0);
-        }
-}
-
-#endif
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
-// skbug.com/40034846
-class ClipCubicGM : public skiagm::GM {
-    const SkScalar W = 100;
-    const SkScalar H = 240;
-
-    SkPath fVPath, fHPath;
+class Image {
 public:
-    ClipCubicGM() {
-        fVPath = SkPathBuilder().moveTo(W, 0)
-                                .cubicTo(W, H-10, 0, 10, 0, H)
-                                .detach();
+    static std::unique_ptr<Image> Make() { return std::make_unique<Image>(); }
+};
 
-        SkMatrix pivot;
-        pivot.setRotate(90, W/2, H/2);
-        fHPath = fVPath.makeTransform(pivot);
+class Sync {
+public:
+    Sync() {}
+
+    void wait() {}
+};
+
+class Command {
+public:
+    enum class Type { kWait, kRect, kRRect, kConvexPath, kConcavePath, kImage };
+
+    Type fType = Type::kRect;
+    SkColor fColor = SK_ColorCYAN;
+    Image* fImage = nullptr;
+    Sync fSync {};
+};
+
+class CommandBuffer {
+public:
+    void add_cmd_to_buffer(Command command) {
+        SkASSERT(fCur < kLimit);
+        fCommands[fCur] = command;
+        fCur++;
     }
+
+    bool full() const { return fCur >= kLimit; }
+    bool empty() const { return fCur == 0; }
+
+    static std::unique_ptr<CommandBuffer> New() {
+        return std::make_unique<CommandBuffer>();
+    }
+
+private:
+    static constexpr int kLimit = 10;
+    int fCur = 0;
+    std::array<Command, kLimit> fCommands;
+};
+
+class GPU {
+public:
+    static Sync Execute(CommandBuffer* commands, Image* dst) {
+        return Sync();
+    }
+
+    static void Display(Image* image) {
+        fCurDisplayed = image;
+    }
+
+private:
+    static Image* fCurDisplayed;
+};
+
+Image* GPU::fCurDisplayed = nullptr;
+
+class CPU {
+public:
+    // Spawns a thread
+    static Sync Execute(CommandBuffer* commands, Image* dst) {
+        return Sync();
+    }
+
+};
+
+void draw_loop(std::span<const Command> drawCalls) {
+    std::unique_ptr<Image> finalImages[2];
+    finalImages[0] = Image::Make();
+    finalImages[1] = Image::Make();
+    int curImage = 0;
+
+    std::vector<std::unique_ptr<Image>> tmpImages;
+    std::vector<std::unique_ptr<CommandBuffer>> tmpBuffers;
+
+    for (int i = 0; i < 10; ++i) {
+        std::vector<std::unique_ptr<CommandBuffer>> buffers;
+
+        buffers.push_back(CommandBuffer::New());
+        CommandBuffer* curBuffer = buffers.back().get();
+
+        Sync lastSync;
+
+        for (const Command& dc : drawCalls) {
+            if (curBuffer->full()) {
+                lastSync = GPU::Execute(curBuffer, finalImages[curImage].get());
+                buffers.push_back(CommandBuffer::New());
+                curBuffer = buffers.back().get();
+            }
+
+            if (dc.fType == Command::Type::kConcavePath) {
+                tmpImages.push_back(Image::Make());
+                Image* tmpImg = tmpImages.back().get();
+
+                tmpBuffers.push_back(CommandBuffer::New());
+                CommandBuffer* tmpBuffer = tmpBuffers.back().get();
+
+                tmpBuffer->add_cmd_to_buffer(dc);
+                Sync imgSync = CPU::Execute(tmpBuffer, tmpImg);
+
+                curBuffer->add_cmd_to_buffer({Command::Type::kWait, SK_ColorRED, nullptr, imgSync});
+                curBuffer->add_cmd_to_buffer({Command::Type::kImage, SK_ColorRED, tmpImg });
+                continue;
+            }
+
+            curBuffer->add_cmd_to_buffer(dc);
+        }
+
+        if (!curBuffer->empty()) {
+            lastSync = GPU::Execute(curBuffer, finalImages[curImage].get());
+        }
+
+        lastSync.wait();
+
+        GPU::Display(finalImages[curImage].get());
+        curImage = (curImage+1) % 2;
+    }
+}
+
+void mainish() {
+    std::unique_ptr<Image> tmp = Image::Make();
+
+    const Command drawCalls[] = {
+        { Command::Type::kRect,  SK_ColorRED },
+        { Command::Type::kRRect, SK_ColorBLUE },
+        { Command::Type::kConcavePath,  SK_ColorGREEN },
+        { Command::Type::kConvexPath,  SK_ColorCYAN },
+        { Command::Type::kImage, SK_ColorRED, tmp.get() },
+    };
+
+    draw_loop(drawCalls);
+}
+
+class ClipCubicGM : public skiagm::GM {
+public:
+    ClipCubicGM() {}
 
 protected:
     SkString getName() const override { return SkString("clipcubic"); }
 
     SkISize getISize() override { return SkISize::Make(400, 410); }
 
-    void doDraw(SkCanvas* canvas, const SkPath& path) {
-        SkPaint paint;
-        paint.setAntiAlias(true);
-
-        paint.setColor(0xFFCCCCCC);
-        canvas->drawPath(path, paint);
-
-        paint.setColor(SK_ColorRED);
-        paint.setStyle(SkPaint::kStroke_Style);
-        canvas->drawPath(path, paint);
-    }
-
-    void drawAndClip(SkCanvas* canvas, const SkPath& path, SkScalar dx, SkScalar dy) {
-        SkAutoCanvasRestore acr(canvas, true);
-
-        SkRect r = SkRect::MakeXYWH(0, H/4, W, H/2);
-        SkPaint paint;
-        paint.setColor(ToolUtils::color_to_565(0xFF8888FF));
-
-        canvas->drawRect(r, paint);
-        this->doDraw(canvas, path);
-
-        canvas->translate(dx, dy);
-
-        canvas->drawRect(r, paint);
-        canvas->clipRect(r);
-        this->doDraw(canvas, path);
-    }
-
     void onDraw(SkCanvas* canvas) override {
-        canvas->translate(80, 10);
-        this->drawAndClip(canvas, fVPath, 200, 0);
-        canvas->translate(0, 200);
-        this->drawAndClip(canvas, fHPath, 200, 0);
+        mainish();
     }
 
 private:
