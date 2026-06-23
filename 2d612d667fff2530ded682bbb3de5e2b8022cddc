@@ -68,6 +68,24 @@
       "parentUuid": "d6c4d9fb_118be78c",
       "revId": "2d612d667fff2530ded682bbb3de5e2b8022cddc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9238d2cd_41a6a818",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3621349
+      },
+      "writtenOn": "2026-06-23T15:39:28Z",
+      "side": 1,
+      "message": "It looks like the dependent patch is too large to merge into the LTS branch. If this CL requires the other to be merged into M144 LTS, it might be better to abandon it to ensure branch stability.",
+      "parentUuid": "44cfc4bf_104d5f04",
+      "revId": "2d612d667fff2530ded682bbb3de5e2b8022cddc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
