@@ -117,6 +117,30 @@
       },
       "revId": "3d26e1ee38dc592042602ae90a278816bb79a1aa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4895957e_f85f4471",
+        "filename": "src/codec/SkAvifCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 4924857
+      },
+      "writtenOn": "2026-06-24T18:36:05Z",
+      "side": 1,
+      "message": "Is this change ok for now while Skia plans to add support for 10 and 12 bits for SkYUVInfo etc and kGray16 format?",
+      "parentUuid": "1ef3c5b3_154e7d2e",
+      "range": {
+        "startLine": 252,
+        "startChar": 25,
+        "endLine": 252,
+        "endChar": 54
+      },
+      "revId": "3d26e1ee38dc592042602ae90a278816bb79a1aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
