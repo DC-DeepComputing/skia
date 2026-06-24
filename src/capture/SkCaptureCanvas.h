@@ -124,6 +124,13 @@ private:
     void addCanvas(SkCanvas* canvas) override {SkNWayCanvas::addCanvas(canvas);}
     void removeCanvas(SkCanvas* canvas) override {SkNWayCanvas::removeCanvas(canvas);}
     void removeAll() override {SkNWayCanvas::removeAll();}
+
+    SkSurface_Base* getSurfaceBase() const override {
+        SkDebugf(
+                "Warning: The SkCanvas you are using is wrapped by a Capture Canvas. The surface "
+                "base is from the underlying fBaseCanvas\n");
+        return fBaseCanvas->getSurfaceBase();
+    }
 };
 
 #endif  // SkCaptureCanvas_DEFINED
