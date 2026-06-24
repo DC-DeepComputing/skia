@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f8ac7f8_719181cb",
+        "filename": "src/gpu/ganesh/GrAHardwareBufferImageGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-06-24T13:53:36Z",
+      "side": 1,
+      "message": "Skia has its own logging system, don\u0027t use Androids. You can look at SkLog.h to find the various macros like SKIA_LOG_D, SKIA_LOG_I, SKIA_LOG_E and SKIA_LOG_W.",
+      "range": {
+        "startLine": 44,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 78
+      },
+      "revId": "3df37b84dbaf65cae8c51b146f7c43ae23ebf7b8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73e35c5f_00611473",
+        "filename": "src/gpu/ganesh/GrAHardwareBufferImageGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-06-24T13:53:36Z",
+      "side": 1,
+      "message": "Why can\u0027t we import a non-protected AHB into a protected Skia context? It is generally allowed to sample from non-protected source into a protected destination. I would understand if we were importing the AHB to use as a render destination, but this function here is importing it as a read only SkImage.",
+      "range": {
+        "startLine": 131,
+        "startChar": 30,
+        "endLine": 132,
+        "endChar": 57
+      },
+      "revId": "3df37b84dbaf65cae8c51b146f7c43ae23ebf7b8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1631bb1b_3b9dee11",
+        "filename": "src/gpu/ganesh/GrAHardwareBufferImageGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-06-24T13:53:36Z",
+      "side": 1,
+      "message": "You never addressed the comment that was made on your original attempted change inside Android. This function is used for both EGL/GLES and Vulkan backends. You cannot assume here that we can and want to use EGL.",
+      "range": {
+        "startLine": 134,
+        "startChar": 8,
+        "endLine": 134,
+        "endChar": 18
+      },
+      "revId": "3df37b84dbaf65cae8c51b146f7c43ae23ebf7b8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
