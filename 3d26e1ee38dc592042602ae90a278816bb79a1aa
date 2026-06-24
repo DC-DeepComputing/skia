@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1bbf95e4_f657ca51",
+        "filename": "src/codec/SkAvifCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 4924857
+      },
+      "writtenOn": "2026-06-24T06:36:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "627d7791_d00613ff",
+      "range": {
+        "startLine": 246,
+        "startChar": 0,
+        "endLine": 250,
+        "endChar": 13
+      },
+      "revId": "3d26e1ee38dc592042602ae90a278816bb79a1aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e3048b7e_db35b5d9",
@@ -61,6 +85,30 @@
       "side": 1,
       "message": "I suppose it\u0027s just 10-bit and 12-bit. How common is this and would it be better to lift it to 16 bit unorm so we don\u0027t lose precision? It shouldn\u0027t take too much work to add a kGray16 format, although gray is an awkward colortype since it\u0027s not renderable.  \n\nSkia\u0027s SkYUVInfo is also likely going to add support for 10-bit and 12-bit values stored in 16 bits. Can the codecs produce YUV 400 as SkYUV metadata instead of having to go to a flattened SkImageInfo?",
       "parentUuid": "e3048b7e_db35b5d9",
+      "range": {
+        "startLine": 252,
+        "startChar": 25,
+        "endLine": 252,
+        "endChar": 54
+      },
+      "revId": "3d26e1ee38dc592042602ae90a278816bb79a1aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ef3c5b3_154e7d2e",
+        "filename": "src/codec/SkAvifCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 4924857
+      },
+      "writtenOn": "2026-06-24T06:36:18Z",
+      "side": 1,
+      "message": "normally is 8, 10 and 12, more of 8. We were focussing on adding monochrome format in android media codecs when this dependency came while executing CTS.\n\nI believe codecs cannot produce YUV 400 as SkYUV metadata today",
+      "parentUuid": "aa1e8c89_a11844e3",
       "range": {
         "startLine": 252,
         "startChar": 25,
