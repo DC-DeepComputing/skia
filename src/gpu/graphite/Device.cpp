@@ -46,6 +46,7 @@
 #include "src/core/SkBlendModePriv.h"
 #include "src/core/SkBlenderBase.h"
 #include "src/core/SkImageFilterTypes.h"  // IWYU pragma: keep
+#include "src/core/SkLatticeIter.h"
 #include "src/core/SkPaintPriv.h"
 #include "src/core/SkPathPriv.h"
 #include "src/core/SkRRectPriv.h"
@@ -98,6 +99,7 @@
 #include "src/gpu/graphite/task/UploadTask.h"
 #include "src/gpu/graphite/text/GlyphData.h"
 #include "src/image/SkImage_Base.h"
+#include "src/sksl/SkSLString.h"
 #include "src/text/gpu/SlugImpl.h"
 #include "src/text/gpu/SubRunContainer.h"
 #include "src/text/gpu/TextBlobRedrawCoordinator.h"
@@ -974,6 +976,44 @@ bool Device::drawAsTiledImageRect(SkCanvas* canvas,
 #endif
     return wasTiled;
 }
+
+void Device::drawImageLattice(const SkImage* image, const SkCanvas::Lattice& lattice,
+                          const SkRect& dst, SkFilterMode filter, const SkPaint& paint) {
+    sk_sp<SkImage> image_sp = sk_ref_sp(image);
+    SkSamplingOptions sampling{};
+    SkLatticeIter iter = SkLatticeIter(lattice, dst);
+
+
+    std::vector<SkCanvas::ImageSetEntry> imageSetEntries;
+    imageSetEntries.reserve(iter.numRectsToDraw());
+
+    SkRect nextSrc, nextDst;
+    bool nextIsFixedColor = false;
+    SkColor nextFixedColor;
+    while (iter.next(&nextSrc, &nextDst, &nextIsFixedColor, &nextFixedColor)) {
+        if (nextIsFixedColor) {
+            SkPaint solidColorPaint;
+            int alpha = SkAlphaMul(SkColorGetA(nextFixedColor), SkAlpha255To256(paint.getAlpha()));
+            solidColorPaint.setColor(SkColorSetA(nextFixedColor, alpha));
+            this->drawRect(nextDst, solidColorPaint);
+        } else {
+            imageSetEntries.push_back(SkCanvas::ImageSetEntry{image_sp,
+                                       nextSrc,
+                                       nextDst,
+                                       /*alpha=*/1.f,
+                                       SkCanvas::kAll_QuadAAFlags});
+        }
+    }
+
+    this->drawEdgeAAImageSet(imageSetEntries.data(),
+                             imageSetEntries.size(),
+                             /*dstClips=*/nullptr,
+                             /*preViewMatrices=*/nullptr,
+                             sampling,
+                             paint,
+                             SkCanvas::SrcRectConstraint::kFast_SrcRectConstraint);
+}
+
 
 void Device::drawOval(const SkRect& oval, const SkPaint& paint) {
     if (paint.getPathEffect()) {
