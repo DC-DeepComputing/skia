@@ -182,6 +182,30 @@
       },
       "revId": "732f7d3f146592f64a405e8190ff8be647b38b5f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f87df0f8_2f573ead",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 3246,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-24T14:01:14Z",
+      "side": 1,
+      "message": "I looked at SkSLFunctionDeclaration.cpp, but I think SkSLFunctionCall.cpp is better?",
+      "parentUuid": "250b1132_81a8481a",
+      "range": {
+        "startLine": 3246,
+        "startChar": 0,
+        "endLine": 3246,
+        "endChar": 61
+      },
+      "revId": "732f7d3f146592f64a405e8190ff8be647b38b5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
