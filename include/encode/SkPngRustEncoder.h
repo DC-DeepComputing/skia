@@ -21,6 +21,8 @@ class SkImage;
 class SkPixmap;
 class SkWStream;
 
+struct SkGainmapInfo;
+
 namespace SkPngRustEncoder {
 
 /*
@@ -63,6 +65,9 @@ struct Options {
      *  79 characters and it can't contain a non-breaking space character.
      */
     sk_sp<SkDataTable> fComments;
+
+    const SkPixmap* fGainmap = nullptr;
+    const SkGainmapInfo* fGainmapInfo = nullptr;
 };
 
 /**
