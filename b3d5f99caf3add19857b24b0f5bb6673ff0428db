@@ -56,6 +56,30 @@
       },
       "revId": "b3d5f99caf3add19857b24b0f5bb6673ff0428db",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2de44260_394b4be9",
+        "filename": "src/sksl/ir/SkSLFunctionCall.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1259,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-24T14:48:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0d187616_5499faac",
+      "range": {
+        "startLine": 1259,
+        "startChar": 0,
+        "endLine": 1259,
+        "endChar": 68
+      },
+      "revId": "b3d5f99caf3add19857b24b0f5bb6673ff0428db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
