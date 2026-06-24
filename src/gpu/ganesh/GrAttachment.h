@@ -54,7 +54,12 @@ public:
     skgpu::Mipmapped mipmapped() const { return fMipmapped; }
 
     bool hasPerformedInitialClear() const { return fHasPerformedInitialClear; }
-    void markHasPerformedInitialClear() { fHasPerformedInitialClear = true; }
+    void markHasPerformedInitialClear() {
+        if (fSupportedUsages & UsageFlags::kStencilAttachment) {
+            SkDebugf("%p: marking stencil as cleared\n", this);
+        }
+        fHasPerformedInitialClear = true;
+    }
 
     // This unique key is used for attachments of the same dimensions, usage, and sample cnt which
     // are shared between multiple render targets at the same time. Only one usage flag may be
@@ -96,7 +101,11 @@ protected:
             , fSupportedUsages(supportedUsages)
             , fSampleCnt(sampleCnt)
             , fMipmapped(mipmapped)
-            , fMemoryless(memoryless) {}
+            , fMemoryless(memoryless) {
+        if (supportedUsages & UsageFlags::kStencilAttachment) {
+            SkDebugf("%p: Created Stencil\n", this);
+        }
+    }
 
 private:
     size_t onGpuMemorySize() const final;
