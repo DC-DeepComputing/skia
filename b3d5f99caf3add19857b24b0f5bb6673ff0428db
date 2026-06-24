@@ -16,6 +16,46 @@
       "message": "PTAL",
       "revId": "b3d5f99caf3add19857b24b0f5bb6673ff0428db",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "423f64f7_11523aec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-24T14:29:36Z",
+      "side": 1,
+      "message": "Yes, I think SkSLFunctionCall is the right move.",
+      "revId": "b3d5f99caf3add19857b24b0f5bb6673ff0428db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d187616_5499faac",
+        "filename": "src/sksl/ir/SkSLFunctionCall.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1259,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-24T14:29:36Z",
+      "side": 1,
+      "message": "This can just be \n```\nif (!rootVar || !rootVar-\u003emodifierFlags().isWorkgroup()) {\n    context.fErrors-\u003eerror(pos, \"workgroupUniformLoad must be called with a variable expression in workgroup address space\");\n    return nullptr;\n}\n```",
+      "range": {
+        "startLine": 1259,
+        "startChar": 0,
+        "endLine": 1259,
+        "endChar": 68
+      },
+      "revId": "b3d5f99caf3add19857b24b0f5bb6673ff0428db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
