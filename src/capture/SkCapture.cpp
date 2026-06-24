@@ -7,6 +7,8 @@
 
 #include "src/capture/SkCapture.h"
 
+#include "include/codec/SkCodec.h"
+#include "include/codec/SkPngDecoder.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkData.h"
@@ -16,8 +18,10 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSerialProcs.h"
 #include "include/core/SkStream.h"
+#include "include/encode/SkPngEncoder.h"
 #include "include/private/SkTArray.h"
 #include "src/capture/SkCaptureManager.h"
+#include "src/image/SkImage_Base.h"
 
 constexpr SkFourByteTag kMagic1  = SkSetFourByteTag('s','k','i','a');
 constexpr SkFourByteTag kMagic2  = SkSetFourByteTag('c','a','p','t');
@@ -146,16 +150,25 @@ sk_sp<SkData> SkCapture::serializeCapture() {
 // PNGs, we want the images that refer to content created from an SkSurface to point to its
 // corresponding SkPicture. This means that we need to create a context for the proc to track these
 // contentIDs.
+
+// TODO figure out whether we should just keep track of these images as pngs or as commands?
+// pngs: debugger.skia does pngs
+// commands: i guess would be useful for cross canvas linking
 SkSerialReturnType SkCapture::serializeImageProc(SkImage* img, void* ctx) {
-    const int contentID = -1; // TODO: replace with real content ID.
-    return SkData::MakeWithCopy(&contentID, sizeof(int));
+    return SkPngEncoder::Encode(as_IB(img)->directContext(), img, SkPngEncoder::Options{});
 }
 
-sk_sp<SkImage> SkCapture::deserializeImageProc(sk_sp<SkData>, std::optional<SkAlphaType>, void*) {
+sk_sp<SkImage> SkCapture::deserializeImageProc(sk_sp<SkData> data,
+                                               std::optional<SkAlphaType> at,
+                                               void* ctx) {
     // TODO: set up the SkCapture context and inspect it to grab SkPictures and pass them as images.
-    SkBitmap b;
-    b.allocN32Pixels(5, 5);
-    SkCanvas canvas(b);
-    canvas.drawColor(SK_ColorMAGENTA);
-    return b.asImage();
+    auto codec = SkPngDecoder::Decode(data, nullptr, nullptr);
+    if (!codec) {
+        SkDebugf("Invalid png data detected\n");
+        return nullptr;
+    }
+    if (auto lazyImage = SkCodecs::DeferredImage(std::move(codec), at)) {
+        return lazyImage->makeRasterImage(/*GrDirectContext=*/nullptr);
+    }
+    return nullptr;
 }

@@ -126,9 +126,6 @@ private:
     void removeAll() override {SkNWayCanvas::removeAll();}
 
     SkSurface_Base* getSurfaceBase() const override {
-        SkDebugf(
-                "Warning: The SkCanvas you are using is wrapped by a Capture Canvas. The surface "
-                "base is from the underlying fBaseCanvas\n");
         return fBaseCanvas->getSurfaceBase();
     }
 };
