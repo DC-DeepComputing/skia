@@ -259,6 +259,12 @@ bool GrVkOpsRenderPass::init(const GrOpsRenderPass::LoadAndStoreInfo& colorInfo,
     GrVkRenderPass::LoadStoreOps vkResolveOps(loadOp, storeOp);
 
     get_vk_load_store_ops(stencilInfo.fLoadOp, stencilInfo.fStoreOp, &loadOp, &storeOp);
+    SkDebugf("**stencil VkOps: load: %s store %s\n",
+        loadOp == VK_ATTACHMENT_LOAD_OP_LOAD ? "load" :
+         (loadOp == VK_ATTACHMENT_LOAD_OP_CLEAR ? "clear" :
+             (loadOp == VK_ATTACHMENT_LOAD_OP_DONT_CARE ? "dontcare" : "other")),
+        storeOp == VK_ATTACHMENT_STORE_OP_STORE ? "store" :
+            (storeOp == VK_ATTACHMENT_STORE_OP_DONT_CARE ? "dontcare" : "other"));
     GrVkRenderPass::LoadStoreOps vkStencilOps(loadOp, storeOp);
 
     GrVkResourceProvider::CompatibleRPHandle rpHandle = fFramebuffer->compatibleRenderPassHandle();
