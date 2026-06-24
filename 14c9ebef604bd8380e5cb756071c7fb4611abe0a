@@ -116,6 +116,24 @@
       "parentUuid": "1f4f1e77_fd998820",
       "revId": "14c9ebef604bd8380e5cb756071c7fb4611abe0a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "32bb846e_99296ce9",
+        "filename": "src/encode/SkPngRustEncoderImpl.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-06-24T18:47:58Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "19c5e1ab_2d73f92f",
+      "revId": "14c9ebef604bd8380e5cb756071c7fb4611abe0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
