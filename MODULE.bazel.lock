@@ -90,6 +90,8 @@
     "https://bcr.bazel.build/modules/re2/2023-09-01/source.json": "e044ce89c2883cd957a2969a43e79f7752f9656f6b20050b62f90ede21ec6eb4",
     "https://bcr.bazel.build/modules/rules_android/0.1.1/MODULE.bazel": "48809ab0091b07ad0182defb787c4c5328bd3a278938415c00a7b69b50c4d3a8",
     "https://bcr.bazel.build/modules/rules_android/0.1.1/source.json": "e6986b41626ee10bdc864937ffb6d6bf275bb5b9c65120e6137d56e6331f089e",
+    "https://bcr.bazel.build/modules/rules_android_ndk/0.1.5/MODULE.bazel": "ab43d418846060de6396e3f1b515a692e945bcd92a9d4541fddcddc8589004ce",
+    "https://bcr.bazel.build/modules/rules_android_ndk/0.1.5/source.json": "2950fc77b8e1f1e3874c4e073776f2258ce46926b43c236620c93517fd2e5865",
     "https://bcr.bazel.build/modules/rules_cc/0.0.1/MODULE.bazel": "cb2aa0747f84c6c3a78dad4e2049c154f08ab9d166b1273835a8174940365647",
     "https://bcr.bazel.build/modules/rules_cc/0.0.10/MODULE.bazel": "ec1705118f7eaedd6e118508d3d26deba2a4e76476ada7e0e3965211be012002",
     "https://bcr.bazel.build/modules/rules_cc/0.0.13/MODULE.bazel": "0e8529ed7b323dad0775ff924d2ae5af7640b23553dfcd4d34344c7e7a867191",
@@ -103,7 +105,8 @@
     "https://bcr.bazel.build/modules/rules_cc/0.0.9/MODULE.bazel": "836e76439f354b89afe6a911a7adf59a6b2518fafb174483ad78a2a2fde7b1c5",
     "https://bcr.bazel.build/modules/rules_cc/0.1.1/MODULE.bazel": "2f0222a6f229f0bf44cd711dc13c858dad98c62d52bd51d8fc3a764a83125513",
     "https://bcr.bazel.build/modules/rules_cc/0.1.5/MODULE.bazel": "88dfc9361e8b5ae1008ac38f7cdfd45ad738e4fa676a3ad67d19204f045a1fd8",
-    "https://bcr.bazel.build/modules/rules_cc/0.1.5/source.json": "4bb4fed7f5499775d495739f785a5494a1f854645fa1bac5de131264f5acdf01",
+    "https://bcr.bazel.build/modules/rules_cc/0.2.14/MODULE.bazel": "353c99ed148887ee89c54a17d4100ae7e7e436593d104b668476019023b58df8",
+    "https://bcr.bazel.build/modules/rules_cc/0.2.14/source.json": "55d0a4587c5592fad350f6e698530f4faf0e7dd15e69d43f8d87e220c78bea54",
     "https://bcr.bazel.build/modules/rules_foreign_cc/0.9.0/MODULE.bazel": "c9e8c682bf75b0e7c704166d79b599f93b72cfca5ad7477df596947891feeef6",
     "https://bcr.bazel.build/modules/rules_fuzzing/0.5.2/MODULE.bazel": "40c97d1144356f52905566c55811f13b299453a14ac7769dfba2ac38192337a8",
     "https://bcr.bazel.build/modules/rules_fuzzing/0.5.2/source.json": "c8b1e2c717646f1702290959a3302a178fb639d987ab61d548105019f11e527e",
@@ -268,39 +271,27 @@
         ]
       }
     },
-    "//toolchain:download_ndk_linux_amd64_toolchain.bzl%download_ndk_linux_amd64_toolchain": {
+    "//bazel:ndk_downloader.bzl%ndk_ext": {
       "general": {
-        "bzlTransitiveDigest": "HRwayyrBTWgp5/ZDjirtTA5JGjW1jZZTN8apfZxE3ew=",
-        "usagesDigest": "fw3MUpU5hvK9gQcq+mMn8blWwG3G04cq2/bnJ5kyL9Y=",
+        "bzlTransitiveDigest": "MBsx2nW962dQysZOGINs8FmcrPUKW7FPw9bVCaaD/oc=",
+        "usagesDigest": "rAaHBWWGwGB4niLkrrRmB4x5lK8RN325+wQB+KvVhYg=",
         "recordedFileInputs": {},
         "recordedDirentsInputs": {},
         "envVariables": {},
         "generatedRepoSpecs": {
-          "ndk_linux_amd64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_archive",
+          "androidndk": {
+            "repoRuleId": "@@//bazel:ndk_downloader.bzl%hybrid_ndk_repository",
             "attributes": {
-              "urls": [
-                "https://dl.google.com/android/repository/android-ndk-r21e-linux-x86_64.zip",
-                "https://cdn.skia.org/bazel/ad7ce5467e18d40050dc51b8e7affc3e635c85bd8c59be62de32352328ed467e.zip"
-              ],
-              "sha256": "ad7ce5467e18d40050dc51b8e7affc3e635c85bd8c59be62de32352328ed467e",
-              "strip_prefix": "android-ndk-r21e",
-              "build_file": "@@//toolchain:ndk.BUILD"
+              "api_level": 21
             }
           }
         },
-        "recordedRepoMappingEntries": [
-          [
-            "",
-            "bazel_tools",
-            "bazel_tools"
-          ]
-        ]
+        "recordedRepoMappingEntries": []
       }
     },
     "@@apple_support+//crosstool:setup.bzl%apple_cc_configure_extension": {
       "general": {
-        "bzlTransitiveDigest": "xcBTf2+GaloFpg7YEh/Bv+1yAczRkiCt3DGws4K7kSk=",
+        "bzlTransitiveDigest": "m3fZqd+xd3/Pi9m1Qh9HuzJhy5jFhctBLfI3CVXOidQ=",
         "usagesDigest": "3L+PK6aRnliv0iIS8m3kdo+LjmvjJWoFCm3qZcPSg+8=",
         "recordedFileInputs": {},
         "recordedDirentsInputs": {},

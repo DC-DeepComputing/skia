@@ -96,13 +96,16 @@ build:for_mac_intel --config=for_mac_x64
 # Android configuration for 32-bit ARM (armeabi-v7a ABI).
 build:for_android_arm32_debug --platforms=//bazel/platform:android_arm32 \
                               --compilation_mode=dbg \
-                              --cc_output_directory_tag=android_arm32_debug
+                              --cc_output_directory_tag=android_arm32_debug \
+                              --cxxopt=-std=c++20
 build:for_android_arm32_release --platforms=//bazel/platform:android_arm32 \
                                 --compilation_mode=opt \
-                                --cc_output_directory_tag=android_arm32_release
+                                --cc_output_directory_tag=android_arm32_release \
+                                --cxxopt=-std=c++20
 build:for_android_arm32_fastbuild --platforms=//bazel/platform:android_arm32 \
                                   --compilation_mode=fastbuild \
-                                  --cc_output_directory_tag=android_arm32_fastbuild
+                                  --cc_output_directory_tag=android_arm32_fastbuild \
+                                  --cxxopt=-std=c++20
 
 build:for_android_arm32_debug_with_rbe --config=for_android_arm32_debug --config=linux_rbe
 build:for_android_arm32_release_with_rbe --config=for_android_arm32_release --config=linux_rbe
@@ -117,13 +120,16 @@ build:android_arm32_rbe --config=for_android_arm32_fastbuild_with_rbe
 # Android configuration for 64-bit ARM (arm64-v8a ABI).
 build:for_android_arm64_debug --platforms=//bazel/platform:android_arm64 \
                               --compilation_mode=dbg \
-                              --cc_output_directory_tag=android_arm64_debug
+                              --cc_output_directory_tag=android_arm64_debug \
+                              --cxxopt=-std=c++20
 build:for_android_arm64_release --platforms=//bazel/platform:android_arm64 \
                                 --compilation_mode=opt \
-                                --cc_output_directory_tag=android_arm64_release
+                                --cc_output_directory_tag=android_arm64_release \
+                                --cxxopt=-std=c++20
 build:for_android_arm64_fastbuild --platforms=//bazel/platform:android_arm64 \
                                   --compilation_mode=fastbuild \
-                                  --cc_output_directory_tag=android_arm64_fastbuild
+                                  --cc_output_directory_tag=android_arm64_fastbuild \
+                                  --cxxopt=-std=c++20
 
 build:for_android_arm64_debug_with_rbe --config=for_android_arm64_debug --config=linux_rbe
 build:for_android_arm64_release_with_rbe --config=for_android_arm64_release --config=linux_rbe
