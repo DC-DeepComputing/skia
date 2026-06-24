@@ -26,6 +26,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9bd98ff3_fa1de781",
+        "filename": "src/encode/SkPngRustEncoderImpl.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-06-24T17:39:23Z",
+      "side": 1,
+      "message": "nitty nit: Let\u0027s move the declaration of the `gainmapVersion` variable closer to the first and only usage on line 217 (as an argument of `WriteChunk`).",
+      "revId": "14c9ebef604bd8380e5cb756071c7fb4611abe0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1f4f1e77_fd998820",
         "filename": "src/encode/SkPngRustEncoderImpl.cpp",
         "patchSetId": 9
