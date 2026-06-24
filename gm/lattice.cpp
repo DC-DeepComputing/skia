@@ -26,6 +26,13 @@
 #include "include/gpu/ganesh/GrDirectContext.h"
 #endif
 
+#if defined(SK_GRAPHITE)
+#include "include/gpu/graphite/Context.h"
+#include "src/gpu/graphite/ContextPriv.h"
+#include "src/gpu/graphite/RecorderPriv.h"
+#include "src/gpu/graphite/TextureProxyView.h"
+#endif
+
 static sk_sp<SkSurface> make_surface(SkCanvas* root, int N, int padLeft, int padTop,
                                      int padRight, int padBottom) {
     SkImageInfo info = SkImageInfo::MakeN32Premul(N + padLeft + padRight, N + padTop + padBottom);
@@ -84,12 +91,6 @@ static sk_sp<SkImage> make_image(SkCanvas* root, int* xDivs, int* yDivs, int pad
     return surface->makeImageSnapshot();
 }
 
-static void image_to_bitmap(GrDirectContext* dContext, const SkImage* image, SkBitmap* bm) {
-    SkImageInfo info = SkImageInfo::MakeN32Premul(image->width(), image->height());
-    bm->allocPixels(info);
-    image->readPixels(dContext, info, bm->getPixels(), bm->rowBytes(), 0, 0);
-}
-
 /**
  *  This is similar to NinePatchStretchGM, but it also tests "ninepatch" images with more
  *  than nine patches.
@@ -103,7 +104,8 @@ protected:
 
     SkISize getISize() override { return SkISize::Make(800, 800); }
 
-    void onDrawHelper(GrDirectContext* dContext, SkCanvas* canvas, int padLeft, int padTop,
+    void onDrawHelper(GrDirectContext* grDContext, skgpu::graphite::Context* graphiteContext,
+                      SkCanvas* canvas, int padLeft, int padTop,
                       int padRight, int padBottom) {
         canvas->save();
 
@@ -112,10 +114,8 @@ protected:
         xDivs[0] = padLeft;
         yDivs[0] = padTop;
 
-        SkBitmap bitmap;
         sk_sp<SkImage> image = make_image(canvas, xDivs + 1, yDivs + 1, padLeft, padTop,
                                           padRight, padBottom);
-        image_to_bitmap(dContext, image.get(), &bitmap);
 
         const SkSize size[] = {
             {  50,  50, }, // shrink in both axes
@@ -161,7 +161,18 @@ protected:
         for (int rectNum = 0; rectNum < 3; rectNum++) {
             int srcX = xDivs[fixedColorX[rectNum]-1];
             int srcY = yDivs[fixedColorY[rectNum]-1];
-            image->readPixels(dContext, info, &fixedColor[rectNum], 4, srcX, srcY);
+
+            void* const dstPixels = &fixedColor[rectNum];
+
+#if defined(SK_GANESH)
+            image->readPixels(grDContext, info, dstPixels, 4, srcX, srcY);
+#elif defined(SK_GRAPHITE)
+            if (graphiteContext) {
+                SkPixmap pixmap(info, dstPixels, /*rowBytes=*/4);
+                graphiteContext->priv().readPixels(pixmap, skgpu::graphite::TextureProxyView{},
+                        image->imageInfo(), srcX, srcY);
+            }
+#endif
         }
 
         // Include the degenerate first div.  While normally the first patch is "scalable",
@@ -209,17 +220,26 @@ protected:
     DrawResult onDraw(SkCanvas* canvas, SkString* errorMsg) override {
 #if defined(SK_GANESH)
         auto rContext = canvas->recordingContext();
-        auto dContext = GrAsDirectContext(rContext);
-        if (rContext && !dContext) {
+        auto grDContext = GrAsDirectContext(rContext);
+        if (rContext && !grDContext) {
             *errorMsg = "not supported in ddl";
             return DrawResult::kSkip;
         }
 #else
-        constexpr GrDirectContext* dContext = nullptr;
+        constexpr GrDirectContext* grDContext = nullptr;
 #endif
-        this->onDrawHelper(dContext, canvas, 0, 0, 0, 0);
+
+        skgpu::graphite::Context* graphiteContext = nullptr;
+#if defined(SK_GRAPHITE)
+        skgpu::graphite::Recorder* recorder = canvas->recorder();
+        if (recorder) {
+            graphiteContext = recorder->priv().context();
+        }
+#endif
+
+        this->onDrawHelper(grDContext, graphiteContext, canvas, 0, 0, 0, 0);
         canvas->translate(0.0f, 400.0f);
-        this->onDrawHelper(dContext, canvas, 3, 7, 4, 11);
+        this->onDrawHelper(grDContext, graphiteContext, canvas, 3, 7, 4, 11);
         return DrawResult::kOk;
     }
 
