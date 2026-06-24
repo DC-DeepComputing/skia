@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba30f037_dd67376c",
+        "filename": "src/gpu/ganesh/ops/OpsTask.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 640,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-24T15:26:13Z",
+      "side": 1,
+      "message": "It seems like this should be unreachable",
+      "range": {
+        "startLine": 638,
+        "startChar": 0,
+        "endLine": 640,
+        "endChar": 18
+      },
+      "revId": "6eeb38caa2e13cbda2c0b119e422931d3895d453",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
