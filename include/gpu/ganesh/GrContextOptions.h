@@ -139,7 +139,7 @@ struct SK_API GrContextOptions {
      * possible. May increase VRAM usage, but still observes the resource cache limit.
      * Enabled by default.
      */
-    Enable fReduceOpsTaskSplitting = Enable::kDefault;
+    Enable fReduceOpsTaskSplitting = Enable::kNo;
 
     /**
      * This affects the usage of the PersistentCache. We can cache SkSL, backend source (GLSL), or

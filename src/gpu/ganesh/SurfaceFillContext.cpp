@@ -216,7 +216,7 @@ void SurfaceFillContext::internalClear(const SkIRect* scissor,
     // If we have a scissor but it's okay to clear beyond it for performance reasons, then disable
     // the test. We only do this when the clear would be handled by a load op or natively.
     if (scissorState.enabled() && !this->caps()->performColorClearsAsDraws()) {
-        if (upgradePartialToFull && (this->caps()->preferFullscreenClears() ||
+        if (upgradePartialToFull && (this->caps()->preferFullscreenClears1() ||
                                      this->caps()->shouldInitializeTextures())) {
             // TODO: wrt the shouldInitializeTextures path, it would be more performant to
             // only clear the entire target if we knew it had not been cleared before. As

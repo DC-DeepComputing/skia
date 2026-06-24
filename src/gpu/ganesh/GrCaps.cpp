@@ -42,7 +42,8 @@ GrCaps::GrCaps(const GrContextOptions& options) {
     fPreferDiscardableMSAAAttachment = false;
     fUsePrimitiveRestart = false;
     fPreferClientSideDynamicBuffers = false;
-    fPreferFullscreenClears = false;
+    fPreferFullscreenClears1 = false;
+    fStencilClearInsteadOfDiscard = false;
     fTwoSidedStencilRefsAndMasksMustMatch = false;
     fMustClearUploadedBufferData = false;
     fShouldInitializeTextures = false;
@@ -227,7 +228,8 @@ void GrCaps::dumpJSON(SkJSONWriter* writer) const {
     writer->appendBool("MSAA Resolves Automatically", fMSAAResolvesAutomatically);
     writer->appendBool("Use primitive restart", fUsePrimitiveRestart);
     writer->appendBool("Prefer client-side dynamic buffers", fPreferClientSideDynamicBuffers);
-    writer->appendBool("Prefer fullscreen clears (and stencil discard)", fPreferFullscreenClears);
+    writer->appendBool("Prefer fullscreen clears (and stencil discard)", fPreferFullscreenClears1);
+    writer->appendBool("Stencil clear instead of discard", fStencilClearInsteadOfDiscard);
     writer->appendBool("Two-sided Stencil Refs And Masks Must Match",
                        fTwoSidedStencilRefsAndMasksMustMatch);
     writer->appendBool("Must clear buffer memory", fMustClearUploadedBufferData);

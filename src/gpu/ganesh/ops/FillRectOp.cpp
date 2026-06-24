@@ -63,14 +63,15 @@ using Subset = skgpu::ganesh::QuadPerEdgeAA::Subset;
 SkString dump_quad_info(int index, const GrQuad* deviceQuad,
                         const GrQuad* localQuad, const SkPMColor4f& color,
                         GrQuadAAFlags aaFlags) {
-    GrQuad safeLocal = localQuad ? *localQuad : GrQuad();
+//    GrQuad safeLocal = localQuad ? *localQuad : GrQuad();
     SkString str;
-    str.appendf("%d: Color: [%.2f, %.2f, %.2f, %.2f], Edge AA: l%u_t%u_r%u_b%u, \n"
-                "  device quad: [(%.2f, %2.f, %.2f), (%.2f, %.2f, %.2f), (%.2f, %.2f, %.2f), "
-                "(%.2f, %.2f, %.2f)],\n"
-                "  local quad: [(%.2f, %2.f, %.2f), (%.2f, %.2f, %.2f), (%.2f, %.2f, %.2f), "
-                "(%.2f, %.2f, %.2f)]\n",
-                index, color.fR, color.fG, color.fB, color.fA,
+    str.appendf("%d: Color: [%.2f, %.2f, %.2f, %.2f]\n",//, Edge AA: l%u_t%u_r%u_b%u, \n"
+//                "  device quad: [(%.2f, %2.f, %.2f), (%.2f, %.2f, %.2f), (%.2f, %.2f, %.2f), "
+//                "(%.2f, %.2f, %.2f)],\n"
+//                "  local quad: [(%.2f, %2.f, %.2f), (%.2f, %.2f, %.2f), (%.2f, %.2f, %.2f), "
+//                "(%.2f, %.2f, %.2f)]\n",
+                index, color.fR, color.fG, color.fB, color.fA
+#if 0
                 (uint32_t) (aaFlags & GrQuadAAFlags::kLeft),
                 (uint32_t) (aaFlags & GrQuadAAFlags::kTop),
                 (uint32_t) (aaFlags & GrQuadAAFlags::kRight),
@@ -82,7 +83,9 @@ SkString dump_quad_info(int index, const GrQuad* deviceQuad,
                 safeLocal.x(0), safeLocal.y(0), safeLocal.w(0),
                 safeLocal.x(1), safeLocal.y(1), safeLocal.w(1),
                 safeLocal.x(2), safeLocal.y(2), safeLocal.w(2),
-                safeLocal.x(3), safeLocal.y(3), safeLocal.w(3));
+                safeLocal.x(3), safeLocal.y(3), safeLocal.w(3)
+#endif
+                );
     return str;
 }
 #endif

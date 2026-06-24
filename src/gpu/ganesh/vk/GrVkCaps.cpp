@@ -420,7 +420,13 @@ void GrVkCaps::init(const GrContextOptions& contextOptions,
         // scissored clear.
         // On NVIDIA and Intel, the discard load followed by clear is faster.
         // TODO: Evaluate on ARM, Imagination, and ATI.
-        fPreferFullscreenClears = true;
+        fPreferFullscreenClears1 = true;
+    }
+
+    if (skgpu::kAMD_VkVendor == properties.vendorID ||
+        skgpu::kImagination_VkVendor == properties.vendorID ||
+        skgpu::kQualcomm_VkVendor == properties.vendorID) {
+        fStencilClearInsteadOfDiscard = true;
     }
 
     if (properties.vendorID == skgpu::kNvidia_VkVendor ||

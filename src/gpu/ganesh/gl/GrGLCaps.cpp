@@ -224,7 +224,8 @@ void GrGLCaps::init(const GrContextOptions& contextOptions,
     if (ctxInfo.vendor() == GrGLVendor::kARM         ||
         ctxInfo.vendor() == GrGLVendor::kImagination ||
         ctxInfo.vendor() == GrGLVendor::kQualcomm ) {
-        fPreferFullscreenClears = true;
+        fPreferFullscreenClears1 = true;
+        fStencilClearInsteadOfDiscard = true;
     }
 
     if (GR_IS_GR_GL(standard)) {
