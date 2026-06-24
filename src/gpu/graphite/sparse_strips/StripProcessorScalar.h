@@ -71,7 +71,7 @@ public:
 
     // Once all tiles at the same geometric location have been combined, the subsample winding must
     // be converted to alpha values consumable by the fragment shader.
-    SK_ALWAYS_INLINE void resolveTileToAlpha() {
+    SK_ALWAYS_INLINE void resolveWindingToAlpha() {
         uint8_t* tileAlphaBase = this->reserveAlphaBuffer();
         int localWriteIdx = 0;
 
@@ -630,7 +630,6 @@ public:
         float invDx = (std::abs(dx) <= Strip::kStripEpsilon) ? 0.0f : 1.0f / dx;
         float invDy = (std::abs(dy) <= Strip::kStripEpsilon) ? 0.0f : 1.0f / dy;
         float dxdy = dx * invDy;
-
         std::array<float, 4> derivs = {dx, dy, invDx, invDy};
 
         auto [clippedLine, topIsOnLeftEdge, botIsOnLeftEdge] =
