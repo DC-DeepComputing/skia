@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68a6f185_7fa13458",
+        "filename": "src/gpu/ganesh/GrAHardwareBufferImageGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-06-24T16:52:07Z",
+      "side": 1,
+      "message": "Why are you including this file? Regardless this file should not be importing backend specific headers.",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 6
+      },
+      "revId": "146db2114091c694077e5541a49f563d91264ddb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09050d3e_68a5a769",
+        "filename": "src/gpu/ganesh/GrAHardwareBufferImageGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-06-24T16:52:07Z",
+      "side": 1,
+      "message": "put this up with all the other includes",
+      "range": {
+        "startLine": 40,
+        "startChar": 0,
+        "endLine": 40,
+        "endChar": 34
+      },
+      "revId": "146db2114091c694077e5541a49f563d91264ddb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "adf579f1_fc0ee088",
+        "filename": "src/gpu/ganesh/GrAHardwareBufferImageGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-06-24T16:52:07Z",
+      "side": 1,
+      "message": "Why are you checking fIsProtectedContent here? Should it be `!fIsProtectedConent` instead? This is checking whether Skia is protected. I believe the goal of this CL is that if Skia is not protected then we need to make sure the buffer isn\u0027t as well.",
+      "range": {
+        "startLine": 128,
+        "startChar": 4,
+        "endLine": 128,
+        "endChar": 30
+      },
+      "revId": "146db2114091c694077e5541a49f563d91264ddb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
