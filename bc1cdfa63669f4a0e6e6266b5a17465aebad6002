@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58d02301_2989d5a0",
+        "filename": "src/gpu/ganesh/ops/GrOvalOpFactory.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 2588,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-24T17:58:15Z",
+      "side": 1,
+      "message": "do we want to remove sk_scalarhalf as well? or just skscalarhalf for now?",
+      "range": {
+        "startLine": 2588,
+        "startChar": 28,
+        "endLine": 2588,
+        "endChar": 41
+      },
+      "revId": "bc1cdfa63669f4a0e6e6266b5a17465aebad6002",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
