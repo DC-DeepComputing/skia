@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93087f0e_31323583",
+        "filename": "src/encode/SkPngRustEncoderImpl.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-06-24T16:56:49Z",
+      "side": 1,
+      "message": "nit: let\u0027s use `SkSpan\u003cconst uint8_t\u003e`.  Then maybe we don\u0027t need the SkData variant because it should be straightforward to convert both `std::vector` and `SkData` to `SkSpan`.",
+      "range": {
+        "startLine": 157,
+        "startChar": 16,
+        "endLine": 158,
+        "endChar": 27
+      },
+      "revId": "14c9ebef604bd8380e5cb756071c7fb4611abe0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f4f1e77_fd998820",
+        "filename": "src/encode/SkPngRustEncoderImpl.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-06-24T16:56:49Z",
+      "side": 1,
+      "message": "Should we clear `fGainmapInfo` too (or instead)?  Looks like we could still write out the info chunk even if `fGainMap` is null.",
+      "revId": "14c9ebef604bd8380e5cb756071c7fb4611abe0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
