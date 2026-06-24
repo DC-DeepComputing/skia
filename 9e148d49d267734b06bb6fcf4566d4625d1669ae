@@ -22,6 +22,30 @@
       },
       "revId": "9e148d49d267734b06bb6fcf4566d4625d1669ae",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d60c7de1_7c5bb05e",
+        "filename": "src/sksl/ir/SkSLFunctionCall.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 1235,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-24T14:55:42Z",
+      "side": 1,
+      "message": "Oh, I didn\u0027t think we needed this check in release.",
+      "parentUuid": "8e465ba8_4369ad0b",
+      "range": {
+        "startLine": 1235,
+        "startChar": 0,
+        "endLine": 1235,
+        "endChar": 21
+      },
+      "revId": "9e148d49d267734b06bb6fcf4566d4625d1669ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
