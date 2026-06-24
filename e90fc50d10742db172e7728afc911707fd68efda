@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1495ab5_aac8d375",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-24T20:06:57Z",
+      "side": 1,
+      "message": "PTAL\n\nAdding this in response to suggestion to remove std::optional\u003c\u003e wrapper on SkPixmap in DrawAtlas changes.",
+      "revId": "e90fc50d10742db172e7728afc911707fd68efda",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
