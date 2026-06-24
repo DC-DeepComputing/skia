@@ -177,12 +177,14 @@ void SkDevice::drawImageLattice(const SkImage* image, const SkCanvas::Lattice& l
                              image->readPixels(nullptr, info, &c, 4, srcR.fLeft, srcR.fTop))) {
               // Fast draw with drawRect, if this is a patch containing a single color
               // or if this is a patch containing a single pixel.
+              // LINT.IfChange
               if (0 != c || !paint.isSrcOver()) {
                    SkPaint paintCopy(paint);
                    int alpha = SkAlphaMul(SkColorGetA(c), SkAlpha255To256(paint.getAlpha()));
                    paintCopy.setColor(SkColorSetA(c, alpha));
                    this->drawRect(dstR, paintCopy);
               }
+              // LINT.ThenChange(/src/gpu/graphite/Device.cpp)
         } else {
             this->drawImageRect(image, &srcR, dstR, SkSamplingOptions(filter), paint,
                                 SkCanvas::kStrict_SrcRectConstraint);
