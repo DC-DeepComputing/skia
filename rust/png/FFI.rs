@@ -2,6 +2,9 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+// avoid issue in G3
+#![allow(unused_attributes)]
+
 //! This crate provides C++ bindings for the `png` Rust crate.
 //!
 //! The public API of this crate is the C++ API declared by the `#[cxx::bridge]`
@@ -924,7 +927,7 @@ impl Reader {
         row: &[u8],
         bits_per_pixel: u8,
     ) {
-        let Some(png::InterlaceInfo::Adam7(ref adam7info)) = self.last_interlace_info.as_ref()
+        let Some(png::InterlaceInfo::Adam7(adam7info)) = self.last_interlace_info.as_ref()
         else {
             panic!("This function should only be called after decoding an interlaced row");
         };
