@@ -22,6 +22,30 @@
       },
       "revId": "87086c78ef53328e5ecc0ce11e003045e614d59b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50df747a_c5a5c230",
+        "filename": "tests/JpegGainmapTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1030,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-06-24T18:48:06Z",
+      "side": 1,
+      "message": "@fmalita@google.com FYI in case you missed it",
+      "parentUuid": "2b272f9f_19d0620d",
+      "range": {
+        "startLine": 1030,
+        "startChar": 40,
+        "endLine": 1030,
+        "endChar": 91
+      },
+      "revId": "87086c78ef53328e5ecc0ce11e003045e614d59b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

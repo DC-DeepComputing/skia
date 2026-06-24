@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ba111b0_dd779674",
+        "filename": "src/encode/SkPngRustEncoderImpl.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-06-24T18:48:06Z",
+      "side": 1,
+      "message": "FYI made a small change here from the last patchset you reviewed, I realized the sBIT size has to match the actual destination PNG color type",
+      "range": {
+        "startLine": 184,
+        "startChar": 26,
+        "endLine": 184,
+        "endChar": 42
+      },
+      "revId": "637c8d1a00a401a10c904bffe48ff623720633c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
