@@ -22,6 +22,30 @@
       },
       "revId": "637c8d1a00a401a10c904bffe48ff623720633c8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba2add85_796fb91a",
+        "filename": "src/encode/SkPngRustEncoderImpl.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-06-24T22:44:28Z",
+      "side": 1,
+      "message": "Marked as resolved. Let me know if you think that’s not accurate and I’ll send a follow-up.",
+      "parentUuid": "6ba111b0_dd779674",
+      "range": {
+        "startLine": 184,
+        "startChar": 26,
+        "endLine": 184,
+        "endChar": 42
+      },
+      "revId": "637c8d1a00a401a10c904bffe48ff623720633c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

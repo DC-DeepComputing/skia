@@ -46,6 +46,30 @@
       },
       "revId": "87086c78ef53328e5ecc0ce11e003045e614d59b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d10cfa61_fd2060e8",
+        "filename": "tests/JpegGainmapTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1030,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-06-24T22:44:28Z",
+      "side": 1,
+      "message": "Marked as resolved. Let me know if you think that’s not accurate and I’ll send a follow-up.",
+      "parentUuid": "50df747a_c5a5c230",
+      "range": {
+        "startLine": 1030,
+        "startChar": 40,
+        "endLine": 1030,
+        "endChar": 91
+      },
+      "revId": "87086c78ef53328e5ecc0ce11e003045e614d59b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
