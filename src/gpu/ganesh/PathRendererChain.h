@@ -61,6 +61,7 @@ public:
     /** Returns a direct pointer to the tessellation path renderer, or null if it is not in the
         chain. */
     PathRenderer* getTessellationPathRenderer() {
+        SkDebugf("Getting tessellation path renderer\n");
         return fTessellationPathRenderer;
     }
 

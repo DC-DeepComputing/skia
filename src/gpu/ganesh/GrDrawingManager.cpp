@@ -373,6 +373,14 @@ void GrDrawingManager::sortTasks() {
         }
 #endif
     }
+
+    SkString label("");
+    SkDebugf("%d tasks\n", fDAG.size());
+    for (const sk_sp<GrRenderTask>& d : fDAG) {
+        SkDebugf("RenderTask: %u\n", d->uniqueID());
+        d->dump(label, label, false, true);
+    }
+
 }
 
 // Reorder the array to match the llist without reffing & unreffing sk_sp's.
