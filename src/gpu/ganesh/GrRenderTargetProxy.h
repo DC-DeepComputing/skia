@@ -74,10 +74,24 @@ public:
     // to modify their attachments.
     bool canUseStencil(const GrCaps& caps) const;
 
+    SkString dump() const override {
+        SkString tmp;
+
+        tmp.appendf("RT: proxyID: %u - surfaceID: %u - needsStencil %d",
+                    this->uniqueID().asUInt(),
+                    this->peekSurface() ? this->peekSurface()->uniqueID().asUInt()
+                                        : -1,
+                    this->needsStencil());
+        return tmp;
+    }
+
     /*
      * Indicate that a draw to this proxy requires stencil.
      */
-    void setNeedsStencil() { fNeedsStencil = true; }
+    void setNeedsStencil() {
+        SkDebugf("proxyID: %u GrRenderTargetProxy::setNeedsStencil()\n", this->uniqueID().asUInt());
+        fNeedsStencil = true;
+    }
 
     int needsStencil() const { return fNeedsStencil; }
 
