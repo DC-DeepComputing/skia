@@ -22,6 +22,30 @@
       },
       "revId": "2a22e8ba93e23153841c15fbfd9392dd7deb7f5e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "32f58093_2ba01c28",
+        "filename": "rust/png/FFI.rs",
+        "patchSetId": 2
+      },
+      "lineNbr": 927,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-24T16:45:51Z",
+      "side": 0,
+      "message": "Acknowledged",
+      "parentUuid": "55faa6b3_3537b342",
+      "range": {
+        "startLine": 927,
+        "startChar": 43,
+        "endLine": 927,
+        "endChar": 46
+      },
+      "revId": "2a22e8ba93e23153841c15fbfd9392dd7deb7f5e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
