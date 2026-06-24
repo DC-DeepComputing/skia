@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "06265897_3eed7339",
+        "filename": "src/encode/SkPngRustEncoderImpl.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-06-24T18:20:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "93087f0e_31323583",
+      "range": {
+        "startLine": 157,
+        "startChar": 16,
+        "endLine": 158,
+        "endChar": 27
+      },
+      "revId": "14c9ebef604bd8380e5cb756071c7fb4611abe0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9bd98ff3_fa1de781",
@@ -41,6 +65,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ffa972e_bd2144da",
+        "filename": "src/encode/SkPngRustEncoderImpl.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-06-24T18:20:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9bd98ff3_fa1de781",
+      "revId": "14c9ebef604bd8380e5cb756071c7fb4611abe0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1f4f1e77_fd998820",
@@ -54,6 +96,24 @@
       "writtenOn": "2026-06-24T16:56:49Z",
       "side": 1,
       "message": "Should we clear `fGainmapInfo` too (or instead)?  Looks like we could still write out the info chunk even if `fGainMap` is null.",
+      "revId": "14c9ebef604bd8380e5cb756071c7fb4611abe0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19c5e1ab_2d73f92f",
+        "filename": "src/encode/SkPngRustEncoderImpl.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-06-24T18:20:19Z",
+      "side": 1,
+      "message": "This matches the implementation in `SkPngEncoderImpl.cpp`. When we decode the base image (which has both the gainmap and the associated info), we recursively encode the gainmap pixels with the modified options, clearing the gainmap to avoid recursing indefinitely.\n\nBut I think we do want to retain the gainmap info during this recursive call, so that we can encode it into the gainmap PNG itself.",
+      "parentUuid": "1f4f1e77_fd998820",
       "revId": "14c9ebef604bd8380e5cb756071c7fb4611abe0a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
