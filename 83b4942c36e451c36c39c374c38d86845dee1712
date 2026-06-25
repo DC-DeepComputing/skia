@@ -22,6 +22,30 @@
       },
       "revId": "83b4942c36e451c36c39c374c38d86845dee1712",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "87712f55_51743f31",
+        "filename": "tests/RoundRectTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1607,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-06-25T22:21:07Z",
+      "side": 1,
+      "message": "This seems fine.",
+      "parentUuid": "d6056797_04bc0eaa",
+      "range": {
+        "startLine": 1607,
+        "startChar": 32,
+        "endLine": 1607,
+        "endChar": 42
+      },
+      "revId": "83b4942c36e451c36c39c374c38d86845dee1712",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
