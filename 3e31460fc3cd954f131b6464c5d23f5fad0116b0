@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2333f7b1_9295df36",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-25T20:35:50Z",
+      "side": 1,
+      "message": "I see that serial_procs_using_png has been used often (in viewer.cpp, in DMSrcSink.cpp, and in Drawcommand.cpp now). Should we consider consolidating it",
+      "revId": "3e31460fc3cd954f131b6464c5d23f5fad0116b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
