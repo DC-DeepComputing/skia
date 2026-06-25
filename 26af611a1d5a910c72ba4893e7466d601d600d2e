@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ce023bc_24dc2fcc",
+        "filename": "src/gpu/ganesh/GrAttachment.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-06-25T20:02:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "726e8c96_8e3a6826",
+      "range": {
+        "startLine": 57,
+        "startChar": 9,
+        "endLine": 57,
+        "endChar": 27
+      },
+      "revId": "26af611a1d5a910c72ba4893e7466d601d600d2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "620b868a_1031fa63",
@@ -37,6 +61,24 @@
       "writtenOn": "2026-06-25T19:14:18Z",
       "side": 1,
       "message": "I don\u0027t think this is actually used",
+      "revId": "26af611a1d5a910c72ba4893e7466d601d600d2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9a6fa0a_5d0e0643",
+        "filename": "src/gpu/ganesh/GrCaps.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 614,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-06-25T20:02:14Z",
+      "side": 1,
+      "message": "Just bad copy paste on my part. It\u0027s used in the commented out section of the related function now.",
+      "parentUuid": "620b868a_1031fa63",
       "revId": "26af611a1d5a910c72ba4893e7466d601d600d2e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -64,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb59c58e_069195a0",
+        "filename": "src/gpu/ganesh/ops/OpsTask.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 606,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-06-25T20:02:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bd982479_e19e9a6b",
+      "range": {
+        "startLine": 606,
+        "startChar": 48,
+        "endLine": 606,
+        "endChar": 51
+      },
+      "revId": "26af611a1d5a910c72ba4893e7466d601d600d2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f513cabf_c6e84999",
@@ -77,6 +143,30 @@
       "writtenOn": "2026-06-25T19:49:33Z",
       "side": 1,
       "message": "\u0027s ?",
+      "range": {
+        "startLine": 631,
+        "startChar": 75,
+        "endLine": 631,
+        "endChar": 86
+      },
+      "revId": "26af611a1d5a910c72ba4893e7466d601d600d2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "59312bc8_2882a6b1",
+        "filename": "src/gpu/ganesh/ops/OpsTask.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 631,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-06-25T20:02:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f513cabf_c6e84999",
       "range": {
         "startLine": 631,
         "startChar": 75,
