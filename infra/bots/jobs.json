@@ -1116,6 +1116,15 @@
     "name": "Perf-Ubuntu22.04-Clang-ThinkCenter-GPU-RadeonVega8-x86_64-Release-All-Vulkan"
   },
   {
+    "name": "Perf-Ubuntu24.04-Clang-FalconRAK-GPU-IntelArcB570-x86_64-Debug-All-Graphite_Dawn_Vulkan"
+  },
+  {
+    "name": "Perf-Ubuntu24.04-Clang-FalconRAK-GPU-IntelArcB570-x86_64-Debug-All-Graphite_Native_Vulkan"
+  },
+  {
+    "name": "Perf-Ubuntu24.04-Clang-FalconRAK-GPU-IntelArcB570-x86_64-Debug-All-Vulkan"
+  },
+  {
     "name": "Perf-Ubuntu24.04-Clang-Golo-CPU-AVX2-x86_64-Release-All"
   },
   {
@@ -1834,6 +1843,15 @@
   },
   {
     "name": "Test-Ubuntu22.04-Clang-ThinkCenter-GPU-RadeonVega8-x86_64-Release-All-Vulkan"
+  },
+  {
+    "name": "Test-Ubuntu24.04-Clang-FalconRAK-GPU-IntelArcB570-x86_64-Debug-All-Graphite_Dawn_Vulkan"
+  },
+  {
+    "name": "Test-Ubuntu24.04-Clang-FalconRAK-GPU-IntelArcB570-x86_64-Debug-All-Graphite_Native_Vulkan"
+  },
+  {
+    "name": "Test-Ubuntu24.04-Clang-FalconRAK-GPU-IntelArcB570-x86_64-Debug-All-Vulkan"
   },
   {
     "name": "Test-Ubuntu24.04-Clang-GCE-CPU-AVX2-x86-Debug-All"
