@@ -72,6 +72,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b5b6922_b256da6e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 14669
+      },
+      "writtenOn": "2026-06-25T18:25:31Z",
+      "side": 1,
+      "message": "I added this for Graphite. Also Dawn already retries on VK_TIMEOUT [here](https://source.chromium.org/chromium/chromium/src/+/main:third_party/dawn/src/dawn/native/vulkan/QueueVk.cpp;l\u003d519;drc\u003d292e993b4a84d9a4affba538643ad376a8f36064).",
+      "parentUuid": "117f0969_d2de8954",
+      "revId": "c21b33259bfb20cf55368d2eefc8f98d5db9f597",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f8c7bcfa_496f7225",
@@ -180,6 +198,30 @@
       "side": 1,
       "message": "I guess this really adds negligible overhead so just leaving it in forever isn\u0027t the worst. So maybe we don\u0027t need to add a specific caps check. But I do think we then need to add a comment in the code here explaining why this loop is here. It is in no way obvious since you would think the WaitForFences call already would wait indefinitely and couldn\u0027t timeout.",
       "parentUuid": "e43260e4_fd172e58",
+      "range": {
+        "startLine": 699,
+        "startChar": 2,
+        "endLine": 702,
+        "endChar": 5
+      },
+      "revId": "c21b33259bfb20cf55368d2eefc8f98d5db9f597",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1db4ba83_4012ea9b",
+        "filename": "src/gpu/ganesh/vk/GrVkCommandBuffer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 702,
+      "author": {
+        "id": 14669
+      },
+      "writtenOn": "2026-06-25T18:25:31Z",
+      "side": 1,
+      "message": "I added a comment.",
+      "parentUuid": "9f2ad724_f5dcae95",
       "range": {
         "startLine": 699,
         "startChar": 2,
