@@ -16,6 +16,24 @@
       "message": "LGTM.  IIUC Chromium doesn\u0027t depend on sampling.",
       "revId": "c25d0ce4b10ebda58b7a536af15e6f019d80234c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a28a174_ba4d0504",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-06-25T20:15:56Z",
+      "side": 1,
+      "message": "That’s my understanding as well, thanks both for the review!\n\nHad to handle a merge conflict so unfortunately lost the +1",
+      "parentUuid": "17269ab3_83bef085",
+      "revId": "c25d0ce4b10ebda58b7a536af15e6f019d80234c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
