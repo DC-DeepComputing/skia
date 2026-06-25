@@ -605,10 +605,19 @@ static SkString encode_data(SkData*         data,
     return urlDataManager.addData(data, contentType);
 }
 
+static SkSerialProcs serial_procs_using_png() {
+    SkSerialProcs sProcs;
+    sProcs.fImageProc = [](SkImage* img, void*) -> SkSerialReturnType {
+        return SkPngEncoder::Encode(as_IB(img)->directContext(), img, SkPngEncoder::Options{});
+    };
+    return sProcs;
+}
+
 void DrawCommand::flatten(const SkFlattenable* flattenable,
                           SkJSONWriter&        writer,
                           UrlDataManager&      urlDataManager) {
-    SkBinaryWriteBuffer buffer({});  // TODO(kjlubick, bungeman) feed SkSerialProcs through API
+    SkSerialProcs procs = serial_procs_using_png();
+    SkBinaryWriteBuffer buffer(procs);
     flattenable->flatten(buffer);
     sk_sp<SkData> data = buffer.snapshotAsData();
     SkString url = encode_data(data.get(), "application/octet-stream", urlDataManager);
