@@ -18,6 +18,41 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f96297f5_551a79a6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4329740
+      },
+      "writtenOn": "2026-06-25T22:37:45Z",
+      "side": 1,
+      "message": "should be fixed now! thanks!",
+      "parentUuid": "96922eb3_77b4713d",
+      "revId": "c55a3137409a22276b2f4e33f6e1c78b315e6b58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bde96040_8578c222",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4329740
+      },
+      "writtenOn": "2026-06-25T22:37:45Z",
+      "side": 1,
+      "message": "@michaelludwig@google.com thank you! could you please kick off bots again?",
+      "revId": "c55a3137409a22276b2f4e33f6e1c78b315e6b58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2a6a5a5f_0687d2e1",
@@ -41,6 +76,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc11b5b7_5f458999",
+        "filename": "src/gpu/ganesh/gradients/GrGradientShader.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 550,
+      "author": {
+        "id": 4329740
+      },
+      "writtenOn": "2026-06-25T22:37:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2a6a5a5f_0687d2e1",
+      "range": {
+        "startLine": 547,
+        "startChar": 0,
+        "endLine": 550,
+        "endChar": 34
+      },
+      "revId": "c55a3137409a22276b2f4e33f6e1c78b315e6b58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9fca2ba3_bb0d899e",
@@ -54,6 +113,30 @@
       "writtenOn": "2026-06-23T15:09:27Z",
       "side": 1,
       "message": "While the other ganesh shaders are structured to be based on scale + bias parameters, if we upload only the colors and offsets, then we can have the `EncodeGradientStopToHalf` build the entire SkBitmap that should be uploaded.  I think that consolidation between the two is valuable, and it will mean that the SkSL for the ganesh and graphite shaders is also much closer to the same.",
+      "range": {
+        "startLine": 555,
+        "startChar": 0,
+        "endLine": 567,
+        "endChar": 26
+      },
+      "revId": "c55a3137409a22276b2f4e33f6e1c78b315e6b58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "78aba072_4f0c2837",
+        "filename": "src/gpu/ganesh/gradients/GrGradientShader.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 567,
+      "author": {
+        "id": 4329740
+      },
+      "writtenOn": "2026-06-25T22:37:45Z",
+      "side": 1,
+      "message": "Done. Restructured to upload colors + offsets instead of scale + bias and consolidated the bitmap building",
+      "parentUuid": "9fca2ba3_bb0d899e",
       "range": {
         "startLine": 555,
         "startChar": 0,
