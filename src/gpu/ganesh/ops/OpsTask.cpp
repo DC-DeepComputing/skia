@@ -585,8 +585,9 @@ bool OpsTask::onExecute(GrOpFlushState* flushState) {
         stencil = renderTarget->getStencilAttachment(fUsesMSAASurface);
     }
 
-    bool markStencilCleared = false;
     GrLoadOp stencilLoadOp;
+    // Determine whether the stencil attachment's cleared area should be updated.
+    bool updateClearedStencilArea = false;
     switch (fInitialStencilContent) {
         case StencilContent::kDontCare:
             stencilLoadOp = GrLoadOp::kDiscard;
@@ -594,18 +595,41 @@ bool OpsTask::onExecute(GrOpFlushState* flushState) {
         case StencilContent::kUserBitsCleared:
             SkASSERT(!caps.performStencilClearsAsDraws());
             SkASSERT(stencil);
+            // Based upon Caps, determine which the stencil load operation to use and perform any
+            // necessary updates to the renderpass's bounds and the stencil's cleared area.
+
+            // If the user bits are meant to be cleared we either do that via an initial clear the
+            // first time the area of the stencil is used, or we assume previous draws left the
+            // stencil cleared so we just load the current values. However, on some devices it is
+            // faster to just clear the stencil each time instead of doing a load.
+            if (caps.clearsAreFasterThanLoads()) {
+                stencilLoadOp = GrLoadOp::kClear;
+            }
+            // If stencil values are discarded after every renderpass, then we do not need to track
+            // which portion of the stencil attachment has already been cleared.
             if (caps.discardStencilValuesAfterRenderPass()) {
-                // Always clear the stencil if it is being discarded after render passes. This is
-                // also an optimization because we are on a tiler and it avoids loading the values
-                // from memory.
                 stencilLoadOp = GrLoadOp::kClear;
                 break;
             }
-            if (!stencil->hasPerformedInitialClear()) {
-                stencilLoadOp = GrLoadOp::kClear;
-                markStencilCleared = true;
+
+            // If the area of the stencil attachment corresponding to this renderpass's
+            // fClippedContentBounds has not already been cleared, calculate new, expanded
+            // renderpass bounds by joining fClippedContentBounds with the cleared stencil area.
+            // Using this joint area simplifies tracking of cleared areas on the stencil attachment.
+            if (!stencil->areaHasBeenCleared(fClippedContentBounds)) {
+                fClippedContentBounds.join(stencil->clearedArea());
+                // We need to also intersect the bounds with the color attachments bounds since the
+                // stencil may be bigger. This could mean that we end up "forgetting" we cleared
+                // the user bits in the portion of the stencil that doesn't overlap with the color
+                // attachment - but that shouldn't have a large performance impact if we later on
+                // need to reclear that area.
+                fClippedContentBounds.intersect(SkIRect::MakeSize(renderTarget->dimensions()));
+
+                // We should update the stencil's cleared area if renderpass creation succeeds.
+                updateClearedStencilArea = true;
                 break;
             }
+
             // SurfaceDrawContexts are required to leave the user stencil bits in a cleared state
             // once finished, meaning the stencil values will always remain cleared after the
             // initial clear. Just fall through to reloading the existing (cleared) stencil values
@@ -644,8 +668,8 @@ bool OpsTask::onExecute(GrOpFlushState* flushState) {
     if (!renderPass) {
         return false;
     }
-    if (markStencilCleared) {
-        stencil->markHasPerformedInitialClear();
+    if (updateClearedStencilArea) {
+        stencil->markAreaCleared(fClippedContentBounds);
     }
     flushState->setOpsRenderPass(renderPass);
     renderPass->begin();
