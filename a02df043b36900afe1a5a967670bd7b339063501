@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e297776_422bebc5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-06-25T12:33:59Z",
+      "side": 1,
+      "message": "FYI: https://ci.chromium.org/ui/p/chromium/builders/try/linux-rel/2757585/overview\n\nLooks like some tests are sensitive to the encoded data.",
+      "revId": "a02df043b36900afe1a5a967670bd7b339063501",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed6e35e2_82dabd35",
+        "filename": "src/encode/SkPngRustEncoderImpl.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 342,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-06-25T12:33:59Z",
+      "side": 1,
+      "message": "Since they change the encoding result, we\u0027ll need to stage these behind a feature flag.\n\nMaybe \n\n```#if !defined(SK_DISABLE_PNG_GAINMAP_ENCODING)```\n\nThen I can add the flag to chromium before relanding, and will remove/rebaseline after.",
+      "range": {
+        "startLine": 336,
+        "startChar": 0,
+        "endLine": 342,
+        "endChar": 5
+      },
+      "revId": "a02df043b36900afe1a5a967670bd7b339063501",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
