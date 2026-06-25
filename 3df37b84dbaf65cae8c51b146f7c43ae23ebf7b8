@@ -119,6 +119,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5546a1b_9063967a",
+        "filename": "src/gpu/ganesh/GrAHardwareBufferImageGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 4934045
+      },
+      "writtenOn": "2026-06-25T16:28:46Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "23df4422_951376cc",
+      "range": {
+        "startLine": 131,
+        "startChar": 30,
+        "endLine": 132,
+        "endChar": 57
+      },
+      "revId": "3df37b84dbaf65cae8c51b146f7c43ae23ebf7b8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1631bb1b_3b9dee11",
@@ -180,6 +204,30 @@
       "side": 1,
       "message": "That wasn\u0027t the point of the question. The question is that this file is backend agnostic (i.e. we don\u0027t know if we\u0027re running on Vulkan or GL). So you can\u0027t be making EGL specific queries in the function.",
       "parentUuid": "7b40b561_80f87658",
+      "range": {
+        "startLine": 134,
+        "startChar": 8,
+        "endLine": 134,
+        "endChar": 18
+      },
+      "revId": "3df37b84dbaf65cae8c51b146f7c43ae23ebf7b8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "59f02446_5df8a295",
+        "filename": "src/gpu/ganesh/GrAHardwareBufferImageGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 4934045
+      },
+      "writtenOn": "2026-06-25T16:28:46Z",
+      "side": 1,
+      "message": "Restored the GrAHardwareBufferImageGenerator.cpp\nMade changes in AHardwareBufferGL.cpp — can_import_protected_content()\nblocks import of a protected AHB from a non-protected GL context, returning an empty GrBackendTexture before eglCreateImageKHR is ever called.",
+      "parentUuid": "b08a8bdb_853a29b2",
       "range": {
         "startLine": 134,
         "startChar": 8,
