@@ -101,6 +101,31 @@
   {
     "cmd": [
       "sudo",
+      "-n",
+      "-l"
+    ],
+    "env": {
+      "IOS_BUNDLE_ID": "com.google.dm",
+      "IOS_MOUNT_POINT": "[START_DIR]/mnt_iosdevice"
+    },
+    "name": "sudo -l"
+  },
+  {
+    "cmd": [
+      "sudo",
+      "/bin/launchctl",
+      "stop",
+      "com.apple.usbmuxd"
+    ],
+    "env": {
+      "IOS_BUNDLE_ID": "com.google.dm",
+      "IOS_MOUNT_POINT": "[START_DIR]/mnt_iosdevice"
+    },
+    "name": "launchctl stop usbmuxd"
+  },
+  {
+    "cmd": [
+      "sudo",
       "/usr/bin/killall",
       "-v",
       "usbmuxd"
@@ -113,6 +138,18 @@
   },
   {
     "cmd": [
+      "/usr/bin/killall",
+      "-v",
+      "CoreDeviceService"
+    ],
+    "env": {
+      "IOS_BUNDLE_ID": "com.google.dm",
+      "IOS_MOUNT_POINT": "[START_DIR]/mnt_iosdevice"
+    },
+    "name": "killall CoreDeviceService"
+  },
+  {
+    "cmd": [
       "sleep",
       "10"
     ],
@@ -121,6 +158,19 @@
       "IOS_MOUNT_POINT": "[START_DIR]/mnt_iosdevice"
     },
     "name": "sleep 10"
+  },
+  {
+    "cmd": [
+      "xcrun",
+      "devicectl",
+      "list",
+      "devices"
+    ],
+    "env": {
+      "IOS_BUNDLE_ID": "com.google.dm",
+      "IOS_MOUNT_POINT": "[START_DIR]/mnt_iosdevice"
+    },
+    "name": "devicectl list devices"
   },
   {
     "cmd": [
@@ -211,7 +261,7 @@
     "cmd": [],
     "name": "ensure xcode",
     "~followup_annotations": [
-      "@@@STEP_SUMMARY_TEXT@Ensuring Xcode version 16a242d in [START_DIR]/cache/Xcode.app@@@"
+      "@@@STEP_SUMMARY_TEXT@Ensuring Xcode version 16e140 in [START_DIR]/cache/Xcode.app@@@"
     ]
   },
   {
@@ -351,7 +401,7 @@
       "-kind",
       "ios",
       "-xcode-version",
-      "16a242d",
+      "16e140",
       "-output-dir",
       "[START_DIR]/cache/Xcode.app"
     ],
@@ -376,6 +426,53 @@
       "IOS_MOUNT_POINT": "[START_DIR]/mnt_iosdevice"
     },
     "name": "ensure xcode.select xcode",
+    "~followup_annotations": [
+      "@@@STEP_NEST_LEVEL@1@@@"
+    ]
+  },
+  {
+    "cmd": [
+      "sudo",
+      "/usr/local/bin/xcode_accept_license.sh",
+      "[START_DIR]/cache/Xcode.app",
+      "16e140"
+    ],
+    "env": {
+      "IOS_BUNDLE_ID": "com.google.dm",
+      "IOS_MOUNT_POINT": "[START_DIR]/mnt_iosdevice"
+    },
+    "name": "ensure xcode.xcode accept license script",
+    "~followup_annotations": [
+      "@@@STEP_NEST_LEVEL@1@@@"
+    ]
+  },
+  {
+    "cmd": [
+      "sudo",
+      "/usr/bin/xcodebuild",
+      "-license",
+      "accept"
+    ],
+    "env": {
+      "IOS_BUNDLE_ID": "com.google.dm",
+      "IOS_MOUNT_POINT": "[START_DIR]/mnt_iosdevice"
+    },
+    "name": "ensure xcode.xcodebuild accept license",
+    "~followup_annotations": [
+      "@@@STEP_NEST_LEVEL@1@@@"
+    ]
+  },
+  {
+    "cmd": [
+      "sudo",
+      "/usr/bin/xcodebuild",
+      "-runFirstLaunch"
+    ],
+    "env": {
+      "IOS_BUNDLE_ID": "com.google.dm",
+      "IOS_MOUNT_POINT": "[START_DIR]/mnt_iosdevice"
+    },
+    "name": "ensure xcode.xcodebuild run first launch",
     "~followup_annotations": [
       "@@@STEP_NEST_LEVEL@1@@@"
     ]
