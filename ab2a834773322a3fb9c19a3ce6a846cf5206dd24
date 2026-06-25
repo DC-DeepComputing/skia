@@ -339,6 +339,30 @@
       },
       "revId": "ab2a834773322a3fb9c19a3ce6a846cf5206dd24",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "433dbe16_fb64d32f",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 1951,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-25T20:36:44Z",
+      "side": 1,
+      "message": "A follow-up CL is fine.",
+      "parentUuid": "b0e9e11e_6ecf67f2",
+      "range": {
+        "startLine": 1951,
+        "startChar": 30,
+        "endLine": 1951,
+        "endChar": 40
+      },
+      "revId": "ab2a834773322a3fb9c19a3ce6a846cf5206dd24",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
