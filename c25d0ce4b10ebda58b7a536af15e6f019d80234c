@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17269ab3_83bef085",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-06-25T19:44:18Z",
+      "side": 1,
+      "message": "LGTM.  IIUC Chromium doesn\u0027t depend on sampling.",
+      "revId": "c25d0ce4b10ebda58b7a536af15e6f019d80234c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
