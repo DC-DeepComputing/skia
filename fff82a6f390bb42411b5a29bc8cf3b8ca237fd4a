@@ -89,6 +89,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "81946bbc_92892e53",
+        "filename": "src/gpu/graphite/compute/ArcLengthScan.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-25T17:31:09Z",
+      "side": 1,
+      "message": "// This is used when there isn\u0027t infinity support",
+      "revId": "fff82a6f390bb42411b5a29bc8cf3b8ca237fd4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "accf3c88_84cd26b4",
         "filename": "src/gpu/graphite/compute/ArcLengthScan.h",
         "patchSetId": 7
@@ -202,6 +219,247 @@
         "startChar": 38,
         "endLine": 119,
         "endChar": 47
+      },
+      "revId": "fff82a6f390bb42411b5a29bc8cf3b8ca237fd4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f02abf8b_716e2869",
+        "filename": "tests/graphite/ScanTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 318,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-25T17:31:09Z",
+      "side": 1,
+      "message": "// Describe what this test is actually doing",
+      "revId": "fff82a6f390bb42411b5a29bc8cf3b8ca237fd4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1b90680_0f0fcdd5",
+        "filename": "tests/graphite/ScanTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-25T17:31:09Z",
+      "side": 1,
+      "message": "Add dummy spaces to align with the other code ?",
+      "range": {
+        "startLine": 354,
+        "startChar": 22,
+        "endLine": 354,
+        "endChar": 23
+      },
+      "revId": "fff82a6f390bb42411b5a29bc8cf3b8ca237fd4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5311e0d9_2fb0418c",
+        "filename": "tests/graphite/ScanTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 377,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-25T17:31:09Z",
+      "side": 1,
+      "message": "brackets around this",
+      "range": {
+        "startLine": 377,
+        "startChar": 18,
+        "endLine": 377,
+        "endChar": 24
+      },
+      "revId": "fff82a6f390bb42411b5a29bc8cf3b8ca237fd4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34d4fd5e_3680f290",
+        "filename": "tests/graphite/ScanTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 391,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-25T17:31:09Z",
+      "side": 1,
+      "message": "// What\u0027s it doing ?",
+      "revId": "fff82a6f390bb42411b5a29bc8cf3b8ca237fd4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "116e0d3b_5cf2f305",
+        "filename": "tests/graphite/ScanTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 445,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-25T17:31:09Z",
+      "side": 1,
+      "message": "Same brackets",
+      "range": {
+        "startLine": 445,
+        "startChar": 18,
+        "endLine": 445,
+        "endChar": 24
+      },
+      "revId": "fff82a6f390bb42411b5a29bc8cf3b8ca237fd4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f343fab3_259e3e19",
+        "filename": "tests/graphite/ScanTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 533,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-25T17:31:09Z",
+      "side": 1,
+      "message": "brackets and new lines",
+      "range": {
+        "startLine": 533,
+        "startChar": 28,
+        "endLine": 533,
+        "endChar": 34
+      },
+      "revId": "fff82a6f390bb42411b5a29bc8cf3b8ca237fd4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ebf1197_4bbfad76",
+        "filename": "tests/graphite/ScanTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 567,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-25T17:31:09Z",
+      "side": 1,
+      "message": "brackets \u0026 newlines",
+      "range": {
+        "startLine": 567,
+        "startChar": 21,
+        "endLine": 567,
+        "endChar": 27
+      },
+      "revId": "fff82a6f390bb42411b5a29bc8cf3b8ca237fd4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8490e56_bb5ddd27",
+        "filename": "tests/graphite/ScanTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 585,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-25T17:31:09Z",
+      "side": 1,
+      "message": "numWorkTiles ?",
+      "range": {
+        "startLine": 585,
+        "startChar": 13,
+        "endLine": 585,
+        "endChar": 22
+      },
+      "revId": "fff82a6f390bb42411b5a29bc8cf3b8ca237fd4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dcaeef6d_21f912b7",
+        "filename": "tests/graphite/ScanTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 586,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-25T17:31:09Z",
+      "side": 1,
+      "message": "better name ?",
+      "range": {
+        "startLine": 586,
+        "startChar": 23,
+        "endLine": 586,
+        "endChar": 33
+      },
+      "revId": "fff82a6f390bb42411b5a29bc8cf3b8ca237fd4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9570f108_65e09282",
+        "filename": "tests/graphite/ScanTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 587,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-25T17:31:09Z",
+      "side": 1,
+      "message": "wgPrev ?",
+      "range": {
+        "startLine": 587,
+        "startChar": 10,
+        "endLine": 587,
+        "endChar": 17
+      },
+      "revId": "fff82a6f390bb42411b5a29bc8cf3b8ca237fd4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bdbfd745_35832f77",
+        "filename": "tests/graphite/ScanTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 589,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-25T17:31:09Z",
+      "side": 1,
+      "message": "fix format",
+      "range": {
+        "startLine": 589,
+        "startChar": 14,
+        "endLine": 589,
+        "endChar": 23
       },
       "revId": "fff82a6f390bb42411b5a29bc8cf3b8ca237fd4a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
