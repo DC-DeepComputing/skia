@@ -21,8 +21,10 @@
 #include "src/gpu/graphite/Surface_Graphite.h"
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/UniformManager.h"
+#include "src/gpu/graphite/compute/DispatchGroup.h"
 #include "src/gpu/graphite/vk/VulkanBuffer.h"
 #include "src/gpu/graphite/vk/VulkanCaps.h"
+#include "src/gpu/graphite/vk/VulkanComputePipeline.h"
 #include "src/gpu/graphite/vk/VulkanDescriptorSet.h"
 #include "src/gpu/graphite/vk/VulkanFramebuffer.h"
 #include "src/gpu/graphite/vk/VulkanGraphiteUtils.h"
@@ -124,6 +126,12 @@ VulkanCommandBuffer::~VulkanCommandBuffer() {
         VULKAN_CALL(fSharedContext->interface(),
                     DestroyFence(fSharedContext->device(), fSubmitFence, nullptr));
     }
+    for (VkDescriptorPool pool : fComputeDescriptorPools) {
+        VULKAN_CALL(fSharedContext->interface(),
+                    DestroyDescriptorPool(fSharedContext->device(), pool, nullptr));
+    }
+    fComputeDescriptorPools.clear();
+
     // This should delete any command buffers as well.
     VULKAN_CALL(fSharedContext->interface(),
                 DestroyCommandPool(fSharedContext->device(), fPool, nullptr));
@@ -273,6 +281,12 @@ void VulkanCommandBuffer::onResetCommandBuffer() {
     SkASSERT(!fActive);
     VULKAN_CALL_ERRCHECK(fSharedContext, ResetCommandPool(fSharedContext->device(), fPool, 0));
     fActiveGraphicsPipeline = nullptr;
+    fActiveComputePipeline = nullptr;
+    for (VkDescriptorPool pool : fComputeDescriptorPools) {
+        VULKAN_CALL(fSharedContext->interface(),
+                    DestroyDescriptorPool(fSharedContext->device(), pool, nullptr));
+    }
+    fComputeDescriptorPools.clear();
     fBindUniformBuffers = true;
     fBoundIndirectBuffer = VK_NULL_HANDLE;
     fBoundIndirectBufferOffset = 0;
@@ -1748,7 +1762,175 @@ void VulkanCommandBuffer::drawIndexedIndirect(PrimitiveType) {
                                        /*stride=*/0));
 }
 
-bool VulkanCommandBuffer::onAddComputePass(DispatchGroupSpan) { return false; }
+void VulkanCommandBuffer::bindDispatchResources(const DispatchGroup& group,
+                                                const DispatchGroup::Dispatch& dispatch) {
+    SkASSERT(fActiveComputePipeline);
+
+    if (dispatch.fBindings.empty()) {
+        return;
+    }
+
+    uint32_t numUbo = 0, numSsbo = 0, numStorageImage = 0, numSampledImage = 0, numCombinedSampler = 0;
+    for (const ResourceBinding& binding : dispatch.fBindings) {
+        VkDescriptorType type = fActiveComputePipeline->bindingType(binding.fIndex);
+        switch (type) {
+            case VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER: numUbo++; break;
+            case VK_DESCRIPTOR_TYPE_STORAGE_BUFFER: numSsbo++; break;
+            case VK_DESCRIPTOR_TYPE_STORAGE_IMAGE: numStorageImage++; break;
+            case VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE: numSampledImage++; break;
+            case VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER: numCombinedSampler++; break;
+            default: break;
+        }
+    }
+
+    STArray<5, VkDescriptorPoolSize> poolSizes;
+    if (numUbo > 0) poolSizes.push_back({VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, numUbo});
+    if (numSsbo > 0) poolSizes.push_back({VK_DESCRIPTOR_TYPE_STORAGE_BUFFER, numSsbo});
+    if (numStorageImage > 0) poolSizes.push_back({VK_DESCRIPTOR_TYPE_STORAGE_IMAGE, numStorageImage});
+    if (numSampledImage > 0) poolSizes.push_back({VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE, numSampledImage});
+    if (numCombinedSampler > 0) poolSizes.push_back({VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, numCombinedSampler});
+
+    VkDescriptorPoolCreateInfo poolCreateInfo = {};
+    poolCreateInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
+    poolCreateInfo.maxSets = 1;
+    poolCreateInfo.poolSizeCount = poolSizes.size();
+    poolCreateInfo.pPoolSizes = poolSizes.data();
+
+    VkDescriptorPool pool = VK_NULL_HANDLE;
+    VkResult result;
+    VULKAN_CALL_RESULT(fSharedContext,
+                       result,
+                       CreateDescriptorPool(fSharedContext->device(),
+                                            &poolCreateInfo,
+                                            nullptr,
+                                            &pool));
+    if (result != VK_SUCCESS) {
+        return;
+    }
+    fComputeDescriptorPools.push_back(pool);
+
+    VkDescriptorSetLayout setLayout = fActiveComputePipeline->vkDescriptorSetLayout();
+    VkDescriptorSetAllocateInfo allocInfo = {};
+    allocInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
+    allocInfo.descriptorPool = pool;
+    allocInfo.descriptorSetCount = 1;
+    allocInfo.pSetLayouts = &setLayout;
+
+    VkDescriptorSet descSet = VK_NULL_HANDLE;
+    VULKAN_CALL_RESULT(fSharedContext,
+                       result,
+                       AllocateDescriptorSets(fSharedContext->device(),
+                                              &allocInfo,
+                                              &descSet));
+    if (result != VK_SUCCESS) {
+        return;
+    }
+
+    STArray<16, VkWriteDescriptorSet> writes;
+    STArray<16, VkDescriptorBufferInfo> bufferInfos;
+    STArray<16, VkDescriptorImageInfo> imageInfos;
+
+    for (const ResourceBinding& binding : dispatch.fBindings) {
+        VkDescriptorType descType = fActiveComputePipeline->bindingType(binding.fIndex);
+        VkWriteDescriptorSet write = {};
+        write.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+        write.dstSet = descSet;
+        write.dstBinding = binding.fIndex;
+        write.dstArrayElement = 0;
+        write.descriptorCount = 1;
+        write.descriptorType = descType;
+
+        if (const BindBufferInfo* buffer = std::get_if<BindBufferInfo>(&binding.fResource)) {
+            const auto* vkBuffer = static_cast<const VulkanBuffer*>(buffer->fBuffer);
+            VkDescriptorBufferInfo& bufInfo = bufferInfos.push_back();
+            bufInfo.buffer = vkBuffer->vkBuffer();
+            bufInfo.offset = buffer->fOffset;
+            bufInfo.range = buffer->fSize ? buffer->fSize : VK_WHOLE_SIZE;
+            write.pBufferInfo = &bufInfo;
+            writes.push_back(write);
+        } else if (const TextureIndex* texIdx = std::get_if<TextureIndex>(&binding.fResource)) {
+            const auto* texture = static_cast<const VulkanTexture*>(group.getTexture(texIdx->fValue));
+            SkASSERT(texture);
+            VkDescriptorImageInfo& imgInfo = imageInfos.push_back();
+            imgInfo.sampler = VK_NULL_HANDLE;
+            imgInfo.imageView = texture->getImageView(VulkanImageView::Usage::kShaderInput)->imageView();
+            imgInfo.imageLayout = (descType == VK_DESCRIPTOR_TYPE_STORAGE_IMAGE)
+                    ? VK_IMAGE_LAYOUT_GENERAL
+                    : VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+            write.pImageInfo = &imgInfo;
+            writes.push_back(write);
+        } else if (const SamplerIndex* samplerIdx = std::get_if<SamplerIndex>(&binding.fResource)) {
+            const auto* sampler = static_cast<const VulkanSampler*>(group.getSampler(samplerIdx->fValue));
+            SkASSERT(sampler);
+            VkDescriptorImageInfo& imgInfo = imageInfos.push_back();
+            imgInfo.sampler = sampler->vkSampler();
+            imgInfo.imageView = VK_NULL_HANDLE;
+            imgInfo.imageLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+            write.pImageInfo = &imgInfo;
+            writes.push_back(write);
+        }
+    }
+
+    if (!writes.empty()) {
+        VULKAN_CALL(fSharedContext->interface(),
+                    UpdateDescriptorSets(fSharedContext->device(),
+                                         writes.size(),
+                                         writes.data(),
+                                         0,
+                                         nullptr));
+    }
+
+    VULKAN_CALL(fSharedContext->interface(),
+                CmdBindDescriptorSets(fPrimaryCommandBuffer,
+                                      VK_PIPELINE_BIND_POINT_COMPUTE,
+                                      fActiveComputePipeline->vkPipelineLayout(),
+                                      0,
+                                      1,
+                                      &descSet,
+                                      0,
+                                      nullptr));
+}
+
+bool VulkanCommandBuffer::onAddComputePass(DispatchGroupSpan groups) {
+    for (const auto& group : groups) {
+        group->addResourceRefs(this);
+        for (const auto& dispatch : group->dispatches()) {
+            const ComputePipeline* pipeline = group->getPipeline(dispatch.fPipelineIndex);
+            if (!pipeline) {
+                return false;
+            }
+            const auto* vkComputePipeline = static_cast<const VulkanComputePipeline*>(pipeline);
+            fActiveComputePipeline = vkComputePipeline;
+
+            VULKAN_CALL(fSharedContext->interface(),
+                        CmdBindPipeline(fPrimaryCommandBuffer,
+                                        VK_PIPELINE_BIND_POINT_COMPUTE,
+                                        vkComputePipeline->vkPipeline()));
+
+            this->bindDispatchResources(*group, dispatch);
+
+            if (const WorkgroupSize* globalSize =
+                        std::get_if<WorkgroupSize>(&dispatch.fGlobalSizeOrIndirect)) {
+                VULKAN_CALL(fSharedContext->interface(),
+                            CmdDispatch(fPrimaryCommandBuffer,
+                                        globalSize->fWidth,
+                                        globalSize->fHeight,
+                                        globalSize->fDepth));
+            } else {
+                SkASSERT(std::holds_alternative<BindBufferInfo>(dispatch.fGlobalSizeOrIndirect));
+                const BindBufferInfo& indirect =
+                        *std::get_if<BindBufferInfo>(&dispatch.fGlobalSizeOrIndirect);
+                const auto* indirectBuffer = static_cast<const VulkanBuffer*>(indirect.fBuffer);
+                VULKAN_CALL(fSharedContext->interface(),
+                            CmdDispatchIndirect(fPrimaryCommandBuffer,
+                                                indirectBuffer->vkBuffer(),
+                                                indirect.fOffset));
+            }
+        }
+    }
+    fActiveComputePipeline = nullptr;
+    return true;
+}
 
 bool VulkanCommandBuffer::onCopyBufferToBuffer(const Buffer* srcBuffer,
                                                size_t srcOffset,

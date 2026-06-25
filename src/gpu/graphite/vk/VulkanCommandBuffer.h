@@ -12,6 +12,8 @@
 
 #include "include/gpu/vk/VulkanTypes.h"
 #include "src/gpu/graphite/DrawPass.h"
+#include "src/gpu/graphite/compute/DispatchGroup.h"
+#include "src/gpu/graphite/vk/VulkanComputePipeline.h"
 #include "src/gpu/graphite/vk/VulkanGraphicsPipeline.h"
 #include "src/gpu/graphite/vk/VulkanResourceProvider.h"
 
@@ -183,6 +185,8 @@ private:
                          void* barrier);
     void submitPipelineBarriers(bool forSelfDependency = false);
 
+    void bindDispatchResources(const DispatchGroup& group, const DispatchGroup::Dispatch& dispatch);
+
     bool loadMSAAFromResolve(const RenderPassDesc&,
                              VulkanTexture& resolveTexture,
                              SkISize dstDimensions,
@@ -205,6 +209,8 @@ private:
     // target texture is kept alive via a command buffer reference.
     VulkanTexture* fTargetTexture = nullptr;
     const VulkanGraphicsPipeline* fActiveGraphicsPipeline = nullptr;
+    const VulkanComputePipeline* fActiveComputePipeline = nullptr;
+    skia_private::TArray<VkDescriptorPool> fComputeDescriptorPools;
 
     VkFence fSubmitFence = VK_NULL_HANDLE;
 
