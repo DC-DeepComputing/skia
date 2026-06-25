@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6056797_04bc0eaa",
+        "filename": "tests/RoundRectTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1607,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-25T20:22:52Z",
+      "side": 1,
+      "message": "Another option is to make this re-calculate what half the width/height are but I wasn\u0027t sure if we wanted that. Thoughts?",
+      "range": {
+        "startLine": 1607,
+        "startChar": 32,
+        "endLine": 1607,
+        "endChar": 42
+      },
+      "revId": "83b4942c36e451c36c39c374c38d86845dee1712",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
