@@ -1039,6 +1039,7 @@ func (b *TaskBuilder) defaultSwarmDimensions() {
 				gpu, ok := map[string]string{
 					"GTX1660":             "10de:2184-31.0.15.4601",
 					"IntelArc140V":        "8086:64a0-32.0.101.7029",
+					"IntelArcB570":        "8086:e20c-32.0.101.8132",
 					"IntelHD4400":         "8086:0a16-10.0.26100.1",
 					"IntelIris540":        "8086:1926-31.0.101.2115",
 					"IntelIris655":        "8086:3ea5-26.20.100.7463",
@@ -1057,6 +1058,7 @@ func (b *TaskBuilder) defaultSwarmDimensions() {
 				d["gpu"] = gpu
 			} else if b.IsLinux() {
 				gpu, ok := map[string]string{
+					"IntelArcB570": "8086:e20c-25.0.7",
 					// Intel drivers come from CIPD, so no need to specify the version here.
 					"IntelHD405": "8086:22b1",
 					// The version is not set on these as of Nov 5 2025
