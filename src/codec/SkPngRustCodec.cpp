@@ -1327,3 +1327,5 @@ SkCodec::Result SkPngRustCodec::FrameHolder::setFrameInfoFromCurrentFctlChunk(
 }
 
 void SkPngRustCodec::processUnknownChunks() { ReadUnknownChunks(*fReader, fPngChunkReader.get()); }
+
+SkSampler* SkPngRustCodec::getSampler(bool createIfNecessary) { return nullptr; }
