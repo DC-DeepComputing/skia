@@ -22,6 +22,30 @@
       },
       "revId": "6eeb38caa2e13cbda2c0b119e422931d3895d453",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "29bf7a91_e096269e",
+        "filename": "src/gpu/ganesh/ops/OpsTask.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 640,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-06-25T18:38:00Z",
+      "side": 1,
+      "message": "made SkUNREACHABLE",
+      "parentUuid": "ba30f037_dd67376c",
+      "range": {
+        "startLine": 638,
+        "startChar": 0,
+        "endLine": 640,
+        "endChar": 18
+      },
+      "revId": "6eeb38caa2e13cbda2c0b119e422931d3895d453",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
