@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13865bdf_cc4d5fb0",
+        "filename": "src/gpu/ganesh/ops/OpsTask.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 614,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-25T19:49:33Z",
+      "side": 0,
+      "message": "Can we remove fHasPerformedInitialClear and its setters \u0026 getters ?",
+      "revId": "41bfea8dcdf6c217bced1762b2944cad4b70cb31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

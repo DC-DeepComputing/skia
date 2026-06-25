@@ -39,6 +39,52 @@
       "message": "I don\u0027t think this is actually used",
       "revId": "26af611a1d5a910c72ba4893e7466d601d600d2e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd982479_e19e9a6b",
+        "filename": "src/gpu/ganesh/ops/OpsTask.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 606,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-25T19:49:33Z",
+      "side": 1,
+      "message": "rm ?",
+      "range": {
+        "startLine": 606,
+        "startChar": 48,
+        "endLine": 606,
+        "endChar": 51
+      },
+      "revId": "26af611a1d5a910c72ba4893e7466d601d600d2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f513cabf_c6e84999",
+        "filename": "src/gpu/ganesh/ops/OpsTask.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 631,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-25T19:49:33Z",
+      "side": 1,
+      "message": "\u0027s ?",
+      "range": {
+        "startLine": 631,
+        "startChar": 75,
+        "endLine": 631,
+        "endChar": 86
+      },
+      "revId": "26af611a1d5a910c72ba4893e7466d601d600d2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
