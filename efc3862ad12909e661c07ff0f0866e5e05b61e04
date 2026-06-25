@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3814b18a_b42ec84b",
+        "filename": "gm/lattice.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-25T22:12:23Z",
+      "side": 1,
+      "message": "This makes total sense in this situation, but if it\u0027s ever harder to guard the variables and it\u0027s a rare/harmless extra variable, you can add the `[[maybe_unused]]` attribute to its declaration to hide the tidy error.",
+      "range": {
+        "startLine": 178,
+        "startChar": 0,
+        "endLine": 178,
+        "endChar": 46
+      },
+      "revId": "efc3862ad12909e661c07ff0f0866e5e05b61e04",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
