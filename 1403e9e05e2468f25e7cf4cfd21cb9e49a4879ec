@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7292bf8d_559840a1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-06-25T14:35:47Z",
+      "side": 1,
+      "message": "Unfortunately, there\u0027s only one machine which can run these tasks, and it\u0027s offline: https://chromium-swarm.appspot.com/bot?id\u003dlin-292-e505\n\nThere\u0027s a bug to fix it but not much movement: b/516429165",
+      "revId": "1403e9e05e2468f25e7cf4cfd21cb9e49a4879ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
