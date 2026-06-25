@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6429e89_fbfd826e",
+        "filename": "gm/lattice.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-25T13:00:35Z",
+      "side": 1,
+      "message": "This could be kNo since the later `readPixels` will sync",
+      "range": {
+        "startLine": 166,
+        "startChar": 56,
+        "endLine": 166,
+        "endChar": 60
+      },
+      "revId": "5852a69f7d84aa6c182255a07f681932564c8702",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9c1c444_62dae282",
+        "filename": "gm/lattice.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-25T13:00:35Z",
+      "side": 1,
+      "message": "clang-tidy wants this to be `dstRowBytes`",
+      "range": {
+        "startLine": 184,
+        "startChar": 51,
+        "endLine": 184,
+        "endChar": 59
+      },
+      "revId": "5852a69f7d84aa6c182255a07f681932564c8702",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
