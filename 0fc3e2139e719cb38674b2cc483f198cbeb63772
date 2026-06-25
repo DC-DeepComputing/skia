@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "60730edf_509a9a16",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-25T03:26:47Z",
+      "side": 1,
+      "message": "PTAL; I think the biggest pain point here is that I am trying to make the ScanComposer composable, so that in the future you can plug in different binary operators, data types, etc. for the scan. But it\u0027s still very brittle. Note how shared memory allocation size (S_MEM_SIZE), which is part of the ScanComposer strings, is set in ArcLengthScan.",
+      "revId": "0fc3e2139e719cb38674b2cc483f198cbeb63772",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
