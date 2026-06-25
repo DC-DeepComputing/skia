@@ -682,7 +682,7 @@ void ClipStack::RawElement::drawClip(Device* device) {
     fOrder = DrawOrder::kNoIntersection;
     fMaxZ = DrawOrder::kClearDepth;
     fCaptureParams = nullptr;
-    fInsertion = {nullptr, nullptr};
+    fInsertion = nullptr;
 }
 
 void ClipStack::RawElement::drawClipImmediate(Device* device, const Rect& snappedOuterBounds) {
@@ -814,7 +814,7 @@ ClipStack::DrawInfluence ClipStack::RawElement::testForDraw(const TransformedSha
     return SimplifyForDraw(*this, draw);
 }
 
-std::pair<CompressedPaintersOrder, Insertion> ClipStack::RawElement::updateForDraw(
+std::pair<CompressedPaintersOrder, Layer*> ClipStack::RawElement::updateForDraw(
         Device* device,
         const BoundsManager* boundsManager,
         const Rect& deviceBounds,
@@ -1972,7 +1972,7 @@ Clip ClipStack::visitClipStackForDraw(const Transform& localToDevice,
     return draw.toClip(geometry, nonMSAAClip, cs.shader());
 }
 
-std::pair<CompressedPaintersOrder, Insertion> ClipStack::updateClipStateForDraw(
+std::pair<CompressedPaintersOrder, Layer*> ClipStack::updateClipStateForDraw(
         const Clip& clip,
         const ElementList& effectiveElements,
         const BoundsManager* boundsManager,
@@ -1990,7 +1990,7 @@ std::pair<CompressedPaintersOrder, Insertion> ClipStack::updateClipStateForDraw(
     // render steps. Although effectiveElements may contain a mixture of drawn and undrawn elements,
     // taking the max across the indexes (which are monotonically increasing) associated with each
     // fDeferredLayer yields the latest layer.
-    Insertion latestInsertion;
+    Layer* latestInsertion = nullptr;
     Rect deviceBounds = this->deviceBounds();
     SkASSERT(!clip.drawBounds().isEmptyNegativeOrNaN());
 
@@ -2020,7 +2020,7 @@ std::pair<CompressedPaintersOrder, Insertion> ClipStack::updateClipStateForDraw(
         // identical insertion. Even if this reverse ordering property was not true, a clipped
         // shading draw cannot match on a depth draw, so it would either match on an existing draw
         // or is added to to the tail, preserving the ordering).
-        if (insertion > latestInsertion) {
+        if (!latestInsertion || insertion->fOrder > latestInsertion->fOrder) {
             latestInsertion = insertion;
         }
     }

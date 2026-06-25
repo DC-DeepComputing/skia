@@ -9,24 +9,16 @@
 
 #include "src/gpu/graphite/DrawListBase.h"
 
-#include "include/private/SkDebug.h"
 #include "include/private/SkEnumBitMask.h"
-#include "src/core/SkBlockAllocator.h"
-#include "src/core/SkTBlockList.h"
-#include "src/gpu/graphite/ContextUtils.h"
 #include "src/gpu/graphite/DrawCommands.h"
 #include "src/gpu/graphite/DrawListTypes.h"
 #include "src/gpu/graphite/DrawOrder.h"
 #include "src/gpu/graphite/DrawParams.h"
 #include "src/gpu/graphite/PaintParams.h"
 #include "src/gpu/graphite/PipelineData.h"
-#include "src/gpu/graphite/geom/Rect.h"
 #include "src/gpu/graphite/geom/Transform.h"
 
 #include <cstdint>
-#include <functional>
-#include <limits>
-#include <optional>
 
 namespace skgpu::graphite {
 
@@ -43,7 +35,7 @@ public:
     // DrawList requires that all Transforms be valid and asserts as much; invalid transforms should
     // be detected at the Device level or similar. The provided Renderer must be compatible with the
     // 'shape' and 'stroke' parameters.
-    std::pair<DrawParams*, Insertion> recordDraw(
+    std::pair<DrawParams*, Layer*> recordDraw(
             const Renderer* renderer,
             const Transform& localToDevice,
             const Geometry& geometry,
@@ -54,7 +46,7 @@ public:
             BarrierType barrierBeforeDraws,
             PipelineDataGatherer* gatherer,
             const StrokeStyle* stroke,
-            const Insertion& latestInsertion) override;
+            Layer* stopLayer) override;
 
     std::unique_ptr<DrawPass> snapDrawPass(Recorder* recorder,
                                            sk_sp<TextureProxy> target,
@@ -66,38 +58,20 @@ public:
     void reset(LoadOp op, SkColor4f clearColor = {0.f, 0.f, 0.f, 0.f}) override;
 
 private:
-    void recordBackwards(int stepIndex,
-                         bool isStencil,
-                         bool isDepthOnly,
-                         bool dependsOnDst,
-                         bool requiresBarrier,
-                         const RenderStep* step,
-                         const UniformDataCache::Index& uniformIndex,
-                         const LayerKey& key,
-                         const DrawParams* drawParams,
-                         const Insertion& stop,
-                         Insertion* capture,
-                         bool canForwardMerge);
-
-    void recordForwards(int stepIndex,
-                        bool isStencil,
-                        bool isDepthOnly,
-                        bool dependsOnDst,
-                        bool requiresBarrier,
-                        const RenderStep* step,
-                        const UniformDataCache::Index& uniformIndex,
-                        const LayerKey& key,
-                        const DrawParams* drawParams,
-                        Insertion& start);
-
     friend class DrawPass;
 
-    static constexpr int32_t  kMaxSearchLimit = 32;
-    static constexpr uint32_t kDefaultAllocation = 4096;
+    std::pair<Layer*, BindingList*> searchBackwards(const RenderStep* step,
+                                                    const LayerKey& key,
+                                                    SkEnumBitMask<BoundsFlags> testMask,
+                                                    const Draw* draw,
+                                                    CompressedPaintersOrder stop);
 
-    // TODO (thomsmit): Try using SkSTArenaAllocWithReset that has the first storage block stored
-    // inline so it's embedded in the DrawListLayer object.
-    SkArenaAllocWithReset fStorage{kDefaultAllocation};
+    BindingList* findOrCreateBindingInLayer(Layer* layer,
+                                            LayerKey key,
+                                            const RenderStep* step,
+                                            BindingList* parent);
+
+    SkSTArenaAllocWithReset<256> fStorage;
     SkTInternalLList<Layer> fLayers;
 
     int fDrawCount = 0;

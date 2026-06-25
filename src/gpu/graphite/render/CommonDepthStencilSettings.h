@@ -117,7 +117,7 @@ constexpr DepthStencilSettings::Face kPassNonZero = {
  // Resets non-zero bits to 0, passes when zero.
 constexpr DepthStencilSettings::Face kPassZero = {
         /*stencilFail=*/   StencilOp::kZero,
-        /*depthFail=*/     StencilOp::kKeep,
+        /*depthFail=*/     StencilOp::kZero,
         /*dsPass=*/        StencilOp::kKeep,
         /*compare=*/       CompareOp::kEqual,
         /*readMask=*/      0xffffffff,

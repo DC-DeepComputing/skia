@@ -156,6 +156,7 @@ MTLStencilDescriptor* stencil_face_to_mtl(DepthStencilSettings::Face face) {
     result.writeMask = face.fWriteMask;
     result.depthStencilPassOperation = stencil_op_to_mtl(face.fDepthStencilPassOp);
     result.stencilFailureOperation = stencil_op_to_mtl(face.fStencilFailOp);
+    result.depthFailureOperation = stencil_op_to_mtl(face.fDepthFailOp);
     return result;
 }
 
