@@ -15,6 +15,7 @@
 #include "include/gpu/vk/VulkanTypes.h"
 #include "include/private/SkMath.h"
 #include "src/gpu/SwizzlePriv.h"
+#include "src/gpu/graphite/ComputePipelineDesc.h"
 #include "src/gpu/graphite/ContextUtils.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
 #include "src/gpu/graphite/GraphiteResourceKey.h"
@@ -150,6 +151,8 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
 
     // TODO(b/353983969): Enable storage buffers once perf regressions are addressed.
     fStorageBufferSupport = false;
+    fStorageBufferSupportForCompute = true;
+    fComputeSupport = true;
 
     VkPhysicalDeviceMemoryProperties deviceMemoryProperties;
     VULKAN_CALL(vkInterface, GetPhysicalDeviceMemoryProperties(physDev, &deviceMemoryProperties));
@@ -658,7 +661,8 @@ void VulkanCaps::initShaderCaps(const EnabledFeatures enabledFeatures, const uin
     // TODO(skbug.com/40045541): We must force std430 array stride when using SSBOs since SPIR-V
     // generation cannot handle mixed array strides being passed into functions.
     fShaderCaps->fForceStd430ArrayLayout =
-            fStorageBufferSupport && fResourceBindingReqs.fStorageBufferLayout == Layout::kStd430;
+            (fStorageBufferSupport || fStorageBufferSupportForCompute) &&
+            fResourceBindingReqs.fStorageBufferLayout == Layout::kStd430;
 
     // Avoid RelaxedPrecision with OpImageSampleImplicitLod due to driver bug with YCbCr sampling.
     // (skbug.com/421927604)
@@ -1141,6 +1145,17 @@ bool VulkanCaps::extractGraphicsDescs(const UniqueKey& key,
             renderPassDesc);
 
     return true;
+}
+
+UniqueKey VulkanCaps::makeComputePipelineKey(const ComputePipelineDesc& pipelineDesc) const {
+    UniqueKey pipelineKey;
+    {
+        static const skgpu::UniqueKey::Domain kComputePipelineDomain = UniqueKey::GenerateDomain();
+        UniqueKey::Builder builder(&pipelineKey, kComputePipelineDomain, 1, "ComputePipeline");
+        builder[0] = pipelineDesc.computeStep()->uniqueID();
+        builder.finish();
+    }
+    return pipelineKey;
 }
 
 void VulkanCaps::buildKeyForTexture(SkISize dimensions,

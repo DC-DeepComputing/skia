@@ -277,6 +277,9 @@ public:
     /* Returns whether storage buffers are supported and to be preferred over uniform buffers. */
     bool storageBufferSupport() const { return fStorageBufferSupport; }
 
+    /* Returns whether storage buffers are supported for compute dispatches. */
+    bool storageBufferSupportForCompute() const { return fStorageBufferSupportForCompute; }
+
     /**
      * The gradient buffer is an unsized float array so it is only optimal memory-wise to use it if
      * the storage buffer memory layout is std430 or in metal, which is also the only supported
@@ -453,6 +456,7 @@ protected:
     bool fDrawListLayer = false;
 
     bool fComputeSupport = false;
+    bool fStorageBufferSupportForCompute = false;
     bool fSupportsAHardwareBufferImages = false;
     bool fFullCompressedUploadSizeMustAlignToBlockDims = false;
 
