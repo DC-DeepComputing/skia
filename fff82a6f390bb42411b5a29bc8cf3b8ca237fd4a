@@ -62,6 +62,149 @@
       },
       "revId": "fff82a6f390bb42411b5a29bc8cf3b8ca237fd4a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f81d57a3_cc9b18f5",
+        "filename": "src/gpu/graphite/compute/ArcLengthScan.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-25T17:07:43Z",
+      "side": 1,
+      "message": "SCAN_MEM_SIZE ?\n// Must be a power of 2 ?",
+      "range": {
+        "startLine": 41,
+        "startChar": 24,
+        "endLine": 41,
+        "endChar": 34
+      },
+      "revId": "fff82a6f390bb42411b5a29bc8cf3b8ca237fd4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "accf3c88_84cd26b4",
+        "filename": "src/gpu/graphite/compute/ArcLengthScan.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-25T17:07:43Z",
+      "side": 1,
+      "message": "This could use a comment",
+      "revId": "fff82a6f390bb42411b5a29bc8cf3b8ca237fd4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43d19091_9b18f6b4",
+        "filename": "src/gpu/graphite/compute/ArcLengthScan.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-25T17:07:43Z",
+      "side": 1,
+      "message": "There are a lot of issues w/ white space in our static code consuming actual space in the binary. Are we going to be hit with that here?",
+      "range": {
+        "startLine": 198,
+        "startChar": 13,
+        "endLine": 198,
+        "endChar": 29
+      },
+      "revId": "fff82a6f390bb42411b5a29bc8cf3b8ca237fd4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4b17273_56b6a358",
+        "filename": "src/gpu/graphite/compute/ScanComposer.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-25T17:07:43Z",
+      "side": 1,
+      "message": "// This all could do with a comment",
+      "revId": "fff82a6f390bb42411b5a29bc8cf3b8ca237fd4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9697b603_7e8d5e25",
+        "filename": "src/gpu/graphite/compute/ScanComposer.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-25T17:07:43Z",
+      "side": 1,
+      "message": "Is this supposed to be prev_read ?",
+      "revId": "fff82a6f390bb42411b5a29bc8cf3b8ca237fd4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c7df1ab_4a2800e1",
+        "filename": "src/gpu/graphite/compute/ScanComposer.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-25T17:07:43Z",
+      "side": 1,
+      "message": "These guys all the way on the left are an odd formatting choice",
+      "range": {
+        "startLine": 92,
+        "startChar": 13,
+        "endLine": 92,
+        "endChar": 15
+      },
+      "revId": "fff82a6f390bb42411b5a29bc8cf3b8ca237fd4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e178d31b_84457610",
+        "filename": "src/gpu/graphite/compute/ScanComposer.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-25T17:07:43Z",
+      "side": 1,
+      "message": "These \u0027f_\u0027 prefixes aren\u0027t telling me anything",
+      "range": {
+        "startLine": 119,
+        "startChar": 38,
+        "endLine": 119,
+        "endChar": 47
+      },
+      "revId": "fff82a6f390bb42411b5a29bc8cf3b8ca237fd4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
