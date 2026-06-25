@@ -23,6 +23,9 @@
 #include "src/ports/SkTypeface_fontations_priv.h"
 #include "src/ports/fontations/src/skpath_bridge.h"
 
+#include <optional>
+#include <utility>
+
 namespace {
 
 template <typename T> rust::Slice<T> toSlice(SkSpan<T> span) {
@@ -32,6 +35,21 @@ template <typename T> rust::Slice<T> toSlice(SkSpan<T> span) {
 static void check_png() {
     SkASSERTF(SkCodecs::HasDecoder("png"),
         "No PNG decoder registered. A call to SkCodecs::Register is necessary.");
+}
+
+// Returns whether an embedded bitmap strike of size `strikePpem` should be
+// preferred over a vector outline at the requested `requestedPpem`. The
+// Fontations strike picker returns the nearest available strike regardless of
+// distance; a monochrome strike scaled away from its native ppem looks worse
+// than the outline. This mirrors the FreeType backend, whose FT_Match_Size
+// (src/base/ftobjs.c) selects an embedded bitmap for a scalable face only when
+// the rounded requested ppem equals a strike ppem, and otherwise renders the
+// outline. See https://issues.chromium.org/issues/526181509.
+bool embeddedBitmapStrikeCloseEnough(float strikePpem, float requestedPpem) {
+    if (strikePpem <= 0.f || requestedPpem <= 0.f) {
+        return true;
+    }
+    return roundf(strikePpem) == roundf(requestedPpem);
 }
 
 [[maybe_unused]] static inline const constexpr bool kSkShowTextBlitCoverage = false;
@@ -524,6 +542,49 @@ protected:
             has_bitmap_glyph = fontations_ffi::has_bitmap_glyph(fBridgeFontRef, glyph.getGlyphID());
         }
 
+        // When a font provides both an outline and an embedded bitmap for a
+        // glyph, decide which one to use; this mirrors the FreeType backend. A
+        // bitmap-only font (no outline, e.g. many color fonts) has no choice and
+        // keeps its bitmap. See https://issues.chromium.org/issues/526181509.
+        std::optional<rust::cxxbridge1::Box<fontations_ffi::BridgeBitmapGlyph>> bitmapGlyph;
+        if (has_bitmap_glyph) {
+            const bool hasOutlineGlyph = fontations_ffi::outline_format(fOutlines) !=
+                                         fontations_ffi::OutlineFormat::NoOutlines;
+            // SkScalerContext::kEmbeddedBitmapText_Flag is cleared when the
+            // client requests that embedded bitmaps be ignored - expressed as
+            // SkFont::setEmbeddedBitmaps(false), which Chromium drives from
+            // fontconfig's embeddedbitmap setting and from Blink's bitmap glyph
+            // block list. Honor that by using the outline (FreeType maps this to
+            // FT_LOAD_NO_BITMAP).
+            if (hasOutlineGlyph &&
+                !SkToBool(fRec.fFlags & SkScalerContext::kEmbeddedBitmapText_Flag)) {
+                has_bitmap_glyph = false;
+            } else {
+                bitmapGlyph = fontations_ffi::bitmap_glyph(
+                        fBridgeFontRef, glyph.getGlyphID(), fScale.y());
+                const bool hasAlphaMask = fontations_ffi::has_alpha_mask(**bitmapGlyph);
+                const bool hasPng = !fontations_ffi::png_data(**bitmapGlyph).empty();
+                if (hasOutlineGlyph && !hasAlphaMask && !hasPng) {
+                    // has_bitmap_glyph() reports a bitmap from the first strike,
+                    // but the strike chosen for this size may not contain the
+                    // glyph, leaving an empty result. Fall back to the outline
+                    // rather than rendering nothing.
+                    has_bitmap_glyph = false;
+                } else if (hasOutlineGlyph && hasAlphaMask &&
+                           !embeddedBitmapStrikeCloseEnough(
+                                   fontations_ffi::bitmap_metrics(**bitmapGlyph).ppem_y,
+                                   fScale.y())) {
+                    // Monochrome embedded bitmaps (EBDT/EBLC) are size-specific
+                    // hinted renderings of the outline. If the chosen strike is
+                    // not at the requested size it would be scaled and look worse
+                    // than the outline, so prefer the outline. Color bitmaps
+                    // (sbix, CBDT) are the intended representation of the glyph
+                    // and are always kept.
+                    has_bitmap_glyph = false;
+                }
+            }
+        }
+
         // Local overrides for color fonts etc. may alter the request for linear metrics.
         bool doLinearMetrics = fDoLinearMetrics;
 
@@ -609,8 +670,10 @@ protected:
             mx.neverRequestPath = true;
             mx.extraBits = ScalerContextBits::BITMAP;
 
+            // The glyph was loaded above when deciding bitmap-vs-outline.
+            SkASSERT(bitmapGlyph.has_value());
             rust::cxxbridge1::Box<fontations_ffi::BridgeBitmapGlyph> bitmap_glyph =
-                    fontations_ffi::bitmap_glyph(fBridgeFontRef, glyph.getGlyphID(), fScale.y());
+                    std::move(*bitmapGlyph);
 
             const fontations_ffi::BitmapMetrics bitmapMetrics =
                     fontations_ffi::bitmap_metrics(*bitmap_glyph);
