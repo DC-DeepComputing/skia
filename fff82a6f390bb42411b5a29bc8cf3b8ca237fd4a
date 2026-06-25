@@ -43,6 +43,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ee241e8a_a8c47372",
+        "filename": "src/gpu/graphite/compute/ArcLengthScan.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-25T18:17:27Z",
+      "side": 1,
+      "message": "Some words about the plan for lines \u0026 quads ?",
+      "revId": "fff82a6f390bb42411b5a29bc8cf3b8ca237fd4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bc61f967_866d7388",
         "filename": "src/gpu/graphite/compute/ArcLengthScan.h",
         "patchSetId": 7
