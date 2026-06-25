@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "726e8c96_8e3a6826",
+        "filename": "src/gpu/ganesh/GrAttachment.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-25T19:14:18Z",
+      "side": 1,
+      "message": "hasAreaBeenCleared ?",
+      "range": {
+        "startLine": 57,
+        "startChar": 9,
+        "endLine": 57,
+        "endChar": 27
+      },
+      "revId": "26af611a1d5a910c72ba4893e7466d601d600d2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "620b868a_1031fa63",
+        "filename": "src/gpu/ganesh/GrCaps.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 614,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-25T19:14:18Z",
+      "side": 1,
+      "message": "I don\u0027t think this is actually used",
+      "revId": "26af611a1d5a910c72ba4893e7466d601d600d2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
