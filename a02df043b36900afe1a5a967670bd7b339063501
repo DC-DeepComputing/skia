@@ -39,6 +39,30 @@
       },
       "revId": "a02df043b36900afe1a5a967670bd7b339063501",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e8a9bbe_2d5469ee",
+        "filename": "src/encode/SkPngRustEncoderImpl.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 342,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-06-25T12:39:50Z",
+      "side": 1,
+      "message": "Yup, I was just talking to robertphillips@google.com who suggested something similar. WDYT of guarding these changes using the FOR_ANDROID build flag I introduced in earlier CLs instead?\n\nThe end goal is to enable all of these features outside Android eventually, having separate flags will be easier to manage to do this gradually but it’s also simpler to have a single master flag, any thoughts on this?",
+      "parentUuid": "ed6e35e2_82dabd35",
+      "range": {
+        "startLine": 336,
+        "startChar": 0,
+        "endLine": 342,
+        "endChar": 5
+      },
+      "revId": "a02df043b36900afe1a5a967670bd7b339063501",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
