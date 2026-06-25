@@ -24,6 +24,13 @@ namespace skgpu::graphite {
 
 namespace {
 
+// We don't need the extra spaces in release builds
+#if defined(SK_DEBUG)
+#define kTab "    "
+#else
+#define kTab
+#endif
+
 struct LiftedExpression {
     // The node who's expression should be lifted.
     const ShaderNode* fNode;
@@ -52,7 +59,9 @@ std::string get_uniforms(UniformOffsetCalculator* offsetter,
 
         if (u.isPaintColor() && wrotePaintColor) {
             if (*wrotePaintColor) {
+#if defined(SK_DEBUG)
                 SkSL::String::appendf(&result, "    // deduplicated %s\n", u.name());
+#endif
                 continue;
             }
 
@@ -65,7 +74,7 @@ std::string get_uniforms(UniformOffsetCalculator* offsetter,
         }
 
         SkSL::String::appendf(&result,
-                              "    layout(offset=%d) %s %s",
+                              kTab"layout(offset=%d) %s %s",
                               offsetter->advanceOffset(u.type(), u.count()),
                               SkSLTypeString(u.type()),
                               uniformName.c_str());
@@ -148,7 +157,7 @@ std::string get_ssbo_fields(SkSpan<const Uniform> uniforms,
             }
         }
 
-        SkSL::String::appendf(&result, "    %s %s", SkSLTypeString(u.type()), uniformName.c_str());
+        SkSL::String::appendf(&result, kTab"%s %s", SkSLTypeString(u.type()), uniformName.c_str());
         if (u.count()) {
             SkSL::String::appendf(&result, "[%d]", u.count());
         }
@@ -273,10 +282,10 @@ std::string emit_combined_storage_buffer(int set,
 
     return SkSL::String::printf(
             "struct CombinedUniformData {\n"
-            "    %s\n"
+            kTab"%s\n"
             "};\n\n"
             "layout (set=%d, binding=%d) readonly buffer CombinedUniforms {\n"
-            "    CombinedUniformData combinedUniformData[];\n"
+            kTab"CombinedUniformData combinedUniformData[];\n"
             "};\n",
             fields.c_str(),
             set,
@@ -468,6 +477,7 @@ void emit_preambles(const ShaderInfo& shaderInfo,
                                            ? node->entry()->fPreambleGenerator(shaderInfo, node)
                                            : node->generateDefaultPreamble(shaderInfo);
         if (!nodePreamble.empty()) {
+#if defined(SK_DEBUG)
             SkSL::String::appendf(preamble,
                                   "// [%d]   %s: %s\n"
                                   "%s\n",
@@ -475,6 +485,9 @@ void emit_preambles(const ShaderInfo& shaderInfo,
                                   nextLabel.c_str(),
                                   node->entry()->fName,
                                   nodePreamble.c_str());
+#else
+            *preamble += nodePreamble + "\n";
+#endif
         }
     }
 }
@@ -1055,7 +1068,7 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
     if (useGradientBuffer) {
         SkSL::String::appendf(&fsPreamble,
                               "layout (set=%d, binding=%d) readonly buffer FSGradientBuffer {\n"
-                              "    float %s[];\n"
+                              kTab"float %s[];\n"
                               "};\n",
                               bindingReqs.fUniformsSetIdx,
                               bindingReqs.fGradientBufferBinding,
@@ -1148,7 +1161,9 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
         } else if (fDstReadStrategy == DstReadStrategy::kReadFromInput) {
             // The dst texture should have been written to with the appropriate write swizzle, so we
             // do not need to worry about the read swizzle when accessing that value for blending.
+#if defined(SK_DEBUG)
             mainBody += "// Read color from input attachment\n";
+#endif
             mainBody += "dstColor = subpassLoad(DstTextureInput);\n";
         } else {
             SkASSERT(fDstReadStrategy == DstReadStrategy::kFramebufferFetch);
@@ -1298,7 +1313,7 @@ void ShaderInfo::generateVertexSkSL(const Caps* caps,
         int attr = 0;
         auto add_attrs = [&vsPreamble, &attr](SkSpan<const Attribute> attrs) {
             for (auto a : attrs) {
-                SkSL::String::appendf(&vsPreamble, "    layout(location=%d) in ", attr++);
+                SkSL::String::appendf(&vsPreamble, kTab"layout(location=%d) in ", attr++);
                 vsPreamble.append(SkSLTypeString(a.gpuType()));
                 SkSL::String::appendf(&vsPreamble, " %s;\n", a.name());
             }
