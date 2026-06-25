@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62d21846_8e1e9aa6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-25T15:42:46Z",
+      "side": 1,
+      "message": "More words ? What? Why?",
+      "revId": "fff82a6f390bb42411b5a29bc8cf3b8ca237fd4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7df8d70b_5c591db8",
+        "filename": "gn/tests.gni",
+        "patchSetId": 7
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-25T15:42:46Z",
+      "side": 1,
+      "message": "PrefixScanTest.cpp ?",
+      "range": {
+        "startLine": 329,
+        "startChar": 20,
+        "endLine": 329,
+        "endChar": 28
+      },
+      "revId": "fff82a6f390bb42411b5a29bc8cf3b8ca237fd4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc61f967_866d7388",
+        "filename": "src/gpu/graphite/compute/ArcLengthScan.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-25T15:42:46Z",
+      "side": 1,
+      "message": "Remove \"we\" ?",
+      "range": {
+        "startLine": 30,
+        "startChar": 98,
+        "endLine": 30,
+        "endChar": 100
+      },
+      "revId": "fff82a6f390bb42411b5a29bc8cf3b8ca237fd4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
