@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6db9a0c_0b7ee230",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-06-25T14:43:50Z",
+      "side": 1,
+      "message": "Ugh, sorry for not realizing that this would have happened after unconditionally adding sBIT chunk to the output.  I have run into the necessity to update test expectations in the past :-(.  Ideally Chromium should make the tests not depend on implementation details of the encoder, but 1) it takes work (in the past I did this for some tests, but not others), and 2) some code/test owners actively pushed back on attempts to do this.  So the end result is over-testing which leads to having update test expectations after changing encoding output :-(.",
+      "revId": "e4c5eafe032087290c00fdfd0ca27bc4a601ad73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
