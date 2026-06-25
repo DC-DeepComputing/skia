@@ -7,20 +7,30 @@
 
 #include "include/core/SkFont.h"
 #include "include/core/SkFontMetrics.h"
+#include "include/core/SkMatrix.h"
+#include "include/core/SkPaint.h"
 #include "include/core/SkStream.h"
+#include "include/core/SkSurfaceProps.h"
 #include "include/core/SkTypeface.h"
 #include "include/ports/SkTypeface_fontations.h"
+#include "src/core/SkGlyph.h"
+#include "src/core/SkMask.h"
+#include "src/core/SkScalerContext.h"
+#include "src/core/SkStrikeSpec.h"
 #include "src/ports/SkTypeface_FreeType.h"
 #include "tests/Test.h"
 #include "tools/Resources.h"
 
 #include <memory>
+#include <vector>
 
 namespace {
 const char kFontResource[] = "fonts/ahem.ttf";
 const char kTtcResource[] = "fonts/test.ttc";
 const char kNoCapHeightResource[] = "fonts/DejaVuSans.subset.ttf";
 const char kNoCapHeightNoHxResource[] = "fonts/DejaVuSans.subset_noHx.ttf";
+const char kSbixResource[] = "fonts/sbix.ttf";
+const char kHintGaspResource[] = "fonts/hintgasp.ttf";
 const char kVariableResource[] = "fonts/test_glyphs-glyf_colr_1_variable.ttf";
 constexpr size_t kNumVariableAxes = 44;
 
@@ -331,4 +341,141 @@ DEF_TEST(Fontations_SyntheticXHeight, reporter) {
     // xHeight falls back to ascent as well.
     const SkScalar kExpected = 11.138672;
     REPORTER_ASSERT(reporter, metrics.fXHeight == kExpected, "Metrics mismatch: %f vs. %f", kExpected, metrics.fXHeight);
+}
+
+DEF_TEST(Fontations_EmbeddedBitmapDisabledFallsBackToOutline, reporter) {
+    // sbix.ttf carries both an `sbix` embedded bitmap table and a `glyf` outline
+    // table. When the client disables embedded bitmaps - for example Chromium
+    // honoring fontconfig's embeddedbitmap setting or Blink's bitmap glyph block
+    // list, both expressed through SkFont::setEmbeddedBitmaps(false) - the
+    // outline must be used instead of the embedded bitmap. The Fontations scaler
+    // context used to ignore that request and always rasterize the embedded
+    // bitmap, mismatching the FreeType backend (FT_LOAD_NO_BITMAP). Regression
+    // test for https://issues.chromium.org/issues/526181509.
+    sk_sp<SkTypeface> typeface(
+            SkTypeface_Make_Fontations(GetResourceAsStream(kSbixResource), SkFontArguments()));
+    if (!typeface) {
+        return;  // Resource not available in this build configuration.
+    }
+
+    auto maskFormatForGlyph = [&](SkGlyphID glyphId, bool embeddedBitmaps) {
+        SkFont font(typeface, 16.0f);
+        font.setEmbeddedBitmaps(embeddedBitmaps);
+        SkStrikeSpec strikeSpec = SkStrikeSpec::MakeMask(
+                font, SkPaint(), SkSurfaceProps(0, kUnknown_SkPixelGeometry),
+                SkScalerContextFlags::kNone, SkMatrix::I());
+        SkBulkGlyphMetricsAndImages glyphs(strikeSpec);
+        return glyphs.glyph(SkPackedGlyphID(glyphId))->maskFormat();
+    };
+
+    // Find a glyph that rasterizes from an embedded (color) bitmap when embedded
+    // bitmaps are enabled.
+    const int glyphCount = typeface->countGlyphs();
+    SkGlyphID bitmapGlyphId = 0;
+    for (int glyphId = 1; glyphId < glyphCount; ++glyphId) {
+        if (maskFormatForGlyph(static_cast<SkGlyphID>(glyphId), /*embeddedBitmaps=*/true) ==
+            SkMask::kARGB32_Format) {
+            bitmapGlyphId = static_cast<SkGlyphID>(glyphId);
+            break;
+        }
+    }
+    REPORTER_ASSERT(reporter, bitmapGlyphId != 0,
+                    "Expected sbix.ttf to expose an embedded bitmap glyph.");
+    if (bitmapGlyphId == 0) {
+        return;
+    }
+
+    // With embedded bitmaps disabled the same glyph must fall back to the
+    // outline, i.e. it is no longer rasterized from the ARGB32 embedded bitmap.
+    REPORTER_ASSERT(reporter,
+                    maskFormatForGlyph(bitmapGlyphId, /*embeddedBitmaps=*/false) !=
+                            SkMask::kARGB32_Format,
+                    "Embedded bitmap used for glyph %u despite being disabled.", bitmapGlyphId);
+}
+
+namespace {
+struct GlyphRendering {
+    SkMask::Format format = SkMask::kA8_Format;
+    int left = 0;
+    int top = 0;
+    int width = 0;
+    int height = 0;
+    std::vector<uint8_t> image;
+    bool operator==(const GlyphRendering& o) const {
+        return format == o.format && left == o.left && top == o.top && width == o.width &&
+               height == o.height && image == o.image;
+    }
+};
+
+GlyphRendering renderGlyph(const sk_sp<SkTypeface>& typeface,
+                           SkGlyphID glyphId,
+                           float textSize,
+                           bool embeddedBitmaps) {
+    SkFont font(typeface, textSize);
+    font.setEmbeddedBitmaps(embeddedBitmaps);
+    SkStrikeSpec strikeSpec = SkStrikeSpec::MakeMask(
+            font, SkPaint(), SkSurfaceProps(0, kUnknown_SkPixelGeometry),
+            SkScalerContextFlags::kNone, SkMatrix::I());
+    SkBulkGlyphMetricsAndImages glyphs(strikeSpec);
+    const SkGlyph* glyph = glyphs.glyph(SkPackedGlyphID(glyphId));
+
+    GlyphRendering rendering;
+    rendering.format = glyph->maskFormat();
+    rendering.left = glyph->left();
+    rendering.top = glyph->top();
+    rendering.width = glyph->width();
+    rendering.height = glyph->height();
+    if (glyph->image() && glyph->height() > 0) {
+        const uint8_t* bytes = static_cast<const uint8_t*>(glyph->image());
+        rendering.image.assign(bytes, bytes + glyph->rowBytes() * glyph->height());
+    }
+    return rendering;
+}
+}  // namespace
+
+DEF_TEST(Fontations_FarEmbeddedBitmapStrikePrefersOutline, reporter) {
+    // hintgasp.ttf has glyf outlines and monochrome EBDT/EBLC strikes at ppem 9,
+    // 11, 13 and 15 for glyphs 0-3. Near a strike the embedded bitmap is used;
+    // far from any strike the outline must be used rather than an upscaled
+    // bitmap. Regression test for https://issues.chromium.org/issues/526181509.
+    sk_sp<SkTypeface> typeface(
+            SkTypeface_Make_Fontations(GetResourceAsStream(kHintGaspResource), SkFontArguments()));
+    if (!typeface) {
+        return;
+    }
+    const int glyphCount = typeface->countGlyphs();
+
+    // Sanity check: at a size matching an embedded strike, toggling embedded
+    // bitmaps changes the rendering (the bitmap is actually used).
+    bool embeddedBitmapUsed = false;
+    for (float strikeSize : {9.f, 11.f, 13.f, 15.f}) {
+        for (int glyphId = 1; glyphId < glyphCount; ++glyphId) {
+            const SkGlyphID id = static_cast<SkGlyphID>(glyphId);
+            if (!(renderGlyph(typeface, id, strikeSize, /*embeddedBitmaps=*/true) ==
+                  renderGlyph(typeface, id, strikeSize, /*embeddedBitmaps=*/false))) {
+                embeddedBitmapUsed = true;
+                break;
+            }
+        }
+        if (embeddedBitmapUsed) {
+            break;
+        }
+    }
+    REPORTER_ASSERT(reporter, embeddedBitmapUsed,
+                    "Expected hintgasp.ttf to use an embedded bitmap at a strike size.");
+
+    // At a size far from any available strike, enabling embedded bitmaps must not
+    // change the rendering: the outline is used rather than an upscaled embedded
+    // bitmap.
+    constexpr float kFarFromStrikeSize = 200.f;
+    for (int glyphId = 1; glyphId < glyphCount; ++glyphId) {
+        const SkGlyphID id = static_cast<SkGlyphID>(glyphId);
+        REPORTER_ASSERT(reporter,
+                        renderGlyph(typeface, id, kFarFromStrikeSize, /*embeddedBitmaps=*/true) ==
+                                renderGlyph(typeface, id, kFarFromStrikeSize,
+                                            /*embeddedBitmaps=*/false),
+                        "Glyph %u rendering changed when toggling embedded bitmaps at size %f; an "
+                        "embedded bitmap strike was scaled instead of using the outline.",
+                        id, kFarFromStrikeSize);
+    }
 }

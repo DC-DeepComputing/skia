@@ -88,6 +88,27 @@ where
     })
 }
 
+// Find the strike whose ppem is nearest to the rounded requested size. This
+// mirrors FreeType's FT_Match_Size, which selects an embedded bitmap strike for
+// a scalable face only by exact (rounded) ppem. Used for monochrome EBDT/EBLC
+// strikes so that, together with the scaler context's strike-distance check,
+// they are used only at their native sizes and the outline is used elsewhere.
+// Color strikes (sbix, CBDT/CBLC) keep `best_strike_size` so they can be scaled
+// as the intended representation of the glyph.
+fn nearest_strike_size<T>(strikes: impl Iterator<Item = T>, font_size: f32) -> Option<T>
+where
+    T: StrikeSizeRetrievable,
+{
+    let target = font_size.round();
+    strikes.reduce(|best, entry| {
+        if (entry.strike_size() - target).abs() < (best.strike_size() - target).abs() {
+            entry
+        } else {
+            best
+        }
+    })
+}
+
 fn sbix_glyph<'a>(
     font_ref: &'a FontRef,
     glyph_id: GlyphId,
@@ -140,7 +161,7 @@ fn eblc_glyph<'a>(
 
     let strikes = &eblc.bitmap_sizes();
     let best_strike = font_size
-        .and_then(|size| best_strike_size(strikes.iter(), size))
+        .and_then(|size| nearest_strike_size(strikes.iter(), size))
         .or(strikes.get(0))?;
 
     let location = best_strike.location(eblc.offset_data(), glyph_id).ok()?;
