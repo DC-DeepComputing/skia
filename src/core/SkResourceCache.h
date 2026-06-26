@@ -137,58 +137,7 @@ public:
      */
     typedef SkDiscardableMemory* (*DiscardableFactory)(size_t bytes);
 
-    /*
-     *  The following static methods are thread-safe wrappers around a global
-     *  instance of this cache.
-     */
 
-    /**
-     *  Returns true if the visitor was called on a matching Key, and the visitor returned true.
-     *
-     *  Find() will search the cache for the specified Key. If no match is found, return false and
-     *  do not call the FindVisitor. If a match is found, return whatever the visitor returns.
-     *  Its return value is interpreted to mean:
-     *      true  : Rec is valid
-     *      false : Rec is "stale" -- the cache will purge it.
-     */
-    static bool Find(const Key& key, FindVisitor, void* context);
-    static void Add(Rec*, void* payload = nullptr);
-
-    typedef void (*Visitor)(const Rec&, void* context);
-    // Call the visitor for every Rec in the cache.
-    static void VisitAll(Visitor, void* context);
-
-    static size_t GetTotalBytesUsed();
-    static size_t GetTotalByteLimit();
-    static size_t SetTotalByteLimit(size_t newLimit);
-
-    static size_t SetSingleAllocationByteLimit(size_t);
-    static size_t GetSingleAllocationByteLimit();
-    static size_t GetEffectiveSingleAllocationByteLimit();
-
-    static void PurgeAll();
-    static void CheckMessages();
-
-    static void TestDumpMemoryStatistics();
-
-    /** Dump memory usage statistics of every Rec in the cache using the
-        SkTraceMemoryDump interface.
-     */
-    static void DumpMemoryStatistics(SkTraceMemoryDump* dump);
-
-    /**
-     *  Returns the DiscardableFactory used by the global cache, or nullptr.
-     */
-    static DiscardableFactory GetDiscardableFactory();
-
-    static SkCachedData* NewCachedData(size_t bytes);
-
-    static void PostPurgeSharedID(uint64_t sharedID);
-
-    /**
-     *  Call SkDebugf() with diagnostic information about the state of the cache
-     */
-    static void Dump();
 
     ///////////////////////////////////////////////////////////////////////////
 
