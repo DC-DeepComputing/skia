@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8fbe507_f7b8cdcc",
+        "filename": "src/gpu/graphite/sparse_strips/MakeStrips.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-26T14:45:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "24a21460_b5d66c2e",
+      "range": {
+        "startLine": 103,
+        "startChar": 0,
+        "endLine": 103,
+        "endChar": 7
+      },
+      "revId": "fd2493cc31a96747d22a0e45b571ce8072fdeb68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "77664d26_0480b2f5",
@@ -54,6 +78,30 @@
       "writtenOn": "2026-06-25T14:49:50Z",
       "side": 1,
       "message": "isWindingTag ?",
+      "range": {
+        "startLine": 121,
+        "startChar": 36,
+        "endLine": 121,
+        "endChar": 45
+      },
+      "revId": "fd2493cc31a96747d22a0e45b571ce8072fdeb68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b39b6e2b_22741742",
+        "filename": "src/gpu/graphite/sparse_strips/MakeStrips.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-26T14:45:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "77664d26_0480b2f5",
       "range": {
         "startLine": 121,
         "startChar": 36,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5dab7c6_7648c090",
+        "filename": "src/gpu/graphite/sparse_strips/MakeStrips.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-26T14:45:48Z",
+      "side": 1,
+      "message": "Oops, meant to delete this. Empirical results show this is unnecessary.",
+      "parentUuid": "761e4c42_9edb7d9b",
+      "range": {
+        "startLine": 153,
+        "startChar": 0,
+        "endLine": 154,
+        "endChar": 82
+      },
+      "revId": "fd2493cc31a96747d22a0e45b571ce8072fdeb68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "afa7f4d8_1e1f2d88",
@@ -100,6 +172,30 @@
       "writtenOn": "2026-06-25T14:49:50Z",
       "side": 1,
       "message": "It seems like we should need this over in the scalar version too",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 18
+      },
+      "revId": "fd2493cc31a96747d22a0e45b571ce8072fdeb68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "acf27bc9_7804b5cb",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorSimd.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-26T14:45:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "afa7f4d8_1e1f2d88",
       "range": {
         "startLine": 20,
         "startChar": 0,
@@ -133,6 +229,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "97e5aaf0_f076c9fb",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorSimd.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-26T14:45:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4c38f70d_c237dfb8",
+      "range": {
+        "startLine": 32,
+        "startChar": 41,
+        "endLine": 33,
+        "endChar": 57
+      },
+      "revId": "fd2493cc31a96747d22a0e45b571ce8072fdeb68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a6e41386_1e480353",
@@ -146,6 +266,30 @@
       "writtenOn": "2026-06-25T14:49:50Z",
       "side": 1,
       "message": "this-\u003e",
+      "range": {
+        "startLine": 58,
+        "startChar": 8,
+        "endLine": 58,
+        "endChar": 20
+      },
+      "revId": "fd2493cc31a96747d22a0e45b571ce8072fdeb68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "91779dc1_6f8376ad",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorSimd.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-26T14:45:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a6e41386_1e480353",
       "range": {
         "startLine": 58,
         "startChar": 8,
@@ -179,6 +323,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3489a49_2c12b83a",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorSimd.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-26T14:45:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3b0a2ea5_f1a2f61c",
+      "range": {
+        "startLine": 63,
+        "startChar": 22,
+        "endLine": 63,
+        "endChar": 33
+      },
+      "revId": "fd2493cc31a96747d22a0e45b571ce8072fdeb68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b1d95591_bdaa39bb",
@@ -196,6 +364,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fdc43737_f3006fb5",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorSimd.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-26T14:45:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b1d95591_bdaa39bb",
+      "revId": "fd2493cc31a96747d22a0e45b571ce8072fdeb68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1dd46b92_a9c4fefc",
@@ -209,6 +395,30 @@
       "writtenOn": "2026-06-25T14:49:50Z",
       "side": 1,
       "message": "\u0026localWriteIdx",
+      "range": {
+        "startLine": 118,
+        "startChar": 64,
+        "endLine": 118,
+        "endChar": 77
+      },
+      "revId": "fd2493cc31a96747d22a0e45b571ce8072fdeb68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad3ca52f_dae69993",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorSimd.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-26T14:45:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1dd46b92_a9c4fefc",
       "range": {
         "startLine": 118,
         "startChar": 64,
@@ -242,6 +452,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "89198491_2ec481c4",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorSimd.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-26T14:45:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0bb6c69c_0e3d7897",
+      "range": {
+        "startLine": 152,
+        "startChar": 47,
+        "endLine": 152,
+        "endChar": 50
+      },
+      "revId": "fd2493cc31a96747d22a0e45b571ce8072fdeb68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e87a6b58_fec872b6",
@@ -255,6 +489,30 @@
       "writtenOn": "2026-06-25T14:49:50Z",
       "side": 1,
       "message": "this-\u003e",
+      "range": {
+        "startLine": 166,
+        "startChar": 12,
+        "endLine": 166,
+        "endChar": 20
+      },
+      "revId": "fd2493cc31a96747d22a0e45b571ce8072fdeb68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "968fbc3e_a2d31254",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorSimd.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-26T14:45:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e87a6b58_fec872b6",
       "range": {
         "startLine": 166,
         "startChar": 12,
@@ -288,6 +546,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5fac7cad_224c4f95",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorSimd.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-26T14:45:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f01c0c3b_e670a70a",
+      "range": {
+        "startLine": 175,
+        "startChar": 13,
+        "endLine": 175,
+        "endChar": 18
+      },
+      "revId": "fd2493cc31a96747d22a0e45b571ce8072fdeb68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "44076eac_00020c79",
@@ -301,6 +583,30 @@
       "writtenOn": "2026-06-25T14:49:50Z",
       "side": 1,
       "message": "This is called \u0027params\u0027 in the scalar version - I think \u0027stepParams\u0027 is more descriptive.",
+      "range": {
+        "startLine": 177,
+        "startChar": 23,
+        "endLine": 177,
+        "endChar": 33
+      },
+      "revId": "fd2493cc31a96747d22a0e45b571ce8072fdeb68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "901892bc_815c9541",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorSimd.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-26T14:45:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "44076eac_00020c79",
       "range": {
         "startLine": 177,
         "startChar": 23,
@@ -328,6 +634,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1cf887b_f6436c48",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorSimd.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-26T14:45:48Z",
+      "side": 1,
+      "message": "Added comment to Scalar, as this is not a detail of the SIMD implementation.",
+      "parentUuid": "4c598cd4_499da84e",
+      "revId": "fd2493cc31a96747d22a0e45b571ce8072fdeb68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "274a97aa_dc5faae3",
@@ -345,6 +669,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f56ce36_929e53a5",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorSimd.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-26T14:45:48Z",
+      "side": 1,
+      "message": "Added comment to Scalar, as this is not a detail of the SIMD implementation.",
+      "parentUuid": "274a97aa_dc5faae3",
+      "revId": "fd2493cc31a96747d22a0e45b571ce8072fdeb68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7b1ac5a3_636ed6b2",
@@ -358,6 +700,30 @@
       "writtenOn": "2026-06-25T14:49:50Z",
       "side": 1,
       "message": "this-\u003e here and below",
+      "range": {
+        "startLine": 206,
+        "startChar": 12,
+        "endLine": 206,
+        "endChar": 26
+      },
+      "revId": "fd2493cc31a96747d22a0e45b571ce8072fdeb68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3642a3a_f32bc0db",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorSimd.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-26T14:45:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7b1ac5a3_636ed6b2",
       "range": {
         "startLine": 206,
         "startChar": 12,
@@ -391,6 +757,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2605c460_f8993175",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorSimd.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-26T14:45:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d52947de_938a6934",
+      "range": {
+        "startLine": 210,
+        "startChar": 48,
+        "endLine": 210,
+        "endChar": 53
+      },
+      "revId": "fd2493cc31a96747d22a0e45b571ce8072fdeb68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7b477fd0_6ad24789",
@@ -408,6 +798,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "703f6869_7fbdf861",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorSimd.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-26T14:45:48Z",
+      "side": 1,
+      "message": "Added to scalar",
+      "parentUuid": "7b477fd0_6ad24789",
+      "revId": "fd2493cc31a96747d22a0e45b571ce8072fdeb68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1fabe891_77230f7d",
@@ -421,6 +829,30 @@
       "writtenOn": "2026-06-25T14:49:50Z",
       "side": 1,
       "message": "Is there some reason we\u0027re not reusing the leftMask and rightMask variables here?",
+      "range": {
+        "startLine": 225,
+        "startChar": 24,
+        "endLine": 225,
+        "endChar": 29
+      },
+      "revId": "fd2493cc31a96747d22a0e45b571ce8072fdeb68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ce9942d_f5db59f2",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorSimd.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-26T14:45:48Z",
+      "side": 1,
+      "message": "These aren\u0027t the same masks as above. The first row must handle the case where both endpoints are in the same row. But note that we only calculate that `endMask` when `onlyRow` is true. \n\nThe separate bottom row case here *cannot* have a start mask, so it only requires the endMask and an empty startMask.\n\nFurthermore, the endMask can\u0027t simply be calculated above, and conditionally passed in to the correct `processRowSpawn`: truncation is performed relative to the top edge of the pixel row. The above calculation uses startY, versus lastY here.",
+      "parentUuid": "1fabe891_77230f7d",
       "range": {
         "startLine": 225,
         "startChar": 24,
@@ -454,6 +886,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c43916bd_71c29801",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorSimd.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-26T14:45:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ecf1e7e5_96452aa7",
+      "range": {
+        "startLine": 228,
+        "startChar": 52,
+        "endLine": 228,
+        "endChar": 57
+      },
+      "revId": "fd2493cc31a96747d22a0e45b571ce8072fdeb68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5a8f019b_26c7427c",
@@ -467,6 +923,30 @@
       "writtenOn": "2026-06-25T15:22:33Z",
       "side": 1,
       "message": "We could use SkFixed here",
+      "range": {
+        "startLine": 240,
+        "startChar": 8,
+        "endLine": 240,
+        "endChar": 15
+      },
+      "revId": "fd2493cc31a96747d22a0e45b571ce8072fdeb68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2581cdc1_805ac7d1",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorSimd.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-26T14:45:48Z",
+      "side": 1,
+      "message": "Slightly slower.",
+      "parentUuid": "5a8f019b_26c7427c",
       "range": {
         "startLine": 240,
         "startChar": 8,
@@ -500,6 +980,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1527a891_9f7452d8",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorSimd.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-26T14:45:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "27c7176a_91a5ffcd",
+      "range": {
+        "startLine": 243,
+        "startChar": 13,
+        "endLine": 243,
+        "endChar": 17
+      },
+      "revId": "fd2493cc31a96747d22a0e45b571ce8072fdeb68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d6e06b13_0e3d3e8f",
@@ -513,6 +1017,30 @@
       "writtenOn": "2026-06-25T14:49:50Z",
       "side": 1,
       "message": "\u0027f\u0027 prefix ?",
+      "range": {
+        "startLine": 239,
+        "startChar": 0,
+        "endLine": 245,
+        "endChar": 28
+      },
+      "revId": "fd2493cc31a96747d22a0e45b571ce8072fdeb68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f6204b7_8c07647a",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorSimd.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-26T14:45:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d6e06b13_0e3d3e8f",
       "range": {
         "startLine": 239,
         "startChar": 0,
@@ -546,6 +1074,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd770353_12352031",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorSimd.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-26T14:45:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f1ce758b_43b5d694",
+      "range": {
+        "startLine": 253,
+        "startChar": 17,
+        "endLine": 253,
+        "endChar": 19
+      },
+      "revId": "fd2493cc31a96747d22a0e45b571ce8072fdeb68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1edb3cc6_ed614107",
@@ -559,6 +1111,30 @@
       "writtenOn": "2026-06-25T14:49:50Z",
       "side": 1,
       "message": "biasBytes ? emptySWARMask ?",
+      "range": {
+        "startLine": 269,
+        "startChar": 23,
+        "endLine": 269,
+        "endChar": 33
+      },
+      "revId": "fd2493cc31a96747d22a0e45b571ce8072fdeb68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "98c39a39_1914e388",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorSimd.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-26T14:45:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1edb3cc6_ed614107",
       "range": {
         "startLine": 269,
         "startChar": 23,
@@ -592,6 +1168,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1cdfac7_998fd68a",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorSimd.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-26T14:45:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "13bd3a33_1e8cfb21",
+      "range": {
+        "startLine": 270,
+        "startChar": 17,
+        "endLine": 270,
+        "endChar": 24
+      },
+      "revId": "fd2493cc31a96747d22a0e45b571ce8072fdeb68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "060b518f_687c8c6a",
@@ -605,6 +1205,30 @@
       "writtenOn": "2026-06-25T14:49:50Z",
       "side": 1,
       "message": "Instead of this, should this method just be surrounded with a GPU_TEST_UTILS guard ?",
+      "range": {
+        "startLine": 287,
+        "startChar": 4,
+        "endLine": 287,
+        "endChar": 20
+      },
+      "revId": "fd2493cc31a96747d22a0e45b571ce8072fdeb68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7fd7280c_7d8848f3",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorSimd.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-26T14:45:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "060b518f_687c8c6a",
       "range": {
         "startLine": 287,
         "startChar": 4,
@@ -638,6 +1262,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ea46bba_644f5537",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorSimd.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 339,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-26T14:45:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "518dd1e3_0788e6eb",
+      "range": {
+        "startLine": 339,
+        "startChar": 39,
+        "endLine": 339,
+        "endChar": 43
+      },
+      "revId": "fd2493cc31a96747d22a0e45b571ce8072fdeb68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "618c4273_13f30588",
@@ -651,6 +1299,30 @@
       "writtenOn": "2026-06-25T15:22:33Z",
       "side": 1,
       "message": "SK_Fixed1 ?",
+      "range": {
+        "startLine": 434,
+        "startChar": 45,
+        "endLine": 434,
+        "endChar": 53
+      },
+      "revId": "fd2493cc31a96747d22a0e45b571ce8072fdeb68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "70a16ca1_47cf9921",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorSimd.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 434,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-26T14:45:48Z",
+      "side": 1,
+      "message": "Slower",
+      "parentUuid": "618c4273_13f30588",
       "range": {
         "startLine": 434,
         "startChar": 45,
@@ -684,6 +1356,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "84e1c728_910ecf98",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorSimd.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 435,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-26T14:45:48Z",
+      "side": 1,
+      "message": "Slower",
+      "parentUuid": "769847a3_7a73ada5",
+      "range": {
+        "startLine": 435,
+        "startChar": 8,
+        "endLine": 435,
+        "endChar": 15
+      },
+      "revId": "fd2493cc31a96747d22a0e45b571ce8072fdeb68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ec8f1d7e_609c6d0a",
@@ -697,6 +1393,30 @@
       "writtenOn": "2026-06-25T15:22:33Z",
       "side": 1,
       "message": "There is SkFloatToFixed",
+      "range": {
+        "startLine": 437,
+        "startChar": 29,
+        "endLine": 437,
+        "endChar": 50
+      },
+      "revId": "fd2493cc31a96747d22a0e45b571ce8072fdeb68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c467139_d63ac15b",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorSimd.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 437,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-26T14:45:48Z",
+      "side": 1,
+      "message": "Slower",
+      "parentUuid": "ec8f1d7e_609c6d0a",
       "range": {
         "startLine": 437,
         "startChar": 29,
@@ -730,6 +1450,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4fc6ab98_818d7b48",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorSimd.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 439,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-26T14:45:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1e25a33f_c7ec4350",
+      "range": {
+        "startLine": 439,
+        "startChar": 13,
+        "endLine": 439,
+        "endChar": 17
+      },
+      "revId": "fd2493cc31a96747d22a0e45b571ce8072fdeb68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cb07fc95_a3ec0cf7",
@@ -747,6 +1491,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "96a74da5_7706063d",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorSimd.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 455,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-26T14:45:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cb07fc95_a3ec0cf7",
+      "revId": "fd2493cc31a96747d22a0e45b571ce8072fdeb68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "49f26d94_dd1b63c3",
@@ -760,6 +1522,30 @@
       "writtenOn": "2026-06-25T15:22:33Z",
       "side": 1,
       "message": "SwarPixel* ?",
+      "range": {
+        "startLine": 477,
+        "startChar": 39,
+        "endLine": 477,
+        "endChar": 49
+      },
+      "revId": "fd2493cc31a96747d22a0e45b571ce8072fdeb68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e20ed03a_0d453d5b",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorSimd.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 477,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-26T14:45:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "49f26d94_dd1b63c3",
       "range": {
         "startLine": 477,
         "startChar": 39,
@@ -793,6 +1579,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "50ab0232_4645b56a",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorSimd.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-26T14:45:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7945e9d6_1b6723e1",
+      "range": {
+        "startLine": 484,
+        "startChar": 12,
+        "endLine": 484,
+        "endChar": 13
+      },
+      "revId": "fd2493cc31a96747d22a0e45b571ce8072fdeb68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bb756d83_ca93f571",
@@ -806,6 +1616,30 @@
       "writtenOn": "2026-06-25T14:49:50Z",
       "side": 1,
       "message": "This is unusual - just hold them as pointers ?",
+      "range": {
+        "startLine": 618,
+        "startChar": 0,
+        "endLine": 619,
+        "endChar": 34
+      },
+      "revId": "fd2493cc31a96747d22a0e45b571ce8072fdeb68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9bd2c5de_90d1c259",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorSimd.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 619,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-26T14:45:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bb756d83_ca93f571",
       "range": {
         "startLine": 618,
         "startChar": 0,
