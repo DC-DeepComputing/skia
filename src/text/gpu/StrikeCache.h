@@ -58,15 +58,15 @@ protected:
     // Called by derived classes when allocating glyphs to update cache accounting
     void addMemoryUsed(size_t bytes);
 
-    const raw_ptr<StrikeCache> fStrikeCache;
+    const raw_ptr<StrikeCache, DanglingUntriaged> fStrikeCache;
     const SkStrikeSpec fStrikeSpec;
 
     // Store for the glyph information (backend-specific glyphs allocated here)
     SkArenaAlloc fAlloc{512};
 
     // Linked list for LRU cache management
-    raw_ptr<TextStrikeBase> fNext{nullptr};
-    raw_ptr<TextStrikeBase> fPrev{nullptr};
+    raw_ptr<TextStrikeBase, DanglingUntriaged> fNext{nullptr};
+    raw_ptr<TextStrikeBase, DanglingUntriaged> fPrev{nullptr};
     size_t fMemoryUsed{sizeof(TextStrikeBase)};
     bool fRemoved{false};
 
@@ -95,8 +95,8 @@ private:
     // A simple accounting of what each glyph cache reports and the strike cache total.
     void validate() const;
 
-    raw_ptr<TextStrikeBase> fHead{nullptr};
-    raw_ptr<TextStrikeBase> fTail{nullptr};
+    raw_ptr<TextStrikeBase, DanglingUntriaged> fHead{nullptr};
+    raw_ptr<TextStrikeBase, DanglingUntriaged> fTail{nullptr};
 
     struct HashTraits {
         static const SkDescriptor& GetKey(const sk_sp<TextStrikeBase>& strike);
