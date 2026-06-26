@@ -93,6 +93,21 @@ sk_sp<SkData> SkData::shareSubset(size_t offset, size_t length) {
     }, this);
 }
 
+sk_sp<const SkData> SkData::shareSubset(size_t offset, size_t length) const {
+    VALIDATE_SUBSET(this->size(), offset, length);
+
+    if (offset == 0 && length == this->size()) {
+        return sk_ref_sp(this);
+    }
+
+    RETURN_EMPTY_FOR_ZERO_SIZE(length);
+
+    this->ref();
+    return SkData::MakeWithProc(this->bytes() + offset, length, [](const void*, void* ctx) {
+        ((SkData*)ctx)->unref();
+    }, const_cast<SkData*>(this));
+}
+
 sk_sp<SkData> SkData::copySubset(size_t offset, size_t length) const {
     VALIDATE_SUBSET(this->size(), offset, length);
 
