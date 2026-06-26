@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "750e42b5_6e16b96c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-06-26T22:57:58Z",
+      "side": 1,
+      "message": "👍",
+      "range": {
+        "startLine": 9,
+        "startChar": 119,
+        "endLine": 9,
+        "endChar": 141
+      },
+      "revId": "9ea4ac849ffdc1514603fe194c4b4a61bf6a56b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3b4482b_feb85488",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-06-26T22:57:58Z",
+      "side": 1,
+      "message": "nit: Please wrap the CL description to 72 columns",
+      "range": {
+        "startLine": 13,
+        "startChar": 53,
+        "endLine": 13,
+        "endChar": 54
+      },
+      "revId": "9ea4ac849ffdc1514603fe194c4b4a61bf6a56b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee01279e_5a539ffc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-06-26T22:57:58Z",
+      "side": 1,
+      "message": "Sorry for the delay - I had to do one other (small, but complicated) review earlier today and didn\u0027t get to this CL until now...",
+      "revId": "9ea4ac849ffdc1514603fe194c4b4a61bf6a56b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "402c2b72_5e496254",
+        "filename": "src/codec/SkPngCodecBase.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-06-26T22:57:58Z",
+      "side": 1,
+      "message": "nit: I wonder if my old comment can be improved by saying:\n\n```suggestion\n    // Needs to be called *after* (i.e. outside of) `onStartIncrementalDecode`.\n    // This timing ensures that the `swizzler` (if present) is in its final\n    // state (e.g. setting up subsampling by the user of the codec can affect `swizzleWidth`).\n```",
+      "range": {
+        "startLine": 59,
+        "startChar": 78,
+        "endLine": 59,
+        "endChar": 79
+      },
+      "revId": "9ea4ac849ffdc1514603fe194c4b4a61bf6a56b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7cc41e34_4b3868b4",
+        "filename": "src/codec/SkPngRustCodec.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 837,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-06-26T22:57:58Z",
+      "side": 1,
+      "message": "This seems to some extent to duplicate the work done in [`SkPngCodecBase::initializeXformParams`](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/codec/SkPngCodecBase.cpp;l\u003d173-193;drc\u003d715fe99ea98739c1089c5066741832a04e535ac8), right?  At least I see that  `SkPngCodecBase::initializeXformParams` calculates `fDstRowBytes` based on `swizzler()-\u003eswizzleWidth()`.  Could we potentially avoid introducing `initializeSamplerParams` if we added a getter/accessor for `SkPngCodecBase::fDstRowBytes`?",
+      "range": {
+        "startLine": 837,
+        "startChar": 0,
+        "endLine": 837,
+        "endChar": 1
+      },
+      "revId": "9ea4ac849ffdc1514603fe194c4b4a61bf6a56b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90728ed6_544f5061",
+        "filename": "src/codec/SkPngRustCodec.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 950,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-06-26T22:57:58Z",
+      "side": 1,
+      "message": "nit: `SkASSERT_RELEASE` please.",
+      "range": {
+        "startLine": 950,
+        "startChar": 16,
+        "endLine": 950,
+        "endChar": 24
+      },
+      "revId": "9ea4ac849ffdc1514603fe194c4b4a61bf6a56b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
