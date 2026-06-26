@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9277fd46_f9ff300d",
+        "filename": "src/codec/SkIcoCodec.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-06-26T18:14:30Z",
+      "side": 1,
+      "message": "I think this would be fine for now, but trying to look for some alternatives: do you happen to know if Android instantiates ICO decoders explicitly (`SkIcoDecoder`), or via generic `SkCodec::MakeFromStream`?  If the former, we could store (optional) PNG and BMP codec factories in the ICO codec and extend the `SkIcoDecoder` entry points.",
+      "revId": "5d846b7f060558fd7a120d2f184e8f08e6c9d872",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
