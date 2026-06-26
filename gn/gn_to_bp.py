@@ -411,8 +411,14 @@ def generate_args(target_os, enable_gpu, libskia_variant = LibSkiaVariant.HWUI):
 
   if target_os == '"android"' and not libskia_variant.is_renderengine():
     d['skia_use_crabbyavif'] = 'true'
+    d['skia_use_rust_png_decode'] = 'true'
+    d['skia_use_rust_png_encode'] = 'true'
+    d['skia_use_rust_png_for_android'] = 'true'
   else:
     d['skia_use_crabbyavif'] = 'false'
+    d['skia_use_rust_png_decode'] = 'false'
+    d['skia_use_rust_png_encode'] = 'false'
+    d['skia_use_rust_png_for_android'] = 'false'
 
   if libskia_variant.is_renderengine():
     d['skia_use_libpng_decode'] = 'false'
