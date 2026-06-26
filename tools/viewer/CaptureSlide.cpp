@@ -122,7 +122,7 @@ void CaptureSlide::draw(SkCanvas* canvas) {
     auto focusPicture = fCapture->getPicture(fCurrentPictureIndex);
 
     auto bounds = focusPicture->cullRect().roundOut();
-    DebugCanvas debugCanvas(bounds.width(), bounds.height());
+    DebugCanvas debugCanvas({bounds.width(), bounds.height()}, {});
     focusPicture->playback(&debugCanvas);
 
     canvas->clipIRect(bounds, SkClipOp::kIntersect);
