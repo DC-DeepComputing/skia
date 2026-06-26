@@ -52,6 +52,24 @@
       "parentUuid": "90b67adf_06d93e23",
       "revId": "5d846b7f060558fd7a120d2f184e8f08e6c9d872",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0eba9ea7_26993fc6",
+        "filename": "src/codec/SkIcoCodec.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-06-26T21:19:42Z",
+      "side": 1,
+      "message": "\u003e So I’m not sure if the factory option is possible here, WDYT?\n\nMakes sense, thanks for checking!",
+      "parentUuid": "ac3826b2_43156f7a",
+      "revId": "5d846b7f060558fd7a120d2f184e8f08e6c9d872",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
