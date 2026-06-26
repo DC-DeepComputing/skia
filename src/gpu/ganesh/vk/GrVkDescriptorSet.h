@@ -45,7 +45,7 @@ private:
     void onRecycle() const override;
 
     VkDescriptorSet                          fDescSet;
-    SkDEBUGCODE(mutable) raw_ptr<GrVkDescriptorPool> fPool;
+    mutable raw_ptr<GrVkDescriptorPool> fPool;
     GrVkDescriptorSetManager::Handle         fHandle;
 
     using INHERITED = GrVkRecycledResource;

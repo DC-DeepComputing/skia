@@ -235,6 +235,7 @@ void GrVkGpu::destroyResources() {
     this->finishOutstandingGpuWork();
 
     if (fMainCmdPool) {
+        fMainCmdBuffer = nullptr;
         fMainCmdPool->unref();
         fMainCmdPool = nullptr;
     }

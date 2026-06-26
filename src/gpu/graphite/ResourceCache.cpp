@@ -84,6 +84,8 @@ void ResourceCache::shutdown() {
     // linked list. We do need to finish processing them for a graceful shutdown.
     this->processReturnedResources(Sentinel::Get());
 
+    fResourceMap.reset();
+
     if (fProxyCache) {
         fProxyCache->purgeAll();
         // NOTE: any resources that would become purgeable or reusable from purging the proxy cache
