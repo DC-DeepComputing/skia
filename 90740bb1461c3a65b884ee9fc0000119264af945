@@ -34,6 +34,24 @@
       "parentUuid": "16751b35_d7ef17f7",
       "revId": "90740bb1461c3a65b884ee9fc0000119264af945",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "246ff2f9_33c6560a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4329740
+      },
+      "writtenOn": "2026-06-26T19:13:17Z",
+      "side": 1,
+      "message": "it was mentioned that it might be not right todo it in chromium itself.\nany ideas, what the right path is from here on?",
+      "parentUuid": "a24987f3_b5eb3b9c",
+      "revId": "90740bb1461c3a65b884ee9fc0000119264af945",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
