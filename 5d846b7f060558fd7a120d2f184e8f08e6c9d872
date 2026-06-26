@@ -16,6 +16,24 @@
       "message": "I think this would be fine for now, but trying to look for some alternatives: do you happen to know if Android instantiates ICO decoders explicitly (`SkIcoDecoder`), or via generic `SkCodec::MakeFromStream`?  If the former, we could store (optional) PNG and BMP codec factories in the ICO codec and extend the `SkIcoDecoder` entry points.",
       "revId": "5d846b7f060558fd7a120d2f184e8f08e6c9d872",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90b67adf_06d93e23",
+        "filename": "src/codec/SkIcoCodec.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-06-26T19:12:09Z",
+      "side": 1,
+      "message": "As far as I can see, `SkIcoCodec` is not used directly in AOSP, at least a quick [code search](https://source.corp.google.com/search?q\u003dSkIcoCodec\u0026sq\u003d\u0026ss\u003dh%2Fgoogleplex-android%2Fplatform%2Fsuperproject%2Fmain%2F%2B%2Frefs%2Fheads%2Fmain) returns no caller (apart from Skia).\n\n[`ImageDecoder`](https://source.corp.google.com/h/googleplex-android/platform/superproject/main/+/main:frameworks/base/libs/hwui/jni/ImageDecoder.cpp;l\u003d117?q\u003dimagedecoder.cpp\u0026ss\u003dh%2Fgoogleplex-android%2Fplatform%2Fsuperproject%2Fmain%2F%2B%2Frefs%2Fheads%2Fmain), however, uses `SkCodec::MakeFromStream`, and I think it handles .ico files.\n\nSo I’m not sure if the factory option is possible here, WDYT?",
+      "parentUuid": "9277fd46_f9ff300d",
+      "revId": "5d846b7f060558fd7a120d2f184e8f08e6c9d872",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
