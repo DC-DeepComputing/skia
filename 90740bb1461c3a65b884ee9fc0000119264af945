@@ -52,6 +52,24 @@
       "parentUuid": "a24987f3_b5eb3b9c",
       "revId": "90740bb1461c3a65b884ee9fc0000119264af945",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70558082_0aaa7681",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-26T20:46:07Z",
+      "side": 1,
+      "message": "Can you share their response? One of the reasons for supporting runtime blender effects in SkSL was so that clients of Skia could define the blending that they wanted.\n\nOne of the other reasons we were hesitant to take it as an SkBlendMode is that it\u0027s not obvious that the actual blending equations are settled. Is that not the case?",
+      "parentUuid": "246ff2f9_33c6560a",
+      "revId": "90740bb1461c3a65b884ee9fc0000119264af945",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
