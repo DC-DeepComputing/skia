@@ -34,6 +34,24 @@
       "parentUuid": "9277fd46_f9ff300d",
       "revId": "5d846b7f060558fd7a120d2f184e8f08e6c9d872",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac3826b2_43156f7a",
+        "filename": "src/codec/SkIcoCodec.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-26T21:13:51Z",
+      "side": 1,
+      "message": "One thing we do in another place is to make sure a png decoder is registered and fail loudly if it\u0027s not. Maybe not at first but after we think we\u0027ve migrated the clients.",
+      "parentUuid": "90b67adf_06d93e23",
+      "revId": "5d846b7f060558fd7a120d2f184e8f08e6c9d872",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
