@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac9fca71_da977dd1",
+        "filename": "src/gpu/graphite/DrawAtlas.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 642,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-26T16:02:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b3b59b5e_41cca32b",
+      "range": {
+        "startLine": 640,
+        "startChar": 0,
+        "endLine": 642,
+        "endChar": 5
+      },
+      "revId": "91a14872ebe2f28d5af783c513d212c174cdd591",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2faf7943_ebba58d0",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-06-10T14:23:01Z",
       "side": 1,
       "message": "This can be reduced to `return SkIRect(*rect)-\u003emakeOffset(this-\u003etopLeftInAtlas());`",
+      "range": {
+        "startLine": 709,
+        "startChar": 0,
+        "endLine": 711,
+        "endChar": 13
+      },
+      "revId": "91a14872ebe2f28d5af783c513d212c174cdd591",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4b8f2b1_70c4ecf8",
+        "filename": "src/gpu/graphite/DrawAtlas.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 711,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-26T16:02:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2faf7943_ebba58d0",
       "range": {
         "startLine": 709,
         "startChar": 0,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "398c35d8_d4659811",
+        "filename": "src/gpu/graphite/DrawAtlas.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 472,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-26T16:02:50Z",
+      "side": 1,
+      "message": "yup",
+      "parentUuid": "7290b314_7481f4b7",
+      "range": {
+        "startLine": 471,
+        "startChar": 0,
+        "endLine": 472,
+        "endChar": 19
+      },
+      "revId": "91a14872ebe2f28d5af783c513d212c174cdd591",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "06724807_aeeda008",
@@ -83,6 +155,30 @@
       "writtenOn": "2026-06-10T14:23:01Z",
       "side": 1,
       "message": "Are these also deprecated now? I think it\u0027d be helpful context to tag the old functions/fields that are going to go away once every atlas system is migrated with something like `// DEPRECATED`",
+      "range": {
+        "startLine": 581,
+        "startChar": 0,
+        "endLine": 584,
+        "endChar": 5
+      },
+      "revId": "91a14872ebe2f28d5af783c513d212c174cdd591",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c52cd266_b53ff716",
+        "filename": "src/gpu/graphite/DrawAtlas.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 584,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-26T16:02:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "06724807_aeeda008",
       "range": {
         "startLine": 581,
         "startChar": 0,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b812e18a_69ecd2e8",
+        "filename": "src/gpu/graphite/DrawAtlas.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 596,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-26T16:02:50Z",
+      "side": 1,
+      "message": "A quick scan in SkPixmap.h shows the empty constructor but no `isEmpty()` method. I think the cleanest thing is to remove the optional here, and add the method to SkPixmap? I have added that into this cl.",
+      "parentUuid": "d5cfa6b6_8fdf7d02",
+      "range": {
+        "startLine": 596,
+        "startChar": 4,
+        "endLine": 596,
+        "endChar": 27
+      },
+      "revId": "91a14872ebe2f28d5af783c513d212c174cdd591",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "13fc62d9_fdde23fd",
@@ -139,6 +259,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "145325b4_d7e64dd8",
+        "filename": "src/gpu/graphite/DrawAtlas.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 597,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-26T16:02:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "13fc62d9_fdde23fd",
+      "range": {
+        "startLine": 597,
+        "startChar": 40,
+        "endLine": 597,
+        "endChar": 41
+      },
+      "revId": "91a14872ebe2f28d5af783c513d212c174cdd591",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "93653f2a_c4a227ab",
@@ -152,6 +296,30 @@
       "writtenOn": "2026-06-10T14:23:01Z",
       "side": 1,
       "message": "nit: move this up with the other private functions",
+      "range": {
+        "startLine": 679,
+        "startChar": 0,
+        "endLine": 685,
+        "endChar": 5
+      },
+      "revId": "91a14872ebe2f28d5af783c513d212c174cdd591",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d911e999_92f9a61c",
+        "filename": "src/gpu/graphite/DrawAtlas.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 685,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-26T16:02:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "93653f2a_c4a227ab",
       "range": {
         "startLine": 679,
         "startChar": 0,
