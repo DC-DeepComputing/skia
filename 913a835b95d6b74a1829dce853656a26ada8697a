@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "df843513_3bb6b0c2",
+        "filename": "src/codec/SkPngRustCodec.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 606,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-06-26T23:59:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1ade0614_45feeb36",
+      "range": {
+        "startLine": 606,
+        "startChar": 50,
+        "endLine": 606,
+        "endChar": 66
+      },
+      "revId": "913a835b95d6b74a1829dce853656a26ada8697a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aee5afa0_854bf80d",
@@ -65,6 +89,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9886e25e_d9a6f06c",
+        "filename": "src/codec/SkPngRustCodec.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 625,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-06-26T23:59:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aee5afa0_854bf80d",
+      "range": {
+        "startLine": 624,
+        "startChar": 0,
+        "endLine": 625,
+        "endChar": 55
+      },
+      "revId": "913a835b95d6b74a1829dce853656a26ada8697a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b33cbc70_3ba6c31f",
@@ -78,6 +126,30 @@
       "writtenOn": "2026-06-26T23:16:24Z",
       "side": 1,
       "message": "Do we have test coverage for interlaced + sampling + subset?  (or is that combination forbidden and rejected somewhere already?)\n\nMaybe I am misremembering-how-`fPreblendBuffer`-works / misunderstanding-these-scenarios, but I have a _vague_ feeling that `fPreblendBuffer` may be needed in this scenario (and it seems that the condition here would return early).",
+      "range": {
+        "startLine": 851,
+        "startChar": 8,
+        "endLine": 851,
+        "endChar": 80
+      },
+      "revId": "913a835b95d6b74a1829dce853656a26ada8697a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83273bfa_bc73d20c",
+        "filename": "src/codec/SkPngRustCodec.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 851,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-06-26T23:59:02Z",
+      "side": 1,
+      "message": "\u003e Do we have test coverage for interlaced + sampling + subset? (or is that combination forbidden and rejected somewhere already?)\n\nWe already do yeah, see the modified test case in this CL: `RustPngCodec_subsampling_subset_interlaced`\n\n\u003e Maybe I am misremembering-how-fPreblendBuffer-works / misunderstanding-these-scenarios, but I have a vague feeling that fPreblendBuffer may be needed in this scenario (and it seems that the condition here would return early).\n\nIn this scenario (interlaced + subset, regardless of sampling) it should already be allocated in `startDecoding`:\n\n```\nif (fReader-\u003einterlaced()) {\n  // Use fPreblendBuffer to decode whole image untransformed, then truncate/xform later.\n  if (options.fSubset) {\n    decodingState-\u003efPreblendBuffer.resize(encodedImageSize, 0x00);\n  } else if (frame-\u003egetBlend() \u003d\u003d SkCodecAnimation::Blend::kSrcOver) {\n    decodingState-\u003efPreblendBuffer.resize(decodingDst.fDst.size(), 0x00);\n  }\n}\n```\n\nBut in the no-subset case, we don’t, hence the added allocation here. The reason we do it here rather than `startDecoding` is to avoid the extra allocation when doing interlaced + no subset + no sampling, since we only know about `isSampling` in `",
+      "parentUuid": "b33cbc70_3ba6c31f",
       "range": {
         "startLine": 851,
         "startChar": 8,
