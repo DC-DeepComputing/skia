@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f69129fb_783580c9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4934045
+      },
+      "writtenOn": "2026-06-26T04:18:43Z",
+      "side": 1,
+      "message": "Please review the changes.\nThe part of the code can_import_protected_conten() is not present in Android-U branch, please suggest any dependent changes to be taken in A14 branch.",
+      "revId": "03fed5eebd42d22ff9333c9e7efb9928147a2fd7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
