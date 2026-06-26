@@ -44,6 +44,8 @@
 
 constexpr uint32_t kDefaultSeed = 0;
 
+extern bool gGraphiteAvoidDepth;
+
 using namespace skgpu::graphite;
 using namespace skiatest::graphite;
 
@@ -391,11 +393,11 @@ void precompile_vs_real_draws_subtest(skiatest::Reporter* reporter,
 
     const SkColorType kColorType = kBGRA_8888_SkColorType;
 
-    static const RenderPassProperties kDepth_Stencil_4 { DepthStencilFlags::kDepthStencil,
+    static const RenderPassProperties kDepth_Stencil_4 { gGraphiteAvoidDepth ? DepthStencilFlags::kNone : DepthStencilFlags::kDepthStencil,
                                                          kColorType,
                                                          /* dstColorSpace= */ nullptr,
                                                          /* requiresMSAA= */ true };
-    static const RenderPassProperties kDepth_1 { DepthStencilFlags::kDepth,
+    static const RenderPassProperties kDepth_1 { gGraphiteAvoidDepth ? DepthStencilFlags::kNone : DepthStencilFlags::kDepth,
                                                  kColorType,
                                                  /* dstColorSpace= */ nullptr,
                                                  /* requiresMSAA= */ false };
