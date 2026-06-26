@@ -1,0 +1,91 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ade0614_45feeb36",
+        "filename": "src/codec/SkPngRustCodec.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 606,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-06-26T23:16:24Z",
+      "side": 1,
+      "message": "My edit suggestion on the previous code was wrong - `numRows` is `static_cast` but is not used for division.  Sorry.\n\n```suggestion\n    SkASSERT_RELEASE(numRows \u003e\u003d 0);  // Preventing `static_cast\u003csize_t\u003e` overflow\n```",
+      "range": {
+        "startLine": 606,
+        "startChar": 50,
+        "endLine": 606,
+        "endChar": 66
+      },
+      "revId": "913a835b95d6b74a1829dce853656a26ada8697a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aee5afa0_854bf80d",
+        "filename": "src/codec/SkPngRustCodec.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 625,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-06-26T23:16:24Z",
+      "side": 1,
+      "message": "This looks ok, but I think it can be removed - I think it is fine to rely on `dst.first` doing this assertion:\n\n* Similar assert is checked in hardened-mode of `std::span`\n* Similar assert is unconditionally checked in Chromium\u0027s `base::span`\n* IIUC this assert is also checked by `SkSpan`:\n    - `first` calls `sk_collection_check_length(prefixLen, fSize)` ([here](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/include/core/SkSpan.h;l\u003d118-120;drc\u003dfc46d066b5b61503e660c9a25a8689f094ee9b04))\n    - `sk_collection_check_length` checks that `i` (or `prefixLen`) is smaller than `size` ([here](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/include/private/SkAssert.h;l\u003d163-165;drc\u003d715fe99ea98739c1089c5066741832a04e535ac8))",
+      "range": {
+        "startLine": 624,
+        "startChar": 0,
+        "endLine": 625,
+        "endChar": 55
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "f7924432_f0a5972a",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/codec/SkPngRustCodec.cpp",
+              "range": {
+                "startLine": 624,
+                "startChar": 0,
+                "endLine": 627,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "913a835b95d6b74a1829dce853656a26ada8697a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b33cbc70_3ba6c31f",
+        "filename": "src/codec/SkPngRustCodec.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 851,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-06-26T23:16:24Z",
+      "side": 1,
+      "message": "Do we have test coverage for interlaced + sampling + subset?  (or is that combination forbidden and rejected somewhere already?)\n\nMaybe I am misremembering-how-`fPreblendBuffer`-works / misunderstanding-these-scenarios, but I have a _vague_ feeling that `fPreblendBuffer` may be needed in this scenario (and it seems that the condition here would return early).",
+      "range": {
+        "startLine": 851,
+        "startChar": 8,
+        "endLine": 851,
+        "endChar": 80
+      },
+      "revId": "913a835b95d6b74a1829dce853656a26ada8697a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
