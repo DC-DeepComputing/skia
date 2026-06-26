@@ -148,17 +148,48 @@ DrawAtlas::DrawAtlas(MaskFormat maskFormat,
     this->createPages(generationCounter);
 }
 
-inline void DrawAtlas::processEvictionAndResetRects(Plot* plot, bool freeData) {
-    // Process evictions
+// POLYFILLED
+// Deprecated: Temporary boolean-based polyfill. Will be removed once all call sites are migrated.
+void DrawAtlas::processEvictionAndResetRects(Plot* plot, bool freeData) {
+    this->processEvictionAndResetRects(plot, freeData ? EvictionType::kReuse_FreeData
+                                                      : EvictionType::kReuse_KeepData);
+}
+
+// NEW
+static uint32_t NextEvictionCounter(uint32_t counter) {
+    if (counter == std::numeric_limits<uint32_t>::max()) {
+        return 1;
+    }
+    return counter + 1;
+}
+
+// NEW
+// This replaces the boolean-based processEvictionAndResetRects and will be kept.
+void DrawAtlas::processEvictionAndResetRects(Plot* plot, EvictionType type) {
     if (!plot->isEmpty()) {
-        const PlotLocator& plotLocator = plot->plotLocator();
-        for (PlotEvictionCallback* evictor : fEvictionCallbacks) {
-            evictor->evict(plotLocator);
+        if (!fEvictionCallbacks.empty()) {
+            PlotLocator locator = plot->plotLocator();
+            for (auto* cb : fEvictionCallbacks) {
+                cb->evict(locator);
+            }
         }
+        if (!fRecordEvictionCallbacks.empty()) {
+            RecordVisitor visitor(plot);
+            for (auto* cb : fRecordEvictionCallbacks) {
+                cb->evict(visitor);
+            }
+        }
+        fEvictionCounter = NextEvictionCounter(fEvictionCounter);
         fAtlasGeneration = fGenerationCounter->next();
     }
 
-    plot->recycle(freeData);
+    fPlotMap.remove(plot->plotID());
+    if (type == EvictionType::kWillBeRemoved) {
+        plot->recycle(/*freeData=*/true);
+    } else {
+        plot->recycle(type == EvictionType::kReuse_FreeData);
+        fPlotMap.set(plot->plotID(), plot);
+    }
 }
 
 inline void DrawAtlas::updatePlot(Plot* plot, AtlasLocator* atlasLocator) {
@@ -497,6 +528,7 @@ bool DrawAtlas::createPages(GenerationCounter* generationCounter) {
 
                 // build LRU list
                 fPages[i].fPlotList.addToHead(currPlot->get());
+                fPlotMap.set((*currPlot)->plotID(), currPlot->get());
                 ++currPlot;
             }
         }
@@ -532,6 +564,14 @@ bool DrawAtlas::activateNewPage(Recorder* recorder) {
         SkDebugf("activated page#: %u\n", fNumActivePages);
     }
 
+    // Recycle all plots on this page to start fresh and register them in fPlotMap
+    for (unsigned int plotIndex = 0; plotIndex < fNumPlots; ++plotIndex) {
+        Plot* plot = fPages[fNumActivePages].fPlotArray[plotIndex].get();
+        fPlotMap.remove(plot->plotID());
+        plot->recycle(/*freeData=*/true);
+        fPlotMap.set(plot->plotID(), plot);
+    }
+
     ++fNumActivePages;
     return true;
 }
@@ -544,17 +584,15 @@ inline void DrawAtlas::deactivateLastPage() {
     int numPlotsX = fTextureWidth/fPlotWidth;
     int numPlotsY = fTextureHeight/fPlotHeight;
 
-    fPages[lastPageIndex].fPlotList.reset();
     for (int r = 0; r < numPlotsY; ++r) {
         for (int c = 0; c < numPlotsX; ++c) {
             uint32_t plotIndex = r * numPlotsX + c;
 
             Plot* currPlot = fPages[lastPageIndex].fPlotArray[plotIndex].get();
-            this->processEvictionAndResetRects(currPlot, /*freeData=*/true);
+            this->processEvictionAndResetRects(currPlot, EvictionType::kWillBeRemoved);
             currPlot->resetFlushesSinceLastUsed();
 
-            // rebuild the LRU list
-            SkDEBUGCODE(currPlot->resetListPtrs());
+            fPages[lastPageIndex].fPlotList.remove(currPlot);
             fPages[lastPageIndex].fPlotList.addToHead(currPlot);
         }
     }
@@ -818,6 +856,8 @@ std::pair<const void*, SkIRect> DrawAtlas::Plot::prepareForUpload() {
 
 // NEW
 // Replaces resetRects in the new record-based design and will be kept.
+// TODO (thomsmit): Wrap this in something that handles the hashmap removal?
+// NOTE: all callsites must unregister the plot from fPlotMap prior to calling recycle!
 void DrawAtlas::Plot::recycle(bool freeData) {
     // Reset layout and entries, and generate a new PlotID to invalidate existing cache references.
     fEntries.reset();
@@ -832,6 +872,19 @@ void DrawAtlas::Plot::recycle(bool freeData) {
     } else if (fData) {
         sk_bzero(fData.get(), this->rowBytes() * fPlotDimensions.height());
     }
+}
+
+// NEW
+// Used to find plots via PlotID/Record in the new design and will be kept.
+DrawAtlas::Plot* DrawAtlas::findPlot(PlotID id) const {
+    Plot* const* plot = fPlotMap.find(id);
+    return plot ? *plot : nullptr;
+}
+
+// NEW
+// Used to find plots via PlotID/Record in the new design and will be kept.
+DrawAtlas::Plot* DrawAtlas::findPlot(Record record) const {
+    return this->findPlot(record.fPlotID);
 }
 
 }  // namespace skgpu::graphite

@@ -327,9 +327,23 @@ private:
     }
 #endif
 
-    // If freeData is true, this will free the backing data as well. This should only be used
-    // when we know we won't be adding to the Plot immediately afterwards.
+    // POLYFILLED
+    // Deprecated: Temporary boolean-based polyfill. Will be removed once all call sites are migrated.
     void processEvictionAndResetRects(Plot* plot, bool freeData);
+    enum class EvictionType {
+        kReuse_FreeData,
+        kReuse_KeepData,
+        kWillBeRemoved
+    };
+    // NEW
+    // This replaces the boolean-based processEvictionAndResetRects and will be kept.
+    void processEvictionAndResetRects(Plot* plot, EvictionType type);
+    // NEW
+    // Used to find plots via PlotID/Record in the new design and will be kept.
+    Plot* findPlot(PlotID id) const;
+    // NEW
+    // Used to find plots via PlotID/Record in the new design and will be kept.
+    Plot* findPlot(Record record) const;
 
     MaskFormat         fMaskFormat;
     int                fTextureWidth;
@@ -358,6 +372,9 @@ private:
     int fFlushesSinceLastUse;
 
     std::vector<PlotEvictionCallback*> fEvictionCallbacks;
+    std::vector<EvictionCallback*> fRecordEvictionCallbacks;
+    skia_private::THashMap<PlotID, Plot*> fPlotMap;
+    uint32_t fEvictionCounter = 0;
 
     struct Page {
         // allocated array of Plots
