@@ -6,9 +6,10 @@
  * found in the LICENSE file.
  */
 #ifndef GrPaint_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define GrPaint_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRegion.h"
 #include "include/private/SkAssert.h"

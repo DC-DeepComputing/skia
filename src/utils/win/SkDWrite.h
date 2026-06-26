@@ -6,9 +6,10 @@
  */
 
 #ifndef SkDWrite_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkDWrite_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkFontStyle.h"
 #include "include/private/SkTemplates.h"

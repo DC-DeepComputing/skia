@@ -6,9 +6,10 @@
  */
 
 #ifndef GrGpuBuffer_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define GrGpuBuffer_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/gpu/ganesh/GrBuffer.h"

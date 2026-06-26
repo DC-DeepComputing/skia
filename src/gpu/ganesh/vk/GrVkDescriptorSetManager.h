@@ -6,9 +6,10 @@
 */
 
 #ifndef GrVkDescriptorSetManager_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define GrVkDescriptorSetManager_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/private/SkAssert.h"
 #include "include/private/SkTArray.h"

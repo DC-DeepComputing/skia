@@ -6,9 +6,10 @@
  */
 
 #ifndef skcpu_RecorderImpl_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define skcpu_RecorderImpl_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkCPURecorder.h"
 #include "src/core/SkCPUContextImpl.h"

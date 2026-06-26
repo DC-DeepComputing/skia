@@ -6,9 +6,10 @@
  */
 
 #ifndef VertexChunkPatchAllocator_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define VertexChunkPatchAllocator_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "src/gpu/BufferWriter.h"
 #include "src/gpu/ganesh/GrVertexChunkArray.h"

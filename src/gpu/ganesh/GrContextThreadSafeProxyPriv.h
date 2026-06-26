@@ -6,9 +6,10 @@
  */
 
 #ifndef GrContextThreadSafeProxyPriv_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define GrContextThreadSafeProxyPriv_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/gpu/ganesh/GrContextThreadSafeProxy.h"
 #include "include/private/gpu/ganesh/GrContext_Base.h"

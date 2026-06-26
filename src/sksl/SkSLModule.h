@@ -6,9 +6,10 @@
  */
 
 #ifndef SKSL_MODULE
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SKSL_MODULE
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "src/sksl/ir/SkSLProgramElement.h"
 #include "src/sksl/ir/SkSLSymbolTable.h"

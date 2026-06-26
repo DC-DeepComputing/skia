@@ -9,9 +9,10 @@
 #include "src/partition_alloc/raw_ref.h"
 
 #ifndef SkPtrSet_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkPtrSet_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkFlattenable.h"
 #include "include/core/SkRefCnt.h"

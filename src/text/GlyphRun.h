@@ -6,9 +6,10 @@
  */
 
 #ifndef SkGlyphRun_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkGlyphRun_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkFont.h"
 #include "include/core/SkFontTypes.h"

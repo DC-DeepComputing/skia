@@ -6,9 +6,10 @@
  */
 
 #ifndef GrGLProgramDataManager_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define GrGLProgramDataManager_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/gpu/ganesh/gl/GrGLTypes.h"
 #include "include/private/SkDebug.h"

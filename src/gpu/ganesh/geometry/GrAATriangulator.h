@@ -6,9 +6,10 @@
  */
 
 #ifndef GrAATriangulator_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define GrAATriangulator_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkTypes.h"
 #if !defined(SK_ENABLE_OPTIMIZE_SIZE)

@@ -8,9 +8,10 @@
 #include "src/partition_alloc/raw_ref.h"
 
 #ifndef SKSL_PARSER
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SKSL_PARSER
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkTypes.h"
 #include "src/sksl/SkSLDefines.h"

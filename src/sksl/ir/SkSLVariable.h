@@ -6,9 +6,10 @@
  */
 
 #ifndef SKSL_VARIABLE
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SKSL_VARIABLE
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkTypes.h"
 #include "src/sksl/SkSLPosition.h"

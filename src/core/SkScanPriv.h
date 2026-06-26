@@ -6,9 +6,10 @@
  */
 
 #ifndef SkScanPriv_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkScanPriv_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkPath.h"
 #include "src/core/SkBlitter.h"

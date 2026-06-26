@@ -6,9 +6,10 @@
  */
 
 #ifndef skgpu_graphite_task_CopyTask_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define skgpu_graphite_task_CopyTask_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"

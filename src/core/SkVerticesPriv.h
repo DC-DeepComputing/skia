@@ -6,9 +6,10 @@
  */
 
 #ifndef SkVerticesPriv_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkVerticesPriv_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkVertices.h"
 

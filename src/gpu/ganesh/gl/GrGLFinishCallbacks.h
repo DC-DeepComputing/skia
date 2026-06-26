@@ -6,9 +6,10 @@
  */
 
 #ifndef GrGLFinishCallbacks_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define GrGLFinishCallbacks_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/gpu/ganesh/gl/GrGLTypes.h"
 #include "src/gpu/RefCntedCallback.h"

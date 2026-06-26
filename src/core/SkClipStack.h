@@ -6,9 +6,10 @@
  */
 
 #ifndef SkClipStack_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkClipStack_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkClipOp.h"
 #include "include/core/SkMatrix.h"

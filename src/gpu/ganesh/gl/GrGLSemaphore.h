@@ -6,9 +6,10 @@
  */
 
 #ifndef GrGLSemaphore_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define GrGLSemaphore_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/gpu/ganesh/GrBackendSemaphore.h"
 #include "include/gpu/ganesh/gl/GrGLTypes.h"

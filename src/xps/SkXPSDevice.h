@@ -6,9 +6,10 @@
  */
 
 #ifndef SkXPSDevice_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkXPSDevice_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkTypes.h"
 

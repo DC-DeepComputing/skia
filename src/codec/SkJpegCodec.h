@@ -6,9 +6,10 @@
  */
 
 #ifndef SkJpegCodec_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkJpegCodec_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/codec/SkCodec.h"
 #include "include/codec/SkEncodedImageFormat.h"

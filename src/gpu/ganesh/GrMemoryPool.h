@@ -6,9 +6,10 @@
  */
 
 #ifndef GrMemoryPool_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define GrMemoryPool_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/private/SkDebug.h"
 #include "src/core/SkBlockAllocator.h"

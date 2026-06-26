@@ -5,9 +5,10 @@
  * found in the LICENSE file.
  */
 #ifndef SkPathOpsTypes_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkPathOpsTypes_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkPath.h"
 #include "include/core/SkScalar.h"

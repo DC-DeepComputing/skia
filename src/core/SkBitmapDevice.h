@@ -6,9 +6,10 @@
  */
 
 #ifndef SkBitmapDevice_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkBitmapDevice_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"

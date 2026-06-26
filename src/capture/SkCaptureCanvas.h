@@ -6,9 +6,10 @@
  */
 
 #ifndef SkCaptureCanvas_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkCaptureCanvas_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <cstddef>
 #include "include/core/SkPictureRecorder.h"

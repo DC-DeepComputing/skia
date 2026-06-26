@@ -6,9 +6,10 @@
  */
 
 #ifndef skgpu_graphite_task_UploadTask_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define skgpu_graphite_task_UploadTask_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "src/gpu/graphite/task/Task.h"
 

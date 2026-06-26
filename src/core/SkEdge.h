@@ -6,9 +6,10 @@
  */
 
 #ifndef SkEdge_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkEdge_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkPoint.h"
 #include "include/private/SkAssert.h"

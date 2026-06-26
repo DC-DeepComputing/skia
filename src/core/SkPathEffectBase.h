@@ -6,9 +6,10 @@
  */
 
 #ifndef SkPathEffectBase_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkPathEffectBase_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkPath.h"
 #include "include/core/SkPathEffect.h"

@@ -6,9 +6,10 @@
  */
 
 #ifndef sktext_gpu_SubRunAllocator_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define sktext_gpu_SubRunAllocator_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkSpan.h"
 #include "include/private/SkAssert.h"

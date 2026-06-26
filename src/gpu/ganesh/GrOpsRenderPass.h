@@ -6,9 +6,10 @@
 */
 
 #ifndef GrOpsRenderPass_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define GrOpsRenderPass_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkDrawable.h"
 #include "include/core/SkRefCnt.h"

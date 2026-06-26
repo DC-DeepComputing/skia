@@ -6,9 +6,10 @@
  */
 
 #ifndef SKSL_SYMBOL
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SKSL_SYMBOL
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/private/SkAssert.h"
 #include "src/sksl/SkSLPosition.h"

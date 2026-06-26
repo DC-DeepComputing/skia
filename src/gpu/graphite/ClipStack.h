@@ -6,9 +6,10 @@
  */
 
 #ifndef skgpu_graphite_ClipStack_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define skgpu_graphite_ClipStack_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkShader.h"

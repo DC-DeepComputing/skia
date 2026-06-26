@@ -8,9 +8,10 @@
 #include "src/partition_alloc/raw_ref.h"
 
 #ifndef SkTypeface_Fontations_priv_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkTypeface_Fontations_priv_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkFontArguments.h"
 #include "include/core/SkFontParameters.h"

@@ -7,9 +7,10 @@
  * found in the LICENSE file.
  */
 #ifndef GrTessellationShader_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define GrTessellationShader_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkMatrix.h"
 #include "src/core/SkArenaAlloc.h"

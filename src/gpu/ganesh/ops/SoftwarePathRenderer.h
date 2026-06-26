@@ -5,9 +5,10 @@
  * found in the LICENSE file.
  */
 #ifndef SoftwarePathRenderer_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SoftwarePathRenderer_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "src/gpu/ganesh/PathRenderer.h"
 

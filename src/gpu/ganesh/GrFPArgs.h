@@ -8,9 +8,10 @@
 #include "src/partition_alloc/raw_ref.h"
 
 #ifndef GrFPArgs_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define GrFPArgs_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/private/SkAssert.h"
 

@@ -6,9 +6,10 @@
  */
 
 #ifndef SkVertState_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkVertState_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkVertices.h"
 

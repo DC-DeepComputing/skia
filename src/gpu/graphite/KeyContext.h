@@ -6,9 +6,10 @@
  */
 
 #ifndef skgpu_graphite_KeyContext_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define skgpu_graphite_KeyContext_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkM44.h"

@@ -6,9 +6,10 @@
  */
 
 #ifndef SkSLAnalysis_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkSLAnalysis_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/private/SkSLSampleUsage.h"
 #include "include/private/SkTArray.h"

@@ -6,9 +6,10 @@
  */
 
 #ifndef SkMipmap_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkMipmap_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkPixmap.h"
 #include "include/core/SkScalar.h"

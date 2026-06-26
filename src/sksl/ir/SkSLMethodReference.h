@@ -6,9 +6,10 @@
  */
 
 #ifndef SKSL_METHODREFERENCE
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SKSL_METHODREFERENCE
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "src/sksl/SkSLBuiltinTypes.h"
 #include "src/sksl/SkSLContext.h"

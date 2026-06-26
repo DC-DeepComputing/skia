@@ -6,9 +6,10 @@
  */
 
 #ifndef skgpu_graphite_PrecompileShaderPriv_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define skgpu_graphite_PrecompileShaderPriv_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/gpu/graphite/precompile/PrecompileShader.h"
 

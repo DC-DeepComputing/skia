@@ -6,9 +6,10 @@
  */
 
 #ifndef SkAnalyticEdge_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkAnalyticEdge_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/private/SkAssert.h"
 #include "include/private/SkDebug.h"

@@ -5,9 +5,10 @@
  * found in the LICENSE file.
  */
 #ifndef SkPDFDocumentPriv_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkPDFDocumentPriv_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkCanvas.h"
 #include "include/core/SkData.h"

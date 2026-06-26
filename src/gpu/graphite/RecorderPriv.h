@@ -6,9 +6,10 @@
  */
 
 #ifndef skgpu_graphite_RecorderPriv_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define skgpu_graphite_RecorderPriv_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRecorder.h"
 #include "include/core/SkRefCnt.h"

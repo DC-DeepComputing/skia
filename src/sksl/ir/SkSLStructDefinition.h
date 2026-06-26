@@ -6,9 +6,10 @@
  */
 
 #ifndef SKSL_STRUCTDEFINITION
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SKSL_STRUCTDEFINITION
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/private/SkTArray.h"
 #include "src/sksl/SkSLPosition.h"

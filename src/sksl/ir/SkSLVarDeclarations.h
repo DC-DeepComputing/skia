@@ -8,9 +8,10 @@
 #include "src/partition_alloc/raw_ref.h"
 
 #ifndef SKSL_VARDECLARATIONS
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SKSL_VARDECLARATIONS
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkTypes.h"
 #include "src/sksl/ir/SkSLExpression.h"

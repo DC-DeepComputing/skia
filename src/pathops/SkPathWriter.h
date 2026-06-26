@@ -5,9 +5,10 @@
  * found in the LICENSE file.
  */
 #ifndef SkPathWriter_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkPathWriter_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkPath.h"
 #include "include/core/SkPathBuilder.h"

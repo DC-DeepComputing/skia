@@ -6,9 +6,10 @@
  */
 
 #ifndef GrVkSemaphore_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define GrVkSemaphore_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/private/SkDebug.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"

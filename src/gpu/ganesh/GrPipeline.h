@@ -6,9 +6,10 @@
  */
 
 #ifndef GrPipeline_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define GrPipeline_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkPoint.h"
 #include "include/core/SkRefCnt.h"

@@ -6,9 +6,10 @@
  */
 
 #ifndef skgpu_graphite_PrecompileBlenderPriv_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define skgpu_graphite_PrecompileBlenderPriv_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/gpu/graphite/precompile/PrecompileBlender.h"
 

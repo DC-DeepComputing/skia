@@ -5,9 +5,10 @@
  * found in the LICENSE file.
  */
 #ifndef skgpu_graphite_DrawAtlas_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define skgpu_graphite_DrawAtlas_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkColor.h"
 #include "include/core/SkPoint.h"

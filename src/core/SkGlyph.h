@@ -6,9 +6,10 @@
  */
 
 #ifndef SkGlyph_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkGlyph_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkDrawable.h"
 #include "include/core/SkPath.h"

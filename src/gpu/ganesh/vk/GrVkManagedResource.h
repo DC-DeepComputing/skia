@@ -6,9 +6,10 @@
  */
 
 #ifndef GrVkManagedResource_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define GrVkManagedResource_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "src/gpu/ganesh/GrManagedResource.h"
 

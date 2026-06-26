@@ -6,9 +6,10 @@
  */
 
 #ifndef skgpu_graphite_geom_IntersectionTree_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define skgpu_graphite_geom_IntersectionTree_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/private/SkAlign.h"
 #include "src/core/SkArenaAlloc.h"

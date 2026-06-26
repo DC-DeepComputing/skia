@@ -6,9 +6,10 @@
  */
 
 #ifndef SKSL_FUNCTIONDEFINITION
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SKSL_FUNCTIONDEFINITION
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "src/sksl/SkSLPosition.h"
 #include "src/sksl/ir/SkSLFunctionDeclaration.h"

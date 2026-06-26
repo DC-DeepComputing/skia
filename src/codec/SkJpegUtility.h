@@ -7,9 +7,10 @@
 
 
 #ifndef SkJpegUtility_codec_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkJpegUtility_codec_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <cstdint>
 

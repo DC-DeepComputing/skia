@@ -6,9 +6,10 @@
  */
 
 #ifndef SkRecordPattern_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkRecordPattern_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/private/SkTLogic.h"
 #include "src/core/SkRecord.h"

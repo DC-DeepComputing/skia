@@ -5,9 +5,10 @@
  * found in the LICENSE file.
  */
 #ifndef GrVkImageView_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define GrVkImageView_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkDebug.h"

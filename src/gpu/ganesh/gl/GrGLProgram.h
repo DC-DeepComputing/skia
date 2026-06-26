@@ -5,9 +5,10 @@
  * found in the LICENSE file.
  */
 #ifndef GrGLProgram_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define GrGLProgram_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"

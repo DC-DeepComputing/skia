@@ -6,9 +6,10 @@
  */
 
 #ifndef SkGaneshRecorder_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkGaneshRecorder_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkCPURecorder.h"
 #include "include/core/SkRecorder.h"

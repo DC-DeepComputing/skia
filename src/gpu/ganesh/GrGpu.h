@@ -6,9 +6,10 @@
  */
 
 #ifndef GrGpu_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define GrGpu_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkData.h"
 #include "include/core/SkRect.h"

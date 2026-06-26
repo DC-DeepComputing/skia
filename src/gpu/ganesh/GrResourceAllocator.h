@@ -6,9 +6,10 @@
  */
 
 #ifndef GrResourceAllocator_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define GrResourceAllocator_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkAssert.h"

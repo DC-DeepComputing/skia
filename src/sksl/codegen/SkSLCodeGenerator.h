@@ -8,9 +8,10 @@
 #include "src/partition_alloc/raw_ref.h"
 
 #ifndef SKSL_CODEGENERATOR
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SKSL_CODEGENERATOR
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "src/sksl/SkSLContext.h"
 #include "src/sksl/SkSLOutputStream.h"

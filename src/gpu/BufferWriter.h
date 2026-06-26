@@ -8,9 +8,10 @@
 #include "src/partition_alloc/raw_ref.h"
 
 #ifndef skgpu_BufferWriter_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define skgpu_BufferWriter_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkRect.h"

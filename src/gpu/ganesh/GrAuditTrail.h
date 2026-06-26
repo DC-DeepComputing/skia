@@ -6,9 +6,10 @@
  */
 
 #ifndef GrAuditTrail_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define GrAuditTrail_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRect.h"
 #include "include/core/SkString.h"

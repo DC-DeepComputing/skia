@@ -8,9 +8,10 @@
 // implementation-specific should go in SkTraceEventCommon.h instead of here.
 
 #ifndef SkTraceEvent_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkTraceEvent_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/utils/SkEventTracer.h"
 #include "src/core/SkTraceEventCommon.h" // IWYU pragma: export

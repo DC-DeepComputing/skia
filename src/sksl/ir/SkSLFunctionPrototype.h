@@ -6,9 +6,10 @@
  */
 
 #ifndef SKSL_FUNCTIONPROTOTYPE
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SKSL_FUNCTIONPROTOTYPE
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "src/sksl/ir/SkSLBlock.h"
 #include "src/sksl/ir/SkSLFunctionDeclaration.h"

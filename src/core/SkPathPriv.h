@@ -6,9 +6,10 @@
  */
 
 #ifndef SkPathPriv_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkPathPriv_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkArc.h"
 #include "include/core/SkPath.h"
@@ -444,7 +445,7 @@ class SkPathEdgeIter {
     raw_ptr<const SkPathVerb, AllowPtrArithmetic> fVerbsStop;
     raw_ptr<const SkPoint, AllowPtrArithmetic> fPts;
     raw_ptr<const SkPoint, AllowPtrArithmetic> fMoveToPtr;
-    raw_ptr<const SkScalar, AllowPtrArithmetic> fConicWeights;
+    const SkScalar* fConicWeights;
     SkPoint         fScratch[2];    // for auto-close lines
     bool            fNeedsCloseLine;
     bool            fNextIsNewContour;

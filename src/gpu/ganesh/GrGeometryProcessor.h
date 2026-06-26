@@ -8,9 +8,10 @@
 #include "src/partition_alloc/raw_ref.h"
 
 #ifndef GrGeometryProcessor_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define GrGeometryProcessor_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkMatrix.h"
 #include "include/gpu/ganesh/GrBackendSurface.h"

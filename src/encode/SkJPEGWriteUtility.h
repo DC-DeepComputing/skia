@@ -7,9 +7,10 @@
 
 
 #ifndef SkJpegUtility_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkJpegUtility_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkTypes.h"
 

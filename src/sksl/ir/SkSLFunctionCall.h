@@ -8,9 +8,10 @@
 #include "src/partition_alloc/raw_ref.h"
 
 #ifndef SKSL_FUNCTIONCALL
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SKSL_FUNCTIONCALL
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "src/sksl/SkSLDefines.h"
 #include "src/sksl/SkSLPosition.h"

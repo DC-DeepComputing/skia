@@ -5,9 +5,10 @@
  */
 
 #ifndef SkStrike_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkStrike_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkFontMetrics.h"
 #include "include/core/SkRefCnt.h"

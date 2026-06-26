@@ -6,9 +6,10 @@
  */
 
 #ifndef SkSpriteBlitter_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkSpriteBlitter_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkPixmap.h"
 #include "include/core/SkShader.h"

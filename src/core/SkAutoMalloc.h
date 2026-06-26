@@ -6,9 +6,10 @@
  */
 
 #ifndef SkAutoMalloc_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkAutoMalloc_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/private/SkAlign.h"
 #include "include/private/SkAssert.h"

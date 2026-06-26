@@ -6,9 +6,10 @@
  */
 
 #ifndef skgpu_graphite_DrawListTypes_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define skgpu_graphite_DrawListTypes_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/private/SkDebug.h"
 #include "include/private/SkEnumBitMask.h"

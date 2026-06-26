@@ -8,9 +8,10 @@
 #include "src/partition_alloc/raw_ref.h"
 
 #ifndef GrXferProcessor_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define GrXferProcessor_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkAssert.h"

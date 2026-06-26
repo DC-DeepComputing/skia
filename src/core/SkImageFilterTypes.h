@@ -8,9 +8,10 @@
 #include "src/partition_alloc/raw_ref.h"
 
 #ifndef SkImageFilterTypes_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkImageFilterTypes_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkColorSpace.h"

@@ -6,9 +6,10 @@
  */
 
 #ifndef SkLRUCache_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkLRUCache_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "src/core/SkChecksum.h"
 #include "src/core/SkTHash.h"

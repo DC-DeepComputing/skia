@@ -6,9 +6,10 @@
  */
 
 #ifndef SKSL_POOL
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SKSL_POOL
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <cstddef>
 #include <memory>

@@ -6,9 +6,10 @@
  */
 
 #ifndef SkPDFDevice_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkPDFDevice_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkCPURecorder.h"
 #include "include/core/SkCanvas.h"

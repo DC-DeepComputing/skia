@@ -6,9 +6,10 @@
  */
 
 #ifndef PathTessellateOp_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define PathTessellateOp_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPath.h"

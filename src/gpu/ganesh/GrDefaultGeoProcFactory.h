@@ -6,9 +6,10 @@
  */
 
 #ifndef GrDefaultGeoProcFactory_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define GrDefaultGeoProcFactory_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/private/SkAssert.h"
 #include "src/core/SkColorData.h"

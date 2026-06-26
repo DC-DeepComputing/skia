@@ -6,9 +6,10 @@
  */
 
 #ifndef SKSL_FORSTATEMENT
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SKSL_FORSTATEMENT
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "src/sksl/SkSLPosition.h"
 #include "src/sksl/ir/SkSLExpression.h"

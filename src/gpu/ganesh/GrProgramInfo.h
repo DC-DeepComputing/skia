@@ -6,9 +6,10 @@
  */
 
 #ifndef GrProgramInfo_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define GrProgramInfo_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/gpu/ganesh/GrBackendSurface.h"
 #include "include/private/SkDebug.h"

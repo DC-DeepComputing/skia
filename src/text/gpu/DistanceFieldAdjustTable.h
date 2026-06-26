@@ -6,9 +6,10 @@
  */
 
 #ifndef sktext_gpu_DistanceFieldAdjustTable_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define sktext_gpu_DistanceFieldAdjustTable_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkScalar.h"
 

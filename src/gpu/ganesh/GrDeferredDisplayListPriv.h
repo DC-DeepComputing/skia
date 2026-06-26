@@ -6,9 +6,10 @@
  */
 
 #ifndef GrDeferredDisplayListPriv_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define GrDeferredDisplayListPriv_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/private/chromium/GrDeferredDisplayList.h"
 

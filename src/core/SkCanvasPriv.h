@@ -6,9 +6,10 @@
  */
 
 #ifndef SkCanvasPriv_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkCanvasPriv_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPaint.h"

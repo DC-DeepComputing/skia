@@ -6,9 +6,10 @@
  */
 
 #ifndef SkTMultiMap_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkTMultiMap_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "src/core/SkTDynamicHash.h"
 

@@ -6,9 +6,10 @@
  */
 
 #ifndef SkZip_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkZip_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkSpan.h"
 #include "include/private/SkAssert.h"

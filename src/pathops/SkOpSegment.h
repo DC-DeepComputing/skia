@@ -5,9 +5,10 @@
  * found in the LICENSE file.
  */
 #ifndef SkOpSegment_DEFINE
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkOpSegment_DEFINE
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkPath.h"
 #include "include/core/SkPoint.h"

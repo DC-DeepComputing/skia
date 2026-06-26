@@ -6,9 +6,10 @@
  */
 
 #ifndef GrGpuResourceCacheAccess_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define GrGpuResourceCacheAccess_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/private/SkAssert.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"

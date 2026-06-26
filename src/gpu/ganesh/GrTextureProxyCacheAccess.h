@@ -6,9 +6,10 @@
  */
 
 #ifndef GrTextureProxyCacheAccess_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define GrTextureProxyCacheAccess_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "src/gpu/ganesh/GrTextureProxy.h"
 

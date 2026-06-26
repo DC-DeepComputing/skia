@@ -6,9 +6,10 @@
  */
 
 #ifndef GrSimpleMeshDrawOpHelperWithStencil_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define GrSimpleMeshDrawOpHelperWithStencil_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkString.h"
 #include "src/core/SkColorData.h"

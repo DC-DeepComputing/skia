@@ -6,9 +6,10 @@
  */
 
 #ifndef skgpu_tessellate_StrokeIterator_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define skgpu_tessellate_StrokeIterator_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPaint.h"

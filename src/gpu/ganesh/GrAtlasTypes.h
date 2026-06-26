@@ -6,9 +6,10 @@
  */
 
 #ifndef GrAtlasTypes_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define GrAtlasTypes_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkColor.h"
 #include "include/core/SkColorType.h"

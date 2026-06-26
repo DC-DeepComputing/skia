@@ -8,9 +8,10 @@
 #include "src/partition_alloc/raw_ref.h"
 
 #ifndef GrFragmentProcessor_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define GrFragmentProcessor_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkString.h"

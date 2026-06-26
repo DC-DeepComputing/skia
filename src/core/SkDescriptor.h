@@ -6,9 +6,10 @@
  */
 
 #ifndef SkDescriptor_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkDescriptor_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkString.h"
 #include "include/private/SkAssert.h"

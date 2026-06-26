@@ -6,9 +6,10 @@
  */
 
 #ifndef skgpu_tessellate_MiddleOutPolygonTriangulator_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define skgpu_tessellate_MiddleOutPolygonTriangulator_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkPath.h"
 #include "include/core/SkPathTypes.h"

@@ -6,9 +6,10 @@
  */
 
 #ifndef skgpu_graphite_ShaderInfo_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define skgpu_graphite_ShaderInfo_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/private/SkTArray.h"
 #include "src/core/SkArenaAlloc.h"

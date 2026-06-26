@@ -6,9 +6,10 @@
  */
 
 #ifndef SKSLTRACEHOOK
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SKSLTRACEHOOK
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <cstdint>
 #include <memory>

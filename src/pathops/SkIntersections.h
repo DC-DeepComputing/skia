@@ -5,9 +5,10 @@
  * found in the LICENSE file.
  */
 #ifndef SkIntersections_DEFINE
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkIntersections_DEFINE
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkPoint.h"
 #include "include/core/SkScalar.h"

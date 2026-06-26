@@ -6,9 +6,10 @@
  */
 
 #ifndef SkRasterPipeline_opts_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkRasterPipeline_opts_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"

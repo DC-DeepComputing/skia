@@ -5,9 +5,10 @@
  * found in the LICENSE file.
  */
 #ifndef SkPictureFlat_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkPictureFlat_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkFlattenable.h"
 #include "include/core/SkRefCnt.h"

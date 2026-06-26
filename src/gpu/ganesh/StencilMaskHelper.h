@@ -6,9 +6,10 @@
  */
 
 #ifndef StencilMaskHelper_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define StencilMaskHelper_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRegion.h"
 #include "include/private/SkNoncopyable.h"

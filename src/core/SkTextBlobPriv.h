@@ -6,9 +6,10 @@
  */
 
 #ifndef SkTextBlobPriv_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkTextBlobPriv_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkFont.h"

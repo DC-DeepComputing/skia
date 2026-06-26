@@ -6,9 +6,10 @@
  */
 
 #ifndef SkOTTable_name_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkOTTable_name_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkString.h"
 #include "src/core/SkEndian.h"

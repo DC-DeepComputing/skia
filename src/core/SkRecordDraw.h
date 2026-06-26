@@ -6,9 +6,10 @@
  */
 
 #ifndef SkRecordDraw_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkRecordDraw_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkBBHFactory.h"
 #include "include/core/SkCanvas.h"

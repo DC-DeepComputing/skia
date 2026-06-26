@@ -6,9 +6,10 @@
  */
 
 #ifndef skgpu_graphite_DawnErrorChecker_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define skgpu_graphite_DawnErrorChecker_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/private/SkEnumBitMask.h"
 

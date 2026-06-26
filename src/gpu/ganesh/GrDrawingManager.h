@@ -6,9 +6,10 @@
  */
 
 #ifndef GrDrawingManager_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define GrDrawingManager_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSpan.h"

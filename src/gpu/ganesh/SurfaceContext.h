@@ -6,9 +6,10 @@
  */
 
 #ifndef SurfaceContext_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SurfaceContext_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkImage.h"
 #include "include/core/SkRect.h"

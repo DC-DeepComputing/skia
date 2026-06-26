@@ -6,9 +6,10 @@
  */
 
 #ifndef SkArenaAllocList_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkArenaAllocList_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/private/SkAssert.h"
 #include "src/core/SkArenaAlloc.h" // IWYU pragma: keep

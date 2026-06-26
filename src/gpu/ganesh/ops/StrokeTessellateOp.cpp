@@ -184,7 +184,7 @@ void StrokeTessellateOp::prePrepareTessellator(GrTessellationShader::ProgramArgs
                                                         std::move(fProcessors));
 
     fTessellator = arena->make<StrokeTessellator>(fPatchAttribs);
-    fTessellationShader = args.fArena->make<GrStrokeTessellationShader>(
+    auto* tessellationShader = args.fArena->make<GrStrokeTessellationShader>(
             *caps.shaderCaps(),
             fPatchAttribs,
             fViewMatrix,
@@ -193,7 +193,7 @@ void StrokeTessellateOp::prePrepareTessellator(GrTessellationShader::ProgramArgs
 
     auto fillStencil = &GrUserStencilSettings::kUnused;
     if (fNeedsStencil) {
-        fStencilProgram = GrTessellationShader::MakeProgram(args, fTessellationShader, pipeline,
+        fStencilProgram = GrTessellationShader::MakeProgram(args, tessellationShader, pipeline,
                                                             &kMarkStencil);
         fillStencil = &kTestAndResetStencil;
         // TODO: Currently if we have a texture barrier for a dst read it will get put in before
@@ -204,7 +204,7 @@ void StrokeTessellateOp::prePrepareTessellator(GrTessellationShader::ProgramArgs
         // general Skia use.
     }
 
-    fFillProgram = GrTessellationShader::MakeProgram(args, fTessellationShader, pipeline,
+    fFillProgram = GrTessellationShader::MakeProgram(args, tessellationShader, pipeline,
                                                      fillStencil);
 }
 

@@ -6,9 +6,10 @@
  */
 
 #ifndef skgpu_graphite_ShaderCodeDictionary_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define skgpu_graphite_ShaderCodeDictionary_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkSpan.h"
 #include "include/effects/SkRuntimeEffect.h"

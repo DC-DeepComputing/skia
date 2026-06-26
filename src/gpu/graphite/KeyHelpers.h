@@ -6,9 +6,10 @@
  */
 
 #ifndef skgpu_graphite_KeyHelpers_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define skgpu_graphite_KeyHelpers_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkBlendMode.h"

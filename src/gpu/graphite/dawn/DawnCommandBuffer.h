@@ -6,9 +6,10 @@
  */
 
 #ifndef skgpu_graphite_DawnCommandBuffer_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define skgpu_graphite_DawnCommandBuffer_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/private/SkLog.h"
 #include "src/gpu/graphite/CommandBuffer.h"

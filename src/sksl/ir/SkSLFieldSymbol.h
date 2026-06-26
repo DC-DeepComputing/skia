@@ -6,9 +6,10 @@
  */
 
 #ifndef SKSL_FIELD
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SKSL_FIELD
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "src/sksl/ir/SkSLModifierFlags.h"
 #include "src/sksl/ir/SkSLSymbol.h"

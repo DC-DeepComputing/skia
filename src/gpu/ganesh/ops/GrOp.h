@@ -6,9 +6,10 @@
  */
 
 #ifndef GrOp_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define GrOp_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkMatrix.h"
 #include "include/core/SkRect.h"

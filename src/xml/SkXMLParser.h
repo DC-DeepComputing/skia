@@ -8,9 +8,10 @@
 
 
 #ifndef SkXMLParser_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkXMLParser_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkString.h"
 

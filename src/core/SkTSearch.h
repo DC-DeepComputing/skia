@@ -8,9 +8,10 @@
 
 
 #ifndef SkTSearch_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkTSearch_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/private/SkAssert.h"
 

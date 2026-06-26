@@ -6,9 +6,10 @@
  */
 
 #ifndef SkPicturePlayback_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkPicturePlayback_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkM44.h"
 #include "include/core/SkPicture.h"

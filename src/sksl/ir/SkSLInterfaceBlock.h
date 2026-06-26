@@ -6,9 +6,10 @@
  */
 
 #ifndef SKSL_INTERFACEBLOCK
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SKSL_INTERFACEBLOCK
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkTypes.h"
 #include "include/private/SkTArray.h"

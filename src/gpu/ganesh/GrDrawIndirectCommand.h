@@ -6,9 +6,10 @@
  */
 
 #ifndef GrDrawIndirectCommand_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define GrDrawIndirectCommand_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <cstdint>
 #include <utility>

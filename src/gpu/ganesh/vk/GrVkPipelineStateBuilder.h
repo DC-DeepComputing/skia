@@ -6,9 +6,10 @@
 */
 
 #ifndef GrVkPipelineStateBuilder_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define GrVkPipelineStateBuilder_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkString.h"
 #include "include/private/gpu/vk/SkiaVulkan.h"

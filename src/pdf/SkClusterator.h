@@ -5,9 +5,10 @@
  * found in the LICENSE file.
  */
 #ifndef SkClusterator_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkClusterator_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <cstdint>
 

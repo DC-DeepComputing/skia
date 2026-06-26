@@ -6,9 +6,10 @@
  */
 
 #ifndef SKSL_INLINER
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SKSL_INLINER
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #ifndef SK_ENABLE_OPTIMIZE_SIZE
 

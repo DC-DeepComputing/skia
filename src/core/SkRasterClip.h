@@ -8,9 +8,10 @@
 #include "src/partition_alloc/raw_ref.h"
 
 #ifndef SkRasterClip_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkRasterClip_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"

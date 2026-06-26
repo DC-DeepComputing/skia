@@ -6,9 +6,10 @@
  */
 
 #ifndef GrGLSLShaderBuilder_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define GrGLSLShaderBuilder_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkSpan.h"
 #include "include/core/SkString.h"

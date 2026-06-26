@@ -6,9 +6,10 @@
  */
 
 #ifndef GrTextureProxyPriv_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define GrTextureProxyPriv_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/private/SkTo.h"
 #include "src/gpu/ganesh/GrTextureProxy.h"

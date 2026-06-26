@@ -6,9 +6,10 @@
  */
 
 #ifndef GrHashMapWithCache_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define GrHashMapWithCache_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/private/SkNoncopyable.h"
 #include "src/core/SkChecksum.h"
@@ -56,6 +57,7 @@ public:
             *fLastValue = std::move(val);
         } else {
             fLastKey = key;
+            fLastValue = nullptr;
             fLastValue = fMap.set(std::move(key), std::move(val));
         }
         return fLastValue;

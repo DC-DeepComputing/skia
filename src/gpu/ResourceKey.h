@@ -6,9 +6,10 @@
  */
 
 #ifndef skgpu_ResourceKey_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define skgpu_ResourceKey_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkData.h"
 #include "include/core/SkRefCnt.h"

@@ -6,9 +6,10 @@
  */
 
 #ifndef SkSwizzler_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkSwizzler_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/codec/SkCodec.h"
 #include "include/core/SkColor.h"

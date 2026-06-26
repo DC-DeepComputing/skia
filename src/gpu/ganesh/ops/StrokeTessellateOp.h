@@ -6,9 +6,10 @@
  */
 
 #ifndef StrokeTessellateOp_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define StrokeTessellateOp_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkMatrix.h"
 #include "include/core/SkStrokeRec.h"
@@ -97,7 +98,6 @@ private:
     bool fNeedsStencil;
 
     raw_ptr<StrokeTessellator, DanglingUntriaged> fTessellator = nullptr;
-    raw_ptr<GrStrokeTessellationShader> fTessellationShader;
     raw_ptr<const GrProgramInfo, DanglingUntriaged> fStencilProgram = nullptr;  // Only used if the stroke has transparency.
     raw_ptr<const GrProgramInfo, DanglingUntriaged> fFillProgram = nullptr;
 };

@@ -6,9 +6,10 @@
  */
 
 #ifndef SkRecords_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkRecords_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkBlender.h"
 #include "include/core/SkCanvas.h"

@@ -82,9 +82,9 @@ public:
     const sktext::gpu::RendererData& rendererData() const { return fRendererData; }
 
 private:
-    raw_ptr<const sktext::gpu::AtlasSubRun> fSubRun;
     // Keep the TextBlob or Slug alive until we're done with the Geometry.
     sk_sp<SkRefCnt> fSupportDataKeepAlive;
+    raw_ptr<const sktext::gpu::AtlasSubRun> fSubRun;
 
     Rect fBounds;  // bounds of the data stored in the SubRun
     SkM44 fMaskToDevice;

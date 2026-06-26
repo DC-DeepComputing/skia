@@ -6,9 +6,10 @@
  */
 
 #ifndef GrBaseContextPriv_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define GrBaseContextPriv_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRefCnt.h"
 #include "include/gpu/ganesh/GrContextOptions.h"

@@ -6,9 +6,10 @@
  */
 
 #ifndef SkReadPixelsRec_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkReadPixelsRec_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPixmap.h"

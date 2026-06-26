@@ -6,9 +6,10 @@
  */
 
 #ifndef GrGLGpu_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define GrGLGpu_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSamplingOptions.h"

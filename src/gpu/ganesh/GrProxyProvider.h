@@ -6,9 +6,10 @@
  */
 
 #ifndef GrProxyProvider_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define GrProxyProvider_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRefCnt.h"
 #include "include/gpu/ganesh/GrTypes.h"

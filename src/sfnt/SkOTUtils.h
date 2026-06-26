@@ -6,9 +6,10 @@
  */
 
 #ifndef SkOTUtils_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkOTUtils_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkTypeface.h"
 #include "src/sfnt/SkOTTableTypes.h"

@@ -6,9 +6,10 @@
  */
 
 #ifndef SkBlockAllocator_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkBlockAllocator_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/private/SkASAN.h"
 #include "include/private/SkAlign.h"

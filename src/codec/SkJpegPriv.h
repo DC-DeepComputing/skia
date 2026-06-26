@@ -7,9 +7,10 @@
 
 
 #ifndef SkJpegPriv_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkJpegPriv_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/codec/SkEncodedOrigin.h"
 #include "include/core/SkStream.h"

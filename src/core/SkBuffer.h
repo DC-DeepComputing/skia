@@ -6,9 +6,10 @@
  */
 
 #ifndef SkBuffer_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkBuffer_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/private/SkAssert.h"
 #include "include/private/SkNoncopyable.h"

@@ -8,9 +8,10 @@
 #include "src/partition_alloc/raw_ref.h"
 
 #ifndef SkRuntimeEffectPriv_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkRuntimeEffectPriv_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkColor.h"
 #include "include/core/SkRefCnt.h"

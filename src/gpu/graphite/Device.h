@@ -6,9 +6,10 @@
  */
 
 #ifndef skgpu_graphite_Device_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define skgpu_graphite_Device_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkBlender.h"
 #include "include/core/SkCanvas.h"

@@ -5,9 +5,10 @@
  * found in the LICENSE file.
  */
 #ifndef GrGradientBitmapCache_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define GrGradientBitmapCache_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkScalar.h"
 #include "include/effects/SkGradient.h"

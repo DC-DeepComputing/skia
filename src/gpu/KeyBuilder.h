@@ -6,9 +6,10 @@
  */
 
 #ifndef skgpu_KeyBuilder_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define skgpu_KeyBuilder_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkString.h"
 #include "include/private/SkAssert.h"

@@ -6,9 +6,10 @@
  */
 
 #ifndef GrResourceProviderPriv_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define GrResourceProviderPriv_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "src/gpu/ganesh/GrResourceProvider.h"
 

@@ -6,9 +6,10 @@
 */
 
 #ifndef GrVkOpsRenderPass_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define GrVkOpsRenderPass_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkDrawable.h"
 #include "include/core/SkRect.h"

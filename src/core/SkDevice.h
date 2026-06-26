@@ -6,9 +6,10 @@
  */
 
 #ifndef SkDevice_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkDevice_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkBlender.h"  // IWYU pragma: keep
 #include "include/core/SkCanvas.h"

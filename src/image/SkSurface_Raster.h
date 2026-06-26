@@ -6,9 +6,10 @@
  */
 
 #ifndef SkSurface_Raster_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkSurface_Raster_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkImageInfo.h"

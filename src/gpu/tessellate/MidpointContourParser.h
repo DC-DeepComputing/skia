@@ -8,9 +8,10 @@
 #include "src/partition_alloc/raw_ref.h"
 
 #ifndef skgpu_tessellate_MidpointContourParser_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define skgpu_tessellate_MidpointContourParser_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkPath.h"
 #include "include/core/SkPoint.h"

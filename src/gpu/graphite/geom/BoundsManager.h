@@ -6,9 +6,10 @@
  */
 
 #ifndef skgpu_graphite_geom_BoundsManager_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define skgpu_graphite_geom_BoundsManager_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"

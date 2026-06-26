@@ -6,9 +6,10 @@
  */
 
 #ifndef SkTHash_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkTHash_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkTypes.h"
 #include "src/core/SkChecksum.h"

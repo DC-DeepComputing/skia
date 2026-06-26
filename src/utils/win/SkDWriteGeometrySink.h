@@ -6,9 +6,10 @@
  */
 
 #ifndef SkDWriteToPath_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkDWriteToPath_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkPathBuilder.h"
 #include "src/utils/win/SkObjBase.h"

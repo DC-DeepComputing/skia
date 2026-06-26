@@ -7,9 +7,10 @@
 
 
 #ifndef GrGLContext_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define GrGLContext_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRefCnt.h"
 #include "include/gpu/ganesh/gl/GrGLInterface.h"

@@ -5,9 +5,10 @@
  * found in the LICENSE file.
  */
 #ifndef SkOpEdgeBuilder_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkOpEdgeBuilder_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkPoint.h"
 #include "include/core/SkScalar.h"

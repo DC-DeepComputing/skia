@@ -7,9 +7,10 @@
 
 
 #ifndef SkEdgeClipper_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define SkEdgeClipper_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkPoint.h"

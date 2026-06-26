@@ -6,9 +6,10 @@
  */
 
 #ifndef GrSurfaceProxyPriv_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define GrSurfaceProxyPriv_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"

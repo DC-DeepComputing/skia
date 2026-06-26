@@ -5,9 +5,10 @@
  * found in the LICENSE file.
  */
 #ifndef GrQuadBuffer_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define GrQuadBuffer_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRect.h"
 #include "include/private/SkAssert.h"

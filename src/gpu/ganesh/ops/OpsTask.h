@@ -5,9 +5,10 @@
  * found in the LICENSE file.
  */
 #ifndef OpsTask_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define OpsTask_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"

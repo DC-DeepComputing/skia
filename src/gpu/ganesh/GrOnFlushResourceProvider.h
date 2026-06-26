@@ -6,9 +6,10 @@
  */
 
 #ifndef GrOnFlushResourceProvider_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #define GrOnFlushResourceProvider_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "src/gpu/ganesh/GrAtlasTypes.h"
 
