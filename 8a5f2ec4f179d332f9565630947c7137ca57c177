@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1badf68a_bae3816b",
+        "filename": "build_overrides/partition_alloc.gni",
+        "patchSetId": 14
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-26T21:16:55Z",
+      "side": 1,
+      "message": "Our bazel build for sure uses a vanilla Clang.",
+      "parentUuid": "1f51aafc_a1ee5f6d",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 54
+      },
+      "revId": "8a5f2ec4f179d332f9565630947c7137ca57c177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e8bb6e44_8dfa5e78",
