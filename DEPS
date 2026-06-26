@@ -120,7 +120,7 @@ deps = {
   'agents/shared': 'https://chromium.googlesource.com/chromium/agents/@e75efa515896f6bf1dea92eaffbcf8ee711a65d8',
 
   'agents/internal': {
-    'url': 'https://chrome-internal.googlesource.com/chrome/agents-internal/@11c700b10e171091b4f0f3cf3bf95f13dee85c93',
+    'url': 'https://chrome-internal.googlesource.com/chrome/agents-internal/@31b193a56ee3629667181ad54a8d8221f98f3105',
     'condition': 'checkout_agents_internal',
   },
 }
