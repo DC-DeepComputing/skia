@@ -1380,6 +1380,9 @@
     "name": "Test-Android-Clang-GalaxyS25Plus-GPU-Adreno830-arm64-Release-All-Android"
   },
   {
+    "name": "Test-Android-Clang-GalaxyS25Plus-GPU-Adreno830-arm64-Release-All-Android_Graphite_Native_Vulkan_AvoidDepth"
+  },
+  {
     "name": "Test-Android-Clang-GalaxyS25Plus-GPU-Adreno830-arm64-Release-All-Android_Vulkan"
   },
   {
@@ -1567,6 +1570,9 @@
         "src/sksl/generated/.*"
       ]
     }
+  },
+  {
+    "name": "Test-Android-Clang-Pixel9-GPU-MaliG715-arm64-Release-All-Android_Graphite_Native_Vulkan_AvoidDepth"
   },
   {
     "name": "Test-Android-Clang-Pixel9-GPU-MaliG715-arm64-Release-All-Android_Vulkan",
