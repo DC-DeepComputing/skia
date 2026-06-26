@@ -8,8 +8,6 @@
 #include "modules/svg/include/SkSVGOpenTypeSVGDecoder.h"
 
 #include "include/codec/SkCodec.h"
-#include "include/codec/SkJpegDecoder.h"
-#include "include/codec/SkPngDecoder.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkData.h"
 #include "include/core/SkOpenTypeSVGDecoder.h"
@@ -47,17 +45,15 @@ public:
                                                   const char rid[]) const override {
         if (auto data = decode_datauri("data:image/", rname)) {
             std::unique_ptr<SkCodec> codec = nullptr;
-            if (SkPngDecoder::IsPng(data->bytes(), data->size())) {
-                codec = SkPngDecoder::Decode(data, nullptr);
-            } else if (SkJpegDecoder::IsJpeg(data->bytes(), data->size())) {
-                codec = SkJpegDecoder::Decode(data, nullptr);
-            } else {
+            codec = SkCodec::MakeFromData(data);
+            if (!codec) {
+                return nullptr;
+            }
+            SkEncodedImageFormat format = codec->getEncodedFormat();
+            if (format != SkEncodedImageFormat::kPNG && format != SkEncodedImageFormat::kJPEG) {
                 // The spec says only JPEG or PNG should be used to encode the embedded data.
                 // https://learn.microsoft.com/en-us/typography/opentype/spec/svg#svg-capability-requirements-and-restrictions
                 SkDEBUGFAIL("Unsupported codec");
-                return nullptr;
-            }
-            if (!codec) {
                 return nullptr;
             }
             return skresources::MultiFrameImageAsset::Make(std::move(codec));
