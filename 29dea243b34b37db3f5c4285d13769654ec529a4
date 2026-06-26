@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4f008e5_93d01b39",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2026-06-26T08:17:09Z",
+      "side": 1,
+      "message": "Code change looks good to me but please add a Skia gold test for this. For example by using font tools to create a basic font from the diamond shape test fonts and adding an outline shape to a bitmap version, or something like that. Also, please remember to add the fontations bot to the CQ from your commit message.",
+      "revId": "29dea243b34b37db3f5c4285d13769654ec529a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9d80949_4eeffbd0",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2026-06-26T08:17:09Z",
+      "side": 1,
+      "message": "Does FreeType round in both directions with something like roundf, too? Or does it round only in one direction?",
+      "range": {
+        "startLine": 46,
+        "startChar": 11,
+        "endLine": 46,
+        "endChar": 55
+      },
+      "revId": "29dea243b34b37db3f5c4285d13769654ec529a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
