@@ -1,0 +1,165 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd84e2b4_2d2ac975",
+        "filename": "modules/canvaskit/debugger_bindings.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 420,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-26T21:11:46Z",
+      "side": 1,
+      "message": "driveby: I use the pattern `auto foo \u003d std::make_unique\u003cBar\u003e` because it\u0027s obvious what auto is.",
+      "range": {
+        "startLine": 420,
+        "startChar": 8,
+        "endLine": 420,
+        "endChar": 36
+      },
+      "revId": "2c90dafca6079e061f715ae8c863e07163ed6d7f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e8a6c88_8b6190db",
+        "filename": "modules/canvaskit/debugger_bindings.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 421,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-26T21:11:46Z",
+      "side": 1,
+      "message": "I\u0027m not sure if this is needed - make_unique should forward the args, right?",
+      "range": {
+        "startLine": 421,
+        "startChar": 50,
+        "endLine": 421,
+        "endChar": 61
+      },
+      "revId": "2c90dafca6079e061f715ae8c863e07163ed6d7f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "521a85e8_07e64156",
+        "filename": "tools/debugger/DebugCanvas.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 433,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-26T21:11:46Z",
+      "side": 1,
+      "message": "nit: don\u0027t include these unnecessary formatting changes.",
+      "range": {
+        "startLine": 433,
+        "startChar": 35,
+        "endLine": 433,
+        "endChar": 38
+      },
+      "revId": "2c90dafca6079e061f715ae8c863e07163ed6d7f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b69f772_a52e3849",
+        "filename": "tools/debugger/DrawCommand.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 609,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-26T21:11:46Z",
+      "side": 1,
+      "message": "Don\u0027t do this, use the procs, right?",
+      "range": {
+        "startLine": 609,
+        "startChar": 21,
+        "endLine": 609,
+        "endChar": 43
+      },
+      "revId": "2c90dafca6079e061f715ae8c863e07163ed6d7f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7372ae78_f013e186",
+        "filename": "tools/debugger/DrawCommand.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 611,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-26T21:11:46Z",
+      "side": 1,
+      "message": "This might be good to put in something like `//tools/DeserialProcsUtils.h` and then used in all the other places instead of `{}`",
+      "range": {
+        "startLine": 611,
+        "startChar": 11,
+        "endLine": 611,
+        "endChar": 21
+      },
+      "revId": "2c90dafca6079e061f715ae8c863e07163ed6d7f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "32ac1814_1424dc87",
+        "filename": "tools/debugger/DrawCommand.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-26T21:11:46Z",
+      "side": 1,
+      "message": "Do we need serial procs on most of the other commands? I\u0027d start with the minimal set of commands if we can get away with that.\n\nUpdate: I guess we do because flatten is called on the base class.",
+      "range": {
+        "startLine": 296,
+        "startChar": 4,
+        "endLine": 296,
+        "endChar": 20
+      },
+      "revId": "2c90dafca6079e061f715ae8c863e07163ed6d7f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34a2d5b8_056655e9",
+        "filename": "tools/viewer/CaptureSlide.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-26T21:11:46Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this contain our image serialization?",
+      "range": {
+        "startLine": 125,
+        "startChar": 63,
+        "endLine": 125,
+        "endChar": 65
+      },
+      "revId": "2c90dafca6079e061f715ae8c863e07163ed6d7f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
