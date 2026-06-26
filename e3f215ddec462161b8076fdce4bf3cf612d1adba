@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8c5fdb5_e76ee7f4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 53
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4569768
+      },
+      "writtenOn": "2026-06-26T15:02:53Z",
+      "side": 1,
+      "message": "It seems like there was one failure in Ubuntu 24.04 with calling ShareSubset on const SkData. \n\nI added an implementation for it and this should fix the issue.",
+      "revId": "e3f215ddec462161b8076fdce4bf3cf612d1adba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
