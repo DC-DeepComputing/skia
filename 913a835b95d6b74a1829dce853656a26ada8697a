@@ -182,6 +182,30 @@
       },
       "revId": "913a835b95d6b74a1829dce853656a26ada8697a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90818bb8_e1452330",
+        "filename": "src/codec/SkPngRustCodec.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 851,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-06-27T00:12:44Z",
+      "side": 1,
+      "message": "Thanks for explaining.  Maybe let\u0027s preserve some of that explanation in the comment (because as written it seems to say that outside of that condition `preblendBuffer` is not needed).  Maybe:\n\n```\n    // `fPreblendBuffer` may have already been allocated in some other scenarios, but\n    // we may need to check again here because `isSampling` wasn\u0027t known earlier.\n```\n\nWDYT?",
+      "parentUuid": "8402e117_30027b68",
+      "range": {
+        "startLine": 851,
+        "startChar": 8,
+        "endLine": 851,
+        "endChar": 80
+      },
+      "revId": "913a835b95d6b74a1829dce853656a26ada8697a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
