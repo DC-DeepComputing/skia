@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aad6174c_f2811436",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 54
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4569768
+      },
+      "writtenOn": "2026-06-27T05:17:24Z",
+      "side": 1,
+      "message": "Reusing non const implementation of shareSubset.",
+      "revId": "ae5dc8d5930f630b6b4276367825125850c824eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d103b50f_ae8f3601",
@@ -14,6 +31,30 @@
       "writtenOn": "2026-06-26T21:39:49Z",
       "side": 1,
       "message": "Good catch, funny that we\u0027ve never hit this before!\n\nNit: to avoid code duplication\n\n```\n    return const_cast\u003cSkData*\u003e(this)-\u003eshareSubset(offset, length);\n```\n\n?",
+      "range": {
+        "startLine": 97,
+        "startChar": 0,
+        "endLine": 108,
+        "endChar": 34
+      },
+      "revId": "ae5dc8d5930f630b6b4276367825125850c824eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eeddf20a_64920178",
+        "filename": "src/core/SkData.cpp",
+        "patchSetId": 54
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 4569768
+      },
+      "writtenOn": "2026-06-27T05:17:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d103b50f_ae8f3601",
       "range": {
         "startLine": 97,
         "startChar": 0,
