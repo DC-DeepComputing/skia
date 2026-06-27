@@ -264,6 +264,19 @@ config("default") {
         "-isysroot",
         xcode_sysroot,
       ]
+      if (is_catalyst) {
+        # Required flags for Mac Catalyst
+        cflags += [
+          "-isystem",
+          "$xcode_sysroot/System/iOSSupport/usr/include",
+          "-iframework",
+          "$xcode_sysroot/System/iOSSupport/System/Library/Frameworks",
+        ]
+        ldflags += [
+          "-iframework",
+          "$xcode_sysroot/System/iOSSupport/System/Library/Frameworks",
+        ]
+      }
     }
 
     # Disable linker warnings.  They're usually just annoyances like,
@@ -275,33 +288,32 @@ config("default") {
 
     # As of 11/2020, gn is an x86 binary and defaults the host_cpu to x86_64.
     # This allows you to build arm64 mac binaries by setting target_cpu = "arm64"
-    if (current_cpu == "arm64") {
-      asmflags += [
-        "-target",
-        "arm64-apple-macos11",
-      ]
-      cflags += [
-        "-target",
-        "arm64-apple-macos11",
-      ]
-      ldflags += [
-        "-target",
-        "arm64-apple-macos11",
-      ]
+    if (is_catalyst) {
+      if (current_cpu == "arm64") {
+        _mac_target = "arm64-apple-ios14.0-macabi"
+      } else {
+        _mac_target = "x86_64-apple-ios14.0-macabi"
+      }
     } else {
-      asmflags += [
-        "-target",
-        "x86_64-apple-macos11",
-      ]
-      cflags += [
-        "-target",
-        "x86_64-apple-macos11",
-      ]
-      ldflags += [
-        "-target",
-        "x86_64-apple-macos11",
-      ]
+      if (current_cpu == "arm64") {
+        _mac_target = "arm64-apple-macos11"
+      } else {
+        _mac_target = "x86_64-apple-macos11"
+      }
     }
+
+    asmflags += [
+      "-target",
+      _mac_target,
+    ]
+    cflags += [
+      "-target",
+      _mac_target,
+    ]
+    ldflags += [
+      "-target",
+      _mac_target,
+    ]
   }
 
   if (is_canvaskit) {
