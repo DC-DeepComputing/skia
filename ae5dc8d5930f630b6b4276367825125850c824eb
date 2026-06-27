@@ -63,6 +63,30 @@
       },
       "revId": "ae5dc8d5930f630b6b4276367825125850c824eb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a50c864c_83cc7283",
+        "filename": "src/core/SkData.cpp",
+        "patchSetId": 54
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 4569768
+      },
+      "writtenOn": "2026-06-27T05:22:50Z",
+      "side": 1,
+      "message": "Agreed, that\u0027s a lot easier.",
+      "parentUuid": "eeddf20a_64920178",
+      "range": {
+        "startLine": 97,
+        "startChar": 0,
+        "endLine": 108,
+        "endChar": 34
+      },
+      "revId": "ae5dc8d5930f630b6b4276367825125850c824eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
