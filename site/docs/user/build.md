@@ -305,6 +305,15 @@ installing the latest official version of Python from
 https://www.python.org/downloads/. Then run
 "Applications/Python 3.11/Install Certificates.command".
 
+### Mac Catalyst
+
+To build for Mac Catalyst, set `target_os="mac"` with `target_environment="catalyst"`.
+Although Mac Catalyst is an iOS-based platform that runs on macOS, it is treated as a variant of macOS target when building. It shares the same build settings as standard macOS, with `target_environment` distinguishing Catalyst builds. Add `target_cpu="arm64"` to build for Apple Silicon.
+
+```
+bin/gn gen out/catalyst --args='target_os="mac" target_environment="catalyst" target_cpu="arm64"'
+```
+
 ## iOS
 
 Run GN to generate your build files. Set `target_os="ios"` to build for iOS.

@@ -35,6 +35,8 @@ declare_args() {
   ios_use_simulator =
       target_os == "ios" && (target_cpu == "x86" || target_cpu == "x64")
 
+  target_environment = ""
+
   # Enable -H, which prints the include tree during compilation.
   # For use by external tools for analyzing include files.
   show_includes = false
@@ -68,6 +70,7 @@ is_ios = current_os == "ios" || current_os == "tvos"
 is_tvos = current_os == "tvos"
 is_linux = current_os == "linux"
 is_mac = current_os == "mac"
+is_catalyst = target_environment == "catalyst"
 is_wasm = current_os == "wasm"
 is_win = current_os == "win"
 
