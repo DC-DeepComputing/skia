@@ -158,6 +158,30 @@
       },
       "revId": "913a835b95d6b74a1829dce853656a26ada8697a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8402e117_30027b68",
+        "filename": "src/codec/SkPngRustCodec.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 851,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-06-27T00:02:08Z",
+      "side": 1,
+      "message": "(Sentence was truncated, sorry)\n\n[…] since we only know about `isSampling` in `initializeSamplerParams`",
+      "parentUuid": "83273bfa_bc73d20c",
+      "range": {
+        "startLine": 851,
+        "startChar": 8,
+        "endLine": 851,
+        "endChar": 80
+      },
+      "revId": "913a835b95d6b74a1829dce853656a26ada8697a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
