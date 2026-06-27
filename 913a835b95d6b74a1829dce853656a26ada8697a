@@ -206,6 +206,30 @@
       },
       "revId": "913a835b95d6b74a1829dce853656a26ada8697a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "35b377eb_31f3be6c",
+        "filename": "src/codec/SkPngRustCodec.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 851,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-06-27T00:15:24Z",
+      "side": 1,
+      "message": "Yup, done, it’s quite confusing and the comment will hopefully help a bit",
+      "parentUuid": "90818bb8_e1452330",
+      "range": {
+        "startLine": 851,
+        "startChar": 8,
+        "endLine": 851,
+        "endChar": 80
+      },
+      "revId": "913a835b95d6b74a1829dce853656a26ada8697a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
