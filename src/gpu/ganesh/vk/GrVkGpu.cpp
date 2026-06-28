@@ -237,6 +237,7 @@ void GrVkGpu::destroyResources() {
     if (fMainCmdPool) {
         fMainCmdPool->unref();
         fMainCmdPool = nullptr;
+        fMainCmdBuffer = nullptr;
     }
 
     for (int i = 0; i < fSemaphoresToWaitOn.size(); ++i) {
