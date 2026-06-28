@@ -1926,6 +1926,7 @@ skia_component("skia") {
     ":png_encode_libpng",
     ":webp_encode",
     ":xps",
+    "//src/partition_alloc:raw_ptr",
   ]
 
   deps = [
@@ -1949,7 +1950,6 @@ skia_component("skia") {
     ":wuffs",
     ":xml",
     "modules/skcms",
-    "//src/partition_alloc:raw_ptr",
   ]
 
   public = []
