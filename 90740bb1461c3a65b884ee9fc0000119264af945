@@ -70,6 +70,24 @@
       "parentUuid": "246ff2f9_33c6560a",
       "revId": "90740bb1461c3a65b884ee9fc0000119264af945",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f5b1a1f_23a26f8e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4329740
+      },
+      "writtenOn": "2026-06-28T21:42:23Z",
+      "side": 1,
+      "message": "@michaelludwig@google.com - here is the link to the discussion: https://chromium-review.googlesource.com/c/chromium/src/+/7966179/comment/be25eb5d_d07d0088/\n\ni think the blending equation is settled, it matches Apple\u0027s kCGBlendModePlusDarker, see https://developer.apple.com/documentation/coregraphics/cgblendmode/plusdarker), which is also what WebKit has shipped for years as BlendMode::PlusDarker. the SkSL in this CL is the alpha-aware form of that same formula.\n\ni am happy for any guidance, pretty much the first time having to touch skia.",
+      "parentUuid": "70558082_0aaa7681",
+      "revId": "90740bb1461c3a65b884ee9fc0000119264af945",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
