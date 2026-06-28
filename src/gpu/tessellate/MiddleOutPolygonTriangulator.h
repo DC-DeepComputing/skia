@@ -92,7 +92,7 @@ public:
         }
 
         PoppedTriangleStack(PoppedTriangleStack&& that)
-            : fMiddleOut(that.fMiddleOut)
+            : fMiddleOut(std::move(that.fMiddleOut))
             , fLastPoint(that.fLastPoint)
             , fEnd(that.fEnd)
             , fNewTopVertex(that.fNewTopVertex)
