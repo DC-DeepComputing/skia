@@ -368,6 +368,7 @@ static VkBlendOp blend_equation_to_vk_blend_op(skgpu::BlendEquation equation) {
         VK_BLEND_OP_HSL_SATURATION_EXT,
         VK_BLEND_OP_HSL_COLOR_EXT,
         VK_BLEND_OP_HSL_LUMINOSITY_EXT,
+        VK_BLEND_OP_PLUS_DARKER_EXT,
 
         // Illegal.
         VK_BLEND_OP_ADD,
@@ -390,6 +391,7 @@ static VkBlendOp blend_equation_to_vk_blend_op(skgpu::BlendEquation equation) {
     static_assert(15 == (int)skgpu::BlendEquation::kHSLSaturation);
     static_assert(16 == (int)skgpu::BlendEquation::kHSLColor);
     static_assert(17 == (int)skgpu::BlendEquation::kHSLLuminosity);
+    static_assert(18 == (int)skgpu::BlendEquation::kPlusDarker);
     static_assert(std::size(gTable) == skgpu::kBlendEquationCnt);
 
     SkASSERT((unsigned)equation < skgpu::kBlendEquationCnt);

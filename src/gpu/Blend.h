@@ -45,6 +45,7 @@ enum class BlendEquation : uint8_t {
     kHSLSaturation,
     kHSLColor,
     kHSLLuminosity,
+    kPlusDarker,
 
     kIllegal,
 

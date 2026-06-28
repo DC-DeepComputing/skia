@@ -2220,6 +2220,10 @@ BLEND_MODE(dstover)  { return mad(s, inv(da), d); }
 BLEND_MODE(modulate) { return s*d; }
 BLEND_MODE(multiply) { return mad(s, d, mad(s, inv(da), d*inv(sa))); }
 BLEND_MODE(plus_)    { return min(s + d, 1.0f); }  // We can clamp to either 1 or sa.
+BLEND_MODE(plus_darker) {
+    auto ao = min(sa + da, 1.0f);
+    return max(ao - min((sa - s) + (da - d), 1.0f), 0.0f);
+}
 BLEND_MODE(screen)   { return nmad(s, d, s + d); }
 BLEND_MODE(xor_)     { return mad(s, inv(da), d*inv(sa)); }
 #undef BLEND_MODE
@@ -5908,6 +5912,10 @@ LOWP_STAGE_PP(swap_src_dst, NoCtx) {
     BLEND_MODE(modulate) { return div255( s*d ); }
     BLEND_MODE(multiply) { return div255( s*inv(da) + d*inv(sa) + s*d ); }
     BLEND_MODE(plus_)    { return min(s+d, 255); }
+    BLEND_MODE(plus_darker) {
+        auto ao = min(sa + da, 255);
+        return max(ao - min((sa - s) + (da - d), 255), 0);
+    }
     BLEND_MODE(screen)   { return s + d - div255( s*d ); }
     BLEND_MODE(xor_)     { return div255( s*inv(da) + d*inv(sa) ); }
 #else
@@ -5923,6 +5931,10 @@ LOWP_STAGE_PP(swap_src_dst, NoCtx) {
     BLEND_MODE(modulate) { return div255_accurate( s*d ); }
     BLEND_MODE(multiply) { return div255( s*inv(da) + d*inv(sa) + s*d ); }
     BLEND_MODE(plus_)    { return min(s+d, 255); }
+    BLEND_MODE(plus_darker) {
+        auto ao = min(sa + da, 255);
+        return max(ao - min((sa - s) + (da - d), 255), 0);
+    }
     BLEND_MODE(screen)   { return s + d - div255_accurate( s*d ); }
     BLEND_MODE(xor_)     { return div255( s*inv(da) + d*inv(sa) ); }
 #endif

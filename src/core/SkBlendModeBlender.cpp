@@ -54,6 +54,7 @@ const SkBlender* GetBlendModeSingleton(SkBlendMode mode) {
         RETURN_SINGLETON_BLENDER(SkBlendMode::kSaturation)
         RETURN_SINGLETON_BLENDER(SkBlendMode::kColor)
         RETURN_SINGLETON_BLENDER(SkBlendMode::kLuminosity)
+        RETURN_SINGLETON_BLENDER(SkBlendMode::kPlusDarker)
     }
 
     SkDEBUGFAILF("invalid blend mode %d", (int)mode);

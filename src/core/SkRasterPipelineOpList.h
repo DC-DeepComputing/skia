@@ -35,7 +35,7 @@
     M( lerp_u8) M( lerp_565) M( lerp_1_float) M(lerp_native)          \
     M(dstatop) M(dstin) M(dstout) M(dstover)                          \
     M(srcatop) M(srcin) M(srcout) M(srcover)                          \
-    M(clear) M(modulate) M(multiply) M(plus_) M(screen) M(xor_)       \
+    M(clear) M(modulate) M(multiply) M(plus_) M(plus_darker) M(screen) M(xor_)       \
     M(darken) M(difference)                                           \
     M(exclusion) M(hardlight) M(lighten) M(overlay)                   \
     M(srcover_rgba_8888)                                              \

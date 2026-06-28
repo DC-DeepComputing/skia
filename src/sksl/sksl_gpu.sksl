@@ -124,6 +124,11 @@ $pure half4 blend_porter_duff(half4 blendOp, half4 src, half4 dst) {
 
 $pure half4 blend_plus(half4 src, half4 dst) { return min(src + dst, 1); }
 
+$pure half4 blend_plus_darker(half4 src, half4 dst) {
+    half alpha = min(src.a + dst.a, 1);
+    return max(half4(alpha) - min((src.a - src) + (dst.a - dst), 1), 0);
+}
+
 $pure half4 blend_modulate(half4 src, half4 dst) { return src*dst; }
 
 $pure half4 blend_screen(half4 src, half4 dst) { return src + (1 - src)*dst; }

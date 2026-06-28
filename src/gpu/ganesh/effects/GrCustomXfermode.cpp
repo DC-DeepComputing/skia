@@ -53,6 +53,7 @@ static constexpr skgpu::BlendEquation hw_blend_equation(SkBlendMode mode) {
     static_assert((int)skgpu::BlendEquation::kHSLSaturation == (int)SkBlendMode::kSaturation + kEqOffset);
     static_assert((int)skgpu::BlendEquation::kHSLColor == (int)SkBlendMode::kColor + kEqOffset);
     static_assert((int)skgpu::BlendEquation::kHSLLuminosity == (int)SkBlendMode::kLuminosity + kEqOffset);
+    static_assert((int)skgpu::BlendEquation::kPlusDarker == (int)SkBlendMode::kPlusDarker + kEqOffset);
 
     // There's an illegal BlendEquation that corresponds to no SkBlendMode, hence the extra +1.
     static_assert(skgpu::kBlendEquationCnt == (int)SkBlendMode::kLastMode + 1 + 1 + kEqOffset);
