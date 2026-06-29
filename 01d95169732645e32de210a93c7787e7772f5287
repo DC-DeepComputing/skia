@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df57b994_600944c2",
+        "filename": "tools/DeserialProcsUtils.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-29T19:04:58Z",
+      "side": 1,
+      "message": "This is a bit of a hack in DM. Images in SkPictures shouldn\u0027t (?) be GPU backed images. I would be included to remove it and see what, if anything, breaks.",
+      "range": {
+        "startLine": 58,
+        "startChar": 36,
+        "endLine": 58,
+        "endChar": 63
+      },
+      "revId": "01d95169732645e32de210a93c7787e7772f5287",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8fafbed_091380d0",
+        "filename": "tools/DeserialProcsUtils.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-29T19:04:58Z",
+      "side": 1,
+      "message": "This file should probably get a new name since it\u0027s both serial procs and desieral procs",
+      "range": {
+        "startLine": 9,
+        "startChar": 8,
+        "endLine": 9,
+        "endChar": 34
+      },
+      "revId": "01d95169732645e32de210a93c7787e7772f5287",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78686617_5116d160",
+        "filename": "tools/DeserialProcsUtils.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-29T19:04:58Z",
+      "side": 1,
+      "message": "remove png from the name here.",
+      "range": {
+        "startLine": 19,
+        "startChar": 14,
+        "endLine": 19,
+        "endChar": 36
+      },
+      "revId": "01d95169732645e32de210a93c7787e7772f5287",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "042e4746_3d2fdcc3",
+        "filename": "tools/DeserialProcsUtils.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-29T19:04:58Z",
+      "side": 1,
+      "message": "Why is this here when we have `get_default_skp_deserial_procs`? We only want one default",
+      "range": {
+        "startLine": 21,
+        "startChar": 16,
+        "endLine": 21,
+        "endChar": 40
+      },
+      "revId": "01d95169732645e32de210a93c7787e7772f5287",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dce5d14d_ac07e300",
+        "filename": "tools/debugger/DrawCommand.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-29T19:04:58Z",
+      "side": 1,
+      "message": "Would it be more helpful to have procs be passed into a JSON writer at construction time?",
+      "range": {
+        "startLine": 119,
+        "startChar": 24,
+        "endLine": 119,
+        "endChar": 37
+      },
+      "revId": "01d95169732645e32de210a93c7787e7772f5287",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
