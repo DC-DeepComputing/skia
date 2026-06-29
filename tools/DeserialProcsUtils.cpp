@@ -11,12 +11,15 @@
 #include "include/core/SkFontMgr.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkStream.h"
+#include "src/image/SkImage_Base.h"
 #include "tools/fonts/FontToolUtils.h"
 
 #if defined(SK_CODEC_DECODES_PNG_WITH_RUST)
 #include "include/codec/SkPngRustDecoder.h"
+#include "include/encode/SkPngRustEncoder.h"
 #else
 #include "include/codec/SkPngDecoder.h"
+#include "include/encode/SkPngEncoder.h"
 #endif
 
 namespace ToolUtils {
@@ -46,6 +49,35 @@ SkDeserialProcs get_default_skp_deserial_procs() {
     procs.fTypefaceStreamProc = [](SkStream& stream, void*) -> sk_sp<SkTypeface> {
         return SkTypeface::MakeDeserialize(&stream, ToolUtils::TestFontMgr());
     };
+    return procs;
+}
+
+SkSerialProcs serial_procs_using_png() {
+    static SkSerialProcs procs{.fImageProc = [](SkImage* img, void*) -> sk_sp<const SkData> {
+#if defined(SK_CODEC_ENCODES_PNG_WITH_LIBPNG)
+        return SkPngEncoder::Encode(as_IB(img)->directContext(), img, {});
+#elif defined(SK_CODEC_ENCODES_PNG_WITH_RUST)
+        return SkPngRustEncoder::Encode(as_IB(img)->directContext(), img, {});
+#else
+        // TODO: This catches SkImageEncoder_NDK (or other).
+        return SkPngEncoder::Encode(as_IB(img)->directContext(), img, {});
+#endif
+    }};
+    return procs;
+}
+
+SkDeserialProcs deserial_procs_using_png() {
+    static SkDeserialProcs procs{.fImageDataProc = [](sk_sp<SkData>              data,
+                                                      std::optional<SkAlphaType> alphaType,
+                                                      void*) -> sk_sp<SkImage> {
+#if defined(SK_CODEC_DECODES_PNG_WITH_RUST)
+        std::unique_ptr<SkStream> stream = SkMemoryStream::Make(data);
+        auto codec = SkPngRustDecoder::Decode(std::move(stream), nullptr, nullptr);
+#else
+        auto codec = SkPngDecoder::Decode(data, nullptr, nullptr);
+#endif
+        return SkCodecs::DeferredImage(std::move(codec), alphaType);
+    }};
     return procs;
 }
 

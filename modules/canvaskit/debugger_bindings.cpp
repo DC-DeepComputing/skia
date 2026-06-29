@@ -417,7 +417,7 @@ class SkpDebugPlayer {
         SkDebugf("Parsed SKP file.\n");
         // Make debug canvas using bounds from SkPicture
         fBoundsArray.push_back(picture->cullRect().roundOut());
-        std::unique_ptr<DebugCanvas> debugCanvas = std::make_unique<DebugCanvas>(fBoundsArray.back());
+        auto debugCanvas = std::make_unique<DebugCanvas>(fBoundsArray.back(), SkSerialProcs{});
 
         // Only draw picture to the debug canvas once.
         debugCanvas->drawPicture(picture);
@@ -453,7 +453,7 @@ class SkpDebugPlayer {
         for (const auto& page : pages) {
           // Make debug canvas using bounds from SkPicture
           fBoundsArray.push_back(page.fPicture->cullRect().roundOut());
-          std::unique_ptr<DebugCanvas> debugCanvas = std::make_unique<DebugCanvas>(fBoundsArray.back());
+          auto debugCanvas = std::make_unique<DebugCanvas>(fBoundsArray.back(), SkSerialProcs{});
           debugCanvas->setLayerManagerAndFrame(fLayerManager.get(), i);
 
           // Only draw picture to the debug canvas once.

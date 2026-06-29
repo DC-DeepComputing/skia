@@ -26,6 +26,7 @@
 #include "include/core/SkRegion.h"
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkSerialProcs.h"
 #include "include/core/SkShader.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTextBlob.h"
@@ -101,7 +102,7 @@ public:
 
     static void WritePNG(const SkBitmap& bitmap, SkWStream& out);
 
-    explicit DrawCommand(OpType opType);
+    explicit DrawCommand(OpType opType, SkSerialProcs procs);
 
     virtual ~DrawCommand() {}
 
@@ -113,7 +114,9 @@ public:
 
     virtual bool render(SkCanvas* canvas) const { return false; }
 
-    virtual void toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManager) const;
+    virtual void toJSON(SkJSONWriter&   writer,
+                        UrlDataManager& urlDataManager,
+                        SkSerialProcs   serialProcs) const;
 
     static const char* GetCommandString(OpType type);
 
@@ -130,26 +133,35 @@ public:
     static void MakeJsonPath(SkJSONWriter&, const SkPath& path);
     static void MakeJsonRegion(SkJSONWriter&, const SkRegion& region);
     static void MakeJsonSampling(SkJSONWriter&, const SkSamplingOptions& sampling);
-    static void MakeJsonPaint(SkJSONWriter&, const SkPaint& paint, UrlDataManager& urlDataManager);
+    static void MakeJsonPaint(SkJSONWriter&,
+                              const SkPaint&  paint,
+                              UrlDataManager& urlDataManager,
+                              SkSerialProcs   serialProcs);
     static void MakeJsonLattice(SkJSONWriter&, const SkCanvas::Lattice& lattice);
 
     static void flatten(const SkFlattenable* flattenable,
                         SkJSONWriter&        writer,
-                        UrlDataManager&      urlDataManager);
-    static bool flatten(const SkImage& image, SkJSONWriter& writer, UrlDataManager& urlDataManager);
+                        UrlDataManager&      urlDataManager,
+                        SkSerialProcs        serialProcs = {});
+    static bool flatten(const SkImage&  image,
+                        SkJSONWriter&   writer,
+                        UrlDataManager& urlDataManager,
+                        SkSerialProcs   serialProcs);
     static bool flatten(const SkBitmap& bitmap,
                         SkJSONWriter&   writer,
-                        UrlDataManager& urlDataManager);
+                        UrlDataManager& urlDataManager,
+                        SkSerialProcs   serialProcs);
     OpType getOpType() const { return fOpType; }
 
 private:
-    OpType fOpType;
-    bool   fVisible;
+    OpType        fOpType;
+    SkSerialProcs fSerialProcs;
+    bool          fVisible;
 };
 
 class RestoreCommand : public DrawCommand {
 public:
-    RestoreCommand();
+    RestoreCommand(SkSerialProcs serialProcs);
     void execute(SkCanvas* canvas) const override;
 
 private:
@@ -158,9 +170,11 @@ private:
 
 class ClearCommand : public DrawCommand {
 public:
-    explicit ClearCommand(SkColor color);
+    explicit ClearCommand(SkColor color, SkSerialProcs serialProcs);
     void execute(SkCanvas* canvas) const override;
-    void toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManager) const override;
+    void toJSON(SkJSONWriter&   writer,
+                UrlDataManager& urlDataManager,
+                SkSerialProcs   serialProcs) const override;
 
 private:
     SkColor fColor;
@@ -170,10 +184,12 @@ private:
 
 class ClipPathCommand : public DrawCommand {
 public:
-    ClipPathCommand(const SkPath& path, SkClipOp op, bool doAA);
+    ClipPathCommand(const SkPath& path, SkClipOp op, bool doAA, SkSerialProcs serialProcs);
     void execute(SkCanvas* canvas) const override;
     bool render(SkCanvas* canvas) const override;
-    void toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManager) const override;
+    void toJSON(SkJSONWriter&   writer,
+                UrlDataManager& urlDataManager,
+                SkSerialProcs   serialProcs) const override;
 
 private:
     SkPath   fPath;
@@ -185,9 +201,11 @@ private:
 
 class ClipRegionCommand : public DrawCommand {
 public:
-    ClipRegionCommand(const SkRegion& region, SkClipOp op);
+    ClipRegionCommand(const SkRegion& region, SkClipOp op, SkSerialProcs serialProcs);
     void execute(SkCanvas* canvas) const override;
-    void toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManager) const override;
+    void toJSON(SkJSONWriter&   writer,
+                UrlDataManager& urlDataManager,
+                SkSerialProcs   serialProcs) const override;
 
 private:
     SkRegion fRegion;
@@ -198,9 +216,11 @@ private:
 
 class ClipRectCommand : public DrawCommand {
 public:
-    ClipRectCommand(const SkRect& rect, SkClipOp op, bool doAA);
+    ClipRectCommand(const SkRect& rect, SkClipOp op, bool doAA, SkSerialProcs serialProcs);
     void execute(SkCanvas* canvas) const override;
-    void toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManager) const override;
+    void toJSON(SkJSONWriter&   writer,
+                UrlDataManager& urlDataManager,
+                SkSerialProcs   serialProcs) const override;
 
 private:
     SkRect   fRect;
@@ -212,10 +232,12 @@ private:
 
 class ClipRRectCommand : public DrawCommand {
 public:
-    ClipRRectCommand(const SkRRect& rrect, SkClipOp op, bool doAA);
+    ClipRRectCommand(const SkRRect& rrect, SkClipOp op, bool doAA, SkSerialProcs serialProcs);
     void execute(SkCanvas* canvas) const override;
     bool render(SkCanvas* canvas) const override;
-    void toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManager) const override;
+    void toJSON(SkJSONWriter&   writer,
+                UrlDataManager& urlDataManager,
+                SkSerialProcs   serialProcs) const override;
 
 private:
     SkRRect  fRRect;
@@ -227,10 +249,12 @@ private:
 
 class ClipShaderCommand : public DrawCommand {
 public:
-    ClipShaderCommand(sk_sp<SkShader>, SkClipOp);
+    ClipShaderCommand(sk_sp<SkShader>, SkClipOp, SkSerialProcs serialProcs);
     void execute(SkCanvas* canvas) const override;
     bool render(SkCanvas* canvas) const override;
-    void toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManager) const override;
+    void toJSON(SkJSONWriter&   writer,
+                UrlDataManager& urlDataManager,
+                SkSerialProcs   serialProcs) const override;
 
 private:
     sk_sp<SkShader> fShader;
@@ -241,7 +265,7 @@ private:
 
 class ResetClipCommand : public DrawCommand {
 public:
-    ResetClipCommand();
+    ResetClipCommand(SkSerialProcs serialProcs);
     void execute(SkCanvas* canvas) const override;
 
 private:
@@ -250,9 +274,11 @@ private:
 
 class ConcatCommand : public DrawCommand {
 public:
-    explicit ConcatCommand(const SkMatrix& matrix);
+    explicit ConcatCommand(const SkMatrix& matrix, SkSerialProcs serialProcs);
     void execute(SkCanvas* canvas) const override;
-    void toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManager) const override;
+    void toJSON(SkJSONWriter&   writer,
+                UrlDataManager& urlDataManager,
+                SkSerialProcs   serialProcs) const override;
 
 private:
     SkMatrix fMatrix;
@@ -262,9 +288,11 @@ private:
 
 class Concat44Command : public DrawCommand {
 public:
-    explicit Concat44Command(const SkM44& matrix);
+    explicit Concat44Command(const SkM44& matrix, SkSerialProcs serialProcs);
     void execute(SkCanvas* canvas) const override;
-    void toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManager) const override;
+    void toJSON(SkJSONWriter&   writer,
+                UrlDataManager& urlDataManager,
+                SkSerialProcs   serialProcs) const override;
 
 private:
     SkM44 fMatrix;
@@ -274,9 +302,14 @@ private:
 
 class DrawAnnotationCommand : public DrawCommand {
 public:
-    DrawAnnotationCommand(const SkRect&, const char key[], sk_sp<SkData> value);
+    DrawAnnotationCommand(const SkRect&,
+                          const char    key[],
+                          sk_sp<SkData> value,
+                          SkSerialProcs serialProcs);
     void execute(SkCanvas* canvas) const override;
-    void toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManager) const override;
+    void toJSON(SkJSONWriter&   writer,
+                UrlDataManager& urlDataManager,
+                SkSerialProcs   serialProcs) const override;
 
 private:
     SkRect        fRect;
@@ -288,11 +321,17 @@ private:
 
 class DrawImageCommand : public DrawCommand {
 public:
-    DrawImageCommand(const SkImage* image, SkScalar left, SkScalar top,
-                     const SkSamplingOptions&, const SkPaint* paint);
+    DrawImageCommand(const SkImage* image,
+                     SkScalar       left,
+                     SkScalar       top,
+                     const SkSamplingOptions&,
+                     const SkPaint* paint,
+                     SkSerialProcs  serialProcs);
     void execute(SkCanvas* canvas) const override;
     bool render(SkCanvas* canvas) const override;
-    void toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManager) const override;
+    void     toJSON(SkJSONWriter&   writer,
+                    UrlDataManager& urlDataManager,
+                    SkSerialProcs   serialProcs) const override;
     uint64_t imageId(UrlDataManager& udb) const;
 
 private:
@@ -311,10 +350,13 @@ public:
                             const SkCanvas::Lattice& lattice,
                             const SkRect&            dst,
                             SkFilterMode,
-                            const SkPaint*           paint);
+                            const SkPaint* paint,
+                            SkSerialProcs  serialProcs);
     void execute(SkCanvas* canvas) const override;
     bool render(SkCanvas* canvas) const override;
-    void toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManager) const override;
+    void     toJSON(SkJSONWriter&   writer,
+                    UrlDataManager& urlDataManager,
+                    SkSerialProcs   serialProcs) const override;
     uint64_t imageId(UrlDataManager& udb) const;
 
 private:
@@ -334,10 +376,13 @@ public:
                          const SkRect&               dst,
                          const SkSamplingOptions&    sampling,
                          const SkPaint*              paint,
-                         SkCanvas::SrcRectConstraint constraint);
+                         SkCanvas::SrcRectConstraint constraint,
+                         SkSerialProcs               serialProcs);
     void execute(SkCanvas* canvas) const override;
     bool render(SkCanvas* canvas) const override;
-    void toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManager) const override;
+    void     toJSON(SkJSONWriter&   writer,
+                    UrlDataManager& urlDataManager,
+                    SkSerialProcs   serialProcs) const override;
     uint64_t imageId(UrlDataManager& udm) const;
 
 private:
@@ -363,10 +408,13 @@ public:
                               const SkRect&               dst,
                               const SkSamplingOptions&    sampling,
                               const SkPaint*              paint,
-                              SkCanvas::SrcRectConstraint constraint);
+                              SkCanvas::SrcRectConstraint constraint,
+                              SkSerialProcs               serialProcs);
     void execute(SkCanvas* canvas) const override;
     bool render(SkCanvas* canvas) const override;
-    void toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManager) const override;
+    void toJSON(SkJSONWriter&   writer,
+                UrlDataManager& urlDataManager,
+                SkSerialProcs   serialProcs) const override;
 
 private:
     DebugLayerManager*          fLayerManager;
@@ -383,10 +431,12 @@ private:
 
 class DrawOvalCommand : public DrawCommand {
 public:
-    DrawOvalCommand(const SkRect& oval, const SkPaint& paint);
+    DrawOvalCommand(const SkRect& oval, const SkPaint& paint, SkSerialProcs serialProcs);
     void execute(SkCanvas* canvas) const override;
     bool render(SkCanvas* canvas) const override;
-    void toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManager) const override;
+    void toJSON(SkJSONWriter&   writer,
+                UrlDataManager& urlDataManager,
+                SkSerialProcs   serialProcs) const override;
 
 private:
     SkRect  fOval;
@@ -401,10 +451,13 @@ public:
                    SkScalar       startAngle,
                    SkScalar       sweepAngle,
                    bool           useCenter,
-                   const SkPaint& paint);
+                   const SkPaint& paint,
+                   SkSerialProcs  serialProcs);
     void execute(SkCanvas* canvas) const override;
     bool render(SkCanvas* canvas) const override;
-    void toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManager) const override;
+    void toJSON(SkJSONWriter&   writer,
+                UrlDataManager& urlDataManager,
+                SkSerialProcs   serialProcs) const override;
 
 private:
     SkRect   fOval;
@@ -418,10 +471,12 @@ private:
 
 class DrawPaintCommand : public DrawCommand {
 public:
-    explicit DrawPaintCommand(const SkPaint& paint);
+    explicit DrawPaintCommand(const SkPaint& paint, SkSerialProcs serialProcs);
     void execute(SkCanvas* canvas) const override;
     bool render(SkCanvas* canvas) const override;
-    void toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManager) const override;
+    void toJSON(SkJSONWriter&   writer,
+                UrlDataManager& urlDataManager,
+                SkSerialProcs   serialProcs) const override;
 
 private:
     SkPaint fPaint;
@@ -431,10 +486,12 @@ private:
 
 class DrawBehindCommand : public DrawCommand {
 public:
-    explicit DrawBehindCommand(const SkPaint& paint);
+    explicit DrawBehindCommand(const SkPaint& paint, SkSerialProcs serialProcs);
     void execute(SkCanvas* canvas) const override;
     bool render(SkCanvas* canvas) const override;
-    void toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManager) const override;
+    void toJSON(SkJSONWriter&   writer,
+                UrlDataManager& urlDataManager,
+                SkSerialProcs   serialProcs) const override;
 
 private:
     SkPaint fPaint;
@@ -444,10 +501,12 @@ private:
 
 class DrawPathCommand : public DrawCommand {
 public:
-    DrawPathCommand(const SkPath& path, const SkPaint& paint);
+    DrawPathCommand(const SkPath& path, const SkPaint& paint, SkSerialProcs serialProcs);
     void execute(SkCanvas* canvas) const override;
     bool render(SkCanvas* canvas) const override;
-    void toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManager) const override;
+    void toJSON(SkJSONWriter&   writer,
+                UrlDataManager& urlDataManager,
+                SkSerialProcs   serialProcs) const override;
 
 private:
     SkPath  fPath;
@@ -458,7 +517,10 @@ private:
 
 class BeginDrawPictureCommand : public DrawCommand {
 public:
-    BeginDrawPictureCommand(const SkPicture* picture, const SkMatrix* matrix, const SkPaint* paint);
+    BeginDrawPictureCommand(const SkPicture* picture,
+                            const SkMatrix*  matrix,
+                            const SkPaint*   paint,
+                            SkSerialProcs    serialProcs);
 
     void execute(SkCanvas* canvas) const override;
     bool render(SkCanvas* canvas) const override;
@@ -473,7 +535,7 @@ private:
 
 class EndDrawPictureCommand : public DrawCommand {
 public:
-    EndDrawPictureCommand(bool restore);
+    EndDrawPictureCommand(bool restore, SkSerialProcs serialProcs);
 
     void execute(SkCanvas* canvas) const override;
 
@@ -488,10 +550,13 @@ public:
     DrawPointsCommand(SkCanvas::PointMode mode,
                       size_t              count,
                       const SkPoint       pts[],
-                      const SkPaint&      paint);
+                      const SkPaint&      paint,
+                      SkSerialProcs       serialProcs);
     void execute(SkCanvas* canvas) const override;
     bool render(SkCanvas* canvas) const override;
-    void toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManager) const override;
+    void toJSON(SkJSONWriter&   writer,
+                UrlDataManager& urlDataManager,
+                SkSerialProcs   serialProcs) const override;
 
 private:
     SkCanvas::PointMode fMode;
@@ -503,10 +568,12 @@ private:
 
 class DrawRegionCommand : public DrawCommand {
 public:
-    DrawRegionCommand(const SkRegion& region, const SkPaint& paint);
+    DrawRegionCommand(const SkRegion& region, const SkPaint& paint, SkSerialProcs serialProcs);
     void execute(SkCanvas* canvas) const override;
     bool render(SkCanvas* canvas) const override;
-    void toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManager) const override;
+    void toJSON(SkJSONWriter&   writer,
+                UrlDataManager& urlDataManager,
+                SkSerialProcs   serialProcs) const override;
 
 private:
     SkRegion fRegion;
@@ -517,11 +584,17 @@ private:
 
 class DrawTextBlobCommand : public DrawCommand {
 public:
-    DrawTextBlobCommand(sk_sp<SkTextBlob> blob, SkScalar x, SkScalar y, const SkPaint& paint);
+    DrawTextBlobCommand(sk_sp<SkTextBlob> blob,
+                        SkScalar          x,
+                        SkScalar          y,
+                        const SkPaint&    paint,
+                        SkSerialProcs     serialProcs);
 
     void execute(SkCanvas* canvas) const override;
     bool render(SkCanvas* canvas) const override;
-    void toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManager) const override;
+    void toJSON(SkJSONWriter&   writer,
+                UrlDataManager& urlDataManager,
+                SkSerialProcs   serialProcs) const override;
 
 private:
     sk_sp<SkTextBlob> fBlob;
@@ -538,9 +611,12 @@ public:
                      const SkColor  colors[4],
                      const SkPoint  texCoords[4],
                      SkBlendMode    bmode,
-                     const SkPaint& paint);
+                     const SkPaint& paint,
+                     SkSerialProcs  serialProcs);
     void execute(SkCanvas* canvas) const override;
-    void toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManager) const override;
+    void toJSON(SkJSONWriter&   writer,
+                UrlDataManager& urlDataManager,
+                SkSerialProcs   serialProcs) const override;
 
 private:
     SkPoint     fCubics[12];
@@ -556,9 +632,11 @@ private:
 
 class DrawRectCommand : public DrawCommand {
 public:
-    DrawRectCommand(const SkRect& rect, const SkPaint& paint);
+    DrawRectCommand(const SkRect& rect, const SkPaint& paint, SkSerialProcs serialProcs);
     void execute(SkCanvas* canvas) const override;
-    void toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManager) const override;
+    void toJSON(SkJSONWriter&   writer,
+                UrlDataManager& urlDataManager,
+                SkSerialProcs   serialProcs) const override;
 
 private:
     SkRect  fRect;
@@ -569,10 +647,12 @@ private:
 
 class DrawRRectCommand : public DrawCommand {
 public:
-    DrawRRectCommand(const SkRRect& rrect, const SkPaint& paint);
+    DrawRRectCommand(const SkRRect& rrect, const SkPaint& paint, SkSerialProcs serialProcs);
     void execute(SkCanvas* canvas) const override;
     bool render(SkCanvas* canvas) const override;
-    void toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManager) const override;
+    void toJSON(SkJSONWriter&   writer,
+                UrlDataManager& urlDataManager,
+                SkSerialProcs   serialProcs) const override;
 
 private:
     SkRRect fRRect;
@@ -583,10 +663,15 @@ private:
 
 class DrawDRRectCommand : public DrawCommand {
 public:
-    DrawDRRectCommand(const SkRRect& outer, const SkRRect& inner, const SkPaint& paint);
+    DrawDRRectCommand(const SkRRect& outer,
+                      const SkRRect& inner,
+                      const SkPaint& paint,
+                      SkSerialProcs  serialProcs);
     void execute(SkCanvas* canvas) const override;
     bool render(SkCanvas* canvas) const override;
-    void toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManager) const override;
+    void toJSON(SkJSONWriter&   writer,
+                UrlDataManager& urlDataManager,
+                SkSerialProcs   serialProcs) const override;
 
 private:
     SkRRect fOuter;
@@ -598,7 +683,7 @@ private:
 
 class DrawVerticesCommand : public DrawCommand {
 public:
-    DrawVerticesCommand(sk_sp<SkVertices>, SkBlendMode, const SkPaint&);
+    DrawVerticesCommand(sk_sp<SkVertices>, SkBlendMode, const SkPaint&, SkSerialProcs serialProcs);
 
     void execute(SkCanvas* canvas) const override;
 
@@ -620,7 +705,8 @@ public:
                      SkBlendMode,
                      const SkSamplingOptions&,
                      const SkRect*,
-                     const SkPaint*);
+                     const SkPaint*,
+                     SkSerialProcs serialProcs);
 
     void execute(SkCanvas* canvas) const override;
 
@@ -639,7 +725,7 @@ private:
 
 class SaveCommand : public DrawCommand {
 public:
-    SaveCommand();
+    SaveCommand(SkSerialProcs serialProcs);
     void execute(SkCanvas* canvas) const override;
 
 private:
@@ -648,9 +734,11 @@ private:
 
 class SaveLayerCommand : public DrawCommand {
 public:
-    SaveLayerCommand(const SkCanvas::SaveLayerRec&);
+    SaveLayerCommand(const SkCanvas::SaveLayerRec&, SkSerialProcs serialProcs);
     void execute(SkCanvas* canvas) const override;
-    void toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManager) const override;
+    void toJSON(SkJSONWriter&   writer,
+                UrlDataManager& urlDataManager,
+                SkSerialProcs   serialProcs) const override;
 
 private:
     std::optional<SkRect>      fBounds;
@@ -665,9 +753,11 @@ private:
 
 class SetMatrixCommand : public DrawCommand {
 public:
-    explicit SetMatrixCommand(const SkMatrix& matrix);
+    explicit SetMatrixCommand(const SkMatrix& matrix, SkSerialProcs serialProcs);
     void execute(SkCanvas* canvas) const override;
-    void toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManager) const override;
+    void toJSON(SkJSONWriter&   writer,
+                UrlDataManager& urlDataManager,
+                SkSerialProcs   serialProcs) const override;
 
 private:
     SkMatrix fMatrix;
@@ -677,9 +767,11 @@ private:
 
 class SetM44Command : public DrawCommand {
 public:
-    explicit SetM44Command(const SkM44& matrix);
+    explicit SetM44Command(const SkM44& matrix, SkSerialProcs serialProcs);
     void execute(SkCanvas* canvas) const override;
-    void toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManager) const override;
+    void toJSON(SkJSONWriter&   writer,
+                UrlDataManager& urlDataManager,
+                SkSerialProcs   serialProcs) const override;
 
 private:
     SkM44 fMatrix;
@@ -689,10 +781,12 @@ private:
 
 class DrawShadowCommand : public DrawCommand {
 public:
-    DrawShadowCommand(const SkPath& path, const SkDrawShadowRec& rec);
+    DrawShadowCommand(const SkPath& path, const SkDrawShadowRec& rec, SkSerialProcs serialProcs);
     void execute(SkCanvas* canvas) const override;
     bool render(SkCanvas* canvas) const override;
-    void toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManager) const override;
+    void toJSON(SkJSONWriter&   writer,
+                UrlDataManager& urlDataManager,
+                SkSerialProcs   serialProcs) const override;
 
 private:
     SkPath          fPath;
@@ -703,7 +797,7 @@ private:
 
 class DrawDrawableCommand : public DrawCommand {
 public:
-    DrawDrawableCommand(SkDrawable*, const SkMatrix*);
+    DrawDrawableCommand(SkDrawable*, const SkMatrix*, SkSerialProcs serialProcs);
     void execute(SkCanvas* canvas) const override;
 
 private:
@@ -719,7 +813,8 @@ public:
                           const SkPoint         clip[4],
                           SkCanvas::QuadAAFlags aa,
                           const SkColor4f&      color,
-                          SkBlendMode           mode);
+                          SkBlendMode           mode,
+                          SkSerialProcs         serialProcs);
     void execute(SkCanvas* canvas) const override;
 
 private:
@@ -741,7 +836,8 @@ public:
                               const SkMatrix[],
                               const SkSamplingOptions&,
                               const SkPaint*,
-                              SkCanvas::SrcRectConstraint);
+                              SkCanvas::SrcRectConstraint,
+                              SkSerialProcs serialProcs);
     void execute(SkCanvas* canvas) const override;
 
 private:

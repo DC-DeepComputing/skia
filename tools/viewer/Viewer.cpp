@@ -1899,18 +1899,6 @@ public:
     Viewer::SkFontFields* fFontOverrides;
 };
 
-static SkSerialProcs serial_procs_using_png() {
-    SkSerialProcs sProcs;
-    sProcs.fImageProc = [](SkImage* img, void*) -> SkSerialReturnType {
-#if defined(SK_CODEC_ENCODES_PNG_WITH_RUST)
-        return SkPngRustEncoder::Encode(
-                as_IB(img)->directContext(), img, SkPngRustEncoder::Options{});
-#else
-        return SkPngEncoder::Encode(as_IB(img)->directContext(), img, SkPngEncoder::Options{});
-#endif
-    };
-    return sProcs;
-}
 
 void Viewer::drawSlide(SkSurface* surface) {
     if (fCurrentSlide < 0) {
@@ -1938,7 +1926,7 @@ void Viewer::drawSlide(SkSurface* surface) {
         fSlides[fCurrentSlide]->draw(recorderCanvas);
         sk_sp<SkPicture> picture(recorder.finishRecordingAsPicture());
         SkFILEWStream stream("sample_app.skp");
-        SkSerialProcs sProcs = serial_procs_using_png();
+        SkSerialProcs    sProcs = ToolUtils::serial_procs_using_png();
         picture->serialize(&stream, &sProcs);
         fSaveToSKP = false;
     }
@@ -2053,7 +2041,7 @@ void Viewer::drawSlide(SkSurface* surface) {
 
     if (recorderRestoreCanvas) {
         sk_sp<SkPicture> picture(recorder.finishRecordingAsPicture());
-        SkSerialProcs sProcs = serial_procs_using_png();
+        SkSerialProcs sProcs = ToolUtils::serial_procs_using_png();
         auto data = picture->serialize(&sProcs);
         slideCanvas = recorderRestoreCanvas;
         SkDeserialProcs dProcs = ToolUtils::get_default_skp_deserial_procs();

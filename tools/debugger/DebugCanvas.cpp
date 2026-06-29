@@ -109,7 +109,7 @@ private:
     using INHERITED = SkPaintFilterCanvas;
 };
 
-DebugCanvas::DebugCanvas(int width, int height)
+DebugCanvas::DebugCanvas(int width, int height, SkSerialProcs serialProcs)
         : INHERITED(width, height)
         , fOverdrawViz(false)
         , fClipVizColor(SK_ColorTRANSPARENT)
@@ -118,7 +118,8 @@ DebugCanvas::DebugCanvas(int width, int height)
         , fShowOrigin(false)
         , fnextDrawPictureLayerId(-1)
         , fnextDrawImageRectLayerId(-1)
-        , fAndroidClip(SkRect::MakeEmpty()) {
+        , fAndroidClip(SkRect::MakeEmpty())
+        , fSerialProcs(serialProcs) {
     // SkPicturePlayback uses the base-class' quickReject calls to cull clipped
     // operations. This can lead to problems in the debugger which expects all
     // the operations in the captured skp to appear in the debug canvas. To
@@ -138,8 +139,8 @@ DebugCanvas::DebugCanvas(int width, int height)
     this->INHERITED::onClipRect(large, SkClipOp::kIntersect, kHard_ClipEdgeStyle);
 }
 
-DebugCanvas::DebugCanvas(SkIRect bounds)
-        : DebugCanvas(bounds.width(), bounds.height()) {}
+DebugCanvas::DebugCanvas(SkIRect bounds, SkSerialProcs serialProcs)
+        : DebugCanvas(bounds.width(), bounds.height(), serialProcs) {}
 
 DebugCanvas::~DebugCanvas() {
     for (DrawCommand* p : fCommandVector) {
@@ -348,7 +349,7 @@ void DebugCanvas::toJSON(SkJSONWriter&   writer,
 
     for (int i = 0; i < this->getSize(); i++) {
         writer.beginObject();  // command
-        this->getDrawCommandAt(i)->toJSON(writer, urlDataManager);
+        this->getDrawCommandAt(i)->toJSON(writer, urlDataManager, fSerialProcs);
 
 #if defined(SK_GANESH)
         if (at && at->isEnabled()) {
@@ -385,37 +386,36 @@ void DebugCanvas::toJSONOpsTask(SkJSONWriter& writer, SkCanvas* canvas) {
 void DebugCanvas::setOverdrawViz(bool overdrawViz) { fOverdrawViz = overdrawViz; }
 
 void DebugCanvas::onClipPath(const SkPath& path, SkClipOp op, ClipEdgeStyle edgeStyle) {
-    this->addDrawCommand(new ClipPathCommand(path, op, kSoft_ClipEdgeStyle == edgeStyle));
+    this->addDrawCommand(
+            new ClipPathCommand(path, op, kSoft_ClipEdgeStyle == edgeStyle, fSerialProcs));
 }
 
 void DebugCanvas::onClipRect(const SkRect& rect, SkClipOp op, ClipEdgeStyle edgeStyle) {
-    this->addDrawCommand(new ClipRectCommand(rect, op, kSoft_ClipEdgeStyle == edgeStyle));
+    this->addDrawCommand(
+            new ClipRectCommand(rect, op, kSoft_ClipEdgeStyle == edgeStyle, fSerialProcs));
 }
 
 void DebugCanvas::onClipRRect(const SkRRect& rrect, SkClipOp op, ClipEdgeStyle edgeStyle) {
-    this->addDrawCommand(new ClipRRectCommand(rrect, op, kSoft_ClipEdgeStyle == edgeStyle));
+    this->addDrawCommand(
+            new ClipRRectCommand(rrect, op, kSoft_ClipEdgeStyle == edgeStyle, fSerialProcs));
 }
 
 void DebugCanvas::onClipRegion(const SkRegion& region, SkClipOp op) {
-    this->addDrawCommand(new ClipRegionCommand(region, op));
+    this->addDrawCommand(new ClipRegionCommand(region, op, fSerialProcs));
 }
 
 void DebugCanvas::onClipShader(sk_sp<SkShader> cs, SkClipOp op) {
-    this->addDrawCommand(new ClipShaderCommand(std::move(cs), op));
+    this->addDrawCommand(new ClipShaderCommand(std::move(cs), op, fSerialProcs));
 }
 
-void DebugCanvas::onResetClip() {
-    this->addDrawCommand(new ResetClipCommand());
-}
+void DebugCanvas::onResetClip() { this->addDrawCommand(new ResetClipCommand(fSerialProcs)); }
 
 void DebugCanvas::didConcat44(const SkM44& m) {
-    this->addDrawCommand(new Concat44Command(m));
+    this->addDrawCommand(new Concat44Command(m, fSerialProcs));
     this->INHERITED::didConcat44(m);
 }
 
-void DebugCanvas::didScale(SkScalar x, SkScalar y) {
-    this->didConcat44(SkM44::Scale(x, y));
-}
+void DebugCanvas::didScale(SkScalar x, SkScalar y) { this->didConcat44(SkM44::Scale(x, y)); }
 
 void DebugCanvas::didTranslate(SkScalar x, SkScalar y) {
     this->didConcat44(SkM44::Translate(x, y));
@@ -445,7 +445,7 @@ void DebugCanvas::onDrawAnnotation(const SkRect& rect, const char key[], SkData*
         // which is unrecordable.
         fAndroidClip = rect;
     }
-    this->addDrawCommand(new DrawAnnotationCommand(rect, key, sk_ref_sp(value)));
+    this->addDrawCommand(new DrawAnnotationCommand(rect, key, sk_ref_sp(value), fSerialProcs));
 }
 
 void DebugCanvas::onDrawImage2(const SkImage*           image,
@@ -453,15 +453,16 @@ void DebugCanvas::onDrawImage2(const SkImage*           image,
                                SkScalar                 top,
                                const SkSamplingOptions& sampling,
                                const SkPaint*           paint) {
-    this->addDrawCommand(new DrawImageCommand(image, left, top, sampling, paint));
+    this->addDrawCommand(new DrawImageCommand(image, left, top, sampling, paint, fSerialProcs));
 }
 
 void DebugCanvas::onDrawImageLattice2(const SkImage* image,
                                       const Lattice& lattice,
                                       const SkRect&  dst,
-                                      SkFilterMode filter,   // todo
+                                      SkFilterMode   filter,  // todo
                                       const SkPaint* paint) {
-    this->addDrawCommand(new DrawImageLatticeCommand(image, lattice, dst, filter, paint));
+    this->addDrawCommand(
+            new DrawImageLatticeCommand(image, lattice, dst, filter, paint, fSerialProcs));
 }
 
 void DebugCanvas::onDrawImageRect2(const SkImage*           image,
@@ -479,18 +480,25 @@ void DebugCanvas::onDrawImageRect2(const SkImage*           image,
         // (managed by fLayerManager)
         // Instead of adding a DrawImageRectCommand, we need a deferred command, that when
         // executed, will call drawImageRect(fLayerManager->getLayerAsImage())
-        this->addDrawCommand(new DrawImageRectLayerCommand(
-            fLayerManager, fnextDrawImageRectLayerId, fFrame, src, dst, sampling,
-                                                           paint, constraint));
+        this->addDrawCommand(new DrawImageRectLayerCommand(fLayerManager,
+                                                           fnextDrawImageRectLayerId,
+                                                           fFrame,
+                                                           src,
+                                                           dst,
+                                                           sampling,
+                                                           paint,
+                                                           constraint,
+                                                           fSerialProcs));
     } else {
-        this->addDrawCommand(new DrawImageRectCommand(image, src, dst, sampling, paint, constraint));
+        this->addDrawCommand(new DrawImageRectCommand(
+                image, src, dst, sampling, paint, constraint, fSerialProcs));
     }
     // Reset expectation so next drawImageRect is not special.
     fnextDrawImageRectLayerId = -1;
 }
 
 void DebugCanvas::onDrawOval(const SkRect& oval, const SkPaint& paint) {
-    this->addDrawCommand(new DrawOvalCommand(oval, paint));
+    this->addDrawCommand(new DrawOvalCommand(oval, paint, fSerialProcs));
 }
 
 void DebugCanvas::onDrawArc(const SkRect&  oval,
@@ -498,36 +506,41 @@ void DebugCanvas::onDrawArc(const SkRect&  oval,
                             SkScalar       sweepAngle,
                             bool           useCenter,
                             const SkPaint& paint) {
-    this->addDrawCommand(new DrawArcCommand(oval, startAngle, sweepAngle, useCenter, paint));
+    this->addDrawCommand(
+            new DrawArcCommand(oval, startAngle, sweepAngle, useCenter, paint, fSerialProcs));
 }
 
 void DebugCanvas::onDrawPaint(const SkPaint& paint) {
-    this->addDrawCommand(new DrawPaintCommand(paint));
+    this->addDrawCommand(new DrawPaintCommand(paint, fSerialProcs));
 }
 
 void DebugCanvas::onDrawBehind(const SkPaint& paint) {
-    this->addDrawCommand(new DrawBehindCommand(paint));
+    this->addDrawCommand(new DrawBehindCommand(paint, fSerialProcs));
 }
 
 void DebugCanvas::onDrawPath(const SkPath& path, const SkPaint& paint) {
-    this->addDrawCommand(new DrawPathCommand(path, paint));
+    this->addDrawCommand(new DrawPathCommand(path, paint, fSerialProcs));
 }
 
 void DebugCanvas::onDrawRegion(const SkRegion& region, const SkPaint& paint) {
-    this->addDrawCommand(new DrawRegionCommand(region, paint));
+    this->addDrawCommand(new DrawRegionCommand(region, paint, fSerialProcs));
 }
 
 void DebugCanvas::onDrawPicture(const SkPicture* picture,
                                 const SkMatrix*  matrix,
                                 const SkPaint*   paint) {
     if (fnextDrawPictureLayerId != -1 && fLayerManager) {
-        fLayerManager->storeSkPicture(fnextDrawPictureLayerId, fFrame, sk_ref_sp(picture),
-           fnextDrawPictureDirtyRect);
+        fLayerManager->storeSkPicture(fnextDrawPictureLayerId,
+                                      fFrame,
+                                      sk_ref_sp(picture),
+                                      fnextDrawPictureDirtyRect,
+                                      fSerialProcs);
     } else {
-        this->addDrawCommand(new BeginDrawPictureCommand(picture, matrix, paint));
+        this->addDrawCommand(new BeginDrawPictureCommand(picture, matrix, paint, fSerialProcs));
         SkAutoCanvasMatrixPaint acmp(this, matrix, paint, picture->cullRect());
         picture->playback(this);
-        this->addDrawCommand(new EndDrawPictureCommand(SkToBool(matrix) || SkToBool(paint)));
+        this->addDrawCommand(
+                new EndDrawPictureCommand(SkToBool(matrix) || SkToBool(paint), fSerialProcs));
     }
     fnextDrawPictureLayerId = -1;
 }
@@ -536,28 +549,28 @@ void DebugCanvas::onDrawPoints(PointMode      mode,
                                size_t         count,
                                const SkPoint  pts[],
                                const SkPaint& paint) {
-    this->addDrawCommand(new DrawPointsCommand(mode, count, pts, paint));
+    this->addDrawCommand(new DrawPointsCommand(mode, count, pts, paint, fSerialProcs));
 }
 
 void DebugCanvas::onDrawRect(const SkRect& rect, const SkPaint& paint) {
     // NOTE(chudy): Messing up when renamed to DrawRect... Why?
-    addDrawCommand(new DrawRectCommand(rect, paint));
+    addDrawCommand(new DrawRectCommand(rect, paint, fSerialProcs));
 }
 
 void DebugCanvas::onDrawRRect(const SkRRect& rrect, const SkPaint& paint) {
-    this->addDrawCommand(new DrawRRectCommand(rrect, paint));
+    this->addDrawCommand(new DrawRRectCommand(rrect, paint, fSerialProcs));
 }
 
 void DebugCanvas::onDrawDRRect(const SkRRect& outer, const SkRRect& inner, const SkPaint& paint) {
-    this->addDrawCommand(new DrawDRRectCommand(outer, inner, paint));
+    this->addDrawCommand(new DrawDRRectCommand(outer, inner, paint, fSerialProcs));
 }
 
 void DebugCanvas::onDrawTextBlob(const SkTextBlob* blob,
                                  SkScalar          x,
                                  SkScalar          y,
                                  const SkPaint&    paint) {
-    this->addDrawCommand(
-            new DrawTextBlobCommand(sk_ref_sp(const_cast<SkTextBlob*>(blob)), x, y, paint));
+    this->addDrawCommand(new DrawTextBlobCommand(
+            sk_ref_sp(const_cast<SkTextBlob*>(blob)), x, y, paint, fSerialProcs));
 }
 
 void DebugCanvas::onDrawPatch(const SkPoint  cubics[12],
@@ -565,14 +578,15 @@ void DebugCanvas::onDrawPatch(const SkPoint  cubics[12],
                               const SkPoint  texCoords[4],
                               SkBlendMode    bmode,
                               const SkPaint& paint) {
-    this->addDrawCommand(new DrawPatchCommand(cubics, colors, texCoords, bmode, paint));
+    this->addDrawCommand(
+            new DrawPatchCommand(cubics, colors, texCoords, bmode, paint, fSerialProcs));
 }
 
 void DebugCanvas::onDrawVerticesObject(const SkVertices*      vertices,
                                        SkBlendMode            bmode,
                                        const SkPaint&         paint) {
-    this->addDrawCommand(
-            new DrawVerticesCommand(sk_ref_sp(const_cast<SkVertices*>(vertices)), bmode, paint));
+    this->addDrawCommand(new DrawVerticesCommand(
+            sk_ref_sp(const_cast<SkVertices*>(vertices)), bmode, paint, fSerialProcs));
 }
 
 void DebugCanvas::onDrawAtlas2(const SkImage*           image,
@@ -584,16 +598,16 @@ void DebugCanvas::onDrawAtlas2(const SkImage*           image,
                                const SkSamplingOptions& sampling,
                                const SkRect*            cull,
                                const SkPaint*           paint) {
-    this->addDrawCommand(
-            new DrawAtlasCommand(image, xform, tex, colors, count, bmode, sampling, cull, paint));
+    this->addDrawCommand(new DrawAtlasCommand(
+            image, xform, tex, colors, count, bmode, sampling, cull, paint, fSerialProcs));
 }
 
 void DebugCanvas::onDrawShadowRec(const SkPath& path, const SkDrawShadowRec& rec) {
-    this->addDrawCommand(new DrawShadowCommand(path, rec));
+    this->addDrawCommand(new DrawShadowCommand(path, rec, fSerialProcs));
 }
 
 void DebugCanvas::onDrawDrawable(SkDrawable* drawable, const SkMatrix* matrix) {
-    this->addDrawCommand(new DrawDrawableCommand(drawable, matrix));
+    this->addDrawCommand(new DrawDrawableCommand(drawable, matrix, fSerialProcs));
 }
 
 void DebugCanvas::onDrawEdgeAAQuad(const SkRect&    rect,
@@ -601,7 +615,7 @@ void DebugCanvas::onDrawEdgeAAQuad(const SkRect&    rect,
                                    QuadAAFlags      aa,
                                    const SkColor4f& color,
                                    SkBlendMode      mode) {
-    this->addDrawCommand(new DrawEdgeAAQuadCommand(rect, clip, aa, color, mode));
+    this->addDrawCommand(new DrawEdgeAAQuadCommand(rect, clip, aa, color, mode, fSerialProcs));
 }
 
 void DebugCanvas::onDrawEdgeAAImageSet2(const ImageSetEntry set[],
@@ -612,21 +626,21 @@ void DebugCanvas::onDrawEdgeAAImageSet2(const ImageSetEntry set[],
                                         const SkPaint*      paint,
                                         SrcRectConstraint   constraint) {
     this->addDrawCommand(new DrawEdgeAAImageSetCommand(
-            set, count, dstClips, preViewMatrices, sampling, paint, constraint));
+            set, count, dstClips, preViewMatrices, sampling, paint, constraint, fSerialProcs));
 }
 
 void DebugCanvas::willRestore() {
-    this->addDrawCommand(new RestoreCommand());
+    this->addDrawCommand(new RestoreCommand(fSerialProcs));
     this->INHERITED::willRestore();
 }
 
 void DebugCanvas::willSave() {
-    this->addDrawCommand(new SaveCommand());
+    this->addDrawCommand(new SaveCommand(fSerialProcs));
     this->INHERITED::willSave();
 }
 
 SkCanvas::SaveLayerStrategy DebugCanvas::getSaveLayerStrategy(const SaveLayerRec& rec) {
-    this->addDrawCommand(new SaveLayerCommand(rec));
+    this->addDrawCommand(new SaveLayerCommand(rec, fSerialProcs));
     (void)this->INHERITED::getSaveLayerStrategy(rec);
     // No need for a full layer.
     return kNoLayer_SaveLayerStrategy;
@@ -638,7 +652,7 @@ bool DebugCanvas::onDoSaveBehind(const SkRect* subset) {
 }
 
 void DebugCanvas::didSetM44(const SkM44& matrix) {
-    this->addDrawCommand(new SetM44Command(matrix));
+    this->addDrawCommand(new SetM44Command(matrix, fSerialProcs));
     this->INHERITED::didSetM44(matrix);
 }
 
