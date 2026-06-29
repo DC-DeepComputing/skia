@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ac4629d_fec606b3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-06-29T16:43:02Z",
+      "side": 1,
+      "message": "Still LGTM.",
+      "revId": "b9c2481a3de9963e563396683956629c45c6f9c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "456b4daa_8c73126c",
+        "filename": "src/codec/SkPngRustCodec.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-06-29T16:43:02Z",
+      "side": 1,
+      "message": "Very nice - I like this rename from patchset 8.",
+      "range": {
+        "startLine": 228,
+        "startChar": 0,
+        "endLine": 229,
+        "endChar": 54
+      },
+      "revId": "b9c2481a3de9963e563396683956629c45c6f9c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
