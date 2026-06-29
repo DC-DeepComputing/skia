@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3bd1f601_e8b5cb3d",
+        "filename": "src/codec/SkAvifCodec.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-29T18:10:50Z",
+      "side": 1,
+      "message": "Can this be moved between SkCodecPriv.h and SkStreamPriv.h? That should make the OnDemand-Presubmit job happy.",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 34
+      },
+      "revId": "6cd1540420ab5243f9d0e75f0f67cb65b6c4e495",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
