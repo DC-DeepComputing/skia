@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef47c08f_4e882d01",
+        "filename": "tests/CodecTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 2646,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-06-29T17:54:54Z",
+      "side": 1,
+      "message": "Oh yeah, done.",
+      "parentUuid": "da0d5c71_f2c0c1d4",
+      "range": {
+        "startLine": 2646,
+        "startChar": 9,
+        "endLine": 2646,
+        "endChar": 15
+      },
+      "revId": "b8bad4ebe5c9b2c4b3f5fd01a2e638dc33a7b8ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f8db1c15_b5b6e519",
