@@ -1,0 +1,128 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d92f0e6_ed9d51dd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-29T20:57:15Z",
+      "side": 1,
+      "message": "LGTM, nice catch",
+      "revId": "f88dbf66c9d1d5209f8e3b732e03943456940699",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f956562_93811dbd",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 436,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-29T20:57:15Z",
+      "side": 1,
+      "message": "nit: don\u0027t have vectorized integer division?",
+      "range": {
+        "startLine": 436,
+        "startChar": 35,
+        "endLine": 436,
+        "endChar": 47
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "e5be7cc9_fb782b7b",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/opts/SkRasterPipeline_opts.h",
+              "range": {
+                "startLine": 436,
+                "startChar": 0,
+                "endLine": 437,
+                "endChar": 0
+              },
+              "replacement": "    // AVX512 and below don\u0027t have vectorized integer division. We can force vectorization by\n"
+            },
+            {
+              "path": "src/opts/SkRasterPipeline_opts.h",
+              "range": {
+                "startLine": 777,
+                "startChar": 0,
+                "endLine": 778,
+                "endChar": 0
+              },
+              "replacement": "    // AVX512 and below don\u0027t have vectorized integer division. We can force vectorization by\n"
+            },
+            {
+              "path": "src/opts/SkRasterPipeline_opts.h",
+              "range": {
+                "startLine": 982,
+                "startChar": 0,
+                "endLine": 983,
+                "endChar": 0
+              },
+              "replacement": "    // AVX512 and below don\u0027t have vectorized integer division. We can force vectorization by\n"
+            }
+          ]
+        }
+      ],
+      "revId": "f88dbf66c9d1d5209f8e3b732e03943456940699",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "651055c7_93d30392",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 777,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-29T20:57:15Z",
+      "side": 1,
+      "message": "same",
+      "range": {
+        "startLine": 777,
+        "startChar": 35,
+        "endLine": 777,
+        "endChar": 55
+      },
+      "revId": "f88dbf66c9d1d5209f8e3b732e03943456940699",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65ae17af_602ab6e9",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 982,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-29T20:57:15Z",
+      "side": 1,
+      "message": "same",
+      "range": {
+        "startLine": 982,
+        "startChar": 24,
+        "endLine": 982,
+        "endChar": 55
+      },
+      "revId": "f88dbf66c9d1d5209f8e3b732e03943456940699",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
