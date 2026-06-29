@@ -46,6 +46,7 @@
 #include "src/core/SkBlendModePriv.h"
 #include "src/core/SkBlenderBase.h"
 #include "src/core/SkImageFilterTypes.h"  // IWYU pragma: keep
+#include "src/core/SkLatticeIter.h"
 #include "src/core/SkPaintPriv.h"
 #include "src/core/SkPathPriv.h"
 #include "src/core/SkRRectPriv.h"
@@ -973,6 +974,45 @@ bool Device::drawAsTiledImageRect(SkCanvas* canvas,
     gNumTilesDrawnGraphite.store(numTiles, std::memory_order_relaxed);
 #endif
     return wasTiled;
+}
+
+void Device::drawImageLattice(const SkImage* image, const SkCanvas::Lattice& lattice,
+                          const SkRect& dst, SkFilterMode filter, const SkPaint& paint) {
+    sk_sp<SkImage> image_sp = sk_ref_sp(image);
+    SkLatticeIter iter = SkLatticeIter(lattice, dst);
+
+    std::vector<SkCanvas::ImageSetEntry> imageSetEntries;
+    imageSetEntries.reserve(iter.numRectsToDraw());
+
+    SkRect nextSrc, nextDst;
+    bool nextIsFixedColor = false;
+    SkColor nextFixedColor;
+    while (iter.next(&nextSrc, &nextDst, &nextIsFixedColor, &nextFixedColor)) {
+        // Use non-AA quads to match Ganesh and Raster backends behavior of drawImageLattice.
+        const SkCanvas::QuadAAFlags quadAAFlags = SkCanvas::kNone_QuadAAFlags;
+        if (nextIsFixedColor) {
+            // LINT.IfChange
+            if (c != 0 || !paint.isSrcOver()) {
+                int alpha = SkAlphaMul(SkColorGetA(nextFixedColor),
+                                       SkAlpha255To256(paint.getAlpha()));
+                SkColor4f newColor = SkColor4f::FromColor(SkColorSetA(nextFixedColor, alpha));
+                this->drawEdgeAAQuad(nextDst, /*clip=*/nullptr, quadAAFlags,
+                                     newColor, paint.getBlendMode_or(SkBlendMode::kSrc));
+            }
+            // LINT.ThenChange(/src/core/SkDevice.cpp)
+        } else {
+            imageSetEntries.push_back(SkCanvas::ImageSetEntry(image_sp, nextSrc, nextDst,
+                                                              /*alpha=*/1.f, quadAAFlags));
+        }
+    }
+
+    this->drawEdgeAAImageSet(imageSetEntries.data(),
+                             imageSetEntries.size(),
+                             /*dstClips=*/nullptr,
+                             /*preViewMatrices=*/nullptr,
+                             SkSamplingOptions(filter),
+                             paint,
+                             SkCanvas::SrcRectConstraint::kStrict_SrcRectConstraint);
 }
 
 void Device::drawOval(const SkRect& oval, const SkPaint& paint) {
