@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec6cc7fd_1be674a9",
+        "filename": "modules/canvaskit/debugger_bindings.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 420,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-29T17:28:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fd84e2b4_2d2ac975",
+      "range": {
+        "startLine": 420,
+        "startChar": 8,
+        "endLine": 420,
+        "endChar": 36
+      },
+      "revId": "2c90dafca6079e061f715ae8c863e07163ed6d7f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2e8a6c88_8b6190db",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-06-26T21:11:46Z",
       "side": 1,
       "message": "I\u0027m not sure if this is needed - make_unique should forward the args, right?",
+      "range": {
+        "startLine": 421,
+        "startChar": 50,
+        "endLine": 421,
+        "endChar": 61
+      },
+      "revId": "2c90dafca6079e061f715ae8c863e07163ed6d7f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d74b7e8e_ed57dfe2",
+        "filename": "modules/canvaskit/debugger_bindings.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 421,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-29T17:28:12Z",
+      "side": 1,
+      "message": "you\u0027re right, thought I was running into a bug, but it was because I didn\u0027t specify that the {} should be SkSerialProcs.\n\ndoing SkSerialProcs{} fixed it",
+      "parentUuid": "2e8a6c88_8b6190db",
       "range": {
         "startLine": 421,
         "startChar": 50,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3104097_73e238ac",
+        "filename": "tools/debugger/DebugCanvas.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 433,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-29T17:28:12Z",
+      "side": 1,
+      "message": "my b!",
+      "parentUuid": "521a85e8_07e64156",
+      "range": {
+        "startLine": 433,
+        "startChar": 35,
+        "endLine": 433,
+        "endChar": 38
+      },
+      "revId": "2c90dafca6079e061f715ae8c863e07163ed6d7f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4b69f772_a52e3849",
@@ -93,6 +165,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0689c98b_79c23883",
+        "filename": "tools/debugger/DrawCommand.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 609,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-29T17:28:12Z",
+      "side": 1,
+      "message": "yep youre right",
+      "parentUuid": "4b69f772_a52e3849",
+      "range": {
+        "startLine": 609,
+        "startChar": 21,
+        "endLine": 609,
+        "endChar": 43
+      },
+      "revId": "2c90dafca6079e061f715ae8c863e07163ed6d7f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7372ae78_f013e186",
@@ -106,6 +202,30 @@
       "writtenOn": "2026-06-26T21:11:46Z",
       "side": 1,
       "message": "This might be good to put in something like `//tools/DeserialProcsUtils.h` and then used in all the other places instead of `{}`",
+      "range": {
+        "startLine": 611,
+        "startChar": 11,
+        "endLine": 611,
+        "endChar": 21
+      },
+      "revId": "2c90dafca6079e061f715ae8c863e07163ed6d7f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0fbe4693_80e8c481",
+        "filename": "tools/debugger/DrawCommand.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 611,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-29T17:28:12Z",
+      "side": 1,
+      "message": "sounds good, do we want to rename it to serialprocsutil? because not it has serial and deserial logic. I couldn\u0027t find a serialProcsUtil.cpp",
+      "parentUuid": "7372ae78_f013e186",
       "range": {
         "startLine": 611,
         "startChar": 11,
@@ -152,6 +272,30 @@
       "writtenOn": "2026-06-26T21:11:46Z",
       "side": 1,
       "message": "Shouldn\u0027t this contain our image serialization?",
+      "range": {
+        "startLine": 125,
+        "startChar": 63,
+        "endLine": 125,
+        "endChar": 65
+      },
+      "revId": "2c90dafca6079e061f715ae8c863e07163ed6d7f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "31ad133b_a254af86",
+        "filename": "tools/viewer/CaptureSlide.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-29T17:28:12Z",
+      "side": 1,
+      "message": "updated it to use the ToolUtils::serial_proces_using_png()",
+      "parentUuid": "34a2d5b8_056655e9",
       "range": {
         "startLine": 125,
         "startChar": 63,
