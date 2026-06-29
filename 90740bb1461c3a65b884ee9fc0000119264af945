@@ -88,6 +88,24 @@
       "parentUuid": "70558082_0aaa7681",
       "revId": "90740bb1461c3a65b884ee9fc0000119264af945",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "458cc1d1_dc4e6fda",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-06-29T14:10:30Z",
+      "side": 1,
+      "message": "My brief research also seems to suggest the the actual spec for plus-darker is still up for debate as there were some mathematically inconsistencies with not all parties agreeing. Because of that Apple just went with their own interpretation of the blend mode (since they were the ones originally championing it so it could match their OS rendering). Other browsers have been slow/frozen to adapting it because of the math issues behind the mode. Some context here I believe, https://github.com/w3c/fxtf-drafts/issues/447\n\nUnless there are some more recent updates to these discussions I don\u0027t think Skia right now wants to put its flag down for saying what the correct way this blend mode should be implemented.\n\nHowever, as Michael said, this does not stop the browser for deciding they want the blend mode to behave as Apple has decided. The browser can simply do a runtime blend mode and pass that to Skia. And performance wise there really isn\u0027t any difference then if it was internal to Skia since Skia would implement it in essentially the same way.",
+      "parentUuid": "2f5b1a1f_23a26f8e",
+      "revId": "90740bb1461c3a65b884ee9fc0000119264af945",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
