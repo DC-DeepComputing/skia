@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7ac5dc4_dd4135b7",
+        "filename": "tests/CodecTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 2646,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-29T17:18:29Z",
+      "side": 1,
+      "message": "Why does this need to be a vector? Could it be a span?",
+      "range": {
+        "startLine": 2646,
+        "startChar": 9,
+        "endLine": 2646,
+        "endChar": 15
+      },
+      "revId": "b8bad4ebe5c9b2c4b3f5fd01a2e638dc33a7b8ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8db1c15_b5b6e519",
+        "filename": "tests/CodecTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 2677,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-29T17:18:29Z",
+      "side": 1,
+      "message": "nit: unusedPixels (dummy is ableist).",
+      "range": {
+        "startLine": 2677,
+        "startChar": 8,
+        "endLine": 2677,
+        "endChar": 19
+      },
+      "revId": "b8bad4ebe5c9b2c4b3f5fd01a2e638dc33a7b8ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
