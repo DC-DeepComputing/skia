@@ -1,0 +1,28 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a05db88b_2cd3bcc0",
+        "filename": "src/codec/SkAvifCodec.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 4924857
+      },
+      "writtenOn": "2026-06-29T18:39:58Z",
+      "side": 1,
+      "message": "Done. Moved the include statement alphabetically.",
+      "parentUuid": "3bd1f601_e8b5cb3d",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 34
+      },
+      "revId": "03b9dd3c824d9b269e166e3bd901bbeedae17ccb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
