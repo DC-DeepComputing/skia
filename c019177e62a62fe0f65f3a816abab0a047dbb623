@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e0f7743_ce7a66ee",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-06-29T18:10:01Z",
+      "side": 1,
+      "message": "I totally wrote this pile of JS code myself *wink wink*.",
+      "revId": "c019177e62a62fe0f65f3a816abab0a047dbb623",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
