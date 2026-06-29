@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f920a7c4_1a902c1c",
+        "filename": "src/gpu/ganesh/ops/OpsTask.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 615,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-29T14:48:29Z",
+      "side": 1,
+      "message": "Can we break here ?",
+      "revId": "5626c2932909a3883670431343e68ba68df1ced4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58eeb102_c0e8332e",
+        "filename": "src/gpu/ganesh/ops/OpsTask.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 630,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-29T14:48:29Z",
+      "side": 1,
+      "message": "Why alter the \u0027fClippedContentBounds\u0027 rather than just computing a \u0027newStencilClearedArea\u0027 SkIRect ?",
+      "revId": "5626c2932909a3883670431343e68ba68df1ced4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
