@@ -80,6 +80,8 @@ ResourceCache::~ResourceCache() {
 void ResourceCache::shutdown() {
     ASSERT_SINGLE_OWNER
 
+    fResourceMap.reset();
+
     // At this point no more changes will happen to fReturnQueue or the resources within that
     // linked list. We do need to finish processing them for a graceful shutdown.
     this->processReturnedResources(Sentinel::Get());
