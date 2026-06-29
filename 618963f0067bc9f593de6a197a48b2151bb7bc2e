@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "408de9e7_2a6d2d13",
+        "filename": "src/core/SkRegion_path.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 372,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-29T19:44:53Z",
+      "side": 1,
+      "message": "If this intersection fails, I think we can just return?",
+      "range": {
+        "startLine": 372,
+        "startChar": 0,
+        "endLine": 372,
+        "endChar": 62
+      },
+      "revId": "618963f0067bc9f593de6a197a48b2151bb7bc2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
