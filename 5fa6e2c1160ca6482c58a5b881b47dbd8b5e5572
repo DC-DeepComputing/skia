@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e204ee70_f9ecc4d7",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 994,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-06-29T18:17:22Z",
+      "side": 1,
+      "message": "Wasn\u0027t sure if this is a good use case for this IfChange lint but added it since it was the same alpha logic and color/blendmode check as in the raster backend, couldn\u0027t find where Ganesh does this logic but visually in the GM_lattice2 doing this alpha mul logic matches Ganesh as well.",
+      "revId": "5fa6e2c1160ca6482c58a5b881b47dbd8b5e5572",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
