@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "53730498_098e6174",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-29T14:11:51Z",
+      "side": 1,
+      "message": "gradients_color_space_many_stops and hardstop_gradients_many are rendering incorrectly in Ganesh, but Gold didn\u0027t have any Graphite images. This makes me think that the GradientBitmap helper changes are valid but that something in the binary search SkSL for ganesh is broken with the latest patch set.",
+      "revId": "52739f8377c52ed871d939453912310afa0c5617",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a3cca47_5ca88583",
+        "filename": "src/gpu/ganesh/gradients/GrGradientShader.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 576,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-29T14:11:51Z",
+      "side": 1,
+      "message": "I don\u0027t think we need this branch because the make_clamped_gradient handles the boundary condition. I believe we still need the t\u003d\u003d1 condition because in that case, `low \u003d 1` and then the offset division would be problematic.",
+      "range": {
+        "startLine": 574,
+        "startChar": 0,
+        "endLine": 576,
+        "endChar": 15
+      },
+      "revId": "52739f8377c52ed871d939453912310afa0c5617",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

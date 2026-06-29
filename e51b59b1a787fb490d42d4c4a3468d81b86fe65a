@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7502b2f3_1b99d1be",
+        "filename": "src/gpu/ganesh/gradients/GrGradientShader.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 556,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-29T14:11:51Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "85837f75_63ba513f",
+      "range": {
+        "startLine": 538,
+        "startChar": 4,
+        "endLine": 556,
+        "endChar": 26
+      },
+      "revId": "e51b59b1a787fb490d42d4c4a3468d81b86fe65a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9c04febc_585c13c1",
