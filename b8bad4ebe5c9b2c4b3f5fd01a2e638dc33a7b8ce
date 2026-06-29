@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "da0d5c71_f2c0c1d4",
+        "filename": "tests/CodecTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 2646,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-29T17:51:21Z",
+      "side": 1,
+      "message": "Then can we replace the SkMemoryStream::MakeCopy below to avoid a second copy?",
+      "parentUuid": "b9b9870b_839d7804",
+      "range": {
+        "startLine": 2646,
+        "startChar": 9,
+        "endLine": 2646,
+        "endChar": 15
+      },
+      "revId": "b8bad4ebe5c9b2c4b3f5fd01a2e638dc33a7b8ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f8db1c15_b5b6e519",
         "filename": "tests/CodecTest.cpp",
         "patchSetId": 4
