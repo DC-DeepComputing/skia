@@ -47,8 +47,8 @@ static void test_basic(skiatest::Reporter* reporter) {
 
   // create and exercise DebugLayerManager
   DebugLayerManager dlm;
-  dlm.storeSkPicture(node, 0, picture1, dirtyRectFull);
-  dlm.storeSkPicture(node, 10, picture2, dirtyRectPartial);
+  dlm.storeSkPicture(node, 0, picture1, dirtyRectFull, {});
+  dlm.storeSkPicture(node, 10, picture2, dirtyRectPartial, {});
   auto frames = dlm.listFramesForNode(node);
 
   // Confirm the layer manager stored these at the right places.

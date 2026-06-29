@@ -16,6 +16,10 @@ namespace ToolUtils {
 // default values for the SkDeserialImageProc and SkDeserialTypefaceProc..
 SkDeserialProcs get_default_skp_deserial_procs();
 
+SkSerialProcs serial_procs_using_png();
+
+SkDeserialProcs deserial_procs_using_png();
+
 }  // namespace ToolUtils
 
 #endif  // ToolUtils_DEFINED
