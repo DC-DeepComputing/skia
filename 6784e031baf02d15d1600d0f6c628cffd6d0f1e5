@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a78de1d_80386bbe",
+        "filename": "src/gpu/graphite/DrawAtlas.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 600,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-29T13:01:39Z",
+      "side": 1,
+      "message": "nit: This is a bit of a non-standard comment and since the functions aren\u0027t going away, we run the risk of forgetting to clean up all the \"NEW\"s when they are no longer new.",
+      "range": {
+        "startLine": 600,
+        "startChar": 0,
+        "endLine": 600,
+        "endChar": 10
+      },
+      "revId": "6784e031baf02d15d1600d0f6c628cffd6d0f1e5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
