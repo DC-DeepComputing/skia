@@ -16,6 +16,52 @@
       "message": "PTAL",
       "revId": "2fc076aab7e886f554a7be9a6af91024981b4f92",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "421e9015_502a1482",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorScalar.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 743,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-29T13:32:05Z",
+      "side": 1,
+      "message": "Put the \u0027:\u0027 here ?",
+      "range": {
+        "startLine": 743,
+        "startChar": 76,
+        "endLine": 743,
+        "endChar": 77
+      },
+      "revId": "2fc076aab7e886f554a7be9a6af91024981b4f92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ed0c0b6_a74bcb53",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorSimd.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 452,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-06-29T13:32:05Z",
+      "side": 1,
+      "message": "This is odd - these aren\u0027t member variables.",
+      "range": {
+        "startLine": 452,
+        "startChar": 16,
+        "endLine": 452,
+        "endChar": 27
+      },
+      "revId": "2fc076aab7e886f554a7be9a6af91024981b4f92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
