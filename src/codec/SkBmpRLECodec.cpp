@@ -20,6 +20,7 @@
 #include "src/codec/SkCodecPriv.h"
 #include "src/core/SkColorData.h"
 #include "src/core/SkColorPriv.h"
+#include "src/core/SkSafeMath.h"
 
 #include <algorithm>
 #include <cstring>
@@ -324,7 +325,11 @@ int SkBmpRLECodec::decodeRows(const SkImageInfo& info, void* dst, size_t dstRowB
         if (this->colorXform()) {
             decodeInfo = decodeInfo.makeColorType(kXformSrcColorType);
             if (kRGBA_F16_SkColorType == dstInfo.colorType()) {
-                int count = height * dstInfo.width();
+                SkSafeMath safe;
+                int count = safe.mulInt(height, dstInfo.width());
+                if (!safe || count <= 0) {
+                    return 0;
+                }
                 this->resetXformBuffer(count);
                 sk_bzero(this->xformBuffer(), count * sizeof(uint32_t));
                 decodeDst = this->xformBuffer();
