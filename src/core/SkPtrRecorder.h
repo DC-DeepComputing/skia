@@ -76,7 +76,7 @@ public:
          * Return the next ptr in the set or null if the end was reached.
          */
         void* next() {
-            return fIndex < fSet->fList.size() ? fSet->fList[fIndex++].fPtr.get() : nullptr;
+            return fIndex < fSet->fList.size() ? fSet->fList[fIndex++].fPtr : nullptr;
         }
 
     private:
@@ -90,7 +90,7 @@ protected:
 
 private:
     struct Pair {
-        raw_ptr<void> fPtr;   // never nullptr
+        void* fPtr;   // never nullptr
         uint32_t    fIndex; // 1...N
     };
 
