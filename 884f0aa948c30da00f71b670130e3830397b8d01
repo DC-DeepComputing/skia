@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2510bc6_d8d9fd8b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-06-29T17:30:35Z",
+      "side": 1,
+      "message": "Looks like this may need some changes in AOSP first:\n\nhttps://googleplex-android-review.git.corp.google.com/c/platform/external/skia/+/40681510?tab\u003dchecks\n\nWill resolve this comment once fixed",
+      "revId": "884f0aa948c30da00f71b670130e3830397b8d01",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
