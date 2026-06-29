@@ -15,6 +15,7 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "tests/Test.h"
+#include "tools/DeserialProcsUtils.h"
 #include "tools/debugger/DebugLayerManager.h"
 
 #include <vector>
@@ -47,8 +48,8 @@ static void test_basic(skiatest::Reporter* reporter) {
 
   // create and exercise DebugLayerManager
   DebugLayerManager dlm;
-  dlm.storeSkPicture(node, 0, picture1, dirtyRectFull);
-  dlm.storeSkPicture(node, 10, picture2, dirtyRectPartial);
+  dlm.storeSkPicture(node, 0, picture1, dirtyRectFull, ToolUtils::serial_procs_using_png());
+  dlm.storeSkPicture(node, 10, picture2, dirtyRectPartial, ToolUtils::serial_procs_using_png());
   auto frames = dlm.listFramesForNode(node);
 
   // Confirm the layer manager stored these at the right places.
