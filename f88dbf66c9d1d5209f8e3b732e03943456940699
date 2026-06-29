@@ -129,6 +129,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9ebc4f53_39cf663d",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 516,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-06-29T21:05:45Z",
+      "side": 1,
+      "message": "nit missing parenthesis",
+      "range": {
+        "startLine": 516,
+        "startChar": 67,
+        "endLine": 516,
+        "endChar": 89
+      },
+      "revId": "f88dbf66c9d1d5209f8e3b732e03943456940699",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "651055c7_93d30392",
         "filename": "src/opts/SkRasterPipeline_opts.h",
         "patchSetId": 11
