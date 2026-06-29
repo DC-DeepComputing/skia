@@ -19,7 +19,7 @@ public:
     SkTypefaceCache();
 
     /**
-     * Callback for FindByProc. Returns true if the given typeface is a match
+     * Callback for findByProcAndRef. Returns true if the given typeface is a match
      * for the given context. The passed typeface is owned by the cache and is
      * not additionally ref()ed. The typeface may be in the disposed state.
      */
