@@ -975,6 +975,47 @@ bool Device::drawAsTiledImageRect(SkCanvas* canvas,
     return wasTiled;
 }
 
+void Device::drawAtlas(SkSpan<const SkRSXform> xform,
+                       SkSpan<const SkRect> tex,
+                       SkSpan<const SkColor> colors,
+                       sk_sp<SkBlender> blender,
+                       const SkPaint& paint) {
+    if (xform.empty()) {
+        return;
+    }
+
+
+    sk_sp<SkShader> paintShader = sk_ref_sp(paint.getShader());
+    for (size_t i = 0; i < xform.size(); i++) {
+        SkRect r = tex[i];
+
+        SkMatrix mat;
+        mat.setRSXform(xform[i]);
+        mat.preTranslate(-r.left(), -r.top());
+
+        SkPaint paintCopy(paint);
+        if (!colors.empty()) {
+            SkColor color = colors[i];
+            // TODO(nathanasanchez): Add primitive solid color in PaintParams so we don't
+            // allocate a blend and color shader for every color.
+            if (blender) {
+                paintCopy.setShader(SkShaders::Blend(blender, SkShaders::Color(color),
+                                                              paintShader));
+            } else {
+                paintCopy.setColor(color);
+            }
+        }
+
+        PaintParams params = PaintParams(paintCopy, nullptr, /*skipColorXform=*/false);
+
+        this->drawGeometry(Transform(SkM44(this->localToDevice() * mat)),
+                           Geometry(Shape(Rect(r))),
+                           params,
+                           DefaultFillStyle());
+    }
+}
+
+
 void Device::drawOval(const SkRect& oval, const SkPaint& paint) {
     if (paint.getPathEffect()) {
         // Dashing requires that the oval path starts on the right side and travels clockwise. This
