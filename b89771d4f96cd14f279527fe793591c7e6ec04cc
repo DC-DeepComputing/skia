@@ -22,6 +22,30 @@
       },
       "revId": "b89771d4f96cd14f279527fe793591c7e6ec04cc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e5b630b_e2449a9e",
+        "filename": "tools/fonts/create_test_font_color.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2026-06-30T12:22:22Z",
+      "side": 1,
+      "message": "Found the answer from the follow-up CL.",
+      "parentUuid": "70cff4cd_3a439a5e",
+      "range": {
+        "startLine": 64,
+        "startChar": 0,
+        "endLine": 64,
+        "endChar": 47
+      },
+      "revId": "b89771d4f96cd14f279527fe793591c7e6ec04cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
