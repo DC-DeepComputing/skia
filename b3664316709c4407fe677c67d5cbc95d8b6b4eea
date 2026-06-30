@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7a0e1b9_9d3da94f",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-30T14:38:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e6eee8a5_312ce4e7",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 6
+      },
+      "revId": "b3664316709c4407fe677c67d5cbc95d8b6b4eea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2f91c601_f0299abd",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-06-30T14:02:32Z",
       "side": 1,
       "message": "Remove and leave out the whitespace in the text.",
+      "range": {
+        "startLine": 77,
+        "startChar": 30,
+        "endLine": 77,
+        "endChar": 34
+      },
+      "revId": "b3664316709c4407fe677c67d5cbc95d8b6b4eea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8340cd6_db9b60e1",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-30T14:38:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2f91c601_f0299abd",
       "range": {
         "startLine": 77,
         "startChar": 30,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3efdf1ca_b49e0796",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-30T14:38:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5cd806ed_f343b63d",
+      "range": {
+        "startLine": 160,
+        "startChar": 39,
+        "endLine": 160,
+        "endChar": 43
+      },
+      "revId": "b3664316709c4407fe677c67d5cbc95d8b6b4eea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "43d842d7_139e6b9b",
@@ -83,6 +155,30 @@
       "writtenOn": "2026-06-30T14:02:32Z",
       "side": 1,
       "message": "Remove, but leave the scoped sksl tabbed over to look similar",
+      "range": {
+        "startLine": 285,
+        "startChar": 12,
+        "endLine": 285,
+        "endChar": 16
+      },
+      "revId": "b3664316709c4407fe677c67d5cbc95d8b6b4eea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8480db7_47e24678",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-30T14:38:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "43d842d7_139e6b9b",
       "range": {
         "startLine": 285,
         "startChar": 12,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e569a7ae_84ec76af",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 490,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-30T14:38:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "daae152a_1637cb92",
+      "range": {
+        "startLine": 480,
+        "startChar": 0,
+        "endLine": 490,
+        "endChar": 6
+      },
+      "revId": "b3664316709c4407fe677c67d5cbc95d8b6b4eea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2ebfad66_92401c65",
@@ -129,6 +249,30 @@
       "writtenOn": "2026-06-30T14:02:32Z",
       "side": 1,
       "message": "remove",
+      "range": {
+        "startLine": 1316,
+        "startChar": 51,
+        "endLine": 1316,
+        "endChar": 55
+      },
+      "revId": "b3664316709c4407fe677c67d5cbc95d8b6b4eea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9b5e885_fda6c45b",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1316,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-30T14:38:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2ebfad66_92401c65",
       "range": {
         "startLine": 1316,
         "startChar": 51,
