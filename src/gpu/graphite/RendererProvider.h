@@ -103,6 +103,7 @@ public:
     }
     const Renderer* convexTessellatedWedges() const { return &fConvexTessellatedWedges; }
     const Renderer* tessellatedStrokes() const { return &fTessellatedStrokes; }
+    const Renderer* arcLengthStrokes() const { return &fArcLengthStrokes; }
 
     // Coverage mask rendering. Used by the atlas path rendering strategies and rendering mask
     // filter results.
@@ -196,6 +197,7 @@ private:
     Renderer fStencilTessellatedWedges[kPathTypeCount];
     Renderer fConvexTessellatedWedges;
     Renderer fTessellatedStrokes;
+    Renderer fArcLengthStrokes;
 
     Renderer fCoverageMask;
 

@@ -31,6 +31,8 @@ CORE_FILES = [
     "SDFTextRenderStep.h",
     "TessellateCurvesRenderStep.cpp",
     "TessellateCurvesRenderStep.h",
+    "ArcLengthRenderStep.cpp",
+    "ArcLengthRenderStep.h",
     "TessellateStrokesRenderStep.cpp",
     "TessellateStrokesRenderStep.h",
     "TessellateWedgesRenderStep.cpp",

@@ -33,7 +33,6 @@ struct GrShaderCaps : SkSL::ShaderCaps {
 
     bool fDstReadInShaderSupport = false;
     bool fPreferFlatInterpolation = false;
-    bool fVertexIDSupport = false;
     // Returns true if `expr` in `myArray[expr]` can be any integer expression. If false, `expr`
     // must be a constant-index-expression as defined in the OpenGL ES2 specification, Appendix A.5.
     bool fNonconstantArrayIndexSupport = false;
