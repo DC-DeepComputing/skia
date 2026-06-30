@@ -5770,6 +5770,32 @@ SI D join(S lo, S hi) {
     return v;
 }
 
+#if defined(SKRP_CPU_ML4)
+SI I32 iround(F v) {
+    return (I32)_mm512_cvtps_epi32((__m512)v);
+}
+#elif !defined(SKRP_CPU_SCALAR)
+SI I32 iround(F v) {
+    SK_OPTS_NS::F lo, hi;
+    split(v, &lo, &hi);
+    return join<I32>(SK_OPTS_NS::iround(lo), SK_OPTS_NS::iround(hi));
+}
+#else
+SI I32 iround(F v) {
+    return (I32)(v + 0.5f);
+}
+#endif
+
+#if !defined(SKRP_CPU_SCALAR)
+SI U32 expand(U16 v) {
+    return __builtin_convertvector(v, U32);
+}
+#else
+SI U32 expand(U16 v) {
+    return (U32)v;
+}
+#endif
+
 SI F if_then_else(I32 c, F t, F e) {
     return sk_bit_cast<F>( (sk_bit_cast<I32>(t) & c) | (sk_bit_cast<I32>(e) & ~c) );
 }
@@ -6215,7 +6241,13 @@ SI U32 ix_and_ptr(T** ptr, const SkRasterPipelineContexts::GatherCtx* ctx, F x, 
     y = sk_bit_cast<F>(sk_bit_cast<U32>(y) - (uint32_t)ctx->roundDownAtInteger);
 
     *ptr = (const T*)ctx->pixels;
-    return trunc_(y)*ctx->stride + trunc_(x);
+    U32 tx = trunc_(x),
+        ty = trunc_(y);
+    if ((ctx->stride & (ctx->stride - 1)) == 0) {
+        return (ty << __builtin_ctz(ctx->stride)) + tx;
+    } else {
+        return ty * ctx->stride + tx;
+    }
 }
 
 template <typename T>
@@ -6230,7 +6262,11 @@ SI U32 ix_and_ptr(T** ptr, const SkRasterPipelineContexts::GatherCtx* ctx, I32 x
         ay = cast<U32>(min(max(0, y), h));
 
     *ptr = (const T*)ctx->pixels;
-    return ay * ctx->stride + ax;
+    if ((ctx->stride & (ctx->stride - 1)) == 0) {
+        return (ay << __builtin_ctz(ctx->stride)) + ax;
+    } else {
+        return ay * ctx->stride + ax;
+    }
 }
 
 template <typename V, typename T>
@@ -6971,8 +7007,71 @@ LOWP_STAGE_GP(evenly_spaced_2_stop_gradient,
 }
 
 LOWP_STAGE_GP(bilerp_clamp_8888, const SkRasterPipelineContexts::GatherCtx* ctx) {
-    // Quantize sample point and transform into lerp coordinates converting them to 16.16 fixed
-    // point number.
+#if defined(SKRP_CPU_ML4)
+    // Fused Weight Bilinear Interpolation (Strategy 1)
+    I32 qx = iround(65536.0f * x) - 32768,
+        qy = iround(65536.0f * y) - 32768;
+
+    I32 sx = qx >> 16,
+        sy = qy >> 16;
+
+    U16 wx = cast<U16>(qx & 65535) >> 1,
+        wy = cast<U16>(qy & 65535) >> 1;
+
+    U16 wx1 = 32768 - wx,
+        wy1 = 32768 - wy;
+
+    // Fused top-left, top-right, bottom-left, bottom-right 16-bit weights
+    U16 w00 = cast<U16>((expand(wy1) * expand(wx1)) >> 15),
+        w10 = cast<U16>((expand(wy1) * expand(wx))  >> 15),
+        w01 = cast<U16>((expand(wy)  * expand(wx1)) >> 15),
+        w11 = cast<U16>((expand(wy)  * expand(wx))  >> 15);
+
+    SkASSERT(ctx->roundDownAtInteger == 0);
+    const I32 w = I32_(ctx->width - 1),
+              h = I32_(ctx->height - 1);
+
+    U32 ax  = cast<U32>(min(max(0, sx),   w)),
+        ax1 = cast<U32>(min(max(0, sx+1), w)),
+        ay  = cast<U32>(min(max(0, sy),   h)),
+        ay1 = cast<U32>(min(max(0, sy+1), h));
+
+    U32 stride0, stride1;
+    if ((ctx->stride & (ctx->stride - 1)) == 0) {
+        int shift = __builtin_ctz(ctx->stride);
+        stride0 = ay  << shift;
+        stride1 = ay1 << shift;
+    } else {
+        stride0 = ay  * ctx->stride;
+        stride1 = ay1 * ctx->stride;
+    }
+
+    const uint32_t* ptr = (const uint32_t*)ctx->pixels;
+
+    U16 p00R, p00G, p00B, p00A;
+    from_8888(gather_unaligned<U32>(ptr, stride0 + ax), &p00R,&p00G,&p00B,&p00A);
+
+    U16 p10R, p10G, p10B, p10A;
+    from_8888(gather_unaligned<U32>(ptr, stride0 + ax1), &p10R,&p10G,&p10B,&p10A);
+
+    U16 p01R, p01G, p01B, p01A;
+    from_8888(gather_unaligned<U32>(ptr, stride1 + ax), &p01R,&p01G,&p01B,&p01A);
+
+    U16 p11R, p11G, p11B, p11A;
+    from_8888(gather_unaligned<U32>(ptr, stride1 + ax1), &p11R,&p11G,&p11B,&p11A);
+
+    auto blend = [&](U16 P00, U16 P10, U16 P01, U16 P11) -> U16 {
+        U32 sum_top    = expand(w00) * expand(P00) + expand(w10) * expand(P10);
+        U32 sum_bottom = expand(w01) * expand(P01) + expand(w11) * expand(P11);
+        return cast<U16>((sum_top + sum_bottom + 16384) >> 15);
+    };
+
+    r = blend(p00R, p10R, p01R, p11R);
+    g = blend(p00G, p10G, p01G, p11G);
+    b = blend(p00B, p10B, p01B, p11B);
+    a = blend(p00A, p10A, p01A, p11A);
+#else
+    // Standard lerpX / lerpY path with Strategy 3 (iround) and Strategy 5 (stride shift)
 #if defined(SKRP_CPU_LSX)
     __m128 _01, _23, _45, _67;
     v4f32 v_tmp1 = {0.5f, 0.5f, 0.5f, 0.5f};
@@ -6986,8 +7085,8 @@ LOWP_STAGE_GP(bilerp_clamp_8888, const SkRasterPipelineContexts::GatherCtx* ctx)
     I32 qx = cast<I32>((join<F>(__lsx_vfrintrm_s(val1), __lsx_vfrintrm_s(val2)))) - 32768,
     qy = cast<I32>((join<F>(__lsx_vfrintrm_s(val3), __lsx_vfrintrm_s(val4)))) - 32768;
 #else
-    I32 qx = cast<I32>(floor_(65536.0f * x + 0.5f)) - 32768,
-        qy = cast<I32>(floor_(65536.0f * y + 0.5f)) - 32768;
+    I32 qx = iround(65536.0f * x) - 32768,
+        qy = iround(65536.0f * y) - 32768;
 #endif
 
     // Calculate screen coordinates sx & sy by flooring qx and qy.
@@ -7015,76 +7114,64 @@ LOWP_STAGE_GP(bilerp_clamp_8888, const SkRasterPipelineContexts::GatherCtx* ctx)
     qy_hi = __lsx_vxor_v(qy_hi, temp);
 
     I16 tx = __lsx_vpickev_h(qx_hi, qx_lo);
-    I16 ty = __lsx_vpickev_h(qy_hi, qy_lo);
+    I16 ty = __lsx_vpickev_h(qy_lo, qy_lo);
 #else
     I16 tx = cast<I16>(qx ^ 0x8000),
         ty = cast<I16>(qy ^ 0x8000);
 #endif
 
-    // Substituting the {qx} by the equation for tx from above into the lerp equation where v is
-    // the lerped value:
-    //         v = {qx}*(R - L) + L,
-    //         v = 1/2*(tx + 1)*(R - L) + L
-    //     2 * v = (tx + 1)*(R - L) + 2*L
-    //           = tx*R - tx*L + R - L + 2*L
-    //           = tx*(R - L) + (R + L).
-    // Since R and L are on [0, 255] we need them on the interval [0, 1/2] to get them into form
-    // for Q15_mult. If L and R where in 16.16 format, this would be done by dividing by 2^9. In
-    // code, we can multiply by 2^7 to get the value directly.
-    //            2 * v = tx*(R - L) + (R + L)
-    //     2^-9 * 2 * v = tx*(R - L)*2^-9 + (R + L)*2^-9
-    //         2^-8 * v = 2^-9 * (tx*(R - L) + (R + L))
-    //                v = 1/2 * (tx*(R - L) + (R + L))
     auto lerpX = [&](U16 left, U16 right) -> U16 {
         I16 width  = (I16)(right - left) << 7;
         U16 middle = (right + left) << 7;
-        // The constrained_add is the most subtle part of lerp. The first term is on the interval
-        // [-1, 1), and the second term is on the interval is on the interval [0, 1) because
-        // both terms are too high by a factor of 2 which will be handled below. (Both R and L are
-        // on [0, 1/2), but the sum R + L is on the interval [0, 1).) Generally, the sum below
-        // should overflow, but because we know that sum produces an output on the
-        // interval [0, 1) we know that the extra bit that would be needed will always be 0. So
-        // we need to be careful to treat this sum as an unsigned positive number in the divide
-        // by 2 below. Add +1 for rounding.
         U16 v2  = constrained_add(scaled_mult(tx, width), middle) + 1;
-        // Divide by 2 to calculate v and at the same time bring the intermediate value onto the
-        // interval [0, 1/2] to set up for the lerpY.
         return v2 >> 1;
     };
 
-    const uint32_t* ptr;
-    U32 ix = ix_and_ptr(&ptr, ctx, sx, sy);
-    U16 leftR, leftG, leftB, leftA;
-    from_8888(gather_unaligned<U32>(ptr, ix), &leftR,&leftG,&leftB,&leftA);
+    SkASSERT(ctx->roundDownAtInteger == 0);
+    const I32 w = I32_(ctx->width - 1),
+              h = I32_(ctx->height - 1);
 
-    ix = ix_and_ptr(&ptr, ctx, sx+1, sy);
+    U32 ax  = cast<U32>(min(max(0, sx),   w)),
+        ax1 = cast<U32>(min(max(0, sx+1), w)),
+        ay  = cast<U32>(min(max(0, sy),   h)),
+        ay1 = cast<U32>(min(max(0, sy+1), h));
+
+    U32 stride0, stride1;
+    if ((ctx->stride & (ctx->stride - 1)) == 0) {
+        int shift = __builtin_ctz(ctx->stride);
+        stride0 = ay  << shift;
+        stride1 = ay1 << shift;
+    } else {
+        stride0 = ay  * ctx->stride;
+        stride1 = ay1 * ctx->stride;
+    }
+
+    const uint32_t* ptr = (const uint32_t*)ctx->pixels;
+
+    U16 leftR, leftG, leftB, leftA;
+    from_8888(gather_unaligned<U32>(ptr, stride0 + ax), &leftR,&leftG,&leftB,&leftA);
+
     U16 rightR, rightG, rightB, rightA;
-    from_8888(gather_unaligned<U32>(ptr, ix), &rightR,&rightG,&rightB,&rightA);
+    from_8888(gather_unaligned<U32>(ptr, stride0 + ax1), &rightR,&rightG,&rightB,&rightA);
 
     U16 topR = lerpX(leftR, rightR),
         topG = lerpX(leftG, rightG),
         topB = lerpX(leftB, rightB),
         topA = lerpX(leftA, rightA);
 
-    ix = ix_and_ptr(&ptr, ctx, sx, sy+1);
-    from_8888(gather_unaligned<U32>(ptr, ix), &leftR,&leftG,&leftB,&leftA);
+    from_8888(gather_unaligned<U32>(ptr, stride1 + ax), &leftR,&leftG,&leftB,&leftA);
 
-    ix = ix_and_ptr(&ptr, ctx, sx+1, sy+1);
-    from_8888(gather_unaligned<U32>(ptr, ix), &rightR,&rightG,&rightB,&rightA);
+    from_8888(gather_unaligned<U32>(ptr, stride1 + ax1), &rightR,&rightG,&rightB,&rightA);
 
     U16 bottomR = lerpX(leftR, rightR),
         bottomG = lerpX(leftG, rightG),
         bottomB = lerpX(leftB, rightB),
         bottomA = lerpX(leftA, rightA);
 
-    // lerpY plays the same mathematical tricks as lerpX, but the final divide is by 256 resulting
-    // in a value on [0, 255].
     auto lerpY = [&](U16 top, U16 bottom) -> U16 {
         I16 width  = (I16)bottom - (I16)top;
         U16 middle = bottom + top;
-        // Add + 0x80 for rounding.
         U16 blend  = constrained_add(scaled_mult(ty, width), middle) + 0x80;
-
         return blend >> 8;
     };
 
@@ -7092,6 +7179,7 @@ LOWP_STAGE_GP(bilerp_clamp_8888, const SkRasterPipelineContexts::GatherCtx* ctx)
     g = lerpY(topG, bottomG);
     b = lerpY(topB, bottomB);
     a = lerpY(topA, bottomA);
+#endif
 }
 
 LOWP_STAGE_GG(xy_to_unit_angle, NoCtx) {
