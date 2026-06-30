@@ -2518,16 +2518,27 @@ BLEND_MODE(softlight) {
 SI F sat(F r, F g, F b) { return max(r, max(g,b)) - min(r, min(g,b)); }
 SI F lum(F r, F g, F b) { return mad(r, 0.30f, mad(g, 0.59f, b*0.11f)); }
 
-SI void set_sat(F* r, F* g, F* b, F s) {
+SI void set_sat_and_lum(F* r, F* g, F* b, F s, F l) {
     F mn  = min(*r, min(*g,*b)),
       mx  = max(*r, max(*g,*b)),
       sat = mx - mn;
 
+    F l_old = lum(*r, *g, *b);
+
     // Map min channel to 0, max channel to s, and scale the middle proportionally.
     s = if_then_else(sat == 0.0f, 0.0f, s * rcp_fast(sat));
-    *r = (*r - mn) * s;
-    *g = (*g - mn) * s;
-    *b = (*b - mn) * s;
+    F r_sat = (*r - mn) * s,
+      g_sat = (*g - mn) * s,
+      b_sat = (*b - mn) * s;
+
+    // Set luminance analytically:
+    // lum(r_sat, g_sat, b_sat) = s * (l_old - mn)
+    F l_new = s * (l_old - mn);
+    F diff = l - l_new;
+
+    *r = r_sat + diff;
+    *g = g_sat + diff;
+    *b = b_sat + diff;
 }
 SI void set_lum(F* r, F* g, F* b, F l) {
     F diff = l - lum(*r, *g, *b);
@@ -2560,8 +2571,7 @@ HIGHP_STAGE(hue, NoCtx) {
       G = g*a,
       B = b*a;
 
-    set_sat(&R, &G, &B, sat(dr,dg,db)*a);
-    set_lum(&R, &G, &B, lum(dr,dg,db)*a);
+    set_sat_and_lum(&R, &G, &B, sat(dr,dg,db)*a, lum(dr,dg,db)*a);
     clip_color(&R,&G,&B, a*da);
 
     r = mad(r, inv(da), mad(dr, inv(a), R));
@@ -2574,8 +2584,7 @@ HIGHP_STAGE(saturation, NoCtx) {
       G = dg*a,
       B = db*a;
 
-    set_sat(&R, &G, &B, sat( r, g, b)*da);
-    set_lum(&R, &G, &B, lum(dr,dg,db)* a);  // (This is not redundant.)
+    set_sat_and_lum(&R, &G, &B, sat( r, g, b)*da, lum(dr,dg,db)* a);
     clip_color(&R,&G,&B, a*da);
 
     r = mad(r, inv(da), mad(dr, inv(a), R));
