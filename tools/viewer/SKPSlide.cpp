@@ -14,7 +14,7 @@
 #include "include/core/SkString.h"
 #include "include/private/SkDebug.h"
 #include "include/private/SkTo.h"
-#include "tools/DeserialProcsUtils.h"
+#include "tools/ProcsUtils.h"
 
 #include <utility>
 

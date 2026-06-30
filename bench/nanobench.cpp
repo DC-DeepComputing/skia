@@ -5,9 +5,9 @@
  * found in the LICENSE file.
  */
 
-#include <ctype.h>
-
 #include "bench/nanobench.h"
+
+#include <ctype.h>
 
 #include "bench/AndroidCodecBench.h"
 #include "bench/Benchmark.h"
@@ -48,9 +48,9 @@
 #include "src/utils/SkShaderUtils.h"
 #include "tools/AutoreleasePool.h"
 #include "tools/CrashHandler.h"
-#include "tools/DeserialProcsUtils.h"
 #include "tools/MSKPPlayer.h"
 #include "tools/ProcStats.h"
+#include "tools/ProcsUtils.h"
 #include "tools/Stats.h"
 #include "tools/ToolUtils.h"
 #include "tools/flags/CommonFlags.h"

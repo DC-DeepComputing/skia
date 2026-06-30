@@ -10,7 +10,7 @@
 #include "include/core/SkStream.h"
 #include "include/utils/SkNullCanvas.h"
 #include "src/utils/SkJSONWriter.h"
-#include "tools/DeserialProcsUtils.h"
+#include "tools/ProcsUtils.h"
 #include "tools/UrlDataManager.h"
 #include "tools/debugger/DebugCanvas.h"
 
@@ -56,7 +56,7 @@ int main(int argc, char** argv) {
         return 3;
     }
     SkISize size = pic->cullRect().roundOut().size();
-    DebugCanvas debugCanvas(size.width(), size.height());
+    DebugCanvas debugCanvas({size.width(), size.height()}, ToolUtils::serial_procs());
     pic->playback(&debugCanvas);
     std::unique_ptr<SkCanvas> nullCanvas = SkMakeNullCanvas();
     UrlDataManager dataManager(SkString("data"));
