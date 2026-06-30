@@ -33,6 +33,23 @@
       "message": "I only see hollow diamonds in the test rendering, and some emoji tests start failing. Did you run viewer locally and looked at the results?",
       "revId": "661cbd2ac1ba0de7965cba5d2f6e64c54b169fd1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "647fc3c6_0a595ee2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2026-06-30T13:21:45Z",
+      "side": 1,
+      "message": "More specifically `coloremoji_sbix` seems to start failing with this test and fontations active.",
+      "revId": "661cbd2ac1ba0de7965cba5d2f6e64c54b169fd1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
