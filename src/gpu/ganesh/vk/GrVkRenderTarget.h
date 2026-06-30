@@ -7,6 +7,8 @@
 
 
 #ifndef GrVkRenderTarget_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define GrVkRenderTarget_DEFINED
 
 #include "include/core/SkRefCnt.h"
@@ -199,7 +201,7 @@ private:
 
     sk_sp<const GrVkFramebuffer> fCachedFramebuffers[kNumCachedFramebuffers];
 
-    const GrVkDescriptorSet* fCachedInputDescriptorSet = nullptr;
+    raw_ptr<const GrVkDescriptorSet> fCachedInputDescriptorSet = nullptr;
 
     sk_sp<GrVkFramebuffer> fExternalFramebuffer;
 };

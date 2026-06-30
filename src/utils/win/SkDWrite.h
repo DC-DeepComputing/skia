@@ -6,6 +6,8 @@
  */
 
 #ifndef SkDWrite_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define SkDWrite_DEFINED
 
 #include "include/core/SkFontStyle.h"
@@ -65,7 +67,7 @@ public:
     BOOL fExists;
 private:
     // Borrowed reference, the user must ensure the fontFace stays alive.
-    IDWriteFontFace* fFontFace;
+    raw_ptr<IDWriteFontFace> fFontFace;
     void* fLock;
 };
 template<typename T> class AutoTDWriteTable : public AutoDWriteTable {

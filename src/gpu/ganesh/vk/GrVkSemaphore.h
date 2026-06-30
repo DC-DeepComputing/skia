@@ -6,6 +6,8 @@
  */
 
 #ifndef GrVkSemaphore_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define GrVkSemaphore_DEFINED
 
 #include "include/private/SkDebug.h"
@@ -94,7 +96,7 @@ private:
         fResource->setIsOwned();
     }
 
-    Resource* fResource;
+    raw_ptr<Resource> fResource;
 
     using INHERITED = GrSemaphore;
 };

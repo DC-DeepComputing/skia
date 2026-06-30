@@ -6,6 +6,8 @@
  */
 
 #ifndef skgpu_graphite_ShaderCodeDictionary_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define skgpu_graphite_ShaderCodeDictionary_DEFINED
 
 #include "include/core/SkSpan.h"
@@ -236,7 +238,7 @@ public:
     SkSpan<const uint32_t> data() const { return fData; }
 
 private:
-    const ShaderSnippet* fEntry; // Owned by the ShaderCodeDictionary
+    raw_ptr<const ShaderSnippet> fEntry; // Owned by the ShaderCodeDictionary
     SkSpan<ShaderNode*> fChildren; // Owned by the ShaderInfo's arena
 
     int32_t fCodeID;

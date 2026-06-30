@@ -6,6 +6,8 @@
  */
 
 #ifndef SkOTUtils_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define SkOTUtils_DEFINED
 
 #include "include/core/SkTypeface.h"
@@ -69,7 +71,7 @@ struct SkOTUtils {
     private:
         static SK_OT_USHORT familyNameTypes[3];
 
-        SK_OT_USHORT* fTypes;
+        raw_ptr<SK_OT_USHORT, AllowPtrArithmetic> fTypes;
         int fTypesCount;
         int fTypesIndex;
         std::unique_ptr<uint8_t[]> fNameTableData;

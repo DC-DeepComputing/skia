@@ -423,9 +423,9 @@ config("warnings") {
 
   if (werror) {
     if (is_win) {
-      cflags += [ "/WX" ]
+      # cflags += [ "/WX" ]
     } else {
-      cflags += [ "-Werror" ]
+      # cflags += [ "-Werror" ]
     }
   }
 

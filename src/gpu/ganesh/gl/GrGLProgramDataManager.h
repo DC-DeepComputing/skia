@@ -6,6 +6,8 @@
  */
 
 #ifndef GrGLProgramDataManager_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define GrGLProgramDataManager_DEFINED
 
 #include "include/gpu/ganesh/gl/GrGLTypes.h"
@@ -87,7 +89,7 @@ private:
                                             const float matrices[]) const;
 
     skia_private::TArray<Uniform, true> fUniforms;
-    GrGLGpu* fGpu;
+    raw_ptr<GrGLGpu> fGpu;
 
     using INHERITED = GrGLSLProgramDataManager;
 };

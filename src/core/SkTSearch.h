@@ -8,6 +8,8 @@
 
 
 #ifndef SkTSearch_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define SkTSearch_DEFINED
 
 #include "include/private/SkAssert.h"
@@ -118,7 +120,7 @@ public:
     size_t      length() const { return fLength; }
 
 private:
-    char*   fLC;    // points to either the heap or fStorage
+    raw_ptr<char> fLC;    // points to either the heap or fStorage
     size_t  fLength;
     enum {
         STORAGE = 64

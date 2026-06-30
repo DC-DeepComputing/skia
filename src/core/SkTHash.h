@@ -6,6 +6,8 @@
  */
 
 #ifndef SkTHash_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define SkTHash_DEFINED
 
 #include "include/core/SkTypes.h"
@@ -294,7 +296,7 @@ public:
         }
 
     protected:
-        const TTable* fTable;
+        raw_ptr<const TTable> fTable;
         int fSlot;
     };
 

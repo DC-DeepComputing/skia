@@ -6,6 +6,8 @@
  */
 
 #ifndef SKSL_FUNCTIONPROTOTYPE
+#include "src/partition_alloc/raw_ptr.h"
+
 #define SKSL_FUNCTIONPROTOTYPE
 
 #include "src/sksl/ir/SkSLBlock.h"
@@ -34,7 +36,7 @@ public:
     }
 
 private:
-    const FunctionDeclaration* fDeclaration;
+    raw_ptr<const FunctionDeclaration> fDeclaration;
 
     using INHERITED = ProgramElement;
 };
