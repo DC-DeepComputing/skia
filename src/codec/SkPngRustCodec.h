@@ -113,10 +113,10 @@ private:
 
     // Helper for row-by-row decoding which is used from `onGetPixels` and/or
     // `onIncrementalDecode`.
-    Result incrementalDecode(DecodingState& decodingState, int* rowsDecoded);
+    Result incrementalDecode(DecodingState& decodingState);
     // The same as incrementalDecode but uses `applyXFormRow()`. Should only
     // be used if this->canReadRows() is false.
-    Result incrementalDecodeXForm(DecodingState& decodingState, int* rowsDecoded);
+    Result incrementalDecodeXForm(DecodingState& decodingState);
 
     // Helper for reading until the start of the next `fdAT` sequence.
     Result readToStartOfNextFrame();
@@ -228,6 +228,8 @@ private:
                                         int srcHeight,
                                         int dstHeight,
                                         size_t dstRowSize);
+    void flushInterlacedBuffer(const DecodingState& decodingState);
+    void updateRowsDecoded(int* rowsDecoded, Result result, const DecodingState& decodingState);
 };
 
 #endif  // SkPngRustCodec_DEFINED
