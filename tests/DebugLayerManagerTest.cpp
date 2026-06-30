@@ -15,6 +15,7 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "tests/Test.h"
+#include "tools/ProcsUtils.h"
 #include "tools/debugger/DebugLayerManager.h"
 
 #include <vector>
