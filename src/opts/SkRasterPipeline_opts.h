@@ -3012,14 +3012,36 @@ HIGHP_STAGE(parametric, const skcms_TransferFunction* ctx) {
 }
 
 HIGHP_STAGE(gamma_, const float* G) {
-    auto fn = [&](F v) {
-        U32 sign;
-        v = strip_sign(v, &sign);
-        return apply_sign(approx_powf(v, *G), sign);
-    };
-    r = fn(r);
-    g = fn(g);
-    b = fn(b);
+    if (*G == 2.0f) {
+        auto fn = [&](F v) {
+            U32 sign;
+            v = strip_sign(v, &sign);
+            return apply_sign(v * v, sign);
+        };
+        r = fn(r);
+        g = fn(g);
+        b = fn(b);
+    } else if (*G == 0.5f) {
+        auto fn = [&](F v) {
+            U32 sign;
+            v = strip_sign(v, &sign);
+            return apply_sign(sqrt_(v), sign);
+        };
+        r = fn(r);
+        g = fn(g);
+        b = fn(b);
+    } else if (*G == 1.0f) {
+        // No-op! 1.0f represents a linear color space, requiring no transformation.
+    } else {
+        auto fn = [&](F v) {
+            U32 sign;
+            v = strip_sign(v, &sign);
+            return apply_sign(approx_powf(v, *G), sign);
+        };
+        r = fn(r);
+        g = fn(g);
+        b = fn(b);
+    }
 }
 
 HIGHP_STAGE(PQish, const skcms_TransferFunction* ctx) {
