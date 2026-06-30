@@ -14,6 +14,7 @@
 #include "src/sksl/ir/SkSLType.h"
 #include "src/sksl/tracing/SkSLDebugTracePriv.h"
 #include "src/utils/SkJSONWriter.h"
+#include "tools/ProcsUtils.h"
 
 #include <cstdint>
 #include <cstdio>
@@ -26,7 +27,7 @@ static constexpr char kTraceVersion[] = "20220209";
 namespace SkSLTraceUtils {
 
 void WriteTrace(const SkSL::DebugTracePriv& src, SkWStream* w) {
-    SkJSONWriter json(w);
+    SkJSONWriter json(w, ToolUtils::serial_procs());
 
     json.beginObject();  // root
     json.appendNString("version", kTraceVersion);
