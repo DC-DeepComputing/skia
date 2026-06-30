@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1d3f2a8_d7815407",
+        "filename": "modules/canvaskit/debugger_bindings.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 420,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-30T13:41:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3890ca49_6e8d2f13",
+      "range": {
+        "startLine": 420,
+        "startChar": 78,
+        "endLine": 420,
+        "endChar": 91
+      },
+      "revId": "d9fd007bb99d3f64b2141bdde6b3ce5c9fe28ca7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e5de0f85_761dcc5b",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "243c57f1_c8f94174",
+        "filename": "tools/debugger/DebugLayerManager.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-30T13:41:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e5de0f85_761dcc5b",
+      "range": {
+        "startLine": 56,
+        "startChar": 48,
+        "endLine": 56,
+        "endChar": 59
+      },
+      "revId": "d9fd007bb99d3f64b2141bdde6b3ce5c9fe28ca7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ae3dbab9_854225da",
@@ -60,6 +108,30 @@
       "writtenOn": "2026-06-29T19:04:58Z",
       "side": 1,
       "message": "Why do we need procs here *and* in toJSON. I bet just in the constructor is cleaner.",
+      "range": {
+        "startLine": 105,
+        "startChar": 40,
+        "endLine": 105,
+        "endChar": 53
+      },
+      "revId": "d9fd007bb99d3f64b2141bdde6b3ce5c9fe28ca7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9f76d82_2030e5f1",
+        "filename": "tools/debugger/DrawCommand.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-30T13:41:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ae3dbab9_854225da",
       "range": {
         "startLine": 105,
         "startChar": 40,

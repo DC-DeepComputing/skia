@@ -238,6 +238,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "fab8b93e_ac0d9d35",
+        "filename": "tools/debugger/DrawCommand.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 611,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-30T13:41:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0fbe4693_80e8c481",
+      "range": {
+        "startLine": 611,
+        "startChar": 11,
+        "endLine": 611,
+        "endChar": 21
+      },
+      "revId": "2c90dafca6079e061f715ae8c863e07163ed6d7f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "32ac1814_1424dc87",
         "filename": "tools/debugger/DrawCommand.h",
         "patchSetId": 3

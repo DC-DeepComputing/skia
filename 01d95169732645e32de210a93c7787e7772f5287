@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "57b1f8c9_67015537",
+        "filename": "tools/DeserialProcsUtils.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-30T13:41:23Z",
+      "side": 1,
+      "message": "turned it into nullptr. everything seems to be working :o will monitor",
+      "parentUuid": "df57b994_600944c2",
+      "range": {
+        "startLine": 58,
+        "startChar": 36,
+        "endLine": 58,
+        "endChar": 63
+      },
+      "revId": "01d95169732645e32de210a93c7787e7772f5287",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a8fafbed_091380d0",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c14e4312_53089723",
+        "filename": "tools/DeserialProcsUtils.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-30T13:41:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a8fafbed_091380d0",
+      "range": {
+        "startLine": 9,
+        "startChar": 8,
+        "endLine": 9,
+        "endChar": 34
+      },
+      "revId": "01d95169732645e32de210a93c7787e7772f5287",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "78686617_5116d160",
@@ -60,6 +108,30 @@
       "writtenOn": "2026-06-29T19:04:58Z",
       "side": 1,
       "message": "remove png from the name here.",
+      "range": {
+        "startLine": 19,
+        "startChar": 14,
+        "endLine": 19,
+        "endChar": 36
+      },
+      "revId": "01d95169732645e32de210a93c7787e7772f5287",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2bca4066_156a25ef",
+        "filename": "tools/DeserialProcsUtils.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-30T13:41:23Z",
+      "side": 1,
+      "message": "left it as `serial_procs` and `deserial_procs` respectively. let me know if that works",
+      "parentUuid": "78686617_5116d160",
       "range": {
         "startLine": 19,
         "startChar": 14,
@@ -95,6 +167,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "907011dc_8b0546fe",
+        "filename": "tools/DeserialProcsUtils.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-30T13:41:23Z",
+      "side": 1,
+      "message": "I saw that they had different logic and functionality so I wasn\u0027t sure which one would be the best choice here. I also think they serve somewhat different purposes with get_default_skp_deserial_procs() being for general testing and (I think) deserial_procs_using_png() being the bare minimum for deserialization procs. \n\nShould we just always default to get_default_skp_deserial_procs()? or should we rename them to communicate this",
+      "parentUuid": "042e4746_3d2fdcc3",
+      "range": {
+        "startLine": 21,
+        "startChar": 16,
+        "endLine": 21,
+        "endChar": 40
+      },
+      "revId": "01d95169732645e32de210a93c7787e7772f5287",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dce5d14d_ac07e300",
         "filename": "tools/debugger/DrawCommand.h",
         "patchSetId": 8
@@ -106,6 +202,30 @@
       "writtenOn": "2026-06-29T19:04:58Z",
       "side": 1,
       "message": "Would it be more helpful to have procs be passed into a JSON writer at construction time?",
+      "range": {
+        "startLine": 119,
+        "startChar": 24,
+        "endLine": 119,
+        "endChar": 37
+      },
+      "revId": "01d95169732645e32de210a93c7787e7772f5287",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "327b3ab1_a5a1e145",
+        "filename": "tools/debugger/DrawCommand.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-30T13:41:23Z",
+      "side": 1,
+      "message": "sorry, I was over plumbing because I had to make some of the static functions (`flatten`) use `SkSerialProcs serialProcs`. this was because you couldn\u0027t access instance field variables from within the static methods. I guess I mistook toJSON as static",
+      "parentUuid": "dce5d14d_ac07e300",
       "range": {
         "startLine": 119,
         "startChar": 24,
