@@ -129,6 +129,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "caf29ccd_469a3c9c",
+        "filename": "src/gpu/graphite/task/RenderPassTask.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-30T16:51:08Z",
+      "side": 1,
+      "message": "Good catch",
+      "parentUuid": "cf8209b1_7ea1d84c",
+      "range": {
+        "startLine": 134,
+        "startChar": 1,
+        "endLine": 137,
+        "endChar": 0
+      },
+      "revId": "89dc42e742b89430010ee2e62a53679d0257893c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7bc9bea4_f4243b23",
