@@ -6,6 +6,8 @@
  */
 
 #ifndef skgpu_graphite_DawnAsyncWait_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define skgpu_graphite_DawnAsyncWait_DEFINED
 
 #include "include/core/SkTypes.h"
@@ -45,7 +47,7 @@ public:
     void reset() { fSignaled = false; }
 
 private:
-    const DawnSharedContext* fSharedContext;
+    raw_ptr<const DawnSharedContext> fSharedContext;
     std::atomic_bool fSignaled;
 };
 

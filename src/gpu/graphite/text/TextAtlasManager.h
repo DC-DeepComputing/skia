@@ -6,6 +6,8 @@
  */
 
 #ifndef skgpu_graphite_TextAtlasManager_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define skgpu_graphite_TextAtlasManager_DEFINED
 
 #include "include/core/SkRefCnt.h"  // IWYU pragma: keep
@@ -139,7 +141,7 @@ private:
         return fAtlases[atlasIndex].get();
     }
 
-    Recorder* fRecorder;
+    raw_ptr<Recorder> fRecorder;
     DrawAtlas::AllowMultitexturing fAllowMultitexturing;
     std::unique_ptr<DrawAtlas> fAtlases[kMaskFormatCount];
     static_assert(kMaskFormatCount == 3);

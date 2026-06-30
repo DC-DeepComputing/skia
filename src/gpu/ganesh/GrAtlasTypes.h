@@ -6,6 +6,8 @@
  */
 
 #ifndef GrAtlasTypes_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define GrAtlasTypes_DEFINED
 
 #include "include/core/SkColor.h"
@@ -391,10 +393,10 @@ private:
     skgpu::Token fLastUse;
     int          fFlushesSinceLastUse;
 
-    GrAtlasGenerationCounter* const fGenerationCounter;
+    const raw_ptr<GrAtlasGenerationCounter> fGenerationCounter;
     uint64_t fGenID;
     GrPlotLocator fPlotLocator;
-    std::byte* fData;
+    raw_ptr<std::byte, DanglingUntriaged | AllowPtrArithmetic> fData;
     const int fWidth;
     const int fHeight;
     const int fX;

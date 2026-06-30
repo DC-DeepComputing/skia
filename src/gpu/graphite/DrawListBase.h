@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 #ifndef skgpu_graphite_DrawListBase_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define skgpu_graphite_DrawListBase_DEFINED
 
 #include "include/gpu/graphite/GraphiteTypes.h"
@@ -274,7 +276,7 @@ protected:
     private:
         TextureDataCache::Index fLastIndex = TextureDataCache::kInvalidIndex;
 
-        TextureDataCache* const fTextureCache;
+        const raw_ptr<TextureDataCache> fTextureCache;
     };
 };
 

@@ -6,6 +6,8 @@
  */
 
 #ifndef SkMaskFilterBase_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define SkMaskFilterBase_DEFINED
 
 #include "include/core/SkFlattenable.h"
@@ -137,7 +139,7 @@ protected:
         SkMask      fMask;      // fBounds must have [0,0] in its top-left
         SkIRect     fOuterRect; // width/height must be >= fMask.fBounds'
         SkIPoint    fCenter;    // identifies center row/col for stretching
-        SkCachedData* fCache = nullptr;
+        raw_ptr<SkCachedData> fCache = nullptr;
     };
 
     /**

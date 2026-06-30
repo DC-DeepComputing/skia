@@ -6,6 +6,8 @@
  */
 
 #ifndef GrDrawingManager_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define GrDrawingManager_DEFINED
 
 #include "include/core/SkRefCnt.h"
@@ -244,7 +246,7 @@ private:
     static const int kNumPixelGeometries = 5; // The different pixel geometries
     static const int kNumDFTOptions = 2;      // DFT or no DFT
 
-    GrRecordingContext*                        fContext;
+    raw_ptr<GrRecordingContext> fContext;
 
     // This cache is used by both the vertex and index pools. It reuses memory across multiple
     // flushes.
@@ -252,7 +254,7 @@ private:
 
     skia_private::TArray<sk_sp<GrRenderTask>>  fDAG;
     std::vector<int>                           fReorderBlockerTaskIndices;
-    skgpu::ganesh::OpsTask*                    fActiveOpsTask = nullptr;
+    raw_ptr<skgpu::ganesh::OpsTask, DanglingUntriaged> fActiveOpsTask = nullptr;
 
     PathRendererChain::Options                 fOptionsForPathRendererChain;
     std::unique_ptr<PathRendererChain>         fPathRendererChain;

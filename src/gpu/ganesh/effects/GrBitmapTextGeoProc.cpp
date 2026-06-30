@@ -62,7 +62,7 @@ public:
 
 private:
     void onEmitCode(EmitArgs& args, GrGPArgs* gpArgs) override {
-        const GrBitmapTextGeoProc& btgp = args.fGeomProc.cast<GrBitmapTextGeoProc>();
+        const GrBitmapTextGeoProc& btgp = args.fGeomProc->cast<GrBitmapTextGeoProc>();
 
         GrGLSLVertexBuilder* vertBuilder = args.fVertBuilder;
         GrGLSLVaryingHandler* varyingHandler = args.fVaryingHandler;

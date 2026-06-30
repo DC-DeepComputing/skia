@@ -1,6 +1,8 @@
 // Copyright 2019 Google LLC
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 #ifndef SkPDFGraphicStackState_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define SkPDFGraphicStackState_DEFINED
 
 #include "include/core/SkColor.h"
@@ -29,7 +31,7 @@ struct SkPDFGraphicStackState {
     inline static constexpr int kMaxStackDepth = 2;
     Entry fEntries[kMaxStackDepth + 1];
     int fStackDepth = 0;
-    SkDynamicMemoryWStream* fContentStream;
+    raw_ptr<SkDynamicMemoryWStream> fContentStream;
 
     SkPDFGraphicStackState(SkDynamicMemoryWStream* s = nullptr) : fContentStream(s) {}
     void updateClip(const SkClipStack* clipStack, const SkIRect& bounds);

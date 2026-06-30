@@ -6,6 +6,8 @@
  */
 
 #ifndef GrThreadSafeCache_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define GrThreadSafeCache_DEFINED
 
 #include "include/core/SkRefCnt.h"
@@ -145,7 +147,7 @@ public:
         }
 
         void reset() {
-            sk_free(const_cast<void*>(fVertices));
+            sk_free(const_cast<void*>(fVertices.get()));
             fVertices = nullptr;
             fNumVertices = 0;
             fVertexSize = 0;
@@ -168,7 +170,7 @@ public:
                 , fGpuBuffer(std::move(gpuBuffer)) {
         }
 
-        const void*        fVertices;
+        raw_ptr<const void> fVertices;
         int                fNumVertices;
         size_t             fVertexSize;
 
@@ -338,7 +340,7 @@ private:
 
     char                         fStorage[kInitialArenaSize];
     SkArenaAlloc                 fEntryAllocator{fStorage, kInitialArenaSize, kInitialArenaSize};
-    Entry*                       fFreeEntryList  SK_GUARDED_BY(fSpinLock);
+    raw_ptr<Entry> fFreeEntryList  SK_GUARDED_BY(fSpinLock);
 };
 
 #endif // GrThreadSafeCache_DEFINED

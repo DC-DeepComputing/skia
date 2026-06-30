@@ -6,6 +6,8 @@
  */
 
 #ifndef SKSL_SYMBOLTABLE
+#include "src/partition_alloc/raw_ptr.h"
+
 #define SKSL_SYMBOLTABLE
 
 #include "include/core/SkTypes.h"
@@ -198,7 +200,7 @@ public:
         fAtModuleBoundary = true;
     }
 
-    SymbolTable* fParent = nullptr;
+    raw_ptr<SymbolTable, DanglingUntriaged> fParent = nullptr;
 
     std::vector<std::unique_ptr<Symbol>> fOwnedSymbols;
 

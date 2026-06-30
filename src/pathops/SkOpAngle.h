@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 #ifndef SkOpAngle_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define SkOpAngle_DEFINED
 
 #include "include/core/SkPath.h"
@@ -133,11 +135,11 @@ private:
     SkDCurveSweep fPart;  // the curve from start to end offset as needed
     double fSide;
     SkLineParameters fTangentHalf;  // used only to sort a pair of lines or line-like sections
-    SkOpAngle* fNext;
-    SkOpSpanBase* fLastMarked;
-    SkOpSpanBase* fStart;
-    SkOpSpanBase* fEnd;
-    SkOpSpanBase* fComputedEnd;
+    raw_ptr<SkOpAngle> fNext;
+    raw_ptr<SkOpSpanBase> fLastMarked;
+    raw_ptr<SkOpSpanBase> fStart;
+    raw_ptr<SkOpSpanBase> fEnd;
+    raw_ptr<SkOpSpanBase> fComputedEnd;
     int fSectorMask;
     int8_t fSectorStart;  // in 32nds of a circle
     int8_t fSectorEnd;

@@ -6,6 +6,8 @@
  */
 
 #ifndef skgpu_graphite_ResourceCache_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define skgpu_graphite_ResourceCache_DEFINED
 
 #include "include/core/SkRefCnt.h"
@@ -195,7 +197,7 @@ private:
     // down. Once set to that address, this will never change value.
     std::atomic<Resource*> fReturnQueue = nullptr;
 
-    SingleOwner* fSingleOwner = nullptr;
+    raw_ptr<SingleOwner> fSingleOwner = nullptr;
     SkDEBUGCODE(int fCount = 0;)
 };
 

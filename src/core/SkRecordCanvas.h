@@ -6,6 +6,8 @@
  */
 
 #ifndef SkRecordCanvas_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define SkRecordCanvas_DEFINED
 
 #include "include/core/SkCPURecorder.h"
@@ -192,7 +194,7 @@ private:
     template <typename T, typename... Args> void append(Args&&...);
 
     size_t fApproxBytesUsedBySubPictures;
-    SkRecord* fRecord;
+    raw_ptr<SkRecord, DanglingUntriaged> fRecord;
     std::unique_ptr<SkDrawableList> fDrawableList;
 };
 

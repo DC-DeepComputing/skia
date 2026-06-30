@@ -23,6 +23,7 @@
 #include "src/core/SkNextID.h"
 #include "src/core/SkResourceCache.h"
 #include "src/image/SkImage_Base.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <cstddef>
 #include <utility>
@@ -95,7 +96,9 @@ public:
             SkASSERT(fDM->data());
             fDM->unlock();
         }
-        sk_free(fMalloc);   // may be null
+        void* p = fMalloc;
+        fMalloc = nullptr;
+        sk_free(p);
     }
 
     const Key& getKey() const override { return fKey; }
@@ -151,7 +154,7 @@ public:
             SkASSERT(fDM->data());
         }
 
-        bitmap->installPixels(fInfo, fDM ? fDM->data() : fMalloc, fRowBytes, ReleaseProc, this);
+        bitmap->installPixels(fInfo, fDM ? fDM->data() : fMalloc.get(), fRowBytes, ReleaseProc, this);
         SkBitmapCache_setImmutableWithID(bitmap->pixelRef(), fPrUniqueID);
         fExternalCounter++;
 
@@ -171,7 +174,7 @@ private:
 
     // either fDM or fMalloc can be non-null, but not both
     std::unique_ptr<SkDiscardableMemory> fDM;
-    void*       fMalloc;
+    raw_ptr<void, DanglingUntriaged> fMalloc;
 
     SkImageInfo fInfo;
     size_t      fRowBytes;
@@ -262,7 +265,7 @@ struct MipMapRec : public SkResourceCache::Rec {
 
     static bool Finder(const SkResourceCache::Rec& baseRec, void* contextMip) {
         const MipMapRec& rec = static_cast<const MipMapRec&>(baseRec);
-        const SkMipmap* mm = SkRef(rec.fMipMap);
+        const SkMipmap* mm = SkRef(rec.fMipMap.get());
         // the call to ref() above triggers a "lock" in the case of discardable memory,
         // which means we can now check for null (in case the lock failed).
         if (nullptr == mm->data()) {
@@ -276,7 +279,7 @@ struct MipMapRec : public SkResourceCache::Rec {
 
 private:
     MipMapKey       fKey;
-    const SkMipmap* fMipMap;
+    raw_ptr<const SkMipmap, DanglingUntriaged> fMipMap;
 };
 }  // namespace
 
