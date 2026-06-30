@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "050dbc31_97660631",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-06-30T19:36:49Z",
+      "side": 1,
+      "message": "For the diff in Gold for the imagefiltersbase, it seems that GM defined the paint to use AA which Ganesh didn\u0027t apply but with this change Graphite does, I think this is probably the expected behavior here.",
+      "revId": "b7784d5b4fbbbfe5b1903eaab5adadaeb3c323db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
