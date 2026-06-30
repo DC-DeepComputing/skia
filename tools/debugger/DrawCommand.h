@@ -26,6 +26,7 @@
 #include "include/core/SkRegion.h"
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkSerialProcs.h"
 #include "include/core/SkShader.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTextBlob.h"
@@ -132,7 +133,6 @@ public:
     static void MakeJsonSampling(SkJSONWriter&, const SkSamplingOptions& sampling);
     static void MakeJsonPaint(SkJSONWriter&, const SkPaint& paint, UrlDataManager& urlDataManager);
     static void MakeJsonLattice(SkJSONWriter&, const SkCanvas::Lattice& lattice);
-
     static void flatten(const SkFlattenable* flattenable,
                         SkJSONWriter&        writer,
                         UrlDataManager&      urlDataManager);
@@ -288,11 +288,14 @@ private:
 
 class DrawImageCommand : public DrawCommand {
 public:
-    DrawImageCommand(const SkImage* image, SkScalar left, SkScalar top,
-                     const SkSamplingOptions&, const SkPaint* paint);
+    DrawImageCommand(const SkImage* image,
+                     SkScalar       left,
+                     SkScalar       top,
+                     const SkSamplingOptions&,
+                     const SkPaint* paint);
     void execute(SkCanvas* canvas) const override;
     bool render(SkCanvas* canvas) const override;
-    void toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManager) const override;
+    void     toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManager) const override;
     uint64_t imageId(UrlDataManager& udb) const;
 
 private:
@@ -311,10 +314,10 @@ public:
                             const SkCanvas::Lattice& lattice,
                             const SkRect&            dst,
                             SkFilterMode,
-                            const SkPaint*           paint);
+                            const SkPaint* paint);
     void execute(SkCanvas* canvas) const override;
     bool render(SkCanvas* canvas) const override;
-    void toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManager) const override;
+    void     toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManager) const override;
     uint64_t imageId(UrlDataManager& udb) const;
 
 private:
@@ -337,7 +340,7 @@ public:
                          SkCanvas::SrcRectConstraint constraint);
     void execute(SkCanvas* canvas) const override;
     bool render(SkCanvas* canvas) const override;
-    void toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManager) const override;
+    void     toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManager) const override;
     uint64_t imageId(UrlDataManager& udm) const;
 
 private:
