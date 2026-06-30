@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "aeac921f_f8324abe",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 18
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 9224
+      },
+      "writtenOn": "2026-06-30T15:43:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "83bc975e_01c4412c",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 38
+      },
+      "revId": "89dc42e742b89430010ee2e62a53679d0257893c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "cb2a3150_a457eca3",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 18
@@ -83,6 +107,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cf8209b1_7ea1d84c",
+        "filename": "src/gpu/graphite/task/RenderPassTask.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 9224
+      },
+      "writtenOn": "2026-06-30T15:43:07Z",
+      "side": 1,
+      "message": "Done\n\nThis also led me to the various Caps::extractGraphicsDescs implementations which I think should also skip setting the depth attachment? Seems like the right thing to do for precompile. Let\u0027s see what cq says..",
+      "parentUuid": "5b53ddef_6a968180",
+      "range": {
+        "startLine": 134,
+        "startChar": 1,
+        "endLine": 137,
+        "endChar": 0
+      },
+      "revId": "89dc42e742b89430010ee2e62a53679d0257893c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7bc9bea4_f4243b23",
         "filename": "tests/graphite/precompile/PaintParamsKeyTest.cpp",
         "patchSetId": 18
@@ -94,6 +142,30 @@
       "writtenOn": "2026-06-30T13:47:53Z",
       "side": 1,
       "message": "Can be fetched by `context-\u003epriv().caps()` or `precompileContext-\u003epriv().caps()`.",
+      "range": {
+        "startLine": 47,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 32
+      },
+      "revId": "89dc42e742b89430010ee2e62a53679d0257893c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e16bae07_5e435aec",
+        "filename": "tests/graphite/precompile/PaintParamsKeyTest.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 9224
+      },
+      "writtenOn": "2026-06-30T15:43:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7bc9bea4_f4243b23",
       "range": {
         "startLine": 47,
         "startChar": 0,
@@ -127,6 +199,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3454c5e_e9e7d758",
+        "filename": "tests/graphite/precompile/PaintParamsKeyTest.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 396,
+      "author": {
+        "id": 9224
+      },
+      "writtenOn": "2026-06-30T15:43:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a19694d_6b7bc271",
+      "range": {
+        "startLine": 396,
+        "startChar": 0,
+        "endLine": 396,
+        "endChar": 139
+      },
+      "revId": "89dc42e742b89430010ee2e62a53679d0257893c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7fbf91ea_a916360f",
@@ -140,6 +236,30 @@
       "writtenOn": "2026-06-30T13:47:53Z",
       "side": 1,
       "message": "nit: line length",
+      "range": {
+        "startLine": 400,
+        "startChar": 0,
+        "endLine": 400,
+        "endChar": 124
+      },
+      "revId": "89dc42e742b89430010ee2e62a53679d0257893c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f205a505_31e46eff",
+        "filename": "tests/graphite/precompile/PaintParamsKeyTest.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 400,
+      "author": {
+        "id": 9224
+      },
+      "writtenOn": "2026-06-30T15:43:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7fbf91ea_a916360f",
       "range": {
         "startLine": 400,
         "startChar": 0,
@@ -173,6 +293,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d36ec39a_ad1799ed",
+        "filename": "tests/graphite/precompile/ThreadedPrecompileTest.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 9224
+      },
+      "writtenOn": "2026-06-30T15:43:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8a982529_46cc316e",
+      "range": {
+        "startLine": 32,
+        "startChar": 12,
+        "endLine": 32,
+        "endChar": 31
+      },
+      "revId": "89dc42e742b89430010ee2e62a53679d0257893c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "689eee5c_3a34809c",
@@ -186,6 +330,30 @@
       "writtenOn": "2026-06-30T13:47:53Z",
       "side": 1,
       "message": "nit: line length",
+      "range": {
+        "startLine": 159,
+        "startChar": 42,
+        "endLine": 159,
+        "endChar": 117
+      },
+      "revId": "89dc42e742b89430010ee2e62a53679d0257893c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8adb3b72_da2b0985",
+        "filename": "tests/graphite/precompile/ThreadedPrecompileTest.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 9224
+      },
+      "writtenOn": "2026-06-30T15:43:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "689eee5c_3a34809c",
       "range": {
         "startLine": 159,
         "startChar": 42,
