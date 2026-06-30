@@ -16,6 +16,23 @@
       "message": "Thanks for adding the test!",
       "revId": "661cbd2ac1ba0de7965cba5d2f6e64c54b169fd1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ca0a2ab_45c720d7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2026-06-30T12:24:46Z",
+      "side": 1,
+      "message": "I only see hollow diamonds in the test rendering, and some emoji tests start failing. Did you run viewer locally and looked at the results?",
+      "revId": "661cbd2ac1ba0de7965cba5d2f6e64c54b169fd1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
