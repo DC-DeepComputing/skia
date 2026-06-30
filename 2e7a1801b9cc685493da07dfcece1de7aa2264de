@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d666d2e3_e5751baf",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 1000,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-06-30T17:56:08Z",
+      "side": 1,
+      "message": "I think keeping it explicit here is nicer so the argument type is more clear, but will keep that in mind for future use cases of SkFilterMode.",
+      "parentUuid": "0df7fcbf_f4cd856c",
+      "range": {
+        "startLine": 1000,
+        "startChar": 37,
+        "endLine": 1000,
+        "endChar": 62
+      },
+      "revId": "2e7a1801b9cc685493da07dfcece1de7aa2264de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "911d3513_1317e3e9",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c30d07f_6c109b14",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 1002,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-06-30T17:56:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "911d3513_1317e3e9",
+      "range": {
+        "startLine": 1002,
+        "startChar": 47,
+        "endLine": 1002,
+        "endChar": 64
+      },
+      "revId": "2e7a1801b9cc685493da07dfcece1de7aa2264de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5a4498bb_8520729f",
@@ -77,6 +125,30 @@
       "writtenOn": "2026-06-30T17:10:56Z",
       "side": 1,
       "message": "We should pass in ignoreShader\u003dtrue here. Technically `false` matches what the base SkDevice does, but from a drawImage consistency POV the lattice\u0027s image is replacing the shader of the paint. The `nextColor` from the lattice iter is a hint that the image\u0027s pixels are constant in that region and the color should match the image. \n\nI think it\u0027s a bug in the SkDevice that it\u0027s not replacing the shader in the paint copy. Looking at the Ganesh implementation (in `src/gpu/ganesh/LatticeOp`), it never passes in the `nextFixedColor` parameter to the lattice iter and explicitly replaces the shader inside Ganesh\u0027s Device::drawImageLattice (which converts to a GrPaint vs. Graphite\u0027s PaintParams).\n\nI suspect that callers are never actually calling drawImageLattice with an SkPaint that has an SkShader to be ignored in the first place, in which case this is all semantics. From that POV, I also think we should still set `ignoreShader\u003dtrue` here because it feels more intuitive when constructing an overridden PaintParams that you\u0027d get just the color provided.",
+      "range": {
+        "startLine": 189,
+        "startChar": 38,
+        "endLine": 189,
+        "endChar": 43
+      },
+      "revId": "2e7a1801b9cc685493da07dfcece1de7aa2264de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "221e7197_32bb9fa0",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-06-30T17:56:08Z",
+      "side": 1,
+      "message": "I looked at the implementations you mentioned and agree that ignoring the shader makes sense here, did that and updated the function comment in the header to clarify this.",
+      "parentUuid": "5a4498bb_8520729f",
       "range": {
         "startLine": 189,
         "startChar": 38,
