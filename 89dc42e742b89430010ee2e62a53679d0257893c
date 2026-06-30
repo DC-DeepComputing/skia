@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "83bc975e_01c4412c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 18
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-30T13:47:53Z",
+      "side": 1,
+      "message": "I think we should push that skipping logic into the unit test itself, it has access to the Caps so it can just exit with a comment along these lines.",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 38
+      },
+      "revId": "89dc42e742b89430010ee2e62a53679d0257893c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "cb2a3150_a457eca3",
@@ -14,6 +37,161 @@
       "writtenOn": "2026-06-29T21:08:23Z",
       "side": 1,
       "message": "ptal\n\nPS10 enabled the mode by default to generate gold results. I\u0027ve looked through them and the diffs look reasonable to me?",
+      "revId": "89dc42e742b89430010ee2e62a53679d0257893c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef90c693_abc544df",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 18
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-30T13:47:53Z",
+      "side": 1,
+      "message": "This all seems solid, just some minor changes to move some logic around a little.",
+      "revId": "89dc42e742b89430010ee2e62a53679d0257893c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b53ddef_6a968180",
+        "filename": "src/gpu/graphite/task/RenderPassTask.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-30T13:47:53Z",
+      "side": 1,
+      "message": "Can we adjust this inside `RenderPassDesc::Make` so that by the time we get to the Task, it more fully reflects what we\u0027ll be doing?",
+      "range": {
+        "startLine": 134,
+        "startChar": 1,
+        "endLine": 137,
+        "endChar": 0
+      },
+      "revId": "89dc42e742b89430010ee2e62a53679d0257893c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7bc9bea4_f4243b23",
+        "filename": "tests/graphite/precompile/PaintParamsKeyTest.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-30T13:47:53Z",
+      "side": 1,
+      "message": "Can be fetched by `context-\u003epriv().caps()` or `precompileContext-\u003epriv().caps()`.",
+      "range": {
+        "startLine": 47,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 32
+      },
+      "revId": "89dc42e742b89430010ee2e62a53679d0257893c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a19694d_6b7bc271",
+        "filename": "tests/graphite/precompile/PaintParamsKeyTest.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 396,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-30T13:47:53Z",
+      "side": 1,
+      "message": "nit: line length",
+      "range": {
+        "startLine": 396,
+        "startChar": 0,
+        "endLine": 396,
+        "endChar": 139
+      },
+      "revId": "89dc42e742b89430010ee2e62a53679d0257893c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7fbf91ea_a916360f",
+        "filename": "tests/graphite/precompile/PaintParamsKeyTest.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 400,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-30T13:47:53Z",
+      "side": 1,
+      "message": "nit: line length",
+      "range": {
+        "startLine": 400,
+        "startChar": 0,
+        "endLine": 400,
+        "endChar": 124
+      },
+      "revId": "89dc42e742b89430010ee2e62a53679d0257893c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a982529_46cc316e",
+        "filename": "tests/graphite/precompile/ThreadedPrecompileTest.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-30T13:47:53Z",
+      "side": 1,
+      "message": "We shoul dbe able to get at this using `precompileContext-\u003epriv().caps()-\u003eavoidDepthMode()`",
+      "range": {
+        "startLine": 32,
+        "startChar": 12,
+        "endLine": 32,
+        "endChar": 31
+      },
+      "revId": "89dc42e742b89430010ee2e62a53679d0257893c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "689eee5c_3a34809c",
+        "filename": "tests/graphite/precompile/ThreadedPrecompileTest.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-06-30T13:47:53Z",
+      "side": 1,
+      "message": "nit: line length",
+      "range": {
+        "startLine": 159,
+        "startChar": 42,
+        "endLine": 159,
+        "endChar": 117
+      },
       "revId": "89dc42e742b89430010ee2e62a53679d0257893c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
