@@ -13,6 +13,8 @@
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkPaint.h"
+#include "include/core/SkPicture.h"
+#include "include/core/SkPictureRecorder.h"
 #include "include/core/SkSurface.h"
 #include "include/gpu/ganesh/GrBackendSurface.h"
 #include "include/gpu/ganesh/GrDirectContext.h"
@@ -228,6 +230,74 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(Protected_asyncRescaleAndReadPixelsFromSurfaces
         dContext->checkAsyncWorkCompletion();
     }
     REPORTER_ASSERT(reporter, !cbContext.fResult);
+}
+
+DEF_GANESH_TEST_FOR_ALL_CONTEXTS(Protected_pictureShader, reporter,
+                                 ctxInfo, CtsEnforcement::kNever) {
+    auto dContext = ctxInfo.directContext();
+
+    if (!dContext->supportsProtectedContent()) {
+        // Protected content not supported
+        return;
+    }
+
+    SkDebugf("1\n");
+    sk_sp<SkImage> image = ProtectedUtils::CreateProtectedSkImage(dContext,
+                                                                  { kSize, kSize },
+                                                                  SkColors::kBlue,
+                                                                  /* isProtected= */ true);
+    dContext->submit(GrSyncCpu::kYes);
+
+    REPORTER_ASSERT(reporter, image);
+    REPORTER_ASSERT(reporter, image->isProtected());
+
+    auto makePicture = [&] () {
+        SkPictureRecorder recorder;
+        recorder.beginRecording(100, 100)->drawImage(image.get(), 0, 0);
+        return recorder.finishRecordingAsPicture();
+    };
+
+    sk_sp<SkPicture> protectedPicture = makePicture();
+
+    SkPaint protectedPaint;
+    protectedPaint.setShader(protectedPicture->makeShader(SkTileMode::kRepeat,
+                                                          SkTileMode::kRepeat,
+                                                          SkFilterMode::kNearest));
+    SkDebugf("2\n");
+
+    for (bool isProtected : { true, false }) {
+#if 0
+        sk_sp<SkSurface> surface = ProtectedUtils::CreateProtectedSkSurface(dContext,
+                                                                            { kSize, kSize },
+                                                                            /* textureable= */ true,
+                                                                            isProtected);
+#endif
+
+        SkImageInfo ii = SkImageInfo::Make({ kSize, kSize },
+                                           kRGBA_8888_SkColorType,
+                                           kPremul_SkAlphaType);
+
+        // We can't use ProtectedUtils::CreateProtectedSkSurface here bc that will wrap a backend
+        // texture which blocks the copy-on-write-behavior
+        sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(dContext,
+                                                            skgpu::Budgeted::kNo,
+                                                            ii,
+                                                            /* sampleCount= */ 1,
+                                                            kBottomLeft_GrSurfaceOrigin,
+                                                            /* surfaceProps= */ nullptr,
+                                                            /* shouldCreateWithMips= */ false,
+                                                            isProtected);
+
+        REPORTER_ASSERT(reporter, surface);
+
+        surface->getCanvas()->drawPaint(protectedPaint);
+    }
+
+    SkDebugf("3\n");
+
+    dContext->flushAndSubmit(GrSyncCpu::kYes);
+
+    SkDebugf("4\n");
 }
 
 #endif  // defined(SK_GANESH)
