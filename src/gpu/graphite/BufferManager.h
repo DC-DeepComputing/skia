@@ -305,6 +305,11 @@ public:
     MappedAllocationInfo getMappedStorageBuffer(size_t count, size_t stride) {
         return this->getMappedBuffer(kStorageBufferIndex, count, stride);
     }
+    MappedAllocationInfo getMappedVertexStorageBuffer(size_t count, size_t stride,
+                                                      size_t reservedCount=0, size_t alignment=1) {
+        return this->getMappedBuffer(
+                kMappedVertexStorageBufferIndex, count, stride, reservedCount, alignment);
+    }
 
     // The remaining writers and buffer allocator functions assume that byte counts are safely
     // calculated by the caller (e.g. Vello).
@@ -424,15 +429,16 @@ private:
     const Caps* const fCaps;
     UploadBufferManager* fUploadManager;
 
-    static constexpr size_t kVertexBufferIndex          = 0;
-    static constexpr size_t kIndexBufferIndex           = 1;
-    static constexpr size_t kUniformBufferIndex         = 2;
-    static constexpr size_t kStorageBufferIndex         = 3;
-    static constexpr size_t kGpuOnlyStorageBufferIndex  = 4;
-    static constexpr size_t kVertexStorageBufferIndex   = 5;
-    static constexpr size_t kIndexStorageBufferIndex    = 6;
-    static constexpr size_t kIndirectStorageBufferIndex = 7;
-    std::array<BufferState, 8> fCurrentBuffers;
+    static constexpr size_t kVertexBufferIndex               = 0;
+    static constexpr size_t kIndexBufferIndex                = 1;
+    static constexpr size_t kUniformBufferIndex              = 2;
+    static constexpr size_t kStorageBufferIndex              = 3;
+    static constexpr size_t kMappedVertexStorageBufferIndex  = 4;
+    static constexpr size_t kGpuOnlyStorageBufferIndex       = 5;
+    static constexpr size_t kVertexStorageBufferIndex        = 6;
+    static constexpr size_t kIndexStorageBufferIndex         = 7;
+    static constexpr size_t kIndirectStorageBufferIndex      = 8;
+    std::array<BufferState, 9> fCurrentBuffers;
 
     // Vector of buffer and transfer buffer pairs.
     skia_private::TArray<std::pair<sk_sp<Buffer>, BindBufferInfo>> fUsedBuffers;
