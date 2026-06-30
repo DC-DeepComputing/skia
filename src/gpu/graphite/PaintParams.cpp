@@ -114,6 +114,7 @@ SkEnumBitMask<DstUsage> get_dst_usage(const Caps* caps,
 PaintParams::PaintParams(const SkPaint& paint,
                          const SimpleImage* imageOverride,
                          const SkBlender* primitiveBlender,
+                         const std::optional<SkColor4f>& primitiveColorOverride,
                          bool skipColorXform,
                          bool ignoreShader)
         : fColor(paint.getColor4f())
@@ -122,6 +123,7 @@ PaintParams::PaintParams(const SkPaint& paint,
         , fImageShader(imageOverride)
         , fColorFilter(paint.getColorFilter())
         , fPrimitiveBlender(primitiveBlender)
+        , fPrimitiveColorOverride(primitiveColorOverride)
         , fSkipColorXform(skipColorXform)
         , fDither(paint.isDither()) {
     if (fFinalBlend.second == SkBlendMode::kClear) {
@@ -166,13 +168,26 @@ PaintParams::PaintParams(const SkPaint& paint,
         : PaintParams(paint,
                       /*imageOverride=*/nullptr,
                       primitiveBlender,
+                      /*primitiveColorOverride=*/std::nullopt,
                       skipColorXform,
                       ignoreShader) {}
+
+PaintParams::PaintParams(const SkPaint& paint,
+                     const SkBlender* primitiveBlender,
+                     const std::optional<SkColor4f>& primitiveColorOverride)
+        : PaintParams(paint,
+                      /*imageOverride=*/nullptr,
+                      primitiveBlender,
+                      primitiveColorOverride,
+                      /*skipColorXform=*/false,
+                      /*ignoreShader=*/false) {}
+
 
 PaintParams::PaintParams(const SkPaint& paint, const SimpleImage& imageOverride, float xtraAlpha)
         : PaintParams(paint,
                       &imageOverride,
                       /*primitiveBlender=*/nullptr,
+                      /*primitiveColorOverride=*/std::nullopt,
                       /*skipColorXform=*/false,
                       // For color images, the paint's original shader is ignored.
                       /*ignoreShader=*/!SkColorTypeIsAlphaOnly(imageOverride.fImage->colorType())) {
@@ -283,8 +298,18 @@ bool ShadingParams::handlePrimitiveColor(const KeyContext& keyContext) const {
     const bool canSkipBlendStep = fPaint.skipPrimitiveColorXform() &&
                                   primBlend == SkBlendMode::kDst;
 
+    std::optional<SkPMColor4f> primOverrideColor;
+    if (fPaint.primitiveColorOverride()) {
+        primOverrideColor = PaintParams::Color4fPrepForDst(*fPaint.primitiveColorOverride(),
+                                                           keyContext.dstColorInfo()).premul();
+    }
+
     if (canSkipBlendStep) {
-        AddPrimitiveColor(keyContext, fPaint.skipPrimitiveColorXform());
+        if (primOverrideColor) {
+            SolidColorShaderBlock::AddBlock(keyContext, *primOverrideColor);
+        } else {
+            AddPrimitiveColor(keyContext, fPaint.skipPrimitiveColorXform());
+        }
         return false;
     }
 
@@ -297,7 +322,11 @@ bool ShadingParams::handlePrimitiveColor(const KeyContext& keyContext) const {
             srcIsOpaque = this->addPaintColorToKey(keyContext);
         },
         /* addDstToKey= */ [&] () -> void {
-            AddPrimitiveColor(keyContext, fPaint.skipPrimitiveColorXform());
+            if (primOverrideColor) {
+                SolidColorShaderBlock::AddBlock(keyContext, *primOverrideColor);
+            } else {
+                AddPrimitiveColor(keyContext, fPaint.skipPrimitiveColorXform());
+            }
         });
     if (primBlend.has_value() && srcIsOpaque) {
         // If the input paint/shader is opaque, the result is only opaque if the primitive blend
