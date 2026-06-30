@@ -7,8 +7,6 @@
 
 #include "tools/viewer/CaptureSlide.h"
 
-#include <string>
-
 #include "imgui.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkClipOp.h"
@@ -22,9 +20,12 @@
 #include "src/core/SkBigPicture.h"
 #include "src/core/SkRecord.h"
 #include "src/utils/SkJSONWriter.h"
+#include "tools/ProcsUtils.h"
 #include "tools/UrlDataManager.h"
 #include "tools/debugger/DebugCanvas.h"
 #include "tools/debugger/DrawCommand.h"
+
+#include <string>
 
 const char* RecordTypeNames[] = {
 #define CASE(T) #T,
@@ -122,7 +123,7 @@ void CaptureSlide::draw(SkCanvas* canvas) {
     auto focusPicture = fCapture->getPicture(fCurrentPictureIndex);
 
     auto bounds = focusPicture->cullRect().roundOut();
-    DebugCanvas debugCanvas(bounds.width(), bounds.height());
+    DebugCanvas debugCanvas({bounds.width(), bounds.height()}, ToolUtils::serial_procs());
     focusPicture->playback(&debugCanvas);
 
     canvas->clipIRect(bounds, SkClipOp::kIntersect);
