@@ -5,7 +5,11 @@
  * found in the LICENSE file.
  */
 
+#include "src/partition_alloc/raw_ref.h"
+
 #ifndef SKSL_CONTEXT
+#include "src/partition_alloc/raw_ptr.h"
+
 #define SKSL_CONTEXT
 
 #include "include/private/SkAssert.h"
@@ -27,13 +31,13 @@ public:
     ~Context();
 
     // The Context holds a reference to all of the built-in types.
-    const BuiltinTypes& fTypes;
+    const raw_ref<const BuiltinTypes> fTypes;
 
     // The Context holds a pointer to the configuration of the program being compiled.
-    ProgramConfig* fConfig = nullptr;
+    raw_ptr<ProgramConfig, DanglingUntriaged> fConfig = nullptr;
 
     // The Context holds a pointer to our error reporter.
-    ErrorReporter* fErrors;
+    raw_ptr<ErrorReporter> fErrors;
 
     void setErrorReporter(ErrorReporter* e) {
         SkASSERT(e);
@@ -41,11 +45,11 @@ public:
     }
 
     // The Context holds a pointer to our module with built-in declarations.
-    const Module* fModule = nullptr;
+    raw_ptr<const Module> fModule = nullptr;
 
     // This is the current symbol table of the code we are processing, and therefore changes during
     // compilation.
-    SymbolTable* fSymbolTable = nullptr;
+    raw_ptr<SymbolTable> fSymbolTable = nullptr;
 };
 
 }  // namespace SkSL

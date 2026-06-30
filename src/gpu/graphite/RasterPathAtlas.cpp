@@ -16,6 +16,7 @@
 #include "src/gpu/graphite/ProxyCache.h"
 #include "src/gpu/graphite/RasterPathUtils.h"
 #include "src/gpu/graphite/RecorderPriv.h"
+#include "src/partition_alloc/raw_ref.h"
 
 namespace skgpu::graphite {
 
@@ -101,12 +102,12 @@ sk_sp<TextureProxy> RasterPathAtlas::onAddShape(const Shape& shape,
     skgpu::UniqueKey maskKey = GeneratePathMaskKey(shape, localToDevice, strokeRec,
                                                    maskOrigin, maskSize);
     struct PathDrawContext {
-        const Shape& fShape;
-        const Transform& fLocalToDevice;
-        const SkStrokeRec& fStrokeRec;
+        const raw_ref<const Shape> fShape;
+        const raw_ref<const Transform> fLocalToDevice;
+        const raw_ref<const SkStrokeRec> fStrokeRec;
         SkIRect fShapeBounds;
         SkIVector fTransformedMaskOffset;
-    } context = { shape, localToDevice, strokeRec,
+    } context = { raw_ref(shape), raw_ref(localToDevice), raw_ref(strokeRec),
                   SkIRect::MakeSize({maskSize.x(), maskSize.y()}).makeOffset(kEntryPadding,
                                                                              kEntryPadding),
                   transformedMaskOffset };
@@ -118,7 +119,7 @@ sk_sp<TextureProxy> RasterPathAtlas::onAddShape(const Shape& shape,
                         pdc->fShapeBounds.size(),
                         -pdc->fTransformedMaskOffset,
                         kEntryPadding);
-                helper.drawShape(pdc->fShape, pdc->fLocalToDevice, pdc->fStrokeRec);
+                helper.drawShape(*pdc->fShape, *pdc->fLocalToDevice, *pdc->fStrokeRec);
                 bm.setImmutable();
                 return bm;
             });

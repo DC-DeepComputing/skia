@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 #ifndef SkIntersections_DEFINE
+#include "src/partition_alloc/raw_ptr.h"
+
 #define SkIntersections_DEFINE
 
 #include "include/core/SkPoint.h"
@@ -52,7 +54,7 @@ public:
         double operator[](int n) const {
             return fTArray[n];
         }
-        const double* fTArray;
+        raw_ptr<const double, AllowPtrArithmetic> fTArray;
     };
     TArray operator[](int n) const { return TArray(fT[n]); }
 
@@ -335,7 +337,7 @@ private:
     bool fAllowNear;
     bool fSwap;
 #ifdef SK_DEBUG
-    SkOpGlobalState* fDebugGlobalState;
+    raw_ptr<SkOpGlobalState> fDebugGlobalState;
     int fDepth;
 #endif
 #if DEBUG_T_SECT_LOOP_COUNT

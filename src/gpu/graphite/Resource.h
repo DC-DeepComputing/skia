@@ -6,6 +6,8 @@
  */
 
 #ifndef skgpu_graphite_Resource_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define skgpu_graphite_Resource_DEFINED
 
 #include "include/gpu/GpuTypes.h"
@@ -689,7 +691,7 @@ private:
 
     // This is not ref'ed but internalDispose() will be called before the Gpu object is destroyed.
     // That call will set this to nullptr.
-    const SharedContext* fSharedContext;
+    raw_ptr<const SharedContext, DanglingUntriaged> fSharedContext;
 
     const UniqueID fUniqueID;
     const Ownership fOwnership;
@@ -706,7 +708,7 @@ private:
     //
     // A null value means the Resource is not in the return queue. A non-null value means it is in
     // the queue, although the ResourceCache assigns a special sentinel value for the tail address.
-    Resource* fNextInReturnQueue = nullptr;
+    raw_ptr<Resource> fNextInReturnQueue = nullptr;
 
     // The remaining fields are mutable state that is only modified by the ResourceCache on the
     // cache's thread, guarded by `fReturnCache::fSingleOwner`.

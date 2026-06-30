@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 #ifndef AtlasRenderTask_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define AtlasRenderTask_DEFINED
 
 #include "include/core/SkPath.h"
@@ -114,7 +116,7 @@ private:
         int pathCount() const { return fPathCount; }
 
     private:
-        PathDrawList* fPathDrawList = nullptr;
+        raw_ptr<PathDrawList, DanglingUntriaged> fPathDrawList = nullptr;
         int fTotalCombinedPathVerbCnt = 0;
         int fPathCount = 0;
     };

@@ -6,6 +6,8 @@
  */
 
 #ifndef skcpu_RecorderImpl_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define skcpu_RecorderImpl_DEFINED
 
 #include "include/core/SkCPURecorder.h"
@@ -20,7 +22,7 @@ public:
     const ContextImpl* ctx() const { return fCtx; }
 
 private:
-    const ContextImpl* const fCtx;
+    const raw_ptr<const ContextImpl> fCtx;
 };
 
 }  // namespace skcpu

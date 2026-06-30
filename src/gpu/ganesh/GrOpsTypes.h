@@ -6,6 +6,8 @@
  */
 
 #ifndef GrOpsTypes_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define GrOpsTypes_DEFINED
 
 #include "include/core/SkMatrix.h"
@@ -31,8 +33,8 @@ struct GrTextureSetEntry {
     SkAlphaType fSrcAlphaType;
     SkRect fSrcRect;
     SkRect fDstRect;
-    const SkPoint* fDstClipQuad; // Must be null, or point to an array of 4 points
-    const SkMatrix* fPreViewMatrix; // If not null, entry's CTM is 'viewMatrix' * fPreViewMatrix
+    raw_ptr<const SkPoint> fDstClipQuad; // Must be null, or point to an array of 4 points
+    raw_ptr<const SkMatrix> fPreViewMatrix; // If not null, entry's CTM is 'viewMatrix' * fPreViewMatrix
     SkPMColor4f   fColor; // {a,a,a,a} for rgb textures, {r,g,b,a} for alpha-only textures
     GrQuadAAFlags fAAFlags;
 };
