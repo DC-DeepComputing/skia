@@ -16,6 +16,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkSerialProcs.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkTDArray.h"
 
@@ -48,9 +49,9 @@ struct SkRSXform;
 
 class DebugCanvas : public SkCanvasVirtualEnforcer<SkCanvas> {
 public:
-    DebugCanvas(int width, int height);
+    DebugCanvas(int width, int height, SkSerialProcs serialProcs);
 
-    explicit DebugCanvas(SkIRect bounds);
+    explicit DebugCanvas(SkIRect bounds, SkSerialProcs serialProcs);
 
     ~DebugCanvas() override;
 
@@ -251,6 +252,8 @@ private:
         @param command  The draw command for execution
      */
     void addDrawCommand(DrawCommand* command);
+
+    SkSerialProcs fSerialProcs;
 
 #if defined(SK_GANESH)
     GrAuditTrail* getAuditTrail(SkCanvas*);

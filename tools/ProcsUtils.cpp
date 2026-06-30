@@ -5,23 +5,26 @@
  * found in the LICENSE file.
  */
 
-#include "tools/DeserialProcsUtils.h"
+#include "tools/ProcsUtils.h"
 
 #include "include/codec/SkCodec.h"
 #include "include/core/SkFontMgr.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkStream.h"
+#include "src/image/SkImage_Base.h"
 #include "tools/fonts/FontToolUtils.h"
 
 #if defined(SK_CODEC_DECODES_PNG_WITH_RUST)
 #include "include/codec/SkPngRustDecoder.h"
+#include "include/encode/SkPngRustEncoder.h"
 #else
 #include "include/codec/SkPngDecoder.h"
+#include "include/encode/SkPngEncoder.h"
 #endif
 
 namespace ToolUtils {
 
-SkDeserialProcs get_default_skp_deserial_procs() {
+SkDeserialProcs deserial_procs() {
     SkDeserialProcs procs;
     procs.fImageDataProc =
             [](sk_sp<SkData> data, std::optional<SkAlphaType> at, void*) -> sk_sp<SkImage> {
@@ -49,5 +52,18 @@ SkDeserialProcs get_default_skp_deserial_procs() {
     return procs;
 }
 
-}  // namespace ToolUtils
+SkSerialProcs serial_procs() {
+    static SkSerialProcs procs{.fImageProc = [](SkImage* img, void*) -> sk_sp<const SkData> {
+#if defined(SK_CODEC_ENCODES_PNG_WITH_LIBPNG)
+        return SkPngEncoder::Encode(nullptr, img, {});
+#elif defined(SK_CODEC_ENCODES_PNG_WITH_RUST)
+        return SkPngRustEncoder::Encode(nullptr, img, {});
+#else
+        // TODO: This catches SkImageEncoder_NDK (or other).
+        return SkPngEncoder::Encode(nullptr, img, {});
+#endif
+    }};
+    return procs;
+}
 
+}  // namespace ToolUtils
