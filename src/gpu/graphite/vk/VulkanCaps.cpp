@@ -1139,6 +1139,9 @@ bool VulkanCaps::extractGraphicsDescs(const UniqueKey& key,
             SwizzleCtorAccessor::Make(rawKeyData[kPipelineKeyWriteSwizzleIndex]),
             this->getDstReadStrategy(),
             renderPassDesc);
+    if (avoidDepthMode()) {
+        renderPassDesc->fDepthStencilAttachment = {};
+    }
 
     return true;
 }

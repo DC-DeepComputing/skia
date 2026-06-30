@@ -381,10 +381,12 @@ bool MtlCaps::extractGraphicsDescs(const UniqueKey& key,
                                         LoadOp::kClear,
                                         StoreOp::kStore,
                                         keyData.fColorSampleCount};
-    renderPassDesc->fDepthStencilAttachment = {keyData.fDSFormat,
-                                               LoadOp::kClear,
-                                               StoreOp::kDiscard,
-                                               keyData.fDSSampleCount};
+    if (!avoidDepthMode()) {
+        renderPassDesc->fDepthStencilAttachment = {keyData.fDSFormat,
+                                                   LoadOp::kClear,
+                                                   StoreOp::kDiscard,
+                                                   keyData.fDSSampleCount};
+    }
     if (keyData.fColorSampleCount > SampleCount::k1) {
         renderPassDesc->fColorResolveAttachment = {keyData.fColorFormat,
                                                    LoadOp::kClear,

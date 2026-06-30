@@ -581,10 +581,12 @@ bool DawnCaps::extractGraphicsDescs(const UniqueKey& key,
                                         LoadOp::kClear,
                                         StoreOp::kStore,
                                         colorSamples};
-    renderPassDesc->fDepthStencilAttachment = {depthStencilFormat,
-                                               LoadOp::kClear,
-                                               StoreOp::kDiscard,
-                                               depthStencilSamples};
+    if (!avoidDepthMode()) {
+        renderPassDesc->fDepthStencilAttachment = {depthStencilFormat,
+                                                   LoadOp::kClear,
+                                                   StoreOp::kDiscard,
+                                                   depthStencilSamples};
+    }
     if (colorSamples > SampleCount::k1) {
         renderPassDesc->fColorResolveAttachment = {colorFormat,
                                                    loadFromResolve ? LoadOp::kLoad : LoadOp::kClear,
