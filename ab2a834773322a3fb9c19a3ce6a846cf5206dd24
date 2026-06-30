@@ -85,6 +85,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ee1e4960_b02061ed",
+        "filename": "src/capture/SkCaptureCanvas.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-06-30T15:32:42Z",
+      "side": 1,
+      "message": "Wrapping it in a SK_LOG at the lowest priority should be fine.\nBut don\u0027t use SkLog the function, use the macros. Also, you shouldn\u0027t put \"warning\" at the front of a debug and we should aim to make this message shorter.\n\n`SK_LOG_D(\"SkCaptureCanvas\u0027s getSurfaceBase returns the wrapped SkCanvas\u0027s surface\");`",
+      "parentUuid": "5289480e_d30a43d4",
+      "range": {
+        "startLine": 129,
+        "startChar": 8,
+        "endLine": 129,
+        "endChar": 16
+      },
+      "revId": "ab2a834773322a3fb9c19a3ce6a846cf5206dd24",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bd7ca227_c093adbe",
         "filename": "tools/debugger/DrawCommand.cpp",
         "patchSetId": 17

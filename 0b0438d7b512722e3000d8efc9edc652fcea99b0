@@ -16,6 +16,63 @@
       "message": "LGTM but I\u0027d like Jorge to take another look before landing",
       "revId": "0b0438d7b512722e3000d8efc9edc652fcea99b0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "243454d8_4e0fac96",
+        "filename": "src/capture/SkCaptureCanvas.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-06-30T15:32:42Z",
+      "side": 1,
+      "message": "Move function logic to .cpp file.",
+      "revId": "0b0438d7b512722e3000d8efc9edc652fcea99b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2151c86_1ce84e91",
+        "filename": "tools/viewer/CaptureSlide.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-06-30T15:32:42Z",
+      "side": 1,
+      "message": "Replace these with constant values defined in the header.",
+      "range": {
+        "startLine": 79,
+        "startChar": 49,
+        "endLine": 79,
+        "endChar": 52
+      },
+      "revId": "0b0438d7b512722e3000d8efc9edc652fcea99b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a85c239_8dcfb8ec",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 1953,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-06-30T15:32:42Z",
+      "side": 1,
+      "message": "Add a TODO for the followup CL to have the user specify a path.",
+      "revId": "0b0438d7b512722e3000d8efc9edc652fcea99b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
