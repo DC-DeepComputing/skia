@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a461f63b_61a2a62d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3916209
+      },
+      "writtenOn": "2026-06-30T11:48:01Z",
+      "side": 1,
+      "message": "Thanks for the review. I have generated the font in different CL and used that font for the test in this CL.\nAlso the fontation bots are already added.",
+      "parentUuid": "b4f008e5_93d01b39",
+      "revId": "29dea243b34b37db3f5c4285d13769654ec529a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d9d80949_4eeffbd0",
@@ -31,6 +49,30 @@
       "writtenOn": "2026-06-26T08:17:09Z",
       "side": 1,
       "message": "Does FreeType round in both directions with something like roundf, too? Or does it round only in one direction?",
+      "range": {
+        "startLine": 46,
+        "startChar": 11,
+        "endLine": 46,
+        "endChar": 55
+      },
+      "revId": "29dea243b34b37db3f5c4285d13769654ec529a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd8fdaa2_3aff2be1",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 3916209
+      },
+      "writtenOn": "2026-06-30T11:48:01Z",
+      "side": 1,
+      "message": "Yes — like  roundf , FreeType rounds to the nearest in both directions:  `FT_PIX_ROUND(x) \u003d FT_PIX_FLOOR(x + 32)`  adds half a pixel before flooring, giving round‑half‑up to nearest (16.4 → 16, 16.6 → 17).",
+      "parentUuid": "d9d80949_4eeffbd0",
       "range": {
         "startLine": 46,
         "startChar": 11,
