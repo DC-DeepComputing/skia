@@ -608,7 +608,7 @@ static SkString encode_data(SkData*         data,
 void DrawCommand::flatten(const SkFlattenable* flattenable,
                           SkJSONWriter&        writer,
                           UrlDataManager&      urlDataManager) {
-    SkBinaryWriteBuffer buffer({});  // TODO(kjlubick, bungeman) feed SkSerialProcs through API
+    SkBinaryWriteBuffer buffer(writer.getSerialProcs());
     flattenable->flatten(buffer);
     sk_sp<SkData> data = buffer.snapshotAsData();
     SkString url = encode_data(data.get(), "application/octet-stream", urlDataManager);
