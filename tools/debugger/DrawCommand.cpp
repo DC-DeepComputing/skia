@@ -214,7 +214,8 @@ static SkString* str_append(SkString* str, const SkRect& r) {
     return str;
 }
 
-DrawCommand::DrawCommand(OpType type) : fOpType(type), fVisible(true) {}
+DrawCommand::DrawCommand(OpType type, SkSerialProcs serialProcs)
+        : fOpType(type), fSerialProcs(serialProcs), fVisible(true) {}
 
 const char* DrawCommand::GetCommandString(OpType type) {
     switch (type) {
@@ -608,7 +609,7 @@ static SkString encode_data(SkData*         data,
 void DrawCommand::flatten(const SkFlattenable* flattenable,
                           SkJSONWriter&        writer,
                           UrlDataManager&      urlDataManager) {
-    SkBinaryWriteBuffer buffer({});  // TODO(kjlubick, bungeman) feed SkSerialProcs through API
+    SkBinaryWriteBuffer buffer(writer.getSerialProcs());
     flattenable->flatten(buffer);
     sk_sp<SkData> data = buffer.snapshotAsData();
     SkString url = encode_data(data.get(), "application/octet-stream", urlDataManager);
@@ -969,7 +970,10 @@ void DrawCommand::MakeJsonLattice(SkJSONWriter& writer, const SkCanvas::Lattice&
     writer.endObject();
 }
 
-ClearCommand::ClearCommand(SkColor color) : INHERITED(kClear_OpType) { fColor = color; }
+ClearCommand::ClearCommand(SkColor color, SkSerialProcs serialProcs)
+        : INHERITED(kClear_OpType, serialProcs) {
+    fColor = color;
+}
 
 void ClearCommand::execute(SkCanvas* canvas) const { canvas->clear(fColor); }
 
@@ -979,8 +983,8 @@ void ClearCommand::toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManager) 
     MakeJsonColor(writer, fColor);
 }
 
-ClipPathCommand::ClipPathCommand(const SkPath& path, SkClipOp op, bool doAA)
-        : INHERITED(kClipPath_OpType) {
+ClipPathCommand::ClipPathCommand(const SkPath& path, SkClipOp op, bool doAA, SkSerialProcs serialProcs)
+        : INHERITED(kClipPath_OpType, serialProcs) {
     fPath = path;
     fOp   = op;
     fDoAA = doAA;
@@ -1001,8 +1005,8 @@ void ClipPathCommand::toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManage
     writer.appendBool(DEBUGCANVAS_ATTRIBUTE_ANTIALIAS, fDoAA);
 }
 
-ClipRegionCommand::ClipRegionCommand(const SkRegion& region, SkClipOp op)
-        : INHERITED(kClipRegion_OpType) {
+ClipRegionCommand::ClipRegionCommand(const SkRegion& region, SkClipOp op, SkSerialProcs serialProcs)
+        : INHERITED(kClipRegion_OpType, serialProcs) {
     fRegion = region;
     fOp     = op;
 }
@@ -1016,8 +1020,8 @@ void ClipRegionCommand::toJSON(SkJSONWriter& writer, UrlDataManager& urlDataMana
     writer.appendCString(DEBUGCANVAS_ATTRIBUTE_REGIONOP, clipop_name(fOp));
 }
 
-ClipRectCommand::ClipRectCommand(const SkRect& rect, SkClipOp op, bool doAA)
-        : INHERITED(kClipRect_OpType) {
+ClipRectCommand::ClipRectCommand(const SkRect& rect, SkClipOp op, bool doAA, SkSerialProcs serialProcs)
+        : INHERITED(kClipRect_OpType, serialProcs) {
     fRect = rect;
     fOp   = op;
     fDoAA = doAA;
@@ -1036,8 +1040,8 @@ void ClipRectCommand::toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManage
     writer.appendString(DEBUGCANVAS_ATTRIBUTE_SHORTDESC, *str_append(&desc, fRect));
 }
 
-ClipRRectCommand::ClipRRectCommand(const SkRRect& rrect, SkClipOp op, bool doAA)
-        : INHERITED(kClipRRect_OpType) {
+ClipRRectCommand::ClipRRectCommand(const SkRRect& rrect, SkClipOp op, bool doAA, SkSerialProcs serialProcs)
+        : INHERITED(kClipRRect_OpType, serialProcs) {
     fRRect = rrect;
     fOp    = op;
     fDoAA  = doAA;
@@ -1058,8 +1062,8 @@ void ClipRRectCommand::toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManag
     writer.appendBool(DEBUGCANVAS_ATTRIBUTE_ANTIALIAS, fDoAA);
 }
 
-ClipShaderCommand::ClipShaderCommand(sk_sp<SkShader> cs, SkClipOp op)
-        : INHERITED(kClipShader_OpType) {
+ClipShaderCommand::ClipShaderCommand(sk_sp<SkShader> cs, SkClipOp op, SkSerialProcs serialProcs)
+        : INHERITED(kClipShader_OpType, serialProcs) {
     fShader = std::move(cs);
     fOp     = op;
 }
@@ -1079,11 +1083,11 @@ void ClipShaderCommand::toJSON(SkJSONWriter& writer, UrlDataManager& urlDataMana
     writer.appendCString(DEBUGCANVAS_ATTRIBUTE_REGIONOP, clipop_name(fOp));
 }
 
-ResetClipCommand::ResetClipCommand() : INHERITED(kResetClip_OpType) {}
+ResetClipCommand::ResetClipCommand(SkSerialProcs serialProcs) : INHERITED(kResetClip_OpType, serialProcs) {}
 
 void ResetClipCommand::execute(SkCanvas* canvas) const { SkCanvasPriv::ResetClip(canvas); }
 
-ConcatCommand::ConcatCommand(const SkMatrix& matrix) : INHERITED(kConcat_OpType) {
+ConcatCommand::ConcatCommand(const SkMatrix& matrix, SkSerialProcs serialProcs) : INHERITED(kConcat_OpType, serialProcs) {
     fMatrix = matrix;
 }
 
@@ -1117,7 +1121,8 @@ void ConcatCommand::toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManager)
     writeMatrixType(writer, fMatrix);
 }
 
-Concat44Command::Concat44Command(const SkM44& matrix) : INHERITED(kConcat44_OpType) {
+Concat44Command::Concat44Command(const SkM44& matrix, SkSerialProcs serialProcs)
+        : INHERITED(kConcat44_OpType, serialProcs) {
     fMatrix = matrix;
 }
 
@@ -1133,8 +1138,9 @@ void Concat44Command::toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManage
 
 DrawAnnotationCommand::DrawAnnotationCommand(const SkRect& rect,
                                              const char    key[],
-                                             sk_sp<SkData> value)
-        : INHERITED(kDrawAnnotation_OpType), fRect(rect), fKey(key), fValue(std::move(value)) {}
+                                             sk_sp<SkData> value,
+                                             SkSerialProcs serialProcs)
+        : INHERITED(kDrawAnnotation_OpType, serialProcs), fRect(rect), fKey(key), fValue(std::move(value)) {}
 
 void DrawAnnotationCommand::execute(SkCanvas* canvas) const {
     canvas->drawAnnotation(fRect, fKey.c_str(), fValue);
@@ -1167,8 +1173,9 @@ DrawImageCommand::DrawImageCommand(const SkImage*           image,
                                    SkScalar                 left,
                                    SkScalar                 top,
                                    const SkSamplingOptions& sampling,
-                                   const SkPaint*           paint)
-        : INHERITED(kDrawImage_OpType)
+                                   const SkPaint*           paint,
+                                   SkSerialProcs            serialProcs)
+        : INHERITED(kDrawImage_OpType, serialProcs)
         , fImage(SkRef(image))
         , fLeft(left)
         , fTop(top)
@@ -1231,8 +1238,9 @@ DrawImageLatticeCommand::DrawImageLatticeCommand(const SkImage*           image,
                                                  const SkCanvas::Lattice& lattice,
                                                  const SkRect&            dst,
                                                  SkFilterMode             filter,
-                                                 const SkPaint*           paint)
-        : INHERITED(kDrawImageLattice_OpType)
+                                                 const SkPaint*           paint,
+                                                 SkSerialProcs            serialProcs)
+        : INHERITED(kDrawImageLattice_OpType, serialProcs)
         , fImage(SkRef(image))
         , fLattice(lattice)
         , fDst(dst)
@@ -1260,7 +1268,7 @@ uint64_t DrawImageLatticeCommand::imageId(UrlDataManager& udm) const {
 
 void DrawImageLatticeCommand::toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManager) const {
     INHERITED::toJSON(writer, urlDataManager);
-    flatten(*fImage, writer, urlDataManager);
+    INHERITED::flatten(*fImage, writer, urlDataManager);
     writer.appendName(DEBUGCANVAS_ATTRIBUTE_LATTICE);
     MakeJsonLattice(writer, fLattice);
     writer.appendName(DEBUGCANVAS_ATTRIBUTE_DST);
@@ -1279,8 +1287,9 @@ DrawImageRectCommand::DrawImageRectCommand(const SkImage*              image,
                                            const SkRect&               dst,
                                            const SkSamplingOptions&    sampling,
                                            const SkPaint*              paint,
-                                           SkCanvas::SrcRectConstraint constraint)
-        : INHERITED(kDrawImageRect_OpType)
+                                           SkCanvas::SrcRectConstraint constraint,
+                                           SkSerialProcs               serialProcs)
+        : INHERITED(kDrawImageRect_OpType, serialProcs)
         , fImage(SkRef(image))
         , fSrc(src)
         , fDst(dst)
@@ -1329,15 +1338,16 @@ void DrawImageRectCommand::toJSON(SkJSONWriter& writer, UrlDataManager& urlDataM
     writer.appendString(DEBUGCANVAS_ATTRIBUTE_SHORTDESC, *str_append(&desc, fDst));
 }
 
-DrawImageRectLayerCommand::DrawImageRectLayerCommand(DebugLayerManager*    layerManager,
+DrawImageRectLayerCommand::DrawImageRectLayerCommand(DebugLayerManager*          layerManager,
                                                      const int                   nodeId,
                                                      const int                   frame,
                                                      const SkRect&               src,
                                                      const SkRect&               dst,
                                                      const SkSamplingOptions&    sampling,
                                                      const SkPaint*              paint,
-                                                     SkCanvas::SrcRectConstraint constraint)
-        : INHERITED(kDrawImageRectLayer_OpType)
+                                                     SkCanvas::SrcRectConstraint constraint,
+                                                     SkSerialProcs               serialProcs)
+        : INHERITED(kDrawImageRectLayer_OpType, serialProcs)
         , fLayerManager(layerManager)
         , fNodeId(nodeId)
         , fFrame(frame)
@@ -1392,8 +1402,10 @@ void DrawImageRectLayerCommand::toJSON(SkJSONWriter& writer, UrlDataManager& url
     writer.appendString(DEBUGCANVAS_ATTRIBUTE_SHORTDESC, *str_append(&desc, fDst));
 }
 
-DrawOvalCommand::DrawOvalCommand(const SkRect& oval, const SkPaint& paint)
-        : INHERITED(kDrawOval_OpType) {
+DrawOvalCommand::DrawOvalCommand(const SkRect&  oval,
+                                 const SkPaint& paint,
+                                 SkSerialProcs  serialProcs)
+        : INHERITED(kDrawOval_OpType, serialProcs) {
     fOval  = oval;
     fPaint = paint;
 }
@@ -1428,8 +1440,9 @@ DrawArcCommand::DrawArcCommand(const SkRect&  oval,
                                SkScalar       startAngle,
                                SkScalar       sweepAngle,
                                bool           useCenter,
-                               const SkPaint& paint)
-        : INHERITED(kDrawArc_OpType) {
+                               const SkPaint& paint,
+                               SkSerialProcs  serialProcs)
+        : INHERITED(kDrawArc_OpType, serialProcs) {
     fOval       = oval;
     fStartAngle = startAngle;
     fSweepAngle = sweepAngle;
@@ -1468,7 +1481,8 @@ void DrawArcCommand::toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManager
     MakeJsonPaint(writer, fPaint, urlDataManager);
 }
 
-DrawPaintCommand::DrawPaintCommand(const SkPaint& paint) : INHERITED(kDrawPaint_OpType) {
+DrawPaintCommand::DrawPaintCommand(const SkPaint& paint, SkSerialProcs serialProcs)
+        : INHERITED(kDrawPaint_OpType, serialProcs) {
     fPaint = paint;
 }
 
@@ -1486,7 +1500,8 @@ void DrawPaintCommand::toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManag
     MakeJsonPaint(writer, fPaint, urlDataManager);
 }
 
-DrawBehindCommand::DrawBehindCommand(const SkPaint& paint) : INHERITED(kDrawPaint_OpType) {
+DrawBehindCommand::DrawBehindCommand(const SkPaint& paint, SkSerialProcs serialProcs)
+        : INHERITED(kDrawPaint_OpType, serialProcs) {
     fPaint = paint;
 }
 
@@ -1506,8 +1521,8 @@ void DrawBehindCommand::toJSON(SkJSONWriter& writer, UrlDataManager& urlDataMana
     MakeJsonPaint(writer, fPaint, urlDataManager);
 }
 
-DrawPathCommand::DrawPathCommand(const SkPath& path, const SkPaint& paint)
-        : INHERITED(kDrawPath_OpType) {
+DrawPathCommand::DrawPathCommand(const SkPath& path, const SkPaint& paint, SkSerialProcs serialProcs)
+        : INHERITED(kDrawPath_OpType, serialProcs) {
     fPath  = path;
     fPaint = paint;
 }
@@ -1527,8 +1542,10 @@ void DrawPathCommand::toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManage
     MakeJsonPaint(writer, fPaint, urlDataManager);
 }
 
-DrawRegionCommand::DrawRegionCommand(const SkRegion& region, const SkPaint& paint)
-        : INHERITED(kDrawRegion_OpType) {
+DrawRegionCommand::DrawRegionCommand(const SkRegion& region,
+                                     const SkPaint&  paint,
+                                     SkSerialProcs   serialProcs)
+        : INHERITED(kDrawRegion_OpType, serialProcs) {
     fRegion = region;
     fPaint  = paint;
 }
@@ -1540,7 +1557,9 @@ bool DrawRegionCommand::render(SkCanvas* canvas) const {
     return true;
 }
 
-void DrawRegionCommand::toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManager) const {
+void DrawRegionCommand::toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManager
+
+) const {
     INHERITED::toJSON(writer, urlDataManager);
     writer.appendName(DEBUGCANVAS_ATTRIBUTE_REGION);
     MakeJsonRegion(writer, fRegion);
@@ -1550,8 +1569,9 @@ void DrawRegionCommand::toJSON(SkJSONWriter& writer, UrlDataManager& urlDataMana
 
 BeginDrawPictureCommand::BeginDrawPictureCommand(const SkPicture* picture,
                                                  const SkMatrix*  matrix,
-                                                 const SkPaint*   paint)
-        : INHERITED(kBeginDrawPicture_OpType)
+                                                 const SkPaint*   paint,
+                                                 SkSerialProcs    serialProcs)
+        : INHERITED(kBeginDrawPicture_OpType, serialProcs)
         , fPicture(SkRef(picture)) {
     assign_if_not_null(fMatrix, matrix);
     assign_if_not_null(fPaint, paint);
@@ -1587,8 +1607,8 @@ bool BeginDrawPictureCommand::render(SkCanvas* canvas) const {
     return true;
 }
 
-EndDrawPictureCommand::EndDrawPictureCommand(bool restore)
-        : INHERITED(kEndDrawPicture_OpType), fRestore(restore) {}
+EndDrawPictureCommand::EndDrawPictureCommand(bool restore, SkSerialProcs serialProcs)
+        : INHERITED(kEndDrawPicture_OpType, serialProcs), fRestore(restore) {}
 
 void EndDrawPictureCommand::execute(SkCanvas* canvas) const {
     if (fRestore) {
@@ -1599,8 +1619,9 @@ void EndDrawPictureCommand::execute(SkCanvas* canvas) const {
 DrawPointsCommand::DrawPointsCommand(SkCanvas::PointMode mode,
                                      size_t              count,
                                      const SkPoint       pts[],
-                                     const SkPaint&      paint)
-        : INHERITED(kDrawPoints_OpType), fMode(mode), fPts(pts, count), fPaint(paint) {}
+                                     const SkPaint&      paint,
+                                     SkSerialProcs       serialProcs)
+        : INHERITED(kDrawPoints_OpType, serialProcs), fMode(mode), fPts(pts, count), fPaint(paint) {}
 
 void DrawPointsCommand::execute(SkCanvas* canvas) const {
     canvas->drawPoints(fMode, fPts, fPaint);
@@ -1644,8 +1665,9 @@ void DrawPointsCommand::toJSON(SkJSONWriter& writer, UrlDataManager& urlDataMana
 DrawTextBlobCommand::DrawTextBlobCommand(sk_sp<SkTextBlob> blob,
                                          SkScalar          x,
                                          SkScalar          y,
-                                         const SkPaint&    paint)
-        : INHERITED(kDrawTextBlob_OpType)
+                                         const SkPaint&    paint,
+                                         SkSerialProcs     serialProcs)
+        : INHERITED(kDrawTextBlob_OpType, serialProcs)
         , fBlob(std::move(blob))
         , fXPos(x)
         , fYPos(y)
@@ -1736,8 +1758,9 @@ DrawPatchCommand::DrawPatchCommand(const SkPoint  cubics[12],
                                    const SkColor  colors[4],
                                    const SkPoint  texCoords[4],
                                    SkBlendMode    bmode,
-                                   const SkPaint& paint)
-        : INHERITED(kDrawPatch_OpType), fBlendMode(bmode) {
+                                   const SkPaint& paint,
+                                   SkSerialProcs  serialProcs)
+        : INHERITED(kDrawPatch_OpType, serialProcs), fBlendMode(bmode) {
     memcpy(fCubics, cubics, sizeof(fCubics));
     if (colors != nullptr) {
         memcpy(fColors, colors, sizeof(fColors));
@@ -1782,8 +1805,8 @@ void DrawPatchCommand::toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManag
     // fBlendMode
 }
 
-DrawRectCommand::DrawRectCommand(const SkRect& rect, const SkPaint& paint)
-        : INHERITED(kDrawRect_OpType) {
+DrawRectCommand::DrawRectCommand(const SkRect& rect, const SkPaint& paint, SkSerialProcs serialProcs)
+        : INHERITED(kDrawRect_OpType, serialProcs) {
     fRect  = rect;
     fPaint = paint;
 }
@@ -1801,8 +1824,8 @@ void DrawRectCommand::toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManage
     writer.appendString(DEBUGCANVAS_ATTRIBUTE_SHORTDESC, *str_append(&desc, fRect));
 }
 
-DrawRRectCommand::DrawRRectCommand(const SkRRect& rrect, const SkPaint& paint)
-        : INHERITED(kDrawRRect_OpType) {
+DrawRRectCommand::DrawRRectCommand(const SkRRect& rrect, const SkPaint& paint, SkSerialProcs serialProcs)
+        : INHERITED(kDrawRRect_OpType, serialProcs) {
     fRRect = rrect;
     fPaint = paint;
 }
@@ -1824,8 +1847,9 @@ void DrawRRectCommand::toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManag
 
 DrawDRRectCommand::DrawDRRectCommand(const SkRRect& outer,
                                      const SkRRect& inner,
-                                     const SkPaint& paint)
-        : INHERITED(kDrawDRRect_OpType) {
+                                     const SkPaint& paint,
+                                     SkSerialProcs  serialProcs)
+        : INHERITED(kDrawDRRect_OpType, serialProcs) {
     fOuter = outer;
     fInner = inner;
     fPaint = paint;
@@ -1850,8 +1874,8 @@ void DrawDRRectCommand::toJSON(SkJSONWriter& writer, UrlDataManager& urlDataMana
     MakeJsonPaint(writer, fPaint, urlDataManager);
 }
 
-DrawShadowCommand::DrawShadowCommand(const SkPath& path, const SkDrawShadowRec& rec)
-        : INHERITED(kDrawShadow_OpType) {
+DrawShadowCommand::DrawShadowCommand(const SkPath& path, const SkDrawShadowRec& rec, SkSerialProcs serialProcs)
+        : INHERITED(kDrawShadow_OpType, serialProcs) {
     fPath      = path;
     fShadowRec = rec;
 }
@@ -1893,8 +1917,9 @@ DrawEdgeAAQuadCommand::DrawEdgeAAQuadCommand(const SkRect&         rect,
                                              const SkPoint         clip[4],
                                              SkCanvas::QuadAAFlags aa,
                                              const SkColor4f&      color,
-                                             SkBlendMode           mode)
-        : INHERITED(kDrawEdgeAAQuad_OpType)
+                                             SkBlendMode           mode,
+                                             SkSerialProcs         serialProcs)
+        : INHERITED(kDrawEdgeAAQuad_OpType, serialProcs)
         , fRect(rect)
         , fHasClip(clip != nullptr)
         , fAA(aa)
@@ -1917,8 +1942,9 @@ DrawEdgeAAImageSetCommand::DrawEdgeAAImageSetCommand(const SkCanvas::ImageSetEnt
                                                      const SkMatrix              preViewMatrices[],
                                                      const SkSamplingOptions&    sampling,
                                                      const SkPaint*              paint,
-                                                     SkCanvas::SrcRectConstraint constraint)
-        : INHERITED(kDrawEdgeAAImageSet_OpType)
+                                                     SkCanvas::SrcRectConstraint constraint,
+                                                     SkSerialProcs               serialProcs)
+        : INHERITED(kDrawEdgeAAImageSet_OpType, serialProcs)
         , fSet(count)
         , fCount(count)
         , fSampling(sampling)
@@ -1947,8 +1973,8 @@ void DrawEdgeAAImageSetCommand::execute(SkCanvas* canvas) const {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-DrawDrawableCommand::DrawDrawableCommand(SkDrawable* drawable, const SkMatrix* matrix)
-        : INHERITED(kDrawDrawable_OpType)
+DrawDrawableCommand::DrawDrawableCommand(SkDrawable* drawable, const SkMatrix* matrix, SkSerialProcs serialProcs)
+        : INHERITED(kDrawDrawable_OpType, serialProcs)
         , fDrawable(SkRef(drawable)) {
     assign_if_not_null(fMatrix, matrix);
 }
@@ -1961,8 +1987,9 @@ void DrawDrawableCommand::execute(SkCanvas* canvas) const {
 
 DrawVerticesCommand::DrawVerticesCommand(sk_sp<SkVertices> vertices,
                                          SkBlendMode       bmode,
-                                         const SkPaint&    paint)
-        : INHERITED(kDrawVertices_OpType)
+                                         const SkPaint&    paint,
+                                         SkSerialProcs     serialProcs)
+        : INHERITED(kDrawVertices_OpType, serialProcs)
         , fVertices(std::move(vertices))
         , fBlendMode(bmode)
         , fPaint(paint) {}
@@ -1973,16 +2000,17 @@ void DrawVerticesCommand::execute(SkCanvas* canvas) const {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-DrawAtlasCommand::DrawAtlasCommand(const SkImage*  image,
-                                   const SkRSXform xform[],
-                                   const SkRect    tex[],
-                                   const SkColor   colors[],
-                                   int             count,
-                                   SkBlendMode     bmode,
+DrawAtlasCommand::DrawAtlasCommand(const SkImage*           image,
+                                   const SkRSXform          xform[],
+                                   const SkRect             tex[],
+                                   const SkColor            colors[],
+                                   int                      count,
+                                   SkBlendMode              bmode,
                                    const SkSamplingOptions& sampling,
-                                   const SkRect*   cull,
-                                   const SkPaint*  paint)
-        : INHERITED(kDrawAtlas_OpType)
+                                   const SkRect*            cull,
+                                   const SkPaint*           paint,
+                                   SkSerialProcs            serialProcs)
+        : INHERITED(kDrawAtlas_OpType, serialProcs)
         , fImage(SkRef(image))
         , fXform(xform, count)
         , fTex(tex, count)
@@ -2004,16 +2032,17 @@ void DrawAtlasCommand::execute(SkCanvas* canvas) const {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-RestoreCommand::RestoreCommand() : INHERITED(kRestore_OpType) {}
+RestoreCommand::RestoreCommand(SkSerialProcs serialProcs)
+        : INHERITED(kRestore_OpType, serialProcs) {}
 
 void RestoreCommand::execute(SkCanvas* canvas) const { canvas->restore(); }
 
-SaveCommand::SaveCommand() : INHERITED(kSave_OpType) {}
+SaveCommand::SaveCommand(SkSerialProcs serialProcs) : INHERITED(kSave_OpType, serialProcs) {}
 
 void SaveCommand::execute(SkCanvas* canvas) const { canvas->save(); }
 
-SaveLayerCommand::SaveLayerCommand(const SkCanvas::SaveLayerRec& rec)
-        : INHERITED(kSaveLayer_OpType)
+SaveLayerCommand::SaveLayerCommand(const SkCanvas::SaveLayerRec& rec, SkSerialProcs serialProcs)
+        : INHERITED(kSaveLayer_OpType, serialProcs)
         , fBackdrop(SkSafeRef(rec.fBackdrop))
         , fSaveLayerFlags(rec.fSaveLayerFlags)
         , fBackdropScale(SkCanvasPriv::GetBackdropScaleFactor(rec))
@@ -2053,7 +2082,8 @@ void SaveLayerCommand::toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManag
     }
 }
 
-SetMatrixCommand::SetMatrixCommand(const SkMatrix& matrix) : INHERITED(kSetMatrix_OpType) {
+SetMatrixCommand::SetMatrixCommand(const SkMatrix& matrix, SkSerialProcs serialProcs)
+        : INHERITED(kSetMatrix_OpType, serialProcs) {
     fMatrix = matrix;
 }
 
@@ -2066,7 +2096,8 @@ void SetMatrixCommand::toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManag
     writeMatrixType(writer, fMatrix);
 }
 
-SetM44Command::SetM44Command(const SkM44& matrix) : INHERITED(kSetM44_OpType) {
+SetM44Command::SetM44Command(const SkM44& matrix, SkSerialProcs serialProcs)
+        : INHERITED(kSetM44_OpType, serialProcs) {
     fMatrix = matrix;
 }
 

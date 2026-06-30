@@ -54,13 +54,14 @@ public:
     /**
      *  Construct a JSON writer that will serialize all the generated JSON to 'stream'.
      */
-    SkJSONWriter(SkWStream* stream, Mode mode = Mode::kFast)
+    SkJSONWriter(SkWStream* stream, SkSerialProcs serialProcs, Mode mode = Mode::kFast)
             : fBlock(new char[kBlockSize])
             , fWrite(fBlock)
             , fBlockEnd(fBlock + kBlockSize)
             , fStream(stream)
             , fMode(mode)
-            , fState(State::kStart) {
+            , fState(State::kStart)
+            , fSerialProcs(serialProcs) {
         fScopeStack.push_back(Scope::kNone);
         fNewlineStack.push_back(true);
     }
@@ -303,6 +304,8 @@ public:
         this->appendDoubleDigits(value, digits);
     }
 
+    SkSerialProcs getSerialProcs() const { return fSerialProcs; }
+
 private:
     enum {
         // Using a 32k scratch block gives big performance wins, but we diminishing returns going
@@ -414,6 +417,8 @@ private:
     State fState;
     skia_private::STArray<16, Scope, true> fScopeStack;
     skia_private::STArray<16, bool, true> fNewlineStack;
+
+    SkSerialProcs fSerialProcs;
 };
 
 #endif

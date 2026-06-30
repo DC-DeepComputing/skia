@@ -199,10 +199,10 @@ skia_cc_library(
     name = "deserial_procs_utils",
     testonly = True,
     srcs = [
-        "DeserialProcsUtils.cpp",
+        "ProcsUtils.cpp",
     ],
     hdrs = [
-        "DeserialProcsUtils.h",
+        "ProcsUtils.h",
     ],
     visibility = [
         "//bench:__subpackages__",
