@@ -48,7 +48,7 @@
 #include "src/gpu/ganesh/GrShaderCaps.h"
 #include "src/gpu/ganesh/GrSurfaceProxy.h"
 #include "src/gpu/ganesh/GrSurfaceProxyView.h"
-#include "src/gpu/ganesh/GrThreadSafePipelineBuilder.h" // IWYU pragma: keep
+#include "src/gpu/ganesh/GrThreadSafePipelineBuilder.h"  // IWYU pragma: keep
 #include "src/gpu/ganesh/SurfaceContext.h"
 #include "src/gpu/ganesh/image/SkImage_GaneshBase.h"
 #include "src/gpu/ganesh/mock/GrMockGpu.h"
@@ -59,7 +59,6 @@
 #include "src/image/SkSurface_Base.h"
 #include "src/text/gpu/StrikeCache.h"
 #include "src/text/gpu/TextBlobRedrawCoordinator.h"
-
 #include <array>
 #include <atomic>
 #include <forward_list>
@@ -1156,7 +1155,7 @@ bool GrDirectContext::precompileShader(const SkData& key, const SkData& data) {
 
 SkString GrDirectContext::dump() const {
     SkDynamicMemoryWStream stream;
-    SkJSONWriter writer(&stream, SkJSONWriter::Mode::kPretty);
+    SkJSONWriter           writer(&stream, SkSerialProcs{}, SkJSONWriter::Mode::kPretty);
     writer.beginObject();
 
     writer.appendCString("backend", GrBackendApiToStr(this->backend()));

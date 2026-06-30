@@ -26,6 +26,7 @@
 #include "include/core/SkRegion.h"
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkSerialProcs.h"
 #include "include/core/SkShader.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTextBlob.h"
