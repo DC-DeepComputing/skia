@@ -6,6 +6,8 @@
  */
 
 #ifndef SkCanvasPriv_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define SkCanvasPriv_DEFINED
 
 #include "include/core/SkCanvas.h"
@@ -31,7 +33,7 @@ public:
     ~SkAutoCanvasMatrixPaint();
 
 private:
-    SkCanvas*   fCanvas;
+    raw_ptr<SkCanvas, DanglingUntriaged> fCanvas;
     int         fSaveCount;
 };
 
@@ -160,7 +162,7 @@ private:
     void addLayer(const SkPaint& restorePaint, const SkRect* drawBounds, bool coverageOnly);
 
     SkPaint         fPaint;
-    SkCanvas*       fCanvas;
+    raw_ptr<SkCanvas, DanglingUntriaged> fCanvas;
     int             fTempLayersForFilters;
 
     SkDEBUGCODE(int fSaveCount;)

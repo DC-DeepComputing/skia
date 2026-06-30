@@ -6,6 +6,8 @@
  */
 
 #ifndef sktext_gpu_StrikeCache_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+
 #define sktext_gpu_StrikeCache_DEFINED
 
 #include "include/core/SkRefCnt.h"
@@ -56,15 +58,15 @@ protected:
     // Called by derived classes when allocating glyphs to update cache accounting
     void addMemoryUsed(size_t bytes);
 
-    StrikeCache* const fStrikeCache;
+    const raw_ptr<StrikeCache, DanglingUntriaged> fStrikeCache;
     const SkStrikeSpec fStrikeSpec;
 
     // Store for the glyph information (backend-specific glyphs allocated here)
     SkArenaAlloc fAlloc{512};
 
     // Linked list for LRU cache management
-    TextStrikeBase* fNext{nullptr};
-    TextStrikeBase* fPrev{nullptr};
+    raw_ptr<TextStrikeBase, DanglingUntriaged> fNext{nullptr};
+    raw_ptr<TextStrikeBase, DanglingUntriaged> fPrev{nullptr};
     size_t fMemoryUsed{sizeof(TextStrikeBase)};
     bool fRemoved{false};
 
@@ -93,8 +95,8 @@ private:
     // A simple accounting of what each glyph cache reports and the strike cache total.
     void validate() const;
 
-    TextStrikeBase* fHead{nullptr};
-    TextStrikeBase* fTail{nullptr};
+    raw_ptr<TextStrikeBase, DanglingUntriaged> fHead{nullptr};
+    raw_ptr<TextStrikeBase, DanglingUntriaged> fTail{nullptr};
 
     struct HashTraits {
         static const SkDescriptor& GetKey(const sk_sp<TextStrikeBase>& strike);
