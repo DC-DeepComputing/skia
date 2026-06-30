@@ -64,6 +64,11 @@ public:
                          bool skipColorXform = false,
                          bool ignoreShader = false);
 
+    // Converts an SkPaint to PaintParams with a primitive blender and primitive color override.
+    explicit PaintParams(const SkPaint& paint,
+                         const SkBlender* primitiveBlender,
+                         const std::optional<SkColor4f>& primitiveColorOverride);
+
     // Converts an SkPaint to PaintParams and accounts for the implicit SkImage shader override
     // from drawImageRect and related functions. Multiplies `xtraAlpha` with the paint's alpha.
     //
@@ -83,6 +88,9 @@ public:
     const SimpleImage* imageShader() const { return fImageShader; }
     const SkColorFilter* colorFilter() const { return fColorFilter; }
     const SkBlender* primitiveBlender() const { return fPrimitiveBlender; }
+    const std::optional<SkColor4f>& primitiveColorOverride() const {
+        return fPrimitiveColorOverride;
+    }
     bool skipPrimitiveColorXform() const { return fSkipColorXform; }
 
     const SkBlender* finalBlender() const { return fFinalBlend.first; }
@@ -103,6 +111,7 @@ private:
     PaintParams(const SkPaint&,
                 const SimpleImage* imageOverride,
                 const SkBlender* primitiveBlender,
+                const std::optional<SkColor4f>& primitiveColorOverride,
                 bool skipColorXform,
                 bool ignoreShader);
 
@@ -121,8 +130,13 @@ private:
     // In the case where there is primitive blending, the primitive color is the source color and
     // the dest is the paint's color (or the paint's shader's computed color).
     const SkBlender* fPrimitiveBlender;
-    bool             fSkipColorXform;
-    bool             fDither;
+    // When a fPrimitiveColorOverride is present, it is used instead of any defined primitive colors
+    // in the vertices for primitive color blending. This is done to enable primitive color blending
+    // for render steps which don't emit primitive colors.
+    const std::optional<SkColor4f> fPrimitiveColorOverride;
+
+    bool fSkipColorXform;
+    bool fDither;
 };
 
 // ShadingParams wraps a PaintParams with the additional per-pixel state to handle clipping and
