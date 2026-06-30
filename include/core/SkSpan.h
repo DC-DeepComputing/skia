@@ -153,5 +153,17 @@ SkSpan(Container&&) ->
 template <typename T> using SkSpan = std::span<T>;
 
 #endif  // legacy
+template <typename T>
+constexpr SkSpan<T> SkPreIncrementSpan(SkSpan<T>& s) {
+    s = s.subspan(1);
+    return s;
+}
+
+template <typename T>
+constexpr SkSpan<T> SkPostIncrementSpan(SkSpan<T>& s) {
+    SkSpan<T> old = s;
+    s = s.subspan(1);
+    return old;
+}
 
 #endif  // SkSpan_DEFINED
