@@ -58,6 +58,20 @@ static void export_ttx(sk_sp<TestSVGTypeface> typeface,
         ebdt.fsync();
     }
 
+    // EBDT monochrome bitmap font that also carries glyf outlines, so the
+    // Fontations bitmap-vs-outline strike-distance behavior can be exercised in
+    // a GM: the embedded bitmap is used at a strike ppem, the outline away from
+    // any strike. See https://issues.chromium.org/issues/526181509.
+    {
+        SkFILEWStream ebdtGlyf((SkString(prefix) += "ebdt_glyf.ttx").c_str());
+        typeface->exportTtxEbdt(&ebdtGlyf,
+                                cbdtStrikeSizes,
+                                TestSVGTypeface::BitmapDataFormat::kSmallByteAligned,
+                                /*withGlyf=*/true);
+        ebdtGlyf.flush();
+        ebdtGlyf.fsync();
+    }
+
     SkFILEWStream sbix((SkString(prefix) += "sbix.ttx").c_str());
     typeface->exportTtxSbix(&sbix, sbixStrikeSizes);
     sbix.flush();
