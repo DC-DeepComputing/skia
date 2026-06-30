@@ -5192,6 +5192,25 @@ HIGHP_TAIL_STAGE(dot_4_floats, F* dst) {
                  dst[3] * dst[7])));
 }
 
+template <int N, int outColumns, int outRows>
+SI void matrix_multiply_unrolled(F* resultMtx, const F* leftMtx, const F* rightMtx) {
+    for (int c = 0; c < outColumns; ++c) {
+        for (int r = 0; r < outRows; ++r) {
+            const F* leftRow     = &leftMtx [r];
+            const F* rightColumn = &rightMtx[c * N];
+
+            F element = *leftRow * *rightColumn;
+            for (int idx = 1; idx < N; ++idx) {
+                leftRow     += outRows;
+                rightColumn += 1;
+                element = mad(*leftRow, *rightColumn, element);
+            }
+
+            resultMtx[c * outRows + r] = element;
+        }
+    }
+}
+
 // MxM, VxM and MxV multiplication all use matrix_multiply. Vectors are treated like a matrix with a
 // single column or row.
 template <int N>
@@ -5222,22 +5241,45 @@ SI void matrix_multiply(SkRasterPipelineContexts::MatrixMultiplyCtx* packed, std
     F* leftMtx    = &resultMtx[ctx.rightColumns * ctx.leftRows];
     F* rightMtx   = &leftMtx[N * ctx.leftRows];
 
-    // Emit each matrix element.
-    for (int c = 0; c < outColumns; ++c) {
-        for (int r = 0; r < outRows; ++r) {
-            // Dot a vector from leftMtx[*][r] with rightMtx[c][*].
-            F* leftRow     = &leftMtx [r];
-            F* rightColumn = &rightMtx[c * N];
-
-            F element = *leftRow * *rightColumn;
-            for (int idx = 1; idx < N; ++idx) {
-                leftRow     += outRows;
-                rightColumn += 1;
-                element = mad(*leftRow, *rightColumn, element);
+    switch (outColumns) {
+        case 1:
+            switch (outRows) {
+                case 1: matrix_multiply_unrolled<N, 1, 1>(resultMtx, leftMtx, rightMtx); return;
+                case 2: matrix_multiply_unrolled<N, 1, 2>(resultMtx, leftMtx, rightMtx); return;
+                case 3: matrix_multiply_unrolled<N, 1, 3>(resultMtx, leftMtx, rightMtx); return;
+                case 4: matrix_multiply_unrolled<N, 1, 4>(resultMtx, leftMtx, rightMtx); return;
+                default: SkUNREACHABLE;
             }
-
-            *resultMtx++ = element;
-        }
+            break;
+        case 2:
+            switch (outRows) {
+                case 1: matrix_multiply_unrolled<N, 2, 1>(resultMtx, leftMtx, rightMtx); return;
+                case 2: matrix_multiply_unrolled<N, 2, 2>(resultMtx, leftMtx, rightMtx); return;
+                case 3: matrix_multiply_unrolled<N, 2, 3>(resultMtx, leftMtx, rightMtx); return;
+                case 4: matrix_multiply_unrolled<N, 2, 4>(resultMtx, leftMtx, rightMtx); return;
+                default: SkUNREACHABLE;
+            }
+            break;
+        case 3:
+            switch (outRows) {
+                case 1: matrix_multiply_unrolled<N, 3, 1>(resultMtx, leftMtx, rightMtx); return;
+                case 2: matrix_multiply_unrolled<N, 3, 2>(resultMtx, leftMtx, rightMtx); return;
+                case 3: matrix_multiply_unrolled<N, 3, 3>(resultMtx, leftMtx, rightMtx); return;
+                case 4: matrix_multiply_unrolled<N, 3, 4>(resultMtx, leftMtx, rightMtx); return;
+                default: SkUNREACHABLE;
+            }
+            break;
+        case 4:
+            switch (outRows) {
+                case 1: matrix_multiply_unrolled<N, 4, 1>(resultMtx, leftMtx, rightMtx); return;
+                case 2: matrix_multiply_unrolled<N, 4, 2>(resultMtx, leftMtx, rightMtx); return;
+                case 3: matrix_multiply_unrolled<N, 4, 3>(resultMtx, leftMtx, rightMtx); return;
+                case 4: matrix_multiply_unrolled<N, 4, 4>(resultMtx, leftMtx, rightMtx); return;
+                default: SkUNREACHABLE;
+            }
+            break;
+        default:
+            SkUNREACHABLE;
     }
 }
 

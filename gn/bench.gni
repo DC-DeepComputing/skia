@@ -130,6 +130,7 @@ bench_sources = [
   "$_bench/SkRPBilerpClampBench.cpp",
   "$_bench/SkRPDivBench.cpp",
   "$_bench/SkRPGammaBench.cpp",
+  "$_bench/SkRPMatrixMultiplyBench.cpp",
   "$_bench/SkSLBench.cpp",
   "$_bench/SkSLBench.h",
   "$_bench/SortBench.cpp",
