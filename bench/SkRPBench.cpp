@@ -3,6 +3,8 @@
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
+ *
+ * Benchmarks to target specific SkRasterPipeline stages.
  */
 
 #include "bench/Benchmark.h"
@@ -14,6 +16,16 @@
 
 #include <memory>
 
+template <typename T>
+static T* allocate_and_align(std::unique_ptr<char[]>& storage, size_t sizeInBytes) {
+    // Align to 64 bytes (critical for AVX-512 in SkRasterPipeline).
+    // The initial allocation might not be 64-byte aligned, so we allocate extra padding
+    // and find the next address in our buffer that is a multiple of 64.
+    storage.reset(new char[sizeInBytes + 64]);
+    return reinterpret_cast<T*>(
+            SkAlignTo(reinterpret_cast<uintptr_t>(storage.get()), (uintptr_t)64));
+}
+
 class SkRPDivBench : public Benchmark {
 public:
     enum class Type { kInt, kUint };
@@ -21,12 +33,7 @@ public:
     SkRPDivBench(Type type, int slots) : fType(type), fSlots(slots) {
         fName.printf("skrp_div_%s_%d", fType == Type::kInt ? "int" : "uint", fSlots);
 
-        // Align fData to 64 bytes (critical for AVX-512 in SkRasterPipeline).
-        // The initial allocation might not be 64 byte aligned so we find the next address in our
-        // allocated buffer that is a multiple of 64.
-        fStorage.reset(new char[1024 * sizeof(int32_t) + 64]);
-        fData = reinterpret_cast<int32_t*>(
-                SkAlignTo(reinterpret_cast<uintptr_t>(fStorage.get()), (uintptr_t)64));
+        fData = allocate_and_align<int32_t>(fStorage, 1024 * sizeof(int32_t));
 
         // Initialize the data we are dividing by so it's non-zero (avoiding any special casing).
         for (int i = 0; i < 1024; i++) {
@@ -71,7 +78,55 @@ private:
     int32_t* fData = nullptr;
 };
 
+class SkRPClampBench : public Benchmark {
+public:
+    enum class Op { kClampXAndY, kClampX1 };
+
+    SkRPClampBench(Op op) : fOp(op) {
+        if (fOp == Op::kClampXAndY) {
+            fName.printf("skrp_clamp_x_and_y");
+            auto* clampCtx = allocate_and_align<SkRasterPipelineContexts::CoordClampCtx>(
+                    fStorage, sizeof(SkRasterPipelineContexts::CoordClampCtx));
+            clampCtx->min_x = 0.0f;
+            clampCtx->min_y = 0.0f;
+            clampCtx->max_x = 100.0f;
+            clampCtx->max_y = 100.0f;
+            fCtx = clampCtx;
+        } else {
+            fName.printf("skrp_clamp_x_1");
+        }
+    }
+
+protected:
+    const char* onGetName() override { return fName.c_str(); }
+    bool isSuitableFor(Backend backend) override { return backend == Backend::kNonRendering; }
+
+    void onDraw(int loops, SkCanvas*) override {
+        SkArenaAlloc alloc(1024);
+        SkRasterPipeline p(&alloc);
+
+        if (fOp == Op::kClampXAndY) {
+            p.append(SkRasterPipelineOp::clamp_x_and_y, fCtx);
+        } else {
+            p.append(SkRasterPipelineOp::clamp_x_1);
+        }
+
+        for (int i = 0; i < loops; i++) {
+            p.run(0, 0, 128, 1);
+        }
+    }
+
+private:
+    Op fOp;
+    SkString fName;
+    std::unique_ptr<char[]> fStorage;
+    void* fCtx = nullptr;
+};
+
 DEF_BENCH(return new SkRPDivBench(SkRPDivBench::Type::kInt, 1);)
 DEF_BENCH(return new SkRPDivBench(SkRPDivBench::Type::kInt, 4);)
 DEF_BENCH(return new SkRPDivBench(SkRPDivBench::Type::kUint, 1);)
 DEF_BENCH(return new SkRPDivBench(SkRPDivBench::Type::kUint, 4);)
+
+DEF_BENCH(return new SkRPClampBench(SkRPClampBench::Op::kClampXAndY);)
+DEF_BENCH(return new SkRPClampBench(SkRPClampBench::Op::kClampX1);)
