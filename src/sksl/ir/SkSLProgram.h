@@ -6,6 +6,8 @@
  */
 
 #ifndef SKSL_PROGRAM
+#include "src/partition_alloc/raw_ref.h"
+
 #define SKSL_PROGRAM
 
 #include "src/sksl/ir/SkSLType.h"
@@ -116,20 +118,20 @@ struct Program {
         };
 
         iterator begin() const {
-            return iterator(fProgram.fOwnedElements.begin(), fProgram.fOwnedElements.end(),
-                            fProgram.fSharedElements.begin(), fProgram.fSharedElements.end());
+            return iterator(fProgram->fOwnedElements.begin(), fProgram->fOwnedElements.end(),
+                            fProgram->fSharedElements.begin(), fProgram->fSharedElements.end());
         }
 
         iterator end() const {
-            return iterator(fProgram.fOwnedElements.end(), fProgram.fOwnedElements.end(),
-                            fProgram.fSharedElements.end(), fProgram.fSharedElements.end());
+            return iterator(fProgram->fOwnedElements.end(), fProgram->fOwnedElements.end(),
+                            fProgram->fSharedElements.end(), fProgram->fSharedElements.end());
         }
 
     private:
         friend struct Program;
 
         ElementsCollection(const Program& program) : fProgram(program) {}
-        const Program& fProgram;
+        const raw_ref<const Program> fProgram;
     };
 
     /**

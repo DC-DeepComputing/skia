@@ -20,6 +20,8 @@
 #include "src/core/SkFontDescriptor.h"
 #include "src/core/SkFontPriv.h"
 #include "src/core/SkScopeExit.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ref.h"
 #include "src/ports/SkTypeface_fontations_priv.h"
 #include "src/ports/fontations/src/skpath_bridge.h"
 
@@ -378,9 +380,9 @@ public:
 
         // Hinting-reliant fonts exist that display incorrect contours when not executing their
         // hinting instructions. Detect those and force-enable hinting for them.
-        if (fontations_ffi::hinting_reliant(fOutlines)) {
+        if (fontations_ffi::hinting_reliant(*fOutlines)) {
             fHintingInstance = fontations_ffi::make_mono_hinting_instance(
-                    fOutlines, fScale.y(), fBridgeNormalizedCoords);
+                    *fOutlines, fScale.y(), *fBridgeNormalizedCoords);
             fDoLinearMetrics = false;
         } else {
             if (SkMask::kBW_Format == fRec.fMaskFormat) {
@@ -389,7 +391,7 @@ public:
                     fDoLinearMetrics = true;
                 } else {
                     fHintingInstance = fontations_ffi::make_mono_hinting_instance(
-                            fOutlines, fScale.y(), fBridgeNormalizedCoords);
+                            *fOutlines, fScale.y(), *fBridgeNormalizedCoords);
                     fDoLinearMetrics = false;
                 }
             } else {
@@ -406,10 +408,10 @@ public:
                             autoHintingControl = AutoHinting::ForceForGlyf;
                         }
                         fHintingInstance = fontations_ffi::make_hinting_instance(
-                                fOutlines,
-                                fGlyphStyles,
+                                *fOutlines,
+                                *fGlyphStyles,
                                 fScale.y(),
-                                fBridgeNormalizedCoords,
+                                *fBridgeNormalizedCoords,
                                 true /* do_light_hinting */,
                                 false /* do_lcd_antialiasing */,
                                 false /* lcd_orientation_vertical */,
@@ -419,10 +421,10 @@ public:
                     case SkFontHinting::kNormal:
                         // No hinting to subpixel coordinates.
                         fHintingInstance = fontations_ffi::make_hinting_instance(
-                                fOutlines,
-                                fGlyphStyles,
+                                *fOutlines,
+                                *fGlyphStyles,
                                 fScale.y(),
-                                fBridgeNormalizedCoords,
+                                *fBridgeNormalizedCoords,
                                 false /* do_light_hinting */,
                                 false /* do_lcd_antialiasing */,
                                 false /* lcd_orientation_vertical */,
@@ -431,10 +433,10 @@ public:
                     case SkFontHinting::kFull:
                         // Attempt to make use of hinting to subpixel coordinates.
                         fHintingInstance = fontations_ffi::make_hinting_instance(
-                                fOutlines,
-                                fGlyphStyles,
+                                *fOutlines,
+                                *fGlyphStyles,
                                 fScale.y(),
-                                fBridgeNormalizedCoords,
+                                *fBridgeNormalizedCoords,
                                 false /* do_light_hinting */,
                                 isLCD(fRec) /* do_lcd_antialiasing */,
                                 SkToBool(fRec.fFlags &
@@ -450,7 +452,7 @@ public:
         SkGlyphID glyphId;
         rust::Slice<const uint32_t> codepointSlice{reinterpret_cast<const uint32_t*>(&letter), 1};
         rust::Slice<uint16_t> glyphSlice{reinterpret_cast<uint16_t*>(&glyphId), 1};
-        fontations_ffi::lookup_glyph_or_zero(fBridgeFontRef, fMappingIndex,
+        fontations_ffi::lookup_glyph_or_zero(*fBridgeFontRef, *fMappingIndex,
                                              codepointSlice, glyphSlice);
         if (!glyphId) {
             return {};
@@ -480,10 +482,10 @@ public:
         // and afer leaving this function, we shrink to the same amount.
         SK_AT_SCOPE_EXIT(fontations_ffi::shrink_verbs_points_if_needed(fPathVerbs, fPathPoints));
 
-        if (!fontations_ffi::get_path_verbs_points(fOutlines,
+        if (!fontations_ffi::get_path_verbs_points(*fOutlines,
                                                    glyphId,
                                                    yScale,
-                                                   fBridgeNormalizedCoords,
+                                                   *fBridgeNormalizedCoords,
                                                    hintingInstance,
                                                    fPathVerbs,
                                                    fPathPoints,
@@ -518,10 +520,10 @@ protected:
         bool has_colrv1_glyph = false;
         bool has_colrv0_glyph = false;
         bool has_bitmap_glyph = false;
-        if (fontations_ffi::has_any_color_table(fBridgeFontRef)) {
-            has_colrv1_glyph = fontations_ffi::has_colrv1_glyph(fBridgeFontRef, glyph.getGlyphID());
-            has_colrv0_glyph = fontations_ffi::has_colrv0_glyph(fBridgeFontRef, glyph.getGlyphID());
-            has_bitmap_glyph = fontations_ffi::has_bitmap_glyph(fBridgeFontRef, glyph.getGlyphID());
+        if (fontations_ffi::has_any_color_table(*fBridgeFontRef)) {
+            has_colrv1_glyph = fontations_ffi::has_colrv1_glyph(*fBridgeFontRef, glyph.getGlyphID());
+            has_colrv0_glyph = fontations_ffi::has_colrv0_glyph(*fBridgeFontRef, glyph.getGlyphID());
+            has_bitmap_glyph = fontations_ffi::has_bitmap_glyph(*fBridgeFontRef, glyph.getGlyphID());
         }
 
         // Local overrides for color fonts etc. may alter the request for linear metrics.
@@ -539,7 +541,7 @@ protected:
 
         float x_advance = 0.0f;
         x_advance = fontations_ffi::unhinted_advance_width_or_zero(
-                fBridgeFontRef, fScale.y(), fBridgeNormalizedCoords, glyph.getGlyphID());
+                *fBridgeFontRef, fScale.y(), *fBridgeNormalizedCoords, glyph.getGlyphID());
         if (!doLinearMetrics) {
             fontations_ffi::BridgeScalerMetrics scalerMetrics;
             if (auto generatedPath = generatePathImpl(glyph.getGlyphID(),
@@ -570,8 +572,8 @@ protected:
             mx.neverRequestPath = true;
 
             fontations_ffi::ClipBox clipBox;
-            if (has_colrv1_glyph && fontations_ffi::get_colrv1_clip_box(fBridgeFontRef,
-                                                                        fBridgeNormalizedCoords,
+            if (has_colrv1_glyph && fontations_ffi::get_colrv1_clip_box(*fBridgeFontRef,
+                                                                        *fBridgeNormalizedCoords,
                                                                         glyph.getGlyphID(),
                                                                         fScale.y(),
                                                                         clipBox)) {
@@ -586,7 +588,7 @@ protected:
                 boundsRect.roundOut(&mx.bounds);
 
             } else {
-                uint16_t upem = fontations_ffi::units_per_em_or_zero(fBridgeFontRef);
+                uint16_t upem = fontations_ffi::units_per_em_or_zero(*fBridgeFontRef);
                 if (upem == 0) {
                     mx.bounds = SkRect::MakeEmpty();
                 } else {
@@ -594,8 +596,8 @@ protected:
                     fullTransform.preScale(1.f / upem, 1.f / upem);
 
                     sk_fontations::BoundsPainter boundsPainter(*this, fullTransform, upem);
-                    bool result = fontations_ffi::draw_colr_glyph(fBridgeFontRef,
-                                                                  fBridgeNormalizedCoords,
+                    bool result = fontations_ffi::draw_colr_glyph(*fBridgeFontRef,
+                                                                  *fBridgeNormalizedCoords,
                                                                   glyph.getGlyphID(),
                                                                   boundsPainter);
                     if (result) {
@@ -610,7 +612,7 @@ protected:
             mx.extraBits = ScalerContextBits::BITMAP;
 
             rust::cxxbridge1::Box<fontations_ffi::BridgeBitmapGlyph> bitmap_glyph =
-                    fontations_ffi::bitmap_glyph(fBridgeFontRef, glyph.getGlyphID(), fScale.y());
+                    fontations_ffi::bitmap_glyph(*fBridgeFontRef, glyph.getGlyphID(), fScale.y());
 
             const fontations_ffi::BitmapMetrics bitmapMetrics =
                     fontations_ffi::bitmap_metrics(*bitmap_glyph);
@@ -649,7 +651,7 @@ protected:
             SkMatrix matrix = fRemainingMatrix;
             float imageToSize = fScale.y() / bitmapMetrics.ppem_y;
             float fontUnitsToSize = fScale.y() /
-                                    fontations_ffi::units_per_em_or_zero(fBridgeFontRef);
+                                    fontations_ffi::units_per_em_or_zero(*fBridgeFontRef);
 
             // The offset from origin is given in font units, so requires a
             // different scale factor than the scaling of the image.
@@ -683,7 +685,7 @@ protected:
 
     void generateBitmapImage(const SkGlyph& glyph, void* imageBuffer) {
         rust::cxxbridge1::Box<fontations_ffi::BridgeBitmapGlyph> bitmap_glyph =
-                fontations_ffi::bitmap_glyph(fBridgeFontRef, glyph.getGlyphID(), fScale.y());
+                fontations_ffi::bitmap_glyph(*fBridgeFontRef, glyph.getGlyphID(), fScale.y());
 
         // Build source image: either from decoded alpha or PNG data.
         sk_sp<SkImage> srcImage;
@@ -745,7 +747,7 @@ protected:
         // one for scaling the embedded PNG, see generateMetrics() for details.
         SkScalar imageScaleFactor = fScale.y() / bitmapMetrics.ppem_y;
 
-        float fontUnitsToSize = fScale.y() / fontations_ffi::units_per_em_or_zero(fBridgeFontRef);
+        float fontUnitsToSize = fScale.y() / fontations_ffi::units_per_em_or_zero(*fBridgeFontRef);
         canvas.translate( bitmapMetrics.bearing_x * fontUnitsToSize,
                          -bitmapMetrics.bearing_y * fontUnitsToSize);
         canvas.scale(imageScaleFactor, imageScaleFactor);
@@ -782,7 +784,7 @@ protected:
             }
             canvas.translate(-glyph.left(), -glyph.top());
 
-            drawCOLRGlyph(glyph, fRec.fForegroundColor, &canvas);
+            drawCOLRGlyph(glyph.getGlyphID(), fRec.fForegroundColor, &canvas);
         } else if (format == ScalerContextBits::BITMAP) {
             generateBitmapImage(glyph, imageBuffer);
         } else {
@@ -812,8 +814,8 @@ protected:
         return generatePathImpl(glyph.getGlyphID(), scalerMetrics);
     }
 
-    bool drawCOLRGlyph(const SkGlyph& glyph, SkColor foregroundColor, SkCanvas* canvas) {
-        uint16_t upem = fontations_ffi::units_per_em_or_zero(fBridgeFontRef);
+    bool drawCOLRGlyph(SkGlyphID glyphId, SkColor foregroundColor, SkCanvas* canvas) {
+        uint16_t upem = fontations_ffi::units_per_em_or_zero(*fBridgeFontRef);
         if (upem == 0) {
             return false;
         }
@@ -830,17 +832,18 @@ protected:
         sk_fontations::ColorPainter colorPainter(*this, *canvas, fPalette, foregroundColor,
                                                  SkMask::kBW_Format != fRec.fMaskFormat, upem);
         bool result = fontations_ffi::draw_colr_glyph(
-                fBridgeFontRef, fBridgeNormalizedCoords, glyph.getGlyphID(), colorPainter);
+                *fBridgeFontRef, *fBridgeNormalizedCoords, glyphId, colorPainter);
         return result;
     }
 
     sk_sp<SkDrawable> generateDrawable(const SkGlyph& glyph) override {
         struct GlyphDrawable : public SkDrawable {
-            SkFontationsScalerContext* fSelf;
-            SkGlyph fGlyph;
+            raw_ptr<SkFontationsScalerContext> fSelf;
+            SkGlyphID fGlyphId;
+            SkRect fBounds;
             GlyphDrawable(SkFontationsScalerContext* self, const SkGlyph& glyph)
-                    : fSelf(self), fGlyph(glyph) {}
-            SkRect onGetBounds() override { return fGlyph.rect(); }
+                    : fSelf(self), fGlyphId(glyph.getGlyphID()), fBounds(glyph.rect()) {}
+            SkRect onGetBounds() override { return fBounds; }
             size_t onApproximateBytesUsed() override { return sizeof(GlyphDrawable); }
             void maybeShowTextBlitCoverage(SkCanvas* canvas) {
                 if constexpr (kSkShowTextBlitCoverage) {
@@ -855,7 +858,7 @@ protected:
             using GlyphDrawable::GlyphDrawable;
             void onDraw(SkCanvas* canvas) override {
                 this->maybeShowTextBlitCoverage(canvas);
-                fSelf->drawCOLRGlyph(fGlyph, fSelf->fRec.fForegroundColor, canvas);
+                fSelf->drawCOLRGlyph(fGlyphId, fSelf->fRec.fForegroundColor, canvas);
             }
         };
         ScalerContextBits::value_type format = glyph.extraBits();
@@ -867,7 +870,7 @@ protected:
 
     void generateFontMetrics(SkFontMetrics* out_metrics) override {
         fontations_ffi::Metrics metrics =
-                fontations_ffi::get_skia_metrics(fBridgeFontRef, fScale.y(), fBridgeNormalizedCoords);
+                fontations_ffi::get_skia_metrics(*fBridgeFontRef, fScale.y(), *fBridgeNormalizedCoords);
         out_metrics->fTop = -metrics.top;
         out_metrics->fAscent = -metrics.ascent;
         out_metrics->fDescent = -metrics.descent;
@@ -898,7 +901,7 @@ protected:
             }
         }
 
-        if (fontations_ffi::table_data(fBridgeFontRef,
+        if (fontations_ffi::table_data(*fBridgeFontRef,
                                        SkSetFourByteTag('f', 'v', 'a', 'r'),
                                        0,
                                        rust::Slice<uint8_t>())) {
@@ -929,11 +932,11 @@ private:
     SkVector fScale;
     SkMatrix fRemainingMatrix;
     sk_sp<SkData> fFontData = nullptr;
-    const fontations_ffi::BridgeFontRef& fBridgeFontRef;
-    const fontations_ffi::BridgeNormalizedCoords& fBridgeNormalizedCoords;
-    const fontations_ffi::BridgeOutlineCollection& fOutlines;
-    const fontations_ffi::BridgeGlyphStyles& fGlyphStyles;
-    const fontations_ffi::BridgeMappingIndex& fMappingIndex;
+    const raw_ref<const fontations_ffi::BridgeFontRef> fBridgeFontRef;
+    const raw_ref<const fontations_ffi::BridgeNormalizedCoords> fBridgeNormalizedCoords;
+    const raw_ref<const fontations_ffi::BridgeOutlineCollection> fOutlines;
+    const raw_ref<const fontations_ffi::BridgeGlyphStyles> fGlyphStyles;
+    const raw_ref<const fontations_ffi::BridgeMappingIndex> fMappingIndex;
     const SkSpan<const SkColor> fPalette;
     rust::Box<fontations_ffi::BridgeHintingInstance> fHintingInstance;
     bool fDoLinearMetrics = false;
@@ -1316,28 +1319,28 @@ ColorPainter::ColorPainter(SkFontationsScalerContext& scaler_context,
         , fUpem(upem) {}
 
 void ColorPainter::push_transform(const fontations_ffi::Transform& transform_arg) {
-    fCanvas.save();
-    fCanvas.concat(SkMatrixFromFontationsTransform(transform_arg));
+    fCanvas->save();
+    fCanvas->concat(SkMatrixFromFontationsTransform(transform_arg));
 }
 
-void ColorPainter::pop_transform() { fCanvas.restore(); }
+void ColorPainter::pop_transform() { fCanvas->restore(); }
 
 void ColorPainter::push_clip_glyph(uint16_t glyph_id) {
-    fCanvas.save();
+    fCanvas->save();
     fontations_ffi::BridgeScalerMetrics scalerMetrics;
-    auto path = fScalerContext.generatePathForGlyphId(glyph_id, fUpem,
+    auto path = fScalerContext->generatePathForGlyphId(glyph_id, fUpem,
                                                       *fontations_ffi::no_hinting_instance(),
                                                       scalerMetrics);
-    fCanvas.clipPath(path.has_value() ? *path : SkPath(), fAntialias);
+    fCanvas->clipPath(path.has_value() ? *path : SkPath(), fAntialias);
 }
 
 void ColorPainter::push_clip_rectangle(float x_min, float y_min, float x_max, float y_max) {
-    fCanvas.save();
+    fCanvas->save();
     SkRect clipRect = SkRect::MakeLTRB(x_min, -y_min, x_max, -y_max);
-    fCanvas.clipRect(clipRect, fAntialias);
+    fCanvas->clipRect(clipRect, fAntialias);
 }
 
-void ColorPainter::pop_clip() { fCanvas.restore(); }
+void ColorPainter::pop_clip() { fCanvas->restore(); }
 
 void ColorPainter::configure_solid_paint(uint16_t palette_index, float alpha, SkPaint& paint) {
     paint.setAntiAlias(fAntialias);
@@ -1357,17 +1360,17 @@ void ColorPainter::configure_solid_paint(uint16_t palette_index, float alpha, Sk
 void ColorPainter::fill_solid(uint16_t palette_index, float alpha) {
     SkPaint paint;
     configure_solid_paint(palette_index, alpha, paint);
-    fCanvas.drawPaint(paint);
+    fCanvas->drawPaint(paint);
 }
 
 void ColorPainter::fill_glyph_solid(uint16_t glyph_id, uint16_t palette_index, float alpha) {
     fontations_ffi::BridgeScalerMetrics scalerMetrics;
-    if (auto path = fScalerContext.generatePathForGlyphId(glyph_id, fUpem,
+    if (auto path = fScalerContext->generatePathForGlyphId(glyph_id, fUpem,
                                                           *fontations_ffi::no_hinting_instance(),
                                                           scalerMetrics)) {
         SkPaint paint;
         configure_solid_paint(palette_index, alpha, paint);
-        fCanvas.drawPath(*path, paint);
+        fCanvas->drawPath(*path, paint);
     }
 }
 
@@ -1414,7 +1417,7 @@ void ColorPainter::fill_linear(const fontations_ffi::FillLinearParams& linear_pa
 
     configure_linear_paint(linear_params, bridge_stops, extend_mode, paint);
 
-    fCanvas.drawPaint(paint);
+    fCanvas->drawPaint(paint);
 }
 
 void ColorPainter::fill_glyph_linear(uint16_t glyph_id,
@@ -1423,13 +1426,13 @@ void ColorPainter::fill_glyph_linear(uint16_t glyph_id,
                                      fontations_ffi::BridgeColorStops& bridge_stops,
                                      uint8_t extend_mode) {
     fontations_ffi::BridgeScalerMetrics scalerMetrics;
-    if (auto path = fScalerContext.generatePathForGlyphId(glyph_id, fUpem,
+    if (auto path = fScalerContext->generatePathForGlyphId(glyph_id, fUpem,
                                                           *fontations_ffi::no_hinting_instance(),
                                                           scalerMetrics)) {
         SkPaint paint;
         SkMatrix paintTransform = SkMatrixFromFontationsTransform(transform);
         configure_linear_paint(linear_params, bridge_stops, extend_mode, paint, &paintTransform);
-        fCanvas.drawPath(*path, paint);
+        fCanvas->drawPath(*path, paint);
     }
 }
 
@@ -1455,7 +1458,7 @@ void ColorPainter::configure_radial_paint(
     // Draw single color if there's only one stop.
     if (stops.size() == 1) {
         paint.setColor(colors[0]);
-        fCanvas.drawPaint(paint);
+        fCanvas->drawPaint(paint);
         return;
     }
 
@@ -1566,7 +1569,7 @@ void ColorPainter::fill_radial(const fontations_ffi::FillRadialParams& fill_radi
 
     configure_radial_paint(fill_radial_params, bridge_stops, extend_mode, paint);
 
-    fCanvas.drawPaint(paint);
+    fCanvas->drawPaint(paint);
 }
 
 void ColorPainter::fill_glyph_radial(uint16_t glyph_id,
@@ -1575,13 +1578,13 @@ void ColorPainter::fill_glyph_radial(uint16_t glyph_id,
                                      fontations_ffi::BridgeColorStops& bridge_stops,
                                      uint8_t extend_mode) {
     fontations_ffi::BridgeScalerMetrics scalerMetrics;
-    if (auto path = fScalerContext.generatePathForGlyphId(glyph_id, fUpem,
+    if (auto path = fScalerContext->generatePathForGlyphId(glyph_id, fUpem,
                                                           *fontations_ffi::no_hinting_instance(),
                                                           scalerMetrics)) {
         SkPaint paint;
         SkMatrix paintTransform = SkMatrixFromFontationsTransform(transform);
         configure_radial_paint(fill_radial_params, bridge_stops, extend_mode, paint, &paintTransform);
-        fCanvas.drawPath(*path, paint);
+        fCanvas->drawPath(*path, paint);
     }
 }
 
@@ -1601,7 +1604,7 @@ void ColorPainter::configure_sweep_paint(const fontations_ffi::FillSweepParams& 
 
     if (stops.size() == 1) {
         paint.setColor(colors[0]);
-        fCanvas.drawPaint(paint);
+        fCanvas->drawPaint(paint);
         return;
     }
 
@@ -1626,7 +1629,7 @@ void ColorPainter::fill_sweep(const fontations_ffi::FillSweepParams& sweep_param
 
     configure_sweep_paint(sweep_params, bridge_stops, extend_mode, paint);
 
-    fCanvas.drawPaint(paint);
+    fCanvas->drawPaint(paint);
 }
 
 void ColorPainter::fill_glyph_sweep(uint16_t glyph_id,
@@ -1635,23 +1638,23 @@ void ColorPainter::fill_glyph_sweep(uint16_t glyph_id,
                                     fontations_ffi::BridgeColorStops& bridge_stops,
                                     uint8_t extend_mode) {
     fontations_ffi::BridgeScalerMetrics scalerMetrics;
-    if (auto path = fScalerContext.generatePathForGlyphId(glyph_id, fUpem,
+    if (auto path = fScalerContext->generatePathForGlyphId(glyph_id, fUpem,
                                                           *fontations_ffi::no_hinting_instance(),
                                                           scalerMetrics)) {
         SkPaint paint;
         SkMatrix paintTransform = SkMatrixFromFontationsTransform(transform);
         configure_sweep_paint(sweep_params, bridge_stops, extend_mode, paint, &paintTransform);
-        fCanvas.drawPath(*path, paint);
+        fCanvas->drawPath(*path, paint);
     }
 }
 
 void ColorPainter::push_layer(uint8_t compositeMode) {
     SkPaint paint;
     paint.setBlendMode(ToSkBlendMode(compositeMode));
-    fCanvas.saveLayer(nullptr, &paint);
+    fCanvas->saveLayer(nullptr, &paint);
 }
 
-void ColorPainter::pop_layer() { fCanvas.restore(); }
+void ColorPainter::pop_layer() { fCanvas->restore(); }
 
 BoundsPainter::BoundsPainter(SkFontationsScalerContext& scaler_context,
                              SkMatrix initialTransfom,
@@ -1675,7 +1678,7 @@ void BoundsPainter::pop_transform() {
 
 void BoundsPainter::push_clip_glyph(uint16_t glyph_id) {
     fontations_ffi::BridgeScalerMetrics scalerMetrics;
-    if (auto path = fScalerContext.generatePathForGlyphId(glyph_id, fUpem,
+    if (auto path = fScalerContext->generatePathForGlyphId(glyph_id, fUpem,
                                                           *fontations_ffi::no_hinting_instance(),
                                                           scalerMetrics)) {
         if (auto newpath = path->tryMakeTransform(fMatrixStack.back())) {
