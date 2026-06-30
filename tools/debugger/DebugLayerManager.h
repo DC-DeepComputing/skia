@@ -44,7 +44,7 @@ struct SkIRect;
 
 class DebugLayerManager {
 public:
-    DebugLayerManager() {}
+    DebugLayerManager(SkSerialProcs serialProcs) : fSerialProcs(serialProcs) {}
 
     // Store an SkPicture under a given nodeId (and under the currently set frame number)
     // `dirty` is the recorded rect that was used to call androidFramework_setDeviceClipRestriction
@@ -159,6 +159,8 @@ private:
     skia_private::THashMap<LayerKey, DrawEvent> fDraws;
     // The list of all keys in the map above (it has no keys() method)
     std::vector<LayerKey> keys;
+
+    SkSerialProcs fSerialProcs;
 };
 
 #endif
