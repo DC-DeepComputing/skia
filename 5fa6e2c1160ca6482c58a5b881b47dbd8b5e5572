@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1da2ef56_db2bed4f",
+        "filename": "src/core/SkDevice.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-06-30T16:56:25Z",
+      "side": 1,
+      "message": "Removed it.",
+      "parentUuid": "1cc27e5f_f80601d2",
+      "range": {
+        "startLine": 181,
+        "startChar": 0,
+        "endLine": 181,
+        "endChar": 49
+      },
+      "revId": "5fa6e2c1160ca6482c58a5b881b47dbd8b5e5572",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "664acdea_23a2cbf4",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-06-29T19:32:52Z",
       "side": 1,
       "message": "nit: Skia style would not use `_` in the name, so it could be `imageRef` or similar. But I also think it\u0027d be fine to just pass in `sk_ref_sp(image)` to the constructor of the ImageSetEntry. I don\u0027t think the number of ref/unrefs is really changing with either approach.",
+      "range": {
+        "startLine": 981,
+        "startChar": 0,
+        "endLine": 981,
+        "endChar": 47
+      },
+      "revId": "5fa6e2c1160ca6482c58a5b881b47dbd8b5e5572",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "07d3d90d_e229baf1",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 981,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-06-30T16:56:25Z",
+      "side": 1,
+      "message": "Sounds good I changed it to pass in the `sk_ref_sp(image)` directly.",
+      "parentUuid": "664acdea_23a2cbf4",
       "range": {
         "startLine": 981,
         "startChar": 0,
@@ -105,6 +153,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a88b89c_cea6197d",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 1000,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-06-30T16:56:25Z",
+      "side": 1,
+      "message": "Done, made that constructor and put the logic there.",
+      "parentUuid": "d73b7c1d_2d260f1a",
+      "range": {
+        "startLine": 999,
+        "startChar": 1,
+        "endLine": 1000,
+        "endChar": 89
+      },
+      "revId": "5fa6e2c1160ca6482c58a5b881b47dbd8b5e5572",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f840f0de_ac3da3e9",
@@ -118,6 +190,30 @@
       "writtenOn": "2026-06-29T19:32:52Z",
       "side": 1,
       "message": "With how `drawEdgeAAImageSet` is implemented, we don\u0027t really gain anything by pre-collecting all of the atlases entries so we could just create a stack allocated ImageSetEntry here and call `drawEdgeAAImageSet` with a count of 1 (similar to how `drawImageRect` does it).\n\nWhile we would be calling drawGeometry() directly in the fixed color case, I think it\u0027s still helpful to use drawEdgeAAImageSet here because it is handling a lot of the logic to create the SimpleImage override.",
+      "range": {
+        "startLine": 1004,
+        "startChar": 0,
+        "endLine": 1005,
+        "endChar": 91
+      },
+      "revId": "5fa6e2c1160ca6482c58a5b881b47dbd8b5e5572",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c843d59_4ac9aee1",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 1005,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-06-30T16:56:25Z",
+      "side": 1,
+      "message": "Sounds good I moved the call into here with just a single entry.",
+      "parentUuid": "f840f0de_ac3da3e9",
       "range": {
         "startLine": 1004,
         "startChar": 0,
