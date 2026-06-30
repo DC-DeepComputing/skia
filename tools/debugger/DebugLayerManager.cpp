@@ -46,16 +46,16 @@ void DebugLayerManager::setCommand(int nodeId, int frame, int command) {
     }
 }
 
-void DebugLayerManager::storeSkPicture(int nodeId,
-                                       int frame,
+void DebugLayerManager::storeSkPicture(int                     nodeId,
+                                       int                     frame,
                                        const sk_sp<SkPicture>& picture,
-                                       SkIRect dirty) {
+                                       SkIRect                 dirty) {
     const LayerKey k = {frame, nodeId};
 
     // Make debug canvas using bounds from SkPicture. This will be equal to whatever width and
     // height were passed into SkPictureRecorder::beginRecording(w, h) which is the layer bounds.
     const auto& layerBounds = picture->cullRect().roundOut();
-    auto debugCanvas = std::make_unique<DebugCanvas>(layerBounds);
+    auto        debugCanvas = std::make_unique<DebugCanvas>(layerBounds, fSerialProcs);
     // Must be set or they end up undefined due to cosmic rays, bad luck, etc.
     debugCanvas->setOverdrawViz(false);
     debugCanvas->setDrawGpuOpBounds(false);

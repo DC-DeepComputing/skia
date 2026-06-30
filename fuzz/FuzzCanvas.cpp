@@ -220,7 +220,7 @@ DEF_FUZZ(PDFCanvas, fuzz) {
 
 // not a "real" thing to fuzz, used to debug errors found while fuzzing.
 DEF_FUZZ(_DumpCanvas, fuzz) {
-    DebugCanvas debugCanvas(kCanvasSize.width(), kCanvasSize.height());
+    DebugCanvas debugCanvas({kCanvasSize.width(), kCanvasSize.height()}, {});
     FuzzCanvas(fuzz, &debugCanvas);
     std::unique_ptr<SkCanvas> nullCanvas = SkMakeNullCanvas();
     UrlDataManager dataManager(SkString("data"));

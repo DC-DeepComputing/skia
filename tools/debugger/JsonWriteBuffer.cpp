@@ -207,7 +207,7 @@ size_t JsonWriteBuffer::writeStream(SkStream* stream, size_t length) {
 void JsonWriteBuffer::writeImage(const SkImage* image) {
     this->append("image");
     fWriter->beginObject();
-    DrawCommand::flatten(*image, *fWriter, *fUrlDataManager);
+    DrawCommand::flatten(*image, *fWriter, *fUrlDataManager, fProcs);
     fWriter->endObject();
 }
 
@@ -219,5 +219,5 @@ void JsonWriteBuffer::writeTypeface(SkTypeface* typeface) {
 
 void JsonWriteBuffer::writePaint(const SkPaint& paint) {
     this->append("paint");
-    DrawCommand::MakeJsonPaint(*fWriter, paint, *fUrlDataManager);
+    DrawCommand::MakeJsonPaint(*fWriter, paint, *fUrlDataManager, fProcs);
 }

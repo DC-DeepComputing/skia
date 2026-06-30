@@ -6,6 +6,7 @@
  */
 
 #include "dm/DMSrcSink.h"
+
 #include "include/codec/SkAndroidCodec.h"
 #include "include/codec/SkCodec.h"
 #include "include/codec/SkPixmapUtils.h"
@@ -57,9 +58,9 @@
 #include "src/utils/SkJSONWriter.h"
 #include "src/utils/SkMultiPictureDocumentPriv.h"
 #include "src/utils/SkOSPath.h"
-#include "tools/DeserialProcsUtils.h"
 #include "tools/EncodeUtils.h"
 #include "tools/GpuToolUtils.h"
+#include "tools/ProcsUtils.h"
 #include "tools/Resources.h"
 #include "tools/RuntimeBlendUtils.h"
 #include "tools/ToolUtils.h"
@@ -2090,34 +2091,6 @@ Result XPSSink::draw(const Src& src, SkBitmap*, SkWStream* dst, SkString*) const
 }
 #endif
 
-static SkSerialProcs serial_procs_using_png() {
-    static SkSerialProcs procs{.fImageProc = [](SkImage* img, void*) -> sk_sp<const SkData> {
-#if defined(SK_CODEC_ENCODES_PNG_WITH_LIBPNG)
-        return SkPngEncoder::Encode(as_IB(img)->directContext(), img, {});
-#elif defined(SK_CODEC_ENCODES_PNG_WITH_RUST)
-        return SkPngRustEncoder::Encode(as_IB(img)->directContext(), img, {});
-#else
-        // TODO: This catches SkImageEncoder_NDK (or other).
-        return SkPngEncoder::Encode(as_IB(img)->directContext(), img, {});
-#endif
-    }};
-    return procs;
-}
-
-static SkDeserialProcs deserial_procs_using_png() {
-    static SkDeserialProcs procs{.fImageDataProc = [](sk_sp<SkData> data,
-                                                      std::optional<SkAlphaType> alphaType,
-                                                      void*) -> sk_sp<SkImage> {
-#if defined(SK_CODEC_DECODES_PNG_WITH_RUST)
-        std::unique_ptr<SkStream> stream = SkMemoryStream::Make(data);
-        auto codec = SkPngRustDecoder::Decode(std::move(stream), nullptr, nullptr);
-#else
-        auto codec = SkPngDecoder::Decode(data, nullptr, nullptr);
-#endif
-        return SkCodecs::DeferredImage(std::move(codec), alphaType);
-    }};
-    return procs;
-}
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
@@ -2131,7 +2104,7 @@ Result SKPSink::draw(const Src& src, SkBitmap*, SkWStream* dst, SkString*) const
     if (!result.isOk()) {
         return result;
     }
-    SkSerialProcs procs = serial_procs_using_png();
+    SkSerialProcs procs = ToolUtils::serial_procs();
     recorder.finishRecordingAsPicture()->serialize(dst, &procs);
     return Result::Ok();
 }
@@ -2139,7 +2112,8 @@ Result SKPSink::draw(const Src& src, SkBitmap*, SkWStream* dst, SkString*) const
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 Result DebugSink::draw(const Src& src, SkBitmap*, SkWStream* dst, SkString*) const {
-    DebugCanvas debugCanvas(src.size().width(), src.size().height());
+    DebugCanvas debugCanvas({src.size().width(), src.size().height()},
+                            ToolUtils::serial_procs());
     Result result = src.draw(&debugCanvas, /*GraphiteTestContext=*/nullptr);
     if (!result.isOk()) {
         return result;
@@ -2725,8 +2699,8 @@ Result ViaSerialization::draw(
     }
     sk_sp<SkPicture> pic(recorder.finishRecordingAsPicture());
 
-    SkSerialProcs procs = serial_procs_using_png();
-    SkDeserialProcs dProcs = deserial_procs_using_png();
+    SkSerialProcs procs = ToolUtils::serial_procs();
+    SkDeserialProcs dProcs = ToolUtils::deserial_procs();
     // Serialize it and then deserialize it.
     sk_sp<SkPicture> deserialized = SkPicture::MakeFromData(pic->serialize(&procs).get(), &dProcs);
 

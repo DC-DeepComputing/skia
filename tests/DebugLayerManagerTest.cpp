@@ -15,6 +15,7 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "tests/Test.h"
+#include "tools/ProcsUtils.h"
 #include "tools/debugger/DebugLayerManager.h"
 
 #include <vector>
@@ -46,7 +47,7 @@ static void test_basic(skiatest::Reporter* reporter) {
   int node = 2;
 
   // create and exercise DebugLayerManager
-  DebugLayerManager dlm;
+  DebugLayerManager dlm(ToolUtils::serial_procs());
   dlm.storeSkPicture(node, 0, picture1, dirtyRectFull);
   dlm.storeSkPicture(node, 10, picture2, dirtyRectPartial);
   auto frames = dlm.listFramesForNode(node);
