@@ -294,6 +294,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6065a2ba_e0a8be40",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 1932,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-06-30T13:46:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "98f47b6d_f9fad19d",
+      "range": {
+        "startLine": 1932,
+        "startChar": 8,
+        "endLine": 1932,
+        "endChar": 16
+      },
+      "revId": "ab2a834773322a3fb9c19a3ce6a846cf5206dd24",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bfac1789_47e03eae",
