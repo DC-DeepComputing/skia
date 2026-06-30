@@ -25,6 +25,7 @@
 #include "src/core/SkPicturePriv.h"
 #include "src/ports/SkTypeface_FreeType.h"
 #include "src/utils/SkJSONWriter.h"
+#include "tools/ProcsUtils.h"
 #include "tools/SkSharingProc.h"
 #include "tools/UrlDataManager.h"
 #include "tools/debugger/DebugCanvas.h"
@@ -248,7 +249,7 @@ class SkpDebugPlayer {
     // Return the command list in JSON representation as a string
     std::string jsonCommandList(sk_sp<SkSurface> surface) {
       SkDynamicMemoryWStream stream;
-      SkJSONWriter writer(&stream, SkJSONWriter::Mode::kFast);
+      SkJSONWriter           writer(&stream, SkSerialProcs{}, SkJSONWriter::Mode::kFast);
       writer.beginObject(); // root
       visibleCanvas()->toJSON(writer, udm, surface->getCanvas());
       writer.endObject(); // root
@@ -266,7 +267,7 @@ class SkpDebugPlayer {
       SkIRect clip = visibleCanvas()->getCurrentClip();
 
       SkDynamicMemoryWStream stream;
-      SkJSONWriter writer(&stream, SkJSONWriter::Mode::kFast);
+      SkJSONWriter           writer(&stream, SkSerialProcs{}, SkJSONWriter::Mode::kFast);
       writer.beginObject(); // root
 
       writer.appendName("ViewMatrix");
@@ -417,7 +418,8 @@ class SkpDebugPlayer {
         SkDebugf("Parsed SKP file.\n");
         // Make debug canvas using bounds from SkPicture
         fBoundsArray.push_back(picture->cullRect().roundOut());
-        std::unique_ptr<DebugCanvas> debugCanvas = std::make_unique<DebugCanvas>(fBoundsArray.back());
+        auto debugCanvas = std::make_unique<DebugCanvas>(fBoundsArray.back(),
+                                                         ToolUtils::serial_procs());
 
         // Only draw picture to the debug canvas once.
         debugCanvas->drawPicture(picture);
@@ -453,7 +455,8 @@ class SkpDebugPlayer {
         for (const auto& page : pages) {
           // Make debug canvas using bounds from SkPicture
           fBoundsArray.push_back(page.fPicture->cullRect().roundOut());
-          std::unique_ptr<DebugCanvas> debugCanvas = std::make_unique<DebugCanvas>(fBoundsArray.back());
+          auto debugCanvas = std::make_unique<DebugCanvas>(fBoundsArray.back(),
+                                                           ToolUtils::serial_procs());
           debugCanvas->setLayerManagerAndFrame(fLayerManager.get(), i);
 
           // Only draw picture to the debug canvas once.

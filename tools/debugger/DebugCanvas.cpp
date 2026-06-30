@@ -404,18 +404,14 @@ void DebugCanvas::onClipShader(sk_sp<SkShader> cs, SkClipOp op) {
     this->addDrawCommand(new ClipShaderCommand(std::move(cs), op));
 }
 
-void DebugCanvas::onResetClip() {
-    this->addDrawCommand(new ResetClipCommand());
-}
+void DebugCanvas::onResetClip() { this->addDrawCommand(new ResetClipCommand()); }
 
 void DebugCanvas::didConcat44(const SkM44& m) {
     this->addDrawCommand(new Concat44Command(m));
     this->INHERITED::didConcat44(m);
 }
 
-void DebugCanvas::didScale(SkScalar x, SkScalar y) {
-    this->didConcat44(SkM44::Scale(x, y));
-}
+void DebugCanvas::didScale(SkScalar x, SkScalar y) { this->didConcat44(SkM44::Scale(x, y)); }
 
 void DebugCanvas::didTranslate(SkScalar x, SkScalar y) {
     this->didConcat44(SkM44::Translate(x, y));
@@ -459,7 +455,7 @@ void DebugCanvas::onDrawImage2(const SkImage*           image,
 void DebugCanvas::onDrawImageLattice2(const SkImage* image,
                                       const Lattice& lattice,
                                       const SkRect&  dst,
-                                      SkFilterMode filter,   // todo
+                                      SkFilterMode   filter,  // todo
                                       const SkPaint* paint) {
     this->addDrawCommand(new DrawImageLatticeCommand(image, lattice, dst, filter, paint));
 }
@@ -479,11 +475,17 @@ void DebugCanvas::onDrawImageRect2(const SkImage*           image,
         // (managed by fLayerManager)
         // Instead of adding a DrawImageRectCommand, we need a deferred command, that when
         // executed, will call drawImageRect(fLayerManager->getLayerAsImage())
-        this->addDrawCommand(new DrawImageRectLayerCommand(
-            fLayerManager, fnextDrawImageRectLayerId, fFrame, src, dst, sampling,
-                                                           paint, constraint));
+        this->addDrawCommand(new DrawImageRectLayerCommand(fLayerManager,
+                                                           fnextDrawImageRectLayerId,
+                                                           fFrame,
+                                                           src,
+                                                           dst,
+                                                           sampling,
+                                                           paint,
+                                                           constraint));
     } else {
-        this->addDrawCommand(new DrawImageRectCommand(image, src, dst, sampling, paint, constraint));
+        this->addDrawCommand(
+                new DrawImageRectCommand(image, src, dst, sampling, paint, constraint));
     }
     // Reset expectation so next drawImageRect is not special.
     fnextDrawImageRectLayerId = -1;
@@ -521,8 +523,8 @@ void DebugCanvas::onDrawPicture(const SkPicture* picture,
                                 const SkMatrix*  matrix,
                                 const SkPaint*   paint) {
     if (fnextDrawPictureLayerId != -1 && fLayerManager) {
-        fLayerManager->storeSkPicture(fnextDrawPictureLayerId, fFrame, sk_ref_sp(picture),
-           fnextDrawPictureDirtyRect);
+        fLayerManager->storeSkPicture(
+                fnextDrawPictureLayerId, fFrame, sk_ref_sp(picture), fnextDrawPictureDirtyRect);
     } else {
         this->addDrawCommand(new BeginDrawPictureCommand(picture, matrix, paint));
         SkAutoCanvasMatrixPaint acmp(this, matrix, paint, picture->cullRect());

@@ -608,7 +608,7 @@ static SkString encode_data(SkData*         data,
 void DrawCommand::flatten(const SkFlattenable* flattenable,
                           SkJSONWriter&        writer,
                           UrlDataManager&      urlDataManager) {
-    SkBinaryWriteBuffer buffer({});  // TODO(kjlubick, bungeman) feed SkSerialProcs through API
+    SkBinaryWriteBuffer buffer(writer.getSerialProcs());
     flattenable->flatten(buffer);
     sk_sp<SkData> data = buffer.snapshotAsData();
     SkString url = encode_data(data.get(), "application/octet-stream", urlDataManager);
@@ -1260,7 +1260,7 @@ uint64_t DrawImageLatticeCommand::imageId(UrlDataManager& udm) const {
 
 void DrawImageLatticeCommand::toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManager) const {
     INHERITED::toJSON(writer, urlDataManager);
-    flatten(*fImage, writer, urlDataManager);
+    INHERITED::flatten(*fImage, writer, urlDataManager);
     writer.appendName(DEBUGCANVAS_ATTRIBUTE_LATTICE);
     MakeJsonLattice(writer, fLattice);
     writer.appendName(DEBUGCANVAS_ATTRIBUTE_DST);
@@ -1329,7 +1329,7 @@ void DrawImageRectCommand::toJSON(SkJSONWriter& writer, UrlDataManager& urlDataM
     writer.appendString(DEBUGCANVAS_ATTRIBUTE_SHORTDESC, *str_append(&desc, fDst));
 }
 
-DrawImageRectLayerCommand::DrawImageRectLayerCommand(DebugLayerManager*    layerManager,
+DrawImageRectLayerCommand::DrawImageRectLayerCommand(DebugLayerManager*          layerManager,
                                                      const int                   nodeId,
                                                      const int                   frame,
                                                      const SkRect&               src,
@@ -1540,7 +1540,9 @@ bool DrawRegionCommand::render(SkCanvas* canvas) const {
     return true;
 }
 
-void DrawRegionCommand::toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManager) const {
+void DrawRegionCommand::toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManager
+
+) const {
     INHERITED::toJSON(writer, urlDataManager);
     writer.appendName(DEBUGCANVAS_ATTRIBUTE_REGION);
     MakeJsonRegion(writer, fRegion);
@@ -1551,8 +1553,7 @@ void DrawRegionCommand::toJSON(SkJSONWriter& writer, UrlDataManager& urlDataMana
 BeginDrawPictureCommand::BeginDrawPictureCommand(const SkPicture* picture,
                                                  const SkMatrix*  matrix,
                                                  const SkPaint*   paint)
-        : INHERITED(kBeginDrawPicture_OpType)
-        , fPicture(SkRef(picture)) {
+        : INHERITED(kBeginDrawPicture_OpType), fPicture(SkRef(picture)) {
     assign_if_not_null(fMatrix, matrix);
     assign_if_not_null(fPaint, paint);
 }
@@ -1948,8 +1949,7 @@ void DrawEdgeAAImageSetCommand::execute(SkCanvas* canvas) const {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 DrawDrawableCommand::DrawDrawableCommand(SkDrawable* drawable, const SkMatrix* matrix)
-        : INHERITED(kDrawDrawable_OpType)
-        , fDrawable(SkRef(drawable)) {
+        : INHERITED(kDrawDrawable_OpType), fDrawable(SkRef(drawable)) {
     assign_if_not_null(fMatrix, matrix);
 }
 
@@ -1973,15 +1973,15 @@ void DrawVerticesCommand::execute(SkCanvas* canvas) const {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-DrawAtlasCommand::DrawAtlasCommand(const SkImage*  image,
-                                   const SkRSXform xform[],
-                                   const SkRect    tex[],
-                                   const SkColor   colors[],
-                                   int             count,
-                                   SkBlendMode     bmode,
+DrawAtlasCommand::DrawAtlasCommand(const SkImage*           image,
+                                   const SkRSXform          xform[],
+                                   const SkRect             tex[],
+                                   const SkColor            colors[],
+                                   int                      count,
+                                   SkBlendMode              bmode,
                                    const SkSamplingOptions& sampling,
-                                   const SkRect*   cull,
-                                   const SkPaint*  paint)
+                                   const SkRect*            cull,
+                                   const SkPaint*           paint)
         : INHERITED(kDrawAtlas_OpType)
         , fImage(SkRef(image))
         , fXform(xform, count)
@@ -2066,9 +2066,7 @@ void SetMatrixCommand::toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManag
     writeMatrixType(writer, fMatrix);
 }
 
-SetM44Command::SetM44Command(const SkM44& matrix) : INHERITED(kSetM44_OpType) {
-    fMatrix = matrix;
-}
+SetM44Command::SetM44Command(const SkM44& matrix) : INHERITED(kSetM44_OpType) { fMatrix = matrix; }
 
 void SetM44Command::execute(SkCanvas* canvas) const { canvas->setMatrix(fMatrix); }
 
