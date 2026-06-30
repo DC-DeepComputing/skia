@@ -755,7 +755,13 @@ static std::unique_ptr<GrFragmentProcessor> make_shader_fp(const SkPictureShader
     } else {
         const int msaaSampleCount = 0;
         const bool createWithMips = false;
-        const bool kUnprotected = false;
+        const bool isProtected =
+#if 0
+                args.fSurfaceDrawContext->asSurfaceProxy()->isProtected() ==
+                GrProtected::kYes;
+#else
+                false;
+#endif
         auto image = info.makeImage(SkSurfaces::RenderTarget(ctx,
                                                              skgpu::Budgeted::kYes,
                                                              info.imageInfo,
@@ -763,7 +769,7 @@ static std::unique_ptr<GrFragmentProcessor> make_shader_fp(const SkPictureShader
                                                              kTopLeft_GrSurfaceOrigin,
                                                              &info.props,
                                                              createWithMips,
-                                                             kUnprotected),
+                                                             isProtected),
                                     shader->picture().get());
         if (!image) {
             return nullptr;
