@@ -191,6 +191,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d7b52f8e_9d08553f",
+        "filename": "tools/DeserialProcsUtils.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-06-30T20:23:10Z",
+      "side": 1,
+      "message": "Let\u0027s call them default_deserial_procs and default_serial_procs",
+      "parentUuid": "907011dc_8b0546fe",
+      "range": {
+        "startLine": 21,
+        "startChar": 16,
+        "endLine": 21,
+        "endChar": 40
+      },
+      "revId": "01d95169732645e32de210a93c7787e7772f5287",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dce5d14d_ac07e300",
         "filename": "tools/debugger/DrawCommand.h",
         "patchSetId": 8
