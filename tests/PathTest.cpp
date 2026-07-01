@@ -37,6 +37,7 @@
 #include "include/utils/SkNullCanvas.h"
 #include "include/utils/SkParse.h"
 #include "include/utils/SkParsePath.h"
+#include "src/core/SkAnalyticEdge.h"
 #include "src/core/SkAutoMalloc.h"
 #include "src/core/SkFloatBits.h"
 #include "src/core/SkGeometry.h"
@@ -5666,4 +5667,18 @@ DEF_TEST(path_b511244869, reporter) {
     // This should not crash or trigger an assertion in debug builds.
     SkPath transformed = path.makeTransform(m);
     REPORTER_ASSERT(reporter, transformed.isEmpty());
+}
+
+DEF_TEST(path_analytic_cubic_overflow_bug, reporter) {
+    SkAnalyticCubicEdge e;
+    const SkPoint points[4] = {
+        {-8191.0f, -8191.0f},
+        {8191.0f, -8191.0f},
+        {-8191.0f, 8191.0f},
+        {8191.0f, 8191.0f}
+    };
+
+    // This directly calls SkAnalyticCubicEdge::setCubic -> setCubicWithoutUpdate,
+    // demonstrating the overflow on adversarial coordinates in [-8191, 8191].
+    e.setCubic(points);
 }

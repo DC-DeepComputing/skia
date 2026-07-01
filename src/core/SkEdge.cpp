@@ -29,6 +29,11 @@
     or pt >> 8 for antialiasing. This is implemented as pt >> (10 - shift).
 */
 
+// Local type aliases to clarify different fixed-point formats. We sometimes shift them
+// to get more precision in our values.
+using SkFDot6Scaled = int32_t; // FDot6 shifted up by upShift (fractional bits: 6 + upShift)
+using SkFixedScaled = int32_t; // Stored derivative scaled by step-size / power-of-h
+
 static inline SkFixed SkFDot6ToFixedDiv2(SkFDot6 value) {
     // we want to return SkFDot6ToFixed(value >> 1), but we don't want to throw
     // away data in value, so just perform a modify up-shift
@@ -404,7 +409,7 @@ bool SkQuadraticEdge::nextSegment() {
 
 /////////////////////////////////////////////////////////////////////////
 
-static inline int SkFDot6UpShift(SkFDot6 x, int upShift) {
+static inline SkFDot6Scaled SkFDot6UpShift(SkFDot6 x, int upShift) {
     SkASSERT((SkLeftShift(x, upShift) >> upShift) == x);
     return SkLeftShift(x, upShift);
 }
@@ -480,9 +485,12 @@ bool SkCubicEdge::setCubic(const SkPoint pts[4]) {
         shift = MAX_COEFF_SHIFT;
     }
 
-    /*  Since our in coming data is initially shifted down by 10 (or 8 in
-        antialias). That means the most we can shift up is 8. However, we
-        compute coefficients with a 3*, so the safest upshift is really 6
+    /*  We scale up the control point coordinates by upShift to preserve fractional
+        precision during successive division steps. Crucially, upShift is capped at 6
+        to provide overflow protection: since the polynomial coefficient formulas
+        contain multiplications by 3 and 6, scaling by a larger factor (such as the
+        theoretical maximum of 8 or 10) could cause intermediate values to exceed
+        the signed 32-bit integer limit and overflow.
     */
     int upShift = 6;    // largest safe value
     int downShift = shift + upShift - 10;
@@ -509,32 +517,45 @@ bool SkCubicEdge::setCubic(const SkPoint pts[4]) {
      */
     // TODO(kjlubick): Can we use SkVx and calculate both X and Y at once?
 
-    SkFixed A = SkFDot6UpShift(x3 + 3 * (x1 - x2) - x0, upShift);
-    SkFixed B = SkFDot6UpShift(3 * (x0 - 2*x1 + x2), upShift);
-    SkFixed C = SkFDot6UpShift(3 * (x1 - x0), upShift);
+    SkFDot6Scaled A_scaled = SkFDot6UpShift(x3 + 3 * (x1 - x2) - x0, upShift);
+    SkFDot6Scaled B_scaled = SkFDot6UpShift(3 * (x0 - 2*x1 + x2), upShift);
+    SkFDot6Scaled C_scaled = SkFDot6UpShift(3 * (x1 - x0), upShift);
 
-    // We want to calculate the slope at the midpoint of our first segment. This means evaluating
-    //   dx/dt = 3A*t^2 + 2B*t + C
-    //   dx^2/dt^2 = 6A * t + 2B
-    //   dx^3/dt^3 = 6A
-    // at t = 1/N * 1/2
-    // TODO(kjlubick): I'm not sure these cubic approximations are being done correctly. Some
-    //                 coefficients seem to be missing. Maybe it's being done not at the midpoint
-    //                 of the first line but just...somewhere in there?
-    fCDxDt = (A >> 2*shift) + (B >> shift) + C;
-    fCD2xDt2 = (3*A >> (shift - 1)) + 2*B;
+    /*
+     *  The cubic curve in polynomial form is: x(t) = A*t^3 + B*t^2 + C*t + D
+     *  With a step size of h = 1/N = 1/(2^shift), the forward differences at t=0 are:
+     *    1) First Difference:  Δx(0) = x(h) - x(0)      = A*h^3 + B*h^2 + C*h
+     *    2) Second Difference: Δ²x(0) = Δx(h) - Δx(0)    = 6A*h^3 + 2B*h^2
+     *    3) Third Difference:  Δ³x(0) = Δ²x(h) - Δ²x(0)  = 6A*h^3
+     *
+     *  To keep the math as precise as possible, we scale up each difference term.
+     *  Because the step size h is a power of 2 (1 / 2^shift), scaling them up
+     *  allows us to perform all loop updates using fast bit-shifts (like >> shift and
+     *  >> dshift) instead of slow division:
+     *
+     *  - fCDxDt   = Δx(0)  / h   = A*h^2 + B*h + C
+     *                            = A*(1/2^shift)*(1/2^shift) + B*(1/2^shift) + C
+     *                            = A/(2^(2*shift) + B/(2^shift) + C
+     *  - fCD2xDt2 = Δ²x(0) / h²  = 6A*h + 2B
+     *                            = 6A*(1/2^shift) + 2B # can cancel one 2 on top and bottom of A
+     *                            = 3A/2^(shift-1) + 2B
+     *  - fCD3xDt3 = Δ³x(0) / h²  = 6A*h
+     *                            = 6A*(1/2^shift)
+     *                            = 3A/2^(shift-1)
+     *  These are stored in the edge struct as SkFixedScaled because they must be scaled down
+     *  by dshift or ddshift before they can be added to standard SkFixed coordinates.
+     */
+    fCDxDt   = (A_scaled >> 2*shift) + (B_scaled >> shift) + C_scaled;
+    fCD2xDt2 = (3*A_scaled >> (shift - 1)) + 2*B_scaled;
+    fCD3xDt3 = 3*A_scaled >> (shift - 1);
 
-    // This may be attempting to precompute the third derivative times 1/N
-    // 6A / N => 6A / 2^shift => 3A / 2^(shift-1)
-    fCD3xDt3 = 3*A >> (shift - 1);
+    A_scaled = SkFDot6UpShift(y3 + 3 * (y1 - y2) - y0, upShift);
+    B_scaled = SkFDot6UpShift(3 * (y0 - 2*y1 + y2), upShift);
+    C_scaled = SkFDot6UpShift(3 * (y1 - y0), upShift);
 
-    A = SkFDot6UpShift(y3 + 3 * (y1 - y2) - y0, upShift);
-    B = SkFDot6UpShift(3 * (y0 - 2*y1 + y2), upShift);
-    C = SkFDot6UpShift(3 * (y1 - y0), upShift);
-
-    fCDyDt = (A >> 2*shift) + (B >> shift) + C;
-    fCD2yDt2 = (3*A >> (shift - 1)) + 2*B;
-    fCD3yDt3 = 3*A >> (shift - 1);
+    fCDyDt   = (A_scaled >> 2*shift) + (B_scaled >> shift) + C_scaled;
+    fCD2yDt2 = (3*A_scaled >> (shift - 1)) + 2*B_scaled;
+    fCD3yDt3 = 3*A_scaled >> (shift - 1);
 
     fCx = SkFDot6ToFixed(x0);
     fCy = SkFDot6ToFixed(y0);
@@ -550,16 +571,24 @@ bool SkCubicEdge::nextSegment() {
     SkFixed oldx = fCx;
     SkFixed oldy = fCy;
     SkFixed newx, newy;
-    const int ddshift = fCurveShift;
-    const int dshift = fCubicDShift;
+    const int ddshift = fCurveShift;   // h step-shift (shift)
+    const int dshift = fCubicDShift;   // Scale conversion shift (shift + upShift - 10)
 
     SkASSERT(count > 0);
 
     do {
         if (--count > 0)
         {
+            // 1. Position Update: x_next = x + Δx = x + (fCDxDt * h)
+            //    Since fCDxDt is scaled by 1/h, we divide by 1/h (>> dshift) to get x in standard SkFixed.
             newx = oldx + (fCDxDt >> dshift);
-            fCDxDt += fCD2xDt2 >> ddshift;
+
+            // 2. First Difference Update: fCDxDt_next = fCDxDt + h * fCD2xDt2
+            //    Since fCD2xDt2 is scaled by 1/h², multiplying by h yields (fCD2xDt2 >> shift).
+            fCDxDt += fCD2xDt2 >> ddshift; // ddshift = shift
+
+            // 3. Second Difference Update: fCD2xDt2_next = fCD2xDt2 + fCD3xDt3
+            //    Since both fCD2xDt2 and fCD3xDt3 are scaled by 1/h², we add them directly.
             fCD2xDt2 += fCD3xDt3;
 
             newy = oldy + (fCDyDt >> dshift);
