@@ -20,6 +20,7 @@
 #include "src/core/SkSLTypeShared.h"
 #include "src/core/SkVx.h"
 #include "src/gpu/graphite/Attribute.h"
+#include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/DrawOrder.h"
 #include "src/gpu/graphite/DrawParams.h"
 #include "src/gpu/graphite/DrawTypes.h"
@@ -50,38 +51,30 @@ using namespace skgpu::tess;
 // No color or wide color attribs, since it might always be part of the PaintParams
 // or we'll add a color-only fast path to RenderStep later.
 static constexpr PatchAttribs kAttribs = PatchAttribs::kJoinControlPoint |
-                                         PatchAttribs::kStrokeParams |
-                                         PatchAttribs::kPaintDepth |
-                                         PatchAttribs::kSsboIndex;
+                                         PatchAttribs::kVertexStorageIndex;
 static constexpr PatchAttribs kAttribsWithCurveType = kAttribs | PatchAttribs::kExplicitCurveType;
 using Writer = PatchWriter<DynamicInstancesPatchAllocator<FixedCountStrokes>,
                            Required<PatchAttribs::kJoinControlPoint>,
-                           Required<PatchAttribs::kStrokeParams>,
-                           Required<PatchAttribs::kPaintDepth>,
-                           Required<PatchAttribs::kSsboIndex>,
+                           Required<PatchAttribs::kVertexStorageIndex>,
                            Optional<PatchAttribs::kExplicitCurveType>,
                            ReplicateLineEndPoints,
                            TrackJoinControlPoints>;
 
 // The order of the attribute declarations must match the order used by
 // PatchWriter::emitPatchAttribs, i.e.:
-//     join << fanPoint << stroke << color << depth << curveType << ssboIndex
+//     join << fanPoint << stroke << color << depth << curveType << ssboIndex << vertexStorageIndex
 static constexpr Attribute kBaseAttributes[] = {
         {"p01", VertexAttribType::kFloat4, SkSLType::kFloat4},
         {"p23", VertexAttribType::kFloat4, SkSLType::kFloat4},
         {"prevPoint", VertexAttribType::kFloat2, SkSLType::kFloat2},
-        {"stroke", VertexAttribType::kFloat2, SkSLType::kFloat2},
-        {"depth", VertexAttribType::kFloat, SkSLType::kFloat},
-        {"ssboIndex", VertexAttribType::kUInt, SkSLType::kUInt}};
+        {"vertexStorageIndex", VertexAttribType::kUInt, SkSLType::kUInt}};
 
 static constexpr Attribute kAttributesWithCurveType[] = {
         {"p01", VertexAttribType::kFloat4, SkSLType::kFloat4},
         {"p23", VertexAttribType::kFloat4, SkSLType::kFloat4},
         {"prevPoint", VertexAttribType::kFloat2, SkSLType::kFloat2},
-        {"stroke", VertexAttribType::kFloat2, SkSLType::kFloat2},
-        {"depth", VertexAttribType::kFloat, SkSLType::kFloat},
         {"curveType", VertexAttribType::kFloat, SkSLType::kFloat},
-        {"ssboIndex", VertexAttribType::kUInt, SkSLType::kUInt}};
+        {"vertexStorageIndex", VertexAttribType::kUInt, SkSLType::kUInt}};
 
 static constexpr SkSpan<const Attribute> kAttributes[2] = {kAttributesWithCurveType,
                                                            kBaseAttributes};
@@ -112,6 +105,8 @@ std::string TessellateStrokesRenderStep::vertexSkSL() const {
             "if ((sk_VertexID & 1) != 0) {"
                 "edgeID = -edgeID;"
             "}\n"
+            "float2 stroke = strokeData[vertexStorageIndex].stroke;\n"
+            "float depth = strokeData[vertexStorageIndex].depth;\n"
             "float2x2 affine = float2x2(affineMatrix.xy, affineMatrix.zw);\n"
             "float4 devAndLocalCoords = tessellate_stroked_curve("
                     "edgeID, 16383, affine, translate, maxScale, p01, p23, prevPoint,"
@@ -126,6 +121,14 @@ void TessellateStrokesRenderStep::writeVertices(DrawWriter* dw,
                                                 uint32_t ssboIndex) const {
     SkPath path = params.geometry().shape().asPath(); // TODO: Iterate the Shape directly
 
+    uint32_t storageIndex = dw->pendingStorageCount();
+
+    // Append to vertex storage buffer first!
+    auto storageWriter = dw->appendVertexStorage(1);
+    storageWriter << SkPoint{params.strokeStyle().halfWidth(), params.strokeStyle().joinLimit()}
+                  << params.order().depthAsFloat()
+                  << ssboIndex;
+
     int patchReserveCount = FixedCountStrokes::PreallocCount(path.countVerbs());
     // Stroke tessellation does not use fixed indices or vertex data, and only needs the vertex ID
     static const BindBufferInfo kNullBinding = {};
@@ -137,19 +140,12 @@ void TessellateStrokesRenderStep::writeVertices(DrawWriter* dw,
                   kNullBinding,
                   kNullBinding,
                   patchReserveCount};
-    writer.updatePaintDepthAttrib(params.order().depthAsFloat());
-    writer.updateSsboIndexAttrib(ssboIndex);
-
-    // The vector xform approximates how the control points are transformed by the shader to
-    // more accurately compute how many *parametric* segments are needed.
-    // getMaxScale() returns -1 if it can't compute a scale factor (e.g. perspective), taking the
-    // absolute value automatically converts that to an identity scale factor for our purposes.
     writer.setShaderTransform(wangs_formula::VectorXform{params.transform().matrix()},
                               params.transform().maxScaleFactor());
+    writer.updateUniformStrokeParams({params.strokeStyle().halfWidth(), params.strokeStyle().joinLimit()});
+    writer.updateVertexStorageIndexAttrib(storageIndex);
 
     SkASSERT(params.isStroke());
-    writer.updateStrokeParamsAttrib({params.strokeStyle().halfWidth(),
-                                     params.strokeStyle().joinLimit()});
 
     for (auto [verb, pts, w] : SkPathPriv::Iterate(path)) {
         switch (verb) {
@@ -261,6 +257,29 @@ void TessellateStrokesRenderStep::writeUniformsAndTextures(const DrawParams& par
                             params.transform().matrix().rc(1, 3)});
 
     gatherer->write(params.transform().maxScaleFactor());
+}
+
+size_t TessellateStrokesRenderStep::vertexStorageStride() const {
+    struct StrokeAndDepth {
+        SkPoint fStroke;
+        float fDepth;
+        uint32_t fSsboIndex;
+    };
+    return sizeof(StrokeAndDepth);
+}
+
+std::string TessellateStrokesRenderStep::vertexStorageSkSL(
+        const ResourceBindingRequirements& reqs, int binding) const {
+    return SkSL::String::printf(
+            "struct StrokeAndDepth {\n"
+            "    float2 stroke;\n"
+            "    float  depth;\n"
+            "    uint   ssboIndex;\n"
+            "};\n"
+            "layout(set=%d, binding=%d) readonly buffer StrokeStorageBuffer {\n"
+            "    StrokeAndDepth strokeData[];\n"
+            "};\n",
+            reqs.fUniformsSetIdx, binding);
 }
 
 }  // namespace skgpu::graphite

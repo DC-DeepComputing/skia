@@ -31,6 +31,9 @@ public:
     std::string vertexSkSL() const override;
     void writeVertices(DrawWriter*, const DrawParams&, uint32_t ssboIndex) const override;
     void writeUniformsAndTextures(const DrawParams&, PipelineDataGatherer*) const override;
+    bool hasVertexStorageBuffer() const override { return true; }
+    size_t vertexStorageStride() const override;
+    std::string vertexStorageSkSL(const ResourceBindingRequirements&, int binding) const override;
 
 private:
     bool fInfinitySupport;
