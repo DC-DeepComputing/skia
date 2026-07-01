@@ -16,6 +16,29 @@
       "message": "Adding in a few more span enthusiasts",
       "revId": "498f473ad57a4c1ae338f454035a0d175f30b651",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b81e776e_a5ce71e1",
+        "filename": "include/core/SkSpan.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-01T14:45:01Z",
+      "side": 1,
+      "message": "nit: new line after the #endif.\n\nCan we also add a comment to this code that it\u0027s only meant to be used for the Spanify process. I would hope that after this is done, we can go through and do a purge of all these call sites by updating the surrounding code to be more idiomatic with spans.",
+      "range": {
+        "startLine": 156,
+        "startChar": 0,
+        "endLine": 156,
+        "endChar": 21
+      },
+      "revId": "498f473ad57a4c1ae338f454035a0d175f30b651",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
