@@ -112,6 +112,10 @@ private:
         // The y offset for a subset in the encoded color type, not the dst color type.
         // Only used for interlaced images.
         size_t fYByteOffset = 0;
+
+        // Tracks the decoded height of the interlaced image so far (via Pass 1 splatting).
+        // Only used for interlaced images.
+        int fInterlacedDecodedHeight = 0;
     };
 
     // Helper for validating parameters of `onGetPixels` and/or
@@ -136,10 +140,10 @@ private:
 
     // Helper for row-by-row decoding which is used from `onGetPixels` and/or
     // `onIncrementalDecode`.
-    Result incrementalDecode(DecodingState& decodingState, int* rowsDecoded);
+    Result incrementalDecode(DecodingState& decodingState);
     // The same as incrementalDecode but uses `applyXFormRow()`. Should only
     // be used if this->canReadRows() is false.
-    Result incrementalDecodeXForm(DecodingState& decodingState, int* rowsDecoded);
+    Result incrementalDecodeXForm(DecodingState& decodingState);
 
     // Helper for reading until the start of the next `fdAT` sequence.
     Result readToStartOfNextFrame();
@@ -247,13 +251,15 @@ private:
     // When decoding interlaced subsets or sampling, decode the full image into a
     // buffer in the encoded colortype and extract/sample for the final dst using
     // this function. This function will use applyXFormRow() for needed rows.
-    void getSubsetOrSampleFromFullImage(SkSpan<const uint8_t> fullImageBuffer,
-                                        SkSpan<uint8_t> dst,
-                                        size_t dstRowStride,
-                                        size_t offset,
-                                        int srcHeight,
-                                        int dstHeight,
-                                        size_t dstRowSize);
+    int getSubsetOrSampleFromFullImage(SkSpan<const uint8_t> fullImageBuffer,
+                                       SkSpan<uint8_t> dst,
+                                       size_t dstRowStride,
+                                       size_t offset,
+                                       int srcHeight,
+                                       int dstHeight,
+                                       size_t dstRowSize);
+    void flushInterlacedBufferOnHalt(DecodingState& decodingState);
+    void updateRowsDecoded(int* rowsDecoded, Result result, const DecodingState& decodingState);
 };
 
 #endif  // SkPngRustCodec_DEFINED
