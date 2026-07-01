@@ -216,7 +216,7 @@ GrSurfaceProxy::LazySurfaceDesc GrTextureRenderTargetProxy::callbackDesc() const
             GrRenderable::kYes,
             this->mipmapped(),
             this->numSamples(),
-            this->backendFormat(),
+            raw_ref(this->backendFormat()),
             this->textureType(),
             this->isProtected(),
             this->isBudgeted(),

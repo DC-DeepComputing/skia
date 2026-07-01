@@ -46,7 +46,7 @@ public:
         public:
             void emitCode(EmitArgs& args) override {
                 fMatrixVar =
-                        args.fUniformHandler->addUniform(&args.fFp,
+                        args.fUniformHandler->addUniform(&*args.fFp,
                                                          kFragment_GrShaderFlag,
                                                          SkSLType::kFloat3x3,
                                                          SkSL::SampleUsage::MatrixUniformName());
