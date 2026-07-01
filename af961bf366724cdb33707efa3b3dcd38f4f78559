@@ -16,6 +16,24 @@
       "message": "What\u0027s the general procedure for gold images? I looked through the new images and they look fine to me. But should I be the one to judge? Should I click approve before I submit, or that comes after submit?",
       "revId": "af961bf366724cdb33707efa3b3dcd38f4f78559",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df600525_7dbf33a0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 20
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-01T17:02:13Z",
+      "side": 1,
+      "message": "Greg and I have looked at these ones and agree that they are fine.  Skia does not block CLs landing on having untriaged GMs, although if something looked very wrong we wouldn\u0027t approve the CL. More likely what tends to happen is some bot on the waterfall but not the CQ will have a failure that was missed and then we revert the CL.",
+      "parentUuid": "1ae97de9_45e13f7a",
+      "revId": "af961bf366724cdb33707efa3b3dcd38f4f78559",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
