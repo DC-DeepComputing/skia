@@ -16,6 +16,24 @@
       "message": "Might want to also consider introducing additional guards (SK_DISABLE_M4_OPS etc) so we can control initialization via cflags instead of editing the sources.",
       "revId": "e419a06408cb7e4ae72356974c7280d4699a4ce6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb52bb63_f498112c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-01T17:16:33Z",
+      "side": 1,
+      "message": "I thought about that. If we want that, it\u0027s best to make sure GN (and eventually Bazel) only affect the opts/ code or we\u0027ll sit through a full rebuild.",
+      "parentUuid": "e564b7d7_e372d8cb",
+      "revId": "e419a06408cb7e4ae72356974c7280d4699a4ce6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
