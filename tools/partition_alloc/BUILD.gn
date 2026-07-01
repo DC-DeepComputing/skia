@@ -17,4 +17,7 @@ source_set("test_support") {
   sources = [ "TestSupport.cpp" ]
   configs += [ ":skia_root_includes" ]
   deps = [ "${skia_partition_alloc_dir}:partition_alloc" ]
+  if (is_win) {
+    libs = [ "dbghelp.lib" ]
+  }
 }

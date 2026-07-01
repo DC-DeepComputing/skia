@@ -22,6 +22,7 @@
 #include "src/gpu/ganesh/GrSurfaceProxyView.h"
 #include "src/gpu/ganesh/image/GrImageUtils.h"
 #include "src/gpu/ganesh/image/SkImage_Ganesh.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <cstddef>
 #include <utility>
@@ -60,11 +61,11 @@ public:
     sk_sp<SkImage> asImage() const override {
         fView.proxy()->priv().exactify();
         return sk_make_sp<SkImage_Ganesh>(
-                sk_ref_sp(fContext), this->uniqueID(), fView, this->colorInfo());
+                sk_ref_sp(fContext.get()), this->uniqueID(), fView, this->colorInfo());
     }
 
 private:
-    GrRecordingContext* fContext;
+    raw_ptr<GrRecordingContext> fContext;
     GrSurfaceProxyView fView;
 };
 

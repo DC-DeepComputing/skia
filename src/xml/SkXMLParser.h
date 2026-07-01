@@ -8,7 +8,10 @@
 
 
 #ifndef SkXMLParser_DEFINED
+
 #define SkXMLParser_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkString.h"
 
@@ -77,9 +80,9 @@ public:
     bool addAttribute(const char name[], const char value[]);
     bool endElement(const char elem[]);
     bool text(const char text[], int len);
-    void* fParser;
+    raw_ptr<void> fParser;
 protected:
-    SkXMLParserError* fError;
+    raw_ptr<SkXMLParserError> fError;
 private:
     void reportError(void* parser);
 };
