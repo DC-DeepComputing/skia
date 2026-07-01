@@ -25,6 +25,7 @@
 #include "src/core/SkRasterPipelineOpContexts.h"
 #include "src/core/SkRasterPipelineOpList.h"
 #include "src/core/SkSpriteBlitter.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <cstdint>
 #include <cstring>
@@ -130,6 +131,7 @@ public:
         , fClipShader(std::move(clipShader))
     {}
 
+
     bool setup(const SkPixmap& dst, int left, int top, const SkPaint& paint) override {
         fDst  = dst;
         fLeft = left;
@@ -181,8 +183,8 @@ public:
     }
 
 private:
-    SkArenaAlloc*              fAlloc;
-    SkBlitter*                 fBlitter;
+    raw_ptr<SkArenaAlloc, DanglingUntriaged> fAlloc;
+    raw_ptr<SkBlitter, DanglingUntriaged> fBlitter;
     SkRasterPipelineContexts::MemoryCtx fSrcPtr;
     SkColor4f                  fPaintColor;
     sk_sp<SkShader>            fClipShader;

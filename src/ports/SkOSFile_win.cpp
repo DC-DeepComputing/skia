@@ -6,6 +6,7 @@
  */
 
 #include "include/core/SkTypes.h"
+#include "src/partition_alloc/raw_ptr.h"
 #if defined(SK_BUILD_FOR_WIN)
 
 #include "include/private/SkMalloc.h"
@@ -165,7 +166,7 @@ size_t sk_qread(FILE* file, void* buffer, size_t count, size_t offset) {
 struct SkOSFileIterData {
     SkOSFileIterData() : fHandle(0), fPath16(nullptr) { }
     HANDLE fHandle;
-    uint16_t* fPath16;
+    raw_ptr<uint16_t> fPath16;
 };
 static_assert(sizeof(SkOSFileIterData) <= SkOSFile::Iter::kStorageSize, "not_enough_space");
 
@@ -203,7 +204,7 @@ SkOSFile::Iter::Iter(const char path[], const char suffix[]) {
 
 SkOSFile::Iter::~Iter() {
     SkOSFileIterData& self = *reinterpret_cast<SkOSFileIterData*>(fSelf);
-    sk_free(self.fPath16);
+    sk_free(self.fPath16.get());
     if (self.fHandle) {
         ::FindClose(self.fHandle);
     }
@@ -220,7 +221,7 @@ void SkOSFile::Iter::reset(const char path[], const char suffix[]) {
         path = "";
     }
 
-    sk_free(self.fPath16);
+    sk_free(self.fPath16.get());
     self.fPath16 = concat_to_16(path, suffix);
 }
 
@@ -275,7 +276,7 @@ bool SkOSFile::Iter::next(SkString* name, bool getDir) {
             return false;
         }
 
-        self.fHandle = ::FindFirstFileW((LPCWSTR)self.fPath16, &data);
+        self.fHandle = ::FindFirstFileW((LPCWSTR)self.fPath16.get(), &data);
         if (self.fHandle != 0 && self.fHandle != (HANDLE)~0) {
             dataPtr = &data;
         }

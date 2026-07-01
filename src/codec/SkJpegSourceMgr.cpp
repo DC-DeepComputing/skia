@@ -12,6 +12,7 @@
 #include "include/core/SkStream.h"
 #include "include/core/SkTypes.h"
 #include "src/codec/SkCodecPriv.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #ifdef SK_CODEC_DECODES_JPEG_GAINMAPS
 #include "src/codec/SkJpegConstants.h"
@@ -41,7 +42,7 @@ public:
     }
 
 private:
-    SkStream* const fStream;
+    const raw_ptr<SkStream> fStream;
     const size_t fPosition;
 };
 
