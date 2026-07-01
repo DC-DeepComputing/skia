@@ -1760,7 +1760,7 @@ void Device::drawGeometry(const Transform& localToDevice,
     // Update the clip stack after issuing a flush (if it was needed). A draw will be recorded after
     // this point.
     DrawOrder order(fCurrentDepth.next());
-    auto [clipOrder, latestInsertion] = fClip.updateClipStateForDraw(
+    auto [clipOrder, clipLayer] = fClip.updateClipStateForDraw(
             clip, clipElements, fColorDepthBoundsManager.get(), order.depth());
 
     // A draw's order always depends on the clips that must be drawn before it
@@ -1804,9 +1804,17 @@ void Device::drawGeometry(const Transform& localToDevice,
                                 ? fRecorder->priv().rendererProvider()->tessellatedStrokes()
                                 : renderer,
                         localToDevice, geometry, clip, order, paintID, dstUsage,
+<<<<<<< PATCH SET (668fa029c7ed83f61934d99315b8d70f3b44e03c [graphite] Remove Insertion helper struct)
+                        scopedDrawBuilder.gatherer(), &stroke, clipLayer);
+    } else if ((dstUsage & DstUsage::kDstOnlyUsedByRenderer) && renderer->useNonAAInnerFill()) {
+||||||| BASE      (95da2dab2eb6f91da8851c7c438eb9061aac8083 [graphite] Exit searchBinding() loop at shading/non-shading )
+                        scopedDrawBuilder.gatherer(), &stroke, latestInsertion);
+    } else if ((dstUsage & DstUsage::kDstOnlyUsedByRenderer) && renderer->useNonAAInnerFill()) {
+=======
                         scopedDrawBuilder.gatherer(), &stroke, latestInsertion);
     } else if ((dstUsage & DstUsage::kDstOnlyUsedByRenderer) && renderer->useNonAAInnerFill() &&
                !avoidDepthMode) {
+>>>>>>> BASE      (916e52d8b097097eab3c0b90067ede46312617ce [graphite] Exit searchBinding() loop at shading/non-shading )
         // Possibly record an additional draw using the non-AA bounds renderer to fill the
         // interior with a renderer that can disable blending entirely.
         Rect innerFillBounds = get_inner_bounds(geometry, localToDevice);
@@ -1821,7 +1829,7 @@ void Device::drawGeometry(const Transform& localToDevice,
             fDC->recordDraw(fRecorder->priv().rendererProvider()->nonAABounds(), localToDevice,
                             Geometry(Shape(innerFillBounds)), clip, orderWithoutCoverage,
                             opaqueID, DstUsage::kNone, scopedDrawBuilder.gatherer(),
-                            /*stroke=*/nullptr, latestInsertion);
+                            /*stroke=*/nullptr, clipLayer);
             // Force the coverage draw to come after the non-AA draw in order to benefit from
             // early depth testing.
             order.dependsOnPaintersOrder(orderWithoutCoverage.paintOrder());
@@ -1831,7 +1839,7 @@ void Device::drawGeometry(const Transform& localToDevice,
     if (styleType == SkStrokeRec::kFill_Style ||
         styleType == SkStrokeRec::kStrokeAndFill_Style) {
         fDC->recordDraw(renderer, localToDevice, geometry, clip, order, paintID, dstUsage,
-                        scopedDrawBuilder.gatherer(), /*stroke=*/nullptr, latestInsertion);
+                        scopedDrawBuilder.gatherer(), /*stroke=*/nullptr, clipLayer);
     }
 
     if (!useDrawListLayer) {
@@ -1884,11 +1892,11 @@ void Device::drawClipShape(const Transform& localToDevice,
         SkPath devicePath = shape.asPath().makeTransform(localToDevice.matrix().asM33());
         fDC->recordDraw(renderer, Transform::Identity(), Geometry(Shape(devicePath)), clip, order,
                         UniquePaintParamsID::Invalid(), DstUsage::kNone,
-                        scopedDrawBuilder.gatherer(), /*stroke=*/nullptr, /*latestInsertion=*/{});
+                        scopedDrawBuilder.gatherer(), /*stroke=*/nullptr);
     } else {
         fDC->recordDraw(renderer, localToDevice, Geometry(shape), clip, order,
                         UniquePaintParamsID::Invalid(), DstUsage::kNone,
-                        scopedDrawBuilder.gatherer(), /*stroke=*/nullptr, /*latestInsertion=*/{});
+                        scopedDrawBuilder.gatherer(), /*stroke=*/nullptr);
     }
     // This ensures that draws recorded after this clip shape has been popped off the stack will
     // be unaffected by the Z value the clip shape wrote to the depth attachment.
@@ -1898,10 +1906,10 @@ void Device::drawClipShape(const Transform& localToDevice,
 }
 
 // records a draw and returns a backpointer to the drawParams of the draw
-std::pair<DrawParams*, Insertion> Device::drawClipShapeImmediate(const Transform& localToDevice,
-                                                                 const Shape& shape,
-                                                                 const Clip& clip,
-                                                                 DrawOrder order) {
+std::pair<DrawParams*, Layer*> Device::drawClipShapeImmediate(const Transform& localToDevice,
+                                                              const Shape& shape,
+                                                              const Clip& clip,
+                                                              DrawOrder order) {
     ScopedDrawBuilder scopedDrawBuilder(fRecorder);
     auto renderer = this->chooseMSAARenderer(shape,
                                              DefaultFillStyle(),
@@ -1915,11 +1923,11 @@ std::pair<DrawParams*, Insertion> Device::drawClipShapeImmediate(const Transform
         SkPath devicePath = shape.asPath().makeTransform(localToDevice.matrix().asM33());
         return fDC->recordDraw(renderer, Transform::Identity(), Geometry(Shape(devicePath)), clip,
                                order, UniquePaintParamsID::Invalid(), DstUsage::kNone,
-                               scopedDrawBuilder.gatherer(), /*stroke=*/{}, /*latestInsertion=*/{});
+                               scopedDrawBuilder.gatherer(), /*stroke=*/{});
     } else {
         return fDC->recordDraw(renderer, localToDevice, Geometry(shape), clip, order,
                                UniquePaintParamsID::Invalid(), DstUsage::kNone,
-                               scopedDrawBuilder.gatherer(), /*stroke=*/{}, /*latestInsertion=*/{});
+                               scopedDrawBuilder.gatherer(), /*stroke=*/{});
     }
 }
 
