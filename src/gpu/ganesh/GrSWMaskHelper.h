@@ -6,7 +6,10 @@
  */
 
 #ifndef GrSWMaskHelper_DEFINED
+
 #define GrSWMaskHelper_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkColor.h"
 #include "include/core/SkPoint.h"
@@ -76,7 +79,7 @@ public:
 
 private:
     SkVector             fTranslate;
-    SkAutoPixmapStorage* fPixels;
+    raw_ptr<SkAutoPixmapStorage, DanglingUntriaged> fPixels;
     SkAutoPixmapStorage  fPixelsStorage;
     skcpu::Draw          fDraw;
     SkRasterClip         fRasterClip;

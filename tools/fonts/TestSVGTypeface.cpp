@@ -253,20 +253,27 @@ protected:
 
     struct SVGGlyphDrawable : public SkDrawable {
         SkTestSVGScalerContext* fSelf;
-        SkGlyph fGlyph;
+        const SkRect fGlyphRect;
+        const SkGlyphID fGlyphID;
+        const SkFixed fSubX;
+        const SkFixed fSubY;
         SVGGlyphDrawable(SkTestSVGScalerContext* self, const SkGlyph& glyph)
-            : fSelf(self), fGlyph(glyph) {}
-        SkRect onGetBounds() override { return fGlyph.rect();  }
+            : fSelf(self)
+            , fGlyphRect(glyph.rect())
+            , fGlyphID(glyph.getGlyphID())
+            , fSubX(glyph.getSubXFixed())
+            , fSubY(glyph.getSubYFixed()) {}
+        SkRect onGetBounds() override { return fGlyphRect;  }
         size_t onApproximateBytesUsed() override { return sizeof(SVGGlyphDrawable); }
 
         void onDraw(SkCanvas* canvas) override {
-            SkGlyphID glyphID = fGlyph.getGlyphID();
+            SkGlyphID glyphID = fGlyphID;
             glyphID = glyphID < fSelf->getTestSVGTypeface()->fGlyphCount ? glyphID : 0;
 
             TestSVGTypeface::Glyph& glyphData = fSelf->getTestSVGTypeface()->fGlyphs[glyphID];
 
-            SkScalar dx = SkFixedToScalar(fGlyph.getSubXFixed());
-            SkScalar dy = SkFixedToScalar(fGlyph.getSubYFixed());
+            SkScalar dx = SkFixedToScalar(fSubX);
+            SkScalar dy = SkFixedToScalar(fSubY);
 
             canvas->translate(dx, dy);
             canvas->concat(fSelf->fMatrix);

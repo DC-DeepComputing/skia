@@ -6,7 +6,10 @@
  */
 
 #ifndef SKSL_FUNCTIONREFERENCE
+
 #define SKSL_FUNCTIONREFERENCE
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "src/sksl/SkSLBuiltinTypes.h"
 #include "src/sksl/SkSLContext.h"
@@ -25,7 +28,7 @@ public:
 
     FunctionReference(const Context& context, Position pos,
                       const FunctionDeclaration* overloadChain)
-        : INHERITED(pos, kIRNodeKind, context.fTypes.fInvalid.get())
+        : INHERITED(pos, kIRNodeKind, context.fTypes->fInvalid.get())
         , fOverloadChain(overloadChain) {}
 
     const FunctionDeclaration* overloadChain() const {
@@ -46,7 +49,7 @@ private:
             : INHERITED(pos, kIRNodeKind, type)
             , fOverloadChain(overloadChain) {}
 
-    const FunctionDeclaration* fOverloadChain;
+    raw_ptr<const FunctionDeclaration> fOverloadChain;
 
     using INHERITED = Expression;
 };

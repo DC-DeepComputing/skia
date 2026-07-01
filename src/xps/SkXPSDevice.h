@@ -6,7 +6,10 @@
  */
 
 #ifndef SkXPSDevice_DEFINED
+
 #define SkXPSDevice_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkTypes.h"
 
@@ -139,7 +142,7 @@ private:
     SkVector fCurrentPixelsPerMeter;
 
     skia_private::TArray<TypefaceUse, true> fTypefaces;
-    skia_private::TArray<TypefaceUse, true>* fTopTypefaces;
+    raw_ptr<skia_private::TArray<TypefaceUse, true>> fTopTypefaces;
 
     SkXPS::Options fOpts;
 

@@ -6,7 +6,10 @@
  */
 
 #ifndef skgpu_graphite_DrawListTypes_DEFINED
+
 #define skgpu_graphite_DrawListTypes_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/private/SkDebug.h"
 #include "include/private/SkEnumBitMask.h"
@@ -56,7 +59,7 @@ struct Draw {
     Draw(const DrawParams* params, const UniformDataCache::Index uniformIndex)
             : fDrawParams(params), fUniformIndex(uniformIndex) {}
 
-    const DrawParams* fDrawParams;
+    raw_ptr<const DrawParams> fDrawParams;
     const UniformDataCache::Index fUniformIndex;
 
     SK_DECLARE_INTERNAL_LLIST_INTERFACE(Draw);
@@ -70,7 +73,7 @@ struct BindingList {
     CompressedPaintersOrder fOrder;
     const bool fIsDepthOnly;
     LayerKey fKey;
-    RenderStep* fStep;
+    raw_ptr<RenderStep> fStep;
     uint32_t fDrawCount = 0;
     Rect fBounds = Rect::InfiniteInverted();
     SkTInternalLList<Draw> fDraws;
@@ -249,8 +252,8 @@ struct Layer {
 };
 
 struct Insertion {
-    Layer* fLayer = nullptr;
-    BindingList* fList = nullptr;
+    raw_ptr<Layer> fLayer = nullptr;
+    raw_ptr<BindingList> fList = nullptr;
 
     explicit operator bool() const { return (fLayer != nullptr) && (fList != nullptr); }
     bool operator>(const Insertion& other) const {
