@@ -6,7 +6,10 @@
  */
 
 #ifndef skgpu_graphite_RecorderPriv_DEFINED
+
 #define skgpu_graphite_RecorderPriv_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRecorder.h"
 #include "include/core/SkRefCnt.h"
@@ -132,7 +135,7 @@ private:
     const RecorderPriv* operator&() const = delete;
     RecorderPriv* operator&() = delete;
 
-    Recorder* fRecorder;
+    raw_ptr<Recorder> fRecorder;
 
     friend class Recorder;  // to construct/copy this type.
 };

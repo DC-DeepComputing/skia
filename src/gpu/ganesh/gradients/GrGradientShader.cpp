@@ -50,6 +50,7 @@
 #include "src/gpu/ganesh/effects/GrTextureEffect.h"
 #include "src/gpu/ganesh/gradients/GrGradientBitmapCache.h"
 #include "src/gpu/ganesh/image/GrMippedBitmap.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/shaders/SkShaderBase.h"
 #include "src/shaders/gradients/SkGradientBaseShader.h"
 
@@ -321,7 +322,7 @@ static std::unique_ptr<GrFragmentProcessor> make_looping_colorizer(int intervalC
 
     struct EffectCacheEntry {
         SkOnce once;
-        const SkRuntimeEffect* effect;
+        raw_ptr<const SkRuntimeEffect> effect;
     };
 
     static EffectCacheEntry effectCache[kMaxLoopingIntervalCount / 4];

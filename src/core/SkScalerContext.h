@@ -5,8 +5,13 @@
  * found in the LICENSE file.
  */
 
+#include "src/partition_alloc/raw_ref.h"
+
 #ifndef SkScalerContext_DEFINED
+
 #define SkScalerContext_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkColor.h"
 #include "include/core/SkFourByteTag.h"
@@ -249,8 +254,8 @@ struct SkScalerContextEffects {
             : fPathEffect(paint.getPathEffect())
             , fMaskFilter(paint.getMaskFilter()) {}
 
-    SkPathEffect*   fPathEffect;
-    SkMaskFilter*   fMaskFilter;
+    raw_ptr<SkPathEffect> fPathEffect;
+    raw_ptr<SkMaskFilter> fMaskFilter;
 };
 
 class SkScalerContext {
@@ -291,7 +296,7 @@ public:
     SkScalerContext(SkTypeface&, const SkScalerContextEffects&, const SkDescriptor*);
     virtual ~SkScalerContext();
 
-    SkTypeface* getTypeface() const { return &fTypeface; }
+    SkTypeface* getTypeface() const { return &*fTypeface; }
 
     SkMask::Format getMaskFormat() const {
         return fRec.fMaskFormat;
@@ -461,7 +466,7 @@ private:
     // In order for a SkScalerContext to be in use this typeface must exist.
     // The SkScalerContext does not keep a reference to this typeface, so this reference may be
     // a dangling reference when the SkScalerContext is destroyed.
-    SkTypeface& fTypeface;
+    const raw_ref<SkTypeface> fTypeface;
 
     // optional objects, which may be null
     sk_sp<SkPathEffect> fPathEffect;
