@@ -177,79 +177,60 @@ void AssertSingleGreenFrame(skiatest::Reporter* r,
     AssertGreenPixel(r, pixmap, expectedWidth / 2, expectedHeight / 2);
 }
 
-static std::unique_ptr<SkCodec> StartIncrementalDecodeSubset(skiatest::Reporter* r,
-                                                             std::unique_ptr<SkStream> stream,
-                                                             const SkIRect& subset,
-                                                             SkBitmap* dstBitmap) {
+// Sentinel fill color used to detect pixels left unwritten by the codec.
+static constexpr SkColor kUnreadSentinelColor = SK_ColorMAGENTA;
+
+static std::unique_ptr<SkCodec> StartIncrementalDecode(
+        skiatest::Reporter* r,
+        std::unique_ptr<SkStream> stream,
+        SkBitmap* dstBitmap,
+        std::function<SkImageInfo(const SkImageInfo&)> makeDstInfo = nullptr,
+        const SkCodec::Options& options = {}) {
     SkCodec::Result result;
     std::unique_ptr<SkCodec> codec = SkPngRustDecoder::Decode(std::move(stream), &result);
+    REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, result);
     if (!codec) {
-        ERRORF(r, "Failed to create Rust codec");
         return nullptr;
     }
 
-    SkImageInfo subsetInfo =
-            codec->getInfo().makeDimensions(subset.size()).makeColorType(kN32_SkColorType);
-    dstBitmap->allocPixels(subsetInfo);
-
-    SkImageInfo fullInfo = codec->getInfo().makeColorType(kN32_SkColorType);
-    SkCodec::Options options;
-    options.fSubset = &subset;
+    const SkImageInfo dstInfo = makeDstInfo ? makeDstInfo(codec->getInfo()) : codec->getInfo();
+    SkImageInfo allocInfo = dstInfo;
+    if (options.fSubset) {
+        allocInfo = allocInfo.makeDimensions(options.fSubset->size());
+    }
+    REPORTER_ASSERT(r, dstBitmap->tryAllocPixels(allocInfo));
+    dstBitmap->eraseColor(options.fZeroInitialized == SkCodec::kYes_ZeroInitialized
+                                  ? SK_ColorTRANSPARENT
+                                  : kUnreadSentinelColor);
 
     result = codec->startIncrementalDecode(
-            fullInfo, dstBitmap->getPixels(), dstBitmap->rowBytes(), &options);
+            dstInfo, dstBitmap->getPixels(), dstBitmap->rowBytes(), &options);
+    REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, result);
     if (result != SkCodec::kSuccess) {
-        ERRORF(r, "startIncrementalDecode failed with %i", (int)result);
         return nullptr;
     }
 
     return codec;
 }
 
-static bool DecodeSubsetOneShot(skiatest::Reporter* r,
-                                sk_sp<SkData> data,
-                                const SkIRect& subset,
-                                SkBitmap* dstBitmap) {
-    auto codec = StartIncrementalDecodeSubset(r, SkMemoryStream::Make(data), subset, dstBitmap);
+static std::optional<SkBitmap> DecodeIncrementalOneShot(
+        skiatest::Reporter* r,
+        sk_sp<SkData> data,
+        std::function<SkImageInfo(const SkImageInfo&)> makeDstInfo = nullptr,
+        const SkCodec::Options& options = {}) {
+    SkBitmap bm;
+    std::unique_ptr<SkCodec> codec = StartIncrementalDecode(
+            r, SkMemoryStream::Make(std::move(data)), &bm, std::move(makeDstInfo), options);
     if (!codec) {
-        return false;
+        return std::nullopt;
     }
-    int rowsDecoded = 0;
+    int rowsDecoded = -1;
     SkCodec::Result result = codec->incrementalDecode(&rowsDecoded);
+    REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, result);
     if (result != SkCodec::kSuccess) {
-        ERRORF(r, "incrementalDecode failed: %d", (int)result);
-        return false;
+        return std::nullopt;
     }
-    return true;
-}
-
-static bool DecodeSubsetHalting(skiatest::Reporter* r,
-                                sk_sp<SkData> data,
-                                const SkIRect& subset,
-                                SkBitmap* dstBitmap) {
-    size_t initialLimit = data->size() / 2;
-    auto haltingStream = std::make_unique<HaltingStream>(data, initialLimit);
-    HaltingStream* retainedStream = haltingStream.get();
-
-    auto codec = StartIncrementalDecodeSubset(r, std::move(haltingStream), subset, dstBitmap);
-    if (!codec) {
-        return false;
-    }
-
-    int rowsDecoded = 0;
-    SkCodec::Result result = codec->incrementalDecode(&rowsDecoded);
-    if (result != SkCodec::kIncompleteInput) {
-        ERRORF(r, "Expected kIncompleteInput, got %d", (int)result);
-        return false;
-    }
-
-    retainedStream->addNewData(data->size() - initialLimit);
-    result = codec->incrementalDecode(&rowsDecoded);
-    if (result != SkCodec::kSuccess) {
-        ERRORF(r, "incrementalDecode resume failed: %d", (int)result);
-        return false;
-    }
-    return true;
+    return bm;
 }
 
 static void CompareBitmaps(skiatest::Reporter* r, const SkBitmap& bm1, const SkBitmap& bm2) {
@@ -265,6 +246,40 @@ static void CompareBitmaps(skiatest::Reporter* r, const SkBitmap& bm1, const SkB
             return;
         }
     }
+}
+
+// Returns the decoded height of `bm` (pre-filled with `sentinelColor`), measured as the number of
+// rows up to and including the last row that differs from `sentinelColor`, and asserts that every
+// pixel in rows `0 .. writtenRows - 1` was overwritten.
+static int CountWrittenRows(skiatest::Reporter* r,
+                            const SkBitmap& bm,
+                            SkColor sentinelColor = kUnreadSentinelColor) {
+    int writtenRows = 0;
+    for (int y = bm.height() - 1; y >= 0; --y) {
+        for (int x = 0; x < bm.width(); ++x) {
+            if (bm.getColor(x, y) != sentinelColor) {
+                writtenRows = y + 1;
+                break;
+            }
+        }
+        if (writtenRows > 0) {
+            break;
+        }
+    }
+    for (int y = 0; y < writtenRows; ++y) {
+        for (int x = 0; x < bm.width(); ++x) {
+            if (bm.getColor(x, y) == sentinelColor) {
+                ERRORF(r,
+                       "Row %d < writtenRows (%d) still has sentinel pixel at (%d, %d)",
+                       y,
+                       writtenRows,
+                       x,
+                       y);
+                return writtenRows;
+            }
+        }
+    }
+    return writtenRows;
 }
 
 // A valid `IEND` chunk has an empty payload: 4-byte length (0), 4-byte type ("IEND"), 4-byte CRC.
@@ -334,7 +349,8 @@ static std::optional<SkBitmap> DecodeToBitmap(skiatest::Reporter* r,
                     "Expected %s, got %s",
                     SkCodec::ResultToString(expectedResult),
                     SkCodec::ResultToString(result));
-    if (result != SkCodec::kSuccess) {
+    if (result != expectedResult ||
+        (result != SkCodec::kSuccess && result != SkCodec::kIncompleteInput)) {
         return std::nullopt;
     }
     return bm;
@@ -376,6 +392,12 @@ static std::optional<SkBitmap> DecodeAndroidPixels(
             opts.fSubset = &subset;
         }
         opts.fMaxDecodeMemory = maxDecodeMemory;
+        if (expectedResult == SkCodec::kIncompleteInput) {
+            // Prevent SkCodec::fillIncompleteImage from zero-filling undecoded rows over
+            // kUnreadSentinelColor so CountWrittenRows can measure the rows written by the codec.
+            bm.eraseColor(kUnreadSentinelColor);
+            opts.fZeroInitialized = SkCodec::kYes_ZeroInitialized;
+        }
         return androidCodec->getAndroidPixels(bm.info(), bm.getPixels(), bm.rowBytes(), &opts);
     });
 }
@@ -384,7 +406,7 @@ static std::optional<SkBitmap> DecodeAndroidPixels(
 // `DecodeAndroidPixels`.
 //
 // The destination is zeroed for `kYes_ZeroInitialized` (as that option requires), and otherwise
-// pre-filled with magenta so that pixels left unwritten by the codec are detectable.
+// pre-filled with `kUnreadSentinelColor` so that pixels left unwritten by the codec are detectable.
 static std::optional<SkBitmap> DecodePixels(
         skiatest::Reporter* r,
         std::unique_ptr<SkCodec> codec,
@@ -400,7 +422,7 @@ static std::optional<SkBitmap> DecodePixels(
     return DecodeToBitmap(r, info, expectedResult, [&](SkBitmap& bm) {
         bm.eraseColor(options.fZeroInitialized == SkCodec::kYes_ZeroInitialized
                               ? SK_ColorTRANSPARENT
-                              : SK_ColorMAGENTA);
+                              : kUnreadSentinelColor);
         return codec->getPixels(bm.info(), bm.getPixels(), bm.rowBytes(), &options);
     });
 }
@@ -773,6 +795,12 @@ DEF_TEST(RustPngCodec_apng_basic_ignoring_default_image, r) {
 DEF_TEST(RustPngCodec_apng_ignoring_default_image_without_getFrameCount, r) {
     const char* kResource = "images/apng-test-suite--basic--ignoring-default-image.png";
 #if !defined(SK_CODEC_USES_PNG_WITH_RUST_FOR_ANDROID)
+    sk_sp<SkData> data = GetResourceAsData(kResource);
+    if (!data) {
+        ERRORF(r, "Missing resource: %s", kResource);
+        return;
+    }
+
     // 1. Direct `getImage()` / `getPixels()` without `getFrameCount()`.
     {
         std::unique_ptr<SkCodec> codec = SkPngRustDecoderDecode(r, kResource);
@@ -787,40 +815,14 @@ DEF_TEST(RustPngCodec_apng_ignoring_default_image_without_getFrameCount, r) {
     }
 
     // 2. Direct `startIncrementalDecode()` + `incrementalDecode()` without `getFrameCount()`.
-    {
-        std::unique_ptr<SkCodec> codec = SkPngRustDecoderDecode(r, kResource);
-        REPORTER_ASSERT(r, codec);
-        SkBitmap bitmap;
-        REPORTER_ASSERT(r, bitmap.tryAllocPixels(codec->getInfo()));
-        SkCodec::Result result =
-                codec->startIncrementalDecode(bitmap.info(), bitmap.getPixels(), bitmap.rowBytes());
-        REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, result);
-        if (result == SkCodec::kSuccess) {
-            result = codec->incrementalDecode();
-            REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, result);
-            AssertGreenPixel(r, bitmap.pixmap(), 0, 0);
-        }
+    if (std::optional<SkBitmap> bitmap = DecodeIncrementalOneShot(r, data)) {
+        AssertGreenPixel(r, bitmap->pixmap(), 0, 0);
     }
 
     // 3. Direct `SkAndroidCodec::getAndroidPixels()` (with downsampling) without `getFrameCount()`.
-    {
-        std::unique_ptr<SkCodec> codec = SkPngRustDecoderDecode(r, kResource);
-        REPORTER_ASSERT(r, codec);
-        std::unique_ptr<SkAndroidCodec> androidCodec =
-                SkAndroidCodec::MakeFromCodec(std::move(codec));
-        REPORTER_ASSERT(r, androidCodec);
-        SkISize sampledDims = androidCodec->getSampledDimensions(2);
-        SkImageInfo sampledInfo = androidCodec->getInfo().makeDimensions(sampledDims);
-        SkBitmap bitmap;
-        REPORTER_ASSERT(r, bitmap.tryAllocPixels(sampledInfo));
-        SkAndroidCodec::AndroidOptions options;
-        options.fSampleSize = 2;
-        SkCodec::Result result = androidCodec->getAndroidPixels(
-                sampledInfo, bitmap.getPixels(), bitmap.rowBytes(), &options);
-        REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, result);
-        if (result == SkCodec::kSuccess) {
-            AssertGreenPixel(r, bitmap.pixmap(), 0, 0);
-        }
+    if (std::optional<SkBitmap> bitmap =
+                DecodeAndroidPixels(r, SkPngRustDecoderDecode(r, kResource), /*sampleSize=*/2)) {
+        AssertGreenPixel(r, bitmap->pixmap(), 0, 0);
     }
 #else
     AssertAndroidStaticApng(r, kResource, SK_ColorRED);
@@ -1355,22 +1357,6 @@ DEF_TEST(RustPngCodec_invalid_profile, r) {
     REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, result);
 }
 
-static bool bitmaps_equal(const SkBitmap& actual, const SkBitmap& expected) {
-    for (int y = 0; y < actual.height(); ++y) {
-        for (int x = 0; x < actual.width(); ++x) {
-            SkColor c1 = actual.getColor(x, y);
-            SkColor c2 = expected.getColor(x, y);
-            SkPMColor actualPMColor = SkPreMultiplyColor(c1);
-            SkPMColor expectedPMColor = SkPreMultiplyColor(c2);
-
-            if (actualPMColor != expectedPMColor) {
-                return false;
-            }
-        }
-    }
-    return true;
-}
-
 static void test_subset_decode(skiatest::Reporter* r, const char* resource) {
     skiatest::ReporterContext context(r, resource);
     std::unique_ptr<SkStream> stream(GetResourceAsStream(resource));
@@ -1439,7 +1425,7 @@ static void test_subset_decode(skiatest::Reporter* r, const char* resource) {
         }
     }
 
-    REPORTER_ASSERT(r, bitmaps_equal(bm, tiledBM));
+    CompareBitmaps(r, bm, tiledBM);
 }
 
 DEF_TEST(RustPngCodec_subset, r) {
@@ -1470,41 +1456,22 @@ DEF_TEST(RustPngCodec_interlaced_partial_decode_covers_all_pixels, r) {
     auto streamForCodec = std::make_unique<HaltingStream>(std::move(data), initialBytes);
     HaltingStream* retainedStream = streamForCodec.get();
 
-    SkCodec::Result result;
-    std::unique_ptr<SkCodec> codec = SkPngRustDecoder::Decode(std::move(streamForCodec), &result);
-    REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, result);
+    SkBitmap bitmap;
+    SkCodec::Options options;
+    options.fZeroInitialized = SkCodec::kNo_ZeroInitialized;
+    std::unique_ptr<SkCodec> codec = StartIncrementalDecode(
+            r,
+            std::move(streamForCodec),
+            &bitmap,
+            [](const SkImageInfo& info) { return info.makeColorType(kN32_SkColorType); },
+            options);
     if (!codec) {
         return;
     }
 
-    SkBitmap bitmap;
-    if (!bitmap.tryAllocN32Pixels(codec->dimensions().width(), codec->dimensions().height())) {
-        ERRORF(r, "Failed to allocate SkBitmap");
-        return;
-    }
-
-    // Fill `bitmap` with a sentinel color, so that pixels that the codec never
-    // wrote to can be detected below.
-    constexpr SkColor kSentinel = SkColorSetARGB(0xFF, 0x12, 0x34, 0x56);
-    bitmap.eraseColor(kSentinel);
-
-    SkCodec::Options options;
-    options.fZeroInitialized = SkCodec::kNo_ZeroInitialized;
-    result = codec->startIncrementalDecode(
-            bitmap.info(), bitmap.getPixels(), bitmap.rowBytes(), &options);
-    REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, result);
-    result = codec->incrementalDecode();
+    SkCodec::Result result = codec->incrementalDecode();
     REPORTER_ASSERT(r, result == SkCodec::kIncompleteInput, "result = %d", (int)result);
-
-    int untouchedPixels = 0;
-    for (int y = 0; y < bitmap.height(); ++y) {
-        for (int x = 0; x < bitmap.width(); ++x) {
-            if (bitmap.getColor(x, y) == kSentinel) {
-                ++untouchedPixels;
-            }
-        }
-    }
-    REPORTER_ASSERT(r, untouchedPixels == 0, "untouchedPixels = %d", untouchedPixels);
+    REPORTER_ASSERT(r, CountWrittenRows(r, bitmap) == bitmap.height());
 
     // Finishing the decode has to produce exactly the same pixels as a decode
     // that had all the input available from the start.
@@ -1512,15 +1479,12 @@ DEF_TEST(RustPngCodec_interlaced_partial_decode_covers_all_pixels, r) {
     result = codec->incrementalDecode();
     REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, result);
 
-    std::unique_ptr<SkCodec> referenceCodec = SkPngRustDecoderDecode(r, path);
-    if (!referenceCodec) {
-        return;
+    if (std::optional<SkBitmap> referenceBitmap =
+                DecodePixels(r, SkPngRustDecoderDecode(r, path), [](const SkImageInfo& info) {
+                    return info.makeColorType(kN32_SkColorType);
+                })) {
+        CompareBitmaps(r, bitmap, *referenceBitmap);
     }
-    SkBitmap referenceBitmap;
-    referenceBitmap.allocPixels(bitmap.info());
-    result = referenceCodec->getPixels(referenceBitmap.pixmap());
-    REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, result);
-    REPORTER_ASSERT(r, bitmaps_equal(bitmap, referenceBitmap));
 }
 
 DEF_TEST(RustPngCodec_interlaced_animated_blending, r) {
@@ -1806,18 +1770,30 @@ DEF_TEST(RustPngCodec_subset_halting, r) {
 
     // Mandrill is 128x128. We target a center 64x64 subset.
     SkIRect subset = SkIRect::MakeXYWH(32, 32, 64, 64);
+    SkCodec::Options options;
+    options.fSubset = &subset;
+    auto makeN32 = [](const SkImageInfo& info) { return info.makeColorType(kN32_SkColorType); };
 
-    SkBitmap bmOneShot;
-    if (!DecodeSubsetOneShot(r, data, subset, &bmOneShot)) {
+    std::optional<SkBitmap> bmOneShot = DecodeIncrementalOneShot(r, data, makeN32, options);
+    if (!bmOneShot) {
         return;
     }
 
+    const size_t initialLimit = data->size() / 2;
+    auto haltingStream = std::make_unique<HaltingStream>(data, initialLimit);
+    HaltingStream* retainedStream = haltingStream.get();
     SkBitmap bmHalting;
-    if (!DecodeSubsetHalting(r, data, subset, &bmHalting)) {
+    std::unique_ptr<SkCodec> codec =
+            StartIncrementalDecode(r, std::move(haltingStream), &bmHalting, makeN32, options);
+    if (!codec) {
         return;
     }
+    int rowsDecoded = -1;
+    REPORTER_ASSERT(r, codec->incrementalDecode(&rowsDecoded) == SkCodec::kIncompleteInput);
+    retainedStream->addNewData(data->size() - initialLimit);
+    REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, codec->incrementalDecode(&rowsDecoded));
 
-    CompareBitmaps(r, bmOneShot, bmHalting);
+    CompareBitmaps(r, *bmOneShot, bmHalting);
 }
 
 DEF_TEST(RustPngCodec_subsampling, r) {
@@ -1910,14 +1886,7 @@ DEF_TEST(RustPngCodec_apng_offset_frame_does_not_overflow_dst, r) {
 // error instead of a decode into an undersized buffer.
 DEF_TEST(RustPngCodec_apng_offset_frame_small_row_bytes, r) {
     const char* path = "images/apng-single-frame-with-offset.png";
-    sk_sp<SkData> data = GetResourceAsData(path);
-    if (!data) {
-        ERRORF(r, "Missing resource: %s", path);
-        return;
-    }
-
-    auto codec = SkPngRustDecoder::Decode(std::make_unique<SkMemoryStream>(data), nullptr);
-    REPORTER_ASSERT(r, codec);
+    std::unique_ptr<SkCodec> codec = SkPngRustDecoderDecode(r, path);
     if (!codec) {
         return;
     }
@@ -1942,32 +1911,31 @@ DEF_TEST(RustPngCodec_apng_offset_frame_small_row_bytes, r) {
 DEF_TEST(RustPngCodec_apng_offset_frame_full_canvas_placement, r) {
     const char* path = "images/apng-single-frame-with-offset.png";
 #if !defined(SK_CODEC_USES_PNG_WITH_RUST_FOR_ANDROID)
-    sk_sp<SkData> data = GetResourceAsData(path);
-    if (!data) {
-        ERRORF(r, "Missing resource: %s", path);
-        return;
-    }
-
-    auto codec = SkPngRustDecoder::Decode(std::make_unique<SkMemoryStream>(data), nullptr);
+    std::unique_ptr<SkCodec> codec = SkPngRustDecoderDecode(r, path);
     if (!codec) {
-        ERRORF(r, "Failed to create a codec for %s", path);
         return;
     }
 
+    // The APNG spec says the output buffer starts as transparent black.
+    SkCodec::Options options;
+    options.fZeroInitialized = SkCodec::kYes_ZeroInitialized;
     for (SkAlphaType alphaType : {kUnpremul_SkAlphaType, kPremul_SkAlphaType}) {
-        SkBitmap bm;
-        bm.allocPixels(codec->getInfo().makeColorType(kN32_SkColorType).makeAlphaType(alphaType));
-        // The APNG spec says the output buffer starts as transparent black.
-        bm.eraseColor(SK_ColorTRANSPARENT);
-
-        SkCodec::Result result = codec->getPixels(bm.pixmap());
-        REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, result);
+        std::optional<SkBitmap> bm = DecodePixels(
+                r,
+                SkPngRustDecoderDecode(r, path),
+                [alphaType](const SkImageInfo& info) {
+                    return info.makeColorType(kN32_SkColorType).makeAlphaType(alphaType);
+                },
+                options);
+        if (!bm) {
+            continue;
+        }
 
         // Rows above the frame stay transparent.  The frame fills rows 32..63.
-        REPORTER_ASSERT(r, bm.getColor(0, 0) == SK_ColorTRANSPARENT);
-        REPORTER_ASSERT(r, bm.getColor(63, 31) == SK_ColorTRANSPARENT);
-        REPORTER_ASSERT(r, bm.getColor(0, 32) == SK_ColorMAGENTA);
-        REPORTER_ASSERT(r, bm.getColor(63, 63) == SK_ColorMAGENTA);
+        REPORTER_ASSERT(r, bm->getColor(0, 0) == SK_ColorTRANSPARENT);
+        REPORTER_ASSERT(r, bm->getColor(63, 31) == SK_ColorTRANSPARENT);
+        REPORTER_ASSERT(r, bm->getColor(0, 32) == SK_ColorMAGENTA);
+        REPORTER_ASSERT(r, bm->getColor(63, 63) == SK_ColorMAGENTA);
     }
 #else
     AssertAndroidStaticApng(r, path);
@@ -2281,28 +2249,24 @@ static void AssertRowsDecodedReportedOnErrorInInput(skiatest::Reporter* r,
         return;
     }
 
-    std::unique_ptr<SkCodec> refCodec =
-            SkPngRustDecoder::Decode(std::make_unique<SkMemoryStream>(data), nullptr);
-    std::unique_ptr<SkCodec> codec =
-            SkPngRustDecoder::Decode(std::make_unique<SkMemoryStream>(corruptData), nullptr);
-    if (!refCodec || !codec) {
-        ERRORF(r, "Failed to create Rust codec");
+    auto makeDstInfo = [&](const SkImageInfo& info) {
+        return info.makeColorType(colorType).makeAlphaType(alphaType).makeColorSpace(colorSpace);
+    };
+    std::optional<SkBitmap> refBitmap = DecodePixels(
+            r, SkPngRustDecoder::Decode(SkMemoryStream::Make(data), nullptr), makeDstInfo);
+    if (!refBitmap) {
         return;
     }
-    const SkImageInfo info =
-            codec->getInfo().makeColorType(colorType).makeAlphaType(alphaType).makeColorSpace(
-                    std::move(colorSpace));
-    SkBitmap refBitmap;
-    refBitmap.allocPixels(info);
-    SkCodec::Result result = refCodec->getPixels(info, refBitmap.getPixels(), refBitmap.rowBytes());
-    REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, result);
 
     SkBitmap bitmap;
-    bitmap.allocPixels(info);
-    result = codec->startIncrementalDecode(info, bitmap.getPixels(), bitmap.rowBytes());
-    REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, result);
+    std::unique_ptr<SkCodec> codec =
+            StartIncrementalDecode(r, SkMemoryStream::Make(corruptData), &bitmap, makeDstInfo);
+    if (!codec) {
+        return;
+    }
+    const SkImageInfo& info = bitmap.info();
     int rowsDecoded = -1;
-    result = codec->incrementalDecode(&rowsDecoded);
+    SkCodec::Result result = codec->incrementalDecode(&rowsDecoded);
     REPORTER_ASSERT(r,
                     result == SkCodec::kErrorInInput,
                     "actualResult=\"%s\" != kErrorInInput",
@@ -2312,12 +2276,13 @@ static void AssertRowsDecodedReportedOnErrorInInput(skiatest::Reporter* r,
                     "rowsDecoded=%d, height=%d",
                     rowsDecoded,
                     info.height());
+    REPORTER_ASSERT(r, CountWrittenRows(r, bitmap) == rowsDecoded);
     if (rowsDecoded <= 0 || rowsDecoded >= info.height()) {
         return;
     }
 
     // `getPixels` keeps the decoded rows, and only fills the rows after them.
-    bitmap.eraseColor(SK_ColorMAGENTA);
+    bitmap.eraseColor(kUnreadSentinelColor);
     SkCodec::Options options;
     options.fZeroInitialized = SkCodec::kNo_ZeroInitialized;
     result = codec->getPixels(info, bitmap.getPixels(), bitmap.rowBytes(), &options);
@@ -2325,19 +2290,17 @@ static void AssertRowsDecodedReportedOnErrorInInput(skiatest::Reporter* r,
                     result == SkCodec::kErrorInInput,
                     "actualResult=\"%s\" != kErrorInInput",
                     SkCodec::ResultToString(result));
-    const size_t rowBytes = info.minRowBytes();
-    for (int y = 0; y < rowsDecoded; ++y) {
-        if (memcmp(bitmap.getAddr(0, y), refBitmap.getAddr(0, y), rowBytes) != 0) {
-            ERRORF(r, "Decoded row %d differs from the intact image", y);
-            return;
-        }
-    }
-    for (int y = rowsDecoded; y < info.height(); ++y) {
-        if (bitmap.getColor(0, y) == SK_ColorMAGENTA) {
-            ERRORF(r, "Row %d after rowsDecoded (%d) was not filled", y, rowsDecoded);
-            return;
-        }
-    }
+    SkBitmap decodedRows, refRows, remainingRows;
+    REPORTER_ASSERT(r,
+                    bitmap.extractSubset(&decodedRows, SkIRect::MakeWH(info.width(), rowsDecoded)));
+    REPORTER_ASSERT(r,
+                    refBitmap->extractSubset(&refRows, SkIRect::MakeWH(info.width(), rowsDecoded)));
+    CompareBitmaps(r, decodedRows, refRows);
+    REPORTER_ASSERT(
+            r,
+            bitmap.extractSubset(&remainingRows,
+                                 SkIRect::MakeLTRB(0, rowsDecoded, info.width(), info.height())));
+    REPORTER_ASSERT(r, CountWrittenRows(r, remainingRows, SK_ColorTRANSPARENT) == 0);
 }
 
 // kRGBA_8888 + kUnpremul without a color space on an RGBA8 source without `iCCP` satisfies
@@ -2350,4 +2313,188 @@ DEF_TEST(RustPngCodec_rowsDecodedReportedOnErrorInInput_readRow, r) {
 DEF_TEST(RustPngCodec_rowsDecodedReportedOnErrorInInput_xform, r) {
     AssertRowsDecodedReportedOnErrorInInput(
             r, kN32_SkColorType, kPremul_SkAlphaType, SkColorSpace::MakeSRGB());
+}
+
+static void AssertInterlacedIncrementalDecodeHalting(
+        skiatest::Reporter* r,
+        SkColorType colorType,
+        SkAlphaType alphaType,
+        int expectedRowsAtHalt,
+        std::optional<size_t> initialLimit = std::nullopt,
+        const SkIRect* subset = nullptr,
+        SkCodec::ZeroInitialized zeroInit = SkCodec::kNo_ZeroInitialized) {
+    static constexpr char kPath[] = "images/plane_interlaced.png";
+    sk_sp<SkData> data = GetResourceAsData(kPath);
+    if (!data) {
+        ERRORF(r, "Missing resource: %s", kPath);
+        return;
+    }
+    const size_t limit = initialLimit.value_or(data->size() / 2);
+
+    // `plane_interlaced.png` has no embedded ICC profile, so `makeColorSpace(nullptr)` is required
+    // for `kRGBA_8888_SkColorType` + `kUnpremul_SkAlphaType` to satisfy `canReadRow()`.
+    auto makeDstInfo = [colorType, alphaType](const SkImageInfo& info) {
+        return info.makeColorType(colorType).makeAlphaType(alphaType).makeColorSpace(nullptr);
+    };
+    SkCodec::Options options;
+    options.fSubset = subset;
+    options.fZeroInitialized = zeroInit;
+
+    auto stream = std::make_unique<HaltingStream>(data, limit);
+    HaltingStream* retainedStream = stream.get();
+    SkBitmap bm;
+    std::unique_ptr<SkCodec> codec =
+            StartIncrementalDecode(r, std::move(stream), &bm, makeDstInfo, options);
+    if (!codec) {
+        return;
+    }
+
+    int rowsDecoded = -1;
+    SkCodec::Result result = codec->incrementalDecode(&rowsDecoded);
+    REPORTER_ASSERT(r, result == SkCodec::kIncompleteInput);
+    if (zeroInit == SkCodec::kNo_ZeroInitialized) {
+        const int writtenRows = CountWrittenRows(r, bm);
+        REPORTER_ASSERT(r,
+                        rowsDecoded == writtenRows,
+                        "API rowsDecoded (%d) != written rows (%d)",
+                        rowsDecoded,
+                        writtenRows);
+    }
+    REPORTER_ASSERT(r,
+                    rowsDecoded == expectedRowsAtHalt,
+                    "rowsDecoded (%d) != expectedRowsAtHalt (%d)",
+                    rowsDecoded,
+                    expectedRowsAtHalt);
+
+    retainedStream->addNewData(data->size() - limit);
+    int rowsDecodedOnSuccess = -1;
+    result = codec->incrementalDecode(&rowsDecodedOnSuccess);
+    REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, result);
+    REPORTER_ASSERT(r, rowsDecodedOnSuccess == -1);
+
+    if (std::optional<SkBitmap> refBm = DecodeIncrementalOneShot(r, data, makeDstInfo, options)) {
+        CompareBitmaps(r, *refBm, bm);
+    }
+}
+
+static void AssertInterlacedAndroidDecodeHalting(
+        skiatest::Reporter* r,
+        int sampleSize,
+        std::function<SkIRect(const SkImageInfo&)> getSubset = nullptr) {
+    static constexpr char kPath[] = "images/plane_interlaced.png";
+    sk_sp<SkData> data = GetResourceAsData(kPath);
+    if (!data) {
+        ERRORF(r, "Missing resource: %s", kPath);
+        return;
+    }
+
+    const struct {
+        size_t fLimit;
+        bool fExpectPartialHeight;
+    } kLimits[] = {
+            {300, true},
+            {data->size() / 2, false},
+    };
+    for (const auto& [limit, expectPartialHeight] : kLimits) {
+        std::optional<SkBitmap> rustBm = DecodeAndroidPixels(
+                r,
+                SkPngRustDecoder::Decode(std::make_unique<HaltingStream>(data, limit), nullptr),
+                sampleSize,
+                getSubset,
+                /*maxDecodeMemory=*/0,
+                SkCodec::kIncompleteInput);
+        if (!rustBm) {
+            continue;
+        }
+
+        const int writtenRows = CountWrittenRows(r, *rustBm);
+        if (expectPartialHeight) {
+            REPORTER_ASSERT(r, writtenRows > 0 && writtenRows < rustBm->height());
+        } else {
+            REPORTER_ASSERT(r, writtenRows == rustBm->height());
+        }
+
+#if defined(SK_CODEC_DECODES_PNG_WITH_LIBPNG)
+        std::optional<SkBitmap> libpngBm = DecodeAndroidPixels(
+                r,
+                SkPngDecoder::Decode(std::make_unique<HaltingStream>(data, limit), nullptr),
+                sampleSize,
+                getSubset,
+                /*maxDecodeMemory=*/0,
+                SkCodec::kIncompleteInput);
+        if (libpngBm) {
+            const int libpngWrittenRows = CountWrittenRows(r, *libpngBm);
+            REPORTER_ASSERT(r,
+                            writtenRows == libpngWrittenRows,
+                            "writtenRows mismatch at halt: Rust %d != Libpng %d",
+                            writtenRows,
+                            libpngWrittenRows);
+        }
+#endif
+    }
+}
+
+// Tests progressive (halting + resume) decoding of an interlaced PNG across both decode paths:
+// * `kRGBA_8888_SkColorType` + `kUnpremul_SkAlphaType` (`canReadRow()` -> `incrementalDecode`)
+// * `kN32_SkColorType` + `kPremul_SkAlphaType` (`!canReadRow()` -> `incrementalDecodeXForm`)
+DEF_TEST(RustPngCodec_interlaced_halting, r) {
+    for (const auto& [colorType, alphaType] : {
+                 std::make_pair(kRGBA_8888_SkColorType, kUnpremul_SkAlphaType),
+                 std::make_pair(kN32_SkColorType, kPremul_SkAlphaType),
+         }) {
+        // At 300 bytes, Pass 1 has decoded 6 scanlines, splatting 6 * 8 = 48 rows.
+        AssertInterlacedIncrementalDecodeHalting(
+                r, colorType, alphaType, /*expectedRowsAtHalt=*/48, /*initialLimit=*/300);
+        // At half the file (`initialLimit = std::nullopt`), Pass 1 has completed and splatted all
+        // 126 rows.
+        AssertInterlacedIncrementalDecodeHalting(
+                r, colorType, alphaType, /*expectedRowsAtHalt=*/126);
+    }
+}
+
+DEF_TEST(RustPngCodec_interlaced_subset_halting, r) {
+    const SkIRect kSubset = SkIRect::MakeXYWH(10, 10, 100, 50);
+    for (SkCodec::ZeroInitialized zeroInit :
+         {SkCodec::kNo_ZeroInitialized, SkCodec::kYes_ZeroInitialized}) {
+        // At 300 bytes (48 full-image rows splatted), 38 of the 50 subset rows (y=10..47) are
+        // flushed.
+        AssertInterlacedIncrementalDecodeHalting(r,
+                                                 kN32_SkColorType,
+                                                 kPremul_SkAlphaType,
+                                                 /*expectedRowsAtHalt=*/38,
+                                                 /*initialLimit=*/300,
+                                                 &kSubset,
+                                                 zeroInit);
+        // At half the file, all 50 subset rows are flushed.
+        AssertInterlacedIncrementalDecodeHalting(r,
+                                                 kN32_SkColorType,
+                                                 kPremul_SkAlphaType,
+                                                 /*expectedRowsAtHalt=*/50,
+                                                 /*initialLimit=*/std::nullopt,
+                                                 &kSubset,
+                                                 zeroInit);
+    }
+
+    // A subset starting below the 48 decoded rows at halt reports 0 rows decoded.
+    const SkIRect kLowerSubset = SkIRect::MakeXYWH(10, 60, 100, 50);
+    AssertInterlacedIncrementalDecodeHalting(r,
+                                             kN32_SkColorType,
+                                             kPremul_SkAlphaType,
+                                             /*expectedRowsAtHalt=*/0,
+                                             /*initialLimit=*/300,
+                                             &kLowerSubset);
+}
+
+DEF_TEST(RustPngCodec_interlaced_subsampling_halting, r) {
+    for (int sampleSize : {2, 3, 8}) {
+        AssertInterlacedAndroidDecodeHalting(r, sampleSize);
+    }
+}
+
+DEF_TEST(RustPngCodec_interlaced_subsampling_subset_halting, r) {
+    for (int sampleSize : {2, 3, 8}) {
+        AssertInterlacedAndroidDecodeHalting(r, sampleSize, [](const SkImageInfo&) {
+            return SkIRect::MakeXYWH(10, 10, 100, 50);
+        });
+    }
 }
