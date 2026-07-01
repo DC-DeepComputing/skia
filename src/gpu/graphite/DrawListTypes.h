@@ -237,6 +237,10 @@ struct Layer {
     // Performs no bounds checks, so can only be used when checks have already confirmed the Layer
     // is valid for adding a new draw into. This searches backwards from `startList` (inclusive) or
     // the tail BindingList if null.
+    //
+    // Return a BindingList matching `key` if one exists in the layer (or exists in the layer
+    // at or before `startList`). If an exact match is not found, it attempts to return a
+    // BindingList that has the same pipeline index.
     SK_ALWAYS_INLINE BindingList* searchBinding(const LayerKey& key,
                                                 BindingList* startList=nullptr,
                                                 bool forForwardMerge=false) {
@@ -244,7 +248,7 @@ struct Layer {
             startList = fBindings.tail();
         }
 
-        // Advancement is evaluated at compile time
+        BindingList* pipelineMatch = nullptr;
         for (BindingList* list = startList; list != nullptr; list = list->fPrev) {
             if (forForwardMerge && list->fBlockForwardMerges) {
                 break;
@@ -252,6 +256,10 @@ struct Layer {
 
             if (list->fKey.isEqual(key)) {
                 return list;
+            } else if (list->fKey.fPipelineIndex == key.fPipelineIndex) {
+                // Save pipeline while continuing to search for an exact match
+                SkASSERT(list->fKey.fFlags == key.fFlags);
+                pipelineMatch = list;
             } else if (key.performsShading() && !list->fKey.performsShading()) {
                 // The BindingLists are split in two sections: a latter half with color (that is
                 // check first because we start at the tail) and then anything else that is
@@ -261,7 +269,10 @@ struct Layer {
                 break;
             }
         }
-        return nullptr;
+
+        // Even though an exact match wasn't found, any non-null pipelineMatch can be used to place
+        // a new binding list, which helps shift from a pipeline switch to just a dynamic state.
+        return pipelineMatch;
     }
 
     // Test the draw with the given bounds and LayerKey against the draws already collected in
@@ -396,7 +407,7 @@ struct Layer {
             // NOTE: It's possible for the same key to be in a layer multiple times due to
             // some of the early-out rules. If we get here, the draw hasn't overlapped any later
             // drawn BindingList, so update the match to be the best, earliest match found so far.
-            if (exactMatch) {
+            if (exactMatch || (!match && list->fKey.fPipelineIndex == key.fPipelineIndex)) {
                 match = list;
             }
 
