@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "879fc7ca_9fe4897d",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 584,
+      "author": {
+        "id": 9224
+      },
+      "writtenOn": "2026-07-01T15:01:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6138a2fb_db3cece1",
+      "range": {
+        "startLine": 584,
+        "startChar": 0,
+        "endLine": 584,
+        "endChar": 28
+      },
+      "revId": "68a25370f3f9d0dd0da95dd622c84b5a6deea0be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7a5d0f0e_5d46bd6a",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-06-30T16:51:08Z",
       "side": 1,
       "message": "I think we also want to do an earlier check along the lines of:\n```\nif ((colorSamples \u003e SampleCount::k1 \u0026\u0026 this-\u003eavoidMSAA()) ||\n    (depthStencilFormat !\u003d TextureFormat::kUnsupported \u0026\u0026 this-\u003eavoidDepthMode()) {\n    return false;\n}\n```\n\nIf we encountered a precompile pipeline that has MSAA or a depth attachment, I think we can ignore them because they fall into 2 cases:\n1. This was a renderer that triggered the use of stencil or msaa so going forward, no one will be able trigger a pipeline cache hit on this pipeline desc even if we just fiddle with the DS attachment.\n2. This desc came from a non-stencil, non-MSAA draw that got looped into a msaa renderpass for some other reason, in which case there\u0027s a very strong chance that the set of precompiled pipelines already includes the single-sampled, non-stencil version.\n\nAll we need here with the final `!this-\u003eavoidDepthMode()` check is to gracefully convert any precompile 1x+D16 render passes into a depth-less render pass.",
+      "range": {
+        "startLine": 585,
+        "startChar": 7,
+        "endLine": 588,
+        "endChar": 72
+      },
+      "revId": "68a25370f3f9d0dd0da95dd622c84b5a6deea0be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c9cad1b_a0708502",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 588,
+      "author": {
+        "id": 9224
+      },
+      "writtenOn": "2026-07-01T15:01:17Z",
+      "side": 1,
+      "message": "Done, I think?",
+      "parentUuid": "7a5d0f0e_5d46bd6a",
       "range": {
         "startLine": 585,
         "startChar": 7,
