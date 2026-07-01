@@ -8,14 +8,14 @@
 #ifndef skgpu_graphite_Recording_DEFINED
 #define skgpu_graphite_Recording_DEFINED
 
-#include "include/core/SkRefCnt.h"
-#include "include/private/SkAPI.h"
-#include "include/private/SkTArray.h"
 #include <cstddef>
 #include <cstdint>
 #include <memory>
 #include <unordered_set>
 #include <vector>
+#include "include/core/SkRefCnt.h"
+#include "include/private/SkAPI.h"
+#include "include/private/SkTArray.h"
 
 struct SkISize;
 
@@ -77,13 +77,14 @@ private:
     uint32_t fUniqueID;
     uint32_t fRecorderID;
 
-    // This is held by a pointer instead of being inline to allow TaskList to be forward declared.
-    std::unique_ptr<TaskList> fRootTaskList;
     // We don't always take refs to all resources used by specific Tasks (e.g. a common buffer used
     // for uploads). Instead we'll just hold onto one ref for those Resources outside the Tasks.
     // Those refs are stored in the array here and will eventually be passed onto a CommandBuffer
     // when the Recording adds its commands.
     std::vector<sk_sp<Resource>> fExtraResourceRefs;
+
+    // This is held by a pointer instead of being inline to allow TaskList to be forward declared.
+    std::unique_ptr<TaskList> fRootTaskList;
 
     std::unordered_set<sk_sp<TextureProxy>, ProxyHash> fNonVolatileLazyProxies;
     std::unordered_set<sk_sp<TextureProxy>, ProxyHash> fVolatileLazyProxies;
@@ -93,6 +94,6 @@ private:
     skia_private::TArray<sk_sp<RefCntedCallback>> fFinishedProcs;
 };
 
-} // namespace skgpu::graphite
+}  // namespace skgpu::graphite
 
-#endif // skgpu_graphite_Recording_DEFINED
+#endif  // skgpu_graphite_Recording_DEFINED

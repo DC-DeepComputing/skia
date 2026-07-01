@@ -7,6 +7,7 @@
 
 #include "include/core/SkCanvas.h"
 #include "src/core/SkPathPriv.h"
+#include "src/partition_alloc/raw_ref.h"
 #include "tools/viewer/ClickHandlerSlide.h"
 
 #if defined(SK_GANESH)
@@ -123,7 +124,7 @@ private:
                                                           shaderMatrix,
                                                           kCyan,
                                                           fTessellator->patchAttribs());
-        fProgram = GrTessellationShader::MakeProgram({alloc, flushState->writeView(),
+        fProgram = GrTessellationShader::MakeProgram({alloc, raw_ref(flushState->writeView()),
                                                      flushState->usesMSAASurface(),
                                                      &flushState->dstProxyView(),
                                                      flushState->renderPassBarriers(),

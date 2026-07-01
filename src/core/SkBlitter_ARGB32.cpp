@@ -1762,7 +1762,9 @@ SkARGB32_Shader_Blitter::SkARGB32_Shader_Blitter(const SkPixmap& device,
 }
 
 SkARGB32_Shader_Blitter::~SkARGB32_Shader_Blitter() {
-    sk_free(fBuffer);
+    void* p = fBuffer;
+    fBuffer = nullptr;
+    sk_free(p);
 }
 
 void SkARGB32_Shader_Blitter::blitH(int x, int y, int width) {
@@ -1785,7 +1787,7 @@ void SkARGB32_Shader_Blitter::blitRect(int x, int y, int width, int height) {
 
     uint32_t*  device = fDevice.writable_addr32(x, y);
     const size_t deviceRB = fDevice.rowBytes();
-    auto*      shaderContext = fShaderContext;
+    auto*      shaderContext = fShaderContext.get();
     SkPMColor* span = fBuffer;
 
     if (fShadeDirectlyIntoDevice) {
@@ -1809,7 +1811,7 @@ void SkARGB32_Shader_Blitter::blitAntiH(int x, int y, const SkAlpha antialias[],
                                         const int16_t runs[]) {
     SkPMColor* span = fBuffer;
     uint32_t*  device = fDevice.writable_addr32(x, y);
-    auto*      shaderContext = fShaderContext;
+    auto*      shaderContext = fShaderContext.get();
 
     if (fShadeDirectlyIntoDevice || (shaderContext->getFlags() & SkShaderBase::kOpaqueAlpha_Flag)) {
         for (;;) {
