@@ -5,8 +5,13 @@
  * found in the LICENSE file.
  */
 
+#include "src/partition_alloc/raw_ref.h"
+
 #ifndef GrFragmentProcessor_DEFINED
+
 #define GrFragmentProcessor_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkString.h"
@@ -471,7 +476,7 @@ private:
     };
 
     skia_private::STArray<1, std::unique_ptr<GrFragmentProcessor>, true> fChildProcessors;
-    const GrFragmentProcessor* fParent = nullptr;
+    raw_ptr<const GrFragmentProcessor> fParent = nullptr;
     uint32_t fFlags = 0;
     SkSL::SampleUsage fUsage;
 
@@ -524,10 +529,10 @@ public:
                 , fInputColor(inputColor ? inputColor : "half4(1.0)")
                 , fDestColor(destColor)
                 , fSampleCoord(sampleCoord) {}
-        GrGLSLFPFragmentBuilder* fFragBuilder;
-        GrGLSLUniformHandler* fUniformHandler;
-        const GrShaderCaps* fShaderCaps;
-        const GrFragmentProcessor& fFp;
+        raw_ptr<GrGLSLFPFragmentBuilder> fFragBuilder;
+        raw_ptr<GrGLSLUniformHandler> fUniformHandler;
+        raw_ptr<const GrShaderCaps> fShaderCaps;
+        const raw_ref<const GrFragmentProcessor> fFp;
         const char* fInputColor;
         const char* fDestColor;
         const char* fSampleCoord;
