@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85ea9bb7_ce278253",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 465,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-01T20:40:31Z",
+      "side": 1,
+      "message": "We might want this to also go down around line 570 to disable on linux too",
+      "range": {
+        "startLine": 465,
+        "startChar": 14,
+        "endLine": 465,
+        "endChar": 25
+      },
+      "revId": "f52e9ab65fbeb860afb664533450110ea688085f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
