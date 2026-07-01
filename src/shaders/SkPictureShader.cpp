@@ -298,7 +298,7 @@ bool SkPictureShader::appendStages(const SkStageRec& rec, const SkShaders::Matri
     bitmapShader = this->rasterShader(mRec.totalMatrix(),
                                       rec.fDstColorType,
                                       rec.fDstCS,
-                                      rec.fSurfaceProps);
+                                      *rec.fSurfaceProps);
     if (!bitmapShader) {
         return false;
     }
