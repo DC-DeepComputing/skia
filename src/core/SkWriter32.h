@@ -6,6 +6,9 @@
  */
 
 #ifndef SkWriter32_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
+
 #define SkWriter32_DEFINED
 
 #include "include/core/SkData.h"
@@ -72,7 +75,7 @@ public:
             this->growToAtLeast(totalRequired);
         }
         fUsed = totalRequired;
-        return (uint32_t*)(fData + offset);
+        return (uint32_t*)(fData.get() + offset);
     }
 
     /**
@@ -83,7 +86,7 @@ public:
     const T& readTAt(size_t offset) const {
         SkASSERT(SkAlign4(offset) == offset);
         SkASSERT(offset < fUsed);
-        return *(T*)(fData + offset);
+        return *(T*)(fData.get() + offset);
     }
 
     /**
@@ -94,7 +97,7 @@ public:
     void overwriteTAt(size_t offset, const T& value) {
         SkASSERT(SkAlign4(offset) == offset);
         SkASSERT(offset < fUsed);
-        *(T*)(fData + offset) = value;
+        *(T*)(fData.get() + offset) = value;
     }
 
     bool writeBool(bool value) {
@@ -253,11 +256,11 @@ public:
 private:
     void growToAtLeast(size_t size);
 
-    uint8_t* fData;                    // Points to either fInternal or fExternal.
+    skia_private::AutoTMalloc<uint8_t> fInternal;  // Managed memory block.
+    raw_ptr<uint8_t, AllowPtrArithmetic | DanglingUntriaged> fData;                    // Points to either fInternal or fExternal.
     size_t fCapacity;                  // Number of bytes we can write to fData.
     size_t fUsed;                      // Number of bytes written.
-    void* fExternal;                   // Unmanaged memory block.
-    skia_private::AutoTMalloc<uint8_t> fInternal;  // Managed memory block.
+    raw_ptr<void> fExternal;                   // Unmanaged memory block.
 };
 
 /**
@@ -269,12 +272,13 @@ private:
 template <size_t SIZE> class SkSWriter32 : public SkWriter32 {
 public:
     SkSWriter32() { this->reset(); }
+    ~SkSWriter32() { this->INHERITED::reset(); }
 
     void reset() {this->INHERITED::reset(fData.fStorage, SIZE); }
 
 private:
     union {
-        void*   fPtrAlignment;
+        RAW_PTR_EXCLUSION void*   fPtrAlignment;
         double  fDoubleAlignment;
         char    fStorage[SIZE];
     } fData;

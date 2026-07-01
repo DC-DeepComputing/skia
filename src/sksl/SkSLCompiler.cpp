@@ -9,6 +9,8 @@
 
 #include "include/private/SkDebug.h"
 #include "src/core/SkTraceEvent.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ref.h"
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLContext.h"
 #include "src/sksl/SkSLDefines.h"
@@ -44,15 +46,15 @@ public:
     AutoProgramConfig(Context& context, ProgramConfig* config)
             : fContext(context)
             , fOldConfig(context.fConfig) {
-        fContext.fConfig = config;
+        fContext->fConfig = config;
     }
 
     ~AutoProgramConfig() {
-        fContext.fConfig = fOldConfig;
+        fContext->fConfig = fOldConfig;
     }
 
-    Context& fContext;
-    ProgramConfig* fOldConfig;
+    const raw_ref<Context> fContext;
+    raw_ptr<ProgramConfig, DanglingUntriaged> fOldConfig;
 };
 
 Compiler::Compiler() : fErrorReporter(this) {
