@@ -8,6 +8,7 @@
 
 #include "include/private/SkMalloc.h"
 #include "include/private/chromium/SkDiscardableMemory.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 SkCachedData::SkCachedData(void* data, size_t size)
     : fData(data)
@@ -32,6 +33,7 @@ SkCachedData::SkCachedData(size_t size, SkDiscardableMemory* dm)
 }
 
 SkCachedData::~SkCachedData() {
+    fData = nullptr;
     switch (fStorageType) {
         case kMalloc_StorageType:
             sk_free(fStorage.fMalloc);
@@ -57,7 +59,7 @@ public:
     SkCachedData* operator->() { return fCD; }
 
 private:
-    SkCachedData* fCD;
+    raw_ptr<SkCachedData> fCD;
 };
 
 void SkCachedData::internalRef(bool fromCache) const {
