@@ -118,15 +118,18 @@ private:
         // Needs to be persisted in DecodingState to support incremental decoding
         // across multiple calls without resetting progress.
         int fCurrentSourceRow = 0;
-        // Tracks the number of rows actually written to the destination buffer.
-        // Reported via `rowsDecoded` when decoding fails. Must never exceed the
-        // number of fully written rows, because callers such as
-        // `SkCodec::getPixels` only fill the rows after it.
+        // Number of destination rows written for non-interlaced decodes, or
+        // flushed by `flushInterlacedBufferOnHalt` for interlaced subset/sampled
+        // decodes.
         int fRowsWrittenToOutput = 0;
 
         // The y offset for a subset in the encoded color type, not the dst color type.
         // Only used for interlaced images.
         size_t fYByteOffset = 0;
+
+        // Source height initialized so far for interlaced images (+8 rows per
+        // Pass 1 scanline via `splat_last_interlaced_row`).
+        int fInterlacedDecodedHeight = 0;
     };
 
     // Helper for validating parameters of `onGetPixels` and/or
@@ -157,12 +160,18 @@ private:
     // be used if this->canReadRows() is false.
     Result incrementalDecodeXForm(DecodingState& decodingState);
 
-    // Reports the number of decoded rows via `rowsDecoded` after any failed
-    // decode (not just `kIncompleteInput`), matching `SkPngCodec`, so that
-    // callers keep the rows decoded before a `kErrorInInput`.
-    void reportRowsDecoded(Result result,
-                           const DecodingState& decodingState,
-                           int* rowsDecoded) const;
+    // On an incomplete or failed interlaced subset/sampled decode, flushes the
+    // rows decoded into `fPreblendBuffer` so far to `fDst` and records the
+    // flushed row count in `fRowsWrittenToOutput`.
+    void flushInterlacedBufferOnHalt(DecodingState& decodingState);
+
+    // Returns the number of destination rows written so far for `decodingState`.
+    int getRowsDecoded(const DecodingState& decodingState);
+
+    // Populates `rowsDecoded` after a failed decode (`kIncompleteInput` or
+    // `kErrorInInput`) with the number of destination rows written so far,
+    // matching `SkPngCodec` so callers only fill the remaining rows.
+    void reportRowsDecoded(Result result, const DecodingState& decodingState, int* rowsDecoded);
 
     // Helper for reading until the start of the next `fdAT` sequence.
     Result readToStartOfNextFrame();
@@ -272,16 +281,17 @@ private:
     // chunk.
     bool fCanParseAdditionalFrameInfos = true;
 
-    // When decoding interlaced subsets or sampling, decode the full image into a
-    // buffer in the encoded colortype and extract/sample for the final dst using
-    // this function. This function will use applyXFormRow() for needed rows.
-    void getSubsetOrSampleFromFullImage(SkSpan<const uint8_t> fullImageBuffer,
-                                        SkSpan<uint8_t> dst,
-                                        size_t dstRowStride,
-                                        size_t offset,
-                                        int srcHeight,
-                                        int dstHeight,
-                                        size_t dstRowSize);
+    // Extracts and/or samples `srcHeight` rows from `fullImageBuffer` (in the
+    // encoded color type) into `dst` using `applyXformRow()`, returning the
+    // number of destination rows written. Used for interlaced subset/sampled
+    // decodes.
+    int getSubsetOrSampleFromFullImage(SkSpan<const uint8_t> fullImageBuffer,
+                                       SkSpan<uint8_t> dst,
+                                       size_t dstRowStride,
+                                       size_t offset,
+                                       int srcHeight,
+                                       int dstHeight,
+                                       size_t dstRowSize);
 };
 
 #endif  // SkPngRustCodec_DEFINED
