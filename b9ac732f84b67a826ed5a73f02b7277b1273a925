@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2811a415_cc11c13e",
+        "filename": "include/utils/SkLogHandler.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-01T19:08:14Z",
+      "side": 1,
+      "message": "I don\u0027t know if it\u0027s possible, but if it is, could we have the virtual function take in the format string and the arguments? That would give the handler more flexibility/",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 55
+      },
+      "revId": "b9ac732f84b67a826ed5a73f02b7277b1273a925",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24eda684_4f5b0b36",
+        "filename": "src/core/SkLog.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-01T19:08:14Z",
+      "side": 1,
+      "message": "redefine",
+      "range": {
+        "startLine": 14,
+        "startChar": 76,
+        "endLine": 14,
+        "endChar": 84
+      },
+      "revId": "b9ac732f84b67a826ed5a73f02b7277b1273a925",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e266ac3a_507c628c",
+        "filename": "src/utils/SkLogHandler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-01T19:08:14Z",
+      "side": 1,
+      "message": "h is still always going to leak if the compare_exchange_strong succeeds so I think we still need the leak macro.",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 40
+      },
+      "revId": "b9ac732f84b67a826ed5a73f02b7277b1273a925",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
