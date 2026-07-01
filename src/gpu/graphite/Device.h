@@ -293,7 +293,8 @@ private:
     void drawGeometry(const Transform&,
                       Geometry&&,
                       const PaintParams&,
-                      SkStrokeRec);
+                      SkStrokeRec,
+                      const SkPathEffect* pathEffect = nullptr);
 
     // Like drawGeometry() but is Shape-only, depth-only, fill-only, and lets the ClipStack define
     // the transform, clip, and DrawOrder (although Device still tracks stencil buffer usage).
@@ -337,13 +338,15 @@ private:
     std::pair<const Renderer*, PathAtlas*> chooseRenderer(const Transform& localToDevice,
                                                           const Geometry&,
                                                           const SkStrokeRec&,
-                                                          const Rect& drawBounds) const;
+                                                          const Rect& drawBounds,
+                                                          const SkPathEffect* pathEffect = nullptr) const;
 
     // Ignoring specialized Shape renderers and the selected PathRendererStrategy, choose a
     // MSAA-requiring tessellation-based renderer for the shape and style.
     const Renderer* chooseMSAARenderer(const Shape&,
                                        const SkStrokeRec&,
-                                       const Rect& drawBounds) const;
+                                       const Rect& drawBounds,
+                                       const SkPathEffect* pathEffect = nullptr) const;
 
     bool needsFlushBeforeDraw(int numNewRenderSteps, DstReadStrategy);
 

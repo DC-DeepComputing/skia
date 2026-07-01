@@ -1289,6 +1289,18 @@ void ShaderInfo::generateVertexSkSL(const Caps* caps,
     // Fixed program header (intrinsics are always declared as an uniform interface block)
     const ResourceBindingRequirements& bindingReqs = caps->resourceBindingRequirements();
     vsPreamble = emit_intrinsic_constants(bindingReqs);
+    if (step->appendsVertexStorage()) {
+        if (step->hasPathAttributes()) {
+            fHasPathAttributesBuffer = true;
+            SkSL::String::appendf(&vsPreamble,
+                                "layout (set=%d, binding=%d) readonly buffer PathAttributes {\n"
+                                    "float path_attributes[];\n"
+                                "};\n",
+                                bindingReqs.fUniformsSetIdx,
+                                bindingReqs.fPathAttributesBufferBinding);
+        }
+    }
+
     // Varyings needed by RenderStep and potentially lifted expressions
     vsPreamble += emit_varyings(step, "out",
                                 sharedData.fLiftedExpr,

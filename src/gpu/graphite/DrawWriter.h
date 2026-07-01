@@ -83,6 +83,7 @@ public:
     ~DrawWriter() { SkASSERT(fPendingCount == 0); }
 
     DrawBufferManager* bufferManager() { return fManager; }
+    DrawPassCommands::List* commandList() { return fCommandList; }
 
     // Issue draw calls for any pending vertex and instance data collected by the writer.
     // Use either flush() or newDynamicState() based on context and readability.

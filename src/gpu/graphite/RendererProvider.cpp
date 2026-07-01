@@ -14,6 +14,7 @@
 #include "src/gpu/graphite/UniformManager.h"
 #include "src/gpu/graphite/render/AnalyticBlurRenderStep.h"
 #include "src/gpu/graphite/render/AnalyticRRectRenderStep.h"
+#include "src/gpu/graphite/render/ArcLengthRenderStep.h"
 #include "src/gpu/graphite/render/BitmapTextRenderStep.h"
 #include "src/gpu/graphite/render/CircularArcRenderStep.h"
 #include "src/gpu/graphite/render/CommonDepthStencilSettings.h"
@@ -128,6 +129,9 @@ RendererProvider::RendererProvider(const Caps* caps, StaticBufferManager* buffer
                  DrawTypeFlags::kNonSimpleShape);
     initFromStep(&fTessellatedStrokes,
                  std::make_unique<TessellateStrokesRenderStep>(layout, infinitySupport),
+                 DrawTypeFlags::kNonSimpleShape);
+    initFromStep(&fArcLengthStrokes,
+                 std::make_unique<ArcLengthRenderStep>(layout, infinitySupport, caps->computeSupport()),
                  DrawTypeFlags::kNonSimpleShape);
     initFromStep(&fCoverageMask,
                  std::make_unique<CoverageMaskRenderStep>(layout),

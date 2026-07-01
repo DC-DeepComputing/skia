@@ -34,6 +34,56 @@
 
 namespace skgpu::tess {
 
+namespace detail {
+inline float eval_line_length(skvx::float2 p0, skvx::float2 p1) {
+    return skvx::length(p1 - p0);
+}
+
+inline float eval_cubic_length(skvx::float2 c0, skvx::float2 c1, skvx::float2 c2, skvx::float2 c3) {
+    skvx::float2 d1 = c1 - c0;
+    skvx::float2 d2 = c2 - c0;
+    skvx::float2 d3 = c3 - c0;
+    float v0 = skvx::length(d1) * 0.15f;
+    float v1 = skvx::length(d1 * 0.325650248872424f + d2 * 0.208983582205757f + d3 * 0.024349751127576f);
+    float v2 = skvx::length(d3 + d2 - d1) * 0.26666666666666666f;
+    float v3 = skvx::length(d1 * -0.208983582205757f - d2 * 0.325650248872424f + d3 * 0.558983582205757f);
+    float v4 = skvx::length(d3 - d2) * 0.15f;
+    return v0 + v1 + v2 + v3 + v4;
+}
+
+inline float eval_conic_length(skvx::float2 p0, skvx::float2 p1, skvx::float2 p2, float w) {
+    float a = skvx::length(p1 - p0);
+    float b = skvx::length(p2 - p1);
+    if (a < b) {
+        std::swap(a, b);
+    }
+    if (b == 0.0f) {
+        return 4.0f * a;
+    }
+    float a_n = 1.0f;
+    float b_n = b / a;
+    float sum = 0.5f * (1.0f - b_n * b_n);
+
+    // Pass 1
+    float a1 = (a_n + b_n) * 0.5f;
+    float b1 = std::sqrt(a_n * b_n);
+    float c1 = (a_n - b_n) * 0.5f;
+    sum += 1.0f * (c1 * c1);
+
+    // Pass 2
+    float a2 = (a1 + b1) * 0.5f;
+    float b2 = std::sqrt(a1 * b1);
+    float c2 = (a1 - b1) * 0.5f;
+    sum += 2.0f * (c2 * c2);
+
+    // Pass 3
+    float c3 = (a2 - b2) * 0.5f;
+    sum += 4.0f * (c3 * c3);
+
+    return 6.283185307f * a * (1.0f - sum);
+}
+} // namespace detail
+
 /**
  * PatchWriter writes out tessellation patches, formatted with their specific attribs, to a GPU
  * buffer.
@@ -277,6 +327,8 @@ class PatchWriter {
     DEF_ATTRIB_TYPE(ColorAttrib,     PatchAttribs::kColor,             Color);
     DEF_ATTRIB_TYPE(DepthAttrib,     PatchAttribs::kPaintDepth,        float);
     DEF_ATTRIB_TYPE(CurveTypeAttrib, PatchAttribs::kExplicitCurveType, float);
+    DEF_ATTRIB_TYPE(ArcLengthAttrib, PatchAttribs::kArcLength,         skvx::float2);
+    DEF_ATTRIB_TYPE(PathIndexAttrib, PatchAttribs::kPathIndex,         int32_t);
     DEF_ATTRIB_TYPE(SsboIndexAttrib, PatchAttribs::kSsboIndex,         uint32_t);
 #undef DEF_ATTRIB_TYPE
 
@@ -287,6 +339,8 @@ class PatchWriter {
             (ColorAttrib::kEnabled     ? std::min(sizeof(Color), sizeof(SkPMColor4f)) : 0) +
             (DepthAttrib::kEnabled     ? sizeof(float)                                : 0) +
             (CurveTypeAttrib::kEnabled ? sizeof(float)                                : 0) +
+            (ArcLengthAttrib::kEnabled ? sizeof(float) * 2                            : 0) +
+            (PathIndexAttrib::kEnabled ? sizeof(int32_t)                              : 0) +
             (SsboIndexAttrib::kEnabled ? 2 * sizeof(uint32_t)                         : 0);
 
     // Types that vary depending on the activated features, but do not define the patch data.
@@ -311,7 +365,10 @@ public:
             , fStrokeParams(attribs)
             , fColor(attribs)
             , fDepth(attribs)
-            , fSsboIndex(attribs) {
+            , fSsboIndex(attribs)
+            , fArcLength(attribs)
+            , fPathIndex(attribs)
+            , fAccumulatedLength(0.f) {
         // Explicit curve types are provided on the writePatch signature, and not a field of
         // PatchWriter, so initialize one in the ctor to validate the provided runtime attribs.
         SkDEBUGCODE((void) CurveTypeAttrib(attribs);)
@@ -332,6 +389,10 @@ public:
     }
 
     PatchAttribs attribs() const { return fAttribs; }
+
+    float accumulatedLength() const { return fAccumulatedLength; }
+
+
 
     // The max scale factor should be derived from the same matrix that 'xform' was. It's only used
     // in stroking calculations, so can be ignored for path filling.
@@ -490,6 +551,19 @@ public:
         fDepth = depth;
     }
 
+    ENABLE_IF(ArcLengthAttrib::kEnabled) updateArcLengthAttrib(float length) {
+        SkASSERT(fAttribs & PatchAttribs::kArcLength);
+        float excl = fAccumulatedLength;
+        fAccumulatedLength += length;
+        fArcLength = {excl, fAccumulatedLength};
+    }
+
+    // Updates the path index written out with each patch.
+    ENABLE_IF(PathIndexAttrib::kEnabled) updatePathIndexAttrib(int32_t pathIndex) {
+        SkASSERT(fAttribs & PatchAttribs::kPathIndex);
+        fPathIndex = pathIndex;
+    }
+
     // Updates the storage buffer index used to access uniforms.
     ENABLE_IF(SsboIndexAttrib::kEnabled)
     updateSsboIndexAttrib(uint32_t ssboIndex) {
@@ -506,6 +580,9 @@ public:
 
     // Write a cubic curve with its four control points.
     AI void writeCubic(float2 p0, float2 p1, float2 p2, float2 p3) {
+        if constexpr (ArcLengthAttrib::kEnabled) {
+            this->updateArcLengthAttrib(detail::eval_cubic_length(p0, p1, p2, p3));
+        }
         float n4 = wangs_formula::cubic_p4(kPrecision, p0, p1, p2, p3, fApproxTransform);
         if constexpr (kDiscardFlatCurves) {
             if (n4 <= 1.f) {
@@ -529,6 +606,9 @@ public:
     // Write a conic curve with three control points and 'w', with the last coord of the last
     // control point signaling a conic by being set to infinity.
     AI void writeConic(float2 p0, float2 p1, float2 p2, float w) {
+        if constexpr (ArcLengthAttrib::kEnabled) {
+            this->updateArcLengthAttrib(detail::eval_conic_length(p0, p1, p2, w));
+        }
         float n2 = wangs_formula::conic_p2(kPrecision, p0, p1, p2, w, fApproxTransform);
         if constexpr (kDiscardFlatCurves) {
             if (n2 <= 1.f) {
@@ -553,6 +633,9 @@ public:
     // Write a quadratic curve that automatically converts its three control points into an
     // equivalent cubic.
     AI void writeQuadratic(float2 p0, float2 p1, float2 p2) {
+        if constexpr (ArcLengthAttrib::kEnabled) {
+            this->updateArcLengthAttrib(detail::eval_conic_length(p0, p1, p2, 1.f));
+        }
         float n4 = wangs_formula::quadratic_p4(kPrecision, p0, p1, p2, fApproxTransform);
         if constexpr (kDiscardFlatCurves) {
             if (n4 <= 1.f) {
@@ -593,7 +676,12 @@ public:
             this->writeCubicPatch(p0p1.lo, (p0p1.zwxy() - p0p1) * (1/3.f) + p0p1, p0p1.hi);
         }
     }
-    AI void writeLine(float2 p0, float2 p1) { this->writeLine({p0, p1}); }
+    AI void writeLine(float2 p0, float2 p1) {
+        if constexpr (ArcLengthAttrib::kEnabled) {
+            this->updateArcLengthAttrib(detail::eval_line_length(p0, p1));
+        }
+        this->writeLine({p0, p1});
+    }
     AI void writeLine(SkPoint p0, SkPoint p1) {
         this->writeLine(sk_bit_cast<float2>(p0), sk_bit_cast<float2>(p1));
     }
@@ -614,9 +702,10 @@ public:
                             sk_bit_cast<float2>(p2));
     }
 
-    // Writes a circle used for round caps and joins in stroking, encoded as a cubic with
-    // identical control points and an empty join.
     AI void writeCircle(SkPoint p) {
+        if constexpr (ArcLengthAttrib::kEnabled) {
+            this->updateArcLengthAttrib(0.f);
+        }
         // This does not use writePatch() because it uses its own location as the join attribute
         // value instead of fJoin and never defers.
         fTolerances.setParametricSegments(1.f);
@@ -631,6 +720,9 @@ public:
     // the join control point). It is encoded as a conic with identical control points (vs. circles
     // which are cubics with identical control points).
     AI void writeSquare(SkPoint p, std::optional<SkPoint> joinTo) {
+        if constexpr (ArcLengthAttrib::kEnabled) {
+            this->updateArcLengthAttrib(0.f);
+        }
         fTolerances.setParametricSegments(1.f);
         if (VertexWriter vw = fPatchAllocator.append(fTolerances)) {
             vw << VertexWriter::Repeat<3>(p) // p0,p1,p2 = p -> 3 copies
@@ -646,9 +738,9 @@ private:
     AI void emitPatchAttribs(VertexWriter vertexWriter,
                              const JoinAttrib& join,
                              float explicitCurveType) {
-        // NOTE: operator<< overrides automatically handle optional and disabled attribs.
         vertexWriter << join << fFanPoint << fStrokeParams << fColor << fDepth
-                     << CurveTypeAttrib{fAttribs, explicitCurveType} << fSsboIndex;
+                     << CurveTypeAttrib{fAttribs, explicitCurveType} << fArcLength << fPathIndex;
+        vertexWriter << fSsboIndex;
     }
 
     AI VertexWriter appendPatch(float explicitCurveType) {
@@ -905,6 +997,15 @@ private:
     // uniforms. Written out as an attribute with every patch, to read the appropriate uniform
     // values from the storage buffer on draw.
     SsboIndexAttrib fSsboIndex;
+
+    // These are used for arc length parameterized path effects. ArcLength is a vec2f, where the x
+    // contains the exclusive cumulative arc length, and y the inclusive; the difference between the
+    // two is the arc length of the curve. The pathIndex maps each curve to a unique parent path.
+    // (Used so that multiple rendersteps can batch their ArcLength compute step).
+    ArcLengthAttrib fArcLength;
+    PathIndexAttrib fPathIndex;
+
+    float fAccumulatedLength;
 };
 
 }  // namespace skgpu::tess

@@ -137,6 +137,12 @@ void DawnSharedContext::createUniformBuffersBindGroupLayout() {
     entries[2].buffer.hasDynamicOffset = true;
     entries[2].buffer.minBindingSize = 0;
 
+    entries[3].binding = DawnGraphicsPipeline::kPathAttributesBufferIndex;
+    entries[3].visibility = wgpu::ShaderStage::Vertex;
+    entries[3].buffer.type = wgpu::BufferBindingType::ReadOnlyStorage;
+    entries[3].buffer.hasDynamicOffset = true;
+    entries[3].buffer.minBindingSize = 0;
+
     wgpu::BindGroupLayoutDescriptor groupLayoutDesc;
     if (caps->setBackendLabels()) {
         groupLayoutDesc.label = "Uniform buffers bind group layout";

@@ -121,6 +121,9 @@ struct ShaderCaps {
     /** isinf() is defined + floating point infinities are handled according to IEEE standards. */
     bool fInfinitySupport = false;
 
+    /** sk_VertexID is supported in vertex shaders. */
+    bool fVertexIDSupport = false;
+
     /** Used by SkSL to know when to generate polyfills. */
     bool fBuiltinFMASupport = true;
     bool fBuiltinDeterminantSupport = true;

@@ -37,6 +37,7 @@ public:
     inline static constexpr unsigned int kStaticDataBufferIndex = 2;
     inline static constexpr unsigned int kAppendDataBufferIndex = 3;
     inline static constexpr unsigned int kGradientBufferIndex = 4;
+    inline static constexpr unsigned int kPathAttributesBufferIndex = 5;
 
     static sk_sp<MtlGraphicsPipeline> Make(const MtlSharedContext*,
                                            const RuntimeEffectDictionary*,

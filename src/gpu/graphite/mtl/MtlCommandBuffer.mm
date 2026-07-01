@@ -540,14 +540,19 @@ void MtlCommandBuffer::bindUniformBuffer(const BindBufferInfo& info, UniformSlot
     switch(slot) {
         case UniformSlot::kCombinedUniforms:
             bufferIndex = MtlGraphicsPipeline::kCombinedUniformIndex;
+            fActiveRenderCommandEncoder->setVertexBuffer(mtlBuffer, info.fOffset, bufferIndex);
+            fActiveRenderCommandEncoder->setFragmentBuffer(mtlBuffer, info.fOffset, bufferIndex);
             break;
         case UniformSlot::kGradient:
             bufferIndex = MtlGraphicsPipeline::kGradientBufferIndex;
+            fActiveRenderCommandEncoder->setVertexBuffer(mtlBuffer, info.fOffset, bufferIndex);
+            fActiveRenderCommandEncoder->setFragmentBuffer(mtlBuffer, info.fOffset, bufferIndex);
+            break;
+        case UniformSlot::kPathAttributes:
+            bufferIndex = MtlGraphicsPipeline::kPathAttributesBufferIndex;
+            fActiveRenderCommandEncoder->setVertexBuffer(mtlBuffer, info.fOffset, bufferIndex);
             break;
     }
-
-    fActiveRenderCommandEncoder->setVertexBuffer(mtlBuffer, info.fOffset, bufferIndex);
-    fActiveRenderCommandEncoder->setFragmentBuffer(mtlBuffer, info.fOffset, bufferIndex);
 }
 
 void MtlCommandBuffer::bindInputBuffer(const Buffer* buffer, size_t offset, uint32_t bindingIndex) {

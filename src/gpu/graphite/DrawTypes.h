@@ -131,11 +131,14 @@ static constexpr inline size_t VertexAttribTypeSize(VertexAttribType type) {
     SkUNREACHABLE;
 }
 
+// TODO (thomsmit): Maybe rename this from UniformSlot to "BufferSlot" ?
 enum class UniformSlot {
     // Slot for paints and render step uniforms
     kCombinedUniforms,
     // Meant for gradient storage buffer.
-    kGradient
+    kGradient,
+    // Path attributes storage buffer for vertex shader.
+    kPathAttributes
 };
 
 /*

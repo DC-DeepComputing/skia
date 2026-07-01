@@ -239,6 +239,8 @@ skia_graphite_sources = [
   "$_src/gpu/graphite/render/AnalyticBlurRenderStep.h",
   "$_src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
   "$_src/gpu/graphite/render/AnalyticRRectRenderStep.h",
+  "$_src/gpu/graphite/render/ArcLengthRenderStep.cpp",
+  "$_src/gpu/graphite/render/ArcLengthRenderStep.h",
   "$_src/gpu/graphite/render/BitmapTextRenderStep.cpp",
   "$_src/gpu/graphite/render/BitmapTextRenderStep.h",
   "$_src/gpu/graphite/render/CircularArcRenderStep.cpp",

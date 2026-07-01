@@ -47,6 +47,7 @@ GraphicsPipeline::PipelineInfo::PipelineInfo(
         , fNumFragTexturesAndSamplers(shaderInfo.numFragmentTexturesAndSamplers())
         , fHasCombinedUniforms(shaderInfo.hasCombinedUniforms())
         , fHasGradientBuffer(shaderInfo.hasGradientBuffer())
+        , fHasPathAttributesBuffer(shaderInfo.hasPathAttributesBuffer())
         , fUniqueKeyHash(uniqueKeyHash)
         , fCompilationID(compilationID)
         , fFromPrecompile(pipelineCreationFlags & PipelineCreationFlags::kForPrecompilation) {

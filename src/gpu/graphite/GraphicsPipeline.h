@@ -48,6 +48,7 @@ public:
     int  numFragTexturesAndSamplers() const { return fPipelineInfo.fNumFragTexturesAndSamplers; }
     bool hasCombinedUniforms()        const { return fPipelineInfo.fHasCombinedUniforms;        }
     bool hasGradientBuffer()          const { return fPipelineInfo.fHasGradientBuffer;          }
+    bool hasPathAttributesBuffer()    const { return fPipelineInfo.fHasPathAttributesBuffer;    }
 
     struct PipelineInfo {
         PipelineInfo() = default;
@@ -60,6 +61,7 @@ public:
         int  fNumFragTexturesAndSamplers = 0;
         bool fHasCombinedUniforms = false;
         bool fHasGradientBuffer = false;
+        bool fHasPathAttributesBuffer = false;
 
         // In test-enabled builds, we preserve the generated shader code to display in the viewer
         // slide UI. This is not quite enough information to fully recreate the pipeline, as the

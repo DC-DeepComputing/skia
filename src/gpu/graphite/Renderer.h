@@ -68,6 +68,7 @@ enum class Coverage { kNone, kSingleChannel, kLCD };
         M2(TessellateCurves, EvenOdd)               \
         M2(TessellateCurves, Winding)               \
         M1(TessellateStrokes)                       \
+        M1(ArcLength)                               \
         M2(TessellateWedges, Convex)                \
         M2(TessellateWedges, EvenOdd)               \
         M2(TessellateWedges, Winding)               \
@@ -160,6 +161,8 @@ public:
     // 'half4 primitiveColor' variable (defined in the calling code).
     virtual const char* fragmentColorSkSL() const { return ""; }
 
+    virtual bool hasPathAttributes() const { return false; }
+
     // Indicates whether this RenderStep's uniforms are referenced in its fragment shader code.
     // If not, its uniforms can be omitted from the fragment shader entirely.
     // By default, we assume that RenderSteps use their uniforms for emitting coverage or primitive
@@ -227,7 +230,7 @@ public:
                         ? DepthStencilFlags::kDepth : DepthStencilFlags::kNone);
     }
 
-    static const int kRenderStepIDVersion = 1;
+    static const int kRenderStepIDVersion = 2;
 
 #define ENUM1(BaseName) k##BaseName,
 #define ENUM2(BaseName, VariantName) k##BaseName##_##VariantName,
