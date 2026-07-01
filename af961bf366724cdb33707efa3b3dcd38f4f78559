@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ae97de9_45e13f7a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 20
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9224
+      },
+      "writtenOn": "2026-07-01T16:08:50Z",
+      "side": 1,
+      "message": "What\u0027s the general procedure for gold images? I looked through the new images and they look fine to me. But should I be the one to judge? Should I click approve before I submit, or that comes after submit?",
+      "revId": "af961bf366724cdb33707efa3b3dcd38f4f78559",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
