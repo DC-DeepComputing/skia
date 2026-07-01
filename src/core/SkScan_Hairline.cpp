@@ -29,6 +29,7 @@
 #include "src/core/SkScan.h"
 #include "src/core/SkUtils.h"
 #include "src/core/SkVx.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <algorithm>
 #include <array>
@@ -214,10 +215,10 @@ void SkScan::HairLineRgn(SkSpan<const SkPoint> src, const SkRegion* clip, SkBlit
 }
 
 struct DrawingParameters {
-    const SkRegion* clip;
-    const SkRect* insetClip;
-    const SkRect* outsetClip;
-    SkBlitter* blitter;
+    raw_ptr<const SkRegion> clip;
+    raw_ptr<const SkRect> insetClip;
+    raw_ptr<const SkRect> outsetClip;
+    raw_ptr<SkBlitter> blitter;
     SkScan::HairRgnProc lineproc;
 };
 

@@ -197,9 +197,11 @@ wgpu::CommandBuffer DawnCommandBuffer::finishEncoding() {
 
 void DawnCommandBuffer::onResetCommandBuffer() {
     fActiveGraphicsPipeline = nullptr;
+    fActiveComputePipeline = nullptr;
     fActiveRenderPassEncoder = nullptr;
     fActiveComputePassEncoder = nullptr;
     fCommandEncoder = nullptr;
+    fResolveStepEmulationInfo.reset();
 
     for (auto& bufferSlot : fBoundUniforms) {
         bufferSlot = {};
