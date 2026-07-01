@@ -332,16 +332,24 @@ private:
         SkASSERT(AppendVertices == SkToBool(fRenderState & RenderStateFlags::kAppendVertices));
         static constexpr unsigned int kBaseMultiple = AppendVertices ? 4 : 1;
 
-        // We pass 0 as the count parameter to getMappedVertexBuffer and our `count` param as
-        // the `reservedCount`, allowing the next call to append() to flexibly use less than our
-        // reserved count. Because of this we ignore the BufferWriter, which points to an empty
-        // range. `fAppend` will also have an empty size, but that will get patched as we append
-        // data and increase fPendingCount (see getDefaultAppendBinding()).
-        std::tie(std::ignore, fAppend, fCurrentBuffer) =
-                fManager->getMappedVertexBuffer(/*count=*/0,
-                                                /*stride=*/fAppendStride,
-                                                /*reservedCount=*/SkAlignTo(count, kBaseMultiple),
-                                                /*alignment=*/kBaseMultiple * fAppendStride);
+        // We pass 0 as the count parameter to getMappedVertexBuffer/getMappedVertexStorageBuffer
+        // and our `count` param as the `reservedCount`, allowing the next call to append() to
+        // flexibly use less than our reserved count. Because of this we ignore the BufferWriter,
+        // which points to an empty range. `fAppend` will also have an empty size, but that will get
+        // patched as we append data and increase fPendingCount (see getDefaultAppendBinding()).
+        if (fRenderState & RenderStateFlags::kAppendsVertexStorage) {
+            std::tie(std::ignore, fAppend, fCurrentBuffer) = fManager->getMappedVertexStorageBuffer(
+                    /*count=*/0,
+                    /*stride=*/fAppendStride,
+                    /*reservedCount=*/SkAlignTo(count, kBaseMultiple),
+                    /*alignment=*/kBaseMultiple * fAppendStride);
+        } else {
+            std::tie(std::ignore, fAppend, fCurrentBuffer) = fManager->getMappedVertexBuffer(
+                    /*count=*/0,
+                    /*stride=*/fAppendStride,
+                    /*reservedCount=*/SkAlignTo(count, kBaseMultiple),
+                    /*alignment=*/kBaseMultiple * fAppendStride);
+        }
     }
 
     // Append `count` fAppendStride-sized blocks to be drawn in the next flush. This requires that
@@ -390,7 +398,7 @@ public:
             : fDrawer(w) {
         SkASSERT(w.fAppendStride > 0);
         SkASSERT(!w.fAppender);
-        SkASSERT(w.fRenderState == renderState);
+        SkASSERT(w.fRenderState & renderState);
         SkDEBUGCODE(w.fAppender = this;)
     }
 
