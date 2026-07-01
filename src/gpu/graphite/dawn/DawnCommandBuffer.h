@@ -6,7 +6,10 @@
  */
 
 #ifndef skgpu_graphite_DawnCommandBuffer_DEFINED
+
 #define skgpu_graphite_DawnCommandBuffer_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/private/SkLog.h"
 #include "src/gpu/graphite/CommandBuffer.h"
@@ -168,8 +171,8 @@ private:
     wgpu::ComputePassEncoder fActiveComputePassEncoder;
 
     struct ResolveStepEmulationInfo {
-        const DawnTexture* fMSAATexture;
-        const DawnTexture* fResolveTexture;
+        RAW_PTR_EXCLUSION const DawnTexture* fMSAATexture = nullptr;
+        RAW_PTR_EXCLUSION const DawnTexture* fResolveTexture = nullptr;
         SkIPoint fMSAAAOffset;
         SkIRect fResolveArea;
     };
@@ -184,10 +187,10 @@ private:
     sk_sp<DawnBuffer> fTimestampQueryBuffer;
     sk_sp<DawnBuffer> fTimestampQueryXferBuffer;
 
-    const DawnGraphicsPipeline* fActiveGraphicsPipeline = nullptr;
-    const DawnComputePipeline* fActiveComputePipeline = nullptr;
-    const DawnSharedContext* fSharedContext;
-    DawnResourceProvider* fResourceProvider;
+    raw_ptr<const DawnGraphicsPipeline> fActiveGraphicsPipeline = nullptr;
+    raw_ptr<const DawnComputePipeline> fActiveComputePipeline = nullptr;
+    raw_ptr<const DawnSharedContext> fSharedContext;
+    raw_ptr<DawnResourceProvider> fResourceProvider;
 };
 
 }  // namespace skgpu::graphite

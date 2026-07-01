@@ -15,6 +15,7 @@
 #include "src/core/SkMask.h"
 #include "src/core/SkResourceCache.h"
 #include "src/core/SkTLazy.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <cstddef>
 #include <cstdint>
@@ -27,7 +28,7 @@ enum SkBlurStyle : int;
 
 struct MaskValue {
     SkMask          fMask;
-    SkCachedData*   fData;
+    raw_ptr<SkCachedData> fData;
 };
 
 namespace {
@@ -56,7 +57,9 @@ struct RRectBlurRec : public SkResourceCache::Rec {
         fValue.fData->attachToCacheAndRef();
     }
     ~RRectBlurRec() override {
-        fValue.fData->detachFromCacheAndUnref();
+        SkCachedData* data = fValue.fData;
+        fValue.fData = nullptr;
+        data->detachFromCacheAndUnref();
     }
 
     RRectBlurKey   fKey;
@@ -144,7 +147,9 @@ struct RectsBlurRec : public SkResourceCache::Rec {
         fValue.fData->attachToCacheAndRef();
     }
     ~RectsBlurRec() override {
-        fValue.fData->detachFromCacheAndUnref();
+        SkCachedData* data = fValue.fData;
+        fValue.fData = nullptr;
+        data->detachFromCacheAndUnref();
     }
 
     RectsBlurKey   fKey;
