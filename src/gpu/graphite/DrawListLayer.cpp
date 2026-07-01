@@ -51,6 +51,10 @@ std::pair<Layer*, BindingList*> DrawListLayer::searchBackwards(
         SkEnumBitMask<BoundsFlags> testMask,
         const DrawParams* drawParams,
         CompressedPaintersOrder stop) {
+    // CPU performance is sensitive to increasing this value. Searching for longer *can* reduce the
+    // draw count and pipeline change count
+    static constexpr int kMaxSearchLimit = 8;
+
     Layer* targetLayer = nullptr;
     BindingList* targetMatch = nullptr;
     BindingList* forwardMerge = nullptr;
@@ -69,6 +73,28 @@ std::pair<Layer*, BindingList*> DrawListLayer::searchBackwards(
             // as that propagates into the stop layer for subsequent draws).
             targetLayer = current;
             targetMatch = match;
+<<<<<<< PATCH SET (931c94632191a0456cc8d93adabb815f4727b332 [graphite] Tune search limit parameters for DrawListLayers)
+            // To support deeper searches while mitigating search time, if we found a matching
+            // BindingList then we penalize the remaining search limit by subtracting half of
+            // kMaxSearchLimit. Ultimately this is an imprecise heuristic. In an ideal world, we
+            // would maximize batching by exhaustively searching to the end of the list, but that
+            // would degrade insertion performance to O(n^2).
+            if (match) {
+                limit /= 2;
+                targetMatch = match;
+            }
+||||||| BASE      (9e97ba91f71405afbfedcab92cfc0f2057fff87b [graphite] Use ComplementRect for faster bounds intersection)
+            // To support deeper searches while mitigating search time, if we found a matching
+            // BindingList then we penalize the remaining search limit by subtracting half of
+            // kMaxSearchLimit. Ultimately this is an imprecise heuristic. In an ideal world, we
+            // would maximize batching by exhaustively searching to the end of the list, but that
+            // would degrade insertion performance to O(n^2).
+            if (match) {
+                limit -= kMaxSearchLimit >> 1;
+                targetMatch = match;
+            }
+=======
+>>>>>>> BASE      (2ca62ca2b6be829d8dce3fc09df753f3b7f0fe8e [graphite] Use ComplementRect for faster bounds intersection)
         } else if (match) {
             // Save this for after we create a new targetLayer, at which point this will move from
             // current to the new layer and become targetMatch. Given the asserted conditions
