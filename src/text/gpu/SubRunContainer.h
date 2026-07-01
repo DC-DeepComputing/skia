@@ -6,7 +6,10 @@
 */
 
 #ifndef sktext_gpu_SubRunContainer_DEFINED
+
 #define sktext_gpu_SubRunContainer_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPoint.h"
@@ -169,7 +172,7 @@ public:
         reference operator*() { return *fPtr; }
 
     private:
-        SubRun* fPtr;
+        raw_ptr<SubRun> fPtr;
     };
 
     void append(SubRunOwner subRun) {
@@ -186,7 +189,7 @@ public:
 
 private:
     SubRunOwner fHead{nullptr};
-    SubRunOwner* fTail{&fHead};
+    raw_ptr<SubRunOwner> fTail{&fHead};
 };
 
 // -- SubRunContainer ------------------------------------------------------------------------------
