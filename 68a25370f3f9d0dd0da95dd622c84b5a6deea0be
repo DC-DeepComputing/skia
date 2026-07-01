@@ -93,6 +93,30 @@
       },
       "revId": "68a25370f3f9d0dd0da95dd622c84b5a6deea0be",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0044dff_5f67cb02",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 588,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-01T15:02:58Z",
+      "side": 1,
+      "message": "I think so",
+      "parentUuid": "7c9cad1b_a0708502",
+      "range": {
+        "startLine": 585,
+        "startChar": 7,
+        "endLine": 588,
+        "endChar": 72
+      },
+      "revId": "68a25370f3f9d0dd0da95dd622c84b5a6deea0be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
