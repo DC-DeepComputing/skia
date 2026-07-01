@@ -39,6 +39,30 @@
       },
       "revId": "52739f8377c52ed871d939453912310afa0c5617",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "78bbeb47_82ab19b0",
+        "filename": "src/gpu/ganesh/gradients/GrGradientShader.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 576,
+      "author": {
+        "id": 4329740
+      },
+      "writtenOn": "2026-07-01T19:49:23Z",
+      "side": 1,
+      "message": "done, also manually verified it with a chromium build, could you please run bots again?",
+      "parentUuid": "0a3cca47_5ca88583",
+      "range": {
+        "startLine": 574,
+        "startChar": 0,
+        "endLine": 576,
+        "endChar": 15
+      },
+      "revId": "52739f8377c52ed871d939453912310afa0c5617",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
