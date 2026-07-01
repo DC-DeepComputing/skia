@@ -5,7 +5,10 @@
  * found in the LICENSE file.
  */
 #ifndef SkMaskSwizzler_DEFINED
+
 #define SkMaskSwizzler_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/codec/SkCodec.h"
 #include "include/core/SkTypes.h"
@@ -62,7 +65,7 @@ private:
 
     int onSetSampleX(int) override;
 
-    SkMasks*        fMasks;           // unowned
+    raw_ptr<SkMasks> fMasks;           // unowned
     const RowProc   fRowProc;
 
     // FIXME: Can this class share more with SkSwizzler? These variables are all the same.

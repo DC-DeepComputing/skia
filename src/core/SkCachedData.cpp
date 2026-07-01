@@ -8,30 +8,30 @@
 
 #include "include/private/SkMalloc.h"
 #include "include/private/chromium/SkDiscardableMemory.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 SkCachedData::SkCachedData(void* data, size_t size)
-    : fData(data)
-    , fSize(size)
-    , fRefCnt(1)
-    , fStorageType(kMalloc_StorageType)
-    , fInCache(false)
-    , fIsLocked(true)
-{
+        : fData(data)
+        , fSize(size)
+        , fRefCnt(1)
+        , fStorageType(kMalloc_StorageType)
+        , fInCache(false)
+        , fIsLocked(true) {
     fStorage.fMalloc = data;
 }
 
 SkCachedData::SkCachedData(size_t size, SkDiscardableMemory* dm)
-    : fData(dm->data())
-    , fSize(size)
-    , fRefCnt(1)
-    , fStorageType(kDiscardableMemory_StorageType)
-    , fInCache(false)
-    , fIsLocked(true)
-{
+        : fData(dm->data())
+        , fSize(size)
+        , fRefCnt(1)
+        , fStorageType(kDiscardableMemory_StorageType)
+        , fInCache(false)
+        , fIsLocked(true) {
     fStorage.fDM = dm;
 }
 
 SkCachedData::~SkCachedData() {
+    fData = nullptr;
     switch (fStorageType) {
         case kMalloc_StorageType:
             sk_free(fStorage.fMalloc);
@@ -57,7 +57,7 @@ public:
     SkCachedData* operator->() { return fCD; }
 
 private:
-    SkCachedData* fCD;
+    raw_ptr<SkCachedData> fCD;
 };
 
 void SkCachedData::internalRef(bool fromCache) const {
@@ -65,7 +65,12 @@ void SkCachedData::internalRef(bool fromCache) const {
 }
 
 void SkCachedData::internalUnref(bool fromCache) const {
-    if (AutoMutexWritable(this)->inMutexUnref(fromCache)) {
+    bool shouldDelete = false;
+    {
+        AutoMutexWritable amw(this);
+        shouldDelete = amw->inMutexUnref(fromCache);
+    }
+    if (shouldDelete) {
         // can't delete inside doInternalUnref, since it is locking a mutex (which we own)
         delete this;
     }
@@ -130,7 +135,7 @@ void SkCachedData::inMutexLock() {
                 SkASSERT(ptr);
                 this->setData(ptr);
             } else {
-                this->setData(nullptr);   // signal failure to lock, contents are gone
+                this->setData(nullptr);  // signal failure to lock, contents are gone
             }
             break;
     }
@@ -147,12 +152,12 @@ void SkCachedData::inMutexUnlock() {
             // nothing to do/check
             break;
         case kDiscardableMemory_StorageType:
-            if (fData) {    // did the previous lock succeed?
+            if (fData) {  // did the previous lock succeed?
                 fStorage.fDM->unlock();
             }
             break;
     }
-    this->setData(nullptr);   // signal that we're in an unlocked state
+    this->setData(nullptr);  // signal that we're in an unlocked state
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
