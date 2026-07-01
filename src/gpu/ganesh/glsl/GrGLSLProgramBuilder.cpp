@@ -318,7 +318,7 @@ void GrGLSLProgramBuilder::writeFPFunction(const GrFragmentProcessor& fp,
                                                     sampleCoords);
 
     impl.emitCode(args);
-    impl.setFunctionName(fFS.getMangledFunctionName(args.fFp.name()));
+    impl.setFunctionName(fFS.getMangledFunctionName(args.fFp->name()));
 
     fFS.emitFunction(SkSLType::kHalf4,
                      impl.functionName(),
