@@ -20,6 +20,7 @@
 #include "src/core/SkRasterPipelineOpList.h"
 #include "src/core/SkSafeMath.h"
 #include "src/core/SkTHash.h"
+#include "src/partition_alloc/raw_ref.h"
 #include "src/sksl/SkSLPosition.h"
 #include "src/sksl/SkSLString.h"
 #include "src/sksl/tracing/SkSLDebugTracePriv.h"
@@ -2497,13 +2498,13 @@ public:
     // Assign unique names to each variable slot; our trace might have multiple variables with the
     // same name, which can make a dump hard to read. We disambiguate them with subscripts.
     void buildUniqueSlotNameList() {
-        if (fProgram.fDebugTrace) {
-            fSlotNameList.reserve_exact(fProgram.fDebugTrace->fSlotInfo.size());
+        if (fProgram->fDebugTrace) {
+            fSlotNameList.reserve_exact(fProgram->fDebugTrace->fSlotInfo.size());
 
             // The map consists of <variable name, <source position, unique name>>.
             THashMap<std::string_view, THashMap<int, std::string>> uniqueNameMap;
 
-            for (const SlotDebugInfo& slotInfo : fProgram.fDebugTrace->fSlotInfo) {
+            for (const SlotDebugInfo& slotInfo : fProgram->fDebugTrace->fSlotInfo) {
                 // Look up this variable by its name and source position.
                 int pos = slotInfo.pos.valid() ? slotInfo.pos.startOffset() : 0;
                 THashMap<int, std::string>& positionMap = uniqueNameMap[slotInfo.name];
@@ -2611,12 +2612,12 @@ public:
 
     // Generates a reasonable name for a range of slots.
     std::string slotName(SlotRange range) const {
-        return this->slotOrUniformName(fProgram.fDebugTrace->fSlotInfo, fSlotNameList, range);
+        return this->slotOrUniformName(fProgram->fDebugTrace->fSlotInfo, fSlotNameList, range);
     }
 
     // Generates a reasonable name for a range of uniforms.
     std::string uniformName(SlotRange range) const {
-        return this->slotOrUniformName(fProgram.fDebugTrace->fUniformInfo, /*names=*/{}, range);
+        return this->slotOrUniformName(fProgram->fDebugTrace->fUniformInfo, /*names=*/{}, range);
     }
 
     // Attempts to interpret the passed-in pointer as a uniform range.
@@ -2624,7 +2625,7 @@ public:
         const float* end = ptr + numSlots;
         if (ptr >= fUniforms.data() && end <= fUniforms.data() + fUniforms.size()) {
             int uniformIdx = ptr - fUniforms.data();
-            if (fProgram.fDebugTrace) {
+            if (fProgram->fDebugTrace) {
                 // Handle pointers to named uniform slots.
                 std::string name = this->uniformName({uniformIdx, numSlots});
                 if (!name.empty()) {
@@ -2644,7 +2645,7 @@ public:
             int valueIdx = ptr - fSlots.values.data();
             SkASSERT((valueIdx % N) == 0);
             valueIdx /= N;
-            if (fProgram.fDebugTrace) {
+            if (fProgram->fDebugTrace) {
                 // Handle pointers to named value slots.
                 std::string name = this->slotName({valueIdx, numSlots});
                 if (!name.empty()) {
@@ -2747,7 +2748,7 @@ public:
     std::tuple<std::string, std::string> copyUniformCtx(const void* v, int numSlots) const {
         const auto* ctx = static_cast<const SkRasterPipelineContexts::UniformCtx*>(v);
         return {this->ptrCtx(ctx->dst, numSlots),
-                this->multiImmCtx(reinterpret_cast<const float*>(ctx->src), numSlots)};
+                this->multiImmCtx(reinterpret_cast<const float*>(ctx->src.get()), numSlots)};
     }
 
     // Interprets the context value as a pointer to two adjacent values.
@@ -2890,7 +2891,7 @@ public:
 
 private:
     const int N = SkOpts::raster_pipeline_highp_stride;
-    const Program& fProgram;
+    const raw_ref<const Program> fProgram;
     TArray<Stage> fStages;
     TArray<std::string> fSlotNameList;
     THashMap<int, int> fLabelToStageMap;  // <label ID, stage index>
@@ -2905,12 +2906,12 @@ void Program::Dumper::dump(SkWStream* out, bool writeInstructionCount) {
     // executed. The program requires pointer ranges for managing its data, and ASAN will report
     // errors if those pointers are pointing at unallocated memory.
     SkArenaAlloc alloc(/*firstHeapAllocation=*/1000);
-    fSlots = fProgram.allocateSlotData(&alloc).value();
-    float* uniformPtr = alloc.makeArray<float>(fProgram.fNumUniformSlots);
-    fUniforms = SkSpan(uniformPtr, fProgram.fNumUniformSlots);
+    fSlots = fProgram->allocateSlotData(&alloc).value();
+    float* uniformPtr = alloc.makeArray<float>(fProgram->fNumUniformSlots);
+    fUniforms = SkSpan(uniformPtr, fProgram->fNumUniformSlots);
 
     // Turn this program into an array of Raster Pipeline stages.
-    fProgram.makeStages(&fStages, &alloc, fUniforms, fSlots);
+    fProgram->makeStages(&fStages, &alloc, fUniforms, fSlots);
 
     // Assemble lookup tables for program labels and slot names.
     this->buildLabelToStageMap();
@@ -2952,7 +2953,7 @@ void Program::Dumper::dump(SkWStream* out, bool writeInstructionCount) {
     // Emit all of the program's immutable data.
     const char* header = "[immutable slots]\n";
     const char* footer = "";
-    for (const Instruction& inst : fProgram.fInstructions) {
+    for (const Instruction& inst : fProgram->fInstructions) {
         if (inst.fOp == BuilderOp::store_immutable_value) {
             out->writeText(header);
             out->writeText("i");
@@ -3352,10 +3353,10 @@ void Program::Dumper::dump(SkWStream* out, bool writeInstructionCount) {
             case POp::trace_exit: {
                 const auto* ctx = static_cast<SkRasterPipelineContexts::TraceFuncCtx*>(stage.ctx);
                 opArg1 = this->ptrCtx(ctx->traceMask, 1);
-                opArg2 = (fProgram.fDebugTrace &&
+                opArg2 = (fProgram->fDebugTrace &&
                           ctx->funcIdx >= 0 &&
-                          ctx->funcIdx < (int)fProgram.fDebugTrace->fFuncInfo.size())
-                                 ? fProgram.fDebugTrace->fFuncInfo[ctx->funcIdx].name
+                          ctx->funcIdx < (int)fProgram->fDebugTrace->fFuncInfo.size())
+                                 ? fProgram->fDebugTrace->fFuncInfo[ctx->funcIdx].name
                                  : "???";
                 break;
             }
