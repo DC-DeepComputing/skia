@@ -54,6 +54,8 @@ sk_sp<skgpu::VulkanMemoryAllocator> VkTestMemoryAllocator::Make(
     SKGPU_COPY_FUNCTION_KHR(BindBufferMemory2);
     SKGPU_COPY_FUNCTION_KHR(BindImageMemory2);
     SKGPU_COPY_FUNCTION_KHR(GetPhysicalDeviceMemoryProperties2);
+    SKGPU_COPY_FUNCTION_KHR(GetPhysicalDeviceProperties2);
+
 
     VmaAllocatorCreateInfo info;
     info.flags = VMA_ALLOCATOR_CREATE_KHR_DEDICATED_ALLOCATION_BIT;
