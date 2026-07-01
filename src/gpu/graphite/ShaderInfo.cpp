@@ -1333,8 +1333,14 @@ void ShaderInfo::generateVertexSkSL(const Caps* caps,
     // We define the SSBO index variable immediately if the VS is using storage buffers. This covers
     // both the "Step Uniforms" case and the "Lifted Uniforms Only" case.
     if (sharedData.fUseUniformStorageBufferVS) {
-        SkSL::String::appendf(&mainBody, "uint %s = %s;\n", this->uniformSsboIndex(),
+        if (step->renderStepID() == RenderStep::RenderStepID::kTessellateStrokes) {
+            SkSL::String::appendf(&mainBody,
+                                  "uint %s = strokeData[vertexStorageIndex].ssboIndex;\n",
+                                  this->uniformSsboIndex());
+        } else {
+            SkSL::String::appendf(&mainBody, "uint %s = %s;\n", this->uniformSsboIndex(),
                                   RenderStep::ssboIndexAttribute());
+        }
         if (sharedData.fHasStepUniforms) {
             mainBody +=
                     emit_uniforms_from_storage_buffer(this->uniformSsboIndex(), step->uniforms());
