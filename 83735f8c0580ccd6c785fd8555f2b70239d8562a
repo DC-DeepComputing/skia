@@ -161,6 +161,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9f11b183_dff4931e",
+        "filename": "tools/debugger/DrawCommand.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 666,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-01T13:10:08Z",
+      "side": 1,
+      "message": "Let me rephrase. Let\u0027s change this to also use the proc instead of hard-coding in the PNG encoder. This will let us decouple debugger from libpng encoding and make it more flexible.",
+      "parentUuid": "0b0b7041_e5db2f2f",
+      "range": {
+        "startLine": 666,
+        "startChar": 17,
+        "endLine": 666,
+        "endChar": 25
+      },
+      "revId": "83735f8c0580ccd6c785fd8555f2b70239d8562a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f86dada9_cf03a913",
         "filename": "tools/debugger/DrawCommand.h",
         "patchSetId": 22
