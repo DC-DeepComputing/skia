@@ -96,7 +96,8 @@ public:
                           size_t staticStride,
                           size_t appendStride,
                           SkEnumBitMask<RenderStateFlags> newRenderState,
-                          BarrierType barrierType) {
+                          BarrierType barrierType,
+                          size_t storageStride = 0) {
         this->flush();
 
         // Once flushed, any pending data must have been drawn.
@@ -105,6 +106,7 @@ public:
         fPrimitiveType = type;
         fStaticStride = SkTo<uint32_t>(staticStride);
         fAppendStride = SkTo<uint32_t>(appendStride);
+        fStorageStride = SkTo<uint32_t>(storageStride);
         fRenderState = newRenderState;
 
         // ARM hardware(b/399631317): On a new pipeline, the initial offset when appending
@@ -120,6 +122,14 @@ public:
                                                                           fAppendStride,
                                                                           baseAlign);
 
+        if (fStorageStride > 0) {
+            std::tie(std::ignore, fStorage) = fStorageBuffer.getMappedSubrange(/*count=*/0,
+                                                                              fStorageStride,
+                                                                              fStorageStride);
+        } else {
+            fStorage = {};
+            fStorageBuffer.reset();
+        }
 
         // Assign the barrier type. If a valid value, then the DrawWriter will append
         // AddBarrier commands of the indicated type prior to appending any draw commands used with
@@ -225,6 +235,31 @@ public:
         this->bindAndFlush(vertices, indices, instances, indexCount, instanceCount);
     }
 
+    SK_ALWAYS_INLINE VertexWriter appendVertexStorage(unsigned int count) {
+        SkASSERT(count > 0 && fStorageStride > 0);
+        if (count > fStorageBuffer.availableWithStride()) SK_UNLIKELY {
+            this->flush();
+            std::tie(std::ignore, fStorage, fStorageBuffer) = fManager->getMappedVertexStorageBuffer(
+                    /*count=*/0,
+                    /*stride=*/fStorageStride,
+                    /*reservedCount=*/count,
+                    /*alignment=*/fStorageStride);
+        }
+        BufferWriter writer = fStorageBuffer.appendMappedWithStride(count);
+        if (!writer) SK_UNLIKELY {
+            uint64_t size = (uint64_t)count * (uint64_t)fStorageStride;
+            if (!SkTFitsIn<size_t>(size)) {
+                sk_report_container_overflow_and_die();
+            }
+            return VertexWriter(fFailureStorage.reset(size, SkAutoMalloc::kReuse_OnShrink),
+                                SkTo<size_t>(size));
+        }
+        fPendingStorageCount += count;
+        return VertexWriter(std::move(writer));
+    }
+
+    uint32_t pendingStorageCount() const { return fPendingStorageCount; }
+
 #if defined(GPU_TEST_UTILS)
     BindBufferInfo getLastAppendedBuffer() { return this->getDefaultAppendBinding(); }
 #endif
@@ -245,6 +280,7 @@ private:
     BarrierType fBarrierToIssueBeforeDraws = BarrierType::kNone;
     uint32_t fStaticStride;
     uint32_t fAppendStride;
+    uint32_t fStorageStride;
 
     // - fAppend: Holds buffer information for data that is generated and appended during the
     //            drawPass. The data can be either vertex (kAppendVertices) or instance
@@ -254,13 +290,19 @@ private:
     // - Indices: Defines the (for now static) buffer used for any kind of index drawing. A
     //            renderstep with a valid index buffer implies that it will be performing indexed
     //            drawing.
+    // - fStorage: Holds buffer information for vertex storage data generated and appended.
     BindBufferInfo fAppend;
     BindBufferInfo fStatic;
     BindBufferInfo fIndices;
+    BindBufferInfo fStorage;
     // These track the buffers *last bound* by the command list. Used to ensure minimal binding.
     BindBufferInfo fBoundAppend;
     BindBufferInfo fBoundStatic;
     BindBufferInfo fBoundIndices;
+    BindBufferInfo fBoundStorage;
+
+    BufferSubAllocator fStorageBuffer;
+    uint32_t fPendingStorageCount = 0;
 
     // Per-instance count for instanced draws (vertex count if no index buffer, index count
     // otherwise).

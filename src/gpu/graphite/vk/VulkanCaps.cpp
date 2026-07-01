@@ -79,6 +79,7 @@ void populate_resource_binding_reqs(ResourceBindingRequirements& reqs) {
     // Assign uniform buffer binding values for shader generation
     reqs.fCombinedUniformBufferBinding = VulkanGraphicsPipeline::kCombinedUniformIndex;
     reqs.fGradientBufferBinding = VulkanGraphicsPipeline::kGradientBufferIndex;
+    reqs.fVertexStorageBufferBinding = VulkanGraphicsPipeline::kVertexStorageBufferIndex;
 
     // Assign descriptor set indices for shader generation
     reqs.fUniformsSetIdx = VulkanGraphicsPipeline::kUniformBufferDescSetIndex;

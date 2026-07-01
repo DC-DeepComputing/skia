@@ -1304,6 +1304,9 @@ void VulkanCommandBuffer::recordBufferBindingInfo(const BindBufferInfo& info, Un
         case UniformSlot::kGradient:
             bufferIndex = VulkanGraphicsPipeline::kGradientBufferIndex;
             break;
+        case UniformSlot::kVertexStorage:
+            bufferIndex = VulkanGraphicsPipeline::kVertexStorageBufferIndex;
+            break;
         default:
             SkASSERT(false);
     }

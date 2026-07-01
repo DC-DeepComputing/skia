@@ -460,7 +460,8 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
                                         renderStep->staticDataStride(),
                                         renderStep->appendDataStride(),
                                         renderStep->getRenderStateFlags(),
-                                        drawParams.barrierBeforeDraws());
+                                        drawParams.barrierBeforeDraws(),
+                                        renderStep->vertexStorageStride());
         } else if (uniformBindingChange || textureBindingsChange || newScissor.has_value()) {
             drawWriter.newDynamicState();
         } else if (drawParams.barrierBeforeDraws() != BarrierType::kNone) {

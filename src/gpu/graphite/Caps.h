@@ -87,6 +87,7 @@ struct ResourceBindingRequirements {
     int fIntrinsicBufferBinding       = kUnassigned;
     int fCombinedUniformBufferBinding = kUnassigned;
     int fGradientBufferBinding        = kUnassigned;
+    int fVertexStorageBufferBinding   = kUnassigned;
 };
 
 class Caps {
