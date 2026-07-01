@@ -617,38 +617,7 @@ SkBlitter* SkBlitterClipper::apply(SkBlitter* blitter, const SkRegion* clip,
 bool SkBlitter::UseLegacyBlitter(const SkPixmap& device,
                                  const SkPaint& paint,
                                  const SkMatrix& matrix) {
-    if (gSkForceRasterPipelineBlitter) {
-        return false;
-    }
-#if defined(SK_FORCE_RASTER_PIPELINE_BLITTER)
     return false;
-#else
-
-    if (paint.isDither()) {
-        return false;
-    }
-
-    const SkMaskFilterBase* mf = as_MFB(paint.getMaskFilter());
-
-    // The legacy blitters cannot handle any of these "complex" features (anymore).
-    if (device.alphaType() == kUnpremul_SkAlphaType   ||
-        !paint.isSrcOver()                            ||
-        (mf && mf->getFormat() == SkMask::k3D_Format)) {
-        return false;
-    }
-
-    auto cs = device.colorSpace();
-    // We check (indirectly via makeContext()) later on if the shader can handle the colorspace
-    // in legacy mode, so here we just focus on if a single color needs raster-pipeline.
-    if (cs && !paint.getShader()) {
-        if (!paint.getColor4f().fitsInBytes() || !cs->isSRGB()) {
-            return false;
-        }
-    }
-
-    // Only kN32 is handled by legacy blitters now
-    return device.colorType() == kN32_SkColorType;
-#endif
 }
 
 SkBlitter* SkBlitter::Choose(const SkPixmap& device,

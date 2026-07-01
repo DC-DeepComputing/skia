@@ -6,6 +6,9 @@
  */
 
 #ifndef SKSL_RASTERPIPELINEBUILDER
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
+
 #define SKSL_RASTERPIPELINEBUILDER
 
 #include "include/core/SkTypes.h"
@@ -181,7 +184,7 @@ private:
 
     struct Stage {
         ProgramOp op;
-        void*     ctx;
+        RAW_PTR_EXCLUSION void* ctx;
     };
     void makeStages(skia_private::TArray<Stage>* pipeline,
                     SkArenaAlloc* alloc,
@@ -290,7 +293,7 @@ private:
     int fNumTempStackSlots = 0;
     int fNumLabels = 0;
     StackDepths fTempStackMaxDepths;
-    DebugTracePriv* fDebugTrace = nullptr;
+    raw_ptr<DebugTracePriv, DanglingUntriaged> fDebugTrace = nullptr;
     std::unique_ptr<SkSL::TraceHook> fTraceHook;
 };
 
