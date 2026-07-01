@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3fbd06a3_0395737d",
+        "filename": "example/external_client/src/log_tester.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-07-01T18:28:37Z",
+      "side": 1,
+      "message": "I see how the phrasing leads to confusion. I put this here because we have a presubmit that blocks the use of std::mutex, but I just temporarily disabled it.",
+      "parentUuid": "df601f67_f5c37879",
+      "range": {
+        "startLine": 59,
+        "startChar": 23,
+        "endLine": 59,
+        "endChar": 68
+      },
+      "revId": "4dee2f1f31c1301ddaa817bb7501de14c0200ad2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "79070ce5_16b284d3",
@@ -61,6 +85,30 @@
       "side": 1,
       "message": "I think this opens a can of worms in terms of policy. Do we get rid of the old handler, or do we have to chain all of them together. Since in practice this is a singleton for our interaction, a client could implement a SkLogHandlerListener that they collect and call into in their handler impl.",
       "parentUuid": "79070ce5_16b284d3",
+      "range": {
+        "startLine": 31,
+        "startChar": 72,
+        "endLine": 31,
+        "endChar": 91
+      },
+      "revId": "4dee2f1f31c1301ddaa817bb7501de14c0200ad2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "26030000_fbdafd4c",
+        "filename": "include/utils/SkLogHandler.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-07-01T18:28:37Z",
+      "side": 1,
+      "message": "I think Noelle and I talked about Android\u0027s use cases offline and decided that we could have most use cases covered by the call-once singleton model. Marking done, but reopen if I misremembered.",
+      "parentUuid": "d12fbd8f_f81c0ade",
       "range": {
         "startLine": 31,
         "startChar": 72,
@@ -118,6 +166,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "40c1f3a9_c1a1a687",
+        "filename": "include/utils/SkLogHandler.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-07-01T18:28:37Z",
+      "side": 1,
+      "message": "I updated the model to support shared ownership (got rid of the intentional leaking stuff), please review again.",
+      "parentUuid": "6d488123_7bcb70ca",
+      "range": {
+        "startLine": 32,
+        "startChar": 22,
+        "endLine": 32,
+        "endChar": 46
+      },
+      "revId": "4dee2f1f31c1301ddaa817bb7501de14c0200ad2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "07485b34_041ed433",
@@ -165,6 +237,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "abeb97df_737218c6",
+        "filename": "include/utils/SkLogHandler.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-07-01T18:28:37Z",
+      "side": 1,
+      "message": "See other comment regarding shared ownership.",
+      "parentUuid": "6bee27f9_81710758",
+      "range": {
+        "startLine": 36,
+        "startChar": 28,
+        "endLine": 36,
+        "endChar": 41
+      },
+      "revId": "4dee2f1f31c1301ddaa817bb7501de14c0200ad2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1f0f0f9f_98d8f322",
@@ -178,6 +274,30 @@
       "writtenOn": "2026-06-23T15:54:20Z",
       "side": 1,
       "message": "If clients can redefine SkLog, then they may lose the ability to notify the log handler (if they don\u0027t realize they have to invoke it).\n\nShould we just say clients that want to collect log messages are expected to override SkLog? Or if we think SkLogHandler provides a better way to let client\u0027s abstract their logs, then maybe SkLog isn\u0027t a macro at all and can\u0027t be overridden in that manner.",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 62
+      },
+      "revId": "4dee2f1f31c1301ddaa817bb7501de14c0200ad2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2ef21e3_d48c57e5",
+        "filename": "src/core/SkLog.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-07-01T18:28:37Z",
+      "side": 1,
+      "message": "I think long term goal is that the handler should be enough, so I\u0027d like to move all clients to that model instead. But for now I think a comment will suffice for now to dissuade further overrides.",
+      "parentUuid": "1f0f0f9f_98d8f322",
       "range": {
         "startLine": 14,
         "startChar": 0,
@@ -211,6 +331,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "78ed7d13_4e0cd067",
+        "filename": "src/core/SkLog.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-07-01T18:28:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c97bf2b2_208b5ec0",
+      "range": {
+        "startLine": 18,
+        "startChar": 4,
+        "endLine": 22,
+        "endChar": 22
+      },
+      "revId": "4dee2f1f31c1301ddaa817bb7501de14c0200ad2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ba5d08d3_4dcd1d45",
@@ -224,6 +368,30 @@
       "writtenOn": "2026-06-23T15:54:20Z",
       "side": 1,
       "message": "Let\u0027s just remove this argument, I haven\u0027t thought through whether or not we can get away with just a release barrier here but SetInstance isn\u0027t performance critical.",
+      "range": {
+        "startLine": 24,
+        "startChar": 66,
+        "endLine": 24,
+        "endChar": 93
+      },
+      "revId": "4dee2f1f31c1301ddaa817bb7501de14c0200ad2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "39cfbc48_38e2bb3b",
+        "filename": "src/utils/SkLogHandler.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-07-01T18:28:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ba5d08d3_4dcd1d45",
       "range": {
         "startLine": 24,
         "startChar": 66,
