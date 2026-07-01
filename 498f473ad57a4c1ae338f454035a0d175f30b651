@@ -39,6 +39,30 @@
       },
       "revId": "498f473ad57a4c1ae338f454035a0d175f30b651",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "603acbc2_c4371c99",
+        "filename": "include/core/SkSpan.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 4621846
+      },
+      "writtenOn": "2026-07-01T18:15:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b81e776e_a5ce71e1",
+      "range": {
+        "startLine": 156,
+        "startChar": 0,
+        "endLine": 156,
+        "endChar": 21
+      },
+      "revId": "498f473ad57a4c1ae338f454035a0d175f30b651",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
