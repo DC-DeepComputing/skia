@@ -69,7 +69,7 @@ skia_cc_library(
                    ":skcms_TransformSkx",
                ],
                "//conditions:default": [],
-           }),
+           }) + ["//src/partition_alloc:raw_ptr"],
 )
 
 skia_cc_library(
@@ -84,6 +84,7 @@ skia_cc_library(
     textual_hdrs = [
         "src/Transform_inl.h",
     ],
+    deps = ["//src/partition_alloc:raw_ptr"],
 )
 
 skia_cc_library(
@@ -102,6 +103,7 @@ skia_cc_library(
     textual_hdrs = [
         "src/Transform_inl.h",
     ],
+    deps = ["//src/partition_alloc:raw_ptr"],
 )
 
 skia_cc_library(
@@ -120,4 +122,5 @@ skia_cc_library(
     textual_hdrs = [
         "src/Transform_inl.h",
     ],
+    deps = ["//src/partition_alloc:raw_ptr"],
 )

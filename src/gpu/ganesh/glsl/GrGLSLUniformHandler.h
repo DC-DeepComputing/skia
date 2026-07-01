@@ -8,6 +8,8 @@
 #ifndef GrGLSLUniformHandler_DEFINED
 #define GrGLSLUniformHandler_DEFINED
 
+#include "src/partition_alloc/raw_ptr.h"
+
 #include "include/core/SkString.h"
 #include "include/private/SkAssert.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
@@ -43,7 +45,7 @@ public:
     struct UniformInfo {
         GrShaderVar        fVariable;
         uint32_t           fVisibility;
-        const GrProcessor* fOwner;
+        raw_ptr<const GrProcessor> fOwner;
         SkString           fRawName;
     };
 
@@ -104,7 +106,7 @@ protected:
     explicit GrGLSLUniformHandler(GrGLSLProgramBuilder* program) : fProgramBuilder(program) {}
 
     // This is not owned by the class
-    GrGLSLProgramBuilder* fProgramBuilder;
+    raw_ptr<GrGLSLProgramBuilder> fProgramBuilder;
 
 private:
     virtual const char * samplerVariable(SamplerHandle) const = 0;

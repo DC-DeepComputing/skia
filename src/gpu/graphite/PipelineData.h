@@ -8,6 +8,8 @@
 #ifndef skgpu_graphite_PipelineData_DEFINED
 #define skgpu_graphite_PipelineData_DEFINED
 
+#include "src/partition_alloc/raw_ptr.h"
+
 #include "include/core/SkM44.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRefCnt.h"
@@ -469,7 +471,7 @@ public:
     }
 
 private:
-    UniformManager* fManager;
+    raw_ptr<UniformManager> fManager;
 
     UniformExpectationsValidator(UniformExpectationsValidator&&) = delete;
     UniformExpectationsValidator(const UniformExpectationsValidator&) = delete;

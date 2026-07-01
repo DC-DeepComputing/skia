@@ -8,6 +8,8 @@
 #ifndef GrVertexChunkArray_DEFINED
 #define GrVertexChunkArray_DEFINED
 
+#include "src/partition_alloc/raw_ptr.h"
+
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkDebug.h"
@@ -88,8 +90,8 @@ public:
 private:
     bool allocChunk(int minCount);
 
-    GrMeshDrawTarget* const fTarget;
-    GrVertexChunkArray* const fChunks;
+    const raw_ptr<GrMeshDrawTarget> fTarget;
+    const raw_ptr<GrVertexChunkArray> fChunks;
     const size_t fStride;
     int fMinVerticesPerChunk;
 

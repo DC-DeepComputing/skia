@@ -8,6 +8,8 @@
 #ifndef SKSL_INLINER
 #define SKSL_INLINER
 
+#include "src/partition_alloc/raw_ptr.h"
+
 #ifndef SK_ENABLE_OPTIMIZE_SIZE
 
 #include "src/core/SkTHash.h"
@@ -114,7 +116,7 @@ private:
 
     bool overInlineStatementLimit() const;
 
-    const Context* fContext = nullptr;
+    raw_ptr<const Context> fContext = nullptr;
     Mangler fMangler;
     int fInlinedStatementCounter = 0;
 };

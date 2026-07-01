@@ -7,6 +7,8 @@
 #ifndef skgpu_graphite_DrawListBase_DEFINED
 #define skgpu_graphite_DrawListBase_DEFINED
 
+#include "src/partition_alloc/raw_ptr.h"
+
 #include "include/gpu/graphite/GraphiteTypes.h"
 
 #include "include/private/SkDebug.h"
@@ -274,7 +276,7 @@ protected:
     private:
         TextureDataCache::Index fLastIndex = TextureDataCache::kInvalidIndex;
 
-        TextureDataCache* const fTextureCache;
+        const raw_ptr<TextureDataCache> fTextureCache;
     };
 };
 

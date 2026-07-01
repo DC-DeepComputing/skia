@@ -66,7 +66,7 @@ std::unique_ptr<InterfaceBlock> InterfaceBlock::Convert(const Context& context,
     std::optional<int> rtAdjustIndex = find_rt_adjust_index(fields);
     if (rtAdjustIndex.has_value()) {
         const Field& rtAdjustField = fields[*rtAdjustIndex];
-        if (!rtAdjustField.fType->matches(*context.fTypes.fFloat4)) {
+        if (!rtAdjustField.fType->matches(*context.fTypes->fFloat4)) {
             context.fErrors->error(rtAdjustField.fPosition, "sk_RTAdjust must have type 'float4'");
             return nullptr;
         }

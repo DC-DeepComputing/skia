@@ -7,6 +7,8 @@
 #ifndef skgpu_graphite_ClipAtlasManager_DEFINED
 #define skgpu_graphite_ClipAtlasManager_DEFINED
 
+#include "src/partition_alloc/raw_ptr.h"
+
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkTDArray.h"
@@ -85,7 +87,7 @@ private:
         struct MaskHashEntry {
             SkIRect fBounds;
             DrawAtlas::AtlasLocator fLocator;
-            MaskHashEntry* fNext = nullptr;
+            raw_ptr<MaskHashEntry> fNext = nullptr;
         };
         struct UniqueKeyHash {
             uint32_t operator()(const skgpu::UniqueKey& key) const { return key.hash(); }
@@ -108,7 +110,7 @@ private:
         int fListEntryCount = 0;
     };
 
-    Recorder* fRecorder;
+    raw_ptr<Recorder> fRecorder;
     // We have two atlas managers, one for clips that can be keyed via the path keys,
     // and a smaller one for those that can only be keyed by the SaveRecord ID. We keep
     // them separate because the SaveRecord keyed clips will be far more transient, i.e.,

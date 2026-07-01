@@ -7,6 +7,8 @@
 #ifndef AtlasRenderTask_DEFINED
 #define AtlasRenderTask_DEFINED
 
+#include "src/partition_alloc/raw_ptr.h"
+
 #include "include/core/SkPath.h"
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkAssert.h"
@@ -114,7 +116,7 @@ private:
         int pathCount() const { return fPathCount; }
 
     private:
-        PathDrawList* fPathDrawList = nullptr;
+        raw_ptr<PathDrawList, DanglingUntriaged> fPathDrawList = nullptr;
         int fTotalCombinedPathVerbCnt = 0;
         int fPathCount = 0;
     };

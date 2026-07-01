@@ -35,7 +35,9 @@ class SkRRect;
 SkMaskFilterBase::NinePatch::~NinePatch() {
     if (fCache) {
         SkASSERT((const void*)fMask.fImage == fCache->data());
-        fCache->unref();
+        SkCachedData* cache = fCache.get();
+        fCache = nullptr;
+        cache->unref();
     } else {
         // fMask is about to be destroyed and "owns" its fImage.
         SkMaskBuilder::FreeImage(const_cast<uint8_t*>(fMask.fImage));

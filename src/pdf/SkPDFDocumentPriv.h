@@ -7,6 +7,8 @@
 #ifndef SkPDFDocumentPriv_DEFINED
 #define SkPDFDocumentPriv_DEFINED
 
+#include "src/partition_alloc/raw_ptr.h"
+
 #include "include/core/SkCanvas.h"
 #include "include/core/SkData.h"
 #include "include/core/SkDocument.h"
@@ -215,7 +217,7 @@ private:
     const SkPDF::Metadata fMetadata;
     const SkScalar fRasterScale;
     const SkScalar fInverseRasterScale;
-    SkExecutor *const fExecutor;
+    const raw_ptr<SkExecutor> fExecutor;
 
     // For tagged PDFs.
     SkPDFStructTree fStructTree;

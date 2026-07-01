@@ -174,7 +174,7 @@ GrSurfaceProxy::LazySurfaceDesc GrRenderTargetProxy::callbackDesc() const {
             GrRenderable::kYes,
             skgpu::Mipmapped::kNo,
             this->numSamples(),
-            this->backendFormat(),
+            raw_ref(this->backendFormat()),
             GrTextureType::kNone,
             this->isProtected(),
             this->isBudgeted(),

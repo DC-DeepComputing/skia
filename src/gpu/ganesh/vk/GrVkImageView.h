@@ -7,6 +7,8 @@
 #ifndef GrVkImageView_DEFINED
 #define GrVkImageView_DEFINED
 
+#include "src/partition_alloc/raw_ptr.h"
+
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkDebug.h"
 #include "include/private/gpu/vk/SkiaVulkan.h"
@@ -54,7 +56,7 @@ private:
     void freeGPUData() const override;
 
     VkImageView  fImageView;
-    GrVkSamplerYcbcrConversion* fYcbcrConversion;
+    raw_ptr<GrVkSamplerYcbcrConversion> fYcbcrConversion;
 
     using INHERITED = GrVkManagedResource;
 };

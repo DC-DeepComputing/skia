@@ -8,6 +8,8 @@
 #ifndef SKSL_EXPRESSION
 #define SKSL_EXPRESSION
 
+#include "src/partition_alloc/raw_ptr.h"
+
 #include "include/core/SkTypes.h"
 #include "src/sksl/SkSLPosition.h"
 #include "src/sksl/ir/SkSLIRNode.h"
@@ -133,7 +135,7 @@ public:
 
 
 private:
-    const Type* fType;
+    raw_ptr<const Type> fType;
 
     using INHERITED = IRNode;
 };

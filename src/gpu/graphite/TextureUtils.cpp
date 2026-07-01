@@ -23,6 +23,7 @@
 #include "src/core/SkSamplingPriv.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/image/SkImage_Base.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/gpu/graphite/BackendTexture.h"
 #include "include/gpu/graphite/Context.h"
@@ -789,7 +790,7 @@ public:
     }
 
 private:
-    skgpu::graphite::Recorder* fRecorder;
+    raw_ptr<skgpu::graphite::Recorder> fRecorder;
 };
 
 } // anonymous namespace

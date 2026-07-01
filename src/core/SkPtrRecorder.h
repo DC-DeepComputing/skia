@@ -6,8 +6,12 @@
  */
 
 
+#include "src/partition_alloc/raw_ref.h"
+
 #ifndef SkPtrSet_DEFINED
 #define SkPtrSet_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkFlattenable.h"
 #include "include/core/SkRefCnt.h"
@@ -72,11 +76,11 @@ public:
          * Return the next ptr in the set or null if the end was reached.
          */
         void* next() {
-            return fIndex < fSet.fList.size() ? fSet.fList[fIndex++].fPtr : nullptr;
+            return fIndex < fSet->fList.size() ? fSet->fList[fIndex++].fPtr : nullptr;
         }
 
     private:
-        const SkPtrSet& fSet;
+        const raw_ref<const SkPtrSet> fSet;
         int             fIndex;
     };
 

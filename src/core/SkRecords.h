@@ -8,6 +8,8 @@
 #ifndef SkRecords_DEFINED
 #define SkRecords_DEFINED
 
+#include "src/partition_alloc/raw_ptr.h"
+
 #include "include/core/SkBlender.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -122,7 +124,7 @@ public:
 
     ACT_AS_PTR(fPtr)
 private:
-    T* fPtr;
+    raw_ptr<T> fPtr;
     Optional(const Optional&) = delete;
     Optional& operator=(const Optional&) = delete;
 };
@@ -137,7 +139,7 @@ public:
 
     ACT_AS_PTR(fPtr)
 private:
-    T* fPtr;
+    raw_ptr<T> fPtr;
 };
 
 #undef ACT_AS_PTR

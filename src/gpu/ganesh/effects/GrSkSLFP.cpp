@@ -33,6 +33,8 @@
 #include "src/gpu/ganesh/GrShaderVar.h"
 #include "src/gpu/ganesh/glsl/GrGLSLFragmentShaderBuilder.h"
 #include "src/gpu/ganesh/glsl/GrGLSLUniformHandler.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ref.h"
 #include "src/sksl/SkSLString.h"
 #include "src/sksl/SkSLUtil.h"
 #include "src/sksl/codegen/SkSLPipelineStageCodeGenerator.h"
@@ -50,7 +52,7 @@ struct GrShaderCaps;
 class GrSkSLFP::Impl : public ProgramImpl {
 public:
     void emitCode(EmitArgs& args) override {
-        const GrSkSLFP& fp            = args.fFp.cast<GrSkSLFP>();
+        const GrSkSLFP& fp            = args.fFp->cast<GrSkSLFP>();
         const SkSL::Program& program  = *fp.fEffect->fBaseProgram;
 
         class FPCallbacks : public SkSL::PipelineStage::Callbacks {
@@ -79,8 +81,8 @@ public:
 
                 const SkSL::Type* type = &var->type();
                 size_t sizeInBytes = type->slotCount() * sizeof(float);
-                const float* floatData = reinterpret_cast<const float*>(fUniformData);
-                const int* intData = reinterpret_cast<const int*>(fUniformData);
+                const float* floatData = reinterpret_cast<const float*>(fUniformData.get());
+                const int* intData = reinterpret_cast<const int*>(fUniformData.get());
                 fUniformData += sizeInBytes;
 
                 bool isArray = false;
@@ -90,7 +92,7 @@ public:
                 }
 
                 SkSLType gpuType;
-                SkAssertResult(SkSL::type_to_sksltype(fContext, *type, &gpuType));
+                SkAssertResult(SkSL::type_to_sksltype(*fContext, *type, &gpuType));
 
                 if (*fSpecialized++ == Specialized::kYes) {
                     SkASSERTF(!isArray, "specializing array uniforms is not allowed");
@@ -110,7 +112,7 @@ public:
 
                 const char* uniformName = nullptr;
                 auto handle =
-                        fArgs.fUniformHandler->addUniformArray(&fArgs.fFp.cast<GrSkSLFP>(),
+                        fArgs->fUniformHandler->addUniformArray(&fArgs->fFp->cast<GrSkSLFP>(),
                                                                kFragment_GrShaderFlag,
                                                                gpuType,
                                                                SkString(var->name()).c_str(),
@@ -121,27 +123,27 @@ public:
             }
 
             std::string getMangledName(const char* name) override {
-                return std::string(fArgs.fFragBuilder->getMangledFunctionName(name).c_str());
+                return std::string(fArgs->fFragBuilder->getMangledFunctionName(name).c_str());
             }
 
             void defineFunction(const char* decl, const char* body, bool isMain) override {
                 if (isMain) {
-                    fArgs.fFragBuilder->codeAppend(body);
+                    fArgs->fFragBuilder->codeAppend(body);
                 } else {
-                    fArgs.fFragBuilder->emitFunction(decl, body);
+                    fArgs->fFragBuilder->emitFunction(decl, body);
                 }
             }
 
             void declareFunction(const char* decl) override {
-                fArgs.fFragBuilder->emitFunctionPrototype(decl);
+                fArgs->fFragBuilder->emitFunctionPrototype(decl);
             }
 
             void defineStruct(const char* definition) override {
-                fArgs.fFragBuilder->definitionAppend(definition);
+                fArgs->fFragBuilder->definitionAppend(definition);
             }
 
             void declareGlobal(const char* declaration) override {
-                fArgs.fFragBuilder->definitionAppend(declaration);
+                fArgs->fFragBuilder->definitionAppend(declaration);
             }
 
             std::string sampleShader(int index, std::string coords) override {
@@ -157,11 +159,11 @@ public:
                 // To prevent the assert, we pass the empty string in this case. Note that for
                 // children sampled like this, invokeChild doesn't even use the coords parameter,
                 // except for that assert.
-                const GrFragmentProcessor* child = fArgs.fFp.childProcessor(index);
+                const GrFragmentProcessor* child = fArgs->fFp->childProcessor(index);
                 if (child && child->sampleUsage().isPassThrough()) {
                     coords.clear();
                 }
-                return child ? std::string(fSelf->invokeChild(index, fInputColor, fArgs, coords)
+                return child ? std::string(fSelf->invokeChild(index, fInputColor, *fArgs, coords)
                                                    .c_str())
                              : std::string("half4(0)");
             }
@@ -169,7 +171,7 @@ public:
             std::string sampleColorFilter(int index, std::string color) override {
                 return std::string(fSelf->invokeChild(index,
                                                       color.empty() ? fInputColor : color.c_str(),
-                                                      fArgs)
+                                                      *fArgs)
                                            .c_str());
             }
 
@@ -178,39 +180,39 @@ public:
                     return SkSL::String::printf("blend_src_over(%s, %s)", src.c_str(), dst.c_str());
                 }
                 return std::string(
-                        fSelf->invokeChild(index, src.c_str(), dst.c_str(), fArgs).c_str());
+                        fSelf->invokeChild(index, src.c_str(), dst.c_str(), *fArgs).c_str());
             }
 
             // These intrinsics take and return 3-component vectors, but child FPs operate on
             // 4-component vectors. We use swizzles here to paper over the difference.
             std::string toLinearSrgb(std::string color) override {
-                const GrSkSLFP& fp = fArgs.fFp.cast<GrSkSLFP>();
+                const GrSkSLFP& fp = fArgs->fFp->cast<GrSkSLFP>();
                 if (fp.fToLinearSrgbChildIndex < 0) {
                     return color;
                 }
                 color = SkSL::String::printf("(%s).rgb1", color.c_str());
                 SkString xformedColor = fSelf->invokeChild(
-                        fp.fToLinearSrgbChildIndex, color.c_str(), fArgs);
+                        fp.fToLinearSrgbChildIndex, color.c_str(), *fArgs);
                 return SkSL::String::printf("(%s).rgb", xformedColor.c_str());
             }
 
             std::string fromLinearSrgb(std::string color) override {
-                const GrSkSLFP& fp = fArgs.fFp.cast<GrSkSLFP>();
+                const GrSkSLFP& fp = fArgs->fFp->cast<GrSkSLFP>();
                 if (fp.fFromLinearSrgbChildIndex < 0) {
                     return color;
                 }
                 color = SkSL::String::printf("(%s).rgb1", color.c_str());
                 SkString xformedColor = fSelf->invokeChild(
-                        fp.fFromLinearSrgbChildIndex, color.c_str(), fArgs);
+                        fp.fFromLinearSrgbChildIndex, color.c_str(), *fArgs);
                 return SkSL::String::printf("(%s).rgb", xformedColor.c_str());
             }
 
-            Impl*                         fSelf;
-            EmitArgs&                     fArgs;
+            raw_ptr<Impl> fSelf;
+            const raw_ref<EmitArgs> fArgs;
             const char*                   fInputColor;
-            const SkSL::Context&          fContext;
-            const uint8_t*                fUniformData;
-            const Specialized*            fSpecialized;
+            const raw_ref<const SkSL::Context> fContext;
+            raw_ptr<const uint8_t, AllowPtrArithmetic> fUniformData;
+            raw_ptr<const Specialized, AllowPtrArithmetic> fSpecialized;
             int                           fUniformIndex = 0;
         };
 

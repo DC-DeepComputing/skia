@@ -7,6 +7,8 @@
 #include "src/utils/win/SkDWriteNTDDI_VERSION.h"
 
 #include "include/core/SkTypes.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 #if defined(SK_BUILD_FOR_WIN)
 
 #undef GetGlyphIndices
@@ -78,7 +80,7 @@ public:
     }
 
 private:
-    SkSharedMutex* fLock;
+    raw_ptr<SkSharedMutex> fLock;
 };
 class SK_SCOPED_CAPABILITY Shared {
 public:
@@ -99,7 +101,7 @@ public:
     }
 
 private:
-    SkSharedMutex* fLock;
+    raw_ptr<SkSharedMutex> fLock;
 };
 
 static bool isLCD(const SkScalerContextRec& rec) {
@@ -1705,7 +1707,7 @@ bool SkScalerContext_DW::generateSVGMetrics(const SkGlyph& glyph, SkRect* bounds
 namespace {
 struct Context {
     SkTScopedComPtr<IDWriteFontFace4> fontFace4;
-    void* glyphDataContext;
+    raw_ptr<void> glyphDataContext;
     Context(IDWriteFontFace4* face4, void* context)
         : fontFace4(SkRefComPtr(face4))
         , glyphDataContext(context)
@@ -2454,7 +2456,9 @@ SkScalerContext_DW::generatePath(const SkGlyph& glyph) {
 
 sk_sp<SkDrawable> SkScalerContext_DW::generateDrawable(const SkGlyph& glyph) {
     struct GlyphDrawable : public SkDrawable {
-        SkScalerContext_DW* fSelf;
+        // RAW_PTR_EXCLUSION: The drawable may outlive the scaler context (e.g. cached in text runs
+        // or pictures).
+        RAW_PTR_EXCLUSION SkScalerContext_DW* fSelf;
         SkGlyph fGlyph;
         GlyphDrawable(SkScalerContext_DW* self, const SkGlyph& glyph) : fSelf(self), fGlyph(glyph){}
         SkRect onGetBounds() override { return fGlyph.rect();  }

@@ -8,6 +8,8 @@
 #ifndef sktext_gpu_DistanceFieldAdjustTable_DEFINED
 #define sktext_gpu_DistanceFieldAdjustTable_DEFINED
 
+#include "src/partition_alloc/raw_ptr.h"
+
 #include "include/core/SkScalar.h"
 
 template <typename T> class SkNoDestructor;
@@ -34,8 +36,8 @@ private:
 
     static constexpr int kDistanceAdjustLumShift = 5;
 
-    SkScalar* fTable;
-    SkScalar* fGammaCorrectTable;
+    raw_ptr<SkScalar, AllowPtrArithmetic> fTable;
+    raw_ptr<SkScalar, AllowPtrArithmetic> fGammaCorrectTable;
 
     friend class SkNoDestructor<DistanceFieldAdjustTable>;
 };

@@ -8,6 +8,8 @@
 #ifndef SkDWriteToPath_DEFINED
 #define SkDWriteToPath_DEFINED
 
+#include "src/partition_alloc/raw_ptr.h"
+
 #include "include/core/SkPathBuilder.h"
 #include "src/utils/win/SkObjBase.h"
 
@@ -17,7 +19,7 @@
 class SkDWriteGeometrySink : public IDWriteGeometrySink {
 private:
     LONG fRefCount;
-    SkPathBuilder* fBuilder;
+    raw_ptr<SkPathBuilder> fBuilder;
     bool fStarted;
     D2D1_POINT_2F fCurrent;
 

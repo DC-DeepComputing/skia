@@ -8,6 +8,8 @@
 #ifndef SkLRUCache_DEFINED
 #define SkLRUCache_DEFINED
 
+#include "src/partition_alloc/raw_ptr.h"
+
 #include "src/core/SkChecksum.h"
 #include "src/core/SkTHash.h"
 #include "src/core/SkTInternalLList.h"
@@ -137,7 +139,7 @@ private:
     int                                         fMaxCount;
     skia_private::THashTable<Entry*, K, Traits> fMap;
     SkTInternalLList<Entry>                     fLRU;
-    void*                                       fContext;
+    raw_ptr<void> fContext;
 };
 
 #endif

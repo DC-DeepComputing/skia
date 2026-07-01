@@ -6,6 +6,8 @@
  */
 
 #ifndef SKSL_MODULELOADER
+#include "src/partition_alloc/raw_ref.h"
+
 #define SKSL_MODULELOADER
 
 #include "src/sksl/SkSLBuiltinTypes.h"
@@ -26,7 +28,7 @@ using BuiltinTypePtr = const std::unique_ptr<Type> BuiltinTypes::*;
 class ModuleLoader {
 private:
     struct Impl;
-    Impl& fModuleLoader;
+    const raw_ref<Impl> fModuleLoader;
 
 public:
     ModuleLoader(ModuleLoader::Impl&);

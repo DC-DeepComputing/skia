@@ -8,6 +8,8 @@
 #ifndef GrVkPipelineStateBuilder_DEFINED
 #define GrVkPipelineStateBuilder_DEFINED
 
+#include "src/partition_alloc/raw_ptr.h"
+
 #include "include/core/SkString.h"
 #include "include/private/gpu/vk/SkiaVulkan.h"
 #include "src/gpu/ganesh/glsl/GrGLSLProgramBuilder.h"
@@ -84,7 +86,7 @@ private:
     const GrGLSLUniformHandler* uniformHandler() const override { return &fUniformHandler; }
     GrGLSLVaryingHandler* varyingHandler() override { return &fVaryingHandler; }
 
-    GrVkGpu* fGpu;
+    raw_ptr<GrVkGpu> fGpu;
     GrVkVaryingHandler fVaryingHandler;
     GrVkUniformHandler fUniformHandler;
 

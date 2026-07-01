@@ -44,6 +44,7 @@ SkSurface_Base::~SkSurface_Base() {
     if (fCachedCanvas) {
         fCachedCanvas->setSurfaceBase(nullptr);
         fCachedCanvas->onSurfaceDelete();
+        fCachedCanvas = nullptr;
     }
 }
 

@@ -12,6 +12,7 @@
 #include "src/core/SkGeometry.h"
 #include "src/core/SkPathPriv.h"
 #include "src/core/SkPointPriv.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include <algorithm>
 #include <array>
 #include <cstdint>
@@ -753,10 +754,10 @@ public:
 
 private:
     int fCurrPtCount;
-    const SkPoint* fCurrPt;
-    const SkPathVerb* fCurrVerb;
-    const SkPathVerb* fStopVerbs;
-    const SkScalar* fCurrConicWeight;
+    raw_ptr<const SkPoint, AllowPtrArithmetic> fCurrPt;
+    raw_ptr<const SkPathVerb, AllowPtrArithmetic> fCurrVerb;
+    raw_ptr<const SkPathVerb> fStopVerbs;
+    raw_ptr<const SkScalar, AllowPtrArithmetic> fCurrConicWeight;
     bool fDone;
     SkDEBUGCODE(int fContourCounter;)
 };
@@ -1324,16 +1325,16 @@ bool SkPathPriv::Contains(const SkPathRaw& raw, SkPoint p) {
     for (auto iter = SkPathEdgeIter(raw); auto rec = iter.next(); ) {
         switch (rec.fEdge) {
             case SkPathEdgeIter::Edge::kLine:
-                w += winding_line({rec.fPts, 2}, p.fX, p.fY, &onCurveCount);
+                w += winding_line({rec.fPts.get(), 2}, p.fX, p.fY, &onCurveCount);
                 break;
             case SkPathEdgeIter::Edge::kQuad:
-                w += winding_quad({rec.fPts, 3}, p.fX, p.fY, &onCurveCount);
+                w += winding_quad({rec.fPts.get(), 3}, p.fX, p.fY, &onCurveCount);
                 break;
             case SkPathEdgeIter::Edge::kConic:
-                w += winding_conic({rec.fPts, 3}, p.fX, p.fY, iter.conicWeight(), &onCurveCount);
+                w += winding_conic({rec.fPts.get(), 3}, p.fX, p.fY, iter.conicWeight(), &onCurveCount);
                 break;
             case SkPathEdgeIter::Edge::kCubic:
-                w += winding_cubic({rec.fPts, 4}, p.fX, p.fY, &onCurveCount);
+                w += winding_cubic({rec.fPts.get(), 4}, p.fX, p.fY, &onCurveCount);
                 break;
        }
     }
@@ -1358,16 +1359,16 @@ bool SkPathPriv::Contains(const SkPathRaw& raw, SkPoint p) {
         int oldCount = tangents.size();
         switch (rec.fEdge) {
             case SkPathEdgeIter::Edge::kLine:
-                tangent_line({rec.fPts, 2}, p.fX, p.fY, &tangents);
+                tangent_line({rec.fPts.get(), 2}, p.fX, p.fY, &tangents);
                 break;
             case SkPathEdgeIter::Edge::kQuad:
-                tangent_quad({rec.fPts, 3}, p.fX, p.fY, &tangents);
+                tangent_quad({rec.fPts.get(), 3}, p.fX, p.fY, &tangents);
                 break;
             case SkPathEdgeIter::Edge::kConic:
-                tangent_conic({rec.fPts, 3}, p.fX, p.fY, iter.conicWeight(), &tangents);
+                tangent_conic({rec.fPts.get(), 3}, p.fX, p.fY, iter.conicWeight(), &tangents);
                 break;
             case SkPathEdgeIter::Edge::kCubic:
-                tangent_cubic({rec.fPts, 4}, p.fX, p.fY, &tangents);
+                tangent_cubic({rec.fPts.get(), 4}, p.fX, p.fY, &tangents);
                 break;
        }
        if (tangents.size() > oldCount) {

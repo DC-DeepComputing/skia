@@ -8,6 +8,8 @@
 #ifndef GrVkSemaphore_DEFINED
 #define GrVkSemaphore_DEFINED
 
+#include "src/partition_alloc/raw_ptr.h"
+
 #include "include/private/SkDebug.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "include/private/gpu/vk/SkiaVulkan.h"
@@ -94,7 +96,7 @@ private:
         fResource->setIsOwned();
     }
 
-    Resource* fResource;
+    raw_ptr<Resource> fResource;
 
     using INHERITED = GrSemaphore;
 };

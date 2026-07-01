@@ -10,6 +10,7 @@ import("skcms.gni")
 template("arch") {
   if (invoker.enabled) {
     source_set(target_name) {
+      include_dirs = [ "../.." ]
       visibility = [ ":*" ]
       check_includes = false
       forward_variables_from(invoker, "*")
@@ -17,6 +18,7 @@ template("arch") {
   } else {
     # If not enabled, a phony empty target that swallows all otherwise unused variables.
     source_set(target_name) {
+      include_dirs = [ "../.." ]
       visibility = [ ":*" ]
       check_includes = false
       forward_variables_from(invoker,
@@ -81,6 +83,7 @@ arch("skcms_TransformSkx") {
 }
 
 static_library("skcms") {
+  include_dirs = [ "../.." ]
   cflags = []
   if (!is_win || is_clang) {
     cflags += [ "-std=c11" ]
@@ -96,5 +99,6 @@ static_library("skcms") {
   deps = [
     ":skcms_TransformHsw",
     ":skcms_TransformSkx",
+    "//src/partition_alloc:raw_ptr",
   ]
 }

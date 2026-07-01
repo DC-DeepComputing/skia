@@ -8,6 +8,8 @@
 #ifndef skgpu_graphite_geom_IntersectionTree_DEFINED
 #define skgpu_graphite_geom_IntersectionTree_DEFINED
 
+#include "src/partition_alloc/raw_ptr.h"
+
 #include "include/private/SkAlign.h"
 #include "src/core/SkArenaAlloc.h"
 #include "src/gpu/graphite/geom/Rect.h"
@@ -60,7 +62,7 @@ private:
     constexpr static int kLeafNodeSize = 16 + (2 + 64) * sizeof(Rect);
     constexpr static int kPadSize = 256;  // For footers and alignment.
     SkArenaAlloc fArena{kLeafNodeSize + kTreeNodeSize + kPadSize*2};
-    Node* fRoot;
+    raw_ptr<Node> fRoot;
 };
 
 } // namespace skgpu::graphite

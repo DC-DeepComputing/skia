@@ -8,6 +8,8 @@
 #ifndef SKSL_POOL
 #define SKSL_POOL
 
+#include "src/partition_alloc/raw_ptr.h"
+
 #include <cstddef>
 #include <memory>
 
@@ -87,7 +89,7 @@ public:
     }
 
 private:
-    Pool* fPool = nullptr;
+    raw_ptr<Pool> fPool = nullptr;
 };
 
 

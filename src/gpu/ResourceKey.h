@@ -8,6 +8,8 @@
 #ifndef skgpu_ResourceKey_DEFINED
 #define skgpu_ResourceKey_DEFINED
 
+#include "src/partition_alloc/raw_ptr.h"
+
 #include "include/core/SkData.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
@@ -85,7 +87,7 @@ public:
         }
 
     private:
-        ResourceKey* fKey;
+        raw_ptr<ResourceKey> fKey;
     };
 
 protected:
@@ -426,7 +428,7 @@ public:
         }
 
     private:
-        FixedSizeKey* fKey = nullptr;
+        raw_ptr<FixedSizeKey<SizeInUInt32>> fKey = nullptr;
     };
 
     struct Hash {

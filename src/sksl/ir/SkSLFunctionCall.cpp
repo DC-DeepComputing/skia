@@ -199,7 +199,7 @@ static std::unique_ptr<Expression> optimize_comparison(const Context& context,
         array[index] = compare(*leftValue, *rightValue) ? 1.0 : 0.0;
     }
 
-    const Type& bvecType = context.fTypes.fBool->toCompound(context, type.columns(), /*rows=*/1);
+    const Type& bvecType = context.fTypes->fBool->toCompound(context, type.columns(), /*rows=*/1);
     return ConstructorCompound::MakeFromConstants(context, left->fPosition, bvecType, array);
 }
 
@@ -813,7 +813,7 @@ static std::unique_ptr<Expression> optimize_intrinsic_call(const Context& contex
             const double packed = ((Pack(0) << 0)  & 0x0000FFFF) |
                                   ((Pack(1) << 16) & 0xFFFF0000);
             return ConstructorCompound::MakeFromConstants(context, arguments[0]->fPosition,
-                                                          *context.fTypes.fUInt, &packed);
+                                                          *context.fTypes->fUInt, &packed);
         }
         case k_packSnorm2x16_IntrinsicKind: {
             auto Pack = [&](int n) -> unsigned int {
@@ -823,7 +823,7 @@ static std::unique_ptr<Expression> optimize_intrinsic_call(const Context& contex
             const double packed = ((Pack(0) << 0)  & 0x0000FFFF) |
                                   ((Pack(1) << 16) & 0xFFFF0000);
             return ConstructorCompound::MakeFromConstants(context, arguments[0]->fPosition,
-                                                          *context.fTypes.fUInt, &packed);
+                                                          *context.fTypes->fUInt, &packed);
         }
         case k_packHalf2x16_IntrinsicKind: {
             auto Pack = [&](int n) -> unsigned int {
@@ -832,7 +832,7 @@ static std::unique_ptr<Expression> optimize_intrinsic_call(const Context& contex
             const double packed = ((Pack(0) << 0)  & 0x0000FFFF) |
                                   ((Pack(1) << 16) & 0xFFFF0000);
             return ConstructorCompound::MakeFromConstants(context, arguments[0]->fPosition,
-                                                          *context.fTypes.fUInt, &packed);
+                                                          *context.fTypes->fUInt, &packed);
         }
         case k_unpackUnorm2x16_IntrinsicKind: {
             SKSL_INT x = *arguments[0]->getConstantValue(0);
@@ -841,7 +841,7 @@ static std::unique_ptr<Expression> optimize_intrinsic_call(const Context& contex
             const double unpacked[2] = {double(a) / 65535.0,
                                         double(b) / 65535.0};
             return ConstructorCompound::MakeFromConstants(context, arguments[0]->fPosition,
-                                                          *context.fTypes.fFloat2, unpacked);
+                                                          *context.fTypes->fFloat2, unpacked);
         }
         case k_unpackSnorm2x16_IntrinsicKind: {
             SKSL_INT x = *arguments[0]->getConstantValue(0);
@@ -850,7 +850,7 @@ static std::unique_ptr<Expression> optimize_intrinsic_call(const Context& contex
             const double unpacked[2] = {Intrinsics::evaluate_clamp(double(a) / 32767.0, -1.0, 1.0),
                                         Intrinsics::evaluate_clamp(double(b) / 32767.0, -1.0, 1.0)};
             return ConstructorCompound::MakeFromConstants(context, arguments[0]->fPosition,
-                                                          *context.fTypes.fFloat2, unpacked);
+                                                          *context.fTypes->fFloat2, unpacked);
         }
         case k_unpackHalf2x16_IntrinsicKind: {
             SKSL_INT x = *arguments[0]->getConstantValue(0);
@@ -859,7 +859,7 @@ static std::unique_ptr<Expression> optimize_intrinsic_call(const Context& contex
             const double unpacked[2] = {SkHalfToFloat(a),
                                         SkHalfToFloat(b)};
             return ConstructorCompound::MakeFromConstants(context, arguments[0]->fPosition,
-                                                          *context.fTypes.fFloat2, unpacked);
+                                                          *context.fTypes->fFloat2, unpacked);
         }
         // 8.5 : Geometric Functions
         case k_length_IntrinsicKind:

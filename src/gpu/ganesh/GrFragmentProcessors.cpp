@@ -176,7 +176,7 @@ GrFPResult MakeChildFP(const SkRuntimeEffect::ChildPtr& child, const GrFPArgs& c
                                                                  child.colorFilter(),
                                                                  /*inputFP=*/nullptr,
                                                                  *childArgs.fDstColorInfo,
-                                                                 childArgs.fSurfaceProps);
+                                                                 *childArgs.fSurfaceProps);
             return success ? GrFPSuccess(std::move(childFP))
                            : GrFPFailure(nullptr);
         }
@@ -237,7 +237,7 @@ static std::unique_ptr<GrFragmentProcessor> make_blender_fp(
     SkASSERT(uniforms);
     GrFPArgs childArgs(fpArgs.fSurfaceDrawContext,
                        fpArgs.fDstColorInfo,
-                       fpArgs.fSurfaceProps,
+                       *fpArgs.fSurfaceProps,
                        GrFPArgs::Scope::kRuntimeEffect);
     auto [success, fp] = make_effect_fp(rtb->effect(),
                                         "runtime_blender",
@@ -529,7 +529,7 @@ static std::unique_ptr<GrFragmentProcessor> make_shader_fp(const SkColorFilterSh
                               shader->filter().get(),
                               std::move(shaderFP),
                               *args.fDstColorInfo,
-                              args.fSurfaceProps);
+                              *args.fSurfaceProps);
     // If the filter FP could not be created, we still want to return the shader FP, so checking
     // success can be omitted here.
     return std::move(fp);
@@ -724,7 +724,7 @@ static std::unique_ptr<GrFragmentProcessor> make_shader_fp(const SkPictureShader
                                                        dstColorType,
                                                        dstCS.get(),
                                                        ctx->priv().caps()->maxTextureSize(),
-                                                       args.fSurfaceProps);
+                                                       *args.fSurfaceProps);
     if (!info.success) {
         return nullptr;
     }
@@ -806,7 +806,7 @@ static std::unique_ptr<GrFragmentProcessor> make_shader_fp(const SkRuntimeShader
 
     bool success;
     std::unique_ptr<GrFragmentProcessor> fp;
-    GrFPArgs childArgs(args.fSurfaceDrawContext, args.fDstColorInfo, args.fSurfaceProps,
+    GrFPArgs childArgs(args.fSurfaceDrawContext, args.fDstColorInfo, *args.fSurfaceProps,
                        GrFPArgs::Scope::kRuntimeEffect);
     std::tie(success, fp) = make_effect_fp(shader->effect(),
                                            "runtime_shader",
@@ -855,7 +855,7 @@ static std::unique_ptr<GrFragmentProcessor> make_shader_fp(const SkWorkingColorS
                 input  = {dstInfo->colorType(), workingAT, inputCS},
                 output = {dstInfo->colorType(), workingAT, outputCS};
 
-    GrFPArgs workingArgs(args.fSurfaceDrawContext, &input, args.fSurfaceProps, args.fScope);
+    GrFPArgs workingArgs(args.fSurfaceDrawContext, &input, *args.fSurfaceProps, args.fScope);
 
     auto childFP = Make(shader->shader().get(), workingArgs, mRec);
     if (!childFP) {

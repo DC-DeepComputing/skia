@@ -7,6 +7,8 @@
 #ifndef SkIntersectionHelper_DEFINED
 #define SkIntersectionHelper_DEFINED
 
+#include "src/partition_alloc/raw_ptr.h"
+
 #include "include/core/SkPath.h"
 #include "src/pathops/SkOpContour.h"
 #include "src/pathops/SkOpSegment.h"
@@ -107,7 +109,7 @@ public:
     }
 
 private:
-    SkOpSegment* fSegment;
+    raw_ptr<SkOpSegment> fSegment;
 };
 
 #endif

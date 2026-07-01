@@ -8,6 +8,8 @@
 #ifndef GrGLVertexArray_DEFINED
 #define GrGLVertexArray_DEFINED
 
+#include "src/partition_alloc/raw_ptr.h"
+
 #include "include/gpu/ganesh/gl/GrGLTypes.h"
 #include "include/private/SkTArray.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
@@ -85,7 +87,7 @@ private:
         GrVertexAttribType        fCPUType;
         SkSLType                  fGPUType;
         GrGLsizei                 fStride;
-        const GrGLvoid*           fOffset;
+        raw_ptr<const GrGLvoid> fOffset;
         int                       fDivisor;
     };
 

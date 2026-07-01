@@ -8,6 +8,8 @@
 #ifndef skgpu_graphite_PaintParamsKey_DEFINED
 #define skgpu_graphite_PaintParamsKey_DEFINED
 
+#include "src/partition_alloc/raw_ptr.h"
+
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkMacros.h"
@@ -310,7 +312,7 @@ private:
         int fDataSize = -1;
     };
 
-    const ShaderCodeDictionary* fDict;
+    raw_ptr<const ShaderCodeDictionary> fDict;
     skia_private::TArray<StackFrame> fStack;
     bool fLocked = false;
 #endif
@@ -331,7 +333,7 @@ public:
     const PaintParamsKey* operator->() const { return &fKey; }
 
 private:
-    PaintParamsKeyBuilder* fBuilder;
+    raw_ptr<PaintParamsKeyBuilder> fBuilder;
     PaintParamsKey fKey;
 };
 

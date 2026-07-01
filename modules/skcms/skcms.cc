@@ -14,6 +14,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "src/partition_alloc/raw_ptr.h"
+
 #if defined(__ARM_NEON)
     #include <arm_neon.h>
 #elif defined(__SSE__)
@@ -2541,7 +2543,7 @@ static bool tf_is_gamma(const skcms_TransferFunction& tf) {
 
 struct OpAndArg {
     Op          op;
-    const void* arg;
+    raw_ptr<const void> arg;
 };
 
 static OpAndArg select_curve_op(const skcms_Curve* curve, int channel) {

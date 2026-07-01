@@ -79,6 +79,7 @@
 #include "src/gpu/graphite/task/SynchronizeToCpuTask.h"
 #include "src/gpu/graphite/task/Task.h"
 #include "src/image/SkSurface_Base.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/sksl/SkSLGraphiteModules.h"
 
 #include <algorithm>
@@ -264,7 +265,7 @@ bool Context::hasPendingGPUWork() const { return fQueueManager->hasPendingGPUWor
 
 template <typename SrcPixels>
 struct Context::AsyncParams {
-    const SrcPixels* fSrcImage;
+    raw_ptr<const SrcPixels> fSrcImage;
     SkIRect          fSrcRect;
     SkImageInfo      fDstImageInfo;
 
@@ -669,7 +670,7 @@ void Context::finalizeAsyncReadPixels(std::unique_ptr<Recorder> recorder,
     struct AsyncReadFinishContext {
         SkImage::ReadPixelsCallback* fClientCallback;
         SkImage::ReadPixelsContext fClientContext;
-        ClientMappedBufferManager* fMappedBufferManager;
+        raw_ptr<ClientMappedBufferManager> fMappedBufferManager;
         std::array<PixelTransferResult, 4> fTransferResults;
     };
 

@@ -21,6 +21,7 @@
 #include "include/private/SkMalloc.h"
 #include "src/core/SkDevice.h"
 #include "src/core/SkWriter32.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/utils/SkCanvasStack.h"
 
 #include <cstddef>
@@ -145,9 +146,11 @@ public:
     SkMCState mcState;
 
     int32_t layerCount;
-    SkCanvasLayerState* layers;
+    // RAW_PTR_EXCLUSION: C ABI flat struct copied via raw memcpy
+    RAW_PTR_EXCLUSION SkCanvasLayerState* layers;
 private:
-    SkCanvas* originalCanvas;
+    // RAW_PTR_EXCLUSION: C ABI flat struct copied via raw memcpy
+    RAW_PTR_EXCLUSION SkCanvas* originalCanvas;
     using INHERITED = SkCanvasState;
 };
 

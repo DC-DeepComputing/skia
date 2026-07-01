@@ -10,6 +10,8 @@
 #ifndef SkTraceEvent_DEFINED
 #define SkTraceEvent_DEFINED
 
+#include "src/partition_alloc/raw_ptr.h"
+
 #include "include/utils/SkEventTracer.h"
 #include "src/core/SkTraceEventCommon.h" // IWYU pragma: export
 #include "src/core/SkUtils.h"
@@ -390,11 +392,11 @@ class TRACE_EVENT_API_CLASS_EXPORT ScopedTracer {
   // disabled. If the members of Data were members of this class instead, compiler warnings occur
   // about potential uninitialized accesses.
   struct Data {
-    const uint8_t* category_group_enabled;
+    raw_ptr<const uint8_t> category_group_enabled;
     const char* name;
     SkEventTracer::Handle event_handle;
   };
-  Data* p_data_;
+  raw_ptr<Data> p_data_;
   Data data_;
 };
 

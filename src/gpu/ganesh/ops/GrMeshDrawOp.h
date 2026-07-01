@@ -8,6 +8,8 @@
 #ifndef GrMeshDrawOp_DEFINED
 #define GrMeshDrawOp_DEFINED
 
+#include "src/partition_alloc/raw_ptr.h"
+
 #include "include/core/SkRefCnt.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/gpu/ganesh/GrAppliedClip.h"
@@ -81,8 +83,8 @@ protected:
                   int indicesPerRepetition, int repeatCount, int maxRepetitions);
 
     private:
-        void* fVertices = nullptr;
-        GrSimpleMesh* fMesh = nullptr;
+        raw_ptr<void> fVertices = nullptr;
+        raw_ptr<GrSimpleMesh, DanglingUntriaged> fMesh = nullptr;
         GrPrimitiveType fPrimitiveType;
     };
 

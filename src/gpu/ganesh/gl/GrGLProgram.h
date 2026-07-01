@@ -7,6 +7,8 @@
 #ifndef GrGLProgram_DEFINED
 #define GrGLProgram_DEFINED
 
+#include "src/partition_alloc/raw_ptr.h"
+
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
 #include "include/gpu/ganesh/gl/GrGLTypes.h"
@@ -164,7 +166,7 @@ private:
     int fVertexStride;
     int fInstanceStride;
 
-    GrGLGpu* fGpu;
+    raw_ptr<GrGLGpu> fGpu;
     GrGLProgramDataManager fProgramDataManager;
 
     int fNumTextureSamplers;

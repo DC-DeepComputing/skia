@@ -415,7 +415,7 @@ void PathInnerTriangulateOp::onPrePrepare(GrRecordingContext* context,
                                           GrLoadOp colorLoadOp) {
     // DMSAA is not supported on DDL.
     bool usesMSAASurface = writeView.asRenderTargetProxy()->numSamples() > 1;
-    this->prePreparePrograms({context->priv().recordTimeAllocator(), writeView, usesMSAASurface,
+    this->prePreparePrograms({context->priv().recordTimeAllocator(), raw_ref(writeView), usesMSAASurface,
                              &dstProxyView, renderPassXferBarriers, colorLoadOp,
                              context->priv().caps()},
                              (clip) ? std::move(*clip) : GrAppliedClip::Disabled());
@@ -436,7 +436,7 @@ void PathInnerTriangulateOp::onPrepare(GrOpFlushState* flushState) {
     const GrCaps& caps = flushState->caps();
 
     if (!fFanTriangulator) {
-        this->prePreparePrograms({flushState->allocator(), flushState->writeView(),
+        this->prePreparePrograms({flushState->allocator(), raw_ref(flushState->writeView()),
                                  flushState->usesMSAASurface(), &flushState->dstProxyView(),
                                  flushState->renderPassBarriers(), flushState->colorLoadOp(),
                                  &caps}, flushState->detachAppliedClip());

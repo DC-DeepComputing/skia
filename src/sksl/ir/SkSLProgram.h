@@ -6,6 +6,8 @@
  */
 
 #ifndef SKSL_PROGRAM
+#include "src/partition_alloc/raw_ref.h"
+
 #define SKSL_PROGRAM
 
 #include "src/sksl/ir/SkSLType.h"
@@ -116,20 +118,20 @@ struct Program {
         };
 
         iterator begin() const {
-            return iterator(fProgram.fOwnedElements.begin(), fProgram.fOwnedElements.end(),
-                            fProgram.fSharedElements.begin(), fProgram.fSharedElements.end());
+            return iterator(fProgram->fOwnedElements.begin(), fProgram->fOwnedElements.end(),
+                            fProgram->fSharedElements.begin(), fProgram->fSharedElements.end());
         }
 
         iterator end() const {
-            return iterator(fProgram.fOwnedElements.end(), fProgram.fOwnedElements.end(),
-                            fProgram.fSharedElements.end(), fProgram.fSharedElements.end());
+            return iterator(fProgram->fOwnedElements.end(), fProgram->fOwnedElements.end(),
+                            fProgram->fSharedElements.end(), fProgram->fSharedElements.end());
         }
 
     private:
         friend struct Program;
 
         ElementsCollection(const Program& program) : fProgram(program) {}
-        const Program& fProgram;
+        const raw_ref<const Program> fProgram;
     };
 
     /**
@@ -153,10 +155,10 @@ struct Program {
     std::unique_ptr<ProgramConfig> fConfig;
     std::shared_ptr<Context> fContext;
     std::unique_ptr<ProgramUsage> fUsage;
+    std::unique_ptr<Pool> fPool;
     // it's important to keep fOwnedElements defined after (and thus destroyed before) fSymbols,
     // because an IR element might access the symbol table during its destruction
     std::unique_ptr<SymbolTable> fSymbols;
-    std::unique_ptr<Pool> fPool;
     // Contains *only* elements owned exclusively by this program.
     std::vector<std::unique_ptr<ProgramElement>> fOwnedElements;
     // Contains *only* elements owned by a built-in module that are included in this program.

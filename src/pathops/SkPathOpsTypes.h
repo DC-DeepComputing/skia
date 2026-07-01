@@ -7,6 +7,8 @@
 #ifndef SkPathOpsTypes_DEFINED
 #define SkPathOpsTypes_DEFINED
 
+#include "src/partition_alloc/raw_ptr.h"
+
 #include "include/core/SkPath.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkTypes.h"
@@ -178,16 +180,16 @@ public:
     }
 
 private:
-    SkArenaAlloc* fAllocator;
-    SkOpCoincidence* fCoincidence;
-    SkOpContourHead* fContourHead;
+    raw_ptr<SkArenaAlloc> fAllocator;
+    raw_ptr<SkOpCoincidence> fCoincidence;
+    raw_ptr<SkOpContourHead> fContourHead;
     int fNested;
     bool fAllocatedOpSpan;
     bool fWindingFailed;
     SkOpPhase fPhase;
 #ifdef SK_DEBUG
     const char* fDebugTestName;
-    void* fDebugReporter;
+    raw_ptr<void> fDebugReporter;
     int fAngleID;
     int fCoinID;
     int fContourID;

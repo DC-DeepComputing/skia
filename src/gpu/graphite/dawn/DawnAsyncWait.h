@@ -8,6 +8,8 @@
 #ifndef skgpu_graphite_DawnAsyncWait_DEFINED
 #define skgpu_graphite_DawnAsyncWait_DEFINED
 
+#include "src/partition_alloc/raw_ptr.h"
+
 #include "include/core/SkTypes.h"
 
 #include "webgpu/webgpu_cpp.h"  // NO_G3_REWRITE
@@ -45,7 +47,7 @@ public:
     void reset() { fSignaled = false; }
 
 private:
-    const DawnSharedContext* fSharedContext;
+    raw_ptr<const DawnSharedContext> fSharedContext;
     std::atomic_bool fSignaled;
 };
 

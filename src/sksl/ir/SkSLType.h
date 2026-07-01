@@ -8,6 +8,8 @@
 #ifndef SKSL_TYPE
 #define SKSL_TYPE
 
+#include "src/partition_alloc/raw_ptr.h"
+
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkTArray.h"
@@ -91,7 +93,7 @@ struct Field {
     Layout fLayout;
     ModifierFlags fModifierFlags;
     std::string_view fName;
-    const Type* fType;
+    raw_ptr<const Type, DanglingUntriaged> fType;
 };
 
 /**

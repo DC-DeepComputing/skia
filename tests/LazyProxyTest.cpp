@@ -131,7 +131,7 @@ public:
                         } else {
                             static constexpr SkISize kDimensions = {1234, 567};
                             sk_sp<GrTexture> texture = rp->createTexture(kDimensions,
-                                                                         desc.fFormat,
+                                                                         *desc.fFormat,
                                                                          desc.fTextureType,
                                                                          desc.fRenderable,
                                                                          desc.fSampleCnt,
@@ -413,7 +413,7 @@ private:
                         return {};
                     }
                     return {rp->createTexture(desc.fDimensions,
-                                              desc.fFormat,
+                                              *desc.fFormat,
                                               desc.fTextureType,
                                               desc.fRenderable,
                                               desc.fSampleCnt,

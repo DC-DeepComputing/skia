@@ -198,7 +198,7 @@ bool SkBitmapProcState::init(const SkMatrix& inv, SkAlpha paintAlpha,
     fPixmap.reset();
     fBilerp = false;
 
-    auto* access = SkMipmapAccessor::Make(&fAlloc, (const SkImage*)fImage, inv, sampling.mipmap);
+    auto* access = SkMipmapAccessor::Make(&fAlloc, (const SkImage*)fImage.get(), inv, sampling.mipmap);
     if (!access) {
         return false;
     }

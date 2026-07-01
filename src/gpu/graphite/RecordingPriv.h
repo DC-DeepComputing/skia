@@ -8,6 +8,8 @@
 #ifndef skgpu_graphite_RecordingPriv_DEFINED
 #define skgpu_graphite_RecordingPriv_DEFINED
 
+#include "src/partition_alloc/raw_ptr.h"
+
 #include "include/core/SkPoint.h"
 #include "include/core/SkRefCnt.h"  // IWYU pragma: keep
 #include "include/gpu/graphite/Recording.h"
@@ -82,7 +84,7 @@ private:
     const RecordingPriv* operator&() const = delete;
     RecordingPriv* operator&() = delete;
 
-    Recording* fRecording;
+    raw_ptr<Recording> fRecording;
 
     friend class Recording;  // to construct/copy this type.
 };

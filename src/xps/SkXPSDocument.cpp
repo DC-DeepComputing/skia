@@ -70,7 +70,9 @@ void SkXPSDocument::onClose(SkWStream*) {
     (void)fDevice.endPortfolio();
 }
 
-void SkXPSDocument::onAbort() {}
+void SkXPSDocument::onAbort() {
+    fDevice.cleanup();
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 

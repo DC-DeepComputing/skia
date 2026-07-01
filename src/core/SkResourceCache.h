@@ -6,6 +6,9 @@
  */
 
 #ifndef SkResourceCache_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
+
 #define SkResourceCache_DEFINED
 
 #include "include/private/SkDebug.h"
@@ -67,7 +70,7 @@ public:
         // split uint64_t into hi and lo so we don't force ourselves to pad on 32bit machines.
         uint32_t fSharedID_lo;
         uint32_t fSharedID_hi;
-        void*    fNamespace; // A unique namespace tag. This is hashed.
+        RAW_PTR_EXCLUSION void*    fNamespace; // A unique namespace tag. This is hashed.
         /* uint32_t fContents32[] */
 
         const uint32_t* as32() const { return (const uint32_t*)this; }
@@ -105,8 +108,8 @@ public:
         virtual SkDiscardableMemory* diagnostic_only_getDiscardable() const { return nullptr; }
 
     private:
-        Rec*    fNext;
-        Rec*    fPrev;
+        raw_ptr<Rec, DanglingUntriaged> fNext;
+        raw_ptr<Rec, DanglingUntriaged> fPrev;
 
         friend class SkResourceCache;
     };
@@ -260,11 +263,11 @@ public:
     virtual void dump() const;
 
 private:
-    Rec*    fHead;
-    Rec*    fTail;
+    raw_ptr<Rec, DanglingUntriaged> fHead;
+    raw_ptr<Rec, DanglingUntriaged> fTail;
 
     class Hash;
-    Hash*   fHash;
+    raw_ptr<Hash, DanglingUntriaged> fHash;
 
     DiscardableFactory  fDiscardableFactory;
 
