@@ -121,6 +121,24 @@
       "parentUuid": "4a8c00cc_482f17f9",
       "revId": "661cbd2ac1ba0de7965cba5d2f6e64c54b169fd1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19016e2e_529e20e2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2026-07-02T10:00:43Z",
+      "side": 1,
+      "message": "Similarly `scaledemojipos_sbix` loses emoji renderings on in the set of Gold results above.",
+      "parentUuid": "0e790d4f_d33c913c",
+      "revId": "661cbd2ac1ba0de7965cba5d2f6e64c54b169fd1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
