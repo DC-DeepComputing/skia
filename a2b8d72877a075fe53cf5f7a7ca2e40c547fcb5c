@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0abde8cf_c427d6b4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-02T01:54:48Z",
+      "side": 1,
+      "message": "Generally lgtm, I just posted some thoughts on how to adjust the PaintParams API a bit",
+      "revId": "a2b8d72877a075fe53cf5f7a7ca2e40c547fcb5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96f3efdd_d73de3c4",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 1031,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-02T01:54:48Z",
+      "side": 1,
+      "message": "We could declare `primitiveBlender` alonside `primitiveColorOverride and then the second ternary could be moved into the if statement, which might be clearer.\n\nAlternatively, we could have the PaintParams constructor take the primitive blender and override color as non-optional arguments.  Then inside this loop, we could do something like\n\n`PaintParams params \u003d colors.empty() ? PaintParams(paint) : PaintParams(paint, primitiveBlender, colors[i])`\n\nAnother API option, given the number of constructor variants that we are creating in PaintParams would be to add a static factory that was something like `PaintParams::withPrimitiveColor(primitiveBlender, color)`.  It would take in an existing PaintParams and modify just the primitive blender field, then we would create one base PaintParams(paint) outside the atlas for loop and then the drawGeometry() call would take in `colors.empty() ? params : params.withPrimitiveColor(primitiveBlender, colors[i]);`",
+      "range": {
+        "startLine": 1031,
+        "startChar": 0,
+        "endLine": 1031,
+        "endChar": 43
+      },
+      "revId": "a2b8d72877a075fe53cf5f7a7ca2e40c547fcb5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8cf5fc6e_52c89646",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 1039,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-02T01:54:48Z",
+      "side": 1,
+      "message": "I would just pass in the `PaintParams(...)` directly here.",
+      "range": {
+        "startLine": 1039,
+        "startChar": 27,
+        "endLine": 1039,
+        "endChar": 33
+      },
+      "revId": "a2b8d72877a075fe53cf5f7a7ca2e40c547fcb5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
