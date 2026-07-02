@@ -1387,6 +1387,9 @@ void VulkanCommandBuffer::bindUniformBuffers() {
     const bool hasGradientBuffer =
             fActiveGraphicsPipeline->hasGradientBuffer() &&
             fUniformBuffersToBind[Pipeline::kGradientBufferIndex].fBuffer;
+    const bool hasVertexStorageBuffer =
+            fActiveGraphicsPipeline->hasVertexStorageBuffer() &&
+            fUniformBuffersToBind[Pipeline::kVertexStorageBufferIndex].fBuffer;
 
     // We should never have a gradient buffer without having a combined uniform buffer as well.
     SkASSERT(!hasGradientBuffer || hasCombinedUbo);
@@ -1408,11 +1411,11 @@ void VulkanCommandBuffer::bindUniformBuffers() {
     SkASSERT(uniformBufferType != DescriptorType::kStorageBuffer ||
              vulkanBuffer->bufferUsageFlags() | VK_BUFFER_USAGE_STORAGE_BUFFER_BIT);
 
-    // We expect to have up to 2 descriptors within this set. Fill out DescriptorData (for
+    // We expect to have up to 3 descriptors within this set. Fill out DescriptorData (for
     // interfacing with backend-agnostic graphite calls) and dynamic offset information for each
     // uniform, starting with the combined uniform buffer.
-    skia_private::STArray<2, DescriptorData> uniformDescriptorData;
-    skia_private::STArray<2, uint32_t> dynamicOffsets;
+    skia_private::STArray<3, DescriptorData> uniformDescriptorData;
+    skia_private::STArray<3, uint32_t> dynamicOffsets;
 
     uniformDescriptorData.push_back({
             uniformBufferType,
@@ -1432,11 +1435,20 @@ void VulkanCommandBuffer::bindUniformBuffers() {
         dynamicOffsets.push_back(fUniformBuffersToBind[Pipeline::kGradientBufferIndex].fOffset);
     }
 
+    if (hasVertexStorageBuffer) {
+        uniformDescriptorData.push_back({DescriptorType::kStorageBuffer,
+                                         /*count=*/1,
+                                         Pipeline::kVertexStorageBufferIndex,
+                                         PipelineStageFlags::kVertexShader});
+        dynamicOffsets.push_back(fUniformBuffersToBind[Pipeline::kVertexStorageBufferIndex].fOffset);
+    }
+
     // Now obtain an actual descriptor set. In the case of using only one buffer, we can query
     // the VulkanBuffer for an existing cached set with the appropriate sizing and can avoid
     // performing an update call on the set. Otherwise, obtain a new set and update before binding.
     sk_sp<VulkanDescriptorSet> descSet;
     if (hasGradientBuffer ||
+        hasVertexStorageBuffer ||
         !(descSet = vulkanBuffer->getCachedSingleBufferDescriptorSet(combinedUboInfo.fSize))) {
 
         descSet = fResourceProvider->findOrCreateDescriptorSet(uniformDescriptorData);
