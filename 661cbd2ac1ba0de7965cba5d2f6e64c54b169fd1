@@ -85,6 +85,24 @@
       "parentUuid": "8ca0a2ab_45c720d7",
       "revId": "661cbd2ac1ba0de7965cba5d2f6e64c54b169fd1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a8c00cc_482f17f9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2026-07-02T09:51:22Z",
+      "side": 1,
+      "message": "Good, the ebdt test looks good now, but in the Gold status above (can you access that?) Tests like  coloremoji_blendmodes_sbix start to lose their emoji display - can you confirm?",
+      "parentUuid": "35ec006a_78dcd3e9",
+      "revId": "661cbd2ac1ba0de7965cba5d2f6e64c54b169fd1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
