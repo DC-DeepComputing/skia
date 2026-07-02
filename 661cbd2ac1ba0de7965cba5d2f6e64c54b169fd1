@@ -103,6 +103,24 @@
       "parentUuid": "35ec006a_78dcd3e9",
       "revId": "661cbd2ac1ba0de7965cba5d2f6e64c54b169fd1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e790d4f_d33c913c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3916209
+      },
+      "writtenOn": "2026-07-02T09:59:38Z",
+      "side": 1,
+      "message": "I am not able to access the gold status. As per your earlier comment i checked `coloremoji_sbix` and this was same as previous. Let me check the `coloremoji_blendmodes_sbix` once.\n\nThanks for sharing the result.",
+      "parentUuid": "4a8c00cc_482f17f9",
+      "revId": "661cbd2ac1ba0de7965cba5d2f6e64c54b169fd1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
