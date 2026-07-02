@@ -18,12 +18,15 @@ DrawWriter::DrawWriter(DrawPassCommands::List* commandList, DrawBufferManager* b
         , fPrimitiveType(PrimitiveType::kTriangles)
         , fStaticStride(0)
         , fAppendStride(0)
+        , fStorageStride(0)
         , fAppend({})
         , fStatic({})
         , fIndices({})
+        , fStorage({})
         , fBoundAppend({})
         , fBoundStatic({})
         , fBoundIndices({})
+        , fBoundStorage({})
         , fTemplateCount(0)
         , fPendingCount(0) {
     SkASSERT(commandList && bufferManager);
@@ -84,6 +87,13 @@ void DrawWriter::flushInternal(BindBufferInfo appendData) {
     if (bind(fIndices, sizeof(uint16_t), fBoundIndices, pendingBaseIndices)) {
         fCommandList->bindIndexBuffer(fBoundIndices);
     }
+    if (fPendingStorageCount > 0) {
+        BindBufferInfo storageData = {fStorage.fBuffer, fStorage.fOffset, fPendingStorageCount * fStorageStride};
+        if (fBoundStorage != storageData) {
+            fBoundStorage = storageData;
+            fCommandList->bindUniformBuffer(fBoundStorage, UniformSlot::kVertexStorage);
+        }
+    }
 
     // Before any draw commands are added, check if the DrawWriter has an assigned barrier type
     // to issue prior to draw calls.
@@ -137,7 +147,9 @@ void DrawWriter::flushInternal(BindBufferInfo appendData) {
     // pipeline state or flushing for a new buffer during appending data. But if we flushed because
     // of other dynamic state changes, there might not be interaction with the BufferManager.
     fAppend.fOffset += advanceOffset * fAppendStride;
+    fStorage.fOffset += fPendingStorageCount * fStorageStride;
     fPendingCount = 0;
+    fPendingStorageCount = 0;
 }
 
 } // namespace skgpu::graphite

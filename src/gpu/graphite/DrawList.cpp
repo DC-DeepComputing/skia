@@ -186,7 +186,8 @@ std::unique_ptr<DrawPass> DrawList::snapDrawPass(Recorder* recorder,
                                         renderStep.staticDataStride(),
                                         renderStep.appendDataStride(),
                                         renderStep.getRenderStateFlags(),
-                                        draw.drawParams().barrierBeforeDraws());
+                                        draw.drawParams().barrierBeforeDraws(),
+                                        renderStep.vertexStorageStride());
         } else if (stateChange) {
             drawWriter.newDynamicState();
         } else if (draw.drawParams().barrierBeforeDraws() != BarrierType::kNone &&
