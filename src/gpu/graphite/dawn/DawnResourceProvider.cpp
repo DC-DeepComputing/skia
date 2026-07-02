@@ -665,10 +665,15 @@ wgpu::BindGroup DawnResourceProvider::findOrCreateSingleUniformBindGroup(
     gradientBufferNullEntry.binding = DawnGraphicsPipeline::kGradientBufferIndex;
     gradientBufferNullEntry.buffer  = this->getOrCreateNullBuffer();
 
+    wgpu::BindGroupEntry vertexStorageBufferNullEntry;
+    vertexStorageBufferNullEntry.binding = DawnGraphicsPipeline::kVertexStorageBufferIndex;
+    vertexStorageBufferNullEntry.buffer  = this->getOrCreateNullBuffer();
+
     std::array<wgpu::BindGroupEntry, kNumUniformEntries> entries = {
         intrinsicConstantNullEntry,
         combinedUniformEntry,
-        gradientBufferNullEntry
+        gradientBufferNullEntry,
+        vertexStorageBufferNullEntry
     };
 
     wgpu::BindGroup bindGroup = this->createBindGroup(

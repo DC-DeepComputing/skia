@@ -147,4 +147,46 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(BufferManagerMappedVertexStorageTest, r
                     std::string_view(mappedVs.fBuffer->getLabel()) == "MappedVertexStorageBuffer");
 }
 
+DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(BufferManagerSecondaryStorageBufferTest, reporter, context,
+                                         CtsEnforcement::kNever) {
+    std::unique_ptr<Recorder> recorder = context->makeRecorder();
+    DrawBufferManager* mgr = recorder->priv().drawBufferManager();
+
+    DrawPassCommands::List commandList;
+    DrawWriter writer(&commandList, mgr);
+
+    // Set a storage stride of 16 bytes
+    writer.newPipelineState(PrimitiveType::kTriangles,
+                            /*staticStride=*/0,
+                            /*appendStride=*/4,
+                            RenderStateFlags::kAppendInstances,
+                            BarrierType::kNone,
+                            /*storageStride=*/16);
+
+    {
+        VertexWriter storageWriter = writer.appendVertexStorage(1);
+        REPORTER_ASSERT(reporter, storageWriter);
+        storageWriter << 1.f << 2.f << 3.f << 4.f;
+
+        DrawWriter::Instances appender(writer, {}, {}, 3);
+        appender.append(2);
+    }
+    writer.flush();
+
+    // Verify command list contains BindUniformBuffer with slot kVertexStorage
+    bool foundBindVertexStorage = false;
+    for (auto [type, cmd] : commandList.commands()) {
+        if (type == DrawPassCommands::Type::kBindUniformBuffer) {
+            auto bub = static_cast<DrawPassCommands::BindUniformBuffer*>(cmd);
+            if (bub->fSlot == UniformSlot::kVertexStorage) {
+                REPORTER_ASSERT(reporter, bub->fInfo.fBuffer != nullptr);
+                // Size should be 1 * 16 bytes
+                REPORTER_ASSERT(reporter, bub->fInfo.fSize == 16);
+                foundBindVertexStorage = true;
+            }
+        }
+    }
+    REPORTER_ASSERT(reporter, foundBindVertexStorage);
+}
+
 }  // namespace skgpu::graphite
