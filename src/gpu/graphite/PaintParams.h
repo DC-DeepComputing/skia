@@ -79,6 +79,7 @@ public:
     const SkColorFilter* colorFilter() const { return fColorFilter; }
     const SkBlender* primitiveBlender() const { return fPrimitiveBlender; }
     bool skipPrimitiveColorXform() const { return fSkipColorXform; }
+    const SkPathEffect* pathEffect() const { return fPathEffect; }
 
     const SkBlender* finalBlender() const { return fFinalBlend.first; }
     // Must also check finalBlender() to see if that overrides finalBlendMode() behavior.
@@ -118,6 +119,7 @@ private:
     const SkBlender* fPrimitiveBlender;
     bool             fSkipColorXform;
     bool             fDither;
+    const SkPathEffect* fPathEffect;
 };
 
 // ShadingParams wraps a PaintParams with the additional per-pixel state to handle clipping and
