@@ -156,6 +156,9 @@ public:
     // Returns true if the device supports importing Android hardware buffers into Vulkan memory.
     bool supportsAndroidHWBExternalMemory() const { return fSupportsAndroidHWBExternalMemory; }
 
+    // Returns true if the device supports VK_EXT_queue_family_foreign.
+    bool supportsForeignQueueFamily() const { return fSupportsForeignQueueFamily; }
+
     // Returns true if it supports ycbcr conversion for samplers
     bool supportsYcbcrConversion() const { return fSupportsYcbcrConversion; }
 
@@ -460,6 +463,8 @@ private:
     bool fSupportsSwapchain = false;
 
     bool fSupportsAndroidHWBExternalMemory = false;
+
+    bool fSupportsForeignQueueFamily = false;
 
     bool fSupportsYcbcrConversion = false;
 

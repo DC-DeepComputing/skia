@@ -304,6 +304,10 @@ static GrBackendTexture make_vk_backend_texture(
         return GrBackendTexture();
     }
 
+    const uint32_t initialQueueFamily = gpu->vkCaps().supportsForeignQueueFamily()
+            ? VK_QUEUE_FAMILY_FOREIGN_EXT
+            : VK_QUEUE_FAMILY_EXTERNAL;
+
     GrVkImageInfo imageInfo;
     imageInfo.fImage = image;
     imageInfo.fAlloc = alloc;
@@ -311,10 +315,7 @@ static GrBackendTexture make_vk_backend_texture(
     imageInfo.fImageLayout = VK_IMAGE_LAYOUT_UNDEFINED;
     imageInfo.fFormat = grBackendVkFormat;
     imageInfo.fLevelCount = 1;
-    // TODO: This should possibly be VK_QUEUE_FAMILY_FOREIGN_EXT but current Adreno devices do not
-    // support that extension. Or if we know the source of the AHardwareBuffer is not from a
-    // "foreign" device we can leave them as external.
-    imageInfo.fCurrentQueueFamily = VK_QUEUE_FAMILY_EXTERNAL;
+    imageInfo.fCurrentQueueFamily = initialQueueFamily;
     imageInfo.fProtected = isProtectedContent ? GrProtected::kYes : GrProtected::kNo;
     imageInfo.fYcbcrConversionInfo = *ycbcrConversion;
     imageInfo.fSharingMode = imageCreateInfo.sharingMode;

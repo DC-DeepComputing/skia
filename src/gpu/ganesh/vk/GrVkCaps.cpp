@@ -342,6 +342,9 @@ void GrVkCaps::init(const GrContextOptions& contextOptions,
         fSupportsAndroidHWBExternalMemory = true;
         fSupportsAHardwareBufferImages = true;
     }
+
+    fSupportsForeignQueueFamily =
+            extensions.hasExtension(VK_EXT_QUEUE_FAMILY_FOREIGN_EXTENSION_NAME, 1);
 #endif
 
     const auto ycbcrFeatures =
