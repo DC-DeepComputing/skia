@@ -87,8 +87,19 @@ bool SkStreamAdapter::seek_relative(int64_t requestedOffset, uint64_t& finalPos)
         return false;
     }
 
-    // Only move the stream if the offset is non-zero, as zero offset should be no-op.
-    if (offset != 0 && !fStream->move(offset)) {
+    if (offset < 0) {
+        if (offset == std::numeric_limits<long>::min()) {
+            return false;
+        }
+        size_t position = fStream->getPosition();
+        size_t distance = safe.castTo<size_t>(-offset);
+        if (!safe.ok() || distance > position) {
+            return false;
+        }
+        if (!fStream->seek(position - distance)) {
+            return false;
+        }
+    } else if (offset > 0 && !fStream->move(offset)) {
         return false;
     }
 
