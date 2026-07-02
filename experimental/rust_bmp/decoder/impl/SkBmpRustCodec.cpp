@@ -49,6 +49,8 @@ static_assert(static_cast<int>(rust_bmp::BmpAlpha::Unpremul) ==
               static_cast<int>(SkEncodedInfo::kUnpremul_Alpha),
               "BmpAlpha::Unpremul must match SkEncodedInfo::kUnpremul_Alpha");
 
+static constexpr size_t kInMemoryReaderThreshold = 4 * 1024;
+
 namespace {
 
 // Helper function to map Rust DecodingResult to SkCodec::Result
@@ -86,9 +88,22 @@ std::unique_ptr<SkBmpRustCodec> SkBmpRustCodec::MakeFromStream(std::unique_ptr<S
         return nullptr;
     }
 
-    auto inputAdapter = std::make_unique<rust::stream::SkStreamAdapter>(stream.get());
-    rust::Box<rust_bmp::ResultOfReader> resultOfReader =
-            rust_bmp::new_reader(std::move(inputAdapter));
+    // Fast path: if stream data is fully available in memory, pass it directly
+    // to Rust as a slice. This avoids SkStreamAdapter + BufReader heap
+    // allocations and virtual call overhead.
+    rust::Box<rust_bmp::ResultOfReader> resultOfReader = [&]() {
+        const void* memBase = stream->getMemoryBase();
+        if (memBase && stream->hasLength() &&
+            stream->getLength() <= kInMemoryReaderThreshold) {
+            size_t length = stream->getLength();
+            rust::Slice<const uint8_t> dataSlice(
+                static_cast<const uint8_t*>(memBase), length);
+            return rust_bmp::new_reader_from_data(dataSlice);
+        }
+        // Streaming path: use SkStreamAdapter + BufReader.
+        auto inputAdapter = std::make_unique<rust::stream::SkStreamAdapter>(stream.get());
+        return rust_bmp::new_reader(std::move(inputAdapter));
+    }();
 
     rust_bmp::DecodingResult rustResult = resultOfReader->err();
     if (rustResult != rust_bmp::DecodingResult::Success) {
@@ -230,9 +245,18 @@ bool SkBmpRustCodec::onRewind() {
         return false;
     }
 
-    auto inputAdapter = std::make_unique<rust::stream::SkStreamAdapter>(fPrivStream.get());
-    rust::Box<rust_bmp::ResultOfReader> resultOfReader =
-            rust_bmp::new_reader(std::move(inputAdapter));
+    rust::Box<rust_bmp::ResultOfReader> resultOfReader = [&]() {
+        const void* memBase = fPrivStream->getMemoryBase();
+        if (memBase && fPrivStream->hasLength() &&
+            fPrivStream->getLength() <= kInMemoryReaderThreshold) {
+            size_t length = fPrivStream->getLength();
+            rust::Slice<const uint8_t> dataSlice(
+                static_cast<const uint8_t*>(memBase), length);
+            return rust_bmp::new_reader_from_data(dataSlice);
+        }
+        auto inputAdapter = std::make_unique<rust::stream::SkStreamAdapter>(fPrivStream.get());
+        return rust_bmp::new_reader(std::move(inputAdapter));
+    }();
 
     if (resultOfReader->err() != rust_bmp::DecodingResult::Success) {
         return false;
