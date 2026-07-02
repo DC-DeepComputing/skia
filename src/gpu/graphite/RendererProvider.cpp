@@ -127,7 +127,8 @@ RendererProvider::RendererProvider(const Caps* caps, StaticBufferManager* buffer
                         infinitySupport, kDirectDepthLessPass, bufferManager),
                  DrawTypeFlags::kNonSimpleShape);
     initFromStep(&fTessellatedStrokes,
-                 std::make_unique<TessellateStrokesRenderStep>(layout, infinitySupport),
+                 std::make_unique<TessellateStrokesRenderStep>(layout, infinitySupport,
+                                                               caps->vertexStorageSupport()),
                  DrawTypeFlags::kNonSimpleShape);
     initFromStep(&fCoverageMask,
                  std::make_unique<CoverageMaskRenderStep>(layout),

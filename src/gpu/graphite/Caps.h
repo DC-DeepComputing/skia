@@ -279,7 +279,7 @@ public:
     bool storageBufferSupport() const { return fStorageBufferSupport; }
 
     /* Returns whether storage buffers can be used for vertex/instance storage. */
-    bool vertexStorageSupport() const { return false; }
+    bool vertexStorageSupport() const { return true; }
 
     /**
      * The gradient buffer is an unsized float array so it is only optimal memory-wise to use it if
