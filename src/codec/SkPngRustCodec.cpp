@@ -858,8 +858,115 @@ SkCodec::Result SkPngRustCodec::initializeSamplerParams(DecodingState& decodingS
     return kSuccess;
 }
 
-SkCodec::Result SkPngRustCodec::incrementalDecodeXForm(DecodingState& decodingState,
-                                                       int* rowsDecodedPtr) {
+void SkPngRustCodec::flushInterlacedBufferOnHalt(const DecodingState& decodingState) {
+    if (!fReader->interlaced() || decodingState.fPreblendBuffer.empty()) {
+        return;
+    }
+
+    if (!this->options().fSubset && !this->isSampling()) {
+        return;
+    }
+
+    const DecodingDstInfo& decodingDst = decodingState.fDecodingDstInfo;
+    const int srcHeight = decodingState.fLastRow - decodingState.fFirstRow + 1;
+    const int decodedDstHeight = this->getDecodedDstHeight(decodingState);
+
+    this->getSubsetOrSampleFromFullImage(decodingState.fPreblendBuffer,
+                                         decodingDst.fDst,
+                                         decodingDst.fDstRowStride,
+                                         decodingState.fYByteOffset,
+                                         srcHeight,
+                                         decodedDstHeight,
+                                         decodingDst.fDstRowSize);
+}
+
+void SkPngRustCodec::updateRowsDecoded(int* rowsDecoded,
+                                       Result result,
+                                       const DecodingState& decodingState) {
+    if (!rowsDecoded || result == kSuccess) {
+        return;
+    }
+
+    if (!fReader->interlaced()) {
+        *rowsDecoded = decodingState.fRowsWrittenToOutput;
+        return;
+    }
+
+    *rowsDecoded = this->getDecodedDstHeight(decodingState);
+}
+
+static int get_next_adam7_row(int height, int& pass, int& line) {
+    if (pass >= 7) {
+        return -1;
+    }
+
+    int startY = 0;
+    int stepY = 0;
+    switch (pass) {
+        case 0:
+            startY = 0;
+            stepY = 8;
+            break;
+        case 1:
+            startY = 0;
+            stepY = 8;
+            break;
+        case 2:
+            startY = 4;
+            stepY = 8;
+            break;
+        case 3:
+            startY = 0;
+            stepY = 4;
+            break;
+        case 4:
+            startY = 2;
+            stepY = 4;
+            break;
+        case 5:
+            startY = 0;
+            stepY = 2;
+            break;
+        case 6:
+            startY = 1;
+            stepY = 2;
+            break;
+        default:
+            SkUNREACHABLE;
+    }
+
+    int row = startY + line * stepY;
+    if (row >= height) {
+        pass++;
+        line = 0;
+        return get_next_adam7_row(height, pass, line);
+    }
+
+    line++;
+    return row;
+}
+
+int SkPngRustCodec::getDecodedDstHeight(const DecodingState& decodingState) const {
+    if (decodingState.fMaxRowWritten < 0) {
+        return 0;
+    }
+
+    const int srcHeight = decodingState.fLastRow - decodingState.fFirstRow + 1;
+    const int maxRowWritten = decodingState.fMaxRowWritten + 1;
+
+    const int sampleY = this->swizzler() ? this->swizzler()->sampleY() : 1;
+    const int dstHeight = SkCodecPriv::GetSampledDimension(srcHeight, sampleY);
+    const int limit = std::min(srcHeight, maxRowWritten - decodingState.fFirstRow);
+    const int startCoord = SkCodecPriv::GetStartCoord(sampleY);
+
+    int decodedDstHeight = 0;
+    if (limit > startCoord) {
+        decodedDstHeight = (limit - startCoord + sampleY - 1) / sampleY;
+    }
+    return std::min(dstHeight, decodedDstHeight);
+}
+
+SkCodec::Result SkPngRustCodec::incrementalDecodeXForm(DecodingState& decodingState) {
     SkASSERT_RELEASE(!this->canReadRow());
     this->initializeXformParams();
 
@@ -882,8 +989,8 @@ SkCodec::Result SkPngRustCodec::incrementalDecodeXForm(DecodingState& decodingSt
         fStreamIsPositionedAtStartOfFrameData = false;
         Result result = ToSkCodecResult(fReader->next_interlaced_row(decodedRow));
         if (result != kSuccess) {
-            if (result == kIncompleteInput && rowsDecodedPtr) {
-                *rowsDecodedPtr = decodingState.fRowsWrittenToOutput;
+            if (result == kIncompleteInput) {
+                this->flushInterlacedBufferOnHalt(decodingState);
             }
             return result;
         }
@@ -950,6 +1057,10 @@ SkCodec::Result SkPngRustCodec::incrementalDecodeXForm(DecodingState& decodingSt
                                                      /*xFormNeeded=*/true);
                 }
             }
+            decodingState.fMaxRowWritten = std::max(decodingState.fMaxRowWritten,
+                                                    get_next_adam7_row(this->getInfo().height(),
+                                                                       decodingState.fAdam7Pass,
+                                                                       decodingState.fAdam7Line));
             // `fRowsWrittenToOutput` is not incremented, because full, contiguous rows
             // are not decoded until pass 6 (or 7 depending on how you look) of
             // Adam7 interlacing scheme.
@@ -988,8 +1099,7 @@ SkCodec::Result SkPngRustCodec::incrementalDecodeXForm(DecodingState& decodingSt
     }
 }
 
-SkCodec::Result SkPngRustCodec::incrementalDecode(DecodingState& decodingState,
-                                                  int* rowsDecodedPtr) {
+SkCodec::Result SkPngRustCodec::incrementalDecode(DecodingState& decodingState) {
     SkASSERT_RELEASE(this->canReadRow());
     const bool interlaced = fReader->interlaced();
     rust::Slice<uint8_t> dstSlice;
@@ -1013,8 +1123,8 @@ SkCodec::Result SkPngRustCodec::incrementalDecode(DecodingState& decodingState,
         Result result = ToSkCodecResult(rustResult);
 
         if (result != kSuccess) {
-            if (result == kIncompleteInput && rowsDecodedPtr) {
-                *rowsDecodedPtr = decodingState.fRowsWrittenToOutput;
+            if (result == kIncompleteInput) {
+                this->flushInterlacedBufferOnHalt(decodingState);
             }
             return result;
         }
@@ -1028,7 +1138,7 @@ SkCodec::Result SkPngRustCodec::incrementalDecode(DecodingState& decodingState,
                              decodingDst.fDstRowStride,
                              this->dstInfo().colorType(),
                              this->dstInfo().alphaType());
-                }
+            }
 
             if (!interlaced) {
                 // All of the original `fDst` should be filled out at this point.
@@ -1055,6 +1165,10 @@ SkCodec::Result SkPngRustCodec::incrementalDecode(DecodingState& decodingState,
                                                  decodingDst,
                                                  /*xFormNeeded=*/false);
             }
+            decodingState.fMaxRowWritten = std::max(decodingState.fMaxRowWritten,
+                                                    get_next_adam7_row(this->getInfo().height(),
+                                                                       decodingState.fAdam7Pass,
+                                                                       decodingState.fAdam7Line));
             // `fRowsWrittenToOutput` is not incremented, because full, contiguous rows
             // are not decoded until pass 6 (or 7 depending on how you look) of
             // Adam7 interlacing scheme.
@@ -1085,10 +1199,12 @@ SkCodec::Result SkPngRustCodec::onGetPixels(const SkImageInfo& dstInfo,
     }
 
     if (this->canReadRow()) {
-        result = this->incrementalDecode(decodingState, rowsDecoded);
+        result = this->incrementalDecode(decodingState);
     } else {
-        result = this->incrementalDecodeXForm(decodingState, rowsDecoded);
+        result = this->incrementalDecodeXForm(decodingState);
     }
+
+    this->updateRowsDecoded(rowsDecoded, result, decodingState);
     return result;
 }
 
@@ -1115,10 +1231,13 @@ SkCodec::Result SkPngRustCodec::onIncrementalDecode(int* rowsDecoded) {
 
     Result result;
     if (this->canReadRow()) {
-        result = this->incrementalDecode(*fIncrementalDecodingState, rowsDecoded);
+        result = this->incrementalDecode(*fIncrementalDecodingState);
     } else {
-        result = this->incrementalDecodeXForm(*fIncrementalDecodingState, rowsDecoded);
+        result = this->incrementalDecodeXForm(*fIncrementalDecodingState);
     }
+
+    this->updateRowsDecoded(rowsDecoded, result, *fIncrementalDecodingState);
+
     if (result != kIncompleteInput) {
         // After successfully reading the whole row (`kSuccess`), and after a
         // fatal error (only recoverable error is `kIncompleteInput`) our client
