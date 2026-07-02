@@ -93,6 +93,12 @@ private:
         // The y offset for a subset in the encoded color type, not the dst color type.
         // Only used for interlaced images.
         size_t fYByteOffset = 0;
+
+        // Tracks the maximum row index written so far.
+        // Only used for interlaced images.
+        int fMaxRowWritten = -1;
+        int fAdam7Pass = 0;
+        int fAdam7Line = 0;
     };
 
     // Helper for validating parameters of `onGetPixels` and/or
@@ -113,10 +119,10 @@ private:
 
     // Helper for row-by-row decoding which is used from `onGetPixels` and/or
     // `onIncrementalDecode`.
-    Result incrementalDecode(DecodingState& decodingState, int* rowsDecoded);
+    Result incrementalDecode(DecodingState& decodingState);
     // The same as incrementalDecode but uses `applyXFormRow()`. Should only
     // be used if this->canReadRows() is false.
-    Result incrementalDecodeXForm(DecodingState& decodingState, int* rowsDecoded);
+    Result incrementalDecodeXForm(DecodingState& decodingState);
 
     // Helper for reading until the start of the next `fdAT` sequence.
     Result readToStartOfNextFrame();
@@ -228,6 +234,9 @@ private:
                                         int srcHeight,
                                         int dstHeight,
                                         size_t dstRowSize);
+    void flushInterlacedBufferOnHalt(const DecodingState& decodingState);
+    void updateRowsDecoded(int* rowsDecoded, Result result, const DecodingState& decodingState);
+    int getDecodedDstHeight(const DecodingState& decodingState) const;
 };
 
 #endif  // SkPngRustCodec_DEFINED
