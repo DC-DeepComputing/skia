@@ -40,6 +40,7 @@ void Caps::setDefaultShaderCaps() {
     fShaderCaps->fNonsquareMatrixSupport = true;
     fShaderCaps->fInverseHyperbolicSupport = true;
     fShaderCaps->fFloatIs32Bits = true;
+    fShaderCaps->fVertexIDSupport = true;
 }
 
 void Caps::finishInitialization(const ContextOptions& options) {
