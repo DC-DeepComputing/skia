@@ -2783,20 +2783,25 @@ bool skcms_Transform(const void*             src,
     }
     // TODO: more careful alias rejection (like, dst == src + 1)?
 
-    Op          program[32];
-    const void* context[32];
+    const int kMaxOps = 32;
+    Op          program[kMaxOps];
+    const void* context[kMaxOps];
 
     Op*          ops      = program;
     const void** contexts = context;
 
     auto add_op = [&](Op o) {
-        *ops++ = o;
-        *contexts++ = nullptr;
+        if (ops - program < kMaxOps) {
+            *ops++ = o;
+            *contexts++ = nullptr;
+        }
     };
 
     auto add_op_ctx = [&](Op o, const void* c) {
-        *ops++ = o;
-        *contexts++ = c;
+        if (ops - program < kMaxOps) {
+            *ops++ = o;
+            *contexts++ = c;
+        }
     };
 
     auto add_curve_ops = [&](const skcms_Curve* curves, int numChannels) -> bool {
