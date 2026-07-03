@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9cbae20c_743040c9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3916209
+      },
+      "writtenOn": "2026-07-03T16:24:28Z",
+      "side": 1,
+      "message": "The vote got reset . There is no diff from the approved PS. Please review again.",
+      "revId": "5918ce1c0be0df9294180fae636ad95e04c96f3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
