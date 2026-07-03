@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e770f09c_cf287a90",
+        "filename": "src/text/gpu/SubRunAllocator.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-07-03T16:17:34Z",
+      "side": 1,
+      "message": "Note: Along the way, I turned the pointer into a unique_ptr, because it has ownership of the memory.\n\nIf I don\u0027t, the MiraclePtr rewriter is going to rewrite it to `raw_ptr` and then calling delete on it would free, because releasing the memory, causing the dangling pointer to complain.",
+      "revId": "8f64ade90ed69191a663f2319f78762d50534fd7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2feab031_8e7a9f87",
+        "filename": "src/text/gpu/SubRunAllocator.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 327,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-07-03T16:17:34Z",
+      "side": 1,
+      "message": "Note: With tuple, the destruction order was inverted with clang, starting from the initializer and ending with the allocator.",
+      "revId": "8f64ade90ed69191a663f2319f78762d50534fd7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

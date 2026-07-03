@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "139cd410_3b109022",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-07-03T16:17:34Z",
+      "side": 1,
+      "message": "Hello,\nCould you please take a look?\n\n(I also have one question in the [bug](https://issues.skia.org/issues/530646115))",
+      "revId": "779e60b56cb304f497bd9dee56788c019dd01116",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
