@@ -189,19 +189,21 @@ template <typename T>
 class SubRunInitializer {
 public:
     SubRunInitializer(void* memory) : fMemory{memory} { SkASSERT(memory != nullptr); }
-    ~SubRunInitializer() {
-        ::operator delete(fMemory);
-    }
+
     template <typename... Args>
     T* initialize(Args&&... args) {
-        // Warn on more than one initialization.
         SkASSERT(fMemory != nullptr);
-        return new (std::exchange(fMemory, nullptr)) T(std::forward<Args>(args)...);
+        return new (fMemory.release()) T(std::forward<Args>(args)...);
     }
 
 private:
-    void* fMemory;
+    struct Deleter {
+        void operator()(void* p) const { ::operator delete(p); }
+    };
+    std::unique_ptr<void, Deleter> fMemory;
 };
+
+template <typename T> struct AllocateAndArenaResult;
 
 // GrSubRunAllocator provides fast allocation where the user takes care of calling the destructors
 // of the returned pointers, and GrSubRunAllocator takes care of deleting the storage. The
@@ -234,20 +236,8 @@ public:
     SubRunAllocator& operator=(SubRunAllocator&&) = default;
 
     template <typename T>
-    static std::tuple<SubRunInitializer<T>, int, SubRunAllocator>
-    AllocateClassMemoryAndArena(int allocSizeHint) {
-        SkASSERT_RELEASE(allocSizeHint >= 0);
-        // Round the size after the object the optimal amount.
-        int extraSize = BagOfBytes::PlatformMinimumSizeWithOverhead(allocSizeHint, alignof(T));
-
-        // Don't overflow or die.
-        SkASSERT_RELEASE(INT_MAX - SkTo<int>(sizeof(T)) > extraSize);
-        int totalMemorySize = sizeof(T) + extraSize;
-
-        void* memory = ::operator new (totalMemorySize);
-        SubRunAllocator alloc{SkTAddOffset<char>(memory, sizeof(T)), extraSize, extraSize/2};
-        return {memory, totalMemorySize, std::move(alloc)};
-    }
+    static AllocateAndArenaResult<T>
+    AllocateClassMemoryAndArena(int allocSizeHint);
 
     template <typename T, typename... Args> T* makePOD(Args&&... args) {
         static_assert(HasNoDestructor<T>, "This is not POD. Use makeUnique.");
@@ -327,6 +317,29 @@ public:
 private:
     BagOfBytes fAlloc;
 };
+
+template <typename T>
+struct AllocateAndArenaResult {
+    SubRunInitializer<T> initializer;
+    int totalMemorySize;
+    SubRunAllocator alloc;
+};
+
+template <typename T>
+inline AllocateAndArenaResult<T>
+SubRunAllocator::AllocateClassMemoryAndArena(int allocSizeHint) {
+    SkASSERT_RELEASE(allocSizeHint >= 0);
+    // Round the size after the object the optimal amount.
+    int extraSize = BagOfBytes::PlatformMinimumSizeWithOverhead(allocSizeHint, alignof(T));
+
+    // Don't overflow or die.
+    SkASSERT_RELEASE(INT_MAX - SkTo<int>(sizeof(T)) > extraSize);
+    int totalMemorySize = sizeof(T) + extraSize;
+
+    void* memory = ::operator new (totalMemorySize);
+    SubRunAllocator alloc{SkTAddOffset<char>(memory, sizeof(T)), extraSize, extraSize/2};
+    return {memory, totalMemorySize, std::move(alloc)};
+}
 
 // Helper for defining allocators with inline/reserved storage.
 // For argument declarations, stick to the base type (SubRunAllocator).
