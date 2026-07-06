@@ -274,7 +274,7 @@ public:
 
 private:
     union {
-        void*   fPtrAlignment;
+        RAW_PTR_EXCLUSION void*   fPtrAlignment;
         double  fDoubleAlignment;
         char    fStorage[SIZE];
     } fData;
