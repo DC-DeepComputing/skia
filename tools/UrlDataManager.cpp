@@ -12,9 +12,9 @@
 
 UrlDataManager::UrlDataManager(SkString rootUrl) : fRootUrl(rootUrl), fDataId(0) {}
 
-SkString UrlDataManager::addData(SkData* data, const char* contentType) {
+SkString UrlDataManager::addData(const SkData* data, const char* contentType) {
     UrlData* urlData = fCache.find(*data);
-    if (fCache.find(*data)) {
+    if (urlData) {
         SkASSERT(data->equals(urlData->fData.get()));
         return urlData->fUrl;
     }
