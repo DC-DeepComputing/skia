@@ -203,7 +203,9 @@ SkOSFile::Iter::Iter(const char path[], const char suffix[]) {
 
 SkOSFile::Iter::~Iter() {
     SkOSFileIterData& self = *reinterpret_cast<SkOSFileIterData*>(fSelf);
-    sk_free(self.fPath16);
+    uint16_t* path = self.fPath16;
+    self.fPath16 = nullptr;
+    sk_free(path);
     if (self.fHandle) {
         ::FindClose(self.fHandle);
     }
@@ -220,7 +222,9 @@ void SkOSFile::Iter::reset(const char path[], const char suffix[]) {
         path = "";
     }
 
-    sk_free(self.fPath16);
+    uint16_t* oldPath = self.fPath16;
+    self.fPath16 = nullptr;
+    sk_free(oldPath);
     self.fPath16 = concat_to_16(path, suffix);
 }
 
