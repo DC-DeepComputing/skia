@@ -7,6 +7,7 @@
 
 #ifndef skgpu_graphite_DawnCommandBuffer_DEFINED
 #define skgpu_graphite_DawnCommandBuffer_DEFINED
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include "include/private/SkLog.h"
 #include "src/gpu/graphite/CommandBuffer.h"
@@ -168,8 +169,8 @@ private:
     wgpu::ComputePassEncoder fActiveComputePassEncoder;
 
     struct ResolveStepEmulationInfo {
-        const DawnTexture* fMSAATexture;
-        const DawnTexture* fResolveTexture;
+        RAW_PTR_EXCLUSION const DawnTexture* fMSAATexture = nullptr;
+        RAW_PTR_EXCLUSION const DawnTexture* fResolveTexture = nullptr;
         SkIPoint fMSAAAOffset;
         SkIRect fResolveArea;
     };
