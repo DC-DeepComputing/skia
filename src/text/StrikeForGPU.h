@@ -107,7 +107,8 @@ union IDOrPath {
 // prepareForDrawableDrawing uses this union to convert glyph ids to drawables.
 union IDOrDrawable {
     SkGlyphID fGlyphID;
-    SkDrawable* fDrawable;
+    // RAW_PTR_EXCLUSION: Pointers inside unions cannot be raw_ptr.
+    RAW_PTR_EXCLUSION SkDrawable* fDrawable;
 };
 
 // -- StrikeMutationMonitor ------------------------------------------------------------------------

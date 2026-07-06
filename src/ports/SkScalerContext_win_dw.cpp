@@ -2454,7 +2454,8 @@ SkScalerContext_DW::generatePath(const SkGlyph& glyph) {
 
 sk_sp<SkDrawable> SkScalerContext_DW::generateDrawable(const SkGlyph& glyph) {
     struct GlyphDrawable : public SkDrawable {
-        SkScalerContext_DW* fSelf;
+        // RAW_PTR_EXCLUSION: Drawable may outlive the scaler context.
+        RAW_PTR_EXCLUSION SkScalerContext_DW* fSelf;
         SkGlyph fGlyph;
         GlyphDrawable(SkScalerContext_DW* self, const SkGlyph& glyph) : fSelf(self), fGlyph(glyph){}
         SkRect onGetBounds() override { return fGlyph.rect();  }

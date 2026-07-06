@@ -274,7 +274,8 @@ public:
 
 private:
     union {
-        void*   fPtrAlignment;
+        // RAW_PTR_EXCLUSION: Pointers inside unions cannot be raw_ptr.
+        RAW_PTR_EXCLUSION void*   fPtrAlignment;
         double  fDoubleAlignment;
         char    fStorage[SIZE];
     } fData;
