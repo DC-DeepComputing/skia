@@ -12,6 +12,7 @@
 #include "include/private/SkDebug.h"
 #include "include/private/SkTo.h"
 #include "src/core/SkArenaAlloc.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 #include "src/pathops/SkPathOpsPoint.h"
 #include "src/pathops/SkPathOpsRect.h"
 #include "src/pathops/SkPathOpsTCurve.h"
@@ -354,7 +355,7 @@ private:
 
     const SkTCurve& fCurve;
     SkSTArenaAlloc<1024> fHeap;
-    SkTSpan* fHead;
+    RAW_PTR_EXCLUSION SkTSpan* fHead;
     SkTSpan* fCoincident;
     SkTSpan* fDeleted;
     int fActiveCount;

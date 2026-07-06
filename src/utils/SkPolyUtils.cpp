@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 #include "src/utils/SkPolyUtils.h"
 
 #include "include/core/SkRect.h"
@@ -250,8 +251,8 @@ bool SkIsConvexPolygon(const SkPoint* polygonVerts, int polygonSize) {
 }
 
 struct OffsetEdge {
-    OffsetEdge*   fPrev;
-    OffsetEdge*   fNext;
+    RAW_PTR_EXCLUSION OffsetEdge*   fPrev;
+    RAW_PTR_EXCLUSION OffsetEdge*   fNext;
     OffsetSegment fOffset;
     SkPoint       fIntersection;
     SkScalar      fTValue;

@@ -19,6 +19,7 @@
 #include "include/private/SkTArray.h"
 #include "include/private/SkTemplates.h"
 #include "src/core/SkColorData.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 #include "src/shaders/SkShaderBase.h"
 
 #include <cstddef>
@@ -130,8 +131,8 @@ public:
     void setCachedBitmap(SkBitmap b) const { fColorsAndOffsetsBitmap = b; }
 
 private:
-    SkColor4f* fColors;               // points into fStorage
-    SkScalar* fPositions;             // points into fStorage, or nullptr
+    RAW_PTR_EXCLUSION SkColor4f* fColors;               // points into fStorage
+    RAW_PTR_EXCLUSION SkScalar*  fPositions;             // points into fStorage, or nullptr
     sk_sp<SkColorSpace> fColorSpace;  // color space of gradient stops
     Interpolation fInterpolation;
     size_t fColorCount;               // length of fColors (and fPositions, if not nullptr)

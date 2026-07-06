@@ -12,6 +12,7 @@
 #include "include/private/SkAssert.h"
 #include "include/private/SkTDArray.h"
 #include "src/core/SkArenaAlloc.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <cstddef>
 
@@ -31,7 +32,7 @@ protected:
 
     // In general mode we allocate pointers in fList and fEdgeList points to its head.
     // In polygon mode we preallocated edges contiguously in fAlloc and fEdgeList points there.
-    void**              fEdgeList = nullptr;
+    RAW_PTR_EXCLUSION void** fEdgeList = nullptr;
     SkTDArray<void*>    fList;
     SkSTArenaAlloc<512> fAlloc;
 

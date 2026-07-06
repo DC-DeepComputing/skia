@@ -15,6 +15,7 @@
 #include "src/gpu/graphite/compute/DispatchGroup.h"
 #include "src/gpu/graphite/dawn/DawnGraphicsPipeline.h"
 #include "src/gpu/graphite/dawn/DawnResourceProvider.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include "webgpu/webgpu_cpp.h"  // NO_G3_REWRITE
 
@@ -168,8 +169,8 @@ private:
     wgpu::ComputePassEncoder fActiveComputePassEncoder;
 
     struct ResolveStepEmulationInfo {
-        const DawnTexture* fMSAATexture;
-        const DawnTexture* fResolveTexture;
+        RAW_PTR_EXCLUSION const DawnTexture* fMSAATexture = nullptr;
+        RAW_PTR_EXCLUSION const DawnTexture* fResolveTexture = nullptr;
         SkIPoint fMSAAAOffset;
         SkIRect fResolveArea;
     };

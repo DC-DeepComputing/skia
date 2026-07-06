@@ -14,6 +14,7 @@
 #include "src/core/SkDraw.h"
 #include "src/core/SkRasterClip.h"
 #include "src/core/SkSurfacePriv.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 class SkMatrix;
 class SkPaint;
@@ -60,7 +61,7 @@ public:
 
 private:
     // Owned by fAlloc, which will handle the delete.
-    SkBlitter* fBlitter = nullptr;
+    RAW_PTR_EXCLUSION SkBlitter* fBlitter = nullptr;
 
     SkBlitterSizedArena fAlloc;
 };

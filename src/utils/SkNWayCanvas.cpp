@@ -6,6 +6,7 @@
  */
 
 #include "include/utils/SkNWayCanvas.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -93,7 +94,7 @@ public:
 private:
     const SkTDArray<SkCanvas*>& fList;
     int fIndex;
-    SkCanvas* fCanvas;
+    RAW_PTR_EXCLUSION SkCanvas* fCanvas;
 };
 
 void SkNWayCanvas::willSave() {

@@ -13,6 +13,7 @@
 #include "include/private/SkTemplates.h"
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkRecords.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <cstddef>
 #include <type_traits>
@@ -134,7 +135,7 @@ private:
     // A typed pointer to some bytes in fAlloc.  visit() and mutate() allow polymorphic dispatch.
     struct Record {
         SkRecords::Type fType;
-        void*           fPtr;
+        RAW_PTR_EXCLUSION void* fPtr;
 
         // Point this record to its data in fAlloc.  Returns ptr for convenience.
         template <typename T>

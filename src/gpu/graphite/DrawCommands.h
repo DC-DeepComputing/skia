@@ -14,6 +14,7 @@
 #include "src/core/SkTBlockList.h"
 #include "src/gpu/graphite/CommandTypes.h"
 #include "src/gpu/graphite/ResourceTypes.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <array>
 #include <cstdint>
@@ -93,7 +94,7 @@ public:
 
     ACT_AS_PTR(fPtr)
 private:
-    T* fPtr;
+    RAW_PTR_EXCLUSION T* fPtr;
 };
 
 #undef ACT_AS_PTR
