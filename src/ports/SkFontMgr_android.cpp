@@ -6,6 +6,7 @@
  */
 
 #include "include/core/SkTypes.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkData.h"
 #include "include/core/SkFontMgr.h"
@@ -232,7 +233,7 @@ private:
  */
 struct NameToFamily {
     SkString name;
-    SkFontStyleSet_Android* styleSet;
+    raw_ptr<SkFontStyleSet_Android> styleSet;
 };
 
 class SkFontMgr_Android : public SkFontMgr {
@@ -280,7 +281,7 @@ protected:
         if (index < 0 || fNameToFamilyMap.size() <= index) {
             return nullptr;
         }
-        return sk_ref_sp(fNameToFamilyMap[index].styleSet);
+        return sk_ref_sp(fNameToFamilyMap[index].styleSet.get());
     }
 
     sk_sp<SkFontStyleSet> onMatchFamily(const char familyName[]) const override {
@@ -290,13 +291,13 @@ protected:
         SkAutoAsciiToLC tolc(familyName);
         for (int i = 0; i < fNameToFamilyMap.size(); ++i) {
             if (fNameToFamilyMap[i].name.equals(tolc.lc())) {
-                return sk_ref_sp(fNameToFamilyMap[i].styleSet);
+                return sk_ref_sp(fNameToFamilyMap[i].styleSet.get());
             }
         }
         // TODO: eventually we should not need to name fallback families.
         for (int i = 0; i < fFallbackNameToFamilyMap.size(); ++i) {
             if (fFallbackNameToFamilyMap[i].name.equals(tolc.lc())) {
-                return sk_ref_sp(fFallbackNameToFamilyMap[i].styleSet);
+                return sk_ref_sp(fFallbackNameToFamilyMap[i].styleSet.get());
             }
         }
         return nullptr;

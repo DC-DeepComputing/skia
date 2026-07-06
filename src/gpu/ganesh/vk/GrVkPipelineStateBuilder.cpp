@@ -168,7 +168,7 @@ void GrVkPipelineStateBuilder::storeShadersInCache(const SkSL::NativeShader shad
     // to the key right after the base key.
     sk_sp<SkData> key = SkData::MakeWithoutCopy(this->desc().asKey(),
                                                 this->desc().initialKeyLength()+4);
-    SkString description = GrProgramDesc::Describe(fProgramInfo, *this->caps());
+    SkString description = GrProgramDesc::Describe(*fProgramInfo, *this->caps());
 
     sk_sp<SkData> data = GrPersistentCacheUtils::PackCachedShaders(
             shaders[0].isBinary() ? kSPIRV_Tag : kSKSL_Tag,
@@ -307,7 +307,7 @@ GrVkPipelineState* GrVkPipelineStateBuilder::finalize(const GrProgramDesc& desc,
     // descriptor set must be bound to all pipelines in that subpass. This includes pipelines that
     // don't actually use the input attachment. Thus we look at the renderPassBarriers and not just
     // the DstProxyView barrier flags to determine if we use the input attachment.
-    bool usesInput = SkToBool(fProgramInfo.renderPassBarriers() & GrXferBarrierFlags::kTexture);
+    bool usesInput = SkToBool(fProgramInfo->renderPassBarriers() & GrXferBarrierFlags::kTexture);
     uint32_t layoutCount =
         usesInput ? GrVkUniformHandler::kDescSetCount : (GrVkUniformHandler::kDescSetCount - 1);
     // Create the VkPipelineLayout
@@ -345,12 +345,12 @@ GrVkPipelineState* GrVkPipelineStateBuilder::finalize(const GrProgramDesc& desc,
     // main subpass will be 1.
     uint32_t subpass = 0;
     if (overrideSubpassForResolveLoad ||
-        (fProgramInfo.colorLoadOp() == GrLoadOp::kLoad &&
-         fGpu->vkCaps().programInfoWillUseDiscardableMSAA(fProgramInfo))) {
+        (fProgramInfo->colorLoadOp() == GrLoadOp::kLoad &&
+         fGpu->vkCaps().programInfoWillUseDiscardableMSAA(*fProgramInfo))) {
         subpass = 1;
     }
     sk_sp<const GrVkPipeline> pipeline = resourceProvider.makePipeline(
-            fProgramInfo, shaderStageInfo, numShaderStages, compatibleRenderPass, pipelineLayout,
+            *fProgramInfo, shaderStageInfo, numShaderStages, compatibleRenderPass, pipelineLayout,
             subpass);
 
     for (int i = 0; i < kGrShaderTypeCount; ++i) {

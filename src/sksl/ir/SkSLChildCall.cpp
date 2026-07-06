@@ -39,8 +39,8 @@ std::string ChildCall::description(OperatorPrecedence) const {
 [[maybe_unused]] static bool call_signature_is_valid(const Context& context,
                                                      const Variable& child,
                                                      const ExpressionArray& arguments) {
-    const Type* half4 = context.fTypes.fHalf4.get();
-    const Type* float2 = context.fTypes.fFloat2.get();
+    const Type* half4 = context.fTypes->fHalf4.get();
+    const Type* float2 = context.fTypes->fFloat2.get();
 
     auto params = [&]() -> STArray<2, const Type*> {
         switch (child.type().typeKind()) {

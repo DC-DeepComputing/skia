@@ -6,7 +6,10 @@
  */
 
 #ifndef SkArenaAllocList_DEFINED
+
 #define SkArenaAllocList_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/private/SkAssert.h"
 #include "src/core/SkArenaAlloc.h" // IWYU pragma: keep
@@ -42,7 +45,7 @@ public:
     private:
         friend class SkArenaAllocList;
         explicit Iter(Node* node) : fCurr(node) {}
-        Node* fCurr = nullptr;
+        raw_ptr<Node> fCurr = nullptr;
     };
 
     Iter begin() { return Iter(fHead); }
@@ -54,10 +57,10 @@ private:
         template <typename... Args>
         Node(Args... args) : fT(std::forward<Args>(args)...) {}
         T fT;
-        Node* fNext = nullptr;
+        raw_ptr<Node> fNext = nullptr;
     };
-    Node* fHead = nullptr;
-    Node* fTail = nullptr;
+    raw_ptr<Node, DanglingUntriaged> fHead = nullptr;
+    raw_ptr<Node, DanglingUntriaged> fTail = nullptr;
 };
 
 template <typename T>

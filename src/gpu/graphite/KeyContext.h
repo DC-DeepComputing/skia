@@ -6,7 +6,10 @@
  */
 
 #ifndef skgpu_graphite_KeyContext_DEFINED
+
 #define skgpu_graphite_KeyContext_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkM44.h"
@@ -133,20 +136,20 @@ public:
 
 private:
     // Fields which will not change over the course of building a paint key
-    const Caps* fCaps;
-    Recorder* fRecorder;
-    DrawContext* fDC;
-    FloatStorageManager* fFloatStorageManager;
-    PaintParamsKeyBuilder* fPaintParamsKeyBuilder;
-    PipelineDataGatherer* fPipelineDataGatherer;
-    ShaderCodeDictionary* fDictionary;
+    raw_ptr<const Caps> fCaps;
+    raw_ptr<Recorder> fRecorder;
+    raw_ptr<DrawContext> fDC;
+    raw_ptr<FloatStorageManager> fFloatStorageManager;
+    raw_ptr<PaintParamsKeyBuilder> fPaintParamsKeyBuilder;
+    raw_ptr<PipelineDataGatherer> fPipelineDataGatherer;
+    raw_ptr<ShaderCodeDictionary> fDictionary;
     sk_sp<RuntimeEffectDictionary> fRTEffectDict;
     SkM44 fLocal2Dev;
     SkRect fClipDrawBounds;
 
 protected:
     // Fields that can be modified while walking a paint's effects for a key
-    SkMatrix* fLocalMatrix = nullptr;
+    raw_ptr<SkMatrix> fLocalMatrix = nullptr;
     SkColorInfo fDstColorInfo;
     // Although stored as premul the paint color is actually comprised of an opaque RGB portion
     // and a separate alpha portion. The two portions will never be used together but are stored
