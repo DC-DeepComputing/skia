@@ -53,6 +53,7 @@
 #include "src/gpu/ganesh/glsl/GrGLSLVertexGeoBuilder.h"
 #include "src/gpu/ganesh/ops/GrMeshDrawOp.h"
 #include "src/gpu/ganesh/ops/GrSimpleMeshDrawOpHelper.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #if defined(GPU_TEST_UTILS)
 #include "src/core/SkRandom.h"
@@ -184,7 +185,7 @@ private:
 
     private:
         void onEmitCode(EmitArgs& args, GrGPArgs* gpArgs) override {
-            const CircleGeometryProcessor& cgp = args.fGeomProc.cast<CircleGeometryProcessor>();
+            const CircleGeometryProcessor& cgp = args.fGeomProc->cast<CircleGeometryProcessor>();
             GrGLSLVertexBuilder* vertBuilder = args.fVertBuilder;
             GrGLSLVaryingHandler* varyingHandler = args.fVaryingHandler;
             GrGLSLUniformHandler* uniformHandler = args.fUniformHandler;
@@ -365,7 +366,7 @@ private:
     private:
         void onEmitCode(EmitArgs& args, GrGPArgs* gpArgs) override {
             const ButtCapDashedCircleGeometryProcessor& bcscgp =
-                    args.fGeomProc.cast<ButtCapDashedCircleGeometryProcessor>();
+                    args.fGeomProc->cast<ButtCapDashedCircleGeometryProcessor>();
             GrGLSLVertexBuilder* vertBuilder = args.fVertBuilder;
             GrGLSLVaryingHandler* varyingHandler = args.fVaryingHandler;
             GrGLSLUniformHandler* uniformHandler = args.fUniformHandler;
@@ -626,7 +627,7 @@ private:
 
     private:
         void onEmitCode(EmitArgs& args, GrGPArgs* gpArgs) override {
-            const EllipseGeometryProcessor& egp = args.fGeomProc.cast<EllipseGeometryProcessor>();
+            const EllipseGeometryProcessor& egp = args.fGeomProc->cast<EllipseGeometryProcessor>();
             GrGLSLVertexBuilder* vertBuilder = args.fVertBuilder;
             GrGLSLVaryingHandler* varyingHandler = args.fVaryingHandler;
             GrGLSLUniformHandler* uniformHandler = args.fUniformHandler;
@@ -826,7 +827,7 @@ private:
 
     private:
         void onEmitCode(EmitArgs& args, GrGPArgs* gpArgs) override {
-            const auto& diegp = args.fGeomProc.cast<DIEllipseGeometryProcessor>();
+            const auto& diegp = args.fGeomProc->cast<DIEllipseGeometryProcessor>();
             GrGLSLVertexBuilder* vertBuilder = args.fVertBuilder;
             GrGLSLVaryingHandler* varyingHandler = args.fVaryingHandler;
             GrGLSLUniformHandler* uniformHandler = args.fUniformHandler;
@@ -1534,8 +1535,8 @@ private:
     bool fRoundCaps;
     bool fWideColor;
 
-    GrSimpleMesh*  fMesh = nullptr;
-    GrProgramInfo* fProgramInfo = nullptr;
+    raw_ptr<GrSimpleMesh, DanglingUntriaged> fMesh = nullptr;
+    raw_ptr<GrProgramInfo, DanglingUntriaged> fProgramInfo = nullptr;
 
     using INHERITED = GrMeshDrawOp;
 };
@@ -1853,8 +1854,8 @@ private:
     int fIndexCount;
     bool fWideColor;
 
-    GrSimpleMesh*  fMesh = nullptr;
-    GrProgramInfo* fProgramInfo = nullptr;
+    raw_ptr<GrSimpleMesh, DanglingUntriaged> fMesh = nullptr;
+    raw_ptr<GrProgramInfo, DanglingUntriaged> fProgramInfo = nullptr;
 
     using INHERITED = GrMeshDrawOp;
 };
@@ -2144,8 +2145,8 @@ private:
     bool fUseScale;
     STArray<1, Ellipse, true> fEllipses;
 
-    GrSimpleMesh*  fMesh = nullptr;
-    GrProgramInfo* fProgramInfo = nullptr;
+    raw_ptr<GrSimpleMesh, DanglingUntriaged> fMesh = nullptr;
+    raw_ptr<GrProgramInfo, DanglingUntriaged> fProgramInfo = nullptr;
 
     using INHERITED = GrMeshDrawOp;
 };
@@ -2422,8 +2423,8 @@ private:
     bool fUseScale;
     STArray<1, Ellipse, true> fEllipses;
 
-    GrSimpleMesh*  fMesh = nullptr;
-    GrProgramInfo* fProgramInfo = nullptr;
+    raw_ptr<GrSimpleMesh, DanglingUntriaged> fMesh = nullptr;
+    raw_ptr<GrProgramInfo, DanglingUntriaged> fProgramInfo = nullptr;
 
     using INHERITED = GrMeshDrawOp;
 };
@@ -2890,8 +2891,8 @@ private:
     bool fWideColor;
     STArray<1, RRect, true> fRRects;
 
-    GrSimpleMesh*  fMesh = nullptr;
-    GrProgramInfo* fProgramInfo = nullptr;
+    raw_ptr<GrSimpleMesh, DanglingUntriaged> fMesh = nullptr;
+    raw_ptr<GrProgramInfo, DanglingUntriaged> fProgramInfo = nullptr;
 
     using INHERITED = GrMeshDrawOp;
 };
@@ -3209,8 +3210,8 @@ private:
     bool fUseScale;
     STArray<1, RRect, true> fRRects;
 
-    GrSimpleMesh*  fMesh = nullptr;
-    GrProgramInfo* fProgramInfo = nullptr;
+    raw_ptr<GrSimpleMesh, DanglingUntriaged> fMesh = nullptr;
+    raw_ptr<GrProgramInfo, DanglingUntriaged> fProgramInfo = nullptr;
 
     using INHERITED = GrMeshDrawOp;
 };

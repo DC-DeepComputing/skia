@@ -66,7 +66,7 @@ std::pair<Layer*, BindingList*> DrawListLayer::searchBackwards(
     if (!isStencil && !dependsOnDst) {
         // A valid stopLayer will never be null, because the depth draw will always return the layer
         // it drew into.
-        targetLayer = stop.fLayer ? stop.fLayer : fLayers.head();
+        targetLayer = stop.fLayer ? stop.fLayer.get() : fLayers.head();
         if (targetLayer) {
             targetMatch = targetLayer->searchBinding(
                     key, /*startList=*/nullptr, !fStorageBufferSupport);

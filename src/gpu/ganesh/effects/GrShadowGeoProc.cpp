@@ -29,7 +29,7 @@ public:
 
 private:
     void onEmitCode(EmitArgs& args, GrGPArgs* gpArgs) override {
-        const GrRRectShadowGeoProc& rsgp = args.fGeomProc.cast<GrRRectShadowGeoProc>();
+        const GrRRectShadowGeoProc& rsgp = args.fGeomProc->cast<GrRRectShadowGeoProc>();
         GrGLSLVertexBuilder* vertBuilder = args.fVertBuilder;
         GrGLSLVaryingHandler* varyingHandler = args.fVaryingHandler;
         GrGLSLFPFragmentBuilder* fragBuilder = args.fFragBuilder;

@@ -6,7 +6,10 @@
  */
 
 #ifndef GrRenderTask_DEFINED
+
 #define GrRenderTask_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSpan.h"
@@ -291,9 +294,9 @@ private:
     // For performance reasons, we should perform texture resolves back-to-back as much as possible.
     // (skbug.com/40040728). To accomplish this, we make and reuse one single resolve task for
     // each render task, then add it as a dependency during makeClosed().
-    GrTextureResolveRenderTask* fTextureResolveTask = nullptr;
+    raw_ptr<GrTextureResolveRenderTask> fTextureResolveTask = nullptr;
 
-    SkDEBUGCODE(GrDrawingManager *fDrawingMgr = nullptr;)
+    SkDEBUGCODE(raw_ptr<GrDrawingManager> fDrawingMgr = nullptr;)
 };
 
 #endif

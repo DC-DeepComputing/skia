@@ -13,6 +13,8 @@
 #include "src/core/SkMathPriv.h"
 #include "src/core/SkSafeMath.h"
 #include "src/core/SkTHash.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ref.h"
 #include "src/sksl/SkSLBuiltinTypes.h"
 #include "src/sksl/SkSLConstantFolder.h"
 #include "src/sksl/SkSLContext.h"
@@ -47,113 +49,113 @@ public:
             , fTargetType(targetType) {}
 
     const Type& resolve() const override {
-        return fTargetType;
+        return *fTargetType;
     }
 
     const Type& componentType() const override {
-        return fTargetType.componentType();
+        return fTargetType->componentType();
     }
 
     NumberKind numberKind() const override {
-        return fTargetType.numberKind();
+        return fTargetType->numberKind();
     }
 
     int priority() const override {
-        return fTargetType.priority();
+        return fTargetType->priority();
     }
 
     int columns() const override {
-        return fTargetType.columns();
+        return fTargetType->columns();
     }
 
     int rows() const override {
-        return fTargetType.rows();
+        return fTargetType->rows();
     }
 
     int bitWidth() const override {
-        return fTargetType.bitWidth();
+        return fTargetType->bitWidth();
     }
 
     bool isAllowedInES2() const override {
-        return fTargetType.isAllowedInES2();
+        return fTargetType->isAllowedInES2();
     }
 
     bool isOrContainsBool() const override {
-        return fTargetType.isOrContainsBool();
+        return fTargetType->isOrContainsBool();
     }
 
     bool isOrContainsAtomic() const override {
-        return fTargetType.isOrContainsAtomic();
+        return fTargetType->isOrContainsAtomic();
     }
 
     size_t slotCount() const override {
-        return fTargetType.slotCount();
+        return fTargetType->slotCount();
     }
 
     const Type& slotType(size_t n) const override {
-        return fTargetType.slotType(n);
+        return fTargetType->slotType(n);
     }
 
     SpvDim_ dimensions() const override {
-        return fTargetType.dimensions();
+        return fTargetType->dimensions();
     }
 
     bool isDepth() const override {
-        return fTargetType.isDepth();
+        return fTargetType->isDepth();
     }
 
     bool isArrayedTexture() const override {
-        return fTargetType.isArrayedTexture();
+        return fTargetType->isArrayedTexture();
     }
 
     bool isScalar() const override {
-        return fTargetType.isScalar();
+        return fTargetType->isScalar();
     }
 
     bool isLiteral() const override {
-        return fTargetType.isLiteral();
+        return fTargetType->isLiteral();
     }
 
     bool isVector() const override {
-        return fTargetType.isVector();
+        return fTargetType->isVector();
     }
 
     bool isMatrix() const override {
-        return fTargetType.isMatrix();
+        return fTargetType->isMatrix();
     }
 
     bool isArray() const override {
-        return fTargetType.isArray();
+        return fTargetType->isArray();
     }
 
     bool isUnsizedArray() const override {
-        return fTargetType.isUnsizedArray();
+        return fTargetType->isUnsizedArray();
     }
 
     bool isStruct() const override {
-        return fTargetType.isStruct();
+        return fTargetType->isStruct();
     }
 
     bool isInterfaceBlock() const override {
-        return fTargetType.isInterfaceBlock();
+        return fTargetType->isInterfaceBlock();
     }
 
     bool isMultisampled() const override {
-        return fTargetType.isMultisampled();
+        return fTargetType->isMultisampled();
     }
 
     TextureAccess textureAccess() const override {
-        return fTargetType.textureAccess();
+        return fTargetType->textureAccess();
     }
 
     SkSpan<const Type* const> coercibleTypes() const override {
-        return fTargetType.coercibleTypes();
+        return fTargetType->coercibleTypes();
     }
 
 private:
     using INHERITED = Type;
 
-    const Type& fTargetType;
+    const raw_ref<const Type> fTargetType;
 };
 
 class ArrayType final : public Type {
@@ -190,11 +192,11 @@ public:
     }
 
     bool isOrContainsAtomic() const override {
-        return fComponentType.isOrContainsAtomic();
+        return fComponentType->isOrContainsAtomic();
     }
 
     bool isOrContainsBool() const override {
-        return fComponentType.isOrContainsBool();
+        return fComponentType->isOrContainsBool();
     }
 
     bool isUnsizedArray() const override {
@@ -202,11 +204,11 @@ public:
     }
 
     bool isOrContainsUnsizedArray() const override {
-        return this->isUnsizedArray() || fComponentType.isOrContainsUnsizedArray();
+        return this->isUnsizedArray() || fComponentType->isOrContainsUnsizedArray();
     }
 
     const Type& componentType() const override {
-        return fComponentType;
+        return *fComponentType;
     }
 
     int columns() const override {
@@ -214,32 +216,32 @@ public:
     }
 
     int bitWidth() const override {
-        return fComponentType.bitWidth();
+        return fComponentType->bitWidth();
     }
 
     bool isAllowedInES2() const override {
-        return fComponentType.isAllowedInES2();
+        return fComponentType->isAllowedInES2();
     }
 
     bool isAllowedInUniform(Position* errorPosition) const override {
-        return fComponentType.isAllowedInUniform(errorPosition);
+        return fComponentType->isAllowedInUniform(errorPosition);
     }
 
     size_t slotCount() const override {
         SkASSERT(fCount != kUnsizedArray);
         SkASSERT(fCount > 0);
-        return fCount * fComponentType.slotCount();
+        return fCount * fComponentType->slotCount();
     }
 
     const Type& slotType(size_t n) const override {
         SkASSERT(fCount == kUnsizedArray || n < this->slotCount());
-        return fComponentType.slotType(n % fComponentType.slotCount());
+        return fComponentType->slotType(n % fComponentType->slotCount());
     }
 
 private:
     using INHERITED = Type;
 
-    const Type& fComponentType;
+    const raw_ref<const Type, DanglingUntriaged> fComponentType;
     int fCount;
     bool fIsBuiltin;
 };
@@ -268,7 +270,7 @@ private:
     using INHERITED = Type;
 
     const Type* fCoercibleTypes[9];
-    const Type* fSlotType;
+    raw_ptr<const Type> fSlotType;
     size_t fNumTypes;
 };
 
@@ -282,7 +284,7 @@ public:
             , fPriority(priority) {}
 
     const Type& scalarTypeForLiteral() const override {
-        return fScalarType;
+        return *fScalarType;
     }
 
     int priority() const override {
@@ -298,19 +300,19 @@ public:
     }
 
     NumberKind numberKind() const override {
-        return fScalarType.numberKind();
+        return fScalarType->numberKind();
     }
 
     int bitWidth() const override {
-        return fScalarType.bitWidth();
+        return fScalarType->bitWidth();
     }
 
     double minimumValue() const override {
-        return fScalarType.minimumValue();
+        return fScalarType->minimumValue();
     }
 
     double maximumValue() const override {
-        return fScalarType.maximumValue();
+        return fScalarType->maximumValue();
     }
 
     bool isScalar() const override {
@@ -322,7 +324,7 @@ public:
     }
 
     bool isOrContainsBool() const override {
-        return fScalarType.isBoolean();
+        return fScalarType->isBoolean();
     }
 
     size_t slotCount() const override {
@@ -331,13 +333,13 @@ public:
 
     const Type& slotType(size_t n) const override {
         SkASSERT(n == 0);
-        return fScalarType;
+        return *fScalarType;
     }
 
 private:
     using INHERITED = Type;
 
-    const Type& fScalarType;
+    const raw_ref<const Type> fScalarType;
     int8_t fPriority;
 };
 
@@ -483,7 +485,7 @@ public:
     }
 
     const ScalarType& componentType() const override {
-        return fComponentType;
+        return *fComponentType;
     }
 
     int columns() const override {
@@ -512,13 +514,13 @@ public:
 
     const Type& slotType(size_t n) const override {
         SkASSERT(n < this->slotCount());
-        return fComponentType;
+        return *fComponentType;
     }
 
 private:
     using INHERITED = Type;
 
-    const ScalarType& fComponentType;
+    const raw_ref<const ScalarType> fComponentType;
     int8_t fColumns;
     int8_t fRows;
 };
@@ -585,27 +587,27 @@ public:
     }
 
     const TextureType& textureType() const override {
-        return fTextureType;
+        return *fTextureType;
     }
 
     SpvDim_ dimensions() const override {
-        return fTextureType.dimensions();
+        return fTextureType->dimensions();
     }
 
     bool isDepth() const override {
-        return fTextureType.isDepth();
+        return fTextureType->isDepth();
     }
 
     bool isArrayedTexture() const override {
-        return fTextureType.isArrayedTexture();
+        return fTextureType->isArrayedTexture();
     }
 
     bool isMultisampled() const override {
-        return fTextureType.isMultisampled();
+        return fTextureType->isMultisampled();
     }
 
     TextureAccess textureAccess() const override {
-        return fTextureType.textureAccess();
+        return fTextureType->textureAccess();
     }
 
     const Type& slotType(size_t n) const override {
@@ -616,7 +618,7 @@ public:
 private:
     using INHERITED = Type;
 
-    const TextureType& fTextureType;
+    const raw_ref<const TextureType> fTextureType;
 };
 
 class StructType final : public Type {
@@ -745,7 +747,7 @@ public:
     }
 
     const ScalarType& componentType() const override {
-        return fComponentType;
+        return *fComponentType;
     }
 
     int columns() const override {
@@ -765,15 +767,15 @@ public:
     }
 
     bool isAllowedInES2() const override {
-        return fComponentType.isAllowedInES2();
+        return fComponentType->isAllowedInES2();
     }
 
     bool isAllowedInUniform(Position* errorPosition) const override {
-        return fComponentType.isAllowedInUniform(errorPosition);
+        return fComponentType->isAllowedInUniform(errorPosition);
     }
 
     bool isOrContainsBool() const override {
-        return fComponentType.isOrContainsBool();
+        return fComponentType->isOrContainsBool();
     }
 
     size_t slotCount() const override {
@@ -782,13 +784,13 @@ public:
 
     const Type& slotType(size_t n) const override {
         SkASSERT(n < SkToSizeT(fColumns));
-        return fComponentType;
+        return *fComponentType;
     }
 
 private:
     using INHERITED = Type;
 
-    const ScalarType& fComponentType;
+    const raw_ref<const ScalarType> fComponentType;
     int8_t fColumns;
 };
 
@@ -1009,12 +1011,12 @@ const Type* Type::applyPrecisionQualifiers(const Context& context,
         // We want to discourage precision modifiers internally. Instead, use the type that
         // corresponds to the precision you need. (e.g. half vs float, short vs int)
         context.fErrors->error(pos, "precision qualifiers are not allowed");
-        return context.fTypes.fPoison.get();
+        return context.fTypes->fPoison.get();
     }
 
     if (SkPopCount(precisionQualifiers.value()) > 1) {
         context.fErrors->error(pos, "only one precision qualifier can be used");
-        return context.fTypes.fPoison.get();
+        return context.fTypes->fPoison.get();
     }
 
     // We're going to return a whole new type, so the modifier bits can be cleared out.
@@ -1034,19 +1036,19 @@ const Type* Type::applyPrecisionQualifiers(const Context& context,
         const Type* mediumpType;
         switch (component.numberKind()) {
             case Type::NumberKind::kFloat:
-                mediumpType = context.fTypes.fHalf.get();
+                mediumpType = context.fTypes->fHalf.get();
                 break;
 
             case Type::NumberKind::kSigned:
-                mediumpType = context.fTypes.fShort.get();
+                mediumpType = context.fTypes->fShort.get();
                 break;
 
             case Type::NumberKind::kUnsigned:
-                mediumpType = context.fTypes.fUShort.get();
+                mediumpType = context.fTypes->fUShort.get();
                 break;
 
             default:
-                mediumpType = context.fTypes.fPoison.get();
+                mediumpType = context.fTypes->fPoison.get();
                 break;
         }
 
@@ -1060,7 +1062,7 @@ const Type* Type::applyPrecisionQualifiers(const Context& context,
 
     context.fErrors->error(pos, "type '" + this->displayName() +
                                 "' does not support precision qualifiers");
-    return context.fTypes.fPoison.get();
+    return context.fTypes->fPoison.get();
 }
 
 const Type* Type::applyAccessQualifiers(const Context& context,
@@ -1073,14 +1075,14 @@ const Type* Type::applyAccessQualifiers(const Context& context,
     *modifierFlags &= ~(ModifierFlag::kReadOnly |
                         ModifierFlag::kWriteOnly);
 
-    if (this->matches(*context.fTypes.fTexture2D)) {
+    if (this->matches(*context.fTypes->fTexture2D)) {
         // We require all texture2Ds to be qualified with `readonly` or `writeonly`.
         // (Read-write textures are not yet supported in WGSL.)
         if (accessQualifiers == ModifierFlag::kReadOnly) {
-            return context.fTypes.fReadOnlyTexture2D.get();
+            return context.fTypes->fReadOnlyTexture2D.get();
         }
         if (accessQualifiers == ModifierFlag::kWriteOnly) {
-            return context.fTypes.fWriteOnlyTexture2D.get();
+            return context.fTypes->fWriteOnlyTexture2D.get();
         }
         context.fErrors->error(
                 pos,
@@ -1103,135 +1105,135 @@ const Type& Type::toCompound(const Context& context, int columns, int rows) cons
     if (columns == 1 && rows == 1) {
         return *this;
     }
-    if (this->matches(*context.fTypes.fFloat) || this->matches(*context.fTypes.fFloatLiteral)) {
+    if (this->matches(*context.fTypes->fFloat) || this->matches(*context.fTypes->fFloatLiteral)) {
         switch (rows) {
             case 1:
                 switch (columns) {
-                    case 1: return *context.fTypes.fFloat;
-                    case 2: return *context.fTypes.fFloat2;
-                    case 3: return *context.fTypes.fFloat3;
-                    case 4: return *context.fTypes.fFloat4;
+                    case 1: return *context.fTypes->fFloat;
+                    case 2: return *context.fTypes->fFloat2;
+                    case 3: return *context.fTypes->fFloat3;
+                    case 4: return *context.fTypes->fFloat4;
                     default: SK_ABORT("unsupported vector column count (%d)", columns);
                 }
             case 2:
                 switch (columns) {
-                    case 2: return *context.fTypes.fFloat2x2;
-                    case 3: return *context.fTypes.fFloat3x2;
-                    case 4: return *context.fTypes.fFloat4x2;
+                    case 2: return *context.fTypes->fFloat2x2;
+                    case 3: return *context.fTypes->fFloat3x2;
+                    case 4: return *context.fTypes->fFloat4x2;
                     default: SK_ABORT("unsupported matrix column count (%d)", columns);
                 }
             case 3:
                 switch (columns) {
-                    case 2: return *context.fTypes.fFloat2x3;
-                    case 3: return *context.fTypes.fFloat3x3;
-                    case 4: return *context.fTypes.fFloat4x3;
+                    case 2: return *context.fTypes->fFloat2x3;
+                    case 3: return *context.fTypes->fFloat3x3;
+                    case 4: return *context.fTypes->fFloat4x3;
                     default: SK_ABORT("unsupported matrix column count (%d)", columns);
                 }
             case 4:
                 switch (columns) {
-                    case 2: return *context.fTypes.fFloat2x4;
-                    case 3: return *context.fTypes.fFloat3x4;
-                    case 4: return *context.fTypes.fFloat4x4;
+                    case 2: return *context.fTypes->fFloat2x4;
+                    case 3: return *context.fTypes->fFloat3x4;
+                    case 4: return *context.fTypes->fFloat4x4;
                     default: SK_ABORT("unsupported matrix column count (%d)", columns);
                 }
             default: SK_ABORT("unsupported row count (%d)", rows);
         }
-    } else if (this->matches(*context.fTypes.fHalf)) {
+    } else if (this->matches(*context.fTypes->fHalf)) {
         switch (rows) {
             case 1:
                 switch (columns) {
-                    case 1: return *context.fTypes.fHalf;
-                    case 2: return *context.fTypes.fHalf2;
-                    case 3: return *context.fTypes.fHalf3;
-                    case 4: return *context.fTypes.fHalf4;
+                    case 1: return *context.fTypes->fHalf;
+                    case 2: return *context.fTypes->fHalf2;
+                    case 3: return *context.fTypes->fHalf3;
+                    case 4: return *context.fTypes->fHalf4;
                     default: SK_ABORT("unsupported vector column count (%d)", columns);
                 }
             case 2:
                 switch (columns) {
-                    case 2: return *context.fTypes.fHalf2x2;
-                    case 3: return *context.fTypes.fHalf3x2;
-                    case 4: return *context.fTypes.fHalf4x2;
+                    case 2: return *context.fTypes->fHalf2x2;
+                    case 3: return *context.fTypes->fHalf3x2;
+                    case 4: return *context.fTypes->fHalf4x2;
                     default: SK_ABORT("unsupported matrix column count (%d)", columns);
                 }
             case 3:
                 switch (columns) {
-                    case 2: return *context.fTypes.fHalf2x3;
-                    case 3: return *context.fTypes.fHalf3x3;
-                    case 4: return *context.fTypes.fHalf4x3;
+                    case 2: return *context.fTypes->fHalf2x3;
+                    case 3: return *context.fTypes->fHalf3x3;
+                    case 4: return *context.fTypes->fHalf4x3;
                     default: SK_ABORT("unsupported matrix column count (%d)", columns);
                 }
             case 4:
                 switch (columns) {
-                    case 2: return *context.fTypes.fHalf2x4;
-                    case 3: return *context.fTypes.fHalf3x4;
-                    case 4: return *context.fTypes.fHalf4x4;
+                    case 2: return *context.fTypes->fHalf2x4;
+                    case 3: return *context.fTypes->fHalf3x4;
+                    case 4: return *context.fTypes->fHalf4x4;
                     default: SK_ABORT("unsupported matrix column count (%d)", columns);
                 }
             default: SK_ABORT("unsupported row count (%d)", rows);
         }
-    } else if (this->matches(*context.fTypes.fInt) || this->matches(*context.fTypes.fIntLiteral)) {
+    } else if (this->matches(*context.fTypes->fInt) || this->matches(*context.fTypes->fIntLiteral)) {
         switch (rows) {
             case 1:
                 switch (columns) {
-                    case 1: return *context.fTypes.fInt;
-                    case 2: return *context.fTypes.fInt2;
-                    case 3: return *context.fTypes.fInt3;
-                    case 4: return *context.fTypes.fInt4;
+                    case 1: return *context.fTypes->fInt;
+                    case 2: return *context.fTypes->fInt2;
+                    case 3: return *context.fTypes->fInt3;
+                    case 4: return *context.fTypes->fInt4;
                     default: SK_ABORT("unsupported vector column count (%d)", columns);
                 }
             default: SK_ABORT("unsupported row count (%d)", rows);
         }
-    } else if (this->matches(*context.fTypes.fShort)) {
+    } else if (this->matches(*context.fTypes->fShort)) {
         switch (rows) {
             case 1:
                 switch (columns) {
-                    case 1: return *context.fTypes.fShort;
-                    case 2: return *context.fTypes.fShort2;
-                    case 3: return *context.fTypes.fShort3;
-                    case 4: return *context.fTypes.fShort4;
+                    case 1: return *context.fTypes->fShort;
+                    case 2: return *context.fTypes->fShort2;
+                    case 3: return *context.fTypes->fShort3;
+                    case 4: return *context.fTypes->fShort4;
                     default: SK_ABORT("unsupported vector column count (%d)", columns);
                 }
             default: SK_ABORT("unsupported row count (%d)", rows);
         }
-    } else if (this->matches(*context.fTypes.fUInt)) {
+    } else if (this->matches(*context.fTypes->fUInt)) {
         switch (rows) {
             case 1:
                 switch (columns) {
-                    case 1: return *context.fTypes.fUInt;
-                    case 2: return *context.fTypes.fUInt2;
-                    case 3: return *context.fTypes.fUInt3;
-                    case 4: return *context.fTypes.fUInt4;
+                    case 1: return *context.fTypes->fUInt;
+                    case 2: return *context.fTypes->fUInt2;
+                    case 3: return *context.fTypes->fUInt3;
+                    case 4: return *context.fTypes->fUInt4;
                     default: SK_ABORT("unsupported vector column count (%d)", columns);
                 }
             default: SK_ABORT("unsupported row count (%d)", rows);
         }
-    } else if (this->matches(*context.fTypes.fUShort)) {
+    } else if (this->matches(*context.fTypes->fUShort)) {
         switch (rows) {
             case 1:
                 switch (columns) {
-                    case 1: return *context.fTypes.fUShort;
-                    case 2: return *context.fTypes.fUShort2;
-                    case 3: return *context.fTypes.fUShort3;
-                    case 4: return *context.fTypes.fUShort4;
+                    case 1: return *context.fTypes->fUShort;
+                    case 2: return *context.fTypes->fUShort2;
+                    case 3: return *context.fTypes->fUShort3;
+                    case 4: return *context.fTypes->fUShort4;
                     default: SK_ABORT("unsupported vector column count (%d)", columns);
                 }
             default: SK_ABORT("unsupported row count (%d)", rows);
         }
-    } else if (this->matches(*context.fTypes.fBool)) {
+    } else if (this->matches(*context.fTypes->fBool)) {
         switch (rows) {
             case 1:
                 switch (columns) {
-                    case 1: return *context.fTypes.fBool;
-                    case 2: return *context.fTypes.fBool2;
-                    case 3: return *context.fTypes.fBool3;
-                    case 4: return *context.fTypes.fBool4;
+                    case 1: return *context.fTypes->fBool;
+                    case 2: return *context.fTypes->fBool2;
+                    case 3: return *context.fTypes->fBool3;
+                    case 4: return *context.fTypes->fBool4;
                     default: SK_ABORT("unsupported vector column count (%d)", columns);
                 }
             default: SK_ABORT("unsupported row count (%d)", rows);
         }
     }
     SkDEBUGFAILF("unsupported toCompound type %s", this->description().c_str());
-    return *context.fTypes.fVoid;
+    return *context.fTypes->fVoid;
 }
 
 const Type* Type::clone(const Context& context, SymbolTable* symbolTable) const {
@@ -1371,7 +1373,7 @@ bool Type::checkIfUsableInArray(const Context& context, Position arrayPos) const
 SKSL_INT Type::convertArraySize(const Context& context,
                                 Position arrayPos,
                                 std::unique_ptr<Expression> size) const {
-    size = context.fTypes.fInt->coerceExpression(std::move(size), context);
+    size = context.fTypes->fInt->coerceExpression(std::move(size), context);
     if (!size) {
         return 0;
     }
