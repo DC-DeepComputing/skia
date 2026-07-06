@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3bd20327_faef92d6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-07-06T15:18:37Z",
+      "side": 1,
+      "message": "Yes, this is the [DanglingPointerDetector](https://skia.org/docs/dev/design/dangling_pointer_detector/). This will be enforced after I apply the MiraclePtr rewrite.  e.g. turning every `T*` into `raw_ptr\u003cT\u003e`. This patch is a preliminary one to avoid adding `DanglingUntriaged`.\n\n---\n\nYou will be able to detect regressions, e.g. a developer causing a pointer somewhere to become dangling after a change, provided Skia is testing this behavior at runtime.",
+      "parentUuid": "4d2a8f7f_e9a963eb",
+      "revId": "599edafb4bb95871b1102493e93f95501696e952",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a5b12575_29e36322",
         "filename": "include/gpu/ganesh/GrRecordingContext.h",
         "patchSetId": 3
