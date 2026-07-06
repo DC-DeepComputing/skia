@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4d2a8f7f_e9a963eb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-06T13:41:15Z",
+      "side": 1,
+      "message": "Is there a way we can detect this automatically? Maybe some kind of automated test or a presubmit?",
+      "revId": "599edafb4bb95871b1102493e93f95501696e952",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a5b12575_29e36322",
         "filename": "include/gpu/ganesh/GrRecordingContext.h",
         "patchSetId": 3
@@ -31,6 +48,30 @@
       "writtenOn": "2026-07-06T13:22:39Z",
       "side": 1,
       "message": "Swap declaration order to ensure `fDrawingManager` (which owns active drawing tasks referencing proxies) is destroyed before `fProxyProvider` (which manages the proxies\u0027 lifetimes), preventing temporary dangling pointers during context teardown.",
+      "range": {
+        "startLine": 281,
+        "startChar": 0,
+        "endLine": 283,
+        "endChar": 54
+      },
+      "revId": "599edafb4bb95871b1102493e93f95501696e952",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68d3f91e_3b41b742",
+        "filename": "include/gpu/ganesh/GrRecordingContext.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 283,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-06T13:41:15Z",
+      "side": 1,
+      "message": "Put that as a comment, since the order otherwise is not obviously important.",
+      "parentUuid": "a5b12575_29e36322",
       "range": {
         "startLine": 281,
         "startChar": 0,
@@ -66,6 +107,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0d71e8b9_e9a31c7b",
+        "filename": "include/gpu/graphite/Recorder.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 300,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-06T13:41:15Z",
+      "side": 1,
+      "message": "Put that as a comment, since the order otherwise is not obviously important.",
+      "parentUuid": "060eabce_5a9cf38b",
+      "range": {
+        "startLine": 299,
+        "startChar": 0,
+        "endLine": 300,
+        "endChar": 58
+      },
+      "revId": "599edafb4bb95871b1102493e93f95501696e952",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1d299f0b_4ca56464",
         "filename": "include/gpu/graphite/Recording.h",
         "patchSetId": 3
@@ -77,6 +142,24 @@
       "writtenOn": "2026-07-06T13:22:39Z",
       "side": 1,
       "message": "Swap declaration order to ensure `fRootTaskList` (which holds tasks referencing GPU resources) is destroyed before `fExtraResourceRefs` (which keeps those GPU resources alive), preventing temporary dangling pointers during task list teardown.",
+      "revId": "599edafb4bb95871b1102493e93f95501696e952",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1281a591_b1497466",
+        "filename": "include/gpu/graphite/Recording.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-06T13:41:15Z",
+      "side": 1,
+      "message": "Put that as a comment, since the order otherwise is not obviously important.",
+      "parentUuid": "1d299f0b_4ca56464",
       "revId": "599edafb4bb95871b1102493e93f95501696e952",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
