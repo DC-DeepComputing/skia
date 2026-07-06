@@ -195,7 +195,7 @@ enum class Shareable : uint8_t {
  * buffers created by DrawBufferManager).
  */
 struct BindBufferInfo {
-    const Buffer* fBuffer = nullptr;
+    RAW_PTR_EXCLUSION const Buffer* fBuffer = nullptr;
     uint32_t fOffset = 0;
     uint32_t fSize = 0;
 
