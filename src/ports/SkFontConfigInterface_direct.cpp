@@ -505,7 +505,9 @@ SkFontConfigInterfaceDirect::SkFontConfigInterfaceDirect(FcConfig* fc) : fFC(fc)
 
 SkFontConfigInterfaceDirect::~SkFontConfigInterfaceDirect() {
     if (fFC) {
-        FcConfigDestroy(fFC);
+        FcConfig* fc = fFC;
+        fFC = nullptr;
+        FcConfigDestroy(fc);
     }
 }
 

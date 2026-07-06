@@ -430,18 +430,18 @@ SkCodec::Result SkJpegCodec::readRows(const SkImageInfo& dstInfo,
     size_t swizzleDstRowBytes = rowBytes;
     int dstWidth = opts.fSubset ? opts.fSubset->width() : dstInfo.width();
     if (fSwizzleSrcRow && fColorXformSrcRow) {
-        decodeDst = (JSAMPLE*) fSwizzleSrcRow;
+        decodeDst = (JSAMPLE*) fSwizzleSrcRow.get();
         swizzleDst = fColorXformSrcRow;
         decodeDstRowBytes = 0;
         swizzleDstRowBytes = 0;
         dstWidth = fSwizzler->swizzleWidth();
     } else if (fColorXformSrcRow) {
-        decodeDst = (JSAMPLE*) fColorXformSrcRow;
+        decodeDst = (JSAMPLE*) fColorXformSrcRow.get();
         swizzleDst = fColorXformSrcRow;
         decodeDstRowBytes = 0;
         swizzleDstRowBytes = 0;
     } else if (fSwizzleSrcRow) {
-        decodeDst = (JSAMPLE*) fSwizzleSrcRow;
+        decodeDst = (JSAMPLE*) fSwizzleSrcRow.get();
         decodeDstRowBytes = 0;
         dstWidth = fSwizzler->swizzleWidth();
     }
@@ -610,6 +610,8 @@ bool SkJpegCodec::allocateStorage(const SkImageInfo& dstInfo) {
         if (!this->allocateFromBudget(totalBytes)) {
             return false;
         }
+        fSwizzleSrcRow = nullptr;
+        fColorXformSrcRow = nullptr;
         if (!fStorage.reset(totalBytes)) {
             return false;
         }

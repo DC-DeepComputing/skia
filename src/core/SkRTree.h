@@ -10,6 +10,7 @@
 
 #include "include/core/SkBBHFactory.h"
 #include "include/core/SkRect.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <cstddef>
 #include <cstdint>

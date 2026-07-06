@@ -955,6 +955,7 @@ skia_shared_gpu_sources = [
   "$_include/private/SkOnce.h",
   "$_include/private/SkSafe32.h",
   "$_include/private/SkSemaphore.h",
+  "$_include/private/SkStackAllocated.h",
   "$_include/private/SkTArray.h",
   "$_include/private/SkTDArray.h",
   "$_include/private/SkTFitsIn.h",

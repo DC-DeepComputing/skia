@@ -35,7 +35,7 @@ class SkRRect;
 SkMaskFilterBase::NinePatch::~NinePatch() {
     if (fCache) {
         SkASSERT((const void*)fMask.fImage == fCache->data());
-        SkCachedData* cache = fCache;
+        SkCachedData* cache = fCache.get();
         fCache = nullptr;
         cache->unref();
     } else {

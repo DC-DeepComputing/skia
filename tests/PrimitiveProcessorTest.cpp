@@ -108,7 +108,7 @@ private:
 
                 private:
                     void onEmitCode(EmitArgs& args, GrGPArgs* gpArgs) override {
-                        const GP& gp = args.fGeomProc.cast<GP>();
+                        const GP& gp = args.fGeomProc->cast<GP>();
                         args.fVaryingHandler->emitAttributes(gp);
                         WriteOutputPosition(args.fVertBuilder, gpArgs, gp.fAttributes[0].name());
                         GrGLSLFPFragmentBuilder* fragBuilder = args.fFragBuilder;

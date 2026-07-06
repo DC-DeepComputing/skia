@@ -5,8 +5,13 @@
  * found in the LICENSE file.
  */
 
+#include "src/partition_alloc/raw_ref.h"
+
 #ifndef SKSL_FUNCTIONCALL
+
 #define SKSL_FUNCTIONCALL
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "src/sksl/SkSLDefines.h"
 #include "src/sksl/SkSLPosition.h"
@@ -66,7 +71,7 @@ public:
                                                               const ExpressionArray& arguments);
 
     const FunctionDeclaration& function() const {
-        return fFunction;
+        return *fFunction;
     }
 
     ExpressionArray& arguments() {
@@ -86,12 +91,12 @@ public:
     std::string description(OperatorPrecedence) const override;
 
 private:
-    const FunctionDeclaration& fFunction;
+    const raw_ref<const FunctionDeclaration> fFunction;
     ExpressionArray fArguments;
 
     // The stable pointer uniquely identifies this FunctionCall across an entire SkSL program.
     // This allows us to clone() a FunctionCall but still find that call in a hash-map.
-    const FunctionCall* fStablePointer = nullptr;
+    raw_ptr<const FunctionCall, DanglingUntriaged> fStablePointer = nullptr;
 
     using INHERITED = Expression;
 };
