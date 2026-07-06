@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ffb0063_8890ce96",
+        "filename": "src/capture/SkCaptureCanvas.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-06T19:20:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "243454d8_4e0fac96",
+      "revId": "0b0438d7b512722e3000d8efc9edc652fcea99b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a2151c86_1ce84e91",
@@ -58,6 +76,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7dbaa8a1_e54d119e",
+        "filename": "tools/viewer/CaptureSlide.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-06T19:20:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a2151c86_1ce84e91",
+      "range": {
+        "startLine": 79,
+        "startChar": 49,
+        "endLine": 79,
+        "endChar": 52
+      },
+      "revId": "0b0438d7b512722e3000d8efc9edc652fcea99b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4a85c239_8dcfb8ec",
@@ -71,6 +113,24 @@
       "writtenOn": "2026-06-30T15:32:42Z",
       "side": 1,
       "message": "Add a TODO for the followup CL to have the user specify a path.",
+      "revId": "0b0438d7b512722e3000d8efc9edc652fcea99b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a829b581_a916a7eb",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 1953,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-06T19:20:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4a85c239_8dcfb8ec",
       "revId": "0b0438d7b512722e3000d8efc9edc652fcea99b0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
