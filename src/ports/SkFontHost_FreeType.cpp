@@ -35,6 +35,7 @@
 #include "src/core/SkMaskGamma.h"
 #include "src/core/SkScalerContext.h"
 #include "src/core/SkTSearch.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/ports/SkFontHost_FreeType_common.h"
 #include "src/ports/SkFontScanner_FreeType_priv.h"
 #include "src/ports/SkTypeface_FreeType.h"
@@ -457,7 +458,7 @@ public:
     FT_Face face() { return fFaceRec ? fFaceRec->fFace.get() : nullptr; }
 
 private:
-    SkTypeface_FreeType::FaceRec* fFaceRec;
+    raw_ptr<SkTypeface_FreeType::FaceRec> fFaceRec;
 };
 
 ///////////////////////////////////////////////////////////////////////////
@@ -492,7 +493,7 @@ private:
     // This value was chosen by eyeballing the result in Firefox and trying to match it.
     static const FT_Pos kBitmapEmboldenStrength = 1 << 6;
 
-    SkTypeface_FreeType::FaceRec* fFaceRec; // Borrowed face from the typeface's FaceRec.
+    raw_ptr<SkTypeface_FreeType::FaceRec> fFaceRec; // Borrowed face from the typeface's FaceRec.
     FT_Face   fFace;  // Borrowed face from fFaceRec.
     FT_Size   fFTSize;  // The size to apply to the fFace.
     FT_Int    fStrikeIndex; // The bitmap strike for the fFace (or -1 if none).

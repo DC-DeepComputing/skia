@@ -6,7 +6,10 @@
 */
 
 #ifndef GrVkCommandBuffer_DEFINED
+
 #define GrVkCommandBuffer_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkAssert.h"
@@ -188,7 +191,7 @@ protected:
     // Stores a pointer to the current active render pass (i.e. begin has been called but not
     // end). A nullptr means there is no active render pass. The GrVKCommandBuffer does not own
     // the render pass.
-    const GrVkRenderPass*     fActiveRenderPass = nullptr;
+    raw_ptr<const GrVkRenderPass> fActiveRenderPass = nullptr;
 
     VkCommandBuffer           fCmdBuffer;
 
