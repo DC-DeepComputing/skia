@@ -54,7 +54,7 @@ public:
 
     // Test if a point is in the rrect, if it were a closed set.
     static bool ContainsPoint(const SkRRect& rr, const SkPoint& p) {
-        return rr.getBounds().contains(p.fX, p.fY) && rr.checkCornerContainment(p.fX, p.fY);
+        return rr.contains(p);
     }
 
     // Compute an approximate largest inscribed bounding box of the rounded rect. For empty,

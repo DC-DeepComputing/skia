@@ -407,6 +407,20 @@ static void test_direction(skiatest::Reporter* reporter, const SkRRect &rr,
     }
 }
 
+// Move a point from the start position by (stepX, stepY) 'numSteps' times
+// testing for containment in 'rr' at each step.
+static void test_point_direction(skiatest::Reporter* reporter, const SkRRect &rr,
+                                 SkScalar initX, int stepX, SkScalar initY, int stepY,
+                                 int numSteps, const bool* contains) {
+    SkScalar x = initX, y = initY;
+    for (int i = 0; i < numSteps; ++i) {
+        REPORTER_ASSERT(reporter, contains[i] == rr.contains(SkPoint::Make(x, y)));
+
+        x += stepX;
+        y += stepY;
+    }
+}
+
 // Exercise the RR's contains rect method
 static void test_round_rect_contains_rect(skiatest::Reporter* reporter) {
 
@@ -519,6 +533,109 @@ static void test_round_rect_contains_rect(skiatest::Reporter* reporter) {
         test_direction(reporter, rrects[i], 19.5f,  0,    40, -1, kNumSteps, answers[i][5]); // S
         test_direction(reporter, rrects[i],     0,  1,    40, -1, kNumSteps, answers[i][6]); // SW
         test_direction(reporter, rrects[i],     0,  1, 19.5f,  0, kNumSteps, answers[i][7]); // W
+    }
+}
+
+static void test_round_rect_contains_point(skiatest::Reporter* reporter) {
+    static const int kNumRRects = 4;
+    static const SkVector gRadii[kNumRRects][4] = {
+        { {  0,  0 }, {  0,  0 }, {  0,  0 }, {  0,  0 } },  // rect
+        { { 20, 20 }, { 20, 20 }, { 20, 20 }, { 20, 20 } },  // circle
+        { { 10, 10 }, { 10, 10 }, { 10, 10 }, { 10, 10 } },  // simple
+        { {  0,  0 }, { 20, 20 }, { 10, 10 }, { 30, 30 } }   // complex
+    };
+
+    SkRRect rrects[kNumRRects];
+    for (int i = 0; i < kNumRRects; ++i) {
+        rrects[i].setRectRadii(SkRect::MakeWH(40, 40), gRadii[i]);
+    }
+
+    static const SkPoint easyOuts[] = {
+        { -5, -5 }, // NW
+        { 20, -5 }, // N
+        { 45, -5 }, // NE
+        { 45, 20 }, // E
+        { 45, 45 }, // SE
+        { 20, 45 }, // S
+        { -5, 45 }, // SW
+        { -5, 20 }  // W
+    };
+
+    for (int i = 0; i < kNumRRects; ++i) {
+        for (size_t j = 0; j < std::size(easyOuts); ++j) {
+            REPORTER_ASSERT(reporter, !rrects[i].contains(easyOuts[j]));
+        }
+    }
+
+    // Walk just far enough in from each compass point to test bounds exclusion,
+    // curved-corner rejection, and curved-corner acceptance.
+    static const int kNumSteps = 3;
+    bool answers[kNumRRects][8][kNumSteps] = {
+        // for the rect we expect points on the left/top edges to be in, but
+        // points on the right/bottom edges to be out
+        {
+            // rect
+            { 1, 1, 1 },
+            { 1, 1, 1 },
+            { 0, 1, 1 },
+            { 0, 1, 1 },
+            { 0, 1, 1 },
+            { 0, 1, 1 },
+            { 0, 1, 1 },
+            { 1, 1, 1 },
+        },
+        // for the circle we expect the first two points to be out on the
+        // corners (then in) and only the first point out on the right/bottom axes
+        {
+            // circle
+            { 0, 0, 1 },
+            { 1, 1, 1 },
+            { 0, 0, 1 },
+            { 0, 1, 1 },
+            { 0, 0, 1 },
+            { 0, 1, 1 },
+            { 0, 0, 1 },
+            { 1, 1, 1 },
+        },
+        // for the simple round rect we expect only the first point to be out on
+        // corners and on the right/bottom axes
+        {
+            // simple RR
+            { 0, 1, 1 },
+            { 1, 1, 1 },
+            { 0, 1, 1 },
+            { 0, 1, 1 },
+            { 0, 1, 1 },
+            { 0, 1, 1 },
+            { 0, 1, 1 },
+            { 1, 1, 1 },
+        },
+        // for the complex case the answer is different for each direction
+        {
+            // complex RR
+            // all in for NW (rect) corner and N (top center band)
+            { 1, 1, 1 },
+            { 1, 1, 1 },
+            // first out for NE and SW is the excluded bound; second is outside the larger corner
+            { 0, 0, 1 },
+            // first out for E, SE, and S is the excluded bound; W is due to the larger corner
+            { 0, 1, 1 },
+            { 0, 1, 1 },
+            { 0, 1, 1 },
+            { 0, 0, 1 },
+            { 0, 1, 1 },
+         }
+    };
+
+    for (int i = 0; i < kNumRRects; ++i) {
+        test_point_direction(reporter, rrects[i],  0,  5,  0,  5, kNumSteps, answers[i][0]); // NW
+        test_point_direction(reporter, rrects[i], 20,  0,  0,  5, kNumSteps, answers[i][1]); // N
+        test_point_direction(reporter, rrects[i], 40, -5,  0,  5, kNumSteps, answers[i][2]); // NE
+        test_point_direction(reporter, rrects[i], 40, -5, 20,  0, kNumSteps, answers[i][3]); // E
+        test_point_direction(reporter, rrects[i], 40, -5, 40, -5, kNumSteps, answers[i][4]); // SE
+        test_point_direction(reporter, rrects[i], 20,  0, 40, -5, kNumSteps, answers[i][5]); // S
+        test_point_direction(reporter, rrects[i],  0,  5, 40, -5, kNumSteps, answers[i][6]); // SW
+        test_point_direction(reporter, rrects[i],  0,  5, 20,  0, kNumSteps, answers[i][7]); // W
     }
 }
 
@@ -1520,6 +1637,7 @@ DEF_TEST(RoundRect, reporter) {
     test_round_rect_iffy_parameters(reporter);
     test_inset(reporter);
     test_round_rect_contains_rect(reporter);
+    test_round_rect_contains_point(reporter);
     test_round_rect_transform(reporter);
     test_issue_2696(reporter);
     test_tricky_radii(reporter);
