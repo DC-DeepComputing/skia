@@ -6,6 +6,9 @@
  */
 
 #ifndef SkMask_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
+
 #define SkMask_DEFINED
 
 #include "include/core/SkRect.h"
