@@ -14,9 +14,9 @@
 struct SkDeque::Block {
     Block*  fNext;
     Block*  fPrev;
-    char*   fBegin; // start of used section in this chunk
-    char*   fEnd;   // end of used section in this chunk
-    char*   fStop;  // end of the allocated chunk
+    RAW_PTR_EXCLUSION char* fBegin; // start of used section in this chunk
+    RAW_PTR_EXCLUSION char* fEnd;   // end of used section in this chunk
+    RAW_PTR_EXCLUSION char* fStop;  // end of the allocated chunk
 
     char*       start() { return (char*)(this + 1); }
     const char* start() const { return (const char*)(this + 1); }

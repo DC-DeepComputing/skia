@@ -405,9 +405,9 @@ private:
         }
     }
 
-    char* fBlock;
-    char* fWrite;
-    char* fBlockEnd;
+    RAW_PTR_EXCLUSION char* fBlock;
+    RAW_PTR_EXCLUSION char* fWrite;
+    RAW_PTR_EXCLUSION char* fBlockEnd;
 
     SkWStream* fStream;
     Mode fMode;
