@@ -35,7 +35,7 @@ std::unique_ptr<Expression> Transform::RewriteIndexedSwizzle(const Context& cont
 
     // Make a compound constructor with the literal array.
     const Type& vecType =
-            context.fTypes.fInt->toCompound(context, swizzle.components().size(), /*rows=*/1);
+            context.fTypes->fInt->toCompound(context, swizzle.components().size(), /*rows=*/1);
     std::unique_ptr<Expression> vec =
             ConstructorCompound::MakeFromConstants(context, indexExpr.fPosition, vecType, vecArray);
 

@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "src/partition_alloc/raw_ref.h"
 #include "src/sksl/SkSLModule.h"
 #include "src/sksl/ir/SkSLConstructorSplat.h"
 #include "src/sksl/ir/SkSLExpression.h"
@@ -43,14 +44,14 @@ void Transform::ReplaceSplatCastsWithSwizzles(const Context& context, Module& mo
                     components.push_back_n(expr->type().columns(), SwizzleComponent::X);
 
                     // Replace the splat expression with the swizzle.
-                    expr = Swizzle::MakeExact(fContext, expr->position(), std::move(arg),
+                    expr = Swizzle::MakeExact(*fContext, expr->position(), std::move(arg),
                                               std::move(components));
                 }
             }
             return false;
         }
 
-        const Context& fContext;
+        const raw_ref<const Context> fContext;
 
         using INHERITED = ProgramWriter;
     };

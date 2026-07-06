@@ -583,13 +583,13 @@ void SkEdgeClipper::ClipPath(const SkPathRaw& raw, const SkRect& clip, bool canC
                 }
                 break;
             case SkPathEdgeIter::Edge::kQuad:
-                if (clipper.clipQuad(e.fPts, clip)) {
+                if (clipper.clipQuad(e.fPts.get(), clip)) {
                     consume(&clipper, e.fIsNewContour, ctx);
                 }
                 break;
             case SkPathEdgeIter::Edge::kConic: {
                 const SkPoint* quadPts =
-                        quadder.computeQuads(e.fPts, iter.conicWeight(), kConicTol);
+                        quadder.computeQuads(e.fPts.get(), iter.conicWeight(), kConicTol);
                 for (int i = 0; i < quadder.countQuads(); ++i) {
                     if (clipper.clipQuad(quadPts, clip)) {
                         consume(&clipper, e.fIsNewContour, ctx);
@@ -598,7 +598,7 @@ void SkEdgeClipper::ClipPath(const SkPathRaw& raw, const SkRect& clip, bool canC
                 }
             } break;
             case SkPathEdgeIter::Edge::kCubic:
-                if (clipper.clipCubic(e.fPts, clip)) {
+                if (clipper.clipCubic(e.fPts.get(), clip)) {
                     consume(&clipper, e.fIsNewContour, ctx);
                 }
                 break;
