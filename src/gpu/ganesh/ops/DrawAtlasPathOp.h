@@ -93,11 +93,11 @@ private:
         std::array<float, 6> fLocalToDeviceIfUsingLocalCoords;
         SkPMColor4f fColor;
         AtlasInstancedHelper::Instance fAtlasInstance;
-        Instance* fNext = nullptr;
+        RAW_PTR_EXCLUSION Instance* fNext = nullptr;
     };
 
-    Instance* fHeadInstance;
-    Instance** fTailInstance;
+    RAW_PTR_EXCLUSION Instance* fHeadInstance;
+    RAW_PTR_EXCLUSION Instance** fTailInstance;
 
     AtlasInstancedHelper fAtlasHelper;
     bool fUsesLocalCoords = false;
