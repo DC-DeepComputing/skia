@@ -157,6 +157,24 @@
       "parentUuid": "19016e2e_529e20e2",
       "revId": "661cbd2ac1ba0de7965cba5d2f6e64c54b169fd1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25f8353b_fc2c9150",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2026-07-06T08:12:43Z",
+      "side": 1,
+      "message": "Can you explain what the issue was?\n\nDo you also observe differences in skia GM `typefacerendering` - why does the rendering change there, does it cover bitmap glyph rendering?",
+      "parentUuid": "d02c340f_7379522f",
+      "revId": "661cbd2ac1ba0de7965cba5d2f6e64c54b169fd1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
