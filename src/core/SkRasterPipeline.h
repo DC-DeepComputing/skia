@@ -64,7 +64,7 @@ struct SkRasterPipelineStage {
     // Most context structures are declared in SkRasterPipelineOpContexts.h, and have names ending
     // in Ctx (e.g. "SkRasterPipelineContexts::SamplerCtx"). Some Raster Pipeline stages pack
     // non-pointer data into this field using `SkRPCtxUtils::Pack`.
-    void* ctx;
+    RAW_PTR_EXCLUSION void* ctx;
 };
 SK_END_REQUIRE_DENSE
 

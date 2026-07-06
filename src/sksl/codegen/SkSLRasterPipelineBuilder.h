@@ -181,7 +181,7 @@ private:
 
     struct Stage {
         ProgramOp op;
-        void*     ctx;
+        RAW_PTR_EXCLUSION void* ctx;
     };
     void makeStages(skia_private::TArray<Stage>* pipeline,
                     SkArenaAlloc* alloc,
