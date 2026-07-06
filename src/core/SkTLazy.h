@@ -209,7 +209,7 @@ public:
     const T& operator *() const { return *fObj; }
 
 private:
-    const T*         fObj;
+    RAW_PTR_EXCLUSION const T* fObj = nullptr;
     std::optional<T> fLazy;
 };
 
