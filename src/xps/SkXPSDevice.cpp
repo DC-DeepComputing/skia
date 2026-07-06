@@ -443,8 +443,18 @@ bool SkXPSDevice::endPortfolio() {
         HRBM(this->fPackageWriter->Close(), "Could not close writer.");
     }
 
+    this->cleanup();
+
     return true;
 }
+
+void SkXPSDevice::cleanup() {
+    fPackageWriter.reset();
+    fOutputStream.reset();
+    fCurrentXpsCanvas.reset();
+    fXpsFactory.reset();
+}
+
 
 static XPS_COLOR xps_color(const SkColor4f skColor) {
     //XPS uses non-pre-multiplied alpha (XPS Spec 11.4).
