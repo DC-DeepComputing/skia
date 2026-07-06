@@ -93,7 +93,7 @@ public:
 private:
     const SkTDArray<SkCanvas*>& fList;
     int fIndex;
-    SkCanvas* fCanvas;
+    RAW_PTR_EXCLUSION SkCanvas* fCanvas;
 };
 
 void SkNWayCanvas::willSave() {
