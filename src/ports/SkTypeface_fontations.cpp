@@ -836,7 +836,8 @@ protected:
 
     sk_sp<SkDrawable> generateDrawable(const SkGlyph& glyph) override {
         struct GlyphDrawable : public SkDrawable {
-            SkFontationsScalerContext* fSelf;
+            // RAW_PTR_EXCLUSION: Drawable may outlive the scaler context.
+            RAW_PTR_EXCLUSION SkFontationsScalerContext* fSelf;
             SkGlyph fGlyph;
             GlyphDrawable(SkFontationsScalerContext* self, const SkGlyph& glyph)
                     : fSelf(self), fGlyph(glyph) {}
