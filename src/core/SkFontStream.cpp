@@ -12,6 +12,7 @@
 #include "include/private/SkMalloc.h"
 #include "src/core/SkAutoMalloc.h"
 #include "src/core/SkEndian.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <algorithm>
 #include <cstdint>
@@ -137,7 +138,7 @@ struct SfntHeader {
     }
 
     int             fCount;
-    SkSFNTDirEntry* fDir;
+    raw_ptr<SkSFNTDirEntry, AllowPtrArithmetic | DanglingUntriaged> fDir;
 };
 
 ///////////////////////////////////////////////////////////////////////////////

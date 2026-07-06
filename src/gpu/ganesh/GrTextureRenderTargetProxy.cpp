@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 #include "src/gpu/ganesh/GrTextureRenderTargetProxy.h"
+#include "src/partition_alloc/raw_ref.h"
 
 #include "include/core/SkSize.h"
 #include "include/gpu/GpuTypes.h"
@@ -216,7 +217,7 @@ GrSurfaceProxy::LazySurfaceDesc GrTextureRenderTargetProxy::callbackDesc() const
             GrRenderable::kYes,
             this->mipmapped(),
             this->numSamples(),
-            this->backendFormat(),
+            raw_ref(this->backendFormat()),
             this->textureType(),
             this->isProtected(),
             this->isBudgeted(),

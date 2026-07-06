@@ -45,18 +45,18 @@ static bool index_out_of_range(const Context& context, Position pos, SKSL_INT in
 
 const Type& IndexExpression::IndexType(const Context& context, const Type& type) {
     if (type.isMatrix()) {
-        if (type.componentType().matches(*context.fTypes.fFloat)) {
+        if (type.componentType().matches(*context.fTypes->fFloat)) {
             switch (type.rows()) {
-                case 2: return *context.fTypes.fFloat2;
-                case 3: return *context.fTypes.fFloat3;
-                case 4: return *context.fTypes.fFloat4;
+                case 2: return *context.fTypes->fFloat2;
+                case 3: return *context.fTypes->fFloat3;
+                case 4: return *context.fTypes->fFloat4;
                 default: SkASSERT(false);
             }
-        } else if (type.componentType().matches(*context.fTypes.fHalf)) {
+        } else if (type.componentType().matches(*context.fTypes->fHalf)) {
             switch (type.rows()) {
-                case 2: return *context.fTypes.fHalf2;
-                case 3: return *context.fTypes.fHalf3;
-                case 4: return *context.fTypes.fHalf4;
+                case 2: return *context.fTypes->fHalf2;
+                case 3: return *context.fTypes->fHalf3;
+                case 4: return *context.fTypes->fHalf4;
                 default: SkASSERT(false);
             }
         }
@@ -88,7 +88,7 @@ std::unique_ptr<Expression> IndexExpression::Convert(const Context& context,
         return nullptr;
     }
     if (!index->type().isInteger()) {
-        index = context.fTypes.fInt->coerceExpression(std::move(index), context);
+        index = context.fTypes->fInt->coerceExpression(std::move(index), context);
         if (!index) {
             return nullptr;
         }

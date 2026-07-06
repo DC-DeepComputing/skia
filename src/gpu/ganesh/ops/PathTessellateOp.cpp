@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 #include "src/gpu/ganesh/ops/PathTessellateOp.h"
+#include "src/partition_alloc/raw_ref.h"
 #include <limits>
 
 #include "include/core/SkColor.h"
@@ -103,7 +104,7 @@ void PathTessellateOp::onPrePrepare(GrRecordingContext* context,
                                     GrLoadOp colorLoadOp) {
     // DMSAA is not supported on DDL.
     bool usesMSAASurface = writeView.asRenderTargetProxy()->numSamples() > 1;
-    this->prepareTessellator({context->priv().recordTimeAllocator(), writeView, usesMSAASurface,
+    this->prepareTessellator({context->priv().recordTimeAllocator(), raw_ref(writeView), usesMSAASurface,
                              &dstProxyView, renderPassXferBarriers, colorLoadOp,
                              context->priv().caps()},
                              (clip) ? std::move(*clip) : GrAppliedClip::Disabled());
@@ -113,7 +114,7 @@ void PathTessellateOp::onPrePrepare(GrRecordingContext* context,
 
 void PathTessellateOp::onPrepare(GrOpFlushState* flushState) {
     if (!fTessellator) {
-        this->prepareTessellator({flushState->allocator(), flushState->writeView(),
+        this->prepareTessellator({flushState->allocator(), raw_ref(flushState->writeView()),
                                  flushState->usesMSAASurface(), &flushState->dstProxyView(),
                                  flushState->renderPassBarriers(), flushState->colorLoadOp(),
                                  &flushState->caps()}, flushState->detachAppliedClip());

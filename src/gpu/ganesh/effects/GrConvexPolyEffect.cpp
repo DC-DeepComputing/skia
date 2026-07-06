@@ -112,7 +112,7 @@ std::unique_ptr<GrFragmentProcessor::ProgramImpl> GrConvexPolyEffect::onMakeProg
     class Impl : public ProgramImpl {
     public:
         void emitCode(EmitArgs& args) override {
-            const GrConvexPolyEffect& cpe = args.fFp.cast<GrConvexPolyEffect>();
+            const GrConvexPolyEffect& cpe = args.fFp->cast<GrConvexPolyEffect>();
 
             const char *edgeArrayName;
             fEdgeUniform = args.fUniformHandler->addUniformArray(&cpe,

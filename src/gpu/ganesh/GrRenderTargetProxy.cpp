@@ -6,6 +6,7 @@
  */
 
 #include "src/gpu/ganesh/GrRenderTargetProxy.h"
+#include "src/partition_alloc/raw_ref.h"
 
 #include "include/core/SkSize.h"
 #include "include/gpu/GpuTypes.h"
@@ -174,7 +175,7 @@ GrSurfaceProxy::LazySurfaceDesc GrRenderTargetProxy::callbackDesc() const {
             GrRenderable::kYes,
             skgpu::Mipmapped::kNo,
             this->numSamples(),
-            this->backendFormat(),
+            raw_ref(this->backendFormat()),
             GrTextureType::kNone,
             this->isProtected(),
             this->isBudgeted(),

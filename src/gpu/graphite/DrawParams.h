@@ -11,6 +11,7 @@
 #include "include/core/SkPaint.h"
 #include "include/core/SkRect.h"
 #include "include/private/SkAssert.h"
+#include "include/private/SkStackAllocated.h"
 #include "include/private/SkTo.h"
 #include "src/gpu/graphite/DrawOrder.h"
 #include "src/gpu/graphite/DrawTypes.h"
@@ -18,6 +19,7 @@
 #include "src/gpu/graphite/geom/NonMSAAClip.h"
 #include "src/gpu/graphite/geom/Rect.h"
 #include "src/gpu/graphite/geom/Transform.h"
+#include "src/partition_alloc/raw_ref.h"
 
 #include <algorithm>
 #include <optional>
@@ -69,6 +71,7 @@ private:
 // TBD: Separate DashParams extracted from an SkDashPathEffect? Or folded into StrokeStyle?
 
 class Clip {
+    SK_STACK_ALLOCATED();
 public:
     Clip() = default;
     Clip(const Rect& drawBounds,
@@ -154,7 +157,7 @@ public:
             , fBarrierBeforeDraws(barrierBeforeDraws)
             , fStroke(stroke ? std::optional<StrokeStyle>(*stroke) : std::nullopt) {}
 
-    const Transform& transform() const { return fTransform; }
+    const Transform& transform() const { return *fTransform; }
     const Geometry&  geometry()  const { return fGeometry;  }
     DrawOrder        order()     const { return fOrder;     }
 
@@ -175,7 +178,7 @@ public:
 private:
     friend class ClipStack; // For updating clip and order components on depth only draws
 
-    const Transform& fTransform; // Lifetime of the transform must be held longer than the geometry
+    const raw_ref<const Transform> fTransform; // Lifetime of the transform must be held longer than the geometry
     Geometry         fGeometry;
     Rect             fDrawBounds;
     Rect             fTransformedShapeBounds;

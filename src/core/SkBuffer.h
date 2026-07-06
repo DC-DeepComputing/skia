@@ -6,7 +6,10 @@
  */
 
 #ifndef SkBuffer_DEFINED
+
 #define SkBuffer_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/private/SkAssert.h"
 #include "include/private/SkNoncopyable.h"
@@ -126,9 +129,9 @@ public:
 private:
     void    writeNoSizeCheck(const void* buffer, size_t size);
 
-    char* fData;
-    char* fPos;
-    char* fStop;
+    raw_ptr<char, AllowPtrArithmetic> fData;
+    raw_ptr<char, AllowPtrArithmetic> fPos;
+    raw_ptr<char, AllowPtrArithmetic> fStop;
 };
 
 #endif

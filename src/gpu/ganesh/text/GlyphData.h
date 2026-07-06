@@ -8,6 +8,8 @@
 #ifndef skgpu_ganesh_GlyphData_DEFINED
 #define skgpu_ganesh_GlyphData_DEFINED
 
+#include "src/partition_alloc/raw_ptr.h"
+
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSpan.h"
 #include "src/core/SkColorData.h"
@@ -64,7 +66,7 @@ struct GlyphEntry {
 
 /** Adapts GlyphEntry* to conform to GlyphVectors GlyphType requirements. */
 class Glyph {
-    GlyphEntry* fEntry;
+    raw_ptr<GlyphEntry> fEntry;
 
     Glyph() = delete;
     Glyph(const Glyph&) = delete;

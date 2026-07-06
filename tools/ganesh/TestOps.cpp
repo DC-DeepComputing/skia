@@ -45,7 +45,7 @@ public:
 
         private:
             void onEmitCode(EmitArgs& args, GrGPArgs* gpArgs) override {
-                const auto& gp = args.fGeomProc.cast<GP>();
+                const auto& gp = args.fGeomProc->cast<GP>();
                 args.fVaryingHandler->emitAttributes(gp);
                 GrGLSLVarying colorVarying(SkSLType::kHalf4);
                 args.fVaryingHandler->addVarying("color", &colorVarying,

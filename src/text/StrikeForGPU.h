@@ -6,6 +6,9 @@
  */
 
 #ifndef sktext_StrikeForGPU_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
+
 #define sktext_StrikeForGPU_DEFINED
 
 #include "include/core/SkPath.h"
@@ -119,7 +122,7 @@ public:
     ~StrikeMutationMonitor();
 
 private:
-    StrikeForGPU* fStrike;
+    raw_ptr<StrikeForGPU> fStrike;
 };
 
 // -- StrikeForGPUCacheInterface -------------------------------------------------------------------
