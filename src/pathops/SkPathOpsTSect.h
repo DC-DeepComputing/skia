@@ -354,7 +354,7 @@ private:
 
     const SkTCurve& fCurve;
     SkSTArenaAlloc<1024> fHeap;
-    SkTSpan* fHead;
+    RAW_PTR_EXCLUSION SkTSpan* fHead;
     SkTSpan* fCoincident;
     SkTSpan* fDeleted;
     int fActiveCount;
