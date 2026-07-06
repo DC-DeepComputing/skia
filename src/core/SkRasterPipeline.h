@@ -98,7 +98,7 @@ public:
     struct StageList {
         StageList*          prev;
         SkRasterPipelineOp  stage;
-        void*               ctx;
+        RAW_PTR_EXCLUSION void* ctx;
     };
 
     static const char* GetOpName(SkRasterPipelineOp op);
