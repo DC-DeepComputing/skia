@@ -28,8 +28,8 @@ Program::Program(std::unique_ptr<std::string> source,
         : fSource(std::move(source))
         , fConfig(std::move(config))
         , fContext(context)
-        , fSymbols(std::move(symbols))
         , fPool(std::move(pool))
+        , fSymbols(std::move(symbols))
         , fOwnedElements(std::move(elements)) {
     fUsage = Analysis::GetUsage(*this);
 }

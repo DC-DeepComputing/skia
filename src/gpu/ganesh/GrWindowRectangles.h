@@ -12,6 +12,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkAssert.h"
 #include "src/gpu/ganesh/GrNonAtomicRef.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <cstring>
 
