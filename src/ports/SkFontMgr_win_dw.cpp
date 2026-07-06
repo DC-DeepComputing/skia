@@ -1,4 +1,6 @@
 /*
+#include "src/partition_alloc/raw_ptr.h"
+
  * Copyright 2014 Google Inc.
  *
  * Use of this source code is governed by a BSD-style license that can be
@@ -615,7 +617,7 @@ private:
     const WCHAR* fString;
     UINT32 fLength;
     const WCHAR* fLocale;
-    IDWriteNumberSubstitution* fNumberSubstitution;
+    raw_ptr<IDWriteNumberSubstitution> fNumberSubstitution;
 };
 
 sk_sp<SkTypeface> SkFontMgr_DirectWrite::onMatchFamilyStyleCharacter(

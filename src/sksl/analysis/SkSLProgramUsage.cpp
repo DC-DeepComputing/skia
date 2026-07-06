@@ -10,6 +10,7 @@
 #include "include/private/SkDebug.h"
 #include "include/private/SkEnumBitMask.h"
 #include "src/core/SkTHash.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLModule.h"
 #include "src/sksl/analysis/SkSLProgramUsage.h"
@@ -135,7 +136,7 @@ public:
     using ProgramVisitor::visitProgramElement;
     using ProgramVisitor::visitStatement;
 
-    ProgramUsage* fUsage;
+    raw_ptr<ProgramUsage> fUsage;
     int fDelta;
     using INHERITED = ProgramVisitor;
 };

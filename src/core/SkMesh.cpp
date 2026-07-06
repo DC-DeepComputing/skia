@@ -20,6 +20,8 @@
 #include "src/core/SkMeshPriv.h"
 #include "src/core/SkRuntimeEffectPriv.h"
 #include "src/core/SkSafeMath.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ref.h"
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLBuiltinTypes.h"
 #include "src/sksl/SkSLCompiler.h"
@@ -147,9 +149,9 @@ ColorType get_fs_color_type(const SkSL::Program& fsProgram) {
                     return ColorType::kNone;
                 }
                 const SkSL::Type& paramType = decl.parameters()[1]->type();
-                SkASSERT(paramType.matches(*fsProgram.fContext->fTypes.fHalf4) ||
-                         paramType.matches(*fsProgram.fContext->fTypes.fFloat4));
-                return paramType.matches(*fsProgram.fContext->fTypes.fHalf4) ? ColorType::kHalf4
+                SkASSERT(paramType.matches(*fsProgram.fContext->fTypes->fHalf4) ||
+                         paramType.matches(*fsProgram.fContext->fTypes->fFloat4));
+                return paramType.matches(*fsProgram.fContext->fTypes->fHalf4) ? ColorType::kHalf4
                                                                              : ColorType::kFloat4;
             }
         }
@@ -338,7 +340,7 @@ int check_for_passthrough_local_coords_and_dead_varyings(const SkSL::Program& fs
                 return false;
             }
             const Field& field = fVaryings->type().fields()[fa.fieldIndex()];
-            if (!field.fType->matches(*fContext.fTypes.fFloat2)) {
+            if (!field.fType->matches(*fContext->fTypes->fFloat2)) {
                 this->passthroughFailed();
                 return ProgramVisitor::visitStatement(s);
             }
@@ -372,9 +374,9 @@ int check_for_passthrough_local_coords_and_dead_varyings(const SkSL::Program& fs
             fPassthroughFieldIndex = kFailed;
         }
 
-        const Context&  fContext;
-        const Type*     fVaryingsType          = nullptr;
-        const Variable* fVaryings              = nullptr;
+        const raw_ref<const Context> fContext;
+        raw_ptr<const Type> fVaryingsType          = nullptr;
+        raw_ptr<const Variable> fVaryings              = nullptr;
         int             fPassthroughFieldIndex = -1;
         bool            fInMain                = false;
         uint32_t        fFieldUseMask          = 0;
