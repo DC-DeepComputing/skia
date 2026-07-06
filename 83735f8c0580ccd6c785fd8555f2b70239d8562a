@@ -183,6 +183,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "30aa9817_670fe0f2",
+        "filename": "tools/debugger/DrawCommand.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 666,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-06T17:28:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9f11b183_dff4931e",
+      "range": {
+        "startLine": 666,
+        "startChar": 17,
+        "endLine": 666,
+        "endChar": 25
+      },
+      "revId": "83735f8c0580ccd6c785fd8555f2b70239d8562a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f86dada9_cf03a913",
