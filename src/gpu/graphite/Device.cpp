@@ -1004,6 +1004,37 @@ void Device::drawImageLattice(const SkImage* image, const SkCanvas::Lattice& lat
     }
 }
 
+void Device::drawAtlas(SkSpan<const SkRSXform> xform,
+                       SkSpan<const SkRect> tex,
+                       SkSpan<const SkColor> colors,
+                       sk_sp<SkBlender> blender,
+                       const SkPaint& paint) {
+    if (xform.empty()) {
+        return;
+    }
+
+    PaintParams baseParams(paint);
+    for (size_t i = 0; i < xform.size(); i++) {
+        SkRect r = tex[i];
+
+        SkMatrix mat;
+        mat.setRSXform(xform[i]);
+        mat.preTranslate(-r.left(), -r.top());
+
+        // Ensure a non-null blender is created if there is a color defined so the
+        // SoliderColorShaderBlock is still created for the primitive color.
+        this->drawGeometry(Transform(SkM44(this->localToDevice() * mat)),
+                           Geometry(Shape(Rect(r))),
+                           colors.empty()
+                                    ? baseParams
+                                    : baseParams.withPrimitiveColor(
+                                            blender ? blender.get()
+                                                    : GetBlendModeSingleton(SkBlendMode::kSrcOver),
+                                            SkColor4f::FromColor(colors[i])),
+                           DefaultFillStyle());
+    }
+}
+
 void Device::drawOval(const SkRect& oval, const SkPaint& paint) {
     if (paint.getPathEffect()) {
         // Dashing requires that the oval path starts on the right side and travels clockwise. This
