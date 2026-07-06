@@ -246,8 +246,8 @@ std::unique_ptr<DrawPass> DrawList::snapDrawPass(Recorder* recorder,
 }
 
 void DrawList::reset(LoadOp op, SkColor4f clearColor) {
-    fDraws.reset();
     fSortKeys.clear();
+    fDraws.reset();
     DrawListBase::reset(op, clearColor);
 }
 

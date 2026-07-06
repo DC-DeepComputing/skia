@@ -94,7 +94,7 @@ private:
         class Impl : public ProgramImpl {
         public:
             void emitCode(EmitArgs& args) override {
-                auto& fp = args.fFp.cast<VisualizeCrossProductSignFP>();
+                auto& fp = args.fFp->cast<VisualizeCrossProductSignFP>();
                 const char *a, *b;
                 fAUniform = args.fUniformHandler->addUniform(&fp, kFragment_GrShaderFlag,
                                                              SkSLType::kFloat2, "a", &a);
