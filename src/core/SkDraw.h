@@ -247,11 +247,11 @@ private:
 public:
     SkPixmap fDst;
     BlitterChooser* fBlitterChooser{nullptr};  // required
-    const SkMatrix* fCTM{nullptr};             // required
-    const SkRasterClip* fRC{nullptr};          // required
-    const SkSurfaceProps* fProps{nullptr};     // optional
+    RAW_PTR_EXCLUSION const SkMatrix* fCTM{nullptr};             // required
+    RAW_PTR_EXCLUSION const SkRasterClip* fRC{nullptr};          // required
+    RAW_PTR_EXCLUSION const SkSurfaceProps* fProps{nullptr};     // optional
 
-    const ContextImpl* fCtx{nullptr};  // optional for now
+    RAW_PTR_EXCLUSION const ContextImpl* fCtx{nullptr};  // optional for now
 
 #ifdef SK_DEBUG
     void validate() const;

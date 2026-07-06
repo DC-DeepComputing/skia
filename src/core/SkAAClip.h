@@ -113,14 +113,14 @@ private:
     SkIRect         fAAClipBounds;
 
     // point into fScanlineScratch
-    int16_t*        fRuns;
-    SkAlpha*        fAA;
+    RAW_PTR_EXCLUSION int16_t* fRuns;
+    RAW_PTR_EXCLUSION SkAlpha* fAA;
 
     enum {
         kSize = 32 * 32
     };
     SkAutoSMalloc<kSize> fGrayMaskScratch;  // used for blitMask
-    void* fScanlineScratch;  // enough for a mask at 32bit, or runs+aa
+    RAW_PTR_EXCLUSION void* fScanlineScratch;  // enough for a mask at 32bit, or runs+aa
 
     void ensureRunsAndAA();
 };
