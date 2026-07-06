@@ -6,7 +6,10 @@
  */
 
 #ifndef ClipStack_DEFINED
+
 #define ClipStack_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkMatrix.h"
 #include "include/core/SkRect.h"
@@ -221,7 +224,7 @@ private:
         SkIRect     fBounds;
         uint32_t    fGenID;
 
-        SkDEBUGCODE(const SaveRecord* fOwner;)
+        SkDEBUGCODE(raw_ptr<const SaveRecord> fOwner;)
     };
 
     // Represents a saved point in the clip stack, and manages the life time of elements added to
@@ -333,10 +336,10 @@ private:
     // of the actual clip stack.
     // NOTE: These fields can go away once a context has a dedicated clip atlas
     mutable Mask::Stack      fMasks;
-    mutable GrProxyProvider* fProxyProvider;
+    mutable raw_ptr<GrProxyProvider> fProxyProvider;
 
     const SkIRect            fDeviceBounds;
-    const SkMatrix*          fCTM;
+    raw_ptr<const SkMatrix> fCTM;
 
     // When there's MSAA, clip elements are applied using the stencil buffer. If a backend cannot
     // disable MSAA per draw, then all elements are effectively AA'ed. Tracking them as such makes

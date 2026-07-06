@@ -6,6 +6,9 @@
  */
 
 #include "src/gpu/ganesh/GrTextureProxy.h"
+
+#include "src/partition_alloc/raw_ref.h"
+
 #include "src/gpu/ganesh/GrTextureProxyPriv.h"
 
 #include "include/core/SkSize.h"
@@ -218,7 +221,7 @@ GrSurfaceProxy::LazySurfaceDesc GrTextureProxy::callbackDesc() const {
             GrRenderable::kNo,
             fMipmapped,
             1,
-            this->backendFormat(),
+            raw_ref(this->backendFormat()),
             this->textureType(),
             this->isProtected(),
             this->isBudgeted(),

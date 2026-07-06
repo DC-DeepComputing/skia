@@ -40,6 +40,7 @@
 #include "src/core/SkMask.h"
 #include "src/core/SkScalerContext.h"
 #include "src/core/SkStreamPriv.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <algorithm>
 #include <cstdint>
@@ -422,7 +423,7 @@ std::unique_ptr<SkStreamAsset> SkUserTypeface::onOpenStream(int* ttcIndex) const
 }
 
 class AutoRestorePosition {
-    SkStream* fStream;
+    raw_ptr<SkStream> fStream;
     size_t fPosition;
 public:
     AutoRestorePosition(SkStream* stream) : fStream(stream) {

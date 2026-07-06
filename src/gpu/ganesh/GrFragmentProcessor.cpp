@@ -287,7 +287,8 @@ std::unique_ptr<GrFragmentProcessor> GrFragmentProcessor::SwizzleOutput(
                 void emitCode(EmitArgs& args) override {
                     SkString childColor = this->invokeChild(0, args);
 
-                    const SwizzleFragmentProcessor& sfp = args.fFp.cast<SwizzleFragmentProcessor>();
+                    const SwizzleFragmentProcessor& sfp =
+                            args.fFp->cast<SwizzleFragmentProcessor>();
                     const skgpu::Swizzle& swizzle = sfp.fSwizzle;
                     GrGLSLFPFragmentBuilder* fragBuilder = args.fFragBuilder;
 
@@ -875,7 +876,7 @@ SkString ProgramImpl::invokeChild(int childIndex,
         inputColor = args.fInputColor;
     }
 
-    const GrFragmentProcessor* childProc = args.fFp.childProcessor(childIndex);
+    const GrFragmentProcessor* childProc = args.fFp->childProcessor(childIndex);
     if (!childProc) {
         // If no child processor is provided, return the input color as-is.
         return SkString(inputColor);
@@ -886,7 +887,7 @@ SkString ProgramImpl::invokeChild(int childIndex,
 
     if (childProc->isBlendFunction()) {
         if (!destColor) {
-            destColor = args.fFp.isBlendFunction() ? args.fDestColor : "half4(1)";
+            destColor = args.fFp->isBlendFunction() ? args.fDestColor : "half4(1)";
         }
         invocation.appendf(", %s", destColor);
     }
@@ -919,7 +920,7 @@ SkString ProgramImpl::invokeChildWithMatrix(int childIndex,
         inputColor = args.fInputColor;
     }
 
-    const GrFragmentProcessor* childProc = args.fFp.childProcessor(childIndex);
+    const GrFragmentProcessor* childProc = args.fFp->childProcessor(childIndex);
     if (!childProc) {
         // If no child processor is provided, return the input color as-is.
         return SkString(inputColor);
@@ -929,7 +930,7 @@ SkString ProgramImpl::invokeChildWithMatrix(int childIndex,
 
     // Every uniform matrix has the same (initial) name. Resolve that into the mangled name:
     GrShaderVar uniform = args.fUniformHandler->getUniformMapping(
-            args.fFp, SkString(SkSL::SampleUsage::MatrixUniformName()));
+            *args.fFp, SkString(SkSL::SampleUsage::MatrixUniformName()));
     SkASSERT(uniform.getType() == SkSLType::kFloat3x3);
     const SkString& matrixName(uniform.getName());
 
@@ -938,7 +939,7 @@ SkString ProgramImpl::invokeChildWithMatrix(int childIndex,
 
     if (childProc->isBlendFunction()) {
         if (!destColor) {
-            destColor = args.fFp.isBlendFunction() ? args.fDestColor : "half4(1)";
+            destColor = args.fFp->isBlendFunction() ? args.fDestColor : "half4(1)";
         }
         invocation.appendf(", %s", destColor);
     }

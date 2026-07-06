@@ -46,15 +46,12 @@ struct KeyHash {
 };
 
 inline bool operator==(const SkShaderBase::GradientInfo& u, const SkShaderBase::GradientInfo& v) {
-    return u.fColorCount    == v.fColorCount
-        && u.fPoint[0]      == v.fPoint[0]
-        && u.fPoint[1]      == v.fPoint[1]
-        && u.fRadius[0]     == v.fRadius[0]
-        && u.fRadius[1]     == v.fRadius[1]
-        && u.fTileMode      == v.fTileMode
-        && u.fPremulInterp  == v.fPremulInterp
-        && SkPackedArrayEqual(u.fColors, v.fColors, u.fColorCount)
-        && SkPackedArrayEqual(u.fColorOffsets, v.fColorOffsets, u.fColorCount);
+    return u.fColorCount == v.fColorCount && u.fPoint[0] == v.fPoint[0] &&
+           u.fPoint[1] == v.fPoint[1] && u.fRadius[0] == v.fRadius[0] &&
+           u.fRadius[1] == v.fRadius[1] && u.fTileMode == v.fTileMode &&
+           u.fPremulInterp == v.fPremulInterp &&
+           SkPackedArrayEqual(u.fColors.get(), v.fColors.get(), u.fColorCount) &&
+           SkPackedArrayEqual(u.fColorOffsets.get(), v.fColorOffsets.get(), u.fColorCount);
 }
 
 inline bool operator==(const Key& u, const Key& v) {

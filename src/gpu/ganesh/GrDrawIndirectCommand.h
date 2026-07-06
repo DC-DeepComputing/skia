@@ -6,7 +6,10 @@
  */
 
 #ifndef GrDrawIndirectCommand_DEFINED
+
 #define GrDrawIndirectCommand_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <cstdint>
 #include <utility>
@@ -62,7 +65,7 @@ public:
     }
 
 private:
-    GrDrawIndirectCommand* fData;
+    raw_ptr<GrDrawIndirectCommand, AllowPtrArithmetic> fData;
 };
 
 // Helper for writing commands to an indexed indirect draw buffer. Usage:
@@ -97,7 +100,7 @@ public:
     }
 
 private:
-    GrDrawIndexedIndirectCommand* fData;
+    raw_ptr<GrDrawIndexedIndirectCommand, AllowPtrArithmetic> fData;
 };
 
 #endif

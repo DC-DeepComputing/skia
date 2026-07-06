@@ -6,7 +6,9 @@
  */
 
 #ifndef SKSL_IRHELPERS
+
 #define SKSL_IRHELPERS
+#include "src/partition_alloc/raw_ref.h"
 
 #include "include/core/SkTypes.h"
 #include "src/sksl/SkSLAnalysis.h"
@@ -48,26 +50,29 @@ struct IRHelpers {
     }
 
     std::unique_ptr<Expression> Field(const Variable* var, int idx) const {
-        return FieldAccess::Make(fContext, Position(), Ref(var), idx,
+        return FieldAccess::Make(*fContext,
+                                 Position(),
+                                 Ref(var),
+                                 idx,
                                  FieldAccess::OwnerKind::kAnonymousInterfaceBlock);
     }
 
     std::unique_ptr<Expression> Swizzle(std::unique_ptr<Expression> base, ComponentArray c) const {
         Position pos = base->fPosition;
-        return Swizzle::Make(fContext, pos, std::move(base), std::move(c));
+        return Swizzle::Make(*fContext, pos, std::move(base), std::move(c));
     }
 
     std::unique_ptr<Expression> Index(std::unique_ptr<Expression> base,
                                       std::unique_ptr<Expression> idx) const {
         Position pos = base->fPosition.rangeThrough(idx->fPosition);
-        return IndexExpression::Make(fContext, pos, std::move(base), std::move(idx));
+        return IndexExpression::Make(*fContext, pos, std::move(base), std::move(idx));
     }
 
     std::unique_ptr<Expression> Binary(std::unique_ptr<Expression> l,
                                        Operator op,
                                        std::unique_ptr<Expression> r) const {
         Position pos = l->fPosition.rangeThrough(r->fPosition);
-        return BinaryExpression::Make(fContext, pos, std::move(l), op, std::move(r));
+        return BinaryExpression::Make(*fContext, pos, std::move(l), op, std::move(r));
     }
 
     std::unique_ptr<Expression> Mul(std::unique_ptr<Expression> l,
@@ -81,11 +86,11 @@ struct IRHelpers {
     }
 
     std::unique_ptr<Expression> Float(float value) const {
-        return Literal::MakeFloat(Position(), value, fContext.fTypes.fFloat.get());
+        return Literal::MakeFloat(Position(), value, fContext->fTypes->fFloat.get());
     }
 
     std::unique_ptr<Expression> Int(int value) const {
-        return Literal::MakeInt(Position(), value, fContext.fTypes.fInt.get());
+        return Literal::MakeInt(Position(), value, fContext->fTypes->fInt.get());
     }
 
     std::unique_ptr<Expression> CtorXYZW(std::unique_ptr<Expression> xy,
@@ -95,18 +100,18 @@ struct IRHelpers {
         args.push_back(std::move(xy));
         args.push_back(std::move(z));
         args.push_back(std::move(w));
-        return ConstructorCompound::Make(fContext, Position(), *fContext.fTypes.fFloat4,
-                                         std::move(args));
+        return ConstructorCompound::Make(
+                *fContext, Position(), *fContext->fTypes->fFloat4, std::move(args));
     }
 
     std::unique_ptr<Statement> Assign(std::unique_ptr<Expression> l,
                                       std::unique_ptr<Expression> r) const {
         SkAssertResult(Analysis::UpdateVariableRefKind(l.get(), VariableRefKind::kWrite));
-        return ExpressionStatement::Make(fContext,
+        return ExpressionStatement::Make(*fContext,
                                          Binary(std::move(l), OperatorKind::EQ, std::move(r)));
     }
 
-    const Context& fContext;
+    const raw_ref<const Context> fContext;
 };
 
 }  // namespace SkSL

@@ -19,7 +19,7 @@ public:
     inline static constexpr Kind kIRNodeKind = Kind::kPoison;
 
     static std::unique_ptr<Expression> Make(Position pos, const Context& context) {
-        return std::make_unique<Poison>(pos, context.fTypes.fPoison.get());
+        return std::make_unique<Poison>(pos, context.fTypes->fPoison.get());
     }
 
     Poison(Position pos, const Type* type)

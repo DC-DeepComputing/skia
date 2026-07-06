@@ -6,6 +6,7 @@
  */
 
 #include "src/utils/SkPolyUtils.h"
+
 #include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include "include/core/SkRect.h"
@@ -21,6 +22,8 @@
 #include "src/core/SkTDPQueue.h"
 #include "src/core/SkTInternalLList.h"
 #include "src/core/SkVx.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <algorithm>
 #include <cstdint>
@@ -690,8 +693,8 @@ struct ActiveEdge {
     uint16_t fIndex0;   // indices for previous and next vertex in polygon
     uint16_t fIndex1;
     ActiveEdge* fChild[2];
-    ActiveEdge* fAbove;
-    ActiveEdge* fBelow;
+    raw_ptr<ActiveEdge> fAbove;
+    raw_ptr<ActiveEdge> fBelow;
     int32_t  fRed;
 };
 
@@ -1079,7 +1082,7 @@ private:
     }
 
     ActiveEdge fTreeHead;
-    char*      fAllocation;
+    raw_ptr<char, AllowPtrArithmetic | DanglingUntriaged> fAllocation;
     int        fCurrFree;
     int        fMaxFree;
 };
