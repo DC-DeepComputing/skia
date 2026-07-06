@@ -168,8 +168,8 @@ private:
     wgpu::ComputePassEncoder fActiveComputePassEncoder;
 
     struct ResolveStepEmulationInfo {
-        const DawnTexture* fMSAATexture;
-        const DawnTexture* fResolveTexture;
+        RAW_PTR_EXCLUSION const DawnTexture* fMSAATexture = nullptr;
+        RAW_PTR_EXCLUSION const DawnTexture* fResolveTexture = nullptr;
         SkIPoint fMSAAAOffset;
         SkIRect fResolveArea;
     };

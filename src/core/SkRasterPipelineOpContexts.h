@@ -33,7 +33,7 @@ inline static constexpr size_t kMaxScratchPerPatch =
 
 // These structs hold the context data for many of the Raster Pipeline ops.
 struct MemoryCtx {
-    void* pixels;
+    RAW_PTR_EXCLUSION void* pixels;
     int   stride;
 };
 
@@ -64,7 +64,7 @@ struct MemoryCtxPatch {
     std::byte scratch[kMaxScratchPerPatch];
 
     MemoryCtxInfo info;
-    void* backup;  // Remembers context->pixels so we can restore it
+    RAW_PTR_EXCLUSION void* backup;  // Remembers context->pixels so we can restore it
 };
 
 struct GatherCtx {

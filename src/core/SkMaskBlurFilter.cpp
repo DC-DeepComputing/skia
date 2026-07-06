@@ -204,12 +204,12 @@ public:
 
         uint64_t  fWeight;
         int       fNoChangeCount;
-        uint32_t* fBuffer0;
-        uint32_t* fBuffer0End;
-        uint32_t* fBuffer1;
-        uint32_t* fBuffer1End;
-        uint32_t* fBuffer2;
-        uint32_t* fBuffer2End;
+        RAW_PTR_EXCLUSION uint32_t* fBuffer0;
+        RAW_PTR_EXCLUSION uint32_t* fBuffer0End;
+        RAW_PTR_EXCLUSION uint32_t* fBuffer1;
+        RAW_PTR_EXCLUSION uint32_t* fBuffer1End;
+        RAW_PTR_EXCLUSION uint32_t* fBuffer2;
+        RAW_PTR_EXCLUSION uint32_t* fBuffer2End;
     };
 
     Scan makeBlurScan(int width, uint32_t* buffer) const {
