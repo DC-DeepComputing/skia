@@ -67,7 +67,9 @@ public:
         // split uint64_t into hi and lo so we don't force ourselves to pad on 32bit machines.
         uint32_t fSharedID_lo;
         uint32_t fSharedID_hi;
-        void*    fNamespace; // A unique namespace tag. This is hashed.
+        // TODO(arthursonzogni): Consider turning this pointer into a proper ID.
+        // RAW_PTR_EXCLUSION: identifier.
+        RAW_PTR_EXCLUSION void*    fNamespace; // A unique namespace tag. This is hashed.
         /* uint32_t fContents32[] */
 
         const uint32_t* as32() const { return (const uint32_t*)this; }
