@@ -37,6 +37,7 @@
 #include "src/gpu/graphite/geom/EdgeAAQuad.h"
 #include "src/gpu/graphite/geom/Geometry.h"
 #include "src/gpu/graphite/geom/NonMSAAClip.h"
+#include "src/partition_alloc/raw_ref.h"
 
 #include <algorithm>
 #include <atomic>
@@ -327,10 +328,10 @@ Rect snap_scissor(const Rect& a, const Rect& deviceBounds) {
 // interact with each other, without needing to share a base class, friend each other, or have a
 // template for each combination of two types.
 struct ClipStack::TransformedShape {
-    const Transform& fLocalToDevice;
-    const Shape&     fShape;
-    const Rect&      fOuterBounds;
-    const Rect&      fInnerBounds;
+    const raw_ref<const Transform> fLocalToDevice;
+    const raw_ref<const Shape> fShape;
+    const raw_ref<const Rect> fOuterBounds;
+    const raw_ref<const Rect> fInnerBounds;
 
     SkClipOp         fOp;
 
@@ -346,32 +347,32 @@ struct ClipStack::TransformedShape {
 };
 
 bool ClipStack::TransformedShape::intersects(const TransformedShape& o) const {
-    if (!fOuterBounds.intersects(o.fOuterBounds)) {
+    if (!fOuterBounds->intersects(*o.fOuterBounds)) {
         return false;
     }
 
-    if (fLocalToDevice.type() <= Transform::Type::kRectStaysRect &&
-        o.fLocalToDevice.type() <= Transform::Type::kRectStaysRect) {
+    if (fLocalToDevice->type() <= Transform::Type::kRectStaysRect &&
+        o.fLocalToDevice->type() <= Transform::Type::kRectStaysRect) {
         // The two shape's coordinate spaces are different but both rect-stays-rect or simpler.
         // This means, though, that their outer bounds approximations are tight to their transormed
         // shape bounds. There's no point to do further tests given that and that we already found
         // that these outer bounds *do* intersect.
         return true;
-    } else if (fLocalToDevice == o.fLocalToDevice) {
+    } else if ((*fLocalToDevice) == (*o.fLocalToDevice)) {
         // Since the two shape's local coordinate spaces are the same, we can compare shape
         // bounds directly for a more accurate intersection test. We intentionally do not go
         // further and do shape-specific intersection tests since these could have unknown
         // complexity (for paths) and limited utility (e.g. two round rects that are disjoint
         // solely from their corner curves).
-        return fShape.bounds().intersects(o.fShape.bounds());
-    } else if (fLocalToDevice.type() != Transform::Type::kPerspective &&
-               o.fLocalToDevice.type() != Transform::Type::kPerspective) {
+        return fShape->bounds().intersects(o.fShape->bounds());
+    } else if (fLocalToDevice->type() != Transform::Type::kPerspective &&
+               o.fLocalToDevice->type() != Transform::Type::kPerspective) {
         // The shapes don't share the same coordinate system, and their approximate 'outer'
         // bounds in device space could have substantial outsetting to contain the transformed
         // shape (e.g. 45 degree rotation). Perform a more detailed check on their oriented
         // bounding boxes.
-        return oriented_bbox_intersection(fShape.bounds(), fLocalToDevice,
-                                          o.fShape.bounds(), o.fLocalToDevice);
+        return oriented_bbox_intersection(fShape->bounds(), *fLocalToDevice,
+                                          o.fShape->bounds(), *o.fLocalToDevice);
     }
     // Else multiple perspective transforms are involved, so assume intersection and allow the
     // rasterizer to handle perspective clipping.
@@ -379,13 +380,13 @@ bool ClipStack::TransformedShape::intersects(const TransformedShape& o) const {
 }
 
 bool ClipStack::TransformedShape::contains(const TransformedShape& o) const {
-    if (fInnerBounds.contains(o.fOuterBounds)) {
+    if (fInnerBounds->contains(*o.fOuterBounds)) {
         return true;
     }
     // Skip more expensive contains() checks if configured not to, or if the extent of 'o' exceeds
     // this shape's outer bounds. When that happens there must be some part of 'o' that cannot be
     // contained in this shape.
-    if (fContainsChecksOnlyBounds || !fOuterBounds.contains(o.fOuterBounds)) {
+    if (fContainsChecksOnlyBounds || !fOuterBounds->contains(*o.fOuterBounds)) {
         return false;
     }
 
@@ -393,36 +394,36 @@ bool ClipStack::TransformedShape::contains(const TransformedShape& o) const {
         return false; // don't do any more work
     }
 
-    if (fLocalToDevice == o.fLocalToDevice) {
+    if ((*fLocalToDevice) == (*o.fLocalToDevice)) {
         // Test the shapes directly against each other, with a special check for a rrect+rrect
         // containment (a intersect b == a implies b contains a) and paths (same gen ID, or same
         // path for small paths means they contain each other).
         static constexpr int kMaxPathComparePoints = 16;
-        if (fShape.isRRect() && o.fShape.isRRect()) {
-            return SkRRectPriv::ConservativeIntersect(fShape.rrect(), o.fShape.rrect())
-                    == o.fShape.rrect();
-        } else if (fShape.isPath() && o.fShape.isPath()) {
+        if (fShape->isRRect() && o.fShape->isRRect()) {
+            return SkRRectPriv::ConservativeIntersect(fShape->rrect(), o.fShape->rrect())
+                    == o.fShape->rrect();
+        } else if (fShape->isPath() && o.fShape->isPath()) {
             // TODO: Is this worth doing still if clips only cost as much as a single draw?
-            return (fShape.path().getGenerationID() == o.fShape.path().getGenerationID()) ||
-                    (fShape.path().countPoints() <= kMaxPathComparePoints &&
-                    fShape.path() == o.fShape.path());
+            return (fShape->path().getGenerationID() == o.fShape->path().getGenerationID()) ||
+                    (fShape->path().countPoints() <= kMaxPathComparePoints &&
+                    fShape->path() == o.fShape->path());
         } else {
-            return fShape.conservativeContains(o.fShape.bounds());
+            return fShape->conservativeContains(o.fShape->bounds());
         }
-    } else if (fLocalToDevice.type() <= Transform::Type::kRectStaysRect &&
-               o.fLocalToDevice.type() <= Transform::Type::kRectStaysRect) {
+    } else if (fLocalToDevice->type() <= Transform::Type::kRectStaysRect &&
+               o.fLocalToDevice->type() <= Transform::Type::kRectStaysRect) {
         // Optimize the common case where o's bounds can be mapped tightly into this coordinate
         // space and then tested against our shape.
-        Rect localBounds = fLocalToDevice.inverseMapRect(
-                o.fLocalToDevice.mapRect(o.fShape.bounds()));
-        return fShape.conservativeContains(localBounds);
-    } else if (fShape.convex()) {
+        Rect localBounds = fLocalToDevice->inverseMapRect(
+                o.fLocalToDevice->mapRect(o.fShape->bounds()));
+        return fShape->conservativeContains(localBounds);
+    } else if (fShape->convex()) {
         // Since this shape is convex, if all four corners of o's bounding box are inside it
         // then the entirety of o is also guaranteed to be inside it.
         SkV4 deviceQuad[4];
-        o.fLocalToDevice.mapPoints(o.fShape.bounds(), deviceQuad);
+        o.fLocalToDevice->mapPoints(o.fShape->bounds(), deviceQuad);
         SkV4 localQuad[4];
-        fLocalToDevice.inverseMapPoints(deviceQuad, localQuad, 4);
+        fLocalToDevice->inverseMapPoints(deviceQuad, localQuad, 4);
         for (int i = 0; i < 4; ++i) {
             // TODO: Would be nice to make this consistent with how the GPU clips NDC w.
             if (deviceQuad[i].w < SkPathPriv::kW0PlaneDistance ||
@@ -431,7 +432,7 @@ bool ClipStack::TransformedShape::contains(const TransformedShape& o) const {
                 // to infinity, so it's extremely unlikely that this contains O.
                 return false;
             }
-            if (!fShape.conservativeContains(skvx::float2::Load(localQuad + i) / localQuad[i].w)) {
+            if (!fShape->conservativeContains(skvx::float2::Load(localQuad + i) / localQuad[i].w)) {
                 return false;
             }
         }
@@ -607,7 +608,7 @@ ClipStack::RawElement::RawElement(const Rect& deviceBounds,
 }
 
 ClipStack::RawElement::operator ClipStack::TransformedShape() const {
-    return {fLocalToDevice, fShape, fOuterBounds, fInnerBounds, fOp};
+    return {raw_ref(fLocalToDevice), raw_ref(fShape), raw_ref(fOuterBounds), raw_ref(fInnerBounds), fOp};
 }
 
 void ClipStack::RawElement::drawClip(Device* device) {
@@ -954,7 +955,7 @@ ClipStack::ClipState ClipStack::SaveRecord::state() const {
 ClipStack::DrawInfluence ClipStack::SaveRecord::testForDraw(const TransformedShape& draw) const {
     Transform identity = Transform::Identity();
     Shape outerSaveBounds{fOuterBounds};
-    TransformedShape save{identity, outerSaveBounds, fOuterBounds, fInnerBounds, fStackOp,
+    TransformedShape save{raw_ref(identity), raw_ref(outerSaveBounds), raw_ref(fOuterBounds), raw_ref(fInnerBounds), fStackOp,
                           /*containsChecksOnlyBounds=*/true};
 
     return SimplifyForDraw(save, draw);
@@ -1023,7 +1024,7 @@ bool ClipStack::SaveRecord::addElement(RawElement&& toAdd,
     // shape is potentially very different from its aggregate outer bounds.
     Shape outerSaveBounds{fOuterBounds};
     Transform identity = Transform::Identity();
-    TransformedShape save{identity, outerSaveBounds, fOuterBounds, fInnerBounds, fStackOp,
+    TransformedShape save{raw_ref(identity), raw_ref(outerSaveBounds), raw_ref(fOuterBounds), raw_ref(fInnerBounds), fStackOp,
                           /*containsChecksOnlyBounds=*/true};
 
     // In this invocation, 'A' refers to the existing stack's bounds and 'B' refers to the new
@@ -1283,7 +1284,7 @@ public:
         // contains check, but that would cause path rendering draws to potentially change in hard
         // to predict ways.
         SkClipOp op = fShape.inverted() ? SkClipOp::kDifference : SkClipOp::kIntersect;
-        return TransformedShape{fLocalToDevice, fShape, fOuterBounds, fInnerBounds, op,
+        return TransformedShape{raw_ref(fLocalToDevice), raw_ref(fShape), raw_ref(fOuterBounds), raw_ref(fInnerBounds), op,
                                 /*containsChecksOnlyBounds=*/!this->shapeCanBeModified()};
     }
 

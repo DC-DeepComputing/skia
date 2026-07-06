@@ -6,7 +6,10 @@
  */
 
 #ifndef skgpu_graphite_ScratchResourceManager_DEFINED
+
 #define skgpu_graphite_ScratchResourceManager_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
@@ -174,7 +177,7 @@ public:
     }
 
 private:
-    ResourceProvider* fResourceProvider;
+    raw_ptr<ResourceProvider> fResourceProvider;
 
     // ScratchResourceManager holds a pointer to each un-returned scratch resource that it's
     // fetched from the ResourceProvider that should be considered unavailable when making

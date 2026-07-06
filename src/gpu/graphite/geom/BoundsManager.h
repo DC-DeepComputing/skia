@@ -6,7 +6,10 @@
  */
 
 #ifndef skgpu_graphite_geom_BoundsManager_DEFINED
+
 #define skgpu_graphite_geom_BoundsManager_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
@@ -293,7 +296,7 @@ private:
     const int     fMaxBruteForceN;
     const int     fMaxGridSize;
 
-    BoundsManager* fCurrentManager;
+    raw_ptr<BoundsManager> fCurrentManager;
 
     BruteForceBoundsManager                  fBruteForceManager;
 
