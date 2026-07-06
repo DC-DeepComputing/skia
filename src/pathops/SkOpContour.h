@@ -5,7 +5,10 @@
  * found in the LICENSE file.
  */
 #ifndef SkOpContour_DEFINED
+
 #define SkOpContour_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkPath.h"
 #include "include/core/SkPoint.h"
@@ -380,10 +383,10 @@ public:
     SkOpSpan* undoneSpan();
 
 protected:
-    SkOpGlobalState* fState;
+    raw_ptr<SkOpGlobalState> fState;
     SkOpSegment fHead;
-    SkOpSegment* fTail;
-    SkOpContour* fNext;
+    raw_ptr<SkOpSegment> fTail;
+    raw_ptr<SkOpContour> fNext;
     SkPathOpsBounds fBounds;
     int fCcw;
     int fCount;
@@ -454,7 +457,7 @@ public:
     SkOpContour* contour() { return fContour; }
     void setContour(SkOpContour* contour) { flush(); fContour = contour; }
 protected:
-    SkOpContour* fContour;
+    raw_ptr<SkOpContour> fContour;
     SkPoint fLastLine[2];
     bool fLastIsLine;
 };

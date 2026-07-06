@@ -6,7 +6,10 @@
  */
 
 #ifndef skgpu_graphite_ResourceProvider_DEFINED
+
 #define skgpu_graphite_ResourceProvider_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkSize.h"
 #include "include/core/SkTileMode.h"
@@ -135,7 +138,7 @@ protected:
                      uint32_t recorderID,
                      size_t resourceBudget);
 
-    SharedContext* fSharedContext;
+    raw_ptr<SharedContext, DanglingUntriaged> fSharedContext;
     // Each ResourceProvider owns one local cache; for some resources it also refers out to the
     // global cache of the SharedContext, which is assumed to outlive the ResourceProvider.
     sk_sp<ResourceCache> fResourceCache;

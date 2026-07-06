@@ -6,7 +6,10 @@
  */
 
 #ifndef SKSL_FORSTATEMENT
+
 #define SKSL_FORSTATEMENT
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "src/sksl/SkSLPosition.h"
 #include "src/sksl/ir/SkSLExpression.h"
@@ -27,7 +30,7 @@ class Variable;
  * The unrollability information for an ES2-compatible loop.
  */
 struct LoopUnrollInfo {
-    const Variable* fIndex;
+    raw_ptr<const Variable, DanglingUntriaged> fIndex;
     double fStart;
     double fDelta;
     int fCount;

@@ -175,6 +175,7 @@ skia_core_sources = [
   "$_include/private/SkSLSampleUsage.h",
   "$_include/private/SkSafe32.h",
   "$_include/private/SkSemaphore.h",
+  "$_include/private/SkStackAllocated.h",
   "$_include/private/SkTArray.h",
   "$_include/private/SkTDArray.h",
   "$_include/private/SkTFitsIn.h",

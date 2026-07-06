@@ -20,6 +20,7 @@
 #include "include/private/SkTArray.h"
 #include "include/private/SkTo.h"
 #include "include/utils/SkNWayCanvas.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/utils/SkMultiPictureDocumentPriv.h"
 
 #include <algorithm>
@@ -119,7 +120,7 @@ struct MultiPictureDocument final : public SkDocument {
 
 struct PagerCanvas : public SkNWayCanvas {
     SkPictureRecorder fRecorder;
-    SkDocumentPage* fDst;
+    raw_ptr<SkDocumentPage, AllowPtrArithmetic> fDst;
     int fCount;
     int fIndex = 0;
     PagerCanvas(SkISize wh, SkDocumentPage* dst, int count)

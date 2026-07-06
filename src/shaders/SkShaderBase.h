@@ -5,8 +5,13 @@
  * found in the LICENSE file.
  */
 
+#include "src/partition_alloc/raw_ref.h"
+
 #ifndef SkShaderBase_DEFINED
+
 #define SkShaderBase_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkColor.h"
 #include "include/core/SkFlattenable.h"
@@ -245,8 +250,8 @@ public:
                                                //   of fColors/fColorOffsets on input, and
                                                //   actual number of colors/offsets on
                                                //   output.
-        SkColor4f*  fColors        = nullptr;  //!< The colors in the gradient.
-        SkScalar*   fColorOffsets  = nullptr;  //!< The unit offset for color transitions.
+        raw_ptr<SkColor4f, AllowPtrArithmetic | DanglingUntriaged> fColors        = nullptr;  //!< The colors in the gradient.
+        raw_ptr<SkScalar, AllowPtrArithmetic | DanglingUntriaged> fColorOffsets  = nullptr;  //!< The unit offset for color transitions.
         SkPoint     fPoint[2];                 //!< Type specific, see above.
         SkScalar    fRadius[2];                //!< Type specific, see above.
         SkTileMode  fTileMode;
@@ -288,7 +293,7 @@ public:
 
         const SkShaders::MatrixRec fMatrixRec;
         SkColorType                fDstColorType;   // the color type of the dest surface
-        SkColorSpace*              fDstColorSpace;  // the color space of the dest surface (if any)
+        raw_ptr<SkColorSpace> fDstColorSpace;  // the color space of the dest surface (if any)
         SkSurfaceProps             fProps;          // props of the dest surface
         SkAlpha                    fPaintAlpha;
 
@@ -319,7 +324,7 @@ public:
 
     protected:
         // Reference to shader, so we don't have to dupe information.
-        const SkShaderBase& fShader;
+        const raw_ref<const SkShaderBase> fShader;
 
         uint8_t getPaintAlpha() const { return fPaintAlpha; }
 
