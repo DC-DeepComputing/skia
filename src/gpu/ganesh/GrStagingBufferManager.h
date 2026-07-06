@@ -6,7 +6,10 @@
  */
 
 #ifndef GrStagingBufferManager_DEFINED
+
 #define GrStagingBufferManager_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRefCnt.h"
 #include "src/gpu/ganesh/GrGpuBuffer.h"
@@ -25,9 +28,9 @@ public:
         Slice() {}
         Slice(GrGpuBuffer* buffer, size_t offset, void* offsetMapPtr)
                 : fBuffer(buffer), fOffset(offset), fOffsetMapPtr(offsetMapPtr) {}
-        GrGpuBuffer* fBuffer = nullptr;
+        raw_ptr<GrGpuBuffer> fBuffer = nullptr;
         size_t fOffset = 0;
-        void* fOffsetMapPtr = nullptr;
+        raw_ptr<void> fOffsetMapPtr = nullptr;
     };
 
     Slice allocateStagingBufferSlice(size_t size, size_t requiredAlignment = 1);
@@ -55,14 +58,14 @@ private:
                 , fMapPtr(mapPtr) {}
 
         sk_sp<GrGpuBuffer> fBuffer;
-        void* fMapPtr;
+        raw_ptr<void> fMapPtr;
         size_t fOffset = 0;
 
         size_t remaining() { return fBuffer->size() - fOffset; }
     };
 
     std::vector<StagingBuffer> fBuffers;
-    GrGpu* fGpu;
+    raw_ptr<GrGpu> fGpu;
 };
 
 #endif

@@ -6,7 +6,10 @@
  */
 
 #ifndef SkPDFDevice_DEFINED
+
 #define SkPDFDevice_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkCPURecorder.h"
 #include "include/core/SkCanvas.h"
@@ -178,8 +181,8 @@ private:
         }
 
     private:
-        SkPDFDocument* fDoc;
-        SkDynamicMemoryWStream* fOut;
+        raw_ptr<SkPDFDocument> fDoc;
+        raw_ptr<SkDynamicMemoryWStream> fOut;
         SkPDFStructTree::Mark fCurrentlyActiveMark;
         int fCurrentMarksElemId;
         int fNextMarksElemId;
@@ -190,7 +193,7 @@ private:
     SkDynamicMemoryWStream fContentBuffer;
     bool fNeedsExtraSave = false;
     SkPDFGraphicStackState fActiveStackState;
-    SkPDFDocument* fDocument;
+    raw_ptr<SkPDFDocument> fDocument;
 
     ////////////////////////////////////////////////////////////////////////////
 

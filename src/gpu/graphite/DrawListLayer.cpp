@@ -54,7 +54,6 @@ std::pair<Layer*, BindingList*> DrawListLayer::searchBackwards(
     Layer* targetLayer = nullptr;
     BindingList* targetMatch = nullptr;
     BindingList* forwardMerge = nullptr;
-
     // Forward merging attempts to pull an earlier, compatible draw out of the current layer and
     // push it into a newly created layer to improve pipeline/texture batching.
     //

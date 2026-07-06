@@ -34,7 +34,7 @@ BagOfBytes::BagOfBytes(size_t firstHeapAllocation)
         : BagOfBytes(nullptr, 0, firstHeapAllocation) {}
 
 BagOfBytes::~BagOfBytes() {
-    Block* cursor = reinterpret_cast<Block*>(fEndByte);
+    Block* cursor = reinterpret_cast<Block*>(fEndByte.get());
     while (cursor != nullptr) {
         char* toDelete = cursor->fBlockStart;
         cursor = cursor->fPrevious;

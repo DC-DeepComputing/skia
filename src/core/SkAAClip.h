@@ -6,6 +6,9 @@
  */
 
 #ifndef SkAAClip_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
+
 #define SkAAClip_DEFINED
 
 #include "include/core/SkColor.h"
@@ -72,7 +75,7 @@ private:
     friend class SkAAClipBlitter;
 
     SkIRect  fBounds;
-    RunHead* fRunHead;
+    raw_ptr<RunHead, DanglingUntriaged> fRunHead;
 
     void freeRuns();
 
@@ -108,8 +111,8 @@ public:
     void blitMask(const SkMask&, const SkIRect& clip) override;
 
 private:
-    SkBlitter*      fBlitter;
-    const SkAAClip* fAAClip;
+    raw_ptr<SkBlitter, DanglingUntriaged> fBlitter;
+    raw_ptr<const SkAAClip, DanglingUntriaged> fAAClip;
     SkIRect         fAAClipBounds;
 
     // point into fScanlineScratch
