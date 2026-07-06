@@ -150,7 +150,8 @@ struct SkDCubic {
 
     static const int gPrecisionUnit;
     SkDPoint fPts[kPointCount];
-    SkDEBUGCODE(SkOpGlobalState* fDebugGlobalState;)
+    // RAW_PTR_EXCLUSION: Points to a stack-allocated global state.
+    SkDEBUGCODE(RAW_PTR_EXCLUSION SkOpGlobalState* fDebugGlobalState;)
 };
 
 /* Given the set [0, 1, 2, 3], and two of the four members, compute an XOR mask
