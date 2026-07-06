@@ -35,7 +35,7 @@ public:
         SkPath fPath;
         SkStrokeRec fStroke;
         SkPMColor4f fColor;
-        PathStrokeList* fNext = nullptr;
+        RAW_PTR_EXCLUSION PathStrokeList* fNext = nullptr;
     };
 
     StrokeTessellator(PatchAttribs attribs) : fAttribs(attribs | PatchAttribs::kJoinControlPoint) {}
