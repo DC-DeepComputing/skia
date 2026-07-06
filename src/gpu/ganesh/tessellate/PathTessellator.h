@@ -17,6 +17,7 @@
 #include "src/gpu/ganesh/GrVertexChunkArray.h"
 #include "src/gpu/ganesh/geometry/GrInnerFanTriangulator.h"
 #include "src/gpu/tessellate/Tessellation.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <tuple>
 
@@ -41,7 +42,7 @@ public:
         SkMatrix fPathMatrix;
         SkPath fPath;
         SkPMColor4f fColor;
-        PathDrawList* fNext;
+        RAW_PTR_EXCLUSION PathDrawList* fNext;
 
         struct Iter {
             void operator++() { fHead = fHead->fNext; }

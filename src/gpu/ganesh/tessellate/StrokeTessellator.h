@@ -15,6 +15,7 @@
 #include "src/gpu/ganesh/GrGpuBuffer.h"
 #include "src/gpu/ganesh/GrVertexChunkArray.h"
 #include "src/gpu/tessellate/Tessellation.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 class GrMeshDrawTarget;
 class GrOpFlushState;
@@ -35,7 +36,7 @@ public:
         SkPath fPath;
         SkStrokeRec fStroke;
         SkPMColor4f fColor;
-        PathStrokeList* fNext = nullptr;
+        RAW_PTR_EXCLUSION PathStrokeList* fNext = nullptr;
     };
 
     StrokeTessellator(PatchAttribs attribs) : fAttribs(attribs | PatchAttribs::kJoinControlPoint) {}

@@ -27,6 +27,7 @@
 #include "src/gpu/ganesh/effects/GrDistanceFieldGeoProc.h"
 #include "src/gpu/ganesh/ops/GrMeshDrawOp.h"
 #include "src/gpu/ganesh/ops/GrOp.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <cstddef>
 #include <cstdint>
@@ -119,7 +120,7 @@ public:
         // a constant color that we then evaluate on the CPU.
         // TODO: This can be made const once processor analysis is separated from op creation.
         SkPMColor4f fColor;
-        Geometry* fNext{nullptr};
+        RAW_PTR_EXCLUSION Geometry* fNext{nullptr};
     };
 
     const char* name() const override { return "AtlasTextOp"; }
@@ -293,8 +294,8 @@ private:
     // for single-channel distance fields.
     const SkColor fLuminanceColor{0};
 
-    Geometry* fHead{nullptr};
-    Geometry** fTail{&fHead};
+    RAW_PTR_EXCLUSION Geometry* fHead{nullptr};
+    RAW_PTR_EXCLUSION Geometry** fTail{&fHead};
 
     using INHERITED = GrMeshDrawOp;
 };

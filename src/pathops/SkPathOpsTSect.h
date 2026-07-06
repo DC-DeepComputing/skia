@@ -227,7 +227,7 @@ private:
     SkTCoincident fCoinEnd;
     SkTSpanBounded* fBounded;
     SkTSpan* fPrev;
-    SkTSpan* fNext;
+    RAW_PTR_EXCLUSION SkTSpan* fNext;
     SkDRect fBounds;
     double fStartT;
     double fEndT;
