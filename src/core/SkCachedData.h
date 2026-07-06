@@ -51,8 +51,8 @@ private:
     };
 
     union {
-        SkDiscardableMemory*    fDM;
-        void*                   fMalloc;
+        RAW_PTR_EXCLUSION SkDiscardableMemory*    fDM;
+        RAW_PTR_EXCLUSION void*                   fMalloc;
     } fStorage;
     void*       fData;
     size_t      fSize;
