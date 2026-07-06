@@ -93,7 +93,7 @@ public:
 
     ACT_AS_PTR(fPtr)
 private:
-    T* fPtr;
+    RAW_PTR_EXCLUSION T* fPtr;
 };
 
 #undef ACT_AS_PTR
