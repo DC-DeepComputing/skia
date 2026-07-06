@@ -13,12 +13,17 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
 #include "src/capture/SkCapture.h"
+#include "tools/debugger/DebugCanvas.h"
 #include "tools/viewer/Slide.h"
 
 class SkCanvas;
 class SkPicture;
 class SkStream;
 class SkString;
+
+const int JSON_TEXT_BOX_HEIGHT = 200;
+// A width of -1 means use all available width
+const int JSON_TEXT_BOX_WIDTH = -1;
 
 class CaptureSlide : public Slide {
 public:
@@ -39,6 +44,7 @@ private:
     int fCurrentPictureIndex = 0;
     bool fInvalidate = false;
     SkCapture::Metadata fMetadata;
+    std::unique_ptr<DebugCanvas> fDebugCanvas;
 };
 
 #endif
