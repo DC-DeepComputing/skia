@@ -6,7 +6,9 @@
  */
 
 #ifndef SKSL_CHILDCALL
+
 #define SKSL_CHILDCALL
+#include "src/partition_alloc/raw_ref.h"
 
 #include "src/sksl/SkSLDefines.h"
 #include "src/sksl/SkSLPosition.h"
@@ -44,9 +46,7 @@ public:
                                             const Variable& child,
                                             ExpressionArray arguments);
 
-    const Variable& child() const {
-        return fChild;
-    }
+    const Variable& child() const { return *fChild; }
 
     ExpressionArray& arguments() {
         return fArguments;
@@ -61,7 +61,7 @@ public:
     std::string description(OperatorPrecedence) const override;
 
 private:
-    const Variable& fChild;
+    const raw_ref<const Variable> fChild;
     ExpressionArray fArguments;
 
     using INHERITED = Expression;

@@ -6,7 +6,10 @@
  */
 
 #ifndef SkJpegCodec_DEFINED
+
 #define SkJpegCodec_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/codec/SkCodec.h"
 #include "include/codec/SkEncodedImageFormat.h"
@@ -123,8 +126,8 @@ private:
     const int fReadyState;
 
     skia_private::AutoTMalloc<uint8_t> fStorage;
-    uint8_t* fSwizzleSrcRow = nullptr;
-    uint32_t* fColorXformSrcRow = nullptr;
+    raw_ptr<uint8_t> fSwizzleSrcRow = nullptr;
+    raw_ptr<uint32_t> fColorXformSrcRow = nullptr;
 
     // libjpeg-turbo provides some subsetting.  In the case that libjpeg-turbo
     // cannot take the exact the subset that we need, we will use the swizzler

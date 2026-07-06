@@ -6,7 +6,10 @@
  */
 
 #ifndef skgpu_graphite_ContextPriv_DEFINED
+
 #define skgpu_graphite_ContextPriv_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRefCnt.h"
 #include "include/gpu/graphite/Context.h"
@@ -93,7 +96,7 @@ private:
     const ContextPriv* operator&() const;
     ContextPriv *operator&();
 
-    Context* fContext;
+    raw_ptr<Context> fContext;
 };
 
 inline ContextPriv Context::priv() { return ContextPriv(this); }

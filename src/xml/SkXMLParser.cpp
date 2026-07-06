@@ -14,6 +14,7 @@
 #include "src/core/SkRandom.h"
 #include "src/core/SkTime.h"
 #include "src/core/SkUtils.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <expat.h>
 
@@ -103,7 +104,7 @@ struct ParsingContext {
         fBufferedText.insert(fBufferedText.end(), txt, &txt[len]);
     }
 
-    SkXMLParser* fParser;
+    raw_ptr<SkXMLParser> fParser;
     SkAutoTCallVProc<std::remove_pointer_t<XML_Parser>, XML_ParserFree> fXMLParser;
 
 private:

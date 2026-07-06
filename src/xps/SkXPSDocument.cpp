@@ -5,10 +5,11 @@
  * found in the LICENSE file.
  */
 
+#include "include/docs/SkXPSDocument.h"
+
 #include "include/core/SkTypes.h"
 #if defined(SK_BUILD_FOR_WIN)
 
-#include "include/docs/SkXPSDocument.h"
 
 #include "include/core/SkStream.h"
 #include "src/utils/win/SkHRESULT.h"
@@ -70,7 +71,7 @@ void SkXPSDocument::onClose(SkWStream*) {
     (void)fDevice.endPortfolio();
 }
 
-void SkXPSDocument::onAbort() {}
+void SkXPSDocument::onAbort() { fDevice.cleanup(); }
 
 ///////////////////////////////////////////////////////////////////////////////
 

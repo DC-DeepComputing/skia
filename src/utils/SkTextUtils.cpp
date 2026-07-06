@@ -17,6 +17,7 @@
 #include "include/core/SkTextBlob.h"
 #include "include/private/SkTemplates.h"
 #include "src/core/SkFontPriv.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 using namespace skia_private;
 
@@ -44,7 +45,7 @@ void SkTextUtils::GetPath(const void* text, size_t length, SkTextEncoding encodi
 
     struct Rec {
         SkPathBuilder fDst;
-        const SkPoint* fPos;
+        raw_ptr<const SkPoint, AllowPtrArithmetic> fPos;
     } rec = { {}, pos.get() };
 
     font.getPaths(ag.glyphs(), [](const SkPath* src, const SkMatrix& mx, void* ctx) {

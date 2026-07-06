@@ -6,7 +6,9 @@
  */
 
 #ifndef SKSL_TYPEREFERENCE
+
 #define SKSL_TYPEREFERENCE
+#include "src/partition_alloc/raw_ref.h"
 
 #include "src/sksl/SkSLBuiltinTypes.h"
 #include "src/sksl/SkSLContext.h"
@@ -32,7 +34,7 @@ public:
     inline static constexpr Kind kIRNodeKind = Kind::kTypeReference;
 
     TypeReference(const Context& context, Position pos, const Type* value)
-            : TypeReference(pos, value, context.fTypes.fInvalid.get()) {}
+            : TypeReference(pos, value, context.fTypes->fInvalid.get()) {}
 
     // Reports an error and returns false if the type is generic or, in a strict-ES2 program, if the
     // type is not allowed in ES2. Otherwise, returns true. (These are the same checks performed by
@@ -48,9 +50,7 @@ public:
     static std::unique_ptr<TypeReference> Make(const Context& context, Position pos,
             const Type* type);
 
-    const Type& value() const {
-        return fValue;
-    }
+    const Type& value() const { return *fValue; }
 
     std::string description(OperatorPrecedence) const override {
         return std::string(this->value().name());
@@ -65,7 +65,7 @@ private:
         : INHERITED(pos, kIRNodeKind, type)
         , fValue(*value) {}
 
-    const Type& fValue;
+    const raw_ref<const Type> fValue;
 
     using INHERITED = Expression;
 };

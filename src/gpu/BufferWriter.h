@@ -5,8 +5,13 @@
  * found in the LICENSE file.
  */
 
+#include "src/partition_alloc/raw_ref.h"
+
 #ifndef skgpu_BufferWriter_DEFINED
+
 #define skgpu_BufferWriter_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkRect.h"
@@ -117,7 +122,7 @@ protected:
     template<typename W>
     W makeOffset(size_t offsetInBytes) const {
         this->validate(offsetInBytes);
-        void* p = SkTAddOffset<void>(fPtr, offsetInBytes);
+        void* p = SkTAddOffset<void>(fPtr.get(), offsetInBytes);
         Mark end{SkDEBUGCODE(fEnd)};
         SkDEBUGCODE(fEnd = Mark(p);)
         return W{p, end};
@@ -128,8 +133,8 @@ protected:
     // order, for optimal performance.
     SkSpan<uint8_t> slice(size_t bytes) {
         this->validate(bytes);
-        SkSpan<uint8_t> slice{static_cast<uint8_t*>(fPtr), bytes};
-        fPtr = SkTAddOffset<void>(fPtr, bytes);
+        SkSpan<uint8_t> slice{static_cast<uint8_t*>(fPtr.get()), bytes};
+        fPtr = SkTAddOffset<void>(fPtr.get(), bytes);
         return slice;
     }
 
@@ -141,7 +146,7 @@ protected:
         SkASSERT(!fEnd || Mark(fPtr, bytesToWrite) <= fEnd);
     }
 
-    void* fPtr = nullptr;
+    raw_ptr<void, DanglingUntriaged> fPtr = nullptr;
     SkDEBUGCODE(mutable Mark fEnd = {};)
 };
 
@@ -202,7 +207,7 @@ struct VertexWriter : private BufferWriter {
 
     template<typename T>
     struct ArrayDesc {
-        const T* fArray;
+        raw_ptr<const T> fArray;
         int fCount;
     };
 
@@ -213,12 +218,12 @@ struct VertexWriter : private BufferWriter {
 
     template<int kCount, typename T>
     struct RepeatDesc {
-        const T& fVal;
+        const raw_ref<const T> fVal;
     };
 
     template <int kCount, typename T>
     static RepeatDesc<kCount, T> Repeat(const T& val) {
-        return {val};
+        return {raw_ref(val)};
     }
 
     /**
@@ -341,14 +346,14 @@ inline VertexWriter& operator<<(VertexWriter& w, const VertexWriter::Skip<T>& va
 template <typename T>
 inline VertexWriter& operator<<(VertexWriter& w, const VertexWriter::ArrayDesc<T>& array) {
     static_assert(std::is_trivially_copyable<T>::value, "");
-    w.write(SkSpan<const T>{array.fArray, (size_t)array.fCount});
+    w.write(SkSpan<const T>{array.fArray.get(), (size_t)array.fCount});
     return w;
 }
 
 template <int kCount, typename T>
 inline VertexWriter& operator<<(VertexWriter& w, const VertexWriter::RepeatDesc<kCount,T>& repeat) {
     for (int i = 0; i < kCount; ++i) {
-        w << repeat.fVal;
+        w << (*repeat.fVal);
     }
     return w;
 }
@@ -442,7 +447,7 @@ struct TextureUploadWriter : private BufferWriter {
     void write(size_t offset, const void* src, size_t srcRowBytes, size_t dstRowBytes,
                size_t trimRowBytes, int rowCount) {
         this->validate(offset + dstRowBytes * rowCount);
-        void* dst = SkTAddOffset<void>(fPtr, offset);
+        void* dst = SkTAddOffset<void>(fPtr.get(), offset);
         SkRectMemcpy(dst, dstRowBytes, src, srcRowBytes, trimRowBytes, rowCount);
     }
 
@@ -451,7 +456,7 @@ struct TextureUploadWriter : private BufferWriter {
                          const SkImageInfo& dstInfo, size_t dstRowBytes) {
         SkASSERT(srcInfo.width() == dstInfo.width() && srcInfo.height() == dstInfo.height());
         this->validate(offset + dstRowBytes * dstInfo.height());
-        void* dst = SkTAddOffset<void>(fPtr, offset);
+        void* dst = SkTAddOffset<void>(fPtr.get(), offset);
         SkAssertResult(SkConvertPixels(dstInfo, dst, dstRowBytes, srcInfo, src, srcRowBytes));
     }
 
@@ -460,7 +465,7 @@ struct TextureUploadWriter : private BufferWriter {
     void writeRGBFromRGBx(size_t offset, const void* src, size_t srcRowBytes, size_t dstRowBytes,
                           int rowPixels, int rowCount) {
         this->validate(offset + dstRowBytes * rowCount);
-        void* dst = SkTAddOffset<void>(fPtr, offset);
+        void* dst = SkTAddOffset<void>(fPtr.get(), offset);
         auto* sRow = reinterpret_cast<const char*>(src);
         auto* dRow = reinterpret_cast<char*>(dst);
 

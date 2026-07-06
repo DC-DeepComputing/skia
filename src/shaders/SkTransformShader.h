@@ -5,7 +5,9 @@
  * found in the LICENSE file.
  */
 #ifndef SkTextCoordShader_DEFINED
+
 #define SkTextCoordShader_DEFINED
+#include "src/partition_alloc/raw_ref.h"
 
 #include "include/core/SkScalar.h"
 #include "include/private/SkAssert.h"
@@ -43,10 +45,10 @@ public:
         return nullptr;
     }
 
-    bool isOpaque() const override { return fShader.isOpaque(); }
+    bool isOpaque() const override { return fShader->isOpaque(); }
 
 private:
-    const SkShaderBase& fShader;
+    const raw_ref<const SkShaderBase> fShader;
     SkScalar fMatrixStorage[9];  // actual memory used by generated RP or VM
     bool fAllowPerspective;
 };

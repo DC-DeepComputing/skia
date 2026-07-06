@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 #ifndef SkEdgeBuilder_DEFINED
+
 #define SkEdgeBuilder_DEFINED
 #include "src/partition_alloc/raw_ptr_exclusion.h"
 

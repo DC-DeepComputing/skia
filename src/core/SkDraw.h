@@ -6,6 +6,7 @@
  */
 
 #ifndef skcpu_Draw_DEFINED
+
 #define skcpu_Draw_DEFINED
 #include "src/partition_alloc/raw_ptr_exclusion.h"
 
@@ -108,6 +109,8 @@ public:
 class Draw : public BitmapDevicePainter {
 public:
     Draw();
+    Draw(const Draw&) = default;
+    ~Draw() override;
 
     void drawPaint(const SkPaint&) const;
     void drawRect(const SkRect& prePaintRect,
@@ -248,10 +251,14 @@ private:
 public:
     SkPixmap fDst;
     BlitterChooser* fBlitterChooser{nullptr};  // required
-    RAW_PTR_EXCLUSION const SkMatrix* fCTM{nullptr};          // required
-    RAW_PTR_EXCLUSION const SkRasterClip* fRC{nullptr};       // required
+    // RAW_PTR_EXCLUSION: Lightweight parameter struct referencing interior device storage
+    RAW_PTR_EXCLUSION const SkMatrix* fCTM{nullptr};  // required
+    // RAW_PTR_EXCLUSION: Lightweight parameter struct referencing interior device storage
+    RAW_PTR_EXCLUSION const SkRasterClip* fRC{nullptr};  // required
+    // RAW_PTR_EXCLUSION: Lightweight parameter struct referencing interior device storage
     RAW_PTR_EXCLUSION const SkSurfaceProps* fProps{nullptr};  // optional
 
+    // RAW_PTR_EXCLUSION: Lightweight parameter struct referencing interior device storage
     RAW_PTR_EXCLUSION const ContextImpl* fCtx{nullptr};  // optional for now
 
 #ifdef SK_DEBUG

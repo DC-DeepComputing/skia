@@ -6,6 +6,7 @@
  */
 
 #ifndef SkMask_DEFINED
+
 #define SkMask_DEFINED
 #include "src/partition_alloc/raw_ptr_exclusion.h"
 

@@ -8,7 +8,10 @@
 
 
 #ifndef SkIStream_DEFINED
+
 #define SkIStream_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkTypes.h"
 
@@ -91,7 +94,7 @@ public:
     SK_STDMETHODIMP Stat(STATSTG* pStatstg, DWORD grfStatFlag) override;
 
 private:
-    SkWStream *fSkWStream;
+    raw_ptr<SkWStream> fSkWStream;
 
     SkWIStream(SkWStream* stream);
     ~SkWIStream() override;

@@ -6,6 +6,7 @@
  */
 
 #ifndef SkArenaAlloc_DEFINED
+
 #define SkArenaAlloc_DEFINED
 #include "src/partition_alloc/raw_ptr_exclusion.h"
 

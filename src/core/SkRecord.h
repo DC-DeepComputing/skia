@@ -6,6 +6,7 @@
  */
 
 #ifndef SkRecord_DEFINED
+
 #define SkRecord_DEFINED
 #include "src/partition_alloc/raw_ptr_exclusion.h"
 

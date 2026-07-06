@@ -6,7 +6,10 @@
  */
 
 #ifndef GrAtlasManager_DEFINED
+
 #define GrAtlasManager_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRefCnt.h"
 #include "include/gpu/GpuTypes.h"
@@ -168,7 +171,7 @@ private:
     std::unique_ptr<GrDrawOpAtlas> fAtlases[skgpu::kMaskFormatCount];
     static_assert(skgpu::kMaskFormatCount == 3);
     bool fSupportBilerpAtlas;
-    GrProxyProvider* fProxyProvider;
+    raw_ptr<GrProxyProvider> fProxyProvider;
     sk_sp<const GrCaps> fCaps;
     GrDrawOpAtlasConfig fAtlasConfig;
 

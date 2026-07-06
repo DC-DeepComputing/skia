@@ -22,6 +22,7 @@
 #include "src/core/SkScalerContext.h"
 #include "src/core/SkStrikeCache.h"
 #include "src/core/SkWriteBuffer.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/text/StrikeForGPU.h"
 
 #include <cctype>
@@ -69,7 +70,7 @@ public:
     }
 
 private:
-    SkStrike* const fStrike;
+    const raw_ptr<SkStrike> fStrike;
 };
 
 void SkStrike::lock() {
@@ -408,7 +409,7 @@ SkGlyph* SkStrike::mergeGlyphFromBuffer(SkReadBuffer& buffer) {
     }
 
     // This is the first time. Allocate a new glyph.
-    SkGlyph* glyph = fAlloc.make<SkGlyph>(prototypeGlyph.value());
+    SkGlyph* glyph = fAlloc.make<SkGlyph>(std::move(prototypeGlyph.value()));
     fMemoryIncrease += sizeof(SkGlyph);
     this->addGlyphAndDigest(glyph);
     return glyph;

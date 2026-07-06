@@ -6,7 +6,9 @@
  */
 
 #ifndef PathTessellator_DEFINED
+
 #define PathTessellator_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include "include/core/SkMatrix.h"
@@ -50,7 +52,7 @@ public:
             std::tuple<const SkMatrix&, const SkPath&, const SkPMColor4f&> operator*() const {
                 return {fHead->fPathMatrix, fHead->fPath, fHead->fColor};
             }
-            const PathDrawList* fHead;
+            raw_ptr<const PathDrawList> fHead;
         };
         Iter begin() const { return {this}; }
         Iter end() const { return {nullptr}; }

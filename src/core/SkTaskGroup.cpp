@@ -19,15 +19,16 @@ void SkTaskGroup::add(std::function<void(void)> fn) {
 
 void SkTaskGroup::add(std::function<void(void)> fn, int workList) {
     fPending.fetch_add(+1, std::memory_order_relaxed);
-    fExecutor.add([this, fn{std::move(fn)}] {
-                      fn();
-                      fPending.fetch_add(-1, std::memory_order_release);
-                  },
-                  workList);
+    fExecutor->add(
+            [this, fn{std::move(fn)}] {
+                fn();
+                fPending.fetch_add(-1, std::memory_order_release);
+            },
+            workList);
 }
 
 void SkTaskGroup::discardAllPendingWork() {
-    int numDiscarded = fExecutor.discardAllPendingWork();
+    int numDiscarded = fExecutor->discardAllPendingWork();
     fPending.fetch_add(-numDiscarded, std::memory_order_release);
 }
 
@@ -35,7 +36,7 @@ void SkTaskGroup::batch(int N, std::function<void(int)> fn) {
     // TODO: I really thought we had some sort of more clever chunking logic.
     fPending.fetch_add(+N, std::memory_order_relaxed);
     for (int i = 0; i < N; i++) {
-        fExecutor.add([fn, i, this] {
+        fExecutor->add([fn, i, this] {
             fn(i);
             fPending.fetch_add(-1, std::memory_order_release);
         });
@@ -52,7 +53,7 @@ void SkTaskGroup::wait() {
     // no thread ever blocks waiting for others to do its work.
     // (We may end up doing work that's not part of our task group.  That's fine.)
     while (!this->done()) {
-        fExecutor.borrow();
+        fExecutor->borrow();
     }
 }
 

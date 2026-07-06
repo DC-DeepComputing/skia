@@ -18,6 +18,7 @@
 #include "src/core/SkRasterPipeline.h"
 #include "src/core/SkRasterPipelineOpContexts.h"
 #include "src/core/SkRasterPipelineOpList.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/shaders/gradients/SkGradientBaseShader.h"
 
 #include <cstdint>
@@ -26,10 +27,10 @@
 using namespace skia_private;
 
 struct GrGradientBitmapCache::Entry {
-    Entry*      fPrev;
-    Entry*      fNext;
+    raw_ptr<Entry> fPrev;
+    raw_ptr<Entry> fNext;
 
-    void*       fBuffer;
+    raw_ptr<void> fBuffer;
     size_t      fSize;
     SkBitmap    fBitmap;
 
@@ -42,7 +43,11 @@ struct GrGradientBitmapCache::Entry {
         memcpy(fBuffer, buffer, size);
     }
 
-    ~Entry() { sk_free(fBuffer); }
+    ~Entry() {
+        void* ptr = fBuffer;
+        fBuffer = nullptr;
+        sk_free(ptr);
+    }
 
     bool equals(const void* buffer, size_t size) const {
         return (fSize == size) && !memcmp(fBuffer, buffer, size);
@@ -62,8 +67,14 @@ GrGradientBitmapCache::~GrGradientBitmapCache() {
     this->validate();
 
     Entry* entry = fHead;
+    fHead = nullptr;
+    fTail = nullptr;
     while (entry) {
         Entry* next = entry->fNext;
+        if (next) {
+            next->fPrev = nullptr;
+        }
+        entry->fNext = nullptr;
         delete entry;
         entry = next;
     }

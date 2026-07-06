@@ -3,7 +3,9 @@
 // found in the LICENSE file.
 
 #ifndef SkStreamAdapter_DEFINED
+
 #define SkStreamAdapter_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkStream.h"
 #include "include/private/SkAssert.h"
@@ -45,7 +47,7 @@ private:
     //   `virtual SkStream& stream() = 0`.
     // * Remove the constructor.
     // * Derive-from/implement this in a child class in `src/codec/SkPngRustCodec.cpp`
-    SkStream* fStream;
+    raw_ptr<SkStream> fStream;
 };
 
 }  // namespace stream

@@ -7,6 +7,7 @@
 
 #include "include/core/SkTypes.h"
 #include "src/core/SkTHash.h"
+#include "src/partition_alloc/raw_ref.h"
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLContext.h"
 #include "src/sksl/SkSLErrorReporter.h"
@@ -58,9 +59,10 @@ void Analysis::CheckSymbolTableCorrectness(const Program& program) {
                     }
                 });
                 if (!containsSymbol) {
-                    fContext.fErrors->error(vardecl.position(), "internal error (variable '" +
-                                                                std::string(vardecl.var()->name()) +
-                                                                "' is incorrectly scoped)");
+                    fContext->fErrors->error(vardecl.position(),
+                                             "internal error (variable '" +
+                                                     std::string(vardecl.var()->name()) +
+                                                     "' is incorrectly scoped)");
                 }
             }
             return INHERITED::visitStatement(stmt);
@@ -73,7 +75,7 @@ void Analysis::CheckSymbolTableCorrectness(const Program& program) {
     private:
         using INHERITED = ProgramVisitor;
 
-        const Context& fContext;
+        const raw_ref<const Context> fContext;
         std::vector<SymbolTable*> fSymbolTableStack;
     };
 

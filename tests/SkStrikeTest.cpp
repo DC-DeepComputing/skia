@@ -220,7 +220,8 @@ DEF_TEST(SkStrike_FlattenByType, reporter) {
             {X,X,X,X,X,X,X,X},
     };
     maskGlyph.setImage(&alloc, imageData);
-    imagesToSend.emplace_back(maskGlyph);
+    auto expectedMaskRect = maskGlyph.rect();
+    imagesToSend.emplace_back(std::move(maskGlyph));
 
     // Make a path glyph and put it in the glyphs to send.
     const SkPackedGlyphID pathPackedGlyphID((SkGlyphID)11);
@@ -228,7 +229,8 @@ DEF_TEST(SkStrike_FlattenByType, reporter) {
     SkGlyphTestPeer::SetGlyph(&pathGlyph);
     SkPath path = SkPath::Rect(pathGlyph.rect());
     pathGlyph.setPath(&alloc, &path, false, false);
-    pathsToSend.emplace_back(pathGlyph);
+    auto expectedPathRect = pathGlyph.rect();
+    pathsToSend.emplace_back(std::move(pathGlyph));
 
     // Make a drawable glyph and put it in the glyphs to send.
     const SkPackedGlyphID drawablePackedGlyphID((SkGlyphID)12);
@@ -255,7 +257,8 @@ DEF_TEST(SkStrike_FlattenByType, reporter) {
     drawableGlyph.setDrawable(&alloc, drawable);
     REPORTER_ASSERT(reporter, drawableGlyph.setDrawableHasBeenCalled());
     REPORTER_ASSERT(reporter, drawableGlyph.drawable() != nullptr);
-    drawablesToSend.emplace_back(drawableGlyph);
+    auto expectedDrawableRect = drawableGlyph.rect();
+    drawablesToSend.emplace_back(std::move(drawableGlyph));
 
     // Test the FlattenGlyphsByType method.
     SkBinaryWriteBuffer writeBuffer({});
@@ -275,19 +278,19 @@ DEF_TEST(SkStrike_FlattenByType, reporter) {
 
     // Check mask glyph.
     SkGlyph* dstMaskGlyph = SkStrikeTestingPeer::GetGlyph(strike.get(), maskPackedGlyphID);
-    REPORTER_ASSERT(reporter, maskGlyph.rect() == dstMaskGlyph->rect());
+    REPORTER_ASSERT(reporter, expectedMaskRect == dstMaskGlyph->rect());
     REPORTER_ASSERT(reporter, dstMaskGlyph->setImageHasBeenCalled());
     REPORTER_ASSERT(reporter, dstMaskGlyph->image() != nullptr);
 
     // Check path glyph.
     SkGlyph* dstPathGlyph = SkStrikeTestingPeer::GetGlyph(strike.get(), pathPackedGlyphID);
-    REPORTER_ASSERT(reporter, pathGlyph.rect() == dstPathGlyph->rect());
+    REPORTER_ASSERT(reporter, expectedPathRect == dstPathGlyph->rect());
     REPORTER_ASSERT(reporter, dstPathGlyph->setPathHasBeenCalled());
     REPORTER_ASSERT(reporter, dstPathGlyph->path() != nullptr);
 
     // Check drawable glyph.
     SkGlyph* dstDrawableGlyph = SkStrikeTestingPeer::GetGlyph(strike.get(),drawablePackedGlyphID);
-    REPORTER_ASSERT(reporter, drawableGlyph.rect() == dstDrawableGlyph->rect());
+    REPORTER_ASSERT(reporter, expectedDrawableRect == dstDrawableGlyph->rect());
     REPORTER_ASSERT(reporter, dstDrawableGlyph->setDrawableHasBeenCalled());
     REPORTER_ASSERT(reporter, dstDrawableGlyph->drawable() != nullptr);
 }
