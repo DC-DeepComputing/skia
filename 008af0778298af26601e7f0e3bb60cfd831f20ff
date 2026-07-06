@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1697e29_d21d88ac",
+        "filename": "include/gpu/ganesh/GrRecordingContext.h",
+        "patchSetId": 27
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-06T13:06:21Z",
+      "side": 1,
+      "message": "It appears this file only has formatter changes. Please revert this. I noticed something similar in include/gpu/graphite/Recorder.h too, so please take a pass through and undo unnecessary formatting changes",
+      "range": {
+        "startLine": 47,
+        "startChar": 6,
+        "endLine": 47,
+        "endChar": 15
+      },
+      "revId": "008af0778298af26601e7f0e3bb60cfd831f20ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
