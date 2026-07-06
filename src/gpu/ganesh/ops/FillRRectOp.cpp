@@ -6,6 +6,7 @@
  */
 
 #include "src/gpu/ganesh/ops/FillRRectOp.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include "include/core/SkClipOp.h"
 #include "include/core/SkMatrix.h"
@@ -213,11 +214,11 @@ private:
         SkRRect fRRect;
         LocalCoords fLocalCoords;
         SkPMColor4f fColor;
-        Instance* fNext = nullptr;
+        RAW_PTR_EXCLUSION Instance* fNext = nullptr;
     };
 
-    Instance* fHeadInstance;
-    Instance** fTailInstance;
+    RAW_PTR_EXCLUSION Instance* fHeadInstance;
+    RAW_PTR_EXCLUSION Instance** fTailInstance;
     int fInstanceCount = 1;
 
     sk_sp<const GrBuffer> fInstanceBuffer;

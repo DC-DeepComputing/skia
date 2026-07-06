@@ -54,7 +54,7 @@ struct MemoryCtx {
 // To do all of this, the pipeline creates a MemoryCtxPatch for each unique MemoryCtx referenced by
 // the pipeline.
 struct MemoryCtxInfo {
-    MemoryCtx* context;
+    RAW_PTR_EXCLUSION MemoryCtx* context;
 
     int bytesPerPixel;
     bool load;
