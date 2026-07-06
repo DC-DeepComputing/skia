@@ -5,8 +5,13 @@
  * found in the LICENSE file.
  */
 
+#include "src/partition_alloc/raw_ref.h"
+
 #ifndef SKSL_PARSER
+
 #define SKSL_PARSER
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkTypes.h"
 #include "src/sksl/SkSLDefines.h"
@@ -163,7 +168,7 @@ private:
     struct VarDeclarationsPrefix {
         Position fPosition;
         Modifiers fModifiers;
-        const Type* fType;
+        raw_ptr<const Type> fType;
         Token fName;
     };
 
@@ -316,9 +321,9 @@ private:
 
     SymbolTable* symbolTable();
 
-    Compiler& fCompiler;
+    const raw_ref<Compiler> fCompiler;
     ProgramSettings fSettings;
-    ErrorReporter* fErrorReporter;
+    raw_ptr<ErrorReporter> fErrorReporter;
     bool fEncounteredFatalError;
     ProgramKind fKind;
     std::unique_ptr<std::string> fText;

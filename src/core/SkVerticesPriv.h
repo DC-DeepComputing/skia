@@ -6,7 +6,10 @@
  */
 
 #ifndef SkVerticesPriv_DEFINED
+
 #define SkVerticesPriv_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkVertices.h"
 
@@ -50,7 +53,7 @@ private:
     const SkVerticesPriv* operator&() const = delete;
     SkVerticesPriv* operator&() = delete;
 
-    SkVertices* fVertices;
+    raw_ptr<SkVertices> fVertices;
 
     friend class SkVertices; // to construct this type
 };

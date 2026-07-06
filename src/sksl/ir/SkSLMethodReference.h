@@ -6,7 +6,10 @@
  */
 
 #ifndef SKSL_METHODREFERENCE
+
 #define SKSL_METHODREFERENCE
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "src/sksl/SkSLBuiltinTypes.h"
 #include "src/sksl/SkSLContext.h"
@@ -36,7 +39,7 @@ public:
                     Position pos,
                     std::unique_ptr<Expression> self,
                     const FunctionDeclaration* overloadChain)
-            : INHERITED(pos, kIRNodeKind, context.fTypes.fInvalid.get())
+            : INHERITED(pos, kIRNodeKind, context.fTypes->fInvalid.get())
             , fSelf(std::move(self))
             , fOverloadChain(overloadChain) {}
 
@@ -64,7 +67,7 @@ private:
             , fOverloadChain(overloadChain) {}
 
     std::unique_ptr<Expression> fSelf;
-    const FunctionDeclaration* fOverloadChain;
+    raw_ptr<const FunctionDeclaration> fOverloadChain;
 
     using INHERITED = Expression;
 };

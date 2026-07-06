@@ -6,7 +6,10 @@
  */
 
 #ifndef GrVkManagedResource_DEFINED
+
 #define GrVkManagedResource_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "src/gpu/ganesh/GrManagedResource.h"
 
@@ -17,7 +20,7 @@ public:
     GrVkManagedResource(const GrVkGpu* gpu) : fGpu(gpu) {}
 
 protected:
-    const GrVkGpu* fGpu;  // pointer to gpu object that can be used
+    raw_ptr<const GrVkGpu> fGpu;  // pointer to gpu object that can be used
                           // in subclass's freeGPUData()
 
 private:
@@ -29,7 +32,7 @@ public:
     GrVkRecycledResource(GrVkGpu* gpu) : fGpu(gpu) {}
 
 protected:
-    GrVkGpu* fGpu;  // pointer to gpu object that can be used
+    raw_ptr<GrVkGpu> fGpu;  // pointer to gpu object that can be used
                     // in subclass's freeGPUData() and onRecycle().
                     // mustn't be const
 };

@@ -6,7 +6,10 @@
  */
 
 #ifndef skgpu_graphite_task_Task_DEFINED
+
 #define skgpu_graphite_task_Task_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
@@ -32,7 +35,7 @@ class Task : public SkRefCnt {
 public:
     // Holds a render target and translation to use in the task's work, if necessary.
     struct ReplayTargetData {
-        const Texture* fTarget;
+        raw_ptr<const Texture> fTarget;
         SkIVector fTranslation;
         SkIRect fClip;
     };
