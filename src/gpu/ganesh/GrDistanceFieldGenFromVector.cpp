@@ -789,7 +789,7 @@ bool GrGenerateDistanceFieldFromPath(unsigned char* distanceField,
             case SkPathEdgeIter::Edge::kConic: {
                 SkScalar weight = iter.conicWeight();
                 SkAutoConicToQuads converter;
-                const SkPoint* quadPts = converter.computeQuads(e.fPts, weight, kConicTolerance);
+                const SkPoint* quadPts = converter.computeQuads(e.fPts.get(), weight, kConicTolerance);
                 for (int i = 0; i < converter.countQuads(); ++i) {
                     add_quad(quadPts + 2*i, &segments);
                 }

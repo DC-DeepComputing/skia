@@ -6,7 +6,10 @@
  */
 
 #ifndef SkSwizzler_DEFINED
+
 #define SkSwizzler_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/codec/SkCodec.h"
 #include "include/core/SkColor.h"
@@ -139,7 +142,7 @@ private:
     // whether or not we are sampling.
     RowProc             fActualProc;
 
-    const SkPMColor*    fColorTable;      // Unowned pointer
+    raw_ptr<const SkPMColor, DanglingUntriaged> fColorTable;      // Unowned pointer
 
     // Subset Swizzles
     // There are two types of subset swizzles that we support.  We do not

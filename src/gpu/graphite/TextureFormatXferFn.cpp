@@ -435,7 +435,7 @@ void TextureUploadWriter::convert(size_t offset, int width, int height,
                                   const void* src, size_t srcRowBytes,
                                   const graphite::TextureFormatXferFn& dst, size_t dstRowBytes) {
     this->validate(offset + dstRowBytes * height);
-    void* dstPtr = SkTAddOffset<void>(fPtr, offset);
+    void* dstPtr = SkTAddOffset<void>(fPtr.get(), offset);
     dst.run(width, height, src, srcRowBytes, dstPtr, dstRowBytes);
 }
 
