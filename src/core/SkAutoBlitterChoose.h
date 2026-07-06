@@ -7,6 +7,7 @@
 
 #ifndef SkAutoBlitterChoose_DEFINED
 #define SkAutoBlitterChoose_DEFINED
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include "include/private/SkMacros.h"
 #include "src/core/SkArenaAlloc.h"
@@ -60,7 +61,7 @@ public:
 
 private:
     // Owned by fAlloc, which will handle the delete.
-    SkBlitter* fBlitter = nullptr;
+    RAW_PTR_EXCLUSION SkBlitter* fBlitter = nullptr;
 
     SkBlitterSizedArena fAlloc;
 };
