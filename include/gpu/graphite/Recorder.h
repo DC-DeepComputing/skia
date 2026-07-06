@@ -296,8 +296,10 @@ private:
     // Aggregated one-time uploads that precede all tasks in the root task list.
     std::unique_ptr<UploadList> fRootUploads;
 
-    std::unique_ptr<DrawBufferManager> fDrawBufferManager;
+    // fDrawBufferManager must be declared after fUploadBufferManager to ensure it is
+    // destroyed first, as DrawBufferManager holds a pointer to UploadBufferManager.
     std::unique_ptr<UploadBufferManager> fUploadBufferManager;
+    std::unique_ptr<DrawBufferManager> fDrawBufferManager;
     sk_sp<FloatStorageManager> fFloatStorageManager;
     std::unique_ptr<ProxyReadCountMap> fProxyReadCounts;
 

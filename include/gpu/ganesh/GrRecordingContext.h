@@ -279,8 +279,10 @@ protected:
 private:
     OwnedArenas                       fArenas;
 
+    // fDrawingManager must be declared after fProxyProvider to ensure it is destroyed first,
+    // as drawing tasks in fDrawingManager reference proxies managed by fProxyProvider.
+    std::unique_ptr<GrProxyProvider> fProxyProvider;
     std::unique_ptr<GrDrawingManager> fDrawingManager;
-    std::unique_ptr<GrProxyProvider>  fProxyProvider;
     std::unique_ptr<const skcpu::ContextImpl> fCPUContext;
     std::unique_ptr<SkGaneshRecorder> fRecorder;
 
