@@ -773,7 +773,8 @@ static void clut(const skcms_B2A* b2a, F* r, F* g, F* b, F* a) {
 struct NoCtx {};
 
 struct Ctx {
-    const void* fArg;
+    // RAW_PTR_EXCLUSION: Standalone library; does not use PartitionAlloc.
+    RAW_PTR_EXCLUSION const void* fArg;
     operator NoCtx()                    { return NoCtx{}; }
     template <typename T> operator T*() { return (const T*)fArg; }
 };
@@ -796,7 +797,8 @@ struct Ctx {
     struct StageList;
     using StageFn = void (*)(StageList stages, const void** ctx, STAGE_PARAMS());
     struct StageList {
-        const StageFn* fn;
+        // RAW_PTR_EXCLUSION: Not needed on function pointers.
+        RAW_PTR_EXCLUSION const StageFn* fn;
     };
 
     #define DECLARE_STAGE(name, arg, CALL_NEXT)                                 \
