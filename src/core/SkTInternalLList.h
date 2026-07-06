@@ -19,9 +19,9 @@
 #define SK_DECLARE_INTERNAL_LLIST_INTERFACE(ClassName)              \
     friend class SkTInternalLList<ClassName>;                       \
     /* back pointer to the owning list - for debugging */           \
-    SkDEBUGCODE(SkTInternalLList<ClassName>* fList = nullptr;)      \
-    ClassName* fPrev = nullptr;                                     \
-    ClassName* fNext = nullptr
+    SkDEBUGCODE(RAW_PTR_EXCLUSION SkTInternalLList<ClassName>* fList = nullptr;) \
+    RAW_PTR_EXCLUSION ClassName* fPrev = nullptr;                   \
+    RAW_PTR_EXCLUSION ClassName* fNext = nullptr
 
 /**
  * This class implements a templated internal doubly linked list data structure.
@@ -294,8 +294,8 @@ public:
 #endif // SK_DEBUG
 
 private:
-    T* fHead = nullptr;
-    T* fTail = nullptr;
+    RAW_PTR_EXCLUSION T* fHead = nullptr;
+    RAW_PTR_EXCLUSION T* fTail = nullptr;
 
     SkTInternalLList(const SkTInternalLList&) = delete;
     SkTInternalLList& operator=(const SkTInternalLList&) = delete;

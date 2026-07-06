@@ -60,7 +60,7 @@ public:
 
 private:
     // Owned by fAlloc, which will handle the delete.
-    SkBlitter* fBlitter = nullptr;
+    RAW_PTR_EXCLUSION SkBlitter* fBlitter = nullptr;
 
     SkBlitterSizedArena fAlloc;
 };
