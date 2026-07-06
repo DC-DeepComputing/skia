@@ -6,6 +6,9 @@
  */
 
 #ifndef DrawAtlasPathOp_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
+
 #define DrawAtlasPathOp_DEFINED
 
 #include "include/core/SkMatrix.h"
@@ -104,7 +107,7 @@ private:
 
     int fInstanceCount = 1;
 
-    GrProgramInfo* fProgram = nullptr;
+    raw_ptr<GrProgramInfo, DanglingUntriaged> fProgram = nullptr;
 
     sk_sp<const GrBuffer> fInstanceBuffer;
     int fBaseInstance;
