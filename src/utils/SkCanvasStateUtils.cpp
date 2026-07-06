@@ -7,8 +7,6 @@
 
 #include "include/utils/SkCanvasStateUtils.h"
 
-#include "src/partition_alloc/raw_ptr_exclusion.h"
-
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -22,6 +20,8 @@
 #include "include/private/SkMalloc.h"
 #include "src/core/SkDevice.h"
 #include "src/core/SkWriter32.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 #include "src/utils/SkCanvasStack.h"
 
 #include <cstddef>

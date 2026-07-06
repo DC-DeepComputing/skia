@@ -6,7 +6,10 @@
  */
 
 #ifndef skgpu_graphite_DrawListTypes_DEFINED
+
 #define skgpu_graphite_DrawListTypes_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/private/SkDebug.h"
 #include "include/private/SkEnumBitMask.h"
@@ -88,7 +91,7 @@ struct Draw {
     Draw(const DrawParams* params, const UniformDataCache::Index uniformIndex)
             : fDrawParams(params), fUniformIndex(uniformIndex) {}
 
-    const DrawParams* fDrawParams;
+    raw_ptr<const DrawParams> fDrawParams;
     const UniformDataCache::Index fUniformIndex;
 
     SK_DECLARE_INTERNAL_LLIST_INTERFACE(Draw);
@@ -98,11 +101,10 @@ struct BindingList {
     static constexpr uint32_t kCoarseBoundsThreshold = 32;
 
     BindingList(const RenderStep* step, LayerKey key) : fStep(step), fKey(key) {}
-
     Rect fBounds = Rect::InfiniteInverted();
 
     SkTInternalLList<Draw> fDraws;
-    const RenderStep* fStep;
+    raw_ptr<const RenderStep> fStep;
     const LayerKey fKey;
 
     uint32_t fDrawCount = 0; // SkTInternalLList doesn't maintain a count for us :/
@@ -280,8 +282,8 @@ struct Layer {
 };
 
 struct Insertion {
-    Layer* fLayer = nullptr;
-    BindingList* fList = nullptr;
+    raw_ptr<Layer> fLayer = nullptr;
+    raw_ptr<BindingList> fList = nullptr;
 
     explicit operator bool() const { return (fLayer != nullptr) && (fList != nullptr); }
     bool operator>(const Insertion& other) const {

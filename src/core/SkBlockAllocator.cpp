@@ -120,7 +120,9 @@ void SkBlockAllocator::releaseBlock(Block* block) {
         if (this->scratchBlockSize() < block->fSize) {
             SkASSERT(block != fHead.fPrev); // shouldn't already be the scratch block
             if (fHead.fPrev) {
-                delete fHead.fPrev;
+                Block* oldScratch = fHead.fPrev;
+                fHead.fPrev = nullptr;
+                delete oldScratch;
             }
             block->markAsScratch();
             fHead.fPrev = block;
@@ -167,10 +169,12 @@ void SkBlockAllocator::stealHeapBlocks(SkBlockAllocator* other) {
 }
 
 void SkBlockAllocator::reset() {
-    for (Block* b : this->rblocks()) {
+    Block* b = fTail;
+    fTail = &fHead;
+    while (b != nullptr) {
+        Block* prev = b->fPrev;
         if (b == &fHead) {
-            // Reset metadata and cursor, tail points to the head block again
-            fTail = b;
+            // Reset metadata and cursor
             b->fNext = nullptr;
             b->fCursor = kDataStart;
             b->fMetadata = 0;
@@ -179,8 +183,13 @@ void SkBlockAllocator::reset() {
             b->fAllocatorMetadata = 0;
             b->poisonRange(kDataStart, b->fSize);
             this->resetScratchSpace();
+            break;
         } else {
+            if (b->fPrev) {
+                b->fPrev->fNext = nullptr;
+            }
             delete b;
+            b = prev;
         }
     }
     SkASSERT(fTail == &fHead && fHead.fNext == nullptr && fHead.fPrev == nullptr &&
@@ -193,8 +202,9 @@ void SkBlockAllocator::reset() {
 
 void SkBlockAllocator::resetScratchSpace() {
     if (fHead.fPrev) {
-        delete fHead.fPrev;
+        Block* toDelete = fHead.fPrev;
         fHead.fPrev = nullptr;
+        delete toDelete;
     }
 }
 

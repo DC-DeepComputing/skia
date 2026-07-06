@@ -6,6 +6,7 @@
  */
 
 #include "src/core/SkBlurEngine.h"
+
 #include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include "include/core/SkAlphaType.h"
@@ -37,6 +38,8 @@
 #include "src/core/SkKnownRuntimeEffects.h"
 #include "src/core/SkSpecialImage.h"
 #include "src/core/SkVx.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <algorithm>
 #include <array>

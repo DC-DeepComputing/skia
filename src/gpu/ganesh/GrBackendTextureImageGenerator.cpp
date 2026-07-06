@@ -153,7 +153,7 @@ GrSurfaceProxyView GrBackendTextureImageGenerator::onGenerateTexture(
         } else {
             SkASSERT(fRefHelper->fBorrowingContextReleaseProc);
             // Ref the release proc to be held by the proxy we make below
-            releaseProcHelper = sk_ref_sp(fRefHelper->fBorrowingContextReleaseProc);
+            releaseProcHelper = sk_ref_sp(fRefHelper->fBorrowingContextReleaseProc.get());
         }
     } else {
         SkASSERT(!fRefHelper->fBorrowingContextReleaseProc);
