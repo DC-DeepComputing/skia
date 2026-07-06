@@ -132,7 +132,7 @@ struct SkDQuad {
     void dumpID(int id) const;
     void dumpInner() const;
 
-    SkDEBUGCODE(SkOpGlobalState* fDebugGlobalState;)
+    SkDEBUGCODE(RAW_PTR_EXCLUSION SkOpGlobalState* fDebugGlobalState;)
 };
 
 
