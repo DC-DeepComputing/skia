@@ -6,6 +6,9 @@
  */
 
 #ifndef SkCachedData_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
+
 #define SkCachedData_DEFINED
 
 #include "include/core/SkTypes.h"
@@ -56,7 +59,7 @@ private:
         // RAW_PTR_EXCLUSION: union.
         RAW_PTR_EXCLUSION void*                   fMalloc;
     } fStorage;
-    void*       fData;
+    raw_ptr<void, DanglingUntriaged> fData;
     size_t      fSize;
     int         fRefCnt;    // low-bit means we're owned by the cache
     StorageType fStorageType;

@@ -51,6 +51,7 @@
 #include "src/core/SkTHash.h"
 #include "src/core/SkTLazy.h"
 #include "src/image/SkImage_Base.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/shaders/SkColorShader.h"
 #include "src/shaders/SkShaderBase.h"
 #include "src/text/GlyphRun.h"
@@ -209,9 +210,9 @@ bool RequiresViewportReset(const SkPaint& paint) {
 
 void AddPath(const sktext::GlyphRun& glyphRun, const SkPoint& offset, SkPathBuilder* builder) {
     struct Rec {
-        SkPathBuilder* fBuilder;
+        raw_ptr<SkPathBuilder> fBuilder;
         const SkPoint  fOffset;
-        const SkPoint* fPos;
+        raw_ptr<const SkPoint, AllowPtrArithmetic> fPos;
     } rec = { builder, offset, glyphRun.positions().data() };
 
     glyphRun.font().getPaths(glyphRun.glyphsIDs(),
@@ -269,8 +270,8 @@ private:
 };
 
 struct SkSVGDevice::MxCp {
-    const SkMatrix* fMatrix;
-    const SkClipStack*  fClipStack;
+    raw_ptr<const SkMatrix> fMatrix;
+    raw_ptr<const SkClipStack> fClipStack;
 
     MxCp(const SkMatrix* mx, const SkClipStack* cs) : fMatrix(mx), fClipStack(cs) {}
     MxCp(SkSVGDevice* device) : fMatrix(&device->localToDevice()), fClipStack(&device->cs()) {}
@@ -356,9 +357,9 @@ private:
                             const SkShader* shader,
                             const SkMatrix& localMatrix);
 
-    SkXMLWriter*                   fWriter = nullptr;
+    raw_ptr<SkXMLWriter> fWriter = nullptr;
     SkSVGCanvas::EncodePngCallback fPngEncoder = nullptr;
-    ResourceBucket*                fResourceBucket = nullptr;
+    raw_ptr<ResourceBucket> fResourceBucket = nullptr;
 };
 
 void SkSVGDevice::AutoElement::addPaint(const SkPaint& paint, const Resources& resources) {
