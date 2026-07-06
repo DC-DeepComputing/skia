@@ -41,7 +41,7 @@ public:
         SkMatrix fPathMatrix;
         SkPath fPath;
         SkPMColor4f fColor;
-        PathDrawList* fNext;
+        RAW_PTR_EXCLUSION PathDrawList* fNext;
 
         struct Iter {
             void operator++() { fHead = fHead->fNext; }
