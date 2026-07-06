@@ -471,9 +471,9 @@ static inline void sk_memcpy_4bytes(void* dst, const void* src, size_t size) {
 #define SkDynamicMemoryWStream_MinBlockSize   4096
 
 struct SkDynamicMemoryWStream::Block {
-    Block*  fNext;
-    char*   fCurr;
-    char*   fStop;
+    RAW_PTR_EXCLUSION Block* fNext;
+    RAW_PTR_EXCLUSION char* fCurr;
+    RAW_PTR_EXCLUSION char* fStop;
 
     const char* start() const { return (const char*)(this + 1); }
     char*   start() { return (char*)(this + 1); }
