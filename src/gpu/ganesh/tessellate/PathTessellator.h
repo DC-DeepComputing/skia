@@ -7,6 +7,7 @@
 
 #ifndef PathTessellator_DEFINED
 #define PathTessellator_DEFINED
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPath.h"
@@ -41,7 +42,7 @@ public:
         SkMatrix fPathMatrix;
         SkPath fPath;
         SkPMColor4f fColor;
-        PathDrawList* fNext;
+        RAW_PTR_EXCLUSION PathDrawList* fNext;
 
         struct Iter {
             void operator++() { fHead = fHead->fNext; }
