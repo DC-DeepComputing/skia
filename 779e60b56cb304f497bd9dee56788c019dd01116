@@ -16,6 +16,115 @@
       "message": "Hello,\nCould you please take a look?\n\n(I also have one question in the [bug](https://issues.skia.org/issues/530646115))",
       "revId": "779e60b56cb304f497bd9dee56788c019dd01116",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b42d38f5_4bb86acf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-06T13:00:23Z",
+      "side": 1,
+      "message": "Nice finding and fix!",
+      "revId": "779e60b56cb304f497bd9dee56788c019dd01116",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45cdc324_051f2bfd",
+        "filename": "src/text/gpu/SubRunAllocator.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-06T13:00:23Z",
+      "side": 1,
+      "message": "driveby: I\u0027d like this to be marked explicit (It wasn\u0027t obvious to me that the void* was getting wrapped in this down in AllocateClassMemoryAndArena).",
+      "range": {
+        "startLine": 191,
+        "startChar": 4,
+        "endLine": 191,
+        "endChar": 21
+      },
+      "revId": "779e60b56cb304f497bd9dee56788c019dd01116",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7479cde_9ffa55a8",
+        "filename": "src/text/gpu/SubRunAllocator.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-06T13:00:23Z",
+      "side": 1,
+      "message": "nit: While we are here, let\u0027s add a comment reminding the reader that this frees the heap memory w/o calling a destructor and it\u0027s paired with a `::operator new` elsewhere (https://stackoverflow.com/a/949090 helped me understand the ::operator syntax here)",
+      "range": {
+        "startLine": 202,
+        "startChar": 43,
+        "endLine": 202,
+        "endChar": 51
+      },
+      "revId": "779e60b56cb304f497bd9dee56788c019dd01116",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1e80ada_32ce0f49",
+        "filename": "src/text/gpu/SubRunAllocator.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-06T13:00:23Z",
+      "side": 1,
+      "message": "driveby: this class is called SubRunAllocator (it lacks the Gr prefix now)",
+      "range": {
+        "startLine": 209,
+        "startChar": 3,
+        "endLine": 209,
+        "endChar": 20
+      },
+      "revId": "779e60b56cb304f497bd9dee56788c019dd01116",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9216bbff_92ca4ebe",
+        "filename": "src/text/gpu/SubRunAllocator.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-06T13:00:23Z",
+      "side": 1,
+      "message": "nit: add a comment that we need to make sure alloc is destroyed first and initializer last. I\u0027d probably also cite something like https://isocpp.org/wiki/faq/dtors#order-dtors-for-members because *I* had forgotten which order this happens in. Link to the bug also.",
+      "range": {
+        "startLine": 323,
+        "startChar": 7,
+        "endLine": 323,
+        "endChar": 29
+      },
+      "revId": "779e60b56cb304f497bd9dee56788c019dd01116",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
