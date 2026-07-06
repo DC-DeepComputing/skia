@@ -100,7 +100,7 @@ std::unique_ptr<GrGeometryProcessor::ProgramImpl> BoundingBoxShader::makeProgram
 
     private:
         void onEmitCode(EmitArgs& args, GrGPArgs* gpArgs) final {
-            args.fVaryingHandler->emitAttributes(args.fGeomProc);
+            args.fVaryingHandler->emitAttributes(*args.fGeomProc);
 
             // Vertex shader.
             if (args.fShaderCaps->fVertexIDSupport) {
@@ -220,7 +220,7 @@ void PathStencilCoverOp::prePreparePrograms(const GrTessellationShader::ProgramA
                 args.fCaps,
                 args.fArena,
                 bboxPipeline,
-                args.fWriteView,
+                *args.fWriteView,
                 args.fUsesMSAASurface,
                 bboxShader,
                 GrPrimitiveType::kTriangleStrip,
@@ -237,7 +237,7 @@ void PathStencilCoverOp::onPrePrepare(GrRecordingContext* context,
                                       GrLoadOp colorLoadOp) {
     // DMSAA is not supported on DDL.
     bool usesMSAASurface = writeView.asRenderTargetProxy()->numSamples() > 1;
-    this->prePreparePrograms({context->priv().recordTimeAllocator(), writeView, usesMSAASurface,
+    this->prePreparePrograms({context->priv().recordTimeAllocator(), raw_ref(writeView), usesMSAASurface,
                              &dstProxyView, renderPassXferBarriers, colorLoadOp,
                              context->priv().caps()},
                              (clip) ? std::move(*clip) : GrAppliedClip::Disabled());
@@ -256,7 +256,7 @@ SKGPU_DECLARE_STATIC_UNIQUE_KEY(gUnitQuadBufferKey);
 
 void PathStencilCoverOp::onPrepare(GrOpFlushState* flushState) {
     if (!fTessellator) {
-        this->prePreparePrograms({flushState->allocator(), flushState->writeView(),
+        this->prePreparePrograms({flushState->allocator(), raw_ref(flushState->writeView()),
                                  flushState->usesMSAASurface(), &flushState->dstProxyView(),
                                  flushState->renderPassBarriers(), flushState->colorLoadOp(),
                                  &flushState->caps()}, flushState->detachAppliedClip());

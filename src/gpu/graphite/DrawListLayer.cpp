@@ -54,7 +54,6 @@ std::pair<Layer*, BindingList*> DrawListLayer::searchBackwards(
     Layer* targetLayer = nullptr;
     BindingList* targetMatch = nullptr;
     BindingList* forwardMerge = nullptr;
-
     // Forward merging attempts to pull an earlier, compatible draw out of the current layer and
     // push it into a newly created layer to improve pipeline/texture batching.
     //
@@ -230,7 +229,7 @@ std::pair<DrawParams*, Insertion> DrawListLayer::recordDraw(const Renderer* rend
     BindingList* lastStepBinding = nullptr;
     // If we're an easy draw, jump to the latestInsertion layer since we don't have to test
     if (testMask == BoundsFlags::kNone && baseLayerMask == BoundsFlags::kNone) {
-        insertionLayer = latestInsertion ? latestInsertion.fLayer : fLayers.head();
+        insertionLayer = latestInsertion ? latestInsertion.fLayer.get() : fLayers.head();
     }
 
     fRenderStepCount += renderer->numRenderSteps();

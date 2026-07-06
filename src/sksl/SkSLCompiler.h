@@ -6,6 +6,8 @@
  */
 
 #ifndef SKSL_COMPILER
+#include "src/partition_alloc/raw_ref.h"
+
 #define SKSL_COMPILER
 
 #include "include/core/SkSize.h"
@@ -168,11 +170,11 @@ private:
         explicit CompilerErrorReporter(Compiler* compiler) : fCompiler(*compiler) {}
 
         void handleError(std::string_view msg, Position pos) override {
-            fCompiler.handleError(msg, pos);
+            fCompiler->handleError(msg, pos);
         }
 
     private:
-        Compiler& fCompiler;
+        const raw_ref<Compiler> fCompiler;
     };
 
     /** Updates ProgramSettings to eliminate contradictions and to honor the ProgramKind. */

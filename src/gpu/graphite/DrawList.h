@@ -5,7 +5,10 @@
  * found in the LICENSE file.
  */
 #ifndef skgpu_graphite_DrawList_DEFINED
+
 #define skgpu_graphite_DrawList_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "src/gpu/graphite/DrawListBase.h"
 
@@ -107,7 +110,7 @@ private:
         const DrawParams& drawParams()          const { return fDrawParams; }
 
     private:
-        const Renderer* fRenderer;
+        raw_ptr<const Renderer> fRenderer;
         DrawParams fDrawParams;
     };
 
@@ -203,7 +206,7 @@ private:
         uint64_t fUniformKey;
 
         // Backpointer to the draw that produced the sort key
-        const Draw* fDraw;
+        raw_ptr<const Draw> fDraw;
 
 // https://issues.skia.org/issues/485303056
 #if defined(__clang__)
