@@ -8,14 +8,14 @@
 #ifndef skgpu_graphite_Recording_DEFINED
 #define skgpu_graphite_Recording_DEFINED
 
-#include "include/core/SkRefCnt.h"
-#include "include/private/SkAPI.h"
-#include "include/private/SkTArray.h"
 #include <cstddef>
 #include <cstdint>
 #include <memory>
 #include <unordered_set>
 #include <vector>
+#include "include/core/SkRefCnt.h"
+#include "include/private/SkAPI.h"
+#include "include/private/SkTArray.h"
 
 struct SkISize;
 
@@ -94,6 +94,6 @@ private:
     skia_private::TArray<sk_sp<RefCntedCallback>> fFinishedProcs;
 };
 
-} // namespace skgpu::graphite
+}  // namespace skgpu::graphite
 
-#endif // skgpu_graphite_Recording_DEFINED
+#endif  // skgpu_graphite_Recording_DEFINED

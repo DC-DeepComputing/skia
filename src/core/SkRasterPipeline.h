@@ -6,6 +6,9 @@
  */
 
 #ifndef SkRasterPipeline_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
+
 #define SkRasterPipeline_DEFINED
 
 #include "include/core/SkColor.h"
@@ -96,8 +99,9 @@ public:
 
     // Callers can inspect the stage list for debugging purposes.
     struct StageList {
-        StageList*          prev;
+        raw_ptr<StageList> prev;
         SkRasterPipelineOp  stage;
+        // ctx points to various objects, often stack-allocated, and is accessed by JIT.
         RAW_PTR_EXCLUSION void* ctx;
     };
 
@@ -158,11 +162,11 @@ private:
                           bool store);
     uint8_t* tailPointer();
 
-    SkArenaAlloc*                        fAlloc;
-    SkRasterPipelineContexts::RewindCtx* fRewindCtx;
+    raw_ptr<SkArenaAlloc> fAlloc;
+    raw_ptr<SkRasterPipelineContexts::RewindCtx> fRewindCtx;
     // A linked list of stages. fStages and getStageList() return the latest stage.
-    StageList*                  fStages;
-    uint8_t*                    fTailPointer;
+    raw_ptr<StageList> fStages;
+    raw_ptr<uint8_t> fTailPointer;
     int                         fNumStages;
 
     // Only 1 in 2 million CPU-backend pipelines used more than two MemoryCtxs.
@@ -175,6 +179,10 @@ class SkRasterPipeline_ : public SkRasterPipeline {
 public:
     SkRasterPipeline_()
         : SkRasterPipeline(&fBuiltinAlloc) {}
+
+    ~SkRasterPipeline_() {
+        this->reset();
+    }
 
 private:
     SkSTArenaAlloc<bytes> fBuiltinAlloc;
