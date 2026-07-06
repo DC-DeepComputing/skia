@@ -6,6 +6,9 @@
  */
 
 #ifndef SkTInternalLList_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
+
 #define SkTInternalLList_DEFINED
 
 #include "include/private/SkAssert.h"
@@ -243,7 +246,7 @@ public:
         void operator++() { this->next(); }
 
     private:
-        T* fCurr;
+        raw_ptr<T> fCurr;
     };
 
     Iter begin() const {
