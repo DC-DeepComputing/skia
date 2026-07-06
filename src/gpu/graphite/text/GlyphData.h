@@ -12,6 +12,7 @@
 #include "src/core/SkGlyph.h"
 #include "src/gpu/graphite/DrawAtlas.h"
 #include "src/gpu/graphite/text/TextStrike.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <cstdint>
 #include <tuple>
@@ -61,7 +62,7 @@ struct GlyphEntry {
 
 /** Adapts GlyphEntry* to conform to GlyphVector's GlyphType requirements. */
 class Glyph final {
-    GlyphEntry* fEntry;
+    raw_ptr<GlyphEntry> fEntry;
 
     Glyph() = delete;
     Glyph(const Glyph&) = delete;

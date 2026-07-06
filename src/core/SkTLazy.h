@@ -6,6 +6,7 @@
  */
 
 #ifndef SkTLazy_DEFINED
+
 #define SkTLazy_DEFINED
 #include "src/partition_alloc/raw_ptr_exclusion.h"
 
@@ -209,7 +210,10 @@ public:
 
     const T& operator *() const { return *fObj; }
 
+    ~SkTCopyOnFirstWrite() { fObj = nullptr; }
+
 private:
+    // RAW_PTR_EXCLUSION: Wraps stack variables or interior member storage
     RAW_PTR_EXCLUSION const T* fObj = nullptr;
     std::optional<T> fLazy;
 };

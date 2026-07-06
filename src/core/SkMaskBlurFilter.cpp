@@ -6,6 +6,7 @@
  */
 
 #include "src/core/SkMaskBlurFilter.h"
+
 #include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include "include/private/SkFloatingPoint.h"
@@ -17,6 +18,8 @@
 #include "src/core/SkColorPriv.h"
 #include "src/core/SkGaussFilter.h"
 #include "src/core/SkVx.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <cmath>
 #include <climits>

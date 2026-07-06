@@ -6,6 +6,7 @@
  */
 
 #include "include/core/SkColorSpace.h"
+
 #include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include "include/core/SkData.h"
@@ -13,6 +14,7 @@
 #include "modules/skcms/skcms.h"
 #include "src/core/SkChecksum.h"
 #include "src/core/SkColorSpacePriv.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <cmath>
 #include <cstring>

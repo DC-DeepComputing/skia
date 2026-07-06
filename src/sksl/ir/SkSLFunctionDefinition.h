@@ -6,7 +6,10 @@
  */
 
 #ifndef SKSL_FUNCTIONDEFINITION
+
 #define SKSL_FUNCTIONDEFINITION
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "src/sksl/SkSLPosition.h"
 #include "src/sksl/ir/SkSLFunctionDeclaration.h"
@@ -76,7 +79,7 @@ public:
     }
 
 private:
-    const FunctionDeclaration* fDeclaration;
+    raw_ptr<const FunctionDeclaration> fDeclaration;
     std::unique_ptr<Statement> fBody;
 
     using INHERITED = ProgramElement;

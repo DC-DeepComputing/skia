@@ -6,6 +6,7 @@
  */
 
 #ifndef skgpu_graphite_DrawPassCommands_DEFINED
+
 #define skgpu_graphite_DrawPassCommands_DEFINED
 #include "src/partition_alloc/raw_ptr_exclusion.h"
 

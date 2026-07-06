@@ -284,7 +284,7 @@ DEF_TEST(SkBlockAllocatorRewind, r) {
     // Release everything in reverse order
     SkDEBUGCODE(pool->validate();)
     for (int i = 31; i >= 0; --i) {
-        auto br = ptrs[i];
+        const auto& br = ptrs[i];
         REPORTER_ASSERT(r, br.fBlock->release(br.fStart, br.fEnd));
     }
 

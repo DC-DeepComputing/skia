@@ -7,6 +7,8 @@
 
 // Despite the name and location, this is portable code.
 
+#include "src/ports/SkFontMgr_android_parser.h"
+
 #include "include/core/SkFontMgr.h"
 #include "include/core/SkStream.h"
 #include "include/private/SkFixed.h"
@@ -16,7 +18,8 @@
 #include "include/private/SkTemplates.h"
 #include "src/core/SkOSFile.h"
 #include "src/core/SkTSearch.h"
-#include "src/ports/SkFontMgr_android_parser.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ref.h"
 
 #include <expat.h>
 
@@ -111,11 +114,12 @@ struct FamilyData {
     { }
 
     XML_Parser fParser;                         // The expat parser doing the work, owned by caller
-    std::vector<std::unique_ptr<FontFamily>>& fFamilies; // Collection of families, owned by caller
+    const raw_ref<std::vector<std::unique_ptr<FontFamily>>>
+            fFamilies;                          // Collection of families, owned by caller
     std::unique_ptr<FontFamily> fCurrentFamily; // The family being created, owned by this
-    FontFileInfo* fCurrentFontInfo;             // The info being created, owned by fCurrentFamily
+    raw_ptr<FontFileInfo> fCurrentFontInfo;     // The info being created, owned by fCurrentFamily
     int fVersion;                               // The version of the file parsed.
-    const SkString& fBasePath;                  // The current base path.
+    const raw_ref<const SkString> fBasePath;    // The current base path.
     const bool fIsFallback;                     // The file being parsed is a fallback file
     const char* fFilename;                      // The name of the file currently being parsed.
 
@@ -278,6 +282,7 @@ static const TagHandler fontHandler = {
     },
     /*end*/[](FamilyData* self, const char* tag) {
         trim_string(&self->fCurrentFontInfo->fFileName);
+        self->fCurrentFontInfo = nullptr;
     },
     /*tag*/[](FamilyData* self, const char* tag, const char** attributes) -> const TagHandler* {
         size_t len = strlen(tag);
@@ -293,50 +298,52 @@ static const TagHandler fontHandler = {
 };
 
 static const TagHandler familyHandler = {
-    /*start*/[](FamilyData* self, const char* tag, const char** attributes) {
-        // 'name' (string) [optional]
-        // 'lang' (space separated string) [default ""]
-        // 'variant' ("elegant", "compact") [default "default"]
-        // If there is no name, this is a fallback only font.
-        FontFamily* family = new FontFamily(self->fBasePath, true);
-        self->fCurrentFamily.reset(family);
+        /*start*/ [](FamilyData* self, const char* tag, const char** attributes) {
+            // 'name' (string) [optional]
+            // 'lang' (space separated string) [default ""]
+            // 'variant' ("elegant", "compact") [default "default"]
+            // If there is no name, this is a fallback only font.
+            FontFamily* family = new FontFamily(*self->fBasePath, true);
+            self->fCurrentFamily.reset(family);
 
-        if (!self->fCurrentFamilyList.isEmpty()) {
-            family->fNames.push_back().set(self->fCurrentFamilyList);
-            family->fIsFallbackFont = false;
-        }
-
-        for (size_t i = 0; ATTS_NON_NULL(attributes, i); i += 2) {
-            const char* name = attributes[i];
-            const char* value = attributes[i+1];
-            size_t nameLen = strlen(name);
-            size_t valueLen = strlen(value);
-            if (MEMEQ("name", name, nameLen)) {
-                SkAutoAsciiToLC tolc(value);
-                family->fNames.push_back().set(tolc.lc());
+            if (!self->fCurrentFamilyList.isEmpty()) {
+                family->fNames.push_back().set(self->fCurrentFamilyList);
                 family->fIsFallbackFont = false;
-            } else if (MEMEQ("lang", name, nameLen)) {
-                parse_space_separated_languages(value, valueLen, family->fLanguages);
-            } else if (MEMEQ("variant", name, nameLen)) {
-                if (MEMEQ("elegant", value, valueLen)) {
-                    family->fVariant = kElegant_FontVariant;
-                } else if (MEMEQ("compact", value, valueLen)) {
-                    family->fVariant = kCompact_FontVariant;
+            }
+
+            for (size_t i = 0; ATTS_NON_NULL(attributes, i); i += 2) {
+                const char* name = attributes[i];
+                const char* value = attributes[i + 1];
+                size_t nameLen = strlen(name);
+                size_t valueLen = strlen(value);
+                if (MEMEQ("name", name, nameLen)) {
+                    SkAutoAsciiToLC tolc(value);
+                    family->fNames.push_back().set(tolc.lc());
+                    family->fIsFallbackFont = false;
+                } else if (MEMEQ("lang", name, nameLen)) {
+                    parse_space_separated_languages(value, valueLen, family->fLanguages);
+                } else if (MEMEQ("variant", name, nameLen)) {
+                    if (MEMEQ("elegant", value, valueLen)) {
+                        family->fVariant = kElegant_FontVariant;
+                    } else if (MEMEQ("compact", value, valueLen)) {
+                        family->fVariant = kCompact_FontVariant;
+                    }
                 }
             }
-        }
-    },
-    /*end*/[](FamilyData* self, const char* tag) {
-        self->fFamilies.push_back(std::move(self->fCurrentFamily));
-    },
-    /*tag*/[](FamilyData* self, const char* tag, const char** attributes) -> const TagHandler* {
-        size_t len = strlen(tag);
-        if (MEMEQ("font", tag, len)) {
-            return &fontHandler;
-        }
-        return nullptr;
-    },
-    /*chars*/nullptr,
+        },
+        /*end*/
+        [](FamilyData* self, const char* tag) {
+            self->fFamilies->push_back(std::move(self->fCurrentFamily));
+        },
+        /*tag*/
+        [](FamilyData* self, const char* tag, const char** attributes) -> const TagHandler* {
+            size_t len = strlen(tag);
+            if (MEMEQ("font", tag, len)) {
+                return &fontHandler;
+            }
+            return nullptr;
+        },
+        /*chars*/ nullptr,
 };
 
 static const TagHandler familyListHandler = {
@@ -364,7 +371,7 @@ static const TagHandler familyListHandler = {
 };
 
 static FontFamily* find_family(FamilyData* self, const SkString& familyName) {
-    for (std::unique_ptr<FontFamily>& candidate : self->fFamilies) {
+    for (std::unique_ptr<FontFamily>& candidate : *self->fFamilies) {
         for (const SkString& candidateName : candidate->fNames) {
             if (candidateName == familyName) {
                 return &*candidate;
@@ -420,7 +427,7 @@ static const TagHandler aliasHandler = {
                     family->fFonts.push_back(targetFamily->fFonts[i]);
                 }
             }
-            self->fFamilies.push_back(std::move(family));
+            self->fFamilies->push_back(std::move(family));
         } else {
             targetFamily->fNames.push_back().set(aliasName);
         }
@@ -552,27 +559,30 @@ static const TagHandler nameSetHandler = {
 };
 
 static const TagHandler familyHandler = {
-    /*start*/[](FamilyData* self, const char* tag, const char** attributes) {
-        self->fCurrentFamily = std::make_unique<FontFamily>(self->fBasePath, self->fIsFallback);
-        // 'order' (non-negative integer) [default -1]
-        for (size_t i = 0; ATTS_NON_NULL(attributes, i); i += 2) {
-            const char* value = attributes[i+1];
-            parse_non_negative_integer(value, &self->fCurrentFamily->fOrder);
-        }
-    },
-    /*end*/[](FamilyData* self, const char* tag) {
-        self->fFamilies.push_back(std::move(self->fCurrentFamily));
-    },
-    /*tag*/[](FamilyData* self, const char* tag, const char** attributes) -> const TagHandler* {
-        size_t len = strlen(tag);
-        if (MEMEQ("nameset", tag, len)) {
-            return &nameSetHandler;
-        } else if (MEMEQ("fileset", tag, len)) {
-            return &fileSetHandler;
-        }
-        return nullptr;
-    },
-    /*chars*/nullptr,
+        /*start*/ [](FamilyData* self, const char* tag, const char** attributes) {
+            self->fCurrentFamily =
+                    std::make_unique<FontFamily>(*self->fBasePath, self->fIsFallback);
+            // 'order' (non-negative integer) [default -1]
+            for (size_t i = 0; ATTS_NON_NULL(attributes, i); i += 2) {
+                const char* value = attributes[i + 1];
+                parse_non_negative_integer(value, &self->fCurrentFamily->fOrder);
+            }
+        },
+        /*end*/
+        [](FamilyData* self, const char* tag) {
+            self->fFamilies->push_back(std::move(self->fCurrentFamily));
+        },
+        /*tag*/
+        [](FamilyData* self, const char* tag, const char** attributes) -> const TagHandler* {
+            size_t len = strlen(tag);
+            if (MEMEQ("nameset", tag, len)) {
+                return &nameSetHandler;
+            } else if (MEMEQ("fileset", tag, len)) {
+                return &fileSetHandler;
+            }
+            return nullptr;
+        },
+        /*chars*/ nullptr,
 };
 
 static const TagHandler familySetHandler = {
