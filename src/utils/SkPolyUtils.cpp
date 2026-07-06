@@ -250,8 +250,8 @@ bool SkIsConvexPolygon(const SkPoint* polygonVerts, int polygonSize) {
 }
 
 struct OffsetEdge {
-    OffsetEdge*   fPrev;
-    OffsetEdge*   fNext;
+    RAW_PTR_EXCLUSION OffsetEdge*   fPrev;
+    RAW_PTR_EXCLUSION OffsetEdge*   fNext;
     OffsetSegment fOffset;
     SkPoint       fIntersection;
     SkScalar      fTValue;
