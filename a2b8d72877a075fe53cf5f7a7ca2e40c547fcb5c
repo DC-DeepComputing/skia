@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f62c33e_93fc3247",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 1031,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-07-06T17:23:51Z",
+      "side": 1,
+      "message": "I ended up creating `withPrimitiveColor` as a non-static function since to me if its taking in a PaintParams as the first argument it makes sense to be a member function, just marked it const for clarity that its constructing a new PaintParams. I think this is clearer than adding another constructor variant as well.\n\nThis let me condense down the code for the `primitiveBlender` and `primitiveColorOverride` into a single ternary. IMO the ternary isn\u0027t the clearest to read but other ways I\u0027ve tried formatting it I\u0027ve found I would either evaluate the condition twice, create the blender singleton even if not used, or create a copy of the `baseParams` when it could be taken as a reference.",
+      "parentUuid": "96f3efdd_d73de3c4",
+      "range": {
+        "startLine": 1031,
+        "startChar": 0,
+        "endLine": 1031,
+        "endChar": 43
+      },
+      "revId": "a2b8d72877a075fe53cf5f7a7ca2e40c547fcb5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8cf5fc6e_52c89646",
@@ -54,6 +78,30 @@
       "writtenOn": "2026-07-02T01:54:48Z",
       "side": 1,
       "message": "I would just pass in the `PaintParams(...)` directly here.",
+      "range": {
+        "startLine": 1039,
+        "startChar": 27,
+        "endLine": 1039,
+        "endChar": 33
+      },
+      "revId": "a2b8d72877a075fe53cf5f7a7ca2e40c547fcb5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "046cfba5_e86562bc",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 1039,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-07-06T17:23:51Z",
+      "side": 1,
+      "message": "Did the ternary solution that either takes the `baseParams` or extends the `baseParams` with `withPrimitiveColor`.",
+      "parentUuid": "8cf5fc6e_52c89646",
       "range": {
         "startLine": 1039,
         "startChar": 27,
