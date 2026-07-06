@@ -5,9 +5,6 @@
  * found in the LICENSE file.
  */
 
-#include "include/utils/SkCanvasStateUtils.h"
-#include "src/partition_alloc/raw_ptr_exclusion.h"
-
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -19,8 +16,11 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkSize.h"
 #include "include/private/SkMalloc.h"
+#include "include/utils/SkCanvasStateUtils.h"
 #include "src/core/SkDevice.h"
 #include "src/core/SkWriter32.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 #include "src/utils/SkCanvasStack.h"
 
 #include <cstddef>
@@ -145,10 +145,10 @@ public:
     SkMCState mcState;
 
     int32_t layerCount;
-    // RAW_PTR_EXCLUSION: Part of a stable C ABI struct.
+    // RAW_PTR_EXCLUSION: C ABI flat struct copied via raw memcpy
     RAW_PTR_EXCLUSION SkCanvasLayerState* layers;
 private:
-    // RAW_PTR_EXCLUSION: Part of a stable C ABI struct.
+    // RAW_PTR_EXCLUSION: C ABI flat struct copied via raw memcpy
     RAW_PTR_EXCLUSION SkCanvas* originalCanvas;
     using INHERITED = SkCanvasState;
 };

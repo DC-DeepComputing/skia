@@ -18,6 +18,7 @@
 #include "src/gpu/ganesh/GrFragmentProcessor.h"
 #include "src/gpu/ganesh/GrProcessorAnalysis.h"
 #include "src/gpu/ganesh/GrXferProcessor.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <cstdint>
 #include <memory>

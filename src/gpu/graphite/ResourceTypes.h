@@ -15,6 +15,8 @@
 #include "include/private/SkEnumBitMask.h"
 #include "include/private/SkTo.h"
 #include "src/core/SkMathPriv.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 namespace skgpu::graphite {
 
