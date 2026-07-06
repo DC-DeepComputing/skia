@@ -902,6 +902,7 @@ std::unique_ptr<ShaderInfo> ShaderInfo::Make(const Caps* caps,
         result->fBlendInfo.fWritesColor = false;
     }
 
+    result->fHasVertexStorageBuffer = step->hasVertexStorageBuffer();
     result->generateVertexSkSL(caps, step, sharedData);
     result->fVSLabel = step->name();
     if (sharedData.fNeedsLocalCoords) {
@@ -1294,6 +1295,11 @@ void ShaderInfo::generateVertexSkSL(const Caps* caps,
                                 sharedData.fLiftedExpr,
                                 sharedData.fHasSsboIndexVarying,
                                 sharedData.fNeedsLocalCoords);
+
+    // Declare vertex storage buffer if the RenderStep has one
+    if (step->hasVertexStorageBuffer()) {
+        vsPreamble += step->vertexStorageSkSL(bindingReqs, bindingReqs.fVertexStorageBufferBinding);
+    }
 
     // Add vertex attributes
     if (step->numStaticAttributes() > 0 || step->numAppendAttributes() > 0) {

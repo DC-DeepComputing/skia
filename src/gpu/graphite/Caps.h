@@ -87,6 +87,7 @@ struct ResourceBindingRequirements {
     int fIntrinsicBufferBinding       = kUnassigned;
     int fCombinedUniformBufferBinding = kUnassigned;
     int fGradientBufferBinding        = kUnassigned;
+    int fVertexStorageBufferBinding   = kUnassigned;
 };
 
 class Caps {
@@ -277,6 +278,9 @@ public:
     /* Returns whether storage buffers are supported and to be preferred over uniform buffers. */
     bool storageBufferSupport() const { return fStorageBufferSupport; }
 
+    /* Returns whether storage buffers can be used for vertex/instance storage. */
+    bool vertexStorageSupport() const { return false; }
+
     /**
      * The gradient buffer is an unsized float array so it is only optimal memory-wise to use it if
      * the storage buffer memory layout is std430 or in metal, which is also the only supported
@@ -445,6 +449,7 @@ protected:
     bool fSemaphoreSupport = false;
     bool fAllowCpuSync = true;
     bool fStorageBufferSupport = false;
+    bool fVertexStorageSupport = false;
     bool fDrawBufferCanBeMapped = true;
     bool fBufferMapsAreAsync = false;
     bool fMSAARenderToSingleSampledSupport = false;

@@ -149,6 +149,18 @@ public:
         return "";
     }
 
+    // Indicates whether this RenderStep requires a secondary vertex storage buffer.
+    virtual bool hasVertexStorageBuffer() const { return false; }
+
+    // Returns the stride of the secondary vertex storage buffer, if hasVertexStorageBuffer() is true.
+    virtual size_t vertexStorageStride() const { return 0; }
+
+    // Emits the SkSL declaration for the secondary vertex storage buffer.
+    virtual std::string vertexStorageSkSL(const ResourceBindingRequirements&,
+                                          int binding) const {
+        return "";
+    }
+
     // Emits code to set up coverage value. Should only be defined if overridesCoverage is true.
     // When implemented the returned SkSL fragment should write its coverage into a
     // 'half4 outputCoverage' variable (defined in the calling code) with the actual

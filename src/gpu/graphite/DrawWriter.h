@@ -96,7 +96,8 @@ public:
                           size_t staticStride,
                           size_t appendStride,
                           SkEnumBitMask<RenderStateFlags> newRenderState,
-                          BarrierType barrierType) {
+                          BarrierType barrierType,
+                          size_t storageStride = 0) {
         this->flush();
 
         // Once flushed, any pending data must have been drawn.
@@ -105,6 +106,7 @@ public:
         fPrimitiveType = type;
         fStaticStride = SkTo<uint32_t>(staticStride);
         fAppendStride = SkTo<uint32_t>(appendStride);
+        fStorageStride = SkTo<uint32_t>(storageStride);
         fRenderState = newRenderState;
 
         // ARM hardware(b/399631317): On a new pipeline, the initial offset when appending
@@ -120,6 +122,14 @@ public:
                                                                           fAppendStride,
                                                                           baseAlign);
 
+        if (fStorageStride > 0) {
+            std::tie(std::ignore, fStorage) = fStorageBuffer.getMappedSubrange(/*count=*/0,
+                                                                              fStorageStride,
+                                                                              fStorageStride);
+        } else {
+            fStorage = {};
+            fStorageBuffer.reset();
+        }
 
         // Assign the barrier type. If a valid value, then the DrawWriter will append
         // AddBarrier commands of the indicated type prior to appending any draw commands used with
@@ -225,6 +235,22 @@ public:
         this->bindAndFlush(vertices, indices, instances, indexCount, instanceCount);
     }
 
+    SK_ALWAYS_INLINE VertexWriter appendVertexStorage(unsigned int count) {
+        SkASSERT(count > 0 && fStorageStride > 0);
+        if (count > fStorageBuffer.availableWithStride()) SK_UNLIKELY {
+            this->flush();
+            std::tie(std::ignore, fStorage, fStorageBuffer) =
+                    fManager->getMappedVertexStorageBuffer(
+                        /*count=*/0,
+                        /*stride=*/fStorageStride,
+                        /*reservedCount=*/count,
+                        /*alignment=*/fStorageStride);
+        }
+        return this->appendToBuffer(fStorageBuffer, count, fStorageStride, fPendingStorageCount);
+    }
+
+    uint32_t pendingStorageCount() const { return fPendingStorageCount; }
+
 #if defined(GPU_TEST_UTILS)
     BindBufferInfo getLastAppendedBuffer() { return this->getDefaultAppendBinding(); }
 #endif
@@ -245,6 +271,7 @@ private:
     BarrierType fBarrierToIssueBeforeDraws = BarrierType::kNone;
     uint32_t fStaticStride;
     uint32_t fAppendStride;
+    uint32_t fStorageStride;
 
     // - fAppend: Holds buffer information for data that is generated and appended during the
     //            drawPass. The data can be either vertex (kAppendVertices) or instance
@@ -254,13 +281,19 @@ private:
     // - Indices: Defines the (for now static) buffer used for any kind of index drawing. A
     //            renderstep with a valid index buffer implies that it will be performing indexed
     //            drawing.
+    // - fStorage: Holds buffer information for vertex storage data generated and appended.
     BindBufferInfo fAppend;
     BindBufferInfo fStatic;
     BindBufferInfo fIndices;
+    BindBufferInfo fStorage;
     // These track the buffers *last bound* by the command list. Used to ensure minimal binding.
     BindBufferInfo fBoundAppend;
     BindBufferInfo fBoundStatic;
     BindBufferInfo fBoundIndices;
+    BindBufferInfo fBoundStorage;
+
+    BufferSubAllocator fStorageBuffer;
+    uint32_t fPendingStorageCount = 0;
 
     // Per-instance count for instanced draws (vertex count if no index buffer, index count
     // otherwise).
@@ -313,12 +346,42 @@ private:
         this->flushInternal(appendData);
     }
 
+    SK_ALWAYS_INLINE VertexWriter fallbackWriter(unsigned int count, uint32_t stride) {
+        // If the GPU mapped buffer failed, ensure we have a sufficiently large CPU address to write
+        // to so that RenderSteps don't have to worry about error handling. The Recording will fail
+        // since the map failure is tracked by BufferManager.
+        // Since one of the reasons for GPU mapping failure is that count*stride does not fit in
+        // 32-bits, we calculate the CPU-side size carefully.
+        uint64_t size = (uint64_t)count * (uint64_t)stride;
+        if (!SkTFitsIn<size_t>(size)) {
+            sk_report_container_overflow_and_die();
+        }
+        return VertexWriter(fFailureStorage.reset(size, SkAutoMalloc::kReuse_OnShrink),
+                            SkTo<size_t>(size));
+    }
+
+    SK_ALWAYS_INLINE VertexWriter appendToBuffer(BufferSubAllocator& buffer,
+                                                 unsigned int count,
+                                                 uint32_t stride,
+                                                 uint32_t& pendingCount) {
+        // Attempt suballocation from the buffer. If this is the primary buffer, the reserve() call
+        // and newPipelineState() configure the current buffer to append in units of fAppendStride.
+        // Assuming reserve() succeeded (or had a larger reservation from before), this will
+        // succeed. If the GPU mapped buffer failed, fallback to CPU-side failure storage.
+        BufferWriter writer = buffer.appendMappedWithStride(count);
+        if (!writer) SK_UNLIKELY {
+            return this->fallbackWriter(count, stride);
+        }
+        pendingCount += count;
+        return VertexWriter(std::move(writer));
+    }
+
     void flushInternal(BindBufferInfo appendData);
 
     // RAII - Sets the DrawWriter's template and marks the writer in append mode (disabling direct
     // draws until the Appender is destructed).
     class Appender;
-    SkDEBUGCODE(const Appender* fAppender = nullptr;)
+    const Appender* fAppender = nullptr;
 
     // Helper functions for Appender implementations:
 
@@ -366,27 +429,7 @@ private:
         SkASSERT(!SkToBool(fRenderState & RenderStateFlags::kAppendVertices) ||
                  (count + fPendingCount) <= SkAlign4(count + fPendingCount));
 
-        // Attempt suballocation from the current buffer. The reserve() call and newPipelineState()
-        // configure the current buffer to append in units of fAppendStride. Assuming reserve()
-        // succeeded (or had a larger reservation from before), this will succeed. reserve() handles
-        // moving to a new Buffer, so if this is still invalid, there is a larger problem.
-        BufferWriter writer = fCurrentBuffer.appendMappedWithStride(count);
-        if (!writer) SK_UNLIKELY {
-            // If the GPU mapped buffer failed, ensure we have a sufficiently large CPU address to
-            // write to so that RenderSteps don't have to worry about error handling. The Recording
-            // will fail since the map failure is tracked by BufferManager.
-            // Since one of the reasons for GPU mapping failure is that count*stride does not fit
-            // in 32-bits, we calculate the CPU-side size carefully.
-            uint64_t size = (uint64_t)count * (uint64_t)fAppendStride;
-            if (!SkTFitsIn<size_t>(size)) {
-                sk_report_container_overflow_and_die();
-            }
-            return VertexWriter(fFailureStorage.reset(size, SkAutoMalloc::kReuse_OnShrink),
-                                SkTo<size_t>(size));
-        }
-
-        fPendingCount += count;
-        return VertexWriter(std::move(writer));
+        return this->appendToBuffer(fCurrentBuffer, count, fAppendStride, fPendingCount);
     }
 };
 
@@ -399,12 +442,12 @@ public:
         SkASSERT(w.fAppendStride > 0);
         SkASSERT(!w.fAppender);
         SkASSERT(w.fRenderState & renderState);
-        SkDEBUGCODE(w.fAppender = this;)
+        w.fAppender = this;
     }
 
     ~Appender() {
         SkASSERT(fDrawer.fAppender == this);
-        SkDEBUGCODE(fDrawer.fAppender = nullptr;)
+        fDrawer.fAppender = nullptr;
     }
 
 protected:

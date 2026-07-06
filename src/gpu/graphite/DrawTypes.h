@@ -135,7 +135,9 @@ enum class UniformSlot {
     // Slot for paints and render step uniforms
     kCombinedUniforms,
     // Meant for gradient storage buffer.
-    kGradient
+    kGradient,
+    // Meant for vertex storage buffer.
+    kVertexStorage
 };
 
 /*

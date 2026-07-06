@@ -108,11 +108,13 @@ void MtlCaps::initCaps(const id<MTLDevice> device) {
             MtlGraphicsPipeline::kIntrinsicUniformBufferIndex;
     fResourceBindingReqs.fCombinedUniformBufferBinding = MtlGraphicsPipeline::kCombinedUniformIndex;
     fResourceBindingReqs.fGradientBufferBinding = MtlGraphicsPipeline::kGradientBufferIndex;
+    fResourceBindingReqs.fVertexStorageBufferBinding = MtlGraphicsPipeline::kVertexStorageBufferIndex;
 
     // Metal does not distinguish between uniform and storage buffers.
     fRequiredStorageBufferAlignment = fRequiredUniformBufferAlignment;
 
     fStorageBufferSupport = true;
+    fVertexStorageSupport = true;
 
     fComputeSupport = true;
 

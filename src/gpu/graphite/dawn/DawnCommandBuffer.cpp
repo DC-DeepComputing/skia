@@ -819,6 +819,9 @@ void DawnCommandBuffer::bindUniformBuffer(const BindBufferInfo& info, UniformSlo
         case UniformSlot::kGradient:
             bufferIndex = DawnGraphicsPipeline::kGradientBufferIndex;
             break;
+        case UniformSlot::kVertexStorage:
+            bufferIndex = DawnGraphicsPipeline::kVertexStorageBufferIndex;
+            break;
     }
 
     fBoundUniforms[bufferIndex] = info;
@@ -959,8 +962,8 @@ void DawnCommandBuffer::syncUniformBuffers() {
     bool usePushConstants = fSharedContext->dawnCaps()->
             resourceBindingRequirements().fUsePushConstantsForIntrinsicConstants;
 
-    // We expect to have up to 3 uniforms in this bind group.
-    static constexpr int kMaxUniformsInGroup = 3;
+    // We expect to have up to 4 uniforms in this bind group.
+    static constexpr int kMaxUniformsInGroup = 4;
     // Until/unless uniform bind group structure gets reorganized, this should be equivalent to the
     // size of our bound uniform array.
     SkASSERT(kMaxUniformsInGroup == fBoundUniforms.size());
@@ -970,6 +973,7 @@ void DawnCommandBuffer::syncUniformBuffers() {
     // Check if we can use an optimized route for single-uniform buffer bind groups:
     if (usePushConstants &&
         !fActiveGraphicsPipeline->hasGradientBuffer() &&
+        !fActiveGraphicsPipeline->hasVertexStorageBuffer() &&
         fActiveGraphicsPipeline->hasCombinedUniforms()) {
         const BindBufferInfo& bufferInfo =
                 fBoundUniforms[DawnGraphicsPipeline::kCombinedUniformIndex];
@@ -980,11 +984,13 @@ void DawnCommandBuffer::syncUniformBuffers() {
                 !usePushConstants,                              // intrinsic uniforms
                 fActiveGraphicsPipeline->hasCombinedUniforms(), // paint AND renderstep uniforms!
                 fActiveGraphicsPipeline->hasGradientBuffer(),   // gradient SSBO
+                fActiveGraphicsPipeline->hasVertexStorageBuffer(), // vertex storage SSBO
         };
         constexpr uint32_t kBindingIndices[] = {
             DawnGraphicsPipeline::kIntrinsicUniformBufferIndex,
             DawnGraphicsPipeline::kCombinedUniformIndex,
             DawnGraphicsPipeline::kGradientBufferIndex,
+            DawnGraphicsPipeline::kVertexStorageBufferIndex,
         };
 
         std::array<wgpu::BindGroupEntry, kMaxUniformsInGroup> bindGroupEntries {};
