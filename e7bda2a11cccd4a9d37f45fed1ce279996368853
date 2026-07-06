@@ -16,6 +16,23 @@
       "message": "Hi! Could you please take a look at this CL when you have a chance?\n\nIt adds Mac Catalyst support to the GN build by introducing target_environment\u003d\"catalyst\" detection and the corresponding is_catalyst target handling.\n\nThanks!",
       "revId": "e7bda2a11cccd4a9d37f45fed1ce279996368853",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d117523_ab433657",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4962127
+      },
+      "writtenOn": "2026-07-06T14:15:03Z",
+      "side": 1,
+      "message": "Hi! Could you please take a look at this CL when you have a chance?\n\nIt adds Mac Catalyst support to the GN build by introducing target_environment\u003d\"catalyst\" detection and the corresponding is_catalyst target handling.\n\nThanks!",
+      "revId": "e7bda2a11cccd4a9d37f45fed1ce279996368853",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
