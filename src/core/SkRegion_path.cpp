@@ -26,6 +26,7 @@
 #include "src/core/SkSafeMath.h"
 #include "src/core/SkScan.h"
 #include "src/core/SkTSort.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <algorithm>
 #include <cstdint>
@@ -107,11 +108,11 @@ private:
             return (Scanline*)((SkRegion::RunType*)(this + 1) + fXCount + 1);
         }
     };
-    SkRegion::RunType*  fStorage;
-    Scanline*           fCurrScanline;
-    Scanline*           fPrevScanline;
+    RAW_PTR_EXCLUSION SkRegion::RunType* fStorage;
+    RAW_PTR_EXCLUSION Scanline* fCurrScanline;
+    RAW_PTR_EXCLUSION Scanline* fPrevScanline;
     //  points at next avialable x[] in fCurrScanline
-    SkRegion::RunType*  fCurrXPtr;
+    RAW_PTR_EXCLUSION SkRegion::RunType* fCurrXPtr;
     SkRegion::RunType   fTop;           // first Y value
 
     int fStorageCount;
