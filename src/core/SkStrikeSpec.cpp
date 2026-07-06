@@ -140,8 +140,8 @@ SkStrikeSpec::SkStrikeSpec(const SkFont& font, const SkPaint& paint,
             font, paint, surfaceProps, scalerContextFlags, deviceMatrix,
             &fAutoDescriptor, &effects);
 
-    fMaskFilter = sk_ref_sp(effects.fMaskFilter);
-    fPathEffect = sk_ref_sp(effects.fPathEffect);
+    fMaskFilter = sk_ref_sp(effects.fMaskFilter.get());
+    fPathEffect = sk_ref_sp(effects.fPathEffect.get());
     fTypeface = font.refTypeface();
 }
 
