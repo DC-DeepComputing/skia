@@ -7,6 +7,9 @@
 #ifndef skgpu_graphite_DrawWriter_DEFINED
 #define skgpu_graphite_DrawWriter_DEFINED
 
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ref.h"
+
 #include "include/private/SkAlign.h"
 #include "include/private/SkAssert.h"
 #include "include/private/SkContainers.h"
@@ -231,8 +234,8 @@ public:
 
 private:
     // Both of these pointers must outlive the DrawWriter.
-    DrawPassCommands::List* fCommandList;
-    DrawBufferManager* fManager;
+    raw_ptr<DrawPassCommands::List> fCommandList;
+    raw_ptr<DrawBufferManager> fManager;
 
     BufferSubAllocator fCurrentBuffer;
     SkAutoMalloc fFailureStorage; // storage address for VertexWriter when GPU buffer mapping fails
@@ -318,7 +321,7 @@ private:
     // RAII - Sets the DrawWriter's template and marks the writer in append mode (disabling direct
     // draws until the Appender is destructed).
     class Appender;
-    SkDEBUGCODE(const Appender* fAppender = nullptr;)
+    SkDEBUGCODE(raw_ptr<const Appender> fAppender = nullptr;)
 
     // Helper functions for Appender implementations:
 
@@ -395,12 +398,12 @@ public:
     }
 
     ~Appender() {
-        SkASSERT(fDrawer.fAppender == this);
-        SkDEBUGCODE(fDrawer.fAppender = nullptr;)
+        SkASSERT(fDrawer->fAppender == this);
+        SkDEBUGCODE(fDrawer->fAppender = nullptr;)
     }
 
 protected:
-    DrawWriter& fDrawer;
+    const raw_ref<DrawWriter> fDrawer;
 };
 
 class DrawWriter::Vertices : private DrawWriter::Appender {
@@ -416,14 +419,14 @@ public:
         //     which prevents speculative execution from evaluating prior vertex data.
         //  2. There is always enough remaining data so that the element count could be rounded up
         //     to a multiple of 4 (and if not utilized, will be zero'ed by flush()).
-        count = std::max(SkAlign4(fDrawer.fPendingCount + count) - fDrawer.fPendingCount, count);
-        if (count > fDrawer.fCurrentBuffer.availableWithStride()) SK_UNLIKELY {
-            fDrawer.realloc</*AppendVertices=*/true>(count);
+        count = std::max(SkAlign4(fDrawer->fPendingCount + count) - fDrawer->fPendingCount, count);
+        if (count > fDrawer->fCurrentBuffer.availableWithStride()) SK_UNLIKELY {
+            fDrawer->realloc</*AppendVertices=*/true>(count);
         }
     }
     SK_ALWAYS_INLINE VertexWriter append(unsigned int count) {
         this->reserve(count);
-        return fDrawer.append(count);
+        return fDrawer->append(count);
     }
 };
 
@@ -439,13 +442,13 @@ public:
     }
 
     SK_ALWAYS_INLINE void reserve(unsigned int count) {
-        if (count > fDrawer.fCurrentBuffer.availableWithStride()) SK_UNLIKELY {
-            fDrawer.realloc</*AppendVertices=*/false>(count);
+        if (count > fDrawer->fCurrentBuffer.availableWithStride()) SK_UNLIKELY {
+            fDrawer->realloc</*AppendVertices=*/false>(count);
         }
     }
     SK_ALWAYS_INLINE VertexWriter append(unsigned int count) {
         this->reserve(count);
-        return fDrawer.append(count);
+        return fDrawer->append(count);
     }
 };
 
@@ -465,17 +468,17 @@ public:
     }
 
     SK_ALWAYS_INLINE void reserve(unsigned int count) {
-        if (count > fDrawer.fCurrentBuffer.availableWithStride()) SK_UNLIKELY {
+        if (count > fDrawer->fCurrentBuffer.availableWithStride()) SK_UNLIKELY {
             // See updateTemplateCount() "Reserve Case"
             this->updateTemplateCount();
-            fDrawer.realloc</*AppendVertices=*/false>(count);
+            fDrawer->realloc</*AppendVertices=*/false>(count);
         }
     }
 
     template <typename V>
     VertexWriter append(const V& vertexCount, unsigned int instanceCount) {
         this->reserve(instanceCount);
-        VertexWriter w = fDrawer.append(instanceCount);
+        VertexWriter w = fDrawer->append(instanceCount);
         // Record vertex count after appending instance data in case the append triggered a flush
         // and the max vertex count is reset. However, the contents of 'w' will not have been
         // flushed so 'fProxy' will account for 'vertexCount' when it is actually drawn.
@@ -498,7 +501,7 @@ private:
     //    - Since index data gets aligned to the largest count in a batch, we use max()
     //      to ensure the recorded count matches this alignment.
     SK_ALWAYS_INLINE void updateTemplateCount() {
-        fDrawer.fTemplateCount = std::max(fDrawer.fTemplateCount, static_cast<uint32_t>(fProxy));
+        fDrawer->fTemplateCount = std::max(fDrawer->fTemplateCount, static_cast<uint32_t>(fProxy));
         // By resetting the proxy after updating the template count, the next batch will start over
         // with the minimum required vertex count and grow from there.
         fProxy = {};

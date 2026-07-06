@@ -89,7 +89,7 @@ bool GrMtlBuffer::onUpdateData(const void *src, size_t offset, size_t size, bool
         if (!fMapPtr) {
             return false;
         }
-        memcpy(SkTAddOffset<void>(fMapPtr, offset), src, size);
+        memcpy(SkTAddOffset<void>(fMapPtr.get(), offset), src, size);
         this->internalUnmap(offset, size);
         return true;
     }
@@ -110,7 +110,7 @@ bool GrMtlBuffer::onUpdateData(const void *src, size_t offset, size_t size, bool
     if (!slice.fBuffer) {
         return false;
     }
-    memcpy(SkTAddOffset<void>(slice.fOffsetMapPtr, r), src, size);
+    memcpy(SkTAddOffset<void>(slice.fOffsetMapPtr.get(), r), src, size);
 
     GrMtlCommandBuffer* cmdBuffer = this->mtlGpu()->commandBuffer();
     id<MTLBlitCommandEncoder> GR_NORETAIN blitCmdEncoder = cmdBuffer->getBlitCommandEncoder();

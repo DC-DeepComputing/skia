@@ -6,7 +6,10 @@
  */
 
 #ifndef GrRefCnt_DEFINED
+
 #define GrRefCnt_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkAssert.h"
@@ -75,8 +78,9 @@ public:
      * Calls Unref() on the underlying object pointer.
      */
     ~gr_sp() {
-        SafeUnref(fPtr);
-        SkDEBUGCODE(fPtr = nullptr);
+        T* ptr = fPtr.get();
+        fPtr = nullptr;
+        SafeUnref(ptr);
     }
 
     gr_sp& operator=(std::nullptr_t) {
@@ -157,7 +161,7 @@ private:
         return ptr;
     }
 
-    T* fPtr;
+    raw_ptr<T> fPtr;
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

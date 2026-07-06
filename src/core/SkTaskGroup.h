@@ -6,6 +6,8 @@
  */
 
 #ifndef SkTaskGroup_DEFINED
+#include "src/partition_alloc/raw_ref.h"
+
 #define SkTaskGroup_DEFINED
 
 #include "include/core/SkExecutor.h"
@@ -48,7 +50,7 @@ public:
 
 private:
     std::atomic<int32_t> fPending;
-    SkExecutor&          fExecutor;
+    const raw_ref<SkExecutor> fExecutor;
 };
 
 #endif//SkTaskGroup_DEFINED

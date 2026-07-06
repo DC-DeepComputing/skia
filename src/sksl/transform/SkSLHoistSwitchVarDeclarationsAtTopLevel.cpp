@@ -7,6 +7,7 @@
 
 #include "include/private/SkAssert.h"
 #include "include/private/SkTArray.h"
+#include "src/partition_alloc/raw_ref.h"
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLDefines.h"
 #include "src/sksl/SkSLPosition.h"
@@ -71,7 +72,7 @@ std::unique_ptr<Block> Transform::HoistSwitchVarDeclarationsAtTopLevel(const Con
             return false;
         }
 
-        const Context& fContext;
+        const raw_ref<const Context> fContext;
         TArray<std::unique_ptr<Statement>*> fVarDeclarations;
 
         using INHERITED = ProgramWriter;
