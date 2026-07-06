@@ -46,7 +46,8 @@ private:
     int fCount;
     union {
         SkIRect   fLocalWindow; // If fCount <= 1
-        Rec*      fRec;         // If fCount >  1.
+        // RAW_PTR_EXCLUSION: union
+        RAW_PTR_EXCLUSION Rec*      fRec;         // If fCount >  1.
     };
 };
 
