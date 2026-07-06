@@ -6,6 +6,9 @@
  */
 
 #ifndef GrTriangulator_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
+
 #define GrTriangulator_DEFINED
 
 #if !defined(SK_ENABLE_OPTIMIZE_SIZE)
@@ -202,7 +205,7 @@ protected:
 
     // FIXME: fPath should be plumbed through function parameters instead.
     const SkPath fPath;
-    SkArenaAlloc* const fAlloc;
+    const raw_ptr<SkArenaAlloc> fAlloc;
     int fNumMonotonePolys = 0;
     int fNumEdges = 0;
     // Track how deep of a stack we get from mergeCollinearEdges()

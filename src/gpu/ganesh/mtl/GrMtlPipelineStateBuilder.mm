@@ -72,7 +72,7 @@ void GrMtlPipelineStateBuilder::storeShadersInCache(const SkSL::NativeShader sha
                                                     bool isSkSL) {
     sk_sp<SkData> key = SkData::MakeWithoutCopy(this->desc().asKey(),
                                                 this->desc().keyLength());
-    SkString description = GrProgramDesc::Describe(fProgramInfo, *this->caps());
+    SkString description = GrProgramDesc::Describe(*fProgramInfo, *this->caps());
     // cache metadata to allow for a complete precompile in either case
     GrPersistentCacheUtils::ShaderMetadata meta;
     meta.fSettings = settings;

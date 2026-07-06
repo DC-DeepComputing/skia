@@ -6,6 +6,8 @@
  */
 
 #ifndef GrSurfaceProxy_DEFINED
+#include "src/partition_alloc/raw_ref.h"
+
 #define GrSurfaceProxy_DEFINED
 
 #include "include/core/SkRect.h"
@@ -91,7 +93,7 @@ public:
         GrRenderable fRenderable;
         skgpu::Mipmapped fMipmapped;
         int fSampleCnt;
-        const GrBackendFormat& fFormat;
+        const raw_ref<const GrBackendFormat> fFormat;
         GrTextureType fTextureType;
         GrProtected fProtected;
         skgpu::Budgeted fBudgeted;

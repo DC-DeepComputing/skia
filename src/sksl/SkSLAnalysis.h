@@ -6,7 +6,10 @@
  */
 
 #ifndef SkSLAnalysis_DEFINED
+
 #define SkSLAnalysis_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/private/SkSLSampleUsage.h"
 #include "include/private/SkTArray.h"
@@ -140,7 +143,7 @@ LoopControlFlowInfo GetLoopControlFlowInfo(const Statement& stmt);
  * are not actually writable.
  */
 struct AssignmentInfo {
-    VariableReference* fAssignedVar = nullptr;
+    raw_ptr<VariableReference> fAssignedVar = nullptr;
 };
 bool IsAssignable(Expression& expr, AssignmentInfo* info = nullptr,
                   ErrorReporter* errors = nullptr);
@@ -272,7 +275,7 @@ public:
     }
 
 private:
-    std::vector<SymbolTable*>* fStackToPop = nullptr;
+    raw_ptr<std::vector<SymbolTable *>> fStackToPop = nullptr;
 };
 
 }  // namespace Analysis
