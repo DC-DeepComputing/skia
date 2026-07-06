@@ -401,7 +401,7 @@ private:
     int fFirstVertex;
     int fVerticesInChunk;
     SkPoint* fVertices;
-    SkPoint* fCurVert;
+    RAW_PTR_EXCLUSION SkPoint* fCurVert;
 
     sk_sp<const GrBuffer> fIndexBuffer;
     int fFirstIndex;
