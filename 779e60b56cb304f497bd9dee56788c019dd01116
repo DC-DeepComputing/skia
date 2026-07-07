@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3db47a2d_f102b561",
+        "filename": "src/text/gpu/SubRunAllocator.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-07-07T11:03:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "45cdc324_051f2bfd",
+      "range": {
+        "startLine": 191,
+        "startChar": 4,
+        "endLine": 191,
+        "endChar": 21
+      },
+      "revId": "779e60b56cb304f497bd9dee56788c019dd01116",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f7479cde_9ffa55a8",
@@ -81,6 +105,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "409a81d7_b86ddd95",
+        "filename": "src/text/gpu/SubRunAllocator.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-07-07T11:03:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f7479cde_9ffa55a8",
+      "range": {
+        "startLine": 202,
+        "startChar": 43,
+        "endLine": 202,
+        "endChar": 51
+      },
+      "revId": "779e60b56cb304f497bd9dee56788c019dd01116",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a1e80ada_32ce0f49",
@@ -94,6 +142,30 @@
       "writtenOn": "2026-07-06T13:00:23Z",
       "side": 1,
       "message": "driveby: this class is called SubRunAllocator (it lacks the Gr prefix now)",
+      "range": {
+        "startLine": 209,
+        "startChar": 3,
+        "endLine": 209,
+        "endChar": 20
+      },
+      "revId": "779e60b56cb304f497bd9dee56788c019dd01116",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7983f9a_f5b32de5",
+        "filename": "src/text/gpu/SubRunAllocator.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-07-07T11:03:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a1e80ada_32ce0f49",
       "range": {
         "startLine": 209,
         "startChar": 3,
