@@ -30,6 +30,7 @@
 
 namespace skgpu::graphite {
 
+class ComputeManager;
 class DrawPass;
 class Geometry;
 class Renderer;
@@ -64,10 +65,12 @@ public:
             const StrokeStyle* stroke,
             const Insertion& latestInsertion) = 0;
 
-    virtual std::unique_ptr<DrawPass> snapDrawPass(Recorder* recorder,
-                                                   sk_sp<TextureProxy> target,
-                                                   const SkImageInfo& targetInfo,
-                                                   const DstReadStrategy dstReadStrategy) = 0;
+    virtual std::unique_ptr<DrawPass> snapDrawPass(
+            Recorder* recorder,
+            sk_sp<TextureProxy> target,
+            const SkImageInfo& targetInfo,
+            const DstReadStrategy dstReadStrategy,
+            ComputeManager* computeManager) = 0;
 
     int renderStepCount() const { return fRenderStepCount; }
 

@@ -9,6 +9,7 @@
 #include "include/core/SkTypes.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "src/core/SkTraceEvent.h"
+#include "src/gpu/graphite/ComputeManager.h"
 #include "src/gpu/graphite/DrawPass.h"
 #include "src/gpu/graphite/DrawWriter.h"
 #include "src/gpu/graphite/KeyContext.h"
@@ -397,10 +398,12 @@ std::pair<DrawParams*, Insertion> DrawListLayer::recordDraw(const Renderer* rend
     return {drawParams, stepInsertion};
 }
 
-std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
-                                                      sk_sp<TextureProxy> target,
-                                                      const SkImageInfo& targetInfo,
-                                                      const DstReadStrategy dstReadStrategy) {
+std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(
+        Recorder* recorder,
+        sk_sp<TextureProxy> target,
+        const SkImageInfo& targetInfo,
+        const DstReadStrategy dstReadStrategy,
+        ComputeManager* computeManager) {
     TRACE_EVENT1("skia.gpu", TRACE_FUNC, "draw count", fDrawCount);
 
     std::unique_ptr<DrawPass> drawPass(new DrawPass(target,
@@ -508,6 +511,9 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
                             false)) {
                 return nullptr;
             }
+            if (computeManager && list->fStep->hasCompute()) {
+                list->fStep->recordComputeSteps(computeManager, *current->fDrawParams, &drawWriter);
+            }
             current = current->fNext;
 
             while (current) {
@@ -517,6 +523,9 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
                                 *current->fDrawParams,
                                 true)) {
                     return nullptr;
+                }
+                if (computeManager && list->fStep->hasCompute()) {
+                    list->fStep->recordComputeSteps(computeManager, *current->fDrawParams, &drawWriter);
                 }
                 current = current->fNext;
             }

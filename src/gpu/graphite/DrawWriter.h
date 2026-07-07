@@ -250,6 +250,8 @@ public:
     }
 
     uint32_t pendingStorageCount() const { return fPendingStorageCount; }
+    BindBufferInfo currentStorageBuffer() const { return fStorage; }
+    uint32_t storageStride() const { return fStorageStride; }
 
 #if defined(GPU_TEST_UTILS)
     BindBufferInfo getLastAppendedBuffer() { return this->getDefaultAppendBinding(); }

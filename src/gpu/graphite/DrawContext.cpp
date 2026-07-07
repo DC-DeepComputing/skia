@@ -21,6 +21,7 @@
 #include "src/gpu/Swizzle.h"
 #include "src/gpu/graphite/AtlasProvider.h"
 #include "src/gpu/graphite/Caps.h"
+#include "src/gpu/graphite/ComputeManager.h"
 #include "src/gpu/graphite/ComputePathAtlas.h"
 #include "src/gpu/graphite/DrawList.h"
 #include "src/gpu/graphite/DrawListBase.h"
@@ -258,14 +259,22 @@ void DrawContext::flush(Recorder* recorder) {
     // TODO: At this point, there's only ever one DrawPass in a RenderPassTask to a target. When
     // subpasses are implemented, they will either be collected alongside fPendingDraws or added
     // to the RenderPassTask separately.
+    ComputeManager computeManager(recorder);
     std::unique_ptr<DrawPass> pass = fPendingDraws->snapDrawPass(recorder,
                                                                  fTarget.refProxy(),
                                                                  this->imageInfo(),
-                                                                 drawPassDstReadStrategy);
+                                                                 drawPassDstReadStrategy,
+                                                                 &computeManager);
     SkASSERT(!fPendingDraws->modifiesTarget()); // Should be drained into `pass`.
 
     if (pass) {
         SkASSERT(fTarget.proxy() == pass->target());
+
+        ComputeTask::DispatchGroupList computeDispatches;
+        computeManager.snapDispatchGroups(&computeDispatches);
+        if (!computeDispatches.empty()) {
+            fCurrentDrawTask->addTask(ComputeTask::Make(std::move(computeDispatches)));
+        }
 
         // If any paint used within the DrawPass reads from the dst texture (indicated by nonempty
         // dstReadPixelBounds) and the dstReadStrategy is kTextureCopy, then add a CopyTask.

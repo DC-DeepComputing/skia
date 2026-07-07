@@ -29,6 +29,7 @@
 
 namespace skgpu::graphite {
 
+class ComputeManager;
 class DrawPass;
 class Geometry;
 class Renderer;
@@ -85,10 +86,12 @@ public:
             const StrokeStyle* stroke,
             const Insertion& latestInsertion) override;
 
-    std::unique_ptr<DrawPass> snapDrawPass(Recorder* recorder,
-                                           sk_sp<TextureProxy> target,
-                                           const SkImageInfo& targetInfo,
-                                           DstReadStrategy dstReadStrategy) override;
+    std::unique_ptr<DrawPass> snapDrawPass(
+            Recorder* recorder,
+            sk_sp<TextureProxy> target,
+            const SkImageInfo& targetInfo,
+            DstReadStrategy dstReadStrategy,
+            ComputeManager* computeManager) override;
 
     // Discard all previously recorded draws and set to the requested load op (with optional clear
     // color).
