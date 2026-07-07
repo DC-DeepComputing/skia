@@ -123,7 +123,8 @@ PaintParams::PaintParams(const SkPaint& paint,
         , fColorFilter(paint.getColorFilter())
         , fPrimitiveBlender(primitiveBlender)
         , fSkipColorXform(skipColorXform)
-        , fDither(paint.isDither()) {
+        , fDither(paint.isDither())
+        , fPathEffect(paint.getPathEffect()) {
     if (fFinalBlend.second == SkBlendMode::kClear) {
         // None of the other effects are relevant, the final src color for blending is transparent
         // and we can consolidate its blend mode to kSrc. This is helpful to restrict the number of
@@ -190,7 +191,8 @@ PaintParams::PaintParams(const SkColor4f& color, SkBlendMode finalBlendMode)
         , fColorFilter(nullptr)
         , fPrimitiveBlender(nullptr)
         , fSkipColorXform(false)
-        , fDither(false) {}
+        , fDither(false)
+        , fPathEffect(nullptr) {}
 
 SkColor4f PaintParams::Color4fPrepForDst(SkColor4f srcColor, const SkColorInfo& dstColorInfo) {
     // xform from sRGB to the destination colorspace

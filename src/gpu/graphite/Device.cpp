@@ -47,6 +47,7 @@
 #include "src/core/SkBlenderBase.h"
 #include "src/core/SkImageFilterTypes.h"  // IWYU pragma: keep
 #include "src/core/SkPaintPriv.h"
+#include "src/core/SkPathEffectBase.h"
 #include "src/core/SkPathPriv.h"
 #include "src/core/SkRRectPriv.h"
 #include "src/core/SkRectPriv.h"
@@ -98,6 +99,7 @@
 #include "src/gpu/graphite/task/UploadTask.h"
 #include "src/gpu/graphite/text/GlyphData.h"
 #include "src/image/SkImage_Base.h"
+#include "src/sksl/SkSLUtil.h"
 #include "src/text/gpu/SlugImpl.h"
 #include "src/text/gpu/SubRunContainer.h"
 #include "src/text/gpu/TextBlobRedrawCoordinator.h"
@@ -1461,6 +1463,16 @@ void Device::drawGeometryWithPathEffect(const Transform& localToDevice,
     // Path effects are applied on the CPU, which may modify the geometry to draw.
     // TODO(b/238757903): Handle dashing on the GPU when possible (e.g. straight lines)
     if (pathEffect && localToDevice.valid()) {
+        const SkPathEffectBase* peb = as_PEB(pathEffect);
+        if (peb->isArcLengthParameterized()) {
+            if (!fRecorder->priv().caps()->computeSupport() ||
+                !fRecorder->priv().caps()->shaderCaps()->fVertexIDSupport) {
+                return;
+            }
+            this->drawGeometry(localToDevice, std::move(geometry), paint, style);
+            return;
+        }
+
         // Apply the path effect before anything else, which if we are applying here, means that we
         // are dealing with a Shape. drawVertices (and a SkVertices geometry) should pass in
         // kIgnorePathEffect per SkCanvas spec. Text geometry also should pass in kIgnorePathEffect
@@ -1508,6 +1520,8 @@ void Device::drawGeometry(const Transform& localToDevice,
         return;
     }
 
+    SkASSERT(!paint.pathEffect() || style.getStyle() != SkStrokeRec::kFill_Style);
+
     // TODO: The tessellating and atlas path renderers haven't implemented perspective yet, so
     // transform to device space so we draw something approximately correct (barring local coord
     // issues).
@@ -1552,7 +1566,8 @@ void Device::drawGeometry(const Transform& localToDevice,
     auto [renderer, pathAtlas] = this->chooseRenderer(localToDevice,
                                                       geometry,
                                                       style,
-                                                      clip.transformedShapeBounds());
+                                                      clip.transformedShapeBounds(),
+                                                      &paint);
     if (!renderer && !pathAtlas) {
         SKIA_LOG_W("Skipping draw with no supported renderer or PathAtlas.");
         return;
@@ -1583,8 +1598,10 @@ void Device::drawGeometry(const Transform& localToDevice,
     if (renderer) {
         numNewRenderSteps = renderer->numRenderSteps();
         if (styleType == SkStrokeRec::kStrokeAndFill_Style) {
-            numNewRenderSteps +=
-                fRecorder->priv().rendererProvider()->tessellatedStrokes()->numRenderSteps();
+            const Renderer* strokeRenderer = (paint.pathEffect() && as_PEB(paint.pathEffect())->isArcLengthParameterized())
+                                ? fRecorder->priv().rendererProvider()->arcLengthStrokes()
+                                : fRecorder->priv().rendererProvider()->tessellatedStrokes();
+            numNewRenderSteps += strokeRenderer->numRenderSteps();
         } else if (styleType == SkStrokeRec::kFill_Style && renderer->useNonAAInnerFill()) {
             numNewRenderSteps +=
                 fRecorder->priv().rendererProvider()->nonAABounds()->numRenderSteps();
@@ -1769,9 +1786,13 @@ void Device::drawGeometry(const Transform& localToDevice,
         // For stroke-and-fill, 'renderer' is used for the fill and we always use the
         // TessellatedStrokes renderer; for stroke and hairline, 'renderer' is used.
         StrokeStyle stroke(style.getWidth(), style.getMiter(), style.getJoin(), style.getCap());
-        fDC->recordDraw(styleType == SkStrokeRec::kStrokeAndFill_Style
-                                ? fRecorder->priv().rendererProvider()->tessellatedStrokes()
-                                : renderer,
+        const Renderer* strokeRenderer = renderer;
+        if (styleType == SkStrokeRec::kStrokeAndFill_Style) {
+            strokeRenderer = (paint.pathEffect() && as_PEB(paint.pathEffect())->isArcLengthParameterized())
+                                ? fRecorder->priv().rendererProvider()->arcLengthStrokes()
+                                : fRecorder->priv().rendererProvider()->tessellatedStrokes();
+        }
+        fDC->recordDraw(strokeRenderer,
                         localToDevice, geometry, clip, order, paintID, dstUsage,
                         scopedDrawBuilder.gatherer(), &stroke, latestInsertion);
     } else if ((dstUsage & DstUsage::kDstOnlyUsedByRenderer) && renderer->useNonAAInnerFill()) {
@@ -1903,7 +1924,8 @@ void Device::updateNextDepthForClipping(PaintersDepth depth) {
 std::pair<const Renderer*, PathAtlas*> Device::chooseRenderer(const Transform& localToDevice,
                                                               const Geometry& geometry,
                                                               const SkStrokeRec& style,
-                                                              const Rect& drawBounds) const {
+                                                              const Rect& drawBounds,
+                                                              const PaintParams* paint) const {
     const RendererProvider* renderers = fRecorder->priv().rendererProvider();
     SkASSERT(renderers);
     SkStrokeRec::Style type = style.getStyle();
@@ -2037,12 +2059,13 @@ std::pair<const Renderer*, PathAtlas*> Device::chooseRenderer(const Transform& l
 
     // If we got here, it requires tessellated path rendering or an MSAA technique applied to a
     // simple shape (so we interpret them as paths to reduce the number of pipelines we need).
-    return {this->chooseMSAARenderer(geometry.shape(), style, drawBounds), nullptr};
+    return {this->chooseMSAARenderer(geometry.shape(), style, drawBounds, paint), nullptr};
 }
 
 const Renderer* Device::chooseMSAARenderer(const Shape& shape,
                                            const SkStrokeRec& style,
-                                           const Rect& drawBounds) const {
+                                           const Rect& drawBounds,
+                                           const PaintParams* paint) const {
     // TODO: All shapes that select a tessellating path renderer need to be "pre-chopped" if they
     // are large enough to exceed the fixed count tessellation limits. Fills are pre-chopped to the
     // viewport bounds, strokes and stroke-and-fills are pre-chopped to the viewport bounds outset
@@ -2052,6 +2075,9 @@ const Renderer* Device::chooseMSAARenderer(const Shape& shape,
 
     if (type == SkStrokeRec::kStroke_Style ||
         type == SkStrokeRec::kHairline_Style) {
+        if (paint && paint->pathEffect() && as_PEB(paint->pathEffect())->isArcLengthParameterized()) {
+            return renderers->arcLengthStrokes();
+        }
         // Unlike in Ganesh, the HW stroke tessellator can work with arbitrary paints since the
         // depth test prevents double-blending when there is transparency, thus we can HW stroke
         // any path regardless of its paint.

@@ -14,6 +14,7 @@
 #include "include/gpu/graphite/Context.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "include/gpu/graphite/Surface.h"
+#include "src/core/SkPathEffectBase.h"
 
 namespace skgpu::graphite {
 
@@ -79,6 +80,47 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(DeviceTestVertexTransparency, reporter, conte
     SkColor expected = 0xFF807F00;
     REPORTER_ASSERT(
             reporter, color == expected, "Wrong color, expected %08x, found %08x", expected, color);
+}
+
+class TestArcLengthPathEffect : public SkPathEffectBase {
+public:
+    static sk_sp<SkPathEffect> Make() {
+        return sk_sp<SkPathEffect>(new TestArcLengthPathEffect());
+    }
+
+    bool isArcLengthParameterized() const override { return true; }
+
+    bool onFilterPath(SkPathBuilder*, const SkPath&, SkStrokeRec*, const SkRect*,
+                      const SkMatrix&) const override {
+        return false;
+    }
+
+    bool computeFastBounds(SkRect* bounds) const override {
+        return true;
+    }
+
+    Factory getFactory() const override { return nullptr; }
+    const char* getTypeName() const override { return "TestArcLengthPathEffect"; }
+};
+
+DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(DeviceTestArcLengthPathEffect, reporter, context,
+                                   CtsEnforcement::kNever) {
+    std::unique_ptr<Recorder> recorder = context->makeRecorder();
+    SkImageInfo ii = SkImageInfo::Make(SkISize::Make(10, 10),
+                                       SkColorType::kRGBA_8888_SkColorType,
+                                       SkAlphaType::kPremul_SkAlphaType);
+    sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(recorder.get(), ii);
+    if (!surface) {
+        return;
+    }
+    SkCanvas* canvas = surface->getCanvas();
+
+    SkPaint paint;
+    paint.setStroke(true);
+    paint.setStrokeWidth(2.0f);
+    paint.setPathEffect(TestArcLengthPathEffect::Make());
+
+    canvas->drawLine(0, 0, 10, 10, paint);
 }
 
 }  // namespace skgpu::graphite
