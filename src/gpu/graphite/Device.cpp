@@ -991,6 +991,7 @@ void Device::drawImageLattice(const SkImage* image, const SkCanvas::Lattice& lat
                                Geometry(EdgeAAQuad(nextDst, EdgeAAQuad::Flags::kNone)),
                                paintParams,
                                DefaultFillStyle());
+            // add a comment here to trigger gold? idk.
         } else {
             SkCanvas::ImageSetEntry entry(sk_ref_sp(image), nextSrc, nextDst,
                                           /*alpha=*/1.f, SkCanvas::kNone_QuadAAFlags);
