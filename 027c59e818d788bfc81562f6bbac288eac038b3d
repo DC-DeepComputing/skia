@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3aad6c48_72097eb5",
+        "filename": "tools/UrlDataManager.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-07T20:04:41Z",
+      "side": 1,
+      "message": "It feels odd for this API to take a raw ptr and not a sk_sp\u003cconst SkData\u003e. What happens if we change that out?\n\nI\u0027m worried about the data being passed in and then elsewhere it gets deref\u0027d and then we are holding onto a bad pointer.",
+      "range": {
+        "startLine": 29,
+        "startChar": 27,
+        "endLine": 29,
+        "endChar": 33
+      },
+      "revId": "027c59e818d788bfc81562f6bbac288eac038b3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
