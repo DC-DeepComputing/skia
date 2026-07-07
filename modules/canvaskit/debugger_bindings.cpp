@@ -30,6 +30,7 @@
 #include "tools/debugger/DebugCanvas.h"
 #include "tools/debugger/DebugLayerManager.h"
 #include "tools/debugger/DrawCommand.h"
+#include "tools/ProcsUtils.h"
 
 #include <memory>
 #include <string>
@@ -248,7 +249,7 @@ class SkpDebugPlayer {
     // Return the command list in JSON representation as a string
     std::string jsonCommandList(sk_sp<SkSurface> surface) {
       SkDynamicMemoryWStream stream;
-      SkJSONWriter writer(&stream, SkJSONWriter::Mode::kFast);
+      SkJSONWriter           writer(&stream, ToolUtils::default_serial_procs(), SkJSONWriter::Mode::kFast);
       writer.beginObject(); // root
       visibleCanvas()->toJSON(writer, udm, surface->getCanvas());
       writer.endObject(); // root
@@ -266,7 +267,7 @@ class SkpDebugPlayer {
       SkIRect clip = visibleCanvas()->getCurrentClip();
 
       SkDynamicMemoryWStream stream;
-      SkJSONWriter writer(&stream, SkJSONWriter::Mode::kFast);
+      SkJSONWriter           writer(&stream, SkSerialProcs{}, SkJSONWriter::Mode::kFast);
       writer.beginObject(); // root
 
       writer.appendName("ViewMatrix");
@@ -454,6 +455,7 @@ class SkpDebugPlayer {
           // Make debug canvas using bounds from SkPicture
           fBoundsArray.push_back(page.fPicture->cullRect().roundOut());
           std::unique_ptr<DebugCanvas> debugCanvas = std::make_unique<DebugCanvas>(fBoundsArray.back());
+
           debugCanvas->setLayerManagerAndFrame(fLayerManager.get(), i);
 
           // Only draw picture to the debug canvas once.
