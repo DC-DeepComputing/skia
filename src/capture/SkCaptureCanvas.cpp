@@ -14,6 +14,7 @@
 #include "include/private/SkAssert.h"
 #include "include/private/SkLog.h"
 #include "include/utils/SkNWayCanvas.h"
+#include "src/capture/SkCaptureCanvas.h"
 #include "src/capture/SkCaptureManager.h"
 #include "src/core/SkCanvasPriv.h"
 #include "src/image/SkImage_Base.h"
@@ -62,6 +63,12 @@ void SkCaptureCanvas::detachRecordingCanvas() {
 
 void SkCaptureCanvas::onSurfaceDelete() {
     // TODO (b/412351769): signal to the capture manager that this canvas's surface has been deleted
+}
+
+SkSurface_Base* SkCaptureCanvas::getSurfaceBase() const {
+    SKIA_LOG(SkLogPriority::kDebug,
+             "SkCaptureCanvas's getSurfaceBase returns the wrapped SkCanvas's surface");
+    return this->fBaseCanvas->getSurfaceBase();
 }
 
 //////////////////// Function forwarding ///////////////////////

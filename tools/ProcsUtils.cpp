@@ -8,19 +8,22 @@
 #include "tools/ProcsUtils.h"
 
 #include "include/codec/SkCodec.h"
-#include "include/codec/SkPngDecoder.h"
 #include "include/core/SkFontMgr.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkStream.h"
-#include "include/encode/SkPngEncoder.h"
 #include "src/image/SkImage_Base.h"
 #include "tools/fonts/FontToolUtils.h"
-
+#if defined(SK_CODEC_ENCODES_PNG_WITH_RUST)
+#include "include/encode/SkPngRustEncoder.h"
+#endif
 #if defined(SK_CODEC_DECODES_PNG_WITH_RUST)
 #include "include/codec/SkPngRustDecoder.h"
 #endif
-#if defined(SK_CODEC_ENCODES_PNG_WITH_RUST)
-#include "include/encode/SkPngRustEncoder.h"
+#if defined(SK_CODEC_ENCODES_PNG_WITH_LIBPNG)
+#include "include/encode/SkPngEncoder.h"
+#endif
+#if defined(SK_CODEC_DECODES_PNG_WITH_LIBPNG)
+#include "include/codec/SkPngDecoder.h"
 #endif
 
 namespace ToolUtils {

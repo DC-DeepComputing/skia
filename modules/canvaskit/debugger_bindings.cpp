@@ -25,20 +25,20 @@
 #include "src/core/SkPicturePriv.h"
 #include "src/ports/SkTypeface_FreeType.h"
 #include "src/utils/SkJSONWriter.h"
+#include "tools/ProcsUtils.h"
 #include "tools/SkSharingProc.h"
 #include "tools/UrlDataManager.h"
 #include "tools/debugger/DebugCanvas.h"
 #include "tools/debugger/DebugLayerManager.h"
 #include "tools/debugger/DrawCommand.h"
-#include "tools/ProcsUtils.h"
 
+#include <emscripten.h>
+#include <emscripten/bind.h>
+#include <map>
 #include <memory>
 #include <string>
 #include <string_view>
 #include <vector>
-#include <map>
-#include <emscripten.h>
-#include <emscripten/bind.h>
 
 #ifdef CK_ENABLE_WEBGL
 #include "include/gpu/ganesh/GrBackendSurface.h"

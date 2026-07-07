@@ -652,7 +652,7 @@ bool DrawCommand::flatten(const SkImage&  image,
     SkBitmap bm;
     bm.installPixels(dstInfo, buffer.get(), rowBytes);
 
-    SkSerialProcs procs = ToolUtils::default_serial_procs();
+    SkSerialProcs procs = writer.getSerialProcs();
     sk_sp<const SkData> encoded;
     if (procs.fImageProc) {
         sk_sp<SkImage> rasterImage = bm.asImage();
