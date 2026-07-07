@@ -1154,11 +1154,11 @@ BuiltInCodeSnippetID add_generic_xfer_fn(const KeyContext& keyContext,
     return BuiltInCodeSnippetID::kCSXform_TransferFn;
 }
 
-BuiltInCodeSnippetID add_xfer_fn(const KeyContext& keyContext,
-                                 const skcms_TransferFunction& xferFn,
-                                 Swizzle ootfSwizzle,
-                                 const float* ootf,
-                                 bool specialize) {
+[[maybe_unused]] BuiltInCodeSnippetID add_xfer_fn(const KeyContext& keyContext,
+                                                 const skcms_TransferFunction& xferFn,
+                                                 Swizzle ootfSwizzle,
+                                                 const float* ootf,
+                                                 bool specialize) {
     if (specialize) {
         return add_xfer_fn(keyContext, xferFn, ootfSwizzle, ootf);
     } else {
@@ -1166,7 +1166,7 @@ BuiltInCodeSnippetID add_xfer_fn(const KeyContext& keyContext,
     }
 }
 
-SkMatrix swizzle_gamut_transform(const float* gamut, Swizzle readSwizzle) {
+[[maybe_unused]] SkMatrix swizzle_gamut_transform(const float* gamut, Swizzle readSwizzle) {
      float gamutTransform[] = { 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f};
 
     // Accumulate each column of the gamut transform based on the swizzle
@@ -1221,6 +1221,7 @@ ColorSpaceTransformBlock::ColorSpaceTransformData::ColorSpaceTransformData(const
 
 void ColorSpaceTransformBlock::AddBlock(const KeyContext& keyContext,
                                         const ColorSpaceTransformData& data) {
+#if 0
     // Colorspace transforms are a sequence of stages. We write each stage's uniforms and append
     // its code snippet ID to a list. Once all stages are collected, the sequence is converted to
     // a paint key by chaining together with Compose blocks. If there were no stages needed,
@@ -1367,6 +1368,9 @@ void ColorSpaceTransformBlock::AddBlock(const KeyContext& keyContext,
             keyContext.paintParamsKeyBuilder()->endBlock();
         }
     }
+#else
+    keyContext.paintParamsKeyBuilder()->addBlock(BuiltInCodeSnippetID::kPriorOutput);
+#endif
 }
 
 //--------------------------------------------------------------------------------------------------
