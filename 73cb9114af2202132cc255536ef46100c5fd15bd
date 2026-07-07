@@ -1,0 +1,215 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "079540c7_dc939486",
+        "filename": "src/capture/SkCaptureCanvas.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-07-07T15:30:36Z",
+      "side": 1,
+      "message": "nit: delete dupe",
+      "revId": "73cb9114af2202132cc255536ef46100c5fd15bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18775356_755e3772",
+        "filename": "src/capture/SkCaptureCanvas.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-07-07T15:30:36Z",
+      "side": 1,
+      "message": "SKIA_LOG_D",
+      "revId": "73cb9114af2202132cc255536ef46100c5fd15bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "744ce8ce_7692bfd0",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 1920,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-07-07T15:30:36Z",
+      "side": 1,
+      "message": "SKIA_LOG_D",
+      "revId": "73cb9114af2202132cc255536ef46100c5fd15bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa95e3e2_32fdddbe",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 1927,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-07-07T15:30:36Z",
+      "side": 1,
+      "message": "SKIA_LOG_I (Info is used for tooling messages)",
+      "revId": "73cb9114af2202132cc255536ef46100c5fd15bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ce3d7a1_4d6bb1b5",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 1931,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-07-07T15:30:36Z",
+      "side": 1,
+      "message": "SKIA_LOG_W (and get rid of \"Error:)",
+      "revId": "73cb9114af2202132cc255536ef46100c5fd15bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f64aab87_763c067c",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 1937,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-07-07T15:30:36Z",
+      "side": 1,
+      "message": "SKIA_LOG_W (and get rid of \"Error:)",
+      "revId": "73cb9114af2202132cc255536ef46100c5fd15bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "092e6fff_b444e003",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 1941,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-07-07T15:30:36Z",
+      "side": 1,
+      "message": "nit: Better to put a tracking bug instead of ldap in case task gets reassigned.",
+      "range": {
+        "startLine": 1941,
+        "startChar": 16,
+        "endLine": 1941,
+        "endChar": 28
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "967a3488_32964879",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tools/viewer/Viewer.cpp",
+              "range": {
+                "startLine": 1941,
+                "startChar": 0,
+                "endLine": 1942,
+                "endChar": 0
+              },
+              "replacement": "        // TODO(b/334925727) allow user to specify a path\n"
+            }
+          ]
+        }
+      ],
+      "revId": "73cb9114af2202132cc255536ef46100c5fd15bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d010a54_5fce2ca5",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 1950,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-07-07T15:30:36Z",
+      "side": 1,
+      "message": "SKIA_LOG_D",
+      "revId": "73cb9114af2202132cc255536ef46100c5fd15bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82333997_c1a952ee",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 1952,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-07-07T15:30:36Z",
+      "side": 1,
+      "message": "SKIA_LOG_D",
+      "revId": "73cb9114af2202132cc255536ef46100c5fd15bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1a7e072_c9a5d5c9",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 1956,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-07-07T15:30:36Z",
+      "side": 1,
+      "message": "SKIA_LOG_I",
+      "revId": "73cb9114af2202132cc255536ef46100c5fd15bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "597d6866_de50978d",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 1961,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-07-07T15:30:36Z",
+      "side": 1,
+      "message": "SKIA_LOG_W",
+      "revId": "73cb9114af2202132cc255536ef46100c5fd15bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
