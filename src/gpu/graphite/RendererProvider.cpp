@@ -14,6 +14,7 @@
 #include "src/gpu/graphite/UniformManager.h"
 #include "src/gpu/graphite/render/AnalyticBlurRenderStep.h"
 #include "src/gpu/graphite/render/AnalyticRRectRenderStep.h"
+#include "src/gpu/graphite/render/ArcLengthStrokeRenderStep.h"
 #include "src/gpu/graphite/render/BitmapTextRenderStep.h"
 #include "src/gpu/graphite/render/CircularArcRenderStep.h"
 #include "src/gpu/graphite/render/CommonDepthStencilSettings.h"
@@ -101,7 +102,9 @@ RendererProvider::RendererProvider(const Caps* caps, StaticBufferManager* buffer
         SkASSERT(IsSupported(fStrategy, caps));
     }
 
+    const bool computeSupport = caps->computeSupport();
     const bool infinitySupport = caps->shaderCaps()->fInfinitySupport;
+    const bool useVertexStorage = caps->vertexStorageSupport();
     const bool useStorageBuffers = caps->storageBufferSupport();
     const auto& bindingReq = caps->resourceBindingRequirements();
     auto layout = useStorageBuffers ? bindingReq.fStorageBufferLayout
@@ -128,7 +131,11 @@ RendererProvider::RendererProvider(const Caps* caps, StaticBufferManager* buffer
                  DrawTypeFlags::kNonSimpleShape);
     initFromStep(&fTessellatedStrokes,
                  std::make_unique<TessellateStrokesRenderStep>(layout, infinitySupport,
-                                                               caps->vertexStorageSupport()),
+                                                               useVertexStorage),
+                 DrawTypeFlags::kNonSimpleShape);
+    initFromStep(&fArcLengthStrokes,
+                 std::make_unique<ArcLengthStrokeRenderStep>(layout, computeSupport,
+                                                             infinitySupport, useVertexStorage),
                  DrawTypeFlags::kNonSimpleShape);
     initFromStep(&fCoverageMask,
                  std::make_unique<CoverageMaskRenderStep>(layout),

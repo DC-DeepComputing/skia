@@ -197,6 +197,7 @@ private:
     Renderer fStencilTessellatedWedges[kPathTypeCount];
     Renderer fConvexTessellatedWedges;
     Renderer fTessellatedStrokes;
+    Renderer fArcLengthStrokes;
 
     Renderer fCoverageMask;
 

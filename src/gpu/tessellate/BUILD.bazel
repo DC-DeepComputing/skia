@@ -8,6 +8,8 @@ licenses(["notice"])
 
 TESSELLATE_FILES = [
     "AffineMatrix.h",
+    "ArcLengthCalculator.cpp",
+    "ArcLengthCalculator.h",
     "CullTest.h",
     "FixedCountBufferUtils.cpp",
     "FixedCountBufferUtils.h",
