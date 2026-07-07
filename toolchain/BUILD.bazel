@@ -240,7 +240,7 @@ filegroup(
 filegroup(
     name = "archive_windows_files",
     srcs = [
-        "windows_trampolines/ar_trampoline_windows.bat",
+        "windows_trampolines/link_trampoline_windows.bat",
         "@clang_windows_amd64//:archive_files",
     ],
 )

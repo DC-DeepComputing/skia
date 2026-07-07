@@ -3,5 +3,11 @@
 :: Use of this source code is governed by a BSD-style license that can be
 :: found in the LICENSE file.
 
-external\+_repo_rules+clang_windows_amd64\bin\clang.exe %*
-if %errorlevel% neq 0 exit /b %errorlevel%
+@echo off
+:: Windows cmd.exe does not expand wildcards in executable paths. We must use a 'for /d'
+:: directory-globbing loop to expand the dynamically-suffixed Bzlmod repository folder name
+:: (e.g. +_repo_rules3+clang_windows_amd64) and bind the expanded path to %%i.
+for /d %%i in ("%~dp0..\..\external\*clang_windows_amd64") do (
+    "%%~i\bin\clang.exe" %*
+    exit /b
+)
