@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7329542_721132c1",
+        "filename": "modules/canvaskit/debugger_bindings.cpp",
+        "patchSetId": 34
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-07T20:15:21Z",
+      "side": 1,
+      "message": "This might break the Bazel build, FYI.",
+      "range": {
+        "startLine": 28,
+        "startChar": 16,
+        "endLine": 28,
+        "endChar": 26
+      },
+      "revId": "45147acc7dfb09ab6dc68000ae0e56d97ff227d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82749832_3854bb84",
+        "filename": "tools/ProcsUtils.cpp",
+        "patchSetId": 34
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-07T20:15:21Z",
+      "side": 1,
+      "message": "nit: blank line before #if when doing includes",
+      "revId": "45147acc7dfb09ab6dc68000ae0e56d97ff227d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b46aa260_1d57748d",
+        "filename": "tools/ProcsUtils.cpp",
+        "patchSetId": 34
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-07T20:15:21Z",
+      "side": 1,
+      "message": "This #if needs to match the one on line 35 or this is going to fail to compile sometimes. I think an #else should be sufficient for both.",
+      "range": {
+        "startLine": 22,
+        "startChar": 12,
+        "endLine": 22,
+        "endChar": 44
+      },
+      "revId": "45147acc7dfb09ab6dc68000ae0e56d97ff227d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
