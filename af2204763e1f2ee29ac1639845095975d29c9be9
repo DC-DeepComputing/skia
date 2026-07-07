@@ -1,0 +1,22 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e575d0f9_2f1d7d55",
+        "filename": "modules/skparagraph/gm/softhyphen_gm.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 4714569
+      },
+      "writtenOn": "2026-07-07T00:26:58Z",
+      "side": 1,
+      "message": "Done in PS8 — switched to SkShapers::BestAvailableUnicode() and removed the hand-rolled get_unicode() helper (and its SK_UNICODE_* conditional includes). Also added the missing include/core/SkFont.h and dropped the unused include/core/SkRect.h. Thanks!",
+      "parentUuid": "d5ff7d44_70ff56e8",
+      "revId": "af2204763e1f2ee29ac1639845095975d29c9be9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
