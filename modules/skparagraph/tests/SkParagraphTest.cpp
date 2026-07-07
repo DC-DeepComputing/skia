@@ -8969,6 +8969,57 @@ UNIX_ONLY_TEST(SkParagraph_SoftHyphenWordBoundary, reporter) {
     }
 }
 
+// Verifies that ParagraphStyle::setSoftHyphenString overrides the default "-"
+// glyph rendered at soft hyphen line breaks, and that an empty string disables
+// the rendered glyph entirely.
+UNIX_ONLY_TEST(SkParagraph_SoftHyphenCustomString, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>(true);
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+
+    const char* text =
+            "inter\xC2\xAD"
+            "national";
+
+    auto build = [&](const SkString& hyphenStr) {
+        ParagraphStyle paragraph_style;
+        paragraph_style.turnHintingOff();
+        paragraph_style.setRenderSoftHyphens(true);
+        paragraph_style.setSoftHyphenString(hyphenStr);
+        ParagraphBuilderImpl builder(paragraph_style, fontCollection, get_unicode());
+        TextStyle text_style;
+        text_style.setFontFamilies({SkString("Roboto")});
+        text_style.setFontSize(20);
+        text_style.setColor(SK_ColorBLACK);
+        builder.pushStyle(text_style);
+        builder.addText(text, strlen(text));
+        builder.pop();
+        auto paragraph = builder.Build();
+        paragraph->layout(60);
+        return paragraph;
+    };
+
+    // Default "-" matches setSoftHyphenString("-").
+    auto pDefault = build(SkString("-"));
+    auto pCustom = build(SkString("="));
+
+    auto* implDefault = static_cast<ParagraphImpl*>(pDefault.get());
+    auto* implCustom = static_cast<ParagraphImpl*>(pCustom.get());
+    REPORTER_ASSERT(reporter, implDefault->lines().size() == 2);
+    REPORTER_ASSERT(reporter, implCustom->lines().size() == 2);
+
+    auto& firstDefault = implDefault->lines()[0];
+    auto& firstCustom = implCustom->lines()[0];
+    REPORTER_ASSERT(reporter, firstDefault.hyphen() != nullptr);
+    REPORTER_ASSERT(reporter, firstCustom.hyphen() != nullptr);
+    REPORTER_ASSERT(reporter, firstCustom.hyphen()->advance().fX > 0);
+
+    // Empty string disables the rendered glyph (no fHyphen even at the break).
+    auto pEmpty = build(SkString(""));
+    auto* implEmpty = static_cast<ParagraphImpl*>(pEmpty.get());
+    REPORTER_ASSERT(reporter, implEmpty->lines().size() == 2);
+    REPORTER_ASSERT(reporter, implEmpty->lines()[0].hyphen() == nullptr);
+}
+
 #if defined(SK_UNICODE_ICU_IMPLEMENTATION)
 UNIX_ONLY_TEST(SkParagraph_ICU_EmojiRuns, reporter) {
     SkUnicode_Emoji(SkUnicodes::ICU::Make(), reporter);
