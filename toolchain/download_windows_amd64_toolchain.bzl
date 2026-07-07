@@ -23,19 +23,43 @@ clang_prefix = "clang+llvm-18.1.8-x86_64-pc-windows-msvc"
 clang_sha256 = "22c5907db053026cc2a8ff96d21c0f642a90d24d66c23c6d28ee7b1d572b82e8"
 clang_url = "https://github.com/llvm/llvm-project/releases/download/llvmorg-18.1.8/clang+llvm-18.1.8-x86_64-pc-windows-msvc.tar.xz"
 
+# Download the exact same clang version as GN (from skia/bots/clang_win)
+win_clang_pkg = "skia/bots/clang_win"
+win_clang_tag = "version:19"
+win_clang_sha256 = "6e5416ab9756a6e75804f75bbb006d61b1bd39677284223789e9a060d32fb8c1"
+
 win_toolchain_pkg = "skia/bots/win_toolchain"
 win_toolchain_tag = "version:15"  # TODO(kjlubick) when updating to 16, update win_sdk path below
 win_toolchain_sha256 = "f3dfb040052661124470d959faf8350aef4c2da9b396ad191a2c922d7a01c43f"
 
 def _download_windows_amd64_toolchain_impl(ctx):
-    # Download the clang toolchain (the extraction can take a while)
-    # https://bazel.build/rules/lib/repository_ctx#download_and_extract
+    # Download the clang-win asset from CIPD
+    ctx.download_and_extract(
+        url = cipd_download_urls(win_clang_pkg, win_clang_sha256, win_clang_tag),
+        output = "",
+        sha256 = win_clang_sha256,
+        type = "zip",
+    )
+
+    # Download the standard clang LLVM toolchain as a fallback for llvm-ar.exe (which clang_win lacks)
     ctx.download_and_extract(
         url = gcs_mirror_url(clang_url, clang_sha256),
-        output = "",
+        output = "llvm_fallback",
         stripPrefix = clang_prefix,
         sha256 = clang_sha256,
     )
+
+    # Copy/symlink fallback tools and create compiler/linker binaries
+    if ctx.os.name.lower().find("windows") != -1:
+        ctx.execute(["powershell.exe", "/c", "Copy-Item llvm_fallback/bin/llvm-ar.exe bin/llvm-ar.exe"])
+        ctx.execute(["powershell.exe", "/c", "Copy-Item bin/clang-cl.exe bin/clang.exe"])
+        ctx.execute(["powershell.exe", "/c", "Copy-Item bin/lld-link.exe bin/ld.lld.exe"])
+        ctx.execute(["powershell.exe", "/c", "Copy-Item bin/lld-link.exe bin/lld.exe"])
+    else:
+        ctx.symlink("llvm_fallback/bin/llvm-ar.exe", "bin/llvm-ar.exe")
+        ctx.symlink("bin/clang-cl.exe", "bin/clang.exe")
+        ctx.symlink("bin/lld-link.exe", "bin/ld.lld.exe")
+        ctx.symlink("bin/lld-link.exe", "bin/lld.exe")
 
     # Create a BUILD.bazel file that makes the files necessary for compiling,
     # linking and creating archive files visible to Bazel.
@@ -64,7 +88,7 @@ filegroup(
         "bin/clang.exe",
     ] + glob(
         include = [
-            "lib/clang/18/include/**",
+            "lib/clang/23/include/**",
             MSVC_INCLUDE + "/**",
             WIN_SDK_INCLUDE + "/**",
         ],
@@ -93,12 +117,21 @@ filegroup(
     )
 
     # Download the win_toolchain CIPD package (the extraction can take a while).
+    # We extract it to a subfolder to prevent CIPD metadata file collisions with the clang_win package.
     ctx.download_and_extract(
         url = cipd_download_urls(win_toolchain_pkg, win_toolchain_sha256, win_toolchain_tag),
-        output = "",
+        output = "win_toolchain_temp",
         sha256 = win_toolchain_sha256,
         type = "zip",
     )
+
+    # Move/symlink the VC and win_sdk directories to the root of the repository
+    if ctx.os.name.lower().find("windows") != -1:
+        ctx.execute(["powershell.exe", "/c", "Move-Item win_toolchain_temp/VC VC"])
+        ctx.execute(["powershell.exe", "/c", "Move-Item win_toolchain_temp/win_sdk win_sdk"])
+    else:
+        ctx.symlink("win_toolchain_temp/VC", "VC")
+        ctx.symlink("win_toolchain_temp/win_sdk", "win_sdk")
 
     # Find the correct version of MSVC and the Windows SDK.
     if ctx.os.name.lower().find("windows") != -1:
