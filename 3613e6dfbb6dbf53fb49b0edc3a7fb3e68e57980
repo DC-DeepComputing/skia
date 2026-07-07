@@ -16,6 +16,24 @@
       "message": "Chrome roll failures:\n\nhttps://chromium-review.git.corp.google.com/c/chromium/src/+/8054184\n\n```",
       "revId": "3613e6dfbb6dbf53fb49b0edc3a7fb3e68e57980",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1e1d5e0_db288621",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 56
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-07-07T19:25:30Z",
+      "side": 1,
+      "message": "```\n[18447/72607] RUST obj/skia/librust_bmp_ffi_e866329c.rlib obj/skia/librust_bmp_ffi_e866329c.rmeta obj/skia/rust_bmp_ffi.rustflags.json obj/skia/rust_bmp_ffi.rsp.rust\npython3 ../../build/rust/gni_impl/rustc_wrapper.py --dump-rustc-env-and-flags\u003dobj/skia/rust_bmp_ffi.rustflags.json --rsp\u003dobj/skia/rust_bmp_ffi.rsp --rustc\u003d../../third_party/rust-toolchain/bin/rustc --depfile\u003dobj/skia/librust_bmp_ffi_e866329c.rlib.d --emit\u003ddep-info\u003dobj/skia/librust_bmp_ffi_e866329c.rlib.d,link,metadata\u003dobj/skia/librust_bmp_ffi_e866329c.rmeta -o obj/skia/librust_bmp_ffi_e866329c.rlib -- -Clinker\u003d../../third_party/llvm-build/Release+Asserts/bin/clang++ ../../third_party/skia/experimental/rust_bmp/ffi/FFI.rs LDFLAGS RUSTENV OUT_DIR\u003dgen/skia/rust_bmp_ffi CLIPPY_CONF_DIR\u003d../../build/config\nerror[E0599]: no method named `read_metadata_in_ico_format` found for mutable reference `\u0026mut BmpDecoder\u003cBufReader\u003cUniquePtr\u003cskia_rust_common::SkStreamAdapter\u003e\u003e\u003e` in the current scope\n   --\u003e ../../third_party/skia/experimental/rust_bmp/ffi/FFI.rs:259:39\n    |\n259 |         self.read_metadata_impl(|d| d.read_metadata_in_ico_format())\n    |                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^ method not found in `\u0026mut BmpDecoder\u003cBufReader\u003cUniquePtr\u003cskia_rust_common::SkStreamAdapter\u003e\u003e\u003e`\n\nerror: aborting due to 1 previous error\n\n```",
+      "parentUuid": "f9128be9_d4e3f786",
+      "revId": "3613e6dfbb6dbf53fb49b0edc3a7fb3e68e57980",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
