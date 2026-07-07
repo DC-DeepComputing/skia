@@ -47,16 +47,11 @@ WIN_SDK_LIB = "win_sdk/Lib/" + WIN_SDK_VERSION
 # WIN_SDK_INCLUDE = "Windows Kits/10/Include/" + WIN_SDK_VERSION
 # WIN_SDK_LIB = "Windows Kits/10/Lib/" + WIN_SDK_VERSION
 
-# The location of the downloaded clang toolchain.
-CLANG_TOOLCHAIN = "external/clang_windows_amd64"
-
-# Paths inside the win_toolchain CIPD package.
-FULL_MSVC_INCLUDE = CLANG_TOOLCHAIN + "/" + MSVC_INCLUDE
-FULL_MSVC_LIB = CLANG_TOOLCHAIN + "/" + MSVC_LIB
-FULL_WIN_SDK_INCLUDE = CLANG_TOOLCHAIN + "/" + WIN_SDK_INCLUDE
-FULL_WIN_SDK_LIB = CLANG_TOOLCHAIN + "/" + WIN_SDK_LIB
+# Paths inside the win_toolchain CIPD package are defined dynamically below.
 
 def _windows_amd64_toolchain_info(ctx):
+    clang_repo_name = ctx.attr.clang_windows_amd64.label.workspace_name
+    clang_toolchain_path = "external/" + clang_repo_name
     action_configs = _make_action_configs()
     features = [
         feature(
@@ -64,7 +59,7 @@ def _windows_amd64_toolchain_info(ctx):
             enabled = True,
         ),
     ]
-    features += _make_default_flags()
+    features += _make_default_flags(clang_toolchain_path)
     features += _make_diagnostic_flags()
 
     # https://bazel.build/rules/lib/cc_common#create_cc_toolchain_config_info
@@ -83,7 +78,9 @@ def _windows_amd64_toolchain_info(ctx):
     )
 
 provide_windows_amd64_toolchain_config = rule(
-    attrs = {},
+    attrs = {
+        "clang_windows_amd64": attr.label(default = "@clang_windows_amd64//:compile_files"),
+    },
     provides = [CcToolchainConfigInfo],
     implementation = _windows_amd64_toolchain_info,
 )
@@ -104,7 +101,7 @@ def _make_action_configs():
 
     # https://cs.opensource.google/bazel/bazel/+/master:tools/cpp/cc_toolchain_config_lib.bzl;l=435;drc=3b9e6f201a9a3465720aad8712ab7bcdeaf2e5da
     clang_tool = tool(path = "windows_trampolines/clang_trampoline_windows.bat")
-    ar_tool = tool(path = "windows_trampolines/ar_trampoline_windows.bat")
+    link_tool = tool(path = "windows_trampolines/link_trampoline_windows.bat")
 
     # https://cs.opensource.google/bazel/bazel/+/master:tools/cpp/cc_toolchain_config_lib.bzl;l=488;drc=3b9e6f201a9a3465720aad8712ab7bcdeaf2e5da
     assemble_action = action_config(
@@ -143,7 +140,7 @@ def _make_action_configs():
         tools = [clang_tool],
     )
 
-    # By default, there are no flags or libraries passed to the llvm-ar tool, so
+    # By default, there are no flags or libraries passed to the llvm-link tool, so
     # we need to specify them. The variables mentioned by expand_if_available are defined
     # https://bazel.build/docs/cc-toolchain-config-reference#cctoolchainconfiginfo-build-variables
     cpp_link_static_library_action = action_config(
@@ -152,14 +149,10 @@ def _make_action_configs():
             flag_set(
                 flag_groups = [
                     flag_group(
-                        # https://llvm.org/docs/CommandGuide/llvm-ar.html
-                        # replace existing files or insert them if they already exist,
-                        # create the file if it doesn't already exist
-                        # symbol table should be added
-                        # Deterministic timestamps should be used
-                        flags = ["rcsD", "%{output_execpath}"],
+                        # LLD in /lib mode expects the MSVC-style /OUT:<file> option
+                        flags = ["/OUT:%{output_execpath}"],
                         # Despite the name, output_execpath just refers to linker output,
-                        # e.g. libFoo.a
+                        # e.g. libFoo.lib
                         expand_if_available = "output_execpath",
                     ),
                 ],
@@ -198,7 +191,7 @@ def _make_action_configs():
                 ],
             ),
         ],
-        tools = [ar_tool],
+        tools = [link_tool],
     )
 
     action_configs = [
@@ -214,7 +207,7 @@ def _make_action_configs():
     ]
     return action_configs
 
-def _make_default_flags():
+def _make_default_flags(clang_toolchain):
     """Here we define the flags for certain actions that are always applied.
 
     For any flag that might be conditionally applied, it should be defined in //bazel/copts.bzl.
@@ -222,6 +215,10 @@ def _make_default_flags():
     Flags that are set here will be unconditionally applied to everything we compile with
     this toolchain, even third_party deps.
     """
+    full_msvc_include = clang_toolchain + "/" + MSVC_INCLUDE
+    full_msvc_lib = clang_toolchain + "/" + MSVC_LIB
+    full_win_sdk_include = clang_toolchain + "/" + WIN_SDK_INCLUDE
+    full_win_sdk_lib = clang_toolchain + "/" + WIN_SDK_LIB
 
     # Note: These values must be kept in sync with those defined in cmake_exporter.go.
     cxx_compile_includes = flag_set(
@@ -237,33 +234,33 @@ def _make_default_flags():
                     # error (or, without -no-canonical-prefixes, a mysterious case where files
                     # are included with an absolute path and fail the build).
                     "-isystem",
-                    CLANG_TOOLCHAIN + "/include/clang",
+                    clang_toolchain + "/include/clang",
                     "-isystem",
-                    CLANG_TOOLCHAIN + "/include/clang-c",
+                    clang_toolchain + "/include/clang-c",
                     "-isystem",
-                    CLANG_TOOLCHAIN + "/include/clang-tidy",
+                    clang_toolchain + "/include/clang-tidy",
                     "-isystem",
-                    CLANG_TOOLCHAIN + "/include/lld",
+                    clang_toolchain + "/include/lld",
                     "-isystem",
-                    CLANG_TOOLCHAIN + "/include/lldb",
+                    clang_toolchain + "/include/lldb",
                     "-isystem",
-                    CLANG_TOOLCHAIN + "/include/llvm",
+                    clang_toolchain + "/include/llvm",
                     "-isystem",
-                    CLANG_TOOLCHAIN + "/include/llvm-c",
+                    clang_toolchain + "/include/llvm-c",
                     "-isystem",
-                    CLANG_TOOLCHAIN + "/lib/clang/18/include",
+                    clang_toolchain + "/lib/clang/23/include",
                     "-isystem",
-                    FULL_WIN_SDK_INCLUDE + "/shared",
+                    full_win_sdk_include + "/shared",
                     "-isystem",
-                    FULL_WIN_SDK_INCLUDE + "/ucrt",
+                    full_win_sdk_include + "/ucrt",
                     "-isystem",
-                    FULL_WIN_SDK_INCLUDE + "/um",
+                    full_win_sdk_include + "/um",
                     "-isystem",
-                    FULL_WIN_SDK_INCLUDE + "/winrt",
+                    full_win_sdk_include + "/winrt",
                     "-isystem",
-                    FULL_WIN_SDK_INCLUDE + "/cppwinrt",
+                    full_win_sdk_include + "/cppwinrt",
                     "-isystem",
-                    FULL_MSVC_INCLUDE,
+                    full_msvc_include,
                     # We do not want clang to search in absolute paths for files. This makes
                     # Bazel think we are using an outside resource and fail the compile.
                     "-no-canonical-prefixes",
@@ -299,9 +296,9 @@ def _make_default_flags():
                     # included in the clang binary
                     "--rtlib=compiler-rt",
                     "-std=c++20",
-                    "-L" + FULL_MSVC_LIB + "/x64",
-                    "-L" + FULL_WIN_SDK_LIB + "/ucrt/x64",
-                    "-L" + FULL_WIN_SDK_LIB + "/um/x64",
+                    "-L" + full_msvc_lib + "/x64",
+                    "-L" + full_win_sdk_lib + "/ucrt/x64",
+                    "-L" + full_win_sdk_lib + "/um/x64",
                 ],
             ),
         ],
