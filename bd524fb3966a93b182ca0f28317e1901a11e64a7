@@ -16,6 +16,24 @@
       "message": "LGTM, this is an improvement and addresses 526181509. Unfortunately, the previous change that added EBDT support did not seem have generated Gold references - which would have been showing us that the previous change  https://review.skia.org/1249116 would have preferred EBDT/EBLC too much in `typefacerendering` GM. \n\nWhen landing this, the `typefacerendering` GM goes back to only using bitmap fonts at the intended odd font sizes, but for these strike sizes, the horizontal metrics differ from FreeType.",
       "revId": "bd524fb3966a93b182ca0f28317e1901a11e64a7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a413f7be_5e02454c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2026-07-07T13:28:28Z",
+      "side": 1,
+      "message": "Advances differences analysed in crbug.com/531746250",
+      "parentUuid": "21aacc25_ae46632a",
+      "revId": "bd524fb3966a93b182ca0f28317e1901a11e64a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
