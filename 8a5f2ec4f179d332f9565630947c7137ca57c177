@@ -95,6 +95,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "41fedd1f_ffd5f68a",
+        "filename": "build_overrides/partition_alloc.gni",
+        "patchSetId": 14
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-07-07T13:55:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e8bb6e44_8dfa5e78",
+      "range": {
+        "startLine": 59,
+        "startChar": 21,
+        "endLine": 59,
+        "endChar": 80
+      },
+      "revId": "8a5f2ec4f179d332f9565630947c7137ca57c177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "26d9195d_2859d831",
@@ -126,6 +150,24 @@
       "side": 1,
       "message": "With\n\ns/Chrome/Skia",
       "parentUuid": "26d9195d_2859d831",
+      "revId": "8a5f2ec4f179d332f9565630947c7137ca57c177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10bb1034_baaf01a2",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 14
+      },
+      "lineNbr": 860,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-07-07T13:55:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c80fbc0b_d4aa8da3",
       "revId": "8a5f2ec4f179d332f9565630947c7137ca57c177",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
