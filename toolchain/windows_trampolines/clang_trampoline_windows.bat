@@ -3,5 +3,12 @@
 :: Use of this source code is governed by a BSD-style license that can be
 :: found in the LICENSE file.
 
-external\+_repo_rules+clang_windows_amd64\bin\clang.exe %*
-if %errorlevel% neq 0 exit /b %errorlevel%
+@echo off
+for /d %%i in (external\*clang_windows_amd64) do (
+    %%i\bin\clang.exe %*
+    exit /b
+)
+for /d %%i in (..\..\..\..\..\..\..\external\*clang_windows_amd64) do (
+    %%i\bin\clang.exe %*
+    exit /b
+)
