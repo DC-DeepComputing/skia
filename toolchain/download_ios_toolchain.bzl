@@ -26,6 +26,9 @@ ios_sdk_root = "/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/"
 
 def _get_system_xcode_path(ctx):
     # https://developer.apple.com/library/archive/technotes/tn2339/_index.html
+    xcode_path = ctx.os.environ.get("HERMETIC_XCODE_PATH")
+    if xcode_path:
+        return xcode_path
     res = ctx.execute(["xcode-select", "--print-path"])
     if res.return_code != 0:
         fail("Error Getting XCode path: " + res.stderr)
@@ -188,6 +191,11 @@ filegroup(
 download_ios_toolchain = repository_rule(
     implementation = _download_ios_toolchain_impl,
     attrs = {},
+    environ = [
+        "DEVELOPER_DIR",
+        "SDKROOT",
+        "HERMETIC_XCODE_PATH",
+    ],
     doc = "Downloads clang to build Skia with." +
           "Assumes you have xcode located on your device and have" +
           "xcode-select in your $PATH.",

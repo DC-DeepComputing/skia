@@ -26,6 +26,9 @@ clang_arm_sha256 = "946f9bd47ccad906dddde6c426fb5a685ea2c1b660a5ccaef314deadfa1a
 clang_ver = "22"
 
 def _get_system_sdk_path(ctx):
+    sdk_path = ctx.os.environ.get("HERMETIC_MAC_SDK_PATH")
+    if sdk_path:
+        return sdk_path
     res = ctx.execute(["xcrun", "--sdk", "macosx", "--show-sdk-path"])
     if res.return_code != 0:
         fail("Error Getting SDK path: " + res.stderr)
@@ -215,6 +218,11 @@ filegroup(
 download_mac_toolchain = repository_rule(
     implementation = _download_mac_toolchain_impl,
     attrs = {},
+    environ = [
+        "DEVELOPER_DIR",
+        "SDKROOT",
+        "HERMETIC_MAC_SDK_PATH",
+    ],
     doc = "Downloads clang to build Skia with." +
           "Assumes you have xcode located on your device and have" +
           "xcode-select in your $PATH.",
