@@ -128,8 +128,7 @@ cc_defaults {
 }
 
 cc_defaults {
-    name: "skia_defaults",
-    defaults: ["skia_arch_defaults"],
+    name: "skia_flags_defaults",
     cflags: [
         $cflags
     ],
@@ -149,6 +148,14 @@ cc_defaults {
     sanitize: {
         blocklist: "libskia_blocklist.txt",
     },
+}
+
+cc_defaults {
+    name: "skia_defaults",
+    defaults: [
+        "skia_arch_defaults",
+        "skia_flags_defaults",
+    ],
 }
 
 filegroup {
@@ -625,6 +632,7 @@ def main():
                                      renderengine_oopr_srcs, VMA_DEP)
   renderengine_oopr_srcs = strip_non_srcs(renderengine_oopr_srcs)
   renderengine_oopr_srcs = renderengine_oopr_srcs.difference(renderengine_srcs)
+
 
   # Execute GN for specialized SkQP target
   skqp_sdk_version = 26
