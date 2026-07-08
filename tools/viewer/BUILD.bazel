@@ -109,8 +109,6 @@ skia_cc_binary(
     ],
     deps = [
         "//:core",
-        "//:fontmgr_directory_freetype",
-        "//:fontmgr_empty_fontations",
         "//:skshaper_core",
         "//:svg_renderer",
         "//gm",
@@ -142,6 +140,15 @@ skia_cc_binary(
         "@delaunator",
         "@imgui",
     ] + select({
+        "@platforms//os:windows": [
+            "//:fontmgr_win_dw",
+            "//tools/ganesh:ganesh_d3d_utils",
+        ],
+        "//conditions:default": [
+            "//:fontmgr_directory_freetype",
+            "//:fontmgr_empty_fontations",
+        ],
+    }) + select({
         "@platforms//os:linux": ["@spirv_tools"],
         "//conditions:default": [],
     }),

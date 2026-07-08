@@ -272,6 +272,7 @@ def split_srcs_and_hdrs(name, files, visibility = None):
 
 _ALLOWED_TEST_UTIL_NAMES = set([
     "ganesh",
+    "ganesh_d3d",
     "ganesh_gl",
     "ganesh_vulkan",
     "glx_factory",
@@ -283,12 +284,14 @@ _ALLOWED_TEST_UTIL_NAMES = set([
 ])
 
 _REWRITE_TEST_UTIL_DEPS = {
+    "//:ganesh_d3d": "//src/gpu/ganesh/d3d:ganesh_d3d_TEST_UTIL",
     "//:ganesh_gl": "//src/gpu/ganesh/gl:ganesh_gl_TEST_UTIL",
     "//:ganesh_vulkan": "//src/gpu/ganesh/vk:ganesh_vulkan_TEST_UTIL",
     "//:glx_factory": "//src/gpu/ganesh/gl/glx:glx_factory_TEST_UTIL",
     "//:graphite_native_metal": "//src/gpu/graphite/mtl:graphite_native_metal_TEST_UTIL",
     "//:graphite_native_vulkan": "//src/gpu/graphite/vk:graphite_native_vulkan_TEST_UTIL",
     "//src/gpu/ganesh": "//src/gpu/ganesh:ganesh_TEST_UTIL",
+    "//src/gpu/ganesh/d3d:ganesh_d3d": "//src/gpu/ganesh/d3d:ganesh_d3d_TEST_UTIL",
     "//src/gpu/ganesh/gl/glx:glx_factory": "//src/gpu/ganesh/gl/glx:glx_factory_TEST_UTIL",
     "//src/gpu/ganesh/gl:ganesh_gl": "//src/gpu/ganesh/gl:ganesh_gl_TEST_UTIL",
     "//src/gpu/ganesh/vk:ganesh_vulkan": "//src/gpu/ganesh/vk:ganesh_vulkan_TEST_UTIL",
