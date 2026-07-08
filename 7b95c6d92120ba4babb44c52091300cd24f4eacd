@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55683cfc_8be93d3f",
+        "filename": "tools/UrlDataManager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-08T17:18:40Z",
+      "side": 1,
+      "message": "I think we just want `urlData-\u003efData \u003d data;` This approach I think \"overrefs\" the data object",
+      "range": {
+        "startLine": 23,
+        "startChar": 19,
+        "endLine": 23,
+        "endChar": 24
+      },
+      "revId": "7b95c6d92120ba4babb44c52091300cd24f4eacd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
