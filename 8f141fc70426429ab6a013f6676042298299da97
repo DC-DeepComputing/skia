@@ -61,6 +61,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "89bfab13_6df317f4",
+        "filename": "src/capture/SkCaptureCanvas.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-07-08T17:46:44Z",
+      "side": 1,
+      "message": "No, we made it virtual because there is Skia code that calls getSurfaceBase on SkCanvases that in instances where SkCanvas is a SkCaptureCanvas, it returns null.\nWe got around this by making SkCaptureCanvas::getBaseCanvasSurface() return the wrapped canvas\u0027s surface, but it looks like other places might still expect SkCaptureCanvas::getSurfaceBase() to return non-null.\nWhile N-Ways technically don\u0027t have a SurfaceBase since they can point to many canvases, we thought since CaptureCanvases only wrap 1 main canvas that we can safely say that canvas\u0027s surface is the correct return value.",
+      "parentUuid": "e3408546_9d00e909",
+      "range": {
+        "startLine": 68,
+        "startChar": 4,
+        "endLine": 68,
+        "endChar": 90
+      },
+      "revId": "8f141fc70426429ab6a013f6676042298299da97",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9751f184_1046a002",
         "filename": "tools/ProcsUtils.h",
         "patchSetId": 27
