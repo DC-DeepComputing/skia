@@ -20,6 +20,47 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ceec81d9_ad0eaed8",
+        "filename": "include/core/SkCanvas.h",
+        "patchSetId": 27
+      },
+      "lineNbr": 2532,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-07-08T17:05:00Z",
+      "side": 1,
+      "message": "See comment below, but I don\u0027t think there is any real value in making this a virtual call.",
+      "parentUuid": "b1602a00_ae6ce23e",
+      "revId": "8f141fc70426429ab6a013f6676042298299da97",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3408546_9d00e909",
+        "filename": "src/capture/SkCaptureCanvas.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-07-08T17:05:00Z",
+      "side": 1,
+      "message": "Did we make this function virtual just to add this log statement? I also don\u0027t think this is a very useful log. Like its more just saying how the internals of the code work and not really something unique or interesting someone debugging would need to know.",
+      "range": {
+        "startLine": 68,
+        "startChar": 4,
+        "endLine": 68,
+        "endChar": 90
+      },
+      "revId": "8f141fc70426429ab6a013f6676042298299da97",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9751f184_1046a002",
         "filename": "tools/ProcsUtils.h",
         "patchSetId": 27
