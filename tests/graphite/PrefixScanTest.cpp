@@ -339,6 +339,12 @@ void run_arclength_prefixScan_test(skiatest::Reporter* reporter,
                                    "    uint pathIndex;\n"
                                    "    float t;\n"
                                    "    uint padding;\n"
+                                   "};\n\n"
+                                   "struct PathAttributes {\n"
+                                   "    uint startIndex;\n"
+                                   "    float totalLength;\n"
+                                   "    float padding1;\n"
+                                   "    float padding2;\n"
                                    "}"},
                                   {ResourceType::kStorageBuffer,
                                    DataFlow::kPrivate,
@@ -353,7 +359,7 @@ void run_arclength_prefixScan_test(skiatest::Reporter* reporter,
                                    DataFlow::kShared,
                                    ResourcePolicy::kMapped,
                                    1,
-                                   "PathAttributes { uint path_attributes[]; }"},
+                                   "PathStorageBuffer { PathAttributes pathData[]; }"},
                           }})
                 , fInfinitySupport(infinitySupport)
                 , fPathAttributes(std::move(pathAttributes)) {}
@@ -396,7 +402,7 @@ void run_arclength_prefixScan_test(skiatest::Reporter* reporter,
                 return sizeof(CpuStrokePatch) * fProblemSize;
             }
             if (index == 3) {
-                return sizeof(uint32_t) * fPathAttributes.size() * 2;
+                return sizeof(uint32_t) * fPathAttributes.size() * 4;
             }
             return 0;
         }
@@ -433,10 +439,17 @@ void run_arclength_prefixScan_test(skiatest::Reporter* reporter,
                     writer.write(patch);
                 }
             } else if (index == 3) {
-                // Double sized to hold the startIdx then total lengths
-                std::vector<uint32_t> pathAttributes(fPathAttributes.size() * 2, 0);
-                std::copy(fPathAttributes.begin(), fPathAttributes.end(), pathAttributes.begin());
-                writer.write(pathAttributes.data(), pathAttributes.size() * sizeof(uint32_t));
+                struct PathAttributes {
+                    uint32_t startIndex;
+                    float totalLength;
+                    float padding1;
+                    float padding2;
+                };
+                std::vector<PathAttributes> strokeData(fPathAttributes.size());
+                for (size_t i = 0; i < fPathAttributes.size(); ++i) {
+                    strokeData[i] = {fPathAttributes[i], 0.f, 0.f, 0.f};
+                }
+                writer.write(strokeData.data(), strokeData.size() * sizeof(PathAttributes));
             }
         }
 
@@ -480,7 +493,13 @@ void run_arclength_prefixScan_test(skiatest::Reporter* reporter,
 
         CpuStrokePatch* outPatches = static_cast<CpuStrokePatch*>(
                 map_buffer(context, testContext, outputBuffer.get(), outputInfo.fOffset));
-        uint32_t* outPathAttrs = static_cast<uint32_t*>(
+        struct CpuPathAttributes {
+            uint32_t startIndex;
+            float totalLength;
+            float padding1;
+            float padding2;
+        };
+        CpuPathAttributes* outPathAttrs = static_cast<CpuPathAttributes*>(
                 map_buffer(context, testContext, pathAttrBuffer.get(), pathAttrInfo.fOffset));
         if (!outPatches || !outPathAttrs) return;
 
@@ -503,14 +522,14 @@ void run_arclength_prefixScan_test(skiatest::Reporter* reporter,
         for (size_t p = 0; p < pathAttributes.size(); ++p) {
             // Assert start index is preserved
             REPORTER_ASSERT(reporter,
-                            outPathAttrs[p] == pathAttributes[p],
+                            outPathAttrs[p].startIndex == pathAttributes[p],
                             "At path %zu: expected start index '%u', found '%u'",
                             p,
                             pathAttributes[p],
-                            outPathAttrs[p]);
+                            outPathAttrs[p].startIndex);
 
             const float expected = expectedPathLens[p];
-            const float found = SkBits2Float(outPathAttrs[pathAttributes.size() + p]);
+            const float found = outPathAttrs[p].totalLength;
             const float absDiff = std::abs(expected - found);
             const float maxAbsDiff = 1e-3f;
             const float relDiff = absDiff / std::max(1.0f, std::abs(expected));
@@ -581,7 +600,13 @@ DEF_GRAPHITE_TEST_FOR_DAWN_AND_METAL_CONTEXTS(PrefixScan_WorkgroupScanTest,
             shader += "const uint tile_id = 0u;\n";
             shader += "uint start_index = 0u;\n";
             shader += "workgroup StrokePatch patches[S_MEM_SIZE];\n";
-            shader += "workgroup uint path_attributes[2];\n";
+            shader += "struct PathAttributes {\n";
+            shader += "    uint startIndex;\n";
+            shader += "    float totalLength;\n";
+            shader += "    float padding1;\n";
+            shader += "    float padding2;\n";
+            shader += "};\n";
+            shader += "workgroup PathAttributes pathData[2];\n";
 
             shader += "void main() {\n";
             shader += "    uint idx = sk_LocalInvocationID.x;\n";
@@ -589,7 +614,7 @@ DEF_GRAPHITE_TEST_FOR_DAWN_AND_METAL_CONTEXTS(PrefixScan_WorkgroupScanTest,
             shader += "    wg_partials[idx] = float(idx);\n";
             shader += "    patches[idx].pathIndex = 0u;\n";
             shader += "    if (idx == 0u) {\n";
-            shader += "        path_attributes[0] = 0u;\n";
+            shader += "        pathData[0].startIndex = 0u;\n";
             shader += "    }\n";
             shader += "    workgroupBarrier();\n";
 

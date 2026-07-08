@@ -54,7 +54,7 @@ using namespace skgpu::tess;
 // The order of the attribute declarations must match the order used by
 // PatchWriter::emitPatchAttribs, i.e.:
 //     join << fanPoint << stroke << color << depth << curveType << ssboIndex << vertexStorageIndex
-static constexpr Attribute kSSBOPatchAttributes[] = {
+static constexpr Attribute kVertexStorageAttributes[] = {
         {"p01", VertexAttribType::kFloat4, SkSLType::kFloat4},
         {"p23", VertexAttribType::kFloat4, SkSLType::kFloat4},
         {"prevPoint", VertexAttribType::kFloat2, SkSLType::kFloat2},
@@ -64,7 +64,7 @@ static constexpr Attribute kSSBOPatchAttributes[] = {
         {"ssboIndex", VertexAttribType::kUInt, SkSLType::kUInt},
         {"arcLength", VertexAttribType::kFloat3, SkSLType::kFloat3}};
 
-static constexpr Attribute kSSBOPatchAttributesWithCurveType[] = {
+static constexpr Attribute kVertexStorageAttributesWithCurveType[] = {
         {"p01", VertexAttribType::kFloat4, SkSLType::kFloat4},
         {"p23", VertexAttribType::kFloat4, SkSLType::kFloat4},
         {"prevPoint", VertexAttribType::kFloat2, SkSLType::kFloat2},
@@ -96,8 +96,8 @@ static constexpr Attribute kInstancedAttributesWithCurveType[] = {
 
 inline SkSpan<const Attribute> get_attributes(bool infinitySupport, bool vertexStorageSupport) {
     if (vertexStorageSupport) {
-        return infinitySupport ? SkSpan(kSSBOPatchAttributes)
-                               : SkSpan(kSSBOPatchAttributesWithCurveType);
+        return infinitySupport ? SkSpan(kVertexStorageAttributes)
+                               : SkSpan(kVertexStorageAttributesWithCurveType);
     } else {
         return infinitySupport ? SkSpan(kInstancedAttributes)
                                : SkSpan(kInstancedAttributesWithCurveType);
@@ -257,7 +257,7 @@ std::string ArcLengthStrokeRenderStep::vertexSkSL() const {
                            "edgeID = -edgeID;"
                        "}\n";
     if (fVertexStorageSupport) {
-        sksl += "float totalArcLength = strokeData[vertexStorageIndex].totalLength;\n";
+        sksl += "float totalArcLength = pathData[vertexStorageIndex].totalLength;\n";
     } else {
         sksl += "float totalArcLength = arcLength.z;\n";
     }
@@ -284,14 +284,14 @@ const char* ArcLengthStrokeRenderStep::fragmentColorSkSL() const {
 std::string ArcLengthStrokeRenderStep::vertexStorageSkSL(const ResourceBindingRequirements& reqs,
                                                        int binding) const {
     return SkSL::String::printf(
-            "struct StrokeAndDepth {\n"
+            "struct PathAttributes {\n"
+                "uint   startIndex;\n"
                 "float  totalLength;\n"
-                "float  padding0;\n"
                 "float  padding1;\n"
                 "float  padding2;\n"
             "};\n"
-            "layout(set=%d, binding=%d) readonly buffer StrokeStorageBuffer {\n"
-            "    StrokeAndDepth strokeData[];\n"
+            "layout(set=%d, binding=%d) readonly buffer PathStorageBuffer {\n"
+            "    PathAttributes pathData[];\n"
             "};\n",
             reqs.fUniformsSetIdx,
             binding);

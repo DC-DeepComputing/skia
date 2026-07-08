@@ -218,6 +218,8 @@ skia_graphite_sources = [
   "$_src/gpu/graphite/UploadBufferManager.cpp",
   "$_src/gpu/graphite/UploadBufferManager.h",
   "$_src/gpu/graphite/YUVABackendTextures.cpp",
+  "$_src/gpu/graphite/compute/ArcLengthComputeStep.cpp",
+  "$_src/gpu/graphite/compute/ArcLengthComputeStep.h",
   "$_src/gpu/graphite/compute/ComputeStep.cpp",
   "$_src/gpu/graphite/compute/ComputeStep.h",
   "$_src/gpu/graphite/compute/DispatchGroup.cpp",
