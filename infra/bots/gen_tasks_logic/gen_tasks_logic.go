@@ -2195,6 +2195,7 @@ func (b *jobBuilder) bazelBuild() {
 			// We only run builds in GCE.
 			"linux_x64":   bazelCacheDirOnGCELinux,
 			"mac_arm64":   bazelCacheDirOnMac,
+			"mac_x64":     bazelCacheDirOnMac,
 			"windows_x64": bazelCacheDirOnWindows,
 		}[host]
 		if !ok {
@@ -2240,6 +2241,16 @@ func (b *jobBuilder) bazelBuild() {
 			b.usesBazel("mac_arm64")
 			b.dimension("cpu:arm64-64-Apple_M4", "pool:Skia")
 			b.usesXCode()
+			cmd = append(cmd, "--bazel_arg=--repo_env=DEVELOPER_DIR")
+		} else if host == "mac_x64" {
+			b.usesBazel("mac_x64")
+			b.dimension(
+				"cpu:x86-64-i9-8950HK",
+				"cipd_platform:mac-amd64",
+				"pool:Skia",
+			)
+			b.usesXCode()
+			cmd = append(cmd, "--bazel_arg=--repo_env=DEVELOPER_DIR")
 		} else {
 			panic("unsupported Bazel host " + host)
 		}

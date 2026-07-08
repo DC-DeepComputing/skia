@@ -14,6 +14,7 @@ import (
 	"flag"
 	"fmt"
 	"io/fs"
+	"os"
 	"path/filepath"
 
 	infra_common "go.skia.org/infra/go/common"
@@ -59,6 +60,14 @@ func main() {
 	if err != nil {
 		td.Fatal(ctx, err)
 	}
+
+	// For Mac builds, ensure DEVELOPER_DIR points to the checked out (cached) Xcode developer directory.
+	parentDir := filepath.Dir(checkoutPath)
+	cachedXcodeDevDir := filepath.Join(parentDir, "cache", "Xcode.app", "Contents", "Developer")
+	if _, err := os.Stat(cachedXcodeDevDir); err == nil {
+		os.Setenv("DEVELOPER_DIR", cachedXcodeDevDir)
+	}
+
 	var outputPath string
 	if *outPath != "" {
 		outputPath, err = os_steps.Abs(ctx, *outPath)
