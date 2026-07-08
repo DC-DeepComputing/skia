@@ -18,6 +18,7 @@
 #include "src/core/SkUtils.h"
 #include "src/core/SkVx.h"
 #include "src/gpu/BufferWriter.h"
+#include "src/gpu/tessellate/ArcLengthCalculator.h"
 #include "src/gpu/tessellate/LinearTolerances.h"
 #include "src/gpu/tessellate/MiddleOutPolygonTriangulator.h"
 #include "src/gpu/tessellate/Tessellation.h"
@@ -191,6 +192,7 @@ template <size_t Stride>
 struct PatchStorage {
     SkPoint fFirstControlPoint; // This is the first control point of the contour, e.g. moveTo
     SkPoint fLastControlPoint;  // The last control point written within the contour
+    float   fStartArcLength = 0.f; // The arclength at the start of the contour
 
     // The signs of fCurveType and fN_p4 encode some special states:
     //  - If both are negative, then nothing has been written that needs to be deferred
@@ -222,10 +224,11 @@ struct PatchStorage {
         return fN_p4 > 0.f;
     }
 
-    void reset(SkPoint moveTo) {
+    void reset(SkPoint moveTo, float startArcLength) {
         fCurveType = -1.f;
         fN_p4 = -1.f;
         fFirstControlPoint = fLastControlPoint = moveTo;
+        fStartArcLength = startArcLength;
     }
 };
 
@@ -279,6 +282,10 @@ class PatchWriter {
     DEF_ATTRIB_TYPE(CurveTypeAttrib, PatchAttribs::kExplicitCurveType, float);
     DEF_ATTRIB_TYPE(SsboIndexAttrib, PatchAttribs::kSsboIndex,         uint32_t);
     DEF_ATTRIB_TYPE(VertexStorageIndexAttrib, PatchAttribs::kVertexStorageIndex, uint32_t);
+    struct float3 {
+        float x, y, z;
+    };
+    DEF_ATTRIB_TYPE(ArcLengthAttrib, PatchAttribs::kArcLength,         float3);
 #undef DEF_ATTRIB_TYPE
 
     static constexpr size_t kMaxStride = 4 * sizeof(SkPoint) + // control points
@@ -289,7 +296,8 @@ class PatchWriter {
             (DepthAttrib::kEnabled     ? sizeof(float)                                : 0) +
             (CurveTypeAttrib::kEnabled ? sizeof(float)                                : 0) +
             (SsboIndexAttrib::kEnabled ? 2 * sizeof(uint32_t)                         : 0) +
-            (VertexStorageIndexAttrib::kEnabled ? sizeof(uint32_t)                    : 0);
+            (VertexStorageIndexAttrib::kEnabled ? sizeof(uint32_t)                    : 0) +
+            (ArcLengthAttrib::kEnabled ? sizeof(float) * 3                            : 0);
 
     // Types that vary depending on the activated features, but do not define the patch data.
     using DeferredPatch = std::conditional_t<kTrackJoinControlPoints,
@@ -314,7 +322,10 @@ public:
             , fColor(attribs)
             , fDepth(attribs)
             , fSsboIndex(attribs)
-            , fVertexStorageIndex(attribs) {
+            , fVertexStorageIndex(attribs)
+            , fArcLength(attribs)
+            , fTotalPathLength(0.f)
+            , fAccumulatedLength(0.f) {
         // Explicit curve types are provided on the writePatch signature, and not a field of
         // PatchWriter, so initialize one in the ctor to validate the provided runtime attribs.
         SkDEBUGCODE((void) CurveTypeAttrib(attribs);)
@@ -335,6 +346,14 @@ public:
     }
 
     PatchAttribs attribs() const { return fAttribs; }
+
+    float accumulatedLength() const { return fAccumulatedLength; }
+
+    void setTotalPathLength(float totalPathLength) {
+        fTotalPathLength = totalPathLength;
+    }
+
+
 
     // The max scale factor should be derived from the same matrix that 'xform' was. It's only used
     // in stroking calculations, so can be ignored for path filling.
@@ -368,7 +387,11 @@ public:
                 if (cap == SkPaint::kRound_Cap) {
                     // Also add circles for the start and end (these don't join with anything)
                     this->writeCircle(fDeferredPatch.fLastControlPoint);
+
+                    float savedAccumulated = fAccumulatedLength;
+                    fAccumulatedLength = fDeferredPatch.fStartArcLength;
                     this->writeCircle(fDeferredPatch.fFirstControlPoint);
+                    fAccumulatedLength = savedAccumulated;
                     // Since these caps are full circles, there's no need to correct the deferred
                     // patch's join attribute. The circle will cover up the butt-end just fine.
                 } else if (cap == SkPaint::kSquare_Cap) {
@@ -381,7 +404,11 @@ public:
                     float2 last = fDeferredPatch.fCurveType == kCubicCurveType
                             ? p23.zw() : p23.xy();
                     float2 capPt = TangentPoint(p01.xy(), p01.zw(), p23.xy(), last);
+
+                    float savedAccumulated = fAccumulatedLength;
+                    fAccumulatedLength = fDeferredPatch.fStartArcLength;
                     this->writeSquare(p01.xy(), capPt);
+                    fAccumulatedLength = savedAccumulated;
                 }
             }
 
@@ -419,7 +446,7 @@ public:
         }
 
         // Remember the first control point in the event we need to produce a cap, or a close()
-        fDeferredPatch.reset(moveTo);
+        fDeferredPatch.reset(moveTo, fAccumulatedLength);
     }
 
     ENABLE_IF(kTrackJoinControlPoints) closeDeferredStrokePatch(SkPaint::Cap cap) {
@@ -469,8 +496,9 @@ public:
     // Updates tolerances to account for stroke params that are stored as uniforms instead of
     // dynamic instance attributes.
     void updateUniformStrokeParams(StrokeParams strokeParams) {
-        SkASSERT(!(fAttribs & PatchAttribs::kStrokeParams));
-        fTolerances.setStroke(strokeParams, fMaxScale);
+        if constexpr (!StrokeAttrib::kEnabled) {
+            fTolerances.setStroke(strokeParams, fMaxScale);
+        }
     }
 
     // Updates the color that will be written out with each patch.
@@ -493,11 +521,11 @@ public:
         fDepth = depth;
     }
 
-    // Updates the storage buffer index used to access uniforms.
-    ENABLE_IF(SsboIndexAttrib::kEnabled)
-    updateSsboIndexAttrib(uint32_t ssboIndex) {
-        SkASSERT(fAttribs & PatchAttribs::kSsboIndex);
-        fSsboIndex = ssboIndex;
+    ENABLE_IF(ArcLengthAttrib::kEnabled) updateArcLengthAttrib(float length) {
+        SkASSERT(fAttribs & PatchAttribs::kArcLength);
+        float excl = fAccumulatedLength;
+        fAccumulatedLength += length;
+        fArcLength = {excl, length, fTotalPathLength};
     }
 
     // Updates the vertex storage buffer index.
@@ -505,6 +533,13 @@ public:
     updateVertexStorageIndexAttrib(uint32_t vertexStorageIndex) {
         SkASSERT(fAttribs & PatchAttribs::kVertexStorageIndex);
         fVertexStorageIndex = vertexStorageIndex;
+    }
+
+    // Updates the storage buffer index used to access uniforms.
+    ENABLE_IF(SsboIndexAttrib::kEnabled)
+    updateSsboIndexAttrib(uint32_t ssboIndex) {
+        SkASSERT(fAttribs & PatchAttribs::kSsboIndex);
+        fSsboIndex = ssboIndex;
     }
 
     /**
@@ -527,6 +562,9 @@ public:
         if (int numPatches = this->accountForCurve(n4)) {
             this->chopAndWriteCubics(p0, p1, p2, p3, numPatches);
         } else {
+            if constexpr (ArcLengthAttrib::kEnabled) {
+                this->updateArcLengthAttrib(ArcLengthCalculator::CubicLength(p0, p1, p2, p3));
+            }
             this->writeCubicPatch(p0, p1, p2, p3);
         }
     }
@@ -550,6 +588,9 @@ public:
         if (int numPatches = this->accountForCurve(n2 * n2)) {
             this->chopAndWriteConics(p0, p1, p2, w, numPatches);
         } else {
+            if constexpr (ArcLengthAttrib::kEnabled) {
+                this->updateArcLengthAttrib(ArcLengthCalculator::ConicLength(p0, p1, p2, w));
+            }
             this->writeConicPatch(p0, p1, p2, w);
         }
     }
@@ -574,6 +615,9 @@ public:
         if (int numPatches = this->accountForCurve(n4)) {
             this->chopAndWriteQuads(p0, p1, p2, numPatches);
         } else {
+            if constexpr (ArcLengthAttrib::kEnabled) {
+                this->updateArcLengthAttrib(ArcLengthCalculator::ConicLength(p0, p1, p2, 1.f));
+            }
             this->writeQuadPatch(p0, p1, p2);
         }
     }
@@ -603,7 +647,12 @@ public:
             this->writeCubicPatch(p0p1.lo, (p0p1.zwxy() - p0p1) * (1/3.f) + p0p1, p0p1.hi);
         }
     }
-    AI void writeLine(float2 p0, float2 p1) { this->writeLine({p0, p1}); }
+    AI void writeLine(float2 p0, float2 p1) {
+        if constexpr (ArcLengthAttrib::kEnabled) {
+            this->updateArcLengthAttrib(ArcLengthCalculator::LineLength(p0, p1));
+        }
+        this->writeLine({p0, p1});
+    }
     AI void writeLine(SkPoint p0, SkPoint p1) {
         this->writeLine(sk_bit_cast<float2>(p0), sk_bit_cast<float2>(p1));
     }
@@ -624,9 +673,10 @@ public:
                             sk_bit_cast<float2>(p2));
     }
 
-    // Writes a circle used for round caps and joins in stroking, encoded as a cubic with
-    // identical control points and an empty join.
     AI void writeCircle(SkPoint p) {
+        if constexpr (ArcLengthAttrib::kEnabled) {
+            this->updateArcLengthAttrib(0.f);
+        }
         // This does not use writePatch() because it uses its own location as the join attribute
         // value instead of fJoin and never defers.
         fTolerances.setParametricSegments(1.f);
@@ -641,6 +691,9 @@ public:
     // the join control point). It is encoded as a conic with identical control points (vs. circles
     // which are cubics with identical control points).
     AI void writeSquare(SkPoint p, std::optional<SkPoint> joinTo) {
+        if constexpr (ArcLengthAttrib::kEnabled) {
+            this->updateArcLengthAttrib(0.f);
+        }
         fTolerances.setParametricSegments(1.f);
         if (VertexWriter vw = fPatchAllocator.append(fTolerances)) {
             vw << VertexWriter::Repeat<3>(p) // p0,p1,p2 = p -> 3 copies
@@ -656,10 +709,11 @@ private:
     AI void emitPatchAttribs(VertexWriter vertexWriter,
                              const JoinAttrib& join,
                              float explicitCurveType) {
-        // NOTE: operator<< overrides automatically handle optional and disabled attribs.
         vertexWriter << join << fFanPoint << fStrokeParams << fColor << fDepth
-                     << CurveTypeAttrib{fAttribs, explicitCurveType} << fSsboIndex
-                     << fVertexStorageIndex;
+                     << CurveTypeAttrib{fAttribs, explicitCurveType}
+                     << fVertexStorageIndex
+                     << fSsboIndex
+                     << fArcLength;
     }
 
     AI VertexWriter appendPatch(float explicitCurveType) {
@@ -759,9 +813,15 @@ private:
             // p1 & p2 of the cubic representation of the middle quad.
             float4 middle = mix(ab, bc, mix(T, T.zwxy(), 2/3.f));
 
+            if constexpr (ArcLengthAttrib::kEnabled) {
+                this->updateArcLengthAttrib(ArcLengthCalculator::ConicLength(p0, ab.lo, abc.lo, 1.f));
+            }
             this->writeQuadPatch(p0, ab.lo, abc.lo);  // Write the 1st quad.
             if constexpr (kAddTrianglesWhenChopping) {
                 this->writeTriangle(p0, abc.lo, abc.hi);
+            }
+            if constexpr (ArcLengthAttrib::kEnabled) {
+                this->updateArcLengthAttrib(ArcLengthCalculator::CubicLength(abc.lo, middle.lo, middle.hi, abc.hi));
             }
             this->writeCubicPatch(abc.lo, middle, abc.hi);  // Write the 2nd quad (already a cubic)
             if constexpr (kAddTrianglesWhenChopping) {
@@ -775,13 +835,22 @@ private:
             float2 bc = (p1 + p2) * .5f;
             float2 abc = (ab + bc) * .5f;
 
+            if constexpr (ArcLengthAttrib::kEnabled) {
+                this->updateArcLengthAttrib(ArcLengthCalculator::ConicLength(p0, ab, abc, 1.f));
+            }
             this->writeQuadPatch(p0, ab, abc);  // Write the 1st quad.
             if constexpr (kAddTrianglesWhenChopping) {
                 this->writeTriangle(p0, abc, p2);
             }
+            if constexpr (ArcLengthAttrib::kEnabled) {
+                this->updateArcLengthAttrib(ArcLengthCalculator::ConicLength(abc, bc, p2, 1.f));
+            }
             this->writeQuadPatch(abc, bc, p2);  // Write the 2nd quad.
         } else {
             SkASSERT(numPatches == 1);
+            if constexpr (ArcLengthAttrib::kEnabled) {
+                this->updateArcLengthAttrib(ArcLengthCalculator::ConicLength(p0, p1, p2, 1.f));
+            }
             this->writeQuadPatch(p0, p1, p2);  // Write the single remaining quad.
         }
         if constexpr (kAddTrianglesWhenChopping) {
@@ -805,10 +874,16 @@ private:
 
             // Project and write the 1st conic.
             float2 midpoint = abc.xy() / abc.w();
-            this->writeConicPatch(h0.xy() / h0.w(),
-                                  ab.xy() / ab.w(),
+            float2 p0_chopped = h0.xy() / h0.w();
+            float2 p1_chopped = ab.xy() / ab.w();
+            float w_chopped = ab.w() / sqrtf(h0.w() * abc.w());
+            if constexpr (ArcLengthAttrib::kEnabled) {
+                this->updateArcLengthAttrib(ArcLengthCalculator::ConicLength(p0_chopped, p1_chopped, midpoint, w_chopped));
+            }
+            this->writeConicPatch(p0_chopped,
+                                  p1_chopped,
                                   midpoint,
-                                  ab.w() / sqrtf(h0.w() * abc.w()));
+                                  w_chopped);
             if constexpr (kAddTrianglesWhenChopping) {
                 this->writeTriangleStack(triangulator.pushVertex(sk_bit_cast<SkPoint>(midpoint)));
             }
@@ -816,10 +891,16 @@ private:
         }
         // Project and write the remaining conic.
         SkASSERT(numPatches == 1);
-        this->writeConicPatch(h0.xy() / h0.w(),
-                              h1.xy() / h1.w(),
+        float2 p0_chopped = h0.xy() / h0.w();
+        float2 p1_chopped = h1.xy() / h1.w();
+        float w_chopped = h1.w() / sqrtf(h0.w());
+        if constexpr (ArcLengthAttrib::kEnabled) {
+            this->updateArcLengthAttrib(ArcLengthCalculator::ConicLength(p0_chopped, p1_chopped, h2.xy(), w_chopped));
+        }
+        this->writeConicPatch(p0_chopped,
+                              p1_chopped,
                               h2.xy(), // h2.w == 1
-                              h1.w() / sqrtf(h0.w()));
+                              w_chopped);
         if constexpr (kAddTrianglesWhenChopping) {
             this->writeTriangleStack(triangulator.pushVertex(sk_bit_cast<SkPoint>(h2.xy())));
             this->writeTriangleStack(triangulator.close());
@@ -839,9 +920,15 @@ private:
             float4 abcd = mix(abc, bcd, T);
             float4 middle = mix(abc, bcd, T.zwxy());  // p1 & p2 of the middle cubic.
 
+            if constexpr (ArcLengthAttrib::kEnabled) {
+                this->updateArcLengthAttrib(ArcLengthCalculator::CubicLength(p0, ab.lo, abc.lo, abcd.lo));
+            }
             this->writeCubicPatch(p0, ab.lo, abc.lo, abcd.lo);  // Write the 1st cubic.
             if constexpr (kAddTrianglesWhenChopping) {
                 this->writeTriangle(p0, abcd.lo, abcd.hi);
+            }
+            if constexpr (ArcLengthAttrib::kEnabled) {
+                this->updateArcLengthAttrib(ArcLengthCalculator::CubicLength(abcd.lo, middle.lo, middle.hi, abcd.hi));
             }
             this->writeCubicPatch(abcd.lo, middle, abcd.hi);  // Write the 2nd cubic.
             if constexpr (kAddTrianglesWhenChopping) {
@@ -858,13 +945,22 @@ private:
             float2 bcd = (bc + cd) * .5f;
             float2 abcd = (abc + bcd) * .5f;
 
+            if constexpr (ArcLengthAttrib::kEnabled) {
+                this->updateArcLengthAttrib(ArcLengthCalculator::CubicLength(p0, ab, abc, abcd));
+            }
             this->writeCubicPatch(p0, ab, abc, abcd);  // Write the 1st cubic.
             if constexpr (kAddTrianglesWhenChopping) {
                 this->writeTriangle(p0, abcd, p3);
             }
+            if constexpr (ArcLengthAttrib::kEnabled) {
+                this->updateArcLengthAttrib(ArcLengthCalculator::CubicLength(abcd, bcd, cd, p3));
+            }
             this->writeCubicPatch(abcd, bcd, cd, p3);  // Write the 2nd cubic.
         } else {
             SkASSERT(numPatches == 1);
+            if constexpr (ArcLengthAttrib::kEnabled) {
+                this->updateArcLengthAttrib(ArcLengthCalculator::CubicLength(p0, p1, p2, p3));
+            }
             this->writeCubicPatch(p0, p1, p2, p3);  // Write the single remaining cubic.
         }
         if constexpr (kAddTrianglesWhenChopping) {
@@ -916,7 +1012,15 @@ private:
     // uniforms. Written out as an attribute with every patch, to read the appropriate uniform
     // values from the storage buffer on draw.
     SsboIndexAttrib fSsboIndex;
+
+    // These are used for arc length parameterized path effects. ArcLength is a vec2f, where the x
+    // contains the exclusive cumulative arc length, and y the inclusive; the difference between the
+    // two is the arc length of the curve.
     VertexStorageIndexAttrib fVertexStorageIndex;
+    ArcLengthAttrib fArcLength;
+
+    float fTotalPathLength;
+    float fAccumulatedLength;
 };
 
 }  // namespace skgpu::tess

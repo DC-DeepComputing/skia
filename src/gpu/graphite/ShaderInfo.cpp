@@ -1335,12 +1335,10 @@ void ShaderInfo::generateVertexSkSL(const Caps* caps,
     if (sharedData.fUseUniformStorageBufferVS) {
         // If the renderStep uses vertexStorage, it can place the ssboIndex into vertexStorage
         // rather than passing it as instance data.
-        if (step->hasVertexStorageBuffer()) {
-            if (step->renderStepID() == RenderStep::RenderStepID::kTessellateStrokes) {
-                SkSL::String::appendf(&mainBody,
-                                      "uint %s = strokeData[vertexStorageIndex].ssboIndex;\n",
-                                      this->uniformSsboIndex());
-            }
+        if (step->renderStepID() == RenderStep::RenderStepID::kTessellateStrokes) {
+            SkSL::String::appendf(&mainBody,
+                                  "uint %s = strokeData[vertexStorageIndex].ssboIndex;\n",
+                                  this->uniformSsboIndex());
         } else {
             SkSL::String::appendf(&mainBody, "uint %s = %s;\n", this->uniformSsboIndex(),
                                   RenderStep::ssboIndexAttribute());

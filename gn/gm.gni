@@ -450,6 +450,7 @@ ganesh_gm_sources = [
 
 # GMs that should only be built for Graphite
 graphite_gm_sources = [
+  "$_gm/arclengthstroke.cpp",
   "$_gm/graphite_replay.cpp",
   "$_gm/graphitestart.cpp",
 ]

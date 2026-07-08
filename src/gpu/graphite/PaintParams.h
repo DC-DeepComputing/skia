@@ -78,6 +78,7 @@ public:
     const SimpleImage* imageShader() const { return fImageShader; }
     const SkColorFilter* colorFilter() const { return fColorFilter; }
     const SkBlender* primitiveBlender() const { return fPrimitiveBlender; }
+    void setPrimitiveBlender(const SkBlender* blender) { fPrimitiveBlender = blender; }
     bool skipPrimitiveColorXform() const { return fSkipColorXform; }
     const SkPathEffect* pathEffect() const { return fPathEffect; }
 

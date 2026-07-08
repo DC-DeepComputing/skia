@@ -1581,9 +1581,32 @@ void Device::drawGeometry(const Transform& localToDevice,
         clip.outsetBoundsForAA();
     }
 
+    SkStrokeRec::Style styleType = style.getStyle();
+    bool emitsPrimitiveColor = false;
+    if (renderer && renderer->emitsPrimitiveColor()) {
+        emitsPrimitiveColor = true;
+    }
+    if (styleType == SkStrokeRec::kStrokeAndFill_Style) {
+        const Renderer* strokeRenderer = (paint.pathEffect() && as_PEB(paint.pathEffect())->isArcLengthParameterized())
+                            ? fRecorder->priv().rendererProvider()->arcLengthStrokes()
+                            : fRecorder->priv().rendererProvider()->tessellatedStrokes();
+        if (strokeRenderer && strokeRenderer->emitsPrimitiveColor()) {
+            emitsPrimitiveColor = true;
+        }
+    }
+
+    PaintParams localPaint = paint;
+    if (emitsPrimitiveColor && !localPaint.primitiveBlender()) {
+        // TODO(b/xxxxx): This is a temporary hack to support debugging renderers (like ArcLengthStroke)
+        // that emit a primitive color to draw a gradient but were called with a standard paint
+        // that lacks a primitive blender. Remove this once we have a clean way to specify
+        // rendering debug options.
+        localPaint.setPrimitiveBlender(GetBlendModeSingleton(SkBlendMode::kDst));
+    }
+
     TextureFormat format = fDC->target().proxy()->format();
     ShadingParams shading{fRecorder->priv().caps(),
-                          paint,
+                          localPaint,
                           clip.nonMSAAClip(),
                           clip.shader(),
                           renderer ? renderer->coverage() : Coverage::kSingleChannel,
@@ -1594,11 +1617,10 @@ void Device::drawGeometry(const Transform& localToDevice,
     // renderer is required prior to getting the dstUsage from shading.toKey(), we pessimistically
     // assume it's required for needsFlushBeforeDraw().
     int numNewRenderSteps = 1;
-    SkStrokeRec::Style styleType = style.getStyle();
     if (renderer) {
         numNewRenderSteps = renderer->numRenderSteps();
         if (styleType == SkStrokeRec::kStrokeAndFill_Style) {
-            const Renderer* strokeRenderer = (paint.pathEffect() && as_PEB(paint.pathEffect())->isArcLengthParameterized())
+            const Renderer* strokeRenderer = (localPaint.pathEffect() && as_PEB(localPaint.pathEffect())->isArcLengthParameterized())
                                 ? fRecorder->priv().rendererProvider()->arcLengthStrokes()
                                 : fRecorder->priv().rendererProvider()->tessellatedStrokes();
             numNewRenderSteps += strokeRenderer->numRenderSteps();
@@ -1646,7 +1668,7 @@ void Device::drawGeometry(const Transform& localToDevice,
                           clip.drawBounds().asSkRect(),
                           fDC->colorInfo(),
                           keyGenFlags,
-                          paint.color()};
+                          localPaint.color()};
     auto keyResult = shading.toKey(keyContext);
     if (!keyResult) {
         // Converting the SkPaint to a pipeline and set of uniform values + sampled textures failed.
@@ -1666,7 +1688,7 @@ void Device::drawGeometry(const Transform& localToDevice,
                                      clipElements.empty() &&
                                      clip.scissor().contains(this->bounds());
     if (overwritesAllPixels) {
-        if (std::optional<SkColor4f> color = extract_paint_color(paint, fDC->colorInfo())) {
+        if (std::optional<SkColor4f> color = extract_paint_color(localPaint, fDC->colorInfo())) {
             // Fullscreen clear, so nothing has to be rendered at all
             fDC->clear(*color);
             return;
@@ -1788,7 +1810,7 @@ void Device::drawGeometry(const Transform& localToDevice,
         StrokeStyle stroke(style.getWidth(), style.getMiter(), style.getJoin(), style.getCap());
         const Renderer* strokeRenderer = renderer;
         if (styleType == SkStrokeRec::kStrokeAndFill_Style) {
-            strokeRenderer = (paint.pathEffect() && as_PEB(paint.pathEffect())->isArcLengthParameterized())
+            strokeRenderer = (localPaint.pathEffect() && as_PEB(localPaint.pathEffect())->isArcLengthParameterized())
                                 ? fRecorder->priv().rendererProvider()->arcLengthStrokes()
                                 : fRecorder->priv().rendererProvider()->tessellatedStrokes();
         }
