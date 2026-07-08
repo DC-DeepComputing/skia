@@ -59,6 +59,14 @@ m = re.search(r'''<key>ApplicationIdentifierPrefix</key>
 \t<string>(.*)</string>''', open(mobileprovision, 'rb').read().decode("utf-8", "ignore"), re.MULTILINE)
 prefix = m.group(1)
 
+# Check if the provisioning profile requires get-task-allow to be true or false.
+# Headless swarming bots use Ad-Hoc/Enterprise profiles where get-task-allow is false.
+get_task_allow = "false"
+profile_content = open(mobileprovision, 'rb').read().decode("utf-8", "ignore")
+m_get_task = re.search(r'<key>get-task-allow</key>\s*<(true|false)/>', profile_content)
+if m_get_task:
+  get_task_allow = m_get_task.group(1)
+
 app, _ = os.path.splitext(os.path.basename(pkg))
 
 # Write a minimal entitlements file, then codesign.
@@ -67,10 +75,10 @@ with tempfile.NamedTemporaryFile() as f:
 <plist version="1.0">
   <dict>
     <key>application-identifier</key> <string>{prefix}.com.google.{app}</string>
-    <key>get-task-allow</key>         <true/>
+    <key>get-task-allow</key>         <{get_task_allow}/>
   </dict>
 </plist>
-'''.format(prefix=prefix, app=app).encode("utf-8"))
+'''.format(prefix=prefix, app=app, get_task_allow=get_task_allow).encode("utf-8"))
   f.flush()
 
   subprocess.check_call(['codesign',
