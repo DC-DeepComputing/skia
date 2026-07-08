@@ -152,6 +152,7 @@ bench_sources = [
 ]
 
 graphite_bench_sources = [
+  "$_bench/graphite/ArcLengthBench.cpp",
   "$_bench/graphite/BoundsManagerBench.cpp",
   "$_bench/graphite/IntersectionTreeBench.cpp",
 ]
