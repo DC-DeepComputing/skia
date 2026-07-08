@@ -31,6 +31,7 @@ namespace skgpu { enum class MaskFormat; }
 
 namespace skgpu::graphite {
 
+class ComputeManager;
 class DrawWriter;
 class DrawParams;
 class PipelineDataGatherer;
@@ -150,6 +151,9 @@ public:
         return "";
     }
 
+    // If this step requires compute, appends dispatches using the draw parameters
+    virtual void recordComputeSteps(ComputeManager*, const DrawParams&, const DrawWriter*) const {}
+
     // Indicates whether this RenderStep requires a secondary vertex storage buffer.
     virtual bool hasVertexStorageBuffer() const { return false; }
 
@@ -193,6 +197,7 @@ public:
     bool useNonAAInnerFill()    const { return SkToBool(fFlags & Flags::kUseNonAAInnerFill);    }
     bool appendsVertices()      const { return SkToBool(fFlags & Flags::kAppendVertices);       }
     bool appendsVertexStorage() const { return SkToBool(fFlags & Flags::kAppendsVertexStorage); }
+    bool hasCompute()           const { return SkToBool(fFlags & Flags::kHasCompute);            }
     SkEnumBitMask<RenderStateFlags> getRenderStateFlags() const {
         SkEnumBitMask<RenderStateFlags> rs = RenderStateFlags::kNone;
         if (fFlags & Flags::kFixed)             { rs |= RenderStateFlags::kFixed;           }
@@ -283,6 +288,7 @@ enum class Flags : unsigned {
     kIgnoreInverseFill      = 0x1000, // Rasterization treats all shapes as non-inverted for scissor
     kInverseFillsScissor    = 0x2000, // Rasterization of inverse fills scissor geometrically
     kAppendsVertexStorage   = 0x4000, // Appends into VertexStorage buffers for compute access
+    kHasCompute             = 0x8000, // This step relies on a compute shader
 };
 SK_DECL_BITMASK_OPS_FRIENDS(Flags)
 

@@ -9,6 +9,7 @@
 #include "include/core/SkTypes.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "src/core/SkTraceEvent.h"
+#include "src/gpu/graphite/ComputeManager.h"
 #include "src/gpu/graphite/DrawPass.h"
 #include "src/gpu/graphite/DrawWriter.h"
 #include "src/gpu/graphite/KeyContext.h"
@@ -87,10 +88,12 @@ std::pair<DrawParams*, Insertion> DrawList::recordDraw(
     return {nullptr, {}};
 }
 
-std::unique_ptr<DrawPass> DrawList::snapDrawPass(Recorder* recorder,
-                                                 sk_sp<TextureProxy> target,
-                                                 const SkImageInfo& targetInfo,
-                                                 DstReadStrategy dstReadStrategy) {
+std::unique_ptr<DrawPass> DrawList::snapDrawPass(
+        Recorder* recorder,
+        sk_sp<TextureProxy> target,
+        const SkImageInfo& targetInfo,
+        DstReadStrategy dstReadStrategy,
+        ComputeManager* computeManager) {
     // NOTE: This assert is here to ensure SortKey is as tightly packed as possible. Any change to
     // its size should be done with care and good reason. The performance of sorting the keys is
     // heavily tied to the total size.
@@ -225,6 +228,10 @@ std::unique_ptr<DrawPass> DrawList::snapDrawPass(Recorder* recorder,
             SKIA_LOG_W("Failed to write necessary vertex/instance data for DrawPass, dropping!");
             this->reset(LoadOp::kLoad);
             return nullptr;
+        }
+
+        if (computeManager) {
+            renderStep.recordComputeSteps(computeManager, draw.drawParams(), &drawWriter);
         }
 
         // Update priorDrawPaintOrder value before iterating to analyze the next draw.
