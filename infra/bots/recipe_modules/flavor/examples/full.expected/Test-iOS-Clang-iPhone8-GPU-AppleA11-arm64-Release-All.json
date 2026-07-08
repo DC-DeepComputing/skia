@@ -7,7 +7,7 @@
     ],
     "env": {
       "CHROME_HEADLESS": "1",
-      "IOS_BUNDLE_ID": "com.google.dm",
+      "IOS_BUNDLE_ID": "org.chromium.dm",
       "IOS_MOUNT_POINT": "[START_DIR]/mnt_iosdevice",
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
     },
@@ -21,7 +21,7 @@
     ],
     "env": {
       "CHROME_HEADLESS": "1",
-      "IOS_BUNDLE_ID": "com.google.dm",
+      "IOS_BUNDLE_ID": "org.chromium.dm",
       "IOS_MOUNT_POINT": "[START_DIR]/mnt_iosdevice",
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
     },
@@ -35,7 +35,7 @@
     ],
     "env": {
       "CHROME_HEADLESS": "1",
-      "IOS_BUNDLE_ID": "com.google.dm",
+      "IOS_BUNDLE_ID": "org.chromium.dm",
       "IOS_MOUNT_POINT": "[START_DIR]/mnt_iosdevice",
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
     },
@@ -77,7 +77,7 @@
     ],
     "env": {
       "CHROME_HEADLESS": "1",
-      "IOS_BUNDLE_ID": "com.google.dm",
+      "IOS_BUNDLE_ID": "org.chromium.dm",
       "IOS_MOUNT_POINT": "[START_DIR]/mnt_iosdevice",
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
     },
@@ -91,7 +91,7 @@
     ],
     "env": {
       "CHROME_HEADLESS": "1",
-      "IOS_BUNDLE_ID": "com.google.dm",
+      "IOS_BUNDLE_ID": "org.chromium.dm",
       "IOS_MOUNT_POINT": "[START_DIR]/mnt_iosdevice",
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
     },
@@ -101,15 +101,52 @@
   {
     "cmd": [
       "sudo",
+      "-n",
+      "-l"
+    ],
+    "env": {
+      "IOS_BUNDLE_ID": "org.chromium.dm",
+      "IOS_MOUNT_POINT": "[START_DIR]/mnt_iosdevice"
+    },
+    "name": "sudo -l"
+  },
+  {
+    "cmd": [
+      "sudo",
+      "/bin/launchctl",
+      "stop",
+      "com.apple.usbmuxd"
+    ],
+    "env": {
+      "IOS_BUNDLE_ID": "org.chromium.dm",
+      "IOS_MOUNT_POINT": "[START_DIR]/mnt_iosdevice"
+    },
+    "name": "launchctl stop usbmuxd"
+  },
+  {
+    "cmd": [
+      "sudo",
       "/usr/bin/killall",
       "-v",
       "usbmuxd"
     ],
     "env": {
-      "IOS_BUNDLE_ID": "com.google.dm",
+      "IOS_BUNDLE_ID": "org.chromium.dm",
       "IOS_MOUNT_POINT": "[START_DIR]/mnt_iosdevice"
     },
     "name": "killall usbmuxd"
+  },
+  {
+    "cmd": [
+      "/usr/bin/killall",
+      "-v",
+      "CoreDeviceService"
+    ],
+    "env": {
+      "IOS_BUNDLE_ID": "org.chromium.dm",
+      "IOS_MOUNT_POINT": "[START_DIR]/mnt_iosdevice"
+    },
+    "name": "killall CoreDeviceService"
   },
   {
     "cmd": [
@@ -117,10 +154,23 @@
       "10"
     ],
     "env": {
-      "IOS_BUNDLE_ID": "com.google.dm",
+      "IOS_BUNDLE_ID": "org.chromium.dm",
       "IOS_MOUNT_POINT": "[START_DIR]/mnt_iosdevice"
     },
     "name": "sleep 10"
+  },
+  {
+    "cmd": [
+      "xcrun",
+      "devicectl",
+      "list",
+      "devices"
+    ],
+    "env": {
+      "IOS_BUNDLE_ID": "org.chromium.dm",
+      "IOS_MOUNT_POINT": "[START_DIR]/mnt_iosdevice"
+    },
+    "name": "devicectl list devices"
   },
   {
     "cmd": [
@@ -129,7 +179,7 @@
     ],
     "env": {
       "CHROME_HEADLESS": "1",
-      "IOS_BUNDLE_ID": "com.google.dm",
+      "IOS_BUNDLE_ID": "org.chromium.dm",
       "IOS_MOUNT_POINT": "[START_DIR]/mnt_iosdevice",
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
     },
@@ -143,7 +193,7 @@
     ],
     "env": {
       "CHROME_HEADLESS": "1",
-      "IOS_BUNDLE_ID": "com.google.dm",
+      "IOS_BUNDLE_ID": "org.chromium.dm",
       "IOS_MOUNT_POINT": "[START_DIR]/mnt_iosdevice",
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
     },
@@ -161,7 +211,7 @@
       "ios-dev-image*"
     ],
     "env": {
-      "IOS_BUNDLE_ID": "com.google.dm",
+      "IOS_BUNDLE_ID": "org.chromium.dm",
       "IOS_MOUNT_POINT": "[START_DIR]/mnt_iosdevice"
     },
     "infra_step": true,
@@ -182,7 +232,7 @@
       "[START_DIR]/ios-dev-image-13.2"
     ],
     "env": {
-      "IOS_BUNDLE_ID": "com.google.dm",
+      "IOS_BUNDLE_ID": "org.chromium.dm",
       "IOS_MOUNT_POINT": "[START_DIR]/mnt_iosdevice"
     },
     "infra_step": true,
@@ -201,7 +251,7 @@
     ],
     "env": {
       "CHROME_HEADLESS": "1",
-      "IOS_BUNDLE_ID": "com.google.dm",
+      "IOS_BUNDLE_ID": "org.chromium.dm",
       "IOS_MOUNT_POINT": "[START_DIR]/mnt_iosdevice",
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
     },
@@ -211,7 +261,7 @@
     "cmd": [],
     "name": "ensure xcode",
     "~followup_annotations": [
-      "@@@STEP_SUMMARY_TEXT@Ensuring Xcode version 16a242d in [START_DIR]/cache/Xcode.app@@@"
+      "@@@STEP_SUMMARY_TEXT@Ensuring Xcode version 16e140 in [START_DIR]/cache/Xcode.app@@@"
     ]
   },
   {
@@ -234,7 +284,7 @@
       "[START_DIR]/cipd_tool/infra/tools/mac_toolchain/066a48b36c73b8e8bb0048e40c54a55c86195561cf17d85788968b1a97fabe0a"
     ],
     "env": {
-      "IOS_BUNDLE_ID": "com.google.dm",
+      "IOS_BUNDLE_ID": "org.chromium.dm",
       "IOS_MOUNT_POINT": "[START_DIR]/mnt_iosdevice"
     },
     "infra_step": true,
@@ -257,7 +307,7 @@
       "/path/to/tmp/json"
     ],
     "env": {
-      "IOS_BUNDLE_ID": "com.google.dm",
+      "IOS_BUNDLE_ID": "org.chromium.dm",
       "IOS_MOUNT_POINT": "[START_DIR]/mnt_iosdevice"
     },
     "infra_step": true,
@@ -288,7 +338,7 @@
       "[START_DIR]/cipd_tool/infra/tools/mac_toolchain"
     ],
     "env": {
-      "IOS_BUNDLE_ID": "com.google.dm",
+      "IOS_BUNDLE_ID": "org.chromium.dm",
       "IOS_MOUNT_POINT": "[START_DIR]/mnt_iosdevice"
     },
     "infra_step": true,
@@ -306,7 +356,7 @@
       "[START_DIR]/cipd_tool"
     ],
     "env": {
-      "IOS_BUNDLE_ID": "com.google.dm",
+      "IOS_BUNDLE_ID": "org.chromium.dm",
       "IOS_MOUNT_POINT": "[START_DIR]/mnt_iosdevice"
     },
     "name": "ensure xcode.ls -R cipd_tool",
@@ -321,7 +371,7 @@
       "[START_DIR]/cipd_tool/infra/tools/mac_toolchain"
     ],
     "env": {
-      "IOS_BUNDLE_ID": "com.google.dm",
+      "IOS_BUNDLE_ID": "org.chromium.dm",
       "IOS_MOUNT_POINT": "[START_DIR]/mnt_iosdevice"
     },
     "name": "ensure xcode.ls -R cipd_tool (2)",
@@ -336,7 +386,7 @@
       "[START_DIR]/cipd_tool/infra/tools/mac_toolchain/abc123/mac_toolchain"
     ],
     "env": {
-      "IOS_BUNDLE_ID": "com.google.dm",
+      "IOS_BUNDLE_ID": "org.chromium.dm",
       "IOS_MOUNT_POINT": "[START_DIR]/mnt_iosdevice"
     },
     "name": "ensure xcode.ls -alh mac_toolchain",
@@ -351,12 +401,12 @@
       "-kind",
       "ios",
       "-xcode-version",
-      "16a242d",
+      "16e140",
       "-output-dir",
       "[START_DIR]/cache/Xcode.app"
     ],
     "env": {
-      "IOS_BUNDLE_ID": "com.google.dm",
+      "IOS_BUNDLE_ID": "org.chromium.dm",
       "IOS_MOUNT_POINT": "[START_DIR]/mnt_iosdevice"
     },
     "name": "ensure xcode.install xcode",
@@ -372,10 +422,57 @@
       "[START_DIR]/cache/Xcode.app"
     ],
     "env": {
-      "IOS_BUNDLE_ID": "com.google.dm",
+      "IOS_BUNDLE_ID": "org.chromium.dm",
       "IOS_MOUNT_POINT": "[START_DIR]/mnt_iosdevice"
     },
     "name": "ensure xcode.select xcode",
+    "~followup_annotations": [
+      "@@@STEP_NEST_LEVEL@1@@@"
+    ]
+  },
+  {
+    "cmd": [
+      "sudo",
+      "/usr/local/bin/xcode_accept_license.sh",
+      "[START_DIR]/cache/Xcode.app",
+      "16e140"
+    ],
+    "env": {
+      "IOS_BUNDLE_ID": "org.chromium.dm",
+      "IOS_MOUNT_POINT": "[START_DIR]/mnt_iosdevice"
+    },
+    "name": "ensure xcode.xcode accept license script",
+    "~followup_annotations": [
+      "@@@STEP_NEST_LEVEL@1@@@"
+    ]
+  },
+  {
+    "cmd": [
+      "sudo",
+      "/usr/bin/xcodebuild",
+      "-license",
+      "accept"
+    ],
+    "env": {
+      "IOS_BUNDLE_ID": "org.chromium.dm",
+      "IOS_MOUNT_POINT": "[START_DIR]/mnt_iosdevice"
+    },
+    "name": "ensure xcode.xcodebuild accept license",
+    "~followup_annotations": [
+      "@@@STEP_NEST_LEVEL@1@@@"
+    ]
+  },
+  {
+    "cmd": [
+      "sudo",
+      "/usr/bin/xcodebuild",
+      "-runFirstLaunch"
+    ],
+    "env": {
+      "IOS_BUNDLE_ID": "org.chromium.dm",
+      "IOS_MOUNT_POINT": "[START_DIR]/mnt_iosdevice"
+    },
+    "name": "ensure xcode.xcodebuild run first launch",
     "~followup_annotations": [
       "@@@STEP_NEST_LEVEL@1@@@"
     ]
@@ -388,7 +485,7 @@
     ],
     "env": {
       "CHROME_HEADLESS": "1",
-      "IOS_BUNDLE_ID": "com.google.dm",
+      "IOS_BUNDLE_ID": "org.chromium.dm",
       "IOS_MOUNT_POINT": "[START_DIR]/mnt_iosdevice",
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
     },
@@ -403,7 +500,7 @@
     ],
     "env": {
       "CHROME_HEADLESS": "1",
-      "IOS_BUNDLE_ID": "com.google.dm",
+      "IOS_BUNDLE_ID": "org.chromium.dm",
       "IOS_MOUNT_POINT": "[START_DIR]/mnt_iosdevice",
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
     },
@@ -418,7 +515,7 @@
     ],
     "env": {
       "CHROME_HEADLESS": "1",
-      "IOS_BUNDLE_ID": "com.google.dm",
+      "IOS_BUNDLE_ID": "org.chromium.dm",
       "IOS_MOUNT_POINT": "[START_DIR]/mnt_iosdevice",
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
     },
@@ -433,7 +530,7 @@
     ],
     "env": {
       "CHROME_HEADLESS": "1",
-      "IOS_BUNDLE_ID": "com.google.dm",
+      "IOS_BUNDLE_ID": "org.chromium.dm",
       "IOS_MOUNT_POINT": "[START_DIR]/mnt_iosdevice",
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
     },
@@ -448,7 +545,7 @@
     ],
     "env": {
       "CHROME_HEADLESS": "1",
-      "IOS_BUNDLE_ID": "com.google.dm",
+      "IOS_BUNDLE_ID": "org.chromium.dm",
       "IOS_MOUNT_POINT": "[START_DIR]/mnt_iosdevice",
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
     },
@@ -461,12 +558,12 @@
       "RECIPE_MODULE[skia::flavor]/resources/ios_xcode_run.py",
       "[START_DIR]/cache/Xcode.app",
       "[START_DIR]/build/dm.app",
-      "com.google.dm",
+      "org.chromium.dm",
       "--some-flag"
     ],
     "env": {
       "CHROME_HEADLESS": "1",
-      "IOS_BUNDLE_ID": "com.google.dm",
+      "IOS_BUNDLE_ID": "org.chromium.dm",
       "IOS_MOUNT_POINT": "[START_DIR]/mnt_iosdevice",
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
     },
@@ -480,7 +577,7 @@
     ],
     "env": {
       "CHROME_HEADLESS": "1",
-      "IOS_BUNDLE_ID": "com.google.dm",
+      "IOS_BUNDLE_ID": "org.chromium.dm",
       "IOS_MOUNT_POINT": "[START_DIR]/mnt_iosdevice",
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
     },
