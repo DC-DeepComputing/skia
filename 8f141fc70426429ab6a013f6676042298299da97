@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0217489c_6ef413cb",
+        "filename": "include/core/SkCanvas.h",
+        "patchSetId": 27
+      },
+      "lineNbr": 2532,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-07-08T17:56:52Z",
+      "side": 1,
+      "message": "As talked about offline lets leave this virtual. However, it looks like it is only used in ASSERTS so maybe we can wrap it in a `if defined(SK_DEBUG)`",
+      "parentUuid": "ceec81d9_ad0eaed8",
+      "revId": "8f141fc70426429ab6a013f6676042298299da97",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e3408546_9d00e909",
         "filename": "src/capture/SkCaptureCanvas.cpp",
         "patchSetId": 27
