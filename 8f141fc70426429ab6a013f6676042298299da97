@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1602a00_ae6ce23e",
+        "filename": "include/core/SkCanvas.h",
+        "patchSetId": 27
+      },
+      "lineNbr": 2532,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-07-08T16:56:31Z",
+      "side": 1,
+      "message": "I want @egdaniel@google.com to make sure this is a good approach before we submit.",
+      "revId": "8f141fc70426429ab6a013f6676042298299da97",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9751f184_1046a002",
+        "filename": "tools/ProcsUtils.h",
+        "patchSetId": 27
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-07-08T16:56:31Z",
+      "side": 1,
+      "message": "nit: lowercase",
+      "range": {
+        "startLine": 19,
+        "startChar": 63,
+        "endLine": 19,
+        "endChar": 64
+      },
+      "revId": "8f141fc70426429ab6a013f6676042298299da97",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66fd08cc_19d8d58a",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 1954,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-07-08T16:56:31Z",
+      "side": 1,
+      "message": "This should be moved up (or also returned at all the above error checks where we return early).",
+      "revId": "8f141fc70426429ab6a013f6676042298299da97",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a101e1a_4efbeef9",
+        "filename": "tools/viewer/Viewer.h",
+        "patchSetId": 27
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-07-08T16:56:31Z",
+      "side": 1,
+      "message": "bool fCurrentlyCapturing \u003d false;",
+      "revId": "8f141fc70426429ab6a013f6676042298299da97",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
