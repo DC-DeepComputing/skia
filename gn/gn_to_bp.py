@@ -128,8 +128,7 @@ cc_defaults {
 }
 
 cc_defaults {
-    name: "skia_defaults",
-    defaults: ["skia_arch_defaults"],
+    name: "skia_flags_defaults",
     cflags: [
         $cflags
     ],
@@ -151,6 +150,14 @@ cc_defaults {
     },
 }
 
+cc_defaults {
+    name: "skia_defaults",
+    defaults: [
+        "skia_arch_defaults",
+        "skia_flags_defaults",
+    ],
+}
+
 filegroup {
     // Smaller version of Skia, without e.g. codecs, intended for use by RenderEngine.
     name: "libskia_renderengine_srcs",
@@ -168,6 +175,7 @@ filegroup {
         $renderengine_oopr_srcs
     ],
 }
+
 
 filegroup {
     name: "libskia_skcms_srcs",
@@ -625,6 +633,7 @@ def main():
                                      renderengine_oopr_srcs, VMA_DEP)
   renderengine_oopr_srcs = strip_non_srcs(renderengine_oopr_srcs)
   renderengine_oopr_srcs = renderengine_oopr_srcs.difference(renderengine_srcs)
+
 
   # Execute GN for specialized SkQP target
   skqp_sdk_version = 26
