@@ -128,8 +128,7 @@ cc_defaults {
 }
 
 cc_defaults {
-    name: "skia_defaults",
-    defaults: ["skia_arch_defaults"],
+    name: "skia_flags_defaults",
     cflags: [
         $cflags
     ],
@@ -151,6 +150,14 @@ cc_defaults {
     },
 }
 
+cc_defaults {
+    name: "skia_defaults",
+    defaults: [
+        "skia_arch_defaults",
+        "skia_flags_defaults",
+    ],
+}
+
 filegroup {
     // Smaller version of Skia, without e.g. codecs, intended for use by RenderEngine.
     name: "libskia_renderengine_srcs",
@@ -166,6 +173,14 @@ filegroup {
     name: "libskia_renderengine_oopr_srcs",
     srcs: [
         $renderengine_oopr_srcs
+    ],
+}
+
+filegroup {
+    // C++ sources for the Rust FFI bridges.
+    name: "libskia_rust_ffi_cxx_srcs",
+    srcs: [
+        $rust_ffi_cxx_srcs
     ],
 }
 
@@ -626,6 +641,11 @@ def main():
   renderengine_oopr_srcs = strip_non_srcs(renderengine_oopr_srcs)
   renderengine_oopr_srcs = renderengine_oopr_srcs.difference(renderengine_srcs)
 
+  # Collect C++ sources for Rust FFI bridges
+  rust_common_srcs = strip_slashes(js['targets']['//:rust_common']['sources'])
+  typeface_fontations_srcs = strip_slashes(js['targets']['//:typeface_fontations']['sources'])
+  rust_ffi_cxx_srcs = strip_non_srcs(rust_common_srcs.union(typeface_fontations_srcs))
+
   # Execute GN for specialized SkQP target
   skqp_sdk_version = 26
   js_skqp = gn_to_bp_utils.GenerateJSONFromGN(args.gn, skqp_gn_args.GetGNArgs(api_level=skqp_sdk_version,
@@ -736,6 +756,7 @@ def main():
 
       'renderengine_srcs': bpfmt(8, renderengine_srcs),
       'renderengine_oopr_srcs': bpfmt(8, renderengine_oopr_srcs),
+      'rust_ffi_cxx_srcs': bpfmt(8, rust_ffi_cxx_srcs),
     }), file=Android_gen_bp)
 
     print(skqp_instance_bp.substitute({
