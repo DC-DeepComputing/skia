@@ -50,6 +50,23 @@
       "message": "At the moment, we aren\u0027t able to add Mac Catalyst builds as a supported target. We are open to re-evaluating it in the future, but for now it\u0027s not something we can give our full support to.",
       "revId": "e7bda2a11cccd4a9d37f45fed1ce279996368853",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b67fc99_e6b63036",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4962127
+      },
+      "writtenOn": "2026-07-08T02:42:22Z",
+      "side": 1,
+      "message": "Hi again,\n\nI understand the concern about full support. By the way, Mac Catalyst is already fully supported by `skia` without any special thing to make it supported, as it’s just a variant of fully supported macOS (literally nothing more). It just only need those custom flag and target to build for. I and the `react-native-skia` team have already tested it and that worked.\n\nThese flags is needed because if we add those custom flags in our end, it will still not override the `-apple-macos11` target and will be failed with mixed target. But it will succeed with those flags in this CL, as it will not conflicts.\n\nThank you.",
+      "revId": "e7bda2a11cccd4a9d37f45fed1ce279996368853",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
