@@ -8,6 +8,7 @@
 #ifndef skgpu_graphite_Attribute_DEFINED
 #define skgpu_graphite_Attribute_DEFINED
 
+#include "include/core/SkMesh.h"
 #include "include/private/SkAlign.h"
 #include "include/private/SkAssert.h"
 #include "src/core/SkSLTypeShared.h"
@@ -39,6 +40,34 @@ public:
 
     constexpr size_t size()       const { return VertexAttribTypeSize(fCPUType); }
     constexpr size_t sizeAlign4() const { return SkAlign4(this->size()); }
+
+    static Attribute MakeFromSkMeshAttribute(const SkMeshSpecification::Attribute& attr) {
+        VertexAttribType cpuType;
+        SkSLType gpuType;
+        switch (attr.type) {
+            case SkMeshSpecification::Attribute::Type::kFloat:
+                cpuType = VertexAttribType::kFloat;
+                gpuType = SkSLType::kFloat;
+                break;
+            case SkMeshSpecification::Attribute::Type::kFloat2:
+                cpuType = VertexAttribType::kFloat2;
+                gpuType = SkSLType::kFloat2;
+                break;
+            case SkMeshSpecification::Attribute::Type::kFloat3:
+                cpuType = VertexAttribType::kFloat3;
+                gpuType = SkSLType::kFloat3;
+                break;
+            case SkMeshSpecification::Attribute::Type::kFloat4:
+                cpuType = VertexAttribType::kFloat4;
+                gpuType = SkSLType::kFloat4;
+                break;
+            case SkMeshSpecification::Attribute::Type::kUByte4_unorm:
+                cpuType = VertexAttribType::kUByte4;
+                gpuType = SkSLType::kHalf4;
+                break;
+        }
+        return Attribute(attr.name.c_str(), cpuType, gpuType);
+    }
 
 private:
     const char* fName = nullptr;

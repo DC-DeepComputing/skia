@@ -975,6 +975,19 @@ bool Device::drawAsTiledImageRect(SkCanvas* canvas,
     return wasTiled;
 }
 
+void Device::drawMesh(const SkMesh& mesh, sk_sp<SkBlender> blender, const SkPaint& paint) {
+    if (!mesh.isValid()) {
+        return;
+    }
+
+    SkBlender* primitiveBlender =
+        (blender && SkMeshSpecificationPriv::HasColors(*mesh.spec())) ? blender.get() : nullptr;
+    this->drawGeometry(this->localToDeviceTransform(),
+                       Geometry(mesh),
+                       PaintParams(paint, primitiveBlender),
+                       DefaultFillStyle());
+}
+
 void Device::drawOval(const SkRect& oval, const SkPaint& paint) {
     if (paint.getPathEffect()) {
         // Dashing requires that the oval path starts on the right side and travels clockwise. This
@@ -1544,6 +1557,16 @@ void Device::drawGeometry(const Transform& localToDevice,
         return;
     }
 
+    // Meshes may need to create a renderer dynamically if one doesn't exist already for the meshes
+    // data.
+    if (geometry.isMesh()) {
+        RendererProvider* provider = fRecorder->priv().rendererProvider();
+        const SkMesh& mesh = geometry.mesh();
+        if (!provider->hasMeshRenderStep(mesh)) {
+            provider->initMeshRenderStep(fRecorder->priv().caps(), mesh);
+        }
+    }
+
     // We assume that we will receive a renderer, or a PathAtlas. If it's a PathAtlas, then we
     // assume that the renderer chosen in PathAtlas::addShape() will have single-channel coverage,
     // require AA bounds outsetting, and have a single renderStep. The clip's draw bounds are passed
@@ -1921,6 +1944,8 @@ std::pair<const Renderer*, PathAtlas*> Device::chooseRenderer(const Transform& l
     } else if (geometry.isVertices()) {
         SkVerticesPriv info(geometry.vertices()->priv());
         return {renderers->vertices(info.mode(), info.hasColors(), info.hasTexCoords()), nullptr};
+    } else if (geometry.isMesh()) {
+        return {renderers->mesh(geometry.mesh()), nullptr};
     } else if (geometry.isCoverageMaskShape()) {
         // drawCoverageMask() passes in CoverageMaskShapes that reference a provided texture.
         // The CoverageMask renderer can also be chosen later on if the shape is assigned to

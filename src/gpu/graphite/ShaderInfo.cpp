@@ -1103,6 +1103,10 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
     // implementation in the SkSL modules.
     emit_preambles(*this, sharedData.fRootNodes, /*treeLabel=*/"", &fsPreamble);
 
+
+    // Inject RenderStep's top-level fragment logic
+    fsPreamble += step->fragmentColorSkSLTopLevel();
+
     std::string mainBody = "void main() {";
 
     if (sharedData.fHasSsboIndexVarying) {
@@ -1318,6 +1322,9 @@ void ShaderInfo::generateVertexSkSL(const Caps* caps,
             add_attrs(step->appendAttributes());
         }
     }
+
+    // Inject RenderStep's top-level vertex logic
+    vsPreamble += step->vertexSkSLTopLevel();
 
     // Vertex shader function declaration
     std::string mainBody = "void main() {";

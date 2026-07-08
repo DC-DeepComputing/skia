@@ -116,9 +116,13 @@ public:
         // Initializes fAppend to hold the aligned offset within fCurrentBuffer and prepares
         // fCurrentBuffer for later reservations. Passing count=0 here means no actual space
         // (besides alignment padding) is used up until appendMappedWithStride is called.
-        std::tie(std::ignore, fAppend) = fCurrentBuffer.getMappedSubrange(/*count=*/0,
-                                                                          fAppendStride,
-                                                                          baseAlign);
+        if (fAppendStride > 0) {
+            std::tie(std::ignore, fAppend) = fCurrentBuffer.getMappedSubrange(/*count=*/0,
+                                                                              fAppendStride,
+                                                                              baseAlign);
+        } else {
+            fAppend = {};
+        }
 
 
         // Assign the barrier type. If a valid value, then the DrawWriter will append
@@ -208,7 +212,7 @@ public:
     // This will not merge with any already appended instance or vertex data, pending data is issued
     // in its own draw call first. These are currently unused.
     void draw(BindBufferInfo vertices, unsigned int vertexCount) {
-        this->bindAndFlush({}, {}, vertices, 0, vertexCount);
+        this->bindAndFlush(vertices, {}, {}, 0, vertexCount);
     }
     void drawIndexed(BindBufferInfo vertices, BindBufferInfo indices, unsigned int indexCount) {
         this->bindAndFlush(vertices, indices, {}, 0, indexCount);
@@ -292,7 +296,8 @@ private:
             // new pipeline yet. So we know the buffers MUST be the same.
             // IF a new buffer is acquired in reserve(), it calls a flush on the previous binding.
             // The flush sets the pendingCount to zero, skipping this code path.
-            SkASSERT(fStatic == staticData && fIndices == indices);
+            SkASSERT(fStatic == staticData);
+            SkASSERT(fIndices == indices);
             SkASSERT(fAppendStride == 0 || fAppend.fOffset % fAppendStride == 0);
             SkASSERT((templateCount == 0 &&
                       (fRenderState & RenderStateFlags::kAppendDynamicInstances)) ||

@@ -123,13 +123,15 @@ void DrawWriter::flushInternal(BindBufferInfo appendData) {
         if (fIndices) {
             // As before, just validate there is sufficient index data
             SkASSERT(fPendingCount*sizeof(uint16_t) <= fIndices.fSize);
+            uint32_t baseVertex = fBoundStatic.fBuffer ? pendingBaseStatic : pendingBaseAppend;
             fCommandList->drawIndexed(fPrimitiveType,
                                       pendingBaseIndices,
                                       fPendingCount,
-                                      pendingBaseAppend);
+                                      baseVertex);
         } else {
-            SkASSERT((pendingBaseAppend + fPendingCount)*fStaticStride <= fBoundAppend.fSize);
-            fCommandList->draw(fPrimitiveType, pendingBaseAppend, fPendingCount);
+            size_t baseVertex = fBoundStatic.fBuffer ? pendingBaseStatic : pendingBaseAppend;
+            SkASSERT((baseVertex + fPendingCount)*fStaticStride <= fBoundStatic.fSize);
+            fCommandList->draw(fPrimitiveType, baseVertex, fPendingCount);
         }
     }
 
