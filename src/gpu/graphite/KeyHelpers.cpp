@@ -478,6 +478,8 @@ void LocalMatrixShaderBlock::BeginBlock(const KeyContext& keyContext,
         keyContext.paintParamsKeyBuilder()->beginBlock(BuiltInCodeSnippetID::kLocalMatrixShader);
 
         BEGIN_WRITE_UNIFORMS(keyContext, BuiltInCodeSnippetID::kLocalMatrixShader)
+        printf("Writing %f %f %f %f, T %f %f\n", m.getScaleX(), m.getSkewY(),
+                             m.getSkewX(),  m.getScaleY(),m.getTranslateX(), m.getTranslateY());
         // The upper 2x2 is expected to be in column major order, but SkMatrix is 3x3 row major.
         keyContext.pipelineDataGatherer()->write(SkV4{m.getScaleX(), m.getSkewY(),
                              m.getSkewX(),  m.getScaleY()});

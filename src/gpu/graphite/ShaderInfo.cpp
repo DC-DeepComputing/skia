@@ -772,7 +772,9 @@ struct ShaderInfo::SharedGeneratorData {
             const int availableVaryings =
                     caps->maxVaryings() - kFixedVaryings - step->varyings().size();
 
-            fRootNodes = key.getRootNodes(caps, dict, alloc, availableVaryings);
+            fRootNodes =
+                key.getRootNodes(caps, dict, alloc, availableVaryings,
+                                 /*canLiftCoords=*/!step->fragmentColorSkSLLocalCoordsVariable());
 
             fNeedsLocalCoords = !fRootNodes.empty() &&
                                SkToBool(fRootNodes[0]->requiredFlags() &
@@ -1103,6 +1105,10 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
     // implementation in the SkSL modules.
     emit_preambles(*this, sharedData.fRootNodes, /*treeLabel=*/"", &fsPreamble);
 
+
+    // Inject RenderStep's top-level fragment logic
+    fsPreamble += step->fragmentColorSkSLTopLevel();
+
     std::string mainBody = "void main() {";
 
     if (sharedData.fHasSsboIndexVarying) {
@@ -1112,19 +1118,28 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
                               RenderStep::ssboIndexVarying());
     }
 
+    bool emittedRenderStepFragmentSkSL = false;
     if (sharedData.fRootNodes[0]->requiredFlags() & SnippetRequirementFlags::kPrimitiveColor) {
         SkASSERT(step->emitsPrimitiveColor());
         mainBody += "half4 primitiveColor;";
         mainBody += step->fragmentColorSkSL();
+        emittedRenderStepFragmentSkSL = true;
     }
+
     // else the RenderStep may be producing a primitive color but the paint is not consuming it
-    // so just skip injecting that SkSL entirely.
+    // so just skip injecting that SkSL entirely, unless the RenderStep produced a local coord.
+    if (!emittedRenderStepFragmentSkSL && step->fragmentColorSkSLLocalCoordsVariable()) {
+        mainBody += step->fragmentColorSkSL();
+    }
 
     // Using kDefaultArgs as the initial value means it will refer to undefined variables, but the
     // root nodes should--at most--be depending on the coordinate when "needsLocalCoords" is true.
     // If the PaintParamsKey violates that structure, this will produce SkSL compile errors.
     ShaderSnippet::Args args = ShaderSnippet::kDefaultArgs;
-    args.fFragCoord = "localCoordsVar";  // the varying added in emit_varyings()
+    args.fFragCoord = step->fragmentColorSkSLLocalCoordsVariable()
+                        ? step->fragmentColorSkSLLocalCoordsVariable()
+                        : "localCoordsVar";  // the varying added in emit_varyings()
+
     // TODO(b/349997190): The paint root node should not depend on any prior stage's output, but
     // it can happen with how SkEmptyShader is currently mapped to `sk_passthrough`. In this case
     // it requires that prior stage color to be transparent black. When SkEmptyShader can instead
@@ -1318,6 +1333,9 @@ void ShaderInfo::generateVertexSkSL(const Caps* caps,
             add_attrs(step->appendAttributes());
         }
     }
+
+    // Inject RenderStep's top-level vertex logic
+    vsPreamble += step->vertexSkSLTopLevel();
 
     // Vertex shader function declaration
     std::string mainBody = "void main() {";

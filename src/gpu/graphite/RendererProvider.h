@@ -8,11 +8,15 @@
 #ifndef skgpu_graphite_RendererProvider_DEFINED
 #define skgpu_graphite_RendererProvider_DEFINED
 
+#include "include/core/SkMesh.h"
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkVertices.h"
 #include "include/private/SkTArray.h"
 #include "src/gpu/MaskFormat.h"
 #include "src/gpu/graphite/Renderer.h"
+#include "src/gpu/graphite/render/MeshRenderStep.h"
+
+#include <unordered_map>
 
 namespace skgpu::graphite {
 
@@ -128,6 +132,10 @@ public:
         return &fVertices[4*triStrip + 2*hasColors + hasTexCoords];
     }
 
+    const Renderer* mesh(const SkMesh& mesh) const;
+    bool hasMeshRenderStep(const SkMesh& mesh) const;
+    void initMeshRenderStep(const Caps* caps, const SkMesh& mesh);
+
     // Filled and stroked [r]rects
     const Renderer* analyticRRect() const { return &fAnalyticRRect; }
 
@@ -152,6 +160,11 @@ public:
     }
 
     const RenderStep* lookup(RenderStep::RenderStepID renderStepID) const {
+        if (auto it = fMeshRendererLookup.find(renderStepID); it != fMeshRendererLookup.end()) {
+            SkASSERT(static_cast<uint32_t>(renderStepID) >= RenderStep::kNumRenderSteps);
+            return fMeshRenderers[it->second].renderStep.get();
+        }
+
         return fRenderSteps[(int) renderStepID].get();
     }
 
@@ -166,6 +179,11 @@ private:
     static constexpr int kVerticesCount = 8; // 2 modes * 2 color configs * 2 tex coord configs
 
     friend class Context; // for ctor
+
+    struct MeshRendererPair {
+        std::unique_ptr<MeshRenderStep> renderStep;
+        std::unique_ptr<Renderer> renderer;
+    };
 
     RendererProvider(const Caps*, StaticBufferManager* bufferManager);
 
@@ -210,6 +228,14 @@ private:
     Renderer fAnalyticBlur;
 
     Renderer fVertices[kVerticesCount];
+
+    // Mesh renderers keys by their SkMeshSpecification hash since each mesh specification needs
+    // its own render step due to varying vertex attributes and SkSL.
+    std::vector<MeshRendererPair> fMeshRenderers;
+    std::unordered_map<MeshRenderStep::HashKey, size_t> fMeshRendererCache;
+    std::unordered_map<RenderStep::RenderStepID, size_t> fMeshRendererLookup;
+
+    uint32_t fDynamicRenderStepId = RenderStep::kNumRenderSteps;
 
     // Aggregate of all enabled Renderers for convenient iteration when pre-compiling
     skia_private::TArray<const Renderer*> fRenderers;

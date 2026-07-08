@@ -15,7 +15,7 @@ namespace skgpu::graphite {
 RenderStep::RenderStep(Layout layout,
                        RenderStepID renderStepID,
                        SkEnumBitMask<Flags> flags,
-                       std::initializer_list<Uniform> uniforms,
+                       std::vector<Uniform> uniforms,
                        PrimitiveType primitiveType,
                        DepthStencilSettings depthStencilSettings,
                        SkSpan<const Attribute> staticAttrs,
@@ -116,7 +116,7 @@ const char* RenderStep::RenderStepName(RenderStepID id) {
 #undef CASE1
 #undef CASE2
 
-    SkUNREACHABLE;
+    return "DynamicRenderStep";
 }
 
 bool RenderStep::IsValidRenderStepID(uint32_t renderStepID) {

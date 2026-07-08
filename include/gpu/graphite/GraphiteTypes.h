@@ -270,6 +270,8 @@ enum DrawTypeFlags : uint16_t {
     //        [Tristrips], [TristripsTexCoords], [TristripsColor], [TristripsColorTexCoords]
     kDrawVertices     = 1 << 5,
 
+    kDrawMesh,
+
     // kCircularArc renders filled circular arcs, with or without the center included, and
     // stroked circular arcs with butt or round caps that don't include the center point.
     // It corresponds to the CircularArcRenderStep.

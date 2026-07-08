@@ -143,6 +143,10 @@ public:
     // and then including the function bodies returned here.
     virtual std::string vertexSkSL() const = 0;
 
+    // Returns the top level SkSL code for the vertex function, this is used to define functions
+    // and structs used by `vertexSkSL()`.
+    virtual std::string vertexSkSLTopLevel() const { return ""; }
+
     // Emits code to set up textures and samplers. Should only be defined if hasTextures is true.
     virtual std::string texturesAndSamplersSkSL(const ResourceBindingRequirements&,
                                                 int* nextBindingIndex) const {
@@ -158,7 +162,9 @@ public:
     // Emits code to set up a primitive color value. Should only be defined if emitsPrimitiveColor
     // is true. When implemented, the returned SkSL fragment should write its color into a
     // 'half4 primitiveColor' variable (defined in the calling code).
-    virtual const char* fragmentColorSkSL() const { return ""; }
+    virtual std::string fragmentColorSkSL() const { return ""; }
+    virtual std::string fragmentColorSkSLTopLevel() const { return ""; }
+    virtual const char* fragmentColorSkSLLocalCoordsVariable() const { return nullptr; }
 
     // Indicates whether this RenderStep's uniforms are referenced in its fragment shader code.
     // If not, its uniforms can be omitted from the fragment shader entirely.
@@ -274,7 +280,7 @@ SK_DECL_BITMASK_OPS_FRIENDS(Flags)
     RenderStep(Layout layout,
                RenderStepID renderStepID,
                SkEnumBitMask<Flags> flags,
-               std::initializer_list<Uniform> uniforms,
+               std::vector<Uniform> uniforms,
                PrimitiveType primitiveType,
                DepthStencilSettings depthStencilSettings,
                SkSpan<const Attribute> staticAttrs,

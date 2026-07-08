@@ -2930,7 +2930,7 @@ void MetalCodeGenerator::writeFields(SkSpan<const Field> fields, Position parent
             this->writeType(fieldType->componentType());
             this->write(" ");
             this->writeName(field.fName);
-            this->write("[1]");
+            this->write("[2]");
         } else {
             size_t fieldSize = memoryLayout.size(*fieldType);
             if (fieldSize > static_cast<size_t>(std::numeric_limits<int>::max() - currentOffset)) {

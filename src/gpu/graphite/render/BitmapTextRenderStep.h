@@ -37,7 +37,7 @@ public:
     // For a given BitmapTextRenderStep instance,
     // we will only use either fragmentColorSkSL() (for color text)
     // or fragmentCoverageSKSL() (for grayscale and LCD masks), never both.
-    const char* fragmentColorSkSL() const override;
+    std::string fragmentColorSkSL() const override;
     const char* fragmentCoverageSkSL() const override;
     bool usesUniformsInFragmentSkSL() const override;
 

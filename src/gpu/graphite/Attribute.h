@@ -8,6 +8,7 @@
 #ifndef skgpu_graphite_Attribute_DEFINED
 #define skgpu_graphite_Attribute_DEFINED
 
+#include "include/core/SkMesh.h"
 #include "include/private/SkAlign.h"
 #include "include/private/SkAssert.h"
 #include "src/core/SkSLTypeShared.h"
@@ -23,8 +24,9 @@ public:
     constexpr Attribute() = default;
     constexpr Attribute(const char* name,
                         VertexAttribType cpuType,
-                        SkSLType gpuType)
-            : fName(name), fCPUType(cpuType), fGPUType(gpuType) {
+                        SkSLType gpuType,
+                        std::optional<size_t> offset = std::nullopt)
+            : fName(name), fCPUType(cpuType), fGPUType(gpuType), fOffset(offset) {
         SkASSERT(name && gpuType != SkSLType::kVoid);
     }
     constexpr Attribute(const Attribute&) = default;
@@ -39,11 +41,41 @@ public:
 
     constexpr size_t size()       const { return VertexAttribTypeSize(fCPUType); }
     constexpr size_t sizeAlign4() const { return SkAlign4(this->size()); }
+    constexpr std::optional<size_t> offset() const { return fOffset; }
+
+    static Attribute MakeFromSkMeshAttribute(const SkMeshSpecification::Attribute& attr) {
+        VertexAttribType cpuType;
+        SkSLType gpuType;
+        switch (attr.type) {
+            case SkMeshSpecification::Attribute::Type::kFloat:
+                cpuType = VertexAttribType::kFloat;
+                gpuType = SkSLType::kFloat;
+                break;
+            case SkMeshSpecification::Attribute::Type::kFloat2:
+                cpuType = VertexAttribType::kFloat2;
+                gpuType = SkSLType::kFloat2;
+                break;
+            case SkMeshSpecification::Attribute::Type::kFloat3:
+                cpuType = VertexAttribType::kFloat3;
+                gpuType = SkSLType::kFloat3;
+                break;
+            case SkMeshSpecification::Attribute::Type::kFloat4:
+                cpuType = VertexAttribType::kFloat4;
+                gpuType = SkSLType::kFloat4;
+                break;
+            case SkMeshSpecification::Attribute::Type::kUByte4_unorm:
+                cpuType = VertexAttribType::kUByte4;
+                gpuType = SkSLType::kHalf4;
+                break;
+        }
+        return Attribute(attr.name.c_str(), cpuType, gpuType, attr.offset);
+    }
 
 private:
     const char* fName = nullptr;
     VertexAttribType fCPUType = VertexAttribType::kFloat;
     SkSLType fGPUType = SkSLType::kVoid;
+    std::optional<size_t> fOffset;
 };
 
 enum class Interpolation {
