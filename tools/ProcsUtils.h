@@ -16,8 +16,8 @@ namespace ToolUtils {
 // default values for the SkDeserialImageProc and SkDeserialTypefaceProc.
 SkDeserialProcs default_deserial_procs();
 
-// Returns the default SkSerialProcs used by Skia's tools when serializing Skps. This adds
-// default values for the SkSerialImageProc.
+// Returnsthe default SkSerialProcs used by Skia's tools when serializing Skps. This adds a default
+// value for the SkSerialImageProc.
 SkSerialProcs default_serial_procs();
 
 }  // namespace ToolUtils
