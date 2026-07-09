@@ -89,6 +89,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "25709ccf_7d6f8163",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-07-09T16:45:08Z",
+      "side": 1,
+      "message": "Good point. I agree that Skia should not interpret `hasLength()` / `getLength()` as proof that all encoded bytes have been received. That may be true for a particular caller, but it is not a general `SkStream` API guarantee.\n\nI updated the fast path to require `stream-\u003egetData()` instead of `getMemoryBase()` + `getLength()`. This restricts the optimization to streams that expose a complete `SkData` buffer, and partial/incremental streams continue through the `SkStreamAdapter` path.\n\nSo we no longer rely on Chromium-specific `IsAllDataReceived()` assumptions inside Skia, nor on `SegmentStream` length semantics.",
+      "parentUuid": "8d016c8b_37c6a8e9",
+      "range": {
+        "startLine": 91,
+        "startChar": 36,
+        "endLine": 91,
+        "endChar": 52
+      },
+      "revId": "d4d3d48d3873bd086a207a811f221186d80e61da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "24a5ad68_414d7499",
@@ -102,6 +126,30 @@
       "writtenOn": "2026-07-09T14:45:03Z",
       "side": 1,
       "message": "Nit: it should be safe to call `getLength` regardless of stream type, it just returns zero if unsupported.  I think we could refactor along these lines to get rid of a couple of virtual calls:\n\n```\n    if (const void* memBase \u003d stream-\u003egetMemoryBase()) {\n        const size_t length \u003d stream-\u003egetLength();\n        if (length \u003e 0 \u0026\u0026 length \u003c\u003d kInMemoryReaderThreshold) {\n            ...\n        }\n    }\n```",
+      "range": {
+        "startLine": 96,
+        "startChar": 0,
+        "endLine": 102,
+        "endChar": 9
+      },
+      "revId": "d4d3d48d3873bd086a207a811f221186d80e61da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f19778c_045554ef",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-07-09T16:45:08Z",
+      "side": 1,
+      "message": "Done. Refactored this into `NewReaderFromStream()` and changed the check to branch on `getMemoryBase()`, call `getLength()` once, and require `length \u003e 0 \u0026\u0026 length \u003c\u003d kInMemoryReaderThreshold`.",
+      "parentUuid": "24a5ad68_414d7499",
       "range": {
         "startLine": 96,
         "startChar": 0,
@@ -158,6 +206,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "945d2597_f629bb14",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-07-09T16:45:08Z",
+      "side": 1,
+      "message": "Done. This now shares the same `NewReaderFromStream()` helper as `MakeFromStream()`.",
+      "parentUuid": "69ecc4a0_beb5c713",
+      "range": {
+        "startLine": 259,
+        "startChar": 7,
+        "endLine": 259,
+        "endChar": 8
+      },
+      "revId": "d4d3d48d3873bd086a207a811f221186d80e61da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "67dec404_dc796ce7",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-07-09T16:45:08Z",
+      "side": 1,
+      "message": "Done. Extracted the shared stream-to-reader construction into `NewReaderFromStream()` and reused it from both `MakeFromStream()` and `onRewind()`.",
+      "parentUuid": "f3a2c729_6aad0d8d",
+      "range": {
+        "startLine": 248,
+        "startChar": 0,
+        "endLine": 259,
+        "endChar": 8
+      },
+      "revId": "d4d3d48d3873bd086a207a811f221186d80e61da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8363a6b8_a500016d",
@@ -181,6 +277,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd3049e8_f0408b4a",
+        "filename": "experimental/rust_bmp/ffi/FFI.rs",
+        "patchSetId": 6
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-07-09T16:45:08Z",
+      "side": 1,
+      "message": "I did local tests running 100s of executions, and the results show that the enum input was consistently a little faster than a Box\u003cdyn BufRead + Seek\u003e\ninput, but only by ~1-1.6% on the tested files. Wrapping the in-memory cursor in\nBufReader was ~2-3% slower. The full SkStreamAdapter + BufReader path was much\nslower, roughly ~7-14% slower depending on the file.\n\nSo I agree that enum-vs-trait-object dispatch is not the main source of the win.\nThe main benefit is avoiding the SkStreamAdapter/CXX streaming path and BufReader\nmachinery. The enum still avoids an extra allocation and trait-object pointer\nhop, so I think it is reasonable to keep, but I updated the comment to avoid\nimplying that eliminating dispatch is the primary performance reason.\n\nI updated comments to reflect that",
+      "parentUuid": "8363a6b8_a500016d",
+      "range": {
+        "startLine": 218,
+        "startChar": 0,
+        "endLine": 218,
+        "endChar": 1
+      },
+      "revId": "d4d3d48d3873bd086a207a811f221186d80e61da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0223106c_804bb84a",
@@ -194,6 +314,30 @@
       "writtenOn": "2026-07-09T15:47:01Z",
       "side": 1,
       "message": "Is this heap allocation and data copy (associated with `to_vec`) necessary?  IIUC `\u0026[u8]` provides `Read + Seek`, so we should be able to use it directly.",
+      "range": {
+        "startLine": 284,
+        "startChar": 67,
+        "endLine": 284,
+        "endChar": 75
+      },
+      "revId": "d4d3d48d3873bd086a207a811f221186d80e61da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e299730b_0f6ffe66",
+        "filename": "experimental/rust_bmp/ffi/FFI.rs",
+        "patchSetId": 6
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-07-09T16:45:08Z",
+      "side": 1,
+      "message": "A borrowed `Cursor\u003c\u0026[u8]\u003e` would work only if the borrow were limited to this function. Here the `Reader` is returned to C++ and retained by the codec after the FFI call returns, so Rust needs to own the bytes unless we introduce an unsafe lifetime contract tied to the C++ `SkData`/`SkStream`.\n\nFor this CL I kept the safe Rust-owned copy and documented that `data.to_vec()` is intentional because `Reader` outlives the FFI call.",
+      "parentUuid": "0223106c_804bb84a",
       "range": {
         "startLine": 284,
         "startChar": 67,
