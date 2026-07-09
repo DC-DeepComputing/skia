@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c66908a2_2fb6b249",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-07-09T18:34:16Z",
+      "side": 1,
+      "message": "I measured ~4 KiB, ~8 KiB, and ~64 KiB cases. The win was meaningful near 4 KiB, but weak at 8 KiB and 64 KiB, so I kept the threshold at 4 KiB for now.",
+      "parentUuid": "3626e339_3330e99e",
+      "range": {
+        "startLine": 52,
+        "startChar": 51,
+        "endLine": 52,
+        "endChar": 60
+      },
+      "revId": "0eeac6bf813e28340585436ae9e8aa429cc9a590",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5969925b_a6de873c",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a93dde2_5ecdfcef",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-07-09T18:34:16Z",
+      "side": 1,
+      "message": "Done. Empty data now falls through; the in-memory reader is only used for non-empty small complete data.",
+      "parentUuid": "5969925b_a6de873c",
+      "range": {
+        "startLine": 120,
+        "startChar": 9,
+        "endLine": 120,
+        "endChar": 22
+      },
+      "revId": "0eeac6bf813e28340585436ae9e8aa429cc9a590",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8ab4902d_80ffe209",
@@ -60,6 +108,30 @@
       "writtenOn": "2026-07-09T17:27:03Z",
       "side": 1,
       "message": "nit: Should be safe to `std::move(data)` here also.",
+      "range": {
+        "startLine": 122,
+        "startChar": 60,
+        "endLine": 122,
+        "endChar": 64
+      },
+      "revId": "0eeac6bf813e28340585436ae9e8aa429cc9a590",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "defbc0be_5924ad11",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-07-09T18:34:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8ab4902d_80ffe209",
       "range": {
         "startLine": 122,
         "startChar": 60,

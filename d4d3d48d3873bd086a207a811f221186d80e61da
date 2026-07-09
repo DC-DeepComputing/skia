@@ -113,6 +113,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed4b7811_eb3c7043",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-07-09T18:34:16Z",
+      "side": 1,
+      "message": "@fmalita@google.com sorry, it seems that my response to Lukasz initial comment closed your later response. I tried your less intrusive approach and I think it should work. I moved the optimization out of the generic stream path and behind the complete-data entry point instead.\n\n`SkBmpRustDecoder::Decode(sk_sp\u003cconst SkData\u003e, ...)` now calls a new internal `SkBmpRustCodec::MakeFromData(...)`, which uses the in-memory Rust reader only for small complete data. The generic `MakeFromStream(...)` path stays streaming-only, so it no longer tries to infer completeness from `SkStream` properties.\n\nOn the Chromium side, the fully received small-file case now calls the `SkData` overload directly instead of wrapping the `SegmentStream` in a memory stream subclass.\n\nAlso, I Added a Blink regression test on Chromium CL that first provides only the BMP header with `all_data_received\u003dfalse`, verifies the frame is not complete and the decoder has not failed, then provides the full data and verifies the image completes successfully. This guards against treating partial small data as complete.",
+      "parentUuid": "25709ccf_7d6f8163",
+      "range": {
+        "startLine": 91,
+        "startChar": 36,
+        "endLine": 91,
+        "endChar": 52
+      },
+      "revId": "d4d3d48d3873bd086a207a811f221186d80e61da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "24a5ad68_414d7499",
@@ -362,6 +386,30 @@
       "side": 1,
       "message": "Ack.  I agree that the extra lifetime management complexity means that this shouldn\u0027t block this CL.\n\nNevertheless, avoiding the extra copy may still be beneficial - maybe you can try / pursue this in a follow-up CL?  Leaving this comment as unresolved to make sure you see it, but feel free to just ack and resolve.  I think the lifetimes can be solved one way or another:\n\n* One idea would be to \"store\" the lifetime of the slice as a generic parameter of `Self` / `Reader`.\n* Another idea would be to add `rust::stream::SkDataAdapter` that 1) on C++ side holds `sk_sp\u003cSkData\u003e` and a `fCurrentPosition`, and 2) on Rust provides `Read` + `BufRead` + `Seek` implementations.",
       "parentUuid": "e299730b_0f6ffe66",
+      "range": {
+        "startLine": 284,
+        "startChar": 67,
+        "endLine": 284,
+        "endChar": 75
+      },
+      "revId": "d4d3d48d3873bd086a207a811f221186d80e61da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "75d3bc12_60161e49",
+        "filename": "experimental/rust_bmp/ffi/FFI.rs",
+        "patchSetId": 6
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-07-09T18:34:16Z",
+      "side": 1,
+      "message": "Ack, thanks for the suggestions.\n\nI tried to estimate the upside before deciding whether this should be part of this CL. I temporarily replaced the safe `Cursor\u003cVec\u003cu8\u003e\u003e` path with a benchmark-only borrowed-slice cursor, which should be a best-case proxy for avoiding `to_vec()` because it avoids both the copy and any C++ adapter calls.\n\nAcross 100 `image_decode_bench` executions per variant:\n\n- tiny 24-bit: copy path 3.097 us, no-copy proxy 3.084 us (-0.41%)\n- tiny pal4: copy path 3.083 us, no-copy proxy 3.089 us (+0.19%)\n- 4050-byte BMP: copy path 12.040 us, no-copy proxy 12.563 us (+4.34%)\n\nSo for the image sizes this CL targets, avoiding the copy was either noise-level or slower in the local benchmark. Given that, I’d prefer to keep the safe Rust-owned copy in this CL.\n\nI agree a proper `SkDataAdapter` or lifetime-parameterized reader could be explored separately, so I will continue investigation after this CL completes",
+      "parentUuid": "cdd09be6_9e2ade93",
       "range": {
         "startLine": 284,
         "startChar": 67,
