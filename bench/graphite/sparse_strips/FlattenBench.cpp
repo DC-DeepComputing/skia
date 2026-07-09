@@ -8,7 +8,9 @@
 #include "bench/Benchmark.h"
 #include "bench/Tiger.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/private/SkTArray.h"
+#include "src/core/SkRandom.h"
 #include "src/gpu/ganesh/geometry/GrPathUtils.h"
 #include "src/gpu/graphite/sparse_strips/Flatten.h"
 #include "src/gpu/graphite/sparse_strips/Polyline.h"
@@ -18,10 +20,76 @@
 namespace {
 using namespace skgpu::graphite;
 
-template <FlattenMode kMode> class FlattenBench : public Benchmark {
+enum class BenchmarkDataset {
+    kTiger,
+    kMixed,
+};
+
+constexpr float kMixedWidthF = 1000.f;
+constexpr float kMixedHeightF = 1000.f;
+
+static std::vector<SkPath> GetMixedPaths() {
+    std::vector<SkPath> paths;
+    SkRandom rand(42);
+    constexpr int kNumPaths = 100;
+    constexpr int kVerbsPerPath = 50;
+
+    for (int i = 0; i < kNumPaths; ++i) {
+        SkPathBuilder builder;
+        builder.moveTo(rand.nextRangeF(0.f, kMixedWidthF), rand.nextRangeF(0.f, kMixedHeightF));
+        for (int j = 0; j < kVerbsPerPath; ++j) {
+            int type = rand.nextULessThan(4);
+            switch (type) {
+                case 0:
+                    builder.lineTo(rand.nextRangeF(0.f, kMixedWidthF),
+                                   rand.nextRangeF(0.f, kMixedHeightF));
+                    break;
+                case 1:
+                    builder.quadTo(rand.nextRangeF(0.f, kMixedWidthF),
+                                   rand.nextRangeF(0.f, kMixedHeightF),
+                                   rand.nextRangeF(0.f, kMixedWidthF),
+                                   rand.nextRangeF(0.f, kMixedHeightF));
+                    break;
+                case 2:
+                    builder.conicTo(rand.nextRangeF(0.f, kMixedWidthF),
+                                    rand.nextRangeF(0.f, kMixedHeightF),
+                                    rand.nextRangeF(0.f, kMixedWidthF),
+                                    rand.nextRangeF(0.f, kMixedHeightF),
+                                    rand.nextRangeF(0.1f, 5.f));
+                    break;
+                case 3:
+                    builder.cubicTo(rand.nextRangeF(0.f, kMixedWidthF),
+                                    rand.nextRangeF(0.f, kMixedHeightF),
+                                    rand.nextRangeF(0.f, kMixedWidthF),
+                                    rand.nextRangeF(0.f, kMixedHeightF),
+                                    rand.nextRangeF(0.f, kMixedWidthF),
+                                    rand.nextRangeF(0.f, kMixedHeightF));
+                    break;
+            }
+        }
+        paths.push_back(builder.detach());
+    }
+    return paths;
+}
+
+using namespace skgpu::graphite;
+
+template <FlattenMode kMode, BenchmarkDataset kDataset> class FlattenBench : public Benchmark {
 public:
-    FlattenBench() : fPaths(Tiger::GetTigerPaths()) {
-        fName.printf("SparseStrips_Flatten_%s", kMode == FlattenMode::kScalar ? "Scalar" : "SIMD");
+    FlattenBench() {
+        if constexpr (kDataset == BenchmarkDataset::kTiger) {
+            fPaths = Tiger::GetTigerPaths();
+            fWidth = Tiger::kTigerWidthF;
+            fHeight = Tiger::kTigerHeightF;
+            fName.printf("SparseStrips_Flatten_%s_Tiger",
+                         kMode == FlattenMode::kScalar ? "Scalar" : "SIMD");
+        } else {
+            fPaths = GetMixedPaths();
+            fWidth = kMixedWidthF;
+            fHeight = kMixedHeightF;
+            fName.printf("SparseStrips_Flatten_%s_Mixed",
+                         kMode == FlattenMode::kScalar ? "Scalar" : "SIMD");
+        }
     }
 
 protected:
@@ -32,8 +100,7 @@ protected:
         Polyline polyline;
         for (int i = 0; i < loops; ++i) {
             for (auto& path : fPaths) {
-                flattener.processPaths<kMode>(
-                        path, SkMatrix(), Tiger::kTigerWidthF, Tiger::kTigerHeightF, &polyline);
+                flattener.processPaths<kMode>(path, SkMatrix(), fWidth, fHeight, &polyline);
             }
             polyline.reset();
         }
@@ -42,15 +109,25 @@ protected:
 private:
     SkString fName;
     std::vector<SkPath> fPaths;
+    float fWidth;
+    float fHeight;
 };
 
-class GrLegacyBench : public Benchmark {
+template <BenchmarkDataset kDataset> class GrLegacyBench : public Benchmark {
 public:
     // Match the tolerances of Flatten.
     static constexpr SkScalar kTolerance = Flatten::kQuadErrTolerance;
     static constexpr SkScalar kToleranceSqd = Flatten::kQuadTolerance2;
 
-    GrLegacyBench() : fName("SparseStrips_FlattenLegacy_Ganesh"), fPaths(Tiger::GetTigerPaths()) {}
+    GrLegacyBench() {
+        if constexpr (kDataset == BenchmarkDataset::kTiger) {
+            fPaths = Tiger::GetTigerPaths();
+            fName.printf("SparseStrips_FlattenLegacy_Ganesh_Tiger");
+        } else {
+            fPaths = GetMixedPaths();
+            fName.printf("SparseStrips_FlattenLegacy_Ganesh_Mixed");
+        }
+    }
 
 protected:
     const char* onGetName() override { return fName.c_str(); }
@@ -125,6 +202,14 @@ private:
 
 }  // namespace
 
-DEF_BENCH(return (new FlattenBench<skgpu::graphite::FlattenMode::kScalar>());)
-DEF_BENCH(return (new FlattenBench<skgpu::graphite::FlattenMode::kSimd>());)
-DEF_BENCH(return (new GrLegacyBench());)
+DEF_BENCH(return (new FlattenBench<skgpu::graphite::FlattenMode::kScalar,
+                                   BenchmarkDataset::kTiger>());)
+DEF_BENCH(
+        return (new FlattenBench<skgpu::graphite::FlattenMode::kSimd, BenchmarkDataset::kTiger>());)
+DEF_BENCH(return (new GrLegacyBench<BenchmarkDataset::kTiger>());)
+
+DEF_BENCH(return (new FlattenBench<skgpu::graphite::FlattenMode::kScalar,
+                                   BenchmarkDataset::kMixed>());)
+DEF_BENCH(
+        return (new FlattenBench<skgpu::graphite::FlattenMode::kSimd, BenchmarkDataset::kMixed>());)
+DEF_BENCH(return (new GrLegacyBench<BenchmarkDataset::kMixed>());)
