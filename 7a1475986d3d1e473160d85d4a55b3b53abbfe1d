@@ -22,6 +22,30 @@
       },
       "revId": "7a1475986d3d1e473160d85d4a55b3b53abbfe1d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5836d80_0f279790",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-07-09T19:34:41Z",
+      "side": 1,
+      "message": "Agreed. My intent with `MakeFromCompleteStream` was to make the complete-data contract explicit and to avoid inferring completeness from generic `SkStream` state. Blink also needed the original stream to stay alive because `SkiaImageDecoderBase` keeps a raw pointer to the `SegmentStream`.\n\nBut I agree the two-input Skia API is not ideal: passing both `stream` and `data` creates an unnecessary coherency question about which one is the source of truth.\n\nI simplified this so Skia uses the existing `Decode(sk_sp\u003cconst SkData\u003e)` / `MakeFromData(...)` complete-data path again. Blink now owns the lifetime issue locally by retaining the original stream while calling the existing `SkData` overload. This keeps the Skia API smaller and avoids passing two sources of truth into Skia.",
+      "parentUuid": "6dab5ada_de6fcb53",
+      "range": {
+        "startLine": 33,
+        "startChar": 43,
+        "endLine": 35,
+        "endChar": 75
+      },
+      "revId": "7a1475986d3d1e473160d85d4a55b3b53abbfe1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
