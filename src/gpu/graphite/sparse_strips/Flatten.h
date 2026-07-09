@@ -9,6 +9,7 @@
 
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkSpan.h"
 #include "include/private/SkTDArray.h"
 #include "src/core/SkGeometry.h"
 #include "src/gpu/graphite/sparse_strips/SparseStripsTypes.h"
@@ -93,6 +94,13 @@ public:
     static constexpr double   kSqrtQuadFromCubicTol = 0x1.e5b9d136c6d96p-2;
     static_assert(kCubicAccuracy == .1f);
 
+    static constexpr uint32_t kMaxCubicsFromConic = 16;
+    static constexpr uint32_t kMaxBisections = 4;
+    static constexpr float    kConicAccuracy = 0.1f;
+    static constexpr double   kConicToCubicErrTolerance = kConicAccuracy * kQuadErrTolerance;
+    static constexpr double   kSqrtQuadFromCubicTolForConic = 0x1.c9f25c264ef86p-2;
+    static_assert(kConicAccuracy == .1f);
+
     Flatten() = default;
 
     template <FlattenMode kMode>
@@ -118,33 +126,35 @@ private:
     // 'fFlattenedCubics', all members are overwritten during flattenCubic*() calls. Consequently,
     // only 'fFlattenedCubics' requires manual state management (clearing) at the start of the
     // function.
+    static constexpr uint32_t kMaxQuadsInCtx = 64;
+
     struct CubicFlattenCtx {
         // The on-curve endpoints (p0 and p2) of the approximated quadratic segments, where p2 of
         // the prior quad is p0 of the next quad. Sized +4 to safely handle the final point
         // insertion and potential SIMD padding.
-        std::array<SkPoint, kMaxQuadsFromCubic + 4> fEvenPts;
+        std::array<SkPoint, kMaxQuadsInCtx + 4> fEvenPts;
 
         // The off-curve control points (p1) of the approximated quadratic segments.
-        std::array<SkPoint, kMaxQuadsFromCubic> fOddPts;
+        std::array<SkPoint, kMaxQuadsInCtx> fOddPts;
 
         // The starting value of the parabolic integral for each quadratic segment. Maps the start
         // of the curve into uniform arc-length space.
-        std::array<float, kMaxQuadsFromCubic> fA0;
+        std::array<float, kMaxQuadsInCtx> fA0;
 
         // The delta of the parabolic integral (a2 - a0) for each quadratic. Used to linearly
         // interpolate the integral 'a' across the segment.
-        std::array<float, kMaxQuadsFromCubic> fDa;
+        std::array<float, kMaxQuadsInCtx> fDa;
 
         // The starting value of the inverse parabolic integral for each quadratic.
-        std::array<float, kMaxQuadsFromCubic> fU0;
+        std::array<float, kMaxQuadsInCtx> fU0;
 
         // The scale factor for the inverse integral (1.0 / (u2 - u0)). Used to map the evenly
         // spaced parabolic steps back into parametric 't' space.
-        std::array<float, kMaxQuadsFromCubic> fUScale;
+        std::array<float, kMaxQuadsInCtx> fUScale;
 
         // Total integrated curvature/error metric for each quadratic. This dictates how many flat
         // line segments each quad needs to be broken into.
-        std::array<float, kMaxQuadsFromCubic> fCurvatureIntegral;
+        std::array<float, kMaxQuadsInCtx> fCurvatureIntegral;
 
         // The actual number of quadratics the current cubic was split into. Guaranteed to be <=
         // kMaxQuadsFromCubic.
@@ -162,13 +172,14 @@ private:
 
     void flattenQuadSimd(const SkPoint pts[3], Polyline* polyline);
     void flattenQuadScalar(const SkPoint pts[3], Polyline* polyline);
-    uint32_t flattenCubicScalar(const SkPoint pts[4]);
+    template <double kSqrtQuadTol> uint32_t flattenCubicScalar(const SkPoint pts[4]);
 
-    void evalCubicsSimd(const SkPoint pts[4], uint32_t numQuads);
-    void estimateLinesFromQuadSimd();
+    void evalCubicsSimd(const SkPoint pts[4], uint32_t numQuads, uint32_t startIdx = 0);
+    template <double kSqrtQuadTol> void estimateLinesFromQuadSimd();
     void outputLinesFromQuadSimd(uint32_t quadIdx, float x0, float dx, uint32_t numSegments,
                                  uint32_t startIdx);
-    uint32_t flattenCubicSimd(const SkPoint pts[4]);
+    template <double kSqrtQuadTol> uint32_t flattenCubicSimd(const SkPoint pts[4]);
+    template <double kSqrtQuadTol> uint32_t flattenCubicsSimd(SkSpan<const SkPoint[4]> cubics);
 
     CubicFlattenCtx fContext;
     SkAutoConicToQuads fConicToQuad;
