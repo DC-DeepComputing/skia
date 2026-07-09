@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d154ef11_e23f2739",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-09T15:19:16Z",
+      "side": 1,
+      "message": "away from?",
+      "range": {
+        "startLine": 9,
+        "startChar": 230,
+        "endLine": 9,
+        "endChar": 250
+      },
+      "revId": "6d6be81144513c6806c4f0a494b3f9be77ec9808",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7fef8bf_1de00778",
+        "filename": "src/capture/SkCapture.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-09T15:19:16Z",
+      "side": 1,
+      "message": "rename to make empty?",
+      "revId": "6d6be81144513c6806c4f0a494b3f9be77ec9808",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
