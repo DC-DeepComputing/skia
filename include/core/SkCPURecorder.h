@@ -56,8 +56,8 @@ public:
                                        const SkSurfaceProps* surfaceProps = nullptr);
 
 private:
-    // TODO (b/412351769): Implement this so we can capture from a CPU Recorder.
-    SkCanvas* makeCaptureCanvas(SkCanvas*) final { return nullptr; }
+    void registerCanvas(SkCanvas*) final {}
+    void unregisterCanvas(SkCanvas*) final {}
     void createCaptureBreakpoint(SkSurface*) final;
 };
 

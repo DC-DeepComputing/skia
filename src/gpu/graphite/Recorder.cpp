@@ -298,11 +298,16 @@ SkCanvas* Recorder::makeDeferredCanvas(const SkImageInfo& imageInfo,
     return fTargetProxyCanvas.get();
 }
 
-SkCanvas* Recorder::makeCaptureCanvas(SkCanvas* canvas) {
+void Recorder::registerCanvas(SkCanvas* canvas) {
     if (fSharedContext->captureManager()) {
-        return fSharedContext->captureManager()->makeCaptureCanvas(canvas);
+        fSharedContext->captureManager()->registerCanvas(canvas);
     }
-    return nullptr;
+}
+
+void Recorder::unregisterCanvas(SkCanvas* canvas) {
+    if (fSharedContext->captureManager()) {
+        fSharedContext->captureManager()->unregisterCanvas(canvas);
+    }
 }
 
 void Recorder::createCaptureBreakpoint(SkSurface* surface) {

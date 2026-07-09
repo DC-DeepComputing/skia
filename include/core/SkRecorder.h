@@ -36,11 +36,8 @@ public:
 
 private:
 
-    /**
-    * Attempts to create and return an SkCaptureCanvas that wraps the provided base canvas.
-    * Returns nullptr if capture is not enabled.
-    */
-    virtual SkCanvas* makeCaptureCanvas(SkCanvas*) = 0;
+    virtual void registerCanvas(SkCanvas*) = 0;
+    virtual void unregisterCanvas(SkCanvas*) = 0;
     virtual void createCaptureBreakpoint(SkSurface*) = 0;
 
     friend class SkSurface_Base; // for capture functionality
