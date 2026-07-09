@@ -269,6 +269,7 @@ use_repo(
     cpp_modules,
     "dawn",
     "delaunator",
+    "d3d12allocator",
     "dng_sdk",
     "egl_registry",
     "expat",
