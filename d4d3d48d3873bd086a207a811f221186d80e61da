@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e6f16059_075e38b7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-07-09T14:45:03Z",
+      "side": 1,
+      "message": "Nice!",
+      "revId": "d4d3d48d3873bd086a207a811f221186d80e61da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24a5ad68_414d7499",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-07-09T14:45:03Z",
+      "side": 1,
+      "message": "Nit: it should be safe to call `getLength` regardless of stream type, it just returns zero if unsupported.  I think we could refactor along these lines to get rid of a couple of virtual calls:\n\n```\n    if (const void* memBase \u003d stream-\u003egetMemoryBase()) {\n        const size_t length \u003d stream-\u003egetLength();\n        if (length \u003e 0 \u0026\u0026 length \u003c\u003d kInMemoryReaderThreshold) {\n            ...\n        }\n    }\n```",
+      "range": {
+        "startLine": 96,
+        "startChar": 0,
+        "endLine": 102,
+        "endChar": 9
+      },
+      "revId": "d4d3d48d3873bd086a207a811f221186d80e61da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3a2c729_6aad0d8d",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-07-09T14:45:03Z",
+      "side": 1,
+      "message": "This is the same logic, right? Let\u0027s extract to a helper function to avoid duplication.",
+      "range": {
+        "startLine": 248,
+        "startChar": 0,
+        "endLine": 259,
+        "endChar": 8
+      },
+      "revId": "d4d3d48d3873bd086a207a811f221186d80e61da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
