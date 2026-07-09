@@ -29,6 +29,10 @@ SK_API bool IsBmp(const void*, size_t);
 SK_API std::unique_ptr<SkCodec> Decode(std::unique_ptr<SkStream>,
                                        SkCodec::Result*,
                                        SkCodecs::DecodeContext = nullptr);
+SK_API std::unique_ptr<SkCodec> DecodeCompleteStream(std::unique_ptr<SkStream>,
+                                                     sk_sp<const SkData>,
+                                                     SkCodec::Result*,
+                                                     SkCodecs::DecodeContext = nullptr);
 SK_API std::unique_ptr<SkCodec> Decode(sk_sp<const SkData>,
                                        SkCodec::Result*,
                                        SkCodecs::DecodeContext = nullptr);
