@@ -266,6 +266,7 @@ def _make_default_flags(clang_toolchain):
             flag_group(
                 flags = [
                     "-std=c++20",
+                    "-DNOMINMAX",  # https://stackoverflow.com/a/22744273
                 ],
             ),
         ],

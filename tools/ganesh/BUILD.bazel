@@ -46,11 +46,11 @@ skia_cc_library(
     testonly = True,
     srcs = [
         "GrContextFactory.cpp",
-        "//tools/ganesh/gl:private_hdrs",
         "//tools/ganesh/gl:srcs",
     ],
     hdrs = [
         "GrContextFactory.h",
+        "//tools/ganesh/gl:private_hdrs",
     ],
     visibility = [
         "//bench:__subpackages__",
@@ -116,5 +116,32 @@ skia_cc_library(
         "//:core",
         "//src/codec:codec_support_priv",
         "//src/gpu/ganesh:ganesh_TEST_UTIL",
+    ],
+)
+
+skia_cc_library(
+    name = "ganesh_d3d_utils",
+    testonly = True,
+    srcs = [
+        "GrContextFactory.cpp",
+        "//tools/ganesh/d3d:srcs",
+    ],
+    hdrs = [
+        "GrContextFactory.h",
+        "//tools/ganesh/d3d:private_hdrs",
+    ],
+    target_compatible_with = select({
+        "@platforms//os:windows": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+    visibility = [
+        "//bench:__subpackages__",
+        "//tools:__subpackages__",
+    ],
+    deps = [
+        ":common_ganesh_utils",
+        "//src/gpu/ganesh/d3d:ganesh_d3d_TEST_UTIL",
+        "//tools:autorelease_pool",
+        "@d3d12allocator",
     ],
 )

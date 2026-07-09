@@ -14,6 +14,10 @@
 #include <Windows.h>
 #include <GL/gl.h>
 
+#ifdef interface
+#undef interface
+#endif
+
 using skwindow::DisplayParams;
 using skwindow::internal::GLWindowContext;
 
