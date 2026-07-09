@@ -22,6 +22,52 @@
       },
       "revId": "0eeac6bf813e28340585436ae9e8aa429cc9a590",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5969925b_a6de873c",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-07-09T17:27:03Z",
+      "side": 1,
+      "message": "nit: Does it matter which reader type we use in this case?  If both can handle empty data, might as well let it fall through here.",
+      "range": {
+        "startLine": 120,
+        "startChar": 9,
+        "endLine": 120,
+        "endChar": 22
+      },
+      "revId": "0eeac6bf813e28340585436ae9e8aa429cc9a590",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ab4902d_80ffe209",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-07-09T17:27:03Z",
+      "side": 1,
+      "message": "nit: Should be safe to `std::move(data)` here also.",
+      "range": {
+        "startLine": 122,
+        "startChar": 60,
+        "endLine": 122,
+        "endChar": 64
+      },
+      "revId": "0eeac6bf813e28340585436ae9e8aa429cc9a590",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
