@@ -67,6 +67,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "546a1621_794583a9",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-07-09T16:43:39Z",
+      "side": 1,
+      "message": "If Blink is calling this factory directly, we could add a separate entry point for complete streams (`MakeFromCompleteStream`?).\n\nAnother option: since we must also retain the original stream, we could check whether its length has changed and rebuild the rust reader as needed.  Adding a bunch of explicit checks for length is too fragile though, I think the only way that would work is if we encapsulate everything at a reader level somehow (e.g. introduce a dispatching reader that holds both the original stream and the current rust reader, and updates internally when the stream\u0027s length changes).\n\nA new SkStream virtual is also on the table, but I\u0027ll have to think harder about implications. Most of Skia assumes streams with known lengths are always complete, it\u0027s just codecs that accommodate growing data.  The API docs refer to **total length**, so one could argue that codecs are abusing the API semantics and the rest of Skia is correct.  Of course it\u0027s too late to claw that back now, but adding this extra signal could muddy the waters even further.  Do all SkStream clients that currently (arguably correctly) assume the length is final need to be updated to handle incomplete/progressive data?  Do codec impls need to be updated to e.g. return error instead of incomplete if the stream is now known to be complete but the data is not all there?  I guess I\u0027d prefer one of the other less intrusive options if feasible.",
+      "parentUuid": "66dd52bf_6b3b42d2",
+      "range": {
+        "startLine": 91,
+        "startChar": 36,
+        "endLine": 91,
+        "endChar": 52
+      },
+      "revId": "d4d3d48d3873bd086a207a811f221186d80e61da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "24a5ad68_414d7499",
         "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
         "patchSetId": 6
