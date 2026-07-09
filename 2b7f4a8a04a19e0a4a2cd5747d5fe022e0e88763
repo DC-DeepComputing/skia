@@ -22,6 +22,30 @@
       },
       "revId": "2b7f4a8a04a19e0a4a2cd5747d5fe022e0e88763",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "008f1da2_de332fbc",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-07-09T19:59:49Z",
+      "side": 1,
+      "message": "Good catch, thanks. Fixed by creating the `SkMemoryStream` in a separate statement before moving `data` into `MakeFromStreamAndReader()`, so we no longer rely on function argument evaluation order.",
+      "parentUuid": "16208e1b_fbc54a4f",
+      "range": {
+        "startLine": 122,
+        "startChar": 39,
+        "endLine": 122,
+        "endChar": 54
+      },
+      "revId": "2b7f4a8a04a19e0a4a2cd5747d5fe022e0e88763",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
