@@ -4,12 +4,14 @@
 :: found in the LICENSE file.
 
 @echo off
-:: Windows cmd.exe does not expand wildcards in executable paths. We must use a 'for /d'
-:: directory-globbing loop to expand the dynamically-suffixed Bzlmod repository folder name
-:: (e.g. +_repo_rules3+clang_windows_amd64) and bind the expanded path to %%i.
-:: - %~dp0: Expands to the drive (d) and path (p) of the folder containing this batch script.
-:: - %%~i: Expands %%i while stripping any surrounding quotes (important if paths contain spaces).
-for /d %%i in ("%~dp0..\..\external\*clang_windows_amd64") do (
+:: This batch script serves as a compiler trampoline to invoke the Clang
+:: compiler located inside the dynamically-named external Bazel cache directory.
+::
+:: Since Bazel always executes build actions with the current working directory 
+:: set to the execution root, we can locate the external toolchain repository 
+:: directly under the relative "external\" folder. This avoids relative path 
+:: parent traversals (like '..\..') which can trigger Windows cmd.exe wildcard bugs.
+for /d %%i in ("external\*clang_windows_amd64") do (
     "%%~i\bin\clang.exe" %*
     exit /b
 )

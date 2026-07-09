@@ -41,10 +41,18 @@ def _windows_amd64_toolchain_info(ctx):
     # https://bazel.build/rules/lib/builtins/Label#repo_name
     clang_repo_name = ctx.attr.clang_windows_amd64.label.repo_name
     clang_toolchain_path = "external/" + clang_repo_name
-    action_configs = _make_action_configs()
+    action_configs = _make_action_configs(clang_toolchain_path)
     features = [
         feature(
             name = "archive_param_file",
+            enabled = True,
+        ),
+        feature(
+            name = "compiler_param_file",
+            enabled = True,
+        ),
+        feature(
+            name = "linker_param_file",
             enabled = True,
         ),
     ]
@@ -74,23 +82,18 @@ provide_windows_amd64_toolchain_config = rule(
     implementation = _windows_amd64_toolchain_info,
 )
 
-def _make_action_configs():
+def _make_action_configs(clang_toolchain_path):
     """
     This function sets up the tools needed to perform the various compile/link actions.
 
-    Bazel normally restricts us to referring to (and therefore running) executables/scripts
-    that are in this directory (That is EXEC_ROOT/toolchain). However, the executables we want
-    to run are brought in via WORKSPACE.bazel and are located in EXEC_ROOT/external/clang....
-    Therefore, we make use of "trampoline scripts" that will call the binaries from the
-    toolchain directory.
-
-    These action_configs also let us dynamically specify arguments from the Bazel
-    environment if necessary (see cpp_link_static_library_action).
+    By using ../external/... relative paths pointing directly to clang.exe and lld-link.exe,
+    we bypass batch script trampolines. This allows direct CreateProcessW execution which
+    natively supports forward-slash path separators (critical for rules_rust/rustc linking).
     """
 
     # https://cs.opensource.google/bazel/bazel/+/master:tools/cpp/cc_toolchain_config_lib.bzl;l=435;drc=3b9e6f201a9a3465720aad8712ab7bcdeaf2e5da
-    clang_tool = tool(path = "windows_trampolines/clang_trampoline_windows.bat")
-    link_tool = tool(path = "windows_trampolines/link_trampoline_windows.bat")
+    clang_tool = tool(path = "../" + clang_toolchain_path + "/bin/clang.exe")
+    link_tool = tool(path = "../" + clang_toolchain_path + "/bin/llvm-lib.bat")
 
     # https://cs.opensource.google/bazel/bazel/+/master:tools/cpp/cc_toolchain_config_lib.bzl;l=488;drc=3b9e6f201a9a3465720aad8712ab7bcdeaf2e5da
     assemble_action = action_config(
@@ -134,6 +137,7 @@ def _make_action_configs():
     # https://bazel.build/docs/cc-toolchain-config-reference#cctoolchainconfiginfo-build-variables
     cpp_link_static_library_action = action_config(
         action_name = ACTION_NAMES.cpp_link_static_library,
+        implies = ["archive_param_file"],
         flag_sets = [
             flag_set(
                 flag_groups = [
@@ -174,8 +178,8 @@ def _make_action_configs():
             flag_set(
                 flag_groups = [
                     flag_group(
-                        flags = ["@%{archive_param_file}"],
-                        expand_if_available = "archive_param_file",
+                        flags = ["@%{linker_param_file}"],
+                        expand_if_available = "linker_param_file",
                     ),
                 ],
             ),
@@ -266,6 +270,7 @@ def _make_default_flags(clang_toolchain):
             flag_group(
                 flags = [
                     "-std=c++20",
+                    "-DNOMINMAX",  # https://stackoverflow.com/a/22744273
                 ],
             ),
         ],
