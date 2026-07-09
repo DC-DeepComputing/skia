@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6dab5ada_de6fcb53",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-07-09T19:10:10Z",
+      "side": 1,
+      "message": "Is your previous `MakeFromData` version not sufficient (patch set 9)?  I think I prefer that as an API entry point: having two inputs that refer to the same data introduces some ambiguity and potential coherency issues.",
+      "range": {
+        "startLine": 33,
+        "startChar": 43,
+        "endLine": 35,
+        "endChar": 75
+      },
+      "revId": "7a1475986d3d1e473160d85d4a55b3b53abbfe1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
