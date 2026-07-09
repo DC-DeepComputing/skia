@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3626e339_3330e99e",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-07-09T17:22:42Z",
+      "side": 1,
+      "message": "L1 cache holds 32kB of data - I wonder if it may be worth increasing the threshold.  OTOH, this is all arm-chair analysis, so I have low confidence in this suggestion... :-(",
+      "range": {
+        "startLine": 52,
+        "startChar": 51,
+        "endLine": 52,
+        "endChar": 60
+      },
+      "revId": "0eeac6bf813e28340585436ae9e8aa429cc9a590",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

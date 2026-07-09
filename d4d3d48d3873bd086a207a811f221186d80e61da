@@ -346,6 +346,30 @@
       },
       "revId": "d4d3d48d3873bd086a207a811f221186d80e61da",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdd09be6_9e2ade93",
+        "filename": "experimental/rust_bmp/ffi/FFI.rs",
+        "patchSetId": 6
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-07-09T17:22:42Z",
+      "side": 1,
+      "message": "Ack.  I agree that the extra lifetime management complexity means that this shouldn\u0027t block this CL.\n\nNevertheless, avoiding the extra copy may still be beneficial - maybe you can try / pursue this in a follow-up CL?  Leaving this comment as unresolved to make sure you see it, but feel free to just ack and resolve.  I think the lifetimes can be solved one way or another:\n\n* One idea would be to \"store\" the lifetime of the slice as a generic parameter of `Self` / `Reader`.\n* Another idea would be to add `rust::stream::SkDataAdapter` that 1) on C++ side holds `sk_sp\u003cSkData\u003e` and a `fCurrentPosition`, and 2) on Rust provides `Read` + `BufRead` + `Seek` implementations.",
+      "parentUuid": "e299730b_0f6ffe66",
+      "range": {
+        "startLine": 284,
+        "startChar": 67,
+        "endLine": 284,
+        "endChar": 75
+      },
+      "revId": "d4d3d48d3873bd086a207a811f221186d80e61da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
