@@ -16,11 +16,13 @@ load("@bazel_tools//tools/build_defs/cc:action_names.bzl", "ACTION_NAMES")
 load(
     "@bazel_tools//tools/cpp:cc_toolchain_config_lib.bzl",
     "action_config",
+    "artifact_name_pattern",
     "feature",
     "flag_group",
     "flag_set",
     "tool",
     "variable_with_value",
+    "with_feature_set",
 )
 load("@rules_cc//cc/common:cc_common.bzl", "cc_common")
 
@@ -41,15 +43,51 @@ def _windows_amd64_toolchain_info(ctx):
     # https://bazel.build/rules/lib/builtins/Label#repo_name
     clang_repo_name = ctx.attr.clang_windows_amd64.label.repo_name
     clang_toolchain_path = "external/" + clang_repo_name
-    action_configs = _make_action_configs()
+    action_configs = _make_action_configs(clang_toolchain_path)
     features = [
         feature(
             name = "archive_param_file",
             enabled = True,
         ),
+        feature(
+            name = "compiler_param_file",
+            enabled = True,
+        ),
+        feature(
+            name = "linker_param_file",
+            enabled = True,
+        ),
+        # This feature is explicitly blacklisted (unsupported) by rules_rust by definition.
+        # Defining it as enabled by default means it is active for standard C++ compiles
+        # but is guaranteed to be disabled when rules_rust queries the toolchain.
+        # This allows us to select clang.exe for C++ and fallback to lld-link.exe for Rust.
+        feature(
+            name = "rules_rust_unsupported_feature",
+            enabled = True,
+        ),
     ]
     features += _make_default_flags(clang_toolchain_path)
     features += _make_diagnostic_flags()
+
+    # Tells bazel that our compiler will add .exe etc to the outputs
+    # https://stackoverflow.com/a/63889676
+    artifact_name_patterns = [
+        artifact_name_pattern(
+            category_name = "executable",
+            prefix = "",
+            extension = ".exe",
+        ),
+        artifact_name_pattern(
+            category_name = "dynamic_library",
+            prefix = "",
+            extension = ".dll",
+        ),
+        artifact_name_pattern(
+            category_name = "static_library",
+            prefix = "",
+            extension = ".lib",
+        ),
+    ]
 
     # https://bazel.build/rules/lib/cc_common#create_cc_toolchain_config_info
     # Note, this rule is defined in Java code, not Starlark
@@ -64,6 +102,7 @@ def _windows_amd64_toolchain_info(ctx):
         target_libc = "",
         target_system_name = "",
         toolchain_identifier = "",
+        artifact_name_patterns = artifact_name_patterns,
     )
 
 provide_windows_amd64_toolchain_config = rule(
@@ -74,23 +113,19 @@ provide_windows_amd64_toolchain_config = rule(
     implementation = _windows_amd64_toolchain_info,
 )
 
-def _make_action_configs():
+def _make_action_configs(clang_toolchain_path):
     """
     This function sets up the tools needed to perform the various compile/link actions.
 
-    Bazel normally restricts us to referring to (and therefore running) executables/scripts
-    that are in this directory (That is EXEC_ROOT/toolchain). However, the executables we want
-    to run are brought in via WORKSPACE.bazel and are located in EXEC_ROOT/external/clang....
-    Therefore, we make use of "trampoline scripts" that will call the binaries from the
-    toolchain directory.
-
-    These action_configs also let us dynamically specify arguments from the Bazel
-    environment if necessary (see cpp_link_static_library_action).
+    By using ../external/... relative paths pointing directly to clang.exe and lld-link.exe,
+    we bypass batch script trampolines. This allows direct CreateProcessW execution which
+    natively supports forward-slash path separators (critical for rules_rust/rustc linking).
     """
 
     # https://cs.opensource.google/bazel/bazel/+/master:tools/cpp/cc_toolchain_config_lib.bzl;l=435;drc=3b9e6f201a9a3465720aad8712ab7bcdeaf2e5da
-    clang_tool = tool(path = "windows_trampolines/clang_trampoline_windows.bat")
-    link_tool = tool(path = "windows_trampolines/link_trampoline_windows.bat")
+    clang_tool = tool(path = "../" + clang_toolchain_path + "/bin/clang.exe")
+    clang_cl_tool = tool(path = "../" + clang_toolchain_path + "/bin/clang-cl.exe")
+    link_tool = tool(path = "../" + clang_toolchain_path + "/bin/llvm-lib.bat")
 
     # https://cs.opensource.google/bazel/bazel/+/master:tools/cpp/cc_toolchain_config_lib.bzl;l=488;drc=3b9e6f201a9a3465720aad8712ab7bcdeaf2e5da
     assemble_action = action_config(
@@ -116,17 +151,35 @@ def _make_action_configs():
 
     cpp_link_dynamic_library_action = action_config(
         action_name = ACTION_NAMES.cpp_link_dynamic_library,
-        tools = [clang_tool],
+        tools = [
+            tool(
+                path = "../" + clang_toolchain_path + "/bin/clang-cl.exe",
+                with_features = [with_feature_set(features = ["rules_rust_unsupported_feature"])],
+            ),
+            tool(path = "../" + clang_toolchain_path + "/bin/lld-link.exe"),
+        ],
     )
     cpp_link_executable_action = action_config(
         action_name = ACTION_NAMES.cpp_link_executable,
         # Bazel assumes it is talking to clang when building an executable. There are
         # "-Wl" flags on the command: https://releases.llvm.org/6.0.1/tools/clang/docs/ClangCommandLineReference.html#cmdoption-clang-Wl
-        tools = [clang_tool],
+        tools = [
+            tool(
+                path = "../" + clang_toolchain_path + "/bin/clang-cl.exe",
+                with_features = [with_feature_set(features = ["rules_rust_unsupported_feature"])],
+            ),
+            tool(path = "../" + clang_toolchain_path + "/bin/lld-link.exe"),
+        ],
     )
     cpp_link_nodeps_dynamic_library_action = action_config(
         action_name = ACTION_NAMES.cpp_link_nodeps_dynamic_library,
-        tools = [clang_tool],
+        tools = [
+            tool(
+                path = "../" + clang_toolchain_path + "/bin/clang-cl.exe",
+                with_features = [with_feature_set(features = ["rules_rust_unsupported_feature"])],
+            ),
+            tool(path = "../" + clang_toolchain_path + "/bin/lld-link.exe"),
+        ],
     )
 
     # By default, there are no flags or libraries passed to the llvm-link tool, so
@@ -134,6 +187,7 @@ def _make_action_configs():
     # https://bazel.build/docs/cc-toolchain-config-reference#cctoolchainconfiginfo-build-variables
     cpp_link_static_library_action = action_config(
         action_name = ACTION_NAMES.cpp_link_static_library,
+        implies = ["archive_param_file"],
         flag_sets = [
             flag_set(
                 flag_groups = [
@@ -174,8 +228,8 @@ def _make_action_configs():
             flag_set(
                 flag_groups = [
                     flag_group(
-                        flags = ["@%{archive_param_file}"],
-                        expand_if_available = "archive_param_file",
+                        flags = ["@%{linker_param_file}"],
+                        expand_if_available = "linker_param_file",
                     ),
                 ],
             ),
@@ -266,28 +320,100 @@ def _make_default_flags(clang_toolchain):
             flag_group(
                 flags = [
                     "-std=c++20",
+                    "-DNOMINMAX",  # https://stackoverflow.com/a/22744273
                 ],
             ),
         ],
     )
 
-    link_exe_flags = flag_set(
+    # THE HYBRID C++ COMPILATION-LINKING PIPELINE
+    # -------------------------------------------
+    # Our Windows C++ toolchain is designed as a custom hybrid pipeline:
+    # 1. COMPILATION: Handled via 'clang.exe' in GCC driver mode. This allows Skia to perfectly
+    #    preserve and parse its existing, highly granular Unix/GCC compilation copts and warning
+    #    suppressions (configured in include/config/copts.bzl) without rewriting them.
+    # 2. LINKING: Handled via 'clang-cl.exe' in MSVC driver mode. This allows C++ links to process
+    #    standard positional Windows system libraries (like user32.lib, gdi32.lib, dxgi.lib) and
+    #    resolve MSVC standard library and SDK search paths natively.
+    #
+    # THE LINKER SPLITTING MECHANISM:
+    # -------------------------------
+    # C++ links must run via 'clang-cl.exe' (MSVC driver) to parse search paths and positional libs.
+    # Conversely, Rust targets ('rules_rust') emit raw MSVC command lines and MUST link directly
+    # with the raw 'lld-link.exe' linker (rejecting compiler drivers like clang-cl).
+    # We solve this natively in Bazel by declaring "rules_rust_unsupported_feature" as a default-enabled
+    # toolchain feature. Because rules_rust blacklists this feature, it is guaranteed to be enabled
+    # only for C++ links (selecting clang-cl.exe) and disabled for Rust links (selecting lld-link.exe).
+    #
+    # THE STATIC CRT (/MT) ALIGNMENT:
+    # -------------------------------
+    # When 'clang.exe' compiles C++ files in GCC compatibility mode on Windows, the resulting
+    # object files natively target the Static C Runtime (/MT) by default.
+    # To prevent severe dynamic vs static CRT linkage conflicts, our C++ link actions must also
+    # target the Static CRT using '/MT' and explicitly load the corresponding static standard libraries.
+    #
+    # DETAILED BREAKDOWN OF SYSTEM AND CRT LIBRARIES:
+    # ----------------------------------------------
+    # Because GCC-mode compilations do not automatically inject MSVC-style '/DEFAULTLIB' directives
+    # into C++ object files, the LLD-link linker does not automatically know which MSVC standard and
+    # SDK libraries to load. We must list them explicitly after '/link':
+    #
+    # - libcpmt.lib: The standard MSVC Static C++ Standard Library (locale, cout, threads, vector).
+    # - libcmt.lib: The MSVC Static C Runtime. Even though 'operator new' and 'operator delete'
+    #   are C++ language constructs, MSVC compiles their raw physical memory allocation backends
+    #   directly into libcmt.lib.
+    # - libvcruntime.lib: Static VC Runtime Helper containing physical definitions for compiler
+    #   intrinsics like 'memcpy' and 'memset', RTTI metadata, and exception handlers (_CxxThrowException).
+    # - libucrt.lib: Modern Universal CRT containing basic string and math library functions.
+    # - kernel32.lib: The core Win32 system library containing fundamental OS APIs.
+    # - ntdll.lib: Native Windows NT system calls. Essential for resolving NtReadFile, NtWriteFile,
+    #   and RtlNtStatusToDosError used heavily by Rust's standard library (std) OS abstractions!
+    # - dxguid.lib: Physical GUID definition constants for DirectX/DXGI (required by Google Dawn
+    #   to resolve D3D debugging GUIDs like WKPDID_D3DDebugObjectName).
+    # - onecore.lib: The modern unified Windows runtime SDK umbrella library. Explicitly used to
+    #   resolve modern secure OS handle comparisons (CompareObjectHandles) partitioned inside the SDK.
+    link_exe_flags_cpp = flag_set(
         actions = [
             ACTION_NAMES.cpp_link_executable,
             ACTION_NAMES.cpp_link_dynamic_library,
             ACTION_NAMES.cpp_link_nodeps_dynamic_library,
         ],
+        with_features = [with_feature_set(features = ["rules_rust_unsupported_feature"])],
         flag_groups = [
             flag_group(
                 flags = [
-                    "-fuse-ld=lld",
-                    # We chose to use the llvm runtime, not the gcc one because it is already
-                    # included in the clang binary
-                    "--rtlib=compiler-rt",
-                    "-std=c++20",
-                    "-L" + full_msvc_lib + "/x64",
-                    "-L" + full_win_sdk_lib + "/ucrt/x64",
-                    "-L" + full_win_sdk_lib + "/um/x64",
+                    "/MT",
+                    "/link",
+                    "/subsystem:console",
+                    "libcpmt.lib",
+                    "libcmt.lib",
+                    "libvcruntime.lib",
+                    "libucrt.lib",
+                    "kernel32.lib",
+                    "ntdll.lib",
+                    "dxguid.lib",
+                    "onecore.lib",
+                    "/LIBPATH:" + full_msvc_lib + "/x64",
+                    "/LIBPATH:" + full_win_sdk_lib + "/ucrt/x64",
+                    "/LIBPATH:" + full_win_sdk_lib + "/um/x64",
+                ],
+            ),
+        ],
+    )
+
+    link_exe_flags_rust = flag_set(
+        actions = [
+            ACTION_NAMES.cpp_link_executable,
+            ACTION_NAMES.cpp_link_dynamic_library,
+            ACTION_NAMES.cpp_link_nodeps_dynamic_library,
+        ],
+        with_features = [with_feature_set(not_features = ["rules_rust_unsupported_feature"])],
+        flag_groups = [
+            flag_group(
+                flags = [
+                    "/LIBPATH:" + full_msvc_lib + "/x64",
+                    "/LIBPATH:" + full_win_sdk_lib + "/ucrt/x64",
+                    "/LIBPATH:" + full_win_sdk_lib + "/um/x64",
                 ],
             ),
         ],
@@ -298,7 +424,8 @@ def _make_default_flags(clang_toolchain):
         flag_sets = [
             cxx_compile_includes,
             cpp_compile_flags,
-            link_exe_flags,
+            link_exe_flags_cpp,
+            link_exe_flags_rust,
         ],
     )]
 

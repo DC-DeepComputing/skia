@@ -39,6 +39,17 @@ def _download_windows_amd64_toolchain_impl(ctx):
     ctx.symlink("bin/lld-link.exe", "bin/ld.lld.exe")
     ctx.symlink("bin/lld-link.exe", "bin/lld.exe")
 
+    # Since lld-link.exe requires "/lib" to be the very first physical command-line
+    # argument to boot in static archiver mode, we create a tiny helper batch file
+    # inside the toolchain bin/ folder. This executes lld-link.exe with "/lib" prepended.
+    ctx.file(
+        "bin/llvm-lib.bat",
+        content = """@echo off
+"%~dp0lld-link.exe" /lib %*
+""",
+        executable = True,
+    )
+
     # Create a BUILD.bazel file that makes the files necessary for compiling,
     # linking and creating archive files visible to Bazel.
     # The smaller the globs are, the more performant the sandboxed builds will be.
@@ -56,6 +67,7 @@ filegroup(
     name = "archive_files",
     srcs = [
         "bin/lld-link.exe",
+        "bin/llvm-lib.bat",
     ],
     visibility = ["//visibility:public"],
 )
