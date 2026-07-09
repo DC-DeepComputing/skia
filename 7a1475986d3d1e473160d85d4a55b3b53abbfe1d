@@ -46,6 +46,30 @@
       },
       "revId": "7a1475986d3d1e473160d85d4a55b3b53abbfe1d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2fb8f5e_ee20bad8",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-07-09T19:51:07Z",
+      "side": 1,
+      "message": "Thanks, looks good with a minor tweak.",
+      "parentUuid": "f5836d80_0f279790",
+      "range": {
+        "startLine": 33,
+        "startChar": 43,
+        "endLine": 35,
+        "endChar": 75
+      },
+      "revId": "7a1475986d3d1e473160d85d4a55b3b53abbfe1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

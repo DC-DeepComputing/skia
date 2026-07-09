@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16208e1b_fbc54a4f",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-07-09T19:51:07Z",
+      "side": 1,
+      "message": "My fault for bringing this up in previously, but looking at the current version I think it\u0027s no longer safe to move here: we reference `data` in two arguments, and the argument evaluation order is not well defined.",
+      "range": {
+        "startLine": 122,
+        "startChar": 39,
+        "endLine": 122,
+        "endChar": 54
+      },
+      "revId": "2b7f4a8a04a19e0a4a2cd5747d5fe022e0e88763",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
