@@ -1386,6 +1386,7 @@ void SkCanvas::clipRect(const SkRect& rect, SkClipOp op, bool doAA) {
 }
 
 void SkCanvas::onClipRect(const SkRect& rect, SkClipOp op, ClipEdgeStyle edgeStyle) {
+    if (fCaptureCanvas) { fCaptureCanvas->clipRect(rect, op, edgeStyle == kSoft_ClipEdgeStyle); }
     SkASSERT(rect.isSorted());
     const bool isAA = kSoft_ClipEdgeStyle == edgeStyle;
 
@@ -1440,6 +1441,7 @@ void SkCanvas::internal_private_resetClip() {
 }
 
 void SkCanvas::onResetClip() {
+    if (fCaptureCanvas) { SkCanvasPriv::ResetClip(fCaptureCanvas); }
     SkIRect deviceRestriction = this->topDevice()->imageInfo().bounds();
     if (fClipRestrictionSaveCount >= 0 && this->topDevice() == this->rootDevice()) {
         // Respect the device clip restriction when resetting the clip if we're on the base device.
@@ -1465,6 +1467,7 @@ void SkCanvas::clipRRect(const SkRRect& rrect, SkClipOp op, bool doAA) {
 }
 
 void SkCanvas::onClipRRect(const SkRRect& rrect, SkClipOp op, ClipEdgeStyle edgeStyle) {
+    if (fCaptureCanvas) { fCaptureCanvas->clipRRect(rrect, op, edgeStyle == kSoft_ClipEdgeStyle); }
     bool isAA = kSoft_ClipEdgeStyle == edgeStyle;
 
     AutoUpdateQRBounds aqr(this);
@@ -1497,6 +1500,7 @@ void SkCanvas::clipPath(const SkPath& path, SkClipOp op, bool doAA) {
 }
 
 void SkCanvas::onClipPath(const SkPath& path, SkClipOp op, ClipEdgeStyle edgeStyle) {
+    if (fCaptureCanvas) { fCaptureCanvas->clipPath(path, op, edgeStyle == kSoft_ClipEdgeStyle); }
     bool isAA = kSoft_ClipEdgeStyle == edgeStyle;
 
     AutoUpdateQRBounds aqr(this);
@@ -1521,6 +1525,7 @@ void SkCanvas::clipShader(sk_sp<SkShader> sh, SkClipOp op) {
 }
 
 void SkCanvas::onClipShader(sk_sp<SkShader> sh, SkClipOp op) {
+    if (fCaptureCanvas) { fCaptureCanvas->clipShader(sh, op); }
     AutoUpdateQRBounds aqr(this);
     this->topDevice()->clipShader(sh, op);
 }
@@ -1531,6 +1536,7 @@ void SkCanvas::clipRegion(const SkRegion& rgn, SkClipOp op) {
 }
 
 void SkCanvas::onClipRegion(const SkRegion& rgn, SkClipOp op) {
+    if (fCaptureCanvas) { fCaptureCanvas->clipRegion(rgn, op); }
     AutoUpdateQRBounds aqr(this);
     this->topDevice()->clipRegion(rgn, op);
 }
@@ -1862,6 +1868,7 @@ void SkCanvas::private_draw_shadow_rec(const SkPath& path, const SkDrawShadowRec
 }
 
 void SkCanvas::onDrawShadowRec(const SkPath& path, const SkDrawShadowRec& rec) {
+    if (fCaptureCanvas) { fCaptureCanvas->onDrawShadowRec(path, rec); }
     // We don't test quickReject because the shadow outsets the path's bounds.
     // TODO(michaelludwig): Is it worth calling SkDrawShadowMetrics::GetLocalBounds here?
     if (!this->predrawNotify()) {
@@ -1920,6 +1927,7 @@ void SkCanvas::onDiscard() {
 }
 
 void SkCanvas::onDrawPaint(const SkPaint& paint) {
+    if (fCaptureCanvas) { fCaptureCanvas->drawPaint(paint); }
     this->internalDrawPaint(paint);
 }
 
@@ -1936,8 +1944,8 @@ void SkCanvas::internalDrawPaint(const SkPaint& paint) {
     }
 }
 
-void SkCanvas::onDrawPoints(PointMode mode, size_t count, const SkPoint pts[],
-                            const SkPaint& paint) {
+void SkCanvas::onDrawPoints(PointMode mode, size_t count, const SkPoint pts[], const SkPaint& paint) {
+    if (fCaptureCanvas) { fCaptureCanvas->drawPoints(mode, {pts, count}, paint); }
     if ((long)count <= 0 || this->nothingToDraw(paint)) {
         return;
     }
@@ -2040,6 +2048,7 @@ std::optional<AutoLayerForImageFilter> SkCanvas::attemptBlurredRRectDraw(
 }
 
 void SkCanvas::onDrawRect(const SkRect& r, const SkPaint& paint) {
+    if (fCaptureCanvas) { fCaptureCanvas->drawRect(r, paint); }
     SkASSERT(r.isSorted());
     if (this->internalQuickReject(r, paint)) {
         return;
@@ -2062,6 +2071,7 @@ void SkCanvas::onDrawRect(const SkRect& r, const SkPaint& paint) {
 }
 
 void SkCanvas::onDrawRegion(const SkRegion& region, const SkPaint& paint) {
+    if (fCaptureCanvas) { fCaptureCanvas->drawRegion(region, paint); }
     const SkRect bounds = SkRect::Make(region.getBounds());
     if (this->internalQuickReject(bounds, paint)) {
         return;
@@ -2074,6 +2084,7 @@ void SkCanvas::onDrawRegion(const SkRegion& region, const SkPaint& paint) {
 }
 
 void SkCanvas::onDrawBehind(const SkPaint& paint) {
+    if (fCaptureCanvas) { SkCanvasPriv::DrawBehind(fCaptureCanvas, paint); }
     SkDevice* dev = this->topDevice();
     if (!dev) {
         return;
@@ -2118,6 +2129,7 @@ void SkCanvas::onDrawBehind(const SkPaint& paint) {
 }
 
 void SkCanvas::onDrawOval(const SkRect& oval, const SkPaint& paint) {
+    if (fCaptureCanvas) { fCaptureCanvas->drawOval(oval, paint); }
     SkASSERT(oval.isSorted());
     if (this->internalQuickReject(oval, paint)) {
         return;
@@ -2138,9 +2150,8 @@ void SkCanvas::onDrawOval(const SkRect& oval, const SkPaint& paint) {
     }
 }
 
-void SkCanvas::onDrawArc(const SkRect& oval, SkScalar startAngle,
-                         SkScalar sweepAngle, bool useCenter,
-                         const SkPaint& paint) {
+void SkCanvas::onDrawArc(const SkRect& oval, SkScalar startAngle, SkScalar sweepAngle, bool useCenter, const SkPaint& paint) {
+    if (fCaptureCanvas) { fCaptureCanvas->drawArc(oval, startAngle, sweepAngle, useCenter, paint); }
     SkASSERT(oval.isSorted());
     if (this->internalQuickReject(oval, paint)) {
         return;
@@ -2165,6 +2176,7 @@ void SkCanvas::onDrawArc(const SkRect& oval, SkScalar startAngle,
 }
 
 void SkCanvas::onDrawRRect(const SkRRect& rrect, const SkPaint& paint) {
+    if (fCaptureCanvas) { fCaptureCanvas->drawRRect(rrect, paint); }
     const SkRect& bounds = rrect.getBounds();
 
     // Delegating to simpler draw operations
@@ -2197,6 +2209,7 @@ void SkCanvas::onDrawRRect(const SkRRect& rrect, const SkPaint& paint) {
 }
 
 void SkCanvas::onDrawDRRect(const SkRRect& outer, const SkRRect& inner, const SkPaint& paint) {
+    if (fCaptureCanvas) { fCaptureCanvas->drawDRRect(outer, inner, paint); }
     const SkRect& bounds = outer.getBounds();
     if (this->internalQuickReject(bounds, paint)) {
         return;
@@ -2209,6 +2222,7 @@ void SkCanvas::onDrawDRRect(const SkRRect& outer, const SkRRect& inner, const Sk
 }
 
 void SkCanvas::onDrawPath(const SkPath& path, const SkPaint& paint) {
+    if (fCaptureCanvas) { fCaptureCanvas->drawPath(path, paint); }
     if (!path.isFinite()) {
         return;
     }
@@ -2249,8 +2263,8 @@ static SkPaint clean_paint_for_drawVertices(SkPaint paint) {
 }
 
 // TODO: Delete this since it is no longer used
-void SkCanvas::onDrawImage2(const SkImage* image, SkScalar x, SkScalar y,
-                            const SkSamplingOptions& sampling, const SkPaint* paint) {
+void SkCanvas::onDrawImage2(const SkImage* image, SkScalar x, SkScalar y, const SkSamplingOptions& sampling, const SkPaint* paint) {
+    if (fCaptureCanvas) { fCaptureCanvas->drawImage(image, x, y, sampling, paint); }
     SkUNREACHABLE;
 }
 
@@ -2268,9 +2282,8 @@ static SkSamplingOptions clean_sampling_for_constraint(
     return sampling;
 }
 
-void SkCanvas::onDrawImageRect2(const SkImage* image, const SkRect& src, const SkRect& dst,
-                                const SkSamplingOptions& sampling, const SkPaint* paint,
-                                SrcRectConstraint constraint) {
+void SkCanvas::onDrawImageRect2(const SkImage* image, const SkRect& src, const SkRect& dst, const SkSamplingOptions& sampling, const SkPaint* paint, SrcRectConstraint constraint) {
+    if (fCaptureCanvas) { fCaptureCanvas->drawImageRect(image, src, dst, sampling, paint, constraint); }
     SkPaint realPaint = clean_paint_for_drawImage(paint);
     SkSamplingOptions realSampling = clean_sampling_for_constraint(sampling, constraint);
 
@@ -2368,8 +2381,8 @@ void SkCanvas::onDrawImageRect2(const SkImage* image, const SkRect& src, const S
     }
 }
 
-void SkCanvas::onDrawImageLattice2(const SkImage* image, const Lattice& lattice, const SkRect& dst,
-                                   SkFilterMode filter, const SkPaint* paint) {
+void SkCanvas::onDrawImageLattice2(const SkImage* image, const Lattice& lattice, const SkRect& dst, SkFilterMode filter, const SkPaint* paint) {
+    if (fCaptureCanvas) { fCaptureCanvas->drawImageLattice(image, lattice, dst, filter, paint); }
     SkPaint realPaint = clean_paint_for_drawImage(paint);
 
     if (this->internalQuickReject(dst, realPaint)) {
@@ -2439,14 +2452,15 @@ private:
     sktext::GlyphRunBuilder* fGlyphRunBuilder;
 };
 
-void SkCanvas::onDrawTextBlob(const SkTextBlob* blob, SkScalar x, SkScalar y,
-                              const SkPaint& paint) {
+void SkCanvas::onDrawTextBlob(const SkTextBlob* blob, SkScalar x, SkScalar y, const SkPaint& paint) {
+    if (fCaptureCanvas) { fCaptureCanvas->drawTextBlob(blob, x, y, paint); }
     AutoGlyphRunBuilder scratchBuilder(this);
     auto glyphRunList = scratchBuilder->blobToGlyphRunList(*blob, {x, y});
     this->onDrawGlyphRunList(glyphRunList, paint);
 }
 
 void SkCanvas::onDrawGlyphRunList(const sktext::GlyphRunList& glyphRunList, const SkPaint& paint) {
+    if (fCaptureCanvas) { fCaptureCanvas->onDrawGlyphRunList(glyphRunList, paint); }
     SkRect bounds = glyphRunList.sourceBoundsWithOrigin();
     if (this->internalQuickReject(bounds, paint)) {
         return;
@@ -2492,6 +2506,7 @@ void SkCanvas::drawSlug(const Slug* slug, const SkPaint& paint) {
 }
 
 void SkCanvas::onDrawSlug(const Slug* slug, const SkPaint& paint) {
+    if (fCaptureCanvas) { fCaptureCanvas->onDrawSlug(slug, paint); }
     SkRect bounds = slug->sourceBoundsWithOrigin();
     if (this->internalQuickReject(bounds, paint)) {
         return;
@@ -2599,8 +2614,8 @@ void SkCanvas::drawTextBlob(const SkTextBlob* blob, SkScalar x, SkScalar y,
     this->onDrawTextBlob(blob, x, y, paint);
 }
 
-void SkCanvas::onDrawVerticesObject(const SkVertices* vertices, SkBlendMode bmode,
-                                    const SkPaint& paint) {
+void SkCanvas::onDrawVerticesObject(const SkVertices* vertices, SkBlendMode bmode, const SkPaint& paint) {
+    if (fCaptureCanvas) { fCaptureCanvas->onDrawVerticesObject(vertices, bmode, paint); }
     SkPaint simplePaint = clean_paint_for_drawVertices(paint);
 
     const SkRect& bounds = vertices->bounds();
@@ -2615,6 +2630,7 @@ void SkCanvas::onDrawVerticesObject(const SkVertices* vertices, SkBlendMode bmod
 }
 
 void SkCanvas::onDrawMesh(const SkMesh& mesh, sk_sp<SkBlender> blender, const SkPaint& paint) {
+    if (fCaptureCanvas) { fCaptureCanvas->drawMesh(mesh, blender, paint); }
     SkPaint simplePaint = clean_paint_for_drawVertices(paint);
     auto layer = this->aboutToDraw(simplePaint, nullptr);
     if (layer) {
@@ -2636,6 +2652,7 @@ void SkCanvas::drawPatch(const SkPoint cubics[12], const SkColor colors[4],
 void SkCanvas::onDrawPatch(const SkPoint cubics[12], const SkColor colors[4],
                            const SkPoint texCoords[4], SkBlendMode bmode,
                            const SkPaint& paint) {
+    if (fCaptureCanvas) { fCaptureCanvas->onDrawPatch(cubics, colors, texCoords, bmode, paint); }
     auto bounds = SkRect::Bounds({cubics, (size_t)SkPatchUtils::kNumCtrlPts});
     if (!bounds) {
         return; // we don't draw if the bounds are not finite
@@ -2683,6 +2700,7 @@ void SkCanvas::drawDrawable(SkDrawable* dr, const SkMatrix* matrix) {
 }
 
 void SkCanvas::onDrawDrawable(SkDrawable* dr, const SkMatrix* matrix) {
+    if (fCaptureCanvas) { fCaptureCanvas->onDrawDrawable(dr, matrix); }
     // drawable bounds are no longer reliable (e.g. android displaylist)
     // so don't use them for quick-reject
     if (this->predrawNotify()) {
@@ -2690,10 +2708,8 @@ void SkCanvas::onDrawDrawable(SkDrawable* dr, const SkMatrix* matrix) {
     }
 }
 
-void SkCanvas::onDrawAtlas2(const SkImage* atlas, const SkRSXform xform[], const SkRect tex[],
-                            const SkColor colors[], int count, SkBlendMode bmode,
-                            const SkSamplingOptions& sampling, const SkRect* cull,
-                            const SkPaint* paint) {
+void SkCanvas::onDrawAtlas2(const SkImage* atlas, const SkRSXform xform[], const SkRect tex[], const SkColor colors[], int count, SkBlendMode bmode, const SkSamplingOptions& sampling, const SkRect* cull, const SkPaint* paint) {
+    if (fCaptureCanvas) { fCaptureCanvas->onDrawAtlas2(atlas, xform, tex, colors, count, bmode, sampling, cull, paint); }
     // drawAtlas is a combination of drawVertices and drawImage...
     SkPaint realPaint = clean_paint_for_drawVertices(clean_paint_for_drawImage(paint));
     realPaint.setShader(atlas->makeShader(sampling));
@@ -2714,6 +2730,7 @@ void SkCanvas::onDrawAtlas2(const SkImage* atlas, const SkRSXform xform[], const
 }
 
 void SkCanvas::onDrawAnnotation(const SkRect& rect, const char key[], SkData* value) {
+    if (fCaptureCanvas) { fCaptureCanvas->onDrawAnnotation(rect, key, value); }
     SkASSERT(key);
 
     if (this->predrawNotify()) {
@@ -2721,8 +2738,8 @@ void SkCanvas::onDrawAnnotation(const SkRect& rect, const char key[], SkData* va
     }
 }
 
-void SkCanvas::onDrawEdgeAAQuad(const SkRect& r, const SkPoint clip[4], QuadAAFlags edgeAA,
-                                const SkColor4f& color, SkBlendMode mode) {
+void SkCanvas::onDrawEdgeAAQuad(const SkRect& r, const SkPoint clip[4], QuadAAFlags edgeAA, const SkColor4f& color, SkBlendMode mode) {
+    if (fCaptureCanvas) { fCaptureCanvas->onDrawEdgeAAQuad(r, clip, edgeAA, color, mode); }
     SkASSERT(r.isSorted());
 
     SkPaint paint{color};
@@ -2736,10 +2753,8 @@ void SkCanvas::onDrawEdgeAAQuad(const SkRect& r, const SkPoint clip[4], QuadAAFl
     }
 }
 
-void SkCanvas::onDrawEdgeAAImageSet2(const ImageSetEntry imageSet[], int count,
-                                     const SkPoint dstClips[], const SkMatrix preViewMatrices[],
-                                     const SkSamplingOptions& sampling, const SkPaint* paint,
-                                     SrcRectConstraint constraint) {
+void SkCanvas::onDrawEdgeAAImageSet2(const ImageSetEntry imageSet[], int count, const SkPoint dstClips[], const SkMatrix preViewMatrices[], const SkSamplingOptions& sampling, const SkPaint* paint, SrcRectConstraint constraint) {
+    if (fCaptureCanvas) { fCaptureCanvas->onDrawEdgeAAImageSet2(imageSet, count, dstClips, preViewMatrices, sampling, paint, constraint); }
     if (count <= 0) {
         // Nothing to draw
         return;
@@ -2884,8 +2899,8 @@ void SkCanvas::drawArc(const SkRect& oval, SkScalar startAngle,
 void SkCanvas::drawPicture(const SkPicture* picture, const SkMatrix* matrix, const SkPaint* paint) {}
 
 
-void SkCanvas::onDrawPicture(const SkPicture* picture, const SkMatrix* matrix,
-                             const SkPaint* paint) {}
+void SkCanvas::onDrawPicture(const SkPicture* picture, const SkMatrix* matrix, const SkPaint* paint) {
+    if (fCaptureCanvas) { fCaptureCanvas->onDrawPicture(picture, matrix, paint); }}
 #else
 
 void SkCanvas::drawPicture(const SkPicture* picture, const SkMatrix* matrix, const SkPaint* paint) {
@@ -2903,8 +2918,8 @@ void SkCanvas::drawPicture(const SkPicture* picture, const SkMatrix* matrix, con
     }
 }
 
-void SkCanvas::onDrawPicture(const SkPicture* picture, const SkMatrix* matrix,
-                             const SkPaint* paint) {
+void SkCanvas::onDrawPicture(const SkPicture* picture, const SkMatrix* matrix, const SkPaint* paint) {
+    if (fCaptureCanvas) { fCaptureCanvas->onDrawPicture(picture, matrix, paint); }
     if (this->internalQuickReject(picture->cullRect(), paint ? *paint : SkPaint{}, matrix)) {
         return;
     }
@@ -3029,4 +3044,55 @@ SkRasterHandleAllocator::MakeCanvas(std::unique_ptr<SkRasterHandleAllocator> all
     }
     return hndl ? std::unique_ptr<SkCanvas>(new SkCanvas(bm, std::move(alloc), hndl, props))
                 : nullptr;
+}
+
+
+void SkCanvas::willSave() {
+    if (fCaptureCanvas) {
+        fCaptureCanvas->save();
+    }
+}
+
+SkCanvas::SaveLayerStrategy SkCanvas::getSaveLayerStrategy(const SaveLayerRec& rec) {
+    if (fCaptureCanvas) {
+        fCaptureCanvas->saveLayer(rec);
+    }
+    return kFullLayer_SaveLayerStrategy;
+}
+
+bool SkCanvas::onDoSaveBehind(const SkRect* bounds) {
+    if (fCaptureCanvas) {
+        SkCanvasPriv::SaveBehind(fCaptureCanvas, bounds);
+    }
+    return true;
+}
+
+void SkCanvas::willRestore() {
+    if (fCaptureCanvas) {
+        fCaptureCanvas->restore();
+    }
+}
+
+void SkCanvas::didConcat44(const SkM44& m) {
+    if (fCaptureCanvas) {
+        fCaptureCanvas->concat(m);
+    }
+}
+
+void SkCanvas::didSetM44(const SkM44& matrix) {
+    if (fCaptureCanvas) {
+        fCaptureCanvas->setMatrix(matrix);
+    }
+}
+
+void SkCanvas::didTranslate(SkScalar x, SkScalar y) {
+    if (fCaptureCanvas) {
+        fCaptureCanvas->translate(x, y);
+    }
+}
+
+void SkCanvas::didScale(SkScalar x, SkScalar y) {
+    if (fCaptureCanvas) {
+        fCaptureCanvas->scale(x, y);
+    }
 }

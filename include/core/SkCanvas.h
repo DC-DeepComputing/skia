@@ -2319,21 +2319,19 @@ protected:
         kNoLayer_SaveLayerStrategy,
     };
 
-    virtual void willSave() {}
+    virtual void willSave();
     // Overriders should call the corresponding INHERITED method up the inheritance chain.
-    virtual SaveLayerStrategy getSaveLayerStrategy(const SaveLayerRec& ) {
-        return kFullLayer_SaveLayerStrategy;
-    }
+    virtual SaveLayerStrategy getSaveLayerStrategy(const SaveLayerRec&);
 
     // returns true if we should actually perform the saveBehind, or false if we should just save.
-    virtual bool onDoSaveBehind(const SkRect*) { return true; }
-    virtual void willRestore() {}
+    virtual bool onDoSaveBehind(const SkRect*);
+    virtual void willRestore();
     virtual void didRestore() {}
 
-    virtual void didConcat44(const SkM44&) {}
-    virtual void didSetM44(const SkM44&) {}
-    virtual void didTranslate(SkScalar, SkScalar) {}
-    virtual void didScale(SkScalar, SkScalar) {}
+    virtual void didConcat44(const SkM44&);
+    virtual void didSetM44(const SkM44&);
+    virtual void didTranslate(SkScalar, SkScalar);
+    virtual void didScale(SkScalar, SkScalar);
 
     // NOTE: If you are adding a new onDraw virtual to SkCanvas, PLEASE add an override to
     // SkCanvasVirtualEnforcer (in SkCanvasVirtualEnforcer.h). This ensures that subclasses using
@@ -2529,6 +2527,10 @@ private:
     std::unique_ptr<SkRasterHandleAllocator> fAllocator;
 
     SkSurface_Base*  fSurfaceBase;
+    SkCanvas* fCaptureCanvas = nullptr;
+    void setCaptureCanvas(SkCanvas* canvas) { fCaptureCanvas = canvas; }
+    SkCanvas* getCaptureCanvas() const { return fCaptureCanvas; }
+    friend class SkCaptureManager;
     SkSurface_Base* getSurfaceBase() const { return fSurfaceBase; }
     void setSurfaceBase(SkSurface_Base* sb) {
         fSurfaceBase = sb;

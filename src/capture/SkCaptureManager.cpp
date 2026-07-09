@@ -12,59 +12,99 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSurface.h"
 #include "src/capture/SkCapture.h"
-#include "src/capture/SkCaptureCanvas.h"
 #include "src/image/SkSurface_Base.h"
 
 #include <memory>
 
 SkCaptureManager::SkCaptureManager() {}
 
-SkCanvas* SkCaptureManager::makeCaptureCanvas(SkCanvas* canvas) {
-    auto newCanvas = std::make_unique<SkCaptureCanvas>(canvas, this);
-    auto rawCanvasPtr = newCanvas.get();
-    fTrackedCanvases.emplace_back(std::move(newCanvas));
-    return rawCanvasPtr;
+void SkCaptureManager::registerCanvas(SkCanvas* canvas) {
+    TrackedCanvas tc;
+    tc.fCanvas = canvas;
+    if (fIsCurrentlyCapturing) {
+        this->startRecording(&tc);
+    }
+    fTrackedCanvases.push_back(std::move(tc));
 }
 
-void SkCaptureManager::processCanvasContent(SkCaptureCanvas* canvas) {
-    auto picture = canvas->snapPicture();
-    if (picture) {
-        if (auto surfacePixelStorage = asSB(canvas->getBaseCanvasSurface())->getPixelStorage()) {
-            surfacePixelStorage->incrementContentId();
+void SkCaptureManager::unregisterCanvas(SkCanvas* canvas) {
+    for (int i = 0; i < fTrackedCanvases.size(); ++i) {
+        if (fTrackedCanvases[i].fCanvas == canvas) {
+            if (fIsCurrentlyCapturing) {
+                this->stopRecording(&fTrackedCanvases[i]);
+            }
+            fTrackedCanvases.removeShuffle(i);
+            break;
         }
-        fPictures.emplace_back(picture);
     }
 }
 
+void SkCaptureManager::startRecording(TrackedCanvas* tc) {
+    tc->fRecorder = std::make_unique<SkPictureRecorder>();
+    SkCanvas* recordingCanvas = tc->fRecorder->beginRecording(
+            tc->fCanvas->imageInfo().width(),
+            tc->fCanvas->imageInfo().height());
+    tc->fCanvas->setCaptureCanvas(recordingCanvas);
+}
+
+void SkCaptureManager::stopRecording(TrackedCanvas* tc) {
+    if (!tc->fRecorder) {
+        return;
+    }
+    tc->fCanvas->setCaptureCanvas(nullptr);
+    sk_sp<SkPicture> picture = tc->fRecorder->finishRecordingAsPicture();
+    if (picture) {
+        if (auto surfaceBase = tc->fCanvas->getSurfaceBase()) {
+            if (auto surfacePixelStorage = surfaceBase->getPixelStorage()) {
+                surfacePixelStorage->incrementContentId();
+            }
+        }
+        fPictures.emplace_back(std::move(picture));
+    }
+    tc->fRecorder.reset();
+}
+
 void SkCaptureManager::snapPictures() {
-    for (auto& canvas : fTrackedCanvases) {
-        if (canvas) {
-            this->processCanvasContent(canvas.get());
+    for (auto& tc : fTrackedCanvases) {
+        if (fIsCurrentlyCapturing && tc.fRecorder) {
+            this->stopRecording(&tc);
+            this->startRecording(&tc);
         }
     }
 }
 
 // TODO: make thread safe by using exchange() and a mutex.
 void SkCaptureManager::toggleCapture(bool capturing) {
-    if (capturing != fIsCurrentlyCapturing && !capturing) {
+    if (capturing == fIsCurrentlyCapturing) {
+        return;
+    }
+    if (capturing) {
+        fIsCurrentlyCapturing = true;
+        for (auto& tc : fTrackedCanvases) {
+            this->startRecording(&tc);
+        }
+    } else {
         // on capture stop, save the capture and reset
         this->snapPictures();
+        for (auto& tc : fTrackedCanvases) {
+            this->stopRecording(&tc);
+        }
         fLastCapture = SkCapture::MakeFromPictures(fPictures);
         fPictures.clear();
+        fIsCurrentlyCapturing = false;
     }
-    fIsCurrentlyCapturing = capturing;
 }
 
 void SkCaptureManager::snapPicture(SkSurface* surface) {
-    for (auto& canvas : fTrackedCanvases) {
-        if (canvas) {
-            if (canvas->getBaseCanvasSurface() == surface) {
-                this->processCanvasContent(canvas.get());
+    for (auto& tc : fTrackedCanvases) {
+        if (tc.fCanvas->getSurfaceBase() == surface) {
+            if (fIsCurrentlyCapturing && tc.fRecorder) {
+                this->stopRecording(&tc);
+                this->startRecording(&tc);
             }
         }
     }
 }
-
 
 sk_sp<SkCapture> SkCaptureManager::getLastCapture() const {
    return fLastCapture;

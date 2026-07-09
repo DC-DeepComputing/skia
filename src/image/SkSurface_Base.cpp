@@ -19,7 +19,6 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkSurface.h"
-#include "src/capture/SkCaptureCanvas.h"
 #include "src/capture/SkCaptureManager.h"
 #include "src/image/SkRescaleAndReadPixels.h"
 
@@ -42,8 +41,10 @@ SkSurface_Base::SkSurface_Base(const SkImageInfo& info, const SkSurfaceProps* pr
 SkSurface_Base::~SkSurface_Base() {
     // in case the canvas outsurvives us, we null the callback
     if (fCachedCanvas) {
+        if (this->baseRecorder()) {
+            this->baseRecorder()->unregisterCanvas(fCachedCanvas);
+        }
         fCachedCanvas->setSurfaceBase(nullptr);
-        fCachedCanvas->onSurfaceDelete();
     }
 }
 
