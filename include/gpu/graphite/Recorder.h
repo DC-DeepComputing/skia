@@ -282,7 +282,8 @@ private:
     void registerDevice(sk_sp<Device>);
     void deregisterDevice(const Device*);
 
-    SkCanvas* makeCaptureCanvas(SkCanvas*) override;
+    void registerCanvas(SkCanvas*) override;
+    void unregisterCanvas(SkCanvas*) override;
     void createCaptureBreakpoint(SkSurface*) override;
 
     sk_sp<SharedContext> fSharedContext;

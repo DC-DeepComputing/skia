@@ -9,16 +9,16 @@
 #define SkCaptureManager_DEFINED
 
 #include "include/core/SkPicture.h"
+#include "include/core/SkPictureRecorder.h"
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkTArray.h"
 
 #include <atomic>
 #include <cstdint>
-#include <map>
+#include <memory>
 
 class SkCanvas;
 class SkCapture;
-class SkCaptureCanvas;
 class SkSurface;
 
 /**
@@ -29,7 +29,9 @@ class SkCaptureManager : public SkRefCnt {
 public:
     SkCaptureManager();
 
-    SkCanvas* makeCaptureCanvas(SkCanvas* canvas);
+    void registerCanvas(SkCanvas* canvas);
+    void unregisterCanvas(SkCanvas* canvas);
+
     void snapPictures();
     void snapPicture(SkSurface*);
 
@@ -42,11 +44,17 @@ public:
     sk_sp<SkCapture> getLastCapture() const;
 
 private:
-    void processCanvasContent(SkCaptureCanvas*);
+    struct TrackedCanvas {
+        SkCanvas* fCanvas = nullptr;
+        std::unique_ptr<SkPictureRecorder> fRecorder;
+    };
+
+    void startRecording(TrackedCanvas* tc);
+    void stopRecording(TrackedCanvas* tc);
 
     std::atomic<bool> fIsCurrentlyCapturing = false;
-    skia_private::TArray<std::unique_ptr<SkCaptureCanvas>> fTrackedCanvases;
-    skia_private::TArray<sk_sp<SkPicture>>  fPictures;
+    skia_private::TArray<TrackedCanvas> fTrackedCanvases;
+    skia_private::TArray<sk_sp<SkPicture>> fPictures;
 
     sk_sp<SkCapture> fLastCapture;
 };

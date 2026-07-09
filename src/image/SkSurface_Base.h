@@ -213,14 +213,11 @@ SkCanvas* SkSurface_Base::getCachedCanvas() {
         fOwnedBaseCanvas = std::unique_ptr<SkCanvas>(this->onNewCanvas());
         if (fOwnedBaseCanvas) {
             fOwnedBaseCanvas->setSurfaceBase(this);
+            if (this->baseRecorder()) {
+                this->baseRecorder()->registerCanvas(fOwnedBaseCanvas.get());
+            }
         }
-        // Try to wrap base canvas in capture wrapper
-        if (this->baseRecorder()) {
-            fCachedCanvas = this->baseRecorder()->makeCaptureCanvas(fOwnedBaseCanvas.get());
-        }
-        if (!fCachedCanvas) {
-            fCachedCanvas = fOwnedBaseCanvas.get();
-        }
+        fCachedCanvas = fOwnedBaseCanvas.get();
     }
     return fCachedCanvas;
 }

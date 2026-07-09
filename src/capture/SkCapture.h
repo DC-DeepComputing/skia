@@ -20,7 +20,6 @@ class SkImage;
 class SkPicture;
 
 class SkCanvas;
-class SkCaptureCanvas;
 
 // TODO(b/412351769): Make this class public.
 class SkCapture : public SkRefCnt {
