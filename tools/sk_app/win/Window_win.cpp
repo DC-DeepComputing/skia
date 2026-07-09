@@ -390,7 +390,7 @@ bool Window_win::attach(BackendType attachType) {
             break;
 #endif
         default:
-            SK_ABORT("Unknown backend");
+            SkASSERTF_RELEASE(false, "Unknown backend %d", static_cast<int>(attachType));
     }
     this->onBackendCreated();
 
