@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8d016c8b_37c6a8e9",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-07-09T14:59:07Z",
+      "side": 1,
+      "message": "I am not sure if the checks implemented below / supported by SkStream API are sufficient to check if **all** the input data is available.  If (for example) only the first 1024 bytes (of a **bigger** input) are available, then IIUC `SkStream::hasLength` will return `true` (e.g. see [`blink::SegmentStream::hasLength`](https://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/renderer/platform/image-decoders/skia/segment_stream.cc;l\u003d115-117;drc\u003d30341531e02ec37f096b896932f227b6bd51d635)) and `SkStream::getLength` will return 1024 (e.g. see [`blink::SegmentStream::getLength`](https://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/renderer/platform/image-decoders/skia/segment_stream.cc;l\u003d119-125;drc\u003d30341531e02ec37f096b896932f227b6bd51d635)), eventually returning `isAtEnd` (e.g. see [Blink implementation here](https://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/renderer/platform/image-decoders/skia/segment_stream.cc;l\u003d87-89;drc\u003d30341531e02ec37f096b896932f227b6bd51d635)).\n\nI am not sure what can be done about this - I hope that @fmalita can chime in with suggestions.  I wonder if a new API (`virtual std::optional\u003cbool\u003e SkStream::hasAllData()`) could potentially be added to Skia (`nullopt` \u003d\u003e don\u0027t know or unimplemented;  false \u003d don\u0027t have all the data, true \u003d have all the data).",
+      "range": {
+        "startLine": 91,
+        "startChar": 36,
+        "endLine": 91,
+        "endChar": 52
+      },
+      "revId": "d4d3d48d3873bd086a207a811f221186d80e61da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "24a5ad68_414d7499",
         "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
         "patchSetId": 6
@@ -57,6 +80,29 @@
       "range": {
         "startLine": 248,
         "startChar": 0,
+        "endLine": 259,
+        "endChar": 8
+      },
+      "revId": "d4d3d48d3873bd086a207a811f221186d80e61da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69ecc4a0_beb5c713",
+        "filename": "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-07-09T14:59:07Z",
+      "side": 1,
+      "message": "nit: Can this be deduplicated with the other similar code being added in this CL above?",
+      "range": {
+        "startLine": 259,
+        "startChar": 7,
         "endLine": 259,
         "endChar": 8
       },
