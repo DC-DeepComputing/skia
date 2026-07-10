@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "df2c9f54_3f1a2139",
+        "filename": "src/core/SkRasterPipeline.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-10T13:21:51Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "ad669e61_1eb86a9d",
+      "revId": "9167c9b7d581d269fa953b1aa230a9b29563816d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cad1641e_e6888d0c",
@@ -52,6 +70,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "201b5f14_9736d780",
+        "filename": "src/core/SkRasterPipeline.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-10T13:21:51Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "cad1641e_e6888d0c",
+      "revId": "9167c9b7d581d269fa953b1aa230a9b29563816d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "616d4100_579d6425",
@@ -65,6 +101,24 @@
       "writtenOn": "2026-07-10T11:53:23Z",
       "side": 1,
       "message": "Data is packed in the pointer in:\n```cpp\n            case BuilderOp::case_op: {\n                SkRasterPipelineContexts::CaseOpCtx ctx;\n                ctx.expectedValue \u003d inst.fImmA;\n                ctx.offset \u003d OffsetFromBase(tempStackPtr - (2 * N));\n                pipeline-\u003epush_back({ProgramOp::case_op, SkRPCtxUtils::Pack(ctx, alloc)});\n```\n[SkSLRasterPipelineBuilder.cpp:2388-2392](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/sksl/codegen/SkSLRasterPipelineBuilder.cpp;l\u003d2388)",
+      "revId": "9167c9b7d581d269fa953b1aa230a9b29563816d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ab89843_332efa30",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-10T13:21:51Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "616d4100_579d6425",
       "revId": "9167c9b7d581d269fa953b1aa230a9b29563816d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
