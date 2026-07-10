@@ -1,0 +1,58 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5998782_93f862c0",
+        "filename": "src/core/SkRasterPipeline.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-07-10T11:39:22Z",
+      "side": 1,
+      "message": "This pointer is used to pack integers for some stages (e.g. CaseOpCtx, ConstantCtx, BinaryOpCtx) using SkRPCtxUtils::Pack. Excluded from raw_ptr to avoid crashes when interpreting packed integers as addresses.",
+      "isAi": true,
+      "revId": "94c119783bf57f6b7c29a6c9240d7a6bfd92aced",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b42e0007_abac2b39",
+        "filename": "src/core/SkRasterPipeline.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-07-10T11:39:22Z",
+      "side": 1,
+      "message": "This pointer is used to pack integers for some stages (e.g. CaseOpCtx, ConstantCtx, BinaryOpCtx) using SkRPCtxUtils::Pack. Excluded from raw_ptr to avoid crashes when interpreting packed integers as addresses.",
+      "isAi": true,
+      "revId": "94c119783bf57f6b7c29a6c9240d7a6bfd92aced",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a7b9ed6_37f89146",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-07-10T11:39:22Z",
+      "side": 1,
+      "message": "This pointer is used to pack integers for some stages (e.g. CaseOpCtx, ConstantCtx, BinaryOpCtx) using SkRPCtxUtils::Pack. Excluded from raw_ptr to avoid crashes when interpreting packed integers as addresses.",
+      "isAi": true,
+      "revId": "94c119783bf57f6b7c29a6c9240d7a6bfd92aced",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
