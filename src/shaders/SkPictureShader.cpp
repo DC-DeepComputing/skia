@@ -45,8 +45,6 @@ sk_sp<SkShader> SkPicture::makeShader(SkTileMode tmx, SkTileMode tmy, SkFilterMo
 }
 
 namespace {
-static unsigned gImageFromPictureKeyNamespaceLabel;
-
 struct ImageFromPictureKey : public SkResourceCache::Key {
 public:
     ImageFromPictureKey(SkColorSpace* colorSpace, SkColorType colorType,
@@ -67,7 +65,7 @@ public:
                                       sizeof(fSurfaceProps);
         // This better be packed.
         SkASSERT(sizeof(uint32_t) * (&fEndOfStruct - &fColorSpaceXYZHash) == keySize);
-        this->init(&gImageFromPictureKeyNamespaceLabel,
+        this->init(SkResourceCache::GetNamespace("ImageFromPictureKey"),
                    SkPicturePriv::MakeSharedID(pictureID),
                    keySize);
     }

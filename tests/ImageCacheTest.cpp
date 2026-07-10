@@ -16,12 +16,11 @@
 #include <cstdint>
 
 namespace {
-static void* gGlobalAddress;
 struct TestingKey : public SkResourceCache::Key {
     intptr_t    fValue;
 
     TestingKey(intptr_t value, uint64_t sharedID = 0) : fValue(value) {
-        this->init(&gGlobalAddress, sharedID, sizeof(fValue));
+        this->init(SkResourceCache::GetNamespace("ImageCacheTestKey"), sharedID, sizeof(fValue));
     }
 };
 struct TestingRec : public SkResourceCache::Rec {

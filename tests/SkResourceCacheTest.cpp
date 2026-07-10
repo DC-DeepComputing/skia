@@ -224,13 +224,11 @@ DEF_TEST(BitmapCache_discarded_image, reporter) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-static void* gTestNamespace;
-
 struct TestKey : SkResourceCache::Key {
     int32_t fData;
 
     TestKey(int sharedID, int32_t data) : fData(data) {
-        this->init(&gTestNamespace, sharedID, sizeof(fData));
+        this->init(SkResourceCache::GetNamespace("ResourceCacheTestKey"), sharedID, sizeof(fData));
     }
 };
 
@@ -303,6 +301,32 @@ DEF_TEST(ResourceCache_purge, reporter) {
         {
             SkResourceCache cache(SkDiscardableMemory::Create);
             test_duplicate_add(&cache, reporter, purgable);
+        }
+    }
+}
+
+DEF_TEST(ResourceCache_NamespaceUniqueness, reporter) {
+    const char* names[] = {
+        "BitmapKey",
+        "MipMapKey",
+        "RRectBlurKey",
+        "RectsBlurKey",
+        "YUVPlanesKey",
+        "ImageFromPictureKey",
+        "FontRequestKey",
+        "ShadowUtils",
+        "ImageCacheTestKey",
+        "ResourceCacheTestKey",
+        "ImageCacheBenchKey"
+    };
+    constexpr size_t N = sizeof(names) / sizeof(names[0]);
+    uint16_t hashes[N];
+    for (size_t i = 0; i < N; ++i) {
+        hashes[i] = SkResourceCache::GetNamespace(names[i]);
+        for (size_t j = 0; j < i; ++j) {
+            REPORTER_ASSERT(reporter, hashes[i] != hashes[j],
+                            "Namespace collision detected: %s and %s both hash to 0x%04x",
+                            names[i], names[j], hashes[i]);
         }
     }
 }
