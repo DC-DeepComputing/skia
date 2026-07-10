@@ -226,6 +226,10 @@ template("optional") {
                                "sources_for_tests",
                                "sources_when_disabled",
                              ])
+      if (!defined(deps)) {
+        deps = []
+      }
+      deps += [ "//src/partition_alloc:raw_ptr" ]
       if (defined(invoker.configs)) {
         configs += invoker.configs
       }
@@ -1238,6 +1242,7 @@ skia_source_set("pathops") {
   public = skia_pathops_public
   sources = skia_pathops_sources
   deps = [ ":core" ]
+  public_deps = [ "//src/partition_alloc:raw_ptr" ]
 }
 
 skia_source_set("clipstack_utils") {
@@ -1897,6 +1902,7 @@ skia_source_set("core") {
     ":typeface_fontations",
     ":typeface_freetype",
   ]
+  public_deps = [ "//src/partition_alloc:raw_ptr" ]
 }
 
 skia_component("skia") {
