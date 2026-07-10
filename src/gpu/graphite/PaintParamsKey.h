@@ -100,7 +100,8 @@ public:
     SkSpan<const ShaderNode*> getRootNodes(const Caps*,
                                            const ShaderCodeDictionary*,
                                            SkArenaAlloc*,
-                                           int availableVaryings) const;
+                                           int availableVaryings,
+                                           bool canLiftCoords) const;
 
     // Converts the key to a structured list of snippet information for debugging or labeling
     // purposes.

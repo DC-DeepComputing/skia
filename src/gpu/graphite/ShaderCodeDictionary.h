@@ -293,6 +293,8 @@ public:
     int numUserDefinedKnownRuntimeEffects() const;
 #endif
 
+    static SkSLType UniformTypeToSkSLType(const SkRuntimeEffect::Uniform& u);
+
 private:
     const char* addTextToArena(std::string_view text);
 
