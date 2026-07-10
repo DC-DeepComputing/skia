@@ -28,7 +28,7 @@ class iOSFlavor(default.DefaultFlavor):
   @property
   def env(self):
     return {
-      'IOS_BUNDLE_ID': 'com.google.%s' % self.app_name,
+      'IOS_BUNDLE_ID': 'com.testing.%s' % self.app_name,
       'IOS_MOUNT_POINT': self.m.vars.workdir.joinpath('mnt_iosdevice'),
     }
 
@@ -51,10 +51,32 @@ class iOSFlavor(default.DefaultFlavor):
   def _install(self):
     # We assume a single device is connected.
 
-    # Kill usbmuxd.  This tends to help with connection problems.
+    # Kill usbmuxd, CoreDeviceService, and tunneld to completely reset the iOS connectivity stack.
+    # This is critical for iOS 17+ devices to be discovered by Xcode.
     if self.m.platform.is_mac:
-      self.m.step('killall usbmuxd', ['sudo', '/usr/bin/killall', '-v', 'usbmuxd'])
+      try:
+        self.m.step('sudo -l', ['sudo', '-n', '-l'])
+      except self.m.step.StepFailure:  # pragma: nocover
+        pass
+      try:
+        self.m.step('launchctl stop usbmuxd', ['sudo', '/bin/launchctl', 'stop', 'com.apple.usbmuxd'])
+      except self.m.step.StepFailure:  # pragma: nocover
+        pass
+      try:
+        self.m.step('killall usbmuxd', ['sudo', '/usr/bin/killall', '-v', 'usbmuxd'])
+      except self.m.step.StepFailure:  # pragma: nocover
+        pass
+      try:
+        # CoreDeviceService runs as the current logged-in user, so we don't need sudo to kill it.
+        self.m.step('killall CoreDeviceService', ['/usr/bin/killall', '-v', 'CoreDeviceService'])
+      except self.m.step.StepFailure:  # pragma: nocover
+        pass
       self.m.step('sleep 10', ['sleep', '10'])
+      try:
+        # Output exact devices CoreDevice detects for debugging/diagnostics.
+        self.m.step('devicectl list devices', ['xcrun', 'devicectl', 'list', 'devices'])
+      except self.m.step.StepFailure:  # pragma: nocover
+        pass
 
     # Pair the device.
     try:
@@ -112,7 +134,7 @@ class iOSFlavor(default.DefaultFlavor):
         self.m.run(self.m.step,
                    'uninstall %s' % self.app_name,
                    cmd=['ideviceinstaller', '-U',
-                        'com.google.%s' % self.app_name],
+                        'com.testing.%s' % self.app_name],
                    infra_step=True,
                    # App may not be installed.
                    abort_on_failure=False, fail_build_on_failure=False)
@@ -127,7 +149,7 @@ class iOSFlavor(default.DefaultFlavor):
   def step(self, name, cmd, **kwargs):
     app_name = cmd[0]
     app_package = self.host_dirs.bin_dir.joinpath('%s.app' % app_name)
-    bundle_id = 'com.google.%s' % app_name
+    bundle_id = 'com.testing.%s' % app_name
     if self.m.platform.is_mac:
       args = [self.m.xcode.path, app_package, bundle_id] + [str(ele) for ele in cmd[1:]]
       with self.context():
