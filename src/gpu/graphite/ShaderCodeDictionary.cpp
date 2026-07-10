@@ -271,6 +271,11 @@ std::string ShaderNode::invokeAndAssign(const ShaderInfo& shaderInfo,
     return outputVar;
 }
 
+std::string ShaderNode::invoke(const ShaderInfo& shaderInfo,
+                               const ShaderSnippet::Args& args) const {
+    return invoke_node(shaderInfo, this, args);
+}
+
 // Return a name that should be used as a varying passing the result of an expression emitted by
 // this node, if the expression is being lifted from the fragment shader to the vertex shader. The
 // choice of name is arbitrary, but it must be used consistently.
@@ -737,7 +742,7 @@ void ShaderCodeDictionary::dump(const Caps* caps, UniquePaintParamsID id) const 
 }
 #endif
 
-static SkSLType uniform_type_to_sksl_type(const SkRuntimeEffect::Uniform& u) {
+SkSLType ShaderCodeDictionary::uniform_type_to_sksl_type(const SkRuntimeEffect::Uniform& u) {
     using Type = SkRuntimeEffect::Uniform::Type;
     if (u.flags & SkRuntimeEffect::Uniform::kHalfPrecision_Flag) {
         switch (u.type) {

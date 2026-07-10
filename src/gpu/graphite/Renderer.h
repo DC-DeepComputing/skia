@@ -39,6 +39,8 @@ class ResourceProvider;
 class TextureDataBlock;
 class Transform;
 class UniformOffsetCalculator;
+class ShaderInfo;
+class ShaderNode;
 
 struct ResourceBindingRequirements;
 
@@ -143,6 +145,8 @@ public:
     // and then including the function bodies returned here.
     virtual std::string vertexSkSL() const = 0;
 
+    virtual std::string vertexSkSLTopLevel(const ShaderInfo*) const { return ""; }
+
     // Emits code to set up textures and samplers. Should only be defined if hasTextures is true.
     virtual std::string texturesAndSamplersSkSL(const ResourceBindingRequirements&,
                                                 int* nextBindingIndex) const {
@@ -158,9 +162,14 @@ public:
     // Emits code to set up a primitive color value. Should only be defined if emitsPrimitiveColor
     // is true. When implemented, the returned SkSL fragment should write its color into a
     // 'half4 primitiveColor' variable (defined in the calling code).
-    virtual const char* fragmentColorSkSL() const { return ""; }
+    virtual std::string fragmentColorSkSL() const { return ""; }
+    virtual std::string fragmentColorSkSLTopLevel(const ShaderInfo*,
+                                                  SkSpan<const ShaderNode*> = {}) const { return ""; }
+    virtual const char* fragmentColorSkSLLocalCoordsVariable() const { return nullptr; }
+    virtual size_t numEffectChildren() const { return 0; }
 
     // Indicates whether this RenderStep's uniforms are referenced in its fragment shader code.
+
     // If not, its uniforms can be omitted from the fragment shader entirely.
     // By default, we assume that RenderSteps use their uniforms for emitting coverage or primitive
     // colors.
@@ -274,13 +283,19 @@ SK_DECL_BITMASK_OPS_FRIENDS(Flags)
     RenderStep(Layout layout,
                RenderStepID renderStepID,
                SkEnumBitMask<Flags> flags,
-               std::initializer_list<Uniform> uniforms,
+               std::vector<Uniform> uniforms,
                PrimitiveType primitiveType,
                DepthStencilSettings depthStencilSettings,
                SkSpan<const Attribute> staticAttrs,
                SkSpan<const Attribute> appendAttrs,
                SkSpan<const Varying> varyings = {});
 
+protected:
+    // In the case that the uploaded vertex static attribute data is not tightly packed, the stride
+    // can be overriden to use the correct stride.
+    void setStaticDataStride(size_t staticDataStride) {
+        fStaticDataStride = staticDataStride;
+    }
 private:
     friend class Renderer; // for Flags
 

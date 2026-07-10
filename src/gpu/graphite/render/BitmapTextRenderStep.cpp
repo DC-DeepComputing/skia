@@ -128,7 +128,7 @@ std::string BitmapTextRenderStep::texturesAndSamplersSkSL(
 }
 
 
-const char* BitmapTextRenderStep::fragmentColorSkSL() const {
+std::string BitmapTextRenderStep::fragmentColorSkSL() const {
     // The returned SkSL must write its color into a 'half4 primitiveColor' variable
     // (defined in the calling code).
     static_assert(kNumTextAtlasTextures == 4);
