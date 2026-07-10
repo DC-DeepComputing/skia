@@ -981,6 +981,46 @@ SINT T dot(const Vec<N, T>& a, const Vec<N, T>& b) {
     }
 }
 
+// NOTE: reduce_add is currently only optimized for vec4 float. Add implementations for other types
+// as needed.
+SIT  T reduce_add(const Vec<1,T>& x) { return x.val; }
+SINT T reduce_add(const Vec<N,T>& x) {
+#if SKVX_USE_SIMD && defined(__aarch64__)
+    if constexpr (N == 4 && std::is_same_v<T, float>) {
+        return vaddvq_f32(sk_bit_cast<float32x4_t>(x));
+    }
+#endif
+
+#if SKVX_USE_SIMD && SK_CPU_X64_LEVEL >= SK_CPU_X64_LEVEL_AVX
+    // Manually fold the upper 128 bits into the lower 128 bits, then pass it down to the N=4 SSE
+    // implementation.
+    if constexpr (N == 8 && std::is_same_v<T, float>) {
+        __m256 v = sk_bit_cast<__m256>(x);
+        __m128 lo = _mm256_castps256_ps128(v);
+        __m128 hi = _mm256_extractf128_ps(v, 1);
+        __m128 sums = _mm_add_ps(lo, hi);
+        return reduce_add(sk_bit_cast<Vec<4,float>>(sums));
+    }
+#endif
+
+#if SKVX_USE_SIMD && SK_CPU_X64_LEVEL >= SK_CPU_X64_LEVEL_SSE1
+    // Explicitly write shuffle-and-add to avoid _mm_hadd_ps microcode, and to guarantee optimal
+    // vector code on compilers without GCC/Clang vector extensions.
+    // See: https://stackoverflow.com/questions/6996764/fastest-way-to-do-horizontal-sse-vector-sum-or-other-reduction
+    if constexpr (N == 4 && std::is_same_v<T, float>) {
+        __m128 v = sk_bit_cast<__m128>(x);
+        __m128 shuf = _mm_shuffle_ps(v, v, _MM_SHUFFLE(2, 3, 0, 1));
+        __m128 sums = _mm_add_ps(v, shuf);
+        shuf = _mm_movehl_ps(sums, sums);
+        sums = _mm_add_ps(sums, shuf);
+        return _mm_cvtss_f32(sums);
+    }
+#endif
+
+    // Else, recursively shuffle-reduce
+    return reduce_add(x.lo + x.hi);
+}
+
 SIT T cross(const Vec<2, T>& a, const Vec<2, T>& b) {
     auto x = a * shuffle<1,0>(b);
     return x[0] - x[1];
