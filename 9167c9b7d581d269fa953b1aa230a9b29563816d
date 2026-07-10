@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2a5afe6_755c26f1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-07-10T11:53:23Z",
+      "side": 1,
+      "message": "Hi Kaylee and Greg, could you please take a look?",
+      "revId": "9167c9b7d581d269fa953b1aa230a9b29563816d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad669e61_1eb86a9d",
+        "filename": "src/core/SkRasterPipeline.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-07-10T11:53:23Z",
+      "side": 1,
+      "message": "Data is packed in the pointer in:\n```cpp\n            if (immutable_data_is_splattable(immutablePtr, numSlots)) {\n                auto stage \u003d (ProgramOp)((int)ProgramOp::copy_constant + numSlots - 1);\n                SkRasterPipelineContexts::ConstantCtx ctx;\n                ctx.dst \u003d dst;\n                ctx.value \u003d *immutablePtr;\n                pipeline-\u003epush_back({stage, SkRPCtxUtils::Pack(ctx, alloc)});\n```\n[SkSLRasterPipelineBuilder.cpp:1455-1460](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/sksl/codegen/SkSLRasterPipelineBuilder.cpp;l\u003d1455)",
+      "revId": "9167c9b7d581d269fa953b1aa230a9b29563816d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cad1641e_e6888d0c",
+        "filename": "src/core/SkRasterPipeline.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-07-10T11:53:23Z",
+      "side": 1,
+      "message": "Data is packed in the pointer in:\n```cpp\n        SkRasterPipelineContexts::BinaryOpCtx ctx;\n        ctx.dst \u003d dst;\n        ctx.src \u003d src;\n        pipeline-\u003epush_back({stage, SkRPCtxUtils::Pack(ctx, alloc)});\n```\n[SkSLRasterPipelineBuilder.cpp:1467-1470](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/sksl/codegen/SkSLRasterPipelineBuilder.cpp;l\u003d1467)",
+      "revId": "9167c9b7d581d269fa953b1aa230a9b29563816d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "616d4100_579d6425",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-07-10T11:53:23Z",
+      "side": 1,
+      "message": "Data is packed in the pointer in:\n```cpp\n            case BuilderOp::case_op: {\n                SkRasterPipelineContexts::CaseOpCtx ctx;\n                ctx.expectedValue \u003d inst.fImmA;\n                ctx.offset \u003d OffsetFromBase(tempStackPtr - (2 * N));\n                pipeline-\u003epush_back({ProgramOp::case_op, SkRPCtxUtils::Pack(ctx, alloc)});\n```\n[SkSLRasterPipelineBuilder.cpp:2388-2392](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/sksl/codegen/SkSLRasterPipelineBuilder.cpp;l\u003d2388)",
+      "revId": "9167c9b7d581d269fa953b1aa230a9b29563816d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
