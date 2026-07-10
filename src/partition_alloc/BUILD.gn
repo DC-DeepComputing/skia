@@ -3,10 +3,20 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
+import("//build_overrides/build.gni")
 import("../../gn/skia.gni")
 
-if (skia_use_partition_alloc && defined(skia_partition_alloc_dir)) {
-  import("${skia_partition_alloc_dir}/partition_alloc.gni")
+# If we are building with Chromium but the directory is not explicitly defined,
+# use the default Chromium path.
+_skia_partition_alloc_dir = ""
+if (defined(skia_partition_alloc_dir)) {
+  _skia_partition_alloc_dir = skia_partition_alloc_dir
+} else if (build_with_chromium) {
+  _skia_partition_alloc_dir = "//base/allocator/partition_allocator"
+}
+
+if (skia_use_partition_alloc && _skia_partition_alloc_dir != "") {
+  import("${_skia_partition_alloc_dir}/partition_alloc.gni")
 }
 
 source_set("raw_ptr") {
@@ -15,8 +25,8 @@ source_set("raw_ptr") {
     "raw_ptr_exclusion.h",
     "raw_ref.h",
   ]
-  if (skia_use_partition_alloc && defined(skia_partition_alloc_dir)) {
-    public_deps = [ "${skia_partition_alloc_dir}:raw_ptr" ]
+  if (skia_use_partition_alloc && _skia_partition_alloc_dir != "") {
+    public_deps = [ "${_skia_partition_alloc_dir}:raw_ptr" ]
   } else {
     sources = [
       "noop/raw_ptr.h",
