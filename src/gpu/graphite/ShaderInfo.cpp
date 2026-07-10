@@ -772,7 +772,9 @@ struct ShaderInfo::SharedGeneratorData {
             const int availableVaryings =
                     caps->maxVaryings() - kFixedVaryings - step->varyings().size();
 
-            fRootNodes = key.getRootNodes(caps, dict, alloc, availableVaryings);
+            fRootNodes =
+                key.getRootNodes(caps, dict, alloc, availableVaryings,
+                                 /*canLiftCoords=*/!step->fragmentColorSkSLLocalCoordsVariable());
 
             fNeedsLocalCoords = !fRootNodes.empty() &&
                                SkToBool(fRootNodes[0]->requiredFlags() &
@@ -963,7 +965,8 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
                                       const SharedGeneratorData& sharedData) {
 #if defined(SK_DEBUG)
     // Validate the root node structure of the key.
-    SkASSERT(sharedData.fRootNodes.size() == 2 || sharedData.fRootNodes.size() == 3);
+    const size_t baseRootCount = sharedData.fRootNodes.size() - step->numEffectChildren();
+    SkASSERT(baseRootCount == 2 || baseRootCount == 3);
     // First node produces the source color (all snippets return a half4), so we just require that
     // its signature takes no extra args or just local coords.
     const ShaderSnippet* srcSnippet = dict->getEntry(sharedData.fRootNodes[0]->codeSnippetId());
@@ -977,22 +980,23 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
     SkASSERT(blendSnippet->needsPriorStageOutput() && blendSnippet->needsBlenderDstColor());
     SkASSERT(!blendSnippet->needsLocalCoords());
     // Optional third node is the clip
-    const ShaderSnippet* clipSnippet = sharedData.fRootNodes.size() > 2 ?
+    const ShaderSnippet* clipSnippet = baseRootCount > 2 ?
             dict->getEntry(sharedData.fRootNodes[2]->codeSnippetId()) : nullptr;
     SkASSERT(!clipSnippet ||
              (!clipSnippet->needsPriorStageOutput() && !clipSnippet->needsBlenderDstColor()));
 #endif
 
     // Check for unexpected corruption / illegal instructions occurring in the wild.
-    SkASSERTF_RELEASE(sharedData.fRootNodes.size() == 2 || sharedData.fRootNodes.size() == 3,
-                      "root node size = %zu, label = %s", sharedData.fRootNodes.size(), label);
+    SkASSERTF_RELEASE(baseRootCount == 2 || baseRootCount == 3,
+                      "base root node size = %zu, effect children size = %zu, label = %s",
+                      baseRootCount, step->numEffectChildren(), label);
 
     // Extract the root nodes for clarity
     const ShaderNode* const srcColorRoot = sharedData.fRootNodes[0];
     const ShaderNode* const finalBlendRoot = sharedData.fRootNodes[1];
     const int32_t finalBlendRootSnippetId = finalBlendRoot->codeSnippetId();
     const ShaderNode* const clipRoot =
-            sharedData.fRootNodes.size() > 2 ? sharedData.fRootNodes[2] : nullptr;
+            baseRootCount > 2 ? sharedData.fRootNodes[2] : nullptr;
 
     // Determine the algorithm for final blending: direct HW blending, coverage-modified HW
     // blending (w/ or w/o dual-source blending) or via dst-read requirement.
@@ -1103,6 +1107,13 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
     // implementation in the SkSL modules.
     emit_preambles(*this, sharedData.fRootNodes, /*treeLabel=*/"", &fsPreamble);
 
+    SkSpan<const ShaderNode*> stepEffectChildNodes =
+            step->numEffectChildren() > 0
+                    ? sharedData.fRootNodes.subspan(sharedData.fRootNodes.size() - step->numEffectChildren(),
+                                                    step->numEffectChildren())
+                    : SkSpan<const ShaderNode*>();
+    fsPreamble += step->fragmentColorSkSLTopLevel(this, stepEffectChildNodes);
+
     std::string mainBody = "void main() {";
 
     if (sharedData.fHasSsboIndexVarying) {
@@ -1116,6 +1127,8 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
         SkASSERT(step->emitsPrimitiveColor());
         mainBody += "half4 primitiveColor;";
         mainBody += step->fragmentColorSkSL();
+    } else if(step->fragmentColorSkSLLocalCoordsVariable()) {
+        mainBody += step->fragmentColorSkSL();
     }
     // else the RenderStep may be producing a primitive color but the paint is not consuming it
     // so just skip injecting that SkSL entirely.
@@ -1124,7 +1137,9 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
     // root nodes should--at most--be depending on the coordinate when "needsLocalCoords" is true.
     // If the PaintParamsKey violates that structure, this will produce SkSL compile errors.
     ShaderSnippet::Args args = ShaderSnippet::kDefaultArgs;
-    args.fFragCoord = "localCoordsVar";  // the varying added in emit_varyings()
+    args.fFragCoord = step->fragmentColorSkSLLocalCoordsVariable()
+                        ? step->fragmentColorSkSLLocalCoordsVariable()
+                        : "localCoordsVar";  // the varying added in emit_varyings()
     // TODO(b/349997190): The paint root node should not depend on any prior stage's output, but
     // it can happen with how SkEmptyShader is currently mapped to `sk_passthrough`. In this case
     // it requires that prior stage color to be transparent black. When SkEmptyShader can instead
@@ -1319,6 +1334,8 @@ void ShaderInfo::generateVertexSkSL(const Caps* caps,
         }
     }
 
+    vsPreamble += step->vertexSkSLTopLevel(this);
+
     // Vertex shader function declaration
     std::string mainBody = "void main() {";
     // Create stepLocalCoords which render steps can write to.
@@ -1327,7 +1344,7 @@ void ShaderInfo::generateVertexSkSL(const Caps* caps,
     // We define the SSBO index variable immediately if the VS is using storage buffers. This covers
     // both the "Step Uniforms" case and the "Lifted Uniforms Only" case.
     if (sharedData.fUseUniformStorageBufferVS) {
-        SkSL::String::appendf(&mainBody, "uint %s = %s;\n", this->uniformSsboIndex(),
+        SkSL::String::appendf(&mainBody, "%s = %s;\n", this->uniformSsboIndex(),
                                   RenderStep::ssboIndexAttribute());
         if (sharedData.fHasStepUniforms) {
             mainBody +=

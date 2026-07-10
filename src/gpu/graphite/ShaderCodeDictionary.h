@@ -213,6 +213,8 @@ public:
     std::string invokeAndAssign(const ShaderInfo& shaderInfo,
                                 const ShaderSnippet::Args& args,
                                 std::string* funcBody) const;
+    std::string invoke(const ShaderInfo& shaderInfo,
+                       const ShaderSnippet::Args& args) const;
 
     std::string getExpressionVaryingName() const;
 
@@ -292,6 +294,8 @@ public:
     int numUserDefinedRuntimeEffects() const SK_EXCLUDES(fSpinLock);
     int numUserDefinedKnownRuntimeEffects() const;
 #endif
+
+    static SkSLType UniformTypeToSkSLType(const SkRuntimeEffect::Uniform& u);
 
 private:
     const char* addTextToArena(std::string_view text);
