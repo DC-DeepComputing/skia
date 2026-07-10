@@ -952,7 +952,7 @@ optional("gpu") {
   configs = []
   public_defines = []
   public_configs = []
-  public_deps = []
+  public_deps = [ "//src/partition_alloc:raw_ptr" ]
 
   public = skia_gpu_public
   sources = skia_ganesh_private
@@ -1242,6 +1242,7 @@ skia_source_set("pathops") {
   public = skia_pathops_public
   sources = skia_pathops_sources
   deps = [ ":core" ]
+  public_deps = [ "//src/partition_alloc:raw_ptr" ]
 }
 
 skia_source_set("clipstack_utils") {
@@ -1333,6 +1334,7 @@ optional("png_encode_libpng") {
   public = skia_encode_libpng_public
   deps = [
     ":png_encode_common",
+    "//src/partition_alloc:raw_ptr",
     "//third_party/libpng",
   ]
   sources = skia_encode_libpng_srcs
@@ -1910,6 +1912,7 @@ skia_source_set("core") {
     ":typeface_fontations",
     ":typeface_freetype",
   ]
+  public_deps = [ "//src/partition_alloc:raw_ptr" ]
 }
 
 skia_component("skia") {
@@ -2283,10 +2286,10 @@ if (skia_enable_tools) {
         ":skia_private",
       ]
 
-      if (!defined(deps)) {
-        deps = []
+      if (!defined(public_deps)) {
+        public_deps = []
       }
-      deps += [ ":skia" ]
+      public_deps += [ ":skia" ]
       testonly = true
     }
   }
