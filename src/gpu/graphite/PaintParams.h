@@ -10,12 +10,14 @@
 
 #include "include/core/SkColor.h"
 #include "include/core/SkPaint.h"
+#include "include/effects/SkRuntimeEffect.h"
 #include "include/private/SkEnumBitMask.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/Renderer.h"
 #include "src/gpu/graphite/geom/NonMSAAClip.h"
 
 class SkColorInfo;
+class SkColorSpace;
 class SkImage;
 class SkShader;
 
@@ -79,12 +81,20 @@ public:
     const SkColorFilter* colorFilter() const { return fColorFilter; }
     const SkBlender* primitiveBlender() const { return fPrimitiveBlender; }
     bool skipPrimitiveColorXform() const { return fSkipColorXform; }
+    SkColorSpace* primitiveColorSpace() const { return fPrimitiveColorSpace; }
+    SkAlphaType primitiveAlphaType() const { return fPrimitiveAlphaType; }
 
     const SkBlender* finalBlender() const { return fFinalBlend.first; }
     // Must also check finalBlender() to see if that overrides finalBlendMode() behavior.
     SkBlendMode finalBlendMode() const { SkASSERT(!fFinalBlend.first); return fFinalBlend.second; }
 
     bool dither() const { return fDither; }
+
+    PaintParams withPrimitiveColorSpace(SkColorSpace* cs, SkAlphaType at = kPremul_SkAlphaType) const;
+    PaintParams withEffectChildren(SkSpan<const SkRuntimeEffect::Child> childInfo,
+                                   SkSpan<const SkRuntimeEffect::ChildPtr> children) const;
+    SkSpan<const SkRuntimeEffect::Child> effectChildInfo() const { return fEffectChildInfo; }
+    SkSpan<const SkRuntimeEffect::ChildPtr> effectChildren() const { return fEffectChildren; }
 
     /** Converts an SkColor4f to the destination color space. */
     static SkColor4f Color4fPrepForDst(SkColor4f srgb, const SkColorInfo& dstColorInfo);
@@ -118,7 +128,12 @@ private:
     const SkBlender* fPrimitiveBlender;
     bool             fSkipColorXform;
     bool             fDither;
+    SkColorSpace*    fPrimitiveColorSpace = nullptr;
+    SkAlphaType      fPrimitiveAlphaType = kPremul_SkAlphaType;
+    SkSpan<const SkRuntimeEffect::Child> fEffectChildInfo;
+    SkSpan<const SkRuntimeEffect::ChildPtr> fEffectChildren;
 };
+
 
 // ShadingParams wraps a PaintParams with the additional per-pixel state to handle clipping and
 // anti-aliasing, as well as making the final determinations for how blending will be implemented

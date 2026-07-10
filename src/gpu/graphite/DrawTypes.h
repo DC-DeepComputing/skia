@@ -8,6 +8,7 @@
 #ifndef skgpu_graphite_DrawTypes_DEFINED
 #define skgpu_graphite_DrawTypes_DEFINED
 
+#include "include/core/SkMesh.h"
 #include "include/private/SkAssert.h"
 #include "include/private/SkEnumBitMask.h"
 
@@ -24,6 +25,15 @@ enum class PrimitiveType : uint8_t {
     kTriangleStrip,
     kPoints,
 };
+
+static constexpr inline PrimitiveType PrimitiveTypeFromSkMeshMode(SkMesh::Mode mode) {
+    switch (mode) {
+        case SkMesh::Mode::kTriangles: return PrimitiveType::kTriangles;
+        case SkMesh::Mode::kTriangleStrip: return PrimitiveType::kTriangleStrip;
+    }
+
+    SkUNREACHABLE;
+}
 
 /**
  * Types used to describe format of vertices in buffers.

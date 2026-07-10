@@ -58,11 +58,11 @@ void DrawWriter::flushInternal(BindBufferInfo appendData) {
     // - If a valid bufferFoo does not exist, or is not stride aligned, then draw from the start of
     //   the offset with pendingBaseFoo = 0 and assign the current buffer.
     auto bind = [](const BindBufferInfo& buffer, uint32_t stride, BindBufferInfo& boundBuffer,
-                   uint32_t& pendingBase) -> bool {
+                   uint32_t& pendingBase, bool extractOffset) -> bool {
         bool shouldBind = false;
         if (buffer.fBuffer) {
             BindBufferInfo newBinding = buffer;
-            if (buffer.fOffset % stride == 0) {
+            if (extractOffset && buffer.fOffset % stride == 0) {
                 pendingBase = buffer.fOffset / stride;
                 newBinding = {buffer.fBuffer, 0, SkTo<uint32_t>(buffer.fBuffer->size())};
             }
@@ -75,13 +75,19 @@ void DrawWriter::flushInternal(BindBufferInfo appendData) {
     uint32_t pendingBaseAppend = 0;
     uint32_t pendingBaseStatic = 0;
     uint32_t pendingBaseIndices = 0;
-    if (bind(appendData, fAppendStride, fBoundAppend, pendingBaseAppend)) {
+    // For non-instanced draws, baseVertex applies to all per-vertex buffers. If both static and
+    // append buffers are bound, their offsets inside their respective buffers may not correspond
+    // to the same element index. In that case, we keep the offsets in the buffer binding and pass
+    // baseVertex = 0. For instanced draws (fTemplateCount > 0), static is per-vertex and append is
+    // per-instance, so both pendingBaseStatic and pendingBaseAppend can be extracted independently.
+    const bool canExtractVertexOffsets = fTemplateCount > 0 || !appendData.fBuffer || !fStatic.fBuffer;
+    if (bind(appendData, fAppendStride, fBoundAppend, pendingBaseAppend, canExtractVertexOffsets)) {
         fCommandList->bindAppendDataBuffer(fBoundAppend);
     }
-    if (bind(fStatic, fStaticStride, fBoundStatic, pendingBaseStatic)) {
+    if (bind(fStatic, fStaticStride, fBoundStatic, pendingBaseStatic, canExtractVertexOffsets)) {
         fCommandList->bindStaticDataBuffer(fBoundStatic);
     }
-    if (bind(fIndices, sizeof(uint16_t), fBoundIndices, pendingBaseIndices)) {
+    if (bind(fIndices, sizeof(uint16_t), fBoundIndices, pendingBaseIndices, /*extractOffset=*/true)) {
         fCommandList->bindIndexBuffer(fBoundIndices);
     }
 
@@ -123,13 +129,19 @@ void DrawWriter::flushInternal(BindBufferInfo appendData) {
         if (fIndices) {
             // As before, just validate there is sufficient index data
             SkASSERT(fPendingCount*sizeof(uint16_t) <= fIndices.fSize);
+            uint32_t baseVertex = fBoundStatic.fBuffer ? pendingBaseStatic : pendingBaseAppend;
             fCommandList->drawIndexed(fPrimitiveType,
                                       pendingBaseIndices,
                                       fPendingCount,
-                                      pendingBaseAppend);
+                                      baseVertex);
         } else {
-            SkASSERT((pendingBaseAppend + fPendingCount)*fStaticStride <= fBoundAppend.fSize);
-            fCommandList->draw(fPrimitiveType, pendingBaseAppend, fPendingCount);
+            if (fBoundStatic.fBuffer) {
+                SkASSERT((pendingBaseStatic + fPendingCount)*fStaticStride <= fBoundStatic.fSize);
+                fCommandList->draw(fPrimitiveType, pendingBaseStatic, fPendingCount);
+            } else {
+                SkASSERT((pendingBaseAppend + fPendingCount)*fStaticStride <= fBoundAppend.fSize);
+                fCommandList->draw(fPrimitiveType, pendingBaseAppend, fPendingCount);
+            }
         }
     }
 

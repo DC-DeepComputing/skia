@@ -55,7 +55,7 @@ public:
 
     PipelineManager* pipelineManager() { return &fPipelineManager; }
 
-    const RendererProvider* rendererProvider() const { return fRendererProvider.get(); }
+    RendererProvider* rendererProvider() const { return fRendererProvider.get(); }
 
     ShaderCodeDictionary* shaderCodeDictionary() { return &fShaderDictionary; }
     const ShaderCodeDictionary* shaderCodeDictionary() const { return &fShaderDictionary; }

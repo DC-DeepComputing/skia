@@ -17,6 +17,7 @@
 #include "include/core/SkSpan.h"
 #include "include/core/SkTileMode.h"
 #include "include/effects/SkGradient.h"
+#include "include/effects/SkRuntimeEffect.h"
 #include "include/gpu/graphite/Context.h"
 #include "src/core/SkColorData.h"
 #include "src/core/SkColorSpaceXformSteps.h"
@@ -354,7 +355,10 @@ void AddAnalyticClip(const KeyContext&, const NonMSAAClip&);
  * Adds a block that references the primitive color produced by the RenderStep and accounts for
  * color space transformation.
  */
-void AddPrimitiveColor(const KeyContext&, bool skipColorXform);
+void AddPrimitiveColor(const KeyContext&,
+                       bool skipColorXform,
+                       SkColorSpace* primitiveColorSpace = nullptr,
+                       SkAlphaType primitiveAlphaType = kPremul_SkAlphaType);
 
 /**
  * Blend mode color filters blend their input (as the dst color) with some given color (supplied
@@ -428,6 +432,11 @@ void AddToKey(const KeyContext& keyContext, const SkShader* shader);
  * with the benefit of not creating any SkShader objects or having to compute matrix inverses.
  */
 void AddToKey(const KeyContext& keyContext, const PaintParams::SimpleImage& imageShader);
+void AddEffectChildrenToKey(const KeyContext&,
+                            SkSpan<const SkRuntimeEffect::Child>,
+                            SkSpan<const SkRuntimeEffect::ChildPtr>);
+
+
 
 // Add a fixed blend mode node for a specific SkBlendMode.
 void AddFixedBlendMode(const KeyContext&, SkBlendMode);

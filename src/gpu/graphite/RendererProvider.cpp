@@ -9,8 +9,11 @@
 
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkVertices.h"
+#include "src/core/SkMeshPriv.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/InternalDrawTypeFlags.h"
+#include "src/gpu/graphite/ShaderCodeDictionary.h"
+#include "src/gpu/graphite/Uniform.h"
 #include "src/gpu/graphite/UniformManager.h"
 #include "src/gpu/graphite/render/AnalyticBlurRenderStep.h"
 #include "src/gpu/graphite/render/AnalyticRRectRenderStep.h"
@@ -19,6 +22,7 @@
 #include "src/gpu/graphite/render/CommonDepthStencilSettings.h"
 #include "src/gpu/graphite/render/CoverBoundsRenderStep.h"
 #include "src/gpu/graphite/render/CoverageMaskRenderStep.h"
+#include "src/gpu/graphite/render/MeshRenderStep.h"
 #include "src/gpu/graphite/render/MiddleOutFanRenderStep.h"
 #include "src/gpu/graphite/render/PerEdgeAAQuadRenderStep.h"
 #include "src/gpu/graphite/render/SDFTextLCDRenderStep.h"
@@ -28,6 +32,9 @@
 #include "src/gpu/graphite/render/TessellateWedgesRenderStep.h"
 #include "src/gpu/graphite/render/VerticesRenderStep.h"
 #include "src/sksl/SkSLUtil.h"
+#include "src/sksl/ir/SkSLFunctionDefinition.h"
+#include "src/sksl/ir/SkSLIRNode.h"
+#include "src/sksl/ir/SkSLProgram.h"
 
 #ifdef SK_ENABLE_VELLO_SHADERS
 #include "src/gpu/graphite/compute/VelloRenderer.h"
@@ -252,6 +259,72 @@ RendererProvider::RendererProvider(const Caps* caps, StaticBufferManager* buffer
         fVelloRenderer = std::make_unique<VelloRenderer>(caps);
     }
 #endif
+}
+
+const Renderer* RendererProvider::mesh(const SkMesh& mesh) const {
+    SkASSERT(this->hasMeshRenderStep(mesh));
+    size_t meshRenderStepIndex = fMeshRendererCache.at(MeshRenderStep::HashKey(mesh));
+    return fMeshRenderers[meshRenderStepIndex].renderer.get();
+}
+
+bool RendererProvider::hasMeshRenderStep(const SkMesh& mesh) const {
+    return fMeshRendererCache.find(MeshRenderStep::HashKey(mesh)) != fMeshRendererCache.end();
+}
+
+void RendererProvider::initMeshRenderStep(const Caps* caps, const SkMesh& mesh) {
+    SkASSERT(!this->hasMeshRenderStep(mesh));
+
+    const bool useStorageBuffers = caps->storageBufferSupport();
+    const auto& bindingReq = caps->resourceBindingRequirements();
+    Layout layout = useStorageBuffers ? bindingReq.fStorageBufferLayout
+                                      : bindingReq.fUniformBufferLayout;
+
+    sk_sp<SkMeshSpecification> spec = mesh.refSpec();
+
+    size_t attributeCount = spec->attributes().size();
+    std::vector<Attribute> attributes(attributeCount);
+    for (size_t i = 0; i < attributeCount; i++) {
+        attributes[i] = Attribute::MakeFromSkMeshAttribute(spec->attributes()[i]);
+    }
+
+    auto meshVaryings =
+        SkMeshSpecificationPriv::Varyings(*spec);
+    std::vector<Varying> varyings(meshVaryings.size());
+    std::unordered_map<std::string, std::string> mangledVaryingsMap;
+    for (size_t i = 0; i < meshVaryings.size(); i++) {
+        const SkMeshSpecification::Varying& v = meshVaryings[i];
+        std::string mangledName = std::string(v.name.c_str()) + "_SkMeshSpecificationVaryingName";
+        mangledVaryingsMap.emplace(mangledName, std::string(v.name.c_str()));
+        varyings[i] = Varying(mangledName, SkMeshSpecificationPriv::VaryingTypeAsSLType(v.type));
+    }
+
+    std::vector<Uniform> uniforms;
+    for (const SkMeshSpecification::Uniform& u: spec->uniforms()) {
+        uniforms.emplace_back(std::string(u.name),
+                              ShaderCodeDictionary::uniform_type_to_sksl_type(u),
+                              u.isArray() ? u.count : Uniform::kNonArray);
+    }
+
+    const SkMeshSpecificationPriv::ColorType& ct = SkMeshSpecificationPriv::GetColorType(*spec);
+    bool hasColorOutput = ct != SkMeshSpecificationPriv::ColorType::kNone;
+    bool hasColorConversion = ct == SkMeshSpecificationPriv::ColorType::kFloat4;
+
+    RenderStep::RenderStepID nextDynamicId =
+        static_cast<RenderStep::RenderStepID>(fDynamicRenderStepId);
+    MeshRendererPair pair;
+    pair.renderStep = std::make_unique<MeshRenderStep>(nextDynamicId, layout, spec, mesh.mode(),
+                                                       attributes, varyings, mangledVaryingsMap,
+                                                       uniforms,
+                                                       hasColorOutput, hasColorConversion);
+    pair.renderer = std::unique_ptr<Renderer>(new Renderer(std::string("MeshRenderer[RenderStep]"),
+                       DrawTypeFlags::kDrawMesh, pair.renderStep.get()));
+
+    size_t meshRendererIndex = fMeshRenderers.size();
+    fMeshRenderers.emplace_back(std::move(pair));
+
+    fMeshRendererCache.emplace(MeshRenderStep::HashKey(mesh), meshRendererIndex);
+    fMeshRendererLookup.emplace(nextDynamicId, meshRendererIndex);
+    fDynamicRenderStepId++;
 }
 
 } // namespace skgpu::graphite
