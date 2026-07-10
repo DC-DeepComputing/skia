@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4c068749_b5b6de5a",
+        "filename": "src/pathops/SkPathOpsCubic.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-07-10T20:30:32Z",
+      "side": 1,
+      "message": "SkDCurve \u003e (union) \u003e SkDCubic \u003e SkOpGlobalState\n\nSo, the memory of SkOpGlobalState might be overriden by other member of the union.",
+      "parentUuid": "e76c9fde_f95eba66",
+      "range": {
+        "startLine": 155,
+        "startChar": 51,
+        "endLine": 155,
+        "endChar": 68
+      },
+      "revId": "65c4f64fb5b2fb3d21e5e6a8b3834671c890e478",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0e98c1ba_b05d0b1d",
         "filename": "src/pathops/SkPathOpsQuad.h",
         "patchSetId": 3
