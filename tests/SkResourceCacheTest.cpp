@@ -46,8 +46,11 @@ enum CachedState {
     kInCache,
 };
 
-static void check_data(skiatest::Reporter* reporter, const SkCachedData* data,
-                       int refcnt, CachedState cacheState, LockedState lockedState) {
+static void check_data(skiatest::Reporter* reporter,
+                       const SkCachedData* data,
+                       int refcnt,
+                       CachedState cacheState,
+                       LockedState lockedState) {
     REPORTER_ASSERT(reporter, data->testing_only_getRefCnt() == refcnt);
     REPORTER_ASSERT(reporter, data->testing_only_isInCache() == (kInCache == cacheState));
     bool isLocked = (data->data() != nullptr);
@@ -113,12 +116,12 @@ static void test_mipmap_notify(skiatest::Reporter* reporter, SkResourceCache* ca
         REPORTER_ASSERT(reporter, mipmap);
         SkSafeUnref(mipmap);
 
-        img[i].reset(); // delete the image, which *should not* remove us from the cache
+        img[i].reset();  // delete the image, which *should not* remove us from the cache
         mipmap = SkMipmapCache::FindAndRef(desc[i], cache);
         REPORTER_ASSERT(reporter, mipmap);
         SkSafeUnref(mipmap);
 
-        src[i].reset(); // delete the underlying pixelref, which *should* remove us from the cache
+        src[i].reset();  // delete the underlying pixelref, which *should* remove us from the cache
         mipmap = SkMipmapCache::FindAndRef(desc[i], cache);
         REPORTER_ASSERT(reporter, !mipmap);
     }
@@ -133,7 +136,8 @@ static SkDiscardableMemory* pool_factory(size_t bytes) {
     return gPool->create(bytes);
 }
 
-static void testBitmapCache_discarded_bitmap(skiatest::Reporter* reporter, SkResourceCache* cache,
+static void testBitmapCache_discarded_bitmap(skiatest::Reporter* reporter,
+                                             SkResourceCache* cache,
                                              SkResourceCache::DiscardableFactory factory) {
     test_mipmapcache(reporter, cache);
     test_mipmap_notify(reporter, cache);
@@ -155,7 +159,8 @@ DEF_TEST(BitmapCache_discarded_bitmap, reporter) {
     REPORTER_ASSERT(reporter, gFactoryCalls > 0);
 }
 
-static void test_discarded_image(skiatest::Reporter* reporter, const SkMatrix& transform,
+static void test_discarded_image(skiatest::Reporter* reporter,
+                                 const SkMatrix& transform,
                                  sk_sp<SkImage> (*buildImage)()) {
     auto surface(SkSurfaces::Raster(SkImageInfo::MakeN32Premul(10, 10)));
     SkCanvas* canvas = surface->getCanvas();
@@ -172,7 +177,7 @@ static void test_discarded_image(skiatest::Reporter* reporter, const SkMatrix& t
         // any associated resources get cached
         canvas->concat(transform);
         // always use high quality to ensure caching when scaled
-        canvas->drawImage(image, 0, 0, SkSamplingOptions({1.0f/3, 1.0f/3}));
+        canvas->drawImage(image, 0, 0, SkSamplingOptions({1.0f / 3, 1.0f / 3}));
 
         const auto desc = SkBitmapCacheDesc::Make(image.get());
 
@@ -185,7 +190,6 @@ static void test_discarded_image(skiatest::Reporter* reporter, const SkMatrix& t
     }
 }
 
-
 // Verify that associated bitmap cache entries are purged on SkImage destruction.
 DEF_TEST(BitmapCache_discarded_image, reporter) {
     // Cache entries associated with SkImages fall into two categories:
@@ -197,8 +201,8 @@ DEF_TEST(BitmapCache_discarded_image, reporter) {
     // To exercise the latter, we draw scaled bitmap images using HQ filters.
 
     const SkMatrix xforms[] = {
-        SkMatrix::Scale(1, 1),
-        SkMatrix::Scale(1.7f, 0.5f),
+            SkMatrix::Scale(1, 1),
+            SkMatrix::Scale(1.7f, 0.5f),
     };
 
     for (size_t i = 0; i < std::size(xforms); ++i) {
@@ -224,13 +228,12 @@ DEF_TEST(BitmapCache_discarded_image, reporter) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-static void* gTestNamespace;
-
 struct TestKey : SkResourceCache::Key {
     int32_t fData;
 
     TestKey(int sharedID, int32_t data) : fData(data) {
-        this->init(&gTestNamespace, sharedID, sizeof(fData));
+        this->init(
+                SkResourceCache::HashNamespace16("ResourceCacheTestKey"), sharedID, sizeof(fData));
     }
 };
 
@@ -240,8 +243,8 @@ struct TestRec : SkResourceCache::Rec {
     };
 
     TestKey fKey;
-    int*    fFlags;
-    bool    fCanBePurged;
+    int* fFlags;
+    bool fCanBePurged;
 
     TestRec(int sharedID, int32_t data, int* flagPtr) : fKey(sharedID, data), fFlags(flagPtr) {
         fCanBePurged = false;
@@ -250,13 +253,12 @@ struct TestRec : SkResourceCache::Rec {
     const Key& getKey() const override { return fKey; }
     size_t bytesUsed() const override { return 1024; /* just need a value */ }
     bool canBePurged() override { return fCanBePurged; }
-    void postAddInstall(void*) override {
-        *fFlags |= kDidInstall;
-    }
+    void postAddInstall(void*) override { *fFlags |= kDidInstall; }
     const char* getCategory() const override { return "test-category"; }
 };
 
-static void test_duplicate_add(SkResourceCache* cache, skiatest::Reporter* reporter,
+static void test_duplicate_add(SkResourceCache* cache,
+                               skiatest::Reporter* reporter,
                                bool purgable) {
     int sharedID = 1;
     int data = 0;
@@ -267,7 +269,7 @@ static void test_duplicate_add(SkResourceCache* cache, skiatest::Reporter* repor
     auto rec1 = std::make_unique<TestRec>(sharedID, data, &flags1);
     SkASSERT(rec0->getKey() == rec1->getKey());
 
-    TestRec* r0 = rec0.get();   // save the bare-pointer since we will release rec0
+    TestRec* r0 = rec0.get();  // save the bare-pointer since we will release rec0
     r0->fCanBePurged = purgable;
 
     REPORTER_ASSERT(reporter, !(flags0 & TestRec::kDidInstall));
@@ -276,7 +278,7 @@ static void test_duplicate_add(SkResourceCache* cache, skiatest::Reporter* repor
     cache->add(rec0.release(), nullptr);
     REPORTER_ASSERT(reporter, flags0 & TestRec::kDidInstall);
     REPORTER_ASSERT(reporter, !(flags1 & TestRec::kDidInstall));
-    flags0 = 0; // reset the flag
+    flags0 = 0;  // reset the flag
 
     cache->add(rec1.release(), nullptr);
     if (purgable) {
@@ -295,7 +297,7 @@ static void test_duplicate_add(SkResourceCache* cache, skiatest::Reporter* repor
  *  Test behavior when the same key is added more than once.
  */
 DEF_TEST(ResourceCache_purge, reporter) {
-    for (bool purgable : { false, true }) {
+    for (bool purgable : {false, true}) {
         {
             SkResourceCache cache(1024 * 1024);
             test_duplicate_add(&cache, reporter, purgable);
@@ -303,6 +305,32 @@ DEF_TEST(ResourceCache_purge, reporter) {
         {
             SkResourceCache cache(SkDiscardableMemory::Create);
             test_duplicate_add(&cache, reporter, purgable);
+        }
+    }
+}
+
+DEF_TEST(ResourceCache_NamespaceUniqueness, reporter) {
+    const char* names[] = {"BitmapKey",
+                           "MipMapKey",
+                           "RRectBlurKey",
+                           "RectsBlurKey",
+                           "YUVPlanesKey",
+                           "ImageFromPictureKey",
+                           "FontRequestKey",
+                           "ShadowUtils",
+                           "ImageCacheTestKey",
+                           "ResourceCacheTestKey"};
+    constexpr size_t N = sizeof(names) / sizeof(names[0]);
+    uint16_t hashes[N];
+    for (size_t i = 0; i < N; ++i) {
+        hashes[i] = SkResourceCache::HashNamespace16(names[i]);
+        for (size_t j = 0; j < i; ++j) {
+            REPORTER_ASSERT(reporter,
+                            hashes[i] != hashes[j],
+                            "Namespace collision detected: %s and %s both hash to 0x%04x",
+                            names[i],
+                            names[j],
+                            hashes[i]);
         }
     }
 }

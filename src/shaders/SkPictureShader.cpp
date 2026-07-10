@@ -36,8 +36,11 @@
 #include <utility>
 class SkDiscardableMemory;
 
-sk_sp<SkShader> SkPicture::makeShader(SkTileMode tmx, SkTileMode tmy, SkFilterMode filter,
-                                      const SkMatrix* localMatrix, const SkRect* tile) const {
+sk_sp<SkShader> SkPicture::makeShader(SkTileMode tmx,
+                                      SkTileMode tmy,
+                                      SkFilterMode filter,
+                                      const SkMatrix* localMatrix,
+                                      const SkRect* tile) const {
     if (localMatrix && !localMatrix->invert()) {
         return nullptr;
     }
@@ -45,39 +48,36 @@ sk_sp<SkShader> SkPicture::makeShader(SkTileMode tmx, SkTileMode tmy, SkFilterMo
 }
 
 namespace {
-static unsigned gImageFromPictureKeyNamespaceLabel;
-
 struct ImageFromPictureKey : public SkResourceCache::Key {
 public:
-    ImageFromPictureKey(SkColorSpace* colorSpace, SkColorType colorType,
-                        uint32_t pictureID, const SkRect& subset,
-                        SkSize scale, const SkSurfaceProps& surfaceProps)
-        : fColorSpaceXYZHash(colorSpace->toXYZD50Hash())
-        , fColorSpaceTransferFnHash(colorSpace->transferFnHash())
-        , fColorType(static_cast<uint32_t>(colorType))
-        , fSubset(subset)
-        , fScale(scale)
-        , fSurfaceProps(surfaceProps)
-    {
+    ImageFromPictureKey(SkColorSpace* colorSpace,
+                        SkColorType colorType,
+                        uint32_t pictureID,
+                        const SkRect& subset,
+                        SkSize scale,
+                        const SkSurfaceProps& surfaceProps)
+            : fColorSpaceXYZHash(colorSpace->toXYZD50Hash())
+            , fColorSpaceTransferFnHash(colorSpace->transferFnHash())
+            , fColorType(static_cast<uint32_t>(colorType))
+            , fSubset(subset)
+            , fScale(scale)
+            , fSurfaceProps(surfaceProps) {
         static const size_t keySize = sizeof(fColorSpaceXYZHash) +
-                                      sizeof(fColorSpaceTransferFnHash) +
-                                      sizeof(fColorType) +
-                                      sizeof(fSubset) +
-                                      sizeof(fScale) +
-                                      sizeof(fSurfaceProps);
+                                      sizeof(fColorSpaceTransferFnHash) + sizeof(fColorType) +
+                                      sizeof(fSubset) + sizeof(fScale) + sizeof(fSurfaceProps);
         // This better be packed.
         SkASSERT(sizeof(uint32_t) * (&fEndOfStruct - &fColorSpaceXYZHash) == keySize);
-        this->init(&gImageFromPictureKeyNamespaceLabel,
+        this->init(SkResourceCache::HashNamespace16("ImageFromPictureKey"),
                    SkPicturePriv::MakeSharedID(pictureID),
                    keySize);
     }
 
 private:
-    uint32_t       fColorSpaceXYZHash;
-    uint32_t       fColorSpaceTransferFnHash;
-    uint32_t       fColorType;
-    SkRect         fSubset;
-    SkSize         fScale;
+    uint32_t fColorSpaceXYZHash;
+    uint32_t fColorSpaceTransferFnHash;
+    uint32_t fColorType;
+    SkRect fSubset;
+    SkSize fScale;
     SkSurfaceProps fSurfaceProps;
 
     SkDEBUGCODE(uint32_t fEndOfStruct;)
@@ -85,11 +85,10 @@ private:
 
 struct ImageFromPictureRec : public SkResourceCache::Rec {
     ImageFromPictureRec(const ImageFromPictureKey& key, sk_sp<SkImage> image)
-        : fKey(key)
-        , fImage(std::move(image)) {}
+            : fKey(key), fImage(std::move(image)) {}
 
     ImageFromPictureKey fKey;
-    sk_sp<SkImage>  fImage;
+    sk_sp<SkImage> fImage;
 
     const Key& getKey() const override { return fKey; }
     size_t bytesUsed() const override {
@@ -108,7 +107,7 @@ struct ImageFromPictureRec : public SkResourceCache::Rec {
     }
 };
 
-} // namespace
+}  // namespace
 
 SkPictureShader::SkPictureShader(sk_sp<SkPicture> picture,
                                  SkTileMode tmx,
@@ -121,16 +120,17 @@ SkPictureShader::SkPictureShader(sk_sp<SkPicture> picture,
         , fTmy(tmy)
         , fFilter(filter) {}
 
-sk_sp<SkShader> SkPictureShader::Make(sk_sp<SkPicture> picture, SkTileMode tmx, SkTileMode tmy,
-                                      SkFilterMode filter, const SkMatrix* lm, const SkRect* tile) {
+sk_sp<SkShader> SkPictureShader::Make(sk_sp<SkPicture> picture,
+                                      SkTileMode tmx,
+                                      SkTileMode tmy,
+                                      SkFilterMode filter,
+                                      const SkMatrix* lm,
+                                      const SkRect* tile) {
     if (!picture || picture->cullRect().isEmpty() || (tile && tile->isEmpty())) {
         return SkShaders::Empty();
     }
-    return SkLocalMatrixShader::MakeWrapped<SkPictureShader>(lm,
-                                                             std::move(picture),
-                                                             tmx, tmy,
-                                                             filter,
-                                                             tile);
+    return SkLocalMatrixShader::MakeWrapped<SkPictureShader>(
+            lm, std::move(picture), tmx, tmy, filter, tile);
 }
 
 sk_sp<SkFlattenable> SkPictureShader::CreateProc(SkReadBuffer& buffer) {
@@ -261,17 +261,18 @@ sk_sp<SkShader> SkPictureShader::rasterShader(const SkMatrix& totalM,
                                               SkColorSpace* dstColorSpace,
                                               const SkSurfaceProps& propsIn) const {
     const int maxTextureSize_NotUsedForCPU = 0;
-    CachedImageInfo info = CachedImageInfo::Make(fTile,
-                                                 totalM,
-                                                 dstColorType, dstColorSpace,
-                                                 maxTextureSize_NotUsedForCPU,
-                                                 propsIn);
+    CachedImageInfo info = CachedImageInfo::Make(
+            fTile, totalM, dstColorType, dstColorSpace, maxTextureSize_NotUsedForCPU, propsIn);
     if (!info.success) {
         return nullptr;
     }
 
-    ImageFromPictureKey key(info.imageInfo.colorSpace(), info.imageInfo.colorType(),
-                            fPicture->uniqueID(), fTile, info.tileScale, info.props);
+    ImageFromPictureKey key(info.imageInfo.colorSpace(),
+                            info.imageInfo.colorType(),
+                            fPicture->uniqueID(),
+                            fTile,
+                            info.tileScale,
+                            info.props);
 
     sk_sp<SkImage> image;
     if (!SkResourceCache::Find(key, ImageFromPictureRec::Visitor, &image)) {
@@ -284,7 +285,7 @@ sk_sp<SkShader> SkPictureShader::rasterShader(const SkMatrix& totalM,
         SkPicturePriv::AddedToCache(fPicture.get());
     }
     // Scale the image to the original picture size.
-    auto lm = SkMatrix::Scale(1.f/info.tileScale.width(), 1.f/info.tileScale.height());
+    auto lm = SkMatrix::Scale(1.f / info.tileScale.width(), 1.f / info.tileScale.height());
     return image->makeShader(fTmx, fTmy, SkSamplingOptions(fFilter), &lm);
 }
 
@@ -295,10 +296,8 @@ bool SkPictureShader::appendStages(const SkStageRec& rec, const SkShaders::Matri
     // mapping to make an image. It could be wildly wrong if there is a runtime shader transforming
     // the coordinates in a manner we don't know about here. However, that is a fundamental problem
     // with the technique of converting a picture to an image to implement this shader.
-    bitmapShader = this->rasterShader(mRec.totalMatrix(),
-                                      rec.fDstColorType,
-                                      rec.fDstCS,
-                                      rec.fSurfaceProps);
+    bitmapShader = this->rasterShader(
+            mRec.totalMatrix(), rec.fDstColorType, rec.fDstCS, rec.fSurfaceProps);
     if (!bitmapShader) {
         return false;
     }
