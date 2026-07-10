@@ -55,7 +55,8 @@ private:
 
     struct Branch {
         union {
-            Node* fSubtree;
+            // RAW_PTR_EXCLUSION: union.
+            RAW_PTR_EXCLUSION Node* fSubtree;
             int fOpIndex;
         };
         SkRect fBounds;
