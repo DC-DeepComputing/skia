@@ -896,7 +896,7 @@ optional("gpu_shared") {
   enabled = skia_enable_ganesh || skia_enable_graphite
 
   configs = []
-  deps = []
+  deps = [ "//src/partition_alloc:raw_ptr" ]
   libs = []
   public_defines = []
   public_deps = []
@@ -945,6 +945,7 @@ optional("gpu") {
     ":gpu_shared",
     ":minify_sksl",
     ":run_sksllex",
+    "//src/partition_alloc:raw_ptr",
   ]
   if (skia_generate_workarounds) {
     deps += [ ":workaround_list" ]
@@ -1131,7 +1132,10 @@ optional("jpeg_encode") {
   enabled = skia_use_libjpeg_turbo_encode && !skia_use_ndk_images
   public_defines = [ "SK_CODEC_ENCODES_JPEG" ]
 
-  deps = [ "//third_party/libjpeg-turbo:libjpeg" ]
+  deps = [
+    "//src/partition_alloc:raw_ptr",
+    "//third_party/libjpeg-turbo:libjpeg",
+  ]
   public = skia_encode_jpeg_public
   sources = skia_encode_jpeg_srcs
 
@@ -1237,7 +1241,10 @@ skia_source_set("pathops") {
   configs = skia_library_configs
   public = skia_pathops_public
   sources = skia_pathops_sources
-  deps = [ ":core" ]
+  deps = [
+    ":core",
+    "//src/partition_alloc:raw_ptr",
+  ]
 }
 
 skia_source_set("clipstack_utils") {
@@ -1256,6 +1263,7 @@ optional("pdf") {
   deps = [
     ":clipstack_utils",
     ":pathops",
+    "//src/partition_alloc:raw_ptr",
     "//third_party/zlib",
   ]
   public = skia_pdf_public
@@ -1329,6 +1337,7 @@ optional("png_encode_libpng") {
   public = skia_encode_libpng_public
   deps = [
     ":png_encode_common",
+    "//src/partition_alloc:raw_ptr",
     "//third_party/libpng",
   ]
   sources = skia_encode_libpng_srcs
@@ -1819,7 +1828,10 @@ optional("webp_encode") {
   public_defines = [ "SK_CODEC_ENCODES_WEBP" ]
   public = skia_encode_webp_public
 
-  deps = [ "//third_party/libwebp" ]
+  deps = [
+    "//src/partition_alloc:raw_ptr",
+    "//third_party/libwebp",
+  ]
   sources = skia_encode_webp_srcs
 }
 
@@ -1830,7 +1842,10 @@ optional("wuffs") {
     "SK_CODEC_DECODES_GIF",
   ]
 
-  deps = [ "//third_party/wuffs" ]
+  deps = [
+    "//src/partition_alloc:raw_ptr",
+    "//third_party/wuffs",
+  ]
   sources = [ "src/codec/SkWuffsCodec.cpp" ]
 }
 
@@ -1838,7 +1853,10 @@ optional("xml") {
   enabled = skia_use_expat || skia_use_jpeg_gainmaps
   public_defines = [ "SK_XML" ]
 
-  deps = [ "//third_party/expat" ]
+  deps = [
+    "//src/partition_alloc:raw_ptr",
+    "//third_party/expat",
+  ]
   sources = skia_xml_sources
   sources += skia_codec_xmp
   sources += skia_svg_writer_sources
@@ -1896,6 +1914,7 @@ skia_source_set("core") {
     ":png_encode_libpng",
     ":typeface_fontations",
     ":typeface_freetype",
+    "//src/partition_alloc:raw_ptr",
   ]
 }
 
@@ -2371,7 +2390,10 @@ if (skia_enable_tools) {
         defines += [ "SK_ENABLE_DISCRETE_GPU" ]
       }
 
-      deps = [ ":load_dynamic_library" ]
+      deps = [
+        ":load_dynamic_library",
+        "//src/partition_alloc:raw_ptr",
+      ]
       public_deps = []
       sources = [
         "tools/gpu/BackendSurfaceFactory.cpp",
@@ -2688,7 +2710,10 @@ if (skia_enable_tools) {
     if (skia_tools_require_resources) {
       defines += [ "SK_TOOLS_REQUIRE_RESOURCES" ]
     }
-    deps = [ ":flags" ]
+    deps = [
+      ":flags",
+      "//src/partition_alloc:raw_ptr",
+    ]
     if (skia_enable_svg) {
       deps += [ "modules/svg" ]
     }
@@ -2731,6 +2756,7 @@ if (skia_enable_tools) {
       "modules/skparagraph:gm",
       "modules/skresources",
       "modules/skshaper",
+      "//src/partition_alloc:raw_ptr",
     ]
     if (is_skia_dev_build) {
       sources += [ "gm/fiddle.cpp" ]
@@ -2760,6 +2786,7 @@ if (skia_enable_tools) {
       ":flags",
       ":skia",
       ":tool_utils",
+      "//src/partition_alloc:raw_ptr",
     ]
     if (skia_enable_graphite || skia_enable_ganesh) {
       public_deps = [
@@ -2950,6 +2977,7 @@ if (skia_enable_tools) {
           "modules/skottie:utils",
           "modules/skshaper",
           "modules/skunicode",
+          "//src/partition_alloc:raw_ptr",
         ]
         if (skia_use_libpng_decode) {
           deps += [ "modules/svg" ]
