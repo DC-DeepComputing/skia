@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "459b7349_02a6134a",
+        "filename": "src/context/SkContext.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-10T14:34:06Z",
+      "side": 1,
+      "message": "dont use static\n\nwrap in anon namespace",
+      "revId": "eeba1d7c9b5cfa7f91319a1210ee0d673a8bd815",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
