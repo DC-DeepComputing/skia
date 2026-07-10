@@ -1,4 +1,4 @@
- /*
+/*
  * Copyright 2013 Google Inc.
  *
  * Use of this source code is governed by a BSD-style license that can be
@@ -16,19 +16,18 @@
 #include <cstdint>
 
 namespace {
-static void* gGlobalAddress;
 struct TestingKey : public SkResourceCache::Key {
-    intptr_t    fValue;
+    intptr_t fValue;
 
     TestingKey(intptr_t value, uint64_t sharedID = 0) : fValue(value) {
-        this->init(&gGlobalAddress, sharedID, sizeof(fValue));
+        this->init(SkResourceCache::HashNamespace16("ImageCacheTestKey"), sharedID, sizeof(fValue));
     }
 };
 struct TestingRec : public SkResourceCache::Rec {
     TestingRec(const TestingKey& key, uint32_t value) : fKey(key), fValue(value) {}
 
-    TestingKey  fKey;
-    intptr_t    fValue;
+    TestingKey fKey;
+    intptr_t fValue;
 
     const Key& getKey() const override { return fKey; }
     size_t bytesUsed() const override { return sizeof(fKey) + sizeof(fValue); }
@@ -81,13 +80,13 @@ static void test_cache(skiatest::Reporter* reporter, SkResourceCache& cache, boo
 
 static void test_cache_purge_shared_id(skiatest::Reporter* reporter, SkResourceCache& cache) {
     for (int i = 0; i < COUNT; ++i) {
-        TestingKey key(i, i & 1);   // every other key will have a 1 for its sharedID
+        TestingKey key(i, i & 1);  // every other key will have a 1 for its sharedID
         cache.add(new TestingRec(key, i));
     }
 
     // Ensure that everyone is present
     for (int i = 0; i < COUNT; ++i) {
-        TestingKey key(i, i & 1);   // every other key will have a 1 for its sharedID
+        TestingKey key(i, i & 1);  // every other key will have a 1 for its sharedID
         intptr_t value = -1;
 
         REPORTER_ASSERT(reporter, cache.find(key, TestingRec::Visitor, &value));
@@ -99,7 +98,7 @@ static void test_cache_purge_shared_id(skiatest::Reporter* reporter, SkResourceC
 
     // Ensure that only the even ones are still present
     for (int i = 0; i < COUNT; ++i) {
-        TestingKey key(i, i & 1);   // every other key will have a 1 for its sharedID
+        TestingKey key(i, i & 1);  // every other key will have a 1 for its sharedID
         intptr_t value = -1;
 
         if (i & 1) {
@@ -118,7 +117,7 @@ static SkDiscardableMemory* pool_factory(size_t bytes) {
 }
 
 DEF_TEST(ImageCache, reporter) {
-    static const size_t defLimit = DIM * DIM * 4 * COUNT + 1024;    // 1K slop
+    static const size_t defLimit = DIM * DIM * 4 * COUNT + 1024;  // 1K slop
 
     {
         SkResourceCache cache(defLimit);

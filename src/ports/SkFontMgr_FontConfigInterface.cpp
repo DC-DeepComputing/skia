@@ -23,7 +23,7 @@
 using namespace skia_private;
 
 std::unique_ptr<SkStreamAsset> SkTypeface_FCI::onOpenStream(int* ttcIndex) const {
-    *ttcIndex =  this->getIdentity().fTTCIndex;
+    *ttcIndex = this->getIdentity().fTTCIndex;
     return std::unique_ptr<SkStreamAsset>(fFCI->openStream(this->getIdentity()));
 }
 
@@ -44,7 +44,10 @@ public:
 
     int count() override { return 0; }
     void getStyle(int index, SkFontStyle*, SkString* style) override { SkASSERT(false); }
-    sk_sp<SkTypeface> createTypeface(int index) override { SkASSERT(false); return nullptr; }
+    sk_sp<SkTypeface> createTypeface(int index) override {
+        SkASSERT(false);
+        return nullptr;
+    }
     sk_sp<SkTypeface> matchStyle(const SkFontStyle& pattern) override { return nullptr; }
 };
 
@@ -67,7 +70,7 @@ public:
             size_t contentLen = SkAlign4(nameLen);
             sk_careful_memcpy(content, name, nameLen);
             sk_bzero(content + nameLen, contentLen - nameLen);
-            this->init(nullptr, 0, keySize + contentLen);
+            this->init(SkResourceCache::HashNamespace16("FontRequestKey"), 0, keySize + contentLen);
         }
         const SkFontStyle fStyle;
         /** The sum of the sizes of the fields of this class. */
@@ -80,16 +83,13 @@ public:
             char* storage = new char[sizeof(Request) + contentLen];
             return new (storage) Request(name, nameLen, style);
         }
-        void operator delete(void* storage) {
-            delete[] reinterpret_cast<char*>(storage);
-        }
+        void operator delete(void* storage) { delete[] reinterpret_cast<char*>(storage); }
     };
-
 
 private:
     struct Result : public SkResourceCache::Rec {
         Result(Request* request, sk_sp<SkTypeface> typeface)
-            : fRequest(request), fFace(std::move(typeface)) {}
+                : fRequest(request), fFace(std::move(typeface)) {}
         Result(Result&&) = default;
         Result& operator=(Result&&) = default;
 
@@ -114,13 +114,16 @@ public:
     /** Does not take ownership of request. */
     sk_sp<SkTypeface> findAndRef(Request* request) {
         sk_sp<SkTypeface> face;
-        fCachedResults.find(*request, [](const SkResourceCache::Rec& rec, void* context) -> bool {
-            const Result& result = static_cast<const Result&>(rec);
-            sk_sp<SkTypeface>* face = static_cast<sk_sp<SkTypeface>*>(context);
+        fCachedResults.find(
+                *request,
+                [](const SkResourceCache::Rec& rec, void* context) -> bool {
+                    const Result& result = static_cast<const Result&>(rec);
+                    sk_sp<SkTypeface>* face = static_cast<sk_sp<SkTypeface>*>(context);
 
-            *face = result.fFace;
-            return true;
-        }, &face);
+                    *face = result.fFace;
+                    return true;
+                },
+                &face);
         return face;
     }
 };
@@ -151,17 +154,12 @@ class SkFontMgr_FCI : public SkFontMgr {
 
 public:
     SkFontMgr_FCI(sk_sp<SkFontConfigInterface> fci, std::unique_ptr<SkFontScanner> scanner)
-        : fFCI(std::move(fci))
-        , fScanner(std::move(scanner))
-        , fCache(kMaxSize)
-    {
+            : fFCI(std::move(fci)), fScanner(std::move(scanner)), fCache(kMaxSize) {
         SkASSERT_RELEASE(fFCI);
     }
 
 protected:
-    int onCountFamilies() const override {
-        SK_ABORT("Not implemented.");
-    }
+    int onCountFamilies() const override { SK_ABORT("Not implemented."); }
 
     void onGetFamilyName(int index, SkString* familyName) const override {
         SK_ABORT("Not implemented.");
@@ -176,8 +174,7 @@ protected:
     }
 
     sk_sp<SkTypeface> onMatchFamilyStyle(const char requestedFamilyName[],
-                                         const SkFontStyle& requestedStyle) const override
-    {
+                                         const SkFontStyle& requestedStyle) const override {
         SkAutoMutexExclusive ama(fMutex);
 
         // Check if this request is already in the request cache.
@@ -191,9 +188,8 @@ protected:
         SkFontConfigInterface::FontIdentity identity;
         SkString outFamilyName;
         SkFontStyle outStyle;
-        if (!fFCI->matchFamilyName(requestedFamilyName, requestedStyle,
-                                   &identity, &outFamilyName, &outStyle))
-        {
+        if (!fFCI->matchFamilyName(
+                    requestedFamilyName, requestedStyle, &identity, &outFamilyName, &outStyle)) {
             return nullptr;
         }
 
@@ -203,8 +199,12 @@ protected:
             sk_sp<SkTypeface> realTypeface = fScanner->MakeFromStream(
                     std::unique_ptr<SkStreamAsset>(fFCI->openStream(identity)),
                     SkFontArguments().setCollectionIndex(identity.fTTCIndex));
-            face.reset(SkTypeface_FCI::Create(std::move(realTypeface), fFCI, identity,
-                                              std::move(outFamilyName), outStyle, false));
+            face.reset(SkTypeface_FCI::Create(std::move(realTypeface),
+                                              fFCI,
+                                              identity,
+                                              std::move(outFamilyName),
+                                              outStyle,
+                                              false));
             if (face) {
                 // Add this typeface to the typeface cache.
                 fTFCache.add(face);
@@ -216,9 +216,11 @@ protected:
         return face;
     }
 
-    sk_sp<SkTypeface> onMatchFamilyStyleCharacter(const char familyName[], const SkFontStyle&,
-                                            const char* bcp47[], int bcp47Count,
-                                            SkUnichar character) const override {
+    sk_sp<SkTypeface> onMatchFamilyStyleCharacter(const char familyName[],
+                                                  const SkFontStyle&,
+                                                  const char* bcp47[],
+                                                  int bcp47Count,
+                                                  SkUnichar character) const override {
         SK_ABORT("Not implemented.");
     }
 

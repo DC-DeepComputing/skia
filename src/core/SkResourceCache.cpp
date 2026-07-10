@@ -32,58 +32,54 @@ using namespace skia_private;
 
 DECLARE_SKMESSAGEBUS_MESSAGE(SkResourceCache::PurgeSharedIDMessage, uint32_t, true)
 
-static inline bool SkShouldPostMessageToBus(
-        const SkResourceCache::PurgeSharedIDMessage&, uint32_t) {
+static inline bool SkShouldPostMessageToBus(const SkResourceCache::PurgeSharedIDMessage&,
+                                            uint32_t) {
     // SkResourceCache is typically used as a singleton and we don't label Inboxes so all messages
     // go to all inboxes.
     return true;
 }
 
 // This can be defined by the caller's build system
-//#define SK_USE_DISCARDABLE_SCALEDIMAGECACHE
+// #define SK_USE_DISCARDABLE_SCALEDIMAGECACHE
 
 #ifndef SK_DISCARDABLEMEMORY_SCALEDIMAGECACHE_COUNT_LIMIT
-#   define SK_DISCARDABLEMEMORY_SCALEDIMAGECACHE_COUNT_LIMIT   1024
+#define SK_DISCARDABLEMEMORY_SCALEDIMAGECACHE_COUNT_LIMIT 1024
 #endif
 
 #ifndef SK_DEFAULT_IMAGE_CACHE_LIMIT
-    #define SK_DEFAULT_IMAGE_CACHE_LIMIT     (32 * 1024 * 1024)
+#define SK_DEFAULT_IMAGE_CACHE_LIMIT (32 * 1024 * 1024)
 #endif
 
-void SkResourceCache::Key::init(void* nameSpace, uint64_t sharedID, size_t dataSize) {
+void SkResourceCache::Key::init(uint16_t nameSpace, uint64_t sharedID, size_t dataSize) {
     SkASSERT(SkAlign4(dataSize) == dataSize);
 
-    // fCount32 and fHash are not hashed
-    static const int kUnhashedLocal32s = 2; // fCache32 + fHash
-    static const int kSharedIDLocal32s = 2; // fSharedID_lo + fSharedID_hi
-    static const int kHashedLocal32s = kSharedIDLocal32s + (sizeof(fNamespace) >> 2);
-    static const int kLocal32s = kUnhashedLocal32s + kHashedLocal32s;
+    // Only fHash is not hashed (1 word)
+    static const int kUnhashedLocal32s = 1;  // fHash
+    static const int kLocal32s = 4;          // sizeof(Key) >> 2
 
     static_assert(sizeof(Key) == (kLocal32s << 2), "unaccounted_key_locals");
-    static_assert(sizeof(Key) == offsetof(Key, fNamespace) + sizeof(fNamespace),
-                 "namespace_field_must_be_last");
 
-    fCount32 = SkToS32(kLocal32s + (dataSize >> 2));
-    fSharedID_lo = (uint32_t)(sharedID & 0xFFFFFFFF);
-    fSharedID_hi = (uint32_t)(sharedID >> 32);
+    fCount32 = SkToU8(kLocal32s + (dataSize >> 2));
+    fPlaceholder = 0;
     fNamespace = nameSpace;
-    // skip unhashed fields when computing the hash
+    fSharedID = sharedID;
+
+    // skip fHash when computing the hash
     fHash = SkChecksum::Hash32(this->as32() + kUnhashedLocal32s,
                                (fCount32 - kUnhashedLocal32s) << 2);
 }
 
 namespace {
-    struct HashTraits {
-        static uint32_t Hash(const SkResourceCache::Key& key) { return key.hash(); }
-        static const SkResourceCache::Key& GetKey(const SkResourceCache::Rec* rec) {
-            return rec->getKey();
-        }
-    };
+struct HashTraits {
+    static uint32_t Hash(const SkResourceCache::Key& key) { return key.hash(); }
+    static const SkResourceCache::Key& GetKey(const SkResourceCache::Rec* rec) {
+        return rec->getKey();
+    }
+};
 }  // namespace
 
-class SkResourceCache::Hash :
-    public THashTable<SkResourceCache::Rec*, SkResourceCache::Key, HashTraits> {};
-
+class SkResourceCache::Hash
+        : public THashTable<SkResourceCache::Rec*, SkResourceCache::Key, HashTraits> {};
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -106,8 +102,7 @@ SkResourceCache::SkResourceCache(DiscardableFactory factory)
     fDiscardableFactory = factory;
 }
 
-SkResourceCache::SkResourceCache(size_t byteLimit)
-        : fPurgeSharedIDInbox(SK_InvalidUniqueID) {
+SkResourceCache::SkResourceCache(size_t byteLimit) : fPurgeSharedIDInbox(SK_InvalidUniqueID) {
     this->init();
     fTotalByteLimit = byteLimit;
 }
@@ -141,7 +136,7 @@ bool SkResourceCache::find(const Key& key, FindVisitor visitor, void* context) {
 }
 
 static void make_size_str(size_t size, SkString* str) {
-    const char suffix[] = { 'b', 'k', 'm', 'g', 't', 0 };
+    const char suffix[] = {'b', 'k', 'm', 'g', 't', 0};
     int i = 0;
     while (suffix[i] && (size > 1024)) {
         i += 1;
@@ -179,7 +174,11 @@ void SkResourceCache::add(Rec* rec, void* payload) {
         make_size_str(rec->bytesUsed(), &bytesStr);
         make_size_str(fTotalBytesUsed, &totalStr);
         SkDebugf("RC:    add %5s %12p key %08x -- total %5s, count %d\n",
-                 bytesStr.c_str(), rec, rec->getHash(), totalStr.c_str(), fCount);
+                 bytesStr.c_str(),
+                 rec,
+                 rec->getHash(),
+                 totalStr.c_str(),
+                 fCount);
     }
 
     // since the new rec may push us over-budget, we perform a purge check now
@@ -197,14 +196,18 @@ void SkResourceCache::remove(Rec* rec) {
     fTotalBytesUsed -= used;
     fCount -= 1;
 
-    //SkDebugf("-RC count [%3d] bytes %d\n", fCount, fTotalBytesUsed);
+    // SkDebugf("-RC count [%3d] bytes %d\n", fCount, fTotalBytesUsed);
 
     if (gDumpCacheTransactions) {
         SkString bytesStr, totalStr;
         make_size_str(used, &bytesStr);
         make_size_str(fTotalBytesUsed, &totalStr);
         SkDebugf("RC: remove %5s %12p key %08x -- total %5s, count %d\n",
-                 bytesStr.c_str(), rec, rec->getHash(), totalStr.c_str(), fCount);
+                 bytesStr.c_str(),
+                 rec,
+                 rec->getHash(),
+                 totalStr.c_str(),
+                 fCount);
     }
 
     delete rec;
@@ -212,13 +215,13 @@ void SkResourceCache::remove(Rec* rec) {
 
 void SkResourceCache::purgeAsNeeded(bool forcePurge) {
     size_t byteLimit;
-    int    countLimit;
+    int countLimit;
 
     if (fDiscardableFactory) {
         countLimit = SK_DISCARDABLEMEMORY_SCALEDIMAGECACHE_COUNT_LIMIT;
         byteLimit = UINT32_MAX;  // no limit based on bytes
     } else {
-        countLimit = SK_MaxS32; // no limit based on count
+        countLimit = SK_MaxS32;  // no limit based on count
         byteLimit = fTotalByteLimit;
     }
 
@@ -236,7 +239,7 @@ void SkResourceCache::purgeAsNeeded(bool forcePurge) {
     }
 }
 
-//#define SK_TRACK_PURGE_SHAREDID_HITRATE
+// #define SK_TRACK_PURGE_SHAREDID_HITRATE
 
 #ifdef SK_TRACK_PURGE_SHAREDID_HITRATE
 static int gPurgeCallCounter;
@@ -275,7 +278,9 @@ void SkResourceCache::purgeSharedID(uint64_t sharedID) {
         gPurgeHitCounter += 1;
     }
 
-    SkDebugf("PurgeShared calls=%d hits=%d rate=%g\n", gPurgeCallCounter, gPurgeHitCounter,
+    SkDebugf("PurgeShared calls=%d hits=%d rate=%g\n",
+             gPurgeCallCounter,
+             gPurgeHitCounter,
              gPurgeHitCounter * 100.0 / gPurgeCallCounter);
 #endif
 }
@@ -422,7 +427,9 @@ void SkResourceCache::dump() const {
     this->validate();
 
     SkDebugf("SkResourceCache: count=%d bytes=%zu %s\n",
-             fCount, fTotalBytesUsed, fDiscardableFactory ? "discardable" : "malloc");
+             fCount,
+             fTotalBytesUsed,
+             fDiscardableFactory ? "discardable" : "malloc");
 }
 
 size_t SkResourceCache::setSingleAllocationByteLimit(size_t newLimit) {
@@ -431,9 +438,7 @@ size_t SkResourceCache::setSingleAllocationByteLimit(size_t newLimit) {
     return oldLimit;
 }
 
-size_t SkResourceCache::getSingleAllocationByteLimit() const {
-    return fSingleAllocationByteLimit;
-}
+size_t SkResourceCache::getSingleAllocationByteLimit() const { return fSingleAllocationByteLimit; }
 
 size_t SkResourceCache::getEffectiveSingleAllocationByteLimit() const {
     // fSingleAllocationByteLimit == 0 means the caller is asking for our default
@@ -472,13 +477,9 @@ static SkSynchronizedResourceCache* get_cache() {
     return gResourceCache;
 }
 
-size_t SkResourceCache::GetTotalBytesUsed() {
-    return get_cache()->getTotalBytesUsed();
-}
+size_t SkResourceCache::GetTotalBytesUsed() { return get_cache()->getTotalBytesUsed(); }
 
-size_t SkResourceCache::GetTotalByteLimit() {
-    return get_cache()->getTotalByteLimit();
-}
+size_t SkResourceCache::GetTotalByteLimit() { return get_cache()->getTotalByteLimit(); }
 
 size_t SkResourceCache::SetTotalByteLimit(size_t newLimit) {
     return get_cache()->setTotalByteLimit(newLimit);
@@ -492,9 +493,7 @@ SkCachedData* SkResourceCache::NewCachedData(size_t bytes) {
     return get_cache()->newCachedData(bytes);
 }
 
-void SkResourceCache::Dump() {
-    get_cache()->dump();
-}
+void SkResourceCache::Dump() { get_cache()->dump(); }
 
 size_t SkResourceCache::SetSingleAllocationByteLimit(size_t size) {
     return get_cache()->setSingleAllocationByteLimit(size);
@@ -508,21 +507,15 @@ size_t SkResourceCache::GetEffectiveSingleAllocationByteLimit() {
     return get_cache()->getEffectiveSingleAllocationByteLimit();
 }
 
-void SkResourceCache::PurgeAll() {
-    return get_cache()->purgeAll();
-}
+void SkResourceCache::PurgeAll() { return get_cache()->purgeAll(); }
 
-void SkResourceCache::CheckMessages() {
-    return get_cache()->checkMessages();
-}
+void SkResourceCache::CheckMessages() { return get_cache()->checkMessages(); }
 
 bool SkResourceCache::Find(const Key& key, FindVisitor visitor, void* context) {
     return get_cache()->find(key, visitor, context);
 }
 
-void SkResourceCache::Add(Rec* rec, void* payload) {
-    get_cache()->add(rec, payload);
-}
+void SkResourceCache::Add(Rec* rec, void* payload) { get_cache()->add(rec, payload); }
 
 void SkResourceCache::VisitAll(Visitor visitor, void* context) {
     get_cache()->visitAll(visitor, context);
@@ -538,12 +531,12 @@ void SkResourceCache::PostPurgeSharedID(uint64_t sharedID) {
 
 static void dump_visitor(const SkResourceCache::Rec& rec, void*) {
     SkDebugf("RC: %12s bytes %9zu  discardable %p\n",
-             rec.getCategory(), rec.bytesUsed(), rec.diagnostic_only_getDiscardable());
+             rec.getCategory(),
+             rec.bytesUsed(),
+             rec.diagnostic_only_getDiscardable());
 }
 
-void SkResourceCache::TestDumpMemoryStatistics() {
-    VisitAll(dump_visitor, nullptr);
-}
+void SkResourceCache::TestDumpMemoryStatistics() { VisitAll(dump_visitor, nullptr); }
 
 static void sk_trace_dump_visitor(const SkResourceCache::Rec& rec, void* context) {
     SkTraceMemoryDump* dump = static_cast<SkTraceMemoryDump*>(context);

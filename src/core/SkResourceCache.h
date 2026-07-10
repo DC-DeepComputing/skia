@@ -30,22 +30,31 @@ class SkTraceMemoryDump;
  */
 class SkResourceCache {
 public:
+    // Compile-time FNV-1a 32-bit hash folded to 16-bit.
+    // If you add a new namespace, please update ResourceCache_NamespaceUniqueness
+    // in tests/SkResourceCacheTest.cpp to verify there are no collisions.
+    static constexpr uint16_t HashNamespace16(const char* name) {
+        uint32_t hash = 2166136261u;
+        for (size_t i = 0; name[i] != '\0'; ++i) {
+            hash ^= static_cast<uint8_t>(name[i]);
+            hash *= 16777619u;
+        }
+        return static_cast<uint16_t>((hash >> 16) ^ (hash & 0xffff));
+    }
+
     struct Key {
         /** Key subclasses must call this after their own fields and data are initialized.
          *  All fields and data must be tightly packed.
-         *  @param nameSpace must be unique per Key subclass.
+         *  @param nameSpace must be unique per Key subclass (use HashNamespace16).
          *  @param sharedID == 0 means ignore this field, does not support group purging.
          *  @param dataSize is size of fields and data of the subclass, must be a multiple of 4.
          */
-        void init(void* nameSpace, uint64_t sharedID, size_t dataSize);
+        void init(uint16_t nameSpace, uint64_t sharedID, size_t dataSize);
 
         /** Returns the size of this key. */
-        size_t size() const {
-            return fCount32 << 2;
-        }
+        size_t size() const { return fCount32 << 2; }
 
-        void* getNamespace() const { return fNamespace; }
-        uint64_t getSharedID() const { return ((uint64_t)fSharedID_hi << 32) | fSharedID_lo; }
+        uint64_t getSharedID() const { return fSharedID; }
 
         // This is only valid after having called init().
         uint32_t hash() const { return fHash; }
@@ -62,12 +71,11 @@ public:
         }
 
     private:
-        int32_t  fCount32;   // local + user contents count32
         uint32_t fHash;
-        // split uint64_t into hi and lo so we don't force ourselves to pad on 32bit machines.
-        uint32_t fSharedID_lo;
-        uint32_t fSharedID_hi;
-        void*    fNamespace; // A unique namespace tag. This is hashed.
+        uint8_t fCount32;
+        uint8_t fPlaceholder;  // Explicit padding to avoid garbage comparison
+        uint16_t fNamespace;
+        uint64_t fSharedID;
         /* uint32_t fContents32[] */
 
         const uint32_t* as32() const { return (const uint32_t*)this; }
@@ -105,8 +113,8 @@ public:
         virtual SkDiscardableMemory* diagnostic_only_getDiscardable() const { return nullptr; }
 
     private:
-        Rec*    fNext;
-        Rec*    fPrev;
+        Rec* fNext;
+        Rec* fPrev;
 
         friend class SkResourceCache;
     };
@@ -219,7 +227,7 @@ public:
      *      true  : Rec is valid
      *      false : Rec is "stale" -- the cache will purge it.
      */
-    virtual bool find(const Key&, FindVisitor, void* context) ;
+    virtual bool find(const Key&, FindVisitor, void* context);
     virtual void add(Rec*, void* payload = nullptr);
     virtual void visitAll(Visitor, void* context);
 
@@ -246,9 +254,7 @@ public:
 
     virtual void purgeSharedID(uint64_t sharedID);
 
-    virtual void purgeAll() {
-        this->purgeAsNeeded(true);
-    }
+    virtual void purgeAll() { this->purgeAsNeeded(true); }
 
     virtual DiscardableFactory discardableFactory() const { return fDiscardableFactory; }
 
@@ -260,18 +266,18 @@ public:
     virtual void dump() const;
 
 private:
-    Rec*    fHead;
-    Rec*    fTail;
+    Rec* fHead;
+    Rec* fTail;
 
     class Hash;
-    Hash*   fHash;
+    Hash* fHash;
 
-    DiscardableFactory  fDiscardableFactory;
+    DiscardableFactory fDiscardableFactory;
 
-    size_t  fTotalBytesUsed;
-    size_t  fTotalByteLimit;
-    size_t  fSingleAllocationByteLimit;
-    int     fCount;
+    size_t fTotalBytesUsed;
+    size_t fTotalByteLimit;
+    size_t fSingleAllocationByteLimit;
+    int fCount;
 
     SkMessageBus<PurgeSharedIDMessage, uint32_t>::Inbox fPurgeSharedIDInbox;
 
@@ -284,7 +290,7 @@ private:
     void release(Rec*);
     void remove(Rec*);
 
-    void init();    // called by constructors
+    void init();  // called by constructors
 
 #ifdef SK_DEBUG
     void validate() const;
