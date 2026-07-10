@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 #include "include/ports/SkTypeface_fontations.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include "include/codec/SkCodec.h"
 #include "include/core/SkBitmap.h"
@@ -874,7 +875,9 @@ protected:
 
     sk_sp<SkDrawable> generateDrawable(const SkGlyph& glyph) override {
         struct GlyphDrawable : public SkDrawable {
-            SkFontationsScalerContext* fSelf;
+            // TODO(arthursonzogni): GlyphDrawable may outlive SkScalerContext. Find a way to avoid holding a raw pointer, as it causes a long-lived dangling pointer which would lead to BackupRefPtr quarantine bloat.
+            // RAW_PTR_EXCLUSION: See TODO.
+            RAW_PTR_EXCLUSION SkFontationsScalerContext* fSelf;
             SkGlyph fGlyph;
             GlyphDrawable(SkFontationsScalerContext* self, const SkGlyph& glyph)
                     : fSelf(self), fGlyph(glyph) {}
