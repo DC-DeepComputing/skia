@@ -145,9 +145,11 @@ public:
     SkMCState mcState;
 
     int32_t layerCount;
-    SkCanvasLayerState* layers;
+    // RAW_PTR_EXCLUSION: Stable C ABI.
+    RAW_PTR_EXCLUSION SkCanvasLayerState* layers;
 private:
-    SkCanvas* originalCanvas;
+    // RAW_PTR_EXCLUSION: Stable C ABI.
+    RAW_PTR_EXCLUSION SkCanvas* originalCanvas;
     using INHERITED = SkCanvasState;
 };
 
