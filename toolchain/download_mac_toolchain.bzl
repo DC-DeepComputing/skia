@@ -24,9 +24,38 @@ clang_arm_sha256 = "946f9bd47ccad906dddde6c426fb5a685ea2c1b660a5ccaef314deadfa1a
 
 # This should be the same across both arm and intel.
 clang_ver = "22"
+xcode_ver = "16a242d"  # Xcode 16.0
 
 def _get_system_sdk_path(ctx):
-    res = ctx.execute(["xcrun", "--sdk", "macosx", "--show-sdk-path"])
+    # Resolve the workspace directory (skia root) and its parent (Swarming run directory)
+    workspace_dir = ctx.path(Label("@//:WORKSPACE")).dirname
+    parent_dir = workspace_dir.dirname
+
+    # On Swarming bots, the mac_toolchain and cache folders are located in the parent directory
+    mac_toolchain_bin = parent_dir.get_child("mac_toolchain").get_child("mac_toolchain")
+
+    environment = {}
+    if mac_toolchain_bin.exists:
+        xcode_app_path = parent_dir.get_child("cache").get_child("Xcode.app")
+
+        # Ensure Xcode is provisioned/extracted into the cache directory on the bot
+        res = ctx.execute([
+            str(mac_toolchain_bin),
+            "install",
+            "-kind",
+            "ios",
+            "-xcode-version",
+            xcode_ver,
+            "-output-dir",
+            str(xcode_app_path),
+        ])
+        if res.return_code != 0:
+            fail("Error provisioning Xcode via mac_toolchain: " + res.stderr)
+
+        # Override DEVELOPER_DIR to point xcrun to the provisioned Xcode developer tools
+        environment["DEVELOPER_DIR"] = str(xcode_app_path) + "/Contents/Developer"
+
+    res = ctx.execute(["xcrun", "--sdk", "macosx", "--show-sdk-path"], environment = environment)
     if res.return_code != 0:
         fail("Error Getting SDK path: " + res.stderr)
     return res.stdout.rstrip()
