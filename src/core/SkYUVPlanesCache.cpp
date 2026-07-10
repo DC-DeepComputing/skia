@@ -20,8 +20,6 @@ class SkDiscardableMemory;
     ((localCache) ? localCache->localName(__VA_ARGS__) : SkResourceCache::globalName(__VA_ARGS__))
 
 namespace {
-static unsigned gYUVPlanesKeyNamespaceLabel;
-
 struct YUVValue {
     SkYUVAPixmaps fPixmaps;
     SkCachedData* fData;
@@ -31,7 +29,8 @@ struct YUVPlanesKey : public SkResourceCache::Key {
     YUVPlanesKey(uint32_t genID)
         : fGenID(genID)
     {
-        this->init(&gYUVPlanesKeyNamespaceLabel, SkMakeResourceCacheSharedIDForBitmap(genID),
+        this->init(SkResourceCache::HashNamespace16("YUVPlanesKey"),
+                   SkMakeResourceCacheSharedIDForBitmap(genID),
                    sizeof(genID));
     }
 
