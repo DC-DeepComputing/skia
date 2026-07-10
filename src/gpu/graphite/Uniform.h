@@ -10,6 +10,8 @@
 
 #include "src/core/SkSLTypeShared.h"
 
+#include <string>
+
 namespace skgpu::graphite {
 
 // TODO: can SkRuntimeEffect::Uniform be absorbed into this class!?
@@ -24,14 +26,14 @@ class Uniform {
 public:
     static constexpr int kNonArray = 0;
 
-    constexpr Uniform(const char* name, SkSLType type, int count = kNonArray)
+    Uniform(const std::string& name, SkSLType type, int count = kNonArray)
             : Uniform(name, type, count, /*isPaintColor=*/false) {}
 
     /*
      * The paint color uniform is treated special and will only be added to the uniform block
      * once. Its name will not be mangled.
      */
-    static constexpr Uniform PaintColor() {
+    static Uniform PaintColor() {
         return Uniform("paintColor", SkSLType::kHalf4,
                        Uniform::kNonArray, /*isPaintColor=*/true);
     }
@@ -39,14 +41,14 @@ public:
     constexpr Uniform(const Uniform&) = default;
     Uniform& operator=(const Uniform&) = default;
 
-    constexpr const char* name()  const { return fName; }
+    constexpr const char* name()  const { return fName.c_str(); }
     constexpr SkSLType    type()  const { return static_cast<SkSLType>(fType);  }
     constexpr int         count() const { return static_cast<int>(fCount); }
 
     constexpr bool isPaintColor() const { return static_cast<bool>(fIsPaintColor); }
 
 private:
-    constexpr Uniform(const char* name, SkSLType type, int count, bool isPaintColor)
+    Uniform(const std::string& name, SkSLType type, int count, bool isPaintColor)
             : fName(name)
             , fType(static_cast<unsigned>(type))
             , fIsPaintColor(static_cast<unsigned>(isPaintColor))
@@ -55,7 +57,7 @@ private:
         SkASSERT(count >= 0);
     }
 
-    const char* fName;
+    std::string fName;
 
     // Uniform definitions for all encountered SkRuntimeEffects are stored permanently in the
     // ShaderCodeDictionary as part of the stable ShaderSnippet and code ID assigned to the

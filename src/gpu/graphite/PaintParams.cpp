@@ -212,6 +212,22 @@ SkColor4f PaintParams::Color4fPrepForDst(SkColor4f srcColor, const SkColorInfo& 
     return result;
 }
 
+PaintParams PaintParams::withPrimitiveColorSpace(SkColorSpace* cs, SkAlphaType at) const {
+    PaintParams copy = *this;
+    copy.fPrimitiveColorSpace = cs;
+    copy.fPrimitiveAlphaType = at;
+    return copy;
+}
+
+PaintParams PaintParams::withEffectChildren(SkSpan<const SkRuntimeEffect::Child> childInfo,
+                                            SkSpan<const SkRuntimeEffect::ChildPtr> children) const {
+    SkASSERT(childInfo.size() == children.size());
+    PaintParams copy = *this;
+    copy.fEffectChildInfo = childInfo;
+    copy.fEffectChildren = children;
+    return copy;
+}
+
 #if defined(SK_DEBUG)
 PaintParams PaintParams::MakeOpaque(const PaintParams& paint) {
     PaintParams opaque = paint;
@@ -294,7 +310,8 @@ bool ShadingParams::handlePrimitiveColor(const KeyContext& keyContext) const {
                                   primBlend == SkBlendMode::kDst;
 
     if (canSkipBlendStep) {
-        AddPrimitiveColor(keyContext, fPaint.skipPrimitiveColorXform());
+        AddPrimitiveColor(keyContext, fPaint.skipPrimitiveColorXform(),
+                          fPaint.primitiveColorSpace(), fPaint.primitiveAlphaType());
         return false;
     }
 
@@ -307,7 +324,8 @@ bool ShadingParams::handlePrimitiveColor(const KeyContext& keyContext) const {
             srcIsOpaque = this->addPaintColorToKey(keyContext);
         },
         /* addDstToKey= */ [&] () -> void {
-            AddPrimitiveColor(keyContext, fPaint.skipPrimitiveColorXform());
+            AddPrimitiveColor(keyContext, fPaint.skipPrimitiveColorXform(),
+                              fPaint.primitiveColorSpace(), fPaint.primitiveAlphaType());
         });
     if (primBlend.has_value() && srcIsOpaque) {
         // If the input paint/shader is opaque, the result is only opaque if the primitive blend
@@ -534,6 +552,11 @@ std::optional<ShadingParams::Result> ShadingParams::toKey(const KeyContext& keyC
 
     // Optional Root Node 2 is the clip
     this->handleClipping(keyContext);
+
+    // Optional additional root nodes for SkMesh runtime effect children
+    if (!fPaint.effectChildren().empty()) {
+        AddEffectChildrenToKey(keyContext, fPaint.effectChildInfo(), fPaint.effectChildren());
+    }
 
     // If dstUsage is not kNone, then kDependsOnDst must be set (all other bits only apply *because*
     // the shading depends on dst).

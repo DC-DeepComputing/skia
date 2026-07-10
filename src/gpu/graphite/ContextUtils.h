@@ -56,8 +56,8 @@ enum class Layout : uint8_t;
 // It is assumed that `dstReadBounds` is in the same coordinate space as the `viewport` (e.g.
 // final backing target's pixel coords) and that its width and height match the dimensions of the
 // texture to be sampled for dst reads.
-static constexpr Uniform kIntrinsicUniforms[] = { {"viewport",      SkSLType::kFloat4},
-                                                  {"dstReadBounds", SkSLType::kFloat4} };
+static Uniform kIntrinsicUniforms[] = { {"viewport",      SkSLType::kFloat4},
+                                        {"dstReadBounds", SkSLType::kFloat4} };
 
 void CollectIntrinsicUniforms(const Caps* caps,
                               SkIRect viewport,

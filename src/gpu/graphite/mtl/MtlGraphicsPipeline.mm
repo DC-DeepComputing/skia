@@ -95,16 +95,25 @@ MTLVertexDescriptor* create_vertex_descriptor(MTLVertexStepFunction appendStepFu
     auto vertexDescriptor = [[MTLVertexDescriptor alloc] init];
     int attributeIndex = 0;
 
+    bool usingAttributeDefinedOffset = false;
     size_t staticAttributeOffset = 0;
     for (const auto& attribute : staticAttrs) {
         MTLVertexAttributeDescriptor* mtlAttribute = vertexDescriptor.attributes[attributeIndex];
         MTLVertexFormat format = attribute_type_to_mtlformat(attribute.cpuType());
         SkASSERT(MTLVertexFormatInvalid != format);
+        SkASSERTF(!attribute.offset() || usingAttributeDefinedOffset || staticAttributeOffset == 0,
+                  "If using attribute offsets, all attributes must define an offset.");
+        usingAttributeDefinedOffset |= attribute.offset().has_value();
+
         mtlAttribute.format = format;
-        mtlAttribute.offset = staticAttributeOffset;
+        mtlAttribute.offset = usingAttributeDefinedOffset ? *attribute.offset()
+                                                          : staticAttributeOffset;
         mtlAttribute.bufferIndex = MtlGraphicsPipeline::kStaticDataBufferIndex;
 
-        staticAttributeOffset += attribute.sizeAlign4();
+        staticAttributeOffset =
+                usingAttributeDefinedOffset ? std::max(mtlAttribute.offset + attribute.sizeAlign4(),
+                                                       staticAttributeOffset)
+                                            : staticAttributeOffset + attribute.sizeAlign4();
         attributeIndex++;
     }
 
@@ -116,16 +125,25 @@ MTLVertexDescriptor* create_vertex_descriptor(MTLVertexStepFunction appendStepFu
         staticDataBufferLayout.stride = staticAttributeOffset;
     }
 
+    usingAttributeDefinedOffset = false;
     size_t appendAttributeOffset = 0;
     for (const auto& attribute : appendAttrs) {
         MTLVertexAttributeDescriptor* mtlAttribute = vertexDescriptor.attributes[attributeIndex];
         MTLVertexFormat format = attribute_type_to_mtlformat(attribute.cpuType());
         SkASSERT(MTLVertexFormatInvalid != format);
+        SkASSERTF(!attribute.offset() || usingAttributeDefinedOffset || appendAttributeOffset == 0,
+                  "If using attribute offsets, all attributes must define an offset.");
+        usingAttributeDefinedOffset |= attribute.offset().has_value();
+
         mtlAttribute.format = format;
-        mtlAttribute.offset = appendAttributeOffset;
+        mtlAttribute.offset = usingAttributeDefinedOffset ? *attribute.offset()
+                                                          : appendAttributeOffset;
         mtlAttribute.bufferIndex = MtlGraphicsPipeline::kAppendDataBufferIndex;
 
-        appendAttributeOffset += attribute.sizeAlign4();
+        appendAttributeOffset =
+                usingAttributeDefinedOffset ? std::max(mtlAttribute.offset + attribute.sizeAlign4(),
+                                                       appendAttributeOffset)
+                                            : appendAttributeOffset + attribute.sizeAlign4();
         attributeIndex++;
     }
 

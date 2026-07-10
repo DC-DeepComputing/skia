@@ -30,7 +30,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PipelineDataCacheTest, reporter, context,
 
 
     // Create testing textures and uniforms
-    SkDEBUGCODE(static constexpr Uniform kUniforms[] = {{"data", SkSLType::kFloat4}};)
+    SkDEBUGCODE(static Uniform kUniforms[] = {{"data", SkSLType::kFloat4}};)
     TextureInfo info = caps->getDefaultSampledTextureInfo(kAlpha_8_SkColorType,
                                                           skgpu::Mipmapped::kNo,
                                                           skgpu::Protected::kNo,

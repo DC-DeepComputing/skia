@@ -32,7 +32,7 @@ public:
                        const DrawParams& params,
                        uint32_t ssboIndex) const override;
     void writeUniformsAndTextures(const DrawParams&, PipelineDataGatherer*) const override;
-    const char* fragmentColorSkSL() const override;
+    std::string fragmentColorSkSL() const override;
 
 private:
     const bool fHasColor;

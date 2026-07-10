@@ -1489,7 +1489,8 @@ void AddAnalyticClip(const KeyContext& keyContext, const NonMSAAClip& clip) {
 
 //--------------------------------------------------------------------------------------------------
 
-void AddPrimitiveColor(const KeyContext& keyContext, bool skipColorXform) {
+void AddPrimitiveColor(const KeyContext& keyContext, bool skipColorXform,
+                       SkColorSpace* primitiveColorSpace, SkAlphaType primitiveAlphaType) {
     /**
      * When skipColorXform is true, we assume the primitive color is already in the dst color space.
     */
@@ -1499,10 +1500,12 @@ void AddPrimitiveColor(const KeyContext& keyContext, bool skipColorXform) {
     }
 
     /**
-     * If skipColorXform is false (most cases), the primitive color is assumed to be in sRGB.
+     * If skipColorXform is false (most cases), the primitive color is assumed to be in sRGB unless
+     * an explicit primitive color space is provided.
     */
-    ColorSpaceTransformBlock::ColorSpaceTransformData toDst(sk_srgb_singleton(),
-                                                            kPremul_SkAlphaType,
+    SkColorSpace* srcCS = primitiveColorSpace ? primitiveColorSpace : sk_srgb_singleton();
+    ColorSpaceTransformBlock::ColorSpaceTransformData toDst(srcCS,
+                                                            primitiveAlphaType,
                                                             keyContext.dstColorInfo().colorSpace(),
                                                             keyContext.dstColorInfo().alphaType());
 
@@ -1529,6 +1532,45 @@ void AddBlendModeColorFilter(const KeyContext& keyContext, SkBlendMode bm,
           /* addDstToKey= */ [&]() -> void {
               keyContext.paintParamsKeyBuilder()->addBlock(BuiltInCodeSnippetID::kPriorOutput);
           });
+}
+
+void AddEffectChildrenToKey(const KeyContext& keyContext,
+                            SkSpan<const SkRuntimeEffect::Child> childInfo,
+                            SkSpan<const SkRuntimeEffect::ChildPtr> children) {
+    SkASSERT(childInfo.size() == children.size());
+    using ChildType = SkRuntimeEffect::ChildType;
+    KeyContext childContext = keyContext.withExtraFlags(KeyGenFlags::kDisableAlphaOnlyImageColorization);
+    for (size_t index = 0; index < children.size(); ++index) {
+        const SkRuntimeEffect::ChildPtr& child = children[index];
+        if (std::optional<ChildType> type = child.type(); type) {
+            switch (*type) {
+                case ChildType::kShader:
+                    AddToKey(childContext, child.shader());
+                    break;
+                case ChildType::kColorFilter:
+                    AddToKey(childContext, child.colorFilter());
+                    break;
+                case ChildType::kBlender:
+                    AddToKey(childContext, child.blender());
+                    break;
+            }
+        } else {
+            // Passed child is null so emit an noop block depending on expected child type
+            // to keep effect indices the same. See `RuntimeEffectBlock::AddNoOpEffect` for
+            // explanations of blocks.
+            switch (childInfo[index].type) {
+                case ChildType::kShader:
+                    SolidColorShaderBlock::AddBlock(childContext, SK_PMColor4fTRANSPARENT);
+                    break;
+                case ChildType::kColorFilter:
+                    keyContext.paintParamsKeyBuilder()->addBlock(BuiltInCodeSnippetID::kPriorOutput);
+                    break;
+                case ChildType::kBlender:
+                    AddFixedBlendMode(childContext, SkBlendMode::kSrcOver);
+                    break;
+            }
+        }
+    }
 }
 
 RuntimeEffectBlock::ShaderData::ShaderData(sk_sp<const SkRuntimeEffect> effect)
