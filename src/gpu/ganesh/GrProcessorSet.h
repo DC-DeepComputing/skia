@@ -182,8 +182,10 @@ private:
             SkASSERT(fProcessor == that.fProcessor);
             that.fProcessor = nullptr;
         }
-        const GrXPFactory* fFactory;
-        const GrXferProcessor* fProcessor;
+        // RAW_PTR_EXCLUSION: union.
+        RAW_PTR_EXCLUSION const GrXPFactory* fFactory;
+        // RAW_PTR_EXCLUSION: union.
+        RAW_PTR_EXCLUSION const GrXferProcessor* fProcessor;
     };
 
     const GrXPFactory* xpFactory() const {
