@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e0eacfc_e7abaa7c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-07-10T12:54:44Z",
+      "side": 1,
+      "message": "I hate that our tasks are leaving state on the machines like this. I guess maybe there\u0027s not a good way around it?",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 53
+      },
+      "revId": "ba4d62954f90305fb0ac1a90b6d8d4402e7fb157",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9d061df_99306162",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-07-10T12:54:44Z",
+      "side": 1,
+      "message": "LGTM with a couple of grumbles that probably can\u0027t be addressed here.",
+      "revId": "ba4d62954f90305fb0ac1a90b6d8d4402e7fb157",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab72316f_1e06799d",
+        "filename": "infra/bots/task_drivers/bazel_build/bazel_build.go",
+        "patchSetId": 12
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-07-10T12:54:44Z",
+      "side": 1,
+      "message": "Is there no way to do this as part of the Bazel build itself?  Hermeticity is supposed to be one of the benefits of using Bazel.",
+      "range": {
+        "startLine": 66,
+        "startChar": 0,
+        "endLine": 66,
+        "endChar": 91
+      },
+      "revId": "ba4d62954f90305fb0ac1a90b6d8d4402e7fb157",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
