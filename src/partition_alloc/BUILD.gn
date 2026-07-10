@@ -16,7 +16,7 @@ source_set("raw_ptr") {
     "raw_ref.h",
   ]
   if (skia_use_partition_alloc && defined(skia_partition_alloc_dir)) {
-    public_deps = [ "${skia_partition_alloc_dir}:raw_ptr" ]
+    public_deps = [ "${skia_partition_alloc_dir}/src/partition_alloc:raw_ptr" ]
   } else {
     sources = [
       "noop/raw_ptr.h",
