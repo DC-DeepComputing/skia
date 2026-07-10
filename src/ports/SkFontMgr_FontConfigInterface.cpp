@@ -67,7 +67,7 @@ public:
             size_t contentLen = SkAlign4(nameLen);
             sk_careful_memcpy(content, name, nameLen);
             sk_bzero(content + nameLen, contentLen - nameLen);
-            this->init(nullptr, 0, keySize + contentLen);
+            this->init(SkResourceCache::HashNamespace16("FontRequestKey"), 0, keySize + contentLen);
         }
         const SkFontStyle fStyle;
         /** The sum of the sizes of the fields of this class. */

@@ -10,6 +10,8 @@ See http://dev.chromium.org/developers/how-tos/depottools/presubmit-scripts
 for more details about the presubmit API built into gcl.
 """
 
+PRESUBMIT_VERSION = '2.0.0'
+
 import difflib
 import os
 import re
@@ -614,6 +616,56 @@ def _CheckDEPS(input_api, output_api):
   return _RunCommandAndCheckDiff(
       output_api, ['bazelisk', 'run', '//bazel/deps_parser'], files
   )
+
+
+def CheckHashNamespaceUniqueness(input_api, output_api):
+  """Ensures that all string literals passed to HashNamespace16 are registered in the test."""
+  file_filter = lambda x: (x.LocalPath().endswith('.h') or
+                           x.LocalPath().endswith('.cpp') or
+                           x.LocalPath().endswith('.cc') or
+                           x.LocalPath().endswith('.m') or
+                           x.LocalPath().endswith('.mm'))
+
+  ns_re = input_api.re.compile(r'HashNamespace16\s*\(\s*"([^"]+)"\s*\)')
+  new_namespaces = []
+  for affected_file in input_api.AffectedSourceFiles(file_filter):
+    for (_, line) in affected_file.ChangedContents():
+      matches = ns_re.findall(line)
+      for m in matches:
+        new_namespaces.append(m)
+
+  if not new_namespaces:
+    return []
+
+  test_file_path = input_api.os_path.join('tests', 'SkResourceCacheTest.cpp')
+  try:
+    with open(test_file_path, 'r') as f:
+      test_file_content = f.read()
+  except Exception as e:
+    return [output_api.PresubmitError(
+        'Could not read tests/SkResourceCacheTest.cpp: %s' % e)]
+
+  names_array_re = input_api.re.compile(r'names\s*\[\s*\]\s*=\s*\{([^}]+)\}')
+  match = names_array_re.search(test_file_content)
+  if not match:
+    return [output_api.PresubmitError(
+        'Could not find \'names\' array in tests/SkResourceCacheTest.cpp')]
+
+  array_content = match.group(1)
+  existing_names = input_api.re.findall(r'"([^"]+)"', array_content)
+
+  errors = []
+  for ns in new_namespaces:
+    if ns not in existing_names:
+      errors.append(
+          'Namespace \'%s\' is used but not registered in '
+          'ResourceCache_NamespaceUniqueness test in tests/SkResourceCacheTest.cpp. '
+          'Please add it to the \'names\' array there.' % ns)
+
+  if errors:
+    return [output_api.PresubmitError('\n'.join(errors))]
+
+  return []
 
 
 def _CommonChecks(input_api, output_api):
