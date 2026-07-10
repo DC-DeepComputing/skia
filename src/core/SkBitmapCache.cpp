@@ -53,12 +53,11 @@ SkBitmapCacheDesc SkBitmapCacheDesc::Make(const SkImage* image) {
 }
 
 namespace {
-static unsigned gBitmapKeyNamespaceLabel;
-
 struct BitmapKey : public SkResourceCache::Key {
 public:
     BitmapKey(const SkBitmapCacheDesc& desc) : fDesc(desc) {
-        this->init(&gBitmapKeyNamespaceLabel, SkMakeResourceCacheSharedIDForBitmap(fDesc.fImageID),
+        this->init(SkResourceCache::GetNamespace("BitmapKey"),
+                   SkMakeResourceCacheSharedIDForBitmap(fDesc.fImageID),
                    sizeof(fDesc));
     }
 
@@ -229,12 +228,11 @@ bool SkBitmapCache::Find(const SkBitmapCacheDesc& desc, SkBitmap* result) {
     ((localCache) ? localCache->localName(__VA_ARGS__) : SkResourceCache::globalName(__VA_ARGS__))
 
 namespace {
-static unsigned gMipMapKeyNamespaceLabel;
-
 struct MipMapKey : public SkResourceCache::Key {
 public:
     MipMapKey(const SkBitmapCacheDesc& desc) : fDesc(desc) {
-        this->init(&gMipMapKeyNamespaceLabel, SkMakeResourceCacheSharedIDForBitmap(fDesc.fImageID),
+        this->init(SkResourceCache::GetNamespace("MipMapKey"),
+                   SkMakeResourceCacheSharedIDForBitmap(fDesc.fImageID),
                    sizeof(fDesc));
     }
 

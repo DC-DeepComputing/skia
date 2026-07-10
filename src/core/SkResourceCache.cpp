@@ -50,24 +50,21 @@ static inline bool SkShouldPostMessageToBus(
     #define SK_DEFAULT_IMAGE_CACHE_LIMIT     (32 * 1024 * 1024)
 #endif
 
-void SkResourceCache::Key::init(void* nameSpace, uint64_t sharedID, size_t dataSize) {
+void SkResourceCache::Key::init(uint16_t nameSpace, uint64_t sharedID, size_t dataSize) {
     SkASSERT(SkAlign4(dataSize) == dataSize);
 
-    // fCount32 and fHash are not hashed
-    static const int kUnhashedLocal32s = 2; // fCache32 + fHash
-    static const int kSharedIDLocal32s = 2; // fSharedID_lo + fSharedID_hi
-    static const int kHashedLocal32s = kSharedIDLocal32s + (sizeof(fNamespace) >> 2);
-    static const int kLocal32s = kUnhashedLocal32s + kHashedLocal32s;
+    // Only fHash is not hashed (1 word)
+    static const int kUnhashedLocal32s = 1; // fHash
+    static const int kLocal32s = 4;         // sizeof(Key) >> 2
 
     static_assert(sizeof(Key) == (kLocal32s << 2), "unaccounted_key_locals");
-    static_assert(sizeof(Key) == offsetof(Key, fNamespace) + sizeof(fNamespace),
-                 "namespace_field_must_be_last");
 
-    fCount32 = SkToS32(kLocal32s + (dataSize >> 2));
-    fSharedID_lo = (uint32_t)(sharedID & 0xFFFFFFFF);
-    fSharedID_hi = (uint32_t)(sharedID >> 32);
+    fCount32 = SkToU8(kLocal32s + (dataSize >> 2));
+    fPadding = 0;
     fNamespace = nameSpace;
-    // skip unhashed fields when computing the hash
+    fSharedID = sharedID;
+
+    // skip fHash when computing the hash
     fHash = SkChecksum::Hash32(this->as32() + kUnhashedLocal32s,
                                (fCount32 - kUnhashedLocal32s) << 2);
 }
