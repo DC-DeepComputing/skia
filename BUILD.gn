@@ -896,7 +896,7 @@ optional("gpu_shared") {
   enabled = skia_enable_ganesh || skia_enable_graphite
 
   configs = []
-  deps = []
+  deps = [ "//src/partition_alloc:raw_ptr" ]
   libs = []
   public_defines = []
   public_deps = []
@@ -952,7 +952,7 @@ optional("gpu") {
   configs = []
   public_defines = []
   public_configs = []
-  public_deps = []
+  public_deps = [ "//src/partition_alloc:raw_ptr" ]
 
   public = skia_gpu_public
   sources = skia_ganesh_private
@@ -1131,7 +1131,10 @@ optional("jpeg_encode") {
   enabled = skia_use_libjpeg_turbo_encode && !skia_use_ndk_images
   public_defines = [ "SK_CODEC_ENCODES_JPEG" ]
 
-  deps = [ "//third_party/libjpeg-turbo:libjpeg" ]
+  deps = [
+    "//src/partition_alloc:raw_ptr",
+    "//third_party/libjpeg-turbo:libjpeg",
+  ]
   public = skia_encode_jpeg_public
   sources = skia_encode_jpeg_srcs
 
@@ -1238,6 +1241,7 @@ skia_source_set("pathops") {
   public = skia_pathops_public
   sources = skia_pathops_sources
   deps = [ ":core" ]
+  public_deps = [ "//src/partition_alloc:raw_ptr" ]
 }
 
 skia_source_set("clipstack_utils") {
@@ -1256,6 +1260,7 @@ optional("pdf") {
   deps = [
     ":clipstack_utils",
     ":pathops",
+    "//src/partition_alloc:raw_ptr",
     "//third_party/zlib",
   ]
   public = skia_pdf_public
@@ -1329,6 +1334,7 @@ optional("png_encode_libpng") {
   public = skia_encode_libpng_public
   deps = [
     ":png_encode_common",
+    "//src/partition_alloc:raw_ptr",
     "//third_party/libpng",
   ]
   sources = skia_encode_libpng_srcs
@@ -1819,7 +1825,10 @@ optional("webp_encode") {
   public_defines = [ "SK_CODEC_ENCODES_WEBP" ]
   public = skia_encode_webp_public
 
-  deps = [ "//third_party/libwebp" ]
+  deps = [
+    "//src/partition_alloc:raw_ptr",
+    "//third_party/libwebp",
+  ]
   sources = skia_encode_webp_srcs
 }
 
@@ -1830,7 +1839,10 @@ optional("wuffs") {
     "SK_CODEC_DECODES_GIF",
   ]
 
-  deps = [ "//third_party/wuffs" ]
+  deps = [
+    "//src/partition_alloc:raw_ptr",
+    "//third_party/wuffs",
+  ]
   sources = [ "src/codec/SkWuffsCodec.cpp" ]
 }
 
@@ -1838,7 +1850,10 @@ optional("xml") {
   enabled = skia_use_expat || skia_use_jpeg_gainmaps
   public_defines = [ "SK_XML" ]
 
-  deps = [ "//third_party/expat" ]
+  deps = [
+    "//src/partition_alloc:raw_ptr",
+    "//third_party/expat",
+  ]
   sources = skia_xml_sources
   sources += skia_codec_xmp
   sources += skia_svg_writer_sources
@@ -1897,6 +1912,7 @@ skia_source_set("core") {
     ":typeface_fontations",
     ":typeface_freetype",
   ]
+  public_deps = [ "//src/partition_alloc:raw_ptr" ]
 }
 
 skia_component("skia") {
