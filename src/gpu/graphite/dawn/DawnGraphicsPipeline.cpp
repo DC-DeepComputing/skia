@@ -158,13 +158,22 @@ size_t create_vertex_attributes(SkSpan<const Attribute> attrs,
     SkASSERT(out && out->empty());
     out->resize(attrs.size());
     size_t vertexAttributeOffset = 0;
+    bool usingAttributeDefinedOffset = false;
     int attributeIndex = 0;
     for (const auto& attr : attrs) {
         wgpu::VertexAttribute& vertexAttribute =  (*out)[attributeIndex];
+        SkASSERTF(!attr.offset() || usingAttributeDefinedOffset || vertexAttributeOffset == 0,
+                  "If using attribute offsets, all attributes must define an offset.");
+        usingAttributeDefinedOffset |= attr.offset().has_value();
+
         vertexAttribute.format = attribute_type_to_dawn(attr.cpuType());
-        vertexAttribute.offset = vertexAttributeOffset;
+        vertexAttribute.offset = usingAttributeDefinedOffset ? *attr.offset()
+                                                             : vertexAttributeOffset;
         vertexAttribute.shaderLocation = shaderLocationOffset + attributeIndex;
-        vertexAttributeOffset += attr.sizeAlign4();
+        vertexAttributeOffset = usingAttributeDefinedOffset
+                ? std::max<size_t>(vertexAttribute.offset + attr.sizeAlign4(),
+                                   vertexAttributeOffset)
+                : vertexAttributeOffset + attr.sizeAlign4();
         attributeIndex++;
     }
     return vertexAttributeOffset;

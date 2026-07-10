@@ -148,7 +148,7 @@ std::string VerticesRenderStep::vertexSkSL() const {
     }
 }
 
-const char* VerticesRenderStep::fragmentColorSkSL() const {
+std::string VerticesRenderStep::fragmentColorSkSL() const {
     if (fHasColor) {
         return "primitiveColor = color;\n";
     } else {
