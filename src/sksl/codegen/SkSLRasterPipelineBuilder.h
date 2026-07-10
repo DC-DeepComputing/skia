@@ -6,7 +6,9 @@
  */
 
 #ifndef SKSL_RASTERPIPELINEBUILDER
+
 #define SKSL_RASTERPIPELINEBUILDER
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include "include/core/SkTypes.h"
 
@@ -181,7 +183,8 @@ private:
 
     struct Stage {
         ProgramOp op;
-        void*     ctx;
+        // RAW_PTR_EXCLUSION: pointer used to pack integers.
+        RAW_PTR_EXCLUSION void* ctx;
     };
     void makeStages(skia_private::TArray<Stage>* pipeline,
                     SkArenaAlloc* alloc,
