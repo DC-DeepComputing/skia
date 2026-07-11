@@ -459,6 +459,7 @@ ganesh_tests_sources = [
   "$_tests/DashPathEffectTestGanesh.cpp",
   "$_tests/DefaultPathRendererTest.cpp",
   "$_tests/DeferredDisplayListTest.cpp",
+  "$_tests/DirectMaskLimitTest.cpp",
   "$_tests/DrawOpAtlasTest.cpp",
   "$_tests/FloatingPointTextureTest.cpp",
   "$_tests/GaneshContextRecorderTest.cpp",
