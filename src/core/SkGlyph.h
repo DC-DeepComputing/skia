@@ -351,7 +351,7 @@ public:
     }
 
     bool fitsInAtlasDirect() const {
-        return this->maxDimension() <= kSkSideTooBigForAtlas;
+        return this->maxDimension() <= kSkSideTooBigForAtlas - 2;
     }
 
     bool fitsInAtlasInterpolated() const {
