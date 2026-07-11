@@ -64,7 +64,7 @@ bool SubRunControl::isDirect(SkScalar approximateDeviceTextSize, const SkPaint& 
     return !isSDFT &&
            !matrix.hasPerspective() &&
             0 < approximateDeviceTextSize &&
-            approximateDeviceTextSize < SkGlyphDigest::kSkSideTooBigForAtlas;
+            approximateDeviceTextSize < SkGlyphDigest::kSkSideTooBigForAtlas - 2;
 }
 
 #if !defined(SK_DISABLE_SDF_TEXT)
