@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3287c9b3_b0b472e8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4329740
+      },
+      "writtenOn": "2026-07-11T08:16:12Z",
+      "side": 1,
+      "message": "ping, anything from my side i could do?",
+      "revId": "8cb0dceddc84c854bc3c201ffc778d0a0963f8f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
