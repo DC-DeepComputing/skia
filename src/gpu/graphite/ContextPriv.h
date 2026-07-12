@@ -59,6 +59,9 @@ public:
     ResourceProvider* resourceProvider() const {
         return fContext->fResourceProvider.get();
     }
+    const SharedContext* sharedContext() const {
+        return fContext->fSharedContext.get();
+    }
     SharedContext* sharedContext() {
         return fContext->fSharedContext.get();
     }

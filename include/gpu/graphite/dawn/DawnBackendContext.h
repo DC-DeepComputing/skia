@@ -12,6 +12,8 @@
 #include "webgpu/webgpu_cpp.h"  // NO_G3_REWRITE
 
 #include <memory>
+#include <string>
+#include <vector>
 
 namespace skgpu::graphite {
 
@@ -71,6 +73,21 @@ struct SK_API DawnBackendContext {
 namespace ContextFactory {
 SK_API std::unique_ptr<Context> MakeDawn(const DawnBackendContext&, const ContextOptions&);
 } // namespace ContextFactory
+
+/**
+ * Information about an asynchronous pipeline compilation that is currently pending in Dawn.
+ */
+struct SK_API DawnPendingPipelineCreationInfo {
+    std::string fPipelineLabel;
+    uint64_t fElapsedTimeNs;
+};
+
+/**
+ * Returns a list of asynchronous pipeline compilations currently in flight for the given Context's
+ * Dawn backend, along with the elapsed time in nanoseconds since each compilation was initiated.
+ */
+SK_API std::vector<DawnPendingPipelineCreationInfo> GetDawnPendingPipelineCreationInfos(
+        const Context* context);
 
 } // namespace skgpu::graphite
 

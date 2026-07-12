@@ -11,6 +11,7 @@
 #include "include/gpu/graphite/ContextOptions.h"
 #include "include/gpu/graphite/dawn/DawnBackendContext.h"
 #include "include/private/SkLog.h"
+#include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/dawn/DawnGraphicsPipeline.h"
 #include "src/gpu/graphite/dawn/DawnResourceProvider.h"
 
@@ -108,6 +109,37 @@ void DawnSharedContext::deviceTick(Context* context) {
     context->checkAsyncWorkCompletion();
 }
 
+DawnSharedContext::PipelineCreationTimer::~PipelineCreationTimer() {
+    if (fSharedContext && !fLabel.empty()) {
+        SkAutoMutexExclusive lock(fSharedContext->fPendingPipelineAsyncCreationsMutex);
+        fSharedContext->fPendingPipelineAsyncCreations.removeIfExists(fLabel);
+        fSharedContext = nullptr;
+    }
+}
+
+DawnSharedContext::PipelineCreationTimer DawnSharedContext::trackPipelineCreationTime(
+        const std::string& label) const {
+    SkAutoMutexExclusive lock(fPendingPipelineAsyncCreationsMutex);
+    fPendingPipelineAsyncCreations.set(label, skgpu::StdSteadyClock::now());
+    return PipelineCreationTimer(this, label);
+}
+
+std::vector<DawnPendingPipelineCreationInfo>
+DawnSharedContext::getPendingPipelineCreationInfos() const {
+    SkAutoMutexExclusive lock(fPendingPipelineAsyncCreationsMutex);
+    auto now = skgpu::StdSteadyClock::now();
+    std::vector<DawnPendingPipelineCreationInfo> result;
+    result.reserve(fPendingPipelineAsyncCreations.count());
+    fPendingPipelineAsyncCreations.foreach(
+            [&](const std::string& label, const skgpu::StdSteadyClock::time_point& startTime) {
+                skgpu::StdSteadyClock::duration elapsed = now - startTime;
+                uint64_t elapsedNs =
+                        std::chrono::duration_cast<std::chrono::nanoseconds>(elapsed).count();
+                result.push_back({label, elapsedNs});
+            });
+    return result;
+}
+
 void DawnSharedContext::createUniformBuffersBindGroupLayout() {
     const Caps* caps = this->caps();
 
@@ -186,6 +218,20 @@ sk_sp<GraphicsPipeline> DawnSharedContext::createGraphicsPipeline(
                                       renderPassDesc,
                                       pipelineCreationFlags,
                                       compilationID);
+}
+
+std::vector<DawnPendingPipelineCreationInfo> GetDawnPendingPipelineCreationInfos(
+        const Context* context) {
+    if (!context) {
+        return {};
+    }
+    const SharedContext* sharedContext = context->priv().sharedContext();
+    if (!sharedContext || sharedContext->backend() != BackendApi::kDawn) {
+        return {};
+    }
+    const DawnSharedContext* dawnSharedContext =
+            static_cast<const DawnSharedContext*>(sharedContext);
+    return dawnSharedContext->getPendingPipelineCreationInfos();
 }
 
 } // namespace skgpu::graphite

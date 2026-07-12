@@ -35,6 +35,7 @@
 #include "src/sksl/ir/SkSLProgram.h"
 
 #include <atomic>
+#include <optional>
 
 using namespace skia_private;
 
@@ -322,6 +323,7 @@ struct DawnGraphicsPipeline::AsyncPipelineCreation : public AsyncPipelineCreatio
     AsyncPipelineCreation(const UniqueKey& key) : AsyncPipelineCreationBase(key) {}
 
     wgpu::Future fFuture;
+    std::optional<DawnSharedContext::PipelineCreationTimer> fAsyncCreationTimer;
 };
 #endif
 
@@ -699,6 +701,8 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
         // We shouldn't use CreateRenderPipelineAsync in wasm.
         SK_ABORT("CreateRenderPipelineAsync shouldn't be used in WASM");
 #else
+        asyncCreation->fAsyncCreationTimer =
+                sharedContext->trackPipelineCreationTime(shaderInfo->pipelineLabel());
         asyncCreation->fFuture = device.CreateRenderPipelineAsync(
                 &descriptor,
                 wgpu::CallbackMode::WaitAnyOnly,
@@ -717,6 +721,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
                         asyncCreationPtr->fRenderPipeline = std::move(pipeline);
                     }
 
+                    asyncCreationPtr->fAsyncCreationTimer.reset();
                     asyncCreationPtr->fFinished = true;
 
                     log_pipeline_creation(asyncCreationPtr);

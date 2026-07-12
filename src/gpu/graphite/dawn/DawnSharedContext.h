@@ -13,8 +13,12 @@
 #include "webgpu/webgpu_cpp.h"  // NO_G3_REWRITE
 
 #include "include/gpu/graphite/dawn/DawnBackendContext.h"
+#include "src/core/SkTHash.h"
+#include "src/gpu/GpuTypesPriv.h"
 #include "src/gpu/graphite/ThreadSafeResourceProvider.h"
 #include "src/gpu/graphite/dawn/DawnCaps.h"
+
+#include <string>
 
 namespace skgpu::graphite {
 
@@ -30,6 +34,43 @@ class DawnSharedContext final : public SharedContext {
 public:
     static sk_sp<SharedContext> Make(const DawnBackendContext&, const ContextOptions&);
     ~DawnSharedContext() override;
+
+    // Scoped RAII struct that tracks an asynchronous pipeline creation in DawnSharedContext.
+    // When constructed via trackPipelineCreationTime, the pipeline label and start timestamp are
+    // recorded in DawnSharedContext. Destroying this struct automatically removes the tracking entry
+    // from DawnSharedContext's internal hash table.
+    struct PipelineCreationTimer {
+        PipelineCreationTimer() = default;
+        PipelineCreationTimer(const DawnSharedContext* sharedContext, std::string label)
+                : fSharedContext(sharedContext), fLabel(std::move(label)) {}
+        PipelineCreationTimer(PipelineCreationTimer&& other)
+                : fSharedContext(other.fSharedContext), fLabel(std::move(other.fLabel)) {
+            other.fSharedContext = nullptr;
+        }
+        PipelineCreationTimer& operator=(PipelineCreationTimer&& other) {
+            if (this != &other) {
+                if (fSharedContext && !fLabel.empty()) {
+                    SkAutoMutexExclusive lock(fSharedContext->fPendingPipelineAsyncCreationsMutex);
+                    fSharedContext->fPendingPipelineAsyncCreations.removeIfExists(fLabel);
+                }
+                fSharedContext = other.fSharedContext;
+                fLabel = std::move(other.fLabel);
+                other.fSharedContext = nullptr;
+            }
+            return *this;
+        }
+        PipelineCreationTimer(const PipelineCreationTimer&) = delete;
+        PipelineCreationTimer& operator=(const PipelineCreationTimer&) = delete;
+
+        ~PipelineCreationTimer();
+
+    private:
+        const DawnSharedContext* fSharedContext = nullptr;
+        std::string fLabel;
+    };
+
+    PipelineCreationTimer trackPipelineCreationTime(const std::string& label) const;
+    std::vector<DawnPendingPipelineCreationInfo> getPendingPipelineCreationInfos() const;
 
     DawnThreadSafeResourceProvider* threadSafeResourceProvider() const;
 
@@ -86,6 +127,10 @@ private:
 
     wgpu::BindGroupLayout fUniformBuffersBindGroupLayout;
     wgpu::BindGroupLayout fSingleTextureSamplerBindGroupLayout;
+
+    mutable SkMutex fPendingPipelineAsyncCreationsMutex;
+    mutable skia_private::THashMap<std::string, skgpu::StdSteadyClock::time_point>
+            fPendingPipelineAsyncCreations SK_GUARDED_BY(fPendingPipelineAsyncCreationsMutex);
 };
 
 } // namespace skgpu::graphite
