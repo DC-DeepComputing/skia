@@ -5,12 +5,16 @@
  * found in the LICENSE file.
  */
 
-
 #include "src/core/SkBase64.h"
 
 #include "include/private/SkAssert.h"
 
 #include <cstdint>
+
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
 
 #define DecodePad -2
 #define EncodePad 64

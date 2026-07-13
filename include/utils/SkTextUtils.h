@@ -15,6 +15,11 @@
 #include <cstddef>
 #include <cstring>
 
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 class SkCanvas;
 class SkFont;
 class SkPaint;

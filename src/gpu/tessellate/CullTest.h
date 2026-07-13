@@ -14,6 +14,11 @@
 #include "include/private/SkAssert.h"
 #include "src/core/SkVx.h"
 
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 namespace skgpu::tess {
 
 // This class determines whether the given local-space points will be contained in the cull bounds

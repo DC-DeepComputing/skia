@@ -94,6 +94,11 @@ using U8  = V<uint8_t>;
     #define SI static inline
 #endif
 
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 template <typename T, typename P>
 SI T load(const P* ptr) {
     T val;

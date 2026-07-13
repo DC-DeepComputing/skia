@@ -15,6 +15,11 @@
 #include <cstddef>
 #include <utility>
 
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 // Verify that the values of enum ResourceType correspond to the expected values
 // as defined in the arrays below.
 // If these are failing, you may need to update the kResourceTypePrefixes

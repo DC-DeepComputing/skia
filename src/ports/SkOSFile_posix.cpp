@@ -24,6 +24,11 @@
 #include "src/ports/SkOSFile_ios.h"
 #endif
 
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 void sk_fsync(FILE* f) {
 #if !defined(SK_BUILD_FOR_ANDROID) && !defined(__UCLIBC__) && !defined(_NEWLIB_VERSION)
     int fd = fileno(f);

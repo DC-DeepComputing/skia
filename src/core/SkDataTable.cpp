@@ -13,6 +13,11 @@
 
 #include <cstring>
 
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 static void malloc_freeproc(void* context) {
     sk_free(context);
 }

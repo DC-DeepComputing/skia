@@ -12,6 +12,11 @@
 #include "tools/sk_app/unix/Window_unix.h"
 #include "tools/timer/Timer.h"
 
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 using namespace skia_private;
 
 int main(int argc, char**argv) {

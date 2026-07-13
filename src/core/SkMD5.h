@@ -15,6 +15,11 @@
 #include <cstdint>
 #include <cstring>
 
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 /* Calculate a 128-bit MD5 message-digest of the bytes sent to this stream. */
 class SkMD5 : public SkWStream {
 public:

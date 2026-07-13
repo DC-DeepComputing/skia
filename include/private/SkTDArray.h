@@ -17,6 +17,11 @@
 #include <initializer_list>
 #include <utility>
 
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 // We'd prefer not to use these types anymore. SkTDArray can be replaced skia_private::TArray
 
 class SK_SPI SkTDStorage {
