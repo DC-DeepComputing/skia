@@ -14,4 +14,5 @@ LAZY_FILES = [
 split_srcs_and_hdrs(
     name = "lazy",
     files = LAZY_FILES,
+    visibility = ["//src/core:__pkg__"],
 )
