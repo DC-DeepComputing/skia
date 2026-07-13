@@ -1066,6 +1066,7 @@ func (b *TaskBuilder) defaultSwarmDimensions() {
 				d["gpu"] = gpu
 			} else if b.IsLinux() {
 				gpu, ok := map[string]string{
+					"IntelArcB570": "8086:e20c-25.2.8",
 					// Intel drivers come from CIPD, so no need to specify the version here.
 					"IntelHD405": "8086:22b1",
 					// The version is not set on these as of Nov 5 2025
