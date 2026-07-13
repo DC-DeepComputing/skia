@@ -4,6 +4,7 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+
 #include "src/sksl/tracing/SkSLDebugTracePriv.h"
 
 #include "include/core/SkStream.h"
@@ -14,6 +15,14 @@
 #include <cstring>
 #include <sstream>
 #include <string>
+
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunknown-pragmas"
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#pragma clang diagnostic pop
+#endif
 
 namespace SkSL {
 

@@ -13,6 +13,14 @@
 #include <cmath>
 #include <limits>
 
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunknown-pragmas"
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#pragma clang diagnostic pop
+#endif
+
 // Solve 0 = M * x + B. If M is 0, there are no solutions, unless B is also 0,
 // in which case there are infinite solutions, so we just return 1 of them.
 static int solve_linear(const double M, const double B, double solution[2]) {

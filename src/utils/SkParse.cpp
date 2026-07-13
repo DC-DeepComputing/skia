@@ -16,6 +16,14 @@
 #include <limits>
 #include <string>
 
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunknown-pragmas"
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#pragma clang diagnostic pop
+#endif
+
 static inline bool is_between(int c, int min, int max)
 {
     return (unsigned)(c - min) <= (unsigned)(max - min);

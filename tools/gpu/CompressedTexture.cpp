@@ -7,6 +7,14 @@
 
 #include "tools/gpu/CompressedTexture.h"
 
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunknown-pragmas"
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#pragma clang diagnostic pop
+#endif
+
 // The following four helpers are copied from src/gpu/DataUtils.cpp to support the test only
 // GrTwoColorBC1Compress function. Ideally we would copy the test function into DataUtils.cpp
 // instead, but we're currently trying to avoid using the GPU_TEST_UTILS define in src/gpu.

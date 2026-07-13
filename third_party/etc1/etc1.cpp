@@ -24,6 +24,14 @@
 
 #include <cstring>
 
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunknown-pragmas"
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#pragma clang diagnostic pop
+#endif
+
 /* From http://www.khronos.org/registry/gles/extensions/OES/OES_compressed_ETC1_RGB8_texture.txt
 
  The number of bits that represent a 4x4 texel block is 64 bits if
