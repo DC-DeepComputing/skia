@@ -36,6 +36,7 @@ class DrawParams;
 class PipelineDataGatherer;
 class Rect;
 class ResourceProvider;
+class ShaderInfo;
 class TextureDataBlock;
 class Transform;
 class UniformOffsetCalculator;
@@ -143,6 +144,10 @@ public:
     // and then including the function bodies returned here.
     virtual std::string vertexSkSL() const = 0;
 
+    // Returns SkSL which defines structs and functions at the top-level required for the
+    // code defined in `RenderStep::vertexSkSL`.
+    virtual std::string vertexSkSLTopLevel(const ShaderInfo*) const { return ""; }
+
     // Emits code to set up textures and samplers. Should only be defined if hasTextures is true.
     virtual std::string texturesAndSamplersSkSL(const ResourceBindingRequirements&,
                                                 int* nextBindingIndex) const {
@@ -158,7 +163,15 @@ public:
     // Emits code to set up a primitive color value. Should only be defined if emitsPrimitiveColor
     // is true. When implemented, the returned SkSL fragment should write its color into a
     // 'half4 primitiveColor' variable (defined in the calling code).
-    virtual const char* fragmentColorSkSL() const { return ""; }
+    virtual std::string fragmentColorSkSL() const { return ""; }
+
+    // Returns SkSL which defines structs and functions at the top-level required for the
+    // code defined in `RenderStep::fragmentColorSkSL`.
+    virtual std::string fragmentColorSkSLTopLevel(const ShaderInfo*) const { return ""; }
+
+    // Returns a pointer to the name of the local coordinates variable to use for
+    // shader sampling if non-null.
+    virtual const char* fragmentColorSkSLLocalCoordsVariable() const { return nullptr; }
 
     // Indicates whether this RenderStep's uniforms are referenced in its fragment shader code.
     // If not, its uniforms can be omitted from the fragment shader entirely.
@@ -274,12 +287,18 @@ SK_DECL_BITMASK_OPS_FRIENDS(Flags)
     RenderStep(Layout layout,
                RenderStepID renderStepID,
                SkEnumBitMask<Flags> flags,
-               std::initializer_list<Uniform> uniforms,
+               std::vector<Uniform> uniforms,
                PrimitiveType primitiveType,
                DepthStencilSettings depthStencilSettings,
                SkSpan<const Attribute> staticAttrs,
                SkSpan<const Attribute> appendAttrs,
                SkSpan<const Varying> varyings = {});
+
+    // In the case that the uploaded vertex static attribute data is not tightly packed, the stride
+    // can be overriden to satisfy the custom vertex attribute layout.
+    void setStaticDataStride(size_t staticDataStride) {
+        fStaticDataStride = staticDataStride;
+    }
 
 private:
     friend class Renderer; // for Flags
