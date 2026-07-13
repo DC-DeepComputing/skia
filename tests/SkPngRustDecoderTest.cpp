@@ -5,15 +5,20 @@
  * found in the LICENSE file.
  */
 
-#include "include/codec/SkPngChunkReader.h"
 #include "include/codec/SkPngRustDecoder.h"
 
+#include <functional>
 #include <memory>
+#include <optional>
 #include <utility>
 
 #include "include/codec/SkAndroidCodec.h"
 #include "include/codec/SkCodec.h"
 #include "include/codec/SkCodecAnimation.h"
+#include "include/codec/SkPngChunkReader.h"
+#if defined(SK_CODEC_DECODES_PNG_WITH_LIBPNG)
+#include "include/codec/SkPngDecoder.h"
+#endif
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkColorType.h"
@@ -24,6 +29,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkStream.h"
 #include "include/private/SkGainmapInfo.h"
+#include "src/codec/SkCodecPriv.h"
 #include "tests/FakeStreams.h"
 #include "tests/Test.h"
 #include "tools/Resources.h"
@@ -163,6 +169,174 @@ void AssertSingleGreenFrame(skiatest::Reporter* r,
 
     AssertGreenPixel(r, pixmap, 0, 0);
     AssertGreenPixel(r, pixmap, expectedWidth / 2, expectedHeight / 2);
+}
+
+static std::unique_ptr<SkCodec> StartIncrementalDecodeSubset(skiatest::Reporter* r,
+                                                             std::unique_ptr<SkStream> stream,
+                                                             const SkIRect& subset,
+                                                             SkBitmap* dstBitmap) {
+    SkCodec::Result result;
+    std::unique_ptr<SkCodec> codec = SkPngRustDecoder::Decode(std::move(stream), &result);
+    if (!codec) {
+        ERRORF(r, "Failed to create Rust codec");
+        return nullptr;
+    }
+
+    SkImageInfo subsetInfo =
+            codec->getInfo().makeDimensions(subset.size()).makeColorType(kN32_SkColorType);
+    dstBitmap->allocPixels(subsetInfo);
+
+    SkImageInfo fullInfo = codec->getInfo().makeColorType(kN32_SkColorType);
+    SkCodec::Options options;
+    options.fSubset = &subset;
+
+    result = codec->startIncrementalDecode(
+            fullInfo, dstBitmap->getPixels(), dstBitmap->rowBytes(), &options);
+    if (result != SkCodec::kSuccess) {
+        ERRORF(r, "startIncrementalDecode failed with %i", (int)result);
+        return nullptr;
+    }
+
+    return codec;
+}
+
+static bool DecodeSubsetOneShot(skiatest::Reporter* r,
+                                sk_sp<SkData> data,
+                                const SkIRect& subset,
+                                SkBitmap* dstBitmap) {
+    auto codec = StartIncrementalDecodeSubset(r, SkMemoryStream::Make(data), subset, dstBitmap);
+    if (!codec) {
+        return false;
+    }
+    int rowsDecoded = 0;
+    SkCodec::Result result = codec->incrementalDecode(&rowsDecoded);
+    if (result != SkCodec::kSuccess) {
+        ERRORF(r, "incrementalDecode failed: %d", (int)result);
+        return false;
+    }
+    return true;
+}
+
+static bool DecodeSubsetHalting(skiatest::Reporter* r,
+                                sk_sp<SkData> data,
+                                const SkIRect& subset,
+                                SkBitmap* dstBitmap) {
+    size_t initialLimit = data->size() / 2;
+    auto haltingStream = std::make_unique<HaltingStream>(data, initialLimit);
+    HaltingStream* retainedStream = haltingStream.get();
+
+    auto codec = StartIncrementalDecodeSubset(r, std::move(haltingStream), subset, dstBitmap);
+    if (!codec) {
+        return false;
+    }
+
+    int rowsDecoded = 0;
+    SkCodec::Result result = codec->incrementalDecode(&rowsDecoded);
+    if (result != SkCodec::kIncompleteInput) {
+        ERRORF(r, "Expected kIncompleteInput, got %d", (int)result);
+        return false;
+    }
+
+    retainedStream->addNewData(data->size() - initialLimit);
+    result = codec->incrementalDecode(&rowsDecoded);
+    if (result != SkCodec::kSuccess) {
+        ERRORF(r, "incrementalDecode resume failed: %d", (int)result);
+        return false;
+    }
+    return true;
+}
+
+static void CompareBitmaps(skiatest::Reporter* r, const SkBitmap& bm1, const SkBitmap& bm2) {
+    const SkImageInfo& info = bm1.info();
+    if (info != bm2.info()) {
+        ERRORF(r, "Bitmaps have different image infos!");
+        return;
+    }
+    const size_t rowBytes = info.minRowBytes();
+    for (int i = 0; i < info.height(); i++) {
+        if (0 != memcmp(bm1.getAddr(0, i), bm2.getAddr(0, i), rowBytes)) {
+            ERRORF(r, "Bitmaps have different pixels, starting on line %i!", i);
+            return;
+        }
+    }
+}
+
+static std::optional<SkBitmap> DecodeAndroidPixels(
+        skiatest::Reporter* r,
+        std::unique_ptr<SkCodec> codec,
+        int sampleSize,
+        std::function<SkIRect(const SkImageInfo&)> getSubset = nullptr) {
+    REPORTER_ASSERT(r, codec);
+    if (!codec) {
+        return std::nullopt;
+    }
+
+    auto androidCodec = SkAndroidCodec::MakeFromCodec(std::move(codec));
+    REPORTER_ASSERT(r, androidCodec);
+    if (!androidCodec) {
+        return std::nullopt;
+    }
+
+    SkAndroidCodec::AndroidOptions opts;
+    opts.fSampleSize = sampleSize;
+
+    SkIRect subset;
+    if (getSubset) {
+        subset = getSubset(androidCodec->getInfo());
+        opts.fSubset = &subset;
+    }
+
+    SkISize sampledDims = androidCodec->getSampledDimensions(sampleSize);
+    SkImageInfo info =
+            androidCodec->getInfo().makeDimensions(sampledDims).makeColorType(kN32_SkColorType);
+    if (opts.fSubset) {
+        int subsetWidth = SkCodecPriv::GetSampledDimension(opts.fSubset->width(), sampleSize);
+        int subsetHeight = SkCodecPriv::GetSampledDimension(opts.fSubset->height(), sampleSize);
+        info = info.makeWH(subsetWidth, subsetHeight);
+    }
+
+    SkBitmap bm;
+    bm.allocPixels(info);
+    auto result = androidCodec->getAndroidPixels(info, bm.getPixels(), bm.rowBytes(), &opts);
+    REPORTER_ASSERT(r, result == SkCodec::kSuccess);
+    if (result != SkCodec::kSuccess) {
+        return std::nullopt;
+    }
+    return bm;
+}
+
+static void AssertAndroidDecodeSampling(
+        skiatest::Reporter* r,
+        const char* path,
+        int sampleSize,
+        std::function<SkIRect(const SkImageInfo&)> getSubset = nullptr) {
+    sk_sp<SkData> data = GetResourceAsData(path);
+    if (!data) {
+        ERRORF(r, "Missing resource: %s", path);
+        return;
+    }
+
+    std::optional<SkBitmap> rustBm = DecodeAndroidPixels(
+            r,
+            SkPngRustDecoder::Decode(std::make_unique<SkMemoryStream>(data), nullptr),
+            sampleSize,
+            getSubset);
+
+#if defined(SK_CODEC_DECODES_PNG_WITH_LIBPNG)
+    std::optional<SkBitmap> libpngBm = DecodeAndroidPixels(
+            r,
+            SkPngDecoder::Decode(std::make_unique<SkMemoryStream>(data), nullptr),
+            sampleSize,
+            getSubset);
+
+    if (!rustBm || !libpngBm) {
+        return;
+    }
+
+    CompareBitmaps(r, *rustBm, *libpngBm);
+#else
+    REPORTER_ASSERT(r, rustBm.has_value());
+#endif
 }
 
 sk_sp<SkImage> DecodeLastFrame(skiatest::Reporter* r, SkCodec* codec) {
@@ -1096,3 +1270,55 @@ DEF_TEST(RustPngCodec_exactRead_overshoot, r) {
     }
 }
 #endif
+
+DEF_TEST(RustPngCodec_subset_halting, r) {
+    sk_sp<SkData> data = GetResourceAsData("images/mandrill_128.png");
+    if (!data) {
+        ERRORF(r, "Missing resource: images/mandrill_128.png");
+        return;
+    }
+
+    // Mandrill is 128x128. We target a center 64x64 subset.
+    SkIRect subset = SkIRect::MakeXYWH(32, 32, 64, 64);
+
+    SkBitmap bmOneShot;
+    if (!DecodeSubsetOneShot(r, data, subset, &bmOneShot)) {
+        return;
+    }
+
+    SkBitmap bmHalting;
+    if (!DecodeSubsetHalting(r, data, subset, &bmHalting)) {
+        return;
+    }
+
+    CompareBitmaps(r, bmOneShot, bmHalting);
+}
+
+DEF_TEST(RustPngCodec_subsampling, r) {
+    for (int sampleSize : {2, 3, 5, 8, 100, 1000}) {
+        AssertAndroidDecodeSampling(r, "images/plane.png", sampleSize);
+    }
+}
+
+DEF_TEST(RustPngCodec_subsampling_interlaced, r) {
+    for (int sampleSize : {2, 3, 5, 8, 100, 1000}) {
+        AssertAndroidDecodeSampling(r, "images/plane_interlaced.png", sampleSize);
+    }
+}
+
+DEF_TEST(RustPngCodec_subsampling_subset, r) {
+    for (int sampleSize : {2, 3, 5, 8, 100, 1000}) {
+        AssertAndroidDecodeSampling(r, "images/plane.png", sampleSize, [](const SkImageInfo& info) {
+            return SkIRect::MakeXYWH(info.width() / 2, 0, info.width() / 2, info.height());
+        });
+    }
+}
+
+DEF_TEST(RustPngCodec_subsampling_subset_interlaced, r) {
+    for (int sampleSize : {2, 3, 5, 8, 100, 1000}) {
+        AssertAndroidDecodeSampling(
+                r, "images/plane_interlaced.png", sampleSize, [](const SkImageInfo& info) {
+                    return SkIRect::MakeXYWH(0, 1, info.width(), info.height() - 1);
+                });
+    }
+}
