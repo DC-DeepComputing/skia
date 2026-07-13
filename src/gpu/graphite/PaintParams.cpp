@@ -212,6 +212,13 @@ SkColor4f PaintParams::Color4fPrepForDst(SkColor4f srcColor, const SkColorInfo& 
     return result;
 }
 
+PaintParams PaintParams::withPrimitiveColorSpace(SkColorSpace* cs, SkAlphaType at) const {
+    PaintParams copy = *this;
+    copy.fPrimitiveColorSpace = cs;
+    copy.fPrimitiveAlphaType = at;
+    return copy;
+}
+
 #if defined(SK_DEBUG)
 PaintParams PaintParams::MakeOpaque(const PaintParams& paint) {
     PaintParams opaque = paint;
