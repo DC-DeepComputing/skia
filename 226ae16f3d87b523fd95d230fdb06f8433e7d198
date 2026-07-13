@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7afd26a7_71cfa471",
+        "filename": "src/core/SkContext.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-13T21:07:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4e957df6_4d4e0689",
+      "range": {
+        "startLine": 61,
+        "startChar": 4,
+        "endLine": 61,
+        "endChar": 10
+      },
+      "revId": "226ae16f3d87b523fd95d230fdb06f8433e7d198",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "27268569_454ab685",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "574d7068_a6d3a6e3",
+        "filename": "src/core/SkContext.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-13T21:07:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "27268569_454ab685",
+      "range": {
+        "startLine": 2,
+        "startChar": 16,
+        "endLine": 2,
+        "endChar": 17
+      },
+      "revId": "226ae16f3d87b523fd95d230fdb06f8433e7d198",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8a1abab2_76c18285",
@@ -60,6 +108,30 @@
       "writtenOn": "2026-07-10T16:49:16Z",
       "side": 1,
       "message": "Does this need to be public? Can it be private so just the factories have access to call it?",
+      "range": {
+        "startLine": 58,
+        "startChar": 4,
+        "endLine": 58,
+        "endChar": 16
+      },
+      "revId": "226ae16f3d87b523fd95d230fdb06f8433e7d198",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "61f0515f_72548ff5",
+        "filename": "src/core/SkContext.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-13T21:07:11Z",
+      "side": 1,
+      "message": "Moved it",
+      "parentUuid": "8a1abab2_76c18285",
       "range": {
         "startLine": 58,
         "startChar": 4,
@@ -95,6 +167,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "78291831_77172535",
+        "filename": "src/core/SkContext.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-13T21:07:11Z",
+      "side": 1,
+      "message": "I removed the implementation of the INIT for now. I figured 1) it would be better If I added it with more implementation details for SkOpts, 2) I don\u0027t want this CL to be too large. For now, I was thinking that this CL could start the implementation of the SkContext factories.\n\nlet me know what you think.",
+      "parentUuid": "4b34e3c3_00c812d3",
+      "range": {
+        "startLine": 87,
+        "startChar": 16,
+        "endLine": 87,
+        "endChar": 20
+      },
+      "revId": "226ae16f3d87b523fd95d230fdb06f8433e7d198",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "49076cee_cef7f0d3",
         "filename": "src/core/SkContext.h",
         "patchSetId": 9
@@ -106,6 +202,30 @@
       "writtenOn": "2026-07-10T16:49:16Z",
       "side": 1,
       "message": "The resource cache here should be a member of SkContext and not a global or static. Given that, the name of this function should be getResourceCache",
+      "range": {
+        "startLine": 99,
+        "startChar": 7,
+        "endLine": 103,
+        "endChar": 68
+      },
+      "revId": "226ae16f3d87b523fd95d230fdb06f8433e7d198",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "99c30222_bfdee84c",
+        "filename": "src/core/SkContext.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-13T21:07:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "49076cee_cef7f0d3",
       "range": {
         "startLine": 99,
         "startChar": 7,
@@ -139,6 +259,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "21cb82ca_ca724487",
+        "filename": "src/core/SkContext.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-13T21:07:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2d8783bb_e37ce5eb",
+      "range": {
+        "startLine": 104,
+        "startChar": 51,
+        "endLine": 104,
+        "endChar": 52
+      },
+      "revId": "226ae16f3d87b523fd95d230fdb06f8433e7d198",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8a011953_6705e93e",
@@ -162,6 +306,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "054eb7d8_b686eede",
+        "filename": "src/core/SkContext.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-13T21:07:11Z",
+      "side": 1,
+      "message": "Sounds good. Updated them such that they are unique_ptrs and initialized in the constructor.",
+      "parentUuid": "8a011953_6705e93e",
+      "range": {
+        "startLine": 134,
+        "startChar": 0,
+        "endLine": 140,
+        "endChar": 6
+      },
+      "revId": "226ae16f3d87b523fd95d230fdb06f8433e7d198",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "77e39bfc_463bba84",
@@ -175,6 +343,30 @@
       "writtenOn": "2026-07-10T16:49:16Z",
       "side": 1,
       "message": "thread_local doesn\u0027t really make sense for a class member",
+      "range": {
+        "startLine": 143,
+        "startChar": 3,
+        "endLine": 143,
+        "endChar": 16
+      },
+      "revId": "226ae16f3d87b523fd95d230fdb06f8433e7d198",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "594a7c8c_4b7b12dd",
+        "filename": "src/core/SkContext.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-13T21:07:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "77e39bfc_463bba84",
       "range": {
         "startLine": 143,
         "startChar": 3,
