@@ -64,13 +64,18 @@ public:
 
     void freeAll();
 
-    bool hasGlyph(skgpu::MaskFormat, const skgpu::ganesh::GlyphEntry&);
+    // do we need to take in this mask format still?
+    // if so, does that also mean we need to pass in the final expected padding as well?
+    // no we don't need the format anymore, because hasGlyph() can just pull the format off of the
+    // packed gpu glyph id that entry *now* has.
+    bool hasGlyph(//skgpu::MaskFormat,
+                  const skgpu::ganesh::GlyphEntry&);
 
     bool supportsBilerp() const { return fSupportBilerpAtlas; }
 
     GrDrawOpAtlas::ErrorCode addGlyphToAtlas(const SkGlyph&,
                                              skgpu::ganesh::GlyphEntry*,
-                                             int srcPadding,
+                                            //  int srcPadding,
                                              GrResourceProvider*,
                                              GrDeferredUploadTarget*);
 
@@ -80,7 +85,7 @@ public:
     // For convenience, this function will also set the use token for the current glyph if required
     // NOTE: the bulk uploader is only valid if the subrun has a valid atlasGeneration
     void addGlyphToBulkAndSetUseToken(GrBulkUsePlotUpdater*,
-                                      skgpu::MaskFormat,
+                                    //   skgpu::MaskFormat,
                                       const skgpu::ganesh::GlyphEntry&,
                                       skgpu::Token);
 

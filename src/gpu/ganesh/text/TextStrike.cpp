@@ -29,7 +29,7 @@ sk_sp<TextStrike> TextStrike::GetOrCreate(sktext::gpu::StrikeCache* strikeCache,
 }
 
 GlyphEntry* TextStrike::getGlyph(SkPackedGlyphID packedGlyphID, MaskFormat format) {
-    GlyphEntryKey localKey(packedGlyphID, format);
+    PackedGPUGlyphID localKey(packedGlyphID, format, 0, false); // FIXME
     GlyphEntry* glyph = fCache.findOrNull(localKey);
     if (glyph == nullptr) {
         glyph = fAlloc.make<GlyphEntry>(packedGlyphID, format);
@@ -39,10 +39,10 @@ GlyphEntry* TextStrike::getGlyph(SkPackedGlyphID packedGlyphID, MaskFormat forma
     return glyph;
 }
 
-const GlyphEntryKey& TextStrike::HashTraits::GetKey(const GlyphEntry* glyph) {
-    return glyph->fGlyphEntryKey;
+const sktext::gpu::PackedGPUGlyphID& TextStrike::HashTraits::GetKey(const GlyphEntry* glyph) {
+    return glyph->fKey;
 }
 
-uint32_t TextStrike::HashTraits::Hash(GlyphEntryKey key) { return key.hash(); }
+uint32_t TextStrike::HashTraits::Hash(PackedGPUGlyphID key) { return key.hash(); }
 
 }  // namespace skgpu::ganesh

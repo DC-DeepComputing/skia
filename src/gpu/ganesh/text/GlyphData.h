@@ -14,6 +14,7 @@
 #include "src/core/SkGlyph.h"
 #include "src/gpu/ganesh/GrAtlasTypes.h"
 #include "src/gpu/ganesh/text/TextStrike.h"
+#include "src/text/gpu/PackedGPUGlyphID.h"
 
 #include <cstdint>
 #include <tuple>
@@ -34,34 +35,22 @@ enum class MaskFormat : int;
 namespace skgpu::ganesh {
 class TextStrike;
 
-struct GlyphEntryKey {
-    explicit GlyphEntryKey(SkPackedGlyphID id, MaskFormat format) : fPackedID(id), fFormat(format) {}
-
-    const SkPackedGlyphID fPackedID;
-    MaskFormat fFormat;
-
-    bool operator==(const GlyphEntryKey& that) const {
-        return fPackedID == that.fPackedID && fFormat == that.fFormat;
-    }
-    bool operator!=(const GlyphEntryKey& that) const {
-        return !(*this == that);
-    }
-
-    uint32_t hash() const {
-        return fPackedID.hash();
-    }
-};
-
 /**
  * Ganesh-specific glyph type with atlas location information.
  */
 struct GlyphEntry {
-    explicit GlyphEntry(SkPackedGlyphID id, MaskFormat format) : fGlyphEntryKey(id, format) {}
+    explicit GlyphEntry(SkPackedGlyphID id, MaskFormat format, int padding, bool isSDF)
+            : fKey(id, format, padding, isSDf) {}
 
-    const GlyphEntryKey fGlyphEntryKey;
+    const sktext::gpu::PackedGPUGlyphID fKey;
     GrAtlasLocator fAtlasLocator;
 };
 
+// FIXME consolidate GlyphEntry and Glyph? packedID() could just return fKey as a PackedGPUGlyphID
+// since it's convertible to packedGlyphID.
+//
+// Not sure about the pointer semantics but could push that into the GlyphVector code, unless
+// you aren't allowed to have a pointer type of a Concept?
 /** Adapts GlyphEntry* to conform to GlyphVectors GlyphType requirements. */
 class Glyph {
     GlyphEntry* fEntry;
@@ -74,7 +63,7 @@ class Glyph {
 
 public:
     explicit Glyph(GlyphEntry* entry) : fEntry{entry} { SkASSERT(entry); }
-    SkPackedGlyphID packedID() const { return fEntry->fGlyphEntryKey.fPackedID; }
+    SkPackedGlyphID packedID() const { return fEntry->fKey.packedGlyphID(); }
     GlyphEntry& entry() const { return *fEntry; }
 };
 
@@ -92,15 +81,15 @@ public:
 
     ~GlyphData();
 
-    Glyph makeGlyphFromID(SkPackedGlyphID, MaskFormat);
+    Glyph makeGlyphFromID(SkPackedGlyphID); //, MaskFormat);
 
     // Regenerate atlas entries for glyphs in range [begin, end).
     // Returns {success, glyphs_placed_in_atlas}.
     std::tuple<bool, int> regenerateAtlas(int begin,
                                           int end,
                                           sktext::gpu::GlyphVector& glyphVector,
-                                          MaskFormat maskFormat,
-                                          int srcPadding,
+                                        //   MaskFormat maskFormat,
+                                        //   int srcPadding,
                                           GrMeshDrawTarget* target);
 
     size_t vertexStride(MaskFormat, const SkMatrix& positionMatrix) const;

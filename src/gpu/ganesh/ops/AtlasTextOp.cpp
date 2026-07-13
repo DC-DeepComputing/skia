@@ -544,6 +544,17 @@ void AtlasTextOp::onPrepareDraws(GrMeshDrawTarget* target) {
         const sktext::gpu::AtlasSubRun& subRun = geo->fSubRun;
 
         if (!subRun.glyphVector().hasBackendData()) {
+            // FIXME so we would be passing in the mask format, isSDF and padding to this function
+            // call as the args... and then GlyphData in skgpu::ganesh would hold on to them so
+            // that it could forward them to makeGlyphFromID(id).
+            //
+            // The big question is can any of these be derived from the strike cache or resolved
+            // mask format here? What about srcPadding vs. final padding choices? The glyph data
+            // should have keys matching between transformed mask glyphs and direct masks *if*
+            // we're adding padding
+
+            // Is it a problem for the sub run's cached glyph vector be initialized with the mask format
+            // that was set on the AtlasTextOp? Is that pre or post resolving?
             subRun.glyphVector().initBackendData<GlyphData>(target->strikeCache(), maskFormat);
         }
 
@@ -562,6 +573,9 @@ void AtlasTextOp::onPrepareDraws(GrMeshDrawTarget* target) {
             // of the glyphs to fill the vertex buffer.
             int regenEnd = subRunCursor + std::min(subRunEnd - subRunCursor, quadEnd - quadCursor);
 
+            // FIXME what enforces a transformed mask sub run actually having 1px of src padding in
+            // its glyph IDs? What controls generating that glyph image? does a direct mask get
+            // a different ID? Or is it first through the gate?
             auto [ok, glyphsRegenerated] = glyphData.regenerateAtlas(subRunCursor,
                                                                      regenEnd,
                                                                      subRun.glyphVector(),

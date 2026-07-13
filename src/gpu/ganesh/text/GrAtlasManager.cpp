@@ -49,8 +49,10 @@ void GrAtlasManager::freeAll() {
     }
 }
 
-bool GrAtlasManager::hasGlyph(MaskFormat format, const GlyphEntry& glyph) {
-    return this->getAtlas(format)->hasID(glyph.fAtlasLocator.plotLocator());
+bool GrAtlasManager::hasGlyph(//MaskFormat format,
+            const GlyphEntry& glyph) {
+                // FIXME resolve mask format?
+    return this->getAtlas(glyph.fKey.maskFormat())->hasID(glyph.fAtlasLocator.plotLocator());
 }
 
 template <typename INT_TYPE>
@@ -177,9 +179,10 @@ GrDrawOpAtlas::ErrorCode GrAtlasManager::addGlyphToAtlas(const SkGlyph& skGlyph,
     }
     SkASSERT(glyph != nullptr);
 
-    MaskFormat expectedMaskFormat = this->resolveMaskFormat(glyph->fGlyphEntryKey.fFormat);
+    MaskFormat expectedMaskFormat = this->resolveMaskFormat(glyph->fKey.maskFormat());
     int bytesPerPixel = MaskFormatBytesPerPixel(expectedMaskFormat);
 
+    // FIXME this padding needs to be handled before we create fKey
     int padding;
     switch (srcPadding) {
         case 0:

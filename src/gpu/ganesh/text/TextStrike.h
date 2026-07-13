@@ -16,10 +16,13 @@
 struct SkPackedGlyphID;
 class SkStrikeSpec;
 
+namespace sktext::gpu {
+struct PackedGPUGlyphID;
+}
+
 namespace skgpu::ganesh {
 
 struct GlyphEntry;
-struct GlyphEntryKey;
 
 /**
  * Ganesh-specific text strike cache entry.
@@ -36,15 +39,18 @@ public:
     static sk_sp<TextStrike> GetOrCreate(sktext::gpu::StrikeCache* strikeCache,
                                          const SkStrikeSpec& strikeSpec);
 
-    GlyphEntry* getGlyph(SkPackedGlyphID packedGlyphID, MaskFormat format);
+                                         // FIXME padding isSDF, could this be where we calculate full padding?
+    GlyphEntry* getGlyph(SkPackedGlyphID packedGlyphID, MaskFormat format, int padding, bool isSDF);
 
 private:
+    using PackedGPUGlyphID = sktext::gpu::PackedGPUGlyphID;
+
     struct HashTraits {
-        static const GlyphEntryKey& GetKey(const GlyphEntry* glyph);
-        static uint32_t Hash(GlyphEntryKey key);
+        static const PackedGPUGlyphID& GetKey(const GlyphEntry* glyph);
+        static uint32_t Hash(PackedGPUGlyphID key);
     };
 
-    skia_private::THashTable<GlyphEntry*, GlyphEntryKey, HashTraits> fCache;
+    skia_private::THashTable<GlyphEntry*, PackedGPUGlyphID, HashTraits> fCache;
 
     friend class sktext::gpu::StrikeCache;
 };

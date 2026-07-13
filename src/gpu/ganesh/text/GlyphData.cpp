@@ -178,8 +178,8 @@ Glyph GlyphData::makeGlyphFromID(SkPackedGlyphID id, MaskFormat format) {
 std::tuple<bool, int> GlyphData::regenerateAtlas(int begin,
                                                  int end,
                                                  sktext::gpu::GlyphVector& glyphVector,
-                                                 MaskFormat maskFormat,
-                                                 int srcPadding,
+                                                //  MaskFormat maskFormat,
+                                                //  int srcPadding,
                                                  GrMeshDrawTarget* target) {
     SkASSERT(glyphVector.hasBackendData());
     GrAtlasManager* atlasManager = target->atlasManager();
@@ -201,12 +201,13 @@ std::tuple<bool, int> GlyphData::regenerateAtlas(int begin,
         bool success = true;
         for (int i = begin; i < end; i++) {
             const Glyph& glyph = glyphSpan[i];
-            SkASSERT(glyph.entry().fGlyphEntryKey.fFormat == maskFormat);
+            SkASSERT(glyph.entry().fKey.maskFormat() == maskFormat);
+            // So this mask format is pre-resolving? or was it resolved before calling regenerateAtlas?
             if (!atlasManager->hasGlyph(maskFormat, glyph.entry())) {
                 const SkGlyph& skGlyph = *metricsAndImages.glyph(glyph.packedID());
                 auto code = atlasManager->addGlyphToAtlas(skGlyph,
                                                           &glyph.entry(),
-                                                          srcPadding,
+                                                        //   srcPadding,
                                                           target->resourceProvider(),
                                                           uploadTarget);
                 if (code != GrDrawOpAtlas::ErrorCode::kSucceeded) {
