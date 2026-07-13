@@ -15,6 +15,14 @@
 #include <cstdint>
 #include <cstring>
 
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunknown-pragmas"
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#pragma clang diagnostic pop
+#endif
+
 /**
  *  Like SkData, SkDataTable holds an immutable data buffer. The data buffer is
  *  organized into a table of entries, each with a length, so the entries are

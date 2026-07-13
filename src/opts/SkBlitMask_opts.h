@@ -413,6 +413,14 @@ namespace SK_OPTS_NS {
     }
 #endif
 
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunknown-pragmas"
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#pragma clang diagnostic pop
+#endif
+
 /*not static*/ inline void blit_mask_d32_a8(SkPMColor* dst, size_t dstRB,
                                             const SkAlpha* mask, size_t maskRB,
                                             SkColor color, int w, int h) {

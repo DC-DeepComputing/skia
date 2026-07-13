@@ -98,6 +98,14 @@ static inline void rect_memset64(uint64_t* dst, uint64_t v, int n, size_t rowByt
 
 #endif // X86_64 && !SK_ENABLE_OPTIMIZE_SIZE
 
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunknown-pragmas"
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#pragma clang diagnostic pop
+#endif
+
 namespace SkOpts {
     void Init_Memset_erms() {
         #if (defined(__x86_64__) || defined(_M_X64)) && !defined(SK_ENABLE_OPTIMIZE_SIZE)

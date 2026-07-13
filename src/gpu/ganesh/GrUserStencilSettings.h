@@ -5,13 +5,20 @@
  * found in the LICENSE file.
  */
 
-
 #ifndef GrUserStencilSettings_DEFINED
 #define GrUserStencilSettings_DEFINED
 
 #include "include/gpu/ganesh/GrTypes.h"  // IWYU pragma: keep
 
 #include <cstdint>
+
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunknown-pragmas"
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#pragma clang diagnostic pop
+#endif
 
 /**
  * Gr uses the stencil buffer to implement complex clipping inside the

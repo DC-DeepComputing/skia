@@ -5,6 +5,14 @@
 #include "src/utils/SkOSPath.h"
 #include "tools/flags/CommonFlags.h"
 
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunknown-pragmas"
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#pragma clang diagnostic pop
+#endif
+
 using namespace skia_private;
 
 namespace CommonFlags {

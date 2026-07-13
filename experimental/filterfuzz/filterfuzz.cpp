@@ -1,9 +1,16 @@
 // Copyright 2021 Google LLC
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 
-
 #include "include/core/SkGraphics.h"
 #include "tools/flags/CommandLineFlags.h"
+
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunknown-pragmas"
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#pragma clang diagnostic pop
+#endif
 
 static DEFINE_int_2(option, o, 0, "An option");
 
