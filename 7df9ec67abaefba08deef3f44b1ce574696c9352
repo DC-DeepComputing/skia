@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "60454a1d_80c7f62c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-13T14:28:02Z",
+      "side": 1,
+      "message": "Gold diffs look good except for `draw-atlas-colors` on the Mali G715. Other devices don\u0027t show the color shift in the saturation blend, and it is only in one row that shows the issue. Can you investigate a little more to see if you can reproduce?",
+      "revId": "7df9ec67abaefba08deef3f44b1ce574696c9352",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89e17026_3a40efcc",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 1022,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-13T14:28:02Z",
+      "side": 1,
+      "message": "Can we add a comment here like `// tex[i] is relative to the atlas\u0027 coordinate space; drawAtlas\u0027s drawn rects are (0,0,r.width(), r.height())`?",
+      "range": {
+        "startLine": 1022,
+        "startChar": 0,
+        "endLine": 1022,
+        "endChar": 46
+      },
+      "revId": "7df9ec67abaefba08deef3f44b1ce574696c9352",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
