@@ -27,4 +27,13 @@ SK_API sk_sp<GrDirectContext> MakeMetal(const GrMtlBackendContext&, const GrCont
 SK_API sk_sp<GrDirectContext> MakeMetal(const GrMtlBackendContext&);
 }  // namespace GrDirectContexts
 
+namespace SkUnifiedContext {
+class SkContext;
+class SkContextOptions;
+
+// Creates a context wrapping a Ganesh GPU backend with Metal
+sk_sp<SkContext> MakeGanesh(const GrMtlBackendContext& mtlContext, const SkContextOptions& options);
+
+}  // namespace SkUnifiedContext
+
 #endif
