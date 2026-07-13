@@ -28,4 +28,14 @@ SK_API std::unique_ptr<Context> MakeVulkan(const VulkanBackendContext&, const Co
 
 } // namespace skgpu::graphite
 
+namespace SkUnifiedContext {
+class SkContext;
+class SkContextOptions;
+
+// Creates a context wrapping a Graphite GPU backend with Vulkan
+sk_sp<SkContext> MakeGraphite(const skgpu::VulkanBackendContext& vkContext,
+                            const SkContextOptions& options);
+
+}  // namespace SkUnifiedContext
+
 #endif // skgpu_graphite_VulkanGraphiteUtils_DEFINED
