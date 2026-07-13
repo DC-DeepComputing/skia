@@ -22,6 +22,30 @@
       },
       "revId": "6e05f74681402a533c47e2173ad66956c03e75c4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6240493_166fc450",
+        "filename": "src/gpu/ganesh/GrResourceCache.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 720,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2026-07-13T20:18:09Z",
+      "side": 1,
+      "message": "Also, IMO, it would be nice to have something like a \"Sk \" prefix on each of these, as it can be difficult for other engineers to know where a counter track is coming from (and these names could semantically conflict with other counter tracks created by e.g. HWUI, RenderEngine, or GPU drivers, even if the literal track names don\u0027t literally conflict).",
+      "parentUuid": "88ebd0e7_85b9e4e7",
+      "range": {
+        "startLine": 720,
+        "startChar": 39,
+        "endLine": 720,
+        "endChar": 54
+      },
+      "revId": "6e05f74681402a533c47e2173ad66956c03e75c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
