@@ -91,6 +91,9 @@ void GrResourceCache::insertResource(GrGpuResource* resource) {
     fHighWaterCount = std::max(this->getResourceCount(), fHighWaterCount);
     fHighWaterBytes = std::max(fBytes, fHighWaterBytes);
 #endif
+    if (resource->resourcePriv().refsWrappedObjects()) {
+        fWrappedBytes += size;
+    }
     if (GrBudgetedType::kBudgeted == resource->resourcePriv().budgetedType()) {
         ++fBudgetedCount;
         fBudgetedBytes += size;
@@ -120,6 +123,9 @@ void GrResourceCache::removeResource(GrGpuResource* resource) {
 
     SkDEBUGCODE(--fCount;)
     fBytes -= size;
+    if (resource->resourcePriv().refsWrappedObjects()) {
+        fWrappedBytes -= size;
+    }
     if (GrBudgetedType::kBudgeted == resource->resourcePriv().budgetedType()) {
         --fBudgetedCount;
         fBudgetedBytes -= size;
@@ -704,6 +710,22 @@ void GrResourceCache::dumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump) c
     for (int i = 0; i < fPurgeableQueue.count(); ++i) {
         fPurgeableQueue.at(i)->dumpMemoryStatistics(traceMemoryDump);
     }
+}
+
+void GrResourceCache::traceStatsSummary() const {
+    // Trace out counters for several categories of memory:
+    //   total bytes, wrapped bytes, unbudgeted, budgeted, purgeable
+    // The four later categories should equal the total bytes; the budgeted category is specifically
+    // the non-purgeable budgeted bytes; wrapped and unbudgeted are never purgeable.
+    TRACE_COUNTER1_ALWAYS("skia.gpu", "Total GPU Bytes",      fBytes);
+    TRACE_COUNTER1_ALWAYS("skia.gpu", "Purgeable GPU Bytes",  fPurgeableBytes);
+    TRACE_COUNTER1_ALWAYS("skia.gpu", "Budgeted GPU Bytes",   fBudgetedBytes - fPurgeableBytes);
+    TRACE_COUNTER1_ALWAYS("skia.gpu", "Unbudgeted GPU Bytes", fBytes -
+                                                              fBudgetedBytes -
+                                                              fWrappedBytes);
+    // Unlike Graphite, this only includes BackendTextures that have been wrapped into a
+    // GrGpuResource; there is no good chokepoint for aggregating all created/destroyed BackendTex's
+    TRACE_COUNTER1_ALWAYS("skia.gpu", "Wrapped GPU Bytes",    fWrappedBytes);
 }
 
 #if GR_CACHE_STATS

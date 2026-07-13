@@ -16,6 +16,7 @@
 #include "src/gpu/graphite/GpuWorkSubmission.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
 #include "src/gpu/graphite/RendererProvider.h"
+#include "src/gpu/graphite/ResourceCache.h"
 #include "src/gpu/graphite/ResourceProvider.h"
 #include "src/gpu/graphite/SerializationUtils.h"
 #include "src/gpu/graphite/ThreadSafeResourceProvider.h"
@@ -36,7 +37,8 @@ SharedContext::SharedContext(std::unique_ptr<const Caps> caps,
     , fBackend(backend)
     , fGlobalCache()
     , fPipelineManager() // TODO(robertphillips): pass in executor here
-    , fShaderDictionary(get_binding_layout(fCaps.get()), userDefinedKnownRuntimeEffects) {}
+    , fShaderDictionary(get_binding_layout(fCaps.get()), userDefinedKnownRuntimeEffects)
+    , fResourceStats(new ThreadSafeResourceStats()) {}
 
 SharedContext::~SharedContext() {
     // TODO: add disconnect?

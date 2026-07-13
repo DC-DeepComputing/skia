@@ -210,6 +210,9 @@ public:
      */
     void purgeUnlockedResources(size_t bytesToPurge, bool preferScratchResources);
 
+    // Always available as the overhead is minimal
+    void traceStatsSummary() const;
+
 #if GR_CACHE_STATS
     struct Stats {
         int fTotal;
@@ -390,6 +393,7 @@ private:
     // our current stats for all resources
     SkDEBUGCODE(int                     fCount = 0;)
     size_t                              fBytes = 0;
+    size_t                              fWrappedBytes = 0;
 
     // our current stats for resources that count against the budget
     int                                 fBudgetedCount = 0;

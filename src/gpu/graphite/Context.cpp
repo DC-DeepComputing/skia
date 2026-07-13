@@ -813,6 +813,7 @@ void Context::checkForFinishedWork(SyncToCpu syncToCpu) {
     // Process the return queue periodically to make sure it doesn't get too big
     fResourceProvider->forceProcessReturnedResources();
     fSharedContext->forceProcessReturnedResources();
+    fSharedContext->resourceStats()->traceStatsSummary();
 }
 
 void Context::checkAsyncWorkCompletion() {
