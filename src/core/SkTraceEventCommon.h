@@ -250,6 +250,8 @@ static inline void sk_noop(Args...) {}
     #define TRACE_EVENT_OBJECT_DELETED_WITH_ID(cg, n, id) TRACE_EMPTY(cg, n, id)
     #define TRACE_COUNTER1(cg, n, value) TRACE_EMPTY(cg, n, value)
     #define TRACE_COUNTER2(cg, n, v1n, v1v, v2n, v2v) TRACE_EMPTY(cg, n, v1n, v1v, v2n, v2v)
+    #define TRACE_COUNTER1_ALWAYS(cg, n, value) TRACE_EMPTY(cg, n, value)
+    #define TRACE_COUNTER2_ALWAYS(cg, n, v1n, v1v, v2n, v2v) TRACE_EMPTY(cg, n, v1n, v1v, v2n, v2v)
 
 #elif defined(SK_ANDROID_FRAMEWORK_USE_PERFETTO)
 
@@ -566,6 +568,12 @@ namespace skia_private {
             ATRACE_INT(name, value);                                    \
         }                                                               \
     }
+#define TRACE_COUNTER1_ALWAYS(category_group, name, value)          \
+    if (SkAndroidFrameworkTraceUtil::getUsePerfettoTrackEvents()) { \
+        TRACE_COUNTER(category_group, name, value);                 \
+    } else {                                                        \
+        ATRACE_INT(name, value);                                    \
+    }
 
 // Records the values of a multi-parted counter called "name" immediately.
 // In Chrome, this macro produces a stacked bar chart. Perfetto doesn't support
@@ -579,6 +587,16 @@ namespace skia_private {
             ATRACE_INT(name "-" value1_name, value1_val);                                       \
             ATRACE_INT(name "-" value2_name, value2_val);                                       \
         }                                                                                       \
+    }
+#define TRACE_COUNTER2_ALWAYS(category_group, name,
+                              value1_name, value1_val,
+                              value2_name, value2_val)                   \
+    if (SkAndroidFrameworkTraceUtil::getUsePerfettoTrackEvents()) {      \
+        TRACE_COUNTER(category_group, name "-" value1_name, value1_val); \
+        TRACE_COUNTER(category_group, name "-" value2_name, value2_val); \
+    } else {                                                             \
+        ATRACE_INT(name "-" value1_name, value1_val);                    \
+        ATRACE_INT(name "-" value2_name, value2_val);                    \
     }
 
 // ATrace has no object tracking, and would require a legacy shim for Perfetto (which likely no-ops
@@ -661,6 +679,10 @@ namespace skia_private {
   INTERNAL_TRACE_EVENT_ADD(TRACE_EVENT_PHASE_COUNTER, category_group, name, \
                            TRACE_EVENT_FLAG_NONE, "value",                  \
                            static_cast<int>(value))
+#define TRACE_COUNTER1_ALWAYS(category_group, name, value)                  \
+  INTERNAL_TRACE_EVENT_ADD(TRACE_EVENT_PHASE_COUNTER, category_group, name, \
+                           TRACE_EVENT_FLAG_NONE, "value",                  \
+                           static_cast<int>(value))
 
 // Records the values of a multi-parted counter called "name" immediately.
 // The UI will treat value1 and value2 as parts of a whole, displaying their
@@ -670,6 +692,12 @@ namespace skia_private {
   INTERNAL_TRACE_EVENT_ADD(TRACE_EVENT_PHASE_COUNTER, category_group, name, \
                            TRACE_EVENT_FLAG_NONE, value1_name,              \
                            static_cast<int>(value1_val), value2_name,       \
+                           static_cast<int>(value2_val))
+#define TRACE_COUNTER2_ALWAYS(category_group, name, value1_name, value1_val, \
+                              value2_name, value2_val)                       \
+  INTERNAL_TRACE_EVENT_ADD(TRACE_EVENT_PHASE_COUNTER, category_group, name,  \
+                           TRACE_EVENT_FLAG_NONE, value1_name,               \
+                           static_cast<int>(value1_val), value2_name,        \
                            static_cast<int>(value2_val))
 
 #define TRACE_EVENT_ASYNC_BEGIN0(category, name, id)                                           \
