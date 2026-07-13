@@ -16,6 +16,24 @@
       "message": "ping, anything from my side i could do?",
       "revId": "8cb0dceddc84c854bc3c201ffc778d0a0963f8f8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "02e355b8_d838081b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-13T14:14:40Z",
+      "side": 1,
+      "message": "PS6 continues to render incorrectly, unfortunately. We don\u0027t have the bandwidth to investigate this directly",
+      "parentUuid": "3287c9b3_b0b472e8",
+      "revId": "8cb0dceddc84c854bc3c201ffc778d0a0963f8f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
