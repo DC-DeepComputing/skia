@@ -5,7 +5,7 @@
  * found in the LICENSE file.
  */
 
-#include "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.h"
+#include "src/codec/SkBmpRustCodec.h"
 
 #include "include/codec/SkCodecAnimation.h"
 #include "include/core/SkColorType.h"

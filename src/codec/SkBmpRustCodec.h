@@ -10,11 +10,11 @@
 #include <memory>
 #include <optional>
 
-#include "experimental/rust_bmp/ffi/FFI.rs.h"
 #include "include/codec/SkCodec.h"
 #include "include/codec/SkEncodedImageFormat.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSpan.h"
+#include "rust/bmp/FFI.rs.h"
 #include "third_party/rust/cxx/v1/cxx.h"
 
 struct SkEncodedInfo;

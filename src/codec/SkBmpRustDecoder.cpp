@@ -5,14 +5,14 @@
  * found in the LICENSE file.
  */
 
-#include "experimental/rust_bmp/decoder/SkBmpRustDecoder.h"
+#include "include/codec/SkBmpRustDecoder.h"
 
 #include <utility>
 
-#include "experimental/rust_bmp/ffi/FFI.rs.h"
-#include "experimental/rust_bmp/decoder/impl/SkBmpRustCodec.h"
 #include "include/core/SkData.h"
 #include "include/core/SkStream.h"
+#include "rust/bmp/FFI.rs.h"
+#include "src/codec/SkBmpRustCodec.h"
 
 namespace SkBmpRustDecoder {
 
