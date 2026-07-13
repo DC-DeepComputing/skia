@@ -4,10 +4,16 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+
 #include "src/core/SkReadPixelsRec.h"
 
 #include "include/core/SkRect.h"
 #include "src/core/SkSafeMath.h"
+
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
 
 bool SkReadPixelsRec::trim(int srcWidth, int srcHeight) {
     // fInfo.minRowBytes() returns 0 if the size doesn't fit in `size_t`.

@@ -14,6 +14,11 @@
 #include <cstddef>
 #include <utility>
 
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /*  Sifts a broken heap. The input array is a heap from root to bottom

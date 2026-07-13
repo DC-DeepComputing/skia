@@ -18,6 +18,11 @@
 #include <cstring>
 #include <new>
 
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 SkData::SkData(SkSpan<std::byte> span, ReleaseProc proc, void* context)
     : fReleaseProc(proc)
     , fReleaseProcContext(context)

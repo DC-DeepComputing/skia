@@ -13,6 +13,11 @@
 #include "src/sfnt/SkOTTable_OS_2_V4.h"
 #include "src/sfnt/SkOTTable_name.h"
 
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 class SkData;
 class SkStream;
 struct SkAdvancedTypefaceMetrics;

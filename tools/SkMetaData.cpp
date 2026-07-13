@@ -10,6 +10,11 @@
 #include "include/private/SkMalloc.h"
 #include "include/private/SkTo.h"
 
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 void SkMetaData::reset()
 {
     Rec* rec = fRec;
