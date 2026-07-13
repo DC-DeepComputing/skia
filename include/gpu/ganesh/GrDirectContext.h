@@ -1023,5 +1023,4 @@ private:
     friend class GrDirectContextPriv;
 };
 
-
 #endif
