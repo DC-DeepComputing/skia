@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8a9923e_9abbc7d3",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-13T15:14:11Z",
+      "side": 0,
+      "message": "I removed this comment since it\u0027s not really a scenario that comes up any more with the restrictions on `canForwardMerge`. These restrictions will also become clearer in follow-up CLs when the logic is moved into test() and derived from the LayerKey flags there.",
+      "range": {
+        "startLine": 111,
+        "startChar": 0,
+        "endLine": 111,
+        "endChar": 70
+      },
+      "revId": "cda20c38b4ac6498308debfd74f8e8f84f06864a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "675468a5_53d01b6b",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-13T15:14:11Z",
+      "side": 1,
+      "message": "NOTE: This CL expands the limit reduction to all matched draws, not just ones that use stencil. By the end of the CL chain, since we aren\u0027t always early-out\u0027ing when we find a match, it was beneficial to always apply this limit reduction.",
+      "range": {
+        "startLine": 122,
+        "startChar": 0,
+        "endLine": 122,
+        "endChar": 94
+      },
+      "revId": "ab77e7b57ab616a04ba8e8fafbd3b79988204a7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
