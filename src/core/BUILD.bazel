@@ -569,6 +569,8 @@ skia_cc_library(
         "//src/capture:capture_srcs",
         "//src/effects:core_srcs",
         "//src/image:image_srcs",
+        "//src/lazy:lazy_hdrs",
+        "//src/lazy:lazy_srcs",
         "//src/ports:core_srcs",
         "//src/sfnt:sfnt_srcs",
         "//src/shaders:core_srcs",
