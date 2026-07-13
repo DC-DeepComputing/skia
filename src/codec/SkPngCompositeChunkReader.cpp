@@ -8,6 +8,11 @@
 #include "src/codec/SkPngCompositeChunkReader.h"
 #include <cstring>
 
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 class SkData;
 
 bool SkPngCompositeChunkReader::readChunk(const char tag[], const void* data, size_t length) {

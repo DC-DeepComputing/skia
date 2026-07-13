@@ -27,6 +27,11 @@
 #include <cstring>
 #include <optional>
 
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 using namespace skia_private;
 
 namespace SkSL {

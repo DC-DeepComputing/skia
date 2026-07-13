@@ -12,6 +12,11 @@
 #include "src/core/SkTSearch.h"
 #include "src/core/SkUTF.h"
 
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 static SkUnichar next_unichar_UTF16BE(const uint8_t** srcPtr, size_t* length) {
     SkASSERT(srcPtr && *srcPtr && length);
     SkASSERT(*length > 0);

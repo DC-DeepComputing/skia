@@ -26,6 +26,11 @@
   #include "tools/trace/SkPerfettoTrace.h"
 #endif
 
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 static DEFINE_string(trace,
               "",
               "Log trace events in one of several modes:\n"

@@ -5,6 +5,11 @@
 
 #include "include/private/SkTFitsIn.h"
 
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 static constexpr inline int32_t left_shift(int32_t value, int32_t shift) {
     return (int32_t) ((uint32_t) value << shift);
 }

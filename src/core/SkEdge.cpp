@@ -17,6 +17,11 @@
 #include <algorithm>
 #include <utility>
 
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 /*
     In setLine, setQuadratic, setCubic, the first thing we do is to convert
     the points into FDot6. This is modulated by the shift parameter, which

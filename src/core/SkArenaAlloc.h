@@ -24,6 +24,11 @@
 #include <type_traits>  // IWYU pragma: keep
 #include <utility>
 
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 // We found allocating strictly doubling amounts of memory from the heap left too
 // much unused slop, particularly on Android.  Instead we'll follow a Fibonacci-like
 // progression.

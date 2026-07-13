@@ -10,6 +10,11 @@
 #include "include/private/SkAssert.h"
 #include "include/private/SkDebug.h"
 
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 SkRTree::SkRTree() : fCount(0) {}
 
 void SkRTree::insert(const SkRect boundsArray[], int N) {

@@ -8,6 +8,11 @@
 #include "include/effects/SkColorMatrix.h"
 #include "src/core/SkYUVMath.h"
 
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 enum SkYUVColorSpace : int;
 
 SkColorMatrix SkColorMatrix::RGBtoYUV(SkYUVColorSpace cs) {

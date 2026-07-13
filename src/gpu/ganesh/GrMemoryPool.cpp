@@ -18,6 +18,11 @@
     #include <atomic>
 #endif
 
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 std::unique_ptr<GrMemoryPool> GrMemoryPool::Make(size_t preallocSize, size_t minAllocSize) {

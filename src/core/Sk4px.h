@@ -12,6 +12,11 @@
 #include "src/core/SkColorData.h"
 #include "src/core/SkVx.h"
 
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 // 1, 2 or 4 SkPMColors, generally vectorized.
 class Sk4px {
 public:

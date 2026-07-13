@@ -59,3 +59,8 @@ void GrThreadSafePipelineBuilder::Stats::dumpKeyValuePairs(TArray<SkString>* key
 
 #endif // defined(GPU_TEST_UTILS)
 #endif // GR_GPU_STATS
+
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif

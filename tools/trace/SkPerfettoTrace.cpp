@@ -12,6 +12,11 @@
 #include "src/core/SkTraceEvent.h"
 #include "tools/flags/CommandLineFlags.h"
 
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 PERFETTO_TRACK_EVENT_STATIC_STORAGE();
 
 static DEFINE_string(perfettoOutputDir, "./",
