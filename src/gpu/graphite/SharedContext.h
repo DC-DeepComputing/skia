@@ -37,6 +37,7 @@ class RendererProvider;
 class ResourceProvider;
 class TextureInfo;
 class ThreadSafeResourceProvider;
+class ThreadSafeResourceStats;
 
 class SharedContext : public SkRefCnt {
 public:
@@ -94,6 +95,8 @@ public:
     void purgeResourcesNotUsedSince(StdSteadyClock::time_point purgeTime);
     void forceProcessReturnedResources();
 
+    ThreadSafeResourceStats* resourceStats() const { return fResourceStats.get(); }
+
 protected:
     SharedContext(std::unique_ptr<const Caps>,
                   BackendApi,
@@ -133,6 +136,9 @@ private:
     std::unique_ptr<RendererProvider> fRendererProvider;
     ShaderCodeDictionary fShaderDictionary;
     sk_sp<SkCaptureManager> fCaptureManager;
+
+    // This can be removed once there is a single thread safe ResourceCache
+    std::unique_ptr<ThreadSafeResourceStats> fResourceStats;
 };
 
 } // namespace skgpu::graphite

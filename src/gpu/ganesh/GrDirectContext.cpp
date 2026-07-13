@@ -457,7 +457,11 @@ bool GrDirectContext::submit(const GrSubmitInfo& info) {
         return false;
     }
 
-    return fGpu->submitToGpu(info);
+    bool result = fGpu->submitToGpu(info);
+    if (fResourceCache) {
+        fResourceCache->traceStatsSummary();
+    }
+    return result;
 }
 
 GrSemaphoresSubmitted GrDirectContext::flush(const sk_sp<const SkImage>& image,

@@ -199,6 +199,34 @@ private:
     SkDEBUGCODE(int fCount = 0;)
 };
 
+// This collects stats across all Recorders' and the Context's ResourceCache so that it can provide
+// a single traceable set of counters for Perfetto.
+class ThreadSafeResourceStats {
+public:
+    void recordNewResource(size_t size, Budgeted);
+    void recordPurgeResource(size_t size);
+    void recordResourceBudgetChange(size_t size, Budgeted newBudget);
+    void recordResourceUpdatedSize(size_t newSize, size_t oldSize, Budgeted);
+    void recordResourcePurgeable(size_t);
+    void recordResourceNonpurgeable(size_t);
+
+    void recordCreateBackendTexture(size_t size);
+    void recordDeleteBackendTexture(size_t size);
+
+    // Push stats out to SK_TRACE counters
+    void traceStatsSummary() const;
+
+private:
+    // These fields are currently thread-safe (eventually consistent) totals of the similarly named
+    // fields in ResourceCache across the Context's and every Recorders' caches. Once there is a
+    // single thread-safe ResourceCache, its values can replace these aggregates.
+    std::atomic<size_t> fBudgetedBytes = 0; // Including purgeable bytes
+    std::atomic<size_t> fPurgeableBytes = 0;
+    // These bytes are non-purgeable
+    std::atomic<size_t> fUnbudgetedBytes = 0; // Resources created via Skia APIs, not wrapped
+    std::atomic<size_t> fBackendTexBytes = 0; // All BackendTextures, not just wrapped Resources
+};
+
 } // namespace skgpu::graphite
 
 #endif // skgpu_graphite_ResourceCache_DEFINED

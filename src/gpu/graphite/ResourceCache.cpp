@@ -15,6 +15,7 @@
 #include "src/gpu/graphite/GraphiteResourceKey.h"
 #include "src/gpu/graphite/ProxyCache.h"
 #include "src/gpu/graphite/Resource.h"
+#include "src/gpu/graphite/SharedContext.h"
 
 #if defined(GPU_TEST_UTILS)
 #include "src/gpu/graphite/Texture.h"
@@ -156,6 +157,8 @@ void ResourceCache::insertResource(Resource* resource,
     if (resource->budgeted() == Budgeted::kYes) {
         fBudgetedBytes += resource->gpuMemorySize();
     }
+    resource->sharedContext()->resourceStats()->recordNewResource(
+            resource->gpuMemorySize(), resource->budgeted());
 
     this->purgeAsNeeded();
 }
@@ -202,6 +205,8 @@ Resource* ResourceCache::findAndRefResource(const GraphiteResourceKey& key,
             if (budgeted == Budgeted::kNo) {
                 resource->setBudgeted(Budgeted::kNo);
                 fBudgetedBytes -= resource->gpuMemorySize();
+                resource->sharedContext()->resourceStats()->recordResourceBudgetChange(
+                        resource->gpuMemorySize(), Budgeted::kNo);
             }
             // It is safe to update non-shareable resources when returning them from the cache.
             resource->setLabel(label);
@@ -414,6 +419,8 @@ Resource* ResourceCache::processReturnedResource(Resource* resource) {
             if (resource->budgeted() == Budgeted::kNo) {
                 resource->setBudgeted(Budgeted::kYes);
                 fBudgetedBytes += resource->gpuMemorySize();
+                resource->sharedContext()->resourceStats()->recordResourceBudgetChange(
+                        resource->gpuMemorySize(), Budgeted::kYes);
             }
         }
 
@@ -439,13 +446,15 @@ Resource* ResourceCache::processReturnedResource(Resource* resource) {
 
     // Update GPU budget now that the budget policy is up to date. Some GPU resources may have their
     // actual memory amount change over time so update periodically.
-    if (resource->budgeted() == Budgeted::kYes) {
-        size_t oldSize = resource->gpuMemorySize();
-        resource->updateGpuMemorySize();
-        if (oldSize != resource->gpuMemorySize()) {
+    size_t oldSize = resource->gpuMemorySize();
+    resource->updateGpuMemorySize();
+    if (oldSize != resource->gpuMemorySize()) {
+        if (resource->budgeted() == Budgeted::kYes) {
             fBudgetedBytes -= oldSize;
             fBudgetedBytes += resource->gpuMemorySize();
         }
+        resource->sharedContext()->resourceStats()->recordResourceUpdatedSize(
+                resource->gpuMemorySize(), oldSize, resource->budgeted());
     }
 
     this->setResourceUseToken(resource, this->getNextUseToken());
@@ -477,6 +486,8 @@ Resource* ResourceCache::processReturnedResource(Resource* resource) {
         resource->updateAccessTime();
         fPurgeableQueue.insert(resource);
         fPurgeableBytes += resource->gpuMemorySize();
+        resource->sharedContext()->resourceStats()->recordResourcePurgeable(
+            resource->gpuMemorySize());
     }
     this->validate();
 
@@ -526,6 +537,8 @@ void ResourceCache::removeFromPurgeableQueue(Resource* resource) {
 
     fPurgeableQueue.remove(resource);
     fPurgeableBytes -= resource->gpuMemorySize();
+    resource->sharedContext()->resourceStats()->recordResourceNonpurgeable(
+            resource->gpuMemorySize());
     // SkTDPQueue will set the index back to -1 in debug builds, but we are using the index as a
     // flag for whether the Resource has been purged from the cache or not. So we need to make sure
     // it always gets set.
@@ -575,8 +588,11 @@ void ResourceCache::purgeResource(Resource* resource) {
     }
 
     SkASSERT(!this->isInCache(resource));
-
+    // Unbudgeted resources always transition through becoming reusable and budgeted before they
+    // are purged.
+    SkASSERT(resource->budgeted() == Budgeted::kYes);
     fBudgetedBytes -= resource->gpuMemorySize();
+    resource->sharedContext()->resourceStats()->recordPurgeResource(resource->gpuMemorySize());
     resource->unrefCache();
 }
 
@@ -921,5 +937,89 @@ void ResourceCache::visitTextures(
 }
 
 #endif // defined(GPU_TEST_UTILS)
+
+// ThreadSafeResourceStats
+
+void ThreadSafeResourceStats::recordNewResource(size_t size, Budgeted budgeted) {
+    if (budgeted == Budgeted::kYes) {
+        fBudgetedBytes += size;
+    } else {
+        fUnbudgetedBytes += size;
+    }
+}
+
+void ThreadSafeResourceStats::recordPurgeResource(size_t size) {
+    fBudgetedBytes -= size;
+}
+
+void ThreadSafeResourceStats::recordResourceBudgetChange(size_t size, Budgeted newBudget) {
+    // We're not worrying about synchronizing the update between unbudgeted and budgeted, tracing
+    // will eventually show the right state.
+    if (newBudget == Budgeted::kYes) {
+        fUnbudgetedBytes -= size;
+        fBudgetedBytes += size;
+    } else {
+        fBudgetedBytes -= size;
+        fUnbudgetedBytes += size;
+    }
+}
+
+void ThreadSafeResourceStats::recordResourceUpdatedSize(size_t newSize,
+                                                        size_t oldSize,
+                                                        Budgeted budgeted) {
+    // We could structure this as subtracting oldSize and then adding newSize, but we can keep it
+    // atomic by choosing += or -=.
+    if (budgeted == Budgeted::kYes) {
+        if (oldSize > newSize) {
+            fBudgetedBytes -= (oldSize - newSize);
+        } else {
+            fBudgetedBytes += (newSize - oldSize);
+        }
+    } else {
+        if (oldSize > newSize) {
+            fUnbudgetedBytes -= (oldSize - newSize);
+        } else {
+            fUnbudgetedBytes += (newSize - oldSize);
+        }
+    }
+}
+
+void ThreadSafeResourceStats::recordResourcePurgeable(size_t size) {
+    fPurgeableBytes += size;
+}
+
+void ThreadSafeResourceStats::recordResourceNonpurgeable(size_t size) {
+    fPurgeableBytes -= size;
+}
+
+void ThreadSafeResourceStats::recordCreateBackendTexture(size_t size) {
+    fBackendTexBytes += size;
+}
+
+void ThreadSafeResourceStats::recordDeleteBackendTexture(size_t size) {
+    fBackendTexBytes -= size;
+}
+
+void ThreadSafeResourceStats::traceStatsSummary() const {
+    // Trace out counters for several categories of memory:
+    //   total bytes, wrapped bytes, unbudgeted, budgeted, purgeable
+    // The four later categories should equal the total bytes; the budgeted category is specifically
+    // the non-purgeable budgeted bytes; wrapped and unbudgeted are never purgeable.
+    const size_t budgetedBytes   = fBudgetedBytes;
+    const size_t unbudgetedBytes = fUnbudgetedBytes;
+    const size_t purgeableBytes  = fPurgeableBytes;
+    const size_t backendTexBytes = fBackendTexBytes;
+
+    const size_t budgetedUnpurgeableBytes =
+            budgetedBytes > purgeableBytes ? budgetedBytes - purgeableBytes : 0;
+
+    TRACE_COUNTER1_ALWAYS("skia.gpu", "Total GPU Bytes",      budgetedBytes +
+                                                              unbudgetedBytes +
+                                                              backendTexBytes);
+    TRACE_COUNTER1_ALWAYS("skia.gpu", "Purgeable GPU Bytes",  purgeableBytes);
+    TRACE_COUNTER1_ALWAYS("skia.gpu", "Budgeted GPU Bytes",   budgetedUnpurgeableBytes);
+    TRACE_COUNTER1_ALWAYS("skia.gpu", "Unbudgeted GPU Bytes", unbudgetedBytes);
+    TRACE_COUNTER1_ALWAYS("skia.gpu", "BackendTex GPU Bytes", backendTexBytes);
+}
 
 } // namespace skgpu::graphite
