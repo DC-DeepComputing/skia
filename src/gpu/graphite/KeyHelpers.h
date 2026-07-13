@@ -354,7 +354,8 @@ void AddAnalyticClip(const KeyContext&, const NonMSAAClip&);
  * Adds a block that references the primitive color produced by the RenderStep and accounts for
  * color space transformation.
  */
-void AddPrimitiveColor(const KeyContext&, bool skipColorXform);
+void AddPrimitiveColor(const KeyContext&, bool skipColorXform,
+                       SkColorSpace* primitiveColorSpace, SkAlphaType primitiveAlphaType);
 
 /**
  * Blend mode color filters blend their input (as the dst color) with some given color (supplied
