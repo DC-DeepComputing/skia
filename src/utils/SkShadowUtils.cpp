@@ -381,7 +381,6 @@ private:
 };
 
 // This creates a domain of keys in SkResourceCache used by this file.
-static void* kNamespace;
 
 // When the SkPathRef genID changes, invalidate a corresponding GrResource described by key.
 class ShadowInvalidator : public SkIDChangeListener {
@@ -430,7 +429,7 @@ bool draw_shadow(const FACTORY& factory,
         key = new (keyStorage.begin()) SkResourceCache::Key();
         // ... followed by the bytes from path.
         path.writeKey((uint32_t*)(((uint8_t*)keyStorage.begin()) + sizeof(SkResourceCache::Key)));
-        key->init(&kNamespace, resource_cache_shared_id(), keyDataBytes);
+        key->init(SkResourceCache::GetNamespace("ShadowUtils"), resource_cache_shared_id(), keyDataBytes);
         SkResourceCache::Find(*key, FindVisitor<FACTORY>, &context);
     }
 

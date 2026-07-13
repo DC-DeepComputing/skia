@@ -31,8 +31,6 @@ struct MaskValue {
 };
 
 namespace {
-static unsigned gRRectBlurKeyNamespaceLabel;
-
 struct RRectBlurKey : public SkResourceCache::Key {
 public:
     RRectBlurKey(SkScalar sigma, const SkRRect& rrect, SkBlurStyle style)
@@ -40,7 +38,7 @@ public:
         , fStyle(style)
         , fRRect(rrect)
     {
-        this->init(&gRRectBlurKeyNamespaceLabel, 0,
+        this->init(SkResourceCache::GetNamespace("RRectBlurKey"), 0,
                    sizeof(fSigma) + sizeof(fStyle) + sizeof(fRRect));
     }
 
@@ -109,8 +107,6 @@ void SkMaskCache::Add(SkScalar sigma, SkBlurStyle style,
 //////////////////////////////////////////////////////////////////////////////////////////
 
 namespace {
-static unsigned gRectsBlurKeyNamespaceLabel;
-
 struct RectsBlurKey : public SkResourceCache::Key {
 public:
     RectsBlurKey(SkScalar sigma, SkBlurStyle style, SkSpan<const SkRect> rects)
@@ -128,7 +124,7 @@ public:
         }
         fSizes[3] = SkSize{rects[0].x() - ir.x(), rects[0].y() - ir.y()};
 
-        this->init(&gRectsBlurKeyNamespaceLabel, 0,
+        this->init(SkResourceCache::GetNamespace("RectsBlurKey"), 0,
                    sizeof(fSigma) + sizeof(fStyle) + sizeof(fSizes));
     }
 

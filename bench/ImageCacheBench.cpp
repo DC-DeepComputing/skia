@@ -9,13 +9,12 @@
 #include "src/core/SkResourceCache.h"
 
 namespace {
-static void* gGlobalAddress;
 class TestKey : public SkResourceCache::Key {
 public:
     intptr_t fValue;
 
     TestKey(intptr_t value) : fValue(value) {
-        this->init(&gGlobalAddress, 0, sizeof(fValue));
+        this->init(SkResourceCache::GetNamespace("ImageCacheBenchKey"), 0, sizeof(fValue));
     }
 };
 struct TestRec : public SkResourceCache::Rec {
