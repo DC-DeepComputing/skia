@@ -75,6 +75,10 @@ public:
         return fRecorder->fSharedContext->shaderCodeDictionary();
     }
 
+    RendererProvider* rendererProvider() {
+        return fRecorder->fSharedContext->rendererProvider();
+    }
+
     const RendererProvider* rendererProvider() const {
         return fRecorder->fSharedContext->rendererProvider();
     }
