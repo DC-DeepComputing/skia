@@ -16,6 +16,23 @@
       "message": "PTAL",
       "revId": "b0225c6ad72f4b03827173b2060618e6510784a8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9a321f8_5355097e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2026-07-13T07:54:13Z",
+      "side": 1,
+      "message": "lgtm. I don\u0027t have reviewing permission though. Leave it to Michael",
+      "revId": "b0225c6ad72f4b03827173b2060618e6510784a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
