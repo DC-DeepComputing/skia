@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88ebd0e7_85b9e4e7",
+        "filename": "src/gpu/ganesh/GrResourceCache.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 720,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2026-07-13T20:14:58Z",
+      "side": 1,
+      "message": "These track names will conflict if a process is working with multiple contexts, and will clobber each other. :(\n\nI can think of three ways we could handle this:\n1. Allow clients to optionally pass in a short context-identifying tracing prefix/suffix.\n2. Have some global incrementing ID per context.\n3. Try to guess how clients might be using multiple contexts, and automatically add prefixes/suffixes. For Android this would mean checking if protected content is supported by the context (to support RenderEngine), but HWUI would need us to check the Vulkan queue index this context is using. :/",
+      "range": {
+        "startLine": 720,
+        "startChar": 39,
+        "endLine": 720,
+        "endChar": 54
+      },
+      "revId": "6e05f74681402a533c47e2173ad66956c03e75c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
