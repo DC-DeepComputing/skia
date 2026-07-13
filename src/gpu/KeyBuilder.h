@@ -15,6 +15,11 @@
 #include <cstdint>
 #include <string_view>
 
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 namespace skgpu {
 
 class KeyBuilder {

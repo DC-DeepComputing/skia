@@ -14,6 +14,11 @@
 #include "include/private/SkTDArray.h"
 #include "src/core/SkTHash.h"
 
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 /**
  *  Including this file (and compiling CommandLineFlags.cpp) provides command line
  *  parsing. In order to use it, use the following macros in global

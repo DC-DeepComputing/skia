@@ -2,6 +2,11 @@
 
 #include "modules/skparagraph/include/FontArguments.h"
 
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 static bool operator==(const SkFontArguments::VariationPosition::Coordinate& a,
                        const SkFontArguments::VariationPosition::Coordinate& b) {
    return a.axis == b.axis && a.value == b.value;

@@ -14,6 +14,11 @@
 
 #include <cmath>
 
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 class SkLinearColorSpaceLuminance : public SkColorSpaceLuminance {
     SkScalar toLuma(SkScalar SkDEBUGCODE(gamma), SkScalar luminance) const override {
         SkASSERT(SK_Scalar1 == gamma);
