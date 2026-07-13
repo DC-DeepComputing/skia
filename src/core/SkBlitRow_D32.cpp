@@ -537,6 +537,11 @@ static void blit_row_s32_opaque(SkPMColor* dst,
     }
 #endif
 
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 SkBlitRow::Proc32 SkBlitRow::Factory32(unsigned flags) {
     static const SkBlitRow::Proc32 kProcs[] = {
         blit_row_s32_opaque,

@@ -19,6 +19,11 @@
 #include <string>
 #include <string_view>
 
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 template <typename RoundtripType, int kFullPrecision>
 static std::string to_string_impl(RoundtripType value) {
     std::stringstream buffer;

@@ -18,6 +18,11 @@
 
 #include <optional>
 
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 bool SkBlendMode_ShouldPreScaleCoverage(SkBlendMode mode, bool rgb_coverage) {
     // The most important things we do here are:
     //   1) never pre-scale with rgb coverage if the blend mode involves a source-alpha term;

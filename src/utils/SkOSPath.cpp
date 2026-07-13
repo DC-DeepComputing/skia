@@ -11,6 +11,11 @@
 
 #include <string.h>
 
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 SkString SkOSPath::Join(const char *rootPath, const char *relativePath) {
     SkString result(rootPath);
     if (!result.endsWith(SEPARATOR) && !result.isEmpty()) {

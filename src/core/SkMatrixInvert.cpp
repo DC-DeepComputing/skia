@@ -9,6 +9,11 @@
 
 #include "include/private/SkFloatingPoint.h"
 
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 SkScalar SkInvert2x2Matrix(const SkScalar inMatrix[4], SkScalar outMatrix[4]) {
     double a00 = inMatrix[0];
     double a01 = inMatrix[1];

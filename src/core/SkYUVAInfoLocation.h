@@ -13,6 +13,11 @@
 
 #include <algorithm>
 
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 /**
  * The location of Y, U, V, or A values within the planes described by SkYUVAInfo. Computed from a
  * SkYUVAInfo and the set of channels present in a set of pixmaps/textures.

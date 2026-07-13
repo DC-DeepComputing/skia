@@ -4,11 +4,17 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+
 #include "src/codec/SkColorPalette.h"
 
 #include "include/private/SkMalloc.h"
 
 #include <cstring>
+
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
 
 SkColorPalette::SkColorPalette(const SkPMColor colors[], int count) {
     SkASSERT(0 == count || colors);

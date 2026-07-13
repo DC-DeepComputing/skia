@@ -10,6 +10,11 @@
 #include "src/codec/SkHdrAgtmPriv.h"
 #include "src/core/SkStreamPriv.h"
 
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 namespace {
 
 // Return x clamped to [a, b].
@@ -655,4 +660,3 @@ sk_sp<SkData> AdaptiveGlobalToneMap::serialize() const {
 }
 
 }  // namespace skhdr
-

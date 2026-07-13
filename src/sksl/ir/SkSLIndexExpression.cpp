@@ -27,6 +27,11 @@
 #include <cstdint>
 #include <optional>
 
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 namespace SkSL {
 
 static bool index_out_of_range(const Context& context, Position pos, SKSL_INT index,

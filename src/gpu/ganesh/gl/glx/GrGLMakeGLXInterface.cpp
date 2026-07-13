@@ -4,6 +4,7 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+
 #include "include/gpu/ganesh/gl/glx/GrGLMakeGLXInterface.h"
 
 #include "include/core/SkRefCnt.h"
@@ -16,6 +17,11 @@
 #include <GL/gl.h>
 #include <GL/glx.h>
 #include <string.h>
+
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
 
 static GrGLFuncPtr glx_get(void* ctx, const char name[]) {
     // Avoid calling glXGetProcAddress() for EGL procs.

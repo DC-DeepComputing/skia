@@ -4,6 +4,7 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+
 #include "modules/skunicode/src/SkUnicode_icu_bidi.h"
 
 #include "include/core/SkTypes.h"
@@ -20,6 +21,11 @@
 #include <string>
 #include <utility>
 #include <vector>
+
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
 
 namespace {
 using SkUnicodeBidi = std::unique_ptr<UBiDi, SkBidiFactory::BidiCloseCallback>;

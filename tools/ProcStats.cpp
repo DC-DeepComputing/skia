@@ -84,6 +84,11 @@
     int64_t sk_tools::getCurrResidentSetSizeBytes() { return -1; }
 #endif
 
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 int sk_tools::getMaxResidentSetSizeMB() {
     int64_t bytes = sk_tools::getMaxResidentSetSizeBytes();
     return bytes < 0 ? -1 : static_cast<int>(bytes / 1024 / 1024);

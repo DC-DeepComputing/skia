@@ -23,6 +23,11 @@
 #include <new>
 #include <type_traits>
 
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 /**
  * SkBlockAllocator provides low-level support for a block allocated arena with a dynamic tail that
  * tracks space reservations within each block. Its APIs provide the ability to reserve space,

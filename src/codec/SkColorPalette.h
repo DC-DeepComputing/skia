@@ -12,6 +12,11 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
 
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 /** \class SkColorPalette
 
     SkColorPalette holds an array of SkPMColors (premultiplied 32-bit colors) used by

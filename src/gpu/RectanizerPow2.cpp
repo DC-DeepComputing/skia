@@ -7,6 +7,11 @@
 
 #include "src/gpu/RectanizerPow2.h"
 
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 namespace skgpu {
 
 bool RectanizerPow2::addRect(int width, int height, SkIPoint16* loc) {

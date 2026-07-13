@@ -17,6 +17,11 @@
 #include <memory>
 #include <string>
 
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 namespace skgpu {
 
 bool SkSLToBackend(const SkSL::ShaderCaps* caps,

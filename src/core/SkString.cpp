@@ -23,6 +23,11 @@
 #include <string_view>
 #include <utility>
 
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 // number of bytes (on the stack) to receive the printf result
 static const size_t kBufferSize = 1024;
 

@@ -20,6 +20,11 @@
 #include <string>
 #include <type_traits>
 
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 /**
  *  Lightweight class for writing properly structured JSON data. No random-access, everything must
  *  be generated in-order. The resulting JSON is written directly to the SkWStream supplied at
