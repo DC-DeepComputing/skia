@@ -9,6 +9,7 @@
 
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkVertices.h"
+#include "src/core/SkMeshPriv.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/InternalDrawTypeFlags.h"
 #include "src/gpu/graphite/UniformManager.h"
@@ -252,6 +253,40 @@ RendererProvider::RendererProvider(const Caps* caps, StaticBufferManager* buffer
         fVelloRenderer = std::make_unique<VelloRenderer>(caps);
     }
 #endif
+}
+
+const Renderer* RendererProvider::mesh(const SkMesh& mesh) const {
+    SkASSERT(this->hasMeshRenderStep(mesh));
+    size_t meshRenderStepIndex = fMeshRendererCache.at(MeshRenderStep::HashKey(mesh));
+    return fMeshRenderers[meshRenderStepIndex].renderer.get();
+}
+
+bool RendererProvider::hasMeshRenderStep(const SkMesh& mesh) const {
+    return fMeshRendererCache.find(MeshRenderStep::HashKey(mesh)) != fMeshRendererCache.end();
+}
+
+void RendererProvider::initMeshRenderStep(const Caps* caps, const SkMesh& mesh) {
+    SkASSERT(!this->hasMeshRenderStep(mesh));
+
+    const bool useStorageBuffers = caps->storageBufferSupport();
+    const auto& bindingReq = caps->resourceBindingRequirements();
+    Layout layout = useStorageBuffers ? bindingReq.fStorageBufferLayout
+                                      : bindingReq.fUniformBufferLayout;
+
+    RenderStep::RenderStepID nextDynamicId =
+        static_cast<RenderStep::RenderStepID>(fDynamicRenderStepId);
+    MeshRendererPair pair;
+    pair.renderStep = MeshRenderStep::Make(nextDynamicId, layout, mesh);
+    pair.renderer = std::unique_ptr<Renderer>(
+            new Renderer(std::string("MeshRenderer[MeshRenderStep]"),
+                         DrawTypeFlags::kDrawMesh, pair.renderStep.get()));
+
+    size_t meshRendererIndex = fMeshRenderers.size();
+    fMeshRenderers.emplace_back(std::move(pair));
+
+    fMeshRendererCache.emplace(MeshRenderStep::HashKey(mesh), meshRendererIndex);
+    fMeshRendererLookup.emplace(nextDynamicId, meshRendererIndex);
+    fDynamicRenderStepId++;
 }
 
 } // namespace skgpu::graphite

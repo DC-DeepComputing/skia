@@ -212,6 +212,13 @@ SkColor4f PaintParams::Color4fPrepForDst(SkColor4f srcColor, const SkColorInfo& 
     return result;
 }
 
+PaintParams PaintParams::withPrimitiveColorSpace(SkColorSpace* cs, SkAlphaType at) const {
+    PaintParams copy = *this;
+    copy.fPrimitiveColorSpace = cs;
+    copy.fPrimitiveAlphaType = at;
+    return copy;
+}
+
 #if defined(SK_DEBUG)
 PaintParams PaintParams::MakeOpaque(const PaintParams& paint) {
     PaintParams opaque = paint;
@@ -294,7 +301,8 @@ bool ShadingParams::handlePrimitiveColor(const KeyContext& keyContext) const {
                                   primBlend == SkBlendMode::kDst;
 
     if (canSkipBlendStep) {
-        AddPrimitiveColor(keyContext, fPaint.skipPrimitiveColorXform());
+        AddPrimitiveColor(keyContext, fPaint.skipPrimitiveColorXform(),
+                          fPaint.primitiveColorSpace(), fPaint.primitiveAlphaType());
         return false;
     }
 
@@ -307,7 +315,8 @@ bool ShadingParams::handlePrimitiveColor(const KeyContext& keyContext) const {
             srcIsOpaque = this->addPaintColorToKey(keyContext);
         },
         /* addDstToKey= */ [&] () -> void {
-            AddPrimitiveColor(keyContext, fPaint.skipPrimitiveColorXform());
+            AddPrimitiveColor(keyContext, fPaint.skipPrimitiveColorXform(),
+                              fPaint.primitiveColorSpace(), fPaint.primitiveAlphaType());
         });
     if (primBlend.has_value() && srcIsOpaque) {
         // If the input paint/shader is opaque, the result is only opaque if the primitive blend

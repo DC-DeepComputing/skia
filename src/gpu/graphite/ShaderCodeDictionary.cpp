@@ -737,7 +737,7 @@ void ShaderCodeDictionary::dump(const Caps* caps, UniquePaintParamsID id) const 
 }
 #endif
 
-static SkSLType uniform_type_to_sksl_type(const SkRuntimeEffect::Uniform& u) {
+SkSLType ShaderCodeDictionary::UniformTypeToSkSLType(const SkRuntimeEffect::Uniform& u) {
     using Type = SkRuntimeEffect::Uniform::Type;
     if (u.flags & SkRuntimeEffect::Uniform::kHalfPrecision_Flag) {
         switch (u.type) {
@@ -797,7 +797,7 @@ SkSpan<const Uniform> ShaderCodeDictionary::convertUniforms(const SkRuntimeEffec
         const char* name = this->addTextToArena(u->name);
 
         // Add one Uniform to our array.
-        SkSLType type = uniform_type_to_sksl_type(*u);
+        SkSLType type = ShaderCodeDictionary::UniformTypeToSkSLType(*u);
         return (u->flags & rteUniform::kArray_Flag) ? Uniform(name, type, u->count)
                                                     : Uniform(name, type);
     });

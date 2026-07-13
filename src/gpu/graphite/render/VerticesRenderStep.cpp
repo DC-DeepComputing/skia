@@ -60,10 +60,10 @@ static constexpr SkSpan<const Attribute> kAttributes[4] = {
         kAttributeColorAndTexCoords,
     };
 
-static constexpr Varying kVaryingColor[] =
+static Varying kVaryingColor[] =
         {{"color", SkSLType::kHalf4}};
 
-static constexpr SkSpan<const Varying> kVaryings[2] = {
+static SkSpan<const Varying> kVaryings[2] = {
         /*none*/  {},
         /*color*/ kVaryingColor
     };
@@ -148,7 +148,7 @@ std::string VerticesRenderStep::vertexSkSL() const {
     }
 }
 
-const char* VerticesRenderStep::fragmentColorSkSL() const {
+std::string VerticesRenderStep::fragmentColorSkSL() const {
     if (fHasColor) {
         return "primitiveColor = color;\n";
     } else {
