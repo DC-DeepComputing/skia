@@ -47,6 +47,7 @@
 #include "src/core/SkBlenderBase.h"
 #include "src/core/SkImageFilterTypes.h"  // IWYU pragma: keep
 #include "src/core/SkLatticeIter.h"
+#include "src/core/SkMeshPriv.h"
 #include "src/core/SkPaintPriv.h"
 #include "src/core/SkPathPriv.h"
 #include "src/core/SkRRectPriv.h"
@@ -1004,6 +1005,75 @@ void Device::drawImageLattice(const SkImage* image, const SkCanvas::Lattice& lat
     }
 }
 
+void Device::drawMesh(const SkMesh& mesh, sk_sp<SkBlender> blender, const SkPaint& paint) {
+    // Skip meshes which have effect children since they are not supported yet.
+    if (!mesh.isValid() || mesh.spec()->children().size() > 0) {
+        return;
+    }
+
+    sk_sp<SkMesh::VertexBuffer> vb = mesh.refVertexBuffer();
+    sk_sp<SkMesh::IndexBuffer> ib = mesh.refIndexBuffer();
+    size_t vertexOffset = mesh.vertexOffset();
+    size_t indexOffset = mesh.indexOffset();
+
+    // The caller could modify CPU buffers after the draw so we must copy the data.
+    SkASSERTF(vb, "Vertex buffer should always exist for a valid SkMesh.");
+    if (auto* privVB = static_cast<SkMeshPriv::VB*>(vb.get()); privVB && privVB->peek()) {
+        auto data = SkTAddOffset<const void>(privVB->peek(), vertexOffset);
+        size_t size = mesh.vertexCount() * mesh.spec()->stride();
+        vb = SkMeshPriv::CpuVertexBuffer::Make(data, size);
+        vertexOffset = 0;
+    }
+    if (ib) {
+        if (auto* privIB = static_cast<SkMeshPriv::IB*>(ib.get()); privIB && privIB->peek()) {
+            auto data = SkTAddOffset<const void>(privIB->peek(), indexOffset);
+            size_t size = mesh.indexCount() * sizeof(uint16_t);
+            ib = SkMeshPriv::CpuIndexBuffer::Make(data, size);
+            indexOffset = 0;
+        }
+    }
+
+    SkMesh drawMesh;
+    SkSpan<SkMesh::ChildPtr> children(const_cast<SkMesh::ChildPtr*>(mesh.children().data()),
+                                      mesh.children().size());
+    if (ib) {
+        auto result = SkMesh::MakeIndexed(mesh.refSpec(),
+                                          mesh.mode(),
+                                          std::move(vb),
+                                          mesh.vertexCount(),
+                                          vertexOffset,
+                                          std::move(ib),
+                                          mesh.indexCount(),
+                                          indexOffset,
+                                          mesh.refUniforms(),
+                                          children,
+                                          mesh.bounds());
+        SkASSERT(result.mesh.isValid());
+        drawMesh = std::move(result.mesh);
+    } else {
+        auto result = SkMesh::Make(mesh.refSpec(),
+                                   mesh.mode(),
+                                   std::move(vb),
+                                   mesh.vertexCount(),
+                                   vertexOffset,
+                                   mesh.refUniforms(),
+                                   children,
+                                   mesh.bounds());
+        SkASSERT(result.mesh.isValid());
+        drawMesh = std::move(result.mesh);
+    }
+
+    SkBlender* primitiveBlender =
+        (blender && SkMeshSpecificationPriv::HasColors(*drawMesh.spec())) ? blender.get() : nullptr;
+    this->drawGeometry(this->localToDeviceTransform(),
+                       Geometry(drawMesh),
+                       PaintParams(paint, primitiveBlender)
+                               .withPrimitiveColorSpace(
+                                       SkMeshSpecificationPriv::ColorSpace(*drawMesh.spec()),
+                                       SkMeshSpecificationPriv::AlphaType(*drawMesh.spec())),
+                       DefaultFillStyle());
+}
+
 void Device::drawOval(const SkRect& oval, const SkPaint& paint) {
     if (paint.getPathEffect()) {
         // Dashing requires that the oval path starts on the right side and travels clockwise. This
@@ -1573,6 +1643,16 @@ void Device::drawGeometry(const Transform& localToDevice,
         return;
     }
 
+    // Meshes may need to create a renderer dynamically if one doesn't exist already
+    // for the mesh's specification.
+    if (geometry.isMesh()) {
+        RendererProvider* provider = fRecorder->priv().rendererProvider();
+        const SkMesh& mesh = geometry.mesh();
+        if (!provider->hasMeshRenderStep(mesh)) {
+            provider->initMeshRenderStep(fRecorder->priv().caps(), mesh);
+        }
+    }
+
     // We assume that we will receive a renderer, or a PathAtlas. If it's a PathAtlas, then we
     // assume that the renderer chosen in PathAtlas::addShape() will have single-channel coverage,
     // require AA bounds outsetting, and have a single renderStep. The clip's draw bounds are passed
@@ -1954,6 +2034,8 @@ std::pair<const Renderer*, PathAtlas*> Device::chooseRenderer(const Transform& l
     } else if (geometry.isVertices()) {
         SkVerticesPriv info(geometry.vertices()->priv());
         return {renderers->vertices(info.mode(), info.hasColors(), info.hasTexCoords()), nullptr};
+    } else if (geometry.isMesh()) {
+        return {renderers->mesh(geometry.mesh()), nullptr};
     } else if (geometry.isCoverageMaskShape()) {
         // drawCoverageMask() passes in CoverageMaskShapes that reference a provided texture.
         // The CoverageMask renderer can also be chosen later on if the shape is assigned to
