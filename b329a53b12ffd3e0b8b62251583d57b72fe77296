@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5332b65f_82a1bd73",
+        "filename": "src/gpu/ganesh/GrCaps.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-13T17:52:52Z",
+      "side": 1,
+      "message": "This is hidden by the #if 0, but I think our effective behavior is fine since all the cases you set this to true are also setting `fClearsAreFasterThanLoads` to true, and then the OpsTask does basically the same thing.",
+      "range": {
+        "startLine": 130,
+        "startChar": 15,
+        "endLine": 130,
+        "endChar": 51
+      },
+      "revId": "b329a53b12ffd3e0b8b62251583d57b72fe77296",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
