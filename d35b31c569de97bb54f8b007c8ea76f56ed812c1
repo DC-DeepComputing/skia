@@ -88,6 +88,24 @@
       "parentUuid": "e0156d65_cfe90997",
       "revId": "d35b31c569de97bb54f8b007c8ea76f56ed812c1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5898577_f981bb7d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-14T19:33:07Z",
+      "side": 1,
+      "message": "If we can get a new enough Mesa driver, that\u0027s probably for the best.",
+      "parentUuid": "adb0840f_7bb392fb",
+      "revId": "d35b31c569de97bb54f8b007c8ea76f56ed812c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
