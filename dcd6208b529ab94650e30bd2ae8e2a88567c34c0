@@ -1,0 +1,107 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4dfd15cc_581c13c9",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-07-14T18:13:50Z",
+      "side": 1,
+      "message": "I think the rust reader holds a raw pointer to the stream.  Not sure if it\u0027s truly problematic to destroy them out of order, but it\u0027d be safer to reverse the declaration order and avoid any dangling pointer issues.",
+      "range": {
+        "startLine": 90,
+        "startChar": 0,
+        "endLine": 92,
+        "endChar": 42
+      },
+      "revId": "dcd6208b529ab94650e30bd2ae8e2a88567c34c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84a06f60_cd65f75c",
+        "filename": "experimental/rust_jpeg/encoder/SkJpegRustEncoder.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-07-14T18:13:50Z",
+      "side": 1,
+      "message": "So IIUC `encode_jpeg` always premultiplies by alpha for `kBlendOnBlack`.  But if the source alpha type is `kPremul_SkAlphaType` then the components are already premultiplied and we end up applying alpha twice.  Maybe we should ignore/discard `kBlendOnBlack` if the source is already premultiplied?  The legacy impl seems to have similar logic:\n\nhttps://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/encode/SkJpegEncoderImpl.cpp;drc\u003dfc46d066b5b61503e660c9a25a8689f094ee9b04;l\u003d113",
+      "range": {
+        "startLine": 54,
+        "startChar": 0,
+        "endLine": 62,
+        "endChar": 5
+      },
+      "revId": "dcd6208b529ab94650e30bd2ae8e2a88567c34c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25eaae6c_fe327385",
+        "filename": "experimental/rust_jpeg/ffi/FFI.rs",
+        "patchSetId": 15
+      },
+      "lineNbr": 451,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-07-14T18:13:50Z",
+      "side": 1,
+      "message": "Any reason to bump these to `usize::MAX`?  I think jpeg only allows up to 64K, and most implementations impose even lower limits.",
+      "range": {
+        "startLine": 451,
+        "startChar": 27,
+        "endLine": 451,
+        "endChar": 37
+      },
+      "revId": "dcd6208b529ab94650e30bd2ae8e2a88567c34c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b99ceb7d_a3e7db78",
+        "filename": "experimental/rust_jpeg/ffi/jpeg_metadata.rs",
+        "patchSetId": 15
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-07-14T18:13:50Z",
+      "side": 1,
+      "message": "The legacy version (`read_metadata`) seems to perform more segment validations: duplicate rejection, index checking, all segments present, etc.",
+      "revId": "dcd6208b529ab94650e30bd2ae8e2a88567c34c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0b9344e_79bb9620",
+        "filename": "experimental/rust_jpeg/ffi/jpeg_segment_scan.rs",
+        "patchSetId": 15
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-07-14T18:13:50Z",
+      "side": 1,
+      "message": "Should this be checked arithmetic?",
+      "revId": "dcd6208b529ab94650e30bd2ae8e2a88567c34c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
