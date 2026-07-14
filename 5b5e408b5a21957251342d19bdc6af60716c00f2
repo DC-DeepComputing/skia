@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "864a0199_a9076bf6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-07-14T17:56:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "855ccff7_0cd2c0d2",
+      "revId": "5b5e408b5a21957251342d19bdc6af60716c00f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2fdf9766_f3bafb54",
@@ -48,6 +66,30 @@
       "writtenOn": "2026-07-14T15:57:06Z",
       "side": 1,
       "message": "documentation: reduce_add efficiently adds up all the items in the vector by using simd to do log(n) adds instead of n additions, ala mergesort.",
+      "range": {
+        "startLine": 984,
+        "startChar": 9,
+        "endLine": 984,
+        "endChar": 19
+      },
+      "revId": "5b5e408b5a21957251342d19bdc6af60716c00f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "95d1594c_c6bcea55",
+        "filename": "src/core/SkVx.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 984,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-07-14T17:56:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2fdf9766_f3bafb54",
       "range": {
         "startLine": 984,
         "startChar": 9,
