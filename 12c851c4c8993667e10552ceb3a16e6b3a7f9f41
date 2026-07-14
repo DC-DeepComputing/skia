@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "11038f8e_1705721c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-14T20:05:26Z",
+      "side": 1,
+      "message": "This is a pretty significant new capability for Graphite to start mixing compute and rasterization, so it\u0027d be good to outline what\u0027s going on here and the general plan for how it might be used.",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 46
+      },
+      "revId": "12c851c4c8993667e10552ceb3a16e6b3a7f9f41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "bd75410d_9c221b19",
@@ -14,6 +37,213 @@
       "writtenOn": "2026-07-13T15:01:07Z",
       "side": 1,
       "message": "PTAL",
+      "revId": "12c851c4c8993667e10552ceb3a16e6b3a7f9f41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b3ec6e5_d834824f",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-14T20:05:26Z",
+      "side": 1,
+      "message": "fVertexStorageSupport \u0026\u0026 fStorageBufferSupport?",
+      "range": {
+        "startLine": 282,
+        "startChar": 47,
+        "endLine": 282,
+        "endChar": 52
+      },
+      "revId": "12c851c4c8993667e10552ceb3a16e6b3a7f9f41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51feb9e5_36f2d12e",
+        "filename": "src/gpu/graphite/DrawWriter.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-14T20:05:26Z",
+      "side": 1,
+      "message": "Could we avoid using DrawWriter entirely by allowing access to the BufferManager in RenderStep so that it can call getMappedVertexStorageBuffer directly? This would then end up having the code look more like how SSBOs and UBOs are handled.\n\nAlthough in the case of the tessellation stroke render step, that\u0027s really what is happening here, it\u0027s bringing back the concept of a separate renderstep binding (albeit with visibility restricted to the vertex shader). We could get basically the same benefits by moving all of the shared path properties to the uniform declarations of the tesselate stroke render step (when SSBOs are enabled) with simpler code.  \n\nThis makes me think we should focus the API for sidecar vertex storage for two situations:\n1. something that is 1:1 parallel to the rest of the appended data that will be filled in via compute, but is otherwise in lockstep with the CPU data and the flushed draw calls.\n2. something that would work even when we don\u0027t have SSBO support so we could restructure the render step implementation to take advantage of it w/o having to define two whole modes of operation (e.g. fall back to pseudo instancing or a way to manipulate the advance of the sidecar buffer, possibly with extra flushes to make it work like a per-Graphite-draw set of attributes).",
+      "range": {
+        "startLine": 153,
+        "startChar": 0,
+        "endLine": 157,
+        "endChar": 5
+      },
+      "revId": "12c851c4c8993667e10552ceb3a16e6b3a7f9f41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5514a905_a58805e7",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-14T20:05:26Z",
+      "side": 1,
+      "message": "Are we anticipating that this is called with the same count as whatever `Appender` is used by the RenderStep? Or are they only completely parallel such that they can be indexed entirely separately from each other?\n\nLooking ahead at the tessellation change at least, it looks like they are meant to be separately appended to (vs. a one-to-one pairing between the CPU instance and the to-be-computed storage). I fleshed out some thoughts around this in another comment after I kind of answered my question here.",
+      "range": {
+        "startLine": 238,
+        "startChar": 0,
+        "endLine": 238,
+        "endChar": 75
+      },
+      "revId": "12c851c4c8993667e10552ceb3a16e6b3a7f9f41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46cc8294_594eacdc",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-14T20:05:26Z",
+      "side": 1,
+      "message": "Can we combine these? And say return 0 if you\u0027re not using a vertex storage buffer?",
+      "range": {
+        "startLine": 155,
+        "startChar": 0,
+        "endLine": 155,
+        "endChar": 102
+      },
+      "revId": "12c851c4c8993667e10552ceb3a16e6b3a7f9f41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d18f731_46e3aa5a",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-14T20:05:26Z",
+      "side": 1,
+      "message": "nit: length",
+      "range": {
+        "startLine": 341,
+        "startChar": 0,
+        "endLine": 341,
+        "endChar": 103
+      },
+      "revId": "12c851c4c8993667e10552ceb3a16e6b3a7f9f41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6be71c02_2fdff31f",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-14T20:05:26Z",
+      "side": 1,
+      "message": "We still need 4 but this comment is out of date 😊",
+      "range": {
+        "startLine": 344,
+        "startChar": 46,
+        "endLine": 344,
+        "endChar": 85
+      },
+      "revId": "12c851c4c8993667e10552ceb3a16e6b3a7f9f41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac107e91_965c3043",
+        "filename": "src/gpu/graphite/dawn/DawnSharedContext.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-14T20:05:26Z",
+      "side": 1,
+      "message": "I think this needs the same Uniform type fallback when it\u0027s not enabled that the gradient buffer binding has.",
+      "range": {
+        "startLine": 143,
+        "startChar": 0,
+        "endLine": 143,
+        "endChar": 70
+      },
+      "revId": "12c851c4c8993667e10552ceb3a16e6b3a7f9f41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10c7b9ae_8cd1d1bf",
+        "filename": "src/gpu/graphite/mtl/MtlCaps.mm",
+        "patchSetId": 4
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-14T20:05:26Z",
+      "side": 1,
+      "message": "nit: length",
+      "range": {
+        "startLine": 111,
+        "startChar": 0,
+        "endLine": 111,
+        "endChar": 102
+      },
+      "revId": "12c851c4c8993667e10552ceb3a16e6b3a7f9f41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd8e023f_e4454b76",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1443,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-14T20:05:26Z",
+      "side": 1,
+      "message": "nit: length",
+      "range": {
+        "startLine": 1443,
+        "startChar": 0,
+        "endLine": 1443,
+        "endChar": 101
+      },
       "revId": "12c851c4c8993667e10552ceb3a16e6b3a7f9f41",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
