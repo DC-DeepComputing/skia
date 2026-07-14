@@ -1192,7 +1192,8 @@ prepare_for_direct_mask_drawing(StrikeForGPU* strike,
                                 const SkMatrix& positionMatrix,
                                 SkZip<const SkGlyphID, const SkPoint> source,
                                 SkZip<SkPackedGlyphID, SkPoint, SkMask::Format> acceptedBuffer,
-                                SkZip<SkGlyphID, SkPoint> rejectedBuffer) {
+                                SkZip<SkGlyphID, SkPoint> rejectedBuffer,
+                                skglyph::ActionType actionType) {
     const SkIPoint mask = strike->roundingSpec().ignorePositionFieldMask;
     const SkPoint halfSampleFreq = strike->roundingSpec().halfAxisSampleFreq;
 
@@ -1212,8 +1213,8 @@ prepare_for_direct_mask_drawing(StrikeForGPU* strike,
 
         const SkPoint mappedPos = positionMatrixWithRounding.mapPoint(pos);
         const SkPackedGlyphID packedID{glyphID, mappedPos, mask};
-        switch (const SkGlyphDigest digest = strike->digestFor(skglyph::kDirectMask, packedID);
-                digest.actionFor(skglyph::kDirectMask)) {
+        switch (const SkGlyphDigest digest = strike->digestFor(actionType, packedID);
+                digest.actionFor(actionType)) {
             case GlyphAction::kAccept: {
                 const SkPoint roundedPos{SkScalarFloorToScalar(mappedPos.x()),
                                          SkScalarFloorToScalar(mappedPos.y())};
@@ -1503,8 +1504,12 @@ SubRunContainerOwner SubRunContainer::MakeInAlloc(
                 auto acceptedBuffer = SkMakeZip(acceptedPackedGlyphIDs,
                                                 acceptedPositions,
                                                 acceptedFormats);
+                const skglyph::ActionType actionType = subRunControl->useBilerp()
+                        ? skglyph::kDirectMaskBilerp
+                        : skglyph::kDirectMask;
                 auto [accepted, rejected, creationBounds] = prepare_for_direct_mask_drawing(
-                        strike.get(), positionMatrix, source, acceptedBuffer, rejectedBuffer);
+                        strike.get(), positionMatrix, source, acceptedBuffer, rejectedBuffer,
+                        actionType);
                 source = rejected;
 
                 if (creationBehavior == kAddSubRuns && !accepted.empty()) {
@@ -1603,9 +1608,10 @@ SubRunContainerOwner SubRunContainer::MakeInAlloc(
                 creationMatrix = SkMatrix::Scale(perspectiveFactor, perspectiveFactor);
             }
 
-            // Reduce to make a one pixel border for the bilerp padding.
-            static const constexpr SkScalar kMaxBilerpAtlasDimension =
-                    SkGlyphDigest::kSkSideTooBigForAtlas - 2;
+            // Reduce to make a border for atlas padding if bilerp is enabled.
+            const SkScalar maxAtlasDimension = subRunControl->useBilerp()
+                    ? SkGlyphDigest::kSkSideTooBigForAtlas - 2
+                    : SkGlyphDigest::kSkSideTooBigForAtlas;
 
             // Get the raw glyph IDs to simulate device drawing to figure the maximum device
             // dimension.
@@ -1630,14 +1636,13 @@ SubRunContainerOwner SubRunContainer::MakeInAlloc(
 
             // Condition the creationMatrix so that glyphs fit in the atlas.
             for (SkScalar maxDimension = maxGlyphDimension(creationMatrix);
-                 kMaxBilerpAtlasDimension < maxDimension;
+                 maxAtlasDimension < maxDimension;
                  maxDimension = maxGlyphDimension(creationMatrix))
             {
-                // The SkScalerContext has a limit of 65536 maximum dimension.
-                // reductionFactor will always be < 1 because
-                // maxDimension > kMaxBilerpAtlasDimension, and because maxDimension will always
-                // be an integer the reduction factor will always be at most 254 / 255.
-                SkScalar reductionFactor = kMaxBilerpAtlasDimension / maxDimension;
+                // The SkScalerContext has a limit of 65536 maximum dimension. reductionFactor will
+                // always be < 1 because maxDimension > maxAtlasDimension, and because maxDimension
+                // will always be an integer the reduction factor will always be at most 254 / 255.
+                SkScalar reductionFactor = maxAtlasDimension / maxDimension;
                 creationMatrix.postScale(reductionFactor, reductionFactor);
             }
 
