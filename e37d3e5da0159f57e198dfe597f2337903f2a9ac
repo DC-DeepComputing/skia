@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c61481f_56dd94ee",
+        "filename": "src/sksl/sksl_gpu.sksl",
+        "patchSetId": 20
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-14T19:05:24Z",
+      "side": 1,
+      "message": "This was a good find and makes it consistent with the _luminance handling that was updated to use $guarded_divide and $kMinNormalHalf in https://skia-review.git.corp.google.com/c/skia/+/895197.\n\nSince this impacts both Ganesh and Graphite (they share access to these sksl functions), we should lift this change out to an earlier patch",
+      "range": {
+        "startLine": 317,
+        "startChar": 0,
+        "endLine": 321,
+        "endChar": 48
+      },
+      "revId": "e37d3e5da0159f57e198dfe597f2337903f2a9ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
