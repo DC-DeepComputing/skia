@@ -315,7 +315,8 @@ $pure half3 $blend_set_color_saturation(half3 color, half3 satColor) {
     half mn = min(min(color.r, color.g), color.b);
     half mx = max(max(color.r, color.g), color.b);
 
-    return (mx > mn) ? ((color - mn) * $blend_color_saturation(satColor)) / (mx - mn)
+    return (mx > mn) ? ((color - mn) * $blend_color_saturation(satColor)) /
+                            ((mx - mn) + $kMinNormalHalf)
                      : half3(0);
 }
 
