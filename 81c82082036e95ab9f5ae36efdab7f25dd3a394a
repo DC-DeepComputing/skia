@@ -16,6 +16,24 @@
       "message": "Tentative LGTM - I kicked off the G3 Canary so we can see if we break anything internally",
       "revId": "81c82082036e95ab9f5ae36efdab7f25dd3a394a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "765da33a_0d0f7ea9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-07-14T14:29:17Z",
+      "side": 1,
+      "message": "Looks like we do have some issues - do we need to update the g3 rewrite rules?\n\n```\nERROR: rust/bmp/BUILD:38:13: no such package \u0027@@[unknown repo \u0027crates\u0027 requested from @@]//\u0027: no such package \u0027@@[unknown repo \u0027crates\u0027 requested from @@]//\u0027: Accessing external repositories is not supported in google3. and referenced by \u0027rust/bmp:ffi_rs\u0027\n```",
+      "parentUuid": "18772590_d2d6f691",
+      "revId": "81c82082036e95ab9f5ae36efdab7f25dd3a394a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
