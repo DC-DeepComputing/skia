@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04692011_cc24d4d5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-07-14T15:03:39Z",
+      "side": 1,
+      "message": "I would LGTM this twice if I could 🎉",
+      "revId": "0231e2c32c380f1f7549bc38119e93d3da3b6617",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
