@@ -34,6 +34,24 @@
       "parentUuid": "fca56d7b_90cb9e4d",
       "revId": "d35b31c569de97bb54f8b007c8ea76f56ed812c1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "de8142fe_698849bb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-14T17:46:57Z",
+      "side": 1,
+      "message": "New failure:\n```\nWarning: loader_get_json: Failed to open JSON file /b/s/w/ir/mesa_intel_driver_linux/intel_icd.x86_64.json\nWarning: vkCreateInstance: Found no drivers!\nWarning: vkCreateInstance failed with VK_ERROR_INCOMPATIBLE_DRIVER\n```\nI don\u0027t know enough to determine if that means we got past the previous point of failure with the debug layers looking for a GPU, or if we failed even earlier.",
+      "parentUuid": "dc304252_e700ec67",
+      "revId": "d35b31c569de97bb54f8b007c8ea76f56ed812c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
