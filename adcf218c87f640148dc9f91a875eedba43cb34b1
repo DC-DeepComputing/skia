@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f032b80e_9e9e1712",
+        "filename": "src/core/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 572,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-14T13:24:20Z",
+      "side": 1,
+      "message": "Do we really want to add the lazy code to skia_core? Could it be it\u0027s on thing that depends on core? I only ask because no G3 clients needed the lazy code - I want to be intentional on what we include in \"core\".",
+      "range": {
+        "startLine": 572,
+        "startChar": 20,
+        "endLine": 572,
+        "endChar": 29
+      },
+      "revId": "adcf218c87f640148dc9f91a875eedba43cb34b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0cae3318_c4c95f6b",
+        "filename": "tests/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-14T13:24:20Z",
+      "side": 1,
+      "message": "Please add to the commit message (and perhaps even in line) why we decided to make this a filegroup and not a cc_library. That was an intentional choice and it would be good to make it clear *why* that is.",
+      "range": {
+        "startLine": 62,
+        "startChar": 0,
+        "endLine": 62,
+        "endChar": 9
+      },
+      "revId": "adcf218c87f640148dc9f91a875eedba43cb34b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b011e9e9_2ef62f8a",
+        "filename": "tools/ganesh/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-14T13:24:20Z",
+      "side": 1,
+      "message": "What depends on this?",
+      "range": {
+        "startLine": 36,
+        "startChar": 12,
+        "endLine": 36,
+        "endChar": 28
+      },
+      "revId": "adcf218c87f640148dc9f91a875eedba43cb34b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
