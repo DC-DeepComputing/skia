@@ -52,6 +52,7 @@ split_srcs_and_hdrs(
 SEMI_PUBLIC_HEADERS = [
     "Sk4px.h",
     "SkAAClip.h",
+    "SkScopedSafetyChecksExclusion.h",
     "SkATrace.h",
     "SkAdvancedTypefaceMetrics.h",
     "SkAnnotationKeys.h",
@@ -601,6 +602,7 @@ skia_cc_library(
         "//modules/skcms",
         "//src/opts",
         "//src/partition_alloc:raw_ptr",
+        "//src/partition_alloc:safety_checks",
         "//src/sksl:generated_sksl",
         "@skia_user_config//:user_config",
     ] + select({

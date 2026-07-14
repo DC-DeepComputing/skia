@@ -11,9 +11,12 @@ if (skia_use_partition_alloc && defined(skia_partition_alloc_dir)) {
 
 source_set("raw_ptr") {
   public = [
+    "ScopedSafetyChecksExclusion.h",
     "raw_ptr.h",
     "raw_ptr_exclusion.h",
     "raw_ref.h",
+    "safety_checks.h",
+    "scoped_safety_checks_exclusion.h",
   ]
   if (skia_use_partition_alloc && defined(skia_partition_alloc_dir)) {
     public_deps = [ "${skia_partition_alloc_dir}:raw_ptr" ]
