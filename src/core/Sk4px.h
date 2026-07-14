@@ -12,6 +12,14 @@
 #include "src/core/SkColorData.h"
 #include "src/core/SkVx.h"
 
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunknown-pragmas"
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#pragma clang diagnostic pop
+#endif
+
 // 1, 2 or 4 SkPMColors, generally vectorized.
 class Sk4px {
 public:

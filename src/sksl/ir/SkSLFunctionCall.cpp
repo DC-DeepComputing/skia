@@ -48,6 +48,14 @@
 #include <optional>
 #include <string_view>
 
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunknown-pragmas"
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#pragma clang diagnostic pop
+#endif
+
 namespace SkSL {
 
 using IntrinsicArguments = std::array<const Expression*, 3>;

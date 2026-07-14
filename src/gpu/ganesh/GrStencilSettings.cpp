@@ -4,6 +4,7 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+
 #include "src/gpu/ganesh/GrStencilSettings.h"
 
 #include "include/private/SkDebug.h"
@@ -12,6 +13,14 @@
 #include <algorithm>
 #include <cstddef>
 #include <cstring>
+
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunknown-pragmas"
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#pragma clang diagnostic pop
+#endif
 
 constexpr const GrUserStencilSettings gUnused(
     GrUserStencilSettings::StaticInit<

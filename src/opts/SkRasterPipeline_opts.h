@@ -112,6 +112,14 @@ using NoCtx = const void*;
     #include <immintrin.h>
 #endif
 
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunknown-pragmas"
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#pragma clang diagnostic pop
+#endif
+
 // Notes:
 // * rcp_fast and rcp_precise both produce a reciprocal, but rcp_fast is an estimate with at least
 //   12 bits of precision while rcp_precise should be accurate for float size. For ARM rcp_precise

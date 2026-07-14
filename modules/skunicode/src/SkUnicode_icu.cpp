@@ -4,6 +4,7 @@
 * Use of this source code is governed by a BSD-style license that can be
 * found in the LICENSE file.
 */
+
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
@@ -41,6 +42,14 @@
 #if defined(SK_USING_THIRD_PARTY_ICU) && defined(SK_BUILD_FOR_WIN)
 #include "SkLoadICU.h"
 #include "include/private/SkOnce.h"
+#endif
+
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunknown-pragmas"
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#pragma clang diagnostic pop
 #endif
 
 using namespace skia_private;

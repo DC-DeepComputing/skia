@@ -10,6 +10,14 @@
 #include "include/core/SkRect.h"
 #include "src/core/SkSafeMath.h"
 
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunknown-pragmas"
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#pragma clang diagnostic pop
+#endif
+
 bool SkWritePixelsRec::trim(int dstWidth, int dstHeight) {
     // fInfo.minRowBytes() returns 0 if the size doesn't fit in `size_t`.
     const size_t minRowBytes = fInfo.minRowBytes();
