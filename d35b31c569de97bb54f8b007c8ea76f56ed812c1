@@ -52,6 +52,24 @@
       "parentUuid": "dc304252_e700ec67",
       "revId": "d35b31c569de97bb54f8b007c8ea76f56ed812c1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0156d65_cfe90997",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-14T17:50:54Z",
+      "side": 1,
+      "message": "I suspect that even a 2022 package won\u0027t work, these GPUs were released in 2024. I found these instructions: https://dgpu-docs.intel.com/installation-guides/installing-packages-from-the-intel-ppa.html",
+      "parentUuid": "de8142fe_698849bb",
+      "revId": "d35b31c569de97bb54f8b007c8ea76f56ed812c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
