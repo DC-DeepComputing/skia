@@ -122,6 +122,30 @@
       },
       "revId": "5b5e408b5a21957251342d19bdc6af60716c00f2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ce70be0_71f9ac2a",
+        "filename": "src/core/SkVx.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 984,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-07-14T20:53:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a66f4cf_38aafae3",
+      "range": {
+        "startLine": 984,
+        "startChar": 9,
+        "endLine": 984,
+        "endChar": 19
+      },
+      "revId": "5b5e408b5a21957251342d19bdc6af60716c00f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
