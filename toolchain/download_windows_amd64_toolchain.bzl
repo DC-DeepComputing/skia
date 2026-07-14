@@ -39,6 +39,17 @@ def _download_windows_amd64_toolchain_impl(ctx):
     ctx.symlink("bin/lld-link.exe", "bin/ld.lld.exe")
     ctx.symlink("bin/lld-link.exe", "bin/lld.exe")
 
+    # Since lld-link.exe requires "/lib" to be the very first physical command-line
+    # argument to boot in static archiver mode, we create a tiny helper batch file
+    # inside the toolchain bin/ folder. This executes lld-link.exe with "/lib" prepended.
+    ctx.file(
+        "bin/llvm-lib.bat",
+        content = """@echo off
+"%~dp0lld-link.exe" /lib %*
+""",
+        executable = True,
+    )
+
     # Create a BUILD.bazel file that makes the files necessary for compiling,
     # linking and creating archive files visible to Bazel.
     # The smaller the globs are, the more performant the sandboxed builds will be.
@@ -56,6 +67,7 @@ filegroup(
     name = "archive_files",
     srcs = [
         "bin/lld-link.exe",
+        "bin/llvm-lib.bat",
     ],
     visibility = ["//visibility:public"],
 )
@@ -94,8 +106,8 @@ filegroup(
         executable = False,
     )
 
-    # Download the win_toolchain CIPD package.
-    # We extract it to a subfolder to prevent CIPD metadata file collisions with the clang_win package.
+    # Download the win_toolchain CIPD package. It's important to extract this to a subfolder to
+    # avoid collisions with prevent collisions the contents of win_clang_pkg.
     ctx.download_and_extract(
         url = cipd_download_urls(win_toolchain_pkg, win_toolchain_sha256, win_toolchain_tag),
         output = "win_toolchain",
@@ -125,5 +137,5 @@ WIN_SDK_LIB = "win_sdk/Lib/" + WIN_SDK_VERSION
 download_windows_amd64_toolchain = repository_rule(
     implementation = _download_windows_amd64_toolchain_impl,
     attrs = {},
-    doc = "Downloads clang and MSVC to build Skia on Windows with.",
+    doc = "Downloads clang and the MSVC libraries which are necessary to build Skia.",
 )
