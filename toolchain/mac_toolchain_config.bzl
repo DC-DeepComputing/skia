@@ -41,7 +41,7 @@ def _mac_toolchain_info(ctx):
     external_toolchain = "external/" + clang_repo_name
     xcode_macsdk_symlink = external_toolchain + "/symlinks/xcode/MacSDK"
 
-    action_configs = _make_action_configs()
+    action_configs = _make_action_configs(external_toolchain)
     features = []
     features += _make_default_flags(ctx, external_toolchain, xcode_macsdk_symlink)
     features += make_layering_check_features()
@@ -112,23 +112,18 @@ provide_mac_toolchain_config = rule(
     implementation = _mac_toolchain_info,
 )
 
-def _make_action_configs():
+def _make_action_configs(external_toolchain):
     """
     This function sets up the tools needed to perform the various compile/link actions.
 
-    Bazel normally restricts us to referring to (and therefore running) executables/scripts
-    that are in this directory (That is EXEC_ROOT/toolchain). However, the executables we want
-    to run are brought in via WORKSPACE.bazel and are located in EXEC_ROOT/external/clang....
-    Therefore, we make use of "trampoline scripts" that will call the binaries from the
-    toolchain directory.
-
-    These action_configs also let us dynamically specify arguments from the Bazel
-    environment if necessary (see cpp_link_static_library_action).
+    By pointing directly to the clang and llvm-ar binaries inside the external toolchain
+    repository, we bypass the need for shell script trampolines, increasing build
+    performance and keeping the design uniform across Linux, Mac, and Windows.
     """
 
     # https://cs.opensource.google/bazel/bazel/+/master:tools/cpp/cc_toolchain_config_lib.bzl;l=435;drc=3b9e6f201a9a3465720aad8712ab7bcdeaf2e5da
-    clang_tool = tool(path = "mac_trampolines/clang_trampoline_mac.sh")
-    ar_tool = tool(path = "mac_trampolines/ar_trampoline_mac.sh")
+    clang_tool = tool(path = "../" + external_toolchain + "/bin/clang")
+    ar_tool = tool(path = "../" + external_toolchain + "/bin/llvm-ar")
 
     # https://cs.opensource.google/bazel/bazel/+/master:tools/cpp/cc_toolchain_config_lib.bzl;l=488;drc=3b9e6f201a9a3465720aad8712ab7bcdeaf2e5da
     assemble_action = action_config(
