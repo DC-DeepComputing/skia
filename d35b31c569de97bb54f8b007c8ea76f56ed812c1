@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fca56d7b_90cb9e4d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-14T13:45:53Z",
+      "side": 1,
+      "message": "How hard is it to update the drivers and/or Vulkan debug layers on this device?\n\nThe tests failing are graphite+vulkan, ganesh+vulkan, and dawn+vulkan, all with `Failed to detect any valid GPUs in the current config`. This suggests that either Vulkan isn\u0027t supported at all (and then we should just drop those jobs), or something needs to be updated to get it running.",
+      "revId": "d35b31c569de97bb54f8b007c8ea76f56ed812c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
