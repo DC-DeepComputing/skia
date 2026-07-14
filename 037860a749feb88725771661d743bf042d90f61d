@@ -16,6 +16,24 @@
       "message": "So this is logically where we begin using a layer only stopping system? \n\nAnd the logic is that the shading draw cannot match with its parent depth-only draw, so treating the stop layer inclusively is sufficient? \n\nAnd if we had a stencil draw affected by a depth only, it would naturally intersect and stop traversal?",
       "revId": "037860a749feb88725771661d743bf042d90f61d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1e2df0a_ac604e78",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-14T19:24:30Z",
+      "side": 1,
+      "message": "You\u0027re absolutely right, this the beginning of just stopping by Layer (a follow up furthers that to stopping by compressed painters order). The justification for allowing it to be inclusive at the stop layer is:\n\n 1. We are only ever providing a stop layer for shading draws (the clip stack always passes in null to search as deep as possible). If we reach the stop layer during the search\u0027s pilot draw it\u0027ll be a shading draw that is then appended to the tail of the layer\u0027s binding lists (so will be after the clip\u0027s draw in the layer).\n 2. If it also used the stencil buffer, we include that in what we\u0027re checking for for all the render steps of the draw so that the pilot draw would ensure there\u0027s no stencil overlap. If we did overlap, then its forced to a later Layer.\n \nHypothetically, if there was a clip draw that did not modify the stencil buffer, but a draw that used the stencil for path rendering, its non-shading stencil steps could get pushed in front of the clip draw. However, this should be fine because the stencil settings are such that even if there\u0027s a depth failure in the later shading step, it will zero out the stencil. This is equivalent to a multi-step shading draw having its stencil step come before a color-only occluding draw (unaffected by the stencil bits), and then the final shading step fails the depth test due to the occluder (but still needs to reset the stencil buffer).",
+      "parentUuid": "591735f5_51a06043",
+      "revId": "037860a749feb88725771661d743bf042d90f61d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
