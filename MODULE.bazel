@@ -145,12 +145,26 @@ crate.annotation(
 )
 crate.spec(
     default_features = False,
-    features = ["bmp"],
+    features = [
+        "bmp",
+    ],
     # Using image crate with streaming/resumable BMP decoder API.
     # rows_decoded() returns RowsDecoded enum for orientation detection.
     git = "https://github.com/image-rs/image.git",
     package = "image",
     rev = "5d0418d0eff747c829d52738c092581312f775c9",
+)
+crate.spec(
+    package = "jpeg-encoder",
+    version = "=0.6.0",
+)
+crate.spec(
+    package = "zune-jpeg",
+    version = "=0.5.13",
+)
+crate.spec(
+    package = "zune-core",
+    version = "=0.5.1",
 )
 crate.spec(
     package = "moxcms",
