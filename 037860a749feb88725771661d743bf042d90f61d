@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "591735f5_51a06043",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-07-14T14:33:18Z",
+      "side": 1,
+      "message": "So this is logically where we begin using a layer only stopping system? \n\nAnd the logic is that the shading draw cannot match with its parent depth-only draw, so treating the stop layer inclusively is sufficient? \n\nAnd if we had a stencil draw affected by a depth only, it would naturally intersect and stop traversal?",
+      "revId": "037860a749feb88725771661d743bf042d90f61d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
