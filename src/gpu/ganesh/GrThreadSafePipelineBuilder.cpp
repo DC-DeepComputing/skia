@@ -59,3 +59,11 @@ void GrThreadSafePipelineBuilder::Stats::dumpKeyValuePairs(TArray<SkString>* key
 
 #endif // defined(GPU_TEST_UTILS)
 #endif // GR_GPU_STATS
+
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunknown-pragmas"
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#pragma clang diagnostic pop
+#endif

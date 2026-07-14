@@ -4,6 +4,7 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+
 #include "include/utils/SkParse.h"
 
 #include "include/core/SkColor.h"
@@ -14,6 +15,14 @@
 #include <cstdint>
 #include <cstring>
 #include <iterator>
+
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunknown-pragmas"
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#pragma clang diagnostic pop
+#endif
 
 static constexpr const char* gColorNames[] = {
     "aliceblue",

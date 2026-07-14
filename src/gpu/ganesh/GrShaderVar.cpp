@@ -9,6 +9,14 @@
 
 #include "src/core/SkSLTypeShared.h"
 
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunknown-pragmas"
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#pragma clang diagnostic pop
+#endif
+
 static const char* type_modifier_string(GrShaderVar::TypeModifier t) {
     switch (t) {
         case GrShaderVar::TypeModifier::None: return "";

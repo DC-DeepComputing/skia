@@ -18,6 +18,14 @@
 #include <type_traits>
 #include <utility>
 
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunknown-pragmas"
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#pragma clang diagnostic pop
+#endif
+
 namespace skia_private {
 
 // Before trying to use THashTable, look below to see if THashMap or THashSet works for you.
