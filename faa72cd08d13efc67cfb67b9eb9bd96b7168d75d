@@ -33,6 +33,47 @@
       "message": "BTW, this fixes a real bug in the code (unaccounted padding for billinear filtering), just not the one it was intended for.",
       "revId": "faa72cd08d13efc67cfb67b9eb9bd96b7168d75d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "227e53c6_a1638f98",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-14T13:05:20Z",
+      "side": 1,
+      "message": "Is the real issue basically if you\u0027re operating in the mode where direct masks can be transformed, the high-level code would think that a 255x255 glyph would fit in the atlas, but then after adding the padding, there\u0027d be no room in any of the plots since it would exceed their max size?",
+      "parentUuid": "0e69ac43_714f0030",
+      "revId": "faa72cd08d13efc67cfb67b9eb9bd96b7168d75d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "930fb472_babfd627",
+        "filename": "src/core/SkGlyph.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-14T13:05:20Z",
+      "side": 1,
+      "message": "Can we instead switch the caller\u0027s logic to use fitsInAtlasInterpolated() when we should be treating direct masks as transformed masks?",
+      "range": {
+        "startLine": 354,
+        "startChar": 63,
+        "endLine": 354,
+        "endChar": 64
+      },
+      "revId": "faa72cd08d13efc67cfb67b9eb9bd96b7168d75d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
