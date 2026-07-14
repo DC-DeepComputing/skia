@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a8bb4e0_3e3774dc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-14T13:12:32Z",
+      "side": 1,
+      "message": "So when I do `make -C infra/bots train`, these warnings will show up? What about for other Skia devs, will they have permissions to do so also? (I think yes, but just checking)",
+      "revId": "f0766c62927e4a01c5175edfc01bd697feeacc83",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93ca0c4a_29be0dd0",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 365,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-14T13:12:32Z",
+      "side": 1,
+      "message": "nit: could we get a brief comment here?",
+      "range": {
+        "startLine": 365,
+        "startChar": 5,
+        "endLine": 365,
+        "endChar": 19
+      },
+      "revId": "f0766c62927e4a01c5175edfc01bd697feeacc83",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
