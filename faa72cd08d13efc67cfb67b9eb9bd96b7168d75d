@@ -71,6 +71,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f0ce352_2e52626a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-07-14T17:19:20Z",
+      "side": 1,
+      "message": "It turned out to be quite difficult to pipe the caps down to SkGlyph, so I added a new mask type, kDirectMaskBilerp, which I think is clearer than adding a side car for if the subrun was created with bilerp.\n\nI\u0027ve also added a test for graphite as well",
+      "parentUuid": "81c884ee_00fe3376",
+      "revId": "faa72cd08d13efc67cfb67b9eb9bd96b7168d75d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "930fb472_babfd627",
