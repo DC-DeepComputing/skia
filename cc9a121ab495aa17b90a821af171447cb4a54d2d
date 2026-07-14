@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "68d16f34_38dcdfc8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-14T18:01:08Z",
+      "side": 1,
+      "message": "Can you include some psuedo-assembly to show the \"without this function\" and a \"with this function\"? As is, the commit message seems to imply the reader can assemble code in their heads (which I cannot).",
+      "range": {
+        "startLine": 9,
+        "startChar": 163,
+        "endLine": 9,
+        "endChar": 167
+      },
+      "revId": "cc9a121ab495aa17b90a821af171447cb4a54d2d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "d000a6e4_5937cd22",

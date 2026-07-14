@@ -98,6 +98,30 @@
       },
       "revId": "5b5e408b5a21957251342d19bdc6af60716c00f2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a66f4cf_38aafae3",
+        "filename": "src/core/SkVx.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 984,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-14T18:01:08Z",
+      "side": 1,
+      "message": "I\u0027d like a less jargony \"what does this do\" sentence in addition to the \"how does it do\" since the name wasn\u0027t immediately clear to me. In general, let\u0027s try to reduce jargon from the comments where possible, especially in places where the code is quite complex. I\u0027d rather be a tiny bit more verbose and explanatory than terse and jargony.",
+      "parentUuid": "95d1594c_c6bcea55",
+      "range": {
+        "startLine": 984,
+        "startChar": 9,
+        "endLine": 984,
+        "endChar": 19
+      },
+      "revId": "5b5e408b5a21957251342d19bdc6af60716c00f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
