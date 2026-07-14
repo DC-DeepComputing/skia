@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a211ecf_030e2400",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-14T16:53:15Z",
+      "side": 1,
+      "message": "Assuming this isn\u0027t a priority, I\u0027d like to hold off on this until Rob is back so we can discuss how it might be generalized into the higher-level async compile work Rob is picking back up.",
+      "revId": "8b8b7b8373bc760cb091a0a81b3f536c1ec5dc49",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
