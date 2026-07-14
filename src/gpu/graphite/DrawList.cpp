@@ -15,6 +15,7 @@
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/Renderer.h"
 #include "src/gpu/graphite/geom/Geometry.h"
+#include "src/partition_alloc/ScopedSafetyChecksExclusion.h"
 
 namespace skgpu::graphite {
 
@@ -246,6 +247,7 @@ std::unique_ptr<DrawPass> DrawList::snapDrawPass(Recorder* recorder,
 }
 
 void DrawList::reset(LoadOp op, SkColor4f clearColor) {
+    base::ScopedSafetyChecksExclusion exclusion;
     fDraws.reset();
     fSortKeys.clear();
     DrawListBase::reset(op, clearColor);
