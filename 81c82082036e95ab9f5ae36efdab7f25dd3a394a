@@ -34,6 +34,24 @@
       "parentUuid": "18772590_d2d6f691",
       "revId": "81c82082036e95ab9f5ae36efdab7f25dd3a394a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "496802c6_a060c7ac",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-14T14:42:51Z",
+      "side": 1,
+      "message": "Yes, we\u0027ll have to update them or expand their rewrite scope.",
+      "parentUuid": "765da33a_0d0f7ea9",
+      "revId": "81c82082036e95ab9f5ae36efdab7f25dd3a394a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
