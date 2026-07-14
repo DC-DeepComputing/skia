@@ -96,10 +96,10 @@
     "cwd": "[START_DIR]/skia",
     "env": {
       "CHROME_HEADLESS": "1",
-      "LD_LIBRARY_PATH": "[START_DIR]/mesa_intel_driver_linux_22",
-      "LIBGL_DRIVERS_PATH": "[START_DIR]/mesa_intel_driver_linux_22",
+      "LD_LIBRARY_PATH": "[START_DIR]/mesa_intel_driver_linux_24",
+      "LIBGL_DRIVERS_PATH": "[START_DIR]/mesa_intel_driver_linux_24",
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]",
-      "VK_ICD_FILENAMES": "[START_DIR]/mesa_intel_driver_linux_22/intel_icd.x86_64.json"
+      "VK_ICD_FILENAMES": "[START_DIR]/mesa_intel_driver_linux_24/intel_icd.x86_64.json"
     },
     "name": "symbolized dm"
   },

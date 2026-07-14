@@ -137,8 +137,9 @@ class DefaultFlavor(object):
       if (self.m.vars.builder_cfg.get('cpu_or_gpu', '') == 'GPU'
           and 'Intel' in self.m.vars.builder_cfg.get('cpu_or_gpu_value', '')):
         dri_path = workdir.joinpath('mesa_intel_driver_linux')
-        if ('IntelIrisXe' in self.m.vars.builder_cfg.get('cpu_or_gpu_value', '')):
-          dri_path = workdir.joinpath('mesa_intel_driver_linux_22')
+        if ('IntelIrisXe' in self.m.vars.builder_cfg.get('cpu_or_gpu_value', '') or
+            'IntelArc' in self.m.vars.builder_cfg.get('cpu_or_gpu_value', '')):
+          dri_path = workdir.joinpath('mesa_intel_driver_linux_24')
         ld_library_path.append(dri_path)
         env['LIBGL_DRIVERS_PATH'] = str(dri_path)
         env['VK_ICD_FILENAMES'] = str(dri_path.joinpath('intel_icd.x86_64.json'))
