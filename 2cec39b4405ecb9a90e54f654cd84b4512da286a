@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4d37b2ae_70dab5b0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-07-14T10:08:14Z",
+      "side": 1,
+      "message": "Good points. In both cases we will require changes in zune-jpeg (which are already in progress). My idea is to complete that in a follow up CL in which we update required patches to zune-jpeg and then make use of new APIs to support incremental decoding and scanline consumption of decoded image.",
+      "parentUuid": "6bde025f_e4770ba9",
+      "revId": "2cec39b4405ecb9a90e54f654cd84b4512da286a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dc6fc93d_ff0f7a7b",
         "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
         "patchSetId": 13
@@ -78,6 +96,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "00bfdbf3_f8987fce",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-07-14T10:08:14Z",
+      "side": 1,
+      "message": "Done. I removed the special-case `IncompleteInput` branch and now route all non-success metadata results through `MapDecodingResult(metadataResult)`.",
+      "parentUuid": "dc6fc93d_ff0f7a7b",
+      "range": {
+        "startLine": 105,
+        "startChar": 0,
+        "endLine": 107,
+        "endChar": 27
+      },
+      "revId": "2cec39b4405ecb9a90e54f654cd84b4512da286a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "d8608d77_1ac1a880",
         "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
         "patchSetId": 13
@@ -112,6 +154,24 @@
       "writtenOn": "2026-05-12T17:29:40Z",
       "side": 1,
       "message": "nit: line break",
+      "revId": "2cec39b4405ecb9a90e54f654cd84b4512da286a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a70b2a14_8c125bd7",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-07-14T10:08:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8e7c3981_79e0c0a6",
       "revId": "2cec39b4405ecb9a90e54f654cd84b4512da286a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -157,6 +217,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3fbedf8_ae1e85d7",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-07-14T10:08:14Z",
+      "side": 1,
+      "message": "Good catch. The MPF loop now uses `mpIdx \u003c\u003d mpfCount`, so it includes the final MPF entry instead of stopping one entry early.",
+      "parentUuid": "6c9f6ed2_4439ea34",
+      "range": {
+        "startLine": 336,
+        "startChar": 29,
+        "endLine": 336,
+        "endChar": 45
+      },
+      "revId": "2cec39b4405ecb9a90e54f654cd84b4512da286a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "54f1ce4c_f85e7595",
@@ -170,6 +254,24 @@
       "writtenOn": "2026-05-12T17:29:40Z",
       "side": 1,
       "message": "nit: if we move this before the first return, we could drop the #else branch.",
+      "revId": "2cec39b4405ecb9a90e54f654cd84b4512da286a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3b2f2db_0fe1101f",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 417,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-07-14T10:08:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "54f1ce4c_f85e7595",
       "revId": "2cec39b4405ecb9a90e54f654cd84b4512da286a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -215,6 +317,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e2d3b12_1d252535",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 590,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-07-14T10:08:14Z",
+      "side": 1,
+      "message": "Done. Simplified the reset condition to `result !\u003d kIncompleteInput`, which preserves state only while more input is expected.",
+      "parentUuid": "eaa689fb_d9a99fb9",
+      "range": {
+        "startLine": 590,
+        "startChar": 8,
+        "endLine": 590,
+        "endChar": 29
+      },
+      "revId": "2cec39b4405ecb9a90e54f654cd84b4512da286a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d66856c3_f485cb70",
@@ -228,6 +354,30 @@
       "writtenOn": "2026-05-12T17:29:40Z",
       "side": 1,
       "message": "nit: `SkToU32(SkTPin(options.fQuality, 0, 100))`",
+      "range": {
+        "startLine": 62,
+        "startChar": 29,
+        "endLine": 63,
+        "endChar": 54
+      },
+      "revId": "2cec39b4405ecb9a90e54f654cd84b4512da286a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "63e15354_85811f10",
+        "filename": "experimental/rust_jpeg/encoder/SkJpegRustEncoder.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-07-14T10:08:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d66856c3_f485cb70",
       "range": {
         "startLine": 62,
         "startChar": 29,
