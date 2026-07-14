@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "18772590_d2d6f691",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-14T13:25:43Z",
+      "side": 1,
+      "message": "Tentative LGTM - I kicked off the G3 Canary so we can see if we break anything internally",
+      "revId": "81c82082036e95ab9f5ae36efdab7f25dd3a394a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
