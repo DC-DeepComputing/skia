@@ -16,6 +16,24 @@
       "message": "How hard is it to update the drivers and/or Vulkan debug layers on this device?\n\nThe tests failing are graphite+vulkan, ganesh+vulkan, and dawn+vulkan, all with `Failed to detect any valid GPUs in the current config`. This suggests that either Vulkan isn\u0027t supported at all (and then we should just drop those jobs), or something needs to be updated to get it running.",
       "revId": "d35b31c569de97bb54f8b007c8ea76f56ed812c1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc304252_e700ec67",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-07-14T14:25:44Z",
+      "side": 1,
+      "message": "Interestingly, we\u0027re providing the Mesa driver via CIPD.  That package hasn\u0027t been updated since 2020 but somehow it\u0027s working elsewhere.  I swapped it to the newer package we\u0027re using for IntelIrisXe (from 2022) in PS6.  We\u0027ll see how that works, but it\u0027s probably a good idea to update.",
+      "parentUuid": "fca56d7b_90cb9e4d",
+      "revId": "d35b31c569de97bb54f8b007c8ea76f56ed812c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
