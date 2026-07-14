@@ -1,0 +1,176 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e5e5c5e_b7daa979",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 18
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-07-14T14:17:07Z",
+      "side": 1,
+      "message": "There are more backend factories to add here\n\nganesh/gl\nganesh/d3d\nganesh/mock\ngraphite/dawn",
+      "revId": "7d7f65b65f1c77a0730a621b0d89dad7b996b800",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8096da24_aadd95ee",
+        "filename": "include/gpu/ganesh/mtl/GrMtlDirectContext.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-07-14T14:17:07Z",
+      "side": 1,
+      "message": "The naming we\u0027ve gone for other similar namespaces for factories is just adding an \"s\" to the object. For example, SkSurfaces and SkImages. So for here I would just name this SkContexts.\n\nOn a moot side not SkUnifiedContext as more a description of the project to unify contexts and less a description of the final state. Like if we were starting from scratch there is no reason to call out the context is unified because it was never not unified.",
+      "range": {
+        "startLine": 30,
+        "startChar": 10,
+        "endLine": 30,
+        "endChar": 26
+      },
+      "revId": "7d7f65b65f1c77a0730a621b0d89dad7b996b800",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b3feac1_f8c3e956",
+        "filename": "src/core/SkContext.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-07-14T14:17:07Z",
+      "side": 1,
+      "message": "I\u0027m surprised the header actually needs all the includes here. Taking a quick scan it looks like it probably only needs a couple of them. There is a bazel tool you can run to check for iwyu which may help narrow this down.",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 37
+      },
+      "revId": "7d7f65b65f1c77a0730a621b0d89dad7b996b800",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8a2f21b_4dc94393",
+        "filename": "src/core/SkContext.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-07-14T14:17:07Z",
+      "side": 1,
+      "message": "We don\u0027t need to wrap the class itself in a namespace. At least that\u0027s not the model we have for all other public \"Sk\" classes",
+      "range": {
+        "startLine": 59,
+        "startChar": 1,
+        "endLine": 59,
+        "endChar": 28
+      },
+      "revId": "7d7f65b65f1c77a0730a621b0d89dad7b996b800",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4c89c6e_04111d3a",
+        "filename": "src/core/SkContext.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-07-14T14:17:07Z",
+      "side": 1,
+      "message": "It is fine to have this factory in this file vs its own. But it should follow the same pattern as other backends. I.e. pull it out of the class and put it as its own factory function inside a namespace",
+      "range": {
+        "startLine": 72,
+        "startChar": 4,
+        "endLine": 72,
+        "endChar": 72
+      },
+      "revId": "7d7f65b65f1c77a0730a621b0d89dad7b996b800",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "285ad9bd_ca3e66ca",
+        "filename": "src/core/SkContext.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-07-14T14:17:07Z",
+      "side": 1,
+      "message": "Which of these getters/setters are actually needed to be public vs which are just used internally in Skia? Like are there clients that need to actually call `getFontCache` or `getResourceCache`? Those seem like things that only Skia should even know about let alone access.",
+      "range": {
+        "startLine": 74,
+        "startChar": 4,
+        "endLine": 102,
+        "endChar": 5
+      },
+      "revId": "7d7f65b65f1c77a0730a621b0d89dad7b996b800",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02bc6338_d38818e6",
+        "filename": "src/core/SkContext.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-07-14T14:17:07Z",
+      "side": 1,
+      "message": "These should all be part of the SkSharedContext I believe.",
+      "range": {
+        "startLine": 112,
+        "startChar": 0,
+        "endLine": 118,
+        "endChar": 0
+      },
+      "revId": "7d7f65b65f1c77a0730a621b0d89dad7b996b800",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c846e32_386c37c2",
+        "filename": "src/core/SkContextPriv.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-07-14T14:17:07Z",
+      "side": 1,
+      "message": "I don\u0027t think I would add this class yet. As of now there is no use for it and it is causing you to add a lot of forward declarations and includes that you don\u0027t even know if you\u0027ll need yet.",
+      "revId": "7d7f65b65f1c77a0730a621b0d89dad7b996b800",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
