@@ -1067,6 +1067,7 @@ func (b *TaskBuilder) defaultSwarmDimensions() {
 				d["gpu"] = gpu
 			} else if b.IsLinux() {
 				gpu, ok := map[string]string{
+					"IntelArcB570": "8086:e20c-25.2.8",
 					// Intel drivers come from CIPD, so no need to specify the version here.
 					"IntelHD405": "8086:22b1",
 					// The version is not set on these as of Nov 5 2025
@@ -1670,7 +1671,7 @@ func (b *TaskBuilder) commonTestPerfAssets() {
 			b.asset("linux_vulkan_sdk")
 		}
 		if b.MatchGpu("Intel") {
-			if b.MatchGpu("IrisXe") {
+			if b.MatchGpu("IrisXe", "IntelArc") {
 				b.asset("mesa_intel_driver_linux_22")
 			} else {
 				// Use this for legacy drivers that were culled in v22 of Mesa.
