@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "382d5cec_2ebed42d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-07-14T13:21:46Z",
+      "side": 1,
+      "message": "Yeah, I think anyone should be able to read from the public pool on this server, but the code is intentionally written so that any failure will be logged and not block successful completion of the regular gen_tasks process.",
+      "parentUuid": "4a8bb4e0_3e3774dc",
+      "revId": "f0766c62927e4a01c5175edfc01bd697feeacc83",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "93ca0c4a_29be0dd0",
@@ -31,6 +49,30 @@
       "writtenOn": "2026-07-14T13:12:32Z",
       "side": 1,
       "message": "nit: could we get a brief comment here?",
+      "range": {
+        "startLine": 365,
+        "startChar": 5,
+        "endLine": 365,
+        "endChar": 19
+      },
+      "revId": "f0766c62927e4a01c5175edfc01bd697feeacc83",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "985e180c_abe43abf",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 365,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-07-14T13:21:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "93ca0c4a_29be0dd0",
       "range": {
         "startLine": 365,
         "startChar": 5,
