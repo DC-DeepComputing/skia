@@ -618,6 +618,7 @@ uint32_t init_actions(const SkGlyph& glyph) {
     constexpr uint32_t kDrop = SkTo<uint32_t>(GlyphAction::kDrop);
     constexpr uint32_t kAllDrop =
             kDrop << kDirectMask |
+            kDrop << kDirectMaskBilerp |
             kDrop << kDirectMaskCPU |
             kDrop << kMask |
             kDrop << kSDFT |
@@ -648,6 +649,12 @@ void SkGlyphDigest::setActionFor(skglyph::ActionType actionType,
         switch (actionType) {
             case kDirectMask: {
                 if (this->fitsInAtlasDirect()) {
+                    action = GlyphAction::kAccept;
+                }
+                break;
+            }
+            case kDirectMaskBilerp: {
+                if (this->fitsInAtlasInterpolated()) {
                     action = GlyphAction::kAccept;
                 }
                 break;
