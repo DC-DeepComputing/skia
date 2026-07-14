@@ -18,6 +18,10 @@
 #include <optional>
 #include <utility>
 
+#ifdef interface
+#undef interface
+#endif
+
 namespace skgpu {
 
 class VulkanExtensions;
