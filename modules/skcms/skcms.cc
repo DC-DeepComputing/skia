@@ -33,6 +33,11 @@
     #endif
 #endif
 
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 using namespace skcms_private;
 
 // A potential vulnerability exists where a large CLUT can cause an integer

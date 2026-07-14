@@ -5,13 +5,17 @@
  * found in the LICENSE file.
  */
 
-
 #include "src/core/SkTSearch.h"
 
 #include "include/private/SkMalloc.h"
 
 #include <cstring>
 #include <ctype.h>
+
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
 
 static inline const char* index_into_base(const char*const* base, int index,
                                           size_t elemSize)

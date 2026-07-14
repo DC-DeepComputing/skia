@@ -15,6 +15,11 @@
 #include <cmath>
 #include <cstdint>
 
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 struct SkIPoint;
 
 /** SkIVector provides an alternative name for SkIPoint. SkIVector and SkIPoint

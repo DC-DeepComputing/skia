@@ -1,10 +1,16 @@
 // Copyright 2018 Google LLC
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
+
 #ifndef SkUUID_DEFINED
 #define SkUUID_DEFINED
 
 #include <cstdint>
 #include <cstring>
+
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
 
 struct SkUUID {
     uint8_t fData[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};

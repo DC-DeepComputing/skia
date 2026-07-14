@@ -11,6 +11,11 @@
 
 #include <cmath>
 
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 // The value when we can stop expanding the filter. The spec implies that 3% is acceptable, but
 // we just use 1%.
 static constexpr double kGoodEnough = 1.0 / 100.0;

@@ -5,6 +5,11 @@
  * found in the LICENSE file.
  */
 
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 #include "src/core/SkColorData.h"
 #include "src/core/SkSwizzlePriv.h"
 #include "src/core/SkUtils.h"

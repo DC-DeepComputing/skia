@@ -22,6 +22,11 @@
 #include <utility>
 #include <vector>
 
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 class SkStreamAsset;
 
 /**

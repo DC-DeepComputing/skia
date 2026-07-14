@@ -16,6 +16,11 @@
 #include <limits.h>
 #endif
 
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 // returns `value * pow(base, e)`, assuming `e` is positive.
 static double pow_by_squaring(double value, double base, int e) {
     // https://en.wikipedia.org/wiki/Exponentiation_by_squaring

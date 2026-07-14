@@ -13,6 +13,11 @@
 
 #include <cstring>
 
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 static inline void SkRectMemcpy(void* dst, size_t dstRB, const void* src, size_t srcRB,
                                 size_t trimRowBytes, int rowCount) {
     SkASSERT(trimRowBytes <= dstRB);

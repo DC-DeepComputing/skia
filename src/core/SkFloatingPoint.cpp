@@ -12,6 +12,11 @@
 #include <cstring>
 #include <limits>
 
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 // Return the positive magnitude of a double.
 // * normalized - given 1.bbb...bbb x 2^e return 2^e.
 // * subnormal - return 0.

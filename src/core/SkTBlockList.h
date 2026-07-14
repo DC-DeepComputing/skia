@@ -18,6 +18,11 @@
 #include <type_traits>
 #include <utility>
 
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 // Forward declarations for the iterators used by SkTBlockList
 using IndexFn = int (*)(const SkBlockAllocator::Block*);
 using NextFn = int (*)(const SkBlockAllocator::Block*, int);

@@ -8,6 +8,11 @@
 #include <optional>
 #include <vector>
 
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 namespace bentleyottmann {
 std::optional<std::vector<Crossing>> brute_force_crossings(SkSpan<const Segment> segments) {
     std::vector<Crossing> answer;

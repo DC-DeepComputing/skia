@@ -34,6 +34,11 @@
     #include <sys/auxv.h>
 #endif
 
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 namespace {
 #if defined(SK_CPU_X86)
     // Vendor String https://www.sandpile.org/x86/cpuid.htm#leaf_0000_0000h

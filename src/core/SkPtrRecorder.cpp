@@ -4,10 +4,16 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+
 #include "src/core/SkPtrRecorder.h"
 
 #include "include/private/SkAssert.h"
 #include "src/core/SkTSearch.h"
+
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
 
 void SkPtrSet::reset() {
     Pair* p = fList.begin();

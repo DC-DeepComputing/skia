@@ -16,6 +16,11 @@
 
 #include <limits>
 
+#if defined(UNSAFE_BUFFERS_BUILD) && defined(__clang__)
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 /**
  * Represents the filtering and tile modes used to access a texture.
  */
