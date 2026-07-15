@@ -1631,6 +1631,11 @@ func (b *TaskBuilder) dmFlags(internalHardwareLabel string) {
 		skip(ALL, "test", ALL, "SurfaceClear_Gpu")
 	}
 
+	if b.IsWindows() && b.GPU("IntelArcB570") && b.ExtraConfig("ANGLE") {
+		// TODO: skbug.com/????
+		skip(ALL, "test", ALL, "BigImageTest_Ganesh")
+	}
+
 	if b.GPU("PowerVRGX6250") {
 		match = append(match, "~gradients_view_perspective_nodither") //skbug.com/40038203
 	}
