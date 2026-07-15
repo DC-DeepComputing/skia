@@ -54,6 +54,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4a23f5cd_5ef0a0c6",
+        "filename": "src/gpu/graphite/DrawList.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-15T15:12:58Z",
+      "side": 1,
+      "message": "This feels like a somewhat arbitrary place to exclude; resetting a DrawList doesn\u0027t happen that often in a frame, so I\u0027d only want to exclude these checks if we actually saw that it was making a noticeable performance impact.",
+      "range": {
+        "startLine": 249,
+        "startChar": 0,
+        "endLine": 249,
+        "endChar": 55
+      },
+      "revId": "c76393f8936f7bae8f1ac93157c5d0151e97d8d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4c699cd9_8921d65d",
         "filename": "src/gpu/graphite/DrawList.cpp",
         "patchSetId": 1
@@ -65,6 +88,30 @@
       "writtenOn": "2026-07-15T09:20:19Z",
       "side": 1,
       "message": "Do you happen to know how many functions in Skia would require this exclusion?",
+      "range": {
+        "startLine": 250,
+        "startChar": 0,
+        "endLine": 250,
+        "endChar": 48
+      },
+      "revId": "c76393f8936f7bae8f1ac93157c5d0151e97d8d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e4e6089_4a6a6f0d",
+        "filename": "src/gpu/graphite/DrawList.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-15T15:12:58Z",
+      "side": 1,
+      "message": "What sort of analysis do these deallocation checks actually perform? That would help me understand how often we\u0027d want to skip them. My gut feeling is that most places we\u0027d want to skip them, we\u0027d also be excluding the use of raw_ptr for performance already. Would that have the same effect?",
+      "parentUuid": "4c699cd9_8921d65d",
       "range": {
         "startLine": 250,
         "startChar": 0,
