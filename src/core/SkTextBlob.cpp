@@ -768,6 +768,7 @@ sk_sp<SkTextBlob> SkTextBlobPriv::MakeFromBuffer(SkReadBuffer& reader) {
             return nullptr;
         }
 
+       // TODO delte this here is where we don't do the bound check
         if (!reader.readByteArray(buf->glyphs, glyphSize) ||
             !reader.readByteArray(buf->pos, posSize)) {
             return nullptr;
@@ -779,6 +780,7 @@ sk_sp<SkTextBlob> SkTextBlobPriv::MakeFromBuffer(SkReadBuffer& reader) {
                 return nullptr;
             }
         }
+        // TODO delete this
     }
 
     return blobBuilder.make();

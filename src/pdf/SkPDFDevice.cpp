@@ -1028,6 +1028,7 @@ void SkPDFDevice::internalDrawGlyphRun(
             bool toUnicode = false;
             const char* textPtr = c.fUtf8Text;
             const char* textEnd = c.fUtf8Text + c.fTextByteLength;
+            // TODO delete this this is where the span is consumed and we read outof bounds
             SkUnichar clusterUnichar = SkUTF::NextUTF8(&textPtr, textEnd);
             // ToUnicode can only handle one glyph in a cluster.
             if (clusterUnichar >= 0 && c.fGlyphCount == 1) {
