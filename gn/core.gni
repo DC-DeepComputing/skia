@@ -9,6 +9,7 @@
 #   //include/private/chromium/BUILD.bazel
 #   //src/android/BUILD.bazel
 #   //src/capture/BUILD.bazel
+#   //src/chromium/BUILD.bazel
 #   //src/core/BUILD.bazel
 #   //src/encode/BUILD.bazel
 #   //src/image/BUILD.bazel
@@ -128,6 +129,7 @@ skia_core_public = [
 #  //include/private/chromium:shared_private_hdrs
 #  //src/capture:capture_hdrs
 #  //src/capture:capture_srcs
+#  //src/chromium:srcs
 #  //src/core:core_priv_hdrs
 #  //src/core:core_priv_srcs
 #  //src/core:core_srcs
@@ -195,6 +197,7 @@ skia_core_sources = [
   "$_src/capture/SkCaptureCanvas.h",
   "$_src/capture/SkCaptureManager.cpp",
   "$_src/capture/SkCaptureManager.h",
+  "$_src/chromium/SkScopedSafelyChecksExclusion.h",
   "$_src/core/Sk4px.h",
   "$_src/core/SkAAClip.cpp",
   "$_src/core/SkAAClip.h",
@@ -534,6 +537,7 @@ skia_core_sources = [
   "$_src/core/SkSafeMath.cpp",
   "$_src/core/SkSafeMath.h",
   "$_src/core/SkSafeRange.h",
+  "$_src/core/SkSafetyChecks.h",
   "$_src/core/SkSamplingPriv.h",
   "$_src/core/SkScalar.cpp",
   "$_src/core/SkScaleToSides.h",
