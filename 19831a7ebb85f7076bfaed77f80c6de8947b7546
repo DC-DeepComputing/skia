@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a8bbeb4_cbc240fc",
+        "filename": "MODULE.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-07-15T13:41:29Z",
+      "side": 1,
+      "message": "Looks like the presubmit check is complaining about the ordering of this list item.",
+      "range": {
+        "startLine": 272,
+        "startChar": 0,
+        "endLine": 272,
+        "endChar": 21
+      },
+      "revId": "19831a7ebb85f7076bfaed77f80c6de8947b7546",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
