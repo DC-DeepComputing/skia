@@ -120,6 +120,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b6124da_edd86aa9",
+        "filename": "src/pathops/SkPathOpsCubic.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-15T13:40:01Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "881a6898_32bd0cec",
+      "range": {
+        "startLine": 155,
+        "startChar": 51,
+        "endLine": 155,
+        "endChar": 68
+      },
+      "revId": "65c4f64fb5b2fb3d21e5e6a8b3834671c890e478",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0e98c1ba_b05d0b1d",
