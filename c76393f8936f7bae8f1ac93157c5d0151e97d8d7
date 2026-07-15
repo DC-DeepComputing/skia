@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "21d1b8f9_77176b5d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-07-15T09:20:19Z",
+      "side": 1,
+      "message": "Can you explain why this patch is useful?",
+      "revId": "c76393f8936f7bae8f1ac93157c5d0151e97d8d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "81a1f396_102f41f6",
@@ -14,6 +31,161 @@
       "writtenOn": "2026-07-15T00:01:35Z",
       "side": 1,
       "message": "Hey there. I\u0027m pretty sure this is not how you\u0027d like this to work ultimately. Can you please take a look and suggest what to change? Thanks!",
+      "revId": "c76393f8936f7bae8f1ac93157c5d0151e97d8d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "806a8c10_a7315224",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-07-15T09:20:19Z",
+      "side": 1,
+      "message": "Thanks Gregg!",
+      "revId": "c76393f8936f7bae8f1ac93157c5d0151e97d8d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c699cd9_8921d65d",
+        "filename": "src/gpu/graphite/DrawList.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-07-15T09:20:19Z",
+      "side": 1,
+      "message": "Do you happen to know how many functions in Skia would require this exclusion?",
+      "range": {
+        "startLine": 250,
+        "startChar": 0,
+        "endLine": 250,
+        "endChar": 48
+      },
+      "revId": "c76393f8936f7bae8f1ac93157c5d0151e97d8d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6fa4f654_86aad32d",
+        "filename": "src/partition_alloc/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-07-15T09:20:19Z",
+      "side": 1,
+      "message": "This feels out of place. That\u0027s the target for \"raw_ptr\". Could you please move these out of \"raw_ptr\"?",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 26
+      },
+      "revId": "c76393f8936f7bae8f1ac93157c5d0151e97d8d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb2d99ac_e2a2dea2",
+        "filename": "src/partition_alloc/BUILD.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-07-15T09:20:19Z",
+      "side": 1,
+      "message": "This feels out of place. That\u0027s the target for \"raw_ptr\". Could you please move these out of \"raw_ptr\"?",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 39
+      },
+      "revId": "c76393f8936f7bae8f1ac93157c5d0151e97d8d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e0a8ff3_8ea4e1ba",
+        "filename": "src/partition_alloc/ScopedSafetyChecksExclusion.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-07-15T09:20:19Z",
+      "side": 1,
+      "message": "Why wouldn\u0027t it be defined?",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 24
+      },
+      "revId": "c76393f8936f7bae8f1ac93157c5d0151e97d8d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a6eb027_1ff95b8f",
+        "filename": "src/partition_alloc/ScopedSafetyChecksExclusion.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-07-15T09:20:19Z",
+      "side": 1,
+      "message": "Using \"has_include\" looks fragile to me. Someone it going to move files in chrome, and then we would silently break things without knowing. I would avoid using it.",
+      "range": {
+        "startLine": 15,
+        "startChar": 6,
+        "endLine": 15,
+        "endChar": 58
+      },
+      "revId": "c76393f8936f7bae8f1ac93157c5d0151e97d8d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bfc870fd_522457ec",
+        "filename": "src/partition_alloc/ScopedSafetyChecksExclusion.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-07-15T09:20:19Z",
+      "side": 1,
+      "message": "I observe the partition_alloc/safety_checks.h file doesn\u0027t exist. Is this expected?",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 6
+      },
       "revId": "c76393f8936f7bae8f1ac93157c5d0151e97d8d7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
