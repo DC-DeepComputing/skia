@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7da2c91c_c163e060",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4497568
+      },
+      "writtenOn": "2026-07-15T13:40:49Z",
+      "side": 1,
+      "message": "PTAL. I chose reviewers based on blame, but feel free to redirect to more appropriate reviewers if needed. Hopefully trivial tho, but famous last words 😊",
+      "revId": "7b6ec6eeabfabd7a5149f2b785f1722bcef47aec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
