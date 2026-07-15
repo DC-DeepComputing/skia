@@ -366,6 +366,30 @@
       },
       "revId": "c76393f8936f7bae8f1ac93157c5d0151e97d8d7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f3170f0_5443f9bb",
+        "filename": "src/partition_alloc/ScopedSafetyChecksExclusion.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 18514
+      },
+      "writtenOn": "2026-07-15T18:34:58Z",
+      "side": 1,
+      "message": "Sorry, this does not exist. I must have clicked \"Save\" on my comment by accident. That said, The question here is what should happen? I\u0027m not a Skia committer. Should I make some skia define? SK_USE_SAFETY_CHECKS which will be on in chrome and off everywhere else? Something else?",
+      "parentUuid": "1f98b090_c4f2ebfd",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 6
+      },
+      "revId": "c76393f8936f7bae8f1ac93157c5d0151e97d8d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
