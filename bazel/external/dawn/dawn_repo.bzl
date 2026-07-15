@@ -27,6 +27,7 @@ def _dawn_repo_impl(repo_ctx):
     # repo_ctx.execute do not automatically register file content dependencies, which would
     # cause changes to the python script to be ignored by Bazel's cache.
     repo_ctx.watch(repo_ctx.attr.generator_py)
+    repo_ctx.watch(repo_ctx.attr.build_file)
 
     # Resolve the python paths for jinja2 and markupsafe so the generator can run
     # with the Bazel-cached dependencies without requiring any system/host pip installs.

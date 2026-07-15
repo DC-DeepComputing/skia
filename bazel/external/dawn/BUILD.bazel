@@ -482,6 +482,13 @@ cc_library(
         "@platforms//os:ios": DAWN_METAL_DEFINES,
         "@platforms//os:windows": [],  # TODO(kjlubick)
     }),
+    linkopts = select({
+        "@platforms//os:windows": [
+            "dxguid.lib",
+            "onecore.lib",
+        ],
+        "//conditions:default": [],
+    }),
     deps = [
         ":dawn_common",
         ":dawn_native_headers",
