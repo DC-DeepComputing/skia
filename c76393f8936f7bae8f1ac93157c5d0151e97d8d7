@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9950366_3be2a316",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 18514
+      },
+      "writtenOn": "2026-07-15T17:07:28Z",
+      "side": 1,
+      "message": "Like it says in my first comment, I\u0027m expecting big changes so I didn\u0027t write a commit message yet because I assumed your feedback would end up being an entire re-write",
+      "parentUuid": "21d1b8f9_77176b5d",
+      "revId": "c76393f8936f7bae8f1ac93157c5d0151e97d8d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "81a1f396_102f41f6",
@@ -48,6 +66,23 @@
       "writtenOn": "2026-07-15T09:20:19Z",
       "side": 1,
       "message": "Thanks Gregg!",
+      "revId": "c76393f8936f7bae8f1ac93157c5d0151e97d8d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d925fc9_a6324aa2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18514
+      },
+      "writtenOn": "2026-07-15T17:07:28Z",
+      "side": 1,
+      "message": "Hey there. Please read this CL as a goal, not a request to merge.\n\nRather than review the code, read it\u0027s intent and tell me how you\u0027d like this to implemented.\n\nThank you! 🙏",
       "revId": "c76393f8936f7bae8f1ac93157c5d0151e97d8d7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -124,6 +159,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ec28f730_9edcded7",
+        "filename": "src/gpu/graphite/DrawList.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 18514
+      },
+      "writtenOn": "2026-07-15T17:07:28Z",
+      "side": 1,
+      "message": "\u003e What sort of analysis do these deallocation checks actually perform?\n\nI\u0027m not sure what you\u0027re asking. MiracleObject does 2 things (1) after an object is destroyed its memory is not freed immediately (quarantine) (2) the memory is immediately cleared to 0xCD (zapping). The apparent hope is this will catch UAF bugs.\n\nI\u0027ve been ordered to ship MiracleObject in the GPU process. To do so I apparently have to add code that slows things down without having anything slow down in certain benchmarks. Skia, ANGLE, and Dawn all run on the same thread. I tried disabling all of Skia at a higher level but too many calls come through at that level and the exclusion check itself ends up affecting the benchmarks.\n\nIn MotionMark\u0027s \"Design\" benchmark, this is the #1 hotspot. It gets called ~1000000 times and frees a 0.5 terabytes of data all of which gets \"zapped\"\n\n\u003e  My gut feeling is that most places we\u0027d want to skip them, we\u0027d also be excluding the use of raw_ptr for performance already. Would that have the same effect?\n\nI don\u0027t know what this means (what does raw_ptr do here?). This code is going through PartitionAlloc and is checked whether or not to do this \"quarantine/zapping\" dance. Since the order is for MiracleObject to run in the entire process, it\u0027s running here.",
+      "parentUuid": "4e4e6089_4a6a6f0d",
+      "range": {
+        "startLine": 250,
+        "startChar": 0,
+        "endLine": 250,
+        "endChar": 48
+      },
+      "revId": "c76393f8936f7bae8f1ac93157c5d0151e97d8d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6fa4f654_86aad32d",
         "filename": "src/partition_alloc/BUILD.bazel",
         "patchSetId": 1
@@ -147,6 +206,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "06a50cb2_03d2ecf9",
+        "filename": "src/partition_alloc/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 18514
+      },
+      "writtenOn": "2026-07-15T17:07:28Z",
+      "side": 1,
+      "message": "Sure!, Where should I move them.",
+      "parentUuid": "6fa4f654_86aad32d",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 26
+      },
+      "revId": "c76393f8936f7bae8f1ac93157c5d0151e97d8d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fb2d99ac_e2a2dea2",
         "filename": "src/partition_alloc/BUILD.gn",
         "patchSetId": 1
@@ -158,6 +241,30 @@
       "writtenOn": "2026-07-15T09:20:19Z",
       "side": 1,
       "message": "This feels out of place. That\u0027s the target for \"raw_ptr\". Could you please move these out of \"raw_ptr\"?",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 39
+      },
+      "revId": "c76393f8936f7bae8f1ac93157c5d0151e97d8d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d8d130d_bfa623af",
+        "filename": "src/partition_alloc/BUILD.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 18514
+      },
+      "writtenOn": "2026-07-15T17:07:28Z",
+      "side": 1,
+      "message": "Sure, where should I move them?",
+      "parentUuid": "fb2d99ac_e2a2dea2",
       "range": {
         "startLine": 14,
         "startChar": 0,
@@ -227,6 +334,30 @@
       "writtenOn": "2026-07-15T09:20:19Z",
       "side": 1,
       "message": "I observe the partition_alloc/safety_checks.h file doesn\u0027t exist. Is this expected?",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 6
+      },
+      "revId": "c76393f8936f7bae8f1ac93157c5d0151e97d8d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f98b090_c4f2ebfd",
+        "filename": "src/partition_alloc/ScopedSafetyChecksExclusion.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 18514
+      },
+      "writtenOn": "2026-07-15T17:07:28Z",
+      "side": 1,
+      "message": "it exist",
+      "parentUuid": "bfc870fd_522457ec",
       "range": {
         "startLine": 13,
         "startChar": 0,
