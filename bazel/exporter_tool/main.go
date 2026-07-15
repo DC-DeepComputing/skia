@@ -146,6 +146,7 @@ var gniExportDescs = []exporter.GNIExportDesc{
 				"//include/private/chromium:shared_private_hdrs",
 				"//src/capture:capture_hdrs",
 				"//src/capture:capture_srcs",
+				"//src/chromium:srcs",
 				"//src/core:core_priv_hdrs",
 				"//src/core:core_priv_srcs",
 				"//src/core:core_srcs",

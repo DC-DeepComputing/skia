@@ -1,0 +1,15 @@
+load("//bazel:skia_rules.bzl", "skia_filegroup")
+
+package(
+    default_applicable_licenses = ["//:license"],
+)
+
+licenses(["notice"])
+
+skia_filegroup(
+    name = "srcs",
+    srcs = [
+        "SkScopedSafelyChecksExclusion.h",
+    ],
+    visibility = ["//src/core:__pkg__"],
+)
