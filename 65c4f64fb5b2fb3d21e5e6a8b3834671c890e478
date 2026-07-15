@@ -189,6 +189,30 @@
       },
       "revId": "65c4f64fb5b2fb3d21e5e6a8b3834671c890e478",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5403a1d2_761116ec",
+        "filename": "src/pathops/SkPathOpsQuad.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-07-15T15:06:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ba33b0e0_0d11f248",
+      "range": {
+        "startLine": 137,
+        "startChar": 51,
+        "endLine": 137,
+        "endChar": 68
+      },
+      "revId": "65c4f64fb5b2fb3d21e5e6a8b3834671c890e478",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
