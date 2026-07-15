@@ -11,10 +11,12 @@
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/ganesh/GrBackendSurface.h"
 #include "include/gpu/ganesh/GrTypes.h"
+#include "include/private/SkIDChangeListener.h"
 #include "include/private/SkTo.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/gpu/MaskFormat.h"
 #include "src/gpu/ganesh/GrCaps.h"
+#include "src/gpu/ganesh/geometry/GrStyledShape.h"
 #include "src/gpu/ganesh/ops/SmallPathShapeData.h"
 
 #include <cstddef>
@@ -86,11 +88,23 @@ void SmallPathAtlasMgr::deleteCacheEntry(SmallPathShapeData* shapeData) {
     delete shapeData;
 }
 
-SmallPathShapeData* SmallPathAtlasMgr::findOrCreate(const SmallPathShapeDataKey& key) {
+SmallPathShapeData* SmallPathAtlasMgr::findOrCreate(const SmallPathShapeDataKey& key,
+                                                    const GrStyledShape& shape) {
     auto shapeData = fShapeCache.find(key);
+
+    if (shapeData) {
+        if (shapeData->fListener && shapeData->fListener->fired()) {
+            this->deleteCacheEntry(shapeData);
+            shapeData = nullptr;
+        }
+    }
+
     if (!shapeData) {
         // TODO: move the key into the ctor
         shapeData = new SmallPathShapeData(key);
+        auto listener = sk_make_sp<SmallPathIDChangeListener>();
+        shape.addGenIDChangeListener(listener);
+        shapeData->fListener = std::move(listener);
         fShapeCache.add(shapeData);
         fShapeList.addToTail(shapeData);
 #ifdef DF_PATH_TRACKING
@@ -108,7 +122,7 @@ SmallPathShapeData* SmallPathAtlasMgr::findOrCreate(const GrStyledShape& shape,
     SmallPathShapeDataKey key(shape, desiredDimension);
 
     // TODO: move the key into 'findOrCreate'
-    return this->findOrCreate(key);
+    return this->findOrCreate(key, shape);
 }
 
 SmallPathShapeData* SmallPathAtlasMgr::findOrCreate(const GrStyledShape& shape,
@@ -116,7 +130,7 @@ SmallPathShapeData* SmallPathAtlasMgr::findOrCreate(const GrStyledShape& shape,
     SmallPathShapeDataKey key(shape, ctm);
 
     // TODO: move the key into 'findOrCreate'
-    return this->findOrCreate(key);
+    return this->findOrCreate(key, shape);
 }
 
 GrDrawOpAtlas::ErrorCode SmallPathAtlasMgr::addToAtlas(GrResourceProvider* resourceProvider,
