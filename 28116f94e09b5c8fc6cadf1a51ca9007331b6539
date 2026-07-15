@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5d66bf7_458d4b07",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1508,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-15T15:16:46Z",
+      "side": 1,
+      "message": "That\u0027s a good point, but I think your logic is sound that it is still safe. I added a chrome-canary job to double-check things.  We also have some GMs that force bilerp on in the context options (the slug tests) so that should be checking these paths as well.",
+      "parentUuid": "17e7db76_f1482793",
+      "range": {
+        "startLine": 1508,
+        "startChar": 35,
+        "endLine": 1508,
+        "endChar": 52
+      },
+      "revId": "28116f94e09b5c8fc6cadf1a51ca9007331b6539",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "daf7d81d_9df39f26",
