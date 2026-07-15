@@ -183,6 +183,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cf1b85cf_fed116bf",
+        "filename": "src/gpu/graphite/DrawList.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-15T19:21:49Z",
+      "side": 1,
+      "message": "(1) and (2) are the exactly the kinds of things I was wondering about, and in particular, the memory clearing is helpful info.  Given it does write the memory of the allocation, then I this `reset()` is in fact not an arbitrary place to exclude, but represents the bulk of the allocations that get collected for a frame of rendering.\n\nOther hotspots might be the DrawCommandsList in held by DrawPass and various arenas. Your context and reading skia/534908403 clarifies this nicely.\n\nRegarding, raw_ptr, I agree that this is not so relevant any more. I was thinking that this exclusion only stopped any sort of UAF tracking that might otherwise happen under the scope of the exclusion object. Now I realize that MiracleObject and MiraclePtr are more distinct.\n\n---\n\nGoing back to your original question, I think you can focus primarily on code inside src/gpu/graphite/ as this will be the Skia backend that is used for all of the competitive benchmarks. Ganesh also can accumulate a lot of work, but it tends to be spread out a bit more so tracking down all the places to scope will be harder. It also may not be as critical as Ganesh is not enabled on Mac anymore and we\u0027re rolling out to Windows. The main issue would be if MiracleObject regresses Ganesh on Clank.  That said, slowing down Ganesh and being intractible to migrate Ganesh to MiracleObject could be an incentive to migrate to Graphite on Clank (where we are currently working through Graphite\u0027s own regressions vs. Ganesh). \n\nI do not think the CPU/raster backend of Skia would need these exclusions as it does immediate-mode rendering so its allocations tend not to accumulate to the same degree that Ganesh/Graphite might.  I suspect you may pay attention to allocations of pixel data (e.g. inside SkBitmap/SkPixmap) or SkArenaAlloc.",
+      "parentUuid": "ec28f730_9edcded7",
+      "range": {
+        "startLine": 250,
+        "startChar": 0,
+        "endLine": 250,
+        "endChar": 48
+      },
+      "revId": "c76393f8936f7bae8f1ac93157c5d0151e97d8d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6fa4f654_86aad32d",
         "filename": "src/partition_alloc/BUILD.bazel",
         "patchSetId": 1
