@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "17e7db76_f1482793",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1508,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-07-15T00:52:34Z",
+      "side": 1,
+      "message": "I think yes? See the comment but the risk is getting a collision in the strike cache.",
+      "parentUuid": "98d014f3_b0e94349",
+      "range": {
+        "startLine": 1508,
+        "startChar": 35,
+        "endLine": 1508,
+        "endChar": 52
+      },
+      "revId": "28116f94e09b5c8fc6cadf1a51ca9007331b6539",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "daf7d81d_9df39f26",
@@ -54,6 +78,30 @@
       "writtenOn": "2026-07-14T17:33:09Z",
       "side": 1,
       "message": "I think that anything using `kMaxBilerpAtlasDimension` is going to be using the kMask glyph type (or TransformedMaskSubRun), so it will always be assuming bilerp.",
+      "range": {
+        "startLine": 1611,
+        "startChar": 0,
+        "endLine": 1614,
+        "endChar": 59
+      },
+      "revId": "28116f94e09b5c8fc6cadf1a51ca9007331b6539",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb3f4a61_5e413ef5",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1614,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-07-15T00:52:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "daf7d81d_9df39f26",
       "range": {
         "startLine": 1611,
         "startChar": 0,
