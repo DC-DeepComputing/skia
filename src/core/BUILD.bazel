@@ -52,6 +52,7 @@ split_srcs_and_hdrs(
 SEMI_PUBLIC_HEADERS = [
     "Sk4px.h",
     "SkAAClip.h",
+    "SkScopedSafetyChecksExclusion.h",
     "SkATrace.h",
     "SkAdvancedTypefaceMetrics.h",
     "SkAnnotationKeys.h",
