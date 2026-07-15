@@ -9,6 +9,7 @@
 
 #include "include/core/SkSpan.h"
 #include "include/private/SkAssert.h"
+#include "include/private/SkTPin.h"
 #include "include/private/SkTo.h"
 #include "src/text/GlyphRun.h"
 
@@ -55,10 +56,10 @@ SkClusterator::Cluster SkClusterator::next() {
     uint32_t clusterGlyphCount = fCurrentGlyphIndex - clusterGlyphIndex;
     uint32_t clusterEnd = fTextByteLength;
     for (unsigned i = 0; i < fGlyphCount; ++i) {
-       uint32_t c = fClusters[i];
-       if (c > cluster && c < clusterEnd) {
-           clusterEnd = c;
-       }
+        uint32_t c = SkTPin<uint32_t>(fClusters[i], 0, fTextByteLength);
+        if (c > cluster && c < clusterEnd) {
+            clusterEnd = c;
+        }
     }
     uint32_t clusterLen = clusterEnd - cluster;
     return Cluster{fUtf8Text + cluster, clusterLen, clusterGlyphIndex, clusterGlyphCount};
