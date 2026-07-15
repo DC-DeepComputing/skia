@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "258d7457_5569f118",
+        "filename": "bazel/external/dawn/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 522,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-15T01:40:48Z",
+      "side": 1,
+      "message": "Note: these libraries aren\u0027t needed until linking an executable (e.g. viewer) but I\u0027ve added them here to keep the other CL cleaner.",
+      "range": {
+        "startLine": 522,
+        "startChar": 13,
+        "endLine": 522,
+        "endChar": 19
+      },
+      "revId": "682efc37ab8c3742fef73a06a57cc1c45b7d2e6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
