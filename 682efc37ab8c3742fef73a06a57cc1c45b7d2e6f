@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d87a8833_86a66c59",
+        "filename": "tools/ganesh/BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-15T14:10:04Z",
+      "side": 0,
+      "message": "This had been unused before which is why it had a not-existing dep in it and nothing broke...\n\nI just deleted it because it\u0027s unused and we can add it back if/when we find a use for it.",
+      "range": {
+        "startLine": 78,
+        "startChar": 12,
+        "endLine": 78,
+        "endChar": 31
+      },
+      "revId": "682efc37ab8c3742fef73a06a57cc1c45b7d2e6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
