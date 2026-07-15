@@ -207,6 +207,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "15d373ba_cd6696db",
+        "filename": "src/gpu/graphite/DrawList.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 18514
+      },
+      "writtenOn": "2026-07-15T19:25:57Z",
+      "side": 1,
+      "message": "Do you have any thoughts on how based to put this in Skia?\n\n* Make a macro SK_SCOPED_SAFETY_CHECK_EXCLUSION that is nothing in non-chrome?\n\n* Make a define SK_USE_SAFETY_CHECKS that provides a null impl if no fined?\n\n* Make a class SKScopedSafetyCheckExclusion that inherits or \u0027using\u0027 the partition alloc one if some compile time flag is set?\n\n* Do something like this CL that makes base::ScopedSafetyChecksExclusion if one doesn\u0027t exist?",
+      "parentUuid": "cf1b85cf_fed116bf",
+      "range": {
+        "startLine": 250,
+        "startChar": 0,
+        "endLine": 250,
+        "endChar": 48
+      },
+      "revId": "c76393f8936f7bae8f1ac93157c5d0151e97d8d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6fa4f654_86aad32d",
         "filename": "src/partition_alloc/BUILD.bazel",
         "patchSetId": 1
