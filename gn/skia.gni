@@ -122,7 +122,10 @@ declare_args() {
   #
   # While GCC is supported, it lacks CI coverage to catch regressions.
   # Therefore, we disable it by default on GCC builds.
-  skia_use_partition_alloc = is_clang
+  #
+  # partition_alloc is also not compatible with Xcode clang.
+  skia_use_partition_alloc = is_clang && !is_xcode
+
   skia_partition_alloc_dir = "//third_party/externals/partition_alloc"
 }
 
