@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d123786_a44c6304",
+        "filename": "gn/tests.gni",
+        "patchSetId": 3
+      },
+      "lineNbr": 514,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-16T16:40:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1412aa14_e3021cc1",
+      "range": {
+        "startLine": 514,
+        "startChar": 11,
+        "endLine": 514,
+        "endChar": 42
+      },
+      "revId": "d62438ad312e2702df636a71fd34d7db77acd5a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7bc30285_065bca85",
@@ -81,6 +105,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "825f5151_4e0dd3a3",
+        "filename": "src/gpu/ganesh/ops/SmallPathAtlasMgr.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-16T16:40:28Z",
+      "side": 1,
+      "message": "Just to make sure, when you say remove the defensive checks, do you mean within the destructor",
+      "parentUuid": "7bc30285_065bca85",
+      "range": {
+        "startLine": 104,
+        "startChar": 0,
+        "endLine": 107,
+        "endChar": 51
+      },
+      "revId": "d62438ad312e2702df636a71fd34d7db77acd5a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "22f86a4a_2316d5ed",
@@ -94,6 +142,24 @@
       "writtenOn": "2026-07-16T14:58:24Z",
       "side": 1,
       "message": "This is interestingly different from SoftwarePathRenderer/TriangulatingPathRenderer, in that the listener only tracks whether the cached entry is stale, but does not immediately clear it (using `SkMessageBus\u003cskgpu::UniqueKeyInvalidatedMessage`).\n\nI guess that\u0027s sufficient for the bug at hand, but clearing the cache on change seems more robust as it avoids accumulating stale entries (AFAICT there is no cleanup mechanism for this cache, so we\u0027re effectively leaking?).\n\nHave you looked into what it would take to replicate the cleanup functionality from other renderers?",
+      "revId": "d62438ad312e2702df636a71fd34d7db77acd5a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ecb5de2_dc90de45",
+        "filename": "src/gpu/ganesh/ops/SmallPathShapeData.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-16T16:40:28Z",
+      "side": 1,
+      "message": "I thought about using the `SkMessageBus` for this when I was copying the Listener pattern, but, from what I saw, it seems this cache wasn\u0027t designed to support `SkMessageBus` or the `GrMakeUniqueKeyInvalidationListener` mechanism. \n\nBoth of these rely on the `GrUniqueKey::ID` for invalidation, which is created for the globally accessed textures managed by `GrResourceCache`. Since `SmallPathAtlasMgr` uses a local cache (`fShapeCache`) to keep track of the `ShapeData`, it doesn\u0027t have a mechanism for global invalidation with messages. \n\nI was also thinking about a way to invalidate the `ShapeData` cache within the `changed()` function, but I think this might lead to more memory safety issues since `SmallPathAtlasMgr` isn\u0027t thread-safe. I discussed this potential change with Gemini and it said that since `SmallPathAtlasMgr` is tied to `GrDrawOpAtlas`, which isn\u0027t thread-safe, there could be UAF bugs with dangling references to the cached `ShapeData`\n\nI do think that having no cleanup mechanism for this cache is problematic, but I\u0027m not sure what a path forward would look like, or whether it would be necessary to modify other parts of the code",
+      "parentUuid": "22f86a4a_2316d5ed",
       "revId": "d62438ad312e2702df636a71fd34d7db77acd5a0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
