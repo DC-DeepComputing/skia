@@ -623,7 +623,7 @@ func (b *TaskBuilder) dmFlags(internalHardwareLabel string) {
 					if b.MatchOs("Win11") && b.GPU("IntelIris540") {
 						skip(ALL, "test", ALL, "NotifyInUseTestLayer") // b/485241813
 					}
-					if b.MatchOs("Win11") && b.GPU("IntelArc140V", "IntelIrisXe", "IntelUHDGraphics770") {
+					if b.MatchOs("Win11") && b.GPU("IntelArc140V", "IntelArcB570", "IntelIrisXe", "IntelUHDGraphics770") {
 						// skbug.com/470073298
 						skip(ALL, "gm", ALL, "ycbcrimage")
 					}
@@ -1629,6 +1629,11 @@ func (b *TaskBuilder) dmFlags(internalHardwareLabel string) {
 		skip(ALL, "test", ALL, "ResourceCacheStencilBuffers")
 		skip(ALL, "test", ALL, "SurfaceAttachStencil_Gpu")
 		skip(ALL, "test", ALL, "SurfaceClear_Gpu")
+	}
+
+	if b.IsWindows() && b.GPU("IntelArcB570") && b.ExtraConfig("ANGLE") {
+		// skbug.com/535536995
+		skip(ALL, "test", ALL, "BigImageTest_Ganesh")
 	}
 
 	if b.GPU("PowerVRGX6250") {
