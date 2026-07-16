@@ -382,6 +382,12 @@ def compile_fn(api, checkout_root, out_dir):
   existing_path = env.get('PATH', '%(PATH)s')
   env['PATH'] = api.path.pathsep.join([existing_path, str(ninja_root)])
 
+  # TODO(b/535581863): Bazel Rust builds sporadically run out of space in /dev/shm.
+  # Overriding HOME causes the build to ignore /home/chrome-bot/.bazelrc which
+  # currently sets --output_user_root=/dev/shm/bazel_cache.
+  if any(tok in extra_tokens for tok in ('Fontations', 'ICU4X', 'Vello', 'RustALL', 'RustPNG')):
+    env['HOME'] = api.vars.tmp_dir
+
   with api.context(cwd=skia_dir):
     with api.env(env):
       if ccache:

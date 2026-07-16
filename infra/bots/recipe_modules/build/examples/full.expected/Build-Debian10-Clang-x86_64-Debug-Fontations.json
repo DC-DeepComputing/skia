@@ -55,6 +55,7 @@
       "CCACHE_MAXFILES": "0",
       "CCACHE_MAXSIZE": "75G",
       "CHROME_HEADLESS": "1",
+      "HOME": "[START_DIR]/tmp",
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]:[START_DIR]/cache/work/skia/third_party/ninja"
     },
     "name": "ccache stats-start"
@@ -73,6 +74,7 @@
       "CCACHE_MAXFILES": "0",
       "CCACHE_MAXSIZE": "75G",
       "CHROME_HEADLESS": "1",
+      "HOME": "[START_DIR]/tmp",
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]:[START_DIR]/cache/work/skia/third_party/ninja"
     },
     "name": "gn gen"
@@ -90,6 +92,7 @@
       "CCACHE_MAXFILES": "0",
       "CCACHE_MAXSIZE": "75G",
       "CHROME_HEADLESS": "1",
+      "HOME": "[START_DIR]/tmp",
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]:[START_DIR]/cache/work/skia/third_party/ninja"
     },
     "name": "gn clean"
@@ -107,6 +110,7 @@
       "CCACHE_MAXFILES": "0",
       "CCACHE_MAXSIZE": "75G",
       "CHROME_HEADLESS": "1",
+      "HOME": "[START_DIR]/tmp",
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]:[START_DIR]/cache/work/skia/third_party/ninja"
     },
     "name": "ninja"
@@ -123,6 +127,7 @@
       "CCACHE_MAXFILES": "0",
       "CCACHE_MAXSIZE": "75G",
       "CHROME_HEADLESS": "1",
+      "HOME": "[START_DIR]/tmp",
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]:[START_DIR]/cache/work/skia/third_party/ninja"
     },
     "name": "ccache stats-end"
