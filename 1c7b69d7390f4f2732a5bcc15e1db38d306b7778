@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "29a8e08d_b79cf1fe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-07-16T14:02:23Z",
+      "side": 1,
+      "message": "Hi Kaylee,\n\nI wonder if I am following the right path here. I am not sure quite sure why skia disable check_includes. I am guessing this is for historical reasons after the GYP \u003d\u003e GN migration.",
+      "revId": "1c7b69d7390f4f2732a5bcc15e1db38d306b7778",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
