@@ -16,6 +16,24 @@
       "message": "Hi Kaylee,\n\nI wonder if I am following the right path here. I am not sure quite sure why skia disable check_includes. I am guessing this is for historical reasons after the GYP \u003d\u003e GN migration.",
       "revId": "1c7b69d7390f4f2732a5bcc15e1db38d306b7778",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a2266a3_02b9dfdc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-16T14:09:54Z",
+      "side": 1,
+      "message": "check_includes has been there for a long time. I think it was because all our code sort of depended on each other for a while (it has since been decoupled).",
+      "parentUuid": "29a8e08d_b79cf1fe",
+      "revId": "1c7b69d7390f4f2732a5bcc15e1db38d306b7778",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
