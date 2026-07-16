@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6ba632a_3830d0c9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-07-16T13:51:43Z",
+      "side": 1,
+      "message": "A newer userspace driver isn\u0027t helping.  Gemini suggests to me that a newer kernel might help, so I\u0027ve filed b/535548196 to get the machine updated to 26.04.",
+      "revId": "cf38f4fe7987f3808e560214eeacc1e6e7eb06a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
