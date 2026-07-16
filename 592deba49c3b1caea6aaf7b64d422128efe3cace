@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ac2bc18_3a5ff932",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18514
+      },
+      "writtenOn": "2026-07-16T00:17:52Z",
+      "side": 1,
+      "message": "The CL is updated. PTAL",
+      "revId": "592deba49c3b1caea6aaf7b64d422128efe3cace",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
