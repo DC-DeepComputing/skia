@@ -4,10 +4,13 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+
 #include "src/core/SkPtrRecorder.h"
 
 #include "include/private/SkAssert.h"
 #include "src/core/SkTSearch.h"
+
+#pragma clang unsafe_buffer_usage begin
 
 void SkPtrSet::reset() {
     Pair* p = fList.begin();
@@ -73,3 +76,4 @@ void SkPtrSet::copyToArray(void* array[]) const {
         }
     }
 }
+#pragma clang unsafe_buffer_usage end

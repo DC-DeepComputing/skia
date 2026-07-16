@@ -22,6 +22,8 @@
 #include <utility>
 #include <vector>
 
+#pragma clang unsafe_buffer_usage begin
+
 class SkStreamAsset;
 
 /**
@@ -522,3 +524,4 @@ private:
 };
 
 #endif
+#pragma clang unsafe_buffer_usage end

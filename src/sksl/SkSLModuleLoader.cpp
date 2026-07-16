@@ -29,6 +29,8 @@
 #include <utility>
 #include <vector>
 
+#pragma clang unsafe_buffer_usage begin
+
 #define MODULE_DATA(type) ModuleType::type, GetModuleData(ModuleType::type, #type ".sksl")
 
 namespace SkSL {
@@ -364,3 +366,4 @@ void ModuleLoader::Impl::makeRootSymbolTable() {
 }
 
 }  // namespace SkSL
+#pragma clang unsafe_buffer_usage end

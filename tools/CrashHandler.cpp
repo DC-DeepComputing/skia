@@ -244,3 +244,6 @@
     void SetupCrashHandler() { }
 
 #endif
+
+#pragma clang unsafe_buffer_usage begin
+#pragma clang unsafe_buffer_usage end

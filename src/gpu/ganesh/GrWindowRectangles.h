@@ -15,6 +15,8 @@
 
 #include <cstring>
 
+#pragma clang unsafe_buffer_usage begin
+
 class GrWindowRectangles {
 public:
     constexpr static int kMaxWindows = 8;
@@ -125,3 +127,4 @@ inline bool GrWindowRectangles::operator==(const GrWindowRectangles& that) const
 }
 
 #endif
+#pragma clang unsafe_buffer_usage end

@@ -58,6 +58,8 @@
     #endif
 #endif
 
+#pragma clang unsafe_buffer_usage begin
+
 // To avoid ODR violations, all methods must be force-inlined...
 #if defined(_MSC_VER)
     #define SKVX_ALWAYS_INLINE __forceinline
@@ -1193,3 +1195,4 @@ using half8   = Vec< 8, uint16_t>;
 #undef SKVX_USE_SIMD
 
 #endif//SKVX_DEFINED
+#pragma clang unsafe_buffer_usage end

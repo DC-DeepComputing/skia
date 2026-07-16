@@ -15,6 +15,8 @@
 #include <cmath>
 #include <cstring>
 
+#pragma clang unsafe_buffer_usage begin
+
 static bool xyz_almost_equal(const skcms_Matrix3x3& mA, const skcms_Matrix3x3& mB) {
     for (int r = 0; r < 3; ++r) {
         for (int c = 0; c < 3; ++c) {
@@ -505,3 +507,4 @@ bool SkColorSpace::Equals(const SkColorSpace* x, const SkColorSpace* y) {
     }
     return false;
 }
+#pragma clang unsafe_buffer_usage end

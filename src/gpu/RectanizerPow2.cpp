@@ -7,6 +7,8 @@
 
 #include "src/gpu/RectanizerPow2.h"
 
+#pragma clang unsafe_buffer_usage begin
+
 namespace skgpu {
 
 bool RectanizerPow2::addRect(int width, int height, SkIPoint16* loc) {
@@ -67,3 +69,4 @@ bool RectanizerPow2::addRect(int width, int height, SkIPoint16* loc) {
 //}
 
 }  // End of namespace skgpu
+#pragma clang unsafe_buffer_usage end

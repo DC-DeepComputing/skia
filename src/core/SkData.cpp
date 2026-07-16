@@ -18,6 +18,8 @@
 #include <cstring>
 #include <new>
 
+#pragma clang unsafe_buffer_usage begin
+
 SkData::SkData(SkSpan<std::byte> span, ReleaseProc proc, void* context)
     : fReleaseProc(proc)
     , fReleaseProcContext(context)
@@ -224,3 +226,4 @@ sk_sp<SkData> SkData::MakeFromStream(SkStream* stream, size_t size) {
     }
     return data;
 }
+#pragma clang unsafe_buffer_usage end

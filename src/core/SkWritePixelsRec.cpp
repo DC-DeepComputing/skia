@@ -10,6 +10,8 @@
 #include "include/core/SkRect.h"
 #include "src/core/SkSafeMath.h"
 
+#pragma clang unsafe_buffer_usage begin
+
 bool SkWritePixelsRec::trim(int dstWidth, int dstHeight) {
     // fInfo.minRowBytes() returns 0 if the size doesn't fit in `size_t`.
     const size_t minRowBytes = fInfo.minRowBytes();
@@ -56,3 +58,4 @@ bool SkWritePixelsRec::trim(int dstWidth, int dstHeight) {
 
     return true;
 }
+#pragma clang unsafe_buffer_usage end

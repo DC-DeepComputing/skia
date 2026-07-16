@@ -15,6 +15,8 @@
 
 #include <utility>
 
+#pragma clang unsafe_buffer_usage begin
+
 static DEFINE_string2(resourcePath, i, "resources",
                       "Directory with test resources: images, fonts, etc.");
 
@@ -51,3 +53,4 @@ sk_sp<SkData> GetResourceAsData(const char* resource) {
     #endif
     return nullptr;
 }
+#pragma clang unsafe_buffer_usage end

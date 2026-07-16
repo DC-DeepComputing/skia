@@ -27,6 +27,8 @@
 #include <optional>
 #include <tuple>
 
+#pragma clang unsafe_buffer_usage begin
+
 class SkData;
 class SkRRect;
 class SkWStream;
@@ -1161,3 +1163,4 @@ private:
 };
 
 #endif
+#pragma clang unsafe_buffer_usage end

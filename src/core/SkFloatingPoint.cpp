@@ -12,6 +12,8 @@
 #include <cstring>
 #include <limits>
 
+#pragma clang unsafe_buffer_usage begin
+
 // Return the positive magnitude of a double.
 // * normalized - given 1.bbb...bbb x 2^e return 2^e.
 // * subnormal - return 0.
@@ -54,3 +56,4 @@ bool sk_doubles_nearly_equal_ulps(double a, double b, uint8_t maxUlpsDiff) {
 bool sk_double_nearly_zero(double a) {
     return a == 0 || fabs(a) < std::numeric_limits<float>::epsilon();
 }
+#pragma clang unsafe_buffer_usage end

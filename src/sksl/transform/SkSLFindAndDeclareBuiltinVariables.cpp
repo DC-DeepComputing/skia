@@ -32,6 +32,8 @@
 #include <string_view>
 #include <vector>
 
+#pragma clang unsafe_buffer_usage begin
+
 namespace SkSL {
 namespace Transform {
 namespace {
@@ -185,3 +187,4 @@ void FindAndDeclareBuiltinVariables(Program& program) {
 
 }  // namespace Transform
 }  // namespace SkSL
+#pragma clang unsafe_buffer_usage end

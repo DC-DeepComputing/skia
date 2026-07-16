@@ -9,6 +9,8 @@
 
 #include "src/core/SkSLTypeShared.h"
 
+#pragma clang unsafe_buffer_usage begin
+
 static const char* type_modifier_string(GrShaderVar::TypeModifier t) {
     switch (t) {
         case GrShaderVar::TypeModifier::None: return "";
@@ -41,3 +43,4 @@ void GrShaderVar::appendDecl(const GrShaderCaps* shaderCaps, SkString* out) cons
         out->appendf("%s %s", SkSLTypeString(effectiveType), this->getName().c_str());
     }
 }
+#pragma clang unsafe_buffer_usage end

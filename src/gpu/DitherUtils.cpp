@@ -103,3 +103,6 @@ SkBitmap MakeDitherLUT() {
 }  // namespace skgpu
 
 #endif // SK_IGNORE_GPU_DITHER
+
+#pragma clang unsafe_buffer_usage begin
+#pragma clang unsafe_buffer_usage end

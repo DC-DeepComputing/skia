@@ -15,6 +15,8 @@
 
 #include <algorithm>
 
+#pragma clang unsafe_buffer_usage begin
+
 SkPMColor SkPreMultiplyARGB(U8CPU a, U8CPU r, U8CPU g, U8CPU b) {
     return SkPremultiplyARGBInline(a, r, g, b);
 }
@@ -180,3 +182,4 @@ SkColorConverter::SkColorConverter(SkSpan<const SkColor> src) {
         return SkColor4f::FromColor(c);
     });
 }
+#pragma clang unsafe_buffer_usage end

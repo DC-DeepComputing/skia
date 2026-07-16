@@ -15,6 +15,8 @@
 #include <cstdint>
 #include <cstring>
 
+#pragma clang unsafe_buffer_usage begin
+
 /**
  *  Like SkData, SkDataTable holds an immutable data buffer. The data buffer is
  *  organized into a table of entries, each with a length, so the entries are
@@ -120,3 +122,4 @@ private:
 };
 
 #endif
+#pragma clang unsafe_buffer_usage end

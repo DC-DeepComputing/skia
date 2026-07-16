@@ -7,6 +7,8 @@
 
 #include "src/core/SkVertState.h"
 
+#pragma clang unsafe_buffer_usage begin
+
 bool VertState::Triangles(VertState* state) {
     int index = state->fCurrIndex;
     if (index + 3 > state->fCount) {
@@ -104,3 +106,4 @@ VertState::Proc VertState::chooseProc(SkVertices::VertexMode mode) {
             return nullptr;
     }
 }
+#pragma clang unsafe_buffer_usage end

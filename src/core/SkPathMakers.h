@@ -12,6 +12,8 @@
 #include "include/core/SkPoint.h"
 #include "include/core/SkRRect.h"
 
+#pragma clang unsafe_buffer_usage begin
+
 template <unsigned N> class SkPath_PointIterator {
 public:
     SkPath_PointIterator(SkPathDirection dir, unsigned startIndex)
@@ -86,3 +88,4 @@ public:
 };
 
 #endif
+#pragma clang unsafe_buffer_usage end

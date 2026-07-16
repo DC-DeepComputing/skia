@@ -17,6 +17,8 @@
 #include <memory>
 #include <utility>
 
+#pragma clang unsafe_buffer_usage begin
+
 namespace SkSL {
 
 std::unique_ptr<Expression> Transform::RewriteIndexedSwizzle(const Context& context,
@@ -49,3 +51,4 @@ std::unique_ptr<Expression> Transform::RewriteIndexedSwizzle(const Context& cont
 }
 
 }  // namespace SkSL
+#pragma clang unsafe_buffer_usage end

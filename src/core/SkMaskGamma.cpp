@@ -14,6 +14,8 @@
 
 #include <cmath>
 
+#pragma clang unsafe_buffer_usage begin
+
 class SkLinearColorSpaceLuminance : public SkColorSpaceLuminance {
     SkScalar toLuma(SkScalar SkDEBUGCODE(gamma), SkScalar luminance) const override {
         SkASSERT(SK_Scalar1 == gamma);
@@ -126,3 +128,4 @@ void SkTMaskGamma_build_correcting_lut(uint8_t* table, U8CPU srcI, SkScalar cont
         }
     }
 }
+#pragma clang unsafe_buffer_usage end

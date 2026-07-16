@@ -4,11 +4,14 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+
 #include "src/core/SkChecksum.h"
 
 #include "include/private/SkAssert.h"
 
 #include <cstring>
+
+#pragma clang unsafe_buffer_usage begin
 
 // wyhash, a fast and good hash function, from https://github.com/wangyi-fudan/wyhash
 
@@ -112,3 +115,4 @@ uint64_t Hash64(const void *data, size_t bytes, uint64_t seed) {
 }
 
 }  // namespace SkChecksum
+#pragma clang unsafe_buffer_usage end

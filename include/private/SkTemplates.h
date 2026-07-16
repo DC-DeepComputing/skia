@@ -23,6 +23,7 @@
 #include <type_traits>
 #include <utility>
 
+#pragma clang unsafe_buffer_usage begin
 
 /** \file SkTemplates.h
 
@@ -498,3 +499,4 @@ template<size_t N, typename C> constexpr auto SkMakeArray(C c)
 }
 
 #endif
+#pragma clang unsafe_buffer_usage end

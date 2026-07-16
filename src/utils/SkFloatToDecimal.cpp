@@ -16,6 +16,8 @@
 #include <limits.h>
 #endif
 
+#pragma clang unsafe_buffer_usage begin
+
 // returns `value * pow(base, e)`, assuming `e` is positive.
 static double pow_by_squaring(double value, double base, int e) {
     // https://en.wikipedia.org/wiki/Exponentiation_by_squaring
@@ -185,3 +187,4 @@ unsigned SkFloatToDecimal(float value, char output[kMaximumSkFloatToDecimalLengt
     *output_ptr = '\0';
     return static_cast<unsigned>(output_ptr - output);
 }
+#pragma clang unsafe_buffer_usage end

@@ -28,6 +28,8 @@
 
 #include <algorithm>
 
+#pragma clang unsafe_buffer_usage begin
+
 using namespace skia_private;
 
 DECLARE_SKMESSAGEBUS_MESSAGE(SkResourceCache::PurgeSharedIDMessage, uint32_t, true)
@@ -566,3 +568,4 @@ void SkResourceCache::DumpMemoryStatistics(SkTraceMemoryDump* dump) {
     // stats to be accurate.
     VisitAll(sk_trace_dump_visitor, dump);
 }
+#pragma clang unsafe_buffer_usage end

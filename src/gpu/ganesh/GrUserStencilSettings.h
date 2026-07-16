@@ -5,13 +5,14 @@
  * found in the LICENSE file.
  */
 
-
 #ifndef GrUserStencilSettings_DEFINED
 #define GrUserStencilSettings_DEFINED
 
 #include "include/gpu/ganesh/GrTypes.h"  // IWYU pragma: keep
 
 #include <cstdint>
+
+#pragma clang unsafe_buffer_usage begin
 
 /**
  * Gr uses the stencil buffer to implement complex clipping inside the
@@ -258,3 +259,4 @@ struct GrUserStencilSettings::Attrs {
 };
 
 #endif
+#pragma clang unsafe_buffer_usage end

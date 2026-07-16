@@ -16,6 +16,8 @@
 #include <limits>
 #include <type_traits>
 
+#pragma clang unsafe_buffer_usage begin
+
 inline constexpr float SK_FloatSqrt2 = 1.41421356f;
 inline constexpr float SK_FloatPI    = 3.14159265f;
 inline constexpr double SK_DoublePI  = 3.14159265358979323846264338327950288;
@@ -181,3 +183,4 @@ bool sk_double_nearly_zero(double a);
 bool sk_doubles_nearly_equal_ulps(double a, double b, uint8_t maxUlpsDiff = 16);
 
 #endif
+#pragma clang unsafe_buffer_usage end

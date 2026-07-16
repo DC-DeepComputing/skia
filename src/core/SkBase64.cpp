@@ -5,12 +5,13 @@
  * found in the LICENSE file.
  */
 
-
 #include "src/core/SkBase64.h"
 
 #include "include/private/SkAssert.h"
 
 #include <cstdint>
+
+#pragma clang unsafe_buffer_usage begin
 
 #define DecodePad -2
 #define EncodePad 64
@@ -154,3 +155,4 @@ size_t SkBase64::Encode(const void* srcv, size_t length, void* dstv, const char*
     }
     return EncodedSize(length);
 }
+#pragma clang unsafe_buffer_usage end

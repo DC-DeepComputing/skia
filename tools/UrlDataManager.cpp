@@ -10,6 +10,8 @@
 #include <unordered_map>
 #include <vector>
 
+#pragma clang unsafe_buffer_usage begin
+
 UrlDataManager::UrlDataManager(SkString rootUrl) : fRootUrl(rootUrl), fDataId(0) {}
 
 SkString UrlDataManager::addData(SkData* data, const char* contentType) {
@@ -55,3 +57,4 @@ int UrlDataManager::lookupImage(const SkImage* im) {
         return -1;
     }
 }
+#pragma clang unsafe_buffer_usage end

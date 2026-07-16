@@ -17,6 +17,8 @@
 #include <unordered_map>
 #include <vector>
 
+#pragma clang unsafe_buffer_usage begin
+
 class UrlDataManager {
 public:
     explicit UrlDataManager(SkString rootUrl);
@@ -94,3 +96,4 @@ private:
 };
 
 #endif
+#pragma clang unsafe_buffer_usage end

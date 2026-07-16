@@ -8,6 +8,8 @@
 #include "include/core/SkScalar.h"
 #include "include/private/SkDebug.h"
 
+#pragma clang unsafe_buffer_usage begin
+
 float SkFloatInterpFunc(float searchKey, const float keys[], const float values[], int length) {
     SkASSERT(length > 0);
     SkASSERT(keys != nullptr);
@@ -35,3 +37,4 @@ float SkFloatInterpFunc(float searchKey, const float keys[], const float values[
     float fract = (searchKey - leftKey) / (rightKey - leftKey);
     return SkScalarInterp(values[right-1], values[right], fract);
 }
+#pragma clang unsafe_buffer_usage end

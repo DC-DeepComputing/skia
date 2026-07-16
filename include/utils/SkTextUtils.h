@@ -15,6 +15,8 @@
 #include <cstddef>
 #include <cstring>
 
+#pragma clang unsafe_buffer_usage begin
+
 class SkCanvas;
 class SkFont;
 class SkPaint;
@@ -41,3 +43,4 @@ public:
 };
 
 #endif
+#pragma clang unsafe_buffer_usage end

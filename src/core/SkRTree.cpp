@@ -10,6 +10,8 @@
 #include "include/private/SkAssert.h"
 #include "include/private/SkDebug.h"
 
+#pragma clang unsafe_buffer_usage begin
+
 SkRTree::SkRTree() : fCount(0) {}
 
 void SkRTree::insert(const SkRect boundsArray[], int N) {
@@ -169,3 +171,4 @@ size_t SkRTree::bytesUsed() const {
 
     return byteCount;
 }
+#pragma clang unsafe_buffer_usage end

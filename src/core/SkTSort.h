@@ -14,6 +14,8 @@
 #include <cstddef>
 #include <utility>
 
+#pragma clang unsafe_buffer_usage begin
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /*  Sifts a broken heap. The input array is a heap from root to bottom
@@ -212,3 +214,4 @@ template <typename T> void SkTQSort(T** begin, T** end) {
 }
 
 #endif
+#pragma clang unsafe_buffer_usage end

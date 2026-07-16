@@ -16,6 +16,8 @@
 
 #include <limits>
 
+#pragma clang unsafe_buffer_usage begin
+
 /**
  * Represents the filtering and tile modes used to access a texture.
  */
@@ -150,3 +152,4 @@ private:
 };
 
 #endif
+#pragma clang unsafe_buffer_usage end

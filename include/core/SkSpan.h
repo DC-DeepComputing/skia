@@ -150,6 +150,8 @@ SkSpan(Container&&) ->
 
 #include <span>
 
+#pragma clang unsafe_buffer_usage begin
+
 template <typename T> using SkSpan = std::span<T>;
 
 #endif  // legacy
@@ -172,3 +174,4 @@ constexpr SkSpan<T> SkPostIncrementSpan(SkSpan<T>& s) {
 }
 
 #endif  // SkSpan_DEFINED
+#pragma clang unsafe_buffer_usage end

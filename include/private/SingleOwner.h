@@ -18,6 +18,8 @@
 
 #endif
 
+#pragma clang unsafe_buffer_usage begin
+
 namespace skgpu {
 
 #if defined(SK_DEBUG)
@@ -73,3 +75,4 @@ class SingleOwner {}; // Provide a no-op implementation so we can pass pointers 
 } // namespace skgpu
 
 #endif
+#pragma clang unsafe_buffer_usage end

@@ -16,6 +16,8 @@
 #include <cstring>
 #include <string_view>
 
+#pragma clang unsafe_buffer_usage begin
+
 class SkString;
 class SkWStream;
 
@@ -387,3 +389,4 @@ inline const Value& Value::operator[](const char* key) const {
 }  // namespace skjson
 
 #endif  // SkJSON_DEFINED
+#pragma clang unsafe_buffer_usage end

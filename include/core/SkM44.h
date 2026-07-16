@@ -14,6 +14,8 @@
 
 #include <cstring>
 
+#pragma clang unsafe_buffer_usage begin
+
 struct SkRect;
 
 struct SK_API SkV2 {
@@ -440,3 +442,4 @@ private:
 };
 
 #endif
+#pragma clang unsafe_buffer_usage end

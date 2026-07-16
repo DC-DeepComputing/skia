@@ -13,6 +13,8 @@
 
 #include <cstdint>
 
+#pragma clang unsafe_buffer_usage begin
+
 /** \file SkEndian.h
 
     Macros and helper functions for handling 16 and 32 bit values in
@@ -197,3 +199,4 @@ static inline void SkEndianSwap64s(uint64_t array[], int count) {
 #endif
 
 #endif
+#pragma clang unsafe_buffer_usage end

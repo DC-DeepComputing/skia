@@ -23,6 +23,8 @@
 #include <string_view>
 #include <utility>
 
+#pragma clang unsafe_buffer_usage begin
+
 // number of bytes (on the stack) to receive the printf result
 static const size_t kBufferSize = 1024;
 
@@ -634,3 +636,4 @@ SkString SkStringPrintf(const char* format, ...) {
     va_end(args);
     return formattedOutput;
 }
+#pragma clang unsafe_buffer_usage end

@@ -4,6 +4,7 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+
 #include "src/xml/SkXMLParser.h"
 
 #include "include/core/SkStream.h"
@@ -18,6 +19,8 @@
 #include <expat.h>
 
 #include <vector>
+
+#pragma clang unsafe_buffer_usage begin
 
 static char const* const gErrorStrings[] = {
     "empty or missing file ",
@@ -260,3 +263,4 @@ bool SkXMLParser::onStartElement(const char elem[]) {return false; }
 bool SkXMLParser::onAddAttribute(const char name[], const char value[]) {return false; }
 bool SkXMLParser::onEndElement(const char elem[]) { return false; }
 bool SkXMLParser::onText(const char text[], int len) {return false; }
+#pragma clang unsafe_buffer_usage end

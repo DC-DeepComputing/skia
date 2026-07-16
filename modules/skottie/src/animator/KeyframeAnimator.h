@@ -19,6 +19,8 @@
 #include <utility>
 #include <vector>
 
+#pragma clang unsafe_buffer_usage begin
+
 namespace skjson {
 class ArrayValue;
 class ObjectValue;
@@ -156,3 +158,4 @@ T Lerp(const T& a, const T& b, float t) { return a + (b - a) * t; }
 } // namespace skottie::internal
 
 #endif // SkottieKeyframeAnimator_DEFINED
+#pragma clang unsafe_buffer_usage end

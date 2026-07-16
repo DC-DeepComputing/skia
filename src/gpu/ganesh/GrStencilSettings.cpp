@@ -4,6 +4,7 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+
 #include "src/gpu/ganesh/GrStencilSettings.h"
 
 #include "include/private/SkDebug.h"
@@ -12,6 +13,8 @@
 #include <algorithm>
 #include <cstddef>
 #include <cstring>
+
+#pragma clang unsafe_buffer_usage begin
 
 constexpr const GrUserStencilSettings gUnused(
     GrUserStencilSettings::StaticInit<
@@ -288,3 +291,4 @@ void GrStencilSettings::genKey(skgpu::KeyBuilder* b, bool includeRefs) const {
     static_assert(2 == sizeof(Face::fWriteMask));
     static_assert(10 == sizeof(Face));
 }
+#pragma clang unsafe_buffer_usage end

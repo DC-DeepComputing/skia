@@ -23,3 +23,6 @@ void SkLogVAList(SkLogPriority priority, const char format[], va_list args) {
 #pragma GCC diagnostic pop
 }
 #endif  // !defined(SK_BUILD_FOR_WIN) && !defined(SK_BUILD_FOR_ANDROID)
+
+#pragma clang unsafe_buffer_usage begin
+#pragma clang unsafe_buffer_usage end

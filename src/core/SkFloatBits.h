@@ -13,6 +13,8 @@
 #include <cstdint>
 #include <cstring>
 
+#pragma clang unsafe_buffer_usage begin
+
 /** Convert a sign-bit int (i.e. float interpreted as int) into a 2s compliement
     int. This also converts -0 (0x80000000) to 0. Doing this to a float allows
     it to be compared using normal C operators (<, <=, etc.)
@@ -72,3 +74,4 @@ static inline float Sk2sComplimentAsFloat(int32_t x) {
 #define SkScalarAs2sCompliment(x)    SkFloatAs2sCompliment(x)
 
 #endif
+#pragma clang unsafe_buffer_usage end

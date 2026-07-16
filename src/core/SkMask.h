@@ -18,6 +18,8 @@
 #include <cstdint>
 #include <memory>
 
+#pragma clang unsafe_buffer_usage begin
+
 /** \class SkMask
     SkMask is used to describe alpha bitmaps, either 1bit, 8bit, or
     the 3-channel 3D format. These are passed to SkMaskFilter objects.
@@ -316,3 +318,4 @@ struct SkMaskBuilder : public SkMask {
 using SkAutoMaskFreeImage = std::unique_ptr<uint8_t, SkFunctionObject<SkMaskBuilder::FreeImage>>;
 
 #endif
+#pragma clang unsafe_buffer_usage end

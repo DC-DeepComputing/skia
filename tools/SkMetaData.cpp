@@ -10,6 +10,8 @@
 #include "include/private/SkMalloc.h"
 #include "include/private/SkTo.h"
 
+#pragma clang unsafe_buffer_usage begin
+
 void SkMetaData::reset()
 {
     Rec* rec = fRec;
@@ -250,3 +252,4 @@ SkMetaData::Rec* SkMetaData::Rec::Alloc(size_t size) {
 void SkMetaData::Rec::Free(Rec* rec) {
     sk_free(rec);
 }
+#pragma clang unsafe_buffer_usage end

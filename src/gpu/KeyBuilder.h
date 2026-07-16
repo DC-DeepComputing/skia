@@ -15,6 +15,8 @@
 #include <cstdint>
 #include <string_view>
 
+#pragma clang unsafe_buffer_usage begin
+
 namespace skgpu {
 
 class KeyBuilder {
@@ -99,3 +101,4 @@ private:
 } // namespace skgpu
 
 #endif // skgpu_KeyBuilder_DEFINED
+#pragma clang unsafe_buffer_usage end

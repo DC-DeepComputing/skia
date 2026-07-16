@@ -34,6 +34,8 @@
 #include <string_view>
 #include <vector>
 
+#pragma clang unsafe_buffer_usage begin
+
 namespace SkSL {
 
 struct Program;
@@ -298,3 +300,4 @@ bool ProgramUsage::operator==(const ProgramUsage& that) const {
 }
 
 }  // namespace SkSL
+#pragma clang unsafe_buffer_usage end

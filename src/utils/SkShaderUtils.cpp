@@ -17,6 +17,8 @@
 #include <iomanip>
 #include <sstream>
 
+#pragma clang unsafe_buffer_usage begin
+
 using namespace skia_private;
 
 namespace SkShaderUtils {
@@ -295,3 +297,4 @@ void PrintShaderBanner(SkSL::ProgramKind programKind) {
 }
 
 }  // namespace SkShaderUtils
+#pragma clang unsafe_buffer_usage end

@@ -17,6 +17,8 @@
 #include <cstdint>
 #include <cstring>
 
+#pragma clang unsafe_buffer_usage begin
+
 class GrCaps;
 class GrProgramInfo;
 
@@ -105,3 +107,4 @@ private:
 };
 
 #endif
+#pragma clang unsafe_buffer_usage end

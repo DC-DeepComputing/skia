@@ -16,6 +16,8 @@
 #include <cstring>
 #include <ctype.h>
 
+#pragma clang unsafe_buffer_usage begin
+
 namespace SkSL {
 
 std::string Mangler::uniqueName(std::string_view baseName, SymbolTable* symbolTable) {
@@ -74,3 +76,4 @@ std::string Mangler::uniqueName(std::string_view baseName, SymbolTable* symbolTa
 }
 
 } // namespace SkSL
+#pragma clang unsafe_buffer_usage end

@@ -24,6 +24,8 @@
 
 #include <cstring>
 
+#pragma clang unsafe_buffer_usage begin
+
 /* From http://www.khronos.org/registry/gles/extensions/OES/OES_compressed_ETC1_RGB8_texture.txt
 
  The number of bits that represent a 4x4 texel block is 64 bits if
@@ -673,3 +675,4 @@ etc1_uint32 etc1_pkm_get_width(const etc1_byte* pHeader) {
 etc1_uint32 etc1_pkm_get_height(const etc1_byte* pHeader){
     return readBEUint16(pHeader + ETC1_PKM_HEIGHT_OFFSET);
 }
+#pragma clang unsafe_buffer_usage end

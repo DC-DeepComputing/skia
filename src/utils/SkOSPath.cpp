@@ -11,6 +11,8 @@
 
 #include <string.h>
 
+#pragma clang unsafe_buffer_usage begin
+
 SkString SkOSPath::Join(const char *rootPath, const char *relativePath) {
     SkString result(rootPath);
     if (!result.endsWith(SEPARATOR) && !result.isEmpty()) {
@@ -47,3 +49,4 @@ SkString SkOSPath::Dirname(const char* fullPath) {
     }
     return SkString(fullPath, end - fullPath);
 }
+#pragma clang unsafe_buffer_usage end

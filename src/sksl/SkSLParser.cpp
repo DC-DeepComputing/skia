@@ -70,6 +70,8 @@
 #include <utility>
 #include <vector>
 
+#pragma clang unsafe_buffer_usage begin
+
 using namespace skia_private;
 
 namespace SkSL {
@@ -2401,3 +2403,4 @@ bool Parser::identifier(std::string_view* dest) {
 }
 
 }  // namespace SkSL
+#pragma clang unsafe_buffer_usage end

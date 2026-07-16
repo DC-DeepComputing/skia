@@ -13,6 +13,8 @@
 
 #include <algorithm>
 
+#pragma clang unsafe_buffer_usage begin
+
 static bool is_plane_config_compatible_with_subsampling(SkYUVAInfo::PlaneConfig config,
                                                         SkYUVAInfo::Subsampling subsampling) {
     if (config      == SkYUVAInfo::PlaneConfig::kUnknown ||
@@ -376,3 +378,4 @@ bool SkYUVAInfo::operator==(const SkYUVAInfo& that) const {
            fSitingY       == that.fSitingY       &&
            fOrigin        == that.fOrigin;
 }
+#pragma clang unsafe_buffer_usage end

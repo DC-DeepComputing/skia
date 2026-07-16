@@ -18,6 +18,8 @@
     #include <atomic>
 #endif
 
+#pragma clang unsafe_buffer_usage begin
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 std::unique_ptr<GrMemoryPool> GrMemoryPool::Make(size_t preallocSize, size_t minAllocSize) {
@@ -149,3 +151,4 @@ void GrMemoryPool::validate() const {
     SkASSERT(allocCount > 0 || this->isEmpty());
 }
 #endif
+#pragma clang unsafe_buffer_usage end

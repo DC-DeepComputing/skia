@@ -94,6 +94,8 @@ using U8  = V<uint8_t>;
     #define SI static inline
 #endif
 
+#pragma clang unsafe_buffer_usage begin
+
 template <typename T, typename P>
 SI T load(const P* ptr) {
     T val;
@@ -1598,3 +1600,4 @@ void run_program(const Op* program, const void** contexts, SKCMS_MAYBE_UNUSED pt
         memcpy((char*)dst + (size_t)i*dst_bpp, tmp, (size_t)n*dst_bpp);
     }
 }
+#pragma clang unsafe_buffer_usage end

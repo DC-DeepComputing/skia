@@ -537,6 +537,8 @@ static void blit_row_s32_opaque(SkPMColor* dst,
     }
 #endif
 
+#pragma clang unsafe_buffer_usage begin
+
 SkBlitRow::Proc32 SkBlitRow::Factory32(unsigned flags) {
     static const SkBlitRow::Proc32 kProcs[] = {
         blit_row_s32_opaque,
@@ -558,3 +560,4 @@ void SkBlitRow::Color32(SkPMColor dst[], int count, SkPMColor color) {
     }
     return SkOpts::blit_row_color32(dst, count, color);
 }
+#pragma clang unsafe_buffer_usage end

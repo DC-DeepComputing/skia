@@ -8,6 +8,8 @@
 #include <optional>
 #include <vector>
 
+#pragma clang unsafe_buffer_usage begin
+
 namespace bentleyottmann {
 std::optional<std::vector<Crossing>> brute_force_crossings(SkSpan<const Segment> segments) {
     std::vector<Crossing> answer;
@@ -23,3 +25,4 @@ std::optional<std::vector<Crossing>> brute_force_crossings(SkSpan<const Segment>
     return answer;
 }
 }  // namespace bentleyottmann
+#pragma clang unsafe_buffer_usage end

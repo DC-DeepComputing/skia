@@ -18,6 +18,8 @@
 #include <cstdint>
 #include <utility>
 
+#pragma clang unsafe_buffer_usage begin
+
 SkTypefaceCache::SkTypefaceCache() {}
 
 void SkTypefaceCache::add(sk_sp<SkTypeface> face) {
@@ -112,3 +114,4 @@ void SkTypefaceCache::Dump() {
     (void)Get().findByProcAndRef(DumpProc, nullptr);
 #endif
 }
+#pragma clang unsafe_buffer_usage end

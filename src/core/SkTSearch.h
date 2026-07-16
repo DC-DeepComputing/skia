@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2006 The Android Open Source Project
  *
@@ -6,13 +5,14 @@
  * found in the LICENSE file.
  */
 
-
 #ifndef SkTSearch_DEFINED
 #define SkTSearch_DEFINED
 
 #include "include/private/SkAssert.h"
 
 #include <cstddef>
+
+#pragma clang unsafe_buffer_usage begin
 
 /**
  *  All of the SkTSearch variants want to return the index (0...N-1) of the
@@ -130,3 +130,4 @@ private:
 #define SkCastForQSort(compare) reinterpret_cast<int (*)(const void*, const void*)>(compare)
 
 #endif
+#pragma clang unsafe_buffer_usage end

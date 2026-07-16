@@ -13,6 +13,8 @@
 
 #include <cstring>
 
+#pragma clang unsafe_buffer_usage begin
+
 static inline void SkRectMemcpy(void* dst, size_t dstRB, const void* src, size_t srcRB,
                                 size_t trimRowBytes, int rowCount) {
     SkASSERT(trimRowBytes <= dstRB);
@@ -30,3 +32,4 @@ static inline void SkRectMemcpy(void* dst, size_t dstRB, const void* src, size_t
 }
 
 #endif
+#pragma clang unsafe_buffer_usage end

@@ -15,6 +15,8 @@
 #include "src/sksl/ir/SkSLFunctionDeclaration.h"
 #include "src/sksl/ir/SkSLType.h"
 
+#pragma clang unsafe_buffer_usage begin
+
 namespace SkSL {
 
 std::unique_ptr<SymbolTable> SymbolTable::insertNewParent() {
@@ -208,3 +210,4 @@ std::unique_ptr<Expression> SymbolTable::instantiateSymbolRef(const Context& con
 }
 
 }  // namespace SkSL
+#pragma clang unsafe_buffer_usage end

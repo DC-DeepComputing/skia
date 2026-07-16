@@ -15,6 +15,8 @@
 #include <cstddef>
 #include <utility>
 
+#pragma clang unsafe_buffer_usage begin
+
 // Verify that the values of enum ResourceType correspond to the expected values
 // as defined in the arrays below.
 // If these are failing, you may need to update the kResourceTypePrefixes
@@ -100,3 +102,4 @@ std::unique_ptr<SkPDFDict> SkPDFMakeResourceDict(
     add_subdict(fontResources,         SkPDFResourceType::kFont,      dict.get());
     return dict;
 }
+#pragma clang unsafe_buffer_usage end

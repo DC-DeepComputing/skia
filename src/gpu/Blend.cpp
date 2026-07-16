@@ -13,6 +13,8 @@
 #include "include/core/SkString.h"
 #endif
 
+#pragma clang unsafe_buffer_usage begin
+
 namespace skgpu {
 
 const char* BlendFuncName(SkBlendMode mode) {
@@ -196,3 +198,4 @@ SkString BlendInfo::dump() const {
 #endif // SK_DEBUG
 
 }  // namespace skgpu
+#pragma clang unsafe_buffer_usage end

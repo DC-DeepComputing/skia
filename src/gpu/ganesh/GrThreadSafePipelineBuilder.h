@@ -15,6 +15,8 @@
 
 #include <atomic>
 
+#pragma clang unsafe_buffer_usage begin
+
 class GrThreadSafePipelineBuilder : public SkRefCnt {
 public:
     GrThreadSafePipelineBuilder() = default;
@@ -109,3 +111,4 @@ protected:
 };
 
 #endif
+#pragma clang unsafe_buffer_usage end

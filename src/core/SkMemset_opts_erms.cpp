@@ -98,6 +98,8 @@ static inline void rect_memset64(uint64_t* dst, uint64_t v, int n, size_t rowByt
 
 #endif // X86_64 && !SK_ENABLE_OPTIMIZE_SIZE
 
+#pragma clang unsafe_buffer_usage begin
+
 namespace SkOpts {
     void Init_Memset_erms() {
         #if (defined(__x86_64__) || defined(_M_X64)) && !defined(SK_ENABLE_OPTIMIZE_SIZE)
@@ -117,3 +119,4 @@ namespace SkOpts {
         #endif  // X86_64 && !SK_ENABLE_OPTIMIZE_SIZE
     }
 }  // namespace SkOpts
+#pragma clang unsafe_buffer_usage end

@@ -18,6 +18,8 @@
 #include <functional>
 #include <vector>
 
+#pragma clang unsafe_buffer_usage begin
+
 class SkCanvas;
 
 namespace sk_app {
@@ -120,3 +122,4 @@ private:
 }   // namespace sk_app
 
 #endif
+#pragma clang unsafe_buffer_usage end

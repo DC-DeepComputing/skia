@@ -32,6 +32,8 @@ using namespace skia_private;
     }
 #endif
 
+#pragma clang unsafe_buffer_usage begin
+
 SkExecutor::~SkExecutor() {}
 
 // The default default SkExecutor is an SkTrivialExecutor, which just runs the work right away.
@@ -217,3 +219,4 @@ std::unique_ptr<SkExecutor> SkExecutor::MakeMultiListLIFOThreadPool(int numWorkL
                                                     threads > 0 ? threads : num_cores(),
                                                     allowBorrowing);
 }
+#pragma clang unsafe_buffer_usage end

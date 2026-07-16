@@ -19,6 +19,8 @@
 #include <cstddef>
 #include <cstdint>
 
+#pragma clang unsafe_buffer_usage begin
+
 class SkMatrix;
 class SkPath;
 struct SkRect;
@@ -215,3 +217,4 @@ inline float CalcNumRadialSegmentsPerRadian(float approxDevStrokeRadius) {
 }  // namespace skgpu::tess
 
 #endif  // skgpu_tessellate_Tessellation_DEFINED
+#pragma clang unsafe_buffer_usage end

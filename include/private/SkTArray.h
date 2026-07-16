@@ -28,6 +28,8 @@
 #include <new>
 #include <utility>
 
+#pragma clang unsafe_buffer_usage begin
+
 namespace skia_private {
 /** TArray<T> implements a typical, mostly std::vector-like array.
     Each T will be default-initialized on allocation, and ~T will be called on destruction.
@@ -821,3 +823,4 @@ public:
 };
 }  // namespace skia_private
 #endif  // SkTArray_DEFINED
+#pragma clang unsafe_buffer_usage end

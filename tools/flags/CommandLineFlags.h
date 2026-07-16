@@ -14,6 +14,8 @@
 #include "include/private/SkTDArray.h"
 #include "src/core/SkTHash.h"
 
+#pragma clang unsafe_buffer_usage begin
+
 /**
  *  Including this file (and compiling CommandLineFlags.cpp) provides command line
  *  parsing. In order to use it, use the following macros in global
@@ -508,3 +510,4 @@ private:
     SkFlagInfo* fNext;
 };
 #endif  // SK_COMMAND_LINE_FLAGS_H
+#pragma clang unsafe_buffer_usage end

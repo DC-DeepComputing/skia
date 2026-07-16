@@ -18,6 +18,8 @@
 #include <memory>
 #include <optional>
 
+#pragma clang unsafe_buffer_usage begin
+
 class SkBitSet {
 public:
     explicit SkBitSet(size_t size)
@@ -158,3 +160,4 @@ private:
 };
 
 #endif
+#pragma clang unsafe_buffer_usage end

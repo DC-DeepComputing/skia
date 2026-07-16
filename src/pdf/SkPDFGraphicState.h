@@ -5,7 +5,6 @@
  * found in the LICENSE file.
  */
 
-
 #ifndef SkPDFGraphicState_DEFINED
 #define SkPDFGraphicState_DEFINED
 
@@ -16,6 +15,8 @@
 
 #include <cstdint>
 #include <cstring>
+
+#pragma clang unsafe_buffer_usage begin
 
 class SkPDFDocument;
 class SkPaint;
@@ -77,3 +78,4 @@ struct SkPDFFillGraphicState {
 SK_END_REQUIRE_DENSE
 
 #endif
+#pragma clang unsafe_buffer_usage end

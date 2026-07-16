@@ -24,6 +24,8 @@
 #include <type_traits>  // IWYU pragma: keep
 #include <utility>
 
+#pragma clang unsafe_buffer_usage begin
+
 // We found allocating strictly doubling amounts of memory from the heap left too
 // much unused slop, particularly on Android.  Instead we'll follow a Fibonacci-like
 // progression.
@@ -369,3 +371,4 @@ public:
 };
 
 #endif  // SkArenaAlloc_DEFINED
+#pragma clang unsafe_buffer_usage end

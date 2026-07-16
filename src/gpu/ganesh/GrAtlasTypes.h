@@ -27,6 +27,8 @@
 #include <cstring>
 #include <utility>
 
+#pragma clang unsafe_buffer_usage begin
+
 class SkPixmap;
 
 /**
@@ -410,3 +412,4 @@ private:
 typedef SkTInternalLList<GrPlot> GrPlotList;
 
 #endif  // GrAtlasTypes_DEFINED
+#pragma clang unsafe_buffer_usage end

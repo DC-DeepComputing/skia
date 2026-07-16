@@ -11,6 +11,8 @@
 #include <stdint.h>
 #include "src/core/SkVx.h"
 
+#pragma clang unsafe_buffer_usage begin
+
 namespace SK_OPTS_NS {
 
     template <typename T>
@@ -69,3 +71,4 @@ namespace SK_OPTS_NS {
 }  // namespace SK_OPTS_NS
 
 #endif//SkUtils_opts_DEFINED
+#pragma clang unsafe_buffer_usage end

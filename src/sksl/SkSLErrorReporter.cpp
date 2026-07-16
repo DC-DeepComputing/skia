@@ -11,6 +11,8 @@
 #include "src/sksl/SkSLCompiler.h"
 #include "src/sksl/SkSLPosition.h"
 
+#pragma clang unsafe_buffer_usage begin
+
 namespace SkSL {
 
 void ErrorReporter::error(Position position, std::string_view msg) {
@@ -27,3 +29,4 @@ void TestingOnly_AbortErrorReporter::handleError(std::string_view msg, Position 
 }
 
 } // namespace SkSL
+#pragma clang unsafe_buffer_usage end

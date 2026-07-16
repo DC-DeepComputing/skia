@@ -16,6 +16,8 @@
 #include <cstddef>
 #include <utility>
 
+#pragma clang unsafe_buffer_usage begin
+
 struct GrShaderCaps;
 
 /**
@@ -138,3 +140,4 @@ private:
 };
 
 #endif
+#pragma clang unsafe_buffer_usage end

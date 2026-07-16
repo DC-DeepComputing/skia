@@ -34,6 +34,8 @@
 #include <string>
 #include <utility>
 
+#pragma clang unsafe_buffer_usage begin
+
 using namespace skia_private;
 
 namespace SkSL {
@@ -902,3 +904,4 @@ std::unique_ptr<Expression> ConstantFolder::Simplify(const Context& context,
 }
 
 }  // namespace SkSL
+#pragma clang unsafe_buffer_usage end

@@ -19,6 +19,8 @@
 #include <cstddef>
 #include <memory>
 
+#pragma clang unsafe_buffer_usage begin
+
 class SkMatrix;
 class SkPath;
 class SkPathBuilder;
@@ -213,3 +215,4 @@ private:
 };
 
 #endif
+#pragma clang unsafe_buffer_usage end

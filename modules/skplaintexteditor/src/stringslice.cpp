@@ -8,6 +8,8 @@
 #include <cstdlib>
 #include <cstring>
 
+#pragma clang unsafe_buffer_usage begin
+
 using namespace SkPlainTextEditor;
 
 void StringSlice::FreeWrapper::operator()(void* t) { std::free(t); }
@@ -80,3 +82,4 @@ void StringSlice::realloc(std::size_t size) {
     fPtr.reset((char*)std::realloc(fPtr.release(), fCapacity));
     assert(fCapacity >= fLength);
 }
+#pragma clang unsafe_buffer_usage end

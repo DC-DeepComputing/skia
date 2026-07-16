@@ -13,6 +13,8 @@
 
 #include <algorithm>
 
+#pragma clang unsafe_buffer_usage begin
+
 /**
  * The location of Y, U, V, or A values within the planes described by SkYUVAInfo. Computed from a
  * SkYUVAInfo and the set of channels present in a set of pixmaps/textures.
@@ -61,3 +63,4 @@ struct SkYUVAInfo::YUVALocation {
 };
 
 #endif
+#pragma clang unsafe_buffer_usage end

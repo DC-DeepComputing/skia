@@ -48,6 +48,8 @@
 #include <optional>
 #include <string_view>
 
+#pragma clang unsafe_buffer_usage begin
+
 namespace SkSL {
 
 using IntrinsicArguments = std::array<const Expression*, 3>;
@@ -1299,3 +1301,4 @@ std::unique_ptr<Expression> FunctionCall::Make(const Context& context,
 }
 
 }  // namespace SkSL
+#pragma clang unsafe_buffer_usage end

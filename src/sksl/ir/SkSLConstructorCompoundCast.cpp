@@ -20,6 +20,8 @@
 #include <iterator>
 #include <optional>
 
+#pragma clang unsafe_buffer_usage begin
+
 namespace SkSL {
 
 static std::unique_ptr<Expression> cast_constant_composite(const Context& context,
@@ -98,3 +100,4 @@ std::unique_ptr<Expression> ConstructorCompoundCast::Make(const Context& context
 }
 
 }  // namespace SkSL
+#pragma clang unsafe_buffer_usage end

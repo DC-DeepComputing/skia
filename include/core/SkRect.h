@@ -24,6 +24,8 @@
 #include <cstring>
 #include <optional>
 
+#pragma clang unsafe_buffer_usage begin
+
 struct SkRect;
 class SkString;
 
@@ -1417,3 +1419,4 @@ inline bool SkIRect::contains(const SkRect& r) const {
 }
 
 #endif
+#pragma clang unsafe_buffer_usage end

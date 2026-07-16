@@ -17,6 +17,8 @@
 #include <cstddef>
 #include <iterator>
 
+#pragma clang unsafe_buffer_usage begin
+
 static constexpr int kInverseTableSize = 1024; // SK_FDot6One * 16
 
 static inline SkFixed quick_inverse(SkFDot6 x) {
@@ -713,3 +715,4 @@ bool SkAnalyticCubicEdge::updateCubic() {
     fCurveCount = SkToS8(count);
     return success;
 }
+#pragma clang unsafe_buffer_usage end

@@ -5,6 +5,8 @@
 #include "src/utils/SkOSPath.h"
 #include "tools/flags/CommonFlags.h"
 
+#pragma clang unsafe_buffer_usage begin
+
 using namespace skia_private;
 
 namespace CommonFlags {
@@ -91,3 +93,4 @@ bool CollectImages(const CommandLineFlags::StringArray& images, TArray<SkString>
 }
 
 }  // namespace CommonFlags
+#pragma clang unsafe_buffer_usage end

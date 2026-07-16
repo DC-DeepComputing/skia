@@ -23,6 +23,8 @@
 #include <new>
 #include <utility>
 
+#pragma clang unsafe_buffer_usage begin
+
 class TestResource;
 
 namespace skgpu {
@@ -441,3 +443,4 @@ private:
 } // namespace skgpu
 
 #endif // skgpu_ResourceKey_DEFINED
+#pragma clang unsafe_buffer_usage end

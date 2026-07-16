@@ -15,6 +15,8 @@
 #include <cmath>
 #include <cstdint>
 
+#pragma clang unsafe_buffer_usage begin
+
 struct SkIPoint;
 
 /** SkIVector provides an alternative name for SkIPoint. SkIVector and SkIPoint
@@ -558,3 +560,4 @@ struct SK_API SkPoint {
 };
 
 #endif
+#pragma clang unsafe_buffer_usage end

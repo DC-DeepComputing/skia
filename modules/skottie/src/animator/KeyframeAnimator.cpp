@@ -13,6 +13,8 @@
 
 #include <cstddef>
 
+#pragma clang unsafe_buffer_usage begin
+
 #define DUMP_KF_RECORDS 0
 
 namespace skottie::internal {
@@ -223,3 +225,4 @@ uint32_t AnimatorBuilder::parseMapping(const skjson::ObjectValue& jkf) {
 }
 
 } // namespace skottie::internal
+#pragma clang unsafe_buffer_usage end

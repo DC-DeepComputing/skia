@@ -12,6 +12,8 @@
 #include "src/core/SkTraceEvent.h"
 #include "tools/flags/CommandLineFlags.h"
 
+#pragma clang unsafe_buffer_usage begin
+
 PERFETTO_TRACK_EVENT_STATIC_STORAGE();
 
 static DEFINE_string(perfettoOutputDir, "./",
@@ -334,3 +336,4 @@ void SkPerfettoTrace::newTracingSection(const char* name) {
     }
     this->openNewTracingSession(name);
 }
+#pragma clang unsafe_buffer_usage end
