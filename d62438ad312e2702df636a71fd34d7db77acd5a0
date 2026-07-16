@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a76d715_748e4f25",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-07-16T14:58:24Z",
+      "side": 1,
+      "message": "Ganesh folks should also take a look at this.  Rob, is that you? :)",
+      "revId": "d62438ad312e2702df636a71fd34d7db77acd5a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1412aa14_e3021cc1",
+        "filename": "gn/tests.gni",
+        "patchSetId": 3
+      },
+      "lineNbr": 514,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-07-16T14:58:24Z",
+      "side": 1,
+      "message": "You can add the test to `SmallPathRendererTest.cpp`, no need for a dedicated source.",
+      "range": {
+        "startLine": 514,
+        "startChar": 11,
+        "endLine": 514,
+        "endChar": 42
+      },
+      "revId": "d62438ad312e2702df636a71fd34d7db77acd5a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7bc30285_065bca85",
+        "filename": "src/gpu/ganesh/ops/SmallPathAtlasMgr.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-07-16T14:58:24Z",
+      "side": 1,
+      "message": "Since we\u0027re always adding a listener for newly created `SmallPathShapeData`, I think it would make sense to do that in its constructor?  Then we can assert that the listener is always present and we can drop the defensive checks.",
+      "range": {
+        "startLine": 104,
+        "startChar": 0,
+        "endLine": 107,
+        "endChar": 51
+      },
+      "revId": "d62438ad312e2702df636a71fd34d7db77acd5a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22f86a4a_2316d5ed",
+        "filename": "src/gpu/ganesh/ops/SmallPathShapeData.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-07-16T14:58:24Z",
+      "side": 1,
+      "message": "This is interestingly different from SoftwarePathRenderer/TriangulatingPathRenderer, in that the listener only tracks whether the cached entry is stale, but does not immediately clear it (using `SkMessageBus\u003cskgpu::UniqueKeyInvalidatedMessage`).\n\nI guess that\u0027s sufficient for the bug at hand, but clearing the cache on change seems more robust as it avoids accumulating stale entries (AFAICT there is no cleanup mechanism for this cache, so we\u0027re effectively leaking?).\n\nHave you looked into what it would take to replicate the cleanup functionality from other renderers?",
+      "revId": "d62438ad312e2702df636a71fd34d7db77acd5a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
