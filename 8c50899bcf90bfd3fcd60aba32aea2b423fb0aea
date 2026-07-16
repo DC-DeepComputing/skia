@@ -1,0 +1,85 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "80ab009b_31278fd6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-07-16T14:07:48Z",
+      "side": 1,
+      "message": "Might be a tricky to set up, but can we add a unit test for the fix?\n\n`SkDynamicMemoryStream`, write blob data following the `SkTextBlobPriv::Flatten` structure while injecting invalid cluster indices, create a `SkReadBuffer` pointing at the data, then call `SkTextBlobPriv::MakeFromBuffer` and check that we rejected the input.",
+      "revId": "8c50899bcf90bfd3fcd60aba32aea2b423fb0aea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab6ea53e_5355ec17",
+        "filename": "src/core/SkTextBlob.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 783,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-07-16T14:07:48Z",
+      "side": 1,
+      "message": "`clusters` is `uint32_t`, we can drop the negative check.",
+      "range": {
+        "startLine": 783,
+        "startChar": 51,
+        "endLine": 783,
+        "endChar": 71
+      },
+      "revId": "8c50899bcf90bfd3fcd60aba32aea2b423fb0aea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0d1c7c4_f65e8f95",
+        "filename": "src/core/SkTextBlob.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 783,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-07-16T14:07:48Z",
+      "side": 1,
+      "message": "`\u003e\u003d textSize` (textSize is an out of bounds index)",
+      "range": {
+        "startLine": 783,
+        "startChar": 37,
+        "endLine": 783,
+        "endChar": 47
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "9970e97a_09529aa7",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/core/SkTextBlob.cpp",
+              "range": {
+                "startLine": 783,
+                "startChar": 0,
+                "endLine": 784,
+                "endChar": 0
+              },
+              "replacement": "                if (buf-\u003eclusters[i] \u003e\u003d textSize || buf-\u003eclusters[i] \u003c 0){\n"
+            }
+          ]
+        }
+      ],
+      "revId": "8c50899bcf90bfd3fcd60aba32aea2b423fb0aea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
