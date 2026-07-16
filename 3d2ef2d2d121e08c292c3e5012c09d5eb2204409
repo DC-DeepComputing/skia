@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0ef9688_a9f32dbc",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 1016,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-07-16T13:59:56Z",
+      "side": 1,
+      "message": "I also hoisted this blender definition outside of the loop so the condition wouldn\u0027t be getting evaluated everytime we have a color/needing a blender.",
+      "revId": "3d2ef2d2d121e08c292c3e5012c09d5eb2204409",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

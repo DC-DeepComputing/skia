@@ -22,6 +22,30 @@
       },
       "revId": "e37d3e5da0159f57e198dfe597f2337903f2a9ac",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "94850030_5cc9c675",
+        "filename": "src/sksl/sksl_gpu.sksl",
+        "patchSetId": 20
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-07-16T13:59:56Z",
+      "side": 1,
+      "message": "Made that change as an earlier CL and now the issue is also resolved here.",
+      "parentUuid": "9c61481f_56dd94ee",
+      "range": {
+        "startLine": 317,
+        "startChar": 0,
+        "endLine": 321,
+        "endChar": 48
+      },
+      "revId": "e37d3e5da0159f57e198dfe597f2337903f2a9ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
