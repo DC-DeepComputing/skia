@@ -28,7 +28,7 @@ import sys
 # Separate targets (starting with // or @) from outputs and flags
 targets = []
 outputs = {}
-bazel_args = []
+bazel_args = ["--announce_rc"]
 for arg in sys.argv[1:]:
     if arg.startswith("//") or arg.startswith("@"):
         targets.append(arg)
