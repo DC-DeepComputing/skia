@@ -38,6 +38,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "b2a5f219_846d78d6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 18514
+      },
+      "writtenOn": "2026-07-16T17:27:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a9950366_3be2a316",
+      "revId": "c76393f8936f7bae8f1ac93157c5d0151e97d8d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "81a1f396_102f41f6",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
@@ -315,6 +333,30 @@
       "side": 1,
       "message": "I think my preference would be for a macro that is either a no-op or that inserts the scoping object variable behind the scenes. This is mostly because its capitalization matches what we\u0027d do for a pointer field that is being excluded from raw_ptr conversion. It is a bit annoying to have it introducing a local variable name that theoretically could conflict with something else in the function block, but if we do something more unique than `exclusion` like `__miracleObjExclusion` I think that\u0027s safe.\n\nI would also prefer that the macro name reflect that these safety checks are specific to MiracleObj or the use of PartitionAlloc, such `SK_SCOPED_DISABLE_PARTIION_ALLOC_SAFETY_CHECKS`",
       "parentUuid": "bdff8745_b266be8d",
+      "range": {
+        "startLine": 250,
+        "startChar": 0,
+        "endLine": 250,
+        "endChar": 48
+      },
+      "revId": "c76393f8936f7bae8f1ac93157c5d0151e97d8d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "084ade0a_37a5778d",
+        "filename": "src/gpu/graphite/DrawList.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 18514
+      },
+      "writtenOn": "2026-07-16T17:27:53Z",
+      "side": 1,
+      "message": "Added but note: I used `_miracleObjExclusion` not `__miracleObjExclusion` because using `__` anywhere in a variable name in C++ is UB 😭",
+      "parentUuid": "b5aaab7f_a5c41851",
       "range": {
         "startLine": 250,
         "startChar": 0,
