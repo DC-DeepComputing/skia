@@ -414,6 +414,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "16fc3ff7_363c1a86",
+        "filename": "src/partition_alloc/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 18514
+      },
+      "writtenOn": "2026-07-16T20:48:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "06a50cb2_03d2ecf9",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 26
+      },
+      "revId": "c76393f8936f7bae8f1ac93157c5d0151e97d8d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fb2d99ac_e2a2dea2",
@@ -461,6 +485,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8256baf_d64a8243",
+        "filename": "src/partition_alloc/BUILD.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 18514
+      },
+      "writtenOn": "2026-07-16T20:48:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4d8d130d_bfa623af",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 39
+      },
+      "revId": "c76393f8936f7bae8f1ac93157c5d0151e97d8d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6e0a8ff3_8ea4e1ba",
@@ -484,6 +532,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d8286a4_8e59ad23",
+        "filename": "src/partition_alloc/ScopedSafetyChecksExclusion.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 18514
+      },
+      "writtenOn": "2026-07-16T20:48:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6e0a8ff3_8ea4e1ba",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 24
+      },
+      "revId": "c76393f8936f7bae8f1ac93157c5d0151e97d8d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9a6eb027_1ff95b8f",
@@ -497,6 +569,30 @@
       "writtenOn": "2026-07-15T09:20:19Z",
       "side": 1,
       "message": "Using \"has_include\" looks fragile to me. Someone it going to move files in chrome, and then we would silently break things without knowing. I would avoid using it.",
+      "range": {
+        "startLine": 15,
+        "startChar": 6,
+        "endLine": 15,
+        "endChar": 58
+      },
+      "revId": "c76393f8936f7bae8f1ac93157c5d0151e97d8d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "912516d7_b5d83417",
+        "filename": "src/partition_alloc/ScopedSafetyChecksExclusion.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 18514
+      },
+      "writtenOn": "2026-07-16T20:48:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9a6eb027_1ff95b8f",
       "range": {
         "startLine": 15,
         "startChar": 6,
@@ -568,6 +664,30 @@
       "side": 1,
       "message": "Sorry, this does not exist. I must have clicked \"Save\" on my comment by accident. That said, The question here is what should happen? I\u0027m not a Skia committer. Should I make some skia define? SK_USE_SAFETY_CHECKS which will be on in chrome and off everywhere else? Something else?",
       "parentUuid": "1f98b090_c4f2ebfd",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 6
+      },
+      "revId": "c76393f8936f7bae8f1ac93157c5d0151e97d8d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "41ab8fc1_d14cc729",
+        "filename": "src/partition_alloc/ScopedSafetyChecksExclusion.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 18514
+      },
+      "writtenOn": "2026-07-16T20:48:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0f3170f0_5443f9bb",
       "range": {
         "startLine": 13,
         "startChar": 0,
