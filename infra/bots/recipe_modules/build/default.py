@@ -391,6 +391,8 @@ def compile_fn(api, checkout_root, out_dir):
       if 'Fontations' in extra_tokens:
         api.run(api.step, 'gn clean',
               cmd=[gn, 'clean', out_dir])
+      if 'RustALL' in extra_tokens:  # pragma: nocover
+        api.run(api.step, 'list bazel flags', cmd=['bazelisk', 'info', '--announce_rc'])
       api.run(api.step, 'ninja', cmd=[ninja, '-C', out_dir])
       if ccache:
         api.run(api.step, 'ccache stats-end', cmd=[ccache, '-s'])
