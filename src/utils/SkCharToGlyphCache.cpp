@@ -7,6 +7,8 @@
 
 #include "src/utils/SkCharToGlyphCache.h"
 
+#pragma clang unsafe_buffer_usage begin
+
 SkCharToGlyphCache::SkCharToGlyphCache() {
     this->reset();
 }
@@ -127,3 +129,4 @@ void SkCharToGlyphCache::insertCharAndGlyph(int index, SkUnichar unichar, SkGlyp
     }
 #endif
 }
+#pragma clang unsafe_buffer_usage end

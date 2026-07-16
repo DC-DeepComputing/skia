@@ -12,6 +12,8 @@
 #include "src/core/SkTSearch.h"
 #include "src/core/SkUTF.h"
 
+#pragma clang unsafe_buffer_usage begin
+
 static SkUnichar next_unichar_UTF16BE(const uint8_t** srcPtr, size_t* length) {
     SkASSERT(srcPtr && *srcPtr && length);
     SkASSERT(*length > 0);
@@ -584,3 +586,4 @@ bool SkOTTableName::Iterator::next(SkOTTableName::Iterator::Record& record) {
     record.language = "und";
     return true;
 }
+#pragma clang unsafe_buffer_usage end

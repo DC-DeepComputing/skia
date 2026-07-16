@@ -2,6 +2,8 @@
 
 #include "modules/skparagraph/include/FontArguments.h"
 
+#pragma clang unsafe_buffer_usage begin
+
 static bool operator==(const SkFontArguments::VariationPosition::Coordinate& a,
                        const SkFontArguments::VariationPosition::Coordinate& b) {
    return a.axis == b.axis && a.value == b.value;
@@ -77,3 +79,4 @@ sk_sp<SkTypeface> FontArguments::CloneTypeface(const sk_sp<SkTypeface>& typeface
 
 }  // namespace textlayout
 }  // namespace skia
+#pragma clang unsafe_buffer_usage end

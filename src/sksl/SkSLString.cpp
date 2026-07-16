@@ -19,6 +19,8 @@
 #include <string>
 #include <string_view>
 
+#pragma clang unsafe_buffer_usage begin
+
 template <typename RoundtripType, int kFullPrecision>
 static std::string to_string_impl(RoundtripType value) {
     std::stringstream buffer;
@@ -111,3 +113,4 @@ void SkSL::String::vappendf(std::string *str, const char* fmt, va_list args) {
     }
     va_end(reuse);
 }
+#pragma clang unsafe_buffer_usage end

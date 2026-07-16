@@ -18,6 +18,8 @@
 #include <type_traits>
 #include <utility>
 
+#pragma clang unsafe_buffer_usage begin
+
 namespace skia_private {
 
 // Before trying to use THashTable, look below to see if THashMap or THashSet works for you.
@@ -711,4 +713,5 @@ private:
 
 }  // namespace skia_private
 
+#pragma clang unsafe_buffer_usage end
 #endif  // SkTHash_DEFINED

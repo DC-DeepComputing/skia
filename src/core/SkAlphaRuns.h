@@ -16,6 +16,8 @@
 
 #include <cstdint>
 
+#pragma clang unsafe_buffer_usage begin
+
 /** Sparse array of run-length-encoded alpha (supersampling coverage) values.
     Sparseness allows us to independently compose several paths into the
     same SkAlphaRuns buffer.
@@ -198,4 +200,5 @@ private:
     SkDEBUGCODE(void validate() const;)
 };
 
+#pragma clang unsafe_buffer_usage end
 #endif

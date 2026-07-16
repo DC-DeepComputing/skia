@@ -21,6 +21,8 @@
 #include <memory>
 #include <utility>
 
+#pragma clang unsafe_buffer_usage begin
+
 class SkFontData {
 public:
     /** Makes a copy of the data in 'axis'. */
@@ -170,4 +172,5 @@ private:
     SkTypeface::FactoryId fFactoryId = 0;
 };
 
+#pragma clang unsafe_buffer_usage end
 #endif // SkFontDescriptor_DEFINED

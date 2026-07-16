@@ -10,6 +10,8 @@
 
 #include "include/core/SkScalar.h"
 
+#pragma clang unsafe_buffer_usage begin
+
 template <typename T> class SkNoDestructor;
 
 namespace sktext::gpu {
@@ -42,4 +44,5 @@ private:
 
 }  // namespace sktext::gpu
 
+#pragma clang unsafe_buffer_usage end
 #endif

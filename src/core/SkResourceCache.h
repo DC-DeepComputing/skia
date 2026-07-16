@@ -14,6 +14,8 @@
 #include <cstddef>
 #include <cstdint>
 
+#pragma clang unsafe_buffer_usage begin
+
 class SkCachedData;
 class SkDiscardableMemory;
 class SkTraceMemoryDump;
@@ -292,4 +294,5 @@ private:
     void validate() const {}
 #endif
 };
+#pragma clang unsafe_buffer_usage end
 #endif

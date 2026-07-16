@@ -33,6 +33,8 @@
     #endif
 #endif
 
+#pragma clang unsafe_buffer_usage begin
+
 using namespace skcms_private;
 
 // A potential vulnerability exists where a large CLUT can cause an integer
@@ -3219,3 +3221,4 @@ bool skcms_MakeUsableAsDestinationWithSingleCurve(skcms_ICCProfile* profile) {
     assert_usable_as_destination(profile);
     return true;
 }
+#pragma clang unsafe_buffer_usage end

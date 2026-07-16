@@ -22,6 +22,8 @@
 #include <cstdint>
 #include <memory>
 
+#pragma clang unsafe_buffer_usage begin
+
 /**
  * SkColorSpaceLuminance is used to convert luminances to and from linear and
  * perceptual color spaces.
@@ -261,4 +263,5 @@ template<> /*static*/ inline U8CPU sk_apply_lut_if<true>(U8CPU component, const 
 }
 ///@}
 
+#pragma clang unsafe_buffer_usage end
 #endif

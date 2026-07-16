@@ -87,7 +87,6 @@ WARNINGS = [
     "-Wno-undefined-func-template",
     "-Wno-unused-parameter",  # It is common to have unused parameters in src/
     "-Wno-zero-as-null-pointer-constant",  # VK_NULL_HANDLE is defined as 0
-    "-Wno-unsafe-buffer-usage",
     #### Warnings we would like to fix ####
     "-Wno-abstract-vbase-init",
     "-Wno-cast-align",

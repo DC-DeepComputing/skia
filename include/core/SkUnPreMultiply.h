@@ -1,10 +1,10 @@
-
 /*
  * Copyright 2008 The Android Open Source Project
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+
 #ifndef SkUnPreMultiply_DEFINED
 #define SkUnPreMultiply_DEFINED
 
@@ -13,6 +13,8 @@
 #include "include/private/SkCPUTypes.h"
 
 #include <cstdint>
+
+#pragma clang unsafe_buffer_usage begin
 
 class SK_API SkUnPreMultiply {
 public:
@@ -52,4 +54,5 @@ private:
     static const uint32_t gTable[256];
 };
 
+#pragma clang unsafe_buffer_usage end
 #endif

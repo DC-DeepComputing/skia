@@ -43,6 +43,8 @@
 #include <stdint.h>
 #include <string.h>
 
+#pragma clang unsafe_buffer_usage begin
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -493,4 +495,5 @@ static inline void skcms_SetXYZD50(skcms_ICCProfile* p, const skcms_Matrix3x3* m
 
 #ifdef __cplusplus
 }
+#pragma clang unsafe_buffer_usage end
 #endif

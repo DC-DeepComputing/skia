@@ -15,6 +15,8 @@
 #include <cstddef>
 #include <cstdint>
 
+#pragma clang unsafe_buffer_usage begin
+
 typedef float SkScalar;
 
 /** \class SkRBuffer
@@ -131,4 +133,5 @@ private:
     char* fStop;
 };
 
+#pragma clang unsafe_buffer_usage end
 #endif

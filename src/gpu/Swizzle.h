@@ -18,6 +18,8 @@
 #include <cstdint>
 #include <type_traits>
 
+#pragma clang unsafe_buffer_usage begin
+
 class SkRasterPipeline;
 enum SkAlphaType : int;
 
@@ -202,4 +204,5 @@ constexpr Swizzle Swizzle::invert() const {
 }
 
 } // namespace skgpu
+#pragma clang unsafe_buffer_usage end
 #endif

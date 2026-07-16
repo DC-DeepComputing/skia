@@ -17,6 +17,8 @@
 #include <algorithm>
 #include <utility>
 
+#pragma clang unsafe_buffer_usage begin
+
 /*
     In setLine, setQuadratic, setCubic, the first thing we do is to convert
     the points into FDot6. This is modulated by the shift parameter, which
@@ -588,3 +590,4 @@ bool SkCubicEdge::nextSegment() {
     fSegmentCount = SkToU8(count);
     return success;
 }
+#pragma clang unsafe_buffer_usage end

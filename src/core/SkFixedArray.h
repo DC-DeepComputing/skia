@@ -16,6 +16,8 @@
 #include <initializer_list>
 #include <type_traits>  // IWYU pragma: keep for std::is_trivial_v
 
+#pragma clang unsafe_buffer_usage begin
+
 namespace skia_private {
 
 /**
@@ -229,4 +231,5 @@ private:
 
 }  // namespace skia_private
 
+#pragma clang unsafe_buffer_usage end
 #endif

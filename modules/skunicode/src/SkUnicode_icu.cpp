@@ -4,6 +4,7 @@
 * Use of this source code is governed by a BSD-style license that can be
 * found in the LICENSE file.
 */
+
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
@@ -42,6 +43,8 @@
 #include "SkLoadICU.h"
 #include "include/private/SkOnce.h"
 #endif
+
+#pragma clang unsafe_buffer_usage begin
 
 using namespace skia_private;
 
@@ -706,3 +709,4 @@ sk_sp<SkUnicode> Make() {
     return nullptr;
 }
 }  // namespace SkUnicodes::ICU
+#pragma clang unsafe_buffer_usage end

@@ -22,6 +22,8 @@
 #include <utility>
 #include <vector>
 
+#pragma clang unsafe_buffer_usage begin
+
 class SkStreamAsset;
 
 /**
@@ -521,4 +523,5 @@ private:
     using INHERITED = SkWStream;
 };
 
+#pragma clang unsafe_buffer_usage end
 #endif

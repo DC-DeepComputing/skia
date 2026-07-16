@@ -20,6 +20,8 @@
 #include <cmath>
 #include <cstring>
 
+#pragma clang unsafe_buffer_usage begin
+
 // See skia.org/docs/user/color  (== site/docs/user/color.md).
 
 // Compute the Y vector for the HLG OOTF in the primaries of a specified color space. The value
@@ -273,3 +275,4 @@ void SkColorSpaceXformSteps::apply(SkRasterPipeline* p) const {
     if (this->fFlags.encode)          { p->appendTransferFunction(fDstTFInv); }
     if (this->fFlags.premul)          { p->append(SkRasterPipelineOp::premul); }
 }
+#pragma clang unsafe_buffer_usage end

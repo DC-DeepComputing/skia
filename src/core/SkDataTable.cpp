@@ -13,6 +13,8 @@
 
 #include <cstring>
 
+#pragma clang unsafe_buffer_usage begin
+
 static void malloc_freeproc(void* context) {
     sk_free(context);
 }
@@ -131,3 +133,4 @@ sk_sp<SkDataTable> SkDataTable::MakeArrayProc(const void* array, size_t elemSize
     }
     return sk_sp<SkDataTable>(new SkDataTable(array, elemSize, count, proc, ctx));
 }
+#pragma clang unsafe_buffer_usage end

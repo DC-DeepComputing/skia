@@ -4,7 +4,10 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+
 #include "include/core/SkRSXform.h"
+
+#pragma clang unsafe_buffer_usage begin
 
 void SkRSXform::toQuad(SkScalar width, SkScalar height, SkPoint quad[4]) const {
 #if 0
@@ -43,3 +46,4 @@ void SkRSXform::toTriStrip(SkScalar width, SkScalar height, SkPoint strip[4]) co
     strip[2].set(m00 * width + m02, m10 * width + m12);
     strip[3].set(m00 * width + m01 * height + m02, m10 * width + m11 * height + m12);
 }
+#pragma clang unsafe_buffer_usage end

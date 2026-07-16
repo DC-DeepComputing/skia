@@ -15,6 +15,8 @@
 #include <functional>
 #include <string>
 
+#pragma clang unsafe_buffer_usage begin
+
 namespace SkSL { enum class ProgramKind : int8_t; }
 
 namespace SkShaderUtils {
@@ -41,4 +43,5 @@ void PrintShaderBanner(SkSL::ProgramKind programKind);
 
 }  // namespace SkShaderUtils
 
+#pragma clang unsafe_buffer_usage end
 #endif

@@ -9,6 +9,8 @@
 
 #include "include/core/SkBlendMode.h"
 
+#pragma clang unsafe_buffer_usage begin
+
 namespace {
 
 using skgpu::BlendFormula;
@@ -224,3 +226,4 @@ BlendFormula GetLCDBlendFormula(SkBlendMode xfermode) {
 }
 
 }  // namespace skgpu
+#pragma clang unsafe_buffer_usage end

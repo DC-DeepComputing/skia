@@ -4,9 +4,12 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+
 #include "src/core/SkMasks.h"
 
 #include "include/private/SkDebug.h"
+
+#pragma clang unsafe_buffer_usage begin
 
 /*
  *
@@ -150,4 +153,4 @@ SkMasks* SkMasks::CreateMasks(InputMasks masks, int bytesPerPixel) {
                        process_mask(masks.blue ),
                        process_mask(masks.alpha));
 }
-
+#pragma clang unsafe_buffer_usage end

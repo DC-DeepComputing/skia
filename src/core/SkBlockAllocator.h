@@ -23,6 +23,8 @@
 #include <new>
 #include <type_traits>
 
+#pragma clang unsafe_buffer_usage begin
+
 /**
  * SkBlockAllocator provides low-level support for a block allocated arena with a dynamic tail that
  * tracks space reservations within each block. Its APIs provide the ability to reserve space,
@@ -751,4 +753,5 @@ SkBlockAllocator::BlockIter<false, true> SkBlockAllocator::rblocks() const {
     return BlockIter<false, true>(this);
 }
 
+#pragma clang unsafe_buffer_usage end
 #endif // SkBlockAllocator_DEFINED

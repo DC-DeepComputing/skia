@@ -13,6 +13,8 @@
 
 #include <cmath>
 
+#pragma clang unsafe_buffer_usage begin
+
 typedef float SkScalar;
 
 #define SK_Scalar1                  1.0f
@@ -145,4 +147,5 @@ static inline bool SkScalarsEqual(const SkScalar a[], const SkScalar b[], int n)
     return true;
 }
 
+#pragma clang unsafe_buffer_usage end
 #endif

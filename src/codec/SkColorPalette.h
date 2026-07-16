@@ -12,6 +12,8 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
 
+#pragma clang unsafe_buffer_usage begin
+
 /** \class SkColorPalette
 
     SkColorPalette holds an array of SkPMColors (premultiplied 32-bit colors) used by
@@ -48,4 +50,5 @@ private:
     using INHERITED = SkRefCnt;
 };
 
+#pragma clang unsafe_buffer_usage end
 #endif

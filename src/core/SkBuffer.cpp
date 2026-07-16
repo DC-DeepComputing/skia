@@ -12,6 +12,8 @@
 
 #include <cstdint>
 
+#pragma clang unsafe_buffer_usage begin
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 const void* SkRBuffer::skip(size_t size) {
@@ -87,4 +89,5 @@ size_t SkWBuffer::padToAlign4() {
     #define AssertBuffer32(buffer)
 #endif
 
+#pragma clang unsafe_buffer_usage end
 #endif

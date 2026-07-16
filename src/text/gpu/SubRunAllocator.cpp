@@ -14,6 +14,8 @@
 #include <memory>
 #include <new>
 
+#pragma clang unsafe_buffer_usage begin
+
 namespace sktext::gpu {
 
 // -- BagOfBytes ---------------------------------------------------------------------------------
@@ -94,3 +96,4 @@ void* SubRunAllocator::alignedBytes(int unsafeSize, int unsafeAlignment) {
 }
 
 }  // namespace sktext::gpu
+#pragma clang unsafe_buffer_usage end

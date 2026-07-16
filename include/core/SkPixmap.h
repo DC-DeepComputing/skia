@@ -21,6 +21,8 @@
 #include <cstddef>
 #include <cstdint>
 
+#pragma clang unsafe_buffer_usage begin
+
 class SkColorSpace;
 enum SkAlphaType : int;
 struct SkMask;
@@ -733,4 +735,5 @@ private:
     SkImageInfo     fInfo;
 };
 
+#pragma clang unsafe_buffer_usage end
 #endif

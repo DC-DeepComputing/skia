@@ -33,6 +33,8 @@
 #include <fstream>
 #endif
 
+#pragma clang unsafe_buffer_usage begin
+
 namespace SkSL {
 
 // These flags allow tools like Viewer or Nanobench to override the compiler's ProgramSettings.
@@ -531,3 +533,4 @@ void Compiler::writeErrorCount() {
 }
 
 }  // namespace SkSL
+#pragma clang unsafe_buffer_usage end

@@ -26,6 +26,8 @@
   #include "tools/trace/SkPerfettoTrace.h"
 #endif
 
+#pragma clang unsafe_buffer_usage begin
+
 static DEFINE_string(trace,
               "",
               "Log trace events in one of several modes:\n"
@@ -111,3 +113,4 @@ const char* SkEventTracingCategories::getCategoryGroupName(const uint8_t* catego
     }
     return nullptr;
 }
+#pragma clang unsafe_buffer_usage end

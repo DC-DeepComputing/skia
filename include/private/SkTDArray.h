@@ -17,6 +17,8 @@
 #include <initializer_list>
 #include <utility>
 
+#pragma clang unsafe_buffer_usage begin
+
 // We'd prefer not to use these types anymore. SkTDArray can be replaced skia_private::TArray
 
 class SK_SPI SkTDStorage {
@@ -244,4 +246,5 @@ private:
 
 template <typename T> static inline void swap(SkTDArray<T>& a, SkTDArray<T>& b) { a.swap(b); }
 
+#pragma clang unsafe_buffer_usage end
 #endif

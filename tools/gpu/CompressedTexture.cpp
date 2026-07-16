@@ -7,6 +7,8 @@
 
 #include "tools/gpu/CompressedTexture.h"
 
+#pragma clang unsafe_buffer_usage begin
+
 // The following four helpers are copied from src/gpu/DataUtils.cpp to support the test only
 // GrTwoColorBC1Compress function. Ideally we would copy the test function into DataUtils.cpp
 // instead, but we're currently trying to avoid using the GPU_TEST_UTILS define in src/gpu.
@@ -87,3 +89,4 @@ void TwoColorBC1Compress(const SkPixmap& pixmap, SkColor otherColor, char* dstPi
 }
 
 }  // namespace sk_gpu_test
+#pragma clang unsafe_buffer_usage end

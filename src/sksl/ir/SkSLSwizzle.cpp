@@ -27,6 +27,8 @@
 #include <cstring>
 #include <optional>
 
+#pragma clang unsafe_buffer_usage begin
+
 using namespace skia_private;
 
 namespace SkSL {
@@ -553,3 +555,4 @@ std::string Swizzle::description(OperatorPrecedence) const {
 }
 
 }  // namespace SkSL
+#pragma clang unsafe_buffer_usage end

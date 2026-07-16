@@ -12,6 +12,8 @@
 #include "src/core/SkColorData.h"
 #include "src/core/SkVx.h"
 
+#pragma clang unsafe_buffer_usage begin
+
 // 1, 2 or 4 SkPMColors, generally vectorized.
 class Sk4px {
 public:
@@ -246,4 +248,5 @@ private:
 static_assert(sizeof(Sk4px) == sizeof(skvx::byte16));
 static_assert(alignof(Sk4px) == alignof(skvx::byte16));
 
+#pragma clang unsafe_buffer_usage end
 #endif // Sk4px_DEFINED

@@ -4,10 +4,13 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+
 #ifndef SkMetaData_DEFINED
 #define SkMetaData_DEFINED
 
 #include "include/core/SkScalar.h"
+
+#pragma clang unsafe_buffer_usage begin
 
 /** A map from c-string keys to arrays of POD (int32_t, kScalar, void*, or bool)
     values.
@@ -120,4 +123,5 @@ private:
     void remove(FindResult);
 };
 
+#pragma clang unsafe_buffer_usage end
 #endif

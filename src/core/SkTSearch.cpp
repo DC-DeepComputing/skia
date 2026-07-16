@@ -5,13 +5,14 @@
  * found in the LICENSE file.
  */
 
-
 #include "src/core/SkTSearch.h"
 
 #include "include/private/SkMalloc.h"
 
 #include <cstring>
 #include <ctype.h>
+
+#pragma clang unsafe_buffer_usage begin
 
 static inline const char* index_into_base(const char*const* base, int index,
                                           size_t elemSize)
@@ -115,3 +116,4 @@ SkAutoAsciiToLC::~SkAutoAsciiToLC()
         sk_free(fLC);
     }
 }
+#pragma clang unsafe_buffer_usage end

@@ -15,6 +15,8 @@
 
 #include <cstring>
 
+#pragma clang unsafe_buffer_usage begin
+
 class GrWindowRectangles {
 public:
     constexpr static int kMaxWindows = 8;
@@ -124,4 +126,5 @@ inline bool GrWindowRectangles::operator==(const GrWindowRectangles& that) const
     return !fCount || !memcmp(this->data(), that.data(), sizeof(SkIRect) * fCount);
 }
 
+#pragma clang unsafe_buffer_usage end
 #endif

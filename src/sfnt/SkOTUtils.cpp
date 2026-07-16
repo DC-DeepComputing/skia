@@ -19,6 +19,8 @@
 #include "src/sfnt/SkOTTable_name.h"
 #include "src/sfnt/SkSFNTHeader.h"
 
+#pragma clang unsafe_buffer_usage begin
+
 uint32_t SkOTUtils::CalcTableChecksum(SK_OT_ULONG *data, size_t length) {
     uint32_t sum = 0;
     SK_OT_ULONG *dataEnd = data + ((length + 3) & ~3) / sizeof(SK_OT_ULONG);
@@ -229,3 +231,4 @@ void SkOTUtils::SetAdvancedTypefaceFlags(SkOTTableOS2_V4::Type fsType,
         }
     }
 }
+#pragma clang unsafe_buffer_usage end

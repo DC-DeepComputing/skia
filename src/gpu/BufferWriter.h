@@ -25,6 +25,8 @@
 #include <type_traits>
 #include <utility>
 
+#pragma clang unsafe_buffer_usage begin
+
 namespace skgpu {
 
 namespace graphite {
@@ -481,4 +483,5 @@ struct TextureUploadWriter : private BufferWriter {
 
 }  // namespace skgpu
 
+#pragma clang unsafe_buffer_usage end
 #endif // skgpu_BufferWriter_DEFINED

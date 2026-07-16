@@ -8,6 +8,8 @@
 #include "src/codec/SkPngCompositeChunkReader.h"
 #include <cstring>
 
+#pragma clang unsafe_buffer_usage begin
+
 class SkData;
 
 bool SkPngCompositeChunkReader::readChunk(const char tag[], const void* data, size_t length) {
@@ -46,3 +48,4 @@ bool SkPngCompositeChunkReader::readChunk(const char tag[], const void* data, si
     }
     return true;
 }
+#pragma clang unsafe_buffer_usage end

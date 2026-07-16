@@ -16,6 +16,8 @@
 
 #include <cstddef>
 
+#pragma clang unsafe_buffer_usage begin
+
 static inline double interpolate(double A, double B, double t) {
     return A + (B - A) * t;
 }
@@ -225,4 +227,4 @@ SkSpan<const float> SkBezierQuad::Intersect(
 
     return {intersectionStorage, intersectionCount};
 }
-
+#pragma clang unsafe_buffer_usage end

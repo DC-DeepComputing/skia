@@ -112,6 +112,8 @@ using NoCtx = const void*;
     #include <immintrin.h>
 #endif
 
+#pragma clang unsafe_buffer_usage begin
+
 // Notes:
 // * rcp_fast and rcp_precise both produce a reciprocal, but rcp_fast is an estimate with at least
 //   12 bits of precision while rcp_precise should be accurate for float size. For ARM rcp_precise
@@ -7318,4 +7320,5 @@ constexpr size_t raster_pipeline_highp_stride() { return N; }
 
 #undef SI
 
+#pragma clang unsafe_buffer_usage end
 #endif//SkRasterPipeline_opts_DEFINED

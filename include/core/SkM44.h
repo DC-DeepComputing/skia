@@ -14,6 +14,8 @@
 
 #include <cstring>
 
+#pragma clang unsafe_buffer_usage begin
+
 struct SkRect;
 
 struct SK_API SkV2 {
@@ -439,4 +441,5 @@ private:
     friend class SkMatrixPriv;
 };
 
+#pragma clang unsafe_buffer_usage end
 #endif

@@ -13,6 +13,8 @@
 #include <cassert>
 #include <cstddef>
 
+#pragma clang unsafe_buffer_usage begin
+
 static char* end_chain(char*) { return nullptr; }
 
 SkArenaAlloc::SkArenaAlloc(char* block, size_t size, size_t firstHeapAllocation)
@@ -176,3 +178,4 @@ std::array<const uint32_t, 47> SkFibonacci47 {
          24157817,  39088169,   63245986,  102334155,  165580141,  267914296,
         433494437, 701408733, 1134903170, 1836311903, 2971215073,
 };
+#pragma clang unsafe_buffer_usage end

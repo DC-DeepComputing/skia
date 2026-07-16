@@ -13,6 +13,8 @@
 #include <cstring>
 #include <type_traits> // is_trivially_copyable
 
+#pragma clang unsafe_buffer_usage begin
+
 namespace SkHexadecimalDigits {
     extern const char gUpper[16];  // 0-9A-F
     extern const char gLower[16];  // 0-9a-f
@@ -74,4 +76,5 @@ static SK_ALWAYS_INLINE Dst SK_FP_SAFE_ABI sk_bit_cast(const Src& src) {
 
 #undef SK_FP_SAFE_ABI
 
+#pragma clang unsafe_buffer_usage end
 #endif

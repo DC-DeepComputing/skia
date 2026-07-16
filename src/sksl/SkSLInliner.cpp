@@ -1187,3 +1187,6 @@ bool Inliner::analyze(const std::vector<std::unique_ptr<ProgramElement>>& elemen
 }  // namespace SkSL
 
 #endif  // SK_ENABLE_OPTIMIZE_SIZE
+
+#pragma clang unsafe_buffer_usage begin
+#pragma clang unsafe_buffer_usage end

@@ -10,6 +10,8 @@
 #include <stdio.h>
 #include <memory>
 
+#pragma clang unsafe_buffer_usage begin
+
 namespace SkSL {
 
 void OutputStream::writeString(const std::string& s) {
@@ -39,3 +41,4 @@ void OutputStream::appendVAList(const char format[], va_list args) {
 }
 
 }  // namespace SkSL
+#pragma clang unsafe_buffer_usage end

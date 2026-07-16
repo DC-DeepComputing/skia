@@ -130,6 +130,11 @@ config("skia_private") {
 config("skia_library") {
   visibility = [ "./*" ]
   defines = [ "SKIA_IMPLEMENTATION=1" ]
+
+  # Only enable the spanification/unsafe buffers macro when built inside Chromium.
+  if (defined(build_with_chromium) && build_with_chromium) {
+    defines += [ "UNSAFE_BUFFERS_BUILD" ]
+  }
 }
 
 skia_library_configs = [

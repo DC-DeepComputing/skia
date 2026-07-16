@@ -11,6 +11,8 @@
 #include <cstring>
 #include <string_view>
 
+#pragma clang unsafe_buffer_usage begin
+
 namespace skstd {
 
 // C++20 additions
@@ -48,4 +50,5 @@ inline constexpr bool contains(std::string_view str, std::string_view::value_typ
 
 }  // namespace skstd
 
+#pragma clang unsafe_buffer_usage end
 #endif

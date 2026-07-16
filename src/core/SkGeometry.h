@@ -499,6 +499,8 @@ struct SkCubicCoeff {
 
 #include "include/private/SkTemplates.h"
 
+#pragma clang unsafe_buffer_usage begin
+
 /**
  *  Help class to allocate storage for approximating a conic with N quads.
  */
@@ -558,4 +560,5 @@ private:
     int fQuadCount; // #quads for current usage
 };
 
+#pragma clang unsafe_buffer_usage end
 #endif

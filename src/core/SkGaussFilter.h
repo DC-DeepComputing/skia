@@ -10,6 +10,8 @@
 
 #include <cstddef>
 
+#pragma clang unsafe_buffer_usage begin
+
 // Define gaussian filters for values of sigma < 2. Produce values good to 1 part in 1,000,000.
 // Produces values as defined in "Scale-Space for Discrete Signals" by Tony Lindeberg.
 class SkGaussFilter {
@@ -31,4 +33,5 @@ private:
     int    fN;
 };
 
+#pragma clang unsafe_buffer_usage end
 #endif  // SkGaussFilter_DEFINED

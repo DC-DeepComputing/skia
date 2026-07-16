@@ -23,6 +23,7 @@
 #include <type_traits>
 #include <utility>
 
+#pragma clang unsafe_buffer_usage begin
 
 /** \file SkTemplates.h
 
@@ -497,4 +498,5 @@ template<size_t N, typename C> constexpr auto SkMakeArray(C c)
     return SkMakeArrayFromIndexSequence(c, std::make_index_sequence<N>{});
 }
 
+#pragma clang unsafe_buffer_usage end
 #endif

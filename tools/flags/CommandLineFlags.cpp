@@ -11,6 +11,8 @@
 
 #include <stdlib.h>
 
+#pragma clang unsafe_buffer_usage begin
+
 template <typename T> static void ignore_result(const T&) {}
 
 bool SkFlagInfo::CreateStringFlag(const char*                    name,
@@ -397,3 +399,4 @@ bool CommandLineFlags::ShouldSkip(const SkTDArray<const char*>& strings, const c
 bool CommandLineFlags::ShouldSkip(const StringArray& strings, const char* name) {
     return ShouldSkipImpl(strings, name);
 }
+#pragma clang unsafe_buffer_usage end

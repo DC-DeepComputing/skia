@@ -14,6 +14,8 @@
 #include "include/private/SkAssert.h"
 #include "src/core/SkVx.h"
 
+#pragma clang unsafe_buffer_usage begin
+
 namespace skgpu::tess {
 
 // This class determines whether the given local-space points will be contained in the cull bounds
@@ -107,4 +109,5 @@ private:
 
 }  // namespace skgpu::tess
 
+#pragma clang unsafe_buffer_usage end
 #endif  // skgpu_tessellate_CullTest_DEFINED

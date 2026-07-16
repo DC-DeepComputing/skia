@@ -22,6 +22,8 @@
 #include <string_view>
 #include <type_traits>
 
+#pragma clang unsafe_buffer_usage begin
+
 /*  Some helper functions for C strings */
 static inline bool SkStrStartsWith(const char string[], const char prefixStr[]) {
     SkASSERT(string);
@@ -294,4 +296,5 @@ static inline void swap(SkString& a, SkString& b) {
     a.swap(b);
 }
 
+#pragma clang unsafe_buffer_usage end
 #endif

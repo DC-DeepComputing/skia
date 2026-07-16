@@ -24,6 +24,8 @@
 #include <cstring>
 #include <optional>
 
+#pragma clang unsafe_buffer_usage begin
+
 struct SkRect;
 class SkString;
 
@@ -1416,4 +1418,5 @@ inline bool SkIRect::contains(const SkRect& r) const {
             fRight >= r.fRight && fBottom >= r.fBottom;
 }
 
+#pragma clang unsafe_buffer_usage end
 #endif

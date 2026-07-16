@@ -26,6 +26,8 @@
 #include <cstddef>
 #include <optional>
 
+#pragma clang unsafe_buffer_usage begin
+
 namespace SkSL {
 
 static ExpressionArray negate_operands(const Context& context,
@@ -355,3 +357,4 @@ std::string PrefixExpression::description(OperatorPrecedence parentPrecedence) c
 }
 
 }  // namespace SkSL
+#pragma clang unsafe_buffer_usage end

@@ -34,6 +34,8 @@
 #include <compare>
 #endif
 
+#pragma clang unsafe_buffer_usage begin
+
 namespace SkSL {
 
 class Context;
@@ -680,4 +682,5 @@ private:
 
 }  // namespace SkSL
 
+#pragma clang unsafe_buffer_usage end
 #endif

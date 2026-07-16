@@ -19,6 +19,8 @@
 #include "include/private/SkFeatures.h"
 #include "include/private/SkMalloc.h"
 
+#pragma clang unsafe_buffer_usage begin
+
 /** MD5 basic transformation. Transforms state based on block. */
 static void transform(uint32_t state[4], const uint8_t block[64]);
 
@@ -279,3 +281,4 @@ static const uint32_t* decode(uint32_t storage[16], const uint8_t input[64]) {
     return storage;
 #endif
 }
+#pragma clang unsafe_buffer_usage end

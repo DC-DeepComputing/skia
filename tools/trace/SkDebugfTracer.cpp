@@ -10,6 +10,8 @@
 
 #include <inttypes.h>
 
+#pragma clang unsafe_buffer_usage begin
+
 SkEventTracer::Handle SkDebugfTracer::addTraceEvent(char phase,
                                                     const uint8_t* categoryEnabledFlag,
                                                     const char* name,
@@ -89,3 +91,4 @@ void SkDebugfTracer::updateTraceEventDuration(const uint8_t* categoryEnabledFlag
 void SkDebugfTracer::newTracingSection(const char* name) {
     SkDebugf("\n\n- - - New tracing section: %s - - -\n", name);
 }
+#pragma clang unsafe_buffer_usage end

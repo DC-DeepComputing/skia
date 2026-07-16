@@ -23,6 +23,8 @@
 #include <numeric>
 #include <string>
 
+#pragma clang unsafe_buffer_usage begin
+
 namespace SkSL {
 
 static bool is_safe_to_eliminate(const Type& type, const Expression& arg) {
@@ -170,3 +172,4 @@ std::unique_ptr<Expression> ConstructorCompound::MakeFromConstants(const Context
 }
 
 }  // namespace SkSL
+#pragma clang unsafe_buffer_usage end

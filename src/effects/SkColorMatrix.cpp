@@ -8,6 +8,8 @@
 #include "include/effects/SkColorMatrix.h"
 #include "src/core/SkYUVMath.h"
 
+#pragma clang unsafe_buffer_usage begin
+
 enum SkYUVColorSpace : int;
 
 SkColorMatrix SkColorMatrix::RGBtoYUV(SkYUVColorSpace cs) {
@@ -114,3 +116,4 @@ void SkColorMatrix::setSaturation(float sat) {
     setrow(fMat.data() + 10, R, G, B + sat);
     fMat[kA_Scale] = 1;
 }
+#pragma clang unsafe_buffer_usage end

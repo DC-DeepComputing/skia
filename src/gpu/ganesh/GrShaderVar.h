@@ -16,6 +16,8 @@
 #include <cstddef>
 #include <utility>
 
+#pragma clang unsafe_buffer_usage begin
+
 struct GrShaderCaps;
 
 /**
@@ -137,4 +139,5 @@ private:
     SkString        fExtraModifiers;
 };
 
+#pragma clang unsafe_buffer_usage end
 #endif

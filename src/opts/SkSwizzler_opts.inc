@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 
+#pragma clang unsafe_buffer_usage begin
+
 #include "src/core/SkColorData.h"
 #include "src/core/SkSwizzlePriv.h"
 #include "src/core/SkUtils.h"
@@ -2026,3 +2028,4 @@ static void RGB_to_BGR1_portable(uint32_t dst[], const uint8_t* src, int count) 
 }  // namespace SK_OPTS_NS
 
 #undef SI
+#pragma clang unsafe_buffer_usage end

@@ -34,6 +34,8 @@
     #include <sys/auxv.h>
 #endif
 
+#pragma clang unsafe_buffer_usage begin
+
 namespace {
 #if defined(SK_CPU_X86)
     // Vendor String https://www.sandpile.org/x86/cpuid.htm#leaf_0000_0000h
@@ -234,3 +236,4 @@ void SkCpu::CacheRuntimeFeatures() {
     static SkOnce once;
     once([] { gCachedFeatures = read_cpu_features(); });
 }
+#pragma clang unsafe_buffer_usage end

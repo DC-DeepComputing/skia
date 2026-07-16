@@ -28,6 +28,8 @@
 #include <tuple>
 #include <utility>
 
+#pragma clang unsafe_buffer_usage begin
+
 namespace sktext::gpu {
 
 // BagOfBytes parcels out bytes with a given size and alignment.
@@ -344,4 +346,5 @@ public:
 };
 }  // namespace sktext::gpu
 
+#pragma clang unsafe_buffer_usage end
 #endif // sktext_gpu_SubRunAllocator_DEFINED

@@ -17,6 +17,8 @@
 #include <memory>
 #include <string>
 
+#pragma clang unsafe_buffer_usage begin
+
 namespace skgpu {
 
 bool SkSLToBackend(const SkSL::ShaderCaps* caps,
@@ -82,3 +84,4 @@ bool SkSLToBackend(const SkSL::ShaderCaps* caps,
 }
 
 }  // namespace skgpu
+#pragma clang unsafe_buffer_usage end

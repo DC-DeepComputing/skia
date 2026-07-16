@@ -9,6 +9,8 @@
 
 #include "include/private/SkFloatingPoint.h"
 
+#pragma clang unsafe_buffer_usage begin
+
 SkScalar SkInvert2x2Matrix(const SkScalar inMatrix[4], SkScalar outMatrix[4]) {
     double a00 = inMatrix[0];
     double a01 = inMatrix[1];
@@ -142,3 +144,4 @@ SkScalar SkInvert4x4Matrix(const SkScalar inMatrix[16], SkScalar outMatrix[16]) 
     }
     return determinant;
 }
+#pragma clang unsafe_buffer_usage end

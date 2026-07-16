@@ -15,6 +15,8 @@
 
 #include <cstring>
 
+#pragma clang unsafe_buffer_usage begin
+
 using namespace skia_private;
 
 void SkAppendScalar(SkString* str, SkScalar value, SkScalarAsStringType asType) {
@@ -120,3 +122,4 @@ void SkStrSplit(const char* str,
         }
     }
 }
+#pragma clang unsafe_buffer_usage end

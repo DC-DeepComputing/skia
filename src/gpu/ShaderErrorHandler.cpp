@@ -13,6 +13,8 @@
 #include <functional>
 #include <string>
 
+#pragma clang unsafe_buffer_usage begin
+
 namespace skgpu {
 
 ShaderErrorHandler* DefaultShaderErrorHandler() {
@@ -32,3 +34,4 @@ ShaderErrorHandler* DefaultShaderErrorHandler() {
 }
 
 }  // namespace SkShaderUtils
+#pragma clang unsafe_buffer_usage end

@@ -13,6 +13,8 @@
 #include <cstddef>
 #include <string.h>
 
+#pragma clang unsafe_buffer_usage begin
+
 // Typically declared in LLVM's msan_interface.h.  Easier for us to just re-declare.
 extern "C" {
     void __msan_check_mem_is_initialized(const volatile void*, size_t);
@@ -40,4 +42,5 @@ static inline void sk_msan_mark_initialized(const void* begin, const void* end, 
 #endif
 }
 
+#pragma clang unsafe_buffer_usage end
 #endif//SkMSAN_DEFINED

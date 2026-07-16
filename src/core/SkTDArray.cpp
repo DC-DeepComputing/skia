@@ -17,6 +17,8 @@
 #include <cstring>
 #include <new>
 
+#pragma clang unsafe_buffer_usage begin
+
 SkTDStorage::SkTDStorage(int sizeOfT) : fSizeOfT{sizeOfT} {
     SkASSERT(sizeOfT > 0);
 }
@@ -240,3 +242,4 @@ void SkTDStorage::copySrc(int dstIndex, const void* src, int count) {
     SkASSERT(count > 0);
     memmove(this->address(dstIndex), src, this->bytes(count));
 }
+#pragma clang unsafe_buffer_usage end

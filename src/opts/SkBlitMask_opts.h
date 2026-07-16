@@ -413,6 +413,8 @@ namespace SK_OPTS_NS {
     }
 #endif
 
+#pragma clang unsafe_buffer_usage begin
+
 /*not static*/ inline void blit_mask_d32_a8(SkPMColor* dst, size_t dstRB,
                                             const SkAlpha* mask, size_t maskRB,
                                             SkColor color, int w, int h) {
@@ -427,4 +429,5 @@ namespace SK_OPTS_NS {
 
 }  // namespace SK_OPTS_NS
 
+#pragma clang unsafe_buffer_usage end
 #endif//SkBlitMask_opts_DEFINED

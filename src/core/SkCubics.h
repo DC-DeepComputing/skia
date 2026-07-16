@@ -4,10 +4,13 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+
 #ifndef SkCubics_DEFINED
 #define SkCubics_DEFINED
 
 #include <cmath>
+
+#pragma clang unsafe_buffer_usage begin
 
 /**
  * Utilities for dealing with cubic formulas with one variable:
@@ -57,4 +60,5 @@ public:
     }
 };
 
+#pragma clang unsafe_buffer_usage end
 #endif

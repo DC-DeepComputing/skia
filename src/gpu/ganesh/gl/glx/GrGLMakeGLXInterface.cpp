@@ -4,6 +4,7 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+
 #include "include/gpu/ganesh/gl/glx/GrGLMakeGLXInterface.h"
 
 #include "include/core/SkRefCnt.h"
@@ -16,6 +17,8 @@
 #include <GL/gl.h>
 #include <GL/glx.h>
 #include <string.h>
+
+#pragma clang unsafe_buffer_usage begin
 
 static GrGLFuncPtr glx_get(void* ctx, const char name[]) {
     // Avoid calling glXGetProcAddress() for EGL procs.
@@ -41,4 +44,5 @@ sk_sp<const GrGLInterface> MakeGLX() {
 
 #if !defined(SK_DISABLE_LEGACY_GLXINTERFACE_FACTORY)
 sk_sp<const GrGLInterface> GrGLMakeGLXInterface() { return GrGLInterfaces::MakeGLX(); }
+#pragma clang unsafe_buffer_usage end
 #endif

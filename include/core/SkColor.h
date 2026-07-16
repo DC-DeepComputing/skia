@@ -17,6 +17,8 @@
 #include <array>
 #include <cstdint>
 
+#pragma clang unsafe_buffer_usage begin
+
 /** \file SkColor.h
 
     Types, consts, functions, and macros for colors.
@@ -466,4 +468,5 @@ constexpr SkColor4f kYellow      = {1, 1, 0, 1};
 constexpr SkColor4f kCyan        = {0, 1, 1, 1};
 constexpr SkColor4f kMagenta     = {1, 0, 1, 1};
 }  // namespace SkColors
+#pragma clang unsafe_buffer_usage end
 #endif

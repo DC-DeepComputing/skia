@@ -26,6 +26,8 @@
 #include <limits>
 #include <new>
 
+#pragma clang unsafe_buffer_usage begin
+
 using namespace skia_private;
 
 #if !defined(SK_ENABLE_OPTIMIZE_SIZE)
@@ -1770,5 +1772,5 @@ bool SkTriangulateSimplePolygon(const SkPoint* polygonVerts, uint16_t* indexMap,
     return true;
 }
 
+#pragma clang unsafe_buffer_usage end
 #endif // !defined(SK_ENABLE_OPTIMIZE_SIZE)
-

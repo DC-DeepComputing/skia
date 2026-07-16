@@ -1,9 +1,10 @@
 // Copyright 2021 Google LLC
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 
-
 #include "include/core/SkGraphics.h"
 #include "tools/flags/CommandLineFlags.h"
+
+#pragma clang unsafe_buffer_usage begin
 
 static DEFINE_int_2(option, o, 0, "An option");
 
@@ -29,3 +30,4 @@ int main(int argc, char** argv) {
 
     return 0;
 }
+#pragma clang unsafe_buffer_usage end

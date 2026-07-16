@@ -16,6 +16,8 @@
 #include <limits>
 #include <string>
 
+#pragma clang unsafe_buffer_usage begin
+
 static inline bool is_between(int c, int min, int max)
 {
     return (unsigned)(c - min) <= (unsigned)(max - min);
@@ -261,3 +263,4 @@ int SkParse::FindList(const char target[], const char list[])
     }
     return -1;
 }
+#pragma clang unsafe_buffer_usage end

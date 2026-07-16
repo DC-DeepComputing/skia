@@ -20,6 +20,8 @@
 
 #include <zlib.h>
 
+#pragma clang unsafe_buffer_usage begin
+
 namespace {
 
 // Different zlib implementations use different T.
@@ -143,3 +145,4 @@ bool SkDeflateWStream::write(const void* void_buffer, size_t len) {
 size_t SkDeflateWStream::bytesWritten() const {
     return fImpl->fZStream.total_in + fImpl->fInBufferIndex;
 }
+#pragma clang unsafe_buffer_usage end

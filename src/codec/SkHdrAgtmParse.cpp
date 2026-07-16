@@ -10,6 +10,8 @@
 #include "src/codec/SkHdrAgtmPriv.h"
 #include "src/core/SkStreamPriv.h"
 
+#pragma clang unsafe_buffer_usage begin
+
 namespace {
 
 // Return x clamped to [a, b].
@@ -655,4 +657,4 @@ sk_sp<SkData> AdaptiveGlobalToneMap::serialize() const {
 }
 
 }  // namespace skhdr
-
+#pragma clang unsafe_buffer_usage end

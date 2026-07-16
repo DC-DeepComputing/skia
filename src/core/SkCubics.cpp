@@ -15,6 +15,8 @@
 #include <algorithm>
 #include <cmath>
 
+#pragma clang unsafe_buffer_usage begin
+
 static bool nearly_equal(double x, double y) {
     if (sk_double_nearly_zero(x)) {
         return sk_double_nearly_zero(y);
@@ -237,3 +239,4 @@ int SkCubics::BinarySearchRootsValidT(double A, double B, double C, double D,
     }
     return foundRoots;
 }
+#pragma clang unsafe_buffer_usage end

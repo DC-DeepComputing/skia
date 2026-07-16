@@ -19,6 +19,8 @@
 #include <cstring>
 #include <optional>
 
+#pragma clang unsafe_buffer_usage begin
+
 class SkMatrix;
 class SkString;
 
@@ -537,4 +539,5 @@ private:
 };
 SK_END_REQUIRE_DENSE
 
+#pragma clang unsafe_buffer_usage end
 #endif

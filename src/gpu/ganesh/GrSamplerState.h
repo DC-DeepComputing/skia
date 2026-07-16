@@ -16,6 +16,8 @@
 
 #include <limits>
 
+#pragma clang unsafe_buffer_usage begin
+
 /**
  * Represents the filtering and tile modes used to access a texture.
  */
@@ -149,4 +151,5 @@ private:
     int        fMaxAniso     = 1;
 };
 
+#pragma clang unsafe_buffer_usage end
 #endif

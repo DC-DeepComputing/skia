@@ -18,6 +18,8 @@
 
 #include <optional>
 
+#pragma clang unsafe_buffer_usage begin
+
 bool SkBlendMode_ShouldPreScaleCoverage(SkBlendMode mode, bool rgb_coverage) {
     // The most important things we do here are:
     //   1) never pre-scale with rgb coverage if the blend mode involves a source-alpha term;
@@ -238,3 +240,4 @@ SkBlendFastPath CheckFastPath(const SkPaint& paint, bool dstIsOpaque) {
             return SkBlendFastPath::kNormal;
     }
 }
+#pragma clang unsafe_buffer_usage end

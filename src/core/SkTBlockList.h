@@ -18,6 +18,8 @@
 #include <type_traits>
 #include <utility>
 
+#pragma clang unsafe_buffer_usage begin
+
 // Forward declarations for the iterators used by SkTBlockList
 using IndexFn = int (*)(const SkBlockAllocator::Block*);
 using NextFn = int (*)(const SkBlockAllocator::Block*, int);
@@ -454,4 +456,5 @@ private:
     BlockIter fBlockIter;
 };
 
+#pragma clang unsafe_buffer_usage end
 #endif

@@ -13,6 +13,8 @@
 #include "src/sfnt/SkOTTable_OS_2_V4.h"
 #include "src/sfnt/SkOTTable_name.h"
 
+#pragma clang unsafe_buffer_usage begin
+
 class SkData;
 class SkStream;
 struct SkAdvancedTypefaceMetrics;
@@ -101,4 +103,5 @@ struct SkOTUtils {
                                          SkAdvancedTypefaceMetrics* info);
 };
 
+#pragma clang unsafe_buffer_usage end
 #endif

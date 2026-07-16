@@ -11,6 +11,8 @@
 
 #include <cstddef>
 
+#pragma clang unsafe_buffer_usage begin
+
 struct SkDeque::Block {
     Block*  fNext;
     Block*  fPrev;
@@ -308,3 +310,4 @@ void SkDeque::Iter::reset(const SkDeque& d, IterStart startLoc) {
         fPos = fCurBlock ? fCurBlock->fEnd - fElemSize : nullptr;
     }
 }
+#pragma clang unsafe_buffer_usage end

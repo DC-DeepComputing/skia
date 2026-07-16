@@ -20,6 +20,8 @@
 #include <string>
 #include <type_traits>
 
+#pragma clang unsafe_buffer_usage begin
+
 /**
  *  Lightweight class for writing properly structured JSON data. No random-access, everything must
  *  be generated in-order. The resulting JSON is written directly to the SkWStream supplied at
@@ -416,4 +418,5 @@ private:
     skia_private::STArray<16, bool, true> fNewlineStack;
 };
 
+#pragma clang unsafe_buffer_usage end
 #endif

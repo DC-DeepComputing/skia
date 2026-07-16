@@ -17,6 +17,8 @@
 #include <cstdint>
 #include <cstring>
 
+#pragma clang unsafe_buffer_usage begin
+
 class GrCaps;
 class GrProgramInfo;
 
@@ -104,4 +106,5 @@ private:
     uint32_t fInitialKeyLength = 0;
 };
 
+#pragma clang unsafe_buffer_usage end
 #endif

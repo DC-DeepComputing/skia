@@ -16,6 +16,8 @@
 #include <emscripten/version.h>
 #endif
 
+#pragma clang unsafe_buffer_usage begin
+
 extern "C" {
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -310,4 +312,5 @@ private:
     size_t fBuf[4];
 };
 
+#pragma clang unsafe_buffer_usage end
 #endif

@@ -27,6 +27,8 @@
 #include <limits>
 #include <new>
 
+#pragma clang unsafe_buffer_usage begin
+
 ///////////////////////////////////////////////////////////////////////////////
 
 bool SkStream::readS8(int8_t* i) {
@@ -1000,3 +1002,4 @@ bool DebugfStream::write(const void* buffer, size_t size) {
 size_t DebugfStream::bytesWritten() const { return fBytesWritten; }
 
 }  // namespace SkStreamPriv
+#pragma clang unsafe_buffer_usage end

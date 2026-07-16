@@ -12,6 +12,8 @@
 
 #include "include/private/SkAPI.h"
 
+#pragma clang unsafe_buffer_usage begin
+
 /*
     memory wrappers to be implemented by the porting layer (platform)
 */
@@ -149,4 +151,5 @@ static inline int sk_careful_memcmp(const void* a, const void* b, size_t len) {
     return memcmp(a, b, len);
 }
 
+#pragma clang unsafe_buffer_usage end
 #endif  // SkMalloc_DEFINED

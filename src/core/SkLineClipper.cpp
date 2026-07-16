@@ -17,6 +17,8 @@
 #include <cstring>
 #include <utility>
 
+#pragma clang unsafe_buffer_usage begin
+
 template <typename T> T pin_unsorted(T value, T limit0, T limit1) {
     if (limit1 < limit0) {
         using std::swap;
@@ -281,3 +283,4 @@ int SkLineClipper::ClipLine(const SkPoint pts[2], const SkRect& clip, SkPoint li
     }
     return lineCount;
 }
+#pragma clang unsafe_buffer_usage end

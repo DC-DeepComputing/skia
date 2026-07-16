@@ -84,6 +84,8 @@
     int64_t sk_tools::getCurrResidentSetSizeBytes() { return -1; }
 #endif
 
+#pragma clang unsafe_buffer_usage begin
+
 int sk_tools::getMaxResidentSetSizeMB() {
     int64_t bytes = sk_tools::getMaxResidentSetSizeBytes();
     return bytes < 0 ? -1 : static_cast<int>(bytes / 1024 / 1024);
@@ -93,3 +95,4 @@ int sk_tools::getCurrResidentSetSizeMB() {
     int64_t bytes = sk_tools::getCurrResidentSetSizeBytes();
     return bytes < 0 ? -1 : static_cast<int>(bytes / 1024 / 1024);
 }
+#pragma clang unsafe_buffer_usage end

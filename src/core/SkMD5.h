@@ -15,6 +15,8 @@
 #include <cstdint>
 #include <cstring>
 
+#pragma clang unsafe_buffer_usage begin
+
 /* Calculate a 128-bit MD5 message-digest of the bytes sent to this stream. */
 class SkMD5 : public SkWStream {
 public:
@@ -48,4 +50,5 @@ private:
     uint8_t buffer[64];  // input buffer
 };
 
+#pragma clang unsafe_buffer_usage end
 #endif

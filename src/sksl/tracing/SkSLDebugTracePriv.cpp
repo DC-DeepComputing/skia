@@ -4,6 +4,7 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+
 #include "src/sksl/tracing/SkSLDebugTracePriv.h"
 
 #include "include/core/SkStream.h"
@@ -14,6 +15,8 @@
 #include <cstring>
 #include <sstream>
 #include <string>
+
+#pragma clang unsafe_buffer_usage begin
 
 namespace SkSL {
 
@@ -191,3 +194,4 @@ void DebugTracePriv::dump(SkWStream* o) const {
 }
 
 }  // namespace SkSL
+#pragma clang unsafe_buffer_usage end

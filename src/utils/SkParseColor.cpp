@@ -4,6 +4,7 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+
 #include "include/utils/SkParse.h"
 
 #include "include/core/SkColor.h"
@@ -14,6 +15,8 @@
 #include <cstdint>
 #include <cstring>
 #include <iterator>
+
+#pragma clang unsafe_buffer_usage begin
 
 static constexpr const char* gColorNames[] = {
     "aliceblue",
@@ -386,3 +389,4 @@ const char* SkParse::FindColor(const char* value, SkColor* colorPtr) {
     } else
         return FindNamedColor(value, strlen(value), colorPtr);
 }
+#pragma clang unsafe_buffer_usage end

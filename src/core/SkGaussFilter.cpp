@@ -11,6 +11,8 @@
 
 #include <cmath>
 
+#pragma clang unsafe_buffer_usage begin
+
 // The value when we can stop expanding the filter. The spec implies that 3% is acceptable, but
 // we just use 1%.
 static constexpr double kGoodEnough = 1.0 / 100.0;
@@ -107,3 +109,4 @@ SkGaussFilter::SkGaussFilter(double sigma) {
 
     fN = calculate_bessel_factors(sigma, fBasis);
 }
+#pragma clang unsafe_buffer_usage end

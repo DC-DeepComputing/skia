@@ -16,6 +16,8 @@
 #include <utility>
 #include <vector>
 
+#pragma clang unsafe_buffer_usage begin
+
 namespace myers {
 
 // -- Point ----------------------------------------------------------------------------------------
@@ -663,3 +665,4 @@ std::vector<Crossing> brute_force_crossings(SkSpan<Segment> segments) {
     return crossings.finishAndReleaseCrossings();
 }
 }  // namespace myers
+#pragma clang unsafe_buffer_usage end

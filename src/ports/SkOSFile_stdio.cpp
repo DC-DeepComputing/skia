@@ -23,6 +23,8 @@
 #include "src/ports/SkOSFile_ios.h"
 #endif
 
+#pragma clang unsafe_buffer_usage begin
+
 #ifdef _WIN32
 static bool is_ascii(const char* s) {
     while (char v = *s++) {
@@ -178,3 +180,4 @@ bool sk_mkdir(const char* path) {
 #endif
     return 0 == retval;
 }
+#pragma clang unsafe_buffer_usage end

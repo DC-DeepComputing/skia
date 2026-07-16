@@ -13,6 +13,8 @@
 #include <cmath>
 #include <limits>
 
+#pragma clang unsafe_buffer_usage begin
+
 // Solve 0 = M * x + B. If M is 0, there are no solutions, unless B is also 0,
 // in which case there are infinite solutions, so we just return 1 of them.
 static int solve_linear(const double M, const double B, double solution[2]) {
@@ -165,3 +167,4 @@ double SkQuads::EvalAt(double A, double B, double C, double t) {
     // Use fused-multiply-add to reduce the amount of round-off error between terms.
     return std::fma(std::fma(A, t, B), t, C);
 }
+#pragma clang unsafe_buffer_usage end

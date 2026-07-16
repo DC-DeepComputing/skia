@@ -27,6 +27,8 @@
 #include <cstdint>
 #include <optional>
 
+#pragma clang unsafe_buffer_usage begin
+
 namespace SkSL {
 
 static bool index_out_of_range(const Context& context, Position pos, SKSL_INT index,
@@ -175,3 +177,4 @@ std::string IndexExpression::description(OperatorPrecedence) const {
 }
 
 }  // namespace SkSL
+#pragma clang unsafe_buffer_usage end

@@ -12,6 +12,8 @@
 #include "tools/sk_app/unix/Window_unix.h"
 #include "tools/timer/Timer.h"
 
+#pragma clang unsafe_buffer_usage begin
+
 using namespace skia_private;
 
 int main(int argc, char**argv) {
@@ -92,3 +94,4 @@ int main(int argc, char**argv) {
 
     return 0;
 }
+#pragma clang unsafe_buffer_usage end
