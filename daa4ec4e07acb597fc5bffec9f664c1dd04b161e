@@ -1,0 +1,108 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b148d37_667fe9ef",
+        "filename": "src/gpu/ganesh/ops/SmallPathAtlasMgr.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-07-16T18:43:13Z",
+      "side": 1,
+      "message": "```\n    if (shapeData \u0026\u0026 shapeData-\u003efListener-\u003efired()) {\n```\n\nshould be sufficient now.",
+      "range": {
+        "startLine": 95,
+        "startChar": 0,
+        "endLine": 96,
+        "endChar": 68
+      },
+      "revId": "daa4ec4e07acb597fc5bffec9f664c1dd04b161e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8fd1e2db_05705d20",
+        "filename": "src/gpu/ganesh/ops/SmallPathShapeData.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-07-16T18:43:13Z",
+      "side": 1,
+      "message": "naming nit: `hasChanged` seems more informative",
+      "range": {
+        "startLine": 33,
+        "startChar": 9,
+        "endLine": 33,
+        "endChar": 14
+      },
+      "revId": "daa4ec4e07acb597fc5bffec9f664c1dd04b161e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e002e51_d7acee46",
+        "filename": "src/gpu/ganesh/ops/SmallPathShapeData.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-07-16T18:43:13Z",
+      "side": 1,
+      "message": "nit: this can be in the member initializer list.",
+      "fixSuggestions": [
+        {
+          "fixId": "b6195399_276b5b14",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/ganesh/ops/SmallPathShapeData.h",
+              "range": {
+                "startLine": 74,
+                "startChar": 0,
+                "endLine": 77,
+                "endChar": 0
+              },
+              "replacement": "    SmallPathShapeData(const SmallPathShapeDataKey\u0026 key)\n        : fKey(key), fListener(sk_make_sp\u003cSmallPathIDChangeListener\u003e()) {}\n"
+            }
+          ]
+        }
+      ],
+      "revId": "daa4ec4e07acb597fc5bffec9f664c1dd04b161e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "856df556_ca048816",
+        "filename": "src/gpu/ganesh/ops/SmallPathShapeData.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-07-16T18:43:13Z",
+      "side": 1,
+      "message": "naming nit: `fIDChangeListener`",
+      "range": {
+        "startLine": 93,
+        "startChar": 37,
+        "endLine": 93,
+        "endChar": 46
+      },
+      "revId": "daa4ec4e07acb597fc5bffec9f664c1dd04b161e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

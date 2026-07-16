@@ -129,6 +129,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a16b4911_903127aa",
+        "filename": "src/gpu/ganesh/ops/SmallPathAtlasMgr.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-07-16T18:43:13Z",
+      "side": 1,
+      "message": "Also above `if (shapeData-\u003efListener \u0026\u0026 ...`",
+      "parentUuid": "825f5151_4e0dd3a3",
+      "range": {
+        "startLine": 104,
+        "startChar": 0,
+        "endLine": 107,
+        "endChar": 51
+      },
+      "revId": "d62438ad312e2702df636a71fd34d7db77acd5a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "22f86a4a_2316d5ed",
@@ -160,6 +184,24 @@
       "side": 1,
       "message": "I thought about using the `SkMessageBus` for this when I was copying the Listener pattern, but, from what I saw, it seems this cache wasn\u0027t designed to support `SkMessageBus` or the `GrMakeUniqueKeyInvalidationListener` mechanism. \n\nBoth of these rely on the `GrUniqueKey::ID` for invalidation, which is created for the globally accessed textures managed by `GrResourceCache`. Since `SmallPathAtlasMgr` uses a local cache (`fShapeCache`) to keep track of the `ShapeData`, it doesn\u0027t have a mechanism for global invalidation with messages. \n\nI was also thinking about a way to invalidate the `ShapeData` cache within the `changed()` function, but I think this might lead to more memory safety issues since `SmallPathAtlasMgr` isn\u0027t thread-safe. I discussed this potential change with Gemini and it said that since `SmallPathAtlasMgr` is tied to `GrDrawOpAtlas`, which isn\u0027t thread-safe, there could be UAF bugs with dangling references to the cached `ShapeData`\n\nI do think that having no cleanup mechanism for this cache is problematic, but I\u0027m not sure what a path forward would look like, or whether it would be necessary to modify other parts of the code",
       "parentUuid": "22f86a4a_2316d5ed",
+      "revId": "d62438ad312e2702df636a71fd34d7db77acd5a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a285f6a4_36b25a48",
+        "filename": "src/gpu/ganesh/ops/SmallPathShapeData.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-07-16T18:43:13Z",
+      "side": 1,
+      "message": "Right, I don\u0027t think we can update the cache synchronously from the listener, we\u0027d have to use the message bus.  One option might be to add a new/dedicated channel if smallpath is not compatible with `UniqueKeyInvalidatedMessage`.\n\nI don\u0027t feel strongly about forcing that change here, since it\u0027s a preexisting issue, but it would be good to look at as a followup.",
+      "parentUuid": "5ecb5de2_dc90de45",
       "revId": "d62438ad312e2702df636a71fd34d7db77acd5a0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
