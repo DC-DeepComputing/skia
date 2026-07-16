@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "896375f8_72ffca88",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-07-16T20:14:13Z",
+      "side": 1,
+      "message": "Good catch. I reversed the member declaration/initialization order so the stream outlives the Rust reader during destruction. The Rust reader can indirectly reference the stream adapter, so this avoids any dangling-pointer risk from member teardown order.",
+      "parentUuid": "4dfd15cc_581c13c9",
+      "range": {
+        "startLine": 90,
+        "startChar": 0,
+        "endLine": 92,
+        "endChar": 42
+      },
+      "revId": "dcd6208b529ab94650e30bd2ae8e2a88567c34c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "84a06f60_cd65f75c",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-07-14T18:13:50Z",
       "side": 1,
       "message": "So IIUC `encode_jpeg` always premultiplies by alpha for `kBlendOnBlack`.  But if the source alpha type is `kPremul_SkAlphaType` then the components are already premultiplied and we end up applying alpha twice.  Maybe we should ignore/discard `kBlendOnBlack` if the source is already premultiplied?  The legacy impl seems to have similar logic:\n\nhttps://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/encode/SkJpegEncoderImpl.cpp;drc\u003dfc46d066b5b61503e660c9a25a8689f094ee9b04;l\u003d113",
+      "range": {
+        "startLine": 54,
+        "startChar": 0,
+        "endLine": 62,
+        "endChar": 5
+      },
+      "revId": "dcd6208b529ab94650e30bd2ae8e2a88567c34c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "85851bea_73a39c57",
+        "filename": "experimental/rust_jpeg/encoder/SkJpegRustEncoder.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-07-16T20:14:13Z",
+      "side": 1,
+      "message": "Done. The Rust encoder now matches the legacy encoder behavior: `kBlendOnBlack` is only applied for unpremul RGBA/BGRA sources. Premul sources already have RGB premultiplied by alpha, so we pass `Ignore` to avoid applying alpha twice.\n\nWhile modifying this path, I also added pixmap validation, checked row-byte narrowing, checked total byte math, checked APP1/XMP length math, and checked `SkWStream::write()` results.",
+      "parentUuid": "84a06f60_cd65f75c",
       "range": {
         "startLine": 54,
         "startChar": 0,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a79e32e_02e9ed05",
+        "filename": "experimental/rust_jpeg/ffi/FFI.rs",
+        "patchSetId": 15
+      },
+      "lineNbr": 451,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-07-16T20:14:13Z",
+      "side": 1,
+      "message": "Done. I removed the `set_max_width(usize::MAX)` / `set_max_height(usize::MAX)` overrides and let zune’s configured/default limits apply.\n\nI also tightened the downstream allocation path: dimensions and row bytes are checked before narrowing, decoded image allocation is bounded, and allocation uses fallible reserve before resize.",
+      "parentUuid": "25eaae6c_fe327385",
+      "range": {
+        "startLine": 451,
+        "startChar": 27,
+        "endLine": 451,
+        "endChar": 37
+      },
+      "revId": "dcd6208b529ab94650e30bd2ae8e2a88567c34c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b99ceb7d_a3e7db78",
@@ -87,6 +159,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f7d1b39_fbd4b255",
+        "filename": "experimental/rust_jpeg/ffi/jpeg_metadata.rs",
+        "patchSetId": 15
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-07-16T20:14:13Z",
+      "side": 1,
+      "message": "Done. ICC multipart assembly now follows the legacy validation rules more closely. It rejects invalid zero counts, out-of-range indexes, duplicate parts, inconsistent part counts, and incomplete part sets instead of silently concatenating whatever segments were present.\n\nI added malformed multipart ICC coverage for those cases.",
+      "parentUuid": "b99ceb7d_a3e7db78",
+      "revId": "dcd6208b529ab94650e30bd2ae8e2a88567c34c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f0b9344e_79bb9620",
@@ -100,6 +190,24 @@
       "writtenOn": "2026-07-14T18:13:50Z",
       "side": 1,
       "message": "Should this be checked arithmetic?",
+      "revId": "dcd6208b529ab94650e30bd2ae8e2a88567c34c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a57b5462_700ef9c4",
+        "filename": "experimental/rust_jpeg/ffi/jpeg_segment_scan.rs",
+        "patchSetId": 15
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-07-16T20:14:13Z",
+      "side": 1,
+      "message": "Done. `get_segment_params()` now uses checked arithmetic for marker/length range calculation and returns an empty slice for malformed or out-of-bounds segment metadata.\n\nI also audited nearby metadata parsing and tightened related range/narrowing behavior: segment offsets now reject values that cannot cross the current FFI u32 shape, and TIFF IFD parsing now rejects truncated entry tables instead of accepting a partial table.",
+      "parentUuid": "f0b9344e_79bb9620",
       "revId": "dcd6208b529ab94650e30bd2ae8e2a88567c34c0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
