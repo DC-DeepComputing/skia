@@ -22,6 +22,30 @@
       },
       "revId": "69dd0cd1078483fc400e1b3936f8e172e3072005",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66ef0f89_4ed1288e",
+        "filename": "src/gpu/graphite/UploadBufferManager.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-17T19:41:20Z",
+      "side": 1,
+      "message": "Can you point me to the spec that says that these row sizes have to be a multiple of the bpp? Is it because when we move to the next row, if we weren\u0027t a multiple of the bpp then accessing each pixel within the row would get unaligned?",
+      "parentUuid": "fd9e3810_86fa5ca4",
+      "range": {
+        "startLine": 49,
+        "startChar": 30,
+        "endLine": 49,
+        "endChar": 45
+      },
+      "revId": "69dd0cd1078483fc400e1b3936f8e172e3072005",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

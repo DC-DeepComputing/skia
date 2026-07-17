@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d71eb799_3ce802ac",
+        "filename": "src/gpu/ganesh/GrDataUtils.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-17T19:41:20Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "2553ab71_43bc926b",
+      "range": {
+        "startLine": 55,
+        "startChar": 67,
+        "endLine": 55,
+        "endChar": 79
+      },
+      "revId": "6316a299cd51ad1cd52dc883138e2ce44a945d04",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2225941c_82be0654",
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "I agree that in practice this won\u0027t ever overflow. We do have a concrete set of bpp to know those are bounded. However, the spec technically has no limit on the transfer buffer row bytes alignment. In reality it will be relatively small number (like max 1024), but nothing actually stops a device from returning a stupidly large number.\n\nAnd I don\u0027t think the value here can automatically be considered safe if we know we\u0027ve allocated a texture. The texture size doesn\u0027t have to correspond to this value.\n\nI\u0027m happy to move this to std::lcm or keep as safe, whatever you prefer.",
       "parentUuid": "2225941c_82be0654",
+      "range": {
+        "startLine": 627,
+        "startChar": 4,
+        "endLine": 627,
+        "endChar": 87
+      },
+      "revId": "6316a299cd51ad1cd52dc883138e2ce44a945d04",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32c48fa4_28db97f2",
+        "filename": "src/gpu/ganesh/vk/GrVkGpu.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 627,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-17T19:41:20Z",
+      "side": 1,
+      "message": "I think I\u0027d prefer std::lcm here",
+      "parentUuid": "6811c6ea_27e09bce",
       "range": {
         "startLine": 627,
         "startChar": 4,
@@ -273,6 +321,30 @@
       "side": 1,
       "message": "not sure exactly what you mean here as it looks to be aligned right to me (as is the new change). But I also have little faith in my eyes",
       "parentUuid": "733b0206_d5358288",
+      "range": {
+        "startLine": 79,
+        "startChar": 24,
+        "endLine": 79,
+        "endChar": 50
+      },
+      "revId": "6316a299cd51ad1cd52dc883138e2ce44a945d04",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "60b9fd91_2405803f",
+        "filename": "src/gpu/graphite/task/UploadTask.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-17T19:41:20Z",
+      "side": 1,
+      "message": "I think after changing it to alignUpNonPow2, it\u0027s aligned correctly, but in PS 14 my eyes tell me the m is underneath the ( instead of under the s.",
+      "parentUuid": "a0a9812c_eeadaa1c",
       "range": {
         "startLine": 79,
         "startChar": 24,
