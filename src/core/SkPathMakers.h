@@ -12,6 +12,11 @@
 #include "include/core/SkPoint.h"
 #include "include/core/SkRRect.h"
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 template <unsigned N> class SkPath_PointIterator {
 public:
     SkPath_PointIterator(SkPathDirection dir, unsigned startIndex)

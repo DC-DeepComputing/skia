@@ -18,6 +18,11 @@
     #include <atomic>
 #endif
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 std::unique_ptr<GrMemoryPool> GrMemoryPool::Make(size_t preallocSize, size_t minAllocSize) {

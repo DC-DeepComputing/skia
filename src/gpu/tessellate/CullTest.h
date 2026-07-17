@@ -14,6 +14,11 @@
 #include "include/private/SkAssert.h"
 #include "src/core/SkVx.h"
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 namespace skgpu::tess {
 
 // This class determines whether the given local-space points will be contained in the cull bounds

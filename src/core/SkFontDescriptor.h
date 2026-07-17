@@ -21,6 +21,11 @@
 #include <memory>
 #include <utility>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 class SkFontData {
 public:
     /** Makes a copy of the data in 'axis'. */

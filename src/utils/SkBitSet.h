@@ -18,6 +18,11 @@
 #include <memory>
 #include <optional>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 class SkBitSet {
 public:
     explicit SkBitSet(size_t size)

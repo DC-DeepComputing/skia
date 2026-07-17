@@ -7,6 +7,11 @@
 
 #include "src/gpu/RectanizerPow2.h"
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 namespace skgpu {
 
 bool RectanizerPow2::addRect(int width, int height, SkIPoint16* loc) {
@@ -26,7 +31,6 @@ bool RectanizerPow2::addRect(int width, int height, SkIPoint16* loc) {
     } else {
         height = SkNextPow2(height);
     }
-
 
     Row* row = &fRows[HeightToRowIndex(height)];
     SkASSERT(row->fRowHeight == 0 || row->fRowHeight == height);

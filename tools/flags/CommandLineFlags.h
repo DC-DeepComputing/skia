@@ -100,6 +100,11 @@
  *  strings) so that a flag can be followed by multiple parameters.
  */
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 class SkFlagInfo;
 
 class CommandLineFlags {

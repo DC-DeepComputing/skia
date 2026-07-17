@@ -11,6 +11,11 @@
 
 #include <cmath>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 // The value when we can stop expanding the filter. The spec implies that 3% is acceptable, but
 // we just use 1%.
 static constexpr double kGoodEnough = 1.0 / 100.0;

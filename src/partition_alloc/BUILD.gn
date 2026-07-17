@@ -10,6 +10,9 @@ if (skia_use_partition_alloc && defined(skia_partition_alloc_dir)) {
 }
 
 source_set("raw_ptr") {
+  if (is_clang) {
+    cflags_cc = [ "-Wno-unsafe-buffer-usage" ]
+  }
   public = [
     "raw_ptr.h",
     "raw_ptr_exclusion.h",

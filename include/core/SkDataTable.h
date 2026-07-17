@@ -20,6 +20,12 @@
  *  organized into a table of entries, each with a length, so the entries are
  *  not required to all be the same size.
  */
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 class SK_API SkDataTable : public SkRefCnt {
 public:
     /**

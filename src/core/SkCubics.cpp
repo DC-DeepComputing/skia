@@ -15,6 +15,11 @@
 #include <algorithm>
 #include <cmath>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 static bool nearly_equal(double x, double y) {
     if (sk_double_nearly_zero(x)) {
         return sk_double_nearly_zero(y);

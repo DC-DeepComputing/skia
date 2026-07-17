@@ -8,6 +8,11 @@
 #include "include/core/SkScalar.h"
 #include "include/private/SkDebug.h"
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 float SkFloatInterpFunc(float searchKey, const float keys[], const float values[], int length) {
     SkASSERT(length > 0);
     SkASSERT(keys != nullptr);

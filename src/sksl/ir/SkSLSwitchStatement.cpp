@@ -29,6 +29,11 @@
 #include <algorithm>
 #include <iterator>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 using namespace skia_private;
 
 namespace SkSL {

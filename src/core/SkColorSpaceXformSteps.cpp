@@ -20,6 +20,11 @@
 #include <cmath>
 #include <cstring>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 // See skia.org/docs/user/color  (== site/docs/user/color.md).
 
 // Compute the Y vector for the HLG OOTF in the primaries of a specified color space. The value

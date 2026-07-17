@@ -15,6 +15,11 @@
 
 #include <cstdint>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 namespace skgpu {
 
 float DitherRangeForConfig(SkColorType dstColorType) {
@@ -103,3 +108,4 @@ SkBitmap MakeDitherLUT() {
 }  // namespace skgpu
 
 #endif // SK_IGNORE_GPU_DITHER
+

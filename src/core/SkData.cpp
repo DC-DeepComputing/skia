@@ -18,6 +18,11 @@
 #include <cstring>
 #include <new>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 SkData::SkData(SkSpan<std::byte> span, ReleaseProc proc, void* context)
     : fReleaseProc(proc)
     , fReleaseProcContext(context)
@@ -62,7 +67,6 @@ size_t SkData::copyRange(size_t offset, size_t length, void* buffer) const {
     }
     return length;
 }
-
 
 #define RETURN_EMPTY_FOR_ZERO_SIZE(size)    \
     do {                                    \

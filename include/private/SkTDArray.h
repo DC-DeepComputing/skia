@@ -17,6 +17,11 @@
 #include <initializer_list>
 #include <utility>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 // We'd prefer not to use these types anymore. SkTDArray can be replaced skia_private::TArray
 
 class SK_SPI SkTDStorage {

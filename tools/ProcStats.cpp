@@ -14,6 +14,11 @@
     #include <zircon/syscalls/object.h>
     #include <zircon/types.h>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
     int64_t sk_tools::getMaxResidentSetSizeBytes() {
       zx_info_task_stats_t task_stats;
       zx_handle_t process = zx_process_self();

@@ -16,6 +16,11 @@
 #include <cstring>
 #include <ctype.h>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 namespace SkSL {
 
 std::string Mangler::uniqueName(std::string_view baseName, SymbolTable* symbolTable) {

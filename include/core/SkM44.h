@@ -14,6 +14,11 @@
 
 #include <cstring>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 struct SkRect;
 
 struct SK_API SkV2 {

@@ -5,7 +5,6 @@
  * found in the LICENSE file.
  */
 
-
 #ifndef GrUserStencilSettings_DEFINED
 #define GrUserStencilSettings_DEFINED
 
@@ -33,6 +32,11 @@
  *   must zero all user bits that were modifed (both inside and outside the
  *   clip).
  */
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
 
 enum GrStencilFlags : int {
     kDisabled_StencilFlag         = (1 << 0),

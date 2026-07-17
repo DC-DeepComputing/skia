@@ -7,6 +7,11 @@
 
 #include "src/core/SkVertState.h"
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 bool VertState::Triangles(VertState* state) {
     int index = state->fCurrIndex;
     if (index + 3 > state->fCount) {

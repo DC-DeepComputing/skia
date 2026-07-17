@@ -13,6 +13,11 @@
 #include <functional>
 #include <string>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 namespace skgpu {
 
 ShaderErrorHandler* DefaultShaderErrorHandler() {

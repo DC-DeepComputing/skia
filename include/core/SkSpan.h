@@ -81,6 +81,12 @@
  *     initializer_list l = {1, 2, 3, 4, 5};   // The data behind l dies at the ;.
  *     routine(l);
  */
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 template <typename T>
 class SkSpan {
 public:

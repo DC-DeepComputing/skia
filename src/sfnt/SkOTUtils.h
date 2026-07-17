@@ -13,6 +13,11 @@
 #include "src/sfnt/SkOTTable_OS_2_V4.h"
 #include "src/sfnt/SkOTTable_name.h"
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 class SkData;
 class SkStream;
 struct SkAdvancedTypefaceMetrics;

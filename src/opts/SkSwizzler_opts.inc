@@ -39,6 +39,11 @@
 #define SI static inline
 #endif
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 namespace SK_OPTS_NS {
 
 #if defined(SK_USE_FAST_UNPREMUL_324099025)
@@ -987,7 +992,6 @@ void grayA_to_rgbA(uint32_t dst[], const uint8_t* src, int count) {
 
         __m128i gg = _mm_or_si128(g0, _mm_slli_epi16(g0, 8));
         __m128i ga = _mm_or_si128(g0, _mm_slli_epi16(a0, 8));
-
 
         __m128i ggga_lo = _mm_unpacklo_epi16(gg, ga);
         __m128i ggga_hi = _mm_unpackhi_epi16(gg, ga);

@@ -12,6 +12,11 @@
 #include "tools/sk_app/unix/Window_unix.h"
 #include "tools/timer/Timer.h"
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 using namespace skia_private;
 
 int main(int argc, char**argv) {

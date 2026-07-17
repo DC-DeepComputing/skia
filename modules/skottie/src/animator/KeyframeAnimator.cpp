@@ -15,6 +15,11 @@
 
 #define DUMP_KF_RECORDS 0
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 namespace skottie::internal {
 
 KeyframeAnimator::~KeyframeAnimator() = default;

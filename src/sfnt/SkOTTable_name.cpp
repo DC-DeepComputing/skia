@@ -12,6 +12,11 @@
 #include "src/core/SkTSearch.h"
 #include "src/core/SkUTF.h"
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 static SkUnichar next_unichar_UTF16BE(const uint8_t** srcPtr, size_t* length) {
     SkASSERT(srcPtr && *srcPtr && length);
     SkASSERT(*length > 0);

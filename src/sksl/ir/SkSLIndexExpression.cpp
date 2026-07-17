@@ -27,6 +27,11 @@
 #include <cstdint>
 #include <optional>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 namespace SkSL {
 
 static bool index_out_of_range(const Context& context, Position pos, SKSL_INT index,

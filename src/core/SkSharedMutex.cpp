@@ -21,6 +21,12 @@
 
     /* Report that a lock has been created at address "lock". */
     #define ANNOTATE_RWLOCK_CREATE(lock) \
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
         AnnotateRWLockCreate(__FILE__, __LINE__, lock)
 
     /* Report that the lock at address "lock" is about to be destroyed. */
@@ -363,3 +369,4 @@
     }
 
 #endif
+

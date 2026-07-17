@@ -15,6 +15,11 @@
 
 #include <cstring>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 class GrWindowRectangles {
 public:
     constexpr static int kMaxWindows = 8;

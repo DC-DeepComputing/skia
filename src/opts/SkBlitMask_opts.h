@@ -15,6 +15,11 @@
     #include <arm_neon.h>
 #endif
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 namespace SK_OPTS_NS {
 
 #if defined(SK_ARM_HAS_NEON)
@@ -44,7 +49,6 @@ namespace SK_OPTS_NS {
 
         return ret;
     }
-
 
     template <bool isTranslucent>
     static void blit_mask_d32_a8_neon(void* SK_RESTRICT dst, size_t dstRB,

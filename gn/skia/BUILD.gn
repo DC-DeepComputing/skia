@@ -860,3 +860,9 @@ if (is_apple) {
     cflags_objcc = common_flags
   }
 }
+
+config("enforce_unsafe_buffers") {
+  if (is_clang) {
+    cflags = [ "-Wunsafe-buffer-usage" ]
+  }
+}

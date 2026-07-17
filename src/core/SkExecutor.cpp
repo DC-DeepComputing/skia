@@ -16,6 +16,11 @@
 #include <thread>
 #include <utility>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 using namespace skia_private;
 
 #if defined(SK_BUILD_FOR_WIN)

@@ -12,6 +12,11 @@
 
 #include <cstdint>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 const void* SkRBuffer::skip(size_t size) {

@@ -13,6 +13,11 @@
 
 #include <cstring>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 static void malloc_freeproc(void* context) {
     sk_free(context);
 }

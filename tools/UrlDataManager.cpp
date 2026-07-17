@@ -10,6 +10,11 @@
 #include <unordered_map>
 #include <vector>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 UrlDataManager::UrlDataManager(SkString rootUrl) : fRootUrl(rootUrl), fDataId(0) {}
 
 SkString UrlDataManager::addData(sk_sp<const SkData> data, const char* contentType) {

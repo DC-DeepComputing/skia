@@ -31,6 +31,11 @@
 
 #define MODULE_DATA(type) ModuleType::type, GetModuleData(ModuleType::type, #type ".sksl")
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 namespace SkSL {
 
 #define TYPE(t) &BuiltinTypes::f ## t

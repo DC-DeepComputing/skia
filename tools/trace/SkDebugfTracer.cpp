@@ -10,6 +10,11 @@
 
 #include <inttypes.h>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 SkEventTracer::Handle SkDebugfTracer::addTraceEvent(char phase,
                                                     const uint8_t* categoryEnabledFlag,
                                                     const char* name,

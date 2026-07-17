@@ -28,6 +28,11 @@
 #include <tuple>
 #include <utility>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 namespace sktext::gpu {
 
 // BagOfBytes parcels out bytes with a given size and alignment.

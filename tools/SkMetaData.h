@@ -4,6 +4,7 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+
 #ifndef SkMetaData_DEFINED
 #define SkMetaData_DEFINED
 
@@ -12,6 +13,12 @@
 /** A map from c-string keys to arrays of POD (int32_t, kScalar, void*, or bool)
     values.
 */
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 class SkMetaData {
 public:
     SkMetaData() {}

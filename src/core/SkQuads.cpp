@@ -13,6 +13,11 @@
 #include <cmath>
 #include <limits>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 // Solve 0 = M * x + B. If M is 0, there are no solutions, unless B is also 0,
 // in which case there are infinite solutions, so we just return 1 of them.
 static int solve_linear(const double M, const double B, double solution[2]) {

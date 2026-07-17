@@ -23,6 +23,11 @@
 #include <string_view>
 #include <utility>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 // number of bytes (on the stack) to receive the printf result
 static const size_t kBufferSize = 1024;
 

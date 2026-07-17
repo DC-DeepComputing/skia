@@ -24,6 +24,11 @@
 #include "src/ports/SkOSFile_ios.h"
 #endif
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 void sk_fsync(FILE* f) {
 #if !defined(SK_BUILD_FOR_ANDROID) && !defined(__UCLIBC__) && !defined(_NEWLIB_VERSION)
     int fd = fileno(f);

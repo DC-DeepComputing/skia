@@ -12,6 +12,11 @@
 #include "src/core/SkColorData.h"
 #include "src/core/SkVx.h"
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 // 1, 2 or 4 SkPMColors, generally vectorized.
 class Sk4px {
 public:

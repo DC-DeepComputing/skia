@@ -10,6 +10,11 @@
 #include "include/private/SkMalloc.h"
 #include "include/private/SkTo.h"
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 void SkMetaData::reset()
 {
     Rec* rec = fRec;
@@ -169,7 +174,6 @@ SkMetaData::FindResult SkMetaData::findWithPrev(const char name[], Type type) co
     }
     return current;
 }
-
 
 const SkMetaData::Rec* SkMetaData::find(const char name[], Type type) const {
     return this->findWithPrev(name, type).rec;

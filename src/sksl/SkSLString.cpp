@@ -19,6 +19,11 @@
 #include <string>
 #include <string_view>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 template <typename RoundtripType, int kFullPrecision>
 static std::string to_string_impl(RoundtripType value) {
     std::stringstream buffer;

@@ -26,6 +26,11 @@
 #include <limits>
 #include <new>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 using namespace skia_private;
 
 #if !defined(SK_ENABLE_OPTIMIZE_SIZE)
@@ -1771,4 +1776,3 @@ bool SkTriangulateSimplePolygon(const SkPoint* polygonVerts, uint16_t* indexMap,
 }
 
 #endif // !defined(SK_ENABLE_OPTIMIZE_SIZE)
-

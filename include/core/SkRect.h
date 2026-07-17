@@ -24,6 +24,11 @@
 #include <cstring>
 #include <optional>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 struct SkRect;
 class SkString;
 
@@ -1142,7 +1147,6 @@ struct SK_API SkRect {
         @return   true if a and b have area in common
     */
     [[nodiscard]] bool intersect(const SkRect& a, const SkRect& b);
-
 
 private:
     static bool Intersects(float al, float at, float ar, float ab,

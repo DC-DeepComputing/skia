@@ -13,6 +13,11 @@
 // memset16 and memset32 could work on 32-bit x86 too, but for simplicity just use this on x64
 #if (defined(__x86_64__) || defined(_M_X64)) && !defined(SK_ENABLE_OPTIMIZE_SIZE)
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 static const char* note = "MSAN can't see that repsto initializes memory.";
 
 #if defined(_MSC_VER)

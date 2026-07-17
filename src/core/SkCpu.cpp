@@ -34,6 +34,11 @@
     #include <sys/auxv.h>
 #endif
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 namespace {
 #if defined(SK_CPU_X86)
     // Vendor String https://www.sandpile.org/x86/cpuid.htm#leaf_0000_0000h

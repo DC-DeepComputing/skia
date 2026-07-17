@@ -18,6 +18,11 @@
 #include <cstdint>
 #include <utility>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 SkTypefaceCache::SkTypefaceCache() {}
 
 void SkTypefaceCache::add(sk_sp<SkTypeface> face) {

@@ -17,6 +17,11 @@
 #include <cstring>
 #include <utility>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 template <typename T> T pin_unsorted(T value, T limit0, T limit1) {
     if (limit1 < limit0) {
         using std::swap;

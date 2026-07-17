@@ -16,6 +16,11 @@
 #include <emscripten/version.h>
 #endif
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 extern "C" {
 
 ///////////////////////////////////////////////////////////////////////////////

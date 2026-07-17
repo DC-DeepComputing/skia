@@ -10,6 +10,11 @@
 #include "include/private/SkAssert.h"
 #include "include/private/SkDebug.h"
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 SkRTree::SkRTree() : fCount(0) {}
 
 void SkRTree::insert(const SkRect boundsArray[], int N) {

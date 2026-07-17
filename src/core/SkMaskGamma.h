@@ -29,6 +29,12 @@
  * Luma is used to specify a linear luminance value [0.0, 1.0].
  * Luminance is used to specify a luminance value in an arbitrary color space [0.0, 1.0].
  */
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 class SkColorSpaceLuminance : SkNoncopyable {
 public:
     virtual ~SkColorSpaceLuminance() { }

@@ -10,6 +10,11 @@
 
 #include <cstddef>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 // Define gaussian filters for values of sigma < 2. Produce values good to 1 part in 1,000,000.
 // Produces values as defined in "Scale-Space for Discrete Signals" by Tony Lindeberg.
 class SkGaussFilter {

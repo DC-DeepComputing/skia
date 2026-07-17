@@ -16,6 +16,11 @@
 #include <stdarg.h>
 #include <stdio.h>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 void SkLogVAList(SkLogPriority priority, const char format[], va_list args) {
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wformat-nonliteral"
@@ -23,3 +28,4 @@ void SkLogVAList(SkLogPriority priority, const char format[], va_list args) {
 #pragma GCC diagnostic pop
 }
 #endif  // !defined(SK_BUILD_FOR_WIN) && !defined(SK_BUILD_FOR_ANDROID)
+

@@ -15,6 +15,11 @@
 #include <cmath>
 #include <cstdint>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 struct SkIPoint;
 
 /** SkIVector provides an alternative name for SkIPoint. SkIVector and SkIPoint

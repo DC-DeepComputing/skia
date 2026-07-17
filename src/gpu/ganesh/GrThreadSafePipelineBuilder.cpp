@@ -11,6 +11,11 @@
 #if defined(GPU_TEST_UTILS)
 #include "include/core/SkString.h"
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 using namespace skia_private;
 
 using Stats = GrThreadSafePipelineBuilder::Stats;
@@ -59,3 +64,4 @@ void GrThreadSafePipelineBuilder::Stats::dumpKeyValuePairs(TArray<SkString>* key
 
 #endif // defined(GPU_TEST_UTILS)
 #endif // GR_GPU_STATS
+

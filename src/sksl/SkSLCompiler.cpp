@@ -33,6 +33,11 @@
 #include <fstream>
 #endif
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#endif
+
 namespace SkSL {
 
 // These flags allow tools like Viewer or Nanobench to override the compiler's ProgramSettings.
