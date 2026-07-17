@@ -240,6 +240,24 @@
       "parentUuid": "54c310c3_29f13096",
       "revId": "d62438ad312e2702df636a71fd34d7db77acd5a0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e332a5c7_5c126545",
+        "filename": "src/gpu/ganesh/ops/SmallPathShapeData.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-17T16:38:41Z",
+      "side": 1,
+      "message": "sounds good, will mark this as resolved for now, and we can revisit this later if needed.",
+      "parentUuid": "684ffe01_adc2492d",
+      "revId": "d62438ad312e2702df636a71fd34d7db77acd5a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
