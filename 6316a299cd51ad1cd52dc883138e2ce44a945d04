@@ -143,6 +143,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b5e5aaf_8829d878",
+        "filename": "src/gpu/ganesh/vk/GrVkGpu.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 627,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-07-17T20:16:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "32c48fa4_28db97f2",
+      "range": {
+        "startLine": 627,
+        "startChar": 4,
+        "endLine": 627,
+        "endChar": 87
+      },
+      "revId": "6316a299cd51ad1cd52dc883138e2ce44a945d04",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "52cf1d8d_38dae198",
