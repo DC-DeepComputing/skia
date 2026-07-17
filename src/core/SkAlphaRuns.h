@@ -21,6 +21,10 @@
     same SkAlphaRuns buffer.
 */
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 class SkAlphaRuns {
 public:
     int16_t*    fRuns;

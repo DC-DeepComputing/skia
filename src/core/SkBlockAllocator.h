@@ -51,6 +51,11 @@
  *    SkSBlockAllocator<1024> allocator(policy, heapAllocSize);
  *    sizeof(allocator) == 1024;
  */
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 // TODO(michaelludwig) - While API is different, this shares similarities to SkArenaAlloc and
 // SkFibBlockSizes, so we should work to integrate them.
 class SkBlockAllocator final : SkNoncopyable {

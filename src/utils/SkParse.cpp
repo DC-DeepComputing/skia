@@ -16,6 +16,10 @@
 #include <limits>
 #include <string>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 static inline bool is_between(int c, int min, int max)
 {
     return (unsigned)(c - min) <= (unsigned)(max - min);

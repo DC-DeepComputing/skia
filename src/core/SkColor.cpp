@@ -15,6 +15,10 @@
 
 #include <algorithm>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 SkPMColor SkPreMultiplyARGB(U8CPU a, U8CPU r, U8CPU g, U8CPU b) {
     return SkPremultiplyARGBInline(a, r, g, b);
 }

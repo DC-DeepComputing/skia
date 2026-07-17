@@ -17,6 +17,11 @@
     int. This also converts -0 (0x80000000) to 0. Doing this to a float allows
     it to be compared using normal C operators (<, <=, etc.)
 */
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 static inline int32_t SkSignBitTo2sCompliment(int32_t x) {
     if (x < 0) {
         x &= 0x7FFFFFFF;

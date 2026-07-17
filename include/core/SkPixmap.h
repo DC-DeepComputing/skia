@@ -21,6 +21,10 @@
 #include <cstddef>
 #include <cstdint>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 class SkColorSpace;
 enum SkAlphaType : int;
 struct SkMask;

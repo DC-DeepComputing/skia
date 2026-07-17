@@ -18,6 +18,10 @@
 #include <type_traits>
 #include <utility>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 namespace skia_private {
 
 // Before trying to use THashTable, look below to see if THashMap or THashSet works for you.

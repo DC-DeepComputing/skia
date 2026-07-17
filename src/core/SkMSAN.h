@@ -13,6 +13,10 @@
 #include <cstddef>
 #include <string.h>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 // Typically declared in LLVM's msan_interface.h.  Easier for us to just re-declare.
 extern "C" {
     void __msan_check_mem_is_initialized(const volatile void*, size_t);

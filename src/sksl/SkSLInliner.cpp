@@ -72,6 +72,10 @@
 #include <string_view>
 #include <utility>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 using namespace skia_private;
 
 namespace SkSL {
@@ -1187,3 +1191,4 @@ bool Inliner::analyze(const std::vector<std::unique_ptr<ProgramElement>>& elemen
 }  // namespace SkSL
 
 #endif  // SK_ENABLE_OPTIMIZE_SIZE
+

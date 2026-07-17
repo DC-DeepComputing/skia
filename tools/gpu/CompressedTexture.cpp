@@ -7,6 +7,10 @@
 
 #include "tools/gpu/CompressedTexture.h"
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 // The following four helpers are copied from src/gpu/DataUtils.cpp to support the test only
 // GrTwoColorBC1Compress function. Ideally we would copy the test function into DataUtils.cpp
 // instead, but we're currently trying to avoid using the GPU_TEST_UTILS define in src/gpu.

@@ -33,6 +33,10 @@
     #endif
 #endif
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 using namespace skcms_private;
 
 // A potential vulnerability exists where a large CLUT can cause an integer
@@ -303,7 +307,6 @@ float skcms_TransferFunction_eval(const skcms_TransferFunction* tf, float x) {
     }
     return 0;
 }
-
 
 static float eval_curve(const skcms_Curve* curve, float x) {
     if (curve->table_entries == 0) {
@@ -782,7 +785,6 @@ static bool read_mft_common(const mft_CommonLayout* mftTag, skcms_B2A* b2a) {
     b2a-> input_channels = mftTag-> input_channels[0];
     b2a->output_channels = mftTag->output_channels[0];
 
-
     // For B2A, exactly 3 input channels (XYZ) and 3 (RGB) or 4 (CMYK) output channels.
     if (b2a->input_channels != ARRAY_COUNT(b2a->input_curves)) {
         return false;
@@ -1260,7 +1262,6 @@ static int fit_linear(const skcms_Curve* curve, int N, float tol,
         f = &f_zero;
     }
 
-
     float slope_min = -INFINITY_;
     float slope_max = +INFINITY_;
     for (int i = 1; i < N; ++i) {
@@ -1559,7 +1560,6 @@ bool skcms_ParseWithA2BPriority(const void* buf, size_t len,
 
     return usable_as_src(profile);
 }
-
 
 const skcms_ICCProfile* skcms_sRGB_profile() {
     static const skcms_ICCProfile sRGB_profile = {
@@ -1960,7 +1960,6 @@ bool skcms_PrimariesToXYZD50(float rx, float ry,
     *toXYZD50 = skcms_Matrix3x3_concat(&DXtoD50, &toXYZ);
     return true;
 }
-
 
 bool skcms_Matrix3x3_invert(const skcms_Matrix3x3* src, skcms_Matrix3x3* dst) {
     double a00 = src->vals[0][0],
@@ -2427,7 +2426,6 @@ bool skcms_ApproximateCurve(const skcms_Curve* curve,
             tf.b = 0;
             tf.e =    tf.c*tf.d + tf.f
               - powf_(tf.a*tf.d + tf.b, tf.g);
-
 
             if (!skcms_TransferFunction_invert(&tf, &tf_inv) ||
                 !fit_nonlinear(curve, L,N, &tf_inv)) {

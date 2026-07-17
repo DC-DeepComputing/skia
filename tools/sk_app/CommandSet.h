@@ -18,6 +18,10 @@
 #include <functional>
 #include <vector>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 class SkCanvas;
 
 namespace sk_app {

@@ -15,6 +15,10 @@
 #include "src/sksl/ir/SkSLFunctionDeclaration.h"
 #include "src/sksl/ir/SkSLType.h"
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 namespace SkSL {
 
 std::unique_ptr<SymbolTable> SymbolTable::insertNewParent() {

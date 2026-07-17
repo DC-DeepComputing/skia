@@ -12,6 +12,10 @@
 #include "src/core/SkTraceEvent.h"
 #include "tools/flags/CommandLineFlags.h"
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 PERFETTO_TRACK_EVENT_STATIC_STORAGE();
 
 static DEFINE_string(perfettoOutputDir, "./",

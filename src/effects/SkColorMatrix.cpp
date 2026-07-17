@@ -8,6 +8,10 @@
 #include "include/effects/SkColorMatrix.h"
 #include "src/core/SkYUVMath.h"
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 enum SkYUVColorSpace : int;
 
 SkColorMatrix SkColorMatrix::RGBtoYUV(SkYUVColorSpace cs) {

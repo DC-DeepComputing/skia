@@ -20,6 +20,10 @@
 
 #include <zlib.h>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 namespace {
 
 // Different zlib implementations use different T.

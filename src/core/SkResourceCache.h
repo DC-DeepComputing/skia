@@ -14,6 +14,10 @@
 #include <cstddef>
 #include <cstdint>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 class SkCachedData;
 class SkDiscardableMemory;
 class SkTraceMemoryDump;

@@ -26,6 +26,10 @@
 #include <cstddef>
 #include <optional>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 namespace SkSL {
 
 static ExpressionArray negate_operands(const Context& context,

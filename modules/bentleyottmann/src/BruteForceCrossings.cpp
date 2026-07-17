@@ -8,6 +8,10 @@
 #include <optional>
 #include <vector>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 namespace bentleyottmann {
 std::optional<std::vector<Crossing>> brute_force_crossings(SkSpan<const Segment> segments) {
     std::vector<Crossing> answer;

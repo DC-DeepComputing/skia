@@ -23,6 +23,10 @@
 #include <numeric>
 #include <string>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 namespace SkSL {
 
 static bool is_safe_to_eliminate(const Type& type, const Expression& arg) {

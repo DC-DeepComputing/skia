@@ -16,8 +16,12 @@
     memory wrappers to be implemented by the porting layer (platform)
 */
 
-
 /** Free memory returned by sk_malloc(). It is safe to pass null. */
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 SK_API extern void sk_free(void*);
 
 /**

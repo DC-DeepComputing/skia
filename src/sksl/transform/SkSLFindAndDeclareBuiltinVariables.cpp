@@ -32,6 +32,10 @@
 #include <string_view>
 #include <vector>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 namespace SkSL {
 namespace Transform {
 namespace {
