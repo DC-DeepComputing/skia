@@ -46,6 +46,30 @@
       },
       "revId": "7545622bd12307364055171577f4ab8265c7e623",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9eb1002b_9fe175f4",
+        "filename": "infra/bots/recipe_modules/build/default.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 387,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-17T13:48:00Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "a1a94bf2_8b106429",
+      "range": {
+        "startLine": 387,
+        "startChar": 21,
+        "endLine": 387,
+        "endChar": 37
+      },
+      "revId": "7545622bd12307364055171577f4ab8265c7e623",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
