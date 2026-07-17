@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5bcbf386_479de901",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 21749
+      },
+      "writtenOn": "2026-07-17T19:47:18Z",
+      "side": 1,
+      "message": "Hey!\n\nI\u0027m trying to make the Linux/ChromeOS implementation of FontDataService be able to share file handles instead of shared memory. I had to stop its rollout at Stable 10% due to regressions, and the performance cost seems to be having to rely on copying and sharing the memory.\n\nFor reference, on Windows (which has been ramped up several times to 100%), we are able to get the file handle from Skia and share it to the renderer.\n\nPTAL!",
+      "revId": "576f568ef6c9af8b4b8d391799d365ed391e848f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
