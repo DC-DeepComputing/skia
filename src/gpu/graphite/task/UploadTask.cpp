@@ -25,6 +25,7 @@
 #include "src/core/SkCompressedDataUtils.h"
 #include "src/core/SkConvertPixels.h"
 #include "src/core/SkMipmap.h"
+#include "src/core/SkSafeMath.h"
 #include "src/core/SkTraceEvent.h"  // IWYU pragma: keep
 #include "src/gpu/DataUtils.h"
 #include "src/gpu/graphite/Caps.h"
@@ -67,12 +68,15 @@ std::pair<size_t, size_t> compute_combined_buffer_size(
 
     size_t minTransferBufferAlignment =
             std::max(bytesPerBlock, caps->requiredTransferBufferAlignment());
+
+    SkSafeMath safe;
     size_t alignedBytesPerRow =
-            caps->getAlignedTextureDataRowBytes(compressedBlockDimensions.width() * bytesPerBlock);
+            caps->getAlignedTextureDataRowBytes(safe.mul(compressedBlockDimensions.width(), bytesPerBlock),
+                                                bytesPerBlock);
 
     levelOffsetsAndRowBytes->push_back({0, alignedBytesPerRow});
-    size_t combinedBufferSize = SkAlignTo(alignedBytesPerRow * baseDimensions.height(),
-                                          minTransferBufferAlignment);
+    size_t combinedBufferSize = safe.alignUp(safe.mul(alignedBytesPerRow, baseDimensions.height()),
+                                            minTransferBufferAlignment);
     SkISize levelDimensions = baseDimensions;
 
     for (int currentMipLevel = 1; currentMipLevel < mipLevelCount; ++currentMipLevel) {
@@ -80,16 +84,20 @@ std::pair<size_t, size_t> compute_combined_buffer_size(
                            std::max(1, levelDimensions.height() / 2)};
         compressedBlockDimensions = CompressedDimensionsInBlocks(compressionType, levelDimensions);
         alignedBytesPerRow = caps->getAlignedTextureDataRowBytes(
-                compressedBlockDimensions.width() * bytesPerBlock);
-        size_t alignedSize = SkAlignTo(alignedBytesPerRow * compressedBlockDimensions.height(),
+                safe.mul(compressedBlockDimensions.width(), bytesPerBlock),
+                bytesPerBlock);
+        size_t alignedSize = safe.alignUp(safe.mul(alignedBytesPerRow, compressedBlockDimensions.height()),
                                        minTransferBufferAlignment);
-        SkASSERT(combinedBufferSize % minTransferBufferAlignment == 0);
 
         levelOffsetsAndRowBytes->push_back({combinedBufferSize, alignedBytesPerRow});
-        combinedBufferSize += alignedSize;
+        combinedBufferSize = safe.add(combinedBufferSize, alignedSize);
     }
 
     SkASSERT(levelOffsetsAndRowBytes->size() == mipLevelCount);
+    if (!safe.ok()) {
+        levelOffsetsAndRowBytes->clear();
+        return {0, minTransferBufferAlignment};
+    }
     SkASSERT(combinedBufferSize % minTransferBufferAlignment == 0);
     return {combinedBufferSize, minTransferBufferAlignment};
 }
@@ -243,7 +251,9 @@ UploadInstance UploadInstance::Make(Recorder* recorder,
                                          mipLevelCount,
                                          dstRect.size(),
                                          &levelOffsetsAndRowBytes);
-    SkASSERT(combinedBufferSize);
+    if (combinedBufferSize == 0) {
+        return Invalid();
+    }
 
     UploadBufferManager* bufferMgr = recorder->priv().uploadBufferManager();
     auto [writer, bufferInfo] = bufferMgr->getTextureUploadWriter(combinedBufferSize, minAlignment);
