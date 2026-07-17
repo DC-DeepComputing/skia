@@ -24,6 +24,11 @@
 #endif
 
 #ifdef _WIN32
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 static bool is_ascii(const char* s) {
     while (char v = *s++) {
         if ((v & 0x80) != 0) {

@@ -1,11 +1,9 @@
-
 /*
  * Copyright 2006 The Android Open Source Project
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
-
 
 #ifndef SkTSearch_DEFINED
 #define SkTSearch_DEFINED
@@ -32,6 +30,9 @@
  *  }
  */
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
 
 // The most general form of SkTSearch takes an array of T and a key of type K. A functor, less, is
 // used to perform comparisons. It has two function operators:

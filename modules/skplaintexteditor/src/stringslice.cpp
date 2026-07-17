@@ -8,6 +8,10 @@
 #include <cstdlib>
 #include <cstring>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 using namespace SkPlainTextEditor;
 
 void StringSlice::FreeWrapper::operator()(void* t) { std::free(t); }

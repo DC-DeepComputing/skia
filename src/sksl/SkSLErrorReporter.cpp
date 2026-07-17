@@ -11,6 +11,10 @@
 #include "src/sksl/SkSLCompiler.h"
 #include "src/sksl/SkSLPosition.h"
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 namespace SkSL {
 
 void ErrorReporter::error(Position position, std::string_view msg) {

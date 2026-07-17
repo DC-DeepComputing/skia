@@ -5,7 +5,6 @@
  * found in the LICENSE file.
  */
 
-
 #include "src/core/SkBase64.h"
 
 #include "include/private/SkAssert.h"
@@ -14,6 +13,10 @@
 
 #define DecodePad -2
 #define EncodePad 64
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
 
 static const char default_encode[] =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZ"

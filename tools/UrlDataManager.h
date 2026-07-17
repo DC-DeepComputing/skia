@@ -17,6 +17,10 @@
 #include <unordered_map>
 #include <vector>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 class UrlDataManager {
 public:
     explicit UrlDataManager(SkString rootUrl);
@@ -84,7 +88,6 @@ private:
             return SkChecksum::Hash32(key.c_str(), strlen(key.c_str()));
         }
     };
-
 
     SkString fRootUrl;
     SkTDynamicHash<UrlData, SkData, LookupTrait> fCache;

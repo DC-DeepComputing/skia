@@ -24,6 +24,10 @@
 #include <type_traits>  // IWYU pragma: keep
 #include <utility>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 // We found allocating strictly doubling amounts of memory from the heap left too
 // much unused slop, particularly on Android.  Instead we'll follow a Fibonacci-like
 // progression.

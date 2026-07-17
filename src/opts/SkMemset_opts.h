@@ -11,6 +11,10 @@
 #include <stdint.h>
 #include "src/core/SkVx.h"
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 namespace SK_OPTS_NS {
 
     template <typename T>

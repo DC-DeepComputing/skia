@@ -22,6 +22,10 @@
 #include <cstring>
 #include <optional>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 struct SkRSXform;
 struct SkSize;
 

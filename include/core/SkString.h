@@ -23,6 +23,11 @@
 #include <type_traits>
 
 /*  Some helper functions for C strings */
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 static inline bool SkStrStartsWith(const char string[], const char prefixStr[]) {
     SkASSERT(string);
     SkASSERT(prefixStr);

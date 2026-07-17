@@ -24,6 +24,11 @@
 
 /** 8-bit type for an alpha value. 255 is 100% opaque, zero is 100% transparent.
 */
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 typedef uint8_t SkAlpha;
 
 /** 32-bit ARGB color value, unpremultiplied. Color components are always in

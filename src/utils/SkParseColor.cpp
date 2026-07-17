@@ -4,6 +4,7 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+
 #include "include/utils/SkParse.h"
 
 #include "include/core/SkColor.h"
@@ -14,6 +15,10 @@
 #include <cstdint>
 #include <cstring>
 #include <iterator>
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
 
 static constexpr const char* gColorNames[] = {
     "aliceblue",

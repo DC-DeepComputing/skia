@@ -10,6 +10,10 @@
 
 #include "include/core/SkScalar.h"
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 template <typename T> class SkNoDestructor;
 
 namespace sktext::gpu {

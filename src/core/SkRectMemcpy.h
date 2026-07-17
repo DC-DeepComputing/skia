@@ -13,6 +13,10 @@
 
 #include <cstring>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 static inline void SkRectMemcpy(void* dst, size_t dstRB, const void* src, size_t srcRB,
                                 size_t trimRowBytes, int rowCount) {
     SkASSERT(trimRowBytes <= dstRB);

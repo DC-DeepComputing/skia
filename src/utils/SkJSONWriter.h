@@ -35,6 +35,11 @@
  *  Note that all error checking is in the form of asserts - invalid usage in a non-debug build
  *  will simply produce invalid JSON.
  */
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 class SkJSONWriter : SkNoncopyable {
 public:
     enum class Mode {

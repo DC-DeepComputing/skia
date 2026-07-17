@@ -1,10 +1,10 @@
-
 /*
  * Copyright 2008 The Android Open Source Project
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+
 #ifndef SkUnPreMultiply_DEFINED
 #define SkUnPreMultiply_DEFINED
 
@@ -13,6 +13,10 @@
 #include "include/private/SkCPUTypes.h"
 
 #include <cstdint>
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
 
 class SK_API SkUnPreMultiply {
 public:

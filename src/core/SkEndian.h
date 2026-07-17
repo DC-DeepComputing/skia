@@ -30,6 +30,11 @@
 /** Swap the two bytes in the low 16bits of the parameters.
     e.g. 0x1234 -> 0x3412
 */
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 static inline uint16_t SkEndianSwap16(uint16_t value) {
     return static_cast<uint16_t>((value >> 8) | ((value & 0xFF) << 8));
 }
@@ -160,7 +165,6 @@ static inline void SkEndianSwap64s(uint64_t array[], int count) {
     #define SkEndian_Byte2Shift 8
     #define SkEndian_Byte3Shift 0
 #endif
-
 
 #if defined(SK_UINT8_BITFIELD_LENDIAN) && defined(SK_UINT8_BITFIELD_BENDIAN)
     #error "can't have both bitfield LENDIAN and BENDIAN defined"
