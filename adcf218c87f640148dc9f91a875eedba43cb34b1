@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc0c4b47_7f28e66b",
+        "filename": "src/core/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 572,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-07-17T17:04:49Z",
+      "side": 1,
+      "message": "Made it its own target and had DM depend on it directly.",
+      "parentUuid": "f032b80e_9e9e1712",
+      "range": {
+        "startLine": 572,
+        "startChar": 20,
+        "endLine": 572,
+        "endChar": 29
+      },
+      "revId": "adcf218c87f640148dc9f91a875eedba43cb34b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0cae3318_c4c95f6b",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "efb836a3_3d372852",
+        "filename": "tests/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-07-17T17:04:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0cae3318_c4c95f6b",
+      "range": {
+        "startLine": 62,
+        "startChar": 0,
+        "endLine": 62,
+        "endChar": 9
+      },
+      "revId": "adcf218c87f640148dc9f91a875eedba43cb34b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b011e9e9_2ef62f8a",
@@ -60,6 +108,30 @@
       "writtenOn": "2026-07-14T13:24:20Z",
       "side": 1,
       "message": "What depends on this?",
+      "range": {
+        "startLine": 36,
+        "startChar": 12,
+        "endLine": 36,
+        "endChar": 28
+      },
+      "revId": "adcf218c87f640148dc9f91a875eedba43cb34b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "00692805_6b020bb5",
+        "filename": "tools/ganesh/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-07-17T17:04:49Z",
+      "side": 1,
+      "message": "GrAtlasTools",
+      "parentUuid": "b011e9e9_2ef62f8a",
       "range": {
         "startLine": 36,
         "startChar": 12,

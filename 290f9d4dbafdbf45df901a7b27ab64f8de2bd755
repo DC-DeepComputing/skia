@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4cf5ed44_bebd60d6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-07-17T17:04:49Z",
+      "side": 1,
+      "message": "Review order:\n1) dm/BUILD.bazel and tests/BUILD.bazel\n* Tests listed in tests/BUILD.bazel reflect tests.gni\n2) New targets\n* src/lazy/BUILD.bazel\n* tools/graphite/BUILD.bazel\n* tools/text/gpu/BUILD.bazel\n3) Expanded targets\n* tools/fonts/BUILD.bazel\n* tools/ganesh/BUILD.bazel\n* tools/gpu/BUILD.bazel\n* src/gpu/ganesh/BUILD.bazel\n4) Targets with DM added to visibility\n* android/src/BUILD.bazel\n* src/gpu/graphite/precompile/BUILD.bazel\n* src/sksl/codegen/BUILD.bazel\n* src/sksl/tracing/BUILD.bazel\n* src/utils/BUILD.bazel\n* tools/sksltrace/BUILD.bazel",
+      "revId": "290f9d4dbafdbf45df901a7b27ab64f8de2bd755",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

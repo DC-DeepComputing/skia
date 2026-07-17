@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7d64c9d_e695cbeb",
+        "filename": "tools/gpu/BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-07-17T17:04:49Z",
+      "side": 1,
+      "message": "This was added for macro purposes as well, please review.",
+      "revId": "afaf226234182c9b9a915641921649568a4c5c67",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
