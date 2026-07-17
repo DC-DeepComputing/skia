@@ -25,6 +25,7 @@
 #include "include/private/SkAssert.h"
 #include "include/private/SkTemplates.h"
 #include "include/private/SkTo.h"
+#include <numeric>
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/core/SkColorSpaceXformSteps.h"
 #include "src/core/SkMipmap.h"
@@ -1438,9 +1439,20 @@ SurfaceContext::PixelTransferResult SurfaceContext::transferPixels(GrColorType d
 
     SkSafeMath safe;
     size_t bytesPerPixel = GrColorTypeBytesPerPixel(supportedRead.fColorType);
+    SkASSERT(bytesPerPixel > 0);
     size_t rowBytes = safe.mul(bytesPerPixel, rect.width());
     size_t maxTransAlignment = this->caps()->transferBufferRowBytesAlignment();
-    rowBytes = safe.alignUp(rowBytes, maxTransAlignment);
+    size_t gcd = std::gcd(bytesPerPixel, maxTransAlignment);
+    size_t alignment = safe.mul(bytesPerPixel / gcd, maxTransAlignment);
+    if (!safe.ok()) {
+        return {};
+    }
+    SkASSERT(alignment > 0);
+    size_t alignedRowBytes = safe.add(rowBytes, alignment - 1);
+    if (!safe.ok()) {
+        return {};
+    }
+    rowBytes = (alignedRowBytes / alignment) * alignment;
     size_t size = safe.mul(rowBytes, rect.height());
     if (!safe.ok()) {
         return {};
