@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d6c2368_688cc5ce",
+        "filename": "src/gpu/ganesh/GrDataUtils.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-17T18:24:35Z",
+      "side": 1,
+      "message": "Is this not guaranteed to be a power of 2? Or is it because rowAlignment has already been LCM\u0027ed with the bytesPerPixel? (so just the transfer alignment would be a power of 2?)",
+      "range": {
+        "startLine": 55,
+        "startChar": 67,
+        "endLine": 55,
+        "endChar": 79
+      },
+      "revId": "6316a299cd51ad1cd52dc883138e2ce44a945d04",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2225941c_82be0654",
+        "filename": "src/gpu/ganesh/vk/GrVkGpu.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 627,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-17T18:24:35Z",
+      "side": 1,
+      "message": "There should be no possible way for this to overflow so I don\u0027t know if safemath is warranted. I think it\u0027s only necessary when the net calculation involves an image dimension (and even then, if we have an allocated texture at this point, can we argue that the transfer alignment calculations have already been vetted?)",
+      "range": {
+        "startLine": 627,
+        "startChar": 4,
+        "endLine": 627,
+        "endChar": 87
+      },
+      "revId": "6316a299cd51ad1cd52dc883138e2ce44a945d04",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "733b0206_d5358288",
+        "filename": "src/gpu/graphite/task/UploadTask.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-17T18:24:35Z",
+      "side": 1,
+      "message": "nit: space",
+      "range": {
+        "startLine": 79,
+        "startChar": 24,
+        "endLine": 79,
+        "endChar": 50
+      },
+      "revId": "6316a299cd51ad1cd52dc883138e2ce44a945d04",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
