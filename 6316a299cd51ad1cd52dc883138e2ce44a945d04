@@ -284,6 +284,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "18650acc_46eb6dd6",
+        "filename": "src/gpu/graphite/task/UploadTask.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-07-17T19:53:36Z",
+      "side": 1,
+      "message": "Acknowledged, looks good now!",
+      "parentUuid": "388b14ed_49e45631",
+      "range": {
+        "startLine": 78,
+        "startChar": 17,
+        "endLine": 78,
+        "endChar": 24
+      },
+      "revId": "6316a299cd51ad1cd52dc883138e2ce44a945d04",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "733b0206_d5358288",
