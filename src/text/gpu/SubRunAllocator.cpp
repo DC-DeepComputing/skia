@@ -14,6 +14,10 @@
 #include <memory>
 #include <new>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 namespace sktext::gpu {
 
 // -- BagOfBytes ---------------------------------------------------------------------------------

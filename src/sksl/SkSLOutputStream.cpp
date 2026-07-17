@@ -10,6 +10,10 @@
 #include <stdio.h>
 #include <memory>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 namespace SkSL {
 
 void OutputStream::writeString(const std::string& s) {

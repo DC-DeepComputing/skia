@@ -29,6 +29,10 @@
 #include <algorithm>
 #include <iterator>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 using namespace skia_private;
 
 namespace SkSL {

@@ -16,6 +16,10 @@
 #include <initializer_list>
 #include <type_traits>  // IWYU pragma: keep for std::is_trivial_v
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 namespace skia_private {
 
 /**

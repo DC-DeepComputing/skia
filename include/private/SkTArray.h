@@ -28,6 +28,10 @@
 #include <new>
 #include <utility>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 namespace skia_private {
 /** TArray<T> implements a typical, mostly std::vector-like array.
     Each T will be default-initialized on allocation, and ~T will be called on destruction.

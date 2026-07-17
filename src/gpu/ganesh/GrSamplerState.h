@@ -19,6 +19,11 @@
 /**
  * Represents the filtering and tile modes used to access a texture.
  */
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 class GrSamplerState {
 public:
     using Filter = SkFilterMode;

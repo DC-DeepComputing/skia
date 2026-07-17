@@ -17,6 +17,10 @@
 #include <cstddef>
 #include <iterator>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 static constexpr int kInverseTableSize = 1024; // SK_FDot6One * 16
 
 static inline SkFixed quick_inverse(SkFDot6 x) {

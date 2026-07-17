@@ -11,6 +11,10 @@
 
 #include <stdlib.h>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 template <typename T> static void ignore_result(const T&) {}
 
 bool SkFlagInfo::CreateStringFlag(const char*                    name,

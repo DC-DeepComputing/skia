@@ -18,6 +18,10 @@ using U32 = V<uint32_t>;
 using U16 = V<uint16_t>;
 using U8  = V<uint8_t>;
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 #if defined(__GNUC__) && !defined(__clang__)
     // GCC is kind of weird, not allowing vector = scalar directly.
     static constexpr F F0 = F() + 0.0f,
@@ -143,7 +147,6 @@ SI U32 to_fixed(F f) {  return (U32)cast<I32>(f + 0.5f); }
                            (~cond & bit_pun<C>(e)) );
     }
 #endif
-
 
 SI F F_from_Half(U16 half) {
 #if defined(USING_NEON_F16C)
@@ -430,7 +433,6 @@ SI void store_4(P* p, const T& v) {
     p[48] = v[12]; p[52] = v[13]; p[56] = v[14]; p[60] = v[15];
 #endif
 }
-
 
 SI U8 gather_8(const uint8_t* p, I32 ix) {
 #if N == 1

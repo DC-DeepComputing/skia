@@ -13,6 +13,10 @@
 
 #include <cmath>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 typedef float SkScalar;
 
 #define SK_Scalar1                  1.0f

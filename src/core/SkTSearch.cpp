@@ -5,13 +5,16 @@
  * found in the LICENSE file.
  */
 
-
 #include "src/core/SkTSearch.h"
 
 #include "include/private/SkMalloc.h"
 
 #include <cstring>
 #include <ctype.h>
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
 
 static inline const char* index_into_base(const char*const* base, int index,
                                           size_t elemSize)

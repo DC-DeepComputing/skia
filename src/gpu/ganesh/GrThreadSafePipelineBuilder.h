@@ -15,6 +15,10 @@
 
 #include <atomic>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 class GrThreadSafePipelineBuilder : public SkRefCnt {
 public:
     GrThreadSafePipelineBuilder() = default;

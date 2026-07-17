@@ -47,6 +47,10 @@
 // 2. SkFixedScaled: Derivatives stored at a scaled precision so they can be efficiently
 //    updated and then scaled down back to standard SkFixed (FDot16) inside the loop
 //    using 'toFixedShift'.
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 using SkFDot6Scaled = int32_t;
 using SkFixedScaled = int32_t;
 

@@ -17,6 +17,10 @@
 #include <cstring>
 #include <new>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 SkTDStorage::SkTDStorage(int sizeOfT) : fSizeOfT{sizeOfT} {
     SkASSERT(sizeOfT > 0);
 }
@@ -110,7 +114,6 @@ void SkTDStorage::reserve(int newCapacity) {
                 expandedReserve = newCapacity + growth;
             }
         }
-
 
         // With a T size of 1, the above allocator produces the progression of 7, 15, ... Since,
         // the sizeof max_align_t is often 16, there is no reason to allocate anything less than

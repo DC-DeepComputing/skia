@@ -19,6 +19,11 @@
 
     SkColorPalette is thread-safe.
 */
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 class SkColorPalette : public SkRefCnt {
 public:
     /** Copy up to 256 colors into a new SkColorPalette.

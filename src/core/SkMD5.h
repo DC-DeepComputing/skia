@@ -16,6 +16,11 @@
 #include <cstring>
 
 /* Calculate a 128-bit MD5 message-digest of the bytes sent to this stream. */
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 class SkMD5 : public SkWStream {
 public:
     SkMD5();

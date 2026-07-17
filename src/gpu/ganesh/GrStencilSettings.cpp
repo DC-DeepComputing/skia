@@ -4,6 +4,7 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+
 #include "src/gpu/ganesh/GrStencilSettings.h"
 
 #include "include/private/SkDebug.h"
@@ -12,6 +13,10 @@
 #include <algorithm>
 #include <cstddef>
 #include <cstring>
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
 
 constexpr const GrUserStencilSettings gUnused(
     GrUserStencilSettings::StaticInit<

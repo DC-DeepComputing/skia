@@ -19,6 +19,10 @@
 #include <utility>
 #include <vector>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 namespace skjson {
 class ArrayValue;
 class ObjectValue;
