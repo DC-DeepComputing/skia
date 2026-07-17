@@ -16,6 +16,24 @@
       "message": "Gold images look good now, added a Chrome Canary just in case. Will need Rob\u0027s +1 to land as well.",
       "revId": "02c7515d82fdb7ed0634d99cd56061d3c1485c19",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8cab6433_dc5fb03f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4329740
+      },
+      "writtenOn": "2026-07-17T19:07:34Z",
+      "side": 1,
+      "message": "awesome! thank you michael.\nThe canary failure is not caused by this CL. All 5 Mac bots fail with the same compile error:\n\n```\n  printing/common/metafile_utils.cc:426: no member named \u0027fRasterizeAlphaGradientsForPrinting\u0027 in \u0027SkPDF::Metadata\u0027\n```\n\nThe canary rolled Skia pinned to this CL\u0027s base revision, which predates my CL. That field has already rolled into Chromium and printing/common/metafile_utils.cc uses it, so the canary effectively rolled Skia backwards and broke the Mac build.\n\nuploaded new rebased PS, can you run it again?",
+      "parentUuid": "e77ef09d_4c0f1a70",
+      "revId": "02c7515d82fdb7ed0634d99cd56061d3c1485c19",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
