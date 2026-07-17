@@ -148,7 +148,10 @@ public:
         Does not affect ownership of SkStream.
      */
 
-    static sk_sp<SkTypeface> MakeDeserialize(SkStream*, sk_sp<SkFontMgr> lastResortMgr);
+    using SkTypefaceStreamSanitizerProc = sk_sp<SkData> (*)(sk_sp<const SkData>);
+
+    static sk_sp<SkTypeface> MakeDeserialize(SkStream*, sk_sp<SkFontMgr> lastResortMgr,
+                                             SkTypefaceStreamSanitizerProc = nullptr);
 
     /**
      *  Given an array of UTF32 character codes, return their corresponding glyph IDs.
