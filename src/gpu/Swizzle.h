@@ -5,6 +5,13 @@
  * found in the LICENSE file.
  */
 
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 #ifndef skgpu_Swizzle_DEFINED
 #define skgpu_Swizzle_DEFINED
 
@@ -17,6 +24,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <type_traits>
+
 
 class SkRasterPipeline;
 enum SkAlphaType : int;

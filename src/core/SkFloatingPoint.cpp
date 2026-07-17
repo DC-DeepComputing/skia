@@ -12,6 +12,12 @@
 #include <cstring>
 #include <limits>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 // Return the positive magnitude of a double.
 // * normalized - given 1.bbb...bbb x 2^e return 2^e.
 // * subnormal - return 0.

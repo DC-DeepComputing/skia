@@ -5,6 +5,13 @@
  * found in the LICENSE file.
  */
 
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 #ifndef SkTHash_DEFINED
 #define SkTHash_DEFINED
 
@@ -17,6 +24,7 @@
 #include <new>
 #include <type_traits>
 #include <utility>
+
 
 namespace skia_private {
 

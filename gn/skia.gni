@@ -251,6 +251,10 @@ template("skia_source_set") {
     assert(!defined(configs), "No set_defaults(skia_target)")
     _skia_target_type = "source_set"
     forward_variables_from(invoker, "*")
+    if (!defined(configs)) {
+      configs = []
+    }
+    configs += [ "//gn/skia:enforce_unsafe_buffers" ]
   }
 }
 template("skia_static_library") {

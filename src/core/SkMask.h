@@ -5,6 +5,13 @@
  * found in the LICENSE file.
  */
 
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 #ifndef SkMask_DEFINED
 #define SkMask_DEFINED
 
@@ -22,6 +29,8 @@
     SkMask is used to describe alpha bitmaps, either 1bit, 8bit, or
     the 3-channel 3D format. These are passed to SkMaskFilter objects.
 */
+
+
 struct SkMask {
     enum Format : uint8_t {
         kBW_Format, //!< 1bit per pixel mask (e.g. monochrome)

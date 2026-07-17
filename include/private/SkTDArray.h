@@ -5,6 +5,13 @@
  * found in the LICENSE file.
  */
 
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 #ifndef SkTDArray_DEFINED
 #define SkTDArray_DEFINED
 
@@ -16,6 +23,7 @@
 #include <cstddef>
 #include <initializer_list>
 #include <utility>
+
 
 // We'd prefer not to use these types anymore. SkTDArray can be replaced skia_private::TArray
 

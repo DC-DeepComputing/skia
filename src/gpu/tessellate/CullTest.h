@@ -5,6 +5,13 @@
  * found in the LICENSE file.
  */
 
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 #ifndef skgpu_tessellate_CullTest_DEFINED
 #define skgpu_tessellate_CullTest_DEFINED
 
@@ -13,6 +20,7 @@
 #include "include/core/SkRect.h"
 #include "include/private/SkAssert.h"
 #include "src/core/SkVx.h"
+
 
 namespace skgpu::tess {
 

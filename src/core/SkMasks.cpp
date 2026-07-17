@@ -4,6 +4,7 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+
 #include "src/core/SkMasks.h"
 
 #include "include/private/SkDebug.h"
@@ -13,6 +14,13 @@
  * Used to convert 1-7 bit color components into 8-bit color components
  *
  */
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 static constexpr uint8_t n_bit_to_8_bit_lookup_table[] = {
     // 1 bit
     0, 255,
@@ -150,4 +158,3 @@ SkMasks* SkMasks::CreateMasks(InputMasks masks, int bytesPerPixel) {
                        process_mask(masks.blue ),
                        process_mask(masks.alpha));
 }
-

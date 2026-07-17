@@ -5,6 +5,13 @@
  * found in the LICENSE file.
  */
 
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 #ifndef SkFloatBits_DEFINED
 #define SkFloatBits_DEFINED
 
@@ -17,6 +24,8 @@
     int. This also converts -0 (0x80000000) to 0. Doing this to a float allows
     it to be compared using normal C operators (<, <=, etc.)
 */
+
+
 static inline int32_t SkSignBitTo2sCompliment(int32_t x) {
     if (x < 0) {
         x &= 0x7FFFFFFF;

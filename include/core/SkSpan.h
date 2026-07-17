@@ -5,6 +5,13 @@
  * found in the LICENSE file.
  */
 
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 #ifndef SkSpan_DEFINED
 #define SkSpan_DEFINED
 
@@ -81,6 +88,8 @@
  *     initializer_list l = {1, 2, 3, 4, 5};   // The data behind l dies at the ;.
  *     routine(l);
  */
+
+
 template <typename T>
 class SkSpan {
 public:

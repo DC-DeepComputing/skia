@@ -5,6 +5,13 @@
  * found in the LICENSE file.
  */
 
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 #ifndef SkTFixedArray_DEFINED
 #define SkTFixedArray_DEFINED
 
@@ -15,6 +22,7 @@
 #include <cstring>
 #include <initializer_list>
 #include <type_traits>  // IWYU pragma: keep for std::is_trivial_v
+
 
 namespace skia_private {
 

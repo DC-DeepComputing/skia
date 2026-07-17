@@ -5,6 +5,13 @@
  * found in the LICENSE file.
  */
 
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 #ifndef SkPath_DEFINED
 #define SkPath_DEFINED
 
@@ -26,6 +33,7 @@
 #include <cstdint>
 #include <optional>
 #include <tuple>
+
 
 class SkData;
 class SkRRect;

@@ -5,6 +5,13 @@
  * found in the LICENSE file.
  */
 
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 #ifndef SkBlockAllocator_DEFINED
 #define SkBlockAllocator_DEFINED
 
@@ -51,6 +58,8 @@
  *    SkSBlockAllocator<1024> allocator(policy, heapAllocSize);
  *    sizeof(allocator) == 1024;
  */
+
+
 // TODO(michaelludwig) - While API is different, this shares similarities to SkArenaAlloc and
 // SkFibBlockSizes, so we should work to integrate them.
 class SkBlockAllocator final : SkNoncopyable {

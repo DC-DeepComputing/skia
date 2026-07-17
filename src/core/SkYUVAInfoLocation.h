@@ -5,6 +5,13 @@
  * found in the LICENSE file.
  */
 
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 #ifndef SkYUVAInfoLocation_DEFINED
 #define SkYUVAInfoLocation_DEFINED
 
@@ -17,6 +24,8 @@
  * The location of Y, U, V, or A values within the planes described by SkYUVAInfo. Computed from a
  * SkYUVAInfo and the set of channels present in a set of pixmaps/textures.
  */
+
+
 struct SkYUVAInfo::YUVALocation {
     /** The index of the plane where the Y, U, V, or A value is to be found. */
     int fPlane = -1;

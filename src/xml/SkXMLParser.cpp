@@ -4,6 +4,7 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+
 #include "src/xml/SkXMLParser.h"
 
 #include "include/core/SkStream.h"
@@ -18,6 +19,12 @@
 #include <expat.h>
 
 #include <vector>
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
 
 static char const* const gErrorStrings[] = {
     "empty or missing file ",

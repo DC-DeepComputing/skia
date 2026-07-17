@@ -5,6 +5,13 @@
  * found in the LICENSE file.
  */
 
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 #ifndef GrSamplerState_DEFINED
 #define GrSamplerState_DEFINED
 
@@ -19,6 +26,8 @@
 /**
  * Represents the filtering and tile modes used to access a texture.
  */
+
+
 class GrSamplerState {
 public:
     using Filter = SkFilterMode;

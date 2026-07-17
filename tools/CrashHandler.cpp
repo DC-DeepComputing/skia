@@ -13,12 +13,17 @@
 #include <array>  // for std::size
 #include <stdlib.h>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 #if defined(SK_BUILD_FOR_MAC)
     // We only use local unwinding, so we can define this to select a faster implementation.
     #define UNW_LOCAL_ONLY
     #include <libunwind.h>
     #include <cxxabi.h>
-
     static void handler(int sig) {
         unw_context_t context;
         unw_getcontext(&context);
@@ -244,3 +249,4 @@
     void SetupCrashHandler() { }
 
 #endif
+

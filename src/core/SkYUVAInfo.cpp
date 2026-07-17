@@ -13,6 +13,12 @@
 
 #include <algorithm>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 static bool is_plane_config_compatible_with_subsampling(SkYUVAInfo::PlaneConfig config,
                                                         SkYUVAInfo::Subsampling subsampling) {
     if (config      == SkYUVAInfo::PlaneConfig::kUnknown ||

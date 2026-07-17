@@ -1,9 +1,14 @@
 // Copyright 2021 Google LLC
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 
-
 #include "include/core/SkGraphics.h"
 #include "tools/flags/CommandLineFlags.h"
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
 
 static DEFINE_int_2(option, o, 0, "An option");
 

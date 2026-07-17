@@ -9,6 +9,12 @@
 
 #include "src/core/SkSLTypeShared.h"
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 static const char* type_modifier_string(GrShaderVar::TypeModifier t) {
     switch (t) {
         case GrShaderVar::TypeModifier::None: return "";

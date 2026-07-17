@@ -8,11 +8,19 @@
 #include "include/core/SkTypes.h"
 #include "tools/ProcStats.h"
 
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 #if defined(__Fuchsia__)
     #include <zircon/process.h>
     #include <zircon/syscalls.h>
     #include <zircon/syscalls/object.h>
     #include <zircon/types.h>
+
 
     int64_t sk_tools::getMaxResidentSetSizeBytes() {
       zx_info_task_stats_t task_stats;

@@ -7,6 +7,13 @@
 
 #include "src/gpu/DitherUtils.h"
 
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 #ifndef SK_IGNORE_GPU_DITHER
 
 #include "include/core/SkBitmap.h"
@@ -14,6 +21,7 @@
 #include "include/core/SkImageInfo.h"
 
 #include <cstdint>
+
 
 namespace skgpu {
 
@@ -103,3 +111,4 @@ SkBitmap MakeDitherLUT() {
 }  // namespace skgpu
 
 #endif // SK_IGNORE_GPU_DITHER
+

@@ -5,10 +5,18 @@
  * found in the LICENSE file.
  */
 
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 #ifndef SkGaussFilter_DEFINED
 #define SkGaussFilter_DEFINED
 
 #include <cstddef>
+
 
 // Define gaussian filters for values of sigma < 2. Produce values good to 1 part in 1,000,000.
 // Produces values as defined in "Scale-Space for Discrete Signals" by Tony Lindeberg.

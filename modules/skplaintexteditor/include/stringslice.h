@@ -1,5 +1,13 @@
 // Copyright 2019 Google LLC
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
+
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 #ifndef stringslice_DEFINED
 #define stringslice_DEFINED
 
@@ -7,6 +15,7 @@
 
 #include <memory>
 #include <cstddef>
+
 
 namespace SkPlainTextEditor {
 // A lightweight modifiable string class.

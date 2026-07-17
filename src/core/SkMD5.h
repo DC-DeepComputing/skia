@@ -5,6 +5,13 @@
  * found in the LICENSE file.
  */
 
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 #ifndef SkMD5_DEFINED
 #define SkMD5_DEFINED
 
@@ -16,6 +23,8 @@
 #include <cstring>
 
 /* Calculate a 128-bit MD5 message-digest of the bytes sent to this stream. */
+
+
 class SkMD5 : public SkWStream {
 public:
     SkMD5();

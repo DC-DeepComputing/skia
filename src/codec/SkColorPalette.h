@@ -5,6 +5,13 @@
  * found in the LICENSE file.
  */
 
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 #ifndef SkColorPalette_DEFINED
 #define SkColorPalette_DEFINED
 
@@ -19,6 +26,8 @@
 
     SkColorPalette is thread-safe.
 */
+
+
 class SkColorPalette : public SkRefCnt {
 public:
     /** Copy up to 256 colors into a new SkColorPalette.

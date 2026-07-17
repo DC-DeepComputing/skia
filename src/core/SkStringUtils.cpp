@@ -15,6 +15,12 @@
 
 #include <cstring>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 using namespace skia_private;
 
 void SkAppendScalar(SkString* str, SkScalar value, SkScalarAsStringType asType) {

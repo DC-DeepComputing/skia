@@ -11,10 +11,18 @@
 #include "include/private/SkLoadUserConfig.h"
 #include "include/private/SkLog.h"
 
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 #if !defined(SK_BUILD_FOR_WIN) && !defined(SK_BUILD_FOR_ANDROID)
 
 #include <stdarg.h>
 #include <stdio.h>
+
 
 void SkLogVAList(SkLogPriority priority, const char format[], va_list args) {
 #pragma GCC diagnostic push
@@ -23,3 +31,4 @@ void SkLogVAList(SkLogPriority priority, const char format[], va_list args) {
 #pragma GCC diagnostic pop
 }
 #endif  // !defined(SK_BUILD_FOR_WIN) && !defined(SK_BUILD_FOR_ANDROID)
+

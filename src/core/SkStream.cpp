@@ -27,6 +27,12 @@
 #include <limits>
 #include <new>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 ///////////////////////////////////////////////////////////////////////////////
 
 bool SkStream::readS8(int8_t* i) {
@@ -609,7 +615,6 @@ void SkDynamicMemoryWStream::prependToAndReset(SkDynamicMemoryWStream* dst) {
     fBytesWrittenBeforeTail = 0;
 }
 
-
 bool SkDynamicMemoryWStream::read(void* buffer, size_t offset, size_t count) {
     if (offset + count > this->bytesWritten()) {
         return false; // test does not partially modify
@@ -667,7 +672,6 @@ void SkDynamicMemoryWStream::padToAlign4() {
         }
     }
 }
-
 
 void SkDynamicMemoryWStream::copyToAndReset(void* ptr) {
     if (!ptr) {

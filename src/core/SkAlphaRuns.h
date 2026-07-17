@@ -5,6 +5,13 @@
  * found in the LICENSE file.
  */
 
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 #ifndef SkAlphaRuns_DEFINED
 #define SkAlphaRuns_DEFINED
 
@@ -20,6 +27,7 @@
     Sparseness allows us to independently compose several paths into the
     same SkAlphaRuns buffer.
 */
+
 
 class SkAlphaRuns {
 public:

@@ -5,6 +5,13 @@
  * found in the LICENSE file.
  */
 
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 #ifndef sktext_gpu_SubRunAllocator_DEFINED
 #define sktext_gpu_SubRunAllocator_DEFINED
 
@@ -27,6 +34,7 @@
 #include <new>
 #include <tuple>
 #include <utility>
+
 
 namespace sktext::gpu {
 

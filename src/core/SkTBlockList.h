@@ -5,6 +5,13 @@
  * found in the LICENSE file.
  */
 
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 #ifndef SkTBlockList_DEFINED
 #define SkTBlockList_DEFINED
 
@@ -17,6 +24,7 @@
 #include <cstring>
 #include <type_traits>
 #include <utility>
+
 
 // Forward declarations for the iterators used by SkTBlockList
 using IndexFn = int (*)(const SkBlockAllocator::Block*);

@@ -7,9 +7,17 @@
 
 #include "src/gpu/ganesh/GrThreadSafePipelineBuilder.h"
 
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 #if GR_GPU_STATS
 #if defined(GPU_TEST_UTILS)
 #include "include/core/SkString.h"
+
 
 using namespace skia_private;
 
@@ -59,3 +67,4 @@ void GrThreadSafePipelineBuilder::Stats::dumpKeyValuePairs(TArray<SkString>* key
 
 #endif // defined(GPU_TEST_UTILS)
 #endif // GR_GPU_STATS
+

@@ -17,6 +17,12 @@
 #include <memory>
 #include <utility>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 namespace SkSL {
 
 std::unique_ptr<Expression> Transform::RewriteIndexedSwizzle(const Context& context,

@@ -5,6 +5,13 @@
  * found in the LICENSE file.
  */
 
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 #ifndef SkTextUtils_DEFINED
 #define SkTextUtils_DEFINED
 
@@ -14,6 +21,7 @@
 
 #include <cstddef>
 #include <cstring>
+
 
 class SkCanvas;
 class SkFont;

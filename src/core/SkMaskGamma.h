@@ -5,6 +5,13 @@
  * found in the LICENSE file.
  */
 
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 #ifndef SkMaskGamma_DEFINED
 #define SkMaskGamma_DEFINED
 
@@ -29,6 +36,8 @@
  * Luma is used to specify a linear luminance value [0.0, 1.0].
  * Luminance is used to specify a luminance value in an arbitrary color space [0.0, 1.0].
  */
+
+
 class SkColorSpaceLuminance : SkNoncopyable {
 public:
     virtual ~SkColorSpaceLuminance() { }

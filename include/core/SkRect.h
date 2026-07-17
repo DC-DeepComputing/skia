@@ -5,6 +5,13 @@
  * found in the LICENSE file.
  */
 
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 #ifndef SkRect_DEFINED
 #define SkRect_DEFINED
 
@@ -23,6 +30,7 @@
 #include <cstdint>
 #include <cstring>
 #include <optional>
+
 
 struct SkRect;
 class SkString;
@@ -1142,7 +1150,6 @@ struct SK_API SkRect {
         @return   true if a and b have area in common
     */
     [[nodiscard]] bool intersect(const SkRect& a, const SkRect& b);
-
 
 private:
     static bool Intersects(float al, float at, float ar, float ab,

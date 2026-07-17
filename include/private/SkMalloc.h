@@ -5,6 +5,13 @@
  * found in the LICENSE file.
  */
 
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 #ifndef SkMalloc_DEFINED
 #define SkMalloc_DEFINED
 
@@ -16,8 +23,9 @@
     memory wrappers to be implemented by the porting layer (platform)
 */
 
-
 /** Free memory returned by sk_malloc(). It is safe to pass null. */
+
+
 SK_API extern void sk_free(void*);
 
 /**

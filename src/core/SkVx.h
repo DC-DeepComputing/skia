@@ -5,6 +5,13 @@
  * found in the LICENSE file.
  */
 
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 #ifndef SKVX_DEFINED
 #define SKVX_DEFINED
 
@@ -71,7 +78,8 @@
 #define SIN   template <int N            > SI
 #define SINT  template <int N, typename T> SI
 #define SINTU template <int N, typename T, typename U, \
-                        typename=std::enable_if_t<std::is_convertible<U,T>::value>> SI
+typename=std::enable_if_t<std::is_convertible<U,T>::value>> SI
+
 
 namespace skvx {
 
@@ -903,7 +911,6 @@ private:
     const uint32_t fDivisorFactor;
     const uint32_t fHalf;
 };
-
 
 SIN Vec<N,uint16_t> mull(const Vec<N,uint8_t>& x,
                          const Vec<N,uint8_t>& y) {

@@ -5,6 +5,13 @@
  * found in the LICENSE file.
  */
 
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 #ifndef GrProgramDesc_DEFINED
 #define GrProgramDesc_DEFINED
 
@@ -16,6 +23,7 @@
 
 #include <cstdint>
 #include <cstring>
+
 
 class GrCaps;
 class GrProgramInfo;

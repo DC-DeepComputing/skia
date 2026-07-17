@@ -5,6 +5,13 @@
  * found in the LICENSE file.
  */
 
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 #ifndef SkUrlDataManager_DEFINED
 #define SkUrlDataManager_DEFINED
 
@@ -16,6 +23,7 @@
 
 #include <unordered_map>
 #include <vector>
+
 
 class UrlDataManager {
 public:
@@ -84,7 +92,6 @@ private:
             return SkChecksum::Hash32(key.c_str(), strlen(key.c_str()));
         }
     };
-
 
     SkString fRootUrl;
     SkTDynamicHash<UrlData, SkData, LookupTrait> fCache;

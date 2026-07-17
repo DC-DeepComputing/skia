@@ -5,6 +5,13 @@
  * found in the LICENSE file.
  */
 
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 #ifndef SkColor_DEFINED
 #define SkColor_DEFINED
 
@@ -24,6 +31,8 @@
 
 /** 8-bit type for an alpha value. 255 is 100% opaque, zero is 100% transparent.
 */
+
+
 typedef uint8_t SkAlpha;
 
 /** 32-bit ARGB color value, unpremultiplied. Color components are always in

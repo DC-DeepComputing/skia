@@ -12,6 +12,13 @@
 #include <stdio.h>
 #include <sys/stat.h>
 
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 #ifdef _WIN32
 #include <direct.h>
 #include <io.h>
@@ -24,6 +31,8 @@
 #endif
 
 #ifdef _WIN32
+
+
 static bool is_ascii(const char* s) {
     while (char v = *s++) {
         if ((v & 0x80) != 0) {

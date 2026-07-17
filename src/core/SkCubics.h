@@ -4,6 +4,14 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 #ifndef SkCubics_DEFINED
 #define SkCubics_DEFINED
 
@@ -13,6 +21,8 @@
  * Utilities for dealing with cubic formulas with one variable:
  *   f(t) = A*t^3 + B*t^2 + C*t + d
  */
+
+
 class SkCubics {
 public:
     /**
@@ -31,7 +41,6 @@ public:
      */
     static int RootsValidT(double A, double B, double C, double D,
                            double solution[3]);
-
 
     /**
      * Puts up to 3 real solutions to the equation

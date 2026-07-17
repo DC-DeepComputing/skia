@@ -55,7 +55,6 @@
  | B1 (4bits)| B2 (4bits)| cw 1   | cw 2   |bit |bit |
  ---------------------------------------------------
 
-
  b) bit layout in bits 63 through 32 if diffbit = 1
 
  63 62 61 60 59 58 57 56 55 54 53 52 51 50 49 48
@@ -69,7 +68,6 @@
  | base col 1   | dcol 2 | table  | table  |diff|flip|
  | B1' (5 bits) | dB2    | cw 1   | cw 2   |bit |bit |
  ---------------------------------------------------
-
 
  c) bit layout in bits 31 through 0 (in both cases)
 
@@ -85,7 +83,6 @@
  | p| o| n| m| l| k| j| i| h| g| f| e| d| c | b | a |
  --------------------------------------------------
 
-
  Add table 3.17.2: Intensity modifier sets for ETC1 compressed textures:
 
  table codeword                modifier table
@@ -99,7 +96,6 @@
  6                   -106 -33 33 106
  7                   -183 -47 47 183
 
-
  Add table 3.17.3 Mapping from pixel index values to modifier values for
  ETC1 compressed textures:
 
@@ -112,8 +108,13 @@
  0       0             a (small positive value)
  0       1             b (large positive value)
 
-
  */
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
 
 static const int kModifierTable[] = {
 /* 0 */2, 8, -2, -8,
@@ -568,7 +569,6 @@ int etc1_encode_image(const etc1_byte* pIn, etc1_uint32 width, etc1_uint32 heigh
 // pOut - pointer to the image data. Will be written such that the Red component of
 //       pixel (x,y) is at pIn + pixelSize * x + stride * y + redOffset. Must be
 //        large enough to store entire image.
-
 
 int etc1_decode_image(const etc1_byte* pIn, etc1_byte* pOut,
         etc1_uint32 width, etc1_uint32 height,

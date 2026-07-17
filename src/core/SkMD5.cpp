@@ -20,6 +20,13 @@
 #include "include/private/SkMalloc.h"
 
 /** MD5 basic transformation. Transforms state based on block. */
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 static void transform(uint32_t state[4], const uint8_t block[64]);
 
 /** Encodes input into output (4 little endian 32 bit values). */

@@ -16,6 +16,12 @@
 
 #include <cstddef>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 static inline double interpolate(double A, double B, double t) {
     return A + (B - A) * t;
 }
@@ -225,4 +231,3 @@ SkSpan<const float> SkBezierQuad::Intersect(
 
     return {intersectionStorage, intersectionCount};
 }
-

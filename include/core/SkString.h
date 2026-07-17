@@ -5,6 +5,13 @@
  * found in the LICENSE file.
  */
 
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 #ifndef SkString_DEFINED
 #define SkString_DEFINED
 
@@ -23,6 +30,8 @@
 #include <type_traits>
 
 /*  Some helper functions for C strings */
+
+
 static inline bool SkStrStartsWith(const char string[], const char prefixStr[]) {
     SkASSERT(string);
     SkASSERT(prefixStr);

@@ -5,6 +5,13 @@
  * found in the LICENSE file.
  */
 
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 #ifndef SkMSAN_DEFINED
 #define SkMSAN_DEFINED
 
@@ -12,6 +19,7 @@
 
 #include <cstddef>
 #include <string.h>
+
 
 // Typically declared in LLVM's msan_interface.h.  Easier for us to just re-declare.
 extern "C" {

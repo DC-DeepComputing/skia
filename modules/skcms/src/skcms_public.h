@@ -10,6 +10,13 @@
 // skcms_public.h contains the entire public API for skcms.
 
 // Modeled after the FOX example in https://gcc.gnu.org/wiki/Visibility
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 #if !defined(SKCMS_API)
     // Client has opted in to building skcms as part of a DLL/shared object file.
     #if defined(SKCMS_DLL)
@@ -44,6 +51,8 @@
 #include <string.h>
 
 #ifdef __cplusplus
+
+
 extern "C" {
 #endif
 

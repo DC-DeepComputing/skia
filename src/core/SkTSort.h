@@ -5,6 +5,13 @@
  * found in the LICENSE file.
  */
 
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 #ifndef SkTSort_DEFINED
 #define SkTSort_DEFINED
 
@@ -30,6 +37,8 @@
  *  @param root the one based index into array of the out-of-place root of the heap.
  *  @param bottom the one based index in the array of the last entry in the heap.
  */
+
+
 template <typename T, typename C>
 void SkTHeapSort_SiftUp(T array[], size_t root, size_t bottom, const C& lessThan) {
     T x = array[root-1];

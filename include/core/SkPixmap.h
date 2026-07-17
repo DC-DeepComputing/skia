@@ -5,6 +5,13 @@
  * found in the LICENSE file.
  */
 
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 #ifndef SkPixmap_DEFINED
 #define SkPixmap_DEFINED
 
@@ -20,6 +27,7 @@
 
 #include <cstddef>
 #include <cstdint>
+
 
 class SkColorSpace;
 enum SkAlphaType : int;

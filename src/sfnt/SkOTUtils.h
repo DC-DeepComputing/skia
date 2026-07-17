@@ -5,6 +5,13 @@
  * found in the LICENSE file.
  */
 
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 #ifndef SkOTUtils_DEFINED
 #define SkOTUtils_DEFINED
 
@@ -12,6 +19,7 @@
 #include "src/sfnt/SkOTTableTypes.h"
 #include "src/sfnt/SkOTTable_OS_2_V4.h"
 #include "src/sfnt/SkOTTable_name.h"
+
 
 class SkData;
 class SkStream;

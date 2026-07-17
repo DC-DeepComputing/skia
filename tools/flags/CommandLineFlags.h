@@ -5,6 +5,13 @@
  * found in the LICENSE file.
  */
 
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 #ifndef SK_COMMAND_LINE_FLAGS_H
 #define SK_COMMAND_LINE_FLAGS_H
 
@@ -99,6 +106,7 @@
  *  Strings are handled differently (resulting variable will be an array of
  *  strings) so that a flag can be followed by multiple parameters.
  */
+
 
 class SkFlagInfo;
 

@@ -5,6 +5,13 @@
  * found in the LICENSE file.
  */
 
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 #ifndef SkTemplates_DEFINED
 #define SkTemplates_DEFINED
 
@@ -23,7 +30,6 @@
 #include <type_traits>
 #include <utility>
 
-
 /** \file SkTemplates.h
 
     This file contains light-weight template classes for type-safe and exception-safe
@@ -34,6 +40,8 @@
  *  Marks a local variable as known to be unused (to avoid warnings).
  *  Note that this does *not* prevent the local variable from being optimized away.
  */
+
+
 template<typename T> inline void sk_ignore_unused_variable(const T&) { }
 
 /**
@@ -91,7 +99,6 @@ public:
 
     operator T*() const { return this->get(); }
 };
-
 
 namespace skia_private {
 /** Allocate an array of T elements on the heap. Once this goes out of scope, the

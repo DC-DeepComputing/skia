@@ -5,6 +5,13 @@
  * found in the LICENSE file.
  */
 
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 #ifndef SkBlitMask_opts_DEFINED
 #define SkBlitMask_opts_DEFINED
 
@@ -14,6 +21,7 @@
 #if defined(SK_ARM_HAS_NEON)
     #include <arm_neon.h>
 #endif
+
 
 namespace SK_OPTS_NS {
 
@@ -44,7 +52,6 @@ namespace SK_OPTS_NS {
 
         return ret;
     }
-
 
     template <bool isTranslucent>
     static void blit_mask_d32_a8_neon(void* SK_RESTRICT dst, size_t dstRB,

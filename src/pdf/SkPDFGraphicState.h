@@ -6,6 +6,12 @@
  */
 
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 #ifndef SkPDFGraphicState_DEFINED
 #define SkPDFGraphicState_DEFINED
 
@@ -16,6 +22,7 @@
 
 #include <cstdint>
 #include <cstring>
+
 
 class SkPDFDocument;
 class SkPaint;

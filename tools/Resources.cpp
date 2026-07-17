@@ -15,6 +15,12 @@
 
 #include <utility>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 static DEFINE_string2(resourcePath, i, "resources",
                       "Directory with test resources: images, fonts, etc.");
 

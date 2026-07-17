@@ -13,6 +13,13 @@
 #include <cinttypes>
 #include <cstdint>
 
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 #if !defined(__has_feature)
     #define __has_feature(x) 0
 #endif
@@ -21,6 +28,8 @@
 
     /* Report that a lock has been created at address "lock". */
     #define ANNOTATE_RWLOCK_CREATE(lock) \
+
+
         AnnotateRWLockCreate(__FILE__, __LINE__, lock)
 
     /* Report that the lock at address "lock" is about to be destroyed. */
@@ -363,3 +372,4 @@
     }
 
 #endif
+

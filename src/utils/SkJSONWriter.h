@@ -5,6 +5,13 @@
  * found in the LICENSE file.
  */
 
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 #ifndef SkJSONWriter_DEFINED
 #define SkJSONWriter_DEFINED
 
@@ -36,6 +43,8 @@
  *  Note that all error checking is in the form of asserts - invalid usage in a non-debug build
  *  will simply produce invalid JSON.
  */
+
+
 class SkJSONWriter : SkNoncopyable {
 public:
     enum class Mode {

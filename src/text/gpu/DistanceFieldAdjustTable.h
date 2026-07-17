@@ -5,10 +5,18 @@
  * found in the LICENSE file.
  */
 
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 #ifndef sktext_gpu_DistanceFieldAdjustTable_DEFINED
 #define sktext_gpu_DistanceFieldAdjustTable_DEFINED
 
 #include "include/core/SkScalar.h"
+
 
 template <typename T> class SkNoDestructor;
 

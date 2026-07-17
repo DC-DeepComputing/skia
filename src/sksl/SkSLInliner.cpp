@@ -7,6 +7,13 @@
 
 #include "src/sksl/SkSLInliner.h"
 
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 #ifndef SK_ENABLE_OPTIMIZE_SIZE
 
 #include "include/core/SkSpan.h"
@@ -71,6 +78,7 @@
 #include <string>
 #include <string_view>
 #include <utility>
+
 
 using namespace skia_private;
 
@@ -1187,3 +1195,4 @@ bool Inliner::analyze(const std::vector<std::unique_ptr<ProgramElement>>& elemen
 }  // namespace SkSL
 
 #endif  // SK_ENABLE_OPTIMIZE_SIZE
+

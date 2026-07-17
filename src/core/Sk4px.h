@@ -5,12 +5,20 @@
  * found in the LICENSE file.
  */
 
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 #ifndef Sk4px_DEFINED
 #define Sk4px_DEFINED
 
 #include "include/core/SkColor.h"
 #include "src/core/SkColorData.h"
 #include "src/core/SkVx.h"
+
 
 // 1, 2 or 4 SkPMColors, generally vectorized.
 class Sk4px {

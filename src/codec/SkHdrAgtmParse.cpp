@@ -10,6 +10,12 @@
 #include "src/codec/SkHdrAgtmPriv.h"
 #include "src/core/SkStreamPriv.h"
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-format-attr-call"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage-in-libc-call"
+#endif
+
 namespace {
 
 // Return x clamped to [a, b].
@@ -655,4 +661,3 @@ sk_sp<SkData> AdaptiveGlobalToneMap::serialize() const {
 }
 
 }  // namespace skhdr
-
