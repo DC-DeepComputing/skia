@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e77ef09d_4c0f1a70",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-17T18:04:18Z",
+      "side": 1,
+      "message": "Gold images look good now, added a Chrome Canary just in case. Will need Rob\u0027s +1 to land as well.",
+      "revId": "02c7515d82fdb7ed0634d99cd56061d3c1485c19",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
