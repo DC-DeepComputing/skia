@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2553ab71_43bc926b",
+        "filename": "src/gpu/ganesh/GrDataUtils.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-07-17T19:28:02Z",
+      "side": 1,
+      "message": "Yeah this is no guarantee in this helper what rowAlignment comes in as. And you are correct the case where we lcm with bbp means we can be non power of 2 (e.g. bbp \u003d 3, transAlign \u003d 4, rowAlignment \u003d 12).",
+      "parentUuid": "4d6c2368_688cc5ce",
+      "range": {
+        "startLine": 55,
+        "startChar": 67,
+        "endLine": 55,
+        "endChar": 79
+      },
+      "revId": "6316a299cd51ad1cd52dc883138e2ce44a945d04",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2225941c_82be0654",
         "filename": "src/gpu/ganesh/vk/GrVkGpu.cpp",
         "patchSetId": 14
@@ -37,6 +61,30 @@
       "writtenOn": "2026-07-17T18:24:35Z",
       "side": 1,
       "message": "There should be no possible way for this to overflow so I don\u0027t know if safemath is warranted. I think it\u0027s only necessary when the net calculation involves an image dimension (and even then, if we have an allocated texture at this point, can we argue that the transfer alignment calculations have already been vetted?)",
+      "range": {
+        "startLine": 627,
+        "startChar": 4,
+        "endLine": 627,
+        "endChar": 87
+      },
+      "revId": "6316a299cd51ad1cd52dc883138e2ce44a945d04",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6811c6ea_27e09bce",
+        "filename": "src/gpu/ganesh/vk/GrVkGpu.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 627,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-07-17T19:28:02Z",
+      "side": 1,
+      "message": "I agree that in practice this won\u0027t ever overflow. We do have a concrete set of bpp to know those are bounded. However, the spec technically has no limit on the transfer buffer row bytes alignment. In reality it will be relatively small number (like max 1024), but nothing actually stops a device from returning a stupidly large number.\n\nAnd I don\u0027t think the value here can automatically be considered safe if we know we\u0027ve allocated a texture. The texture size doesn\u0027t have to correspond to this value.\n\nI\u0027m happy to move this to std::lcm or keep as safe, whatever you prefer.",
+      "parentUuid": "2225941c_82be0654",
       "range": {
         "startLine": 627,
         "startChar": 4,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b68b5e6_4365621f",
+        "filename": "src/gpu/ganesh/vk/GrVkGpu.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 732,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-07-17T19:28:02Z",
+      "side": 1,
+      "message": "yes you are correct. The only time it would not be true is if safe was not Ok, but we\u0027re already checking that.",
+      "parentUuid": "52cf1d8d_38dae198",
+      "range": {
+        "startLine": 732,
+        "startChar": 22,
+        "endLine": 732,
+        "endChar": 48
+      },
+      "revId": "6316a299cd51ad1cd52dc883138e2ce44a945d04",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0dc93643_ce78a4aa",
@@ -83,6 +155,30 @@
       "writtenOn": "2026-07-17T18:25:27Z",
       "side": 1,
       "message": "Same with earlier check this seems redundant to me since the definition in safe math does the check for 0 and sets `fOk` to false if it does return 0, could be an assert under the if in case the safe math definition changes regarding returning 0 in the future?",
+      "range": {
+        "startLine": 907,
+        "startChar": 18,
+        "endLine": 907,
+        "endChar": 36
+      },
+      "revId": "6316a299cd51ad1cd52dc883138e2ce44a945d04",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e1abf6f_d08cde14",
+        "filename": "src/gpu/ganesh/vk/GrVkGpu.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 907,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-07-17T19:28:02Z",
+      "side": 1,
+      "message": "same.",
+      "parentUuid": "0dc93643_ce78a4aa",
       "range": {
         "startLine": 907,
         "startChar": 18,
@@ -118,6 +214,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "388b14ed_49e45631",
+        "filename": "src/gpu/graphite/task/UploadTask.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-07-17T19:28:02Z",
+      "side": 1,
+      "message": "good catch. Teaches you to not trust code that was there before your change 😜",
+      "parentUuid": "a6be8e65_738f8450",
+      "range": {
+        "startLine": 78,
+        "startChar": 17,
+        "endLine": 78,
+        "endChar": 24
+      },
+      "revId": "6316a299cd51ad1cd52dc883138e2ce44a945d04",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "733b0206_d5358288",
         "filename": "src/gpu/graphite/task/UploadTask.cpp",
         "patchSetId": 14
@@ -129,6 +249,30 @@
       "writtenOn": "2026-07-17T18:24:35Z",
       "side": 1,
       "message": "nit: space",
+      "range": {
+        "startLine": 79,
+        "startChar": 24,
+        "endLine": 79,
+        "endChar": 50
+      },
+      "revId": "6316a299cd51ad1cd52dc883138e2ce44a945d04",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0a9812c_eeadaa1c",
+        "filename": "src/gpu/graphite/task/UploadTask.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-07-17T19:28:02Z",
+      "side": 1,
+      "message": "not sure exactly what you mean here as it looks to be aligned right to me (as is the new change). But I also have little faith in my eyes",
+      "parentUuid": "733b0206_d5358288",
       "range": {
         "startLine": 79,
         "startChar": 24,
@@ -162,6 +306,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "46190cf5_193b8c0c",
+        "filename": "tests/TransferPixelsTest.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-07-17T19:28:02Z",
+      "side": 1,
+      "message": "I didn\u0027t use safe math in here, because we\u0027re in full control of the inputs so things shouldn\u0027t be overflowing in our test. But I did change this to use SkAlignToNonPow2",
+      "parentUuid": "2ca96310_883b4e35",
+      "range": {
+        "startLine": 188,
+        "startChar": 25,
+        "endLine": 188,
+        "endChar": 99
+      },
+      "revId": "6316a299cd51ad1cd52dc883138e2ce44a945d04",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fb9238c7_01eeae8f",
@@ -175,6 +343,30 @@
       "writtenOn": "2026-07-17T18:25:27Z",
       "side": 1,
       "message": "Could use `SkSafeMath::alignUpNonPow2` here as well.",
+      "range": {
+        "startLine": 383,
+        "startChar": 4,
+        "endLine": 386,
+        "endChar": 85
+      },
+      "revId": "6316a299cd51ad1cd52dc883138e2ce44a945d04",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc65b26b_31d9a053",
+        "filename": "tests/TransferPixelsTest.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 386,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-07-17T19:28:02Z",
+      "side": 1,
+      "message": "same",
+      "parentUuid": "fb9238c7_01eeae8f",
       "range": {
         "startLine": 383,
         "startChar": 4,

@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd9e3810_86fa5ca4",
+        "filename": "src/gpu/graphite/UploadBufferManager.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-07-17T19:28:02Z",
+      "side": 1,
+      "message": "This was changed because the requiredAligment passed into this function can come from the minTransferBufferAlignment in UploadTask which as discussed in there may not be a pow2",
+      "range": {
+        "startLine": 49,
+        "startChar": 30,
+        "endLine": 49,
+        "endChar": 45
+      },
+      "revId": "69dd0cd1078483fc400e1b3936f8e172e3072005",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
