@@ -68,7 +68,8 @@ std::pair<size_t, size_t> compute_combined_buffer_size(
     size_t minTransferBufferAlignment =
             std::max(bytesPerBlock, caps->requiredTransferBufferAlignment());
     size_t alignedBytesPerRow =
-            caps->getAlignedTextureDataRowBytes(compressedBlockDimensions.width() * bytesPerBlock);
+            caps->getAlignedTextureDataRowBytes(compressedBlockDimensions.width() * bytesPerBlock,
+                                                bytesPerBlock);
 
     levelOffsetsAndRowBytes->push_back({0, alignedBytesPerRow});
     size_t combinedBufferSize = SkAlignTo(alignedBytesPerRow * baseDimensions.height(),
@@ -80,7 +81,8 @@ std::pair<size_t, size_t> compute_combined_buffer_size(
                            std::max(1, levelDimensions.height() / 2)};
         compressedBlockDimensions = CompressedDimensionsInBlocks(compressionType, levelDimensions);
         alignedBytesPerRow = caps->getAlignedTextureDataRowBytes(
-                compressedBlockDimensions.width() * bytesPerBlock);
+                compressedBlockDimensions.width() * bytesPerBlock,
+                bytesPerBlock);
         size_t alignedSize = SkAlignTo(alignedBytesPerRow * compressedBlockDimensions.height(),
                                        minTransferBufferAlignment);
         SkASSERT(combinedBufferSize % minTransferBufferAlignment == 0);

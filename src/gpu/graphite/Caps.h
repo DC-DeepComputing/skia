@@ -18,6 +18,7 @@
 #include "src/gpu/Swizzle.h"
 #include "src/gpu/graphite/ResourceTypes.h"
 #include "src/gpu/graphite/TextureFormat.h"
+#include <numeric>
 #include "src/text/gpu/SubRunControl.h"
 
 #include <cstddef>
@@ -241,8 +242,9 @@ public:
     size_t requiredTransferBufferAlignment() const { return fRequiredTransferBufferAlignment; }
 
     /* Returns the aligned rowBytes when transferring to or from a Texture */
-    size_t getAlignedTextureDataRowBytes(size_t rowBytes) const {
-        return SkAlignTo(rowBytes, fTextureDataRowBytesAlignment);
+    size_t getAlignedTextureDataRowBytes(size_t rowBytes, size_t bytesPerBlock) const {
+        size_t alignment = std::lcm(bytesPerBlock, fTextureDataRowBytesAlignment);
+        return SkAlignNonPow2(rowBytes, alignment);
     }
 
     /**

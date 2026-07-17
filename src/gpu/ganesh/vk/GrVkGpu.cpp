@@ -73,6 +73,7 @@
 #include <algorithm>
 #include <cstring>
 #include <functional>
+#include <numeric>
 #include <utility>
 
 class GrAttachment;
@@ -720,7 +721,10 @@ bool GrVkGpu::onTransferPixelsFrom(GrSurface* surface,
     VkBufferImageCopy region;
     memset(&region, 0, sizeof(VkBufferImageCopy));
     region.bufferOffset = offset;
-    region.bufferRowLength = rect.width();
+    size_t bpp = GrColorTypeBytesPerPixel(bufferColorType);
+    size_t alignment = std::lcm(bpp, this->vkCaps().transferBufferRowBytesAlignment());
+    size_t alignedRowBytes = SkAlignNonPow2(bpp * rect.width(), alignment);
+    region.bufferRowLength = alignedRowBytes / bpp;
     region.bufferImageHeight = 0;
     region.imageSubresource = { VK_IMAGE_ASPECT_COLOR_BIT, 0, 0, 1 };
     region.imageOffset = {rect.left(), rect.top(), 0};
@@ -950,13 +954,8 @@ bool GrVkGpu::uploadTexDataOptimal(GrVkImage* texImage,
     AutoTArray<GrMipLevel> texelsShallowCopy(mipLevelCount);
     std::copy_n(texels, mipLevelCount, texelsShallowCopy.get());
 
-    // Vulkan requires offsets in the buffer to be aligned to multiple of the texel size and 4
-    size_t alignment = bpp;
-    switch (alignment & 0b11) {
-        case 0:                     break;   // alignment is already a multiple of 4.
-        case 2:     alignment *= 2; break;   // alignment is a multiple of 2 but not 4.
-        default:    alignment *= 4; break;   // alignment is not a multiple of 2.
-    }
+    // Vulkan requires offsets in the buffer to be aligned to multiple of the texel size.
+    size_t rowAlignment = std::lcm(bpp, this->vkCaps().transferBufferRowBytesAlignment());
 
     if (mipLevelCount == 1) {
         SkASSERT(texelsShallowCopy[0].fPixels && texelsShallowCopy[0].fRowBytes);
@@ -967,12 +966,12 @@ bool GrVkGpu::uploadTexDataOptimal(GrVkImage* texImage,
                                                             rect.size(),
                                                             &individualMipOffsets,
                                                             mipLevelCount,
-                                                            alignment);
+                                                            rowAlignment);
     SkASSERT(combinedBufferSize);
 
     // Get a staging buffer slice to hold our mip data.
     GrStagingBufferManager::Slice slice =
-            fStagingBufferManager.allocateStagingBufferSlice(combinedBufferSize, alignment);
+            fStagingBufferManager.allocateStagingBufferSlice(combinedBufferSize, rowAlignment);
     if (!slice.fBuffer) {
         return false;
     }
@@ -989,7 +988,7 @@ bool GrVkGpu::uploadTexDataOptimal(GrVkImage* texImage,
         if (texelsShallowCopy[currentMipLevel].fPixels) {
             const size_t trimRowBytes = currentWidth * bpp;
             const size_t rowBytes = texelsShallowCopy[currentMipLevel].fRowBytes;
-            const size_t alignedRowBytes = SkAlignNonPow2(trimRowBytes, alignment);
+            const size_t alignedRowBytes = SkAlignNonPow2(trimRowBytes, rowAlignment);
 
             // copy data into the buffer, skipping the trailing bytes
             char* dst = buffer + individualMipOffsets[currentMipLevel];
