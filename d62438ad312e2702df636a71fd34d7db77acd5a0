@@ -222,6 +222,24 @@
       "parentUuid": "a285f6a4_36b25a48",
       "revId": "d62438ad312e2702df636a71fd34d7db77acd5a0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "684ffe01_adc2492d",
+        "filename": "src/gpu/ganesh/ops/SmallPathShapeData.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-17T15:02:21Z",
+      "side": 1,
+      "message": "I don\u0027t think it makes sense to force it into a UniqueKeyInvalidatedMessage since that maps back to a single resource (texture) associated with the shape (so all of the clean up is actually handled by the GrResourceCache and not the sources that create them (e.g. SoftwareMask or TriangulatingPathRenderer).\n\nIf we need to do cleanup, it should be simple enough to SmallPathAtlasMgr declare a `SkMessageBus\u003cSmallPathShapeDataKey\u003e::Inbox` that polls messages to remove, and have the SmallPathIDChangeListener post messages when changed() is called.\n\nBut I also think that this is fine as-is and we don\u0027t need to spend too much time in Ganesh.",
+      "parentUuid": "54c310c3_29f13096",
+      "revId": "d62438ad312e2702df636a71fd34d7db77acd5a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
