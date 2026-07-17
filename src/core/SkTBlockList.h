@@ -18,6 +18,10 @@
 #include <type_traits>
 #include <utility>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 // Forward declarations for the iterators used by SkTBlockList
 using IndexFn = int (*)(const SkBlockAllocator::Block*);
 using NextFn = int (*)(const SkBlockAllocator::Block*, int);

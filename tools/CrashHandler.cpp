@@ -19,6 +19,10 @@
     #include <libunwind.h>
     #include <cxxabi.h>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
     static void handler(int sig) {
         unw_context_t context;
         unw_getcontext(&context);
@@ -244,3 +248,4 @@
     void SetupCrashHandler() { }
 
 #endif
+

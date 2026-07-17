@@ -15,6 +15,10 @@
 #include <cstddef>
 #include <utility>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 // Verify that the values of enum ResourceType correspond to the expected values
 // as defined in the arrays below.
 // If these are failing, you may need to update the kResourceTypePrefixes

@@ -10,6 +10,10 @@
 #include "include/core/SkRect.h"
 #include "src/core/SkSafeMath.h"
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 bool SkWritePixelsRec::trim(int dstWidth, int dstHeight) {
     // fInfo.minRowBytes() returns 0 if the size doesn't fit in `size_t`.
     const size_t minRowBytes = fInfo.minRowBytes();

@@ -16,6 +16,10 @@
 #include <cstring>
 #include <iterator>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 // Everyone agrees memcpy() is the best way to do this.
 static void blit_row_s32_opaque(SkPMColor* dst,
                                 const SkPMColor* src,
@@ -61,7 +65,6 @@ static void blit_row_s32_opaque(SkPMColor* dst,
         // Add difference to destination.
         return _mm_add_epi8(dst, diff);
     }
-
 
     static void blit_row_s32_blend(SkPMColor* dst, const SkPMColor* src, int count, U8CPU alpha) {
         SkASSERT(alpha <= 255);
@@ -308,7 +311,6 @@ static void blit_row_s32_opaque(SkPMColor* dst,
         return __lasx_xvadd_b(dst, diff);
     }
 
-
     static void blit_row_s32_blend(SkPMColor* dst, const SkPMColor* src, int count, U8CPU alpha) {
         SkASSERT(alpha <= 255);
 
@@ -427,7 +429,6 @@ static void blit_row_s32_opaque(SkPMColor* dst,
         // Add difference to destination.
         return __lsx_vadd_b(dst, diff);
     }
-
 
     static void blit_row_s32_blend(SkPMColor* dst, const SkPMColor* src, int count, U8CPU alpha) {
         SkASSERT(alpha <= 255);

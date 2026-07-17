@@ -19,6 +19,10 @@
 #include <cstddef>
 #include <cstdint>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 class SkMatrix;
 class SkPath;
 struct SkRect;

@@ -15,6 +15,10 @@
 #include <cstdint>
 #include <string_view>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 namespace skgpu {
 
 class KeyBuilder {

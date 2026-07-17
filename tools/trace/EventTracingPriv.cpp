@@ -26,6 +26,10 @@
   #include "tools/trace/SkPerfettoTrace.h"
 #endif
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 static DEFINE_string(trace,
               "",
               "Log trace events in one of several modes:\n"

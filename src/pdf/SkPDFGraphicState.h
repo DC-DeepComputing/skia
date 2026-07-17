@@ -5,7 +5,6 @@
  * found in the LICENSE file.
  */
 
-
 #ifndef SkPDFGraphicState_DEFINED
 #define SkPDFGraphicState_DEFINED
 
@@ -16,6 +15,10 @@
 
 #include <cstdint>
 #include <cstring>
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
 
 class SkPDFDocument;
 class SkPaint;

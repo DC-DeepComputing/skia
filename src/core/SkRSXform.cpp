@@ -4,7 +4,12 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+
 #include "include/core/SkRSXform.h"
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
 
 void SkRSXform::toQuad(SkScalar width, SkScalar height, SkPoint quad[4]) const {
 #if 0

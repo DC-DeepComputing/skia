@@ -7,6 +7,10 @@
 
 #include "src/utils/SkCharToGlyphCache.h"
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 SkCharToGlyphCache::SkCharToGlyphCache() {
     this->reset();
 }

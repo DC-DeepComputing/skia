@@ -20,6 +20,10 @@
 #include <iterator>
 #include <optional>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 namespace SkSL {
 
 static std::unique_ptr<Expression> cast_constant_composite(const Context& context,

@@ -27,6 +27,10 @@
 #include <optional>
 #include <tuple>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 class SkData;
 class SkRRect;
 class SkWStream;

@@ -11,6 +11,10 @@
 
 #include <string.h>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 SkString SkOSPath::Join(const char *rootPath, const char *relativePath) {
     SkString result(rootPath);
     if (!result.endsWith(SEPARATOR) && !result.isEmpty()) {

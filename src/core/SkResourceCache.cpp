@@ -28,6 +28,10 @@
 
 #include <algorithm>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 using namespace skia_private;
 
 DECLARE_SKMESSAGEBUS_MESSAGE(SkResourceCache::PurgeSharedIDMessage, uint32_t, true)
@@ -83,7 +87,6 @@ namespace {
 
 class SkResourceCache::Hash :
     public THashTable<SkResourceCache::Rec*, SkResourceCache::Key, HashTraits> {};
-
 
 ///////////////////////////////////////////////////////////////////////////////
 

@@ -34,6 +34,10 @@
 #include <compare>
 #endif
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 namespace SkSL {
 
 class Context;

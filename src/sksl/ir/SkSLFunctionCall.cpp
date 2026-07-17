@@ -48,6 +48,10 @@
 #include <optional>
 #include <string_view>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 namespace SkSL {
 
 using IntrinsicArguments = std::array<const Expression*, 3>;

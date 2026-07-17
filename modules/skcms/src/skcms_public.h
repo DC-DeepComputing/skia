@@ -44,6 +44,11 @@
 #include <string.h>
 
 #ifdef __cplusplus
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 extern "C" {
 #endif
 

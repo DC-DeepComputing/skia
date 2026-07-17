@@ -16,6 +16,10 @@
 #include <cstddef>
 #include <utility>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 struct GrShaderCaps;
 
 /**

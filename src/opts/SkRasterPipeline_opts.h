@@ -42,6 +42,11 @@
 // SkRP is to have the 8 parameters passed into a stage be actual hardware registers (for
 // optimal performance).
 #if defined(__clang__)
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
     template <int N, typename T> using Vec = T __attribute__((ext_vector_type(N)));
 #elif defined(__GNUC__)
     // Unfortunately, GCC does not allow us to omit the struct. This will not compile:
@@ -1990,7 +1995,6 @@ static void start_pipeline(size_t dx, size_t dy,
         ctx->stage = program;
     }
 #endif
-
 
 // We could start defining normal Stages now.  But first, some helper functions.
 

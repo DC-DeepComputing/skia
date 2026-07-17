@@ -15,6 +15,10 @@
 #include <cstddef>
 #include <cstring>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 class SkCanvas;
 class SkFont;
 class SkPaint;

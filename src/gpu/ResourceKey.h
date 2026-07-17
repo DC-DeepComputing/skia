@@ -23,6 +23,10 @@
 #include <new>
 #include <utility>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 class TestResource;
 
 namespace skgpu {
