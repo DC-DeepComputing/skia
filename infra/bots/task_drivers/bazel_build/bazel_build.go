@@ -15,6 +15,7 @@ import (
 	"fmt"
 	"io/fs"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"runtime"
 
@@ -133,6 +134,44 @@ func main() {
 	}()
 
 	// Perform the build.
+	// 1. "which bazelisk" and "file bazelisk" equivalents in cross-platform Go
+	_ = td.Do(ctx, td.Props("Diagnose Bazelisk Binary"), func(ctx context.Context) error {
+		if bazeliskPath, err := exec.LookPath("bazelisk"); err == nil {
+			td.StepText(ctx, "Bazelisk Path", bazeliskPath)
+			if info, err := os.Stat(bazeliskPath); err == nil {
+				fileDetails := fmt.Sprintf("Size: %d bytes\nMode: %s\nModTime: %s", info.Size(), info.Mode(), info.ModTime())
+				td.StepText(ctx, "File Details", fileDetails)
+			} else {
+				td.StepText(ctx, "Stat Error", err.Error())
+			}
+		} else {
+			td.StepText(ctx, "PATH Error", "Failed to locate bazelisk on PATH: " + err.Error())
+		}
+		return nil
+	})
+
+	// 2. "bazelisk --version" equivalent using sk_exec.Command
+	err = td.Do(ctx, td.Props("Verify Bazelisk Version"), func(ctx context.Context) error {
+		runCmd := &sk_exec.Command{
+			Name: "bazelisk",
+			Args: []string{"--version"},
+			InheritEnv: true,
+			LogStdout:  true,
+			LogStderr:  true,
+		}
+		_, runErr := sk_exec.RunCommand(ctx, runCmd)
+		return runErr
+	})
+	if err != nil {
+		td.Fatal(ctx, err)
+	}
+
+	// Run a quick diagnostic "info" step to verify Bazelisk server startup
+	// and capture the complete Bazel environment in the swarming logs.
+	if _, err := bzl.Do(ctx, "info"); err != nil {
+		td.Fatal(ctx, err)
+	}
+
 	args := append([]string{*bazelFlags.Label, fmt.Sprintf("--config=%s", *bazelFlags.Config)}, *bazelFlags.AdditionalArgs...)
 	if os.Getenv("DEVELOPER_DIR") != "" {
 		args = append(args, "--repo_env=DEVELOPER_DIR")
