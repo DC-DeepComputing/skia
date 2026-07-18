@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e031603_16a6520d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20502
+      },
+      "writtenOn": "2026-07-18T04:10:08Z",
+      "side": 1,
+      "message": "Hi michaelludwig@. You, or robertphillips@ were recommended to me by kylechar@ for reviewing this CL.\n\nWe\u0027re working to support rounded corner hit-testing in viz, in order to accelerate pointer input routing, and would like to slightly extend Skia\u0027s public capabilities to do so. More context can be found in the design document here: https://docs.google.com/document/d/1ZubECnybyRJqfvB4mS4SRwlHiMvITVkHw9NchE0oXPw/edit?pli\u003d1\u0026tab\u003dt.967azltr7ch9\n\nThere\u0027s also a WIP CL that shows where this would hook into the Chromium hit-testing pipeline. Specifically, the TODO at line 74 in https://chromium-review.googlesource.com/c/chromium/src/+/7952076/1/components/viz/common/hit_test/hit_test_query.cc. I\u0027ve verified that these changes:\n\n```\n@@ -274,13 +204,7 @@ bool HitTestQuery::FindTargetInRegionForLocation(\n     }\n     location_transformed \u003d region.transform.MapPoint(location_transformed);\n     const gfx::RectF region_rect \u003d region.rect.rect();\n-    bool inside;\n-    if (base::FeatureList::IsEnabled(features::kVizHitTestRoundedCorners)) {\n-      inside \u003d PointInRoundedRect(location_transformed, region.rect);\n-    } else {\n-      inside \u003d region_rect.Contains(location_transformed);\n-    }\n-    if (!inside) {\n+    if (!region_rect.Contains(location_transformed)) {\n       return false;\n     }\n   }\n```\n\nwith this CL\u0027s patch applied as a local patch works for this viz hit-testing scenario.\n\nAnd you can see a WIP CL which would move from a custom implementation in Chromium to leveraging this Skia version, if approved, at https://chromium-review.googlesource.com/c/chromium/src/+/8065606.\n\nI\u0027d appreciate your feedback. Thanks!",
+      "revId": "7b2b4af7252a444467d61c8c612015a0107de0ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
