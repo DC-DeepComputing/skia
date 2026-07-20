@@ -15,8 +15,10 @@ import (
 	"fmt"
 	"io/fs"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"runtime"
+	"strings"
 
 	infra_common "go.skia.org/infra/go/common"
 	sk_exec "go.skia.org/infra/go/exec"
@@ -62,6 +64,9 @@ func main() {
 	if err != nil {
 		td.Fatal(ctx, err)
 	}
+
+	// Dynamically locate and add the MSVC compiler and runtime folders to the system PATH.
+	locateAndAddMSVCToPATH(ctx, checkoutPath)
 
 	// For Mac builds, ensure Xcode is downloaded/installed via mac_toolchain before we build.
 	if runtime.GOOS == "darwin" {
@@ -133,6 +138,102 @@ func main() {
 	}()
 
 	// Perform the build.
+	// 1. "which bazelisk" and "file bazelisk" equivalents in cross-platform Go
+	_ = td.Do(ctx, td.Props("Diagnose Bazelisk Binary"), func(ctx context.Context) error {
+		if bazeliskPath, err := exec.LookPath("bazelisk"); err == nil {
+			td.StepText(ctx, "Bazelisk Path", bazeliskPath)
+			if info, err := os.Stat(bazeliskPath); err == nil {
+				fileDetails := fmt.Sprintf("Size: %d bytes\nMode: %s\nModTime: %s", info.Size(), info.Mode(), info.ModTime())
+				td.StepText(ctx, "File Details", fileDetails)
+			} else {
+				td.StepText(ctx, "Stat Error", err.Error())
+			}
+		} else {
+			td.StepText(ctx, "PATH Error", "Failed to locate bazelisk on PATH: "+err.Error())
+		}
+
+		// Also check if "bazel" is already pre-installed/present on the system PATH
+		if bazelPath, err := exec.LookPath("bazel"); err == nil {
+			td.StepText(ctx, "Bazel Path", bazelPath)
+		} else {
+			td.StepText(ctx, "Bazel PATH Check", "Bazel is not present on system PATH: "+err.Error())
+		}
+		return nil
+	})
+
+	// 1b. Check if the required MSVC runtime DLLs exist in the standard Windows system folders
+	// and scan standard python or other directories to see where they are located.
+	if runtime.GOOS == "windows" {
+		_ = td.Do(ctx, td.Props("Explore System DLLs and Python Folders"), func(ctx context.Context) error {
+			// Check C:\Windows\System32
+			sys32Paths := []string{
+				"C:\\Windows\\System32\\vcruntime140.dll",
+				"C:\\Windows\\System32\\vcruntime140_1.dll",
+				"C:\\Windows\\System32\\msvcp140.dll",
+			}
+			for _, path := range sys32Paths {
+				if info, err := os.Stat(path); err == nil {
+					td.StepText(ctx, "System32 Present", fmt.Sprintf("%s: %d bytes", filepath.Base(path), info.Size()))
+				} else {
+					td.StepText(ctx, "System32 Missing", filepath.Base(path))
+				}
+			}
+
+			// Scan standard directories to locate these DLLs
+			searchDirs := []string{
+				"C:\\Python3",
+				"C:\\Python311",
+				"C:\\Program Files\\Python311",
+				"C:\\Program Files\\Microsoft Visual Studio",
+				"C:\\Program Files (x86)\\Microsoft Visual Studio",
+				"C:\\Users\\chrome-bot\\AppData\\Local\\Programs\\Python",
+			}
+
+			for _, dir := range searchDirs {
+				if _, err := os.Stat(dir); err != nil {
+					continue
+				}
+				fmt.Printf("Scanning folder: %s\n", dir)
+				_ = filepath.WalkDir(dir, func(path string, d fs.DirEntry, err error) error {
+					if err != nil {
+						return nil
+					}
+					if !d.IsDir() {
+						name := filepath.Base(path)
+						if name == "vcruntime140.dll" || name == "vcruntime140_1.dll" || name == "msvcp140.dll" {
+							td.StepText(ctx, "Located DLL", fmt.Sprintf("%s found at %s", name, path))
+						}
+					}
+					return nil
+				})
+			}
+			return nil
+		})
+	}
+
+	// 2. "bazelisk version" (no --) which is processed internally by Bazelisk without downloading bazel
+	err = td.Do(ctx, td.Props("Verify Bazelisk Version"), func(ctx context.Context) error {
+		runCmd := &sk_exec.Command{
+			Name:       "bazelisk",
+			Args:       []string{"version"},
+			Dir:        checkoutPath, // Execute inside ./skia where .bazelversion lives!
+			InheritEnv: true,
+			LogStdout:  true,
+			LogStderr:  true,
+		}
+		_, runErr := sk_exec.RunCommand(ctx, runCmd)
+		return runErr
+	})
+	if err != nil {
+		td.Fatal(ctx, err)
+	}
+
+	// Run a quick diagnostic "info" step to verify Bazelisk server startup
+	// and capture the complete Bazel environment in the swarming logs.
+	if _, err := bzl.Do(ctx, "info"); err != nil {
+		td.Fatal(ctx, err)
+	}
+
 	args := append([]string{*bazelFlags.Label, fmt.Sprintf("--config=%s", *bazelFlags.Config)}, *bazelFlags.AdditionalArgs...)
 	if os.Getenv("DEVELOPER_DIR") != "" {
 		args = append(args, "--repo_env=DEVELOPER_DIR")
@@ -179,4 +280,111 @@ func copyBazelBinSubdirs(ctx context.Context, checkoutDir string, bazelBinSubdir
 		}
 	}
 	return nil
+}
+
+// locateAndAddMSVCToPATH dynamically scans the pre-downloaded win_toolchain asset on the bot,
+// detects the active MSVC compiler version, resolves its absolute directory, and appends it
+// directly to the system PATH of the running task driver process (so all spawned child processes inherit it).
+func locateAndAddMSVCToPATH(ctx context.Context, checkoutPath string) {
+	if runtime.GOOS != "windows" {
+		return
+	}
+	_ = td.Do(ctx, td.Props("Dynamic MSVC Runtime Path Resolver"), func(ctx context.Context) error {
+		// 1. Locate the pre-downloaded win_toolchain asset directory
+		winToolchainDir := "win_toolchain"
+		if _, err := os.Stat(winToolchainDir); err != nil {
+			// If not found in CWD, try relative to the parent of checkoutPath
+			winToolchainDir = filepath.Join(filepath.Dir(checkoutPath), "win_toolchain")
+		}
+
+		if _, err := os.Stat(winToolchainDir); err != nil {
+			fmt.Printf("Warning: win_toolchain directory does not exist: %s\n", err)
+			// Debug step: List the files in the current working directory
+			if pwd, err := os.Getwd(); err == nil {
+				fmt.Printf("[DEBUG-LS] Current working directory: %s\n", pwd)
+				if files, err := os.ReadDir("."); err == nil {
+					for _, f := range files {
+						fmt.Printf("  %s (dir: %t)\n", f.Name(), f.IsDir())
+					}
+				}
+			}
+			// Debug step: List files in the parent of checkoutPath
+			parentDir := filepath.Dir(checkoutPath)
+			if files, err := os.ReadDir(parentDir); err == nil {
+				fmt.Printf("[DEBUG-LS] Contents of parent of checkoutPath ( %s ):\n", parentDir)
+				for _, f := range files {
+					fmt.Printf("  %s (dir: %t)\n", f.Name(), f.IsDir())
+				}
+			}
+			return nil
+		}
+
+		// Debug step: List files inside the win_toolchain folder to verify its structure
+		if files, err := os.ReadDir(winToolchainDir); err == nil {
+			fmt.Printf("[DEBUG-LS] Contents of win_toolchain folder ( %s ):\n", winToolchainDir)
+			for _, f := range files {
+				fmt.Printf("  %s (dir: %t)\n", f.Name(), f.IsDir())
+			}
+		}
+
+		// Walk the win_toolchain directory to locate vcruntime140.dll (specifically x64)
+		var pathsToAdd []string
+		added := make(map[string]bool)
+		err := filepath.WalkDir(winToolchainDir, func(path string, d fs.DirEntry, err error) error {
+			if err != nil {
+				return nil
+			}
+			if !d.IsDir() && filepath.Base(path) == "vcruntime140.dll" {
+				dir := filepath.Dir(path)
+				lowerDir := strings.ToLower(filepath.ToSlash(dir))
+				// We want x64 binaries. Exclude arm, x86, and win32 to avoid architecture mismatches.
+				if !strings.Contains(lowerDir, "arm") && !strings.Contains(lowerDir, "x86") && !strings.Contains(lowerDir, "win32") {
+					absPath, err := filepath.Abs(dir)
+					if err == nil && !added[absPath] {
+						added[absPath] = true
+						pathsToAdd = append(pathsToAdd, absPath)
+					}
+				}
+			}
+			return nil
+		})
+		if err != nil {
+			fmt.Printf("Failed to walk win_toolchain directory: %s\n", err)
+			return nil
+		}
+
+		// Also explicitly add the Hostx64 compiler tools folder if it exists
+		msvcRoot := filepath.Join(winToolchainDir, "VC", "Tools", "MSVC")
+		if entries, err := os.ReadDir(msvcRoot); err == nil {
+			var msvcVersion string
+			for _, entry := range entries {
+				if entry.IsDir() {
+					msvcVersion = entry.Name()
+				}
+			}
+			if msvcVersion != "" {
+				if compilerBinDir, err := filepath.Abs(filepath.Join(msvcRoot, msvcVersion, "bin", "Hostx64", "x64")); err == nil {
+					if !added[compilerBinDir] {
+						added[compilerBinDir] = true
+						pathsToAdd = append(pathsToAdd, compilerBinDir)
+					}
+				}
+			}
+		}
+
+		if len(pathsToAdd) == 0 {
+			fmt.Printf("Warning: Could not locate any x64 MSVC runtime DLLs or compiler tools in %s\n", winToolchainDir)
+			return nil
+		}
+
+		// Prepend these folders directly to the system PATH of this running process
+		currentPATH := os.Getenv("PATH")
+		newPATH := currentPATH
+		for _, path := range pathsToAdd {
+			newPATH = fmt.Sprintf("%s;%s", path, newPATH)
+			td.StepText(ctx, "Dynamic PATH Added", path)
+		}
+		os.Setenv("PATH", newPATH)
+		return nil
+	})
 }
