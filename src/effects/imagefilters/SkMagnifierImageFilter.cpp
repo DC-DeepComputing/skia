@@ -254,10 +254,19 @@ skif::FilterResult SkMagnifierImageFilter::onFilterImage(const skif::Context& co
                           .applyCrop(context, lensBounds.roundOut());
     }
 
+    // The maginfier shader samples both within the visible lens (visibleLensBounds) and the zoomed
+    // coordinate space (zoomXform(visibleLensBounds)). When the zoomed coordinate space is not a
+    // subset of the visible lens, we can potentially read outside of the visibleLensBounds. Thus we
+    // should use the union of the visible lens and the zoomed coordinate space.
+    skif::LayerSpace<SkIRect> requiredInput = visibleLensBounds.roundOut();
+    requiredInput.join(zoomXform.mapRect(requiredInput));
+
     using ShaderFlags = skif::FilterResult::ShaderFlags;
     skif::FilterResult::Builder builder{context};
-    builder.add(this->getChildOutput(0, context.withNewDesiredOutput(visibleLensBounds.roundOut())),
-                {}, ShaderFlags::kNonTrivialSampling, fSampling);
+    builder.add(this->getChildOutput(0, context.withNewDesiredOutput(requiredInput)),
+                requiredInput,
+                ShaderFlags::kNonTrivialSampling,
+                fSampling);
     return builder.eval([&](SkSpan<sk_sp<SkShader>> inputs) {
             // If the input resolved to a null shader, the magnified output will be transparent too
             return inputs[0] ? make_magnifier_shader(inputs[0], lensBounds, zoomXform, inset)
