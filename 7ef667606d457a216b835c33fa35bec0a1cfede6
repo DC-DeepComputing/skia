@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b145559e_0fab016d",
+        "filename": "src/core/SkScopedSafetyChecksExclusion.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-20T14:39:19Z",
+      "side": 1,
+      "message": "I\u0027m happy with how the rest of the Skia-side use of this exclusion looks, but Kaylee can correct me if I\u0027m wrong, but it seems brittle to add an include on `base` and other types that are restricted to Chromium.  I don\u0027t believe that is a real third_party dependency from our project so it becomes a bit magic; is there a way we can port over base\u0027s code and then depend on our existing PA dependency?",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 38
+      },
+      "revId": "7ef667606d457a216b835c33fa35bec0a1cfede6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
