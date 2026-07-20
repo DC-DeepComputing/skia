@@ -39,6 +39,30 @@
       },
       "revId": "290f9d4dbafdbf45df901a7b27ab64f8de2bd755",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "05a17be1_d633d6f2",
+        "filename": "src/lazy/BUILD.bazel",
+        "patchSetId": 7
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-07-20T15:56:42Z",
+      "side": 1,
+      "message": "Updated the exporter. Done.",
+      "parentUuid": "03eaeb3f_1dac701f",
+      "range": {
+        "startLine": 10,
+        "startChar": 12,
+        "endLine": 10,
+        "endChar": 16
+      },
+      "revId": "290f9d4dbafdbf45df901a7b27ab64f8de2bd755",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

@@ -119,6 +119,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c2a118f_a87288d9",
+        "filename": "tests/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-07-20T15:56:42Z",
+      "side": 1,
+      "message": "Oops, done.",
+      "parentUuid": "831d9063_753c906d",
+      "range": {
+        "startLine": 62,
+        "startChar": 0,
+        "endLine": 62,
+        "endChar": 9
+      },
+      "revId": "adcf218c87f640148dc9f91a875eedba43cb34b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b011e9e9_2ef62f8a",
