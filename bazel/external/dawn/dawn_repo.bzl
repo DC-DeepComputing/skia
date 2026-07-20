@@ -53,7 +53,8 @@ for root, dirs, files in os.walk("src/tint"):
         fail("Failed to patch Tint BUILD.bazel files: " + res.stderr)
 
     # Copy the BUILD.bazel from Skia
-    repo_ctx.execute(["rm", "-f", "BUILD.bazel", "dawn_files.bzl"])
+    repo_ctx.delete("BUILD.bazel")
+    repo_ctx.delete("dawn_files.bzl")
     repo_ctx.symlink(repo_ctx.path(repo_ctx.attr.build_file), "BUILD.bazel")
 
     # Run the generator to create dawn_files.bzl
