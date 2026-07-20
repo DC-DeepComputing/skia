@@ -510,6 +510,7 @@ public:
     */
     const SkRect& getBounds() const;
 
+#if !defined(SK_DISABLE_LEGACY_UPDATEBOUNDSCACHE)
     /** Updates internal bounds so that subsequent calls to getBounds() are instantaneous.
         Unaltered copies of SkPath may also access cached bounds through getBounds().
 
@@ -517,11 +518,14 @@ public:
 
         Call to prepare SkPath subsequently drawn from multiple threads,
         to avoid a race condition where each draw separately computes the bounds.
+
+        DEPRECATED: after the path immutability changes, this is a no-op
     */
     void updateBoundsCache() const {
         // for now, just calling getBounds() is sufficient
         this->getBounds();
     }
+#endif
 
     /** Returns minimum and maximum axes values of the lines and curves in SkPath.
         Returns (0, 0, 0, 0) if SkPath contains no points.
