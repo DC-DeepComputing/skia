@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "09576f59_2ec3480b",
+        "filename": "site/docs/dev/testing/perf/_index.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 4324200
+      },
+      "writtenOn": "2026-07-20T16:55:01Z",
+      "side": 1,
+      "message": "Added Skia Perf.",
+      "parentUuid": "2880a7d3_7afed53a",
+      "range": {
+        "startLine": 2,
+        "startChar": 26,
+        "endLine": 2,
+        "endChar": 35
+      },
+      "revId": "17cbb8a88ea6e01ddfbceed5356cd64efd08a0bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c183681b_38958695",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f323a004_da497c3c",
+        "filename": "site/docs/dev/testing/perf/_index.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 4324200
+      },
+      "writtenOn": "2026-07-20T16:55:01Z",
+      "side": 1,
+      "message": "Added Skia Perf.",
+      "parentUuid": "c183681b_38958695",
+      "range": {
+        "startLine": 7,
+        "startChar": 2,
+        "endLine": 7,
+        "endChar": 53
+      },
+      "revId": "17cbb8a88ea6e01ddfbceed5356cd64efd08a0bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a0a8c780_8624a1be",
@@ -60,6 +108,30 @@
       "writtenOn": "2026-07-20T16:47:03Z",
       "side": 1,
       "message": "let\u0027s leave this out and and reword to focus on scope expansion",
+      "range": {
+        "startLine": 9,
+        "startChar": 100,
+        "endLine": 9,
+        "endChar": 169
+      },
+      "revId": "17cbb8a88ea6e01ddfbceed5356cd64efd08a0bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "54aa73aa_192593a7",
+        "filename": "site/docs/dev/testing/perf/_index.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 4324200
+      },
+      "writtenOn": "2026-07-20T16:55:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a0a8c780_8624a1be",
       "range": {
         "startLine": 9,
         "startChar": 100,
@@ -118,6 +190,30 @@
       "writtenOn": "2026-07-20T16:47:03Z",
       "side": 1,
       "message": "nit: remove either or, let\u0027s consolidate on one.",
+      "range": {
+        "startLine": 13,
+        "startChar": 36,
+        "endLine": 13,
+        "endChar": 129
+      },
+      "revId": "17cbb8a88ea6e01ddfbceed5356cd64efd08a0bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f738ce9_a08e8a27",
+        "filename": "site/docs/dev/testing/perf/help.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 4324200
+      },
+      "writtenOn": "2026-07-20T16:55:01Z",
+      "side": 1,
+      "message": "Let\u0027s stick to chromium issue tracker - we are under chrome, not skia, after all.",
+      "parentUuid": "9ac4f3f6_62d4b70a",
       "range": {
         "startLine": 13,
         "startChar": 36,
@@ -211,6 +307,30 @@
       "writtenOn": "2026-07-20T16:47:03Z",
       "side": 1,
       "message": "Can you verify these images are relevant? You can do this in a follow up CL, but we should remove anything that\u0027s not applicable today.",
+      "range": {
+        "startLine": 23,
+        "startChar": 9,
+        "endLine": 23,
+        "endChar": 23
+      },
+      "revId": "17cbb8a88ea6e01ddfbceed5356cd64efd08a0bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a946844f_fb2a00e4",
+        "filename": "site/docs/dev/testing/skiaperf.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 4324200
+      },
+      "writtenOn": "2026-07-20T16:55:01Z",
+      "side": 1,
+      "message": "Okay, I\u0027ll verify if these work and remove them, if not. Will do in a future CL.",
+      "parentUuid": "9d471d38_8cfdeca5",
       "range": {
         "startLine": 23,
         "startChar": 9,
