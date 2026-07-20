@@ -1,0 +1,109 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "39be320c_f43842e6",
+        "filename": "site/docs/dev/testing/perf/_index.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 4324200
+      },
+      "writtenOn": "2026-07-20T16:28:01Z",
+      "side": 1,
+      "message": "We link Skia-specific documentation in this section, since those contain a very nuanced use-cases.",
+      "fixSuggestions": [
+        {
+          "fixId": "53d4bdb1_b219cf1e",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "site/docs/dev/testing/perf/_index.md",
+              "range": {
+                "startLine": 1,
+                "startChar": 0,
+                "endLine": 1,
+                "endChar": 0
+              },
+              "replacement": "We link Skia-specific documentation in this section, since those contain a very nuanced use.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "17cbb8a88ea6e01ddfbceed5356cd64efd08a0bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4cd83c8e_a1dc306a",
+        "filename": "site/docs/dev/testing/perf/user_guide.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 4324200
+      },
+      "writtenOn": "2026-07-20T16:28:01Z",
+      "side": 1,
+      "message": "A note: we do not link the triage guide here, since that\u0027s something only internal users do.",
+      "fixSuggestions": [
+        {
+          "fixId": "59ab2b21_9e7fb270",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "site/docs/dev/testing/perf/user_guide.md",
+              "range": {
+                "startLine": 1,
+                "startChar": 0,
+                "endLine": 1,
+                "endChar": 0
+              },
+              "replacement": "Note: We do not link the triage guide here, since that\u0027s something only\n\n"
+            }
+          ]
+        }
+      ],
+      "revId": "17cbb8a88ea6e01ddfbceed5356cd64efd08a0bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "78436443_dc8a1b9e",
+        "filename": "site/docs/dev/testing/perf/user_guide.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 4324200
+      },
+      "writtenOn": "2026-07-20T16:28:01Z",
+      "side": 1,
+      "message": "TODO I\u0027ll do next: deduplicate docs in the buildbot repo and make them safe to share publicly.",
+      "fixSuggestions": [
+        {
+          "fixId": "1d87d781_a9f1076d",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "site/docs/dev/testing/perf/user_guide.md",
+              "range": {
+                "startLine": 12,
+                "startChar": 0,
+                "endLine": 13,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "17cbb8a88ea6e01ddfbceed5356cd64efd08a0bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
