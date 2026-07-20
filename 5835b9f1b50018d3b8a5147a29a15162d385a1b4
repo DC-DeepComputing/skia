@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa8cdca1_dc9df07e",
+        "filename": "src/core/SkRRectPriv.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 20502
+      },
+      "writtenOn": "2026-07-20T17:44:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6a9c260a_d6b2d596",
+      "range": {
+        "startLine": 55,
+        "startChar": 1,
+        "endLine": 58,
+        "endChar": 5
+      },
+      "revId": "5835b9f1b50018d3b8a5147a29a15162d385a1b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "144f004c_a565ba5d",
@@ -71,6 +95,30 @@
       "writtenOn": "2026-07-20T14:46:44Z",
       "side": 1,
       "message": "This can be SkSpan\u003cconst bool\u003e",
+      "range": {
+        "startLine": 414,
+        "startChar": 33,
+        "endLine": 414,
+        "endChar": 67
+      },
+      "revId": "5835b9f1b50018d3b8a5147a29a15162d385a1b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "213ad133_ee23b07f",
+        "filename": "tests/RoundRectTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 414,
+      "author": {
+        "id": 20502
+      },
+      "writtenOn": "2026-07-20T17:44:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "144f004c_a565ba5d",
       "range": {
         "startLine": 414,
         "startChar": 33,
@@ -104,6 +152,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "106f160d_8e167e13",
+        "filename": "tests/RoundRectTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 554,
+      "author": {
+        "id": 20502
+      },
+      "writtenOn": "2026-07-20T17:44:42Z",
+      "side": 1,
+      "message": "Done. Note there\u0027s `test_direction` and `test_round_rect_contains_rect` in this file which uses the same patterns (not using SkSpan, 1/0 vs true/false, and cardinal directions). I can address those in a follow-up PR if you want.",
+      "parentUuid": "a73385f7_97ee52a9",
+      "range": {
+        "startLine": 554,
+        "startChar": 23,
+        "endLine": 554,
+        "endChar": 25
+      },
+      "revId": "5835b9f1b50018d3b8a5147a29a15162d385a1b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "41360c50_04c41282",
@@ -117,6 +189,30 @@
       "writtenOn": "2026-07-20T14:46:44Z",
       "side": 1,
       "message": "nit: can you use true and false here?",
+      "range": {
+        "startLine": 578,
+        "startChar": 14,
+        "endLine": 578,
+        "endChar": 21
+      },
+      "revId": "5835b9f1b50018d3b8a5147a29a15162d385a1b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e72665bf_aad2a81d",
+        "filename": "tests/RoundRectTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 578,
+      "author": {
+        "id": 20502
+      },
+      "writtenOn": "2026-07-20T17:44:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "41360c50_04c41282",
       "range": {
         "startLine": 578,
         "startChar": 14,

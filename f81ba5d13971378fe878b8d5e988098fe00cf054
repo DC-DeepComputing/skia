@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9df43269_b0a3fff6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20502
+      },
+      "writtenOn": "2026-07-20T17:44:42Z",
+      "side": 1,
+      "message": "Thank you for the feedback. I had a follow-up question on https://skia-review.googlesource.com/c/skia/+/1286236/comment/a73385f7_97ee52a9/.\n\nAlso, I don\u0027t have access to CQ dry runs or to submit in Skia. Would you mind clicking those buttons for me once you\u0027re happy with the change?\n\nThank you for assistance!",
+      "revId": "f81ba5d13971378fe878b8d5e988098fe00cf054",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
