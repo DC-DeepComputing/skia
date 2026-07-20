@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f57636b6_1d8c319b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-07-20T20:00:14Z",
+      "side": 1,
+      "message": "PTAL; \n\nI believe this workaround is necessary if an OOPR is using GL on an effected devices?",
+      "revId": "7618ea3287c5a49f0f80e8bf8013c7b538affb6c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
