@@ -4040,7 +4040,7 @@ bool GrGLGpu::onClearBackendTexture(const GrBackendTexture& backendTexture,
     return result;
 }
 
-void GrGLGpu::deleteBackendTexture(const GrBackendTexture& tex) {
+void GrGLGpu::onDeleteBackendTexture(const GrBackendTexture& tex) {
     SkASSERT(GrBackendApi::kOpenGL == tex.backend());
 
     GrGLTextureInfo info;

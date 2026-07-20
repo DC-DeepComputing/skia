@@ -1120,7 +1120,7 @@ bool GrMtlGpu::onUpdateCompressedBackendTexture(const GrBackendTexture& backendT
     return true;
 }
 
-void GrMtlGpu::deleteBackendTexture(const GrBackendTexture& tex) {
+void GrMtlGpu::onDeleteBackendTexture(const GrBackendTexture& tex) {
     SkASSERT(GrBackendApi::kMetal == tex.backend());
     // Nothing to do here, will get cleaned up when the GrBackendTexture object goes away
 }
