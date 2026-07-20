@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4be2c2c5_31151c0f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-07-20T19:46:06Z",
+      "side": 1,
+      "message": "PTAL;\n\nI know we discussed folding the workaround into the existing `unbind_attachments_on_bound_render_fbo_delete` but I believe these should be kept separate; one workaround targets Adreno gpus and unbinds attatchements, the other targets Imagination gpus and unbinds the current FBO.",
+      "revId": "da8e9df6f7661a7a516f4afefd71da1508df64e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
