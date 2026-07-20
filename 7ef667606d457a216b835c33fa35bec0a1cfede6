@@ -22,6 +22,30 @@
       },
       "revId": "7ef667606d457a216b835c33fa35bec0a1cfede6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14257fd3_6ab8654c",
+        "filename": "src/core/SkScopedSafetyChecksExclusion.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-20T15:33:16Z",
+      "side": 1,
+      "message": "Yeah, this will only be compiled on Chrome. Can we move src/core/SkScopedSafetyChecksExclusion.h to a new src/chromium to mirror the include/private/chromium we have for similar code like that?",
+      "parentUuid": "b145559e_0fab016d",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 38
+      },
+      "revId": "7ef667606d457a216b835c33fa35bec0a1cfede6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
