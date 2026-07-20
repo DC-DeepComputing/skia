@@ -9,6 +9,8 @@ linkTitle: "Skia Perf"
 [Skia Perf](https://perf.skia.org) is a web application for analyzing and
 viewing performance metrics produced by Skia's testing infrastructure.
 
+For more general documentation regarding Perf, see [Perf docs](./perf/_index.md).
+
 <img src=../Perf.png style="margin-left:30px" align="left" width="800"/> <br clear="left">
 
 Skia tests across a large number of platforms and configurations, and each
