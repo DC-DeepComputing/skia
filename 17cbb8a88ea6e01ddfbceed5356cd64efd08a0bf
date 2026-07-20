@@ -1,6 +1,75 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "2880a7d3_7afed53a",
+        "filename": "site/docs/dev/testing/perf/_index.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 12339
+      },
+      "writtenOn": "2026-07-20T16:47:03Z",
+      "side": 1,
+      "message": "I know traditionally we removed Skia, but let\u0027s actually include it here for backwards compatibility. Maybe Performance Dashboard (former: Skia Performance Dashboard) or something like that?",
+      "range": {
+        "startLine": 2,
+        "startChar": 26,
+        "endLine": 2,
+        "endChar": 35
+      },
+      "revId": "17cbb8a88ea6e01ddfbceed5356cd64efd08a0bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c183681b_38958695",
+        "filename": "site/docs/dev/testing/perf/_index.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 12339
+      },
+      "writtenOn": "2026-07-20T16:47:03Z",
+      "side": 1,
+      "message": "See above comment",
+      "range": {
+        "startLine": 7,
+        "startChar": 2,
+        "endLine": 7,
+        "endChar": 53
+      },
+      "revId": "17cbb8a88ea6e01ddfbceed5356cd64efd08a0bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0a8c780_8624a1be",
+        "filename": "site/docs/dev/testing/perf/_index.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 12339
+      },
+      "writtenOn": "2026-07-20T16:47:03Z",
+      "side": 1,
+      "message": "let\u0027s leave this out and and reword to focus on scope expansion",
+      "range": {
+        "startLine": 9,
+        "startChar": 100,
+        "endLine": 9,
+        "endChar": 169
+      },
+      "revId": "17cbb8a88ea6e01ddfbceed5356cd64efd08a0bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "39be320c_f43842e6",
@@ -32,6 +101,29 @@
           ]
         }
       ],
+      "revId": "17cbb8a88ea6e01ddfbceed5356cd64efd08a0bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ac4f3f6_62d4b70a",
+        "filename": "site/docs/dev/testing/perf/help.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 12339
+      },
+      "writtenOn": "2026-07-20T16:47:03Z",
+      "side": 1,
+      "message": "nit: remove either or, let\u0027s consolidate on one.",
+      "range": {
+        "startLine": 13,
+        "startChar": 36,
+        "endLine": 13,
+        "endChar": 129
+      },
       "revId": "17cbb8a88ea6e01ddfbceed5356cd64efd08a0bf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -102,6 +194,29 @@
           ]
         }
       ],
+      "revId": "17cbb8a88ea6e01ddfbceed5356cd64efd08a0bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d471d38_8cfdeca5",
+        "filename": "site/docs/dev/testing/skiaperf.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 12339
+      },
+      "writtenOn": "2026-07-20T16:47:03Z",
+      "side": 1,
+      "message": "Can you verify these images are relevant? You can do this in a follow up CL, but we should remove anything that\u0027s not applicable today.",
+      "range": {
+        "startLine": 23,
+        "startChar": 9,
+        "endLine": 23,
+        "endChar": 23
+      },
       "revId": "17cbb8a88ea6e01ddfbceed5356cd64efd08a0bf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
