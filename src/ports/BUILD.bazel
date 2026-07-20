@@ -507,3 +507,13 @@ skia_filegroup(
     name = "fonthost_win_srcs",
     srcs = ["SkFontHost_win.cpp"],
 )
+
+skia_cc_library(
+    name = "discardable_memory_none",
+    srcs = ["SkDiscardableMemory_none.cpp"],
+    visibility = ["//dm:__pkg__"],
+    deps = [
+        "//:core",
+        "//src/lazy",
+    ],
+)
