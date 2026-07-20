@@ -16,6 +16,115 @@
       "message": "I believe this is ready for review. PTAL. I left a comment with context at https://skia-review.googlesource.com/c/skia/+/1286236/comments/8e031603_16a6520d.\n\nThanks!",
       "revId": "5835b9f1b50018d3b8a5147a29a15162d385a1b4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a5cfd3a_7d13f37a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-20T14:46:44Z",
+      "side": 1,
+      "message": "Thank you for the contribution!",
+      "revId": "5835b9f1b50018d3b8a5147a29a15162d385a1b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a9c260a_d6b2d596",
+        "filename": "src/core/SkRRectPriv.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-20T14:46:44Z",
+      "side": 1,
+      "message": "We should just delete this function and have all call-sites use the public function now.",
+      "range": {
+        "startLine": 55,
+        "startChar": 1,
+        "endLine": 58,
+        "endChar": 5
+      },
+      "revId": "5835b9f1b50018d3b8a5147a29a15162d385a1b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "144f004c_a565ba5d",
+        "filename": "tests/RoundRectTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 414,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-20T14:46:44Z",
+      "side": 1,
+      "message": "This can be SkSpan\u003cconst bool\u003e",
+      "range": {
+        "startLine": 414,
+        "startChar": 33,
+        "endLine": 414,
+        "endChar": 67
+      },
+      "revId": "5835b9f1b50018d3b8a5147a29a15162d385a1b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a73385f7_97ee52a9",
+        "filename": "tests/RoundRectTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 554,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-20T14:46:44Z",
+      "side": 1,
+      "message": "Skia typically uses `TL`, `T`, `TR`, etc. instead of cardinal directions",
+      "range": {
+        "startLine": 554,
+        "startChar": 23,
+        "endLine": 554,
+        "endChar": 25
+      },
+      "revId": "5835b9f1b50018d3b8a5147a29a15162d385a1b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41360c50_04c41282",
+        "filename": "tests/RoundRectTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 578,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-20T14:46:44Z",
+      "side": 1,
+      "message": "nit: can you use true and false here?",
+      "range": {
+        "startLine": 578,
+        "startChar": 14,
+        "endLine": 578,
+        "endChar": 21
+      },
+      "revId": "5835b9f1b50018d3b8a5147a29a15162d385a1b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
