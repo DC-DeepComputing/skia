@@ -16,6 +16,24 @@
       "message": "I\u0027ll need to resolve the merge conflict (which I expect to be mundane), but WDYT about having the draw list information as `_ALWAYS` vs. a regular trace? Since it\u0027s just tracing ints, I\u0027m hoping it doesn\u0027t have a significant overhead. On the other hand, it may not give too much useful information in RE since it\u0027s pretty easy to infer the number of draw calls and textures from other trace information already.",
       "revId": "99fe751604c2a28024c7fdc5efe6bc4d2057fc6e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d4bf7d2_ee8a1a5a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2026-07-21T19:10:11Z",
+      "side": 1,
+      "message": "I\u0027d lean towards just trying it, and trimming it down later if we\u0027re consistently not looking at it.",
+      "parentUuid": "3418068e_9ba47eab",
+      "revId": "99fe751604c2a28024c7fdc5efe6bc4d2057fc6e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
