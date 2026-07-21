@@ -22,6 +22,30 @@
       },
       "revId": "9ee86622c07d349b611c06ebe5535fe6433807e5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5a54961_cde2e5fc",
+        "filename": "tests/SerializationTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 706,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-21T20:14:29Z",
+      "side": 1,
+      "message": "The reply is non-const and I didn\u0027t like the look of a const_cast.",
+      "parentUuid": "0af9abc9_55598d23",
+      "range": {
+        "startLine": 706,
+        "startChar": 19,
+        "endLine": 706,
+        "endChar": 68
+      },
+      "revId": "9ee86622c07d349b611c06ebe5535fe6433807e5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
