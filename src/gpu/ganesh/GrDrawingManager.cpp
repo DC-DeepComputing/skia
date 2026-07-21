@@ -126,7 +126,10 @@ bool GrDrawingManager::flush(SkSpan<GrSurfaceProxy*> proxies,
             if (info.fSubmittedProc) {
                 info.fSubmittedProc(info.fSubmittedContext, true);
             }
-            return false;
+            // Nothing to flush is a success (fSubmittedProc is already called with `true`
+            // above); returning true lets flushSurfaces() run resolve_and_mipmap() for proxies
+            // that are still MSAA-dirty from a *previous* successful flush.
+            return true;
         }
     }
 
@@ -542,8 +545,13 @@ GrSemaphoresSubmitted GrDrawingManager::flushSurfaces(SkSpan<GrSurfaceProxy*> pr
     // portion of the DAG required by 'proxies' in order to restore some of the
     // semantics of this method.
     bool didFlush = this->flush(proxies, access, info, newState);
-    for (GrSurfaceProxy* proxy : proxies) {
-        resolve_and_mipmap(gpu, proxy);
+    if (didFlush) {
+        // Only resolve/regen mips if the flush actually executed the render tasks. Otherwise the
+        // MSAA attachment was never written and resolving would blit uninitialized/recycled bytes
+        // into the client-visible resolve texture and then mark the proxy resolved.
+        for (GrSurfaceProxy* proxy : proxies) {
+            resolve_and_mipmap(gpu, proxy);
+        }
     }
 
     SkDEBUGCODE(this->validate());
