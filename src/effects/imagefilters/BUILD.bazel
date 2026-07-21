@@ -32,3 +32,14 @@ skia_filegroup(
     srcs = IMAGEFILTERS_FILES,
     visibility = ["//src/effects:__pkg__"],
 )
+
+skia_filegroup(
+    name = "imagefilters_hdrs",
+    srcs = [
+        "SkMatrixConvolutionImageFilter.h",
+    ],
+    visibility = [
+        "//src/core:__pkg__",
+        "//src/effects:__pkg__",
+    ],
+)
