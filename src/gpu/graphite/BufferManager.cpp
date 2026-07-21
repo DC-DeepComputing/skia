@@ -357,6 +357,8 @@ DrawBufferManager::DrawBufferManager(ResourceProvider* resourceProvider,
             {BufferType::kIndex, "IndexBuffer", /*isGpuOnly=*/false, dbmOpts, caps},
             {BufferType::kUniform, "UniformBuffer", /*isGpuOnly=*/false, dbmOpts, caps},
             {BufferType::kStorage, "StorageBuffer", /*isGpuOnly=*/false, dbmOpts, caps},
+            {BufferType::kVertexStorage,
+                    "MappedVertexStorageBuffer", /*isGpuOnly=*/false, dbmOpts, caps},
             // GPU-only buffers
             {BufferType::kStorage, "GPUOnlyStorageBuffer", /*isGpuOnly=*/true, dbmOpts, caps},
             {BufferType::kVertexStorage, "VertexStorageBuffer", /*isGpuOnly=*/true, dbmOpts, caps},
