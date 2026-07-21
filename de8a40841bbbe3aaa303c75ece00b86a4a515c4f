@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01812034_8c4cf6ac",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2026-07-21T18:56:22Z",
+      "side": 0,
+      "message": "Nit: note the removal of this trace event in the commit description, or move it to another commit (is it supposed to be in the next one?)",
+      "revId": "de8a40841bbbe3aaa303c75ece00b86a4a515c4f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
