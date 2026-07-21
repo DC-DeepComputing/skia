@@ -94,6 +94,30 @@
       },
       "revId": "7ef667606d457a216b835c33fa35bec0a1cfede6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8236d21d_a8726218",
+        "filename": "src/core/SkScopedSafetyChecksExclusion.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-21T15:25:52Z",
+      "side": 1,
+      "message": "As a side question, I am confused as to why this is something that is defined in base and not something that is provided by PartitionAlloc itself?  If the scope excluder is implementable in terms of PA components, then there is also a lot of precedent for Skia having a similar implementation that parrots what\u0027s in chrome without taking the dependency.\n\nBut if it really needs to be something that is dependent on base, why not just have `SkTypes.h` define `SK_SCOPED_SAFETY_CHECK_EXCLUSION` to be empty if it\u0027s not already defined, and then have `skia/config/SkUserConfig.h` in the chrome repo define `SK_SCOPED_SAFETY_CHECK_EXCLUSION` to be `base::ScopedSafetyChecksExclusion _miracleObjExclusion _mircaleObjExclusion;`?",
+      "parentUuid": "df8b3779_c0ffa71f",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 38
+      },
+      "revId": "7ef667606d457a216b835c33fa35bec0a1cfede6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
