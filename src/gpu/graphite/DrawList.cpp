@@ -137,6 +137,9 @@ std::unique_ptr<DrawPass> DrawList::snapDrawPass(Recorder* recorder,
     const bool useStorageBuffers = caps->storageBufferSupport();
     UniformTracker uniformTracker(useStorageBuffers);
 
+    // Freeze cached gradient storage data and compute 16-byte aligned appended storage offset
+    recorder->priv().storageBufferManager()->finalizeCacheStorageData();
+
     // TODO(b/372953722): Remove this forced binding command behavior once dst copies are always
     // bound separately from the rest of the textures.
     const bool rebindTexturesOnPipelineChange = dstReadStrategy == DstReadStrategy::kTextureCopy;

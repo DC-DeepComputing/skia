@@ -351,6 +351,9 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
 
     UniformTracker uniformTracker(fStorageBufferSupport);
 
+    // Freeze cached gradient storage data and compute 16-byte aligned appended storage offset
+    recorder->priv().storageBufferManager()->finalizeCacheStorageData();
+
     const bool rebindTexturesOnPipelineChange = dstReadStrategy == DstReadStrategy::kTextureCopy;
     CompressedPaintersOrder priorDrawPaintOrder{};
 

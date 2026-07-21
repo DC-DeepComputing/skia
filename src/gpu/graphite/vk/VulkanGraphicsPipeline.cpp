@@ -513,7 +513,8 @@ static bool input_attachment_desc_set_layout(VkDescriptorSetLayout& outLayout,
 static bool uniform_desc_set_layout(VkDescriptorSetLayout& outLayout,
                                     const VulkanSharedContext* sharedContext,
                                     bool hasCombinedUniforms,
-                                    bool hasGradientBuffer) {
+                                    bool hasGradientBuffer,
+                                    bool hasVertexStorageBuffer) {
     // Define a container with size reserved for up to kMaxNumUniformBuffers descriptors. Only add
     // DescriptorData for uniforms that actually are used and need to be included in the layout.
     skia_private::STArray<
@@ -528,12 +529,23 @@ static bool uniform_desc_set_layout(VkDescriptorSetLayout& outLayout,
                 VulkanGraphicsPipeline::kCombinedUniformIndex,
                 PipelineStageFlags::kVertexShader | PipelineStageFlags::kFragmentShader});
     }
-    if (hasGradientBuffer) {
+
+    // Shared storage buffer descriptor for gradient and vertex storage. Currently these are the
+    // only storage usages; they are proxies for which shader stages the storage buffer should be
+    // bound to.
+    if (hasGradientBuffer || hasVertexStorageBuffer) {
+        PipelineStageFlags stageFlags = PipelineStageFlags::kNone;
+        if (hasGradientBuffer) {
+            stageFlags |= PipelineStageFlags::kFragmentShader;
+        }
+        if (hasVertexStorageBuffer) {
+            stageFlags |= PipelineStageFlags::kVertexShader;
+        }
         uniformDescriptors.push_back({
                 DescriptorType::kStorageBuffer,
                 /*count=*/1,
-                VulkanGraphicsPipeline::kGradientBufferIndex,
-                PipelineStageFlags::kFragmentShader});
+                VulkanGraphicsPipeline::kStorageBufferIndex,
+                stageFlags});
     }
 
     // If no uniforms are used, still request a mock VkDescriptorSetLayout handle by passing in the
@@ -577,6 +589,7 @@ static VkPipelineLayout setup_pipeline_layout(const VulkanSharedContext* sharedC
                                               VkShaderStageFlagBits pushConstantPipelineStageFlags,
                                               bool hasCombinedUniforms,
                                               bool hasGradientBuffer,
+                                              bool hasVertexStorageBuffer,
                                               int numTextureSamplers,
                                               bool loadMsaaFromResolve,
                                               SkSpan<sk_sp<VulkanSampler>> immutableSamplers) {
@@ -602,7 +615,8 @@ static VkPipelineLayout setup_pipeline_layout(const VulkanSharedContext* sharedC
                 setLayouts[VulkanGraphicsPipeline::kUniformBufferDescSetIndex],
                 sharedContext,
                 hasCombinedUniforms,
-                hasGradientBuffer) ||
+                hasGradientBuffer,
+                hasVertexStorageBuffer) ||
         !texture_sampler_desc_set_layout(
                 setLayouts[VulkanGraphicsPipeline::kTextureBindDescSetIndex],
                 sharedContext,
@@ -954,6 +968,7 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
                 VulkanResourceProvider::kIntrinsicConstantStageFlags,
                 shaderInfo->hasCombinedUniforms(),
                 shaderInfo->hasGradientBuffer(),
+                shaderInfo->hasVertexStorageBuffer(),
                 shaderInfo->numFragmentTexturesAndSamplers(),
                 /*loadMsaaFromResolve=*/false,
                 SkSpan<sk_sp<VulkanSampler>>(immutableSamplers)))) {
@@ -1224,6 +1239,7 @@ std::unique_ptr<VulkanProgramInfo> VulkanGraphicsPipeline::CreateLoadMSAAProgram
                 (VkShaderStageFlagBits)VK_SHADER_STAGE_VERTEX_BIT,
                 /*hasCombinedUniforms=*/false,
                 /*hasGradientBuffer=*/false,
+                /*hasVertexStorageBuffer=*/false,
                 /*numTextureSamplers=*/0,
                 /*loadMsaaFromResolve=*/true,
                 /*immutableSamplers=*/{}))) {
