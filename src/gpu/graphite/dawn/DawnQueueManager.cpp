@@ -101,7 +101,10 @@ void DawnWorkSubmissionWithFuture::onWaitUntilFinished(const SharedContext* shar
 DawnQueueManager::DawnQueueManager(wgpu::Queue queue, const SharedContext* sharedContext)
         : QueueManager(sharedContext), fQueue(std::move(queue)) {}
 
-void DawnQueueManager::tick() const { this->dawnSharedContext()->tick(); }
+void DawnQueueManager::tick() const {
+    this->dawnSharedContext()->tick();
+    this->QueueManager::tick();
+}
 
 const DawnSharedContext* DawnQueueManager::dawnSharedContext() const {
     return static_cast<const DawnSharedContext*>(fSharedContext);

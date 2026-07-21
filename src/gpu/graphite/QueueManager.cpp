@@ -85,6 +85,20 @@ bool QueueManager::setupCommandBuffer(ResourceProvider* resourceProvider, Protec
 }
 
 InsertStatus QueueManager::addRecording(const InsertRecordingInfo& info, Context* context) {
+    fContext = context;
+    if (fDeferredRecordings.empty() && info.fRecording->priv().isReady()) {
+        return this->addRecordingInternal(info, context);
+    }
+
+    DeferredRecording deferred;
+    deferred.fRecording = std::unique_ptr<Recording>(const_cast<Recording*>(info.fRecording));
+    deferred.fInfo = info;
+    deferred.fInfo.fRecording = deferred.fRecording.get();
+    fDeferredRecordings.push_back(std::move(deferred));
+    return InsertStatus::kSuccess;
+}
+
+InsertStatus QueueManager::addRecordingInternal(const InsertRecordingInfo& info, Context* context) {
     TRACE_EVENT0_ALWAYS("skia.gpu", TRACE_FUNC);
 
     // Configure the callback before validation so that failures are propagated to the finish
@@ -244,9 +258,25 @@ InsertStatus QueueManager::addRecording(const InsertRecordingInfo& info, Context
     return InsertStatus::kSuccess;
 }
 
+bool QueueManager::processDeferredRecordings(Context* context) {
+    Context* ctx = context ? context : fContext;
+    while (!fDeferredRecordings.empty()) {
+        if (!fDeferredRecordings.front().fRecording->priv().isReady()) {
+            break;
+        }
+        DeferredRecording deferred = std::move(fDeferredRecordings.front());
+        fDeferredRecordings.erase(fDeferredRecordings.begin());
+        if (this->addRecordingInternal(deferred.fInfo, ctx) != InsertStatus::kSuccess) {
+            return false;
+        }
+    }
+    return true;
+}
+
 bool QueueManager::addTask(Task* task,
                            Context* context,
                            Protected isProtected) {
+    fContext = context;
     SkASSERT(task);
     if (!task) {
         SKIA_LOG_E("No valid Task passed into addTask call");
@@ -293,6 +323,8 @@ bool QueueManager::addFinishInfo(const InsertFinishInfo& info,
 bool QueueManager::submitToGpu(const SubmitInfo& submitInfo) {
     TRACE_EVENT0_ALWAYS("skia.gpu", TRACE_FUNC);
 
+    this->processDeferredRecordings(fContext);
+
     sk_sp<RefCntedCallback> callback;
     if (submitInfo.fFinishedProc) {
         callback = RefCntedCallback::Make(submitInfo.fFinishedProc, submitInfo.fFinishedContext);
@@ -335,18 +367,22 @@ bool QueueManager::submitToGpu(const SubmitInfo& submitInfo) {
     return true;
 }
 
-bool QueueManager::hasUnfinishedGpuWork() { return !fOutstandingSubmissions.empty(); }
+bool QueueManager::hasUnfinishedGpuWork() {
+    return !fOutstandingSubmissions.empty() || !fDeferredRecordings.empty();
+}
 
 bool QueueManager::hasPendingGPUWork() const {
     // Only check if fCurrentCommandBuffer is non-null.
     // If there is no command in the command buffer i.e. fCurrentCommandBuffer->hasWork() is false,
     // it's still considered valid. Because clients can insert a recording without any command just
     // to track the finish proc.
-    return fCurrentCommandBuffer != nullptr;
+    return fCurrentCommandBuffer != nullptr || !fDeferredRecordings.empty();
 }
 
 void QueueManager::checkForFinishedWork(SyncToCpu sync) {
     TRACE_EVENT1("skia.gpu", TRACE_FUNC, "sync", sync == SyncToCpu::kYes);
+
+    this->processDeferredRecordings(fContext);
 
     if (sync == SyncToCpu::kYes) {
         SkASSERT(fSharedContext->caps()->allowCpuSync());
@@ -373,6 +409,10 @@ void QueueManager::checkForFinishedWork(SyncToCpu sync) {
         front = (OutstandingSubmission*)fOutstandingSubmissions.front();
     }
     SkASSERT(sync == SyncToCpu::kNo || fOutstandingSubmissions.empty());
+}
+
+void QueueManager::tick() const {
+    const_cast<QueueManager*>(this)->processDeferredRecordings(fContext);
 }
 
 void QueueManager::returnCommandBuffer(std::unique_ptr<CommandBuffer> commandBuffer) {

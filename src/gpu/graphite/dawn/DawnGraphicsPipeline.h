@@ -70,6 +70,7 @@ public:
     ~DawnGraphicsPipeline() override;
 
     std::optional<std::string> didAsyncCompilationFail() const override;
+    bool isReady() const override;
 
     uint32_t stencilReferenceValue() const { return fStencilReferenceValue; }
     PrimitiveType primitiveType() const { return fPrimitiveType; }

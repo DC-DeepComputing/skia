@@ -801,6 +801,19 @@ std::optional<std::string> DawnGraphicsPipeline::didAsyncCompilationFail() const
     return std::nullopt;
 }
 
+bool DawnGraphicsPipeline::isReady() const {
+    if (!fAsyncPipelineCreation || fAsyncPipelineCreation->fFinished) {
+        return true;
+    }
+    wgpu::FutureWaitInfo waitInfo{};
+    waitInfo.future = fAsyncPipelineCreation->fFuture;
+    const auto& instance = static_cast<const DawnSharedContext*>(sharedContext())->instance();
+    if (instance.WaitAny(1, &waitInfo, /*timeoutNS=*/0) != wgpu::WaitStatus::Success) {
+        return false;
+    }
+    return fAsyncPipelineCreation->fFinished;
+}
+
 const wgpu::RenderPipeline& DawnGraphicsPipeline::dawnRenderPipeline() const {
     if (!fAsyncPipelineCreation) {
         static const wgpu::RenderPipeline kNullPipeline = nullptr;

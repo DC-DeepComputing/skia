@@ -54,6 +54,8 @@ public:
 
     // Adds the commands from the passed in Recording to the current CommandBuffer
     [[nodiscard]] InsertStatus addRecording(const InsertRecordingInfo&, Context*);
+    [[nodiscard]] InsertStatus addRecordingInternal(const InsertRecordingInfo&, Context*);
+    bool processDeferredRecordings(Context*);
 
     // Adds the commands from the passed in Task to the current CommandBuffer
     [[nodiscard]] bool addTask(Task*, Context*, Protected);
@@ -75,7 +77,7 @@ public:
 
     void returnCommandBuffer(std::unique_ptr<CommandBuffer>);
 
-    virtual void tick() const {}
+    virtual void tick() const;
 
     void addUploadBufferManagerRefs(UploadBufferManager*, ResourceProvider*);
 
@@ -96,6 +98,14 @@ private:
     std::vector<std::unique_ptr<CommandBuffer>>* getAvailableCommandBufferList(Protected);
 
     SkDeque fOutstandingSubmissions;
+
+    struct DeferredRecording {
+        std::unique_ptr<Recording> fRecording;
+        InsertRecordingInfo fInfo;
+    };
+
+    std::vector<DeferredRecording> fDeferredRecordings;
+    Context* fContext = nullptr;
 
     std::vector<std::unique_ptr<CommandBuffer>> fAvailableCommandBuffers;
     std::vector<std::unique_ptr<CommandBuffer>> fAvailableProtectedCommandBuffers;

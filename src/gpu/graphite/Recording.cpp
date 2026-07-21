@@ -18,6 +18,7 @@
 #include "src/core/SkChecksum.h"
 #include "src/gpu/RefCntedCallback.h"
 #include "src/gpu/graphite/CommandBuffer.h"
+#include "src/gpu/graphite/GraphicsPipeline.h"
 #include "src/gpu/graphite/RecordingPriv.h"
 #include "src/gpu/graphite/Resource.h"
 #include "src/gpu/graphite/RuntimeEffectDictionary.h"
@@ -247,6 +248,12 @@ bool RecordingPriv::addCommands(Context* context,
 
 void RecordingPriv::addResourceRef(sk_sp<Resource> resource) {
     fRecording->fExtraResourceRefs.push_back(std::move(resource));
+}
+
+bool RecordingPriv::isReady() const {
+    return fRecording->fRootTaskList->visitPipelines([](const GraphicsPipeline* pipeline) {
+        return pipeline->isReady();
+    });
 }
 
 #if defined(GPU_TEST_UTILS)
