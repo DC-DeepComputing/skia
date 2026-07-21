@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "858e2e7e_e2ff9223",
+        "filename": "src/gpu/GradientBitmap.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 4329740
+      },
+      "writtenOn": "2026-07-21T19:42:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eaa2a4e1_d2e395eb",
+      "range": {
+        "startLine": 2,
+        "startChar": 13,
+        "endLine": 2,
+        "endChar": 17
+      },
+      "revId": "655062b7433204727ca6bedf9abca28325fac5a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8d11c8fa_39728c5d",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-07-21T15:34:31Z",
       "side": 1,
       "message": "2026",
+      "range": {
+        "startLine": 2,
+        "startChar": 13,
+        "endLine": 2,
+        "endChar": 17
+      },
+      "revId": "655062b7433204727ca6bedf9abca28325fac5a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce1dccc0_ff927a13",
+        "filename": "src/gpu/GradientBitmap.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 4329740
+      },
+      "writtenOn": "2026-07-21T19:42:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8d11c8fa_39728c5d",
       "range": {
         "startLine": 2,
         "startChar": 13,
