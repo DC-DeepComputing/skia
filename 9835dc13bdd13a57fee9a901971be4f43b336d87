@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96018f20_d560e435",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2026-07-21T18:54:46Z",
+      "side": 1,
+      "message": "Nit: update subject to reflect removal of `TRACE_COUNTER2`.\n\n```suggestion\nAdd TRACE_COUNTER1_ALWAYS variant\n```",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 34
+      },
+      "revId": "9835dc13bdd13a57fee9a901971be4f43b336d87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
