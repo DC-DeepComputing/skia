@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "74940c48_593305d6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-07-21T23:11:42Z",
+      "side": 1,
+      "message": "The perf gain is roughly half templating, half elision of the unary negation.",
+      "parentUuid": "6313cf96_35559908",
+      "revId": "884f498028670b7cbaa745a0f9e54a35f9c024ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a8ce872a_d0f17b61",
@@ -48,6 +66,30 @@
       "writtenOn": "2026-07-21T13:27:48Z",
       "side": 1,
       "message": "/* kCanonicalYDir\u003d */ - here and below ?",
+      "range": {
+        "startLine": 120,
+        "startChar": 42,
+        "endLine": 120,
+        "endChar": 46
+      },
+      "revId": "884f498028670b7cbaa745a0f9e54a35f9c024ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba444cb5_61a5e814",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorSimd.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-07-21T23:11:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a8ce872a_d0f17b61",
       "range": {
         "startLine": 120,
         "startChar": 42,
@@ -75,6 +117,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f089eaa3_3f54cd20",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorSimd.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-07-21T23:11:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f31d3b9f_f861244d",
+      "revId": "884f498028670b7cbaa745a0f9e54a35f9c024ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7d31f1e6_aa8d49fc",
@@ -88,6 +148,24 @@
       "writtenOn": "2026-07-21T13:27:48Z",
       "side": 1,
       "message": "overlength, here and below",
+      "revId": "884f498028670b7cbaa745a0f9e54a35f9c024ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8bab5a03_bb8f9bb9",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorSimd.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-07-21T23:11:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7d31f1e6_aa8d49fc",
       "revId": "884f498028670b7cbaa745a0f9e54a35f9c024ed",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
