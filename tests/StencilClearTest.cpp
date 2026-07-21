@@ -126,8 +126,9 @@ DEF_GANESH_TEST_FOR_CONTEXTS(StencilClearTest,
         canvas->drawPath(star, paint);
     }
 
-    dContext->flush();
-    dContext->submit(GrSyncCpu::kYes);
+    dContext->flushAndSubmit(GrSyncCpu::kYes);
+//    dContext->flush();
+//    dContext->submit(GrSyncCpu::kYes);
 }
 
 // The goal here is to:
@@ -188,7 +189,8 @@ DEF_GANESH_TEST_FOR_CONTEXTS(StencilClearTest_PreservedAcrossSplit,
         canvas->restore();
     }
 
-    dContext->flush();
-    dContext->submit(GrSyncCpu::kYes);
+    dContext->flushAndSubmit(GrSyncCpu::kYes);
+    //dContext->flush();
+    //dContext->submit(GrSyncCpu::kYes);
 }
 

@@ -180,7 +180,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SkipOpsTaskTest, reporter, ctxInfo, CtsEn
 
     auto dst = dContext->priv().makeSFC(ii, /*label=*/{}, SkBackingFit::kExact);
     dst->clear(SkPMColor4f{1, 0, 0, 1});
-    dContext->flush();
+    dContext->flush1();
 
     dst->clear(SkPMColor4f{0, 0, 1, 1});
     sk_sp<GrRenderTask> task = dst->refRenderTask();

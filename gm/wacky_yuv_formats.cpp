@@ -903,7 +903,7 @@ protected:
             // Some backends (e.g., Vulkan) require all work be completed for backend textures
             // before they are deleted. Since we don't know when we'll next have access to a
             // direct context, flush all the work now.
-            dContext->flush();
+            dContext->flush1();
             dContext->submit(GrSyncCpu::kYes);
         }
 #endif
@@ -1164,8 +1164,9 @@ protected:
         // they are deleted. Since we don't know when we'll next have access to a direct context,
         // flush all the work now.
         if (context) {
-            context->flush();
-            context->submit(GrSyncCpu::kYes);
+            context->flushAndSubmit(GrSyncCpu::kYes);
+//            context->flush1();
+//            context->submit(GrSyncCpu::kYes);
         }
 #endif
         return true;

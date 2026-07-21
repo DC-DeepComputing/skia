@@ -184,7 +184,7 @@ void DebugCanvas::drawTo(SkCanvas* originalCanvas, int index, int m) {
             // Previous operations were not registered with the audit trail when they were
             // created, so if we allow them to combine, the audit trail will fail to find them.
             if (dContext) {
-                dContext->flush();
+                dContext->flush1();
             }
             acb = new GrAuditTrail::AutoCollectOps(at, i);
         }
@@ -233,7 +233,7 @@ void DebugCanvas::drawTo(SkCanvas* originalCanvas, int index, int m) {
         // GrAuditTrail
         GrAuditTrail::AutoEnable ae(at);
         if (dContext) {
-            dContext->flush();
+            dContext->flush1();
         }
 
         // we pick three colorblind-safe colors, 75% alpha
@@ -320,7 +320,7 @@ void DebugCanvas::drawAndCollectOps(SkCanvas* canvas) {
 
             auto dContext = GrAsDirectContext(canvas->recordingContext());
             if (dContext) {
-                dContext->flush();
+                dContext->flush1();
             }
         }
     }

@@ -131,7 +131,7 @@ GrSemaphoresSubmitted SkImage_GaneshYUVA::flush(GrDirectContext* dContext,
     for (size_t i = 0; i < numProxies; ++i) {
         proxies[i] = fYUVAProxies.proxy(i);
     }
-    return dContext->priv().flushSurfaces(
+    return dContext->priv().flushSurfaces2(
             {proxies, numProxies}, SkSurfaces::BackendSurfaceAccess::kNoAccess, info);
 }
 

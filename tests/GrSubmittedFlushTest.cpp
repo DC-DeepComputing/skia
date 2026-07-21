@@ -57,7 +57,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(FlushSubmittedProcTest,
     flushInfo.fSubmittedProc = testing_submitted_proc;
     flushInfo.fSubmittedContext = &submittedInfo;
 
-    ctx->flush(flushInfo);
+    ctx->flush1(flushInfo);
     REPORTER_ASSERT(reporter, submittedCount == 0);
 
     ctx->submit();
@@ -65,13 +65,13 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(FlushSubmittedProcTest,
     REPORTER_ASSERT(reporter, submittedSuccess);
 
     // There should be no work so if we flush again the submittedProc should be called immediately
-    ctx->flush(surface.get(), SkSurfaces::BackendSurfaceAccess::kNoAccess, flushInfo);
+    ctx->flush1(surface.get(), SkSurfaces::BackendSurfaceAccess::kNoAccess, flushInfo);
     REPORTER_ASSERT(reporter, submittedCount == 2);
     REPORTER_ASSERT(reporter, submittedSuccess);
 
     // However, flushing the context we don't do any checks of work so we still require submit to be
     // called in order for the callback to trigger.
-    ctx->flush(flushInfo);
+    ctx->flush1(flushInfo);
     REPORTER_ASSERT(reporter, submittedCount == 2);
 
     ctx->submit();
@@ -80,10 +80,10 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(FlushSubmittedProcTest,
 
     // Testing that doing multiple flushes before a submit triggers both submittedProcs to be called
     canvas->clear(SK_ColorBLUE);
-    ctx->flush(surface.get(), SkSurfaces::BackendSurfaceAccess::kNoAccess, flushInfo);
+    ctx->flush1(surface.get(), SkSurfaces::BackendSurfaceAccess::kNoAccess, flushInfo);
     REPORTER_ASSERT(reporter, submittedCount == 3);
     canvas->clear(SK_ColorRED);
-    ctx->flush(surface.get(), SkSurfaces::BackendSurfaceAccess::kNoAccess, flushInfo);
+    ctx->flush1(surface.get(), SkSurfaces::BackendSurfaceAccess::kNoAccess, flushInfo);
     REPORTER_ASSERT(reporter, submittedCount == 3);
     ctx->submit();
 
@@ -93,10 +93,10 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(FlushSubmittedProcTest,
     // Test an abandoned context to get a failed submit immediately when flush is called
     canvas->clear(SK_ColorCYAN);
     ctx->abandonContext();
-    ctx->flush(surface.get(), SkSurfaces::BackendSurfaceAccess::kNoAccess, flushInfo);
+    ctx->flush1(surface.get(), SkSurfaces::BackendSurfaceAccess::kNoAccess, flushInfo);
     REPORTER_ASSERT(reporter, submittedCount == 6);
     REPORTER_ASSERT(reporter, !submittedSuccess);
-    ctx->flush(flushInfo);
+    ctx->flush1(flushInfo);
     REPORTER_ASSERT(reporter, submittedCount == 7);
     REPORTER_ASSERT(reporter, !submittedSuccess);
 }

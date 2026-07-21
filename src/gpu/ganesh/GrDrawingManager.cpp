@@ -95,7 +95,7 @@ void GrDrawingManager::freeGpuResources() {
 }
 
 // MDB TODO: make use of the 'proxies' parameter.
-bool GrDrawingManager::flush(SkSpan<GrSurfaceProxy*> proxies,
+bool GrDrawingManager::flush7(SkSpan<GrSurfaceProxy*> proxies,
                              SkSurfaces::BackendSurfaceAccess access,
                              const GrFlushInfo& info,
                              const skgpu::MutableTextureState* newState) {
@@ -517,7 +517,7 @@ static void resolve_and_mipmap(GrGpu* gpu, GrSurfaceProxy* proxy) {
     }
 }
 
-GrSemaphoresSubmitted GrDrawingManager::flushSurfaces(SkSpan<GrSurfaceProxy*> proxies,
+GrSemaphoresSubmitted GrDrawingManager::flushSurfaces1(SkSpan<GrSurfaceProxy*> proxies,
                                                       SkSurfaces::BackendSurfaceAccess access,
                                                       const GrFlushInfo& info,
                                                       const skgpu::MutableTextureState* newState) {
@@ -541,9 +541,11 @@ GrSemaphoresSubmitted GrDrawingManager::flushSurfaces(SkSpan<GrSurfaceProxy*> pr
     // TODO: It is important to upgrade the drawingmanager to just flushing the
     // portion of the DAG required by 'proxies' in order to restore some of the
     // semantics of this method.
-    bool didFlush = this->flush(proxies, access, info, newState);
-    for (GrSurfaceProxy* proxy : proxies) {
-        resolve_and_mipmap(gpu, proxy);
+    bool didFlush = this->flush7(proxies, access, info, newState);
+    if (didFlush) {
+        for (GrSurfaceProxy* proxy : proxies) {
+            resolve_and_mipmap(gpu, proxy);
+        }
     }
 
     SkDEBUGCODE(this->validate());
@@ -995,7 +997,7 @@ bool GrDrawingManager::newWritePixelsTask(sk_sp<GrSurfaceProxy> dst,
     // On platforms that prefer flushes over VRAM use (i.e., ANGLE) we're better off forcing a
     // complete flush here.
     if (!caps.preferVRAMUseOverFlushes()) {
-        this->flushSurfaces(SkSpan<GrSurfaceProxy*>{},
+        this->flushSurfaces1(SkSpan<GrSurfaceProxy*>{},
                             SkSurfaces::BackendSurfaceAccess::kNoAccess,
                             GrFlushInfo{},
                             nullptr);

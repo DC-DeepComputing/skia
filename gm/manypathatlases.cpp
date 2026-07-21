@@ -62,7 +62,7 @@ private:
         // atlas task to an empty DAG.
         auto dContext = GrAsDirectContext(canvas->recordingContext());
         if (dContext) {
-            dContext->flush();
+            dContext->flush1();
         }
 #endif
 

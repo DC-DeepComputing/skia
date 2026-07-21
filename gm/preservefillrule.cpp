@@ -67,7 +67,7 @@ private:
 
 #if defined(SK_GANESH)
         if (auto dContext = GrAsDirectContext(canvas->recordingContext())) {
-            dContext->flush();
+            dContext->flush1();
         }
 #endif
     }
