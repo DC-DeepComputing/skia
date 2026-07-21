@@ -41,7 +41,6 @@ if (skia_use_icu || skia_use_client_icu || skia_use_libgrapheme ||
   }
 
   skia_component("skunicode_core") {
-    check_includes = false
     deps = [ "../..:skia" ]
     configs = [
       ":module",
@@ -53,7 +52,6 @@ if (skia_use_icu || skia_use_client_icu || skia_use_libgrapheme ||
 
   if (skia_use_icu) {
     skia_component("skunicode_icu") {
-      check_includes = false
       deps = [
         ":skunicode_core",
         "../..:skia",
@@ -89,7 +87,6 @@ if (skia_use_icu || skia_use_client_icu || skia_use_libgrapheme ||
 
   if (skia_use_client_icu) {
     skia_component("skunicode_client_icu") {
-      check_includes = false
       deps = [
         ":skunicode_core",
         "../..:skia",
@@ -122,7 +119,6 @@ if (skia_use_icu || skia_use_client_icu || skia_use_libgrapheme ||
 
   if (skia_use_bidi) {
     skia_component("skunicode_bidi") {
-      check_includes = false
       deps = [
         ":skunicode_core",
         "../..:skia",
@@ -155,7 +151,6 @@ if (skia_use_icu || skia_use_client_icu || skia_use_libgrapheme ||
 
   if (skia_use_libgrapheme) {
     skia_component("skunicode_libgrapheme") {
-      check_includes = false
       deps = [
         ":skunicode_core",
         "../..:skia",
@@ -186,7 +181,6 @@ if (skia_use_icu || skia_use_client_icu || skia_use_libgrapheme ||
 
   if (skia_use_icu4x) {
     skia_component("skunicode_icu4x") {
-      check_includes = false
       deps = [
         ":skunicode_core",
         "../..:skia",
