@@ -61,7 +61,7 @@ float4 blend_hslc_h4h2h4h4(float2 _62, float4 _63, float4 _64)
         float _117 = _114 - _108;
         float _RESERVED_IDENTIFIER_FIXUP_4_diff = _117;
         float3 _120 = 0.0f.xxx;
-        if (_117 >= 0.000244140625f)
+        if (_117 >= 0.00048828125f)
         {
             float3 _126 = _97;
             float3 _129 = (_88 - _108.xxx) * blend_color_saturation_Qhh3(_126);

@@ -5,7 +5,7 @@
 #endif
 using namespace metal;
 constant const half sk_PrivkGuardedDivideEpsilon = half(false ? 1e-08 : 0.0);
-constant const half sk_PrivkHalfEpsilon = 0.000244140625h;
+constant const half sk_PrivkHalfEpsilon = 0.00048828125h;
 constant const half sk_PrivkMinNormalHalf = 6.10351562e-05h;
 struct Uniforms {
     half4 src;

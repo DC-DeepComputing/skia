@@ -174,7 +174,7 @@ const half $kMinNormalHalf = 1.0 / (1 << 14);
 // Constant used when comparing floats for inequality for mobile GPUs. The difference of two floats
 // which should be zero can sometimes lead to values slightly above that leading to conditions
 // triggering when they shouldn't.
-const half $kHalfEpsilon = 1.0 / (1 << 12);
+const half $kHalfEpsilon = 1.0 / (1 << 11);
 
 const half $kGuardedDivideEpsilon = sk_Caps.mustGuardDivisionEvenAfterExplicitZeroCheck
                                         ? 0.00000001
