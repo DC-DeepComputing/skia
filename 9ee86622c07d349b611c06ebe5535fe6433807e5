@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0af9abc9_55598d23",
+        "filename": "tests/SerializationTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 706,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-07-21T17:34:38Z",
+      "side": 1,
+      "message": "nit: any reason to force a copy? we could just return `data` as is.",
+      "range": {
+        "startLine": 706,
+        "startChar": 19,
+        "endLine": 706,
+        "endChar": 68
+      },
+      "revId": "9ee86622c07d349b611c06ebe5535fe6433807e5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
