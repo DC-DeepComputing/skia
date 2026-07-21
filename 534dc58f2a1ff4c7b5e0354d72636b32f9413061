@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "edc97ebd_9b9c3464",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-07-21T15:17:57Z",
+      "side": 1,
+      "message": "Floater\u0027s method provides ...",
+      "revId": "534dc58f2a1ff4c7b5e0354d72636b32f9413061",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "94f3dfca_33c9235b",
@@ -14,6 +31,177 @@
       "writtenOn": "2026-07-21T14:20:50Z",
       "side": 1,
       "message": "PTAL",
+      "revId": "534dc58f2a1ff4c7b5e0354d72636b32f9413061",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df12b9ae_3939ecc6",
+        "filename": "bench/graphite/sparse_strips/FlattenBench.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-07-21T15:17:57Z",
+      "side": 1,
+      "message": "It seems like this should be line broken like the above example.",
+      "range": {
+        "startLine": 207,
+        "startChar": 0,
+        "endLine": 208,
+        "endChar": 100
+      },
+      "revId": "534dc58f2a1ff4c7b5e0354d72636b32f9413061",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2862e10_8e591b86",
+        "filename": "bench/graphite/sparse_strips/FlattenBench.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-07-21T15:17:57Z",
+      "side": 1,
+      "message": "Same here",
+      "revId": "534dc58f2a1ff4c7b5e0354d72636b32f9413061",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7cdb4555_09d2574d",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-07-21T15:17:57Z",
+      "side": 1,
+      "message": "// This is from ... ?",
+      "revId": "534dc58f2a1ff4c7b5e0354d72636b32f9413061",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16d59973_1408182a",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 612,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-07-21T15:17:57Z",
+      "side": 1,
+      "message": "overlength",
+      "revId": "534dc58f2a1ff4c7b5e0354d72636b32f9413061",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50b58212_a75fc4fa",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 839,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-07-21T15:17:57Z",
+      "side": 1,
+      "message": "overlength",
+      "revId": "534dc58f2a1ff4c7b5e0354d72636b32f9413061",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3c30ed3_93f85f76",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-07-21T15:17:57Z",
+      "side": 1,
+      "message": "Can we remove kMaxQuadsFromCubic ?",
+      "range": {
+        "startLine": 89,
+        "startChar": 30,
+        "endLine": 89,
+        "endChar": 48
+      },
+      "revId": "534dc58f2a1ff4c7b5e0354d72636b32f9413061",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c4ffbbd_286a9365",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-07-21T15:17:57Z",
+      "side": 1,
+      "message": "Shouldn\u0027t we also have a static_assert for kQuadErrTolerance?",
+      "revId": "534dc58f2a1ff4c7b5e0354d72636b32f9413061",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05aa0d61_2db4e29a",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-07-21T15:17:57Z",
+      "side": 1,
+      "message": "Comment here akin to the one on line 91 ?",
+      "revId": "534dc58f2a1ff4c7b5e0354d72636b32f9413061",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5544a2bd_eab6351f",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-07-21T15:17:57Z",
+      "side": 1,
+      "message": "kMaxQuadsInCtx ?",
+      "range": {
+        "startLine": 160,
+        "startChar": 11,
+        "endLine": 160,
+        "endChar": 29
+      },
       "revId": "534dc58f2a1ff4c7b5e0354d72636b32f9413061",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
