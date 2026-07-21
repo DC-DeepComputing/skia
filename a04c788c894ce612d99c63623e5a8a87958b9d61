@@ -200,6 +200,30 @@
       },
       "revId": "a04c788c894ce612d99c63623e5a8a87958b9d61",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b8d22be_79d69c77",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-21T17:28:19Z",
+      "side": 1,
+      "message": "Good point, in this new system a draw can be allowed in the layer AND allowed before the layer, but as the code is written we\u0027ll adjust the limit even if it\u0027s not allowed before the layer (which then exits the loop immediately anyways).\n\nI moved the limit adjustment and comment to be in the iteration step since it is most relevant to the the allowed-before-layer behavior.",
+      "parentUuid": "4adfc8ae_04ea05f0",
+      "range": {
+        "startLine": 101,
+        "startChar": 12,
+        "endLine": 104,
+        "endChar": 13
+      },
+      "revId": "a04c788c894ce612d99c63623e5a8a87958b9d61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
