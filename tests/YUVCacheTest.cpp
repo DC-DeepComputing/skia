@@ -7,6 +7,7 @@
 
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPixmap.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkYUVAInfo.h"
 #include "include/core/SkYUVAPixmaps.h"
 #include "src/core/SkCachedData.h"
@@ -44,7 +45,7 @@ DEF_TEST(YUVPlanesCache, reporter) {
                         kRec601_Limited_SkYUVColorSpace);
     SkYUVAPixmapInfo yuvaPixmapInfo(yuvaInfo,
                                     SkYUVAPixmapInfo::DataType::kUnorm8,
-                                    /*rowBytes[]*/ nullptr);
+                                    /*rowBytes[]*/ {});
     SkYUVAPixmaps yuvaPixmaps;
     const uint32_t genID = 12345678;
 

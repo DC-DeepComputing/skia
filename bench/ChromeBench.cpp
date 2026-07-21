@@ -4,6 +4,7 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include <array>
 #include "bench/Benchmark.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPaint.h"
@@ -14,7 +15,7 @@
 */
 
 /// blitRect() calls emitted by Chrome while scrolling through gmail: count, width, height.
-int gmailScrollingRectSpec [431*3] = {
+std::array<int, 431*3> gmailScrollingRectSpec ={
       1, 1254, 1160,
       1, 64, 112,
       1, 1034, 261,

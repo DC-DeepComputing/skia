@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkBBHFactory.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -868,10 +869,10 @@ DEF_TEST(Picture_emptyNestedPictureBug, r) {
 
 DEF_TEST(Picture_fillsBBH, r) {
     // Test empty (0 draws), mini (1 draw), and big (2+) pictures, making sure they fill the BBH.
-    const SkRect rects[] = {
+    const auto rects = std::to_array<SkRect>({
         { 0, 0, 20,20},
         {20,20, 40,40},
-    };
+    });
 
     for (int n = 0; n <= 2; n++) {
         SkRTreeFactory factory;

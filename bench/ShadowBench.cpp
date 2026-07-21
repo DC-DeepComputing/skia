@@ -4,6 +4,7 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include <array>
 #include "bench/Benchmark.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPaint.h"
@@ -36,10 +37,10 @@ protected:
     };
 
     void computeName(const char root[]) {
-        static const char kTransChars[2] = {
+        static const std::array<char, 2> kTransChars ={
             'o', 't'
         };
-        static const char kGeomChars[2] = {
+        static const std::array<char, 2> kGeomChars ={
             'a', 'g'
         };
 
@@ -91,7 +92,7 @@ protected:
 private:
     SkString fBaseName;
 
-    SkPath  fRRects[kNumRRects];
+    std::array<SkPath, kNumRRects> fRRects;
     SkDrawShadowRec fRec;
     int    fTransparent;
     int    fForceGeometric;

@@ -6,6 +6,8 @@
  */
 
 #ifndef GrGLSLShaderBuilder_DEFINED
+#include <array>
+
 #define GrGLSLShaderBuilder_DEFINED
 
 #include "include/core/SkSpan.h"
@@ -276,7 +278,7 @@ protected:
     VarArray fInputs;
     VarArray fOutputs;
     uint32_t fFeaturesAddedMask;
-    skia_private::STArray<1, SkString> fLayoutParams[kLastInterfaceQualifier + 1];
+    std::array<skia_private::STArray<1, SkString>, kLastInterfaceQualifier + 1> fLayoutParams;
     int fCodeIndex;
     bool fFinalized;
 

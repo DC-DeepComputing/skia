@@ -25,7 +25,7 @@ manually compute the intersection of a pair of circles and see if the conic inte
 
  */
 
-static const ConicPts testSet[] = {
+static const auto testSet = std::to_array<ConicPts>({
     {{{{306.588013,-227.983994}, {212.464996,-262.242004}, {95.5512009,58.9763985}}}, 0.707107008f},
     {{{{377.218994,-141.981003}, {40.578701,-201.339996}, {23.1854992,-102.697998}}}, 0.707107008f},
 
@@ -49,7 +49,7 @@ static const ConicPts testSet[] = {
     {{{{0, 0}, {0, 1}, {1, 1}}}, 0.5f},
     {{{{1, 0}, {0, 0}, {0, 1}}}, 0.5f},
 
-};
+});
 
 const int testSetCount = (int) std::size(testSet);
 

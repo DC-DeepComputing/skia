@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkCanvas.h"
 #include "include/core/SkFont.h"
 #include "include/core/SkPaint.h"
@@ -110,9 +111,9 @@ public:
         canvas->drawColor(SK_ColorWHITE);
         canvas->translate(SkIntToScalar(20), SkIntToScalar(20));
 
-        static const CanvasProc gProc[] = {
+        static const auto gProc = std::to_array<CanvasProc>({
             show_text, show_thick, show_hair, show_fill
-        };
+        ,});
 
         SkRect r = { 0, 0, SkIntToScalar(W), SkIntToScalar(H) };
         r.inset(SK_Scalar1 / 4, SK_Scalar1 / 4);

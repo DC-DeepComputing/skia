@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -99,7 +100,7 @@ protected:
         SkPoint3 pointLocation = SkPoint3::Make(32, 32, SkIntToScalar(10));
 
         SkRect r = SkRect::MakeWH(SkIntToScalar(64), SkIntToScalar(64));
-        sk_sp<SkImageFilter> filters[] = {
+        auto filters = std::to_array<sk_sp<SkImageFilter>>({
             SkImageFilters::Blur(SkIntToScalar(12), SkIntToScalar(12), nullptr),
             SkImageFilters::DropShadow(SkIntToScalar(10), SkIntToScalar(10),
                                        SkIntToScalar(3), SkIntToScalar(3), SK_ColorGREEN, nullptr),
@@ -112,7 +113,7 @@ protected:
             // Crop output of lighting to the checkerboard
             SkImageFilters::PointLitDiffuse(pointLocation, SK_ColorWHITE, SK_Scalar1,
                                             SkIntToScalar(2), checkerboard, r),
-        };
+        });
 
         SkScalar margin = SkIntToScalar(16);
         SkRect bounds = r;

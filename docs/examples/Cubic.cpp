@@ -1,3 +1,5 @@
+#include <array>
+
 // Copyright 2019 Google LLC
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 #include "tools/fiddle/examples.h"
@@ -6,8 +8,8 @@ void draw(SkCanvas* canvas) {
     SkPaint paint;
     paint.setAntiAlias(true);
     paint.setStyle(SkPaint::kStroke_Style);
-    SkPoint cubicPts[] = {{20, 150}, {90, 10}, {160, 150}, {230, 10}};
-    SkColor colors[] = { 0xff88ff00, 0xff0088bb, 0xff6600cc, 0xffbb3377 };
+    auto cubicPts = std::to_array<SkPoint>({{20, 150}, {90, 10}, {160, 150}, {230, 10},});
+    auto colors = std::to_array<SkColor>({ 0xff88ff00, 0xff0088bb, 0xff6600cc, 0xffbb3377 ,});
     for (unsigned i = 0; i < std::size(colors); ++i) {
         paint.setColor(0x7fffffff & colors[i]);
         paint.setStrokeWidth(1);

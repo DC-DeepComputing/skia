@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "bench/Benchmark.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -26,7 +27,7 @@ public:
         N = 300,
     };
     SkRect  fRects[N];
-    SkColor fColors[N];
+    std::array<SkColor, N> fColors;
     bool    fAA;
     bool    fPerspective;
 
@@ -225,9 +226,9 @@ public:
 
 protected:
     void onDraw(int loops, SkCanvas* canvas) override {
-        SkScalar gSizes[] = {
+        auto gSizes = std::to_array<SkScalar>({
             SkIntToScalar(7), 0
-        };
+        });
         size_t sizes = std::size(gSizes);
 
         if (FLAGS_strokeWidth >= 0) {
@@ -329,9 +330,9 @@ public:
 
 protected:
     void onDraw(int loops, SkCanvas* canvas) override {
-        SkScalar gSizes[] = {
+        auto gSizes = std::to_array<SkScalar>({
             SkIntToScalar(13), SkIntToScalar(24)
-        };
+        });
         size_t sizes = std::size(gSizes);
 
         if (FLAGS_strokeWidth >= 0) {

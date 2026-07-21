@@ -6,6 +6,8 @@
  */
 
 #ifndef SkGaussFilter_DEFINED
+#include <array>
+
 #define SkGaussFilter_DEFINED
 
 #include <cstddef>
@@ -27,7 +29,7 @@ public:
     const double* end()   const { return &fBasis[fN]; }
 
 private:
-    double fBasis[kGaussArrayMax];
+    std::array<double, kGaussArrayMax> fBasis;
     int    fN;
 };
 

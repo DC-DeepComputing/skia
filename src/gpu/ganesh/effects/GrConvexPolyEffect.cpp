@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "src/gpu/ganesh/effects/GrConvexPolyEffect.h"
 
 #include "include/core/SkPath.h"
@@ -55,7 +56,7 @@ GrFPResult GrConvexPolyEffect::Make(std::unique_ptr<GrFragmentProcessor> inputFP
                 GrFragmentProcessor::ModulateRGBA(std::move(inputFP), SK_PMColor4fTRANSPARENT));
     }
 
-    SkScalar        edges[3 * kMaxEdges];
+    std::array<SkScalar, 3 * kMaxEdges> edges;
     SkPath::Iter    iter(path, true);
 
     // SkPath considers itself convex so long as there is a convex contour within it,
@@ -97,7 +98,7 @@ GrFPResult GrConvexPolyEffect::Make(std::unique_ptr<GrFragmentProcessor> inputFP
     if (path.isInverseFillType()) {
         type = GrInvertClipEdgeType(type);
     }
-    return GrConvexPolyEffect::Make(std::move(inputFP), type, n, edges);
+    return GrConvexPolyEffect::Make(std::move(inputFP), type, n, edges.data());
 }
 
 GrConvexPolyEffect::~GrConvexPolyEffect() {}
@@ -208,7 +209,7 @@ GR_DEFINE_FRAGMENT_PROCESSOR_TEST(GrConvexPolyEffect)
 #if defined(GPU_TEST_UTILS)
 std::unique_ptr<GrFragmentProcessor> GrConvexPolyEffect::TestCreate(GrProcessorTestData* d) {
     int count = d->fRandom->nextULessThan(kMaxEdges) + 1;
-    SkScalar edges[kMaxEdges * 3];
+    std::array<SkScalar, kMaxEdges * 3> edges;
     for (int i = 0; i < 3 * count; ++i) {
         edges[i] = d->fRandom->nextSScalar1();
     }
@@ -218,7 +219,7 @@ std::unique_ptr<GrFragmentProcessor> GrConvexPolyEffect::TestCreate(GrProcessorT
     do {
         GrClipEdgeType edgeType =
                 static_cast<GrClipEdgeType>(d->fRandom->nextULessThan(kGrClipEdgeTypeCnt));
-        std::tie(success, fp) = GrConvexPolyEffect::Make(std::move(fp), edgeType, count, edges);
+        std::tie(success, fp) = GrConvexPolyEffect::Make(std::move(fp), edgeType, count, edges.data());
     } while (!success);
     return fp;
 }

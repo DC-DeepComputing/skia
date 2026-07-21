@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "tools/viewer/Viewer.h"
 
 #include "bench/GpuTools.h"
@@ -494,15 +495,15 @@ static SkColorSpacePrimaries gRec2020Primaries = {
     0.131f, 0.046f,
     0.3127f, 0.3290f };
 
-struct NamedPrimaries {
+struct NamedPrimaries{
     const char* fName;
     SkColorSpacePrimaries* fPrimaries;
-} gNamedPrimaries[] = {
+}; auto gNamedPrimaries = std::to_array<NamedPrimaries>({
     { "sRGB", &gSrgbPrimaries },
     { "AdobeRGB", &gAdobePrimaries },
     { "P3", &gP3Primaries },
     { "Rec. 2020", &gRec2020Primaries },
-};
+});
 
 static bool primaries_equal(const SkColorSpacePrimaries& a, const SkColorSpacePrimaries& b) {
     return memcmp(&a, &b, sizeof(SkColorSpacePrimaries)) == 0;
@@ -529,7 +530,7 @@ static const char kRefreshStateName[] = "Refresh";
 static const char kPathRendererStateName[] = "Path renderer";
 #endif
 
-static const Window::BackendType kSupportedBackends[] = {
+static const auto kSupportedBackends = std::to_array<Window::BackendType>({
 #if defined(SK_GL) && defined(SK_GANESH)
         sk_app::Window::BackendType::kNativeGL,
     #if defined(SK_ANGLE) && (defined(SK_BUILD_FOR_WIN) || defined(SK_BUILD_FOR_MAC))
@@ -578,7 +579,7 @@ static const Window::BackendType kSupportedBackends[] = {
 #endif
 
         sk_app::Window::BackendType::kRaster,
-};
+});
 
 constexpr size_t kSupportedBackendTypeCount = std::size(kSupportedBackends);
 

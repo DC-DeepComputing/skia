@@ -7,6 +7,7 @@
 
 // This test only works with the GPU backend.
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -20,6 +21,7 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkShader.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkTileMode.h"
@@ -82,7 +84,7 @@ protected:
                                      SkYUVAInfo::Subsampling::k420,
                                      kJPEG_Full_SkYUVColorSpace},
                                     SkYUVAPixmapInfo::DataType::kUnorm8,
-                                    nullptr);
+                                    {});
         auto pixmaps = SkYUVAPixmaps::Allocate(pixmapInfo);
 
         unsigned char* yuvPixels[] = {
@@ -112,7 +114,7 @@ protected:
         for (int j = 0; j < pixmaps.planes()[1].height(); ++j) {
             for (int i = 0; i < pixmaps.planes()[1].width(); ++i) {
                 // Average together 4 pixels of RGB.
-                int rgba[] = {0, 0, 0, 0};
+                auto rgba = std::to_array<int>({0, 0, 0, 0});
                 int denom = 0;
                 int ylimit = std::min(2*j + 2, pixmaps.planes()[0].height());
                 int xlimit = std::min(2*i + 2, pixmaps.planes()[0].width());
@@ -364,7 +366,7 @@ private:
 
     // 3 draws x 3 scales x 4 filter qualities
     inline static constexpr int kNumImages = 3 * 3 * 4;
-    sk_sp<SkImage> fYUVAImages[kNumImages];
+    std::array<sk_sp<SkImage>, kNumImages> fYUVAImages;
     sk_sp<SkImage> fReferenceImage;
 
     inline static constexpr SkScalar kPad = 10.0f;

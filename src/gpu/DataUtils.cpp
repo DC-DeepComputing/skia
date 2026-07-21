@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "src/gpu/DataUtils.h"
 
 #include "include/core/SkTextureCompressionType.h"
@@ -43,7 +44,7 @@ static const int kNumETC1PixelIndices = 4;
 
 // The index of each row in this table is the ETC1 table codeword
 // The index of each column in this table is the ETC1 pixel index value
-static const int kETC1ModifierTables[kNumETC1ModifierTables][kNumETC1PixelIndices] = {
+static const std::array<std::array<const int, kNumETC1PixelIndices>, kNumETC1ModifierTables> kETC1ModifierTables = {{
     /* 0 */ { 2,    8,  -2,   -8 },
     /* 1 */ { 5,   17,  -5,  -17 },
     /* 2 */ { 9,   29,  -9,  -29 },
@@ -52,7 +53,7 @@ static const int kETC1ModifierTables[kNumETC1ModifierTables][kNumETC1PixelIndice
     /* 5 */ { 24,  80, -24,  -80 },
     /* 6 */ { 33, 106, -33, -106 },
     /* 7 */ { 47, 183, -47, -183 }
-};
+,}};
 
 // Evaluate one of the entries in 'kModifierTables' to see how close it can get (r8,g8,b8) to
 // the original color (rOrig, gOrib, bOrig).

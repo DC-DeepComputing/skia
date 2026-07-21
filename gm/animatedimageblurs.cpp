@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkFont.h"
@@ -140,7 +141,7 @@ private:
         SkScalar fSpeed;
     };
 
-    Node     fNodes[kNumNodes];
+    std::array<Node, kNumNodes> fNodes;
     SkRandom fRand;
     SkScalar fLastTime;
 

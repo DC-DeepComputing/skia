@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkBlendMode.h"
@@ -28,6 +29,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
@@ -384,7 +386,7 @@ static SkBitmap make_bitmap(SkColorType colorType, const SkPath& path,
     return bm;
 }
 
-static void convert_rgba_to_yuva(const float mtx[20], SkColor col, uint8_t yuv[4]) {
+static void convert_rgba_to_yuva(SkSpan<const float> mtx, SkColor col, uint8_t yuv[4]) {
     const uint8_t r = SkColorGetR(col);
     const uint8_t g = SkColorGetG(col);
     const uint8_t b = SkColorGetB(col);
@@ -699,12 +701,12 @@ static int create_YUV(const PlaneData& planes,
 }
 
 static void draw_col_label(SkCanvas* canvas, int x, int yuvColorSpace, bool opaque) {
-    static const char* kYUVColorSpaceNames[] = {
+    static auto kYUVColorSpaceNames = std::to_array<const char *>({
             "JPEG",      "601",       "709F",      "709L",      "2020_8F",   "2020_8L",
             "2020_10F",  "2020_10L",  "2020_12F",  "2020_12L",  "2020_16F",  "2020_16L",
             "FCCF",      "FCCL",      "SMPTE240F", "SMPTE240L", "YDZDXF",    "YDZDXL",
             "GBRF",      "GBRL",      "YCGCO_8F",  "YCGCO_8L",  "YCGCO_10F", "YCGCO_10L",
-            "YCGCO_12F", "YCGCO_12L", "YCGCO_16F", "YCGCO_16L", "Identity"};
+            "YCGCO_12F", "YCGCO_12L", "YCGCO_16F", "YCGCO_16L", "Identity",});
     static_assert(std::size(kYUVColorSpaceNames) == kLastEnum_SkYUVColorSpace + 1);
 
     SkPaint paint;
@@ -729,9 +731,9 @@ static void draw_col_label(SkCanvas* canvas, int x, int yuvColorSpace, bool opaq
 }
 
 static void draw_row_label(SkCanvas* canvas, int y, int yuvFormat) {
-    static const char* kYUVFormatNames[] = {
+    static auto kYUVFormatNames = std::to_array<const char *>({
         "P016", "P010", "P016F", "Y416", "AYUV", "Y410", "NV12", "NV21", "I420", "YV12"
-    };
+    ,});
     static_assert(std::size(kYUVFormatNames) == kLast_YUVFormat + 1);
 
     SkPaint paint;
@@ -1017,8 +1019,8 @@ protected:
     }
 
 private:
-    SkBitmap                   fOriginalBMs[2];
-    sk_sp<SkImage>             fImages[2][kLastEnum_SkYUVColorSpace + 1][kLast_YUVFormat + 1];
+    std::array<SkBitmap, 2> fOriginalBMs;
+    std::array<std::array<std::array<sk_sp<SkImage>, kLast_YUVFormat + 1>, kLastEnum_SkYUVColorSpace + 1>, 2> fImages;
     bool                       fUseLimitedRange;
     bool                       fUseTargetColorSpace;
     bool                       fUseSubset;
@@ -1277,8 +1279,8 @@ protected:
     }
 
 private:
-    SkBitmap fOriginalBMs[2];
-    sk_sp<SkImage> fImages[2][2];
+    std::array<SkBitmap, 2> fOriginalBMs;
+    std::array<std::array<sk_sp<SkImage>, 2>, 2> fImages;
     sk_sp<SkColorSpace> fTargetColorSpace;
 
     using INHERITED = GM;

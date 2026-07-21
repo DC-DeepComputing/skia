@@ -6,6 +6,8 @@
  */
 
 #ifndef GrGLShaderStringBuilder_DEFINED
+#include "include/core/SkSpan.h"
+
 #define GrGLShaderStringBuilder_DEFINED
 
 #include "include/core/SkTypes.h"
@@ -68,7 +70,7 @@ bool GrGLCheckLinkStatus(const GrGLGpu* gpu,
                          GrGLuint programID,
                          bool shaderWasCached,
                          GrContextOptions::ShaderErrorHandler* errorHandler,
-                         const std::string* sksl[kGrShaderTypeCount],
-                         const SkSL::NativeShader glsl[kGrShaderTypeCount]);
+                         SkSpan<const std::string *> sksl,
+                         SkSpan<const SkSL::NativeShader> glsl);
 
 #endif

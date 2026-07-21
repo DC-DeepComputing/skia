@@ -127,7 +127,7 @@ public:
 
 private:
     enum { kMaxFrameLag = 3 };
-    sk_sp<sk_gpu_test::FlushFinishTracker> fFinishTrackers[kMaxFrameLag - 1];
+    std::array<sk_sp<sk_gpu_test::FlushFinishTracker>, kMaxFrameLag - 1> fFinishTrackers;
     int fCurrentFlushIdx = 0;
 };
 

@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "bench/Benchmark.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkFont.h"
@@ -104,9 +105,9 @@ private:
     const bool fClipped;
     const bool fUncached;
     SkString fName;
-    SkPath fGlyphs[kNumGlyphs];
-    SkPaint fPaints[kNumDraws];
-    SkMatrix fXforms[kNumDraws];
+    std::array<SkPath, kNumGlyphs> fGlyphs;
+    std::array<SkPaint, kNumDraws> fPaints;
+    std::array<SkMatrix, kNumDraws> fXforms;
     SkPath fClipPath;
 
     using INHERITED = Benchmark;

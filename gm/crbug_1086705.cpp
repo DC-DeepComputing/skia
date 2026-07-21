@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPaint.h"
@@ -20,7 +21,7 @@ DEF_SIMPLE_GM(crbug_1086705, canvas, 200, 200) {
     paint.setStrokeWidth(5.f);
     paint.setAntiAlias(true);
 
-    SkPoint circleVertices[700];
+    std::array<SkPoint, 700> circleVertices;
     for (int i = 0; i < 700; ++i) {
         SkScalar angleRads = 2 * SK_ScalarPI * i / 700.f;
         circleVertices[i] = {100.f + 2.f * SkScalarCos(angleRads),

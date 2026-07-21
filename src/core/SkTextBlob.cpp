@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkTextBlob.h"
 
 #include "include/core/SkData.h"
@@ -196,12 +197,12 @@ enum SkTextBlob::GlyphPositioning : uint8_t {
 };
 
 unsigned SkTextBlob::ScalarsPerGlyph(GlyphPositioning pos) {
-    const uint8_t gScalarsPerPositioning[] = {
+    const auto gScalarsPerPositioning = std::to_array<uint8_t>({
         0,  // kDefault_Positioning
         1,  // kHorizontal_Positioning
         2,  // kFull_Positioning
         4,  // kRSXform_Positioning
-    };
+    });
     SkASSERT((unsigned)pos <= 3);
     return gScalarsPerPositioning[pos];
 }

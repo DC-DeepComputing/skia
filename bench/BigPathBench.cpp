@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "bench/Benchmark.h"
 #include "bench/BigPath.h"
 #include "include/core/SkCanvas.h"
@@ -17,7 +18,7 @@ enum Align {
     kRight_Align
 };
 
-const char* gAlignName[] = { "left", "middle", "right" };
+auto gAlignName = std::to_array<const char *>({ "left", "middle", "right" });
 
 // Inspired by crbug.com/455429
 class BigPathBench : public Benchmark {

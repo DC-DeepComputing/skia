@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "bench/Benchmark.h"
 #include "src/core/SkRandom.h"
 #include "src/gpu/ganesh/geometry/GrQuad.h"
@@ -62,7 +63,7 @@ protected:
 
     SkString     fName;
     bool         fPerspective;
-    GrQuad       fQuads[kQuadCount];
+    std::array<GrQuad, kQuadCount> fQuads;
     SkScalar     fArea;
 
     using INHERITED = Benchmark;

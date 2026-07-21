@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -42,7 +43,7 @@ protected:
 
     // Create an image with high frequency vertical stripes
     void onOnceBeforeDraw() override {
-        constexpr SkPMColor gColors[] = {
+        constexpr auto gColors = std::to_array<SkPMColor>({
             SK_ColorRED,     SK_ColorGRAY,
             SK_ColorGREEN,   SK_ColorGRAY,
             SK_ColorBLUE,    SK_ColorGRAY,
@@ -50,7 +51,7 @@ protected:
             SK_ColorMAGENTA, SK_ColorGRAY,
             SK_ColorYELLOW,  SK_ColorGRAY,
             SK_ColorWHITE,   SK_ColorGRAY,
-        };
+        });
 
         auto surface(SkSurfaces::Raster(SkImageInfo::MakeN32Premul(kImageSize, kImageSize)));
         SkCanvas* canvas = surface->getCanvas();

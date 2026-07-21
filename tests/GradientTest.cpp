@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -233,7 +234,7 @@ static void TestGradientShaders(skiatest::Reporter* reporter) {
     rec.fRadius = gRad;
     rec.fTileMode = SkTileMode::kClamp;
 
-    static const GradProc gProcs[] = {
+    static const auto gProcs = std::to_array<GradProc>({
         none_gradproc,
         color_gradproc,
         linear_gradproc,
@@ -241,7 +242,7 @@ static void TestGradientShaders(skiatest::Reporter* reporter) {
         radial_gradproc,
         sweep_gradproc,
         conical_gradproc,
-    };
+    });
 
     for (size_t i = 0; i < std::size(gProcs); ++i) {
         gProcs[i](reporter, rec, rec);

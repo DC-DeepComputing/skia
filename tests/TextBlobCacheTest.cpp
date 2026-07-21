@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkBlendMode.h"
@@ -256,7 +257,7 @@ static sk_sp<SkTextBlob> make_blob() {
 
     static char text[] = "HekpqB";
     static const int maxGlyphLen = sizeof(text) * 4;
-    SkGlyphID glyphs[maxGlyphLen];
+    std::array<SkGlyphID, maxGlyphLen> glyphs;
     int glyphCount =
             font.textToGlyphs(text, sizeof(text), SkTextEncoding::kUTF8, glyphs);
 

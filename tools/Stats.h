@@ -6,6 +6,8 @@
  */
 
 #ifndef Stats_DEFINED
+#include <array>
+
 #define Stats_DEFINED
 
 #include <algorithm>
@@ -17,7 +19,7 @@
 #ifdef SK_BUILD_FOR_WIN
     static const char* kBars[] = { ".", "o", "O" };
 #else
-    static const char* kBars[] = { "▁", "▂", "▃", "▄", "▅", "▆", "▇", "█" };
+    static auto kBars = std::to_array<const char *>({ "▁", "▂", "▃", "▄", "▅", "▆", "▇", "█" ,});
 #endif
 
 struct Stats {

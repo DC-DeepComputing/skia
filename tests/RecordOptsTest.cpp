@@ -262,10 +262,10 @@ DEF_TEST(RecordOpts_MergeSvgOpacityAndFilterLayers, r) {
         SkImageFilter* filters[] = { nullptr, filter.get() };
 
         // Any combination of these should cause the pattern to be optimized.
-        SkRect* firstBounds[] = { nullptr, &bounds };
-        SkPaint* firstPaints[] = { nullptr, &alphaOnlyLayerPaint };
-        SkRect* secondBounds[] = { nullptr, &bounds };
-        SkPaint* secondPaints[] = { &opaqueFilterLayerPaint, &translucentFilterLayerPaint };
+        auto firstBounds = std::to_array<SkRect *>({ nullptr, &bounds });
+        auto firstPaints = std::to_array<SkPaint *>({ nullptr, &alphaOnlyLayerPaint });
+        auto secondBounds = std::to_array<SkRect *>({ nullptr, &bounds });
+        auto secondPaints = std::to_array<SkPaint *>({ &opaqueFilterLayerPaint, &translucentFilterLayerPaint });
 
         for (auto outerF : filters) {
             bool outerNoOped = !outerF;
@@ -298,10 +298,10 @@ DEF_TEST(RecordOpts_MergeSvgOpacityAndFilterLayers, r) {
     }
 
     // These should cause the pattern to stay unoptimized:
-    struct {
+    struct NoChangeTests{
         SkPaint* firstPaint;
         SkPaint* secondPaint;
-    } noChangeTests[] = {
+    }; auto noChangeTests = std::to_array<NoChangeTests>({
         // No change: nullptr filter layer paint not implemented.
         { &alphaOnlyLayerPaint, nullptr },
         // No change: layer paint is not alpha-only.
@@ -315,7 +315,7 @@ DEF_TEST(RecordOpts_MergeSvgOpacityAndFilterLayers, r) {
         // No change: filter layer paint has a color filter (until the optimization accounts for
         // constant color draws that can filter the color).
         { &alphaOnlyLayerPaint, &colorFilterPaint }
-    };
+    ,});
 
     for (size_t i = 0; i < std::size(noChangeTests); ++i) {
         recorder.saveLayer(nullptr, noChangeTests[i].firstPaint);

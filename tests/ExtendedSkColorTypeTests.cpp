@@ -79,7 +79,7 @@ struct TestCase {
     bool               fGpuCanMakeSurfaces;
 };
 
-static const TestCase gTests[] = {
+static const auto gTests = std::to_array<TestCase>({
     { kAlpha_8_SkColorType,            kPremul_SkAlphaType, kAlpha_SkColorChannelFlag, true },
     { kA16_unorm_SkColorType,          kPremul_SkAlphaType, kAlpha_SkColorChannelFlag, false},
     { kA16_float_SkColorType,          kPremul_SkAlphaType, kAlpha_SkColorChannelFlag, false},
@@ -101,7 +101,7 @@ static const TestCase gTests[] = {
     { kR16_float_SkColorType,          kOpaque_SkAlphaType, kRed_SkColorChannelFlag,   false},
     { kR16G16_float_SkColorType,       kOpaque_SkAlphaType, kRG_SkColorChannelFlags,   false},
     { kR16G16B16A16_unorm_SkColorType, kPremul_SkAlphaType, kRGBA_SkColorChannelFlags, false},
-};
+});
 
 static void raster_tests(skiatest::Reporter* reporter, const TestCase& test) {
 

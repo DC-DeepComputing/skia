@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -59,10 +60,10 @@ class ColorFiltersGM : public skiagm::GM {
         SkPaint paint;
         paint.setShader(make_shader(r));
 
-        const struct {
+        struct Rec{
             InstallPaint    fProc;
             uint32_t        fData0, fData1;
-        } rec[] = {
+        }; const auto rec = std::to_array<Rec>({
             { install_nothing, 0, 0 },
             { install_lighting, 0xFF0000, 0 },
             { install_lighting, 0x00FF00, 0 },
@@ -70,7 +71,7 @@ class ColorFiltersGM : public skiagm::GM {
             { install_lighting, 0x000000, 0xFF0000 },
             { install_lighting, 0x000000, 0x00FF00 },
             { install_lighting, 0x000000, 0x0000FF },
-        };
+        });
 
         canvas->translate(10, 10);
         for (size_t i = 0; i < std::size(rec); ++i) {

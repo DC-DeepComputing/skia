@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkCanvas.h"
@@ -219,7 +220,7 @@ private:
     static const SkVector gRadii[kNumComplexCases][4];
 
     inline static constexpr int kNumRRects = kNumSimpleCases + kNumComplexCases + 1 /* extra big */;
-    SkRRect fRRects[kNumRRects];
+    std::array<SkRRect, kNumRRects> fRRects;
 
     using INHERITED = GM;
 };

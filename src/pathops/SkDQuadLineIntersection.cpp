@@ -4,6 +4,7 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include <array>
 #include "include/core/SkPath.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkScalar.h"
@@ -162,7 +163,7 @@ public:
     */
         double adj = (*fLine)[1].fX - (*fLine)[0].fX;
         double opp = (*fLine)[1].fY - (*fLine)[0].fY;
-        double r[3];
+        std::array<double, 3> r;
         for (int n = 0; n < 3; ++n) {
             r[n] = (fQuad[n].fY - (*fLine)[0].fY) * adj - (fQuad[n].fX - (*fLine)[0].fX) * opp;
         }

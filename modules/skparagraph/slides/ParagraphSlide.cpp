@@ -1,3 +1,5 @@
+#include <array>
+
 // Copyright 2019 Google LLC
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColorFilter.h"
@@ -2236,8 +2238,8 @@ public:
         auto paragraph = builder.Build();
         paragraph->layout(1041); // 1041
 
-        SkColor colors[] = {SK_ColorBLUE, SK_ColorCYAN,  SK_ColorLTGRAY, SK_ColorGREEN,
-                            SK_ColorRED,  SK_ColorWHITE, SK_ColorYELLOW, SK_ColorMAGENTA };
+        auto colors = std::to_array<SkColor>({SK_ColorBLUE, SK_ColorCYAN,  SK_ColorLTGRAY, SK_ColorGREEN,
+                            SK_ColorRED,  SK_ColorWHITE, SK_ColorYELLOW, SK_ColorMAGENTA ,});
         SkPaint paint;
         size_t wordPos = 0;
         size_t index = 0;

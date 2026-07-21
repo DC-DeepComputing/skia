@@ -5,6 +5,7 @@
 * found in the LICENSE file.
 */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBlurTypes.h"
 #include "include/core/SkCanvas.h"
@@ -30,7 +31,7 @@ protected:
     SkISize getISize() override { return SkISize::Make(950, 950); }
 
     void onOnceBeforeDraw() override {
-        const float blurRadii[kNumBlurs] = {1.f, 5.f, 10.f, 20.f};
+        const std::array<float, kNumBlurs> blurRadii ={1.f, 5.f, 10.f, 20.f};
 
         for (int i = 0; i < kNumBlurs; ++i) {
             fBlurFilters[i] = SkMaskFilter::MakeBlur(
@@ -43,7 +44,7 @@ protected:
         canvas->scale(1.5f, 1.5f);
         canvas->translate(50,50);
 
-        const float circleRadii[] = {5.f, 10.f, 25.f, 50.f};
+        const auto circleRadii = std::to_array<float>({5.f, 10.f, 25.f, 50.f});
 
         for (size_t i = 0; i < kNumBlurs; ++i) {
             SkAutoCanvasRestore autoRestore(canvas, true);
@@ -66,7 +67,7 @@ protected:
 private:
     inline static constexpr int kNumBlurs = 4;
 
-    sk_sp<SkMaskFilter> fBlurFilters[kNumBlurs];
+    std::array<sk_sp<SkMaskFilter>, kNumBlurs> fBlurFilters;
 
     using INHERITED =         skiagm::GM;
 };

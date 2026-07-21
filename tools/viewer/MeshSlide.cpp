@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -332,17 +333,17 @@ private:
             ImGui::EndCombo();
         }
 
-        static constexpr struct {
+        struct GSizeInfo{
             const char* fLabel;
             size_t      fCount;
-        } gSizeInfo[] = {
+        }; static constexpr auto gSizeInfo = std::to_array<GSizeInfo>({
             {     "4x4",    16 },
             {     "8x8",    64 },
             {   "16x16",   256 },
             {   "32x32",  1024 },
             {   "64x64",  4096 },
             { "128x128", 16384 },
-        };
+        });
         ImGui::SliderInt("Mesh Size",
                          &fMeshSizeSelector,
                          0, std::size(gSizeInfo) - 1,

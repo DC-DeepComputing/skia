@@ -6,6 +6,8 @@
  */
 
 #ifndef PromiseImageHelper_DEFINED
+#include <array>
+
 #define PromiseImageHelper_DEFINED
 
 #include "include/core/SkBitmap.h"
@@ -210,7 +212,7 @@ private:
         SkYUVAPixmaps                      fYUVAPixmaps;
 
         // Up to SkYUVASizeInfo::kMaxCount for a YUVA image. Only one for a normal image.
-        sk_sp<PromiseImageCallbackContext> fCallbackContexts[SkYUVAInfo::kMaxPlanes];
+        std::array<sk_sp<PromiseImageCallbackContext>, SkYUVAInfo::kMaxPlanes> fCallbackContexts;
     };
 
     struct DeserialImageProcContext {

@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -37,9 +38,9 @@ class GiantBitmapGM : public skiagm::GM {
             fBM->allocN32Pixels(W, H);
             fBM->eraseColor(SK_ColorWHITE);
 
-            const SkColor colors[] = {
+            const auto colors = std::to_array<SkColor>({
                 SK_ColorBLUE, SK_ColorRED, SK_ColorBLACK, SK_ColorGREEN
-            };
+            ,});
 
             SkCanvas canvas(*fBM);
             SkPaint paint;

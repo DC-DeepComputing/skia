@@ -6,6 +6,8 @@
  */
 
 #ifndef GrGLProgramBuilder_DEFINED
+#include "include/core/SkSpan.h"
+
 #define GrGLProgramBuilder_DEFINED
 
 #include "include/core/SkData.h"
@@ -84,7 +86,7 @@ private:
                                  bool bindAttribLocations);
     void storeShaderInCache(const SkSL::Program::Interface&,
                             GrGLuint programID,
-                            const SkSL::NativeShader shaders[],
+                            SkSpan<const SkSL::NativeShader> shaders,
                             bool isSkSL,
                             SkSL::ProgramSettings* settings);
     sk_sp<GrGLProgram> finalize(const GrGLPrecompiledProgram*);

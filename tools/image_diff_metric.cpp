@@ -6,6 +6,7 @@
 // means that each pixel is maximally different in each channel.  A non-zero return value indicates
 // that something went wrong.
 
+#include <array>
 #include "include/codec/SkCodec.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkData.h"
@@ -21,7 +22,7 @@ int main(int argc, char** argv) {
         fprintf(stderr, usage, argv[0]);
         return 1;
     }
-    SkBitmap bm[2];
+    std::array<SkBitmap, 2> bm;
     for (int i = 0; i < 2; ++i) {
         const char* path = argv[i + 1];
         if (std::unique_ptr<SkCodec> codec =

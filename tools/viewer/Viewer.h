@@ -6,6 +6,8 @@
 */
 
 #ifndef Viewer_DEFINED
+#include <array>
+
 #define Viewer_DEFINED
 
 #include "include/core/SkColorSpace.h"
@@ -277,7 +279,7 @@ private:
         static constexpr int kFragmentIndex = 1;
         static constexpr int kShaderTypeCount = 2;
 
-        SkSL::NativeShader fShader[kShaderTypeCount];
+        std::array<SkSL::NativeShader, kShaderTypeCount> fShader;
         SkSL::Program::Interface fInterfaces[kShaderTypeCount];
     };
 

@@ -6,6 +6,8 @@
  */
 
 #ifndef SkottieLayer_DEFINED
+#include <array>
+
 #define SkottieLayer_DEFINED
 
 #include <cstddef>
@@ -98,7 +100,7 @@ private:
     LayerInfo                  fInfo;
     BuilderInfo                fBuilderInfo;
     sk_sp<sksg::Transform>     fLayerTransform;             // this layer's transform node.
-    sk_sp<sksg::Transform>     fTransformCache[2];          // cached 2D/3D chain for the local node
+    std::array<sk_sp<sksg::Transform>, 2> fTransformCache;          // cached 2D/3D chain for the local node
     sk_sp<sksg::RenderNode>    fContentTree;                // render tree for layer content,
                                                             // excluding mask/matte and blending
 

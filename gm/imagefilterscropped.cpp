@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkBlendMode.h"
@@ -114,9 +115,9 @@ protected:
     }
 
     void onDraw(SkCanvas* canvas) override {
-        void (*drawProc[])(SkCanvas*, const SkRect&, sk_sp<SkImageFilter>) = {
+        auto drawProc = std::to_array<void (*)(SkCanvas *, const SkRect &, sk_sp<SkImageFilter>)>({
             draw_bitmap, draw_path, draw_paint, draw_text
-        };
+        ,});
 
         sk_sp<SkColorFilter> cf(SkColorFilters::Blend(SK_ColorBLUE,
                                                               SkBlendMode::kSrcIn));
@@ -132,7 +133,7 @@ protected:
         sk_sp<SkImageFilter> erodeX(SkImageFilters::Erode(8, 0, nullptr));
         sk_sp<SkImageFilter> erodeY(SkImageFilters::Erode(0, 8, nullptr));
 
-        sk_sp<SkImageFilter> filters[] = {
+        auto filters = std::to_array<sk_sp<SkImageFilter>>({
             nullptr,
             SkImageFilters::ColorFilter(cf, nullptr, &cropRect),
             SkImageFilters::Blur(0.0f, 0.0f, nullptr, &cropRect),
@@ -147,7 +148,7 @@ protected:
             SkImageFilters::Merge(nullptr, std::move(cfOffset), &cropRect),
             SkImageFilters::Blur(8.0f, 8.0f, nullptr, &bogusRect),
             SkImageFilters::ColorFilter(cf, nullptr, &bogusRect),
-        };
+        });
 
         SkRect r = SkRect::MakeWH(SkIntToScalar(64), SkIntToScalar(64));
         SkScalar MARGIN = SkIntToScalar(16);

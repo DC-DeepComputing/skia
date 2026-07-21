@@ -5,12 +5,16 @@
  * found in the LICENSE file.
  */
 
+#include <cstdint>
+#include <array>
 #include "bench/Benchmark.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkPathBuilder.h"
+#include "include/core/SkSpan.h"
 #include "include/private/SkTDArray.h"
+#include "include/private/SkTo.h"
 #include "src/core/SkRandom.h"
 
 /**
@@ -124,12 +128,12 @@ protected:
             for (int i = 0; i < kNumGraphs; ++i) {
                 SkScalar y = (kNumGraphs - i) * (height - ySpread) / (kNumGraphs + 1);
                 fData[i].reset();
-                gen_data(y, ySpread, dataPointCount, &random, fData + i);
+                gen_data(y, ySpread, dataPointCount, &random, SkSpan<SkTDArray<SkScalar>>(fData ).subspan(SkTo<size_t>( i)).data());
             }
         }
 
         SkRandom colorRand;
-        SkColor colors[kNumGraphs];
+        std::array<SkColor, kNumGraphs> colors;
         for (int i = 0; i < kNumGraphs; ++i) {
             colors[i] = colorRand.nextU() | 0xff000000;
         }
@@ -167,7 +171,7 @@ protected:
                 plotPaint.setColor(colors[i]);
                 canvas->drawPath(plotPath, plotPaint);
 
-                prevData = fData + i;
+                prevData = SkSpan<SkTDArray<SkScalar>>(fData ).subspan(SkTo<size_t>( i)).data();
             }
 
             fShift += kShiftPerFrame;
@@ -182,7 +186,7 @@ private:
     };
     int                 fShift;
     SkISize             fSize;
-    SkTDArray<SkScalar> fData[kNumGraphs];
+    std::array<SkTDArray<SkScalar>, kNumGraphs> fData;
     bool                fAA;
 
     using INHERITED = Benchmark;

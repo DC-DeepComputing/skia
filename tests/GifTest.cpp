@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/codec/SkAndroidCodec.h"
 #include "include/codec/SkCodec.h"
 #include "include/core/SkBitmap.h"
@@ -495,10 +496,10 @@ DEF_TEST(Codec_AnimatedTransparentGif, r) {
             REPORTER_ASSERT(r, result == SkCodec::kSuccess, "Failed to decode frame %i", i);
 
             // Per above: the first frame is full of various red pixels.
-            SkColor expectedPixels[2][4] = {
+            std::array<std::array<SkColor, 4>, 2> expectedPixels = {{
                 { 0xFF800000, 0xFF900000, 0xFFA00000, 0xFFB00000 },
                 { 0xFFC00000, 0xFFD00000, 0xFFE00000, 0xFFF00000 },
-            };
+            }};
             if (use565) {
                 // For kRGB_565_SkColorType, copy the red channel's high 3 bits
                 // to its low 3 bits.

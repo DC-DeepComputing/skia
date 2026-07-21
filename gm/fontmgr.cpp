@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -204,9 +205,9 @@ class FontMgrMatchGM : public skiagm::GM {
         font.setSubpixel(true);
         font.setSize(17);
 
-        const char* gNames[] = {
+        auto gNames = std::to_array<const char *>({
             "Helvetica Neue", "Arial", "sans", "Roboto"
-        };
+        ,});
 
         sk_sp<SkFontStyleSet> fset;
         for (size_t i = 0; i < std::size(gNames); ++i) {
@@ -359,7 +360,7 @@ private:
         font.setScaleX(fScaleX);
         font.setSkewX(fSkewX);
 
-        const SkColor boundsColors[2] = { SK_ColorRED, SK_ColorBLUE };
+        const std::array<SkColor, 2> boundsColors ={ SK_ColorRED, SK_ColorBLUE };
 
         SkFontMgr* fm = fFM.get();
         int count = fm->countFamilies();

@@ -6,6 +6,8 @@
  */
 
 #ifndef GrPersistentCacheEntry_DEFINED
+#include "include/core/SkSpan.h"
+
 #define GrPersistentCacheEntry_DEFINED
 
 #include "include/core/SkData.h"
@@ -38,7 +40,7 @@ struct ShaderMetadata {
 int GetCurrentVersion();
 
 sk_sp<SkData> PackCachedShaders(SkFourByteTag shaderType,
-                                const SkSL::NativeShader shaders[],
+                                SkSpan<const SkSL::NativeShader> shaders,
                                 const SkSL::Program::Interface[],
                                 int numInterfaces,
                                 const ShaderMetadata* meta = nullptr);
@@ -46,7 +48,7 @@ sk_sp<SkData> PackCachedShaders(SkFourByteTag shaderType,
 SkFourByteTag GetType(SkReadBuffer* reader);
 
 bool UnpackCachedShaders(SkReadBuffer* reader,
-                         SkSL::NativeShader shaders[],
+                         SkSpan<SkSL::NativeShader> shaders,
                          bool areShadersBinary,
                          SkSL::Program::Interface[],
                          int numInterfaces,

@@ -16,10 +16,10 @@
 
 #include <array>
 
-static struct conicQuad {
+struct conicQuad{
     ConicPts conic;
     QuadPts quad;
-} conicQuadTests[] = {
+}; static auto conicQuadTests = std::to_array<conicQuad>({
    {{{{{0.00000000000000000, -1.8135968446731567 },
     {0.00000000000000000, -1.0033817291259766 },
     {-0.0073835160583257675, 0.00000000000000000 }}}, 2.26585215e+11f},
@@ -32,7 +32,7 @@ static struct conicQuad {
 
    {{{{{494.348663,224.583771}, {494.365143,224.633194}, {494.376404,224.684067}}}, 0.998645842f},
     {{{494.355774f, 224.605927f}, {494.363708f, 224.631714f}, {494.370148f, 224.657471f}}}},
-};
+});
 
 static const int conicQuadTests_count = (int) std::size(conicQuadTests);
 

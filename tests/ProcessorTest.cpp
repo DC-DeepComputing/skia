@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColor.h"
@@ -532,8 +533,8 @@ static bool legal_modulation(const GrColor inGr[3], const GrColor outGr[3]) {
 
     // With reconstructed pre-modulated FP output, derive the expected value of fp * input for each
     // of the transformed input colors.
-    SkPMColor4f expectedForAlphaModulation[3];
-    SkPMColor4f expectedForColorModulation[3];
+    std::array<SkPMColor4f, 3> expectedForAlphaModulation;
+    std::array<SkPMColor4f, 3> expectedForColorModulation;
     for (int i = 0; i < 3; ++i) {
         expectedForAlphaModulation[i] = fpPreAlphaModulation * inf[i].fA;
         expectedForColorModulation[i] = fpPreColorModulation * inf[i];

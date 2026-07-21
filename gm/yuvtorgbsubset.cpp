@@ -7,6 +7,7 @@
 
 // This test only works with the GPU backend.
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColor.h"
@@ -16,6 +17,7 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkShader.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/core/SkYUVAInfo.h"
 #include "include/core/SkYUVAPixmaps.h"
@@ -58,7 +60,7 @@ protected:
         SkColorType colorTypes[] = {kAlpha_8_SkColorType,
                                     kAlpha_8_SkColorType,
                                     kAlpha_8_SkColorType};
-        SkYUVAPixmapInfo pmapInfo(yuvaInfo, colorTypes, nullptr);
+        SkYUVAPixmapInfo pmapInfo(yuvaInfo, colorTypes, {});
         fPixmaps = SkYUVAPixmaps::Allocate(pmapInfo);
 
         unsigned char innerY[16] = {149, 160, 130, 105,
@@ -67,8 +69,8 @@ protected:
                                     105, 149, 160, 130};
         unsigned char innerU[4] = {43, 75, 145, 200};
         unsigned char innerV[4] = {88, 180, 200, 43};
-        int outerYUV[] = {128, 128, 128};
-        SkBitmap bitmaps[3];
+        auto outerYUV = std::to_array<int>({128, 128, 128});
+        std::array<SkBitmap, 3> bitmaps;
         for (int i = 0; i < 3; ++i) {
             bitmaps[i].installPixels(fPixmaps.plane(i));
             bitmaps[i].eraseColor(SkColorSetARGB(outerYUV[i], 0, 0, 0));
@@ -129,8 +131,8 @@ protected:
             return DrawResult::kSkip;
         }
 
-        static const SkFilterMode kFilters[] = {SkFilterMode::kNearest,
-                                                SkFilterMode::kLinear};
+        static const auto kFilters = std::to_array<SkFilterMode>({SkFilterMode::kNearest,
+                                                SkFilterMode::kLinear});
         static const SkIRect kColorRect = SkIRect::MakeLTRB(2, 2, 6, 6);
 
         // Outset to visualize wrap modes.

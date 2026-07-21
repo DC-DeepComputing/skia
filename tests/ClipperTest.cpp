@@ -87,7 +87,7 @@ static void test_intersectline(skiatest::Reporter* reporter) {
     size_t i;
     SkPoint dst[2];
 
-    static const SkPoint gEmpty[] = {
+    static const auto gEmpty = std::to_array<SkPoint>({
         // sides
         { L, CY }, { L - 10, CY },
         { R, CY }, { R + 10, CY },
@@ -98,7 +98,7 @@ static void test_intersectline(skiatest::Reporter* reporter) {
         { L, B }, { L - 10, B + 10 },
         { R, T }, { R + 10, T - 10 },
         { R, B }, { R + 10, B + 10 },
-    };
+    });
     for (i = 0; i < std::size(gEmpty); i += 2) {
         bool valid = SkLineClipper::IntersectLine(&gEmpty[i], gR, dst);
         if (valid) {

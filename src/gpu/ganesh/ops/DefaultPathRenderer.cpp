@@ -4,6 +4,7 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include <array>
 #include "src/gpu/ganesh/ops/DefaultPathRenderer.h"
 
 #include "include/core/SkMatrix.h"
@@ -670,7 +671,7 @@ bool DefaultPathRenderer::internalDrawPath(skgpu::ganesh::SurfaceDrawContext* sd
     }
 
     int                          passCount = 0;
-    const GrUserStencilSettings* passes[2];
+    std::array<const GrUserStencilSettings *, 2> passes;
     bool                         reverse = false;
     bool                         lastPassIsBounds;
 

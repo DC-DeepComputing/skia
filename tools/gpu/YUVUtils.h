@@ -6,6 +6,8 @@
  */
 
 #ifndef YUVUtils_DEFINED
+#include <array>
+
 #define YUVUtils_DEFINED
 
 #include "include/core/SkColorSpace.h"
@@ -73,7 +75,7 @@ private:
     sk_sp<SkColorSpace> fColorSpace;
 
     // Memoized SkImages formed with planes, one for each Type.
-    sk_sp<SkImage> fYUVImage[4];
+    std::array<sk_sp<SkImage>, 4> fYUVImage;
 
     LazyYUVImage() = default;
 

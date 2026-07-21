@@ -92,9 +92,9 @@
 #if defined(__Fuchsia__)
         backtrace_request();
 #else
-        void* stack[64];
-        const int count = backtrace(stack, std::size(stack));
-        char** symbols = backtrace_symbols(stack, count);
+        std::array<void *, 64> stack;
+        const int count = backtrace(stack.data(), std::size(stack));
+        char** symbols = backtrace_symbols(stack.data(), count);
 
         SkDebugf("\nSignal %d [%s]:\n", sig, strsignal(sig));
         for (int i = 0; i < count; i++) {

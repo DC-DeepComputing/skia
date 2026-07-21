@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "dm/DMSrcSink.h"
 
 #include "include/codec/SkAndroidCodec.h"
@@ -1331,7 +1332,7 @@ Result SkottieSrc::draw(SkCanvas* canvas, GraphiteTestContext*) const {
     // Draw the frames in a shuffled order to exercise non-linear
     // frame progression. The film strip will still be in order left-to-right,
     // top-down, just not drawn in that order.
-    static constexpr int frameOrder[] = { 4, 0, 3, 1, 2 };
+    static constexpr auto frameOrder = std::to_array<int>({ 4, 0, 3, 1, 2 });
     static_assert(std::size(frameOrder) == kTileCount, "");
 
     for (int i = 0; i < kTileCount; ++i) {

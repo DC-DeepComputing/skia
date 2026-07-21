@@ -7,6 +7,7 @@
 
 #include "src/gpu/ganesh/GrPersistentCacheUtils.h"
 
+#include "include/core/SkSpan.h"
 #include "include/private/SkTo.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/core/SkReadBuffer.h"
@@ -39,7 +40,7 @@ int GetCurrentVersion() {
 }
 
 sk_sp<SkData> PackCachedShaders(SkFourByteTag shaderType,
-                                const SkSL::NativeShader shaders[],
+                                SkSpan<const SkSL::NativeShader> shaders,
                                 const SkSL::Program::Interface interfaces[],
                                 int numInterfaces,
                                 const ShaderMetadata* meta) {
@@ -93,7 +94,7 @@ SkFourByteTag GetType(SkReadBuffer* reader) {
 }
 
 bool UnpackCachedShaders(SkReadBuffer* reader,
-                         SkSL::NativeShader shaders[],
+                         SkSpan<SkSL::NativeShader> shaders,
                          bool areShadersBinary,
                          SkSL::Program::Interface interfaces[],
                          int numInterfaces,

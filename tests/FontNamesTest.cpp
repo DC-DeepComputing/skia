@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkFontMgr.h"
 #include "include/core/SkFontStyle.h"
 #include "include/core/SkRefCnt.h"
@@ -101,10 +102,10 @@ struct FontNamesTest {
     size_t size;
     SkOTTableName::Record::NameID nameID;
     size_t nameCount;
-    struct {
+    struct Names{
         const char* name;
         const char* language;
-    } names[10];
+    }; std::array<Names, 10> names;
 
 } tests[] = {
     {

@@ -6,6 +6,7 @@
  */
 #include "src/gpu/ganesh/gl/GrGLUtil.h"
 
+#include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/gpu/ganesh/gl/GrGLExtensions.h"
 #include "include/gpu/ganesh/gl/GrGLFunctions.h"
@@ -56,8 +57,8 @@ GrGLStandard GrGLGetStandardInUseFromString(const char* versionString) {
     }
 
     // check for ES 1
-    char profile[2];
-    n = sscanf(versionString, "OpenGL ES-%c%c %d.%d", profile, profile+1, &major, &minor);
+    std::array<char, 2> profile;
+    n = sscanf(versionString, "OpenGL ES-%c%c %d.%d", profile, SkSpan<char>(profile).subspan(1u), &major, &minor);
     if (4 == n) {
         // we no longer support ES1.
         return kNone_GrGLStandard;
@@ -98,8 +99,8 @@ GrGLVersion GrGLGetVersionFromString(const char* versionString) {
         return GR_GL_VER(major, minor);
     }
 
-    char profile[2];
-    n = sscanf(versionString, "OpenGL ES-%c%c %d.%d", profile, profile + 1, &major, &minor);
+    std::array<char, 2> profile;
+    n = sscanf(versionString, "OpenGL ES-%c%c %d.%d", profile, SkSpan<char>(profile ).subspan( 1u), &major, &minor);
     if (4 == n) {
         return GR_GL_VER(major, minor);
     }
@@ -822,7 +823,7 @@ GrGLDriverInfo GrGLGetDriverInfo(const GrGLInterface* interface) {
 }
 
 GrGLenum GrToGLStencilFunc(GrStencilTest test) {
-    static const GrGLenum gTable[kGrStencilTestCount] = {
+    static const std::array<GrGLenum, kGrStencilTestCount> gTable ={
         GR_GL_ALWAYS,           // kAlways
         GR_GL_NEVER,            // kNever
         GR_GL_GREATER,          // kGreater

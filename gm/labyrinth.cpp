@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 
 #include "include/core/SkCanvas.h"
@@ -22,7 +23,7 @@
  * Butt caps expose under-coverage on abutted strokes when using a 'max()' coverage function.
  */
 static void draw_labyrinth(SkCanvas* canvas, SkPaint::Cap cap) {
-    constexpr static bool kRows[11][12] = {
+    static constexpr std::array<std::array<bool, 12>, 11> kRows = {{
         {1,1,1,1,1,1,1,1,1,1,1,1},
         {0,1,0,1,0,1,0,0,0,0,1,1},
         {0,0,0,0,1,0,0,0,0,1,1,1},
@@ -34,9 +35,9 @@ static void draw_labyrinth(SkCanvas* canvas, SkPaint::Cap cap) {
         {0,0,1,0,0,1,0,0,0,0,0,1},
         {0,1,1,1,0,0,1,1,1,1,0,0},
         {1,1,1,1,1,1,1,1,1,1,1,1},
-    };
+    }};
 
-    constexpr static bool kCols[13][10] = {
+    static constexpr std::array<std::array<bool, 10>, 13> kCols = {{
         {1,1,1,1,0,1,1,1,1,1},
         {0,0,1,0,0,0,1,1,1,0},
         {0,1,1,0,1,1,1,0,0,1},
@@ -50,7 +51,7 @@ static void draw_labyrinth(SkCanvas* canvas, SkPaint::Cap cap) {
         {0,0,1,1,0,0,0,0,1,0},
         {0,0,0,0,0,0,1,0,0,1},
         {1,1,1,1,1,1,0,1,1,1},
-    };
+    }};
 
     SkPathBuilder maze;
     for (size_t y = 0; y < std::size(kRows); ++y) {

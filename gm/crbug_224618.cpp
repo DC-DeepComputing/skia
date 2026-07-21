@@ -4,6 +4,7 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -61,15 +62,15 @@ protected:
         SkM44 rotateHorizontal = SkM44::Rotate({0, 1, 0}, 2.356194490192345f);
 
         // w in degrees will need to be converted to radians
-        SkV4 axisAngles[6] = {
+        std::array<SkV4, 6> axisAngles = {{
             {0.f, 1.f, 0.f, -90.f}, // rotateY(-90deg)
             {1.f, 0.f, 0.f, 0.f},   // <none>
             {0.f, 1.f, 0.f, 90.f},  // rotateY(90deg)
             {0.f, 1.f, 0.f, 180.f}, // rotateY(180deg)
             {1.f, 0.f, 0.f, -90.f}, // rotateX(-90deg)
             {1.f, 0.f, 0.f, 90.f},  // rotateX(90deg)
-        };
-        SkColor faceColors[6] = {
+        }};
+        std::array<SkColor, 6> faceColors ={
             SK_ColorRED,
             SK_ColorGREEN,
             SK_ColorBLUE,

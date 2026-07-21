@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkM44.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPath.h"
@@ -279,10 +280,10 @@ DEF_TEST(M44_mapRect, reporter) {
             assertRectsNearlyEqual(actual, *expected, epsilon);
         }
 
-        SkV4 corners[4] = {{src.fLeft, src.fTop, 0.f, 1.f},
+        std::array<SkV4, 4> corners = {{{src.fLeft, src.fTop, 0.f, 1.f},
                            {src.fRight, src.fTop, 0.f, 1.f},
                            {src.fRight, src.fBottom, 0.f, 1.f},
-                           {src.fLeft, src.fBottom, 0.f, 1.f}};
+                           {src.fLeft, src.fBottom, 0.f, 1.f},}};
         bool leftFound = false;
         bool topFound = false;
         bool rightFound = false;

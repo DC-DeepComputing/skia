@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkFont.h"
@@ -41,12 +42,12 @@ DEF_SIMPLE_GM(imageresizetiled, canvas, WIDTH, HEIGHT) {
                 canvas->scale(SkScalarInvert(RESIZE_FACTOR),
                               SkScalarInvert(RESIZE_FACTOR));
                 canvas->saveLayer(nullptr, &paint);
-                const char* str[] = {
+                auto str = std::to_array<const char *>({
                     "The quick",
                     "brown fox",
                     "jumped over",
                     "the lazy dog.",
-                };
+                });
                 float posY = 0;
                 for (unsigned i = 0; i < std::size(str); i++) {
                     posY += 100.0f;

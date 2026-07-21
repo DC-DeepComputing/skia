@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -44,12 +45,12 @@ DEF_SIMPLE_GM(mipmap, canvas, 400, 200) {
     str.printf("scale %g %g", dst.width() / img->width(), dst.height() / img->height());
 //    canvas->drawString(str, 300, 100, SkFont(nullptr, 30), paint);
 
-    const SkSamplingOptions samplings[] = {
+    const auto samplings = std::to_array<SkSamplingOptions>({
         SkSamplingOptions(SkFilterMode::kNearest),
         SkSamplingOptions(SkFilterMode::kLinear),
         SkSamplingOptions(SkFilterMode::kLinear, SkMipmapMode::kLinear),
         SkSamplingOptions(SkCubicResampler::Mitchell()),
-    };
+    });
 
     canvas->translate(20, 20);
     for (size_t i = 0; i < std::size(samplings); ++i) {

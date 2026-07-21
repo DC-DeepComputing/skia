@@ -18,6 +18,7 @@
 #include "include/core/SkPicture.h"
 #include "include/core/SkPictureRecorder.h"
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkYUVAInfo.h"
 #include "include/core/SkYUVAPixmaps.h"
 #include "src/core/SkAutoMalloc.h"
@@ -85,7 +86,7 @@ DEF_TEST(ImageGenerator, reporter) {
                         kJPEG_Full_SkYUVColorSpace);
     yuvaPixmapInfo = SkYUVAPixmapInfo(yuvaInfo,
                                       SkYUVAPixmapInfo::DataType::kUnorm8,
-                                      /*rowBytes[]*/ nullptr);
+                                      /*rowBytes[]*/ {});
     SkYUVAPixmaps yuvaPixmaps = SkYUVAPixmaps::Allocate(yuvaPixmapInfo);
     ig.getYUVAPlanes(yuvaPixmaps);
 

@@ -7,6 +7,8 @@
 
 
 #ifndef GrUserStencilSettings_DEFINED
+#include <array>
+
 #define GrUserStencilSettings_DEFINED
 
 #include "include/gpu/ganesh/GrTypes.h"  // IWYU pragma: keep
@@ -202,9 +204,9 @@ struct GrUserStencilSettings {
         return !(this->flags(hasStencilClip) & kNoWrapOps_StencilFlag);
     }
 
-    const uint16_t   fCWFlags[2]; // cwFlagsForDraw = fCWFlags[hasStencilClip].
+    const std::array<uint16_t, 2> fCWFlags; // cwFlagsForDraw = fCWFlags[hasStencilClip].
     const Face       fCWFace;
-    const uint16_t   fCCWFlags[2]; // ccwFlagsForDraw = fCCWFlags[hasStencilClip].
+    const std::array<uint16_t, 2> fCCWFlags; // ccwFlagsForDraw = fCCWFlags[hasStencilClip].
     const Face       fCCWFace;
 
     static const GrUserStencilSettings& kUnused;

@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBlurTypes.h"
 #include "include/core/SkCanvas.h"
@@ -131,7 +132,7 @@ private:
     } kMatrixScales[3];
 
     DrawType fDrawType;
-    sk_sp<SkMaskFilter> fBlurFilters[kNumBlurs];
+    std::array<sk_sp<SkMaskFilter>, kNumBlurs> fBlurFilters;
 
     using INHERITED =         skiagm::GM;
 };

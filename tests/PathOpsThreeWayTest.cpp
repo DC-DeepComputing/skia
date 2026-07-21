@@ -36,13 +36,13 @@ static const Curve testSet1[] = {  // extracted from cubicOp85i
     {1, {{{5,1}, {3,4}}} },
 };
 
-static const struct TestSet {
+struct TestSet{
     const Curve* tests;
     int testCount;
-} testSets[] = {
+}; static const auto testSets = std::to_array<TestSet>({
     { testSet0, (int) std::size(testSet0) },
     { testSet1, (int) std::size(testSet1) },
-};
+});
 
 static const int testSetsCount = (int) std::size(testSets);
 

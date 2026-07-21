@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "bench/nanobench.h"
 
 #include "bench/AndroidCodecBench.h"
@@ -1155,7 +1156,7 @@ public:
         }
 
         // Run AndroidCodecBenches
-        const int sampleSizes[] = { 2, 4, 8 };
+        const auto sampleSizes = std::to_array<int>({ 2, 4, 8 });
         for (; fCurrentAndroidCodec < fImages.size(); fCurrentAndroidCodec++) {
             fSourceType = "image";
             fBenchType = "skandroidcodec";
@@ -1200,7 +1201,7 @@ public:
         //     All use cases we are aware of only scale by powers of two.
         //     PNG decodes use the indicated sampling strategy regardless of the sample size, so
         //         these tests are sufficient to provide good coverage of our scaling options.
-        const uint32_t brdSampleSizes[] = { 1, 2, 4, 8, 16 };
+        const auto brdSampleSizes = std::to_array<uint32_t>({ 1, 2, 4, 8, 16 });
         const uint32_t minOutputSize = 512;
         for (; fCurrentBRDImage < fImages.size(); fCurrentBRDImage++) {
             fSourceType = "image";

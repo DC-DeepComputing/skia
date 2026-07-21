@@ -205,8 +205,8 @@ static std::unique_ptr<GrFragmentProcessor> make_unrolled_colorizer(int interval
                                                                     SkRect thresholds9_13) {
     SkASSERT(intervalCount >= 1 && intervalCount <= 8);
 
-    static SkOnce                 once[kMaxUnrolledIntervalCount];
-    static const SkRuntimeEffect* effects[kMaxUnrolledIntervalCount];
+    static std::array<SkOnce, kMaxUnrolledIntervalCount> once;
+    static std::array<const SkRuntimeEffect *, kMaxUnrolledIntervalCount> effects;
 
     once[intervalCount - 1]([intervalCount] {
         SkString sksl;
@@ -324,7 +324,7 @@ static std::unique_ptr<GrFragmentProcessor> make_looping_colorizer(int intervalC
         const SkRuntimeEffect* effect;
     };
 
-    static EffectCacheEntry effectCache[kMaxLoopingIntervalCount / 4];
+    static std::array<EffectCacheEntry, kMaxLoopingIntervalCount / 4> effectCache;
     SkASSERT(cacheIndex >= 0 && cacheIndex < (int)std::size(effectCache));
     EffectCacheEntry* cacheEntry = &effectCache[cacheIndex];
 
@@ -405,7 +405,7 @@ int build_intervals(int inputLength,
                     int outputLength,
                     SkPMColor4f* outScales,
                     SkPMColor4f* outBiases,
-                    SkScalar* outThresholds) {
+                    SkSpan<SkScalar>outThresholds) {
     // Depending on how the positions resolve into hard stops or regular stops, the number of
     // intervals specified by the number of colors/positions can change. For instance, a plain
     // 3 color gradient is two intervals, but a 4 color gradient with a hard stop is also
@@ -474,7 +474,7 @@ static std::unique_ptr<GrFragmentProcessor> make_looping_binary_colorizer(const 
 
     SkPMColor4f scales[kMaxLoopingIntervalCount];
     SkPMColor4f biases[kMaxLoopingIntervalCount];
-    SkScalar thresholds[kMaxLoopingIntervalCount] = {};
+    std::array<SkScalar, kMaxLoopingIntervalCount> thresholds ={};
     int intervalCount = build_intervals(count, colors, positions,
                                         kMaxLoopingIntervalCount, scales, biases, thresholds);
     if (intervalCount <= 0) {
@@ -492,7 +492,7 @@ static std::unique_ptr<GrFragmentProcessor> make_looping_binary_colorizer(const 
         biases[intervalCount] = biases[intervalCount - 1];
     }
 
-    return make_looping_colorizer(intervalCount, scales, biases, thresholds);
+    return make_looping_colorizer(intervalCount, scales, biases, thresholds.data());
 }
 
 // Analyze the shader's color stops and positions and chooses an appropriate colorizer to represent

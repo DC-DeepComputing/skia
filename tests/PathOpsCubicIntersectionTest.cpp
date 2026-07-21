@@ -80,7 +80,7 @@ static void standardTestCases(skiatest::Reporter* reporter) {
     }
 }
 
-static const CubicPts testSet[] = {
+static const auto testSet = std::to_array<CubicPts>({
 // FIXME: uncommenting these two will cause this to fail
 // this results in two curves very nearly but not exactly coincident
 #if 0
@@ -174,11 +174,11 @@ static const CubicPts testSet[] = {
         {18.5656052, 32.1268808}}},
 {{{97.402018, 35.7169972}, {33.1127443, 25.8935163}, {1.13970027, 54.9424981},
         {56.4860195, 60.529264}}},
-};
+});
 
 const int testSetCount = (int) std::size(testSet);
 
-static const CubicPts newTestSet[] = {
+static const auto newTestSet = std::to_array<CubicPts>({
 
 { { { 130.0427549999999997, 11417.41309999999976 },{ 130.2331240000000037, 11418.3192999999992 },{ 131.0370790000000056, 11419 },{ 132, 11419 } } },
 { { { 132, 11419 },{ 130.8954319999999996, 11419 },{ 130, 11418.10449999999946 },{ 130, 11417 } } },
@@ -393,7 +393,7 @@ static const CubicPts newTestSet[] = {
 
 {{{0, 2}, {0, 1}, {3, 0}, {1, 0}}},
 {{{0, 3}, {0, 1}, {2, 0}, {1, 0}}},
-};
+});
 
 const int newTestSetCount = (int) std::size(newTestSet);
 static void oneOff(skiatest::Reporter* reporter, const CubicPts& cubic1, const CubicPts& cubic2,
@@ -548,7 +548,7 @@ static void intersectionFinder(int index0, int index1, double t1Seed, double t2S
         t2[0] = c2.ptAtT(t2Seed - t2Step);
         t2[1] = c2.ptAtT(t2Seed);
         t2[2] = c2.ptAtT(t2Seed + t2Step);
-        double dist[3][3];
+        std::array<std::array<double, 3>, 3> dist;
         dist[1][1] = t1[1].distance(t2[1]);
         int best_i = 1, best_j = 1;
         for (int i = 0; i < 3; ++i) {
@@ -635,7 +635,7 @@ static void CubicIntersection_IntersectionFinder() {
     intersectionFinder(0, 1, 0.865213351, 0.865208087, t1Step, t2Step);
 }
 
-static const CubicPts selfSet[] = {
+static const auto selfSet = std::to_array<CubicPts>({
     {{{2, 3}, {0, 4}, {3, 2}, {5, 3}}},
     {{{3, 6}, {2, 3}, {4, 0}, {3, 2}}},
     {{{0, 2}, {2, 3}, {5, 1}, {3, 2}}},
@@ -644,7 +644,7 @@ static const CubicPts selfSet[] = {
     {{{3.13, 2.74}, {1.08, 4.62}, {3.71, 0.94}, {2.01, 3.81}}},
     {{{6.71, 3.14}, {7.99, 2.75}, {8.27, 1.96}, {6.35, 3.57}}},
     {{{12.81, 7.27}, {7.22, 6.98}, {12.49, 8.97}, {11.42, 6.18}}},
-};
+});
 
 int selfSetCount = (int) std::size(selfSet);
 
@@ -684,7 +684,7 @@ static void cubicIntersectionSelfTest(skiatest::Reporter* reporter) {
     }
 }
 
-static const CubicPts coinSet[] = {
+static const auto coinSet = std::to_array<CubicPts>({
     {{{72.350448608398438, 27.966041564941406}, {72.58441162109375, 27.861515045166016},
         {72.818222045898437, 27.756658554077148}, {73.394996643066406, 27.49799919128418}}},
     {{{73.394996643066406, 27.49799919128418}, {72.818222045898437, 27.756658554077148},
@@ -701,7 +701,7 @@ static const CubicPts coinSet[] = {
     {{{317, 711}, {322.52285766601562, 711}, {327, 715.4771728515625}, {327, 721}}},
     {{{324.07107543945312, 713.928955078125}, {324.4051513671875, 714.26300048828125},
             {324.71566772460937, 714.62060546875}, {325, 714.9990234375}}},
-};
+});
 
 static int coinSetCount = (int) std::size(coinSet);
 

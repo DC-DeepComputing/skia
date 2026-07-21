@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "dm/DMJsonWriter.h"
 #include "dm/DMSrcSink.h"
 #include "include/codec/SkCodec.h"
@@ -388,7 +389,7 @@ static void find_culprit() {
         return x > max_of(rest...) ? x : max_of(rest...);
     }
 
-    static void (*previous_handler[max_of(SIGABRT,SIGBUS,SIGFPE,SIGILL,SIGSEGV,SIGTERM)+1])(int);
+    static std::array<void (*)(int), max_of(SIGABRT,SIGBUS,SIGFPE,SIGILL,SIGSEGV,SIGTERM)+1> previous_handler;
 
     static void crash_handler(int sig) {
         SkAutoSpinlock lock(gMutex);

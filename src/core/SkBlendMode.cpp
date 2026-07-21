@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkBlendMode.h"
 
 #include "include/core/SkColor.h"
@@ -60,7 +61,7 @@ bool SkBlendMode_AsCoeff(SkBlendMode mode, SkBlendModeCoeff* src, SkBlendModeCoe
         SkBlendModeCoeff    fDst;
     };
 
-    static constexpr CoeffRec kCoeffs[] = {
+    static constexpr auto kCoeffs = std::to_array<CoeffRec>({
         // For Porter-Duff blend functions, color = src * src coeff + dst * dst coeff
         // src coeff                  dst coeff                     blend func
         // ----------------------     -----------------------       ----------
@@ -80,7 +81,7 @@ bool SkBlendMode_AsCoeff(SkBlendMode mode, SkBlendModeCoeff* src, SkBlendModeCoe
         { SkBlendModeCoeff::kOne,     SkBlendModeCoeff::kOne  }, // plus
         { SkBlendModeCoeff::kZero,    SkBlendModeCoeff::kSC   }, // modulate
         { SkBlendModeCoeff::kOne,     SkBlendModeCoeff::kISC  }, // screen
-    };
+    });
 
     if (mode > SkBlendMode::kScreen) {
         return false;

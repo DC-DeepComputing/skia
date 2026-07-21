@@ -4,6 +4,7 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include <array>
 #include "src/pathops/SkPathOpsRect.h"
 
 #include "src/pathops/SkPathOpsConic.h"
@@ -14,10 +15,10 @@
 void SkDRect::setBounds(const SkDQuad& curve, const SkDQuad& sub, double startT, double endT) {
     set(sub[0]);
     add(sub[2]);
-    double tValues[2];
+    std::array<double, 2> tValues;
     int roots = 0;
     if (!sub.monotonicInX()) {
-        roots = SkDQuad::FindExtrema(&sub[0].fX, tValues);
+        roots = SkDQuad::FindExtrema(&sub[0].fX, tValues.data());
     }
     if (!sub.monotonicInY()) {
         roots += SkDQuad::FindExtrema(&sub[0].fY, &tValues[roots]);

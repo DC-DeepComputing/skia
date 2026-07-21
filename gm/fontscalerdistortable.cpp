@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkFont.h"
@@ -89,7 +90,7 @@ private:
 
     inline static constexpr int rows = 2;
     inline static constexpr int cols = 5;
-    sk_sp<SkTypeface> typeface[rows][cols];
+    std::array<std::array<sk_sp<SkTypeface>, cols>, rows> typeface;
 
     void updateTypefaces() {
         sk_sp<SkFontMgr> fontMgr = ToolUtils::TestFontMgr();

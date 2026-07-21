@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -102,12 +103,12 @@ private:
                 sk_sp<SkColorFilter> cf0, sk_sp<SkColorFilter> cf1) {
         // We cycle through paint colors on each row, to test how the paint color flows through
         // the color-filter network
-        const SkColor4f paintColors[] = {
+        const auto paintColors = std::to_array<SkColor4f>({
             { 1.0f, 1.0f, 1.0f, 1.0f },  // Opaque white
             { 1.0f, 1.0f, 1.0f, 0.5f },  // Translucent white
             { 0.5f, 0.5f, 1.0f, 1.0f },  // Opaque pale blue
             { 0.5f, 0.5f, 1.0f, 0.5f },  // Translucent pale blue
-        };
+        });
 
         canvas->translate(0, fTileSize.height() * 0.1f);
         {

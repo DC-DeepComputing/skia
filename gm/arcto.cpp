@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -93,7 +94,7 @@ DEF_SIMPLE_GM(arcto, canvas, 500, 600) {
     paint.setStrokeWidth(5);
     const SkColor purple = 0xFF800080;
     const SkColor darkgreen = 0xFF008000;
-    const SkColor colors[] = { SK_ColorRED, darkgreen, purple, SK_ColorBLUE };
+    const auto colors = std::to_array<SkColor>({ SK_ColorRED, darkgreen, purple, SK_ColorBLUE ,});
     const char* arcstrs[] = {
         "M250,400  A120,80 0 0,0 250,500",
         "M250,400  A120,80 0 1,1 250,500",
@@ -124,10 +125,10 @@ enum {
     kParsePathTestDimension = 500
 };
 
-const struct Legal {
+struct Legal{
     char fSymbol;
     int fScalars;
-} gLegal[] = {
+}; const auto gLegal = std::to_array<Legal>({
     { 'M', 2 },
     { 'H', 1 },
     { 'V', 1 },
@@ -138,12 +139,12 @@ const struct Legal {
     { 'S', 4 },
     { 'A', 4 },
     { 'Z', 0 },
-};
+});
 
 bool gEasy = false;  // set to true while debugging to suppress unusual whitespace
 
 // mostly do nothing, then bias towards spaces
-const char gWhiteSpace[] = { 0, 0, 0, 0, 0, 0, 0, 0, ' ', ' ', ' ', ' ', 0x09, 0x0D, 0x0A };
+const auto gWhiteSpace = std::to_array<char>({ 0, 0, 0, 0, 0, 0, 0, 0, ' ', ' ', ' ', ' ', 0x09, 0x0D, 0x0A ,});
 
 static void add_white(SkRandom* rand, SkString* atom) {
     if (gEasy) {

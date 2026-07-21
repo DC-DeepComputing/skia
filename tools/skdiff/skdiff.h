@@ -6,6 +6,8 @@
  */
 
 #ifndef skdiff_DEFINED
+#include "include/core/SkSpan.h"
+
 #define skdiff_DEFINED
 
 #include "include/core/SkBitmap.h"
@@ -71,7 +73,7 @@ struct DiffResource {
      *  Selector may be a comma delimited list of status names, "any", or "failed".
      *  Returns true if the selector was entirely understood, false otherwise.
      */
-    static bool getMatchingStatuses(char* selector, bool statuses[kStatusCount]);
+    static bool getMatchingStatuses(char* selector, SkSpan<bool> statuses);
 
     DiffResource() : fFilename(), fFullPath(), fBitmap(), fStatus(kUnknown_Status) { }
 

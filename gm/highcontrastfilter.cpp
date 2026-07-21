@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -121,7 +122,7 @@ protected:
     SkISize getISize() override { return SkISize::Make(800, 420); }
 
     void onDraw(SkCanvas* canvas) override {
-        SkHighContrastConfig configs[] = {
+        auto configs = std::to_array<SkHighContrastConfig>({
             { false, InvertStyle::kNoInvert, 0.0f },
             { false, InvertStyle::kInvertBrightness, 0.0f },
             { false, InvertStyle::kInvertLightness, 0.0f },
@@ -130,7 +131,7 @@ protected:
             { true, InvertStyle::kInvertBrightness, 0.0f },
             { true, InvertStyle::kInvertLightness, 0.0f },
             { true, InvertStyle::kInvertLightness, 0.2f },
-        };
+        });
 
         for (size_t i = 0; i < std::size(configs); ++i) {
             SkScalar x = kSize * (i % 4);

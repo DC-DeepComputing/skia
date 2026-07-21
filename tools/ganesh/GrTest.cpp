@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkString.h"
 #include "include/gpu/ganesh/GrBackendSurface.h"
 #include "include/gpu/ganesh/GrContextOptions.h"
@@ -78,7 +79,7 @@ void GrDrawRandomOp(SkRandom* random, skgpu::ganesh::SurfaceDrawContext* sdc, Gr
                                      GrRecordingContext*,
                                      skgpu::ganesh::SurfaceDrawContext*,
                                      int numSamples);
-    static constexpr MakeDrawOpFn* gFactories[] = {
+    static constexpr auto gFactories = std::to_array<MakeDrawOpFn *>({
             DRAW_OP_TEST_ENTRY(AAConvexPathOp),
             DRAW_OP_TEST_ENTRY(AAFlatteningConvexPathOp),
             DRAW_OP_TEST_ENTRY(AAHairlineOp),
@@ -110,7 +111,7 @@ void GrDrawRandomOp(SkRandom* random, skgpu::ganesh::SurfaceDrawContext* sdc, Gr
 #if !defined(SK_ENABLE_OPTIMIZE_SIZE)
             DRAW_OP_TEST_ENTRY(TriangulatingPathOp),
 #endif
-    };
+    });
 
     static constexpr size_t kTotal = std::size(gFactories);
     uint32_t index = random->nextULessThan(static_cast<uint32_t>(kTotal));

@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "src/sksl/ir/SkSLSwizzle.h"
 
 #include "include/core/SkSpan.h"
@@ -146,7 +147,7 @@ static std::unique_ptr<Expression> optimize_constructor_swizzle(const Context& c
     };
 
     int numConstructorArgs = base.type().columns();
-    ConstructorArgMap argMap[4] = {};
+    std::array<ConstructorArgMap, 4> argMap ={};
     int writeIdx = 0;
     for (int argIdx = 0; argIdx < (int)baseArguments.size(); ++argIdx) {
         const Expression& arg = *baseArguments[argIdx];
@@ -169,7 +170,7 @@ static std::unique_ptr<Expression> optimize_constructor_swizzle(const Context& c
     //    `half4(bar.yz, half2(foo)).xwxy` -> { 3, 1 }
     // - bar.yz    is referenced 3 times, by `.x_xy`
     // - half(foo) is referenced 1 time,  by `._w__`
-    int8_t exprUsed[4] = {};
+    std::array<int8_t, 4> exprUsed ={};
     for (int8_t c : components) {
         exprUsed[argMap[c].fArgIndex]++;
     }

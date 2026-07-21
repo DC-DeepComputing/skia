@@ -6,6 +6,8 @@
  */
 
 #ifndef EventTracingPriv_DEFINED
+#include <array>
+
 #define EventTracingPriv_DEFINED
 
 #include "include/private/SkMutex.h"
@@ -34,7 +36,7 @@ private:
         const char* fName;
     };
 
-    CategoryState fCategories[kMaxCategories];
+    std::array<CategoryState, kMaxCategories> fCategories;
     int           fNumCategories;
     SkMutex       fMutex;
 };
