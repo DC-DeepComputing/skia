@@ -202,7 +202,7 @@
 %_ptr_Function_v2float = OpTypePointer Function %v2float
 %_ptr_Function_v4float = OpTypePointer Function %v4float
          %61 = OpTypeFunction %v4float %_ptr_Function_v2float %_ptr_Function_v4float %_ptr_Function_v4float
-%float_0_000244140625 = OpConstant %float 0.000244140625
+%float_0_0009765625 = OpConstant %float 0.0009765625
         %132 = OpConstantComposite %v3float %float_0 %float_0 %float_0
 %float_0_300000012 = OpConstant %float 0.300000012
 %float_0_589999974 = OpConstant %float 0.589999974
@@ -354,7 +354,7 @@
                      OpStore %_3_mx %114
         %117 =       OpFSub %float %114 %108        ; RelaxedPrecision
                      OpStore %_4_diff %117
-        %119 =       OpFOrdGreaterThanEqual %bool %117 %float_0_000244140625
+        %119 =       OpFOrdGreaterThanEqual %bool %117 %float_0_0009765625
                      OpSelectionMerge %123 None
                      OpBranchConditional %119 %121 %122
 

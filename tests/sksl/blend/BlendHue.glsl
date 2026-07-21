@@ -1,6 +1,6 @@
 #version 400
 const float sk_PrivkGuardedDivideEpsilon = false ? 1e-08 : 0.0;
-const float sk_PrivkHalfEpsilon = 0.000244140625;
+const float sk_PrivkHalfEpsilon = 0.0009765625;
 const float sk_PrivkMinNormalHalf = 6.10351562e-05;
 out vec4 sk_FragColor;
 uniform vec4 src;

@@ -51,7 +51,7 @@ static constexpr char SKSL_MINIFIED_sksl_gpu[] =
 " mode,half4 src,half4 dst){half4 a=blend_src_over(src,dst);half3 b=(1.-dst."
 "w)*src.xyz+dst.xyz;a.xyz=mode*min(a.xyz*mode,b*mode);return a;}$pure half4 blend_darken"
 "(half4 src,half4 dst){return blend_darken(1.,src,dst);}const half $kMinNormalHalf"
-"=6.10351562e-05;const half $kHalfEpsilon=.000244140625;const half $kGuardedDivideEpsilon"
+"=6.10351562e-05;const half $kHalfEpsilon=.0009765625;const half $kGuardedDivideEpsilon"
 "=half(sk_Caps.mustGuardDivisionEvenAfterExplicitZeroCheck?1e-08:0.);$pure inline"
 " half $guarded_divide(half n,half d){return n/(d+$kGuardedDivideEpsilon);}$pure"
 " inline half3 $guarded_divide(half3 n,half d){return n/(d+$kGuardedDivideEpsilon"

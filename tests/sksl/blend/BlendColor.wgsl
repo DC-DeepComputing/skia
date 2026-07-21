@@ -10,7 +10,7 @@ struct _GlobalUniforms {
 };
 @group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 const sk_PrivkGuardedDivideEpsilon: f16 = f16(select(0.0, 1e-08, false));
-const sk_PrivkHalfEpsilon: f16 = 0.000244140625h;
+const sk_PrivkHalfEpsilon: f16 = 0.0009765625h;
 const sk_PrivkMinNormalHalf: f16 = 6.10351562e-05h;
 fn blend_color_saturation_Qhh3(color: vec3<f16>) -> f16 {
   {
