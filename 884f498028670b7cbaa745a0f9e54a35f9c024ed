@@ -16,6 +16,80 @@
       "message": "PTAL",
       "revId": "884f498028670b7cbaa745a0f9e54a35f9c024ed",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6313cf96_35559908",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-07-21T13:27:48Z",
+      "side": 1,
+      "message": "So, this is going faster bc of increased templating ?",
+      "revId": "884f498028670b7cbaa745a0f9e54a35f9c024ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8ce872a_d0f17b61",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorSimd.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-07-21T13:27:48Z",
+      "side": 1,
+      "message": "/* kCanonicalYDir\u003d */ - here and below ?",
+      "range": {
+        "startLine": 120,
+        "startChar": 42,
+        "endLine": 120,
+        "endChar": 46
+      },
+      "revId": "884f498028670b7cbaa745a0f9e54a35f9c024ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f31d3b9f_f861244d",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorSimd.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-07-21T13:27:48Z",
+      "side": 1,
+      "message": "overlength",
+      "revId": "884f498028670b7cbaa745a0f9e54a35f9c024ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d31f1e6_aa8d49fc",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorSimd.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-07-21T13:27:48Z",
+      "side": 1,
+      "message": "overlength, here and below",
+      "revId": "884f498028670b7cbaa745a0f9e54a35f9c024ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
