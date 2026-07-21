@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8cae029d_7d76b702",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-21T15:43:39Z",
+      "side": 1,
+      "message": "Note that Chromium doesn\u0027t use Skia\u0027s timer query features, so this workaround is not in the same scope as it would be for ANGLE.",
+      "revId": "afd6c4c8cf812f371621359e2bd7de5722d42cf3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
