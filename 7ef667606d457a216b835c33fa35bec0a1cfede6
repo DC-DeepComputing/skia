@@ -46,6 +46,30 @@
       },
       "revId": "7ef667606d457a216b835c33fa35bec0a1cfede6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e8bbbd4_a13ac3e8",
+        "filename": "src/core/SkScopedSafetyChecksExclusion.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 18514
+      },
+      "writtenOn": "2026-07-21T00:15:41Z",
+      "side": 1,
+      "message": "Can you please provide some more comprehensive guidance on what you expect to happen here? I\u0027m pretty confident we don\u0027t want to implement these classes in Skia, just call/instant them from chromium when enabled.\n\nIf I move `src/core/SkScopedSafetyChecksExclusion.h` to `src/chromium/SkScopedSafetyChecksExclusion.h` then `src/gpu/graphite/DrawList.cpp` will have `#include \"src/chromium/SkScopedSafetyChecksExclusion.h\"` which I don\u0027t think is what you\u0027re suggesting (the word \"Chromium\" in the skia code), Right?",
+      "parentUuid": "14257fd3_6ab8654c",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 38
+      },
+      "revId": "7ef667606d457a216b835c33fa35bec0a1cfede6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
