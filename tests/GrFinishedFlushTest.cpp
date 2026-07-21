@@ -67,8 +67,9 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(FlushFinishedProcTest,
     canvas->clear(SK_ColorGREEN);
     auto image = surface->makeImageSnapshot();
 
-    dContext->flush();
-    dContext->submit(GrSyncCpu::kYes);
+    dContext->flushAndSubmit(GrSyncCpu::kYes);
+    //dContext->flush();
+    //dContext->submit(GrSyncCpu::kYes);
 
     int count = 0;
 
@@ -76,7 +77,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(FlushFinishedProcTest,
     flushInfoFinishedProc.fFinishedProc = testing_finished_proc;
     flushInfoFinishedProc.fFinishedContext = (void*)&count;
     // There is no work on the surface so flushing may immediately call the finished proc.
-    dContext->flush(surface.get(), flushInfoFinishedProc);
+    dContext->flush1(surface.get(), flushInfoFinishedProc);
     dContext->submit();
     REPORTER_ASSERT(reporter, count == 0 || count == 1);
     // Busy waiting should detect that the work is done.
@@ -84,7 +85,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(FlushFinishedProcTest,
 
     canvas->clear(SK_ColorRED);
 
-    dContext->flush(surface.get(), flushInfoFinishedProc);
+    dContext->flush1(surface.get(), flushInfoFinishedProc);
     dContext->submit(GrSyncCpu::kNo);
 
     bool expectAsyncCallback = dContext->priv().caps()->finishedProcAsyncCallbackSupport();
@@ -95,13 +96,14 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(FlushFinishedProcTest,
     } else {
         REPORTER_ASSERT(reporter, count == 2);
     }
-    dContext->flush();
-    dContext->submit(GrSyncCpu::kYes);
+    dContext->flushAndSubmit(GrSyncCpu::kYes);
+    //dContext->flush();
+    //dContext->submit(GrSyncCpu::kYes);
     REPORTER_ASSERT(reporter, count == 2);
 
     // Test flushing via the SkImage
     canvas->drawImage(image, 0, 0);
-    dContext->flush(image, flushInfoFinishedProc);
+    dContext->flush1(image, flushInfoFinishedProc);
     dContext->submit(GrSyncCpu::kNo);
     if (expectAsyncCallback) {
         // On Vulkan the command buffer we just submitted may or may not have finished immediately
@@ -110,13 +112,14 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(FlushFinishedProcTest,
     } else {
         REPORTER_ASSERT(reporter, count == 3);
     }
-    dContext->flush();
-    dContext->submit(GrSyncCpu::kYes);
+    dContext->flushAndSubmit(GrSyncCpu::kYes);
+    //dContext->flush();
+    //dContext->submit(GrSyncCpu::kYes);
     REPORTER_ASSERT(reporter, count == 3);
 
     // Test flushing via the GrDirectContext
     canvas->clear(SK_ColorBLUE);
-    dContext->flush(flushInfoFinishedProc);
+    dContext->flush1(flushInfoFinishedProc);
     dContext->submit(GrSyncCpu::kNo);
     if (expectAsyncCallback) {
         // On Vulkan the command buffer we just submitted may or may not have finished immediately
@@ -125,12 +128,13 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(FlushFinishedProcTest,
     } else {
         REPORTER_ASSERT(reporter, count == 4);
     }
-    dContext->flush();
-    dContext->submit(GrSyncCpu::kYes);
+    dContext->flushAndSubmit(GrSyncCpu::kYes);
+//    dContext->flush();
+//    dContext->submit(GrSyncCpu::kYes);
     REPORTER_ASSERT(reporter, count == 4);
 
     // There is no work on the surface so flushing may immediately call the finished proc.
-    dContext->flush(flushInfoFinishedProc);
+    dContext->flush1(flushInfoFinishedProc);
     dContext->submit(GrSyncCpu::kNo);
     REPORTER_ASSERT(reporter, count == 4 || count == 5);
     busy_wait_for_callback(&count, 5, dContext, reporter);
@@ -138,17 +142,18 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(FlushFinishedProcTest,
     count = 0;
     int count2 = 0;
     canvas->clear(SK_ColorGREEN);
-    dContext->flush(surface.get(), flushInfoFinishedProc);
+    dContext->flush1(surface.get(), flushInfoFinishedProc);
     dContext->submit(GrSyncCpu::kNo);
     // There is no work to be flushed here so this will return immediately, but make sure the
     // finished call from this proc isn't called till the previous surface flush also is finished.
     flushInfoFinishedProc.fFinishedContext = (void*)&count2;
-    dContext->flush(flushInfoFinishedProc);
+    dContext->flush1(flushInfoFinishedProc);
     dContext->submit(GrSyncCpu::kNo);
     REPORTER_ASSERT(reporter, count <= 1 && count2 <= count);
 
-    dContext->flush();
-    dContext->submit(GrSyncCpu::kYes);
+    dContext->flushAndSubmit(GrSyncCpu::kYes);
+//    dContext->flush();
+//    dContext->submit(GrSyncCpu::kYes);
 
     REPORTER_ASSERT(reporter, count == 1);
     REPORTER_ASSERT(reporter, count == count2);
@@ -206,7 +211,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(FinishedAsyncProcWhenAbandonedTest,
     flushInfo.fFinishedProc = abandon_context;
     flushInfo.fFinishedContext = dContext;
 
-    dContext->flush(flushInfo);
+    dContext->flush1(flushInfo);
 
     surface->asyncRescaleAndReadPixels(info,
                                        SkIRect::MakeWH(8, 8),

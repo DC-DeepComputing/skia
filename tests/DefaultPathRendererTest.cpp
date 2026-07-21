@@ -100,7 +100,7 @@ static void run_test(GrDirectContext* dContext, skiatest::Reporter* reporter) {
 
         sdc->drawPath(nullptr, std::move(paint), GrAA::kNo, SkMatrix::I(), invPath, style);
 
-        dContext->priv().flushSurface(sdc->asSurfaceProxy());
+        dContext->priv().flushSurface2(sdc->asSurfaceProxy());
     }
 
     {

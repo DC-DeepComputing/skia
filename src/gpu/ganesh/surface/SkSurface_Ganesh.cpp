@@ -97,7 +97,7 @@ static GrRenderTarget* prepare_rt_for_external_access(SkSurface_Ganesh* surface,
             break;
     }
 
-    dContext->priv().flushSurface(surface->getDevice()->targetProxy());
+    dContext->priv().flushSurface2(surface->getDevice()->targetProxy());
 
     // Grab the render target *after* firing notifications, as it may get switched if CoW kicks in.
     return surface->getDevice()->targetProxy()->peekRenderTarget();
@@ -756,7 +756,7 @@ GrSemaphoresSubmitted Flush(SkSurface* surface) {
         return GrSemaphoresSubmitted::kNo;
     }
     if (auto rContext = surface->recordingContext(); rContext != nullptr) {
-        return rContext->asDirectContext()->flush(surface, {});
+        return rContext->asDirectContext()->flush1(surface, {});
     }
     return GrSemaphoresSubmitted::kNo;
 }
@@ -766,7 +766,7 @@ GrSemaphoresSubmitted Flush(sk_sp<SkSurface> surface) {
         return GrSemaphoresSubmitted::kNo;
     }
     if (auto rContext = surface->recordingContext(); rContext != nullptr) {
-        return rContext->asDirectContext()->flush(surface.get(), {});
+        return rContext->asDirectContext()->flush1(surface.get(), {});
     }
     return GrSemaphoresSubmitted::kNo;
 }

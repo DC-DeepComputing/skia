@@ -469,7 +469,7 @@ void DDLSurfaceCharacterizationTestImpl(GrDirectContext* dContext, skiatest::Rep
         REPORTER_ASSERT(reporter, skgpu::ganesh::DrawDDL(s, ddl));
         s->readPixels(imageInfo, bitmap.getPixels(), bitmap.rowBytes(), 0, 0);
 
-        dContext->flush();
+        dContext->flush1();
     }
 
     // Then, alter each parameter in turn and check that the DDL & surface are incompatible
@@ -486,7 +486,7 @@ void DDLSurfaceCharacterizationTestImpl(GrDirectContext* dContext, skiatest::Rep
 
         REPORTER_ASSERT(reporter, !skgpu::ganesh::DrawDDL(s, ddl),
                         "DDLSurfaceCharacterizationTest failed on parameter: %d\n", i);
-        dContext->flush();
+        dContext->flush1();
     }
 
     // Next test the compatibility of resource cache parameters
@@ -517,7 +517,7 @@ void DDLSurfaceCharacterizationTestImpl(GrDirectContext* dContext, skiatest::Rep
         s->readPixels(imageInfo, bitmap.getPixels(), bitmap.rowBytes(), 0, 0);
 #endif
 
-        dContext->flush();
+        dContext->flush1();
     }
 
     // Test that the textureability of the DDL characterization can block a DDL draw
@@ -530,7 +530,7 @@ void DDLSurfaceCharacterizationTestImpl(GrDirectContext* dContext, skiatest::Rep
             // bc the DDL was made w/ textureability
             REPORTER_ASSERT(reporter, !skgpu::ganesh::DrawDDL(s, ddl));
 
-            dContext->flush();
+            dContext->flush1();
         }
     }
 
@@ -858,7 +858,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(DDLNonTextureabilityTest,
         REPORTER_ASSERT(reporter, skgpu::ganesh::DrawDDL(s, ddl));
         s->readPixels(imageInfo, bitmap.getPixels(), bitmap.rowBytes(), 0, 0);
 
-        context->flush();
+        context->flush1();
     }
 }
 
@@ -1241,13 +1241,13 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(DDLSkSurfaceFlush,
     REPORTER_ASSERT(reporter, skgpu::ganesh::DrawDDL(s, ddl));
 
     GrFlushInfo flushInfo;
-    context->flush(s.get(), SkSurfaces::BackendSurfaceAccess::kPresent, flushInfo);
+    context->flush1(s.get(), SkSurfaces::BackendSurfaceAccess::kPresent, flushInfo);
     context->submit(GrSyncCpu::kNo);
 
     REPORTER_ASSERT(reporter, fulfillInfo.fFulfilled);
 
     // In order to receive the done callback with the low-level APIs we need to re-flush
-    context->flush(s.get());
+    context->flush1(s.get());
     context->submit(GrSyncCpu::kYes);
 
     REPORTER_ASSERT(reporter, fulfillInfo.fReleased);

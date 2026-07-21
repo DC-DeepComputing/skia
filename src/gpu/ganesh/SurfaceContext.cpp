@@ -294,7 +294,7 @@ bool SurfaceContext::readPixels(GrDirectContext* dContext, GrPixmap dst, SkIPoin
 
     bool hasPendingTasks =
             dContext->priv().drawingManager()->getLastRenderTask(srcProxy.get()) != nullptr;
-    GrSemaphoresSubmitted flushResult = dContext->priv().flushSurface(srcProxy.get());
+    GrSemaphoresSubmitted flushResult = dContext->priv().flushSurface2(srcProxy.get());
     if (flushResult == GrSemaphoresSubmitted::kNo && hasPendingTasks) {
         return false;
     }
@@ -600,7 +600,7 @@ bool SurfaceContext::internalWritePixels(GrDirectContext* dContext,
     if (!ownAllStorage) {
         // If any pixmap doesn't own its pixels then we must flush so that the pixels are pushed to
         // the GPU before we return.
-        dContext->priv().flushSurface(dstProxy);
+        dContext->priv().flushSurface2(dstProxy);
     }
     return true;
 }
@@ -853,7 +853,7 @@ void SurfaceContext::asyncReadPixels(GrDirectContext* dContext,
         reinterpret_cast<AsyncReadPixelContext*>(c)->setFinished();
     };
 
-    dContext->priv().flushSurface(
+    dContext->priv().flushSurface2(
             this->asSurfaceProxy(), SkSurfaces::BackendSurfaceAccess::kNoAccess, flushInfo);
 }
 
@@ -1112,7 +1112,7 @@ void SurfaceContext::asyncRescaleAndReadPixelsYUV420(GrDirectContext* dContext,
         reinterpret_cast<AsyncReadPixelContext*>(c)->setFinished();
     };
 
-    dContext->priv().flushSurface(
+    dContext->priv().flushSurface2(
             this->asSurfaceProxy(), SkSurfaces::BackendSurfaceAccess::kNoAccess, flushInfo);
 }
 

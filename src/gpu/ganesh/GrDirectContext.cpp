@@ -431,7 +431,7 @@ skgpu::GpuStatsFlags GrDirectContext::supportedGpuStats() const {
     return this->caps()->supportedGpuStats();
 }
 
-GrSemaphoresSubmitted GrDirectContext::flush(const GrFlushInfo& info) {
+GrSemaphoresSubmitted GrDirectContext::flush1(const GrFlushInfo& info) {
     ASSERT_SINGLE_OWNER
     if (this->abandoned()) {
         if (info.fFinishedProc) {
@@ -443,7 +443,7 @@ GrSemaphoresSubmitted GrDirectContext::flush(const GrFlushInfo& info) {
         return GrSemaphoresSubmitted::kNo;
     }
 
-    return this->drawingManager()->flushSurfaces(
+    return this->drawingManager()->flushSurfaces1(
             {}, SkSurfaces::BackendSurfaceAccess::kNoAccess, info, nullptr);
 }
 
@@ -460,7 +460,7 @@ bool GrDirectContext::submit(const GrSubmitInfo& info) {
     return fGpu->submitToGpu(info);
 }
 
-GrSemaphoresSubmitted GrDirectContext::flush(const sk_sp<const SkImage>& image,
+GrSemaphoresSubmitted GrDirectContext::flush1(const sk_sp<const SkImage>& image,
                                              const GrFlushInfo& flushInfo) {
     if (!image) {
         return GrSemaphoresSubmitted::kNo;
@@ -473,16 +473,16 @@ GrSemaphoresSubmitted GrDirectContext::flush(const sk_sp<const SkImage>& image,
     return igb->flush(this, flushInfo);
 }
 
-void GrDirectContext::flush(const sk_sp<const SkImage>& image) {
-    this->flush(image, {});
+void GrDirectContext::flush1(const sk_sp<const SkImage>& image) {
+    this->flush1(image, {});
 }
 
 void GrDirectContext::flushAndSubmit(const sk_sp<const SkImage>& image) {
-    this->flush(image, {});
+    this->flush1(image, {});
     this->submit();
 }
 
-GrSemaphoresSubmitted GrDirectContext::flush(SkSurface* surface,
+GrSemaphoresSubmitted GrDirectContext::flush1(SkSurface* surface,
                                              SkSurfaces::BackendSurfaceAccess access,
                                              const GrFlushInfo& info) {
     if (!surface) {
@@ -497,10 +497,10 @@ GrSemaphoresSubmitted GrDirectContext::flush(SkSurface* surface,
     SkASSERT(this->priv().matches(gs->getDevice()->recordingContext()->asDirectContext()));
     GrRenderTargetProxy* rtp = gs->getDevice()->targetProxy();
 
-    return this->priv().flushSurface(rtp, access, info, nullptr);
+    return this->priv().flushSurface2(rtp, access, info, nullptr);
 }
 
-GrSemaphoresSubmitted GrDirectContext::flush(SkSurface* surface,
+GrSemaphoresSubmitted GrDirectContext::flush1(SkSurface* surface,
                                              const GrFlushInfo& info,
                                              const skgpu::MutableTextureState* newState) {
     if (!surface) {
@@ -515,17 +515,17 @@ GrSemaphoresSubmitted GrDirectContext::flush(SkSurface* surface,
     SkASSERT(this->priv().matches(gs->getDevice()->recordingContext()->asDirectContext()));
     GrRenderTargetProxy* rtp = gs->getDevice()->targetProxy();
 
-    return this->priv().flushSurface(
+    return this->priv().flushSurface2(
             rtp, SkSurfaces::BackendSurfaceAccess::kNoAccess, info, newState);
 }
 
 void GrDirectContext::flushAndSubmit(SkSurface* surface, GrSyncCpu sync) {
-    this->flush(surface, SkSurfaces::BackendSurfaceAccess::kNoAccess, GrFlushInfo());
+    this->flush1(surface, SkSurfaces::BackendSurfaceAccess::kNoAccess, GrFlushInfo());
     this->submit(sync);
 }
 
-void GrDirectContext::flush(SkSurface* surface) {
-    this->flush(surface, GrFlushInfo(), nullptr);
+void GrDirectContext::flush1(SkSurface* surface) {
+    this->flush1(surface, GrFlushInfo(), nullptr);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -724,7 +724,7 @@ static bool update_texture_with_pixmaps(GrDirectContext* context,
 
     GrSurfaceProxy* p = surfaceContext.asSurfaceProxy();
     GrFlushInfo info;
-    context->priv().drawingManager()->flushSurfaces(
+    context->priv().drawingManager()->flushSurfaces1(
             {&p, 1}, SkSurfaces::BackendSurfaceAccess::kNoAccess, info, nullptr);
     return true;
 }

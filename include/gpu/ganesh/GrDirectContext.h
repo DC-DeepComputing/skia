@@ -326,7 +326,7 @@ public:
      * GrContext::submit(sync).
      */
     void flushAndSubmit(GrSyncCpu sync = GrSyncCpu::kNo) {
-        this->flush(GrFlushInfo());
+        [[maybe_unused]] GrSemaphoresSubmitted semSubmitted = this->flush1(GrFlushInfo());
         this->submit(sync);
     }
 
@@ -354,9 +354,9 @@ public:
      * happen. It simply means there were no semaphores submitted to the GPU. A caller should only
      * take this as a failure if they passed in semaphores to be submitted.
      */
-    GrSemaphoresSubmitted flush(const GrFlushInfo& info);
+    GrSemaphoresSubmitted flush1(const GrFlushInfo& info);
 
-    void flush() { this->flush(GrFlushInfo()); }
+    void flush1() { this->flush1(GrFlushInfo()); }
 
     /** Flushes any pending uses of texture-backed images in the GPU backend. If the image is not
      *  texture-backed (including promise texture images) or if the GrDirectContext does not
@@ -367,8 +367,8 @@ public:
      *  @param image    the non-null image to flush.
      *  @param info     flush options
      */
-    GrSemaphoresSubmitted flush(const sk_sp<const SkImage>& image, const GrFlushInfo& info);
-    void flush(const sk_sp<const SkImage>& image);
+    GrSemaphoresSubmitted flush1(const sk_sp<const SkImage>& image, const GrFlushInfo& info);
+    void flush1(const sk_sp<const SkImage>& image);
 
     /** Version of flush() that uses a default GrFlushInfo. Also submits the flushed work to the
      *   GPU.
@@ -420,7 +420,7 @@ public:
      *  @param access  type of access the call will do on the backend object after flush
      *  @param info    flush options
      */
-    GrSemaphoresSubmitted flush(SkSurface* surface,
+    GrSemaphoresSubmitted flush1(SkSurface* surface,
                                 SkSurfaces::BackendSurfaceAccess access,
                                 const GrFlushInfo& info);
 
@@ -443,7 +443,7 @@ public:
      *  @param info     flush options
      *  @param newState optional state change request after flush
      */
-    GrSemaphoresSubmitted flush(SkSurface* surface,
+    GrSemaphoresSubmitted flush1(SkSurface* surface,
                                 const GrFlushInfo& info,
                                 const skgpu::MutableTextureState* newState = nullptr);
 
@@ -462,7 +462,7 @@ public:
      *
      *  Has no effect on a CPU-backed surface.
      */
-    void flush(SkSurface* surface);
+    void flush1(SkSurface* surface);
 
     /**
      * Submit outstanding work to the gpu from all previously un-submitted flushes. The return

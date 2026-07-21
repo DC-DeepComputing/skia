@@ -192,8 +192,9 @@ public:
     }
 
     ~TestHelper() {
-        fDContext->flush();
-        fDContext->submit(GrSyncCpu::kYes);
+        fDContext->flushAndSubmit(GrSyncCpu::kYes);
+//        fDContext->flush();
+//        fDContext->submit(GrSyncCpu::kYes);
     }
 
     Stats* stats() { return &fStats; }
@@ -1019,8 +1020,9 @@ static void test_4_75(GrDirectContext* dContext, skiatest::Reporter* reporter,
     REPORTER_ASSERT(reporter, helper.stats()->fNumHWCreations == 0);
     REPORTER_ASSERT(reporter, helper.stats()->fNumSWCreations == 0);
 
-    dContext->flush();
-    dContext->submit(GrSyncCpu::kYes);
+    dContext->flushAndSubmit(GrSyncCpu::kYes);
+//    dContext->flush();
+//    dContext->submit(GrSyncCpu::kYes);
 
     REPORTER_ASSERT(reporter, (helper.*check)(helper.liveCanvas(), kImageWH,
                                               /*hits*/ 0, /*misses*/ 1, /*refs*/ 0, kNoID));
@@ -1324,8 +1326,9 @@ static void test_10(GrDirectContext* dContext, skiatest::Reporter* reporter,
     REPORTER_ASSERT(reporter, (helper.*check)(helper.ddlCanvas2(), 2*kImageWH,
                                               /*hits*/ 2, /*misses*/ 2, /*refs*/ 2, kNoID));
 
-    dContext->flush();
-    dContext->submit(GrSyncCpu::kYes);
+    dContext->flushAndSubmit(GrSyncCpu::kYes);
+//    dContext->flush();
+//    dContext->submit(GrSyncCpu::kYes);
 
     // This should clear out everything but the textures locked in the thread-safe cache
     dContext->purgeUnlockedResources(GrPurgeResourceOptions::kAllResources);
@@ -1389,8 +1392,9 @@ static void test_11(GrDirectContext* dContext, skiatest::Reporter* reporter,
     REPORTER_ASSERT(reporter, (helper.*check)(helper.liveCanvas(), 2*kImageWH,
                                               /*hits*/ 0, /*misses*/ 2, /*refs*/ 1, kNoID));
 
-    dContext->flush();
-    dContext->submit(GrSyncCpu::kYes);
+    dContext->flushAndSubmit(GrSyncCpu::kYes);
+//    dContext->flush();
+//    dContext->submit(GrSyncCpu::kYes);
 
     REPORTER_ASSERT(reporter, helper.numCacheEntries() == 2);
     REPORTER_ASSERT(reporter, (helper.*check)(helper.liveCanvas(), kImageWH,
@@ -1443,8 +1447,9 @@ static void test_12(GrDirectContext* dContext, skiatest::Reporter* reporter,
     REPORTER_ASSERT(reporter, (helper.*check)(helper.liveCanvas(), 2*kImageWH,
                                               /*hits*/ 1, /*misses*/ 2, /*refs*/ 1, kNoID));
 
-    dContext->flush();
-    dContext->submit(GrSyncCpu::kYes);
+    dContext->flushAndSubmit(GrSyncCpu::kYes);
+//    dContext->flush();
+//    dContext->submit(GrSyncCpu::kYes);
 
     REPORTER_ASSERT(reporter, helper.numCacheEntries() == 2);
     REPORTER_ASSERT(reporter, (helper.*check)(helper.liveCanvas(), kImageWH,

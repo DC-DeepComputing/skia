@@ -1606,13 +1606,13 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(ImageFlush, reporter, ctxInfo, CtsEnforcement::
     REPORTER_ASSERT(reporter, numSubmits() == 3);
 
     // Syncing forces the flush to happen even if the images aren't used.
-    dContext->flush(i0);
+    dContext->flush1(i0);
     dContext->submit(GrSyncCpu::kYes);
     REPORTER_ASSERT(reporter, numSubmits() == 1);
-    dContext->flush(i1);
+    dContext->flush1(i1);
     dContext->submit(GrSyncCpu::kYes);
     REPORTER_ASSERT(reporter, numSubmits() == 1);
-    dContext->flush(i2);
+    dContext->flush1(i2);
     dContext->submit(GrSyncCpu::kYes);
     REPORTER_ASSERT(reporter, numSubmits() == 1);
 

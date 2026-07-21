@@ -91,8 +91,9 @@ DEF_GANESH_TEST(GrDDLImage_MakeSubset, reporter, options, CtsEnforcement::kApiLe
         // gpu image + nullptr:
         REPORTER_ASSERT(reporter, !gpuImage->makeSubset(nullptr, subsetBounds, {}));
 
-        dContext->flush();
-        dContext->submit(GrSyncCpu::kYes);
+        dContext->flushAndSubmit(GrSyncCpu::kYes);
+//        dContext->flush();
+//        dContext->submit(GrSyncCpu::kYes);
         dContext->deleteBackendTexture(tex);
     }
 }

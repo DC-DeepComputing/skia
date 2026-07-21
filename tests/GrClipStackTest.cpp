@@ -2127,7 +2127,7 @@ DEF_GANESH_TEST_FOR_CONTEXTS(ClipStack_SWMask,
 
     auto verifyKeys = [&](const std::vector<skgpu::UniqueKey>& expectedKeys,
                           const std::vector<skgpu::UniqueKey>& releasedKeys) {
-        context->flush();
+        context->flush1();
         GrProxyProvider* proxyProvider = context->priv().proxyProvider();
 
 #ifdef SK_DEBUG

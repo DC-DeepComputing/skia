@@ -1907,7 +1907,7 @@ Result GPUDDLSink::ddlDraw(const Src& src,
                                            // TODO: switch over to using the promiseImage callbacks
                                            // to free the backendTextures. This is complicated a
                                            // bit by which thread possesses the direct context.
-                                           dContext->flush();
+                                           dContext->flush1();
                                            dContext->submit(GrSyncCpu::kYes);
                                        });
 
