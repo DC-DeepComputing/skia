@@ -176,6 +176,30 @@
       },
       "revId": "a04c788c894ce612d99c63623e5a8a87958b9d61",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4adfc8ae_04ea05f0",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-07-21T15:55:57Z",
+      "side": 1,
+      "message": "I think it\u0027s harder to follow here because this block is \"allowed in layer.\" But if the draw is allowed in layer, why is it searching backwards? It only makes sense to decrement the search limit if it is \"allowed before layer.\"",
+      "parentUuid": "ef6f1cec_37a85284",
+      "range": {
+        "startLine": 101,
+        "startChar": 12,
+        "endLine": 104,
+        "endChar": 13
+      },
+      "revId": "a04c788c894ce612d99c63623e5a8a87958b9d61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
