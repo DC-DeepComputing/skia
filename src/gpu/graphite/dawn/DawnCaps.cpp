@@ -337,7 +337,7 @@ void DawnCaps::initCaps(const DawnBackendContext& backendContext, const ContextO
             DawnGraphicsPipeline::kIntrinsicUniformBufferIndex;
     fResourceBindingReqs.fCombinedUniformBufferBinding =
             DawnGraphicsPipeline::kCombinedUniformIndex;
-    fResourceBindingReqs.fGradientBufferBinding = DawnGraphicsPipeline::kGradientBufferIndex;
+    fResourceBindingReqs.fGradientBufferBinding = DawnGraphicsPipeline::kStorageBufferIndex;
 
 #if !defined(__EMSCRIPTEN__)
     // We need at least 4 SSBOs for intrinsic, render step, paint & gradient buffers.
@@ -347,11 +347,13 @@ void DawnCaps::initCaps(const DawnBackendContext& backendContext, const ContextO
                             info.backendType != wgpu::BackendType::Vulkan &&
                             compatLimits.maxStorageBuffersInVertexStage >= 4 &&
                             compatLimits.maxStorageBuffersInFragmentStage >= 4;
+    fVertexStorageSupport = fStorageBufferSupport;
 #else
     // WASM doesn't provide a way to query the backend, so can't tell if we are on a backend that
     // needs to have SSBOs disabled. Pessimistically assume we could be. Once the above conditions
     // go away in Dawn-native, then we can assume SSBOs are always supported in pure WebGPU too.
     fStorageBufferSupport = false;
+    fVertexStorageSupport = false;
 #endif
 
     fDrawBufferCanBeMapped = false;

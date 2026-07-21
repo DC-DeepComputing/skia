@@ -352,10 +352,10 @@ bool MtlCommandBuffer::addDrawPass(DrawPass* drawPass) {
         return true;
     }
 
-    // If there is gradient data to bind, it must be done prior to draws.
+    // If there is storage buffer data to bind, it must be done prior to draws.
     if (drawPass->storageBufferManager()->hasData()) {
         this->bindUniformBuffer(drawPass->storageBufferManager()->getBufferInfo(),
-                                UniformSlot::kGradient);
+                                UniformSlot::kStorageBuffer);
     }
 
     if (!drawPass->addResourceRefs(fResourceProvider, this)) SK_UNLIKELY {
@@ -540,14 +540,15 @@ void MtlCommandBuffer::bindUniformBuffer(const BindBufferInfo& info, UniformSlot
     switch(slot) {
         case UniformSlot::kCombinedUniforms:
             bufferIndex = MtlGraphicsPipeline::kCombinedUniformIndex;
+            fActiveRenderCommandEncoder->setVertexBuffer(mtlBuffer, info.fOffset, bufferIndex);
+            fActiveRenderCommandEncoder->setFragmentBuffer(mtlBuffer, info.fOffset, bufferIndex);
             break;
-        case UniformSlot::kGradient:
-            bufferIndex = MtlGraphicsPipeline::kGradientBufferIndex;
+        case UniformSlot::kStorageBuffer:
+            bufferIndex = MtlGraphicsPipeline::kStorageBufferIndex;
+            fActiveRenderCommandEncoder->setVertexBuffer(mtlBuffer, info.fOffset, bufferIndex);
+            fActiveRenderCommandEncoder->setFragmentBuffer(mtlBuffer, info.fOffset, bufferIndex);
             break;
     }
-
-    fActiveRenderCommandEncoder->setVertexBuffer(mtlBuffer, info.fOffset, bufferIndex);
-    fActiveRenderCommandEncoder->setFragmentBuffer(mtlBuffer, info.fOffset, bufferIndex);
 }
 
 void MtlCommandBuffer::bindInputBuffer(const Buffer* buffer, size_t offset, uint32_t bindingIndex) {
