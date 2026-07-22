@@ -41,6 +41,7 @@ if (skia_enable_skparagraph && skia_enable_skshaper && skia_enable_skunicode &&
   if (defined(is_skia_standalone) && skia_enable_tools) {
     import("skparagraph.gni")
     skia_source_set("utils") {
+      check_includes = false
       public_configs = [ ":utils_config" ]
       configs = [ "../../:skia_private" ]
       sources = skparagraph_utils
@@ -51,6 +52,7 @@ if (skia_enable_skparagraph && skia_enable_skshaper && skia_enable_skunicode &&
     }
 
     skia_source_set("gm") {
+      check_includes = false
       if (paragraph_gms_enabled &&
           (skia_use_icu || skia_use_libgrapheme || skia_use_icu4x)) {
         testonly = true
@@ -68,6 +70,7 @@ if (skia_enable_skparagraph && skia_enable_skshaper && skia_enable_skunicode &&
 
     if (skia_enable_tools) {
       skia_source_set("tests") {
+        check_includes = false
         if (paragraph_tests_enabled &&
             (skia_use_icu || skia_use_libgrapheme || skia_use_icu4x)) {
           testonly = true
@@ -87,6 +90,7 @@ if (skia_enable_skparagraph && skia_enable_skshaper && skia_enable_skunicode &&
     }
 
     skia_source_set("bench") {
+      check_includes = false
       if (paragraph_bench_enabled &&
           (skia_use_icu || skia_use_libgrapheme || skia_use_icu4x)) {
         testonly = true
@@ -103,6 +107,7 @@ if (skia_enable_skparagraph && skia_enable_skshaper && skia_enable_skunicode &&
     }
 
     skia_source_set("slides") {
+      check_includes = false
       if (skia_use_icu || skia_use_libgrapheme) {
         testonly = true
         sources = [ "slides/ParagraphSlide.cpp" ]
