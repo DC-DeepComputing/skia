@@ -55,6 +55,7 @@ if (skia_enable_skottie) {
 
     if (skia_enable_tools) {
       skia_source_set("tests") {
+        check_includes = false
         testonly = true
 
         configs = [ "../..:skia_private" ]

@@ -148,10 +148,6 @@ template("opts") {
       if (defined(invoker.configs)) {
         configs += invoker.configs
       }
-      if (!defined(deps)) {
-        deps = []
-      }
-      deps += [ ":core_priv" ]
     }
   } else {
     # If not enabled, a phony empty target that swallows all otherwise unused variables.
@@ -173,6 +169,7 @@ is_loong64 = current_cpu == "loong64"
 opts("ml3") {
   enabled = is_x86
   sources = skia_opts.ml3_sources
+  deps = [ ":core_priv" ]
   if (is_win) {
     cflags = [ "/arch:AVX2" ]
   } else if (current_cpu == "x86") {
@@ -185,6 +182,7 @@ opts("ml3") {
 opts("ml4") {
   enabled = is_x86
   sources = skia_opts.ml4_sources
+  deps = [ ":core_priv" ]
   if (is_win) {
     cflags = [ "/arch:AVX512" ]
   } else if (current_cpu == "x86") {
@@ -200,6 +198,7 @@ opts("ml4") {
 opts("lasx") {
   enabled = is_loong64
   sources = skia_opts.lasx_sources
+  deps = [ ":core_priv" ]
   cflags = [ "-mlasx" ]
 }
 
@@ -316,6 +315,11 @@ optional("android_utils") {
     "client_utils/android/FrontBufferedStream.h",
   ]
   public_defines = [ "SK_ENABLE_ANDROID_UTILS" ]
+  public_deps = [
+    ":codec_public",
+    ":core",
+  ]
+  deps = [ ":codec_priv" ]
   sources = [
     "client_utils/android/BitmapRegionDecoder.cpp",
     "client_utils/android/FrontBufferedStream.cpp",
@@ -325,6 +329,7 @@ optional("android_utils") {
 optional("fontmgr_android_parser") {
   enabled = skia_use_expat
 
+  public_deps = [ ":core_priv" ]
   deps = [ "//third_party/expat" ]
   sources = skia_ports_fontmgr_android_parser_sources
 }
@@ -365,14 +370,19 @@ optional("fontmgr_custom") {
       skia_enable_fontmgr_custom_directory ||
       skia_enable_fontmgr_custom_embedded || skia_enable_fontmgr_custom_empty
 
-  deps = [ ":typeface_freetype" ]
+  deps = [
+    ":core_priv",
+    ":typeface_freetype",
+  ]
   sources = skia_ports_fontmgr_custom_sources
 }
 
 optional("fontmgr_custom_directory") {
   enabled = skia_enable_fontmgr_custom_directory
   public_defines = [ "SK_FONTMGR_FREETYPE_DIRECTORY_AVAILABLE" ]
+  public_deps = [ ":core" ]
   deps = [
+    ":core_priv",
     ":fontmgr_custom",
     ":typeface_freetype",
   ]
@@ -383,7 +393,9 @@ optional("fontmgr_custom_directory") {
 optional("fontmgr_custom_embedded") {
   enabled = skia_enable_fontmgr_custom_embedded
   public_defines = [ "SK_FONTMGR_FREETYPE_EMBEDDED_AVAILABLE" ]
+  public_deps = [ ":core" ]
   deps = [
+    ":core_priv",
     ":fontmgr_custom",
     ":typeface_freetype",
   ]
@@ -394,7 +406,9 @@ optional("fontmgr_custom_embedded") {
 optional("fontmgr_custom_empty") {
   enabled = skia_enable_fontmgr_custom_empty
   public_defines = [ "SK_FONTMGR_FREETYPE_EMPTY_AVAILABLE" ]
+  public_deps = [ ":core" ]
   deps = [
+    ":core_priv",
     ":fontmgr_custom",
     ":typeface_freetype",
   ]
@@ -405,6 +419,7 @@ optional("fontmgr_custom_empty") {
 skia_source_set("typeface_proxy") {
   configs = [ ":skia_public" ]
   sources = skia_ports_typeface_proxy_sources
+  deps = [ ":core_priv" ]
 }
 
 optional("fontmgr_fontconfig") {
@@ -412,14 +427,21 @@ optional("fontmgr_fontconfig") {
   public_defines = [ "SK_FONTMGR_FONTCONFIG_AVAILABLE" ]
 
   # The public header includes fontconfig.h and uses FcConfig*
-  public_deps = [ "//third_party:fontconfig" ]
+  public_deps = [
+    ":core",
+    "//third_party:fontconfig",
+  ]
   public = skia_ports_fontmgr_fontconfig_public
-  deps = [ ":typeface_proxy" ]
+  deps = [
+    ":core_priv",
+    ":typeface_proxy",
+  ]
   sources = skia_ports_fontmgr_fontconfig_sources
   sources_for_tests = [ "tests/FontMgrFontConfigTest.cpp" ]
 }
 
 skia_source_set("fontscanner_tests") {
+  check_includes = false
   testonly = true
 
   deps = [ ":skia" ]
@@ -432,7 +454,12 @@ skia_source_set("fontscanner_tests") {
 optional("fontmgr_FontConfigInterface") {
   enabled = skia_enable_fontmgr_FontConfigInterface
   public_defines = [ "SK_FONTMGR_FCI_AVAILABLE" ]
-  deps = [ "//third_party:fontconfig" ]
+  public_deps = [ ":core" ]
+  deps = [
+    ":core_priv",
+    ":typeface_proxy",
+    "//third_party:fontconfig",
+  ]
   public = skia_ports_fci_public
   sources = skia_ports_fci_sources
   sources_for_tests = [ "tests/FCITest.cpp" ]
@@ -906,7 +933,10 @@ optional("gpu_shared") {
   deps = []
   libs = []
   public_defines = []
-  public_deps = [ ":core_priv" ]
+  public_deps = [
+    ":core_priv",
+    ":shader_utils",
+  ]
   frameworks = []
 
   sources = skia_shared_gpu_sources
@@ -960,7 +990,12 @@ optional("gpu") {
   public_configs = []
   public_deps = [ ":gpu_shared" ]
 
-  public = skia_gpu_public
+  public = skia_gpu_public + [
+             "src/gpu/ganesh/GrStyle.h",
+             "src/gpu/ganesh/geometry/GrPathUtils.h",
+             "src/gpu/ganesh/geometry/GrShape.h",
+             "src/gpu/ganesh/geometry/GrStyledShape.h",
+           ]
   sources = skia_ganesh_private
 
   libs = []
@@ -1103,6 +1138,10 @@ optional("crabbyavif") {
 optional("jpeg_mpf") {
   enabled = skia_use_jpeg_gainmaps &&
             (skia_use_libjpeg_turbo_encode || skia_use_libjpeg_turbo_decode)
+  deps = [
+    ":codec_priv",
+    ":core",
+  ]
   sources = [
     "src/codec/SkJpegMultiPicture.cpp",
     "src/codec/SkJpegSegmentScan.cpp",
@@ -1113,7 +1152,13 @@ optional("jpeg_decode") {
   enabled = skia_use_libjpeg_turbo_decode
   public_defines = [ "SK_CODEC_DECODES_JPEG" ]
 
+  public = [ "include/codec/SkJpegDecoder.h" ]
+  public_deps = [
+    ":codec_public",
+    ":core",
+  ]
   deps = [
+    ":codec_priv",
     ":core_priv",
     "//third_party/libjpeg-turbo:libjpeg",
   ]
@@ -1140,6 +1185,7 @@ optional("jpeg_encode") {
   enabled = skia_use_libjpeg_turbo_encode && !skia_use_ndk_images
   public_defines = [ "SK_CODEC_ENCODES_JPEG" ]
 
+  public_deps = [ ":encode_common" ]
   deps = [
     ":core_priv",
     "//third_party/libjpeg-turbo:libjpeg",
@@ -1148,7 +1194,10 @@ optional("jpeg_encode") {
   sources = skia_encode_jpeg_srcs
 
   if (skia_use_jpeg_gainmaps) {
-    deps += [ ":jpeg_mpf" ]
+    deps += [
+      ":codec_priv",
+      ":jpeg_mpf",
+    ]
     sources += [ "src/encode/SkJpegGainmapEncoder.cpp" ]
   }
 }
@@ -1253,6 +1302,47 @@ skia_source_set("pathops") {
   deps = [ ":core_priv" ]
 }
 
+skia_source_set("codec_public") {
+  public = skia_codec_public
+  public_deps = [
+    ":core",
+    "modules/skcms",
+  ]
+  public_configs = [ ":skia_public" ]
+}
+
+skia_source_set("codec_priv") {
+  public = [
+    "src/codec/SkBmpCodec.h",
+    "src/codec/SkCodecImageGenerator.h",
+    "src/codec/SkCodecPriv.h",
+    "src/codec/SkColorPalette.h",
+    "src/codec/SkFrameHolder.h",
+    "src/codec/SkHdrAgtmPriv.h",
+    "src/codec/SkMaskSwizzler.h",
+    "src/codec/SkParseEncodedOrigin.h",
+    "src/codec/SkPixmapUtilsPriv.h",
+    "src/codec/SkSampler.h",
+    "src/codec/SkScalingCodec.h",
+    "src/codec/SkSwizzler.h",
+    "src/codec/SkTiffUtility.h",
+  ]
+  public_deps = [
+    ":codec_public",
+    ":core_priv",
+  ]
+}
+
+skia_source_set("shader_utils") {
+  public = [ "src/utils/SkShaderUtils.h" ]
+  sources = [
+    "src/utils/SkShaderUtils.cpp",
+    "src/utils/SkShaderUtils.h",
+  ]
+  public_deps = [ ":core" ]
+  deps = [ ":core_priv" ]
+}
+
 skia_source_set("char_to_glyphcache") {
   configs = skia_library_configs
   sources = skia_char_to_glyphcache
@@ -1265,11 +1355,22 @@ skia_source_set("float_to_decimal") {
   deps = [ ":core" ]
 }
 
+skia_source_set("lazy") {
+  public = [ "src/lazy/SkDiscardableMemoryPool.h" ]
+  sources = [
+    "src/lazy/SkDiscardableMemoryPool.cpp",
+    "src/lazy/SkDiscardableMemoryPool.h",
+  ]
+  public_deps = [ ":core" ]
+  deps = [ ":core_priv" ]
+}
+
 skia_source_set("clipstack_utils") {
   configs = skia_library_configs
   sources = skia_clipstack_utils_sources
   deps = [
     ":core",
+    ":core_priv",
     ":pathops",
   ]
 }
@@ -1281,6 +1382,7 @@ optional("pdf") {
   public_deps = [ ":core" ]
   deps = [
     ":clipstack_utils",
+    ":codec_priv",
     ":core_priv",
     ":float_to_decimal",
     ":pathops",
@@ -1316,7 +1418,15 @@ optional("xps") {
 
 optional("png_decode_common") {
   enabled = skia_use_libpng_decode || skia_use_rust_png_decode
-  public = skia_codec_png_public
+  public = skia_codec_png_public + [
+             "src/codec/SkPngCodecBase.h",
+             "src/codec/SkPngCompositeChunkReader.h",
+           ]
+  public_deps = [
+    ":codec_public",
+    ":core",
+  ]
+  deps = [ ":codec_priv" ]
   sources = skia_codec_png_base
 }
 
@@ -1329,7 +1439,12 @@ optional("png_decode_libpng") {
   ]
   sources_for_tests = [ "tests/PngGainmapTest.cpp" ]
 
+  public_deps = [
+    ":codec_public",
+    ":core",
+  ]
   deps = [
+    ":codec_priv",
     ":png_decode_common",
     "//third_party/libpng",
   ]
@@ -1349,14 +1464,16 @@ skia_source_set("encode_common") {
     "src/encode/SkImageEncoderPriv.h",
   ]
   sources = skia_encode_srcs
-  deps = [
-    ":core",
-    "modules/skcms",
-  ]
+  public_deps = [ ":core_priv" ]
+  deps = [ "modules/skcms" ]
 }
 
 optional("png_encode_common") {
   enabled = skia_use_libpng_encode || skia_use_rust_png_encode
+  public_deps = [
+    ":core",
+    ":encode_common",
+  ]
   sources = skia_encode_png_base
 }
 
@@ -1368,11 +1485,17 @@ optional("png_encode_libpng") {
   ]
 
   public = skia_encode_libpng_public
+  public_deps = [
+    ":core",
+    ":encode_common",
+  ]
   deps = [
+    ":core_priv",
     ":png_encode_common",
     "//third_party/libpng",
   ]
   sources = skia_encode_libpng_srcs
+  sources += [ "src/codec/SkPngPriv.h" ]
 }
 
 optional("raw") {
@@ -1380,6 +1503,7 @@ optional("raw") {
   public_defines = [ "SK_CODEC_DECODES_RAW" ]
 
   deps = [
+    ":codec_priv",
     "//third_party/dng_sdk",
     "//third_party/libjpeg-turbo:libjpeg",
     "//third_party/piex",
@@ -1857,7 +1981,10 @@ optional("webp_decode") {
   enabled = skia_use_libwebp_decode
   public_defines = [ "SK_CODEC_DECODES_WEBP" ]
 
-  deps = [ "//third_party/libwebp" ]
+  deps = [
+    ":codec_priv",
+    "//third_party/libwebp",
+  ]
   sources = [ "src/codec/SkWebpCodec.cpp" ]
 }
 
@@ -1866,6 +1993,10 @@ optional("webp_encode") {
   public_defines = [ "SK_CODEC_ENCODES_WEBP" ]
   public = skia_encode_webp_public
 
+  public_deps = [
+    ":core",
+    ":encode_common",
+  ]
   deps = [
     ":core_priv",
     "//third_party/libwebp",
@@ -1881,6 +2012,7 @@ optional("wuffs") {
   ]
 
   deps = [
+    ":codec_priv",
     ":core_priv",
     "//third_party/wuffs",
   ]
@@ -1896,6 +2028,7 @@ optional("xml") {
   public_defines = [ "SK_XML" ]
 
   deps = [
+    ":codec_priv",
     ":core_priv",
     "//third_party/expat",
   ]
@@ -1947,6 +2080,8 @@ skia_source_set("core") {
   public = skia_core_public
   sources = skia_core_sources
   sources -= [
+    "//src/lazy/SkDiscardableMemoryPool.cpp",
+    "//src/lazy/SkDiscardableMemoryPool.h",
     "//src/utils/SkShadowTessellator.cpp",
     "//src/utils/SkShadowUtils.cpp",
   ]
@@ -1961,8 +2096,6 @@ skia_source_set("core") {
     ":fontmgr_mac_ct",
     ":fontmgr_win",
     ":fontmgr_win_gdi",
-    ":png_decode_libpng",
-    ":png_encode_libpng",
     ":typeface_fontations",
     ":typeface_freetype",
   ]
@@ -2022,6 +2155,7 @@ skia_component("skia") {
     ":jpeg_decode",
     ":jpegxl_decode",
     ":lasx",
+    ":lazy",
     ":minify_sksl",
     ":ml3",
     ":ml4",
@@ -2047,6 +2181,10 @@ skia_component("skia") {
 
   sources = []
   sources += skia_utils_private
+  sources -= [
+    "//src/utils/SkShaderUtils.cpp",
+    "//src/utils/SkShaderUtils.h",
+  ]
   sources += skia_utils_chromium
   sources += skia_effects_sources
   sources += skia_colorfilters_sources

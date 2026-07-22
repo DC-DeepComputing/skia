@@ -22,6 +22,7 @@ skia_component("sksg") {
 
 if (defined(is_skia_standalone) && skia_enable_tools) {
   skia_source_set("tests") {
+    check_includes = false
     testonly = true
 
     configs = [ "../..:skia_private" ]
@@ -35,6 +36,7 @@ if (defined(is_skia_standalone) && skia_enable_tools) {
 
   skia_source_set("slides") {
     if (target_cpu != "wasm") {  # TODO: clean up wasm test
+      check_includes = false
       testonly = true
 
       configs = [ "../..:skia_private" ]

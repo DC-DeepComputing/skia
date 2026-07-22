@@ -16,5 +16,8 @@ source_set("test_support") {
   public = [ "TestSupport.h" ]
   sources = [ "TestSupport.cpp" ]
   configs += [ ":skia_root_includes" ]
-  deps = [ "${skia_partition_alloc_dir}:partition_alloc" ]
+  deps = [
+    "${skia_partition_alloc_dir}:partition_alloc",
+    "//:core",
+  ]
 }
