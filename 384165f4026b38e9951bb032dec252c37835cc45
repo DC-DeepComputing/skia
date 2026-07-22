@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "82d0c733_d0204862",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-07-22T14:27:58Z",
+      "side": 1,
+      "message": "Thanks!\n\nI wanted to follow-up with:\nhttps://skia-review.git.corp.google.com/c/skia/+/1295876\n\nwhich would avoid this heuristic, but this will require more thoughts.\n\nIn the meantime, this patch would be a nice quickfix.",
+      "revId": "384165f4026b38e9951bb032dec252c37835cc45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
