@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "337a1f2f_d3fd00ac",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-07-22T11:59:17Z",
+      "side": 1,
+      "message": "The performance improvements result from:\n  increased templatization\n  folding a unary negation into a subtraction\n  \n?",
+      "revId": "63b4ef039b730fb7c06a57f670b478fb2dc99823",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "ba6bc76e_486bcba2",
@@ -14,6 +31,23 @@
       "writtenOn": "2026-07-21T23:11:42Z",
       "side": 1,
       "message": "PTAL; lost the +1",
+      "revId": "63b4ef039b730fb7c06a57f670b478fb2dc99823",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1811fcdc_3ff774e5",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorSimd.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-07-22T11:59:17Z",
+      "side": 1,
+      "message": "Should there be some assert that \u0027val\u0027 always fits in an unsigned char?",
       "revId": "63b4ef039b730fb7c06a57f670b478fb2dc99823",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
