@@ -343,9 +343,15 @@ func (b *TaskBuilder) nanobenchFlags(doUpload bool) {
 	match = append(match, "~inc0.webp")
 	match = append(match, "~inc1.webp")
 
-	if len(match) > 0 {
+	// Add the EXACT name of the test or benchmark you would
+	// like to test against a specific try job machine
+	match_override := ""
+	if len(match) > 0 && len(match_override) == 0 {
 		args = append(args, "--match")
 		args = append(args, match...)
+	} else {
+		args = append(args, "--match")
+		args = append(args, match_override)
 	}
 
 	if verbose {
