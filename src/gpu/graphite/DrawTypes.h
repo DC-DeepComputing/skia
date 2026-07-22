@@ -192,11 +192,12 @@ enum class DstUsage : uint8_t {
 SK_MAKE_BITMASK_OPS(DstUsage)
 
 enum class RenderStateFlags : uint8_t {
-    kNone                   = 0b0000,
-    kFixed                  = 0b0001,   // Uses explicit DrawWriter::draw functions
-    kAppendVertices         = 0b0010,   // Appends vertices
-    kAppendInstances        = 0b0100,   // Appends instances with static vertex count
-    kAppendDynamicInstances = 0b1000,   // Appends instances with a flexible vertex count
+    kNone                   = 0b00000,
+    kFixed                  = 0b00001,   // Uses explicit DrawWriter::draw functions
+    kAppendVertices         = 0b00010,   // Appends vertices
+    kAppendInstances        = 0b00100,   // Appends instances with static vertex count
+    kAppendDynamicInstances = 0b01000,   // Appends instances with a flexible vertex count
+    kAppendsVertexStorage   = 0b10000,   // Appends into VertexStorage buffers
 };
 SK_MAKE_BITMASK_OPS(RenderStateFlags)
 

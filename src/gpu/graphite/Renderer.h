@@ -172,13 +172,14 @@ public:
     // and variant is a unique term describing instance's specific configuration.
     const char* name() const { return RenderStepName(fRenderStepID); }
 
-    bool requiresMSAA()        const { return SkToBool(fFlags & Flags::kRequiresMSAA);        }
-    bool performsShading()     const { return SkToBool(fFlags & Flags::kPerformsShading);     }
-    bool hasTextures()         const { return SkToBool(fFlags & Flags::kHasTextures);         }
-    bool emitsPrimitiveColor() const { return SkToBool(fFlags & Flags::kEmitsPrimitiveColor); }
-    bool outsetBoundsForAA()   const { return SkToBool(fFlags & Flags::kOutsetBoundsForAA);   }
-    bool useNonAAInnerFill()   const { return SkToBool(fFlags & Flags::kUseNonAAInnerFill);   }
-    bool appendsVertices()     const { return SkToBool(fFlags & Flags::kAppendVertices);      }
+    bool requiresMSAA()         const { return SkToBool(fFlags & Flags::kRequiresMSAA);         }
+    bool performsShading()      const { return SkToBool(fFlags & Flags::kPerformsShading);      }
+    bool hasTextures()          const { return SkToBool(fFlags & Flags::kHasTextures);          }
+    bool emitsPrimitiveColor()  const { return SkToBool(fFlags & Flags::kEmitsPrimitiveColor);  }
+    bool outsetBoundsForAA()    const { return SkToBool(fFlags & Flags::kOutsetBoundsForAA);    }
+    bool useNonAAInnerFill()    const { return SkToBool(fFlags & Flags::kUseNonAAInnerFill);    }
+    bool appendsVertices()      const { return SkToBool(fFlags & Flags::kAppendVertices);       }
+    bool appendsVertexStorage() const { return SkToBool(fFlags & Flags::kAppendsVertexStorage); }
     SkEnumBitMask<RenderStateFlags> getRenderStateFlags() const {
         SkEnumBitMask<RenderStateFlags> rs = RenderStateFlags::kNone;
         if (fFlags & Flags::kFixed)             { rs |= RenderStateFlags::kFixed;           }
@@ -186,6 +187,9 @@ public:
         if (fFlags & Flags::kAppendInstances)   { rs |= RenderStateFlags::kAppendInstances; }
         if (fFlags & Flags::kAppendDynamicInstances) {
              rs |= RenderStateFlags::kAppendDynamicInstances;
+        }
+        if (fFlags & Flags::kAppendsVertexStorage) {
+             rs |= RenderStateFlags::kAppendsVertexStorage;
         }
         return rs;
     }
@@ -265,6 +269,7 @@ enum class Flags : unsigned {
     kUseNonAAInnerFill      = 0x0800, // Opt into Device recording extra inner fill draws
     kIgnoreInverseFill      = 0x1000, // Rasterization treats all shapes as non-inverted for scissor
     kInverseFillsScissor    = 0x2000, // Rasterization of inverse fills scissor geometrically
+    kAppendsVertexStorage   = 0x4000, // Appends into VertexStorage buffers for compute access
 };
 SK_DECL_BITMASK_OPS_FRIENDS(Flags)
 
