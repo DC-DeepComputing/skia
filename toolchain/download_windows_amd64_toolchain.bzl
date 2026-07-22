@@ -77,9 +77,22 @@ filegroup(
 )
 
 filegroup(
+    name = "dynamic_runtime_libs",
+    srcs = [
+        "bin/vcruntime140.dll",
+        "bin/vcruntime140_1.dll",
+        "bin/msvcp140.dll",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
     name = "compile_files",
     srcs = [
         "bin/clang.exe",
+        "bin/vcruntime140.dll",
+        "bin/vcruntime140_1.dll",
+        "bin/msvcp140.dll",
     ] + glob(
         include = [
             "lib/clang/23/include/**",
@@ -96,6 +109,9 @@ filegroup(
     srcs = [
         "bin/clang.exe",
         "bin/lld-link.exe",
+        "bin/vcruntime140.dll",
+        "bin/vcruntime140_1.dll",
+        "bin/msvcp140.dll",
     ] + glob(
         [
             MSVC_LIB + "/**",
@@ -121,6 +137,12 @@ filegroup(
     # Link the VC and win_sdk directories to the root of the repository.
     ctx.symlink("win_toolchain/VC", "VC")
     ctx.symlink("win_toolchain/Windows Kits/10", "win_sdk")
+
+    # Link MSVC runtime DLLs to the bin directory so that they are on the C++ toolchain's
+    # main executable path (bin/), which is propagated to rules_rust actions.
+    ctx.symlink("win_toolchain/sys64/vcruntime140.dll", "bin/vcruntime140.dll")
+    ctx.symlink("win_toolchain/sys64/vcruntime140_1.dll", "bin/vcruntime140_1.dll")
+    ctx.symlink("win_toolchain/sys64/msvcp140.dll", "bin/msvcp140.dll")
 
     # Write vars.bzl.
     ctx.file(
