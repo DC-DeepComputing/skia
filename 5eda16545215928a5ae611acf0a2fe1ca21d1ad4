@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "26b37014_94795911",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2026-07-22T15:52:06Z",
+      "side": 1,
+      "message": "Nice! LGTM from a tracing POV. Deferring to Rob for the actual bookkeeping logic.",
+      "revId": "5eda16545215928a5ae611acf0a2fe1ca21d1ad4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
