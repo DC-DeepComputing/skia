@@ -46,6 +46,30 @@
       },
       "revId": "6e05f74681402a533c47e2173ad66956c03e75c4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "38517f3b_7e88bb1f",
+        "filename": "src/gpu/ganesh/GrResourceCache.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 720,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-22T15:13:39Z",
+      "side": 1,
+      "message": "This has undergone a pretty significant rewrite to address the points you\u0027ve raised.  There is now a src/gpu shared GlobalResourceStats object that accumulates memory events from both Ganesh and Graphite to be able to issue two stable sets of tracks (one for protected and one for unprotected memory).",
+      "parentUuid": "d6240493_166fc450",
+      "range": {
+        "startLine": 720,
+        "startChar": 39,
+        "endLine": 720,
+        "endChar": 54
+      },
+      "revId": "6e05f74681402a533c47e2173ad66956c03e75c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
