@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "ca97ea5d_0a22a49c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-07-22T14:33:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "337a1f2f_d3fd00ac",
+      "revId": "63b4ef039b730fb7c06a57f670b478fb2dc99823",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "ba6bc76e_486bcba2",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 3
@@ -48,6 +66,24 @@
       "writtenOn": "2026-07-22T11:59:17Z",
       "side": 1,
       "message": "Should there be some assert that \u0027val\u0027 always fits in an unsigned char?",
+      "revId": "63b4ef039b730fb7c06a57f670b478fb2dc99823",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2989b6a6_b4e5ebdf",
+        "filename": "src/gpu/graphite/sparse_strips/StripProcessorSimd.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-07-22T14:33:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1811fcdc_3ff774e5",
       "revId": "63b4ef039b730fb7c06a57f670b478fb2dc99823",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
