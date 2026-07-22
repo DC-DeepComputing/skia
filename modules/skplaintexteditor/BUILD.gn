@@ -38,7 +38,10 @@ if ((skia_use_icu || skia_use_libgrapheme || skia_use_icu4x) &&
     include_dirs = [ "../.." ]
     public = [ "src/word_boundaries.h" ]
     sources = [ "src/word_boundaries.cpp" ]
-    deps = [ "../../modules/skunicode" ]
+    deps = [
+      "../../:skia",
+      "../../modules/skunicode",
+    ]
   }
 
   skia_source_set("editor_app") {

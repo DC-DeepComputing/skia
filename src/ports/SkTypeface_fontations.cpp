@@ -6,7 +6,6 @@
  */
 #include "include/ports/SkTypeface_fontations.h"
 
-#include "include/codec/SkCodec.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkData.h"
@@ -16,7 +15,6 @@
 #include "include/core/SkStream.h"
 #include "include/effects/SkGradient.h"
 #include "include/private/SkMutex.h"
-#include "src/codec/SkCodecPriv.h"
 #include "src/core/SkFontDescriptor.h"
 #include "src/core/SkFontPriv.h"
 #include "src/core/SkScopeExit.h"
@@ -30,11 +28,6 @@ namespace {
 
 template <typename T> rust::Slice<T> toSlice(SkSpan<T> span) {
     return rust::Slice<T>(span.data(), span.size());
-}
-
-static void check_png() {
-    SkASSERTF(SkCodecs::HasDecoder("png"),
-        "No PNG decoder registered. A call to SkCodecs::Register is necessary.");
 }
 
 // Use a monochrome bitmap strike only at its native (rounded) ppem, otherwise
@@ -662,7 +655,6 @@ protected:
                 sk_sp<SkImage> img = SkImages::DeferredFromEncodedData(
                         SkData::MakeWithoutCopy(png_data.data(), png_data.size()));
                 if (!img) {
-                    check_png();
                     return mx;
                 }
                 bounds = SkRect::Make(img->imageInfo().bounds());
@@ -732,7 +724,6 @@ protected:
             srcImage = SkImages::DeferredFromEncodedData(
                     SkData::MakeWithoutCopy(png_data.data(), png_data.size()));
             if (!srcImage) {
-                check_png();
                 return;
             }
         }else if (glyph.maskFormat() == SkMask::kA8_Format) {

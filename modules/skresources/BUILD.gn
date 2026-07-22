@@ -19,6 +19,7 @@ static_library("skresources") {
     "../../:skia_library",
   ]
   deps = [
+    "../..:codec_priv",
     "../..:skia",
     "../../experimental/ffmpeg:video_decoder",
   ]

@@ -22,7 +22,6 @@ var gniExportDescs = []exporter.GNIExportDesc{
 		{Var: "skia_codec_public",
 			Rules: []string{
 				"//include/codec:any_codec_hdrs",
-				"//include/codec:core_hdrs",
 			},
 		},
 		{Var: "skia_codec_shared",
@@ -137,13 +136,38 @@ var gniExportDescs = []exporter.GNIExportDesc{
 		{Var: "skia_core_public",
 			Rules: []string{
 				"//include/core:core_hdrs",
-			}},
-		{Var: "skia_core_sources",
-			Rules: []string{
 				"//include/private:core_priv_hdrs",
 				"//include/private:private_hdrs",
 				"//include/private/chromium:core_hdrs",
 				"//include/private/chromium:shared_private_hdrs",
+				"//include/sksl:core_hdrs",
+				"//include/effects:core_hdrs",
+				"//include/utils:core_hdrs",
+				"//include/codec:core_hdrs",
+			}},
+		{Var: "skia_core_private_hdrs",
+			Rules: []string{
+				"//src/core:core_priv_hdrs",
+				"//src/capture:capture_hdrs",
+				"//src/effects:effects_hdrs",
+				"//src/effects/colorfilters:colorfilter_hdrs",
+				"//src/image:image_hdrs",
+				"//src/sfnt:sfnt_hdrs",
+				"//src/shaders:shader_hdrs",
+				"//src/shaders/gradients:gradient_hdrs",
+				"//src/sksl:sksl_hdrs",
+				"//src/sksl/analysis:analysis_hdrs",
+				"//src/sksl/ir:ir_hdrs",
+				"//src/sksl/tracing:core_priv_hdrs",
+				"//src/sksl/transform:transform_hdrs",
+				"//src/sksl/codegen:rasterpipeline_hdrs",
+				"//src/text:text_hdrs",
+				"//src/utils:core_priv_hdrs",
+				"//src/effects/imagefilters:imagefilters_hdrs",
+				"//src/opts:textual_hdrs",
+			}},
+		{Var: "skia_core_sources",
+			Rules: []string{
 				"//src/capture:capture_hdrs",
 				"//src/capture:capture_srcs",
 				"//src/core:core_priv_hdrs",
@@ -158,6 +182,9 @@ var gniExportDescs = []exporter.GNIExportDesc{
 				"//src/shaders:shader_srcs",
 				"//src/text:text_hdrs",
 				"//src/text:text_srcs",
+				"//src/sfnt:sfnt_hdrs",
+				"//src/sfnt:sfnt_srcs",
+				"//src/utils:core_srcs",
 			}},
 		{Var: "skia_encode_public",
 			Rules: []string{"//include/encode:encode_hdrs"}},
@@ -218,10 +245,6 @@ var gniExportDescs = []exporter.GNIExportDesc{
 	},
 	},
 	{GNI: "gn/effects.gni", Vars: []exporter.GNIFileListExportDesc{
-		{Var: "skia_effects_public",
-			Rules: []string{
-				"//include/effects:core_hdrs",
-			}},
 		{Var: "skia_effects_sources",
 			Rules: []string{
 				"//src/effects:effects_hdrs",
@@ -545,7 +568,6 @@ var gniExportDescs = []exporter.GNIExportDesc{
 	{GNI: "gn/sksl.gni", Vars: []exporter.GNIFileListExportDesc{
 		{Var: "skia_sksl_core_sources",
 			Rules: []string{
-				"//include/sksl:core_hdrs",
 				"//src/sksl/analysis:analysis_hdrs",
 				"//src/sksl/analysis:analysis_srcs",
 				"//src/sksl/codegen:rasterpipeline_hdrs",
@@ -635,7 +657,6 @@ var gniExportDescs = []exporter.GNIExportDesc{
 	{GNI: "gn/utils.gni", Vars: []exporter.GNIFileListExportDesc{
 		{Var: "skia_utils_public",
 			Rules: []string{
-				"//include/utils:core_hdrs",
 				"//include/utils/mac:public_hdrs"}},
 		{Var: "skia_utils_chromium",
 			Rules: []string{
@@ -648,13 +669,18 @@ var gniExportDescs = []exporter.GNIExportDesc{
 				"//src/utils/win:core_hdrs",
 				"//src/utils/win:core_srcs",
 				"//src/utils:core_priv_hdrs",
-				"//src/utils:core_srcs",
-				"//src/utils:char_to_glyphcache",
 				"//src/utils:canvas_state_utils",
 				"//src/utils:multi_picture_document",
 				"//src/utils:clip_stack_utils",
-				"//src/utils:float_to_decimal",
 				"//src/utils:shader_utils",
+			}},
+		{Var: "skia_char_to_glyphcache",
+			Rules: []string{
+				"//src/utils:char_to_glyphcache",
+			}},
+		{Var: "skia_float_to_decimal",
+			Rules: []string{
+				"//src/utils:float_to_decimal",
 			}},
 		{Var: "skia_clipstack_utils_sources",
 			Rules: []string{

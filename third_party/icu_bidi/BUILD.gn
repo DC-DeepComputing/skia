@@ -7,6 +7,7 @@ import("../../gn/skia.gni")
 import("../third_party.gni")
 
 third_party("icu_bidi") {
+  check_includes = false
   public_include_dirs = [
     "../externals/icu/source/common",
     "../externals/icu/source/i18n",
