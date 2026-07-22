@@ -1433,8 +1433,7 @@ int main(int argc, char** argv) {
         return 1;
 #endif
     }
-    NanoJSONResultsWriter log(
-            logStream.get(), ToolUtils::default_serial_procs(), SkJSONWriter::Mode::kPretty);
+    NanoJSONResultsWriter log(logStream.get(), SkSerialProcs{}, SkJSONWriter::Mode::kPretty);
     log.beginObject(); // root
 
     if (1 == FLAGS_properties.size() % 2) {

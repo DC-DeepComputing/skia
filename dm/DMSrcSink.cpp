@@ -2119,7 +2119,7 @@ Result DebugSink::draw(const Src& src, SkBitmap*, SkWStream* dst, SkString*) con
     }
     std::unique_ptr<SkCanvas> nullCanvas = SkMakeNullCanvas();
     UrlDataManager dataManager(SkString("data"));
-    SkJSONWriter              writer(dst, ToolUtils::default_serial_procs(), SkJSONWriter::Mode::kPretty);
+    SkJSONWriter writer(dst, SkSerialProcs{}, SkJSONWriter::Mode::kPretty);
     writer.beginObject(); // root
     debugCanvas.toJSON(writer, dataManager, nullCanvas.get());
     writer.endObject(); // root
