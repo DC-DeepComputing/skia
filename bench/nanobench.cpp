@@ -938,8 +938,8 @@ public:
             if (!bench) {
                 return nullptr;
             }
-        } while (CommandLineFlags::ShouldSkip(FLAGS_sourceType, fSourceType) ||
-                 CommandLineFlags::ShouldSkip(FLAGS_benchType, fBenchType));
+        } while (false);  // (CommandLineFlags::ShouldSkip(FLAGS_sourceType, fSourceType) ||
+                          //  CommandLineFlags::ShouldSkip(FLAGS_benchType, fBenchType));
         return bench.release();
     }
 
@@ -1433,8 +1433,7 @@ int main(int argc, char** argv) {
         return 1;
 #endif
     }
-    NanoJSONResultsWriter log(
-            logStream.get(), ToolUtils::default_serial_procs(), SkJSONWriter::Mode::kPretty);
+    NanoJSONResultsWriter log(logStream.get(), SkSerialProcs{}, SkJSONWriter::Mode::kPretty);
     log.beginObject(); // root
 
     if (1 == FLAGS_properties.size() % 2) {

@@ -61,7 +61,7 @@ int main(int argc, char** argv) {
     std::unique_ptr<SkCanvas> nullCanvas = SkMakeNullCanvas();
     UrlDataManager dataManager(SkString("data"));
     SkDynamicMemoryWStream stream;
-    SkJSONWriter writer(&stream, ToolUtils::default_serial_procs(), SkJSONWriter::Mode::kPretty);
+    SkJSONWriter writer(&stream, SkSerialProcs{}, SkJSONWriter::Mode::kPretty);
     writer.beginObject(); // root
     debugCanvas.toJSON(writer, dataManager, nullCanvas.get());
     writer.endObject(); // root
