@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "929c4c01_e1c3b52b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4329740
+      },
+      "writtenOn": "2026-07-22T17:08:31Z",
+      "side": 1,
+      "message": "just wanted to say thank you for the guidance and patience with this CL.really appreciated, especially as an external contributor!",
+      "revId": "a2f1fcc2cfa35978275d4d8754ce6890a76d0579",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
