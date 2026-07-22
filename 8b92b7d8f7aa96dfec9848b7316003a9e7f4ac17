@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f819043f_d744ea81",
+        "filename": "src/gpu/GlobalResourceStats.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-22T18:29:10Z",
+      "side": 1,
+      "message": "That was a hold over from debugging where all the functions were asserting. I actually don\u0027t want asserts here. In the event of any sort of weird race, I\u0027d rather things just trace weird values than crash. I removed this assert.",
+      "parentUuid": "f9763a2b_182e7dd7",
+      "revId": "8b92b7d8f7aa96dfec9848b7316003a9e7f4ac17",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e0435f8f_a402b171",
@@ -48,6 +66,30 @@
       "writtenOn": "2026-07-22T18:02:29Z",
       "side": 1,
       "message": "typo",
+      "range": {
+        "startLine": 43,
+        "startChar": 14,
+        "endLine": 43,
+        "endChar": 24
+      },
+      "revId": "8b92b7d8f7aa96dfec9848b7316003a9e7f4ac17",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "be3e925e_e583f071",
+        "filename": "src/gpu/GlobalResourceStats.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-22T18:29:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e0435f8f_a402b171",
       "range": {
         "startLine": 43,
         "startChar": 14,
@@ -75,6 +117,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd9f5dd1_81e0863c",
+        "filename": "src/gpu/ganesh/GrGpu.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 956,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-22T18:29:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a0618320_348225a8",
+      "revId": "8b92b7d8f7aa96dfec9848b7316003a9e7f4ac17",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0d84c935_4271b5c4",
@@ -88,6 +148,24 @@
       "writtenOn": "2026-07-22T18:02:29Z",
       "side": 1,
       "message": "newlines ?",
+      "revId": "8b92b7d8f7aa96dfec9848b7316003a9e7f4ac17",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "59213229_489cc0d1",
+        "filename": "src/gpu/ganesh/GrGpu.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 967,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-22T18:29:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0d84c935_4271b5c4",
       "revId": "8b92b7d8f7aa96dfec9848b7316003a9e7f4ac17",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -115,6 +193,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "43d3a26f_bcecdb27",
+        "filename": "src/gpu/ganesh/GrResourceCache.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-22T18:29:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "784202eb_43285ae9",
+      "range": {
+        "startLine": 50,
+        "startChar": 23,
+        "endLine": 50,
+        "endChar": 38
+      },
+      "revId": "8b92b7d8f7aa96dfec9848b7316003a9e7f4ac17",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d7b3d387_5fa2c734",
@@ -128,6 +230,24 @@
       "writtenOn": "2026-07-22T18:02:29Z",
       "side": 1,
       "message": "Don\u0027t we need to set fSize and fProtected here ?",
+      "revId": "8b92b7d8f7aa96dfec9848b7316003a9e7f4ac17",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "74bb2ad0_04f8a94e",
+        "filename": "src/gpu/ganesh/vk/AHardwareBufferVk.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-22T18:29:10Z",
+      "side": 1,
+      "message": "Why yes we do!",
+      "parentUuid": "d7b3d387_5fa2c734",
       "revId": "8b92b7d8f7aa96dfec9848b7316003a9e7f4ac17",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
