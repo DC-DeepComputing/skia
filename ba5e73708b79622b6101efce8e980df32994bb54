@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2d9208c_61ef3bd7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4569768
+      },
+      "writtenOn": "2026-07-22T09:42:55Z",
+      "side": 1,
+      "message": "Hi! I created a new CL with updates from main so we can reland the Rusty ICO now that the required dependencies have been added to Chromium via the CL, https://chromium-review.googlesource.com/c/chromium/src/+/8096045?tab\u003dchecks.\n\nThank you!",
+      "revId": "ba5e73708b79622b6101efce8e980df32994bb54",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
