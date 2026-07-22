@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5414ebbd_474964ce",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-07-22T14:50:13Z",
+      "side": 1,
+      "message": "PTAL\n\nThis CL now only adds the flag and exposes the method on the buffermanager; it no longer has integration with drawWriter",
+      "revId": "c2996342d3826dade158c9c800e1aa86adffdaa5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
