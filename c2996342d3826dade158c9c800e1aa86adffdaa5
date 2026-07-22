@@ -16,6 +16,29 @@
       "message": "PTAL\n\nThis CL now only adds the flag and exposes the method on the buffermanager; it no longer has integration with drawWriter",
       "revId": "c2996342d3826dade158c9c800e1aa86adffdaa5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c20452b6_918b0827",
+        "filename": "src/gpu/graphite/DrawTypes.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-22T15:09:47Z",
+      "side": 1,
+      "message": "This is not mutually exclusive with the other kAppend flags right? Maybe to emphasize that we have the flag something like `kAppendUsesStorage`? or just `kUsesVertexStorage`?",
+      "range": {
+        "startLine": 200,
+        "startChar": 0,
+        "endLine": 200,
+        "endChar": 78
+      },
+      "revId": "c2996342d3826dade158c9c800e1aa86adffdaa5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
