@@ -16,6 +16,23 @@
       "message": "The only two files that had merge conflicts was:\nSkBmpRustCodec.cpp\nSkBmpRustCodec.h\n\nAll the other code should be the same as the previous CL.",
       "revId": "0f3a7cad7457a85ee9497dd9bdedd4c5f8481351",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1d65666_3ae16e4c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-07-22T12:37:59Z",
+      "side": 1,
+      "message": "Seeing these build error:\n\n```\n[2127/20946] RUST obj/skia/librust_bmp_ffi_e866329c.rlib obj/skia/librust_bmp_ffi_e866329c.rmeta obj/skia/rust_bmp_ffi.rustflags.json obj/skia/rust_bmp_ffi.rsp.rust\npython3 ../../build/rust/gni_impl/rustc_wrapper.py --dump-rustc-env-and-flags\u003dobj/skia/rust_bmp_ffi.rustflags.json --rsp\u003dobj/skia/rust_bmp_ffi.rsp --rustc\u003d../../third_party/rust-toolchain/bin/rustc --depfile\u003dobj/skia/librust_bmp_ffi_e866329c.rlib.d --emit\u003ddep-info\u003dobj/skia/librust_bmp_ffi_e866329c.rlib.d,link,metadata\u003dobj/skia/librust_bmp_ffi_e866329c.rmeta -o obj/skia/librust_bmp_ffi_e866329c.rlib -- -Clinker\u003d../../third_party/llvm-build/Release+Asserts/bin/clang++ ../../third_party/skia/experimental/rust_bmp/ffi/FFI.rs LDFLAGS RUSTENV OUT_DIR\u003dgen/skia/rust_bmp_ffi CLIPPY_CONF_DIR\u003d../../build/config\nerror[E0308]: mismatched types\n   --\u003e ../../third_party/skia/experimental/rust_bmp/ffi/FFI.rs:349:23\n    |\n349 |         match read_fn(decoder) {\n    |               ------- ^^^^^^^ expected `\u0026mut BmpDecoder\u003cBufReader\u003c...\u003e\u003e`, found `\u0026mut BmpDecoder\u003cDecoderInput\u003e`\n    |               |\n    |               arguments to this function are incorrect\n    |\n    \u003d note: expected mutable reference `\u0026mut BmpDecoder\u003cBufReader\u003cUniquePtr\u003cskia_rust_common::SkStreamAdapter\u003e\u003e\u003e`\n               found mutable reference `\u0026mut BmpDecoder\u003cDecoderInput\u003e`\nnote: type parameter defined here\n   --\u003e ../../third_party/skia/experimental/rust_bmp/ffi/FFI.rs:334:18\n    |\n334 |           read_fn: impl FnOnce(\n    |  __________________^\n335 | |             \u0026mut image::codecs::bmp::BmpDecoder\u003c\n336 | |                 std::io::BufReader\u003ccxx::UniquePtr\u003cffi::SkStreamAdapter\u003e\u003e,\n337 | |             \u003e,\n338 | |         ) -\u003e Result\u003c(), image::ImageError\u003e,\n    | |__________________________________________^\n\nerror: aborting due to 1 previous error\n```",
+      "revId": "0f3a7cad7457a85ee9497dd9bdedd4c5f8481351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
