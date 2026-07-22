@@ -22,6 +22,72 @@
       },
       "revId": "2b74ff2fbe573454fa400c66b6e6c2ca1549e54f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c21d6e3_506b12ca",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 2065,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-22T13:19:42Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "587826bc_d0ffe220",
+      "range": {
+        "startLine": 2065,
+        "startChar": 68,
+        "endLine": 2065,
+        "endChar": 97
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "1fba670a_2ab30cfd",
+          "description": "GET_AI_FIX_FOR_COMMENT prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tools/viewer/Viewer.cpp",
+              "range": {
+                "startLine": 2065,
+                "startChar": 0,
+                "endLine": 2066,
+                "endChar": 0
+              },
+              "replacement": "        // TestingImageProvider (which holds on to a lot of images).\n        // For Ganesh, the gen-id listening will automatically recycle the backing texture so no\n        // intervention is required.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "2b74ff2fbe573454fa400c66b6e6c2ca1549e54f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1396246e_e6ac19c9",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 2065,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-22T13:19:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "587826bc_d0ffe220",
+      "range": {
+        "startLine": 2065,
+        "startChar": 68,
+        "endLine": 2065,
+        "endChar": 97
+      },
+      "revId": "2b74ff2fbe573454fa400c66b6e6c2ca1549e54f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
