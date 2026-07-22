@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0cfc4e3_ecabc979",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4569768
+      },
+      "writtenOn": "2026-07-22T10:00:32Z",
+      "side": 1,
+      "message": "The only two files that had merge conflicts was:\nSkBmpRustCodec.cpp\nSkBmpRustCodec.h\n\nAll the other code should be the same as the previous CL.",
+      "revId": "0f3a7cad7457a85ee9497dd9bdedd4c5f8481351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
