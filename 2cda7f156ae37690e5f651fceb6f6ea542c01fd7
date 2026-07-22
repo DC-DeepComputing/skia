@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c73ad6e_6e43e247",
+        "filename": "gn/is_clang.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-07-22T15:17:44Z",
+      "side": 1,
+      "message": "Just for consistency/completeness, I removed shell\u003dTrue so that this doesn\u0027t break if the compiler paths contain spaces.",
+      "revId": "2cda7f156ae37690e5f651fceb6f6ea542c01fd7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
