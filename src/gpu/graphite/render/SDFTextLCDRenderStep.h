@@ -18,6 +18,7 @@ class DrawParams;
 class DrawWriter;
 class PipelineDataGatherer;
 struct ResourceBindingRequirements;
+struct RootNodesInfo;
 
 class SDFTextLCDRenderStep final : public RenderStep {
 public:
@@ -25,7 +26,7 @@ public:
 
     ~SDFTextLCDRenderStep() override;
 
-    std::string vertexSkSL() const override;
+    std::string vertexSkSL(const RootNodesInfo&) const override;
     std::string texturesAndSamplersSkSL(const ResourceBindingRequirements&,
                                         int* nextBindingIndex) const override;
     const char* fragmentCoverageSkSL() const override;

@@ -20,6 +20,7 @@ class DrawParams;
 class DrawWriter;
 class PipelineDataGatherer;
 class StaticBufferManager;
+struct RootNodesInfo;
 
 class CircularArcRenderStep final : public RenderStep {
 public:
@@ -27,7 +28,7 @@ public:
 
     ~CircularArcRenderStep() override;
 
-    std::string vertexSkSL() const override;
+    std::string vertexSkSL(const RootNodesInfo&) const override;
     const char* fragmentCoverageSkSL() const override;
 
     void writeVertices(DrawWriter*, const DrawParams&, uint32_t ssboIndex) const override;

@@ -12,6 +12,7 @@
 #include "src/core/SkArenaAlloc.h"
 #include "src/gpu/Blend.h"
 #include "src/gpu/Swizzle.h"
+#include "src/gpu/graphite/Attribute.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/ResourceTypes.h"
 #include "src/gpu/graphite/UniquePaintParamsID.h"
@@ -76,6 +77,8 @@ public:
     bool hasCombinedUniforms() const { return fHasCombinedUniforms; }
     bool hasGradientBuffer() const { return fHasGradientBuffer; }
 
+    SkSpan<const Attribute> staticAttributes() const { return fStaticAttrs; }
+
     // Name used in-shader for gradient buffer uniform.
     static constexpr char kGradientBufferName[] = "fsGradientBuffer";
 
@@ -122,6 +125,8 @@ private:
     int fNumFragmentTexturesAndSamplers = 0;
     bool fHasCombinedUniforms = false;
     bool fHasGradientBuffer = false;
+
+    skia_private::TArray<Attribute> fStaticAttrs;
 };
 
 }  // namespace skgpu::graphite

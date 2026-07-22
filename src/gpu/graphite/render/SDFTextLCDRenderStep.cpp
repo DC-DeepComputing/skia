@@ -7,6 +7,8 @@
 
 #include "src/gpu/graphite/render/SDFTextLCDRenderStep.h"
 
+#include "src/gpu/graphite/PaintParamsKey.h"
+
 #include "include/core/SkColor.h"
 #include "include/core/SkM44.h"
 #include "include/core/SkRefCnt.h"
@@ -77,7 +79,7 @@ SDFTextLCDRenderStep::SDFTextLCDRenderStep(Layout layout)
 
 SDFTextLCDRenderStep::~SDFTextLCDRenderStep() {}
 
-std::string SDFTextLCDRenderStep::vertexSkSL() const {
+std::string SDFTextLCDRenderStep::vertexSkSL(const RootNodesInfo&) const {
     // Returns the body of a vertex function, which must define a float4 devPosition variable and
     // must write to an already-defined float2 stepLocalCoords variable.
     return "texIndex = half(indexAndFlags.x);"

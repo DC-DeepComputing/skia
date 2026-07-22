@@ -7,6 +7,8 @@
 
 #include "src/gpu/graphite/render/PerEdgeAAQuadRenderStep.h"
 
+#include "src/gpu/graphite/PaintParamsKey.h"
+
 #include "include/core/SkM44.h"
 #include "include/private/SkAssert.h"
 #include "include/private/SkDebug.h"
@@ -235,7 +237,7 @@ PerEdgeAAQuadRenderStep::PerEdgeAAQuadRenderStep(Layout layout, StaticBufferMana
 
 PerEdgeAAQuadRenderStep::~PerEdgeAAQuadRenderStep() {}
 
-std::string PerEdgeAAQuadRenderStep::vertexSkSL() const {
+std::string PerEdgeAAQuadRenderStep::vertexSkSL(const RootNodesInfo&) const {
     // Returns the body of a vertex function, which must define a float4 devPosition variable and
     // must write to an already-defined float2 stepLocalCoords variable.
     return "float4 devPosition = per_edge_aa_quad_vertex_fn("

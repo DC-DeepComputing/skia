@@ -11,6 +11,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/effects/SkRuntimeEffect.h"
 #include "src/core/SkTHash.h"
+#include "src/gpu/graphite/MeshSpecificationDictionary.h"
 
 class SkRuntimeEffect;
 
@@ -26,6 +27,8 @@ namespace skgpu::graphite {
 // in the Recorder.
 class RuntimeEffectDictionary : public SkRefCnt {
 public:
+    RuntimeEffectDictionary() : fMeshSpecDict(sk_make_sp<MeshSpecificationDictionary>()) {}
+
     const SkRuntimeEffect* find(int codeSnippetID) const {
         sk_sp<const SkRuntimeEffect>* effect = fDict.find(codeSnippetID);
         return effect ? effect->get() : nullptr;
@@ -33,10 +36,14 @@ public:
 
     void set(int codeSnippetID, sk_sp<const SkRuntimeEffect> effect);
 
-    bool empty() const { return fDict.empty(); }
+    const MeshSpecificationDictionary* meshSpecDict() const { return fMeshSpecDict.get(); }
+    MeshSpecificationDictionary* meshSpecDict() { return fMeshSpecDict.get(); }
+
+    bool empty() const { return fDict.empty() && fMeshSpecDict->empty(); }
 
 private:
     skia_private::THashMap<int, sk_sp<const SkRuntimeEffect>> fDict;
+    sk_sp<MeshSpecificationDictionary> fMeshSpecDict;
 };
 
 } // namespace skgpu::graphite

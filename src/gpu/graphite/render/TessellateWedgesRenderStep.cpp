@@ -7,6 +7,8 @@
 
 #include "src/gpu/graphite/render/TessellateWedgesRenderStep.h"
 
+#include "src/gpu/graphite/PaintParamsKey.h"
+
 #include "include/core/SkPath.h"
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkPoint.h"
@@ -121,7 +123,7 @@ TessellateWedgesRenderStep::TessellateWedgesRenderStep(Layout layout,
 
 TessellateWedgesRenderStep::~TessellateWedgesRenderStep() {}
 
-std::string TessellateWedgesRenderStep::vertexSkSL() const {
+std::string TessellateWedgesRenderStep::vertexSkSL(const RootNodesInfo&) const {
     return SkSL::String::printf(
             "float2 localCoord;\n"
             "if (resolveLevel_and_idx.x < 0) {\n"
