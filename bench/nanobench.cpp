@@ -938,8 +938,8 @@ public:
             if (!bench) {
                 return nullptr;
             }
-        } while (CommandLineFlags::ShouldSkip(FLAGS_sourceType, fSourceType) ||
-                 CommandLineFlags::ShouldSkip(FLAGS_benchType, fBenchType));
+        } while (false); //(CommandLineFlags::ShouldSkip(FLAGS_sourceType, fSourceType) ||
+                 //CommandLineFlags::ShouldSkip(FLAGS_benchType, fBenchType));
         return bench.release();
     }
 
