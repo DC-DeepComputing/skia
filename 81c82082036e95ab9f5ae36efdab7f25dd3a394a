@@ -52,6 +52,24 @@
       "parentUuid": "765da33a_0d0f7ea9",
       "revId": "81c82082036e95ab9f5ae36efdab7f25dd3a394a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "92d66531_3ee382a1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-07-22T14:35:32Z",
+      "side": 1,
+      "message": "G3 rolls should be fine now, and the chromium canary failure is prolly unrelated.",
+      "parentUuid": "496802c6_a060c7ac",
+      "revId": "81c82082036e95ab9f5ae36efdab7f25dd3a394a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
