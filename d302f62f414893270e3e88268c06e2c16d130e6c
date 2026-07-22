@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce661ab2_ea16c724",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-07-22T19:07:44Z",
+      "side": 1,
+      "message": "PTAL\n\nApologies, the design has changed so much since when I first made this CL. After going through it, I realize that the majority of the last patchset is redundant. \n\nSince the buffer will be written and uploaded to by the StorageManager, there is no need to expose a separate write mapped storage function. This is because the storageManager will write directly with getMappedStorage. Furthermore, since there is only a single slot for uniiform storage buffers, there is no need to specify to the buffer manager which should be used.\n\nInstead, all we need to add is a way for rendersteps to specify where (if any) its storage buffer should be visible",
+      "revId": "d302f62f414893270e3e88268c06e2c16d130e6c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

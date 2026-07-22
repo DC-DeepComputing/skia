@@ -39,6 +39,30 @@
       },
       "revId": "c2996342d3826dade158c9c800e1aa86adffdaa5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1023b110_a2c63e2e",
+        "filename": "src/gpu/graphite/DrawTypes.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-07-22T19:07:44Z",
+      "side": 1,
+      "message": "Acknowledged, superseded",
+      "parentUuid": "c20452b6_918b0827",
+      "range": {
+        "startLine": 200,
+        "startChar": 0,
+        "endLine": 200,
+        "endChar": 78
+      },
+      "revId": "c2996342d3826dade158c9c800e1aa86adffdaa5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
