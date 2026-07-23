@@ -16,6 +16,149 @@
       "message": "PTAL",
       "revId": "7e23e5ff7f94da196b010e393493783c1427dc42",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19f7924c_0c051a21",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-07-23T18:18:48Z",
+      "side": 1,
+      "message": "Isn\u0027t this more split_conic_into_cubics now ?",
+      "range": {
+        "startLine": 195,
+        "startChar": 21,
+        "endLine": 195,
+        "endChar": 47
+      },
+      "revId": "7e23e5ff7f94da196b010e393493783c1427dc42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85621c8c_8dfbbf78",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-07-23T18:18:48Z",
+      "side": 1,
+      "message": "jam kMaxCubicsFromConic in here ?",
+      "range": {
+        "startLine": 197,
+        "startChar": 65,
+        "endLine": 197,
+        "endChar": 67
+      },
+      "revId": "7e23e5ff7f94da196b010e393493783c1427dc42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d084d866_714d9563",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-07-23T18:18:48Z",
+      "side": 1,
+      "message": "Could this be fused with wangs_formula::nextlog2 ?",
+      "revId": "7e23e5ff7f94da196b010e393493783c1427dc42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7fc1af4_2fdcf3b8",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-07-23T18:18:48Z",
+      "side": 1,
+      "message": "// convert the conic into a cubic ?",
+      "revId": "7e23e5ff7f94da196b010e393493783c1427dc42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89be1281_5f053b28",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-07-23T18:18:48Z",
+      "side": 1,
+      "message": "// subdivide the conic ?",
+      "revId": "7e23e5ff7f94da196b010e393493783c1427dc42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c49386a5_e6d596ca",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-07-23T18:18:48Z",
+      "side": 1,
+      "message": "It feels like this should be derived from kMaxBisections.",
+      "range": {
+        "startLine": 105,
+        "startChar": 52,
+        "endLine": 105,
+        "endChar": 54
+      },
+      "revId": "7e23e5ff7f94da196b010e393493783c1427dc42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5c89bb5_c06f9885",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-07-23T18:18:48Z",
+      "side": 1,
+      "message": "This seems high. I would think conics would rarely exceed 4 quads.",
+      "range": {
+        "startLine": 115,
+        "startChar": 46,
+        "endLine": 115,
+        "endChar": 48
+      },
+      "revId": "7e23e5ff7f94da196b010e393493783c1427dc42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
