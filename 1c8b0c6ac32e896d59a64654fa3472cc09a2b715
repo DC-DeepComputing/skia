@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf64c4fd_c482eb13",
+        "filename": "src/gpu/graphite/BuiltInCodeSnippetID.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-07-23T12:28:49Z",
+      "side": 0,
+      "message": "We should probably bump kCurrent_Version since this will cause a renumbering.",
+      "revId": "1c8b0c6ac32e896d59a64654fa3472cc09a2b715",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
