@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba40e143_20324541",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-23T22:04:40Z",
+      "side": 1,
+      "message": "After reviewing an on-device trace from surfaceflinger made by Nathan, I decided to add traceSummary() calls to the recordCreate|DeleteBackendTexture calls. These ended up happening at points in time far from the default per-submit tracing so it made the backend-texture memory tracks misaligned with when RE is already tracing map and unmap events.",
+      "revId": "2e41ea0bb48de9069b9b0e67af7c7566ceb9a114",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
