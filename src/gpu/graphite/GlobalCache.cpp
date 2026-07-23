@@ -269,6 +269,7 @@ enum class PipelineCreationRace {
     kNormalOverPrecompilation         = 1,
     kPrecompilationOverNormal         = 2,
     kPrecompilationOverPrecompilation = 3, // can happen with multiple threaded precompilation calls
+    kTestVal = 4,
 
     kMaxValue = kPrecompilationOverPrecompilation,
 };
