@@ -54,6 +54,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "40fec383_6dd54ba9",
+        "filename": "include/core/SkCanvas.h",
+        "patchSetId": 27
+      },
+      "lineNbr": 2532,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-23T18:04:53Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "ceec81d9_ad0eaed8",
+      "revId": "8f141fc70426429ab6a013f6676042298299da97",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e3408546_9d00e909",
@@ -101,6 +119,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d233f14a_3d5072a0",
+        "filename": "src/capture/SkCaptureCanvas.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-23T18:04:53Z",
+      "side": 1,
+      "message": "resolved out offline",
+      "parentUuid": "89bfab13_6df317f4",
+      "range": {
+        "startLine": 68,
+        "startChar": 4,
+        "endLine": 68,
+        "endChar": 90
+      },
+      "revId": "8f141fc70426429ab6a013f6676042298299da97",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9751f184_1046a002",
@@ -114,6 +156,30 @@
       "writtenOn": "2026-07-08T16:56:31Z",
       "side": 1,
       "message": "nit: lowercase",
+      "range": {
+        "startLine": 19,
+        "startChar": 63,
+        "endLine": 19,
+        "endChar": 64
+      },
+      "revId": "8f141fc70426429ab6a013f6676042298299da97",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2af2ea5_de333356",
+        "filename": "tools/ProcsUtils.h",
+        "patchSetId": 27
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-23T18:04:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9751f184_1046a002",
       "range": {
         "startLine": 19,
         "startChar": 63,
@@ -141,6 +207,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "78d25e14_e100ca40",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 1954,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-23T18:04:53Z",
+      "side": 1,
+      "message": "moved it up 👍",
+      "parentUuid": "66fd08cc_19d8d58a",
+      "revId": "8f141fc70426429ab6a013f6676042298299da97",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3a101e1a_4efbeef9",
@@ -154,6 +238,24 @@
       "writtenOn": "2026-07-08T16:56:31Z",
       "side": 1,
       "message": "bool fCurrentlyCapturing \u003d false;",
+      "revId": "8f141fc70426429ab6a013f6676042298299da97",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a57d6b2e_9261a752",
+        "filename": "tools/viewer/Viewer.h",
+        "patchSetId": 27
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-23T18:04:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3a101e1a_4efbeef9",
       "revId": "8f141fc70426429ab6a013f6676042298299da97",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
