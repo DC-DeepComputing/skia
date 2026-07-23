@@ -22,6 +22,30 @@
       },
       "revId": "7303e63b708ff71db143b7209b8eac080a0f9907",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f59f962b_47441399",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-07-23T14:25:41Z",
+      "side": 1,
+      "message": "Yeah, let me tag it; I made one yesterday but forgot to add it.",
+      "parentUuid": "3939b24d_53d0d843",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 45
+      },
+      "revId": "7303e63b708ff71db143b7209b8eac080a0f9907",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
