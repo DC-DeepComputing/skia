@@ -16,6 +16,23 @@
       "message": "Whoops, sorry I missed this footgun.",
       "revId": "82e3dd8e93c238baac6039f0ae1f4abaf7bcb01f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3540e037_6e704f2a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-23T14:50:38Z",
+      "side": 1,
+      "message": "See PS1-\u003ePS2 for the only change to SkTraceEventCommon.h",
+      "revId": "82e3dd8e93c238baac6039f0ae1f4abaf7bcb01f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
