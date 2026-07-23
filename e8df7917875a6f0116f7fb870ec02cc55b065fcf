@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1cc32c8c_a57af510",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-07-23T14:32:46Z",
+      "side": 1,
+      "message": "LGTM",
+      "revId": "e8df7917875a6f0116f7fb870ec02cc55b065fcf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6526251_da9553ea",
+        "filename": "src/gpu/graphite/DrawListTypes.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-07-23T14:32:46Z",
+      "side": 1,
+      "message": "nit length?",
+      "range": {
+        "startLine": 49,
+        "startChar": 92,
+        "endLine": 49,
+        "endChar": 101
+      },
+      "revId": "e8df7917875a6f0116f7fb870ec02cc55b065fcf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
