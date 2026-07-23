@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e8799ce_1d945c86",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5029334
+      },
+      "writtenOn": "2026-07-23T20:42:10Z",
+      "side": 1,
+      "message": "Hi team,\n\nI noticed that the Color Overlay layer style (ty: 7) is not yet supported in Skottie. This is a commonly used After Effects layer style. I would like to contribute an implementation. May I take this on?\n\nHappy to answer any questions!\n\nThanks,\nWenting",
+      "revId": "ddd205b28040c7f1ca6013482923cc04329ed732",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
