@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cbd1c35d_ee253cdd",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-07-23T20:21:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "19f7924c_0c051a21",
+      "range": {
+        "startLine": 195,
+        "startChar": 21,
+        "endLine": 195,
+        "endChar": 47
+      },
+      "revId": "7e23e5ff7f94da196b010e393493783c1427dc42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "85621c8c_8dfbbf78",
@@ -54,6 +78,30 @@
       "writtenOn": "2026-07-23T18:18:48Z",
       "side": 1,
       "message": "jam kMaxCubicsFromConic in here ?",
+      "range": {
+        "startLine": 197,
+        "startChar": 65,
+        "endLine": 197,
+        "endChar": 67
+      },
+      "revId": "7e23e5ff7f94da196b010e393493783c1427dc42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "39f059e3_66f84648",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-07-23T20:21:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "85621c8c_8dfbbf78",
       "range": {
         "startLine": 197,
         "startChar": 65,
@@ -81,6 +129,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9dde583_f3ab96cb",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-07-23T20:21:04Z",
+      "side": 1,
+      "message": "Marked as resolved.",
+      "parentUuid": "d084d866_714d9563",
+      "revId": "7e23e5ff7f94da196b010e393493783c1427dc42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f7fc1af4_2fdcf3b8",
@@ -98,6 +164,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "46ea022d_01d8066a",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-07-23T20:21:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f7fc1af4_2fdcf3b8",
+      "revId": "7e23e5ff7f94da196b010e393493783c1427dc42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "89be1281_5f053b28",
@@ -111,6 +195,24 @@
       "writtenOn": "2026-07-23T18:18:48Z",
       "side": 1,
       "message": "// subdivide the conic ?",
+      "revId": "7e23e5ff7f94da196b010e393493783c1427dc42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9183606_1b3d20a8",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-07-23T20:21:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "89be1281_5f053b28",
       "revId": "7e23e5ff7f94da196b010e393493783c1427dc42",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -138,6 +240,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0a0f545_3483110b",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-07-23T20:21:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c49386a5_e6d596ca",
+      "range": {
+        "startLine": 105,
+        "startChar": 52,
+        "endLine": 105,
+        "endChar": 54
+      },
+      "revId": "7e23e5ff7f94da196b010e393493783c1427dc42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a5c89bb5_c06f9885",
@@ -151,6 +277,30 @@
       "writtenOn": "2026-07-23T18:18:48Z",
       "side": 1,
       "message": "This seems high. I would think conics would rarely exceed 4 quads.",
+      "range": {
+        "startLine": 115,
+        "startChar": 46,
+        "endLine": 115,
+        "endChar": 48
+      },
+      "revId": "7e23e5ff7f94da196b010e393493783c1427dc42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d078cae2_1ccee04e",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-07-23T20:21:04Z",
+      "side": 1,
+      "message": "Remember this is not the number of *cubics* produced from a conic, it\u0027s the total number of quads produced across by all of those cubics.\n\nRunning a quick printf on the quads produced during the nanobench produces about ~20 quads on average?",
+      "parentUuid": "a5c89bb5_c06f9885",
       "range": {
         "startLine": 115,
         "startChar": 46,
