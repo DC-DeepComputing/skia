@@ -9,6 +9,8 @@
 #define SkCaptureManager_DEFINED
 
 #include "include/core/SkPicture.h"
+#include "include/core/SkPoint.h"
+#include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkTArray.h"
 
@@ -30,8 +32,9 @@ public:
     SkCaptureManager();
 
     SkCanvas* makeCaptureCanvas(SkCanvas* canvas);
-    void snapPictures();
-    void snapPicture(SkSurface*);
+
+    // TODO: Take in a SkPixelStorage ID instead
+    sk_sp<SkPicture> snapPicture(SkSurface*);
 
     void toggleCapture(bool capturing);
 
@@ -39,10 +42,14 @@ public:
         return fIsCurrentlyCapturing;
     }
 
+    skia_private::TArray<sk_sp<SkPicture>> captureDrawTasksForRecording();
+    void onInsertRecording(const skia_private::TArray<sk_sp<SkPicture>>& capturedPictures);
+
     sk_sp<SkCapture> getLastCapture() const;
 
 private:
-    void processCanvasContent(SkCaptureCanvas*);
+    void captureUninsertedDrawTasks();
+    sk_sp<SkPicture> snapAndIncrement(SkCaptureCanvas*);
 
     std::atomic<bool> fIsCurrentlyCapturing = false;
     skia_private::TArray<std::unique_ptr<SkCaptureCanvas>> fTrackedCanvases;
