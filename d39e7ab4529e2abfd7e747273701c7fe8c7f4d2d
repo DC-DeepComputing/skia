@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3bdb8b5_7ecd9730",
+        "filename": "modules/canvaskit/debugger_bindings.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-23T20:49:26Z",
+      "side": 1,
+      "message": "Can we undo this formatting only change?",
+      "range": {
+        "startLine": 35,
+        "startChar": 10,
+        "endLine": 35,
+        "endChar": 20
+      },
+      "revId": "d39e7ab4529e2abfd7e747273701c7fe8c7f4d2d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f86cbd7_73bc6f1d",
+        "filename": "tools/ProcsUtils.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-23T20:49:26Z",
+      "side": 1,
+      "message": "This #ifdef should be the same as the one controlling the #includes",
+      "range": {
+        "startLine": 62,
+        "startChar": 12,
+        "endLine": 62,
+        "endChar": 44
+      },
+      "revId": "d39e7ab4529e2abfd7e747273701c7fe8c7f4d2d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f7b91f7_0f2d3de6",
+        "filename": "tools/viewer/CaptureSlide.h",
+        "patchSetId": 29
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-23T20:49:26Z",
+      "side": 1,
+      "message": "It\u0027s frowned upon to have constants like this in the global namespace in a .h file. Since they are only used in the .cpp, let\u0027s move them there. Or, if they must be in a .h file, put them under CaptureSlide as statics, such as CaptureSlide::kTextBoxHight or whatever.",
+      "range": {
+        "startLine": 24,
+        "startChar": 10,
+        "endLine": 24,
+        "endChar": 30
+      },
+      "revId": "d39e7ab4529e2abfd7e747273701c7fe8c7f4d2d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
