@@ -22,6 +22,30 @@
       },
       "revId": "a4712bf7280a23125392b108439412265b7b89e7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "286463a7_93af90b6",
+        "filename": "infra/bots/gen_tasks_logic/nano_flags.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 347,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-23T17:23:53Z",
+      "side": 1,
+      "message": "tightened it up, let me know what you think!",
+      "parentUuid": "7d3ec352_244d5fdf",
+      "range": {
+        "startLine": 347,
+        "startChar": 17,
+        "endLine": 347,
+        "endChar": 24
+      },
+      "revId": "a4712bf7280a23125392b108439412265b7b89e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
