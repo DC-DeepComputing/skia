@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d3ec352_244d5fdf",
+        "filename": "infra/bots/gen_tasks_logic/nano_flags.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 347,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-23T13:09:29Z",
+      "side": 1,
+      "message": "nit: Tighten up this language and add an example.",
+      "range": {
+        "startLine": 347,
+        "startChar": 17,
+        "endLine": 347,
+        "endChar": 24
+      },
+      "revId": "a4712bf7280a23125392b108439412265b7b89e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
