@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df347342_800b3961",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-23T15:00:03Z",
+      "side": 1,
+      "message": "From earlier work, I realized the TRACE_COUNTER1_ALWAYS macro needed to append \".always\" to the category name, so I added it here since this is the first CL to use it. Lost the +1s.",
+      "revId": "0b45de8fc91cb93cb3bfd112fd467a842b00b5cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
