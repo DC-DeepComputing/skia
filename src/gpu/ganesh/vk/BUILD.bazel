@@ -91,7 +91,6 @@ skia_filegroup(
     srcs = ["AHardwareBufferVk.cpp"],
 )
 
-
 skia_cc_library_with_testutil(
     name = "ganesh_vulkan",
     srcs = [
