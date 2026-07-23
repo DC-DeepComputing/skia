@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46ce74ad_5521eae0",
+        "filename": "infra/bots/gen_tasks_logic/nano_flags.go",
+        "patchSetId": 6
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-23T20:50:37Z",
+      "side": 1,
+      "message": "nit: two hidden tabs that should be spaces (golang uses tabs for indents, but inside of comments, spaces are better)",
+      "range": {
+        "startLine": 348,
+        "startChar": 4,
+        "endLine": 348,
+        "endChar": 5
+      },
+      "revId": "2c72144d258fe2b5b82dd423e0e2300ffdec6604",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
