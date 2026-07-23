@@ -110,3 +110,11 @@ sk_sp<GrDirectContext> MakeGL(sk_sp<const GrGLInterface> glInterface,
 }
 
 }  // namespace GrDirectContexts
+
+namespace SkUnifiedContext {
+
+sk_sp<SkContext> MakeGanesh(sk_sp<const GrGLInterface>, const SkContextOptions& options) {
+    return nullptr;
+}
+
+}  // namespace SkUnifiedContext

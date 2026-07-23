@@ -35,3 +35,16 @@ sk_sp<GrDirectContext> MakeVulkan(const skgpu::VulkanBackendContext& backendCont
     return direct;
 }
 }  // namespace GrDirectContexts
+
+class SkContext;
+struct SkContextOptions;
+
+namespace SkUnifiedContext {
+
+sk_sp<SkContext> MakeGanesh(const skgpu::VulkanBackendContext& vkContext,
+                            const SkContextOptions& options) {
+    return nullptr;
+}
+
+}  // namespace SkUnifiedContext
+

@@ -108,3 +108,11 @@ WGPUTextureView GetDawnTextureViewPtr(const BackendTexture&);
 }  // namespace skgpu::graphite
 
 #endif  // skgpu_graphite_DawnTypesPriv_DEFINED
+
+class SkContext;
+struct SkContextOptions;
+
+namespace SkUnifiedContext {
+sk_sp<SkContext> MakeGraphite(const skgpu::graphite::DawnBackendContext& dawnContext,
+                              const SkContextOptions& options);
+}  // namespace SkUnifiedContext

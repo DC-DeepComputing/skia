@@ -25,4 +25,15 @@ SK_API sk_sp<GrDirectContext> MakeD3D(const GrD3DBackendContext& backendContext,
 SK_API sk_sp<GrDirectContext> MakeD3D(const GrD3DBackendContext& backendContext);
 }  // namespace GrDirectContexts
 
+class SkContext;
+struct SkContextOptions;
+
+namespace SkUnifiedContext {
+
+// Creates a context wrapping a Ganesh GPU backend with D3D
+sk_sp<SkContext> MakeGanesh(const GrD3DBackendContext& backendContext,
+                            const SkContextOptions& options);
+
+}  // namespace SkUnifiedContext
+
 #endif

@@ -42,3 +42,15 @@ namespace sk_gpu_test {
 TestContext* CreateMockTestContext(TestContext*) { return new MockTestContext(); }
 
 }  // namespace sk_gpu_test
+
+class SkContext;
+struct SkContextOptions;
+
+namespace SkUnifiedContext {
+
+sk_sp<SkContext> MakeGanesh(sk_gpu_test::TestContext* shareContext,
+                            const SkContextOptions& options) {
+    return nullptr;
+}
+
+}  // namespace SkUnifiedContext

@@ -31,4 +31,15 @@ SK_API std::unique_ptr<Context> MakeMetal(const MtlBackendContext&, const Contex
 
 } // namespace skgpu::graphite
 
+class SkContext;
+struct SkContextOptions;
+
+namespace SkUnifiedContext {
+
+// Creates a context wrapping a Graphite GPU backend using Metal
+sk_sp<SkContext> MakeGraphite(const skgpu::graphite::MtlBackendContext& mtlContext,
+                              const SkContextOptions& options);
+
+}  // namespace SkUnifiedContext
+
 #endif // skgpu_graphite_MtlBackendContext_DEFINED
