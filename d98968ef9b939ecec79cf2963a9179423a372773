@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "49fdcc04_c37b4a3e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2026-07-23T18:15:11Z",
+      "side": 1,
+      "message": "I updated chromium, the other clients seem to be safe.",
+      "revId": "d98968ef9b939ecec79cf2963a9179423a372773",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
