@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd789ad2_e1f091a6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4569768
+      },
+      "writtenOn": "2026-07-23T11:19:51Z",
+      "side": 1,
+      "message": "Resolved merge conflicts as bmp was moved from experimental.",
+      "revId": "33aedac5a56410c0e19266106f0cd7903a83f364",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
