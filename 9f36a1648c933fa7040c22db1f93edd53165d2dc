@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "def3b531_6713753b",
+        "filename": "src/gpu/graphite/DrawContext.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-07-23T18:38:44Z",
+      "side": 1,
+      "message": "nit: spacing around \u003d? don\u0027t know if it matters skia style-wise",
+      "range": {
+        "startLine": 87,
+        "startChar": 32,
+        "endLine": 87,
+        "endChar": 33
+      },
+      "revId": "9f36a1648c933fa7040c22db1f93edd53165d2dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
