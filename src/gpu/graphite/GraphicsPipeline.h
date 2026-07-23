@@ -47,7 +47,9 @@ public:
 
     int  numFragTexturesAndSamplers() const { return fPipelineInfo.fNumFragTexturesAndSamplers; }
     bool hasCombinedUniforms()        const { return fPipelineInfo.fHasCombinedUniforms;        }
-    bool hasGradientBuffer()          const { return fPipelineInfo.fHasGradientBuffer;          }
+    bool hasStorageBuffer()           const { return fPipelineInfo.fHasStorageBuffer;           }
+    bool vsUsesStorage()              const { return fPipelineInfo.fVsUsesStorage;             }
+    bool fsUsesStorage()              const { return fPipelineInfo.fFsUsesStorage;             }
 
     struct PipelineInfo {
         PipelineInfo() = default;
@@ -59,7 +61,9 @@ public:
         DstReadStrategy fDstReadStrategy = DstReadStrategy::kNoneRequired;
         int  fNumFragTexturesAndSamplers = 0;
         bool fHasCombinedUniforms = false;
-        bool fHasGradientBuffer = false;
+        bool fHasStorageBuffer = false;
+        bool fVsUsesStorage = false;
+        bool fFsUsesStorage = false;
 
         // In test-enabled builds, we preserve the generated shader code to display in the viewer
         // slide UI. This is not quite enough information to fully recreate the pipeline, as the

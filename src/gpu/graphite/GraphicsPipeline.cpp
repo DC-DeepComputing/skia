@@ -46,7 +46,9 @@ GraphicsPipeline::PipelineInfo::PipelineInfo(
         : fDstReadStrategy(shaderInfo.dstReadStrategy())
         , fNumFragTexturesAndSamplers(shaderInfo.numFragmentTexturesAndSamplers())
         , fHasCombinedUniforms(shaderInfo.hasCombinedUniforms())
-        , fHasGradientBuffer(shaderInfo.hasGradientBuffer())
+        , fHasStorageBuffer(shaderInfo.hasStorageBuffer())
+        , fVsUsesStorage(shaderInfo.vsUsesStorage())
+        , fFsUsesStorage(shaderInfo.fsUsesStorage())
         , fUniqueKeyHash(uniqueKeyHash)
         , fCompilationID(compilationID)
         , fFromPrecompile(pipelineCreationFlags & PipelineCreationFlags::kForPrecompilation) {

@@ -87,7 +87,7 @@ struct ResourceBindingRequirements {
     /* Define uniform buffer bindings */
     int fIntrinsicBufferBinding       = kUnassigned;
     int fCombinedUniformBufferBinding = kUnassigned;
-    int fGradientBufferBinding        = kUnassigned;
+    int fStorageBufferBinding         = kUnassigned;
 };
 
 class Caps {
