@@ -25,6 +25,7 @@ void StorageBufferManager::GradientCache::reset() {
 void StorageBufferManager::reset() {
     fGradientCache.reset();
     fBufferInfo.reset();
+    fVisibility = {};
 }
 
 std::pair<float*, int> StorageBufferManager::allocateGradientData(
@@ -33,6 +34,8 @@ std::pair<float*, int> StorageBufferManager::allocateGradientData(
     if (numStops > GradientCache::kMaxGradientStops) {
         return {nullptr, -1};
     }
+
+    fVisibility |= PipelineStageFlags::kFragmentShader;
 
     int* existingOffset = fGradientCache.fOffsetCache.find(shader);
     if (existingOffset) {

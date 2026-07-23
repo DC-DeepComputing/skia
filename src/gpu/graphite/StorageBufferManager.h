@@ -13,6 +13,7 @@
 #include "include/private/SkTDArray.h"
 #include "src/core/SkTHash.h"
 #include "src/gpu/graphite/BufferManager.h"
+#include "src/gpu/graphite/DescriptorData.h"
 #include "src/gpu/graphite/ResourceTypes.h"
 
 #include <cstdint>
@@ -48,6 +49,7 @@ public:
 
     BindBufferInfo getBufferInfo() const { return fBufferInfo.value_or(BindBufferInfo{}); }
     bool hasData() const { return fBufferInfo.has_value() && fBufferInfo->fBuffer != nullptr; }
+    SkEnumBitMask<PipelineStageFlags> visibility() const { return fVisibility; }
 
 #if defined(SK_DEBUG)
     bool isFinalized() const { return fBufferInfo.has_value(); }
@@ -68,6 +70,7 @@ private:
 
     GradientCache fGradientCache;
     std::optional<BindBufferInfo> fBufferInfo;
+    SkEnumBitMask<PipelineStageFlags> fVisibility = {};
 };
 
 } // namespace skgpu::graphite
