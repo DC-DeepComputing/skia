@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "acc5b599_ba74e4b8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 18
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-23T17:00:03Z",
+      "side": 1,
+      "message": "Implemented these where I thought they should go, but definitely let me know if they are off course",
+      "parentUuid": "5e5e5c5e_b7daa979",
+      "revId": "7d7f65b65f1c77a0730a621b0d89dad7b996b800",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8096da24_aadd95ee",
@@ -31,6 +49,30 @@
       "writtenOn": "2026-07-14T14:17:07Z",
       "side": 1,
       "message": "The naming we\u0027ve gone for other similar namespaces for factories is just adding an \"s\" to the object. For example, SkSurfaces and SkImages. So for here I would just name this SkContexts.\n\nOn a moot side not SkUnifiedContext as more a description of the project to unify contexts and less a description of the final state. Like if we were starting from scratch there is no reason to call out the context is unified because it was never not unified.",
+      "range": {
+        "startLine": 30,
+        "startChar": 10,
+        "endLine": 30,
+        "endChar": 26
+      },
+      "revId": "7d7f65b65f1c77a0730a621b0d89dad7b996b800",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "24600644_bab534da",
+        "filename": "include/gpu/ganesh/mtl/GrMtlDirectContext.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-23T17:00:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8096da24_aadd95ee",
       "range": {
         "startLine": 30,
         "startChar": 10,
@@ -64,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "32b8cfd7_5a6e7826",
+        "filename": "src/core/SkContext.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-23T17:00:03Z",
+      "side": 1,
+      "message": "found the bazel tool, thanks for recommending it",
+      "parentUuid": "3b3feac1_f8c3e956",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 37
+      },
+      "revId": "7d7f65b65f1c77a0730a621b0d89dad7b996b800",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c8a2f21b_4dc94393",
@@ -77,6 +143,30 @@
       "writtenOn": "2026-07-14T14:17:07Z",
       "side": 1,
       "message": "We don\u0027t need to wrap the class itself in a namespace. At least that\u0027s not the model we have for all other public \"Sk\" classes",
+      "range": {
+        "startLine": 59,
+        "startChar": 1,
+        "endLine": 59,
+        "endChar": 28
+      },
+      "revId": "7d7f65b65f1c77a0730a621b0d89dad7b996b800",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f086c06_2afe17a9",
+        "filename": "src/core/SkContext.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-23T17:00:03Z",
+      "side": 1,
+      "message": "sounds good, removed the namespace here",
+      "parentUuid": "c8a2f21b_4dc94393",
       "range": {
         "startLine": 59,
         "startChar": 1,
@@ -110,6 +200,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e3bea0e_07608f3a",
+        "filename": "src/core/SkContext.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-23T17:00:03Z",
+      "side": 1,
+      "message": "I put it in a RasterContext.h file, not sure if that was what you were imagining",
+      "parentUuid": "a4c89c6e_04111d3a",
+      "range": {
+        "startLine": 72,
+        "startChar": 4,
+        "endLine": 72,
+        "endChar": 72
+      },
+      "revId": "7d7f65b65f1c77a0730a621b0d89dad7b996b800",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "285ad9bd_ca3e66ca",
@@ -123,6 +237,30 @@
       "writtenOn": "2026-07-14T14:17:07Z",
       "side": 1,
       "message": "Which of these getters/setters are actually needed to be public vs which are just used internally in Skia? Like are there clients that need to actually call `getFontCache` or `getResourceCache`? Those seem like things that only Skia should even know about let alone access.",
+      "range": {
+        "startLine": 74,
+        "startChar": 4,
+        "endLine": 102,
+        "endChar": 5
+      },
+      "revId": "7d7f65b65f1c77a0730a621b0d89dad7b996b800",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf935638_6f588bba",
+        "filename": "src/core/SkContext.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-23T17:00:03Z",
+      "side": 1,
+      "message": "kind of set them to public by default, so I just set them all to private for the time being. I was thinking we could leave them private for now and make them public as the need arises.",
+      "parentUuid": "285ad9bd_ca3e66ca",
       "range": {
         "startLine": 74,
         "startChar": 4,
@@ -158,6 +296,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b370506f_919cf028",
+        "filename": "src/core/SkContext.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-23T17:00:03Z",
+      "side": 1,
+      "message": "I formatted it so that the caches would live in the shared context and the getters would live in the the skcontext, is that what you were picturing?",
+      "parentUuid": "02bc6338_d38818e6",
+      "range": {
+        "startLine": 112,
+        "startChar": 0,
+        "endLine": 118,
+        "endChar": 0
+      },
+      "revId": "7d7f65b65f1c77a0730a621b0d89dad7b996b800",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7c846e32_386c37c2",
         "filename": "src/core/SkContextPriv.h",
         "patchSetId": 18
@@ -169,6 +331,24 @@
       "writtenOn": "2026-07-14T14:17:07Z",
       "side": 1,
       "message": "I don\u0027t think I would add this class yet. As of now there is no use for it and it is causing you to add a lot of forward declarations and includes that you don\u0027t even know if you\u0027ll need yet.",
+      "revId": "7d7f65b65f1c77a0730a621b0d89dad7b996b800",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0026b2fa_0632f9d7",
+        "filename": "src/core/SkContextPriv.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-23T17:00:03Z",
+      "side": 1,
+      "message": "sounds good, took it out",
+      "parentUuid": "7c846e32_386c37c2",
       "revId": "7d7f65b65f1c77a0730a621b0d89dad7b996b800",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
