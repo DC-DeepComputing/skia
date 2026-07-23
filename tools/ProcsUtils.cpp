@@ -59,7 +59,9 @@ SkSerialProcs default_serial_procs() {
     static SkSerialProcs procs;
 
     procs.fImageProc = [](SkImage* img, void*) -> sk_sp<const SkData> {
-#if defined(SK_CODEC_ENCODES_PNG_WITH_RUST)
+#if defined(SK_CODEC_ENCODES_PNG_WITH_LIBPNG)
+        return SkPngEncoder::Encode(nullptr, img, {});
+#elif defined(SK_CODEC_ENCODES_PNG_WITH_RUST)
         return SkPngRustEncoder::Encode(nullptr, img, {});
 #else
         // TODO: This catches SkImageEncoder_NDK (or other).
