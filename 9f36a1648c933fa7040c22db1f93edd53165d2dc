@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "c500f398_2ba0d63c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-23T19:01:59Z",
+      "side": 1,
+      "message": "Right, we\u0027re already off the pair insertion system. I can do a follow-up that renames these variables to something like `stopLayer` or similar",
+      "parentUuid": "fb516122_f58b016b",
+      "revId": "9f36a1648c933fa7040c22db1f93edd53165d2dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "def3b531_6713753b",
         "filename": "src/gpu/graphite/DrawContext.h",
         "patchSetId": 6
