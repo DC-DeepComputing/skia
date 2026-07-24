@@ -1,0 +1,124 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6889ddc9_778d1893",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19729
+      },
+      "writtenOn": "2026-07-24T19:35:14Z",
+      "side": 1,
+      "message": "Thanks for updating this!",
+      "revId": "1c5eb13965c12c74f0cbd0aec52a8784aeaeba84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4c7379d_0b6a49a0",
+        "filename": "site/docs/dev/testing/skiaperf.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 19729
+      },
+      "writtenOn": "2026-07-24T19:35:14Z",
+      "side": 1,
+      "message": "I would suggest rephrasing this a bit (comments below for more explanation):\n\n\u003e Skia Perf is a web application for analyzing and viewing performance metrics produced by performance tests run in Continuous Integration (CI/postsubmit) builds.\n\u003e\n\u003e See the main [Skia Perf docs](https://skia.googlesource.com/buildbot/+/refs/heads/main/perf/README.md) for more information.\n\u003e\n\u003e See [Skia\u0027s instance of Skia Perf, skia-perf.luci.app](https://skia-perf.luci.app/) for Skia performance results.\n\u003e\n\u003e Skia Perf was originally developed for use by the Skia project, but is now used by multiple open source projects.  It retains the name Skia Perf for now, even though it is no longer specific to Skia.\"\n\n* This makes the link to the main docs a bit more prominent.\n* This drops the link to https://perf.skia.org from the first paragraph, moves it, and makes it to be for https://skia-perf.luci.app/, which is what https://perf.skia.org redirects to anyway.\n   * While you could keep the link as https://perf.skia.org, IMO it\u0027s harder to understand what sites do what when redirects are involved.",
+      "revId": "1c5eb13965c12c74f0cbd0aec52a8784aeaeba84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3d978e4_c18340bf",
+        "filename": "site/docs/dev/testing/skiaperf.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 19729
+      },
+      "writtenOn": "2026-07-24T19:35:14Z",
+      "side": 1,
+      "message": "\"Testing infrastructure\" on its own (after removing \"Skia\u0027s\") sounds a bit vague.\n\nMy suggestion above is \"performance metrics produced by performance tests run in Continuous Integration (CI/postsubmit) builds\" (the wording used in the internal docs).",
+      "range": {
+        "startLine": 10,
+        "startChar": 40,
+        "endLine": 10,
+        "endChar": 62
+      },
+      "revId": "1c5eb13965c12c74f0cbd0aec52a8784aeaeba84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e8a7027_2af6fa01",
+        "filename": "site/docs/dev/testing/skiaperf.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 19729
+      },
+      "writtenOn": "2026-07-24T19:35:14Z",
+      "side": 1,
+      "message": "Like we discussed in the earlier code review, I don\u0027t think the info here is really specific to Skia\u0027s instance, it\u0027s just old.\n\nIf you do want to refer to Skia\u0027s instance, I would say \"Skia\u0027s instance of Skia Perf\", rather than \"the Skia-specific instance\", to be clearer.  Readers won\u0027t necessarily know what an instance is in this context.",
+      "range": {
+        "startLine": 12,
+        "startChar": 52,
+        "endLine": 13,
+        "endChar": 26
+      },
+      "revId": "1c5eb13965c12c74f0cbd0aec52a8784aeaeba84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e80217a9_cde004b3",
+        "filename": "site/docs/dev/testing/skiaperf.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 19729
+      },
+      "writtenOn": "2026-07-24T19:35:14Z",
+      "side": 1,
+      "message": "Could change this to \"Skia\u0027s usage of Skia Perf\" instead?",
+      "revId": "1c5eb13965c12c74f0cbd0aec52a8784aeaeba84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51158571_a32056a6",
+        "filename": "site/docs/dev/testing/skiaperf.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 19729
+      },
+      "writtenOn": "2026-07-24T19:35:14Z",
+      "side": 1,
+      "message": "Since you changed \"Perf\" -\u003e \"Skia Perf\" below, could do the same here too for clarity.",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 4
+      },
+      "revId": "1c5eb13965c12c74f0cbd0aec52a8784aeaeba84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
