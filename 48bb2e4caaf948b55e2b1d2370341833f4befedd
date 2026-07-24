@@ -1,0 +1,65 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a46141e_2cc5e416",
+        "filename": "src/core/SkRasterPipeline.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-07-24T11:21:43Z",
+      "side": 1,
+      "message": "Move it with other includes starting from src and remove the extra empty line above. Run git cl format.",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 50
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "7901a220_263415e1",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/core/SkRasterPipeline.h",
+              "range": {
+                "startLine": 9,
+                "startChar": 0,
+                "endLine": 10,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "src/core/SkRasterPipeline.h",
+              "range": {
+                "startLine": 11,
+                "startChar": 0,
+                "endLine": 12,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "src/core/SkRasterPipeline.h",
+              "range": {
+                "startLine": 1,
+                "startChar": 0,
+                "endLine": 1,
+                "endChar": 0
+              },
+              "replacement": "#include \"src/partition_alloc/raw_ptr_exclusion.h\"\n"
+            }
+          ]
+        }
+      ],
+      "revId": "48bb2e4caaf948b55e2b1d2370341833f4befedd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
