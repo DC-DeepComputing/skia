@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9fde6ec_20191129",
+        "filename": "modules/canvaskit/debugger_bindings.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-24T15:17:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c3bdb8b5_7ecd9730",
+      "range": {
+        "startLine": 35,
+        "startChar": 10,
+        "endLine": 35,
+        "endChar": 20
+      },
+      "revId": "d39e7ab4529e2abfd7e747273701c7fe8c7f4d2d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1f86cbd7_73bc6f1d",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "74b74818_999be62b",
+        "filename": "tools/ProcsUtils.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-24T15:17:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1f86cbd7_73bc6f1d",
+      "range": {
+        "startLine": 62,
+        "startChar": 12,
+        "endLine": 62,
+        "endChar": 44
+      },
+      "revId": "d39e7ab4529e2abfd7e747273701c7fe8c7f4d2d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2f7b91f7_0f2d3de6",
@@ -60,6 +108,30 @@
       "writtenOn": "2026-07-23T20:49:26Z",
       "side": 1,
       "message": "It\u0027s frowned upon to have constants like this in the global namespace in a .h file. Since they are only used in the .cpp, let\u0027s move them there. Or, if they must be in a .h file, put them under CaptureSlide as statics, such as CaptureSlide::kTextBoxHight or whatever.",
+      "range": {
+        "startLine": 24,
+        "startChar": 10,
+        "endLine": 24,
+        "endChar": 30
+      },
+      "revId": "d39e7ab4529e2abfd7e747273701c7fe8c7f4d2d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca193953_c34d5b7f",
+        "filename": "tools/viewer/CaptureSlide.h",
+        "patchSetId": 29
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-24T15:17:57Z",
+      "side": 1,
+      "message": "I don\u0027t believe they have to be in the header, so added them to the cpp",
+      "parentUuid": "2f7b91f7_0f2d3de6",
       "range": {
         "startLine": 24,
         "startChar": 10,
