@@ -220,8 +220,7 @@ std::unique_ptr<Recording> Recorder::snap() {
                                                        std::move(fFinishedProcs)));
     // Allow the buffer managers to add any collected tasks for data transfer or initialization
     // before moving the root task list to the Recording.
-    bool valid = fStorageBufferManager->finalize(fDrawBufferManager.get());
-    valid &= fDrawBufferManager->transferToRecording(recording.get());
+    bool valid = fDrawBufferManager->transferToRecording(recording.get());
 
     // We create the Recording's full task list even if the DrawBufferManager failed because it is
     // a convenient way to ensure everything else is unmapped and reset for the next Recording.
