@@ -1,0 +1,208 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe07a7b2_87cd7694",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-07-24T21:24:17Z",
+      "side": 1,
+      "message": "LGTM",
+      "revId": "213f7ea35c8d86caf2c1ff520fc94d68c5bd3ecb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "779486e0_ec933d1f",
+        "filename": "src/gpu/graphite/DrawListTypes.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-07-24T21:24:17Z",
+      "side": 1,
+      "message": "Nit: no longer pass `canForwardMerge`",
+      "range": {
+        "startLine": 282,
+        "startChar": 38,
+        "endLine": 282,
+        "endChar": 80
+      },
+      "revId": "213f7ea35c8d86caf2c1ff520fc94d68c5bd3ecb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f70d902e_85ff4813",
+        "filename": "src/gpu/graphite/DrawListTypes.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 294,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-07-24T21:24:17Z",
+      "side": 1,
+      "message": "Nit rewrite (mine loll):\n\nThe pilot draw searches backwards, tail to head, so during the search, any binding matches found *before* a layer execute *after* that draw during rendering. Because existing Opaque shading draws (kColor only) in a layer are guaranteed to be non-intersecting, it is visually safe to extract this match and defer its execution to the new layer without violating painter\u0027s order.",
+      "range": {
+        "startLine": 288,
+        "startChar": 14,
+        "endLine": 294,
+        "endChar": 38
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "d4696172_6fd2c738",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/DrawListTypes.h",
+              "range": {
+                "startLine": 288,
+                "startChar": 0,
+                "endLine": 295,
+                "endChar": 0
+              },
+              "replacement": "        //    The new draw searches backwards, tail to head, so during the search, any binding matches\n        //    found *before* a layer execute *after* that draw during rendering. Because existing\n        //    Opaque shading draws (kColor only) in a layer are guaranteed to be non-intersecting,\n        //    it is visually safe to extract this match and defer its execution to the new layer\n        //    without violating the Painter\u0027s Algorithm.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "213f7ea35c8d86caf2c1ff520fc94d68c5bd3ecb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4de7cf1_3de74d26",
+        "filename": "src/gpu/graphite/DrawListTypes.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-07-24T21:24:17Z",
+      "side": 1,
+      "message": "Nit rewrite:\nForward merging is restricted to draws in the *tail layer* of the list (layerIsForwardMergeEligible). Merging in the middle requires inserting a new layer, but because `Layer::fOrder` must be monotonically increasing, there is no valid `fOrder` value available to assign to a new middle layer.",
+      "range": {
+        "startLine": 297,
+        "startChar": 14,
+        "endLine": 302,
+        "endChar": 24
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "0db4b47a_cf2a777c",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/DrawListTypes.h",
+              "range": {
+                "startLine": 297,
+                "startChar": 0,
+                "endLine": 303,
+                "endChar": 0
+              },
+              "replacement": "        //    Forward merging is restricted to draws in the *tail layer* of the list\n        //    (layerIsForwardMergeEligible). Merging in the middle requires inserting a new layer,\n        //    but because `Layer::fOrder` must strictly increase, there is no valid fOrder value\n        //    available to assign to a new middle layer.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "213f7ea35c8d86caf2c1ff520fc94d68c5bd3ecb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6c59c56_6ea0815e",
+        "filename": "src/gpu/graphite/DrawListTypes.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 356,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-07-24T21:24:17Z",
+      "side": 1,
+      "message": "Can you add a comment here about the result at this point?\n\nI think it\u0027s // Else must be color aspectOverlap, if we haven\u0027t . . .",
+      "range": {
+        "startLine": 355,
+        "startChar": 16,
+        "endLine": 356,
+        "endChar": 47
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "be5f8039_38666a6f",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/DrawListTypes.h",
+              "range": {
+                "startLine": 1,
+                "startChar": 0,
+                "endLine": 1,
+                "endChar": 0
+              },
+              "replacement": "                // Else must be color aspectOverlap\n"
+            }
+          ]
+        }
+      ],
+      "revId": "213f7ea35c8d86caf2c1ff520fc94d68c5bd3ecb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68754f50_b02eee24",
+        "filename": "src/gpu/graphite/DrawListTypes.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 371,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-07-24T21:24:17Z",
+      "side": 1,
+      "message": "Mega Nit: Something like: \"Since we guarantee that all non-shading draws are ordered *before* shading ones, a shading draw should exit? effectively completes its search? as soon as it encounters as non-shading draw\"",
+      "range": {
+        "startLine": 367,
+        "startChar": 12,
+        "endLine": 371,
+        "endChar": 13
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "47fc8328_75d2124f",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/DrawListTypes.h",
+              "range": {
+                "startLine": 368,
+                "startChar": 0,
+                "endLine": 369,
+                "endChar": 0
+              },
+              "replacement": "                // Since we guarantee that all non-shading draws are ordered *before* shading ones,\n                // the remaining BindingLists won\u0027t perform shading, and the new draw doesn\u0027t use\n"
+            }
+          ]
+        }
+      ],
+      "revId": "213f7ea35c8d86caf2c1ff520fc94d68c5bd3ecb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
