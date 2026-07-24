@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c88a627_4056b0cf",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 19729
+      },
+      "writtenOn": "2026-07-24T19:37:22Z",
+      "side": 1,
+      "message": "I guess some of my comments might be redundant if you\u0027re planning to do that, but to be honest you could just leave the old parts in this doc in place.",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 50
+      },
+      "revId": "1c5eb13965c12c74f0cbd0aec52a8784aeaeba84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "6889ddc9_778d1893",
