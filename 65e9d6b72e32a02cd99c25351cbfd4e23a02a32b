@@ -52,6 +52,24 @@
       "parentUuid": "3be48834_15c876b0",
       "revId": "65e9d6b72e32a02cd99c25351cbfd4e23a02a32b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "76f0d48d_b10aeca6",
+        "filename": "src/core/SkResourceCache.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-07-24T16:03:42Z",
+      "side": 1,
+      "message": "Thanks! I abandonned it.",
+      "parentUuid": "a7623c15_e4b99a04",
+      "revId": "65e9d6b72e32a02cd99c25351cbfd4e23a02a32b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
