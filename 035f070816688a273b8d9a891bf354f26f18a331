@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "31896af9_62fe6f10",
+        "filename": "modules/skcms/skcms.cc",
+        "patchSetId": 2
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-07-24T18:45:57Z",
+      "side": 0,
+      "message": "Sorry, I submitted an arbitrary manual dry run to verify that the roller updates README.chromium correctly.  I have no intention of landing this.",
+      "parentUuid": "29575f58_fb722705",
+      "range": {
+        "startLine": 42,
+        "startChar": 8,
+        "endLine": 42,
+        "endChar": 29
+      },
+      "revId": "035f070816688a273b8d9a891bf354f26f18a331",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b3934d60_683cf501",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-07-24T18:42:29Z",
       "side": 0,
       "message": "We also want to keep these",
+      "range": {
+        "startLine": 683,
+        "startChar": 12,
+        "endLine": 683,
+        "endChar": 13
+      },
+      "revId": "035f070816688a273b8d9a891bf354f26f18a331",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "937833d8_88d5c2a3",
+        "filename": "modules/skcms/src/Transform_inl.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 683,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-07-24T18:45:57Z",
+      "side": 0,
+      "message": "Acknowledged",
+      "parentUuid": "b3934d60_683cf501",
       "range": {
         "startLine": 683,
         "startChar": 12,
