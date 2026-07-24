@@ -2246,6 +2246,8 @@ func (b *jobBuilder) bazelBuild() {
 				fmt.Sprintf("os:%s", DEFAULT_OS_WIN_GCE),
 				"pool:Skia",
 			)
+			b.asset("win_toolchain")
+			b.usesPython()
 			b.usesBazel("windows_x64")
 			cmd = append(cmd, "--bazel_arg=--experimental_scale_timeouts=2.0")
 		} else if host == "mac_arm64" {

@@ -17,6 +17,7 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"strings"
 
 	infra_common "go.skia.org/infra/go/common"
 	sk_exec "go.skia.org/infra/go/exec"
@@ -62,6 +63,10 @@ func main() {
 	if err != nil {
 		td.Fatal(ctx, err)
 	}
+
+	// Dynamically locate and add the MSVC compiler and runtime folders to the system PATH.
+	var newPATH, bazelVC string
+	ctx, newPATH, bazelVC = locateAndAddMSVCToPATH(ctx, checkoutPath)
 
 	// For Mac builds, ensure Xcode is downloaded/installed via mac_toolchain before we build.
 	if runtime.GOOS == "darwin" {
@@ -137,6 +142,28 @@ func main() {
 	if os.Getenv("DEVELOPER_DIR") != "" {
 		args = append(args, "--repo_env=DEVELOPER_DIR")
 	}
+	if runtime.GOOS == "windows" {
+		// On Windows, Bazel's strict action environment (enabled by --incompatible_strict_action_env=true in .bazelrc)
+		// strips the PATH variable from actions. This causes MSVC-compiled build utilities (like launcher_maker.exe)
+		// and rules_rust compilation actions (which run with use_default_shell_env = False) to fail with
+		// STATUS_DLL_NOT_FOUND (0xC0000135).
+		//
+		// Crucially, under --incompatible_strict_action_env, name-only action_env (i.e. --action_env=PATH) only works
+		// if the variable is present in the client's environment with the EXACT same casing. On Windows, the client
+		// env has "Path" (mixed case), but rules_rust's Starlark rule reads "PATH" (all caps) from default_shell_env.
+		// By explicitly passing --action_env and --host_action_env with a static, pre-resolved VALUE (VAR=VALUE),
+		// we bypass case-sensitivity mismatches and guarantee that both target and host/exec actions natively
+		// receive the required MSVC runtime path containing sys64.
+		if newPATH != "" {
+			args = append(args, fmt.Sprintf("--action_env=PATH=%s", newPATH))
+			args = append(args, fmt.Sprintf("--host_action_env=PATH=%s", newPATH))
+		}
+		if bazelVC != "" {
+			args = append(args, fmt.Sprintf("--action_env=BAZEL_VC=%s", bazelVC))
+			args = append(args, fmt.Sprintf("--host_action_env=BAZEL_VC=%s", bazelVC))
+		}
+	}
+
 	if _, err := bzl.Do(ctx, "build", args...); err != nil {
 		td.Fatal(ctx, err)
 	}
@@ -179,4 +206,109 @@ func copyBazelBinSubdirs(ctx context.Context, checkoutDir string, bazelBinSubdir
 		}
 	}
 	return nil
+}
+
+// locateAndAddMSVCToPATH dynamically scans the pre-downloaded win_toolchain asset on the bot,
+// detects the active MSVC compiler version, resolves its absolute directory, and appends it
+// directly to the system PATH of the running task driver process (so all spawned child processes inherit it).
+func locateAndAddMSVCToPATH(ctx context.Context, checkoutPath string) (context.Context, string, string) {
+	if runtime.GOOS != "windows" {
+		return ctx, "", ""
+	}
+	var newPATH, bazelVC string
+	_ = td.Do(ctx, td.Props("Dynamic MSVC Runtime Path Resolver"), func(ctx context.Context) error {
+		// 1. Locate the pre-downloaded win_toolchain asset directory
+		winToolchainDir := "win_toolchain"
+		if _, err := os.Stat(winToolchainDir); err != nil {
+			// If not found in CWD, try relative to the parent of checkoutPath
+			winToolchainDir = filepath.Join(filepath.Dir(checkoutPath), "win_toolchain")
+		}
+
+		if _, err := os.Stat(winToolchainDir); err != nil {
+			fmt.Printf("Warning: win_toolchain directory does not exist: %s\n", err)
+			return nil
+		}
+
+		// Walk the win_toolchain directory to locate vcruntime140.dll or vcruntime140_1.dll (specifically x64)
+		var pathsToAdd []string
+		added := make(map[string]bool)
+		err := filepath.WalkDir(winToolchainDir, func(path string, d fs.DirEntry, err error) error {
+			if err != nil {
+				return nil
+			}
+			if !d.IsDir() {
+				name := strings.ToLower(filepath.Base(path))
+				if name == "vcruntime140.dll" || name == "vcruntime140_1.dll" {
+					dir := filepath.Dir(path)
+					lowerDir := strings.ToLower(filepath.ToSlash(dir))
+					// We want x64 binaries. Exclude arm, x86, win32, and sys32 to avoid architecture mismatches.
+					if !strings.Contains(lowerDir, "arm") && !strings.Contains(lowerDir, "x86") && !strings.Contains(lowerDir, "win32") && !strings.Contains(lowerDir, "sys32") {
+						absPath, err := filepath.Abs(dir)
+						if err == nil && !added[absPath] {
+							added[absPath] = true
+							pathsToAdd = append(pathsToAdd, absPath)
+						}
+					}
+				}
+			}
+			return nil
+		})
+		if err != nil {
+			fmt.Printf("Failed to walk win_toolchain directory: %s\n", err)
+			return nil
+		}
+
+		// Also explicitly add the Hostx64 compiler tools folder if it exists
+		msvcRoot := filepath.Join(winToolchainDir, "VC", "Tools", "MSVC")
+		if entries, err := os.ReadDir(msvcRoot); err == nil {
+			var msvcVersion string
+			for _, entry := range entries {
+				if entry.IsDir() {
+					msvcVersion = entry.Name()
+				}
+			}
+			if msvcVersion != "" {
+				if compilerBinDir, err := filepath.Abs(filepath.Join(msvcRoot, msvcVersion, "bin", "Hostx64", "x64")); err == nil {
+					if !added[compilerBinDir] {
+						added[compilerBinDir] = true
+						pathsToAdd = append(pathsToAdd, compilerBinDir)
+					}
+				}
+			}
+		}
+
+		// Resolve and set BAZEL_VC for standard Bazel C++ toolchain discovery
+		if vcDir, err := filepath.Abs(filepath.Join(winToolchainDir, "VC")); err == nil {
+			os.Setenv("BAZEL_VC", vcDir)
+			bazelVC = vcDir
+			td.StepText(ctx, "Dynamic BAZEL_VC Set", vcDir)
+		}
+
+		if len(pathsToAdd) == 0 {
+			fmt.Printf("Warning: Could not locate any x64 MSVC runtime DLLs or compiler tools in %s\n", winToolchainDir)
+			return nil
+		}
+
+		// Prepend these folders directly to the system PATH of this running process
+		currentPATH := os.Getenv("PATH")
+		tempPATH := currentPATH
+		for _, path := range pathsToAdd {
+			tempPATH = fmt.Sprintf("%s;%s", path, tempPATH)
+			td.StepText(ctx, "Dynamic PATH Added", path)
+		}
+		os.Setenv("PATH", tempPATH)
+		newPATH = tempPATH
+		return nil
+	})
+
+	if newPATH != "" {
+		if bazelVC != "" {
+			return td.WithEnv(ctx, []string{
+				"PATH=" + newPATH,
+				"BAZEL_VC=" + bazelVC,
+			}), newPATH, bazelVC
+		}
+		return td.WithEnv(ctx, []string{"PATH=" + newPATH}), newPATH, ""
+	}
+	return ctx, "", ""
 }
