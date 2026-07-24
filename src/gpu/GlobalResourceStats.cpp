@@ -104,7 +104,7 @@ void GlobalResourceStats::traceStatsSummary() const {
 
     // While the total could be derived within the trace data, it is helpful to trace the total
     // as a visual anchor.
-    const size_t total = backendTex + unbudgeted + budgeted + purgeable;
+    [[maybe_unused]] const size_t total = backendTex + unbudgeted + budgeted + purgeable;
 
     // This pushes the protected label to the front since Perfetto sorts tracks alphabetically.
     #define TRACE_STATS(label) \
