@@ -34,6 +34,24 @@
       "parentUuid": "5620a2ba_fe50e07d",
       "revId": "bdff82070bbf73dd1330fb2d659e82098eb7c49a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc54b7df_4e03fcf8",
+        "filename": "gn/skia.gni",
+        "patchSetId": 25
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-07-24T14:17:12Z",
+      "side": 1,
+      "message": "What are you open to try?\nPlease +1 this patch, or tell the alternative you want to try.",
+      "parentUuid": "a1dd152d_aa335049",
+      "revId": "bdff82070bbf73dd1330fb2d659e82098eb7c49a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
