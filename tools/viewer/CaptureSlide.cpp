@@ -88,7 +88,7 @@ void drawCommandHistory(const DebugCanvas* debugCanvas) {
         DrawCommand* cmd = debugCanvas->getDrawCommandAt(currentCommandIdx);
 
         SkDynamicMemoryWStream stream;
-        SkJSONWriter   writer(&stream, ToolUtils::default_serial_procs(), SkJSONWriter::Mode::kPretty);
+        SkJSONWriter writer(&stream, SkSerialProcs{}, SkJSONWriter::Mode::kPretty);
         UrlDataManager urlDataManager(SkString("data"));
         writer.beginObject();
         cmd->toJSON(writer, urlDataManager);
