@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d304c10d_8d58029f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5029334
+      },
+      "writtenOn": "2026-07-24T20:50:16Z",
+      "side": 1,
+      "message": "Hi Florin. Thank you for catching this! That\u0027s very insightful. I\u0027ve updated the PR, could you please take another look?",
+      "revId": "1866977d06807a49def9f2ee853273322141c7e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

@@ -56,6 +56,30 @@
       },
       "revId": "ddd205b28040c7f1ca6013482923cc04329ed732",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97c1aa45_29860194",
+        "filename": "modules/skottie/src/effects/ColorOverlayStyles.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5029334
+      },
+      "writtenOn": "2026-07-24T20:50:16Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "e10960c5_8c35d5e6",
+      "range": {
+        "startLine": 51,
+        "startChar": 37,
+        "endLine": 51,
+        "endChar": 58
+      },
+      "revId": "ddd205b28040c7f1ca6013482923cc04329ed732",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
