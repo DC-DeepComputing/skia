@@ -34,6 +34,24 @@
       ],
       "revId": "65e9d6b72e32a02cd99c25351cbfd4e23a02a32b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7623c15_e4b99a04",
+        "filename": "src/core/SkResourceCache.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-24T14:08:23Z",
+      "side": 1,
+      "message": "That TODO is probably the better fix (I looked at your linked CL)",
+      "parentUuid": "3be48834_15c876b0",
+      "revId": "65e9d6b72e32a02cd99c25351cbfd4e23a02a32b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
