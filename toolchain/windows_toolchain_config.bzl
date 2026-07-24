@@ -381,6 +381,13 @@ def _make_default_flags(clang_toolchain):
         flag_groups = [
             flag_group(
                 flags = [
+                    "/MT",  # Force static linking of MSVC C++ runtime so Rust compiles are completely self-contained
+                    "libcpmt.lib",  # Standard C++ library (static)
+                    "libcmt.lib",  # static core C runtime
+                    "libvcruntime.lib",  # Visual C++
+                    "libucrt.lib",  # Universal C Runtime
+                    "kernel32.lib",  # Win32 base API
+                    "ntdll.lib",  # native NT system services.
                     "/LIBPATH:" + full_msvc_lib + "/x64",
                     "/LIBPATH:" + full_win_sdk_lib + "/ucrt/x64",
                     "/LIBPATH:" + full_win_sdk_lib + "/um/x64",
