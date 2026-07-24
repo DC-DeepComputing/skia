@@ -16,6 +16,7 @@
 #include "include/private/SkEnumBitMask.h"
 #include "src/core/SkVx.h"
 #include "src/gpu/graphite/Attribute.h"
+#include "src/gpu/graphite/DescriptorData.h"
 #include "src/gpu/graphite/DrawTypes.h"
 #include "src/gpu/graphite/ResourceTypes.h"
 #include "src/gpu/graphite/Uniform.h"
@@ -181,6 +182,10 @@ public:
     bool appendsVertices()     const { return SkToBool(fFlags & Flags::kAppendVertices);      }
     bool vsUsesStorage()       const { return SkToBool(fFlags & Flags::kVsUsesStorage);       }
     bool fsUsesStorage()       const { return SkToBool(fFlags & Flags::kFsUsesStorage);       }
+    SkEnumBitMask<PipelineStageFlags> storageBufferStages() const {
+        return (vsUsesStorage() ? PipelineStageFlags::kVertexShader   : PipelineStageFlags{}) |
+               (fsUsesStorage() ? PipelineStageFlags::kFragmentShader : PipelineStageFlags{});
+    }
     SkEnumBitMask<RenderStateFlags> getRenderStateFlags() const {
         SkEnumBitMask<RenderStateFlags> rs = RenderStateFlags::kNone;
         if (fFlags & Flags::kFixed)             { rs |= RenderStateFlags::kFixed;           }
