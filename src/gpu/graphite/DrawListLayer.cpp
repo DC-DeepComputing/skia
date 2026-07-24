@@ -326,7 +326,7 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
     std::unique_ptr<DrawPass> drawPass(new DrawPass(target,
                                                     {fLoadOp, StoreOp::kStore},
                                                     fClearColor,
-                                                    recorder->priv().refStorageBufferManager()));
+                                                    BindBufferInfo{}));
     DrawBufferManager* bufferMgr = recorder->priv().drawBufferManager();
     DrawWriter drawWriter(&drawPass->fCommandList, bufferMgr);
 
@@ -339,6 +339,11 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
     drawPass->fCommandList.setScissor(lastScissor);
 
     UniformTracker uniformTracker(fStorageBufferSupport);
+    if (fStorageBufferSupport) {
+        fStorageContext.finalizeCacheStorageData();
+    }
+
+
 
     const bool rebindTexturesOnPipelineChange = dstReadStrategy == DstReadStrategy::kTextureCopy;
     CompressedPaintersOrder priorDrawPaintOrder{};
@@ -443,6 +448,10 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
     }
 
     drawWriter.flush();
+
+    if (fStorageBufferSupport) {
+        drawPass->fStorageBufferInfo = recorder->priv().storageBufferManager()->finalize(bufferMgr, &fStorageContext);
+    }
 
     drawPass->fBounds = fPassBounds.roundOut().asSkIRect();
     drawPass->fPipelineDescs = fPipelineCache.detach();
