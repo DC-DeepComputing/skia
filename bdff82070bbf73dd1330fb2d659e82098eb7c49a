@@ -52,6 +52,24 @@
       "parentUuid": "a1dd152d_aa335049",
       "revId": "bdff82070bbf73dd1330fb2d659e82098eb7c49a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dcb8de9f_e9560a24",
+        "filename": "gn/skia.gni",
+        "patchSetId": 25
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-07-24T14:19:55Z",
+      "side": 1,
+      "message": "Thanks! That makes things way simpler to me.\nIf we drop the GN config long term, that\u0027s not a big deal.",
+      "parentUuid": "fc54b7df_4e03fcf8",
+      "revId": "bdff82070bbf73dd1330fb2d659e82098eb7c49a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
