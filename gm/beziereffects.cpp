@@ -7,6 +7,7 @@
 
 // This test only works with the GPU backend.
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkCanvas.h"
@@ -247,7 +248,7 @@ protected:
             { { 0.27f * w, 0.49f * h}, { 0.41f * w, 0.02f * h }, { 0.11f * w, 0.42f * h } },
             { { 0.40f * w, 0.13f * h}, { 0.83f * w, 0.30f * h }, { 0.31f * w, 0.68f * h } },
         };
-        const SkScalar weights[kNumConics] = { 0.62f, 0.01f, 0.95f, 1.48f, 0.37f,
+        const std::array<SkScalar, kNumConics> weights ={ 0.62f, 0.01f, 0.95f, 1.48f, 0.37f,
                                                0.66f, 0.15f, 0.14f, 0.61f, 1.4f };
 
         SkPaint ctrlPtPaint;

@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -94,10 +95,10 @@ protected:
         // draw glyphs scaled up
         canvas->scale(2.f, 2.f);
 
-        constexpr SkTileMode kTileModes[] = {
+        constexpr auto kTileModes = std::to_array<SkTileMode>({
             SkTileMode::kRepeat,
             SkTileMode::kMirror,
-        };
+        });
 
         // position the baseline of the first run
         canvas->translate(0.f, 0.75f * kPointSize);

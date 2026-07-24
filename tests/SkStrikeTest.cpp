@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkCanvas.h"
 #include "include/core/SkData.h"
 #include "include/core/SkDrawable.h"
@@ -118,8 +119,8 @@ DEF_TEST(SkStrikeMultiThread, Reporter) {
     font.setSubpixel(true);
     font.setTypeface(typeface);
 
-    SkGlyphID glyphs['z'];
-    SkPoint pos['z'];
+    std::array<SkGlyphID, 'z'> glyphs;
+    std::array<SkPoint, 'z'> pos;
     for (int c = ' '; c < 'z'; c++) {
         glyphs[c] = font.unicharToGlyph(c);
         pos[c] = {30.0f * c + 30, 30.0f};

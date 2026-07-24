@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -290,16 +291,16 @@ protected:
 
         // strokes and radii
         {
-            SkScalar radii[][2] = {
+            auto radii = std::to_array<std::array<SkScalar, 2>>({
                 {10,10},
                 {5,15},
                 {5,15},
                 {5,15}
-            };
+            ,});
 
-            SkScalar strokeWidths[] = {
+            auto strokeWidths = std::to_array<SkScalar>({
                 20, 10, 20, 40
-            };
+            ,});
 
             for (int i = 0; i < 4; ++i) {
                 SkRRect circleRect;

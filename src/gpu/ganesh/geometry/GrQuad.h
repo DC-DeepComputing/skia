@@ -5,7 +5,11 @@
  * found in the LICENSE file.
  */
 
+#include <array>
+
 #ifndef GrQuad_DEFINED
+#include "include/core/SkSpan.h"
+
 #define GrQuad_DEFINED
 
 #include "include/core/SkPoint.h"
@@ -85,9 +89,9 @@ public:
         // Calculate min/max directly on the 4 floats, instead of loading/unloading into SIMD. Since
         // there's no horizontal min/max, it's not worth it. Defining non-perspective case in header
         // also leads to substantial performance boost due to inlining.
-        auto min = [](const float c[4]) { return std::min(std::min(c[0], c[1]),
+        auto min = [](SkSpan<const float> c) { return std::min(std::min(c[0], c[1]),
                                                           std::min(c[2], c[3]));};
-        auto max = [](const float c[4]) { return std::max(std::max(c[0], c[1]),
+        auto max = [](SkSpan<const float> c) { return std::max(std::max(c[0], c[1]),
                                                           std::max(c[2], c[3]));};
         return { min(fX), min(fY), max(fX), max(fY) };
     }
@@ -110,9 +114,9 @@ public:
     float w(int i) const { return fW[i]; }
     float iw(int i) const { return sk_ieee_float_divide(1.f, fW[i]); }
 
-    skvx::Vec<4, float> x4f() const { return skvx::Vec<4, float>::Load(fX); }
-    skvx::Vec<4, float> y4f() const { return skvx::Vec<4, float>::Load(fY); }
-    skvx::Vec<4, float> w4f() const { return skvx::Vec<4, float>::Load(fW); }
+    skvx::Vec<4, float> x4f() const { return skvx::Vec<4, float>::Load(fX.data()); }
+    skvx::Vec<4, float> y4f() const { return skvx::Vec<4, float>::Load(fY.data()); }
+    skvx::Vec<4, float> w4f() const { return skvx::Vec<4, float>::Load(fW.data()); }
     skvx::Vec<4, float> iw4f() const { return 1.f / this->w4f(); }
 
     Type quadType() const { return fType; }
@@ -129,12 +133,12 @@ public:
 
     // The non-const pointers are provided to support modifying a GrQuad in-place, but care must be
     // taken to keep its quad type aligned with the geometric nature of the new coordinates.
-    const float* xs() const { return fX; }
-    float* xs() { return fX; }
-    const float* ys() const { return fY; }
-    float* ys() { return fY; }
-    const float* ws() const { return fW; }
-    float* ws() { return fW; }
+    const float* xs() const { return fX.data(); }
+    SkSpan<float> xs() { return fX; }
+    const float* ys() const { return fY.data(); }
+    SkSpan<float> ys() { return fY; }
+    const float* ws() const { return fW.data(); }
+    SkSpan<float> ws() { return fW; }
 
     // Automatically ensures ws are 1 if new type is not perspective.
     void setQuadType(Type newType) {
@@ -154,25 +158,25 @@ private:
     GrQuad(const skvx::Vec<4, float>& xs, const skvx::Vec<4, float>& ys, Type type)
             : fType(type) {
         SkASSERT(type != Type::kPerspective);
-        xs.store(fX);
-        ys.store(fY);
+        xs.store(fX.data());
+        ys.store(fY.data());
     }
 
     GrQuad(const skvx::Vec<4, float>& xs, const skvx::Vec<4, float>& ys,
            const skvx::Vec<4, float>& ws, Type type)
             : fW{} // Include fW in member initializer to avoid redundant default initializer
             , fType(type) {
-        xs.store(fX);
-        ys.store(fY);
-        ws.store(fW);
+        xs.store(fX.data());
+        ys.store(fY.data());
+        ws.store(fW.data());
     }
 
     // Defined in GrQuadUtils.cpp to share the coord clipping code
     SkRect projectedBounds() const;
 
-    float fX[4];
-    float fY[4];
-    float fW[4] = {1.f, 1.f, 1.f, 1.f};
+    std::array<float, 4> fX;
+    std::array<float, 4> fY;
+    std::array<float, 4> fW ={1.f, 1.f, 1.f, 1.f};
 
     Type fType = Type::kAxisAligned;
 };

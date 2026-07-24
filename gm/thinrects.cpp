@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -71,7 +72,7 @@ protected:
 
 private:
     void drawVertRects(SkCanvas* canvas, const SkPaint& p) {
-        constexpr SkRect vertRects[] = {
+        constexpr auto vertRects = std::to_array<SkRect>({
             { 1,  1,    5.0f, 21 }, // 4 pix wide
             { 8,  1,   10.0f, 21 }, // 2 pix wide
             { 13, 1,   14.0f, 21 }, // 1 pix wide
@@ -79,7 +80,7 @@ private:
             { 21, 1,  21.25f, 21 }, // 1/4 pix wide
             { 25, 1, 25.125f, 21 }, // 1/8 pix wide
             { 29, 1,   29.0f, 21 }  // 0 pix wide
-        };
+        ,});
 
         static constexpr SkVector radii[4] = {{1/32.f, 2/32.f}, {3/32.f, 1/32.f}, {2/32.f, 3/32.f},
                                               {1/32.f, 3/32.f}};
@@ -95,7 +96,7 @@ private:
     }
 
     void drawHorizRects(SkCanvas* canvas, const SkPaint& p) {
-        constexpr SkRect horizRects[] = {
+        constexpr auto horizRects = std::to_array<SkRect>({
             { 1, 1,  21,    5.0f }, // 4 pix high
             { 1, 8,  21,   10.0f }, // 2 pix high
             { 1, 13, 21,   14.0f }, // 1 pix high
@@ -103,7 +104,7 @@ private:
             { 1, 21, 21,  21.25f }, // 1/4 pix high
             { 1, 25, 21, 25.125f }, // 1/8 pix high
             { 1, 29, 21,   29.0f }  // 0 pix high
-        };
+        ,});
 
         SkRRect rrect;
         for (size_t j = 0; j < std::size(horizRects); ++j) {
@@ -117,7 +118,7 @@ private:
     }
 
     void drawSquares(SkCanvas* canvas, const SkPaint& p) {
-        constexpr SkRect squares[] = {
+        constexpr auto squares = std::to_array<SkRect>({
             { 1,  1,     5.0f,    5.0f }, // 4 pix
             { 8,  8,    10.0f,   10.0f }, // 2 pix
             { 13, 13,   14.0f,   14.0f }, // 1 pix
@@ -125,7 +126,7 @@ private:
             { 21, 21,  21.25f,  21.25f }, // 1/4 pix
             { 25, 25, 25.125f, 25.125f }, // 1/8 pix
             { 29, 29,   29.0f,   29.0f }  // 0 pix
-        };
+        ,});
 
         SkRRect rrect;
         for (size_t j = 0; j < std::size(squares); ++j) {

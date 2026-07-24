@@ -1,4 +1,6 @@
 /*
+#include <array>
+
  * Copyright 2006 The Android Open Source Project
  *
  * Use of this source code is governed by a BSD-style license that can be
@@ -158,9 +160,9 @@ static constexpr const char* gColorNames[] = {
     "yellowgreen",
 };
 
-static constexpr struct ColorRec {
+struct ColorRec{
     uint8_t     r, g, b;
-} gColors[] = {
+}; static constexpr auto gColors = std::to_array<ColorRec>({
     { 0xf0,0xf8,0xff }, // aliceblue
     { 0xfa,0xeb,0xd7 }, // antiquewhite
     { 0x00,0xff,0xff }, // aqua
@@ -301,7 +303,7 @@ static constexpr struct ColorRec {
     { 0xf5,0xf5,0xf5 }, // whitesmoke
     { 0xff,0xff,0x00 }, // yellow
     { 0x9a,0xcd,0x32 }, // yellowgreen
-};
+});
 
 const char* SkParse::FindNamedColor(const char* name, size_t len, SkColor* color) {
     const auto rec = std::lower_bound(std::begin(gColorNames),

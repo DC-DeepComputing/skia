@@ -1,4 +1,7 @@
 /*
+#include <array>
+#include "include/core/SkSpan.h"
+
  * Copyright 2015 Google Inc.
  *
  * Use of this source code is governed by a BSD-style license that can be
@@ -137,14 +140,14 @@ public:
     int intersectRay(double roots[2]) {
         double adj = (*fLine)[1].fX - (*fLine)[0].fX;
         double opp = (*fLine)[1].fY - (*fLine)[0].fY;
-        double r[3];
+        std::array<double, 3> r;
         for (int n = 0; n < 3; ++n) {
             r[n] = (fConic[n].fY - (*fLine)[0].fY) * adj - (fConic[n].fX - (*fLine)[0].fX) * opp;
         }
         return this->validT(r, 0, roots);
     }
 
-    int validT(double r[3], double axisIntercept, double roots[2]) {
+    int validT(SkSpan<double> r, double axisIntercept, double roots[2]) {
         double A = r[2];
         double B = r[1] * fConic.fWeight - axisIntercept * fConic.fWeight + axisIntercept;
         double C = r[0];

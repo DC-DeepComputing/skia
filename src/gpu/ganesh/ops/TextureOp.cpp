@@ -1,4 +1,6 @@
 /*
+#include <array>
+
  * Copyright 2017 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
@@ -173,8 +175,8 @@ void normalize_src_quad(const NormalizationParams& params,
     SkASSERT(!srcQuad->hasPerspective());
     skvx::Vec<4, float> xs = srcQuad->x4f() * params.fIW;
     skvx::Vec<4, float> ys = srcQuad->y4f() * params.fInvH + params.fYOffset;
-    xs.store(srcQuad->xs());
-    ys.store(srcQuad->ys());
+    xs.store(srcQuad->xs().data());
+    ys.store(srcQuad->ys().data());
 }
 
 // Count the number of proxy runs in the entry set. This usually is already computed by
@@ -1125,7 +1127,7 @@ private:
     // This field must go last. When allocating this op, we will allocate extra space to hold
     // additional ViewCountPairs immediately after the op's allocation so we can treat this
     // as an fProxyCnt-length array.
-    ViewCountPair fViewCountPairs[1];
+    std::array<ViewCountPair, 1> fViewCountPairs;
 
     using INHERITED = GrMeshDrawOp;
 };

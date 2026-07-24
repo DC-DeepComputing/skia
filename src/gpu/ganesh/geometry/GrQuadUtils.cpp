@@ -9,6 +9,7 @@
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkFloatingPoint.h"
 #include "include/private/SkMacros.h"
@@ -76,7 +77,7 @@ static AI void correct_bad_coords(const mask4& bad, float4* c1, float4* c2, floa
 // Since the local quad may not be type kRect, this uses the opposites for each vertex when
 // interpolating, and calculates new ws in addition to new xs, ys.
 static void interpolate_local(float alpha, int v0, int v1, int v2, int v3,
-                              float lx[4], float ly[4], float lw[4]) {
+                              SkSpan<float> lx, SkSpan<float> ly, SkSpan<float> lw) {
     SkASSERT(v0 >= 0 && v0 < 4);
     SkASSERT(v1 >= 0 && v1 < 4);
     SkASSERT(v2 >= 0 && v2 < 4);
@@ -96,7 +97,7 @@ static void interpolate_local(float alpha, int v0, int v1, int v2, int v3,
 // It is written to not modify coordinates if there's no intersection along the edge.
 // Ideally this would have been detected earlier and the entire draw is skipped.
 static bool crop_rect_edge(const SkRect& clipDevRect, int v0, int v1, int v2, int v3,
-                           float x[4], float y[4], float lx[4], float ly[4], float lw[4]) {
+                           SkSpan<float> x, SkSpan<float> y, SkSpan<float> lx, SkSpan<float> ly, SkSpan<float> lw) {
     SkASSERT(v0 >= 0 && v0 < 4);
     SkASSERT(v1 >= 0 && v1 < 4);
     SkASSERT(v2 >= 0 && v2 < 4);
@@ -106,7 +107,7 @@ static bool crop_rect_edge(const SkRect& clipDevRect, int v0, int v1, int v2, in
         // A vertical edge
         if (x[v0] < clipDevRect.fLeft && x[v2] >= clipDevRect.fLeft) {
             // Overlapping with left edge of clipDevRect
-            if (lx) {
+            if (!lx.empty()) {
                 float alpha = (x[v2] - clipDevRect.fLeft) / (x[v2] - x[v0]);
                 interpolate_local(alpha, v0, v1, v2, v3, lx, ly, lw);
             }
@@ -115,7 +116,7 @@ static bool crop_rect_edge(const SkRect& clipDevRect, int v0, int v1, int v2, in
             return true;
         } else if (x[v0] > clipDevRect.fRight && x[v2] <= clipDevRect.fRight) {
             // Overlapping with right edge of clipDevRect
-            if (lx) {
+            if (!lx.empty()) {
                 float alpha = (clipDevRect.fRight - x[v2]) / (x[v0] - x[v2]);
                 interpolate_local(alpha, v0, v1, v2, v3, lx, ly, lw);
             }
@@ -128,7 +129,7 @@ static bool crop_rect_edge(const SkRect& clipDevRect, int v0, int v1, int v2, in
         SkASSERT(SkScalarNearlyEqual(y[v0], y[v1]));
         if (y[v0] < clipDevRect.fTop && y[v2] >= clipDevRect.fTop) {
             // Overlapping with top edge of clipDevRect
-            if (lx) {
+            if (!lx.empty()) {
                 float alpha = (y[v2] - clipDevRect.fTop) / (y[v2] - y[v0]);
                 interpolate_local(alpha, v0, v1, v2, v3, lx, ly, lw);
             }
@@ -137,7 +138,7 @@ static bool crop_rect_edge(const SkRect& clipDevRect, int v0, int v1, int v2, in
             return true;
         } else if (y[v0] > clipDevRect.fBottom && y[v2] <= clipDevRect.fBottom) {
             // Overlapping with bottom edge of clipDevRect
-            if (lx) {
+            if (!lx.empty()) {
                 float alpha = (clipDevRect.fBottom - y[v2]) / (y[v0] - y[v2]);
                 interpolate_local(alpha, v0, v1, v2, v3, lx, ly, lw);
             }
@@ -153,8 +154,8 @@ static bool crop_rect_edge(const SkRect& clipDevRect, int v0, int v1, int v2, in
 
 // Updates x and y to intersect with clipDevRect.  lx, ly, and lw are updated appropriately and may
 // be null to skip calculations. Returns bit mask of edges that were clipped.
-static GrQuadAAFlags crop_rect(const SkRect& clipDevRect, float x[4], float y[4],
-                               float lx[4], float ly[4], float lw[4]) {
+static GrQuadAAFlags crop_rect(const SkRect& clipDevRect, SkSpan<float> x, SkSpan<float> y,
+                               SkSpan<float> lx, SkSpan<float> ly, SkSpan<float> lw) {
     GrQuadAAFlags clipEdgeFlags = GrQuadAAFlags::kNone;
 
     // The quad's left edge may not align with the SkRect notion of left due to 90 degree rotations
@@ -183,15 +184,15 @@ static GrQuadAAFlags crop_rect(const SkRect& clipDevRect, float x[4], float y[4]
 
 // Similar to crop_rect, but assumes that both the device coordinates and optional local coordinates
 // geometrically match the TL, BL, TR, BR vertex ordering, i.e. axis-aligned but not flipped, etc.
-static GrQuadAAFlags crop_simple_rect(const SkRect& clipDevRect, float x[4], float y[4],
-                                      float lx[4], float ly[4]) {
+static GrQuadAAFlags crop_simple_rect(const SkRect& clipDevRect, SkSpan<float> x, SkSpan<float> y,
+                                      SkSpan<float> lx, SkSpan<float> ly) {
     GrQuadAAFlags clipEdgeFlags = GrQuadAAFlags::kNone;
 
     // Update local coordinates proportionately to how much the device rect edge was clipped
-    const SkScalar dx = lx ? (lx[2] - lx[0]) / (x[2] - x[0]) : 0.f;
-    const SkScalar dy = ly ? (ly[1] - ly[0]) / (y[1] - y[0]) : 0.f;
+    const SkScalar dx = !lx.empty() ? (lx[2] - lx[0]) / (x[2] - x[0]) : 0.f;
+    const SkScalar dy = !ly.empty() ? (ly[1] - ly[0]) / (y[1] - y[0]) : 0.f;
     if (clipDevRect.fLeft > x[0]) {
-        if (lx) {
+        if (!lx.empty()) {
             lx[0] += (clipDevRect.fLeft - x[0]) * dx;
             lx[1] = lx[0];
         }
@@ -200,7 +201,7 @@ static GrQuadAAFlags crop_simple_rect(const SkRect& clipDevRect, float x[4], flo
         clipEdgeFlags |= GrQuadAAFlags::kLeft;
     }
     if (clipDevRect.fTop > y[0]) {
-        if (ly) {
+        if (!ly.empty()) {
             ly[0] += (clipDevRect.fTop - y[0]) * dy;
             ly[2] = ly[0];
         }
@@ -209,7 +210,7 @@ static GrQuadAAFlags crop_simple_rect(const SkRect& clipDevRect, float x[4], flo
         clipEdgeFlags |= GrQuadAAFlags::kTop;
     }
     if (clipDevRect.fRight < x[2]) {
-        if (lx) {
+        if (!lx.empty()) {
             lx[2] -= (x[2] - clipDevRect.fRight) * dx;
             lx[3] = lx[2];
         }
@@ -218,7 +219,7 @@ static GrQuadAAFlags crop_simple_rect(const SkRect& clipDevRect, float x[4], flo
         clipEdgeFlags |= GrQuadAAFlags::kRight;
     }
     if (clipDevRect.fBottom < y[1]) {
-        if (ly) {
+        if (!ly.empty()) {
             ly[1] -= (y[1] - clipDevRect.fBottom) * dy;
             ly[3] = ly[1];
         }
@@ -564,10 +565,10 @@ bool CropToRect(const SkRect& cropRect, GrAA cropAA, DrawQuad* quad, bool comput
         } else {
             if (is_simple_rect(quad->fDevice)) {
                 clippedEdges = crop_simple_rect(cropRect, quad->fDevice.xs(), quad->fDevice.ys(),
-                                                nullptr, nullptr);
+                                                {}, {});
             } else {
                 clippedEdges = crop_rect(cropRect, quad->fDevice.xs(), quad->fDevice.ys(),
-                                         nullptr, nullptr, nullptr);
+                                         {}, {}, {});
             }
         }
 
@@ -621,8 +622,8 @@ bool CropToRect(const SkRect& cropRect, GrAA cropAA, DrawQuad* quad, bool comput
         // FIXME (michaelludwig) - once we have local coordinates handled, it may be desirable to
         // keep the draw as perspective so that the hardware does perspective interpolation instead
         // of pushing it into a local coord w and having the shader do an extra divide.
-        clipX.store(quad->fDevice.xs());
-        clipY.store(quad->fDevice.ys());
+        clipX.store(quad->fDevice.xs().data());
+        clipY.store(quad->fDevice.ys().data());
         quad->fDevice.setQuadType(GrQuad::Type::kAxisAligned);
 
         // Update the edge flags to match the clip setting since all 4 edges have been clipped
@@ -959,18 +960,18 @@ void TessellationHelper::Vertices::asGrQuads(GrQuad* deviceOut, GrQuad::Type dev
     SkASSERT(deviceOut);
     SkASSERT(fUVRCount == 0 || localOut);
 
-    fX.store(deviceOut->xs());
-    fY.store(deviceOut->ys());
+    fX.store(deviceOut->xs().data());
+    fY.store(deviceOut->ys().data());
     if (deviceType == GrQuad::Type::kPerspective) {
-        fW.store(deviceOut->ws());
+        fW.store(deviceOut->ws().data());
     }
     deviceOut->setQuadType(deviceType); // This sets ws == 1 when device type != perspective
 
     if (fUVRCount > 0) {
-        fU.store(localOut->xs());
-        fV.store(localOut->ys());
+        fU.store(localOut->xs().data());
+        fV.store(localOut->ys().data());
         if (fUVRCount == 3) {
-            fR.store(localOut->ws());
+            fR.store(localOut->ws().data());
         }
         localOut->setQuadType(localType);
     }

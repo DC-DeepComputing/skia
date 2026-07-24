@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColorFilter.h"
@@ -15,6 +16,7 @@
 #include "include/core/SkPathEffect.h"
 #include "include/core/SkRegion.h"
 #include "include/core/SkShader.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkTypeface.h"
 #include "include/core/SkVertices.h"
@@ -52,8 +54,8 @@ public:
     Patch() { sk_bzero(fPts, sizeof(fPts)); }
     ~Patch() {}
 
-    void setPatch(const SkPoint pts[12]) {
-        memcpy(fPts, pts, 12 * sizeof(SkPoint));
+    void setPatch(SkSpan<const SkPoint> pts) {
+        memcpy(fPts, pts.data(), 12 * sizeof(SkPoint));
         fPts[12] = pts[0];  // the last shall be first
     }
     void setBounds(int w, int h) { fW = w; fH = h; }
@@ -210,7 +212,7 @@ struct PatchSlide : public ClickHandlerSlide {
     SkScalar fAngle = 0;
     SkIPoint fSize0 = {0, 0},
              fSize1 = {0, 0};
-    SkPoint  fPts[12] = {
+    std::array<SkPoint, 12> fPts = {{
         {kS * 0, kT * 1},
         {kS * 1, kT * 1},
         {kS * 2, kT * 1},
@@ -223,7 +225,7 @@ struct PatchSlide : public ClickHandlerSlide {
         {kS * 0, kT * 4},
         {kS * 0, kT * 3},
         {kS * 0, kT * 2},
-    };
+    }};
 
 public:
     PatchSlide() { fName = "Patch"; }
@@ -365,7 +367,7 @@ static sk_sp<SkVertices> make_verts(const SkPathBuilder& pathbuilder, SkScalar w
 class PseudoInkSlide : public ClickHandlerSlide {
     enum { N = 100 };
     SkPathBuilder     fPath;
-    sk_sp<SkVertices> fVertices[N];
+    std::array<sk_sp<SkVertices>, N> fVertices;
     SkPaint           fSkeletonP, fStrokeP, fVertsP;
     bool              fDirty = true;
 

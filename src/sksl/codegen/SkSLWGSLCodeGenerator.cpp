@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "src/sksl/codegen/SkSLWGSLCodeGenerator.h"
 
 #include "include/core/SkSpan.h"
@@ -1259,7 +1260,7 @@ public:
 
         // First, see which components are used.
         // The assignment swizzle must not reuse components.
-        bool used[4] = {};
+        std::array<bool, 4> used ={};
         for (int8_t component : fComponents) {
             SkASSERT(!used[component]);
             used[component] = true;
@@ -1482,8 +1483,8 @@ void WGSLCodeGenerator::writeUniformPolyfills() {
               });
 
     THashSet<const Type*> writtenArrayElementPolyfill;
-    bool writtenUniformMatrixPolyfill[2][5][5] = {};  // {h,f} x m[column][row] for each matrix type
-    bool writtenUniformRowPolyfill[2][5] = {};        // {h,f} x for each matrix row-size
+    std::array<std::array<std::array<bool, 5>, 5>, 2> writtenUniformMatrixPolyfill ={};  // {h,f} x m[column][row] for each matrix type
+    std::array<std::array<bool, 5>, 2> writtenUniformRowPolyfill ={};        // {h,f} x for each matrix row-size
     bool anyFieldAccessed = false;
     for (const FieldPolyfillMap::Pair* pair : orderedFields) {
         const auto& [field, info] = *pair;

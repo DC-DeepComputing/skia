@@ -1,4 +1,6 @@
 /*
+#include <array>
+
  * Copyright 2026 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
@@ -10,10 +12,10 @@
 #include "include/core/SkPoint.h"
 
 namespace {
-struct {
+struct TigerPaths{
     const char* fVerbs;
     std::vector<SkPoint> fPoints;
-} kTigerPaths[] = {
+}; auto kTigerPaths = std::to_array<TigerPaths>({
 #if !defined(SK_ENABLE_OPTIMIZE_SIZE)
         {"mcccccccclclclccccclcclccccccclclcccccccccccccccccccccccccccccllcclcccclcccccccccccccccl"
          "z",
@@ -584,7 +586,7 @@ struct {
         // Empty stub to stop MSVC from complaining about zero length arrays.
         {"m", {{0.0f, 0.0f}}},
 #endif
-};
+});
 }  // namespace
 
 std::vector<SkPath> Tiger::GetTigerPaths() {

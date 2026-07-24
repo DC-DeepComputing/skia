@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -1617,9 +1618,9 @@ static void test_free_texture_messages(skiatest::Reporter* reporter) {
     GrResourceCache* cache = mock.cache();
     GrGpu* gpu = mock.gpu();
 
-    GrBackendTexture backends[3];
-    sk_sp<GrTexture> wrapped[3];
-    int freed[3] = { 0, 0, 0 };
+    std::array<GrBackendTexture, 3> backends;
+    std::array<sk_sp<GrTexture>, 3> wrapped;
+    std::array<int, 3> freed ={ 0, 0, 0 };
 
     auto releaseProc = [](void* ctx) {
         int* index = (int*) ctx;

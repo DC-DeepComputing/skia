@@ -65,7 +65,7 @@ static void standardTestCases(skiatest::Reporter* reporter) {
     }
 }
 
-static const QuadPts testSet[] = {
+static const auto testSet = std::to_array<QuadPts>({
 {{{123.637985f, 102.405312f}, {125.172699f, 104.575714f}, {123.387383f, 106.91227f}}},
 {{{123.388428f, 106.910896f}, {123.365623f, 106.94088f}, {123.320007f, 107.000946f}}},
 
@@ -337,7 +337,7 @@ static const QuadPts testSet[] = {
     {{{8, 8}, {10, 10}, {8, -10}}},
     {{{8, 8}, {12, 12}, {14, 4}}},
     {{{8, 8}, {9, 9}, {10, 8}}}
-};
+,});
 
 const size_t testSetCount = std::size(testSet);
 
@@ -378,7 +378,7 @@ static void oneOffTests(skiatest::Reporter* reporter) {
     }
 }
 
-static const QuadPts coincidentTestSet[] = {
+static const auto coincidentTestSet = std::to_array<QuadPts>({
     {{{4914.9990234375, 1523}, {4942.75146484375, 1523}, {4962.375, 1542.6239013671875}}},
     {{{4962.3759765625, 1542.6239013671875}, {4942.75244140625, 1523}, {4915, 1523}}},
 #if 0
@@ -389,7 +389,7 @@ static const QuadPts coincidentTestSet[] = {
     {{{369.850525, 145.675964}, {382.362915, 121.29287}, {406.211273, 121.29287}}},
     {{{8, 8}, {10, 10}, {8, -10}}},
     {{{8, -10}, {10, 10}, {8, 8}}},
-};
+});
 
 static const int coincidentTestSetCount = (int) std::size(coincidentTestSet);
 
@@ -440,7 +440,7 @@ static void intersectionFinder(int test1, int test2) {
         t2[0] = quad2.ptAtT(t2Seed - t2Step);
         t2[1] = quad2.ptAtT(t2Seed);
         t2[2] = quad2.ptAtT(t2Seed + t2Step);
-        double dist[3][3];
+        std::array<std::array<double, 3>, 3> dist;
         dist[1][1] = t1[1].distance(t2[1]);
         int best_i = 1, best_j = 1;
         for (int i = 0; i < 3; ++i) {

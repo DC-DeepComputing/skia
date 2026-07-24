@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -39,9 +40,9 @@ protected:
         constexpr SkRect rect = { 0, 0, 10, 10 };
         constexpr SkRect rect2 = { 0, 0, 20, 20 };
 
-        constexpr SkScalar gStrokeWidths[] = {
+        constexpr auto gStrokeWidths = std::to_array<SkScalar>({
             4, 2, 1, 0.5f, 0.25f, 0.125f, 0
-        };
+        ,});
 
         canvas->translate(5, 5);
         for (int i = 0; i < 8; ++i) {

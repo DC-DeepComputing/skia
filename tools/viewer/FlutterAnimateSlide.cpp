@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkFont.h"
@@ -87,7 +88,7 @@ private:
     };
     sk_sp<SkTypeface> fTypeface;
     inline static constexpr int kNumChars = 40;
-    AnimatedChar fChars[kNumChars];
+    std::array<AnimatedChar, kNumChars> fChars;
 };
 
 //////////////////////////////////////////////////////////////////////////////

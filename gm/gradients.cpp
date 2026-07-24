@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkCanvas.h"
@@ -1122,7 +1123,7 @@ DEF_SIMPLE_GM_BG(gradients_color_space_many_stops, canvas, 500, 500, SK_ColorGRA
     const SkPoint pts[] = { {50, 50}, {450, 465}};
 
     const unsigned kStopCount = 200;
-    SkColor4f colors[kStopCount];
+    std::array<SkColor4f, kStopCount> colors;
     for (unsigned i = 0; i < kStopCount; i++) {
         switch (i % 5) {
             case 0: colors[i] = SkColors::kRed; break;

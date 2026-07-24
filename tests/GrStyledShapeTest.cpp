@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkArc.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkClipOp.h"
@@ -1647,7 +1648,7 @@ void test_rrect(skiatest::Reporter* r, const SkRRect& rrect) {
     };
 
     // SkStrokeRec has no default cons., so init with kFill before calling the setters below.
-    SkStrokeRec strokeRecs[4]{
+    std::array<SkStrokeRec, 4> strokeRecs ={
             SkStrokeRec{SkStrokeRec::kFill_InitStyle},
             SkStrokeRec{SkStrokeRec::kFill_InitStyle},
             SkStrokeRec{SkStrokeRec::kFill_InitStyle},

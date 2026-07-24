@@ -1,4 +1,6 @@
 /*
+#include <array>
+
  * Copyright 2011 Google Inc.
  *
  * Use of this source code is governed by a BSD-style license that can be
@@ -9,8 +11,10 @@
 #include "include/core/SkData.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSerialProcs.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkTDArray.h"
+#include "include/private/SkTo.h"
 #include "src/core/SkPtrRecorder.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkSharedMutex.h"
@@ -81,12 +85,12 @@ struct EntryComparator {
 };
 
 int gCount = 0;
-Entry gEntries[128];
+std::array<Entry, 128> gEntries;
 
 }  // namespace
 
 void SkFlattenable::Finalize() {
-    std::sort(gEntries, gEntries + gCount, EntryComparator());
+    std::sort(gEntries.data(), SkSpan<Entry>(gEntries ).subspan(SkTo<size_t>( gCount)).data(), EntryComparator());
 }
 
 void SkFlattenable::Register(const char name[], Factory factory) {
@@ -103,7 +107,7 @@ SkFlattenable::Factory SkFlattenable::NameToFactory(const char name[]) {
     RegisterFlattenablesIfNeeded();
 
     SkASSERT(std::is_sorted(gEntries, gEntries + gCount, EntryComparator()));
-    auto pair = std::equal_range(gEntries, gEntries + gCount, name, EntryComparator());
+    auto pair = std::equal_range(gEntries.data(), SkSpan<Entry>(gEntries ).subspan(SkTo<size_t>( gCount)).data(), name, EntryComparator());
     if (pair.first == pair.second) {
         return nullptr;
     }
@@ -113,7 +117,7 @@ SkFlattenable::Factory SkFlattenable::NameToFactory(const char name[]) {
 const char* SkFlattenable::FactoryToName(Factory fact) {
     RegisterFlattenablesIfNeeded();
 
-    const Entry* entries = gEntries;
+    SkSpan<const Entry>entries = gEntries;
     for (int i = gCount - 1; i >= 0; --i) {
         if (entries[i].fFactory == fact) {
             return entries[i].fName;

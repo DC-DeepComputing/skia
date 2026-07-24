@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkCanvas.h"
@@ -53,14 +54,14 @@ protected:
 
     void drawTestCase(SkCanvas* canvas, SkScalar x, SkScalar y, SkBlendMode mode,
                       SkBlendMode mode2) {
-        const SkColor colors[] {
+        const auto colors = std::to_array<SkColor>({
                 SK_ColorRED,
                 SK_ColorGREEN,
                 SK_ColorBLUE,
                 SK_ColorYELLOW,
                 SK_ColorCYAN,
                 SK_ColorMAGENTA,
-        };
+        });
 
         for (size_t i = 0; i < std::size(colors); i++) {
             canvas->save();

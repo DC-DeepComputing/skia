@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkFontMgr.h"
@@ -95,16 +96,16 @@ private:
             return;
         }
 
-        static constexpr struct {
+        struct GTests{
             const char* txt_string;
             SkColor     txt_color,
                         solid_color;
             float       transform_scale;
-        } gTests[] = {
+        }; static constexpr auto gTests = std::to_array<GTests>({
             { "update #1", SK_ColorRED    , SK_ColorYELLOW, 100.f },
             { "update #2", SK_ColorGREEN  , SK_ColorBLUE  ,  50.f },
             { "update #3", SK_ColorMAGENTA, SK_ColorCYAN  , 150.f },
-        };
+        });
 
         SkASSERT(i - 1 < std::size(gTests));
         const auto& tst = gTests[i - 1];

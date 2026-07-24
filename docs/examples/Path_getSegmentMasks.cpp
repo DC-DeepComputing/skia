@@ -1,3 +1,5 @@
+#include <array>
+
 // Copyright 2019 Google LLC
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 #include "tools/fiddle/examples.h"
@@ -7,7 +9,7 @@ void draw(SkCanvas* canvas) {
                   .quadTo(20, 30, 40, 50)
                   .close()
                   .detach();
-    const char* masks[] = { "line", "quad", "conic", "cubic" };
+    auto masks = std::to_array<const char *>({ "line", "quad", "conic", "cubic" });
     int index = 0;
     for (auto mask : { SkPath::kLine_SegmentMask, SkPath::kQuad_SegmentMask,
             SkPath::kConic_SegmentMask, SkPath::kCubic_SegmentMask } ) {

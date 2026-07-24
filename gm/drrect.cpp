@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPaint.h"
@@ -29,7 +30,7 @@ protected:
         SkPaint paint;
         paint.setAntiAlias(true);
 
-        SkRRect outers[4];
+        std::array<SkRRect, 4> outers;
         // like squares/circles, to exercise fast-cases in GPU
         SkRect r = { 0, 0, 100, 100 };
         SkVector radii[4] = {
@@ -44,7 +45,7 @@ protected:
         outers[2].setRectXY(r, 20, 20);
         outers[3].setRectRadii(r, radii);
 
-        SkRRect inners[5];
+        std::array<SkRRect, 5> inners;
         r.inset(25, 25);
 
         inners[0].setEmpty();

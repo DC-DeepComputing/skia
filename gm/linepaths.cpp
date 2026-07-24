@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -42,31 +43,31 @@ static void draw(SkCanvas* canvas, bool doClose) {
             SkPathFillType fFill;
             const char*      fName;
         };
-        constexpr FillAndName gFills[] = {
+        constexpr auto gFills = std::to_array<FillAndName>({
             {SkPathFillType::kWinding, "Winding"},
             {SkPathFillType::kEvenOdd, "Even / Odd"},
             {SkPathFillType::kInverseWinding, "Inverse Winding"},
             {SkPathFillType::kInverseEvenOdd, "Inverse Even / Odd"},
-        };
+        });
         struct StyleAndName {
             SkPaint::Style fStyle;
             const char*    fName;
         };
-        constexpr StyleAndName gStyles[] = {
+        constexpr auto gStyles = std::to_array<StyleAndName>({
             {SkPaint::kFill_Style, "Fill"},
             {SkPaint::kStroke_Style, "Stroke"},
             {SkPaint::kStrokeAndFill_Style, "Stroke And Fill"},
-        };
+        });
         struct CapAndName {
             SkPaint::Cap  fCap;
             SkPaint::Join fJoin;
             const char*   fName;
         };
-        constexpr CapAndName gCaps[] = {
+        constexpr auto gCaps = std::to_array<CapAndName>({
             {SkPaint::kButt_Cap, SkPaint::kBevel_Join, "Butt"},
             {SkPaint::kRound_Cap, SkPaint::kRound_Join, "Round"},
             {SkPaint::kSquare_Cap, SkPaint::kBevel_Join, "Square"}
-        };
+        ,});
         struct PathAndName {
             SkPath      fPath;
             const char* fName;

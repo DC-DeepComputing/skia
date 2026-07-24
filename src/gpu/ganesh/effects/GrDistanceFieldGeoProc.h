@@ -6,6 +6,8 @@
  */
 
 #ifndef GrDistanceFieldGeoProc_DEFINED
+#include <array>
+
 #define GrDistanceFieldGeoProc_DEFINED
 
 #if !defined(SK_DISABLE_SDF_TEXT)
@@ -128,7 +130,7 @@ private:
 
     const TextureSampler& onTextureSampler(int i) const override { return fTextureSamplers[i]; }
 
-    TextureSampler   fTextureSamplers[kMaxTextures];
+    std::array<TextureSampler, kMaxTextures> fTextureSamplers;
     SkISize          fAtlasDimensions;  // dimensions for all textures used with fTextureSamplers[].
     SkMatrix         fLocalMatrix;
     Attribute        fInPosition;
@@ -188,7 +190,7 @@ private:
     const TextureSampler& onTextureSampler(int i) const override { return fTextureSamplers[i]; }
 
     SkMatrix         fLocalMatrix;
-    TextureSampler   fTextureSamplers[kMaxTextures];
+    std::array<TextureSampler, kMaxTextures> fTextureSamplers;
     SkISize          fAtlasDimensions;  // dimensions for all textures used with fTextureSamplers[].
     Attribute        fInPosition;
     Attribute        fInColor;
@@ -259,7 +261,7 @@ private:
 
     const TextureSampler& onTextureSampler(int i) const override { return fTextureSamplers[i]; }
 
-    TextureSampler   fTextureSamplers[kMaxTextures];
+    std::array<TextureSampler, kMaxTextures> fTextureSamplers;
     SkISize          fAtlasDimensions;  // dimensions for all textures used with fTextureSamplers[].
     const SkMatrix   fLocalMatrix;
     DistanceAdjust   fDistanceAdjust;

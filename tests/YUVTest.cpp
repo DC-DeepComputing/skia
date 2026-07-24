@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/codec/SkCodec.h"
 #include "include/codec/SkEncodedOrigin.h"
 #include "include/core/SkColorType.h"
@@ -227,8 +228,8 @@ DEF_TEST(YUVMath, reporter) {
                       y2rm = SkColorMatrix::YUVtoRGB(cs);
         r2ym.postConcat(y2rm);
 
-        float tmp[20];
-        r2ym.getRowMajor(tmp);
+        std::array<float, 20> tmp;
+        r2ym.getRowMajor(tmp.data());
         for (int i = 0; i < 20; ++i) {
             float expected = 0;
             if (i % 6 == 0) {   // diagonal

@@ -7,6 +7,7 @@
 
 // This test only works with the GL backend.
 
+#include <array>
 #include "gm/gm.h"
 
 #ifdef SK_GL
@@ -249,7 +250,7 @@ private:
 private:
     static const int kNumGradImages = 2;
 
-    sk_sp<SkImage> fGradImgs[kNumGradImages];
+    std::array<sk_sp<SkImage>, kNumGradImages> fGradImgs;
     sk_sp<SkImage> fSmallImg;
 
     using INHERITED = GM;

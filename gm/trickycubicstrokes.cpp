@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -40,7 +41,7 @@ struct TrickyCubic {
 };
 
 // This is a compilation of cubics that have given strokers grief. Feel free to add more.
-static const TrickyCubic kTrickyCubics[] = {
+static const auto kTrickyCubics = std::to_array<TrickyCubic>({
     {{{122, 737}, {348, 553}, {403, 761}, {400, 760}}, 4, CellFillMode::kStretch},
     {{{244, 520}, {244, 518}, {1141, 634}, {394, 688}}, 4, CellFillMode::kStretch},
     {{{550, 194}, {138, 130}, {1035, 246}, {288, 300}}, 4, CellFillMode::kStretch},
@@ -68,7 +69,7 @@ static const TrickyCubic kTrickyCubics[] = {
      CellFillMode::kStretch},  // Flat CONIC with a cusp
     {{{1,1}, {100,1}, {25,1}, {1.5f, std::numeric_limits<float>::quiet_NaN()}}, 3,
      CellFillMode::kStretch},  // Flat CONIC with a cusp
-};
+});
 
 static SkRect calc_tight_cubic_bounds(const SkPoint P[4], int depth=5) {
     if (0 == depth) {

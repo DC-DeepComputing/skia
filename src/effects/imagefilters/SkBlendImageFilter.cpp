@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/effects/SkImageFilters.h"
 
 #include "include/core/SkBlendMode.h"
@@ -190,7 +191,7 @@ sk_sp<SkFlattenable> SkBlendImageFilter::LegacyArithmeticCreateProc(SkReadBuffer
     }
 
     SK_IMAGEFILTER_UNFLATTEN_COMMON(common, 2);
-    float k[4];
+    std::array<float, 4> k;
     for (int i = 0; i < 4; ++i) {
         k[i] = buffer.readScalar();
     }

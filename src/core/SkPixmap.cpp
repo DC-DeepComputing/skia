@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkPixmap.h"
 
 #include "include/core/SkAlphaType.h"
@@ -780,7 +781,7 @@ bool SkPixmap::erase(const SkColor4f& color, const SkIRect* subset) const {
         }
     } else {
         using MemSet = void(*)(void*, uint64_t c, int count);
-        const MemSet procs[] = {
+        const auto procs = std::to_array<MemSet>({
             [](void* addr, uint64_t c, int count) {
                 SkASSERT(c == (uint8_t)c);
                 SK_OPTS_NS::memsetT((uint8_t*)addr, (uint8_t)c, count);
@@ -796,7 +797,7 @@ bool SkPixmap::erase(const SkColor4f& color, const SkIRect* subset) const {
             [](void* addr, uint64_t c, int count) {
                 SK_OPTS_NS::memsetT((uint64_t*)addr, c, count);
             },
-        };
+        });
 
         unsigned shift = SkColorTypeShiftPerPixel(this->colorType());
         SkASSERT(shift < std::size(procs));

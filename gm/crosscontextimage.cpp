@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -35,7 +36,7 @@ DEF_SIMPLE_GPU_GM_CAN_FAIL(cross_context_image, rContext, canvas, errorMsg,
         return skiagm::DrawResult::kSkip;
     }
 
-    sk_sp<SkImage> images[3];
+    std::array<sk_sp<SkImage>, 3> images;
     images[0] = SkImages::DeferredFromEncodedData(encodedData);
 
     SkBitmap bmp;

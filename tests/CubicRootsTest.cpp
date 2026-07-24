@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkFloatingPoint.h"
@@ -335,7 +336,7 @@ static void testCubicValidT(skiatest::Reporter* reporter, std::string name,
     }
     {
         skiatest::ReporterContext subsubtest(reporter, "SkCubics Analytic Implementation");
-        double roots[3] = {0, 0, 0};
+        std::array<double, 3> roots ={0, 0, 0};
         int rootCount = SkCubics::RootsValidT(A, B, C, D, roots);
         REPORTER_ASSERT(reporter, expectedRoots.size() == size_t(rootCount),
                         "Wrong number of roots returned %zu != %d",
@@ -357,7 +358,7 @@ static void testCubicValidT(skiatest::Reporter* reporter, std::string name,
     }
     {
         skiatest::ReporterContext subsubtest(reporter, "SkCubics Binary Search Implementation");
-        double roots[3] = {0, 0, 0};
+        std::array<double, 3> roots ={0, 0, 0};
         int rootCount = SkCubics::BinarySearchRootsValidT(A, B, C, D, roots);
         REPORTER_ASSERT(reporter, expectedRoots.size() == size_t(rootCount),
                         "Wrong number of roots returned %zu != %d", expectedRoots.size(),

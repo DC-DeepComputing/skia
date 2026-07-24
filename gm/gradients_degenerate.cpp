@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -30,11 +31,11 @@ static const SkColor4f COLORS[] = { SkColors::kRed, SkColors::kWhite, SkColors::
                                     SkColors::kBlack, SkColors::kGreen };
 static const SkScalar POS[] = { 0.0, 0.0, 0.5, 1.0, 1.0 };
 
-static const SkTileMode TILE_MODES[] = { SkTileMode::kDecal,
+static const auto TILE_MODES = std::to_array<SkTileMode>({ SkTileMode::kDecal,
                                          SkTileMode::kRepeat,
                                          SkTileMode::kMirror,
-                                         SkTileMode::kClamp };
-static const char* TILE_NAMES[] = { "decal", "repeat", "mirror", "clamp" };
+                                         SkTileMode::kClamp ,});
+static auto TILE_NAMES = std::to_array<const char *>({ "decal", "repeat", "mirror", "clamp" });
 static const int TILE_MODE_CT = std::size(TILE_MODES);
 
 static constexpr int TILE_SIZE = 100;

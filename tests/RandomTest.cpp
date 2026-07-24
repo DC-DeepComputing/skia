@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 
+#include <array>
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkMath.h"
 #include "src/core/SkRandom.h"
@@ -36,7 +38,7 @@ static bool anderson_darling_test(double p[32]) {
     return (kADMin32 < a2 && a2 < kADMax32);
 }
 
-static bool chi_square_test(int bins[256], int e) {
+static bool chi_square_test(SkSpan<int> bins, int e) {
     // Min and max chisquare values allowable
     const double kChiSqMin256 = 206.3179;        // probability of chance = 0.99 with k=256
     const double kChiSqMax256 = 311.5603;        // probability of chance = 0.01 with k=256
@@ -62,8 +64,8 @@ static double normal_cdf(double z) {
 }
 
 static void test_random_byte(skiatest::Reporter* reporter, int shift) {
-    int bins[256];
-    memset(bins, 0, sizeof(int)*256);
+    std::array<int, 256> bins;
+    memset(bins.data(), 0, sizeof(int)*256);
 
     SkRandom rand;
     for (int i = 0; i < 256*10000; ++i) {
@@ -74,8 +76,8 @@ static void test_random_byte(skiatest::Reporter* reporter, int shift) {
 }
 
 static void test_random_float(skiatest::Reporter* reporter) {
-    int bins[256];
-    memset(bins, 0, sizeof(int)*256);
+    std::array<int, 256> bins;
+    memset(bins.data(), 0, sizeof(int)*256);
 
     SkRandom rand;
     for (int i = 0; i < 256*10000; ++i) {
@@ -110,10 +112,10 @@ static double test_single_gorilla(skiatest::Reporter* reporter, int shift) {
     const double kStandardDeviation = 127.0;
     const int kN = (1 << kWordWidth);
     const int kNumEntries = kN >> 5;  // dividing by 32
-    unsigned int entries[kNumEntries];
+    std::array<unsigned int, kNumEntries> entries;
 
     SkRandom rand;
-    memset(entries, 0, sizeof(unsigned int)*kNumEntries);
+    memset(entries.data(), 0, sizeof(unsigned int)*kNumEntries);
     // pre-seed our string value
     int value = 0;
     for (int i = 0; i < kWordWidth-1; ++i) {
@@ -171,8 +173,8 @@ static void test_range(skiatest::Reporter* reporter) {
     (void) rand.nextRangeU(0, 0xffffffff);
 
     // check a case to see if it's uniform
-    int bins[256];
-    memset(bins, 0, sizeof(int)*256);
+    std::array<int, 256> bins;
+    memset(bins.data(), 0, sizeof(int)*256);
     for (int i = 0; i < 256*10000; ++i) {
         unsigned int u = rand.nextRangeU(17, 17+255);
         REPORTER_ASSERT(reporter, 17 <= u && u <= 17+255);

@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkBlendMode.h"
@@ -22,7 +23,7 @@
 #include "include/core/SkTypes.h"
 #include "src/core/SkColorPriv.h"
 
-constexpr SkBlendMode gModes[] = {
+constexpr auto gModes = std::to_array<SkBlendMode>({
     SkBlendMode::kClear,
     SkBlendMode::kSrc,
     SkBlendMode::kDst,
@@ -35,7 +36,7 @@ constexpr SkBlendMode gModes[] = {
     SkBlendMode::kSrcATop,
     SkBlendMode::kDstATop,
     SkBlendMode::kXor,
-};
+});
 
 const int gWidth = 64;
 const int gHeight = 64;
@@ -94,7 +95,7 @@ namespace skiagm {
 
         void onDraw(SkCanvas* canvas) override {
             const SkRect bounds = SkRect::MakeWH(W, H);
-            constexpr SkAlpha gAlphaValue[] = { 0xFF, 0x88, 0x88 };
+            constexpr auto gAlphaValue = std::to_array<SkAlpha>({ 0xFF, 0x88, 0x88 });
 
             canvas->translate(SkIntToScalar(4), SkIntToScalar(4));
 

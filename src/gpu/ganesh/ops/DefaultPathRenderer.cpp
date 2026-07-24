@@ -1,4 +1,6 @@
 /*
+#include <array>
+
  * Copyright 2011 Google Inc.
  *
  * Use of this source code is governed by a BSD-style license that can be
@@ -670,7 +672,7 @@ bool DefaultPathRenderer::internalDrawPath(skgpu::ganesh::SurfaceDrawContext* sd
     }
 
     int                          passCount = 0;
-    const GrUserStencilSettings* passes[2];
+    std::array<const GrUserStencilSettings *, 2> passes;
     bool                         reverse = false;
     bool                         lastPassIsBounds;
 

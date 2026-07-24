@@ -6,6 +6,8 @@
  */
 
 #ifndef SKSLDEBUGTRACEPRIV
+#include <array>
+
 #define SKSLDEBUGTRACEPRIV
 
 #include "include/core/SkPoint.h"
@@ -32,7 +34,7 @@ struct TraceInfo {
         kScope, /** data: scope delta, (unused) */
     };
     Op op;
-    int32_t data[2];
+    std::array<int32_t, 2> data;
 };
 
 struct SlotDebugInfo {

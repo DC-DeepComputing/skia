@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPixmap.h"
 #include "include/core/SkTileMode.h"
@@ -287,18 +288,18 @@ static unsigned clamp(SkFixed fx, int max) {
     return SkTPin(fx >> 16, 0, max);
 }
 
-static const SkBitmapProcState::MatrixProc ClampX_ClampY_Procs[] = {
+static const auto ClampX_ClampY_Procs = std::to_array<SkBitmapProcState::MatrixProc>({
     nofilter_scale <clamp, clamp, true>, filter_scale <clamp, clamp, extract_low_bits_clamp_clamp, true>,
     nofilter_affine<clamp, clamp>,       filter_affine<clamp, clamp, extract_low_bits_clamp_clamp>,
-};
-static const SkBitmapProcState::MatrixProc RepeatX_RepeatY_Procs[] = {
+});
+static const auto RepeatX_RepeatY_Procs = std::to_array<SkBitmapProcState::MatrixProc>({
     nofilter_scale <repeat, repeat, false>, filter_scale <repeat, repeat, extract_low_bits_general, false>,
     nofilter_affine<repeat, repeat>,        filter_affine<repeat, repeat, extract_low_bits_general>
-};
-static const SkBitmapProcState::MatrixProc MirrorX_MirrorY_Procs[] = {
+,});
+static const auto MirrorX_MirrorY_Procs = std::to_array<SkBitmapProcState::MatrixProc>({
     nofilter_scale <mirror, mirror,  false>, filter_scale <mirror, mirror, extract_low_bits_general, false>,
     nofilter_affine<mirror, mirror>,         filter_affine<mirror, mirror, extract_low_bits_general>,
-};
+});
 
 
 ///////////////////////////////////////////////////////////////////////////////

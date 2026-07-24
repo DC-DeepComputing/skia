@@ -51,13 +51,13 @@ static uint32_t pack_unpremul_bgra(SkColor c) {
 
 typedef uint32_t (*PackUnpremulProc)(SkColor);
 
-const struct {
+struct GUnpremul{
     SkColorType         fColorType;
     PackUnpremulProc    fPackProc;
-} gUnpremul[] = {
+}; const auto gUnpremul = std::to_array<GUnpremul>({
     { kRGBA_8888_SkColorType, pack_unpremul_rgba },
     { kBGRA_8888_SkColorType, pack_unpremul_bgra },
-};
+});
 
 static void fill_surface(SkSurface* surf, SkColorType colorType, PackUnpremulProc proc) {
     // Don't strictly need a bitmap, but its a handy way to allocate the pixels

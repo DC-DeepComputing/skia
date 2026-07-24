@@ -6,6 +6,8 @@
  */
 
 #ifndef SkYUVAInfo_DEFINED
+#include "include/core/SkSpan.h"
+
 #define SkYUVAInfo_DEFINED
 
 #include "include/codec/SkEncodedOrigin.h"
@@ -119,7 +121,7 @@ public:
                                PlaneConfig,
                                Subsampling,
                                SkEncodedOrigin,
-                               SkISize planeDimensions[kMaxPlanes]);
+                               SkSpan<SkISize> planeDimensions);
 
     /** Number of planes for a given PlaneConfig. */
     static constexpr int NumPlanes(PlaneConfig);
@@ -135,7 +137,7 @@ public:
      * representation. Fails if channel flags aren't valid for the PlaneConfig (i.e. don't have
      * enough channels in a plane) by returning an invalid set of locations (plane indices are -1).
      */
-    static YUVALocations GetYUVALocations(PlaneConfig, const uint32_t* planeChannelFlags);
+    static YUVALocations GetYUVALocations(PlaneConfig, SkSpan<const uint32_t>planeChannelFlags);
 
     /** Does the PlaneConfig have alpha values? */
     static bool HasAlpha(PlaneConfig);
@@ -192,7 +194,7 @@ public:
      * the expected dimensions for each plane. Dimensions are as stored in memory, before
      * transformation to image display space as indicated by origin().
      */
-    int planeDimensions(SkISize planeDimensions[kMaxPlanes]) const {
+    int planeDimensions(SkSpan<SkISize> planeDimensions) const {
         return PlaneDimensions(fDimensions, fPlaneConfig, fSubsampling, fOrigin, planeDimensions);
     }
 
@@ -214,7 +216,7 @@ public:
      * enough channels in a plane) by returning default initialized locations (all plane indices are
      * -1).
      */
-    YUVALocations toYUVALocations(const uint32_t* channelFlags) const;
+    YUVALocations toYUVALocations(SkSpan<const uint32_t>channelFlags) const;
 
     /**
      * Makes a SkYUVAInfo that is identical to this one but with the passed Subsampling. If the

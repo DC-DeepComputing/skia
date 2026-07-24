@@ -1,4 +1,6 @@
 /*
+#include <array>
+
  * Copyright 2015 Google Inc.
  *
  * Use of this source code is governed by a BSD-style license that can be
@@ -455,7 +457,7 @@ GR_DRAW_OP_TEST_DEFINE(AAFlatteningConvexPathOp) {
     SkMatrix viewMatrix = GrTest::TestMatrixPreservesRightAngles(random);
     const SkPath& path = GrTest::TestPathConvex(random);
 
-    SkStrokeRec::Style styles[3] = { SkStrokeRec::kFill_Style,
+    std::array<SkStrokeRec::Style, 3> styles ={ SkStrokeRec::kFill_Style,
                                      SkStrokeRec::kStroke_Style,
                                      SkStrokeRec::kStrokeAndFill_Style };
 

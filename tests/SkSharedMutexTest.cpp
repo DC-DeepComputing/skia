@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "src/core/SkSharedMutex.h"
 #include "src/core/SkTaskGroup.h"
 #include "tests/Test.h"
@@ -24,7 +25,7 @@ DEF_TEST(SkSharedMutexBasic, r) {
 DEF_TEST(SkSharedMutexMultiThreaded, r) {
     SkSharedMutex sm;
     static const int kSharedSize = 10;
-    int shared[kSharedSize];
+    std::array<int, kSharedSize> shared;
     int value = 0;
     for (int i = 0; i < kSharedSize; ++i) {
         shared[i] = 0;

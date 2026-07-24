@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "bench/Benchmark.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPaint.h"
@@ -169,8 +170,8 @@ class AtlasBench : public Benchmark {
     static constexpr int N = 10*1000;
 
     sk_sp<SkImage>  fAtlas;
-    SkRSXform       fXforms[N];
-    SkRect          fRects[N];
+    std::array<SkRSXform, N> fXforms;
+    std::array<SkRect, N> fRects;
     SkColor         fColors[N];
 
 public:

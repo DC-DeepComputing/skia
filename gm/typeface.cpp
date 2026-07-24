@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBlurTypes.h"
 #include "include/core/SkCanvas.h"
@@ -87,18 +88,18 @@ static void drawKernText(SkCanvas* canvas, const void* text, size_t len,
     canvas->drawTextBlob(builder.make(), 0, 0, paint);
 }
 
-static constexpr SkFontStyle gStyles[] = {
+static constexpr auto gStyles = std::to_array<SkFontStyle>({
     SkFontStyle::Normal(),
     SkFontStyle::Bold(),
     SkFontStyle::Italic(),
     SkFontStyle::BoldItalic(),
-};
+});
 
 constexpr int gStylesCount = std::size(gStyles);
 
 // TODO(bungeman) delete this GM, as it is no longer useful.
 class TypefaceStylesGM : public skiagm::GM {
-    sk_sp<SkTypeface> fFaces[gStylesCount];
+    std::array<sk_sp<SkTypeface>, gStylesCount> fFaces;
     bool fApplyKerning;
 
 public:

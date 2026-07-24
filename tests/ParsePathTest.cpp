@@ -33,10 +33,10 @@ static void test_to_from(skiatest::Reporter* reporter, const SkPath& path) {
 #endif
 }
 
-static struct {
+struct GRec{
     const char* fStr;
     const SkRect fBounds;
-} gRec[] = {
+}; static auto gRec = std::to_array<GRec>({
     { "M1,1 l-2.58-2.828-3.82-0.113, 1.9-3.3223-1.08-3.6702, 3.75,0.7744,3.16-2.1551,"
        "0.42,3.8008,3.02,2.3384-3.48,1.574-1.29,3.601z",
         { -5.39999962f, -10.3142f, 5.77000046f, 1.f } },
@@ -45,7 +45,7 @@ static struct {
     { "M-5.5,-0.5 Q 0 0 6,6.50",
         { -5.5f, -0.5f,
           6, 6.5f } }
-};
+,});
 
 DEF_TEST(ParsePath, reporter) {
     for (size_t i = 0; i < std::size(gRec); i++) {
@@ -90,11 +90,11 @@ DEF_TEST(ParsePath_InvalidDoesNotCrash, r) {
 }
 
 DEF_TEST(ParsePathOptionalCommand, r) {
-    struct {
+    struct GTests{
         const char* fStr;
         int         fVerbs;
         int         fPoints;
-    } gTests[] = {
+    }; auto gTests = std::to_array<GTests>({
         { "", 0, 0 },
 
         { "H100 200 ", 3, 3 },
@@ -119,7 +119,7 @@ DEF_TEST(ParsePathOptionalCommand, r) {
         { "C+.10+.10+.20+.20+.30+.30+.40+.40+.50+.50+.60+.60", 3, 7 },
 
         { "c-1.49.71-2.12 2.5-1.4 4 .71 1.49 2.5 2.12 4 1.4z", 4, 7 },
-    };
+    });
 
     for (size_t i = 0; i < std::size(gTests); ++i) {
         auto path = SkParsePath::FromSVGString(gTests[i].fStr);

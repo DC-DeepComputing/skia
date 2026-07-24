@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "src/gpu/ganesh/gl/GrGLCaps.h"
 
 #include "include/core/SkColor.h"
@@ -3698,7 +3699,7 @@ void GrGLCaps::setupSampleCounts(const GrGLContextInfo& ctxInfo, const GrGLInter
             } else {
                 // Fake out the table using some semi-standard counts up to the max allowed sample
                 // count.
-                static constexpr int kDefaultSamples[] = {1, 2, 4, 8};
+                static constexpr auto kDefaultSamples = std::to_array<int>({1, 2, 4, 8});
                 int count = std::size(kDefaultSamples);
                 for (; count > 0; --count) {
                     if (kDefaultSamples[count - 1] <= maxSampleCnt) {
@@ -3706,7 +3707,7 @@ void GrGLCaps::setupSampleCounts(const GrGLContextInfo& ctxInfo, const GrGLInter
                     }
                 }
                 if (count > 0) {
-                    fFormatTable[i].fColorSampleCounts.append(count, kDefaultSamples);
+                    fFormatTable[i].fColorSampleCounts.append(count, kDefaultSamples.data());
                 }
             }
         } else if (FormatInfo::kFBOColorAttachment_Flag & fFormatTable[i].fFlags) {

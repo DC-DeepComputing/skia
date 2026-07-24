@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBlurTypes.h"
 #include "include/core/SkCanvas.h"
@@ -55,13 +56,13 @@ protected:
         const SkScalar kRightBotPad = kCloseUpSize-3*kSigma; // use on right and bot sides
 
         // UL hand corners of the rendered closeups
-        const SkPoint origins[] = {
+        const auto origins = std::to_array<SkPoint>({
             { -kLeftTopPad,          -kLeftTopPad           }, // UL
             {  kBig-kRightBotPad,    -kLeftTopPad           }, // UR
             {  kBig-kRightBotPad,     kBig-kRightBotPad     }, // LR
             { -kLeftTopPad,           kBig-kRightBotPad     }, // LL
             {  kBig/2-kCloseUpSize/2, kBig/2-kCloseUpSize/2 }, // center
-        };
+        });
 
         SkPaint outlinePaint;
         outlinePaint.setColor(SK_ColorRED);

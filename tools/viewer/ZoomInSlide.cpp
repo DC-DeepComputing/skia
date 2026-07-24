@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "tools/viewer/ZoomInSlide.h"
 
 #include "include/core/SkCanvas.h"
@@ -88,7 +89,7 @@ private:
     static constexpr float kHandleRadius = 4.f;
     static constexpr int kNumPoints = 4;
 
-    SkPoint fPts[kNumPoints];
+    std::array<SkPoint, kNumPoints> fPts;
 };
 
 DEF_SLIDE(return new ZoomInSlideDemo();)

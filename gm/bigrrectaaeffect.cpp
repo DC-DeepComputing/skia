@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkCanvas.h"
@@ -76,10 +77,10 @@ protected:
 
         int y = kPad;
         int x = kPad;
-        constexpr GrClipEdgeType kEdgeTypes[] = {
+        constexpr auto kEdgeTypes = std::to_array<GrClipEdgeType>({
             GrClipEdgeType::kFillAA,
             GrClipEdgeType::kInverseFillAA,
-        };
+        });
         SkRect testBounds = SkRect::MakeIWH(fTestWidth, fTestHeight);
         for (size_t et = 0; et < std::size(kEdgeTypes); ++et) {
             GrClipEdgeType edgeType = kEdgeTypes[et];

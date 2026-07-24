@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "bench/Benchmark.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPaint.h"
@@ -114,9 +115,9 @@ private:
     }
 
     const char* onGetName() override {
-        const char* shapeTypeNames[] = {
+        auto shapeTypeNames = std::to_array<const char *>({
             "none", "rect", "oval", "rrect", "mixed"
-        };
+        ,});
 
         fName.printf("shapes_%s", shapeTypeNames[fShapesType]);
 

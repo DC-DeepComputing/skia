@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -99,10 +100,10 @@ protected:
     }
 
 private:
-    struct {
+    struct FTallBmps{
         SkBitmap fBmp;
         int      fItemCnt;
-    } fTallBmps[8];
+    }; std::array<FTallBmps, 8> fTallBmps;
     using INHERITED = skiagm::GM;
 };
 

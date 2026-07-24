@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -114,13 +115,13 @@ protected:
                                                nullptr),
         };
 
-        SkVector scales[] = {
+        auto scales = std::to_array<SkVector>({
             SkVector::Make(SkScalarInvert(2), SkScalarInvert(2)),
             SkVector::Make(SkIntToScalar(1), SkIntToScalar(1)),
             SkVector::Make(SkIntToScalar(1), SkIntToScalar(2)),
             SkVector::Make(SkIntToScalar(2), SkIntToScalar(1)),
             SkVector::Make(SkIntToScalar(2), SkIntToScalar(2)),
-        };
+        });
 
         SkRect r = SkRect::MakeWH(SkIntToScalar(64), SkIntToScalar(64));
         SkScalar margin = SkIntToScalar(16);

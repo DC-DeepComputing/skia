@@ -1,4 +1,6 @@
 /*
+#include <array>
+
  * Copyright 2011 Google Inc.
  *
  * Use of this source code is governed by a BSD-style license that can be
@@ -130,10 +132,10 @@ static sk_sp<SkShader> MakeConicalOutsideZeroRad(const SkPoint pts[2], const Gra
 typedef sk_sp<SkShader> (*GradMaker)(const SkPoint pts[2], const GradData& data,
                                      SkTileMode tm, float scale);
 
-static const struct {
+struct GGrads{
     GradMaker   fMaker;
     const char* fName;
-} gGrads[] = {
+}; static const auto gGrads = std::to_array<GGrads>({
     { MakeLinear,                 "linear"  },
     { MakeRadial,                 "radial1" },
     { MakeSweep,                  "sweep"   },
@@ -141,7 +143,7 @@ static const struct {
     { MakeConicalZeroRad,         "conicalZero" },
     { MakeConicalOutside,         "conicalOut" },
     { MakeConicalOutsideZeroRad,  "conicalOutZero" },
-};
+});
 
 enum GradType { // these must match the order in gGrads
     kLinear_GradType,

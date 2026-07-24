@@ -1,4 +1,6 @@
 /*
+#include <array>
+
  * Copyright 2011 Google Inc.
  *
  * Use of this source code is governed by a BSD-style license that can be
@@ -22,9 +24,9 @@ enum class PathIterType {
     kEdge,
     kPathIter,
 };
-const char* gPathIterNames[] = {
+auto gPathIterNames = std::to_array<const char *>({
     "olditer", "newiter", "priv", "edge", "pathiter",
-};
+});
 
 static int rand_pts(SkRandom& rand, SkPoint pts[4]) {
     int n = rand.nextU() & 3;

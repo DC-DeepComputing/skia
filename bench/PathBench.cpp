@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "bench/Benchmark.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -468,7 +469,7 @@ enum class BenchPathType {
     kBuilder,
     kData,
 };
-const char* gBenchPathTypeNames[] = { "path", "builder", "data" };
+auto gBenchPathTypeNames = std::to_array<const char *>({ "path", "builder", "data" });
 
 class PathTransformBench : public Benchmark {
 public:
@@ -1018,7 +1019,7 @@ protected:
     enum {
         CONICS = 100
     };
-    SkConic fConics[CONICS];
+    std::array<SkConic, CONICS> fConics;
 
 private:
     using INHERITED = Benchmark;

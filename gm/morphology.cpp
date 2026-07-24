@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -58,16 +59,16 @@ protected:
     }
 
     void onDraw(SkCanvas* canvas) override {
-        struct {
+        struct Samples{
             int fWidth, fHeight;
             int fRadiusX, fRadiusY;
-        } samples[] = {
+        }; auto samples = std::to_array<Samples>({
             { 140, 140,   0,   0 },
             { 140, 140,   0,   2 },
             { 140, 140,   2,   0 },
             { 140, 140,   2,   2 },
             {  24,  24,  25,  25 },
-        };
+        });
         SkPaint paint;
         SkIRect cropRect = SkIRect::MakeXYWH(25, 20, 100, 80);
 

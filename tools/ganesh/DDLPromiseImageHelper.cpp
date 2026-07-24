@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "tools/ganesh/DDLPromiseImageHelper.h"
 
 #include "include/core/SkPicture.h"
@@ -328,9 +329,9 @@ sk_sp<SkImage> DDLPromiseImageHelper::CreatePromiseImages(const void* rawData,
 
     sk_sp<SkImage> image;
     if (curImage.isYUV()) {
-        GrBackendFormat backendFormats[SkYUVAInfo::kMaxPlanes];
+        std::array<GrBackendFormat, SkYUVAInfo::kMaxPlanes> backendFormats;
         const SkYUVAInfo& yuvaInfo = curImage.yuvaInfo();
-        void* contexts[SkYUVAInfo::kMaxPlanes] = {nullptr, nullptr, nullptr, nullptr};
+        std::array<void *, SkYUVAInfo::kMaxPlanes> contexts ={nullptr, nullptr, nullptr, nullptr};
         int textureCount = yuvaInfo.numPlanes();
         for (int i = 0; i < textureCount; ++i) {
             backendFormats[i] = curImage.backendFormat(i);
