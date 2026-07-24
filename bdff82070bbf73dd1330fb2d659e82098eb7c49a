@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5620a2ba_fe50e07d",
+        "filename": "gn/skia.gni",
+        "patchSetId": 25
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-07-24T08:16:39Z",
+      "side": 1,
+      "message": "@kjlubick@google.com: Is this acceptable?\n\nAlternatives are:\n1. Enforce check_includes in Skia GN (you told me this would be a big can of worms). Here is an attemp: https://skia-review.git.corp.google.com/c/skia/+/1299297\n2. Add \"raw_ptr\" dependency directly into every targets that depends transitively on targets that depend on raw_ptr (but fail to declare the deps.",
+      "revId": "bdff82070bbf73dd1330fb2d659e82098eb7c49a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
