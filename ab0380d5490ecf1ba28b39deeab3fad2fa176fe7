@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bfecaf55_5815d296",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-07-24T15:52:32Z",
+      "side": 1,
+      "message": "This patch is ready again. Sorry, I lost the +1",
+      "revId": "ab0380d5490ecf1ba28b39deeab3fad2fa176fe7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
