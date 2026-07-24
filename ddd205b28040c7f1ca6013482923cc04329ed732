@@ -16,6 +16,46 @@
       "message": "Hi team,\n\nI noticed that the Color Overlay layer style (ty: 7) is not yet supported in Skottie. This is a commonly used After Effects layer style. I would like to contribute an implementation. May I take this on?\n\nHappy to answer any questions!\n\nThanks,\nWenting",
       "revId": "ddd205b28040c7f1ca6013482923cc04329ed732",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bbe4d4d2_f39a7a9f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-07-24T01:09:40Z",
+      "side": 1,
+      "message": "Neat, thanks Wenting!",
+      "revId": "ddd205b28040c7f1ca6013482923cc04329ed732",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e10960c5_8c35d5e6",
+        "filename": "modules/skottie/src/effects/ColorOverlayStyles.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-07-24T01:09:40Z",
+      "side": 1,
+      "message": "I think this is subtly different from how AE handles non-opaque colors: `Merge` essentially performs srcOver blending, while AE appears to perform an interpolation between src and overlay color.\n\nE.g. let\u0027s take a [sample shape](https://skottie.skia.org/6c7ab85c70fb82ce18c58af2a2490548?h\u003d500\u0026w\u003d500) with an opaque blue stroke and a 50% red fill, and add a green color overlay with animating opacity.  Screenshots from AE:\n\n * at [0% overlay opacity](https://imgur.com/a/FVpYwJk), only the original shape colors are visible; this happens to match the srcOver behavior, so far so good.\n * at [100% overlay opacity](https://imgur.com/a/5za9tII), only the overlay color (modulated by src alpha) is expected to show; but if we apply srcOver blending we end up with something like 50% green on top of 50% red on top of white, which ends up bleeding some of the red component.\n * (also adding expected [50% overlay](https://imgur.com/a/2ZXqQvm) for reference)\n \nIt looks like AE\u0027s \"opacity\" parameter name is misleading as the color overlay is not blended on top of the source, and instead opacity behaves like an interpolation selector between the two.\n\nWe can still use a color filter for interpolation, something like this seems to match AE in my testing, WDYT?\n\n```\n        SkColorMatrix cm{\n            1 - o,     0,     0,    0, c.fR * o,\n                0, 1 - o,     0,    0, c.fG * o,\n                0,     0, 1 - o,    0, c.fB * o,\n                0,     0,     0, c.fA,        0,\n\n        };\n        this-\u003enode()-\u003esetImageFilter(\n                SkImageFilters::ColorFilter(SkColorFilters::Matrix(cm), nullptr));\n```",
+      "range": {
+        "startLine": 51,
+        "startChar": 37,
+        "endLine": 51,
+        "endChar": 58
+      },
+      "revId": "ddd205b28040c7f1ca6013482923cc04329ed732",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
