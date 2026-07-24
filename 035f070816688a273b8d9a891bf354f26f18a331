@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29575f58_fb722705",
+        "filename": "modules/skcms/skcms.cc",
+        "patchSetId": 2
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-24T18:42:29Z",
+      "side": 0,
+      "message": "We shouldn\u0027t be undoing this change. I guess maybe it slipped in and needs to land upstream?",
+      "range": {
+        "startLine": 42,
+        "startChar": 8,
+        "endLine": 42,
+        "endChar": 29
+      },
+      "revId": "035f070816688a273b8d9a891bf354f26f18a331",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3934d60_683cf501",
+        "filename": "modules/skcms/src/Transform_inl.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 683,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-24T18:42:29Z",
+      "side": 0,
+      "message": "We also want to keep these",
+      "range": {
+        "startLine": 683,
+        "startChar": 12,
+        "endLine": 683,
+        "endChar": 13
+      },
+      "revId": "035f070816688a273b8d9a891bf354f26f18a331",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
