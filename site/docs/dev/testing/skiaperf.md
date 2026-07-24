@@ -7,7 +7,13 @@ linkTitle: "Skia Perf"
 
 
 [Skia Perf](https://perf.skia.org) is a web application for analyzing and
-viewing performance metrics produced by Skia's testing infrastructure.
+viewing performance metrics produced by testing infrastructure.
+
+Skia Perf is used by multiple open-source projects. While this page focuses on
+the Skia-specific instance, you can see more general documentation
+regarding Perf, including links to all public instances, in the [Perf docs](https://skia.googlesource.com/buildbot/+/refs/heads/main/perf/README.md).
+
+## Skia-specific instance
 
 <img src=../Perf.png style="margin-left:30px" align="left" width="800"/> <br clear="left">
 
@@ -16,7 +22,9 @@ commit to Skia generates more than 400,000 individual values that are sent to
 Perf, consisting mostly of performance benchmark results, but also including
 memory and coverage data.
 
-Perf offers clustering, which is a tool to pick out trends and patterns in large sets of traces.
+## Clustering and alerting
+
+Skia Perf offers clustering, which is a tool to pick out trends and patterns in large sets of traces.
 
 <img src=../Cluster.png style="margin-left:30px" align="left" width="400"/> <br clear="left">
 
