@@ -74,10 +74,12 @@ public:
 
     int numFragmentTexturesAndSamplers() const { return fNumFragmentTexturesAndSamplers; }
     bool hasCombinedUniforms() const { return fHasCombinedUniforms; }
-    bool hasGradientBuffer() const { return fHasGradientBuffer; }
+    bool hasStorageBuffer() const { return fHasStorageBuffer; }
+    bool vsUsesStorage() const { return fVsUsesStorage; }
+    bool fsUsesStorage() const { return fFsUsesStorage; }
 
-    // Name used in-shader for gradient buffer uniform.
-    static constexpr char kGradientBufferName[] = "fsGradientBuffer";
+    // Name used in-shader for storage buffer uniform.
+    static constexpr char kStorageBufferName[] = "fsStorageBuffer";
 
 private:
     struct SharedGeneratorData;
@@ -121,7 +123,9 @@ private:
 
     int fNumFragmentTexturesAndSamplers = 0;
     bool fHasCombinedUniforms = false;
-    bool fHasGradientBuffer = false;
+    bool fHasStorageBuffer = false;
+    bool fVsUsesStorage = false;
+    bool fFsUsesStorage = false;
 };
 
 }  // namespace skgpu::graphite

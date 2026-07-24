@@ -902,6 +902,9 @@ std::unique_ptr<ShaderInfo> ShaderInfo::Make(const Caps* caps,
         result->fBlendInfo.fWritesColor = false;
     }
 
+    result->fVsUsesStorage = step->vsUsesStorage();
+    result->fFsUsesStorage = step->fsUsesStorage();
+
     result->generateVertexSkSL(caps, step, sharedData);
     result->fVSLabel = step->name();
     if (sharedData.fNeedsLocalCoords) {
@@ -1050,17 +1053,18 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
                 /*binding=*/0);
     }
 
-    bool useGradientBuffer = caps->gradientBufferSupport() &&
-                              (allReqFlags & SnippetRequirementFlags::kGradientBuffer);
-    if (useGradientBuffer) {
+    // TODO (thomsmit): update once vertex is added
+    bool useStorageBuffer = caps->storageBufferSupport() &&
+                             (allReqFlags & SnippetRequirementFlags::kStorageBuffer);
+    if (useStorageBuffer) {
         SkSL::String::appendf(&fsPreamble,
-                              "layout (set=%d, binding=%d) readonly buffer FSGradientBuffer {\n"
+                              "layout (set=%d, binding=%d) readonly buffer FSStorageBuffer {\n"
                               "float %s[];\n"
                               "};\n",
                               bindingReqs.fUniformsSetIdx,
-                              bindingReqs.fGradientBufferBinding,
-                              ShaderInfo::kGradientBufferName);
-        fHasGradientBuffer = true;
+                              bindingReqs.fStorageBufferBinding,
+                              ShaderInfo::kStorageBufferName);
+        fHasStorageBuffer = true;
     }
 
     const bool useDstSampler = fDstReadStrategy == DstReadStrategy::kTextureCopy ||
