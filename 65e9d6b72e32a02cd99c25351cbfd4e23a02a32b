@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3be48834_15c876b0",
+        "filename": "src/core/SkResourceCache.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-07-24T12:27:23Z",
+      "side": 1,
+      "message": "@kjlubick@chromium.org: Feel free to ignore, but if you are interested, I can address this:\nhttps://skia-review.git.corp.google.com/c/skia/+/1290303\n\nThe cache key is reduced to from 24 byte to 16byte and stop depending on the 32/64bit architecture.\n\nI did a performance benchmark from Chrome, but couldn\u0027t see any measurable gains. The Skia benchmarks might be more sensitive to cache key size.",
+      "fixSuggestions": [
+        {
+          "fixId": "df2fbd67_f33382f8",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/core/SkResourceCache.h",
+              "range": {
+                "startLine": 71,
+                "startChar": 0,
+                "endLine": 72,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "65e9d6b72e32a02cd99c25351cbfd4e23a02a32b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
