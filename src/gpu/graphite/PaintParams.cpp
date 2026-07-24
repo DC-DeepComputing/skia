@@ -483,6 +483,9 @@ void ShadingParams::handleClipping(const KeyContext& keyContext) const {
     } else if (fClipShader) {
         // Since there's no analytic clip, the clipping root node can be fClipShader directly.
         AddToKey(keyContext, fClipShader);
+    } else {
+        // We check for clipping before calling `handleClipping()`.
+        SkUNREACHABLE;
     }
 }
 
@@ -494,9 +497,11 @@ std::optional<ShadingParams::Result> ShadingParams::toKey(const KeyContext& keyC
     SkDEBUGCODE(bool paintDependsOnDst = true;)
 
     // Root Node 0 is the source color, which is the output of all effects post dithering
+    keyContext.paintParamsKeyBuilder()->addRootBlockHeader(RootBlockType::kSrcColor);
     bool isOpaque = this->handleDithering(keyContext);
 
     // Root Node 1 is the final blender
+    keyContext.paintParamsKeyBuilder()->addRootBlockHeader(RootBlockType::kFinalBlend);
     SkEnumBitMask<DstUsage> dstUsage = fDstUsage;
     if (fPaint.finalBlender()) {
         AddToKey(keyContext, fPaint.finalBlender());
@@ -556,7 +561,10 @@ std::optional<ShadingParams::Result> ShadingParams::toKey(const KeyContext& keyC
     }
 
     // Optional Root Node 2 is the clip
-    this->handleClipping(keyContext);
+    if (fClipShader || !fNonMSAAClip.isEmpty()) {
+        keyContext.paintParamsKeyBuilder()->addRootBlockHeader(RootBlockType::kClip);
+        this->handleClipping(keyContext);
+    }
 
     // If dstUsage is not kNone, then kDependsOnDst must be set (all other bits only apply *because*
     // the shading depends on dst).
