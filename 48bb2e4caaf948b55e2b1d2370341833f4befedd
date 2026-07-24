@@ -60,6 +60,30 @@
       ],
       "revId": "48bb2e4caaf948b55e2b1d2370341833f4befedd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e6f10c7_a8ade590",
+        "filename": "src/core/SkRasterPipeline.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-24T14:06:20Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "6a46141e_2cc5e416",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 50
+      },
+      "revId": "48bb2e4caaf948b55e2b1d2370341833f4befedd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
