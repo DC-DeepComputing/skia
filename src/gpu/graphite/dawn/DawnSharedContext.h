@@ -52,9 +52,18 @@ public:
 
     void deviceTick(Context*) override;
 
-    const wgpu::BindGroupLayout& getUniformBuffersBindGroupLayout() const {
-        return fUniformBuffersBindGroupLayout;
+    const wgpu::BindGroupLayout& getUniformBuffersBindGroupLayout(
+            wgpu::ShaderStage storageVisibility) const {
+        size_t index = static_cast<size_t>(storageVisibility);
+        index = (index > 3 || index < 1 ? 1 : index) - 1;
+        SkASSERT(index < fUniformBuffersBindGroupLayouts.size());
+        return fUniformBuffersBindGroupLayouts[index];
     }
+
+    const wgpu::BindGroupLayout& getUniformBuffersBindGroupLayout() const {
+        return this->getUniformBuffersBindGroupLayout(wgpu::ShaderStage::Fragment);
+    }
+
     const wgpu::BindGroupLayout& getSingleTextureSamplerBindGroupLayout() const {
         return fSingleTextureSamplerBindGroupLayout;
     }
@@ -84,7 +93,7 @@ private:
     // a pipeline with a color attachment but without a fragment shader).
     wgpu::ShaderModule fNoopFragment;
 
-    wgpu::BindGroupLayout fUniformBuffersBindGroupLayout;
+    std::array<wgpu::BindGroupLayout, 3> fUniformBuffersBindGroupLayouts;
     wgpu::BindGroupLayout fSingleTextureSamplerBindGroupLayout;
 };
 
