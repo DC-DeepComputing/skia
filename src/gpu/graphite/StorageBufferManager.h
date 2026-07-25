@@ -13,6 +13,7 @@
 #include "include/private/SkTDArray.h"
 #include "src/core/SkTHash.h"
 #include "src/gpu/graphite/BufferManager.h"
+#include "src/gpu/graphite/DescriptorData.h"
 #include "src/gpu/graphite/ResourceTypes.h"
 
 #include <cstdint>
