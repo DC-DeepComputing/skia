@@ -125,7 +125,7 @@ Recorder::Recorder(sk_sp<SharedContext> sharedContext,
         , fRuntimeEffectDict(sk_make_sp<RuntimeEffectDictionary>())
         , fRootTaskList(new TaskList)
         , fRootUploads(new UploadList)
-        , fStorageBufferManager(sk_make_sp<StorageBufferManager>())
+        , fStorageBufferManager(sk_make_sp<StorageBufferManager>(fSharedContext->caps()->storageBufferSupport()))
         , fProxyReadCounts(new ProxyReadCountMap)
         , fUniqueID(next_id())
         , fRequireOrderedRecordings(options.fRequireOrderedRecordings.has_value()
@@ -260,7 +260,7 @@ std::unique_ptr<Recording> Recorder::snap() {
     // Remaining cleanup that must always happen regardless of success or failure
     fRuntimeEffectDict = sk_make_sp<RuntimeEffectDictionary>();
     fProxyReadCounts = std::make_unique<ProxyReadCountMap>();
-    fStorageBufferManager = sk_make_sp<StorageBufferManager>();
+    fStorageBufferManager = sk_make_sp<StorageBufferManager>(fSharedContext->caps()->storageBufferSupport());
     if (!fRequireOrderedRecordings) {
         fAtlasProvider->invalidateAtlases();
     }

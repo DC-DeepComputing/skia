@@ -54,6 +54,7 @@ public:
     const SkIRect&      bounds() const { return fBounds;       }
     TextureProxy* target() const { return fTarget.get(); }
     const BindBufferInfo& storageBufferInfo() const { return fStorageBufferInfo; }
+    const TextureProxy* storageTextureProxy() const { return fStorageTextureProxy.get(); }
     std::pair<LoadOp, StoreOp> ops() const { return fOps; }
     std::array<float, 4> clearColor() const { return fClearColor; }
 
@@ -87,6 +88,7 @@ public:
 private:
     friend class DrawList;      // For the constructor
     friend class DrawListLayer; // ''
+    friend class StorageBufferManager;
 
     DrawPass(sk_sp<TextureProxy> target,
              std::pair<LoadOp, StoreOp> ops,
@@ -114,6 +116,7 @@ private:
     skia_private::TArray<sk_sp<GraphicsPipeline>> fFullPipelines;
 
     BindBufferInfo fStorageBufferInfo;
+    sk_sp<TextureProxy> fStorageTextureProxy;
 };
 
 } // namespace skgpu::graphite
