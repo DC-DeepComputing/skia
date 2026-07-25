@@ -1298,6 +1298,22 @@ void ShaderInfo::generateVertexSkSL(const Caps* caps,
                                 sharedData.fHasSsboIndexVarying,
                                 sharedData.fNeedsLocalCoords);
 
+    // Declare vertex storage buffer if the RenderStep has storage attributes
+    if (step->numStorageAttributes() > 0) {
+        std::string fields;
+        for (auto a : step->storageAttributes()) {
+            SkSL::String::appendf(&fields, "%s %s;\n", SkSLTypeString(a.gpuType()), a.name());
+        }
+        SkSL::String::appendf(&vsPreamble,
+                              "struct StepStorageData {\n%s};\n"
+                              "layout (set=%d, binding=%d) readonly buffer StepStorageBuffer {\n"
+                              "    StepStorageData stepStorageData[];\n"
+                              "};\n",
+                              fields.c_str(),
+                              bindingReqs.fUniformsSetIdx,
+                              bindingReqs.fStorageBufferBinding);
+    }
+
     // Add vertex attributes
     if (step->numStaticAttributes() > 0 || step->numAppendAttributes() > 0) {
         int attr = 0;

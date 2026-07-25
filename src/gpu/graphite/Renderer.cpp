@@ -20,26 +20,32 @@ RenderStep::RenderStep(Layout layout,
                        DepthStencilSettings depthStencilSettings,
                        SkSpan<const Attribute> staticAttrs,
                        SkSpan<const Attribute> appendAttrs,
+                       SkSpan<const Attribute> storageAttrs,
                        SkSpan<const Varying> varyings)
         : fRenderStepID(renderStepID)
         , fFlags(flags)
         , fStorageBufferStages(
-                  (SkToBool(flags & Flags::kVsUsesStorage) ? PipelineStageFlags::kVertexShader   : PipelineStageFlags{}) |
+                  ((SkToBool(flags & Flags::kVsUsesStorage) || !storageAttrs.empty()) ? PipelineStageFlags::kVertexShader   : PipelineStageFlags{}) |
                   (SkToBool(flags & Flags::kFsUsesStorage) ? PipelineStageFlags::kFragmentShader : PipelineStageFlags{}))
         , fPrimitiveType(primitiveType)
         , fDepthStencilSettings(depthStencilSettings)
         , fUniforms(uniforms)
         , fStaticAttrs(staticAttrs.begin(), staticAttrs.end())
         , fAppendAttrs(appendAttrs.begin(), appendAttrs.end())
+        , fStorageAttrs(storageAttrs.begin(), storageAttrs.end())
         , fVaryings(varyings.begin(), varyings.end())
         , fUniformAlignment(0)
         , fStaticDataStride(0)
-        , fAppendDataStride(0) {
+        , fAppendDataStride(0)
+        , fStorageDataStride(0) {
     for (auto v : this->staticAttributes()) {
         fStaticDataStride += v.sizeAlign4();
     }
     for (auto i : this->appendAttributes()) {
         fAppendDataStride += i.sizeAlign4();
+    }
+    for (auto s : this->storageAttributes()) {
+        fStorageDataStride += s.sizeAlign4();
     }
 
     UniformOffsetCalculator calculator = UniformOffsetCalculator::ForTopLevel(layout);
@@ -47,6 +53,19 @@ RenderStep::RenderStep(Layout layout,
         calculator.advanceOffset(u.type(), u.count());
     }
     fUniformAlignment = calculator.requiredAlignment();
+}
+
+size_t RenderStep::storageDataAlignment() const {
+    size_t maxAlign = 4;
+    for (const auto& s : fStorageAttrs) {
+        size_t sz = s.sizeAlign4();
+        if (sz >= 16) {
+            maxAlign = 16;
+        } else if (sz >= 8 && maxAlign < 8) {
+            maxAlign = 8;
+        }
+    }
+    return maxAlign;
 }
 
 std::optional<SkIRect> RenderStep::getScissor(const DrawParams& params,

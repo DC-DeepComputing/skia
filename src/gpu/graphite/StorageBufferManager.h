@@ -44,6 +44,7 @@ public:
         fContextGradientsList.clear();
         fGradientDataSize = 0;
         fAppendedData.clear();
+        fStrideAlignment = 0;
         fBufferInfo.reset();
         SkDEBUGCODE(fGradientsFinalized = false;)
     }
@@ -56,6 +57,7 @@ public:
 
     void finalizeGradientStorage() {
         fGradientDataSize = SkAlignTo<size_t>(fGradientDataSize, kStructAlignment);
+        fStrideAlignment = kStructAlignment;
         SkDEBUGCODE(fGradientsFinalized = true;)
     }
 
@@ -63,20 +65,38 @@ public:
         this->finalizeGradientStorage();
     }
 
-    AppendedAllocation append(size_t count, size_t stride) {
+    AppendedAllocation append(size_t count, size_t stride, size_t align = 4) {
         SkASSERT(fGradientsFinalized);
-        size_t currentAppendedOffset = SkAlignTo<size_t>(fAppendedData.size(), kStructAlignment);
+        if (count == 0 || stride == 0) {
+            return {VertexWriter{nullptr, 0}, 0};
+        }
+
+        size_t reqAlign = std::max(align, (size_t)4);
+        size_t currentGpuOffset = fGradientDataSize + fAppendedData.size();
+
+        size_t alignedGpuOffset = SkAlignTo<size_t>(currentGpuOffset, reqAlign);
+        if (alignedGpuOffset % stride != 0) {
+            alignedGpuOffset = SkAlignTo<size_t>(alignedGpuOffset, stride);
+        }
+
+        size_t padding = alignedGpuOffset - currentGpuOffset;
         size_t allocationBytes = count * stride;
-        fAppendedData.resize(currentAppendedOffset + allocationBytes);
+        size_t oldAppendedSize = fAppendedData.size();
 
-        size_t gpuByteOffset = fGradientDataSize + currentAppendedOffset;
+        fAppendedData.resize(oldAppendedSize + padding + allocationBytes);
+        if (padding > 0) {
+            memset(fAppendedData.data() + oldAppendedSize, 0, padding);
+        }
 
-        void* ptr = fAppendedData.data() + currentAppendedOffset;
-        return {VertexWriter{ptr, allocationBytes}, static_cast<uint32_t>(gpuByteOffset)};
+        uint32_t strideIndex = static_cast<uint32_t>(alignedGpuOffset / stride);
+        fStrideAlignment = reqAlign;
+
+        void* ptr = fAppendedData.data() + oldAppendedSize + padding;
+        return {VertexWriter{ptr, allocationBytes}, strideIndex};
     }
 
-    AppendedAllocation appendVertexStorage(size_t count, size_t stride) {
-        return this->append(count, stride);
+    AppendedAllocation appendVertexStorage(size_t count, size_t stride, size_t align = 4) {
+        return this->append(count, stride, align);
     }
 
     SkDEBUGCODE(bool fGradientsFinalized = false;)
@@ -84,6 +104,7 @@ public:
     skia_private::THashMap<const SkGradientBaseShader*, int> fLocalGradientOffsetCache;
     skia_private::STArray<4, const SkGradientBaseShader*> fContextGradientsList;
     size_t fGradientDataSize = 0;
+    size_t fStrideAlignment = 0;
 
     SkTDArray<char> fAppendedData;
     std::optional<BindBufferInfo> fBufferInfo;
