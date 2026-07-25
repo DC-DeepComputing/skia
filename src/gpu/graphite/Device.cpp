@@ -1676,56 +1676,7 @@ void Device::drawGeometry(const Transform& localToDevice,
         }
     }
 
-    // Determine the paint ID and collect the paint uniforms now before anything has been recorded.
-    // The paint may reference an SkPicture or a Graphite-backed dynamic SkImage that can trigger
-    // a flush of the Recorder.
-    SkEnumBitMask<KeyGenFlags> keyGenFlags = KeyGenFlags::kDefault;
-    if (renderer && (renderer->useNonAAInnerFill() || renderer->coverage() == Coverage::kNone)) {
-        keyGenFlags |= KeyGenFlags::kPreferFixedSrcBlend;
-    }
-    KeyContext keyContext{fRecorder,
-                          fDC.get(),
-                          fRecorder->priv().storageBufferManager(),
-                          scopedDrawBuilder.builder(),
-                          scopedDrawBuilder.gatherer(),
-                          localToDevice.matrix(),
-                          clip.drawBounds().asSkRect(),
-                          fDC->colorInfo(),
-                          keyGenFlags,
-                          paint.color()};
-    auto keyResult = shading.toKey(keyContext);
-    if (!keyResult) {
-        // Converting the SkPaint to a pipeline and set of uniform values + sampled textures failed.
-        SKIA_LOG_W("Key context creation failed in Device::drawGeometry, draw dropped!");
-        return;
-    }
-    auto [paintID, dstUsage] = *keyResult;
-
-    // If we are unclipped, do not depend on the dst, and cover the target, then we can adjust
-    // load ops of the renderpass to more optimally handle the draw (and avoid redundant clears).
-    // NOTE: We skip this for fully-lazy render targets because the load ops may impact a larger
-    // area than the Device's theoretical bounds.
-    const bool overwritesAllPixels = dstUsage == DstUsage::kNone &&
-                                     geometry.isShape() &&
-                                     geometry.shape().isFloodFill() &&
-                                     !fDC->target().proxy()->isFullyLazy() &&
-                                     clipElements.empty() &&
-                                     clip.scissor().contains(this->bounds());
-    if (overwritesAllPixels) {
-        if (std::optional<SkColor4f> color = extract_paint_color(paint, fDC->colorInfo())) {
-            // Fullscreen clear, so nothing has to be rendered at all
-            fDC->clear(*color);
-            return;
-        } else {
-            // This paint does not depend on the destination and covers the entire surface, so
-            // discard everything previously recorded and proceed with the draw. DstUsage::kNone
-            // implies no blending will be enabled for the draw, so discards on floating-point
-            // formats (that could inject NaNs into the dst) will be overwritten correctly.
-            fDC->discard();
-            // But then continue to render the flood fill with shading
-        }
-    }
-
+    // TODO look at this
     // If an atlas path renderer was chosen we need to insert the shape into the atlas and schedule
     // it to be drawn.
     if (pathAtlas != nullptr) {
@@ -1772,6 +1723,62 @@ void Device::drawGeometry(const Transform& localToDevice,
         geometry.setCoverageMaskShape(*atlasMask);
         styleType = SkStrokeRec::kFill_Style;
         fAtlasedPathCount++;
+    }
+
+    // Determine the paint ID and collect the paint uniforms now before anything has been recorded.
+    // The paint may reference an SkPicture or a Graphite-backed dynamic SkImage that can trigger
+    // a flush of the Recorder.
+    SkEnumBitMask<KeyGenFlags> keyGenFlags = KeyGenFlags::kDefault;
+    if (renderer && (renderer->useNonAAInnerFill() || renderer->coverage() == Coverage::kNone)) {
+        keyGenFlags |= KeyGenFlags::kPreferFixedSrcBlend;
+    }
+    KeyContext keyContext{fRecorder,
+                          fDC.get(),
+                          fRecorder->priv().storageBufferManager(),
+                          scopedDrawBuilder.builder(),
+                          scopedDrawBuilder.gatherer(),
+                          localToDevice.matrix(),
+                          clip.drawBounds().asSkRect(),
+                          fDC->colorInfo(),
+                          keyGenFlags,
+                          paint.color()};
+    auto keyResult = shading.toKey(keyContext);
+    if (!keyResult) {
+        // Converting the SkPaint to a pipeline and set of uniform values + sampled textures failed.
+        SKIA_LOG_W("Key context creation failed in Device::drawGeometry, draw dropped!");
+        return;
+    }
+    auto [paintID, dstUsage] = *keyResult;
+
+    // If we are unclipped, do not depend on the dst, and cover the target, then we can adjust
+    // load ops of the renderpass to more optimally handle the draw (and avoid redundant clears).
+    // NOTE: We skip this for fully-lazy render targets because the load ops may impact a larger
+    // area than the Device's theoretical bounds.
+    const bool overwritesAllPixels = dstUsage == DstUsage::kNone &&
+                                     geometry.isShape() &&
+                                     geometry.shape().isFloodFill() &&
+                                     !fDC->target().proxy()->isFullyLazy() &&
+                                     clipElements.empty() &&
+                                     clip.scissor().contains(this->bounds());
+    if (overwritesAllPixels) {
+        if (std::optional<SkColor4f> color = extract_paint_color(paint, fDC->colorInfo())) {
+            // Fullscreen clear, so nothing has to be rendered at all
+            fDC->clear(*color);
+            return;
+        } else {
+            // This paint does not depend on the destination and covers the entire surface, so
+            // discard everything previously recorded and proceed with the draw. DstUsage::kNone
+            // implies no blending will be enabled for the draw, so discards on floating-point
+            // formats (that could inject NaNs into the dst) will be overwritten correctly.
+            fDC->discard();
+            scopedDrawBuilder.gatherer()->resetForDraw();
+            scopedDrawBuilder.builder()->resetForDraw();
+            keyResult = shading.toKey(keyContext);
+            if (!keyResult) {
+                return;
+            }
+            std::tie(paintID, dstUsage) = *keyResult;
+        }
     }
 
 #if defined(SK_DEBUG)

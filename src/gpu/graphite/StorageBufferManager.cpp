@@ -15,63 +15,106 @@ namespace skgpu::graphite {
 StorageBufferManager::~StorageBufferManager() { this->reset(); }
 
 void StorageBufferManager::GradientCache::reset() {
-    for (auto [k, _] : fOffsetCache) {
+    for (auto [k, _] : fGradientHash) {
         k->unref();
     }
-    fOffsetCache.reset();
-    fStorage.clear();
+    fGradientHash.reset();
+    fGradientData.clear();
 }
 
 void StorageBufferManager::reset() {
     fGradientCache.reset();
-    fBufferInfo.reset();
 }
 
 std::pair<float*, int> StorageBufferManager::allocateGradientData(
-        int numStops, const SkGradientBaseShader* shader) {
-    SkASSERT(!this->isFinalized());
-    if (numStops > GradientCache::kMaxGradientStops) {
+        StorageContext* ctx,
+        int numStops,
+        const SkGradientBaseShader* shader) {
+    if (!ctx) {
+        return {nullptr, -1};
+    }
+    SkASSERT(!ctx->fGradientsFinalized);
+    if (numStops > kMaxGradientStops) {
         return {nullptr, -1};
     }
 
-    int* existingOffset = fGradientCache.fOffsetCache.find(shader);
-    if (existingOffset) {
-        return {nullptr, *existingOffset};
+    int* existingLocalOffset = ctx->fLocalGradientOffsetCache.find(shader);
+    if (existingLocalOffset) {
+        return {nullptr, *existingLocalOffset};
     }
 
-    int floatCount = numStops * 5;
-    int currentFloatCount = fGradientCache.fStorage.size();
-    if (GradientCache::kMaxStorageFloats - floatCount < currentFloatCount) {
-        return {nullptr, -1};
+    float* dstData = nullptr;
+    GradientCache::GradientInfo* globalInfo = fGradientCache.fGradientHash.find(shader);
+    if (!globalInfo) {
+        int globalOffset = fGradientCache.fGradientData.size();
+        int floatCount = numStops * 5;
+        if (kMaxStorageFloats - floatCount < globalOffset) {
+            return {nullptr, -1};
+        }
+
+        fGradientCache.fGradientData.resize(globalOffset + floatCount);
+        dstData = fGradientCache.fGradientData.data() + globalOffset;
+
+        shader->ref();
+        fGradientCache.fGradientHash.set(shader, {globalOffset, floatCount});
+        globalInfo = fGradientCache.fGradientHash.find(shader);
     }
 
-    float* startPtr = fGradientCache.fStorage.append(floatCount);
+    int localFloatOffset = ctx->fGradientDataSize / sizeof(float);
+    ctx->fLocalGradientOffsetCache.set(shader, localFloatOffset);
+    ctx->fContextGradientsList.push_back(shader);
+    ctx->fGradientDataSize += globalInfo->fFloatCount * sizeof(float);
 
-    // Since StorageBufferManager is single threaded, adding a ref and then storing in the
-    // map should be fine.
-    shader->ref();
-    fGradientCache.fOffsetCache.set(shader, currentFloatCount);
-
-    return {startPtr, currentFloatCount};
+    return {dstData, localFloatOffset};
 }
 
-bool StorageBufferManager::finalize(DrawBufferManager* bufferMgr) {
-    SkASSERT(!this->isFinalized());
-    size_t totalBytes = fGradientCache.fStorage.size_bytes();
+BindBufferInfo StorageBufferManager::finalize(DrawBufferManager* bufferMgr, StorageContext* ctx) {
+    if (!ctx) {
+        return BindBufferInfo{};
+    }
+
+    ctx->finalizeGradientStorage();
+
+    size_t gradSize = ctx->fGradientDataSize;
+    size_t appSize = SkAlignTo<size_t>(ctx->fAppendedData.size(), StorageContext::kStructAlignment);
+    size_t totalBytes = gradSize + appSize;
+
     if (totalBytes > 0) {
         auto [writer, bufferInfo, _] =
-                bufferMgr->getMappedStorageBuffer(totalBytes, sizeof(float));
+                bufferMgr->getMappedStorageBuffer(totalBytes, /*stride=*/1);
         if (writer) {
-            writer.write(fGradientCache.fStorage.data(), fGradientCache.fStorage.size_bytes());
-            this->reset();
-            fBufferInfo = bufferInfo;
-            return true;
+            // 1. Pack gradient floats for this context in local run order
+            if (gradSize > 0) {
+                size_t writtenGradientBytes = 0;
+                for (const SkGradientBaseShader* shader : ctx->fContextGradientsList) {
+                    GradientCache::GradientInfo* info =
+                            fGradientCache.fGradientHash.find(shader);
+                    if (info) {
+                        size_t bytesToCopy = info->fFloatCount * sizeof(float);
+                        writer.write(fGradientCache.fGradientData.data() + info->fGlobalFloatOffset,
+                                     bytesToCopy);
+                        writtenGradientBytes += bytesToCopy;
+                    }
+                }
+                if (gradSize > writtenGradientBytes) {
+                    writer.zeroBytes(gradSize - writtenGradientBytes);
+                }
+            }
+
+            // 2. Write appended vertex/instance storage
+            if (!ctx->fAppendedData.empty()) {
+                writer.write(ctx->fAppendedData.data(), ctx->fAppendedData.size());
+                size_t paddingBytes = appSize - ctx->fAppendedData.size();
+                if (paddingBytes > 0) {
+                    writer.zeroBytes(paddingBytes);
+                }
+            }
+
+            ctx->fBufferInfo = bufferInfo;
+            return bufferInfo;
         }
-        return false;
-    } else {
-        fBufferInfo = BindBufferInfo();
     }
-    return true;
+    return BindBufferInfo{};
 }
 
-}  // namespace skgpu::graphite
+} // namespace skgpu::graphite
