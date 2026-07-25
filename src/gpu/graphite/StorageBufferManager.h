@@ -10,14 +10,17 @@
 
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkAlign.h"
+#include "include/private/SkTArray.h"
 #include "include/private/SkTDArray.h"
 #include "src/core/SkTHash.h"
+#include "src/gpu/BufferWriter.h"
 #include "src/gpu/graphite/BufferManager.h"
 #include "src/gpu/graphite/DescriptorData.h"
 #include "src/gpu/graphite/ResourceTypes.h"
 
 #include <cstdint>
 #include <limits>
+#include <memory>
 #include <optional>
 #include <utility>
 
@@ -27,48 +30,101 @@ namespace skgpu::graphite {
 
 class DrawBufferManager;
 
+class StorageContext {
+public:
+    static constexpr size_t kStructAlignment = 16;
+
+    struct AppendedAllocation {
+        VertexWriter fWriter;
+        uint32_t     fOffset;
+    };
+
+    void reset() {
+        fLocalGradientOffsetCache.reset();
+        fContextGradientsList.clear();
+        fGradientDataSize = 0;
+        fAppendedData.clear();
+        fBufferInfo.reset();
+        SkDEBUGCODE(fGradientsFinalized = false;)
+    }
+
+    int size() const {
+        int gradSize = SkAlignTo<int>(fGradientDataSize, kStructAlignment);
+        int appSize = SkAlignTo<int>(fAppendedData.size(), kStructAlignment);
+        return gradSize + appSize;
+    }
+
+    void finalizeGradientStorage() {
+        fGradientDataSize = SkAlignTo<size_t>(fGradientDataSize, kStructAlignment);
+        SkDEBUGCODE(fGradientsFinalized = true;)
+    }
+
+    void finalizeCacheStorageData() {
+        this->finalizeGradientStorage();
+    }
+
+    AppendedAllocation append(size_t count, size_t stride) {
+        SkASSERT(fGradientsFinalized);
+        size_t currentAppendedOffset = SkAlignTo<size_t>(fAppendedData.size(), kStructAlignment);
+        size_t allocationBytes = count * stride;
+        fAppendedData.resize(currentAppendedOffset + allocationBytes);
+
+        size_t gpuByteOffset = fGradientDataSize + currentAppendedOffset;
+
+        void* ptr = fAppendedData.data() + currentAppendedOffset;
+        return {VertexWriter{ptr, allocationBytes}, static_cast<uint32_t>(gpuByteOffset)};
+    }
+
+    AppendedAllocation appendVertexStorage(size_t count, size_t stride) {
+        return this->append(count, stride);
+    }
+
+    SkDEBUGCODE(bool fGradientsFinalized = false;)
+
+    skia_private::THashMap<const SkGradientBaseShader*, int> fLocalGradientOffsetCache;
+    skia_private::STArray<4, const SkGradientBaseShader*> fContextGradientsList;
+    size_t fGradientDataSize = 0;
+
+    SkTDArray<char> fAppendedData;
+    std::optional<BindBufferInfo> fBufferInfo;
+};
+
 /**
- * Manages allocation of storage buffer data, currently only handles gradient data
+ * Manages allocation of storage buffer data (such as gradient colors/stops and vertex/instance
+ * storage) per DrawContext, concatenating gradients and appended storage per context.
  */
 class StorageBufferManager : public SkRefCnt {
 public:
+    static constexpr int kMaxGradientStops = 1024 * 1024;
+    static constexpr int kMaxStorageFloats =
+            static_cast<int>(std::numeric_limits<uint32_t>::max() / sizeof(float));
+
     StorageBufferManager() = default;
     ~StorageBufferManager() override;
 
     void reset();
 
-    // Checks if data already exists for the requested gradient shader. If so, it returns a nullptr
-    // and the existing offset. If not, it allocates space, caches the offset, and returns a pointer
-    // to the start of the new data and the calculated offset.
-    //
-    // If it was not possible to store the gradient data, a nullptr and negative offset are returned
-    // to signal the error state.
-    std::pair<float*, int> allocateGradientData(int numStops, const SkGradientBaseShader* shader);
+    // Checks if gradient data already exists for the requested gradient shader.
+    std::pair<float*, int> allocateGradientData(StorageContext* ctx,
+                                                int numStops, const SkGradientBaseShader* shader);
 
-    bool finalize(DrawBufferManager* bufferMgr);
-
-    BindBufferInfo getBufferInfo() const { return fBufferInfo.value_or(BindBufferInfo{}); }
-    bool hasData() const { return fBufferInfo.has_value() && fBufferInfo->fBuffer != nullptr; }
-
-#if defined(SK_DEBUG)
-    bool isFinalized() const { return fBufferInfo.has_value(); }
-    int gradientSize() const { return fGradientCache.fStorage.size_bytes(); }
-#endif
+    // Finalizes storage for a specific DrawContext/DrawPass and returns its BindBufferInfo.
+    BindBufferInfo finalize(DrawBufferManager* bufferMgr, StorageContext* ctx);
 
 private:
     struct GradientCache {
-        static constexpr int kMaxGradientStops = 1024 * 1024;
-        static constexpr int kMaxStorageFloats =
-                static_cast<int>(std::numeric_limits<uint32_t>::max() / sizeof(float));
+        struct GradientInfo {
+            int fGlobalFloatOffset;
+            int fFloatCount;
+        };
 
-        skia_private::THashMap<const SkGradientBaseShader*, int> fOffsetCache;
-        SkTDArray<float> fStorage;
+        SkTDArray<float> fGradientData;
+        skia_private::THashMap<const SkGradientBaseShader*, GradientInfo> fGradientHash;
 
         void reset();
     };
 
     GradientCache fGradientCache;
-    std::optional<BindBufferInfo> fBufferInfo;
 };
 
 } // namespace skgpu::graphite

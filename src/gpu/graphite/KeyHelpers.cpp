@@ -293,12 +293,14 @@ void add_conical_gradient_uniform_data(const KeyContext& keyContext,
 //
 // Returns a negative offset to signal failure, in which case the paint key must be poisoned
 // to drop the draw.
-static int write_color_and_offset_bufdata(int numStops,
+static int write_color_and_offset_bufdata(StorageContext* storageContext,
+                                           int numStops,
                                            const SkPMColor4f* colors,
                                            const float* offsets,
                                            const SkGradientBaseShader* shader,
                                            StorageBufferManager* storageBufferManager) {
-    auto [dstData, bufferOffset] = storageBufferManager->allocateGradientData(numStops, shader);
+    auto [dstData, bufferOffset] =
+            storageBufferManager->allocateGradientData(storageContext, numStops, shader);
     if (dstData) {
         SkASSERT(bufferOffset >= 0);
         // Data doesn't already exist so we need to write it.
@@ -395,7 +397,12 @@ void GradientShaderBlocks::AddBlock(const KeyContext& keyContext, const Gradient
     if (gradData.fNumStops > GradientData::kNumInternalStorageStops && keyContext.recorder()) {
         bool hasStorage;
         if (gradData.fUseStorageBuffer) {
-            bufferOffset = write_color_and_offset_bufdata(gradData.fNumStops,
+            // TODO assert?
+            StorageContext* storageContext = keyContext.drawContext()
+                    ? keyContext.drawContext()->storageContext()
+                    : nullptr;
+            bufferOffset = write_color_and_offset_bufdata(storageContext,
+                                                          gradData.fNumStops,
                                                           gradData.fSrcColors,
                                                           gradData.fSrcOffsets,
                                                           gradData.fSrcShader,
