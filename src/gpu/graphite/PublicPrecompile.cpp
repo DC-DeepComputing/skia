@@ -138,7 +138,7 @@ void Precompile(PrecompileContext* precompileContext,
             // The PipelineDataGatherer handles uniform data; the StorageBufferManager may handle
             // mixed data. In the pre-compile case we don't need to record the uniform data but the
             // process of generating it is required to create the correct key.
-            StorageBufferManager storageBufferManager;
+            StorageBufferManager storageBufferManager(caps->storageBufferSupport());
             PipelineDataGatherer gatherer(Layout::kMetal);
             PaintParamsKeyBuilder builder(dict);
             KeyContext keyContext(caps, &storageBufferManager, &builder, &gatherer, dict,
