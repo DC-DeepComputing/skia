@@ -13,6 +13,7 @@
 #include "src/gpu/Blend.h"
 #include "src/gpu/Swizzle.h"
 #include "src/gpu/graphite/Caps.h"
+#include "src/gpu/graphite/DescriptorData.h"
 #include "src/gpu/graphite/ResourceTypes.h"
 #include "src/gpu/graphite/UniquePaintParamsID.h"
 
@@ -74,10 +75,19 @@ public:
 
     int numFragmentTexturesAndSamplers() const { return fNumFragmentTexturesAndSamplers; }
     bool hasCombinedUniforms() const { return fHasCombinedUniforms; }
-    bool hasGradientBuffer() const { return fHasGradientBuffer; }
+    SkEnumBitMask<PipelineStageFlags> storageBufferStages() const { return fStorageBufferStages; }
+    bool vsUsesStorage() const {
+        return SkToBool(fStorageBufferStages & PipelineStageFlags::kVertexShader);
+    }
+    bool fsUsesStorage() const {
+        return SkToBool(fStorageBufferStages & PipelineStageFlags::kFragmentShader);
+    }
+    bool usesStorageBuffer() const {
+        return fStorageBufferStages != SkEnumBitMask<PipelineStageFlags>{};
+    }
 
-    // Name used in-shader for gradient buffer uniform.
-    static constexpr char kGradientBufferName[] = "fsGradientBuffer";
+    // Name used in-shader for storage buffer uniform.
+    static constexpr char kStorageBufferName[] = "fsStorageBuffer";
 
 private:
     struct SharedGeneratorData;
@@ -87,7 +97,7 @@ private:
                const char* uniformSsboIndex,
                DstReadStrategy);
 
-    // Determines fNumFragmentTexturesAndSamplers, fHasPaintUniforms, fHasGradientBuffer,
+    // Determines fNumFragmentTexturesAndSamplers, fHasPaintUniforms, fHasStorageBuffer,
     // fHasSsboIndexVarying, and if a valid SamplerDesc ptr is passed in, any immutable
     // sampler SamplerDescs.
     void generateFragmentSkSL(const Caps*,
@@ -121,7 +131,7 @@ private:
 
     int fNumFragmentTexturesAndSamplers = 0;
     bool fHasCombinedUniforms = false;
-    bool fHasGradientBuffer = false;
+    SkEnumBitMask<PipelineStageFlags> fStorageBufferStages = {};
 };
 
 }  // namespace skgpu::graphite
