@@ -19,6 +19,7 @@
 #include "src/gpu/graphite/DrawParams.h"
 #include "src/gpu/graphite/PaintParams.h"
 #include "src/gpu/graphite/PipelineData.h"
+#include "src/gpu/graphite/StorageBufferManager.h"
 #include "src/gpu/graphite/geom/Rect.h"
 #include "src/gpu/graphite/geom/Transform.h"
 
@@ -64,10 +65,15 @@ public:
             const StrokeStyle* stroke,
             Layer* latestInsertion) = 0;
 
+
     virtual std::unique_ptr<DrawPass> snapDrawPass(Recorder* recorder,
                                                    sk_sp<TextureProxy> target,
                                                    const SkImageInfo& targetInfo,
                                                    const DstReadStrategy dstReadStrategy) = 0;
+
+    StorageContext* storageContext() {
+        return &fStorageContext;
+    }
 
     int renderStepCount() const { return fRenderStepCount; }
 
@@ -100,9 +106,13 @@ public:
         fUniformDataCache.reset();
         fTextureDataCache.reset();
         fPipelineCache.reset();
+        fStorageContext.reset();
 
         SkDEBUGCODE(fCoverageMaskShapeDrawCount = 0;)
     }
+
+protected:
+    StorageContext fStorageContext;
 
 protected:
     const Transform& deduplicateTransform(const Transform& localToDevice) {
