@@ -7,10 +7,20 @@
 
 #include "src/gpu/graphite/StorageBufferManager.h"
 
-#include "src/gpu/graphite/BufferManager.h"
+#include "src/gpu/graphite/Caps.h"
+#include "src/gpu/graphite/DrawContext.h"
+#include "src/gpu/graphite/DrawPass.h"
+#include "src/gpu/graphite/RecorderPriv.h"
+#include "src/gpu/graphite/TextureFormat.h"
+#include "src/gpu/graphite/TextureProxy.h"
+#include "src/gpu/graphite/TextureProxyView.h"
+#include "src/gpu/graphite/task/UploadTask.h"
 #include "src/shaders/gradients/SkGradientBaseShader.h"
 
 namespace skgpu::graphite {
+
+StorageBufferManager::StorageBufferManager(bool storageBufferSupport)
+        : fStorageBufferSupport(storageBufferSupport) {}
 
 StorageBufferManager::~StorageBufferManager() { this->reset(); }
 
@@ -68,7 +78,31 @@ std::pair<float*, int> StorageBufferManager::allocateGradientData(
     return {dstData, localFloatOffset};
 }
 
-BindBufferInfo StorageBufferManager::finalize(DrawBufferManager* bufferMgr, StorageContext* ctx) {
+BindBufferInfo StorageBufferManager::finalize(DrawBufferManager* bufferMgr,
+                                                StorageContext* ctx,
+                                                Recorder* recorder,
+                                                DrawContext* dc,
+                                                DrawPass* drawPass) {
+    if (!ctx) {
+        return {};
+    }
+
+    if (fStorageBufferSupport) {
+        return this->finalizeSSBO(bufferMgr, ctx);
+    }
+
+    if (ctx->size() > 0 && recorder && dc) {
+        TextureProxyView proxyView = this->finalizeTexture(recorder, dc, ctx);
+        if (proxyView && drawPass) {
+            drawPass->fStorageTextureProxy = proxyView.refProxy();
+            drawPass->fSampledTextures.push_back(proxyView.refProxy());
+        }
+    }
+
+    return {};
+}
+
+BindBufferInfo StorageBufferManager::finalizeSSBO(DrawBufferManager* bufferMgr, StorageContext* ctx) {
     if (!ctx) {
         return BindBufferInfo{};
     }
@@ -115,6 +149,102 @@ BindBufferInfo StorageBufferManager::finalize(DrawBufferManager* bufferMgr, Stor
         }
     }
     return BindBufferInfo{};
+}
+
+sk_sp<TextureProxy> StorageBufferManager::createTextureProxy(Recorder* recorder, int width, int height) {
+    const Caps* caps = recorder->priv().caps();
+    TextureInfo info = caps->getDefaultSampledTextureInfo(
+            kRGBA_F32_SkColorType, Mipmapped::kNo, recorder->priv().isProtected(), Renderable::kNo);
+
+    return TextureProxy::Make(caps,
+                              recorder->priv().resourceProvider(),
+                              SkISize::Make(width, height),
+                              info,
+                              "StorageBufferFallbackTexture",
+                              Budgeted::kYes);
+}
+
+TextureProxyView StorageBufferManager::finalizeTexture(Recorder* recorder,
+                                                        DrawContext* dc,
+                                                        StorageContext* ctx) {
+    if (!ctx || ctx->size() == 0 || !recorder || !dc) {
+        return {};
+    }
+
+    ctx->finalizeGradientStorage();
+
+    size_t gradSize = ctx->fGradientDataSize;
+    size_t appSize = SkAlignTo<size_t>(ctx->fAppendedData.size(), StorageContext::kStructAlignment);
+    size_t totalBytes = gradSize + appSize;
+
+    if (totalBytes == 0) {
+        return {};
+    }
+
+    SkTDArray<char> uploadBuffer;
+    uploadBuffer.resize(totalBytes);
+
+    if (gradSize > 0) {
+        size_t writtenGradientBytes = 0;
+        for (const SkGradientBaseShader* shader : ctx->fContextGradientsList) {
+            GradientCache::GradientInfo* info = fGradientCache.fGradientHash.find(shader);
+            if (info) {
+                size_t bytesToCopy = info->fFloatCount * sizeof(float);
+                memcpy(uploadBuffer.data() + writtenGradientBytes,
+                       fGradientCache.fGradientData.data() + info->fGlobalFloatOffset,
+                       bytesToCopy);
+                writtenGradientBytes += bytesToCopy;
+            }
+        }
+        if (gradSize > writtenGradientBytes) {
+            memset(uploadBuffer.data() + writtenGradientBytes, 0, gradSize - writtenGradientBytes);
+        }
+    }
+
+    if (!ctx->fAppendedData.empty()) {
+        memcpy(uploadBuffer.data() + gradSize, ctx->fAppendedData.data(), ctx->fAppendedData.size());
+        size_t paddingBytes = appSize - ctx->fAppendedData.size();
+        if (paddingBytes > 0) {
+            memset(uploadBuffer.data() + gradSize + ctx->fAppendedData.size(), 0, paddingBytes);
+        }
+    }
+
+    constexpr int kTexelBytes = 16;
+    constexpr int kAtlasWidth = 2048;
+    constexpr int kAtlasRowBytes = kAtlasWidth * kTexelBytes;
+
+    int totalTexels = (totalBytes + kTexelBytes - 1) / kTexelBytes;
+    int height = (totalTexels + kAtlasWidth - 1) / kAtlasWidth;
+    int paddedBytes = height * kAtlasRowBytes;
+
+    if (uploadBuffer.size() < paddedBytes) {
+        uploadBuffer.resize(paddedBytes);
+    }
+
+    sk_sp<TextureProxy> proxy = this->createTextureProxy(recorder, kAtlasWidth, height);
+    if (!proxy) {
+        return {};
+    }
+
+    MipLevel level;
+    level.fPixels = uploadBuffer.data();
+    level.fRowBytes = kAtlasRowBytes;
+    SkIRect dstRect = SkIRect::MakeWH(kAtlasWidth, height);
+
+    Swizzle readSwizzle = ReadSwizzleForColorType(kRGBA_F32_SkColorType, proxy->format());
+    TextureProxyView proxyView(std::move(proxy), readSwizzle);
+
+    SkColorInfo colorInfo(kRGBA_F32_SkColorType, kPremul_SkAlphaType, nullptr);
+    UploadSource source = UploadSource::Make(recorder->priv().caps(),
+                                             proxyView,
+                                             colorInfo,
+                                             colorInfo,
+                                             SkSpan<const MipLevel>(&level, 1),
+                                             dstRect);
+
+    dc->recordUpload(recorder, source);
+
+    return proxyView;
 }
 
 } // namespace skgpu::graphite

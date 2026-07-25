@@ -100,6 +100,22 @@ public:
                                      atIndex:index];
     }
 
+    void setVertexTexture(id<MTLTexture> texture, NSUInteger index) {
+        SkASSERT(index < kMaxExpectedTextures);
+        if (fCurrentVertexTexture[index] != texture) {
+            [(*fCommandEncoder) setVertexTexture:texture
+                                         atIndex:index];
+            fCurrentVertexTexture[index] = texture;
+        }
+    }
+    void setVertexSamplerState(id<MTLSamplerState> sampler, NSUInteger index) {
+        SkASSERT(index < kMaxExpectedTextures);
+        if (fCurrentVertexSampler[index] != sampler) {
+            [(*fCommandEncoder) setVertexSamplerState:sampler
+                                              atIndex:index];
+            fCurrentVertexSampler[index] = sampler;
+        }
+    }
     void setFragmentTexture(id<MTLTexture> texture, NSUInteger index) {
         SkASSERT(index < kMaxExpectedTextures);
         if (fCurrentTexture[index] != texture) {
@@ -222,6 +238,8 @@ private:
         for (int i = 0; i < kMaxExpectedTextures; i++) {
             fCurrentTexture[i] = nil;
             fCurrentSampler[i] = nil;
+            fCurrentVertexTexture[i] = nil;
+            fCurrentVertexSampler[i] = nil;
         }
     }
 
@@ -237,6 +255,8 @@ private:
 
     id<MTLTexture> fCurrentTexture[kMaxExpectedTextures];
     id<MTLSamplerState> fCurrentSampler[kMaxExpectedTextures];
+    id<MTLTexture> fCurrentVertexTexture[kMaxExpectedTextures];
+    id<MTLSamplerState> fCurrentVertexSampler[kMaxExpectedTextures];
 
     MTLScissorRect fCurrentScissorRect = { 0, 0, 0, 0 };
     MTLTriangleFillMode fCurrentTriangleFillMode = (MTLTriangleFillMode)-1;

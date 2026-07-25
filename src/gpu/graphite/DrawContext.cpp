@@ -261,7 +261,8 @@ void DrawContext::flush(Recorder* recorder) {
     std::unique_ptr<DrawPass> pass = fPendingDraws->snapDrawPass(recorder,
                                                                  fTarget.refProxy(),
                                                                  this->imageInfo(),
-                                                                 drawPassDstReadStrategy);
+                                                                 drawPassDstReadStrategy,
+                                                                 this);
     SkASSERT(!fPendingDraws->modifiesTarget()); // Should be drained into `pass`.
 
     if (pass) {

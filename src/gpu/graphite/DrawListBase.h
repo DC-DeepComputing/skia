@@ -69,7 +69,8 @@ public:
     virtual std::unique_ptr<DrawPass> snapDrawPass(Recorder* recorder,
                                                    sk_sp<TextureProxy> target,
                                                    const SkImageInfo& targetInfo,
-                                                   const DstReadStrategy dstReadStrategy) = 0;
+                                                   const DstReadStrategy dstReadStrategy,
+                                                   DrawContext* dc = nullptr) = 0;
 
     StorageContext* storageContext() {
         return &fStorageContext;

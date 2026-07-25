@@ -88,7 +88,8 @@ public:
     std::unique_ptr<DrawPass> snapDrawPass(Recorder* recorder,
                                            sk_sp<TextureProxy> target,
                                            const SkImageInfo& targetInfo,
-                                           DstReadStrategy dstReadStrategy) override;
+                                           DstReadStrategy dstReadStrategy,
+                                           DrawContext* dc = nullptr) override;
 
     // Discard all previously recorded draws and set to the requested load op (with optional clear
     // color).
