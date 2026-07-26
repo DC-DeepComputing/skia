@@ -68,15 +68,15 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(StorageBufferManagerAppendOnlyTest, reporter,
     StorageContext* ctxHandle = &ctxStorage;
     ctxHandle->finalizeCacheStorageData();
 
-    // Append 1: 4 elements of 8 bytes = 32 bytes
+    // Append 1: 4 elements of 8 bytes = 32 bytes (start byte 0 -> index 0 / 8 = 0)
     auto alloc1 = ctxHandle->appendVertexStorage(4, 8);
     REPORTER_ASSERT(reporter, static_cast<bool>(alloc1.fWriter));
     REPORTER_ASSERT(reporter, alloc1.fOffset == 0);
 
-    // Append 2: 2 elements of 16 bytes = 32 bytes (aligned to 16 bytes)
-    auto alloc2 = ctxHandle->appendVertexStorage(2, 16);
+    // Append 2: 2 elements of 16 bytes = 32 bytes (start byte 32 -> index 32 / 16 = 2)
+    auto alloc2 = ctxHandle->appendVertexStorage(2, 16, 16);
     REPORTER_ASSERT(reporter, static_cast<bool>(alloc2.fWriter));
-    REPORTER_ASSERT(reporter, alloc2.fOffset == 32);
+    REPORTER_ASSERT(reporter, alloc2.fOffset == 2);
 
     auto bindInfo = sbm->finalize(recorder->priv().drawBufferManager(), ctxHandle);
     REPORTER_ASSERT(reporter, bindInfo.fBuffer != nullptr);
@@ -104,10 +104,10 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(StorageBufferManagerGradientsAndAppendTest, r
     // Finalize cached gradient storage region (pads to 16 bytes: 40 -> 48 bytes)
     ctxHandle->finalizeCacheStorageData();
 
-    // Appended allocation: Should be 16-byte aligned relative to 40 gradient bytes -> starts at byte 48!
+    // Appended allocation: starts at byte 48 -> in stride units (48 / 8 = 6)
     auto alloc = ctxHandle->appendVertexStorage(4, 8);
     REPORTER_ASSERT(reporter, static_cast<bool>(alloc.fWriter));
-    REPORTER_ASSERT(reporter, alloc.fOffset == 48);
+    REPORTER_ASSERT(reporter, alloc.fOffset == 6);
 
     auto bindInfo = sbm->finalize(recorder->priv().drawBufferManager(), ctxHandle);
     REPORTER_ASSERT(reporter, bindInfo.fBuffer != nullptr);
@@ -125,7 +125,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(StorageBufferManagerMultiStreamTest, reporter
     const auto* grad1 = static_cast<const SkGradientBaseShader*>(shader1.get());
     const auto* grad2 = static_cast<const SkGradientBaseShader*>(shader2.get());
 
-    // Stream 0: Add to gradient (new grad1), append
+    // Stream 0: Add to gradient (new grad1), append (start byte 48 -> index 48/8 = 6)
     StorageContext ctxStorage0;
     StorageContext* ctx0 = &ctxStorage0;
     auto [gPtr0, gOffset0] = sbm->allocateGradientData(ctx0, 2, grad1);
@@ -133,9 +133,9 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(StorageBufferManagerMultiStreamTest, reporter
     REPORTER_ASSERT(reporter, gOffset0 == 0);
     ctx0->finalizeCacheStorageData();
     auto app0 = ctx0->appendVertexStorage(2, 8);
-    REPORTER_ASSERT(reporter, app0.fOffset == 48);
+    REPORTER_ASSERT(reporter, app0.fOffset == 6);
 
-    // Stream 1: Add to gradient (grad1 deduplicated against shared cache), append
+    // Stream 1: Add to gradient (grad1 deduplicated), append (start byte 48 -> index 48/8 = 6)
     StorageContext ctxStorage1;
     StorageContext* ctx1 = &ctxStorage1;
     auto [gPtr1_a, gOffset1_a] = sbm->allocateGradientData(ctx1, 2, grad1);
@@ -146,9 +146,9 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(StorageBufferManagerMultiStreamTest, reporter
     REPORTER_ASSERT(reporter, gOffset1_b == gOffset1_a);
     ctx1->finalizeCacheStorageData();
     auto app1 = ctx1->appendVertexStorage(4, 8);
-    REPORTER_ASSERT(reporter, app1.fOffset == 48);
+    REPORTER_ASSERT(reporter, app1.fOffset == 6);
 
-    // Stream 2: Add to gradient (grad1 deduplicated), add to gradient (cached grad1), add to gradient (new grad2), append
+    // Stream 2: Add to gradient (grad1 deduplicated, grad2 new -> 80 bytes -> start byte 80 -> index 80/8 = 10)
     StorageContext ctxStorage2;
     StorageContext* ctx2 = &ctxStorage2;
     auto [gPtr2_a, gOffset2_a] = sbm->allocateGradientData(ctx2, 2, grad1);
@@ -162,7 +162,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(StorageBufferManagerMultiStreamTest, reporter
     REPORTER_ASSERT(reporter, gOffset2_c == 10); // 10 floats offset
     ctx2->finalizeCacheStorageData();
     auto app2 = ctx2->appendVertexStorage(2, 8);
-    REPORTER_ASSERT(reporter, app2.fOffset == 80); // 80 is 16-byte aligned
+    REPORTER_ASSERT(reporter, app2.fOffset == 10);
 
     // Finalize all streams independently
     auto bind0 = sbm->finalize(recorder->priv().drawBufferManager(), ctx0);
@@ -228,34 +228,34 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(StorageBufferManagerInterleavedMultiStreamTes
 
     // 3. Heavily Interleaved Appends Across Streams
     // Round 1
-    auto a0_1 = ctx0->appendVertexStorage(2, 8); // 16 bytes
-    REPORTER_ASSERT(reporter, a0_1.fOffset == 80);
+    auto a0_1 = ctx0->appendVertexStorage(2, 8); // start byte 80 -> 80/8 = 10
+    REPORTER_ASSERT(reporter, a0_1.fOffset == 10);
 
-    auto a1_1 = ctx1->appendVertexStorage(1, 16); // 16 bytes
-    REPORTER_ASSERT(reporter, a1_1.fOffset == 48);
+    auto a1_1 = ctx1->appendVertexStorage(1, 16, 16); // start byte 48 -> 48/16 = 3
+    REPORTER_ASSERT(reporter, a1_1.fOffset == 3);
 
-    auto a2_1 = ctx2->appendVertexStorage(4, 8); // 32 bytes
-    REPORTER_ASSERT(reporter, a2_1.fOffset == 80);
+    auto a2_1 = ctx2->appendVertexStorage(4, 8); // start byte 80 -> 80/8 = 10
+    REPORTER_ASSERT(reporter, a2_1.fOffset == 10);
 
     // Round 2 (interleaved append order)
-    auto a0_2 = ctx0->appendVertexStorage(3, 16); // 48 bytes
-    REPORTER_ASSERT(reporter, a0_2.fOffset == 96); // 80 + 16
+    auto a0_2 = ctx0->appendVertexStorage(3, 16, 16); // start byte 96 -> 96/16 = 6
+    REPORTER_ASSERT(reporter, a0_2.fOffset == 6);
 
-    auto a1_2 = ctx1->appendVertexStorage(2, 8); // 16 bytes
-    REPORTER_ASSERT(reporter, a1_2.fOffset == 64); // 48 + 16
+    auto a1_2 = ctx1->appendVertexStorage(2, 8); // start byte 64 -> 64/8 = 8
+    REPORTER_ASSERT(reporter, a1_2.fOffset == 8);
 
-    auto a2_2 = ctx2->appendVertexStorage(2, 16); // 32 bytes
-    REPORTER_ASSERT(reporter, a2_2.fOffset == 112); // 80 + 32
+    auto a2_2 = ctx2->appendVertexStorage(2, 16, 16); // start byte 112 -> 112/16 = 7
+    REPORTER_ASSERT(reporter, a2_2.fOffset == 7);
 
     // Round 3 (interleaved append order)
-    auto a0_3 = ctx0->appendVertexStorage(1, 8); // 8 bytes
-    REPORTER_ASSERT(reporter, a0_3.fOffset == 144); // 96 + 48
+    auto a0_3 = ctx0->appendVertexStorage(1, 8); // start byte 144 -> 144/8 = 18
+    REPORTER_ASSERT(reporter, a0_3.fOffset == 18);
 
-    auto a1_3 = ctx1->appendVertexStorage(4, 16); // 64 bytes
-    REPORTER_ASSERT(reporter, a1_3.fOffset == 80); // 64 + 16
+    auto a1_3 = ctx1->appendVertexStorage(4, 16, 16); // start byte 80 -> 80/16 = 5
+    REPORTER_ASSERT(reporter, a1_3.fOffset == 5);
 
-    auto a2_3 = ctx2->appendVertexStorage(1, 8); // 8 bytes
-    REPORTER_ASSERT(reporter, a2_3.fOffset == 144); // 112 + 32
+    auto a2_3 = ctx2->appendVertexStorage(1, 8); // start byte 144 -> 144/8 = 18
+    REPORTER_ASSERT(reporter, a2_3.fOffset == 18);
 
     // 4. Finalize all streams independently
     auto bind0 = sbm->finalize(recorder->priv().drawBufferManager(), ctx0);
@@ -266,6 +266,35 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(StorageBufferManagerInterleavedMultiStreamTes
 
     auto bind2 = sbm->finalize(recorder->priv().drawBufferManager(), ctx2);
     REPORTER_ASSERT(reporter, bind2.fBuffer != nullptr);
+}
+
+DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(StorageBufferManagerAlignmentAndStrideUnitsTest, reporter, context,
+                                   CtsEnforcement::kApiLevel_202404) {
+    StorageContext ctxStorage;
+    StorageContext* ctx = &ctxStorage;
+
+    REPORTER_ASSERT(reporter, ctx->fStrideAlignment == 0);
+
+    ctx->finalizeCacheStorageData();
+    REPORTER_ASSERT(reporter, ctx->fStrideAlignment == StorageContext::kStructAlignment);
+
+    // Allocation 1: stride = 12, align = 4, count = 2 -> size = 24 bytes
+    // Current byte offset = 0. Aligned to 4 & multiple of 12 -> start byte 0. Index = 0 / 12 = 0.
+    auto alloc1 = ctx->appendVertexStorage(2, 12, 4);
+    REPORTER_ASSERT(reporter, alloc1.fOffset == 0);
+    REPORTER_ASSERT(reporter, ctx->fStrideAlignment == 4);
+
+    // Allocation 2: stride = 16, align = 16, count = 1 -> size = 16 bytes
+    // Current byte offset = 24. Aligned to 16 -> start byte 32. Padding = 8 bytes. Index = 32 / 16 = 2.
+    auto alloc2 = ctx->appendVertexStorage(1, 16, 16);
+    REPORTER_ASSERT(reporter, alloc2.fOffset == 2);
+    REPORTER_ASSERT(reporter, ctx->fStrideAlignment == 16);
+
+    // Allocation 3: stride = 8, align = 8, count = 3 -> size = 24 bytes
+    // Current byte offset = 48. Aligned to 8 -> start byte 48. Index = 48 / 8 = 6.
+    auto alloc3 = ctx->appendVertexStorage(3, 8, 8);
+    REPORTER_ASSERT(reporter, alloc3.fOffset == 6);
+    REPORTER_ASSERT(reporter, ctx->fStrideAlignment == 8);
 }
 
 }  // namespace skgpu::graphite

@@ -29,6 +29,7 @@ public:
 
     std::string vertexSkSL() const override;
     void writeVertices(DrawWriter* writer,
+                       StorageContext* storageContext,
                        const DrawParams& params,
                        uint32_t ssboIndex) const override;
     void writeUniformsAndTextures(const DrawParams&, PipelineDataGatherer*) const override;

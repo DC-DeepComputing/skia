@@ -142,8 +142,9 @@ std::string TessellateWedgesRenderStep::vertexSkSL() const {
 }
 
 void TessellateWedgesRenderStep::writeVertices(DrawWriter* dw,
-                                               const DrawParams& params,
-                                               uint32_t ssboIndex) const {
+                                                StorageContext* storageContext,
+                                                const DrawParams& params,
+                                                uint32_t ssboIndex) const {
     SkPath path = params.geometry().shape().asPath(); // TODO: Iterate the Shape directly
 
     int patchReserveCount = FixedCountWedges::PreallocCount(path.countVerbs());
