@@ -8,6 +8,7 @@
 #define skgpu_graphite_sparse_strips_MakeStrips_DEFINED
 
 #include "include/core/SkPathTypes.h"
+#include "include/core/SkRect.h"
 #include "include/private/SkTDArray.h"
 #include "src/gpu/graphite/geom/WideTiles.h"
 #include "src/gpu/graphite/sparse_strips/Polyline.h"
@@ -16,6 +17,7 @@
 #include "src/gpu/graphite/sparse_strips/StripProcessorScalar.h"
 #include "src/gpu/graphite/sparse_strips/StripProcessorSimd.h"
 #include "src/gpu/graphite/sparse_strips/Tiler.h"
+#include "src/gpu/graphite/sparse_strips/WindingHistogram.h"
 
 #include <utility>
 
@@ -112,8 +114,9 @@ public:
                            const Polyline& polyline,
                            const SkTDArray<uint8_t>& maskLut,
                            WideTiles<kTileHeight>& wides,
-                           uint16_t viewportWidth,
-                           uint16_t viewportHeight
+                           bool isCulled,
+                           const WindingHistogram& windingHistogram,
+                           const SkIRect& clipRect
 #if defined(GPU_TEST_UTILS)
                            , MsaaExactMaskObserver observer = nullptr
 #endif
@@ -129,8 +132,8 @@ public:
             );
 
             TraverseCPU<kTileWidth, kTileHeight>(
-                    tileContainer, stripBuf, alphaBuf, wides, viewportWidth, viewportHeight,
-                    isInverse, &processor);
+                    tileContainer, stripBuf, alphaBuf, wides, isCulled, windingHistogram,
+                    clipRect, isInverse, &processor);
         });
     }
 
@@ -142,8 +145,9 @@ public:
                          const Polyline& polyline,
                          const SkTDArray<uint8_t>& maskLut,
                          WideTiles<kTileHeight>& wides,
-                         uint16_t viewportWidth,
-                         uint16_t viewportHeight
+                         bool isCulled,
+                         const WindingHistogram& windingHistogram,
+                         const SkIRect& clipRect
 #if defined(GPU_TEST_UTILS)
                          , MsaaExactMaskObserver observer = nullptr
 #endif
@@ -159,8 +163,8 @@ public:
             );
 
             TraverseCPU<kTileWidth, kTileHeight>(
-                    tileContainer, stripBuf, alphaBuf, wides, viewportWidth, viewportHeight,
-                    isInverse, &processor);
+                    tileContainer, stripBuf, alphaBuf, wides, isCulled, windingHistogram,
+                    clipRect, isInverse, &processor);
         });
     }
 
@@ -184,63 +188,111 @@ private:
         SkUNREACHABLE;
     }
 
-    // While the underlying implementation may be scalar or SIMD, the core traversal across
-    // the tiles is identical. To reiterate, the goal of MakeStrips is twofold:
-    // 1) Combine intersecting segments within the same spatial tile to resolve final coverage.
-    // 2) Generate the difference encoded `Strip` objects mapping out fills and gaps.
-    //
-    // To achieve this in a single pass, the traversal treats the strictly sorted tile stream
-    // as an event-driven state machine governed by three transition events:
-    //
-    // 1) Tile Start (`tileStart`):
-    //    Triggered when the current tile's x or y differs from the previous tile.
-    //    Action: All overlapping segments at the previous spatial coordinate have been processed.
-    //    The accumulated coverage is pushed to the dense alpha buffer, and the local mask is reset.
-    //
-    // 2) Row Start (`rowStart`):
-    //    Triggered when the current tile's y differs from the previous tile (moves to a new row).
-    //    Action: Because strips define an implicit difference encoding bounded by two successive
-    //    strips, advancing to a new row requires pushing a sentinel strip (`kSentinelCoord`) to
-    //    safely terminate and cap off the final strip of the previous row.
-    //
-    // 3) Segment Start (`segStart`):
-    //    Triggered by a `rowStart`, OR when the current tile's x coordinate skips forward by more
-    //    than 1 (a non-contiguous gap in the same row).
-    //    Action: A spatial gap has been found. We commit the previously tracked strip and begin a
-    //    new one. The renderer will use the difference in alpha indices between these two strips
-    //    to evaluate the solid fill space bounded between them.
     template <uint16_t kTileWidth, uint16_t kTileHeight, typename Processor>
     static SK_ALWAYS_INLINE void TraverseCPU(
             const Tiles<kTileWidth, kTileHeight>& tileContainer,
             SkTDArray<Strip>* stripBuf,
             SkTDArray<uint8_t>* alphaBuf,
             WideTiles<kTileHeight>& wides,
-            uint16_t viewportWidth,
-            uint16_t viewportHeight,
+            bool isCulled,
+            const WindingHistogram& windingHistogram,
+            const SkIRect& clipRect,
             bool isInverse,
             Processor* processor) {
-        auto emitBackground = [&](uint16_t start, uint16_t end, uint16_t width) {
-            for (uint16_t row = start; row < end; row += kTileHeight) {
-                wides.addTile(0, row, width);
+        auto processEmptyTileRows = [&](uint16_t startTileY, uint16_t endTileY) {
+            if (startTileY >= endTileY) {
+                return;
+            }
+
+            uint16_t y = startTileY;
+            uint16_t startX = static_cast<uint16_t>(clipRect.left());
+            uint16_t width = static_cast<uint16_t>(clipRect.width());
+
+            if (isCulled && isInverse) {
+                const auto& activeRows = windingHistogram.activeRows();
+                while (y < endTileY) {
+                    int wordIdx = y >> 5;
+                    uint16_t wordEnd = std::min<uint16_t>(endTileY, (wordIdx + 1) << 5);
+
+                    uint32_t mask = activeRows[wordIdx];
+                    mask &= (~0u << (y & 31));
+
+                    uint32_t endShift = wordEnd & 31;
+                    if (endShift != 0) {
+                        mask &= (1u << endShift) - 1;
+                    }
+
+                    while (mask != 0) {
+                        int bit = std::countr_zero(mask);
+                        uint16_t nextActiveY = (wordIdx << 5) + bit;
+
+                        for (; y < nextActiveY; ++y) {
+                            wides.addTile(startX, y * kTileHeight, width);
+                        }
+
+                        if (!processor->ShouldFill(windingHistogram[y])) {
+                            wides.addTile(startX, y * kTileHeight, width);
+                        }
+
+                        y++;
+                        mask &= mask - 1;
+                    }
+
+                    for (; y < wordEnd; ++y) {
+                        wides.addTile(startX, y * kTileHeight, width);
+                    }
+                }
+            } else if (isCulled) {
+                const auto& activeRows = windingHistogram.activeRows();
+                while (y < endTileY) {
+                    int wordIdx = y >> 5;
+                    uint16_t wordEnd = std::min<uint16_t>(endTileY, (wordIdx + 1) << 5);
+
+                    uint32_t mask = activeRows[wordIdx];
+                    mask &= (~0u << (y & 31));
+
+                    uint32_t endShift = wordEnd & 31;
+                    if (endShift != 0) {
+                        mask &= (1u << endShift) - 1;
+                    }
+
+                    while (mask != 0) {
+                        int bit = std::countr_zero(mask);
+                        y = (wordIdx << 5) + bit;
+
+                        if (processor->ShouldFill(windingHistogram[y])) {
+                            wides.addTile(startX, y * kTileHeight, width);
+                        }
+                        mask &= mask - 1;
+                    }
+
+                    y = wordEnd;
+                }
+            } else if (isInverse) {
+                for (; y < endTileY; ++y) {
+                    wides.addTile(startX, y * kTileHeight, width);
+                }
             }
         };
 
         const auto& tiles = tileContainer.getTiles();
         if (tiles.empty()) {
-            if (isInverse) {
-                emitBackground(0, viewportHeight + kTileHeight, viewportWidth);
-            }
+            processEmptyTileRows(0, windingHistogram.size());
             return;
         }
 
         size_t totalCount = tiles.size();
         Tile prevTile = tiles[0];
 
-        if (isInverse) {
-            emitBackground(0, prevTile.y * kTileHeight, viewportWidth);
-            // If the first tile isn't flush left, we need a 0-width strip to start filling
-            if (prevTile.x != 0) {
-                stripBuf->push_back(Strip(0,
+        int32_t windingDelta = windingHistogram[prevTile.y];
+        processor->setCoarseWinding(windingDelta);
+        processor->clearWithCoarseWinding();
+
+        processEmptyTileRows(0, prevTile.y);
+        bool fillLeftStart = processor->ShouldFill(windingDelta) ^ isInverse;
+        if (isInverse || isCulled) {
+            if (fillLeftStart) {
+                stripBuf->push_back(Strip(static_cast<uint16_t>(clipRect.left()),
                                           prevTile.y * kTileHeight,
                                           processor->localAlphaIdx(),
                                           false));
@@ -251,7 +303,7 @@ private:
                 prevTile.x * kTileWidth,
                 prevTile.y * kTileHeight,
                 processor->localAlphaIdx(),
-                processor->ShouldFill(processor->coarseWinding()) ^ isInverse);
+                fillLeftStart);
 
         float prevX = static_cast<float>(prevTile.x * kTileWidth);
         float prevY = static_cast<float>(prevTile.y * kTileHeight);
@@ -260,7 +312,6 @@ private:
                 SkPoint::Make(prevX + static_cast<float>(kTileWidth),
                               prevY + static_cast<float>(kTileHeight))
         };
-
 
         for (size_t i = 0; i < totalCount; ++i) {
             Tile tile = tiles[i];
@@ -271,23 +322,17 @@ private:
             bool segStart = tileStart && (rowStart || (tile.x != prevTile.x + 1));
 
             if (tileStart) {
-                // Moving to a new tile implies that all previous tile's coverage has been combined,
-                // resolve the coverage mask winding to alpha, then clear it.
                 processor->resolveWindingToAlpha();
                 if (!rowStart) {
-                    // If we're not a row start, carry the scanline winding by seeding the coverage
-                    // mask with the coarse winding.
                     processor->clearWithCoarseWinding();
                 }
             }
 
             if (segStart) {
-                // Moved to a new segment, push back the old strip.
                 stripBuf->push_back(currentStrip);
 
+                bool fillLeftCaptive = false;
                 if (rowStart) {
-                    // If we're starting a new row, check to see if we need to push a sentinel to
-                    // cap the end of the last row.
                     if (processor->coarseWinding() != 0 || isInverse) {
                         stripBuf->push_back(Strip::MakeCap(
                                 prevTile.y * kTileHeight,
@@ -295,33 +340,31 @@ private:
                                 processor->ShouldFill(processor->coarseWinding()) ^ isInverse));
                     }
 
-                    // The previous row has ended, meaning that the scanline is no longer carried,
-                    // so reset the coarse winding and clear the coverage mask.
-                    processor->setCoarseWinding(0);
-                    processor->clearWindingForNewRow();
+                    processEmptyTileRows(prevTile.y + 1, tile.y);
 
-                    if (isInverse) {
-                        emitBackground(
-                                (prevTile.y + 1) * kTileHeight, tile.y * kTileHeight, viewportWidth);
-                        // Start the new row with a 0-width strip if it doesn't flush left
-                        if (tile.x != 0) {
-                            stripBuf->push_back(Strip(0,
-                                                      tile.y * kTileHeight,
-                                                      processor->localAlphaIdx(),
-                                                      false));
-                        }
+                    windingDelta = windingHistogram[tile.y];
+                    processor->setCoarseWinding(windingDelta);
+                    processor->clearWithCoarseWinding();
+                    fillLeftCaptive = processor->ShouldFill(windingDelta) ^ isInverse;
+
+                    if (fillLeftCaptive) {
+                        stripBuf->push_back(Strip(static_cast<uint16_t>(clipRect.left()),
+                                                  tile.y * kTileHeight,
+                                                  processor->localAlphaIdx(),
+                                                  false));
                     }
+                } else {
+                    fillLeftCaptive = processor->ShouldFill(processor->coarseWinding()) ^ isInverse;
                 }
 
                 currentStrip = Strip(tile.x * kTileWidth,
                                      tile.y * kTileHeight,
                                      processor->localAlphaIdx(),
-                                     processor->ShouldFill(processor->coarseWinding()) ^ isInverse);
+                                     fillLeftCaptive);
             }
 
             prevTile = tile;
 
-            // Lazily recalculate tile bounds only if we have moved to a new tile
             if (tileStart) {
                 float x = static_cast<float>(tile.x * kTileWidth);
                 float y = static_cast<float>(tile.y * kTileHeight);
@@ -335,7 +378,6 @@ private:
             processor->rasterizeLineToTile(tile, tileBounds);
         }
 
-        // Process the last tile and emit the final strip
         processor->resolveWindingToAlpha();
         stripBuf->push_back(currentStrip);
         stripBuf->push_back(Strip::MakeCap(prevTile.y * kTileHeight,
@@ -343,13 +385,8 @@ private:
                                            processor->ShouldFill(
                                                     processor->coarseWinding()) ^ isInverse));
 
-        if (isInverse) {
-            emitBackground((prevTile.y + 1) * kTileHeight,
-                           viewportHeight + kTileHeight,
-                           viewportWidth);
-        }
+        processEmptyTileRows(prevTile.y + 1, windingHistogram.size());
 
-        // Shrink the alpha buffer to reclaim any unused capacity.
         alphaBuf->resize(processor->localAlphaIdx());
     }
 };

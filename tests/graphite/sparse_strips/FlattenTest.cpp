@@ -232,7 +232,8 @@ template <FlattenMode kMode> class FlattenTestRunner {
         Flatten flattener;
         Polyline polyline;
 
-        flattener.processPaths<kMode>(originalPath, shift, kViewDim, kViewDim, &polyline);
+        flattener.processPaths<kMode>(
+                originalPath, shift, SkIRect::MakeWH(kViewDim, kViewDim), &polyline);
 
         if (originalPath.isEmpty()) {
             REPORTER_ASSERT(reporter, polyline.empty(), "[%s] Expected empty output", testName);
@@ -413,7 +414,8 @@ template <FlattenMode kMode> class FlattenTestRunner {
         auto checkPath = [&](const SkPath& path, Expect expect, const char* testName) {
             Flatten flattener;
             Polyline polyline;
-            flattener.processPaths<kMode>(path, SkMatrix(), kViewW, kViewH, &polyline);
+            flattener.processPaths<kMode>(
+                    path, SkMatrix(), SkIRect::MakeWH(kViewW, kViewH), &polyline);
 
             int count = polyline.points().size();
 

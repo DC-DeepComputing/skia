@@ -12,6 +12,7 @@
 #include "include/core/SkPath.h"
 #include "src/gpu/graphite/sparse_strips/Flatten.h"
 #include "src/gpu/graphite/sparse_strips/Tiler.h"
+#include "src/gpu/graphite/sparse_strips/WindingHistogram.h"
 
 #include <vector>
 
@@ -20,7 +21,7 @@ namespace skgpu::graphite {
 template<uint16_t kTileWidth, uint16_t kTileHeight, bool kShouldSort>
 class TilerBench : public Benchmark {
 public:
-    TilerBench() {
+    TilerBench() : fCulled((Tiger::kTigerHeight + kTileHeight + 1) / kTileHeight) {
         fName.printf("SparseStrips_Tiler%sBench_%ux%u",
                      kShouldSort ? "Sort" : "" , kTileWidth, kTileHeight);
     }
@@ -35,16 +36,18 @@ protected:
         std::vector<SkPath> tigerPaths = Tiger::GetTigerPaths();
         for (auto& subPath : tigerPaths) {
             flattener.processPaths<FlattenMode::kSimd>(subPath, SkMatrix(),
-                                                       Tiger::kTigerWidthF, Tiger::kTigerHeightF,
+                                                       SkIRect::MakeWH(Tiger::kTigerWidth, Tiger::kTigerHeight),
                                                        &fPolyline);
         }
+        fCulled.resize((Tiger::kTigerHeight + kTileHeight + 1) / kTileHeight);
     }
 
     void onDraw(int loops, SkCanvas* /*canvas*/) override {
         Tiles<kTileWidth, kTileHeight> tiler;
         for (int i = 0; i < loops; ++i) {
             tiler.reset();
-            tiler.makeTilesMSAA(fPolyline, Tiger::kTigerHeight, Tiger::kTigerWidth);
+            fCulled.clear();
+            tiler.makeTilesMSAA(fPolyline, SkIRect::MakeWH(Tiger::kTigerWidth, Tiger::kTigerHeight), fCulled);
             if constexpr (kShouldSort) {
                 tiler.sortTiles();
             }
@@ -55,6 +58,7 @@ private:
 
     SkString fName;
     Polyline fPolyline;
+    WindingHistogram fCulled;
 };
 
 }  // namespace skgpu::graphite

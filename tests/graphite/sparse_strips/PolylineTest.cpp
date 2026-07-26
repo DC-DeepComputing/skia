@@ -159,11 +159,10 @@ DEF_TEST(SparseStrips_Polyline_Integrated, reporter) {
         SkPathBuilder builder;
         builder.addRect(SkRect::MakeXYWH(10, 10, 50, 50));
         SkPath path = builder.detach();
-
         Flatten flatten;
         Polyline polyline;
-
-        flatten.processPaths<FlattenMode::kScalar>(path, SkMatrix::I(), 100.0f, 100.0f, &polyline);
+        flatten.processPaths<FlattenMode::kScalar>(
+                path, SkMatrix::I(), SkIRect::MakeWH(100, 100), &polyline);
 
         REPORTER_ASSERT(reporter, polyline.count() == 6);
         const auto& pts = polyline.points();
@@ -188,11 +187,10 @@ DEF_TEST(SparseStrips_Polyline_Integrated, reporter) {
         builder.moveTo(20, 20); // Triggers sentinel for previous open path
         builder.lineTo(30, 20);
         SkPath path = builder.detach();
-
         Flatten flatten;
         Polyline polyline;
-
-        flatten.processPaths<FlattenMode::kScalar>(path, SkMatrix::I(), 100.0f, 100.0f, &polyline);
+        flatten.processPaths<FlattenMode::kScalar>(
+                path, SkMatrix::I(), SkIRect::MakeWH(100, 100), &polyline);
 
         REPORTER_ASSERT(reporter, polyline.count() == 8);
 
@@ -221,11 +219,10 @@ DEF_TEST(SparseStrips_Polyline_Integrated, reporter) {
         builder.lineTo(20, 0);
         builder.close();
         SkPath path = builder.detach();
-
         Flatten flatten;
         Polyline polyline;
-
-        flatten.processPaths<FlattenMode::kScalar>(path, SkMatrix::I(), 100.0f, 100.0f, &polyline);
+        flatten.processPaths<FlattenMode::kScalar>(
+                path, SkMatrix::I(), SkIRect::MakeWH(100, 100), &polyline);
 
         REPORTER_ASSERT(reporter, polyline.count() == 5);
         const auto& pts = polyline.points();
@@ -260,10 +257,10 @@ DEF_TEST(SparseStrips_Polyline_Integrated, reporter) {
         builder.cubicTo(20, 50, 30, 50, 40, 50);
 
         SkPath path = builder.detach();
-
         Flatten flatten;
         Polyline polyline;
-        flatten.processPaths<FlattenMode::kScalar>(path, SkMatrix::I(), 100.0f, 100.0f, &polyline);
+        flatten.processPaths<FlattenMode::kScalar>(
+                path, SkMatrix::I(), SkIRect::MakeWH(100, 100), &polyline);
         // Expected per contour: Start Pt, Simplified End Pt, Implicit Close Pt, NaN.
         // 6 contours * 4 pts = 24 points total
         REPORTER_ASSERT(reporter, polyline.count() == 24);
@@ -317,7 +314,8 @@ DEF_TEST(SparseStrips_Polyline_Integrated, reporter) {
 
         Flatten flatten;
         Polyline polyline;
-        flatten.processPaths<FlattenMode::kScalar>(path, SkMatrix::I(), 100.0f, 100.0f, &polyline);
+        flatten.processPaths<FlattenMode::kScalar>(
+                path, SkMatrix::I(), SkIRect::MakeWH(100, 100), &polyline);
 
         // Curves are fully dropped. The implicit close points match the moveTo points
         // exactly, so Polyline drops the close point via deduplication!
@@ -358,7 +356,8 @@ DEF_TEST(SparseStrips_Polyline_Integrated, reporter) {
 
         Flatten flatten;
         Polyline polyline;
-        flatten.processPaths<FlattenMode::kScalar>(path, SkMatrix::I(), 100.0f, 100.0f, &polyline);
+        flatten.processPaths<FlattenMode::kScalar>(
+                path, SkMatrix::I(), SkIRect::MakeWH(100, 100), &polyline);
 
         // Contour 1: moveTo + 3 lineTos + simplified quad + lineTo + close + NaN = 7 points
         // Contour 2: moveTo + NaN (close is deduplicated due to complete culling) = 2 points

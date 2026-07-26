@@ -194,23 +194,23 @@ SK_ALWAYS_INLINE SkPoint eval_cubic_scalar(const SkPoint pts[4], float t) {
 }
 
 template <int N>
-SK_ALWAYS_INLINE bool is_completely_culled(const SkPoint pts[N], float width, float height) {
+SK_ALWAYS_INLINE bool is_completely_culled(const SkPoint pts[N], SkIRect clip) {
     bool top = true;
     bool right = true;
     bool bottom = true;
     for (int i = 0; i < N; ++i) {
-        top    &= (pts[i].fY < 0.0f);
-        right  &= (pts[i].fX > width);
-        bottom &= (pts[i].fY > height);
+        top    &= (pts[i].fY < clip.top());
+        right  &= (pts[i].fX > clip.right());
+        bottom &= (pts[i].fY > clip.bottom());
     }
     return top || right || bottom;
 }
 
 template <int N>
-SK_ALWAYS_INLINE bool is_completely_left(const SkPoint pts[N]) {
+SK_ALWAYS_INLINE bool is_completely_left(const SkPoint pts[N], SkIRect clip) {
     bool left = true;
     for (int i = 0; i < N; ++i) {
-        left &= (pts[i].fX < 0.0f);
+        left &= (pts[i].fX < clip.left());
     }
     return left;
 }
@@ -713,16 +713,16 @@ uint32_t Flatten::flattenCubicSimd(const SkPoint pts[4]) {
 }
 
 void Flatten::processPathsSimd(
-        const SkPath& path, const SkMatrix& ctm, float width, float height, Polyline* polyline) {
+        const SkPath& path, const SkMatrix& ctm, SkIRect clip, Polyline* polyline) {
     fContext.fFlattenedCubics.clear();
 
-    auto processQuad = [this, width, height, polyline](const SkPoint pts[3]) {
+    auto processQuad = [this, clip, polyline](const SkPoint pts[3]) {
         skvx::float4 X(pts[0].fX, pts[1].fX, pts[2].fX, pts[2].fX); // Duplicate last pt
         skvx::float4 Y(pts[0].fY, pts[1].fY, pts[2].fY, pts[2].fY);
-        if (skvx::all(X > width) || skvx::all(Y < 0.0f) || skvx::all(Y > height)) {
+        if (skvx::all(X > clip.right()) || skvx::all(Y < clip.top()) || skvx::all(Y > clip.bottom())) {
             return;
         }
-        if (skvx::all(X < 0.0f) ||
+        if (skvx::all(X < clip.left()) ||
             is_within_dist_sq(pts[1], pts[0], pts[2], kQuadSubdivThreshold)) {
             polyline->appendPoint(pts[2]);
         } else {
@@ -733,13 +733,13 @@ void Flatten::processPathsSimd(
     };
 
     // TODO (thomsmit): this could probably simd-fied a little more.
-    auto processConic = [this, width, height, polyline](const SkPoint pts[3], float weight) {
+    auto processConic = [this, clip, polyline](const SkPoint pts[3], float weight) {
         skvx::float4 X(pts[0].fX, pts[1].fX, pts[2].fX, pts[2].fX); // Duplicate last pt
         skvx::float4 Y(pts[0].fY, pts[1].fY, pts[2].fY, pts[2].fY);
-        if (skvx::all(X > width) || skvx::all(Y < 0.0f) || skvx::all(Y > height)) {
+        if (skvx::all(X > clip.right()) || skvx::all(Y < clip.top()) || skvx::all(Y > clip.bottom())) {
             return;
         }
-        if (skvx::all(X < 0.0f) ||
+        if (skvx::all(X < clip.left()) ||
             is_within_dist_sq(pts[1], pts[0], pts[2], kQuadSubdivThreshold)) {
             polyline->appendPoint(pts[2]);
         } else {
@@ -751,13 +751,13 @@ void Flatten::processPathsSimd(
         }
     };
 
-    auto processCubic = [this, width, height, polyline](const SkPoint pts[4]) {
+    auto processCubic = [this, clip, polyline](const SkPoint pts[4]) {
         skvx::float4 X(pts[0].fX, pts[1].fX, pts[2].fX, pts[3].fX);
         skvx::float4 Y(pts[0].fY, pts[1].fY, pts[2].fY, pts[3].fY);
-        if (skvx::all(X > width) || skvx::all(Y < 0.0f) || skvx::all(Y > height)) {
+        if (skvx::all(X > clip.right()) || skvx::all(Y < clip.top()) || skvx::all(Y > clip.bottom())) {
             return;
         }
-        if (skvx::all(X < 0.0f) ||
+        if (skvx::all(X < clip.left()) ||
             (is_within_dist_sq(pts[1], pts[0], pts[3], kCubicSubdivThreshold) &&
              is_within_dist_sq(pts[2], pts[0], pts[3], kCubicSubdivThreshold))) {
             polyline->appendPoint(pts[3]);
@@ -775,15 +775,15 @@ void Flatten::processPathsSimd(
 }
 
 void Flatten::processPathsScalar(
-        const SkPath& path, const SkMatrix& ctm, float width, float height, Polyline* polyline) {
+        const SkPath& path, const SkMatrix& ctm, SkIRect clip, Polyline* polyline) {
     fContext.fFlattenedCubics.clear();
 
-    auto processQuad = [this, width, height, polyline](const SkPoint pts[3]) {
-        if (is_completely_culled<3>(pts, width, height)) {
+    auto processQuad = [this, clip, polyline](const SkPoint pts[3]) {
+        if (is_completely_culled<3>(pts, clip)) {
             // If the quad is completely top, right, or bottom of the viewport, cull.
             return;
         }
-        if (is_completely_left<3>(pts) ||
+        if (is_completely_left<3>(pts, clip) ||
             is_within_dist_sq(pts[1], pts[0], pts[2], kQuadSubdivThreshold)) {
             // If the quad is visually a line or completely left of the viewport, simplify.
             polyline->appendPoint(pts[2]);
@@ -792,12 +792,12 @@ void Flatten::processPathsScalar(
         }
     };
 
-    auto processConic = [this, width, height, polyline](const SkPoint pts[3], float weight) {
-        if (is_completely_culled<3>(pts, width, height)) {
+    auto processConic = [this, clip, polyline](const SkPoint pts[3], float weight) {
+        if (is_completely_culled<3>(pts, clip)) {
             // If the conic is completely top, right, or bottom of the viewport, cull.
             return;
         }
-        if (is_completely_left<3>(pts) ||
+        if (is_completely_left<3>(pts, clip) ||
             is_within_dist_sq(pts[1], pts[0], pts[2], kQuadSubdivThreshold)) {
             // If the conic is visually a line or completely left of the viewport, simplify.
             // Note: A low weight can produce a visually flat conic even if the control point is far
@@ -812,12 +812,12 @@ void Flatten::processPathsScalar(
         }
     };
 
-    auto processCubic = [this, width, height, polyline](const SkPoint pts[4]) {
-        if (is_completely_culled<4>(pts, width, height)) {
+    auto processCubic = [this, clip, polyline](const SkPoint pts[4]) {
+        if (is_completely_culled<4>(pts, clip)) {
             // If the cubic is completely top, right, or bottom of the viewport, cull.
             return;
         }
-        if (is_completely_left<4>(pts) ||
+        if (is_completely_left<4>(pts, clip) ||
             (is_within_dist_sq(pts[1], pts[0], pts[3], kCubicSubdivThreshold) &&
              is_within_dist_sq(pts[2], pts[0], pts[3], kCubicSubdivThreshold))) {
             // If the cubic is visually a line or completely left of the viewport, simplify.

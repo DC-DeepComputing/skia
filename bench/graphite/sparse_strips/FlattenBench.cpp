@@ -33,7 +33,7 @@ protected:
         for (int i = 0; i < loops; ++i) {
             for (auto& path : fPaths) {
                 flattener.processPaths<kMode>(
-                        path, SkMatrix(), Tiger::kTigerWidthF, Tiger::kTigerHeightF, &polyline);
+                        path, SkMatrix(), SkIRect::MakeWH(Tiger::kTigerWidth, Tiger::kTigerHeight), &polyline);
             }
             polyline.reset();
         }

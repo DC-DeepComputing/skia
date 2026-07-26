@@ -621,13 +621,6 @@ public:
             fCoarseWinding ^= static_cast<int32_t>(windingBit);
         }
 
-        // TODO (thomsmit): remove once culling lands
-        // Cull lines that exist entirely to the left of the tile.
-        float rightEdge = canonicalXDir ? line.p1.fX : line.p0.fX;
-        if (rightEdge < 0.0f) {
-            return;
-        }
-
         float dx = line.p1.fX - line.p0.fX;
         float dy = line.p1.fY - line.p0.fY;
         float invDx = (std::abs(dx) <= Strip::kStripEpsilon) ? 0.0f : 1.0f / dx;

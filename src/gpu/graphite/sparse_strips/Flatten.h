@@ -9,6 +9,7 @@
 
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkRect.h"
 #include "include/private/SkTDArray.h"
 #include "src/core/SkGeometry.h"
 #include "src/gpu/graphite/sparse_strips/SparseStripsTypes.h"
@@ -98,14 +99,13 @@ public:
     template <FlattenMode kMode>
     SK_ALWAYS_INLINE void processPaths(const SkPath& path,
                                        const SkMatrix& ctm,
-                                       float width,
-                                       float height,
+                                       const SkIRect clip,
                                        Polyline* polyline) {
         SkASSERT(!ctm.hasPerspective());
         if constexpr (kMode == FlattenMode::kSimd) {
-            this->processPathsSimd(path, ctm, width, height, polyline);
+            this->processPathsSimd(path, ctm, clip, polyline);
         } else {
-            this->processPathsScalar(path, ctm, width, height, polyline);
+            this->processPathsScalar(path, ctm, clip, polyline);
         }
     }
 
@@ -155,9 +155,9 @@ private:
         SkTDArray<SkPoint> fFlattenedCubics;
     };
 
-    void processPathsSimd(const SkPath& path, const SkMatrix& ctm, float width, float height,
+    void processPathsSimd(const SkPath& path, const SkMatrix& ctm, SkIRect clip,
                           Polyline* polyline);
-    void processPathsScalar(const SkPath& path, const SkMatrix& ctm, float width, float height,
+    void processPathsScalar(const SkPath& path, const SkMatrix& ctm, SkIRect clip,
                             Polyline* polyline);
 
     void flattenQuadSimd(const SkPoint pts[3], Polyline* polyline);

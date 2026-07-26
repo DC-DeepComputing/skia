@@ -19,6 +19,7 @@
 #include "src/gpu/graphite/sparse_strips/Polyline.h"
 #include "src/gpu/graphite/sparse_strips/Strip.h"
 #include "src/gpu/graphite/sparse_strips/Tiler.h"
+#include "src/gpu/graphite/sparse_strips/WindingHistogram.h"
 #include "tests/Test.h"
 
 #include <array>
@@ -173,9 +174,12 @@ public:
         SkPathFillType fillType =
                 isInverse ? SkPathFillType::kInverseWinding : SkPathFillType::kWinding;
         WideTiles<kTileHeight> wides;
+        int32_t rows = (kViewportHeight + kTileHeight - 1) / kTileHeight;
+        WindingHistogram culled(rows);
+        culled.resize(rows);
         MakeStrips::MsaaScalar<kTileWidth, kTileHeight>(
                 tileContainer, stripBuf, alphaBuf, fillType, polyline, maskLut,
-                wides, kViewportWidth, kViewportHeight, observer);
+                wides, /*isCulled=*/false, culled, SkIRect::MakeWH(kViewportWidth, kViewportHeight), observer);
     }
 
     static void RunSimdWinding(const Tiles<kTileWidth, kTileHeight>& tileContainer,
@@ -188,9 +192,12 @@ public:
         SkPathFillType fillType =
                 isInverse ? SkPathFillType::kInverseWinding : SkPathFillType::kWinding;
         WideTiles<kTileHeight> wides;
+        int32_t rows = (kViewportHeight + kTileHeight - 1) / kTileHeight;
+        WindingHistogram culled(rows);
+        culled.resize(rows);
         MakeStrips::MsaaSimd<kTileWidth, kTileHeight>(
                 tileContainer, stripBuf, alphaBuf, fillType, polyline, maskLut,
-                wides, kViewportWidth, kViewportHeight, observer);
+                wides, /*isCulled=*/false, culled, SkIRect::MakeWH(kViewportWidth, kViewportHeight), observer);
     }
 
     CoverageTestRunner(StripFunc func, const char* implName) : fFunc(func), fImplName(implName) {}
@@ -304,10 +311,13 @@ private:
         Flatten flattener;
         Polyline polyline;
         flattener.processPaths<FlattenMode::kSimd>(
-                path, SkMatrix(), kViewportWidthF, kViewportHeightF, &polyline);
+                path, SkMatrix(), SkIRect::MakeWH(kViewportWidth, kViewportHeight), &polyline);
 
+        int32_t numRows = (kViewportHeight + kTileHeight - 1) / kTileHeight;
+        WindingHistogram culled(numRows);
+        culled.resize(numRows);
         Tiles<kTileWidth, kTileHeight> tiler;
-        tiler.makeTilesMSAA(polyline, kViewportWidth, kViewportHeight);
+        tiler.makeTilesMSAA(polyline, SkIRect::MakeWH(kViewportWidth, kViewportHeight), culled);
         tiler.sortTiles();
 
         SkTDArray<Strip> stripBuf;

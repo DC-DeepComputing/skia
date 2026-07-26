@@ -41,31 +41,34 @@ public:
     static constexpr uint16_t kTileWidth = SparseStripConfig::kTileWidth;
     static constexpr uint16_t kTileHeight = SparseStripConfig::kTileHeight;
 
-    StripGenerator(uint16_t viewportWidth, uint16_t viewportHeight, const SkTDArray<uint8_t>& lut,
-                   Recorder* recorder)
-        : fViewportWidth(viewportWidth), fViewportHeight(viewportHeight) , fLUT(lut)
-        , fRecorder(recorder) {
-            fAllocations.reserve(SparseStripConfig::kMaxTexturePages);
-        }
+    StripGenerator(SkISize deviceSize, const SkTDArray<uint8_t>& lut, Recorder* recorder)
+            : fDeviceSize(SkIRect::MakeSize(deviceSize)), fCulled(true), fLUT(lut), fRecorder(recorder)
+            , fWindingHistogram((fDeviceSize.bottom() + kTileHeight - 1) / kTileHeight) {
+        fAllocations.reserve(SparseStripConfig::kMaxTexturePages);
+    }
 
     ~StripGenerator() {
         this->reset();
     }
 
     std::optional<std::pair<WideTiles<kTileHeight>&, EndCaps<kTileHeight>&>> processGeometry(
-                const SkPath& path, const SkMatrix& ctm) {
+                const SkPath& path, const SkMatrix& ctm, const SkIRect& clip) {
         this->reset();
 
-        fFlattener.processPaths<FlattenMode::kSimd>(path, ctm, fViewportWidth, fViewportHeight,
-                                                    &fFlattened);
+        fFlattener.processPaths<FlattenMode::kSimd>(path, ctm, fDeviceSize, &fFlattened);
 
-        fTiles.makeTilesMSAA(fFlattened, fViewportWidth, fViewportHeight);
+        fWindingHistogram.resize((fDeviceSize.bottom() + kTileHeight - 1) / kTileHeight);
+        if (fCulled) {
+            fWindingHistogram.clear();
+        }
+        fCulled = fTiles.makeTilesMSAA(fFlattened, fDeviceSize, fWindingHistogram);
         fTiles.sortTiles();
 
         AlphaAtlasManager* manager = fRecorder->priv().atlasProvider()->alphaAtlasManager();
         MakeStrips::MsaaSimd<kTileWidth, kTileHeight>(fTiles, &fStrips, &manager->getAlphaBuffer(),
                                                       path.getFillType(), fFlattened, fLUT,
-                                                      fWides, fViewportWidth, fViewportHeight);
+                                                      fWides, fCulled, fWindingHistogram,
+                                                      fDeviceSize);
 
         // Retrieve the mapping of offsets to proxies
         SkASSERT(fRecorder);
@@ -91,7 +94,7 @@ public:
                     int32_t numTiles = totalBytes / kBytesPerTile;
                     uint16_t prevWidth = numTiles * kTileWidth;
                     bool shouldFill = curr.shouldFill();
-                    if (shouldFill) {
+                    if (shouldFill && prev.fY == curr.fY) {
                         SkASSERT(prev.fY == curr.fY);
                         uint16_t startX = prev.fX + prevWidth;
                         uint16_t width = curr.fX - startX;
@@ -118,9 +121,8 @@ private:
         fEnds.clear();
     }
 
-    const uint16_t fViewportWidth;
-    const uint16_t fViewportHeight;
-
+    SkIRect fDeviceSize;
+    bool fCulled;
     Flatten fFlattener;
     Tiles<kTileWidth, kTileHeight> fTiles;
     Polyline fFlattened;
@@ -128,6 +130,7 @@ private:
     const SkTDArray<uint8_t>& fLUT;
     SkTDArray<std::pair<int32_t, sk_sp<TextureProxy>>> fAllocations;
     Recorder* fRecorder;
+    WindingHistogram fWindingHistogram;
 
     WideTiles<kTileHeight> fWides;
     EndCaps<kTileHeight> fEnds;

@@ -15,6 +15,7 @@
 #include "src/gpu/graphite/sparse_strips/MakeStrips.h"
 #include "src/gpu/graphite/sparse_strips/Strip.h"
 #include "src/gpu/graphite/sparse_strips/Tiler.h"
+#include "src/gpu/graphite/sparse_strips/WindingHistogram.h"
 
 namespace skgpu::graphite {
 
@@ -28,11 +29,14 @@ public:
                                   const Polyline&,
                                   const SkTDArray<uint8_t>&,
                                   WideTiles<kTileHeight>&,
-                                  uint16_t viewportWidth,
-                                  uint16_t viewportHeight,
+                                  bool,
+                                  const WindingHistogram&,
+                                  const SkIRect&,
                                   MsaaExactMaskObserver);
 
-    CoverageBench(const char* name, MakeStripsFn func) : fFunc(func) {
+    CoverageBench(const char* name, MakeStripsFn func)
+            : fFunc(func)
+            , fCulled((Tiger::kTigerHeight + kTileHeight + 1) / kTileHeight) {
         fName.printf("SparseStrips_%s_%ux%u", name, kTileWidth, kTileHeight);
         fLUT = GenerateMSAALUT<uint8_t>();
     }
@@ -45,10 +49,11 @@ protected:
         std::vector<SkPath> tigerPaths = Tiger::GetTigerPaths();
         for (auto& subPath : tigerPaths) {
             flattener.processPaths<FlattenMode::kSimd>(subPath, SkMatrix(),
-                                                       Tiger::kTigerWidthF, Tiger::kTigerHeightF,
+                                                       SkIRect::MakeWH(Tiger::kTigerWidth, Tiger::kTigerHeight),
                                                        &fPolyline);
         }
-        fTiles.makeTilesMSAA(fPolyline, Tiger::kTigerWidth, Tiger::kTigerHeight);
+        fCulled.resize((Tiger::kTigerHeight + kTileHeight + 1) / kTileHeight);
+        fTiles.makeTilesMSAA(fPolyline, SkIRect::MakeWH(Tiger::kTigerWidth, Tiger::kTigerHeight), fCulled);
         fTiles.sortTiles();
     }
 
@@ -58,7 +63,7 @@ protected:
         SkTDArray<uint8_t> alphas;
         for (int i = 0; i < loops; ++i) {
             fFunc(fTiles, &strips, &alphas, SkPathFillType::kDefault, fPolyline, fLUT,
-                  wides, Tiger::kTigerWidth, Tiger::kTigerHeight,
+                  wides, /*isCulled=*/false, fCulled, SkIRect::MakeWH(Tiger::kTigerWidth, Tiger::kTigerHeight),
                   /*MsaaExactMaskObserver=*/nullptr);
             strips.resize(0);
             alphas.resize(0);
@@ -71,6 +76,7 @@ private:
     Polyline fPolyline;
     Tiles<kTileWidth, kTileHeight> fTiles;
     SkTDArray<uint8_t> fLUT;
+    WindingHistogram fCulled;
 };
 
 }  // namespace skgpu::graphite
