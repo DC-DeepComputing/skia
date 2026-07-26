@@ -25,7 +25,8 @@ namespace skgpu::graphite {
 DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(StorageBufferManagerGradientsOnlyTest, reporter, context,
                                    CtsEnforcement::kApiLevel_202404) {
     std::unique_ptr<Recorder> recorder = context->makeRecorder();
-    StorageBufferManager* sbm = recorder->priv().storageBufferManager();
+    StorageBufferManager sbmSSBO(/*storageBufferSupport=*/true);
+    StorageBufferManager* sbm = &sbmSSBO;
 
     SkPoint pts[2] = {{0, 0}, {100, 100}};
     SkColor4f colors[2] = {SkColors::kRed, SkColors::kBlue};
@@ -62,7 +63,8 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(StorageBufferManagerGradientsOnlyTest, report
 DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(StorageBufferManagerAppendOnlyTest, reporter, context,
                                    CtsEnforcement::kApiLevel_202404) {
     std::unique_ptr<Recorder> recorder = context->makeRecorder();
-    StorageBufferManager* sbm = recorder->priv().storageBufferManager();
+    StorageBufferManager sbmSSBO(/*storageBufferSupport=*/true);
+    StorageBufferManager* sbm = &sbmSSBO;
 
     StorageContext ctxStorage;
     StorageContext* ctxHandle = &ctxStorage;
@@ -86,7 +88,8 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(StorageBufferManagerAppendOnlyTest, reporter,
 DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(StorageBufferManagerGradientsAndAppendTest, reporter, context,
                                    CtsEnforcement::kApiLevel_202404) {
     std::unique_ptr<Recorder> recorder = context->makeRecorder();
-    StorageBufferManager* sbm = recorder->priv().storageBufferManager();
+    StorageBufferManager sbmSSBO(/*storageBufferSupport=*/true);
+    StorageBufferManager* sbm = &sbmSSBO;
 
     SkPoint pts[2] = {{0, 0}, {100, 100}};
     SkColor4f colors[2] = {SkColors::kRed, SkColors::kBlue};
@@ -116,7 +119,8 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(StorageBufferManagerGradientsAndAppendTest, r
 DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(StorageBufferManagerMultiStreamTest, reporter, context,
                                    CtsEnforcement::kApiLevel_202404) {
     std::unique_ptr<Recorder> recorder = context->makeRecorder();
-    StorageBufferManager* sbm = recorder->priv().storageBufferManager();
+    StorageBufferManager sbmSSBO(/*storageBufferSupport=*/true);
+    StorageBufferManager* sbm = &sbmSSBO;
 
     SkPoint pts[2] = {{0, 0}, {100, 100}};
     SkColor4f colors[2] = {SkColors::kRed, SkColors::kBlue};
@@ -178,7 +182,8 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(StorageBufferManagerMultiStreamTest, reporter
 DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(StorageBufferManagerInterleavedMultiStreamTest, reporter, context,
                                    CtsEnforcement::kApiLevel_202404) {
     std::unique_ptr<Recorder> recorder = context->makeRecorder();
-    StorageBufferManager* sbm = recorder->priv().storageBufferManager();
+    StorageBufferManager sbmSSBO(/*storageBufferSupport=*/true);
+    StorageBufferManager* sbm = &sbmSSBO;
 
     SkPoint pts[2] = {{0, 0}, {100, 100}};
     SkColor4f colors[2] = {SkColors::kRed, SkColors::kBlue};
@@ -295,6 +300,26 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(StorageBufferManagerAlignmentAndStrideUnitsTe
     auto alloc3 = ctx->appendVertexStorage(3, 8, 8);
     REPORTER_ASSERT(reporter, alloc3.fOffset == 6);
     REPORTER_ASSERT(reporter, ctx->fStrideAlignment == 8);
+}
+
+DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(StorageBufferManagerTextureFallbackTest, reporter, context,
+                                   CtsEnforcement::kApiLevel_202404) {
+    std::unique_ptr<Recorder> recorder = context->makeRecorder();
+    StorageBufferManager sbm(/*storageBufferSupport=*/false);
+    REPORTER_ASSERT(reporter, !sbm.storageBufferSupport());
+
+    SkPoint pts[2] = {{0, 0}, {100, 100}};
+    SkColor4f colors[2] = {SkColors::kRed, SkColors::kBlue};
+    sk_sp<SkShader> shader = SkShaders::LinearGradient(pts, {{colors, {}, SkTileMode::kClamp}, {}});
+    const auto* grad = static_cast<const SkGradientBaseShader*>(shader.get());
+
+    StorageContext ctxStorage;
+    StorageContext* ctx = &ctxStorage;
+    auto [ptr, offset] = sbm.allocateGradientData(ctx, 2, grad);
+    REPORTER_ASSERT(reporter, ptr != nullptr);
+
+    BindBufferInfo info = sbm.finalize(recorder->priv().drawBufferManager(), ctx);
+    REPORTER_ASSERT(reporter, info.fBuffer == nullptr);
 }
 
 }  // namespace skgpu::graphite

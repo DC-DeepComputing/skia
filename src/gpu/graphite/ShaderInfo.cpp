@@ -1298,20 +1298,143 @@ void ShaderInfo::generateVertexSkSL(const Caps* caps,
                                 sharedData.fHasSsboIndexVarying,
                                 sharedData.fNeedsLocalCoords);
 
-    // Declare vertex storage buffer if the RenderStep has storage attributes
+    // Declare vertex storage buffer (or fallback texture) if the RenderStep has storage attributes
     if (step->numStorageAttributes() > 0) {
         std::string fields;
         for (auto a : step->storageAttributes()) {
-            SkSL::String::appendf(&fields, "%s %s;\n", SkSLTypeString(a.gpuType()), a.name());
+            SkSL::String::appendf(&fields, "    %s %s;\n", SkSLTypeString(a.gpuType()), a.name());
         }
-        SkSL::String::appendf(&vsPreamble,
-                              "struct StepStorageData {\n%s};\n"
-                              "layout (set=%d, binding=%d) readonly buffer StepStorageBuffer {\n"
-                              "    StepStorageData stepStorageData[];\n"
-                              "};\n",
-                              fields.c_str(),
-                              bindingReqs.fUniformsSetIdx,
-                              bindingReqs.fStorageBufferBinding);
+
+        if (caps->storageBufferSupport()) {
+            SkSL::String::appendf(&vsPreamble,
+                                  "struct StepStorageData {\n%s};\n"
+                                  "layout (set=%d, binding=%d) readonly buffer StepStorageBuffer {\n"
+                                  "    StepStorageData stepStorageData[];\n"
+                                  "};\n"
+                                  "inline StepStorageData readStepStorageData(int idx) {\n"
+                                  "    return stepStorageData[idx];\n"
+                                  "}\n"
+                                  "inline StepStorageData readStepStorageData(uint idx) {\n"
+                                  "    return stepStorageData[idx];\n"
+                                  "}\n",
+                                  fields.c_str(),
+                                  bindingReqs.fUniformsSetIdx,
+                                  bindingReqs.fStorageBufferBinding);
+        } else {
+            int currentTexel = 0;
+            int currentComp = 0;
+
+            auto getCompCount = [](SkSLType type) -> int {
+                switch (type) {
+                    case SkSLType::kFloat: case SkSLType::kInt: case SkSLType::kUInt:
+                    case SkSLType::kBool: case SkSLType::kShort: case SkSLType::kUShort:
+                    case SkSLType::kHalf:
+                        return 1;
+                    case SkSLType::kFloat2: case SkSLType::kInt2: case SkSLType::kUInt2:
+                    case SkSLType::kBool2: case SkSLType::kShort2: case SkSLType::kUShort2:
+                    case SkSLType::kHalf2:
+                        return 2;
+                    case SkSLType::kFloat3: case SkSLType::kInt3: case SkSLType::kUInt3:
+                    case SkSLType::kBool3: case SkSLType::kShort3: case SkSLType::kUShort3:
+                    case SkSLType::kHalf3:
+                        return 3;
+                    case SkSLType::kFloat4: case SkSLType::kInt4: case SkSLType::kUInt4:
+                    case SkSLType::kBool4: case SkSLType::kShort4: case SkSLType::kUShort4:
+                    case SkSLType::kHalf4: case SkSLType::kFloat2x2: case SkSLType::kHalf2x2:
+                        return 4;
+                    case SkSLType::kFloat3x3: case SkSLType::kHalf3x3:
+                        return 9;
+                    case SkSLType::kFloat4x4: case SkSLType::kHalf4x4:
+                        return 16;
+                    default:
+                        return 1;
+                }
+            };
+
+            static const char* kSwizzles[] = {"x", "y", "z", "w"};
+            std::string fieldAssignments;
+
+            for (auto a : step->storageAttributes()) {
+                int count = getCompCount(a.gpuType());
+                if (currentComp + count > 4 && count > 1) {
+                    currentTexel++;
+                    currentComp = 0;
+                }
+
+                int startTexel = currentTexel;
+                int startComp = currentComp;
+
+                std::string expr;
+                if (count == 1) {
+                    expr = SkSL::String::printf("t%d.%s", startTexel, kSwizzles[startComp]);
+                } else if (count == 2) {
+                    expr = SkSL::String::printf("t%d.%s%s", startTexel, kSwizzles[startComp], kSwizzles[startComp+1]);
+                } else if (count == 3) {
+                    expr = SkSL::String::printf("t%d.%s%s%s", startTexel, kSwizzles[startComp], kSwizzles[startComp+1], kSwizzles[startComp+2]);
+                } else if (count == 4) {
+                    if (a.gpuType() == SkSLType::kFloat2x2 || a.gpuType() == SkSLType::kHalf2x2) {
+                        expr = SkSL::String::printf("float2x2(t%d.xy, t%d.zw)", startTexel, startTexel);
+                    } else {
+                        expr = SkSL::String::printf("t%d", startTexel);
+                    }
+                } else if (count == 16) {
+                    expr = SkSL::String::printf("float4x4(t%d, t%d, t%d, t%d)", startTexel, startTexel+1, startTexel+2, startTexel+3);
+                }
+
+                switch (a.gpuType()) {
+                    case SkSLType::kInt:   expr = "int(" + expr + ")"; break;
+                    case SkSLType::kInt2:  expr = "int2(" + expr + ")"; break;
+                    case SkSLType::kInt3:  expr = "int3(" + expr + ")"; break;
+                    case SkSLType::kInt4:  expr = "int4(" + expr + ")"; break;
+                    case SkSLType::kUInt:  expr = "uint(" + expr + ")"; break;
+                    case SkSLType::kUInt2: expr = "uint2(" + expr + ")"; break;
+                    case SkSLType::kUInt3: expr = "uint3(" + expr + ")"; break;
+                    case SkSLType::kUInt4: expr = "uint4(" + expr + ")"; break;
+                    default: break;
+                }
+
+                SkSL::String::appendf(&fieldAssignments, "    data.%s = %s;\n", a.name(), expr.c_str());
+
+                currentComp += count;
+                currentTexel += currentComp / 4;
+                currentComp %= 4;
+            }
+
+            int nTexels = (currentComp > 0) ? (currentTexel + 1) : currentTexel;
+
+            std::string texelLoads = "    int texWidth = int(textureSize(stepStorageTexture).x);\n";
+            for (int i = 0; i < nTexels; ++i) {
+                SkSL::String::appendf(&texelLoads,
+                                      "    int linearIdx%d = index * %d + %d;\n"
+                                      "    int2 coords%d = int2(linearIdx%d %% texWidth, linearIdx%d / texWidth);\n"
+                                      "    float4 t%d = float4(textureRead(stepStorageTexture, uint2(coords%d)));\n",
+                                      i, nTexels, i,
+                                      i, i, i,
+                                      i, i);
+            }
+
+            std::string storageTextureLayout = SkSL::String::printf(
+                    "layout(set=%d, binding=%d, rgba32f)",
+                    bindingReqs.fUniformsSetIdx,
+                    bindingReqs.fStorageBufferBinding);
+
+            SkSL::String::appendf(&vsPreamble,
+                                  "struct StepStorageData {\n%s};\n"
+                                  "%s readonly texture2D stepStorageTexture;\n"
+                                  "StepStorageData readStepStorageData(int index) {\n"
+                                  "%s"
+                                  "    StepStorageData data;\n"
+                                  "%s"
+                                  "    return data;\n"
+                                  "}\n"
+                                  "inline StepStorageData readStepStorageData(uint index) {\n"
+                                  "    return readStepStorageData(int(index));\n"
+                                  "}\n",
+                                  fields.c_str(),
+                                  storageTextureLayout.c_str(),
+                                  texelLoads.c_str(),
+                                  fieldAssignments.c_str());
+        }
     }
 
     // Add vertex attributes

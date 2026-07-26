@@ -320,7 +320,8 @@ std::pair<DrawParams*, Layer*> DrawListLayer::recordDraw(const Renderer* rendere
 std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
                                                       sk_sp<TextureProxy> target,
                                                       const SkImageInfo& targetInfo,
-                                                      const DstReadStrategy dstReadStrategy) {
+                                                      const DstReadStrategy dstReadStrategy,
+                                                      DrawContext* drawContext) {
     TRACE_EVENT1_ALWAYS("skia.gpu", TRACE_FUNC, "draw count", fDrawCount);
 
     std::unique_ptr<DrawPass> drawPass(new DrawPass(target,
@@ -339,9 +340,7 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
     drawPass->fCommandList.setScissor(lastScissor);
 
     UniformTracker uniformTracker(fStorageBufferSupport);
-    if (fStorageBufferSupport) {
-        fStorageContext.finalizeCacheStorageData();
-    }
+    fStorageContext.finalizeCacheStorageData();
 
 
 
@@ -449,13 +448,16 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
 
     drawWriter.flush();
 
-    if (fStorageBufferSupport) {
-        drawPass->fStorageBufferInfo = recorder->priv().storageBufferManager()->finalize(bufferMgr, &fStorageContext);
-    }
-
     drawPass->fBounds = fPassBounds.roundOut().asSkIRect();
     drawPass->fPipelineDescs = fPipelineCache.detach();
     drawPass->fSampledTextures = fTextureDataCache.detachTextures();
+
+    drawPass->fStorageBufferInfo =
+            recorder->priv().storageBufferManager()->finalize(bufferMgr,
+                                                               &fStorageContext,
+                                                               recorder,
+                                                               drawContext,
+                                                               drawPass.get());
 
     TRACE_EVENT_INSTANT2_ALWAYS("skia.gpu",
                                 "DrawPass Stats",

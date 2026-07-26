@@ -1419,12 +1419,18 @@ void VulkanCommandBuffer::bindUniformBuffers() {
     dynamicOffsets.push_back(combinedUboInfo.fOffset);
 
     if (fActiveGraphicsPipeline->usesStorageBuffer()) {
-        SkASSERT(fSharedContext->caps()->storageBufferSupport());
-        uniformDescriptorData.push_back({DescriptorType::kStorageBuffer,
-                                         /*count=*/1,
-                                         Pipeline::kStorageBufferIndex,
-                                         fActiveGraphicsPipeline->storageBufferStages()});
-        dynamicOffsets.push_back(fUniformBuffersToBind[Pipeline::kStorageBufferIndex].fOffset);
+        if (fSharedContext->caps()->storageBufferSupport()) {
+            uniformDescriptorData.push_back({DescriptorType::kStorageBuffer,
+                                             /*count=*/1,
+                                             Pipeline::kStorageBufferIndex,
+                                             fActiveGraphicsPipeline->storageBufferStages()});
+            dynamicOffsets.push_back(fUniformBuffersToBind[Pipeline::kStorageBufferIndex].fOffset);
+        } else {
+            uniformDescriptorData.push_back({DescriptorType::kTexture,
+                                             /*count=*/1,
+                                             Pipeline::kStorageBufferIndex,
+                                             fActiveGraphicsPipeline->storageBufferStages()});
+        }
     }
 
     // Now obtain an actual descriptor set. In the case of using only one buffer, we can query

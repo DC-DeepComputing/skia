@@ -290,7 +290,7 @@ public:
                  fResourceBindingReqs.fStorageBufferLayout == Layout::kStd430 ||
                  fResourceBindingReqs.fStorageBufferLayout == Layout::kStd430_F16 ||
                  fResourceBindingReqs.fStorageBufferLayout == Layout::kMetal);
-        return fStorageBufferSupport;
+        return false;
     }
 
     /* Returns whether a draw buffer can be mapped. */

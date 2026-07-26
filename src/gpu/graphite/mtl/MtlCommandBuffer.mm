@@ -356,6 +356,13 @@ bool MtlCommandBuffer::addDrawPass(DrawPass* drawPass) {
     if (drawPass->storageBufferInfo().fBuffer != nullptr) {
         this->bindUniformBuffer(drawPass->storageBufferInfo(),
                                 UniformSlot::kStorage);
+    } else if (drawPass->storageTextureProxy() != nullptr) {
+        const Texture* texture = drawPass->storageTextureProxy()->texture();
+        if (texture) {
+            id<MTLTexture> mtlTexture = static_cast<const MtlTexture*>(texture)->mtlTexture();
+            fActiveRenderCommandEncoder->setVertexTexture(mtlTexture, MtlGraphicsPipeline::kStorageBufferIndex);
+            fActiveRenderCommandEncoder->setFragmentTexture(mtlTexture, MtlGraphicsPipeline::kStorageBufferIndex);
+        }
     }
 
     if (!drawPass->addResourceRefs(fResourceProvider, this)) SK_UNLIKELY {
