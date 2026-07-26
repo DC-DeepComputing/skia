@@ -1,0 +1,16 @@
+# Copyright 2026 Google LLC.
+#
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build_overrides/build.gni")
+
+declare_args() {
+  skia_use_partition_alloc = is_clang
+
+  if (build_with_chromium) {
+    skia_partition_alloc_dir = "//base/allocator/partition_allocator"
+  } else {
+    skia_partition_alloc_dir = "//third_party/externals/partition_alloc"
+  }
+}

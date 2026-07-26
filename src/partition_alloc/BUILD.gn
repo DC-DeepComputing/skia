@@ -3,9 +3,9 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
-import("../../gn/skia.gni")
+import("../../gn/partition_alloc.gni")
 
-if (skia_use_partition_alloc && defined(skia_partition_alloc_dir)) {
+if (skia_use_partition_alloc && skia_partition_alloc_dir != "") {
   import("${skia_partition_alloc_dir}/partition_alloc.gni")
 }
 
@@ -15,7 +15,7 @@ source_set("raw_ptr") {
     "raw_ptr_exclusion.h",
     "raw_ref.h",
   ]
-  if (skia_use_partition_alloc && defined(skia_partition_alloc_dir)) {
+  if (skia_use_partition_alloc && skia_partition_alloc_dir != "") {
     public_deps = [ "${skia_partition_alloc_dir}:raw_ptr" ]
   } else {
     sources = [
