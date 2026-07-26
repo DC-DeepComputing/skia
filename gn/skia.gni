@@ -8,6 +8,8 @@ if (!defined(is_skia_standalone)) {
 
 is_skia_dev_build = is_skia_standalone && !is_official_build
 
+skia_root = get_path_info("..", "abspath")
+
 declare_args() {
   is_canvaskit = false
 }
@@ -237,6 +239,11 @@ template("skia_target") {
     if (defined(invoker.configs)) {
       configs += invoker.configs
     }
+
+    if (!defined(deps)) {
+      deps = []
+    }
+    deps += [ "$skia_root/src/partition_alloc:raw_ptr" ]
   }
 }
 

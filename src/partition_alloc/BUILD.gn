@@ -3,25 +3,36 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
-import("../../gn/skia.gni")
+import("//build_overrides/build.gni")
 
-if (skia_use_partition_alloc && defined(skia_partition_alloc_dir)) {
-  import("${skia_partition_alloc_dir}/partition_alloc.gni")
-}
+if (build_with_chromium) {
+  # In Chromium build, redirect to Chromium's PartitionAlloc target.
+  # We do NOT import gn/skia.gni to avoid clashing with Chromium's GN arguments.
+  group("raw_ptr") {
+    public_deps = [ "//base/allocator/partition_allocator:raw_ptr" ]
+  }
+} else {
+  # Standalone Skia or other client builds (e.g. Flutter).
+  # We can safely import gn/skia.gni because there is no Chromium features.gni to clash with.
+  import("../../gn/skia.gni")
+  if (skia_use_partition_alloc && skia_partition_alloc_dir != "") {
+    import("${skia_partition_alloc_dir}/partition_alloc.gni")
+  }
 
-source_set("raw_ptr") {
-  public = [
-    "raw_ptr.h",
-    "raw_ptr_exclusion.h",
-    "raw_ref.h",
-  ]
-  if (skia_use_partition_alloc && defined(skia_partition_alloc_dir)) {
-    public_deps = [ "${skia_partition_alloc_dir}:raw_ptr" ]
-  } else {
-    sources = [
-      "noop/raw_ptr.h",
-      "noop/raw_ptr_exclusion.h",
-      "noop/raw_ref.h",
+  source_set("raw_ptr") {
+    public = [
+      "raw_ptr.h",
+      "raw_ptr_exclusion.h",
+      "raw_ref.h",
     ]
+    if (skia_use_partition_alloc && skia_partition_alloc_dir != "") {
+      public_deps = [ "${skia_partition_alloc_dir}:raw_ptr" ]
+    } else {
+      sources = [
+        "noop/raw_ptr.h",
+        "noop/raw_ptr_exclusion.h",
+        "noop/raw_ref.h",
+      ]
+    }
   }
 }
