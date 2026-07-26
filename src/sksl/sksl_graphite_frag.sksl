@@ -1864,3 +1864,40 @@ $pure half4 blur_coverage_fn(float2 coords,
     }
     return half4(0);
 }
+
+$pure half4 endcap_coverage_fn(float2 rectCoord,
+                               float2 atlasSize,
+                               sampler2D alpha_text_0,
+                               sampler2D alpha_text_1,
+                               uint maskIndex) {
+    uint tileWidth = 8;
+    uint tileHeight = 8;
+
+    // Floor and cast the interpolated floating-point local coordinates
+    uint dx = uint(floor(rectCoord.x));
+    uint dy = uint(floor(rectCoord.y));
+
+    uint tileX = dx / tileWidth;
+    uint inTileX = dx % tileWidth;
+    uint inTileY = dy;
+
+    uint tileArea = tileWidth * tileHeight;
+    uint linearOffset = (tileX * tileArea) + (inTileY * tileWidth) + inTileX;
+
+    uint linearIdx = maskIndex + linearOffset;
+    uint channelIdx = linearIdx & 3;
+    uint trueLinearIdx = linearIdx >> 2;
+
+    uint atlasLinearIdx = trueLinearIdx & 0xffffff;
+    uint2 uv = uint2(atlasLinearIdx % 4096, atlasLinearIdx / 4096);
+
+    half4 texColor;
+    int texPage = min(int(trueLinearIdx >> 24), 1);
+    if (texPage == 0) {
+        texColor = textureRead(alpha_text_0, uv);
+    } else {
+        texColor = textureRead(alpha_text_1, uv);
+    }
+
+    return texColor[channelIdx].rrrr;
+}

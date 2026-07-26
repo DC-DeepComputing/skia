@@ -29,7 +29,8 @@ bool AlphaAtlasManager::initializeTexture() {
 
     fTextures.back().fTexture = TextureProxy::Make(caps,
                                                    fRecorder->priv().resourceProvider(),
-                                                   SkISize::Make(kAtlasWidth, kAtlasHeight),
+                                                   SkISize::Make(kAtlasTextureDims,
+                                                                 kAtlasTextureDims),
                                                    info,
                                                    "AlphaAtlas",
                                                    Budgeted::kYes);
@@ -87,20 +88,20 @@ void AlphaAtlasManager::recordUploads(DrawContext* dc) {
             // The texture better not have been dropped here.
             SkASSERT(tex.fTexture);
 
-            int height = (tex.fAlphaBuffer.size() + kAtlasWidthBytes - 1) / kAtlasWidthBytes;
-            int paddedSize = height * kAtlasWidthBytes;
+            int height = (tex.fAlphaBuffer.size() + kAtlasDimsBytes - 1) / kAtlasDimsBytes;
+            int paddedSize = height * kAtlasDimsBytes;
             if (tex.fAlphaBuffer.size() != paddedSize) {
                 tex.fAlphaBuffer.resize(paddedSize);
             }
 
             MipLevel level;
             level.fPixels = tex.fAlphaBuffer.data();
-            level.fRowBytes = kAtlasWidthBytes;
-            int startRow = tex.fUploadSize / kAtlasWidthBytes;
-            SkIRect dstRect = SkIRect::MakeXYWH(0, startRow, kAtlasWidth, height);
+            level.fRowBytes = kAtlasDimsBytes;
+            int startRow = tex.fUploadSize / kAtlasDimsBytes;
+            SkIRect dstRect = SkIRect::MakeXYWH(0, startRow, kAtlasTextureDims, height);
 
             Swizzle readSwizzle = ReadSwizzleForColorType(
-                    kColorType, TextureInfoPriv::ViewFormat(tex.fTexture->textureInfos()));
+                    kColorType, TextureInfoPriv::ViewFormat(tex.fTexture->textureInfo()));
             TextureProxyView proxyView(tex.fTexture, readSwizzle);
 
             SkColorInfo srcColorInfo(kColorType, kPremul_SkAlphaType, nullptr);

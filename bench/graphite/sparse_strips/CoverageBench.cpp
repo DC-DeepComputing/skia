@@ -9,6 +9,7 @@
 #include "bench/Tiger.h"
 #include "include/core/SkPath.h"
 #include "include/private/SkTDArray.h"
+#include "src/gpu/graphite/geom/WideTiles.h"
 #include "src/gpu/graphite/sparse_strips/Flatten.h"
 #include "src/gpu/graphite/sparse_strips/MSAA_LUT.h"
 #include "src/gpu/graphite/sparse_strips/MakeStrips.h"
@@ -26,6 +27,9 @@ public:
                                   SkPathFillType,
                                   const Polyline&,
                                   const SkTDArray<uint8_t>&,
+                                  WideTiles<kTileHeight>&,
+                                  uint16_t viewportWidth,
+                                  uint16_t viewportHeight,
                                   MsaaExactMaskObserver);
 
     CoverageBench(const char* name, MakeStripsFn func) : fFunc(func) {
@@ -50,9 +54,11 @@ protected:
 
     void onDraw(int loops, SkCanvas* /*canvas*/) override {
         SkTDArray<Strip> strips;
+        WideTiles<kTileHeight> wides;
         SkTDArray<uint8_t> alphas;
         for (int i = 0; i < loops; ++i) {
             fFunc(fTiles, &strips, &alphas, SkPathFillType::kDefault, fPolyline, fLUT,
+                  wides, Tiger::kTigerWidth, Tiger::kTigerHeight,
                   /*MsaaExactMaskObserver=*/nullptr);
             strips.resize(0);
             alphas.resize(0);
