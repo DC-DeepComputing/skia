@@ -12,6 +12,7 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkString.h"
 #include "include/private/SkTDArray.h"
+#include "src/gpu/graphite/geom/WideTiles.h"
 #include "src/gpu/graphite/sparse_strips/Flatten.h"
 #include "src/gpu/graphite/sparse_strips/MSAA_LUT.h"
 #include "src/gpu/graphite/sparse_strips/MakeStrips.h"
@@ -171,8 +172,10 @@ public:
                                  MsaaExactMaskObserver observer) {
         SkPathFillType fillType =
                 isInverse ? SkPathFillType::kInverseWinding : SkPathFillType::kWinding;
+        WideTiles<kTileHeight> wides;
         MakeStrips::MsaaScalar<kTileWidth, kTileHeight>(
-                tileContainer, stripBuf, alphaBuf, fillType, polyline, maskLut, observer);
+                tileContainer, stripBuf, alphaBuf, fillType, polyline, maskLut,
+                wides, kViewportWidth, kViewportHeight, observer);
     }
 
     static void RunSimdWinding(const Tiles<kTileWidth, kTileHeight>& tileContainer,
@@ -184,8 +187,10 @@ public:
                                MsaaExactMaskObserver observer) {
         SkPathFillType fillType =
                 isInverse ? SkPathFillType::kInverseWinding : SkPathFillType::kWinding;
+        WideTiles<kTileHeight> wides;
         MakeStrips::MsaaSimd<kTileWidth, kTileHeight>(
-                tileContainer, stripBuf, alphaBuf, fillType, polyline, maskLut, observer);
+                tileContainer, stripBuf, alphaBuf, fillType, polyline, maskLut,
+                wides, kViewportWidth, kViewportHeight, observer);
     }
 
     CoverageTestRunner(StripFunc func, const char* implName) : fFunc(func), fImplName(implName) {}
@@ -308,7 +313,7 @@ private:
         SkTDArray<Strip> stripBuf;
         SkTDArray<uint8_t> alphaBuf;
         SkTDArray<uint8_t> exactMasks;
-
+        WideTiles<kTileHeight> wides;
         auto observer = [&](uint8_t exactMask) { exactMasks.push_back(exactMask); };
         fFunc(tiler, &stripBuf, &alphaBuf, /*isInverse=*/false, polyline, lut, observer);
 

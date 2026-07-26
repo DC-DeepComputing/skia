@@ -10,6 +10,7 @@
 #include "include/core/SkColorType.h"
 #include "include/private/SkTDArray.h"
 #include "src/gpu/graphite/TextureProxy.h"
+#include "src/gpu/graphite/sparse_strips/SparseStripsConfig.h"
 
 #include <cstdint>
 #include <queue>
@@ -22,13 +23,13 @@ class Recorder;
 
 class AlphaAtlasManager {
 public:
-    static constexpr int32_t kAtlasWidth = 8192;
+    static constexpr int32_t kAtlasWidth = SparseStripConfig::kInitialAtlasWidth;
     static constexpr int32_t kAtlasDimsBytes = kAtlasWidth * 4;
-    static constexpr int32_t kInitialAtlasHeight = 32;
-    static constexpr int32_t kMaxAtlasHeight = 4096;
+    static constexpr int32_t kInitialAtlasHeight = SparseStripConfig::kInitialAtlasHeight;
+    static constexpr int32_t kMaxAtlasHeight = SparseStripConfig::kMaxAtlasHeight;
     static constexpr int32_t kMaxCapBytes = kAtlasWidth * kMaxAtlasHeight * 4;
-    static constexpr int32_t kMaxPages = 2;
-    static constexpr SkColorType kColorType = SkColorType::kRGBA_8888_SkColorType;
+    static constexpr int32_t kMaxPages = SparseStripConfig::kMaxTexturePages;
+    static constexpr SkColorType kColorType = SparseStripConfig::kColorType;
 
     AlphaAtlasManager(Recorder* recorder);
 

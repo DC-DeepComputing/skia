@@ -12,6 +12,7 @@ CORE_FILES = [
     "BoundsManager.h",
     "CoverageMaskShape.h",
     "EdgeAAQuad.h",
+    "EndCaps.h",
     "Geometry.h",
     "IntersectionTree.cpp",
     "IntersectionTree.h",
@@ -22,6 +23,7 @@ CORE_FILES = [
     "SubRunData.h",
     "Transform.cpp",
     "Transform.h",
+    "WideTiles.h"
 ]
 
 split_srcs_and_hdrs(
