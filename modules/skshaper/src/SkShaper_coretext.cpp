@@ -295,11 +295,6 @@ void SkShaper_CoreText::shape(const char* utf8,
                                       &kCFTypeDictionaryKeyCallBacks,
                                       &kCFTypeDictionaryValueCallBacks));
     CFDictionaryAddValue(attr.get(), kCTFontAttributeName, ctfont.get());
-    if ((false)) {
-        // trying to see what these affect
-        dict_add_double(attr.get(), kCTTracking_AttributeName, 1);
-        dict_add_double(attr.get(), kCTKernAttributeName, 0.0);
-    }
 
     SkUniqueCFRef<CFAttributedStringRef> attrString(
             CFAttributedStringCreate(kCFAllocatorDefault, textString.get(), attr.get()));
