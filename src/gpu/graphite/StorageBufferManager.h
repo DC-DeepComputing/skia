@@ -28,7 +28,12 @@ class SkGradientBaseShader;
 
 namespace skgpu::graphite {
 
+class DrawContext;
+class DrawPass;
 class DrawBufferManager;
+class Recorder;
+class TextureProxy;
+class TextureProxyView;
 
 class StorageContext {
 public:
@@ -120,8 +125,10 @@ public:
     static constexpr int kMaxStorageFloats =
             static_cast<int>(std::numeric_limits<uint32_t>::max() / sizeof(float));
 
-    StorageBufferManager() = default;
+    explicit StorageBufferManager(bool storageBufferSupport = true);
     ~StorageBufferManager() override;
+
+    bool storageBufferSupport() const { return fStorageBufferSupport; }
 
     void reset();
 
@@ -129,10 +136,20 @@ public:
     std::pair<float*, int> allocateGradientData(StorageContext* ctx,
                                                 int numStops, const SkGradientBaseShader* shader);
 
-    // Finalizes storage for a specific DrawContext/DrawPass and returns its BindBufferInfo.
-    BindBufferInfo finalize(DrawBufferManager* bufferMgr, StorageContext* ctx);
+    // Finalizes storage for a DrawPass/DrawContext. Returns SSBO BindBufferInfo if SSBO is supported,
+    // or records texture fallback to DrawContext and returns empty {} BindBufferInfo if unsupported.
+    BindBufferInfo finalize(DrawBufferManager* bufferMgr,
+                            StorageContext* ctx,
+                            Recorder* recorder = nullptr,
+                            DrawPass* drawPass = nullptr);
 
 private:
+    BindBufferInfo finalizeSSBO(DrawBufferManager* bufferMgr, StorageContext* ctx);
+    TextureProxyView finalizeTexture(Recorder* recorder, StorageContext* ctx, DrawPass* drawPass);
+
+private:
+    sk_sp<TextureProxy> createTextureProxy(Recorder* recorder, int width, int height);
+
     struct GradientCache {
         struct GradientInfo {
             int fGlobalFloatOffset;
@@ -146,6 +163,7 @@ private:
     };
 
     GradientCache fGradientCache;
+    bool fStorageBufferSupport = true;
 };
 
 } // namespace skgpu::graphite

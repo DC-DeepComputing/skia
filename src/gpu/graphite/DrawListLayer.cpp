@@ -339,9 +339,7 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
     drawPass->fCommandList.setScissor(lastScissor);
 
     UniformTracker uniformTracker(fStorageBufferSupport);
-    if (fStorageBufferSupport) {
-        fStorageContext.finalizeCacheStorageData();
-    }
+    fStorageContext.finalizeCacheStorageData();
 
 
 
@@ -449,13 +447,15 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
 
     drawWriter.flush();
 
-    if (fStorageBufferSupport) {
-        drawPass->fStorageBufferInfo = recorder->priv().storageBufferManager()->finalize(bufferMgr, &fStorageContext);
-    }
-
     drawPass->fBounds = fPassBounds.roundOut().asSkIRect();
     drawPass->fPipelineDescs = fPipelineCache.detach();
     drawPass->fSampledTextures = fTextureDataCache.detachTextures();
+
+    drawPass->fStorageBufferInfo =
+            recorder->priv().storageBufferManager()->finalize(bufferMgr,
+                                                               &fStorageContext,
+                                                               recorder,
+                                                               drawPass.get());
 
     TRACE_EVENT_INSTANT2_ALWAYS("skia.gpu",
                                 "DrawPass Stats",

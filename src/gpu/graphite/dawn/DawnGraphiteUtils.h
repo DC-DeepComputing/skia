@@ -82,17 +82,18 @@ wgpu::TextureFormat TextureFormatToDawnFormat(TextureFormat);
 // Helper bit mask for the columns of the "Texture Format Capabilities" tables in
 // https://gpuweb.github.io/gpuweb/#texture-format-caps
 enum class DawnFormatFlag {
-    None      = 0x0,
-    // Corresponds to "float" in GPUTextureSampleType column; "unfilterable-float", "uint" and
-    // "sint" are readable but not filterable and can be inferred from the format's type.
-    Filter    = 0x1,
-    Render    = 0x2,  // Support for wgpu::TextureUsage::RenderAttachment
-    Blend     = 0x4,  // Corresponds to https://gpuweb.github.io/gpuweb/#blendable
-    MSAA      = 0x8,  // Supports MSAA (4x only)
-    Resolve   = 0x10, // Supports being a resolve target
-    WriteOnly = 0x20, // Support for wgpu::TextureUsage::StorageBinding as "write-only"
-    ReadOnly  = 0x40, // Support for wgpu::TextureUsage::StorageBinding as "read-only"
-    ReadWrite = 0x80, // Support for wgpu::TextureUsage::StorageBinding as "read-write"
+    None               = 0x0,
+    // Corresponds to "float" in GPUTextureSampleType column.
+    Filter             = 0x1,
+    // Corresponds to "unfilterable-float", "uint" and "sint" in GPUTextureSampleType column.
+    UnfilterableSample = 0x2,
+    Render             = 0x4,  // Support for wgpu::TextureUsage::RenderAttachment
+    Blend              = 0x8,  // Corresponds to https://gpuweb.github.io/gpuweb/#blendable
+    MSAA               = 0x10, // Supports MSAA (4x only)
+    Resolve            = 0x20, // Supports being a resolve target
+    WriteOnly          = 0x40, // Support for wgpu::TextureUsage::StorageBinding as "write-only"
+    ReadOnly           = 0x80, // Support for wgpu::TextureUsage::StorageBinding as "read-only"
+    ReadWrite          = 0x100,// Support for wgpu::TextureUsage::StorageBinding as "read-write"
 };
 SK_MAKE_BITMASK_OPS(DawnFormatFlag)
 
