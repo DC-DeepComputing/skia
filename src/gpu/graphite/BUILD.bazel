@@ -85,6 +85,7 @@ GRAPHITE_FILES = [
     "KeyContext.h",
     "KeyHelpers.cpp",
     "KeyHelpers.h",
+    "MeshSpecificationDictionary.h",
     "PaintParams.cpp",
     "PaintParams.h",
     "PaintParamsKey.cpp",

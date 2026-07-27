@@ -13,6 +13,7 @@
 #include "src/core/SkBlenderBase.h"
 #include "src/core/SkColorSpacePriv.h"
 #include "src/core/SkImageInfoPriv.h"
+#include "src/core/SkMeshPriv.h"
 #include "src/effects/colorfilters/SkColorFilterBase.h"
 #include "src/gpu/Blend.h"
 #include "src/gpu/DitherUtils.h"
@@ -219,6 +220,22 @@ SkColor4f PaintParams::Color4fPrepForDst(SkColor4f srcColor, const SkColorInfo& 
     SkColor4f result = srcColor;
     steps.apply(result.vec());
     return result;
+}
+
+PaintParams PaintParams::makeWithPrimitiveColorSpace(SkColorSpace* cs, SkAlphaType at) const {
+    PaintParams copy = *this;
+    copy.fPrimitiveColorSpace = cs;
+    copy.fPrimitiveAlphaType = at;
+    return copy;
+}
+
+PaintParams PaintParams::makeWithMesh(const SkMesh& mesh) const {
+    PaintParams copy = *this;
+    copy.fMeshSpec = mesh.refSpec();
+    copy.fMeshChildren = mesh.children();
+    copy.fPrimitiveColorSpace = SkMeshSpecificationPriv::ColorSpace(*mesh.spec());
+    copy.fPrimitiveAlphaType = SkMeshSpecificationPriv::AlphaType(*mesh.spec());
+    return copy;
 }
 
 #if defined(SK_DEBUG)
@@ -489,6 +506,8 @@ void ShadingParams::handleClipping(const KeyContext& keyContext) const {
         // We check for clipping before calling `handleClipping()`.
         SkUNREACHABLE;
     }
+    // We check for clipping before calling `handleClipping()`.
+    SkUNREACHABLE;
 }
 
 std::optional<ShadingParams::Result> ShadingParams::toKey(const KeyContext& keyContext) const {
@@ -566,6 +585,11 @@ std::optional<ShadingParams::Result> ShadingParams::toKey(const KeyContext& keyC
     if (fClipShader || !fNonMSAAClip.isEmpty()) {
         keyContext.paintParamsKeyBuilder()->addRootBlockHeader(RootBlockType::kClip);
         this->handleClipping(keyContext);
+    }
+
+    if (fPaint.meshSpec()) {
+        keyContext.paintParamsKeyBuilder()->addRootBlockHeader(RootBlockType::kMeshShader);
+        MeshShaderBlocks::AddBlocks(keyContext, fPaint.meshSpecRef(), fPaint.meshChildren());
     }
 
     // If dstUsage is not kNone, then kDependsOnDst must be set (all other bits only apply *because*
