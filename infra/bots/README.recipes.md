@@ -193,13 +193,13 @@ This module assumes setup has occurred for the vars and flavor modules.
 
 &mdash; **def [\_\_call\_\_](/infra/bots/recipe_modules/gsutil/api.py#11)(self, step_name, \*args):**
 
-Run gsutil with the given args.
+Run "gcloud storage" with the given args.
 
 This assumes there exists an executable called gsutil on the PATH.
 This probably only works for Linux/Mac, but those are the only
 hosts that we try to upload to GCS from anyway.
 
-&mdash; **def [cp](/infra/bots/recipe_modules/gsutil/api.py#20)(self, name, src, dst, extra_gsutil_args=None, extra_args=None, multithread=False):**
+&mdash; **def [cp](/infra/bots/recipe_modules/gsutil/api.py#20)(self, name, src, dst, extra_args=None):**
 
 Attempt to upload or download files to/from Google Cloud Storage (GCS).
 

@@ -9,16 +9,15 @@ UPLOAD_ATTEMPTS = 5
 
 class GSUtilApi(recipe_api.RecipeApi):
   def __call__(self, step_name, *args):
-    """Run gsutil with the given args.
+    """Run "gcloud storage" with the given args.
 
        This assumes there exists an executable called gsutil on the PATH.
        This probably only works for Linux/Mac, but those are the only
        hosts that we try to upload to GCS from anyway.
     """
-    return self.m.step(step_name, cmd=['gsutil'] + list(args))
+    return self.m.step(step_name, cmd=['gcloud', 'storage'] + list(args))
 
-  def cp(self, name, src, dst, extra_gsutil_args=None, extra_args=None,
-         multithread=False):
+  def cp(self, name, src, dst, extra_args=None):
     """Attempt to upload or download files to/from Google Cloud Storage (GCS).
 
     Args:
@@ -34,12 +33,7 @@ class GSUtilApi(recipe_api.RecipeApi):
 
     If the operation fails, it will be retried multiple times.
     """
-    cmd = []
-    if extra_gsutil_args:
-      cmd.extend(extra_gsutil_args)
-    if multithread:
-      cmd.append('-m')
-    cmd.append('cp')
+    cmd = ['cp']
     if extra_args:
       cmd.extend(extra_args)
     cmd.extend([src, dst])
