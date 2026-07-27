@@ -16,6 +16,7 @@
 #include "src/core/SkColorData.h"
 #include "src/core/SkColorSpaceXformSteps.h"
 #include "src/gpu/graphite/DrawContext.h"
+#include "src/gpu/graphite/MeshSpecificationDictionary.h"
 #include "src/gpu/graphite/TextureProxy.h"
 
 class SkRuntimeEffect;
@@ -122,6 +123,7 @@ public:
     TextureFormat targetFormat() const { return fDC->target().proxy()->format(); }
 
     sk_sp<RuntimeEffectDictionary> rtEffectDict() const;
+    MeshSpecificationDictionary* meshSpecDict() const { return fRTEffectDict->meshSpecDict(); }
 
     const SkColorInfo& dstColorInfo() const { return fDstColorInfo; }
 
