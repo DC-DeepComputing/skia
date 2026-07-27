@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54e3143a_a9bbe481",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 755,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-07-27T12:57:40Z",
+      "side": 1,
+      "message": "Do we actually need this cast?",
+      "range": {
+        "startLine": 755,
+        "startChar": 0,
+        "endLine": 755,
+        "endChar": 74
+      },
+      "revId": "d5e37daea39328f83dda51dd4febdd454edcfb30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a51c26d_d07ccb2f",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-07-27T12:57:40Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 114,
+        "startChar": 56,
+        "endLine": 114,
+        "endChar": 66
+      },
+      "revId": "d5e37daea39328f83dda51dd4febdd454edcfb30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
