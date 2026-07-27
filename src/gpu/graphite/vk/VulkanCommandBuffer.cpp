@@ -277,6 +277,7 @@ void VulkanCommandBuffer::onResetCommandBuffer() {
     fBoundIndirectBuffer = VK_NULL_HANDLE;
     fBoundIndirectBufferOffset = 0;
     fTargetTexture = nullptr;
+    fBoundStorageTexture = nullptr;
     fTextureSamplerDescSetToBind = VK_NULL_HANDLE;
     fNumTextureSamplers = 0;
     fUniformBuffersToBind.fill({});
@@ -1128,6 +1129,13 @@ void VulkanCommandBuffer::addDrawPass(DrawPass* drawPass) {
     if (drawPass->storageBufferInfo().fBuffer != nullptr) {
         this->recordBufferBindingInfo(drawPass->storageBufferInfo(),
                                       UniformSlot::kStorage);
+    } else if (drawPass->storageTextureProxy() != nullptr) {
+        // NOTE: addResourceRefs() already called in onAddRenderPass()
+        const Texture* texture = drawPass->storageTextureProxy()->texture();
+        if (texture) {
+            fBoundStorageTexture = texture;
+            fBindUniformBuffers = true;
+        }
     }
 
     for (auto [type, cmdPtr] : drawPass->commands()) {
@@ -1328,10 +1336,41 @@ void VulkanCommandBuffer::syncDescriptorSets() {
 namespace {
 void update_uniform_descriptor_set(SkSpan<DescriptorData> requestedDescriptors,
                                    SkSpan<BindBufferInfo> bindUniformBufferInfo,
+                                   const Texture* boundStorageTexture,
                                    VkDescriptorSet descSet,
                                    const VulkanSharedContext* sharedContext) {
     for (size_t i = 0; i < requestedDescriptors.size(); i++) {
         int descriptorBindingIndex = requestedDescriptors[i].fBindingIndex;
+        if (requestedDescriptors[i].fType == DescriptorType::kTexture) {
+            VkDescriptorImageInfo imageInfo = {};
+            imageInfo.sampler = VK_NULL_HANDLE;
+            if (boundStorageTexture) {
+                const auto* vkTex = static_cast<const VulkanTexture*>(boundStorageTexture);
+                const auto* view = vkTex->getImageView(VulkanImageView::Usage::kShaderInput);
+                if (view) {
+                    imageInfo.imageView = view->imageView();
+                }
+            }
+            imageInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+
+            VkWriteDescriptorSet writeInfo = {};
+            writeInfo.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+            writeInfo.dstSet = descSet;
+            writeInfo.dstBinding = descriptorBindingIndex;
+            writeInfo.dstArrayElement = 0;
+            writeInfo.descriptorCount = requestedDescriptors[i].fCount;
+            writeInfo.descriptorType = VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE;
+            writeInfo.pImageInfo = &imageInfo;
+
+            VULKAN_CALL(sharedContext->interface(),
+                        UpdateDescriptorSets(sharedContext->device(),
+                                             /*descriptorWriteCount=*/1,
+                                             &writeInfo,
+                                             /*descriptorCopyCount=*/0,
+                                             /*pDescriptorCopies=*/nullptr));
+            continue;
+        }
+
         SkASSERT(SkTo<unsigned long>(descriptorBindingIndex) < bindUniformBufferInfo.size());
         const auto& bindInfo = bindUniformBufferInfo[descriptorBindingIndex];
         if (bindInfo.fBuffer) {
@@ -1357,11 +1396,6 @@ void update_uniform_descriptor_set(SkSpan<DescriptorData> requestedDescriptors,
             writeInfo.descriptorType = DsTypeEnumToVkDs(requestedDescriptors[i].fType);
             writeInfo.pBufferInfo = &bufferInfo;
 
-            // TODO(b/293925059): Migrate to updating all the uniform descriptors with one driver
-            // call. Calling UpdateDescriptorSets once to encapsulate updates to all uniform
-            // descriptors would be ideal, but that led to issues with draws where all the UBOs
-            // within that set would unexpectedly be assigned the same offset. Updating them one at
-            // a time within this loop works in the meantime but is suboptimal.
             VULKAN_CALL(sharedContext->interface(),
                         UpdateDescriptorSets(sharedContext->device(),
                                              /*descriptorWriteCount=*/1,
@@ -1419,12 +1453,18 @@ void VulkanCommandBuffer::bindUniformBuffers() {
     dynamicOffsets.push_back(combinedUboInfo.fOffset);
 
     if (fActiveGraphicsPipeline->usesStorageBuffer()) {
-        SkASSERT(fSharedContext->caps()->storageBufferSupport());
-        uniformDescriptorData.push_back({DescriptorType::kStorageBuffer,
-                                         /*count=*/1,
-                                         Pipeline::kStorageBufferIndex,
-                                         fActiveGraphicsPipeline->storageBufferStages()});
-        dynamicOffsets.push_back(fUniformBuffersToBind[Pipeline::kStorageBufferIndex].fOffset);
+        if (fSharedContext->caps()->storageBufferSupport()) {
+            uniformDescriptorData.push_back({DescriptorType::kStorageBuffer,
+                                             /*count=*/1,
+                                             Pipeline::kStorageBufferIndex,
+                                             fActiveGraphicsPipeline->storageBufferStages()});
+            dynamicOffsets.push_back(fUniformBuffersToBind[Pipeline::kStorageBufferIndex].fOffset);
+        } else {
+            uniformDescriptorData.push_back({DescriptorType::kTexture,
+                                             /*count=*/1,
+                                             Pipeline::kStorageBufferIndex,
+                                             fActiveGraphicsPipeline->storageBufferStages()});
+        }
     }
 
     // Now obtain an actual descriptor set. In the case of using only one buffer, we can query
@@ -1443,6 +1483,7 @@ void VulkanCommandBuffer::bindUniformBuffers() {
         // Update the set before binding.
         update_uniform_descriptor_set(uniformDescriptorData,
                                       fUniformBuffersToBind,
+                                      fBoundStorageTexture,
                                       *descSet->descriptorSet(),
                                       fSharedContext);
 

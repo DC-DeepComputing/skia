@@ -117,7 +117,7 @@ void DawnCaps::initFormatTable(const wgpu::Device& device) {
 
         // At this point, we can claim at least 1 sample is supported
         supportedSampleCounts = SampleCount::k1;
-        if (formatCaps & DawnFormatFlag::Filter) {
+        if (formatCaps & (DawnFormatFlag::Filter | DawnFormatFlag::UnfilterableSample)) {
             supportedUsage |= TextureUsage::kSample;
         }
 

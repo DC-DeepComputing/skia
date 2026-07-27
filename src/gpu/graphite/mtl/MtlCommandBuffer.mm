@@ -352,14 +352,22 @@ bool MtlCommandBuffer::addDrawPass(DrawPass* drawPass) {
         return true;
     }
 
+    // Must run first to instantiate storage texture fallback proxy if necessary.
+    if (!drawPass->addResourceRefs(fResourceProvider, this)) SK_UNLIKELY {
+        return false;
+    }
+
     // If there is storage buffer data to bind, it must be done prior to draws.
     if (drawPass->storageBufferInfo().fBuffer != nullptr) {
         this->bindUniformBuffer(drawPass->storageBufferInfo(),
                                 UniformSlot::kStorage);
-    }
-
-    if (!drawPass->addResourceRefs(fResourceProvider, this)) SK_UNLIKELY {
-        return false;
+    } else if (drawPass->storageTextureProxy() != nullptr) {
+        const Texture* texture = drawPass->storageTextureProxy()->texture();
+        if (texture) {
+            id<MTLTexture> mtlTexture = static_cast<const MtlTexture*>(texture)->mtlTexture();
+            fActiveRenderCommandEncoder->setVertexTexture(mtlTexture, MtlGraphicsPipeline::kStorageBufferIndex);
+            fActiveRenderCommandEncoder->setFragmentTexture(mtlTexture, MtlGraphicsPipeline::kStorageBufferIndex);
+        }
     }
 
     for (auto[type, cmdPtr] : drawPass->commands()) {

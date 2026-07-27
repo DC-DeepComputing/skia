@@ -239,7 +239,7 @@ const DawnFormatCapabilityMap& DawnFormatCapabilityMap::Get() {
 
         {R32Sint,        {Compat >> Render | WriteOnly | ReadOnly | ReadWrite}},
 
-        {R32Float,       {Compat >> Render | WriteOnly | ReadOnly | ReadWrite,
+        {R32Float,       {Compat >> Render | WriteOnly | ReadOnly | ReadWrite | UnfilterableSample,
                           Core   >> MSAA,
                           F::Float32Filterable >> Filter,
                           F::Float32Blendable  >> Blend}},
@@ -250,7 +250,7 @@ const DawnFormatCapabilityMap& DawnFormatCapabilityMap::Get() {
         {RG32Sint,       {Compat >> Render,
                           Core   >> WriteOnly | ReadOnly}},
 
-        {RG32Float,      {Compat >> Render,
+        {RG32Float,      {Compat >> Render | UnfilterableSample,
                           Core   >> WriteOnly | ReadOnly,
                           F::Float32Filterable >> Filter,
                           F::Float32Blendable  >>  Blend}},
@@ -261,7 +261,7 @@ const DawnFormatCapabilityMap& DawnFormatCapabilityMap::Get() {
         {RGBA32Sint,     {Compat >> Render | WriteOnly | ReadOnly,
                           Tier2  >> ReadWrite}},
 
-        {RGBA32Float,    {Compat >> Render|  WriteOnly | ReadOnly,
+        {RGBA32Float,    {Compat >> Render | WriteOnly | ReadOnly | UnfilterableSample,
                           Tier2  >> ReadWrite,
                           F::Float32Filterable >> Filter,
                           F::Float32Blendable  >> Blend}},
