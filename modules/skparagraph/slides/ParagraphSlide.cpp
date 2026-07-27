@@ -4287,15 +4287,6 @@ public:
             auto paragraph = builder.Build();
             paragraph->layout(this->size().width());
             paragraph->paint(canvas, 0, 0);
-            if ((false)) {
-                SkDebugf("Paragraph '%s'\n", text);
-                auto impl = static_cast<ParagraphImpl*>(paragraph.get());
-                for (auto& run: impl->runs()) {
-                    SkString ff;
-                    run.font().getTypeface()->getFamilyName(&ff);
-                    SkDebugf("'%s': [%zu:%zu)\n", ff.c_str(), run.textRange().start, run.textRange().end);
-                }
-            }
         };
         test("2nd");
         canvas->translate(0, 50);

@@ -127,10 +127,6 @@ static void make_images() {
 // visual difference is a number in the middle corresponding to the
 // EXIF tag for that image's jpg file.
 static void draw(SkCanvas* canvas, const char* suffix) {
-    // Avoid unused function warning.
-    if ((false)) {
-        make_images();
-    }
     canvas->save();
     for (char i = '1'; i <= '8'; i++) {
         SkString path = SkStringPrintf("images/orientation/%c%s.jpg", i, suffix);

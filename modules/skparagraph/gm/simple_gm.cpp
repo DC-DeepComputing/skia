@@ -182,22 +182,6 @@ protected:
                 }
                 canvas->drawLine(x0, Y+2, X1, Y+2, underp);
             }
-
-            if ((false)) {
-                if (info->utf8Starts) {
-                    SkString str;
-                    for (int i = 0; i < info->count; ++i) {
-                        str.appendUnichar(gSpeech[info->utf8Starts[i]]);
-                    }
-                    SkDebugf("'%s'\n", str.c_str());
-                }
-
-                // show position points
-                for (int i = 0; i < info->count; ++i) {
-                    auto pos = info->positions[i];
-                    canvas->drawPoint(pos.fX + info->origin.fX, pos.fY + info->origin.fY, p2);
-                }
-            }
         });
     }
 
