@@ -647,3 +647,10 @@ wgpu::YCbCrVkDescriptor DawnDescriptorFromImmutableSamplerInfo(ImmutableSamplerI
 #endif // !defined(__EMSCRIPTEN__)
 
 } // namespace skgpu::graphite
+
+namespace SkUnifiedContext {
+sk_sp<SkContext> MakeGraphite(const skgpu::graphite::DawnBackendContext& dawnContext,
+                              const SkContextOptions& options) {
+    return nullptr;
+}
+}  // namespace SkUnifiedContext

@@ -19,4 +19,16 @@ namespace sk_gpu_test {
 TestContext* CreateMockTestContext(TestContext* shareContext = nullptr);
 
 }  // namespace sk_gpu_test
+
+class SkContext;
+struct SkContextOptions;
+
+namespace SkUnifiedContext {
+
+// Creates a context wrapping a Ganesh GPU backend with Mock
+sk_sp<SkContext> MakeGanesh(sk_gpu_test::TestContext* shareContext = nullptr,
+                            const SkContextOptions& options);
+
+}  // namespace SkUnifiedContext
+
 #endif

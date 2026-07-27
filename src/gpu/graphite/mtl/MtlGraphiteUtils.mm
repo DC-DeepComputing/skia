@@ -503,3 +503,15 @@ MTLPixelFormat TextureFormatToMTLPixelFormat(TextureFormat format) {
 }
 
 }  // namespace skgpu::graphite
+
+class SkContext;
+struct SkContextOptions;
+
+namespace SkUnifiedContext {
+// Creates a context wrapping a Graphite GPU backend using Metal
+sk_sp<SkContext> MakeGraphite(const skgpu::graphite::MtlBackendContext& mtlContext,
+                              const SkContextOptions& options) {
+    return nullptr;
+}
+
+}  // namespace SkUnifiedContext

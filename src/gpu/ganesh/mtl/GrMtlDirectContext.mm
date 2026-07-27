@@ -34,3 +34,16 @@ sk_sp<GrDirectContext> MakeMetal(const GrMtlBackendContext& backendContext,
     return direct;
 }
 }  // namespace GrDirectContexts
+
+class SkContext;
+struct SkContextOptions;
+
+namespace SkUnifiedContext {
+
+// Creates a context wrapping a Ganesh GPU backend with Metal
+sk_sp<SkContext> MakeGanesh(const GrMtlBackendContext& mtlContext,
+                            const SkContextOptions& options) {
+    return nullptr;
+}
+
+}  // namespace SkUnifiedContext

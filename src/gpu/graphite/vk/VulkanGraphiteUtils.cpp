@@ -270,3 +270,16 @@ RenderPassDesc MakePipelineCompatibleRenderPass(const RenderPassDesc& renderPass
 }
 
 } // namespace skgpu::graphite
+
+class SkContext;
+struct SkContextOptions;
+
+namespace SkUnifiedContext {
+
+// Creates a context wrapping a Graphite GPU backend with Vulkan
+sk_sp<SkContext> MakeGraphite(const skgpu::VulkanBackendContext& vkContext,
+                              const SkContextOptions& options) {
+    return nullptr;
+}
+
+}  // namespace SkUnifiedContext
