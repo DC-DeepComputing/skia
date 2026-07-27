@@ -30,6 +30,20 @@ class ShaderNode;
 class TextureProxy;
 class UniquePaintParamsID;
 
+enum class RootBlockType : int32_t {
+    kSrcColor = -1,
+    kFinalBlend = -2,
+    kClip = -3,
+};
+
+struct RootNodesInfo {
+    const ShaderNode* srcColor = nullptr;
+    const ShaderNode* finalBlend = nullptr;
+    const ShaderNode* clip = nullptr;
+
+    SkSpan<const ShaderNode*> roots;
+};
+
 /**
  * This class is a compact representation of the shader needed to implement a given
  * PaintParams. Its structure is a series of nodes where each node consists of:
@@ -97,10 +111,10 @@ public:
     //
     // Before returning the ShaderNode trees, this method decides which ShaderNode expressions to
     // lift to the vertex shader, depending on how many varyings are available.
-    SkSpan<const ShaderNode*> getRootNodes(const Caps*,
-                                           const ShaderCodeDictionary*,
-                                           SkArenaAlloc*,
-                                           int availableVaryings) const;
+    RootNodesInfo getRootNodes(const Caps*,
+                               const ShaderCodeDictionary*,
+                               SkArenaAlloc*,
+                               int availableVaryings) const;
 
     // Converts the key to a structured list of snippet information for debugging or labeling
     // purposes.
@@ -180,6 +194,11 @@ public:
         return PaintParamsKey(fData) == that;
     }
     bool operator!=(const PaintParamsKey& that) const { return !(*this == that); }
+
+    void addRootBlockHeader(RootBlockType type) {
+        SkASSERT(!fLocked);
+        fData.push_back(static_cast<int32_t>(type));
+    }
 
     void beginBlock(BuiltInCodeSnippetID id) { this->beginBlock(static_cast<uint32_t>(id)); }
     void beginBlock(uint32_t codeSnippetID) {
