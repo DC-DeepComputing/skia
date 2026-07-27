@@ -2531,6 +2531,8 @@ static void add_gradient_to_key(const KeyContext& keyContext,
 
     sk_sp<TextureProxy> proxy;
 
+    // TODO (thomsmit) delete this in the future, all fallbacks should get routed through the
+    // StorageBufferManager.
     bool gradUsesStorage = keyContext.caps()->storageBufferSupport();
     if (colorCount > GradientShaderBlocks::GradientData::kNumInternalStorageStops
             && !gradUsesStorage) {
