@@ -1,9 +1,8 @@
 [
   {
     "cmd": [
-      "gsutil",
-      "--blah",
-      "-m",
+      "gcloud",
+      "storage",
       "cp",
       "-Z",
       "/foo/file",
