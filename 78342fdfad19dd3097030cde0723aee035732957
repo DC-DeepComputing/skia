@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa4059f0_76d209b2",
+        "filename": "src/ports/SkFontConfigInterface_direct.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 712,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-07-27T20:47:03Z",
+      "side": 1,
+      "message": "Looks like both `font_set` and `match` can be !\u003d null (L691)?  In general explicit cleanup on every return path is fragile, can we use a RAII helper to handle that?  Something like\n\n```\nstd::unique_ptr\u003cFcPattern, SkFunctionObject\u003cFcPatternDestroy\u003e\u003e pattern, match;\nstd::unique_ptr\u003cFcFontSet, SkFunctionObject\u003cFcFontSetDestroy\u003e\u003e font_set;\n```\n\nmay just work",
+      "range": {
+        "startLine": 708,
+        "startChar": 0,
+        "endLine": 712,
+        "endChar": 9
+      },
+      "revId": "78342fdfad19dd3097030cde0723aee035732957",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
