@@ -329,6 +329,9 @@ void PaintOption::handleClipping(const KeyContext& keyContext) const {
         // We check for clipping before calling `handleClipping()`.
         SkUNREACHABLE;
     }
+    // We check for clipping before calling `handleClipping()`.
+    SkUNREACHABLE;
+
 }
 
 } // namespace skgpu::graphite
