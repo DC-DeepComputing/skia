@@ -91,12 +91,6 @@ protected:
                                                         &bounds, &textPaint);
                     canvas->drawSimpleText(text, strlen(text), SkTextEncoding::kUTF8,
                                            x, y, font, textPaint);
-                    if ((false)) {
-                        bounds.offset(x, y);
-                        canvas->drawRect(bounds, boundsPaint);
-                        SkRect advanceRect = SkRect::MakeLTRB(x, y + 2, x + advance, y + 4);
-                        canvas->drawRect(advanceRect, advancePaint);
-                    }
                     x += bounds.width() * 1.2;
                 }
                 y += metrics.fDescent + metrics.fLeading;

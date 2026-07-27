@@ -37,12 +37,6 @@ static void check_inval(skiatest::Reporter* reporter, const sk_sp<sksg::Node>& r
     sksg::InvalidationController ic;
     const auto bbox = root->revalidate(&ic, SkMatrix::I());
 
-    if ((false)) {
-        SkDebugf("** bbox: [%f %f %f %f], ibbox: [%f %f %f %f]\n",
-                 bbox.fLeft, bbox.fTop, bbox.fRight, bbox.fBottom,
-                 ic.bounds().left(), ic.bounds().top(), ic.bounds().right(), ic.bounds().bottom());
-    }
-
     REPORTER_ASSERT(reporter, bbox == expected_bounds);
     REPORTER_ASSERT(reporter, ic.bounds() == expected_inval_bounds);
 
