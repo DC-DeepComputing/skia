@@ -7,6 +7,8 @@
 
 #include "src/gpu/graphite/render/CoverBoundsRenderStep.h"
 
+#include "src/gpu/graphite/PaintParamsKey.h"
+
 #include "include/core/SkM44.h"
 #include "include/private/SkDebug.h"
 #include "include/private/SkEnumBitMask.h"
@@ -47,7 +49,7 @@ CoverBoundsRenderStep::CoverBoundsRenderStep(Layout layout,
 
 CoverBoundsRenderStep::~CoverBoundsRenderStep() {}
 
-std::string CoverBoundsRenderStep::vertexSkSL() const {
+std::string CoverBoundsRenderStep::vertexSkSL(const RootNodesInfo&) const {
     // Returns the body of a vertex function, which must define a float4 devPosition variable and
     // must write to an already-defined float2 stepLocalCoords variable.
     return "float4 devPosition = cover_bounds_vertex_fn("
