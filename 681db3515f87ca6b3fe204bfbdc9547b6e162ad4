@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c910a27_6228c724",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3621349
+      },
+      "writtenOn": "2026-07-27T03:58:50Z",
+      "side": 1,
+      "message": "Verified that the patchset was built in M144 locally.",
+      "revId": "681db3515f87ca6b3fe204bfbdc9547b6e162ad4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
