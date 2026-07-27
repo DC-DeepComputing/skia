@@ -1,0 +1,188 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ea88f9e_70d6b0db",
+        "filename": "include/gpu/ganesh/d3d/GrD3DDirectContext.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-07-27T15:15:12Z",
+      "side": 1,
+      "message": "Our style is to keep all our includes and forward declares at the top of the file even though these aren\u0027t used until down here.",
+      "range": {
+        "startLine": 28,
+        "startChar": 1,
+        "endLine": 29,
+        "endChar": 24
+      },
+      "revId": "cf74d7e3a7d003ad10422f7da77a745fc00cae71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f8a4c99_57d1edae",
+        "filename": "include/gpu/ganesh/d3d/GrD3DDirectContext.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-07-27T15:15:12Z",
+      "side": 1,
+      "message": "as mentioned before this should be SkContexts to match our other name conventions for namespaces.",
+      "range": {
+        "startLine": 31,
+        "startChar": 10,
+        "endLine": 31,
+        "endChar": 26
+      },
+      "revId": "cf74d7e3a7d003ad10422f7da77a745fc00cae71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b624c88f_e80a57c0",
+        "filename": "src/core/SkContext.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-07-27T15:15:12Z",
+      "side": 1,
+      "message": "if this is a unique_ptr there is no need to default it to nullptr since that is the default initialization of u_p anyways",
+      "range": {
+        "startLine": 71,
+        "startChar": 48,
+        "endLine": 71,
+        "endChar": 58
+      },
+      "revId": "cf74d7e3a7d003ad10422f7da77a745fc00cae71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd0fd658_a0a7cd17",
+        "filename": "src/core/SkContext.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-07-27T15:15:12Z",
+      "side": 1,
+      "message": "What\u0027s the reasoning for keeping these here vs on SkSharedContext?",
+      "range": {
+        "startLine": 70,
+        "startChar": 5,
+        "endLine": 71,
+        "endChar": 59
+      },
+      "revId": "cf74d7e3a7d003ad10422f7da77a745fc00cae71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "548d6fc0_9e9f8c0e",
+        "filename": "src/core/SkSharedContext.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-07-27T15:15:12Z",
+      "side": 1,
+      "message": "nit: 2026",
+      "range": {
+        "startLine": 2,
+        "startChar": 16,
+        "endLine": 2,
+        "endChar": 17
+      },
+      "revId": "cf74d7e3a7d003ad10422f7da77a745fc00cae71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c1fc563_0f191bd8",
+        "filename": "src/core/SkSharedContext.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-07-27T15:15:12Z",
+      "side": 1,
+      "message": "nti: 2026",
+      "range": {
+        "startLine": 2,
+        "startChar": 13,
+        "endLine": 2,
+        "endChar": 17
+      },
+      "revId": "cf74d7e3a7d003ad10422f7da77a745fc00cae71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b77a7609_1cec7480",
+        "filename": "src/core/SkSharedContext.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-07-27T15:15:12Z",
+      "side": 1,
+      "message": "nit: 100 chars",
+      "range": {
+        "startLine": 23,
+        "startChar": 104,
+        "endLine": 23,
+        "endChar": 105
+      },
+      "revId": "cf74d7e3a7d003ad10422f7da77a745fc00cae71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc582da0_1f12b525",
+        "filename": "src/core/SkSharedContext.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-07-27T15:15:12Z",
+      "side": 1,
+      "message": "what is the protected here for?",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 10
+      },
+      "revId": "cf74d7e3a7d003ad10422f7da77a745fc00cae71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
