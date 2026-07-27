@@ -267,6 +267,12 @@ void DrawContext::flush(Recorder* recorder) {
     if (pass) {
         SkASSERT(fTarget.proxy() == pass->target());
 
+        if (!recorder->priv().caps()->storageBufferSupport()) {
+            if (sk_sp<Task> uploadTask = pass->takeTextureFallbackUploadTask()) {
+                fCurrentDrawTask->addTask(std::move(uploadTask));
+            }
+        }
+
         // If any paint used within the DrawPass reads from the dst texture (indicated by nonempty
         // dstReadPixelBounds) and the dstReadStrategy is kTextureCopy, then add a CopyTask.
         sk_sp<TextureProxy> dstCopy;

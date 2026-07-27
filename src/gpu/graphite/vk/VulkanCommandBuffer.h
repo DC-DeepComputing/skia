@@ -224,6 +224,7 @@ private:
     bool fBindTextureSamplers = false;
 
     std::array<BindBufferInfo, VulkanGraphicsPipeline::kMaxNumUniformBuffers> fUniformBuffersToBind;
+    const Texture* fBoundStorageTexture = nullptr;
     VkDescriptorSet fTextureSamplerDescSetToBind = VK_NULL_HANDLE;
 
     int fNumTextureSamplers = 0;
