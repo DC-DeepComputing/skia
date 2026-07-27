@@ -147,9 +147,6 @@ class ResourceFontCollection : public FontCollection {
             std::vector<sk_sp<SkTypeface>> typefaces;
             bool fontsFound = false;
             for (auto&& path : paths) {
-                if ((false)) {
-                    SkDebugf("Reading font: %s\n", path.c_str());
-                }
                 auto stream = SkStream::MakeFromFile(path.c_str());
                 SkASSERTF(stream, "%s not readable", path.c_str());
                 sk_sp<SkTypeface> typeface = mgr->makeFromStream(std::move(stream), {});
