@@ -19,8 +19,8 @@
   },
   {
     "cmd": [
-      "gsutil",
-      "-m",
+      "gcloud",
+      "storage",
       "cp",
       "[START_DIR]/test/*.png",
       "gs://skia-infra-gm/dm-images-v1"
@@ -47,7 +47,8 @@
   },
   {
     "cmd": [
-      "gsutil",
+      "gcloud",
+      "storage",
       "cp",
       "-Z",
       "[START_DIR]/test/dm.json",
@@ -75,7 +76,8 @@
   },
   {
     "cmd": [
-      "gsutil",
+      "gcloud",
+      "storage",
       "cp",
       "-Z",
       "[START_DIR]/test/verbose.log",
