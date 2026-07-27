@@ -14,6 +14,7 @@
 #include "src/core/SkStringView.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/KeyHelpers.h"
+#include "src/gpu/graphite/RuntimeEffectDictionary.h"
 #include "src/gpu/graphite/ShaderCodeDictionary.h"
 
 using namespace skia_private;
@@ -244,10 +245,12 @@ void lift_color_expressions(SkSpan<ShaderNode*> nodes, int* availableVaryings) {
 #endif
 }
 
-SkSpan<const ShaderNode*> PaintParamsKey::getRootNodes(const Caps* caps,
-                                                       const ShaderCodeDictionary* dict,
-                                                       SkArenaAlloc* arena,
-                                                       int availableVaryings) const {
+RootNodesInfo PaintParamsKey::getRootNodes(const Caps* caps,
+                                           const ShaderCodeDictionary* dict,
+                                           const RuntimeEffectDictionary* rteDict,
+                                           SkArenaAlloc* arena,
+                                           int availableVaryings,
+                                           bool canLiftCoords) const {
     // TODO: Once the PaintParamsKey creation is organized to represent a single tree starting at
     // the final blend, there will only be a single root node and this can be simplified.
     // For now, we don't know how many roots there are, so collect them into a local array before
@@ -255,20 +258,38 @@ SkSpan<const ShaderNode*> PaintParamsKey::getRootNodes(const Caps* caps,
     const int keySize = SkTo<int>(fData.size());
 
     // Normal PaintParams creation will have up to 7 roots for the different stages.
+    RootNodesInfo rootsInfo;
     STArray<7, ShaderNode*> roots;
     int currentIndex = 0;
     while (currentIndex < keySize) {
+        int32_t blockMarker = fData[currentIndex++];
+        if (blockMarker >= 0) {
+            return {}; // a bad key
+        }
+        RootBlockType type = static_cast<RootBlockType>(blockMarker);
         ShaderNode* root = this->createNode(dict, &currentIndex, arena);
         if (!root) {
             return {}; // a bad key
         }
         roots.push_back(root);
+        switch (type) {
+            case RootBlockType::kSrcColor:   rootsInfo.srcColor = root; break;
+            case RootBlockType::kFinalBlend: rootsInfo.finalBlend = root; break;
+            case RootBlockType::kClip:       rootsInfo.clip = root; break;
+            case RootBlockType::kMeshShader: rootsInfo.meshShader = root; break;
+        }
+    }
+
+    if (rootsInfo.meshShader && rteDict) {
+        rootsInfo.meshSpec = rteDict->meshSpecDict()->find(rootsInfo.meshShader->codeSnippetId());
     }
 
     // See what expressions we can lift to the vertex shader.
     const bool hasClipNode = roots.size() > 2;
     SkSpan<ShaderNode*> liftableNodes(roots.data(), hasClipNode ? 2 : roots.size());
-    lift_coord_expressions(liftableNodes, &availableVaryings);
+    if (canLiftCoords) {
+        lift_coord_expressions(liftableNodes, &availableVaryings);
+    }
     // Don't lift constant expressions if we're using regular UBOs, since lifting is likely only
     // beneficial if we're avoiding a storage buffer access.
     if (caps->storageBufferSupport()) {
@@ -278,7 +299,8 @@ SkSpan<const ShaderNode*> PaintParamsKey::getRootNodes(const Caps* caps,
     // Copy the accumulated roots into a span stored in the arena
     const ShaderNode** rootSpan = arena->makeArray<const ShaderNode*>(roots.size());
     memcpy(rootSpan, roots.data(), roots.size_bytes());
-    return SkSpan(rootSpan, roots.size());
+    rootsInfo.roots = SkSpan(rootSpan, roots.size());
+    return rootsInfo;
 }
 
 static void append_as_base64(SkString* str, SkSpan<const int32_t> data) {
@@ -309,6 +331,20 @@ static int key_to_string(const Caps* caps,
     }
 
     int32_t id = keyData[currentIndex++];
+    if (id < 0) {
+        RootBlockType type = static_cast<RootBlockType>(id);
+        const char* typeStr;
+        switch (type) {
+            case RootBlockType::kSrcColor:   typeStr = "RootSrcColor"; break;
+            case RootBlockType::kFinalBlend: typeStr = "RootFinalBlend"; break;
+            case RootBlockType::kClip:       typeStr = "RootClip"; break;
+            case RootBlockType::kMeshShader: typeStr = "RootMeshShader"; break;
+            default: SkUNREACHABLE;
+        }
+        str->appendf("[%s]", typeStr);
+        id = keyData[currentIndex++];
+    }
+
     auto entry = dict->getEntry(id);
     if (!entry) {
         str->append("Unknown(");
@@ -513,6 +549,10 @@ bool PaintParamsKey::isSerializable(const ShaderCodeDictionary* dict) const {
 
     int currentIndex = 0;
     while (currentIndex < keySize) {
+        // Ensure root nodes have their headers set properly, if not the key is malformed.
+        if (fData[currentIndex++] >= 0) {
+            return false;
+        }
         if (!is_block_valid(dict, fData, &currentIndex)) {
             return false;
         }

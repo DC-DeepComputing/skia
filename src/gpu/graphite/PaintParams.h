@@ -9,6 +9,7 @@
 #define skgpu_graphite_PaintParams_DEFINED
 
 #include "include/core/SkColor.h"
+#include "include/core/SkMesh.h"
 #include "include/core/SkPaint.h"
 #include "include/private/SkEnumBitMask.h"
 #include "src/gpu/graphite/Caps.h"
@@ -16,6 +17,7 @@
 #include "src/gpu/graphite/geom/NonMSAAClip.h"
 
 class SkColorInfo;
+class SkColorSpace;
 class SkImage;
 class SkShader;
 
@@ -91,12 +93,21 @@ public:
         return fPrimitiveColorOverride;
     }
     bool skipPrimitiveColorXform() const { return fSkipColorXform; }
+    SkColorSpace* primitiveColorSpace() const { return fPrimitiveColorSpace; }
+    SkAlphaType primitiveAlphaType() const { return fPrimitiveAlphaType; }
+    const SkMeshSpecification* meshSpec() const { return fMeshSpec.get(); }
+    sk_sp<const SkMeshSpecification> meshSpecRef() const { return fMeshSpec; }
+    SkSpan<const SkRuntimeEffect::ChildPtr> meshChildren() const { return fMeshChildren; }
 
     const SkBlender* finalBlender() const { return fFinalBlend.first; }
     // Must also check finalBlender() to see if that overrides finalBlendMode() behavior.
     SkBlendMode finalBlendMode() const { SkASSERT(!fFinalBlend.first); return fFinalBlend.second; }
 
     bool dither() const { return fDither; }
+
+    PaintParams makeWithPrimitiveColorSpace(SkColorSpace* cs,
+                                            SkAlphaType at = kPremul_SkAlphaType) const;
+    PaintParams makeWithMesh(const SkMesh& mesh) const;
 
     /** Converts an SkColor4f to the destination color space. */
     static SkColor4f Color4fPrepForDst(SkColor4f srgb, const SkColorInfo& dstColorInfo);
@@ -132,9 +143,14 @@ private:
     // in the vertices for primitive color blending. This is done to enable primitive color blending
     // for render steps which don't emit primitive colors.
     std::optional<SkColor4f> fPrimitiveColorOverride;
+    SkColorSpace*    fPrimitiveColorSpace = nullptr;
+    SkAlphaType      fPrimitiveAlphaType = kPremul_SkAlphaType;
 
-    bool fSkipColorXform;
-    bool fDither;
+    sk_sp<const SkMeshSpecification> fMeshSpec = nullptr;
+    SkSpan<const SkRuntimeEffect::ChildPtr> fMeshChildren;
+
+    bool             fSkipColorXform;
+    bool             fDither;
 };
 
 // ShadingParams wraps a PaintParams with the additional per-pixel state to handle clipping and

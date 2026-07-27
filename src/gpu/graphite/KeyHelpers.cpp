@@ -21,6 +21,7 @@
 #include "src/core/SkColorSpacePriv.h"
 #include "src/core/SkDebugUtils.h"
 #include "src/core/SkHalf.h"
+#include "src/core/SkMeshPriv.h"
 #include "src/core/SkRuntimeBlender.h"
 #include "src/core/SkRuntimeEffectPriv.h"
 #include "src/core/SkYUVMath.h"
@@ -1489,7 +1490,8 @@ void AddAnalyticClip(const KeyContext& keyContext, const NonMSAAClip& clip) {
 
 //--------------------------------------------------------------------------------------------------
 
-void AddPrimitiveColor(const KeyContext& keyContext, bool skipColorXform) {
+void AddPrimitiveColor(const KeyContext& keyContext, bool skipColorXform,
+                       SkColorSpace* primitiveColorSpace, SkAlphaType primitiveAlphaType) {
     /**
      * When skipColorXform is true, we assume the primitive color is already in the dst color space.
     */
@@ -1499,10 +1501,12 @@ void AddPrimitiveColor(const KeyContext& keyContext, bool skipColorXform) {
     }
 
     /**
-     * If skipColorXform is false (most cases), the primitive color is assumed to be in sRGB.
+     * If skipColorXform is false (most cases), the primitive color is assumed to be in sRGB unless
+     * an explicit primitive color space is provided.
     */
-    ColorSpaceTransformBlock::ColorSpaceTransformData toDst(sk_srgb_singleton(),
-                                                            kPremul_SkAlphaType,
+    SkColorSpace* srcCS = primitiveColorSpace ? primitiveColorSpace : sk_srgb_singleton();
+    ColorSpaceTransformBlock::ColorSpaceTransformData toDst(srcCS,
+                                                            primitiveAlphaType,
                                                             keyContext.dstColorInfo().colorSpace(),
                                                             keyContext.dstColorInfo().alphaType());
 
@@ -2833,5 +2837,46 @@ void AddDitherBlock(const KeyContext& keyContext, SkColorType ct) {
     DitherShaderBlock::AddBlock(keyContext, data);
 }
 
+void MeshShaderBlocks::AddBlocks(const KeyContext& keyContext,
+                                 sk_sp<const SkMeshSpecification> spec,
+                                 SkSpan<const SkRuntimeEffect::ChildPtr> children) {
+    int meshSnippetID = keyContext.dict()->findOrCreateMeshSnippet(spec.get());
+    keyContext.meshSpecDict()->set(meshSnippetID, spec);
+
+    keyContext.paintParamsKeyBuilder()->beginBlock(meshSnippetID);
+
+    SkSpan<const SkRuntimeEffect::Child> childInfo = spec->children();
+    SkASSERT(children.size() == childInfo.size());
+
+    for (size_t index = 0; index < children.size(); ++index) {
+        const SkRuntimeEffect::ChildPtr& child = children[index];
+        KeyContext childContext = keyContext.withExtraFlags(KeyGenFlags::kDisableAlphaOnlyImageColorization);
+
+        using ChildType = SkRuntimeEffect::ChildType;
+
+        std::optional<ChildType> type = child.type();
+        if (type == ChildType::kShader) {
+            AddToKey(childContext, child.shader());
+        } else if (type == ChildType::kColorFilter) {
+            AddToKey(childContext, child.colorFilter());
+        } else if (type == ChildType::kBlender) {
+            AddToKey(childContext, child.blender());
+        } else {
+            switch (childInfo[index].type) {
+                case ChildType::kShader:
+                    SolidColorShaderBlock::AddBlock(childContext, SK_PMColor4fTRANSPARENT);
+                    break;
+                case ChildType::kColorFilter:
+                    keyContext.paintParamsKeyBuilder()->addBlock(BuiltInCodeSnippetID::kPriorOutput);
+                    break;
+                case ChildType::kBlender:
+                    AddFixedBlendMode(childContext, SkBlendMode::kSrcOver);
+                    break;
+            }
+        }
+    }
+
+    keyContext.paintParamsKeyBuilder()->endBlock();
+}
 
 } // namespace skgpu::graphite
