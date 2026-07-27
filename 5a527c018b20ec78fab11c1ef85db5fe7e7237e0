@@ -16,6 +16,23 @@
       "message": "Unfortunately, Gerrit seems to have lost the history of rename+edit 😞\n\nI recommend starting with gen_tasks_logic.go and task_builder.go, then take a look at gcloud/api.py, which is almost the same as gsutil/api.py except that it removes some flags that don\u0027t exist for gcloud.  Everything else is mechanical.",
       "revId": "5a527c018b20ec78fab11c1ef85db5fe7e7237e0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6bee1b4e_011c3900",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-27T19:15:19Z",
+      "side": 1,
+      "message": "Thanks!",
+      "revId": "5a527c018b20ec78fab11c1ef85db5fe7e7237e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
