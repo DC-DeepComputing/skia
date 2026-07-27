@@ -186,20 +186,20 @@ Attempt to upload files to Gold.
 This module assumes setup has occurred for the vars and flavor modules.
 ### *recipe_modules* / [gsutil](/infra/bots/recipe_modules/gsutil)
 
-[DEPS](/infra/bots/recipe_modules/gsutil/__init__.py#8): [recipe\_engine/context][recipe_engine/recipe_modules/context], [recipe\_engine/step][recipe_engine/recipe_modules/step], [run](#recipe_modules-run), [vars](#recipe_modules-vars)
+[DEPS](/infra/bots/recipe_modules/gsutil/__init__.py#8): [recipe\_engine/context][recipe_engine/recipe_modules/context], [recipe\_engine/service\_account][recipe_engine/recipe_modules/service_account], [recipe\_engine/step][recipe_engine/recipe_modules/step], [run](#recipe_modules-run), [vars](#recipe_modules-vars)
 
 
 #### **class [GSUtilApi](/infra/bots/recipe_modules/gsutil/api.py#10)([RecipeApi][recipe_engine/wkt/RecipeApi]):**
 
 &mdash; **def [\_\_call\_\_](/infra/bots/recipe_modules/gsutil/api.py#11)(self, step_name, \*args):**
 
-Run gsutil with the given args.
+Run "gcloud storage" with the given args.
 
 This assumes there exists an executable called gsutil on the PATH.
 This probably only works for Linux/Mac, but those are the only
 hosts that we try to upload to GCS from anyway.
 
-&mdash; **def [cp](/infra/bots/recipe_modules/gsutil/api.py#20)(self, name, src, dst, extra_gsutil_args=None, extra_args=None, multithread=False):**
+&mdash; **def [cp](/infra/bots/recipe_modules/gsutil/api.py#23)(self, name, src, dst, extra_args=None):**
 
 Attempt to upload or download files to/from Google Cloud Storage (GCS).
 
@@ -207,12 +207,8 @@ Args:
   name: string. Will be used to fill out the step name.
   src: string. Absolute path for a local file or gcs file (e.g. gs://...)
   dst: string. Same as src.
-  extra_gsutil_args: optional list of args to be passed to gsutil before the
-    cp command.
   extra_args: optional list of args to be passed to gsutil cp. e.g. [-Z]
     asks all files be compressed with gzip after upload and before download.
-  multi_thread: if the -m argument should be used to copy multiple items
-    at once (e.g. gsutil -m cp foo* gs://bar/dir)
 
 If the operation fails, it will be retried multiple times.
 ### *recipe_modules* / [infra](/infra/bots/recipe_modules/infra)
