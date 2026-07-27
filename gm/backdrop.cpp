@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -31,7 +32,7 @@ static sk_sp<SkShader> make_shader(SkScalar cx, SkScalar cy, SkScalar rad) {
         SkColors::kRed, SkColors::kRed, SkColors::kBlue, SkColors::kBlue, SkColors::kGreen, SkColors::kGreen,
     };
     constexpr int count = std::size(colors);
-    SkScalar pos[count] = { 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6 };
+    std::array<SkScalar, count> pos ={ 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6 };
     for (int i = 0; i < count; ++i) {
         pos[i] *= 1.0f/6;
     }

@@ -1,4 +1,6 @@
 /*
+#include <array>
+
  * Copyright 2012 Google Inc.
  *
  * Use of this source code is governed by a BSD-style license that can be
@@ -152,7 +154,7 @@ static void testPathOpsFastMain(PathOpsThreadState* data)
                              SkPathDirection::kCW);
         }
         SkPath pathB = builder.close().detach();
-        const char* fillTypeStr[] = { "Winding", "EvenOdd", "InverseWinding", "InverseEvenOdd" };
+        auto fillTypeStr = std::to_array<const char *>({ "Winding", "EvenOdd", "InverseWinding", "InverseEvenOdd" ,});
         for (int op = 0; op <= kXOR_SkPathOp; ++op)    {
             if (state.fReporter->verbose()) {
                 pathStr.printf(

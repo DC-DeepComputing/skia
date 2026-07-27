@@ -1,4 +1,6 @@
 /*
+#include <array>
+
  * Copyright 2015 Google Inc.
  *
  * Use of this source code is governed by a BSD-style license that can be
@@ -252,7 +254,7 @@ void GrGLSLProgramBuilder::writeFPFunction(const GrFragmentProcessor& fp,
     // sampled by a chain of uniform matrix expressions (or legacy coord transforms), the value that
     // would have been passed to _coords is lifted to the vertex shader and
     // varying. In that case it uses that variable and we do not pass a second argument for _coords.
-    GrShaderVar params[3];
+    std::array<GrShaderVar, 3> params;
     int numParams = 0;
 
     params[numParams++] = GrShaderVar(inputColor, SkSLType::kHalf4);
@@ -322,7 +324,7 @@ void GrGLSLProgramBuilder::writeFPFunction(const GrFragmentProcessor& fp,
 
     fFS.emitFunction(SkSLType::kHalf4,
                      impl.functionName(),
-                     SkSpan(params, numParams),
+                     SkSpan(params.data(), numParams),
                      fFS.code().c_str());
     fFS.deleteStage();
 }

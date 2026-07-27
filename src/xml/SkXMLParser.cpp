@@ -1,4 +1,6 @@
 /*
+#include <array>
+
  * Copyright 2006 The Android Open Source Project
  *
  * Use of this source code is governed by a BSD-style license that can be
@@ -19,14 +21,14 @@
 
 #include <vector>
 
-static char const* const gErrorStrings[] = {
+static const auto gErrorStrings = std::to_array<const char *>({
     "empty or missing file ",
     "unknown element ",
     "unknown attribute name ",
     "error in attribute value ",
     "duplicate ID ",
     "unknown error "
-};
+,});
 
 SkXMLParserError::SkXMLParserError() : fCode(kNoError), fLineNumber(-1),
     fNativeCode(-1)

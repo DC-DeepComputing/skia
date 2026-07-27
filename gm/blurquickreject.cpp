@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBlurTypes.h"
 #include "include/core/SkCanvas.h"
@@ -39,18 +40,18 @@ protected:
         constexpr SkScalar kBoxSize = SkIntToScalar(100);
 
         SkRect clipRect = SkRect::MakeXYWH(0, 0, kBoxSize, kBoxSize);
-        SkRect blurRects[] = {
+        auto blurRects = std::to_array<SkRect>({
             { -kBoxSize - (kBlurRadius+1), 0, -(kBlurRadius+1), kBoxSize },
             { 0, -kBoxSize - (kBlurRadius+1), kBoxSize, -(kBlurRadius+1) },
             { kBoxSize+kBlurRadius+1, 0, 2*kBoxSize+kBlurRadius+1, kBoxSize },
             { 0, kBoxSize+kBlurRadius+1, kBoxSize, 2*kBoxSize+kBlurRadius+1 }
-        };
-        SkColor colors[] = {
+        ,});
+        auto colors = std::to_array<SkColor>({
             SK_ColorRED,
             SK_ColorGREEN,
             SK_ColorBLUE,
             SK_ColorYELLOW,
-        };
+        });
         SkASSERT(std::size(colors) == std::size(blurRects));
 
         SkPaint hairlinePaint;

@@ -1,4 +1,6 @@
 /*
+#include <array>
+
  * Copyright 2014 Google Inc.
  *
  * Use of this source code is governed by a BSD-style license that can be
@@ -7,6 +9,7 @@
 #include "src/gpu/ganesh/gl/builders/GrGLProgramBuilder.h"
 
 #include "include/core/SkFourByteTag.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/gpu/ganesh/GrDirectContext.h"
 #include "include/gpu/ganesh/gl/GrGLFunctions.h"
@@ -172,7 +175,7 @@ static constexpr SkFourByteTag kGLPB_Tag = SkSetFourByteTag('G', 'L', 'P', 'B');
 
 void GrGLProgramBuilder::storeShaderInCache(const SkSL::Program::Interface& interface,
                                             GrGLuint programID,
-                                            const SkSL::NativeShader shaders[],
+                                            SkSpan<const SkSL::NativeShader> shaders,
                                             bool isSkSL,
                                             SkSL::ProgramSettings* settings) {
     if (!this->gpu()->getContext()->priv().getPersistentCache()) {
@@ -256,12 +259,12 @@ sk_sp<GrGLProgram> GrGLProgramBuilder::finalize(const GrGLPrecompiledProgram* pr
 
     bool cached = fCached.get() != nullptr;
     bool usedProgramBinaries = false;
-    SkSL::NativeShader glsl[kGrShaderTypeCount];
-    const std::string* sksl[kGrShaderTypeCount] = {
+    std::array<SkSL::NativeShader, kGrShaderTypeCount> glsl;
+    std::array<const std::string *, kGrShaderTypeCount> sksl ={
         &fVS.fCompilerString,
         &fFS.fCompilerString,
     };
-    SkSL::NativeShader cached_sksl[kGrShaderTypeCount];
+    std::array<SkSL::NativeShader, kGrShaderTypeCount> cached_sksl;
     if (precompiledProgram) {
         // This is very similar to when we get program binaries. We even set that flag, as it's
         // used to prevent other compile work later, and to force re-querying uniform locations.
@@ -298,7 +301,7 @@ sk_sp<GrGLProgram> GrGLProgramBuilder::finalize(const GrGLPrecompiledProgram* pr
                 // Clients won't be directly notified, but they can infer this from the trace
                 // events, and from the traffic to the persistent cache.
                 cached = GrGLCheckLinkStatus(fGpu, programID, /*shaderWasCached=*/true,
-                                             /*errorHandler=*/nullptr, nullptr, nullptr);
+                                             /*errorHandler=*/nullptr, {}, {});
                 if (cached) {
                     this->addInputVars(interface);
                     this->computeCountsAndStrides(programID, geomProc, false);

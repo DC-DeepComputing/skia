@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -77,10 +78,10 @@ protected:
 
         SkRect outerRect = SkRect::MakeWH(40, 40);
 
-        SkRect innerRects[] = {
+        auto innerRects = std::to_array<SkRect>({
             { 10, 10, 30, 30 },     // small
             { .5f, 18, 4.5f, 22 }   // smaller and offset to left
-        };
+        });
 
         // draw a background pattern to make transparency errors more apparent
         SkRandom rand;

@@ -1,4 +1,7 @@
 /*
+#include <array>
+#include "include/core/SkSpan.h"
+
  * Copyright 2011 Google Inc.
  *
  * Use of this source code is governed by a BSD-style license that can be
@@ -73,10 +76,10 @@ struct DiffSummary {
     uint32_t fMaxMismatchV;
     float fMaxMismatchPercent;
 
-    FileArray fResultsOfType[DiffRecord::kResultCount];
-    FileArray fStatusOfType[DiffResource::kStatusCount][DiffResource::kStatusCount];
+    std::array<FileArray, DiffRecord::kResultCount> fResultsOfType;
+    std::array<std::array<FileArray, DiffResource::kStatusCount>, DiffResource::kStatusCount> fStatusOfType;
 
-    StringArray fFailedBaseNames[DiffRecord::kResultCount];
+    std::array<StringArray, DiffRecord::kResultCount> fFailedBaseNames;
 
     void printContents(const FileArray& fileArray,
                        const char* baseStatus, const char* comparisonStatus,
@@ -131,7 +134,7 @@ struct DiffSummary {
         printf("\n");
     }
 
-    void print(bool listFilenames, bool failOnResultType[DiffRecord::kResultCount],
+    void print(bool listFilenames, SkSpan<bool> failOnResultType,
                bool failOnStatusType[DiffResource::kStatusCount]
                                     [DiffResource::kStatusCount]) {
         printf("\ncompared %u file pairs:\n", fNumMatches + fNumMismatches);
@@ -620,7 +623,7 @@ int main(int argc, char** argv) {
     RecordArray differences;
     DiffSummary summary;
 
-    bool failOnResultType[DiffRecord::kResultCount];
+    std::array<bool, DiffRecord::kResultCount> failOnResultType;
     for (int i = 0; i < DiffRecord::kResultCount; i++) {
         failOnResultType[i] = false;
     }
@@ -652,7 +655,7 @@ int main(int argc, char** argv) {
                 SkDebugf("failonstatus missing base status.\n");
                 continue;
             }
-            bool baseStatuses[DiffResource::kStatusCount];
+            std::array<bool, DiffResource::kStatusCount> baseStatuses;
             if (!DiffResource::getMatchingStatuses(argv[i], baseStatuses)) {
                 SkDebugf("unrecognized base status <%s>\n", argv[i]);
             }
@@ -661,7 +664,7 @@ int main(int argc, char** argv) {
                 SkDebugf("failonstatus missing comparison status.\n");
                 continue;
             }
-            bool comparisonStatuses[DiffResource::kStatusCount];
+            std::array<bool, DiffResource::kStatusCount> comparisonStatuses;
             if (!DiffResource::getMatchingStatuses(argv[i], comparisonStatuses)) {
                 SkDebugf("unrecognized comarison status <%s>\n", argv[i]);
             }

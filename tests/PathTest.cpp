@@ -346,10 +346,10 @@ typedef SkPath (*PathProc)();
  *  https://code.google.com/p/skia/issues/detail?id=1706
  */
 static void test_path_to_region(skiatest::Reporter* reporter) {
-    PathProc procs[] = {
+    auto procs = std::to_array<PathProc>({
         make_path0,
         make_path1,
-    };
+    });
 
     SkRegion clip;
     clip.setRect({0, 0, 1255, 1925});
@@ -1070,14 +1070,14 @@ static void test_direction(skiatest::Reporter* reporter) {
     REPORTER_ASSERT(reporter,
                     SkPathPriv::ComputeFirstDirection(SkPath()) == SkPathFirstDirection::kUnknown);
 
-    static const char* gDegen[] = {
+    static auto gDegen = std::to_array<const char *>({
         "M 10 10",
         "M 10 10 M 20 20",
         "M 10 10 L 20 20",
         "M 10 10 L 10 10 L 10 10",
         "M 10 10 Q 10 10 10 10",
         "M 10 10 C 10 10 10 10 10 10",
-    };
+    });
     for (i = 0; i < std::size(gDegen); ++i) {
         auto path = SkParsePath::FromSVGString(gDegen[i]);
         REPORTER_ASSERT(reporter, path.has_value());
@@ -1085,7 +1085,7 @@ static void test_direction(skiatest::Reporter* reporter) {
                         SkPathPriv::ComputeFirstDirection(*path) == SkPathFirstDirection::kUnknown);
     }
 
-    static const char* gCW[] = {
+    static auto gCW = std::to_array<const char *>({
         "M 10 10 L 10 10 Q 20 10 20 20",
         "M 10 10 C 20 10 20 20 20 20",
         "M 20 10 Q 20 20 30 20 L 10 20", // test double-back at y-max
@@ -1093,14 +1093,14 @@ static void test_direction(skiatest::Reporter* reporter) {
         // control points
         "M 10 10 C 10 0 10 0 20 0 L 40 0 C 50 0 50 0 50 10",
         "M 20 10 L 0 10 Q 10 10 20 0",  // left, degenerate serif
-    };
+    });
     for (i = 0; i < std::size(gCW); ++i) {
         auto path = SkParsePath::FromSVGString(gCW[i]);
         REPORTER_ASSERT(reporter, path.has_value());
         check_direction(reporter, *path, SkPathFirstDirection::kCW);
     }
 
-    static const char* gCCW[] = {
+    static auto gCCW = std::to_array<const char *>({
         "M 10 10 L 10 10 Q 20 10 20 -20",
         "M 10 10 C 20 10 20 -20 20 -20",
         "M 20 10 Q 20 20 10 20 L 30 20", // test double-back at y-max
@@ -1108,7 +1108,7 @@ static void test_direction(skiatest::Reporter* reporter) {
         // control points
         "M 50 10 C 50 0 50 0 40 0 L 20 0 C 10 0 10 0 10 10",
         "M 10 10 L 30 10 Q 20 10 10 0",  // right, degenerate serif
-    };
+    });
     for (i = 0; i < std::size(gCCW); ++i) {
         auto path = SkParsePath::FromSVGString(gCCW[i]);
         REPORTER_ASSERT(reporter, path.has_value());
@@ -1162,12 +1162,12 @@ static void add_rect(SkPathBuilder* builder, const SkRect& r) {
 }
 
 static void test_bounds(skiatest::Reporter* reporter) {
-    static const SkRect rects[] = {
+    static const auto rects = std::to_array<SkRect>({
         { SkIntToScalar(10), SkIntToScalar(160), SkIntToScalar(610), SkIntToScalar(160) },
         { SkIntToScalar(610), SkIntToScalar(160), SkIntToScalar(610), SkIntToScalar(199) },
         { SkIntToScalar(10), SkIntToScalar(198), SkIntToScalar(610), SkIntToScalar(199) },
         { SkIntToScalar(10), SkIntToScalar(160), SkIntToScalar(10), SkIntToScalar(199) },
-    };
+    });
 
     SkPathBuilder builder0, builder1;
     for (size_t i = 0; i < std::size(rects); ++i) {
@@ -1602,11 +1602,11 @@ static void test_convexity(skiatest::Reporter* reporter) {
            .detach();
     check_convexity(reporter, path, true);
 
-    static const struct {
+    struct GRec{
         const char*           fPathStr;
         bool                  fExpectedIsConvex;
         SkPathFirstDirection  fExpectedDirection;
-    } gRec[] = {
+    }; static const auto gRec = std::to_array<GRec>({
         { "", true, SkPathFirstDirection::kUnknown },
         { "0 0", true, SkPathFirstDirection::kUnknown },
         { "0 0 10 10", true, SkPathFirstDirection::kUnknown },
@@ -1615,7 +1615,7 @@ static void test_convexity(skiatest::Reporter* reporter) {
         { "0 0 10 10 10 0", true, SkPathFirstDirection::kCCW },
         { "0 0 10 10 10 0 0 10", false, kDontCheckDir },
         { "0 0 10 0 0 10 -10 -10", false, SkPathFirstDirection::kCW },
-    };
+    });
 
     for (size_t i = 0; i < std::size(gRec); ++i) {
         path = setFromString(gRec[i].fPathStr);
@@ -1790,13 +1790,13 @@ static void test_conservativelyContains(skiatest::Reporter* reporter) {
     // round-rect radii
     static const SkScalar kRRRadii[] = {SkIntToScalar(5), SkIntToScalar(3)};
 
-    static const struct SUPPRESS_VISIBILITY_WARNING {
+    struct Queries{
         SkRect fQueryRect;
         bool   fInRect;
         bool   fInCircle;
         bool   fInRR;
         bool   fInCubicRR;
-    } kQueries[] = {
+    }; static const auto kQueries = std::to_array<Queries>({
         {kBaseRect, true, true, false, false},
 
         // rect well inside of kBaseRect
@@ -1864,7 +1864,7 @@ static void test_conservativelyContains(skiatest::Reporter* reporter) {
         {SkRect::MakeXYWH(kBaseRect.fLeft, kBaseRect.centerY(),
                           kBaseRect.width() + 1, SkScalar(1)),
          false, true, false, false},
-    };
+    });
 
     for (int inv = 0; inv < 4; ++inv) {
         for (size_t q = 0; q < std::size(kQueries); ++q) {
@@ -2082,12 +2082,12 @@ static void test_isRect(skiatest::Reporter* reporter) {
     SkPoint d2[] = {{0, 0}, {1, 0}, {1, 2}, {0, 2}, {0, -1}};
     SkPoint d3[] = {{0, 0}, {1, 0}, {1, 2}, {0, 2}, {0, -1}, {0, 0}};
 
-    struct IsRectTest {
+    struct IsRectTest{
         SkPoint *fPoints;
         int fPointCount;
         bool fClose;
         bool fIsRect;
-    } tests[] = {
+    }; auto tests = std::to_array<IsRectTest>({
         { r1, std::size(r1), true, true },
         { r2, std::size(r2), true, true },
         { r3, std::size(r3), true, true },
@@ -2123,7 +2123,7 @@ static void test_isRect(skiatest::Reporter* reporter) {
         { d1, std::size(d1), false, false },
         { d2, std::size(d2), false, true },
         { d3, std::size(d3), false, false },
-    };
+    });
 
     const size_t testCount = std::size(tests);
     int index;
@@ -2321,8 +2321,8 @@ static void test_is_closed_rect(skiatest::Reporter* reporter) {
             SkPathDirection swapDir = (dir == SkPathDirection::kCW)
                                             ? SkPathDirection::kCCW
                                             : SkPathDirection::kCW;
-            static constexpr unsigned kXSwapStarts[] = { 1, 0, 3, 2 };
-            static constexpr unsigned kYSwapStarts[] = { 3, 2, 1, 0 };
+            static constexpr auto kXSwapStarts = std::to_array<unsigned int>({ 1, 0, 3, 2 });
+            static constexpr auto kYSwapStarts = std::to_array<unsigned int>({ 3, 2, 1, 0 });
             SkRect swapRect = testRect;
             swap(swapRect.fLeft, swapRect.fRight);
             builder2.reset();
@@ -2412,13 +2412,13 @@ static void test_isNestedFillRects(skiatest::Reporter* reporter) {
     SkPoint c1[] = {{0, 0}, {1, 0}, {1, 1}, {0, 1}}; // close doesn't match
     SkPoint c2[] = {{0, 0}, {1, 0}, {1, 2}, {0, 2}, {0, 1}}; // ditto
 
-    struct IsNestedRectTest {
+    struct IsNestedRectTest{
         SkPoint *fPoints;
         size_t fPointCount;
         SkPathFirstDirection fDirection;
         bool fClose;
         bool fIsNestedRect; // nests with path.addRect(-1, -1, 2, 2);
-    } tests[] = {
+    }; auto tests = std::to_array<IsNestedRectTest>({
         { r1, std::size(r1), SkPathFirstDirection::kCW , true, true },
         { r2, std::size(r2), SkPathFirstDirection::kCW , true, true },
         { r3, std::size(r3), SkPathFirstDirection::kCW , true, true },
@@ -2445,7 +2445,7 @@ static void test_isNestedFillRects(skiatest::Reporter* reporter) {
 
         { c1, std::size(c1), SkPathFirstDirection::kCW, false, true },
         { c2, std::size(c2), SkPathFirstDirection::kCW, false, true },
-    };
+    });
 
     const size_t testCount = std::size(tests);
     for (int rectFirst = 0; rectFirst <= 1; ++rectFirst) {
@@ -2693,7 +2693,7 @@ static void test_flattening(skiatest::Reporter* reporter) {
 
 static void test_transform(skiatest::Reporter* reporter) {
 #define CONIC_PERSPECTIVE_BUG_FIXED 0
-    static const SkPoint pts[] = {
+    static const auto pts = std::to_array<SkPoint>({
         { 0, 0 },  // move
         { SkIntToScalar(10), SkIntToScalar(10) },  // line
         { SkIntToScalar(20), SkIntToScalar(10) }, { SkIntToScalar(20), 0 },  // quad
@@ -2701,7 +2701,7 @@ static void test_transform(skiatest::Reporter* reporter) {
 #if CONIC_PERSPECTIVE_BUG_FIXED
         { 0, 0 }, { SkIntToScalar(20), SkIntToScalar(10) },  // conic
 #endif
-    };
+    });
     const int kPtCount = std::size(pts);
 
     SkPath p = SkPathBuilder()
@@ -2818,7 +2818,7 @@ static void test_zero_length_paths(skiatest::Reporter* reporter) {
     static const SkPath::Verb resultVerbs16[] = {
         SkPath::kMove_Verb, SkPath::kCubic_Verb, SkPath::kClose_Verb, SkPath::kMove_Verb, SkPath::kCubic_Verb, SkPath::kClose_Verb
     };
-    static const struct zeroPathTestData gZeroLengthTests[] = {
+    static const auto gZeroLengthTests = std::to_array<zeroPathTestData>({
         { "M 1 1", 1, {1, 1, 1, 1}, resultVerbs1, std::size(resultVerbs1) },
         { "M 1 1 z", 1, {1, 1, 1, 1}, resultVerbs3, std::size(resultVerbs3) },
         { "M 1 1 z M 2 1 z", 2, {SK_Scalar1, SK_Scalar1, 2*SK_Scalar1, SK_Scalar1}, resultVerbs4, std::size(resultVerbs4) },
@@ -2838,7 +2838,7 @@ static void test_zero_length_paths(skiatest::Reporter* reporter) {
         { "M 1 1 C 1 1 1 1 1 1 z M 2 1 C 2 1 2 1 2 1 z", 8, {SK_Scalar1, SK_Scalar1, 2*SK_Scalar1, SK_Scalar1}, resultVerbs16,
             std::size(resultVerbs16)
         }
-    };
+    ,});
 
     for (size_t i = 0; i < std::size(gZeroLengthTests); ++i) {
         auto p = SkParsePath::FromSVGString(gZeroLengthTests[i].testPath);
@@ -2968,13 +2968,13 @@ static void test_iter(skiatest::Reporter* reporter) {
     static const SkPoint resultPts3[] = {
         { SK_Scalar1, 0 }, { SK_Scalar1, 0 }, { SK_Scalar1, 0 }, { SK_Scalar1, 0 }, { 0, 0 }, { 0, 0 }
     };
-    static const struct iterTestData gIterTests[] = {
+    static const auto gIterTests = std::to_array<iterTestData>({
         { "M 1 0", false, resultPtsSizes1, resultPts1, resultVerbs1, std::size(resultVerbs1) },
         { "z", false, resultPtsSizes1, resultPts1, resultVerbs1, std::size(resultVerbs1) },
         { "z", true, resultPtsSizes1, resultPts1, resultVerbs1, std::size(resultVerbs1) },
         { "M 1 0 L 1 0 M 0 0 z", false, resultPtsSizes2, resultPts2, resultVerbs2, std::size(resultVerbs2) },
         { "M 1 0 L 1 0 M 0 0 z", true, resultPtsSizes3, resultPts3, resultVerbs3, std::size(resultVerbs3) }
-    };
+    ,});
 
     for (size_t i = 0; i < std::size(gIterTests); ++i) {
         auto path = SkParsePath::FromSVGString(gIterTests[i].testPath);
@@ -3128,7 +3128,7 @@ static void test_range_iter(skiatest::Reporter* reporter) {
     REPORTER_ASSERT(reporter, iter == iterate.end());
 
     // Generate random paths and verify
-    SkPoint randomPts[25];
+    std::array<SkPoint, 25> randomPts;
     for (int i = 0; i < 5; ++i) {
         for (int j = 0; j < 5; ++j) {
             randomPts[i*5+j].set(SK_Scalar1*i, SK_Scalar1*j);
@@ -3137,8 +3137,8 @@ static void test_range_iter(skiatest::Reporter* reporter) {
 
     // Max of 10 segments, max 3 points per segment
     SkRandom rand(9876543);
-    SkPoint expectedPts[31]; // May have leading moveTo
-    SkPathVerb expectedVerbs[22]; // May have leading moveTo
+    std::array<SkPoint, 31> expectedPts; // May have leading moveTo
+    std::array<SkPathVerb, 22> expectedVerbs; // May have leading moveTo
     SkPathVerb nextVerb;
 
     SkPathVerb prevVerb = static_cast<SkPathVerb>(0xFF); // need something illegal to start twith
@@ -4080,7 +4080,7 @@ static void test_contains(skiatest::Reporter* reporter) {
     check({4, 8}, true);
 
     bu.reset();
-    const SkPoint qPts[] = {{6, 6}, {8, 8}, {6, 8}, {4, 8}, {4, 6}, {4, 4}, {6, 6}};
+    const auto qPts = std::to_array<SkPoint>({{6, 6}, {8, 8}, {6, 8}, {4, 8}, {4, 6}, {4, 4}, {6, 6},});
     bu.moveTo(qPts[0]);
     for (int index = 1; index < (int) std::size(qPts); index += 2) {
         bu.quadTo(qPts[index], qPts[index + 1]);
@@ -4096,7 +4096,7 @@ static void test_contains(skiatest::Reporter* reporter) {
 
     // test conics
     bu.reset();
-    const SkPoint kPts[] = {{4, 4}, {6, 6}, {8, 8}, {6, 8}, {4, 8}, {4, 6}, {4, 4}};
+    const auto kPts = std::to_array<SkPoint>({{4, 4}, {6, 6}, {8, 8}, {6, 8}, {4, 8}, {4, 6}, {4, 4},});
     bu.moveTo(kPts[0]);
     for (int index = 1; index < (int) std::size(kPts); index += 2) {
         bu.conicTo(kPts[index], kPts[index + 1], 0.5f);
@@ -4115,7 +4115,7 @@ static void test_contains(skiatest::Reporter* reporter) {
     check({4, 8}, true);
 
     // test cubics
-    SkPoint pts[] = {{5, 4}, {6, 5}, {7, 6}, {6, 6}, {4, 6}, {5, 7}, {5, 5}, {5, 4}, {6, 5}, {7, 6}};
+    auto pts = std::to_array<SkPoint>({{5, 4}, {6, 5}, {7, 6}, {6, 6}, {4, 6}, {5, 7}, {5, 5}, {5, 4}, {6, 5}, {7, 6},});
     for (int i = 0; i < 3; ++i) {
         bu = SkPathBuilder(SkPathFillType::kEvenOdd)
             .moveTo(pts[i].fX, pts[i].fY)
@@ -4296,8 +4296,7 @@ static void test_fuzz_crbug_662730(skiatest::Reporter* reporter) {
 }
 
 static void test_skbug_6947() {
-    const SkPoint points[] =
-        {{125.126022f, -0.499872506f}, {125.288895f, -0.499338806f},
+    const auto points = std::to_array<SkPoint>({{125.126022f, -0.499872506f}, {125.288895f, -0.499338806f},
          {125.299316f, -0.499290764f}, {126.294594f, 0.505449712f},
          {125.999992f, 62.5047531f}, {124.0f, 62.4980202f},
          {124.122749f, 0.498142242f}, {125.126022f, -0.499872506f},
@@ -4306,7 +4305,7 @@ static void test_skbug_6947() {
          {125.0f, 62.5f}, {124.000008f, 62.4952469f},
          {124.294609f, 0.495946467f}, {125.294601f, 0.50069809f},
          {125.289886f, 1.50068688f}, {125.282349f, 1.50065041f},
-         {125.119476f, 1.50011659f}};
+         {125.119476f, 1.50011659f},});
     constexpr SkPathVerb kMove = SkPathVerb::kMove;
     constexpr SkPathVerb kLine = SkPathVerb::kLine;
     constexpr SkPathVerb kClose = SkPathVerb::kClose;
@@ -5147,10 +5146,10 @@ static void test_addRect_and_trailing_lineTo(skiatest::Reporter* reporter) {
     SkPath path;
     const SkRect r = {1, 2, 3, 4};
     // build our default p-array clockwise
-    const SkPoint p[] = {
+    const auto p = std::to_array<SkPoint>({
         {r.fLeft,  r.fTop},    {r.fRight, r.fTop},
         {r.fRight, r.fBottom}, {r.fLeft,  r.fBottom},
-    };
+    });
 
     for (auto dir : {SkPathDirection::kCW, SkPathDirection::kCCW}) {
         int increment = dir == SkPathDirection::kCW ? 1 : 3;
@@ -5160,7 +5159,7 @@ static void test_addRect_and_trailing_lineTo(skiatest::Reporter* reporter) {
             path = builder.snapshot();
 
             // check that we return the 4 ponts in the expected order
-            SkPoint e[4];
+            std::array<SkPoint, 4> e;
             for (int j = 0; j < 4; ++j) {
                 int index = (i + j*increment) % 4;
                 e[j] = p[index];

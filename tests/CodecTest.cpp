@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/codec/SkAndroidCodec.h"
 #include "include/codec/SkCodec.h"
 #include "include/codec/SkEncodedImageFormat.h"
@@ -288,10 +289,10 @@ static void test_codec(skiatest::Reporter* r, const char* path, Codec* codec, Sk
 }
 
 static bool supports_partial_scanlines(const char path[]) {
-    static const char* const exts[] = {
+    static const auto exts = std::to_array<const char *>({
         "jpg", "jpeg", "png", "webp",
         "JPG", "JPEG", "PNG", "WEBP"
-    };
+    ,});
 
     for (uint32_t i = 0; i < std::size(exts); i++) {
         if (SkStrEndsWith(path, exts[i])) {
@@ -933,14 +934,14 @@ DEF_TEST(Codec_pngChunkReader, r) {
 #define PNG_BYTES(str) reinterpret_cast<png_byte*>(const_cast<char*>(str))
 
     // Create some chunks that match the Android framework's use.
-    static png_unknown_chunk gUnknowns[] = {
+    static auto gUnknowns = std::to_array<png_unknown_chunk>({
         { "npOl", PNG_BYTES("outline"), sizeof("outline"), PNG_HAVE_IHDR },
         { "npLb", PNG_BYTES("layoutBounds"), sizeof("layoutBounds"), PNG_HAVE_IHDR },
         { "npTc", PNG_BYTES("ninePatchData"), sizeof("ninePatchData"), PNG_HAVE_IHDR },
-    };
+    });
 
     png_set_keep_unknown_chunks(png, PNG_HANDLE_CHUNK_ALWAYS, PNG_BYTES("npOl\0npLb\0npTc\0"), 3);
-    png_set_unknown_chunks(png, info, gUnknowns, std::size(gUnknowns));
+    png_set_unknown_chunks(png, info, gUnknowns.data(), std::size(gUnknowns));
 #if PNG_LIBPNG_VER < 10600
     /* Deal with unknown chunk location bug in 1.5.x and earlier */
     png_set_unknown_chunk_location(png, info, 0, PNG_HAVE_IHDR);

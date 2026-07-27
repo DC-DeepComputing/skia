@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPathBuilder.h"
@@ -23,10 +24,10 @@
     p.setStyle(SkPaint::kStroke_Style);
     p.setPathEffect(SkDashPathEffect::Make(intervals, 0));
 
-    int quadratic_at[] = {
+    auto quadratic_at = std::to_array<int>({
         13, 68, 258, 1053, 1323, 2608, 10018, 15668, 59838, 557493, 696873, 871098, 4153813,
         15845608, 48357008, 118059138, 288230353, 360287948, 562949933, 703687423, 1099511613, 0
-    };
+    ,});
     int next_quadratic_at = 0;
 
     SkPathBuilder path;

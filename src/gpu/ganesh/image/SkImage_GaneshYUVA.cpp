@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "src/gpu/ganesh/image/SkImage_GaneshYUVA.h"
 
 #include "include/core/SkAlphaType.h"
@@ -92,7 +93,7 @@ bool SkImage_GaneshYUVA::setupMipmapsForPlanes(GrRecordingContext* context) cons
         return true;
     }
     int n = fYUVAProxies.yuvaInfo().numPlanes();
-    sk_sp<GrSurfaceProxy> newProxies[4];
+    std::array<sk_sp<GrSurfaceProxy>, 4> newProxies;
     for (int i = 0; i < n; ++i) {
         auto* t = fYUVAProxies.proxy(i)->asTextureProxy();
         if (t->mipmapped() == skgpu::Mipmapped::kNo && (t->width() > 1 || t->height() > 1)) {
@@ -126,13 +127,13 @@ GrSemaphoresSubmitted SkImage_GaneshYUVA::flush(GrDirectContext* dContext,
         return GrSemaphoresSubmitted::kNo;
     }
 
-    GrSurfaceProxy* proxies[SkYUVAInfo::kMaxPlanes] = {};
+    std::array<GrSurfaceProxy *, SkYUVAInfo::kMaxPlanes> proxies ={};
     size_t numProxies = fYUVAProxies.numPlanes();
     for (size_t i = 0; i < numProxies; ++i) {
         proxies[i] = fYUVAProxies.proxy(i);
     }
     return dContext->priv().flushSurfaces(
-            {proxies, numProxies}, SkSurfaces::BackendSurfaceAccess::kNoAccess, info);
+            {proxies.data(), numProxies}, SkSurfaces::BackendSurfaceAccess::kNoAccess, info);
 }
 
 bool SkImage_GaneshYUVA::onHasMipmaps() const {

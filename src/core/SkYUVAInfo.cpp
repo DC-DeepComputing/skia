@@ -5,9 +5,11 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkYUVAInfo.h"
 
 #include "include/core/SkColor.h"
+#include "include/core/SkSpan.h"
 #include "src/core/SkSafeMath.h"
 #include "src/core/SkYUVAInfoLocation.h"
 
@@ -78,8 +80,8 @@ int SkYUVAInfo::PlaneDimensions(SkISize imageDimensions,
                                 PlaneConfig planeConfig,
                                 Subsampling subsampling,
                                 SkEncodedOrigin origin,
-                                SkISize planeDimensions[SkYUVAInfo::kMaxPlanes]) {
-    std::fill_n(planeDimensions, SkYUVAInfo::kMaxPlanes, SkISize{0, 0});
+                                SkSpan<SkISize> planeDimensions) {
+    std::fill_n(planeDimensions.data(), SkYUVAInfo::kMaxPlanes, SkISize{0, 0});
     if (!is_plane_config_compatible_with_subsampling(planeConfig, subsampling)) {
         return 0;
     }
@@ -189,7 +191,7 @@ static bool channel_index_to_channel(uint32_t channelFlags,
 }
 
 SkYUVAInfo::YUVALocations SkYUVAInfo::GetYUVALocations(PlaneConfig config,
-                                                       const uint32_t* planeChannelFlags) {
+                                                       SkSpan<const uint32_t>planeChannelFlags) {
     // Like YUVALocation but chanIdx refers to channels by index rather than absolute channel, e.g.
     // A is the 0th channel of an alpha-only texture. We'll use this plus planeChannelFlags to get
     // the actual channel.
@@ -329,7 +331,7 @@ size_t SkYUVAInfo::computeTotalBytes(const size_t rowBytes[kMaxPlanes],
     }
     SkSafeMath safe;
     size_t totalBytes = 0;
-    SkISize planeDimensions[kMaxPlanes];
+    std::array<SkISize, kMaxPlanes> planeDimensions;
     int n = this->planeDimensions(planeDimensions);
     for (int i = 0; i < n; ++i) {
         SkASSERT(!planeDimensions[i].isEmpty());
@@ -355,7 +357,7 @@ size_t SkYUVAInfo::computeTotalBytes(const size_t rowBytes[kMaxPlanes],
     return safe.ok() ? totalBytes : SIZE_MAX;
 }
 
-SkYUVAInfo::YUVALocations SkYUVAInfo::toYUVALocations(const uint32_t* channelFlags) const {
+SkYUVAInfo::YUVALocations SkYUVAInfo::toYUVALocations(SkSpan<const uint32_t>channelFlags) const {
     return GetYUVALocations(fPlaneConfig, channelFlags);
 }
 

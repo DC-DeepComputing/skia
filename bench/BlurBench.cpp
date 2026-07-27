@@ -1,4 +1,6 @@
 /*
+#include <array>
+
  * Copyright 2011 Google Inc.
  *
  * Use of this source code is governed by a BSD-style license that can be
@@ -20,12 +22,12 @@
 #define BIG     SkIntToScalar(10)
 #define REALBIG 100.5f
 
-static const char* gStyleName[] = {
+static auto gStyleName = std::to_array<const char *>({
     "normal",
     "solid",
     "outer",
     "inner"
-};
+,});
 
 class BlurBench : public Benchmark {
     SkScalar    fRadius;

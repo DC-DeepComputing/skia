@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "bench/Benchmark.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPaint.h"
@@ -166,15 +167,15 @@ typedef bool (*IsFiniteProc)(const float[]);
 
 #define MAKEREC(name)   { name, #name }
 
-static const struct {
+struct GRec{
     IsFiniteProc    fProc;
     const char*     fName;
-} gRec[] = {
+}; static const auto gRec = std::to_array<GRec>({
     MAKEREC(isfinite_and_int),
     MAKEREC(isfinite_and_mulzero),
     MAKEREC(isfinite_plus_int),
     MAKEREC(isfinite_plus_mulzero),
-};
+});
 
 #undef MAKEREC
 
@@ -263,7 +264,7 @@ class NormalizeBench : public Benchmark {
     enum {
         ARRAY =1000,
     };
-    SkVector fVec[ARRAY];
+    std::array<SkVector, ARRAY> fVec;
 
 public:
     NormalizeBench() {
@@ -310,8 +311,8 @@ class FixedMathBench : public Benchmark {
     enum {
         N = 1000,
     };
-    float fData[N];
-    SkFixed fResult[N];
+    std::array<float, N> fData;
+    std::array<SkFixed, N> fResult;
 public:
 
     FixedMathBench()  {
@@ -372,7 +373,7 @@ class Floor2IntBench : public Benchmark {
     enum {
         ARRAY = 1000,
     };
-    float fData[ARRAY];
+    std::array<float, ARRAY> fData;
     const bool fSat;
 public:
 

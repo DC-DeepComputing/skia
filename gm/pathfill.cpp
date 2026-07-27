@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -283,7 +284,7 @@ static SkPath make_visualizer() {
     return path.detach();
 }
 
-constexpr MakePathProc gProcs[] = {
+constexpr auto gProcs = std::to_array<MakePathProc>({
     make_frame,
     make_triangle,
     make_rect,
@@ -294,13 +295,13 @@ constexpr MakePathProc gProcs[] = {
     make_line,
     make_house,
     make_sawtooth_3,
-};
+});
 
 #define N   std::size(gProcs)
 
 class PathFillGM : public skiagm::GM {
-    SkPath  fPath[N];
-    SkScalar fDY[N];
+    std::array<SkPath, N> fPath;
+    std::array<SkScalar, N> fDY;
     SkPath  fInfoPath;
     SkPath  fAccessibilityPath;
     SkPath  fVisualizerPath;
@@ -351,8 +352,8 @@ private:
 
 // test inverse-fill w/ a clip that completely excludes the geometry
 class PathInverseFillGM : public skiagm::GM {
-    SkPath  fPath[N];
-    SkScalar fDY[N];
+    std::array<SkPath, N> fPath;
+    std::array<SkScalar, N> fDY;
 protected:
     void onOnceBeforeDraw() override {
         for (size_t i = 0; i < N; i++) {

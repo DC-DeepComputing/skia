@@ -6,6 +6,8 @@
  */
 
 #ifndef GrThreadSafePipelineBuilder_Base_DEFINED
+#include <array>
+
 #define GrThreadSafePipelineBuilder_Base_DEFINED
 
 #include "include/core/SkRefCnt.h"
@@ -75,10 +77,10 @@ public:
         std::atomic<int> fShaderCompilations{0};
 
         std::atomic<int> fNumInlineCompilationFailures{0};
-        std::atomic<int> fInlineProgramCacheStats[kNumProgramCacheResults]{};
+        std::array<std::atomic<int>, kNumProgramCacheResults> fInlineProgramCacheStats ={};
 
         std::atomic<int> fNumPreCompilationFailures{0};
-        std::atomic<int> fPreProgramCacheStats[kNumProgramCacheResults]{};
+        std::array<std::atomic<int>, kNumProgramCacheResults> fPreProgramCacheStats ={};
 
         std::atomic<int> fNumCompilationFailures{0};
         std::atomic<int> fNumPartialCompilationSuccesses{0};

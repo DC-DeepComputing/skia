@@ -1,4 +1,6 @@
 /*
+#include <array>
+
  * Copyright 2016 Google Inc.
  *
  * Use of this source code is governed by a BSD-style license that can be
@@ -14,6 +16,7 @@
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkSamplingOptions.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkSurface.h"
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/ganesh/GrBackendSurface.h"
@@ -958,7 +961,7 @@ void SurfaceContext::asyncRescaleAndReadPixelsYUV420(GrDirectContext* dContext,
         return;
     }
 
-    float baseM[20];
+    std::array<float, 20> baseM;
     SkColorMatrix_RGB2YUV(yuvColorSpace, baseM);
 
     // TODO: Use one transfer buffer for all three planes to reduce map/unmap cost?
@@ -980,7 +983,7 @@ void SurfaceContext::asyncRescaleAndReadPixelsYUV420(GrDirectContext* dContext,
     // This matrix generates (r,g,b,a) = (0, 0, 0, y)
     float yM[20];
     std::fill_n(yM, 15, 0.f);
-    std::copy_n(baseM + 0, 5, yM + 15);
+    std::copy_n(SkSpan<float>(baseM ).subspan( 0u).data(), 5, yM + 15);
 
     auto yFP = GrTextureEffect::Make(srcView, this->colorInfo().alphaType(), texMatrix);
     yFP = GrFragmentProcessor::ColorMatrix(std::move(yFP),
@@ -1020,7 +1023,7 @@ void SurfaceContext::asyncRescaleAndReadPixelsYUV420(GrDirectContext* dContext,
     // This matrix generates (r,g,b,a) = (0, 0, 0, u)
     float uM[20];
     std::fill_n(uM, 15, 0.f);
-    std::copy_n(baseM + 5, 5, uM + 15);
+    std::copy_n(SkSpan<float>(baseM ).subspan( 5u).data(), 5, uM + 15);
 
     auto uFP = GrTextureEffect::Make(srcView,
                                      this->colorInfo().alphaType(),
@@ -1044,7 +1047,7 @@ void SurfaceContext::asyncRescaleAndReadPixelsYUV420(GrDirectContext* dContext,
     // This matrix generates (r,g,b,a) = (0, 0, 0, v)
     float vM[20];
     std::fill_n(vM, 15, 0.f);
-    std::copy_n(baseM + 10, 5, vM + 15);
+    std::copy_n(SkSpan<float>(baseM ).subspan( 10u).data(), 5, vM + 15);
     auto vFP = GrTextureEffect::Make(std::move(srcView),
                                      this->colorInfo().alphaType(),
                                      texMatrix,

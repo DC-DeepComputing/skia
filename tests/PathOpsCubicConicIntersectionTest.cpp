@@ -1,4 +1,6 @@
 /*
+#include <array>
+
  * Copyright 2015 Google Inc.
  *
  * Use of this source code is governed by a BSD-style license that can be
@@ -16,10 +18,10 @@
 
 #include <iterator>
 
-static struct cubicConic {
+struct cubicConic{
     CubicPts cubic;
     ConicPts conic;
-} cubicConicTests[] = {
+}; static auto cubicConicTests = std::to_array<cubicConic>({
 #if 0
 // FIXME: this triggers an assert in bool SkTSect::extractCoincident() at
 // SkOPASSERT(oppStartT < oppEndT);
@@ -43,7 +45,7 @@ static struct cubicConic {
         {275, 2065.39990234375}, {275, 2041.5999755859375}}},
     {{{{275, 2041.5999755859375}, {275, 2084.800048828125},
         {231.80000305175781, 2084.800048828125}}}, 0.707107008f}},
-};
+});
 
 static const int cubicConicTests_count = (int) std::size(cubicConicTests);
 

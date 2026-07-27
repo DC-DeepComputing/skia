@@ -18,19 +18,19 @@
 #include <cstddef>
 #include <utility>
 
-static struct lineQuad {
+struct lineQuad{
     QuadPts quad;
     SkDLine line;
     int result;
     SkDPoint expected[2];
-} lineQuadTests[] = {
+}; static auto lineQuadTests = std::to_array<lineQuad>({
     //        quad                    line                  results
     {{{{1, 1}, {2, 1}, {0, 2}}}, {{{0, 0}, {1, 1}}},  1,  {{1, 1}, {0, 0}} },
     {{{{0, 0}, {1, 1}, {3, 1}}}, {{{0, 0}, {3, 1}}},  2,  {{0, 0}, {3, 1}} },
     {{{{2, 0}, {1, 1}, {2, 2}}}, {{{0, 0}, {0, 2}}},  0,  {{0, 0}, {0, 0}} },
     {{{{4, 0}, {0, 1}, {4, 2}}}, {{{3, 1}, {4, 1}}},  0,  {{0, 0}, {0, 0}} },
     {{{{0, 0}, {0, 1}, {1, 1}}}, {{{0, 1}, {1, 0}}},  1,  {{.25, .75}, {0, 0}} },
-};
+});
 
 static size_t lineQuadTests_count = std::size(lineQuadTests);
 
@@ -63,10 +63,10 @@ static int doIntersect(SkIntersections& intersections, const SkDQuad& quad, cons
     return result;
 }
 
-static struct oneLineQuad {
+struct oneLineQuad{
     QuadPts quad;
     SkDLine line;
-} oneOffs[] = {
+}; static auto oneOffs = std::to_array<oneLineQuad>({
     {{{{97.9337616,100}, {88,112.94265}, {88,130}}},
      {{{88.919838,120}, {107.058823,120}}}},
     {{{{447.96701049804687, 894.4381103515625}, {448.007080078125, 894.4239501953125},
@@ -80,7 +80,7 @@ static struct oneLineQuad {
         {{{930, 467}, {973, 510}}}},
     {{{{369.848602, 145.680267}, {382.360413, 121.298294}, {406.207703, 121.298294}}},
         {{{406.207703, 121.298294}, {348.781738, 123.864815}}}},
-};
+});
 
 static size_t oneOffs_count = std::size(oneOffs);
 

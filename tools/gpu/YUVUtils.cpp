@@ -5,13 +5,17 @@
  * found in the LICENSE file.
  */
 
+#include <cstdint>
+#include <array>
 #include "tools/gpu/YUVUtils.h"
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkData.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkSurface.h"
+#include "include/private/SkTo.h"
 #include "src/codec/SkCodecImageGenerator.h"
 #include "src/core/SkColorPriv.h"
 #include "src/core/SkYUVAInfoLocation.h"
@@ -37,7 +41,7 @@
 
 namespace {
 
-static SkPMColor convert_yuva_to_rgba(const float mtx[20], uint8_t yuva[4]) {
+static SkPMColor convert_yuva_to_rgba(const float mtx[20], SkSpan<uint8_t> yuva) {
     uint8_t y = yuva[0];
     uint8_t u = yuva[1];
     uint8_t v = yuva[2];
@@ -101,7 +105,7 @@ protected:
                     xy1.fX *= normX;
                     xy1.fY *= normY;
 
-                    uint8_t yuva[4] = {0, 0, 0, 255};
+                    std::array<uint8_t, 4> yuva ={0, 0, 0, 255};
 
                     for (auto c : {SkYUVAInfo::YUVAChannels::kY,
                                    SkYUVAInfo::YUVAChannels::kU,
@@ -155,12 +159,12 @@ MakeYUVAPlanesAsA8(SkImage* src,
                    SkYUVColorSpace cs,
                    SkYUVAInfo::Subsampling ss,
                    GrRecordingContext* rContext) {
-    float rgbToYUV[20];
+    std::array<float, 20> rgbToYUV;
     SkColorMatrix_RGB2YUV(cs, rgbToYUV);
 
     SkYUVAInfo::PlaneConfig config = src->isOpaque() ? SkYUVAInfo::PlaneConfig::kY_U_V
                                                      : SkYUVAInfo::PlaneConfig::kY_U_V_A;
-    SkISize dims[SkYUVAInfo::kMaxPlanes];
+    std::array<SkISize, SkYUVAInfo::kMaxPlanes> dims;
     int n = SkYUVAInfo::PlaneDimensions(src->dimensions(),
                                         config,
                                         ss,
@@ -187,7 +191,7 @@ MakeYUVAPlanesAsA8(SkImage* src,
 
         // Make a matrix with the ith row of rgbToYUV copied to the A row since we're drawing to A8.
         float m[20] = {};
-        std::copy_n(rgbToYUV + 5*i, 5, m + 15);
+        std::copy_n(SkSpan<float>(rgbToYUV ).subspan(SkTo<size_t>( 5*i)).data(), 5, m + 15);
         paint.setColorFilter(SkColorFilters::Matrix(m));
         surf->getCanvas()->drawImageRect(src,
                                          SkRect::Make(dims[i]),
@@ -335,8 +339,8 @@ bool LazyYUVImage::ensureYUVImage(GrRecordingContext* rContext, Type type) {
                 return false;
             }
             if (auto direct = rContext->asDirectContext()) {
-                sk_sp<sk_gpu_test::ManagedBackendTexture> mbets[SkYUVAInfo::kMaxPlanes];
-                GrBackendTexture textures[SkYUVAInfo::kMaxPlanes];
+                std::array<sk_sp<sk_gpu_test::ManagedBackendTexture>, SkYUVAInfo::kMaxPlanes> mbets;
+                std::array<GrBackendTexture, SkYUVAInfo::kMaxPlanes> textures;
                 for (int i = 0; i < fPixmaps.numPlanes(); ++i) {
                     mbets[i] = sk_gpu_test::ManagedBackendTexture::MakeFromPixmap(
                             direct,

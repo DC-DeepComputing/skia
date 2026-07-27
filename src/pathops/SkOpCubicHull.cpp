@@ -1,4 +1,6 @@
 /*
+#include "include/core/SkSpan.h"
+
  * Copyright 2012 Google Inc.
  *
  * Use of this source code is governed by a BSD-style license that can be
@@ -57,7 +59,7 @@ static int side(double x) {
 
    The indices returned in order describe the convex hull.
 */
-int SkDCubic::convexHull(char order[4]) const {
+int SkDCubic::convexHull(SkSpan<char> order) const {
     size_t index;
     // find top point
     size_t yMin = 0;

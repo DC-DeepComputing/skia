@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "src/core/SkEdgeBuilder.h"
 
 #include "include/core/SkPath.h"
@@ -301,10 +302,10 @@ int SkEdgeBuilder::build(const SkPathRaw& raw, const SkIRect* iclip, bool canCul
     SkPathEdgeIter iter(raw);
     SkAutoConicToQuads quadder;
     constexpr float kConicTol = 0.25f;
-    SkPoint monoY[10];
-    SkPoint monoX[5];
+    std::array<SkPoint, 10> monoY;
+    std::array<SkPoint, 5> monoX;
     auto handle_quad = [this, &monoX](const SkPoint pts[3]) {
-        int n = SkChopQuadAtYExtrema(pts, monoX);
+        int n = SkChopQuadAtYExtrema(pts, monoX.data());
         for (int i = 0; i <= n; i++) {
             this->addQuad(&monoX[i * 2]);
         }
@@ -328,7 +329,7 @@ int SkEdgeBuilder::build(const SkPathRaw& raw, const SkIRect* iclip, bool canCul
                 }
             } break;
             case SkPathEdgeIter::Edge::kCubic: {
-                int n = SkChopCubicAtYExtrema(e.fPts, monoY);
+                int n = SkChopCubicAtYExtrema(e.fPts, monoY.data());
                 for (int i = 0; i <= n; i++) {
                     this->addCubic(&monoY[i * 3]);
                 }
