@@ -43,8 +43,8 @@ def RunSteps(api):
     # For some reason, glob returns results_dir when it should return nothing.
     files_to_upload = [f for f in files_to_upload if str(f).endswith(ext)]
     if len(files_to_upload) > 0:
-      api.gsutil.cp('%s images' % ext, results_dir.joinpath('*%s' % ext),
-                       image_dest_path, multithread=True)
+      api.gsutil.cp(
+        '%s images' % ext, results_dir.joinpath('*%s' % ext), image_dest_path)
 
   # Compute the directory to upload results to
   now = api.time.utcnow()
