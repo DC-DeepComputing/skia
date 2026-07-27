@@ -37,6 +37,11 @@ const int JSON_TEXT_BOX_HEIGHT = 200;
 // A width of -1 means use all available width
 const int JSON_TEXT_BOX_WIDTH = -1;
 
+const float EXPLORER_DEFAULT_WIDTH = 450.0f;
+const float EXPLORER_DEFAULT_HEIGHT = 500.0f;
+const float EXPLORER_DEFAULT_POS_X = 20.0f;
+const float EXPLORER_DEFAULT_POS_Y = 20.0f;
+
 CaptureSlide::CaptureSlide(const SkString& name, const SkString& path) {
     auto data = SkData::MakeFromFileName(path.c_str());
     fCapture = SkCapture::MakeFromData(data);
@@ -92,9 +97,131 @@ void drawCommandHistory(const DebugCanvas* debugCanvas) {
     ImGui::End();
 }
 
-void drawMetadata(int currentPictureIndex) {
-    ImGui::Begin("Capture Info");
-    ImGui::Text("Current Index: %d", currentPictureIndex);
+void drawRecordingTimelineTab(SkCapture* capture,
+                              int& currentAssetIndex,
+                              int& currentRecordingCaptureIndex,
+                              int& currentDrawTaskIndex,
+                              bool& invalidate) {
+    ImGui::Text("Total Recordings: %u", capture->getMetadata().numRecordingCaptures);
+    ImGui::Separator();
+
+    ImGui::Columns(2, "TimelineSplit", true);
+
+    // Column 0: Recordings List
+    ImGui::Text("Recordings:");
+    ImGui::BeginChild("RecordingList", ImVec2(0, 300), true);
+    for (int i = 0; i < (int)capture->getMetadata().numRecordingCaptures; ++i) {
+        const auto* rec = capture->getRecordingCapture(i);
+        if (!rec) continue;
+        char label[128];
+        sprintf(label, "Recording #%d", i);
+        const bool isSelected = (currentRecordingCaptureIndex == i);
+        if (ImGui::Selectable(label, isSelected)) {
+            if (currentRecordingCaptureIndex != i) {
+                currentRecordingCaptureIndex = i;
+                currentDrawTaskIndex = 0; // reset draw task selection
+                invalidate = true;
+            }
+        }
+    }
+    ImGui::EndChild();
+
+    ImGui::NextColumn();
+
+    // Column 1: DrawTasks List
+    const auto* activeRec = capture->getRecordingCapture(currentRecordingCaptureIndex);
+    if (activeRec) {
+        ImGui::Text("DrawTasks (%d):", (int)activeRec->fDrawTasks.size());
+        ImGui::BeginChild("DrawTaskList", ImVec2(0, 300), true);
+        for (int j = 0; j < (int)activeRec->fDrawTasks.size(); ++j) {
+            const auto& task = activeRec->fDrawTasks[j];
+            uint32_t assetIdx = task.fAssetIndex;
+            auto pic = capture->getAsset(assetIdx);
+            char label[128];
+            if (pic) {
+                sprintf(label, "Task #%d: Asset %u (%dx%d)",
+                        j, assetIdx, (int)pic->cullRect().width(), (int)pic->cullRect().height());
+            } else {
+                sprintf(label, "Task #%d: Asset %u (Null)", j, assetIdx);
+            }
+            const bool isSelected = (currentDrawTaskIndex == j);
+            if (ImGui::Selectable(label, isSelected)) {
+                if (currentDrawTaskIndex != j) {
+                    currentDrawTaskIndex = j;
+                    invalidate = true;
+                }
+            }
+        }
+        ImGui::EndChild();
+
+        // Update currentAssetIndex to point to the selected sub-picture's asset index
+        if (currentDrawTaskIndex >= 0 && currentDrawTaskIndex < (int)activeRec->fDrawTasks.size()) {
+            currentAssetIndex = activeRec->fDrawTasks[currentDrawTaskIndex].fAssetIndex;
+        }
+    } else {
+        ImGui::Text("No active recording selected.");
+    }
+
+    ImGui::Columns(1); // Reset back to single column
+}
+
+void drawFlatAssetCatalogTab(SkCapture* capture,
+                             int& currentAssetIndex,
+                             bool& invalidate) {
+    ImGui::Text("Total Picture Assets: %u", capture->getMetadata().numAssets);
+    ImGui::Separator();
+    ImGui::BeginChild("FlatCatalogList", ImVec2(0, 0), true);
+    for (int i = 0; i < (int)capture->getMetadata().numAssets; ++i) {
+        auto pic = capture->getAsset(i);
+        char label[128];
+        if (pic) {
+            sprintf(label, "Asset Index %d (%dx%d)",
+                    i, (int)pic->cullRect().width(), (int)pic->cullRect().height());
+        } else {
+            sprintf(label, "Asset Index %d (Null)", i);
+        }
+        const bool isSelected = (currentAssetIndex == i);
+        if (ImGui::Selectable(label, isSelected)) {
+            if (currentAssetIndex != i) {
+                currentAssetIndex = i;
+                invalidate = true;
+            }
+        }
+    }
+    ImGui::EndChild();
+}
+
+void drawCaptureExplorer(SkCapture* capture,
+                         int& currentAssetIndex,
+                         int& currentRecordingCaptureIndex,
+                         int& currentDrawTaskIndex,
+                         bool& invalidate) {
+    ImGui::SetNextWindowSize(ImVec2(EXPLORER_DEFAULT_WIDTH, EXPLORER_DEFAULT_HEIGHT),
+                             ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowPos(ImVec2(EXPLORER_DEFAULT_POS_X, EXPLORER_DEFAULT_POS_Y),
+                            ImGuiCond_FirstUseEver);
+
+    if (!ImGui::Begin("SkCapture Explorer")) {
+        ImGui::End();
+        return;
+    }
+
+    if (ImGui::BeginTabBar("ExplorerTabBar")) {
+        if (ImGui::BeginTabItem("Recording Timeline")) {
+            drawRecordingTimelineTab(capture,
+                                     currentAssetIndex,
+                                     currentRecordingCaptureIndex,
+                                     currentDrawTaskIndex,
+                                     invalidate);
+            ImGui::EndTabItem();
+        }
+
+        if (ImGui::BeginTabItem("Flat Asset Catalog")) {
+            drawFlatAssetCatalogTab(capture, currentAssetIndex, invalidate);
+            ImGui::EndTabItem();
+        }
+        ImGui::EndTabBar();
+    }
     ImGui::End();
 }
 
@@ -103,7 +230,17 @@ void CaptureSlide::draw(SkCanvas* canvas) {
         return;
     }
 
-    auto focusPicture = fCapture->getPicture(fCurrentPictureIndex);
+    drawCaptureExplorer(fCapture.get(),
+                        fCurrentAssetIndex,
+                        fCurrentRecordingCaptureIndex,
+                        fCurrentDrawTaskIndex,
+                        fInvalidate);
+
+    auto focusPicture = fCapture->getAsset(fCurrentAssetIndex);
+    if (!focusPicture) {
+        return;
+    }
+
     auto bounds = focusPicture->cullRect().roundOut();
 
     if (!fDebugCanvas) {
@@ -111,10 +248,10 @@ void CaptureSlide::draw(SkCanvas* canvas) {
         focusPicture->playback(fDebugCanvas.get());
     }
 
+    canvas->save();
     canvas->clipIRect(bounds, SkClipOp::kIntersect);
     canvas->drawPicture(focusPicture);
-
-    drawMetadata(fCurrentPictureIndex);
+    canvas->restore();
 
     drawCommandHistory(fDebugCanvas.get());
 }
@@ -135,17 +272,47 @@ SkISize CaptureSlide::getDimensions() const { return {0, 0}; }
 
 bool CaptureSlide::onChar(SkUnichar c) {
     switch (c) {
-        case 'N':
-            fCurrentPictureIndex = (fCurrentPictureIndex + 1) % fMetadata.numPictures;
-            fInvalidate = true;
-            fDebugCanvas.reset();
+        case 'N': {
+            int numSubs = fMetadata.numRecordingCaptures;
+            if (numSubs > 0) {
+                fCurrentRecordingCaptureIndex = (fCurrentRecordingCaptureIndex + 1) % numSubs;
+                fCurrentDrawTaskIndex = 0;
+                fInvalidate = true;
+                fDebugCanvas.reset();
+            }
             return true;
-        case 'P':
-            fCurrentPictureIndex =
-                    (fCurrentPictureIndex + fMetadata.numPictures - 1) % fMetadata.numPictures;
-            fInvalidate = true;
-            fDebugCanvas.reset();
+        }
+        case 'P': {
+            int numSubs = fMetadata.numRecordingCaptures;
+            if (numSubs > 0) {
+                fCurrentRecordingCaptureIndex = (fCurrentRecordingCaptureIndex + numSubs - 1)
+                    % numSubs;
+                fCurrentDrawTaskIndex = 0;
+                fInvalidate = true;
+                fDebugCanvas.reset();
+            }
             return true;
+        }
+        case 'n': {
+            const auto* activeRec = fCapture->getRecordingCapture(fCurrentRecordingCaptureIndex);
+            if (activeRec && activeRec->fDrawTasks.size() > 0) {
+                int numPics = activeRec->fDrawTasks.size();
+                fCurrentDrawTaskIndex = (fCurrentDrawTaskIndex + 1) % numPics;
+                fInvalidate = true;
+                fDebugCanvas.reset();
+            }
+            return true;
+        }
+        case 'p': {
+            const auto* activeRec = fCapture->getRecordingCapture(fCurrentRecordingCaptureIndex);
+            if (activeRec && activeRec->fDrawTasks.size() > 0) {
+                int numPics = activeRec->fDrawTasks.size();
+                fCurrentDrawTaskIndex = (fCurrentDrawTaskIndex + numPics - 1) % numPics;
+                fInvalidate = true;
+                fDebugCanvas.reset();
+            }
+            return true;
+        }
         case 'F':
             ImGui::GetIO().FontGlobalScale = ImGui::GetIO().FontGlobalScale + 0.1f;
             return true;

@@ -9,10 +9,11 @@
 #define SkCapture_DEFINED
 
 #include "include/core/SkAlphaType.h"
+#include "include/core/SkPoint.h"
+#include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSerialProcs.h"
 #include "include/private/SkTArray.h"
-
 #include <optional>
 
 class SkData;
@@ -25,37 +26,42 @@ class SkCaptureCanvas;
 // TODO(b/412351769): Make this class public.
 class SkCapture : public SkRefCnt {
 public:
+    struct DrawTask {
+        uint32_t fAssetIndex;
+    };
+
+    struct RecordingCapture {
+        skia_private::TArray<DrawTask> fDrawTasks;
+    };
+
     struct Metadata {
         uint32_t version;
-        uint32_t numPictures;
+        uint32_t numAssets;
+        uint32_t numRecordingCaptures;
     };
 
     static sk_sp<SkCapture> MakeFromData(sk_sp<const SkData>);
     static sk_sp<SkCapture> MakeEmpty();
 
-    // TODO: Pictures should be added to the SkCapture along with tracked metadata.
-    void addPicture(sk_sp<SkPicture>);
+    void addAsset(sk_sp<SkPicture>);
+    void addRecordingCapture(RecordingCapture);
 
     sk_sp<SkData> serializeCapture();
 
-    // TODO: Pictures being grabbed by index is not intuitive and leave the capture disorganized.
-    // This should be deleted once SkPictures are organized by Surface and grouped by Recording.
-    sk_sp<SkPicture> getPicture(int i) const;
+    sk_sp<SkPicture> getAsset(int i) const;
+    const RecordingCapture* getRecordingCapture(int i) const;
     Metadata getMetadata() const;
 
 private:
-    // TODO: add more awareness of the image meta data to a SkCaptureContext object
     static SkSerialReturnType serializeImageProc(SkImage* img, void* ctx);
     static sk_sp<SkImage> deserializeImageProc(sk_sp<SkData>,
                                                std::optional<SkAlphaType>, void* ctx);
 
     Metadata fMetadata;
-    //TODO(b/412351769): Replace pictures with SkCapturePicture structs that also include
-    // picture metadata
-    skia_private::TArray<sk_sp<SkPicture>> fPictures;
+    skia_private::TArray<sk_sp<SkPicture>> fAssets;
+    skia_private::TArray<RecordingCapture> fTimeline;
 
-    static const uint32_t kVersion = 0; // Until this version is 1 or greater, active development
-                                        // will make this unstable.
+    static const uint32_t kVersion = 0;
 };
 
 #endif //SkCapture_DEFINED

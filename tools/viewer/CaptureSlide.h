@@ -37,7 +37,9 @@ public:
 
 private:
     sk_sp<SkCapture> fCapture;
-    int fCurrentPictureIndex = 0;
+    int fCurrentAssetIndex = 0;
+    int fCurrentRecordingCaptureIndex = 0;
+    int fCurrentDrawTaskIndex = 0;
     bool fInvalidate = false;
     SkCapture::Metadata fMetadata;
     std::unique_ptr<DebugCanvas> fDebugCanvas;
