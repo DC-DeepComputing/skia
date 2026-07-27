@@ -63,6 +63,10 @@ func main() {
 		td.Fatal(ctx, err)
 	}
 
+	// Dynamically locate and add the MSVC compiler and runtime folders to the system PATH.
+	var newPATH, bazelVC string
+	ctx, newPATH, bazelVC = locateAndAddMSVCToPATH(ctx, checkoutPath)
+
 	// For Mac builds, ensure Xcode is downloaded/installed via mac_toolchain before we build.
 	if runtime.GOOS == "darwin" {
 		parentDir := filepath.Dir(checkoutPath)
@@ -137,6 +141,28 @@ func main() {
 	if os.Getenv("DEVELOPER_DIR") != "" {
 		args = append(args, "--repo_env=DEVELOPER_DIR")
 	}
+	if runtime.GOOS == "windows" {
+		// On Windows, Bazel's strict action environment (enabled by --incompatible_strict_action_env=true in .bazelrc)
+		// strips the PATH variable from actions. This causes MSVC-compiled build utilities (like launcher_maker.exe)
+		// and rules_rust compilation actions (which run with use_default_shell_env = False) to fail with
+		// STATUS_DLL_NOT_FOUND (0xC0000135).
+		//
+		// Crucially, under --incompatible_strict_action_env, name-only action_env (i.e. --action_env=PATH) only works
+		// if the variable is present in the client's environment with the EXACT same casing. On Windows, the client
+		// env has "Path" (mixed case), but rules_rust's Starlark rule reads "PATH" (all caps) from default_shell_env.
+		// By explicitly passing --action_env and --host_action_env with a static, pre-resolved VALUE (VAR=VALUE),
+		// we bypass case-sensitivity mismatches and guarantee that both target and host/exec actions natively
+		// receive the required MSVC runtime path containing sys64.
+		if newPATH != "" {
+			args = append(args, fmt.Sprintf("--action_env=PATH=%s", newPATH))
+			args = append(args, fmt.Sprintf("--host_action_env=PATH=%s", newPATH))
+		}
+		if bazelVC != "" {
+			args = append(args, fmt.Sprintf("--action_env=BAZEL_VC=%s", bazelVC))
+			args = append(args, fmt.Sprintf("--host_action_env=BAZEL_VC=%s", bazelVC))
+		}
+	}
+
 	if _, err := bzl.Do(ctx, "build", args...); err != nil {
 		td.Fatal(ctx, err)
 	}
@@ -179,4 +205,46 @@ func copyBazelBinSubdirs(ctx context.Context, checkoutDir string, bazelBinSubdir
 		}
 	}
 	return nil
+}
+
+// locateAndAddMSVCToPATH resolves the MSVC C++ runtime directory (sys64) and VC directories
+// and appends sys64 to the system PATH so that bazel.exe/bazelisk.exe and prebuilt tools can run on Windows.
+func locateAndAddMSVCToPATH(ctx context.Context, checkoutPath string) (context.Context, string, string) {
+	if runtime.GOOS != "windows" {
+		return ctx, "", ""
+	}
+	var newPATH, bazelVC string
+	_ = td.Do(ctx, td.Props("MSVC Runtime Path Resolver"), func(ctx context.Context) error {
+		winToolchainDir := "win_toolchain"
+		if _, err := os.Stat(winToolchainDir); err != nil {
+			winToolchainDir = filepath.Join(filepath.Dir(checkoutPath), "win_toolchain")
+		}
+
+		sys64Dir, _ := filepath.Abs(filepath.Join(winToolchainDir, "sys64"))
+		vcDir, _ := filepath.Abs(filepath.Join(winToolchainDir, "VC"))
+
+		if _, err := os.Stat(sys64Dir); err == nil {
+			currentPATH := os.Getenv("PATH")
+			tempPATH := fmt.Sprintf("%s;%s", sys64Dir, currentPATH)
+			os.Setenv("PATH", tempPATH)
+			os.Setenv("BAZEL_VC", vcDir)
+			td.StepText(ctx, "MSVC Paths Initialized", fmt.Sprintf("PATH=%s, BAZEL_VC=%s", sys64Dir, vcDir))
+			newPATH = tempPATH
+			bazelVC = vcDir
+		} else {
+			fmt.Printf("Warning: MSVC sys64 folder not found at %s\n", sys64Dir)
+		}
+		return nil
+	})
+
+	if newPATH != "" {
+		if bazelVC != "" {
+			return td.WithEnv(ctx, []string{
+				"PATH=" + newPATH,
+				"BAZEL_VC=" + bazelVC,
+			}), newPATH, bazelVC
+		}
+		return td.WithEnv(ctx, []string{"PATH=" + newPATH}), newPATH, ""
+	}
+	return ctx, "", ""
 }
