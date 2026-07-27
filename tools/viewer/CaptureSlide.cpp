@@ -92,9 +92,100 @@ void drawCommandHistory(const DebugCanvas* debugCanvas) {
     ImGui::End();
 }
 
-void drawMetadata(int currentPictureIndex) {
-    ImGui::Begin("Capture Info");
-    ImGui::Text("Current Index: %d", currentPictureIndex);
+void drawMetadata(SkCapture* capture,
+                  int& currentPictureIndex,
+                  int& currentSubmissionIndex,
+                  int& currentSubPictureIndex,
+                  bool& invalidate) {
+    ImGui::Begin("SkCapture Explorer");
+
+    if (ImGui::BeginTabBar("ExplorerTabBar")) {
+        // Tab 1: Timeline
+        if (ImGui::BeginTabItem("Submission Timeline")) {
+            ImGui::Text("Total Submissions: %u", capture->getMetadata().numRecordingCaptures);
+            ImGui::Separator();
+
+            // List of submissions
+            ImGui::BeginChild("SubmissionList", ImVec2(0, 150), true);
+            for (int i = 0; i < (int)capture->getMetadata().numRecordingCaptures; ++i) {
+                const auto* rec = capture->getRecordingCapture(i);
+                if (!rec) continue;
+                char label[128];
+                sprintf(label, "Submission #%d", i);
+                const bool isSelected = (currentSubmissionIndex == i);
+                if (ImGui::Selectable(label, isSelected)) {
+                    if (currentSubmissionIndex != i) {
+                        currentSubmissionIndex = i;
+                        currentSubPictureIndex = 0; // reset sub-picture selection
+                        invalidate = true;
+                    }
+                }
+            }
+            ImGui::EndChild();
+
+            // Show selected submission details
+            const auto* activeRec = capture->getRecordingCapture(currentSubmissionIndex);
+            if (activeRec) {
+                ImGui::Separator();
+                ImGui::Text("DrawTasks in this Recording (%d):", activeRec->fDrawTasks.size());
+
+                ImGui::BeginChild("SubPictureList", ImVec2(0, 100), true);
+                for (int j = 0; j < (int)activeRec->fDrawTasks.size(); ++j) {
+                    const auto& task = activeRec->fDrawTasks[j];
+                    uint32_t assetIdx = task.fAssetIndex;
+                    auto pic = capture->getAsset(assetIdx);
+                    char label[128];
+                    if (pic) {
+                        sprintf(label, "Task #%d: Asset Index %u (%dx%d)",
+                                j, assetIdx, (int)pic->cullRect().width(), (int)pic->cullRect().height());
+                    } else {
+                        sprintf(label, "Task #%d: Asset Index %u (Null)", j, assetIdx);
+                    }
+                    const bool isSelected = (currentSubPictureIndex == j);
+                    if (ImGui::Selectable(label, isSelected)) {
+                        if (currentSubPictureIndex != j) {
+                            currentSubPictureIndex = j;
+                            invalidate = true;
+                        }
+                    }
+                }
+                ImGui::EndChild();
+
+                // Update currentPictureIndex to point to the selected sub-picture's asset index
+                if (currentSubPictureIndex >= 0 && currentSubPictureIndex < (int)activeRec->fDrawTasks.size()) {
+                    currentPictureIndex = activeRec->fDrawTasks[currentSubPictureIndex].fAssetIndex;
+                }
+            }
+            ImGui::EndTabItem();
+        }
+
+        // Tab 2: Raw Catalog
+        if (ImGui::BeginTabItem("Flat Asset Catalog")) {
+            ImGui::Text("Total Picture Assets: %u", capture->getMetadata().numAssets);
+            ImGui::Separator();
+            ImGui::BeginChild("FlatCatalogList", ImVec2(0, 0), true);
+            for (int i = 0; i < (int)capture->getMetadata().numAssets; ++i) {
+                auto pic = capture->getAsset(i);
+                char label[128];
+                if (pic) {
+                    sprintf(label, "Asset Index %d (%dx%d)",
+                            i, (int)pic->cullRect().width(), (int)pic->cullRect().height());
+                } else {
+                    sprintf(label, "Asset Index %d (Null)", i);
+                }
+                const bool isSelected = (currentPictureIndex == i);
+                if (ImGui::Selectable(label, isSelected)) {
+                    if (currentPictureIndex != i) {
+                        currentPictureIndex = i;
+                        invalidate = true;
+                    }
+                }
+            }
+            ImGui::EndChild();
+            ImGui::EndTabItem();
+        }
+        ImGui::EndTabBar();
+    }
     ImGui::End();
 }
 
@@ -103,7 +194,17 @@ void CaptureSlide::draw(SkCanvas* canvas) {
         return;
     }
 
-    auto focusPicture = fCapture->getPicture(fCurrentPictureIndex);
+    drawMetadata(fCapture.get(),
+                 fCurrentPictureIndex,
+                 fCurrentSubmissionIndex,
+                 fCurrentSubPictureIndex,
+                 fInvalidate);
+
+    auto focusPicture = fCapture->getAsset(fCurrentPictureIndex);
+    if (!focusPicture) {
+        return;
+    }
+
     auto bounds = focusPicture->cullRect().roundOut();
 
     if (!fDebugCanvas) {
@@ -111,10 +212,10 @@ void CaptureSlide::draw(SkCanvas* canvas) {
         focusPicture->playback(fDebugCanvas.get());
     }
 
+    canvas->save();
     canvas->clipIRect(bounds, SkClipOp::kIntersect);
     canvas->drawPicture(focusPicture);
-
-    drawMetadata(fCurrentPictureIndex);
+    canvas->restore();
 
     drawCommandHistory(fDebugCanvas.get());
 }
@@ -135,17 +236,46 @@ SkISize CaptureSlide::getDimensions() const { return {0, 0}; }
 
 bool CaptureSlide::onChar(SkUnichar c) {
     switch (c) {
-        case 'N':
-            fCurrentPictureIndex = (fCurrentPictureIndex + 1) % fMetadata.numPictures;
-            fInvalidate = true;
-            fDebugCanvas.reset();
+        case 'N': {
+            int numSubs = fMetadata.numRecordingCaptures;
+            if (numSubs > 0) {
+                fCurrentSubmissionIndex = (fCurrentSubmissionIndex + 1) % numSubs;
+                fCurrentSubPictureIndex = 0;
+                fInvalidate = true;
+                fDebugCanvas.reset();
+            }
             return true;
-        case 'P':
-            fCurrentPictureIndex =
-                    (fCurrentPictureIndex + fMetadata.numPictures - 1) % fMetadata.numPictures;
-            fInvalidate = true;
-            fDebugCanvas.reset();
+        }
+        case 'P': {
+            int numSubs = fMetadata.numRecordingCaptures;
+            if (numSubs > 0) {
+                fCurrentSubmissionIndex = (fCurrentSubmissionIndex + numSubs - 1) % numSubs;
+                fCurrentSubPictureIndex = 0;
+                fInvalidate = true;
+                fDebugCanvas.reset();
+            }
             return true;
+        }
+        case 'n': {
+            const auto* activeRec = fCapture->getRecordingCapture(fCurrentSubmissionIndex);
+            if (activeRec && activeRec->fDrawTasks.size() > 0) {
+                int numPics = activeRec->fDrawTasks.size();
+                fCurrentSubPictureIndex = (fCurrentSubPictureIndex + 1) % numPics;
+                fInvalidate = true;
+                fDebugCanvas.reset();
+            }
+            return true;
+        }
+        case 'p': {
+            const auto* activeRec = fCapture->getRecordingCapture(fCurrentSubmissionIndex);
+            if (activeRec && activeRec->fDrawTasks.size() > 0) {
+                int numPics = activeRec->fDrawTasks.size();
+                fCurrentSubPictureIndex = (fCurrentSubPictureIndex + numPics - 1) % numPics;
+                fInvalidate = true;
+                fDebugCanvas.reset();
+            }
+            return true;
+        }
         case 'F':
             ImGui::GetIO().FontGlobalScale = ImGui::GetIO().FontGlobalScale + 0.1f;
             return true;

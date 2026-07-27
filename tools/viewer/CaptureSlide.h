@@ -38,6 +38,8 @@ public:
 private:
     sk_sp<SkCapture> fCapture;
     int fCurrentPictureIndex = 0;
+    int fCurrentSubmissionIndex = 0;
+    int fCurrentSubPictureIndex = 0;
     bool fInvalidate = false;
     SkCapture::Metadata fMetadata;
     std::unique_ptr<DebugCanvas> fDebugCanvas;
