@@ -46,67 +46,100 @@ sk_sp<SkCapture> SkCapture::MakeFromData(sk_sp<const SkData> data) {
         return nullptr;
     }
 
-    // 4. Read Picture Count
-    uint32_t pictureCount;
-    if (!stream.readU32(&pictureCount)) {
-        SkDebugf("Failed to read picture count.\n");
+    // 4. Read Asset and RecordingCapture Counts
+    uint32_t assetCount;
+    uint32_t recordingCaptureCount;
+    if (!stream.readU32(&assetCount) || !stream.readU32(&recordingCaptureCount)) {
+        SkDebugf("Failed to read asset or recording capture counts.\n");
         return nullptr;
     }
 
     auto capture = sk_make_sp<SkCapture>();
-    capture->fMetadata = {version, pictureCount};
+    capture->fMetadata = {version, assetCount, recordingCaptureCount};
 
-    // 5. Loop and Deserialize Each Picture
-    for (uint32_t i = 0; i < pictureCount; ++i) {
+    // 5. Loop and Deserialize Each Asset (SkPicture)
+    for (uint32_t i = 0; i < assetCount; ++i) {
         uint32_t pictureDataSize;
         if (!stream.readU32(&pictureDataSize)) {
-            SkDebugf("Failed to read picture data size for picture %u.\n", i);
+            SkDebugf("Failed to read picture data size for asset %u.\n", i);
             return nullptr;
         }
 
-        // Read the picture data into an SkData object
         sk_sp<SkData> pictureData = SkData::MakeUninitialized(pictureDataSize);
-
-        // Check if allocation failed *or* if the stream read failed.
         if (!pictureData || stream.read(pictureData->writable_data(),
                                         pictureDataSize) != pictureDataSize) {
-            SkDebugf("Failed to read picture data for picture %u or allocation failed.\n", i);
+            SkDebugf("Failed to read picture data for asset %u or allocation failed.\n", i);
             return nullptr;
         }
 
-        // Deserialize the SkPicture from its raw data
         SkDeserialProcs procs;
         procs.fImageDataProc = SkCapture::deserializeImageProc;
         sk_sp<SkPicture> picture = SkPicture::MakeFromData(pictureData.get(), &procs);
         if (!picture) {
-            SkDebugf("Failed to deserialize SkPicture for picture %u.\n", i);
+            SkDebugf("Failed to deserialize SkPicture for asset %u.\n", i);
             return nullptr;
         }
 
-        // Add the deserialized picture to the SkCapture object
-        capture->fPictures.emplace_back(std::move(picture));
+        capture->fAssets.emplace_back(std::move(picture));
     }
 
-    SkDebugf("Successfully read %d pictures into SkCapture.\n", capture->fPictures.size());
+    // 6. Loop and Deserialize Each RecordingCapture
+    for (uint32_t i = 0; i < recordingCaptureCount; ++i) {
+        RecordingCapture rec;
+        uint32_t taskCount;
+        if (!stream.readU32(&taskCount)) {
+            SkDebugf("Failed to read task count for recording capture %u.\n", i);
+            return nullptr;
+        }
+        for (uint32_t j = 0; j < taskCount; ++j) {
+            uint32_t assetIdx;
+            if (!stream.readU32(&assetIdx)) {
+                SkDebugf("Failed to read task %u for recording capture %u.\n", j, i);
+                return nullptr;
+            }
+            if (assetIdx >= assetCount) {
+                SkDebugf("Out-of-bounds asset index %u parsed for task %u inside recording %u.\n",
+                         assetIdx, j, i);
+                return nullptr;
+            }
+            rec.fDrawTasks.push_back({assetIdx});
+        }
+        capture->fTimeline.push_back(std::move(rec));
+    }
+
+    SkDebugf("Successfully read %d assets and %d recording captures into SkCapture.\n",
+             capture->fAssets.size(), capture->fTimeline.size());
     return capture;
 }
 
 sk_sp<SkCapture> SkCapture::MakeEmpty() {
     auto capture = sk_make_sp<SkCapture>();
-    capture->fMetadata = {SkCapture::kVersion, 0};
+    capture->fMetadata = {SkCapture::kVersion, 0, 0};
     return capture;
 }
 
-void SkCapture::addPicture(sk_sp<SkPicture> picture) {
+void SkCapture::addAsset(sk_sp<SkPicture> picture) {
     if (picture) {
-        fPictures.push_back(std::move(picture));
-        fMetadata.numPictures = fPictures.size();
+        fAssets.push_back(std::move(picture));
+        fMetadata.numAssets = fAssets.size();
     }
 }
 
-sk_sp<SkPicture> SkCapture::getPicture(int i) const {
-    if (i >= 0 && i < fPictures.size()) {
-        return fPictures[i];
+void SkCapture::addRecordingCapture(RecordingCapture rec) {
+    fTimeline.push_back(std::move(rec));
+    fMetadata.numRecordingCaptures = fTimeline.size();
+}
+
+sk_sp<SkPicture> SkCapture::getAsset(int i) const {
+    if (i >= 0 && i < fAssets.size()) {
+        return fAssets[i];
+    }
+    return nullptr;
+}
+
+const SkCapture::RecordingCapture* SkCapture::getRecordingCapture(int i) const {
+    if (i >= 0 && i < fTimeline.size()) {
+        return &fTimeline[i];
     }
     return nullptr;
 }
@@ -122,14 +155,12 @@ sk_sp<SkData> SkCapture::serializeCapture() {
     stream.write32(kMagic2);
     stream.write32(SkCapture::kVersion);
 
-    // Number of pictures
-    stream.write32(fPictures.size());
+    // Number of assets and recording captures
+    stream.write32(fAssets.size());
+    stream.write32(fTimeline.size());
 
-    // TODO (b/412351769): Write metadata on each picture and assosiated canvas. This will be needed
-    // when we have multiple SkPictures per canvas and we want to track which ones are drawn into
-    // each other.
-
-    for (const auto& picture : fPictures) {
+    // 1. Assets Section: Serialized Pictures
+    for (const auto& picture : fAssets) {
         SkDynamicMemoryWStream pictureStream;
         SkSerialProcs procs;
         procs.fImageProc = SkCapture::serializeImageProc;
@@ -141,8 +172,18 @@ sk_sp<SkData> SkCapture::serializeCapture() {
         stream.write(pictureData->data(), pictureData->size());
     }
 
+    // 2. Timeline Section: RecordingCaptures
+    for (const auto& rec : fTimeline) {
+        // Write DrawTasks count
+        stream.write32(rec.fDrawTasks.size());
+        for (const auto& task : rec.fDrawTasks) {
+            stream.write32(task.fAssetIndex);
+        }
+    }
+
     auto data = stream.detachAsData();
-    SkDebugf("Wrote %d pictures to SkData block.\n", fPictures.size());
+    SkDebugf("Wrote %d assets and %d recording captures to SkData block.\n",
+             fAssets.size(), fTimeline.size());
     return data;
 }
 
