@@ -15,7 +15,6 @@
     "cmd": [
       "gcloud",
       "storage",
-      "storage",
       "cp",
       "-Z",
       "/foo/file",

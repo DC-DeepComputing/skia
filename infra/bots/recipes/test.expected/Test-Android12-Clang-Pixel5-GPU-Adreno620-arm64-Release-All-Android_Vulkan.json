@@ -412,7 +412,6 @@
     "cmd": [
       "gcloud",
       "storage",
-      "storage",
       "cp",
       "[START_DIR]/[SWARM_OUT_DIR]/*.png",
       "gs://skia-infra-gm/dm-images-v1"
@@ -437,7 +436,6 @@
   {
     "cmd": [
       "gcloud",
-      "storage",
       "storage",
       "cp",
       "-Z",

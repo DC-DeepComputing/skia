@@ -33,7 +33,6 @@
     "cmd": [
       "gcloud",
       "storage",
-      "storage",
       "cp",
       "[START_DIR]/test/*.png",
       "gs://skia-infra-gm/dm-images-v1"
@@ -61,7 +60,6 @@
   {
     "cmd": [
       "gcloud",
-      "storage",
       "storage",
       "cp",
       "[START_DIR]/test/*.png",
@@ -106,7 +104,6 @@
     "cmd": [
       "gcloud",
       "storage",
-      "storage",
       "cp",
       "-Z",
       "[START_DIR]/test/dm.json",
@@ -150,7 +147,6 @@
   {
     "cmd": [
       "gcloud",
-      "storage",
       "storage",
       "cp",
       "-Z",
