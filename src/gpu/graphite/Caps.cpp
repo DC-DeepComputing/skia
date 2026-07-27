@@ -10,11 +10,13 @@
 #include "include/gpu/ShaderErrorHandler.h"
 #include "include/gpu/graphite/ContextOptions.h"
 #include "include/gpu/graphite/TextureInfo.h"
+#include "include/private/SkDebug.h"
 #include "include/private/SkTArray.h"
 #include "include/private/SkTo.h"
 #include "src/gpu/graphite/ContextOptionsPriv.h"
 #include "src/gpu/graphite/RenderPassDesc.h"
 #include "src/gpu/graphite/ResourceTypes.h"
+#include "src/gpu/graphite/TextureFormat.h"
 #include "src/gpu/graphite/TextureInfoPriv.h"
 #include "src/sksl/SkSLUtil.h"
 
@@ -220,7 +222,11 @@ TextureInfo Caps::getDefaultTextureInfo(SkEnumBitMask<TextureUsage> usage,
     for (TextureFormat format : formats) {
         auto [supportedUsage, supportedSampleCounts] =
                 this->getTextureSupport(format, Tiling::kOptimal);
-        if ((supportedUsage & usage) != usage || !SkToBool(supportedSampleCounts & sampleCount)) {
+        bool matchUsage = (supportedUsage & usage) == usage;
+        bool matchSample = SkToBool(supportedSampleCounts & sampleCount);
+        SkDebugf("[Caps::getDefaultTextureInfo] fmt=%s (%d): matchUsage=%d (supp=0x%x req=0x%x), matchSample=%d\n",
+                 TextureFormatName(format), (int)format, matchUsage, (uint32_t)supportedUsage.value(), (uint32_t)usage.value(), matchSample);
+        if (!matchUsage || !matchSample) {
             continue; // unsupported, move on to the next possible format
         }
 
@@ -243,11 +249,14 @@ TextureInfo Caps::getDefaultTextureInfo(SkEnumBitMask<TextureUsage> usage,
             // host-image-copy flag reduces the performance of renderable images.
             usage |= TextureUsage::kHostCopy;
         }
-        return this->onGetDefaultTextureInfo(usage, format, sampleCount, mipmapped,
-                                            isProtected, discardable);
+        TextureInfo res = this->onGetDefaultTextureInfo(usage, format, sampleCount, mipmapped,
+                                                         isProtected, discardable);
+        SkDebugf("[Caps::getDefaultTextureInfo] onGetDefaultTextureInfo returned valid=%d\n", res.isValid());
+        return res;
     }
 
     // None of the possible formats were supported
+    SkDebugf("[Caps::getDefaultTextureInfo] NONE of %zu formats supported!\n", formats.size());
     return {};
 }
 
@@ -285,12 +294,15 @@ TextureInfo Caps::getDefaultSampledTextureInfo(SkColorType colorType,
         formats = validFormats;
     }
 
-    return this->getDefaultTextureInfo(usage,
-                                       formats,
-                                       SampleCount::k1,
-                                       mipmapped,
-                                       isProtected,
-                                       Discardable::kNo);
+    TextureInfo res = this->getDefaultTextureInfo(usage,
+                                                   formats,
+                                                   SampleCount::k1,
+                                                   mipmapped,
+                                                   isProtected,
+                                                   Discardable::kNo);
+    SkDebugf("[Caps::getDefaultSampledTextureInfo] ct=%d, numFmts=%zu, valid=%d\n",
+             (int)colorType, formats.size(), res.isValid());
+    return res;
 }
 
 TextureInfo Caps::getTextureInfoForSampledCopy(const TextureInfo& info, Mipmapped mipmapped) const {

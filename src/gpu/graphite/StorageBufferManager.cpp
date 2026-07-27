@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/private/SkDebug.h"
 #include "src/gpu/graphite/StorageBufferManager.h"
 
 #include "src/gpu/graphite/Caps.h"
@@ -86,6 +87,9 @@ BindBufferInfo StorageBufferManager::finalize(DrawBufferManager* bufferMgr,
         return {};
     }
 
+    SkDebugf("[StorageBufferManager::finalize] fStorageBufferSupport=%d, ctxSize=%d, drawPass=%p\n",
+             fStorageBufferSupport, (int)ctx->size(), drawPass);
+
     if (fStorageBufferSupport) {
         return this->finalizeSSBO(bufferMgr, ctx);
     }
@@ -155,14 +159,24 @@ sk_sp<TextureProxy> StorageBufferManager::createTextureProxy(Recorder* recorder,
     TextureInfo info = caps->getDefaultSampledTextureInfo(
             kRGBA_F32_SkColorType, Mipmapped::kNo, recorder->priv().isProtected(), Renderable::kNo);
 
+    if (!info.isValid()) {
+        SkDebugf("[StorageBufferManager::createTextureProxy] getDefaultSampledTextureInfo for kRGBA_F32_SkColorType is INVALID!\n");
+        return nullptr;
+    }
+
     sk_sp<TextureProxy> proxy = TextureProxy::Make(caps,
                                                    recorder->priv().resourceProvider(),
                                                    SkISize::Make(width, height),
                                                    info,
                                                    "StorageBufferFallbackTexture",
                                                    Budgeted::kYes);
-    if (proxy) {
-        proxy->instantiate(recorder->priv().resourceProvider());
+    if (!proxy) {
+        SkDebugf("[StorageBufferManager::createTextureProxy] TextureProxy::Make returned nullptr!\n");
+        return nullptr;
+    }
+
+    if (!proxy->instantiate(recorder->priv().resourceProvider())) {
+        SkDebugf("[StorageBufferManager::createTextureProxy] proxy->instantiate failed!\n");
     }
     return proxy;
 }
@@ -228,6 +242,7 @@ TextureProxyView StorageBufferManager::finalizeTexture(Recorder* recorder,
 
     sk_sp<TextureProxy> proxy = this->createTextureProxy(recorder, width, height);
     if (!proxy) {
+        SkDebugf("[StorageBufferManager::finalizeTexture] createTextureProxy(%d, %d) returned nullptr!\n", width, height);
         return {};
     }
 
@@ -254,13 +269,18 @@ TextureProxyView StorageBufferManager::finalizeTexture(Recorder* recorder,
 
     UploadInstance uploadInstance = UploadInstance::Make(recorder, source, nullptr);
     if (!uploadInstance.isValid()) {
+        SkDebugf("[StorageBufferManager::finalizeTexture] UploadInstance::Make failed!\n");
         return {};
     }
 
     sk_sp<Task> uploadTask = UploadTask::Make(std::move(uploadInstance));
     if (!uploadTask) {
+        SkDebugf("[StorageBufferManager::finalizeTexture] UploadTask::Make failed!\n");
         return {};
     }
+
+    SkDebugf("[StorageBufferManager::finalizeTexture] Created fallback uploadTask=%p, drawPass=%p\n",
+             uploadTask.get(), drawPass);
 
     if (drawPass) {
         drawPass->fTextureFallbackUploadTask = std::move(uploadTask);
