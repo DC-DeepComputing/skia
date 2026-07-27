@@ -445,10 +445,12 @@ UploadTask::~UploadTask() {}
 Task::Status UploadTask::prepareResources(ResourceProvider* resourceProvider,
                                           ScratchResourceManager*,
                                           sk_sp<const RuntimeEffectDictionary>) {
+    SkDebugf("[UploadTask::prepareResources] Preparing %d instances (task=%p)\n", fInstances.size(), this);
     for (int i = 0; i < fInstances.size(); ++i) {
         // No upload should be invalidated before prepareResources() is called.
         SkASSERT(fInstances[i].isValid());
         if (!fInstances[i].prepareResources(resourceProvider)) {
+            SkDebugf("[UploadTask::prepareResources] Instance %d failed prepareResources!\n", i);
             return Status::kFail;
         }
     }
@@ -459,6 +461,7 @@ Task::Status UploadTask::prepareResources(ResourceProvider* resourceProvider,
 Task::Status UploadTask::addCommands(Context* context,
                                      CommandBuffer* commandBuffer,
                                      ReplayTargetData replayData) {
+    SkDebugf("[UploadTask::addCommands] Adding commands for %d instances (task=%p)\n", fInstances.size(), this);
     int discardCount = 0;
     for (int i = 0; i < fInstances.size(); ++i) {
         if (!fInstances[i].isValid()) {
@@ -467,6 +470,7 @@ Task::Status UploadTask::addCommands(Context* context,
         }
         Status status = fInstances[i].addCommand(context, commandBuffer, replayData);
         if (status == Status::kFail) {
+            SkDebugf("[UploadTask::addCommands] Instance %d addCommand failed!\n", i);
             return Status::kFail;
         } else if (status == Status::kDiscard) {
             fInstances[i] = UploadInstance::Invalid();

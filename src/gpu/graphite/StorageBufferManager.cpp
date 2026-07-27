@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/private/SkDebug.h"
 #include "src/gpu/graphite/StorageBufferManager.h"
 
 #include "src/gpu/graphite/Caps.h"
@@ -85,6 +86,9 @@ BindBufferInfo StorageBufferManager::finalize(DrawBufferManager* bufferMgr,
     if (!ctx) {
         return {};
     }
+
+    SkDebugf("[StorageBufferManager::finalize] fStorageBufferSupport=%d, ctxSize=%d, drawPass=%p\n",
+             fStorageBufferSupport, (int)ctx->size(), drawPass);
 
     if (fStorageBufferSupport) {
         return this->finalizeSSBO(bufferMgr, ctx);
@@ -254,13 +258,18 @@ TextureProxyView StorageBufferManager::finalizeTexture(Recorder* recorder,
 
     UploadInstance uploadInstance = UploadInstance::Make(recorder, source, nullptr);
     if (!uploadInstance.isValid()) {
+        SkDebugf("[StorageBufferManager::finalizeTexture] UploadInstance::Make failed!\n");
         return {};
     }
 
     sk_sp<Task> uploadTask = UploadTask::Make(std::move(uploadInstance));
     if (!uploadTask) {
+        SkDebugf("[StorageBufferManager::finalizeTexture] UploadTask::Make failed!\n");
         return {};
     }
+
+    SkDebugf("[StorageBufferManager::finalizeTexture] Created fallback uploadTask=%p, drawPass=%p\n",
+             uploadTask.get(), drawPass);
 
     if (drawPass) {
         drawPass->fTextureFallbackUploadTask = std::move(uploadTask);

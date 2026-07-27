@@ -13,6 +13,7 @@
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "include/private/SkAssert.h"
+#include "include/private/SkDebug.h"
 #include "include/private/SkEnumBitMask.h"
 #include "include/private/SkLog.h"
 #include "src/core/SkColorData.h"
@@ -267,9 +268,16 @@ void DrawContext::flush(Recorder* recorder) {
     if (pass) {
         SkASSERT(fTarget.proxy() == pass->target());
 
-        if (!recorder->priv().caps()->storageBufferSupport()) {
+        bool capsStorageSupport = recorder->priv().caps()->storageBufferSupport();
+        SkDebugf("[DrawContext] pass snapped: pass=%p, capsStorageBufferSupport=%d\n",
+                 pass.get(), capsStorageSupport);
+
+        if (!capsStorageSupport) {
             if (sk_sp<Task> uploadTask = pass->takeTextureFallbackUploadTask()) {
+                SkDebugf("[DrawContext] Added fallback uploadTask=%p to fCurrentDrawTask\n", uploadTask.get());
                 fCurrentDrawTask->addTask(std::move(uploadTask));
+            } else {
+                SkDebugf("[DrawContext] pass->takeTextureFallbackUploadTask() returned null!\n");
             }
         }
 
