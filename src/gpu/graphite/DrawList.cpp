@@ -183,7 +183,7 @@ std::unique_ptr<DrawPass> DrawList::snapDrawPass(Recorder* recorder,
         // the previous state use the proper state.
         if (pipelineChange) {
             drawWriter.newPipelineState(renderStep.primitiveType(),
-                                        renderStep.staticDataStride(),
+                                        renderStep.staticDataStride(draw.drawParams()),
                                         renderStep.appendDataStride(),
                                         renderStep.getRenderStateFlags(),
                                         draw.drawParams().barrierBeforeDraws());

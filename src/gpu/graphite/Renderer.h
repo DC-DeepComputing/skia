@@ -36,6 +36,8 @@ class DrawParams;
 class PipelineDataGatherer;
 class Rect;
 class ResourceProvider;
+class ShaderInfo;
+struct RootNodesInfo;
 class TextureDataBlock;
 class Transform;
 class UniformOffsetCalculator;
@@ -49,37 +51,39 @@ enum class Coverage { kNone, kSingleChannel, kLCD };
 // RenderStep::kRenderStepIDVersion value. The enum values generated from this
 // list are serialized and the kRenderStepIDVersion value is the signal to
 // abandon older serialized data.
-#define SKGPU_RENDERSTEP_TYPES(M1, M2)              \
-        M1(Invalid)                                 \
-        M1(CircularArc)                             \
-        M1(AnalyticRRect)                           \
-        M1(AnalyticBlur)                            \
-        M1(PerEdgeAAQuad)                           \
-        M2(CoverBounds,      NonAAFill)             \
-        M2(CoverBounds,      RegularCover)          \
-        M2(CoverBounds,      InverseCover)          \
-        M1(CoverageMask)                            \
-        M2(BitmapText,       Mask)                  \
-        M2(BitmapText,       LCD)                   \
-        M2(BitmapText,       Color)                 \
-        M2(MiddleOutFan,     EvenOdd)               \
-        M2(MiddleOutFan,     Winding)               \
-        M1(SDFTextLCD)                              \
-        M1(SDFText)                                 \
-        M2(TessellateCurves, EvenOdd)               \
-        M2(TessellateCurves, Winding)               \
-        M1(TessellateStrokes)                       \
-        M2(TessellateWedges, Convex)                \
-        M2(TessellateWedges, EvenOdd)               \
-        M2(TessellateWedges, Winding)               \
-        M2(Vertices,         Tris)                  \
-        M2(Vertices,         TrisColor)             \
-        M2(Vertices,         TrisTexCoords)         \
-        M2(Vertices,         TrisColorTexCoords)    \
-        M2(Vertices,         Tristrips)             \
-        M2(Vertices,         TristripsColor)        \
-        M2(Vertices,         TristripsTexCoords)    \
-        M2(Vertices,         TristripsColorTexCoords)
+#define SKGPU_RENDERSTEP_TYPES(M1, M2)               \
+        M1(Invalid)                                  \
+        M1(CircularArc)                              \
+        M1(AnalyticRRect)                            \
+        M1(AnalyticBlur)                             \
+        M1(PerEdgeAAQuad)                            \
+        M2(CoverBounds,      NonAAFill)              \
+        M2(CoverBounds,      RegularCover)           \
+        M2(CoverBounds,      InverseCover)           \
+        M1(CoverageMask)                             \
+        M2(BitmapText,       Mask)                   \
+        M2(BitmapText,       LCD)                    \
+        M2(BitmapText,       Color)                  \
+        M2(MiddleOutFan,     EvenOdd)                \
+        M2(MiddleOutFan,     Winding)                \
+        M1(SDFTextLCD)                               \
+        M1(SDFText)                                  \
+        M2(TessellateCurves, EvenOdd)                \
+        M2(TessellateCurves, Winding)                \
+        M1(TessellateStrokes)                        \
+        M2(TessellateWedges, Convex)                 \
+        M2(TessellateWedges, EvenOdd)                \
+        M2(TessellateWedges, Winding)                \
+        M2(Vertices,         Tris)                   \
+        M2(Vertices,         TrisColor)              \
+        M2(Vertices,         TrisTexCoords)          \
+        M2(Vertices,         TrisColorTexCoords)     \
+        M2(Vertices,         Tristrips)              \
+        M2(Vertices,         TristripsColor)         \
+        M2(Vertices,         TristripsTexCoords)     \
+        M2(Vertices,         TristripsColorTexCoords)\
+        M2(Mesh,             Tri)                    \
+        M2(Mesh,             Tristrips)
 
 /**
  * The actual technique for rasterizing a high-level draw recorded in a DrawList is handled by a
@@ -146,7 +150,7 @@ public:
 
     // Emits code to set up textures and samplers. Should only be defined if hasTextures is true.
     virtual std::string texturesAndSamplersSkSL(const ResourceBindingRequirements&,
-                                                int* nextBindingIndex) const {
+                                                 int* nextBindingIndex) const {
         return "";
     }
 
@@ -160,6 +164,10 @@ public:
     // is true. When implemented, the returned SkSL fragment should write its color into a
     // 'half4 primitiveColor' variable (defined in the calling code).
     virtual std::string fragmentColorSkSL(const RootNodesInfo&) const { return ""; }
+
+    // Returns a pointer to the name of the local coordinates variable to use for
+    // shader sampling if non-null.
+    virtual const char* fragmentColorSkSLLocalCoordsVariable() const { return nullptr; }
 
     // Indicates whether this RenderStep's uniforms are referenced in its fragment shader code.
     // If not, its uniforms can be omitted from the fragment shader entirely.
@@ -195,9 +203,9 @@ public:
 
     Coverage coverage() const { return RenderStep::GetCoverage(fFlags); }
 
-    PrimitiveType primitiveType()    const { return fPrimitiveType;    }
-    size_t        staticDataStride() const { return fStaticDataStride; }
-    size_t        appendDataStride() const { return fAppendDataStride; }
+    PrimitiveType  primitiveType()    const { return fPrimitiveType;    }
+    virtual size_t staticDataStride(const DrawParams& params) const { return fStaticDataStride; }
+    size_t         appendDataStride() const { return fAppendDataStride; }
 
     size_t numUniforms()         const { return fUniforms.size();    }
     int    uniformAlignment()    const { return fUniformAlignment;   }
@@ -233,7 +241,7 @@ public:
     enum class RenderStepID : uint32_t {
         SKGPU_RENDERSTEP_TYPES(ENUM1, ENUM2)
 
-        kLast = kVertices_TristripsColorTexCoords,
+        kLast = kMesh_Tristrips,
     };
 #undef ENUM1
 #undef ENUM2
@@ -279,12 +287,13 @@ SK_DECL_BITMASK_OPS_FRIENDS(Flags)
     RenderStep(Layout layout,
                RenderStepID renderStepID,
                SkEnumBitMask<Flags> flags,
-               std::initializer_list<Uniform> uniforms,
+               std::vector<Uniform> uniforms,
                PrimitiveType primitiveType,
                DepthStencilSettings depthStencilSettings,
                SkSpan<const Attribute> staticAttrs,
                SkSpan<const Attribute> appendAttrs,
                SkSpan<const Varying> varyings = {});
+
 
 private:
     friend class Renderer; // for Flags
