@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkTypes.h"
 #include "include/private/SkDebug.h"
 #include "src/core/SkBlockAllocator.h"
@@ -297,7 +298,7 @@ DEF_TEST(SkBlockAllocatorRewind, r) {
 DEF_TEST(SkBlockAllocatorGrowthPolicy, r) {
     static constexpr int kInitSize = 128;
     static constexpr int kBlockCount = 5;
-    static constexpr size_t kExpectedSizes[SkBlockAllocator::kGrowthPolicyCount][kBlockCount] = {
+    static constexpr std::array<std::array<size_t, kBlockCount>, SkBlockAllocator::kGrowthPolicyCount> kExpectedSizes = {{
         // kFixed -> kInitSize per block
         { kInitSize, kInitSize, kInitSize, kInitSize, kInitSize },
         // kLinear -> (block ct + 1) * kInitSize for next block
@@ -306,7 +307,7 @@ DEF_TEST(SkBlockAllocatorGrowthPolicy, r) {
         { kInitSize, kInitSize, 2 * kInitSize, 3 * kInitSize, 5 * kInitSize },
         // kExponential -> 1, 2, 4, 8, 16 * kInitSize for the blocks
         { kInitSize, 2 * kInitSize, 4 * kInitSize, 8 * kInitSize, 16 * kInitSize },
-    };
+    }};
 
     for (int gp = 0; gp < SkBlockAllocator::kGrowthPolicyCount; ++gp) {
         SkSBlockAllocator<kInitSize> pool{(GrowthPolicy) gp};

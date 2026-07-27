@@ -24,11 +24,11 @@ struct lineCubic {
     SkDLine line;
 };
 
-static lineCubic failLineCubicTests[] = {
+static auto failLineCubicTests = std::to_array<lineCubic>({
     {{{{37.5273438,-1.44140625}, {37.8736992,-1.69921875}, {38.1640625,-2.140625},
             {38.3984375,-2.765625}}},
             {{{40.625,-5.7890625}, {37.7109375,1.3515625}}}},
-};
+});
 
 static const size_t failLineCubicTests_count = std::size(failLineCubicTests);
 
@@ -58,7 +58,7 @@ static void testFail(skiatest::Reporter* reporter, int iIndex) {
     }
 }
 
-static lineCubic lineCubicTests[] = {
+static auto lineCubicTests = std::to_array<lineCubic>({
     {{{{0, 6}, {1.0851458311080933, 4.3722810745239258}, {1.5815209150314331, 3.038947582244873}, {1.9683018922805786, 1.9999997615814209}}},
      {{{3,2}, {1,2}}}},
 
@@ -102,7 +102,7 @@ static lineCubic lineCubicTests[] = {
             {{{286.69512939453125,291}, {229.30485534667969,561}}}},
     {{{{1, 2}, {2, 6}, {2, 0}, {1, 0}}}, {{{1, 0}, {1, 2}}}},
     {{{{0, 0}, {0, 1}, {0, 1}, {1, 1}}}, {{{0, 1}, {1, 0}}}},
-};
+});
 
 static const size_t lineCubicTests_count = std::size(lineCubicTests);
 

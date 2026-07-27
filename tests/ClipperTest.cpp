@@ -87,7 +87,7 @@ static void test_intersectline(skiatest::Reporter* reporter) {
     size_t i;
     SkPoint dst[2];
 
-    static const SkPoint gEmpty[] = {
+    static const auto gEmpty = std::to_array<SkPoint>({
         // sides
         { L, CY }, { L - 10, CY },
         { R, CY }, { R + 10, CY },
@@ -98,7 +98,7 @@ static void test_intersectline(skiatest::Reporter* reporter) {
         { L, B }, { L - 10, B + 10 },
         { R, T }, { R + 10, T - 10 },
         { R, B }, { R + 10, B + 10 },
-    };
+    });
     for (i = 0; i < std::size(gEmpty); i += 2) {
         bool valid = SkLineClipper::IntersectLine(&gEmpty[i], gR, dst);
         if (valid) {
@@ -108,7 +108,7 @@ static void test_intersectline(skiatest::Reporter* reporter) {
         REPORTER_ASSERT(reporter, !valid);
     }
 
-    static const SkPoint gFull[] = {
+    static const auto gFull = std::to_array<SkPoint>({
         // diagonals, chords
         { L, T }, { R, B },
         { L, B }, { R, T },
@@ -123,7 +123,7 @@ static void test_intersectline(skiatest::Reporter* reporter) {
         { R, T }, { R, B },
         { L, T }, { R, T },
         { L, B }, { R, B },
-    };
+    });
     for (i = 0; i < std::size(gFull); i += 2) {
         bool valid = SkLineClipper::IntersectLine(&gFull[i], gR, dst);
         if (!valid || 0 != memcmp(&gFull[i], dst, sizeof(dst))) {
@@ -133,7 +133,7 @@ static void test_intersectline(skiatest::Reporter* reporter) {
         REPORTER_ASSERT(reporter, valid && !memcmp(&gFull[i], dst, sizeof(dst)));
     }
 
-    static const SkPoint gPartial[] = {
+    static const auto gPartial = std::to_array<SkPoint>({
         { L - 10, CY }, { CX, CY }, { L, CY }, { CX, CY },
         { CX, T - 10 }, { CX, CY }, { CX, T }, { CX, CY },
         { R + 10, CY }, { CX, CY }, { R, CY }, { CX, CY },
@@ -143,7 +143,7 @@ static void test_intersectline(skiatest::Reporter* reporter) {
         { R, T - 10 }, { R, B + 10 }, { R, T }, { R, B },
         { L - 10, T }, { R + 10, T }, { L, T }, { R, T },
         { L - 10, B }, { R + 10, B }, { L, B }, { R, B },
-    };
+    });
     for (i = 0; i < std::size(gPartial); i += 4) {
         bool valid = SkLineClipper::IntersectLine(&gPartial[i], gR, dst);
         if (!valid || 0 != memcmp(&gPartial[i+2], dst, sizeof(dst))) {

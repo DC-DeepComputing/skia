@@ -5,10 +5,12 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/gpu/ganesh/GrYUVABackendTextures.h"
 
 #include "include/core/SkColor.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkSpan.h"
 #include "include/private/SkDebug.h"
 #include "src/core/SkYUVAInfoLocation.h"
 
@@ -29,7 +31,7 @@ static int num_channels(const GrBackendFormat& format) {
 }
 
 GrYUVABackendTextureInfo::GrYUVABackendTextureInfo(const SkYUVAInfo& yuvaInfo,
-                                                   const GrBackendFormat formats[kMaxPlanes],
+                                                   SkSpan<const GrBackendFormat> formats,
                                                    skgpu::Mipmapped mipmapped,
                                                    GrSurfaceOrigin origin)
         : fYUVAInfo(yuvaInfo), fMipmapped(mipmapped), fTextureOrigin(origin) {
@@ -84,13 +86,13 @@ SkYUVAInfo::YUVALocations GrYUVABackendTextureInfo::toYUVALocations() const {
 
 GrYUVABackendTextures::GrYUVABackendTextures(
         const SkYUVAInfo& yuvaInfo,
-        const GrBackendTexture textures[SkYUVAInfo::kMaxPlanes],
+        SkSpan<const GrBackendTexture> textures,
         GrSurfaceOrigin textureOrigin)
         : fYUVAInfo(yuvaInfo), fTextureOrigin(textureOrigin) {
     if (!fYUVAInfo.isValid()) {
         return;
     }
-    SkISize planeDimensions[SkYUVAInfo::kMaxPlanes];
+    std::array<SkISize, SkYUVAInfo::kMaxPlanes> planeDimensions;
     int numPlanes = yuvaInfo.planeDimensions(planeDimensions);
     for (int i = 0; i < numPlanes; ++i) {
         int numRequiredChannels = fYUVAInfo.numChannelsInPlane(i);

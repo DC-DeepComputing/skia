@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "bench/Benchmark.h"
 
 #include "include/core/SkCanvas.h"
@@ -45,7 +46,7 @@ public:
         };
 
         constexpr int kNumColorChoices = 4;
-        SkColor4f color_choices[kNumColorChoices] = {
+        std::array<SkColor4f, kNumColorChoices> color_choices ={
             SkColors::kRed,
             SkColors::kGreen,
             SkColors::kBlue,

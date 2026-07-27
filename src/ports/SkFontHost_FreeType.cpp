@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkBBHFactory.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -2258,10 +2259,10 @@ bool SkFontScanner_FreeType::scanInstance(SkStreamAsset* stream,
     }
 
     if (!hasOs2 && !hasAxes && 0 == FT_Get_PS_Font_Info(face.get(), &psFontInfo) && psFontInfo.weight) {
-        static const struct {
+        struct CommonWeights{
             char const * const name;
             int const weight;
-        } commonWeights [] = {
+        }; static const auto commonWeights = std::to_array<CommonWeights>({
                 // There are probably more common names, but these are known to exist.
                 { "all", SkFontStyle::kNormal_Weight }, // Multiple Masters usually default to normal.
                 { "black", SkFontStyle::kBlack_Weight },
@@ -2288,7 +2289,7 @@ bool SkFontScanner_FreeType::scanInstance(SkStreamAsset* stream,
                 { "ultrabold", SkFontStyle::kExtraBold_Weight },
                 { "ultraheavy", SkFontStyle::kExtraBlack_Weight },
                 { "ultralight", SkFontStyle::kExtraLight_Weight },
-        };
+        });
         int const index = SkStrLCSearch(&commonWeights[0].name, std::size(commonWeights),
                                         psFontInfo.weight, sizeof(commonWeights[0]));
         if (index >= 0) {

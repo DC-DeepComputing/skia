@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 
+#include <array>
+#include "include/core/SkSpan.h"
 #include "include/gpu/ganesh/SkImageGanesh.h"
 
 #include "include/core/SkAlphaType.h"
@@ -489,7 +491,7 @@ sk_sp<SkImage> TextureFromYUVATextures(GrRecordingContext* context,
 
     GrProxyProvider* proxyProvider = context->priv().proxyProvider();
     int numPlanes = yuvaTextures.yuvaInfo().numPlanes();
-    sk_sp<GrSurfaceProxy> proxies[SkYUVAInfo::kMaxPlanes];
+    std::array<sk_sp<GrSurfaceProxy>, SkYUVAInfo::kMaxPlanes> proxies;
     for (int plane = 0; plane < numPlanes; ++plane) {
         proxies[plane] = proxyProvider->wrapBackendTexture(yuvaTextures.texture(plane),
                                                            kBorrow_GrWrapOwnership,
@@ -552,7 +554,7 @@ sk_sp<SkImage> TextureFromYUVAPixmaps(GrRecordingContext* context,
                 std::min(static_cast<int>(pixmaps.yuvaInfo().width() * scale), maxTextureSize),
                 std::min(static_cast<int>(pixmaps.yuvaInfo().height() * scale), maxTextureSize)};
         SkYUVAInfo newInfo = pixmaps.yuvaInfo().makeDimensions(newDimensions);
-        SkYUVAPixmapInfo newPixmapInfo(newInfo, pixmaps.dataType(), /*row bytes*/ nullptr);
+        SkYUVAPixmapInfo newPixmapInfo(newInfo, pixmaps.dataType(), /*row bytes*/ {});
         tempPixmaps = SkYUVAPixmaps::Allocate(newPixmapInfo);
         SkSamplingOptions sampling(SkFilterMode::kLinear);
         if (!tempPixmaps.isValid()) {
@@ -567,8 +569,8 @@ sk_sp<SkImage> TextureFromYUVAPixmaps(GrRecordingContext* context,
     }
 
     // Convert to texture proxies.
-    GrSurfaceProxyView views[SkYUVAInfo::kMaxPlanes];
-    GrColorType pixmapColorTypes[SkYUVAInfo::kMaxPlanes];
+    std::array<GrSurfaceProxyView, SkYUVAInfo::kMaxPlanes> views;
+    std::array<GrColorType, SkYUVAInfo::kMaxPlanes> pixmapColorTypes;
     for (int i = 0; i < numPlanes; ++i) {
         // Turn the pixmap into a GrTextureProxy
         std::optional<GrMippedBitmap> bitmap = GrMippedBitmap::Make(pixmapsToUpload->plane(i));
@@ -596,18 +598,18 @@ sk_sp<SkImage> PromiseTextureFromYUVA(sk_sp<GrContextThreadSafeProxy> threadSafe
                                       sk_sp<SkColorSpace> imageColorSpace,
                                       PromiseImageTextureFulfillProc textureFulfillProc,
                                       PromiseImageTextureReleaseProc textureReleaseProc,
-                                      PromiseImageTextureContext textureContexts[]) {
+                                      SkSpan<PromiseImageTextureContext> textureContexts) {
     if (!backendTextureInfo.isValid()) {
         return nullptr;
     }
 
-    SkISize planeDimensions[SkYUVAInfo::kMaxPlanes];
+    std::array<SkISize, SkYUVAInfo::kMaxPlanes> planeDimensions;
     int n = backendTextureInfo.yuvaInfo().planeDimensions(planeDimensions);
 
     // Our contract is that we will always call the release proc even on failure.
     // We use the helper to convey the context, so we need to ensure make doesn't fail.
     textureReleaseProc = textureReleaseProc ? textureReleaseProc : [](void*) {};
-    sk_sp<skgpu::RefCntedCallback> releaseHelpers[4];
+    std::array<sk_sp<skgpu::RefCntedCallback>, 4> releaseHelpers;
     for (int i = 0; i < n; ++i) {
         releaseHelpers[i] = skgpu::RefCntedCallback::Make(textureReleaseProc, textureContexts[i]);
     }
@@ -626,7 +628,7 @@ sk_sp<SkImage> PromiseTextureFromYUVA(sk_sp<GrContextThreadSafeProxy> threadSafe
     }
 
     // Make a lazy proxy for each plane
-    sk_sp<GrSurfaceProxy> proxies[4];
+    std::array<sk_sp<GrSurfaceProxy>, 4> proxies;
     for (int i = 0; i < n; ++i) {
         proxies[i] =
                 SkImage_GaneshBase::MakePromiseImageLazyProxy(threadSafeProxy.get(),

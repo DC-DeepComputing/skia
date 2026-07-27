@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColorSpace.h"
@@ -60,7 +61,7 @@ private:
 };
 
 using MakerT = sk_sp<SkImage>(*)(SkCanvas*, const SkImageInfo&);
-const MakerT makers[] = {
+const auto makers = std::to_array<MakerT>({
         // SkImage_Raster
         [](SkCanvas*, const SkImageInfo& info) -> sk_sp<SkImage> {
             return make_mask(SkSurfaces::Raster(info));
@@ -86,7 +87,7 @@ const MakerT makers[] = {
         [](SkCanvas*, const SkImageInfo& info) -> sk_sp<SkImage> {
             return SkImages::DeferredFromGenerator(std::make_unique<MaskGenerator>(info));
         },
-};
+});
 
 }  // namespace
 

@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 #ifndef SkCubics_DEFINED
+#include "include/core/SkSpan.h"
+
 #define SkCubics_DEFINED
 
 #include <cmath>
@@ -30,7 +32,7 @@ public:
      * and returns how many roots that was.
      */
     static int RootsValidT(double A, double B, double C, double D,
-                           double solution[3]);
+                           SkSpan<double> solution);
 
 
     /**
@@ -42,7 +44,7 @@ public:
      * where floating point error gets too big.
      */
     static int BinarySearchRootsValidT(double A, double B, double C, double D,
-                                       double solution[3]);
+                                       SkSpan<double> solution);
 
     /**
      * Evaluates the cubic function with the 4 provided coefficients and the

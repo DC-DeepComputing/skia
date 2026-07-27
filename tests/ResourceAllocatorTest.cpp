@@ -274,7 +274,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ResourceAllocatorTest,
     // Non-RT GrSurfaces are never recycled on some platforms.
     bool kConditionallyShare = caps->reuseScratchTextures();
 
-    static const TestCase overlappingTests[] = {
+    static const auto overlappingTests = std::to_array<TestCase>({
         // Two proxies with overlapping intervals and compatible descriptors should never share
         // RT version
         {{64, kRT, kRGBA, kA, 1, kNotB, kDeferred},
@@ -284,7 +284,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ResourceAllocatorTest,
         {{64, kNotRT, kRGBA, kA, 1, kNotB, kDeferred},
          {64, kNotRT, kRGBA, kA, 1, kNotB, kDeferred},
          kDontShare},
-    };
+    });
 
     for (size_t i = 0; i < std::size(overlappingTests); i++) {
         const TestCase& test = overlappingTests[i];
@@ -301,7 +301,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ResourceAllocatorTest,
 
     // This cannot be made static as some of the members depend on non static variables like
     // kConditionallyShare, k2, and k4.
-    const TestCase nonOverlappingTests[] = {
+    const auto nonOverlappingTests = std::to_array<TestCase>({
         // Two non-overlapping intervals w/ compatible proxies should share
         // both same size & approx
         {{64, kRT, kRGBA, kA, 1, kNotB, kDeferred},
@@ -355,7 +355,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ResourceAllocatorTest,
         {{64, kNotRT, kRGBA, kE, 1, kNotB, kBackend},
          {64, kNotRT, kRGBA, kE, 1, kNotB, kDeferred},
          kDontShare}
-    };
+    ,});
 
     for (size_t i = 0; i < std::size(nonOverlappingTests); i++) {
         const TestCase& test = nonOverlappingTests[i];
@@ -486,7 +486,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ResourceAllocatorMemoryBudgetTest,
     const ProxyParams kProxy32Instantiated = {32, kRT, kRGBA, kE, 1, kB,    kInstantiated};
     const ProxyParams kProxy64Instantiated = {64, kRT, kRGBA, kE, 1, kB,    kInstantiated};
 
-    TestCase tests[] = {
+    auto tests = std::to_array<TestCase>({
         {"empty DAG", kUnder, 0, {}, {}, {}},
         {"unbudgeted", kUnder, 0, {}, {}, {{kProxy64NotBudgeted, 0, 2}}},
         {"basic", kUnder, kRGBA64Bytes, {}, {}, {{kProxy64, 0, 2}}},
@@ -550,7 +550,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ResourceAllocatorMemoryBudgetTest,
             {
                 {kProxy64FullyLazy, 0, 2}
             }},
-    };
+    });
     SkString match("");
     for (size_t i = 0; i < std::size(tests); i++) {
         TestCase& test = tests[i];

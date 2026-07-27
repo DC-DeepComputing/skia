@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/codec/SkEncodedImageFormat.h"
 #include "include/core/SkBitmap.h"
@@ -104,12 +105,12 @@ static sk_sp<SkImage> make_encode_gen(GrRecordingContext* ctx,
     return SkImages::DeferredFromEncodedData(std::move(encoded));
 }
 
-const ImageMakerProc gProcs[] = {
+const auto gProcs = std::to_array<ImageMakerProc>({
     make_raster,
     make_texture,
     make_pict_gen,
     make_encode_gen,
-};
+});
 
 /*
  *  Exercise drawing pictures inside an image, showing that the image version is pixelated

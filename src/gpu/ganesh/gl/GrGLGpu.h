@@ -750,7 +750,7 @@ private:
         GrGLVertexArray*     fCoreProfileVertexArray;
     } fHWVertexArrayState;
 
-    struct {
+    struct FHWBufferState{
         GrGLenum                fGLTarget;
         GrGpuResource::UniqueID fBoundBufferUniqueID;
         bool                    fBufferZeroKnownBound;
@@ -759,7 +759,7 @@ private:
             fBoundBufferUniqueID.makeInvalid();
             fBufferZeroKnownBound = false;
         }
-    }                                       fHWBufferState[kGrGpuBufferTypeCount];
+    }; std::array<FHWBufferState, kGrGpuBufferTypeCount> fHWBufferState;
 
     auto* hwBufferState(GrGpuBufferType type) {
         unsigned typeAsUInt = static_cast<unsigned>(type);
@@ -825,7 +825,7 @@ private:
             GrGpuResource::UniqueID fBoundResourceID;
             bool fHasBeenModified = false;
         };
-        TargetBinding fTargetBindings[3];
+        std::array<TargetBinding, 3> fTargetBindings;
     };
     skia_private::AutoTArray<TextureUnitBindings> fHWTextureUnitBindings;
 
@@ -834,20 +834,20 @@ private:
     GrGLuint fBoundDrawFramebuffer = 0;
 
     /** IDs for copy surface program. (3 sampler types) */
-    struct {
+    struct FCopyPrograms{
         GrGLuint    fProgram = 0;
         GrGLint     fTextureUniform = 0;
         GrGLint     fTexCoordXformUniform = 0;
         GrGLint     fPosXformUniform = 0;
-    }                                       fCopyPrograms[3];
+    }; std::array<FCopyPrograms, 3> fCopyPrograms;
     sk_sp<GrGLBuffer>                       fCopyProgramArrayBuffer;
 
     /** IDs for texture mipmap program. (4 filter configurations) */
-    struct {
+    struct FMipmapPrograms{
         GrGLuint    fProgram = 0;
         GrGLint     fTextureUniform = 0;
         GrGLint     fTexCoordXformUniform = 0;
-    }                                       fMipmapPrograms[4];
+    }; std::array<FMipmapPrograms, 4> fMipmapPrograms;
     sk_sp<GrGLBuffer>                       fMipmapProgramArrayBuffer;
 
     static int TextureToCopyProgramIdx(GrTexture* texture);

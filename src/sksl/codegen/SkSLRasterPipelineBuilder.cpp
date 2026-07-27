@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "src/sksl/codegen/SkSLRasterPipelineBuilder.h"
 #include <cstdint>
 #include <optional>
@@ -1147,7 +1148,7 @@ void Builder::swizzle(int consumedSlots, SkSpan<const int8_t> components) {
     SkASSERT(std::all_of(components.begin(), components.end(), [](int8_t e){ return e <= 0xF; }));
 
     // Make a local copy of the element array.
-    int8_t elements[16] = {};
+    std::array<int8_t, 16> elements ={};
     std::copy(components.begin(), components.end(), std::begin(elements));
 
     while (numElements > 0) {
@@ -1179,7 +1180,7 @@ void Builder::swizzle(int consumedSlots, SkSpan<const int8_t> components) {
         // We can fit everything into a little swizzle.
         int op = (int)BuilderOp::swizzle_1 + numElements - 1;
         this->appendInstruction((BuilderOp)op, {}, consumedSlots,
-                                pack_nybbles(SkSpan(elements, numElements)));
+                                pack_nybbles(SkSpan(elements.data(), numElements)));
         return;
     }
 
@@ -1193,31 +1194,31 @@ void Builder::swizzle(int consumedSlots, SkSpan<const int8_t> components) {
 
 void Builder::transpose(int columns, int rows) {
     // Transposes a matrix of size CxR on the stack (into a matrix of size RxC).
-    int8_t elements[16] = {};
+    std::array<int8_t, 16> elements ={};
     size_t index = 0;
     for (int r = 0; r < rows; ++r) {
         for (int c = 0; c < columns; ++c) {
             elements[index++] = (c * rows) + r;
         }
     }
-    this->swizzle(/*consumedSlots=*/columns * rows, SkSpan(elements, index));
+    this->swizzle(/*consumedSlots=*/columns * rows, SkSpan(elements.data(), index));
 }
 
 void Builder::diagonal_matrix(int columns, int rows) {
     // Generates a CxR diagonal matrix from the top two scalars on the stack.
-    int8_t elements[16] = {};
+    std::array<int8_t, 16> elements ={};
     size_t index = 0;
     for (int c = 0; c < columns; ++c) {
         for (int r = 0; r < rows; ++r) {
             elements[index++] = (c == r) ? 1 : 0;
         }
     }
-    this->swizzle(/*consumedSlots=*/2, SkSpan(elements, index));
+    this->swizzle(/*consumedSlots=*/2, SkSpan(elements.data(), index));
 }
 
 void Builder::matrix_resize(int origColumns, int origRows, int newColumns, int newRows) {
     // Resizes a CxR matrix at the top of the stack to C'xR'.
-    int8_t elements[16] = {};
+    std::array<int8_t, 16> elements ={};
     size_t index = 0;
 
     size_t consumedSlots = origColumns * origRows;
@@ -1248,7 +1249,7 @@ void Builder::matrix_resize(int origColumns, int origRows, int newColumns, int n
             }
         }
     }
-    this->swizzle(consumedSlots, SkSpan(elements, index));
+    this->swizzle(consumedSlots, SkSpan(elements.data(), index));
 }
 
 void Builder::matrix_multiply(int leftColumns, int leftRows, int rightColumns, int rightRows) {

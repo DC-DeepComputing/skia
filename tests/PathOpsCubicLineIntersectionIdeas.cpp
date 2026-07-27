@@ -19,11 +19,11 @@
 
 static bool gPathOpsCubicLineIntersectionIdeasVerbose = false;
 
-static struct CubicLineFailures {
+struct CubicLineFailures{
     CubicPts c;
     double t;
     SkDPoint p;
-} cubicLineFailures[] = {
+}; static auto cubicLineFailures = std::to_array<CubicLineFailures>({
     {{{{-164.3726806640625, 36.826904296875}, {-189.045166015625, -953.2220458984375},
         {926.505859375, -897.36175537109375}, {-139.33489990234375, 204.40771484375}}},
         0.37329583, {107.54935269006289, -632.13736293162208}},
@@ -33,7 +33,7 @@ static struct CubicLineFailures {
     {{{{-580.6834716796875, -127.044921875}, {-872.8983154296875, -945.54302978515625},
         {260.8092041015625, -909.34991455078125}, {-976.2125244140625, -18.46551513671875}}},
         0.578826774, {-390.17910153915489, -687.21144412296007}},
-};
+});
 
 int cubicLineFailuresCount = (int) std::size(cubicLineFailures);
 
@@ -142,7 +142,7 @@ DEF_TEST(PathOpsCubicLineRoots, reporter) {
         return;
     }
     SkRandom ran;
-    double worstStep[256] = {0};
+    std::array<double, 256> worstStep ={0};
     int errors = 0;
     int iters = 0;
     double smallestR2 = 0;

@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkCanvas.h"
@@ -88,7 +89,7 @@ protected:
     }
 
     void drawColumn(SkCanvas* canvas, SkColor backgroundColor, SkColor textColor, bool useGrad) {
-        const SkBlendMode gModes[] = {
+        const auto gModes = std::to_array<SkBlendMode>({
             SkBlendMode::kClear,
             SkBlendMode::kSrc,
             SkBlendMode::kDst,
@@ -118,7 +119,7 @@ protected:
             SkBlendMode::kSaturation,
             SkBlendMode::kColor,
             SkBlendMode::kLuminosity,
-        };
+        });
         // Draw background rect
         SkPaint backgroundPaint;
         backgroundPaint.setColor(backgroundColor);

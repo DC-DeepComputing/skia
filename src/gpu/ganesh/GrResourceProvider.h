@@ -6,6 +6,8 @@
  */
 
 #ifndef GrResourceProvider_DEFINED
+#include "include/core/SkSpan.h"
+
 #define GrResourceProvider_DEFINED
 
 #include "include/core/SkRefCnt.h"
@@ -251,7 +253,7 @@ public:
      *
      * @return The index buffer if successful, otherwise nullptr.
      */
-    sk_sp<const GrGpuBuffer> findOrCreatePatternedIndexBuffer(const uint16_t* pattern,
+    sk_sp<const GrGpuBuffer> findOrCreatePatternedIndexBuffer(SkSpan<const uint16_t>pattern,
                                                               int patternSize,
                                                               int reps,
                                                               int vertCount,
@@ -429,7 +431,7 @@ private:
         return !SkToBool(fCache);
     }
 
-    sk_sp<const GrGpuBuffer> createPatternedIndexBuffer(const uint16_t* pattern,
+    sk_sp<const GrGpuBuffer> createPatternedIndexBuffer(SkSpan<const uint16_t>pattern,
                                                         int patternSize,
                                                         int reps,
                                                         int vertCount,

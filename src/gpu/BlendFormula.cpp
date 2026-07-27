@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "src/gpu/BlendFormula.h"
 
 #include "include/core/SkBlendMode.h"
@@ -179,7 +180,7 @@ constexpr BlendFormula gBlendTable[2][2][(int)SkBlendMode::kLastCoeffMode + 1] =
 // blending) is an advantage we change the blend mode to src before getting the blend formula from
 // this table.
 
-constexpr BlendFormula gLCDBlendTable[(int)SkBlendMode::kLastCoeffMode + 1] = {
+constexpr std::array<BlendFormula, (int)SkBlendMode::kLastCoeffMode + 1> gLCDBlendTable ={
     /* clear */      MakeCoverageSrcCoeffZeroFormula(BlendFormula::kCoverage_OutputType),
     /* src */        MakeCoverageFormula(BlendFormula::kCoverage_OutputType,
                                          skgpu::BlendCoeff::kOne),

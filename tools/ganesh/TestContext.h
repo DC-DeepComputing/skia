@@ -7,6 +7,8 @@
  */
 
 #ifndef TestContext_DEFINED
+#include <array>
+
 #define TestContext_DEFINED
 
 #include "include/core/SkRefCnt.h"
@@ -108,7 +110,7 @@ private:
         kMaxFrameLag = 3
     };
 
-    sk_sp<FlushFinishTracker> fFinishTrackers[kMaxFrameLag - 1];
+    std::array<sk_sp<FlushFinishTracker>, kMaxFrameLag - 1> fFinishTrackers;
     int fCurrentFlushIdx = 0;
 
     using INHERITED = SkNoncopyable;

@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkBlendMode.h"
@@ -70,7 +71,7 @@ static void test4(SkCanvas* canvas) {
     canvas->drawPath(path.detach(), paint);
 }
 
-constexpr SkBlendMode gModes[] = {
+constexpr auto gModes = std::to_array<SkBlendMode>({
     SkBlendMode::kClear,
     SkBlendMode::kSrc,
     SkBlendMode::kDst,
@@ -83,7 +84,7 @@ constexpr SkBlendMode gModes[] = {
     SkBlendMode::kSrcATop,
     SkBlendMode::kDstATop,
     SkBlendMode::kXor,
-};
+});
 
 const int gWidth = 64;
 const int gHeight = 64;
@@ -133,7 +134,7 @@ DEF_SIMPLE_GM(aarectmodes, canvas, 640, 480) {
                 test4(canvas);
             }
             const SkRect bounds = SkRect::MakeWH(W, H);
-            constexpr SkAlpha gAlphaValue[] = { 0xFF, 0x88, 0x88 };
+            constexpr auto gAlphaValue = std::to_array<SkAlpha>({ 0xFF, 0x88, 0x88 });
 
             canvas->translate(SkIntToScalar(4), SkIntToScalar(4));
 

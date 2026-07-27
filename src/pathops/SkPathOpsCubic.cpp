@@ -4,8 +4,10 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include <array>
 #include "src/pathops/SkPathOpsCubic.h"
 
+#include "include/core/SkSpan.h"
 #include "include/private/SkFloatingPoint.h"
 #include "include/private/SkTPin.h"
 #include "include/private/SkTo.h"
@@ -157,7 +159,7 @@ bool SkDCubic::endsAreExtremaInXOrY() const {
 */
 bool SkDCubic::hullIntersects(const SkDPoint* pts, int ptCount, bool* isLinear) const {
     bool linear = true;
-    char hullOrder[4];
+    std::array<char, 4> hullOrder;
     int hullCount = convexHull(hullOrder);
     int end1 = hullOrder[0];
     int hullIndex = 0;
@@ -251,7 +253,7 @@ static double derivative_at_t(const double* src, double t) {
     return 3 * ((b - a) * one_t * one_t + 2 * (c - b) * t * one_t + (d - c) * t * t);
 }
 
-int SkDCubic::ComplexBreak(const SkPoint pointsPtr[4], SkScalar* t) {
+int SkDCubic::ComplexBreak(const SkPoint pointsPtr[4], SkSpan<SkScalar>t) {
     SkDCubic cubic;
     cubic.set(pointsPtr);
     if (cubic.monotonicInX() && cubic.monotonicInY()) {

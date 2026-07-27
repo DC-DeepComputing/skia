@@ -17,7 +17,7 @@
 #include <cstddef>
 #include <limits>
 
-static const SkDPoint tests[] = {
+static const auto tests = std::to_array<SkDPoint>({
     {0, 0},
     {1, 0},
     {0, 1},
@@ -25,7 +25,7 @@ static const SkDPoint tests[] = {
     {1, 2},
     {1, 1},
     {2, 2}
-};
+,});
 
 static const size_t tests_count = std::size(tests);
 
