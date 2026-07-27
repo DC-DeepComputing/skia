@@ -194,9 +194,11 @@ void MtlCaps::initFormatTable(const id<MTLDevice> device) {
             supportedUsage |= TextureUsage::kCopySrc | TextureUsage::kCopyDst;
         }
 
-        // Graphite assumes you can filter in a shader (not just read texels)
         if (features & MTLFeatureFlag::Filter) {
             supportedUsage |= TextureUsage::kSample;
+        }
+        if (features != MTLFeatureFlag::NotAvailable) {
+            supportedUsage |= TextureUsage::kUnfilterableSample;
         }
 
         // Graphite requires textures to be writable to be used for compute storage
@@ -241,7 +243,15 @@ std::pair<SkEnumBitMask<TextureUsage>, Tiling> MtlCaps::getTextureUsage(
     // Other than rendering, every other usage is blocked if it's framebuffer-only
     if (!mtlInfo.fFramebufferOnly) {
         if (mtlInfo.fUsage & MTLTextureUsageShaderRead) {
-            usage |= TextureUsage::kSample;
+            TextureFormat format = TextureInfoPriv::ViewFormat(info);
+            MTLPixelFormat mtlFormat = TextureFormatToMTLPixelFormat(format);
+            SkEnumBitMask<MTLFeatureFlag> features = MTLPixelFormatSupport(fGPUFamily, mtlFormat);
+            if (features & MTLFeatureFlag::Filter) {
+                usage |= TextureUsage::kSample;
+            }
+            if (features != MTLFeatureFlag::NotAvailable) {
+                usage |= TextureUsage::kUnfilterableSample;
+            }
 
             if (mtlInfo.fUsage & MTLTextureUsageShaderWrite) {
                 usage |= TextureUsage::kStorage;
@@ -271,7 +281,7 @@ TextureInfo MtlCaps::onGetDefaultTextureInfo(SkEnumBitMask<TextureUsage> usage,
     MTLStorageMode storageMode = MTLStorageModePrivate;
     MTLTextureUsage mtlUsage = MTLTextureUsageUnknown;
 
-    if (usage & TextureUsage::kSample) {
+    if (usage & (TextureUsage::kSample | TextureUsage::kUnfilterableSample)) {
         mtlUsage |= MTLTextureUsageShaderRead;
     }
     if (usage & TextureUsage::kStorage) {

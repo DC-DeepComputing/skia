@@ -137,9 +137,7 @@ std::unique_ptr<DrawPass> DrawList::snapDrawPass(Recorder* recorder,
     const bool useStorageBuffers = caps->storageBufferSupport();
     UniformTracker uniformTracker(useStorageBuffers);
 
-    if (useStorageBuffers) {
-        fStorageContext.finalizeCacheStorageData();
-    }
+    fStorageContext.finalizeCacheStorageData();
 
     // TODO(b/372953722): Remove this forced binding command behavior once dst copies are always
     // bound separately from the rest of the textures.
@@ -237,14 +235,16 @@ std::unique_ptr<DrawPass> DrawList::snapDrawPass(Recorder* recorder,
     // Finish recording draw calls for any collected data still pending at end of the loop
     drawWriter.flush();
 
-    if (useStorageBuffers) {
-        drawPass->fStorageBufferInfo =
-                recorder->priv().storageBufferManager()->finalize(bufferMgr, &fStorageContext);
-    }
-
     drawPass->fBounds = fPassBounds.roundOut().asSkIRect();
     drawPass->fPipelineDescs   = fPipelineCache.detach();
     drawPass->fSampledTextures = fTextureDataCache.detachTextures();
+
+    drawPass->fStorageBufferInfo =
+            recorder->priv().storageBufferManager()->finalize(bufferMgr,
+                                                               &fStorageContext,
+                                                               recorder,
+                                                               drawPass.get());
+
 
     TRACE_EVENT_INSTANT2_ALWAYS("skia.gpu",
                                 "DrawPass Stats",

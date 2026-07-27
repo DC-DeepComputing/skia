@@ -216,13 +216,14 @@ enum class Tiling : uint8_t {
 // Coarse ways in which a specific texture can be used, or the theoretic set of usages a texture
 // format supports.
 enum class TextureUsage : uint8_t {
-    kRender   = 0x01, // Can be used as a rendering attachment
-    kMSRTSS   = 0x02, // Can be rendered with MSAA-render-to-single-sampled functionality
-    kSample   = 0x04, // Can be sampled within a shader
-    kCopySrc  = 0x08, // Can be copied into another texture or buffer
-    kCopyDst  = 0x10, // Can be the copy target of another texture or buffer
-    kStorage  = 0x20, // Can be read and written to in a compute pipeline
-    kHostCopy = 0x40, // Can be written to directly from host memory
+    kRender             = 0x01, // Can be used as a rendering attachment
+    kMSRTSS             = 0x02, // Can be rendered with MSAA-render-to-single-sampled functionality
+    kSample             = 0x04, // Can be sampled within a shader with linear filtering
+    kCopySrc            = 0x08, // Can be copied into another texture or buffer
+    kCopyDst            = 0x10, // Can be the copy target of another texture or buffer
+    kStorage            = 0x20, // Can be read and written to in a compute pipeline
+    kHostCopy           = 0x40, // Can be written to directly from host memory
+    kUnfilterableSample = 0x80, // Can be sampled within a shader with point/nearest sampling only
 };
 SK_MAKE_BITMASK_OPS(TextureUsage)
 

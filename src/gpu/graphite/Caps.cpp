@@ -269,8 +269,12 @@ static constexpr SkEnumBitMask<TextureUsage> kDefaultSampledUsage =
 TextureInfo Caps::getDefaultSampledTextureInfo(SkColorType colorType,
                                                Mipmapped mipmapped,
                                                Protected isProtected,
-                                               Renderable renderable) const {
-    SkEnumBitMask<TextureUsage> usage = kDefaultSampledUsage;
+                                               Renderable renderable,
+                                               bool filterable) const {
+    SkEnumBitMask<TextureUsage> usage =
+            (filterable ? TextureUsage::kSample : TextureUsage::kUnfilterableSample) |
+            TextureUsage::kCopySrc |
+            TextureUsage::kCopyDst;
     SkSpan<const TextureFormat> formats = PreferredTextureFormats(colorType);
     skia_private::STArray<3, TextureFormat> validFormats;
     if (renderable == Renderable::kYes) {

@@ -120,6 +120,9 @@ void DawnCaps::initFormatTable(const wgpu::Device& device) {
         if (formatCaps & DawnFormatFlag::Filter) {
             supportedUsage |= TextureUsage::kSample;
         }
+        if (formatCaps & DawnFormatFlag::UnfilterableSample) {
+            supportedUsage |= TextureUsage::kUnfilterableSample;
+        }
 
         if (formatCaps & DawnFormatFlag::Render) {
             supportedUsage |= TextureUsage::kRender;
@@ -172,7 +175,14 @@ std::pair<SkEnumBitMask<TextureUsage>, Tiling> DawnCaps::getTextureUsage(
             }
         }
         if (dawnInfo.fUsage & wgpu::TextureUsage::TextureBinding) {
-            usage |= TextureUsage::kSample;
+            TextureFormat format = TextureInfoPriv::ViewFormat(info);
+            auto [supportedUsage, _] = this->getTextureSupport(format, Tiling::kOptimal);
+            if (supportedUsage & TextureUsage::kSample) {
+                usage |= TextureUsage::kSample;
+            }
+            if (supportedUsage & TextureUsage::kUnfilterableSample) {
+                usage |= TextureUsage::kUnfilterableSample;
+            }
         }
         if (dawnInfo.fUsage & wgpu::TextureUsage::CopySrc) {
             usage |= TextureUsage::kCopySrc;
@@ -200,7 +210,7 @@ TextureInfo DawnCaps::onGetDefaultTextureInfo(SkEnumBitMask<TextureUsage> usage,
 
     wgpu::TextureUsage dawnUsage = wgpu::TextureUsage::None;
 
-    if (usage & TextureUsage::kSample) {
+    if (usage & (TextureUsage::kSample | TextureUsage::kUnfilterableSample)) {
         dawnUsage |= wgpu::TextureUsage::TextureBinding;
     }
     if (usage & TextureUsage::kStorage) {
