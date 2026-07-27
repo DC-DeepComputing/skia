@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6d8d301_87fcb294",
+        "filename": "include/gpu/ganesh/d3d/GrD3DDirectContext.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-27T20:55:14Z",
+      "side": 1,
+      "message": "sounds good, moved them up",
+      "parentUuid": "6ea88f9e_70d6b0db",
+      "range": {
+        "startLine": 28,
+        "startChar": 1,
+        "endLine": 29,
+        "endChar": 24
+      },
+      "revId": "cf74d7e3a7d003ad10422f7da77a745fc00cae71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6f8a4c99_57d1edae",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-07-27T15:15:12Z",
       "side": 1,
       "message": "as mentioned before this should be SkContexts to match our other name conventions for namespaces.",
+      "range": {
+        "startLine": 31,
+        "startChar": 10,
+        "endLine": 31,
+        "endChar": 26
+      },
+      "revId": "cf74d7e3a7d003ad10422f7da77a745fc00cae71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4834b62_e8abebcc",
+        "filename": "include/gpu/ganesh/d3d/GrD3DDirectContext.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-27T20:55:14Z",
+      "side": 1,
+      "message": "Pardon me, I think I did the change but didn\u0027t save it / commit it. Should be updated now",
+      "parentUuid": "6f8a4c99_57d1edae",
       "range": {
         "startLine": 31,
         "startChar": 10,
@@ -93,6 +141,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "64a56cd9_e9f44763",
+        "filename": "src/core/SkContext.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-27T20:55:14Z",
+      "side": 1,
+      "message": "No reasoning, forgot to move these over in the refactor.",
+      "parentUuid": "bd0fd658_a0a7cd17",
+      "range": {
+        "startLine": 70,
+        "startChar": 5,
+        "endLine": 71,
+        "endChar": 59
+      },
+      "revId": "cf74d7e3a7d003ad10422f7da77a745fc00cae71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c47e075a_046004ae",
+        "filename": "src/core/SkContext.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-27T20:55:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b624c88f_e80a57c0",
+      "range": {
+        "startLine": 71,
+        "startChar": 48,
+        "endLine": 71,
+        "endChar": 58
+      },
+      "revId": "cf74d7e3a7d003ad10422f7da77a745fc00cae71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "548d6fc0_9e9f8c0e",
@@ -106,6 +202,30 @@
       "writtenOn": "2026-07-27T15:15:12Z",
       "side": 1,
       "message": "nit: 2026",
+      "range": {
+        "startLine": 2,
+        "startChar": 16,
+        "endLine": 2,
+        "endChar": 17
+      },
+      "revId": "cf74d7e3a7d003ad10422f7da77a745fc00cae71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d587dfe2_309c8849",
+        "filename": "src/core/SkSharedContext.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-27T20:55:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "548d6fc0_9e9f8c0e",
       "range": {
         "startLine": 2,
         "startChar": 16,
@@ -139,6 +259,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "47302594_3f786aee",
+        "filename": "src/core/SkSharedContext.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-27T20:55:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0c1fc563_0f191bd8",
+      "range": {
+        "startLine": 2,
+        "startChar": 13,
+        "endLine": 2,
+        "endChar": 17
+      },
+      "revId": "cf74d7e3a7d003ad10422f7da77a745fc00cae71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b77a7609_1cec7480",
@@ -162,6 +306,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d29f3350_648ffa67",
+        "filename": "src/core/SkSharedContext.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-27T20:55:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b77a7609_1cec7480",
+      "range": {
+        "startLine": 23,
+        "startChar": 104,
+        "endLine": 23,
+        "endChar": 105
+      },
+      "revId": "cf74d7e3a7d003ad10422f7da77a745fc00cae71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cc582da0_1f12b525",
@@ -175,6 +343,30 @@
       "writtenOn": "2026-07-27T15:15:12Z",
       "side": 1,
       "message": "what is the protected here for?",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 10
+      },
+      "revId": "cf74d7e3a7d003ad10422f7da77a745fc00cae71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "506def65_de17800f",
+        "filename": "src/core/SkSharedContext.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-27T20:55:14Z",
+      "side": 1,
+      "message": "I think this was left over in a copy paste.",
+      "parentUuid": "cc582da0_1f12b525",
       "range": {
         "startLine": 32,
         "startChar": 0,
