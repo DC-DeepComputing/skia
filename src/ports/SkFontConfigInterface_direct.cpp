@@ -549,44 +549,55 @@ bool SkFontConfigInterfaceDirect::isValidPattern(FcPattern* pattern) {
     return this->isAccessible(c_filename);
 }
 
+bool SkFontConfigInterfaceDirect::isAcceptableMatch(FcPattern* match,
+                                                    const char* post_config_family,
+                                                    const SkString& family) {
+    if (!this->isValidPattern(match)) {
+        return false;
+    }
+
+    if (!IsFallbackFontAllowed(family)) {
+        bool acceptable_substitute = false;
+        for (int id = 0; id < 255; ++id) {
+            const char* post_match_family = get_string(match, FC_FAMILY, id);
+            if (!post_match_family) {
+                break;
+            }
+
+            // The requested family should be able to accept matches for post_config_family
+            // or post_match_family. The below case should work fine
+            //   requested family: "Bitstream Vera Sans"
+            //   post_config_family: "Arial"
+            //   post_match_family: "Bitstream Vera Sans"
+            acceptable_substitute =
+                    (strcasecmp(post_config_family, post_match_family) == 0 ||
+                     strcasecmp(family.c_str(), post_match_family) == 0 ||
+                     IsMetricCompatibleReplacement(family.c_str(), post_match_family));
+
+            if (acceptable_substitute) {
+                break;
+            }
+        }
+        if (!acceptable_substitute) {
+            return false;
+        }
+    }
+    return true;
+}
+
 // Find matching font from |font_set| for the given font family.
 FcPattern* SkFontConfigInterfaceDirect::MatchFont(FcFontSet* font_set,
                                                   const char* post_config_family,
                                                   const SkString& family) {
-  // Older versions of fontconfig have a bug where they cannot select
-  // only scalable fonts so we have to manually filter the results.
-  FcPattern* match = nullptr;
-  for (int i = 0; i < font_set->nfont; ++i) {
-    FcPattern* current = font_set->fonts[i];
-    if (this->isValidPattern(current)) {
-      match = current;
-      break;
-    }
-  }
+    for (int i = 0; i < font_set->nfont; ++i) {
+        FcPattern* current = font_set->fonts[i];
 
-  if (match && !IsFallbackFontAllowed(family)) {
-    bool acceptable_substitute = false;
-    for (int id = 0; id < 255; ++id) {
-      const char* post_match_family = get_string(match, FC_FAMILY, id);
-      if (!post_match_family)
-        break;
-      acceptable_substitute =
-          (strcasecmp(post_config_family, post_match_family) == 0 ||
-           // Workaround for Issue 12530:
-           //   requested family: "Bitstream Vera Sans"
-           //   post_config_family: "Arial"
-           //   post_match_family: "Bitstream Vera Sans"
-           // -> We should treat this case as a good match.
-           strcasecmp(family.c_str(), post_match_family) == 0) ||
-           IsMetricCompatibleReplacement(family.c_str(), post_match_family);
-      if (acceptable_substitute)
-        break;
+        if (this->isAcceptableMatch(current, post_config_family, family)) {
+            return current;
+        }
     }
-    if (!acceptable_substitute)
-      return nullptr;
-  }
 
-  return match;
+    return nullptr;
 }
 
 bool SkFontConfigInterfaceDirect::matchFamilyName(const char familyName[],
@@ -659,34 +670,59 @@ bool SkFontConfigInterfaceDirect::matchFamilyName(const char familyName[],
     }
 
     FcResult result;
-    FcFontSet* font_set = FcFontSort(fc, pattern, 0, nullptr, &result);
-    if (!font_set) {
-        FcPatternDestroy(pattern);
-        return false;
+    FcPattern* match = nullptr;
+    FcFontSet* font_set = nullptr;
+
+    FcPattern* direct_match = FcFontMatch(fc, pattern, &result);
+    if (direct_match) {
+        if (this->isAcceptableMatch(direct_match, post_config_family, familyStr)) {
+            match = direct_match;
+        } else {
+            FcPatternDestroy(direct_match);
+        }
     }
 
-    FcPattern* match = this->MatchFont(font_set, post_config_family, familyStr);
     if (!match) {
-        FcPatternDestroy(pattern);
-        FcFontSetDestroy(font_set);
-        return false;
+        font_set = FcFontSort(fc, pattern, 0, nullptr, &result);
+        if (!font_set) {
+            FcPatternDestroy(pattern);
+            return false;
+        }
+        match = this->MatchFont(font_set, post_config_family, familyStr);
     }
 
     FcPatternDestroy(pattern);
 
+    if (!match) {
+        if (font_set) {
+            FcFontSetDestroy(font_set);
+        }
+        return false;
+    }
+
     // From here out we just extract our results from 'match'
+    // Whenever FcFontSetDestroy is called, it also destroys the matched pattern (FcPatternDestroy)
 
     post_config_family = get_string(match, FC_FAMILY);
     if (!post_config_family) {
-        FcFontSetDestroy(font_set);
+        if (font_set) {
+            FcFontSetDestroy(font_set);
+        } else {
+            FcPatternDestroy(match);
+        }
         return false;
     }
 
     const char* c_filename = get_string(match, FC_FILE);
     if (!c_filename) {
-        FcFontSetDestroy(font_set);
+        if (font_set) {
+            FcFontSetDestroy(font_set);
+        } else {
+            FcPatternDestroy(match);
+        }
         return false;
     }
+
     const char* sysroot = (const char*)FcConfigGetSysRoot(fc);
     SkString resolvedFilename;
     if (sysroot) {
@@ -697,8 +733,6 @@ bool SkFontConfigInterfaceDirect::matchFamilyName(const char familyName[],
 
     int face_index = get_int(match, FC_INDEX, 0);
 
-    FcFontSetDestroy(font_set);
-
     if (outIdentity) {
         outIdentity->fTTCIndex = face_index;
         outIdentity->fString.set(c_filename);
@@ -708,6 +742,12 @@ bool SkFontConfigInterfaceDirect::matchFamilyName(const char familyName[],
     }
     if (outStyle) {
         *outStyle = skfontstyle_from_fcpattern(match);
+    }
+
+    if (font_set) {
+        FcFontSetDestroy(font_set);
+    } else {
+        FcPatternDestroy(match);
     }
     return true;
 }
