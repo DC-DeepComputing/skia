@@ -7,6 +7,8 @@
 
 #include "src/gpu/graphite/render/CircularArcRenderStep.h"
 
+#include "src/gpu/graphite/PaintParamsKey.h"
+
 #include "include/core/SkArc.h"
 #include "include/core/SkM44.h"
 #include "include/core/SkPaint.h"
@@ -178,7 +180,7 @@ CircularArcRenderStep::CircularArcRenderStep(Layout layout, StaticBufferManager*
 
 CircularArcRenderStep::~CircularArcRenderStep() {}
 
-std::string CircularArcRenderStep::vertexSkSL() const {
+std::string CircularArcRenderStep::vertexSkSL(const RootNodesInfo&) const {
     // Returns the body of a vertex function, which must define a float4 devPosition variable and
     // must write to an already-defined float2 stepLocalCoords variable.
     return "float4 devPosition = circular_arc_vertex_fn("
