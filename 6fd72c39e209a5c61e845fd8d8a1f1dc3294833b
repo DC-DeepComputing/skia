@@ -16,6 +16,213 @@
       "message": "PTAL",
       "revId": "6fd72c39e209a5c61e845fd8d8a1f1dc3294833b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42638db7_f4194faa",
+        "filename": "src/gpu/graphite/GraphicsPipeline.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-27T18:27:38Z",
+      "side": 1,
+      "message": "`return SkToBool(fStorageBufferStages);`",
+      "range": {
+        "startLine": 71,
+        "startChar": 0,
+        "endLine": 71,
+        "endChar": 79
+      },
+      "revId": "6fd72c39e209a5c61e845fd8d8a1f1dc3294833b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cac7b633_596aa79f",
+        "filename": "src/gpu/graphite/Renderer.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-27T18:27:38Z",
+      "side": 1,
+      "message": "nit: line wrap the `:` to be right below the `?`s.",
+      "range": {
+        "startLine": 27,
+        "startChar": 18,
+        "endLine": 28,
+        "endChar": 121
+      },
+      "revId": "6fd72c39e209a5c61e845fd8d8a1f1dc3294833b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2f7dbfb_b04449da",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1056,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-27T18:27:38Z",
+      "side": 1,
+      "message": "We should assert if we have a snippet requiring kStorageBuffer but Caps doesn\u0027t support it (at least until we have the texture fallback)",
+      "range": {
+        "startLine": 1056,
+        "startChar": 30,
+        "endLine": 1056,
+        "endChar": 83
+      },
+      "revId": "6fd72c39e209a5c61e845fd8d8a1f1dc3294833b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79fe895e_3b42afa2",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1065,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-27T18:27:38Z",
+      "side": 1,
+      "message": "Yes I think so; if the RenderStep doesn\u0027t have any storage usage at all, something needs to mark that this binding as being part of the fragment shader.  What made you wonder if we needed it?",
+      "range": {
+        "startLine": 1065,
+        "startChar": 0,
+        "endLine": 1065,
+        "endChar": 38
+      },
+      "revId": "6fd72c39e209a5c61e845fd8d8a1f1dc3294833b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6eb05c93_c5b510b4",
+        "filename": "src/gpu/graphite/ShaderInfo.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-27T18:27:38Z",
+      "side": 1,
+      "message": "This can be `SkToBool(fStorageBufferStages)`;",
+      "range": {
+        "startLine": 86,
+        "startChar": 15,
+        "endLine": 86,
+        "endChar": 74
+      },
+      "revId": "6fd72c39e209a5c61e845fd8d8a1f1dc3294833b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e5e3737_ca51e710",
+        "filename": "src/gpu/graphite/dawn/DawnSharedContext.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-27T18:27:38Z",
+      "side": 1,
+      "message": "This could be simplified (if we ignore any extraneous stages) to:\n```\nint index \u003d (storageVisibility \u0026 Fragment ? 1 : 0) * (storageVisibility \u0026 Vertex ? 2 : 1);\n```\n\nMaybe that\u0027s not simpler, just shorter 😊. It\u0027d be a bit easier if we included a kNone bind group layout that was never actually used that would be in index 0.",
+      "range": {
+        "startLine": 61,
+        "startChar": 0,
+        "endLine": 78,
+        "endChar": 9
+      },
+      "revId": "6fd72c39e209a5c61e845fd8d8a1f1dc3294833b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "871b9b54_43fe0e4b",
+        "filename": "src/gpu/graphite/dawn/DawnSharedContext.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-27T18:27:38Z",
+      "side": 1,
+      "message": "nit: collections already do bounds checking, so we don\u0027t have duplicate that",
+      "range": {
+        "startLine": 79,
+        "startChar": 0,
+        "endLine": 79,
+        "endChar": 65
+      },
+      "revId": "6fd72c39e209a5c61e845fd8d8a1f1dc3294833b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14fc3482_4e60ffb7",
+        "filename": "src/gpu/graphite/dawn/DawnSharedContext.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-27T18:27:38Z",
+      "side": 1,
+      "message": "Do we need this function anymore? Previously the uniform bind group had entries for both combined uniforms and the gradient storage buffer. I don\u0027t think that\u0027s changing here yet, so DawnGraphicsPipeline just calls the new function.",
+      "range": {
+        "startLine": 83,
+        "startChar": 0,
+        "endLine": 83,
+        "endChar": 75
+      },
+      "revId": "6fd72c39e209a5c61e845fd8d8a1f1dc3294833b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "968ef2fe_c3e92065",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 532,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-27T18:27:38Z",
+      "side": 1,
+      "message": "`SkToBool(storageStageFlags)`",
+      "range": {
+        "startLine": 532,
+        "startChar": 8,
+        "endLine": 532,
+        "endChar": 64
+      },
+      "revId": "6fd72c39e209a5c61e845fd8d8a1f1dc3294833b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
