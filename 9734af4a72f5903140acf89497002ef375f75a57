@@ -16,6 +16,23 @@
       "message": "michaelludwig@ / nathanasanchez PTAL, thanks!  The win-rel CQ bot always reports infra error so not sure what happend to the bot. mac-rel \u0026 linux-rel bot works fine.",
       "revId": "9734af4a72f5903140acf89497002ef375f75a57",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3614a062_87f4ac0e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-27T16:40:07Z",
+      "side": 1,
+      "message": "This looks good to me. If you `git cl patch -f 1304576` this into a chromium checkout\u0027s third_party/skia/ directory, you should be able to confirm that it addresses the original issue.",
+      "revId": "9734af4a72f5903140acf89497002ef375f75a57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
