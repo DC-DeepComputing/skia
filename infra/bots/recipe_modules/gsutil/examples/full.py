@@ -19,8 +19,7 @@ DEPS = [
 def RunSteps(api):
   api.vars.setup()
   api.gsutil.cp('test file', '/foo/file', 'gs://bar-bucket/file',
-                extra_gsutil_args=['--blah'], extra_args=['-Z'],
-                multithread=True)
+                extra_args=['-Z'])
 
 def GenTests(api):
   yield (
