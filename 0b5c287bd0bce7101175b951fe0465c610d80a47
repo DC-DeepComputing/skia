@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8af1996_928f6e14",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4569768
+      },
+      "writtenOn": "2026-07-28T09:46:47Z",
+      "side": 1,
+      "message": "Hi! I\u0027m currently adding feature flags as well as comparison tests in Chromium for the Rust ICO decoder, but I noticed that it was missing an override for onSupportsIncrementalDecode. The default SkCodec returns false as it\u0027s unimplemented, but both Rust PNG and Rust BMP support it, so it seems reasonable to add this.",
+      "revId": "0b5c287bd0bce7101175b951fe0465c610d80a47",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
