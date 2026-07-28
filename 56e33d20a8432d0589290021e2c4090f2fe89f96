@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "134e7827_f3c5ccfc",
+        "filename": "bazel/external/dawn/dawn_repo.bzl",
+        "patchSetId": 28
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-28T14:40:24Z",
+      "side": 1,
+      "message": "I\u0027ll give that a try in a follow-up CL.",
+      "parentUuid": "71579350_4f6636ba",
+      "range": {
+        "startLine": 35,
+        "startChar": 23,
+        "endLine": 35,
+        "endChar": 41
+      },
+      "revId": "56e33d20a8432d0589290021e2c4090f2fe89f96",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "badfe310_b374aac7",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-07-28T14:13:15Z",
       "side": 1,
       "message": "Nit: it seems cleaner (and more along the lines of what we already do for darwin) to check `runtime.GOOS \u003d\u003d \"windows\"` before calling locateAndAddMSVCToPATH.  We could td.Fatal if that returns an error.",
+      "range": {
+        "startLine": 145,
+        "startChar": 0,
+        "endLine": 147,
+        "endChar": 3
+      },
+      "revId": "56e33d20a8432d0589290021e2c4090f2fe89f96",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "980394b0_a2e6ec5a",
+        "filename": "infra/bots/task_drivers/bazel_build/bazel_build.go",
+        "patchSetId": 28
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-28T14:40:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "badfe310_b374aac7",
       "range": {
         "startLine": 145,
         "startChar": 0,
