@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLVM-MCA Timeline Visualizer</title>
+    <style>
+        /* =========================================================================
+         * 1. General & Layout Styles
+         * ========================================================================= */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f5f7;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            color: #1d1d1f; /* Dark Gray */
+        }
+
+        header {
+            background-color: #1d1d1f; /* Dark Gray */
+            color: white;
+            padding: 0.4rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+
+        .brand-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        .version {
+            font-size: 0.7rem;
+            font-weight: 400;
+            opacity: 0.5;
+            margin-left: 8px;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            padding: 0;
+            gap: 0;
+            overflow: hidden;
+        }
+
+        /* =========================================================================
+         * 2. Input Section
+         * ========================================================================= */
+        #input-section {
+            padding: 10px;
+            background: #f5f5f7;
+            border-bottom: 1px solid #d2d2d7;
+            transition: all 0.3s ease;
+        }
+
+        #input-section.collapsed textarea {
+            height: 0;
+            padding: 0;
+            border: none;
+            opacity: 0;
+            margin-bottom: 0;
+        }
+
+        textarea {
+            width: 100%;
+            height: 80px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 11px;
+            padding: 8px;
+            border: 1px solid #d2d2d7;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            box-sizing: border-box;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        button {
+            padding: 4px 12px;
+            background-color: #0071e3; /* Blue */
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        button.secondary {
+            background-color: #e5e5ea; /* Light Gray */
+            color: #0071e3; /* Blue */
+        }
+
+        /* Utility helper for hiding elements */
+        .hidden {
+            display: none !important;
+        }
+
+        /* =========================================================================
+         * 3. Visualization Area (Panes & Columns)
+         * ========================================================================= */
+        #viz-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: #fff;
+        }
+
+        .viz-pane {
+            display: flex;
+            flex-direction: row;
+            border-bottom: 1px solid #d2d2d7;
+            overflow: hidden;
+        }
+
+        #timeline-pane {
+            height: 70%;
+        }
+
+        #heatmap-pane {
+            height: 25%;
+        }
+
+        .label-column {
+            width: 350px;
+            flex-shrink: 0;
+            border-right: 1px solid #d2d2d7;
+            overflow-y: hidden;
+            background: #f9f9f9;
+        }
+
+        .data-column {
+            flex: 1;
+            overflow: auto;
+            position: relative;
+        }
+
+        svg {
+            display: block;
+        }
+
+        /* =========================================================================
+         * 4. Interactive & SVG Elements
+         * ========================================================================= */
+        .tooltip {
+            position: fixed;
+            background: rgba(0, 0, 0, 0.92);
+            color: white;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 11px;
+            pointer-events: none;
+            display: none;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            max-width: 450px;
+            line-height: 1.5;
+        }
+
+        .stats-bar {
+            display: flex;
+            gap: 1rem;
+            font-size: 11px;
+            background: #2c2c2e; /* Darker Gray */
+            padding: 2px 10px;
+            border-radius: 4px;
+            color: #ffffff;
+            font-family: 'Roboto Mono', monospace;
+        }
+
+        .instr-label {
+            fill: #1d1d1f;
+            font-family: 'Roboto Mono', monospace;
+            cursor: pointer;
+        }
+
+        .timeline-stage {
+            cursor: pointer;
+        }
+
+        .dependency-arrow {
+            cursor: pointer;
+        }
+
+        /* =========================================================================
+         * 5. Legend Styles & Swatches
+         * ========================================================================= */
+        .legend-bar {
+            background: #f5f5f7;
+            padding: 6px 15px;
+            border-top: 1px solid #d2d2d7;
+            display: flex;
+            justify-content: flex-start;
+            gap: 20px;
+        }
+
+        .legend {
+            display: flex;
+            gap: 12px;
+            font-size: 10.5px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            cursor: help;
+        }
+
+        .legend-header {
+            font-size: 11px;
+            color: #8e8e93;
+            font-weight: 600;
+        }
+
+        .swatch {
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+        }
+
+        /* Color classes for swatches matching their stage colors */
+        .swatch.dispatch    { background-color: #ffd60a; }
+        .swatch.waiting     { background-color: #ff9f0a; }
+        .swatch.ready       { background-color: #ff453a; }
+        .swatch.executing   { background-color: #30d158; }
+        .swatch.writeback   { background-color: #5e5ce6; }
+        .swatch.wait-retire { background-color: #a2845e; }
+        .swatch.retire      { background-color: #8e8e93; }
+        .swatch.backlog-low  { background-color: rgba(94, 92, 230, 0.3); }
+        .swatch.backlog-high { background-color: rgba(94, 92, 230, 1.0); }
+    </style>
+</head>
+<body>
+    <header>
+        <div>
+            <span class="brand-title">llvm-mca Timeline Viz</span>
+            <span class="version">v1.44</span>
+        </div>
+        <div id="stats" class="stats-bar hidden"></div>
+    </header>
+
+    <div class="container">
+        <!-- Input pane for raw llvm-mca copy-pastas -->
+        <div id="input-section">
+            <textarea id="mca-input" placeholder="Paste llvm-mca --timeline output here..."></textarea>
+            <div class="btn-group">
+                <button id="render-btn">Render</button>
+                <button id="toggle-input" class="secondary hidden">Input</button>
+
+                <!-- Stage color-code legend -->
+                <div class="legend">
+                    <div class="legend-item" title="Instruction added to scheduler.">
+                        <div class="swatch dispatch"></div> Dispatch
+                    </div>
+                    <div class="legend-item" title="Waiting for registers to be ready.">
+                        <div class="swatch waiting"></div> Waiting
+                    </div>
+                    <div class="legend-item" title="Waiting for a free execution port.">
+                        <div class="swatch ready"></div> Ready
+                    </div>
+                    <div class="legend-item" title="Actively executing.">
+                        <div class="swatch executing"></div> Executing
+                    </div>
+                    <div class="legend-item" title="Writing result to register file.">
+                        <div class="swatch writeback"></div> Writeback
+                    </div>
+                    <div class="legend-item" title="Finished, waiting for older instructions to retire.">
+                        <div class="swatch wait-retire"></div> WaitRetire
+                    </div>
+                    <div class="legend-item" title="Instruction committed.">
+                        <div class="swatch retire"></div> Retire
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="viz-area">
+            <!-- Timeline rendering pane -->
+            <div id="timeline-pane" class="viz-pane">
+                <div id="timeline-labels" class="label-column">
+                    <svg id="timeline-labels-svg"></svg>
+                </div>
+                <div id="timeline-data" class="data-column">
+                    <svg id="timeline-data-svg"></svg>
+                </div>
+            </div>
+
+            <!-- Heatmap rendering pane -->
+            <div id="heatmap-pane" class="viz-pane">
+                <div id="heatmap-labels" class="label-column">
+                    <svg id="heatmap-labels-svg"></svg>
+                </div>
+                <div id="heatmap-data" class="data-column">
+                    <svg id="heatmap-data-svg"></svg>
+                </div>
+            </div>
+
+            <!-- Heatmap backlog intensity legend -->
+            <div class="legend-bar">
+                <div class="legend">
+                    <span class="legend-header">PORT BACKLOG (Queue Depth):</span>
+                    <div class="legend-item" title="Low backlog (<= 1 cycle).">
+                        <div class="swatch backlog-low"></div> Low
+                    </div>
+                    <div class="legend-item" title="High backlog (10+ cycles).">
+                        <div class="swatch backlog-high"></div> High
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="tooltip" class="tooltip"></div>
+
+    <script>
+        // =========================================================================
+        // 1. Constants & Configuration
+        // =========================================================================
+        const ROW_HEIGHT = 26;
+        const COL_WIDTH = 20;
+        const LABEL_WIDTH = 350;
+        const HEADER_HEIGHT = 30;
+
+        /**
+         * Formats a numeric value to a clean representation with up to 2 decimal places.
+         * Omits trailing decimal zeros dynamically to preserve screen clarity.
+         */
+        const formatVal = v => Number(v.toFixed(2));
+
+        // =========================================================================
+        // 2. Application State Variables
+        // =========================================================================
+        let focusedInstructionIdx = null;
+        let lastParsedData = null; // Store parsed data globally for interactive re-rendering
+
+        // =========================================================================
+        // 3. UI Sync Scrolling & Setup
+        // =========================================================================
+        const td = document.getElementById('timeline-data');
+        const tl = document.getElementById('timeline-labels');
+        const hd = document.getElementById('heatmap-data');
+        const hl = document.getElementById('heatmap-labels');
+
+        // Align timeline and heatmap columns when scrolling horizontally or vertically
+        td.onscroll = () => {
+            hd.scrollLeft = td.scrollLeft;
+            tl.scrollTop = td.scrollTop;
+        };
+        hd.onscroll = () => {
+            td.scrollLeft = hd.scrollLeft;
+            hl.scrollTop = hd.scrollTop;
+        };
+
+        // Wire up control event listeners
+        document.getElementById('render-btn').addEventListener('click', visualize);
+        document.getElementById('toggle-input').addEventListener('click', toggleInput);
+
+        // =========================================================================
+        // 4. Controller & Global Event Handlers
+        // =========================================================================
+        function setFocus(idx) {
+            if (focusedInstructionIdx === idx) {
+                focusedInstructionIdx = null; // Toggle focus off
+            } else {
+                focusedInstructionIdx = idx;
+            }
+            if (lastParsedData) {
+                renderTimeline(lastParsedData);
+                renderHeatmap(lastParsedData);
+            }
+        }
+
+        function toggleInput() {
+            document.getElementById('input-section').classList.toggle('collapsed');
+        }
+
+        function visualize() {
+            const input = document.getElementById('mca-input').value;
+            const data = parseMCA(input);
+            if (!data) return;
+
+            lastParsedData = data;
+            focusedInstructionIdx = null; // Reset focus on new render
+
+            document.getElementById('input-section').classList.add('collapsed');
+            document.getElementById('toggle-input').classList.remove('hidden');
+
+            renderStats(data.stats);
+            renderTimeline(data);
+            renderHeatmap(data);
+        }
+
+        // =========================================================================
+        // 5. Data Parsing & Assembly Flow Logic
+        // =========================================================================
+
+        /**
+         * Split operands by commas while correctly preserving nested components within
+         * parentheses (e.g. x86 SIB memory references: `(%rax,%rcx,8)`).
+         */
+        function splitOperands(operandsStr) {
+            const parts = [];
+            let current = '';
+            let depth = 0;
+
+            for (let i = 0; i < operandsStr.length; i++) {
+                const char = operandsStr[i];
+                if (char === '(') {
+                    depth++;
+                } else if (char === ')') {
+                    depth--;
+                }
+
+                if (char === ',' && depth === 0) {
+                    parts.push(current.trim());
+                    current = '';
+                } else {
+                    current += char;
+                }
+            }
+
+            if (current.trim()) {
+                parts.push(current.trim());
+            }
+            return parts;
+        }
+
+        /**
+         * Perform static data-flow analysis to identify registers read and written by
+         * a given AT&T-syntax assembly instruction.
+         */
+        function analyzeDataFlow(instrText) {
+            const trimmed = instrText.trim();
+            const tokens = trimmed.split(/\s+/);
+            const op = tokens[0].toLowerCase();
+            const operandsStr = tokens.slice(1).join(' ');
+            const operands = splitOperands(operandsStr);
+
+            const reads = new Set();
+            const writes = new Set();
+
+            // Stack operations implicitly read & write %rsp
+            const stackOps = ['push', 'pop', 'call', 'ret', 'leave', 'enter'];
+            if (stackOps.some(s => op.startsWith(s))) {
+                reads.add('%rsp');
+                writes.add('%rsp');
+            }
+
+            // Regular expression helper to find all register tokens (e.g., %rax, %ymm0)
+            function getRegs(operandStr) {
+                if (!operandStr) return [];
+                return operandStr.match(/%[a-zA-Z0-9]+/g) || [];
+            }
+
+            // Core logic to parse registers out of individual operand strings
+            function parseOperand(operand, isDestination, isWriteOnly) {
+                if (!operand) return;
+                const isMemory = operand.includes('(') && operand.includes(')');
+                const regs = getRegs(operand);
+
+                if (isMemory) {
+                    // Registers inside memory parentheses represent base/index reads
+                    regs.forEach(r => reads.add(r));
+                } else {
+                    // Standard register operand
+                    if (isDestination) {
+                        if (isWriteOnly) {
+                            regs.forEach(r => writes.add(r));
+                        } else {
+                            // Read-modify-write destination
+                            regs.forEach(r => {
+                                reads.add(r);
+                                writes.add(r);
+                            });
+                        }
+                    } else {
+                        regs.forEach(r => reads.add(r));
+                    }
+                }
+            }
+
+            // Detect zeroing idioms: instructions like xor/sub on identical registers
+            const allOpRegs = getRegs(operandsStr);
+            const uniqueRegs = [...new Set(allOpRegs)];
+            const isZeroing = uniqueRegs.length === 1 &&
+                              (op.includes('xor') || op.includes('sub') || op.includes('pxor')) &&
+                              !op.includes('subss');
+
+            if (isZeroing) {
+                writes.add(uniqueRegs[0]);
+            } else if (operands.length === 1) {
+                const isDest = op.startsWith('pop') || op.startsWith('leave');
+                const isWriteOnly = isDest; // pop and leave are purely write-only for their target
+                parseOperand(operands[0], isDest, isWriteOnly);
+
+                // If it's not pop, leave, push, call, jmp, or implicit stack, it is a unary modify (e.g., inc/dec)
+                const isImplicitStack = stackOps.some(s => op.startsWith(s));
+                const isJump = op.startsWith('jmp');
+                if (!isDest && !op.startsWith('push') && !op.startsWith('call') && !isJump && !isImplicitStack) {
+                    parseOperand(operands[0], true, false); // Read-modify-write
+                }
+            } else if (operands.length === 2) {
+                // Operand 1 is always read
+                parseOperand(operands[0], false, false);
+
+                // Operand 2 is destination
+                const isWriteOnly = op.startsWith('mov') || op.startsWith('vmov') ||
+                                    op.startsWith('lea') || op.startsWith('vbroadcast') ||
+                                    isZeroing || // Zeroing moves are write-only
+                                    op.startsWith('vpbroadcast') || op.startsWith('vcvtt') ||
+                                    op.startsWith('vcvtdq');
+                parseOperand(operands[1], true, isWriteOnly);
+            } else if (operands.length >= 3) {
+                // All operands up to the last are read sources
+                for (let idx = 0; idx < operands.length - 1; idx++) {
+                    parseOperand(operands[idx], false, false);
+                }
+
+                // Final operand is destination. Destructive math instructions are read-modify-write
+                const isDestructive = op.startsWith('vfmadd') || op.startsWith('vfnmadd') || op.startsWith('vfmsub');
+                parseOperand(operands[operands.length - 1], true, !isDestructive);
+            }
+
+            return { reads: [...reads], writes: [...writes] };
+        }
+
+        /**
+         * Main parser function to extract execution states, pipeline stages,
+         * resource names, and port pressure out of raw llvm-mca logs.
+         */
+        function parseMCA(text) {
+            const lines = text.split('\n');
+            let timelineStart = -1;
+            let timelineEnd = -1;
+            let resourceStart = -1;
+
+            const stats = {};
+            const resources = [];
+
+            // Grab top-level global stats
+            const ipcMatch = text.match(/IPC:\s+([\d.]+)/);
+            if (ipcMatch) stats.ipc = ipcMatch[1];
+
+            const cycleMatch = text.match(/Total Cycles:\s+(\d+)/);
+            if (cycleMatch) stats.cycles = cycleMatch[1];
+
+            // Scan lines to discover structural boundaries
+            for (let i = 0; i < lines.length; i++) {
+                if (lines[i].startsWith('Resources:')) {
+                    resourceStart = i + 1;
+                }
+                if (resourceStart !== -1 && lines[i].includes('Resource pressure per iteration:')) {
+                    for (let j = resourceStart; j < i; j++) {
+                        const rMatch = lines[j].match(/\[(\d+)\]\s+-\s+(.*)/);
+                        if (rMatch) {
+                            const idx = parseInt(rMatch[1]);
+                            resources[idx] = rMatch[2].trim();
+                        }
+                    }
+                    resourceStart = -1;
+                }
+                if (lines[i].includes('Timeline view:')) {
+                    timelineStart = i + 4;
+                }
+                if (timelineStart !== -1 && lines[i].trim() === '' && i > timelineStart) {
+                    timelineEnd = i;
+                    break;
+                }
+            }
+
+            // Extract Resource Pressure details indexed directly by instruction index
+            const pressureIdx = lines.findIndex(l => l.includes('Resource pressure by instruction:'));
+            const resourcePressures = [];
+            if (pressureIdx !== -1) {
+                for (let i = pressureIdx + 2; i < lines.length; i++) {
+                    const line = lines[i];
+                    if (line.trim() === '' || line.includes('Timeline view:')) break;
+                    const match = line.match(/^((\s*[\d.-]+\s+)+)\s+(.*)$/);
+                    if (match) {
+                        const values = match[1].trim().split(/\s+/).map(v => v === '-' ? 0 : parseFloat(v));
+                        resourcePressures.push(values);
+                    }
+                }
+            }
+
+            if (timelineStart === -1) {
+                alert("Timeline view not found!");
+                return null;
+            }
+
+            // Build structural instruction list and parse pipeline timelines
+            const instructions = [];
+            for (let i = timelineStart; i < timelineEnd; i++) {
+                const line = lines[i];
+                if (!line.includes('[') || !line.includes(']')) continue;
+
+                const match = line.match(/\[(\d+),(\d+)\]\s+([\.DeE=R\s-]+)\s+(.*)/);
+                if (match) {
+                    const instrIdx = parseInt(match[2]);
+                    const timelineStr = match[3];
+                    const stages = [];
+                    for (let c = 0; c < timelineStr.length; c++) {
+                        const char = timelineStr[c];
+                        if (char !== '.' && char !== ' ') {
+                            stages.push({ cycle: c, type: char });
+                        }
+                    }
+                    instructions.push({
+                        index: instructions.length,
+                        instrIndex: instrIdx,
+                        text: match[4].trim(),
+                        stages,
+                        pressure: resourcePressures[instrIdx] || [],
+                        waitReasons: []
+                    });
+                }
+            }
+
+            const maxCycle = Math.max(...instructions.flatMap(i => i.stages.map(s => s.cycle)));
+
+            // Compute port backlogs utilizing the sequential "Pipelined Pour" model
+            const numResources = resources.length;
+            const newUsage = Array.from({ length: numResources }, () => Array(maxCycle + 1).fill(null));
+
+            instructions.forEach((instr, idx) => {
+                const execStages = instr.stages.filter(s => s.type === 'e');
+                if (execStages.length > 0) {
+                    const startCycle = Math.min(...execStages.map(s => s.cycle));
+                    const len = execStages.length;
+
+                    instr.pressure.forEach((v, rIdx) => {
+                        if (v > 0) {
+                            let remainingPressure = v;
+                            for (let offset = 0; offset < len; offset++) {
+                                if (remainingPressure <= 0) break;
+                                const cycle = startCycle + offset;
+                                const portion = Math.min(1.0, remainingPressure);
+
+                                if (!newUsage[rIdx][cycle]) {
+                                    newUsage[rIdx][cycle] = { val: 0, instrs: [] };
+                                }
+                                newUsage[rIdx][cycle].val += portion;
+                                newUsage[rIdx][cycle].instrs.push(idx);
+
+                                remainingPressure -= portion;
+                            }
+                        }
+                    });
+                }
+            });
+
+            const backlog = Array.from({ length: numResources }, () => Array(maxCycle + 1).fill(0));
+            const currentOwner = Array.from({ length: numResources }, () => Array(maxCycle + 1).fill(null));
+
+            resources.forEach((resName, rIdx) => {
+                let activeOwner = null;
+                for (let c = 0; c <= maxCycle; c++) {
+                    const prevBacklog = c > 0 ? backlog[rIdx][c - 1] : 0;
+                    const incoming = newUsage[rIdx][c];
+                    backlog[rIdx][c] = Math.max(0, prevBacklog - 1) + (incoming ? incoming.val : 0);
+
+                    if (incoming) activeOwner = incoming.instrs[0];
+                    if (backlog[rIdx][c] === 0) activeOwner = null;
+                    currentOwner[rIdx][c] = activeOwner;
+                }
+            });
+
+            // Track active and blocked users per resource per cycle
+            const activeUsers = Array.from({ length: numResources }, () => Array(maxCycle + 1).fill(null).map(() => []));
+            const blockedUsers = Array.from({ length: numResources }, () => Array(maxCycle + 1).fill(null).map(() => []));
+
+            instructions.forEach((instr, idx) => {
+                const execStages = instr.stages.filter(s => s.type === 'e');
+                const firstExec = execStages.length > 0 ? Math.min(...execStages.map(s => s.cycle)) : 999999;
+
+                // Active executing users
+                if (execStages.length > 0) {
+                    instr.pressure.forEach((v, rIdx) => {
+                        if (v > 0) {
+                            execStages.forEach(stage => {
+                                activeUsers[rIdx][stage.cycle].push(idx);
+                            });
+                        }
+                    });
+                }
+
+                // Blocked waiting users (scheduler queue residency stage '=' or '-' before execution starts)
+                instr.stages.forEach(stage => {
+                    if ((stage.type === '=' || stage.type === '-') && stage.cycle < firstExec) {
+                        instr.pressure.forEach((v, rIdx) => {
+                            if (v > 0) {
+                                blockedUsers[rIdx][stage.cycle].push(idx);
+                            }
+                        });
+                    }
+                });
+            });
+
+            return {
+                instructions,
+                maxCycle,
+                stats,
+                resources,
+                backlog,
+                currentOwner,
+                activeUsers,
+                blockedUsers
+            };
+        }
+
+        // =========================================================================
+        // 6. UI Render Functions
+        // =========================================================================
+        function renderStats(stats) {
+            const bar = document.getElementById('stats');
+            bar.classList.remove('hidden');
+            bar.innerHTML = `<span>IPC: ${stats.ipc || 'N/A'}</span><span>Cycles: ${stats.cycles || 'N/A'}</span>`;
+        }
+
+        function renderTimeline(data) {
+            const lSvg = document.getElementById('timeline-labels-svg');
+            const dSvg = document.getElementById('timeline-data-svg');
+            const totalWidth = (data.maxCycle + 5) * COL_WIDTH;
+            const totalHeight = HEADER_HEIGHT + data.instructions.length * ROW_HEIGHT;
+            const tooltip = document.getElementById('tooltip');
+
+            lSvg.setAttribute('width', LABEL_WIDTH);
+            lSvg.setAttribute('height', totalHeight);
+            lSvg.innerHTML = '';
+
+            dSvg.setAttribute('width', totalWidth);
+            dSvg.setAttribute('height', totalHeight);
+            dSvg.innerHTML = '';
+
+            // Clear focus on click on empty canvas regions
+            const clearFocusHandler = (e) => {
+                if (e.target === dSvg || e.target === lSvg) {
+                    focusedInstructionIdx = null;
+                    renderTimeline(data);
+                    renderHeatmap(data);
+                }
+            };
+            dSvg.onclick = clearFocusHandler;
+            lSvg.onclick = clearFocusHandler;
+
+            // Render vertical timeline grids & column indices
+            for (let c = 0; c <= data.maxCycle; c++) {
+                if (c % 5 === 0) {
+                    const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                    text.setAttribute('x', c * COL_WIDTH);
+                    text.setAttribute('y', 20);
+                    text.setAttribute('font-size', '10px');
+                    text.setAttribute('fill', '#8e8e93');
+                    text.setAttribute('font-family', 'Roboto Mono, monospace');
+                    text.textContent = c;
+                    dSvg.appendChild(text);
+                }
+                const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                line.setAttribute('x1', c * COL_WIDTH);
+                line.setAttribute('y1', HEADER_HEIGHT);
+                line.setAttribute('x2', c * COL_WIDTH);
+                line.setAttribute('y2', totalHeight);
+                line.setAttribute('stroke', '#f2f2f7');
+                dSvg.appendChild(line);
+            }
+
+            // Run initial dependencies mapping pass to associate producers & consumers list
+            drawDependencyArrows(data, null);
+
+            // Draw individual instructions
+            data.instructions.forEach((instr, i) => {
+                const y = HEADER_HEIGHT + i * ROW_HEIGHT;
+
+                // 1. Draw instruction row label
+                const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                label.setAttribute('x', 10);
+                label.setAttribute('y', y + 18);
+                label.setAttribute('font-size', '11px');
+                label.setAttribute('class', 'instr-label');
+                label.textContent = `[${i}] ${instr.text}`;
+
+                const isFocused = (focusedInstructionIdx === i);
+                let isProducer = false;
+                let isConsumer = false;
+
+                if (focusedInstructionIdx !== null && !isFocused) {
+                    const focusedInstr = data.instructions[focusedInstructionIdx];
+                    if (focusedInstr) {
+                        isProducer = focusedInstr.producersList.some(p => p.index === i);
+                        isConsumer = focusedInstr.consumersList.some(c => c.index === i);
+                    }
+                }
+
+                // Enable focus toggles on label click
+                label.onclick = (e) => {
+                    e.stopPropagation();
+                    setFocus(i);
+                };
+
+                // Focus styling
+                if (focusedInstructionIdx !== null) {
+                    if (isFocused) {
+                        label.setAttribute('font-weight', 'bold');
+                        label.setAttribute('fill', '#0071e3');
+                    } else if (isProducer) {
+                        label.setAttribute('font-weight', 'bold');
+                        label.setAttribute('fill', '#ff453a'); // Darker Red for producers
+                    } else if (isConsumer) {
+                        label.setAttribute('font-weight', 'bold');
+                        label.setAttribute('fill', '#30d158'); // Darker Green for consumers
+                    } else {
+                        label.setAttribute('opacity', '0.15');
+                    }
+                }
+
+                lSvg.appendChild(label);
+
+                // 2. Draw stage cells
+                const execCycles = instr.stages.filter(s => s.type === 'e').map(s => s.cycle);
+                const hasExecution = execCycles.length > 0;
+                const firstExec = hasExecution ? Math.min(...execCycles) : 999999;
+
+                instr.stages.forEach(stage => {
+                    const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                    rect.setAttribute('x', stage.cycle * COL_WIDTH);
+                    rect.setAttribute('y', y + 4);
+                    rect.setAttribute('width', COL_WIDTH - 1);
+                    rect.setAttribute('height', ROW_HEIGHT - 8);
+                    rect.setAttribute('rx', 2);
+                    rect.setAttribute('class', 'timeline-stage');
+
+                    rect.onclick = (e) => {
+                        e.stopPropagation();
+                        setFocus(i);
+                    };
+
+                    // Dim non-dependent items when an instruction is focused
+                    if (focusedInstructionIdx !== null) {
+                        if (isFocused) {
+                            // Full opacity for focus
+                        } else if (isProducer || isConsumer) {
+                            rect.setAttribute('opacity', '0.75');
+                        } else {
+                            rect.setAttribute('opacity', '0.15');
+                        }
+                    }
+
+                    let color = '#ccc';
+                    let title = '';
+                    let details = '';
+
+                    switch(stage.type) {
+                        case 'D':
+                            color = '#ffd60a';
+                            title = 'Dispatch';
+                            details = 'Instruction dispatched to scheduler / reservation stations.';
+                            break;
+                        case '=':
+                            color = '#ff9f0a';
+                            title = 'Waiting (Data Dependency)';
+                            break;
+                        case '-':
+                            if (!hasExecution || stage.cycle < firstExec) {
+                                if (!hasExecution) {
+                                    color = '#a2845e';
+                                    title = 'WaitRetire';
+                                    details = 'Zero-latency instruction. Effective immediately, waiting for older instructions to retire.';
+                                } else {
+                                    color = '#ff453a';
+                                    title = 'Ready (Resource Contention)';
+
+                                    // Identify exact occupying instruction causing the port contention block
+                                    const ports = instr.pressure.map((v, idx) => v > 0 ? { name: data.resources[idx], index: idx } : null).filter(n => n);
+                                    if (ports.length > 0) {
+                                        let contentionDetails = 'Operands ready. Waiting for port:<br>';
+                                        ports.forEach(p => {
+                                            const ownerIdx = data.currentOwner[p.index][stage.cycle];
+                                            if (ownerIdx !== null && ownerIdx !== undefined) {
+                                                const ownerInstr = data.instructions[ownerIdx];
+                                                contentionDetails += `<span style="color:#ff453a"><strong>${p.name}</strong></span> (busy with [${ownerIdx}] <code>${ownerInstr.text}</code>)<br>`;
+                                            } else {
+                                                contentionDetails += `<span style="color:#ff453a"><strong>${p.name}</strong></span> (occupied)<br>`;
+                                            }
+                                        });
+                                        details = contentionDetails;
+                                    } else {
+                                        details = 'Operands ready. Waiting for a free execution port.';
+                                    }
+                                }
+                            } else {
+                                color = '#a2845e';
+                                title = 'WaitRetire';
+                                details = 'Execution and writeback complete. Instruction staying in Reorder Buffer until older instructions retire.';
+                            }
+                            break;
+                        case 'e':
+                            color = '#30d158';
+                            const execIndex = execCycles.findIndex(c => c === stage.cycle);
+                            title = `Executing (Cycle ${execIndex + 1} of ${execCycles.length})`;
+
+                            const ports = instr.pressure.map((v, idx) => v > 0 ? { name: data.resources[idx], pressure: v } : null).filter(n => n);
+                            if (ports.length > 0) {
+                                details = `Actively executing. Requested resources:<br>` +
+                                          ports.map(p => `<span style="color:#30d158"><strong>${p.name}</strong></span> (pressure: ${formatVal(p.pressure)} cycles)`).join('<br>');
+                            } else {
+                                details = `Actively executing (bypass/zero-latency path).`;
+                            }
+                            break;
+                        case 'E':
+                            color = '#5e5ce6';
+                            title = 'Writeback';
+                            details = 'Writing execution results back to physical registers.';
+                            break;
+                        case 'R':
+                            color = '#8e8e93';
+                            title = 'Retired';
+                            details = 'Instruction committed and retired from Reorder Buffer (ROB).';
+                            break;
+                    }
+                    rect.setAttribute('fill', color);
+
+                    rect.onmouseover = (e) => {
+                        tooltip.style.display = 'block';
+                        const waitHtml = (stage.type === '=' && instr.waitReasons.length > 0) ?
+                                         `<br><span style="color:#ff9f0a"><strong>Data Dependencies:</strong></span><br>` + instr.waitReasons.join('<br>') : '';
+                        tooltip.innerHTML = `<strong>Cycle ${stage.cycle}</strong>: ${title}<br><code>${instr.text}</code>${waitHtml}<br><span style="color:#ccc"><strong>Status:</strong></span><br>${details || title}`;
+                        updateTooltipPos(e);
+                    };
+                    rect.onmousemove = updateTooltipPos;
+                    rect.onmouseout = () => {
+                        tooltip.style.display = 'none';
+                    };
+
+                    dSvg.appendChild(rect);
+                });
+            });
+
+            // Draw connecting dependency paths
+            drawDependencyArrows(data, dSvg);
+        }
+
+        function renderHeatmap(data) {
+            const lSvg = document.getElementById('heatmap-labels-svg');
+            const dSvg = document.getElementById('heatmap-data-svg');
+            const tooltip = document.getElementById('tooltip');
+            const totalWidth = (data.maxCycle + 5) * COL_WIDTH;
+            const totalHeight = (data.resources.length * ROW_HEIGHT) + 20;
+
+            lSvg.setAttribute('width', LABEL_WIDTH);
+            lSvg.setAttribute('height', totalHeight);
+            lSvg.innerHTML = '';
+
+            dSvg.setAttribute('width', totalWidth);
+            dSvg.setAttribute('height', totalHeight);
+            dSvg.innerHTML = '';
+
+            // Clear focus on click on empty canvas regions
+            const clearFocusHandler = (e) => {
+                if (e.target === dSvg || e.target === lSvg) {
+                    focusedInstructionIdx = null;
+                    renderTimeline(data);
+                    renderHeatmap(data);
+                }
+            };
+            dSvg.onclick = clearFocusHandler;
+            lSvg.onclick = clearFocusHandler;
+
+            data.resources.forEach((resName, rIdx) => {
+                const y = 10 + rIdx * ROW_HEIGHT;
+                const rLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                rLabel.setAttribute('x', 10);
+                rLabel.setAttribute('y', y + 16);
+                rLabel.setAttribute('font-size', '11px');
+                rLabel.setAttribute('font-weight', '600');
+                rLabel.setAttribute('font-family', 'Roboto, sans-serif');
+                rLabel.textContent = resName;
+                lSvg.appendChild(rLabel);
+
+                for (let c = 0; c <= data.maxCycle; c++) {
+                    const activeCount = data.backlog[rIdx][c];
+                    const blockedCount = data.blockedUsers[rIdx][c].length;
+                    const usage = activeCount + blockedCount; // L = L_s + L_q Queuing Theory queue depth
+
+                    if (usage > 0) {
+                        const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                        rect.setAttribute('x', c * COL_WIDTH);
+                        rect.setAttribute('y', y + 4);
+                        rect.setAttribute('width', COL_WIDTH - 1);
+                        rect.setAttribute('height', ROW_HEIGHT - 8);
+                        rect.setAttribute('rx', 2);
+                        rect.setAttribute('class', 'timeline-stage');
+
+                        // Map queue depth to heat gradient transparency
+                        let alpha = 0.2;
+                        if (usage <= 1.0) {
+                            alpha = 0.2 + (0.3 * usage);
+                        } else {
+                            alpha = 0.5 + (0.5 * Math.min(1, (usage - 1) / 9));
+                        }
+                        rect.setAttribute('fill', `rgba(94, 92, 230, ${alpha})`);
+
+                        // Dimming logic during instruction-specific focus mode
+                        if (focusedInstructionIdx !== null && data.currentOwner[rIdx][c] !== focusedInstructionIdx) {
+                            rect.setAttribute('opacity', '0.15');
+                        }
+
+                        // Generate active instructions listing for heatmap tooltip
+                        let activeText = "";
+                        const activeList = data.activeUsers[rIdx][c];
+                        if (activeList && activeList.length > 0) {
+                            activeText = `<br><span style="color:#30d158"><strong>Active Instructions:</strong></span><br>` +
+                                         activeList.map(idx => `[${idx}] <code>${data.instructions[idx].text}</code>`).join('<br>');
+                        }
+
+                        // Generate blocked waiting instructions list for heatmap tooltip
+                        let blockedText = "";
+                        const blockedList = data.blockedUsers[rIdx][c];
+                        if (blockedList && blockedList.length > 0) {
+                            blockedText = `<br><span style="color:#ff453a"><strong>Blocked Instructions (Queue):</strong></span><br>` +
+                                          blockedList.map(idx => `[${idx}] <code>${data.instructions[idx].text}</code>`).join('<br>');
+                        }
+
+                        rect.onmouseover = (e) => {
+                            tooltip.style.display = 'block';
+                            tooltip.innerHTML = `<strong>Cycle ${c}</strong>: ${resName}<br>Queue Depth: <strong>${formatVal(usage)}</strong> (Active: ${formatVal(activeCount)}, Blocked: ${blockedCount})${activeText}${blockedText}`;
+                            updateTooltipPos(e);
+                        };
+                        rect.onmousemove = updateTooltipPos;
+                        rect.onmouseout = () => {
+                            tooltip.style.display = 'none';
+                        };
+                        dSvg.appendChild(rect);
+                    }
+                }
+            });
+        }
+
+        // =========================================================================
+        // 7. Data-Dependency Vector Path Drafting
+        // =========================================================================
+        function drawDependencyArrows(data, svg) {
+            if (!svg) {
+                // Initial pass: Clear tracking metadata
+                data.instructions.forEach(instr => {
+                    instr.waitReasons = [];
+                    instr.producersList = [];
+                    instr.consumersList = [];
+                });
+            }
+
+            const lastWriters = {};
+
+            data.instructions.forEach((instr, i) => {
+                const flow = analyzeDataFlow(instr.text);
+                const execStage = instr.stages.find(s => s.type === 'e');
+                const waitStage = instr.stages.find(s => s.type === '=');
+                const dispatchStage = instr.stages.find(s => s.type === 'D');
+                const waitStartCycle = waitStage ? waitStage.cycle : (dispatchStage ? dispatchStage.cycle : 0);
+
+                flow.reads.forEach(reg => {
+                    if (lastWriters[reg] !== undefined) {
+                        const prodIdx = lastWriters[reg];
+                        const prodInstr = data.instructions[prodIdx];
+                        const prodE = prodInstr.stages.find(s => s.type === 'E');
+
+                        if (prodE) {
+                            const isActualStall = prodE.cycle >= waitStartCycle;
+                            if (isActualStall) {
+                                const reason = `Waiting for <strong>${reg}</strong> from [${prodIdx}]`;
+                                if (!instr.waitReasons.includes(reason)) {
+                                    instr.waitReasons.push(reason);
+                                }
+                            }
+
+                            if (!svg) {
+                                // First pass tracking associations
+                                if (!instr.producersList.some(p => p.index === prodIdx && p.reg === reg)) {
+                                    instr.producersList.push({ index: prodIdx, reg });
+                                }
+                                if (!prodInstr.consumersList.some(c => c.index === i && c.reg === reg)) {
+                                    prodInstr.consumersList.push({ index: i, reg });
+                                }
+                            }
+
+                            if (svg) {
+                                // Second pass rendering
+                                const isFocused = (focusedInstructionIdx !== null);
+                                const isFocusedProducer = (isFocused && focusedInstructionIdx === i);
+                                const isFocusedConsumer = (isFocused && focusedInstructionIdx === prodIdx);
+
+                                if ((waitStage && isActualStall) || isFocusedProducer || isFocusedConsumer) {
+                                    drawArrow(svg, prodIdx, prodE.cycle, i, execStage ? execStage.cycle : waitStartCycle, reg, isFocusedProducer, isFocusedConsumer);
+                                }
+                            }
+                        }
+                    }
+                });
+
+                flow.writes.forEach(reg => {
+                    lastWriters[reg] = i;
+                });
+            });
+        }
+
+        function drawArrow(svg, fromRow, fromCol, toRow, toCol, label, isFocusedProducer, isFocusedConsumer) {
+            const x1 = fromCol * COL_WIDTH + COL_WIDTH/2;
+            const y1 = HEADER_HEIGHT + fromRow * ROW_HEIGHT + ROW_HEIGHT/2;
+            const x2 = toCol * COL_WIDTH + (fromCol === toCol ? COL_WIDTH/2 : 0);
+            const y2 = HEADER_HEIGHT + toRow * ROW_HEIGHT + 4;
+
+            const isVertical = fromCol === toCol;
+            const dx = Math.abs(x2 - x1);
+
+            const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            path.setAttribute('class', 'dependency-arrow');
+
+            if (isVertical) {
+                path.setAttribute('d', `M ${x1} ${y1} L ${x2} ${y2}`);
+            } else {
+                // Ensure nice visual curved paths with vertical end bias to align arrowhead tangents
+                const ctrlX1 = x1 + Math.min(dx * 0.5, 50);
+                const ctrlX2 = x2 - Math.min(dx * 0.5, 50);
+                const ctrlY1 = y1;
+                const ctrlY2 = y2 - 20;
+                path.setAttribute('d', `M ${x1} ${y1} C ${ctrlX1} ${ctrlY1}, ${ctrlX2} ${ctrlY2}, ${x2} ${y2}`);
+            }
+
+            let strokeColor = 'rgba(0,113,227,0.5)';
+            let strokeWidth = '2';
+
+            if (focusedInstructionIdx !== null) {
+                if (isFocusedProducer) {
+                    strokeColor = 'rgba(255, 69, 58, 0.9)'; // Red (inputs/producers)
+                    strokeWidth = '3';
+                } else if (isFocusedConsumer) {
+                    strokeColor = 'rgba(48, 209, 88, 0.9)'; // Green (outputs/consumers)
+                    strokeWidth = '3';
+                } else {
+                    strokeColor = 'rgba(0,113,227,0.08)'; // Heavily dimmed non-focus arrows
+                    strokeWidth = '1';
+                }
+            }
+
+            path.setAttribute('stroke', strokeColor);
+            path.setAttribute('stroke-width', strokeWidth);
+            path.setAttribute('fill', 'none');
+
+            const markerId = focusedInstructionIdx !== null ?
+                             (isFocusedProducer ? 'url(#arrowhead-prod)' : (isFocusedConsumer ? 'url(#arrowhead-cons)' : 'url(#arrowhead-dim)')) :
+                             'url(#arrowhead)';
+            path.setAttribute('marker-end', markerId);
+
+            const tooltip = document.getElementById('tooltip');
+            path.onmouseover = (e) => {
+                const hoverColor = isFocusedProducer ? 'rgba(255, 69, 58, 1)' : (isFocusedConsumer ? 'rgba(48, 209, 88, 1)' : 'rgba(0,113,227,1)');
+                path.setAttribute('stroke', hoverColor);
+                path.setAttribute('stroke-width', '4');
+                tooltip.style.display = 'block';
+                tooltip.innerHTML = `<strong>Dependency: ${label}</strong><br>Instr [${fromRow}] &rarr; [${toRow}]`;
+                updateTooltipPos(e);
+            };
+            path.onmousemove = updateTooltipPos;
+            path.onmouseout = () => {
+                path.setAttribute('stroke', strokeColor);
+                path.setAttribute('stroke-width', strokeWidth);
+                tooltip.style.display = 'none';
+            };
+
+            svg.appendChild(path);
+            ensureMarkers(svg);
+        }
+
+        /**
+         * Lazily instantiates the SVG arrow markers in userSpaceOnUse mode to match pixel sizing.
+         */
+        function ensureMarkers(svg) {
+            if (document.getElementById('arrowhead')) return;
+            const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
+
+            // Build reusable path marker templates
+            function buildMarker(id, color) {
+                const marker = document.createElementNS("http://www.w3.org/2000/svg", "marker");
+                marker.setAttribute('id', id);
+                marker.setAttribute('markerUnits', 'userSpaceOnUse');
+                marker.setAttribute('markerWidth', '14');
+                marker.setAttribute('markerHeight', '14');
+                marker.setAttribute('refX', '0'); // Aligns base with exact path endpoint
+                marker.setAttribute('refY', '7'); // Center vertically
+                marker.setAttribute('orient', 'auto');
+
+                const polygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+                polygon.setAttribute('points', '0 2, 11 7, 0 12'); // Perfect sharp arrowhead triangle
+                polygon.setAttribute('fill', color);
+
+                marker.appendChild(polygon);
+                defs.appendChild(marker);
+            }
+
+            buildMarker('arrowhead', 'rgba(0,113,227,0.8)');
+            buildMarker('arrowhead-prod', 'rgba(255,69,58,0.9)'); // Red for inputs
+            buildMarker('arrowhead-cons', 'rgba(48,209,88,0.9)'); // Green for outputs
+            buildMarker('arrowhead-dim', 'rgba(0,113,227,0.15)');  // Dimmed reference markers
+
+            svg.appendChild(defs);
+        }
+
+        function updateTooltipPos(e) {
+            const tooltip = document.getElementById('tooltip');
+            tooltip.style.left = (e.clientX + 15) + 'px';
+            tooltip.style.top = (e.clientY + 15) + 'px';
+        }
+    </script>
+</body>
+</html>
