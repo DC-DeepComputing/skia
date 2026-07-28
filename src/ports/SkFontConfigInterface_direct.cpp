@@ -58,13 +58,15 @@ struct FCLocker {
 };
 
 using UniqueFCConfig = std::unique_ptr<FcConfig, SkFunctionObject<FcConfigDestroy>>;
+using UniqueFcPatternRAII = std::unique_ptr<FcPattern, SkFunctionObject<FcPatternDestroy>>;
+using UniqueFcFontSetRAII = std::unique_ptr<FcFontSet, SkFunctionObject<FcFontSetDestroy>>;
 
-} // namespace
+}  // namespace
 
 size_t SkFontConfigInterface::FontIdentity::writeToMemory(void* addr) const {
     size_t size = sizeof(fID) + sizeof(fTTCIndex);
-    size += sizeof(int32_t) + sizeof(int32_t) + sizeof(uint8_t); // weight, width, italic
-    size += sizeof(int32_t) + fString.size();    // store length+data
+    size += sizeof(int32_t) + sizeof(int32_t) + sizeof(uint8_t);  // weight, width, italic
+    size += sizeof(int32_t) + fString.size();                     // store length+data
     if (addr) {
         SkWBuffer buffer(addr, size);
 
@@ -82,8 +84,7 @@ size_t SkFontConfigInterface::FontIdentity::writeToMemory(void* addr) const {
     return size;
 }
 
-size_t SkFontConfigInterface::FontIdentity::readFromMemory(const void* addr,
-                                                           size_t size) {
+size_t SkFontConfigInterface::FontIdentity::readFromMemory(const void* addr, size_t size) {
     SkRBuffer buffer(addr, size);
 
     (void)buffer.readU32(&fID);
@@ -100,7 +101,7 @@ size_t SkFontConfigInterface::FontIdentity::readFromMemory(const void* addr,
     (void)buffer.read(fString.data(), strLen);
     buffer.skipToAlign4();
 
-    return buffer.pos();    // the actual number of bytes read
+    return buffer.pos();  // the actual number of bytes read
 }
 
 #ifdef SK_DEBUG
@@ -111,8 +112,7 @@ static void make_iden(SkFontConfigInterface::FontIdentity* iden) {
     iden->fStyle = SkFontStyle(300, 6, SkFontStyle::kItalic_Slant);
 }
 
-static void test_writeToMemory(const SkFontConfigInterface::FontIdentity& iden0,
-                               int initValue) {
+static void test_writeToMemory(const SkFontConfigInterface::FontIdentity& iden0, int initValue) {
     SkFontConfigInterface::FontIdentity iden1;
 
     size_t size0 = iden0.writeToMemory(nullptr);
@@ -163,8 +163,7 @@ namespace {
 // Equivalence classes, used to match the Liberation and other fonts
 // with their metric-compatible replacements.  See the discussion in
 // GetFontEquivClass().
-enum FontEquivClass
-{
+enum FontEquivClass {
     OTHER,
     SANS,
     SERIF,
@@ -187,8 +186,7 @@ enum FontEquivClass
 
 // Match the font name against a whilelist of fonts, returning the equivalence
 // class.
-FontEquivClass GetFontEquivClass(const char* fontname)
-{
+FontEquivClass GetFontEquivClass(const char* fontname) {
     // It would be nice for fontconfig to tell us whether a given suggested
     // replacement is a "strong" match (that is, an equivalent font) or
     // a "weak" match (that is, fontconfig's next-best attempt at finding a
@@ -205,130 +203,128 @@ FontEquivClass GetFontEquivClass(const char* fontname)
     // compatible with Courier New, but the former is sans-serif while
     // the latter is serif.
 
-
     struct FontEquivMap {
         FontEquivClass clazz;
         const char name[40];
     };
 
     static const FontEquivMap kFontEquivMap[] = {
-        { SANS, "Arial" },
-        { SANS, "Arimo" },
-        { SANS, "Liberation Sans" },
+            {SANS, "Arial"},
+            {SANS, "Arimo"},
+            {SANS, "Liberation Sans"},
 
-        { SERIF, "Times New Roman" },
-        { SERIF, "Tinos" },
-        { SERIF, "Liberation Serif" },
+            {SERIF, "Times New Roman"},
+            {SERIF, "Tinos"},
+            {SERIF, "Liberation Serif"},
 
-        { MONO, "Courier New" },
-        { MONO, "Cousine" },
-        { MONO, "Liberation Mono" },
+            {MONO, "Courier New"},
+            {MONO, "Cousine"},
+            {MONO, "Liberation Mono"},
 
-        { SYMBOL, "Symbol" },
-        { SYMBOL, "Symbol Neu" },
+            {SYMBOL, "Symbol"},
+            {SYMBOL, "Symbol Neu"},
 
-        // ＭＳ Ｐゴシック
-        { PGOTHIC, "MS PGothic" },
-        { PGOTHIC, "\xef\xbc\xad\xef\xbc\xb3 \xef\xbc\xb0"
-                   "\xe3\x82\xb4\xe3\x82\xb7\xe3\x83\x83\xe3\x82\xaf" },
-        { PGOTHIC, "Noto Sans CJK JP" },
-        { PGOTHIC, "IPAPGothic" },
-        { PGOTHIC, "MotoyaG04Gothic" },
+            // ＭＳ Ｐゴシック
+            {PGOTHIC, "MS PGothic"},
+            {PGOTHIC,
+             "\xef\xbc\xad\xef\xbc\xb3 \xef\xbc\xb0"
+             "\xe3\x82\xb4\xe3\x82\xb7\xe3\x83\x83\xe3\x82\xaf"},
+            {PGOTHIC, "Noto Sans CJK JP"},
+            {PGOTHIC, "IPAPGothic"},
+            {PGOTHIC, "MotoyaG04Gothic"},
 
-        // ＭＳ ゴシック
-        { GOTHIC, "MS Gothic" },
-        { GOTHIC, "\xef\xbc\xad\xef\xbc\xb3 "
-                  "\xe3\x82\xb4\xe3\x82\xb7\xe3\x83\x83\xe3\x82\xaf" },
-        { GOTHIC, "Noto Sans Mono CJK JP" },
-        { GOTHIC, "IPAGothic" },
-        { GOTHIC, "MotoyaG04GothicMono" },
+            // ＭＳ ゴシック
+            {GOTHIC, "MS Gothic"},
+            {GOTHIC,
+             "\xef\xbc\xad\xef\xbc\xb3 "
+             "\xe3\x82\xb4\xe3\x82\xb7\xe3\x83\x83\xe3\x82\xaf"},
+            {GOTHIC, "Noto Sans Mono CJK JP"},
+            {GOTHIC, "IPAGothic"},
+            {GOTHIC, "MotoyaG04GothicMono"},
 
-        // ＭＳ Ｐ明朝
-        { PMINCHO, "MS PMincho" },
-        { PMINCHO, "\xef\xbc\xad\xef\xbc\xb3 \xef\xbc\xb0"
-                   "\xe6\x98\x8e\xe6\x9c\x9d"},
-        { PMINCHO, "Noto Serif CJK JP" },
-        { PMINCHO, "IPAPMincho" },
-        { PMINCHO, "MotoyaG04Mincho" },
+            // ＭＳ Ｐ明朝
+            {PMINCHO, "MS PMincho"},
+            {PMINCHO,
+             "\xef\xbc\xad\xef\xbc\xb3 \xef\xbc\xb0"
+             "\xe6\x98\x8e\xe6\x9c\x9d"},
+            {PMINCHO, "Noto Serif CJK JP"},
+            {PMINCHO, "IPAPMincho"},
+            {PMINCHO, "MotoyaG04Mincho"},
 
-        // ＭＳ 明朝
-        { MINCHO, "MS Mincho" },
-        { MINCHO, "\xef\xbc\xad\xef\xbc\xb3 \xe6\x98\x8e\xe6\x9c\x9d" },
-        { MINCHO, "Noto Serif CJK JP" },
-        { MINCHO, "IPAMincho" },
-        { MINCHO, "MotoyaG04MinchoMono" },
+            // ＭＳ 明朝
+            {MINCHO, "MS Mincho"},
+            {MINCHO, "\xef\xbc\xad\xef\xbc\xb3 \xe6\x98\x8e\xe6\x9c\x9d"},
+            {MINCHO, "Noto Serif CJK JP"},
+            {MINCHO, "IPAMincho"},
+            {MINCHO, "MotoyaG04MinchoMono"},
 
-        // 宋体
-        { SIMSUN, "Simsun" },
-        { SIMSUN, "\xe5\xae\x8b\xe4\xbd\x93" },
-        { SIMSUN, "Noto Serif CJK SC" },
-        { SIMSUN, "MSung GB18030" },
-        { SIMSUN, "Song ASC" },
+            // 宋体
+            {SIMSUN, "Simsun"},
+            {SIMSUN, "\xe5\xae\x8b\xe4\xbd\x93"},
+            {SIMSUN, "Noto Serif CJK SC"},
+            {SIMSUN, "MSung GB18030"},
+            {SIMSUN, "Song ASC"},
 
-        // 新宋体
-        { NSIMSUN, "NSimsun" },
-        { NSIMSUN, "\xe6\x96\xb0\xe5\xae\x8b\xe4\xbd\x93" },
-        { NSIMSUN, "Noto Serif CJK SC" },
-        { NSIMSUN, "MSung GB18030" },
-        { NSIMSUN, "N Song ASC" },
+            // 新宋体
+            {NSIMSUN, "NSimsun"},
+            {NSIMSUN, "\xe6\x96\xb0\xe5\xae\x8b\xe4\xbd\x93"},
+            {NSIMSUN, "Noto Serif CJK SC"},
+            {NSIMSUN, "MSung GB18030"},
+            {NSIMSUN, "N Song ASC"},
 
-        // 黑体
-        { SIMHEI, "Simhei" },
-        { SIMHEI, "\xe9\xbb\x91\xe4\xbd\x93" },
-        { SIMHEI, "Noto Sans CJK SC" },
-        { SIMHEI, "MYingHeiGB18030" },
-        { SIMHEI, "MYingHeiB5HK" },
+            // 黑体
+            {SIMHEI, "Simhei"},
+            {SIMHEI, "\xe9\xbb\x91\xe4\xbd\x93"},
+            {SIMHEI, "Noto Sans CJK SC"},
+            {SIMHEI, "MYingHeiGB18030"},
+            {SIMHEI, "MYingHeiB5HK"},
 
-        // 新細明體
-        { PMINGLIU, "PMingLiU"},
-        { PMINGLIU, "\xe6\x96\xb0\xe7\xb4\xb0\xe6\x98\x8e\xe9\xab\x94" },
-        { PMINGLIU, "Noto Serif CJK TC"},
-        { PMINGLIU, "MSung B5HK"},
+            // 新細明體
+            {PMINGLIU, "PMingLiU"},
+            {PMINGLIU, "\xe6\x96\xb0\xe7\xb4\xb0\xe6\x98\x8e\xe9\xab\x94"},
+            {PMINGLIU, "Noto Serif CJK TC"},
+            {PMINGLIU, "MSung B5HK"},
 
-        // 細明體
-        { MINGLIU, "MingLiU"},
-        { MINGLIU, "\xe7\xb4\xb0\xe6\x98\x8e\xe9\xab\x94" },
-        { MINGLIU, "Noto Serif CJK TC"},
-        { MINGLIU, "MSung B5HK"},
+            // 細明體
+            {MINGLIU, "MingLiU"},
+            {MINGLIU, "\xe7\xb4\xb0\xe6\x98\x8e\xe9\xab\x94"},
+            {MINGLIU, "Noto Serif CJK TC"},
+            {MINGLIU, "MSung B5HK"},
 
-        // 新細明體
-        { PMINGLIUHK, "PMingLiU_HKSCS"},
-        { PMINGLIUHK, "\xe6\x96\xb0\xe7\xb4\xb0\xe6\x98\x8e\xe9\xab\x94_HKSCS" },
-        { PMINGLIUHK, "Noto Serif CJK TC"},
-        { PMINGLIUHK, "MSung B5HK"},
+            // 新細明體
+            {PMINGLIUHK, "PMingLiU_HKSCS"},
+            {PMINGLIUHK, "\xe6\x96\xb0\xe7\xb4\xb0\xe6\x98\x8e\xe9\xab\x94_HKSCS"},
+            {PMINGLIUHK, "Noto Serif CJK TC"},
+            {PMINGLIUHK, "MSung B5HK"},
 
-        // 細明體
-        { MINGLIUHK, "MingLiU_HKSCS"},
-        { MINGLIUHK, "\xe7\xb4\xb0\xe6\x98\x8e\xe9\xab\x94_HKSCS" },
-        { MINGLIUHK, "Noto Serif CJK TC"},
-        { MINGLIUHK, "MSung B5HK"},
+            // 細明體
+            {MINGLIUHK, "MingLiU_HKSCS"},
+            {MINGLIUHK, "\xe7\xb4\xb0\xe6\x98\x8e\xe9\xab\x94_HKSCS"},
+            {MINGLIUHK, "Noto Serif CJK TC"},
+            {MINGLIUHK, "MSung B5HK"},
 
-        // Cambria
-        { CAMBRIA, "Cambria" },
-        { CAMBRIA, "Caladea" },
+            // Cambria
+            {CAMBRIA, "Cambria"},
+            {CAMBRIA, "Caladea"},
 
-        // Calibri
-        { CALIBRI, "Calibri" },
-        { CALIBRI, "Carlito" },
+            // Calibri
+            {CALIBRI, "Calibri"},
+            {CALIBRI, "Carlito"},
     };
 
-    static const size_t kFontCount =
-        sizeof(kFontEquivMap)/sizeof(kFontEquivMap[0]);
+    static const size_t kFontCount = sizeof(kFontEquivMap) / sizeof(kFontEquivMap[0]);
 
     // TODO(jungshik): If this loop turns out to be hot, turn
     // the array to a static (hash)map to speed it up.
     for (size_t i = 0; i < kFontCount; ++i) {
-        if (strcasecmp(kFontEquivMap[i].name, fontname) == 0)
-            return kFontEquivMap[i].clazz;
+        if (strcasecmp(kFontEquivMap[i].name, fontname) == 0) return kFontEquivMap[i].clazz;
     }
     return OTHER;
 }
 
-
 // Return true if |font_a| and |font_b| are visually and at the metrics
 // level interchangeable.
-bool IsMetricCompatibleReplacement(const char* font_a, const char* font_b)
-{
+bool IsMetricCompatibleReplacement(const char* font_a, const char* font_b) {
     FontEquivClass class_a = GetFontEquivClass(font_a);
     FontEquivClass class_b = GetFontEquivClass(font_b);
 
@@ -340,11 +336,9 @@ bool IsMetricCompatibleReplacement(const char* font_a, const char* font_b)
 // basic font names like "Sans", "Serif" or "Monospace". This function
 // tells you whether a given request is for such a fallback.
 bool IsFallbackFontAllowed(const SkString& family) {
-  const char* family_cstr = family.c_str();
-  return family.isEmpty() ||
-         strcasecmp(family_cstr, "sans") == 0 ||
-         strcasecmp(family_cstr, "serif") == 0 ||
-         strcasecmp(family_cstr, "monospace") == 0;
+    const char* family_cstr = family.c_str();
+    return family.isEmpty() || strcasecmp(family_cstr, "sans") == 0 ||
+           strcasecmp(family_cstr, "serif") == 0 || strcasecmp(family_cstr, "monospace") == 0;
 }
 
 // Retrieves |is_bold|, |is_italic| and |font_family| properties from |font|.
@@ -356,10 +350,8 @@ static int get_int(FcPattern* pattern, const char object[], int missing) {
     return value;
 }
 
-static int map_range(SkScalar value,
-                     SkScalar old_min, SkScalar old_max,
-                     SkScalar new_min, SkScalar new_max)
-{
+static int map_range(
+        SkScalar value, SkScalar old_min, SkScalar old_max, SkScalar new_min, SkScalar new_max) {
     SkASSERT(old_min < old_max);
     SkASSERT(new_min <= new_max);
     return new_min + ((value - old_min) * (new_max - new_min) / (old_max - old_min));
@@ -378,66 +370,77 @@ static SkScalar map_ranges(SkScalar val, MapRanges const ranges[], int rangesCou
 
     // Linear from [i] to [i+1]
     for (int i = 0; i < rangesCount - 1; ++i) {
-        if (val < ranges[i+1].old_val) {
-            return map_range(val, ranges[i].old_val, ranges[i+1].old_val,
-                                  ranges[i].new_val, ranges[i+1].new_val);
+        if (val < ranges[i + 1].old_val) {
+            return map_range(val,
+                             ranges[i].old_val,
+                             ranges[i + 1].old_val,
+                             ranges[i].new_val,
+                             ranges[i + 1].new_val);
         }
     }
 
     // From [n] to +Inf
     // if (fcweight < Inf)
-    return ranges[rangesCount-1].new_val;
+    return ranges[rangesCount - 1].new_val;
 }
 
 #ifndef FC_WEIGHT_DEMILIGHT
-#define FC_WEIGHT_DEMILIGHT        65
+#define FC_WEIGHT_DEMILIGHT 65
 #endif
 
 // Available since FontConfig 2.15.
 #ifndef FC_FONT_WRAPPER
-#define FC_FONT_WRAPPER         "fontwrapper"
+#define FC_FONT_WRAPPER "fontwrapper"
 #endif
 
 static SkFontStyle skfontstyle_from_fcpattern(FcPattern* pattern) {
     typedef SkFontStyle SkFS;
 
     static constexpr MapRanges weightRanges[] = {
-        { FC_WEIGHT_THIN,       SkFS::kThin_Weight },
-        { FC_WEIGHT_EXTRALIGHT, SkFS::kExtraLight_Weight },
-        { FC_WEIGHT_LIGHT,      SkFS::kLight_Weight },
-        { FC_WEIGHT_DEMILIGHT,  350 },
-        { FC_WEIGHT_BOOK,       380 },
-        { FC_WEIGHT_REGULAR,    SkFS::kNormal_Weight },
-        { FC_WEIGHT_MEDIUM,     SkFS::kMedium_Weight },
-        { FC_WEIGHT_DEMIBOLD,   SkFS::kSemiBold_Weight },
-        { FC_WEIGHT_BOLD,       SkFS::kBold_Weight },
-        { FC_WEIGHT_EXTRABOLD,  SkFS::kExtraBold_Weight },
-        { FC_WEIGHT_BLACK,      SkFS::kBlack_Weight },
-        { FC_WEIGHT_EXTRABLACK, SkFS::kExtraBlack_Weight },
+            {FC_WEIGHT_THIN, SkFS::kThin_Weight},
+            {FC_WEIGHT_EXTRALIGHT, SkFS::kExtraLight_Weight},
+            {FC_WEIGHT_LIGHT, SkFS::kLight_Weight},
+            {FC_WEIGHT_DEMILIGHT, 350},
+            {FC_WEIGHT_BOOK, 380},
+            {FC_WEIGHT_REGULAR, SkFS::kNormal_Weight},
+            {FC_WEIGHT_MEDIUM, SkFS::kMedium_Weight},
+            {FC_WEIGHT_DEMIBOLD, SkFS::kSemiBold_Weight},
+            {FC_WEIGHT_BOLD, SkFS::kBold_Weight},
+            {FC_WEIGHT_EXTRABOLD, SkFS::kExtraBold_Weight},
+            {FC_WEIGHT_BLACK, SkFS::kBlack_Weight},
+            {FC_WEIGHT_EXTRABLACK, SkFS::kExtraBlack_Weight},
     };
-    SkScalar weight = map_ranges(get_int(pattern, FC_WEIGHT, FC_WEIGHT_REGULAR),
-                                 weightRanges, std::size(weightRanges));
+    SkScalar weight = map_ranges(
+            get_int(pattern, FC_WEIGHT, FC_WEIGHT_REGULAR), weightRanges, std::size(weightRanges));
 
     static constexpr MapRanges widthRanges[] = {
-        { FC_WIDTH_ULTRACONDENSED, SkFS::kUltraCondensed_Width },
-        { FC_WIDTH_EXTRACONDENSED, SkFS::kExtraCondensed_Width },
-        { FC_WIDTH_CONDENSED,      SkFS::kCondensed_Width },
-        { FC_WIDTH_SEMICONDENSED,  SkFS::kSemiCondensed_Width },
-        { FC_WIDTH_NORMAL,         SkFS::kNormal_Width },
-        { FC_WIDTH_SEMIEXPANDED,   SkFS::kSemiExpanded_Width },
-        { FC_WIDTH_EXPANDED,       SkFS::kExpanded_Width },
-        { FC_WIDTH_EXTRAEXPANDED,  SkFS::kExtraExpanded_Width },
-        { FC_WIDTH_ULTRAEXPANDED,  SkFS::kUltraExpanded_Width },
+            {FC_WIDTH_ULTRACONDENSED, SkFS::kUltraCondensed_Width},
+            {FC_WIDTH_EXTRACONDENSED, SkFS::kExtraCondensed_Width},
+            {FC_WIDTH_CONDENSED, SkFS::kCondensed_Width},
+            {FC_WIDTH_SEMICONDENSED, SkFS::kSemiCondensed_Width},
+            {FC_WIDTH_NORMAL, SkFS::kNormal_Width},
+            {FC_WIDTH_SEMIEXPANDED, SkFS::kSemiExpanded_Width},
+            {FC_WIDTH_EXPANDED, SkFS::kExpanded_Width},
+            {FC_WIDTH_EXTRAEXPANDED, SkFS::kExtraExpanded_Width},
+            {FC_WIDTH_ULTRAEXPANDED, SkFS::kUltraExpanded_Width},
     };
-    SkScalar width = map_ranges(get_int(pattern, FC_WIDTH, FC_WIDTH_NORMAL),
-                                widthRanges, std::size(widthRanges));
+    SkScalar width = map_ranges(
+            get_int(pattern, FC_WIDTH, FC_WIDTH_NORMAL), widthRanges, std::size(widthRanges));
 
     SkFS::Slant slant = SkFS::kUpright_Slant;
     switch (get_int(pattern, FC_SLANT, FC_SLANT_ROMAN)) {
-        case FC_SLANT_ROMAN:   slant = SkFS::kUpright_Slant; break;
-        case FC_SLANT_ITALIC : slant = SkFS::kItalic_Slant ; break;
-        case FC_SLANT_OBLIQUE: slant = SkFS::kOblique_Slant; break;
-        default: SkASSERT(false); break;
+        case FC_SLANT_ROMAN:
+            slant = SkFS::kUpright_Slant;
+            break;
+        case FC_SLANT_ITALIC:
+            slant = SkFS::kItalic_Slant;
+            break;
+        case FC_SLANT_OBLIQUE:
+            slant = SkFS::kOblique_Slant;
+            break;
+        default:
+            SkASSERT(false);
+            break;
     }
 
     return SkFontStyle(SkScalarRoundToInt(weight), SkScalarRoundToInt(width), slant);
@@ -447,59 +450,66 @@ static void fcpattern_from_skfontstyle(SkFontStyle style, FcPattern* pattern) {
     typedef SkFontStyle SkFS;
 
     static constexpr MapRanges weightRanges[] = {
-        { SkFS::kThin_Weight,       FC_WEIGHT_THIN },
-        { SkFS::kExtraLight_Weight, FC_WEIGHT_EXTRALIGHT },
-        { SkFS::kLight_Weight,      FC_WEIGHT_LIGHT },
-        { 350,                      FC_WEIGHT_DEMILIGHT },
-        { 380,                      FC_WEIGHT_BOOK },
-        { SkFS::kNormal_Weight,     FC_WEIGHT_REGULAR },
-        { SkFS::kMedium_Weight,     FC_WEIGHT_MEDIUM },
-        { SkFS::kSemiBold_Weight,   FC_WEIGHT_DEMIBOLD },
-        { SkFS::kBold_Weight,       FC_WEIGHT_BOLD },
-        { SkFS::kExtraBold_Weight,  FC_WEIGHT_EXTRABOLD },
-        { SkFS::kBlack_Weight,      FC_WEIGHT_BLACK },
-        { SkFS::kExtraBlack_Weight, FC_WEIGHT_EXTRABLACK },
+            {SkFS::kThin_Weight, FC_WEIGHT_THIN},
+            {SkFS::kExtraLight_Weight, FC_WEIGHT_EXTRALIGHT},
+            {SkFS::kLight_Weight, FC_WEIGHT_LIGHT},
+            {350, FC_WEIGHT_DEMILIGHT},
+            {380, FC_WEIGHT_BOOK},
+            {SkFS::kNormal_Weight, FC_WEIGHT_REGULAR},
+            {SkFS::kMedium_Weight, FC_WEIGHT_MEDIUM},
+            {SkFS::kSemiBold_Weight, FC_WEIGHT_DEMIBOLD},
+            {SkFS::kBold_Weight, FC_WEIGHT_BOLD},
+            {SkFS::kExtraBold_Weight, FC_WEIGHT_EXTRABOLD},
+            {SkFS::kBlack_Weight, FC_WEIGHT_BLACK},
+            {SkFS::kExtraBlack_Weight, FC_WEIGHT_EXTRABLACK},
     };
     int weight = map_ranges(style.weight(), weightRanges, std::size(weightRanges));
 
     static constexpr MapRanges widthRanges[] = {
-        { SkFS::kUltraCondensed_Width, FC_WIDTH_ULTRACONDENSED },
-        { SkFS::kExtraCondensed_Width, FC_WIDTH_EXTRACONDENSED },
-        { SkFS::kCondensed_Width,      FC_WIDTH_CONDENSED },
-        { SkFS::kSemiCondensed_Width,  FC_WIDTH_SEMICONDENSED },
-        { SkFS::kNormal_Width,         FC_WIDTH_NORMAL },
-        { SkFS::kSemiExpanded_Width,   FC_WIDTH_SEMIEXPANDED },
-        { SkFS::kExpanded_Width,       FC_WIDTH_EXPANDED },
-        { SkFS::kExtraExpanded_Width,  FC_WIDTH_EXTRAEXPANDED },
-        { SkFS::kUltraExpanded_Width,  FC_WIDTH_ULTRAEXPANDED },
+            {SkFS::kUltraCondensed_Width, FC_WIDTH_ULTRACONDENSED},
+            {SkFS::kExtraCondensed_Width, FC_WIDTH_EXTRACONDENSED},
+            {SkFS::kCondensed_Width, FC_WIDTH_CONDENSED},
+            {SkFS::kSemiCondensed_Width, FC_WIDTH_SEMICONDENSED},
+            {SkFS::kNormal_Width, FC_WIDTH_NORMAL},
+            {SkFS::kSemiExpanded_Width, FC_WIDTH_SEMIEXPANDED},
+            {SkFS::kExpanded_Width, FC_WIDTH_EXPANDED},
+            {SkFS::kExtraExpanded_Width, FC_WIDTH_EXTRAEXPANDED},
+            {SkFS::kUltraExpanded_Width, FC_WIDTH_ULTRAEXPANDED},
     };
     int width = map_ranges(style.width(), widthRanges, std::size(widthRanges));
 
     int slant = FC_SLANT_ROMAN;
     switch (style.slant()) {
-        case SkFS::kUpright_Slant: slant = FC_SLANT_ROMAN  ; break;
-        case SkFS::kItalic_Slant : slant = FC_SLANT_ITALIC ; break;
-        case SkFS::kOblique_Slant: slant = FC_SLANT_OBLIQUE; break;
-        default: SkASSERT(false); break;
+        case SkFS::kUpright_Slant:
+            slant = FC_SLANT_ROMAN;
+            break;
+        case SkFS::kItalic_Slant:
+            slant = FC_SLANT_ITALIC;
+            break;
+        case SkFS::kOblique_Slant:
+            slant = FC_SLANT_OBLIQUE;
+            break;
+        default:
+            SkASSERT(false);
+            break;
     }
 
     FcPatternAddInteger(pattern, FC_WEIGHT, weight);
-    FcPatternAddInteger(pattern, FC_WIDTH , width);
-    FcPatternAddInteger(pattern, FC_SLANT , slant);
+    FcPatternAddInteger(pattern, FC_WIDTH, width);
+    FcPatternAddInteger(pattern, FC_SLANT, slant);
 }
 
 }  // anonymous namespace
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#define kMaxFontFamilyLength    2048
+#define kMaxFontFamilyLength 2048
 #ifdef SK_FONT_CONFIG_INTERFACE_ONLY_ALLOW_SFNT_FONTS
 const char* kFontFormatTrueType = "TrueType";
 const char* kFontFormatCFF = "CFF";
 #endif
 
-SkFontConfigInterfaceDirect::SkFontConfigInterfaceDirect(FcConfig* fc) : fFC(fc)
-{
+SkFontConfigInterfaceDirect::SkFontConfigInterfaceDirect(FcConfig* fc) : fFC(fc) {
     SkDEBUGCODE(fontconfiginterface_unittest();)
 }
 
@@ -520,8 +530,7 @@ bool SkFontConfigInterfaceDirect::isValidPattern(FcPattern* pattern) {
 #ifdef SK_FONT_CONFIG_INTERFACE_ONLY_ALLOW_SFNT_FONTS
     const char* font_format = get_string(pattern, FC_FONTFORMAT);
     if (!font_format || (0 != strcmp(font_format, kFontFormatTrueType) &&
-                         0 != strcmp(font_format, kFontFormatCFF)))
-    {
+                         0 != strcmp(font_format, kFontFormatCFF))) {
         return false;
     }
 #endif
@@ -549,44 +558,55 @@ bool SkFontConfigInterfaceDirect::isValidPattern(FcPattern* pattern) {
     return this->isAccessible(c_filename);
 }
 
+bool SkFontConfigInterfaceDirect::isAcceptableMatch(FcPattern* match,
+                                                    const char* post_config_family,
+                                                    const SkString& family) {
+    if (!this->isValidPattern(match)) {
+        return false;
+    }
+
+    if (!IsFallbackFontAllowed(family)) {
+        bool acceptable_substitute = false;
+        for (int id = 0; id < 255; ++id) {
+            const char* post_match_family = get_string(match, FC_FAMILY, id);
+            if (!post_match_family) {
+                break;
+            }
+
+            // The requested family should be able to accept matches for post_config_family
+            // or post_match_family. The below case should work fine
+            //   requested family: "Bitstream Vera Sans"
+            //   post_config_family: "Arial"
+            //   post_match_family: "Bitstream Vera Sans"
+            acceptable_substitute =
+                    (strcasecmp(post_config_family, post_match_family) == 0 ||
+                     strcasecmp(family.c_str(), post_match_family) == 0 ||
+                     IsMetricCompatibleReplacement(family.c_str(), post_match_family));
+
+            if (acceptable_substitute) {
+                break;
+            }
+        }
+        if (!acceptable_substitute) {
+            return false;
+        }
+    }
+    return true;
+}
+
 // Find matching font from |font_set| for the given font family.
 FcPattern* SkFontConfigInterfaceDirect::MatchFont(FcFontSet* font_set,
                                                   const char* post_config_family,
                                                   const SkString& family) {
-  // Older versions of fontconfig have a bug where they cannot select
-  // only scalable fonts so we have to manually filter the results.
-  FcPattern* match = nullptr;
-  for (int i = 0; i < font_set->nfont; ++i) {
-    FcPattern* current = font_set->fonts[i];
-    if (this->isValidPattern(current)) {
-      match = current;
-      break;
-    }
-  }
+    for (int i = 0; i < font_set->nfont; ++i) {
+        FcPattern* current = font_set->fonts[i];
 
-  if (match && !IsFallbackFontAllowed(family)) {
-    bool acceptable_substitute = false;
-    for (int id = 0; id < 255; ++id) {
-      const char* post_match_family = get_string(match, FC_FAMILY, id);
-      if (!post_match_family)
-        break;
-      acceptable_substitute =
-          (strcasecmp(post_config_family, post_match_family) == 0 ||
-           // Workaround for Issue 12530:
-           //   requested family: "Bitstream Vera Sans"
-           //   post_config_family: "Arial"
-           //   post_match_family: "Bitstream Vera Sans"
-           // -> We should treat this case as a good match.
-           strcasecmp(family.c_str(), post_match_family) == 0) ||
-           IsMetricCompatibleReplacement(family.c_str(), post_match_family);
-      if (acceptable_substitute)
-        break;
+        if (this->isAcceptableMatch(current, post_config_family, family)) {
+            return current;
+        }
     }
-    if (!acceptable_substitute)
-      return nullptr;
-  }
 
-  return match;
+    return nullptr;
 }
 
 bool SkFontConfigInterfaceDirect::matchFamilyName(const char familyName[],
@@ -607,21 +627,24 @@ bool SkFontConfigInterfaceDirect::matchFamilyName(const char familyName[],
     }
 
     FCLocker lock;
-    FcPattern* pattern = FcPatternCreate();
+
+    UniqueFcPatternRAII pattern(FcPatternCreate());
+    UniqueFcPatternRAII direct_match;
+    UniqueFcFontSetRAII font_set;
 
     if (familyName) {
-        FcPatternAddString(pattern, FC_FAMILY, (const FcChar8*)familyName);
+        FcPatternAddString(pattern.get(), FC_FAMILY, (const FcChar8*)familyName);
     }
-    fcpattern_from_skfontstyle(style, pattern);
+    fcpattern_from_skfontstyle(style, pattern.get());
 
-    FcPatternAddBool(pattern, FC_SCALABLE, FcTrue);
+    FcPatternAddBool(pattern.get(), FC_SCALABLE, FcTrue);
 
     // Prefer SFNT fonts in order to reduce the chance of having to reject the font
     // in isValidPattern().
-    FcPatternAddString(pattern, FC_FONT_WRAPPER, reinterpret_cast<const FcChar8*>("SFNT"));
+    FcPatternAddString(pattern.get(), FC_FONT_WRAPPER, reinterpret_cast<const FcChar8*>("SFNT"));
 
-    FcConfigSubstitute(fc, pattern, FcMatchPattern);
-    FcDefaultSubstitute(pattern);
+    FcConfigSubstitute(fc, pattern.get(), FcMatchPattern);
+    FcDefaultSubstitute(pattern.get());
 
     // Font matching:
     // CSS often specifies a fallback list of families:
@@ -652,41 +675,49 @@ bool SkFontConfigInterfaceDirect::matchFamilyName(const char familyName[],
     //
     // However, we special-case fallback fonts; see IsFallbackFontAllowed().
 
-    const char* post_config_family = get_string(pattern, FC_FAMILY);
+    const char* post_config_family = get_string(pattern.get(), FC_FAMILY);
     if (!post_config_family) {
         // we can just continue with an empty name, e.g. default font
         post_config_family = "";
     }
 
     FcResult result;
-    FcFontSet* font_set = FcFontSort(fc, pattern, 0, nullptr, &result);
-    if (!font_set) {
-        FcPatternDestroy(pattern);
-        return false;
+    // Whenever FcFontSetDestroy is called, it also destroys the matched pattern (FcPatternDestroy)
+    // Thus match remains a raw pointer to avoid double freeing with direct_match or font_set
+    FcPattern* match = nullptr;
+
+    // first we check if we can get a match directly (direct_match) with FcFontMatch
+    direct_match.reset(FcFontMatch(fc, pattern.get(), &result));
+    if (direct_match &&
+        this->isAcceptableMatch(direct_match.get(), post_config_family, familyStr)) {
+        match = direct_match.get();
     }
 
-    FcPattern* match = this->MatchFont(font_set, post_config_family, familyStr);
+    // if we did not get a match from FcFontMatch, then get all fonts and sort with FcFontSort
     if (!match) {
-        FcPatternDestroy(pattern);
-        FcFontSetDestroy(font_set);
-        return false;
+        font_set.reset(FcFontSort(fc, pattern.get(), 0, nullptr, &result));
+        if (!font_set) {
+            return false;
+        }
+        match = this->MatchFont(font_set.get(), post_config_family, familyStr);
     }
 
-    FcPatternDestroy(pattern);
+    // if we could not get our match from either of the above return false
+    if (!match) {
+        return false;
+    }
 
     // From here out we just extract our results from 'match'
-
     post_config_family = get_string(match, FC_FAMILY);
     if (!post_config_family) {
-        FcFontSetDestroy(font_set);
         return false;
     }
 
     const char* c_filename = get_string(match, FC_FILE);
     if (!c_filename) {
-        FcFontSetDestroy(font_set);
         return false;
     }
+
     const char* sysroot = (const char*)FcConfigGetSysRoot(fc);
     SkString resolvedFilename;
     if (sysroot) {
@@ -696,8 +727,6 @@ bool SkFontConfigInterfaceDirect::matchFamilyName(const char familyName[],
     }
 
     int face_index = get_int(match, FC_INDEX, 0);
-
-    FcFontSetDestroy(font_set);
 
     if (outIdentity) {
         outIdentity->fTTCIndex = face_index;
@@ -709,6 +738,7 @@ bool SkFontConfigInterfaceDirect::matchFamilyName(const char familyName[],
     if (outStyle) {
         *outStyle = skfontstyle_from_fcpattern(match);
     }
+
     return true;
 }
 
