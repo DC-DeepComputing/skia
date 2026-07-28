@@ -2218,7 +2218,6 @@ func (b *jobBuilder) bazelBuild() {
 		b.usesGit()
 		b.addToPATH("cipd_bin_packages", "cipd_bin_packages/bin")
 		b.usesLUCIAuth()
-		b.usesPython() // dawn_repo.bzl needs an external Python binary
 
 		cmd := []string{
 			"luci-auth", "context",
