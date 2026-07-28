@@ -477,7 +477,7 @@ A dictionary is returned that has the following structure:
 [DEPS](/infra/bots/recipes/test.py#12): [recipe\_engine/context][recipe_engine/recipe_modules/context], [recipe\_engine/file][recipe_engine/recipe_modules/file], [recipe\_engine/path][recipe_engine/recipe_modules/path], [recipe\_engine/platform][recipe_engine/recipe_modules/platform], [recipe\_engine/properties][recipe_engine/recipe_modules/properties], [recipe\_engine/raw\_io][recipe_engine/recipe_modules/raw_io], [recipe\_engine/step][recipe_engine/recipe_modules/step], [env](#recipe_modules-env), [flavor](#recipe_modules-flavor), [gold\_upload](#recipe_modules-gold_upload), [run](#recipe_modules-run), [vars](#recipe_modules-vars)
 
 
-&mdash; **def [RunSteps](/infra/bots/recipes/test.py#135)(api):**
+&mdash; **def [RunSteps](/infra/bots/recipes/test.py#133)(api):**
 
 &mdash; **def [test\_steps](/infra/bots/recipes/test.py#29)(api):**
 
