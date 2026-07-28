@@ -200,6 +200,8 @@ InsertStatus QueueManager::addRecording(const InsertRecordingInfo& info, Context
         // compilation was the reason for failure. Clients that manage pipeline disk caches may
         // want to handle the failure differently than when any other GPU command failed.
         // We will only report the 1st pipeline creation's failure message.
+
+        // The Pipelines are fulfilled in RecordingPriv::addCommands
         std::string failureMsg;
         const bool validPipelines = info.fRecording->priv().taskList()->visitPipelines(
                 [&failureMsg](const GraphicsPipeline* pipeline) {
