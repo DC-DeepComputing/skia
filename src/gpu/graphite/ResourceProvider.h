@@ -52,7 +52,7 @@ class ResourceProvider {
 public:
     virtual ~ResourceProvider();
 
-    GraphicsPipelineHandle createGraphicsPipelineHandle(
+    GraphicsPipelineHandle createGraphicsPipelineHandle1(
             const GraphicsPipelineDesc&,
             const RenderPassDesc&,
             SkEnumBitMask<PipelineCreationFlags>);

@@ -68,7 +68,7 @@ void compile(const RendererProvider* rendererProvider,
             UniquePaintParamsID paintID = s->performsShading() ? uniqueID
                                                                : UniquePaintParamsID::Invalid();
 
-            GraphicsPipelineHandle handle = resourceProvider->createGraphicsPipelineHandle(
+            GraphicsPipelineHandle handle = resourceProvider->createGraphicsPipelineHandle1(
                     { s->renderStepID(), paintID },
                     renderPassDesc,
                     PipelineCreationFlags::kForPrecompilation);
@@ -166,7 +166,7 @@ void Precompile(PrecompileContext* precompileContext,
                 const RenderStep* renderStep =
                     rendererProvider->lookup(RenderStep::RenderStepID::kCoverBounds_InverseCover);
 
-                GraphicsPipelineHandle handle = resourceProvider->createGraphicsPipelineHandle(
+                GraphicsPipelineHandle handle = resourceProvider->createGraphicsPipelineHandle1(
                         { renderStep->renderStepID(), UniquePaintParamsID::Invalid() },
                         renderPassDesc,
                         PipelineCreationFlags::kForPrecompilation);

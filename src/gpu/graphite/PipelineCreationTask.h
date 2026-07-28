@@ -35,6 +35,8 @@ private:
             , fPipelineCreationFlags(pipelineCreationFlags) {}
 
     const UniqueKey fPipelineKey;  // used to track this task in the PipelineManager
+
+    // The next two create the 'fPipelineKey'
     const GraphicsPipelineDesc fGraphicsPipelineDesc;
     const RenderPassDesc fRenderPassDesc;
     const SkEnumBitMask<PipelineCreationFlags> fPipelineCreationFlags;

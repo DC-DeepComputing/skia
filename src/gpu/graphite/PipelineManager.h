@@ -33,7 +33,7 @@ public:
     PipelineManager();
     ~PipelineManager();
 
-    GraphicsPipelineHandle createHandle(
+    GraphicsPipelineHandle createHandle1(
             SharedContext*,
             const GraphicsPipelineDesc&,
             const RenderPassDesc&,
