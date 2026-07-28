@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fae826d7_9c502281",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-28T17:21:10Z",
+      "side": 1,
+      "message": "This fails the Recording insert now, which is fine; pipeline compile failures are pretty hard to recover from.",
+      "range": {
+        "startLine": 88,
+        "startChar": 78,
+        "endLine": 88,
+        "endChar": 91
+      },
+      "revId": "5485a7547a9552ab4e2ce3668f061d41e43a407b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6b62e9e_4afa3f41",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-28T17:21:10Z",
+      "side": 1,
+      "message": "I think we want to have these traced even on replay. If we get rid of `fPipelineHandles` as a separate array to fill out, we could fold these traces into the loop that checks everything is resolved.",
+      "range": {
+        "startLine": 95,
+        "startChar": 8,
+        "endLine": 109,
+        "endChar": 9
+      },
+      "revId": "5485a7547a9552ab4e2ce3668f061d41e43a407b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "263dd303_80da2cd2",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-28T17:21:10Z",
+      "side": 1,
+      "message": "Similarly, this trackResource() could happen right after resolveHandle() returns.",
+      "range": {
+        "startLine": 115,
+        "startChar": 0,
+        "endLine": 117,
+        "endChar": 5
+      },
+      "revId": "5485a7547a9552ab4e2ce3668f061d41e43a407b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3e19286_c653bac8",
+        "filename": "src/gpu/graphite/DrawPass.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-28T17:21:10Z",
+      "side": 1,
+      "message": "This should be `addResourceRefs` right? I kind of thinking we should remove this, since it\u0027s a whole separate TArray heap allocation for pointers we can get at through the `GraphicsPipelineHandle` right?",
+      "range": {
+        "startLine": 118,
+        "startChar": 64,
+        "endLine": 118,
+        "endChar": 80
+      },
+      "revId": "5485a7547a9552ab4e2ce3668f061d41e43a407b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
