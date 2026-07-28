@@ -13,6 +13,7 @@
 #include "webgpu/webgpu_cpp.h"  // NO_G3_REWRITE
 
 #include "include/gpu/graphite/dawn/DawnBackendContext.h"
+#include "include/private/SkLog.h"
 #include "src/gpu/graphite/ThreadSafeResourceProvider.h"
 #include "src/gpu/graphite/dawn/DawnCaps.h"
 
@@ -52,9 +53,17 @@ public:
 
     void deviceTick(Context*) override;
 
-    const wgpu::BindGroupLayout& getUniformBuffersBindGroupLayout() const {
-        return fUniformBuffersBindGroupLayout;
+    const wgpu::BindGroupLayout& getUniformBuffersBindGroupLayout(
+            wgpu::ShaderStage storageVisibility) const {
+        uint32_t index = static_cast<uint32_t>(storageVisibility);
+        constexpr uint32_t kMaxValid = static_cast<uint32_t>(wgpu::ShaderStage::Vertex |
+                                                             wgpu::ShaderStage::Fragment);
+        if (index > kMaxValid) SK_UNLIKELY {
+            index = static_cast<uint32_t>(wgpu::ShaderStage::None);
+        }
+        return fUniformBuffersBindGroupLayouts[index];
     }
+
     const wgpu::BindGroupLayout& getSingleTextureSamplerBindGroupLayout() const {
         return fSingleTextureSamplerBindGroupLayout;
     }
@@ -84,7 +93,7 @@ private:
     // a pipeline with a color attachment but without a fragment shader).
     wgpu::ShaderModule fNoopFragment;
 
-    wgpu::BindGroupLayout fUniformBuffersBindGroupLayout;
+    std::array<wgpu::BindGroupLayout, 4> fUniformBuffersBindGroupLayouts;
     wgpu::BindGroupLayout fSingleTextureSamplerBindGroupLayout;
 };
 
