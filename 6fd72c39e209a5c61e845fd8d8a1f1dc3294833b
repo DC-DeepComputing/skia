@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8f9ae0e_f33a4c86",
+        "filename": "src/gpu/graphite/GraphicsPipeline.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-07-28T14:46:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "42638db7_f4194faa",
+      "range": {
+        "startLine": 71,
+        "startChar": 0,
+        "endLine": 71,
+        "endChar": 79
+      },
+      "revId": "6fd72c39e209a5c61e845fd8d8a1f1dc3294833b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cac7b633_596aa79f",
@@ -54,6 +78,30 @@
       "writtenOn": "2026-07-27T18:27:38Z",
       "side": 1,
       "message": "nit: line wrap the `:` to be right below the `?`s.",
+      "range": {
+        "startLine": 27,
+        "startChar": 18,
+        "endLine": 28,
+        "endChar": 121
+      },
+      "revId": "6fd72c39e209a5c61e845fd8d8a1f1dc3294833b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0395f9e_0f5c909e",
+        "filename": "src/gpu/graphite/Renderer.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-07-28T14:46:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cac7b633_596aa79f",
       "range": {
         "startLine": 27,
         "startChar": 18,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8dc70e7f_091a1f9a",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1056,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-07-28T14:46:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b2f7dbfb_b04449da",
+      "range": {
+        "startLine": 1056,
+        "startChar": 30,
+        "endLine": 1056,
+        "endChar": 83
+      },
+      "revId": "6fd72c39e209a5c61e845fd8d8a1f1dc3294833b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "79fe895e_3b42afa2",
@@ -100,6 +172,30 @@
       "writtenOn": "2026-07-27T18:27:38Z",
       "side": 1,
       "message": "Yes I think so; if the RenderStep doesn\u0027t have any storage usage at all, something needs to mark that this binding as being part of the fragment shader.  What made you wonder if we needed it?",
+      "range": {
+        "startLine": 1065,
+        "startChar": 0,
+        "endLine": 1065,
+        "endChar": 38
+      },
+      "revId": "6fd72c39e209a5c61e845fd8d8a1f1dc3294833b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "855a0c12_b32a616f",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1065,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-07-28T14:46:45Z",
+      "side": 1,
+      "message": "Vestigial comment; at one point I  held the SB usage on the SC, and explicitly set fragment shader visibility in `allocateGradientData.` However, I realized this really isn\u0027t the job of the SC.",
+      "parentUuid": "79fe895e_3b42afa2",
       "range": {
         "startLine": 1065,
         "startChar": 0,
@@ -133,6 +229,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "92cbff94_5cb9c5e5",
+        "filename": "src/gpu/graphite/ShaderInfo.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-07-28T14:46:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6eb05c93_c5b510b4",
+      "range": {
+        "startLine": 86,
+        "startChar": 15,
+        "endLine": 86,
+        "endChar": 74
+      },
+      "revId": "6fd72c39e209a5c61e845fd8d8a1f1dc3294833b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7e5e3737_ca51e710",
@@ -156,6 +276,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3324dd3_e0a5a3fe",
+        "filename": "src/gpu/graphite/dawn/DawnSharedContext.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-07-28T14:46:45Z",
+      "side": 1,
+      "message": "I had this before lmao:\n```\nsize_t index \u003d static_cast\u003csize_t\u003e(storageVisibility);\nindex \u003d (index \u003e 3 || index \u003c 1 ? 2 : index) - 1;\n```\n\nBut I ultimately changed it because the ternary version would be harder to add visibility for stages past vert/frag.",
+      "parentUuid": "7e5e3737_ca51e710",
+      "range": {
+        "startLine": 61,
+        "startChar": 0,
+        "endLine": 78,
+        "endChar": 9
+      },
+      "revId": "6fd72c39e209a5c61e845fd8d8a1f1dc3294833b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "871b9b54_43fe0e4b",
@@ -169,6 +313,30 @@
       "writtenOn": "2026-07-27T18:27:38Z",
       "side": 1,
       "message": "nit: collections already do bounds checking, so we don\u0027t have duplicate that",
+      "range": {
+        "startLine": 79,
+        "startChar": 0,
+        "endLine": 79,
+        "endChar": 65
+      },
+      "revId": "6fd72c39e209a5c61e845fd8d8a1f1dc3294833b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a749474_5dc12ee3",
+        "filename": "src/gpu/graphite/dawn/DawnSharedContext.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-07-28T14:46:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "871b9b54_43fe0e4b",
       "range": {
         "startLine": 79,
         "startChar": 0,
@@ -204,6 +372,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2fed3394_2db73e16",
+        "filename": "src/gpu/graphite/dawn/DawnSharedContext.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-07-28T14:46:45Z",
+      "side": 1,
+      "message": "Get\u0027s called here for the cached single bindgroup:\nhttps://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/gpu/graphite/dawn/DawnResourceProvider.cpp;l\u003d675#:~:text\u003d674-,675,-676\n\nMaybe this should be frag/vert?",
+      "parentUuid": "14fc3482_4e60ffb7",
+      "range": {
+        "startLine": 83,
+        "startChar": 0,
+        "endLine": 83,
+        "endChar": 75
+      },
+      "revId": "6fd72c39e209a5c61e845fd8d8a1f1dc3294833b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "968ef2fe_c3e92065",
         "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
         "patchSetId": 8
@@ -215,6 +407,30 @@
       "writtenOn": "2026-07-27T18:27:38Z",
       "side": 1,
       "message": "`SkToBool(storageStageFlags)`",
+      "range": {
+        "startLine": 532,
+        "startChar": 8,
+        "endLine": 532,
+        "endChar": 64
+      },
+      "revId": "6fd72c39e209a5c61e845fd8d8a1f1dc3294833b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff0994b5_da303274",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 532,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-07-28T14:46:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "968ef2fe_c3e92065",
       "range": {
         "startLine": 532,
         "startChar": 8,
