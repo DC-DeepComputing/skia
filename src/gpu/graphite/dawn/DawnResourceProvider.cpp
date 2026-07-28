@@ -662,7 +662,7 @@ wgpu::BindGroup DawnResourceProvider::findOrCreateSingleUniformBindGroup(
     combinedUniformEntry.size    = SkAlignTo(bufferInfo.fSize, kBufferBindingSizeAlignment);
 
     wgpu::BindGroupEntry gradientBufferNullEntry;
-    gradientBufferNullEntry.binding = DawnGraphicsPipeline::kGradientBufferIndex;
+    gradientBufferNullEntry.binding = DawnGraphicsPipeline::kStorageBufferIndex;
     gradientBufferNullEntry.buffer  = this->getOrCreateNullBuffer();
 
     std::array<wgpu::BindGroupEntry, kNumUniformEntries> entries = {

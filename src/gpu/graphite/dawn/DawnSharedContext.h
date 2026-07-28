@@ -13,6 +13,7 @@
 #include "webgpu/webgpu_cpp.h"  // NO_G3_REWRITE
 
 #include "include/gpu/graphite/dawn/DawnBackendContext.h"
+#include "include/private/SkLog.h"
 #include "src/gpu/graphite/ThreadSafeResourceProvider.h"
 #include "src/gpu/graphite/dawn/DawnCaps.h"
 
@@ -52,9 +53,37 @@ public:
 
     void deviceTick(Context*) override;
 
-    const wgpu::BindGroupLayout& getUniformBuffersBindGroupLayout() const {
-        return fUniformBuffersBindGroupLayout;
+    const wgpu::BindGroupLayout& getUniformBuffersBindGroupLayout(
+            wgpu::ShaderStage storageVisibility) const {
+        constexpr uint32_t kVertex   = static_cast<uint32_t>(wgpu::ShaderStage::Vertex);
+        constexpr uint32_t kFragment = static_cast<uint32_t>(wgpu::ShaderStage::Fragment);
+
+        size_t index;
+        switch (static_cast<uint32_t>(storageVisibility)) {
+            case kVertex:
+                index = 0;
+                break;
+            case kFragment:
+                index = 1;
+                break;
+            case kVertex | kFragment:
+                index = 2;
+                break;
+            default:
+                SKIA_LOG_W("Requested layout for unsupported/unusual storageVisibility (%u); "
+                           "defaulting to fragment stage.",
+                           static_cast<uint32_t>(storageVisibility));
+                index = 1;
+                break;
+        }
+
+        return fUniformBuffersBindGroupLayouts[index];
     }
+
+    const wgpu::BindGroupLayout& getUniformBuffersBindGroupLayout() const {
+        return this->getUniformBuffersBindGroupLayout(wgpu::ShaderStage::Fragment);
+    }
+
     const wgpu::BindGroupLayout& getSingleTextureSamplerBindGroupLayout() const {
         return fSingleTextureSamplerBindGroupLayout;
     }
@@ -84,7 +113,7 @@ private:
     // a pipeline with a color attachment but without a fragment shader).
     wgpu::ShaderModule fNoopFragment;
 
-    wgpu::BindGroupLayout fUniformBuffersBindGroupLayout;
+    std::array<wgpu::BindGroupLayout, 3> fUniformBuffersBindGroupLayouts;
     wgpu::BindGroupLayout fSingleTextureSamplerBindGroupLayout;
 };
 
