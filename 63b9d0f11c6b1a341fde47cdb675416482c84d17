@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f76402b2_4587145b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-07-28T18:29:36Z",
+      "side": 1,
+      "message": "PS1 is a pure reland, PS2 contains the fix: removing the conditional which disables uploads on Windows.",
+      "revId": "63b9d0f11c6b1a341fde47cdb675416482c84d17",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
