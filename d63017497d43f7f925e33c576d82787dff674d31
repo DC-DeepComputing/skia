@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec7e5eb5_aef5c48c",
+        "filename": "bazel/external/dawn/dawn_repo.bzl",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-28T15:53:08Z",
+      "side": 1,
+      "message": "This trick should prevent Bazel from having to download all four versions of cpython on a given host.",
+      "range": {
+        "startLine": 40,
+        "startChar": 35,
+        "endLine": 40,
+        "endChar": 40
+      },
+      "revId": "d63017497d43f7f925e33c576d82787dff674d31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
