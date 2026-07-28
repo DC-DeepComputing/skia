@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "deda8c9a_d2f233d9",
+        "filename": "site/docs/dev/testing/fuzz.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-07-28T15:45:00Z",
+      "side": 1,
+      "message": "Replace the link with the external version.",
+      "revId": "1bff8359e87d1f16fe88a0d455c36cb06f6f3b13",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
