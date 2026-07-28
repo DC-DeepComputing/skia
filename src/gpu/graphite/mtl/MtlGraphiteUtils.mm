@@ -9,6 +9,7 @@
 #include "include/gpu/ShaderErrorHandler.h"
 #include "include/gpu/graphite/Context.h"
 #include "include/gpu/graphite/mtl/MtlBackendContext.h"
+#include "src/core/SkContext.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/TextureFormat.h"
@@ -18,6 +19,15 @@
 #include "src/gpu/mtl/MtlUtilsPriv.h"
 
 #import <Metal/Metal.h>
+
+namespace SkContexts {
+// Creates a context wrapping a Graphite GPU backend using Metal
+std::unique_ptr<SkContext> MakeGraphite(const skgpu::graphite::MtlBackendContext& mtlContext,
+                              const SkContextOptions& options) {
+    return nullptr;
+}
+
+}  // namespace SkContexts
 
 namespace skgpu::graphite {
 
