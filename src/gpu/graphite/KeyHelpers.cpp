@@ -293,17 +293,17 @@ void add_conical_gradient_uniform_data(const KeyContext& keyContext,
 //
 // Returns a negative offset to signal failure, in which case the paint key must be poisoned
 // to drop the draw.
-static int write_color_and_offset_bufdata(int numStops,
+static int write_color_and_offset_bufdata(StorageContext* storageContext,
+                                           int numStops,
                                            const SkPMColor4f* colors,
                                            const float* offsets,
-                                           const SkGradientBaseShader* shader,
-                                           StorageBufferManager* storageBufferManager) {
-    auto [dstData, bufferOffset] = storageBufferManager->allocateGradientData(numStops, shader);
+                                           const SkGradientBaseShader* shader) {
+    if (!storageContext) {
+        return -1;
+    }
+    auto [dstData, bufferOffset] = storageContext->allocateGradientData(numStops, shader);
     if (dstData) {
-        SkASSERT(bufferOffset >= 0);
-        // Data doesn't already exist so we need to write it.
-        // Writes all offset data, then color data. This way when binary searching through the
-        // offsets, there is better cache locality.
+        // Data doesn't already exist in storageContext so write float data
         for (int i = 0, colorIdx = numStops; i < numStops; i++, colorIdx+=4) {
             float offset = offsets ? offsets[i] : SkIntToFloat(i) / (numStops - 1);
             SkASSERT(offset >= 0.0f && offset <= 1.0f);
@@ -395,11 +395,14 @@ void GradientShaderBlocks::AddBlock(const KeyContext& keyContext, const Gradient
     if (gradData.fNumStops > GradientData::kNumInternalStorageStops && keyContext.recorder()) {
         bool hasStorage;
         if (gradData.fUseStorageBuffer) {
-            bufferOffset = write_color_and_offset_bufdata(gradData.fNumStops,
+            StorageContext* storageContext = keyContext.drawContext()
+                    ? keyContext.drawContext()->storageContext()
+                    : nullptr;
+            bufferOffset = write_color_and_offset_bufdata(storageContext,
+                                                          gradData.fNumStops,
                                                           gradData.fSrcColors,
                                                           gradData.fSrcOffsets,
-                                                          gradData.fSrcShader,
-                                                          keyContext.storageBufferManager());
+                                                          gradData.fSrcShader);
             hasStorage = bufferOffset >= 0;
         } else {
             keyContext.pipelineDataGatherer()->add(gradData.fColorsAndOffsetsProxy,

@@ -637,18 +637,20 @@ UniquePaintParamsID ShadingParams::validateOpacityOptimization(const KeyContext&
                                 Coverage::kNone,
                                 keyContext.targetFormat()};
 
-    // Create a new KeyContext that writes to a different key builder and pipeline data gatherer. We
-    // have to use the original gradient cache in the StorageBufferManager since its global state
-    // impacts the other extracted uniforms, but everything will be a cache hit in the second call
-    // to toKey(), so it shouldn't change size.
-    SkDEBUGCODE(const int gradSize = keyContext.storageBufferManager()->gradientSize();)
+    // Create a new KeyContext that writes to a different key builder and pipeline data gatherer.
+    // We have to use the original StorageBufferManager since its global state impacts the other
+    // extracted uniforms, but everything will be a cache hit in the second call to toKey(), so it
+    // shouldn't change size.
+    StorageContext* storageContext = keyContext.drawContext()
+            ? keyContext.drawContext()->storageContext()
+            : nullptr;
+    const int fsmSize = storageContext ? storageContext->size() : 0;
 
     const Layout layout = keyContext.pipelineDataGatherer()->uniformManager()->layout();
     PaintParamsKeyBuilder opaqueBuilder{keyContext.dict()};
     PipelineDataGatherer opaqueGatherer{layout};
     KeyContext opaqueContext{keyContext.recorder(),
                              keyContext.drawContext(),
-                             keyContext.storageBufferManager(),
                              &opaqueBuilder,
                              &opaqueGatherer,
                              keyContext.local2Dev(),
@@ -663,7 +665,7 @@ UniquePaintParamsID ShadingParams::validateOpacityOptimization(const KeyContext&
     auto [actualOpaqueID, actualDstUsage] = *result;
     SkASSERT(actualDstUsage == DstUsage::kNone);
     opaqueGatherer.checkEquivalent(keyContext.pipelineDataGatherer());
-    SkASSERT(keyContext.storageBufferManager()->gradientSize() == gradSize);
+    SkASSERT((storageContext ? storageContext->size() : 0) == fsmSize);
 
     return actualOpaqueID;
 }

@@ -1685,7 +1685,6 @@ void Device::drawGeometry(const Transform& localToDevice,
     }
     KeyContext keyContext{fRecorder,
                           fDC.get(),
-                          fRecorder->priv().storageBufferManager(),
                           scopedDrawBuilder.builder(),
                           scopedDrawBuilder.gatherer(),
                           localToDevice.matrix(),
@@ -2208,6 +2207,8 @@ void Device::flushPendingWork(DrawContext* drawContext) {
             fRecorder->priv().add(std::move(drawTask));
         }
     }
+
+    fDC->storageContext()->resetCache();
 
     SkDEBUGCODE(fIsFlushing = false;)
 }
