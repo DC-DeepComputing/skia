@@ -14,6 +14,7 @@
 #include "src/core/SkStringView.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/KeyHelpers.h"
+#include "src/gpu/graphite/RuntimeEffectDictionary.h"
 #include "src/gpu/graphite/ShaderCodeDictionary.h"
 
 using namespace skia_private;
@@ -246,6 +247,7 @@ void lift_color_expressions(SkSpan<ShaderNode*> nodes, int* availableVaryings) {
 
 RootNodesInfo PaintParamsKey::getRootNodes(const Caps* caps,
                                            const ShaderCodeDictionary* dict,
+                                           const RuntimeEffectDictionary* rteDict,
                                            SkArenaAlloc* arena,
                                            int availableVaryings) const {
     // TODO: Once the PaintParamsKey creation is organized to represent a single tree starting at
@@ -254,8 +256,8 @@ RootNodesInfo PaintParamsKey::getRootNodes(const Caps* caps,
     // copying into the arena.
     const int keySize = SkTo<int>(fData.size());
 
-    RootNodesInfo rootsInfo;
     // Normal PaintParams creation will have up to 7 roots for the different stages.
+    RootNodesInfo rootsInfo;
     STArray<7, ShaderNode*> roots;
     int currentIndex = 0;
     while (currentIndex < keySize) {
@@ -273,7 +275,12 @@ RootNodesInfo PaintParamsKey::getRootNodes(const Caps* caps,
             case RootBlockType::kSrcColor:   rootsInfo.srcColor = root; break;
             case RootBlockType::kFinalBlend: rootsInfo.finalBlend = root; break;
             case RootBlockType::kClip:       rootsInfo.clip = root; break;
+            case RootBlockType::kMeshShader: rootsInfo.meshShader = root; break;
         }
+    }
+
+    if (rootsInfo.meshShader && rteDict) {
+        rootsInfo.meshSpec = rteDict->meshSpecDict()->find(rootsInfo.meshShader->codeSnippetId());
     }
 
     // See what expressions we can lift to the vertex shader.

@@ -671,6 +671,10 @@ private:
     SkDEBUGCODE(const SkRuntimeEffect* fEffect;)
 };
 
+std::string NoopPreamble(const ShaderInfo& shaderInfo, const ShaderNode* node) {
+    return "";
+}
+
 std::string GenerateRuntimeShaderPreamble(const ShaderInfo& shaderInfo,
                                           const ShaderNode* node) {
     // Find this runtime effect in the shader-code or runtime-effect dictionary.
@@ -897,6 +901,52 @@ int ShaderCodeDictionary::findOrCreateRuntimeEffectSnippet(const SkRuntimeEffect
 
     fRuntimeEffectMap.set(key, newCodeSnippetID);
     return newCodeSnippetID;
+}
+
+int ShaderCodeDictionary::findOrCreateMeshSnippet(const SkMeshSpecification* spec) {
+    SkAutoSpinlock lock{fSpinLock};
+
+    // Use the combination of SkMeshSpecification hash, attribute stride, and uniform stride
+    // as our key. In the event of a hash collision, due to differing shader code, color space, or
+    // alpha type, we will still have the correct uniform size and attribute stride to prevent
+    // unexpected memory sizes for allocated buffers.
+    MeshSpecKey key;
+    key.fHash = SkMeshSpecificationPriv::Hash(*spec);
+    key.fAttributeStride = static_cast<uint32_t>(spec->stride());
+    key.fUniformSize = static_cast<uint32_t>(spec->uniformSize());
+
+    int32_t* existingCodeSnippetID = fMeshMap.find(key);
+    if (existingCodeSnippetID) {
+        return *existingCodeSnippetID;
+    }
+
+    ShaderSnippet snippet = this->convertMeshShader(spec);
+    fUserDefinedCodeSnippets.push_back(std::move(snippet));
+    int newCodeSnippetID = kUnknownRuntimeEffectIDStart + fUserDefinedCodeSnippets.size() - 1;
+
+    fMeshMap.set(key, newCodeSnippetID);
+    return newCodeSnippetID;
+}
+
+ShaderSnippet ShaderCodeDictionary::convertMeshShader(const SkMeshSpecification* spec) {
+    int numChildren = SkTo<int>(spec->children().size());
+
+     // We emit uniforms for mesh geometry manually at the end of the uniform list where
+     // RenderStep uniforms would normally be written. This allows the MeshRenderStep to
+     // be responsible for writing the uniform data, since it is where render step
+     // uniforms normally reside.
+     //
+     // We also provide a Noop preamble so any children runtime effects that the user's
+     // fragment main function relies on are emittied before we emit their main function.
+     // Then after emitting all other preambles, we emit the user's main function at the
+     // very end since other the MeshRenderStep relies on it.
+    return ShaderSnippet("MeshShader",
+                         /*staticFn=*/nullptr,
+                         SnippetRequirementFlags::kPriorStageOutput,
+                         /*uniforms=*/{},
+                         /*texturesAndSamplers=*/{},
+                         NoopPreamble,
+                         numChildren);
 }
 
 void ShaderCodeDictionary::registerUserDefinedKnownRuntimeEffects(
