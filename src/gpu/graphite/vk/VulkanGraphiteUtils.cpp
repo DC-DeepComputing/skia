@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "src/core/SkContext.h"
 #include "src/gpu/graphite/vk/VulkanGraphiteUtils.h"
 
 #include "include/core/SkStream.h"
@@ -19,6 +20,16 @@
 #include "src/gpu/graphite/vk/VulkanSampler.h"
 #include "src/gpu/graphite/vk/VulkanSharedContext.h"
 #include "src/sksl/SkSLProgramSettings.h"
+
+namespace SkContexts {
+
+// Creates a context wrapping a Graphite GPU backend with Vulkan
+std::unique_ptr<SkContext> MakeGraphite(const skgpu::VulkanBackendContext& vkContext,
+                              const SkContextOptions& options) {
+    return nullptr;
+}
+
+}  // namespace SkContexts
 
 namespace skgpu::graphite::ContextFactory {
 

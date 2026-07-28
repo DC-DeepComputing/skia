@@ -16,11 +16,21 @@
 #include "src/gpu/vk/VulkanInterface.h"
 #include "src/sksl/codegen/SkSLNativeShader.h"
 
+#include <memory>
 #include <string>
 
 class SkStream;
 class SkWStream;
+class SkContext;
+struct SkContextOptions;
 
+namespace SkContexts {
+
+// Creates a context wrapping a Graphite GPU backend with Vulkan
+std::unique_ptr<SkContext> MakeGraphite(const skgpu::VulkanBackendContext& vkContext,
+                                        const SkContextOptions& options);
+
+}  // namespace SkContexts
 // Uncomment to log all Vulkan commands from Graphite
 // #define VULKAN_DEBUG_LOG(X) SkDebugf("vk%s (%s:%d)\n", #X, __FILE__, __LINE__)
 
