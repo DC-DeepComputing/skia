@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "src/core/SkContext.h"
 #include "src/gpu/graphite/dawn/DawnGraphiteUtils.h"
 
 #include "include/gpu/ShaderErrorHandler.h"
@@ -17,6 +18,13 @@
 #include "src/gpu/graphite/dawn/DawnSharedContext.h"
 
 using namespace skia_private;
+
+namespace SkContexts {
+std::unique_ptr<SkContext> MakeGraphite(const skgpu::graphite::DawnBackendContext& dawnContext,
+                              const SkContextOptions& options) {
+    return nullptr;
+}
+}  // namespace SkContexts
 
 namespace skgpu::graphite {
 

@@ -6,6 +6,7 @@
  */
 
 #include "include/gpu/ganesh/d3d/GrD3DDirectContext.h"
+#include "src/core/SkContext.h"
 
 #include "include/gpu/ganesh/GrDirectContext.h"
 #include "src/gpu/ganesh/GrContextThreadSafeProxyPriv.h"
@@ -35,3 +36,12 @@ sk_sp<GrDirectContext> MakeD3D(const GrD3DBackendContext& backendContext,
 }
 
 }  // namespace GrDirectContexts
+
+namespace SkContexts {
+
+std::unique_ptr<SkContext> MakeGanesh(const GrD3DBackendContext& backendContext,
+                            const SkContextOptions& options) {
+    return nullptr;
+}
+
+}  // namespace SkContexts
