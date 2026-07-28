@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71579350_4f6636ba",
+        "filename": "bazel/external/dawn/dawn_repo.bzl",
+        "patchSetId": 28
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-07-28T14:13:15Z",
+      "side": 1,
+      "message": "I guess an alternative would be to have this rule download the appropriate Cpython CIPD package?  That\u0027s not really more hermetic than having the Swarming task download it, but at least the version would be pinned closer to where it\u0027s used.  And I guess it would prevent issues due to differing versions on developer machines.",
+      "range": {
+        "startLine": 35,
+        "startChar": 23,
+        "endLine": 35,
+        "endChar": 41
+      },
+      "revId": "56e33d20a8432d0589290021e2c4090f2fe89f96",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "badfe310_b374aac7",
+        "filename": "infra/bots/task_drivers/bazel_build/bazel_build.go",
+        "patchSetId": 28
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-07-28T14:13:15Z",
+      "side": 1,
+      "message": "Nit: it seems cleaner (and more along the lines of what we already do for darwin) to check `runtime.GOOS \u003d\u003d \"windows\"` before calling locateAndAddMSVCToPATH.  We could td.Fatal if that returns an error.",
+      "range": {
+        "startLine": 145,
+        "startChar": 0,
+        "endLine": 147,
+        "endChar": 3
+      },
+      "revId": "56e33d20a8432d0589290021e2c4090f2fe89f96",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
