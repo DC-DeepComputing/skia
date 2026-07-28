@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d009d11f_d45f3fb1",
+        "filename": "src/gpu/graphite/DrawListTypes.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-28T17:41:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "779486e0_ec933d1f",
+      "range": {
+        "startLine": 282,
+        "startChar": 38,
+        "endLine": 282,
+        "endChar": 80
+      },
+      "revId": "213f7ea35c8d86caf2c1ff520fc94d68c5bd3ecb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f70d902e_85ff4813",
@@ -78,6 +102,30 @@
           ]
         }
       ],
+      "revId": "213f7ea35c8d86caf2c1ff520fc94d68c5bd3ecb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "16965db5_7ca5e150",
+        "filename": "src/gpu/graphite/DrawListTypes.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 294,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-28T17:41:30Z",
+      "side": 1,
+      "message": "This actually extends beyond just opaque shading draws (both opaque and non-opaque will be kColor for their LayerKey flags, but opaque would be kNone for the testMask). They are disjoint with any other shading draw later in the BindingList (close to tail). In a follow-up CL, this changes a bit to mark BindingLists as forward-merge blockers when we lose the disjoint property.",
+      "parentUuid": "f70d902e_85ff4813",
+      "range": {
+        "startLine": 288,
+        "startChar": 14,
+        "endLine": 294,
+        "endChar": 38
+      },
       "revId": "213f7ea35c8d86caf2c1ff520fc94d68c5bd3ecb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -123,6 +171,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "175dbd81_5ff3e2ab",
+        "filename": "src/gpu/graphite/DrawListTypes.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-28T17:41:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e4de7cf1_3de74d26",
+      "range": {
+        "startLine": 297,
+        "startChar": 14,
+        "endLine": 302,
+        "endChar": 24
+      },
+      "revId": "213f7ea35c8d86caf2c1ff520fc94d68c5bd3ecb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d6c59c56_6ea0815e",
@@ -164,6 +236,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf6264d3_495ff0bf",
+        "filename": "src/gpu/graphite/DrawListTypes.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 356,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-28T17:41:30Z",
+      "side": 1,
+      "message": "Done, and added an assert that aspectOverlap \u003d\u003d kColor.",
+      "parentUuid": "d6c59c56_6ea0815e",
+      "range": {
+        "startLine": 355,
+        "startChar": 16,
+        "endLine": 356,
+        "endChar": 47
+      },
+      "revId": "213f7ea35c8d86caf2c1ff520fc94d68c5bd3ecb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "68754f50_b02eee24",
@@ -201,6 +297,30 @@
           ]
         }
       ],
+      "revId": "213f7ea35c8d86caf2c1ff520fc94d68c5bd3ecb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a41c8e4d_52fa94b5",
+        "filename": "src/gpu/graphite/DrawListTypes.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 371,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-28T17:41:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "68754f50_b02eee24",
+      "range": {
+        "startLine": 367,
+        "startChar": 12,
+        "endLine": 371,
+        "endChar": 13
+      },
       "revId": "213f7ea35c8d86caf2c1ff520fc94d68c5bd3ecb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
