@@ -249,7 +249,7 @@ class SkpDebugPlayer {
     // Return the command list in JSON representation as a string
     std::string jsonCommandList(sk_sp<SkSurface> surface) {
       SkDynamicMemoryWStream stream;
-      SkJSONWriter           writer(&stream, ToolUtils::default_serial_procs(), SkJSONWriter::Mode::kFast);
+      SkJSONWriter writer(&stream, SkSerialProcs{}, SkJSONWriter::Mode::kFast);
       writer.beginObject(); // root
       visibleCanvas()->toJSON(writer, udm, surface->getCanvas());
       writer.endObject(); // root

@@ -68,7 +68,7 @@ void drawCommandHistory(const DebugCanvas* debugCanvas) {
         if (ImGui::TreeNode(commandName, "%d: %s", i, commandName)) {
             SkDynamicMemoryWStream stream;
             SkJSONWriter writer(
-                    &stream, ToolUtils::default_serial_procs(), SkJSONWriter::Mode::kPretty);
+                    &stream, SkSerialProcs{}, SkJSONWriter::Mode::kPretty);
             UrlDataManager urlDataManager(SkString("data"));
             writer.beginObject();
             cmd->toJSON(writer, urlDataManager);
