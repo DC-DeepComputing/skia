@@ -396,6 +396,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e777e0f6_ea0bbb2e",
+        "filename": "src/gpu/graphite/dawn/DawnSharedContext.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-28T14:49:34Z",
+      "side": 1,
+      "message": "In that function, it\u0027s specifically for no gradient/storage buffer, so if we had a cached layout for kNone stages (for the other reasons of calculating an index), it\u0027d be easy to get that cached layout there.",
+      "parentUuid": "2fed3394_2db73e16",
+      "range": {
+        "startLine": 83,
+        "startChar": 0,
+        "endLine": 83,
+        "endChar": 75
+      },
+      "revId": "6fd72c39e209a5c61e845fd8d8a1f1dc3294833b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "968ef2fe_c3e92065",
         "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
         "patchSetId": 8
