@@ -72,14 +72,22 @@ public:
         return fCommandList.commands();
     }
 
+    // Not valid until after addResourceRefs() is called
+    // This dude's sole call site is okay
     const GraphicsPipeline* getPipeline(size_t index) const {
+        SkASSERT(fPipelinesHaveBeenResolved);
         return fFullPipelines[index].get();
     }
 
     // Proxies are always valid but may not be instantiated until after prepareResources() is called
     SkSpan<const sk_sp<TextureProxy>> sampledTextures() const { return fSampledTextures; }
-    // Not valid until after prepareResources() is called
-    SkSpan<const sk_sp<GraphicsPipeline>> pipelines() const { return fFullPipelines; }
+
+    // Not valid until after addResourceRefs() is called
+    // This dude's sole call site is okay
+    SkSpan<const sk_sp<GraphicsPipeline>> pipelines() const {
+        SkASSERT(fPipelinesHaveBeenResolved);
+        return fFullPipelines;
+    }
 
     [[nodiscard]] bool addResourceRefs(ResourceProvider*, CommandBuffer*);
 
@@ -111,8 +119,10 @@ private:
 
     // These get resolved (from the GraphicsPipelineHandles) in prepareResources
     skia_private::TArray<sk_sp<GraphicsPipeline>> fFullPipelines;
+    SkDEBUGCODE(bool fPipelinesHaveBeenResolved = false;)
 
     sk_sp<StorageBufferManager> fStorageBufferManager;
+
 };
 
 } // namespace skgpu::graphite

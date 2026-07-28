@@ -46,14 +46,14 @@ ResourceProvider::~ResourceProvider() {
     fResourceCache->shutdown();
 }
 
-GraphicsPipelineHandle ResourceProvider::createGraphicsPipelineHandle(
+GraphicsPipelineHandle ResourceProvider::createGraphicsPipelineHandle1(
         const GraphicsPipelineDesc& pipelineDesc,
         const RenderPassDesc& renderPassDesc,
         SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags) {
 
     PipelineManager* pipelineManager = fSharedContext->pipelineManager();
 
-    return pipelineManager->createHandle(fSharedContext,
+    return pipelineManager->createHandle1(fSharedContext,
                                          pipelineDesc,
                                          renderPassDesc,
                                          pipelineCreationFlags);

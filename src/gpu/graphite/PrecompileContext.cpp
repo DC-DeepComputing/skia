@@ -78,7 +78,7 @@ bool PrecompileContext::precompile(sk_sp<SkData> serializedPipelineKey) {
         return false;
     }
 
-    GraphicsPipelineHandle handle = fResourceProvider->createGraphicsPipelineHandle(
+    GraphicsPipelineHandle handle = fResourceProvider->createGraphicsPipelineHandle1(
             pipelineDesc,
             renderPassDesc,
             PipelineCreationFlags::kForPrecompilation);

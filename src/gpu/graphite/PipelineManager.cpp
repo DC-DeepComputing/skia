@@ -35,7 +35,7 @@ uint32_t PipelineManager::Traits::Hash(const UniqueKey& pipelineKey) {
     return pipelineKey.hash();
 }
 
-GraphicsPipelineHandle PipelineManager::createHandle(
+GraphicsPipelineHandle PipelineManager::createHandle1(
         SharedContext* sharedContext,
         const GraphicsPipelineDesc& pipelineDesc,
         const RenderPassDesc& renderPassDesc,
@@ -48,6 +48,8 @@ GraphicsPipelineHandle PipelineManager::createHandle(
     if (sk_sp<PipelineCreationTask> task = this->findTask(pipelineKey)) {
         // There is a task in progress to compile this Pipeline so it can't be ready yet (i.e.,
         // it isn't in the Pipeline Cache).
+        //** Why can't the task have been executed and it has the GraphicsPipeline and it
+        //** is locked in the cache?
         return GraphicsPipelineHandle(std::move(task));
     }
 
