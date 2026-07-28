@@ -3596,7 +3596,7 @@ void Viewer::updateUIState() {
     }
 
     SkDynamicMemoryWStream memStream;
-    SkJSONWriter writer(&memStream, ToolUtils::default_serial_procs());
+    SkJSONWriter writer(&memStream, SkSerialProcs{});
     writer.beginArray();
 
     // Slide state
