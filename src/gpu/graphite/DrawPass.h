@@ -14,6 +14,7 @@
 #include "src/gpu/graphite/DrawCommands.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
 #include "src/gpu/graphite/GraphicsPipelineHandle.h"
+#include "src/gpu/graphite/ResourceTypes.h"
 
 struct SkImageInfo;
 
@@ -21,7 +22,6 @@ namespace skgpu::graphite {
 
 class CommandBuffer;
 class DrawList;
-class StorageBufferManager;
 class GraphicsPipeline;
 struct RenderPassDesc;
 class ResourceProvider;
@@ -52,7 +52,7 @@ public:
     // contained within its dimensions.
     const SkIRect&      bounds() const { return fBounds;       }
     TextureProxy* target() const { return fTarget.get(); }
-    StorageBufferManager* storageBufferManager() const { return fStorageBufferManager.get(); }
+    const BindBufferInfo& storageBufferInfo() const { return fStorageBufferInfo; }
     std::pair<LoadOp, StoreOp> ops() const { return fOps; }
     std::array<float, 4> clearColor() const { return fClearColor; }
 
@@ -89,8 +89,7 @@ private:
 
     DrawPass(sk_sp<TextureProxy> target,
              std::pair<LoadOp, StoreOp> ops,
-             std::array<float, 4> clearColor,
-             sk_sp<StorageBufferManager> storageBufferManager);
+             std::array<float, 4> clearColor);
 
     DrawPassCommands::List fCommandList;
 
@@ -112,7 +111,7 @@ private:
     // These get resolved (from the GraphicsPipelineHandles) in prepareResources
     skia_private::TArray<sk_sp<GraphicsPipeline>> fFullPipelines;
 
-    sk_sp<StorageBufferManager> fStorageBufferManager;
+    BindBufferInfo fStorageBufferInfo;
 };
 
 } // namespace skgpu::graphite
