@@ -389,6 +389,14 @@ void DawnCaps::initCaps(const DawnBackendContext& backendContext, const ContextO
 
     fSupportsRenderPassRenderArea =
             backendContext.fDevice.HasFeature(wgpu::FeatureName::RenderPassRenderArea);
+
+    if (backendContext.fDevice.HasFeature(wgpu::FeatureName::DawnAllowUndefinedLoadStoreOp)) {
+        fDiscardLoadOp = wgpu::LoadOp::Undefined;
+        fDiscardStoreOp = wgpu::StoreOp::Undefined;
+    } else {
+        fDiscardLoadOp = wgpu::LoadOp::Clear;
+        fDiscardStoreOp = wgpu::StoreOp::Discard;
+    }
 #endif
 
     if (!fSupportsPartialLoadResolve &&
