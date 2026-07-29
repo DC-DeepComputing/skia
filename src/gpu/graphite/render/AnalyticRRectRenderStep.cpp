@@ -7,6 +7,8 @@
 
 #include "src/gpu/graphite/render/AnalyticRRectRenderStep.h"
 
+#include "src/gpu/graphite/PaintParamsKey.h"
+
 #include "include/core/SkM44.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPoint.h"
@@ -457,7 +459,7 @@ AnalyticRRectRenderStep::AnalyticRRectRenderStep(Layout layout, StaticBufferMana
 
 AnalyticRRectRenderStep::~AnalyticRRectRenderStep() {}
 
-std::string AnalyticRRectRenderStep::vertexSkSL() const {
+std::string AnalyticRRectRenderStep::vertexSkSL(const RootNodesInfo&) const {
     // Returns the body of a vertex function, which must define a float4 devPosition variable and
     // must write to an already-defined float2 stepLocalCoords variable.
     return "float4 devPosition = analytic_rrect_vertex_fn("
