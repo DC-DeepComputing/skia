@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8b9a807_7c373820",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 399,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-29T16:03:04Z",
+      "side": 1,
+      "message": "unnecessary since it\u0027s just the same as what was default initialized.",
+      "range": {
+        "startLine": 396,
+        "startChar": 6,
+        "endLine": 399,
+        "endChar": 5
+      },
+      "revId": "b6fa29092a4cab84819f7690a37204ff86a1cfde",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
