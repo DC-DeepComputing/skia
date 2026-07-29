@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7dbe4b81_64164b15",
+        "filename": "src/gpu/graphite/DrawPass.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-29T15:07:24Z",
+      "side": 1,
+      "message": "The comment is helpful about when they have been resolved, but I don\u0027t think we need to assert here since we are just getting the handles and it could be used to iterate over the incomplete tasks, right?",
+      "range": {
+        "startLine": 88,
+        "startChar": 0,
+        "endLine": 88,
+        "endChar": 45
+      },
+      "revId": "fa55ccaeab78d0625f33d69701a7739314969c15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d77d2054_98427f56",
+        "filename": "src/gpu/graphite/PipelineManager.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-29T15:07:24Z",
+      "side": 1,
+      "message": "Can we add a comment (assuming it\u0027s correct), along the lines of \"// This is thread safe because a given GraphicsPipelineHandle does not switch between a task or pipeline when the task completes\"",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 27
+      },
+      "revId": "fa55ccaeab78d0625f33d69701a7739314969c15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
