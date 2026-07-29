@@ -70,6 +70,30 @@
       },
       "revId": "6d6333bb443b57629cc10b4a8dca77296c82bc5c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e664d209_da9c73ac",
+        "filename": "src/gpu/graphite/PipelineManager.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-29T17:15:58Z",
+      "side": 1,
+      "message": "I think it\u0027s the latter, looking at `startPipelineCreationTask`, it exchanges fCompleted to true and then sets pipeline. I think for now since things are serial still it doesn\u0027t matter, so switching to an atomic pipeline pointer could come in a follow-up CL?",
+      "parentUuid": "24b736e3_85072d2c",
+      "range": {
+        "startLine": 24,
+        "startChar": 13,
+        "endLine": 24,
+        "endChar": 59
+      },
+      "revId": "6d6333bb443b57629cc10b4a8dca77296c82bc5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
