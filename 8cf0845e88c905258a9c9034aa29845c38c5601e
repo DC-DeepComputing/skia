@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0055487_f82db47c",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-07-29T19:29:42Z",
+      "side": 1,
+      "message": "nit: space before ||",
+      "range": {
+        "startLine": 112,
+        "startChar": 20,
+        "endLine": 112,
+        "endChar": 21
+      },
+      "revId": "8cf0845e88c905258a9c9034aa29845c38c5601e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
