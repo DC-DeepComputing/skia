@@ -213,6 +213,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6915a60e_92721097",
+        "filename": "src/core/SkContext.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-07-29T20:01:08Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "d61c7b96_24eeffe4",
+      "range": {
+        "startLine": 71,
+        "startChar": 48,
+        "endLine": 71,
+        "endChar": 58
+      },
+      "revId": "cf74d7e3a7d003ad10422f7da77a745fc00cae71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "548d6fc0_9e9f8c0e",

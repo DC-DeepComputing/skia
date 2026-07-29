@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e116bdec_05d2a47b",
+        "filename": "src/core/RasterContext.h",
+        "patchSetId": 30
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-07-29T20:01:08Z",
+      "side": 1,
+      "message": "Since all the GPU ones are in public include, probably should just move this there too",
+      "range": {
+        "startLine": 1,
+        "startChar": 1,
+        "endLine": 1,
+        "endChar": 2
+      },
+      "revId": "c30a344cfd99d38ef7b572e725536af9560d7e21",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c9f33f4_3b19d3f2",
+        "filename": "src/core/SkContext.h",
+        "patchSetId": 30
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-07-29T20:01:08Z",
+      "side": 1,
+      "message": "Since we\u0027ve made all the factories public in include, it kind of seems like we might as well just make the SkContext public too now. There isn\u0027t really a reason to hide it in src/ since it is not like users can do anything with it if they happen to make one.",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 2
+      },
+      "revId": "c30a344cfd99d38ef7b572e725536af9560d7e21",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f0921db_37368142",
+        "filename": "src/core/SkContext.h",
+        "patchSetId": 30
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-07-29T20:01:08Z",
+      "side": 1,
+      "message": "I would remove this. Generally comments in code (especially header files) should focus on what the class/function/object does. We don\u0027t need to add the history of why we did something here (that can be in design docs or CL descriptions).",
+      "range": {
+        "startLine": 25,
+        "startChar": 35,
+        "endLine": 26,
+        "endChar": 35
+      },
+      "revId": "c30a344cfd99d38ef7b572e725536af9560d7e21",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1bf39297_ee49167d",
+        "filename": "src/core/SkContextOptions.h",
+        "patchSetId": 30
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-07-29T20:01:08Z",
+      "side": 1,
+      "message": "If we move SkContext public we\u0027ll need to move this as well",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 2
+      },
+      "revId": "c30a344cfd99d38ef7b572e725536af9560d7e21",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9794a2fd_249c3d84",
+        "filename": "src/gpu/graphite/dawn/DawnGraphiteUtils.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-07-29T20:01:08Z",
+      "side": 1,
+      "message": "This should go grouped with the other includes below. The only header we separate out at the start is the header that is directly connected to this cpp file.",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 8,
+        "endChar": 31
+      },
+      "revId": "c30a344cfd99d38ef7b572e725536af9560d7e21",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bbe2c37f_3417f95d",
+        "filename": "src/gpu/graphite/vk/VulkanGraphiteUtils.h",
+        "patchSetId": 30
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-07-29T20:01:08Z",
+      "side": 1,
+      "message": "Why are you declaring this here? Isn\u0027t it already declared in VulkanGraphiteContext?",
+      "range": {
+        "startLine": 31,
+        "startChar": 1,
+        "endLine": 32,
+        "endChar": 73
+      },
+      "revId": "c30a344cfd99d38ef7b572e725536af9560d7e21",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
