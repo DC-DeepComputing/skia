@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "modules/svg/include/SkSVGAttributeParser.h"
 
 #include "include/core/SkMatrix.h"
@@ -222,10 +223,10 @@ bool SkSVGAttributeParser::parseIdentToken(SkString* ident) {
 }
 
 bool SkSVGAttributeParser::parseLengthUnitToken(SkSVGLength::Unit* unit) {
-    static const struct {
+    struct GUnitInfo {
         const char*       fUnitName;
         SkSVGLength::Unit fUnit;
-    } gUnitInfo[] = {
+    }; static const auto gUnitInfo = std::to_array<GUnitInfo>({
         { "%" , SkSVGLength::Unit::kPercentage },
         { "em", SkSVGLength::Unit::kEMS        },
         { "ex", SkSVGLength::Unit::kEXS        },
@@ -235,7 +236,7 @@ bool SkSVGAttributeParser::parseLengthUnitToken(SkSVGLength::Unit* unit) {
         { "in", SkSVGLength::Unit::kIN         },
         { "pt", SkSVGLength::Unit::kPT         },
         { "pc", SkSVGLength::Unit::kPC         },
-    };
+    });
 
     for (size_t i = 0; i < std::size(gUnitInfo); ++i) {
         if (this->parseExpectedStringToken(gUnitInfo[i].fUnitName)) {
@@ -774,14 +775,14 @@ bool SkSVGAttributeParser::parse(SkSVGFuncIRI* firi) {
 // https://www.w3.org/TR/SVG11/painting.html#StrokeLinecapProperty
 template <>
 bool SkSVGAttributeParser::parse(SkSVGLineCap* cap) {
-    static const struct {
+    struct GCapInfo {
         SkSVGLineCap fType;
         const char*        fName;
-    } gCapInfo[] = {
+    }; static const auto gCapInfo = std::to_array<GCapInfo>({
         { SkSVGLineCap::kButt   , "butt"    },
         { SkSVGLineCap::kRound  , "round"   },
         { SkSVGLineCap::kSquare , "square"  },
-    };
+    });
 
     bool parsedValue = false;
     for (size_t i = 0; i < std::size(gCapInfo); ++i) {
@@ -798,15 +799,15 @@ bool SkSVGAttributeParser::parse(SkSVGLineCap* cap) {
 // https://www.w3.org/TR/SVG11/painting.html#StrokeLinejoinProperty
 template <>
 bool SkSVGAttributeParser::parse(SkSVGLineJoin* join) {
-    static const struct {
+    struct GJoinInfo {
         SkSVGLineJoin::Type fType;
         const char*         fName;
-    } gJoinInfo[] = {
+    }; static const auto gJoinInfo = std::to_array<GJoinInfo>({
         { SkSVGLineJoin::Type::kMiter  , "miter"   },
         { SkSVGLineJoin::Type::kRound  , "round"   },
         { SkSVGLineJoin::Type::kBevel  , "bevel"   },
         { SkSVGLineJoin::Type::kInherit, "inherit" },
-    };
+    });
 
     bool parsedValue = false;
     for (size_t i = 0; i < std::size(gJoinInfo); ++i) {
@@ -888,14 +889,14 @@ bool SkSVGAttributeParser::parse(SkSVGPointsType* points) {
 // https://www.w3.org/TR/SVG11/painting.html#FillRuleProperty
 template <>
 bool SkSVGAttributeParser::parse(SkSVGFillRule* fillRule) {
-    static const struct {
+    struct GFillRuleInfo {
         SkSVGFillRule::Type fType;
         const char*         fName;
-    } gFillRuleInfo[] = {
+    }; static const auto gFillRuleInfo = std::to_array<GFillRuleInfo>({
         { SkSVGFillRule::Type::kNonZero, "nonzero" },
         { SkSVGFillRule::Type::kEvenOdd, "evenodd" },
         { SkSVGFillRule::Type::kInherit, "inherit" },
-    };
+    });
 
     bool parsedValue = false;
     for (size_t i = 0; i < std::size(gFillRuleInfo); ++i) {

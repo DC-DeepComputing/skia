@@ -352,7 +352,7 @@ DEF_TEST(WritePixelsSurfaceGenID, reporter) {
 
 static void test_write_pixels(skiatest::Reporter* reporter, SkSurface* surface,
                               const SkImageInfo& surfaceInfo) {
-    const SkIRect testRects[] = {
+    const auto testRects = std::to_array<SkIRect>({
         // entire thing
         DEV_RECT,
         // larger on all sides
@@ -397,20 +397,20 @@ static void test_write_pixels(skiatest::Reporter* reporter, SkSurface* surface,
         SkIRect::MakeLTRB(3 * DEV_W / 4, 3 * DEV_H / 4, DEV_W + 10, DEV_H + 10),
         // overlapping top right and bottom right corners
         SkIRect::MakeLTRB(3 * DEV_W / 4, -10, DEV_W + 10, DEV_H + 10),
-    };
+    });
 
     SkCanvas* canvas = surface->getCanvas();
 
-    static const struct {
+    struct GSrcConfigs {
         SkColorType fColorType;
         SkAlphaType fAlphaType;
-    } gSrcConfigs[] = {
+    }; static const auto gSrcConfigs = std::to_array<GSrcConfigs>({
             {kRGBA_8888_SkColorType, kPremul_SkAlphaType},
             {kRGBA_8888_SkColorType, kUnpremul_SkAlphaType},
             {kRGB_888x_SkColorType, kOpaque_SkAlphaType},
             {kBGRA_8888_SkColorType, kPremul_SkAlphaType},
             {kBGRA_8888_SkColorType, kUnpremul_SkAlphaType},
-    };
+    });
     for (size_t r = 0; r < std::size(testRects); ++r) {
         const SkIRect& rect = testRects[r];
         for (int tightBmp = 0; tightBmp < 2; ++tightBmp) {

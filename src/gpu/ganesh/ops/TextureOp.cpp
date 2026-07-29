@@ -4,6 +4,7 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include <array>
 #include "src/gpu/ganesh/ops/TextureOp.h"
 
 #include "include/core/SkAlphaType.h"
@@ -1125,7 +1126,7 @@ private:
     // This field must go last. When allocating this op, we will allocate extra space to hold
     // additional ViewCountPairs immediately after the op's allocation so we can treat this
     // as an fProxyCnt-length array.
-    ViewCountPair fViewCountPairs[1];
+    std::array<ViewCountPair, 1> fViewCountPairs;
 
     using INHERITED = GrMeshDrawOp;
 };

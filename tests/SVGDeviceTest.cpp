@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkTypes.h"
 #ifdef SK_XML
 
@@ -179,10 +180,10 @@ void test_whitespace_pos(skiatest::Reporter* reporter,
 } // namespace
 
 DEF_TEST(SVGDevice_whitespace_pos, reporter) {
-    static const struct {
+    struct Tests {
         const char* tst_in;
         const char* tst_out;
-    } tests[] = {
+    }; static const auto tests = std::to_array<Tests>({
         { "abcd"      , "abcd" },
         { "ab cd"     , "ab cd" },
         { "ab \t\t cd", "ab cd" },
@@ -193,7 +194,7 @@ DEF_TEST(SVGDevice_whitespace_pos, reporter) {
         { "abcd  "    , "abcd " }, // because it makes no difference and
         { "abcd\t  "  , "abcd " }, // simplifies the implementation
         { "\t\t  \t ab \t\t  \t cd \t\t   \t  ", "ab cd " },
-    };
+    });
 
     for (unsigned i = 0; i < std::size(tests); ++i) {
         test_whitespace_pos(reporter, tests[i].tst_in, tests[i].tst_out);

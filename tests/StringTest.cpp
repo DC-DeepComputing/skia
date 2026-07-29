@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkScalar.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
@@ -153,10 +154,10 @@ DEF_TEST(String, reporter) {
     a.printf("hello %s", "skia");
     REPORTER_ASSERT(reporter, a.equals("hello skia"));
 
-    static const struct {
+    struct GRec {
         SkScalar    fValue;
         const char* fString;
-    } gRec[] = {
+    }; static const auto gRec = std::to_array<GRec>({
         { 0,             "0" },
         { SK_Scalar1,    "1" },
         { -SK_Scalar1,   "-1" },
@@ -172,7 +173,7 @@ DEF_TEST(String, reporter) {
         { 3.4028234e38f,   "3.4028235e+38" },
         { -3.4028234e38f, "-3.4028235e+38" },
   #endif
-    };
+    });
     for (size_t i = 0; i < std::size(gRec); i++) {
         a.reset();
         a.appendScalar(gRec[i].fValue);

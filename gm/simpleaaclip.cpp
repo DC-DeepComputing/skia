@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -158,14 +159,14 @@ protected:
 
     void onDraw(SkCanvas* canvas) override {
 
-        const struct {
+        struct GOps {
             SkColor         fColor;
             const char*     fName;
             SkClipOp        fOp;
-        } gOps[] = {
+        }; const auto gOps = std::to_array<GOps>({
                 {SK_ColorBLACK, "Difference", SkClipOp::kDifference},
                 {SK_ColorRED, "Intersect", SkClipOp::kIntersect},
-        };
+        });
 
         SkPaint textPaint;
         SkFont  font(ToolUtils::DefaultPortableTypeface(), 24);

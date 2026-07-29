@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -135,11 +136,11 @@ protected:
     }
 
     void onDraw(SkCanvas* canvas) override {
-        const struct {
+        struct Configs {
             SkISize  size;
             SkScalar scaleX, scaleY;
             SkScalar opacity;
-        } configs[] = {
+        }; const auto configs = std::to_array<Configs>({
             { SkISize::Make(200, 100), 1, 1, 1 },
             { SkISize::Make(200, 200), 1, 1, 1 },
             { SkISize::Make(200, 200), 1, 2, 1 },
@@ -159,7 +160,7 @@ protected:
             { SkISize::Make(200, 100),  1, -1, 1    },
             { SkISize::Make(200, 100), -1, -1, 1    },
             { SkISize::Make(200, 100), -1, -1, 0.5f },
-        };
+        });
 
         auto srgbColorSpace = SkColorSpace::MakeSRGB();
         const unsigned kDrawsPerRow = 4;

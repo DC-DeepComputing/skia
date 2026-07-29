@@ -5,6 +5,7 @@
 * found in the LICENSE file.
 */
 
+#include <array>
 #include "src/core/SkUTF.h"
 #include "tools/sk_app/unix/Window_unix.h"
 #include "tools/skui/ModifierKey.h"
@@ -208,10 +209,10 @@ void Window_unix::closeWindow() {
 }
 
 static skui::Key get_key(KeySym keysym) {
-    static const struct {
+    struct GPair {
         KeySym      fXK;
         skui::Key fKey;
-    } gPair[] = {
+    }; static const auto gPair = std::to_array<GPair>({
         { XK_BackSpace, skui::Key::kBack     },
         { XK_Clear,     skui::Key::kBack     },
         { XK_Return,    skui::Key::kOK       },
@@ -238,7 +239,7 @@ static skui::Key get_key(KeySym keysym) {
         { 'x',          skui::Key::kX        },
         { 'y',          skui::Key::kY        },
         { 'z',          skui::Key::kZ        },
-    };
+    });
     for (size_t i = 0; i < std::size(gPair); i++) {
         if (gPair[i].fXK == keysym) {
             return gPair[i].fKey;
@@ -248,14 +249,14 @@ static skui::Key get_key(KeySym keysym) {
 }
 
 static skui::ModifierKey get_modifiers(const XEvent& event) {
-    static const struct {
+    struct GModifiers {
         unsigned    fXMask;
         skui::ModifierKey  fSkMask;
-    } gModifiers[] = {
+    }; static const auto gModifiers = std::to_array<GModifiers>({
         { ShiftMask,   skui::ModifierKey::kShift },
         { ControlMask, skui::ModifierKey::kControl },
         { Mod1Mask,    skui::ModifierKey::kOption },
-    };
+    });
 
     skui::ModifierKey modifiers = skui::ModifierKey::kNone;
     for (size_t i = 0; i < std::size(gModifiers); ++i) {

@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -26,14 +27,14 @@
 #include "tools/ToolUtils.h"
 #include "tools/fonts/FontToolUtils.h"
 
-static struct {
+struct TileConfigs {
     SkTileMode tmx;
     SkTileMode tmy;
-} kTileConfigs[] = {
+}; static auto kTileConfigs = std::to_array<TileConfigs>({
     { SkTileMode::kRepeat, SkTileMode::kRepeat },
     { SkTileMode::kRepeat, SkTileMode::kClamp  },
     { SkTileMode::kMirror, SkTileMode::kRepeat },
-};
+});
 
 class PictureShaderGM : public skiagm::GM {
 public:

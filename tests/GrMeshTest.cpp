@@ -91,7 +91,7 @@ static constexpr int kImageWidth = kBoxCountY * kBoxSize;
 static constexpr int kImageHeight = kBoxCountX * kBoxSize;
 
 static constexpr int kIndexPatternRepeatCount = 3;
-constexpr uint16_t kIndexPattern[6] = {0, 1, 2, 1, 2, 3};
+constexpr std::array<uint16_t, 6> kIndexPattern = {0, 1, 2, 1, 2, 3};
 
 
 class DrawMeshHelper {

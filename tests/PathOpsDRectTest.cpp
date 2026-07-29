@@ -15,19 +15,19 @@
 #include <array>
 #include <cstddef>
 
-static const QuadPts quadTests[] = {
+static const auto quadTests = std::to_array<QuadPts>({
     {{{1, 1}, {2, 1}, {0, 2}}},
     {{{0, 0}, {1, 1}, {3, 1}}},
     {{{2, 0}, {1, 1}, {2, 2}}},
     {{{4, 0}, {0, 1}, {4, 2}}},
     {{{0, 0}, {0, 1}, {1, 1}}},
-};
+});
 
-static const CubicPts cubicTests[] = {
+static const auto cubicTests = std::to_array<CubicPts>({
     {{{2, 0}, {3, 1}, {2, 2}, {1, 1}}},
     {{{3, 1}, {2, 2}, {1, 1}, {2, 0}}},
     {{{3, 0}, {2, 1}, {3, 2}, {1, 1}}},
-};
+});
 
 static const size_t quadTests_count = std::size(quadTests);
 static const size_t cubicTests_count = std::size(cubicTests);

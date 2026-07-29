@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkBlendMode.h"
@@ -48,7 +49,7 @@ enum SrcType {
     kBasic_SrcType                        = 0x03, //!< Just basic source types.
 };
 
-const struct {
+struct GModes {
     SkBlendMode fMode;
     int         fSourceTypeMask;  // The source types to use this
                                   // mode with. See draw_mode for
@@ -56,7 +57,7 @@ const struct {
                                   // PDF has to play some tricks
                                   // to support the base modes,
                                   // test those more extensively.
-} gModes[] = {
+}; const auto gModes = std::to_array<GModes>({
     { SkBlendMode::kClear,        kAll_SrcType   },
     { SkBlendMode::kSrc,          kAll_SrcType   },
     { SkBlendMode::kDst,          kAll_SrcType   },
@@ -87,7 +88,7 @@ const struct {
     { SkBlendMode::kSaturation,   kBasic_SrcType },
     { SkBlendMode::kColor,        kBasic_SrcType },
     { SkBlendMode::kLuminosity,   kBasic_SrcType },
-};
+});
 
 static void make_bitmaps(int w, int h, SkBitmap* src, SkBitmap* dst,
                          SkBitmap* transparent) {

@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkCanvas.h"
@@ -61,14 +62,14 @@ constexpr SkColor4f gColor4fClamp[] = {
     SkColors::kGreen,
     SkColors::kBlue,
 };
-constexpr GradData gGradData[] = {
+constexpr auto gGradData = std::to_array<GradData>({
     { {gColors, 2}, {} },
     { {gColors, 2}, gPos0 },
     { {gColors, 2}, gPos1 },
     { {gColors, 5}, {} },
     { {gColors, 5}, gPos2 },
     { gColor4fClamp, gPosClamp }
-};
+,});
 
 static sk_sp<SkShader> MakeLinear(const SkPoint pts[2], const GradData& data,
                                   SkTileMode tm, const SkMatrix& localMatrix) {
@@ -117,9 +118,9 @@ static sk_sp<SkShader> Make2Conical(const SkPoint pts[2], const GradData& data,
 
 typedef sk_sp<SkShader> (*GradMaker)(const SkPoint pts[2], const GradData& data,
                                      SkTileMode tm, const SkMatrix& localMatrix);
-constexpr GradMaker gGradMakers[] = {
+constexpr auto gGradMakers = std::to_array<GradMaker>({
     MakeLinear, MakeRadial, MakeSweep, Make2Radial, Make2Conical
-};
+,});
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -433,10 +434,10 @@ private:
 
         // We can either interpolate endpoints and premultiply each point (default, more precision),
         // or premultiply the endpoints first, avoiding the need to premultiply each point (cheap).
-        const SkGradient::Interpolation::InPremul flags[] = {
+        const auto flags = std::to_array<SkGradient::Interpolation::InPremul>({
             SkGradient::Interpolation::InPremul::kNo,
             SkGradient::Interpolation::InPremul::kYes,
-        };
+        });
         const SkTileMode tm = SkTileMode::kClamp;
 
         for (size_t i = 0; i < std::size(flags); i++) {
@@ -562,8 +563,8 @@ private:
             SkColor4f::FromColor(0xFF008200), SkColor4f::FromColor(0xFF008200),
             SkColors::kWhite, SkColors::kWhite,
         };
-        const SkScalar unitPos[] = { 0, 50, 70, 500, 540 };
-        SkScalar pos[6];
+        const auto unitPos = std::to_array<SkScalar>({ 0, 50, 70, 500, 540 });
+        std::array<SkScalar, 6> pos;
         pos[5] = 1;
         for (int index = 0; index < (int) std::size(fShader); ++index) {
             pts[1].fX = 500.f + index * kWidthBump;
@@ -587,7 +588,7 @@ private:
     }
 
 private:
-    sk_sp<SkShader> fShader[100];
+    std::array<sk_sp<SkShader>, 100> fShader;
     bool fDither;
 
     using INHERITED = GM;
@@ -604,10 +605,10 @@ class LinearGradientTinyGM : public skiagm::GM {
         const SkScalar kRectSize = 100;
         const unsigned kStopCount = 3;
         const SkColor4f colors[kStopCount] = { SkColors::kGreen, SkColors::kRed, SkColors::kGreen };
-        const struct {
+        struct Configs {
             SkPoint pts[2];
             SkScalar pos[kStopCount];
-        } configs[] = {
+        }; const auto configs = std::to_array<Configs>({
             { { SkPoint::Make(0, 0),        SkPoint::Make(10, 0) },       { 0, 0.999999f,    1 }},
             { { SkPoint::Make(0, 0),        SkPoint::Make(10, 0) },       { 0, 0.000001f,    1 }},
             { { SkPoint::Make(0, 0),        SkPoint::Make(10, 0) },       { 0, 0.999999999f, 1 }},
@@ -622,7 +623,7 @@ class LinearGradientTinyGM : public skiagm::GM {
             { { SkPoint::Make(9.99999f, 0), SkPoint::Make(10, 0) },       { 0, 0.5f, 1 }},
             { { SkPoint::Make(0, 0),        SkPoint::Make(0, 0.00001f) }, { 0, 0.5f, 1 }},
             { { SkPoint::Make(0, 9.99999f), SkPoint::Make(0, 10) },       { 0, 0.5f, 1 }},
-        };
+        });
 
         SkPaint paint;
         for (unsigned i = 0; i < std::size(configs); ++i) {
@@ -738,7 +739,7 @@ static void draw_many_stops(SkCanvas* canvas) {
     const unsigned kStopCount = 200;
     const SkPoint pts[] = { {50, 50}, {450, 450}};
 
-    SkColor4f colors[kStopCount];
+    std::array<SkColor4f, kStopCount> colors;
     for (unsigned i = 0; i < kStopCount; i++) {
         switch (i % 5) {
         case 0: colors[i] = SkColors::kRed;   break;
@@ -763,8 +764,8 @@ static void draw_many_hard_stops(SkCanvas* canvas) {
     const unsigned kStopCount = 300;
     const SkPoint pts[] = {{50, 50}, {450, 450}};
 
-    SkColor4f colors[kStopCount];
-    SkScalar pos[kStopCount];
+    std::array<SkColor4f, kStopCount> colors;
+    std::array<SkScalar, kStopCount> pos;
     for (unsigned i = 0; i < kStopCount; i++) {
         switch (i % 6) {
             case 0: colors[i] = SkColors::kRed;   break;
@@ -1122,7 +1123,7 @@ DEF_SIMPLE_GM_BG(gradients_color_space_many_stops, canvas, 500, 500, SK_ColorGRA
     const SkPoint pts[] = { {50, 50}, {450, 465}};
 
     const unsigned kStopCount = 200;
-    SkColor4f colors[kStopCount];
+    std::array<SkColor4f, kStopCount> colors;
     for (unsigned i = 0; i < kStopCount; i++) {
         switch (i % 5) {
             case 0: colors[i] = SkColors::kRed; break;

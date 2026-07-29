@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "fuzz/Fuzz.h"
 #include "include/core/SkString.h"
 #include "include/utils/SkParsePath.h"
@@ -14,10 +15,10 @@
 // Most of this is taken from random_parse_path.cpp and adapted to use the Fuzz
 // instead of SKRandom
 
-static const struct Legal {
+struct Legal {
     char fSymbol;
     int fScalars;
-} gLegal[] = {
+}; static const auto gLegal = std::to_array<Legal>({
     { 'M', 2 },
     { 'H', 1 },
     { 'V', 1 },
@@ -28,12 +29,12 @@ static const struct Legal {
     { 'S', 4 },
     { 'A', 4 },
     { 'Z', 0 },
-};
+});
 
 static bool gEasy = false;  // set to true while debugging to suppress unusual whitespace
 
 // mostly do nothing, then bias towards spaces
-static const char gWhiteSpace[] = { 0, 0, 0, 0, 0, 0, 0, 0, ' ', ' ', ' ', ' ', 0x09, 0x0D, 0x0A };
+static const auto gWhiteSpace = std::to_array<char>({ 0, 0, 0, 0, 0, 0, 0, 0, ' ', ' ', ' ', ' ', 0x09, 0x0D, 0x0A ,});
 
 static void add_white(Fuzz* fuzz, SkString* atom) {
     if (gEasy) {

@@ -16,10 +16,10 @@
 
 #include <array>
 
-static struct quadCubic {
+struct quadCubic {
     CubicPts cubic;
     QuadPts quad;
-} quadCubicTests[] = {
+}; static auto quadCubicTests = std::to_array<quadCubic>({
     {{{{945.08099365234375, 747.1619873046875}, {982.5679931640625, 747.1619873046875}, {1013.6290283203125, 719.656005859375}, {1019.1910400390625, 683.72601318359375}}},
      {{{945, 747}, {976.0660400390625, 747}, {998.03302001953125, 725.03302001953125}}}},
 
@@ -51,7 +51,7 @@ static struct quadCubic {
 
     {{{{10,234}, {10,229.58172607421875}, {13.581720352172852,226}, {18,226}}},
      {{{12.342399597167969,228.3424072265625}, {10,230.68629455566406}, {10,234}}}},
-};
+});
 
 static const int quadCubicTests_count = (int) std::size(quadCubicTests);
 

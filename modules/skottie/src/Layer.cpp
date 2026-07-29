@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "modules/skottie/src/Layer.h"
 
 #include "include/core/SkBlendMode.h"
@@ -331,7 +332,7 @@ LayerBuilder::LayerBuilder(const skjson::ObjectValue& jlayer, const SkSize& comp
             ParseDefault<float>(jlayer["ip"], 0.0f),
             ParseDefault<float>(jlayer["op"], 0.0f)}
 {
-    static constexpr struct BuilderInfo gLayerBuildInfo[] = {
+    static constexpr auto gLayerBuildInfo = std::to_array<skottie::internal::LayerBuilder::BuilderInfo>({
         { &AnimationBuilder::attachPrecompLayer, kTransformEffects },  // 'ty':  0 -> precomp
         { &AnimationBuilder::attachSolidLayer  , kTransformEffects },  // 'ty':  1 -> solid
         { &AnimationBuilder::attachFootageLayer, kTransformEffects },  // 'ty':  2 -> image
@@ -347,7 +348,7 @@ LayerBuilder::LayerBuilder(const skjson::ObjectValue& jlayer, const SkSize& comp
         { nullptr                              ,                 0 },  // 'ty': 12 -> adjustment
         { &AnimationBuilder::attachNullLayer   ,                 0 },  // 'ty': 13 -> camera
         { nullptr                              ,                 0 },  // 'ty': 14 -> light
-    };
+    });
 
     if (fType >= 0 && SkToSizeT(fType) < std::size(gLayerBuildInfo)) {
         fBuilderInfo = gLayerBuildInfo[fType];
@@ -551,12 +552,12 @@ sk_sp<sksg::RenderNode> LayerBuilder::buildRenderTree(const AnimationBuilder& ab
 
     // Optional matte.
     if (const auto matte_mode = ParseDefault<size_t>(fJlayer["tt"], 0)) {
-        static constexpr sksg::MaskEffect::Mode gMatteModes[] = {
+        static constexpr auto gMatteModes = std::to_array<sksg::MaskEffect::Mode>({
             sksg::MaskEffect::Mode::kAlphaNormal, // tt: 1
             sksg::MaskEffect::Mode::kAlphaInvert, // tt: 2
             sksg::MaskEffect::Mode::kLumaNormal,  // tt: 3
             sksg::MaskEffect::Mode::kLumaInvert,  // tt: 4
-        };
+        });
 
         if (matte_mode <= std::size(gMatteModes)) {
             int matte_index = ParseDefault<int>(fJlayer["tp"], -1);

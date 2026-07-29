@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
@@ -174,10 +175,10 @@ static void create_graph6(TArray<sk_sp<ToolUtils::TopoTestNode>>* graph) {
 DEF_TEST(TopoSort, reporter) {
     SkRandom rand;
 
-    struct {
+    struct Tests {
         CreateGraphPF fCreate;
         bool          fExpectedResult;
-    } tests[] = {
+    }; auto tests = std::to_array<Tests>({
         { create_graph0, true  },
         { create_graph1, true  },
         { create_graph2, false },
@@ -185,7 +186,7 @@ DEF_TEST(TopoSort, reporter) {
         { create_graph4, true  },
         { create_graph5, false },
         { create_graph6, false },
-    };
+    });
 
     for (size_t i = 0; i < std::size(tests); ++i) {
         TArray<sk_sp<ToolUtils::TopoTestNode>> graph;

@@ -45,10 +45,10 @@ DEF_TEST(DashPathEffectTest_asPoints, r) {
 
     SkRect cull = SkRect::MakeWH(1.0f, 1.0f);
 
-    const struct {
+    struct TestCases {
         SkPoint fPts[2];
         bool    fExpectedResult;
-    } testCases[] = {
+    }; const auto testCases = std::to_array<TestCases>({
         { { { -5.0f,  0.5f }, { -4.0f,  0.5f } }, false },   // off to the left
         { { {  4.0f,  0.5f }, {  5.0f,  0.5f } }, false },   // off to the right
         { { {  0.5f,  4.0f }, {  0.5f,  5.0f } }, false },   // off the bottom
@@ -62,7 +62,7 @@ DEF_TEST(DashPathEffectTest_asPoints, r) {
         { { { -5.0f,  0.5f }, {  0.5f,  0.5f } }, true  },   // straddles left
         { { {  5.0f,  0.5f }, {  0.5f,  0.5f } }, true  },   // straddles right
         { { {  0.5f,  0.5f }, {  0.5f,  0.5f } }, false },   // zero length
-    };
+    });
 
     SkPaint paint;
     paint.setStyle(SkPaint::kStroke_Style);
@@ -70,7 +70,7 @@ DEF_TEST(DashPathEffectTest_asPoints, r) {
     SkStrokeRec rec(paint);
 
     static const int kNumMats = 3;
-    SkMatrix mats[kNumMats];
+    std::array<SkMatrix, kNumMats> mats;
     mats[0].reset();
     mats[1].setRotate(90, 0.5f, 0.5f);
     mats[2].setTranslate(10.0f, 10.0f);
