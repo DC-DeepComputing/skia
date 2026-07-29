@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 #include "include/gpu/ganesh/mtl/GrMtlDirectContext.h"
+#include "src/core/SkContext.h"
 
 #include "include/gpu/ganesh/GrDirectContext.h"
 #include "include/gpu/ganesh/mtl/GrMtlBackendContext.h"
@@ -34,3 +35,13 @@ sk_sp<GrDirectContext> MakeMetal(const GrMtlBackendContext& backendContext,
     return direct;
 }
 }  // namespace GrDirectContexts
+
+namespace SkContexts {
+
+// Creates a context wrapping a Ganesh GPU backend with Metal
+std::unique_ptr<SkContext> MakeGanesh(const GrMtlBackendContext& mtlContext,
+                            const SkContextOptions& options) {
+    return nullptr;
+}
+
+}  // namespace SkContexts
