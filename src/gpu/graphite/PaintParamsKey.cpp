@@ -273,10 +273,7 @@ RootNodesInfo PaintParamsKey::getRootNodes(const Caps* caps,
             case RootBlockType::kSrcColor:   rootsInfo.srcColor = root; break;
             case RootBlockType::kFinalBlend: rootsInfo.finalBlend = root; break;
             case RootBlockType::kClip:       rootsInfo.clip = root; break;
-<<<<<<< HEAD
             default:                         SkUNREACHABLE;
-=======
->>>>>>> e4ea8c56f9 ([Graphite] Root nodes struct for explicit root nodes)
         }
     }
 
