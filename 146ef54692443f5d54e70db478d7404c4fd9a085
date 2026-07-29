@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d9982e0_16722dc6",
+        "filename": "gn/skia.gni",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-07-29T21:03:24Z",
+      "side": 1,
+      "message": "@kjlubick@chromium.org,\n\nPreviously, I used the absolute path for `//src/partition_alloc:raw_ptr`, which failed when the root is flutter embedding skia.\n\nI am adding \"skia_root\", similar to [dawn_root](https://source.chromium.org/chromium/chromium/src/+/main:third_party/dawn/scripts/dawn_overrides_with_defaults.gni;l\u003d41?q\u003d%22dawn_root%20%3D%22%20file:.gn\u0026ss\u003dchromium%2Fchromium%2Fsrc) to resolve skia no matter the embedder and the caller of the template.",
+      "revId": "146ef54692443f5d54e70db478d7404c4fd9a085",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
