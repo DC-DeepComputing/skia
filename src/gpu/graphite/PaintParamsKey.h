@@ -45,8 +45,6 @@ struct RootNodesInfo {
     const ShaderNode* clip = nullptr;
     const ShaderNode* meshShader = nullptr;
 
-    // We store the SkMeshSpecification referenced by the `meshShader` when populating this struct
-    // so we don't have to constantly look up the specification by the shader snippet id.
     const SkMeshSpecification* meshSpec = nullptr;
 
     SkSpan<const ShaderNode*> roots;
@@ -78,8 +76,6 @@ struct RootNodesInfo {
  *  2. Final blend node: defines the blend function combining src and dst colors. If this is a
  *     FixedBlend snippet the final pipeline may be able to lift it to HW blending.
  *  3. Clipping: optional, produces analytic coverage from a clip shader or shape.
- *  4. Mesh shader: optional, provides a reference to a SkMeshSpecification which is used to
- *     generate the user specified custom vertex/fragment SkSL as well as varyings and attributes.
  *
  * Each root node within the key is also preceded by a 4 byte header with a value < 0 defining
  * the type of the node as one of the 3 types listed above.
@@ -128,7 +124,8 @@ public:
                                const ShaderCodeDictionary*,
                                const RuntimeEffectDictionary*,
                                SkArenaAlloc*,
-                               int availableVaryings) const;
+                               int availableVaryings,
+                               bool canLiftCoords) const;
 
     // Converts the key to a structured list of snippet information for debugging or labeling
     // purposes.
