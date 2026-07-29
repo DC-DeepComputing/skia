@@ -7,6 +7,8 @@
 
 #include "src/gpu/graphite/render/BitmapTextRenderStep.h"
 
+#include "src/gpu/graphite/PaintParamsKey.h"
+
 #include "include/core/SkM44.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSamplingOptions.h"
@@ -95,7 +97,7 @@ SkEnumBitMask<RenderStep::Flags> BitmapTextRenderStep::Flags(skgpu::MaskFormat v
     }
 }
 
-std::string BitmapTextRenderStep::vertexSkSL() const {
+std::string BitmapTextRenderStep::vertexSkSL(const RootNodesInfo&) const {
     // Returns the body of a vertex function, which must define a float4 devPosition variable and
     // must write to an already-defined float2 stepLocalCoords variable.
     return "texIndex = half(indexAndFlags.x);"
@@ -128,7 +130,7 @@ std::string BitmapTextRenderStep::texturesAndSamplersSkSL(
 }
 
 
-const char* BitmapTextRenderStep::fragmentColorSkSL() const {
+std::string BitmapTextRenderStep::fragmentColorSkSL(const RootNodesInfo&) const {
     // The returned SkSL must write its color into a 'half4 primitiveColor' variable
     // (defined in the calling code).
     static_assert(kNumTextAtlasTextures == 4);
