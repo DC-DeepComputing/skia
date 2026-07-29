@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3f05cbb_3b3bfd63",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-07-29T18:45:48Z",
+      "side": 1,
+      "message": "PTAL\n\nThe most critical part of the patch is where the StorageContext flushes cached (gradient) data, which is in Recorder. Not sure if we need to be more aggressive with the resetting?",
+      "revId": "a214142580858219295364f80560f84fb2e38ce3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
