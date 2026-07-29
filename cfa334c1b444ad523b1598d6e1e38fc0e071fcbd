@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f631ee4_1430297f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-07-29T14:35:28Z",
+      "side": 1,
+      "message": "PTAL\n\nI realized there was some cleanup I had missed, most notably, plumbing the shader stage visibility through native metal.",
+      "revId": "cfa334c1b444ad523b1598d6e1e38fc0e071fcbd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
