@@ -822,8 +822,6 @@ func (b *jobBuilder) deriveCompileTaskName() string {
 			log.Fatal(err)
 		}
 		return name
-	} else if b.Role("BuildStats") {
-		return strings.Replace(b.Name, "BuildStats", "Build", 1)
 	} else if b.Role("CodeSize") {
 		return codesizeTaskNameRegexp.ReplaceAllString(b.Name, "Build-")
 	} else {
@@ -1137,7 +1135,7 @@ func (b *TaskBuilder) defaultSwarmDimensions() {
 	} else {
 		d["gpu"] = "none"
 		if d["os"] == DEFAULT_OS_LINUX_GCE {
-			if b.ExtraConfig("CanvasKit", "CMake", "Docker") || b.Role("BuildStats", "CodeSize") {
+			if b.ExtraConfig("CanvasKit", "CMake", "Docker") || b.Role("CodeSize") {
 				b.linuxGceDimensions(MACHINE_TYPE_MEDIUM)
 			} else {
 				// Use many-core machines for Build tasks.
@@ -1522,42 +1520,6 @@ func (b *jobBuilder) infra() {
 		b.idempotent()
 		b.usesGo()
 	})
-}
-
-// buildstats generates a builtstats task, which compiles code and generates
-// statistics about the build.
-func (b *jobBuilder) buildstats() {
-	compileTaskName := b.compile()
-	b.addTask(b.Name, func(b *TaskBuilder) {
-		b.recipeProps(EXTRA_PROPS)
-		b.kitchenTask("compute_buildstats", OUTPUT_PERF)
-		b.dep(compileTaskName)
-		b.asset("bloaty")
-		b.linuxGceDimensions(MACHINE_TYPE_MEDIUM)
-		b.usesDocker()
-		b.usesGit()
-		b.cache(CACHES_WORKDIR...)
-	})
-	// Upload release results (for tracking in perf)
-	// We have some jobs that are FYI (e.g. Debug-CanvasKit, tree-map generator)
-	if b.Release() && !b.Arch("x86_64") {
-		uploadName := fmt.Sprintf("%s%s%s", PREFIX_UPLOAD, b.jobNameSchema.Sep, b.Name)
-		depName := b.Name
-		b.addTask(uploadName, func(b *TaskBuilder) {
-			b.recipeProp("gs_bucket", b.cfg.GsBucketNano)
-			b.recipeProps(EXTRA_PROPS)
-			// TODO(borenet): I'm not sure why the upload task is
-			// using the BuildStats task name, but I've done this
-			// to maintain existing behavior.
-			b.Name = depName
-			b.kitchenTask("upload_buildstats_results", OUTPUT_NONE)
-			b.Name = uploadName
-			b.serviceAccount(b.cfg.ServiceAccountUploadNano)
-			b.linuxGceDimensions(MACHINE_TYPE_SMALL)
-			b.usesGCloud()
-			b.dep(depName)
-		})
-	}
 }
 
 // codesize generates a codesize task, which takes binary produced by a
