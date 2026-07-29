@@ -1,0 +1,123 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dcccb727_3b23c1f4",
+        "filename": "src/capture/SkCapture.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-29T20:39:10Z",
+      "side": 1,
+      "message": "nit: maybe move this to a separate function",
+      "revId": "d83b3945ed6a47f43a39ce9fb1bbef588794b8d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7256afda_bdf39854",
+        "filename": "src/capture/SkCapture.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-29T20:39:10Z",
+      "side": 1,
+      "message": "i love this good job",
+      "revId": "d83b3945ed6a47f43a39ce9fb1bbef588794b8d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb911682_450240b8",
+        "filename": "src/capture/SkCapture.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-29T20:39:10Z",
+      "side": 1,
+      "message": "nit: maybe adding a part like \"repeated numAssets times\" here to clarify this section represents one asset. no worries if this is too pedantic\n\nor you can say (n \u003d numAssets) instead, that might be shorter",
+      "revId": "d83b3945ed6a47f43a39ce9fb1bbef588794b8d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2d9c314_c6ebbf15",
+        "filename": "src/capture/SkCapture.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-29T20:39:10Z",
+      "side": 1,
+      "message": "same as the commment above",
+      "revId": "d83b3945ed6a47f43a39ce9fb1bbef588794b8d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8fce2a1_bdc27f99",
+        "filename": "src/capture/SkCapture.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-29T20:39:10Z",
+      "side": 1,
+      "message": "do we want to continue calling them assets? I like the name but just wondering if we plan to include anything other than pictures here",
+      "revId": "d83b3945ed6a47f43a39ce9fb1bbef588794b8d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9f453bc_9733d7eb",
+        "filename": "src/capture/SkCaptureManager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-29T20:39:10Z",
+      "side": 1,
+      "message": "maybe add a comment in the header explaining the purpose of this method. having trouble understanding why we need to capture uninserted draw tasks / what is an inserted draw task. Might be a skill  issue on my part",
+      "revId": "d83b3945ed6a47f43a39ce9fb1bbef588794b8d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "792013e9_fb534485",
+        "filename": "tools/viewer/CaptureSlide.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-29T20:39:10Z",
+      "side": 1,
+      "message": "can we separate this into it\u0027s own file. lmk if that\u0027s too granular",
+      "revId": "d83b3945ed6a47f43a39ce9fb1bbef588794b8d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
