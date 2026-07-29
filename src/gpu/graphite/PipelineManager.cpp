@@ -18,6 +18,14 @@
 
 namespace skgpu::graphite {
 
+sk_sp<GraphicsPipeline> GraphicsPipelineHandle::pipelineOrNull() const {
+    if (std::holds_alternative<sk_sp<GraphicsPipeline>>(fTaskOrPipeline)) {
+        return std::get<sk_sp<GraphicsPipeline>>(fTaskOrPipeline);
+    }
+    sk_sp<PipelineCreationTask> task = std::get<sk_sp<PipelineCreationTask>>(fTaskOrPipeline);
+    return task->fPipeline;
+}
+
 GraphicsPipelineHandle::GraphicsPipelineHandle(sk_sp<PipelineCreationTask> task)
     : fTaskOrPipeline(std::move(task)) {}
 
