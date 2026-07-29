@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ec50ab7_cc83cce8",
+        "filename": "include/utils/SkLogHandler.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-07-29T19:21:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e9d921e5_50301c7e",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 32
+      },
+      "revId": "1e760e44806b90fe7b67d90ee1d79098fe495578",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a8c6098d_eb58b097",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-07-29T15:13:39Z",
       "side": 1,
       "message": "nit: maybe follow up with an additional \"Skia only allows one SkLogHandler to be set and it cannot change after setting\"",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 93
+      },
+      "revId": "1e760e44806b90fe7b67d90ee1d79098fe495578",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5ac640f_7c2ab463",
+        "filename": "include/utils/SkLogHandler.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-07-29T19:21:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a8c6098d_eb58b097",
       "range": {
         "startLine": 35,
         "startChar": 0,
