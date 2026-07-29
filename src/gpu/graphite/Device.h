@@ -138,6 +138,7 @@ public:
     // May not be texturable, but includes the swizzle required when sampling or reading to CPU
     const TextureProxyView& target() const;
     bool isTexturable() const;
+    void resetStorageCache();
 
     // Can succeed if target is readable but not sampleable. Assumes 'subset' is contained in bounds
     sk_sp<Image> makeImageCopy(const SkIRect& subset, Budgeted, Mipmapped, SkBackingFit);
