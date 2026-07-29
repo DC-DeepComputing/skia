@@ -6,6 +6,7 @@
  */
 
 #include "include/gpu/ganesh/vk/GrVkDirectContext.h"
+#include "src/core/SkContext.h"
 
 #include "include/gpu/ganesh/GrContextOptions.h"
 #include "include/gpu/ganesh/GrContextThreadSafeProxy.h"
@@ -35,3 +36,12 @@ sk_sp<GrDirectContext> MakeVulkan(const skgpu::VulkanBackendContext& backendCont
     return direct;
 }
 }  // namespace GrDirectContexts
+
+namespace SkContexts {
+
+std::unique_ptr<SkContext> MakeGanesh(const skgpu::VulkanBackendContext& vkContext,
+                            const SkContextOptions& options) {
+    return nullptr;
+}
+
+}  // namespace SkContexts
