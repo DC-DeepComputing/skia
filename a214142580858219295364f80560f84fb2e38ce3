@@ -16,6 +16,70 @@
       "message": "PTAL\n\nThe most critical part of the patch is where the StorageContext flushes cached (gradient) data, which is in Recorder. Not sure if we need to be more aggressive with the resetting?",
       "revId": "a214142580858219295364f80560f84fb2e38ce3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "513950a7_b038e29b",
+        "filename": "src/gpu/graphite/StorageContext.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-07-29T18:56:11Z",
+      "side": 1,
+      "message": "This shouldn\u0027t be a VertexWriter, gemini assumed it should be one instead of an array 😊. I\u0027ll replace in the next PS.",
+      "range": {
+        "startLine": 33,
+        "startChar": 8,
+        "endLine": 33,
+        "endChar": 29
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "83d5eaa3_9252c4ba",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/StorageContext.h",
+              "range": {
+                "startLine": 33,
+                "startChar": 0,
+                "endLine": 34,
+                "endChar": 0
+              },
+              "replacement": "        BufferWriter fWriter;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "a214142580858219295364f80560f84fb2e38ce3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06660b16_f5331c4d",
+        "filename": "src/gpu/graphite/Surface_Graphite.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-07-29T18:56:11Z",
+      "side": 1,
+      "message": "We also reset the cache here.",
+      "range": {
+        "startLine": 184,
+        "startChar": 4,
+        "endLine": 184,
+        "endChar": 37
+      },
+      "revId": "a214142580858219295364f80560f84fb2e38ce3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
