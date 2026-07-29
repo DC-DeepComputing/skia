@@ -191,6 +191,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d61c7b96_24eeffe4",
+        "filename": "src/core/SkContext.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-29T17:06:32Z",
+      "side": 1,
+      "message": "made a mistake here. OpenTypeSVGDecoderFactory is a *function pointer* that returns a unique ptr, thus it should have a nullptr initialization.",
+      "parentUuid": "c47e075a_046004ae",
+      "range": {
+        "startLine": 71,
+        "startChar": 48,
+        "endLine": 71,
+        "endChar": 58
+      },
+      "revId": "cf74d7e3a7d003ad10422f7da77a745fc00cae71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "548d6fc0_9e9f8c0e",
         "filename": "src/core/SkSharedContext.cpp",
         "patchSetId": 20

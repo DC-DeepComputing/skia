@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c829f24_e2e413a3",
+        "filename": "include/gpu/ganesh/gl/GrGLDirectContext.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-29T17:06:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "163f1c49_3d5809eb",
+      "range": {
+        "startLine": 30,
+        "startChar": 1,
+        "endLine": 31,
+        "endChar": 24
+      },
+      "revId": "3920b77f04641f9eb5a5c00dcdd35b3fa5af7493",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ea46d379_74e9c0df",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-07-28T14:05:55Z",
       "side": 1,
       "message": "move these to top of file",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 24
+      },
+      "revId": "3920b77f04641f9eb5a5c00dcdd35b3fa5af7493",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8c716ed_4acd5f4c",
+        "filename": "include/gpu/ganesh/mtl/GrMtlDirectContext.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-29T17:06:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ea46d379_74e9c0df",
       "range": {
         "startLine": 30,
         "startChar": 0,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5c9eae3_a17cb4e3",
+        "filename": "include/gpu/ganesh/vk/GrVkDirectContext.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-29T17:06:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1ce92334_118cfed0",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 24
+      },
+      "revId": "3920b77f04641f9eb5a5c00dcdd35b3fa5af7493",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c65c45e8_6220ce42",
@@ -83,6 +155,30 @@
       "writtenOn": "2026-07-28T14:05:55Z",
       "side": 1,
       "message": "what\u0027s this for?\n\nShould there be SkContext factory in this file?",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 34
+      },
+      "revId": "3920b77f04641f9eb5a5c00dcdd35b3fa5af7493",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "adfdc368_8d5bb45b",
+        "filename": "include/gpu/graphite/dawn/DawnBackendContext.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-29T17:06:32Z",
+      "side": 1,
+      "message": "I originally was working on adding the dawn graphite backend factory here, but then I saw that the ContextFactory::MakDawn function was defined in DawnGraphiteUtils.cpp\n\nthe change I implemented here is that we declare the factory in DawnBackendContext.h and implement it in DawnGraphiteUtils.cpp. \n\nLet me know what you think",
+      "parentUuid": "c65c45e8_6220ce42",
       "range": {
         "startLine": 11,
         "startChar": 0,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b8a15ed_633e6d84",
+        "filename": "include/gpu/graphite/mtl/MtlBackendContext.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-29T17:06:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0657e664_d3b0496f",
+      "range": {
+        "startLine": 34,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 24
+      },
+      "revId": "3920b77f04641f9eb5a5c00dcdd35b3fa5af7493",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c0efc6be_93a3befd",
@@ -129,6 +249,30 @@
       "writtenOn": "2026-07-28T14:05:55Z",
       "side": 1,
       "message": "SkContexts",
+      "range": {
+        "startLine": 37,
+        "startChar": 10,
+        "endLine": 37,
+        "endChar": 26
+      },
+      "revId": "3920b77f04641f9eb5a5c00dcdd35b3fa5af7493",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0467f726_f36767f5",
+        "filename": "include/gpu/graphite/mtl/MtlBackendContext.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-29T17:06:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c0efc6be_93a3befd",
       "range": {
         "startLine": 37,
         "startChar": 10,
@@ -162,6 +306,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3ee0ccb_c34b9b29",
+        "filename": "include/gpu/graphite/vk/VulkanGraphiteContext.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-29T17:06:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d4a98bec_8fa848b6",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 24
+      },
+      "revId": "3920b77f04641f9eb5a5c00dcdd35b3fa5af7493",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0494b390_da94c0ad",
@@ -175,6 +343,30 @@
       "writtenOn": "2026-07-28T14:05:55Z",
       "side": 1,
       "message": "SkContexts",
+      "range": {
+        "startLine": 34,
+        "startChar": 10,
+        "endLine": 34,
+        "endChar": 26
+      },
+      "revId": "3920b77f04641f9eb5a5c00dcdd35b3fa5af7493",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "978a7e40_4ca4cdd5",
+        "filename": "include/gpu/graphite/vk/VulkanGraphiteContext.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-29T17:06:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0494b390_da94c0ad",
       "range": {
         "startLine": 34,
         "startChar": 10,
@@ -208,6 +400,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e8d0150_408c5acd",
+        "filename": "src/core/RasterContext.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-29T17:06:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ee4e11d3_df040550",
+      "range": {
+        "startLine": 2,
+        "startChar": 13,
+        "endLine": 2,
+        "endChar": 17
+      },
+      "revId": "3920b77f04641f9eb5a5c00dcdd35b3fa5af7493",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "552b1e6f_81533516",
@@ -221,6 +437,30 @@
       "writtenOn": "2026-07-28T14:05:55Z",
       "side": 1,
       "message": "SkContexts",
+      "range": {
+        "startLine": 12,
+        "startChar": 10,
+        "endLine": 12,
+        "endChar": 26
+      },
+      "revId": "3920b77f04641f9eb5a5c00dcdd35b3fa5af7493",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0de6df74_30941914",
+        "filename": "src/core/RasterContext.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-29T17:06:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "552b1e6f_81533516",
       "range": {
         "startLine": 12,
         "startChar": 10,
@@ -254,6 +494,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c360930_40f504c7",
+        "filename": "src/core/RasterContext.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-29T17:06:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b1f7601d_2bf2b3d9",
+      "range": {
+        "startLine": 2,
+        "startChar": 12,
+        "endLine": 2,
+        "endChar": 17
+      },
+      "revId": "3920b77f04641f9eb5a5c00dcdd35b3fa5af7493",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "faeba658_92c0333b",
@@ -267,6 +531,30 @@
       "writtenOn": "2026-07-28T14:05:55Z",
       "side": 1,
       "message": "SkContexts",
+      "range": {
+        "startLine": 16,
+        "startChar": 10,
+        "endLine": 16,
+        "endChar": 26
+      },
+      "revId": "3920b77f04641f9eb5a5c00dcdd35b3fa5af7493",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7c02ee6_6cd32aac",
+        "filename": "src/core/RasterContext.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-29T17:06:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "faeba658_92c0333b",
       "range": {
         "startLine": 16,
         "startChar": 10,
@@ -300,6 +588,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "75eb13a4_21d2c42b",
+        "filename": "src/core/SkContext.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-29T17:06:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "85598137_345dfcbe",
+      "range": {
+        "startLine": 2,
+        "startChar": 13,
+        "endLine": 2,
+        "endChar": 17
+      },
+      "revId": "3920b77f04641f9eb5a5c00dcdd35b3fa5af7493",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5ce127c6_d28d2a6e",
@@ -313,6 +625,30 @@
       "writtenOn": "2026-07-28T14:05:55Z",
       "side": 1,
       "message": "Move this to be just above where it is used, i.e. dumpMemoryStatistics",
+      "range": {
+        "startLine": 61,
+        "startChar": 0,
+        "endLine": 62,
+        "endChar": 26
+      },
+      "revId": "3920b77f04641f9eb5a5c00dcdd35b3fa5af7493",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "757df48a_e5f7bbcb",
+        "filename": "src/core/SkContext.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-29T17:06:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5ce127c6_d28d2a6e",
       "range": {
         "startLine": 61,
         "startChar": 0,
@@ -346,6 +682,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "675d651f_6595c8d0",
+        "filename": "src/core/SkContext.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-29T17:06:32Z",
+      "side": 1,
+      "message": "left over include, need to delete",
+      "parentUuid": "ef23f303_17d151aa",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 17
+      },
+      "revId": "3920b77f04641f9eb5a5c00dcdd35b3fa5af7493",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c5b48c47_c59de0ad",
@@ -363,6 +723,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "da245b56_ac22d659",
+        "filename": "src/core/SkContext.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-29T17:06:32Z",
+      "side": 1,
+      "message": "done, lmk what you think",
+      "parentUuid": "c5b48c47_c59de0ad",
+      "revId": "3920b77f04641f9eb5a5c00dcdd35b3fa5af7493",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c9d34373_c48d9ca1",
@@ -376,6 +754,30 @@
       "writtenOn": "2026-07-28T14:05:55Z",
       "side": 1,
       "message": "This isn\u0027t a member of SkContext",
+      "range": {
+        "startLine": 54,
+        "startChar": 8,
+        "endLine": 54,
+        "endChar": 32
+      },
+      "revId": "3920b77f04641f9eb5a5c00dcdd35b3fa5af7493",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "12e7edb9_2f8ba039",
+        "filename": "src/core/SkContext.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-29T17:06:32Z",
+      "side": 1,
+      "message": "moved it 👍",
+      "parentUuid": "c9d34373_c48d9ca1",
       "range": {
         "startLine": 54,
         "startChar": 8,
@@ -409,6 +811,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "10a1fcee_9cc943be",
+        "filename": "src/core/SkContextOptions.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-29T17:06:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "25a4b558_079815bb",
+      "range": {
+        "startLine": 2,
+        "startChar": 13,
+        "endLine": 2,
+        "endChar": 17
+      },
+      "revId": "3920b77f04641f9eb5a5c00dcdd35b3fa5af7493",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5819abdc_7a063f2a",
@@ -422,6 +848,30 @@
       "writtenOn": "2026-07-28T14:05:55Z",
       "side": 1,
       "message": "should this be make_unique?",
+      "range": {
+        "startLine": 24,
+        "startChar": 26,
+        "endLine": 24,
+        "endChar": 36
+      },
+      "revId": "3920b77f04641f9eb5a5c00dcdd35b3fa5af7493",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "acd380f9_15ea72e8",
+        "filename": "src/core/SkSharedContext.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-29T17:06:32Z",
+      "side": 1,
+      "message": "you\u0027re right, typo there",
+      "parentUuid": "5819abdc_7a063f2a",
       "range": {
         "startLine": 24,
         "startChar": 26,
@@ -455,6 +905,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "74ac88d1_7627d8c3",
+        "filename": "src/core/SkSharedContext.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-29T17:06:32Z",
+      "side": 1,
+      "message": "moved to private",
+      "parentUuid": "76a908d8_8203d90b",
+      "range": {
+        "startLine": 39,
+        "startChar": 4,
+        "endLine": 40,
+        "endChar": 49
+      },
+      "revId": "3920b77f04641f9eb5a5c00dcdd35b3fa5af7493",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "af0d8868_bbd316b7",
@@ -468,6 +942,30 @@
       "writtenOn": "2026-07-28T14:05:55Z",
       "side": 1,
       "message": "SkContexts",
+      "range": {
+        "startLine": 114,
+        "startChar": 10,
+        "endLine": 114,
+        "endChar": 26
+      },
+      "revId": "3920b77f04641f9eb5a5c00dcdd35b3fa5af7493",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "95812448_10d0ff8a",
+        "filename": "src/gpu/ganesh/gl/GrGLDirectContext.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-29T17:06:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "af0d8868_bbd316b7",
       "range": {
         "startLine": 114,
         "startChar": 10,
@@ -501,6 +999,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae8178b8_a3eab3d7",
+        "filename": "src/gpu/ganesh/mtl/GrMtlDirectContext.mm",
+        "patchSetId": 21
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-29T17:06:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "df3be7e1_c7c9a66b",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 24
+      },
+      "revId": "3920b77f04641f9eb5a5c00dcdd35b3fa5af7493",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5fc2a52c_f62cce7a",
@@ -514,6 +1036,30 @@
       "writtenOn": "2026-07-28T14:05:55Z",
       "side": 1,
       "message": "SkContexts",
+      "range": {
+        "startLine": 41,
+        "startChar": 10,
+        "endLine": 41,
+        "endChar": 26
+      },
+      "revId": "3920b77f04641f9eb5a5c00dcdd35b3fa5af7493",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9fd1b7a6_3fee433b",
+        "filename": "src/gpu/ganesh/mtl/GrMtlDirectContext.mm",
+        "patchSetId": 21
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-29T17:06:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5fc2a52c_f62cce7a",
       "range": {
         "startLine": 41,
         "startChar": 10,
@@ -547,6 +1093,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "773a0595_5e50e6a0",
+        "filename": "src/gpu/ganesh/vk/GrVkDirectContext.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-29T17:06:32Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "48d145c9_e5e8f1d1",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 0
+      },
+      "revId": "3920b77f04641f9eb5a5c00dcdd35b3fa5af7493",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3a084584_74660339",
@@ -560,6 +1130,30 @@
       "writtenOn": "2026-07-28T14:05:55Z",
       "side": 1,
       "message": "SkContexts",
+      "range": {
+        "startLine": 42,
+        "startChar": 10,
+        "endLine": 42,
+        "endChar": 26
+      },
+      "revId": "3920b77f04641f9eb5a5c00dcdd35b3fa5af7493",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d5f14a7_af976406",
+        "filename": "src/gpu/ganesh/vk/GrVkDirectContext.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-29T17:06:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3a084584_74660339",
       "range": {
         "startLine": 42,
         "startChar": 10,
@@ -593,6 +1187,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "14f8d409_71ef25f5",
+        "filename": "src/gpu/graphite/dawn/DawnGraphiteUtils.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 651,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-29T17:06:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d84146c3_23de5a87",
+      "range": {
+        "startLine": 651,
+        "startChar": 10,
+        "endLine": 651,
+        "endChar": 26
+      },
+      "revId": "3920b77f04641f9eb5a5c00dcdd35b3fa5af7493",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "382b580b_0901f4e6",
@@ -606,6 +1224,30 @@
       "writtenOn": "2026-07-28T14:05:55Z",
       "side": 1,
       "message": "It probably makes more sense to move this up to near the top of the file near the factory for the graphite Context",
+      "range": {
+        "startLine": 652,
+        "startChar": 17,
+        "endLine": 652,
+        "endChar": 29
+      },
+      "revId": "3920b77f04641f9eb5a5c00dcdd35b3fa5af7493",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "86ba3d42_84cf30e4",
+        "filename": "src/gpu/graphite/dawn/DawnGraphiteUtils.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 652,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-29T17:06:32Z",
+      "side": 1,
+      "message": "moved, let me know if this is what you weere thinking",
+      "parentUuid": "382b580b_0901f4e6",
       "range": {
         "startLine": 652,
         "startChar": 17,
@@ -639,6 +1281,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5fe8e9d_4088a813",
+        "filename": "src/gpu/graphite/dawn/DawnGraphiteUtils.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-29T17:06:32Z",
+      "side": 1,
+      "message": "This is the header, did you mean another file",
+      "parentUuid": "b15bc202_67f8f88d",
+      "range": {
+        "startLine": 111,
+        "startChar": 0,
+        "endLine": 113,
+        "endChar": 24
+      },
+      "revId": "3920b77f04641f9eb5a5c00dcdd35b3fa5af7493",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "63fbbbb5_2760a0ee",
@@ -652,6 +1318,30 @@
       "writtenOn": "2026-07-28T14:05:55Z",
       "side": 1,
       "message": "SkContexts",
+      "range": {
+        "startLine": 115,
+        "startChar": 10,
+        "endLine": 115,
+        "endChar": 26
+      },
+      "revId": "3920b77f04641f9eb5a5c00dcdd35b3fa5af7493",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "751f8a2e_f0c90a3b",
+        "filename": "src/gpu/graphite/dawn/DawnGraphiteUtils.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-29T17:06:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "63fbbbb5_2760a0ee",
       "range": {
         "startLine": 115,
         "startChar": 10,
@@ -685,6 +1375,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d0bf6e7_2bea7bb8",
+        "filename": "src/gpu/graphite/mtl/MtlGraphiteUtils.mm",
+        "patchSetId": 21
+      },
+      "lineNbr": 508,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-29T17:06:32Z",
+      "side": 1,
+      "message": "mistake, fixed",
+      "parentUuid": "26ec4945_8cbaad1d",
+      "range": {
+        "startLine": 507,
+        "startChar": 0,
+        "endLine": 508,
+        "endChar": 24
+      },
+      "revId": "3920b77f04641f9eb5a5c00dcdd35b3fa5af7493",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8e740fa3_72154654",
@@ -698,6 +1412,30 @@
       "writtenOn": "2026-07-28T14:05:55Z",
       "side": 1,
       "message": "SkContexts",
+      "range": {
+        "startLine": 510,
+        "startChar": 10,
+        "endLine": 510,
+        "endChar": 26
+      },
+      "revId": "3920b77f04641f9eb5a5c00dcdd35b3fa5af7493",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9879b9a6_cfa1ebf7",
+        "filename": "src/gpu/graphite/mtl/MtlGraphiteUtils.mm",
+        "patchSetId": 21
+      },
+      "lineNbr": 510,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-29T17:06:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8e740fa3_72154654",
       "range": {
         "startLine": 510,
         "startChar": 10,
@@ -731,6 +1469,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0071b01f_aa85c094",
+        "filename": "src/gpu/graphite/mtl/MtlGraphiteUtils.mm",
+        "patchSetId": 21
+      },
+      "lineNbr": 512,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-29T17:06:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "85d7eccb_06aac3a1",
+      "range": {
+        "startLine": 512,
+        "startChar": 17,
+        "endLine": 512,
+        "endChar": 29
+      },
+      "revId": "3920b77f04641f9eb5a5c00dcdd35b3fa5af7493",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c8e9ed32_28064995",
@@ -744,6 +1506,30 @@
       "writtenOn": "2026-07-28T14:05:55Z",
       "side": 1,
       "message": "Why are these declarations here in the cpp?",
+      "range": {
+        "startLine": 274,
+        "startChar": 0,
+        "endLine": 275,
+        "endChar": 24
+      },
+      "revId": "3920b77f04641f9eb5a5c00dcdd35b3fa5af7493",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8f87d13_ee871c68",
+        "filename": "src/gpu/graphite/vk/VulkanGraphiteUtils.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-29T17:06:32Z",
+      "side": 1,
+      "message": "mistake, fixed,",
+      "parentUuid": "c8e9ed32_28064995",
       "range": {
         "startLine": 274,
         "startChar": 0,
@@ -777,6 +1563,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "05305e06_4488ef49",
+        "filename": "src/gpu/graphite/vk/VulkanGraphiteUtils.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-29T17:06:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dcb51eb3_72340888",
+      "range": {
+        "startLine": 277,
+        "startChar": 10,
+        "endLine": 277,
+        "endChar": 26
+      },
+      "revId": "3920b77f04641f9eb5a5c00dcdd35b3fa5af7493",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a6ba9873_41a6e67a",
@@ -790,6 +1600,30 @@
       "writtenOn": "2026-07-28T14:05:55Z",
       "side": 1,
       "message": "similarly move near other context factory",
+      "range": {
+        "startLine": 280,
+        "startChar": 17,
+        "endLine": 280,
+        "endChar": 29
+      },
+      "revId": "3920b77f04641f9eb5a5c00dcdd35b3fa5af7493",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "349bd6a1_1fdbdbf4",
+        "filename": "src/gpu/graphite/vk/VulkanGraphiteUtils.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-29T17:06:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a6ba9873_41a6e67a",
       "range": {
         "startLine": 280,
         "startChar": 17,
@@ -823,6 +1657,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1d92e8a_6f6e357b",
+        "filename": "tools/ganesh/mock/MockTestContext.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-29T17:06:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d297a358_4a82bad8",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 24
+      },
+      "revId": "3920b77f04641f9eb5a5c00dcdd35b3fa5af7493",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7f12cfb5_2f007bfa",
@@ -836,6 +1694,30 @@
       "writtenOn": "2026-07-28T14:05:55Z",
       "side": 1,
       "message": "move to top",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 24
+      },
+      "revId": "3920b77f04641f9eb5a5c00dcdd35b3fa5af7493",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d9f2051_14bf28e5",
+        "filename": "tools/ganesh/mock/MockTestContext.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-29T17:06:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7f12cfb5_2f007bfa",
       "range": {
         "startLine": 22,
         "startChar": 0,
@@ -869,6 +1751,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fbadcd0a_9c99b6a4",
+        "filename": "tools/ganesh/mock/MockTestContext.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-29T17:06:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e2857e66_2e1e6e5a",
+      "range": {
+        "startLine": 26,
+        "startChar": 10,
+        "endLine": 26,
+        "endChar": 26
+      },
+      "revId": "3920b77f04641f9eb5a5c00dcdd35b3fa5af7493",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "817f9e02_9b5ba5ed",
@@ -882,6 +1788,30 @@
       "writtenOn": "2026-07-28T14:05:55Z",
       "side": 1,
       "message": "can\u0027t put a non optional parameter after an optional one.",
+      "range": {
+        "startLine": 30,
+        "startChar": 28,
+        "endLine": 30,
+        "endChar": 59
+      },
+      "revId": "3920b77f04641f9eb5a5c00dcdd35b3fa5af7493",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "19bd6906_dc7274b3",
+        "filename": "tools/ganesh/mock/MockTestContext.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-29T17:06:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "817f9e02_9b5ba5ed",
       "range": {
         "startLine": 30,
         "startChar": 28,
