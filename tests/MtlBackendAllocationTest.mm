@@ -219,3 +219,6 @@ DEF_GANESH_TEST_FOR_METAL_CONTEXT(MtlBackendAllocationTest, reporter, ctxInfo) {
         }
     }
 }
+
+FORCE_LINK_TEST(MtlBackendAllocationTest)
+

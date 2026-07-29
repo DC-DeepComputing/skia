@@ -30,6 +30,7 @@
 #include "src/core/SkTime.h"
 #include "src/core/SkVx.h"
 #include "src/utils/SkOSPath.h"
+#include "tests/MetalTestHelper.h"
 #include "tests/Test.h"
 #include "tests/TestHarness.h"
 #include "tools/AutoreleasePool.h"
@@ -1635,6 +1636,7 @@ static void print_sinks() {
 }
 
 int main(int argc, char** argv) {
+    force_link_metal_tests();
 #if defined(SK_USE_PARTITION_ALLOC)
     // If available, use PartitionAlloc as the memory allocator for DM. This allows catching
     // additional memory errors in tests that would otherwise go unnoticed.

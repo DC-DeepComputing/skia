@@ -58,3 +58,5 @@ DEF_GRAPHITE_TEST_FOR_METAL_CONTEXT(MtlBackendTextureTest, reporter, context, te
     REPORTER_ASSERT(reporter, !beTexture.isValid());
     recorder->deleteBackendTexture(beTexture);
 }
+
+FORCE_LINK_TEST(MtlBackendTextureTest)
