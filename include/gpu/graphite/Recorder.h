@@ -299,7 +299,6 @@ private:
     std::unique_ptr<UploadBufferManager> fUploadBufferManager;
     // Depends on fUploadBufferManager (holds a pointer to it). Must be destroyed first.
     std::unique_ptr<DrawBufferManager> fDrawBufferManager;
-    sk_sp<StorageBufferManager> fStorageBufferManager;
     std::unique_ptr<ProxyReadCountMap> fProxyReadCounts;
 
     skia_private::STArray<kMaxKeyAndDataBuilders, std::unique_ptr<KeyAndDataBuilder>>
