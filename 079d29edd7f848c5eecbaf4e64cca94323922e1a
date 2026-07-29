@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49bba336_a71869ba",
+        "filename": "src/gpu/graphite/PaintParamsKey.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 326,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-07-29T18:52:40Z",
+      "side": 1,
+      "message": "Would it make sense to emit a label here for the type of root node header when creating the paint key string? Only place I see these strings used is in AndroidPrecompileTest.cpp and AndroidYCbCrPrecompileTest.cpp.",
+      "revId": "079d29edd7f848c5eecbaf4e64cca94323922e1a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
