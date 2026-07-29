@@ -22,6 +22,30 @@
       },
       "revId": "6d6333bb443b57629cc10b4a8dca77296c82bc5c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10f86ac7_1a84812e",
+        "filename": "src/gpu/graphite/PipelineManager.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-07-29T16:59:32Z",
+      "side": 1,
+      "message": "It is the former. I also think it is acceptable. Most likely, this will come into play in the Recording::isReady test is going to be racy no matter what.",
+      "parentUuid": "3a62af8a_f28499c9",
+      "range": {
+        "startLine": 24,
+        "startChar": 13,
+        "endLine": 24,
+        "endChar": 59
+      },
+      "revId": "6d6333bb443b57629cc10b4a8dca77296c82bc5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
