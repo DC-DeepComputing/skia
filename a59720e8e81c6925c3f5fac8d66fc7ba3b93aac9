@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f10e7bf_f6abc842",
+        "filename": "src/ports/SkFontConfigInterface_direct.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 565,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-07-29T14:42:23Z",
+      "side": 0,
+      "message": "The old version is subtly different in that it commits to the fist valid pattern and does not consider other candidates if the substitution rules below fail.  I think the new approach (trying other fonts if substitution fails) is more robust, and it makes sense to keep it.",
+      "range": {
+        "startLine": 559,
+        "startChar": 0,
+        "endLine": 565,
+        "endChar": 3
+      },
+      "revId": "a59720e8e81c6925c3f5fac8d66fc7ba3b93aac9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
