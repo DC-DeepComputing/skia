@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a62af8a_f28499c9",
+        "filename": "src/gpu/graphite/PipelineManager.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-29T16:00:29Z",
+      "side": 1,
+      "message": "To make sure we\u0027r eon the same page, the race here is that `fCompleted` will appear false so we branch to return null, but before we return null, the task completes and `fPipeline` could have been returned. That seems like an acceptable race.\n\nHopefully what\u0027s not happening is that `fCompleted` returns true for the first time but `fPipeline` hasn\u0027t been set yet. The `fCompleted \u003d true` should be coming *after* the `fPipeline` field is set or we\u0027ll have unsafe reads of the sk_sp. We could address this by having the task\u0027s `fPipeline` field be an atomic and do an compare-and-exchange where we expect it to have been null before. If we set it, it\u0027s then gets a manually added ref which we remove on task destruction, and `fCompleted` can go away since it\u0027s one-to-one with the pipeline address being non-null.",
+      "range": {
+        "startLine": 24,
+        "startChar": 13,
+        "endLine": 24,
+        "endChar": 59
+      },
+      "revId": "6d6333bb443b57629cc10b4a8dca77296c82bc5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
