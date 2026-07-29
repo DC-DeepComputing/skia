@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5dfdfd9a_e0a1b65f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-29T17:35:27Z",
+      "side": 1,
+      "message": "I\u0027m gonna need a design for this. How many story points are we thinking? Can we implement this with a Factory Reverse Inheritance Pipline Singleton shifter?",
+      "revId": "956757e82e3ff080bcfd0633e666bd15e06d64c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
