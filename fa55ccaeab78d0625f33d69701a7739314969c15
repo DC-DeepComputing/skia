@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7fded1a6_8552cada",
+        "filename": "src/gpu/graphite/DrawPass.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-07-29T15:32:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7dbe4b81_64164b15",
+      "range": {
+        "startLine": 88,
+        "startChar": 0,
+        "endLine": 88,
+        "endChar": 45
+      },
+      "revId": "fa55ccaeab78d0625f33d69701a7739314969c15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d77d2054_98427f56",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-07-29T15:07:24Z",
       "side": 1,
       "message": "Can we add a comment (assuming it\u0027s correct), along the lines of \"// This is thread safe because a given GraphicsPipelineHandle does not switch between a task or pipeline when the task completes\"",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 27
+      },
+      "revId": "fa55ccaeab78d0625f33d69701a7739314969c15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f01d8e2f_af8ed91c",
+        "filename": "src/gpu/graphite/PipelineManager.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-07-29T15:32:37Z",
+      "side": 1,
+      "message": "Done - although you may want to take a look at the comment",
+      "parentUuid": "d77d2054_98427f56",
       "range": {
         "startLine": 22,
         "startChar": 0,
