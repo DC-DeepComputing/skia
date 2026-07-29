@@ -1685,7 +1685,6 @@ void Device::drawGeometry(const Transform& localToDevice,
     }
     KeyContext keyContext{fRecorder,
                           fDC.get(),
-                          fRecorder->priv().storageBufferManager(),
                           scopedDrawBuilder.builder(),
                           scopedDrawBuilder.gatherer(),
                           localToDevice.matrix(),
@@ -2210,6 +2209,10 @@ void Device::flushPendingWork(DrawContext* drawContext) {
     }
 
     SkDEBUGCODE(fIsFlushing = false;)
+}
+
+void Device::resetStorageCache() {
+    fDC->storageContext()->resetCache();
 }
 
 void Device::internalFlush() {
