@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c72e78e1_8a8d1e9a",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-07-29T13:53:31Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "fae826d7_9c502281",
+      "range": {
+        "startLine": 88,
+        "startChar": 78,
+        "endLine": 88,
+        "endChar": 91
+      },
+      "revId": "5485a7547a9552ab4e2ce3668f061d41e43a407b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d6b62e9e_4afa3f41",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-07-28T17:21:10Z",
       "side": 1,
       "message": "I think we want to have these traced even on replay. If we get rid of `fPipelineHandles` as a separate array to fill out, we could fold these traces into the loop that checks everything is resolved.",
+      "range": {
+        "startLine": 95,
+        "startChar": 8,
+        "endLine": 109,
+        "endChar": 9
+      },
+      "revId": "5485a7547a9552ab4e2ce3668f061d41e43a407b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d3b3627_b9f58faa",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-07-29T13:53:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d6b62e9e_4afa3f41",
       "range": {
         "startLine": 95,
         "startChar": 8,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3a6a58a_d29f7149",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-07-29T13:53:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "263dd303_80da2cd2",
+      "range": {
+        "startLine": 115,
+        "startChar": 0,
+        "endLine": 117,
+        "endChar": 5
+      },
+      "revId": "5485a7547a9552ab4e2ce3668f061d41e43a407b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f3e19286_c653bac8",
@@ -83,6 +155,30 @@
       "writtenOn": "2026-07-28T17:21:10Z",
       "side": 1,
       "message": "This should be `addResourceRefs` right? I kind of thinking we should remove this, since it\u0027s a whole separate TArray heap allocation for pointers we can get at through the `GraphicsPipelineHandle` right?",
+      "range": {
+        "startLine": 118,
+        "startChar": 64,
+        "endLine": 118,
+        "endChar": 80
+      },
+      "revId": "5485a7547a9552ab4e2ce3668f061d41e43a407b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bcfd62c1_0f50e08d",
+        "filename": "src/gpu/graphite/DrawPass.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-07-29T13:53:31Z",
+      "side": 1,
+      "message": "Done\n\nNote that, we are lugging around a bit more memory than strictly necessary since we\u0027re not clearing out the PipelineCreationTask-backed GraphicsPipelineHandles anymore. I don\u0027t think it will make much of a difference though.",
+      "parentUuid": "f3e19286_c653bac8",
       "range": {
         "startLine": 118,
         "startChar": 64,
