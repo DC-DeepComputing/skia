@@ -17,6 +17,9 @@ namespace skgpu {
 class UniqueKey;
 }
 
+class SkExecutor;
+class SkTaskGroup;
+
 namespace skgpu::graphite {
 
 class GraphicsPipeline;
@@ -30,7 +33,7 @@ class SharedContext;
 
 class PipelineManager {
 public:
-    PipelineManager();
+    PipelineManager(SkExecutor* executor);
     ~PipelineManager();
 
     GraphicsPipelineHandle createHandle(
@@ -45,7 +48,13 @@ public:
 
     sk_sp<GraphicsPipeline> resolveHandle(const GraphicsPipelineHandle&);
 
+    // Discard any uncompleted tasks and wait for any in-flight tasks to complete. Additionally,
+    // disable the addition of any more threaded tasks.
+    void shutDown();
+
 #if defined(GPU_TEST_UTILS)
+    void wait_TestOnly();
+
     struct Stats {
         // The number of times we find a pre-existing task for a Pipeline
         int fNumPreemptivelyFoundTasks = 0;
@@ -80,6 +89,8 @@ private:
 #if defined(GPU_TEST_UTILS)
     Stats fStats SK_GUARDED_BY(fSpinLock);
 #endif
+
+    std::unique_ptr<SkTaskGroup> fTaskGroup;
 };
 
 } // namespace skgpu::graphite
