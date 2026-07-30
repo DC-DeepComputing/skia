@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d1233e7f_76d80178",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2026-07-30T19:02:55Z",
+      "side": 1,
+      "message": "Previously:\n- The declaration of `skgpu::MakeInterface` in `VulkanUtilsPriv.h` listed `(..., physDevVersionOut, instanceVersionOut)`, but the actual definition in `VulkanUtilsPriv.cpp` listed them in the reverse order: `(..., instanceVersionOut, physDevVersionOut)`.\n- Graphite and VMA both assumed the _declaration_ order of `physDev,instance` was correct, **which ended up with Graphite and VMA looking at `instanceVersionOut` when they meant to look at `physDevVersionOut`.**\n- Ganesh followed the actual _definition_ order, so it ended up looking at the correct value, even though that wasn\u0027t the contract claimed by the declaration.\n\nWith this CL:\n- The declaration in .h has been updated to align with the definition in .cpp.\n- Graphite and VMA have been updated to the new declaration order, which now matches the definition order correctly.\n- Ganesh doesn\u0027t need an update, since it was already passing its arguments in the \"wrong\" order (that happened to match the actual definition).\n\nDoes that SGTY?",
+      "parentUuid": "2693fec6_677ddb1e",
+      "revId": "ce4e28697f78241b5d5e97221fb8b5c19d6f1a02",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1b0dfa99_5dc73c8e",
         "filename": "src/gpu/vk/vulkanmemoryallocator/VulkanAMDMemoryAllocator.cpp",
         "patchSetId": 1
@@ -31,6 +49,30 @@
       "writtenOn": "2026-07-30T18:39:44Z",
       "side": 1,
       "message": "nit: could we remove this parameter since it isn\u0027t used? if so, could also remove `physDevVersion` local var in the `VulkanMemoryAllocators::Make()` function.",
+      "range": {
+        "startLine": 27,
+        "startChar": 60,
+        "endLine": 27,
+        "endChar": 95
+      },
+      "revId": "ce4e28697f78241b5d5e97221fb8b5c19d6f1a02",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1aed19d6_cc803a9e",
+        "filename": "src/gpu/vk/vulkanmemoryallocator/VulkanAMDMemoryAllocator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2026-07-30T19:02:55Z",
+      "side": 1,
+      "message": "Fair point -- done",
+      "parentUuid": "1b0dfa99_5dc73c8e",
       "range": {
         "startLine": 27,
         "startChar": 60,
