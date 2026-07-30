@@ -296,7 +296,14 @@ SkPath SkPathBuilder::snapshot(const SkMatrix* mx) const {
         pdata = SkPathData::MakeTransform(*raw, *mx);
     }
     if (pdata && fType != SkPathIsAType::kGeneral) {
-        pdata->setupIsA(fType, fIsA.fDirection, fIsA.fStartIndex);
+        if (mx->isIdentity()) {
+            pdata->setupIsA(fType, fIsA.fDirection, fIsA.fStartIndex);
+        } else if (mx->rectStaysRect() && SkPathPriv::IsAxisAligned(fPts)) {
+            auto [dir, start] =
+            SkPathPriv::TransformDirAndStart(*mx, fType == SkPathIsAType::kRRect,
+                                             fIsA.fDirection, fIsA.fStartIndex);
+            pdata->setupIsA(fType, dir, start);
+        }
     }
     return SkPath::MakeNullCheck(std::move(pdata), fFillType, fIsVolatile);
 }
@@ -728,7 +735,7 @@ SkPathBuilder& SkPathBuilder::addRaw(const SkPathRaw& raw, Reserve reserve) {
 }
 
 SkPathBuilder& SkPathBuilder::addRect(const SkRect& rect, SkPathDirection dir, unsigned index) {
-    const bool wasEmpty = (fSegmentMask == 0);
+    const bool wasEmpty = fVerbs.empty() || (fVerbs.size() == 1 && fVerbs.back() == SkPathVerb::kMove);
 
     this->addRaw(SkPathRawShapes::Rect(rect, dir, index), Reserve::kGrow);
 
@@ -740,7 +747,8 @@ SkPathBuilder& SkPathBuilder::addRect(const SkRect& rect, SkPathDirection dir, u
 }
 
 SkPathBuilder& SkPathBuilder::addOval(const SkRect& oval, SkPathDirection dir, unsigned index) {
-    const bool wasEmpty = (fSegmentMask == 0);
+    // webkit historically would call moveTo then addOval
+    const bool wasEmpty = fVerbs.empty() || (fVerbs.size() == 1 && fVerbs.back() == SkPathVerb::kMove);
 
     this->addRaw(SkPathRawShapes::Oval(oval, dir, index), Reserve::kGrow);
 
@@ -768,7 +776,7 @@ SkPathBuilder& SkPathBuilder::addRRect(const SkRRect& rrect, SkPathDirection dir
             break;
     }
 
-    const bool wasEmpty = (fSegmentMask == 0);
+    const bool wasEmpty = fVerbs.empty() || (fVerbs.size() == 1 && fVerbs.back() == SkPathVerb::kMove);
 
     this->addRaw(SkPathRawShapes::RRect(rrect, dir, index), Reserve::kGrow);
 
