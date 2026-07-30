@@ -20,6 +20,144 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0cbb5ed3_f81988c3",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 557,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-30T20:32:38Z",
+      "side": 1,
+      "message": "We should reset the storage context here too.",
+      "range": {
+        "startLine": 557,
+        "startChar": 0,
+        "endLine": 557,
+        "endChar": 56
+      },
+      "revId": "a214142580858219295364f80560f84fb2e38ce3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1920b9b4_8e1a942d",
+        "filename": "src/gpu/graphite/Device.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-30T20:32:38Z",
+      "side": 1,
+      "message": "Can we add a TODO here to say that this is only needed until `flushPendingWork()` is no longer called inside drawGeometry after the data has been extracted?  After that, the extracted uniform data won\u0027t be invalidated and flushPendingWork() can then be the natural resetStorageCache() place (which also would automatically handle all the surface flush/setImmutable events as well).",
+      "range": {
+        "startLine": 141,
+        "startChar": 0,
+        "endLine": 141,
+        "endChar": 29
+      },
+      "revId": "a214142580858219295364f80560f84fb2e38ce3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba5f34d7_f2eb084d",
+        "filename": "src/gpu/graphite/StorageContext.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-30T20:32:38Z",
+      "side": 1,
+      "message": "We can just iterate over the [k,v] of the `fLocalGradientOffsetCache` and avoid the need to have a separate TArray of the shader pointers.",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 70
+      },
+      "revId": "a214142580858219295364f80560f84fb2e38ce3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9675950_a98a9149",
+        "filename": "src/gpu/graphite/StorageContext.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-30T20:32:38Z",
+      "side": 1,
+      "message": "This shouldn\u0027t be set in `resetAppendedStorage()`, right?",
+      "range": {
+        "startLine": 40,
+        "startChar": 0,
+        "endLine": 40,
+        "endChar": 45
+      },
+      "revId": "a214142580858219295364f80560f84fb2e38ce3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cff2a836_c9f0c070",
+        "filename": "src/gpu/graphite/StorageContext.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-30T20:32:38Z",
+      "side": 1,
+      "message": "I think we should assert here instead of auto-finalizing, even though it\u0027s a no-op.",
+      "range": {
+        "startLine": 98,
+        "startChar": 0,
+        "endLine": 98,
+        "endChar": 36
+      },
+      "revId": "a214142580858219295364f80560f84fb2e38ce3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "491d0958_af2f0b57",
+        "filename": "src/gpu/graphite/StorageContext.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-30T20:32:38Z",
+      "side": 1,
+      "message": "I think we should take in an extra alignment or assume that appended data has to be aligned to its stride.",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 50
+      },
+      "revId": "a214142580858219295364f80560f84fb2e38ce3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "513950a7_b038e29b",
         "filename": "src/gpu/graphite/StorageContext.h",
         "patchSetId": 16
@@ -61,6 +199,122 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "dc1d4604_928a48a8",
+        "filename": "src/gpu/graphite/StorageContext.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-30T20:32:38Z",
+      "side": 1,
+      "message": "I would prefer that for now, we don\u0027t add these append APIs to StorageContext so that this CL is 100% just moving the StorageContext on to the DrawContext. Then in a follow-up we can add the new vertex storage APIs, since this is already a pretty big CL.",
+      "parentUuid": "513950a7_b038e29b",
+      "range": {
+        "startLine": 33,
+        "startChar": 8,
+        "endLine": 33,
+        "endChar": 29
+      },
+      "revId": "a214142580858219295364f80560f84fb2e38ce3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6559b295_c70635b1",
+        "filename": "src/gpu/graphite/StorageContext.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-30T20:32:38Z",
+      "side": 1,
+      "message": "can this be private so that it\u0027s only called by the full reset() or automatically as part of finalize()?",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 32
+      },
+      "revId": "a214142580858219295364f80560f84fb2e38ce3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b4750d4_8f34651f",
+        "filename": "src/gpu/graphite/StorageContext.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-30T20:32:38Z",
+      "side": 1,
+      "message": "Should we just standardize on this name and get rid of finalizeGradientStorage?\n\nI like that CacheStorageData is more general than the gradientStorage name, but it would be good if we can name it something that also indicates that the caching has to happen before data appending. Maybe something like \"finalizePrecachedStorageData\" or \"finalizeRecordTimeStorageData\"?",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 58,
+        "endChar": 37
+      },
+      "revId": "a214142580858219295364f80560f84fb2e38ce3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2e44a61_7900c8f8",
+        "filename": "src/gpu/graphite/StorageContext.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-30T20:32:38Z",
+      "side": 1,
+      "message": "Can we add a comment here that we also collect all the appended data on the CPU while appending so that we can allocate a single buffer (vs. having to roll forward to new buffers), and it also is required for the texture fallback?",
+      "range": {
+        "startLine": 87,
+        "startChar": 0,
+        "endLine": 87,
+        "endChar": 34
+      },
+      "revId": "a214142580858219295364f80560f84fb2e38ce3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03753416_f35c769b",
+        "filename": "src/gpu/graphite/StorageContext.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-30T20:32:38Z",
+      "side": 1,
+      "message": "This doesn\u0027t need to be an optional, fBufferInfo can already be truthy based on whether or not its Buffer* is set.",
+      "range": {
+        "startLine": 88,
+        "startChar": 0,
+        "endLine": 88,
+        "endChar": 46
+      },
+      "revId": "a214142580858219295364f80560f84fb2e38ce3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "06660b16_f5331c4d",
         "filename": "src/gpu/graphite/Surface_Graphite.cpp",
         "patchSetId": 16
@@ -72,6 +326,30 @@
       "writtenOn": "2026-07-29T18:56:11Z",
       "side": 1,
       "message": "We also reset the cache here.",
+      "range": {
+        "startLine": 184,
+        "startChar": 4,
+        "endLine": 184,
+        "endChar": 37
+      },
+      "revId": "a214142580858219295364f80560f84fb2e38ce3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f9b99d5_1e5a7924",
+        "filename": "src/gpu/graphite/Surface_Graphite.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-30T20:32:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "06660b16_f5331c4d",
       "range": {
         "startLine": 184,
         "startChar": 4,
