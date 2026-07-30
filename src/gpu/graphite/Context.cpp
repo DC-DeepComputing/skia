@@ -157,6 +157,10 @@ Context::Context(sk_sp<SharedContext> sharedContext,
 }
 
 Context::~Context() {
+    // The task in the PipelineManager rely on the existence of the SharedContext.
+    // Shut it down before the SharedContext's destructor is invoked.
+    fSharedContext->pipelineManager()->shutDown();
+
 #if defined(GPU_TEST_UTILS)
     SkAutoMutexExclusive lock(fTestingLock);
     for (auto& recorder : fTrackedRecorders) {
