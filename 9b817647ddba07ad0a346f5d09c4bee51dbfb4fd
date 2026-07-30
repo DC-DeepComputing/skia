@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e832e140_f2b4d812",
+        "filename": "src/capture/SkCaptureCanvas.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-07-30T17:21:06Z",
+      "side": 1,
+      "message": "Note for future: this is more evidence that it might just be easier to",
+      "fixSuggestions": [
+        {
+          "fixId": "48c76ba3_24fc09b2",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/capture/SkCaptureCanvas.h",
+              "range": {
+                "startLine": 116,
+                "startChar": 0,
+                "endLine": 117,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "9b817647ddba07ad0a346f5d09c4bee51dbfb4fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
