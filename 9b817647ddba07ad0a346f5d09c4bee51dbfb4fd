@@ -34,6 +34,24 @@
       ],
       "revId": "9b817647ddba07ad0a346f5d09c4bee51dbfb4fd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14f436a4_8053ce92",
+        "filename": "src/capture/SkCaptureCanvas.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-07-30T17:23:04Z",
+      "side": 1,
+      "message": "Message didn\u0027t save:\nNote for future: this is more evidence that it might just be easier to drop this model in favor of the proposal at https://skia-review.git.corp.google.com/c/skia/+/1289836",
+      "parentUuid": "e832e140_f2b4d812",
+      "revId": "9b817647ddba07ad0a346f5d09c4bee51dbfb4fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
