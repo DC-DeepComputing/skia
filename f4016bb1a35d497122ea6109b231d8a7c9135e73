@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ebee290_bccd9644",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-07-30T18:58:18Z",
+      "side": 1,
+      "message": "Nice one!",
+      "revId": "f4016bb1a35d497122ea6109b231d8a7c9135e73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6732122f_b05bcc3a",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 299,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-07-30T18:58:18Z",
+      "side": 1,
+      "message": "I think we should push this down as a quick-out in `SkPathPriv::TransformDirAndStart`, then we don\u0027t have to special case here.",
+      "range": {
+        "startLine": 299,
+        "startChar": 8,
+        "endLine": 299,
+        "endChar": 31
+      },
+      "revId": "f4016bb1a35d497122ea6109b231d8a7c9135e73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6fe5b2cf_afa954f6",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 738,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-07-30T18:58:18Z",
+      "side": 1,
+      "message": "Hmm, this seems to be equivalent to the original: `fSegmentMask \u003d\u003d 0` means we are either empty or holding moves only (which don\u0027t have a mask enum); and since we don\u0027t allow appending successive moves, it really means we\u0027re either empty or holding exactly one move.  Does the change actually make a difference in testing?  If not, we could keep the original form and add the more explicit version as an assert.",
+      "range": {
+        "startLine": 738,
+        "startChar": 26,
+        "endLine": 738,
+        "endChar": 102
+      },
+      "revId": "f4016bb1a35d497122ea6109b231d8a7c9135e73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9c25af0_554f1611",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 750,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-07-30T18:58:18Z",
+      "side": 1,
+      "message": "I would leave out this comment.",
+      "revId": "f4016bb1a35d497122ea6109b231d8a7c9135e73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
