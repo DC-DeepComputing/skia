@@ -33,6 +33,42 @@
       "message": "nit: any reason we list it here and not with the other flags below (line 228 ish)?",
       "revId": "2a7979ec32932b3863fbf4008b8a433de34c5b46",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c4bf5f2_e08b82f9",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-30T17:11:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7ac15b9e_acc68813",
+      "revId": "2a7979ec32932b3863fbf4008b8a433de34c5b46",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0240b194_ba33ad3d",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-30T17:11:51Z",
+      "side": 1,
+      "message": "I think we can keep it here just cuz the flags on viewer are all scattered about and it would probably be best to maybe fix that in another cl for maintencance",
+      "parentUuid": "ced28fb8_cfdd6cc0",
+      "revId": "2a7979ec32932b3863fbf4008b8a433de34c5b46",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
