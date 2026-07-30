@@ -101,6 +101,7 @@ var depsOverrides = map[string]depConfig{
 	},
 	"opengl-registry":          {bazelNameOverride: "opengl_registry", needsBazelFile: true},
 	"spirv-cross":              {bazelNameOverride: "spirv_cross", needsBazelFile: true},
+	"partition_alloc":          {needsBazelFile: true},
 	"perfetto":                 {needsBazelFile: true},
 	"piex":                     {needsBazelFile: true},
 	"vello":                    {needsBazelFile: true},

@@ -6,6 +6,8 @@
  */
 #include "tools/partition_alloc/TestSupport.h"
 
+#if defined(SKIA_ENABLE_PARTITION_ALLOC)
+
 #include <partition_alloc/buildflags.h>
 
 #if PA_BUILDFLAG(USE_ALLOCATOR_SHIM)
@@ -40,3 +42,12 @@ void InitializeDanglingPointerChecksForTesting() {
 }
 
 }  // namespace skiatest
+
+#else  // !defined(SKIA_ENABLE_PARTITION_ALLOC)
+
+namespace skiatest {
+void InitializePartitionAllocForTesting() {}
+void InitializeDanglingPointerChecksForTesting() {}
+}  // namespace skiatest
+
+#endif  // defined(SKIA_ENABLE_PARTITION_ALLOC)

@@ -168,6 +168,12 @@
       "remote": "https://skia.googlesource.com/external/github.com/KhronosGroup/OpenGL-Registry"
     },
     {
+      "build_file": "//bazel/external/partition_alloc:BUILD.bazel",
+      "commit": "b1d0141bcecfda2bfd108882d818fc5df70ae5c7",
+      "name": "partition_alloc",
+      "remote": "https://chromium.googlesource.com/chromium/src/base/allocator/partition_allocator.git"
+    },
+    {
       "build_file": "//bazel/external/perfetto:BUILD.bazel",
       "commit": "93885509be1c9240bc55fa515ceb34811e54a394",
       "name": "perfetto",

@@ -195,3 +195,8 @@ build:vk --config=vulkan_ganesh
 # but it is needed by SkRasterPipelineBuilder when being compiled for GN
 build:compile_sksl --cc_output_directory_tag=compile_sksl \
     --compilation_mode=opt --//src/core:load_sksl_from_disk --copt="-DSKSL_STANDALONE=1" \
+
+# The --//src/partition_alloc:enabled=true
+# bool flag should be enabled in tests and benchmark of Skia Standalone, but not
+# by Skia embedders.
+build:partition_alloc --//src/partition_alloc:enabled=true

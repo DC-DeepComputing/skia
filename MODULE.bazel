@@ -292,6 +292,7 @@ use_repo(
     "libyuv",
     "markupsafe",
     "opengl_registry",
+    "partition_alloc",
     "perfetto",
     "piex",
     "spirv_cross",
