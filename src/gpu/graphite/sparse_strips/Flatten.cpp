@@ -365,6 +365,7 @@ SK_ALWAYS_INLINE void processPathsImpl(const SkPath& path,
                                        ProcessConicFn&& processConic,
                                        ProcessCubicFn&& processCubic) {
     bool closed = true;
+    bool needStartPt = false;
     SkPoint startPt = {0, 0};
     SkPoint lastPt = {0, 0};
 
@@ -382,12 +383,18 @@ SK_ALWAYS_INLINE void processPathsImpl(const SkPath& path,
                     pts = mappedPts;
                 }
 
-                if (!closed && lastPt != startPt) {
-                    polyline->appendPoint(startPt);
+                if (!closed) {
+                    if (needStartPt) {
+                        polyline->appendPoint(lastPt);
+                        polyline->appendPoint(startPt);
+                    } else if (lastPt != startPt) {
+                        polyline->appendPoint(startPt);
+                    }
                 }
                 polyline->appendSentinel();
 
                 closed = false;
+                needStartPt = false;
                 lastPt = pts[0];
                 startPt = pts[0];
                 polyline->appendPoint(pts[0]);
@@ -401,6 +408,10 @@ SK_ALWAYS_INLINE void processPathsImpl(const SkPath& path,
                     pts = mappedPts;
                 }
 
+                if (needStartPt) {
+                    polyline->appendPoint(pts[0]);
+                    needStartPt = false;
+                }
                 lastPt = pts[1];
                 polyline->appendPoint(pts[1]);
                 break;
@@ -413,8 +424,15 @@ SK_ALWAYS_INLINE void processPathsImpl(const SkPath& path,
                     pts = mappedPts;
                 }
 
-                processQuad(pts);
-                lastPt = pts[2];
+                if (processQuad(pts, needStartPt)) {
+                    needStartPt = false;
+                    lastPt = pts[2];
+                } else {
+                    if (!needStartPt) {
+                        polyline->appendSentinel();
+                        needStartPt = true;
+                    }
+                }
                 break;
             }
             case SkPath::kConic_Verb: {
@@ -425,8 +443,15 @@ SK_ALWAYS_INLINE void processPathsImpl(const SkPath& path,
                     pts = mappedPts;
                 }
 
-                processConic(pts, iter.conicWeight());
-                lastPt = pts[2];
+                if (processConic(pts, iter.conicWeight(), needStartPt)) {
+                    needStartPt = false;
+                    lastPt = pts[2];
+                } else {
+                    if (!needStartPt) {
+                        polyline->appendSentinel();
+                        needStartPt = true;
+                    }
+                }
                 break;
             }
             case SkPath::kCubic_Verb: {
@@ -437,15 +462,26 @@ SK_ALWAYS_INLINE void processPathsImpl(const SkPath& path,
                     pts = mappedPts;
                 }
 
-                processCubic(pts);
-                lastPt = pts[3];
+                if (processCubic(pts, needStartPt)) {
+                    needStartPt = false;
+                    lastPt = pts[3];
+                } else {
+                    if (!needStartPt) {
+                        polyline->appendSentinel();
+                        needStartPt = true;
+                    }
+                }
                 break;
             }
             case SkPath::kClose_Verb: {
                 closed = true;
-                if (lastPt != startPt) {
+                if (needStartPt) {
+                    polyline->appendPoint(lastPt);
+                    polyline->appendPoint(startPt);
+                } else if (lastPt != startPt) {
                     polyline->appendPoint(startPt);
                 }
+                needStartPt = false;
                 break;
             }
             default:
@@ -453,8 +489,13 @@ SK_ALWAYS_INLINE void processPathsImpl(const SkPath& path,
         }
     }
 
-    if (!closed && lastPt != startPt) {
-        polyline->appendPoint(startPt);
+    if (!closed) {
+        if (needStartPt) {
+            polyline->appendPoint(lastPt);
+            polyline->appendPoint(startPt);
+        } else if (lastPt != startPt) {
+            polyline->appendPoint(startPt);
+        }
     }
 
     polyline->appendSentinel();
@@ -812,11 +853,15 @@ void Flatten::processPathsSimd(
         const SkPath& path, const SkMatrix& ctm, float width, float height, Polyline* polyline) {
     fContext.fFlattenedCubics.clear();
 
-    auto processQuad = [this, width, height, polyline](const SkPoint pts[3]) {
+    auto processQuad = [this, width, height, polyline](const SkPoint pts[3],
+                                                       bool needStartPt) -> bool {
         skvx::float4 X(pts[0].fX, pts[1].fX, pts[2].fX, pts[2].fX); // Duplicate last pt
         skvx::float4 Y(pts[0].fY, pts[1].fY, pts[2].fY, pts[2].fY);
         if (skvx::all(X > width) || skvx::all(Y < 0.0f) || skvx::all(Y > height)) {
-            return;
+            return false;
+        }
+        if (needStartPt) {
+            polyline->appendPoint(pts[0]);
         }
         if (skvx::all(X < 0.0f) ||
             is_within_dist_sq(pts[1], pts[0], pts[2], kQuadSubdivThreshold)) {
@@ -826,15 +871,20 @@ void Flatten::processPathsSimd(
             // because most quads don't produce enough segments to make simd worth it.
             this->flattenQuadScalar(pts, polyline);
         }
+        return true;
     };
 
-    auto processConic = [this, width, height, polyline](const SkPoint pts[3], float weight) {
+    auto processConic = [this, width, height, polyline](const SkPoint pts[3], float weight,
+                                                        bool needStartPt) -> bool {
         skvx::float4 X(pts[0].fX, pts[1].fX, pts[2].fX, pts[2].fX); // Duplicate last pt
         skvx::float4 Y(pts[0].fY, pts[1].fY, pts[2].fY, pts[2].fY);
 
         // Cull if completely outside the viewport
         if (skvx::all(X > width) || skvx::all(Y < 0.0f) || skvx::all(Y > height)) {
-            return;
+            return false;
+        }
+        if (needStartPt) {
+            polyline->appendPoint(pts[0]);
         }
 
         // Simplify if completely to the left or visually a line
@@ -849,13 +899,18 @@ void Flatten::processPathsSimd(
                     {cubics, (size_t)numCubics});
             polyline->appendPoints(SkSpan(fContext.fFlattenedCubics.data() + 1, numSegments - 1));
         }
+        return true;
     };
 
-    auto processCubic = [this, width, height, polyline](const SkPoint pts[4]) {
+    auto processCubic = [this, width, height, polyline](const SkPoint pts[4],
+                                                        bool needStartPt) -> bool {
         skvx::float4 X(pts[0].fX, pts[1].fX, pts[2].fX, pts[3].fX);
         skvx::float4 Y(pts[0].fY, pts[1].fY, pts[2].fY, pts[3].fY);
         if (skvx::all(X > width) || skvx::all(Y < 0.0f) || skvx::all(Y > height)) {
-            return;
+            return false;
+        }
+        if (needStartPt) {
+            polyline->appendPoint(pts[0]);
         }
         if (skvx::all(X < 0.0f) ||
             (is_within_dist_sq(pts[1], pts[0], pts[3], kCubicSubdivThreshold) &&
@@ -865,6 +920,7 @@ void Flatten::processPathsSimd(
             uint32_t numSegments = this->flattenCubicSimd<kSqrtQuadFromCubicTol>(pts);
             polyline->appendPoints(SkSpan(fContext.fFlattenedCubics.data() + 1, numSegments - 1));
         }
+        return true;
     };
 
     if (ctm.isIdentity()) {
@@ -878,10 +934,14 @@ void Flatten::processPathsScalar(
         const SkPath& path, const SkMatrix& ctm, float width, float height, Polyline* polyline) {
     fContext.fFlattenedCubics.clear();
 
-    auto processQuad = [this, width, height, polyline](const SkPoint pts[3]) {
+    auto processQuad = [this, width, height, polyline](const SkPoint pts[3],
+                                                       bool needStartPt) -> bool {
         if (is_completely_culled<3>(pts, width, height)) {
             // If the quad is completely top, right, or bottom of the viewport, cull.
-            return;
+            return false;
+        }
+        if (needStartPt) {
+            polyline->appendPoint(pts[0]);
         }
         if (is_completely_left<3>(pts) ||
             is_within_dist_sq(pts[1], pts[0], pts[2], kQuadSubdivThreshold)) {
@@ -890,12 +950,17 @@ void Flatten::processPathsScalar(
         } else {
             this->flattenQuadScalar(pts, polyline);
         }
+        return true;
     };
 
-    auto processConic = [this, width, height, polyline](const SkPoint pts[3], float weight) {
+    auto processConic = [this, width, height, polyline](const SkPoint pts[3], float weight,
+                                                        bool needStartPt) -> bool {
         if (is_completely_culled<3>(pts, width, height)) {
             // If the conic is completely top, right, or bottom of the viewport, cull.
-            return;
+            return false;
+        }
+        if (needStartPt) {
+            polyline->appendPoint(pts[0]);
         }
         if (is_completely_left<3>(pts) ||
             is_within_dist_sq(pts[1], pts[0], pts[2], kQuadSubdivThreshold)) {
@@ -910,12 +975,17 @@ void Flatten::processPathsScalar(
                 this->flattenQuadScalar(&quadPts[i * 2], polyline);
             }
         }
+        return true;
     };
 
-    auto processCubic = [this, width, height, polyline](const SkPoint pts[4]) {
+    auto processCubic = [this, width, height, polyline](const SkPoint pts[4],
+                                                        bool needStartPt) -> bool {
         if (is_completely_culled<4>(pts, width, height)) {
             // If the cubic is completely top, right, or bottom of the viewport, cull.
-            return;
+            return false;
+        }
+        if (needStartPt) {
+            polyline->appendPoint(pts[0]);
         }
         if (is_completely_left<4>(pts) ||
             (is_within_dist_sq(pts[1], pts[0], pts[3], kCubicSubdivThreshold) &&
@@ -926,6 +996,7 @@ void Flatten::processPathsScalar(
             uint32_t numSegments = this->flattenCubicScalar<kSqrtQuadFromCubicTol>(pts);
             polyline->appendPoints(SkSpan(fContext.fFlattenedCubics.data() + 1, numSegments - 1));
         }
+        return true;
     };
 
     if (ctm.isIdentity()) {
