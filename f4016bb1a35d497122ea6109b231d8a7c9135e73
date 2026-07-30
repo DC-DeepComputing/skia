@@ -112,6 +112,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "50ad4662_2ae31713",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 738,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-07-30T21:32:52Z",
+      "side": 1,
+      "message": "Ah right, close also doesn\u0027t have a mask enum, makes sense.  IIRC move + close has some tricky semantics in support of SVG, I don\u0027t think we can change that behavior (or we should tread lightly).  The current version LGTM.",
+      "parentUuid": "8555434a_083c9f5d",
+      "range": {
+        "startLine": 738,
+        "startChar": 26,
+        "endLine": 738,
+        "endChar": 102
+      },
+      "revId": "f4016bb1a35d497122ea6109b231d8a7c9135e73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c9c25af0_554f1611",
