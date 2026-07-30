@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bdd3f43b_903d4ccf",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 299,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-30T19:59:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6732122f_b05bcc3a",
+      "range": {
+        "startLine": 299,
+        "startChar": 8,
+        "endLine": 299,
+        "endChar": 31
+      },
+      "revId": "f4016bb1a35d497122ea6109b231d8a7c9135e73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6fe5b2cf_afa954f6",
@@ -66,6 +90,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8555434a_083c9f5d",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 738,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-30T19:59:22Z",
+      "side": 1,
+      "message": "Without this, `Path_addRRect_with_move` crashes (this was found by the fuzzer). fSegmentMask *is* 0, but it\u0027s not empty and then SkPathPriv::DeduceRRectFromContour asserts later (because we have a degenerate contour before the actual rrect). Maybe that\u0027s the *real* fix (moveTo followed by close is treated as just a move?)?\n\nI pulled this into a helper function to add a comment rationalizing things. WDYT?",
+      "parentUuid": "6fe5b2cf_afa954f6",
+      "range": {
+        "startLine": 738,
+        "startChar": 26,
+        "endLine": 738,
+        "endChar": 102
+      },
+      "revId": "f4016bb1a35d497122ea6109b231d8a7c9135e73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c9c25af0_554f1611",
         "filename": "src/core/SkPathBuilder.cpp",
         "patchSetId": 3
@@ -77,6 +125,24 @@
       "writtenOn": "2026-07-30T18:58:18Z",
       "side": 1,
       "message": "I would leave out this comment.",
+      "revId": "f4016bb1a35d497122ea6109b231d8a7c9135e73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fcceef09_ea5f9b42",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 750,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-30T19:59:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c9c25af0_554f1611",
       "revId": "f4016bb1a35d497122ea6109b231d8a7c9135e73",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
