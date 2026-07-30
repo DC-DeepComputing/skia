@@ -560,7 +560,11 @@ void AtlasTextOp::onPrepareDraws(GrMeshDrawTarget* target) {
         const sktext::gpu::AtlasSubRun& subRun = geo->fSubRun;
 
         if (!subRun.glyphVector().hasBackendData()) {
-            subRun.glyphVector().initBackendData<GlyphData>(target->strikeCache(), maskFormat);
+            subRun.glyphVector().initBackendData<GlyphData>(target->strikeCache(),
+                                                            atlasManager,
+                                                            maskFormat,
+                                                            subRun.glyphSrcPadding(),
+                                                            this->usesDistanceFields());
         }
 
         auto& glyphData = subRun.glyphVector().accessBackendData<GlyphData>();
@@ -576,11 +580,12 @@ void AtlasTextOp::onPrepareDraws(GrMeshDrawTarget* target) {
             // of the glyphs to fill the vertex buffer.
             int regenEnd = subRunCursor + std::min(subRunEnd - subRunCursor, quadEnd - quadCursor);
 
+            // FIXME what enforces a transformed mask sub run actually having 1px of src padding in
+            // its glyph IDs? What controls generating that glyph image? does a direct mask get
+            // a different ID? Or is it first through the gate?
             auto [ok, glyphsRegenerated] = glyphData.regenerateAtlas(subRunCursor,
                                                                      regenEnd,
                                                                      subRun.glyphVector(),
-                                                                     maskFormat,
-                                                                     subRun.glyphSrcPadding(),
                                                                      target);
 
             // There was a problem allocating the glyph in the atlas. Bail.

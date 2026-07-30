@@ -12,6 +12,7 @@
 #include "include/private/SkAssert.h"
 #include "src/gpu/MaskFormat.h"
 #include "src/gpu/graphite/DrawAtlas.h"
+#include "src/text/gpu/SubRunContainer.h"
 
 #include <cstdint>
 #include <memory>
@@ -73,18 +74,26 @@ public:
         return nullptr;
     }
 
+    sktext::gpu::RendererData resolveRendererData(sktext::gpu::RendererData data) {
+        // Bump direct mask glyphs (zero padding) up to 1px when the atlas can be bilerp'ed
+        data.srcPadding = data.srcPadding == 0 && fSupportBilerpAtlas ? 1 : data.srcPadding;
+        data.maskFormat = this->resolveMaskFormat(data.maskFormat);
+        // Leave SDF and LCD properties alone
+        return data;
+    }
+
     void freeGpuResources();
 
-    bool hasGlyph(MaskFormat, const GlyphEntry&);
+    bool hasGlyph(const GlyphEntry&);
 
-    DrawAtlas::ErrorCode addGlyphToAtlas(const SkGlyph&, GlyphEntry*, int srcPadding);
+    DrawAtlas::ErrorCode addGlyphToAtlas(const SkGlyph&, GlyphEntry*);
 
     // To ensure the DrawAtlas does not evict the Glyph Mask from its texture backing store,
     // the client must pass in the current draw token along with the Glyph.
     // A BulkUsePlotUpdater is used to manage bulk last use token updating in the Atlas.
     // For convenience, this function will also set the use token for the current glyph if required
     // NOTE: the bulk uploader is only valid if the subrun has a valid atlasGeneration
-    void addGlyphToBulkAndSetUseToken(DrawAtlas::BulkUsePlotUpdater*, MaskFormat, const GlyphEntry&, Token);
+    void addGlyphToBulkAndSetUseToken(DrawAtlas::BulkUsePlotUpdater*, const GlyphEntry&, Token);
 
     void setUseTokenBulk(const DrawAtlas::BulkUsePlotUpdater& updater,
                          Token token,
