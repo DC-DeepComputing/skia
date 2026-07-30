@@ -22,6 +22,80 @@
       },
       "revId": "8cf0845e88c905258a9c9034aa29845c38c5601e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40dad05d_48a2e39b",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-07-30T15:59:50Z",
+      "side": 1,
+      "message": "nit: ternary here and then if in `searchBinding` is awkward",
+      "range": {
+        "startLine": 138,
+        "startChar": 50,
+        "endLine": 138,
+        "endChar": 87
+      },
+      "revId": "8cf0845e88c905258a9c9034aa29845c38c5601e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c45a5822_790ca033",
+        "filename": "src/gpu/graphite/DrawListTypes.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 410,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-07-30T15:59:50Z",
+      "side": 1,
+      "message": "Nit: Would it be helpful to have preference for earlier pipeline matches here? Currently once we have a pipeline match it doesn\u0027t get overwritten.",
+      "range": {
+        "startLine": 410,
+        "startChar": 12,
+        "endLine": 410,
+        "endChar": 92
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "c812632a_ed4a28e7",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/DrawListTypes.h",
+              "range": {
+                "startLine": 410,
+                "startChar": 0,
+                "endLine": 411,
+                "endChar": 0
+              },
+              "replacement": "            if (exactMatch) {\n"
+            },
+            {
+              "path": "src/gpu/graphite/DrawListTypes.h",
+              "range": {
+                "startLine": 1,
+                "startChar": 0,
+                "endLine": 1,
+                "endChar": 0
+              },
+              "replacement": "            } else if (list-\u003efKey.fPipelineIndex \u003d\u003d key.fPipelineIndex) {\n                if (!match || !match-\u003efKey.isEqual(key)) {\n                    match \u003d list;\n                }\n"
+            }
+          ]
+        }
+      ],
+      "revId": "8cf0845e88c905258a9c9034aa29845c38c5601e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
