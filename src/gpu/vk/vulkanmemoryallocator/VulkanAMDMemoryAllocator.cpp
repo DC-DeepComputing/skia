@@ -24,7 +24,7 @@ namespace skgpu {
 sk_sp<VulkanMemoryAllocator> VulkanAMDMemoryAllocator::Make(VkInstance instance,
                                                             VkPhysicalDevice physicalDevice,
                                                             VkDevice device,
-                                                            uint32_t physicalDeviceVersion,
+                                                            uint32_t /*physicalDeviceVersion*/,
                                                             const VulkanExtensions* extensions,
                                                             const VulkanInterface* interface,
                                                             ThreadSafe threadSafe) {
@@ -301,7 +301,7 @@ sk_sp<VulkanMemoryAllocator> Make(const skgpu::VulkanBackendContext& backendCont
     // not too expensive and this cost is only paid once during initialization.
     uint32_t physDevVersion = 0;
     sk_sp<const skgpu::VulkanInterface> interface =
-            skgpu::MakeInterface(backendContext, extensions, &physDevVersion, nullptr);
+            skgpu::MakeInterface(backendContext, extensions, nullptr, &physDevVersion);
     if (!interface) {
         return nullptr;
     }
