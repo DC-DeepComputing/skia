@@ -112,6 +112,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "85fca47d_15daa3d0",
+        "filename": "src/gpu/graphite/StorageContext.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-30T21:45:12Z",
+      "side": 1,
+      "message": "Since we are making a CPU copy of all of this data, I do think that caching and de-duplication will be important. Particularly since it\u0027s intended for many-to-1 storage, we plan on it being less than the instance/vertex data.\n\nA near-ish goal for this code, if it\u0027s at all possible would be:\n1. Reuse or share a lot of the alignment logic that is in BufferSubAllocator. There are a lot of parallels here with the transfer-buffer flow (except in this case it\u0027s CPU copy then write, vs. write then GPU copy). \n2. De-duplication could look pretty similar to using the UniformDataBlock and UniformDataCache classes as well, except instead of storing an arbitrary ID index for the data identity, it returns the actual buffer byte offset.  If we get to that point, could we improve our UBO writing code to also be able to determine the full size it needs for a buffer and guarantee we only create one UBO binding per DrawPass?",
+      "range": {
+        "startLine": 86,
+        "startChar": 4,
+        "endLine": 95,
+        "endChar": 0
+      },
+      "revId": "a214142580858219295364f80560f84fb2e38ce3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cff2a836_c9f0c070",
         "filename": "src/gpu/graphite/StorageContext.cpp",
         "patchSetId": 16
