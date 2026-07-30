@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ac15b9e_acc68813",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-07-30T14:51:03Z",
+      "side": 1,
+      "message": "micro nit: \"Enable capture\" (lowercase c)",
+      "revId": "2a7979ec32932b3863fbf4008b8a433de34c5b46",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ced28fb8_cfdd6cc0",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-07-30T14:51:03Z",
+      "side": 1,
+      "message": "nit: any reason we list it here and not with the other flags below (line 228 ish)?",
+      "revId": "2a7979ec32932b3863fbf4008b8a433de34c5b46",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
