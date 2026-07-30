@@ -22,8 +22,14 @@ namespace skgpu::graphite {
 // known and handled by the PipelineManager vs being added to TaskLists (as Task-derived classes
 // are).
 class PipelineCreationTask : public SkRefCnt {
+#if defined(GPU_TEST_UTILS)
+public:
+    int id() const { return fID; }
+#endif
+
 private:
     friend class PipelineManager; // for entire API and fPipeline
+    friend class GraphicsPipelineHandle; // for fPipeline in pipelineOrNull()
 
     PipelineCreationTask(const UniqueKey& pipelineKey,
                          const GraphicsPipelineDesc& graphicsPipelineDesc,
@@ -32,7 +38,16 @@ private:
             : fPipelineKey(pipelineKey)
             , fGraphicsPipelineDesc(graphicsPipelineDesc)
             , fRenderPassDesc(renderPassDesc)
-            , fPipelineCreationFlags(pipelineCreationFlags) {}
+            , fPipelineCreationFlags(pipelineCreationFlags) {
+#if defined(GPU_TEST_UTILS)
+        static int sID = 0;
+        fID = sID++;
+#endif
+    }
+
+    bool forPrecompile() const {
+        return SkToBool(fPipelineCreationFlags & PipelineCreationFlags::kForPrecompilation);
+    }
 
     const UniqueKey fPipelineKey;  // used to track this task in the PipelineManager
     const GraphicsPipelineDesc fGraphicsPipelineDesc;
@@ -43,7 +58,13 @@ private:
     // This also serves to lock the pipeline in the cache.
     sk_sp<GraphicsPipeline> fPipeline;
 
+    SkSemaphore fTaskComplete;
+    std::atomic<bool> fInProgress = false;
     std::atomic<bool> fCompleted = false;
+
+#if defined(GPU_TEST_UTILS)
+    int fID;
+#endif
 };
 
 } // namespace skgpu::graphite
