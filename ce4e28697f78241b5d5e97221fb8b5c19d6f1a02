@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "24e232c0_70cbd1c0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-30T19:04:41Z",
+      "side": 1,
+      "message": "Yep, that explains why ther\u0027es no diff in `VulkanUtilsPriv.cpp` :P",
+      "parentUuid": "d1233e7f_76d80178",
+      "revId": "ce4e28697f78241b5d5e97221fb8b5c19d6f1a02",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1b0dfa99_5dc73c8e",
