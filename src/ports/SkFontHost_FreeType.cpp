@@ -1287,7 +1287,10 @@ SkScalerContext::GlyphMetrics SkScalerContext_FreeType::generateMetrics(const Sk
 
         if (haveLayers) {
             mx.maskFormat = SkMask::kARGB32_Format;
-            mx.neverRequestPath = true;
+            // COLRv0 base glyphs have their own outlines; allow path requests
+            // so callers (e.g. Impeller's COLR vector-path text rendering) can
+            // fetch them. Rasterization still goes through generateImage.
+            mx.neverRequestPath = (mx.extraBits != ScalerContextBits::COLRv0);
             updateGlyphBoundsIfSubpixel(glyph, &bounds, this->isSubpixel());
             mx.bounds = bounds;
         }

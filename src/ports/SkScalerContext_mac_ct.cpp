@@ -298,7 +298,12 @@ SkScalerContext::GlyphMetrics SkScalerContext_Mac::generateMetrics(const SkGlyph
                                                                    SkArenaAlloc*) {
     GlyphMetrics mx(glyph.maskFormat());
 
-    mx.neverRequestPath = ((SkTypeface_Mac*)this->getTypeface())->fHasColorGlyphs;
+    // Don't disable outline paths font-wide just because the typeface contains
+    // color glyphs. CTFontCreatePathForGlyph returns correct per-glyph outlines
+    // in a COLR font, and clients that composite COLR layers as vector paths
+    // need them. Color glyphs still rasterize via generateImage for the atlas;
+    // this only makes outlines available when a path is explicitly requested.
+    mx.neverRequestPath = false;
 
     const CGGlyph cgGlyph = (CGGlyph)glyph.getGlyphID();
 
