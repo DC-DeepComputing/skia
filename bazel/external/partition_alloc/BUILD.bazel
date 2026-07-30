@@ -1,0 +1,729 @@
+# Copyright 2026 Google LLC.
+#
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# This file will be copied into //third_party/externals/partition_alloc via the new_local_repository
+# rule in WORKSPACE.bazel (or used via MODULE.bazel), so all files should be relative to that path.
+
+load("@rules_cc//cc:cc_library.bzl", "cc_library")
+load("@skia//bazel/external/partition_alloc:rules.bzl", "pa_buildflag_header")
+
+exports_files([
+    "src/partition_alloc/pointers/raw_ptr.h",
+    "src/partition_alloc/pointers/raw_ptr_exclusion.h",
+    "src/partition_alloc/pointers/raw_ref.h",
+])
+
+# -----------------------------------------------------------------------------
+# Compiler Flag Definitions (Ported from GN)
+# -----------------------------------------------------------------------------
+
+# Used to shim malloc symbols on Android.
+PA_ANDROID_LINKOPTS = [
+    # <stdlib.h> functions
+    "-Wl,-wrap,aligned_alloc",
+    "-Wl,-wrap,calloc",
+    "-Wl,-wrap,free",
+    "-Wl,-wrap,malloc",
+    "-Wl,-wrap,memalign",
+    "-Wl,-wrap,posix_memalign",
+    "-Wl,-wrap,pvalloc",
+    "-Wl,-wrap,realloc",
+    "-Wl,-wrap,valloc",
+
+    # Not allocating memory, but part of the API
+    "-Wl,-wrap,malloc_usable_size",
+
+    # <cstdlib> functions
+    "-Wl,-wrap,realpath",
+
+    # <string.h> functions
+    "-Wl,-wrap,strdup",
+    "-Wl,-wrap,strndup",
+
+    # <unistd.h> functions
+    "-Wl,-wrap,getcwd",
+
+    # <cstdio> functions
+    "-Wl,-wrap,asprintf",
+    "-Wl,-wrap,vasprintf",
+]
+
+PA_MAC_COPTS = [
+    "-fvisibility-global-new-delete=force-hidden",
+]
+
+# -----------------------------------------------------------------------------
+# Targets
+# -----------------------------------------------------------------------------
+
+COMMON_FLAGS = {
+    "BACKUP_REF_PTR_EXTRA_OOB_CHECKS": "1",
+    "BACKUP_REF_PTR_POISON_OOB_PTR": "0",
+    "CAN_UNWIND_WITH_FRAME_POINTERS": "1",
+    "CHECKED_SPAN": "0",
+    "DCHECKS_ARE_ON": "0",
+    "DCHECK_IS_CONFIGURABLE": "0",
+    "ENABLE_ALLOCATOR_SHIM_PARTITION_ALLOC_DISPATCH_WITH_ADVANCED_CHECKS_SUPPORT": "0",
+    "ENABLE_AUTO_PARTITIONING": "0",
+    "ENABLE_BACKUP_REF_PTR_FEATURE_FLAG": "1",
+    "ENABLE_BACKUP_REF_PTR_INSTANCE_TRACER": "0",
+    "ENABLE_BACKUP_REF_PTR_SLOW_CHECKS": "0",
+    "ENABLE_BACKUP_REF_PTR_SUPPORT": "1",
+    "ENABLE_BRP_FOR_UNPROTECTED_IN_RELEASE_RAW_PTR": "0",
+    "ENABLE_DANGLING_RAW_PTR_CHECKS": "1",
+    "ENABLE_DANGLING_RAW_PTR_FEATURE_FLAG": "1",
+    "ENABLE_GWP_ASAN_SUPPORT": "0",
+    "ENABLE_PARTITION_LOCK_REENTRANCY_CHECK": "0",
+    "ENABLE_PARTITION_LOCK_PRIORITY_INHERITANCE": "0",
+    "ENABLE_PKEYS": "0",
+    "ENABLE_POINTER_ARITHMETIC_TRAIT_CHECK": "1",
+    "ENABLE_POINTER_COMPRESSION": "0",
+    "ENABLE_POINTER_SUBTRACTION_CHECK": "0",
+    "ENABLE_SYSTEM_FREE_FALLBACK": "0",
+    "ENABLE_MOVE_METADATA_OUT_OF_GIGACAGE_TRIAL": "1",
+    "ENABLE_THREAD_ISOLATION": "0",
+    "ENABLE_USER_SPACE_ZERO_SEGMENT": "0",
+    "USER_SPACE_ZERO_SEGMENT_SIZE_MB": "0",
+    "EXPENSIVE_DCHECKS_ARE_ON": "0",
+    "FORCE_DISABLE_BACKUP_REF_PTR_FEATURE": "0",
+    "FORCE_ENABLE_RAW_PTR_EXCLUSION": "0",
+    "FORWARD_THROUGH_MALLOC": "0",
+    "HAS_MEMORY_TAGGING": "0",
+    "IS_CASTOS": "0",
+    "IS_CAST_ANDROID": "0",
+    "IS_CHROMEOS": "0",
+    "IS_COMPONENT_BUILD": "0",
+    "IS_DEBUG": "0",
+    "IS_HWASAN": "0",
+    "OFFICIAL": "0",
+    "RAW_PTR_ZERO_ON_CONSTRUCT": "1",
+    "RAW_PTR_ZERO_ON_DESTRUCT": "0",
+    "RAW_PTR_ZERO_ON_MOVE": "1",
+    "REALLOC_GROWTH_FACTOR_MITIGATION": "0",
+    "RECORD_ALLOC_INFO": "0",
+    "SHIM_SUPPORTS_ALLOC_TOKEN": "0",
+    "SHIM_SUPPORTS_SIZED_DEALLOC": "0",
+    "SMALLER_PARTITION_COOKIE": "0",
+    "STACK_SCAN_SUPPORTED": "0",
+    "USE_ALLOCATOR_SHIM": "1",
+    "USE_ASAN_BACKUP_REF_PTR": "0",
+    "USE_ASAN_BACKUP_REF_PTR_V2": "0",
+    "USE_FULL_MTE": "0",
+    "USE_LARGE_EMPTY_SLOT_SPAN_RING": "1",
+    "USE_PARTITION_ALLOC": "1",
+    "USE_PARTITION_ALLOC_AS_MALLOC": "1",
+    "USE_PARTITION_COOKIE": "0",
+    "USE_RAW_PTR_ASAN_UNOWNED_IMPL": "0",
+    "USE_RAW_PTR_BACKUP_REF_IMPL": "1",
+    "USE_RAW_PTR_HOOKABLE_IMPL": "0",
+}
+
+pa_buildflag_header(
+    name = "generated_buildflags_h",
+    out = "src/partition_alloc/buildflags.h",
+    common_flags = COMMON_FLAGS,
+    cpu_flags = select({
+        "@platforms//cpu:aarch64": {
+            "HAS_64_BIT_POINTERS": "true",
+            "MOVE_METADATA_OUT_OF_GIGACAGE_FOR_64_BITS_POINTERS": "true",
+        },
+        "@platforms//cpu:arm64e": {
+            "HAS_64_BIT_POINTERS": "true",
+            "MOVE_METADATA_OUT_OF_GIGACAGE_FOR_64_BITS_POINTERS": "true",
+        },
+        "@platforms//cpu:cortex-r82": {
+            "HAS_64_BIT_POINTERS": "true",
+            "MOVE_METADATA_OUT_OF_GIGACAGE_FOR_64_BITS_POINTERS": "true",
+        },
+        "@platforms//cpu:mips64": {
+            "HAS_64_BIT_POINTERS": "true",
+            "MOVE_METADATA_OUT_OF_GIGACAGE_FOR_64_BITS_POINTERS": "true",
+        },
+        "@platforms//cpu:ppc64le": {
+            "HAS_64_BIT_POINTERS": "true",
+            "MOVE_METADATA_OUT_OF_GIGACAGE_FOR_64_BITS_POINTERS": "true",
+        },
+        "@platforms//cpu:riscv64": {
+            "HAS_64_BIT_POINTERS": "true",
+            "MOVE_METADATA_OUT_OF_GIGACAGE_FOR_64_BITS_POINTERS": "true",
+        },
+        "@platforms//cpu:s390x": {
+            "HAS_64_BIT_POINTERS": "true",
+            "MOVE_METADATA_OUT_OF_GIGACAGE_FOR_64_BITS_POINTERS": "true",
+        },
+        "@platforms//cpu:wasm64": {
+            "HAS_64_BIT_POINTERS": "true",
+            "MOVE_METADATA_OUT_OF_GIGACAGE_FOR_64_BITS_POINTERS": "true",
+        },
+        "@platforms//cpu:x86_64": {
+            "HAS_64_BIT_POINTERS": "true",
+            "MOVE_METADATA_OUT_OF_GIGACAGE_FOR_64_BITS_POINTERS": "true",
+        },
+        "//conditions:default": {
+            "HAS_64_BIT_POINTERS": "false",
+            "MOVE_METADATA_OUT_OF_GIGACAGE_FOR_64_BITS_POINTERS": "false",
+        },
+    }),
+    os_flags = select({
+        "@platforms//os:android": {"IS_ANDROID": "true"},
+        "//conditions:default": {"IS_ANDROID": "false"},
+    }),
+)
+
+cc_library(
+    name = "buildflags",
+    hdrs = [
+        "src/partition_alloc/buildflag.h",
+        ":generated_buildflags_h",
+    ],
+    includes = ["src"],
+    visibility = ["//visibility:private"],
+)
+
+cc_library(
+    name = "build_config",
+    hdrs = [
+        "src/partition_alloc/build_config.h",
+    ],
+    includes = ["src"],
+    visibility = ["//visibility:private"],
+    deps = [":buildflags"],
+)
+
+# ALLOCATOR_BASE ---------------------------------------------------------------
+
+ALLOCATOR_BASE_SRCS_COMMON = [
+    "src/partition_alloc/partition_alloc_base/check.cc",
+    "src/partition_alloc/partition_alloc_base/cpu.cc",
+    "src/partition_alloc/partition_alloc_base/debug/alias.cc",
+    "src/partition_alloc/partition_alloc_base/debug/stack_trace.cc",
+    "src/partition_alloc/partition_alloc_base/log_message.cc",
+    "src/partition_alloc/partition_alloc_base/logging.cc",
+    "src/partition_alloc/partition_alloc_base/memory/ref_counted.cc",
+    "src/partition_alloc/partition_alloc_base/rand_util.cc",
+    "src/partition_alloc/partition_alloc_base/strings/cstring_builder.cc",
+    "src/partition_alloc/partition_alloc_base/strings/safe_sprintf.cc",
+    "src/partition_alloc/partition_alloc_base/strings/string_util.cc",
+    "src/partition_alloc/partition_alloc_base/strings/stringprintf.cc",
+    "src/partition_alloc/partition_alloc_base/threading/platform_thread.cc",
+    "src/partition_alloc/partition_alloc_base/time/time.cc",
+    "src/partition_alloc/partition_alloc_base/time/time_override.cc",
+]
+
+ALLOCATOR_BASE_HDRS_COMMON = [
+    "src/partition_alloc/partition_alloc_base/atomic_ref_count.h",
+    "src/partition_alloc/partition_alloc_base/augmentations/compiler_specific.h",
+    "src/partition_alloc/partition_alloc_base/bit_cast.h",
+    "src/partition_alloc/partition_alloc_base/bits.h",
+    "src/partition_alloc/partition_alloc_base/check.h",
+    "src/partition_alloc/partition_alloc_base/compiler_specific.h",
+    "src/partition_alloc/partition_alloc_base/component_export.h",
+    "src/partition_alloc/partition_alloc_base/containers/checked_iterators.h",
+    "src/partition_alloc/partition_alloc_base/containers/flat_map.h",
+    "src/partition_alloc/partition_alloc_base/containers/flat_tree.h",
+    "src/partition_alloc/partition_alloc_base/containers/span.h",
+    "src/partition_alloc/partition_alloc_base/containers/span_forward_internal.h",
+    "src/partition_alloc/partition_alloc_base/cpu.h",
+    "src/partition_alloc/partition_alloc_base/cxx_wrapper/algorithm.h",
+    "src/partition_alloc/partition_alloc_base/cxx_wrapper/optional.h",
+    "src/partition_alloc/partition_alloc_base/debug/alias.h",
+    "src/partition_alloc/partition_alloc_base/debug/stack_trace.h",
+    "src/partition_alloc/partition_alloc_base/export_template.h",
+    "src/partition_alloc/partition_alloc_base/files/platform_file.h",
+    "src/partition_alloc/partition_alloc_base/immediate_crash.h",
+    "src/partition_alloc/partition_alloc_base/log_message.h",
+    "src/partition_alloc/partition_alloc_base/logging.h",
+    "src/partition_alloc/partition_alloc_base/memory/page_size.h",
+    "src/partition_alloc/partition_alloc_base/memory/ref_counted.h",
+    "src/partition_alloc/partition_alloc_base/memory/scoped_policy.h",
+    "src/partition_alloc/partition_alloc_base/memory/scoped_refptr.h",
+    "src/partition_alloc/partition_alloc_base/memory/stack_allocated.h",
+    "src/partition_alloc/partition_alloc_base/no_destructor.h",
+    "src/partition_alloc/partition_alloc_base/notreached.h",
+    "src/partition_alloc/partition_alloc_base/numerics/checked_math.h",
+    "src/partition_alloc/partition_alloc_base/numerics/checked_math_impl.h",
+    "src/partition_alloc/partition_alloc_base/numerics/clamped_math.h",
+    "src/partition_alloc/partition_alloc_base/numerics/clamped_math_impl.h",
+    "src/partition_alloc/partition_alloc_base/numerics/safe_conversions.h",
+    "src/partition_alloc/partition_alloc_base/numerics/safe_conversions_arm_impl.h",
+    "src/partition_alloc/partition_alloc_base/numerics/safe_conversions_impl.h",
+    "src/partition_alloc/partition_alloc_base/numerics/safe_math.h",
+    "src/partition_alloc/partition_alloc_base/numerics/safe_math_arm_impl.h",
+    "src/partition_alloc/partition_alloc_base/numerics/safe_math_clang_gcc_impl.h",
+    "src/partition_alloc/partition_alloc_base/numerics/safe_math_shared_impl.h",
+    "src/partition_alloc/partition_alloc_base/posix/eintr_wrapper.h",
+    "src/partition_alloc/partition_alloc_base/process/process_handle.h",
+    "src/partition_alloc/partition_alloc_base/rand_util.h",
+    "src/partition_alloc/partition_alloc_base/scoped_clear_last_error.h",
+    "src/partition_alloc/partition_alloc_base/strings/cstring_builder.h",
+    "src/partition_alloc/partition_alloc_base/strings/safe_sprintf.h",
+    "src/partition_alloc/partition_alloc_base/strings/string_util.h",
+    "src/partition_alloc/partition_alloc_base/strings/stringprintf.h",
+    "src/partition_alloc/partition_alloc_base/system/sys_info.h",
+    "src/partition_alloc/partition_alloc_base/template_util.h",
+    "src/partition_alloc/partition_alloc_base/thread_annotations.h",
+    "src/partition_alloc/partition_alloc_base/threading/platform_thread.h",
+    "src/partition_alloc/partition_alloc_base/threading/platform_thread_ref.h",
+    "src/partition_alloc/partition_alloc_base/time/time.h",
+    "src/partition_alloc/partition_alloc_base/time/time_override.h",
+    "src/partition_alloc/partition_alloc_base/types/same_as_any.h",
+    "src/partition_alloc/partition_alloc_base/types/strong_alias.h",
+    "src/partition_alloc/partition_alloc_base/types/to_address.h",
+    "src/partition_alloc/partition_alloc_base/win/win_handle_types.h",
+    "src/partition_alloc/partition_alloc_base/win/win_handle_types_list.inc",
+    "src/partition_alloc/partition_alloc_base/win/windows_handle_util.h",
+    "src/partition_alloc/partition_alloc_base/win/windows_types.h",
+]
+
+ALLOCATOR_BASE_SRCS_POSIX = [
+    "src/partition_alloc/partition_alloc_base/debug/stack_trace_posix.cc",
+    "src/partition_alloc/partition_alloc_base/files/file_util_posix.cc",
+    "src/partition_alloc/partition_alloc_base/memory/page_size_posix.cc",
+    "src/partition_alloc/partition_alloc_base/posix/safe_strerror.cc",
+    "src/partition_alloc/partition_alloc_base/process/process_handle_posix.cc",
+    "src/partition_alloc/partition_alloc_base/rand_util_posix.cc",
+    "src/partition_alloc/partition_alloc_base/threading/platform_thread_posix.cc",
+    "src/partition_alloc/partition_alloc_base/time/time_conversion_posix.cc",
+]
+
+ALLOCATOR_BASE_HDRS_POSIX = [
+    "src/partition_alloc/partition_alloc_base/files/file_util.h",
+    "src/partition_alloc/partition_alloc_base/posix/safe_strerror.h",
+    "src/partition_alloc/partition_alloc_base/threading/platform_thread_internal_posix.h",
+]
+
+ALLOCATOR_BASE_SRCS_LINUX = [
+    "src/partition_alloc/partition_alloc_base/debug/stack_trace_linux.cc",
+    "src/partition_alloc/partition_alloc_base/time/time_now_posix.cc",
+]
+
+ALLOCATOR_BASE_SRCS_ANDROID = [
+    "src/partition_alloc/partition_alloc_base/debug/stack_trace_android.cc",
+    "src/partition_alloc/partition_alloc_base/files/file_path.cc",
+    "src/partition_alloc/partition_alloc_base/native_library.cc",
+    "src/partition_alloc/partition_alloc_base/native_library_posix.cc",
+    "src/partition_alloc/partition_alloc_base/time/time_now_posix.cc",
+]
+
+ALLOCATOR_BASE_HDRS_ANDROID = [
+    "src/partition_alloc/partition_alloc_base/files/file_path.h",
+    "src/partition_alloc/partition_alloc_base/native_library.h",
+]
+
+ALLOCATOR_BASE_SRCS_APPLE = [
+    "src/partition_alloc/partition_alloc_base/debug/stack_trace_mac.cc",
+    "src/partition_alloc/partition_alloc_base/time/time_apple.mm",
+    "src/partition_alloc/partition_alloc_base/apple/foundation_util.mm",
+    "src/partition_alloc/partition_alloc_base/apple/mach_logging.cc",
+]
+
+ALLOCATOR_BASE_HDRS_APPLE = [
+    "src/partition_alloc/partition_alloc_base/apple/foundation_util.h",
+    "src/partition_alloc/partition_alloc_base/apple/mach_logging.h",
+    "src/partition_alloc/partition_alloc_base/apple/scoped_cftyperef.h",
+    "src/partition_alloc/partition_alloc_base/apple/scoped_typeref.h",
+]
+
+ALLOCATOR_BASE_SRCS_MAC = [
+    "src/partition_alloc/partition_alloc_base/mac/mac_util.mm",
+    "src/partition_alloc/partition_alloc_base/system/sys_info_mac.mm",
+]
+
+ALLOCATOR_BASE_SRCS_IOS = [
+    "src/partition_alloc/partition_alloc_base/ios/ios_util.mm",
+    "src/partition_alloc/partition_alloc_base/system/sys_info_ios.mm",
+]
+
+ALLOCATOR_BASE_SRCS_WIN = [
+    "src/partition_alloc/partition_alloc_base/debug/stack_trace_win.cc",
+    "src/partition_alloc/partition_alloc_base/memory/page_size_win.cc",
+    "src/partition_alloc/partition_alloc_base/process/process_handle_win.cc",
+    "src/partition_alloc/partition_alloc_base/rand_util_win.cc",
+    "src/partition_alloc/partition_alloc_base/scoped_clear_last_error_win.cc",
+    "src/partition_alloc/partition_alloc_base/threading/platform_thread_win.cc",
+    "src/partition_alloc/partition_alloc_base/time/time_win.cc",
+]
+
+ALLOCATOR_BASE_SRCS_FUCHSIA = [
+    "src/partition_alloc/partition_alloc_base/fuchsia/fuchsia_logging.cc",
+    "src/partition_alloc/partition_alloc_base/memory/page_size_posix.cc",
+    "src/partition_alloc/partition_alloc_base/posix/safe_strerror.cc",
+    "src/partition_alloc/partition_alloc_base/rand_util_fuchsia.cc",
+    "src/partition_alloc/partition_alloc_base/threading/platform_thread_internal_posix.h",
+    "src/partition_alloc/partition_alloc_base/threading/platform_thread_posix.cc",
+    "src/partition_alloc/partition_alloc_base/time/time_conversion_posix.cc",
+    "src/partition_alloc/partition_alloc_base/time/time_fuchsia.cc",
+]
+
+cc_library(
+    name = "allocator_base",
+    srcs = ALLOCATOR_BASE_SRCS_COMMON + select({
+        "@platforms//os:linux": ALLOCATOR_BASE_SRCS_POSIX + ALLOCATOR_BASE_SRCS_LINUX,
+        "@platforms//os:android": ALLOCATOR_BASE_SRCS_POSIX + ALLOCATOR_BASE_SRCS_ANDROID,
+        "@platforms//os:macos": ALLOCATOR_BASE_SRCS_POSIX + ALLOCATOR_BASE_SRCS_APPLE + ALLOCATOR_BASE_SRCS_MAC,
+        "@platforms//os:ios": ALLOCATOR_BASE_SRCS_POSIX + ALLOCATOR_BASE_SRCS_APPLE + ALLOCATOR_BASE_SRCS_IOS,
+        "@platforms//os:windows": ALLOCATOR_BASE_SRCS_WIN,
+        "@platforms//os:fuchsia": ALLOCATOR_BASE_SRCS_FUCHSIA,
+        "//conditions:default": ALLOCATOR_BASE_SRCS_POSIX + ALLOCATOR_BASE_SRCS_LINUX,
+    }),
+    hdrs = ALLOCATOR_BASE_HDRS_COMMON + select({
+        "@platforms//os:linux": ALLOCATOR_BASE_HDRS_POSIX,
+        "@platforms//os:android": ALLOCATOR_BASE_HDRS_POSIX + ALLOCATOR_BASE_HDRS_ANDROID,
+        "@platforms//os:macos": ALLOCATOR_BASE_HDRS_POSIX + ALLOCATOR_BASE_HDRS_APPLE,
+        "@platforms//os:ios": ALLOCATOR_BASE_HDRS_POSIX + ALLOCATOR_BASE_HDRS_APPLE,
+        "@platforms//os:windows": [],
+        "@platforms//os:fuchsia": ALLOCATOR_BASE_HDRS_POSIX,
+        "//conditions:default": ALLOCATOR_BASE_HDRS_POSIX,
+    }),
+    defines = ["IS_PARTITION_ALLOC_BASE_IMPL"] + select({
+        "@platforms//os:macos": ["HAVE_DLADDR"],
+        "@platforms//os:ios": ["HAVE_DLADDR"],
+        "//conditions:default": [],
+    }),
+    includes = ["src"],
+    linkopts = select({
+        "@platforms//os:windows": ["-defaultlib:winmm.lib"],
+        "//conditions:default": [],
+    }),
+    visibility = ["//visibility:private"],
+    deps = [
+        ":build_config",
+        ":buildflags",
+    ],
+)
+
+# ALLOCATOR_CORE ---------------------------------------------------------------
+
+ALLOCATOR_CORE_SRCS_COMMON = [
+    "src/partition_alloc/address_pool_manager.cc",
+    "src/partition_alloc/address_pool_manager_bitmap.cc",
+    "src/partition_alloc/address_space_randomization.cc",
+    "src/partition_alloc/allocation_guard.cc",
+    "src/partition_alloc/allocator_config.cc",
+    "src/partition_alloc/bounds_checks.cc",
+    "src/partition_alloc/compressed_pointer.cc",
+    "src/partition_alloc/dangling_raw_ptr_checks.cc",
+    "src/partition_alloc/gwp_asan_support.cc",
+    "src/partition_alloc/in_slot_metadata.cc",
+    "src/partition_alloc/internal_allocator.cc",
+    "src/partition_alloc/memory_reclaimer.cc",
+    "src/partition_alloc/oom.cc",
+    "src/partition_alloc/oom_callback.cc",
+    "src/partition_alloc/page_allocator.cc",
+    "src/partition_alloc/partition_address_space.cc",
+    "src/partition_alloc/partition_alloc.cc",
+    "src/partition_alloc/partition_alloc_hooks.cc",
+    "src/partition_alloc/partition_bucket.cc",
+    "src/partition_alloc/partition_cookie.cc",
+    "src/partition_alloc/partition_dcheck_helper.cc",
+    "src/partition_alloc/partition_freelist_entry.cc",
+    "src/partition_alloc/partition_oom.cc",
+    "src/partition_alloc/partition_page.cc",
+    "src/partition_alloc/partition_root.cc",
+    "src/partition_alloc/partition_stats.cc",
+    "src/partition_alloc/random.cc",
+    "src/partition_alloc/reservation_offset_table.cc",
+    "src/partition_alloc/scheduler_loop_quarantine.cc",
+    "src/partition_alloc/scheduler_loop_quarantine_support.cc",
+    "src/partition_alloc/slot_address_and_size.cc",
+    "src/partition_alloc/slot_start.cc",
+    "src/partition_alloc/spinning_mutex.cc",
+    "src/partition_alloc/stack/stack.cc",
+    "src/partition_alloc/tagging.cc",
+    "src/partition_alloc/thread_cache.cc",
+    "src/partition_alloc/thread_isolation/pkey.cc",
+    "src/partition_alloc/thread_isolation/thread_isolation.cc",
+]
+
+ALLOCATOR_CORE_HDRS_COMMON = [
+    "src/partition_alloc/aarch64_support.h",
+    "src/partition_alloc/address_pool_manager.h",
+    "src/partition_alloc/address_pool_manager_bitmap.h",
+    "src/partition_alloc/address_pool_manager_types.h",
+    "src/partition_alloc/address_space_randomization.h",
+    "src/partition_alloc/address_space_stats.h",
+    "src/partition_alloc/allocation_guard.h",
+    "src/partition_alloc/allocator_config.h",
+    "src/partition_alloc/bounds_checks.h",
+    "src/partition_alloc/bucket_lookup.h",
+    "src/partition_alloc/compressed_pointer.h",
+    "src/partition_alloc/dangling_raw_ptr_checks.h",
+    "src/partition_alloc/flags.h",
+    "src/partition_alloc/free_hint.h",
+    "src/partition_alloc/gwp_asan_support.h",
+    "src/partition_alloc/in_slot_metadata.h",
+    "src/partition_alloc/internal_allocator.h",
+    "src/partition_alloc/internal_allocator_forward.h",
+    "src/partition_alloc/memory_reclaimer.h",
+    "src/partition_alloc/oom.h",
+    "src/partition_alloc/oom_callback.h",
+    "src/partition_alloc/page_allocator.h",
+    "src/partition_alloc/page_allocator_constants.h",
+    "src/partition_alloc/partition_address_space.h",
+    "src/partition_alloc/partition_alloc-inl.h",
+    "src/partition_alloc/partition_alloc.h",
+    "src/partition_alloc/partition_alloc_allocation_data.h",
+    "src/partition_alloc/partition_alloc_check.h",
+    "src/partition_alloc/partition_alloc_config.h",
+    "src/partition_alloc/partition_alloc_constants.h",
+    "src/partition_alloc/partition_alloc_forward.h",
+    "src/partition_alloc/partition_alloc_hooks.h",
+    "src/partition_alloc/partition_bucket.h",
+    "src/partition_alloc/partition_cookie.h",
+    "src/partition_alloc/partition_dcheck_helper.h",
+    "src/partition_alloc/partition_direct_map_extent.h",
+    "src/partition_alloc/partition_freelist_entry.h",
+    "src/partition_alloc/partition_lock.h",
+    "src/partition_alloc/partition_oom.h",
+    "src/partition_alloc/partition_page.h",
+    "src/partition_alloc/partition_page_constants.h",
+    "src/partition_alloc/partition_root.h",
+    "src/partition_alloc/partition_stats.h",
+    "src/partition_alloc/partition_superpage_extent_entry.h",
+    "src/partition_alloc/partition_tls.h",
+    "src/partition_alloc/random.h",
+    "src/partition_alloc/reservation_offset_table.h",
+    "src/partition_alloc/reverse_bytes.h",
+    "src/partition_alloc/scheduler_loop_quarantine.h",
+    "src/partition_alloc/scheduler_loop_quarantine_support.h",
+    "src/partition_alloc/slot_address_and_size.h",
+    "src/partition_alloc/slot_start.h",
+    "src/partition_alloc/spinning_mutex.h",
+    "src/partition_alloc/stack/stack.h",
+    "src/partition_alloc/tagging.h",
+    "src/partition_alloc/thread_cache.h",
+    "src/partition_alloc/thread_isolation/alignment.h",
+    "src/partition_alloc/thread_isolation/pkey.h",
+    "src/partition_alloc/thread_isolation/thread_isolation.h",
+    "src/partition_alloc/yield_processor.h",
+    "src/partition_alloc/internal/page_allocator_internal.h",
+    "src/partition_alloc/internal/partition_address_space_internal.h",
+    "src/partition_alloc/internal/partition_page_internal.h",
+    "src/partition_alloc/internal/partition_root_exports.h",
+    "src/partition_alloc/internal/partition_root_internal.h",
+    "src/partition_alloc/internal/partition_superpage_extent_entry_internal.h",
+    "src/partition_alloc/internal/reservation_offset_table_internal.h",
+    "src/partition_alloc/internal/thread_cache_internal.h",
+]
+
+ALLOCATOR_CORE_SRCS_POSIX = [
+    "src/partition_alloc/page_allocator_internals_posix.cc",
+]
+
+ALLOCATOR_CORE_HDRS_POSIX = [
+    "src/partition_alloc/page_allocator_internals_posix.h",
+]
+
+ALLOCATOR_CORE_SRCS_WIN = [
+    "src/partition_alloc/partition_tls_win.cc",
+]
+
+ALLOCATOR_CORE_HDRS_WIN = [
+    "src/partition_alloc/page_allocator_internals_win.h",
+]
+
+ALLOCATOR_CORE_HDRS_FUCHSIA = [
+    "src/partition_alloc/page_allocator_internals_fuchsia.h",
+]
+
+ALLOCATOR_CORE_SRCS_X64 = [
+    "src/partition_alloc/stack/asm/x64/push_registers_asm.cc",
+]
+
+ALLOCATOR_CORE_HDRS_X64 = [
+    "src/partition_alloc/pool_offset_freelist.h",
+]
+
+ALLOCATOR_CORE_SRCS_X86 = [
+    "src/partition_alloc/stack/asm/x86/push_registers_asm.cc",
+]
+
+ALLOCATOR_CORE_SRCS_ARM64 = [
+    "src/partition_alloc/stack/asm/arm64/push_registers_asm.cc",
+]
+
+cc_library(
+    name = "allocator_core",
+    srcs = ALLOCATOR_CORE_SRCS_COMMON + select({
+        "@platforms//os:linux": ALLOCATOR_CORE_SRCS_POSIX,
+        "@platforms//os:android": ALLOCATOR_CORE_SRCS_POSIX,
+        "@platforms//os:macos": ALLOCATOR_CORE_SRCS_POSIX,
+        "@platforms//os:ios": ALLOCATOR_CORE_SRCS_POSIX,
+        "@platforms//os:windows": ALLOCATOR_CORE_SRCS_WIN,
+        "@platforms//os:fuchsia": ALLOCATOR_CORE_SRCS_POSIX,
+        "//conditions:default": ALLOCATOR_CORE_SRCS_POSIX,
+    }) + select({
+        "@platforms//cpu:x86_64": ALLOCATOR_CORE_SRCS_X64,
+        "@platforms//cpu:x86_32": ALLOCATOR_CORE_SRCS_X86,
+        "@platforms//cpu:arm64": ALLOCATOR_CORE_SRCS_ARM64,
+        "//conditions:default": [],
+    }),
+    hdrs = ALLOCATOR_CORE_HDRS_COMMON + select({
+        "@platforms//os:linux": ALLOCATOR_CORE_HDRS_POSIX,
+        "@platforms//os:android": ALLOCATOR_CORE_HDRS_POSIX,
+        "@platforms//os:macos": ALLOCATOR_CORE_HDRS_POSIX,
+        "@platforms//os:ios": ALLOCATOR_CORE_HDRS_POSIX,
+        "@platforms//os:windows": ALLOCATOR_CORE_HDRS_WIN,
+        "@platforms//os:fuchsia": ALLOCATOR_CORE_HDRS_POSIX + ALLOCATOR_CORE_HDRS_FUCHSIA,
+        "//conditions:default": ALLOCATOR_CORE_HDRS_POSIX,
+    }) + select({
+        "@platforms//cpu:x86_64": ALLOCATOR_CORE_HDRS_X64,
+        "@platforms//cpu:arm64": ALLOCATOR_CORE_HDRS_X64,
+        "//conditions:default": [],
+    }),
+    defines = ["IS_PARTITION_ALLOC_IMPL"] + select({
+        "@platforms//os:android": ["HAS_PR_MTE_MACROS"],
+        "//conditions:default": [],
+    }),
+    includes = ["src"],
+    visibility = ["//visibility:private"],
+    deps = [
+        ":allocator_base",
+        ":build_config",
+        ":buildflags",
+    ],
+)
+
+# ALLOCATOR_SHIM ---------------------------------------------------------------
+
+ALLOCATOR_SHIM_SRCS_COMMON = [
+    "src/partition_alloc/shim/allocator_shim_dispatch_to_noop_on_free.cc",
+    "src/partition_alloc/shim/allocator_shim_default_dispatch_to_partition_alloc.cc",
+]
+
+ALLOCATOR_SHIM_SRCS_LINUX = [
+    "src/partition_alloc/shim/allocator_shim.cc",
+]
+
+ALLOCATOR_SHIM_SRCS_ANDROID = [
+    "src/partition_alloc/shim/allocator_shim_android.cc",
+]
+
+ALLOCATOR_SHIM_SRCS_APPLE = [
+    "src/partition_alloc/shim/allocator_interception_apple.mm",
+    "src/partition_alloc/shim/allocator_shim_apple.cc",
+    "src/partition_alloc/shim/malloc_zone_functions_apple.cc",
+]
+
+ALLOCATOR_SHIM_SRCS_WIN = [
+    "src/partition_alloc/shim/winheap_stubs_win.cc",
+    "src/partition_alloc/shim/allocator_shim_win_static.cc",
+]
+
+ALLOCATOR_SHIM_HDRS_COMMON = [
+    "src/partition_alloc/shim/allocator_shim.h",
+    "src/partition_alloc/shim/allocator_shim_internals.h",
+    "src/partition_alloc/shim/shim_alloc_functions.h",
+    "src/partition_alloc/shim/allocator_shim_functions.h",
+    "src/partition_alloc/shim/allocator_dispatch.h",
+    "src/partition_alloc/shim/allocator_shim_dispatch_to_noop_on_free.h",
+    "src/partition_alloc/shim/allocator_shim_default_dispatch_to_partition_alloc.h",
+    "src/partition_alloc/shim/allocator_shim_default_dispatch_to_partition_alloc_internal.h",
+]
+
+ALLOCATOR_SHIM_HDRS_LINUX = [
+    "src/partition_alloc/shim/allocator_shim_override_cpp_symbols.h",
+    "src/partition_alloc/shim/allocator_shim_override_glibc_weak_symbols.h",
+    "src/partition_alloc/shim/allocator_shim_override_libc_symbols.h",
+]
+
+ALLOCATOR_SHIM_HDRS_ANDROID = [
+    "src/partition_alloc/shim/allocator_shim_override_cpp_symbols.h",
+    "src/partition_alloc/shim/allocator_shim_override_linker_wrapped_symbols.h",
+]
+
+ALLOCATOR_SHIM_HDRS_APPLE = [
+    "src/partition_alloc/shim/allocator_shim_override_apple_default_zone.h",
+    "src/partition_alloc/shim/allocator_shim_override_apple_symbols.h",
+    "src/partition_alloc/shim/early_zone_registration_utils_apple.h",
+    "src/partition_alloc/shim/allocator_interception_apple.h",
+    "src/partition_alloc/shim/malloc_zone_functions_apple.h",
+]
+
+ALLOCATOR_SHIM_HDRS_WIN = [
+    "src/partition_alloc/shim/allocator_shim_override_ucrt_symbols_win.h",
+    "src/partition_alloc/shim/winheap_stubs_win.h",
+]
+
+cc_library(
+    name = "allocator_shim",
+    srcs = ALLOCATOR_SHIM_SRCS_COMMON + select({
+        "@platforms//os:linux": ALLOCATOR_SHIM_SRCS_LINUX,
+        "@platforms//os:android": ALLOCATOR_SHIM_SRCS_ANDROID,
+        "@platforms//os:macos": ALLOCATOR_SHIM_SRCS_APPLE,
+        "@platforms//os:ios": ALLOCATOR_SHIM_SRCS_APPLE,
+        "@platforms//os:windows": ALLOCATOR_SHIM_SRCS_WIN,
+        "//conditions:default": ALLOCATOR_SHIM_SRCS_LINUX,
+    }),
+    hdrs = ALLOCATOR_SHIM_HDRS_COMMON + select({
+        "@platforms//os:linux": ALLOCATOR_SHIM_HDRS_LINUX,
+        "@platforms//os:android": ALLOCATOR_SHIM_HDRS_ANDROID,
+        "@platforms//os:macos": ALLOCATOR_SHIM_HDRS_APPLE,
+        "@platforms//os:ios": ALLOCATOR_SHIM_HDRS_APPLE,
+        "@platforms//os:windows": ALLOCATOR_SHIM_HDRS_WIN,
+        "//conditions:default": ALLOCATOR_SHIM_HDRS_LINUX,
+    }),
+    copts = ["-fno-exceptions"] + select({
+        "@platforms//os:macos": PA_MAC_COPTS,
+        "//conditions:default": [],
+    }),
+    defines = ["IS_ALLOCATOR_SHIM_IMPL"],
+    includes = ["src"],
+    linkopts = select({
+        "@platforms//os:android": PA_ANDROID_LINKOPTS,
+        "//conditions:default": [],
+    }),
+    visibility = ["//visibility:private"],
+    deps = [
+        ":allocator_base",
+        ":allocator_core",
+        ":build_config",
+        ":buildflags",
+    ],
+)
+
+# RAW_PTR ----------------------------------------------------------------------
+
+cc_library(
+    name = "raw_ptr",
+    srcs = [
+        "src/partition_alloc/pointers/empty.cc",
+        "src/partition_alloc/pointers/instance_tracer.cc",
+        "src/partition_alloc/pointers/raw_ptr_backup_ref_impl.cc",
+        "src/partition_alloc/pointers/realloc_protected_iterator.cc",
+    ],
+    hdrs = [
+        "src/partition_alloc/pointers/instance_tracer.h",
+        "src/partition_alloc/pointers/raw_ptr.h",
+        "src/partition_alloc/pointers/raw_ptr_backup_ref_impl.h",
+        "src/partition_alloc/pointers/raw_ptr_cast.h",
+        "src/partition_alloc/pointers/raw_ptr_exclusion.h",
+        "src/partition_alloc/pointers/raw_ptr_noop_impl.h",
+        "src/partition_alloc/pointers/raw_ref.h",
+        "src/partition_alloc/pointers/realloc_protected_iterator.h",
+    ],
+    defines = ["IS_RAW_PTR_IMPL"],
+    includes = ["src"],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":allocator_base",
+        ":allocator_core",
+        ":build_config",
+        ":buildflags",
+    ],
+)
+
+# PARTITION_ALLOC --------------------------------------------------------------
+
+cc_library(
+    name = "partition_alloc",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":allocator_base",
+        ":allocator_core",
+        ":allocator_shim",
+        ":buildflags",
+    ],
+)

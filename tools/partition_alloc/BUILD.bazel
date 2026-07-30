@@ -1,0 +1,30 @@
+# Copyright 2026 Google LLC.
+#
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+load("//bazel:skia_rules.bzl", "skia_cc_library")
+
+package(
+    default_applicable_licenses = ["//:license"],
+)
+
+licenses(["notice"])
+
+skia_cc_library(
+    name = "test_support",
+    testonly = True,
+    srcs = ["TestSupport.cpp"],
+    hdrs = ["TestSupport.h"],
+    visibility = [
+        "//bench:__pkg__",
+        "//dm:__pkg__",
+        "//tools/testrunners/common:__pkg__",
+    ],
+    deps = select({
+        "//src/partition_alloc:enabled_true": [
+            "//:core",
+            "@partition_alloc",
+        ],
+        "//conditions:default": [],
+    }),
+)

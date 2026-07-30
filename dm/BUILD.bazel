@@ -93,5 +93,8 @@ skia_cc_binary(
         "//tools/graphite:precompile_utils",
         "//tools/sksltrace:sksltraceutils",
         "//tools/trace",
-    ],
+    ] + select({
+        "//src/partition_alloc:enabled_true": ["//tools/partition_alloc:test_support"],
+        "//conditions:default": [],
+    }),
 )
