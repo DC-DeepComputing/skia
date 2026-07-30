@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c0461cd_2def1623",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2026-07-30T15:11:37Z",
+      "side": 1,
+      "message": "Genuinely sorry for not getting back to this sooner!! Adding LGTM for posterity, and these comments are just food for thought for potential follow up.",
+      "revId": "8e17a1b12373fe6cf2f5206358d7b16cb77f6c65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc5a834e_232d3031",
+        "filename": "PRESUBMIT.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 508,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2026-07-30T15:11:37Z",
+      "side": 1,
+      "message": "Maybe re-enable this, but with an allowlist for the `example/` directory, so we can use `std::mutex` in examples moving forward? Similarly to how line 511 seems to have an allowlist for `std::thread`.",
+      "revId": "8e17a1b12373fe6cf2f5206358d7b16cb77f6c65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e421db2_d6f77820",
+        "filename": "example/external_client/src/log_tester.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2026-07-30T15:11:37Z",
+      "side": 1,
+      "message": "For accuracy of example code, we might want to also add a lock guard around other functions\u0027 access to `fLogs` and `fCounter`?",
+      "revId": "8e17a1b12373fe6cf2f5206358d7b16cb77f6c65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7fce64a_4cbc32d0",
+        "filename": "src/core/SkLog.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2026-07-30T15:11:37Z",
+      "side": 1,
+      "message": "If a client has set a handler, should we early out and not call `SkLogVAList`? I.e. force clients to write their own logs. Otherwise I\u0027m unsure how we would prevent clients from overriding e.g. SkLogVAList in the future without also force them to see duplicate logs, if they want their own formatting applied and do their own logging.",
+      "revId": "8e17a1b12373fe6cf2f5206358d7b16cb77f6c65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

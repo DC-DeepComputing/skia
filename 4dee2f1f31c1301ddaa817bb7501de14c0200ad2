@@ -121,6 +121,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "823e2def_27010c4a",
+        "filename": "include/utils/SkLogHandler.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2026-07-30T15:11:37Z",
+      "side": 1,
+      "message": "This is a bridge we could defer to crossing in the future, but what about for clients that have long-running processes, but frequently tear down / recreate ~all of their Skia context objects? HWUI for example allows apps to continue existing at a process level in the background for a long time, but will frequently send memory trim signals that force apps to destroy all of their graphics-related objects (and recreate them on app resume). Allowing clients to upsert a (potentially null) handler would make it way easier for apps like HWUI to have a log handler that e.g. references other Skia state / context.",
+      "parentUuid": "26030000_fbdafd4c",
+      "range": {
+        "startLine": 31,
+        "startChar": 72,
+        "endLine": 31,
+        "endChar": 91
+      },
+      "revId": "4dee2f1f31c1301ddaa817bb7501de14c0200ad2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5bc00a28_7f352718",
         "filename": "include/utils/SkLogHandler.h",
         "patchSetId": 4
