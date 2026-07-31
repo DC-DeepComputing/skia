@@ -2252,7 +2252,7 @@ public:
 
         example: https://fiddle.skia.org/c/@Canvas_isClipEmpty
     */
-    virtual bool isClipEmpty() const;
+    bool isClipEmpty() const;
 
     /** Returns true if clip is SkRect and not empty.
         Returns false if the clip is empty, or if it is not SkRect.
@@ -2261,7 +2261,7 @@ public:
 
         example: https://fiddle.skia.org/c/@Canvas_isClipRect
     */
-    virtual bool isClipRect() const;
+    bool isClipRect() const;
 
     /** Returns the current transform from local coordinates to the 'device', which for most
      *  purposes means pixels.
