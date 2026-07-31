@@ -16,6 +16,23 @@
       "message": "Verified that the patchset was built in M144 locally.",
       "revId": "681db3515f87ca6b3fe204bfbdc9547b6e162ad4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d26b8f7_91861f6d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3621349
+      },
+      "writtenOn": "2026-07-31T23:31:42Z",
+      "side": 1,
+      "message": "The bug was approved for M144 LTS. PTAL.",
+      "revId": "681db3515f87ca6b3fe204bfbdc9547b6e162ad4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
