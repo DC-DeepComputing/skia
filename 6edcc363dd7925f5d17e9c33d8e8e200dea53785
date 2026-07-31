@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f478f35_0994eb3d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-31T13:11:03Z",
+      "side": 1,
+      "message": "Thank you for contributing, but without a specific test scenario or bug, I am very hesitant to accept a patch to Ganesh\u0027s clipping code at this point. Additionally, its pixel snapping for both inner and outer bounds is intentionally conservative to deal with the unknown behavior of a GPU rasterizing non-AA geometry/clips having to combine with anti-aliased geometry/clips.\n\nGanesh is effectively deprecated at this point and Graphite has a more robust contains() implementation that is based on the underlying floating point geometry.",
+      "revId": "6edcc363dd7925f5d17e9c33d8e8e200dea53785",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
