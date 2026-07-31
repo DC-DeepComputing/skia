@@ -288,7 +288,23 @@ XferRowFn get_xfer_row_fn(TextureFormat format, uint8_t ops) {
     }
 }
 
-void optimize_colortypes_and_swizzle(SkColorType* texBaseCT, Swizzle* readSwizzle) {
+bool bgra_to_rgba(SkColorType* ct) {
+    switch (*ct) {
+        case kBGRA_8888_SkColorType:    *ct = kRGBA_8888_SkColorType;    return true;
+        case kBGRA_1010102_SkColorType: *ct = kRGBA_1010102_SkColorType; return true;
+        case kBGR_101010x_SkColorType:  *ct = kRGB_101010x_SkColorType;  return true;
+        // NOTE: For now there's no RGBA version of the _XR color types, so they can't be swapped
+        case kBGRA_10101010_XR_SkColorType:
+        case kBGR_101010x_XR_SkColorType: [[fallthrough]];
+        default:
+            // No colortype consolidation possible by switching to a kSwapRB op instead.
+            return false;
+    }
+}
+
+void optimize_colortypes_and_swizzle(SkColorType* texBaseCT,
+                                     Swizzle* readSwizzle,
+                                     SkEnumBitMask<FormatXferOp>* xferOps) {
     // Some combinations of swizzle and load/store ops in raster pipeline are redundant so try to
     // make adjustments to reduce or eliminate the use of raster pipeline entirely.
 
@@ -309,13 +325,42 @@ void optimize_colortypes_and_swizzle(SkColorType* texBaseCT, Swizzle* readSwizzl
         adjustedBase = kGray_8_SkColorType;
     }
 
-    // TODO(michaelludwig): Include adjustments to account for redundant RB swaps between colortype
-    // and the swizzle and the FormatXferOp, and remove unnecessary alpha opacity masking (e.g.
-    // rgbx -> rgba) if the target will be masking alpha when sampling/reading anyways.
+    // TODO(michaelludwig): Remove unnecessary alpha opacity masking (e.g. rgbx -> rgba) if the
+    // target will be masking alpha when sampling/reading anyways.
 
     if (adjustedBase != *texBaseCT) {
         *texBaseCT = adjustedBase;
         *readSwizzle = Swizzle::RGBA();
+    }
+
+    // The texture's xfer ops, color type, and read swizzle are applied in a group, whether or not
+    // that group is at the start or end of the transfer (and these steps within the group changes).
+    // However, within the group, swapping red and blue can happen at any time without effecting
+    // the result of the group's steps. Since swapping is it's own inverse, count the number of
+    // total swaps and apply at most one in `xferOps`.
+    int numRBSwaps = 0;
+    if ((*readSwizzle)[0] == 'b' && (*readSwizzle)[2] == 'r') {
+        // Remove the swap in the swizzle (moving towards a no-op swizzle).
+        *readSwizzle = Swizzle::Concat(*readSwizzle, Swizzle::BGRA());
+        numRBSwaps++;
+    }
+    if (bgra_to_rgba(texBaseCT)) {
+        numRBSwaps++;
+    }
+
+    if (*xferOps & FormatXferOp::kSwapRB) {
+        // This would increment numRBSwaps, so if numRBSwaps is currently odd the final count would
+        // be even and we should remove kSwapRB. If it's currently even, the final count would be
+        // odd and we should keep it.
+        if (numRBSwaps & 1) {
+            *xferOps &= ~FormatXferOp::kSwapRB;
+        }
+    } else {
+        // There's no extra kSwapRB already in xferOps, so if numRBSwaps is odd then we need to add
+        // a swap (otherwise leave it unset).
+        if (numRBSwaps & 1) {
+            *xferOps |= FormatXferOp::kSwapRB;
+        }
     }
 }
 
@@ -359,12 +404,10 @@ std::optional<TextureFormatXferFn> TextureFormatXferFn::MakeCpuToGpu(
         return std::nullopt;
     }
 
-    optimize_colortypes_and_swizzle(&baseCT, &dstReadSwizzle);
+    optimize_colortypes_and_swizzle(&baseCT, &dstReadSwizzle, &xferOps);
     const bool computeLuminance = account_for_luminance(srcCT, csSteps, &baseCT);
 
     uint8_t postOps = 0;
-    Swizzle srcToDst = dstReadSwizzle.invert();
-
     if (xferOps & FormatXferOp::kSwapRB) {
         postOps |= kSwapRB;
     }
@@ -380,7 +423,8 @@ std::optional<TextureFormatXferFn> TextureFormatXferFn::MakeCpuToGpu(
     //       srcToDst(dstReadSwizzle^-1)? ->
     //       store(baseCT)}? ->
     //  postOps(baseCT->TF)?
-    auto rp = RPOps::Make(srcCT, baseCT, csSteps, BT709Luminance{computeLuminance}, srcToDst);
+    auto rp = RPOps::Make(srcCT, baseCT, &postOps, // rpModifiers =>
+                          csSteps, BT709Luminance{computeLuminance}, dstReadSwizzle.invert());
     return TextureFormatXferFn(dstFormat, /*preOps=*/0, std::move(rp), postOps);
 }
 
@@ -394,11 +438,10 @@ std::optional<TextureFormatXferFn> TextureFormatXferFn::MakeGpuToCpu(
         return std::nullopt;
     }
 
-    optimize_colortypes_and_swizzle(&baseCT, &srcReadSwizzle);
+    optimize_colortypes_and_swizzle(&baseCT, &srcReadSwizzle, &xferOps);
     const bool computeLuminance = account_for_luminance(baseCT, csSteps, &dstCT);
 
     uint8_t preOps = 0;
-    Swizzle srcToDst = srcReadSwizzle;
     if (xferOps & FormatXferOp::kSwapRB) {
         preOps |= kSwapRB;
     }
@@ -414,7 +457,8 @@ std::optional<TextureFormatXferFn> TextureFormatXferFn::MakeGpuToCpu(
     //       csSteps? ->
     //       luminance? ->
     //       store(dstCT)}?
-    auto rp = RPOps::Make(baseCT, dstCT, srcToDst, csSteps, BT709Luminance{computeLuminance});
+    auto rp = RPOps::Make(baseCT, dstCT, &preOps, // rpModifiers =>
+                          srcReadSwizzle, csSteps, BT709Luminance{computeLuminance});
     return TextureFormatXferFn(srcFormat, preOps, std::move(rp), /*postOps=*/0);
 }
 
@@ -433,11 +477,30 @@ template <typename... RPModifiers>
 sk_sp<TextureFormatXferFn::RPOps> TextureFormatXferFn::RPOps::Make(
         SkColorType srcColorType,
         SkColorType dstColorType,
+        uint8_t* xferOps,
         RPModifiers... rpModifiers) {
-    if (srcColorType == dstColorType &&
-        (!SkToBool(rpModifiers) && ...)) {
+    const bool modifiersNeedRP = (SkToBool(rpModifiers) || ...);
+
+    if (srcColorType == dstColorType && !modifiersNeedRP) {
         return nullptr; // Identity conversion
+    } else if (!modifiersNeedRP) {
+        // A color conversion has to go through raster pipeline, *unless* we can push it back into
+        // `xferOps` to avoid needing to use two different transfer systems.
+        SkColorType adjustedSrc = srcColorType;
+        SkColorType adjustedDst = dstColorType;
+        if ((bgra_to_rgba(&adjustedSrc) && adjustedSrc == dstColorType) ||
+            (bgra_to_rgba(&adjustedDst) && adjustedDst == srcColorType)) {
+            // Swapping will remove the need for RP, so toggle the swap op in `xferOps`
+            if (*xferOps & kSwapRB) {
+                *xferOps &= ~kSwapRB;
+            } else {
+                *xferOps |= kSwapRB;
+            }
+            return nullptr;
+        }
     }
+    // else something operates between the src and dst color types, so we can't consume any color
+    // type mismatch into a swap operation.
 
     // Luminance has to be calculated before the texture's swizzle so it's pulled out manually
     // and put in the right place in `rpModifiers`, so we don't want to encounter them where
@@ -451,9 +514,27 @@ sk_sp<TextureFormatXferFn::RPOps> TextureFormatXferFn::RPOps::Make(
     // pointers for the appended ops to reference, and will be patched during run().
     ops->fRP.appendLoad(srcColorType, &ops->fSrcCtx);
 
-    // We must create a copy of rpModifiers[i] in the arena, because its apply() function may
-    // reference parts of itself as the context's passed to the appended raster pipeline ops
-    (ops->fArena.make<decltype(rpModifiers)>(rpModifiers)->apply(&ops->fRP), ...);
+    auto apply = [target = ops.get()] <typename RPModifier> (RPModifier modifier,
+                                                             uint8_t* xferOps) {
+        const RPModifier* stableModifier = &modifier;
+        if constexpr (std::is_same_v<RPModifier, Swizzle>) {
+            // Swizzle does not require any persisted context, but we can also fold kSwapRB into
+            // the swizzle. This is done here so that the kSwapRB op is grouped with the swizzle
+            // modifier (given the order of modifiers passed into Make).
+            if (*xferOps & kSwapRB) {
+                modifier = Swizzle::Concat(modifier, Swizzle::BGRA());
+                *xferOps &= ~kSwapRB;
+            }
+        } else if constexpr (!std::is_same_v<RPModifier, BT709Luminance>) {
+            // We must create a copy of rpModifiers[i] in the arena, because its apply() function
+            // may reference parts of itself as the context's passed to the appended ops.
+            stableModifier = target->fArena.make<RPModifier>(modifier);
+        } // else BT709Luminance does not require any persisted context
+
+        stableModifier->apply(&target->fRP);
+    };
+
+    (apply(rpModifiers, xferOps), ...);
 
     ops->fRP.appendStore(dstColorType, &ops->fDstCtx);
     return ops;

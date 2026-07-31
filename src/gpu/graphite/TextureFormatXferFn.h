@@ -82,7 +82,8 @@ private:
         const int fDstBpp;
 
         template<typename... RPModifiers>
-        static sk_sp<RPOps> Make(SkColorType srcCT, SkColorType dstCT, RPModifiers...);
+        static sk_sp<RPOps> Make(SkColorType srcCT, SkColorType dstCT,
+                                 uint8_t* xferOps, RPModifiers...);
 
         // Returns true if RasterPipeline can process the whole 2D block via its strides
         bool setStrides(size_t srcRowBytes, size_t dstRowBytes, uint8_t otherOps);
