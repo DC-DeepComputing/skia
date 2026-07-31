@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f059a8c_37697de5",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 489,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-07-31T16:00:15Z",
+      "side": 1,
+      "message": "Did this, done.",
+      "parentUuid": "fdd0c2c8_2fd60af4",
+      "range": {
+        "startLine": 486,
+        "startChar": 6,
+        "endLine": 489,
+        "endChar": 5
+      },
+      "revId": "da004955a04cacc6b63eb37d504cc2c2ec9e181b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b63c13e0_2a025a46",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-07-31T13:40:21Z",
       "side": 1,
       "message": "This comment has actually been out of data for quite some time, right now it\u0027s just 3.",
+      "range": {
+        "startLine": 258,
+        "startChar": 51,
+        "endLine": 258,
+        "endChar": 52
+      },
+      "revId": "da004955a04cacc6b63eb37d504cc2c2ec9e181b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b2ad278_85bdb1e2",
+        "filename": "src/gpu/graphite/PaintParamsKey.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-07-31T16:00:15Z",
+      "side": 1,
+      "message": "Changed the comment and also changed the array count to both be 3 to reflect that.",
+      "parentUuid": "b63c13e0_2a025a46",
       "range": {
         "startLine": 258,
         "startChar": 51,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "85f30ee8_6b5e4452",
+        "filename": "src/gpu/graphite/PaintParamsKey.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-07-31T16:00:15Z",
+      "side": 1,
+      "message": "Done, added asserts for that.",
+      "parentUuid": "b00ddb64_018a43e9",
+      "range": {
+        "startLine": 273,
+        "startChar": 12,
+        "endLine": 275,
+        "endChar": 74
+      },
+      "revId": "da004955a04cacc6b63eb37d504cc2c2ec9e181b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b0ff5b3e_b8fa02e6",
@@ -83,6 +155,30 @@
       "writtenOn": "2026-07-31T13:40:21Z",
       "side": 1,
       "message": "nit fields should have `fSrcColor` style.",
+      "range": {
+        "startLine": 40,
+        "startChar": 22,
+        "endLine": 40,
+        "endChar": 30
+      },
+      "revId": "da004955a04cacc6b63eb37d504cc2c2ec9e181b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6163e135_0a43c70a",
+        "filename": "src/gpu/graphite/PaintParamsKey.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-07-31T16:00:15Z",
+      "side": 1,
+      "message": "Renamed all the fields to have the f prefix.",
+      "parentUuid": "b0ff5b3e_b8fa02e6",
       "range": {
         "startLine": 40,
         "startChar": 22,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c87d253_0b5c3891",
+        "filename": "src/gpu/graphite/PaintParamsKey.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-07-31T16:00:15Z",
+      "side": 1,
+      "message": "Sure, slightly changed the wording at the end to specify that the generated shaders wouldn\u0027t be impacted because they would result in the same shaders irrespective of order of root blocks.",
+      "parentUuid": "b6ddad65_2be6079c",
+      "range": {
+        "startLine": 74,
+        "startChar": 0,
+        "endLine": 75,
+        "endChar": 59
+      },
+      "revId": "da004955a04cacc6b63eb37d504cc2c2ec9e181b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "31971246_fa5bf107",
@@ -129,6 +249,30 @@
       "writtenOn": "2026-07-31T13:40:21Z",
       "side": 1,
       "message": "parellel PaintParams changes",
+      "range": {
+        "startLine": 329,
+        "startChar": 0,
+        "endLine": 330,
+        "endChar": 22
+      },
+      "revId": "da004955a04cacc6b63eb37d504cc2c2ec9e181b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f570f214_a6dcfd5e",
+        "filename": "src/gpu/graphite/precompile/PaintOption.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 330,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-07-31T16:00:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "31971246_fa5bf107",
       "range": {
         "startLine": 329,
         "startChar": 0,
