@@ -78,6 +78,7 @@ action("tint_cmake") {
   args = [
     "--cc=" + _cc,
     "--cxx=" + _cxx,
+    "--cxx_flags=-Wno-changes-meaning",
     "--output_path=" + rebase_path(outputs[0], root_build_dir),
     "--depfile_path=" + rebase_path(depfile, root_build_dir),
     "--target_os=" + host_os,
@@ -226,6 +227,7 @@ action("dawn_cmake") {
   args = [
     "--cc=" + _cc,
     "--cxx=" + _cxx,
+    "--cxx_flags=-Wno-changes-meaning",
     "--output_path=" + rebase_path(outputs[0], root_build_dir),
     "--depfile_path=" + rebase_path(depfile, root_build_dir),
     "--gen_dir=" + rebase_path(target_gen_dir, root_build_dir),
