@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9856af48_e84bdb02",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 299,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-31T17:13:14Z",
+      "side": 1,
+      "message": "I wasn\u0027t sure if we can trust the fType necessarily (e.g. from serialization), but I\u0027ve made it an assert to see if our fuzzers can tickle it.",
+      "parentUuid": "d9bc2a80_87f34fa4",
+      "range": {
+        "startLine": 299,
+        "startChar": 35,
+        "endLine": 299,
+        "endChar": 66
+      },
+      "revId": "37ef1df10ec9c89c50f7656fc7cb3f08fec225b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "36dedd2b_94324351",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-07-30T21:32:52Z",
       "side": 1,
       "message": "nit: Could take a span of verbs instead.",
+      "range": {
+        "startLine": 737,
+        "startChar": 30,
+        "endLine": 737,
+        "endChar": 53
+      },
+      "revId": "37ef1df10ec9c89c50f7656fc7cb3f08fec225b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04f0d9a5_f7031123",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 737,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-07-31T17:13:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "36dedd2b_94324351",
       "range": {
         "startLine": 737,
         "startChar": 30,
