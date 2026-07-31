@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "091cc4f6_77bebd55",
+        "filename": "src/core/RasterContext.h",
+        "patchSetId": 30
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-31T13:29:31Z",
+      "side": 1,
+      "message": "moved it to include/core/. Also removed RasterContext.cpp so that it would conform to the skia file structure. Let me know if this fits the vision",
+      "parentUuid": "e116bdec_05d2a47b",
+      "range": {
+        "startLine": 1,
+        "startChar": 1,
+        "endLine": 1,
+        "endChar": 2
+      },
+      "revId": "c30a344cfd99d38ef7b572e725536af9560d7e21",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6c9f33f4_3b19d3f2",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-07-29T20:01:08Z",
       "side": 1,
       "message": "Since we\u0027ve made all the factories public in include, it kind of seems like we might as well just make the SkContext public too now. There isn\u0027t really a reason to hide it in src/ since it is not like users can do anything with it if they happen to make one.",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 2
+      },
+      "revId": "c30a344cfd99d38ef7b572e725536af9560d7e21",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ea5a4ab_954cf5b5",
+        "filename": "src/core/SkContext.h",
+        "patchSetId": 30
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-31T13:29:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6c9f33f4_3b19d3f2",
       "range": {
         "startLine": 1,
         "startChar": 0,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f90546f_a40441e0",
+        "filename": "src/core/SkContext.h",
+        "patchSetId": 30
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-31T13:29:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5f0921db_37368142",
+      "range": {
+        "startLine": 25,
+        "startChar": 35,
+        "endLine": 26,
+        "endChar": 35
+      },
+      "revId": "c30a344cfd99d38ef7b572e725536af9560d7e21",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1bf39297_ee49167d",
@@ -83,6 +155,30 @@
       "writtenOn": "2026-07-29T20:01:08Z",
       "side": 1,
       "message": "If we move SkContext public we\u0027ll need to move this as well",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 2
+      },
+      "revId": "c30a344cfd99d38ef7b572e725536af9560d7e21",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "25a04e28_c445c83b",
+        "filename": "src/core/SkContextOptions.h",
+        "patchSetId": 30
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-31T13:29:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1bf39297_ee49167d",
       "range": {
         "startLine": 1,
         "startChar": 0,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f70d34f_07e74721",
+        "filename": "src/gpu/graphite/dawn/DawnGraphiteUtils.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-31T13:29:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9794a2fd_249c3d84",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 8,
+        "endChar": 31
+      },
+      "revId": "c30a344cfd99d38ef7b572e725536af9560d7e21",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bbe2c37f_3417f95d",
@@ -129,6 +249,30 @@
       "writtenOn": "2026-07-29T20:01:08Z",
       "side": 1,
       "message": "Why are you declaring this here? Isn\u0027t it already declared in VulkanGraphiteContext?",
+      "range": {
+        "startLine": 31,
+        "startChar": 1,
+        "endLine": 32,
+        "endChar": 73
+      },
+      "revId": "c30a344cfd99d38ef7b572e725536af9560d7e21",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1bbc98f0_3481392c",
+        "filename": "src/gpu/graphite/vk/VulkanGraphiteUtils.h",
+        "patchSetId": 30
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-07-31T13:29:31Z",
+      "side": 1,
+      "message": "you\u0027re right, my mistake.",
+      "parentUuid": "bbe2c37f_3417f95d",
       "range": {
         "startLine": 31,
         "startChar": 1,
