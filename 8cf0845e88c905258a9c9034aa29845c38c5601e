@@ -95,6 +95,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ba9655c_692bb0e3",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-31T15:02:04Z",
+      "side": 1,
+      "message": "I\u0027ll land this, and we can clean up anything else in a follow-up given OoO.",
+      "parentUuid": "7b1556a4_7bdc4c09",
+      "range": {
+        "startLine": 138,
+        "startChar": 50,
+        "endLine": 138,
+        "endChar": 87
+      },
+      "revId": "8cf0845e88c905258a9c9034aa29845c38c5601e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c45a5822_790ca033",
