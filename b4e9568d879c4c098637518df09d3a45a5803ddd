@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb0636cd_61a98a29",
+        "filename": "src/gpu/graphite/DrawListTypes.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-07-31T19:50:24Z",
+      "side": 1,
+      "message": "Could this be `const Rect::ComplementRect\u0026`? I see its just a float4 in the struct which seems trivial to copy, unsure of if reference semantics are worse or not because of that, but could still be marked const.",
+      "range": {
+        "startLine": 171,
+        "startChar": 37,
+        "endLine": 171,
+        "endChar": 57
+      },
+      "revId": "b4e9568d879c4c098637518df09d3a45a5803ddd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b0edaa8_afe044f7",
+        "filename": "src/gpu/graphite/DrawListTypes.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-07-31T19:50:24Z",
+      "side": 1,
+      "message": "Same here as my other reply",
+      "range": {
+        "startLine": 282,
+        "startChar": 12,
+        "endLine": 282,
+        "endChar": 43
+      },
+      "revId": "b4e9568d879c4c098637518df09d3a45a5803ddd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
