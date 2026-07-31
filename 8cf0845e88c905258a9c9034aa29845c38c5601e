@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "84dc2888_7189fbb1",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-31T13:02:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e0055487_f82db47c",
+      "range": {
+        "startLine": 112,
+        "startChar": 20,
+        "endLine": 112,
+        "endChar": 21
+      },
+      "revId": "8cf0845e88c905258a9c9034aa29845c38c5601e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "40dad05d_48a2e39b",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-07-30T15:59:50Z",
       "side": 1,
       "message": "nit: ternary here and then if in `searchBinding` is awkward",
+      "range": {
+        "startLine": 138,
+        "startChar": 50,
+        "endLine": 138,
+        "endChar": 87
+      },
+      "revId": "8cf0845e88c905258a9c9034aa29845c38c5601e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b1556a4_7bdc4c09",
+        "filename": "src/gpu/graphite/DrawListLayer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-31T13:02:31Z",
+      "side": 1,
+      "message": "Switching `searchBinding` to be exclusive to what is passed in seems to simplify all of this. lmkwyt.",
+      "parentUuid": "40dad05d_48a2e39b",
       "range": {
         "startLine": 138,
         "startChar": 50,
@@ -94,6 +142,30 @@
           ]
         }
       ],
+      "revId": "8cf0845e88c905258a9c9034aa29845c38c5601e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "adbcda63_f85529d7",
+        "filename": "src/gpu/graphite/DrawListTypes.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 410,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-31T13:02:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c45a5822_790ca033",
+      "range": {
+        "startLine": 410,
+        "startChar": 12,
+        "endLine": 410,
+        "endChar": 92
+      },
       "revId": "8cf0845e88c905258a9c9034aa29845c38c5601e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
