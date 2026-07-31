@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "245a2b6d_e901d7cc",
+        "filename": "src/gpu/graphite/DrawListTypes.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-07-31T20:21:44Z",
+      "side": 1,
+      "message": "I see thanks for the explanation that makes sense as to why I saw the other function in Rect.h also passed by value as well. Can we still mark it const so it\u0027d be `const Rect::ComplementRect drawBounds` (and in the other spot too) just to make it clear we are not modifying this value? Unless const also has some weird behavior I am not aware of relating to what you said. Other than that LGTM.",
+      "parentUuid": "8ead4dae_7511d9e4",
+      "range": {
+        "startLine": 171,
+        "startChar": 37,
+        "endLine": 171,
+        "endChar": 57
+      },
+      "revId": "b4e9568d879c4c098637518df09d3a45a5803ddd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9b0edaa8_afe044f7",
         "filename": "src/gpu/graphite/DrawListTypes.h",
         "patchSetId": 7
