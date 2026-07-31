@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2940549_dce20d96",
+        "filename": "src/gpu/graphite/vk/VulkanGraphiteUtils.h",
+        "patchSetId": 32
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-07-31T13:52:43Z",
+      "side": 1,
+      "message": "we can remove all the changes to this file",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 9
+      },
+      "revId": "1db76bd73dbfd8a317fe076b2fd503ca01b1b662",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
