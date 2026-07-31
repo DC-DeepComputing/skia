@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "82866c41_017331a2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-07-31T15:01:21Z",
+      "side": 1,
+      "message": "PS1 is the pure reland, PS2 contains the fix.",
+      "revId": "444a7ea10299b6d6ce6e4437abe61ef821f1757c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
