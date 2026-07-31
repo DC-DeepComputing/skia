@@ -16,6 +16,24 @@
       "message": "Would it make sense to emit a label here for the type of root node header when creating the paint key string? Only place I see these strings used is in AndroidPrecompileTest.cpp and AndroidYCbCrPrecompileTest.cpp.",
       "revId": "079d29edd7f848c5eecbaf4e64cca94323922e1a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "883f02be_15ba8b53",
+        "filename": "src/gpu/graphite/PaintParamsKey.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 326,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-31T13:40:21Z",
+      "side": 1,
+      "message": "I think printing the labels when multiline is true would be helpful. When it\u0027s not multiline, we are striving for as-compact-as-possible representation for tracing and viewing in GPU captures (these labels are also attached to the backend-compiled objects). Given that, I think we can skip them in that case.",
+      "parentUuid": "49bba336_a71869ba",
+      "revId": "079d29edd7f848c5eecbaf4e64cca94323922e1a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
