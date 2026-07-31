@@ -44,7 +44,7 @@ void JsonWriter::DumpJson(const char* dir,
     SkString path = SkOSPath::Join(dir, "dm.json");
     sk_mkdir(dir);
     SkFILEWStream stream(path.c_str());
-    SkJSONWriter  writer(&stream, ToolUtils::default_serial_procs(), SkJSONWriter::Mode::kPretty);
+    SkJSONWriter writer(&stream, SkSerialProcs{}, SkJSONWriter::Mode::kPretty);
 
     writer.beginObject(); // root
 
