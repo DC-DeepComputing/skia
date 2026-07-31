@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ead4dae_7511d9e4",
+        "filename": "src/gpu/graphite/DrawListTypes.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-31T20:12:21Z",
+      "side": 1,
+      "message": "This is a bit subtle but there are two things at play here where we do want to keep it as a pass-by-value type:\n\n1. A while back, Brian Salomon found that passing most 4-float sized types by value didn\u0027t really hurt performance and often provides some nice benefits of being able to just modify the parameter locally if needed w/o adding a new variable (this latter benefit doesn\u0027t apply here).\n\n2. SkVx does not like to be passed by reference as it often prevents the SIMD types from being passed down by registers (see a lot of the Rect.h functions are also by value).  Rect is just a wrapper around a skvx::float4 so we want to keep it in registers as much as possible as well.",
+      "parentUuid": "eb0636cd_61a98a29",
+      "range": {
+        "startLine": 171,
+        "startChar": 37,
+        "endLine": 171,
+        "endChar": 57
+      },
+      "revId": "b4e9568d879c4c098637518df09d3a45a5803ddd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9b0edaa8_afe044f7",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-07-31T19:50:24Z",
       "side": 1,
       "message": "Same here as my other reply",
+      "range": {
+        "startLine": 282,
+        "startChar": 12,
+        "endLine": 282,
+        "endChar": 43
+      },
+      "revId": "b4e9568d879c4c098637518df09d3a45a5803ddd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c07a87e7_5ca6d55d",
+        "filename": "src/gpu/graphite/DrawListTypes.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-07-31T20:12:21Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "9b0edaa8_afe044f7",
       "range": {
         "startLine": 282,
         "startChar": 12,
