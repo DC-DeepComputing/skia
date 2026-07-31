@@ -279,7 +279,7 @@ void ChromeTracingTracer::onExit() {
     }
 
     SkFILEWStream fileStream(fFilename.c_str());
-    SkJSONWriter writer(&fileStream, SkSerialProcs{}, SkJSONWriter::Mode::kFast);
+    SkJSONWriter  writer(&fileStream, ToolUtils::default_serial_procs(), SkJSONWriter::Mode::kFast);
     writer.beginArray();
 
     uint64_t clockOffset = 0;
