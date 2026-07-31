@@ -906,6 +906,14 @@ int get_glyph_run_intercepts(const sktext::GlyphRun& glyphRun,
 
     interceptPaint.setStyle(SkPaint::kFill_Style);
     interceptPaint.setPathEffect(nullptr);
+    // Only glyph outlines are read from this strike (see the glyph->path() loop
+    // below), so the paint's color cannot affect the result. It does, however,
+    // reach the SkDescriptor via SkScalerContextRec::fLumBits, which means the
+    // identical outlines get cached once per canonical text color. Normalize it
+    // so that runs differing only in color share a single path cache.
+    // SkStrikeSpec::MakeCanonicalized does the same thing when it switches to
+    // paths (it resets the paint entirely).
+    interceptPaint.setColor(SK_ColorBLACK);
 
     SkStrikeSpec strikeSpec = SkStrikeSpec::MakeWithNoDevice(interceptFont, &interceptPaint);
     SkBulkGlyphMetricsAndPaths metricsAndPaths{strikeSpec};
