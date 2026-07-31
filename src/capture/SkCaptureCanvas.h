@@ -108,6 +108,16 @@ protected:
                                const SkPaint*,
                                SrcRectConstraint) override;
 
+    // Unlike a standard NWayCanvas, SkCaptureCanvas has a single main SkCanvas that we can forward
+    // these surface-oriented functions to.
+    sk_sp<SkSurface> onNewSurface(const SkImageInfo& info, const SkSurfaceProps& props) override;
+    bool onPeekPixels(SkPixmap* pixmap) override;
+    bool onAccessTopLayerPixels(SkPixmap* pixmap) override;
+    SkImageInfo onImageInfo() const override;
+    bool onGetProps(SkSurfaceProps* props, bool top) const override;
+    sk_sp<sktext::gpu::Slug> onConvertGlyphRunListToSlug(
+            const sktext::GlyphRunList& glyphRunList, const SkPaint& paint) override;
+
 private:
     void pollCapturingStatus();
     void attachRecordingCanvas();
