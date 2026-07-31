@@ -537,7 +537,18 @@ bool ClipStack::RawElement::contains(const RawElement& e) const {
     // This is similar to how RawElement checks containment for a Draw, except that both the tester
     // and testee have a transform that needs to be considered.
     if (fInnerBounds.contains(e.fOuterBounds)) {
-        return true;
+        // The integer inner/outer bounds are produced by rounding float device-space edges to pixel
+        // centers (GrClip::GetPixelIBounds), which can snap inward by up to ~0.5px. Verify that
+        // containment also holds at float precision to avoid falsely discarding a clip element whose
+        // actual geometry extends beyond fInnerBounds.
+        SkRect devBounds;
+        e.fLocalToDevice.mapRect(&devBounds, e.fShape.bounds());
+        if (e.fAA == GrAA::kYes) {
+            devBounds.outset(0.5f, 0.5f);
+        }
+        if (SkRect::Make(fInnerBounds).contains(devBounds)) {
+            return true;
+        }
     }
 
     bool mixedAA = fAA != e.fAA;
@@ -884,7 +895,17 @@ bool ClipStack::SaveRecord::contains(const ClipStack::Draw& draw) const {
 }
 
 bool ClipStack::SaveRecord::contains(const ClipStack::RawElement& element) const {
-    return fInnerBounds.contains(element.outerBounds());
+    if (!fInnerBounds.contains(element.outerBounds())) {
+        return false;
+    }
+    // Integer bounds may be tighter than the actual float geometry due to rounding in
+    // GetPixelIBounds. Confirm containment at float precision before declaring redundancy.
+    SkRect devBounds;
+    element.localToDevice().mapRect(&devBounds, element.shape().bounds());
+    if (element.aa() == GrAA::kYes) {
+        devBounds.outset(0.5f, 0.5f);
+    }
+    return SkRect::Make(fInnerBounds).contains(devBounds);
 }
 
 void ClipStack::SaveRecord::removeElements(RawElement::Stack* elements) {
