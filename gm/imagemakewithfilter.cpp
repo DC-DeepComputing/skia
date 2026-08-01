@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 
 #include "include/core/SkBlendMode.h"
@@ -48,8 +49,8 @@
 
 static void show_bounds(SkCanvas* canvas, const SkIRect* clip, const SkIRect* inSubset,
                         const SkIRect* outSubset) {
-    const SkIRect* rects[] { clip, inSubset, outSubset };
-    SkColor colors[] { SK_ColorBLUE, SK_ColorYELLOW, SK_ColorRED };
+    auto rects = std::to_array<const SkIRect *>({ clip, inSubset, outSubset });
+    auto colors = std::to_array<SkColor>({ SK_ColorBLUE, SK_ColorYELLOW, SK_ColorRED ,});
 
     SkPaint paint;
     paint.setStyle(SkPaint::kStroke_Style);
@@ -228,7 +229,7 @@ protected:
     }
 
     DrawResult onDraw(SkCanvas* canvas, SkString* errorMsg) override {
-        FilterFactory filters[] = {
+        auto filters = std::to_array<FilterFactory>({
             color_filter_factory,
             blur_filter_factory,
             drop_shadow_factory,
@@ -242,8 +243,8 @@ protected:
             matrix_factory,
             lighting_factory,
             tile_factory
-        };
-        const char* filterNames[] = {
+        ,});
+        auto filterNames = std::to_array<const char *>({
             "Color",
             "Blur",
             "Drop Shadow",
@@ -257,7 +258,7 @@ protected:
             "Matrix Xform",
             "Lighting",
             "Tile"
-        };
+        ,});
         static_assert(std::size(filters) == std::size(filterNames), "filter name length");
 
         SkIRect clipBounds[] {

@@ -5,12 +5,14 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkGraphics.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkRegion.h"
 #include "include/core/SkShader.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypeface.h"
 #include "include/effects/SkGradient.h"
 #include "include/private/SkTo.h"
@@ -145,9 +147,9 @@ class EdgeClipSlide : public ClickHandlerSlide {
     enum {
         N = 3
     };
-    SkPoint fPoly[N];
+    std::array<SkPoint, N> fPoly;
     SkRect  fClip;
-    SkColor fEdgeColor[N];
+    std::array<SkColor, N> fEdgeColor;
 
 public:
     EdgeClipSlide() : fClip(SkRect::MakeLTRB(150, 150, 550, 450)) {
@@ -239,14 +241,14 @@ public:
     };
 
     class DragPolyClick : public MyClick {
-        SkPoint fSrc[100];
-        SkPoint* fPoly;
+        std::array<SkPoint, 100> fSrc;
+        SkSpan<SkPoint> fPoly;
         int fCount;
     public:
-        DragPolyClick(SkPoint poly[], int count) : fPoly(poly), fCount(count)
+        DragPolyClick(SkSpan<SkPoint> poly, int count) : fPoly(poly), fCount(count)
         {
             SkASSERT((size_t)count <= std::size(fSrc));
-            memcpy(fSrc, poly, count * sizeof(SkPoint));
+            memcpy(fSrc.data(), poly.data(), count * sizeof(SkPoint));
         }
         void handleMove() override {
             const SkScalar dx = fCurr.x() - fOrig.x();

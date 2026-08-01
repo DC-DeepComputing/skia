@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "src/core/SkScalerContext.h"
 
 #include "include/core/SkColorType.h"
@@ -369,14 +370,14 @@ static void pack4xHToMask(const SkPixmap& src, SkMaskBuilder& dst,
     // but is still sharper on small stems and small rounded corners than gray.
     // This also seems to be about as wide as one can get and only have a three pixel kernel.
     // TODO: calculate these at runtime so parameters can be adjusted (esp contrast).
-    static const unsigned int coefficients[LCD_PER_PIXEL][SAMPLES_PER_PIXEL*3] = {
+    static const std::array<std::array<const unsigned int, SAMPLES_PER_PIXEL*3>, LCD_PER_PIXEL> coefficients = {{
         //The red subpixel is centered inside the first sample (at 1/6 pixel), and is shifted.
         { 0x03, 0x0b, 0x1c, 0x33,  0x40, 0x39, 0x24, 0x10,  0x05, 0x01, 0x00, 0x00, },
         //The green subpixel is centered between two samples (at 1/2 pixel), so is symetric
         { 0x00, 0x02, 0x08, 0x16,  0x2b, 0x3d, 0x3d, 0x2b,  0x16, 0x08, 0x02, 0x00, },
         //The blue subpixel is centered inside the last sample (at 5/6 pixel), and is shifted.
         { 0x00, 0x00, 0x01, 0x05,  0x10, 0x24, 0x39, 0x40,  0x33, 0x1c, 0x0b, 0x03, },
-    };
+    }};
 
     size_t dstPB = toA8 ? sizeof(uint8_t) : sizeof(uint16_t);
     for (int y = 0; y < height; ++y) {
@@ -395,7 +396,7 @@ static void pack4xHToMask(const SkPixmap& src, SkMaskBuilder& dst,
         // TODO: this fir filter implementation is straight forward, but slow.
         // It should be possible to make it much faster.
         for (int sample_x = -4; sample_x < sample_width + 4; sample_x += 4) {
-            int fir[LCD_PER_PIXEL] = { 0 };
+            std::array<int, LCD_PER_PIXEL> fir = { 0 };
             for (int sample_index = std::max(0, sample_x - 4), coeff_index = sample_index - (sample_x - 4)
                 ; sample_index < std::min(sample_x + 8, sample_width)
                 ; ++sample_index, ++coeff_index)

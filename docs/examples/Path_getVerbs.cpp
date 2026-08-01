@@ -1,3 +1,5 @@
+#include <array>
+
 // Copyright 2019 Google LLC
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 #include "tools/fiddle/examples.h"
@@ -6,7 +8,7 @@ void draw(SkCanvas* canvas) {
     auto debugster = [](const char* prefix, const SkPath& path, uint8_t* verbs, int max) -> void {
         int count = path.getVerbs({verbs, max});
          SkDebugf("%s verb count: %d  ", prefix, count);
-         const char* verbStr[] = { "move", "line", "quad", "conic", "cubic", "close" };
+         auto verbStr = std::to_array<const char *>({ "move", "line", "quad", "conic", "cubic", "close" ,});
          for (int i = 0; i < std::min(count, max) && verbs; ++i) {
              SkDebugf("%s ", verbStr[verbs[i]]);
          }

@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkCanvas.h"
@@ -119,23 +120,23 @@ protected:
     SkISize getISize() override { return SkISize::Make(600, 420); }
 
     void onDraw(SkCanvas* canvas) override {
-        SkBlendMode modes[] = {
+        auto modes = std::to_array<SkBlendMode>({
             SkBlendMode::kSrcOver,
             SkBlendMode::kDstOver,
             SkBlendMode::kSrcATop,
             SkBlendMode::kDstATop,
             SkBlendMode::kSrcIn,
             SkBlendMode::kDstIn,
-        };
-        struct {
+        });
+        struct Shaders {
             const sk_sp<SkShader>& fShader1;
             const sk_sp<SkShader>& fShader2;
-        } shaders[] = {
-            { nullptr, nullptr },
-            { nullptr, fGr2 },
-            { fGr1, nullptr },
-            { fGr1, fGr2 },
-        };
+        }; auto shaders = std::to_array<Shaders>({
+            Shaders{ nullptr, nullptr },
+            Shaders{ nullptr, fGr2 },
+            Shaders{ fGr1, nullptr },
+            Shaders{ fGr1, fGr2 },
+        });
 
         SkScalar gridStep = kSize + 2 * kInset;
         for (size_t i = 0; i < std::size(modes); ++i) {

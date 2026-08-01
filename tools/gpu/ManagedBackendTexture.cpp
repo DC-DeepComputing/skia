@@ -5,10 +5,12 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "tools/gpu/ManagedBackendTexture.h"
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkImageInfo.h"
+#include "include/core/SkSpan.h"
 #include "src/core/SkMipmap.h"
 #include "src/gpu/RefCntedCallback.h"
 #ifdef SK_GANESH
@@ -29,7 +31,7 @@ namespace {
 struct Context {
     GrGpuFinishedProc fWrappedProc = nullptr;
     GrGpuFinishedContext fWrappedContext = nullptr;
-    sk_sp<sk_gpu_test::ManagedBackendTexture> fMBETs[SkYUVAInfo::kMaxPlanes];
+    std::array<sk_sp<sk_gpu_test::ManagedBackendTexture>, SkYUVAInfo::kMaxPlanes> fMBETs;
 };
 
 }  // anonymous namespace
@@ -57,7 +59,7 @@ void* ManagedBackendTexture::releaseContext(GrGpuFinishedProc wrappedProc,
 }
 
 void* ManagedBackendTexture::MakeYUVAReleaseContext(
-        const sk_sp<ManagedBackendTexture> mbets[SkYUVAInfo::kMaxPlanes]) {
+        SkSpan<const sk_sp<ManagedBackendTexture>> mbets) {
     auto context = new Context;
     for (int i = 0; i < SkYUVAInfo::kMaxPlanes; ++i) {
         context->fMBETs[i] = mbets[i];

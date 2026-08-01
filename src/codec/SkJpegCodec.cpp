@@ -845,7 +845,7 @@ static bool is_yuv_supported(const jpeg_decompress_struct* dinfo,
         return false;
     }
     if (yuvaPixmapInfo) {
-        SkColorType colorTypes[SkYUVAPixmapInfo::kMaxPlanes];
+        std::array<SkColorType, SkYUVAPixmapInfo::kMaxPlanes> colorTypes;
         size_t rowBytes[SkYUVAPixmapInfo::kMaxPlanes];
         for (int i = 0; i < 3; ++i) {
             colorTypes[i] = kAlpha_8_SkColorType;
@@ -911,7 +911,7 @@ SkCodec::Result SkJpegCodec::onGetYUVAPlanes(const SkYUVAPixmaps& yuvaPixmaps) {
     JSAMPARRAY yuv[3];
 
     // Set aside enough space for pointers to rows of Y, U, and V.
-    JSAMPROW rowptrs[2 * DCTSIZE + DCTSIZE + DCTSIZE];
+    std::array<JSAMPROW, 2 * DCTSIZE + DCTSIZE + DCTSIZE> rowptrs;
     yuv[0] = &rowptrs[0];            // Y rows (DCTSIZE or 2 * DCTSIZE)
     yuv[1] = &rowptrs[2 * DCTSIZE];  // U rows (DCTSIZE)
     yuv[2] = &rowptrs[3 * DCTSIZE];  // V rows (DCTSIZE)

@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkCanvas.h"
 #include "include/core/SkM44.h"
 #include "include/core/SkMatrix.h"
@@ -155,8 +156,8 @@ private:
     static SelectorCoeffs Coeffs(Selector sel) {
         // D = displacement input
         // C = displacement coverage
-        static constexpr SelectorCoeffs gCoeffs[] = {
-            { 1,0,0,0,0,   1,0 },   // kR: D = r, C = a
+        static constexpr auto gCoeffs = std::to_array<SelectorCoeffs>({
+            SelectorCoeffs{ 1,0,0,0,0,   1,0 },   // kR: D = r, C = a
             { 0,1,0,0,0,   1,0 },   // kG: D = g, C = a
             { 0,0,1,0,0,   1,0 },   // kB: D = b, C = a
             { 0,0,0,1,0,   0,1 },   // kA: D = a, C = 1.0
@@ -168,7 +169,7 @@ private:
             { 0,0,0,0,1,   0,1 },   // kFull: D = 1.0, C = 1.0
             { 0,0,0,0,.5f, 0,1 },   // kHalf: D = 0.5, C = 1.0
             { 0,0,0,0,0,   0,1 },   // kOff:  D = 0.0, C = 1.0
-        };
+        });
 
         const auto i = static_cast<size_t>(sel);
         SkASSERT(i < std::size(gCoeffs));

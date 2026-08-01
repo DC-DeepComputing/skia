@@ -78,7 +78,7 @@ struct GrContextOptions;
 
 using CreatePathFn = void(*)(SkPathBuilder&);
 
-CreatePathFn kNonEdgeAAPaths[] = {
+auto kNonEdgeAAPaths = std::to_array<CreatePathFn>({
     // Tests active edges made inactive by splitting.
     // Also tests active edge list forced into an invalid ordering by
     // splitting (mopped up in cleanup_active_edges()).
@@ -139,7 +139,7 @@ CreatePathFn kNonEdgeAAPaths[] = {
         path.lineTo(820.70904541015625f, 666.933837890625f);
     },
 
-    [](SkPathBuilder& path) {
+    CreatePathFn([](SkPathBuilder& path) {
         path.moveTo(823.33209228515625f, 749.052734375f);
         path.lineTo(823.494873046875f,   664.20013427734375f);
         path.lineTo(780.9871826171875f,  706.5450439453125f);
@@ -147,9 +147,9 @@ CreatePathFn kNonEdgeAAPaths[] = {
         path.moveTo(823.4134521484375f,  706.6263427734375f);
         path.lineTo(780.9871826171875f,  706.5450439453125f);
         path.lineTo(823.494873046875f,   664.20013427734375f);
-    },
+    }),
 
-    [](SkPathBuilder& path) {
+    CreatePathFn([](SkPathBuilder& path) {
         path.moveTo(954.862548828125f,   562.8349609375f);
         path.lineTo(899.32818603515625f, 498.679443359375f);
         path.lineTo(895.017578125f,      558.52435302734375f);
@@ -157,9 +157,9 @@ CreatePathFn kNonEdgeAAPaths[] = {
         path.moveTo(927.0953369140625f,  530.7572021484375f);
         path.lineTo(895.017578125f,      558.52435302734375f);
         path.lineTo(899.32818603515625f, 498.679443359375f);
-    },
+    }),
 
-    [](SkPathBuilder& path) {
+    CreatePathFn([](SkPathBuilder& path) {
         path.moveTo(958.5330810546875f,  547.35516357421875f);
         path.lineTo(899.93109130859375f, 485.989013671875f);
         path.lineTo(898.54901123046875f, 545.97308349609375f);
@@ -167,9 +167,9 @@ CreatePathFn kNonEdgeAAPaths[] = {
         path.moveTo(929.2320556640625f,  516.67205810546875f);
         path.lineTo(898.54901123046875f, 545.97308349609375f);
         path.lineTo(899.93109130859375f, 485.989013671875f);
-    },
+    }),
 
-    [](SkPathBuilder& path) {
+    CreatePathFn([](SkPathBuilder& path) {
         path.moveTo(389.8609619140625f,   369.326873779296875f);
         path.lineTo(470.6290283203125f,   395.33697509765625f);
         path.lineTo(443.250030517578125f, 341.9478759765625f);
@@ -177,25 +177,25 @@ CreatePathFn kNonEdgeAAPaths[] = {
         path.moveTo(430.244964599609375f, 382.3319091796875f);
         path.lineTo(443.250030517578125f, 341.9478759765625f);
         path.lineTo(470.6290283203125f,   395.33697509765625f);
-    },
+    }),
 
-    [](SkPathBuilder& path) {
+    CreatePathFn([](SkPathBuilder& path) {
         path.moveTo(20, 20);
         path.lineTo(50, 80);
         path.lineTo(20, 80);
         path.moveTo(80, 50);
         path.lineTo(50, 50);
         path.lineTo(20, 50);
-    },
+    }),
 
-    [](SkPathBuilder& path) {
+    CreatePathFn([](SkPathBuilder& path) {
         path.moveTo(257.19439697265625f, 320.876617431640625f);
         path.lineTo(190.113037109375f,   320.58978271484375f);
         path.lineTo(203.64404296875f,    293.8145751953125f);
         path.moveTo(203.357177734375f,   360.896026611328125f);
         path.lineTo(216.88824462890625f, 334.120819091796875f);
         path.lineTo(230.41925048828125f, 307.345611572265625f);
-    },
+    }),
 
     // A degenerate segments case, where both upper and lower segments of
     // a split edge must remain active.
@@ -254,13 +254,13 @@ CreatePathFn kNonEdgeAAPaths[] = {
         path.lineTo(192.651947021484375f, 304.0228271484375f);
     },
 
-    [](SkPathBuilder& path) {
+    CreatePathFn([](SkPathBuilder& path) {
         path.moveTo(    0.0f,   0.0f);
         path.lineTo(10000.0f,   0.0f);
         path.lineTo(    0.0f,  -1.0f);
         path.lineTo(10000.0f,   0.000001f);
         path.lineTo(    0.0f, -30.0f);
-    },
+    }),
 
     // Reduction of Nebraska-StateSeal.svg. Floating point error causes the
     // same edge to be added to more than one poly on the same side.
@@ -469,7 +469,7 @@ CreatePathFn kNonEdgeAAPaths[] = {
         path.lineTo(   32114477642022912,    -3010462031544320);
         path.lineTo(   32111784697528320,    -3010209702215680);
     },
-};
+});
 
 #if defined(SK_GANESH)
 

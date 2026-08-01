@@ -79,29 +79,29 @@ struct TestCase {
     bool               fGpuCanMakeSurfaces;
 };
 
-static const TestCase gTests[] = {
-    { kAlpha_8_SkColorType,            kPremul_SkAlphaType, kAlpha_SkColorChannelFlag, true },
-    { kA16_unorm_SkColorType,          kPremul_SkAlphaType, kAlpha_SkColorChannelFlag, false},
-    { kA16_float_SkColorType,          kPremul_SkAlphaType, kAlpha_SkColorChannelFlag, false},
-    { kRGB_565_SkColorType,            kOpaque_SkAlphaType, kRGB_SkColorChannelFlags,  true },
-    { kARGB_4444_SkColorType,          kPremul_SkAlphaType, kRGBA_SkColorChannelFlags, true },
-    { kRGBA_8888_SkColorType,          kPremul_SkAlphaType, kRGBA_SkColorChannelFlags, true },
-    { kRGB_888x_SkColorType,           kOpaque_SkAlphaType, kRGB_SkColorChannelFlags,  true },
-    { kBGRA_8888_SkColorType,          kPremul_SkAlphaType, kRGBA_SkColorChannelFlags, true },
-    { kRGBA_1010102_SkColorType,       kPremul_SkAlphaType, kRGBA_SkColorChannelFlags, true },
-    { kRGB_101010x_SkColorType,        kOpaque_SkAlphaType, kRGB_SkColorChannelFlags,  true },
-    { kGray_8_SkColorType,             kOpaque_SkAlphaType, kGray_SkColorChannelFlag,  true },
-    { kRGBA_F16Norm_SkColorType,       kPremul_SkAlphaType, kRGBA_SkColorChannelFlags, true },
-    { kRGBA_F16_SkColorType,           kPremul_SkAlphaType, kRGBA_SkColorChannelFlags, true },
-    { kRGB_F16F16F16x_SkColorType,     kOpaque_SkAlphaType, kRGB_SkColorChannelFlags,  true },
-    { kRGBA_F32_SkColorType,           kPremul_SkAlphaType, kRGBA_SkColorChannelFlags, true },
-    { kR8G8_unorm_SkColorType,         kOpaque_SkAlphaType, kRG_SkColorChannelFlags,   true },
-    { kR16_unorm_SkColorType,          kOpaque_SkAlphaType, kRed_SkColorChannelFlag,   false},
-    { kR16G16_unorm_SkColorType,       kOpaque_SkAlphaType, kRG_SkColorChannelFlags,   false},
-    { kR16_float_SkColorType,          kOpaque_SkAlphaType, kRed_SkColorChannelFlag,   false},
-    { kR16G16_float_SkColorType,       kOpaque_SkAlphaType, kRG_SkColorChannelFlags,   false},
-    { kR16G16B16A16_unorm_SkColorType, kPremul_SkAlphaType, kRGBA_SkColorChannelFlags, false},
-};
+static const auto gTests = std::to_array<TestCase>({
+    TestCase{ kAlpha_8_SkColorType,            kPremul_SkAlphaType, kAlpha_SkColorChannelFlag, true },
+    TestCase{ kA16_unorm_SkColorType,          kPremul_SkAlphaType, kAlpha_SkColorChannelFlag, false},
+    TestCase{ kA16_float_SkColorType,          kPremul_SkAlphaType, kAlpha_SkColorChannelFlag, false},
+    TestCase{ kRGB_565_SkColorType,            kOpaque_SkAlphaType, kRGB_SkColorChannelFlags,  true },
+    TestCase{ kARGB_4444_SkColorType,          kPremul_SkAlphaType, kRGBA_SkColorChannelFlags, true },
+    TestCase{ kRGBA_8888_SkColorType,          kPremul_SkAlphaType, kRGBA_SkColorChannelFlags, true },
+    TestCase{ kRGB_888x_SkColorType,           kOpaque_SkAlphaType, kRGB_SkColorChannelFlags,  true },
+    TestCase{ kBGRA_8888_SkColorType,          kPremul_SkAlphaType, kRGBA_SkColorChannelFlags, true },
+    TestCase{ kRGBA_1010102_SkColorType,       kPremul_SkAlphaType, kRGBA_SkColorChannelFlags, true },
+    TestCase{ kRGB_101010x_SkColorType,        kOpaque_SkAlphaType, kRGB_SkColorChannelFlags,  true },
+    TestCase{ kGray_8_SkColorType,             kOpaque_SkAlphaType, kGray_SkColorChannelFlag,  true },
+    TestCase{ kRGBA_F16Norm_SkColorType,       kPremul_SkAlphaType, kRGBA_SkColorChannelFlags, true },
+    TestCase{ kRGBA_F16_SkColorType,           kPremul_SkAlphaType, kRGBA_SkColorChannelFlags, true },
+    TestCase{ kRGB_F16F16F16x_SkColorType,     kOpaque_SkAlphaType, kRGB_SkColorChannelFlags,  true },
+    TestCase{ kRGBA_F32_SkColorType,           kPremul_SkAlphaType, kRGBA_SkColorChannelFlags, true },
+    TestCase{ kR8G8_unorm_SkColorType,         kOpaque_SkAlphaType, kRG_SkColorChannelFlags,   true },
+    TestCase{ kR16_unorm_SkColorType,          kOpaque_SkAlphaType, kRed_SkColorChannelFlag,   false},
+    TestCase{ kR16G16_unorm_SkColorType,       kOpaque_SkAlphaType, kRG_SkColorChannelFlags,   false},
+    TestCase{ kR16_float_SkColorType,          kOpaque_SkAlphaType, kRed_SkColorChannelFlag,   false},
+    TestCase{ kR16G16_float_SkColorType,       kOpaque_SkAlphaType, kRG_SkColorChannelFlags,   false},
+    TestCase{ kR16G16B16A16_unorm_SkColorType, kPremul_SkAlphaType, kRGBA_SkColorChannelFlags, false},
+});
 
 static void raster_tests(skiatest::Reporter* reporter, const TestCase& test) {
 
