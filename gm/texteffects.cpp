@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkFont.h"
@@ -114,7 +115,7 @@ sk_sp<SkTextBlob> MakeFancyBlob(const SkPaint& paint, const SkFont& font, const 
 DEF_SIMPLE_GM(fancyblobunderline, canvas, 1480, 1380) {
     SkPaint paint;
     paint.setAntiAlias(true);
-    const char* fam[] = { "sans-serif", "serif", "monospace" };
+    auto fam = std::to_array<const char *>({ "sans-serif", "serif", "monospace" });
     const char test[] = "aAjJgGyY_|{-(~[,]qQ}pP}zZ";
     const SkPoint blobOffset = { 10, 80 };
 

@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkData.h"
 #include "include/core/SkFont.h"
 #include "include/core/SkFontStyle.h"
@@ -38,13 +39,13 @@ using namespace skia_private;
 #define kFontTableTag_hhea          SkSetFourByteTag('h', 'h', 'e', 'a')
 #define kFontTableTag_maxp          SkSetFourByteTag('m', 'a', 'x', 'p')
 
-static const struct TagSize {
+struct TagSize {
     SkFontTableTag  fTag;
     size_t          fSize;
-} gKnownTableSizes[] = {
-    {   kFontTableTag_head,         54 },
-    {   kFontTableTag_hhea,         36 },
-};
+}; static const auto gKnownTableSizes = std::to_array<TagSize>({
+    TagSize{   kFontTableTag_head,         54 },
+    TagSize{   kFontTableTag_hhea,         36 },
+});
 
 // Test that getUnitsPerEm() agrees with a direct lookup in the 'head' table
 // (if that table is available).
@@ -184,14 +185,14 @@ static void test_tables(skiatest::Reporter* reporter, const sk_sp<SkTypeface>& f
 }
 
 static void test_tables(skiatest::Reporter* reporter) {
-    static const char* const gNames[] = {
+    static const auto gNames = std::to_array<const char *>({
         nullptr,   // default font
         "Helvetica", "Arial",
         "Times", "Times New Roman",
         "Courier", "Courier New",
         "Terminal", "MS Sans Serif",
         "Hiragino Mincho ProN", "MS PGothic",
-    };
+    });
 
     for (size_t i = 0; i < std::size(gNames); ++i) {
         sk_sp<SkTypeface> face(ToolUtils::CreateTestTypeface(gNames[i], SkFontStyle()));
@@ -210,38 +211,38 @@ static void test_tables(skiatest::Reporter* reporter) {
  * Verifies that the advance values returned by various methods match.
  */
 static void test_advances(skiatest::Reporter* reporter) {
-    static const char* const faces[] = {
+    static const auto faces = std::to_array<const char *>({
         nullptr,   // default font
         "Arial", "Times", "Times New Roman", "Helvetica", "Courier",
         "Courier New", "Verdana", "monospace",
-    };
+    });
 
-    static const struct {
+    struct Settings {
         SkFontHinting   hinting;
         bool            linear;
         bool            subpixel;
-    } settings[] = {
-        { SkFontHinting::kNone,   false, false },
-        { SkFontHinting::kNone,   true,  false },
-        { SkFontHinting::kNone,   false, true  },
-        { SkFontHinting::kSlight, false, false },
-        { SkFontHinting::kSlight, true,  false },
-        { SkFontHinting::kSlight, false, true  },
-        { SkFontHinting::kNormal, false, false },
-        { SkFontHinting::kNormal, true,  false },
-        { SkFontHinting::kNormal, false, true  },
-    };
+    }; static const auto settings = std::to_array<Settings>({
+        Settings{ SkFontHinting::kNone,   false, false },
+        Settings{ SkFontHinting::kNone,   true,  false },
+        Settings{ SkFontHinting::kNone,   false, true  },
+        Settings{ SkFontHinting::kSlight, false, false },
+        Settings{ SkFontHinting::kSlight, true,  false },
+        Settings{ SkFontHinting::kSlight, false, true  },
+        Settings{ SkFontHinting::kNormal, false, false },
+        Settings{ SkFontHinting::kNormal, true,  false },
+        Settings{ SkFontHinting::kNormal, false, true  },
+    });
 
-    static const struct {
+    struct GScaleRec {
         SkScalar    fScaleX;
         SkScalar    fSkewX;
-    } gScaleRec[] = {
-        { SK_Scalar1, 0 },
-        { SK_Scalar1/2, 0 },
+    }; static const auto gScaleRec = std::to_array<GScaleRec>({
+        GScaleRec{ SK_Scalar1, 0 },
+        GScaleRec{ SK_Scalar1/2, 0 },
         // these two exercise obliquing (skew)
-        { SK_Scalar1, -SK_Scalar1/4 },
-        { SK_Scalar1/2, -SK_Scalar1/4 },
-    };
+        GScaleRec{ SK_Scalar1, -SK_Scalar1/4 },
+        GScaleRec{ SK_Scalar1/2, -SK_Scalar1/4 },
+    });
 
     SkFont font;
     char const * const txt = "long.text.with.lots.of.dots.";

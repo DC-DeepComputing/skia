@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -142,12 +143,12 @@ const SkPoint gPoints10[] = {
     { -50.0f,  31.0f },
 };
 
-const SkPoint* gPoints[] = {
+auto gPoints = std::to_array<const SkPoint *>({
     gPoints0, gPoints1, gPoints2, gPoints3, gPoints4, gPoints5, gPoints6,
     gPoints7, gPoints8, gPoints9, gPoints10,
-};
+});
 
-const size_t gSizes[] = {
+const auto gSizes = std::to_array<size_t>({
     std::size(gPoints0),
     std::size(gPoints1),
     std::size(gPoints2),
@@ -159,7 +160,7 @@ const size_t gSizes[] = {
     std::size(gPoints8),
     std::size(gPoints9),
     std::size(gPoints10),
-};
+});
 static_assert(std::size(gSizes) == std::size(gPoints), "array_mismatch");
 }  // namespace ConvexLineOnlyData
 
@@ -289,10 +290,10 @@ protected:
             }
         }
 
-        const SkColor colors[2] = { SK_ColorBLACK, SK_ColorWHITE };
-        const SkPathDirection dirs[2] = { SkPathDirection::kCW, SkPathDirection::kCCW };
-        const float scales[] = { 1.0f, 0.75f, 0.5f, 0.25f, 0.1f, 0.01f, 0.001f };
-        const SkPaint::Join joins[3] = { SkPaint::kRound_Join,
+        const std::array<SkColor, 2> colors = { SK_ColorBLACK, SK_ColorWHITE };
+        const std::array<SkPathDirection, 2> dirs = { SkPathDirection::kCW, SkPathDirection::kCCW };
+        const auto scales = std::to_array<float>({ 1.0f, 0.75f, 0.5f, 0.25f, 0.1f, 0.01f, 0.001f ,});
+        const std::array<SkPaint::Join, 3> joins = { SkPaint::kRound_Join,
                                          SkPaint::kBevel_Join,
                                          SkPaint::kMiter_Join };
 

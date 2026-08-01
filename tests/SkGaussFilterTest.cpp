@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 
+#include <array>
+#include "include/core/SkSpan.h"
 #include "src/core/SkGaussFilter.h"
 #include "tests/Test.h"
 
@@ -17,7 +19,7 @@
 // one part in a million
 static constexpr double kEpsilon = 0.000001;
 
-static double careful_add(int n, double* gauss) {
+static double careful_add(int n, SkSpan<double> gauss) {
     // Sum smallest to largest to retain precision.
     double sum = 0;
     for (int i = n - 1; i >= 1; i--) {
@@ -34,7 +36,7 @@ DEF_TEST(SkGaussFilterCommon, r) {
         double sigma; std::vector<double> golden;
         std::tie(sigma, golden) = test;
         SkGaussFilter filter{sigma};
-        double result[SkGaussFilter::kGaussArrayMax];
+        std::array<double, SkGaussFilter::kGaussArrayMax> result;
         int n = 0;
         for (auto d : filter) {
             result[n++] = d;
@@ -67,7 +69,7 @@ DEF_TEST(SkGaussFilterSweep, r) {
     const double maxSigma = nextafter(2.0, 0.0);
     auto check = [&](double sigma) {
         SkGaussFilter filter{sigma};
-        double result[SkGaussFilter::kGaussArrayMax];
+        std::array<double, SkGaussFilter::kGaussArrayMax> result;
         int n = 0;
         for (auto d : filter) {
             result[n++] = d;

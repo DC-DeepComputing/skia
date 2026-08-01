@@ -1,4 +1,6 @@
 /*
+#include <cstdint>
+
  * Copyright 2012 Google Inc.
  *
  * Use of this source code is governed by a BSD-style license that can be
@@ -8,8 +10,10 @@
 
 #include "include/core/SkPath.h"
 #include "include/core/SkPoint.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkFloatingPoint.h"
+#include "include/private/SkTo.h"
 #include "src/core/SkGeometry.h"
 #include "src/core/SkPathPriv.h"
 #include "src/core/SkTSort.h"
@@ -273,7 +277,7 @@ bool SkOpEdgeBuilder::walk() {
                     // Split complex cubics (such as self-intersecting curves or
                     // ones with difficult curvature) in two before proceeding.
                     // This can be required for intersection to succeed.
-                    SkScalar splitT[3];
+                    std::array<SkScalar, 3> splitT;
                     int breaks = SkDCubic::ComplexBreak(pointsPtr, splitT);
                     if (!breaks) {
                         fContourBuilder.addCubic(pointsPtr);
@@ -286,9 +290,9 @@ bool SkOpEdgeBuilder::walk() {
                         SkPoint fReduced[4];
                         SkPath::Verb fVerb;
                         bool fCanAdd;
-                    } splits[4];
+                    }; std::array<Splitsville, 4> splits;
                     SkASSERT(std::size(splits) == std::size(splitT) + 1);
-                    SkTQSort(splitT, splitT + breaks);
+                    SkTQSort(splitT.data(), SkSpan<SkScalar>(splitT ).subspan(SkTo<size_t>( breaks)).data());
                     for (int index = 0; index <= breaks; ++index) {
                         Splitsville* split = &splits[index];
                         split->fT[0] = index ? splitT[index - 1] : 0;

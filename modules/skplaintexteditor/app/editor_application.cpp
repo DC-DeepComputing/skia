@@ -4,6 +4,7 @@
 // Proof of principle of a text editor written with Skia & SkShaper.
 // https://bugs.skia.org/9020
 
+#include <array>
 #include "include/core/SkCanvas.h"
 #include "include/core/SkData.h"
 #include "include/core/SkFontMgr.h"
@@ -93,7 +94,7 @@ struct Timer {
 };
 
 static constexpr float kFontSize = 18;
-static const char* kTypefaces[3] = {"sans-serif", "serif", "monospace"};
+static std::array<const char *, 3> kTypefaces = {"sans-serif", "serif", "monospace"};
 static constexpr size_t kTypefaceCount = std::size(kTypefaces);
 
 static constexpr SkFontStyle::Weight kFontWeight = SkFontStyle::kNormal_Weight;

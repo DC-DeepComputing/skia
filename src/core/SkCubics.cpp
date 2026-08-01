@@ -5,8 +5,10 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "src/core/SkCubics.h"
 
+#include "include/core/SkSpan.h"
 #include "include/private/SkAssert.h"
 #include "include/private/SkFloatingPoint.h"
 #include "include/private/SkTPin.h"
@@ -123,7 +125,7 @@ int SkCubics::RootsReal(double A, double B, double C, double D, double solution[
 }
 
 int SkCubics::RootsValidT(double A, double B, double C, double D,
-                          double solution[3]) {
+                          SkSpan<double> solution) {
     double allRoots[3] = {0, 0, 0};
     int realRoots = SkCubics::RootsReal(A, B, C, D, allRoots);
     int foundRoots = 0;
@@ -204,11 +206,11 @@ static double binary_search(double A, double B, double C, double D, double start
 }
 
 int SkCubics::BinarySearchRootsValidT(double A, double B, double C, double D,
-                                      double solution[3]) {
+                                      SkSpan<double> solution) {
     if (!SkIsFinite(A, B, C, D)) {
         return 0;
     }
-    double regions[4] = {0, 0, 0, 1};
+    std::array<double, 4> regions = {0, 0, 0, 1};
     // Find local minima and maxima
     double minMax[2] = {0, 0};
     int extremaCount = find_extrema_valid_t(A, B, C, minMax);

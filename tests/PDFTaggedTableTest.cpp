@@ -4,6 +4,7 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include <array>
 #include "tests/Test.h"
 
 #ifdef SK_SUPPORT_PDF
@@ -54,7 +55,7 @@ DEF_TEST(SkPDF_tagged_table, r) {
 
     constexpr int kRowCount = 5;
     constexpr int kColCount = 4;
-    const char* cellData[kRowCount * kColCount] = {
+    std::array<const char *, kRowCount * kColCount> cellData = {
         "Car Make and Model",   "Engine",   "City MPG", "Highway MPG",
         "Mitsubishi Mirage ES", "Gas",      "28",       "47",
         "Toyota Prius Three",   "Hybrid",   "43",       "59",

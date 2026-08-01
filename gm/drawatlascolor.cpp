@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkCanvas.h"
@@ -84,7 +85,7 @@ protected:
 
         auto atlas = make_atlas(canvas, kAtlasSize);
 
-        const SkBlendMode gModes[] = {
+        const auto gModes = std::to_array<SkBlendMode>({
             SkBlendMode::kClear,
             SkBlendMode::kSrc,
             SkBlendMode::kDst,
@@ -114,22 +115,22 @@ protected:
             SkBlendMode::kSaturation,
             SkBlendMode::kColor,
             SkBlendMode::kLuminosity,
-        };
+        });
 
-        SkColor gColors[] = {
+        auto gColors = std::to_array<SkColor>({
             SK_ColorWHITE,
             SK_ColorRED,
             0x88888888,         // transparent grey
             0x88000088          // transparent blue
-        };
+        ,});
 
         const int numModes = std::size(gModes);
         SkASSERT(numModes == kNumXferModes);
         const int numColors = std::size(gColors);
         SkASSERT(numColors == kNumColors);
-        SkRSXform xforms[numColors];
-        SkRect rects[numColors];
-        SkColor quadColors[numColors];
+        std::array<SkRSXform, numColors> xforms;
+        std::array<SkRect, numColors> rects;
+        std::array<SkColor, numColors> quadColors;
 
         SkPaint paint;
         paint.setAntiAlias(true);

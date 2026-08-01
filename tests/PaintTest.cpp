@@ -101,21 +101,21 @@ DEF_TEST(Paint_regression_cubic, reporter) {
 }
 
 DEF_TEST(Paint_flattening, reporter) {
-    const SkPaint::Cap caps[] = {
+    const auto caps = std::to_array<SkPaint::Cap>({
         SkPaint::kButt_Cap,
         SkPaint::kRound_Cap,
         SkPaint::kSquare_Cap,
-    };
-    const SkPaint::Join joins[] = {
+    });
+    const auto joins = std::to_array<SkPaint::Join>({
         SkPaint::kMiter_Join,
         SkPaint::kRound_Join,
         SkPaint::kBevel_Join,
-    };
-    const SkPaint::Style styles[] = {
+    });
+    const auto styles = std::to_array<SkPaint::Style>({
         SkPaint::kFill_Style,
         SkPaint::kStroke_Style,
         SkPaint::kStrokeAndFill_Style,
-    };
+    });
 
 #define FOR_SETUP(index, array, setter)                                 \
     for (size_t index = 0; index < std::size(array); ++index) {         \
