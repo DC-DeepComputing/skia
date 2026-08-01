@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPath.h"
@@ -354,7 +355,7 @@ class SimpleStrokerSlide : public ClickHandlerSlide {
     inline static constexpr int kN = 3;
 
 public:
-    SkPoint fPts[kN];
+    std::array<SkPoint, kN> fPts;
 
     SimpleStrokerSlide() : fShowSkiaStroke(true), fShowHidden(true), fShowSkeleton(true) {
         fPts[0] = {500, 200};

@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColorFilter.h"
@@ -15,6 +16,7 @@
 #include "include/core/SkPathUtils.h"
 #include "include/core/SkRegion.h"
 #include "include/core/SkShader.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypeface.h"
 #include "include/effects/SkGradient.h"
 #include "include/utils/SkParsePath.h"
@@ -75,7 +77,7 @@ static void test_cubic2() {
 class PathSlide : public ClickHandlerSlide {
     SkScalar fPrevSecs;
     SkScalar fDStroke, fStroke, fMinStroke, fMaxStroke;
-    SkPath fPath[6];
+    std::array<SkPath, 6> fPath;
     bool fShowHairline;
 
 public:
@@ -136,11 +138,11 @@ public:
 
         canvas->translate(50, 50);
 
-        static const SkPaint::Join gJoins[] = {
+        static const auto gJoins = std::to_array<SkPaint::Join>({
             SkPaint::kBevel_Join,
             SkPaint::kMiter_Join,
             SkPaint::kRound_Join
-        };
+        ,});
 
         for (size_t i = 0; i < std::size(gJoins); i++) {
             canvas->save();
@@ -187,7 +189,7 @@ class ArcToSlide : public ClickHandlerSlide {
     enum {
         N = 4
     };
-    SkPoint fPts[N];
+    std::array<SkPoint, N> fPts;
 
 public:
     ArcToSlide() : fDoFrame(false), fDoCorner(false), fDoConic(false) {
@@ -276,7 +278,7 @@ class FatStrokeSlide : public ClickHandlerSlide {
     enum {
         N = 4
     };
-    SkPoint fPts[N];
+    std::array<SkPoint, N> fPts;
 
 public:
     FatStrokeSlide()
@@ -396,7 +398,7 @@ private:
 };
 DEF_SLIDE( return new FatStrokeSlide; )
 
-static int compute_parallel_to_base(const SkPoint pts[4], SkScalar t[2]) {
+static int compute_parallel_to_base(const SkPoint pts[4], SkSpan<SkScalar> t) {
     // F = At^3 + Bt^2 + Ct + D
     SkVector A = pts[3] - pts[0] + (pts[1] - pts[2]) * 3.0f;
     SkVector B = (pts[0] - pts[1] - pts[1] + pts[2]) * 3.0f;
@@ -408,7 +410,7 @@ static int compute_parallel_to_base(const SkPoint pts[4], SkScalar t[2]) {
     SkScalar b = 2 * B.cross(DA);
     SkScalar c = C.cross(DA);
 
-    int n = SkFindUnitQuadRoots(a, b, c, t);
+    int n = SkFindUnitQuadRoots(a, b, c, t.data());
     SkString str;
     for (int i = 0; i < n; ++i) {
         str.appendf(" %g", t[i]);
@@ -448,7 +450,7 @@ public:
 
         {
             paint.setColor(SK_ColorRED);
-            SkScalar t[2];
+            std::array<SkScalar, 2> t;
             int n = compute_parallel_to_base(fPts, t);
             SkPoint loc;
             SkVector tan;

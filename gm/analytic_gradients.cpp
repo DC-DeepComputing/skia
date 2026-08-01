@@ -34,6 +34,7 @@
  * compared to overall behavior.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -71,7 +72,7 @@ const int INT7_COLOR_COUNTS[] = { 8, 14, 11, 11 };
 const int INT8_COLOR_COUNTS[] = { 9, 16, 12, 13 };
 
 // Cycle through defined colors for positions 0 through 8.
-const SkColor COLORS[] = {
+const auto COLORS = std::to_array<SkColor>({
     SK_ColorDKGRAY,
     SK_ColorRED,
     SK_ColorYELLOW,
@@ -81,9 +82,9 @@ const SkColor COLORS[] = {
     SK_ColorMAGENTA,
     SK_ColorBLACK,
     SK_ColorLTGRAY
-};
+,});
 
-const int* INTERVAL_COLOR_COUNTS[] = {
+auto INTERVAL_COLOR_COUNTS = std::to_array<const int *>({
     INT1_COLOR_COUNTS,
     INT2_COLOR_COUNTS,
     INT3_COLOR_COUNTS,
@@ -92,15 +93,15 @@ const int* INTERVAL_COLOR_COUNTS[] = {
     INT6_COLOR_COUNTS,
     INT7_COLOR_COUNTS,
     INT8_COLOR_COUNTS
-};
+,});
 const int COLOR_COUNT = std::size(COLORS);
 
-const int* M_POSITIONS[] = {
+auto M_POSITIONS = std::to_array<const int *>({
     M1_POSITIONS,
     M2_POSITIONS,
     M3_POSITIONS,
     M4_POSITIONS
-};
+,});
 
 const int WIDTH  = 500;
 const int HEIGHT = 500;

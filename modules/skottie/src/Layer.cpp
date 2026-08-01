@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "modules/skottie/src/Layer.h"
 
 #include "include/core/SkBlendMode.h"
@@ -331,23 +332,23 @@ LayerBuilder::LayerBuilder(const skjson::ObjectValue& jlayer, const SkSize& comp
             ParseDefault<float>(jlayer["ip"], 0.0f),
             ParseDefault<float>(jlayer["op"], 0.0f)}
 {
-    static constexpr struct BuilderInfo gLayerBuildInfo[] = {
-        { &AnimationBuilder::attachPrecompLayer, kTransformEffects },  // 'ty':  0 -> precomp
-        { &AnimationBuilder::attachSolidLayer  , kTransformEffects },  // 'ty':  1 -> solid
-        { &AnimationBuilder::attachFootageLayer, kTransformEffects },  // 'ty':  2 -> image
-        { &AnimationBuilder::attachNullLayer   ,                 0 },  // 'ty':  3 -> null
-        { &AnimationBuilder::attachShapeLayer  ,                 0 },  // 'ty':  4 -> shape
-        { &AnimationBuilder::attachTextLayer   ,                 0 },  // 'ty':  5 -> text
-        { &AnimationBuilder::attachAudioLayer  ,        kForceSeek },  // 'ty':  6 -> audio
-        { nullptr                              ,                 0 },  // 'ty':  7 -> pholderVideo
-        { nullptr                              ,                 0 },  // 'ty':  8 -> imageSeq
-        { &AnimationBuilder::attachFootageLayer, kTransformEffects },  // 'ty':  9 -> video
-        { nullptr                              ,                 0 },  // 'ty': 10 -> pholderStill
-        { nullptr                              ,                 0 },  // 'ty': 11 -> guide
-        { nullptr                              ,                 0 },  // 'ty': 12 -> adjustment
-        { &AnimationBuilder::attachNullLayer   ,                 0 },  // 'ty': 13 -> camera
-        { nullptr                              ,                 0 },  // 'ty': 14 -> light
-    };
+    static constexpr auto gLayerBuildInfo = std::to_array<skottie::internal::LayerBuilder::BuilderInfo>({
+        skottie::internal::LayerBuilder::BuilderInfo{ &AnimationBuilder::attachPrecompLayer, kTransformEffects },  // 'ty':  0 -> precomp
+        skottie::internal::LayerBuilder::BuilderInfo{ &AnimationBuilder::attachSolidLayer  , kTransformEffects },  // 'ty':  1 -> solid
+        skottie::internal::LayerBuilder::BuilderInfo{ &AnimationBuilder::attachFootageLayer, kTransformEffects },  // 'ty':  2 -> image
+        skottie::internal::LayerBuilder::BuilderInfo{ &AnimationBuilder::attachNullLayer   ,                 0 },  // 'ty':  3 -> null
+        skottie::internal::LayerBuilder::BuilderInfo{ &AnimationBuilder::attachShapeLayer  ,                 0 },  // 'ty':  4 -> shape
+        skottie::internal::LayerBuilder::BuilderInfo{ &AnimationBuilder::attachTextLayer   ,                 0 },  // 'ty':  5 -> text
+        skottie::internal::LayerBuilder::BuilderInfo{ &AnimationBuilder::attachAudioLayer  ,        kForceSeek },  // 'ty':  6 -> audio
+        skottie::internal::LayerBuilder::BuilderInfo{ nullptr                              ,                 0 },  // 'ty':  7 -> pholderVideo
+        skottie::internal::LayerBuilder::BuilderInfo{ nullptr                              ,                 0 },  // 'ty':  8 -> imageSeq
+        skottie::internal::LayerBuilder::BuilderInfo{ &AnimationBuilder::attachFootageLayer, kTransformEffects },  // 'ty':  9 -> video
+        skottie::internal::LayerBuilder::BuilderInfo{ nullptr                              ,                 0 },  // 'ty': 10 -> pholderStill
+        skottie::internal::LayerBuilder::BuilderInfo{ nullptr                              ,                 0 },  // 'ty': 11 -> guide
+        skottie::internal::LayerBuilder::BuilderInfo{ nullptr                              ,                 0 },  // 'ty': 12 -> adjustment
+        skottie::internal::LayerBuilder::BuilderInfo{ &AnimationBuilder::attachNullLayer   ,                 0 },  // 'ty': 13 -> camera
+        skottie::internal::LayerBuilder::BuilderInfo{ nullptr                              ,                 0 },  // 'ty': 14 -> light
+    });
 
     if (fType >= 0 && SkToSizeT(fType) < std::size(gLayerBuildInfo)) {
         fBuilderInfo = gLayerBuildInfo[fType];
@@ -551,12 +552,12 @@ sk_sp<sksg::RenderNode> LayerBuilder::buildRenderTree(const AnimationBuilder& ab
 
     // Optional matte.
     if (const auto matte_mode = ParseDefault<size_t>(fJlayer["tt"], 0)) {
-        static constexpr sksg::MaskEffect::Mode gMatteModes[] = {
+        static constexpr auto gMatteModes = std::to_array<sksg::MaskEffect::Mode>({
             sksg::MaskEffect::Mode::kAlphaNormal, // tt: 1
             sksg::MaskEffect::Mode::kAlphaInvert, // tt: 2
             sksg::MaskEffect::Mode::kLumaNormal,  // tt: 3
             sksg::MaskEffect::Mode::kLumaInvert,  // tt: 4
-        };
+        });
 
         if (matte_mode <= std::size(gMatteModes)) {
             int matte_index = ParseDefault<int>(fJlayer["tp"], -1);

@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkClipOp.h"
@@ -39,10 +40,10 @@ protected:
     SkISize getISize() override { return SkISize::Make(800, 200); }
 
     void onDraw(SkCanvas* canvas) override {
-        const SkClipOp ops[] = {
+        const auto ops = std::to_array<SkClipOp>({
             SkClipOp::kDifference,
             SkClipOp::kIntersect
-        };
+        });
 
         SkRect rect = SkRect::MakeLTRB(fX1 - fR, fY - fR, fX2 + fR, fY + fR);
 

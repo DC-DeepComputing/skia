@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -53,11 +54,11 @@ constexpr SkColor4f gColors[] = {
 
 //constexpr SkScalar gPos[] = { SK_Scalar1*999/2000, SK_Scalar1*1001/2000 };
 
-constexpr GradData gGradData[] = {
-    { 40, gColors, nullptr },
+constexpr auto gGradData = std::to_array<GradData>({
+    GradData{ 40, gColors, nullptr },
     //  { 2, gColors, gPos },
     //  { 2, gCol2, nullptr },
-};
+});
 
 static sk_sp<SkShader> MakeLinear(const SkPoint pts[2], const GradData& data, SkTileMode tm) {
     return SkShaders::LinearGradient(pts, data.grad(tm));
@@ -82,9 +83,9 @@ static sk_sp<SkShader> MakeSweep(const SkPoint pts[2], const GradData& data, SkT
 
 typedef sk_sp<SkShader> (*GradMaker)(const SkPoint pts[2], const GradData&, SkTileMode);
 
-constexpr GradMaker gGradMakers[] = {
+constexpr auto gGradMakers = std::to_array<GradMaker>({
     MakeLinear, MakeRadial, MakeSweep,
-};
+});
 
 ///////////////////////////////////////////////////////////////////////////////
 
