@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -151,31 +152,31 @@ class CubicPathGM : public skiagm::GM {
             SkPathFillType fFill;
             const char*      fName;
         };
-        constexpr FillAndName gFills[] = {
-            {SkPathFillType::kWinding, "Winding"},
-            {SkPathFillType::kEvenOdd, "Even / Odd"},
-            {SkPathFillType::kInverseWinding, "Inverse Winding"},
-            {SkPathFillType::kInverseEvenOdd, "Inverse Even / Odd"},
-        };
+        constexpr auto gFills = std::to_array<FillAndName>({
+            FillAndName{SkPathFillType::kWinding, "Winding"},
+            FillAndName{SkPathFillType::kEvenOdd, "Even / Odd"},
+            FillAndName{SkPathFillType::kInverseWinding, "Inverse Winding"},
+            FillAndName{SkPathFillType::kInverseEvenOdd, "Inverse Even / Odd"},
+        });
         struct StyleAndName {
             SkPaint::Style fStyle;
             const char*    fName;
         };
-        constexpr StyleAndName gStyles[] = {
-            {SkPaint::kFill_Style, "Fill"},
-            {SkPaint::kStroke_Style, "Stroke"},
-            {SkPaint::kStrokeAndFill_Style, "Stroke And Fill"},
-        };
+        constexpr auto gStyles = std::to_array<StyleAndName>({
+            StyleAndName{SkPaint::kFill_Style, "Fill"},
+            StyleAndName{SkPaint::kStroke_Style, "Stroke"},
+            StyleAndName{SkPaint::kStrokeAndFill_Style, "Stroke And Fill"},
+        });
         struct CapAndName {
             SkPaint::Cap  fCap;
             SkPaint::Join fJoin;
             const char*   fName;
         };
-        constexpr CapAndName gCaps[] = {
-            {SkPaint::kButt_Cap, SkPaint::kBevel_Join, "Butt"},
-            {SkPaint::kRound_Cap, SkPaint::kRound_Join, "Round"},
-            {SkPaint::kSquare_Cap, SkPaint::kBevel_Join, "Square"}
-        };
+        constexpr auto gCaps = std::to_array<CapAndName>({
+            CapAndName{SkPaint::kButt_Cap, SkPaint::kBevel_Join, "Butt"},
+            CapAndName{SkPaint::kRound_Cap, SkPaint::kRound_Join, "Round"},
+            CapAndName{SkPaint::kSquare_Cap, SkPaint::kBevel_Join, "Square"}
+        });
         struct PathAndName {
             SkPath      fPath;
             const char* fName;
@@ -272,31 +273,31 @@ class CubicClosePathGM : public skiagm::GM {
             SkPathFillType fFill;
             const char*      fName;
         };
-        constexpr FillAndName gFills[] = {
-            {SkPathFillType::kWinding, "Winding"},
-            {SkPathFillType::kEvenOdd, "Even / Odd"},
-            {SkPathFillType::kInverseWinding, "Inverse Winding"},
-            {SkPathFillType::kInverseEvenOdd, "Inverse Even / Odd"},
-        };
+        constexpr auto gFills = std::to_array<FillAndName>({
+            FillAndName{SkPathFillType::kWinding, "Winding"},
+            FillAndName{SkPathFillType::kEvenOdd, "Even / Odd"},
+            FillAndName{SkPathFillType::kInverseWinding, "Inverse Winding"},
+            FillAndName{SkPathFillType::kInverseEvenOdd, "Inverse Even / Odd"},
+        });
         struct StyleAndName {
             SkPaint::Style fStyle;
             const char*    fName;
         };
-        constexpr StyleAndName gStyles[] = {
-            {SkPaint::kFill_Style, "Fill"},
-            {SkPaint::kStroke_Style, "Stroke"},
-            {SkPaint::kStrokeAndFill_Style, "Stroke And Fill"},
-        };
+        constexpr auto gStyles = std::to_array<StyleAndName>({
+            StyleAndName{SkPaint::kFill_Style, "Fill"},
+            StyleAndName{SkPaint::kStroke_Style, "Stroke"},
+            StyleAndName{SkPaint::kStrokeAndFill_Style, "Stroke And Fill"},
+        });
         struct CapAndName {
             SkPaint::Cap  fCap;
             SkPaint::Join fJoin;
             const char*   fName;
         };
-        constexpr CapAndName gCaps[] = {
-            {SkPaint::kButt_Cap, SkPaint::kBevel_Join, "Butt"},
-            {SkPaint::kRound_Cap, SkPaint::kRound_Join, "Round"},
-            {SkPaint::kSquare_Cap, SkPaint::kBevel_Join, "Square"}
-        };
+        constexpr auto gCaps = std::to_array<CapAndName>({
+            CapAndName{SkPaint::kButt_Cap, SkPaint::kBevel_Join, "Butt"},
+            CapAndName{SkPaint::kRound_Cap, SkPaint::kRound_Join, "Round"},
+            CapAndName{SkPaint::kSquare_Cap, SkPaint::kBevel_Join, "Square"}
+        });
         struct PathAndName {
             SkPath      fPath;
             const char* fName;
@@ -402,31 +403,31 @@ class CubicPathShaderGM : public skiagm::GM {
             SkPathFillType fFill;
             const char*      fName;
         };
-        constexpr FillAndName gFills[] = {
-            {SkPathFillType::kWinding, "Winding"},
-            {SkPathFillType::kEvenOdd, "Even / Odd"},
-            {SkPathFillType::kInverseWinding, "Inverse Winding"},
-            {SkPathFillType::kInverseEvenOdd, "Inverse Even / Odd"},
-        };
+        constexpr auto gFills = std::to_array<FillAndName>({
+            FillAndName{SkPathFillType::kWinding, "Winding"},
+            FillAndName{SkPathFillType::kEvenOdd, "Even / Odd"},
+            FillAndName{SkPathFillType::kInverseWinding, "Inverse Winding"},
+            FillAndName{SkPathFillType::kInverseEvenOdd, "Inverse Even / Odd"},
+        });
         struct StyleAndName {
             SkPaint::Style fStyle;
             const char*    fName;
         };
-        constexpr StyleAndName gStyles[] = {
-            {SkPaint::kFill_Style, "Fill"},
-            {SkPaint::kStroke_Style, "Stroke"},
-            {SkPaint::kStrokeAndFill_Style, "Stroke And Fill"},
-        };
+        constexpr auto gStyles = std::to_array<StyleAndName>({
+            StyleAndName{SkPaint::kFill_Style, "Fill"},
+            StyleAndName{SkPaint::kStroke_Style, "Stroke"},
+            StyleAndName{SkPaint::kStrokeAndFill_Style, "Stroke And Fill"},
+        });
         struct CapAndName {
             SkPaint::Cap  fCap;
             SkPaint::Join fJoin;
             const char*   fName;
         };
-        constexpr CapAndName gCaps[] = {
-            {SkPaint::kButt_Cap, SkPaint::kBevel_Join, "Butt"},
-            {SkPaint::kRound_Cap, SkPaint::kRound_Join, "Round"},
-            {SkPaint::kSquare_Cap, SkPaint::kBevel_Join, "Square"}
-        };
+        constexpr auto gCaps = std::to_array<CapAndName>({
+            CapAndName{SkPaint::kButt_Cap, SkPaint::kBevel_Join, "Butt"},
+            CapAndName{SkPaint::kRound_Cap, SkPaint::kRound_Join, "Round"},
+            CapAndName{SkPaint::kSquare_Cap, SkPaint::kBevel_Join, "Square"}
+        });
         struct PathAndName {
             SkPath      fPath;
             const char* fName;

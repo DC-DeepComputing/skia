@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkBlendMode.h"
@@ -54,25 +55,25 @@ protected:
         SkFont  font = ToolUtils::DefaultPortableFont();
         SkPaint labelP;
 
-        constexpr SkColor kSolidColors[] = {
+        constexpr auto kSolidColors = std::to_array<SkColor>({
             SK_ColorTRANSPARENT,
             SK_ColorBLUE,
             0x80808000
-        };
+        ,});
 
-        constexpr SkColor kBmpAlphas[] = {
+        constexpr auto kBmpAlphas = std::to_array<SkColor>({
             0xff,
             0x80,
-        };
+        });
 
         auto tempSurface(this->makeTempSurface(canvas, kSize, kSize));
 
         int test = 0;
         int x = 0, y = 0;
-        constexpr struct { SkPaint::Style fStyle; SkScalar fWidth; } kStrokes[] = {
-            {SkPaint::kFill_Style, 0},
-            {SkPaint::kStroke_Style, SkIntToScalar(kSize) / 2},
-        };
+        struct Strokes { SkPaint::Style fStyle; SkScalar fWidth; }; constexpr auto kStrokes = std::to_array<Strokes>({
+            Strokes{SkPaint::kFill_Style, 0},
+            Strokes{SkPaint::kStroke_Style, SkIntToScalar(kSize) / 2},
+        });
         for (size_t s = 0; s < std::size(kStrokes); ++s) {
             for (size_t m = 0; m < kSkBlendModeCount; ++m) {
                 SkBlendMode mode = static_cast<SkBlendMode>(m);

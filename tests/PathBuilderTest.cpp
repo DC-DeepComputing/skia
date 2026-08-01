@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkPath.h"
 #include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathMeasure.h"
@@ -254,8 +255,8 @@ DEF_TEST(pathbuilder_addRRect, reporter) {
 
 DEF_TEST(pathbuilder_make, reporter) {
     constexpr int N = 100;
-    SkPathVerb vbs[N];
-    SkPoint pts[N];
+    std::array<SkPathVerb, N> vbs;
+    std::array<SkPoint, N> pts;
 
     SkRandom rand;
     SkPathBuilder b;
@@ -691,15 +692,15 @@ DEF_TEST(SkPathBuilder_transform, reporter) {
     SkPathBuilder b;
 
 #define CONIC_PERSPECTIVE_BUG_FIXED 0
-    static const SkPoint pts[] = {
-        { 0, 0 },  // move
+    static const auto pts = std::to_array<SkPoint>({
+        SkPoint{ 0, 0 },  // move
         { SkIntToScalar(10), SkIntToScalar(10) },  // line
-        { SkIntToScalar(20), SkIntToScalar(10) }, { SkIntToScalar(20), 0 },  // quad
-        { 0, 0 }, { 0, SkIntToScalar(10) }, { SkIntToScalar(1), SkIntToScalar(10) },  // cubic
+        { SkIntToScalar(20), SkIntToScalar(10) }, SkPoint{ SkIntToScalar(20), 0 },  // quad
+        { 0, 0 }, SkPoint{ 0, SkIntToScalar(10) }, SkPoint{ SkIntToScalar(1), SkIntToScalar(10) },  // cubic
 #if CONIC_PERSPECTIVE_BUG_FIXED
-        { 0, 0 }, { SkIntToScalar(20), SkIntToScalar(10) },  // conic
+        { 0, 0 }, SkPoint{ SkIntToScalar(20), SkIntToScalar(10) },  // conic
 #endif
-    };
+    });
     const int kPtCount = std::size(pts);
 
     b.moveTo(pts[0]);

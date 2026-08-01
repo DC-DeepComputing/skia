@@ -4,6 +4,7 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include <array>
 #include "include/utils/SkParse.h"
 
 #include "include/core/SkColor.h"
@@ -158,10 +159,10 @@ static constexpr const char* gColorNames[] = {
     "yellowgreen",
 };
 
-static constexpr struct ColorRec {
+struct ColorRec {
     uint8_t     r, g, b;
-} gColors[] = {
-    { 0xf0,0xf8,0xff }, // aliceblue
+}; static constexpr auto gColors = std::to_array<ColorRec>({
+    ColorRec{ 0xf0,0xf8,0xff }, // aliceblue
     { 0xfa,0xeb,0xd7 }, // antiquewhite
     { 0x00,0xff,0xff }, // aqua
     { 0x7f,0xff,0xd4 }, // aquamarine
@@ -301,7 +302,7 @@ static constexpr struct ColorRec {
     { 0xf5,0xf5,0xf5 }, // whitesmoke
     { 0xff,0xff,0x00 }, // yellow
     { 0x9a,0xcd,0x32 }, // yellowgreen
-};
+});
 
 const char* SkParse::FindNamedColor(const char* name, size_t len, SkColor* color) {
     const auto rec = std::lower_bound(std::begin(gColorNames),

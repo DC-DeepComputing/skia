@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -73,12 +74,12 @@ protected:
         // amount of bm that should not be stretched (unless we have to)
         const SkScalar fixed = SkIntToScalar(fImage->width() - fCenter.width());
 
-        const SkSize size[] = {
-            { fixed * 4 / 5, fixed * 4 / 5 },   // shrink in both axes
+        const auto size = std::to_array<SkSize>({
+            SkSize{ fixed * 4 / 5, fixed * 4 / 5 },   // shrink in both axes
             { fixed * 4 / 5, fixed * 4 },       // shrink in X
             { fixed * 4,     fixed * 4 / 5 },   // shrink in Y
             { fixed * 4,     fixed * 4 }
-        };
+        });
 
         canvas->drawImage(fImage, 10, 10);
 

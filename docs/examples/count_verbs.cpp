@@ -1,3 +1,6 @@
+#include <array>
+#include "include/core/SkSpan.h"
+
 // Copyright 2020 Google LLC
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 #include "tools/fiddle/examples.h"
@@ -11,7 +14,7 @@ static SkPath make_path(const SkFont& font) {
     return path;
 }
 
-static void count_verbs(const SkPath& path, int counts[6]) {
+static void count_verbs(const SkPath& path, SkSpan<int> counts) {
     SkPath::Iter it(path, false);
     for (int i = 0; i < 6; ++i) {
         counts[i] = 0;
@@ -24,11 +27,11 @@ static void count_verbs(const SkPath& path, int counts[6]) {
 void draw(SkCanvas* canvas) {
     SkFont font(fontMgr->matchFamilyStyle("DejaVu Sans Mono", SkFontStyle()), 30);
     SkPath path = make_path(font);
-    int counts[6];
+    std::array<int, 6> counts;
     count_verbs(path, counts);
 
     // output results:
-    const char* verbs[6] = {"Move", "Line", "Quad", "Conic", "Cubic", "Close"};
+    std::array<const char *, 6> verbs = {"Move", "Line", "Quad", "Conic", "Cubic", "Close"};
     SkPoint pt = SkPoint::Make(10.0f, 5.0f + font.getSpacing());
     SkPaint p;
     canvas->clear(SK_ColorWHITE);

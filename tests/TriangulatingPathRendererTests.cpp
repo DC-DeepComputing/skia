@@ -78,7 +78,7 @@ struct GrContextOptions;
 
 using CreatePathFn = void(*)(SkPathBuilder&);
 
-CreatePathFn kNonEdgeAAPaths[] = {
+auto kNonEdgeAAPaths = std::to_array<CreatePathFn>({
     // Tests active edges made inactive by splitting.
     // Also tests active edge list forced into an invalid ordering by
     // splitting (mopped up in cleanup_active_edges()).
@@ -469,7 +469,7 @@ CreatePathFn kNonEdgeAAPaths[] = {
         path.lineTo(   32114477642022912,    -3010462031544320);
         path.lineTo(   32111784697528320,    -3010209702215680);
     },
-};
+});
 
 #if defined(SK_GANESH)
 

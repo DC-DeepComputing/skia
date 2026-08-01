@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkBlendMode.h"
@@ -88,7 +89,7 @@ protected:
         SkColorMatrix matrix;
 
         paint.setBlendMode(SkBlendMode::kSrc);
-        const SkImage* bmps[] = { fSolidImg.get(), fTransparentImg.get() };
+        auto bmps = std::to_array<const SkImage *>({ fSolidImg.get(), fTransparentImg.get() });
 
         for (size_t i = 0; i < std::size(bmps); ++i) {
             matrix.setIdentity();

@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkScalar.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
@@ -153,26 +154,26 @@ DEF_TEST(String, reporter) {
     a.printf("hello %s", "skia");
     REPORTER_ASSERT(reporter, a.equals("hello skia"));
 
-    static const struct {
+    struct GRec {
         SkScalar    fValue;
         const char* fString;
-    } gRec[] = {
-        { 0,             "0" },
-        { SK_Scalar1,    "1" },
-        { -SK_Scalar1,   "-1" },
-        { SK_Scalar1/2,  "0.5" },
-        { INFINITY,      "inf" },
-        { -INFINITY,     "-inf" },
-        { NAN,           "nan" },
-        { -NAN,          "nan" },
+    }; static const auto gRec = std::to_array<GRec>({
+        GRec{ 0,             "0" },
+        GRec{ SK_Scalar1,    "1" },
+        GRec{ -SK_Scalar1,   "-1" },
+        GRec{ SK_Scalar1/2,  "0.5" },
+        GRec{ INFINITY,      "inf" },
+        GRec{ -INFINITY,     "-inf" },
+        GRec{ NAN,           "nan" },
+        GRec{ -NAN,          "nan" },
   #if defined(SK_BUILD_FOR_WIN) && (_MSC_VER < 1900)
         { 3.4028234e38f,   "3.4028235e+038" },
-        { -3.4028234e38f, "-3.4028235e+038" },
+        GRec{ -3.4028234e38f, "-3.4028235e+038" },
   #else
         { 3.4028234e38f,   "3.4028235e+38" },
-        { -3.4028234e38f, "-3.4028235e+38" },
+        GRec{ -3.4028234e38f, "-3.4028235e+38" },
   #endif
-    };
+    });
     for (size_t i = 0; i < std::size(gRec); i++) {
         a.reset();
         a.appendScalar(gRec[i].fValue);

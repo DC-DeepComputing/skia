@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -48,7 +49,7 @@ DEF_SIMPLE_GM_CAN_FAIL(hittestpath, canvas, errorMsg, 700, 460) {
     int scale = 300;
     for (int i = 0; i < 4; ++i) {
         // get the random values deterministically
-        SkScalar randoms[12];
+        std::array<SkScalar, 12> randoms;
         for (int index = 0; index < (int) std::size(randoms); ++index) {
             randoms[index] = rand.nextUScalar1();
         }

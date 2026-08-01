@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -101,7 +102,7 @@ protected:
     }
 
     void onDraw(SkCanvas* canvas) override {
-        SkScalar gScales[] = { 0.9f, 0.8f, 0.75f, 0.6f, 0.5f, 0.4f, 0.25f, 0.2f, 0.1f };
+        auto gScales = std::to_array<SkScalar>({ 0.9f, 0.8f, 0.75f, 0.6f, 0.5f, 0.4f, 0.25f, 0.2f, 0.1f ,});
 
         SkASSERT(kNumVertImages-1 == (int)std::size(gScales)/2);
 
@@ -216,7 +217,7 @@ protected:
         }
 
         static constexpr float kScales[] = {1.f, 0.5f, 0.25f, 0.125f};
-        SkColor kColors[] = {0xFFF0F0F0, SK_ColorBLUE, SK_ColorGREEN, SK_ColorRED};
+        auto kColors = std::to_array<SkColor>({0xFFF0F0F0, SK_ColorBLUE, SK_ColorGREEN, SK_ColorRED,});
         static const SkSamplingOptions kSampling = SkSamplingOptions::Aniso(16);
 
         for (bool shader : {false, true}) {

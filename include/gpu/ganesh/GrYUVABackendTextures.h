@@ -6,6 +6,8 @@
  */
 
 #ifndef GrYUVABackendTextures_DEFINED
+#include "include/core/SkSpan.h"
+
 #define GrYUVABackendTextures_DEFINED
 
 #include "include/core/SkTypes.h"
@@ -38,7 +40,7 @@ public:
      * passed formats' channels don't agree with SkYUVAInfo.
      */
     GrYUVABackendTextureInfo(const SkYUVAInfo&,
-                             const GrBackendFormat[kMaxPlanes],
+                             SkSpan<const GrBackendFormat> ,
                              skgpu::Mipmapped,
                              GrSurfaceOrigin);
 
@@ -95,7 +97,7 @@ public:
     GrYUVABackendTextures& operator=(GrYUVABackendTextures&&) = default;
 
     GrYUVABackendTextures(const SkYUVAInfo&,
-                          const GrBackendTexture[SkYUVAInfo::kMaxPlanes],
+                          SkSpan<const GrBackendTexture> ,
                           GrSurfaceOrigin textureOrigin);
 
     const std::array<GrBackendTexture, SkYUVAInfo::kMaxPlanes>& textures() const {

@@ -6,6 +6,8 @@
  */
 
 #ifndef GrAAConvexTessellator_DEFINED
+#include <array>
+
 #define GrAAConvexTessellator_DEFINED
 
 #include "include/core/SkPaint.h"
@@ -271,7 +273,7 @@ private:
     // When visualizing save all the rings
     SkTDArray<Ring*>      fRings;
 #else
-    Ring                  fRings[2];
+    std::array<Ring, 2> fRings;
 #endif
     CandidateVerts        fCandidateVerts;
 

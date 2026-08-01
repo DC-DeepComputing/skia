@@ -5,6 +5,7 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include <array>
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkPath.h"
@@ -62,7 +63,7 @@ public:
         const SkScalar kAmbientAlpha = 0.05f;
         const SkScalar kSpotAlpha = 0.35f;
 
-        const SkScalar elevations[] = { 1, 3, 6, 8, 12, 24 };
+        const auto elevations = std::to_array<SkScalar>({ 1, 3, 6, 8, 12, 24 });
 
         SkPaint paint;
         paint.setAntiAlias(true);

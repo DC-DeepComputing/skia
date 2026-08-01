@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkTypes.h"
 #ifdef SK_XML
 
@@ -179,21 +180,21 @@ void test_whitespace_pos(skiatest::Reporter* reporter,
 } // namespace
 
 DEF_TEST(SVGDevice_whitespace_pos, reporter) {
-    static const struct {
+    struct Tests {
         const char* tst_in;
         const char* tst_out;
-    } tests[] = {
-        { "abcd"      , "abcd" },
-        { "ab cd"     , "ab cd" },
-        { "ab \t\t cd", "ab cd" },
-        { " abcd"     , "abcd" },
-        { "  abcd"    , "abcd" },
-        { " \t\t abcd", "abcd" },
-        { "abcd "     , "abcd " }, // we allow one trailing whitespace char
+    }; static const auto tests = std::to_array<Tests>({
+        Tests{ "abcd"      , "abcd" },
+        Tests{ "ab cd"     , "ab cd" },
+        Tests{ "ab \t\t cd", "ab cd" },
+        Tests{ " abcd"     , "abcd" },
+        Tests{ "  abcd"    , "abcd" },
+        Tests{ " \t\t abcd", "abcd" },
+        Tests{ "abcd "     , "abcd " }, // we allow one trailing whitespace char
         { "abcd  "    , "abcd " }, // because it makes no difference and
         { "abcd\t  "  , "abcd " }, // simplifies the implementation
         { "\t\t  \t ab \t\t  \t cd \t\t   \t  ", "ab cd " },
-    };
+    });
 
     for (unsigned i = 0; i < std::size(tests); ++i) {
         test_whitespace_pos(reporter, tests[i].tst_in, tests[i].tst_out);
