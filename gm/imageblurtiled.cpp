@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkFont.h"
@@ -46,12 +47,12 @@ protected:
                 canvas->save();
                 canvas->clipRect(SkRect::MakeXYWH(x, y, tileSize, tileSize));
                 canvas->saveLayer(nullptr, &paint);
-                const char* str[] = {
+                auto str = std::to_array<const char *>({
                     "The quick",
                     "brown fox",
                     "jumped over",
                     "the lazy dog.",
-                };
+                });
                 SkFont font(ToolUtils::DefaultPortableTypeface(), 100);
                 int posY = 0;
                 for (unsigned i = 0; i < std::size(str); i++) {

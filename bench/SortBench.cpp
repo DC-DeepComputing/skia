@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "bench/Benchmark.h"
 #include "include/core/SkString.h"
 #include "include/private/SkTemplates.h"
@@ -57,16 +58,16 @@ enum Type {
     kRand, kRandN, kFore, kBack, kSame
 };
 
-static const struct {
+struct GRec {
     const char* fName;
     SortProc    fProc;
-} gRec[] = {
-    { "rand", rand_proc },
-    { "rand10", randN_proc },
-    { "forward", forward_proc },
-    { "backward", backward_proc },
-    { "repeated", same_proc },
-};
+}; static const auto gRec = std::to_array<GRec>({
+    GRec{ "rand", rand_proc },
+    GRec{ "rand10", randN_proc },
+    GRec{ "forward", forward_proc },
+    GRec{ "backward", backward_proc },
+    GRec{ "repeated", same_proc },
+});
 
 static void skqsort_sort(int array[N]) {
     SkTQSort<int>(array, array + N);
@@ -96,15 +97,15 @@ enum SortType {
     kSKQSort, kSKHeap, kQSort, kStdSort,
 };
 
-static const struct {
+struct GSorts {
     const char* fName;
     SortProc    fProc;
-} gSorts[] = {
-    { "skqsort", skqsort_sort },
-    { "skheap",   skheap_sort },
-    { "qsort",     qsort_sort },
-    { "stdsort", stdsort_sort },
-};
+}; static const auto gSorts = std::to_array<GSorts>({
+    GSorts{ "skqsort", skqsort_sort },
+    GSorts{ "skheap",   skheap_sort },
+    GSorts{ "qsort",     qsort_sort },
+    GSorts{ "stdsort", stdsort_sort },
+});
 
 class SortBench : public Benchmark {
     SkString           fName;

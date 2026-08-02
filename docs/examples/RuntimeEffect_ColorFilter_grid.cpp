@@ -1,3 +1,5 @@
+#include <array>
+
 // Copyright 2020 Google LLC
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 #include "tools/fiddle/examples.h"
@@ -7,7 +9,7 @@ constexpr size_t kNumColors = 8;
 // This colorfilter turns alpha values into a color from the list
 // (e.g. alpha 3 would produce a yellow color).
 sk_sp<SkColorFilter> color_filter() {
-  static const SkColor colors[kNumColors] = {
+  static const std::array<SkColor, kNumColors> colors = {
       0x80FF0000, // red
       0x8000FF00, // green
       0x800000FF, // blue

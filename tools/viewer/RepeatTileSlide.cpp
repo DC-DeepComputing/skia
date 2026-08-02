@@ -4,6 +4,7 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include <array>
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkShader.h"
@@ -19,9 +20,9 @@ static void make_bitmap(SkBitmap* bm) {
     SkCanvas canvas(*bm);
     canvas.drawColor(SK_ColorWHITE);
 
-    const SkColor colors[] = {
+    const auto colors = std::to_array<SkColor>({
         SK_ColorRED, SK_ColorGREEN, SK_ColorBLUE, SK_ColorWHITE
-    };
+    ,});
 
     for (int ix = 0; ix < W; ix += 1) {
         SkScalar x = SkIntToScalar(ix) + SK_ScalarHalf;

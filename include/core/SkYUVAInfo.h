@@ -6,6 +6,8 @@
  */
 
 #ifndef SkYUVAInfo_DEFINED
+#include "include/core/SkSpan.h"
+
 #define SkYUVAInfo_DEFINED
 
 #include "include/codec/SkEncodedOrigin.h"
@@ -119,7 +121,7 @@ public:
                                PlaneConfig,
                                Subsampling,
                                SkEncodedOrigin,
-                               SkISize planeDimensions[kMaxPlanes]);
+                               SkSpan<SkISize> planeDimensions);
 
     /** Number of planes for a given PlaneConfig. */
     static constexpr int NumPlanes(PlaneConfig);
@@ -192,7 +194,7 @@ public:
      * the expected dimensions for each plane. Dimensions are as stored in memory, before
      * transformation to image display space as indicated by origin().
      */
-    int planeDimensions(SkISize planeDimensions[kMaxPlanes]) const {
+    int planeDimensions(SkSpan<SkISize> planeDimensions) const {
         return PlaneDimensions(fDimensions, fPlaneConfig, fSubsampling, fOrigin, planeDimensions);
     }
 

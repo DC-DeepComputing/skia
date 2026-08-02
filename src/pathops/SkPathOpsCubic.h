@@ -5,7 +5,11 @@
  * found in the LICENSE file.
  */
 
+#include <array>
+
 #ifndef SkPathOpsCubic_DEFINED
+#include "include/core/SkSpan.h"
+
 #define SkPathOpsCubic_DEFINED
 
 #include "include/core/SkPoint.h"
@@ -60,8 +64,8 @@ struct SkDCubic {
     double calcPrecision() const;
     SkDCubicPair chopAt(double t) const;
     static void Coefficients(const double* cubic, double* A, double* B, double* C, double* D);
-    static int ComplexBreak(const SkPoint pts[4], SkScalar* t);
-    int convexHull(char order[kPointCount]) const;
+    static int ComplexBreak(const SkPoint pts[4], SkSpan<SkScalar> t);
+    int convexHull(SkSpan<char> order) const;
 
     void debugInit() {
         sk_bzero(fPts, sizeof(fPts));
@@ -190,7 +194,7 @@ struct SkDCubicPair {
         return (const SkDCubic&) pts[3];
 #endif
     }
-    SkDPoint pts[7];
+    std::array<SkDPoint, 7> pts;
 };
 
 class SkTCubic : public SkTCurve {

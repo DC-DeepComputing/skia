@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkCanvas.h"
 #include "include/core/SkDrawable.h"
 #include "include/core/SkFont.h"
@@ -140,8 +141,8 @@ class DrawAtlasDrawable : public SkDrawable {
     static constexpr size_t N = 256;
 
     sk_sp<SkImage> fAtlas;
-    Rec         fRec[N];
-    SkRect      fTex[N];
+    std::array<Rec, N> fRec;
+    std::array<SkRect, N> fTex;
     SkRect      fBounds;
     bool        fUseColors;
 
@@ -180,7 +181,7 @@ public:
 
 protected:
     void onDraw(SkCanvas* canvas) override {
-        SkRSXform xform[N];
+        std::array<SkRSXform, N> xform;
         SkColor colors[N];
 
         for (size_t i = 0; i < N; ++i) {

@@ -6,6 +6,7 @@
  */
 #include "src/gpu/ganesh/gl/builders/GrGLShaderStringBuilder.h"
 
+#include "include/core/SkSpan.h"
 #include "include/gpu/ganesh/gl/GrGLFunctions.h"
 #include "include/gpu/ganesh/gl/GrGLInterface.h"
 #include "include/private/SkTo.h"
@@ -76,7 +77,7 @@ bool GrGLCheckLinkStatus(const GrGLGpu* gpu,
                          GrGLuint programID,
                          bool shaderWasCached,
                          GrContextOptions::ShaderErrorHandler* errorHandler,
-                         const std::string* sksl[kGrShaderTypeCount],
+                         SkSpan<const std::string *> sksl,
                          const SkSL::NativeShader glsl[kGrShaderTypeCount]) {
     const GrGLInterface* gli = gpu->glInterface();
 
@@ -89,7 +90,7 @@ bool GrGLCheckLinkStatus(const GrGLGpu* gpu,
 #else
         #define SKSL_FORMAT "%s\n%s\n"
 #endif
-        if (sksl) {
+        if (!sksl.empty()) {
             SkSL::String::appendf(&allShaders, SKSL_FORMAT,
                                                sksl[kVertex_GrShaderType]->c_str(),
                                                sksl[kFragment_GrShaderType]->c_str());

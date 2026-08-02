@@ -12,6 +12,7 @@
 #include "include/core/SkData.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkSpan.h"
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/ganesh/GrBackendSurface.h"
 #include "include/gpu/ganesh/GrTypes.h"
@@ -500,7 +501,7 @@ sk_sp<const GrGpuBuffer> GrResourceProvider::findOrMakeStaticBuffer(
 }
 
 sk_sp<const GrGpuBuffer> GrResourceProvider::createPatternedIndexBuffer(
-        const uint16_t* pattern,
+        SkSpan<const uint16_t> pattern,
         int patternSize,
         int reps,
         int vertCount,
