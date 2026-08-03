@@ -16,6 +16,24 @@
       "message": "The bug was approved for M144 LTS. PTAL.",
       "revId": "7aba8b2be40db994f4f2599457dc1e3b04cd25ba",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f8cdf27_ce24b7da",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-03T14:21:34Z",
+      "side": 1,
+      "message": "This is not a clean merge to 144. There are other CLs that it depended on (missing `viewDifference` in VertexFiller).\n\nI do not think this is worth continuing given the balance between what else would need to be cherry picked and the impact of the bug.",
+      "parentUuid": "7ba57540_c8ae2834",
+      "revId": "7aba8b2be40db994f4f2599457dc1e3b04cd25ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
