@@ -1116,7 +1116,7 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
     if (srcColorRoot->requiredFlags() & SnippetRequirementFlags::kPrimitiveColor) {
         SkASSERT(step->emitsPrimitiveColor());
         mainBody += "half4 primitiveColor;";
-        mainBody += step->fragmentColorSkSL();
+        mainBody += step->fragmentColorSkSL(sharedData.fRootsInfo);
     }
     // else the RenderStep may be producing a primitive color but the paint is not consuming it
     // so just skip injecting that SkSL entirely.
@@ -1337,7 +1337,7 @@ void ShaderInfo::generateVertexSkSL(const Caps* caps,
     }
 
     // Inject RenderStep's main vertex logic
-    mainBody += step->vertexSkSL();
+    mainBody += step->vertexSkSL(sharedData.fRootsInfo);
 
     // Calculate sk_Position
     mainBody +=
