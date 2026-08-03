@@ -7,6 +7,8 @@
 
 #include "src/gpu/graphite/render/MiddleOutFanRenderStep.h"
 
+#include "src/gpu/graphite/PaintParamsKey.h"
+
 #include "include/core/SkPath.h"
 #include "include/private/SkDebug.h"
 #include "src/core/SkSLTypeShared.h"
@@ -43,7 +45,7 @@ MiddleOutFanRenderStep::MiddleOutFanRenderStep(Layout layout, bool evenOdd)
 
 MiddleOutFanRenderStep::~MiddleOutFanRenderStep() {}
 
-std::string MiddleOutFanRenderStep::vertexSkSL() const {
+std::string MiddleOutFanRenderStep::vertexSkSL(const RootNodesInfo&) const {
     return
         "float4 devPosition = localToDevice * float4(position, 0.0, 1.0);\n"
         "devPosition.z = depth;\n"

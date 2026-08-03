@@ -7,6 +7,8 @@
 
 #include "src/gpu/graphite/render/TessellateStrokesRenderStep.h"
 
+#include "src/gpu/graphite/PaintParamsKey.h"
+
 #include "include/core/SkM44.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPath.h"
@@ -104,7 +106,7 @@ TessellateStrokesRenderStep::TessellateStrokesRenderStep(Layout layout, bool inf
 
 TessellateStrokesRenderStep::~TessellateStrokesRenderStep() {}
 
-std::string TessellateStrokesRenderStep::vertexSkSL() const {
+std::string TessellateStrokesRenderStep::vertexSkSL(const RootNodesInfo&) const {
     // TODO: Assumes vertex ID support for now, max edges must equal
     // skgpu::tess::FixedCountStrokes::kMaxEdges -> (2^14 - 1) -> 16383
     return SkSL::String::printf(
