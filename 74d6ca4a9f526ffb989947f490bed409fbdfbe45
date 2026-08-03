@@ -16,6 +16,24 @@
       "message": "Thanks Sergio, LGTM.  Looks like we need a rebase before I can kick off the cq jobs.",
       "revId": "74d6ca4a9f526ffb989947f490bed409fbdfbe45",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aad4bbe4_2557f874",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-08-03T13:42:24Z",
+      "side": 1,
+      "message": "I have just rebased and resolved merge conflicts. Can you help kicking of fthe cq jobs? Thanks!",
+      "parentUuid": "ba4c5eaa_a7d3bcee",
+      "revId": "74d6ca4a9f526ffb989947f490bed409fbdfbe45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
