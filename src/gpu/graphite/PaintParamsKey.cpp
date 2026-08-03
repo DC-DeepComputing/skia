@@ -244,47 +244,25 @@ void lift_color_expressions(SkSpan<ShaderNode*> nodes, int* availableVaryings) {
 #endif
 }
 
-RootNodesInfo PaintParamsKey::getRootNodes(const Caps* caps,
-                                           const ShaderCodeDictionary* dict,
-                                           SkArenaAlloc* arena,
-                                           int availableVaryings) const {
+SkSpan<const ShaderNode*> PaintParamsKey::getRootNodes(const Caps* caps,
+                                                       const ShaderCodeDictionary* dict,
+                                                       SkArenaAlloc* arena,
+                                                       int availableVaryings) const {
     // TODO: Once the PaintParamsKey creation is organized to represent a single tree starting at
     // the final blend, there will only be a single root node and this can be simplified.
     // For now, we don't know how many roots there are, so collect them into a local array before
     // copying into the arena.
     const int keySize = SkTo<int>(fData.size());
 
-    RootNodesInfo rootsInfo;
-    // Normal PaintParams creation will have up to 3 roots for the different stages.
-    STArray<3, ShaderNode*> roots;
+    // Normal PaintParams creation will have up to 7 roots for the different stages.
+    STArray<7, ShaderNode*> roots;
     int currentIndex = 0;
     while (currentIndex < keySize) {
-        int32_t blockMarker = fData[currentIndex++];
-        if (blockMarker >= 0) {
-            return {}; // a bad key
-        }
-        RootBlockType type = static_cast<RootBlockType>(blockMarker);
         ShaderNode* root = this->createNode(dict, &currentIndex, arena);
         if (!root) {
             return {}; // a bad key
         }
         roots.push_back(root);
-        switch (type) {
-            case RootBlockType::kSrcColor:
-                SkASSERT(!rootsInfo.fSrcColor);
-                rootsInfo.fSrcColor = root;
-                break;
-            case RootBlockType::kFinalBlend:
-                SkASSERT(!rootsInfo.fFinalBlend);
-                rootsInfo.fFinalBlend = root;
-                break;
-            case RootBlockType::kClip:
-                SkASSERT(!rootsInfo.fClip);
-                rootsInfo.fClip = root;
-                break;
-            default:
-                SkUNREACHABLE;
-        }
     }
 
     // See what expressions we can lift to the vertex shader.
@@ -300,8 +278,7 @@ RootNodesInfo PaintParamsKey::getRootNodes(const Caps* caps,
     // Copy the accumulated roots into a span stored in the arena
     const ShaderNode** rootSpan = arena->makeArray<const ShaderNode*>(roots.size());
     memcpy(rootSpan, roots.data(), roots.size_bytes());
-    rootsInfo.fRoots = SkSpan(rootSpan, roots.size());
-    return rootsInfo;
+    return SkSpan(rootSpan, roots.size());
 }
 
 static void append_as_base64(SkString* str, SkSpan<const int32_t> data) {
@@ -332,26 +309,6 @@ static int key_to_string(const Caps* caps,
     }
 
     int32_t id = keyData[currentIndex++];
-    // Skip the root block headers.
-    if (id < 0) {
-        if (multiline) {
-            switch (static_cast<RootBlockType>(id)) {
-                case RootBlockType::kSrcColor:
-                    str->append("[RootSrcColor] ");
-                    break;
-                case RootBlockType::kFinalBlend:
-                    str->append("[RootFinalBlend] ");
-                    break;
-                case RootBlockType::kClip:
-                    str->append("[RootClip] ");
-                    break;
-                default:
-                    SkUNREACHABLE;
-            }
-        }
-        id = keyData[currentIndex++];
-    }
-
     auto entry = dict->getEntry(id);
     if (!entry) {
         str->append("Unknown(");
@@ -556,10 +513,6 @@ bool PaintParamsKey::isSerializable(const ShaderCodeDictionary* dict) const {
 
     int currentIndex = 0;
     while (currentIndex < keySize) {
-        // Ensure root nodes have their headers set properly, if not the key is malformed.
-        if (fData[currentIndex++] >= 0) {
-            return false;
-        }
         if (!is_block_valid(dict, fData, &currentIndex)) {
             return false;
         }
