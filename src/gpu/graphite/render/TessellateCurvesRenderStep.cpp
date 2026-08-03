@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2022 Google LLC
  *
@@ -117,7 +118,7 @@ TessellateCurvesRenderStep::TessellateCurvesRenderStep(Layout layout,
 
 TessellateCurvesRenderStep::~TessellateCurvesRenderStep() {}
 
-std::string TessellateCurvesRenderStep::vertexSkSL() const {
+std::string TessellateCurvesRenderStep::vertexSkSL(const RootNodesInfo&) const {
     return SkSL::String::printf(
             // TODO: Approximate perspective scaling to match how PatchWriter is configured (or
             // provide explicit tessellation level in instance data instead of replicating
