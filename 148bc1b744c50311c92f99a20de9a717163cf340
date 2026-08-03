@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94c9b119_7a87c9ac",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-08-03T17:12:34Z",
+      "side": 1,
+      "message": "nit: is this PackedGPUGlyphID? I just like using precise class names where available",
+      "range": {
+        "startLine": 22,
+        "startChar": 51,
+        "endLine": 22,
+        "endChar": 67
+      },
+      "revId": "148bc1b744c50311c92f99a20de9a717163cf340",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8645e10f_a832c924",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-08-03T17:12:34Z",
+      "side": 1,
+      "message": "same as above",
+      "range": {
+        "startLine": 31,
+        "startChar": 51,
+        "endLine": 31,
+        "endChar": 67
+      },
+      "revId": "148bc1b744c50311c92f99a20de9a717163cf340",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c7db610_c41d27c9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-08-03T17:12:34Z",
+      "side": 1,
+      "message": "same as above",
+      "range": {
+        "startLine": 43,
+        "startChar": 59,
+        "endLine": 44,
+        "endChar": 3
+      },
+      "revId": "148bc1b744c50311c92f99a20de9a717163cf340",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

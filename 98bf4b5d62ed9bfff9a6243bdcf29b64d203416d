@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0bef9807_f8519d8a",
+        "filename": "src/text/gpu/PackedGPUGlyphID.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-08-03T17:12:34Z",
+      "side": 1,
+      "message": "nit: is this an exhaustive list? as in will the mask data only store coverage or distances? \n\nif it can only store those, then use i.e. (\"in effect\") to communicate the exhaustive list\n\nif it can store more things, then use e.g. (\"for example\") to communicate these are only a few examples.\n\njust wanted to make sure because I confuse these sometimes myself",
+      "range": {
+        "startLine": 19,
+        "startChar": 34,
+        "endLine": 19,
+        "endChar": 60
+      },
+      "revId": "98bf4b5d62ed9bfff9a6243bdcf29b64d203416d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
