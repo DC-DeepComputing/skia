@@ -22,6 +22,30 @@
       },
       "revId": "98bf4b5d62ed9bfff9a6243bdcf29b64d203416d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ba5a836_ed87cd49",
+        "filename": "src/text/gpu/PackedGPUGlyphID.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-03T21:41:33Z",
+      "side": 1,
+      "message": "I think in this case e.g. works because there are other kinds of mask data, such as color or LCD coverage.  This is a bit pedantic, since those particular kinds of data are not ambiguous when also considering the MaskFormat value.  But also in general, I prefer to have general comments be example-based if it\u0027s not critical that they actually are exhaustive. This keeps them relevant as the code evolves (and in this case, the constructor for PackedGPUGlyphID is then what defines the current exhaustive list).",
+      "parentUuid": "0bef9807_f8519d8a",
+      "range": {
+        "startLine": 19,
+        "startChar": 34,
+        "endLine": 19,
+        "endChar": 60
+      },
+      "revId": "98bf4b5d62ed9bfff9a6243bdcf29b64d203416d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
