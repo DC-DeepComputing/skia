@@ -22,6 +22,30 @@
       },
       "revId": "2c72144d258fe2b5b82dd423e0e2300ffdec6604",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1edf2b41_a250e2f3",
+        "filename": "infra/bots/gen_tasks_logic/nano_flags.go",
+        "patchSetId": 6
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-08-03T14:58:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "46ce74ad_5521eae0",
+      "range": {
+        "startLine": 348,
+        "startChar": 4,
+        "endLine": 348,
+        "endChar": 5
+      },
+      "revId": "2c72144d258fe2b5b82dd423e0e2300ffdec6604",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
