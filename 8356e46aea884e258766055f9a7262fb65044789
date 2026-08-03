@@ -22,6 +22,30 @@
       },
       "revId": "8356e46aea884e258766055f9a7262fb65044789",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b0ca10a_efb820a3",
+        "filename": "third_party/dawn/BUILD.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-08-03T11:30:47Z",
+      "side": 1,
+      "message": "We\u0027ll also need a variant for Windows suppression (see https://task-scheduler.skia.org/job/GMgrYGsqdtH9xgbjSVYs)",
+      "parentUuid": "56c20d7b_89e649b1",
+      "range": {
+        "startLine": 81,
+        "startChar": 7,
+        "endLine": 81,
+        "endChar": 16
+      },
+      "revId": "8356e46aea884e258766055f9a7262fb65044789",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
