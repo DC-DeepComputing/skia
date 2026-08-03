@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9507bc25_4d95af30",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-08-03T17:08:16Z",
+      "side": 1,
+      "message": "Gold diffs seem to mainly be differences in AA between Graphite and Ganesh",
+      "revId": "9376256c561aac3d5083454982dc17b5d4b681bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
