@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56c20d7b_89e649b1",
+        "filename": "third_party/dawn/BUILD.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-08-03T11:30:01Z",
+      "side": 1,
+      "message": "Let\u0027s add a \"suppress all warnings\" like https://github.com/google/skia/blob/5a761eb826c12d673b0c2a32facebdb83f20779f/third_party/dawn/build_dawn.py#L150 to third_party/dawn/build_tint.py instead",
+      "range": {
+        "startLine": 81,
+        "startChar": 7,
+        "endLine": 81,
+        "endChar": 16
+      },
+      "revId": "8356e46aea884e258766055f9a7262fb65044789",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
