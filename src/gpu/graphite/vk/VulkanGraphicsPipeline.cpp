@@ -106,25 +106,43 @@ static void get_vertex_input_state(
         const VertexInputBindingDescription& defaultBindingDesc,
         const VertexInputAttributeDescription& defaultAttributeDesc) {
     int attribIndex = 0;
+    bool usingAttributeDefinedOffset = false;
     size_t staticAttributeOffset = 0;
     for (auto attrib : staticAttrs) {
         VertexInputAttributeDescription vkAttrib = defaultAttributeDesc;
+        SkASSERTF(!attrib.offset() || usingAttributeDefinedOffset || staticAttributeOffset == 0,
+                  "If using attribute offsets, all attributes must define an offset.");
+        usingAttributeDefinedOffset |= attrib.offset().has_value();
+
         vkAttrib.location = attribIndex++;
         vkAttrib.binding = VulkanGraphicsPipeline::kStaticDataBufferIndex;
         vkAttrib.format = attrib_type_to_vkformat(attrib.cpuType());
-        vkAttrib.offset = staticAttributeOffset;
-        staticAttributeOffset += attrib.sizeAlign4();
+        vkAttrib.offset = usingAttributeDefinedOffset ? *attrib.offset()
+                                                      : staticAttributeOffset;
+        staticAttributeOffset = usingAttributeDefinedOffset
+                    ? std::max(static_cast<size_t>(vkAttrib.offset) + attrib.sizeAlign4(),
+                                                   staticAttributeOffset)
+                    : staticAttributeOffset + attrib.sizeAlign4();
         attributeDescs.push_back(vkAttrib);
     }
 
+    usingAttributeDefinedOffset = false;
     size_t appendAttributeOffset = 0;
     for (auto attrib : appendAttrs) {
         VertexInputAttributeDescription vkAttrib = defaultAttributeDesc;
+        SkASSERTF(!attrib.offset() || usingAttributeDefinedOffset || appendAttributeOffset == 0,
+                  "If using attribute offsets, all attributes must define an offset.");
+        usingAttributeDefinedOffset |= attrib.offset().has_value();
+
         vkAttrib.location = attribIndex++;
         vkAttrib.binding = VulkanGraphicsPipeline::kAppendDataBufferIndex;
         vkAttrib.format = attrib_type_to_vkformat(attrib.cpuType());
-        vkAttrib.offset = appendAttributeOffset;
-        appendAttributeOffset += attrib.sizeAlign4();
+        vkAttrib.offset = usingAttributeDefinedOffset ? *attrib.offset()
+                                                      : appendAttributeOffset;
+        appendAttributeOffset = usingAttributeDefinedOffset
+                    ? std::max(static_cast<size_t>(vkAttrib.offset) + attrib.sizeAlign4(),
+                                                   appendAttributeOffset)
+                    : appendAttributeOffset + attrib.sizeAlign4();
         attributeDescs.push_back(vkAttrib);
     }
 
