@@ -27,7 +27,17 @@ type depConfig struct {
 // They are a subset of those listed in DEPS.
 // The key is the name of the repo as specified in DEPS.
 var depsOverrides = map[string]depConfig{
-	"abseil-cpp":  {bazelNameOverride: "abseil_cpp", isIndirect: true},
+	"abseil-cpp": {
+		bazelNameOverride: "abseil_cpp",
+		isIndirect:        true,
+		patchCmds: []string{
+			"find . -name BUILD.bazel -type f -exec sed -i.bak -e '/do_not_use_for_gloop_visibility_only/d' {} +",
+			"find . -name '*.bak' -type f -delete",
+		},
+		patchCmdsWin: []string{
+			`powershell -Command "Get-ChildItem -Recurse -Filter BUILD.bazel | ForEach-Object { $path = $_.FullName; (Get-Content $path) | Where-Object { $_ -notmatch 'do_not_use_for_gloop_visibility_only' } | Set-Content -Encoding Ascii $path }"`,
+		},
+	},
 	"brotli":      {isIndirect: true},
 	"highway":     {isIndirect: true},
 	"spirv-tools": {bazelNameOverride: "spirv_tools"},
