@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -140,12 +141,12 @@ DEF_GM(return new MacAAFontsGM;)
 
 DEF_SIMPLE_GM(macaa_colors, canvas, 800, 500) {
     const SkColor GRAY = 0xFF808080;
-    const SkColor colors[] = {
+    const auto colors = std::to_array<SkColor>({
         SK_ColorBLACK, SK_ColorWHITE,
         SK_ColorBLACK, GRAY,
         SK_ColorWHITE, SK_ColorBLACK,
         SK_ColorWHITE, GRAY,
-    };
+    });
     const SkScalar sizes[] = {10, 12, 15, 18, 24};
 
     const SkScalar width = 200;

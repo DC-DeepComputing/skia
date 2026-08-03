@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "src/effects/colorfilters/SkColorSpaceXformColorFilter.h"
 
 #include "include/core/SkAlphaType.h"
@@ -64,7 +65,7 @@ sk_sp<SkFlattenable> SkColorSpaceXformColorFilter::LegacyGammaOnlyCreateProc(SkR
 }
 
 sk_sp<SkFlattenable> SkColorSpaceXformColorFilter::CreateProc(SkReadBuffer& buffer) {
-    sk_sp<SkColorSpace> colorSpaces[2];
+    std::array<sk_sp<SkColorSpace>, 2> colorSpaces;
     for (int i = 0; i < 2; ++i) {
         auto data = buffer.readByteArrayAsData();
         if (!buffer.validate(data != nullptr)) {

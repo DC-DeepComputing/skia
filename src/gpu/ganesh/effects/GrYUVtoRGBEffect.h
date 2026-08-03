@@ -6,6 +6,8 @@
  */
 
 #ifndef GrYUVtoRGBEffect_DEFINED
+#include "include/core/SkSpan.h"
+
 #define GrYUVtoRGBEffect_DEFINED
 
 #include "include/core/SkMatrix.h"
@@ -38,7 +40,7 @@ public:
     const char* name() const override { return "YUVtoRGBEffect"; }
 
 private:
-    GrYUVtoRGBEffect(std::unique_ptr<GrFragmentProcessor> planeFPs[4],
+    GrYUVtoRGBEffect(SkSpan<std::unique_ptr<GrFragmentProcessor>> planeFPs,
                      int numPlanes,
                      const SkYUVAInfo::YUVALocations&,
                      const bool snap[2],

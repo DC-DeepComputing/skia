@@ -5,12 +5,14 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "tools/gpu/YUVUtils.h"
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkData.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkSurface.h"
 #include "src/codec/SkCodecImageGenerator.h"
 #include "src/core/SkColorPriv.h"
@@ -37,7 +39,7 @@
 
 namespace {
 
-static SkPMColor convert_yuva_to_rgba(const float mtx[20], uint8_t yuva[4]) {
+static SkPMColor convert_yuva_to_rgba(const float mtx[20], SkSpan<uint8_t> yuva) {
     uint8_t y = yuva[0];
     uint8_t u = yuva[1];
     uint8_t v = yuva[2];
@@ -101,7 +103,7 @@ protected:
                     xy1.fX *= normX;
                     xy1.fY *= normY;
 
-                    uint8_t yuva[4] = {0, 0, 0, 255};
+                    std::array<uint8_t, 4> yuva = {0, 0, 0, 255};
 
                     for (auto c : {SkYUVAInfo::YUVAChannels::kY,
                                    SkYUVAInfo::YUVAChannels::kU,
@@ -335,7 +337,7 @@ bool LazyYUVImage::ensureYUVImage(GrRecordingContext* rContext, Type type) {
                 return false;
             }
             if (auto direct = rContext->asDirectContext()) {
-                sk_sp<sk_gpu_test::ManagedBackendTexture> mbets[SkYUVAInfo::kMaxPlanes];
+                std::array<sk_sp<sk_gpu_test::ManagedBackendTexture>, SkYUVAInfo::kMaxPlanes> mbets;
                 GrBackendTexture textures[SkYUVAInfo::kMaxPlanes];
                 for (int i = 0; i < fPixmaps.numPlanes(); ++i) {
                     mbets[i] = sk_gpu_test::ManagedBackendTexture::MakeFromPixmap(

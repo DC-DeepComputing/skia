@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "bench/Benchmark.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPaint.h"
@@ -51,8 +52,8 @@ private:
     static constexpr int H = 480;
     static constexpr int N = 300;
 
-    SkRect  fRects[N];
-    SkColor fColors[N];
+    std::array<SkRect, N> fRects;
+    std::array<SkColor, N> fColors;
     bool fInit;
 
     using INHERITED = Benchmark;

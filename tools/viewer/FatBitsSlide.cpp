@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -399,9 +400,9 @@ public:
                 }
                 return true;
             case 'k': {
-                const SkPaint::Cap caps[] = {
+                const auto caps = std::to_array<SkPaint::Cap>({
                     SkPaint::kButt_Cap, SkPaint::kRound_Cap, SkPaint::kSquare_Cap,
-                };
+                });
                 fFB.fStrokeCap = caps[(fFB.fStrokeCap + 1) % 3];
                 return true;
             }

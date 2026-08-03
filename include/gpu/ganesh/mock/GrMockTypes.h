@@ -6,6 +6,8 @@
  */
 
 #ifndef GrMockOptions_DEFINED
+#include <array>
+
 #define GrMockOptions_DEFINED
 
 #include "include/core/SkTextureCompressionType.h"
@@ -148,8 +150,8 @@ struct GrMockOptions {
     int fMaxRenderTargetSize = 2048;
     int fMaxWindowRectangles = 0;
     int fMaxVertexAttributes = 16;
-    ConfigOptions fConfigOptions[kGrColorTypeCnt];
-    ConfigOptions fCompressedOptions[kSkTextureCompressionTypeCount];
+    std::array<ConfigOptions, kGrColorTypeCnt> fConfigOptions;
+    std::array<ConfigOptions, kSkTextureCompressionTypeCount> fCompressedOptions;
 
     // GrShaderCaps options.
     bool fIntegerSupport = false;

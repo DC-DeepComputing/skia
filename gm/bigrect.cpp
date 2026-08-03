@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -76,7 +77,7 @@ DEF_SIMPLE_GM(bigrect, canvas, 325, 125) {
     //   - reasonable size (for comparison),
     //   - outside the range of int32, and
     //   - outside the range of SkFixed.
-    static const SkScalar sizes[] = {SkIntToScalar(100), 5e10f, 1e6f};
+    static const auto sizes = std::to_array<SkScalar>({SkIntToScalar(100), 5e10f, 1e6f});
 
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 3; j++) {

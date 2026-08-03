@@ -13,6 +13,7 @@
 #include "include/core/SkRRect.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/gpu/ganesh/GrRecordingContext.h"
 #include "include/gpu/ganesh/GrTypes.h"
@@ -160,7 +161,7 @@ const uint16_t* circle_type_to_indices(bool stroked) {
 //
 // For filled rrects we reuse the stroke geometry but add an additional quad to the center.
 
-static const uint16_t gRRectIndices[] = {
+static const auto gRRectIndices = std::to_array<uint16_t>({
     // clang-format off
     // overstroke quads
     // we place this at the beginning so that we can skip these indices when rendering as filled
@@ -185,7 +186,7 @@ static const uint16_t gRRectIndices[] = {
     // we place this at the end so that we can skip these indices when rendering as stroked
     0, 6, 18, 0, 18, 12,
     // clang-format on
-};
+});
 
 // overstroke count
 static const int kIndicesPerOverstrokeRRect = std::size(gRRectIndices) - 6;
@@ -231,9 +232,9 @@ const uint16_t* rrect_type_to_indices(RRectType type) {
     switch (type) {
         case kFill_RRectType:
         case kStroke_RRectType:
-            return gRRectIndices + 6*4;
+            return SkSpan<const uint16_t>(gRRectIndices ).subspan(SkTo<size_t>( 6*4)).data();
         case kOverstroke_RRectType:
-            return gRRectIndices;
+            return gRRectIndices.data();
     }
     SK_ABORT("Invalid type");
 }
@@ -459,17 +460,17 @@ private:
             umbraInset = minDim;
         }
 
-        SkScalar xInner[4] = { bounds.fLeft + umbraInset, bounds.fRight - umbraInset,
+        std::array<SkScalar, 4> xInner = { bounds.fLeft + umbraInset, bounds.fRight - umbraInset,
             bounds.fLeft + umbraInset, bounds.fRight - umbraInset };
-        SkScalar xMid[4] = { bounds.fLeft + outerRadius, bounds.fRight - outerRadius,
+        std::array<SkScalar, 4> xMid = { bounds.fLeft + outerRadius, bounds.fRight - outerRadius,
             bounds.fLeft + outerRadius, bounds.fRight - outerRadius };
-        SkScalar xOuter[4] = { bounds.fLeft, bounds.fRight,
+        std::array<SkScalar, 4> xOuter = { bounds.fLeft, bounds.fRight,
             bounds.fLeft, bounds.fRight };
-        SkScalar yInner[4] = { bounds.fTop + umbraInset, bounds.fTop + umbraInset,
+        std::array<SkScalar, 4> yInner = { bounds.fTop + umbraInset, bounds.fTop + umbraInset,
             bounds.fBottom - umbraInset, bounds.fBottom - umbraInset };
-        SkScalar yMid[4] = { bounds.fTop + outerRadius, bounds.fTop + outerRadius,
+        std::array<SkScalar, 4> yMid = { bounds.fTop + outerRadius, bounds.fTop + outerRadius,
             bounds.fBottom - outerRadius, bounds.fBottom - outerRadius };
-        SkScalar yOuter[4] = { bounds.fTop, bounds.fTop,
+        std::array<SkScalar, 4> yOuter = { bounds.fTop, bounds.fTop,
             bounds.fBottom, bounds.fBottom };
 
         SkScalar blurRadius = args.fBlurRadius;

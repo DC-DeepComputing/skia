@@ -11,6 +11,7 @@
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkSamplingOptions.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkYUVAInfo.h"
 #include "include/private/SkAssert.h"
 #include "include/private/SkSLSampleUsage.h"
@@ -71,7 +72,7 @@ std::unique_ptr<GrFragmentProcessor> GrYUVtoRGBEffect::Make(const GrYUVATextureP
     }
 
     bool snap[2] = {false, false};
-    std::unique_ptr<GrFragmentProcessor> planeFPs[SkYUVAInfo::kMaxPlanes];
+    std::array<std::unique_ptr<GrFragmentProcessor>, SkYUVAInfo::kMaxPlanes> planeFPs;
     for (int i = 0; i < numPlanes; ++i) {
         bool useSubset = SkToBool(subset);
         GrSurfaceProxyView view = yuvaProxies.makeView(i);
@@ -221,7 +222,7 @@ static SkAlphaType alpha_type(const SkYUVAInfo::YUVALocations locations) {
                                                                : kOpaque_SkAlphaType;
 }
 
-GrYUVtoRGBEffect::GrYUVtoRGBEffect(std::unique_ptr<GrFragmentProcessor> planeFPs[4],
+GrYUVtoRGBEffect::GrYUVtoRGBEffect(SkSpan<std::unique_ptr<GrFragmentProcessor>> planeFPs,
                                    int numPlanes,
                                    const SkYUVAInfo::YUVALocations& locations,
                                    const bool snap[2],

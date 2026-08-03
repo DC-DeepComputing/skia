@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "src/gpu/ganesh/gl/GrGLGpu.h"
 
 #include "include/core/SkAlphaType.h"
@@ -106,7 +107,7 @@ using namespace skia_private;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-static const GrGLenum gXfermodeEquation2Blend[] = {
+static const auto gXfermodeEquation2Blend = std::to_array<GrGLenum>({
     // Basic OpenGL blend equations.
     GR_GL_FUNC_ADD,
     GR_GL_FUNC_SUBTRACT,
@@ -131,7 +132,7 @@ static const GrGLenum gXfermodeEquation2Blend[] = {
 
     // Illegal... needs to map to something.
     GR_GL_FUNC_ADD,
-};
+});
 static_assert(0 == (int)skgpu::BlendEquation::kAdd);
 static_assert(1 == (int)skgpu::BlendEquation::kSubtract);
 static_assert(2 == (int)skgpu::BlendEquation::kReverseSubtract);
@@ -152,7 +153,7 @@ static_assert(16 == (int)skgpu::BlendEquation::kHSLColor);
 static_assert(17 == (int)skgpu::BlendEquation::kHSLLuminosity);
 static_assert(std::size(gXfermodeEquation2Blend) == skgpu::kBlendEquationCnt);
 
-static const GrGLenum gXfermodeCoeff2Blend[] = {
+static const auto gXfermodeCoeff2Blend = std::to_array<GrGLenum>({
     GR_GL_ZERO,
     GR_GL_ONE,
     GR_GL_SRC_COLOR,
@@ -174,7 +175,7 @@ static const GrGLenum gXfermodeCoeff2Blend[] = {
 
     // Illegal... needs to map to something.
     GR_GL_ZERO,
-};
+});
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -2642,7 +2643,7 @@ namespace {
 
 
 GrGLenum gr_to_gl_stencil_op(GrStencilOp op) {
-    static const GrGLenum gTable[kGrStencilOpCount] = {
+    static const std::array<GrGLenum, kGrStencilOpCount> gTable = {
         GR_GL_KEEP,        // kKeep
         GR_GL_ZERO,        // kZero
         GR_GL_REPLACE,     // kReplace
@@ -3473,12 +3474,12 @@ bool GrGLGpu::createMipmapProgram(int progIdx) {
                                GrShaderVar::TypeModifier::Uniform);
     GrShaderVar uTexture("u_texture", SkSLType::kTexture2DSampler);
     // We need 1, 2, or 4 texture coordinates (depending on parity of each dimension):
-    GrShaderVar vTexCoords[] = {
+    auto vTexCoords = std::to_array<GrShaderVar>({
         GrShaderVar("v_texCoord0", SkSLType::kHalf2, GrShaderVar::TypeModifier::Out),
         GrShaderVar("v_texCoord1", SkSLType::kHalf2, GrShaderVar::TypeModifier::Out),
         GrShaderVar("v_texCoord2", SkSLType::kHalf2, GrShaderVar::TypeModifier::Out),
         GrShaderVar("v_texCoord3", SkSLType::kHalf2, GrShaderVar::TypeModifier::Out),
-    };
+    });
     GrShaderVar oFragColor("o_FragColor", SkSLType::kHalf4,GrShaderVar::TypeModifier::Out);
 
     SkString vshaderTxt;

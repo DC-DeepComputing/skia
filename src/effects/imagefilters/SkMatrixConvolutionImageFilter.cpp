@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "src/effects/imagefilters/SkMatrixConvolutionImageFilter.h"
 
 #include "include/core/SkAlphaType.h"
@@ -30,6 +31,7 @@
 #include "include/private/SkMath.h"
 #include "include/private/SkTArray.h"
 #include "include/private/SkTemplates.h"
+#include "include/private/SkTo.h"
 #include "src/core/SkImageFilterTypes.h"
 #include "src/core/SkImageFilter_Base.h"
 #include "src/core/SkKnownRuntimeEffects.h"
@@ -372,11 +374,11 @@ sk_sp<SkShader> SkMatrixConvolutionImageFilter::createShader(const skif::Context
         builder.child("kernel") = cachedKernel->makeRawShader(SkFilterMode::kNearest);
         builder.uniform("innerGainAndBias") = SkV2{fInnerGain, fInnerBias};
     } else {
-        float paddedKernel[kMaxUniformKernelSize];
-        memcpy(paddedKernel, fKernel.data(), kernelLength*sizeof(float));
-        memset(paddedKernel+kernelLength, 0, (kMaxUniformKernelSize - kernelLength)*sizeof(float));
+        std::array<float, kMaxUniformKernelSize> paddedKernel;
+        memcpy(paddedKernel.data(), fKernel.data(), kernelLength*sizeof(float));
+        memset(SkSpan<float>(paddedKernel).subspan(SkTo<size_t>(kernelLength)).data(), 0, (kMaxUniformKernelSize - kernelLength)*sizeof(float));
 
-        builder.uniform("kernel").set(paddedKernel, kMaxUniformKernelSize);
+        builder.uniform("kernel").set(paddedKernel.data(), kMaxUniformKernelSize);
     }
 
     builder.uniform("size") = SkISize(fKernelSize);

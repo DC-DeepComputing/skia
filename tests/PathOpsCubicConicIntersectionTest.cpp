@@ -4,6 +4,7 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include <array>
 #include "include/core/SkTypes.h"
 #include "include/private/SkDebug.h"
 #include "src/pathops/SkIntersections.h"
@@ -16,10 +17,10 @@
 
 #include <iterator>
 
-static struct cubicConic {
+struct cubicConic {
     CubicPts cubic;
     ConicPts conic;
-} cubicConicTests[] = {
+}; static auto cubicConicTests = std::to_array<cubicConic>({
 #if 0
 // FIXME: this triggers an assert in bool SkTSect::extractCoincident() at
 // SkOPASSERT(oppStartT < oppEndT);
@@ -39,11 +40,11 @@ static struct cubicConic {
     {{{{231.80000305175781, 2084.800048828125}, {188.60000610351562, 2084.800048828125},
         {188.60000610351562, 2041.5999755859375}}}, 0.707107008f}},
 
-    {{{{231.80000305175781, 2084.800048828125}, {255.60000610351562, 2084.800048828125},
+    cubicConic{{{{231.80000305175781, 2084.800048828125}, {255.60000610351562, 2084.800048828125},
         {275, 2065.39990234375}, {275, 2041.5999755859375}}},
     {{{{275, 2041.5999755859375}, {275, 2084.800048828125},
         {231.80000305175781, 2084.800048828125}}}, 0.707107008f}},
-};
+});
 
 static const int cubicConicTests_count = (int) std::size(cubicConicTests);
 

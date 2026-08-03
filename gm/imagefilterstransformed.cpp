@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkBlendMode.h"
@@ -80,14 +81,14 @@ protected:
                                                             SkFilterMode::kLinear));
         sk_sp<SkImageFilter> checkerboard(SkImageFilters::Image(fCheckerboard,
                                                                 SkFilterMode::kLinear));
-        sk_sp<SkImageFilter> filters[] = {
+        auto filters = std::to_array<sk_sp<SkImageFilter>>({
             SkImageFilters::Blur(12, 0, nullptr),
             SkImageFilters::DropShadow(0, 15, 8, 0, SK_ColorGREEN, nullptr),
             SkImageFilters::DisplacementMap(SkColorChannel::kR, SkColorChannel::kR, 12,
                                             std::move(gradient), checkerboard),
             SkImageFilters::Dilate(2, 2, checkerboard),
             SkImageFilters::Erode(2, 2, checkerboard),
-        };
+        });
 
         const SkScalar margin = SkIntToScalar(20);
         const SkScalar size = SkIntToScalar(60);

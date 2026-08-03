@@ -7,6 +7,8 @@
 
 
 #ifndef GrGLRenderTarget_DEFINED
+#include <array>
+
 #define GrGLRenderTarget_DEFINED
 
 #include "include/core/SkRefCnt.h"
@@ -153,7 +155,7 @@ private:
     GrGLuint    fSingleSampleFBOID;
     GrGLuint    fMSColorRenderbufferID;
     GrGLFormat  fRTFormat;
-    bool        fNeedsStencilAttachmentBind[2] = {false, false};
+    std::array<bool, 2> fNeedsStencilAttachmentBind = {false, false};
     bool        fDMSAARenderToTextureFBOIsMultisample = false;
 
     GrBackendObjectOwnership fRTFBOOwnership;
