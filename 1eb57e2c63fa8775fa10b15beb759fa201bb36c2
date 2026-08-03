@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ebfdf81_4394f447",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 20
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-08-03T15:35:03Z",
+      "side": 1,
+      "message": "On CQ run RustALL CQ run was failing due to a crash. The crash was caused at the Rust/C++ FFI boundary in the Rust JPEG reader setup path. We were returning a boxed wrapper result object, unwrapping it in C++, and then dropping that wrapper; on truncated-input test flow this hit an invalid free path (PartitionAlloc trap), which is why RustALL dm crashed.\n\nFix:\nI simplified the FFI contract so `new_reader` now returns the Reader directly (no wrapper result object to unwrap/drop), and updated both C++ call sites (initial decode and rewind) to use that direct return. We also kept the safer explicit stream-read loop in the Rust FFI reader path as additional hardening for partial/truncated input handling.\n\nValidation:\nLocal RustALL dm run (including RustJpeg) now passes, the specific `RustJpegCodec_incomplete_input` regression test passes, and presubmit passes.\n\nCan you help queueing CQ again on latest changes?\n\nThanks!",
+      "revId": "1eb57e2c63fa8775fa10b15beb759fa201bb36c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
