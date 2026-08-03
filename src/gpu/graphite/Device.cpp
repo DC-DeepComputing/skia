@@ -1516,6 +1516,18 @@ void Device::drawAtlasSubRun(const sktext::gpu::AtlasSubRun* subRun,
     }
 }
 
+float calculatePathMaxScaleFactor(const Transform& localToDevice, Rect bounds) {
+    float maxScaleFactor = localToDevice.maxScaleFactor();
+    if (localToDevice.type() == Transform::Type::kPerspective) {
+        float tl = std::get<1>(localToDevice.scaleFactors({bounds.left(), bounds.top()}));
+        float tr = std::get<1>(localToDevice.scaleFactors({bounds.right(), bounds.top()}));
+        float br = std::get<1>(localToDevice.scaleFactors({bounds.right(), bounds.bot()}));
+        float bl = std::get<1>(localToDevice.scaleFactors({bounds.left(), bounds.bot()}));
+        maxScaleFactor = std::max(std::max(tl, tr), std::max(bl, br));
+    }
+    return maxScaleFactor;
+}
+
 void Device::drawGeometryWithPathEffect(const Transform& localToDevice,
                                         Geometry&& geometry,
                                         const PaintParams& paint,
@@ -1532,17 +1544,7 @@ void Device::drawGeometryWithPathEffect(const Transform& localToDevice,
 
         // TODO: If asADash() returns true and the base path matches the dashing fast path, then
         // that should be detected now as well. Maybe add dashPath to Device so canvas can handle it
-        float maxScaleFactor = localToDevice.maxScaleFactor();
-        if (localToDevice.type() == Transform::Type::kPerspective) {
-            auto bounds = geometry.bounds();
-            float tl = std::get<1>(localToDevice.scaleFactors({bounds.left(), bounds.top()}));
-            float tr = std::get<1>(localToDevice.scaleFactors({bounds.right(), bounds.top()}));
-            float br = std::get<1>(localToDevice.scaleFactors({bounds.right(), bounds.bot()}));
-            float bl = std::get<1>(localToDevice.scaleFactors({bounds.left(), bounds.bot()}));
-            maxScaleFactor = std::max(std::max(tl, tr), std::max(bl, br));
-        }
-
-        style.setResScale(maxScaleFactor);
+        style.setResScale(calculatePathMaxScaleFactor(localToDevice, geometry.bounds()));
         SkPathBuilder builder;
         if (pathEffect->filterPath(&builder, geometry.shape().asPath(),
                                    &style, nullptr, localToDevice)) {
@@ -1588,9 +1590,22 @@ void Device::drawGeometry(const Transform& localToDevice,
     // is part of the "fill" style). This differs from Ganesh and CPU rasterization, which only
     // ignore inverted-ness for hairlines. Setting the inverted bit here enforces consistent
     // behavior between Graphite's different path rendering strategies.
-    if (geometry.isShape() && geometry.shape().inverted() &&
-        (style.isHairlineStyle() || style.getStyle() == SkStrokeRec::kStroke_Style)) {
+    if (geometry.isShape() && geometry.shape().inverted() && style.isHairlineStyle()) {
         geometry.shape().setInverted(false);
+    }
+
+    // Consolidate the stroke path and geometry path for inverse fills to ensure the inverse fills
+    // for the two paths don't overlap, turning the inverse stroke-and-fill to just an inverse fill.
+    if (style.getStyle() == SkStrokeRec::kStrokeAndFill_Style &&
+            geometry.isShape() && geometry.shape().inverted()) {
+        style.setResScale(calculatePathMaxScaleFactor(localToDevice, geometry.bounds()));
+        SkPathBuilder builder;
+        // Stroke the path on the CPU so we get a single path containing the stroke.
+        SkAssertResult(style.applyToPath(&builder, geometry.shape().asPath()));
+        SkPath dst = builder.detach();
+        dst.setIsVolatile(true);
+        geometry.setShape(Shape(dst));
+        style.setFillStyle();
     }
 
     ScopedDrawBuilder scopedDrawBuilder(fRecorder);
@@ -1646,8 +1661,10 @@ void Device::drawGeometry(const Transform& localToDevice,
     if (renderer) {
         numNewRenderSteps = renderer->numRenderSteps();
         if (styleType == SkStrokeRec::kStrokeAndFill_Style) {
+            SkASSERT(!(geometry.isShape() && geometry.shape().inverted()));
             numNewRenderSteps +=
-                fRecorder->priv().rendererProvider()->tessellatedStrokes()->numRenderSteps();
+                fRecorder->priv().rendererProvider()->tessellatedStrokes(
+                        /*inverseFill=*/false)->numRenderSteps();
         } else if (styleType == SkStrokeRec::kFill_Style && renderer->useNonAAInnerFill()) {
             numNewRenderSteps +=
                 fRecorder->priv().rendererProvider()->nonAABounds()->numRenderSteps();
@@ -1833,9 +1850,16 @@ void Device::drawGeometry(const Transform& localToDevice,
     if (styleType != SkStrokeRec::kFill_Style) {
         // For stroke-and-fill, 'renderer' is used for the fill and we always use the
         // TessellatedStrokes renderer; for stroke and hairline, 'renderer' is used.
+        //
+        // If the style is stroke-and-fill and the shape is inverted, we should be simplifying
+        // the geometry to an inverted fill style to prevent overlap of TessellatedStrokes renderer
+        // and 'renderer' when shading the inverse fill.
+        SkASSERT(!(geometry.isShape() && geometry.shape().inverted()) ||
+                 styleType != SkStrokeRec::kStrokeAndFill_Style);
         StrokeStyle stroke(style.getWidth(), style.getMiter(), style.getJoin(), style.getCap());
         fDC->recordDraw(styleType == SkStrokeRec::kStrokeAndFill_Style
-                                ? fRecorder->priv().rendererProvider()->tessellatedStrokes()
+                                ? fRecorder->priv().rendererProvider()->tessellatedStrokes(
+                                    /*inverseFill=*/false)
                                 : renderer,
                         localToDevice, geometry, clip, order, paintID, dstUsage,
                         scopedDrawBuilder.gatherer(), &stroke, clipLayer);
@@ -2122,11 +2146,7 @@ const Renderer* Device::chooseMSAARenderer(const Shape& shape,
         // Unlike in Ganesh, the HW stroke tessellator can work with arbitrary paints since the
         // depth test prevents double-blending when there is transparency, thus we can HW stroke
         // any path regardless of its paint.
-        // TODO: We treat inverse-filled strokes as regular strokes. We could handle them by
-        // stenciling first with the HW stroke tessellator and then covering their bounds, but
-        // inverse-filled strokes are not well-specified in our public canvas behavior so we may be
-        // able to remove it.
-        return renderers->tessellatedStrokes();
+        return renderers->tessellatedStrokes(shape.inverted());
     }
 
     // 'type' could be kStrokeAndFill, but in that case chooseRenderer() is meant to return the
