@@ -16,6 +16,7 @@
 #include "include/gpu/graphite/PrecompileContext.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "include/gpu/graphite/Surface.h"
+#include "src/gpu/graphite/ContextPriv.h"
 #include "tools/graphite/ContextFactory.h"
 #include "tools/graphite/TestOptions.h"
 
@@ -143,6 +144,9 @@ void run_precompile_test(skiatest::Reporter* reporter,
     std::unique_ptr<PrecompileContext> precompileContext = newContext->makePrecompileContext();
 
     precompile_linear_gradient(precompileContext.get());
+
+    // We need to explicitly wait for the precompilation to finish here
+    newContext->priv().sharedContext()->pipelineManager()->wait_TestOnly();
 
     REPORTER_ASSERT(reporter, !data.empty());    // some Pipeline should've been reported
 }
@@ -295,6 +299,9 @@ void run_checking_test(skiatest::Reporter* reporter,
     // Next, precompile the Pipelines like usual but the uniqueHashes will be checked in
     // pipeline_checking_callback.
     precompile_linear_gradient(precompileContext.get());
+
+    // We need to explicitly wait for the precompilation to finish here
+    newContext->priv().sharedContext()->pipelineManager()->wait_TestOnly();
 
     // Verify that all the uniqueHashs matched
     for (const PipelineCheckData& d : *verificationData) {

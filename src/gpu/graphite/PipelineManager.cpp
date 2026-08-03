@@ -16,6 +16,15 @@
 #include "src/gpu/graphite/RuntimeEffectDictionary.h"
 #include "src/gpu/graphite/SharedContext.h"
 
+// The threaded PipelineManager is set up to work with a executor with two worklists.
+// All work from the first work list must be completed before work from the second list
+// is begun. In-line compiles will be put in the high priority list while precompiles
+// will be put in the low priority work list. If a single work list executor is provided
+// everything will collapse to just being interleaved on that single work list.
+// Note that the number of worklists is orthogonal to the number of threads.
+static constexpr int kHighPriorityWorkList = 0;
+static constexpr int kLowPriorityWorkList = 1;
+
 namespace skgpu::graphite {
 
 // Directly accessing the two variants is thread safe because a given GraphicsPipelineHandle
@@ -40,8 +49,20 @@ GraphicsPipelineHandle::GraphicsPipelineHandle(sk_sp<PipelineCreationTask> task)
 GraphicsPipelineHandle::GraphicsPipelineHandle(sk_sp<GraphicsPipeline> pipeline)
     : fTaskOrPipeline(std::move(pipeline)) {}
 
-PipelineManager::PipelineManager() {}
-PipelineManager::~PipelineManager() {}
+PipelineManager::PipelineManager(SkExecutor* executor) {
+    if (executor) {
+        fTaskGroup = std::make_unique<SkTaskGroup>(*executor);
+    }
+}
+
+PipelineManager::~PipelineManager() {
+    // The task group should've been shutdown and deleted in Context's destructor (via
+    // shutDown()).
+    {
+        SkDEBUGCODE(SkAutoSpinlock lock{fSpinLock};)
+        SkASSERT(!fTaskGroup);
+    }
+}
 
 const UniqueKey& PipelineManager::Traits::GetKey(const sk_sp<PipelineCreationTask>& task) {
     return task->fPipelineKey;
@@ -51,6 +72,10 @@ uint32_t PipelineManager::Traits::Hash(const UniqueKey& pipelineKey) {
     return pipelineKey.hash();
 }
 
+// TODO(robertphillips): If either 'findTask' or 'findOrCreateTask' returns a hit and it
+// is 'fInProgress', if the search was for a non-Precompile task but we found a Precompile task
+// then the task was initially added to the wrong worklist (i.e., the low-priority one). We need
+// a way to move such tasks to the high priority work list.
 GraphicsPipelineHandle PipelineManager::createHandle(
         SharedContext* sharedContext,
         const GraphicsPipelineDesc& pipelineDesc,
@@ -67,6 +92,8 @@ GraphicsPipelineHandle PipelineManager::createHandle(
         return GraphicsPipelineHandle(std::move(task));
     }
 
+    // There is no task in flight but there could've been one in the past that
+    // compiled the Pipeline - check to see if one exists.
     sk_sp<GraphicsPipeline> pipeline = globalCache->findGraphicsPipeline(
             pipelineKey,
             pipelineCreationFlags);
@@ -74,6 +101,10 @@ GraphicsPipelineHandle PipelineManager::createHandle(
         return GraphicsPipelineHandle(std::move(pipeline));
     }
 
+    // We dropped our SpinLock during the findGraphicsPipeline call so a new Task could've
+    // been created in the interim. However, it is vanishingly unlikely that a Task would've
+    // been created and finished during the gap (so the result of the findGraphicsPipeline
+    // call is still valid).
     sk_sp<PipelineCreationTask> task = this->findOrCreateTask(pipelineKey,
                                                               pipelineDesc,
                                                               renderPassDesc,
@@ -91,21 +122,43 @@ void PipelineManager::startPipelineCreationTask(SharedContext* sharedContext,
     sk_sp<PipelineCreationTask> task =
             std::get<sk_sp<PipelineCreationTask>>(handle.fTaskOrPipeline);
 
-    sk_sp<GraphicsPipeline> pipeline = sharedContext->findOrCreateGraphicsPipeline(
-            runtimeDict.get(),
-            task->fPipelineKey,
-            task->fGraphicsPipelineDesc,
-            task->fRenderPassDesc,
-            task->fPipelineCreationFlags);
-
-    if (!pipeline) {
-        SKIA_LOG_W("Failed to create GraphicsPipeline!");
+    if (task->fInProgress.exchange(true)) {
+        // Tasks are only removed from the TaskList when they are complete. This means that
+        // an in-flight task can be found and resubmitted for compilation. The 'fInProgress'
+        // guard ensures each task is only kicked off once.
+        return;
     }
 
-    if (!task->fCompleted.exchange(true)) {
-        task->fPipeline = pipeline;
+    auto compileTask = [sharedContext, runtimeDict, this, task] {
+        // Note: this lambda function relies on the continued existence of the shared
+        // context and the PipelineManager. The RuntimeEffectDictionary and task are reffed.
+        task->fPipeline = sharedContext->findOrCreateGraphicsPipeline(
+                runtimeDict.get(),
+                task->fPipelineKey,
+                task->fGraphicsPipelineDesc,
+                task->fRenderPassDesc,
+                task->fPipelineCreationFlags);
+
+        if (!task->fPipeline) {
+            SKIA_LOG_W("Failed to create GraphicsPipeline!");
+        }
+
+        this->signalCompleted(task.get());
         this->removeTask(task.get());
+    };
+
+    {
+        SkAutoSpinlock lock{fSpinLock};
+
+        if (fTaskGroup) {
+            int workList = task->forPrecompile() ? kLowPriorityWorkList : kHighPriorityWorkList;
+
+            fTaskGroup->add(std::move(compileTask), workList);
+            return;
+        }
     }
+
+    compileTask();
 }
 
 sk_sp<GraphicsPipeline> PipelineManager::resolveHandle(const GraphicsPipelineHandle& handle) {
@@ -118,13 +171,42 @@ sk_sp<GraphicsPipeline> PipelineManager::resolveHandle(const GraphicsPipelineHan
     sk_sp<PipelineCreationTask> task =
             std::get<sk_sp<PipelineCreationTask>>(handle.fTaskOrPipeline);
 
-    // For the non-threaded version of the PipelineManager, whenever a thread gets here it
-    // will already have blindly executed the task (in DrawPass::prepareResources).
-    SkASSERT(task->fCompleted);
+    // For the non-threaded PipelineManager, the GraphicsPipeline will have been compiled in-line
+    // so will already have been completed.
+    this->potentiallyWaitOn(task.get());
     return task->fPipeline;
 }
 
+void PipelineManager::shutDown() {
+    // We null out 'fTaskGroup' so no more threaded work can be added after this point.
+    std::unique_ptr<SkTaskGroup> tmp;
+    {
+        SkAutoSpinlock lock{fSpinLock};
+        tmp = std::move(fTaskGroup);
+    }
+    if (tmp) {
+        tmp->discardAllPendingWork();
+        // We have to wait for the remaining tasks to complete bc they rely on the existence
+        // of the SharedContext and the PipelineManager (this).
+        tmp->wait();
+    }
+}
+
 #if defined(GPU_TEST_UTILS)
+void PipelineManager::wait_TestOnly() {
+    SkTaskGroup* tmp;
+    {
+        SkAutoSpinlock lock{fSpinLock};
+        tmp = fTaskGroup.get();
+    }
+    // This isn't safe (since 'fTaskGroup' could be altered on some other thread) but, hopefully,
+    // the unit tests know what they're doing (i.e., don't delete the owning Context while
+    // in this method).
+    if (tmp) {
+        tmp->wait();
+    }
+}
+
 PipelineManager::Stats PipelineManager::getStats() const {
     SkAutoSpinlock lock{fSpinLock};
 
@@ -180,11 +262,30 @@ sk_sp<PipelineCreationTask> PipelineManager::findOrCreateTask(
 void PipelineManager::removeTask(PipelineCreationTask* task) {
     SkAutoSpinlock lock{fSpinLock};
 
-    // TODO(robertphillips): this guard is only necessary in the non-threaded version of
-    // the PipelineManager
-    if (fActiveTasks.findOrNull(task->fPipelineKey)) {
-        fActiveTasks.remove(task->fPipelineKey);
+    fActiveTasks.remove(task->fPipelineKey);
+}
+
+void PipelineManager::signalCompleted(PipelineCreationTask* task) {
+    std::unique_lock<std::mutex> lock(fMutex);
+
+    task->fCompleted = true;
+
+    lock.unlock();
+    // potentiallyWaitOn should only ever be called from the main thread (on which
+    // Context::insertRecording is called) so only one thread should ever be waiting
+    fConditionVariable.notify_one();
+}
+
+
+void PipelineManager::potentiallyWaitOn(PipelineCreationTask* task) {
+    std::unique_lock<std::mutex> lock(fMutex);
+
+    if (task->fCompleted) {
+        return;
     }
+    fConditionVariable.wait(lock, [task]{ return task->fCompleted.load(); });
+
+    SkASSERT(task->fCompleted);
 }
 
 } // namespace skgpu::graphite
