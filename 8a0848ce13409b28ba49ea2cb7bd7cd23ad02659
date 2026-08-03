@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8032f758_aa1d8222",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 902,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-08-03T12:51:58Z",
+      "side": 1,
+      "message": "Can\u0027t this fit on the prior line ?",
+      "revId": "8a0848ce13409b28ba49ea2cb7bd7cd23ad02659",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "632d72b6_4aa12d6b",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 928,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-08-03T12:51:58Z",
+      "side": 1,
+      "message": "Here too ?",
+      "revId": "8a0848ce13409b28ba49ea2cb7bd7cd23ad02659",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae06c688_a683e684",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 987,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-08-03T12:51:58Z",
+      "side": 1,
+      "message": "Here ?",
+      "revId": "8a0848ce13409b28ba49ea2cb7bd7cd23ad02659",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d18f9ebf_7270357a",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1016,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-08-03T12:51:58Z",
+      "side": 1,
+      "message": "Here ?",
+      "revId": "8a0848ce13409b28ba49ea2cb7bd7cd23ad02659",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
