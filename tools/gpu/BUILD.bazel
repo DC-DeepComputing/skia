@@ -31,6 +31,7 @@ skia_cc_library(
         "//bench:__subpackages__",
         "//dm:__pkg__",
         "//modules/skottie:__pkg__",
+        "//tests:__pkg__",
         "//tools:__subpackages__",
         "//tools/ganesh:__subpackages__",
     ],

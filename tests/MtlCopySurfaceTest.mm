@@ -80,3 +80,5 @@ DEF_GANESH_TEST_FOR_METAL_CONTEXT(MtlCopySurfaceTest, reporter, ctxInfo) {
         REPORTER_ASSERT(reporter, !result);
     }
 }
+
+FORCE_LINK_TEST(MtlCopySurfaceTest)
