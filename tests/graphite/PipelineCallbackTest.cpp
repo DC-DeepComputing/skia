@@ -16,6 +16,7 @@
 #include "include/gpu/graphite/PrecompileContext.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "include/gpu/graphite/Surface.h"
+#include "src/gpu/graphite/ContextPriv.h"
 #include "tools/graphite/ContextFactory.h"
 #include "tools/graphite/TestOptions.h"
 
@@ -67,24 +68,36 @@ bool draw(Context* context) {
     return true;
 }
 
-void deprecated_callback(void* context, sk_sp<SkData> serializedKey) {
-    std::vector<sk_sp<SkData>>* data = static_cast<std::vector<sk_sp<SkData>>*>(context);
+class CallbackContext {
+public:
+    void add(sk_sp<SkData> data) SK_EXCLUDES(fSpinLock) {
+        SkAutoSpinlock lock{fSpinLock};
 
-    data->push_back(std::move(serializedKey));
+        fData.push_back(std::move(data));
+    }
+
+    SkSpinlock fSpinLock;
+    std::vector<sk_sp<SkData>> fData;
+};
+
+void deprecated_callback(void* contextIn, sk_sp<SkData> serializedKey) {
+    CallbackContext* context = static_cast<CallbackContext*>(contextIn);
+
+    context->add(std::move(serializedKey));
 }
 
-void pipeline_normal_callback(void* context,
+void pipeline_normal_callback(void* contextIn,
                               ContextOptions::PipelineCacheOp op,
                               const std::string& label,
                               uint32_t uniqueKeyHash,
                               bool fromPrecompile,
                               sk_sp<SkData> serializedKey) {
-    std::vector<sk_sp<SkData>>* data = static_cast<std::vector<sk_sp<SkData>>*>(context);
+    CallbackContext* context = static_cast<CallbackContext*>(contextIn);
 
     SkASSERT(!label.empty());
     SkASSERT(!fromPrecompile);
     SkASSERT(serializedKey);
-    data->push_back(std::move(serializedKey));
+    context->add(std::move(serializedKey));
 }
 
 void run_normal_test(skiatest::Reporter* reporter,
@@ -100,19 +113,20 @@ void run_normal_test(skiatest::Reporter* reporter,
 }
 
 #if defined(SK_ENABLE_PRECOMPILE)
-void pipeline_precompile_callback(void* context,
+
+void pipeline_precompile_callback(void* contextIn,
                                   ContextOptions::PipelineCacheOp op,
                                   const std::string& label,
                                   uint32_t uniqueKeyHash,
                                   bool fromPrecompile,
                                   sk_sp<SkData> serializedKey) {
-    std::vector<sk_sp<SkData>>* data = static_cast<std::vector<sk_sp<SkData>>*>(context);
+    CallbackContext* context = static_cast<CallbackContext*>(contextIn);
 
     SkASSERT(!label.empty());
     SkASSERT(fromPrecompile);
     if (op == ContextOptions::PipelineCacheOp::kAddingPipeline) {
         SkASSERT(serializedKey);
-        data->push_back(std::move(serializedKey));
+        context->add(std::move(serializedKey));
     } else {
         // Some PaintOption combinatorics produce the same paint key (e.g. opacity variations that
         // lead to no net change). In these cases, we get cache hits on subsequent callbacks.
@@ -144,6 +158,9 @@ void run_precompile_test(skiatest::Reporter* reporter,
 
     precompile_linear_gradient(precompileContext.get());
 
+    // We need to explicitly wait for the precompilation to finish here
+    newContext->priv().sharedContext()->pipelineManager()->wait_TestOnly();
+
     REPORTER_ASSERT(reporter, !data.empty());    // some Pipeline should've been reported
 }
 #endif
@@ -161,13 +178,13 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_CONTEXTS(PipelineCallbackTest_Deprecated_Norma
                                            /* optionsProc= */ nullptr,
                                            /* condition= */ true,
                                            CtsEnforcement::kApiLevel_202604) {
-    std::vector<sk_sp<SkData>> data;
+    CallbackContext context;
 
     TestOptions newOptions(origOptions);
-    newOptions.fContextOptions.fPipelineCallbackContext = &data;
+    newOptions.fContextOptions.fPipelineCallbackContext = &context;
     newOptions.fContextOptions.fPipelineCallback = deprecated_callback;
 
-    run_normal_test(reporter, newOptions, origTestContext->contextType(), data);
+    run_normal_test(reporter, newOptions, origTestContext->contextType(), context.fData);
 }
 
 // Smoke test for the ContextOptions::PipelineCachingCallback for normal Pipelines.
@@ -180,13 +197,13 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_CONTEXTS(PipelineCallbackTest_Normal,
                                            /* optionsProc= */ nullptr,
                                            /* condition= */ true,
                                            CtsEnforcement::kApiLevel_202604) {
-    std::vector<sk_sp<SkData>> data;
+    CallbackContext context;
 
     TestOptions newOptions(origOptions);
-    newOptions.fContextOptions.fPipelineCallbackContext = &data;
+    newOptions.fContextOptions.fPipelineCallbackContext = &context;
     newOptions.fContextOptions.fPipelineCachingCallback = pipeline_normal_callback;
 
-    run_normal_test(reporter, newOptions, origTestContext->contextType(), data);
+    run_normal_test(reporter, newOptions, origTestContext->contextType(), context.fData);
 }
 
 #if defined(SK_ENABLE_PRECOMPILE)
@@ -200,13 +217,13 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_CONTEXTS(PipelineCallbackTest_Deprecated_Preco
                                            /* optionsProc= */ nullptr,
                                            /* condition= */ true,
                                            CtsEnforcement::kApiLevel_202604) {
-    std::vector<sk_sp<SkData>> data;
+    CallbackContext context;
 
     TestOptions newOptions(origOptions);
-    newOptions.fContextOptions.fPipelineCallbackContext = &data;
+    newOptions.fContextOptions.fPipelineCallbackContext = &context;
     newOptions.fContextOptions.fPipelineCallback = deprecated_callback;
 
-    run_precompile_test(reporter, newOptions, origTestContext->contextType(), data);
+    run_precompile_test(reporter, newOptions, origTestContext->contextType(), context.fData);
 }
 
 // Smoke test for the ContextOptions::PipelineCachingCallback for Precompile Pipelines.
@@ -219,13 +236,13 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_CONTEXTS(PipelineCallbackTest_Precompile,
                                            /* optionsProc= */ nullptr,
                                            /* condition= */ true,
                                            CtsEnforcement::kApiLevel_202604) {
-    std::vector<sk_sp<SkData>> data;
+    CallbackContext context;
 
     TestOptions newOptions(origOptions);
-    newOptions.fContextOptions.fPipelineCallbackContext = &data;
+    newOptions.fContextOptions.fPipelineCallbackContext = &context;
     newOptions.fContextOptions.fPipelineCachingCallback = pipeline_precompile_callback;
 
-    run_precompile_test(reporter, newOptions, origTestContext->contextType(), data);
+    run_precompile_test(reporter, newOptions, origTestContext->contextType(), context.fData);
 }
 
 struct PipelineCheckData {
@@ -296,6 +313,9 @@ void run_checking_test(skiatest::Reporter* reporter,
     // pipeline_checking_callback.
     precompile_linear_gradient(precompileContext.get());
 
+    // We need to explicitly wait for the precompilation to finish here
+    newContext->priv().sharedContext()->pipelineManager()->wait_TestOnly();
+
     // Verify that all the uniqueHashs matched
     for (const PipelineCheckData& d : *verificationData) {
         REPORTER_ASSERT(reporter, d.fSeen && d.fMatched);
@@ -313,15 +333,15 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_CONTEXTS(PipelineCallbackTest_UniqueHash,
                                            /* optionsProc= */ nullptr,
                                            /* condition= */ true,
                                            CtsEnforcement::kNextRelease) {
-    std::vector<sk_sp<SkData>> origKeys;
+    CallbackContext context;
 
     TestOptions newOptions(origOptions);
-    newOptions.fContextOptions.fPipelineCallbackContext = &origKeys;
+    newOptions.fContextOptions.fPipelineCallbackContext = &context;
     newOptions.fContextOptions.fPipelineCachingCallback = pipeline_precompile_callback;
 
     // This creates a new Context, precompiles some Pipelines and puts the serialized keys
     // in origKeys
-    run_precompile_test(reporter, newOptions, origTestContext->contextType(), origKeys);
+    run_precompile_test(reporter, newOptions, origTestContext->contextType(), context.fData);
 
     // The prior Context gets destroyed here so all we have are the serialized keys in 'origKeys'
 
@@ -332,7 +352,7 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_CONTEXTS(PipelineCallbackTest_UniqueHash,
 
     // This calls getPipelineLabel on all the serialized keys in 'data' then precompiles
     // them to verify that the uniqueHashs match.
-    run_checking_test(reporter, newOptions, origTestContext->contextType(), origKeys,
+    run_checking_test(reporter, newOptions, origTestContext->contextType(), context.fData,
                       &verificationData);
 }
 #endif
