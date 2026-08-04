@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa108086_1c9499b0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 21749
+      },
+      "writtenOn": "2026-08-04T17:08:57Z",
+      "side": 1,
+      "message": "PTAL! I have merged the Chromium changes that created problems last time.",
+      "revId": "d4606d132d025f269ad45a1c84eefbdf02a50cb0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
