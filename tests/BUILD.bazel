@@ -1,4 +1,5 @@
-load("//bazel:skia_rules.bzl", "skia_cc_library")
+load("@skia_user_config//:copts.bzl", "DEFAULT_OBJC_COPTS")
+load("//bazel:skia_rules.bzl", "skia_cc_library", "skia_objc_library")
 
 package(
     default_applicable_licenses = ["//:license"],
@@ -551,6 +552,7 @@ filegroup(
         "MtlBackendAllocationTest.mm",
         "MtlCopySurfaceTest.mm",
     ],
+    visibility = ["//dm:__pkg__"],
 )
 
 filegroup(
@@ -655,11 +657,11 @@ filegroup(
     visibility = ["//dm:__pkg__"],
 )
 
-# TODO(b/480952153): These tests require Metal and Objective-C++ which are not yet supported in dm.
 filegroup(
     name = "graphite_metal_tests_sources",
     testonly = True,
     srcs = ["graphite/MtlBackendTextureTest.mm"],
+    visibility = ["//dm:__pkg__"],
 )
 
 filegroup(
@@ -680,4 +682,35 @@ filegroup(
         "SkJpegXmpTest.cpp",
     ],
     visibility = ["//dm:__pkg__"],
+)
+
+# These tests are compiled in an Objective-C library since they cannot be directly added as sources
+# to the dm cc_library target. MetalTestHelper introduces a macro to force the test files to be
+# linked, since alwayslink doesn't work on our Mac toolchain.
+skia_objc_library(
+    name = "metal_tests",
+    testonly = True,
+    srcs = [
+        ":ganesh_metal_tests_sources",
+        ":graphite_metal_tests_sources",
+    ],
+    hdrs = [
+        "MetalTestHelper.h",
+    ],
+    copts = DEFAULT_OBJC_COPTS + ["-fobjc-arc"],
+    sdk_frameworks = [
+        "Metal",
+        "MetalKit",
+        "Foundation",
+    ],
+    visibility = ["//dm:__pkg__"],
+    deps = [
+        ":tests",
+        "//:core",
+        "//src/gpu/ganesh/mtl:ganesh_metal_TEST_UTIL",
+        "//src/gpu/graphite/mtl:graphite_native_metal_TEST_UTIL",
+        "//tools/ganesh:ganesh_gl_utils",
+        "//tools/gpu:shared_utils",
+    ],
+    alwayslink = False,
 )

@@ -103,6 +103,7 @@ skia_cc_binary(
         "@platforms//os:macos": [
             "//:fontmgr_coretext",
             "//:typeface_coretext",
+            "//tests:metal_tests",
         ],
         "@platforms//os:windows": [
             "//:fontmgr_win_dw",
