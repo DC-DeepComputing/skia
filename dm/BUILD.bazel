@@ -33,15 +33,26 @@ skia_cc_binary(
         "//tests:tests_sources",
         "//tools/flags:common_flags_config",
         "//src/utils:canvas_state_utils",
-    ],
+    ] + select({
+        "@platforms//os:macos": [
+            # TODO(b/480952153): These tests require Metal and Objective-C++ which are not yet supported in dm.
+            # "//tests:ganesh_metal_tests_sources",
+            # "//tests:graphite_metal_tests_sources",
+        ],
+        "@platforms//os:linux": [
+            # "//tests:graphite_vulkan_tests_sources",
+        ],
+        "@platforms//os:windows": [
+            # "//tests:graphite_vulkan_tests_sources",
+        ],
+        "//conditions:default": [],
+    }),
     data = [
         "//resources",
     ],
     deps = [
         "//:bmp_decode_codec",
         "//:core",
-        "//:fontmgr_directory_freetype",
-        "//:fontmgr_empty_fontations",
         "//:gif_decode_codec",
         "//:ico_decode_codec",
         "//:jpeg_decode_codec",
@@ -93,5 +104,17 @@ skia_cc_binary(
         "//tools/graphite:precompile_utils",
         "//tools/sksltrace:sksltraceutils",
         "//tools/trace",
-    ],
+    ] + select({
+        "@platforms//os:macos": [
+            "//:fontmgr_coretext",
+            "//:typeface_coretext",
+        ],
+        "@platforms//os:windows": [
+            "//:fontmgr_win_dw",
+        ],
+        "//conditions:default": [
+            "//:fontmgr_directory_freetype",
+            "//:fontmgr_empty_fontations",
+        ],
+    }),
 )

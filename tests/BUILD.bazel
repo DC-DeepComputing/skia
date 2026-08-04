@@ -120,6 +120,7 @@ filegroup(
         "DequeTest.cpp",
         "DescriptorTest.cpp",
         "DeviceTest.cpp",
+        "DirectMaskLimitTest.cpp",
         "DiscardableMemoryPoolTest.cpp",
         "DiscardableMemoryTest.cpp",
         "DrawBitmapRectTest.cpp",
