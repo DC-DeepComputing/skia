@@ -265,7 +265,7 @@ void GlyphData::fillVertexData(const sktext::gpu::VertexFiller& vf,
                                const SkPMColor4f& pmColor,
                                const SkMatrix& positionMatrix,
                                SkIRect clip,
-                               void* vertexBuffer) {
+                               void* vertexBuffer) const {
     GrColor color = pmColor.toBytes_RGBA();
     auto quadData = [&](auto dst) {
         return SkMakeZip(dst, glyphs.subspan(offset, count), vf.topLefts().subspan(offset, count));

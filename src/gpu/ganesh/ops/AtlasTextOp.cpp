@@ -373,7 +373,7 @@ void AtlasTextOp::Geometry::fillVertexData(void *dst, int offset, int count) con
     SkASSERT(fSubRun.glyphVector().hasBackendData());
 
     // Get the backend-specific glyph data
-    auto& glyphData = fSubRun.glyphVector().accessBackendData<GlyphData>();
+    const auto& glyphData = fSubRun.glyphVector().accessBackendData<GlyphData>();
 
     auto glyphSpan = fSubRun.glyphVector().accessBackendGlyphs<Glyph>();
 

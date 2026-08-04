@@ -101,7 +101,7 @@ public:
                         const SkPMColor4f& pmColor,
                         const SkMatrix& positionMatrix,
                         SkIRect clip,
-                        void* vertexBuffer);
+                        void* vertexBuffer) const;
 
 private:
     GlyphData(const GlyphData&) = delete;
