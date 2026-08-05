@@ -148,6 +148,12 @@ private:
     sk_sp<const SkMeshSpecification> fMeshSpec = nullptr;
     SkSpan<const SkRuntimeEffect::ChildPtr> fMeshChildren;
 
+    sk_sp<const SkMeshSpecification> fMeshSpec = nullptr;
+    SkSpan<const SkRuntimeEffect::ChildPtr> fMeshChildren;
+
+    sk_sp<const SkMeshSpecification> fMeshSpec = nullptr;
+    SkSpan<const SkRuntimeEffect::ChildPtr> fMeshChildren;
+
     bool fSkipColorXform;
     bool fDither;
 };

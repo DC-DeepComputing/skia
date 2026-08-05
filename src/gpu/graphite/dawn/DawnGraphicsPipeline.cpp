@@ -157,14 +157,24 @@ size_t create_vertex_attributes(SkSpan<const Attribute> attrs,
                                 TArray<wgpu::VertexAttribute>* out) {
     SkASSERT(out && out->empty());
     out->resize(attrs.size());
+    bool usingAttributeDefinedOffset = false;
     size_t vertexAttributeOffset = 0;
     int attributeIndex = 0;
     for (const auto& attr : attrs) {
         wgpu::VertexAttribute& vertexAttribute =  (*out)[attributeIndex];
+        SkASSERTF(!attr.offset() || usingAttributeDefinedOffset || vertexAttributeOffset == 0,
+                  "If using attribute offsets, all attributes must define an offset.");
+        usingAttributeDefinedOffset |= attr.offset().has_value();
+
         vertexAttribute.format = attribute_type_to_dawn(attr.cpuType());
-        vertexAttribute.offset = vertexAttributeOffset;
+        vertexAttribute.offset = usingAttributeDefinedOffset ? *attr.offset()
+                                                             : vertexAttributeOffset;
         vertexAttribute.shaderLocation = shaderLocationOffset + attributeIndex;
-        vertexAttributeOffset += attr.sizeAlign4();
+
+        vertexAttributeOffset = usingAttributeDefinedOffset
+                    ? std::max(static_cast<size_t>(vertexAttribute.offset) + attr.sizeAlign4(),
+                               vertexAttributeOffset)
+                    : vertexAttributeOffset + attr.sizeAlign4();
         attributeIndex++;
     }
     return vertexAttributeOffset;
@@ -605,8 +615,11 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
     std::array<wgpu::VertexBufferLayout, kNumVertexBuffers> vertexBufferLayouts;
     // Static data buffer layout
     TArray<wgpu::VertexAttribute> staticDataAttributes;
+    SkSpan<const Attribute> staticAttrs = shaderInfo->staticAttributes().empty()
+                                                ? step->staticAttributes()
+                                                : shaderInfo->staticAttributes();
     {
-        auto arrayStride = create_vertex_attributes(step->staticAttributes(),
+        auto arrayStride = create_vertex_attributes(staticAttrs,
                                                     0,
                                                     &staticDataAttributes);
         auto& layout = vertexBufferLayouts[kStaticDataBufferIndex];
@@ -632,7 +645,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
     {
         // Note: the shaderLocationOffset in this function call needs to be the staticAttributeSize
         auto arrayStride = create_vertex_attributes(step->appendAttributes(),
-                                                    step->staticAttributes().size(),
+                                                    staticAttrs.size(),
                                                     &appendDataAttributes);
         auto& layout = vertexBufferLayouts[kAppendDataBufferIndex];
         if (arrayStride) {
