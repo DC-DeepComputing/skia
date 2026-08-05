@@ -157,6 +157,16 @@ Context::Context(sk_sp<SharedContext> sharedContext,
 }
 
 Context::~Context() {
+    // The tasks in the PipelineManager rely on the existence of the SharedContext.
+    // Shut it down before the SharedContext's destructor is invoked. Note that, because
+    // this is happening on the main thread, the PipelineManager should not be waiting
+    // to resolve any Pipelines.
+    // Additionally, the SharedContext and ResourceProvider are also held by any extant
+    // PrecompileContext's. In the case where a PrecompileContext outlives its generating
+    // Context, shutting down the PipelineManager's threading here will force the surviving
+    // PrecompileContext to revert to serial, in-line compilation.
+    fSharedContext->pipelineManager()->shutDown();
+
 #if defined(GPU_TEST_UTILS)
     SkAutoMutexExclusive lock(fTestingLock);
     for (auto& recorder : fTrackedRecorders) {
