@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "14eee9a9_79a68fc3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-05T20:30:05Z",
+      "side": 1,
+      "message": "At a high level, yes, this is the direction I was envisioning. In terms of what to put into the first CL that introduces this, I have a few thoughts:\n\n1. A lot of the fields in SkContextOptions seem like reasonable universally applicable options that belong in SkContextOptions. However, since nothing uses them yet, it\u0027s hard to get a sense of how necessary they are other than vibe. Since this CL is about introducing the new base class for Ganesh and Graphite, we can leave SkContextOptions pretty empty and add options piecemeal as we also start to reference them.\n\n2. I personally don\u0027t feel like parameters need to be wrapped in optional\u003c\u003e if there\u0027s a very good disabled-value, such as 0 or a negative number.\n\n3. Unless the CPU backend of SKia also has a way to use the SkExecutor (I am unsure), I don\u0027t think it should be part of SkContextOptions. This is similar for other common properties between ContextOptions and GrContextOptions such as the GPU cache limit or SDF text controls.  Since there\u0027s no equivalent feature (I\u0027m pretty sure for instance that CPU rasterization does not support SDF tetx), it\u0027s confusing to allow an option to be set but have it silently ignored depending on who consumes the options class.\n\n4. We could consider introducing a GpuContextOptions below SkContextOptions that aggregates all the shared properties between ganesh and graphite to make clients have an easier time initializing a codebase that is mixing both ganesh and graphite.",
+      "revId": "b8115d7ef97deffba9731fb5d5a097f8b10b8dc5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
