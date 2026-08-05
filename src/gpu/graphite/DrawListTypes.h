@@ -150,8 +150,6 @@ struct Draw {
  * painter's order rendering.
  */
 struct BindingList {
-    static constexpr uint32_t kCoarseBoundsThreshold = 32;
-
     BindingList(const RenderStep* step, LayerKey key) : fStep(step), fKey(key) {}
 
     Rect fBounds = Rect::InfiniteInverted();
@@ -160,15 +158,26 @@ struct BindingList {
     const RenderStep* fStep;
     const LayerKey fKey;
 
-    uint32_t fDrawCount = 0; // SkTInternalLList doesn't maintain a count for us :/
+    // If this is true, it means that a draw was added to it without having been tested against
+    // the earlier BindingLists so they are not eligible for being moved forward to a new layer.
+    bool fBlockForwardMerges = false;
+
+    int fDrawCount = 0; // SkTInternalLList doesn't maintain a count for us :/
 
     SK_DECLARE_INTERNAL_LLIST_INTERFACE(BindingList);
 
-    SK_ALWAYS_INLINE bool intersects(const Rect& drawBounds) const {
+    SK_ALWAYS_INLINE bool intersects(const Rect::ComplementRect drawBounds) const {
         if (!fBounds.intersects(drawBounds)) {
             return false;
         }
-        if (fDrawCount > kCoarseBoundsThreshold) {
+
+        // When stencil is involved (or depth-only draws), a larger limit is useful because it
+        // creates a shallower layer list. This in turn makes it more likely to find BindingList
+        // matches. In particular, since stencils have to be disjoint from everything and depth-only
+        // clip draws prevent further layer searches, checking more bounding boxes leads to a net
+        // improvement in complex scenes.
+        const int limit = fKey.isSimpleShading() ? 16 : 64;
+        if (fDrawCount > limit) {
             return true;
         }
         for (const Draw* d = fDraws.head(); d; d = d->fNext) {
@@ -196,6 +205,23 @@ struct BindingList {
  * painter's order visual correctness. Every draw stored in a Layer shares the same
  * CompressedPaintersOrder, which is a monotonically increasing sequence for each DrawList.
  *
+ * Independence does not necessarily mean that all of the draws are disjoint from each other,
+ * although that is frequently the case. The following caveats apply:
+ *   1. Draws that share the same DrawParams (e.g. for a multi-step render) are assumed to overlap.
+ *      The placement within a Layer is determined by the final shading Draw. The test flags used
+ *      for search layers is the union of all Draws, so other than overlapping with its own steps
+ *   2. Draws are only compared against other draws if the testMask has overlapping bits with their
+ *      LayerKey's flags. In the case there are no shared bits, bounds intersections are irrelevant
+ *      since the actual draw operations should be independent.
+ *   3. Draws whoses flags contain kOverlapAllowed may overlap draws within their matched
+ *      BindingList, but the preconditions for this ensure that the rasterization order on the GPU
+ *      and hardware blending preserve painter's order.
+ *   4. If a Layer is not the tail layer, its BindingLists are no longer forward-merge eligible
+ *      (since that only pulls a list into a new layer). Since they are no longer forward-merge
+ *      eligible, it is no longer critical to preserve disjointness between draws in one BindingList
+ *      and those earlier than it. In this case, new Draws only need to be disjoint from
+ *      BindingLists drawn after a match.
+ *
  * A Layer keeps its single list of BindingLists organized to maintain the following properties:
  *   1. Non-shading BindingLists are ordered before every shading BindingList. This helps reduce the
  *      binding lists tested for a shading draw (can stop once a non-shading list is found). It also
@@ -214,18 +240,29 @@ struct Layer {
     SK_DECLARE_INTERNAL_LLIST_INTERFACE(Layer);
 
     // Performs no bounds checks, so can only be used when checks have already confirmed the Layer
-    // is valid for adding a new draw into. This searches backwards from `startList` (inclusive) or
+    // is valid for adding a new draw into. This searches backwards from `startList` (exclusive) or
     // the tail BindingList if null.
+    //
+    // Return a BindingList matching `key` if one exists in the layer (or exists in the layer
+    // at or before `startList`). If an exact match is not found, it attempts to return a
+    // BindingList that has the same pipeline index.
     SK_ALWAYS_INLINE BindingList* searchBinding(const LayerKey& key,
-                                                BindingList* startList=nullptr) {
-        if (!startList) {
-            startList = fBindings.tail();
-        }
+                                                BindingList* startList=nullptr,
+                                                bool forForwardMerge=false) {
+        // `startList` is exclusive, so if it's non-null the loop starts with fPrev.
+        BindingList* pipelineMatch = nullptr;
+        for (BindingList* list = startList ? startList->fPrev : fBindings.tail();
+                list != nullptr; list = list->fPrev) {
+            if (forForwardMerge && list->fBlockForwardMerges) {
+                break;
+            }
 
-        // Advancement is evaluated at compile time
-        for (BindingList* list = startList; list != nullptr; list = list->fPrev) {
             if (list->fKey.isEqual(key)) {
                 return list;
+            } else if (list->fKey.fPipelineIndex == key.fPipelineIndex) {
+                // Save pipeline while continuing to search for an exact match
+                SkASSERT(list->fKey.fFlags == key.fFlags);
+                pipelineMatch = list;
             } else if (key.performsShading() && !list->fKey.performsShading()) {
                 // The BindingLists are split in two sections: a latter half with color (that is
                 // check first because we start at the tail) and then anything else that is
@@ -235,88 +272,158 @@ struct Layer {
                 break;
             }
         }
-        return nullptr;
+
+        // Even though an exact match wasn't found, any non-null pipelineMatch can be used to place
+        // a new binding list, which helps shift from a pipeline switch to just a dynamic state.
+        return pipelineMatch;
     }
 
-    // Note, for the purposes of allowing intersections with non-shading draws, we only delineate
-    // between depthOnlyDraws and nonDepthOnly draws. Although the stencil part of stencil renderers
-    // are also non-shading, and thus could be bypassed by shading draws, in practice there are very
-    // few scenarios where this increases batching and/or performance. This is because---regardless
-    // of the direction of the traversal---the shading part of the stencil renderer is 1) likely
-    // very close by 2) will stop any dependsOnDst draw anyways.
-    //
-    // This was implemented in https://review.skia.org/1171836 and slightly regresses performance
-    // due to the overhead it introduces.
+    // Test the draw with the given bounds and LayerKey against the draws already collected in
+    // this Layer, limiting checks to those that overlap with `testMask`. Returns whether or not
+    // the draw is allowed in the layer, allowed before the layer, or must be in a later layer.
+    // Any BindingList that the draw can be appended to directly, or pulled forward with the draw
+    // is also returned.
     SK_ALWAYS_INLINE std::pair<SkEnumBitMask<BoundsTestResult>, BindingList*> test(
-            const Rect& drawBounds,
+            const Rect::ComplementRect drawBounds,
             const LayerKey& key,
             SkEnumBitMask<BoundsFlags> testMask) {
-        BindingList* foundMatch = nullptr;
-        BindingList* list = fBindings.tail();
-        BindingList* end = nullptr;
+        // If the test mask is kNone, the caller should just use searchBinding() directly since it
+        // won't overlap with anything anyways. Or (rare) it's some opaque multistep draw that
+        // can't overlap itself so is going through the regular `test` process to find a layer.
+        SkASSERT(testMask != BoundsFlags::kNone ||
+                 SkToBool(key.fFlags & BoundsFlags::kMustBeDisjoint));
+        // Overlaps being allowed or not is a property of the BindingList and shouldn't be put in
+        // the test mask (otherwise it'd trigger testing against every BindingList that needed to be
+        // internally disjoint, not just a matching list).
+        SkASSERT(!SkToBool(testMask & BoundsFlags::kMustBeDisjoint));
+
+        // Forward merging attempts to pull an earlier, compatible draw out of the current layer and
+        // push it into a newly created layer to improve pipeline/texture batching.
+        //
+        // 1. Draw Type Restrictions (Single Renderstep & No Depth-Only):
+        //    Forward merging is strictly limited to single-renderstep shading draws. We explicitly
+        //    forbid depth-only draws, and the single-step requirement inherently excludes stencil
+        //    draws. If we allowed multi-step renderers to forward merge, we would risk pulling a
+        //    parent renderstep forward and over its already-inserted child.
+        //
+        // 2. Directional & Spatial Validity:
+        //    The new draw searches backwards, tail to head, so during the search, any binding
+        //    matches found *before* a layer execute *after* that draw during rendering. Because
+        //    existing shading draws (has kColor) in a layer are guaranteed to be non-intersecting
+        //    with other kColor BindingLists, it is visually safe to extract this match and defer
+        //    its execution to the new layer without violating the Painter's Algorithm.
+        //
+        // 3. The Tail-Only Restriction:
+        //    We strictly limit forward merging to the *tail* of the layer list. If we allowed
+        //    forward merging from a middle layer, we would be forced to insert the newly generated
+        //    target layer into the middle of the list. This would break the structural invariant
+        //    that `Layer::fOrder` strictly increases with the physical list order; this invariant
+        //    necessary to ensure that a draw is inserted after *ALL* depth-only clip draws that
+        //    affect it.
+        bool layerIsForwardMergeEligible = !fNext && key.isSimpleShading();
+        const bool overlapInMatchesAllowed = key.isSimpleShading() || key.isDepthOnly();
 
         // Always iterate backwards from the tail, we do this because most draws (including depth-
         // only clip draws) must maintain painter's order so we can early out if they overlap with
         // a more recent draw. In the event that there isn't any color dependency, we're just
         // searching for a disjoint binding match and then whether or not to start from the front or
         // the back is arbitrary
-        for (; list != end; list = list->fPrev) {
-            if (list->fKey.isEqual(key)) {
-                // A side effect of the layer key system is that a non-shading stencil step and a
-                // depth-only draw can generate a valid match. While this allows the two render
-                // steps to share the same binding list, it technically still produces a visually
-                // correct image due to the multi-step nature of stencil renderers:
-                //
-                // 1. Depth-Only matching a Stencil List: While depth-only draws allow self-
-                //    intersection (see below), they cannot bypass shading draws. During a backwards
-                //    traversal, a depth draw might match the stencil's non-shading step, but it
-                //    will always be blocked by the stencil's subsequent shading step (which shares
-                //    identical bounds and is encountered first in reverse).
-                //
-                // 2. Stencil Step matching a Depth-Only List: A spatially disjoint non-shading
-                //    stencil step can match an existing depth-only list. This is a theoretical
-                //    hazard because shading draws are permitted to bypass depth-only lists.
-                //    However, the stencil's corresponding shading step acts as a shield; any
-                //    succeeding draw that would have incorrectly bypassed the stencil step will
-                //    collide with the shading step earlier in its traversal and halt.
-                foundMatch = list;
-                if (key.performsShading() && !key.usesStencil()) {
-                    if (!SkToBool(key.fFlags & BoundsFlags::kMustBeDisjoint)) continue;
+        BindingList* match = nullptr; // remember a good insertion point as bindings are tested
+        for (BindingList* list = fBindings.tail(); list != nullptr; list = list->fPrev) {
+            const bool exactMatch = list->fKey.isEqual(key);
+            // What aspects interfere between the new draw and this binding list in the layer
+            auto aspectOverlap = (list->fKey.fFlags & testMask) |
+                     (exactMatch ? BoundsFlags::kMustBeDisjoint : BoundsFlags::kNone);
+
+            if (aspectOverlap && list->intersects(drawBounds)) {
+                // It is important for complex scene performance that we restrict the exactMatch
+                // early-out to be after doing intersection testing
+                if (exactMatch && overlapInMatchesAllowed) {
+                    if (layerIsForwardMergeEligible &&
+                        list->fPrev && list->fPrev->fKey.performsShading()) {
+                        // The layer is forward-merge compatible and since there are prior
+                        // shading bindings, the draw can't just be appended without risking a
+                        // painter's order inversion for the later binding on a future draw.
+                        // Returning `list` will pull it into a new layer instead.
+                        SkASSERT(!key.isDepthOnly());
+                        return {BoundsTestResult::kBlocked, list};
+                    } else {
+                        // else the layer isn't forward-merge compatible so it doesn't matter if
+                        // we have any overlaps with earlier bindings, but since we have an match
+                        // to append to, let's exit early then (assume color aspect overlap to
+                        // remove kAllowedBeforeLayer).
+                        return {BoundsTestResult::kAllowedInLayer, list};
+                    }
+                }
+
+                if (SkToBool(aspectOverlap & (BoundsFlags::kStencil |
+                                              BoundsFlags::kMustBeDisjoint))) {
+                    // The draw can't be in this layer because either
+                    // - a stencil overlap must be fully disjoint in the layer for all draws
+                    // - or this is an exact match with overlap not allowed
+                    //
+                    // We can also always stop searching because if we depend on kColor, our
+                    // result would be kBlocked; and if we don't depend on kColor then no
+                    // further test will restrict kAllowedBeforeLayer from the result.
+                    return {aspectOverlap & BoundsFlags::kColor
+                                    ? BoundsTestResult::kBlocked
+                                    : BoundsTestResult::kAllowedBeforeLayer,
+                            /*match=*/nullptr};
+                }
+
+                // At this point, it's just a color overlap, so the draw cannot go before this
+                // layer. We try to put it in the layer or in the new layer with a binding match
+                // to improve batching.
+                SkASSERT(aspectOverlap == BoundsFlags::kColor);
+                if (!match) {
+                    // If we haven't found a good insertion point before this intersection, the
+                    // draw must go in a new layer (aspectOverlap is kColor), however, if it's
+                    // forward-merge eligible we can search for a compatible match to pull
+                    // forward with it.
+                    if (key.isSimpleShading() && layerIsForwardMergeEligible) {
+                        match = this->searchBinding(key, list, /*forForwardMerge=*/true);
+                    }
+                    return {BoundsTestResult::kBlocked, match};
+                } else if (!key.usesStencil()) {
+                    // We have a good insertion point in the layer that will be drawn after this
+                    // conflicting BindingList, so put the new draw there. Because we haven't fully
+                    // checked all the previous BindingLists, we need to block forward merges as the
+                    // new draw could now be overlapping with early lists in the layer.
+                    list->fBlockForwardMerges = true;
+                    return {BoundsTestResult::kAllowedInLayer, match};
+                } else {
+                    // This comes up in a rare case where the current draw is stencil+shading and
+                    // we'd found a previous match, but had to continue searching to ensure there is
+                    // no stencil overlap. If we got here, aspectOverlap didn't have stencil so
+                    // it's just overlapping with a regular shading draw. We *could* continue
+                    // going through the BindingLists to confirm no stencil overlap and then
+                    // return {kAllowedInLayer, match} at the end of the loop, but we'd have to
+                    // track the result modifications over time and prevent updates to `match`.
+                    // Pushing it to a new layer seems to work well in practice and let's the
+                    // outer if (intersect) block always return early.
+                    return {BoundsTestResult::kBlocked, /*match=*/nullptr};
                 }
             }
 
-            // Stencil draws always check for intersection. If it's not a stencil draw, it is either
-            // a shading or depth-only draw. Both are allowed to intersect freely with existing
-            // depth-only draws for different reasons:
-            //
-            // 1. Shading bypassing Depth-Only: An unclipped shading draw does not depend on extant
-            //    depth masks. By bypassing it and drawing earlier, it safely skips a depth test
-            //    that it naturally would have passed anyway (due to having a closer Z-value).
-            //    Clipped shading draws are prevented from bypassing their parent depth-only draws
-            //    by the stop-layer insertion mechanism, not by intersection testing.
-            //
-            // 2. Depth-Only bypassing Depth-Only: Because the hardware depth test min/maxs to
-            //    retain the "closest" Z-value, depth writes are commutative. I.e. the greatest
-            //    /least Z-value is retained regardless of draw-ordering. This allows
-            //    intersecting depth-only draws to be safely reordered.
-            //
-            // However, an incoming depth-only draw may NOT bypass an extant shading draws. This is
-            // because writing a closer Z-value would cause the shading draw to fail the depth test.
-            if (!key.usesStencil()) {
-                if (list->fKey.performsShading() && list->intersects(drawBounds)) {
-                    return {BoundsTestResult::kBlocked, foundMatch};
-                }
-            } else {
-                if (list->intersects(drawBounds)) {
-                    return {BoundsTestResult::kBlocked, foundMatch};
-                }
+            layerIsForwardMergeEligible &= !list->fBlockForwardMerges;
+
+            // NOTE: It's possible for the same key to be in a layer multiple times due to
+            // some of the early-out rules. If we get here, the draw hasn't overlapped any later
+            // drawn BindingList, so update the match to be the best, earliest match found so far.
+            if (exactMatch || (list->fKey.fPipelineIndex == key.fPipelineIndex &&
+                               (!match || !match->fKey.isEqual(key)))) {
+                match = list;
+            }
+
+            if ((key.performsShading() && !key.usesStencil()) && !list->fKey.performsShading()) {
+                // Since we guarantee that all non-shading draws are ordered *before* shading ones,
+                // the remaining BindingLists won't perform shading and the new draw doesn't use
+                // the stencil, so all remaining lists will have `aspectOverlap == kNone`.
+                break;
             }
         }
 
-        return {foundMatch ? BoundsTestResult::kAllowedInLayer
-                           : BoundsTestResult::kAllowedBeforeLayer |
-                             BoundsTestResult::kAllowedInLayer,
-                foundMatch};
+        return {BoundsTestResult::kAllowedBeforeLayer | BoundsTestResult::kAllowedInLayer, match};
     }
 
     SK_ALWAYS_INLINE BindingList* addNewBinding(SkArenaAllocWithReset* alloc,

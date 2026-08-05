@@ -3,12 +3,13 @@
 # found in the LICENSE file.
 
 
-# Recipe which runs the Skia gsutils tests.
+# Recipe which runs the Skia gcloud tests.
 
 
 DEPS = [
-  'gsutil',
+  'gcloud',
   'recipe_engine/path',
+  'recipe_engine/platform',
   'recipe_engine/properties',
   'recipe_engine/step',
   'run',
@@ -18,13 +19,12 @@ DEPS = [
 
 def RunSteps(api):
   api.vars.setup()
-  api.gsutil.cp('test file', '/foo/file', 'gs://bar-bucket/file',
-                extra_gsutil_args=['--blah'], extra_args=['-Z'],
-                multithread=True)
+  api.gcloud.cp('test file', '/foo/file', 'gs://bar-bucket/file',
+                extra_args=['-Z'])
 
 def GenTests(api):
   yield (
-      api.test('gsutil_tests') +
+      api.test('gcloud_tests') +
       api.properties(buildername='Housekeeper-PerCommit-InfraTests',
                      repository='https://skia.googlesource.com/skia.git',
                      revision='abc123',
@@ -33,12 +33,13 @@ def GenTests(api):
   )
 
   yield (
-      api.test('gsutil_win_tests') +
+      api.test('gcloud_win_tests') +
       api.properties(buildername='Test-Win11-Clang-Dell3930-GPU-GTX1660-x86_64-Debug-All',
                      repository='https://skia.googlesource.com/skia.git',
                      revision='abc123',
                      path_config='kitchen',
-                     swarm_out_dir='[SWARM_OUT_DIR]')
+                     swarm_out_dir='[SWARM_OUT_DIR]') +
+      api.platform('win', 64)
   )
 
   yield (
