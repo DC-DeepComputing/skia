@@ -16,6 +16,121 @@
       "message": "Gold diffs seem to mainly be differences in AA between Graphite and Ganesh",
       "revId": "9376256c561aac3d5083454982dc17b5d4b681bd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a14e9c33_daae2c2c",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 1607,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-05T18:15:41Z",
+      "side": 1,
+      "message": "Talking offline, we can achieve this on the GPU by adjusting how we draw the fill or the stroke step. Originally, I\u0027d proposed we draw the fill shape with a regular fill and no paint ID (basically blocking those pixels via the depth buffer), then follow it up with an inverse-filled stroke.\n\nHowever, that ends up using stencil inefficiently since the regular fill will write to the stencil then add a cover step to shift the fill rule into the depth buffer, and then we\u0027ll stencil the stroke and add a cover step for handling the inverse.\n\nIf we flip it around to draw the regular stroke into just the depth buffer, it won\u0027t use the stencil at all and will be a single step, and then it can be followed by the inverse-filled fill shape. This simplifies ordering a little bit since we don\u0027t need to worry about both draws using the stencil buffer (which would require adjusting the disjoint stencil index).\n\nHowever, unlike the regular-fill stroke+fill style, the order of the two draws is important.  We can force the depth-only draw to be first by advancing the CompressedPaintersOrder id of the inverse-fill\u0027s draw. An example of this is how the inner-fill draw logic works.",
+      "range": {
+        "startLine": 1596,
+        "startChar": 0,
+        "endLine": 1607,
+        "endChar": 5
+      },
+      "revId": "9376256c561aac3d5083454982dc17b5d4b681bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a22cf973_b96a22a8",
+        "filename": "src/gpu/graphite/render/CommonDepthStencilSettings.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-05T18:15:41Z",
+      "side": 1,
+      "message": "Maybe instead say something like \"Used for storing a stroked path in the stencil buffer\"?",
+      "range": {
+        "startLine": 65,
+        "startChar": 68,
+        "endLine": 65,
+        "endChar": 94
+      },
+      "revId": "9376256c561aac3d5083454982dc17b5d4b681bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5403dacf_50510873",
+        "filename": "src/gpu/graphite/render/CommonDepthStencilSettings.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-05T18:15:41Z",
+      "side": 1,
+      "message": "\"useful for stroked paths\"?",
+      "range": {
+        "startLine": 109,
+        "startChar": 79,
+        "endLine": 110,
+        "endChar": 22
+      },
+      "revId": "9376256c561aac3d5083454982dc17b5d4b681bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00c43339_65f3ea99",
+        "filename": "src/gpu/graphite/render/TessellateStrokesRenderStep.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-05T18:15:41Z",
+      "side": 1,
+      "message": "Maybe swap the true/false cases so we don\u0027t have to negate inverseFill here?",
+      "range": {
+        "startLine": 96,
+        "startChar": 0,
+        "endLine": 96,
+        "endChar": 76
+      },
+      "revId": "9376256c561aac3d5083454982dc17b5d4b681bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ee3ae28_a2101dde",
+        "filename": "src/gpu/graphite/render/TessellateStrokesRenderStep.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-05T18:15:41Z",
+      "side": 1,
+      "message": "Comment is out of date now",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 20
+      },
+      "revId": "9376256c561aac3d5083454982dc17b5d4b681bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
