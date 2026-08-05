@@ -19,12 +19,14 @@
 #include <cstring> // for memcmp
 
 class SkArenaAlloc;
+class SkMeshSpecification;
 struct SkSamplingOptions;
 enum class SkTileMode;
 
 namespace skgpu::graphite {
 
 class Caps;
+class RuntimeEffectDictionary;
 class ShaderCodeDictionary;
 class ShaderNode;
 class TextureProxy;
@@ -34,14 +36,20 @@ enum class RootBlockType : int32_t {
     kSrcColor = -1,
     kFinalBlend = -2,
     kClip = -3,
+    kMeshShader = -4,
 };
 
 struct RootNodesInfo {
-    const ShaderNode* fSrcColor = nullptr;
-    const ShaderNode* fFinalBlend = nullptr;
-    const ShaderNode* fClip = nullptr;
+    const ShaderNode* srcColor = nullptr;
+    const ShaderNode* finalBlend = nullptr;
+    const ShaderNode* clip = nullptr;
+    const ShaderNode* meshShader = nullptr;
 
-    SkSpan<const ShaderNode*> fRoots;
+    // We store the SkMeshSpecification referenced by the `meshShader` when populating this struct
+    // so we don't have to constantly look up the specification by the shader snippet id.
+    const SkMeshSpecification* meshSpec = nullptr;
+
+    SkSpan<const ShaderNode*> roots;
 };
 
 /**
@@ -65,16 +73,16 @@ struct RootNodesInfo {
  * embedded data. Skipping (-v + 1) entries returns iteration to indices containing snippet IDs.
  *
  * The PaintParamsKey stores multiple root nodes, with each root representing an effect tree that
- * affects different parts of the shading pipeline. The key is can only hold 2 or 3 roots:
+ * affects different parts of the shading pipeline. The key is can only hold 2-4 roots:
  *  1. Color root node: produces the "src" color used in final blending with the "dst" color.
  *  2. Final blend node: defines the blend function combining src and dst colors. If this is a
  *     FixedBlend snippet the final pipeline may be able to lift it to HW blending.
  *  3. Clipping: optional, produces analytic coverage from a clip shader or shape.
+ *  4. Mesh shader: optional, provides a reference to a SkMeshSpecification which is used to
+ *     generate the user specified custom vertex/fragment SkSL as well as varyings and attributes.
  *
  * Each root node within the key is also preceded by a 4 byte header with a value < 0 defining
- * the type of the node as one of the 3 types listed above. Writers of the PaintParamsKey should
- * still add the root blocks in a consistent order since that impacts the key hash/comparison
- * even though technically the generated shaders wouldn't be impacted since they would be the same.
+ * the type of the node as one of the 3 types listed above.
  *
  * Logically the root effects produce a src color and the src coverage (augmenting any other
  * coverage coming from the RenderStep). A single src shading node could be used instead of the
@@ -118,6 +126,7 @@ public:
     // lift to the vertex shader, depending on how many varyings are available.
     RootNodesInfo getRootNodes(const Caps*,
                                const ShaderCodeDictionary*,
+                               const RuntimeEffectDictionary*,
                                SkArenaAlloc*,
                                int availableVaryings) const;
 

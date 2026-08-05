@@ -756,6 +756,7 @@ static constexpr skgpu::BlendInfo gBlendTable[kSkBlendModeCount] = {
 struct ShaderInfo::SharedGeneratorData {
     SharedGeneratorData(const Caps* caps,
                         const ShaderCodeDictionary* dict,
+                        const RuntimeEffectDictionary* rteDict,
                         SkArenaAlloc* alloc,
                         const RenderStep* step,
                         UniquePaintParamsID paintID,
@@ -771,10 +772,10 @@ struct ShaderInfo::SharedGeneratorData {
             const int availableVaryings =
                     caps->maxVaryings() - kFixedVaryings - step->varyings().size();
 
-            fRootsInfo = key.getRootNodes(caps, dict, alloc, availableVaryings);
+            fRootsInfo = key.getRootNodes(caps, dict, rteDict, alloc, availableVaryings);
 
-            fNeedsLocalCoords = fRootsInfo.fSrcColor &&
-                                SkToBool(fRootsInfo.fSrcColor->requiredFlags() &
+            fNeedsLocalCoords = fRootsInfo.srcColor &&
+                                SkToBool(fRootsInfo.srcColor->requiredFlags() &
                                 SnippetRequirementFlags::kLocalCoords);
         } else {
             fNeedsLocalCoords = false;
@@ -782,7 +783,7 @@ struct ShaderInfo::SharedGeneratorData {
 
         // Lift Expressions & Check Uniforms
         bool vsHasLiftedPaintUniforms = false;
-        fLiftedExpr = collect_lifted_expressions(fRootsInfo.fRoots);
+        fLiftedExpr = collect_lifted_expressions(fRootsInfo.roots);
         for (const auto& expr : fLiftedExpr) {
             if (!expr.fNode->entry()->fUniforms.empty()) {
                 vsHasLiftedPaintUniforms = true;
@@ -806,7 +807,7 @@ struct ShaderInfo::SharedGeneratorData {
             fSharedPreamble = emit_combined_storage_buffer(
                 bindingReqs.fUniformsSetIdx,
                 bindingReqs.fCombinedUniformBufferBinding,
-                fRootsInfo.fRoots,
+                fRootsInfo.roots,
                 allStepUniforms,
                 &numPaintUniforms,
                 &numUnliftedPaintUniforms,
@@ -816,7 +817,7 @@ struct ShaderInfo::SharedGeneratorData {
                 bindingReqs.fUniformsSetIdx,
                 bindingReqs.fCombinedUniformBufferBinding,
                 bindingReqs.fUniformBufferLayout,
-                fRootsInfo.fRoots,
+                fRootsInfo.roots,
                 allStepUniforms,
                 &numPaintUniforms,
                 &numUnliftedPaintUniforms,
@@ -883,7 +884,7 @@ std::unique_ptr<ShaderInfo> ShaderInfo::Make(const Caps* caps,
     // rootNodes span is valid when passed to helpers.
     SkArenaAlloc shaderNodeAlloc{256};
     SharedGeneratorData sharedData(
-            caps, dict, &shaderNodeAlloc, step, paintID, result->uniformSsboIndex());
+            caps, dict, rteDict, &shaderNodeAlloc, step, paintID, result->uniformSsboIndex());
     result->fHasCombinedUniforms = sharedData.fHasStepUniforms || sharedData.fHasPaintUniforms;
 
     SkString paintLabel = dict->idToString(caps, paintID);
@@ -962,38 +963,38 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
                                       const SharedGeneratorData& sharedData) {
 #if defined(SK_DEBUG)
     // Validate the root count of the key.
-    SkASSERT(sharedData.fRootsInfo.fRoots.size() == 2 || sharedData.fRootsInfo.fRoots.size() == 3);
+    SkASSERT(sharedData.fRootsInfo.roots.size() == 2 || sharedData.fRootsInfo.roots.size() == 3);
     // With source color node all snippets return a half4, so we just require that its signature
     // takes no extra args or just local coords.
-    SkASSERT(sharedData.fRootsInfo.fSrcColor && sharedData.fRootsInfo.fFinalBlend);
+    SkASSERT(sharedData.fRootsInfo.srcColor && sharedData.fRootsInfo.finalBlend);
     const ShaderSnippet* srcSnippet
-            = dict->getEntry(sharedData.fRootsInfo.fSrcColor->codeSnippetId());
+            = dict->getEntry(sharedData.fRootsInfo.srcColor->codeSnippetId());
     // TODO(b/349997190): Once SkEmptyShader doesn't use the passthrough snippet, we can assert
     // that srcSnippet->needsPriorStageOutput() is false.
     SkASSERT(!srcSnippet->needsBlenderDstColor());
     // Final blender node must take both the src color and dst color, and not any local coordinate.
     const ShaderSnippet* blendSnippet
-            = dict->getEntry(sharedData.fRootsInfo.fFinalBlend->codeSnippetId());
+            = dict->getEntry(sharedData.fRootsInfo.finalBlend->codeSnippetId());
     SkASSERT(blendSnippet->needsPriorStageOutput() && blendSnippet->needsBlenderDstColor());
     SkASSERT(!blendSnippet->needsLocalCoords());
-    const ShaderSnippet* clipSnippet = sharedData.fRootsInfo.fClip ?
-            dict->getEntry(sharedData.fRootsInfo.fClip->codeSnippetId()) : nullptr;
+    const ShaderSnippet* clipSnippet = sharedData.fRootsInfo.clip ?
+            dict->getEntry(sharedData.fRootsInfo.clip->codeSnippetId()) : nullptr;
     SkASSERT(!clipSnippet ||
              (!clipSnippet->needsPriorStageOutput() && !clipSnippet->needsBlenderDstColor()));
 #endif
 
     // Check for unexpected corruption / illegal instructions occurring in the wild.
-    SkASSERTF_RELEASE((sharedData.fRootsInfo.fRoots.size() == 2 ||
-                       sharedData.fRootsInfo.fRoots.size() == 3) &&
-                      sharedData.fRootsInfo.fSrcColor && sharedData.fRootsInfo.fFinalBlend,
+    SkASSERTF_RELEASE((sharedData.fRootsInfo.roots.size() == 2 ||
+                       sharedData.fRootsInfo.roots.size() == 3) &&
+                      sharedData.fRootsInfo.srcColor && sharedData.fRootsInfo.finalBlend,
                       "root node size = %zu, label = %s",
-                      sharedData.fRootsInfo.fRoots.size(), label);
+                      sharedData.fRootsInfo.roots.size(), label);
 
     // Extract the root nodes for clarity
-    const ShaderNode* const srcColorRoot = sharedData.fRootsInfo.fSrcColor;
-    const ShaderNode* const finalBlendRoot = sharedData.fRootsInfo.fFinalBlend;
+    const ShaderNode* const srcColorRoot = sharedData.fRootsInfo.srcColor;
+    const ShaderNode* const finalBlendRoot = sharedData.fRootsInfo.finalBlend;
     const int32_t finalBlendRootSnippetId = finalBlendRoot->codeSnippetId();
-    const ShaderNode* const clipRoot = sharedData.fRootsInfo.fClip;
+    const ShaderNode* const clipRoot = sharedData.fRootsInfo.clip;
 
     // Determine the algorithm for final blending: direct HW blending, coverage-modified HW
     // blending (w/ or w/o dual-source blending) or via dst-read requirement.
@@ -1068,7 +1069,7 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
                                fDstReadStrategy == DstReadStrategy::kTextureSample;
     {
         int binding = 0;
-        fsPreamble += emit_textures_and_samplers(bindingReqs, sharedData.fRootsInfo.fRoots,
+        fsPreamble += emit_textures_and_samplers(bindingReqs, sharedData.fRootsInfo.roots,
                                                  &binding, outDescs);
         int paintTextureCount = binding;
         if (step->hasTextures()) {
@@ -1102,7 +1103,7 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
     // Emit preamble declarations and helper functions required for snippets. In the default case
     // this adds functions that bind a node's specific mangled uniforms to the snippet's
     // implementation in the SkSL modules.
-    emit_preambles(*this, sharedData.fRootsInfo.fRoots, /*treeLabel=*/"", &fsPreamble);
+    emit_preambles(*this, sharedData.fRootsInfo.roots, /*treeLabel=*/"", &fsPreamble);
 
     std::string mainBody = "void main() {";
 
