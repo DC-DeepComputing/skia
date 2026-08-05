@@ -16,6 +16,115 @@
       "message": "On CQ run RustALL CQ run was failing due to a crash. The crash was caused at the Rust/C++ FFI boundary in the Rust JPEG reader setup path. We were returning a boxed wrapper result object, unwrapping it in C++, and then dropping that wrapper; on truncated-input test flow this hit an invalid free path (PartitionAlloc trap), which is why RustALL dm crashed.\n\nFix:\nI simplified the FFI contract so `new_reader` now returns the Reader directly (no wrapper result object to unwrap/drop), and updated both C++ call sites (initial decode and rewind) to use that direct return. We also kept the safer explicit stream-read loop in the Rust FFI reader path as additional hardening for partial/truncated input handling.\n\nValidation:\nLocal RustALL dm run (including RustJpeg) now passes, the specific `RustJpegCodec_incomplete_input` regression test passes, and presubmit passes.\n\nCan you help queueing CQ again on latest changes?\n\nThanks!",
       "revId": "1eb57e2c63fa8775fa10b15beb759fa201bb36c2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd43ef50_568bb830",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 20
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-08-05T17:52:13Z",
+      "side": 1,
+      "message": "Thank you for your patience.  Everything looks good to me, although I am afraid that my code review was a bit shallow - looking at the high-level coding patterns, and not looking deeply into specifics.  I hope that the existing tests and launch processes will help reduce the risk of bugs in the new code.",
+      "revId": "1eb57e2c63fa8775fa10b15beb759fa201bb36c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b65c1ac8_96deec9a",
+        "filename": "experimental/rust_jpeg/decoder/BUILD.bazel",
+        "patchSetId": 20
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-08-05T17:52:13Z",
+      "side": 1,
+      "message": "I am not sure why we need `defines \u003d ...` here.  I thought that presence of this definition would matter *outside* of the decoder - when some other code wants to pick whether to use SkJpegDecoder vs SkJpegRustDecoder.  I also see that this macro-definition is not inspected by SkJpegRustDecoder.cpp.\n\nOTOH, this probably doesn\u0027t matter much - I am just curious about possible cleanup.",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 50
+      },
+      "revId": "1eb57e2c63fa8775fa10b15beb759fa201bb36c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a522baa0_c38ed903",
+        "filename": "experimental/rust_jpeg/encoder/BUILD.bazel",
+        "patchSetId": 20
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-08-05T17:52:13Z",
+      "side": 1,
+      "message": "Same question as in the other `BUILD.bazel` file - is this `defines \u003d ...` attribute needed?",
+      "range": {
+        "startLine": 30,
+        "startChar": 16,
+        "endLine": 30,
+        "endChar": 47
+      },
+      "revId": "1eb57e2c63fa8775fa10b15beb759fa201bb36c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9f664b6_770a2cd1",
+        "filename": "experimental/rust_jpeg/ffi/FFI.rs",
+        "patchSetId": 20
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-08-05T17:52:13Z",
+      "side": 1,
+      "message": "nit: `let ... else` may result in shorter code:\n\n```suggestion\n    let Some(mut stream) \u003d input.as_mut() else { return Err(()) };\n```",
+      "range": {
+        "startLine": 358,
+        "startChar": 0,
+        "endLine": 361,
+        "endChar": 6
+      },
+      "revId": "1eb57e2c63fa8775fa10b15beb759fa201bb36c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c22ab27e_58c2d2da",
+        "filename": "experimental/rust_jpeg/ffi/FFI.rs",
+        "patchSetId": 20
+      },
+      "lineNbr": 374,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-08-05T17:52:13Z",
+      "side": 1,
+      "message": "probably a silly premature optimization idea: instead of repeated `saturating_add` we can delete `total_read` variable and return the total bytes more directly\n\n```suggestion\n    }\n\n    let total_read \u003d sink.len() - initial_sink_len;\n    Ok(total_read)\n```",
+      "range": {
+        "startLine": 371,
+        "startChar": 0,
+        "endLine": 374,
+        "endChar": 1
+      },
+      "revId": "1eb57e2c63fa8775fa10b15beb759fa201bb36c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
