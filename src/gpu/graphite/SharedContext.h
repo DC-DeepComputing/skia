@@ -73,6 +73,14 @@ public:
             const RenderPassDesc&,
             SkEnumBitMask<PipelineCreationFlags>);
 
+    GraphicsPipelineHandle createGraphicsPipelineHandle(
+            const GraphicsPipelineDesc&,
+            const RenderPassDesc&,
+            SkEnumBitMask<PipelineCreationFlags>);
+    void startPipelineCreationTask(sk_sp<const RuntimeEffectDictionary>,
+                                   const GraphicsPipelineHandle&);
+    sk_sp<GraphicsPipeline> resolveHandle(const GraphicsPipelineHandle&);
+
     // Called by Context::isContextLost(). Returns true if the backend-specific SharedContext has
     // gotten into an unrecoverable, lost state.
     virtual bool isDeviceLost() const { return false; }

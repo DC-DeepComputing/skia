@@ -15,11 +15,15 @@
 #include "src/gpu/graphite/ContextUtils.h"
 #include "src/gpu/graphite/GpuWorkSubmission.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
+#include "src/gpu/graphite/GraphicsPipelineHandle.h"
+#include "src/gpu/graphite/PipelineCreationTask.h"
 #include "src/gpu/graphite/RendererProvider.h"
 #include "src/gpu/graphite/ResourceCache.h"
 #include "src/gpu/graphite/ResourceProvider.h"
+#include "src/gpu/graphite/RuntimeEffectDictionary.h"
 #include "src/gpu/graphite/SerializationUtils.h"
 #include "src/gpu/graphite/ThreadSafeResourceProvider.h"
+
 
 namespace skgpu::graphite {
 
@@ -127,6 +131,28 @@ sk_sp<GraphicsPipeline> SharedContext::findOrCreateGraphicsPipeline(
         }
     }
     return pipeline;
+}
+
+GraphicsPipelineHandle SharedContext::createGraphicsPipelineHandle(
+        const GraphicsPipelineDesc& pipelineDesc,
+        const RenderPassDesc& renderPassDesc,
+        SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags) {
+
+    return fPipelineManager.createHandle(this,
+                                         pipelineDesc,
+                                         renderPassDesc,
+                                         pipelineCreationFlags);
+}
+
+void SharedContext::startPipelineCreationTask(sk_sp<const RuntimeEffectDictionary> runtimeDict,
+                                                 const GraphicsPipelineHandle& handle) {
+    fPipelineManager.startPipelineCreationTask(this,
+                                               std::move(runtimeDict),
+                                               handle);
+}
+
+sk_sp<GraphicsPipeline> SharedContext::resolveHandle(const GraphicsPipelineHandle& handle) {
+    return fPipelineManager.resolveHandle(handle);
 }
 
 #if defined(SK_DEBUG)
