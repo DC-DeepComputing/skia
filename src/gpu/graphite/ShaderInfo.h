@@ -12,6 +12,7 @@
 #include "src/core/SkArenaAlloc.h"
 #include "src/gpu/Blend.h"
 #include "src/gpu/Swizzle.h"
+#include "src/gpu/graphite/Attribute.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/DescriptorData.h"
 #include "src/gpu/graphite/ResourceTypes.h"
@@ -84,6 +85,8 @@ public:
         return SkToBool(fStorageBufferStages & PipelineStageFlags::kFragmentShader);
     }
 
+    SkSpan<const Attribute> staticAttributes() const { return fStaticAttrs; }
+
     // Name used in-shader for storage buffer uniform.
     static constexpr char kStorageBufferName[] = "fsStorageBuffer";
 
@@ -130,6 +133,8 @@ private:
     int fNumFragmentTexturesAndSamplers = 0;
     bool fHasCombinedUniforms = false;
     SkEnumBitMask<PipelineStageFlags> fStorageBufferStages = {};
+
+    skia_private::TArray<Attribute> fStaticAttrs;
 };
 
 }  // namespace skgpu::graphite

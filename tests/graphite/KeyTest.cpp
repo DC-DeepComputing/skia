@@ -82,8 +82,8 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(KeyWithInvalidCodeSnippetIDTest, reporter, co
                                  (int32_t) BuiltInCodeSnippetID::kFixedBlend_Src};
     SkSpan<const int32_t> invalidKeySpan{invalidKeyData, std::size(invalidKeyData)*sizeof(int32_t)};
     const PaintParamsKey* fakeKey = reinterpret_cast<const PaintParamsKey*>(&invalidKeySpan);
-    REPORTER_ASSERT(reporter, fakeKey->getRootNodes(caps, dict, /*treDict=*/nullptr,
-                                                    &arena, 0).fRoots.empty());
+    REPORTER_ASSERT(reporter, fakeKey->getRootNodes(caps, dict, /*rteDict=*/nullptr, &arena, 0,
+                                                    /*canLiftCoords=*/true).fRoots.empty());
 }
 
 DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(KeyEqualityChecksSnippetID, reporter, context,
