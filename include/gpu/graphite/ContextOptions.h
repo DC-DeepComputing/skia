@@ -8,6 +8,7 @@
 #ifndef skgpu_graphite_ContextOptions_DEFINED
 #define skgpu_graphite_ContextOptions_DEFINED
 
+#include "include/core/SkContextOptions.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkSpan.h"
@@ -28,7 +29,7 @@ namespace skgpu::graphite {
 struct ContextOptionsPriv;
 class PersistentPipelineStorage;
 
-struct SK_API ContextOptions {
+struct SK_API ContextOptions : public SkContextOptions {
     ContextOptions() {}
 
     /**
@@ -197,15 +198,6 @@ struct SK_API ContextOptions {
      * This includes adding, removing or reordering the effects provided here.
      */
     SkSpan<sk_sp<SkRuntimeEffect>> fUserDefinedKnownRuntimeEffects;
-
-    /**
-     * Executor to handle threaded work within Graphite. If this is nullptr, then all work will be
-     * done serially on the main thread. To have worker threads assist with various tasks, set this
-     * to a valid SkExecutor instance. Currently, used for Pipeline compilation, but may be used
-     * for other tasks. It is up to the client to ensure the SkExecutor remains valid throughout
-     * the lifetime of the Context.
-     */
-    SkExecutor* fExecutor = nullptr;
 
     /**
      * Allows Graphite to store Pipeline data across Context lifetimes. It is up to the

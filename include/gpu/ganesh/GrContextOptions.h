@@ -8,6 +8,7 @@
 #ifndef GrContextOptions_DEFINED
 #define GrContextOptions_DEFINED
 
+#include "include/core/SkContextOptions.h"
 #include "include/core/SkData.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
@@ -21,7 +22,7 @@
 
 class SkExecutor;
 
-struct SK_API GrContextOptions {
+struct SK_API GrContextOptions : public SkContextOptions {
     enum class Enable {
         /** Forces an option to be disabled. */
         kNo,
@@ -83,14 +84,6 @@ struct SK_API GrContextOptions {
      */
     GrDirectContextDestroyedContext fContextDeleteContext = nullptr;
     GrDirectContextDestroyedProc fContextDeleteProc = nullptr;
-
-    /**
-     * Executor to handle threaded work within Ganesh. If this is nullptr, then all work will be
-     * done serially on the main thread. To have worker threads assist with various tasks, set this
-     * to a valid SkExecutor instance. Currently, used for software path rendering, but may be used
-     * for other tasks.
-     */
-    SkExecutor* fExecutor = nullptr;
 
     /**
      * Cache in which to store compiled shader binaries between runs.
@@ -378,7 +371,6 @@ struct SK_API GrContextOptions {
     bool fDisallowWriteAndTransferPixelRowBytes = false;
 
 #endif
-
 };
 
 #endif
