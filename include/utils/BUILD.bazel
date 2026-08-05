@@ -10,7 +10,6 @@ PUBLIC_HEADERS = [
     "SkCamera.h",
     "SkCanvasStateUtils.h",
     "SkCustomTypeface.h",
-    "SkEventTracer.h",
     "SkNWayCanvas.h",
     "SkNoDrawCanvas.h",
     "SkNullCanvas.h",

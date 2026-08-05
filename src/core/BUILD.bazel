@@ -52,7 +52,6 @@ split_srcs_and_hdrs(
 SEMI_PUBLIC_HEADERS = [
     "Sk4px.h",
     "SkAAClip.h",
-    "SkATrace.h",
     "SkAdvancedTypefaceMetrics.h",
     "SkAnnotationKeys.h",
     "SkArenaAlloc.h",
@@ -295,7 +294,7 @@ skia_filegroup(
     srcs = [
         # Implementation of public and private headers
         "SkAAClip.cpp",
-        "SkATrace.cpp",
+        "SkTraceEvent.cpp",
         "SkAlphaRuns.cpp",
         "SkAnalyticEdge.cpp",
         "SkAnnotation.cpp",

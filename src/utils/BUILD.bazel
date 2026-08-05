@@ -43,7 +43,6 @@ skia_filegroup(
         "SkCanvasStack.cpp",
         "SkCustomTypeface.cpp",
         "SkDashPath.cpp",
-        "SkEventTracer.cpp",
         "SkFloatUtils.h",
         "SkJSONWriter.cpp",
         "SkMatrix22.cpp",
