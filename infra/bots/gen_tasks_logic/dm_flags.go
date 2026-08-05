@@ -479,6 +479,7 @@ func (b *TaskBuilder) dmFlags(internalHardwareLabel string) {
 					baseConfig = "grdawn_gl"
 				} else if b.ExtraConfig("GLES") {
 					baseConfig = "grdawn_gles"
+					args = append(args, "--gpuThreads=0")
 				}
 
 				configs = []string{baseConfig}
