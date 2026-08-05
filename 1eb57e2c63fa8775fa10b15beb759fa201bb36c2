@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "78cebeda_c9f6ba22",
+        "filename": "experimental/rust_jpeg/decoder/BUILD.bazel",
+        "patchSetId": 20
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-08-05T18:22:32Z",
+      "side": 1,
+      "message": "I validated that this define is not really required here, so removing it. Good catch!",
+      "parentUuid": "b65c1ac8_96deec9a",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 50
+      },
+      "revId": "1eb57e2c63fa8775fa10b15beb759fa201bb36c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a522baa0_c38ed903",
@@ -71,6 +95,30 @@
       "writtenOn": "2026-08-05T17:52:13Z",
       "side": 1,
       "message": "Same question as in the other `BUILD.bazel` file - is this `defines \u003d ...` attribute needed?",
+      "range": {
+        "startLine": 30,
+        "startChar": 16,
+        "endLine": 30,
+        "endChar": 47
+      },
+      "revId": "1eb57e2c63fa8775fa10b15beb759fa201bb36c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "109d7521_040d01cb",
+        "filename": "experimental/rust_jpeg/encoder/BUILD.bazel",
+        "patchSetId": 20
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-08-05T18:22:32Z",
+      "side": 1,
+      "message": "Same here",
+      "parentUuid": "a522baa0_c38ed903",
       "range": {
         "startLine": 30,
         "startChar": 16,
@@ -104,6 +152,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf23ef5c_ce5e2c05",
+        "filename": "experimental/rust_jpeg/ffi/FFI.rs",
+        "patchSetId": 20
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-08-05T18:22:32Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "d9f664b6_770a2cd1",
+      "range": {
+        "startLine": 358,
+        "startChar": 0,
+        "endLine": 361,
+        "endChar": 6
+      },
+      "revId": "1eb57e2c63fa8775fa10b15beb759fa201bb36c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c22ab27e_58c2d2da",
@@ -117,6 +189,30 @@
       "writtenOn": "2026-08-05T17:52:13Z",
       "side": 1,
       "message": "probably a silly premature optimization idea: instead of repeated `saturating_add` we can delete `total_read` variable and return the total bytes more directly\n\n```suggestion\n    }\n\n    let total_read \u003d sink.len() - initial_sink_len;\n    Ok(total_read)\n```",
+      "range": {
+        "startLine": 371,
+        "startChar": 0,
+        "endLine": 374,
+        "endChar": 1
+      },
+      "revId": "1eb57e2c63fa8775fa10b15beb759fa201bb36c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "72392cc3_d11500b3",
+        "filename": "experimental/rust_jpeg/ffi/FFI.rs",
+        "patchSetId": 20
+      },
+      "lineNbr": 374,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-08-05T18:22:32Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "c22ab27e_58c2d2da",
       "range": {
         "startLine": 371,
         "startChar": 0,

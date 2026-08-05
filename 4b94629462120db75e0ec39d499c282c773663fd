@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d52559f6_187dd2cc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 21
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-08-05T18:22:32Z",
+      "side": 1,
+      "message": "Updated to fix Lukasz\u0027s comments. @fmalita@google.com, can you launch CQ on this? Thanks!",
+      "revId": "4b94629462120db75e0ec39d499c282c773663fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
