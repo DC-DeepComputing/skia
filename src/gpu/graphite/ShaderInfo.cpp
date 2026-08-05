@@ -756,6 +756,7 @@ static constexpr skgpu::BlendInfo gBlendTable[kSkBlendModeCount] = {
 struct ShaderInfo::SharedGeneratorData {
     SharedGeneratorData(const Caps* caps,
                         const ShaderCodeDictionary* dict,
+                        const RuntimeEffectDictionary* rteDict,
                         SkArenaAlloc* alloc,
                         const RenderStep* step,
                         UniquePaintParamsID paintID,
@@ -771,7 +772,7 @@ struct ShaderInfo::SharedGeneratorData {
             const int availableVaryings =
                     caps->maxVaryings() - kFixedVaryings - step->varyings().size();
 
-            fRootsInfo = key.getRootNodes(caps, dict, alloc, availableVaryings);
+            fRootsInfo = key.getRootNodes(caps, dict, rteDict, alloc, availableVaryings);
 
             fNeedsLocalCoords = fRootsInfo.fSrcColor &&
                                 SkToBool(fRootsInfo.fSrcColor->requiredFlags() &
@@ -883,7 +884,7 @@ std::unique_ptr<ShaderInfo> ShaderInfo::Make(const Caps* caps,
     // rootNodes span is valid when passed to helpers.
     SkArenaAlloc shaderNodeAlloc{256};
     SharedGeneratorData sharedData(
-            caps, dict, &shaderNodeAlloc, step, paintID, result->uniformSsboIndex());
+            caps, dict, rteDict, &shaderNodeAlloc, step, paintID, result->uniformSsboIndex());
     result->fHasCombinedUniforms = sharedData.fHasStepUniforms || sharedData.fHasPaintUniforms;
 
     SkString paintLabel = dict->idToString(caps, paintID);

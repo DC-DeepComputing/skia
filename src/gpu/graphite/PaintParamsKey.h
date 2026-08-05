@@ -19,12 +19,14 @@
 #include <cstring> // for memcmp
 
 class SkArenaAlloc;
+class SkMeshSpecification;
 struct SkSamplingOptions;
 enum class SkTileMode;
 
 namespace skgpu::graphite {
 
 class Caps;
+class RuntimeEffectDictionary;
 class ShaderCodeDictionary;
 class ShaderNode;
 class TextureProxy;
@@ -34,12 +36,16 @@ enum class RootBlockType : int32_t {
     kSrcColor = -1,
     kFinalBlend = -2,
     kClip = -3,
+    kMeshShader = -4,
 };
 
 struct RootNodesInfo {
     const ShaderNode* fSrcColor = nullptr;
     const ShaderNode* fFinalBlend = nullptr;
     const ShaderNode* fClip = nullptr;
+    const ShaderNode* fMeshShader = nullptr;
+
+    const SkMeshSpecification* fMeshSpec = nullptr;
 
     SkSpan<const ShaderNode*> fRoots;
 };
@@ -118,6 +124,7 @@ public:
     // lift to the vertex shader, depending on how many varyings are available.
     RootNodesInfo getRootNodes(const Caps*,
                                const ShaderCodeDictionary*,
+                               const RuntimeEffectDictionary*,
                                SkArenaAlloc*,
                                int availableVaryings) const;
 
