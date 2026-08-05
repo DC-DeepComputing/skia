@@ -312,7 +312,8 @@ bool ShadingParams::handlePrimitiveColor(const KeyContext& keyContext) const {
         if (primColorOverride) {
             SolidColorShaderBlock::AddBlock(keyContext, *primColorOverride);
         } else {
-            AddPrimitiveColor(keyContext, fPaint.skipPrimitiveColorXform());
+            AddPrimitiveColor(keyContext, fPaint.skipPrimitiveColorXform(),
+                              fPaint.primitiveColorSpace(), fPaint.primitiveAlphaType());
         }
         return false;
     }
@@ -329,7 +330,8 @@ bool ShadingParams::handlePrimitiveColor(const KeyContext& keyContext) const {
             if (primColorOverride) {
                 SolidColorShaderBlock::AddBlock(keyContext, *primColorOverride);
             } else {
-                AddPrimitiveColor(keyContext, fPaint.skipPrimitiveColorXform());
+                AddPrimitiveColor(keyContext, fPaint.skipPrimitiveColorXform(),
+                                  fPaint.primitiveColorSpace(), fPaint.primitiveAlphaType());
             }
         });
     if (primBlend.has_value() && srcIsOpaque) {
@@ -410,7 +412,6 @@ bool ShadingParams::handleDithering(const KeyContext& keyContext) const {
 }
 
 void ShadingParams::handleClipping(const KeyContext& keyContext) const {
-    SkASSERT(!fNonMSAAClip.isEmpty() || fClipShader);
     if (!fNonMSAAClip.isEmpty()) {
 #if defined(SK_GRAPHITE_USE_LEGACY_RRECT_CLIP_SHADER)
         const AnalyticClip& analyticClip = fNonMSAAClip.fAnalyticClip;
@@ -481,10 +482,12 @@ void ShadingParams::handleClipping(const KeyContext& keyContext) const {
             AddAnalyticClip(keyContext, fNonMSAAClip);
         }
 #endif // SK_GRAPHITE_USE_LEGACY_RRECT_CLIP_SHADER
-    } else {
+    } else if (fClipShader) {
         // Since there's no analytic clip, the clipping root node can be fClipShader directly.
-        SkASSERT(fClipShader);
         AddToKey(keyContext, fClipShader);
+    } else {
+        // We check for clipping before calling `handleClipping()`.
+        SkUNREACHABLE;
     }
 }
 
