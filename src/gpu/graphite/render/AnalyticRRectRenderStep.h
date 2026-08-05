@@ -20,6 +20,7 @@ class DrawParams;
 class DrawWriter;
 class PipelineDataGatherer;
 class StaticBufferManager;
+struct RootNodesInfo;
 
 class AnalyticRRectRenderStep final : public RenderStep {
 public:

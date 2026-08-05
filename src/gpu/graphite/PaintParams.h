@@ -16,7 +16,6 @@
 #include "src/gpu/graphite/geom/NonMSAAClip.h"
 
 class SkColorInfo;
-class SkColorSpace;
 class SkImage;
 class SkShader;
 
@@ -92,8 +91,6 @@ public:
         return fPrimitiveColorOverride;
     }
     bool skipPrimitiveColorXform() const { return fSkipColorXform; }
-    SkColorSpace* primitiveColorSpace() const { return fPrimitiveColorSpace; }
-    SkAlphaType primitiveAlphaType() const { return fPrimitiveAlphaType; }
 
     const SkBlender* finalBlender() const { return fFinalBlend.first; }
     // Must also check finalBlender() to see if that overrides finalBlendMode() behavior.
@@ -135,8 +132,6 @@ private:
     // in the vertices for primitive color blending. This is done to enable primitive color blending
     // for render steps which don't emit primitive colors.
     std::optional<SkColor4f> fPrimitiveColorOverride;
-    SkColorSpace*            fPrimitiveColorSpace = nullptr;
-    SkAlphaType              fPrimitiveAlphaType = kPremul_SkAlphaType;
 
     bool fSkipColorXform;
     bool fDither;

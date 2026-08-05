@@ -7,6 +7,8 @@
 
 #include "src/gpu/graphite/render/AnalyticRRectRenderStep.h"
 
+#include "src/gpu/graphite/PaintParamsKey.h"
+
 #include "include/core/SkM44.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPoint.h"

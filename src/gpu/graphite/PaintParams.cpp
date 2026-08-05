@@ -312,8 +312,7 @@ bool ShadingParams::handlePrimitiveColor(const KeyContext& keyContext) const {
         if (primColorOverride) {
             SolidColorShaderBlock::AddBlock(keyContext, *primColorOverride);
         } else {
-            AddPrimitiveColor(keyContext, fPaint.skipPrimitiveColorXform(),
-                              fPaint.primitiveColorSpace(), fPaint.primitiveAlphaType());
+            AddPrimitiveColor(keyContext, fPaint.skipPrimitiveColorXform());
         }
         return false;
     }
@@ -330,8 +329,7 @@ bool ShadingParams::handlePrimitiveColor(const KeyContext& keyContext) const {
             if (primColorOverride) {
                 SolidColorShaderBlock::AddBlock(keyContext, *primColorOverride);
             } else {
-                AddPrimitiveColor(keyContext, fPaint.skipPrimitiveColorXform(),
-                                  fPaint.primitiveColorSpace(), fPaint.primitiveAlphaType());
+                AddPrimitiveColor(keyContext, fPaint.skipPrimitiveColorXform());
             }
         });
     if (primBlend.has_value() && srcIsOpaque) {

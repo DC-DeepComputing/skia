@@ -7,6 +7,8 @@
 
 #include "src/gpu/graphite/render/TessellateCurvesRenderStep.h"
 
+#include "src/gpu/graphite/PaintParamsKey.h"
+
 #include "include/core/SkPath.h"
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkSpan.h"

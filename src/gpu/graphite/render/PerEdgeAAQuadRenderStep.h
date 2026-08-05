@@ -20,6 +20,7 @@ class DrawParams;
 class DrawWriter;
 class PipelineDataGatherer;
 class StaticBufferManager;
+struct RootNodesInfo;
 
 class PerEdgeAAQuadRenderStep final : public RenderStep {
 public:

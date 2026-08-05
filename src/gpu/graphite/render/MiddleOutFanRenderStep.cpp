@@ -7,6 +7,8 @@
 
 #include "src/gpu/graphite/render/MiddleOutFanRenderStep.h"
 
+#include "src/gpu/graphite/PaintParamsKey.h"
+
 #include "include/core/SkPath.h"
 #include "include/private/SkDebug.h"
 #include "src/core/SkSLTypeShared.h"

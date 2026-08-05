@@ -7,6 +7,8 @@
 
 #include "src/gpu/graphite/render/VerticesRenderStep.h"
 
+#include "src/gpu/graphite/PaintParamsKey.h"
+
 #include "include/core/SkColor.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkSpan.h"

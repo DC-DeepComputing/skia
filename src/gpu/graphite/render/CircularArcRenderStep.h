@@ -20,6 +20,7 @@ class DrawParams;
 class DrawWriter;
 class PipelineDataGatherer;
 class StaticBufferManager;
+struct RootNodesInfo;
 
 class CircularArcRenderStep final : public RenderStep {
 public:

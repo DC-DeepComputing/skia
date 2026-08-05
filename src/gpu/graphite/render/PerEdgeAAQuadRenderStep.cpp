@@ -7,6 +7,8 @@
 
 #include "src/gpu/graphite/render/PerEdgeAAQuadRenderStep.h"
 
+#include "src/gpu/graphite/PaintParamsKey.h"
+
 #include "include/core/SkM44.h"
 #include "include/private/SkAssert.h"
 #include "include/private/SkDebug.h"

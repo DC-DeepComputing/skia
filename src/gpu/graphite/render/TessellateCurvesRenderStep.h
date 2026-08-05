@@ -19,6 +19,7 @@ class DrawParams;
 class DrawWriter;
 class PipelineDataGatherer;
 class StaticBufferManager;
+struct RootNodesInfo;
 
 class TessellateCurvesRenderStep final : public RenderStep {
 public:

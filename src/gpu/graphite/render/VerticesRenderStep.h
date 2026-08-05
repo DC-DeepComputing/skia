@@ -20,6 +20,7 @@ class DrawParams;
 class DrawWriter;
 class PipelineDataGatherer;
 enum class PrimitiveType : uint8_t;
+struct RootNodesInfo;
 
 class VerticesRenderStep final : public RenderStep {
 public:

@@ -6,6 +6,8 @@
  */
 #include "src/gpu/graphite/render/CoverageMaskRenderStep.h"
 
+#include "src/gpu/graphite/PaintParamsKey.h"
+
 #include "include/core/SkM44.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkRefCnt.h"

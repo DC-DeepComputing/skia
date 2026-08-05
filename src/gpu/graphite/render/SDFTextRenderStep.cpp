@@ -7,6 +7,8 @@
 
 #include "src/gpu/graphite/render/SDFTextRenderStep.h"
 
+#include "src/gpu/graphite/PaintParamsKey.h"
+
 #include "include/core/SkM44.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSamplingOptions.h"

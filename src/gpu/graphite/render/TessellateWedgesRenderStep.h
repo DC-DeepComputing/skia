@@ -22,6 +22,7 @@ class DrawWriter;
 class PipelineDataGatherer;
 class StaticBufferManager;
 struct DepthStencilSettings;
+struct RootNodesInfo;
 
 class TessellateWedgesRenderStep final : public RenderStep {
 public:

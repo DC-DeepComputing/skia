@@ -7,6 +7,8 @@
 
 #include "src/gpu/graphite/render/CoverBoundsRenderStep.h"
 
+#include "src/gpu/graphite/PaintParamsKey.h"
+
 #include "include/core/SkM44.h"
 #include "include/private/SkDebug.h"
 #include "include/private/SkEnumBitMask.h"

@@ -18,6 +18,7 @@ namespace skgpu::graphite {
 class DrawParams;
 class DrawWriter;
 class PipelineDataGatherer;
+struct RootNodesInfo;
 
 class MiddleOutFanRenderStep final : public RenderStep {
 public:

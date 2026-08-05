@@ -19,6 +19,7 @@ class DrawParams;
 class DrawWriter;
 class PipelineDataGatherer;
 struct DepthStencilSettings;
+struct RootNodesInfo;
 
 class CoverBoundsRenderStep final : public RenderStep {
 public:

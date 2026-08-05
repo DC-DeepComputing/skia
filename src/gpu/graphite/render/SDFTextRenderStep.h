@@ -19,6 +19,7 @@ class DrawParams;
 class DrawWriter;
 class PipelineDataGatherer;
 struct ResourceBindingRequirements;
+struct RootNodesInfo;
 
 class SDFTextRenderStep final : public RenderStep {
 public:

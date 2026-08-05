@@ -327,6 +327,9 @@ void PaintOption::handleClipping(const KeyContext& keyContext) const {
         // Since there's no analytic clip, the clipping root node can be fClipShader directly.
         SkASSERT(fClipShader.first);
         fClipShader.first->priv().addToKey(keyContext, fClipShader.second);
+    } else {
+        // We check for clipping before calling `handleClipping()`.
+        SkUNREACHABLE;
     }
 }
 
