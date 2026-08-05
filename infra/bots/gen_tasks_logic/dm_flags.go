@@ -510,6 +510,9 @@ func (b *TaskBuilder) dmFlags(internalHardwareLabel string) {
 				}
 
 				if b.ExtraConfig("GL") || b.ExtraConfig("GLES") {
+					// skbug.com/542719737 (Dawn GLES fails w/ threaded PipelineManager)
+					args = append(args, "--gpuThreads 0")
+
 					// These GMs currently have rendering issues in Dawn compat.
 					skip(ALL, "gm", ALL, "glyph_pos_n_s")
 					skip(ALL, "gm", ALL, "persptext")
