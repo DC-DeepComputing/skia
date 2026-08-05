@@ -12,6 +12,7 @@
 
 #include <memory>
 
+class SkExecutor;
 class SkOpenTypeSVGDecoder;
 class SkStrikeCache;
 class SkSynchronizedResourceCache;
@@ -56,6 +57,7 @@ private:
     std::unique_ptr<SkSynchronizedResourceCache> fResourceCache;
     std::unique_ptr<SkStrikeCache> fFontCache;
     std::unique_ptr<SkTypefaceCache> fTypefaceCache;
+    SkExecutor* fExecutor = nullptr;
 };
 
 #endif  // SkSharedContext_DEFINED
