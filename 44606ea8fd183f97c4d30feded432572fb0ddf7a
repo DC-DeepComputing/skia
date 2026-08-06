@@ -142,6 +142,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "78ad23f7_47add308",
+        "filename": "src/gpu/graphite/PipelineCreationTask.h",
+        "patchSetId": 30
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-08-06T16:51:39Z",
+      "side": 1,
+      "message": "We\u0027ve resolved to switch to the C++20 (waiting on atomics) style.",
+      "parentUuid": "ffa2c2c6_be883947",
+      "range": {
+        "startLine": 63,
+        "startChar": 4,
+        "endLine": 65,
+        "endChar": 67
+      },
+      "revId": "44606ea8fd183f97c4d30feded432572fb0ddf7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9e02a7b1_77e6e7bc",
@@ -367,6 +391,30 @@
       "side": 1,
       "message": "I\u0027ve added the comment.\n\nRe synchronization primitives, we probably need to have a larger discussion about how to integrate this into Chrome.",
       "parentUuid": "a8c83c5f_ad36a4d9",
+      "range": {
+        "startLine": 98,
+        "startChar": 0,
+        "endLine": 102,
+        "endChar": 72
+      },
+      "revId": "44606ea8fd183f97c4d30feded432572fb0ddf7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a8ac7fe_5dfff732",
+        "filename": "src/gpu/graphite/PipelineManager.h",
+        "patchSetId": 30
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-08-06T16:51:39Z",
+      "side": 1,
+      "message": "We discussed (offline) how to integrate into Chrome.",
+      "parentUuid": "c39e605a_62873db7",
       "range": {
         "startLine": 98,
         "startChar": 0,
