@@ -1,0 +1,1 @@
+Added `SkGraphics::GetUseThreadLocalStrikeCaches()`, `SkGraphics::SetUseThreadLocalStrikeCaches(bool)`, and `SkGraphics::GetTotalStrikeCacheBytesUsed()` to control and monitor thread-local strike caches.

@@ -97,6 +97,12 @@ public:
     static void PurgePinnedFontCache();
 
     /**
+     *  Return the running total of memory (in bytes) used by strikes across all
+     *  SkStrikeCache instances (both global and thread-local).
+     */
+    static size_t GetTotalStrikeCacheBytesUsed();
+
+    /**
      *  This function returns the memory used for temporary images and other resources.
      */
     static size_t GetResourceCacheTotalBytesUsed();

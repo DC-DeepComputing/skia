@@ -466,6 +466,7 @@ void SkStrike::updateMemoryUsage(size_t increase) {
         fMemoryUsed += increase;
         if (!fRemoved) {
             fStrikeCache->fTotalMemoryUsed += increase;
+            SkStrikeCache::RecordMemoryIncrease(increase);
         }
     }
 }
