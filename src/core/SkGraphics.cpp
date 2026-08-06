@@ -78,6 +78,10 @@ void SkGraphics::PurgePinnedFontCache() {
     SkStrikeCache::GlobalStrikeCache()->purgePinned();
 }
 
+size_t SkGraphics::GetTotalStrikeCacheBytesUsed() {
+    return SkStrikeCache::GetTotalStrikeCacheBytesUsed();
+}
+
 size_t SkGraphics::GetResourceCacheTotalBytesUsed() { return SkResourceCache::GetTotalBytesUsed(); }
 
 size_t SkGraphics::GetResourceCacheTotalByteLimit() { return SkResourceCache::GetTotalByteLimit(); }
