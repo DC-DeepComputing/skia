@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "56e87321_ceef3dca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-08-06T13:36:45Z",
+      "side": 1,
+      "message": "updated the cl so that it would introduce a nearly empty skcontextoptions, and then have contextoptions and grcontextoptions inherit it.",
+      "revId": "964ba3a33efe4d124ea64d567c7c6c8012f3260d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
