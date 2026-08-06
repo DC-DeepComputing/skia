@@ -22,6 +22,30 @@
       },
       "revId": "7da244e6df74355e9c05c05ffa46657e12fdb8dc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8db52e7d_17b94228",
+        "filename": "src/gpu/graphite/KeyHelpers.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 360,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-08-06T18:58:39Z",
+      "side": 1,
+      "message": "Yes it is a user-controllable setting, it is part of one of the `SkMeshSpecification::Make` function overloads.",
+      "parentUuid": "e69b45ae_9d875637",
+      "range": {
+        "startLine": 360,
+        "startChar": 23,
+        "endLine": 360,
+        "endChar": 75
+      },
+      "revId": "7da244e6df74355e9c05c05ffa46657e12fdb8dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
