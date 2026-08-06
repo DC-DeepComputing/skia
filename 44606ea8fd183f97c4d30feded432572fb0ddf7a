@@ -521,6 +521,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "50484af6_e21ddf76",
+        "filename": "tests/graphite/precompile/PipelineManagerThreaded.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-08-06T17:00:22Z",
+      "side": 1,
+      "message": "I went ahead and switched this to a safer lifetime model",
+      "parentUuid": "b0c2980c_7365e71a",
+      "range": {
+        "startLine": 145,
+        "startChar": 0,
+        "endLine": 145,
+        "endChar": 84
+      },
+      "revId": "44606ea8fd183f97c4d30feded432572fb0ddf7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "85702676_d5ef8d17",
         "filename": "tools/flags/CommonFlagsGraphite.cpp",
         "patchSetId": 30
@@ -532,6 +556,30 @@
       "writtenOn": "2026-08-05T21:54:51Z",
       "side": 1,
       "message": "Since the default to gpuThreads is 0, we\u0027ll need to add explicit coverage to background pipeline compilation. My goal would be for that to be the default behavior, so we could adjust our test DM configs to add gpuThreads 1 for the graphite configs.\n\nAlternatively, if we want to enforce background compiles, the PipelineManager could create a new thread outside of the executor if an executor is not provided. Something to ponder as we advance.",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 5
+      },
+      "revId": "44606ea8fd183f97c4d30feded432572fb0ddf7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9b7fbf2_22460be1",
+        "filename": "tools/flags/CommonFlagsGraphite.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-08-06T17:00:22Z",
+      "side": 1,
+      "message": "Unless I\u0027ve missed something, this gpuThreads defaults to 2.",
+      "parentUuid": "85702676_d5ef8d17",
       "range": {
         "startLine": 33,
         "startChar": 0,
