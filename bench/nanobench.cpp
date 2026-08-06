@@ -57,7 +57,6 @@
 #include "tools/fonts/FontToolUtils.h"
 #include "tools/ios_utils.h"
 #include "tools/trace/EventTracingPriv.h"
-#include "tools/trace/SkDebugfTracer.h"
 
 #include <ctype.h>
 
@@ -1556,7 +1555,7 @@ int main(int argc, char** argv) {
             }
 
             if (FLAGS_splitPerfettoTracesByBenchmark) {
-                TRACE_EVENT_API_NEW_TRACE_SECTION(TRACE_STR_COPY(bench->getUniqueName()));
+                traceEventNewTracingSection(bench->getUniqueName());
             }
             TRACE_EVENT2("skia", "Benchmark", "name", TRACE_STR_COPY(bench->getUniqueName()),
                                               "config", TRACE_STR_COPY(config));
