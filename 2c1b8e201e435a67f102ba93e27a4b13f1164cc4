@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fafb9f0d_87e9ff41",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-06T19:28:18Z",
+      "side": 1,
+      "message": "Can we go all the way to PipelineManager here? Then we don\u0027t have to parrot the APIs on to SharedContext anymore",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 77
+      },
+      "revId": "2c1b8e201e435a67f102ba93e27a4b13f1164cc4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a37f505_e4bb416a",
+        "filename": "src/gpu/graphite/ResourceProvider.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-06T19:28:18Z",
+      "side": 1,
+      "message": "My preference would be to have two versions of sharedContext() that return const and non-const, and we pull the existing const version out of the define guard.",
+      "range": {
+        "startLine": 113,
+        "startChar": 0,
+        "endLine": 113,
+        "endChar": 69
+      },
+      "revId": "2c1b8e201e435a67f102ba93e27a4b13f1164cc4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
