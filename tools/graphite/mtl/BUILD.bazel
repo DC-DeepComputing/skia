@@ -1,0 +1,29 @@
+load("//bazel:skia_rules.bzl", "skia_objc_library")
+
+package(
+    default_applicable_licenses = ["//:license"],
+)
+
+licenses(["notice"])
+
+skia_objc_library(
+    name = "graphite_metal_test_context",
+    testonly = True,
+    srcs = [
+        "GraphiteMtlTestContext.h",
+        "GraphiteMtlTestContext.mm",
+    ],
+    defines = ["SK_METAL"],
+    sdk_frameworks = [
+        "Metal",
+        "MetalKit",
+        "Foundation",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//tools/graphite:graphite_test_context",
+        "//:core",
+        "//src/gpu/graphite:graphite_TEST_UTIL",
+        "//src/gpu/graphite/mtl:graphite_native_metal_TEST_UTIL",
+    ],
+)
