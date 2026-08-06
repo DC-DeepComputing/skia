@@ -21,9 +21,9 @@ skia_objc_library(
     ],
     visibility = ["//visibility:public"],
     deps = [
-        "//tools/graphite:graphite_test_context",
         "//:core",
         "//src/gpu/graphite:graphite_TEST_UTIL",
         "//src/gpu/graphite/mtl:graphite_native_metal_TEST_UTIL",
+        "//tools/graphite:graphite_test_context",
     ],
 )
