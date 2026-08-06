@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f93f0cb3_4718c0a9",
+        "filename": "infra/bots/gen_tasks_logic/dm_flags.go",
+        "patchSetId": 30
+      },
+      "lineNbr": 517,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-08-06T13:49:34Z",
+      "side": 1,
+      "message": "Yep - I was going to investigate a little bit and then hand it over to him.\nHe already has https://b.corp.google.com/issues/486965497, which is, basically, the same bug.",
+      "parentUuid": "9b7506f4_1f1f6642",
+      "range": {
+        "startLine": 517,
+        "startChar": 9,
+        "endLine": 517,
+        "endChar": 28
+      },
+      "revId": "44606ea8fd183f97c4d30feded432572fb0ddf7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "525a1c78_4cb6175b",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-08-05T21:54:51Z",
       "side": 1,
       "message": "atomic?",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 27
+      },
+      "revId": "44606ea8fd183f97c4d30feded432572fb0ddf7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d2be8d6_bce1f39f",
+        "filename": "src/gpu/graphite/PipelineCreationTask.h",
+        "patchSetId": 30
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-08-06T13:49:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "525a1c78_4cb6175b",
       "range": {
         "startLine": 43,
         "startChar": 0,
@@ -72,6 +120,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ffa2c2c6_be883947",
+        "filename": "src/gpu/graphite/PipelineCreationTask.h",
+        "patchSetId": 30
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-08-06T13:49:34Z",
+      "side": 1,
+      "message": "Let\u0027s discuss this when discussing how to embed this into Chrome.",
+      "parentUuid": "386897f6_ec987eda",
+      "range": {
+        "startLine": 63,
+        "startChar": 4,
+        "endLine": 65,
+        "endChar": 67
+      },
+      "revId": "44606ea8fd183f97c4d30feded432572fb0ddf7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9e02a7b1_77e6e7bc",
         "filename": "src/gpu/graphite/PipelineManager.cpp",
         "patchSetId": 30
@@ -83,6 +155,30 @@
       "writtenOn": "2026-08-05T21:54:51Z",
       "side": 1,
       "message": "In the steady state, we should always be finding the already compiled GraphicsPipelines so does it make sense that this should be the first check? Then if we don\u0027t have a pipeline, we look for an existing task, and then if we don\u0027t have an existing task, we make a new task?\n\nAnd presumably if these are racy steps, we\u0027ll end up having a handle that points to a completed task when it could have pointed to a pipeline, or it\u0027ll point to a new task that when it \"compiles\" just gets a cache hit from the SharedContext, right?",
+      "range": {
+        "startLine": 98,
+        "startChar": 0,
+        "endLine": 103,
+        "endChar": 5
+      },
+      "revId": "44606ea8fd183f97c4d30feded432572fb0ddf7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "704c5231_ae539f46",
+        "filename": "src/gpu/graphite/PipelineManager.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-08-06T13:49:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9e02a7b1_77e6e7bc",
       "range": {
         "startLine": 98,
         "startChar": 0,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "94ba35cf_4de6377d",
+        "filename": "src/gpu/graphite/PipelineManager.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-08-06T13:49:34Z",
+      "side": 1,
+      "message": "Right",
+      "parentUuid": "5057c22e_86498cd0",
+      "range": {
+        "startLine": 143,
+        "startChar": 8,
+        "endLine": 147,
+        "endChar": 42
+      },
+      "revId": "44606ea8fd183f97c4d30feded432572fb0ddf7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a4d0fbd8_890a8f99",
@@ -139,6 +259,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5f7a6ec_943248e2",
+        "filename": "src/gpu/graphite/PipelineManager.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-08-06T13:49:34Z",
+      "side": 1,
+      "message": "The SkTaskGroup (and nested SkThreadPool) both have their own internal thread safety controls. The spin lock here is to guard against the PipelineManager\u0027s own modification of the pointer. Mainly the modification of it in PipelineManager::shutDown.",
+      "parentUuid": "a4d0fbd8_890a8f99",
+      "range": {
+        "startLine": 152,
+        "startChar": 0,
+        "endLine": 152,
+        "endChar": 39
+      },
+      "revId": "44606ea8fd183f97c4d30feded432572fb0ddf7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "44dbb9c5_0d50010b",
@@ -152,6 +296,30 @@
       "writtenOn": "2026-08-05T21:54:51Z",
       "side": 1,
       "message": "It\u0027s probably a good idea to put a comment here why the mutex is still needed because of its use with std::condition_variable. My understanding of that is that without a mutex, the single atomic fCompleted still allows the following scenario to have:\n\nMain thread: checks task-\u003efCompleted and see\u0027s its false, so no early return.\nPrecompile thread: marks task-\u003efCompleted true\nPrecompile thread: signals condition variable\nMain thread: waits on condition variable but the signal already occurred so we\u0027re stuck waiting.\n\nIt\u0027s okay (and hence why lock.unlock() before signal() is fine above) for the condition variable to be signaled outside of the mutex, but we require the mutex to group the check and the wait into one exclusive block of code vs. the code that modifies the check.",
+      "range": {
+        "startLine": 277,
+        "startChar": 0,
+        "endLine": 285,
+        "endChar": 1
+      },
+      "revId": "44606ea8fd183f97c4d30feded432572fb0ddf7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9bc78a38_03ffaaa8",
+        "filename": "src/gpu/graphite/PipelineManager.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-08-06T13:49:34Z",
+      "side": 1,
+      "message": "I\u0027ve added the comment and, yeah, you\u0027re correct. Here is the relevant stackoverflow link:\n \nhttps://stackoverflow.com/questions/38147825/shared-atomic-variable-is-not-properly-published-if-it-is-not-modified-under-mut",
+      "parentUuid": "44dbb9c5_0d50010b",
       "range": {
         "startLine": 277,
         "startChar": 0,
@@ -187,6 +355,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c39e605a_62873db7",
+        "filename": "src/gpu/graphite/PipelineManager.h",
+        "patchSetId": 30
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-08-06T13:49:34Z",
+      "side": 1,
+      "message": "I\u0027ve added the comment.\n\nRe synchronization primitives, we probably need to have a larger discussion about how to integrate this into Chrome.",
+      "parentUuid": "a8c83c5f_ad36a4d9",
+      "range": {
+        "startLine": 98,
+        "startChar": 0,
+        "endLine": 102,
+        "endChar": 72
+      },
+      "revId": "44606ea8fd183f97c4d30feded432572fb0ddf7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9ec05f59_98c30c98",
         "filename": "tests/graphite/precompile/PipelineManagerThreaded.cpp",
         "patchSetId": 30
@@ -198,6 +390,30 @@
       "writtenOn": "2026-08-05T21:54:51Z",
       "side": 1,
       "message": "This is not flaky, right? The ordering of the pipeline compile triggers is serial on the main thread, the only difference is where the pipeline compilation is happening.",
+      "range": {
+        "startLine": 104,
+        "startChar": 0,
+        "endLine": 105,
+        "endChar": 34
+      },
+      "revId": "44606ea8fd183f97c4d30feded432572fb0ddf7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4692dd02_5decc9da",
+        "filename": "tests/graphite/precompile/PipelineManagerThreaded.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-08-06T13:49:34Z",
+      "side": 1,
+      "message": "Right. It should be that the one started first always gets put in the active task list first (and kicked off) and the second call always finds it there. We aren\u0027t firing up any threads to create a race in the handle finding or kicking off.",
+      "parentUuid": "9ec05f59_98c30c98",
       "range": {
         "startLine": 104,
         "startChar": 0,
@@ -221,6 +437,30 @@
       "writtenOn": "2026-08-05T21:54:51Z",
       "side": 1,
       "message": "Add a comment that the `create_executor` function releases ownership so this is just ensuring we don\u0027t leak the executor.",
+      "range": {
+        "startLine": 145,
+        "startChar": 0,
+        "endLine": 145,
+        "endChar": 84
+      },
+      "revId": "44606ea8fd183f97c4d30feded432572fb0ddf7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0c2980c_7365e71a",
+        "filename": "tests/graphite/precompile/PipelineManagerThreaded.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-08-06T13:49:34Z",
+      "side": 1,
+      "message": "Done - but I think I will make a later pass to make this behave more like PipelineManagerEarlyExitTest - which has clearer lifetimes.",
+      "parentUuid": "101eac77_234d5fff",
       "range": {
         "startLine": 145,
         "startChar": 0,
