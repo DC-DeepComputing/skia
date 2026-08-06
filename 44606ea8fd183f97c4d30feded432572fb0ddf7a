@@ -166,6 +166,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e48dd7b_280109a1",
+        "filename": "src/gpu/graphite/PipelineCreationTask.h",
+        "patchSetId": 30
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-08-06T17:57:55Z",
+      "side": 1,
+      "message": "I\u0027ve done this, separately, over in  https://skia-review.git.corp.google.com/c/skia/+/1317676 since I would like to see if there are any performance implications.",
+      "parentUuid": "78ad23f7_47add308",
+      "range": {
+        "startLine": 63,
+        "startChar": 4,
+        "endLine": 65,
+        "endChar": 67
+      },
+      "revId": "44606ea8fd183f97c4d30feded432572fb0ddf7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9e02a7b1_77e6e7bc",
