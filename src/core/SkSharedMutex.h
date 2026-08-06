@@ -6,6 +6,8 @@
  */
 
 #ifndef SkSharedLock_DEFINED
+#include <array>
+
 #define SkSharedLock_DEFINED
 
 #include "include/private/SkDebug.h"
@@ -59,7 +61,7 @@ private:
     std::unique_ptr<ThreadIDSet> fWaitingShared;
     int fSharedQueueSelect{0};
     mutable SkMutex fMu;
-    SkSemaphore fSharedQueue[2];
+    std::array<SkSemaphore, 2> fSharedQueue;
     SkSemaphore fExclusiveQueue;
 #else
     std::atomic<int32_t> fQueueCounts;

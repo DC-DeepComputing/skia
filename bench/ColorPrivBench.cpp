@@ -4,6 +4,7 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include <array>
 #include "bench/Benchmark.h"
 #include "include/core/SkString.h"
 #include "src/core/SkColorData.h"
@@ -74,9 +75,9 @@ public:
 private:
     SkString fName;
     static const int kInputs = 10;  // Arbitrary.
-    volatile unsigned fSrcs[kInputs];
-    volatile unsigned fDsts[kInputs];
-    unsigned fScales[257];  // We need space for [0, 256].
+    std::array<volatile unsigned int, kInputs> fSrcs;
+    std::array<volatile unsigned int, kInputs> fDsts;
+    std::array<unsigned int, 257> fScales;  // We need space for [0, 256].
 };
 
 #define COMMA ,

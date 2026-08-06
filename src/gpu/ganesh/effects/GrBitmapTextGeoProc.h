@@ -6,6 +6,8 @@
  */
 
 #ifndef GrBitmapTextGeoProc_DEFINED
+#include <array>
+
 #define GrBitmapTextGeoProc_DEFINED
 
 #include "include/core/SkMatrix.h"
@@ -83,7 +85,7 @@ private:
     SkMatrix                 fLocalMatrix;
     bool                     fUsesW;
     SkISize                  fAtlasDimensions;  // dims for all textures used with fTextureSamplers
-    TextureSampler           fTextureSamplers[kMaxTextures];
+    std::array<TextureSampler, kMaxTextures> fTextureSamplers;
     Attribute                fInPosition;
     Attribute                fInColor;
     Attribute                fInTextureCoords;

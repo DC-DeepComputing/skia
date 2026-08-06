@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "bench/Benchmark.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -62,9 +63,9 @@ public:
     }
 
 protected:
-    SkRect         fRects[kRectCount];
+    std::array<SkRect, kRectCount> fRects;
     sk_sp<SkImage> fImages[kImageCount > 0 ? kImageCount : 1];
-    SkColor4f      fColors[kRectCount];
+    std::array<SkColor4f, kRectCount> fColors;
     SkString       fName;
 
     void computeName()  {

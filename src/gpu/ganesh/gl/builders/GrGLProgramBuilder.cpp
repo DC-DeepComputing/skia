@@ -4,6 +4,7 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include <array>
 #include "src/gpu/ganesh/gl/builders/GrGLProgramBuilder.h"
 
 #include "include/core/SkFourByteTag.h"
@@ -257,7 +258,7 @@ sk_sp<GrGLProgram> GrGLProgramBuilder::finalize(const GrGLPrecompiledProgram* pr
     bool cached = fCached.get() != nullptr;
     bool usedProgramBinaries = false;
     SkSL::NativeShader glsl[kGrShaderTypeCount];
-    const std::string* sksl[kGrShaderTypeCount] = {
+    std::array<const std::string *, kGrShaderTypeCount> sksl = {
         &fVS.fCompilerString,
         &fFS.fCompilerString,
     };
@@ -402,7 +403,7 @@ sk_sp<GrGLProgram> GrGLProgramBuilder::finalize(const GrGLPrecompiledProgram* pr
         {
             TRACE_EVENT0_ALWAYS("skia.shaders", "driver_link_program");
             GL_CALL(LinkProgram(programID));
-            if (!GrGLCheckLinkStatus(fGpu, programID, cached, errorHandler, sksl, glsl)) {
+            if (!GrGLCheckLinkStatus(fGpu, programID, cached, errorHandler, sksl.data(), glsl)) {
                 cleanup_program(fGpu, programID, shadersToDelete);
                 return nullptr;
             }

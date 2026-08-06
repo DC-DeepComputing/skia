@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/codec/SkCodec.h"
 #include "include/codec/SkGifDecoder.h"
@@ -140,13 +141,13 @@ protected:
     }
 
     bool onChar(SkUnichar uni) override {
-        static constexpr SkColor kColors[] = {
+        static constexpr auto kColors = std::to_array<SkColor>({
             SK_ColorBLACK,
             SK_ColorRED,
             SK_ColorGREEN,
             SK_ColorYELLOW,
             SK_ColorCYAN,
-        };
+        });
 
         if (uni == 'c') {
             fColorIndex = (fColorIndex + 1) % std::size(kColors);

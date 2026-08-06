@@ -6,6 +6,8 @@
  */
 
 #ifndef SkRTree_DEFINED
+#include <array>
+
 #define SkRTree_DEFINED
 
 #include "include/core/SkBBHFactory.h"
@@ -64,7 +66,7 @@ private:
     struct Node {
         uint16_t fNumChildren;
         uint16_t fLevel;
-        Branch fChildren[kMaxChildren];
+        std::array<Branch, kMaxChildren> fChildren;
     };
 
     void search(Node* root, const SkRect& query, std::vector<int>* results) const;

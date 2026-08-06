@@ -1,6 +1,7 @@
 // Copyright 2019 Google LLC
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 
+#include <array>
 #include "tools/fiddle/examples.h"
 
 #if defined(SK_FONTMGR_FONTCONFIG_AVAILABLE)
@@ -34,8 +35,8 @@ sk_sp<SkFontMgr> fontMgr;
 
 int main() {
     constexpr int kImgCount = 7;
-    sk_sp<SkImage> images[kImgCount];
-    SkBitmap bitmaps[kImgCount];
+    std::array<sk_sp<SkImage>, kImgCount> images;
+    std::array<SkBitmap, kImgCount> bitmaps;
     for (int i = 1; i < kImgCount; ++i) {
         SkString path = SkStringPrintf("resources/images/example_%d.png", i);
         images[i] = SkImages::DeferredFromEncodedData(SkData::MakeFromFileName(path.c_str()));

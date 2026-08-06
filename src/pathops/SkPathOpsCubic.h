@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 
+#include <array>
+
 #ifndef SkPathOpsCubic_DEFINED
 #define SkPathOpsCubic_DEFINED
 
@@ -190,7 +192,7 @@ struct SkDCubicPair {
         return (const SkDCubic&) pts[3];
 #endif
     }
-    SkDPoint pts[7];
+    std::array<SkDPoint, 7> pts;
 };
 
 class SkTCubic : public SkTCurve {
