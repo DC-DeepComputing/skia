@@ -8,6 +8,7 @@
 #ifndef skgpu_graphite_ContextOptions_DEFINED
 #define skgpu_graphite_ContextOptions_DEFINED
 
+#include "include/core/SkContextOptions.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkSpan.h"
@@ -28,7 +29,7 @@ namespace skgpu::graphite {
 struct ContextOptionsPriv;
 class PersistentPipelineStorage;
 
-struct SK_API ContextOptions {
+struct SK_API ContextOptions : public SkContextOptions {
     ContextOptions() {}
 
     /**
