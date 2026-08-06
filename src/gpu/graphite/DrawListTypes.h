@@ -23,6 +23,7 @@
 
 #include <cstdint>
 #include <functional>
+#include <limits>
 #include <optional>
 
 namespace skgpu::graphite {
@@ -124,6 +125,206 @@ struct LayerKey {
     }
 };
 
+// template <typename T, int BlockSize>
+// class ArenaBlockList {
+// public:
+//     ArenaBlockList() : fHead(), fTail(&fHead) {}
+
+//     T& push_back(SkArenaAlloc* arena, const T& value) {
+//         if (fTail->fCount == BlockSize) {
+//             Block* newBlock = arena->make<Block>();
+//             fTail->fNext = newBlock;
+//             newBlock->fPrev = fTail;
+//             fTail = newBlock;
+//         }
+//         T* nextItem = new (&fTail->fItems[sizeof(T)*fTail->fCount++]) T(value);
+//         return *nextItem;
+//     }
+
+// private:
+//     struct Block {
+//         Block() = default;
+
+//         const T& operator[](int index) const { return *reinterpret_cast<const T*>(&fItems[index * sizeof(T)]); }
+//         T& operator[](int index) { return *reinterpret_cast<T*>(&fItems[index * sizeof(T)]); }
+
+//         alignas(T) std::array<uint8_t, sizeof(T)*BlockSize> fItems;
+//         Block* fPrev = nullptr;
+//         Block* fNext = nullptr;
+//         int fCount = 0;
+//     };
+//     static_assert(std::is_trivially_destructible<Block>::value);
+
+//     Block fHead;
+//     Block* fTail;
+
+// public:
+//     template <bool Forward>
+//     struct Iter {
+//         struct Item {
+//             Item() : fBlock(nullptr), fIndex(
+//             explicit operator bool() const { return SkToBool(fBlock); }
+
+//             bool operator!=(const Item& other) const {
+//                 return other.fBlock != fBlock || (fBlock && other.fIndex != fIndex);
+//             }
+
+//             const T& operator*() const {
+//                 SkASSERT(fBlock && fIndex < fBlock->fCount);
+//                 return (*fBlock)[fIndex];
+//             }
+
+//             const T* operator->() const {
+//                 SkASSERT(fBlock && fIndex < fBlock->fCount);
+//                 return &(*fBlock)[fIndex];
+//             }
+
+//             Item& operator++() {
+//                 if constexpr (Forward) {
+//                     fIndex++;
+//                     if (fIndex >= fBlock->fCount) {
+//                         fBlock = fBlock->fNext;
+//                         fIndex = 0;
+//                     }
+//                 } else {
+//                     fIndex--;
+//                     if (fIndex < 0) {
+//                         fBlock = fBlock->fPrev;
+//                         fIndex = fBlock ? fBlock->fCount - 1 : 0;
+//                     }
+//                 }
+
+//                 return *this;
+//             }
+
+//         private:
+//             friend struct Iter;
+
+//             Item(const Block* block, int index) : fBlock(block), fIndex(index) {}
+
+//             const Block* fBlock;
+//             int fIndex;
+//         };
+
+//         Item begin() const { return Item(fStart, Forward ? 0 : fStart->fCount - 1); }
+//         Item end() const { return Item(nullptr, 0); }
+
+//     private:
+//         friend class ArenaBlockList;
+
+//         Iter(const Block* start) : fStart(start) {}
+//         const Block* fStart;
+//     };
+
+//     Iter<true> items() const { return Iter<true>(&fHead); }
+//     Iter<false> ritems() const { return Iter<false>(fTail); }
+// };
+
+
+#define BOUNDS_FROM_DRAWS 1
+#define BINDING_LIST_BLOCK 2
+#define LAYER_BLOCK 3
+#define LAYER_BLOCK2 4
+
+#define BOUNDS_MODE LAYER_BLOCK
+
+
+#define INTERLEAVED 1
+
+struct BoundsBlock {
+
+    BoundsBlock() {
+        fBounds = Rect::InfiniteInverted();
+
+#if INTERLEAVED
+        fRects.fill(Rect::InfiniteInverted());
+#else
+        constexpr static float infinity = std::numeric_limits<float>::infinity();
+        fLefts.fill(infinity);
+        fTops.fill(infinity);
+        fNegRights.fill(infinity); // effectively -infinity
+        fNegBots.fill(infinity); // ""
+#endif
+    }
+
+    bool intersects(Rect::ComplementRect test) const {
+        if (!fBounds.intersects(test)) {
+            return false;
+        }
+
+        const int count = std::min(kN, fJoinIndex);
+
+#if INTERLEAVED
+        for (int i = 0; i < count; i++) {
+            if (fRects[i].intersects(test)) {
+                return true;
+            }
+        }
+#else
+        auto comp = test.fVals;
+        for (int i = 0; i < count; i += 4) {
+            auto l = skvx::float4::Load(fLefts.data() + i);
+            auto t = skvx::float4::Load(fTops.data() + i);
+            auto nr = skvx::float4::Load(fNegRights.data() + i);
+            auto nb = skvx::float4::Load(fNegBots.data() + i);
+
+            if (any((l < comp[0]) &
+                    (t < comp[1]) &
+                    (nr < comp[2]) &
+                    (nb < comp[3]))) {
+                return true;
+            }
+        }
+#endif
+        return false;
+
+    }
+
+    void add(Rect rect) {
+        // int join = (fJoinIndex++) % kN;
+
+        fBounds.join(rect);
+
+        int join = fJoinIndex++;
+        if (join >= kN) {
+            float area = std::numeric_limits<float>::infinity();
+            for (int i = 0; i < kN; ++i) {
+                Rect opt = fRects[i].makeJoin(rect);
+                float optArea = opt.area();
+                if (optArea < area) {
+                    join = i;
+                }
+            }
+        }
+
+#if INTERLEAVED
+        fRects[join].join(rect);
+#else
+        auto vals = rect.vals();
+        fLefts[join] = std::min(fLefts[join], vals[0]);
+        fTops[join] = std::min(fTops[join], vals[1]);
+        fNegRights[join] = std::min(fNegRights[join], vals[2]);
+        fNegBots[join] = std::min(fNegBots[join], vals[3]);
+#endif
+    }
+
+private:
+    static constexpr int kN = 16;
+
+    Rect fBounds;
+
+#if INTERLEAVED
+    alignas(Rect) std::array<Rect, kN> fRects;
+#else
+    alignas(Rect) std::array<float, kN> fLefts;
+    alignas(Rect) std::array<float, kN> fTops;
+    alignas(Rect) std::array<float, kN> fNegRights;
+    alignas(Rect) std::array<float, kN> fNegBots;
+#endif
+
+    int fJoinIndex = 0;
+};
+
 /**
  * A Draw represents the combination of a DrawParams and a specific RenderStep from the
  * chosen Renderer. DrawListLayer ensures Draws for a multi-step Renderer are drawn in the
@@ -136,8 +337,10 @@ struct Draw {
     const DrawParams* fDrawParams;
     const UniformDataCache::Index fUniformIndex;
 
-    SK_DECLARE_INTERNAL_LLIST_INTERFACE(Draw);
+    SK_DECLARE_SINGLE_LLIST_INTERFACE(Draw);
 };
+
+using DrawStorage = std::array<uint8_t, sizeof(Draw)>;
 
 /**
  * BindingList represents a collection of Draws that share the same RenderStep and other binding
@@ -152,17 +355,31 @@ struct Draw {
 struct BindingList {
     BindingList(const RenderStep* step, LayerKey key) : fStep(step), fKey(key) {}
 
-    Rect fBounds = Rect::InfiniteInverted();
+#if BOUNDS_MODE != BINDING_LIST_BLOCK
+    // Rect fBounds = Rect::InfiniteInverted();
+#endif
 
-    SkTInternalLList<Draw> fDraws;
     const RenderStep* fStep;
     const LayerKey fKey;
+    SkTSingleLList<Draw> fDraws;
+
+    // ArenaBlockList<Draw, 16> fDraws;
+#if BOUNDS_MODE == BINDING_LIST_BLOCK
+    BoundsBlock fBounds;
+#endif
+
+
 
     // If this is true, it means that a draw was added to it without having been tested against
     // the earlier BindingLists so they are not eligible for being moved forward to a new layer.
-    bool fBlockForwardMerges = false;
+    // bool fBlockForwardMerges = false;
 
-    int fDrawCount = 0; // SkTInternalLList doesn't maintain a count for us :/
+    // int fDrawCount = 0; // SkTInternalLList doesn't maintain a count for us :/
+
+    // int fInlineDrawCount = 0;
+
+    // static constexpr int kInlineDrawSize = 4;
+    // std::array<DrawStorage, kInlineDrawSize> fInlineDraws;
 
     SK_DECLARE_INTERNAL_LLIST_INTERFACE(BindingList);
 
@@ -199,30 +416,52 @@ struct BindingList {
     }
 
     SK_ALWAYS_INLINE bool intersects(const Rect::ComplementRect drawBounds) const {
-        if (!fBounds.intersects(drawBounds)) {
-            return false;
-        }
+#if BOUNDS_MODE == BINDING_LIST_BLOCK
+        return fBounds.intersects(drawBounds);
+#else
+        // if (!fBounds.intersects(drawBounds)) {
+        //     return false;
+        // }
 
         // When stencil is involved (or depth-only draws), a larger limit is useful because it
         // creates a shallower layer list. This in turn makes it more likely to find BindingList
         // matches. In particular, since stencils have to be disjoint from everything and depth-only
         // clip draws prevent further layer searches, checking more bounding boxes leads to a net
         // improvement in complex scenes.
-        const int limit = fKey.isSimpleShading() ? 16 : 64;
-        if (fDrawCount > limit) {
-            return true;
-        }
+        const int limit = 64; //fKey.isSimpleShading() ? 512 : 512;
+        // all the way down to 32 didn't seem to impact batching at layers=64, but limit=16 finally started to
+        // if (fDrawCount > limit) {
+        //     return true;
+        // }
         for (const Draw* d = fDraws.head(); d; d = d->fNext) {
+        // for (const auto& d : fDraws.items()) {
             if (d->fDrawParams->drawBounds().intersects(drawBounds)) {
                 return true;
             }
         }
         return false;
+#endif
     }
 
-    SK_ALWAYS_INLINE void addDraw(Draw* draw, bool backToFront) {
-        fBounds.join(draw->fDrawParams->drawBounds());
-        fDrawCount++;
+    SK_ALWAYS_INLINE void addDraw(SkArenaAlloc* alloc, DrawParams* drawParams, UniformDataCache::Index uniformIndex, bool backToFront) {
+#if BOUNDS_MODE == BINDING_LIST_BLOCK
+    fBounds.add(drawParams->drawBounds());
+#else
+    //  fBounds.join(drawParams->drawBounds());
+#endif
+
+        // int inlineIdx = fDrawCount++;
+
+        Draw* draw;
+        // if (inlineIdx < kInlineDrawSize) {
+        //     void* ptr = static_cast<void*>(&fInlineDraws[inlineIdx]);
+        //     draw = new (ptr) Draw{drawParams, uniformIndex};
+        // } else
+        {
+            // layer->makeNewDraw(alloc, drawParams, uniformIndex);
+            draw = alloc->make<Draw>(drawParams, uniformIndex);
+        }
+
         if (backToFront) {
             fDraws.addToTail(draw);
         } else {
@@ -230,6 +469,8 @@ struct BindingList {
         }
     }
 };
+
+using BindingListStorage = std::array<uint8_t, sizeof(BindingList)>;
 
 /**
  * Layer represents a collection of independent Draws that are organized by BindingLists. Within
@@ -267,9 +508,87 @@ struct BindingList {
 struct Layer {
     Layer(const CompressedPaintersOrder& order) : fOrder(order) {}
 
+    SK_DECLARE_INTERNAL_LLIST_INTERFACE(Layer);
+
     const CompressedPaintersOrder fOrder;
     SkTInternalLList<BindingList> fBindings;
-    SK_DECLARE_INTERNAL_LLIST_INTERFACE(Layer);
+
+#if BOUNDS_MODE == LAYER_BLOCK
+    BoundsBlock fColorBounds;
+    BoundsBlock fStencilBounds;
+#elif BOUNDS_MODE == LAYER_BLOCK2
+    BoundsBlock fBounds;
+#endif
+
+    int fInlineBindingCount = 0;
+    // int fInlineDrawCount = 0;
+
+
+
+
+    static constexpr int kInlineBindingSize = 16;
+    std::array<BindingListStorage, kInlineBindingSize> fInlineBindings;
+
+    // static constexpr int kInlineDrawSize = 64;
+    // std::array<DrawStorage, kInlineDrawSize> fInlineDraws;
+
+    BindingList* makeNewBinding(SkArenaAlloc* alloc, const RenderStep* step, const LayerKey& key) {
+        if (fInlineBindingCount < kInlineBindingSize) {
+            void* ptr = static_cast<void*>(&fInlineBindings[fInlineBindingCount++]);
+            return new (ptr) BindingList(step, key);
+        } else
+        {
+            return alloc->make<BindingList>(step, key);
+        }
+    }
+
+    Draw* makeNewDraw(SkArenaAlloc* alloc, const DrawParams* drawParams, UniformDataCache::Index uniformIndex) {
+        // if (fInlineDrawCount < kInlineDrawSize) {
+        //     void* ptr = static_cast<void*>(&fInlineDraws[fInlineDrawCount++]);
+        //     return new (ptr) Draw{drawParams, uniformIndex};
+        // } else
+        {
+            return alloc->make<Draw>(drawParams, uniformIndex);
+        }
+    }
+
+    // ArenaBlockList<BindingList, 16> fBindings;
+
+
+    struct Stats {
+        int fTotalDrawCount = 0;
+        int fBindingListCount = 0;
+        int fMaxDrawsPerBindingList = 0;
+        int fMaxTestDepth = 0;
+        float fAvgDrawsPerBindingList = 0.f;
+        float fAvgTestDepth = 0.f;
+
+        int fStencilCount = 0;
+    };
+
+    Stats collectStats() const {
+        Stats stats;
+
+        for (const BindingList* list : fBindings) {
+            stats.fBindingListCount++;
+
+            int drawCount = 0;
+            for (const Draw* d : list->fDraws) {
+                drawCount++;
+            }
+            stats.fTotalDrawCount += drawCount;
+            if (list->fKey.fFlags & BoundsFlags::kStencil) {
+                stats.fStencilCount += drawCount;
+            }
+            stats.fMaxDrawsPerBindingList = std::max(drawCount, stats.fMaxDrawsPerBindingList);
+            // SkDebugf("binding change %d\n", drawCount);
+        }
+        stats.fMaxTestDepth = fMaxTestDepth;
+        stats.fAvgDrawsPerBindingList = stats.fTotalDrawCount / (float) stats.fBindingListCount;
+        stats.fAvgTestDepth = fTestDepth / (float) fTestCount;
+
+        return stats;
+    }
 
     // Performs no bounds checks, so can only be used when checks have already confirmed the Layer
     // is valid for adding a new draw into. This searches backwards from `startList` (exclusive) or
@@ -283,13 +602,19 @@ struct Layer {
                                                 bool forForwardMerge=false) {
         // `startList` is exclusive, so if it's non-null the loop starts with fPrev.
         BindingList* pipelineMatch = nullptr;
+        if (!forForwardMerge) {
+            fTestCount++;
+        }
+        int oldDepth = fTestDepth;
         for (BindingList* list = startList ? startList->fPrev : fBindings.tail();
                 list != nullptr; list = list->fPrev) {
-            if (forForwardMerge && list->fBlockForwardMerges) {
-                break;
-            }
+            // if (forForwardMerge && list->fBlockForwardMerges) {
+            //     break;
+            // }
+            fTestDepth++;
 
             if (list->fKey.isEqual(key)) {
+                fMaxTestDepth = std::max(fMaxTestDepth, fTestDepth - oldDepth);
                 return list;
             } else if (list->isBetterMatch(key, pipelineMatch)) {
                 // Save pipeline while continuing to search for an exact match
@@ -305,11 +630,64 @@ struct Layer {
             }
         }
 
+        fMaxTestDepth = std::max(fMaxTestDepth, fTestDepth - oldDepth);
+
         // Even though an exact match wasn't found, any non-null pipelineMatch can be used to place
         // a new binding list, which helps shift from a pipeline switch to just a dynamic state.
         return pipelineMatch;
     }
 
+    int fTestCount = 0;
+    int fTestDepth = 0;
+    int fMaxTestDepth = 0;
+
+#if BOUNDS_MODE == LAYER_BLOCK
+    SK_ALWAYS_INLINE std::pair<SkEnumBitMask<BoundsTestResult>, BindingList*> test(
+            const Rect::ComplementRect drawBounds,
+            const LayerKey& key,
+            SkEnumBitMask<BoundsFlags> testMask) {
+
+        bool allowedBeforeLayer = !(testMask & BoundsFlags::kColor) || !fColorBounds.intersects(drawBounds);
+        bool allowedInLayer = allowedBeforeLayer && (!(testMask & BoundsFlags::kStencil) || !fStencilBounds.intersects(drawBounds));
+
+        BindingList* match = nullptr;
+        if (allowedInLayer) {
+            // match = this->searchBinding(key);
+            // keep it null so we just go as deep as possible???
+        } else if (!fNext && key.isSimpleShading()) {
+            match = this->searchBinding(key, nullptr, true);
+            // return this->testDetailed(drawBounds, key, testMask);
+        }
+
+        return {(allowedBeforeLayer ? BoundsTestResult::kAllowedBeforeLayer : BoundsTestResult::kBlocked) |
+                (allowedInLayer ? BoundsTestResult::kAllowedInLayer : BoundsTestResult::kBlocked),
+                match};
+    }
+#endif
+
+#if BOUNDS_MODE == LAYER_BLOCK2
+    SK_ALWAYS_INLINE std::pair<SkEnumBitMask<BoundsTestResult>, BindingList*> test(
+            const Rect::ComplementRect drawBounds,
+            const LayerKey& key,
+            SkEnumBitMask<BoundsFlags> testMask) {
+
+        if (!fBounds.intersects(drawBounds)) {
+            BindingList* match = this->searchBinding(key);
+            return {BoundsTestResult::kAllowedBeforeLayer | BoundsTestResult::kAllowedInLayer, match};
+        } else {
+            // return this->testDetailed(drawBounds, key, testMask);
+            BindingList* match = !fNext && key.isSimpleShading() ? this->searchBinding(key, nullptr, true) : nullptr;
+            return {BoundsTestResult::kBlocked, match};
+        }
+    }
+#endif
+
+#if BOUNDS_MODE == LAYER_BLOCK2 || BOUNDS_MODE ==LAYER_BLOCK /* unused */
+    SK_ALWAYS_INLINE std::pair<SkEnumBitMask<BoundsTestResult>, BindingList*> testDetailed(
+            const Rect::ComplementRect drawBounds,
+            const LayerKey& key,
+            SkEnumBitMask<BoundsFlags> testMask) {
+#else
     // Test the draw with the given bounds and LayerKey against the draws already collected in
     // this Layer, limiting checks to those that overlap with `testMask`. Returns whether or not
     // the draw is allowed in the layer, allowed before the layer, or must be in a later layer.
@@ -319,6 +697,7 @@ struct Layer {
             const Rect::ComplementRect drawBounds,
             const LayerKey& key,
             SkEnumBitMask<BoundsFlags> testMask) {
+#endif
         // If the test mask is kNone, the caller should just use searchBinding() directly since it
         // won't overlap with anything anyways. Or (rare) it's some opaque multistep draw that
         // can't overlap itself so is going through the regular `test` process to find a layer.
@@ -360,14 +739,17 @@ struct Layer {
         // a more recent draw. In the event that there isn't any color dependency, we're just
         // searching for a disjoint binding match and then whether or not to start from the front or
         // the back is arbitrary
+        fTestCount++;
+        int oldDepth = fTestDepth;
         BindingList* match = nullptr; // remember a good insertion point as bindings are tested
         for (BindingList* list = fBindings.tail(); list != nullptr; list = list->fPrev) {
+            fTestDepth++;
             const bool exactMatch = list->fKey.isEqual(key);
             // What aspects interfere between the new draw and this binding list in the layer
             auto aspectOverlap = (list->fKey.fFlags & testMask) |
                      (exactMatch ? BoundsFlags::kMustBeDisjoint : BoundsFlags::kNone);
 
-            if (aspectOverlap && list->intersects(drawBounds)) {
+            if ((aspectOverlap && list->intersects(drawBounds)) || (fTestDepth - oldDepth) > 1024) {
                 // It is important for complex scene performance that we restrict the exactMatch
                 // early-out to be after doing intersection testing
                 if (exactMatch && overlapInMatchesAllowed) {
@@ -378,12 +760,14 @@ struct Layer {
                         // painter's order inversion for the later binding on a future draw.
                         // Returning `list` will pull it into a new layer instead.
                         SkASSERT(!key.isDepthOnly());
+                        fMaxTestDepth = std::max(fMaxTestDepth, fTestDepth - oldDepth);
                         return {BoundsTestResult::kBlocked, list};
                     } else {
                         // else the layer isn't forward-merge compatible so it doesn't matter if
                         // we have any overlaps with earlier bindings, but since we have an match
                         // to append to, let's exit early then (assume color aspect overlap to
                         // remove kAllowedBeforeLayer).
+                        fMaxTestDepth = std::max(fMaxTestDepth, fTestDepth - oldDepth);
                         return {BoundsTestResult::kAllowedInLayer, list};
                     }
                 }
@@ -397,6 +781,7 @@ struct Layer {
                     // We can also always stop searching because if we depend on kColor, our
                     // result would be kBlocked; and if we don't depend on kColor then no
                     // further test will restrict kAllowedBeforeLayer from the result.
+                    fMaxTestDepth = std::max(fMaxTestDepth, fTestDepth - oldDepth);
                     return {aspectOverlap & BoundsFlags::kColor
                                     ? BoundsTestResult::kBlocked
                                     : BoundsTestResult::kAllowedBeforeLayer,
@@ -415,13 +800,15 @@ struct Layer {
                     if (key.isSimpleShading() && layerIsForwardMergeEligible) {
                         match = this->searchBinding(key, list, /*forForwardMerge=*/true);
                     }
+                    fMaxTestDepth = std::max(fMaxTestDepth, fTestDepth - oldDepth);
                     return {BoundsTestResult::kBlocked, match};
                 } else if (!key.usesStencil()) {
                     // We have a good insertion point in the layer that will be drawn after this
                     // conflicting BindingList, so put the new draw there. Because we haven't fully
                     // checked all the previous BindingLists, we need to block forward merges as the
                     // new draw could now be overlapping with early lists in the layer.
-                    list->fBlockForwardMerges = true;
+                    // list->fBlockForwardMerges = true;
+                    fMaxTestDepth = std::max(fMaxTestDepth, fTestDepth - oldDepth);
                     return {BoundsTestResult::kAllowedInLayer, match};
                 } else {
                     // This comes up in a rare case where the current draw is stencil+shading and
@@ -433,11 +820,12 @@ struct Layer {
                     // track the result modifications over time and prevent updates to `match`.
                     // Pushing it to a new layer seems to work well in practice and let's the
                     // outer if (intersect) block always return early.
+                    fMaxTestDepth = std::max(fMaxTestDepth, fTestDepth - oldDepth);
                     return {BoundsTestResult::kBlocked, /*match=*/nullptr};
                 }
             }
 
-            layerIsForwardMergeEligible &= !list->fBlockForwardMerges;
+            // layerIsForwardMergeEligible &= !list->fBlockForwardMerges;
 
             // NOTE: It's possible for the same key to be in a layer multiple times due to
             // some of the early-out rules. If we get here, the draw hasn't overlapped any later
@@ -454,6 +842,7 @@ struct Layer {
             }
         }
 
+        fMaxTestDepth = std::max(fMaxTestDepth, fTestDepth - oldDepth);
         return {BoundsTestResult::kAllowedBeforeLayer | BoundsTestResult::kAllowedInLayer, match};
     }
 
@@ -463,7 +852,7 @@ struct Layer {
                                                 const RenderStep* step) {
         SkASSERT(!insertBefore || fBindings.isInList(insertBefore));
 
-        BindingList* list = alloc->make<BindingList>(step, key);
+        BindingList* list = this->makeNewBinding(alloc, step, key); //alloc->make<BindingList>(step, key);
 
         // We need to insert the new list in the right place to keep fBindings organized with all
         // non-shading layers before shading layers, while also ensuring that the new `list` comes
@@ -492,6 +881,19 @@ struct Layer {
         }
 
         return list;
+    }
+
+    SK_ALWAYS_INLINE void updateForDraw(Rect bounds, LayerKey key) {
+#if BOUNDS_MODE == LAYER_BLOCK
+        if (key.fFlags & BoundsFlags::kColor) {
+            fColorBounds.add(bounds);
+        }
+        if (key.fFlags & BoundsFlags::kStencil) {
+            fStencilBounds.add(bounds);
+        }
+#elif BOUNDS_MODE == LAYER_BLOCK2
+        fBounds.add(bounds);
+#endif
     }
 };
 

@@ -150,6 +150,7 @@ std::unique_ptr<DrawPass> DrawList::snapDrawPass(Recorder* recorder,
     drawPass->fPipelineDrawAreas.push_back_n(fPipelineCache.count(), 0.f);
 
     TextureTracker textureBindingTracker(&fTextureDataCache);
+    int batchCount = 0;
     for (const DrawList::SortKey& key : fSortKeys) {
         const DrawList::Draw& draw = key.draw();
         const RenderStep& renderStep = key.renderStep();
@@ -178,6 +179,12 @@ std::unique_ptr<DrawPass> DrawList::snapDrawPass(Recorder* recorder,
 
         const bool stateChange = uniformBindingChange  || textureBindingsChange ||
                                  newScissor.has_value();
+
+        if (pipelineChange || uniformBindingChange || textureBindingsChange) {
+            // SkDebugf("binding change %d\n", batchCount);
+            batchCount = 0;
+        }
+        batchCount++;
 
         // Update DrawWriter *before* we actually change any state so that accumulated draws from
         // the previous state use the proper state.
@@ -231,6 +238,9 @@ std::unique_ptr<DrawPass> DrawList::snapDrawPass(Recorder* recorder,
     }
     // Finish recording draw calls for any collected data still pending at end of the loop
     drawWriter.flush();
+
+    // SkDebugf("binding change %d\n", batchCount);
+    // SkDebugf("max compressed painters order: %u\n", fSortKeys.back().draw().drawParams().order().paintOrder().bits());
 
     drawPass->fBounds = fPassBounds.roundOut().asSkIRect();
     drawPass->fPipelineDescs   = fPipelineCache.detach();
