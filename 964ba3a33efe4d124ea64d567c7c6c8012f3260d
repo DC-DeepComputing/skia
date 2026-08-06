@@ -16,6 +16,52 @@
       "message": "updated the cl so that it would introduce a nearly empty skcontextoptions, and then have contextoptions and grcontextoptions inherit it.",
       "revId": "964ba3a33efe4d124ea64d567c7c6c8012f3260d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c187fa58_2c219159",
+        "filename": "include/core/SkContextOptions.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-06T16:05:07Z",
+      "side": 1,
+      "message": "nit: Add a note that a value of 0 means no limit.",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 76
+      },
+      "revId": "964ba3a33efe4d124ea64d567c7c6c8012f3260d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07472101_0208682f",
+        "filename": "include/core/SkContextOptions.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-06T16:05:07Z",
+      "side": 1,
+      "message": "For my awareness, what\u0027s the plan for getting to use this new context option?",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 31
+      },
+      "revId": "964ba3a33efe4d124ea64d567c7c6c8012f3260d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
