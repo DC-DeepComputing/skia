@@ -53,7 +53,7 @@ std::pair<Layer*, BindingList*> DrawListLayer::searchBackwards(
         CompressedPaintersOrder stop) {
     // CPU performance is sensitive to increasing this value. Searching for longer *can* reduce the
     // draw count and pipeline change count
-    static constexpr int kMaxSearchLimit = 8;
+    static constexpr int kMaxSearchLimit = 8; // 128,64,32 are all pretty similar in terms of batching, starts to worsen at 16
 
     Layer* targetLayer = nullptr;
     BindingList* targetMatch = nullptr;
@@ -277,6 +277,7 @@ std::pair<DrawParams*, Layer*> DrawListLayer::recordDraw(const Renderer* rendere
                                                                               testMask,
                                                                               drawParams,
                                                                               stop);
+            insertionLayer->updateForDraw(drawParams->drawBounds(), key);
         } else {
             // Put the earlier steps in the same layer (valid because we used BoundsFlags for the
             // whole Renderer).
@@ -290,6 +291,7 @@ std::pair<DrawParams*, Layer*> DrawListLayer::recordDraw(const Renderer* rendere
         lastStepBinding->addDraw(fStorage.make<Draw>(drawParams, uniformIndex),
                                      /*backToFront=*/dependsOnDst);
 
+        // lastStepBinding->addDraw(&fStorage, drawParams, uniformIndex);
         gatherer->rewindForRenderStep();
     }
 
@@ -414,6 +416,9 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
         for (const BindingList* list : layer->fBindings) {
             SkASSERT(!list->fDraws.isEmpty());
             const Draw* current = list->fDraws.head();
+            // FIXME reverse iterate if the binding list doesn't depend on dst (store in layer key?)
+
+            // auto current = list->fDraws.items().begin();
 
             if (!recordDraw(list->fKey,
                             current->fUniformIndex,
@@ -423,6 +428,7 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
                 return nullptr;
             }
             current = current->fNext;
+            // ++current;
 
             while (current) {
                 if (!recordDraw(list->fKey,
@@ -433,6 +439,7 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
                     return nullptr;
                 }
                 current = current->fNext;
+                // ++current;
             }
         }
     }
@@ -448,6 +455,8 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
                                 TRACE_EVENT_SCOPE_THREAD,
                                 "# commands", drawPass->fCommandList.count(),
                                 "# textures", drawPass->fSampledTextures.size());
+
+    // this->dumpStats();
 
     this->reset(LoadOp::kLoad);
 
