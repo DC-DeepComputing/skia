@@ -36,7 +36,7 @@ enum class RootBlockType : int32_t {
     kSrcColor = -1,
     kFinalBlend = -2,
     kClip = -3,
-    kMeshShader = -4,
+    kMeshShader = -4
 };
 
 struct RootNodesInfo {
@@ -45,6 +45,8 @@ struct RootNodesInfo {
     const ShaderNode* fClip = nullptr;
     const ShaderNode* fMeshShader = nullptr;
 
+    // We store the SkMeshSpecification referenced by the `meshShader` when populating this struct
+    // so we don't have to constantly look up the specification by the shader snippet id.
     const SkMeshSpecification* fMeshSpec = nullptr;
 
     SkSpan<const ShaderNode*> fRoots;
@@ -71,7 +73,7 @@ struct RootNodesInfo {
  * embedded data. Skipping (-v + 1) entries returns iteration to indices containing snippet IDs.
  *
  * The PaintParamsKey stores multiple root nodes, with each root representing an effect tree that
- * affects different parts of the shading pipeline. The key is can only hold 2 or 3 roots:
+ * affects different parts of the shading pipeline. The key is can only hold 2-4 roots:
  *  1. Color root node: produces the "src" color used in final blending with the "dst" color.
  *  2. Final blend node: defines the blend function combining src and dst colors. If this is a
  *     FixedBlend snippet the final pipeline may be able to lift it to HW blending.
@@ -126,7 +128,8 @@ public:
                                const ShaderCodeDictionary*,
                                const RuntimeEffectDictionary*,
                                SkArenaAlloc*,
-                               int availableVaryings) const;
+                               int availableVaryings,
+                               bool canLiftCoords) const;
 
     // Converts the key to a structured list of snippet information for debugging or labeling
     // purposes.
