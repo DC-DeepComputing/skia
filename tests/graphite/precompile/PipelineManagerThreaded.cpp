@@ -106,7 +106,7 @@ void run_test(skiatest::Reporter* reporter, GraphiteTestContext* testContext,
 
         REPORTER_ASSERT(reporter, stats.fGraphicsCacheAdditions == 1);
         REPORTER_ASSERT(reporter, stats.fUnpreemptedPrecompilePipelines ==
-                                  precompileFirst ? 1 : 0,);
+                                  (precompileFirst ? 1 : 0));
         REPORTER_ASSERT(reporter, mgrStats.fNumTasksCreated == 1);
     }
 }

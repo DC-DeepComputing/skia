@@ -36,12 +36,6 @@ PrecompileContext::~PrecompileContext() {
 
 PrecompileContext::PrecompileContext(sk_sp<SharedContext> sharedContext)
     : fSharedContext(sharedContext) {
-
-    // ResourceProviders are not thread-safe. Here we create a ResourceProvider
-    // specifically for the thread on which precompilation will occur.
-    static constexpr size_t kEmptyBudget = 0;
-    fResourceProvider =
-            fSharedContext->makeResourceProvider(&fSingleOwner, SK_InvalidGenID, kEmptyBudget);
 }
 
 void PrecompileContext::purgePipelinesNotUsedInMs(std::chrono::milliseconds msNotUsed) {
@@ -78,11 +72,11 @@ bool PrecompileContext::precompile(sk_sp<SkData> serializedPipelineKey) {
         return false;
     }
 
-    GraphicsPipelineHandle handle = fResourceProvider->createGraphicsPipelineHandle(
+    GraphicsPipelineHandle handle = fSharedContext->createGraphicsPipelineHandle(
             pipelineDesc,
             renderPassDesc,
             PipelineCreationFlags::kForPrecompilation);
-    fResourceProvider->startPipelineCreationTask(rtEffectDict, handle);
+    fSharedContext->startPipelineCreationTask(rtEffectDict, handle);
 
     return true;
 #else
