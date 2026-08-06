@@ -309,6 +309,9 @@ using skiatest::Test;
     #define UNIX_ONLY_TEST DEF_TEST_DISABLED
 #endif
 
+#define FORCE_LINK_TEST(name) \
+    extern "C" void force_link_##name() {}
+
 #define DEF_SERIAL_TEST(name, reporter)                                                 \
     static void test_##name(skiatest::Reporter*);                                       \
     skiatest::TestRegistry name##TestRegistry(Test::MakeCPUSerial(#name, test_##name)); \
