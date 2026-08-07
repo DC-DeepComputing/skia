@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8f39ec0_9178c896",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 557,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-07T15:49:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0cbb5ed3_f81988c3",
+      "range": {
+        "startLine": 557,
+        "startChar": 0,
+        "endLine": 557,
+        "endChar": 56
+      },
+      "revId": "a214142580858219295364f80560f84fb2e38ce3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1920b9b4_8e1a942d",
@@ -54,6 +78,30 @@
       "writtenOn": "2026-07-30T20:32:38Z",
       "side": 1,
       "message": "Can we add a TODO here to say that this is only needed until `flushPendingWork()` is no longer called inside drawGeometry after the data has been extracted?  After that, the extracted uniform data won\u0027t be invalidated and flushPendingWork() can then be the natural resetStorageCache() place (which also would automatically handle all the surface flush/setImmutable events as well).",
+      "range": {
+        "startLine": 141,
+        "startChar": 0,
+        "endLine": 141,
+        "endChar": 29
+      },
+      "revId": "a214142580858219295364f80560f84fb2e38ce3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f6f43de_d4438367",
+        "filename": "src/gpu/graphite/Device.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-07T15:49:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1920b9b4_8e1a942d",
       "range": {
         "startLine": 141,
         "startChar": 0,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e44c2af_565df087",
+        "filename": "src/gpu/graphite/StorageContext.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-07T15:49:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ba5f34d7_f2eb084d",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 70
+      },
+      "revId": "a214142580858219295364f80560f84fb2e38ce3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b9675950_a98a9149",
@@ -100,6 +172,30 @@
       "writtenOn": "2026-07-30T20:32:38Z",
       "side": 1,
       "message": "This shouldn\u0027t be set in `resetAppendedStorage()`, right?",
+      "range": {
+        "startLine": 40,
+        "startChar": 0,
+        "endLine": 40,
+        "endChar": 45
+      },
+      "revId": "a214142580858219295364f80560f84fb2e38ce3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "af7ab4c6_3f0d9e63",
+        "filename": "src/gpu/graphite/StorageContext.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-07T15:49:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b9675950_a98a9149",
       "range": {
         "startLine": 40,
         "startChar": 0,
@@ -133,6 +229,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2ede629_a6072b7a",
+        "filename": "src/gpu/graphite/StorageContext.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-07T15:49:16Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "85fca47d_15daa3d0",
+      "range": {
+        "startLine": 86,
+        "startChar": 4,
+        "endLine": 95,
+        "endChar": 0
+      },
+      "revId": "a214142580858219295364f80560f84fb2e38ce3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cff2a836_c9f0c070",
@@ -156,6 +276,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d33187d_743f199e",
+        "filename": "src/gpu/graphite/StorageContext.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-07T15:49:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cff2a836_c9f0c070",
+      "range": {
+        "startLine": 98,
+        "startChar": 0,
+        "endLine": 98,
+        "endChar": 36
+      },
+      "revId": "a214142580858219295364f80560f84fb2e38ce3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "491d0958_af2f0b57",
@@ -169,6 +313,30 @@
       "writtenOn": "2026-07-30T20:32:38Z",
       "side": 1,
       "message": "I think we should take in an extra alignment or assume that appended data has to be aligned to its stride.",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 50
+      },
+      "revId": "a214142580858219295364f80560f84fb2e38ce3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6632b2fd_921e20b4",
+        "filename": "src/gpu/graphite/StorageContext.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-07T15:49:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "491d0958_af2f0b57",
       "range": {
         "startLine": 30,
         "startChar": 0,
@@ -244,6 +412,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d63fb18f_5a2e41d9",
+        "filename": "src/gpu/graphite/StorageContext.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-07T15:49:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dc1d4604_928a48a8",
+      "range": {
+        "startLine": 33,
+        "startChar": 8,
+        "endLine": 33,
+        "endChar": 29
+      },
+      "revId": "a214142580858219295364f80560f84fb2e38ce3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6559b295_c70635b1",
@@ -257,6 +449,30 @@
       "writtenOn": "2026-07-30T20:32:38Z",
       "side": 1,
       "message": "can this be private so that it\u0027s only called by the full reset() or automatically as part of finalize()?",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 32
+      },
+      "revId": "a214142580858219295364f80560f84fb2e38ce3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0e86fdd_17149519",
+        "filename": "src/gpu/graphite/StorageContext.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-07T15:49:16Z",
+      "side": 1,
+      "message": "Removed as part of deferal to next patch.",
+      "parentUuid": "6559b295_c70635b1",
       "range": {
         "startLine": 45,
         "startChar": 0,
@@ -290,6 +506,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f801a10_96cc0033",
+        "filename": "src/gpu/graphite/StorageContext.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-07T15:49:16Z",
+      "side": 1,
+      "message": "`finalizeGradientStorage()` should have been private; but this was lost in translation.\n\nMy thinking is that we want both `finalizeGradientStorage` and `finalizePrecachedStorageData`. The idea is that the StorageContext can be extended to maintain multiple caches, each in a self contained struct. So `finalizePrecachedStorageData` would call all the child finalizes.\n\nBut after writing the above, I think multiple caches would require interleaving the data to get valid offsets, so only a single finalize would be required. (As opposed to each cache having their own private data stream which gets concatenated in the buffer `finalize`).",
+      "parentUuid": "2b4750d4_8f34651f",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 58,
+        "endChar": 37
+      },
+      "revId": "a214142580858219295364f80560f84fb2e38ce3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f2e44a61_7900c8f8",
@@ -313,6 +553,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8581cbe7_44a575d7",
+        "filename": "src/gpu/graphite/StorageContext.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-07T15:49:16Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "f2e44a61_7900c8f8",
+      "range": {
+        "startLine": 87,
+        "startChar": 0,
+        "endLine": 87,
+        "endChar": 34
+      },
+      "revId": "a214142580858219295364f80560f84fb2e38ce3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "03753416_f35c769b",
@@ -326,6 +590,30 @@
       "writtenOn": "2026-07-30T20:32:38Z",
       "side": 1,
       "message": "This doesn\u0027t need to be an optional, fBufferInfo can already be truthy based on whether or not its Buffer* is set.",
+      "range": {
+        "startLine": 88,
+        "startChar": 0,
+        "endLine": 88,
+        "endChar": 46
+      },
+      "revId": "a214142580858219295364f80560f84fb2e38ce3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce0796e4_2929baae",
+        "filename": "src/gpu/graphite/StorageContext.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-07T15:49:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "03753416_f35c769b",
       "range": {
         "startLine": 88,
         "startChar": 0,
