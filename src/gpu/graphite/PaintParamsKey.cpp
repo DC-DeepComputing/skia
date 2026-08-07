@@ -246,6 +246,7 @@ void lift_color_expressions(SkSpan<ShaderNode*> nodes, int* availableVaryings) {
 
 RootNodesInfo PaintParamsKey::getRootNodes(const Caps* caps,
                                            const ShaderCodeDictionary* dict,
+                                           const RuntimeEffectDictionary* rteDict,
                                            SkArenaAlloc* arena,
                                            int availableVaryings) const {
     // TODO: Once the PaintParamsKey creation is organized to represent a single tree starting at
@@ -255,8 +256,8 @@ RootNodesInfo PaintParamsKey::getRootNodes(const Caps* caps,
     const int keySize = SkTo<int>(fData.size());
 
     RootNodesInfo rootsInfo;
-    // Normal PaintParams creation will have up to 3 roots for the different stages.
-    STArray<3, ShaderNode*> roots;
+    // Normal PaintParams creation will have up to 4 roots for the different stages.
+    STArray<4, ShaderNode*> roots;
     int currentIndex = 0;
     while (currentIndex < keySize) {
         int32_t blockMarker = fData[currentIndex++];
@@ -282,9 +283,17 @@ RootNodesInfo PaintParamsKey::getRootNodes(const Caps* caps,
                 SkASSERT(!rootsInfo.fClip);
                 rootsInfo.fClip = root;
                 break;
+            case RootBlockType::kMeshShader:
+                SkASSERT(!rootsInfo.fMeshShader);
+                rootsInfo.fMeshShader = root;
+                break;
             default:
                 SkUNREACHABLE;
         }
+    }
+
+    if (rootsInfo.fMeshShader && rteDict) {
+        rootsInfo.fMeshSpec = rteDict->meshSpecDict()->find(rootsInfo.fMeshShader->codeSnippetId());
     }
 
     // See what expressions we can lift to the vertex shader.
@@ -344,6 +353,9 @@ static int key_to_string(const Caps* caps,
                     break;
                 case RootBlockType::kClip:
                     str->append("[RootClip] ");
+                    break;
+                case RootBlockType::kMeshShader:
+                    str->append("[RootMeshShader] ");
                     break;
                 default:
                     SkUNREACHABLE;
