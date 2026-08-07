@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "440c25d0_4388cf9e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-07T14:24:22Z",
+      "side": 1,
+      "message": "Thanks for adding this! I have a few requests, but overall I\u0027m happy with this new feature.",
+      "revId": "cc4a43b08d30e7b37287858073664435ea19b86f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c920f7b6_d2379715",
+        "filename": "src/effects/imagefilters/SkRuntimeImageFilter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-07T14:24:22Z",
+      "side": 1,
+      "message": "This should be replaced by instead calculating the union of the layerBounds() from each of the calls to this-\u003egetChildOutput() in the above loop so that it\u0027s specific to the actual received images, instead of the theoretically produced results that onGetOutputLayerBounds sees.\n\nIt should then also be fed through applyMaxSampleRadius() since that represents the area of destination pixels that may still see a non-transparent input pixel.",
+      "range": {
+        "startLine": 273,
+        "startChar": 0,
+        "endLine": 273,
+        "endChar": 97
+      },
+      "revId": "cc4a43b08d30e7b37287858073664435ea19b86f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37f4b92d_fd759045",
+        "filename": "src/effects/imagefilters/SkRuntimeImageFilter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-07T14:24:22Z",
+      "side": 1,
+      "message": "This should be fed through applyMaxSampleRadius()",
+      "range": {
+        "startLine": 336,
+        "startChar": 19,
+        "endLine": 336,
+        "endChar": 30
+      },
+      "revId": "cc4a43b08d30e7b37287858073664435ea19b86f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "996a14fd_cd2aaae3",
+        "filename": "src/effects/imagefilters/SkRuntimeImageFilter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 347,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-07T14:24:22Z",
+      "side": 1,
+      "message": "This should be outset by the max sample radius.",
+      "range": {
+        "startLine": 347,
+        "startChar": 0,
+        "endLine": 347,
+        "endChar": 59
+      },
+      "revId": "cc4a43b08d30e7b37287858073664435ea19b86f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
