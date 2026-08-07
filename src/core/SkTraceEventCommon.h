@@ -86,19 +86,25 @@
 // SkEventTracer::SetInstance(...). This is enabled in tools with the `--trace perfetto` argument.
 // See https://skia.org/docs/dev/tools/tracing/#tracing-with-perfetto for more on SK_USE_PERFETTO.
 
-#ifdef SK_ANDROID_FRAMEWORK_USE_PERFETTO
+#if defined(SK_ANDROID_FRAMEWORK_USE_PERFETTO) || defined(SK_USE_PERFETTO)
 
 // PERFETTO_TRACK_EVENT_NAMESPACE must be defined before including Perfetto. This allows Skia to
 // maintain separate "track event" category storage, etc. from codebases linked into the same
 // executable, and avoid symbol duplication errors.
 //
 // NOTE: A side-effect of this is we must use skia::TrackEvent instead of perfetto::TrackEvent.
+#ifndef PERFETTO_TRACK_EVENT_NAMESPACE
 #define PERFETTO_TRACK_EVENT_NAMESPACE skia
+#endif
+
+
 #include <perfetto/tracing.h>
 
+#if defined(SK_ANDROID_FRAMEWORK_USE_PERFETTO)
 #include <cutils/trace.h>
 #include <stdarg.h>
 #include <string_view>
+#endif
 
 // WARNING: this list must be kept up to date with every category we use for tracing!
 //
@@ -115,7 +121,7 @@
 //
 // Currently kept entirely separate from SkPerfettoTrace for simplicity, which uses dynamic
 // categories and doesn't need these static category definitions.
-PERFETTO_DEFINE_CATEGORIES(
+PERFETTO_DEFINE_CATEGORIES_IN_NAMESPACE_WITH_ATTRS(skia_tracing, SK_API,
     perfetto::Category("GM"),
     perfetto::Category("skia"),
     perfetto::Category("skia.android"),
@@ -142,8 +148,9 @@ PERFETTO_DEFINE_CATEGORIES(
     perfetto::Category("test_ganesh.always").SetTags("skia.always"),
     perfetto::Category("test_graphite.always").SetTags("skia.always"),
 );
+PERFETTO_USE_CATEGORIES_FROM_NAMESPACE(skia_tracing);
 
-#endif // SK_ANDROID_FRAMEWORK_USE_PERFETTO
+#endif // defined(SK_ANDROID_FRAMEWORK_USE_PERFETTO) || defined(SK_USE_PERFETTO)
 
 #ifdef SK_BUILD_FOR_ANDROID_FRAMEWORK
 
@@ -223,7 +230,7 @@ static inline void sk_noop(Args...) {}
 #endif
 
 #if defined(SK_DISABLE_TRACING) || \
-        (defined(SK_BUILD_FOR_ANDROID_FRAMEWORK) && !defined(SK_ANDROID_FRAMEWORK_USE_PERFETTO))
+    (!defined(SK_USE_PERFETTO) && !defined(SK_ANDROID_FRAMEWORK_USE_PERFETTO))
 
     #define ATRACE_ANDROID_FRAMEWORK(fmt, ...) TRACE_EMPTY_FMT(fmt, ##__VA_ARGS__)
     #define ATRACE_ANDROID_FRAMEWORK_ALWAYS(fmt, ...) TRACE_EMPTY_FMT(fmt, ##__VA_ARGS__)
@@ -246,6 +253,61 @@ static inline void sk_noop(Args...) {}
     #define TRACE_EVENT_OBJECT_DELETED_WITH_ID(cg, n, id) TRACE_EMPTY(cg, n, id)
     #define TRACE_COUNTER1(cg, n, value) TRACE_EMPTY(cg, n, value)
     #define TRACE_COUNTER1_ALWAYS(cg, n, value) TRACE_EMPTY(cg, n, value)
+
+    #define TRACE_EVENT(category, name, ...) TRACE_EMPTY(category, name, ##__VA_ARGS__)
+    #define TRACE_EVENT_INSTANT(category, name, ...) TRACE_EMPTY(category, name, ##__VA_ARGS__)
+    #define TRACE_COUNTER(category, name, ...) TRACE_EMPTY(category, name, ##__VA_ARGS__)
+    #define TRACE_EVENT_BEGIN(category, name, ...) TRACE_EMPTY(category, name, ##__VA_ARGS__)
+    #define TRACE_EVENT_END(category, ...) TRACE_EMPTY(category, ##__VA_ARGS__)
+
+#elif defined(SK_USE_PERFETTO)
+
+    #define ATRACE_ANDROID_FRAMEWORK(fmt, ...) TRACE_EMPTY_FMT(fmt, ##__VA_ARGS__)
+    #define ATRACE_ANDROID_FRAMEWORK_ALWAYS(fmt, ...) TRACE_EMPTY_FMT(fmt, ##__VA_ARGS__)
+
+    #define TRACE_EVENT0(category_group, name) \
+        TRACE_EVENT(category_group, name)
+    #define TRACE_EVENT1(category_group, name, arg1_name, arg1_val) \
+        TRACE_EVENT(category_group, name, arg1_name, arg1_val)
+    #define TRACE_EVENT2(category_group, name, arg1_name, arg1_val, arg2_name, arg2_val) \
+        TRACE_EVENT(category_group, name, arg1_name, arg1_val, arg2_name, arg2_val)
+
+    #define TRACE_EVENT0_ALWAYS(category_group, name) \
+        TRACE_EVENT(category_group, name)
+    #define TRACE_EVENT1_ALWAYS(category_group, name, arg1_name, arg1_val) \
+        TRACE_EVENT(category_group, name, arg1_name, arg1_val)
+    #define TRACE_EVENT2_ALWAYS(category_group, name, arg1_name, arg1_val, arg2_name, arg2_val) \
+        TRACE_EVENT(category_group, name, arg1_name, arg1_val, arg2_name, arg2_val)
+
+    #define TRACE_EVENT_INSTANT0(category_group, name, scope) \
+        TRACE_EVENT_INSTANT(category_group, name)
+    #define TRACE_EVENT_INSTANT1(category_group, name, scope, arg1_name, arg1_val) \
+        TRACE_EVENT_INSTANT(category_group, name, arg1_name, arg1_val)
+    #define TRACE_EVENT_INSTANT2(category_group, name, scope, arg1_name, arg1_val, arg2_name, arg2_val)  \
+        TRACE_EVENT_INSTANT(category_group, name, arg1_name, arg1_val, arg2_name, arg2_val)
+
+    #define TRACE_EVENT_INSTANT0_ALWAYS(category_group, name, scope) \
+        TRACE_EVENT_INSTANT(category_group, name)
+    #define TRACE_EVENT_INSTANT1_ALWAYS(category_group, name, scope, arg1_name, arg1_val) \
+        TRACE_EVENT_INSTANT(category_group, name, arg1_name, arg1_val)
+    #define TRACE_EVENT_INSTANT2_ALWAYS(category_group, name, scope, arg1_name, arg1_val, arg2_name, arg2_val)  \
+        TRACE_EVENT_INSTANT(category_group, name, arg1_name, arg1_val, arg2_name, arg2_val)
+
+    #define TRACE_COUNTER1(category_group, name, value) \
+        TRACE_COUNTER(category_group, name, value)
+    #define TRACE_COUNTER1_ALWAYS(category_group, name, value) \
+        TRACE_COUNTER(category_group, name, value)
+
+    #define TRACE_EVENT_OBJECT_CREATED_WITH_ID(category_group, name, id) \
+        TRACE_EMPTY(category_group, name, id)
+    #define TRACE_EVENT_OBJECT_SNAPSHOT_WITH_ID(category_group, name, id, snapshot) \
+        TRACE_EMPTY(category_group, name, id, snapshot)
+    #define TRACE_EVENT_OBJECT_DELETED_WITH_ID(category_group, name, id) \
+        TRACE_EMPTY(category_group, name, id)
+
+    #define TRACE_EVENT_CATEGORY_GROUP_ENABLED(category_group, ret) \
+        *ret = TRACE_EVENT_CATEGORY_ENABLED(category_group)
+
 
 #elif defined(SK_ANDROID_FRAMEWORK_USE_PERFETTO)
 
@@ -587,120 +649,6 @@ namespace skia_private {
     } else {                                                                        \
         *ret = false;                                                               \
     }
-
-#else // Route through SkEventTracer (!SK_DISABLE_TRACING && !SK_ANDROID_FRAMEWORK_USE_PERFETTO)
-
-#define ATRACE_ANDROID_FRAMEWORK(fmt, ...) TRACE_EMPTY_FMT(fmt, ##__VA_ARGS__)
-#define ATRACE_ANDROID_FRAMEWORK_ALWAYS(fmt, ...) TRACE_EMPTY_FMT(fmt, ##__VA_ARGS__)
-
-// Records a pair of begin and end events called "name" for the current scope, with 0, 1 or 2
-// associated arguments. If the category is not enabled, then this does nothing.
-#define TRACE_EVENT0(category_group, name) \
-  INTERNAL_TRACE_EVENT_ADD_SCOPED(category_group, name)
-
-#define TRACE_EVENT1(category_group, name, arg1_name, arg1_val) \
-  INTERNAL_TRACE_EVENT_ADD_SCOPED(category_group, name, arg1_name, arg1_val)
-
-#define TRACE_EVENT2(category_group, name, arg1_name, arg1_val, arg2_name, arg2_val) \
-  INTERNAL_TRACE_EVENT_ADD_SCOPED(category_group, name, arg1_name, arg1_val, arg2_name, arg2_val)
-
-#define TRACE_EVENT0_ALWAYS(category_group, name) \
-  INTERNAL_TRACE_EVENT_ADD_SCOPED(category_group, name)
-
-#define TRACE_EVENT1_ALWAYS(category_group, name, arg1_name, arg1_val) \
-  INTERNAL_TRACE_EVENT_ADD_SCOPED(category_group, name, arg1_name, arg1_val)
-
-#define TRACE_EVENT2_ALWAYS(category_group, name, arg1_name, arg1_val, arg2_name, arg2_val) \
-  INTERNAL_TRACE_EVENT_ADD_SCOPED(category_group, name, arg1_name, arg1_val, arg2_name, arg2_val)
-
-// Records a single event called "name" immediately, with 0, 1 or 2 associated arguments. If the
-// category is not enabled, then this does nothing.
-#define TRACE_EVENT_INSTANT0(category_group, name, scope)                   \
-  INTERNAL_TRACE_EVENT_ADD(TRACE_EVENT_PHASE_INSTANT, category_group, name, \
-                           TRACE_EVENT_FLAG_NONE | scope)
-
-#define TRACE_EVENT_INSTANT1(category_group, name, scope, arg1_name, arg1_val) \
-  INTERNAL_TRACE_EVENT_ADD(TRACE_EVENT_PHASE_INSTANT, category_group, name,    \
-                           TRACE_EVENT_FLAG_NONE | scope, arg1_name, arg1_val)
-
-#define TRACE_EVENT_INSTANT2(category_group, name, scope, arg1_name, arg1_val, \
-                             arg2_name, arg2_val)                              \
-  INTERNAL_TRACE_EVENT_ADD(TRACE_EVENT_PHASE_INSTANT, category_group, name,    \
-                           TRACE_EVENT_FLAG_NONE | scope, arg1_name, arg1_val, \
-                           arg2_name, arg2_val)
-
-#define TRACE_EVENT_INSTANT0_ALWAYS(category_group, name, scope)            \
-  INTERNAL_TRACE_EVENT_ADD(TRACE_EVENT_PHASE_INSTANT, category_group, name, \
-                           TRACE_EVENT_FLAG_NONE | scope)
-
-#define TRACE_EVENT_INSTANT1_ALWAYS(category_group, name, scope, arg1_name, arg1_val) \
-  INTERNAL_TRACE_EVENT_ADD(TRACE_EVENT_PHASE_INSTANT, category_group, name,           \
-                           TRACE_EVENT_FLAG_NONE | scope, arg1_name, arg1_val)
-
-#define TRACE_EVENT_INSTANT2_ALWAYS(category_group, name, scope, arg1_name, arg1_val, \
-                             arg2_name, arg2_val)                                     \
-  INTERNAL_TRACE_EVENT_ADD(TRACE_EVENT_PHASE_INSTANT, category_group, name,           \
-                           TRACE_EVENT_FLAG_NONE | scope, arg1_name, arg1_val,        \
-                           arg2_name, arg2_val)
-
-// Records the value of a counter called "name" immediately. Value
-// must be representable as a 32 bit integer.
-#define TRACE_COUNTER1(category_group, name, value)                         \
-  INTERNAL_TRACE_EVENT_ADD(TRACE_EVENT_PHASE_COUNTER, category_group, name, \
-                           TRACE_EVENT_FLAG_NONE, "value",                  \
-                           static_cast<int>(value))
-#define TRACE_COUNTER1_ALWAYS(category_group, name, value)                  \
-  INTERNAL_TRACE_EVENT_ADD(TRACE_EVENT_PHASE_COUNTER, category_group, name, \
-                           TRACE_EVENT_FLAG_NONE, "value",                  \
-                           static_cast<int>(value))
-
-#define TRACE_EVENT_ASYNC_BEGIN0(category, name, id)                                           \
-    INTERNAL_TRACE_EVENT_ADD_WITH_ID(                                                          \
-        TRACE_EVENT_PHASE_ASYNC_BEGIN, category, name, id, TRACE_EVENT_FLAG_NONE)
-#define TRACE_EVENT_ASYNC_BEGIN1(category, name, id, arg1_name, arg1_val)                      \
-    INTERNAL_TRACE_EVENT_ADD_WITH_ID(TRACE_EVENT_PHASE_ASYNC_BEGIN,                            \
-        category, name, id, TRACE_EVENT_FLAG_NONE, arg1_name, arg1_val)
-#define TRACE_EVENT_ASYNC_BEGIN2(category, name, id, arg1_name, arg1_val, arg2_name, arg2_val) \
-    INTERNAL_TRACE_EVENT_ADD_WITH_ID(TRACE_EVENT_PHASE_ASYNC_BEGIN,                            \
-        category, name, id, TRACE_EVENT_FLAG_NONE, arg1_name, arg1_val, arg2_name, arg2_val)
-
-#define TRACE_EVENT_ASYNC_END0(category, name, id)                                           \
-    INTERNAL_TRACE_EVENT_ADD_WITH_ID(TRACE_EVENT_PHASE_ASYNC_END,                            \
-        category, name, id, TRACE_EVENT_FLAG_NONE)
-#define TRACE_EVENT_ASYNC_END1(category, name, id, arg1_name, arg1_val)                      \
-    INTERNAL_TRACE_EVENT_ADD_WITH_ID(TRACE_EVENT_PHASE_ASYNC_END,                            \
-        category, name, id, TRACE_EVENT_FLAG_NONE, arg1_name, arg1_val)
-#define TRACE_EVENT_ASYNC_END2(category, name, id, arg1_name, arg1_val, arg2_name, arg2_val) \
-    INTERNAL_TRACE_EVENT_ADD_WITH_ID(TRACE_EVENT_PHASE_ASYNC_END,                            \
-        category, name, id, TRACE_EVENT_FLAG_NONE, arg1_name, arg1_val, arg2_name, arg2_val)
-
-// Macros to track the life time and value of arbitrary client objects.
-#define TRACE_EVENT_OBJECT_CREATED_WITH_ID(category_group, name, id) \
-  INTERNAL_TRACE_EVENT_ADD_WITH_ID(                                  \
-      TRACE_EVENT_PHASE_CREATE_OBJECT, category_group, name, id,     \
-      TRACE_EVENT_FLAG_NONE)
-
-#define TRACE_EVENT_OBJECT_SNAPSHOT_WITH_ID(category_group, name, id, \
-                                            snapshot)                 \
-  INTERNAL_TRACE_EVENT_ADD_WITH_ID(                                   \
-      TRACE_EVENT_PHASE_SNAPSHOT_OBJECT, category_group, name,        \
-      id, TRACE_EVENT_FLAG_NONE, "snapshot", snapshot)
-
-#define TRACE_EVENT_OBJECT_DELETED_WITH_ID(category_group, name, id) \
-  INTERNAL_TRACE_EVENT_ADD_WITH_ID(                                  \
-      TRACE_EVENT_PHASE_DELETE_OBJECT, category_group, name, id,     \
-      TRACE_EVENT_FLAG_NONE)
-
-// Macro to efficiently determine if a given category group is enabled.
-#define TRACE_EVENT_CATEGORY_GROUP_ENABLED(category_group, ret)             \
-  do {                                                                      \
-    INTERNAL_TRACE_EVENT_GET_CATEGORY_INFO(category_group);                 \
-    if (INTERNAL_TRACE_EVENT_CATEGORY_GROUP_ENABLED_FOR_RECORDING_MODE()) { \
-      *ret = true;                                                          \
-    } else {                                                                \
-      *ret = false;                                                         \
-    }                                                                       \
-  } while (0)
 
 #endif
 
