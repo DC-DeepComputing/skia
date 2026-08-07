@@ -1971,6 +1971,9 @@ skia_source_set("core") {
     ":typeface_fontations",
     ":typeface_freetype",
   ]
+  if (skia_use_perfetto) {
+    public_deps = [ "//third_party/perfetto" ]
+  }
 }
 
 skia_component("skia") {
@@ -2166,7 +2169,6 @@ skia_component("skia") {
   # Currently only supported in Android framework.
   if (skia_android_framework_use_perfetto) {
     defines += [ "SK_ANDROID_FRAMEWORK_USE_PERFETTO" ]
-    sources += [ "src/android/SkAndroidFrameworkPerfettoStaticStorage.cpp" ]
   }
 }
 
@@ -2654,19 +2656,11 @@ if (skia_enable_tools) {
   test_lib("trace") {
     deps = [ ":flags" ]
     sources = [
-      "tools/trace/ChromeTracingTracer.cpp",
-      "tools/trace/ChromeTracingTracer.h",
       "tools/trace/EventTracingPriv.cpp",
       "tools/trace/EventTracingPriv.h",
-      "tools/trace/SkDebugfTracer.cpp",
-      "tools/trace/SkDebugfTracer.h",
     ]
     if (skia_use_perfetto) {
       deps += [ "//third_party/perfetto" ]
-      sources += [
-        "tools/trace/SkPerfettoTrace.cpp",
-        "tools/trace/SkPerfettoTrace.h",
-      ]
       defines = [ "SK_USE_PERFETTO" ]
     }
   }
