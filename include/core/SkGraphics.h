@@ -36,6 +36,7 @@ public:
      */
     static size_t GetFontCacheLimit();
 
+
     /**
      *  Specify the max number of bytes that should be used by the font cache.
      *  If the cache needs to allocate more, it will purge previous entries.
@@ -95,6 +96,12 @@ public:
      *  pinned strikes.
      */
     static void PurgePinnedFontCache();
+
+    /**
+     *  Return the running total of memory (in bytes) used by strikes across all
+     *  SkStrikeCache instances (both global and thread-local).
+     */
+    static size_t GetTotalStrikeCacheBytesUsed();
 
     /**
      *  This function returns the memory used for temporary images and other resources.

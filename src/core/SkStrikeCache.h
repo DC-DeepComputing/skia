@@ -59,6 +59,12 @@ public:
     static void PurgeAll();
     static void Dump();
 
+    static bool GetUseThreadLocalStrikeCaches();
+    static bool SetUseThreadLocalStrikeCaches(bool useThreadLocal);
+    static size_t GetTotalStrikeCacheBytesUsed();
+    static void RecordMemoryIncrease(size_t bytes);
+    static void RecordMemoryDecrease(size_t bytes);
+
     // Dump memory usage statistics of all the attaches caches in the process using the
     // SkTraceMemoryDump interface.
     static void DumpMemoryStatistics(SkTraceMemoryDump* dump);
