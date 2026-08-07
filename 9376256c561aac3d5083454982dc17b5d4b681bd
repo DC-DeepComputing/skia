@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a0f4f319_89db70e9",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 1607,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-08-07T15:01:04Z",
+      "side": 1,
+      "message": "Implemented the proposed solution where we do a depth-only stroke first, then the inverse fill. Had to make adjustments to DrawList and DrawListLayer uniform gathering since I was proving an invalid paint id to get a depth-only draw, however it still assumed we were doing shading because of the render step\u0027s flags.\n\nI could have also created a separate TessellateStrokesRenderStep without `Flag::kPerformsShading` flag, or constructed an empty PipelineDataGatherer and passed that into the stroke draw call, however checking if the paint id was invalid seemed the simplest to me and matched the behavior of invalid ids being depth-only.",
+      "parentUuid": "a14e9c33_daae2c2c",
+      "range": {
+        "startLine": 1596,
+        "startChar": 0,
+        "endLine": 1607,
+        "endChar": 5
+      },
+      "revId": "9376256c561aac3d5083454982dc17b5d4b681bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a22cf973_b96a22a8",
@@ -54,6 +78,30 @@
       "writtenOn": "2026-08-05T18:15:41Z",
       "side": 1,
       "message": "Maybe instead say something like \"Used for storing a stroked path in the stencil buffer\"?",
+      "range": {
+        "startLine": 65,
+        "startChar": 68,
+        "endLine": 65,
+        "endChar": 94
+      },
+      "revId": "9376256c561aac3d5083454982dc17b5d4b681bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "18804332_06e47421",
+        "filename": "src/gpu/graphite/render/CommonDepthStencilSettings.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-08-07T15:01:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a22cf973_b96a22a8",
       "range": {
         "startLine": 65,
         "startChar": 68,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc4045d2_285469b2",
+        "filename": "src/gpu/graphite/render/CommonDepthStencilSettings.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-08-07T15:01:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5403dacf_50510873",
+      "range": {
+        "startLine": 109,
+        "startChar": 79,
+        "endLine": 110,
+        "endChar": 22
+      },
+      "revId": "9376256c561aac3d5083454982dc17b5d4b681bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "00c43339_65f3ea99",
@@ -110,6 +182,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4363f1c_48a72fb4",
+        "filename": "src/gpu/graphite/render/TessellateStrokesRenderStep.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-08-07T15:01:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "00c43339_65f3ea99",
+      "range": {
+        "startLine": 96,
+        "startChar": 0,
+        "endLine": 96,
+        "endChar": 76
+      },
+      "revId": "9376256c561aac3d5083454982dc17b5d4b681bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7ee3ae28_a2101dde",
@@ -123,6 +219,30 @@
       "writtenOn": "2026-08-05T18:15:41Z",
       "side": 1,
       "message": "Comment is out of date now",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 20
+      },
+      "revId": "9376256c561aac3d5083454982dc17b5d4b681bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "54829236_f21d0120",
+        "filename": "src/gpu/graphite/render/TessellateStrokesRenderStep.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-08-07T15:01:04Z",
+      "side": 1,
+      "message": "Done, removed it.",
+      "parentUuid": "7ee3ae28_a2101dde",
       "range": {
         "startLine": 24,
         "startChar": 0,
