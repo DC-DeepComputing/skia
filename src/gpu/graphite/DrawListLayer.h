@@ -77,6 +77,63 @@ private:
                                             const RenderStep* step,
                                             const LayerKey& key);
 
+    int fLayerSearchCount = 0;
+    int fSearchCount = 0;
+    int fMaxLayerSearchCount = 0;
+
+    struct Stats {
+        int fTotalLayerCount = 0;
+        int fTotalBindingListCount = 0;
+        int fTotalDrawCount = 0;
+
+        int fMaxBindingListsPerLayer = 0;
+        float fAvgBindingListsPerLayer = 0;
+
+        int fMaxDrawsPerLayer = 0;
+        int fMaxDrawsPerBindingList = 0;
+        float fAvgDrawsPerLayer = 0;
+        float fAvgDrawsPerBindingList = 0;
+
+        int fMaxTestDepth = 0;
+        float fAvgTestDepth = 0.f;
+    };
+
+    void dumpStats() {
+        Stats stats;
+        for (const Layer* layer : fLayers) {
+            Layer::Stats l = layer->collectStats();
+            stats.fTotalLayerCount++;
+            stats.fTotalBindingListCount += l.fBindingListCount;
+            stats.fTotalDrawCount += l.fTotalDrawCount;
+
+            stats.fMaxBindingListsPerLayer = std::max(stats.fMaxBindingListsPerLayer, l.fBindingListCount);
+            stats.fMaxDrawsPerLayer = std::max(stats.fMaxDrawsPerLayer, l.fTotalDrawCount);
+            stats.fMaxDrawsPerBindingList = std::max(stats.fMaxDrawsPerBindingList, l.fMaxDrawsPerBindingList);
+            stats.fAvgDrawsPerBindingList += l.fAvgDrawsPerBindingList;
+
+            stats.fMaxTestDepth = std::max(stats.fMaxTestDepth, l.fMaxTestDepth);
+            stats.fAvgTestDepth += l.fAvgTestDepth;
+        }
+        stats.fAvgBindingListsPerLayer = stats.fTotalBindingListCount / (float) stats.fTotalLayerCount;
+        stats.fAvgDrawsPerLayer = stats.fTotalDrawCount / (float) stats.fTotalLayerCount;
+        stats.fAvgDrawsPerBindingList /= stats.fTotalLayerCount;
+        stats.fAvgTestDepth /= stats.fTotalLayerCount;
+
+        SkDebugf("Layer stats:\n"
+                 " - Total layers = %d, total binding lists = %d, total draws = %d\n"
+                 " - Max binding lists / layer = %d, max draws / layer = %d, max draws / binding list = %d, max test depth = %d\n"
+                 " - Avg binding lists / layer = %.2f, avg draws / layer = %.2f, avg draws / binding list = %.2f, avg test depth = %.2f\n"
+                 " - Max layer search / draw = %d, avg layer search / draw = %.2f\n",
+                stats.fTotalLayerCount, stats.fTotalBindingListCount, stats.fTotalDrawCount,
+                stats.fMaxBindingListsPerLayer, stats.fMaxDrawsPerLayer, stats.fMaxDrawsPerBindingList, stats.fMaxTestDepth,
+                stats.fAvgBindingListsPerLayer, stats.fAvgDrawsPerLayer, stats.fAvgDrawsPerBindingList, stats.fAvgTestDepth,
+                fMaxLayerSearchCount, fLayerSearchCount / (float) fSearchCount);
+
+        fLayerSearchCount = 0;
+        fSearchCount = 0;
+        fMaxLayerSearchCount = 0;
+    }
+
     friend class DrawPass;
 
     SkSTArenaAllocWithReset<256> fStorage;
