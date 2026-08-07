@@ -8,35 +8,19 @@
 #ifndef EventTracingPriv_DEFINED
 #define EventTracingPriv_DEFINED
 
-#include "include/private/SkMutex.h"
-
 /**
- * Construct and install an SkEventTracer, based on the mode,
- * defaulting to the --trace command line argument.
+ * Construct and install tracing if enabled.
  */
 void initializeEventTracingForTools(const char* mode = nullptr);
 
 /**
- * Helper class used by internal implementations of SkEventTracer to manage categories.
+ * Terminate tracing and flush events.
  */
-class SkEventTracingCategories {
-public:
-    SkEventTracingCategories() : fNumCategories(0) {}
+void terminateEventTracingForTools();
 
-    uint8_t*    getCategoryGroupEnabled(const char* name);
-    const char* getCategoryGroupName(const uint8_t* categoryEnabledFlag);
-
-private:
-    enum { kMaxCategories = 256 };
-
-    struct CategoryState {
-        uint8_t     fEnabled;
-        const char* fName;
-    };
-
-    CategoryState fCategories[kMaxCategories];
-    int           fNumCategories;
-    SkMutex       fMutex;
-};
+/**
+ * Start a new tracing section (closes current session and starts new one).
+ */
+void traceEventNewTracingSection(const char* name);
 
 #endif

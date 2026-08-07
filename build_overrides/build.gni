@@ -8,3 +8,5 @@
 
 build_with_chromium = false
 build_with_angle = false
+
+perfetto_build_with_embedder = true
