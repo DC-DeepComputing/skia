@@ -23,9 +23,41 @@
 class SkScalerContext;
 struct SkFontMetrics;
 
+#include <atomic>
+
 using namespace sktext;
 
 bool gSkUseThreadLocalStrikeCaches_IAcknowledgeThisIsIncrediblyExperimental = false;
+static bool gUseThreadLocalStrikeCaches = false;
+static std::atomic<size_t> gTotalStrikeCacheBytesUsed{0};
+
+bool SkStrikeCache::GetUseThreadLocalStrikeCaches() {
+    return gUseThreadLocalStrikeCaches ||
+           gSkUseThreadLocalStrikeCaches_IAcknowledgeThisIsIncrediblyExperimental;
+}
+
+bool SkStrikeCache::SetUseThreadLocalStrikeCaches(bool useThreadLocal) {
+    bool prev = GetUseThreadLocalStrikeCaches();
+    gUseThreadLocalStrikeCaches = useThreadLocal;
+    gSkUseThreadLocalStrikeCaches_IAcknowledgeThisIsIncrediblyExperimental = useThreadLocal;
+    return prev;
+}
+
+size_t SkStrikeCache::GetTotalStrikeCacheBytesUsed() {
+    return gTotalStrikeCacheBytesUsed.load(std::memory_order_relaxed);
+}
+
+void SkStrikeCache::RecordMemoryIncrease(size_t bytes) {
+    if (bytes > 0) {
+        gTotalStrikeCacheBytesUsed.fetch_add(bytes, std::memory_order_relaxed);
+    }
+}
+
+void SkStrikeCache::RecordMemoryDecrease(size_t bytes) {
+    if (bytes > 0) {
+        gTotalStrikeCacheBytesUsed.fetch_sub(bytes, std::memory_order_relaxed);
+    }
+}
 
 SkStrikeCache* SkStrikeCache::GlobalStrikeCache() {
     if (gSkUseThreadLocalStrikeCaches_IAcknowledgeThisIsIncrediblyExperimental) {
@@ -273,6 +305,7 @@ void SkStrikeCache::internalAttachToHead(sk_sp<SkStrike> strike) {
     fCacheCount += 1;
     fPinnerCount += strikePtr->fPinner != nullptr ? 1 : 0;
     fTotalMemoryUsed += strikePtr->fMemoryUsed;
+    RecordMemoryIncrease(strikePtr->fMemoryUsed);
 
     if (fHead != nullptr) {
         fHead->fPrev = strikePtr;
@@ -291,6 +324,7 @@ void SkStrikeCache::internalRemoveStrike(SkStrike* strike) {
     fCacheCount -= 1;
     fPinnerCount -= strike->fPinner != nullptr ? 1 : 0;
     fTotalMemoryUsed -= strike->fMemoryUsed;
+    RecordMemoryDecrease(strike->fMemoryUsed);
 
     if (strike->fPrev) {
         strike->fPrev->fNext = strike->fNext;
