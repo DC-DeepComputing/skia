@@ -73,10 +73,6 @@ uint32_t PipelineManager::Traits::Hash(const UniqueKey& pipelineKey) {
     return pipelineKey.hash();
 }
 
-// TODO(robertphillips): If either 'findTask' or 'findOrCreateTask' returns a hit and it
-// is 'fInProgress', if the search was for a non-Precompile task but we found a Precompile task
-// then the task was initially added to the wrong worklist (i.e., the low-priority one). We need
-// a way to move such tasks to the high priority work list.
 GraphicsPipelineHandle PipelineManager::createHandle(
         SharedContext* sharedContext,
         const GraphicsPipelineDesc& pipelineDesc,
@@ -220,10 +216,22 @@ sk_sp<PipelineCreationTask> PipelineManager::findOrCreateTask(
         const GraphicsPipelineDesc& pipelineDesc,
         const RenderPassDesc& renderPassDesc,
         SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags) {
+    bool forPrecompile = SkToBool(pipelineCreationFlags & PipelineCreationFlags::kForPrecompilation);
+
     SkAutoSpinlock lock{fSpinLock};
 
     sk_sp<PipelineCreationTask>* task = fActiveTasks.find(pipelineKey);
-    if (task) {
+
+    // TODO(robertphillips): If either 'findTask' or 'findOrCreateTask' returns a hit and it
+    // is 'fInProgress', if the search was for a non-Precompile task but we found a Precompile task
+    // then the task was initially added to the wrong worklist (i.e., the low-priority one). We need
+    // a way to move such tasks to the high priority work list.
+
+    // If we found an active task for the current Pipeline we know, modulo thread races,
+    // that it hasn't completed yet (since it, then, wouldn't be in the active task list).
+    // If it was initially added to the low priority, but turned out to be high priority,
+    // readd it as a high priority task.
+    if (task && forPrecompile && !(*task)->forPrecompile()) {
 #if defined(GPU_TEST_UTILS)
         fStats.fNumPreemptivelyFoundTasks++;
 #endif
