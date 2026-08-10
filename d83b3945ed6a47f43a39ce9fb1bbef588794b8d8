@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "87f80f64_74f83e92",
+        "filename": "src/capture/SkCapture.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-08-10T19:10:42Z",
+      "side": 1,
+      "message": "I think it is okay to have all the deserialization logic in one function. If we need to, it can be a followup CL.",
+      "parentUuid": "dcccb727_3b23c1f4",
+      "revId": "d83b3945ed6a47f43a39ce9fb1bbef588794b8d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "7256afda_bdf39854",
         "filename": "src/capture/SkCapture.h",
         "patchSetId": 10
@@ -52,6 +70,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc39dde7_2436f83b",
+        "filename": "src/capture/SkCapture.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-08-10T19:10:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bb911682_450240b8",
+      "revId": "d83b3945ed6a47f43a39ce9fb1bbef588794b8d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f2d9c314_c6ebbf15",
@@ -65,6 +101,24 @@
       "writtenOn": "2026-07-29T20:39:10Z",
       "side": 1,
       "message": "same as the commment above",
+      "revId": "d83b3945ed6a47f43a39ce9fb1bbef588794b8d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ffdce53d_5a5b9d4e",
+        "filename": "src/capture/SkCapture.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-08-10T19:10:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f2d9c314_c6ebbf15",
       "revId": "d83b3945ed6a47f43a39ce9fb1bbef588794b8d8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -86,6 +140,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "532fbeb3_099f0de8",
+        "filename": "src/capture/SkCapture.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-08-10T19:10:42Z",
+      "side": 1,
+      "message": "Yes, we\u0027ll call them assets, not pictures, in case we want to add something that isn\u0027t a picture here.",
+      "parentUuid": "d8fce2a1_bdc27f99",
+      "revId": "d83b3945ed6a47f43a39ce9fb1bbef588794b8d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b9f453bc_9733d7eb",
@@ -103,6 +175,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cbe79766_5fddc8ff",
+        "filename": "src/capture/SkCaptureManager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-08-10T19:10:42Z",
+      "side": 1,
+      "message": "Added a comment and will answer here as well for posterity.\n\nIf the real world application is doing a bunch of draws, they are snapping many Recordings over a period of time. The draws are not executed until the application/client inserts the Recording into the Context. There is the case however where the capture ends but some of the CaptureCanvases haven\u0027t snapped yet. We still want to capture these draw commands, even if they were not submitted.\n\nThis doesn\u0027t cover the case of draws that were snapped and sent to a Recording, but not submitted, but this does captrue the draws that are still kept in the CaptureCanvas.",
+      "parentUuid": "b9f453bc_9733d7eb",
+      "revId": "d83b3945ed6a47f43a39ce9fb1bbef588794b8d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "792013e9_fb534485",
@@ -116,6 +206,24 @@
       "writtenOn": "2026-07-29T20:39:10Z",
       "side": 1,
       "message": "can we separate this into it\u0027s own file. lmk if that\u0027s too granular",
+      "revId": "d83b3945ed6a47f43a39ce9fb1bbef588794b8d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8085233_17f8c4aa",
+        "filename": "tools/viewer/CaptureSlide.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-08-10T19:10:42Z",
+      "side": 1,
+      "message": "It might be too granular, I think keeping everything as separate functions is fine for now. A lot of the Slide files can get pretty big overtime, and Capture is nowhere near the biggest. (See SkottieSlide.cpp)\n\nWe can move it to its own file if we want to share functionality with another Slide.",
+      "parentUuid": "792013e9_fb534485",
       "revId": "d83b3945ed6a47f43a39ce9fb1bbef588794b8d8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
