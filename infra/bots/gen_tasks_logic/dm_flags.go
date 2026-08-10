@@ -1746,6 +1746,7 @@ func (b *TaskBuilder) dmFlags(internalHardwareLabel string) {
 			"RustExif",
 			"RustIcc",
 			"RustIcoCodec",
+			"RustJpeg",
 			"RustPngCodec",
 		}
 	}
