@@ -7,7 +7,9 @@
 
 #include "experimental/rust_jpeg/decoder/SkJpegRustDecoder.h"
 
+#include <algorithm>
 #include <cmath>
+#include <cstring>
 #include <functional>
 #include <memory>
 #include <utility>
@@ -140,12 +142,14 @@ DEF_TEST(RustJpeg_IncrementalDecode_PartialStreaming, r) {
     struct TestCase {
         const char* path;
         const char* description;
+        bool expectProgressivePreview;
     };
 
     static const TestCase kTestCases[] = {
-        {"images/color_wheel.jpg",       "baseline RGB 128x128"},
-        {"images/dog.jpg",               "RGB 180x180"},
-        {"images/mandrill_512_q075.jpg", "RGB 512x512"},
+        {"images/color_wheel.jpg",       "baseline RGB 128x128", false},
+        {"images/dog.jpg",               "RGB 180x180",          false},
+        {"images/mandrill_512_q075.jpg", "RGB 512x512",          false},
+        {"images/b78329453.jpeg",        "progressive RGB 635x760", true},
     };
 
     // JPEG headers (SOS, DQT, DHT tables...) can exceed 1 KB. This leaves
@@ -207,6 +211,7 @@ DEF_TEST(RustJpeg_IncrementalDecode_PartialStreaming, r) {
             ERRORF(r, "%s: failed to allocate bitmap", testCase.description);
             continue;
         }
+        memset(bitmap.getPixels(), 0xAB, bitmap.computeByteSize());
 
         result = codec->startIncrementalDecode(info, bitmap.getPixels(), bitmap.rowBytes());
         REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, result);
@@ -218,6 +223,7 @@ DEF_TEST(RustJpeg_IncrementalDecode_PartialStreaming, r) {
         int previousRowsDecoded = 0;
         int iterations = 0;
         bool sawIncompleteInput = false;
+        bool sawPartialOutput = false;
 
         while (iterations++ < kMaxIterations) {
             result = codec->incrementalDecode(&rowsDecoded);
@@ -239,6 +245,23 @@ DEF_TEST(RustJpeg_IncrementalDecode_PartialStreaming, r) {
             }
             sawIncompleteInput = true;
 
+            const uint8_t* pixels = static_cast<const uint8_t*>(bitmap.getPixels());
+            const bool pixelsChanged =
+                    std::any_of(pixels,
+                                pixels + bitmap.computeByteSize(),
+                                [](uint8_t value) { return value != 0xAB; });
+            if (testCase.expectProgressivePreview) {
+                REPORTER_ASSERT(r, rowsDecoded == 0,
+                                "%s: replaceable preview rows must not be reported as final",
+                                testCase.description);
+                sawPartialOutput |= pixelsChanged;
+            } else if (rowsDecoded > 0) {
+                sawPartialOutput = true;
+                REPORTER_ASSERT(r, pixelsChanged,
+                                "%s: reported stable rows were not written",
+                                testCase.description);
+            }
+
             if (streamPtr->isAllDataReceived()) {
                 ERRORF(r, "%s: still incomplete after all data was available",
                        testCase.description);
@@ -255,6 +278,9 @@ DEF_TEST(RustJpeg_IncrementalDecode_PartialStreaming, r) {
                         "%s: decode loop exceeded max iterations", testCase.description);
         REPORTER_ASSERT(r, sawIncompleteInput,
                         "%s: decode never observed incomplete input", testCase.description);
+        REPORTER_ASSERT(r, sawPartialOutput,
+                "%s: no partial output was exposed before all input arrived",
+                testCase.description);
         REPORTER_ASSERT(r, result == SkCodec::kSuccess,
                         "%s: resumed decode expected kSuccess, got %s",
                         testCase.description, SkCodec::ResultToString(result));

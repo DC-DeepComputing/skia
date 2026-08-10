@@ -607,7 +607,10 @@ SkCodec::Result SkJpegRustCodec::incrementalDecode(DecodingState& state, int* ro
             this->swizzleRow(srcRow.data(), dstRow);
             copiedRows++;
         }
-        state.fTotalRowsDecoded += copiedRows;
+        if (!rowsInfo.is_preview) {
+            state.fTotalRowsDecoded = std::max(
+                    state.fTotalRowsDecoded, static_cast<int>(dstRowStart + copiedRows));
+        }
     }
 
     if (rowsDecodedPtr) {
