@@ -106,6 +106,7 @@ GraphicsPipelineHandle PipelineManager::createHandle(
     return GraphicsPipelineHandle(std::move(task));
 }
 
+// TODO: do we need the ref on the runtimeDict ?
 void PipelineManager::startPipelineCreationTask(SharedContext* sharedContext,
                                                 sk_sp<const RuntimeEffectDictionary> runtimeDict,
                                                 const GraphicsPipelineHandle& handle) {
@@ -113,6 +114,9 @@ void PipelineManager::startPipelineCreationTask(SharedContext* sharedContext,
         return;
     }
 
+    // !!! Being in the active task list doesn't mean that it has or hasn't already been kicked off
+    // We need to guard against the case where two DrawPasses have the same Pipeline/Task and
+    // don't kick it off multiple times.
     sk_sp<PipelineCreationTask> task =
             std::get<sk_sp<PipelineCreationTask>>(handle.fTaskOrPipeline);
 

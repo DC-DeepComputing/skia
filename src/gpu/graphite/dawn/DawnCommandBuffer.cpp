@@ -257,7 +257,6 @@ bool DawnCommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
             return true;
         }
 
-
     UniformManager intrinsicValues{Layout::kStd140};
     CollectIntrinsicUniforms(fSharedContext->caps(), viewport, fDstReadBounds, &intrinsicValues);
     const auto uniformData = UniformDataBlock::Wrap(&intrinsicValues);
