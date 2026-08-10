@@ -44,6 +44,9 @@ public:
 
     static SkStrikeCache* GlobalStrikeCache();
 
+    static bool GetUseThreadLocalStrikeCaches();
+    static bool SetUseThreadLocalStrikeCaches(bool useThreadLocal);
+
     sk_sp<SkStrike> findStrike(const SkDescriptor& desc) SK_EXCLUDES(fLock);
 
     sk_sp<SkStrike> createStrike(

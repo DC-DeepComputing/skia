@@ -27,6 +27,7 @@ public:
      *  permit static global initializers that execute code.
      *  Init() is thread-safe and idempotent.
      */
+
     static void Init();
 
     /**
@@ -95,6 +96,17 @@ public:
      *  pinned strikes.
      */
     static void PurgePinnedFontCache();
+
+    /**
+     *  Return whether thread-local strike caches are used instead of a single shared cache.
+     */
+    static bool GetUseThreadLocalStrikeCaches();
+
+    /**
+     *  Specify whether to use thread-local strike caches instead of a single shared cache.
+     *  Returns the previous setting.
+     */
+    static bool SetUseThreadLocalStrikeCaches(bool useThreadLocal);
 
     /**
      *  This function returns the memory used for temporary images and other resources.
