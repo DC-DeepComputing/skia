@@ -16,6 +16,23 @@
       "message": "PTAL",
       "revId": "07f0267bb7b5545f808380b24508c02d04d9860d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8771925c_dc32dbb3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 20
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-10T14:24:24Z",
+      "side": 1,
+      "message": "Looks like something broke on the gold images.",
+      "revId": "07f0267bb7b5545f808380b24508c02d04d9860d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
