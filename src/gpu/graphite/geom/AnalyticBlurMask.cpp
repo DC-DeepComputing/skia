@@ -75,6 +75,9 @@ std::optional<AnalyticBlurMask> AnalyticBlurMask::Make(Recorder* recorder,
                                                        const SkRRect& srcRRect) {
     // TODO: Implement SkMatrix functionality used below for Transform.
     SkMatrix localToDevice = localToDeviceTransform;
+    if (!localToDevice.isSimilarity()) {
+        return std::nullopt;
+    }
 
     if (srcRRect.isRect() && localToDevice.preservesRightAngles()) {
         return MakeRect(recorder, localToDevice, deviceSigma, srcRRect.rect());
@@ -98,10 +101,11 @@ std::optional<AnalyticBlurMask> AnalyticBlurMask::Make(Recorder* recorder,
         return MakeCircle(recorder, localToDevice, deviceSigma, srcRect, devRect);
     }
 
-    if (devRRect.has_value() && SkRRectPriv::IsSimpleCircular(*devRRect) &&
-        localToDevice.isScaleTranslate()) {
-        return MakeRRect(recorder, localToDevice, deviceSigma, srcRRect, *devRRect);
-    }
+    //if (devRRect.has_value() && SkRRectPriv::IsSimpleCircular(*devRRect) &&
+    //    localToDevice.isScaleTranslate()) {
+    //    return std::nullopt;
+    //    return MakeRRect(recorder, localToDevice, deviceSigma, srcRRect, *devRRect);
+    //}
 
     return std::nullopt;
 }

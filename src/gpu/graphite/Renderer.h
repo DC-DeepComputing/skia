@@ -55,6 +55,7 @@ enum class Coverage { kNone, kSingleChannel, kLCD };
         M1(CircularArc)                             \
         M1(AnalyticRRect)                           \
         M1(AnalyticBlur)                            \
+        M1(AnalyticRRectBlur)                       \
         M1(PerEdgeAAQuad)                           \
         M2(CoverBounds,      NonAAFill)             \
         M2(CoverBounds,      RegularCover)          \
@@ -228,7 +229,7 @@ public:
                         ? DepthStencilFlags::kDepth : DepthStencilFlags::kNone);
     }
 
-    static const int kRenderStepIDVersion = 1;
+    static const int kRenderStepIDVersion = 2;
 
 #define ENUM1(BaseName) k##BaseName,
 #define ENUM2(BaseName, VariantName) k##BaseName##_##VariantName,
