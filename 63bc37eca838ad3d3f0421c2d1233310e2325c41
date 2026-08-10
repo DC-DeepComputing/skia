@@ -70,6 +70,30 @@
       },
       "revId": "63bc37eca838ad3d3f0421c2d1233310e2325c41",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6099777d_64c1df50",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-08-10T14:33:56Z",
+      "side": 1,
+      "message": "SGTM, done in https://skia-review.googlesource.com/c/skia-autoroll-internal-config/+/1319856 Add LICENSE to copies for skcms -\u003e skia roller",
+      "parentUuid": "9c6822dc_6cc35905",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 40
+      },
+      "revId": "63bc37eca838ad3d3f0421c2d1233310e2325c41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
