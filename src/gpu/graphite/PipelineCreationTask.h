@@ -23,6 +23,9 @@ namespace skgpu::graphite {
 // are).
 class PipelineCreationTask : public SkRefCnt {
 public:
+    bool forPrecompile() const {
+        return SkToBool(fPipelineCreationFlags1 & PipelineCreationFlags::kForPrecompilation);
+    }
 
 private:
     friend class PipelineManager; // for entire API and fPipeline
@@ -35,17 +38,13 @@ private:
             : fPipelineKey(pipelineKey)
             , fGraphicsPipelineDesc(graphicsPipelineDesc)
             , fRenderPassDesc(renderPassDesc)
-            , fPipelineCreationFlags(pipelineCreationFlags) {
-    }
-
-    bool forPrecompile() const {
-        return SkToBool(fPipelineCreationFlags & PipelineCreationFlags::kForPrecompilation);
+            , fPipelineCreationFlags1(pipelineCreationFlags) {
     }
 
     const UniqueKey fPipelineKey;  // used to track this task in the PipelineManager
     const GraphicsPipelineDesc fGraphicsPipelineDesc;
     const RenderPassDesc fRenderPassDesc;
-    const SkEnumBitMask<PipelineCreationFlags> fPipelineCreationFlags;
+    const SkEnumBitMask<PipelineCreationFlags> fPipelineCreationFlags1;
 
     // Once completed, this task will have filled in 'fPipeline' (if compilation succeeded).
     // This also serves to lock the pipeline in the cache.
