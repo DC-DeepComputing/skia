@@ -22,10 +22,14 @@ namespace skgpu::graphite {
 // known and handled by the PipelineManager vs being added to TaskLists (as Task-derived classes
 // are).
 class PipelineCreationTask : public SkRefCnt {
-#if defined(GPU_TEST_UTILS)
 public:
+#if defined(GPU_TEST_UTILS)
     int32_t id() const { return fID; }
 #endif
+
+    bool forPrecompile() const {
+        return SkToBool(fPipelineCreationFlags & PipelineCreationFlags::kForPrecompilation);
+    }
 
 private:
     friend class PipelineManager; // for entire API and fPipeline
@@ -43,10 +47,6 @@ private:
         static std::atomic<int32_t> sID{0};
         fID = sID++;
 #endif
-    }
-
-    bool forPrecompile() const {
-        return SkToBool(fPipelineCreationFlags & PipelineCreationFlags::kForPrecompilation);
     }
 
     const UniqueKey fPipelineKey;  // used to track this task in the PipelineManager
