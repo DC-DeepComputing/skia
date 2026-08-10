@@ -112,6 +112,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3b3f012_206e3d13",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 1662,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-08-10T18:53:01Z",
+      "side": 1,
+      "message": "Done, added an assert that it is a shape and also added a similar assert under the `if (styleType !\u003d SkStrokeRec::kFill_Style) {` condition since from my understand we should only be stroking if the geometry is a shape.",
+      "parentUuid": "79c7d4ec_22df47cc",
+      "range": {
+        "startLine": 1662,
+        "startChar": 0,
+        "endLine": 1662,
+        "endChar": 75
+      },
+      "revId": "9376256c561aac3d5083454982dc17b5d4b681bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a22cf973_b96a22a8",
