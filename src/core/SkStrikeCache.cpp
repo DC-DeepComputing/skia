@@ -25,10 +25,18 @@ struct SkFontMetrics;
 
 using namespace sktext;
 
-bool gSkUseThreadLocalStrikeCaches_IAcknowledgeThisIsIncrediblyExperimental = false;
+static bool gUseThreadLocalStrikeCaches = false;
+
+bool SkStrikeCache::GetUseThreadLocalStrikeCaches() { return gUseThreadLocalStrikeCaches; }
+
+bool SkStrikeCache::SetUseThreadLocalStrikeCaches(bool useThreadLocal) {
+    bool prev = GetUseThreadLocalStrikeCaches();
+    gUseThreadLocalStrikeCaches = useThreadLocal;
+    return prev;
+}
 
 SkStrikeCache* SkStrikeCache::GlobalStrikeCache() {
-    if (gSkUseThreadLocalStrikeCaches_IAcknowledgeThisIsIncrediblyExperimental) {
+    if (GetUseThreadLocalStrikeCaches()) {
         static thread_local auto* cache = new SkStrikeCache;
         return cache;
     }
