@@ -21,7 +21,6 @@
 #include "include/private/SkMath.h"
 #include "include/private/SkPixelStorage.h"
 #include "src/core/SkBitmapDevice.h"
-#include "src/core/SkCPURecorderImpl.h"
 #include "src/core/SkDevice.h"
 #include "src/core/SkImageInfoPriv.h"
 #include "src/core/SkSurfacePriv.h"
@@ -64,15 +63,15 @@ SkSurface_Raster::SkSurface_Raster(const SkImageInfo& info,
                                    void (*releaseProc)(void* pixels, void* context),
                                    void* context,
                                    const SkSurfaceProps* props)
-        : SkSurface_Raster(
-                  asRRI(skcpu::Recorder::TODO()), info, pixels, rb, releaseProc, context, props) {}
+        : SkSurface_Raster(skcpu::Recorder::TODO(), info, pixels, rb, releaseProc, context, props) {
+}
 
 SkSurface_Raster::SkSurface_Raster(const SkImageInfo& info,
                                    sk_sp<SkPixelRef> pr,
                                    const SkSurfaceProps* props)
-        : SkSurface_Raster(asRRI(skcpu::Recorder::TODO()), info, pr, props) {}
+        : SkSurface_Raster(skcpu::Recorder::TODO(), info, pr, props) {}
 
-SkSurface_Raster::SkSurface_Raster(skcpu::RecorderImpl* recorder,
+SkSurface_Raster::SkSurface_Raster(skcpu::Recorder* recorder,
                                    const SkImageInfo& info,
                                    void* pixels,
                                    size_t rowBytes,
@@ -85,7 +84,7 @@ SkSurface_Raster::SkSurface_Raster(skcpu::RecorderImpl* recorder,
     fWeOwnThePixels = false;    // We are "Direct"
 }
 
-SkSurface_Raster::SkSurface_Raster(skcpu::RecorderImpl* recorder,
+SkSurface_Raster::SkSurface_Raster(skcpu::Recorder* recorder,
                                    const SkImageInfo& info,
                                    sk_sp<SkPixelRef> pr,
                                    const SkSurfaceProps* props)
@@ -253,7 +252,7 @@ sk_sp<SkSurface> Recorder::makeBitmapSurface(const SkImageInfo& imageInfo,
         SkASSERT(pr->rowBytes() == rowBytes);
     }
 
-    return sk_make_sp<SkSurface_Raster>(asRRI(this), imageInfo, std::move(pr), surfaceProps);
+    return sk_make_sp<SkSurface_Raster>(this, imageInfo, std::move(pr), surfaceProps);
 }
 
 }  // namespace skcpu

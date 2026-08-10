@@ -7,6 +7,8 @@
 
 #include "include/core/SkContext.h"
 
+#include "include/core/SkCPURecorder.h"
+#include "include/core/SkContextOptions.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTraceMemoryDump.h"
@@ -21,6 +23,19 @@ SkContext::SkContext(sk_sp<SkSharedContext> sharedContext)
         : fSharedContext(std::move(sharedContext)) {}
 
 SkContext::~SkContext() = default;
+
+std::unique_ptr<SkContext> SkContext::Make(const SkContextOptions& options) {
+    sk_sp<SkSharedContext> sharedContext = SkSharedContext::Make(options);
+
+    return std::unique_ptr<SkContext>(new SkContext(std::move(sharedContext)));
+}
+
+std::unique_ptr<SkContext> SkContext::Make() { return SkContext::Make({}); }
+
+const SkContext* SkContext::TODO() {
+    static const SkContext* gContext = static_cast<const SkContext*>(SkContext::Make().release());
+    return gContext;
+}
 
 SkResourceCache* SkContext::resourceCache() const {
     return fSharedContext->synchronizedResourceCache();
@@ -83,4 +98,8 @@ void sk_trace_dump_visitor(const SkResourceCache::Rec& rec, void* context) {
 void SkContext::dumpMemoryStatistics(SkTraceMemoryDump* dump) {
     this->resourceCache()->visitAll(sk_trace_dump_visitor, dump);
     SkStrikeCache::DumpMemoryStatistics(dump);
+}
+
+std::unique_ptr<skcpu::Recorder> SkContext::makeRecorder() const {
+    return std::make_unique<skcpu::Recorder>(this);
 }

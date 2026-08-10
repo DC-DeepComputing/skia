@@ -32,15 +32,14 @@ class GrRecordingContextPriv;
 class GrThreadSafeCache;
 class SkArenaAlloc;
 class SkCapabilities;
+class SkContext;
 class SkJSONWriter;
 class SkGaneshRecorder;
 class SkRecorder;
 
 namespace skcpu {
-class ContextImpl;
 class Recorder;
-}  // namespace skcpu
-
+}
 namespace sktext::gpu {
 class SubRunAllocator;
 class TextBlobRedrawCoordinator;
@@ -282,7 +281,7 @@ private:
     std::unique_ptr<GrProxyProvider> fProxyProvider;
     // Depends on fProxyProvider (drawing tasks reference proxies). Must be destroyed first.
     std::unique_ptr<GrDrawingManager> fDrawingManager;
-    std::unique_ptr<const skcpu::ContextImpl> fCPUContext;
+    std::unique_ptr<const SkContext> fCPUContext;
     std::unique_ptr<SkGaneshRecorder> fRecorder;
 
 #if defined(GPU_TEST_UTILS)

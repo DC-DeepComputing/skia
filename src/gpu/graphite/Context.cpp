@@ -12,6 +12,7 @@
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkColorType.h"
+#include "include/core/SkContext.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkMatrix.h"
@@ -43,8 +44,6 @@
 #include "src/capture/SkCapture.h"
 #include "src/capture/SkCaptureManager.h"
 #include "src/core/SkAutoPixmapStorage.h"
-#include "src/core/SkCPUContextImpl.h"
-#include "src/core/SkCPURecorderImpl.h"
 #include "src/core/SkColorSpaceXformSteps.h"
 #include "src/core/SkConvertPixels.h"
 #include "src/core/SkImageInfoPriv.h"
@@ -104,9 +103,8 @@
 
 class SkTraceMemoryDump;
 
-namespace skgpu::graphite { class Recording; }
-
 namespace skgpu::graphite {
+class Recording;
 
 #define ASSERT_SINGLE_OWNER SKGPU_ASSERT_SINGLE_OWNER(this->singleOwner())
 
@@ -148,7 +146,7 @@ Context::Context(sk_sp<SharedContext> sharedContext,
                                                        options.fPipelineCachingCallback,
                                                        options.fPipelineCallback);
 
-    fCPUContext = std::make_unique<skcpu::ContextImpl>();
+    fCPUContext = SkContext::Make();
     if (options.fEnableCapture) {
         fSharedContext->setCaptureManager(sk_make_sp<SkCaptureManager>());
     }
@@ -230,7 +228,7 @@ std::unique_ptr<Recorder> Context::makeRecorder(const RecorderOptions& options) 
 std::unique_ptr<skcpu::Recorder> Context::makeCPURecorder() {
     ASSERT_SINGLE_OWNER
 
-    return std::make_unique<skcpu::RecorderImpl>(fCPUContext.get());
+    return std::make_unique<skcpu::Recorder>(fCPUContext.get());
 }
 
 std::unique_ptr<PrecompileContext> Context::makePrecompileContext() {

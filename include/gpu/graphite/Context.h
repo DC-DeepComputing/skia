@@ -37,11 +37,11 @@ class SkColorSpace;
 class SkTraceMemoryDump;
 struct SkIRect;
 struct SkImageInfo;
+class SkContext;
 
 namespace skcpu {
-class ContextImpl;
 class Recorder;
-}  // namespace skcpu
+}
 
 namespace skgpu {
 enum class BackendApi : unsigned int;
@@ -412,7 +412,7 @@ private:
     std::unique_ptr<ResourceProvider> fResourceProvider;
     std::unique_ptr<ClientMappedBufferManager> fMappedBufferManager;
     std::unique_ptr<QueueManager> fQueueManager;
-    std::unique_ptr<const skcpu::ContextImpl> fCPUContext;
+    std::unique_ptr<const SkContext> fCPUContext;
 
     PersistentPipelineStorage* fPersistentPipelineStorage;
 

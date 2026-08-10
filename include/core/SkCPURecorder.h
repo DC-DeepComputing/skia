@@ -8,29 +8,33 @@
 #ifndef skcpu_Recorder_DEFINED
 #define skcpu_Recorder_DEFINED
 
-#include <cstdint>
 #include "include/core/SkRecorder.h"
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkAPI.h"
 
+#include <cstddef>
+#include <cstdint>
+
 class SkCanvas;
+class SkContext;
 class SkSurface;
 class SkSurfaceProps;
 struct SkImageInfo;
-
-#include <cstddef>
 
 namespace skcpu {
 
 class SK_API Recorder : public SkRecorder {
 public:
     /** Returns a non-null global context. Can be used as a means of transitioning onto
-     * new APIs when a skcpu::Context/Recorder has not been piped down into the code paths
+     * new APIs when a SkContext/skcpu::Recorder has not been piped down into the code paths
      */
     static Recorder* TODO();
 
+    Recorder(const SkContext* ctx) : fCtx(ctx) {}
     SkRecorder::Type type() const final { return SkRecorder::Type::kCPU; }
     skcpu::Recorder* cpuRecorder() final { return this; }
+
+    const SkContext* ctx() const { return fCtx; }
 
     /** Allocates a bitmap-backed SkSurface. SkCanvas returned by SkSurface draws directly into
      *  those allocated pixels, which are zeroed before use. Pixel memory size is imageInfo.height()
@@ -59,17 +63,8 @@ private:
     // TODO (b/412351769): Implement this so we can capture from a CPU Recorder.
     SkCanvas* makeCaptureCanvas(SkCanvas*) final { return nullptr; }
     void createCaptureBreakpoint(SkSurface*) final;
+    const SkContext* const fCtx;
 };
-
-inline Recorder* AsRecorder(SkRecorder* recorder) {
-    if (!recorder) {
-        return nullptr;
-    }
-    if (recorder->type() != SkRecorder::Type::kCPU) {
-        return nullptr;
-    }
-    return static_cast<Recorder*>(recorder);
-}
 
 }  // namespace skcpu
 
