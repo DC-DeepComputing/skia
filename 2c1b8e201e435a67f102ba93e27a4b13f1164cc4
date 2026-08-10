@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "21a2d9eb_90802047",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-10T14:29:23Z",
+      "side": 1,
+      "message": "Yeah, if that starts to get annoying, I feel like we could split SharedContext into two pieces: the top-level shared core objects and then the backend-level GPU access.  Then the top-level owns the pipeline manager and we have to pass in the GPU access (or have the pipeline manager ref the GPU access).",
+      "parentUuid": "879717c5_f7e022f7",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 77
+      },
+      "revId": "2c1b8e201e435a67f102ba93e27a4b13f1164cc4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6a37f505_e4bb416a",
         "filename": "src/gpu/graphite/ResourceProvider.h",
         "patchSetId": 6
