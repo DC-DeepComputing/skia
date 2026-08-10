@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0f12a1c_85dd5c62",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-08-10T16:29:14Z",
+      "side": 1,
+      "message": "In support of https://chromium-review.googlesource.com/c/chromium/src/+/8205644.",
+      "revId": "4a3e5d86bddb42380e285cd1ab75f39633393478",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
