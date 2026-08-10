@@ -7,6 +7,7 @@
 
 #include "include/core/SkFont.h"
 #include "include/core/SkFontStyle.h"
+#include "include/core/SkGraphics.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkRefCnt.h"
@@ -58,6 +59,16 @@ DEF_TEST(SkStrikeCache_CachePurge, Reporter) {
         REPORTER_ASSERT(Reporter, cache.getTotalMemoryUsed() == 0);
     }
     REPORTER_ASSERT(Reporter, cache.getTotalMemoryUsed() == 0);
-
-
 }
+
+DEF_TEST(SkStrikeCache_ThreadLocalFlag, reporter) {
+    bool initial = SkGraphics::GetUseThreadLocalStrikeCaches();
+    REPORTER_ASSERT(reporter, SkGraphics::SetUseThreadLocalStrikeCaches(true) == initial);
+    REPORTER_ASSERT(reporter, SkGraphics::GetUseThreadLocalStrikeCaches() == true);
+    REPORTER_ASSERT(reporter, SkStrikeCache::GlobalStrikeCache() != nullptr);
+
+    REPORTER_ASSERT(reporter, SkGraphics::SetUseThreadLocalStrikeCaches(false) == true);
+    REPORTER_ASSERT(reporter, SkGraphics::GetUseThreadLocalStrikeCaches() == false);
+    REPORTER_ASSERT(reporter, SkGraphics::SetUseThreadLocalStrikeCaches(initial) == false);
+}
+
