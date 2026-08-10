@@ -109,6 +109,8 @@ public:
     // If the compilation failed, this will return an error message.
     virtual std::optional<std::string> didAsyncCompilationFail() const { return std::nullopt; }
 
+    virtual bool isReady() const = 0;
+
 protected:
     // GraphicsPipeline labels are often provided to the description of what needs to be compiled,
     // so it is required before the actual pipeline has been successfully created. Instead of adding
