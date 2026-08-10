@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "432d7aa6_ca85879a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4329740
+      },
+      "writtenOn": "2026-08-10T08:59:30Z",
+      "side": 1,
+      "message": "@lukasza@google.com sidequest from the JXL discord, please take a look and let me know if you want me to address anything, the bug has a sample image and a repro.\n\ni\u0027ll also add a follow up chromium side test to verify it, once skia rolled.\n\ncould you run CQ? i am not a commiter/dry-runner at skia",
+      "revId": "9ca090451df106a712bb3d318c4cca7330ba3d0f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
