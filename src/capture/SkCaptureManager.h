@@ -39,6 +39,8 @@ public:
         return fIsCurrentlyCapturing;
     }
 
+    void pruneDeadCanvases();
+
     sk_sp<SkCapture> getLastCapture() const;
 
 private:

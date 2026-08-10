@@ -70,6 +70,15 @@ void SkCaptureManager::snapPicture(SkSurface* surface) {
     }
 }
 
+void SkCaptureManager::pruneDeadCanvases() {
+    for (int i = 0; i < fTrackedCanvases.size();) {
+        if (fTrackedCanvases[i] == nullptr || fTrackedCanvases[i]->getBaseCanvasSurface() == nullptr) {
+            fTrackedCanvases.removeShuffle(i);
+        } else {
+            i++;
+        }
+    }
+}
 
 sk_sp<SkCapture> SkCaptureManager::getLastCapture() const {
    return fLastCapture;

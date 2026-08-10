@@ -62,7 +62,10 @@ void SkCaptureCanvas::detachRecordingCanvas() {
 }
 
 void SkCaptureCanvas::onSurfaceDelete() {
-    // TODO (b/412351769): signal to the capture manager that this canvas's surface has been deleted
+    fBaseCanvas = nullptr;
+    if (fManager) {
+        fManager->pruneDeadCanvases();
+    }
 }
 
 sk_sp<SkSurface> SkCaptureCanvas::onNewSurface(const SkImageInfo& info,
