@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "432a7236_f90a97f3",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-08-10T14:38:00Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "21a2d9eb_90802047",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 77
+      },
+      "revId": "2c1b8e201e435a67f102ba93e27a4b13f1164cc4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6a37f505_e4bb416a",
