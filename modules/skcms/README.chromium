@@ -4,4 +4,6 @@ Version: N/A
 Revision: 6010f3583977f651726b24228f7e6a377e47c58d
 Update Mechanism: Autoroll
 Security Critical: yes
-License: BSD
+Shipped: yes
+License: BSD-3-Clause
+License File: LICENSE
