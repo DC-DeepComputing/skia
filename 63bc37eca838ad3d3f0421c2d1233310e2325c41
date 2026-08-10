@@ -46,6 +46,30 @@
       },
       "revId": "63bc37eca838ad3d3f0421c2d1233310e2325c41",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c6822dc_6cc35905",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-08-10T14:28:19Z",
+      "side": 1,
+      "message": "Yeah I would support doing that unless someone here has a good reason not to do that.",
+      "parentUuid": "b6f873ef_1e65067b",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 40
+      },
+      "revId": "63bc37eca838ad3d3f0421c2d1233310e2325c41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
