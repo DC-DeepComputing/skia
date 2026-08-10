@@ -65,6 +65,53 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0e276d2_ea13da15",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 1607,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-10T16:03:27Z",
+      "side": 1,
+      "message": "I agree, I think that\u0027s the most intuitive behavior and the most flexible way to do it.",
+      "parentUuid": "a0f4f319_89db70e9",
+      "range": {
+        "startLine": 1596,
+        "startChar": 0,
+        "endLine": 1607,
+        "endChar": 5
+      },
+      "revId": "9376256c561aac3d5083454982dc17b5d4b681bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79c7d4ec_22df47cc",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 1662,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-10T16:03:27Z",
+      "side": 1,
+      "message": "I think we need to still assert that the geometry is a shape here",
+      "range": {
+        "startLine": 1662,
+        "startChar": 0,
+        "endLine": 1662,
+        "endChar": 75
+      },
+      "revId": "9376256c561aac3d5083454982dc17b5d4b681bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a22cf973_b96a22a8",
