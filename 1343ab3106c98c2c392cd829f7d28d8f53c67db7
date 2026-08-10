@@ -16,6 +16,24 @@
       "message": "Change LGTM, please also add your info to `AUTHORS`.",
       "revId": "1343ab3106c98c2c392cd829f7d28d8f53c67db7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "071e14a9_ce35da0f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5064562
+      },
+      "writtenOn": "2026-08-10T23:51:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "898b2bf6_b1363c86",
+      "revId": "1343ab3106c98c2c392cd829f7d28d8f53c67db7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
