@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "879717c5_f7e022f7",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-08-10T12:40:33Z",
+      "side": 1,
+      "message": "We definitely can and I\u0027ve updated this CL to do that. It does get a bit wonky though since we\u0027re getting the PipelineManager from the SharedContext but then immediately passing the SharedContext back into the PipelineManager methods.",
+      "parentUuid": "fafb9f0d_87e9ff41",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 77
+      },
+      "revId": "2c1b8e201e435a67f102ba93e27a4b13f1164cc4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6a37f505_e4bb416a",
         "filename": "src/gpu/graphite/ResourceProvider.h",
         "patchSetId": 6
@@ -37,6 +61,30 @@
       "writtenOn": "2026-08-06T19:28:18Z",
       "side": 1,
       "message": "My preference would be to have two versions of sharedContext() that return const and non-const, and we pull the existing const version out of the define guard.",
+      "range": {
+        "startLine": 113,
+        "startChar": 0,
+        "endLine": 113,
+        "endChar": 69
+      },
+      "revId": "2c1b8e201e435a67f102ba93e27a4b13f1164cc4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4df50064_50b2cd91",
+        "filename": "src/gpu/graphite/ResourceProvider.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-08-10T12:40:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6a37f505_e4bb416a",
       "range": {
         "startLine": 113,
         "startChar": 0,
