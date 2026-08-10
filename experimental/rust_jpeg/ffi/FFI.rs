@@ -41,6 +41,9 @@ mod ffi {
         /// The destination row index where the buffer should start being copied.
         dst_row_start: u32,
         row_count: u32,
+        /// Whether these rows replace a previous progressive preview rather than
+        /// extending the stable final-output prefix.
+        is_preview: bool,
     }
 
     /// A scanned JPEG segment's header information.
@@ -425,6 +428,12 @@ pub struct Reader {
     /// May be less than height for truncated images.
     valid_rows: u32,
     last_consumed_row_count: u32,
+    /// Progressive previews are replaceable full-frame renders. Track the
+    /// completed scan represented by the current preview separately from the
+    /// append-only stable row prefix.
+    preview_rows: u32,
+    preview_scan_count: usize,
+    last_consumed_preview_scan_count: usize,
     incremental_decoder: Option<IncrementalJpegDecoder>,
 
     scanner: SegmentScanner,
@@ -454,6 +463,9 @@ impl Reader {
             image_data_loaded: false,
             valid_rows: 0,
             last_consumed_row_count: 0,
+            preview_rows: 0,
+            preview_scan_count: 0,
+            last_consumed_preview_scan_count: 0,
             incremental_decoder: None,
             // Stop at SOS — we only need header segments for metadata.
             scanner: SegmentScanner::new(jpeg_marker::SOS),
@@ -720,6 +732,12 @@ impl Reader {
                     .and_then(|rows| u32::try_from(rows).ok())
                     .unwrap_or(0)
                     .min(self.height);
+                self.preview_rows = decoder
+                    .decoded_preview_scanlines()
+                    .and_then(|rows| u32::try_from(rows).ok())
+                    .unwrap_or(0)
+                    .min(self.height);
+                self.preview_scan_count = decoder.decoded_scans().unwrap_or(0);
                 DecodingResult::IncompleteInput
             }
             Err(ref e) => {
@@ -734,20 +752,35 @@ impl Reader {
     }
 
     pub fn get_next_rows<'a>(&'a mut self, buffer: &mut &'a [u8]) -> DecodedRowsInfo {
+        // Successful output is final even when the last incremental attempt
+        // previously exposed a progressive preview.
+        if !self.image_data_loaded
+            && self.preview_rows > 0
+            && self.preview_scan_count > self.last_consumed_preview_scan_count
+        {
+            self.last_consumed_preview_scan_count = self.preview_scan_count;
+            let preview_bytes = (self.preview_rows as usize) * (self.row_bytes() as usize);
+            *buffer = &self.image_data[..preview_bytes];
+            return DecodedRowsInfo {
+                dst_row_start: 0,
+                row_count: self.preview_rows,
+                is_preview: true,
+            };
+        }
+
         let already_consumed = self.last_consumed_row_count;
         let row_bytes = self.row_bytes() as usize;
 
-        let current_rows = if self.image_data_loaded {
-            self.valid_rows
-        } else {
-            0
-        };
+        // `decoded_scanlines()` is an append-only stable prefix and is useful
+        // before the complete image has loaded (notably for baseline JPEGs).
+        let current_rows = self.valid_rows;
 
         if current_rows <= already_consumed {
             *buffer = &[];
             return DecodedRowsInfo {
                 dst_row_start: 0,
                 row_count: 0,
+                is_preview: false,
             };
         }
 
@@ -761,6 +794,7 @@ impl Reader {
         DecodedRowsInfo {
             dst_row_start: already_consumed,
             row_count: new_row_count,
+            is_preview: false,
         }
     }
 
@@ -791,6 +825,9 @@ impl Reader {
         self.image_data_loaded = false;
         self.valid_rows = 0;
         self.last_consumed_row_count = 0;
+        self.preview_rows = 0;
+        self.preview_scan_count = 0;
+        self.last_consumed_preview_scan_count = 0;
         self.incremental_decoder = None;
         self.stream_exhausted = false;
     }
