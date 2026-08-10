@@ -22,6 +22,30 @@
       },
       "revId": "63bc37eca838ad3d3f0421c2d1233310e2325c41",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6f873ef_1e65067b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-08-10T14:23:51Z",
+      "side": 1,
+      "message": "That\u0027d be easy to do, we\u0027d just need to add another `copies` entry to the config file: https://skia.googlesource.com/skia-autoroll-internal-config/+/refs/heads/main/skia-infra-public/skcms-skia.cfg#62",
+      "parentUuid": "d37816dc_84fa4524",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 40
+      },
+      "revId": "63bc37eca838ad3d3f0421c2d1233310e2325c41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
