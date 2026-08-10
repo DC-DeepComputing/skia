@@ -63,7 +63,7 @@ bool DrawPass::prepareResources(ResourceProvider* resourceProvider,
         // was cached for reuse across Recordings, it's possible that the initializing Recording
         // failed, leaving the TextureProxy in a bad state (and currently with no way to reconstruct
         // the tasks required to initialize it).
-        // TODO(b/409888039): Once TextureProxies track their dependendent tasks to include in all
+        // TODO(b/409888039): Once TextureProxies track their dependent tasks to include in all
         // Recordings, this "should" be able to changed to asserts.
         if (!fSampledTextures[i]->isInstantiated() && !fSampledTextures[i]->isLazy()) {
             SKIA_LOG_W("Cannot sample from an uninstantiated TextureProxy, label %s",

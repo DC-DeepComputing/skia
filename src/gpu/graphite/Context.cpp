@@ -258,6 +258,10 @@ std::unique_ptr<Recorder> Context::makeInternalRecorder() const {
 InsertStatus Context::insertRecording(const InsertRecordingInfo& info) {
     ASSERT_SINGLE_OWNER
 
+//    bool arePipelinesReady = info.fRecording->priv().arePipelinesReady();
+//    SkDebugf("Context::insertRecording arePipelinesReady: %s\n", arePipelinesReady ? "true"
+//                                                                                   : "false");
+
     return fQueueManager->addRecording(info, this);
 }
 
