@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d37816dc_84fa4524",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-08-10T14:19:22Z",
+      "side": 1,
+      "message": "If we are just copying this directly from the repo, is there a reason we don\u0027t just include the LICENSE file on the autoroll? +Eric",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 40
+      },
+      "revId": "63bc37eca838ad3d3f0421c2d1233310e2325c41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
