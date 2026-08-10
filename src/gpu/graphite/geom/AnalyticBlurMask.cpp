@@ -100,7 +100,8 @@ std::optional<AnalyticBlurMask> AnalyticBlurMask::Make(Recorder* recorder,
 
     if (devRRect.has_value() && SkRRectPriv::IsSimpleCircular(*devRRect) &&
         localToDevice.isScaleTranslate()) {
-        return MakeRRect(recorder, localToDevice, deviceSigma, srcRRect, *devRRect);
+        return std::nullopt;
+        //return MakeRRect(recorder, localToDevice, deviceSigma, srcRRect, *devRRect);
     }
 
     return std::nullopt;
