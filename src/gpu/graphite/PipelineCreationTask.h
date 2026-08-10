@@ -23,6 +23,9 @@ namespace skgpu::graphite {
 // are).
 class PipelineCreationTask : public SkRefCnt {
 public:
+    bool forPrecompile() const {
+        return SkToBool(fPipelineCreationFlags & PipelineCreationFlags::kForPrecompilation);
+    }
 
 private:
     friend class PipelineManager; // for entire API and fPipeline
@@ -36,10 +39,6 @@ private:
             , fGraphicsPipelineDesc(graphicsPipelineDesc)
             , fRenderPassDesc(renderPassDesc)
             , fPipelineCreationFlags(pipelineCreationFlags) {
-    }
-
-    bool forPrecompile() const {
-        return SkToBool(fPipelineCreationFlags & PipelineCreationFlags::kForPrecompilation);
     }
 
     const UniqueKey fPipelineKey;  // used to track this task in the PipelineManager
