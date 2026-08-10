@@ -313,6 +313,7 @@ std::pair<DrawParams*, Layer*> DrawListLayer::recordDraw(const Renderer* rendere
 }
 
 std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
+                                                      StorageContext* storageContext,
                                                       sk_sp<TextureProxy> target,
                                                       const SkImageInfo& targetInfo,
                                                       const DstReadStrategy dstReadStrategy) {
@@ -320,8 +321,7 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
 
     std::unique_ptr<DrawPass> drawPass(new DrawPass(target,
                                                     {fLoadOp, StoreOp::kStore},
-                                                    fClearColor,
-                                                    recorder->priv().refStorageBufferManager()));
+                                                    fClearColor));
     DrawBufferManager* bufferMgr = recorder->priv().drawBufferManager();
     DrawWriter drawWriter(&drawPass->fCommandList, bufferMgr);
 
@@ -334,6 +334,10 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
     drawPass->fCommandList.setScissor(lastScissor);
 
     UniformTracker uniformTracker(fStorageBufferSupport);
+    if (fStorageBufferSupport) {
+        SkASSERT(storageContext);
+        storageContext->finalizePrecachedStorageData();
+    }
 
     const bool rebindTexturesOnPipelineChange = dstReadStrategy == DstReadStrategy::kTextureCopy;
     CompressedPaintersOrder priorDrawPaintOrder{};
@@ -438,6 +442,16 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
     }
 
     drawWriter.flush();
+
+    if (fStorageBufferSupport) {
+        SkASSERT(storageContext);
+        drawPass->fStorageBufferInfo = storageContext->finalize(bufferMgr);
+        if (!storageContext->isEmpty() && !drawPass->fStorageBufferInfo) SK_UNLIKELY {
+            SKIA_LOG_W("Failed to write Storage Data for Draw pass, dropping!");
+            this->reset(LoadOp::kLoad);
+            return nullptr;
+        }
+    }
 
     drawPass->fBounds = fPassBounds.roundOut().asSkIRect();
     drawPass->fPipelineDescs = fPipelineCache.detach();
