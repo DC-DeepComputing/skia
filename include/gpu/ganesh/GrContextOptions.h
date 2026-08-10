@@ -8,6 +8,7 @@
 #ifndef GrContextOptions_DEFINED
 #define GrContextOptions_DEFINED
 
+#include "include/core/SkContextOptions.h"
 #include "include/core/SkData.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
@@ -21,7 +22,7 @@
 
 class SkExecutor;
 
-struct SK_API GrContextOptions {
+struct SK_API GrContextOptions : public SkContextOptions {
     enum class Enable {
         /** Forces an option to be disabled. */
         kNo,
@@ -378,7 +379,6 @@ struct SK_API GrContextOptions {
     bool fDisallowWriteAndTransferPixelRowBytes = false;
 
 #endif
-
 };
 
 #endif
