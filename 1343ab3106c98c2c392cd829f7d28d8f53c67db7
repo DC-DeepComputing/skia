@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "898b2bf6_b1363c86",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-08-10T13:17:35Z",
+      "side": 1,
+      "message": "Change LGTM, please also add your info to `AUTHORS`.",
+      "revId": "1343ab3106c98c2c392cd829f7d28d8f53c67db7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
