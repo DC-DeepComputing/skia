@@ -391,6 +391,11 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ThreadedPipelinePrecompileTest,
                                    reporter,
                                    context,
                                    CtsEnforcement::kNever) {
+
+    if (context->backend() != skgpu::BackendApi::kMetal) {
+        return;
+    }
+
     constexpr int kNumPurgingThreads = 0;
     constexpr int kNumRecordingThreads = 0;
     constexpr int kNumPrecompileThreads = 4;
