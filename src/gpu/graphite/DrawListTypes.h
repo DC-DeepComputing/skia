@@ -23,6 +23,7 @@
 
 #include <cstdint>
 #include <functional>
+#include <limits>
 #include <optional>
 
 namespace skgpu::graphite {
@@ -108,6 +109,11 @@ struct LayerKey {
     // intersections with the draws in the BindingList for this key.
     SkEnumBitMask<BoundsFlags> fFlags;
 
+    int32_t hash() const {
+        // Smash bits together, it's fine
+        return ((int32_t)fPipelineIndex << 22) | ((int32_t) fTextureIndex << 10) | (int32_t) fUniformIndex;
+    }
+
     bool performsShading() const { return SkToBool(fFlags & BoundsFlags::kColor); }
     bool usesStencil()     const { return SkToBool(fFlags & BoundsFlags::kStencil); }
 
@@ -124,6 +130,121 @@ struct LayerKey {
     }
 };
 
+#define ROTATING_BOUNDS
+// #define MINIMUM_AREA_BOUNDS
+// #define BASE_DUMP_BOUNDS
+// #define CAP_BOUNDS
+// #define CHAINED_BOUNDS
+
+struct BoundsBlock {
+
+    BoundsBlock() {
+        fBounds = Rect::InfiniteInverted();
+#if defined(ROTATING_BOUNDS)
+        fRects.fill(Rect::InfiniteInverted());
+#elif defined(BASE_DUMP_BOUNDS)
+        fBase = Rect::InfiniteInverted();
+#endif
+    }
+
+    bool intersects(Rect::ComplementRect test) const {
+        if (!fBounds.intersects(test)) {
+            // fBounds also includes all chained bounds, so no need to recurse
+            return false;
+        }
+
+        const int count = std::min(kN, fJoinIndex);
+
+#if defined(BASE_DUMP_BOUNDS)
+        if (count == kN) {
+            if (fBase.intersects(test)) {
+                return true;
+            }
+        }
+#elif defined(CAP_BOUNDS)
+        if (count == kN) {
+            return true;
+        }
+#endif
+
+        for (int i = 0; i < count; i++) {
+            if (fRects[i].intersects(test)) {
+                return true;
+            }
+        }
+#if defined(CHAINED_BOUNDS)
+            if (fChain) {
+                return fChain->intersects(test);
+            }
+#endif
+        return false;
+    }
+
+    void add(Rect rect, SkArenaAlloc* alloc, int drawCount) {
+        fBounds.join(rect);
+
+        int join = fJoinIndex++;
+#if defined(MINIMUM_AREA_BOUNDS)
+        if (join >= kN) {
+            float area = std::numeric_limits<float>::infinity();
+            for (int i = 0; i < kN; ++i) {
+                float optArea = fRects[i].makeJoin(rect).area();
+                if (optArea < area) {
+                    join = i;
+                }
+            }
+            fRects[join].join(rect);
+        } else {
+            fRects[join] = rect;
+        }
+#elif defined(BASE_DUMP_BOUNDS)
+        if (join >= kN) {
+            join = join % kN;
+            fBase.join(fRects[join]);
+        }
+        fRects[join] = rect;
+#elif defined(ROTATING_BOUNDS)
+        fRects[join % kN].join(rect);
+#elif defined(CAP_BOUNDS)
+        if (join < kN) {
+            fRects[join] = rect;
+        }
+#elif defined(CHAINED_BOUNDS)
+        if (join >= kN) {
+            if (fChain) {
+                fChain->add(rect, alloc, drawCount);
+                return;
+            } else if (drawCount < 32) {
+                // Make a chain
+                fChain = alloc->make<BoundsBlock>();
+                fChain->add(rect, alloc, drawCount);
+                return;
+            } else {
+                // rotate as a fallback
+                join = join % kN;
+            }
+        }
+        fRects[join].join(rect);
+#endif
+    }
+
+private:
+    static constexpr int kN = 8;
+
+    Rect fBounds;
+#if defined(BASE_DUMP_BOUNDS)
+    Rect fBase;
+#endif
+
+    std::array<Rect, kN> fRects;
+
+    int fJoinIndex = 0;
+
+#if defined(CHAINED_BOUNDS)
+    BoundsBlock* fChain = nullptr;
+#endif
+};
+
 /**
  * A Draw represents the combination of a DrawParams and a specific RenderStep from the
  * chosen Renderer. DrawListLayer ensures Draws for a multi-step Renderer are drawn in the
@@ -133,10 +254,12 @@ struct Draw {
     Draw(const DrawParams* params, const UniformDataCache::Index uniformIndex)
             : fDrawParams(params), fUniformIndex(uniformIndex) {}
 
-    const DrawParams* fDrawParams;
-    const UniformDataCache::Index fUniformIndex;
+    Draw() = default;
 
-    SK_DECLARE_INTERNAL_LLIST_INTERFACE(Draw);
+    const DrawParams* fDrawParams;
+    UniformDataCache::Index fUniformIndex;
+
+    Draw* fNext = nullptr;
 };
 
 /**
@@ -151,50 +274,70 @@ struct Draw {
  */
 struct BindingList {
     BindingList(const RenderStep* step, LayerKey key) : fStep(step), fKey(key) {}
+    BindingList() = default;
 
-    Rect fBounds = Rect::InfiniteInverted();
-
-    SkTInternalLList<Draw> fDraws;
     const RenderStep* fStep;
-    const LayerKey fKey;
+    Draw* fHead = nullptr;
+    Draw* fTail = nullptr;
 
-    // If this is true, it means that a draw was added to it without having been tested against
-    // the earlier BindingLists so they are not eligible for being moved forward to a new layer.
-    bool fBlockForwardMerges = false;
+    Draw fFirstDraw;
 
-    int fDrawCount = 0; // SkTInternalLList doesn't maintain a count for us :/
+    LayerKey fKey;
 
     SK_DECLARE_INTERNAL_LLIST_INTERFACE(BindingList);
 
-    SK_ALWAYS_INLINE bool intersects(const Rect::ComplementRect drawBounds) const {
-        if (!fBounds.intersects(drawBounds)) {
+    SK_ALWAYS_INLINE bool isBetterMatch(const LayerKey& key,
+                                        const BindingList* existingMatch) const {
+        if (key.fPipelineIndex != fKey.fPipelineIndex) {
+            // Any partial match must still share the same pipeline
             return false;
+        } else if (!existingMatch) {
+            return true; // Any pipeline match is better than no match
         }
 
-        // When stencil is involved (or depth-only draws), a larger limit is useful because it
-        // creates a shallower layer list. This in turn makes it more likely to find BindingList
-        // matches. In particular, since stencils have to be disjoint from everything and depth-only
-        // clip draws prevent further layer searches, checking more bounding boxes leads to a net
-        // improvement in complex scenes.
-        const int limit = fKey.isSimpleShading() ? 16 : 64;
-        if (fDrawCount > limit) {
-            return true;
-        }
-        for (const Draw* d = fDraws.head(); d; d = d->fNext) {
-            if (d->fDrawParams->drawBounds().intersects(drawBounds)) {
-                return true;
-            }
-        }
-        return false;
+        // Otherwise we need to rank based on similarities, preferring texture matches to
+        // uniform matches.
+        SkASSERT(existingMatch->fKey.fPipelineIndex == key.fPipelineIndex);
+        const bool existingTextureMatch = existingMatch->fKey.fTextureIndex == key.fTextureIndex;
+        const bool newTextureMatch = fKey.fTextureIndex == key.fTextureIndex;
+        if (existingTextureMatch != newTextureMatch) {
+            // If `newTextureMatch` is true, then the new BindingList is definitely the better
+            // match (prioritizing textures over UBO changes). If it's false, then the old
+            // match was better since it had a texture match.
+            return newTextureMatch;
+        } // else either both match on the texture, or neither match so equal preference.
+
+        const bool existingUniformMatch = existingMatch->fKey.fUniformIndex == key.fUniformIndex;
+        const bool newUniformMatch= fKey.fUniformIndex == key.fUniformIndex;
+        if (existingUniformMatch != newUniformMatch) {
+            // Like above, if `newUniformMatch` is true, it's the better match.
+            return newUniformMatch;
+        } // else either both match on the uniform, or neither match so equal preference.
+
+        // // At this point, they are equivalent, so prefer the new list as it's deeper
+        return true;
     }
 
-    SK_ALWAYS_INLINE void addDraw(Draw* draw, bool backToFront) {
-        fBounds.join(draw->fDrawParams->drawBounds());
-        fDrawCount++;
-        if (backToFront) {
-            fDraws.addToTail(draw);
+    SK_ALWAYS_INLINE void addDraw(SkArenaAlloc* alloc,
+                                  DrawParams* drawParams,
+                                  UniformDataCache::Index uniformIndex,
+                                  bool backToFront) {
+        if (fHead) {
+            // Singly-linked list for additional draws, created from the arena
+            Draw* newDraw = alloc->make<Draw>(drawParams, uniformIndex);
+            if (backToFront) {
+                // The new draw goes to the end of the tail
+                fTail->fNext = newDraw;
+                fTail = newDraw;
+            } else {
+                // The new draw becomes the new head
+                newDraw->fNext = fHead;
+                fHead = newDraw;
+            }
         } else {
-            fDraws.addToHead(draw);
+            // The first draw uses inline storage and becomes the head
+            fFirstDraw = {drawParams, uniformIndex};
+            fHead = fTail = &fFirstDraw;
         }
     }
 };
@@ -235,9 +378,52 @@ struct BindingList {
 struct Layer {
     Layer(const CompressedPaintersOrder& order) : fOrder(order) {}
 
-    const CompressedPaintersOrder fOrder;
-    SkTInternalLList<BindingList> fBindings;
     SK_DECLARE_INTERNAL_LLIST_INTERFACE(Layer);
+
+    const CompressedPaintersOrder fOrder;
+
+    SkTInternalLList<BindingList> fBindings;
+    BindingList fFirstBinding;
+
+    BoundsBlock fColorBounds;
+    BoundsBlock fStencilBounds;
+
+    struct Stats {
+        int fTotalDrawCount = 0;
+        int fBindingListCount = 0;
+        int fMaxDrawsPerBindingList = 0;
+        int fMaxTestDepth = 0;
+        float fAvgDrawsPerBindingList = 0.f;
+        float fAvgTestDepth = 0.f;
+
+        int fStencilCount = 0;
+    };
+
+    Stats collectStats() const {
+        Stats stats;
+
+        for (const BindingList* list : fBindings) {
+            stats.fBindingListCount++;
+
+            int drawCount = 0;
+
+            for (const Draw* d = list->fHead; d; d = d->fNext) {
+                drawCount++;
+            }
+            stats.fTotalDrawCount += drawCount;
+            if (list->fKey.fFlags & BoundsFlags::kStencil) {
+                stats.fStencilCount += drawCount;
+            }
+            stats.fMaxDrawsPerBindingList = std::max(drawCount, stats.fMaxDrawsPerBindingList);
+            // SkDebugf("binding change %d\n", drawCount);
+        }
+
+        stats.fMaxTestDepth = fMaxTestDepth;
+        stats.fAvgDrawsPerBindingList = stats.fTotalDrawCount / (float) stats.fBindingListCount;
+        stats.fAvgTestDepth = fTestDepth / (float) fTestCount;
+
+        return stats;
+    }
 
     // Performs no bounds checks, so can only be used when checks have already confirmed the Layer
     // is valid for adding a new draw into. This searches backwards from `startList` (exclusive) or
@@ -247,19 +433,22 @@ struct Layer {
     // at or before `startList`). If an exact match is not found, it attempts to return a
     // BindingList that has the same pipeline index.
     SK_ALWAYS_INLINE BindingList* searchBinding(const LayerKey& key,
-                                                BindingList* startList=nullptr,
-                                                bool forForwardMerge=false) {
-        // `startList` is exclusive, so if it's non-null the loop starts with fPrev.
+                                                BindingList* startList=nullptr) {
         BindingList* pipelineMatch = nullptr;
+
+        // `startList` is exclusive, so if it's non-null the loop starts with fPrev.
+        int oldDepth = fTestDepth;
         for (BindingList* list = startList ? startList->fPrev : fBindings.tail();
                 list != nullptr; list = list->fPrev) {
-            if (forForwardMerge && list->fBlockForwardMerges) {
-                break;
-            }
+            // if (forForwardMerge && list->fBlockForwardMerges) {
+            //     break;
+            // }
+            fTestDepth++;
 
             if (list->fKey.isEqual(key)) {
+                fMaxTestDepth = std::max(fMaxTestDepth, fTestDepth - oldDepth);
                 return list;
-            } else if (list->fKey.fPipelineIndex == key.fPipelineIndex) {
+            } else if (list->isBetterMatch(key, pipelineMatch)) {
                 // Save pipeline while continuing to search for an exact match
                 SkASSERT(list->fKey.fFlags == key.fFlags);
                 pipelineMatch = list;
@@ -273,164 +462,43 @@ struct Layer {
             }
         }
 
+        fMaxTestDepth = std::max(fMaxTestDepth, fTestDepth - oldDepth);
+
         // Even though an exact match wasn't found, any non-null pipelineMatch can be used to place
         // a new binding list, which helps shift from a pipeline switch to just a dynamic state.
         return pipelineMatch;
     }
 
-    // Test the draw with the given bounds and LayerKey against the draws already collected in
-    // this Layer, limiting checks to those that overlap with `testMask`. Returns whether or not
-    // the draw is allowed in the layer, allowed before the layer, or must be in a later layer.
-    // Any BindingList that the draw can be appended to directly, or pulled forward with the draw
-    // is also returned.
-    SK_ALWAYS_INLINE std::pair<SkEnumBitMask<BoundsTestResult>, BindingList*> test(
+    int fTestCount = 0;
+    int fTestDepth = 0;
+    int fMaxTestDepth = 0;
+
+    SK_ALWAYS_INLINE SkEnumBitMask<BoundsTestResult> test(
             const Rect::ComplementRect drawBounds,
-            const LayerKey& key,
             SkEnumBitMask<BoundsFlags> testMask) {
-        // If the test mask is kNone, the caller should just use searchBinding() directly since it
-        // won't overlap with anything anyways. Or (rare) it's some opaque multistep draw that
-        // can't overlap itself so is going through the regular `test` process to find a layer.
-        SkASSERT(testMask != BoundsFlags::kNone ||
-                 SkToBool(key.fFlags & BoundsFlags::kMustBeDisjoint));
-        // Overlaps being allowed or not is a property of the BindingList and shouldn't be put in
-        // the test mask (otherwise it'd trigger testing against every BindingList that needed to be
-        // internally disjoint, not just a matching list).
-        SkASSERT(!SkToBool(testMask & BoundsFlags::kMustBeDisjoint));
-
-        // Forward merging attempts to pull an earlier, compatible draw out of the current layer and
-        // push it into a newly created layer to improve pipeline/texture batching.
-        //
-        // 1. Draw Type Restrictions (Single Renderstep & No Depth-Only):
-        //    Forward merging is strictly limited to single-renderstep shading draws. We explicitly
-        //    forbid depth-only draws, and the single-step requirement inherently excludes stencil
-        //    draws. If we allowed multi-step renderers to forward merge, we would risk pulling a
-        //    parent renderstep forward and over its already-inserted child.
-        //
-        // 2. Directional & Spatial Validity:
-        //    The new draw searches backwards, tail to head, so during the search, any binding
-        //    matches found *before* a layer execute *after* that draw during rendering. Because
-        //    existing shading draws (has kColor) in a layer are guaranteed to be non-intersecting
-        //    with other kColor BindingLists, it is visually safe to extract this match and defer
-        //    its execution to the new layer without violating the Painter's Algorithm.
-        //
-        // 3. The Tail-Only Restriction:
-        //    We strictly limit forward merging to the *tail* of the layer list. If we allowed
-        //    forward merging from a middle layer, we would be forced to insert the newly generated
-        //    target layer into the middle of the list. This would break the structural invariant
-        //    that `Layer::fOrder` strictly increases with the physical list order; this invariant
-        //    necessary to ensure that a draw is inserted after *ALL* depth-only clip draws that
-        //    affect it.
-        bool layerIsForwardMergeEligible = !fNext && key.isSimpleShading();
-        const bool overlapInMatchesAllowed = key.isSimpleShading() || key.isDepthOnly();
-
-        // Always iterate backwards from the tail, we do this because most draws (including depth-
-        // only clip draws) must maintain painter's order so we can early out if they overlap with
-        // a more recent draw. In the event that there isn't any color dependency, we're just
-        // searching for a disjoint binding match and then whether or not to start from the front or
-        // the back is arbitrary
-        BindingList* match = nullptr; // remember a good insertion point as bindings are tested
-        for (BindingList* list = fBindings.tail(); list != nullptr; list = list->fPrev) {
-            const bool exactMatch = list->fKey.isEqual(key);
-            // What aspects interfere between the new draw and this binding list in the layer
-            auto aspectOverlap = (list->fKey.fFlags & testMask) |
-                     (exactMatch ? BoundsFlags::kMustBeDisjoint : BoundsFlags::kNone);
-
-            if (aspectOverlap && list->intersects(drawBounds)) {
-                // It is important for complex scene performance that we restrict the exactMatch
-                // early-out to be after doing intersection testing
-                if (exactMatch && overlapInMatchesAllowed) {
-                    if (layerIsForwardMergeEligible &&
-                        list->fPrev && list->fPrev->fKey.performsShading()) {
-                        // The layer is forward-merge compatible and since there are prior
-                        // shading bindings, the draw can't just be appended without risking a
-                        // painter's order inversion for the later binding on a future draw.
-                        // Returning `list` will pull it into a new layer instead.
-                        SkASSERT(!key.isDepthOnly());
-                        return {BoundsTestResult::kBlocked, list};
-                    } else {
-                        // else the layer isn't forward-merge compatible so it doesn't matter if
-                        // we have any overlaps with earlier bindings, but since we have an match
-                        // to append to, let's exit early then (assume color aspect overlap to
-                        // remove kAllowedBeforeLayer).
-                        return {BoundsTestResult::kAllowedInLayer, list};
-                    }
-                }
-
-                if (SkToBool(aspectOverlap & (BoundsFlags::kStencil |
-                                              BoundsFlags::kMustBeDisjoint))) {
-                    // The draw can't be in this layer because either
-                    // - a stencil overlap must be fully disjoint in the layer for all draws
-                    // - or this is an exact match with overlap not allowed
-                    //
-                    // We can also always stop searching because if we depend on kColor, our
-                    // result would be kBlocked; and if we don't depend on kColor then no
-                    // further test will restrict kAllowedBeforeLayer from the result.
-                    return {aspectOverlap & BoundsFlags::kColor
-                                    ? BoundsTestResult::kBlocked
-                                    : BoundsTestResult::kAllowedBeforeLayer,
-                            /*match=*/nullptr};
-                }
-
-                // At this point, it's just a color overlap, so the draw cannot go before this
-                // layer. We try to put it in the layer or in the new layer with a binding match
-                // to improve batching.
-                SkASSERT(aspectOverlap == BoundsFlags::kColor);
-                if (!match) {
-                    // If we haven't found a good insertion point before this intersection, the
-                    // draw must go in a new layer (aspectOverlap is kColor), however, if it's
-                    // forward-merge eligible we can search for a compatible match to pull
-                    // forward with it.
-                    if (key.isSimpleShading() && layerIsForwardMergeEligible) {
-                        match = this->searchBinding(key, list, /*forForwardMerge=*/true);
-                    }
-                    return {BoundsTestResult::kBlocked, match};
-                } else if (!key.usesStencil()) {
-                    // We have a good insertion point in the layer that will be drawn after this
-                    // conflicting BindingList, so put the new draw there. Because we haven't fully
-                    // checked all the previous BindingLists, we need to block forward merges as the
-                    // new draw could now be overlapping with early lists in the layer.
-                    list->fBlockForwardMerges = true;
-                    return {BoundsTestResult::kAllowedInLayer, match};
-                } else {
-                    // This comes up in a rare case where the current draw is stencil+shading and
-                    // we'd found a previous match, but had to continue searching to ensure there is
-                    // no stencil overlap. If we got here, aspectOverlap didn't have stencil so
-                    // it's just overlapping with a regular shading draw. We *could* continue
-                    // going through the BindingLists to confirm no stencil overlap and then
-                    // return {kAllowedInLayer, match} at the end of the loop, but we'd have to
-                    // track the result modifications over time and prevent updates to `match`.
-                    // Pushing it to a new layer seems to work well in practice and let's the
-                    // outer if (intersect) block always return early.
-                    return {BoundsTestResult::kBlocked, /*match=*/nullptr};
-                }
-            }
-
-            layerIsForwardMergeEligible &= !list->fBlockForwardMerges;
-
-            // NOTE: It's possible for the same key to be in a layer multiple times due to
-            // some of the early-out rules. If we get here, the draw hasn't overlapped any later
-            // drawn BindingList, so update the match to be the best, earliest match found so far.
-            if (exactMatch || (list->fKey.fPipelineIndex == key.fPipelineIndex &&
-                               (!match || !match->fKey.isEqual(key)))) {
-                match = list;
-            }
-
-            if ((key.performsShading() && !key.usesStencil()) && !list->fKey.performsShading()) {
-                // Since we guarantee that all non-shading draws are ordered *before* shading ones,
-                // the remaining BindingLists won't perform shading and the new draw doesn't use
-                // the stencil, so all remaining lists will have `aspectOverlap == kNone`.
-                break;
+        SkEnumBitMask<BoundsTestResult> result = BoundsTestResult::kBlocked;
+        if (!(testMask & BoundsFlags::kColor) || !fColorBounds.intersects(drawBounds)) {
+            result |= BoundsTestResult::kAllowedBeforeLayer;
+            if (!(testMask & BoundsFlags::kStencil) || !fStencilBounds.intersects(drawBounds)) {
+                result |= BoundsTestResult::kAllowedInLayer;
             }
         }
 
-        return {BoundsTestResult::kAllowedBeforeLayer | BoundsTestResult::kAllowedInLayer, match};
+        return result;
     }
 
     SK_ALWAYS_INLINE BindingList* addNewBinding(SkArenaAllocWithReset* alloc,
                                                 BindingList* insertBefore,
                                                 const LayerKey& key,
-                                                const RenderStep* step) {
+                                                const RenderStep* step,
+                                                bool firstStep) {
         SkASSERT(!insertBefore || fBindings.isInList(insertBefore));
+
+        if (fBindings.isEmpty()) {
+            fFirstBinding = BindingList(step, key);
+            fBindings.addToHead(&fFirstBinding);
+            return &fFirstBinding;
+        }
 
         BindingList* list = alloc->make<BindingList>(step, key);
 
@@ -461,6 +529,24 @@ struct Layer {
         }
 
         return list;
+    }
+
+    SK_ALWAYS_INLINE void transfer(SkArenaAlloc* alloc, int drawCount, BindingList* binding, Layer* newLayer) {
+        fBindings.remove(binding);
+        newLayer->fBindings.addToHead(binding);
+        for (const Draw* d = binding->fHead; d; d = d->fNext) {
+            newLayer->fColorBounds.add(d->fDrawParams->drawBounds(), alloc, drawCount);
+        }
+    }
+
+    // FIXME make this happen only one time cleaner than inside the for loop.
+    SK_ALWAYS_INLINE void updateForDraw(SkArenaAlloc* alloc, Rect bounds, LayerKey key, int drawCount) {
+        if (key.fFlags & BoundsFlags::kColor) {
+            fColorBounds.add(bounds, alloc, drawCount);
+        }
+        if (key.fFlags & BoundsFlags::kStencil) {
+            fStencilBounds.add(bounds, alloc, drawCount);
+        }
     }
 };
 

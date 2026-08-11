@@ -301,4 +301,141 @@ private:
     SkTInternalLList& operator=(const SkTInternalLList&) = delete;
 };
 
+
+/**
+ * This macro creates the member variables required by the SkTSingleLList class. It should be
+ * placed in the private section of any class that will be stored in a singly linked list.
+ */
+#define SK_DECLARE_SINGLE_LLIST_INTERFACE(ClassName)              \
+    friend class SkTSingleLList<ClassName>;                       \
+    /* back pointer to the owning list - for debugging */         \
+    SkDEBUGCODE(SkTSingleLList<ClassName>* fList = nullptr;)      \
+    ClassName* fNext = nullptr
+
+/**
+ * This class implements a templated internal singly linked list data structure.
+ */
+template <class T> class SkTSingleLList {
+public:
+    SkTSingleLList() {}
+
+    void reset() {
+        fHead = nullptr;
+        fTail = nullptr;
+    }
+
+    void addToHead(T* entry) {
+        SkASSERT(nullptr == entry->fNext);
+        SkASSERT(nullptr == entry->fList);
+
+        entry->fNext = fHead;
+        if (nullptr == fHead) {
+            fTail = entry;
+        }
+        fHead = entry;
+#ifdef SK_DEBUG
+        entry->fList = this;
+#endif
+    }
+
+    void addToTail(T* entry) {
+        SkASSERT(nullptr == entry->fNext);
+        SkASSERT(nullptr == entry->fList);
+
+        entry->fNext = nullptr;
+        if (fTail) {
+            fTail->fNext = entry;
+        }
+        fTail = entry;
+        if (nullptr == fHead) {
+            fHead = entry;
+        }
+
+#ifdef SK_DEBUG
+        entry->fList = this;
+#endif
+    }
+
+    bool isEmpty() const {
+        SkASSERT(SkToBool(fHead) == SkToBool(fTail));
+        return !fHead;
+    }
+
+    T* head() const { return fHead; }
+    T* tail() const { return fTail; }
+
+    class Iter {
+    public:
+        Iter() : fCurr(nullptr) {}
+        Iter(const Iter& iter) : fCurr(iter.fCurr) {}
+        Iter& operator= (const Iter& iter) { fCurr = iter.fCurr; return *this; }
+
+        T* init(const SkTSingleLList& list) {
+            fCurr = list.fHead;
+            return fCurr;
+        }
+
+        T* get() { return fCurr; }
+
+        /**
+         * Return the next/previous element in the list or NULL if at the end.
+         */
+        T* next() {
+            if (nullptr == fCurr) {
+                return nullptr;
+            }
+
+            fCurr = fCurr->fNext;
+            return fCurr;
+        }
+
+        /**
+         * C++11 range-for interface.
+         */
+        bool operator!=(const Iter& that) const { return fCurr != that.fCurr; }
+        T* operator*() { return this->get(); }
+        void operator++() { this->next(); }
+
+    private:
+        T* fCurr;
+    };
+
+    Iter begin() const {
+        Iter iter;
+        iter.init(*this);
+        return iter;
+    }
+
+    Iter end() const { return Iter(); }
+
+#ifdef SK_DEBUG
+
+    /**
+     * Debugging-only method that uses the list back pointer to check if 'entry' is indeed in 'this'
+     * list.
+     */
+    bool isInList(const T* entry) const {
+        return entry->fList == this;
+    }
+
+    /**
+     * Debugging-only method that laboriously counts the list entries.
+     */
+    int countEntries() const {
+        int count = 0;
+        for (T* entry = fHead; entry; entry = entry->fNext) {
+            ++count;
+        }
+        return count;
+    }
+#endif // SK_DEBUG
+
+private:
+    T* fHead = nullptr;
+    T* fTail = nullptr;
+
+    SkTSingleLList(const SkTSingleLList&) = delete;
+    SkTSingleLList& operator=(const SkTSingleLList&) = delete;
+};
+
 #endif

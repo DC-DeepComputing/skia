@@ -353,6 +353,7 @@ void DawnCaps::initCaps(const DawnBackendContext& backendContext, const ContextO
     fStorageBufferSupport = false;
 #endif
 
+fStorageBufferSupport = false;
     fDrawBufferCanBeMapped = false;
 
     fComputeSupport = true;

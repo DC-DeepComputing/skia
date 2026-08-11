@@ -53,18 +53,16 @@ std::pair<Layer*, BindingList*> DrawListLayer::searchBackwards(
         CompressedPaintersOrder stop) {
     // CPU performance is sensitive to increasing this value. Searching for longer *can* reduce the
     // draw count and pipeline change count
-    static constexpr int kMaxSearchLimit = 8;
+    static constexpr int kMaxSearchLimit = 8; // 128,64,32 are all pretty similar in terms of batching, starts to worsen at 16
 
     Layer* targetLayer = nullptr;
-    BindingList* targetMatch = nullptr;
-    BindingList* forwardMerge = nullptr;
-
     Rect::ComplementRect drawBounds{drawParams->drawBounds()};
 
+    int layerCount = 0;
     Layer* current = fLayers.tail();
     for (int limit = kMaxSearchLimit; limit > 0 && current; --limit) {
-        auto [result, match] = current->test(drawBounds, key, testMask);
-
+        auto result = current->test(drawBounds, testMask);
+        layerCount++;
         if (result & BoundsTestResult::kAllowedInLayer) {
             // Allowed in the layer, so remember it. In complex scenes, we want to search deeper
             // in the layer list than just the first compatible overlap we encounter. Stopping early
@@ -72,16 +70,6 @@ std::pair<Layer*, BindingList*> DrawListLayer::searchBackwards(
             // from reaching those denser, later candidates (particularly when this is a clip draw
             // as that propagates into the stop layer for subsequent draws).
             targetLayer = current;
-            targetMatch = match;
-        } else if (match) {
-            // Save this for after we create a new targetLayer, at which point this will move from
-            // current to the new layer and become targetMatch. Given the asserted conditions
-            // below, this case will always exit the loop.
-            SkASSERT(result == BoundsTestResult::kBlocked &&
-                     !SkToBool(key.fFlags & BoundsFlags::kMustBeDisjoint) &&
-                     current == fLayers.tail() &&
-                     !targetLayer);
-            forwardMerge = match;
         }
 
         if (!SkToBool(result & BoundsTestResult::kAllowedBeforeLayer) || current->fOrder == stop) {
@@ -94,22 +82,46 @@ std::pair<Layer*, BindingList*> DrawListLayer::searchBackwards(
             // is an imprecise heuristic. In an ideal world, we would maximize batching by
             // exhaustively searching to the end of the list, but that would degrade insertion
             // performance to O(n^2).
-            if (match) {
-                limit /= 2;
-            }
+            // if (match) {
+            //     limit /= 2;
+            // }
         }
     }
 
     SkASSERT(!targetLayer || targetLayer->fOrder >= stop);
+
+    BindingList* targetMatch = nullptr;
+    BindingList* forwardMerge = nullptr;
+    if (targetLayer) {
+        // `targetLayer` is non-null only if the test returned kAllowedInLayer, which means it is
+        // disjoint from everything else in the layer. We can safely combine it with an exact match
+        // or place it near a partial match.
+        targetMatch = targetLayer->searchBinding(key);
+    } else if (key.isSimpleShading() && fLayers.tail()) {
+        // As a simple-shading draw, there is the potential to  pull a previous binding list
+        // forward to a new layer. This must be an exact match so that we can rely on rasterization
+        // order resolving any overlap (since !targetLayer implies the test originally failed for
+        // fLayers.tail()).
+        if ((forwardMerge = fLayers.tail()->searchBinding(key))) {
+            if (!forwardMerge->fKey.isEqual(key)) {
+                forwardMerge = nullptr;
+            } else if (!forwardMerge->fPrev && !forwardMerge->fNext) {
+                // The tail had a single exact matching binding list, so just append to it. There
+                // are no other incompatible bindings whose overlap we need to worry about.
+                targetLayer = fLayers.tail();
+                targetMatch = forwardMerge;
+                forwardMerge = nullptr;
+            } // else we'll transfer the forward merge list into a new layer below
+        }
+    } // else not forward-merge eligible and no target, so we'll put it in a new layer
 
     if (!targetLayer) {
         fOrderCounter = fOrderCounter.next();
         targetLayer = fStorage.make<Layer>(fOrderCounter);
         if (forwardMerge) {
             SkASSERT(fLayers.tail()->fBindings.isInList(forwardMerge));
-            SkASSERT(key.fFlags & BoundsFlags::kColor); // Moving depth draws would break clipping
-            fLayers.tail()->fBindings.remove(forwardMerge);
-            targetLayer->fBindings.addToHead(forwardMerge);
+            SkASSERT(key.isSimpleShading()); // Anything else breaks clipping or multi-step renders
+            fLayers.tail()->transfer(&fStorage, fDrawCount, forwardMerge, targetLayer);
             targetMatch = forwardMerge;
         }
         fLayers.addToTail(targetLayer);
@@ -118,10 +130,14 @@ std::pair<Layer*, BindingList*> DrawListLayer::searchBackwards(
     if (!targetMatch || !targetMatch->fKey.isEqual(key)) {
         // If targetMatch is just a pipeline match, we can insert right before it because such a
         // match is only returned when the new draw can be ordered in front of it.
-        targetMatch = targetLayer->addNewBinding(&fStorage, targetMatch, key, step);
+        targetMatch = targetLayer->addNewBinding(&fStorage, targetMatch, key, step, true);
     } else {
         SkASSERT(targetLayer->fBindings.isInList(targetMatch));
     }
+
+    fLayerSearchCount += layerCount;
+    fSearchCount++;
+    fMaxLayerSearchCount = std::max(fMaxLayerSearchCount, layerCount);
 
     return {targetLayer, targetMatch};
 }
@@ -136,6 +152,7 @@ BindingList* DrawListLayer::findOrCreateBindingInLayer(Layer* layer,
     // If we have a parent step's BindingList to insert before, it must be in `layer`.
     SkASSERT(!parent || layer->fBindings.isInList(parent));
 
+    bool firstStep = !parent;
     BindingList* targetMatch = nullptr;
 
     // If we don't have a parent, search through all bindings of the layer as this is the first time
@@ -155,7 +172,7 @@ BindingList* DrawListLayer::findOrCreateBindingInLayer(Layer* layer,
     }
 
     if (!targetMatch) {
-        targetMatch = layer->addNewBinding(&fStorage, parent, key, step);
+        targetMatch = layer->addNewBinding(&fStorage, parent, key, step, firstStep);
     }
     return targetMatch;
 }
@@ -223,6 +240,7 @@ std::pair<DrawParams*, Layer*> DrawListLayer::recordDraw(const Renderer* rendere
 
     Layer* insertionLayer = nullptr;
     BindingList* lastStepBinding = nullptr;
+
     // If we're an easy draw, jump to the latestInsertion layer since we don't have to test
     if (testMask == BoundsFlags::kNone && baseLayerMask == BoundsFlags::kNone) {
         insertionLayer = lastInsertion ? lastInsertion : fLayers.head();
@@ -268,6 +286,7 @@ std::pair<DrawParams*, Layer*> DrawListLayer::recordDraw(const Renderer* rendere
                      fStorageBufferSupport ? UniformDataCache::kInvalidIndex : uniformIndex,
                      layerMask};
 
+        bool first = !lastStepBinding;
         if (!insertionLayer) {
             // Since we don't have a layer yet, search from the most recent layer back.
             CompressedPaintersOrder stop = lastInsertion ? lastInsertion->fOrder
@@ -286,10 +305,12 @@ std::pair<DrawParams*, Layer*> DrawListLayer::recordDraw(const Renderer* rendere
                                                                key);
         }
 
+        if (first) {
+            insertionLayer->updateForDraw(&fStorage, drawParams->drawBounds(), key, fDrawCount);
+        }
         SkASSERT(lastStepBinding);
-        lastStepBinding->addDraw(fStorage.make<Draw>(drawParams, uniformIndex),
-                                     /*backToFront=*/dependsOnDst);
 
+        lastStepBinding->addDraw(&fStorage, drawParams, uniformIndex, dependsOnDst);
         gatherer->rewindForRenderStep();
     }
 
@@ -413,7 +434,8 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
     for (Layer* layer : fLayers) {
         for (const BindingList* list : layer->fBindings) {
             SkASSERT(!list->fDraws.isEmpty());
-            const Draw* current = list->fDraws.head();
+            const Draw* current = list->fHead;
+
 
             if (!recordDraw(list->fKey,
                             current->fUniformIndex,
@@ -448,6 +470,8 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
                                 TRACE_EVENT_SCOPE_THREAD,
                                 "# commands", drawPass->fCommandList.count(),
                                 "# textures", drawPass->fSampledTextures.size());
+
+    // this->dumpStats();
 
     this->reset(LoadOp::kLoad);
 

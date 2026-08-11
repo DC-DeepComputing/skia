@@ -80,14 +80,16 @@ public:
     DrawWriter(DrawWriter&&) = delete;
 
     // flush() should be called before the writer is destroyed
-    ~DrawWriter() { SkASSERT(fPendingCount == 0); }
+    ~DrawWriter() { SkASSERT(fPendingCount == 0);
+            // SkDebugf("draw dispatch count = %d, pipeline changes = %d, state changes = %d\n", fDrawCount, fPipelineCount, fDynamicCount);
+             }
 
     DrawBufferManager* bufferManager() { return fManager; }
 
     // Issue draw calls for any pending vertex and instance data collected by the writer.
     // Use either flush() or newDynamicState() based on context and readability.
     void flush() { this->flushInternal(this->getDefaultAppendBinding()); }
-    void newDynamicState() { this->flush(); }
+    void newDynamicState() {         fDynamicCount++;this->flush(); }
 
     // Notify the DrawWriter that a new pipeline needs to be bound, providing the primitive type,
     // attribute strides, and render state of the new pipeline. This issues draw calls for pending
@@ -98,7 +100,7 @@ public:
                           SkEnumBitMask<RenderStateFlags> newRenderState,
                           BarrierType barrierType) {
         this->flush();
-
+        fPipelineCount++;
         // Once flushed, any pending data must have been drawn.
         SkASSERT(fPendingCount == 0);
 
@@ -275,6 +277,10 @@ private:
     // via an Appender (Vertices, Instances, DynamicInstances) but not yet issued in a draw call.
     // Reset to 0 after a flush().
     uint32_t fPendingCount;
+
+        int fDrawCount = 0;
+    int fPipelineCount = 0;
+    int fDynamicCount = 0;
 
     BindBufferInfo getDefaultAppendBinding() const {
         return {fAppend.fBuffer, fAppend.fOffset, fPendingCount*fAppendStride};
