@@ -31,6 +31,7 @@
 #include "src/gpu/graphite/Image_Graphite.h"
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/RenderPassDesc.h"
+#include "src/gpu/graphite/Renderer.h"
 #include "src/gpu/graphite/ResourceTypes.h"
 #include "src/gpu/graphite/TextureFormat.h"
 #include "src/gpu/graphite/TextureInfoPriv.h"
@@ -180,6 +181,15 @@ std::pair<DrawParams*, Layer*> DrawContext::recordDraw(
         // A draw should only read from the dst OR use hardware for advanced blend modes.
         SkASSERT(!(dstUsage & DstUsage::kDstReadRequired));
         barrierBeforeDraws = BarrierType::kAdvancedNoncoherentBlend;
+    }
+
+    if (renderer) {
+        for (int stepIndex = 0; stepIndex < renderer->numRenderSteps(); ++stepIndex) {
+            const RenderStep* const step = renderer->steps()[stepIndex];
+            if (step->storageDataStride() > 0) {
+                fStorageContext.recordAlignment(step->storageDataStride(), step->storageDataAlignment());
+            }
+        }
     }
 
     return fPendingDraws->recordDraw(renderer, localToDevice, geometry, clip, ordering, paintID,
