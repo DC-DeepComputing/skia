@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a57ffc9c_f4ed4085",
+        "filename": "include/gpu/graphite/Recorder.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-08-11T13:48:08Z",
+      "side": 1,
+      "message": "I wonder if this and the logic around it should live on SkRecorder and not the implementations. Or do you think there will be enough variation between backends that they should all be handled indepently?",
+      "range": {
+        "startLine": 336,
+        "startChar": 4,
+        "endLine": 336,
+        "endChar": 61
+      },
+      "revId": "1245ff22f735b063f789c574672d35dca9531b22",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
