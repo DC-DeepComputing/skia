@@ -23,6 +23,9 @@
 #include "src/gpu/graphite/geom/Rect.h"
 #include "src/gpu/graphite/geom/Transform.h"
 
+#include "include/private/SkTDArray.h"
+#include "src/gpu/graphite/Renderer.h"
+
 #include <cstdint>
 #include <functional>
 #include <limits>
@@ -66,6 +69,28 @@ public:
     void reset(LoadOp op, SkColor4f clearColor = {0.f, 0.f, 0.f, 0.f}) override;
 
 private:
+    struct DeferredDraw {
+        struct Step {
+            GraphicsPipelineCache::Index fPipelineIndex;
+            TextureDataCache::Index fTextureIndex;
+            UniformDataCache::Index fUniformIndex;
+            SkEnumBitMask<BoundsFlags> fLayerMask;
+        };
+
+        const DrawParams* fDrawParams;
+        const Renderer* fRenderer;
+        Layer* fLastInsertion;
+        Layer* fClipHandle;
+        Rect fBounds;
+        SkEnumBitMask<BoundsFlags> fTestMask;
+        SkEnumBitMask<BoundsFlags> fBaseLayerMask;
+        bool fDependsOnDst;
+        uint8_t fNumSteps;
+        Step fSteps[Renderer::kMaxRenderSteps];
+    };
+
+    void buildLayers();
+
     std::pair<Layer*, BindingList*> searchBackwards(const RenderStep* step,
                                                     const LayerKey& key,
                                                     SkEnumBitMask<BoundsFlags> testMask,
@@ -80,6 +105,7 @@ private:
     friend class DrawPass;
 
     SkSTArenaAllocWithReset<256> fStorage;
+    SkTDArray<DeferredDraw> fDeferredDraws;
     SkTInternalLList<Layer> fLayers;
 
     int fDrawCount = 0;
