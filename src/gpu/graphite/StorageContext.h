@@ -22,6 +22,10 @@ class SkGradientBaseShader;
 namespace skgpu::graphite {
 
 class DrawBufferManager;
+class DrawPass;
+class Recorder;
+class TextureProxy;
+class TextureProxyView;
 
 class StorageContext {
 public:
@@ -51,12 +55,19 @@ public:
 
     void finalizePrecachedStorageData();
 
-    BindBufferInfo finalize(DrawBufferManager* bufferMgr);
+    BindBufferInfo finalize(DrawBufferManager* bufferMgr,
+                            Recorder* recorder = nullptr,
+                            DrawPass* drawPass = nullptr);
 
     bool isEmpty() const { return fGradientCache.isEmpty() && fVertexData.empty(); }
 
     SkDEBUGCODE(int size() const { return fGradientCache.fGradientData.size(); })
     SkDEBUGCODE(int vertexSize() const { return fVertexData.size(); })
+
+private:
+    BindBufferInfo finalizeSSBO(DrawBufferManager* bufferMgr);
+    TextureProxyView finalizeTexture(Recorder* recorder, DrawPass* drawPass);
+    sk_sp<TextureProxy> createTextureProxy(Recorder* recorder, int width, int height);
 
 private:
     struct GradientCache {

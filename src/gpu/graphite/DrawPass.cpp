@@ -21,6 +21,7 @@
 #include "src/gpu/graphite/SharedContext.h"
 #include "src/gpu/graphite/Texture.h"  // IWYU pragma: keep
 #include "src/gpu/graphite/TextureProxy.h"
+#include "src/gpu/graphite/task/Task.h"
 
 
 using namespace skia_private;

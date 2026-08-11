@@ -159,6 +159,11 @@ bool Caps::isTexturable(const TextureInfo& info, bool allowMSAA) const {
                              allowMSAA,
                              /*allowExternal=*/true,
                              /*allowCompressed=*/true,
+                             /*allowProtected=*/true) ||
+           this->isSupported(info, TextureUsage::kUnfilterableSample,
+                             allowMSAA,
+                             /*allowExternal=*/true,
+                             /*allowCompressed=*/true,
                              /*allowProtected=*/true);
 }
 
@@ -269,8 +274,12 @@ static constexpr SkEnumBitMask<TextureUsage> kDefaultSampledUsage =
 TextureInfo Caps::getDefaultSampledTextureInfo(SkColorType colorType,
                                                Mipmapped mipmapped,
                                                Protected isProtected,
-                                               Renderable renderable) const {
-    SkEnumBitMask<TextureUsage> usage = kDefaultSampledUsage;
+                                               Renderable renderable,
+                                               Filterable filterable) const {
+    SkEnumBitMask<TextureUsage> usage =
+            (filterable == Filterable::kYes ? TextureUsage::kSample : TextureUsage::kUnfilterableSample) |
+            TextureUsage::kCopySrc |
+            TextureUsage::kCopyDst;
     SkSpan<const TextureFormat> formats = PreferredTextureFormats(colorType);
     skia_private::STArray<3, TextureFormat> validFormats;
     if (renderable == Renderable::kYes) {

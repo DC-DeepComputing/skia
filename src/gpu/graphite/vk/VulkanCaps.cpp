@@ -777,10 +777,11 @@ std::pair<SkEnumBitMask<TextureUsage>, SkEnumBitMask<SampleCount>> VulkanCaps::g
         // Assume all external formats are sampleable, since we support adjusting the filtering on
         // a per-immutable sampler basis.
         supports |= TextureUsage::kSample;
-    } else if ((featureFlags & VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT) &&
-               (featureFlags & VK_FORMAT_FEATURE_SAMPLED_IMAGE_FILTER_LINEAR_BIT)) {
-        // Otherwise require full filtering control to count as sampleable
-        supports |= TextureUsage::kSample;
+    } else if (featureFlags & VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT) {
+        supports |= TextureUsage::kUnfilterableSample;
+        if (featureFlags & VK_FORMAT_FEATURE_SAMPLED_IMAGE_FILTER_LINEAR_BIT) {
+            supports |= TextureUsage::kSample;
+        }
     }
 
     // NOTE: We don't check the protected-ness of the Context for format support. It is handled on
@@ -845,9 +846,18 @@ std::pair<SkEnumBitMask<TextureUsage>, Tiling> VulkanCaps::getTextureUsage(
     // All images using external formats are required to be able to be sampled per Vulkan spec.
     // https://registry.khronos.org/vulkan/specs/1.3-extensions/man/html/VkAndroidHardwareBufferFormatPropertiesANDROID.html#_description
     if (vkInfo.fFormat == VK_FORMAT_UNDEFINED && vkInfo.fYcbcrConversionInfo.isValid()) {
-        usage |= TextureUsage::kSample;
+        usage |= TextureUsage::kSample | TextureUsage::kUnfilterableSample;
     } else if (SkToBool(vkInfo.fImageUsageFlags & VK_IMAGE_USAGE_SAMPLED_BIT)) {
-        usage |= TextureUsage::kSample;
+        TextureFormat format = TextureInfoPriv::ViewFormat(info);
+        const Tiling tiling = vkInfo.fImageTiling == VK_IMAGE_TILING_OPTIMAL ? Tiling::kOptimal
+                                                                             : Tiling::kLinear;
+        auto [supportedUsage, _] = this->Caps::getTextureSupport(format, tiling);
+        if (supportedUsage & TextureUsage::kSample) {
+            usage |= TextureUsage::kSample;
+        }
+        if (supportedUsage & TextureUsage::kUnfilterableSample) {
+            usage |= TextureUsage::kUnfilterableSample;
+        }
     }
 
     // We include CopyDst/CopySrc without worrying about format support since that is masked out
@@ -888,7 +898,7 @@ TextureInfo VulkanCaps::onGetDefaultTextureInfo(SkEnumBitMask<TextureUsage> usag
     VkImageCreateFlags createFlags =
             isProtected == Protected::kYes ? VK_IMAGE_CREATE_PROTECTED_BIT : 0;
 
-    if (usage & TextureUsage::kSample) {
+    if (usage & (TextureUsage::kSample | TextureUsage::kUnfilterableSample)) {
         vkUsage |= VK_IMAGE_USAGE_SAMPLED_BIT;
     }
     if (usage & TextureUsage::kStorage) {
