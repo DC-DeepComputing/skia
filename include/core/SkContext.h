@@ -14,6 +14,7 @@
 #include <memory>
 
 class SkContextPriv;
+class SkContextPrivConst;
 class SkResourceCache;
 class SkSharedContext;
 class SkStrikeCache;
@@ -24,7 +25,6 @@ struct SkContextOptions;
 namespace skcpu {
 class Recorder;
 }
-
 /**
  * @brief SkContext is a central context object that serves as the mandatory first point of
  * initialization for all Skia clients. SkContext consolidates global state, management of shared
@@ -40,7 +40,21 @@ public:
     ~SkContext();
 
     SkContextPriv priv();
-    const SkContextPriv priv() const;
+    SkContextPrivConst priv() const;
+
+    // Using PassKey pattern to allow only restricted access to SkContextAccessor
+    // See //base/types/pass_key.h for Chromium's implementation of the pattern
+    class FactoryPassKey {
+    private:
+        friend class SkContextCtorAccessor;
+        FactoryPassKey() = default;
+    };
+
+    SkContext(FactoryPassKey, sk_sp<SkSharedContext>, const SkContextOptions&);
+
+    // Must be called in Make() to handle one-time GPU setup operations that can possibly fail and
+    // require Context::Make() to return a nullptr.
+    bool finishInitialization(FactoryPassKey);
 
     std::unique_ptr<skcpu::Recorder> makeRecorder() const;
 
@@ -49,8 +63,6 @@ public:
     static std::unique_ptr<SkContext> Make(const SkContextOptions& options);
 
 private:
-    SkContext(sk_sp<SkSharedContext>);
-
     SkResourceCache* resourceCache() const;
     SkStrikeCache* fontCache() const;
     SkTypefaceCache* typefaceCache() const;
@@ -69,6 +81,9 @@ private:
     void dumpMemoryStatistics(SkTraceMemoryDump* dump);
 
     sk_sp<SkSharedContext> fSharedContext;
+
+    friend class SkContextPrivConst;
+    friend class SkContextPriv;
 };
 
 #endif  // SkContext_DEFINED
