@@ -22,9 +22,64 @@ void DrawListLayer::reset(LoadOp loadOp, SkColor4f color) {
     DrawListBase::reset(loadOp, color);
 
     fStorage.reset();
+    fHotDraws.clear();
+    fColdDraws.clear();
     fLayers.reset();
     fDrawCount = 0;
     fOrderCounter = CompressedPaintersOrder::First();
+}
+
+void DrawListLayer::buildLayers() {
+    for (int i = 0; i < fHotDraws.size(); ++i) {
+        const HotDraw& hotDraw = fHotDraws[i];
+        const ColdDraw& coldDraw = fColdDraws[i];
+        const DrawParams* drawParams = coldDraw.fDrawParams;
+
+        Layer* clipLayer = coldDraw.fLastInsertion ? coldDraw.fLastInsertion->fActualLayer : nullptr;
+        Layer* insertionLayer = nullptr;
+        BindingList* lastStepBinding = nullptr;
+
+        // If we're an easy draw, jump to the latestInsertion layer since we don't have to test
+        if (hotDraw.fTestMask == BoundsFlags::kNone && hotDraw.fBaseLayerMask == BoundsFlags::kNone) {
+            insertionLayer = clipLayer ? clipLayer : fLayers.head();
+        }
+
+        for (int stepIndex = hotDraw.fNumSteps - 1; stepIndex >= 0; --stepIndex) {
+            const HotStep& step = hotDraw.fSteps[stepIndex];
+            LayerKey key{step.fPipelineIndex,
+                         step.fTextureIndex,
+                         fStorageBufferSupport ? UniformDataCache::kInvalidIndex : step.fUniformIndex,
+                         step.fLayerMask};
+
+            const RenderStep* renderStep = coldDraw.fRenderer->steps()[stepIndex];
+            if (!insertionLayer) {
+                // Since we don't have a layer yet, search from the most recent layer back.
+                CompressedPaintersOrder stop = clipLayer ? clipLayer->fOrder
+                                                         : DrawOrder::kNoIntersection;
+                std::tie(insertionLayer, lastStepBinding) = this->searchBackwards(renderStep,
+                                                                                  key,
+                                                                                  hotDraw.fTestMask,
+                                                                                  drawParams,
+                                                                                  stop);
+            } else {
+                // Put the earlier steps in the same layer (valid because we used BoundsFlags for the
+                // whole Renderer).
+                lastStepBinding = this->findOrCreateBindingInLayer(insertionLayer,
+                                                                   lastStepBinding,
+                                                                   renderStep,
+                                                                   key);
+            }
+
+            SkASSERT(lastStepBinding);
+            lastStepBinding->addDraw(fStorage.make<Draw>(drawParams, coldDraw.fStepUniforms[stepIndex]),
+                                     /*backToFront=*/hotDraw.fDependsOnDst);
+            insertionLayer->fBounds.join(drawParams->drawBounds());
+        }
+
+        if (coldDraw.fClipHandle) {
+            coldDraw.fClipHandle->fActualLayer = insertionLayer;
+        }
+    }
 }
 
 // Draws affected by depth only draws we call "clipped draws."
@@ -111,6 +166,7 @@ std::pair<Layer*, BindingList*> DrawListLayer::searchBackwards(
             fLayers.tail()->fBindings.remove(forwardMerge);
             targetLayer->fBindings.addToHead(forwardMerge);
             targetMatch = forwardMerge;
+            targetLayer->fBounds.join(forwardMerge->fBounds);
         }
         fLayers.addToTail(targetLayer);
     }
@@ -221,12 +277,96 @@ std::pair<DrawParams*, Layer*> DrawListLayer::recordDraw(const Renderer* rendere
                                                        stroke,
                                                        barrierBeforeDraws);
 
-    Layer* insertionLayer = nullptr;
-    BindingList* lastStepBinding = nullptr;
-    // If we're an easy draw, jump to the latestInsertion layer since we don't have to test
-    if (testMask == BoundsFlags::kNone && baseLayerMask == BoundsFlags::kNone) {
-        insertionLayer = lastInsertion ? lastInsertion : fLayers.head();
+    const bool isImmediateOpaque = !isDepthOnly &&
+                                  !dependsOnDst &&
+                                  !(renderer->depthStencilFlags() & DepthStencilFlags::kStencil) &&
+                                  barrierBeforeDraws == BarrierType::kNone &&
+                                  renderer->numRenderSteps() == 1 &&
+                                  !lastInsertion;
+
+    if (isImmediateOpaque) {
+        const RenderStep* const step = renderer->steps()[0];
+        const bool performsShading = step->performsShading() && paintID.isValid();
+
+        gatherer->markOffsetAndAlign(performsShading, step->uniformAlignment());
+
+        GraphicsPipelineCache::Index pipelineIndex = fPipelineCache.insert(
+                {step->renderStepID(),
+                 performsShading ? paintID : UniquePaintParamsID::Invalid()});
+
+        step->writeUniformsAndTextures(*drawParams, gatherer);
+
+        auto [combinedUniforms, combinedTextures] =
+                gatherer->endCombinedData(performsShading);
+
+        UniformDataCache::Index uniformIndex = combinedUniforms
+                                                       ? fUniformDataCache.insert(combinedUniforms)
+                                                       : UniformDataCache::kInvalidIndex;
+        TextureDataCache::Index textureBindingIndex =
+                combinedTextures ? fTextureDataCache.insert(combinedTextures)
+                                 : TextureDataCache::kInvalidIndex;
+
+        LayerKey key{pipelineIndex,
+                     textureBindingIndex,
+                     fStorageBufferSupport ? UniformDataCache::kInvalidIndex : uniformIndex,
+                     BoundsFlags::kColor};
+
+        Layer* layer = fLayers.tail();
+        BindingList* match = nullptr;
+        if (layer) {
+            match = layer->searchBinding(key);
+            if (!match || !match->fKey.isEqual(key)) {
+                match = layer->addNewBinding(&fStorage, match, key, step);
+            }
+        } else {
+            fOrderCounter = fOrderCounter.next();
+            layer = fStorage.make<Layer>(fOrderCounter);
+            fLayers.addToTail(layer);
+            match = layer->addNewBinding(&fStorage, nullptr, key, step);
+        }
+
+        match->addDraw(fStorage.make<Draw>(drawParams, uniformIndex), /*backToFront=*/false);
+        layer->fBounds.join(drawParams->drawBounds());
+        gatherer->rewindForRenderStep();
+
+        fDrawCount++;
+        fRenderStepCount++;
+        fPassBounds.join(clip.drawBounds());
+        fRequiresMSAA |= renderer->requiresMSAA();
+        fDepthStencilFlags |= renderer->depthStencilFlags();
+        if (dstUsage & DstUsage::kDstReadRequired) {
+            fDstReadBounds.join(clip.drawBounds());
+        }
+
+#if defined(SK_DEBUG)
+        if (geometry.isCoverageMaskShape()) {
+            fCoverageMaskShapeDrawCount++;
+        }
+#endif
+
+        return {drawParams, nullptr};
     }
+
+    Layer* clipHandle = nullptr;
+    if (isDepthOnly) {
+        fOrderCounter = fOrderCounter.next();
+        clipHandle = fStorage.make<Layer>(fOrderCounter);
+        clipHandle->fActualLayer = nullptr;
+    }
+
+    HotDraw* hotDraw = fHotDraws.append();
+    ColdDraw* coldDraw = fColdDraws.append();
+
+    hotDraw->fBounds = clip.drawBounds();
+    hotDraw->fTestMask = testMask;
+    hotDraw->fBaseLayerMask = baseLayerMask;
+    hotDraw->fDependsOnDst = dependsOnDst;
+    hotDraw->fNumSteps = renderer->numRenderSteps();
+
+    coldDraw->fDrawParams = drawParams;
+    coldDraw->fRenderer = renderer;
+    coldDraw->fLastInsertion = lastInsertion;
+    coldDraw->fClipHandle = clipHandle;
 
     fRenderStepCount += renderer->numRenderSteps();
     for (int stepIndex = renderer->numRenderSteps() - 1; stepIndex >= 0; --stepIndex) {
@@ -251,45 +391,21 @@ std::pair<DrawParams*, Layer*> DrawListLayer::recordDraw(const Renderer* rendere
                 combinedTextures ? fTextureDataCache.insert(combinedTextures)
                                  : TextureDataCache::kInvalidIndex;
 
-
-        // `layerMask` defines what this draw will block in new draws from going backwards. This is
-        // per-step so that stencil-only draws can be grouped between shading and clip draws.
         SkEnumBitMask<BoundsFlags> layerMask = baseLayerMask;
         if (step->depthStencilFlags() & DepthStencilFlags::kStencil) {
             layerMask |= BoundsFlags::kStencil;
         }
         if (step->performsShading() && paintID.isValid()) {
-            // NOTE: This is not dependsOnDst because it represents what is written by the draw,
-            // not what might be read for blending the draw.
             layerMask |= BoundsFlags::kColor;
         }
 
-        LayerKey key{pipelineIndex,
-                     textureBindingIndex,
-                     fStorageBufferSupport ? UniformDataCache::kInvalidIndex : uniformIndex,
-                     layerMask};
-
-        if (!insertionLayer) {
-            // Since we don't have a layer yet, search from the most recent layer back.
-            CompressedPaintersOrder stop = lastInsertion ? lastInsertion->fOrder
-                                                         : DrawOrder::kNoIntersection;
-            std::tie(insertionLayer, lastStepBinding) = this->searchBackwards(step,
-                                                                              key,
-                                                                              testMask,
-                                                                              drawParams,
-                                                                              stop);
-        } else {
-            // Put the earlier steps in the same layer (valid because we used BoundsFlags for the
-            // whole Renderer).
-            lastStepBinding = this->findOrCreateBindingInLayer(insertionLayer,
-                                                               lastStepBinding,
-                                                               step,
-                                                               key);
-        }
-
-        SkASSERT(lastStepBinding);
-        lastStepBinding->addDraw(fStorage.make<Draw>(drawParams, uniformIndex),
-                                     /*backToFront=*/dependsOnDst);
+        hotDraw->fSteps[stepIndex] = {
+            pipelineIndex,
+            textureBindingIndex,
+            uniformIndex,
+            layerMask
+        };
+        coldDraw->fStepUniforms[stepIndex] = uniformIndex;
 
         gatherer->rewindForRenderStep();
     }
@@ -299,8 +415,6 @@ std::pair<DrawParams*, Layer*> DrawListLayer::recordDraw(const Renderer* rendere
     fRequiresMSAA |= renderer->requiresMSAA();
     fDepthStencilFlags |= renderer->depthStencilFlags();
     if (dstUsage & DstUsage::kDstReadRequired) {
-        // For paints that read from the dst, update the bounds. It may later be determined that the
-        // DstReadStrategy does not require them, but they are inexpensive to track.
         fDstReadBounds.join(clip.drawBounds());
     }
 
@@ -310,7 +424,7 @@ std::pair<DrawParams*, Layer*> DrawListLayer::recordDraw(const Renderer* rendere
     }
 #endif
 
-    return {drawParams, insertionLayer};
+    return {drawParams, clipHandle};
 }
 
 std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
@@ -318,6 +432,8 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
                                                       const SkImageInfo& targetInfo,
                                                       const DstReadStrategy dstReadStrategy) {
     TRACE_EVENT1_ALWAYS("skia.gpu", TRACE_FUNC, "draw count", fDrawCount);
+
+    this->buildLayers();
 
     std::unique_ptr<DrawPass> drawPass(new DrawPass(target,
                                                     {fLoadOp, StoreOp::kStore},

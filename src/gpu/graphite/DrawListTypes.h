@@ -233,10 +233,12 @@ struct BindingList {
  *      than a more expensive pipeline bind.
  */
 struct Layer {
-    Layer(const CompressedPaintersOrder& order) : fOrder(order) {}
+    Layer(const CompressedPaintersOrder& order) : fOrder(order), fActualLayer(this) {}
 
     const CompressedPaintersOrder fOrder;
+    Rect fBounds = Rect::InfiniteInverted();
     SkTInternalLList<BindingList> fBindings;
+    Layer* fActualLayer = this;
     SK_DECLARE_INTERNAL_LLIST_INTERFACE(Layer);
 
     // Performs no bounds checks, so can only be used when checks have already confirmed the Layer
@@ -296,6 +298,11 @@ struct Layer {
         // the test mask (otherwise it'd trigger testing against every BindingList that needed to be
         // internally disjoint, not just a matching list).
         SkASSERT(!SkToBool(testMask & BoundsFlags::kMustBeDisjoint));
+
+        if (!fBounds.intersects(drawBounds)) {
+            return {BoundsTestResult::kAllowedBeforeLayer | BoundsTestResult::kAllowedInLayer,
+                    this->searchBinding(key)};
+        }
 
         // Forward merging attempts to pull an earlier, compatible draw out of the current layer and
         // push it into a newly created layer to improve pipeline/texture batching.
@@ -358,17 +365,8 @@ struct Layer {
 
                 if (SkToBool(aspectOverlap & (BoundsFlags::kStencil |
                                               BoundsFlags::kMustBeDisjoint))) {
-                    // The draw can't be in this layer because either
-                    // - a stencil overlap must be fully disjoint in the layer for all draws
-                    // - or this is an exact match with overlap not allowed
-                    //
-                    // We can also always stop searching because if we depend on kColor, our
-                    // result would be kBlocked; and if we don't depend on kColor then no
-                    // further test will restrict kAllowedBeforeLayer from the result.
-                    return {aspectOverlap & BoundsFlags::kColor
-                                    ? BoundsTestResult::kBlocked
-                                    : BoundsTestResult::kAllowedBeforeLayer,
-                            /*match=*/nullptr};
+                    // ??
+                    return {BoundsTestResult::kBlocked, /*match=*/nullptr};
                 }
 
                 // At this point, it's just a color overlap, so the draw cannot go before this
