@@ -52,8 +52,12 @@ struct SkGainmapInfo {
     /**
      *  Parameters sometimes used in gainmap computation to avoid numerical instability.
      */
-    SkColor4f fEpsilonSdr = {0.f, 0.f, 0.f, 1.0};
-    SkColor4f fEpsilonHdr = {0.f, 0.f, 0.f, 1.0};
+    /**
+     *  Default value of 1/64 (0.015625) matches Android Ultra HDR,
+     *  Adobe Gain Map, and ISO/IEC TS 21496-1 specifications.
+     */
+    SkColor4f fEpsilonSdr = {1.f / 64.f, 1.f / 64.f, 1.f / 64.f, 1.0f};
+    SkColor4f fEpsilonHdr = {1.f / 64.f, 1.f / 64.f, 1.f / 64.f, 1.0f};
 
     /**
      *  If the output display's HDR to SDR ratio is less or equal than fDisplayRatioSdr then the SDR
