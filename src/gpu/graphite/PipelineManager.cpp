@@ -128,6 +128,36 @@ GraphicsPipelineHandle PipelineManager::createHandle(
     return GraphicsPipelineHandle(std::move(task));
 }
 
+void PipelineManager::foo(SharedContext* sharedContext,
+                          const RuntimeEffectDictionary* runtimeDict,
+                          PipelineManager* pipelineManager,
+                          PipelineCreationTask* task) {
+    // This is a bit racy but the exact correctness of the actual cause for the compilation
+    // isn't crucial. In essence, this tries to give the SharedContext a best guess about
+    // the driver behind the compilation. The exact race is if a precompile compilation
+    // was usurped by a normal compilation but we still report a precompile compilation
+    // to the SharedContext.
+    PipelineCreationFlags flags = task->isLowPriority()
+                                      ? PipelineCreationFlags::kForPrecompilation
+                                      : PipelineCreationFlags::kNone;
+
+    // Note: this lambda function relies on the continued existence of the shared
+    // context and the PipelineManager. The RuntimeEffectDictionary and task are reffed.
+    task->fPipeline = sharedContext->findOrCreateGraphicsPipeline(
+            runtimeDict,
+            task->fPipelineKey,
+            task->fGraphicsPipelineDesc,
+            task->fRenderPassDesc,
+            flags);
+
+    if (!task->fPipeline) {
+        SKIA_LOG_W("Failed to create GraphicsPipeline!");
+    }
+
+    pipelineManager->signalCompleted(task);
+    pipelineManager->removeTask(task);
+}
+
 void PipelineManager::addTaskToWorkList(SharedContext* sharedContext,
                                         sk_sp<const RuntimeEffectDictionary> runtimeDict,
                                         sk_sp<PipelineCreationTask> task,
@@ -137,30 +167,7 @@ void PipelineManager::addTaskToWorkList(SharedContext* sharedContext,
             return;
         }
 
-        // This is a bit racy but the exact correctness of the actual cause for the compilation
-        // isn't crucial. In essence, this tries to give the SharedContext a best guess about
-        // the driver behind the compilation. The exact race is if a precompile compilation
-        // was usurped by a normal compilation but we still report a precompile compilation
-        // to the SharedContext.
-        PipelineCreationFlags flags = task->isLowPriority()
-                                          ? PipelineCreationFlags::kForPrecompilation
-                                          : PipelineCreationFlags::kNone;
-
-        // Note: this lambda function relies on the continued existence of the shared
-        // context and the PipelineManager. The RuntimeEffectDictionary and task are reffed.
-        task->fPipeline = sharedContext->findOrCreateGraphicsPipeline(
-                runtimeDict.get(),
-                task->fPipelineKey,
-                task->fGraphicsPipelineDesc,
-                task->fRenderPassDesc,
-                flags);
-
-        if (!task->fPipeline) {
-            SKIA_LOG_W("Failed to create GraphicsPipeline!");
-        }
-
-        this->signalCompleted(task.get());
-        this->removeTask(task.get());
+        foo(sharedContext, runtimeDict.get(), this, task.get());
     };
 
     {
@@ -179,7 +186,8 @@ void PipelineManager::addTaskToWorkList(SharedContext* sharedContext,
     compileTask();
 }
 
-sk_sp<GraphicsPipeline> PipelineManager::resolveHandle(const GraphicsPipelineHandle& handle) {
+sk_sp<GraphicsPipeline> PipelineManager::resolveHandle(SharedContext* sharedContext,
+                                                       const GraphicsPipelineHandle& handle) {
     if (std::holds_alternative<sk_sp<GraphicsPipeline>>(handle.fTaskOrPipeline)) {
         return std::get<sk_sp<GraphicsPipeline>>(handle.fTaskOrPipeline);
     }
@@ -191,7 +199,7 @@ sk_sp<GraphicsPipeline> PipelineManager::resolveHandle(const GraphicsPipelineHan
 
     // For the non-threaded PipelineManager, the GraphicsPipeline will have been compiled in-line
     // so will already have been completed.
-    this->potentiallyWaitOn(task.get());
+    this->potentiallyWaitOn(sharedContext, task.get());
     return task->fPipeline;
 }
 
@@ -287,7 +295,11 @@ void PipelineManager::signalCompleted(PipelineCreationTask* task) {
 }
 
 
-void PipelineManager::potentiallyWaitOn(PipelineCreationTask* task) {
+void PipelineManager::potentiallyWaitOn(SharedContext* sharedContext, PipelineCreationTask* task) {
+    if (!task->fStarted.exchange(true)) {
+        foo(sharedContext, runtimeDict.get(), this, task);
+    }
+
     std::unique_lock<std::mutex> lock(fMutex);
 
     if (task->fCompleted) {
