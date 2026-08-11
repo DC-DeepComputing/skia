@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -53,14 +54,14 @@ static const int kCellSize = kImageSize+2*kLabelSize;
 static const int kGMWidth  = kNumMatrices*kCellSize;
 static const int kGMHeight = 4*kCellSize;
 
-static const SkPoint kPoints[kNumLabels] = {
+static const std::array<SkPoint, kNumLabels> kPoints = {{
     {          0, kImageSize },     // LL
     { kImageSize, kImageSize },     // LR
     {          0,          0 },     // UL
     { kImageSize,          0 },     // UR
-};
+}};
 
-static const SkMatrix kUVMatrices[kNumMatrices] = {
+static const std::array<SkMatrix, kNumMatrices> kUVMatrices = {
     SkMatrix::MakeAll( 0, -1, 1,
                       -1,  0, 1,
                        0,  0, 1),
@@ -190,7 +191,7 @@ private:
     // Draw the reference image and the four corner labels in the matrix's coordinate space
     void drawImageWithMatrixAndLabels(SkCanvas* canvas, SkImage* image, int matIndex,
                                       bool drawSubset, bool drawScaled) {
-        static const SkRect kSubsets[kNumMatrices] = {
+        static const std::array<SkRect, kNumMatrices> kSubsets = {
             SkRect::MakeXYWH(kInset, 0, kImageSize-kInset, kImageSize),
             SkRect::MakeXYWH(0, kInset, kImageSize, kImageSize-kInset),
             SkRect::MakeXYWH(0, 0, kImageSize-kInset, kImageSize),
@@ -243,9 +244,9 @@ private:
             return;
         }
 
-        static const char* kLabelText[kNumLabels] = { "LL", "LR", "UL", "UR" };
+        static std::array<const char *, kNumLabels> kLabelText = { "LL", "LR", "UL", "UR" };
 
-        static const SkColor kLabelColors[kNumLabels] = {
+        static const std::array<SkColor, kNumLabels> kLabelColors = {
             SK_ColorRED,
             SK_ColorGREEN,
             SK_ColorBLUE,
@@ -311,7 +312,7 @@ private:
 
 private:
     TArray<sk_sp<SkImage>> fLabels;
-    sk_sp<SkImage> fReferenceImages[2];
+    std::array<sk_sp<SkImage>, 2> fReferenceImages;
 
     using INHERITED = GM;
 };

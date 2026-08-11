@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "src/core/SkDrawShadowInfo.h"
 
 #include "include/core/SkMatrix.h"
@@ -52,7 +53,7 @@ bool GetSpotShadowTransform(const SkPoint3& lightPos, SkScalar lightRadius,
         SkPoint pts[4];
         ctm.mapRectToQuad(pts, pathBounds);
 
-        SkPoint3 pts3D[4];
+        std::array<SkPoint3, 4> pts3D;
         SkScalar z = heightFunc(pathBounds.fLeft, pathBounds.fTop);
         pts3D[0].set(pts[0].fX, pts[0].fY, z);
         z = heightFunc(pathBounds.fRight, pathBounds.fTop);

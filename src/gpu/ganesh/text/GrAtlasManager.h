@@ -8,6 +8,7 @@
 #ifndef GrAtlasManager_DEFINED
 #define GrAtlasManager_DEFINED
 
+#include <array>
 #include "include/core/SkRefCnt.h"
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/ganesh/GrBackendSurface.h"
@@ -165,7 +166,7 @@ private:
     }
 
     GrDrawOpAtlas::AllowMultitexturing fAllowMultitexturing;
-    std::unique_ptr<GrDrawOpAtlas> fAtlases[skgpu::kMaskFormatCount];
+    std::array<std::unique_ptr<GrDrawOpAtlas>, skgpu::kMaskFormatCount> fAtlases;
     static_assert(skgpu::kMaskFormatCount == 3);
     bool fSupportBilerpAtlas;
     GrProxyProvider* fProxyProvider;

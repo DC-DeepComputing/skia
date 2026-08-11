@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "src/sksl/codegen/SkSLRasterPipelineBuilder.h"
 #include <cstdint>
 #include <optional>
@@ -1142,12 +1143,12 @@ void Builder::swizzle(int consumedSlots, SkSpan<const int8_t> components) {
 
     // We only allow up to 16 elements, and they can only reach 0-15 slots, due to nybble packing.
     int numElements = components.size();
-    SkASSERT(numElements <= 16);
+    SkASSERT_RELEASE(numElements <= 16);
     SkASSERT(std::all_of(components.begin(), components.end(), [](int8_t e){ return e >= 0; }));
     SkASSERT(std::all_of(components.begin(), components.end(), [](int8_t e){ return e <= 0xF; }));
 
     // Make a local copy of the element array.
-    int8_t elements[16] = {};
+    std::array<int8_t, 16> elements = {};
     std::copy(components.begin(), components.end(), std::begin(elements));
 
     while (numElements > 0) {
@@ -1156,7 +1157,7 @@ void Builder::swizzle(int consumedSlots, SkSpan<const int8_t> components) {
             break;
         }
         // ...and zero isn't used elsewhere in the swizzle...
-        if (std::any_of(&elements[1], &elements[numElements], [](int8_t e) { return e == 0; })) {
+        if (std::any_of(elements.begin() + 1, elements.begin() + numElements, [](int8_t e) { return e == 0; })) {
             break;
         }
         // We can omit the first slot from the swizzle entirely.
@@ -1179,7 +1180,7 @@ void Builder::swizzle(int consumedSlots, SkSpan<const int8_t> components) {
         // We can fit everything into a little swizzle.
         int op = (int)BuilderOp::swizzle_1 + numElements - 1;
         this->appendInstruction((BuilderOp)op, {}, consumedSlots,
-                                pack_nybbles(SkSpan(elements, numElements)));
+                                pack_nybbles(SkSpan(elements).first(numElements)));
         return;
     }
 
@@ -1187,37 +1188,37 @@ void Builder::swizzle(int consumedSlots, SkSpan<const int8_t> components) {
     // slots. immB counts the generated slots. immC and immD hold packed-nybble shuffle values.
     this->appendInstruction(BuilderOp::shuffle, {},
                             consumedSlots, numElements,
-                            pack_nybbles(SkSpan(&elements[0], 8)),
-                            pack_nybbles(SkSpan(&elements[8], 8)));
+                            pack_nybbles(SkSpan(elements).first(8)),
+                            pack_nybbles(SkSpan(elements).subspan(8)));
 }
 
 void Builder::transpose(int columns, int rows) {
     // Transposes a matrix of size CxR on the stack (into a matrix of size RxC).
-    int8_t elements[16] = {};
+    std::array<int8_t, 16> elements = {};
     size_t index = 0;
     for (int r = 0; r < rows; ++r) {
         for (int c = 0; c < columns; ++c) {
             elements[index++] = (c * rows) + r;
         }
     }
-    this->swizzle(/*consumedSlots=*/columns * rows, SkSpan(elements, index));
+    this->swizzle(/*consumedSlots=*/columns * rows, SkSpan(elements).first(index));
 }
 
 void Builder::diagonal_matrix(int columns, int rows) {
     // Generates a CxR diagonal matrix from the top two scalars on the stack.
-    int8_t elements[16] = {};
+    std::array<int8_t, 16> elements = {};
     size_t index = 0;
     for (int c = 0; c < columns; ++c) {
         for (int r = 0; r < rows; ++r) {
             elements[index++] = (c == r) ? 1 : 0;
         }
     }
-    this->swizzle(/*consumedSlots=*/2, SkSpan(elements, index));
+    this->swizzle(/*consumedSlots=*/2, SkSpan(elements).first(index));
 }
 
 void Builder::matrix_resize(int origColumns, int origRows, int newColumns, int newRows) {
     // Resizes a CxR matrix at the top of the stack to C'xR'.
-    int8_t elements[16] = {};
+    std::array<int8_t, 16> elements = {};
     size_t index = 0;
 
     size_t consumedSlots = origColumns * origRows;
@@ -1248,7 +1249,7 @@ void Builder::matrix_resize(int origColumns, int origRows, int newColumns, int n
             }
         }
     }
-    this->swizzle(consumedSlots, SkSpan(elements, index));
+    this->swizzle(consumedSlots, SkSpan(elements).first(index));
 }
 
 void Builder::matrix_multiply(int leftColumns, int leftRows, int rightColumns, int rightRows) {

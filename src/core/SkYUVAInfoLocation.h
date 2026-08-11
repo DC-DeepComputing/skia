@@ -8,6 +8,7 @@
 #ifndef SkYUVAInfoLocation_DEFINED
 #define SkYUVAInfoLocation_DEFINED
 
+#include <array>
 #include "include/core/SkColor.h"
 #include "include/core/SkYUVAInfo.h"
 
@@ -31,7 +32,7 @@ struct SkYUVAInfo::YUVALocation {
     static bool AreValidLocations(const SkYUVAInfo::YUVALocations& locations,
                                   int* numPlanes = nullptr) {
         int maxSlotUsed = -1;
-        bool used[SkYUVAInfo::kMaxPlanes] = {};
+        std::array<bool, SkYUVAInfo::kMaxPlanes> used = {};
         bool valid = true;
         for (int i = 0; i < SkYUVAInfo::kYUVAChannelCount; ++i) {
             if (locations[i].fPlane < 0) {

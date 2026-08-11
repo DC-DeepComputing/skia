@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkCanvas.h"
@@ -119,14 +120,14 @@ protected:
     SkISize getISize() override { return SkISize::Make(600, 420); }
 
     void onDraw(SkCanvas* canvas) override {
-        SkBlendMode modes[] = {
+        auto modes = std::to_array<SkBlendMode>({
             SkBlendMode::kSrcOver,
             SkBlendMode::kDstOver,
             SkBlendMode::kSrcATop,
             SkBlendMode::kDstATop,
             SkBlendMode::kSrcIn,
             SkBlendMode::kDstIn,
-        };
+        });
         struct {
             const sk_sp<SkShader>& fShader1;
             const sk_sp<SkShader>& fShader2;

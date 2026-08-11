@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "src/gpu/ganesh/GrThreadSafePipelineBuilder.h"
 
 #if GR_GPU_STATS
@@ -16,7 +17,7 @@ using namespace skia_private;
 using Stats = GrThreadSafePipelineBuilder::Stats;
 
 static const char* cache_result_to_str(int i) {
-    const char* kCacheResultStrings[Stats::kNumProgramCacheResults] = {
+    std::array<const char *, Stats::kNumProgramCacheResults> kCacheResultStrings = {
         "hits",
         "misses",
         "partials"

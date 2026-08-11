@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkFontArguments.h"
 #include "include/core/SkFontMgr.h"
 #include "include/core/SkFontStyle.h"
@@ -133,9 +134,9 @@ SkFontMgr_Custom::SkFontMgr_Custom(const SystemFontLoader& loader)
     loader.loadSystemFonts(fScanner.get(), &fFamilies);
 
     // Try to pick a default font.
-    static const char* defaultNames[] = {
+    static auto defaultNames = std::to_array<const char *>({
         "Arial", "Verdana", "Times New Roman", "Droid Sans", "DejaVu Serif", nullptr
-    };
+    ,});
     for (size_t i = 0; i < std::size(defaultNames); ++i) {
         sk_sp<SkFontStyleSet> set(this->onMatchFamily(defaultNames[i]));
         if (nullptr == set) {

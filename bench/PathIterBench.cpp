@@ -4,6 +4,7 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include <array>
 #include "bench/Benchmark.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -22,9 +23,9 @@ enum class PathIterType {
     kEdge,
     kPathIter,
 };
-const char* gPathIterNames[] = {
+auto gPathIterNames = std::to_array<const char *>({
     "olditer", "newiter", "priv", "edge", "pathiter",
-};
+});
 
 static int rand_pts(SkRandom& rand, SkPoint pts[4]) {
     int n = rand.nextU() & 3;

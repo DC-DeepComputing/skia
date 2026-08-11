@@ -64,9 +64,9 @@ static void testChopCubicAtT(skiatest::Reporter* reporter, const std::string& na
     {
         skiatest::ReporterContext subsubtest(reporter, "SkBezier Implementation");
         double input[8];
-        double output[14];
+        std::array<double, 14> output;
         std::memcpy(input, curveInputs.data(), 8 * sizeof(double));
-        SkBezierCubic::Subdivide(input, t, output);
+        SkBezierCubic::Subdivide(input, t, output.data());
 
         for (int i = 0; i < 7; ++i) {
             REPORTER_ASSERT(reporter,

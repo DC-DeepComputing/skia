@@ -9,6 +9,7 @@
 #ifndef GrGLRenderTarget_DEFINED
 #define GrGLRenderTarget_DEFINED
 
+#include <array>
 #include "include/core/SkRefCnt.h"
 #include "include/gpu/ganesh/GrBackendSurface.h"
 #include "include/gpu/ganesh/gl/GrGLTypes.h"
@@ -153,7 +154,7 @@ private:
     GrGLuint    fSingleSampleFBOID;
     GrGLuint    fMSColorRenderbufferID;
     GrGLFormat  fRTFormat;
-    bool        fNeedsStencilAttachmentBind[2] = {false, false};
+    std::array<bool, 2> fNeedsStencilAttachmentBind = {false, false};
     bool        fDMSAARenderToTextureFBOIsMultisample = false;
 
     GrBackendObjectOwnership fRTFBOOwnership;

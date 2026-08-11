@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/codec/SkAndroidCodec.h"
 #include "include/codec/SkCodec.h"
 #include "include/core/SkBitmap.h"
@@ -619,7 +620,7 @@ DEF_TEST(AndroidCodec_gainmapInfoEncode, r) {
     SkBitmap baseBitmap;
     baseBitmap.allocPixels(SkImageInfo::MakeN32Premul(16, 16));
 
-    SkBitmap gainmapBitmaps[kNumTests];
+    std::array<SkBitmap, kNumTests> gainmapBitmaps;
     gainmapBitmaps[0].allocPixels(SkImageInfo::MakeN32Premul(16, 16));
     gainmapBitmaps[1].allocPixels(SkImageInfo::MakeN32Premul(8, 8));
     gainmapBitmaps[2].allocPixels(
@@ -627,7 +628,7 @@ DEF_TEST(AndroidCodec_gainmapInfoEncode, r) {
     gainmapBitmaps[3].allocPixels(
             SkImageInfo::Make(8, 8, kGray_8_SkColorType, kPremul_SkAlphaType));
 
-    SkGainmapInfo infos[kNumTests] = {
+    std::array<SkGainmapInfo, kNumTests> infos = {{
             // Multi-channel, UltraHDR-compatible.
             {{1.f, 2.f, 4.f, 1.f},
              {8.f, 16.f, 32.f, 1.f},
@@ -672,7 +673,7 @@ DEF_TEST(AndroidCodec_gainmapInfoEncode, r) {
              SkGainmapInfo::BaseImageType::kHDR,
              SkGainmapInfo::Type::kDefault,
              SkColorSpace::MakeRGB(SkNamedTransferFn::kSRGB, SkNamedGamut::kDisplayP3)},
-    };
+    }};
 
     for (size_t i = 0; i < kNumTests; ++i) {
         // Encode |gainmapInfo|.
