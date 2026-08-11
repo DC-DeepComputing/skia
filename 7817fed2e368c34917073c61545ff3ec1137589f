@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c74ea37a_cf4ad425",
+        "filename": "src/core/SkStrikeCache.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-08-11T15:34:33Z",
+      "side": 0,
+      "message": "Deleting this breaks Flutter.\n\nhttps://logs.chromium.org/logs/flutter/buildbucket/cr-buildbucket/8673795830231793985/+/u/build_wasm_release_flutter_web_sdk:flutter_web_sdk_archive/stdout",
+      "revId": "7817fed2e368c34917073c61545ff3ec1137589f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
