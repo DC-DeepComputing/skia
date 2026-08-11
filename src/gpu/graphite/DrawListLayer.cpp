@@ -45,6 +45,134 @@ void DrawListLayer::reset(LoadOp loadOp, SkColor4f color) {
 //         the stopLayer is treated exclusively, a sucessor renderstep stops its traversal before
 //         the stopLayer, thus preserving the relative ordering between the draws. (Note: will be
 //         changed in future CL, so kind of stub comment)
+#if defined(USE_BINDING_TREE2)
+
+#if defined(BULK_BINDING_BOUNDS)
+std::pair<Layer*, PipelineNode*> DrawListLayer::searchBackwards(
+        SkEnumBitMask<BoundsFlags> testMask,
+        const DrawParams* drawParams,
+        const LayerKey& key,
+        CompressedPaintersOrder stop)
+#else
+
+Layer* DrawListLayer::searchBackwards(
+        SkEnumBitMask<BoundsFlags> testMask,
+        const DrawParams* drawParams,
+        CompressedPaintersOrder stop)
+
+#endif
+{
+    // CPU performance is sensitive to increasing this value. Searching for longer *can* reduce the
+    // draw count and pipeline change count
+    static constexpr int kMaxSearchLimit = 8; // 128,64,32 are all pretty similar in terms of batching, starts to worsen at 16
+
+// Some findings:
+//  - the decaying search limit hurts batching on paths because we need to search back ~8ish to get
+//    comparable batching as to before.
+//  - the layers in paths don't have that many binding lists, so it's not too expensive to search
+//    for binding matches.
+//  - using this same limit for suits and suitsclip (in particular) is expensive, its layers have
+//    many more binding lists (~30) so doing a searchBinding as we skip through them is painful.
+//  - most motionmark tests don't get hurt when changing to do a single searchBinding() at the
+//    deepest found target layer, this makes suits win, but suitsclip is still a regression.
+//  - would it be easier and more resposnive to instead decay based on the number of searched
+//    bindings? Then we adapt and we also get the benefit of not skipping past a possible batch
+//
+// Also I should revisit inlining draws into the layer storage for lean layers
+// Could also revisit inlining draws into BindingList, but maybe only do 1 or 2 for the limit
+// since we do have a cascading failure mode of thousands of lists for just a few draws each.
+//
+// Lastly, could we reorganize the layer keys of the binding lists to be in a dense list or something
+// that would be more immediately searchable in the layer to know if there could be a good match?
+
+
+//   -> so trying to use a quick looup for binding match to see if we should do a full search
+//      inside test() doesn't make any difference than just returning no match and searching at the end.
+//      This is also just as good as searching all the time. This is with a search limit of 256 though,
+//      and no decay.
+
+//      -> dropping to 8 w/ no decay also works pretty well on suitsclip, interestingly adding
+//         back the decay doesn't change the max search depth very much, so there must not be a lot
+//         of binding hits.  This would suggest the quick-hash check would skip some searches
+
+// so all that to say, I'm not sure there's a lot that we can do? 4 keys misses too many matches
+//  so I guess the question is how likely we'd hit the 4 early vs. following the pointers?
+//  that seems like pretty negligible memory traffic for just 4.
+// -> could we do a better hierarchy or something that lets us search faster for the cases where
+//    a layer has 30+ bindings in it?
+
+    Layer* targetLayer = nullptr;
+#if defined(BULK_BINDING_BOUNDS)
+    PipelineNode* targetMatch = nullptr;
+    PipelineNode* forwardMerge = nullptr;
+#endif
+
+    Rect::ComplementRect drawBounds{drawParams->drawBounds()};
+
+    int layerCount = 0;
+    Layer* current = fLayers.tail();
+    for (int limit = kMaxSearchLimit; limit > 0 && current; --limit) {
+#if defined(BULK_BINDING_BOUNDS)
+        auto [result, match] = current->test(drawBounds, key, testMask);
+#else
+        auto result = current->test(drawBounds, testMask);
+#endif
+        layerCount++;
+        if (result & BoundsTestResult::kAllowedInLayer) {
+            // Allowed in the layer, so remember it. In complex scenes, we want to search deeper
+            // in the layer list than just the first compatible overlap we encounter. Stopping early
+            // reduces search time but fragments batching. Inserting early blocks subsequent draws
+            // from reaching those denser, later candidates (particularly when this is a clip draw
+            // as that propagates into the stop layer for subsequent draws).
+#if defined(BULK_BINDING_BOUNDS)
+            if (match || !targetMatch) {
+                targetLayer = current;
+                targetMatch = match;
+            }
+#else
+            targetLayer = current;
+#endif
+        }
+#if defined(BULK_BINDING_BOUNDS)
+        else if (match && result == BoundsTestResult::kBlocked && key.isSimpleShading() && !current->fNext) {
+            forwardMerge = targetMatch;
+        }
+#endif
+
+        if (!SkToBool(result & BoundsTestResult::kAllowedBeforeLayer) || current->fOrder == stop) {
+            break;
+        } else {
+            current = current->fPrev;
+        }
+    }
+
+    SkASSERT(!targetLayer || targetLayer->fOrder >= stop);
+
+    if (!targetLayer) {
+        fOrderCounter = fOrderCounter.next();
+        targetLayer = fStorage.make<Layer>(fOrderCounter);
+#if defined(BULK_BINDING_BOUNDS)
+        if (forwardMerge) {
+            fLayers.tail()->fTree.fNodes.remove(forwardMerge);
+            targetLayer->fTree.fNodes.addToHead(forwardMerge);
+            targetMatch = forwardMerge;
+        }
+#endif
+        fLayers.addToTail(targetLayer);
+    }
+
+    fLayerSearchCount += layerCount;
+    fSearchCount++;
+    fMaxLayerSearchCount = std::max(fMaxLayerSearchCount, layerCount);
+
+#if defined(BULK_BINDING_BOUNDS)
+    return {targetLayer, targetMatch};
+#else
+    return targetLayer;
+#endif
+}
+
+#else
 std::pair<Layer*, BindingList*> DrawListLayer::searchBackwards(
         const RenderStep* step,
         const LayerKey& key,
@@ -53,7 +181,42 @@ std::pair<Layer*, BindingList*> DrawListLayer::searchBackwards(
         CompressedPaintersOrder stop) {
     // CPU performance is sensitive to increasing this value. Searching for longer *can* reduce the
     // draw count and pipeline change count
-    static constexpr int kMaxSearchLimit = 8;
+    static constexpr int kMaxSearchLimit = 8; // 128,64,32 are all pretty similar in terms of batching, starts to worsen at 16
+
+// Some findings:
+//  - the decaying search limit hurts batching on paths because we need to search back ~8ish to get
+//    comparable batching as to before.
+//  - the layers in paths don't have that many binding lists, so it's not too expensive to search
+//    for binding matches.
+//  - using this same limit for suits and suitsclip (in particular) is expensive, its layers have
+//    many more binding lists (~30) so doing a searchBinding as we skip through them is painful.
+//  - most motionmark tests don't get hurt when changing to do a single searchBinding() at the
+//    deepest found target layer, this makes suits win, but suitsclip is still a regression.
+//  - would it be easier and more resposnive to instead decay based on the number of searched
+//    bindings? Then we adapt and we also get the benefit of not skipping past a possible batch
+//
+// Also I should revisit inlining draws into the layer storage for lean layers
+// Could also revisit inlining draws into BindingList, but maybe only do 1 or 2 for the limit
+// since we do have a cascading failure mode of thousands of lists for just a few draws each.
+//
+// Lastly, could we reorganize the layer keys of the binding lists to be in a dense list or something
+// that would be more immediately searchable in the layer to know if there could be a good match?
+
+
+//   -> so trying to use a quick looup for binding match to see if we should do a full search
+//      inside test() doesn't make any difference than just returning no match and searching at the end.
+//      This is also just as good as searching all the time. This is with a search limit of 256 though,
+//      and no decay.
+
+//      -> dropping to 8 w/ no decay also works pretty well on suitsclip, interestingly adding
+//         back the decay doesn't change the max search depth very much, so there must not be a lot
+//         of binding hits.  This would suggest the quick-hash check would skip some searches
+
+// so all that to say, I'm not sure there's a lot that we can do? 4 keys misses too many matches
+//  so I guess the question is how likely we'd hit the 4 early vs. following the pointers?
+//  that seems like pretty negligible memory traffic for just 4.
+// -> could we do a better hierarchy or something that lets us search faster for the cases where
+//    a layer has 30+ bindings in it?
 
     Layer* targetLayer = nullptr;
     BindingList* targetMatch = nullptr;
@@ -61,10 +224,11 @@ std::pair<Layer*, BindingList*> DrawListLayer::searchBackwards(
 
     Rect::ComplementRect drawBounds{drawParams->drawBounds()};
 
+    int layerCount = 0;
     Layer* current = fLayers.tail();
     for (int limit = kMaxSearchLimit; limit > 0 && current; --limit) {
         auto [result, match] = current->test(drawBounds, key, testMask);
-
+        layerCount++;
         if (result & BoundsTestResult::kAllowedInLayer) {
             // Allowed in the layer, so remember it. In complex scenes, we want to search deeper
             // in the layer list than just the first compatible overlap we encounter. Stopping early
@@ -81,7 +245,13 @@ std::pair<Layer*, BindingList*> DrawListLayer::searchBackwards(
                      !SkToBool(key.fFlags & BoundsFlags::kMustBeDisjoint) &&
                      current == fLayers.tail() &&
                      !targetLayer);
+            // SkDebugf("found legacy forward merge\n");
             forwardMerge = match;
+            // if (!match->fPrev && !match->fNext) {
+            //     targetMatch = match;
+            //     targetLayer = current;
+            //     forwardMerge = nullptr;
+            // }
         }
 
         if (!SkToBool(result & BoundsTestResult::kAllowedBeforeLayer) || current->fOrder == stop) {
@@ -94,13 +264,46 @@ std::pair<Layer*, BindingList*> DrawListLayer::searchBackwards(
             // is an imprecise heuristic. In an ideal world, we would maximize batching by
             // exhaustively searching to the end of the list, but that would degrade insertion
             // performance to O(n^2).
-            if (match) {
-                limit /= 2;
-            }
+            // if (match) {
+            //     limit /= 2;
+            // }
         }
     }
 
     SkASSERT(!targetLayer || targetLayer->fOrder >= stop);
+
+    // if (targetLayer && (!targetMatch || !targetMatch->fKey.isEqual(key)) &&
+    //     targetLayer->fInlineBindingCount == 16) {
+    //     targetLayer = nullptr;
+    //     targetMatch = nullptr;
+    // }
+
+
+#if !defined(SEARCH_IN_TEST)
+    if (targetLayer && !targetMatch) {
+        targetMatch = targetLayer->searchBinding(key);
+    }
+    if (key.isSimpleShading()) {
+        if (fLayers.tail() && (!targetLayer || !targetMatch)) {
+            // Otherwise see if we can steal something from the tail layer.
+            // FIXME this can't necessarily be a pipeline match because then we'd add the new
+            // binding in front of it in the new layer. That's fine if we passed the original test
+            // on the tail() layer, but if that is what rejected us, the new binding has to go in
+            // afterwards
+            forwardMerge = fLayers.tail()->searchBinding(key, nullptr, true);
+            if (forwardMerge && !forwardMerge->fPrev && !forwardMerge->fNext) {
+                // Same case as the above *if* since there's only one binding in the tail
+                targetLayer = fLayers.tail();
+                targetMatch = forwardMerge;
+                forwardMerge = nullptr;
+                SkDebugf("found singleton forward merge\n");
+            }  else if (forwardMerge) {
+                SkDebugf("found forward merge\n");
+            } // else keep it where we thought (either targetLayer w/ no match, or new layer
+            // and no forward merge
+        }
+    }
+#endif
 
     if (!targetLayer) {
         fOrderCounter = fOrderCounter.next();
@@ -108,20 +311,38 @@ std::pair<Layer*, BindingList*> DrawListLayer::searchBackwards(
         if (forwardMerge) {
             SkASSERT(fLayers.tail()->fBindings.isInList(forwardMerge));
             SkASSERT(key.fFlags & BoundsFlags::kColor); // Moving depth draws would break clipping
-            fLayers.tail()->fBindings.remove(forwardMerge);
-            targetLayer->fBindings.addToHead(forwardMerge);
+            // fLayers.tail()->fTree.remove(forwardMerge);
+            // fLayers.tail()->fBindings.remove(forwardMerge);
+            // targetLayer->fBindings.addToHead(forwardMerge);
+            // targetLayer->fTree.add(nullptr, forwardMerge);
+            fLayers.tail()->transfer(forwardMerge, targetLayer);
             targetMatch = forwardMerge;
         }
         fLayers.addToTail(targetLayer);
+    } else if (!targetMatch) {
+        targetMatch = targetLayer->searchBinding(key);
+        // NOTE: ThIS IDEA JUST HURTS BATCHING IN THE LONG RUN
+        // if (!targetMatch && targetLayer != fLayers.tail() && key.isSimpleShading()) {
+        //     targetMatch = fLayers.tail()->searchBinding(key);
+        //     if (targetMatch) {
+        //         targetLayer = fLayers.tail();
+        //         // SkDebugf("jumped back to tail\n");
+        //     }
+        // }
+        // if (targetMatch) SkDebugf("last chance match in target layer\n");
     }
 
     if (!targetMatch || !targetMatch->fKey.isEqual(key)) {
         // If targetMatch is just a pipeline match, we can insert right before it because such a
         // match is only returned when the new draw can be ordered in front of it.
-        targetMatch = targetLayer->addNewBinding(&fStorage, targetMatch, key, step);
+        targetMatch = targetLayer->addNewBinding(&fStorage, targetMatch, key, step, true);
     } else {
         SkASSERT(targetLayer->fBindings.isInList(targetMatch));
     }
+
+    fLayerSearchCount += layerCount;
+    fSearchCount++;
+    fMaxLayerSearchCount = std::max(fMaxLayerSearchCount, layerCount);
 
     return {targetLayer, targetMatch};
 }
@@ -136,6 +357,7 @@ BindingList* DrawListLayer::findOrCreateBindingInLayer(Layer* layer,
     // If we have a parent step's BindingList to insert before, it must be in `layer`.
     SkASSERT(!parent || layer->fBindings.isInList(parent));
 
+    bool firstStep = !parent;
     BindingList* targetMatch = nullptr;
 
     // If we don't have a parent, search through all bindings of the layer as this is the first time
@@ -155,10 +377,11 @@ BindingList* DrawListLayer::findOrCreateBindingInLayer(Layer* layer,
     }
 
     if (!targetMatch) {
-        targetMatch = layer->addNewBinding(&fStorage, parent, key, step);
+        targetMatch = layer->addNewBinding(&fStorage, parent, key, step, firstStep);
     }
     return targetMatch;
 }
+#endif
 
 // Layer has dual purpose here:
 //  1) (Producer) If recording a depth only draw, the pointer is set to the *latest* layer inserted.
@@ -222,11 +445,24 @@ std::pair<DrawParams*, Layer*> DrawListLayer::recordDraw(const Renderer* rendere
                                                        barrierBeforeDraws);
 
     Layer* insertionLayer = nullptr;
+#if defined(USE_BINDING_TREE2)
+    PipelineNode* lastStepBinding = nullptr;
+#else
     BindingList* lastStepBinding = nullptr;
+#endif
     // If we're an easy draw, jump to the latestInsertion layer since we don't have to test
     if (testMask == BoundsFlags::kNone && baseLayerMask == BoundsFlags::kNone) {
         insertionLayer = lastInsertion ? lastInsertion : fLayers.head();
     }
+#if defined(USE_BINDING_TREE2) && !defined(BULK_BINDING_BOUNDS)
+    if (!insertionLayer) {
+        CompressedPaintersOrder stop = lastInsertion ? lastInsertion->fOrder
+                                                         : DrawOrder::kNoIntersection;
+        insertionLayer = this->searchBackwards(testMask, drawParams, stop);
+    }
+#endif
+
+
 
     fRenderStepCount += renderer->numRenderSteps();
     for (int stepIndex = renderer->numRenderSteps() - 1; stepIndex >= 0; --stepIndex) {
@@ -268,6 +504,29 @@ std::pair<DrawParams*, Layer*> DrawListLayer::recordDraw(const Renderer* rendere
                      fStorageBufferSupport ? UniformDataCache::kInvalidIndex : uniformIndex,
                      layerMask};
 
+#if defined(USE_BINDING_TREE2)
+
+#if defined(BULK_BINDING_BOUNDS)
+        if (!insertionLayer) {
+            CompressedPaintersOrder stop = lastInsertion ? lastInsertion->fOrder
+                                                         : DrawOrder::kNoIntersection;
+            std::tie(insertionLayer, lastStepBinding) = this->searchBackwards(testMask,
+                                                                              drawParams,
+                                                                              key,
+                                                                              stop);
+            if (lastStepBinding) {
+                insertionLayer->addMatched(&fStorage, lastStepBinding, drawParams, key, uniformIndex, dependsOnDst);
+            } else {
+                lastStepBinding = insertionLayer->add(&fStorage, drawParams, key, step, uniformIndex, nullptr, dependsOnDst);
+            }
+        } else
+
+#endif
+        {
+            lastStepBinding = insertionLayer->add(&fStorage, drawParams, key, step, uniformIndex, lastStepBinding, dependsOnDst);
+        }
+#else
+        bool first = !lastStepBinding;
         if (!insertionLayer) {
             // Since we don't have a layer yet, search from the most recent layer back.
             CompressedPaintersOrder stop = lastInsertion ? lastInsertion->fOrder
@@ -286,10 +545,13 @@ std::pair<DrawParams*, Layer*> DrawListLayer::recordDraw(const Renderer* rendere
                                                                key);
         }
 
+        if (first) {
+            insertionLayer->updateForDraw(lastStepBinding, drawParams->drawBounds(), key);
+        }
         SkASSERT(lastStepBinding);
-        lastStepBinding->addDraw(fStorage.make<Draw>(drawParams, uniformIndex),
-                                     /*backToFront=*/dependsOnDst);
 
+        lastStepBinding->addDraw(&fStorage, drawParams, uniformIndex, dependsOnDst);
+#endif
         gatherer->rewindForRenderStep();
     }
 
@@ -410,10 +672,53 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
         return true;
     };
 
+#if defined(USE_BINDING_TREE2)
+    LayerKey key;
+    for (const Layer* layer : fLayers) {
+        for (const PipelineNode* pipeline : layer->fTree.fNodes) {
+            key.fPipelineIndex = pipeline->fPipeline;
+            // bindingsChange = true;
+            for (const BindingNode* binding = pipeline->fHead; binding; binding = binding->fNext) {
+                key.fTextureIndex = binding->fTexture;
+                key.fUniformIndex = binding->fUniform;
+                // bindingsChange = true;
+
+                const Draw* current = binding->fHead;
+
+                if (!recordDraw(key,
+                                current->fUniformIndex,
+                                pipeline->fStep,
+                                *current->fDrawParams,
+                                false)) {
+                    return nullptr;
+                }
+                current = current->fNext;
+                // ++current;
+
+                while (current) {
+                    if (!recordDraw(key,
+                                    current->fUniformIndex,
+                                    pipeline->fStep,
+                                    *current->fDrawParams,
+                                    true)) {
+                        return nullptr;
+                    }
+                    current = current->fNext;
+                    // ++current;
+                }
+            }
+        }
+    }
+
+#else
+
     for (Layer* layer : fLayers) {
         for (const BindingList* list : layer->fBindings) {
             SkASSERT(!list->fDraws.isEmpty());
-            const Draw* current = list->fDraws.head();
+            const Draw* current = list->fHead;
+            // FIXME reverse iterate if the binding list doesn't depend on dst (store in layer key?)
+
+            // auto current = list->fDraws.items().begin();
 
             if (!recordDraw(list->fKey,
                             current->fUniformIndex,
@@ -423,6 +728,7 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
                 return nullptr;
             }
             current = current->fNext;
+            // ++current;
 
             while (current) {
                 if (!recordDraw(list->fKey,
@@ -433,9 +739,11 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
                     return nullptr;
                 }
                 current = current->fNext;
+                // ++current;
             }
         }
     }
+#endif
 
     drawWriter.flush();
 
@@ -448,6 +756,8 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
                                 TRACE_EVENT_SCOPE_THREAD,
                                 "# commands", drawPass->fCommandList.count(),
                                 "# textures", drawPass->fSampledTextures.size());
+
+    // this->dumpStats();
 
     this->reset(LoadOp::kLoad);
 
