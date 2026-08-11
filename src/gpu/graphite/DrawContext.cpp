@@ -183,7 +183,7 @@ std::pair<DrawParams*, Layer*> DrawContext::recordDraw(
     }
 
     return fPendingDraws->recordDraw(renderer, localToDevice, geometry, clip, ordering, paintID,
-                                     dstUsage,  barrierBeforeDraws, gatherer, stroke,
+                                     dstUsage, barrierBeforeDraws, gatherer, &fStorageContext, stroke,
                                      lastInsertion);
 }
 

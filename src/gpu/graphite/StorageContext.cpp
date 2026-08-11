@@ -73,12 +73,12 @@ void StorageContext::recordAlignment(size_t stride, size_t align) {
 
 uint32_t StorageContext::appendVertices(const void* data, size_t count, \
                                         size_t stride, size_t align) {
+    SkASSERT(fGradientsFinalized);
     if (!data || count == 0 || stride == 0 || align == 0) {
         return 0;
     }
 
     uint32_t align32 = BufferAligner::lcmAlignment(SkTo<uint32_t>(align), SkTo<uint32_t>(stride));
-    fRunningLCM = BufferAligner::lcmAlignment(fRunningLCM, align32);
 
     uint32_t requiredBytes = BufferAligner::validateCountAndStride(count, stride, /*headroom=*/0, align32);
     if (requiredBytes == 0) {

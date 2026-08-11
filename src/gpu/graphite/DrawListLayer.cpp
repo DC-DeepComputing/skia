@@ -175,6 +175,7 @@ std::pair<DrawParams*, Layer*> DrawListLayer::recordDraw(const Renderer* rendere
                                                          SkEnumBitMask<DstUsage> dstUsage,
                                                          BarrierType barrierBeforeDraws,
                                                          PipelineDataGatherer* gatherer,
+                                                         StorageContext* storageContext,
                                                          const StrokeStyle* stroke,
                                                          Layer* lastInsertion) {
     SkASSERT(localToDevice.valid());
@@ -231,6 +232,9 @@ std::pair<DrawParams*, Layer*> DrawListLayer::recordDraw(const Renderer* rendere
     fRenderStepCount += renderer->numRenderSteps();
     for (int stepIndex = renderer->numRenderSteps() - 1; stepIndex >= 0; --stepIndex) {
         const RenderStep* const step = renderer->steps()[stepIndex];
+        if (storageContext && step->storageDataStride() > 0) {
+            storageContext->recordAlignment(step->storageDataStride(), step->storageDataAlignment());
+        }
 
         gatherer->markOffsetAndAlign(step->performsShading(), step->uniformAlignment());
 
