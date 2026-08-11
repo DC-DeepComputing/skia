@@ -79,14 +79,13 @@ private:
                fLabel(label),
                fAndroidStyleKey(std::move(androidStyleKey)),
                fUniqueKeyHash(uniqueKeyHash),
-               fUses(fromPrecompile ? 0 : 1),
                fFromPrecompile(fromPrecompile) {
         }
 
         std::string   fLabel;
         sk_sp<SkData> fAndroidStyleKey;
         uint32_t      fUniqueKeyHash;
-        uint32_t      fUses;
+        uint32_t      fUses = 0;
         bool          fFromPrecompile;
     };
 

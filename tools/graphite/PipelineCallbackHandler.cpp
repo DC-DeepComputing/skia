@@ -20,14 +20,20 @@ void PipelineCallBackHandler::add(skgpu::graphite::ContextOptions::PipelineCache
 
     std::unique_ptr<PipelineData>* foundData = fMap.find({ &label, uniqueKeyHash });
     if (foundData) {
-        if (op == skgpu::graphite::ContextOptions::PipelineCacheOp::kPipelineFound) {
+        if (!(*foundData)->fAndroidStyleKey && androidStyleKey) {
+            (*foundData)->fAndroidStyleKey = androidStyleKey;
+        }
+
+        if (!fromPrecompile) {
             (*foundData)->fUses++;
         }
     } else {
-        SkASSERT(op == skgpu::graphite::ContextOptions::PipelineCacheOp::kAddingPipeline);
-
         std::unique_ptr<PipelineData> newData = std::make_unique<PipelineData>(
             label, uniqueKeyHash, fromPrecompile, std::move(androidStyleKey));
+
+        if (!fromPrecompile) {
+            newData->fUses++;
+        }
 
         fMap.set(std::move(newData));
     }
