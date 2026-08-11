@@ -1,0 +1,1 @@
+Adding an SkContextPriv class for private access
