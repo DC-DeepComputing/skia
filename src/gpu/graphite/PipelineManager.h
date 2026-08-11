@@ -41,13 +41,10 @@ public:
 
     GraphicsPipelineHandle createHandle(
             SharedContext*,
+            sk_sp<const RuntimeEffectDictionary> runtimeDict,
             const GraphicsPipelineDesc&,
             const RenderPassDesc&,
             SkEnumBitMask<PipelineCreationFlags>);
-
-    void startPipelineCreationTask(SharedContext*,
-                                   sk_sp<const RuntimeEffectDictionary>,
-                                   const GraphicsPipelineHandle&);
 
     sk_sp<GraphicsPipeline> resolveHandle(const GraphicsPipelineHandle&);
 
@@ -75,6 +72,13 @@ private:
             const GraphicsPipelineDesc&,
             const RenderPassDesc&,
             SkEnumBitMask<PipelineCreationFlags>) SK_EXCLUDES(fSpinLock);
+
+    enum class Priority { kHigh = 0, kLow = 1 };
+
+    void addTaskToWorkList(SharedContext*,
+                           sk_sp<const RuntimeEffectDictionary>,
+                           sk_sp<PipelineCreationTask>,
+                           Priority);
 
     void removeTask(PipelineCreationTask*) SK_EXCLUDES(fSpinLock);
 
