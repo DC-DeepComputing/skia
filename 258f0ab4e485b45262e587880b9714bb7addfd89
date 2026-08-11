@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6927e9f3_8d3ed726",
+        "filename": "src/core/SkStrikeCache.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-08-11T19:57:29Z",
+      "side": 1,
+      "message": "Since we basically ignore `gSkUseThreadLocalStrikeCaches_IAcknowledgeThisIsIncrediblyExperimental` below when the flag is set, I don\u0027t think this is strictly necessary.  It\u0027ll get cleaned up soon so it prolly doesn\u0027t matter much, your call.",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 5
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "ae1863af_dc67724c",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/core/SkStrikeCache.cpp",
+              "range": {
+                "startLine": 29,
+                "startChar": 0,
+                "endLine": 32,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "src/core/SkStrikeCache.cpp",
+              "range": {
+                "startLine": 33,
+                "startChar": 0,
+                "endLine": 34,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "258f0ab4e485b45262e587880b9714bb7addfd89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
