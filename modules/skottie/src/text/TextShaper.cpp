@@ -327,6 +327,7 @@ public:
                                     ? SK_ScalarMax
                                     : fBox.width();
         const auto shape_ltr    = fDesc.fDirection == Shaper::Direction::kLTR;
+        const auto shape_track  = this->trackingEm();
         const size_t utf8_bytes = SkToSizeT(end - start);
 
         static constexpr uint8_t kBidiLevelLTR = 0,
@@ -378,6 +379,7 @@ public:
                        nullptr,
                        0,
                        shape_width,
+                       shape_track,
                        this);
         fUTF8 = nullptr;
     }
@@ -473,6 +475,12 @@ private:
         // Use the explicit ascent, when specified.
         // Note: ascent values are negative (relative to the baseline).
         return fDesc.fAscent ? fDesc.fAscent : fFirstLineAscent;
+    }
+
+    // Tracking expressed as a fraction of the font size (the unit SkShaper expects).
+    float trackingEm() const {
+        static constexpr float kTrackingUnitsPerEm = 1000;
+        return fDesc.fTextTracking / kTrackingUnitsPerEm;
     }
 
     inline static constexpr SkGlyphID kMissingGlyphID = 0;
