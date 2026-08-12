@@ -22,6 +22,30 @@
       },
       "revId": "1245ff22f735b063f789c574672d35dca9531b22",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "79c99ac3_453a1368",
+        "filename": "include/gpu/graphite/Recorder.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-08-12T19:10:23Z",
+      "side": 1,
+      "message": "Good point. I think some of the implementation bits are pending the  move to a Skia-wide context model but we can move fCapturedPictures to the base class.",
+      "parentUuid": "a57ffc9c_f4ed4085",
+      "range": {
+        "startLine": 336,
+        "startChar": 4,
+        "endLine": 336,
+        "endChar": 61
+      },
+      "revId": "1245ff22f735b063f789c574672d35dca9531b22",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
