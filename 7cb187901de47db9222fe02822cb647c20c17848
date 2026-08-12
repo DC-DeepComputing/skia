@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3285205_0802b919",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18514
+      },
+      "writtenOn": "2026-08-12T05:21:53Z",
+      "side": 1,
+      "message": "This is updated. PTAL. We moved the class into partition alloc upstream so it doesn\u0027t need to exist here. Hopefully this is a more acceptable shape.",
+      "revId": "7cb187901de47db9222fe02822cb647c20c17848",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
