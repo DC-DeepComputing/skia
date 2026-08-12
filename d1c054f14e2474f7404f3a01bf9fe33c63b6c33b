@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7cab5e2_56f9be20",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-12T17:24:09Z",
+      "side": 1,
+      "message": "PTAL; perhaps a namespace is more idiomatic for C++ ?",
+      "revId": "d1c054f14e2474f7404f3a01bf9fe33c63b6c33b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
