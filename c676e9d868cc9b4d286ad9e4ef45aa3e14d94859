@@ -63,6 +63,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "12f28339_ea3a77ef",
+        "filename": "src/gpu/ganesh/geometry/GrAATriangulator.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 581,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-12T20:15:58Z",
+      "side": 1,
+      "message": "I don\u0027t think we\u0027ve ever had a fuzzing issue come into this part of the code, but I would prefer to guard this nevertheless.\n\nI\u0027ve made the guard less redundant.",
+      "parentUuid": "a6d70351_048dd6bd",
+      "revId": "c676e9d868cc9b4d286ad9e4ef45aa3e14d94859",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "147dab1f_da4014d3",
@@ -108,6 +126,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7a54047_7e4baf38",
+        "filename": "src/gpu/ganesh/geometry/GrTriangulator.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 869,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-12T20:15:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "147dab1f_da4014d3",
+      "revId": "c676e9d868cc9b4d286ad9e4ef45aa3e14d94859",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a87bb81d_cac07943",
@@ -139,6 +175,24 @@
           ]
         }
       ],
+      "revId": "c676e9d868cc9b4d286ad9e4ef45aa3e14d94859",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "78ad7ba7_02268630",
+        "filename": "src/gpu/ganesh/geometry/GrTriangulator.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 465,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-12T20:15:58Z",
+      "side": 1,
+      "message": "Good catch, on further inspection, this should always be true.",
+      "parentUuid": "a87bb81d_cac07943",
       "revId": "c676e9d868cc9b4d286ad9e4ef45aa3e14d94859",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
