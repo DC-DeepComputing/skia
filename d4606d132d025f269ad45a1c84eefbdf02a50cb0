@@ -16,6 +16,23 @@
       "message": "PTAL! I have merged the Chromium changes that created problems last time.",
       "revId": "d4606d132d025f269ad45a1c84eefbdf02a50cb0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a33b6ade_8a28ade6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 21749
+      },
+      "writtenOn": "2026-08-12T15:52:55Z",
+      "side": 1,
+      "message": "@jlavrova@google.com Could you take a look please? I ran the `linux-rel` and `linux-chromeos-rel` tryjobs to double check the behavior with Chromium.\n\nThank you!",
+      "revId": "d4606d132d025f269ad45a1c84eefbdf02a50cb0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
