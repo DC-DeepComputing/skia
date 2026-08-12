@@ -81,6 +81,9 @@ public:
                 supported |= featureSet.second;
             }
         }
+        if (supported != DawnFormatFlag::None) {
+            supported |= DawnFormatFlag::UnfilterableSample;
+        }
         return supported;
     }
 
