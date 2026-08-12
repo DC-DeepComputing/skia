@@ -16,6 +16,52 @@
       "message": "PTAL",
       "revId": "9894e0f073e64f2e69b7214a19802b2d2fe903f1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19716e2b_4ee52601",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-12T17:06:14Z",
+      "side": 1,
+      "message": "nit: should be unnnecessary since BindBufferInfo has a default initializer already",
+      "range": {
+        "startLine": 37,
+        "startChar": 7,
+        "endLine": 37,
+        "endChar": 33
+      },
+      "revId": "9894e0f073e64f2e69b7214a19802b2d2fe903f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "978d4b55_ec1347b9",
+        "filename": "src/gpu/graphite/StorageContext.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-12T17:06:14Z",
+      "side": 1,
+      "message": "We should have a comment here explaining the two phases of collecting data and how that interacts with flush times.",
+      "range": {
+        "startLine": 44,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 40
+      },
+      "revId": "9894e0f073e64f2e69b7214a19802b2d2fe903f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
