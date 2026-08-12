@@ -17,15 +17,19 @@
 #include "include/core/SkPaint.h"
 #include "include/core/SkRRect.h"
 #include "include/core/SkSurface.h"
+#include "src/core/SkContextPriv.h"
+#include "src/core/SkSharedContext.h"
 #include "tests/Test.h"
 
 #include <memory>
 
-DEF_TEST(SkContext_Make_Success, reporter) {
+DEF_TEST(SkContext_Ctor_Success, reporter) {
     SkContextOptions opts;
-    std::unique_ptr<SkContext> ctxWithOptions = SkContext::Make(opts);
+    std::unique_ptr<SkContext> ctxWithOptions =
+            SkContextCtorAccessor::MakeContext(sk_make_sp<SkSharedContext>(), opts);
     REPORTER_ASSERT(reporter, ctxWithOptions != nullptr);
-    std::unique_ptr<SkContext> ctxDefault = SkContext::Make();
+    std::unique_ptr<SkContext> ctxDefault =
+            SkContextCtorAccessor::MakeContext(sk_make_sp<SkSharedContext>(), {});
     REPORTER_ASSERT(reporter, ctxDefault != nullptr);
     const SkContext* todoCtx = SkContext::TODO();
     REPORTER_ASSERT(reporter, todoCtx != nullptr);
@@ -34,7 +38,7 @@ DEF_TEST(SkContext_Make_Success, reporter) {
 
 DEF_TEST(CPUSurface_UsesContextAndRecorderToDraw_DrawsPixels, reporter) {
     SkContextOptions opts;
-    auto ctx = SkContext::Make(opts);
+    auto ctx = SkContextCtorAccessor::MakeContext(sk_make_sp<SkSharedContext>(), opts);
     REPORTER_ASSERT(reporter, ctx != nullptr);
     std::unique_ptr<skcpu::Recorder> recorder = ctx->makeRecorder();
     REPORTER_ASSERT(reporter, recorder != nullptr);
@@ -72,7 +76,7 @@ DEF_TEST(CPUSurface_UsesTODORecorder_DrawsPixels, reporter) {
 }
 
 DEF_TEST(ImageMakeColorSpace_UsesCPURecorderToMakeImage_Success, reporter) {
-    auto ctx = SkContext::Make();
+    auto ctx = SkContextCtorAccessor::MakeContext(sk_make_sp<SkSharedContext>(), {});
     REPORTER_ASSERT(reporter, ctx != nullptr);
     std::unique_ptr<skcpu::Recorder> recorder = ctx->makeRecorder();
     REPORTER_ASSERT(reporter, recorder != nullptr);
@@ -89,7 +93,7 @@ DEF_TEST(ImageMakeColorSpace_UsesCPURecorderToMakeImage_Success, reporter) {
 }
 
 DEF_TEST(ImageMakeScaled_UsesCPURecorderToMakeImage_Success, reporter) {
-    auto ctx = SkContext::Make();
+    auto ctx = SkContextCtorAccessor::MakeContext(sk_make_sp<SkSharedContext>(), {});
     REPORTER_ASSERT(reporter, ctx != nullptr);
     std::unique_ptr<skcpu::Recorder> recorder = ctx->makeRecorder();
     REPORTER_ASSERT(reporter, recorder != nullptr);

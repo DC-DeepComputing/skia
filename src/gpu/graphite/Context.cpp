@@ -13,6 +13,7 @@
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkColorType.h"
 #include "include/core/SkContext.h"
+#include "include/core/SkContextOptions.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkMatrix.h"
@@ -45,10 +46,12 @@
 #include "src/capture/SkCaptureManager.h"
 #include "src/core/SkAutoPixmapStorage.h"
 #include "src/core/SkColorSpaceXformSteps.h"
+#include "src/core/SkContextPriv.h"
 #include "src/core/SkConvertPixels.h"
 #include "src/core/SkImageInfoPriv.h"
 #include "src/core/SkRectMemcpy.h"
 #include "src/core/SkSafeMath.h"
+#include "src/core/SkSharedContext.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/core/SkYUVMath.h"
 #include "src/gpu/AsyncReadTypes.h"
@@ -146,7 +149,8 @@ Context::Context(sk_sp<SharedContext> sharedContext,
                                                        options.fPipelineCachingCallback,
                                                        options.fPipelineCallback);
 
-    fCPUContext = SkContext::Make();
+    fCPUContext = SkContextCtorAccessor::MakeContext(sk_make_sp<SkSharedContext>(), {});
+
     if (options.fEnableCapture) {
         fSharedContext->setCaptureManager(sk_make_sp<SkCaptureManager>());
     }
