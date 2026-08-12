@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca3b5f84_8df7d9f5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-12T15:54:24Z",
+      "side": 1,
+      "message": "While some of the recent DrawListLayer updates are going to get gutted as part of additional perf testing specific to Android, this CL is still relevant and the follow-up work relies on the isBetterMatch() function this adds.",
+      "revId": "2febaa0ee96a3a934e763084e24cf8cdee50136d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
