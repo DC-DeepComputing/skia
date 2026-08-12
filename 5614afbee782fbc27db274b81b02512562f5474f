@@ -1,0 +1,228 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6ee7123_f7a87b83",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 1006,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-12T18:03:40Z",
+      "side": 1,
+      "message": "This is unfortunate. I wonder if we could switch the CpuBuffer implementations to use a copy-on-write model so that when we record the draw here, we just get a new SkMesh that takes a ref on the same SkData objects.\n\nThat wouldn\u0027t have to be in this CL, but I think we should file a new bug to track additional improvements to make drawMesh work better in Graphite\u0027s model. This also applies to the virtuals on IndexBuffer and VertexBuffer. It would be good to support a Graphite-backed implementation that owned its own Buffer objects. At that point, we could use the direct draw functions on DrawWriter like you used with the appended CPU data. However, we would need a new update function that either took a recorder or a context to control how the operations were ordered on the GPU timeline.",
+      "range": {
+        "startLine": 991,
+        "startChar": 0,
+        "endLine": 1006,
+        "endChar": 0
+      },
+      "revId": "5614afbee782fbc27db274b81b02512562f5474f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe4d77ae_026a1a6c",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 2746,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-12T18:03:40Z",
+      "side": 1,
+      "message": "I think this should be equivalent to `KeyContext::forRuntimeEffect(effect, index)`, except we don\u0027t have an effect to pass in. Can we add a variant that is `forMeshSpec` that internally can reuse the logic or be defined right next to `forRuntimeEffect` so it\u0027s easy to keep in sync.",
+      "range": {
+        "startLine": 2745,
+        "startChar": 0,
+        "endLine": 2746,
+        "endChar": 93
+      },
+      "revId": "5614afbee782fbc27db274b81b02512562f5474f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e21e4935_1c08e241",
+        "filename": "src/gpu/graphite/PaintParams.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-12T18:03:40Z",
+      "side": 1,
+      "message": "PaintParams shouldn\u0027t hold a ref here, these are meant to be flyweight objects that will not outlive the SkPaint or draw call that keeps everything else alive.",
+      "range": {
+        "startLine": 148,
+        "startChar": 4,
+        "endLine": 148,
+        "endChar": 9
+      },
+      "revId": "5614afbee782fbc27db274b81b02512562f5474f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1e85ddf_34a8cb2e",
+        "filename": "src/gpu/graphite/PaintParamsKey.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 295,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-12T18:03:40Z",
+      "side": 1,
+      "message": "Is there a reason `rteDict` might be null that isn\u0027t an error condition?\n\nShould we also return {} as a bad key if we can\u0027t find the mesh spec for the snippet ID?",
+      "range": {
+        "startLine": 295,
+        "startChar": 33,
+        "endLine": 295,
+        "endChar": 40
+      },
+      "revId": "5614afbee782fbc27db274b81b02512562f5474f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79a6807b_0db21df5",
+        "filename": "src/gpu/graphite/RuntimeEffectDictionary.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-12T18:03:40Z",
+      "side": 1,
+      "message": "I don\u0027t think it\u0027s necessary to have a separate MeshSpecificationDictionary type. We should be able to have `set` be overloaded based on the type, and then we just need to have two versions of `find`. \n\nIf you prefer to keep MeshSpecificationDictionary separate, we don\u0027t need to wrap it in an `sk_sp` here. Its lifetime ought to be tied exactly with the `RuntimeEffectDictionary` so could just be a direct field.",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 53
+      },
+      "revId": "5614afbee782fbc27db274b81b02512562f5474f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "572f793c_78b0d423",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 346,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-12T18:03:40Z",
+      "side": 1,
+      "message": "I think we should include the varying size in here as well.",
+      "revId": "5614afbee782fbc27db274b81b02512562f5474f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f515735_bfcbfbd1",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 968,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-12T18:03:40Z",
+      "side": 1,
+      "message": "\u0026\u0026?",
+      "range": {
+        "startLine": 968,
+        "startChar": 54,
+        "endLine": 968,
+        "endChar": 56
+      },
+      "revId": "5614afbee782fbc27db274b81b02512562f5474f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a275547_f829ed40",
+        "filename": "src/gpu/graphite/render/MeshRenderStep.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-12T18:03:40Z",
+      "side": 1,
+      "message": "nit: length",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 101
+      },
+      "revId": "5614afbee782fbc27db274b81b02512562f5474f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1874f42_ce2a0830",
+        "filename": "src/gpu/graphite/render/MeshRenderStep.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-12T18:03:40Z",
+      "side": 1,
+      "message": "Can we initially implement this similar to how VerticesRenderStep does it where we use an Appender and apply the index buffer on the CPU side? DrawWriter and Appender encapsulate a lot of the trickiness around calculating byte sizes and avoiding overflows and resource failures, and also has some driver workarounds for how vertex shaders are invoked on ARM devices.",
+      "range": {
+        "startLine": 66,
+        "startChar": 0,
+        "endLine": 90,
+        "endChar": 5
+      },
+      "revId": "5614afbee782fbc27db274b81b02512562f5474f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a7eefc7_3b0c0859",
+        "filename": "src/gpu/graphite/render/MeshRenderStep.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-12T18:03:40Z",
+      "side": 1,
+      "message": "nit: length",
+      "range": {
+        "startLine": 95,
+        "startChar": 0,
+        "endLine": 95,
+        "endChar": 103
+      },
+      "revId": "5614afbee782fbc27db274b81b02512562f5474f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
