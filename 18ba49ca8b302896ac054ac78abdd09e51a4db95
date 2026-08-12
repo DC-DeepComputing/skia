@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "58d45728_b61b8448",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-12T15:20:48Z",
+      "side": 1,
+      "message": "lgtm modulo some comment questions",
+      "revId": "18ba49ca8b302896ac054ac78abdd09e51a4db95",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b9b5834_5e09f201",
+        "filename": "src/gpu/graphite/PipelineManager.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-12T15:20:48Z",
+      "side": 1,
+      "message": "nit: re-add",
+      "range": {
+        "startLine": 114,
+        "startChar": 11,
+        "endLine": 114,
+        "endChar": 16
+      },
+      "revId": "18ba49ca8b302896ac054ac78abdd09e51a4db95",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05b86c13_7e97eec1",
+        "filename": "src/gpu/graphite/PipelineManager.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-12T15:20:48Z",
+      "side": 1,
+      "message": "comment here that this means another `compileTask` lambda already started the actual pipeline creation.",
+      "range": {
+        "startLine": 137,
+        "startChar": 0,
+        "endLine": 137,
+        "endChar": 19
+      },
+      "revId": "18ba49ca8b302896ac054ac78abdd09e51a4db95",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a79dff9_f02d9884",
+        "filename": "src/gpu/graphite/PipelineManager.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-12T15:20:48Z",
+      "side": 1,
+      "message": "This is somewhat of an unusual scenario, but if a client is multi-threaded but did not provide an SkExecutor, we could have multiple threads reaching `compileTask()` for inline compiles while potentially referencing the same PipelineCreationTask.\n\nIn that case, one of the compileTask() calls will still early out from losing the `fStarted.exchange`. I think that is okay since nothing at this point is requiring that the handle be resolved. Assuming you agree with that analysis, it might be worth emphasizing that this compileTask() may still not result in a non-null GraphicsPipeline after `compileTask()` returns.",
+      "range": {
+        "startLine": 179,
+        "startChar": 0,
+        "endLine": 179,
+        "endChar": 18
+      },
+      "revId": "18ba49ca8b302896ac054ac78abdd09e51a4db95",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
