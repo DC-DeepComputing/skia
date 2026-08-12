@@ -16,6 +16,24 @@
       "message": "Deleting this breaks Flutter.\n\nhttps://logs.chromium.org/logs/flutter/buildbucket/cr-buildbucket/8673795830231793985/+/u/build_wasm_release_flutter_web_sdk:flutter_web_sdk_archive/stdout",
       "revId": "7817fed2e368c34917073c61545ff3ec1137589f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "760c6da6_b0d0bb7e",
+        "filename": "src/core/SkStrikeCache.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-08-12T15:12:23Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "c74ea37a_cf4ad425",
+      "revId": "7817fed2e368c34917073c61545ff3ec1137589f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
