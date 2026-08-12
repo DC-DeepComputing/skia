@@ -16,6 +16,24 @@
       "message": "Nit: explain the \"why\" rather than the \"what\"",
       "revId": "5b9db349f51939396f267fa906afec81410bcc33",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "502a0c47_c32f8f26",
+        "filename": "src/gpu/vk/VulkanMemory.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-08-12T18:44:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "56eb8529_33813c01",
+      "revId": "5b9db349f51939396f267fa906afec81410bcc33",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
