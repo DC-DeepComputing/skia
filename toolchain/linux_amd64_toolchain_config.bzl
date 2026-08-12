@@ -239,6 +239,7 @@ def _make_default_flags(external_toolchain):
         flag_groups = [
             flag_group(
                 flags = [
+                    "-std=c++20",
                     "-stdlib=libc++",
                 ],
             ),
@@ -258,6 +259,7 @@ def _make_default_flags(external_toolchain):
                     # We chose to use the llvm runtime, not the gcc one because it is already
                     # included in the clang binary
                     "--rtlib=compiler-rt",
+                    "-std=c++20",
                     "-stdlib=libc++",
                     # We statically include these libc++ libraries so they do not need to be
                     # on a developer's machine (they can be tricky to get).
@@ -273,19 +275,6 @@ def _make_default_flags(external_toolchain):
         ],
     )
 
-    cpp20_flags = flag_set(
-        actions = [
-            ACTION_NAMES.cpp_compile,
-        ],
-        flag_groups = [
-            flag_group(
-                flags = [
-                    "-std=c++20",
-                ],
-            ),
-        ],
-    )
-
     return [
         feature(
             name = "default_flags",
@@ -294,7 +283,6 @@ def _make_default_flags(external_toolchain):
                 cxx_compile_includes,
                 cpp_compile_flags,
                 link_exe_flags,
-                cpp20_flags,
             ],
         ),
     ]
