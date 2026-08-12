@@ -34,6 +34,24 @@
       "parentUuid": "7ba57540_c8ae2834",
       "revId": "7aba8b2be40db994f4f2599457dc1e3b04cd25ba",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "587b7d72_2074a035",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3621349
+      },
+      "writtenOn": "2026-08-12T02:14:16Z",
+      "side": 1,
+      "message": "Yes, the fix also required maskToDevice(), which was merged at https://skia-review.git.corp.google.com/c/skia/+/1209896. Additionally, the dependent CL generated some conflicts, so it would be better to avoid cherry-picking this CL for the sake of stability.",
+      "parentUuid": "2f8cdf27_ce24b7da",
+      "revId": "7aba8b2be40db994f4f2599457dc1e3b04cd25ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
