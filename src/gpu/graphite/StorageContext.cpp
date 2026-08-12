@@ -77,7 +77,6 @@ uint32_t StorageContext::appendVertices(const void* data,
     }
 
     uint32_t align32 = BufferAligner::lcmAlignment(SkTo<uint32_t>(align), SkTo<uint32_t>(stride));
-    fRunningLCM = BufferAligner::lcmAlignment(fRunningLCM, align32);
 
     uint32_t requiredBytes =
             BufferAligner::validateCountAndStride(count, stride, /*headroom=*/0, align32);

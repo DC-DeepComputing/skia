@@ -28,6 +28,7 @@ std::pair<DrawParams*, Layer*> DrawList::recordDraw(
         SkEnumBitMask<DstUsage> dstUsage,
         BarrierType barrierBeforeDraws,
         PipelineDataGatherer* gatherer,
+        StorageContext* storageContext,
         const StrokeStyle* stroke,
         Layer*) {
 
@@ -50,6 +51,12 @@ std::pair<DrawParams*, Layer*> DrawList::recordDraw(
     for (int stepIndex = 0; stepIndex < draw.renderer()->numRenderSteps(); ++stepIndex) {
         const RenderStep* const step = draw.renderer()->steps()[stepIndex];
         const bool performsShading = step->performsShading() && paintID.isValid();
+
+        if (storageContext && step->storageDataStride() > 0) {
+            storageContext->recordAlignment(step->storageDataStride(),
+                                            step->storageDataAlignment());
+        }
+
         gatherer->markOffsetAndAlign(performsShading, step->uniformAlignment());
 
         GraphicsPipelineCache::Index pipelineIndex = fPipelineCache.insert(
