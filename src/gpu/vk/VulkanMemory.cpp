@@ -79,6 +79,8 @@ bool VulkanMemory::AllocImageMemory(VulkanMemoryAllocator* allocator,
 
     if (useLazyAllocation) {
         propFlags = propFlags | VulkanMemoryAllocator::kLazyAllocation_AllocationPropertyFlag;
+        // If we are doing a lazy allocation, we also want it to be a dedicated allocation.
+        propFlags = propFlags | VulkanMemoryAllocator::kDedicatedAllocation_AllocationPropertyFlag;
     }
 
     VkResult result = allocator->allocateImageMemory(image, propFlags, &memory);
