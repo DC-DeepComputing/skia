@@ -278,6 +278,7 @@ class PatchWriter {
     DEF_ATTRIB_TYPE(DepthAttrib,     PatchAttribs::kPaintDepth,        float);
     DEF_ATTRIB_TYPE(CurveTypeAttrib, PatchAttribs::kExplicitCurveType, float);
     DEF_ATTRIB_TYPE(SsboIndexAttrib, PatchAttribs::kSsboIndex,         uint32_t);
+    DEF_ATTRIB_TYPE(VertexStorageIndexAttrib, PatchAttribs::kVertexStorageIndex, uint32_t);
 #undef DEF_ATTRIB_TYPE
 
     static constexpr size_t kMaxStride = 4 * sizeof(SkPoint) + // control points
@@ -287,7 +288,8 @@ class PatchWriter {
             (ColorAttrib::kEnabled     ? std::min(sizeof(Color), sizeof(SkPMColor4f)) : 0) +
             (DepthAttrib::kEnabled     ? sizeof(float)                                : 0) +
             (CurveTypeAttrib::kEnabled ? sizeof(float)                                : 0) +
-            (SsboIndexAttrib::kEnabled ? 2 * sizeof(uint32_t)                         : 0);
+            (SsboIndexAttrib::kEnabled ? 2 * sizeof(uint32_t)                         : 0) +
+            (VertexStorageIndexAttrib::kEnabled ? sizeof(uint32_t)                    : 0);
 
     // Types that vary depending on the activated features, but do not define the patch data.
     using DeferredPatch = std::conditional_t<kTrackJoinControlPoints,
@@ -311,7 +313,8 @@ public:
             , fStrokeParams(attribs)
             , fColor(attribs)
             , fDepth(attribs)
-            , fSsboIndex(attribs) {
+            , fSsboIndex(attribs)
+            , fVertexStorageIndex(attribs) {
         // Explicit curve types are provided on the writePatch signature, and not a field of
         // PatchWriter, so initialize one in the ctor to validate the provided runtime attribs.
         SkDEBUGCODE((void) CurveTypeAttrib(attribs);)
@@ -465,7 +468,7 @@ public:
     }
     // Updates tolerances to account for stroke params that are stored as uniforms instead of
     // dynamic instance attributes.
-    ENABLE_IF(StrokeAttrib::kEnabled) updateUniformStrokeParams(StrokeParams strokeParams) {
+    void updateUniformStrokeParams(StrokeParams strokeParams) {
         SkASSERT(!(fAttribs & PatchAttribs::kStrokeParams));
         fTolerances.setStroke(strokeParams, fMaxScale);
     }
@@ -495,6 +498,13 @@ public:
     updateSsboIndexAttrib(uint32_t ssboIndex) {
         SkASSERT(fAttribs & PatchAttribs::kSsboIndex);
         fSsboIndex = ssboIndex;
+    }
+
+    // Updates the vertex storage buffer index.
+    ENABLE_IF(VertexStorageIndexAttrib::kEnabled)
+    updateVertexStorageIndexAttrib(uint32_t vertexStorageIndex) {
+        SkASSERT(fAttribs & PatchAttribs::kVertexStorageIndex);
+        fVertexStorageIndex = vertexStorageIndex;
     }
 
     /**
@@ -648,7 +658,8 @@ private:
                              float explicitCurveType) {
         // NOTE: operator<< overrides automatically handle optional and disabled attribs.
         vertexWriter << join << fFanPoint << fStrokeParams << fColor << fDepth
-                     << CurveTypeAttrib{fAttribs, explicitCurveType} << fSsboIndex;
+                     << CurveTypeAttrib{fAttribs, explicitCurveType} << fSsboIndex
+                     << fVertexStorageIndex;
     }
 
     AI VertexWriter appendPatch(float explicitCurveType) {
@@ -905,6 +916,7 @@ private:
     // uniforms. Written out as an attribute with every patch, to read the appropriate uniform
     // values from the storage buffer on draw.
     SsboIndexAttrib fSsboIndex;
+    VertexStorageIndexAttrib fVertexStorageIndex;
 };
 
 }  // namespace skgpu::tess
