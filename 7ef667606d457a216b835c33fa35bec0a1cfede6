@@ -118,6 +118,30 @@
       },
       "revId": "7ef667606d457a216b835c33fa35bec0a1cfede6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6641b4b2_40956a34",
+        "filename": "src/core/SkScopedSafetyChecksExclusion.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-12T14:00:02Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "8236d21d_a8726218",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 38
+      },
+      "revId": "7ef667606d457a216b835c33fa35bec0a1cfede6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
