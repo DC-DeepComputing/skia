@@ -9,6 +9,8 @@
 #define SkSharedContext_DEFINED
 
 #include "include/core/SkRefCnt.h"
+#include "src/core/SkSynchronizedResourceCache.h"
+#include "src/core/SkTypefaceCache.h"
 
 #include <memory>
 
@@ -44,14 +46,26 @@ public:
         return prev;
     }
 
+    int resourceCacheTotalByteLimit() const { return fResourceCache->getTotalByteLimit(); }
+    int setResourceCacheTotalByteLimit(int bytes) {
+        const int prev = fResourceCache->getTotalByteLimit();
+        fResourceCache->setTotalByteLimit(bytes);
+        return prev;
+    }
+
+    int resourceCacheSingleAllocationByteLimit() const {
+        return fResourceCache->getSingleAllocationByteLimit();
+    }
+    int setResourceCacheSingleAllocationByteLimit(int bytes) {
+        const int prev = fResourceCache->getSingleAllocationByteLimit();
+        fResourceCache->setSingleAllocationByteLimit(bytes);
+        return prev;
+    }
+
     int setSVGDecoderFactory(OpenTypeSVGDecoderFactory factory) {
         const int prev = fSVGDecoderFactory != nullptr;
         fSVGDecoderFactory = std::move(factory);
         return prev;
-    }
-
-    static sk_sp<SkSharedContext> Make(const SkContextOptions& options) {
-        return sk_make_sp<SkSharedContext>();
     }
 
 private:

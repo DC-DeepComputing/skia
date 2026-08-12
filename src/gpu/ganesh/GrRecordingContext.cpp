@@ -8,6 +8,7 @@
 #include "include/gpu/ganesh/GrRecordingContext.h"
 
 #include "include/core/SkContext.h"
+#include "include/core/SkContextOptions.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
 #include "include/gpu/GpuTypes.h"
@@ -19,6 +20,8 @@
 #include "include/private/SkMacros.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/core/SkArenaAlloc.h"
+#include "src/core/SkContextPriv.h"
+#include "src/core/SkSharedContext.h"
 #include "src/gpu/ganesh/GrAuditTrail.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrContextThreadSafeProxyPriv.h"
@@ -55,7 +58,7 @@ GrRecordingContext::GrRecordingContext(sk_sp<GrContextThreadSafeProxy> proxy, bo
         , fAuditTrail(new GrAuditTrail())
         , fArenas(ddlRecording) {
     fProxyProvider = std::make_unique<GrProxyProvider>(this);
-    fCPUContext = SkContext::Make();
+    fCPUContext = SkContextCtorAccessor::MakeContext(sk_make_sp<SkSharedContext>(), {});
     fRecorder = std::make_unique<SkGaneshRecorder>(this);
 }
 

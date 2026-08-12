@@ -21,12 +21,30 @@
 #include "src/gpu/graphite/vk/VulkanSharedContext.h"
 #include "src/sksl/SkSLProgramSettings.h"
 
+#include "include/gpu/graphite/vk/VulkanGraphiteContext.h"
+#include "src/core/SkContextPriv.h"
+
 namespace SkContexts {
 
 // Creates a context wrapping a Graphite GPU backend with Vulkan
-std::unique_ptr<SkContext> MakeGraphite(const skgpu::VulkanBackendContext& vkContext,
-                              const SkContextOptions& options) {
-    return nullptr;
+std::unique_ptr<SkContext> MakeGraphite(const skgpu::VulkanBackendContext& backendContext,
+                                        const SkContextOptions& skContextOptions,
+                                        const skgpu::graphite::ContextOptions& options) {
+    std::unique_ptr<skgpu::graphite::Context> context =
+            skgpu::graphite::ContextFactory::MakeVulkan(backendContext, options);
+
+    if (!context) {
+        return nullptr;
+    }
+
+    std::unique_ptr<SkContext> skContext =
+            SkContextCtorAccessor::MakeContext(sk_make_sp<SkSharedContext>(), skContextOptions);
+
+    if (skContext) {
+        skContext->priv().setGraphite(std::move(context));
+    }
+
+    return skContext;
 }
 
 }  // namespace SkContexts
