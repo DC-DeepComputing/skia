@@ -22,6 +22,30 @@
       },
       "revId": "bbac844e9afc611b1b0c8b98763e69468610eddb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4046426f_96493368",
+        "filename": "MODULE.bazel",
+        "patchSetId": 7
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-08-12T17:04:32Z",
+      "side": 1,
+      "message": "Done. Skia already received zune-core/std transitively through the default zune-jpeg features, but I agree it is better to make this direct requirement explicit and match Chromium. Added features \u003d [\"std\"] to the zune-core crate spec.",
+      "parentUuid": "bf7c4cc8_bba342a0",
+      "range": {
+        "startLine": 168,
+        "startChar": 15,
+        "endLine": 168,
+        "endChar": 24
+      },
+      "revId": "bbac844e9afc611b1b0c8b98763e69468610eddb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
