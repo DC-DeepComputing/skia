@@ -236,7 +236,7 @@ void GrAATriangulator::simplifyBoundary(EdgeList* boundary, const Comparator& c)
 }
 
 void GrAATriangulator::connectSSEdge(Vertex* v, Vertex* dest, const Comparator& c) {
-    if (v == dest) {
+    if (!v || !dest || v == dest) {
         return;
     }
     TESS_LOG("ss_connecting vertex %g to vertex %g\n", v->fID, dest->fID);
@@ -577,6 +577,9 @@ void GrAATriangulator::strokeBoundary(EdgeList* boundary, VertexList* innerMesh,
 
 void GrAATriangulator::extractBoundary(EdgeList* boundary, Edge* e) const {
     TESS_LOG("\nextracting boundary\n");
+    if (!e || !e->hasTopAndBottom()) {
+        return;
+    }
     bool down = this->applyFillType(e->fWinding);
     Vertex* start = down ? e->fTop : e->fBottom;
     do {
@@ -606,7 +609,7 @@ void GrAATriangulator::extractBoundary(EdgeList* boundary, Edge* e) const {
         }
         e->disconnect();
         e = next;
-    } while (e && (down ? e->fTop : e->fBottom) != start);
+    } while (e && e->hasTopAndBottom() && (down ? e->fTop : e->fBottom) != start);
 }
 
 // Stage 5b: Extract boundaries from mesh, simplify and stroke them into a new mesh.
