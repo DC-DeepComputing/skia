@@ -16,6 +16,23 @@
       "message": "PTAL. Probably https://g-issues.chromium.org/issues/473156318.",
       "revId": "919361401524d45c17b70d53e295e9ca6a9ea9a0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "554640bd_21945379",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-12T14:44:57Z",
+      "side": 1,
+      "message": "LGTM, looking at the the fuzzing output this does seem to prevent the crash but we won\u0027t have confirmation until it lands.\n\nHowever, the underlying issue is that the triangulator leaves allows zombie edges in the edge list.",
+      "revId": "919361401524d45c17b70d53e295e9ca6a9ea9a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
