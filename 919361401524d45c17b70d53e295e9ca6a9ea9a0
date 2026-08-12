@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac3e4b17_7f035ee9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20899
+      },
+      "writtenOn": "2026-08-12T04:56:43Z",
+      "side": 1,
+      "message": "PTAL. Probably https://g-issues.chromium.org/issues/473156318.",
+      "revId": "919361401524d45c17b70d53e295e9ca6a9ea9a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
