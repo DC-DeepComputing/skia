@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eabeea78_20e5ae11",
+        "filename": "src/effects/imagefilters/SkRuntimeImageFilter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-12T13:57:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c920f7b6_d2379715",
+      "range": {
+        "startLine": 273,
+        "startChar": 0,
+        "endLine": 273,
+        "endChar": 97
+      },
+      "revId": "cc4a43b08d30e7b37287858073664435ea19b86f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "37f4b92d_fd759045",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7db2565e_90d82d2c",
+        "filename": "src/effects/imagefilters/SkRuntimeImageFilter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-12T13:57:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "37f4b92d_fd759045",
+      "range": {
+        "startLine": 336,
+        "startChar": 19,
+        "endLine": 336,
+        "endChar": 30
+      },
+      "revId": "cc4a43b08d30e7b37287858073664435ea19b86f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "996a14fd_cd2aaae3",
@@ -77,6 +125,30 @@
       "writtenOn": "2026-08-07T14:24:22Z",
       "side": 1,
       "message": "This should be outset by the max sample radius.",
+      "range": {
+        "startLine": 347,
+        "startChar": 0,
+        "endLine": 347,
+        "endChar": 59
+      },
+      "revId": "cc4a43b08d30e7b37287858073664435ea19b86f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fffb2e5d_5acb42af",
+        "filename": "src/effects/imagefilters/SkRuntimeImageFilter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 347,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-12T13:57:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "996a14fd_cd2aaae3",
       "range": {
         "startLine": 347,
         "startChar": 0,
