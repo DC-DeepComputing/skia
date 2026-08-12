@@ -16,6 +16,23 @@
       "message": "Hi Florin, could you help review this PR? Thanks. Let me know if you have any questions. \n\n(For your convenience, I verified this with the following command. \n\u003e out/Release/viewer --lotties resources/skottie --match skottie-text-tracking\nThe default text shaping engine is HarfBuzz; use Shift+C to switch to CoreText and visually verify that both produce the same output.)",
       "revId": "d48d02f1ccf321fd85778d521f166fe439a6de30",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "90de59b6_10a1457c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5029334
+      },
+      "writtenOn": "2026-08-12T18:01:22Z",
+      "side": 1,
+      "message": "+ Brandon",
+      "revId": "d48d02f1ccf321fd85778d521f166fe439a6de30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
