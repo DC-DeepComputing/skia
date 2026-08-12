@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc05d7c1_a7c79ac8",
+        "filename": "src/gpu/graphite/PipelineCreationTask.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-08-12T13:06:58Z",
+      "side": 1,
+      "message": "I do not believe holding a ref on the RuntimeEffectDictionary here will have much of an impact on its lifetime.",
+      "revId": "8e03cb0fc070bc2bad7cffb6aa4e96a85f5b2931",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
