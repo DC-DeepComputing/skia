@@ -33,6 +33,75 @@
       "message": "+ Brandon",
       "revId": "d48d02f1ccf321fd85778d521f166fe439a6de30",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "36fc47b8_6c8b9c4d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-08-12T18:13:18Z",
+      "side": 1,
+      "message": "This is great, thank you!\n\nI\u0027ll take a closer look later, some initial thoughts below.\n\n+Julia for SkShaper changes.",
+      "revId": "d48d02f1ccf321fd85778d521f166fe439a6de30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e12dd97a_3be2522f",
+        "filename": "modules/skshaper/src/SkShaper_harfbuzz.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1560,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-08-12T18:13:18Z",
+      "side": 1,
+      "message": "This assignment is now stale, we can remove.",
+      "fixSuggestions": [
+        {
+          "fixId": "afc21a1a_10f7ca85",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "modules/skshaper/src/SkShaper_harfbuzz.cpp",
+              "range": {
+                "startLine": 1560,
+                "startChar": 0,
+                "endLine": 1561,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "d48d02f1ccf321fd85778d521f166fe439a6de30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02f2f481_4da91b1d",
+        "filename": "modules/skshaper/src/SkShaper_harfbuzz.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1561,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-08-12T18:13:18Z",
+      "side": 1,
+      "message": "Does this mean we always append `trackingAdvance`, even for the last glyph on the line?  IIRC AE tracking (and possibly CSS letter-spacing also) only applies *between* glyphs, to preserve alignment semantics.  E.g. with \"right\" alignment, tracking should not push the last glyph to the left.\n\nI\u0027m going to run some tests myself, but if this is an issue we can probably adjust to compensate either in Skottie\u0027s TextShaper or in SkShaper.",
+      "revId": "d48d02f1ccf321fd85778d521f166fe439a6de30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
