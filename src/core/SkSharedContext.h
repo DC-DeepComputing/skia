@@ -9,6 +9,7 @@
 #define SkSharedContext_DEFINED
 
 #include "include/core/SkRefCnt.h"
+#include "src/core/SkTypefaceCache.h"
 
 #include <memory>
 
@@ -48,10 +49,6 @@ public:
         const int prev = fSVGDecoderFactory != nullptr;
         fSVGDecoderFactory = std::move(factory);
         return prev;
-    }
-
-    static sk_sp<SkSharedContext> Make(const SkContextOptions& options) {
-        return sk_make_sp<SkSharedContext>();
     }
 
 private:

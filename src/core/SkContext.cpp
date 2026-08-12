@@ -13,27 +13,23 @@
 #include "include/core/SkString.h"
 #include "include/core/SkTraceMemoryDump.h"
 #include "include/core/SkTypes.h"
+#include "src/core/SkContextPriv.h"
 #include "src/core/SkResourceCache.h"
 #include "src/core/SkSharedContext.h"
 #include "src/core/SkStrikeCache.h"
 #include "src/core/SkSynchronizedResourceCache.h"
 #include "src/core/SkTypefaceCache.h"
 
-SkContext::SkContext(sk_sp<SkSharedContext> sharedContext)
+SkContext::SkContext(SkContext::FactoryPassKey,
+                     sk_sp<SkSharedContext> sharedContext,
+                     const SkContextOptions& options)
         : fSharedContext(std::move(sharedContext)) {}
 
 SkContext::~SkContext() = default;
 
-std::unique_ptr<SkContext> SkContext::Make(const SkContextOptions& options) {
-    sk_sp<SkSharedContext> sharedContext = SkSharedContext::Make(options);
-
-    return std::unique_ptr<SkContext>(new SkContext(std::move(sharedContext)));
-}
-
-std::unique_ptr<SkContext> SkContext::Make() { return SkContext::Make({}); }
-
 const SkContext* SkContext::TODO() {
-    static const SkContext* gContext = static_cast<const SkContext*>(SkContext::Make().release());
+    static const SkContext* gContext =
+            SkContextCtorAccessor::MakeContext(nullptr, SkContextOptions{}).release();
     return gContext;
 }
 
@@ -72,7 +68,6 @@ int SkContext::setFontCacheCountLimit(int count) {
 int SkContext::fontCacheCountUsed() const {
     return this->fontCache()->getCacheCountUsed();
 }
-
 void SkContext::purgeFontCache() { this->fontCache()->purgeAll(); }
 
 void SkContext::purgePinnedFontCache() { this->fontCache()->purgePinned(); }
@@ -98,6 +93,22 @@ void sk_trace_dump_visitor(const SkResourceCache::Rec& rec, void* context) {
 void SkContext::dumpMemoryStatistics(SkTraceMemoryDump* dump) {
     this->resourceCache()->visitAll(sk_trace_dump_visitor, dump);
     SkStrikeCache::DumpMemoryStatistics(dump);
+}
+
+bool SkContext::finishInitialization(SkContext::FactoryPassKey) {
+    // TODO finish implementing
+    return true;
+}
+
+std::unique_ptr<SkContext> SkContextCtorAccessor::MakeContext(sk_sp<SkSharedContext> sharedContext,
+                                                              const SkContextOptions& options) {
+    auto context = std::make_unique<SkContext>(
+            SkContext::FactoryPassKey(), std::move(sharedContext), options);
+    if (context && context->finishInitialization(SkContext::FactoryPassKey())) {
+        return context;
+    } else {
+        return nullptr;
+    }
 }
 
 std::unique_ptr<skcpu::Recorder> SkContext::makeRecorder() const {
