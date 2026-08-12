@@ -16,6 +16,131 @@
       "message": "PTAL",
       "revId": "c676e9d868cc9b4d286ad9e4ef45aa3e14d94859",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6d70351_048dd6bd",
+        "filename": "src/gpu/ganesh/geometry/GrAATriangulator.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 581,
+      "author": {
+        "id": 20899
+      },
+      "writtenOn": "2026-08-12T17:40:24Z",
+      "side": 1,
+      "message": "Is e always non-null here?  I wonder if it would make sense to have a test below TESS_LOG()",
+      "fixSuggestions": [
+        {
+          "fixId": "72f3d836_2e229361",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/ganesh/geometry/GrAATriangulator.cpp",
+              "range": {
+                "startLine": 1,
+                "startChar": 0,
+                "endLine": 1,
+                "endChar": 0
+              },
+              "replacement": "    if (!e) {\n        return;\n    }\n"
+            },
+            {
+              "path": "src/gpu/ganesh/geometry/GrAATriangulator.cpp",
+              "range": {
+                "startLine": 583,
+                "startChar": 0,
+                "endLine": 584,
+                "endChar": 0
+              },
+              "replacement": "        if (!e-\u003ehasTopAndBottom()) {\n"
+            }
+          ]
+        }
+      ],
+      "revId": "c676e9d868cc9b4d286ad9e4ef45aa3e14d94859",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "147dab1f_da4014d3",
+        "filename": "src/gpu/ganesh/geometry/GrTriangulator.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 869,
+      "author": {
+        "id": 20899
+      },
+      "writtenOn": "2026-08-12T17:40:24Z",
+      "side": 1,
+      "message": "I think this will crash if v happens to be null here.  (existing issue).",
+      "fixSuggestions": [
+        {
+          "fixId": "67d8e78d_893879fc",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/ganesh/geometry/GrTriangulator.cpp",
+              "range": {
+                "startLine": 856,
+                "startChar": 0,
+                "endLine": 857,
+                "endChar": 0
+              },
+              "replacement": "    if (!edge || !edge-\u003ehasTopAndBottom() || !v) {\n"
+            },
+            {
+              "path": "src/gpu/ganesh/geometry/GrTriangulator.cpp",
+              "range": {
+                "startLine": 878,
+                "startChar": 0,
+                "endLine": 879,
+                "endChar": 0
+              },
+              "replacement": "    if (!edge || !edge-\u003ehasTopAndBottom() || !v) {\n"
+            }
+          ]
+        }
+      ],
+      "revId": "c676e9d868cc9b4d286ad9e4ef45aa3e14d94859",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a87bb81d_cac07943",
+        "filename": "src/gpu/ganesh/geometry/GrTriangulator.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 465,
+      "author": {
+        "id": 20899
+      },
+      "writtenOn": "2026-08-12T17:40:24Z",
+      "side": 1,
+      "message": "I wonder if we should do something like \n\nSkASSERT(...)\nfLine \u003d Line()?",
+      "fixSuggestions": [
+        {
+          "fixId": "c4cbaf22_6713ccbb",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/ganesh/geometry/GrTriangulator.h",
+              "range": {
+                "startLine": 463,
+                "startChar": 0,
+                "endLine": 466,
+                "endChar": 0
+              },
+              "replacement": "        fLine \u003d Line(fTop, fBottom);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "c676e9d868cc9b4d286ad9e4ef45aa3e14d94859",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
