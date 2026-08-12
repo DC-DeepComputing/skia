@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d51347f4_9aa44619",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-08-12T17:15:01Z",
+      "side": 1,
+      "message": "The individual parsers set their own default values. For the XMP version (UltraHDR), we set the default [here](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/codec/SkXmp.cpp;l\u003d598;drc\u003dd7a4ca22a97493069eab550d3d02f7da144da3ef) to 1/64 during parsing.\n\nFor ISO 21496-1, the value always has to be specified.",
+      "revId": "32d4c1ddd006ae72ff0ca0c3eb6a18f2b7a92949",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
