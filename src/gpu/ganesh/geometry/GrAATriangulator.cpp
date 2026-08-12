@@ -580,6 +580,9 @@ void GrAATriangulator::extractBoundary(EdgeList* boundary, Edge* e) const {
     bool down = this->applyFillType(e->fWinding);
     Vertex* start = down ? e->fTop : e->fBottom;
     do {
+        if (!e || !e->hasTopAndBottom()) {
+            break;
+        }
         e->fWinding = down ? 1 : -1;
         Edge* next;
         e->fLine.normalize();
