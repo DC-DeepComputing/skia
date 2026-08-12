@@ -10,6 +10,7 @@
 
 #include "include/private/SkTDArray.h"
 #include "src/core/SkTHash.h"
+#include "src/gpu/graphite/BufferManager.h"
 #include "src/gpu/graphite/ResourceTypes.h"
 
 #include <cstdint>
@@ -24,14 +25,13 @@ class DrawBufferManager;
 
 class StorageContext {
 public:
-    // Placeholder alignment, to be replaced by LCM across rendersteps in future.
     static constexpr size_t kStructAlignment = 16;
 
     StorageContext();
     ~StorageContext();
 
-    // Resets cached gradient data. Should only occur at "organic" flush time (e.g. canvas/recorder
-    // flush).
+    // Resets cached gradient and vertex data. Should only occur at "organic" flush time
+    // (e.g. canvas/recorder flush).
     void resetCache();
 
     // Stub, will call more than resetCache() in the future
@@ -41,13 +41,22 @@ public:
 
     std::pair<float*, int> allocateGradientData(int numStops, const SkGradientBaseShader* shader);
 
+    // Records the required alignment for a vertex stride and alignment without appending data.
+    // This updates the running LCM used when finalizing precached storage data.
+    void recordAlignment(size_t stride, size_t align = 1);
+
+    // Appends `count * stride` bytes of vertex data into the CPU-side copy, aligned according to
+    // `stride` and `align`. Returns the byte offset within the storage buffer.
+    uint32_t appendVertices(const void* data, size_t count, size_t stride, size_t align = 1);
+
     void finalizePrecachedStorageData();
 
     BindBufferInfo finalize(DrawBufferManager* bufferMgr);
 
-    bool isEmpty() const { return fGradientCache.isEmpty(); }
+    bool isEmpty() const { return fGradientCache.isEmpty() && fVertexData.empty(); }
 
     SkDEBUGCODE(int size() const { return fGradientCache.fGradientData.size(); })
+    SkDEBUGCODE(int vertexSize() const { return fVertexData.size(); })
 
 private:
     struct GradientCache {
@@ -67,6 +76,9 @@ private:
     SkDEBUGCODE(bool fGradientsFinalized = false;)
 
     GradientCache fGradientCache;
+
+    SkTDArray<char> fVertexData;
+    uint32_t fRunningLCM = 1;
 };
 
 } // namespace skgpu::graphite
