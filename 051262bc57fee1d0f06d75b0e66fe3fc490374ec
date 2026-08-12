@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4dc735b7_569f8cfc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-12T18:08:30Z",
+      "side": 1,
+      "message": "Thank you for contributing, I see you\u0027ve already signed the CLA but can you add your name and email to the `AUTHORS` file as well?",
+      "revId": "051262bc57fee1d0f06d75b0e66fe3fc490374ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
