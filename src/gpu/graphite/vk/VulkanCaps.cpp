@@ -283,8 +283,10 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
             enabledFeatures.fGraphicsPipelineLibrary &&
             (deviceProperties.fGpl.graphicsPipelineLibraryFastLinking || vendorID == kARM_VkVendor);
 
-
-    fSupportsFrameBoundary = enabledFeatures.fFrameBoundary;
+    // Attachments can always be bigger than the VkFramebuffer, which Graphite sizes to the main
+    // texture, so using approx-sized dimensions for MSAA and D/S attachments reduces the number
+    // of Resources in play (although hopefully they are all transient anyways).
+    fAttachmentSizePolicy = AttachmentSizePolicy::kApprox;
 
     // Multisampled render to single-sampled usage depends on the mandatory feature of
     // VK_EXT_multisampled_render_to_single_sampled.  Per format queries are needed to determine if
