@@ -109,6 +109,8 @@ protected:
     mutable SingleOwner fSingleOwner;
     std::unique_ptr<ThreadSafeResourceProvider> fThreadSafeResourceProvider;
 
+    void destroyCaptureManager() { fCaptureManager.reset(); }
+
 private:
     friend class Context; // for setRendererProvider() and setCaptureManager()
 
