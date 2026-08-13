@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3aee2b24_bfe4a32d",
+        "filename": "infra/bots/recipe_modules/build/default.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-13T18:42:11Z",
+      "side": 1,
+      "message": "Can we jump this to iOS 15 as well since that\u0027ll be the lowest iOS we have on our tree? But I don\u0027t feel strongly, there are some \"iOS 13.0\" textual and @available references, and a number of @available\u0027s for \"iOS 14.0\" that can now be removed.  There aren\u0027t actually checks for iOS 15.0, so code structure-wise, there\u0027s no difference between supporting 14 vs. 15.\n\nI\u0027m also fine to not modify Ganesh\u0027s code, and just remove the checks / update the MtlSharedContext creation rules for Graphite only.\n\nWe should also update site/about/_index.html and site/docs/_index.md, and add a relnotes/ file.",
+      "range": {
+        "startLine": 101,
+        "startChar": 42,
+        "endLine": 101,
+        "endChar": 45
+      },
+      "revId": "b474c494e44803c51a5da4b62ed9cdd000195ff2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
