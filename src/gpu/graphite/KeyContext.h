@@ -16,6 +16,7 @@
 #include "src/core/SkColorData.h"
 #include "src/core/SkColorSpaceXformSteps.h"
 #include "src/gpu/graphite/DrawContext.h"
+#include "src/gpu/graphite/MeshSpecificationDictionary.h"
 #include "src/gpu/graphite/TextureProxy.h"
 
 class SkRuntimeEffect;
