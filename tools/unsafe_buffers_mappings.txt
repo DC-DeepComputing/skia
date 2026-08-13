@@ -1,0 +1,3 @@
+# tools/unsafe_buffers_mappings.txt
+[unsafe-buffer-usage]
+src:*
