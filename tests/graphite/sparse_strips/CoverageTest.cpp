@@ -19,6 +19,7 @@
 #include "src/gpu/graphite/sparse_strips/Strip.h"
 #include "src/gpu/graphite/sparse_strips/Tiler.h"
 #include "tests/Test.h"
+#include "tests/graphite/sparse_strips/CoverageTestUtils.h"
 
 #include <array>
 #include <cmath>
@@ -309,7 +310,9 @@ private:
         SkTDArray<uint8_t> alphaBuf;
         SkTDArray<uint8_t> exactMasks;
 
-        auto observer = [&](uint8_t exactMask) { exactMasks.push_back(exactMask); };
+        auto observer = [&](uint8_t exactMask, skvx::int8 winding) {
+            exactMasks.push_back(exactMask);
+        };
         fFunc(tiler, &stripBuf, &alphaBuf, /*isInverse=*/false, polyline, lut, observer);
 
         if (stripBuf.empty()) {
@@ -388,14 +391,14 @@ private:
                                              exactMasks,
                                              tileStartIdx);
                             REPORTER_ASSERT(reporter,
-                                            false,
-                                            "[%s] Fail at tile(%d,%d). Exp %d, Got %d (alpha %d)",
-                                            name,
-                                            currX / kTileWidth,
-                                            currY / kTileHeight,
-                                            expectedSamples,
-                                            actualSamples,
-                                            actualAlpha);
+                                             false,
+                                             "[%s] Fail at tile(%d,%d). Exp %d, Got %d (alpha %d)",
+                                             name,
+                                             currX / kTileWidth,
+                                             currY / kTileHeight,
+                                             expectedSamples,
+                                             actualSamples,
+                                             actualAlpha);
                             return false;
                         } else if (sampleDiff > 0) {
                             (*minorErrorCount)[sampleDiff - 1]++;
@@ -419,6 +422,213 @@ private:
     }
 };
 
+template <uint16_t kTileWidth, uint16_t kTileHeight> class OracleCoverageTestRunner {
+public:
+    static constexpr float kTileWidthF        = static_cast<float>(kTileWidth);
+    static constexpr float kTileHeightF       = static_cast<float>(kTileHeight);
+    static constexpr uint32_t kViewportWidth  = 400;
+    static constexpr uint32_t kViewportHeight = 400;
+    static constexpr float kViewportWidthF    = static_cast<float>(kViewportWidth);
+    static constexpr float kViewportHeightF   = static_cast<float>(kViewportHeight);
+
+    using StripFunc = void (*)(const Tiles<kTileWidth, kTileHeight>&,
+                               SkTDArray<Strip>* stripBuf,
+                               SkTDArray<uint8_t>* alphaBuf,
+                               bool isInverse,
+                               const Polyline& polyline,
+                               const SkTDArray<uint8_t>& msaaLut,
+                               MsaaExactMaskObserver observer);
+
+    OracleCoverageTestRunner(StripFunc func, const char* implName)
+            : fFunc(func), fImplName(implName) {}
+
+    void runAll(skiatest::Reporter* reporter) {
+        const SkTDArray<uint8_t> lut = GenerateMSAALUT<uint8_t>();
+        constexpr int kErrorLimit = 3;
+        std::array<uint32_t, kErrorLimit> minorErrorCount = {0, 0, 0};
+        int totalTestsRun = 0;
+
+        struct TestCase {
+            SkPath path;
+            const char* name;
+        };
+        std::vector<TestCase> baseGeometries;
+
+        auto addRect = [&](float w, float h, const char* name) {
+            baseGeometries.push_back(
+                    {SkPathBuilder().addRect(SkRect::MakeWH(w, h)).detach(), name});
+        };
+
+        addRect(kTileWidthF * 0.5f, kTileHeightF * 0.5f, "Rect(Small)");
+        addRect(kTileWidthF,        kTileHeightF,        "Rect(ExactTile)");
+        addRect(kTileWidthF * 2.5f, kTileHeightF * 1.5f, "Rect(MultiTile)");
+        addRect(kTileWidthF * 4.0f, 0.2f,                "Rect(HorizSliver)");
+        addRect(0.2f,               kTileHeightF * 4.0f, "Rect(VertSliver)");
+
+        baseGeometries.push_back(
+                {SkPathBuilder()
+                         .addCircle(kTileWidthF * 1.5f, kTileHeightF * 1.5f, kTileWidthF * 1.2f)
+                         .detach(),
+                 "Circle"});
+
+        baseGeometries.push_back({
+            SkPathBuilder().addOval(SkRect::MakeWH(kTileWidth * 4.0f, 0.5f)).detach(),
+            "ThinOval"
+        });
+
+        SkPathBuilder inset;
+        inset.addRect(SkRect::MakeWH(kTileWidthF * 3.0f, kTileHeightF * 3.0f),
+                                     SkPathDirection::kCW);
+        inset.addRect(SkRect::MakeXYWH(kTileWidthF, kTileHeightF, kTileWidthF, kTileHeightF),
+                                       SkPathDirection::kCCW);
+        baseGeometries.push_back({inset.detach(), "InsetRect"});
+
+        // Curved test cases from Oracle suite
+        baseGeometries.push_back({
+            SkPathBuilder()
+                    .moveTo(1.0f, 0.0f)
+                    .quadTo(6.0f, 2.0f, 2.0f, 4.0f)
+                    .lineTo(1.0f, 4.0f)
+                    .close()
+                    .detach(),
+            "Quad"
+        });
+
+        baseGeometries.push_back({
+            SkPathBuilder()
+                    .moveTo(2.0f, 0.0f)
+                    .conicTo(5.0f, 2.0f, 1.0f, 4.0f, 0.7071f)
+                    .lineTo(2.0f, 4.0f)
+                    .close()
+                    .detach(),
+            "Conic"
+        });
+
+        baseGeometries.push_back({
+            SkPathBuilder()
+                    .moveTo(1.0f, 0.0f)
+                    .cubicTo(6.0f, 0.5f, -1.0f, 2.5f, 5.0f, 4.0f)
+                    .lineTo(1.0f, 4.0f)
+                    .close()
+                    .detach(),
+            "Cubic_Serpentine"
+        });
+
+        baseGeometries.push_back({
+            SkPathBuilder()
+                    .moveTo(2.0f, 0.0f)
+                    .lineTo(8.0f, 1.0f)
+                    .quadTo(12.0f, 4.0f, 8.0f, 7.0f)
+                    .conicTo(4.0f, 9.0f, 1.0f, 6.0f, 0.7071f)
+                    .cubicTo(0.0f, 4.0f, 0.0f, 2.0f, 2.0f, 0.0f)
+                    .close()
+                    .detach(),
+            "Mixed_Closed_Shape"
+        });
+
+        baseGeometries.push_back({
+            SkPathBuilder()
+                    .addRect(SkRect::MakeXYWH(1.0f, 1.0f, 8.0f, 8.0f), SkPathDirection::kCW)
+                    .addRect(SkRect::MakeXYWH(3.0f, 3.0f, 4.0f, 4.0f), SkPathDirection::kCCW)
+                    .detach(),
+            "Donut_Hole"
+        });
+
+        // Tile-relative alignments (dx, dy)
+        const SkPoint alignments[] = {
+                {0.0f,                0.0f},                  // Top & Left aligned
+                {0.0f,                kTileHeightF * 0.5f},   // Left aligned, offset top
+                {kTileWidthF * 0.5f,  0.0f},                  // Top aligned, offset left
+                {kTileWidthF * 0.33f, kTileHeightF * 0.33f},  // Strictly inside
+                {kTileWidthF - 0.01f, kTileHeightF - 0.01f}   // Right on a tile boundary edge
+        };
+
+        for (const TestCase& geom : baseGeometries) {
+            // Progressively rotate the geometry
+            for (int angleDeg = 0; angleDeg < 360; angleDeg += 45) {
+                float angle = static_cast<float>(angleDeg);
+
+                for (const SkPoint& alignment : alignments) {
+                    SkMatrix rotMatrix;
+                    rotMatrix.setRotate(angle);
+                    SkRect rotatedBounds = geom.path.makeTransform(rotMatrix).getBounds();
+                    SkMatrix transMatrix;
+                    transMatrix.setTranslate(alignment.fX - rotatedBounds.fLeft,
+                                             alignment.fY - rotatedBounds.fTop);
+                    SkMatrix ctm = SkMatrix::Concat(transMatrix, rotMatrix);
+                    SkPath deviceSpacePath = geom.path.makeTransform(ctm);
+
+                    SkString testName;
+                    testName.printf("%s - %s Rot(%.1f) Align(%.2f,%.2f)",
+                                    fImplName,
+                                    geom.name,
+                                    angle,
+                                    alignment.fX,
+                                    alignment.fY);
+
+                    if (!this->runSingleTest(reporter,
+                                             deviceSpacePath,
+                                             testName.c_str(),
+                                             lut,
+                                             &minorErrorCount)) {
+                        return;
+                    }
+                    totalTestsRun++;
+                }
+            }
+        }
+
+        INFOF(reporter,
+              "[%s (%dx%d)] StripStreamValidator Oracle Coverage Test Complete. Ran %d variants. "
+              "Minor Error Summary: 1-sample: %u, 2-sample: %u, 3-sample: %u\n",
+              fImplName,
+              kTileWidth,
+              kTileHeight,
+              totalTestsRun,
+              minorErrorCount[0],
+              minorErrorCount[1],
+              minorErrorCount[2]);
+    }
+
+private:
+    StripFunc fFunc;
+    const char* fImplName;
+
+    bool runSingleTest(skiatest::Reporter* reporter,
+                       const SkPath& path,
+                       const char* name,
+                       const SkTDArray<uint8_t>& lut,
+                       std::array<uint32_t, 3>* minorErrorCount) {
+        Flatten flattener;
+        Polyline polyline;
+        flattener.processPaths<FlattenMode::kSimd>(
+                path, SkMatrix(), kViewportWidthF, kViewportHeightF, &polyline);
+
+        Tiles<kTileWidth, kTileHeight> tiler;
+        tiler.makeTilesMSAA(polyline, kViewportWidth, kViewportHeight);
+        tiler.sortTiles();
+
+        SkTDArray<Strip> stripBuf;
+        SkTDArray<uint8_t> alphaBuf;
+        SkTDArray<skvx::int8> exactWindings;
+
+        auto observer = [&](uint8_t exactMask, skvx::int8 winding) {
+            exactWindings.push_back(winding);
+        };
+        fFunc(tiler, &stripBuf, &alphaBuf, /*isInverse=*/false, polyline, lut, observer);
+
+        StripStreamValidator<kTileWidth, kTileHeight> validator(
+                path, stripBuf, alphaBuf, exactWindings, &polyline, &tiler, name);
+
+        uint32_t maxSampleDiff = 0;
+        bool pass = validator.validate(reporter, kViewportWidth, kViewportHeight, &maxSampleDiff);
+        if (maxSampleDiff > 0 && maxSampleDiff <= 3) {
+            (*minorErrorCount)[maxSampleDiff - 1]++;
+        }
+        return pass;
+    }
+};
+
 DEF_TEST(SparseStrips_CoverageScalar_4x4, reporter) {
     skgpu::graphite::CoverageTestRunner<4, 4> scalarRunner(
             &skgpu::graphite::CoverageTestRunner<4, 4>::RunScalarWinding, "Scalar");
@@ -433,6 +643,30 @@ DEF_TEST(SparseStrips_CoverageSIMD_4x4, reporter) {
 
 DEF_TEST(SparseStrips_CoverageSIMD_8x8, reporter) {
     skgpu::graphite::CoverageTestRunner<8, 8> simdRunner(
+            &skgpu::graphite::CoverageTestRunner<8, 8>::RunSimdWinding, "SIMD");
+    simdRunner.runAll(reporter);
+}
+
+DEF_TEST(SparseStrips_OracleCoverage_Scalar_4x4, reporter) {
+    skgpu::graphite::OracleCoverageTestRunner<4, 4> scalarRunner(
+            &skgpu::graphite::CoverageTestRunner<4, 4>::RunScalarWinding, "Scalar");
+    scalarRunner.runAll(reporter);
+}
+
+DEF_TEST(SparseStrips_OracleCoverage_Scalar_8x8, reporter) {
+    skgpu::graphite::OracleCoverageTestRunner<8, 8> scalarRunner(
+            &skgpu::graphite::CoverageTestRunner<8, 8>::RunScalarWinding, "Scalar");
+    scalarRunner.runAll(reporter);
+}
+
+DEF_TEST(SparseStrips_OracleCoverage_SIMD_4x4, reporter) {
+    skgpu::graphite::OracleCoverageTestRunner<4, 4> simdRunner(
+            &skgpu::graphite::CoverageTestRunner<4, 4>::RunSimdWinding, "SIMD");
+    simdRunner.runAll(reporter);
+}
+
+DEF_TEST(SparseStrips_OracleCoverage_SIMD_8x8, reporter) {
+    skgpu::graphite::OracleCoverageTestRunner<8, 8> simdRunner(
             &skgpu::graphite::CoverageTestRunner<8, 8>::RunSimdWinding, "SIMD");
     simdRunner.runAll(reporter);
 }

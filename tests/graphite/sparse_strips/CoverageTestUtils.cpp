@@ -220,7 +220,7 @@ skvx::int8 ScanlineOracle8x::EvaluatePixelWinding(
     skvx::int8 pixelWinding(0);
 
     for (const auto& hit : hits) {
-        pixelWinding += if_then_else(vPx < hit.x, hit.dir, skvx::int8(0));
+        pixelWinding += if_then_else(vPx >= hit.x, hit.dir, skvx::int8(0));
     }
     return pixelWinding;
 }

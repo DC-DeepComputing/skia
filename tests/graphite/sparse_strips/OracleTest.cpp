@@ -52,13 +52,12 @@ void validate_oracle_path(skiatest::Reporter* reporter, const TestCase& tc) {
         for (const auto& hit : hits) {
             for (int k = 0; k < 8; ++k) {
                 if (hit.dir[k] != 0) {
-                    totalWinding[k] += hit.dir[k];
                     int px = static_cast<int>(std::ceil(hit.x[k] - kSubX[k]));
                     int idx = px - minX;
                     if (idx <= 0) {
-                        totalWinding[k] -= hit.dir[k];
+                        totalWinding[k] += hit.dir[k];
                     } else if (idx < rowWidth) {
-                        rowWindings[idx][k] -= hit.dir[k];
+                        rowWindings[idx][k] += hit.dir[k];
                     }
                 }
             }
