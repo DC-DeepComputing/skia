@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19a40351_863054bb",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-13T21:45:50Z",
+      "side": 0,
+      "message": "NOTE: this is actually already set earlier in the init function, so I just removed the double assignment.",
+      "range": {
+        "startLine": 287,
+        "startChar": 0,
+        "endLine": 287,
+        "endChar": 60
+      },
+      "revId": "891273a2582cc2333f31972f005fc01ebefa637a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
