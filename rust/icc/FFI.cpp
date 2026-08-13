@@ -19,8 +19,8 @@ namespace rust_icc {
 
 static constexpr uint64_t kMaxGridPoints = 350000000;
 
-// Keep this at the skcms bridge boundary: moxcms has its own parser limits,
-// while C++ tests and future callers can still construct rust_icc::IccProfile directly.
+// Keep this validation at the skcms bridge boundary because C++ tests and future callers can
+// construct rust_icc::IccProfile directly without going through the checked Rust parser.
 static bool ValidateGridPoints(const uint8_t grid_points[4], uint32_t active_channels) {
     if (active_channels < 1 || active_channels > 4) {
         return false;

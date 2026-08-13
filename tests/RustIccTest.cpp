@@ -964,11 +964,8 @@ DEF_TEST(RustIcc_equivalence_with_skcms_resource_files, r) {
             }
         }
 
-        // Compare has_trc and transfer functions.
-        // Note: the Rust path approximates multi-entry table TRC curves as
-        // parametric functions via skcms_ApproximateCurve, so trc[c].table_entries
-        // may be 0 in the Rust profile and non-zero in the skcms profile.  Use
-        // compare_curves_by_evaluation which handles both representations.
+        // Compare TRCs by evaluation so identity-table canonicalization differences do not
+        // obscure equivalent curves. Non-identity table TRCs are preserved byte-for-byte.
         if (rust.has_trc != skcms.has_trc) {
             ERRORF(r, "[%s] has_trc mismatch: rust=%d, skcms=%d",
                    path, rust.has_trc, skcms.has_trc);
@@ -1163,7 +1160,7 @@ DEF_TEST(RustIcc_trc_table_passthrough, r) {
     REPORTER_ASSERT(r, skcms_prof.has_trc,
                     "skcms should report has_trc=true for swapped.icc");
 
-    // Rust/moxcms path: must expose the 1024-entry table TRC bit-exactly.
+    // Rust parser path: must expose the 1024-entry table TRC bit-exactly.
     auto rust_profile = SkCodecs::MakeICCProfileWithRust(data);
     if (!rust_profile) {
         ERRORF(r, "Rust ICC parser failed to parse swapped.icc");
@@ -1189,12 +1186,11 @@ DEF_TEST(RustIcc_trc_table_passthrough, r) {
 
 // Regression test for the non-fatal B2A rejection path.
 //
-// pq_hdr.icc is an ICCv4 PQ HDR profile with an A2B tag and a curve-only B2A
-// tag.  The Rust path reuses convert_to_a2b() for B2A, then a2b_to_b2a()
-// swaps input/output channels.  Curve-only B2A profiles yield invalid channel
-// counts so ToSkcmsB2A rejects them.  ToSkcmsIccProfile must treat this
-// rejection as non-fatal: has_B2A is left false while A2B (and the rest of
-// the profile) is still usable.
+// pq_hdr.icc is an ICCv4 PQ HDR profile with an A2B tag and a curve-only B2A tag. The Rust
+// parser retains B2A in the shared representation, but the absent CLUT stage is encoded with
+// zero output channels. ToSkcmsB2A rejects that representation. ToSkcmsIccProfile must treat
+// the rejection as non-fatal: has_B2A is left false while A2B and the rest of the profile remain
+// usable.
 DEF_TEST(RustIcc_pq_hdr_b2a_absent, r) {
     auto data = GetResourceAsData("icc_profiles/pq_hdr.icc");
     if (!data) {

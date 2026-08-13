@@ -85,6 +85,15 @@ skia_filegroup(
 )
 
 filegroup(
+    name = "icc_profiles",
+    srcs = glob(
+        ["icc_profiles/**"],
+        allow_empty = False,
+    ),
+    visibility = ["//rust/icc:__pkg__"],
+)
+
+filegroup(
     name = "core_test_resources",
     srcs = [
         "images/baby_tux.png",
