@@ -617,6 +617,12 @@ void SkBitmapDevice::drawCoverageMask(const SkSpecialImage* mask,
 
 // Try to filter as nine patch as a fast path.
 bool SkBitmapDevice::drawBlurredRRect(const SkRRect& rrect, const SkPaint& paint, float) {
+    // If there is more than just translation, rotation, and uniform scale, then the results of
+    // analytic blurring will be different than mask filter blurring.
+    if (!localToDevice.isSimilarity()) {
+        return false;
+    }
+
     SkASSERT(paint.getMaskFilter()
              && as_MFB(paint.getMaskFilter())->type() == SkMaskFilterBase::Type::kBlur);
 
