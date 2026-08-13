@@ -15,7 +15,13 @@ licenses(["notice"])
 
 skia_filegroup(
     name = "rs_srcs",
-    srcs = ["FFI.rs"],
+    srcs = [
+        "FFI.rs",
+        "icc_curve.rs",
+        "icc_lut.rs",
+        "icc_parser.rs",
+        "icc_reader.rs",
+    ],
 )
 
 skia_filegroup(
@@ -77,11 +83,11 @@ rust_static_library(
         ":cxx_bridge",
         ":ffi_cpp_lib",
         "@crates//:cxx",
-        "@crates//:moxcms",
     ],
 )
 
 rust_test(
     name = "ffi_rs_test",
     crate = ":ffi_rs",
+    data = ["//resources:icc_profiles"],
 )
