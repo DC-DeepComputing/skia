@@ -17,6 +17,7 @@ gm_sources = [
   "$_gm/alpha_image.cpp",
   "$_gm/alphagradients.cpp",
   "$_gm/analytic_gradients.cpp",
+  "$_gm/android_poc.cpp",
   "$_gm/androidblendmodes.cpp",
   "$_gm/animated_gif.cpp",
   "$_gm/animated_image_orientation.cpp",
