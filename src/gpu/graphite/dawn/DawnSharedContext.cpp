@@ -82,6 +82,7 @@ DawnSharedContext::DawnSharedContext(const DawnBackendContext& backendContext,
 
 DawnSharedContext::~DawnSharedContext() {
     fThreadSafeResourceProvider.reset();
+    this->destroyCaptureManager();
 
     // need to clear out resources before any allocator is removed
     this->globalCache()->deleteResources();
