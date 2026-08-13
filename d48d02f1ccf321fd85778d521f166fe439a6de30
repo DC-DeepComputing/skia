@@ -87,6 +87,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c5e5946_fb7e1307",
+        "filename": "modules/skshaper/src/SkShaper_harfbuzz.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1560,
+      "author": {
+        "id": 5029334
+      },
+      "writtenOn": "2026-08-13T17:47:56Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "e12dd97a_3be2522f",
+      "revId": "d48d02f1ccf321fd85778d521f166fe439a6de30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "02f2f481_4da91b1d",
@@ -100,6 +118,24 @@
       "writtenOn": "2026-08-12T18:13:18Z",
       "side": 1,
       "message": "Does this mean we always append `trackingAdvance`, even for the last glyph on the line?  IIRC AE tracking (and possibly CSS letter-spacing also) only applies *between* glyphs, to preserve alignment semantics.  E.g. with \"right\" alignment, tracking should not push the last glyph to the left.\n\nI\u0027m going to run some tests myself, but if this is an issue we can probably adjust to compensate either in Skottie\u0027s TextShaper or in SkShaper.",
+      "revId": "d48d02f1ccf321fd85778d521f166fe439a6de30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b1523d5_691fe61c",
+        "filename": "modules/skshaper/src/SkShaper_harfbuzz.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1561,
+      "author": {
+        "id": 5029334
+      },
+      "writtenOn": "2026-08-13T17:47:56Z",
+      "side": 1,
+      "message": "Good catch! I added a fix. Could you take another look? Thank you.",
+      "parentUuid": "02f2f481_4da91b1d",
       "revId": "d48d02f1ccf321fd85778d521f166fe439a6de30",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
