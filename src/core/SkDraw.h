@@ -25,6 +25,7 @@ class SkArenaAlloc;
 class SkBitmap;
 class SkBlender;
 class SkBlitter;
+class SkContext;
 class SkDevice;
 class SkGlyph;
 class SkMaskFilter;
@@ -49,8 +50,6 @@ class GlyphRunList;
 namespace skcpu {
 
 class GlyphRunListPainter;
-class ContextImpl;
-
 
 /** Helper function that creates a mask from a path and a required maskfilter.
     Note however, that the resulting mask will not have been actually filtered,
@@ -251,7 +250,7 @@ public:
     const SkRasterClip* fRC{nullptr};          // required
     const SkSurfaceProps* fProps{nullptr};     // optional
 
-    const ContextImpl* fCtx{nullptr};  // optional for now
+    const SkContext* fCtx{nullptr};  // optional for now
 
 #ifdef SK_DEBUG
     void validate() const;

@@ -7,6 +7,8 @@
 
 #include "include/core/SkContext.h"
 
+#include "include/core/SkCPURecorder.h"
+#include "include/core/SkContextOptions.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTraceMemoryDump.h"
@@ -83,4 +85,9 @@ void sk_trace_dump_visitor(const SkResourceCache::Rec& rec, void* context) {
 void SkContext::dumpMemoryStatistics(SkTraceMemoryDump* dump) {
     this->resourceCache()->visitAll(sk_trace_dump_visitor, dump);
     SkStrikeCache::DumpMemoryStatistics(dump);
+}
+
+std::unique_ptr<SkRecorder> SkContext::makeRecorder(
+        SkContexts::SkBackendSelection selection) const {
+    return std::make_unique<skcpu::Recorder>(this, selection);
 }

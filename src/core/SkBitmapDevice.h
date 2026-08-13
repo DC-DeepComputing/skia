@@ -15,7 +15,6 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkSpan.h"
-#include "src/core/SkCPURecorderImpl.h"
 #include "src/core/SkDevice.h"
 #include "src/core/SkGlyphRunPainter.h"
 #include "src/core/SkRasterClipStack.h"
@@ -43,6 +42,10 @@ struct SkPoint;
 struct SkRSXform;
 namespace sktext { class GlyphRunList; }
 
+namespace skcpu {
+class Recorder;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 class SkBitmapDevice final : public SkDevice {
 public:
@@ -61,8 +64,8 @@ public:
     SkBitmapDevice(const SkBitmap& bitmap, const SkSurfaceProps& surfaceProps,
                    void* externalHandle = nullptr);
 
-    SkBitmapDevice(skcpu::RecorderImpl*, const SkBitmap& bitmap);
-    SkBitmapDevice(skcpu::RecorderImpl*,
+    SkBitmapDevice(skcpu::Recorder*, const SkBitmap& bitmap);
+    SkBitmapDevice(skcpu::Recorder*,
                    const SkBitmap& bitmap,
                    const SkSurfaceProps& surfaceProps,
                    void* externalHandle = nullptr);
@@ -125,7 +128,7 @@ public:
 
     void* getRasterHandle() const override { return fRasterHandle; }
 
-    SkRecorder* baseRecorder() const override { return fRecorder; }
+    SkRecorder* baseRecorder() const override;
 
 private:
     friend class SkDrawTiler;
@@ -154,7 +157,7 @@ private:
                     sk_sp<SkMipmap>);
 
     void* fRasterHandle = nullptr;
-    skcpu::RecorderImpl* fRecorder = nullptr;
+    skcpu::Recorder* fRecorder = nullptr;
     SkBitmap fBitmap;
     SkRasterClipStack fRCStack;
     skcpu::GlyphRunListPainter fGlyphPainter;
