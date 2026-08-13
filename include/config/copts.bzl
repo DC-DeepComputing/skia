@@ -15,6 +15,8 @@ They are divided into several lists/selects and were initially created to be ide
 [3] https://github.com/google/skia/blob/2b07cdb07e88f2870260eabac708f31bc7977d08/gn/skia/BUILD.gn#L593-L630
 """
 
+load("//third_party/bazel_rules/rules_cc/cc:cc_library.bzl", "cc_library")
+
 CORE_COPTS = [
     "-fstrict-aliasing",
 ] + select({
@@ -183,3 +185,35 @@ OBJC_COPTS = [
 ]
 
 DEFAULT_OBJC_COPTS = DEFAULT_COPTS + OBJC_COPTS
+
+# tools/BUILD.bazel
+exports_files(["unsafe_buffers_mappings.txt"])
+
+# -----------------------------
+
+# include/config/copts.bzl
+UNSAFE_BUFFERS_FLAGS = select({
+    "//bazel/common_config_settings:unsafe_buffers_enabled": [
+        "-Wunsafe-buffer-usage",
+        "--warning-suppression-mappings=$(location //tools:unsafe_buffers_mappings.txt)",
+    ],
+    "//conditions:default": [],
+})
+
+UNSAFE_BUFFERS_INPUTS = select({
+    "//bazel/common_config_settings:unsafe_buffers_enabled": [
+        "//tools:unsafe_buffers_mappings.txt",
+    ],
+    "//conditions:default": [],
+})
+
+# -----------------------------
+
+# bazel/macros.bzl
+def skia_cc_library(name, copts = [], additional_compiler_inputs = [], **kwargs):
+    cc_library(
+        name = name,
+        copts = copts + UNSAFE_BUFFERS_FLAGS,
+        additional_compiler_inputs = additional_compiler_inputs + UNSAFE_BUFFERS_INPUTS,
+        **kwargs
+    )
