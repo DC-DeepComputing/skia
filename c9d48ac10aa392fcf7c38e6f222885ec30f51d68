@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1d2b617_d6562266",
+        "filename": "src/gpu/graphite/render/MeshRenderStep.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-14T16:32:43Z",
+      "side": 1,
+      "message": "NOTE: we\u0027ll need to also have a way to provide the DrawParams\u0027 depth value to the vertex shader so that can be part of the emitted sk_Position variable. This is needed so that the drawn mesh respects any depth-based clip.",
+      "range": {
+        "startLine": 57,
+        "startChar": 0,
+        "endLine": 57,
+        "endChar": 98
+      },
+      "revId": "c9d48ac10aa392fcf7c38e6f222885ec30f51d68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8bd5cd21_d109a27e",
+        "filename": "src/gpu/graphite/render/MeshRenderStep.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-14T16:32:43Z",
+      "side": 1,
+      "message": "I think we can collapse this to just using an `Array` that passes in the byte size of the attribute, right? We\u0027re just copying the data so we don\u0027t really need the type itself.",
+      "range": {
+        "startLine": 105,
+        "startChar": 0,
+        "endLine": 123,
+        "endChar": 30
+      },
+      "revId": "c9d48ac10aa392fcf7c38e6f222885ec30f51d68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29d78c7e_f5e2f3c8",
+        "filename": "src/gpu/graphite/render/MeshRenderStep.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-14T16:32:43Z",
+      "side": 1,
+      "message": "We could instead write an additional duplicate vertex here and for the first vertex to create two degenerate triangles. This would avoid flushing but it probably doesn\u0027t make a huge difference, since I imagine when we have support for graphite-backed meshes, they will live in unique buffers and be flushing anyways as part of binding new buffers.\n\nHowever, I realize now that the VerticesRenderStep doesn\u0027t deal with this problem because when it uses `VertState::Proc`, that iterates over the data respecting the primitive type and produces a triangle soup. So VerticesRenderStep actually has a bug in that we shouldn\u0027t let the RendererProvider choose based on the PrimitiveType, that is redundant and would actually produce this same problem if we drew things as a triangle soup interpreted as a triangle strip for instance.\n\nI believe we should do the same here, where (for now since it\u0027s only CPU -backed meshes) the MeshRenderStep itself will always have a triangle primitive type, and then its use of VertState::Proc handles the CPU-data\u0027s topology.",
+      "range": {
+        "startLine": 134,
+        "startChar": 0,
+        "endLine": 134,
+        "endChar": 24
+      },
+      "revId": "c9d48ac10aa392fcf7c38e6f222885ec30f51d68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

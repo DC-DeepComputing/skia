@@ -271,6 +271,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "493c7be9_9c77c99c",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 346,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-14T16:32:43Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "90528165_b6904869",
+      "revId": "5614afbee782fbc27db274b81b02512562f5474f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9f515735_bfcbfbd1",
@@ -402,6 +420,30 @@
       "side": 1,
       "message": "Sure implemented this, didn\u0027t do this initially since it didn\u0027t seem optimal to iterate over each vertex/attributes of the SkMesh vertex buffer but for correctness I think it makes sense to do it via the DrawWriter and Appender. Can revisit this area in a future CL when we have the Graphite backed GPU buffers.\n\nOne question would be whether that GPU buffer approach would consider the attribute data as static or append attributes? Since that would affect how we declare the ssboIndex; now that we are using kAppendVertices we can\u0027t append the ssboIndex as instance data (from my understanding and looking at the vertices render step) unless I am missing something. So I had to change the ssboIndex from a static attribute to an append attribute where it\u0027s added per-vertex, not sure if this is the right approach to follow here though in case there is another way to also write per-instance data?",
       "parentUuid": "a1874f42_ce2a0830",
+      "range": {
+        "startLine": 66,
+        "startChar": 0,
+        "endLine": 90,
+        "endChar": 5
+      },
+      "revId": "5614afbee782fbc27db274b81b02512562f5474f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f2f6b7e_6aadaea4",
+        "filename": "src/gpu/graphite/render/MeshRenderStep.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-14T16:32:43Z",
+      "side": 1,
+      "message": "For right now, it being an appendVertex attribute is correct.\n\nWhen we have a GPU-backed buffer, I think we could have the ssbo index and the paint depth treated as appendInstance data since every call using the same SkMesh would have the same fixed vertex buffer and index buffer (provided then to the instances appender) and then it could append instances.  If there were multiple SkMeshes that shared the same spec but had different vertex buffers and sizes, it would automatically flush since each one\u0027s Instances appender would bind their required vertex template.\n\nRight now there\u0027s no easy way to append a bunch of vertices and then draw a single instance that treats the appended vertices as the vertex template, although that would be pretty straight forward to implement. That would keep the overall data layout pretty similar between the CPU and GPU variants of the mesh render step, which could share the pipeline then.",
+      "parentUuid": "a3fa63b4_6a036368",
       "range": {
         "startLine": 66,
         "startChar": 0,
