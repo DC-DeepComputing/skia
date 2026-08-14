@@ -33,6 +33,23 @@
       "message": "LGTM, thanks!",
       "revId": "b6032367519a787b00b393940dfd1c24b44f74e7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c36913fd_502d57d9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5029334
+      },
+      "writtenOn": "2026-08-14T18:36:39Z",
+      "side": 1,
+      "message": "Gentle ping for a review from a second reviewer. Thanks!",
+      "revId": "b6032367519a787b00b393940dfd1c24b44f74e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
