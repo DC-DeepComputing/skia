@@ -46,6 +46,30 @@
       },
       "revId": "ed5be441b7bb5cd222eda838544d8687c07622b5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "84a40949_203ba580",
+        "filename": "include/gpu/graphite/Recording.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-08-14T18:22:17Z",
+      "side": 1,
+      "message": "woops got tricked by the old -er -ing trap",
+      "parentUuid": "28d6ed6f_0ff11457",
+      "range": {
+        "startLine": 98,
+        "startChar": 0,
+        "endLine": 98,
+        "endChar": 61
+      },
+      "revId": "ed5be441b7bb5cd222eda838544d8687c07622b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
