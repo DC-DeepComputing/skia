@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dccd2236_e7a1b42a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18514
+      },
+      "writtenOn": "2026-08-14T03:49:02Z",
+      "side": 1,
+      "message": "ptal.\n\nThis is a prerequisite for https://skia-review.git.corp.google.com/c/skia/+/1293937?",
+      "revId": "f827bfe8ff988ca5b1473a6b1bf1b85f5f045ca0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
