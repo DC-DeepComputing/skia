@@ -16,6 +16,52 @@
       "message": "PTAL",
       "revId": "f5a3d6f83410bc222835b84e1434ac04c5f9c0da",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ff6c58a_573d36c7",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-14T15:34:14Z",
+      "side": 1,
+      "message": "nit: Can these be declared after `BufferSubAllocator` and `BufferManager`?",
+      "range": {
+        "startLine": 45,
+        "startChar": 10,
+        "endLine": 45,
+        "endChar": 23
+      },
+      "revId": "f5a3d6f83410bc222835b84e1434ac04c5f9c0da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a503f821_ea9f511d",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-14T15:34:14Z",
+      "side": 1,
+      "message": "public \"static\" free functions should have capital names.",
+      "range": {
+        "startLine": 47,
+        "startChar": 26,
+        "endLine": 47,
+        "endChar": 48
+      },
+      "revId": "f5a3d6f83410bc222835b84e1434ac04c5f9c0da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
