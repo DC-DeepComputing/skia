@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e38c368_cbaabf9b",
+        "filename": "tools/ganesh/BUILD.bazel",
+        "patchSetId": 10
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-08-14T17:42:01Z",
+      "side": 1,
+      "message": "You\u0027re right, done.",
+      "parentUuid": "12141c19_896e44be",
+      "range": {
+        "startLine": 62,
+        "startChar": 4,
+        "endLine": 62,
+        "endChar": 11
+      },
+      "revId": "f0fe400849b557c8eff21867612136409472c17e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "80a5b894_00620ff7",
@@ -54,6 +78,30 @@
       "writtenOn": "2026-08-14T14:31:02Z",
       "side": 1,
       "message": "I\u0027d expect the SK_METAL on `//src/gpu/ganesh/mtl:ganesh_metal_TEST_UTIL` to propagate this up and we shouldn\u0027t need it here.",
+      "range": {
+        "startLine": 16,
+        "startChar": 16,
+        "endLine": 16,
+        "endChar": 24
+      },
+      "revId": "f0fe400849b557c8eff21867612136409472c17e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a2fc7b9_c33329a5",
+        "filename": "tools/ganesh/mtl/BUILD.bazel",
+        "patchSetId": 10
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-08-14T17:42:01Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "80a5b894_00620ff7",
       "range": {
         "startLine": 16,
         "startChar": 16,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec858d74_b960ac46",
+        "filename": "tools/graphite/BUILD.bazel",
+        "patchSetId": 10
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-08-14T17:42:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "754c8a29_80ce95ec",
+      "range": {
+        "startLine": 19,
+        "startChar": 4,
+        "endLine": 19,
+        "endChar": 14
+      },
+      "revId": "f0fe400849b557c8eff21867612136409472c17e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6ac0aefc_5872c8b2",
@@ -110,6 +182,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "275dd30f_7f4491af",
+        "filename": "tools/graphite/BUILD.bazel",
+        "patchSetId": 10
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-08-14T17:42:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6ac0aefc_5872c8b2",
+      "range": {
+        "startLine": 45,
+        "startChar": 4,
+        "endLine": 45,
+        "endChar": 11
+      },
+      "revId": "f0fe400849b557c8eff21867612136409472c17e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b8952d01_986121bb",
@@ -123,6 +219,30 @@
       "writtenOn": "2026-08-14T14:31:02Z",
       "side": 1,
       "message": "I\u0027d expect the SK_METAL on `//src/gpu/graphite/mtl:graphite_native_metal_TEST_UTIL` to propagate this up and we shouldn\u0027t need it here.",
+      "range": {
+        "startLine": 16,
+        "startChar": 4,
+        "endLine": 16,
+        "endChar": 11
+      },
+      "revId": "f0fe400849b557c8eff21867612136409472c17e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fde28c44_37925112",
+        "filename": "tools/graphite/mtl/BUILD.bazel",
+        "patchSetId": 10
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-08-14T17:42:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b8952d01_986121bb",
       "range": {
         "startLine": 16,
         "startChar": 4,
