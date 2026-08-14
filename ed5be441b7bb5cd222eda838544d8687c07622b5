@@ -22,6 +22,30 @@
       },
       "revId": "ed5be441b7bb5cd222eda838544d8687c07622b5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28d6ed6f_0ff11457",
+        "filename": "include/gpu/graphite/Recording.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-08-14T18:20:53Z",
+      "side": 1,
+      "message": "The actual Recording still needs to retain the pictures so when it gets sent to the Context, we can bundle them in the Recording Capture. They get moved from SkRecording-\u003eRecording on snap().",
+      "parentUuid": "d8a2ea0e_fc956a0b",
+      "range": {
+        "startLine": 98,
+        "startChar": 0,
+        "endLine": 98,
+        "endChar": 61
+      },
+      "revId": "ed5be441b7bb5cd222eda838544d8687c07622b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
