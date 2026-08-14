@@ -10,6 +10,8 @@
 
 #include "include/private/SkAPI.h"
 
-struct SK_API SkContextOptions {};
+struct SK_API SkContextOptions {
+    SkContextOptions() = default;
+};
 
 #endif  // SkContextOptions_DEFINED

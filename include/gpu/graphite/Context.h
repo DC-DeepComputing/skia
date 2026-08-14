@@ -37,6 +37,7 @@ class SkColorSpace;
 class SkTraceMemoryDump;
 struct SkIRect;
 struct SkImageInfo;
+class SkContext;
 
 namespace skgpu {
 enum class BackendApi : unsigned int;

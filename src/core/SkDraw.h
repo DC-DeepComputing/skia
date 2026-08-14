@@ -25,6 +25,7 @@ class SkArenaAlloc;
 class SkBitmap;
 class SkBlender;
 class SkBlitter;
+class SkContext;
 class SkDevice;
 class SkGlyph;
 class SkMaskFilter;
@@ -49,7 +50,6 @@ class GlyphRunList;
 namespace skcpu {
 
 class GlyphRunListPainter;
-
 
 /** Helper function that creates a mask from a path and a required maskfilter.
     Note however, that the resulting mask will not have been actually filtered,

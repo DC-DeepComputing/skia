@@ -11,6 +11,8 @@
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkAPI.h"
 
+#include <memory>
+
 class SkContextPriv;
 class SkResourceCache;
 class SkSharedContext;
@@ -18,6 +20,17 @@ class SkStrikeCache;
 class SkTraceMemoryDump;
 class SkTypefaceCache;
 struct SkContextOptions;
+class SkRecorder;
+
+namespace SkContexts {
+
+enum SkBackendSelection {
+    kAutomatic,  // Default
+    kRaster,
+    kGPU,
+};
+
+}
 
 /**
  * @brief SkContext is a central context object that serves as the mandatory first point of
@@ -35,6 +48,8 @@ public:
 
     SkContextPriv priv();
     const SkContextPriv priv() const;
+
+    std::unique_ptr<SkRecorder> makeRecorder(SkContexts::SkBackendSelection selection) const;
 
 private:
     SkContext(sk_sp<SkSharedContext>);

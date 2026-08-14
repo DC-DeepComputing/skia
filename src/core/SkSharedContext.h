@@ -16,6 +16,7 @@ class SkOpenTypeSVGDecoder;
 class SkStrikeCache;
 class SkSynchronizedResourceCache;
 class SkTypefaceCache;
+struct SkContextOptions;
 
 using OpenTypeSVGDecoderFactory = std::unique_ptr<SkOpenTypeSVGDecoder> (*)(const uint8_t* svg,
                                                                             size_t length);
@@ -47,6 +48,10 @@ public:
         const int prev = fSVGDecoderFactory != nullptr;
         fSVGDecoderFactory = std::move(factory);
         return prev;
+    }
+
+    static sk_sp<SkSharedContext> Make(const SkContextOptions& options) {
+        return sk_make_sp<SkSharedContext>();
     }
 
 private:

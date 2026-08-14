@@ -703,3 +703,7 @@ void SkBitmapDevice::android_utils_clipAsRgn(SkRegion* rgn) const {
 SkIRect SkBitmapDevice::devClipBounds() const {
     return fRCStack.rc().getBounds();
 }
+
+SkRecorder* SkBitmapDevice::baseRecorder() const {
+    return fRecorder;
+}

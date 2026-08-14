@@ -32,6 +32,7 @@ class GrRecordingContextPriv;
 class GrThreadSafeCache;
 class SkArenaAlloc;
 class SkCapabilities;
+class SkContext;
 class SkJSONWriter;
 class SkGaneshRecorder;
 class SkRecorder;

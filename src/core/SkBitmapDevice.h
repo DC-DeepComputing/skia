@@ -42,6 +42,10 @@ struct SkPoint;
 struct SkRSXform;
 namespace sktext { class GlyphRunList; }
 
+namespace skcpu {
+class Recorder;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 class SkBitmapDevice final : public SkDevice {
 public:
