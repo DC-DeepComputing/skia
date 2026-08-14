@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca1a8322_4c9a2a7c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-08-14T19:15:11Z",
+      "side": 1,
+      "message": "nit: 0/150/300\nUnless I\u0027m misreading the json file... For example, I see `\"nm\": \"L tr150\",`",
+      "range": {
+        "startLine": 11,
+        "startChar": 51,
+        "endLine": 11,
+        "endChar": 65
+      },
+      "revId": "b6032367519a787b00b393940dfd1c24b44f74e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "868f7694_bcf59bbc",
@@ -48,6 +71,40 @@
       "writtenOn": "2026-08-14T18:36:39Z",
       "side": 1,
       "message": "Gentle ping for a review from a second reviewer. Thanks!",
+      "revId": "b6032367519a787b00b393940dfd1c24b44f74e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b24cd25_5893cde6",
+        "filename": "modules/skottie/src/text/TextShaper.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 496,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-08-14T19:15:11Z",
+      "side": 1,
+      "message": "I saw the other trackingAdvance calculations also scale by the font size fFont.getScaleX(), while we don\u0027t here. I\u0027m not super familiar with skottie\u0027s TextShaper, but is this intended?",
+      "revId": "b6032367519a787b00b393940dfd1c24b44f74e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c518f45_33e2048f",
+        "filename": "modules/skshaper/src/SkShaper_harfbuzz.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1560,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-08-14T19:15:11Z",
+      "side": 1,
+      "message": "Do we need to worry about RTL text here by adding trackingAdvance?",
       "revId": "b6032367519a787b00b393940dfd1c24b44f74e7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
