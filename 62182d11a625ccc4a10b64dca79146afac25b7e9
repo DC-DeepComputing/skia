@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "948aaea7_4f1cd0bf",
+        "filename": "gm/hdr_pip_blur.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-08-14T20:21:56Z",
+      "side": 0,
+      "message": "I think we should actually keep this so we know the places we\u0027re planning on passing in a Recorder. If we change them to nullptr they will be much harder to find later. So I would just leave SkCPURecorder for now and we can modify it when we\u0027re ready to tackle more Recorder stuff. Right now our focus is on SkContext mostly.",
+      "range": {
+        "startLine": 169,
+        "startChar": 8,
+        "endLine": 169,
+        "endChar": 48
+      },
+      "revId": "62182d11a625ccc4a10b64dca79146afac25b7e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1099f51c_556fc49f",
+        "filename": "include/core/SkCPURecorder.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-08-14T20:21:56Z",
+      "side": 0,
+      "message": "honestly I think I would just keep this file and we can build the new Recorder off it when were ready. If you want you can leave it pretty much stubbed out. Maybe move it to a new location include/cpu/Recorder.h",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 2
+      },
+      "revId": "62182d11a625ccc4a10b64dca79146afac25b7e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0967bd3_f7240453",
+        "filename": "include/core/SkRecorder.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-08-14T20:21:56Z",
+      "side": 0,
+      "message": "we\u0027re going to need a cpu recorder. Why are you removing this?",
+      "range": {
+        "startLine": 28,
+        "startChar": 7,
+        "endLine": 28,
+        "endChar": 13
+      },
+      "revId": "62182d11a625ccc4a10b64dca79146afac25b7e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
