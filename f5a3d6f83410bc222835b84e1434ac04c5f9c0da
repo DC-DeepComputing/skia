@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2c7fed6_a7729132",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-14T17:06:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7cd41ea6_33c74266",
+      "range": {
+        "startLine": 181,
+        "startChar": 8,
+        "endLine": 182,
+        "endChar": 103
+      },
+      "revId": "f5a3d6f83410bc222835b84e1434ac04c5f9c0da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8ff6c58a_573d36c7",
@@ -54,6 +78,30 @@
       "writtenOn": "2026-08-14T15:34:14Z",
       "side": 1,
       "message": "nit: Can these be declared after `BufferSubAllocator` and `BufferManager`?",
+      "range": {
+        "startLine": 45,
+        "startChar": 10,
+        "endLine": 45,
+        "endChar": 23
+      },
+      "revId": "f5a3d6f83410bc222835b84e1434ac04c5f9c0da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d223ef7_8f90ebf2",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-14T17:06:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8ff6c58a_573d36c7",
       "range": {
         "startLine": 45,
         "startChar": 10,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "09f8ba34_da5bf534",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-14T17:06:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a503f821_ea9f511d",
+      "range": {
+        "startLine": 47,
+        "startChar": 26,
+        "endLine": 47,
+        "endChar": 48
+      },
+      "revId": "f5a3d6f83410bc222835b84e1434ac04c5f9c0da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d79070a1_d32f4d2c",
@@ -110,6 +182,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a23d32e7_ec798d2e",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-14T17:06:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d79070a1_d32f4d2c",
+      "range": {
+        "startLine": 84,
+        "startChar": 0,
+        "endLine": 87,
+        "endChar": 2
+      },
+      "revId": "f5a3d6f83410bc222835b84e1434ac04c5f9c0da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b1da7ea9_c9a3e5d6",
@@ -123,6 +219,30 @@
       "writtenOn": "2026-08-14T15:39:24Z",
       "side": 1,
       "message": "It should be valid to just return remaining\u003d0 here I believe, so we don\u0027t have to wrap in an optional.",
+      "range": {
+        "startLine": 136,
+        "startChar": 0,
+        "endLine": 136,
+        "endChar": 24
+      },
+      "revId": "f5a3d6f83410bc222835b84e1434ac04c5f9c0da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2eb839dc_4291f8f9",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-14T17:06:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b1da7ea9_c9a3e5d6",
       "range": {
         "startLine": 136,
         "startChar": 0,
