@@ -8,7 +8,6 @@
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkBlendMode.h"
-#include "include/core/SkCPURecorder.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkData.h"
 #include "include/core/SkImage.h"
@@ -83,24 +82,15 @@ bool SkImage_Raster::onReadPixels(GrDirectContext*,
     return shallowCopy.readPixels(dstInfo, dstPixels, dstRowBytes, srcX, srcY);
 }
 
-bool SkImage_Raster::onPeekPixels(SkPixmap* pm) const {
-    return fBitmap.peekPixels(pm);
-}
+bool SkImage_Raster::onPeekPixels(SkPixmap* pm) const { return fBitmap.peekPixels(pm); }
 
 bool SkImage_Raster::getROPixels(GrDirectContext*, SkBitmap* dst, CachingHint) const {
     *dst = fBitmap;
     return true;
 }
 
-sk_sp<SkSurface> SkImage_Raster::onMakeSurface(SkRecorder* recorder,
-                                               const SkImageInfo& info) const {
-    if (!recorder) {
-        // TODO(kjlubick) remove this after old SkImage::makeScaled(image info, sampling) API gone
-        recorder = skcpu::Recorder::TODO();
-    }
-    const SkSurfaceProps* props = nullptr;
-    constexpr size_t rowBytes = 0;
-    return recorder->cpuRecorder()->makeBitmapSurface(info, rowBytes, props);
+sk_sp<SkSurface> SkImage_Raster::onMakeSurface(SkRecorder*, const SkImageInfo& info) const {
+    return SkSurfaces::Raster(info, 0, nullptr);
 }
 
 static SkBitmap copy_bitmap_subset(const SkBitmap& orig, const SkIRect& subset) {
@@ -117,8 +107,7 @@ static SkBitmap copy_bitmap_subset(const SkBitmap& orig, const SkIRect& subset) 
         return {};
     }
 
-    SkRectMemcpy(dst, bitmap.rowBytes(), src, orig.rowBytes(), bitmap.rowBytes(),
-                 subset.height());
+    SkRectMemcpy(dst, bitmap.rowBytes(), src, orig.rowBytes(), bitmap.rowBytes(), subset.height());
 
     bitmap.setImmutable();
     return bitmap;
@@ -180,8 +169,8 @@ sk_sp<SkImage> SkImage_Raster::onMakeSubset(SkRecorder*,
 }
 
 sk_sp<SkImage_Raster> SkImage_Raster::MakeFromBitmap(const SkBitmap& bm,
-                                              SkCopyPixelsMode cpm,
-                                              sk_sp<SkMipmap> mips) {
+                                                     SkCopyPixelsMode cpm,
+                                                     sk_sp<SkMipmap> mips) {
     if (!SkImageInfoIsValid(bm.info()) || bm.rowBytes() < bm.info().minRowBytes()) {
         return nullptr;
     }

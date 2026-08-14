@@ -8,7 +8,6 @@
 #ifndef SkPDFDevice_DEFINED
 #define SkPDFDevice_DEFINED
 
-#include "include/core/SkCPURecorder.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkRefCnt.h"
@@ -51,7 +50,7 @@ struct SkRect;
 namespace sktext {
 class GlyphRun;
 class GlyphRunList;
-}
+}  // namespace sktext
 
 /**
  *  \class SkPDFDevice
@@ -71,7 +70,8 @@ public:
      *         as images (via SkPDFDocument::serialize()).
      *  @param initialTransform Transform to be applied to the entire page.
      */
-    SkPDFDevice(SkISize pageSize, SkPDFDocument* document,
+    SkPDFDevice(SkISize pageSize,
+                SkPDFDocument* document,
                 const SkMatrix& initialTransform = SkMatrix::I());
 
     ~SkPDFDevice() override;
@@ -101,15 +101,17 @@ public:
     void drawAnnotation(const SkRect&, const char key[], SkData* value) override;
 
     void drawDevice(SkDevice*, const SkSamplingOptions&, const SkPaint&) override;
-    void drawSpecial(SkSpecialImage*, const SkMatrix&, const SkSamplingOptions&,
-                     const SkPaint&, SkCanvas::SrcRectConstraint) override;
+    void drawSpecial(SkSpecialImage*,
+                     const SkMatrix&,
+                     const SkSamplingOptions&,
+                     const SkPaint&,
+                     SkCanvas::SrcRectConstraint) override;
 
     sk_sp<SkSurface> makeSurface(const SkImageInfo&, const SkSurfaceProps&) override;
     sk_sp<SkDevice> createDevice(const CreateInfo&, const SkPaint*) override;
 
     // PDF specific methods.
-    void drawSprite(const SkBitmap& bitmap, int x, int y,
-                    const SkPaint& paint);
+    void drawSprite(const SkBitmap& bitmap, int x, int y, const SkPaint& paint);
 
     /** Create the resource dictionary for this device. Destructive. */
     std::unique_ptr<SkPDFDict> makeResourceDict();
@@ -122,10 +124,7 @@ public:
 
     SkPDFParentTreeKey structParentsKey() const { return fMarkManager.structParentsKey(); }
 
-    SkRecorder* baseRecorder() const override {
-        // TODO(kjlubick) the creation of this should likely involve a CPU context.
-        return skcpu::Recorder::TODO();
-    }
+    SkRecorder* baseRecorder() const override { return nullptr; }
 
 private:
     // TODO(vandebo): push most of SkPDFDevice's state into a core object in
@@ -172,7 +171,7 @@ private:
         void reset() {
             // fDoc remains the same
             // fOut remains the same (device's fContent may be reset but remains valid)
-            SkASSERT(!this->hasActiveMark()); // fCurrentlyActiveMark and fCurrentMarksElemId unset
+            SkASSERT(!this->hasActiveMark());  // fCurrentlyActiveMark and fCurrentMarksElemId unset
             // fNextMarksElemId unchanged, it is still this device's active structure element id.
             fStructParentsKey = SkPDFParentTreeKey();
         }
@@ -217,10 +216,12 @@ private:
     void finishContentEntry(const SkClipStack*, SkBlendMode, SkPDFIndirectReference, SkPath*);
     bool isContentEmpty();
 
-    void internalDrawGlyphRun(
-            const sktext::GlyphRun& glyphRun, SkPoint offset, const SkPaint& runPaint);
-    void drawGlyphRunAsPath(
-            const sktext::GlyphRun& glyphRun, SkPoint offset, const SkPaint& runPaint);
+    void internalDrawGlyphRun(const sktext::GlyphRun& glyphRun,
+                              SkPoint offset,
+                              const SkPaint& runPaint);
+    void drawGlyphRunAsPath(const sktext::GlyphRun& glyphRun,
+                            SkPoint offset,
+                            const SkPaint& runPaint);
 
     void internalDrawImageRect(SkKeyedImage,
                                const SkRect* src,
@@ -229,10 +230,7 @@ private:
                                const SkPaint&,
                                const SkMatrix& canvasTransformationMatrix);
 
-    void internalDrawPath(const SkClipStack&,
-                          const SkMatrix&,
-                          const SkPath&,
-                          const SkPaint&);
+    void internalDrawPath(const SkClipStack&, const SkMatrix&, const SkPath&, const SkPaint&);
 
     void internalDrawPathWithFilter(const SkClipStack& clipStack,
                                     const SkMatrix& ctm,

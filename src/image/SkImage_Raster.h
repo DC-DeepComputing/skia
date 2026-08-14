@@ -43,23 +43,19 @@ public:
     SkImage_Raster(const SkImageInfo&, sk_sp<SkData>, size_t rb, sk_sp<SkMipmap>, uint32_t id);
     ~SkImage_Raster() override;
 
-    // From SkImage.h
-    bool isValid(SkRecorder* recorder) const override {
-        if (!recorder) {
-            return false;
-        }
-        if (!recorder->cpuRecorder()) {
-            return false;
-        }
-        return true;
-    }
+    bool isValid(SkRecorder*) const override { return true; }
     sk_sp<SkImage> makeColorTypeAndColorSpace(SkRecorder*,
                                               SkColorType targetColorType,
                                               sk_sp<SkColorSpace> targetColorSpace,
                                               RequiredProperties) const override;
 
     // From SkImage_Base.h
-    bool onReadPixels(GrDirectContext*, const SkImageInfo&, void*, size_t, int srcX, int srcY,
+    bool onReadPixels(GrDirectContext*,
+                      const SkImageInfo&,
+                      void*,
+                      size_t,
+                      int srcX,
+                      int srcY,
                       CachingHint) const override;
     bool onPeekPixels(SkPixmap*) const override;
     const SkBitmap* onPeekBitmap() const override { return &fBitmap; }
@@ -117,8 +113,8 @@ public:
      *  nullptr.
      */
     static sk_sp<SkImage_Raster> MakeFromBitmap(const SkBitmap&,
-                                         SkCopyPixelsMode,
-                                         sk_sp<SkMipmap> = nullptr);
+                                                SkCopyPixelsMode,
+                                                sk_sp<SkMipmap> = nullptr);
 
 protected:
     SkImage_Raster(const SkBitmap&, sk_sp<SkMipmap>, bool bitmapMayBeMutable);
@@ -128,4 +124,4 @@ private:
     sk_sp<SkMipmap> fMips;
 };
 
-#endif // SkImage_Raster_DEFINED
+#endif  // SkImage_Raster_DEFINED

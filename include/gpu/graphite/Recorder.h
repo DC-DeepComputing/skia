@@ -8,7 +8,6 @@
 #ifndef skgpu_graphite_Recorder_DEFINED
 #define skgpu_graphite_Recorder_DEFINED
 
-#include "include/core/SkCPURecorder.h"
 #include "include/core/SkRecorder.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSurface.h"
@@ -38,12 +37,12 @@ namespace skgpu {
 enum class BackendApi : unsigned int;
 class RefCntedCallback;
 class TokenTracker;
-}
+}  // namespace skgpu
 
 namespace sktext::gpu {
 class StrikeCache;
 class TextBlobRedrawCoordinator;
-}
+}  // namespace sktext::gpu
 
 namespace skgpu::graphite {
 
@@ -100,7 +99,6 @@ public:
     BackendApi backend() const;
 
     Type type() const override { return SkRecorder::Type::kGraphite; }
-    skcpu::Recorder* cpuRecorder() override;
 
     std::unique_ptr<Recording> snap();
 
@@ -250,9 +248,9 @@ public:
 private:
     static constexpr int kMaxKeyAndDataBuilders = 2;
 
-    friend class Context; // For ctor
-    friend class Device; // For registering and deregistering Devices;
-    friend class RecorderPriv; // for ctor and hidden methods
+    friend class Context;       // For ctor
+    friend class Device;        // For registering and deregistering Devices;
+    friend class RecorderPriv;  // for ctor and hidden methods
 
     // If Context is non-null, the Recorder will use the Context's resource provider
     // instead of creating its own.
@@ -285,8 +283,8 @@ private:
     void createCaptureBreakpoint(SkSurface*) override;
 
     sk_sp<SharedContext> fSharedContext;
-    ResourceProvider* fResourceProvider; // May point to the Context's resource provider
-    std::unique_ptr<ResourceProvider> fOwnedResourceProvider; // May be null
+    ResourceProvider* fResourceProvider;  // May point to the Context's resource provider
+    std::unique_ptr<ResourceProvider> fOwnedResourceProvider;  // May be null
 
     sk_sp<RuntimeEffectDictionary> fRuntimeEffectDict;
 
@@ -301,7 +299,7 @@ private:
     std::unique_ptr<ProxyReadCountMap> fProxyReadCounts;
 
     skia_private::STArray<kMaxKeyAndDataBuilders, std::unique_ptr<KeyAndDataBuilder>>
-        fKeyAndDataBuilders;
+            fKeyAndDataBuilders;
 
     // Iterating over tracked devices in flushTrackedDevices() needs to be re-entrant and support
     // additions to fTrackedDevices if registerDevice() is triggered by a temporary device during
@@ -335,8 +333,8 @@ private:
     SkDEBUGCODE(bool fIsFlushingTrackedDevices = false;)
 
 #if defined(GPU_TEST_UTILS)
-    // For testing use only -- the Context used to create this Recorder
-    Context* fContext = nullptr;
+            // For testing use only -- the Context used to create this Recorder
+            Context* fContext = nullptr;
 #endif
 
 #if defined(SK_DUMP_TASKS)
@@ -348,6 +346,6 @@ private:
 #endif
 };
 
-} // namespace skgpu::graphite
+}  // namespace skgpu::graphite
 
-#endif // skgpu_graphite_Recorder_DEFINED
+#endif  // skgpu_graphite_Recorder_DEFINED

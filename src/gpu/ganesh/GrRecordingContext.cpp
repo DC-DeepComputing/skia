@@ -18,8 +18,6 @@
 #include "include/private/SkMacros.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/core/SkArenaAlloc.h"
-#include "src/core/SkCPUContextImpl.h"
-#include "src/core/SkCPURecorderImpl.h"
 #include "src/gpu/ganesh/GrAuditTrail.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrContextThreadSafeProxyPriv.h"
@@ -40,29 +38,20 @@ using TextBlobRedrawCoordinator = sktext::gpu::TextBlobRedrawCoordinator;
 
 GrRecordingContext::ProgramData::ProgramData(std::unique_ptr<const GrProgramDesc> desc,
                                              const GrProgramInfo* info)
-        : fDesc(std::move(desc))
-        , fInfo(info) {
-}
+        : fDesc(std::move(desc)), fInfo(info) {}
 
 GrRecordingContext::ProgramData::ProgramData(ProgramData&& other)
-        : fDesc(std::move(other.fDesc))
-        , fInfo(other.fInfo) {
-}
+        : fDesc(std::move(other.fDesc)), fInfo(other.fInfo) {}
 
 GrRecordingContext::ProgramData::~ProgramData() = default;
 
 GrRecordingContext::GrRecordingContext(sk_sp<GrContextThreadSafeProxy> proxy, bool ddlRecording)
-        : GrImageContext(std::move(proxy))
-        , fAuditTrail(new GrAuditTrail())
-        , fArenas(ddlRecording) {
+        : GrImageContext(std::move(proxy)), fAuditTrail(new GrAuditTrail()), fArenas(ddlRecording) {
     fProxyProvider = std::make_unique<GrProxyProvider>(this);
-    fCPUContext = std::make_unique<skcpu::ContextImpl>();
     fRecorder = std::make_unique<SkGaneshRecorder>(this);
 }
 
-GrRecordingContext::~GrRecordingContext() {
-    skgpu::ganesh::AtlasTextOp::ClearCache();
-}
+GrRecordingContext::~GrRecordingContext() { skgpu::ganesh::AtlasTextOp::ClearCache(); }
 
 bool GrRecordingContext::init() {
     if (!GrImageContext::init()) {
@@ -87,9 +76,7 @@ bool GrRecordingContext::init() {
     } else if (GrContextOptions::Enable::kNo == this->options().fReduceOpsTaskSplitting) {
         reduceOpsTaskSplitting = false;
     }
-    fDrawingManager.reset(new GrDrawingManager(this,
-                                               prcOptions,
-                                               reduceOpsTaskSplitting));
+    fDrawingManager.reset(new GrDrawingManager(this, prcOptions, reduceOpsTaskSplitting));
     return true;
 }
 
@@ -99,18 +86,13 @@ void GrRecordingContext::abandonContext() {
     this->destroyDrawingManager();
 }
 
-GrDrawingManager* GrRecordingContext::drawingManager() {
-    return fDrawingManager.get();
-}
+GrDrawingManager* GrRecordingContext::drawingManager() { return fDrawingManager.get(); }
 
-void GrRecordingContext::destroyDrawingManager() {
-    fDrawingManager.reset();
-}
+void GrRecordingContext::destroyDrawingManager() { fDrawingManager.reset(); }
 
 GrRecordingContext::Arenas::Arenas(SkArenaAlloc* recordTimeAllocator,
                                    sktext::gpu::SubRunAllocator* subRunAllocator)
-        : fRecordTimeAllocator(recordTimeAllocator)
-        , fRecordTimeSubRunAllocator(subRunAllocator) {
+        : fRecordTimeAllocator(recordTimeAllocator), fRecordTimeSubRunAllocator(subRunAllocator) {
     // OwnedArenas should instantiate these before passing the bare pointer off to this struct.
     SkASSERT(subRunAllocator);
 }
@@ -140,9 +122,7 @@ GrRecordingContext::Arenas GrRecordingContext::OwnedArenas::get() {
     return {fRecordTimeAllocator.get(), fRecordTimeSubRunAllocator.get()};
 }
 
-GrRecordingContext::OwnedArenas&& GrRecordingContext::detachArenas() {
-    return std::move(fArenas);
-}
+GrRecordingContext::OwnedArenas&& GrRecordingContext::detachArenas() { return std::move(fArenas); }
 
 TextBlobRedrawCoordinator* GrRecordingContext::getTextBlobRedrawCoordinator() {
     return fThreadSafeProxy->priv().getTextBlobRedrawCoordinator();
@@ -166,18 +146,15 @@ void GrRecordingContext::addOnFlushCallbackObject(GrOnFlushCallbackObject* onFlu
 
 ////////////////////////////////////////////////////////////////////////////////
 
-sk_sp<const SkCapabilities> GrRecordingContext::skCapabilities() const {
-    return this->refCaps();
-}
+sk_sp<const SkCapabilities> GrRecordingContext::skCapabilities() const { return this->refCaps(); }
 
 int GrRecordingContext::maxTextureSize() const { return this->caps()->maxTextureSize(); }
 
 int GrRecordingContext::maxRenderTargetSize() const { return this->caps()->maxRenderTargetSize(); }
 
 bool GrRecordingContext::colorTypeSupportedAsImage(SkColorType colorType) const {
-    GrBackendFormat format =
-            this->caps()->getDefaultBackendFormat(SkColorTypeToGrColorType(colorType),
-                                                  GrRenderable::kNo);
+    GrBackendFormat format = this->caps()->getDefaultBackendFormat(
+            SkColorTypeToGrColorType(colorType), GrRenderable::kNo);
     return format.isValid();
 }
 
@@ -185,13 +162,7 @@ bool GrRecordingContext::supportsProtectedContent() const {
     return this->caps()->supportsProtectedContent();
 }
 
-std::unique_ptr<skcpu::Recorder> GrRecordingContext::makeCPURecorder() {
-    return std::make_unique<skcpu::RecorderImpl>(fCPUContext.get());
-}
-
-SkRecorder* GrRecordingContext::asRecorder() {
-    return fRecorder.get();
-}
+SkRecorder* GrRecordingContext::asRecorder() { return fRecorder.get(); }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -209,7 +180,7 @@ void GrRecordingContext::dumpJSON(SkJSONWriter* writer) const {
     writer->endObject();
 }
 #else
-void GrRecordingContext::dumpJSON(SkJSONWriter*) const { }
+void GrRecordingContext::dumpJSON(SkJSONWriter*) const {}
 #endif
 
 #if defined(GPU_TEST_UTILS)
@@ -263,5 +234,5 @@ void GrRecordingContext::DMSAAStats::merge(const DMSAAStats& stats) {
     }
 }
 
-#endif // GR_GPU_STATS
-#endif // defined(GPU_TEST_UTILS)
+#endif  // GR_GPU_STATS
+#endif  // defined(GPU_TEST_UTILS)

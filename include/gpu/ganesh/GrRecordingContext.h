@@ -10,7 +10,7 @@
 
 #include "include/core/SkColorType.h"
 #include "include/core/SkRefCnt.h"
-#include "include/core/SkString.h" // IWYU pragma: keep
+#include "include/core/SkString.h"  // IWYU pragma: keep
 #include "include/core/SkTypes.h"
 #include "include/private/SkTArray.h"
 #include "include/private/gpu/ganesh/GrContext_Base.h"
@@ -36,15 +36,10 @@ class SkJSONWriter;
 class SkGaneshRecorder;
 class SkRecorder;
 
-namespace skcpu {
-class ContextImpl;
-class Recorder;
-}  // namespace skcpu
-
 namespace sktext::gpu {
 class SubRunAllocator;
 class TextBlobRedrawCoordinator;
-}
+}  // namespace sktext::gpu
 
 class GrRecordingContext : public GrImageContext {
 public:
@@ -63,14 +58,10 @@ public:
      * use maxSurfaceSampleCountForColorType().
      */
     SK_API bool colorTypeSupportedAsSurface(SkColorType colorType) const {
-        if (colorType == kR16G16_unorm_SkColorType       ||
-            colorType == kA16_unorm_SkColorType          ||
-            colorType == kA16_float_SkColorType          ||
-            colorType == kR16_unorm_SkColorType          ||
-            colorType == kR16_float_SkColorType          ||
-            colorType == kR16G16_float_SkColorType       ||
-            colorType == kR16G16B16A16_unorm_SkColorType ||
-            colorType == kGray_8_SkColorType) {
+        if (colorType == kR16G16_unorm_SkColorType || colorType == kA16_unorm_SkColorType ||
+            colorType == kA16_float_SkColorType || colorType == kR16_unorm_SkColorType ||
+            colorType == kR16_float_SkColorType || colorType == kR16G16_float_SkColorType ||
+            colorType == kR16G16B16A16_unorm_SkColorType || colorType == kGray_8_SkColorType) {
             return false;
         }
 
@@ -109,7 +100,6 @@ public:
     SK_API sk_sp<const SkCapabilities> skCapabilities() const;
 
     SK_API SkRecorder* asRecorder();
-    SK_API std::unique_ptr<skcpu::Recorder> makeCPURecorder();
 
     // Provides access to functions that aren't part of the public API.
     GrRecordingContextPriv priv();
@@ -135,9 +125,9 @@ public:
     };
 
 protected:
-    friend class GrRecordingContextPriv;    // for hidden functions
-    friend class GrDeferredDisplayList;     // for OwnedArenas
-    friend class GrDeferredDisplayListPriv; // for ProgramData
+    friend class GrRecordingContextPriv;     // for hidden functions
+    friend class GrDeferredDisplayList;      // for OwnedArenas
+    friend class GrDeferredDisplayListPriv;  // for ProgramData
 
     // Like Arenas, but preserves ownership of the underlying pools.
     class OwnedArenas {
@@ -177,7 +167,7 @@ protected:
 
     struct ProgramData {
         ProgramData(std::unique_ptr<const GrProgramDesc>, const GrProgramInfo*);
-        ProgramData(ProgramData&&);                     // for SkTArray
+        ProgramData(ProgramData&&);  // for SkTArray
         ProgramData(const ProgramData&) = delete;
         ~ProgramData();
 
@@ -242,7 +232,7 @@ protected:
         int fNumPathMasksGenerated{0};
         int fNumPathMaskCacheHits{0};
 
-#else // GR_GPU_STATS
+#else  // GR_GPU_STATS
         void incNumPathMasksGenerated() {}
         void incNumPathMasksCacheHits() {}
 
@@ -251,7 +241,7 @@ protected:
         void dumpKeyValuePairs(skia_private::TArray<SkString>* keys,
                                skia_private::TArray<double>* values) const {}
 #endif
-#endif // GR_GPU_STATS
+#endif  // GR_GPU_STATS
     } fStats;
 
 #if GR_GPU_STATS && defined(GPU_TEST_UTILS)
@@ -274,15 +264,14 @@ protected:
 
 protected:
     // Delete last in case other objects call it during destruction.
-    std::unique_ptr<GrAuditTrail>     fAuditTrail;
+    std::unique_ptr<GrAuditTrail> fAuditTrail;
 
 private:
-    OwnedArenas                       fArenas;
+    OwnedArenas fArenas;
 
     std::unique_ptr<GrProxyProvider> fProxyProvider;
     // Depends on fProxyProvider (drawing tasks reference proxies). Must be destroyed first.
     std::unique_ptr<GrDrawingManager> fDrawingManager;
-    std::unique_ptr<const skcpu::ContextImpl> fCPUContext;
     std::unique_ptr<SkGaneshRecorder> fRecorder;
 
 #if defined(GPU_TEST_UTILS)

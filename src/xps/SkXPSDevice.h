@@ -12,10 +12,6 @@
 
 #ifdef SK_BUILD_FOR_WIN
 
-#include <ObjBase.h>
-#include <XpsObjectModel.h>
-
-#include "include/core/SkCPURecorder.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkPaint.h"
@@ -32,10 +28,13 @@
 #include "src/utils/win/SkAutoCoInitialize.h"
 #include "src/utils/win/SkTScopedComPtr.h"
 
+#include <ObjBase.h>
+#include <XpsObjectModel.h>
+
 namespace sktext {
 class GlyphRunList;
 }
-//#define SK_XPS_USE_DETERMINISTIC_IDS
+// #define SK_XPS_USE_DETERMINISTIC_IDS
 
 /** \class SkXPSDevice
 
@@ -70,31 +69,28 @@ public:
                      Must be contained within the mediaBox.
                      The default is to coincide with the mediaBox.
      */
-    bool beginSheet(
-        const SkVector& unitsPerMeter,
-        const SkVector& pixelsPerMeter,
-        const SkSize& trimSize,
-        const SkRect* mediaBox = nullptr,
-        const SkRect* bleedBox = nullptr,
-        const SkRect* artBox = nullptr,
-        const SkRect* cropBox = nullptr);
+    bool beginSheet(const SkVector& unitsPerMeter,
+                    const SkVector& pixelsPerMeter,
+                    const SkSize& trimSize,
+                    const SkRect* mediaBox = nullptr,
+                    const SkRect* bleedBox = nullptr,
+                    const SkRect* artBox = nullptr,
+                    const SkRect* cropBox = nullptr);
 
     bool endSheet();
     bool endPortfolio();
 
     void drawPaint(const SkPaint& paint) override;
     void drawPoints(SkCanvas::PointMode, SkSpan<const SkPoint>, const SkPaint&) override;
-    void drawRect(const SkRect& r,
-                  const SkPaint& paint) override;
-    void drawOval(const SkRect& oval,
-                  const SkPaint& paint) override;
-    void drawRRect(const SkRRect& rr,
-                   const SkPaint& paint) override;
-    void drawPath(const SkPath& path,
-                  const SkPaint& paint) override;
+    void drawRect(const SkRect& r, const SkPaint& paint) override;
+    void drawOval(const SkRect& oval, const SkPaint& paint) override;
+    void drawRRect(const SkRRect& rr, const SkPaint& paint) override;
+    void drawPath(const SkPath& path, const SkPaint& paint) override;
     void drawImageRect(const SkImage*,
-                       const SkRect* srcOrNull, const SkRect& dst,
-                       const SkSamplingOptions&, const SkPaint& paint,
+                       const SkRect* srcOrNull,
+                       const SkRect& dst,
+                       const SkSamplingOptions&,
+                       const SkPaint& paint,
                        SkCanvas::SrcRectConstraint) override;
 
     void drawVertices(const SkVertices*, sk_sp<SkBlender>, const SkPaint&, bool) override;
@@ -104,18 +100,21 @@ public:
 
     sk_sp<SkDevice> createDevice(const CreateInfo&, const SkPaint*) override;
 
-    SkRecorder* baseRecorder() const override {
-        // TODO(kjlubick) the creation of this should likely involve a CPU context.
-        return skcpu::Recorder::TODO();
-    }
+    SkRecorder* baseRecorder() const override { return nullptr; }
 
 private:
     class TypefaceUse {
     public:
-        TypefaceUse(SkTypefaceID id, int index, std::unique_ptr<SkStream> data,
-                    SkTScopedComPtr<IXpsOMFontResource> xps, size_t numGlyphs)
-            : typefaceId(id), ttcIndex(index), fontData(std::move(data))
-            , xpsFont(std::move(xps)), glyphsUsed(numGlyphs) {}
+        TypefaceUse(SkTypefaceID id,
+                    int index,
+                    std::unique_ptr<SkStream> data,
+                    SkTScopedComPtr<IXpsOMFontResource> xps,
+                    size_t numGlyphs)
+                : typefaceId(id)
+                , ttcIndex(index)
+                , fontData(std::move(data))
+                , xpsFont(std::move(xps))
+                , glyphsUsed(numGlyphs) {}
         const SkTypefaceID typefaceId;
         const int ttcIndex;
         const std::unique_ptr<SkStream> fontData;
@@ -157,131 +156,107 @@ private:
 
     HRESULT initXpsDocumentWriter(IXpsOMImageResource* image);
 
-    HRESULT createXpsPage(
-        const XPS_SIZE& pageSize,
-        IXpsOMPage** page);
+    HRESULT createXpsPage(const XPS_SIZE& pageSize, IXpsOMPage** page);
 
-    HRESULT createXpsThumbnail(
-        IXpsOMPage* page, const unsigned int pageNumber,
-        IXpsOMImageResource** image);
+    HRESULT createXpsThumbnail(IXpsOMPage* page,
+                               const unsigned int pageNumber,
+                               IXpsOMImageResource** image);
 
-    void internalDrawRect(
-        const SkRect& r,
-        bool transformRect,
-        const SkPaint& paint);
+    void internalDrawRect(const SkRect& r, bool transformRect, const SkPaint& paint);
 
-    HRESULT createXpsBrush(
-        const SkPaint& skPaint,
-        IXpsOMBrush** xpsBrush,
-        const SkMatrix* parentTransform = nullptr);
+    HRESULT createXpsBrush(const SkPaint& skPaint,
+                           IXpsOMBrush** xpsBrush,
+                           const SkMatrix* parentTransform = nullptr);
 
-    HRESULT createXpsSolidColorBrush(
-        const SkColor4f skColor, const SkAlpha alpha,
-        IXpsOMBrush** xpsBrush);
+    HRESULT createXpsSolidColorBrush(const SkColor4f skColor,
+                                     const SkAlpha alpha,
+                                     IXpsOMBrush** xpsBrush);
 
-    HRESULT createXpsImageBrush(
-        const SkPixmap& bitmap,
-        const SkMatrix& localMatrix,
-        const SkTileMode (&xy)[2],
-        const SkAlpha alpha,
-        IXpsOMTileBrush** xpsBrush);
+    HRESULT createXpsImageBrush(const SkPixmap& bitmap,
+                                const SkMatrix& localMatrix,
+                                const SkTileMode (&xy)[2],
+                                const SkAlpha alpha,
+                                IXpsOMTileBrush** xpsBrush);
 
-    HRESULT createXpsLinearGradient(
-        SkShaderBase::GradientInfo info,
-        const SkAlpha alpha,
-        const SkMatrix& localMatrix,
-        IXpsOMMatrixTransform* xpsMatrixToUse,
-        IXpsOMBrush** xpsBrush);
+    HRESULT createXpsLinearGradient(SkShaderBase::GradientInfo info,
+                                    const SkAlpha alpha,
+                                    const SkMatrix& localMatrix,
+                                    IXpsOMMatrixTransform* xpsMatrixToUse,
+                                    IXpsOMBrush** xpsBrush);
 
-    HRESULT createXpsRadialGradient(
-        SkShaderBase::GradientInfo info,
-        const SkAlpha alpha,
-        const SkMatrix& localMatrix,
-        IXpsOMMatrixTransform* xpsMatrixToUse,
-        IXpsOMBrush** xpsBrush);
+    HRESULT createXpsRadialGradient(SkShaderBase::GradientInfo info,
+                                    const SkAlpha alpha,
+                                    const SkMatrix& localMatrix,
+                                    IXpsOMMatrixTransform* xpsMatrixToUse,
+                                    IXpsOMBrush** xpsBrush);
 
-    HRESULT createXpsGradientStop(
-        const SkColor4f skColor,
-        const SkScalar offset,
-        IXpsOMGradientStop** xpsGradStop);
+    HRESULT createXpsGradientStop(const SkColor4f skColor,
+                                  const SkScalar offset,
+                                  IXpsOMGradientStop** xpsGradStop);
 
-    HRESULT createXpsTransform(
-        const SkMatrix& matrix,
-        IXpsOMMatrixTransform ** xpsTransform);
+    HRESULT createXpsTransform(const SkMatrix& matrix, IXpsOMMatrixTransform** xpsTransform);
 
-    HRESULT createXpsRect(
-        const SkRect& rect,
-        BOOL stroke, BOOL fill,
-        IXpsOMGeometryFigure** xpsRect);
+    HRESULT createXpsRect(const SkRect& rect,
+                          BOOL stroke,
+                          BOOL fill,
+                          IXpsOMGeometryFigure** xpsRect);
 
-    HRESULT createXpsQuad(
-        const SkPoint (&points)[4],
-        BOOL stroke, BOOL fill,
-        IXpsOMGeometryFigure** xpsQuad);
+    HRESULT createXpsQuad(const SkPoint (&points)[4],
+                          BOOL stroke,
+                          BOOL fill,
+                          IXpsOMGeometryFigure** xpsQuad);
 
-    HRESULT CreateTypefaceUse(
-        const SkFont& font,
-        TypefaceUse** fontResource);
+    HRESULT CreateTypefaceUse(const SkFont& font, TypefaceUse** fontResource);
 
-    HRESULT AddGlyphs(
-        IXpsOMObjectFactory* xpsFactory,
-        IXpsOMCanvas* canvas,
-        const TypefaceUse* font,
-        LPCWSTR text,
-        XPS_GLYPH_INDEX* xpsGlyphs,
-        UINT32 xpsGlyphsLen,
-        XPS_POINT *origin,
-        FLOAT fontSize,
-        XPS_STYLE_SIMULATION sims,
-        const SkMatrix& transform,
-        const SkPaint& paint);
+    HRESULT AddGlyphs(IXpsOMObjectFactory* xpsFactory,
+                      IXpsOMCanvas* canvas,
+                      const TypefaceUse* font,
+                      LPCWSTR text,
+                      XPS_GLYPH_INDEX* xpsGlyphs,
+                      UINT32 xpsGlyphsLen,
+                      XPS_POINT* origin,
+                      FLOAT fontSize,
+                      XPS_STYLE_SIMULATION sims,
+                      const SkMatrix& transform,
+                      const SkPaint& paint);
 
-    HRESULT addXpsPathGeometry(
-        IXpsOMGeometryFigureCollection* figures,
-        BOOL stroke, BOOL fill, const SkPath& path);
+    HRESULT addXpsPathGeometry(IXpsOMGeometryFigureCollection* figures,
+                               BOOL stroke,
+                               BOOL fill,
+                               const SkPath& path);
 
-    HRESULT createPath(
-        IXpsOMGeometryFigure* figure,
-        IXpsOMVisualCollection* visuals,
-        IXpsOMPath** path);
+    HRESULT createPath(IXpsOMGeometryFigure* figure,
+                       IXpsOMVisualCollection* visuals,
+                       IXpsOMPath** path);
 
-    HRESULT sideOfClamp(
-        const SkRect& leftPoints, const XPS_RECT& left,
-        IXpsOMImageResource* imageResource,
-        IXpsOMVisualCollection* visuals);
+    HRESULT sideOfClamp(const SkRect& leftPoints,
+                        const XPS_RECT& left,
+                        IXpsOMImageResource* imageResource,
+                        IXpsOMVisualCollection* visuals);
 
-    HRESULT cornerOfClamp(
-        const SkRect& tlPoints,
-        const SkColor4f color,
-        IXpsOMVisualCollection* visuals);
+    HRESULT cornerOfClamp(const SkRect& tlPoints,
+                          const SkColor4f color,
+                          IXpsOMVisualCollection* visuals);
 
     HRESULT clip(IXpsOMVisual* xpsVisual);
 
-    HRESULT clipToPath(
-        IXpsOMVisual* xpsVisual,
-        const SkPath& clipPath,
-        XPS_FILL_RULE fillRule);
+    HRESULT clipToPath(IXpsOMVisual* xpsVisual, const SkPath& clipPath, XPS_FILL_RULE fillRule);
 
-    HRESULT drawInverseWindingPath(
-        const SkPath& devicePath,
-        IXpsOMPath* xpsPath);
+    HRESULT drawInverseWindingPath(const SkPath& devicePath, IXpsOMPath* xpsPath);
 
-    HRESULT shadePath(
-        IXpsOMPath* shadedPath,
-        const SkPaint& shaderPaint,
-        const SkMatrix& matrix,
-        BOOL* fill, BOOL* stroke);
+    HRESULT shadePath(IXpsOMPath* shadedPath,
+                      const SkPaint& shaderPaint,
+                      const SkMatrix& matrix,
+                      BOOL* fill,
+                      BOOL* stroke);
 
-    void convertToPpm(
-        const SkMaskFilter* filter,
-        SkMatrix* matrix,
-        SkVector* ppuScale,
-        const SkIRect& clip, SkIRect* clipIRect);
+    void convertToPpm(const SkMaskFilter* filter,
+                      SkMatrix* matrix,
+                      SkVector* ppuScale,
+                      const SkIRect& clip,
+                      SkIRect* clipIRect);
 
-    HRESULT applyMask(
-        const SkMask& mask,
-        const SkVector& ppuScale,
-        IXpsOMPath* shadedPath);
+    HRESULT applyMask(const SkMask& mask, const SkVector& ppuScale, IXpsOMPath* shadedPath);
 };
 
 #endif  // SK_BUILD_FOR_WIN

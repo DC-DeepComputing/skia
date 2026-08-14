@@ -8,7 +8,6 @@
 #include "src/image/SkImage_Lazy.h"
 
 #include "include/core/SkBitmap.h"
-#include "include/core/SkCPURecorder.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkData.h"
 #include "include/core/SkImageGenerator.h"
@@ -44,7 +43,8 @@ bool SharedGenerator::isTextureGenerator() { return fGenerator->isTextureGenerat
 
 ///////////////////////////////////////////////////////////////////////////////
 
-SkImage_Lazy::Validator::Validator(sk_sp<SharedGenerator> gen, const SkColorType* colorType,
+SkImage_Lazy::Validator::Validator(sk_sp<SharedGenerator> gen,
+                                   const SkColorType* colorType,
                                    sk_sp<SkColorSpace> colorSpace)
         : fSharedGenerator(std::move(gen)) {
     if (!fSharedGenerator) {
@@ -82,8 +82,7 @@ SkImage_Lazy::Validator::Validator(sk_sp<SharedGenerator> gen, const SkColorType
 class SkImage_Lazy::ScopedGenerator {
 public:
     ScopedGenerator(const sk_sp<SharedGenerator>& gen)
-      : fSharedGenerator(gen)
-      , fAutoAcquire(gen->fMutex) {}
+            : fSharedGenerator(gen), fAutoAcquire(gen->fMutex) {}
 
     SkImageGenerator* operator->() const {
         fSharedGenerator->fMutex.assertHeld();
@@ -97,19 +96,19 @@ public:
 
 private:
     const sk_sp<SharedGenerator>& fSharedGenerator;
-    SkAutoMutexExclusive          fAutoAcquire;
+    SkAutoMutexExclusive fAutoAcquire;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
 
 SkImage_Lazy::SkImage_Lazy(Validator* validator)
-    : SkImage_Base(validator->fInfo, validator->fUniqueID, /*backingStorage=*/nullptr)
-    , fSharedGenerator(std::move(validator->fSharedGenerator))
-{
+        : SkImage_Base(validator->fInfo, validator->fUniqueID, /*backingStorage=*/nullptr)
+        , fSharedGenerator(std::move(validator->fSharedGenerator)) {
     SkASSERT(fSharedGenerator);
 }
 
-bool SkImage_Lazy::getROPixels(GrDirectContext* ctx, SkBitmap* bitmap,
+bool SkImage_Lazy::getROPixels(GrDirectContext* ctx,
+                               SkBitmap* bitmap,
                                SkImage::CachingHint chint) const {
     auto check_output_bitmap = [bitmap]() {
         SkASSERT(bitmap->isImmutable());
@@ -130,7 +129,7 @@ bool SkImage_Lazy::getROPixels(GrDirectContext* ctx, SkBitmap* bitmap,
             return false;
         }
         bool success = false;
-        {   // make sure ScopedGenerator goes out of scope before we try readPixelsProxy
+        {  // make sure ScopedGenerator goes out of scope before we try readPixelsProxy
             success = ScopedGenerator(fSharedGenerator)->getPixels(pmap);
         }
         if (!success && !this->readPixelsProxy(ctx, pmap)) {
@@ -143,7 +142,7 @@ bool SkImage_Lazy::getROPixels(GrDirectContext* ctx, SkBitmap* bitmap,
             return false;
         }
         bool success = false;
-        {   // make sure ScopedGenerator goes out of scope before we try readPixelsProxy
+        {  // make sure ScopedGenerator goes out of scope before we try readPixelsProxy
             success = ScopedGenerator(fSharedGenerator)->getPixels(bitmap->pixmap());
         }
         if (!success && !this->readPixelsProxy(ctx, bitmap->pixmap())) {
@@ -155,9 +154,7 @@ bool SkImage_Lazy::getROPixels(GrDirectContext* ctx, SkBitmap* bitmap,
     return true;
 }
 
-sk_sp<SharedGenerator> SkImage_Lazy::generator() const {
-    return fSharedGenerator;
-}
+sk_sp<SharedGenerator> SkImage_Lazy::generator() const { return fSharedGenerator; }
 
 bool SkImage_Lazy::onIsProtected() const {
     ScopedGenerator generator(fSharedGenerator);
@@ -204,14 +201,8 @@ sk_sp<SkImage> SkImage_Lazy::onMakeSubset(SkRecorder*,
     return nonLazyImg->makeSubset(nullptr, subset, props);
 }
 
-sk_sp<SkSurface> SkImage_Lazy::onMakeSurface(SkRecorder* recorder, const SkImageInfo& info) const {
-    if (!recorder) {
-        // TODO(kjlubick) remove this after old SkImage::makeScaled(image info, sampling) API gone
-        recorder = skcpu::Recorder::TODO();
-    }
-    const SkSurfaceProps* props = nullptr;
-    constexpr size_t rowBytes = 0;
-    return recorder->cpuRecorder()->makeBitmapSurface(info, rowBytes, props);
+sk_sp<SkSurface> SkImage_Lazy::onMakeSurface(SkRecorder*, const SkImageInfo& info) const {
+    return SkSurfaces::Raster(info, 0, nullptr);
 }
 
 sk_sp<SkImage> SkImage_Lazy::makeColorTypeAndColorSpace(SkRecorder*,
@@ -269,8 +260,8 @@ sk_sp<SkCachedData> SkImage_Lazy::getPlanes(
         return nullptr;
     }
     data.reset(SkResourceCache::NewCachedData(yuvaPixmapInfo.computeTotalBytes()));
-    SkYUVAPixmaps tempPixmaps = SkYUVAPixmaps::FromExternalMemory(yuvaPixmapInfo,
-                                                                  data->writable_data());
+    SkYUVAPixmaps tempPixmaps =
+            SkYUVAPixmaps::FromExternalMemory(yuvaPixmapInfo, data->writable_data());
     SkASSERT(tempPixmaps.isValid());
     if (!generator->getYUVAPlanes(tempPixmaps)) {
         return nullptr;

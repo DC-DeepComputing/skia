@@ -5,8 +5,6 @@
  * found in the LICENSE file.
  */
 #include "gm/gm.h"
-
-#include "include/core/SkCPURecorder.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkPaint.h"
@@ -34,6 +32,7 @@ class HDRPiPBlurGM : public skiagm::GM {
     // size for DM to reduce device load.
     static constexpr SkISize kFullSize{2560, 1440};
     static constexpr SkISize kNonBenchSize{640, 360};
+
 public:
     HDRPiPBlurGM() {}
 
@@ -52,18 +51,18 @@ protected:
 
     DrawResult onDraw(SkCanvas* canvas, SkString* errorMsg) override {
         // When running in DM, all offscreen passes and the final rendering will be small.
-        SkIRect screenBounds = SkIRect::MakeSize(this->getMode() == kGM_Mode ? kNonBenchSize
-                                                                             : kFullSize);
+        SkIRect screenBounds =
+                SkIRect::MakeSize(this->getMode() == kGM_Mode ? kNonBenchSize : kFullSize);
 
         sk_sp<SkImage> input;
         {
             // The main surface is RGBA8 but with a wider gamut sRGB colorspace.
             sk_sp<SkSurface> content = canvas->makeSurface(
-                    canvas->imageInfo().makeWH(screenBounds.width(), screenBounds.height())
-                                       .makeColorType(kRGBA_8888_SkColorType)
-                                       .makeColorSpace(
-                                                SkColorSpace::MakeRGB(SkNamedTransferFn::kRec2020,
-                                                                      SkNamedGamut::kDisplayP3)));
+                    canvas->imageInfo()
+                            .makeWH(screenBounds.width(), screenBounds.height())
+                            .makeColorType(kRGBA_8888_SkColorType)
+                            .makeColorSpace(SkColorSpace::MakeRGB(SkNamedTransferFn::kRec2020,
+                                                                  SkNamedGamut::kDisplayP3)));
             if (!content) {
                 // This occurs in DDL dm configs
                 *errorMsg = "Could not create offscreen surface";
@@ -85,17 +84,17 @@ protected:
                              &fPaint,
                              SkCanvas::kFast_SrcRectConstraint);
 
-            SkRRect pip = SkRRect::MakeRectXY(SkRect::MakeXYWH(1500.f, 700.f, 800.f, 600.f),
-                                              20.f, 20.f);
+            SkRRect pip =
+                    SkRRect::MakeRectXY(SkRect::MakeXYWH(1500.f, 700.f, 800.f, 600.f), 20.f, 20.f);
             c->drawRRect(pip, fPaint);
             c->save();
-                c->clipRRect(pip, true);
-                c->drawImageRect(fPiPImage.get(),
-                                 SkRect::MakeIWH(fPiPImage->width(), fPiPImage->height()),
-                                 pip.rect(),
-                                 SkFilterMode::kLinear,
-                                 &fPaint,
-                                 SkCanvas::kFast_SrcRectConstraint);
+            c->clipRRect(pip, true);
+            c->drawImageRect(fPiPImage.get(),
+                             SkRect::MakeIWH(fPiPImage->width(), fPiPImage->height()),
+                             pip.rect(),
+                             SkFilterMode::kLinear,
+                             &fPaint,
+                             SkCanvas::kFast_SrcRectConstraint);
             c->restore();
             input = content->makeTemporaryImage();
         }
@@ -125,68 +124,68 @@ protected:
             blur = SkImages::MakeWithFilter(canvas->recorder(),
                                             input,
                                             fShadeBlur.get(),
-                                            screenBounds, screenBounds,
-                                            &outSubset, &outOffset);
+                                            screenBounds,
+                                            screenBounds,
+                                            &outSubset,
+                                            &outOffset);
         } else
 #endif
 #if defined(SK_GANESH)
-        if (canvas->recordingContext()) {
+                if (canvas->recordingContext()) {
             blur = SkImages::MakeWithFilter(canvas->recordingContext(),
                                             input,
                                             fShadeBlur.get(),
-                                            screenBounds, screenBounds,
-                                            &outSubset, &outOffset);
+                                            screenBounds,
+                                            screenBounds,
+                                            &outSubset,
+                                            &outOffset);
         } else
 #endif
         {
-            blur = SkImages::MakeWithFilter(input,
-                                            fShadeBlur.get(),
-                                            screenBounds, screenBounds,
-                                            &outSubset, &outOffset);
+            blur = SkImages::MakeWithFilter(
+                    input, fShadeBlur.get(), screenBounds, screenBounds, &outSubset, &outOffset);
         }
 
         SkPaint fadedBlur;
         fadedBlur.setAlphaf(0.9f);
-        canvas->drawImageRect(blur.get(),
-                              SkRect::Make(outSubset),
-                              SkRect::MakeXYWH(outOffset.x(), outOffset.y(),
-                                               outSubset.width(), outSubset.height()),
-                              SkFilterMode::kLinear,
-                              &fadedBlur,
-                              SkCanvas::kFast_SrcRectConstraint);
+        canvas->drawImageRect(
+                blur.get(),
+                SkRect::Make(outSubset),
+                SkRect::MakeXYWH(
+                        outOffset.x(), outOffset.y(), outSubset.width(), outSubset.height()),
+                SkFilterMode::kLinear,
+                &fadedBlur,
+                SkCanvas::kFast_SrcRectConstraint);
 
         canvas->restore();
         return DrawResult::kOk;
     }
 
     void onOnceBeforeDraw() override {
-        fPaint.setColor4f({ 0.0f, 0.0f, 0.0f, 1.f });
+        fPaint.setColor4f({0.0f, 0.0f, 0.0f, 1.f});
 
         SkColorMatrix cm;
         cm.setSaturation(1.5f);
         fPaint.setColorFilter(SkColorFilters::Matrix(cm));
 
-        auto recorder = skcpu::Recorder::TODO();
-
         // The background image is standard sRGB
         fBackgroundImage = ToolUtils::GetResourceAsImage("images/yellow_rose.png")
-                                    ->makeRasterImage(nullptr)
-                                    ->makeColorSpace(recorder, SkColorSpace::MakeSRGB(),
-                                        {});
+                                   ->makeRasterImage(nullptr)
+                                   ->makeColorSpace(nullptr, SkColorSpace::MakeSRGB(), {});
         // The pip will be PQ-ish HDR
         fPiPImage = ToolUtils::GetResourceAsImage("images/mandrill_512.png")
-                             ->makeRasterImage(nullptr)
-                             ->makeColorSpace(recorder,
-                                              SkColorSpace::MakeRGB(SkNamedTransferFn::kPQ,
-                                                                    SkNamedGamut::kRec2020),
-                                              {});
+                            ->makeRasterImage(nullptr)
+                            ->makeColorSpace(nullptr,
+                                             SkColorSpace::MakeRGB(SkNamedTransferFn::kPQ,
+                                                                   SkNamedGamut::kRec2020),
+                                             {});
 
         const float sigma = 32.f;
         const bool scaleSigma = this->getMode() == kGM_Mode;
         const float sigmaX = sigma * (scaleSigma ? kNonBenchSize.width() : kFullSize.width()) /
-                                     (float) kFullSize.width();
+                             (float)kFullSize.width();
         const float sigmaY = sigma * (scaleSigma ? kNonBenchSize.height() : kFullSize.height()) /
-                                     (float) kFullSize.height();
+                             (float)kFullSize.height();
         fShadeBlur = SkImageFilters::Blur(sigmaX, sigmaY, SkTileMode::kClamp, nullptr);
     }
 
@@ -197,4 +196,4 @@ private:
     sk_sp<SkImageFilter> fShadeBlur;
     SkPaint fPaint;
 };
-DEF_GM( return new HDRPiPBlurGM; )
+DEF_GM(return new HDRPiPBlurGM;)

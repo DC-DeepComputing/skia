@@ -7,7 +7,6 @@
 #include "include/gpu/graphite/Recorder.h"
 
 #include "include/core/SkBitmap.h"
-#include "include/core/SkCPURecorder.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkImageInfo.h"
@@ -116,7 +115,7 @@ uint32_t next_id() {
     return id;
 }
 
-} // anonymous namespace
+}  // anonymous namespace
 
 Recorder::Recorder(sk_sp<SharedContext> sharedContext,
                    const RecorderOptions& options,
@@ -144,13 +143,11 @@ Recorder::Recorder(sk_sp<SharedContext> sharedContext,
         fResourceProvider = context->priv().resourceProvider();
     } else {
         fOwnedResourceProvider = fSharedContext->makeResourceProvider(
-                this->singleOwner(),
-                fUniqueID,
-                options.fGpuBudgetInBytes);
+                this->singleOwner(), fUniqueID, options.fGpuBudgetInBytes);
         fResourceProvider = fOwnedResourceProvider.get();
     }
-    fUploadBufferManager = std::make_unique<UploadBufferManager>(fResourceProvider,
-                                                                 fSharedContext->caps());
+    fUploadBufferManager =
+            std::make_unique<UploadBufferManager>(fResourceProvider, fSharedContext->caps());
 
     DrawBufferManager::Options dbmOpts = {};
 #if defined(GPU_TEST_UTILS)
@@ -159,10 +156,8 @@ Recorder::Recorder(sk_sp<SharedContext> sharedContext,
     }
 #endif
 
-    fDrawBufferManager = std::make_unique<DrawBufferManager>(fResourceProvider,
-                                                             fSharedContext->caps(),
-                                                             fUploadBufferManager.get(),
-                                                             dbmOpts);
+    fDrawBufferManager = std::make_unique<DrawBufferManager>(
+            fResourceProvider, fSharedContext->caps(), fUploadBufferManager.get(), dbmOpts);
 
     SkASSERT(fResourceProvider);
 }
@@ -190,10 +185,6 @@ Recorder::~Recorder() {
 
 BackendApi Recorder::backend() const { return fSharedContext->backend(); }
 
-skcpu::Recorder* Recorder::cpuRecorder() {
-    return skcpu::Recorder::TODO();
-}
-
 std::unique_ptr<Recording> Recorder::snap() {
     TRACE_EVENT0_ALWAYS("skia.gpu", TRACE_FUNC);
     ASSERT_SINGLE_OWNER
@@ -212,11 +203,11 @@ std::unique_ptr<Recording> Recorder::snap() {
     // The scratch resources only need to be tracked until prepareResources() is finished, so
     // Recorder doesn't hold a persistent manager and it can be deleted when snap() returns.
     ScratchResourceManager scratchManager{fResourceProvider, std::move(fProxyReadCounts)};
-    std::unique_ptr<Recording> recording(new Recording(fNextRecordingID++,
-                                                       fRequireOrderedRecordings ? fUniqueID
-                                                                                 : SK_InvalidGenID,
-                                                       std::move(fTargetProxyData),
-                                                       std::move(fFinishedProcs)));
+    std::unique_ptr<Recording> recording(
+            new Recording(fNextRecordingID++,
+                          fRequireOrderedRecordings ? fUniqueID : SK_InvalidGenID,
+                          std::move(fTargetProxyData),
+                          std::move(fFinishedProcs)));
     // Allow the buffer managers to add any collected tasks for data transfer or initialization
     // before moving the root task list to the Recording.
     bool valid = fDrawBufferManager->transferToRecording(recording.get());
@@ -231,10 +222,10 @@ std::unique_ptr<Recording> Recorder::snap() {
         // If we are dumping tasks, we want to be able to associate each task with the current flush
         // count, so each task gets a flushToken---just an int---to track this.
         SK_DUMP_TASKS_CODE(uploadTask->fFlushToken =
-                this->priv().tokenTracker()->currentFlushToken();)
+                                   this->priv().tokenTracker()->currentFlushToken();)
 
         recording->priv().taskList()->add(std::move(uploadTask));
-        SkASSERT(fRootUploads->size() == 0); // Drained by the newly added task
+        SkASSERT(fRootUploads->size() == 0);  // Drained by the newly added task
     }
     recording->priv().taskList()->add(std::move(*fRootTaskList));
     SkASSERT(!fRootTaskList->hasTasks());
@@ -244,9 +235,8 @@ std::unique_ptr<Recording> Recorder::snap() {
     // In both the "task failed" case and the "everything is discarded" case, there's no work that
     // needs to be done in insertRecording(). However, we use nullptr as a failure signal, so
     // kDiscard will return a non-null Recording that has no tasks in it.
-    valid &= recording->priv().prepareResources(fResourceProvider,
-                                                &scratchManager,
-                                                fRuntimeEffectDict);
+    valid &= recording->priv().prepareResources(
+            fResourceProvider, &scratchManager, fRuntimeEffectDict);
     if (!valid) {
         recording = nullptr;
         fAtlasProvider->invalidateAtlases();
@@ -308,7 +298,7 @@ SkCanvas* Recorder::makeCaptureCanvas(SkCanvas* canvas) {
 }
 
 void Recorder::createCaptureBreakpoint(SkSurface* surface) {
-   if (fSharedContext->captureManager()) {
+    if (fSharedContext->captureManager()) {
         fSharedContext->captureManager()->snapPicture(surface);
     }
 }
@@ -335,9 +325,7 @@ void Recorder::deregisterDevice(const Device* device) {
     }
 }
 
-int Recorder::maxTextureSize() const {
-    return this->priv().caps()->maxTextureSize();
-}
+int Recorder::maxTextureSize() const { return this->priv().caps()->maxTextureSize(); }
 
 BackendTexture Recorder::createBackendTexture(SkISize dimensions, const TextureInfo& info) {
     ASSERT_SINGLE_OWNER
@@ -356,18 +344,16 @@ BackendTexture Recorder::createBackendTexture(AHardwareBuffer* hardwareBuffer,
                                               SkISize dimensions,
                                               bool fromAndroidWindow) const {
     if (fSharedContext->backend() != BackendApi::kVulkan) {
-        SKIA_LOG_W("Creating an AHardwareBuffer-backed BackendTexture is only supported with the"
-                    "Vulkan backend.");
+        SKIA_LOG_W(
+                "Creating an AHardwareBuffer-backed BackendTexture is only supported with the"
+                "Vulkan backend.");
         return {};
     }
-    return fResourceProvider->createBackendTexture(hardwareBuffer,
-                                                   isRenderable,
-                                                   isProtectedContent,
-                                                   dimensions,
-                                                   fromAndroidWindow);
+    return fResourceProvider->createBackendTexture(
+            hardwareBuffer, isRenderable, isProtectedContent, dimensions, fromAndroidWindow);
 }
 
-#endif // SK_BUILD_FOR_ANDROID
+#endif  // SK_BUILD_FOR_ANDROID
 
 bool Recorder::updateBackendTexture(const BackendTexture& backendTex,
                                     const SkPixmap srcData[],
@@ -425,9 +411,8 @@ bool Recorder::updateBackendTexture(const BackendTexture& backendTex,
     }
 
     // Add UploadTask to Recorder
-    UploadInstance upload = UploadInstance::Make(this,
-                                                 uploadSource,
-                                                 std::make_unique<ImageUploadContext>());
+    UploadInstance upload =
+            UploadInstance::Make(this, uploadSource, std::make_unique<ImageUploadContext>());
     if (!upload.isValid()) {
         SKIA_LOG_E("Recorder::updateBackendTexture: Could not create UploadInstance");
         return false;
@@ -436,7 +421,7 @@ bool Recorder::updateBackendTexture(const BackendTexture& backendTex,
 
     // Need to flush any pending work in case it depends on this texture
     this->priv().flushTrackedDevices(
-        SK_DUMP_TASKS_CODE("Recorder::updateBackendTexture: Update Backend Texture"));
+            SK_DUMP_TASKS_CODE("Recorder::updateBackendTexture: Update Backend Texture"));
 
     this->priv().add(std::move(uploadTask));
 
@@ -480,9 +465,8 @@ bool Recorder::updateCompressedBackendTexture(const BackendTexture& backendTex,
     }
 
     // Add UploadTask to Recorder
-    UploadInstance upload = UploadInstance::Make(this,
-                                                 uploadSource,
-                                                 std::make_unique<ImageUploadContext>());
+    UploadInstance upload =
+            UploadInstance::Make(this, uploadSource, std::make_unique<ImageUploadContext>());
     if (!upload.isValid()) {
         SKIA_LOG_E("Recorder::updateBackendTexture: Could not create compressed UploadInstance");
         return false;
@@ -663,7 +647,7 @@ void RecorderPriv::flushTrackedDevices(SK_DUMP_TASKS_CODE(const char* flushSourc
         Device* device = fRecorder->fTrackedDevices[i].get();
         if (!device || !device->recorder() || device->unique()) {
             if (device) {
-                device->abandonRecorder(); // Keep ~Device() happy
+                device->abandonRecorder();  // Keep ~Device() happy
             }
             fRecorder->fTrackedDevices.removeShuffle(i);
             // Keep i as-is to process what was just shuffled to the ith index.
@@ -684,13 +668,12 @@ std::unique_ptr<KeyAndDataBuilder> RecorderPriv::popOrCreateKeyAndDataBuilder() 
 
     const bool useStorageBuffers = this->caps()->storageBufferSupport();
     const auto& bindingReq = this->caps()->resourceBindingRequirements();
-    auto gathererLayout = useStorageBuffers ? bindingReq.fStorageBufferLayout
-                                            : bindingReq.fUniformBufferLayout;
+    auto gathererLayout =
+            useStorageBuffers ? bindingReq.fStorageBufferLayout : bindingReq.fUniformBufferLayout;
 
-    return std::make_unique<KeyAndDataBuilder>(
-        PipelineDataGatherer(gathererLayout),
-        PaintParamsKeyBuilder(this->shaderCodeDictionary()));
-    }
+    return std::make_unique<KeyAndDataBuilder>(PipelineDataGatherer(gathererLayout),
+                                               PaintParamsKeyBuilder(this->shaderCodeDictionary()));
+}
 
 void RecorderPriv::pushKeyAndDataBuilder(std::unique_ptr<KeyAndDataBuilder> keyDB) {
     SkASSERT(keyDB);
@@ -729,17 +712,11 @@ bool RecorderPriv::deviceIsRegistered(Device* device) const {
 }
 
 // used by the Context that created this Recorder to set a back pointer
-void RecorderPriv::setContext(Context* context) {
-    fRecorder->fContext = context;
-}
+void RecorderPriv::setContext(Context* context) { fRecorder->fContext = context; }
 
-void RecorderPriv::issueFlushToken() {
-    fRecorder->fTokenTracker->issueFlushToken();
-}
+void RecorderPriv::issueFlushToken() { fRecorder->fTokenTracker->issueFlushToken(); }
 
-int RecorderPriv::numRootTasks() const {
-    return fRecorder->fRootTaskList->size();
-}
+int RecorderPriv::numRootTasks() const { return fRecorder->fRootTaskList->size(); }
 #endif
 
-} // namespace skgpu::graphite
+}  // namespace skgpu::graphite

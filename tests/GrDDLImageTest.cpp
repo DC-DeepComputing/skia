@@ -7,7 +7,6 @@
 
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBitmap.h"
-#include "include/core/SkCPURecorder.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkColorType.h"
 #include "include/core/SkImage.h"
@@ -34,7 +33,6 @@ struct GrContextOptions;
 DEF_GANESH_TEST(GrDDLImage_MakeSubset, reporter, options, CtsEnforcement::kApiLevel_T) {
     using namespace skgpu;
 
-    auto cpuRecorder = skcpu::Recorder::TODO();
     sk_gpu_test::GrContextFactory factory(options);
     for (int ct = 0; ct < skgpu::kContextTypeCount; ++ct) {
         auto contextType = static_cast<skgpu::ContextType>(ct);
@@ -45,7 +43,7 @@ DEF_GANESH_TEST(GrDDLImage_MakeSubset, reporter, options, CtsEnforcement::kApiLe
 
         Protected isProtected = Protected(dContext->priv().caps()->supportsProtectedContent());
 
-        SkIRect subsetBounds = SkIRect::MakeLTRB(4,4,8,8);
+        SkIRect subsetBounds = SkIRect::MakeLTRB(4, 4, 8, 8);
         SkImageInfo ii = SkImageInfo::Make(16, 16, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
 
         // Raster image:
@@ -55,7 +53,7 @@ DEF_GANESH_TEST(GrDDLImage_MakeSubset, reporter, options, CtsEnforcement::kApiLe
         bm.eraseColor(SK_ColorBLACK);
         bm.setImmutable();
         auto rasterImg = bm.asImage();
-        REPORTER_ASSERT(reporter, rasterImg->isValid(cpuRecorder));
+        REPORTER_ASSERT(reporter, rasterImg->isValid(nullptr));
 
         // raster + context:
         auto recorder = dContext->asRecorder();
@@ -63,8 +61,8 @@ DEF_GANESH_TEST(GrDDLImage_MakeSubset, reporter, options, CtsEnforcement::kApiLe
         REPORTER_ASSERT(reporter, subImg1->isValid(recorder));
 
         // raster + no context:
-        auto subImg2 = rasterImg->makeSubset(cpuRecorder, subsetBounds, {});
-        REPORTER_ASSERT(reporter, subImg2->isValid(cpuRecorder));
+        auto subImg2 = rasterImg->makeSubset(nullptr, subsetBounds, {});
+        REPORTER_ASSERT(reporter, subImg2->isValid(nullptr));
 
         // Texture image:
         auto surf = SkSurfaces::RenderTarget(dContext, skgpu::Budgeted::kNo, ii);

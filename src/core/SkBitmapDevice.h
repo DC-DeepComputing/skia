@@ -15,7 +15,6 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkSpan.h"
-#include "src/core/SkCPURecorderImpl.h"
 #include "src/core/SkDevice.h"
 #include "src/core/SkGlyphRunPainter.h"
 #include "src/core/SkRasterClipStack.h"
@@ -41,7 +40,9 @@ enum class SkClipOp;
 struct SkImageInfo;
 struct SkPoint;
 struct SkRSXform;
-namespace sktext { class GlyphRunList; }
+namespace sktext {
+class GlyphRunList;
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 class SkBitmapDevice final : public SkDevice {
@@ -58,16 +59,12 @@ public:
      *  valid for the bitmap to have no pixels associated with it. In that case,
      *  any drawing to this device will have no effect.
      */
-    SkBitmapDevice(const SkBitmap& bitmap, const SkSurfaceProps& surfaceProps,
-                   void* externalHandle = nullptr);
-
-    SkBitmapDevice(skcpu::RecorderImpl*, const SkBitmap& bitmap);
-    SkBitmapDevice(skcpu::RecorderImpl*,
-                   const SkBitmap& bitmap,
+    SkBitmapDevice(const SkBitmap& bitmap,
                    const SkSurfaceProps& surfaceProps,
                    void* externalHandle = nullptr);
 
-    static sk_sp<SkBitmapDevice> Create(const SkImageInfo&, const SkSurfaceProps&,
+    static sk_sp<SkBitmapDevice> Create(const SkImageInfo&,
+                                        const SkSurfaceProps&,
                                         SkRasterHandleAllocator* = nullptr);
 
     void drawPaint(const SkPaint& paint) override;
@@ -78,16 +75,22 @@ public:
 
     void drawPath(const SkPath&, const SkPaint&) override;
 
-    void drawImageRect(const SkImage*, const SkRect* src, const SkRect& dst,
-                       const SkSamplingOptions&, const SkPaint&,
+    void drawImageRect(const SkImage*,
+                       const SkRect* src,
+                       const SkRect& dst,
+                       const SkSamplingOptions&,
+                       const SkPaint&,
                        SkCanvas::SrcRectConstraint) override;
 
     void drawVertices(const SkVertices*, sk_sp<SkBlender>, const SkPaint&, bool) override;
     // Implemented in src/sksl/SkBitmapDevice_mesh.cpp
     void drawMesh(const SkMesh&, sk_sp<SkBlender>, const SkPaint&) override;
 
-    void drawAtlas(SkSpan<const SkRSXform>, SkSpan<const SkRect>, SkSpan<const SkColor>,
-                   sk_sp<SkBlender>, const SkPaint&) override;
+    void drawAtlas(SkSpan<const SkRSXform>,
+                   SkSpan<const SkRect>,
+                   SkSpan<const SkColor>,
+                   sk_sp<SkBlender>,
+                   const SkPaint&) override;
 
     ///////////////////////////////////////////////////////////////////////////
 
@@ -107,10 +110,15 @@ public:
 
     ///////////////////////////////////////////////////////////////////////////
 
-    void drawSpecial(SkSpecialImage*, const SkMatrix&, const SkSamplingOptions&,
-                     const SkPaint&, SkCanvas::SrcRectConstraint) override;
+    void drawSpecial(SkSpecialImage*,
+                     const SkMatrix&,
+                     const SkSamplingOptions&,
+                     const SkPaint&,
+                     SkCanvas::SrcRectConstraint) override;
 
-    void drawCoverageMask(const SkSpecialImage*, const SkMatrix&, const SkSamplingOptions&,
+    void drawCoverageMask(const SkSpecialImage*,
+                          const SkMatrix&,
+                          const SkSamplingOptions&,
                           const SkPaint&) override;
 
     bool drawBlurredRRect(const SkRRect&, const SkPaint&, float) override;
@@ -125,7 +133,7 @@ public:
 
     void* getRasterHandle() const override { return fRasterHandle; }
 
-    SkRecorder* baseRecorder() const override { return fRecorder; }
+    SkRecorder* baseRecorder() const override { return nullptr; }
 
 private:
     friend class SkDrawTiler;
@@ -154,10 +162,9 @@ private:
                     sk_sp<SkMipmap>);
 
     void* fRasterHandle = nullptr;
-    skcpu::RecorderImpl* fRecorder = nullptr;
     SkBitmap fBitmap;
     SkRasterClipStack fRCStack;
     skcpu::GlyphRunListPainter fGlyphPainter;
 };
 
-#endif // SkBitmapDevice_DEFINED
+#endif  // SkBitmapDevice_DEFINED
