@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "196b27ac_3b9745ce",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-08-14T14:31:02Z",
+      "side": 1,
+      "message": "Mostly some questions about needing to add SK_METAL in places - is it not bubbling up?",
+      "revId": "f0fe400849b557c8eff21867612136409472c17e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12141c19_896e44be",
+        "filename": "tools/ganesh/BUILD.bazel",
+        "patchSetId": 10
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-08-14T14:31:02Z",
+      "side": 1,
+      "message": "I\u0027d expect SK_METAL to come from \"//tools/ganesh/mtl:ganesh_metal_test_context\"",
+      "range": {
+        "startLine": 62,
+        "startChar": 4,
+        "endLine": 62,
+        "endChar": 11
+      },
+      "revId": "f0fe400849b557c8eff21867612136409472c17e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80a5b894_00620ff7",
+        "filename": "tools/ganesh/mtl/BUILD.bazel",
+        "patchSetId": 10
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-08-14T14:31:02Z",
+      "side": 1,
+      "message": "I\u0027d expect the SK_METAL on `//src/gpu/ganesh/mtl:ganesh_metal_TEST_UTIL` to propagate this up and we shouldn\u0027t need it here.",
+      "range": {
+        "startLine": 16,
+        "startChar": 16,
+        "endLine": 16,
+        "endChar": 24
+      },
+      "revId": "f0fe400849b557c8eff21867612136409472c17e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "754c8a29_80ce95ec",
+        "filename": "tools/graphite/BUILD.bazel",
+        "patchSetId": 10
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-08-14T14:31:02Z",
+      "side": 1,
+      "message": "Avoid public visibility anywhere except the top level //:BUILD.bazel",
+      "range": {
+        "startLine": 19,
+        "startChar": 4,
+        "endLine": 19,
+        "endChar": 14
+      },
+      "revId": "f0fe400849b557c8eff21867612136409472c17e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ac0aefc_5872c8b2",
+        "filename": "tools/graphite/BUILD.bazel",
+        "patchSetId": 10
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-08-14T14:31:02Z",
+      "side": 1,
+      "message": "I\u0027d expect `SK_METAL` to flow up from `graphite_metal_test_context`. Does that not happen?",
+      "range": {
+        "startLine": 45,
+        "startChar": 4,
+        "endLine": 45,
+        "endChar": 11
+      },
+      "revId": "f0fe400849b557c8eff21867612136409472c17e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8952d01_986121bb",
+        "filename": "tools/graphite/mtl/BUILD.bazel",
+        "patchSetId": 10
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-08-14T14:31:02Z",
+      "side": 1,
+      "message": "I\u0027d expect the SK_METAL on `//src/gpu/graphite/mtl:graphite_native_metal_TEST_UTIL` to propagate this up and we shouldn\u0027t need it here.",
+      "range": {
+        "startLine": 16,
+        "startChar": 4,
+        "endLine": 16,
+        "endChar": 11
+      },
+      "revId": "f0fe400849b557c8eff21867612136409472c17e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
