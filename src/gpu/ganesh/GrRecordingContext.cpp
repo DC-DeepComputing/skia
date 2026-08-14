@@ -56,7 +56,6 @@ GrRecordingContext::GrRecordingContext(sk_sp<GrContextThreadSafeProxy> proxy, bo
         , fAuditTrail(new GrAuditTrail())
         , fArenas(ddlRecording) {
     fProxyProvider = std::make_unique<GrProxyProvider>(this);
-    fCPUContext = std::make_unique<skcpu::ContextImpl>();
     fRecorder = std::make_unique<SkGaneshRecorder>(this);
 }
 
@@ -183,10 +182,6 @@ bool GrRecordingContext::colorTypeSupportedAsImage(SkColorType colorType) const 
 
 bool GrRecordingContext::supportsProtectedContent() const {
     return this->caps()->supportsProtectedContent();
-}
-
-std::unique_ptr<skcpu::Recorder> GrRecordingContext::makeCPURecorder() {
-    return std::make_unique<skcpu::RecorderImpl>(fCPUContext.get());
 }
 
 SkRecorder* GrRecordingContext::asRecorder() {

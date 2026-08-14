@@ -148,7 +148,6 @@ Context::Context(sk_sp<SharedContext> sharedContext,
                                                        options.fPipelineCachingCallback,
                                                        options.fPipelineCallback);
 
-    fCPUContext = std::make_unique<skcpu::ContextImpl>();
     if (options.fEnableCapture) {
         fSharedContext->setCaptureManager(sk_make_sp<SkCaptureManager>());
     }
@@ -225,12 +224,6 @@ std::unique_ptr<Recorder> Context::makeRecorder(const RecorderOptions& options) 
     }
 #endif
     return recorder;
-}
-
-std::unique_ptr<skcpu::Recorder> Context::makeCPURecorder() {
-    ASSERT_SINGLE_OWNER
-
-    return std::make_unique<skcpu::RecorderImpl>(fCPUContext.get());
 }
 
 std::unique_ptr<PrecompileContext> Context::makePrecompileContext() {
