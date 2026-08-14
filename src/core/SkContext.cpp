@@ -13,14 +13,31 @@
 #include "include/core/SkString.h"
 #include "include/core/SkTraceMemoryDump.h"
 #include "include/core/SkTypes.h"
+#include "src/core/SkContextPriv.h"
 #include "src/core/SkResourceCache.h"
 #include "src/core/SkSharedContext.h"
 #include "src/core/SkStrikeCache.h"
 #include "src/core/SkSynchronizedResourceCache.h"
 #include "src/core/SkTypefaceCache.h"
 
-SkContext::SkContext(sk_sp<SkSharedContext> sharedContext)
-        : fSharedContext(std::move(sharedContext)) {}
+#if defined(SK_GRAPHITE)
+#include "include/gpu/graphite/Context.h"
+#endif
+
+SkContext::SkContext(SkContext::FactoryPassKey,
+                     sk_sp<SkSharedContext> sharedContext,
+                     const SkContextOptions& options)
+        : fSharedContext(std::move(sharedContext)) {
+    if (fSharedContext) {
+        fSharedContext->setTypefaceCacheCountLimit(options.fTypefaceCacheCountLimit);
+        fSharedContext->setResourceCacheTotalByteLimit(options.fResourceCacheTotalByteLimit);
+        fSharedContext->setResourceCacheSingleAllocationByteLimit(
+                options.fResourceCacheSingleAllocationByteLimit);
+
+        this->setFontCacheCountLimit(options.fFontCacheCountLimit);
+        this->setFontCacheLimit(options.fFontCacheLimit);
+    }
+}
 
 SkContext::~SkContext() = default;
 
@@ -59,7 +76,6 @@ int SkContext::setFontCacheCountLimit(int count) {
 int SkContext::fontCacheCountUsed() const {
     return this->fontCache()->getCacheCountUsed();
 }
-
 void SkContext::purgeFontCache() { this->fontCache()->purgeAll(); }
 
 void SkContext::purgePinnedFontCache() { this->fontCache()->purgePinned(); }
@@ -91,3 +107,13 @@ std::unique_ptr<SkRecorder> SkContext::makeRecorder(
         SkContexts::SkBackendSelection selection) const {
     return std::make_unique<skcpu::Recorder>(this, selection);
 }
+
+#if defined(SK_GRAPHITE)
+void SkContextPriv::setGraphite(std::unique_ptr<skgpu::graphite::Context> context) {
+    fContext->fGraphiteContext = std::move(context);
+}
+
+skgpu::graphite::Context* SkContextPriv::graphiteContext() const {
+    return fContext->fGraphiteContext.get();
+}
+#endif
