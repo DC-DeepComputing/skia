@@ -8,7 +8,6 @@
 #ifndef SkPDFDevice_DEFINED
 #define SkPDFDevice_DEFINED
 
-#include "include/core/SkCPURecorder.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkRefCnt.h"
@@ -123,8 +122,7 @@ public:
     SkPDFParentTreeKey structParentsKey() const { return fMarkManager.structParentsKey(); }
 
     SkRecorder* baseRecorder() const override {
-        // TODO(kjlubick) the creation of this should likely involve a CPU context.
-        return skcpu::Recorder::TODO();
+        return nullptr;
     }
 
 private:

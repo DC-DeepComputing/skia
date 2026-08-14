@@ -8,7 +8,6 @@
 #ifndef skgpu_graphite_Recorder_DEFINED
 #define skgpu_graphite_Recorder_DEFINED
 
-#include "include/core/SkCPURecorder.h"
 #include "include/core/SkRecorder.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSurface.h"
@@ -100,7 +99,6 @@ public:
     BackendApi backend() const;
 
     Type type() const override { return SkRecorder::Type::kGraphite; }
-    skcpu::Recorder* cpuRecorder() override;
 
     std::unique_ptr<Recording> snap();
 

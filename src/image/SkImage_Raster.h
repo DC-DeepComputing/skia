@@ -44,13 +44,7 @@ public:
     ~SkImage_Raster() override;
 
     // From SkImage.h
-    bool isValid(SkRecorder* recorder) const override {
-        if (!recorder) {
-            return false;
-        }
-        if (!recorder->cpuRecorder()) {
-            return false;
-        }
+    bool isValid(SkRecorder*) const override {
         return true;
     }
     sk_sp<SkImage> makeColorTypeAndColorSpace(SkRecorder*,
