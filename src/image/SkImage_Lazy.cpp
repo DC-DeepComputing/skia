@@ -8,7 +8,6 @@
 #include "src/image/SkImage_Lazy.h"
 
 #include "include/core/SkBitmap.h"
-#include "include/core/SkCPURecorder.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkData.h"
 #include "include/core/SkImageGenerator.h"
@@ -204,14 +203,8 @@ sk_sp<SkImage> SkImage_Lazy::onMakeSubset(SkRecorder*,
     return nonLazyImg->makeSubset(nullptr, subset, props);
 }
 
-sk_sp<SkSurface> SkImage_Lazy::onMakeSurface(SkRecorder* recorder, const SkImageInfo& info) const {
-    if (!recorder) {
-        // TODO(kjlubick) remove this after old SkImage::makeScaled(image info, sampling) API gone
-        recorder = skcpu::Recorder::TODO();
-    }
-    const SkSurfaceProps* props = nullptr;
-    constexpr size_t rowBytes = 0;
-    return recorder->cpuRecorder()->makeBitmapSurface(info, rowBytes, props);
+sk_sp<SkSurface> SkImage_Lazy::onMakeSurface(SkRecorder*, const SkImageInfo& info) const {
+    return SkSurfaces::Raster(info, 0, nullptr);
 }
 
 sk_sp<SkImage> SkImage_Lazy::makeColorTypeAndColorSpace(SkRecorder*,

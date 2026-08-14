@@ -190,10 +190,6 @@ Recorder::~Recorder() {
 
 BackendApi Recorder::backend() const { return fSharedContext->backend(); }
 
-skcpu::Recorder* Recorder::cpuRecorder() {
-    return skcpu::Recorder::TODO();
-}
-
 std::unique_ptr<Recording> Recorder::snap() {
     TRACE_EVENT0_ALWAYS("skia.gpu", TRACE_FUNC);
     ASSERT_SINGLE_OWNER

@@ -12,9 +12,6 @@
 class SkCanvas;
 class SkSurface;
 
-namespace skcpu {
-class Recorder;
-}
 
 class SK_API SkRecorder {
 public:
@@ -25,14 +22,11 @@ public:
     SkRecorder& operator=(const SkRecorder&) = delete;
 
     enum class Type {
-        kCPU,
         kGanesh,
         kGraphite,
     };
 
     virtual Type type() const = 0;
-
-    virtual skcpu::Recorder* cpuRecorder() = 0;
 
 private:
 

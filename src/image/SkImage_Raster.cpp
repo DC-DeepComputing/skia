@@ -8,7 +8,6 @@
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkBlendMode.h"
-#include "include/core/SkCPURecorder.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkData.h"
 #include "include/core/SkImage.h"
@@ -92,15 +91,9 @@ bool SkImage_Raster::getROPixels(GrDirectContext*, SkBitmap* dst, CachingHint) c
     return true;
 }
 
-sk_sp<SkSurface> SkImage_Raster::onMakeSurface(SkRecorder* recorder,
+sk_sp<SkSurface> SkImage_Raster::onMakeSurface(SkRecorder*,
                                                const SkImageInfo& info) const {
-    if (!recorder) {
-        // TODO(kjlubick) remove this after old SkImage::makeScaled(image info, sampling) API gone
-        recorder = skcpu::Recorder::TODO();
-    }
-    const SkSurfaceProps* props = nullptr;
-    constexpr size_t rowBytes = 0;
-    return recorder->cpuRecorder()->makeBitmapSurface(info, rowBytes, props);
+    return SkSurfaces::Raster(info, 0, nullptr);
 }
 
 static SkBitmap copy_bitmap_subset(const SkBitmap& orig, const SkIRect& subset) {

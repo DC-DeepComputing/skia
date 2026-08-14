@@ -5,15 +5,11 @@
  * found in the LICENSE file.
  */
 #include "include/core/SkBitmap.h"
-#include "include/core/SkBlurTypes.h"
-#include "include/core/SkCPURecorder.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkImageInfo.h"
-#include "include/core/SkMaskFilter.h"
 #include "include/core/SkPaint.h"
-#include "include/core/SkRRect.h"
 #include "include/core/SkSurface.h"
 #include "include/gpu/graphite/Context.h"
 #include "include/gpu/graphite/Image.h"
@@ -21,29 +17,6 @@
 #include "tests/Test.h"
 
 #include <memory>
-
-DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(
-        CPUSurface_UsesGraphiteContextAndRasterRecorderToDraw_DrawsPixels,
-        reporter,
-        context,
-        CtsEnforcement::kApiLevel_202604) {
-    std::unique_ptr<skcpu::Recorder> recorder = context->makeCPURecorder();
-
-    SkImageInfo imageInfo =
-            SkImageInfo::Make(100, 100, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
-    auto surface = recorder->makeBitmapSurface(imageInfo, imageInfo.minRowBytes(), {});
-
-    SkPaint paint;
-    paint.setColor(SK_ColorRED);
-    paint.setMaskFilter(SkMaskFilter::MakeBlur(SkBlurStyle::kNormal_SkBlurStyle, 3.1f));
-    surface->getCanvas()->drawRRect(SkRRect::MakeRectXY(SkRect::MakeWH(50, 50), 10, 15), paint);
-
-    // If this were a graphite surface, we'd have to do async read-back, but we make a raster
-    // surface which is synchronous.
-    SkPixmap pmap;
-    REPORTER_ASSERT(reporter, surface->peekPixels(&pmap));
-    REPORTER_ASSERT(reporter, pmap.getColor(25, 25) == SK_ColorRED);
-}
 
 DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ImageMakeColorSpace_GraphiteImageWithRecorder_Success,
                                    reporter,

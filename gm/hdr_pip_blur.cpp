@@ -5,8 +5,6 @@
  * found in the LICENSE file.
  */
 #include "gm/gm.h"
-
-#include "include/core/SkCPURecorder.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkPaint.h"
@@ -166,17 +164,15 @@ protected:
         cm.setSaturation(1.5f);
         fPaint.setColorFilter(SkColorFilters::Matrix(cm));
 
-        auto recorder = skcpu::Recorder::TODO();
-
         // The background image is standard sRGB
         fBackgroundImage = ToolUtils::GetResourceAsImage("images/yellow_rose.png")
                                     ->makeRasterImage(nullptr)
-                                    ->makeColorSpace(recorder, SkColorSpace::MakeSRGB(),
+                                    ->makeColorSpace(nullptr, SkColorSpace::MakeSRGB(),
                                         {});
         // The pip will be PQ-ish HDR
         fPiPImage = ToolUtils::GetResourceAsImage("images/mandrill_512.png")
                              ->makeRasterImage(nullptr)
-                             ->makeColorSpace(recorder,
+                             ->makeColorSpace(nullptr,
                                               SkColorSpace::MakeRGB(SkNamedTransferFn::kPQ,
                                                                     SkNamedGamut::kRec2020),
                                               {});
