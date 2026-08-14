@@ -454,6 +454,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac8c40c1_9131a1df",
+        "filename": "src/gpu/graphite/render/MeshRenderStep.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-08-14T19:15:15Z",
+      "side": 1,
+      "message": "Sounds good, could look into appending instance data along with the appended vertices in the future to avoid writing the ssboIndex for each vertex, could possibly apply to other render steps too.",
+      "parentUuid": "2f2f6b7e_6aadaea4",
+      "range": {
+        "startLine": 66,
+        "startChar": 0,
+        "endLine": 90,
+        "endChar": 5
+      },
+      "revId": "5614afbee782fbc27db274b81b02512562f5474f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5a7eefc7_3b0c0859",
