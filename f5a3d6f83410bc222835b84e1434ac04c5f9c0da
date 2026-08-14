@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7cd41ea6_33c74266",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-14T15:39:24Z",
+      "side": 1,
+      "message": "nit: length",
+      "range": {
+        "startLine": 181,
+        "startChar": 8,
+        "endLine": 182,
+        "endChar": 103
+      },
+      "revId": "f5a3d6f83410bc222835b84e1434ac04c5f9c0da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8ff6c58a_573d36c7",
         "filename": "src/gpu/graphite/BufferManager.h",
         "patchSetId": 6
@@ -59,6 +82,52 @@
         "startChar": 26,
         "endLine": 47,
         "endChar": 48
+      },
+      "revId": "f5a3d6f83410bc222835b84e1434ac04c5f9c0da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d79070a1_d32f4d2c",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-14T15:39:24Z",
+      "side": 1,
+      "message": "While it\u0027s nice to have named fields, a std::pair\u003c\u003e could work well here too to avoid introducing a limited-use type into the global scope and can then be used with `std::tie`, such as `std::tie(fOffset, fRemaining) \u003d BufferAligner::PrepForStride(...)` which looks pretty clean to me.",
+      "range": {
+        "startLine": 84,
+        "startChar": 0,
+        "endLine": 87,
+        "endChar": 2
+      },
+      "revId": "f5a3d6f83410bc222835b84e1434ac04c5f9c0da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1da7ea9_c9a3e5d6",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-14T15:39:24Z",
+      "side": 1,
+      "message": "It should be valid to just return remaining\u003d0 here I believe, so we don\u0027t have to wrap in an optional.",
+      "range": {
+        "startLine": 136,
+        "startChar": 0,
+        "endLine": 136,
+        "endChar": 24
       },
       "revId": "f5a3d6f83410bc222835b84e1434ac04c5f9c0da",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
