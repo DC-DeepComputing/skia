@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d5a44f3_8ccdfc95",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-14T13:36:26Z",
+      "side": 1,
+      "message": "One more orthogonal DrawListLayer change before the simplifications/Android optimizations to come.",
+      "revId": "d58ae270a6e7e41eb524d4bcc0e0f3f13eafcfbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
