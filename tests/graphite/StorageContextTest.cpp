@@ -80,13 +80,55 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(StorageContextPaddingAlignmentTest,
     REPORTER_ASSERT(reporter, ptr != nullptr);
     REPORTER_ASSERT(reporter, offset == 0);
 
+    // Record vertex requirement with stride 16 and align 16, setting running LCM to 16
+    ctxHandle->recordAlignment(/*stride=*/16, /*align=*/16);
+
     ctxHandle->finalizePrecachedStorageData();
 
     // Finalize: 40 bytes should be padded to 48 bytes (aligned to 16 bytes)
     auto bindInfo = ctxHandle->finalize(recorder->priv().drawBufferManager());
     REPORTER_ASSERT(reporter, bindInfo.fBuffer != nullptr);
     REPORTER_ASSERT(reporter, bindInfo.fSize == 48);
-    REPORTER_ASSERT(reporter, bindInfo.fSize % StorageContext::kStructAlignment == 0);
+    REPORTER_ASSERT(reporter, bindInfo.fSize % 16 == 0);
+}
+
+DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(StorageContextAppendVertexTest,
+                                   reporter,
+                                   context,
+                                   CtsEnforcement::kApiLevel_202404) {
+    std::unique_ptr<Recorder> recorder = context->makeRecorder();
+
+    SkPoint pts[2] = {{0, 0}, {100, 100}};
+    SkColor4f colors[2] = {SkColors::kRed, SkColors::kBlue};
+    sk_sp<SkShader> shader =
+            SkShaders::LinearGradient(pts, {{colors, {}, SkTileMode::kClamp}, {}});
+    const auto* grad = static_cast<const SkGradientBaseShader*>(shader.get());
+
+    StorageContext ctxStorage;
+    StorageContext* ctxHandle = &ctxStorage;
+
+    // 1. Allocate gradient data (40 bytes)
+    auto [gradPtr, gradOffset] = ctxHandle->allocateGradientData(2, grad);
+    REPORTER_ASSERT(reporter, gradPtr != nullptr);
+    REPORTER_ASSERT(reporter, gradOffset == 0);
+
+    // 2. Record vertex alignment requirement: stride 24, align 16 -> running LCM = 48
+    ctxHandle->recordAlignment(/*stride=*/24, /*align=*/16);
+
+    // 3. Finalize precached storage data: 40 bytes aligned to running LCM (48 bytes)
+    ctxHandle->finalizePrecachedStorageData();
+
+    // 4. Append vertices with stride 24, align 16, count 2 -> 48 bytes
+    float dummyVertices[12] = {0.f, 1.f, 2.f, 3.f, 4.f, 5.f, 6.f, 7.f, 8.f, 9.f, 10.f, 11.f};
+    uint32_t vOffset = ctxHandle->appendVertices(dummyVertices, /*count=*/2, /*stride=*/24, /*align=*/16);
+    REPORTER_ASSERT(reporter, vOffset == 48);
+
+    // 5. Finalize storage buffer
+    auto bindInfo = ctxHandle->finalize(recorder->priv().drawBufferManager());
+    REPORTER_ASSERT(reporter, bindInfo.fBuffer != nullptr);
+    // Total size = 48 (aligned gradient) + 48 (vertices) = 96 bytes
+    REPORTER_ASSERT(reporter, bindInfo.fSize == 96);
+    REPORTER_ASSERT(reporter, bindInfo.fSize % 48 == 0);
 }
 
 }  // namespace skgpu::graphite
