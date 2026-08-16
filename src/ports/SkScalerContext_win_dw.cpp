@@ -103,7 +103,7 @@ private:
 };
 
 static bool isLCD(const SkScalerContextRec& rec) {
-    return SkMask::kLCD16_Format == rec.fMaskFormat;
+    return SkMask::kLCD32_Format == rec.fMaskFormat;
 }
 
 static bool is_hinted(DWriteFontTypeface* typeface) {
@@ -2017,13 +2017,13 @@ void SkScalerContext_DW::RGBToA8(const uint8_t* SK_RESTRICT src,
 }
 
 template<bool APPLY_PREBLEND, bool RGB>
-void SkScalerContext_DW::RGBToLcd16(const uint8_t* SK_RESTRICT src, const SkGlyph& glyph,
+void SkScalerContext_DW::RGBToLcd32(const uint8_t* SK_RESTRICT src, const SkGlyph& glyph,
                                     void* imageBuffer,
                                     const uint8_t* tableR, const uint8_t* tableG,
                                     const uint8_t* tableB) {
     const size_t dstRB = glyph.rowBytes();
     const int width = glyph.width();
-    uint16_t* SK_RESTRICT dst = static_cast<uint16_t*>(imageBuffer);
+    uint32_t* SK_RESTRICT dst = static_cast<uint32_t*>(imageBuffer);
 
     for (int y = 0; y < glyph.height(); y++) {
         for (int i = 0; i < width; i++) {
@@ -2042,9 +2042,9 @@ void SkScalerContext_DW::RGBToLcd16(const uint8_t* SK_RESTRICT src, const SkGlyp
                 g = std::max<U8CPU>(0x30, g);
                 b = std::max<U8CPU>(0x30, b);
             }
-            dst[i] = SkPack888ToRGB16(r, g, b);
+            dst[i] = SkPackARGB_as_RGBA(0xFF, r, g, b);
         }
-        dst = SkTAddOffset<uint16_t>(dst, dstRB);
+        dst = SkTAddOffset<uint32_t>(dst, dstRB);
     }
 }
 
@@ -2171,21 +2171,21 @@ bool SkScalerContext_DW::generateDWImage(const SkGlyph& glyph, void* imageBuffer
             }
         }
     } else {
-        SkASSERT(SkMask::kLCD16_Format == glyph.maskFormat());
+        SkASSERT(SkMask::kLCD32_Format == glyph.maskFormat());
         if (fPreBlend.isApplicable()) {
             if (fRec.fFlags & SkScalerContext::kLCD_BGROrder_Flag) {
-                RGBToLcd16<true, false>(src, glyph, imageBuffer,
+                RGBToLcd32<true, false>(src, glyph, imageBuffer,
                                         fPreBlend.fR, fPreBlend.fG, fPreBlend.fB);
             } else {
-                RGBToLcd16<true, true>(src, glyph, imageBuffer,
+                RGBToLcd32<true, true>(src, glyph, imageBuffer,
                                        fPreBlend.fR, fPreBlend.fG, fPreBlend.fB);
             }
         } else {
             if (fRec.fFlags & SkScalerContext::kLCD_BGROrder_Flag) {
-                RGBToLcd16<false, false>(src, glyph, imageBuffer,
+                RGBToLcd32<false, false>(src, glyph, imageBuffer,
                                          fPreBlend.fR, fPreBlend.fG, fPreBlend.fB);
             } else {
-                RGBToLcd16<false, true>(src, glyph, imageBuffer,
+                RGBToLcd32<false, true>(src, glyph, imageBuffer,
                                         fPreBlend.fR, fPreBlend.fG, fPreBlend.fB);
             }
         }

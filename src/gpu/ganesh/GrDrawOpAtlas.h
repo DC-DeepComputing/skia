@@ -265,8 +265,8 @@ private:
     SkDEBUGCODE(void validate(const GrAtlasLocator& atlasLocator) const;)
 };
 
-// There are three atlases (A8, 565, ARGB) that are kept in relation with one another. In
-// general, because A8 is the most frequently used mask format its dimensions are 2x the 565 and
+// There are three atlases (A8, A888, ARGB) that are kept in relation with one another. In
+// general, because A8 is the most frequently used mask format its dimensions are 2x the A888 and
 // ARGB dimensions, with the constraint that an atlas size will always contain at least one plot.
 // Since the ARGB atlas takes the most space, its dimensions are used to size the other two atlases.
 class GrDrawOpAtlasConfig {

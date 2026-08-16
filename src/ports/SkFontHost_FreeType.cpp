@@ -118,7 +118,7 @@ using SkUniqueFTSize = std::unique_ptr<FT_SizeRec, SkFunctionObject<FT_Done_Size
 #endif
 
 static bool isLCD(const SkScalerContextRec& rec) {
-    return SkMask::kLCD16_Format == rec.fMaskFormat;
+    return SkMask::kLCD32_Format == rec.fMaskFormat;
 }
 
 static SkScalar SkFT_FixedToScalar(FT_Fixed x) {
@@ -1187,7 +1187,7 @@ void SkScalerContext_FreeType::updateGlyphBoundsIfSubpixel(const SkGlyph& glyph,
 }
 
 void SkScalerContext_FreeType::updateGlyphBoundsIfLCD(GlyphMetrics* mx) {
-    if (mx->maskFormat == SkMask::kLCD16_Format && !mx->bounds.isEmpty()) {
+    if (mx->maskFormat == SkMask::kLCD32_Format && !mx->bounds.isEmpty()) {
         mx->bounds.roundOut(&mx->bounds);
         if (fLCDIsVert) {
             mx->bounds.fBottom += 1;

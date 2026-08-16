@@ -60,7 +60,7 @@ SkScalerContext::GlyphMetrics RandomScalerContext::generateMetrics(const SkGlyph
     // NOTE: this may be overridden by the base class (e.g. if a mask filter is applied).
     SkMask::Format format = SkMask::kA8_Format;
     switch (origGlyph.getGlyphID() % 4) {
-        case 0: format = SkMask::kLCD16_Format; break;
+        case 0: format = SkMask::kLCD32_Format; break;
         case 1: format = SkMask::kA8_Format; break;
         case 2: format = SkMask::kARGB32_Format; break;
         case 3: format = SkMask::kBW_Format; break;

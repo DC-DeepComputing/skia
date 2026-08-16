@@ -2905,11 +2905,11 @@ HIGHP_STAGE(scale_u8, const SkRasterPipelineContexts::MemoryCtx* ctx) {
     b = b * c;
     a = a * c;
 }
-HIGHP_STAGE(scale_565, const SkRasterPipelineContexts::MemoryCtx* ctx) {
-    auto ptr = ptr_at_xy<const uint16_t>(ctx, dx,dy);
+HIGHP_STAGE(scale_8888, const SkRasterPipelineContexts::MemoryCtx* ctx) {
+    auto ptr = ptr_at_xy<const uint32_t>(ctx, dx,dy);
 
-    F cr,cg,cb;
-    from_565(load<U16>(ptr), &cr, &cg, &cb);
+    F cr,cg,cb,unused;
+    from_8888(load<U32>(ptr), &cr, &cg, &cb, &unused);
 
     F ca = alpha_coverage_from_rgb_coverage(a,da, cr,cg,cb);
 
@@ -2954,11 +2954,11 @@ HIGHP_STAGE(lerp_u8, const SkRasterPipelineContexts::MemoryCtx* ctx) {
     b = lerp(db, b, c);
     a = lerp(da, a, c);
 }
-HIGHP_STAGE(lerp_565, const SkRasterPipelineContexts::MemoryCtx* ctx) {
-    auto ptr = ptr_at_xy<const uint16_t>(ctx, dx,dy);
+HIGHP_STAGE(lerp_8888, const SkRasterPipelineContexts::MemoryCtx* ctx) {
+    auto ptr = ptr_at_xy<const uint32_t>(ctx, dx,dy);
 
-    F cr,cg,cb;
-    from_565(load<U16>(ptr), &cr, &cg, &cb);
+    F cr,cg,cb,unused;
+    from_8888(load<U32>(ptr), &cr, &cg, &cb, &unused);
 
     F ca = alpha_coverage_from_rgb_coverage(a,da, cr,cg,cb);
 
@@ -6873,9 +6873,9 @@ SI U16 alpha_coverage_from_rgb_coverage(U16 a, U16 da, U16 cr, U16 cg, U16 cb) {
     return if_then_else(a < da, min_intr(cr, min_intr(cg,cb))
                               , max_intr(cr, max_intr(cg,cb)));
 }
-LOWP_STAGE_PP(scale_565, const SkRasterPipelineContexts::MemoryCtx* ctx) {
-    U16 cr,cg,cb;
-    load_565_(ptr_at_xy<const uint16_t>(ctx, dx,dy), &cr,&cg,&cb);
+LOWP_STAGE_PP(scale_8888, const SkRasterPipelineContexts::MemoryCtx* ctx) {
+    U16 cr,cg,cb,unused;
+    load_8888_(ptr_at_xy<const uint32_t>(ctx, dx,dy), &cr,&cg,&cb,&unused);
     U16 ca = alpha_coverage_from_rgb_coverage(a,da, cr,cg,cb);
 
     r = div255( r * cr );
@@ -6883,9 +6883,9 @@ LOWP_STAGE_PP(scale_565, const SkRasterPipelineContexts::MemoryCtx* ctx) {
     b = div255( b * cb );
     a = div255( a * ca );
 }
-LOWP_STAGE_PP(lerp_565, const SkRasterPipelineContexts::MemoryCtx* ctx) {
-    U16 cr,cg,cb;
-    load_565_(ptr_at_xy<const uint16_t>(ctx, dx,dy), &cr,&cg,&cb);
+LOWP_STAGE_PP(lerp_8888, const SkRasterPipelineContexts::MemoryCtx* ctx) {
+    U16 cr,cg,cb,unused;
+    load_8888_(ptr_at_xy<const uint32_t>(ctx, dx,dy), &cr,&cg,&cb,&unused);
     U16 ca = alpha_coverage_from_rgb_coverage(a,da, cr,cg,cb);
 
     r = lerp(dr, r, cr);

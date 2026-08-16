@@ -73,7 +73,7 @@ typedef uint32_t SkGdiRGB;
 //#define SK_ENFORCE_ROTATED_TEXT_AA_ON_WINDOWS
 
 static bool isLCD(const SkScalerContextRec& rec) {
-    return SkMask::kLCD16_Format == rec.fMaskFormat;
+    return SkMask::kLCD32_Format == rec.fMaskFormat;
 }
 
 static bool bothZero(SkScalar a, SkScalar b) {
@@ -585,7 +585,7 @@ private:
                         const SkGlyph& glyph, void* imageBuffer, const uint8_t* table8);
 
     template<bool APPLY_PREBLEND>
-    static void RGBToLcd16(const SkGdiRGB* SK_RESTRICT src, size_t srcRB, const SkGlyph& glyph,
+    static void RGBToLcd32(const SkGdiRGB* SK_RESTRICT src, size_t srcRB, const SkGlyph& glyph,
                            void* imageBuffer,
                            const uint8_t* tableR, const uint8_t* tableG, const uint8_t* tableB);
 
@@ -628,7 +628,7 @@ static BYTE compute_quality(const SkScalerContextRec& rec) {
     switch (rec.fMaskFormat) {
         case SkMask::kBW_Format:
             return NONANTIALIASED_QUALITY;
-        case SkMask::kLCD16_Format:
+        case SkMask::kLCD32_Format:
             return CLEARTYPE_QUALITY;
         default:
             if (rec.fFlags & SkScalerContext::kGenA8FromLCD_Flag) {
@@ -1038,7 +1038,7 @@ static inline uint8_t rgb_to_a8(SkGdiRGB rgb, const uint8_t* table8) {
 }
 
 template<bool APPLY_PREBLEND>
-static inline uint16_t rgb_to_lcd16(SkGdiRGB rgb, const uint8_t* tableR,
+static inline uint32_t rgb_to_lcd32(SkGdiRGB rgb, const uint8_t* tableR,
                                                   const uint8_t* tableG,
                                                   const uint8_t* tableB) {
     U8CPU r = sk_apply_lut_if<APPLY_PREBLEND>((rgb >> 16) & 0xFF, tableR);
@@ -1049,7 +1049,7 @@ static inline uint16_t rgb_to_lcd16(SkGdiRGB rgb, const uint8_t* tableR,
         g = std::max(g, 10u);
         b = std::max(b, 10u);
     }
-    return SkPack888ToRGB16(r, g, b);
+    return SkPackARGB_as_RGBA(0xFF, r, g, b);
 }
 
 template<bool APPLY_PREBLEND>
@@ -1072,19 +1072,19 @@ void SkScalerContext_GDI::RGBToA8(const SkGdiRGB* SK_RESTRICT src, size_t srcRB,
 }
 
 template<bool APPLY_PREBLEND>
-void SkScalerContext_GDI::RGBToLcd16(
+void SkScalerContext_GDI::RGBToLcd32(
         const SkGdiRGB* SK_RESTRICT src, size_t srcRB, const SkGlyph& glyph, void* imageBuffer,
         const uint8_t* tableR, const uint8_t* tableG, const uint8_t* tableB) {
     const size_t dstRB = glyph.rowBytes();
     const int width = glyph.width();
-    uint16_t* SK_RESTRICT dst = (uint16_t*)((char*)imageBuffer + (glyph.height() - 1) * dstRB);
+    uint32_t* SK_RESTRICT dst = (uint32_t*)((char*)imageBuffer + (glyph.height() - 1) * dstRB);
 
     for (int y = 0; y < glyph.height(); y++) {
         for (int i = 0; i < width; i++) {
-            dst[i] = rgb_to_lcd16<APPLY_PREBLEND>(src[i], tableR, tableG, tableB);
+            dst[i] = rgb_to_lcd32<APPLY_PREBLEND>(src[i], tableR, tableG, tableB);
         }
         src = SkTAddOffset<const SkGdiRGB>(src, srcRB);
-        dst = (uint16_t*)((char*)dst - dstRB);
+        dst = (uint32_t*)((char*)dst - dstRB);
     }
 }
 
@@ -1163,14 +1163,14 @@ void SkScalerContext_GDI::generateImage(const SkGlyph& glyph, void* imageBuffer)
         } else {
             RGBToA8<false>(src, srcRB, glyph, imageBuffer, fPreBlend.fG);
         }
-    } else {    // LCD16
+    } else {    // LCD32
         const SkGdiRGB* src = (const SkGdiRGB*)bits;
-        SkASSERT(SkMask::kLCD16_Format == glyph.maskFormat());
+        SkASSERT(SkMask::kLCD32_Format == glyph.maskFormat());
         if (fPreBlend.isApplicable()) {
-            RGBToLcd16<true>(src, srcRB, glyph, imageBuffer,
+            RGBToLcd32<true>(src, srcRB, glyph, imageBuffer,
                              fPreBlend.fR, fPreBlend.fG, fPreBlend.fB);
         } else {
-            RGBToLcd16<false>(src, srcRB, glyph, imageBuffer,
+            RGBToLcd32<false>(src, srcRB, glyph, imageBuffer,
                               fPreBlend.fR, fPreBlend.fG, fPreBlend.fB);
         }
     }

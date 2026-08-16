@@ -9,7 +9,7 @@ const int $kFilterModeNearest = 0;
 const int $kFilterModeLinear  = 1;
 
 const int $kMaskFormatA8   = 0;
-const int $kMaskFormatA565 = 1;
+const int $kMaskFormatA888 = 1;
 const int $kMaskFormatARGB = 2;
 
 const int $kShapeTypeRect = 0;

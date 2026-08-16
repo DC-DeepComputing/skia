@@ -28,7 +28,7 @@ struct SkMask {
         kA8_Format, //!< 8bits per pixel mask (e.g. antialiasing)
         k3D_Format, //!< 3 8bit per pixl planes: alpha, mul, add
         kARGB32_Format,         //!< SkPMColor
-        kLCD16_Format,          //!< 565 alpha for r/g/b
+        kLCD32_Format,          //!< 888 alpha for r/g/b
         kSDF_Format,            //!< 8bits representing signed distance field
     };
 
@@ -84,25 +84,12 @@ struct SkMask {
     }
 
     /**
-     *  Return the address of the specified 16bit mask. In the debug build,
-     *  this asserts that the mask's format is kLCD16_Format, and that (x,y)
-     *  are contained in the mask's fBounds.
-     */
-    const uint16_t* getAddrLCD16(int x, int y) const {
-        SkASSERT(kLCD16_Format == fFormat);
-        SkASSERT(fBounds.contains(x, y));
-        SkASSERT(fImage != nullptr);
-        const uint16_t* row = (const uint16_t*)(fImage + (y - fBounds.fTop) * fRowBytes);
-        return row + (x - fBounds.fLeft);
-    }
-
-    /**
      *  Return the address of the specified 32bit mask. In the debug build,
      *  this asserts that the mask's format is 32bits, and that (x,y)
      *  are contained in the mask's fBounds.
      */
     const uint32_t* getAddr32(int x, int y) const {
-        SkASSERT(kARGB32_Format == fFormat);
+        SkASSERT(kARGB32_Format == fFormat || kLCD32_Format == fFormat);
         SkASSERT(fBounds.contains(x, y));
         SkASSERT(fImage != nullptr);
         const uint32_t* row = (const uint32_t*)(fImage + (y - fBounds.fTop) * fRowBytes);
@@ -194,24 +181,24 @@ template <> struct SkMask::AlphaIter<SkMask::kARGB32_Format> {
     const uint32_t* fPtr;
 };
 
-template <> struct SkMask::AlphaIter<SkMask::kLCD16_Format> {
-    AlphaIter(const uint16_t* ptr) : fPtr(ptr) {}
+template <> struct SkMask::AlphaIter<SkMask::kLCD32_Format> {
+    AlphaIter(const uint32_t* ptr) : fPtr(ptr) {}
     AlphaIter(const AlphaIter& that) : fPtr(that.fPtr) {}
     AlphaIter& operator++() { ++fPtr; return *this; }
     AlphaIter& operator--() { --fPtr; return *this; }
     AlphaIter& operator>>=(uint32_t rb) {
-        fPtr = SkTAddOffset<const uint16_t>(fPtr, rb);
+        fPtr = SkTAddOffset<const uint32_t>(fPtr, rb);
         return *this;
     }
     uint8_t operator*() const {
-        unsigned packed = *fPtr;
-        unsigned r = SkPacked16ToR32(packed);
-        unsigned g = SkPacked16ToG32(packed);
-        unsigned b = SkPacked16ToB32(packed);
+        uint32_t packed = *fPtr;
+        unsigned r = (packed >> SK_RGBA_R32_SHIFT) & 0xFF;
+        unsigned g = (packed >> SK_RGBA_G32_SHIFT) & 0xFF;
+        unsigned b = (packed >> SK_RGBA_B32_SHIFT) & 0xFF;
         return (r + g + b) / 3;
     }
     bool operator<(const AlphaIter& that) const { return fPtr < that.fPtr; }
-    const uint16_t* fPtr;
+    const uint32_t* fPtr;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -252,15 +239,6 @@ struct SkMaskBuilder : public SkMask {
     */
     uint8_t* getAddr8(int x, int y) {
         return const_cast<uint8_t*>(this->SkMask::getAddr8(x, y));
-    }
-
-    /**
-     *  Return the address of the specified 16bit mask. In the debug build,
-     *  this asserts that the mask's format is kLCD16_Format, and that (x,y)
-     *  are contained in the mask's fBounds.
-     */
-    uint16_t* getAddrLCD16(int x, int y) {
-        return const_cast<uint16_t*>(this->SkMask::getAddrLCD16(x, y));
     }
 
     /**

@@ -106,54 +106,9 @@ static void get_packed_glyph_image(
                     expand_bits(bytes, bits, width, height, dstRB, srcRB);
                     break;
                 }
-                case MaskFormat::kA565: {
-                    uint16_t* rgb565 = reinterpret_cast<uint16_t*>(dst);
-                    expand_bits(rgb565, bits, width, height, dstRB, srcRB);
-                    break;
-                }
                 default:
                     SK_ABORT("Invalid MaskFormat");
             }
-        }
-    } else if (maskFormat == MaskFormat::kA565 &&
-               expectedMaskFormat == MaskFormat::kARGB) {
-        // Convert if the glyph uses a 565 mask format since it is using LCD text rendering
-        // but the expected format is 8888 (will happen on macOS with Metal since that
-        // combination does not support 565).
-        static constexpr SkMasks masks{
-                {0b1111'1000'0000'0000, 11, 5},  // Red
-                {0b0000'0111'1110'0000,  5, 6},  // Green
-                {0b0000'0000'0001'1111,  0, 5},  // Blue
-                {0, 0, 0}                        // Alpha
-        };
-        constexpr int a565Bpp = MaskFormatBytesPerPixel(MaskFormat::kA565);
-        constexpr int argbBpp = MaskFormatBytesPerPixel(MaskFormat::kARGB);
-        constexpr bool kBGRAIsNative = kN32_SkColorType == kBGRA_8888_SkColorType;
-        char* dstRow = (char*)dst;
-        for (int y = 0; y < height; y++) {
-            dst = dstRow;
-            for (int x = 0; x < width; x++) {
-                uint16_t color565 = 0;
-                memcpy(&color565, src, a565Bpp);
-                uint32_t color8888;
-                // On Windows (and possibly others), font data is stored as BGR.
-                // So we need to swizzle the data to reflect that.
-                if (kBGRAIsNative) {
-                    color8888 = GrColorPackRGBA(masks.getBlue(color565),
-                                                masks.getGreen(color565),
-                                                masks.getRed(color565),
-                                                0xFF);
-                } else {
-                    color8888 = GrColorPackRGBA(masks.getRed(color565),
-                                                masks.getGreen(color565),
-                                                masks.getBlue(color565),
-                                                0xFF);
-                }
-                memcpy(dst, &color8888, argbBpp);
-                src = (const char*)src + a565Bpp;
-                dst = (char*)dst + argbBpp;
-            }
-            dstRow += dstRB;
         }
     } else {
         SkUNREACHABLE;
@@ -182,7 +137,6 @@ GrDrawOpAtlas::ErrorCode GrAtlasManager::addGlyphToAtlas(const SkGlyph& skGlyph,
 #endif
 
     const MaskFormat expectedMaskFormat = glyph->fKey.maskFormat();
-    SkASSERT(expectedMaskFormat == this->resolveMaskFormat(glyph->fKey.maskFormat()));
 
     int bytesPerPixel = MaskFormatBytesPerPixel(expectedMaskFormat);
 

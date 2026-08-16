@@ -163,7 +163,7 @@ GrBitmapTextGeoProc::GrBitmapTextGeoProc(const GrShaderCaps& caps,
         fInPosition = {"inPosition", kFloat2_GrVertexAttribType, SkSLType::kFloat2};
     }
 
-    bool hasVertexColor = MaskFormat::kA8 == fMaskFormat || MaskFormat::kA565 == fMaskFormat;
+    bool hasVertexColor = MaskFormat::kA8 == fMaskFormat || MaskFormat::kA888 == fMaskFormat;
     if (hasVertexColor) {
         fInColor = MakeColorAttribute("inColor", wideColor);
     }
@@ -244,7 +244,7 @@ GrGeometryProcessor* GrBitmapTextGeoProc::TestCreate(GrProcessorTestData* d) {
             format = MaskFormat::kA8;
             break;
         case GrColorType::kBGR_565:
-            format = MaskFormat::kA565;
+            format = MaskFormat::kA888;
             break;
         case GrColorType::kRGBA_8888:
         default:  // It doesn't really matter that color type and mask format agree.

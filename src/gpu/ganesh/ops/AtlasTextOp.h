@@ -224,7 +224,7 @@ private:
     skgpu::MaskFormat maskFormat() const {
         switch (this->maskType()) {
             case MaskType::kLCDCoverage:
-                return skgpu::MaskFormat::kA565;
+                return skgpu::MaskFormat::kA888;
             case MaskType::kColorBitmap:
                 return skgpu::MaskFormat::kARGB;
             case MaskType::kGrayscaleCoverage:

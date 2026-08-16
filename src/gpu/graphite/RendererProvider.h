@@ -114,11 +114,11 @@ public:
 
     // Atlased text rendering
     const Renderer* bitmapText(bool useLCDText, MaskFormat format) const {
-        // We use 565 here to represent all LCD rendering, regardless of texture format
+        // We use A888 here to represent all LCD rendering, regardless of texture format
         if (useLCDText) {
-            return &fBitmapText[(int)MaskFormat::kA565];
+            return &fBitmapText[(int)MaskFormat::kA888];
         }
-        SkASSERT(format != MaskFormat::kA565);
+        SkASSERT(format != MaskFormat::kA888);
         return &fBitmapText[(int)format];
     }
     const Renderer* sdfText(bool useLCDText) const { return &fSDFText[useLCDText]; }

@@ -419,7 +419,7 @@ static void RGBToA8(const CGRGBPixel* SK_RESTRICT cgPixels, size_t cgRowBytes,
 }
 
 template<bool APPLY_PREBLEND>
-static uint16_t RGBToLcd16(CGRGBPixel rgb,
+static uint32_t RGBToLcd32(CGRGBPixel rgb,
                            const uint8_t* tableR, const uint8_t* tableG, const uint8_t* tableB) {
     U8CPU r = sk_apply_lut_if<APPLY_PREBLEND>(0xFF - ((rgb >> 16) & 0xFF), tableR);
     U8CPU g = sk_apply_lut_if<APPLY_PREBLEND>(0xFF - ((rgb >>  8) & 0xFF), tableG);
@@ -429,24 +429,24 @@ static uint16_t RGBToLcd16(CGRGBPixel rgb,
         g = std::max(g, (U8CPU)0x30);
         b = std::max(b, (U8CPU)0x30);
     }
-    return SkPack888ToRGB16(r, g, b);
+    return SkPackARGB_as_RGBA(0xFF, r, g, b);
 }
 
 template<bool APPLY_PREBLEND>
-static void RGBToLcd16(const CGRGBPixel* SK_RESTRICT cgPixels, size_t cgRowBytes,
+static void RGBToLcd32(const CGRGBPixel* SK_RESTRICT cgPixels, size_t cgRowBytes,
                        const SkGlyph& glyph, void* glyphImage,
                        const uint8_t* tableR, const uint8_t* tableG, const uint8_t* tableB) {
     const int width = glyph.width();
     const int height = glyph.height();
     size_t dstRB = glyph.rowBytes();
-    uint16_t* SK_RESTRICT dst = (uint16_t*)glyphImage;
+    uint32_t* SK_RESTRICT dst = (uint32_t*)glyphImage;
 
     for (int y = 0; y < height; y++) {
         for (int i = 0; i < width; i++) {
-            dst[i] = RGBToLcd16<APPLY_PREBLEND>(cgPixels[i], tableR, tableG, tableB);
+            dst[i] = RGBToLcd32<APPLY_PREBLEND>(cgPixels[i], tableR, tableG, tableB);
         }
         cgPixels = SkTAddOffset<const CGRGBPixel>(cgPixels, cgRowBytes);
-        dst = SkTAddOffset<uint16_t>(dst, dstRB);
+        dst = SkTAddOffset<uint32_t>(dst, dstRB);
     }
 }
 
@@ -475,7 +475,7 @@ void SkScalerContext_Mac::generateImage(const SkGlyph& glyph, void* imageBuffer)
     }
 
     // Fix the glyph
-    if ((glyph.maskFormat() == SkMask::kLCD16_Format) ||
+    if ((glyph.maskFormat() == SkMask::kLCD32_Format) ||
         (glyph.maskFormat() == SkMask::kA8_Format
          && requestSmooth
          && SkCTFontGetSmoothBehavior() != SkCTFontSmoothBehavior::none))
@@ -501,12 +501,12 @@ void SkScalerContext_Mac::generateImage(const SkGlyph& glyph, void* imageBuffer)
 
     // Convert glyph to mask
     switch (glyph.maskFormat()) {
-        case SkMask::kLCD16_Format: {
+        case SkMask::kLCD32_Format: {
             if (fPreBlend.isApplicable()) {
-                RGBToLcd16<true>(cgPixels, cgRowBytes, glyph, imageBuffer,
+                RGBToLcd32<true>(cgPixels, cgRowBytes, glyph, imageBuffer,
                                  fPreBlend.fR, fPreBlend.fG, fPreBlend.fB);
             } else {
-                RGBToLcd16<false>(cgPixels, cgRowBytes, glyph, imageBuffer,
+                RGBToLcd32<false>(cgPixels, cgRowBytes, glyph, imageBuffer,
                                   fPreBlend.fR, fPreBlend.fG, fPreBlend.fB);
             }
         } break;

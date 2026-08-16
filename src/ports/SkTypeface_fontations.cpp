@@ -105,7 +105,7 @@ SkMatrix SkMatrixFromFontationsTransform(const fontations_ffi::Transform& transf
                              1.0f);
 }
 
-bool isLCD(const SkScalerContextRec& rec) { return SkMask::kLCD16_Format == rec.fMaskFormat; }
+bool isLCD(const SkScalerContextRec& rec) { return SkMask::kLCD32_Format == rec.fMaskFormat; }
 
 bool bothZero(SkScalar a, SkScalar b) { return 0 == a && 0 == b; }
 

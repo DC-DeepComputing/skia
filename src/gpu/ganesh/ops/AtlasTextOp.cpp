@@ -113,7 +113,7 @@ SkMatrix position_matrix(const SkMatrix& drawMatrix, SkPoint drawOrigin) {
 AtlasTextOp::MaskType op_mask_type(MaskFormat maskFormat) {
     switch (maskFormat) {
         case MaskFormat::kA8:   return AtlasTextOp::MaskType::kGrayscaleCoverage;
-        case MaskFormat::kA565: return AtlasTextOp::MaskType::kLCDCoverage;
+        case MaskFormat::kA888: return AtlasTextOp::MaskType::kLCDCoverage;
         case MaskFormat::kARGB: return AtlasTextOp::MaskType::kColorBitmap;
     }
     SkUNREACHABLE;

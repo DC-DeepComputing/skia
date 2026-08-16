@@ -99,7 +99,7 @@ static const int gMaskFormatToShift[] = {
     0,  // A8
     0,  // 3D
     2,  // ARGB32
-    1,  // LCD16
+    2,  // LCD32
     0,  // SDF
 };
 
