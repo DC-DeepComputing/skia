@@ -111,6 +111,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "caac7efc_374c18f3",
+        "filename": "modules/skottie/src/text/TextShaper.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 496,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-08-17T15:05:12Z",
+      "side": 1,
+      "message": "Good catch, I think we do need to fully match `SkShaper`\u0027s tracking calculations here.\n\n(It gets a bit weird replicating `SkShaper`\u0027s logic in this layer, might be cleaner to push this undo-last-tracking-advance bit into `SkShaper` itself.  There\u0027s another reason why I suspect we\u0027ll want to do that, curious if that\u0027s what Julia is thinking about - line-break related :)  I\u0027m planning to take a look at that in a follow-up, I don\u0027t want to derail Wenting too much.)",
+      "parentUuid": "8b24cd25_5893cde6",
+      "revId": "b6032367519a787b00b393940dfd1c24b44f74e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8c518f45_33e2048f",
         "filename": "modules/skshaper/src/SkShaper_harfbuzz.cpp",
         "patchSetId": 3
@@ -122,6 +140,24 @@
       "writtenOn": "2026-08-14T19:15:11Z",
       "side": 1,
       "message": "Do we need to worry about RTL text here by adding trackingAdvance?",
+      "revId": "b6032367519a787b00b393940dfd1c24b44f74e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77e6ee20_b5d518ee",
+        "filename": "modules/skshaper/src/SkShaper_harfbuzz.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1560,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-08-17T15:05:12Z",
+      "side": 1,
+      "message": "After shaping, the glyphs should always be in visual/ltr order, I think this is correct.",
+      "parentUuid": "8c518f45_33e2048f",
       "revId": "b6032367519a787b00b393940dfd1c24b44f74e7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
