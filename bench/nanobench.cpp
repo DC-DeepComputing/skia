@@ -543,7 +543,11 @@ static int setup_cpu_bench(const double overhead, Target* target, Benchmark* ben
     return loops;
 }
 
+bool foo77 = false;
+
 static int setup_gpu_bench(Target* target, Benchmark* bench, int maxGpuFrameLag) {
+    double unused = time(1, bench, target);
+    foo77 = true;
     // First, figure out how many loops it'll take to get a frame up to FLAGS_gpuMs.
     int loops = bench->shouldLoop() ? FLAGS_loops : 1;
     if (kAutoTuneLoops == loops) {
