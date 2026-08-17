@@ -36,6 +36,8 @@ void DrawWriter::flushInternal(BindBufferInfo appendData) {
         return;
     }
 
+    fDrawCount++;
+
     // How much to advance fAppend.fOffset when the flush is completed
     uint32_t advanceOffset = fPendingCount;
 

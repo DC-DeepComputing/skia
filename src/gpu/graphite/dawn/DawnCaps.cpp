@@ -352,7 +352,9 @@ void DawnCaps::initCaps(const DawnBackendContext& backendContext, const ContextO
     // go away in Dawn-native, then we can assume SSBOs are always supported in pure WebGPU too.
     fStorageBufferSupport = false;
 #endif
+fStorageBufferSupport = false;
 
+fStorageBufferSupport = false;
     fDrawBufferCanBeMapped = false;
 
     fComputeSupport = true;
