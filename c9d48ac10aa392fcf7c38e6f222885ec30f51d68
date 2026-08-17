@@ -140,6 +140,30 @@
       },
       "revId": "c9d48ac10aa392fcf7c38e6f222885ec30f51d68",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "62f8590c_7c4bb539",
+        "filename": "src/gpu/graphite/render/MeshRenderStep.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-17T14:02:57Z",
+      "side": 1,
+      "message": "That would be great, thanks for filing the bug.",
+      "parentUuid": "7f78c40a_5d33daec",
+      "range": {
+        "startLine": 134,
+        "startChar": 0,
+        "endLine": 134,
+        "endChar": 24
+      },
+      "revId": "c9d48ac10aa392fcf7c38e6f222885ec30f51d68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
