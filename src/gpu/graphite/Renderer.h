@@ -16,6 +16,7 @@
 #include "include/private/SkEnumBitMask.h"
 #include "src/core/SkVx.h"
 #include "src/gpu/graphite/Attribute.h"
+#include "src/gpu/graphite/DescriptorData.h"
 #include "src/gpu/graphite/DrawTypes.h"
 #include "src/gpu/graphite/ResourceTypes.h"
 #include "src/gpu/graphite/Uniform.h"
@@ -41,6 +42,7 @@ class Transform;
 class UniformOffsetCalculator;
 
 struct ResourceBindingRequirements;
+struct RootNodesInfo;
 
 enum class Coverage { kNone, kSingleChannel, kLCD };
 
@@ -48,37 +50,39 @@ enum class Coverage { kNone, kSingleChannel, kLCD };
 // RenderStep::kRenderStepIDVersion value. The enum values generated from this
 // list are serialized and the kRenderStepIDVersion value is the signal to
 // abandon older serialized data.
-#define SKGPU_RENDERSTEP_TYPES(M1, M2)              \
-        M1(Invalid)                                 \
-        M1(CircularArc)                             \
-        M1(AnalyticRRect)                           \
-        M1(AnalyticBlur)                            \
-        M1(PerEdgeAAQuad)                           \
-        M2(CoverBounds,      NonAAFill)             \
-        M2(CoverBounds,      RegularCover)          \
-        M2(CoverBounds,      InverseCover)          \
-        M1(CoverageMask)                            \
-        M2(BitmapText,       Mask)                  \
-        M2(BitmapText,       LCD)                   \
-        M2(BitmapText,       Color)                 \
-        M2(MiddleOutFan,     EvenOdd)               \
-        M2(MiddleOutFan,     Winding)               \
-        M1(SDFTextLCD)                              \
-        M1(SDFText)                                 \
-        M2(TessellateCurves, EvenOdd)               \
-        M2(TessellateCurves, Winding)               \
-        M1(TessellateStrokes)                       \
-        M2(TessellateWedges, Convex)                \
-        M2(TessellateWedges, EvenOdd)               \
-        M2(TessellateWedges, Winding)               \
-        M2(Vertices,         Tris)                  \
-        M2(Vertices,         TrisColor)             \
-        M2(Vertices,         TrisTexCoords)         \
-        M2(Vertices,         TrisColorTexCoords)    \
-        M2(Vertices,         Tristrips)             \
-        M2(Vertices,         TristripsColor)        \
-        M2(Vertices,         TristripsTexCoords)    \
-        M2(Vertices,         TristripsColorTexCoords)
+#define SKGPU_RENDERSTEP_TYPES(M1, M2)               \
+        M1(Invalid)                                  \
+        M1(CircularArc)                              \
+        M1(AnalyticRRect)                            \
+        M1(AnalyticBlur)                             \
+        M1(PerEdgeAAQuad)                            \
+        M2(CoverBounds,      NonAAFill)              \
+        M2(CoverBounds,      RegularCover)           \
+        M2(CoverBounds,      InverseCover)           \
+        M1(CoverageMask)                             \
+        M2(BitmapText,       Mask)                   \
+        M2(BitmapText,       LCD)                    \
+        M2(BitmapText,       Color)                  \
+        M2(MiddleOutFan,     EvenOdd)                \
+        M2(MiddleOutFan,     Winding)                \
+        M1(SDFTextLCD)                               \
+        M1(SDFText)                                  \
+        M2(TessellateCurves, EvenOdd)                \
+        M2(TessellateCurves, Winding)                \
+        M2(TessellateStrokes,Fill)                   \
+        M2(TessellateStrokes,InverseFill)            \
+        M2(TessellateWedges, Convex)                 \
+        M2(TessellateWedges, EvenOdd)                \
+        M2(TessellateWedges, Winding)                \
+        M2(Vertices,         Tris)                   \
+        M2(Vertices,         TrisColor)              \
+        M2(Vertices,         TrisTexCoords)          \
+        M2(Vertices,         TrisColorTexCoords)     \
+        M2(Vertices,         Tristrips)              \
+        M2(Vertices,         TristripsColor)         \
+        M2(Vertices,         TristripsTexCoords)     \
+        M2(Vertices,         TristripsColorTexCoords)\
+        M1(Mesh)
 
 /**
  * The actual technique for rasterizing a high-level draw recorded in a DrawList is handled by a
@@ -141,7 +145,7 @@ public:
     // NOTE: The above contract is mainly so that the entire SkSL program can be created by just str
     // concatenating struct definitions generated from the RenderStep and paint Combination
     // and then including the function bodies returned here.
-    virtual std::string vertexSkSL() const = 0;
+    virtual std::string vertexSkSL(const RootNodesInfo&) const = 0;
 
     // Emits code to set up textures and samplers. Should only be defined if hasTextures is true.
     virtual std::string texturesAndSamplersSkSL(const ResourceBindingRequirements&,
@@ -158,7 +162,11 @@ public:
     // Emits code to set up a primitive color value. Should only be defined if emitsPrimitiveColor
     // is true. When implemented, the returned SkSL fragment should write its color into a
     // 'half4 primitiveColor' variable (defined in the calling code).
-    virtual const char* fragmentColorSkSL() const { return ""; }
+    virtual std::string fragmentColorSkSL(const RootNodesInfo&) const { return ""; }
+
+    // Returns a pointer to the name of the local coordinates variable to use for
+    // shader sampling if non-null.
+    virtual const char* fragmentColorSkSLLocalCoordsVariable() const { return nullptr; }
 
     // Indicates whether this RenderStep's uniforms are referenced in its fragment shader code.
     // If not, its uniforms can be omitted from the fragment shader entirely.
@@ -181,7 +189,8 @@ public:
     bool appendsVertices()     const { return SkToBool(fFlags & Flags::kAppendVertices);      }
     bool vsUsesStorage()       const { return SkToBool(fFlags & Flags::kVsUsesStorage);       }
     bool fsUsesStorage()       const { return SkToBool(fFlags & Flags::kFsUsesStorage);       }
-    SkEnumBitMask<RenderStateFlags> getRenderStateFlags() const {
+    SkEnumBitMask<PipelineStageFlags> storageBufferStages() const { return fStorageBufferStages; }
+    SkEnumBitMask<RenderStateFlags>   getRenderStateFlags() const {
         SkEnumBitMask<RenderStateFlags> rs = RenderStateFlags::kNone;
         if (fFlags & Flags::kFixed)             { rs |= RenderStateFlags::kFixed;           }
         if (fFlags & Flags::kAppendVertices)    { rs |= RenderStateFlags::kAppendVertices;  }
@@ -194,9 +203,10 @@ public:
 
     Coverage coverage() const { return RenderStep::GetCoverage(fFlags); }
 
-    PrimitiveType primitiveType()    const { return fPrimitiveType;    }
-    size_t        staticDataStride() const { return fStaticDataStride; }
-    size_t        appendDataStride() const { return fAppendDataStride; }
+    PrimitiveType  primitiveType()    const { return fPrimitiveType;    }
+    size_t         staticDataStride() const { return fStaticDataStride; }
+    size_t         appendDataStride() const { return fAppendDataStride; }
+    virtual size_t appendDataStride(const DrawParams& params) const { return fAppendDataStride; }
 
     size_t numUniforms()         const { return fUniforms.size();    }
     int    uniformAlignment()    const { return fUniformAlignment;   }
@@ -232,7 +242,7 @@ public:
     enum class RenderStepID : uint32_t {
         SKGPU_RENDERSTEP_TYPES(ENUM1, ENUM2)
 
-        kLast = kVertices_TristripsColorTexCoords,
+        kLast = kMesh,
     };
 #undef ENUM1
 #undef ENUM2
@@ -294,11 +304,11 @@ private:
 
     static Coverage GetCoverage(SkEnumBitMask<Flags>);
 
-    RenderStepID fRenderStepID;
-    SkEnumBitMask<Flags> fFlags;
-    PrimitiveType        fPrimitiveType;
-
-    DepthStencilSettings fDepthStencilSettings;
+    RenderStepID                      fRenderStepID;
+    SkEnumBitMask<Flags>              fFlags;
+    SkEnumBitMask<PipelineStageFlags> fStorageBufferStages;
+    PrimitiveType                     fPrimitiveType;
+    DepthStencilSettings              fDepthStencilSettings;
 
     // TODO: When we always use C++17 for builds, we should be able to just let subclasses declare
     // constexpr arrays and point to those, but we need explicit storage for C++14.

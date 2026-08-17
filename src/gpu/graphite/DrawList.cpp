@@ -18,7 +18,7 @@
 
 namespace skgpu::graphite {
 
-std::pair<DrawParams*, Insertion> DrawList::recordDraw(
+std::pair<DrawParams*, Layer*> DrawList::recordDraw(
         const Renderer* renderer,
         const Transform& localToDevice,
         const Geometry& geometry,
@@ -29,7 +29,7 @@ std::pair<DrawParams*, Insertion> DrawList::recordDraw(
         BarrierType barrierBeforeDraws,
         PipelineDataGatherer* gatherer,
         const StrokeStyle* stroke,
-        const Insertion& latestInsertion) {
+        Layer*) {
 
     SkASSERT(localToDevice.valid());
     SkASSERT(!geometry.isEmpty() && !clip.drawBounds().isEmptyNegativeOrNaN());
@@ -49,16 +49,17 @@ std::pair<DrawParams*, Insertion> DrawList::recordDraw(
     // Create a sort key for every render step in this draw
     for (int stepIndex = 0; stepIndex < draw.renderer()->numRenderSteps(); ++stepIndex) {
         const RenderStep* const step = draw.renderer()->steps()[stepIndex];
-        gatherer->markOffsetAndAlign(step->performsShading(), step->uniformAlignment());
+        const bool performsShading = step->performsShading() && paintID.isValid();
+        gatherer->markOffsetAndAlign(performsShading, step->uniformAlignment());
 
         GraphicsPipelineCache::Index pipelineIndex = fPipelineCache.insert(
-                { step->renderStepID(), step->performsShading() ?
+                { step->renderStepID(), performsShading ?
                                         paintID : UniquePaintParamsID::Invalid()});
 
         step->writeUniformsAndTextures(draw.drawParams(), gatherer);
 
         auto [combinedUniforms, combinedTextures] =
-                gatherer->endCombinedData(step->performsShading());
+                gatherer->endCombinedData(performsShading);
 
         UniformDataCache::Index uniformIndex = combinedUniforms ?
                 fUniformDataCache.insert(combinedUniforms) : UniformDataCache::kInvalidIndex;
@@ -84,10 +85,11 @@ std::pair<DrawParams*, Insertion> DrawList::recordDraw(
     }
 #endif
 
-    return {nullptr, {}};
+    return {nullptr, nullptr};
 }
 
 std::unique_ptr<DrawPass> DrawList::snapDrawPass(Recorder* recorder,
+                                                 StorageContext* storageContext,
                                                  sk_sp<TextureProxy> target,
                                                  const SkImageInfo& targetInfo,
                                                  DstReadStrategy dstReadStrategy) {
@@ -120,8 +122,9 @@ std::unique_ptr<DrawPass> DrawList::snapDrawPass(Recorder* recorder,
 
     // The DrawList is converted directly into the DrawPass' data structures, but once the DrawPass
     // is returned from Make(), it is considered immutable.
-    std::unique_ptr<DrawPass> drawPass(new DrawPass(target, {fLoadOp, StoreOp::kStore}, fClearColor,
-                                                    recorder->priv().refFloatStorageManager()));
+    std::unique_ptr<DrawPass> drawPass(new DrawPass(target,
+                                                    {fLoadOp, StoreOp::kStore},
+                                                    fClearColor));
 
     DrawBufferManager* bufferMgr = recorder->priv().drawBufferManager();
     DrawWriter drawWriter(&drawPass->fCommandList, bufferMgr);
@@ -136,6 +139,11 @@ std::unique_ptr<DrawPass> DrawList::snapDrawPass(Recorder* recorder,
     const Caps* caps = recorder->priv().caps();
     const bool useStorageBuffers = caps->storageBufferSupport();
     UniformTracker uniformTracker(useStorageBuffers);
+
+    if (useStorageBuffers) {
+        SkASSERT(storageContext);
+        storageContext->finalizePrecachedStorageData();
+    }
 
     // TODO(b/372953722): Remove this forced binding command behavior once dst copies are always
     // bound separately from the rest of the textures.
@@ -184,7 +192,7 @@ std::unique_ptr<DrawPass> DrawList::snapDrawPass(Recorder* recorder,
         if (pipelineChange) {
             drawWriter.newPipelineState(renderStep.primitiveType(),
                                         renderStep.staticDataStride(),
-                                        renderStep.appendDataStride(),
+                                        renderStep.appendDataStride(draw.drawParams()),
                                         renderStep.getRenderStateFlags(),
                                         draw.drawParams().barrierBeforeDraws());
         } else if (stateChange) {
@@ -231,6 +239,16 @@ std::unique_ptr<DrawPass> DrawList::snapDrawPass(Recorder* recorder,
     }
     // Finish recording draw calls for any collected data still pending at end of the loop
     drawWriter.flush();
+
+    if (useStorageBuffers) {
+        SkASSERT(storageContext);
+        drawPass->fStorageBufferInfo = storageContext->finalize(bufferMgr);
+        if (!storageContext->isEmpty() && !drawPass->fStorageBufferInfo) SK_UNLIKELY {
+            SKIA_LOG_W("Failed to write Storage Data for Draw pass, dropping!");
+            this->reset(LoadOp::kLoad);
+            return nullptr;
+        }
+    }
 
     drawPass->fBounds = fPassBounds.roundOut().asSkIRect();
     drawPass->fPipelineDescs   = fPipelineCache.detach();

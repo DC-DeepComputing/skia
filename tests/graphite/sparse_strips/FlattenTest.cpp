@@ -405,7 +405,7 @@ template <FlattenMode kMode> class FlattenTestRunner {
         const float kViewH = 100.0f;
 
         enum class Expect {
-            kCulled,      // Completely dropped: Start pt + NaN (2 points)
+            kCulled,      // Removed: Init NaN + Start pt + Cull NaN + Last pt + Start pt (5 points)
             kSimplified,  // Left side simplification: Start pt + End pt + Close pt + NaN (4 points)
             kSubdivided   // Intersects viewport: Subdivided curve (> 4 points)
         };
@@ -420,8 +420,8 @@ template <FlattenMode kMode> class FlattenTestRunner {
             if (expect == Expect::kCulled) {
                 REPORTER_ASSERT(
                         reporter,
-                        count == 2,
-                        "[%s] Expected curve to be entirely culled (2 points), got %d points",
+                        count == 5,
+                        "[%s] Expected curve to be entirely culled (5 points), got %d points",
                         testName,
                         count);
             } else if (expect == Expect::kSimplified) {
@@ -603,25 +603,45 @@ public:
                                    .cubicTo(120, 150, 180, 150, 200, 100)
                                    .detach(),
                            "MultiContour");
+
         CheckFlattenedPath(reporter,
                            SkPathBuilder().moveTo(10, 10).conicTo(50, 100, 90, 10, 0.5f).detach(),
-                           "SimpleConic_WeightHalf");
+                           "SimpleConicWeightHalf");
         CheckFlattenedPath(reporter,
                            SkPathBuilder().moveTo(10, 10).conicTo(50, 100, 90, 10, 2.0f).detach(),
-                           "SimpleConic_WeightTwo");
+                           "SimpleConicWeightTwo");
         CheckFlattenedPath(reporter,
                            SkPathBuilder().moveTo(10, 10).conicTo(50, 100, 90, 10, 1.0f).detach(),
-                           "SimpleConic_WeightOne");
+                           "SimpleConicWeightOne");
         CheckFlattenedPath(reporter,
                            SkPathBuilder()
                                    .moveTo(100, 0)
                                    .conicTo(100, 100, 0, 100, std::sqrt(2.0f) / 2.0f)
                                    .detach(),
                            "QuarterCircleConic");
-
+        CheckFlattenedPath(reporter,
+                           SkPathBuilder().moveTo(10, 10).conicTo(50, 100, 90, 10, 0.0f).detach(),
+                           "WorstCaseWeightZero");
+        CheckFlattenedPath(reporter,
+                           SkPathBuilder().moveTo(10, 10).conicTo(50, 100, 90, 10, 1e-5f).detach(),
+                           "WorstCaseWeightMicroscopic");
+        CheckFlattenedPath(reporter,
+                           SkPathBuilder().moveTo(10, 10).conicTo(50, 100, 90, 10, 1e5f).detach(),
+                           "WorstCaseWeightMassive");
+        CheckFlattenedPath(reporter,
+                           SkPathBuilder().moveTo(50, 50).conicTo(50, 50, 50, 50, 1.0f).detach(),
+                           "WorstCaseDegenerate");
         CheckFlattenedPath(reporter,
                            SkPathBuilder().moveTo(0, 0).cubicTo(50, 0, 100, 0, 100, 50).detach(),
-                           "Cubic_Partial_Linear");
+                           "CubicPartialLinear");
+        CheckFlattenedPath(reporter,
+                           SkPathBuilder()
+                                   .moveTo(10, 10)
+                                   .lineTo(20, 10)
+                                   .quadTo(20, -20, 30, -10)
+                                   .close()
+                                   .detach(),
+                           "CulledEndQuadClosed");
 
         TestCulling(reporter);
         TestTrickyStrokes(reporter);

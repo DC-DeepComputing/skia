@@ -72,7 +72,7 @@ public:
     // 'shape' and 'stroke' parameters. If the renderer uses coverage AA, 'ordering' must have a
     // compressed painters order that reflects that. If the renderer uses stencil, the 'ordering'
     // must have a valid stencil index as well.
-    std::pair<DrawParams*, Insertion> recordDraw(
+    std::pair<DrawParams*, Layer*> recordDraw(
             const Renderer* renderer,
             const Transform& localToDevice,
             const Geometry& geometry,
@@ -83,9 +83,10 @@ public:
             BarrierType barrierBeforeDraws,
             PipelineDataGatherer* gatherer,
             const StrokeStyle* stroke,
-            const Insertion& latestInsertion) override;
+            Layer*) override;
 
     std::unique_ptr<DrawPass> snapDrawPass(Recorder* recorder,
+                                           StorageContext* storageContext,
                                            sk_sp<TextureProxy> target,
                                            const SkImageInfo& targetInfo,
                                            DstReadStrategy dstReadStrategy) override;

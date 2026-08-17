@@ -513,7 +513,7 @@ static bool input_attachment_desc_set_layout(VkDescriptorSetLayout& outLayout,
 static bool uniform_desc_set_layout(VkDescriptorSetLayout& outLayout,
                                     const VulkanSharedContext* sharedContext,
                                     bool hasCombinedUniforms,
-                                    bool hasGradientBuffer) {
+                                    SkEnumBitMask<PipelineStageFlags> storageStageFlags) {
     // Define a container with size reserved for up to kMaxNumUniformBuffers descriptors. Only add
     // DescriptorData for uniforms that actually are used and need to be included in the layout.
     skia_private::STArray<
@@ -528,12 +528,13 @@ static bool uniform_desc_set_layout(VkDescriptorSetLayout& outLayout,
                 VulkanGraphicsPipeline::kCombinedUniformIndex,
                 PipelineStageFlags::kVertexShader | PipelineStageFlags::kFragmentShader});
     }
-    if (hasGradientBuffer) {
+
+    if (SkToBool(storageStageFlags)) {
         uniformDescriptors.push_back({
                 DescriptorType::kStorageBuffer,
                 /*count=*/1,
-                VulkanGraphicsPipeline::kGradientBufferIndex,
-                PipelineStageFlags::kFragmentShader});
+                VulkanGraphicsPipeline::kStorageBufferIndex,
+                storageStageFlags});
     }
 
     // If no uniforms are used, still request a mock VkDescriptorSetLayout handle by passing in the
@@ -576,7 +577,7 @@ static VkPipelineLayout setup_pipeline_layout(const VulkanSharedContext* sharedC
                                               uint32_t pushConstantSize,
                                               VkShaderStageFlagBits pushConstantPipelineStageFlags,
                                               bool hasCombinedUniforms,
-                                              bool hasGradientBuffer,
+                                              SkEnumBitMask<PipelineStageFlags> storageStageFlags,
                                               int numTextureSamplers,
                                               bool loadMsaaFromResolve,
                                               SkSpan<sk_sp<VulkanSampler>> immutableSamplers) {
@@ -602,7 +603,7 @@ static VkPipelineLayout setup_pipeline_layout(const VulkanSharedContext* sharedC
                 setLayouts[VulkanGraphicsPipeline::kUniformBufferDescSetIndex],
                 sharedContext,
                 hasCombinedUniforms,
-                hasGradientBuffer) ||
+                storageStageFlags) ||
         !texture_sampler_desc_set_layout(
                 setLayouts[VulkanGraphicsPipeline::kTextureBindDescSetIndex],
                 sharedContext,
@@ -953,7 +954,7 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
                 VulkanResourceProvider::kIntrinsicConstantSize,
                 VulkanResourceProvider::kIntrinsicConstantStageFlags,
                 shaderInfo->hasCombinedUniforms(),
-                shaderInfo->hasGradientBuffer(),
+                shaderInfo->storageBufferStages(),
                 shaderInfo->numFragmentTexturesAndSamplers(),
                 /*loadMsaaFromResolve=*/false,
                 SkSpan<sk_sp<VulkanSampler>>(immutableSamplers)))) {
@@ -974,7 +975,8 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
             step->primitiveType(),
             step->appendsVertices() ? VK_VERTEX_INPUT_RATE_VERTEX : VK_VERTEX_INPUT_RATE_INSTANCE,
             step->staticAttributes(),
-            step->appendAttributes(),
+            shaderInfo->appendAttributes().empty() ? step->appendAttributes()
+                                                   : shaderInfo->appendAttributes(),
             vertexBindingDescriptions,
             vertexAttributeDescriptions,
             step->depthStencilSettings(),
@@ -991,6 +993,7 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
         pipelineInfo.fNativeFragmentShader = SkShaderUtils::SpirvAsHexStream(fsSPIRV.fBinary);
 #endif
 
+        bool hasPaintParamAttributes = !shaderInfo->appendAttributes().empty();
         pipeline = sk_sp<VulkanGraphicsPipeline>(
                 new VulkanGraphicsPipeline(sharedContext,
                                            pipelineInfo,
@@ -1004,7 +1007,8 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
                                            step->primitiveType(),
                                            step->depthStencilSettings(),
                                            std::move(vertexBindingDescriptions),
-                                           std::move(vertexAttributeDescriptions)));
+                                           std::move(vertexAttributeDescriptions),
+                                           hasPaintParamAttributes));
     }
 
     return pipeline;
@@ -1205,6 +1209,7 @@ std::unique_ptr<VulkanProgramInfo> VulkanGraphicsPipeline::CreateLoadMSAAProgram
                             errorHandler)) {
         return nullptr;
     }
+
     if (!program->setFragmentShader(CreateVulkanShaderModule(
                 sharedContext, fsSPIRV, VK_SHADER_STAGE_FRAGMENT_BIT))) {
         return nullptr;
@@ -1223,7 +1228,7 @@ std::unique_ptr<VulkanProgramInfo> VulkanGraphicsPipeline::CreateLoadMSAAProgram
                 /*pushConstantSize=*/32,
                 (VkShaderStageFlagBits)VK_SHADER_STAGE_VERTEX_BIT,
                 /*hasCombinedUniforms=*/false,
-                /*hasGradientBuffer=*/false,
+                /*storageStageFlags=*/{},
                 /*numTextureSamplers=*/0,
                 /*loadMsaaFromResolve=*/true,
                 /*immutableSamplers=*/{}))) {
@@ -1279,7 +1284,8 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::MakeLoadMSAAPipeline(
                                        PrimitiveType::kTriangleStrip,
                                        /*depthStencilSettings=*/{},
                                        /*vertexBindingDescriptions=*/{},
-                                       /*vertexAttributeDescriptions=*/{}));
+                                       /*vertexAttributeDescriptions=*/{},
+                                       /*hasPaintParamAttributes=*/false));
 }
 
 VulkanGraphicsPipeline::VulkanGraphicsPipeline(
@@ -1295,7 +1301,8 @@ VulkanGraphicsPipeline::VulkanGraphicsPipeline(
         PrimitiveType primitiveType,
         const DepthStencilSettings& depthStencilSettings,
         VertexInputBindingDescriptions&& vertexBindingDescriptions,
-        VertexInputAttributeDescriptions&& vertexAttributeDescriptions)
+        VertexInputAttributeDescriptions&& vertexAttributeDescriptions,
+        bool hasPaintParamAttributes)
     : GraphicsPipeline(sharedContext, pipelineInfo, pipelineLabel)
     , fPipelineLayout(pipelineLayout)
     , fPipeline(pipeline)
@@ -1305,6 +1312,7 @@ VulkanGraphicsPipeline::VulkanGraphicsPipeline(
     , fPrimitiveType(primitiveType)
     , fDepthStencilSettings(depthStencilSettings)
     , fRenderStepID(renderStepID)
+    , fHasPaintParamAttributes(hasPaintParamAttributes)
     , fVertexBindingDescriptions(std::move(vertexBindingDescriptions))
     , fVertexAttributeDescriptions(std::move(vertexAttributeDescriptions)) {
     // Update the newly-created underlying GPU object's label to match the Resource's
@@ -1462,7 +1470,9 @@ void VulkanGraphicsPipeline::updateDynamicState(const VulkanSharedContext* share
     }
     if (sharedContext->caps()->useVertexInputDynamicState()) {
         const bool vertexInputDirty =
-                previous == nullptr || previous->fRenderStepID != fRenderStepID;
+                previous == nullptr ||
+                previous->fRenderStepID != fRenderStepID ||
+                fHasPaintParamAttributes || previous->fHasPaintParamAttributes;
 
         if (vertexInputDirty) {
             VULKAN_CALL(sharedContext->interface(),

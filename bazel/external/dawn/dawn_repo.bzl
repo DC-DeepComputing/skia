@@ -18,14 +18,40 @@ def _dawn_repo_impl(repo_ctx):
 
     repo_ctx.execute(["git", "reset", "--hard", "FETCH_HEAD"])
 
-    python_bin = repo_ctx.which("python3")
-    if not python_bin:
-        python_bin = repo_ctx.which("python")
-    if not python_bin:
-        fail("Could not find python binary on the host")
+    # On Windows, the checked-in headers conflict with the generated headers (Windows doesn't
+    # sandbox like Linux/Mac). Dawn is planning on deleting these anyway, so we do it until then.
+    for h in [
+        "src/tint/lang/core/enums.h",
+        "src/tint/lang/core/intrinsic/ctor_conv.h",
+        "src/tint/lang/glsl/builtin_fn.h",
+        "src/tint/lang/hlsl/builtin_fn.h",
+        "src/tint/lang/msl/builtin_fn.h",
+        "src/tint/lang/spirv/builtin_fn.h",
+        "src/tint/lang/wgsl/enums.h",
+        "src/tint/lang/wgsl/intrinsic/ctor_conv.h",
+    ]:
+        repo_ctx.delete(h)
+
+    # Detect the host system and resolve our hermetic CPython binary
+    os_name = repo_ctx.os.name.lower()
+    os_arch = repo_ctx.os.arch.lower()
+
+    if "windows" in os_name:
+        python_dir = repo_ctx.path(Label("@cpython_windows_amd64//:BUILD.bazel")).dirname
+        python_bin = python_dir.get_child("bin").get_child("python3.exe")
+    elif "mac" in os_name:
+        if "arm" in os_arch or "aarch64" in os_arch:
+            python_dir = repo_ctx.path(Label("@cpython_mac_arm64//:BUILD.bazel")).dirname
+        else:
+            python_dir = repo_ctx.path(Label("@cpython_mac_amd64//:BUILD.bazel")).dirname
+        python_bin = python_dir.get_child("bin").get_child("python3")
+    else:
+        python_dir = repo_ctx.path(Label("@cpython_linux_amd64//:BUILD.bazel")).dirname
+        python_bin = python_dir.get_child("bin").get_child("python3")
 
     # Copy the BUILD.bazel from Skia
-    repo_ctx.execute(["rm", "-f", "BUILD.bazel", "dawn_files.bzl"])
+    repo_ctx.delete("BUILD.bazel")
+    repo_ctx.delete("dawn_files.bzl")
     repo_ctx.symlink(repo_ctx.path(repo_ctx.attr.build_file), "BUILD.bazel")
 
     # Run the generator to create dawn_files.bzl
@@ -36,8 +62,8 @@ def _dawn_repo_impl(repo_ctx):
     repo_ctx.watch(repo_ctx.attr.generator_py)
     repo_ctx.watch(repo_ctx.attr.build_file)
 
-    # Resolve the python paths for jinja2 and markupsafe so the generator can run
-    # with the Bazel-cached dependencies without requiring any system/host pip installs.
+    # We do *not* have to rely on jinja2 and markupsafe (deps for Dawn's generator scripts)
+    # being available. We can use the versions Bazel checks out by adding them to PYTHONPATH.
     jinja2_dir = str(repo_ctx.path(repo_ctx.attr.jinja2).dirname)
     markupsafe_dir = str(repo_ctx.path(repo_ctx.attr.markupsafe).dirname)
     path_sep = ";" if "windows" in repo_ctx.os.name.lower() else ":"
