@@ -5,6 +5,10 @@ package(
     default_applicable_licenses = ["//:license"],
 )
 
+exports_files([
+    "unsafe_buffers_mappings.txt",
+])
+
 # https://opensource.google/documentation/reference/thirdparty/new_license_rules
 # https://github.com/bazelbuild/rules_license/blob/bcffeb0c481d178cbee69bdc7e23ef22d3a087b1/rules/license.bzl
 license(
