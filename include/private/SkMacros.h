@@ -167,4 +167,53 @@ private:
     friend constexpr X operator&(X, SkTFlagsMask<X>); \
     friend X& operator &=(X&, SkTFlagsMask<X>)
 
+// Marks a function or field that can cause out-of-bounds (OOB) accesses if
+// misused (e.g., raw pointers/sizes). Triggers `-Wunsafe-buffer-usage`.
+//
+// Requirements:
+// 1. Must include a `// PRECONDITIONS:` comment explaining caller guarantees.
+// 2. Call sites/mutations must be wrapped in `SK_UNSAFE_BUFFERS()`.
+// Based upon:
+//       https://source.chromium.org/chromium/chromium/src/+/main:base/compiler_specific.h
+// Refs: https://clang.llvm.org/docs/SafeBuffers.html
+//       https://chromium.googlesource.com/chromium/src/+/main/docs/unsafe_buffers.md
+//
+// Usage: SK_UNSAFE_BUFFER_USAGE void Func(T* ptr, size_t size);
+#if __has_cpp_attribute(clang::unsafe_buffer_usage)
+#define SK_UNSAFE_BUFFER_USAGE [[clang::unsafe_buffer_usage]]
+#else
+#define SK_UNSAFE_BUFFER_USAGE
+#endif
+
+// Permanently exempts code from `-Wunsafe-buffer-usage`.
+//
+// WARNING: USE RARELY. Indicates the compiler cannot verify OOB safety.
+// Prefer safer patterns instead.
+//
+// Requirements:
+// 1. Wrap the absolute minimum necessary code.
+// 2. MUST include a `// SAFETY:` comment explaining how local invariants
+//    (e.g., nearby CHECKs, types, or caller bounds) guarantee memory safety.
+//
+// Usage: return SK_UNSAFE_BUFFERS(Func(input, end));
+#if defined(__clang__) && defined(__has_warning)
+#  if __has_warning("-Wunsafe-buffer-usage")
+#    define SK_UNSAFE_BUFFERS(...) \
+       _Pragma("clang unsafe_buffer_usage begin") \
+       __VA_ARGS__ \
+       _Pragma("clang unsafe_buffer_usage end")
+#  else
+#    define SK_UNSAFE_BUFFERS(...) __VA_ARGS__
+#  endif
+#else
+#  define SK_UNSAFE_BUFFERS(...) __VA_ARGS__
+#endif
+
+// Temporarily exempts code from `-Wunsafe-buffer-usage`. 
+// Functionally identical to `SK_UNSAFE_BUFFERS()`, but semantically flags the 
+// code for future migration to safer patterns.
+//
+// Usage: return SK_UNSAFE_TODO(Func(input, end));
+#define SK_UNSAFE_TODO(...) SK_UNSAFE_BUFFERS(__VA_ARGS__)
+
 #endif  // SkMacros_DEFINED
