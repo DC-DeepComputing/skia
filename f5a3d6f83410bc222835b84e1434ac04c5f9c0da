@@ -161,6 +161,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3edf10e3_2d53733d",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-17T15:01:43Z",
+      "side": 1,
+      "message": "It looks like these didn\u0027t actually get updated before this CL landed. Can you do a quick fix?",
+      "parentUuid": "09f8ba34_da5bf534",
+      "range": {
+        "startLine": 47,
+        "startChar": 26,
+        "endLine": 47,
+        "endChar": 48
+      },
+      "revId": "f5a3d6f83410bc222835b84e1434ac04c5f9c0da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d79070a1_d32f4d2c",
         "filename": "src/gpu/graphite/BufferManager.h",
         "patchSetId": 6
