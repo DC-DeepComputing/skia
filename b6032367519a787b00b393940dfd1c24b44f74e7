@@ -111,6 +111,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2d7b8ee3_45cb0f27",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-08-17T16:18:28Z",
+      "side": 1,
+      "message": "The problem is text tracking must be applied prior to (and taken into account for) line breaking.  This is actually a long-standing issue, with several related feature requests.\n\nI understand your SkShaper-is-a-low-level-shaper point, but it already implements higher level semantics (line breaking).  It seems there are two distinct use cases:\n\n1) SkParagraph: only needs low-level functionality, no line breaking\n2) Skottie: relies on SkShaper\u0027s line breaking functionality\n\nSince text tracking affects line breaking, there is no way to correctly implement it purely in Skottie\u0027s TextShaper.cpp (without re-implementing the whole wrapping layer).\n\nThink of text tracking as expanding already existing wrapping functionality in SkShaper.  It will be used by Skottie while SkParagraph can just ignore it and continue to treat SkShaper as a single-line shaper.",
+      "parentUuid": "61dc03c2_40598e1c",
+      "revId": "b6032367519a787b00b393940dfd1c24b44f74e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8b24cd25_5893cde6",
         "filename": "modules/skottie/src/text/TextShaper.cpp",
         "patchSetId": 3
