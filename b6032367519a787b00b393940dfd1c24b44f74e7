@@ -163,6 +163,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf718f26_ef7a0d36",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-08-17T19:06:53Z",
+      "side": 1,
+      "message": "I agree, but the next time you need yet another piece of formatting functionality in the shaping library I will ask you to consider moving to SkParagraph.",
+      "parentUuid": "3edb075a_46a5798b",
+      "revId": "b6032367519a787b00b393940dfd1c24b44f74e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8b24cd25_5893cde6",
