@@ -25,8 +25,6 @@ class DrawBufferManager;
 
 class StorageContext {
 public:
-    static constexpr size_t kStructAlignment = 16;
-
     StorageContext();
     ~StorageContext();
 
@@ -43,9 +41,7 @@ public:
 
     // Records the required alignment for a storage data stride and alignment without appending data.
     // This updates the running LCM used when finalizing precached storage data.
-    //
-    // Currently, we pass default arguments as placeholders until storage attributes are implemented.
-    void recordAlignment(size_t stride = kStructAlignment, size_t align = kStructAlignment);
+    void recordAlignment(size_t stride, size_t align = 1);
 
     // Appends `count * stride` bytes of vertex data into the CPU-side copy, aligned according to
     // `stride` and `align`. Returns the byte offset within the storage buffer.
