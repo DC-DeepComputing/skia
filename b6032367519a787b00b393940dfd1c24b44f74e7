@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "8eec7d77_35b65a84",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5029334
+      },
+      "writtenOn": "2026-08-17T20:18:52Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "ca1a8322_4c9a2a7c",
+      "range": {
+        "startLine": 11,
+        "startChar": 51,
+        "endLine": 11,
+        "endChar": 65
+      },
+      "revId": "b6032367519a787b00b393940dfd1c24b44f74e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "868f7694_bcf59bbc",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 3
@@ -216,6 +240,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "43118147_69dd9d4d",
+        "filename": "modules/skottie/src/text/TextShaper.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 496,
+      "author": {
+        "id": 5029334
+      },
+      "writtenOn": "2026-08-17T20:18:52Z",
+      "side": 1,
+      "message": "Good catch. The omission was unintentional. Skottie never sets a non-default scaleX, but we should have the getScaleX() here in case that ever changes.",
+      "parentUuid": "8b24cd25_5893cde6",
+      "revId": "b6032367519a787b00b393940dfd1c24b44f74e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8c518f45_33e2048f",
@@ -247,6 +289,24 @@
       "side": 1,
       "message": "After shaping, the glyphs should always be in visual/ltr order, I think this is correct.",
       "parentUuid": "8c518f45_33e2048f",
+      "revId": "b6032367519a787b00b393940dfd1c24b44f74e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fad6843f_f52d15cb",
+        "filename": "modules/skshaper/src/SkShaper_harfbuzz.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1560,
+      "author": {
+        "id": 5029334
+      },
+      "writtenOn": "2026-08-17T20:18:52Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "77e6ee20_b5d518ee",
       "revId": "b6032367519a787b00b393940dfd1c24b44f74e7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
