@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f43706b8_bfafac17",
+        "filename": "bazel/common_config_settings/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-08-17T14:38:54Z",
+      "side": 1,
+      "message": "Bazel doesn\u0027t work well (especially in G3) with flags like this. I think it\u0027s better to just have it on or off, don\u0027t make it configurable.",
+      "range": {
+        "startLine": 12,
+        "startChar": 12,
+        "endLine": 12,
+        "endChar": 34
+      },
+      "revId": "115f86ccedc4577c210c556e53cc7ff5f8c15e4d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
