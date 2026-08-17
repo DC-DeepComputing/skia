@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2bc16a7d_06a1da00",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-08-17T14:41:08Z",
+      "side": 1,
+      "message": "Thanks!\n\nCan we split it in 3 parts:\n- Macros\n- GN config\n- Bazel config\n?",
+      "revId": "115f86ccedc4577c210c556e53cc7ff5f8c15e4d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f43706b8_bfafac17",
         "filename": "bazel/common_config_settings/BUILD.bazel",
         "patchSetId": 3
@@ -19,6 +36,29 @@
         "startChar": 12,
         "endLine": 12,
         "endChar": 34
+      },
+      "revId": "115f86ccedc4577c210c556e53cc7ff5f8c15e4d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19cd9c5a_c1ec889b",
+        "filename": "include/private/SkMacros.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-08-17T14:41:08Z",
+      "side": 1,
+      "message": "Can we have comments similar to the chromium ones explaining what each macros means?",
+      "range": {
+        "startLine": 169,
+        "startChar": 0,
+        "endLine": 190,
+        "endChar": 0
       },
       "revId": "115f86ccedc4577c210c556e53cc7ff5f8c15e4d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
