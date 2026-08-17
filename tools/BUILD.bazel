@@ -8,6 +8,7 @@ package(
 licenses(["notice"])
 
 exports_files([
+    "unsafe_buffers_mappings.txt",
     "ToolUtils.h",
     "ToolUtils.cpp",
     "SkMetaData.h",
