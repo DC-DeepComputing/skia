@@ -10,16 +10,10 @@ skia_cc_library(
     name = "trace",
     testonly = True,
     srcs = [
-        "ChromeTracingTracer.cpp",
-        "ChromeTracingTracer.h",
         "EventTracingPriv.cpp",
-        "EventTracingPriv.h",
-        "SkDebugfTracer.cpp",
-        "SkDebugfTracer.h",
     ],
     hdrs = [
-        "ChromeTracingTracer.h",
-        "SkDebugfTracer.h",
+        "EventTracingPriv.h",
     ],
     visibility = [
         "//dm:__pkg__",
