@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a39c2cf1_5647f55b",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 550,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-17T20:42:14Z",
+      "side": 0,
+      "message": "Note, this was not capitalized, but it\u0027s also was unnecessary for appending, so I have inlined it back into the bufferSubAllocator. I missed adding it in the last patch, so I\u0027m putting it in here.",
+      "range": {
+        "startLine": 497,
+        "startChar": 0,
+        "endLine": 550,
+        "endChar": 2
+      },
+      "revId": "e29010fb1e6f20d3ddc356ecd756d1c92c55674e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
