@@ -1,4 +1,4 @@
-load("//bazel:flags.bzl", "selects")
+load("//bazel:flags.bzl", "bool_flag", "selects")
 
 package(
     default_applicable_licenses = ["//:license"],
@@ -7,6 +7,11 @@ package(
 licenses(["notice"])
 
 # @platforms is found at https://github.com/bazelbuild/platforms
+
+bool_flag(
+    name = "unsafe_buffers_enabled",
+    default = False,
+)
 
 config_setting(
     name = "linux_x64",
