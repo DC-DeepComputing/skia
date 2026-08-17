@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4294227f_117f7223",
+        "filename": "src/gpu/graphite/StorageContext.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-17T19:39:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d50cd431_26a58a10",
+      "range": {
+        "startLine": 73,
+        "startChar": 4,
+        "endLine": 75,
+        "endChar": 5
+      },
+      "revId": "7b7f73d67ee8d6ea4ecfe40154114bf006ed95a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "46271aeb_1c87f167",
@@ -54,6 +78,30 @@
       "writtenOn": "2026-08-17T15:06:01Z",
       "side": 1,
       "message": "We should assert that this align32 is handled by the aggregate LCM we collected before we finished precaching.",
+      "range": {
+        "startLine": 77,
+        "startChar": 0,
+        "endLine": 77,
+        "endChar": 98
+      },
+      "revId": "7b7f73d67ee8d6ea4ecfe40154114bf006ed95a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "badf74ac_43edb8d8",
+        "filename": "src/gpu/graphite/StorageContext.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-17T19:39:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "46271aeb_1c87f167",
       "range": {
         "startLine": 77,
         "startChar": 0,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "84fc70fe_4d640548",
+        "filename": "src/gpu/graphite/StorageContext.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-17T19:39:18Z",
+      "side": 1,
+      "message": "Also added an assert that we should not record LCM if we have already finalized precached storage data.",
+      "parentUuid": "01d0dbde_1364ea96",
+      "range": {
+        "startLine": 44,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 101
+      },
+      "revId": "7b7f73d67ee8d6ea4ecfe40154114bf006ed95a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cace3a2a_68859271",
@@ -100,6 +172,30 @@
       "writtenOn": "2026-08-17T15:06:01Z",
       "side": 1,
       "message": "add \"eventual\"?",
+      "range": {
+        "startLine": 51,
+        "startChar": 63,
+        "endLine": 51,
+        "endChar": 64
+      },
+      "revId": "7b7f73d67ee8d6ea4ecfe40154114bf006ed95a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8ca2726_e80326b3",
+        "filename": "src/gpu/graphite/StorageContext.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-17T19:39:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cace3a2a_68859271",
       "range": {
         "startLine": 51,
         "startChar": 63,
