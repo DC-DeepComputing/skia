@@ -16,6 +16,52 @@
       "message": "PTAL",
       "revId": "25ee2b22e156ac917d1d3471b5e951e7a81dbbed",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39d23834_b1840d4b",
+        "filename": "src/gpu/graphite/Renderer.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-17T15:10:29Z",
+      "side": 1,
+      "message": "I think these need to be `const Uniform`. Attribute has both a CPU type and a GPU type and gets to rely on automatic data conversion as part of the beginning of the primitive pipeline. I don\u0027t think that applies to data coming out of an SSBO; it should be calculating its alignment using a UniformOffsetCalculator I think.",
+      "range": {
+        "startLine": 23,
+        "startChar": 36,
+        "endLine": 23,
+        "endChar": 45
+      },
+      "revId": "25ee2b22e156ac917d1d3471b5e951e7a81dbbed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0e79cd8_20cb2376",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-17T15:10:29Z",
+      "side": 1,
+      "message": "If we\u0027re going to right justify this on the `()`, we should do it at primitiveType().",
+      "range": {
+        "startLine": 208,
+        "startChar": 0,
+        "endLine": 209,
+        "endChar": 43
+      },
+      "revId": "25ee2b22e156ac917d1d3471b5e951e7a81dbbed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
