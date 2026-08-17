@@ -305,7 +305,8 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(
                step->appendsVertices() ? MTLVertexStepFunctionPerVertex :
                                          MTLVertexStepFunctionPerInstance,
                step->staticAttributes(),
-               step->appendAttributes(),
+               shaderInfo->appendAttributes().empty() ? step->appendAttributes()
+                                                      : shaderInfo->appendAttributes(),
                {fsLibrary.get(), "fragmentMain"},
                std::move(dss),
                step->depthStencilSettings().fStencilReferenceValue,
