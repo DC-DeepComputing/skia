@@ -25,6 +25,8 @@
 static constexpr int kHighPriorityWorkList = 0;
 static constexpr int kLowPriorityWorkList = 1;
 
+extern bool foo77;
+
 namespace skgpu::graphite {
 
 // Directly accessing the two variants is thread safe because a given GraphicsPipelineHandle
@@ -51,6 +53,7 @@ GraphicsPipelineHandle::GraphicsPipelineHandle(sk_sp<GraphicsPipeline> pipeline)
 
 PipelineManager::PipelineManager(SkExecutor* executor) {
     if (executor) {
+        fprintf(stderr, "------- %d\n", executor->foo());
         fTaskGroup = std::make_unique<SkTaskGroup>(*executor);
     }
 }
@@ -95,6 +98,7 @@ GraphicsPipelineHandle PipelineManager::createHandle(
         return GraphicsPipelineHandle(std::move(pipeline));
     }
 
+    SkASSERT_RELEASE(!foo77);
     // Although 'findGraphicsPipeline' didn't find a GraphicsPipeline, there could be a race.
     // In 'findOrCreateTask' we will, thread-safely, check if there is a task in flight to
     // create the Pipeline and, failing that, create one. If the race had occurred and
@@ -132,6 +136,7 @@ GraphicsPipelineHandle PipelineManager::createHandle(
 void PipelineManager::InlineCompile(SharedContext* sharedContext,
                                     PipelineManager* pipelineManager,
                                     PipelineCreationTask* task) {
+    SkASSERT_RELEASE(!foo77);
     // This is a bit racy but the exact correctness of the actual cause for the compilation
     // isn't crucial. In essence, this tries to give the SharedContext a best guess about
     // the driver behind the compilation. The exact race is if a precompile compilation
@@ -319,6 +324,7 @@ void PipelineManager::potentiallyWaitOn(SharedContext* sharedContext, PipelineCr
     if (task->fCompleted) {
         return;
     }
+    SkASSERT_RELEASE(!foo77);
     fConditionVariable.wait(lock, [task]{ return task->fCompleted.load(); });
 
     SkASSERT(task->fCompleted);
