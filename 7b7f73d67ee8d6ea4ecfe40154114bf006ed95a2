@@ -16,6 +16,98 @@
       "message": "PTAL",
       "revId": "7b7f73d67ee8d6ea4ecfe40154114bf006ed95a2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d50cd431_26a58a10",
+        "filename": "src/gpu/graphite/StorageContext.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-17T15:06:01Z",
+      "side": 1,
+      "message": "I think this should be an assert; callers likely have an easier way to know if they don\u0027t need to append anything.",
+      "range": {
+        "startLine": 73,
+        "startChar": 4,
+        "endLine": 75,
+        "endChar": 5
+      },
+      "revId": "7b7f73d67ee8d6ea4ecfe40154114bf006ed95a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46271aeb_1c87f167",
+        "filename": "src/gpu/graphite/StorageContext.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-17T15:06:01Z",
+      "side": 1,
+      "message": "We should assert that this align32 is handled by the aggregate LCM we collected before we finished precaching.",
+      "range": {
+        "startLine": 77,
+        "startChar": 0,
+        "endLine": 77,
+        "endChar": 98
+      },
+      "revId": "7b7f73d67ee8d6ea4ecfe40154114bf006ed95a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01d0dbde_1364ea96",
+        "filename": "src/gpu/graphite/StorageContext.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-17T15:06:01Z",
+      "side": 1,
+      "message": "nit: length\n\nAlso, can we add that this should be called before `finalizePrecachedStorageData()` but corresponds to the stride and alignment that will be passed into `appendVertices` calls?",
+      "range": {
+        "startLine": 44,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 101
+      },
+      "revId": "7b7f73d67ee8d6ea4ecfe40154114bf006ed95a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cace3a2a_68859271",
+        "filename": "src/gpu/graphite/StorageContext.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-17T15:06:01Z",
+      "side": 1,
+      "message": "add \"eventual\"?",
+      "range": {
+        "startLine": 51,
+        "startChar": 63,
+        "endLine": 51,
+        "endChar": 64
+      },
+      "revId": "7b7f73d67ee8d6ea4ecfe40154114bf006ed95a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
