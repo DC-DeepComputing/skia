@@ -190,6 +190,22 @@
   },
   "selectedYankedVersions": {},
   "moduleExtensions": {
+    "//bazel:check_compiler.bzl%compiler_ext": {
+      "general": {
+        "bzlTransitiveDigest": "wsrX9LNd3NNSi9Z8hxMEhtXqyTTalsuVM19QzcpmW7U=",
+        "usagesDigest": "WhB1JvOQHcvhR11isDu0zlqczxeHHLs6uSrSM+swRPE=",
+        "recordedFileInputs": {},
+        "recordedDirentsInputs": {},
+        "envVariables": {},
+        "generatedRepoSpecs": {
+          "clang_features": {
+            "repoRuleId": "@@//bazel:check_compiler.bzl%check_clang_features",
+            "attributes": {}
+          }
+        },
+        "recordedRepoMappingEntries": []
+      }
+    },
     "//bazel:cipd_deps.bzl%cipd_deps": {
       "general": {
         "bzlTransitiveDigest": "S/CsaQtMXt+uI9+wRxagRFjIjHnEdR+2WA9BxVDLXis=",
