@@ -14,6 +14,7 @@
 #include "src/core/SkStringView.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/KeyHelpers.h"
+#include "src/gpu/graphite/RuntimeEffectDictionary.h"
 #include "src/gpu/graphite/ShaderCodeDictionary.h"
 
 using namespace skia_private;
@@ -246,8 +247,10 @@ void lift_color_expressions(SkSpan<ShaderNode*> nodes, int* availableVaryings) {
 
 RootNodesInfo PaintParamsKey::getRootNodes(const Caps* caps,
                                            const ShaderCodeDictionary* dict,
+                                           const RuntimeEffectDictionary* rteDict,
                                            SkArenaAlloc* arena,
-                                           int availableVaryings) const {
+                                           int availableVaryings,
+                                           bool canLiftCoords) const {
     // TODO: Once the PaintParamsKey creation is organized to represent a single tree starting at
     // the final blend, there will only be a single root node and this can be simplified.
     // For now, we don't know how many roots there are, so collect them into a local array before
@@ -255,8 +258,8 @@ RootNodesInfo PaintParamsKey::getRootNodes(const Caps* caps,
     const int keySize = SkTo<int>(fData.size());
 
     RootNodesInfo rootsInfo;
-    // Normal PaintParams creation will have up to 3 roots for the different stages.
-    STArray<3, ShaderNode*> roots;
+    // Normal PaintParams creation will have up to 4 roots for the different stages.
+    STArray<4, ShaderNode*> roots;
     int currentIndex = 0;
     while (currentIndex < keySize) {
         int32_t blockMarker = fData[currentIndex++];
@@ -282,15 +285,29 @@ RootNodesInfo PaintParamsKey::getRootNodes(const Caps* caps,
                 SkASSERT(!rootsInfo.fClip);
                 rootsInfo.fClip = root;
                 break;
+            case RootBlockType::kMeshShader:
+                SkASSERT(!rootsInfo.fMeshShader);
+                rootsInfo.fMeshShader = root;
+                break;
             default:
                 SkUNREACHABLE;
+        }
+    }
+
+    if (rootsInfo.fMeshShader) {
+        rootsInfo.fMeshSpec = rteDict->findMeshSpec(rootsInfo.fMeshShader->codeSnippetId());
+        if (!rootsInfo.fMeshSpec) {
+            // Couldn't find the SkMeshSpecification for the mesh shader snippet so the key is bad.
+            return {};
         }
     }
 
     // See what expressions we can lift to the vertex shader.
     const bool hasClipNode = roots.size() > 2;
     SkSpan<ShaderNode*> liftableNodes(roots.data(), hasClipNode ? 2 : roots.size());
-    lift_coord_expressions(liftableNodes, &availableVaryings);
+    if (canLiftCoords) {
+        lift_coord_expressions(liftableNodes, &availableVaryings);
+    }
     // Don't lift constant expressions if we're using regular UBOs, since lifting is likely only
     // beneficial if we're avoiding a storage buffer access.
     if (caps->storageBufferSupport()) {
@@ -344,6 +361,9 @@ static int key_to_string(const Caps* caps,
                     break;
                 case RootBlockType::kClip:
                     str->append("[RootClip] ");
+                    break;
+                case RootBlockType::kMeshShader:
+                    str->append("[RootMeshShader] ");
                     break;
                 default:
                     SkUNREACHABLE;
