@@ -147,6 +147,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3edb075a_46a5798b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-08-17T16:48:16Z",
+      "side": 1,
+      "message": "Completely agree on the options struct, it\u0027s better for future-proofing the API.  I don\u0027t want to necessarily push that refactor onto Wenting though, I\u0027m signing up to do it in a follow-up if needed.\n\nRegarding the unit: note that 1/1000 em semantics are handled in Skottie, and at the SkShaper API level it\u0027s just em/font-size units.  FWIW CSS letter-spacing supports a bunch of units, including em.  Scaling relative to font size (em) seems most useful in practice.",
+      "parentUuid": "0aebc708_80da6a12",
+      "revId": "b6032367519a787b00b393940dfd1c24b44f74e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8b24cd25_5893cde6",
         "filename": "modules/skottie/src/text/TextShaper.cpp",
         "patchSetId": 3
