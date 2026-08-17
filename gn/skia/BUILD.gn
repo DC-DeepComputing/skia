@@ -19,6 +19,8 @@ declare_args() {
   malloc = ""
   werror = false
   xcode_sysroot = ""
+  supports_unsafe_buffers_mappings = false
+  enable_unsafe_buffer_warning = !is_android
 }
 
 if (is_ios && xcode_sysroot == "") {
@@ -637,6 +639,28 @@ config("warnings") {
       "-Wdeprecated-writable-str",
       "-Wextra-semi",
     ]
+
+    if (enable_unsafe_buffer_warning) {
+      supports_unsafe_buffers_mappings =
+          exec_script("//gn/check_compiler_flag.py",
+                      [
+                        cc,
+                        "--warning-suppression-mappings=/dev/null",
+                      ],
+                      "value")
+      if (supports_unsafe_buffers_mappings) {
+        cflags += [
+          "-Wunsafe-buffer-usage",
+          "--warning-suppression-mappings=" + rebase_path(
+                  "../../tools/unsafe_buffers/unsafe_buffers_mappings.txt",
+                  root_build_dir),
+        ]
+      } else {
+        cflags += [ "-Wno-unsafe-buffer-usage" ]
+      }
+    } else {
+      cflags += [ "-Wno-unsafe-buffer-usage" ]
+    }
   }
 
   # !is_clang is a proxy for gcc.
