@@ -1,7 +1,9 @@
-// Copyright (c) 2014 Google Inc.
-//
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+/*
+ * Copyright (c) 2014 Google Inc.
+ *
+ * Use of this source code is governed by a BSD-style license that can be
+ * found in the LICENSE file.
+ */
 
 // This header file defines implementation details of how the trace macros in
 // SkTraceEventCommon.h collect and store trace events. Anything not
@@ -10,18 +12,7 @@
 #ifndef SkTraceEvent_DEFINED
 #define SkTraceEvent_DEFINED
 
-#include "include/utils/SkEventTracer.h"
 #include "src/core/SkTraceEventCommon.h" // IWYU pragma: export
-#include "src/core/SkUtils.h"
-#include <atomic>
-
-#if defined(SK_ANDROID_FRAMEWORK_USE_PERFETTO)
-    #include <string>
-    #include <utility>
-#endif
-
-////////////////////////////////////////////////////////////////////////////////
-// Implementation specific tracing API definitions.
 
 // Makes it easier to add traces with a simple TRACE_EVENT0("skia", TRACE_FUNC).
 #if defined(_MSC_VER)
@@ -30,8 +21,7 @@
     #define TRACE_FUNC __PRETTY_FUNCTION__
 #endif
 
-
-#if defined(SK_ANDROID_FRAMEWORK_USE_PERFETTO)
+#if defined(SK_ANDROID_FRAMEWORK_USE_PERFETTO) || defined(SK_USE_PERFETTO)
     // By default, const char* argument values are assumed to have long-lived scope
     // and will not be copied. Use this macro to force a const char* to be copied.
     //
@@ -51,7 +41,11 @@
     // E.g. TRACE_EVENT0("skia", TRACE_STR_STATIC(this->name()));
     // No-op when Perfetto is disabled, or outside of Android framework.
     #define TRACE_STR_STATIC(str) (::perfetto::StaticString{str})
-#else // !SK_ANDROID_FRAMEWORK_USE_PERFETTO
+#else // !SK_ANDROID_FRAMEWORK_USE_PERFETTO && !SK_USE_PERFETTO
+    #include "include/utils/SkEventTracer.h"
+    #include "src/core/SkUtils.h"
+    #include <atomic>
+
     // By default, const char* argument values are assumed to have long-lived scope
     // and will not be copied. Use this macro to force a const char* to be copied.
     //
@@ -71,7 +65,6 @@
     // E.g. TRACE_EVENT0("skia", TRACE_STR_STATIC(this->name()));
     // No-op when Perfetto is disabled, or outside of Android framework.
     #define TRACE_STR_STATIC(str) (str)
-#endif // SK_ANDROID_FRAMEWORK_USE_PERFETTO
 
 #define INTERNAL_TRACE_EVENT_CATEGORY_GROUP_ENABLED_FOR_RECORDING_MODE() \
     *INTERNAL_TRACE_EVENT_UID(category_group_enabled) & \
@@ -111,15 +104,11 @@
 #define TRACE_EVENT_API_UPDATE_TRACE_EVENT_DURATION \
     SkEventTracer::GetInstance()->updateTraceEventDuration
 
-#ifdef SK_ANDROID_FRAMEWORK_USE_PERFETTO
-    #define TRACE_EVENT_API_NEW_TRACE_SECTION(...) do {} while (0)
-#else
-    // Start writing to a new trace output section (file, etc.).
-    // Accepts a label for the new section.
-    // void TRACE_EVENT_API_NEW_TRACE_SECTION(const char* name)
-    #define TRACE_EVENT_API_NEW_TRACE_SECTION \
-        SkEventTracer::GetInstance()->newTracingSection
-#endif
+// Start writing to a new trace output section (file, etc.).
+// Accepts a label for the new section.
+// void TRACE_EVENT_API_NEW_TRACE_SECTION(const char* name)
+#define TRACE_EVENT_API_NEW_TRACE_SECTION \
+    SkEventTracer::GetInstance()->newTracingSection
 
 // Defines visibility for classes in trace_event.h
 #define TRACE_EVENT_API_CLASS_EXPORT SK_API
@@ -400,4 +389,6 @@ class TRACE_EVENT_API_CLASS_EXPORT ScopedTracer {
 
 }  // namespace skia_private
 
-#endif
+#endif // !SK_ANDROID_FRAMEWORK_USE_PERFETTO && !SK_USE_PERFETTO
+
+#endif // SkTraceEvent_DEFINED
