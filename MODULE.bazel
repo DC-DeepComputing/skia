@@ -344,3 +344,6 @@ use_repo(
     "gn_mac_amd64",
     "gn_mac_arm64",
 )
+
+compiler_ext = use_extension("//bazel:check_compiler.bzl", "compiler_ext")
+use_repo(compiler_ext, "clang_features")
