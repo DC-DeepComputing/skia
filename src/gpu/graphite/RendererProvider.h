@@ -171,6 +171,7 @@ public:
 private:
     static constexpr int kPathTypeCount = 4;
     static constexpr int kVerticesCount = 8; // 2 modes * 2 color configs * 2 tex coord configs
+    static constexpr int kMeshCount     = 2; // 2 modes
 
     friend class Context; // for ctor
 

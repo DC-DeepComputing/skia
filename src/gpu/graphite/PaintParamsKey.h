@@ -36,7 +36,7 @@ enum class RootBlockType : int32_t {
     kSrcColor = -1,
     kFinalBlend = -2,
     kClip = -3,
-    kMeshShader = -4,
+    kMeshShader = -4
 };
 
 struct RootNodesInfo {
@@ -45,6 +45,8 @@ struct RootNodesInfo {
     const ShaderNode* fClip = nullptr;
     const ShaderNode* fMeshShader = nullptr;
 
+    // We store the SkMeshSpecification referenced by the `meshShader` when populating this struct
+    // so we don't have to constantly look up the specification by the shader snippet id.
     const SkMeshSpecification* fMeshSpec = nullptr;
 
     SkSpan<const ShaderNode*> fRoots;
@@ -128,7 +130,8 @@ public:
                                const ShaderCodeDictionary*,
                                const RuntimeEffectDictionary*,
                                SkArenaAlloc*,
-                               int availableVaryings) const;
+                               int availableVaryings,
+                               bool canLiftCoords) const;
 
     // Converts the key to a structured list of snippet information for debugging or labeling
     // purposes.
