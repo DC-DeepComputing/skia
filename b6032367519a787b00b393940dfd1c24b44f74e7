@@ -94,6 +94,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "61dc03c2_40598e1c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-08-17T16:06:25Z",
+      "side": 1,
+      "message": "I\u0027d prefer not to add textTracking directly to the SkShaper base class and backend implementations.\n\nExisting Skia Precedent: SkParagraph already supports letter-spacing via \nTextStyle::setLetterSpacing() and handles it entirely in its own layout layer post-shaping (ParagraphImpl::applySpacingAndBuildClusterTable()) without needing any changes to SkShaper.\n\nSkShaper is intended as a focused low-level shaping engine interface (BiDi, script run segmentation, font fallback, HarfBuzz/CoreText bridging). Tracking/letter-spacing is a higher-level text layout property. Adding higher-level layout parameters directly into SkShaper::shape() sets a precedent for API scope creep.\n\nIn this CL, the HarfBuzz, CoreText, and Primitive backends simply add textTracking * fontSize * scaleX to each glyph advance. Since this is post-shaping advance arithmetic rather than native shaping engine functionality, we shouldn\u0027t force every SkShaper backend to duplicate this logic.\n\nCan we handle tracking inside Skottie\u0027s RunHandler (or via a TrackingRunHandler wrapper around SkShaper::RunHandler) in \nmodules/skottie/src/text/TextShaper.cpp?\n\nWhen commitRun(...) receives the glyph advances, it can apply the tracking delta directly to the run\u0027s advances. This keeps SkShaper clean, avoids backend changes, and automatically supports tracking for any SkShaper implementation used by Skottie.",
+      "revId": "b6032367519a787b00b393940dfd1c24b44f74e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8b24cd25_5893cde6",
         "filename": "modules/skottie/src/text/TextShaper.cpp",
         "patchSetId": 3
