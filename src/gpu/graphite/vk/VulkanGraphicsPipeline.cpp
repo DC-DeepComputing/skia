@@ -975,7 +975,8 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
             step->primitiveType(),
             step->appendsVertices() ? VK_VERTEX_INPUT_RATE_VERTEX : VK_VERTEX_INPUT_RATE_INSTANCE,
             step->staticAttributes(),
-            step->appendAttributes(),
+            shaderInfo->appendAttributes().empty() ? step->appendAttributes()
+                                                   : shaderInfo->appendAttributes(),
             vertexBindingDescriptions,
             vertexAttributeDescriptions,
             step->depthStencilSettings(),
