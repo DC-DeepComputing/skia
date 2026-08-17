@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Google LLC
+ * Copyright 2026 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -7,41 +7,128 @@
 
 #include "tools/trace/EventTracingPriv.h"
 
-#include "include/utils/SkEventTracer.h"
-#include "src/core/SkATrace.h"
-#include "src/core/SkTraceEvent.h"
-#include "tools/flags/CommandLineFlags.h"
-#include "tools/trace/ChromeTracingTracer.h"
-#include "tools/trace/SkDebugfTracer.h"
-
-// SkPerfettoTrace is only relevant when Perfetto is requested, and for in-process tracing. It is
-// incompatible with the alternate "direct macro override" approach to using Perfetto, which is
-// currently used for SK_BUILD_FOR_ANDROID_FRAMEWORK. Skia's Perfetto integration is currently in
-// in a transitionary period, see go/skia-perfetto for details.
 #if defined(SK_USE_PERFETTO)
-  #if defined(SK_ANDROID_FRAMEWORK_USE_PERFETTO)
-    #error "SK_USE_PERFETTO and SK_ANDROID_FRAMEWORK_USE_PERFETTO are mutually exclusive"
-  #endif
+#include <perfetto/tracing.h>
+#include <fcntl.h>
+#include <fstream>
+#include "tools/flags/CommandLineFlags.h"
+#include <cstdlib>
 
-  #include "tools/trace/SkPerfettoTrace.h"
-#endif
+static DEFINE_string(perfettoOutputDir, "./",
+                     "Output directory for perfetto trace file(s).\n"
+                     "Note: not the name of the file itself.\n"
+                     "Will only have an effect if perfetto tracing is enabled. See --trace.");
+static DEFINE_string(perfettoOutputFileName, "trace",
+                     "Output file name (excluding path and file extension) for the perfetto trace"
+                     "file.\nNote: When splitting trace files by benchmark (see "
+                     "--splitPerfettoTracesByBenchmark), file name will be determined by the "
+                     "benchmark name.\n"
+                     "Will only have an effect if perfetto tracing is enabled. See --trace.");
+static DEFINE_string(perfettoOutputFileExtension, ".perfetto-trace",
+                     "Output file extension for perfetto trace file(s).\n"
+                     "Will only have an effect if perfetto tracing is enabled. See --trace.");
+static DEFINE_bool(longPerfettoTrace, false,
+                   "Perfetto within Skia is optimized for tracing performance of 'smaller' traces"
+                   "(~10 seconds or less). Set this flag to true to optimize for longer tracing"
+                   "sessions.\n"
+                   "Will only have an effect if perfetto tracing is enabled. See --trace.");
+
+class SkiaPerfettoSession {
+public:
+    static SkiaPerfettoSession& GetInstance() {
+        static SkiaPerfettoSession instance;
+        return instance;
+    }
+
+    void start(const char* baseFileName) {
+        if (fSession) {
+            return; // Already running
+        }
+
+        fCurrentSessionFullOutputPath = FLAGS_perfettoOutputDir[0] +
+                                        std::string(baseFileName) +
+                                        FLAGS_perfettoOutputFileExtension[0];
+
+        perfetto::TraceConfig cfg;
+        cfg.add_buffers()->set_size_kb(32000);
+
+        if (FLAGS_longPerfettoTrace) {
+            cfg.set_write_into_file(true);
+            cfg.set_file_write_period_ms(5000);
+            cfg.set_flush_period_ms(10000);
+        }
+
+        auto* ds_cfg = cfg.add_data_sources()->mutable_config();
+        ds_cfg->set_name("track_event");
+
+        fSession = perfetto::Tracing::NewTrace();
+        if (FLAGS_longPerfettoTrace) {
+            fFd = open(fCurrentSessionFullOutputPath.c_str(), O_RDWR | O_CREAT | O_TRUNC, 0600);
+            fSession->Setup(cfg, fFd);
+        } else {
+            fSession->Setup(cfg);
+        }
+        fSession->StartBlocking();
+    }
+
+    void stop() {
+        if (!fSession) {
+            return;
+        }
+
+        perfetto::TrackEvent::Flush();
+        fSession->StopBlocking();
+
+        if (!FLAGS_longPerfettoTrace) {
+            std::vector<char> trace_data(fSession->ReadTraceBlocking());
+            std::ofstream output;
+            output.open(fCurrentSessionFullOutputPath, std::ios::out | std::ios::binary);
+            output.write(&trace_data[0], trace_data.size());
+            output.close();
+        } else {
+            if (fFd != -1) {
+                close(fFd);
+                fFd = -1;
+            }
+        }
+        fSession.reset();
+    }
+
+private:
+    SkiaPerfettoSession() = default;
+    ~SkiaPerfettoSession() { this->stop(); }
+
+    std::unique_ptr<perfetto::TracingSession> fSession;
+    std::string fCurrentSessionFullOutputPath;
+    int fFd = -1;
+};
+
+static bool gPerfettoInitialized = false;
+static void initPerfetto() {
+    if (gPerfettoInitialized) {
+        return;
+    }
+    perfetto::TracingInitArgs args;
+    args.backends |= perfetto::kInProcessBackend;
+    if (FLAGS_longPerfettoTrace) {
+        args.shmem_size_hint_kb = 2000;
+    }
+    perfetto::Tracing::Initialize(args);
+    perfetto::TrackEvent::Register();
+    gPerfettoInitialized = true;
+}
+
+#endif // SK_USE_PERFETTO
 
 static DEFINE_string(trace,
               "",
               "Log trace events in one of several modes:\n"
-              "  debugf     : Show events using SkDebugf\n"
-              "  atrace     : Send events to Android ATrace\n"
               "  perfetto   : Send events to Perfetto (Linux, Android, and Mac only)\n"
               "  <filename> : Any other string is interpreted as a filename. Writes\n"
-              "               trace events to specified file as JSON, for viewing\n"
-              "               with chrome://tracing");
-
-static DEFINE_string(traceMatch,
-              "",
-              "Filter which categories are traced.\n"
-              "Uses same format as --match\n");
+              "               trace events to specified file as Perfetto proto");
 
 void initializeEventTracingForTools(const char* traceFlag) {
+#if defined(SK_USE_PERFETTO)
     if (!traceFlag) {
         if (FLAGS_trace.isEmpty()) {
             return;
@@ -49,65 +136,35 @@ void initializeEventTracingForTools(const char* traceFlag) {
         traceFlag = FLAGS_trace[0];
     }
 
-    SkEventTracer* eventTracer = nullptr;
-    if (0 == strcmp(traceFlag, "atrace")) {
-        eventTracer = new SkATrace();
-    } else if (0 == strcmp(traceFlag, "debugf")) {
-        eventTracer = new SkDebugfTracer();
-    } else if (0 == strcmp(traceFlag, "perfetto")) {
-      #if defined(SK_USE_PERFETTO)
-          eventTracer = new SkPerfettoTrace();
-      #else
-          // TODO(b/259248961): update this explanation (and associated docs) as the Perfetto
-          // transition progresses.
-          SkDebugf("Perfetto is not enabled (SK_USE_PERFETTO is false). Perfetto tracing will not "
-                   "be performed.\nTracing tools with Perfetto is only enabled for Linux, Android, "
-                   "and Mac.\n");
-          return;
-      #endif
-    }
-    else {
-        eventTracer = new ChromeTracingTracer(traceFlag);
-    }
-
-    SkAssertResult(SkEventTracer::SetInstance(eventTracer));
-}
-
-uint8_t* SkEventTracingCategories::getCategoryGroupEnabled(const char* name) {
-    static_assert(0 == offsetof(CategoryState, fEnabled), "CategoryState");
-
-    // We ignore the "disabled-by-default-" prefix in our internal tools
-    if (SkStrStartsWith(name, TRACE_CATEGORY_PREFIX)) {
-        name += strlen(TRACE_CATEGORY_PREFIX);
-    }
-
-    // Chrome's implementation of this API does a two-phase lookup (once without a lock, then again
-    // with a lock. But the tracing macros avoid calling these functions more than once per site,
-    // so just do something simple (and easier to reason about):
-    SkAutoMutexExclusive lock(fMutex);
-    for (int i = 0; i < fNumCategories; ++i) {
-        if (0 == strcmp(name, fCategories[i].fName)) {
-            return reinterpret_cast<uint8_t*>(&fCategories[i]);
+    static bool atexitRegistered = false;
+    if (0 == strcmp(traceFlag, "perfetto")) {
+        initPerfetto();
+        SkiaPerfettoSession::GetInstance().start(FLAGS_perfettoOutputFileName[0]);
+        if (!atexitRegistered) {
+            std::atexit(terminateEventTracingForTools);
+            atexitRegistered = true;
+        }
+    } else if (traceFlag && strlen(traceFlag) > 0) {
+        // interpret as filename
+        initPerfetto();
+        SkiaPerfettoSession::GetInstance().start(traceFlag);
+        if (!atexitRegistered) {
+            std::atexit(terminateEventTracingForTools);
+            atexitRegistered = true;
         }
     }
-
-    if (fNumCategories >= kMaxCategories) {
-        SkDEBUGFAIL("Exhausted event tracing categories. Increase kMaxCategories.");
-        return reinterpret_cast<uint8_t*>(&fCategories[0]);
-    }
-
-    fCategories[fNumCategories].fEnabled =
-            CommandLineFlags::ShouldSkip(FLAGS_traceMatch, name)
-                    ? 0
-                    : SkEventTracer::kEnabledForRecording_CategoryGroupEnabledFlags;
-
-    fCategories[fNumCategories].fName = name;
-    return reinterpret_cast<uint8_t*>(&fCategories[fNumCategories++]);
+#endif
 }
 
-const char* SkEventTracingCategories::getCategoryGroupName(const uint8_t* categoryEnabledFlag) {
-    if (categoryEnabledFlag) {
-        return reinterpret_cast<const CategoryState*>(categoryEnabledFlag)->fName;
-    }
-    return nullptr;
+void terminateEventTracingForTools() {
+#if defined(SK_USE_PERFETTO)
+    SkiaPerfettoSession::GetInstance().stop();
+#endif
+}
+
+void traceEventNewTracingSection(const char* name) {
+#if defined(SK_USE_PERFETTO)
+    SkiaPerfettoSession::GetInstance().stop();
+    SkiaPerfettoSession::GetInstance().start(name);
+#endif
 }

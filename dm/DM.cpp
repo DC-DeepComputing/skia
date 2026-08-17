@@ -43,9 +43,7 @@
 #include "tools/flags/CommonFlagsConfig.h"
 #include "tools/flags/CommonFlagsGanesh.h"
 #include "tools/fonts/FontToolUtils.h"
-#include "tools/trace/ChromeTracingTracer.h"
 #include "tools/trace/EventTracingPriv.h"
-#include "tools/trace/SkDebugfTracer.h"
 
 #include <algorithm>
 #include <cstring>
