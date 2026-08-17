@@ -129,6 +129,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0aebc708_80da6a12",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-08-17T16:27:07Z",
+      "side": 1,
+      "message": "That makes sense regarding line breaking—since Skottie relies on SkShaper\u0027s built-in line-wrapping (ShaperDrivenWrapper), applying tracking post-shaping in Skottie would indeed result in incorrect line wraps.\n(I always knew that line breaking should not be done in SkShaper - for exactly this reason - but what\u0027s done is done).\n\nHowever, adding float textTracking directly as a new positional parameter to virtual void shape() has a couple of design drawbacks:\n\nAPI signature churn: Adding parameters one-by-one to virtual shape(...) is brittle. If we later need wordSpacing, hyphenation, or CSS letter-spacing flags, we\u0027d have to add even more overloads/parameters to SkShaper.\nUnit coupling: Passing a float in EM units couples the low-level SkShaper API directly to Lottie/After Effects unit conventions (tr / 1000).\nCould we instead consolidate wrapping/shaping options into a ShapingOptions struct?\n\nstruct ShapingOptions {\n    SkScalar fWidth \u003d SK_ScalarMax;\n    float fTextTracking \u003d 0.0f; // extra advance in ems\n    // Future-proof for wordSpacing, etc.\n};\nPassing ShapingOptions into shape() (or configuring ShaperDrivenWrapper) would solve the line-breaking requirement for Skottie while keeping SkShaper clean and extensible for future layout options.",
+      "parentUuid": "2d7b8ee3_45cb0f27",
+      "revId": "b6032367519a787b00b393940dfd1c24b44f74e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8b24cd25_5893cde6",
         "filename": "modules/skottie/src/text/TextShaper.cpp",
         "patchSetId": 3
