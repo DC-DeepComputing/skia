@@ -133,7 +133,22 @@ def skia_cc_test(name, copts = DEFAULT_COPTS, linkopts = DEFAULT_LINKOPTS, **kwa
     """
     cc_test(name = name, copts = copts, linkopts = linkopts, **kwargs)
 
-def skia_cc_library(name, copts = DEFAULT_COPTS, local_defines = [], **kwargs):
+UNSAFE_BUFFERS_FLAGS = select({
+    "//bazel/common_config_settings:unsafe_buffers_enabled_true": [
+        "-Wunsafe-buffer-usage",
+        "--warning-suppression-mappings=$(location //tools:unsafe_buffers_mappings.txt)",
+    ],
+    "//conditions:default": [],
+})
+
+UNSAFE_BUFFERS_INPUTS = select({
+    "//bazel/common_config_settings:unsafe_buffers_enabled_true": [
+        "//tools:unsafe_buffers_mappings.txt",
+    ],
+    "//conditions:default": [],
+})
+
+def skia_cc_library(name, copts = DEFAULT_COPTS, local_defines = [], additional_compiler_inputs = [], **kwargs):
     """A wrapper around cc_library for Skia C++ libraries.
 
     This lets us provide compiler flags (copts) consistently to the Skia build. By default,
@@ -151,6 +166,7 @@ def skia_cc_library(name, copts = DEFAULT_COPTS, local_defines = [], **kwargs):
             from @skia_user_config//:copts.bzl.
         local_defines: Defines set when compiling this library, but not dependents. We
             add a define to all our libraries to correctly export/import symbols.
+        additional_compiler_inputs: Extra files needed for compilation.
         **kwargs: All the normal arguments that cc_library takes.
     """
 
@@ -162,7 +178,13 @@ def skia_cc_library(name, copts = DEFAULT_COPTS, local_defines = [], **kwargs):
     ld = []
     ld.extend(local_defines)
     ld.append("SKIA_IMPLEMENTATION=1")
-    cc_library(name = name, copts = copts, local_defines = ld, **kwargs)
+    cc_library(
+        name = name,
+        copts = copts + UNSAFE_BUFFERS_FLAGS,
+        local_defines = ld,
+        additional_compiler_inputs = additional_compiler_inputs + UNSAFE_BUFFERS_INPUTS,
+        **kwargs
+    )
 
 def skia_filegroup(**kwargs):
     """A wrapper around filegroup allowing us to customize visibility in G3."""
