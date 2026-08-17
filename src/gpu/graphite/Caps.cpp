@@ -159,6 +159,19 @@ bool Caps::isTexturable(const TextureInfo& info, bool allowMSAA) const {
                              allowMSAA,
                              /*allowExternal=*/true,
                              /*allowCompressed=*/true,
+                             /*allowProtected=*/true) ||
+           this->isSupported(info, TextureUsage::kUnfilterableSample,
+                             allowMSAA,
+                             /*allowExternal=*/true,
+                             /*allowCompressed=*/true,
+                             /*allowProtected=*/true);
+}
+
+bool Caps::isFilterable(const TextureInfo& info, bool allowMSAA) const {
+    return this->isSupported(info, TextureUsage::kSample,
+                             allowMSAA,
+                             /*allowExternal=*/true,
+                             /*allowCompressed=*/true,
                              /*allowProtected=*/true);
 }
 
@@ -269,8 +282,12 @@ static constexpr SkEnumBitMask<TextureUsage> kDefaultSampledUsage =
 TextureInfo Caps::getDefaultSampledTextureInfo(SkColorType colorType,
                                                Mipmapped mipmapped,
                                                Protected isProtected,
-                                               Renderable renderable) const {
-    SkEnumBitMask<TextureUsage> usage = kDefaultSampledUsage;
+                                               Renderable renderable,
+                                               Filterable filterable) const {
+    SkEnumBitMask<TextureUsage> usage =
+            (filterable == Filterable::kYes ? TextureUsage::kSample : TextureUsage::kUnfilterableSample) |
+            TextureUsage::kCopySrc |
+            TextureUsage::kCopyDst;
     SkSpan<const TextureFormat> formats = PreferredTextureFormats(colorType);
     skia_private::STArray<3, TextureFormat> validFormats;
     if (renderable == Renderable::kYes) {
@@ -295,7 +312,17 @@ TextureInfo Caps::getDefaultSampledTextureInfo(SkColorType colorType,
 
 TextureInfo Caps::getTextureInfoForSampledCopy(const TextureInfo& info, Mipmapped mipmapped) const {
     const TextureFormat format = TextureInfoPriv::ViewFormat(info);
-    return this->getDefaultTextureInfo(kDefaultSampledUsage,
+
+    SkEnumBitMask<TextureUsage> usage = kDefaultSampledUsage;
+    auto [supportedUsage, _] = this->getTextureSupport(format, Tiling::kOptimal);
+
+    // Fall back to unfilterable if linear sampling is unavailable but unfilterable is supported
+    if (!(supportedUsage & TextureUsage::kSample) &&
+        (supportedUsage & TextureUsage::kUnfilterableSample)) {
+        usage = (usage & ~TextureUsage::kSample) | TextureUsage::kUnfilterableSample;
+    }
+
+    return this->getDefaultTextureInfo(usage,
                                        SkSpan(&format, 1),
                                        SampleCount::k1,
                                        mipmapped,

@@ -89,9 +89,10 @@ enum class DawnFormatFlag {
     Blend     = 0x4,  // Corresponds to https://gpuweb.github.io/gpuweb/#blendable
     MSAA      = 0x8,  // Supports MSAA (4x only)
     Resolve   = 0x10, // Supports being a resolve target
-    WriteOnly = 0x20, // Support for wgpu::TextureUsage::StorageBinding as "write-only"
-    ReadOnly  = 0x40, // Support for wgpu::TextureUsage::StorageBinding as "read-only"
-    ReadWrite = 0x80, // Support for wgpu::TextureUsage::StorageBinding as "read-write"
+    WriteOnly          = 0x20, // Support for wgpu::TextureUsage::StorageBinding as "write-only"
+    ReadOnly           = 0x40, // Support for wgpu::TextureUsage::StorageBinding as "read-only"
+    ReadWrite          = 0x80, // Support for wgpu::TextureUsage::StorageBinding as "read-write"
+    UnfilterableSample = 0x100,
 };
 SK_MAKE_BITMASK_OPS(DawnFormatFlag)
 
