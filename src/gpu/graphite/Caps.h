@@ -157,7 +157,8 @@ public:
     TextureInfo getDefaultSampledTextureInfo(SkColorType,
                                              Mipmapped,
                                              Protected,
-                                             Renderable) const;
+                                             Renderable,
+                                             Filterable = Filterable::kYes) const;
 
     TextureInfo getTextureInfoForSampledCopy(const TextureInfo&,  Mipmapped) const;
 
@@ -517,6 +518,13 @@ protected:
 
     bool fSetBackendLabels = false;
 
+protected:
+    // Return the supported TextureUsages and SampleCounts for a texture of the given format and
+    // tiling, assuming the textures are created with the requisite usages.
+    FormatSupport getTextureSupport(TextureFormat format, Tiling tiling) const {
+        return fFormatSupport[static_cast<int>(tiling)][static_cast<int>(format)];
+    }
+
 private:
     // Validates format support and calls onGetDefaultTextureInfo if it would be valid, returning
     // a TextureInfo for the first format that is supported.
@@ -535,12 +543,6 @@ private:
                                                 Mipmapped,
                                                 Protected,
                                                 Discardable) const = 0;
-
-    // Return the supported TextureUsages and SampleCounts for a texture of the given format and
-    // tiling, assuming the textures are created with the requisite usages.
-    FormatSupport getTextureSupport(TextureFormat format, Tiling tiling) const {
-        return fFormatSupport[static_cast<int>(tiling)][static_cast<int>(format)];
-    }
 
     // Return the mask of TextureUsages supported by the described texture, as well as its tiling
     // representation. Subclasses can assume that this will only be called on valid TextureInfos
