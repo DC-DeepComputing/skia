@@ -17,6 +17,8 @@ load(
     "//bazel:generate_cpp_files_for_headers.bzl",
     _generate_cpp_files_for_headers = "generate_cpp_files_for_headers",
 )
+load("@clang_features//:compiler_info.bzl", "SUPPORTS_UNSAFE_BUFFERS")
+
 
 generate_cpp_files_for_headers = _generate_cpp_files_for_headers
 
@@ -133,7 +135,18 @@ def skia_cc_test(name, copts = DEFAULT_COPTS, linkopts = DEFAULT_LINKOPTS, **kwa
     """
     cc_test(name = name, copts = copts, linkopts = linkopts, **kwargs)
 
-def skia_cc_library(name, copts = DEFAULT_COPTS, local_defines = [], **kwargs):
+_MAPPINGS_FILE = Label("//:unsafe_buffers_mappings.txt")
+
+UNSAFE_BUFFERS_FLAGS = [
+    "-Wunsafe-buffer-usage",
+    "--warning-suppression-mappings=$(location %s)" % _MAPPINGS_FILE,
+] if SUPPORTS_UNSAFE_BUFFERS else []
+
+UNSAFE_BUFFERS_INPUTS = [
+    _MAPPINGS_FILE,
+] if SUPPORTS_UNSAFE_BUFFERS else []
+
+def skia_cc_library(name, copts = DEFAULT_COPTS, local_defines = [], additional_compiler_inputs = [], **kwargs):
     """A wrapper around cc_library for Skia C++ libraries.
 
     This lets us provide compiler flags (copts) consistently to the Skia build. By default,
@@ -151,6 +164,7 @@ def skia_cc_library(name, copts = DEFAULT_COPTS, local_defines = [], **kwargs):
             from @skia_user_config//:copts.bzl.
         local_defines: Defines set when compiling this library, but not dependents. We
             add a define to all our libraries to correctly export/import symbols.
+        additional_compiler_inputs: Extra files needed for compilation.
         **kwargs: All the normal arguments that cc_library takes.
     """
 
@@ -162,7 +176,13 @@ def skia_cc_library(name, copts = DEFAULT_COPTS, local_defines = [], **kwargs):
     ld = []
     ld.extend(local_defines)
     ld.append("SKIA_IMPLEMENTATION=1")
-    cc_library(name = name, copts = copts, local_defines = ld, **kwargs)
+    cc_library(
+        name = name,
+        copts = copts + UNSAFE_BUFFERS_FLAGS,
+        local_defines = ld,
+        additional_compiler_inputs = additional_compiler_inputs + UNSAFE_BUFFERS_INPUTS,
+        **kwargs
+    )
 
 def skia_filegroup(**kwargs):
     """A wrapper around filegroup allowing us to customize visibility in G3."""
