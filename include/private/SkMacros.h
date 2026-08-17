@@ -167,4 +167,25 @@ private:
     friend constexpr X operator&(X, SkTFlagsMask<X>); \
     friend X& operator &=(X&, SkTFlagsMask<X>)
 
+#if __has_cpp_attribute(clang::unsafe_buffer_usage)
+#define SK_UNSAFE_BUFFER_USAGE [[clang::unsafe_buffer_usage]]
+#else
+#define SK_UNSAFE_BUFFER_USAGE
+#endif
+
+#if defined(__clang__) && defined(__has_warning)
+#  if __has_warning("-Wunsafe-buffer-usage")
+#    define SK_UNSAFE_BUFFERS(...) \
+       _Pragma("clang unsafe_buffer_usage begin") \
+       __VA_ARGS__ \
+       _Pragma("clang unsafe_buffer_usage end")
+#  else
+#    define SK_UNSAFE_BUFFERS(...) __VA_ARGS__
+#  endif
+#else
+#  define SK_UNSAFE_BUFFERS(...) __VA_ARGS__
+#endif
+
+#define SK_UNSAFE_TODO(...) SK_UNSAFE_BUFFERS(__VA_ARGS__)
+
 #endif  // SkMacros_DEFINED
