@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b20a1df1_7d26c48f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18514
+      },
+      "writtenOn": "2026-08-17T08:34:45Z",
+      "side": 1,
+      "message": "I had to update BUILD.gn. PTAL.",
+      "revId": "7f7256f4bb64aafe0ee60dbc33e689c2bdf402ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
