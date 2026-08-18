@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "08177d8f_5fff1bf0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-18T15:53:11Z",
+      "side": 1,
+      "message": "Thank you for submitting such a large piece of work. In general, changing how we render glyphs can be a very sensitive topic so I\u0027d like to move forward with this work in a staged manner. I do think it represents an ideal state to end up in, assuming we don\u0027t run into expected issues.\n\nMy thoughts are as follows:\n1. Improving the quality of the masks Skia can generate with its own code will help smooth the adoption of Fontations as a more secure font system.\n2. Chrome\u0027s use of Ganesh is going away, and will primarily focus on Graphite+Dawn. WebGPU/Dawn do not expose a 565 texture format so they are already paying the overhead of 32-bit LCD rendering.\n3. This represents significant code simplification to eventually remove the 16-bit LCD mask handling, and remove the fallback handling when 565 is unavailable on a GPU (conversely, we can always assume 32-bit 8888 formats are supported).\n\nHowever, we need to move carefully so this needs to be broken up into different steps. First I think we can land the support for 32-bit LCD masks and the new mask generation.  Then we need to add a way to control whether or not to opt into the 32-bit or legacy 16-bit LCD masks.  Chromium and other clients can then be opted into on a case-by-case basis after our own local review of the quality and behavior.  For chrome we can also run a Finch experiment to control the setting, which will give us field statistics about impacts on memory and performance (if any), and provide a quick way to go back to the old behavior if there are unexpected bugs or complaints from users.  Assuming all of that passes without issue, then we can proceed with removing the 16-bit LCD mask support.\n\nWhile I don\u0027t necessarily expect there to be memory and performance regressions when considering Graphite+Dawn, we need to be sensitive to the tradeoffs for clients that are using CPU-only renedering.",
+      "revId": "d510a8cd060d4e1266b05948c3f27b6070454ad9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
