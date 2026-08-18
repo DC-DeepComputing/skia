@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "00037044_021ae7ca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18514
+      },
+      "writtenOn": "2026-08-18T04:04:37Z",
+      "side": 1,
+      "message": "Apparently the previous CL failed to link on google3. The only change in this version is in `src/partition_alloc/safety_checks.h` line ll, was\n\n```cpp\n#if defined(SK_USE_PARTITION_ALLOC)\n```\n\nnow\n\n```cpp\n#if defined(SK_USE_PARTITION_ALLOC_AS_MALLOC)\n```\n\nI think that covers it. I have almost zero experience with google3.",
+      "revId": "533751d2c5841fab71cd5fd328c9a108f67878a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
