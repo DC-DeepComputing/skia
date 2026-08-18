@@ -9,9 +9,8 @@
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/DrawContext.h"
 #include "src/gpu/graphite/RecorderPriv.h"
+#include "src/gpu/graphite/TextureInfoPriv.h"
 #include "src/gpu/graphite/task/UploadTask.h"
-
-#include "src/gpu/graphite/task/CopyTask.h"
 
 namespace skgpu::graphite {
 
@@ -24,25 +23,22 @@ bool AlphaAtlasManager::initializeTexture() {
     if (fTextures.back().fTexture) {
         return true;
     }
-    return makeTextureProxy(fTextures.back(), fTextures.back().fCurrentHeight);
-}
 
-bool AlphaAtlasManager::makeTextureProxy(TextureState& state, int32_t height) {
     const Caps* caps = fRecorder->priv().caps();
     TextureInfo info = caps->getDefaultSampledTextureInfo(
             kColorType, Mipmapped::kNo, fRecorder->priv().isProtected(), Renderable::kNo);
 
-    state.fTexture = TextureProxy::Make(caps,
-                                        fRecorder->priv().resourceProvider(),
-                                        SkISize::Make(kAtlasWidth, height),
-                                        info,
-                                        "AlphaAtlas",
-                                        Budgeted::kYes);
-    state.fCurrentHeight = height;
-    return state.fTexture != nullptr;
+    fTextures.back().fTexture = TextureProxy::Make(caps,
+                                                   fRecorder->priv().resourceProvider(),
+                                                   SkISize::Make(kAtlasWidth, kAtlasHeight),
+                                                   info,
+                                                   "AlphaAtlas",
+                                                   Budgeted::kYes);
+
+    return fTextures.back().fTexture != nullptr;
 }
 
-bool AlphaAtlasManager::getAssociatedProxies(
+void AlphaAtlasManager::getAssociatedProxies(
         SkTDArray<std::pair<int32_t, sk_sp<TextureProxy>>>& allocations) {
     SkASSERT(fMarked);
     SkDEBUGCODE(fMarked = false;)
@@ -52,104 +48,36 @@ bool AlphaAtlasManager::getAssociatedProxies(
 
     // Nothing appended
     if (currentSize == fMarkedStart) {
-        return true;
+        return;
     }
 
-    // Check if we need to grow the current texture height
-    int32_t totalNeededBytes = origTex.fUploadSize + currentSize;
-    int32_t maxCurrentPageCapacity = kAtlasWidth * origTex.fCurrentHeight * 4;
+    // Calculate how much room is actually left in the active texture
+    int32_t firstPageSize = kMaxCapBytes - origTex.fUploadSize;
 
-    if (totalNeededBytes > maxCurrentPageCapacity && origTex.fCurrentHeight < kMaxAtlasHeight) {
-        int32_t newHeight = origTex.fCurrentHeight;
-        while (totalNeededBytes > (kAtlasWidth * newHeight * 4) && newHeight < kMaxAtlasHeight) {
-            newHeight *= 2;
-        }
-
-        sk_sp<TextureProxy> oldTexture = origTex.fTexture;
-        int32_t oldUploadSize = origTex.fUploadSize;
-
-        // Upload any pending alpha data that fits into oldTexture before replacing it
-        int32_t remainingOldBytes = maxCurrentPageCapacity - oldUploadSize;
-        int32_t uploadableBytes = std::min(currentSize, remainingOldBytes);
-        int32_t rowsToUpload = uploadableBytes / kAtlasDimsBytes;
-        int32_t bytesToUpload = rowsToUpload * kAtlasDimsBytes;
-
-        if (bytesToUpload > 0 && oldTexture) {
-            MipLevel level;
-            level.fPixels = origTex.fAlphaBuffer.data();
-            level.fRowBytes = kAtlasDimsBytes;
-            int startRow = oldUploadSize / kAtlasDimsBytes;
-            SkIRect dstRect = SkIRect::MakeXYWH(0, startRow, kAtlasWidth, rowsToUpload);
-
-            Swizzle readSwizzle = ReadSwizzleForColorType(
-                    kColorType, TextureInfoPriv::ViewFormat(oldTexture->textureInfo()));
-            TextureProxyView proxyView(oldTexture, readSwizzle);
-
-            SkColorInfo srcColorInfo(kColorType, kPremul_SkAlphaType, nullptr);
-            SkColorInfo dstColorInfo(kColorType, kPremul_SkAlphaType, nullptr);
-            UploadSource source = UploadSource::Make(fRecorder->priv().caps(),
-                                                     proxyView,
-                                                     srcColorInfo,
-                                                     dstColorInfo,
-                                                     SkSpan<const MipLevel>(&level, 1),
-                                                     dstRect);
-
-            UploadInstance instance = UploadInstance::Make(fRecorder, source, nullptr);
-            if (instance.isValid()) {
-                fRecorder->priv().add(UploadTask::Make(std::move(instance)));
-            }
-
-            origTex.fUploadSize += bytesToUpload;
-            int32_t remainingInBuf = currentSize - bytesToUpload;
-            if (remainingInBuf > 0) {
-                memmove(origTex.fAlphaBuffer.data(),
-                        origTex.fAlphaBuffer.data() + bytesToUpload,
-                        remainingInBuf);
-            }
-            origTex.fAlphaBuffer.resize(remainingInBuf);
-            currentSize = remainingInBuf;
-        }
-
-        if (makeTextureProxy(origTex, newHeight)) {
-            int copyUploadSize = origTex.fUploadSize;
-            if (copyUploadSize > 0 && oldTexture) {
-                int oldUploadedRows = (copyUploadSize + kAtlasDimsBytes - 1) / kAtlasDimsBytes;
-                SkIRect srcRect = SkIRect::MakeWH(kAtlasWidth, oldUploadedRows);
-                fRecorder->priv().add(CopyTextureToTextureTask::Make(
-                        std::move(oldTexture), srcRect, origTex.fTexture, SkIPoint::Make(0, 0)));
-            }
-        }
-    }
-
-    int32_t maxCapacity = kAtlasWidth * origTex.fCurrentHeight * 4;
-    int32_t firstPageSize = maxCapacity - origTex.fUploadSize;
-
+    // If we're within the remaining space, we're done
     if (currentSize <= firstPageSize) {
         allocations.push_back({currentSize, origTex.fTexture});
-        return true;
+        return;
     }
 
-    // Handle overflow across pages
+    // Else handle overflow: point the first allocation to the remaining space in the original texture
     allocations.push_back({firstPageSize, origTex.fTexture});
 
+    // Paginate the overflow, in almost all cases this will be a single page
     int32_t processed = firstPageSize;
     while (processed < currentSize) {
-        if (fTextures.size() >= static_cast<size_t>(kMaxPages)) {
-            // BAILOUT! Exceeded total texture page budget!
-            origTex.fAlphaBuffer.resize(fMarkedStart);
-            allocations.clear();
-            return false;
-        }
         int32_t chunk = std::min(kMaxCapBytes, currentSize - processed);
         fTextures.push({});
         initializeTexture();
         fTextures.back().fAlphaBuffer.append(chunk, origTex.fAlphaBuffer.begin() + processed);
         processed += chunk;
+
+        // Return the index relative to the current batch's total buffer size
         allocations.push_back({processed, fTextures.back().fTexture});
     }
 
+    // Truncate the original texture's buffer to what actually fit
     origTex.fAlphaBuffer.resize(firstPageSize);
-    return true;
 }
 
 void AlphaAtlasManager::recordUploads(DrawContext* dc) {
@@ -157,18 +85,19 @@ void AlphaAtlasManager::recordUploads(DrawContext* dc) {
         TextureState& tex = fTextures.front();
 
         if (!tex.fAlphaBuffer.empty()) {
+            // The texture better not have been dropped here.
             SkASSERT(tex.fTexture);
 
-            int height = (tex.fAlphaBuffer.size() + kAtlasDimsBytes - 1) / kAtlasDimsBytes;
-            int paddedSize = height * kAtlasDimsBytes;
+            int height = (tex.fAlphaBuffer.size() + kAtlasWidthBytes - 1) / kAtlasWidthBytes;
+            int paddedSize = height * kAtlasWidthBytes;
             if (tex.fAlphaBuffer.size() != paddedSize) {
                 tex.fAlphaBuffer.resize(paddedSize);
             }
 
             MipLevel level;
             level.fPixels = tex.fAlphaBuffer.data();
-            level.fRowBytes = kAtlasDimsBytes;
-            int startRow = tex.fUploadSize / kAtlasDimsBytes;
+            level.fRowBytes = kAtlasWidthBytes;
+            int startRow = tex.fUploadSize / kAtlasWidthBytes;
             SkIRect dstRect = SkIRect::MakeXYWH(0, startRow, kAtlasWidth, height);
 
             Swizzle readSwizzle = ReadSwizzleForColorType(
@@ -190,11 +119,12 @@ void AlphaAtlasManager::recordUploads(DrawContext* dc) {
             tex.fAlphaBuffer.clear();
         }
 
-        fTextures.pop();
+        if (fTextures.size() > 1) {
+            fTextures.pop();
+        } else {
+            break;
+        }
     }
-
-    // Reset initial texture state for the next frame
-    fTextures.push({});
 }
 
 void AlphaAtlasManager::freeGpuResources() {

@@ -9,6 +9,7 @@
 
 #include "include/core/SkPathTypes.h"
 #include "include/private/SkTDArray.h"
+#include "src/gpu/graphite/geom/WideTiles.h"
 #include "src/gpu/graphite/sparse_strips/Polyline.h"
 #include "src/gpu/graphite/sparse_strips/SparseStripsTypes.h"
 #include "src/gpu/graphite/sparse_strips/Strip.h"
@@ -109,15 +110,14 @@ public:
                            SkTDArray<uint8_t>* alphaBuf,
                            SkPathFillType fillType,
                            const Polyline& polyline,
-                           const SkTDArray<uint8_t>& maskLut
+                           const SkTDArray<uint8_t>& maskLut,
+                           WideTiles<kTileHeight>& wides,
+                           uint16_t viewportWidth,
+                           uint16_t viewportHeight
 #if defined(GPU_TEST_UTILS)
                            , MsaaExactMaskObserver observer = nullptr
 #endif
     ) {
-        const auto& tiles = tileContainer.getTiles();
-        if (tiles.empty()) {
-            return;
-        }
         Dispatch(fillType, [&](auto isWindingTag, bool isInverse) {
             constexpr bool kIsWinding = decltype(isWindingTag)::value;
             int32_t localAlphaIdx = alphaBuf->size();
@@ -128,7 +128,9 @@ public:
 #endif
             );
 
-            TraverseCPU<kTileWidth, kTileHeight>(tileContainer, stripBuf, alphaBuf, &processor);
+            TraverseCPU<kTileWidth, kTileHeight>(
+                    tileContainer, stripBuf, alphaBuf, wides, viewportWidth, viewportHeight,
+                    isInverse, &processor);
         });
     }
 
@@ -138,15 +140,14 @@ public:
                          SkTDArray<uint8_t>* alphaBuf,
                          SkPathFillType fillType,
                          const Polyline& polyline,
-                         const SkTDArray<uint8_t>& maskLut
+                         const SkTDArray<uint8_t>& maskLut,
+                         WideTiles<kTileHeight>& wides,
+                         uint16_t viewportWidth,
+                         uint16_t viewportHeight
 #if defined(GPU_TEST_UTILS)
                          , MsaaExactMaskObserver observer = nullptr
 #endif
     ) {
-        const auto& tiles = tileContainer.getTiles();
-        if (tiles.empty()) {
-            return;
-        }
         Dispatch(fillType, [&](auto isWindingTag, bool isInverse) {
             constexpr bool kIsWinding = decltype(isWindingTag)::value;
             int32_t localAlphaIdx = alphaBuf->size();
@@ -157,7 +158,9 @@ public:
 #endif
             );
 
-            TraverseCPU<kTileWidth, kTileHeight>(tileContainer, stripBuf, alphaBuf, &processor);
+            TraverseCPU<kTileWidth, kTileHeight>(
+                    tileContainer, stripBuf, alphaBuf, wides, viewportWidth, viewportHeight,
+                    isInverse, &processor);
         });
     }
 
@@ -211,13 +214,44 @@ private:
             const Tiles<kTileWidth, kTileHeight>& tileContainer,
             SkTDArray<Strip>* stripBuf,
             SkTDArray<uint8_t>* alphaBuf,
+            WideTiles<kTileHeight>& wides,
+            uint16_t viewportWidth,
+            uint16_t viewportHeight,
+            bool isInverse,
             Processor* processor) {
+        auto emitBackground = [&](uint16_t start, uint16_t end, uint16_t width) {
+            for (uint16_t row = start; row < end; row += kTileHeight) {
+                wides.addTile(0, row, width);
+            }
+        };
+
         const auto& tiles = tileContainer.getTiles();
+        if (tiles.empty()) {
+            if (isInverse) {
+                emitBackground(0, viewportHeight + kTileHeight, viewportWidth);
+            }
+            return;
+        }
+
         size_t totalCount = tiles.size();
         Tile prevTile = tiles[0];
 
-        Strip currentStrip(prevTile.x * kTileWidth, prevTile.y * kTileHeight,
-                           processor->localAlphaIdx(), /*shouldFill*/false);
+        if (isInverse) {
+            emitBackground(0, prevTile.y * kTileHeight, viewportWidth);
+            // If the first tile isn't flush left, we need a 0-width strip to start filling
+            if (prevTile.x != 0) {
+                stripBuf->push_back(Strip(0,
+                                          prevTile.y * kTileHeight,
+                                          processor->localAlphaIdx(),
+                                          false));
+            }
+        }
+
+        Strip currentStrip(
+                prevTile.x * kTileWidth,
+                prevTile.y * kTileHeight,
+                processor->localAlphaIdx(),
+                processor->ShouldFill(processor->coarseWinding()) ^ isInverse);
 
         float prevX = static_cast<float>(prevTile.x * kTileWidth);
         float prevY = static_cast<float>(prevTile.y * kTileHeight);
@@ -254,23 +288,35 @@ private:
                 if (rowStart) {
                     // If we're starting a new row, check to see if we need to push a sentinel to
                     // cap the end of the last row.
-                    if (processor->coarseWinding() != 0) {
+                    if (processor->coarseWinding() != 0 || isInverse) {
                         stripBuf->push_back(Strip::MakeCap(
                                 prevTile.y * kTileHeight,
                                 processor->localAlphaIdx(),
-                                processor->ShouldFill(processor->coarseWinding())));
+                                processor->ShouldFill(processor->coarseWinding()) ^ isInverse));
                     }
 
                     // The previous row has ended, meaning that the scanline is no longer carried,
                     // so reset the coarse winding and clear the coverage mask.
                     processor->setCoarseWinding(0);
                     processor->clearWindingForNewRow();
+
+                    if (isInverse) {
+                        emitBackground(
+                                (prevTile.y + 1) * kTileHeight, tile.y * kTileHeight, viewportWidth);
+                        // Start the new row with a 0-width strip if it doesn't flush left
+                        if (tile.x != 0) {
+                            stripBuf->push_back(Strip(0,
+                                                      tile.y * kTileHeight,
+                                                      processor->localAlphaIdx(),
+                                                      false));
+                        }
+                    }
                 }
 
                 currentStrip = Strip(tile.x * kTileWidth,
                                      tile.y * kTileHeight,
                                      processor->localAlphaIdx(),
-                                     processor->ShouldFill(processor->coarseWinding()));
+                                     processor->ShouldFill(processor->coarseWinding()) ^ isInverse);
             }
 
             prevTile = tile;
@@ -294,7 +340,14 @@ private:
         stripBuf->push_back(currentStrip);
         stripBuf->push_back(Strip::MakeCap(prevTile.y * kTileHeight,
                                            processor->localAlphaIdx(),
-                                           processor->ShouldFill(processor->coarseWinding())));
+                                           processor->ShouldFill(
+                                                    processor->coarseWinding()) ^ isInverse));
+
+        if (isInverse) {
+            emitBackground((prevTile.y + 1) * kTileHeight,
+                           viewportHeight + kTileHeight,
+                           viewportWidth);
+        }
 
         // Shrink the alpha buffer to reclaim any unused capacity.
         alphaBuf->resize(processor->localAlphaIdx());

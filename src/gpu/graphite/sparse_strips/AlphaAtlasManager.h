@@ -22,12 +22,10 @@ class Recorder;
 
 class AlphaAtlasManager {
 public:
-    static constexpr int32_t kAtlasWidth = 8192;
-    static constexpr int32_t kAtlasDimsBytes = kAtlasWidth * 4;
-    static constexpr int32_t kInitialAtlasHeight = 32;
-    static constexpr int32_t kMaxAtlasHeight = 4096;
-    static constexpr int32_t kMaxCapBytes = kAtlasWidth * kMaxAtlasHeight * 4;
-    static constexpr int32_t kMaxPages = 2;
+    static constexpr int32_t kAtlasWidth = 4096;
+    static constexpr int32_t kAtlasHeight = 4096;
+    static constexpr int32_t kAtlasWidthBytes = kAtlasWidth * 4;
+    static constexpr int32_t kMaxCapBytes = kAtlasWidth * kAtlasHeight * 4;
     static constexpr SkColorType kColorType = SkColorType::kRGBA_8888_SkColorType;
 
     AlphaAtlasManager(Recorder* recorder);
@@ -45,7 +43,7 @@ public:
         return fTextures.back().fUploadSize;
     }
 
-    bool getAssociatedProxies(SkTDArray<std::pair<int32_t, sk_sp<TextureProxy>>>& allocations);
+    void getAssociatedProxies(SkTDArray<std::pair<int32_t, sk_sp<TextureProxy>>>& allocations);
 
     bool initializeTexture();
     void recordUploads(DrawContext* dc);
@@ -59,13 +57,10 @@ private:
 #endif
 
     struct TextureState {
-        int32_t fCurrentHeight = kInitialAtlasHeight;
         int32_t fUploadSize = 0;
         sk_sp<TextureProxy> fTexture;
         SkTDArray<uint8_t> fAlphaBuffer;
     };
-
-    bool makeTextureProxy(TextureState& state, int32_t height);
 
     Recorder* fRecorder;
     int32_t fMarkedStart = 0;
