@@ -62,6 +62,15 @@ protected:
 
     SkScanlineOrder onGetScanlineOrder() const override;
 
+    // Each embedded ICO entry is an independent image with its own dimensions.
+    // The codec reports the largest entry as its top-level size (see
+    // MakeFromStream), but a caller may legitimately request any entry's size --
+    // e.g. Blink decodes frame N into a buffer sized to that frame. Without this
+    // override the base class only accepts the top-level dimensions, so
+    // SkCodec::getPixels()/startIncrementalDecode() would reject a smaller
+    // entry's dstInfo with kInvalidScale before onGetPixels ever runs.
+    bool onDimensionsSupported(const SkISize&) override;
+
     bool conversionSupported(const SkImageInfo&, bool, bool) override {
         // This will be checked by the embedded codec.
         return true;
@@ -99,9 +108,11 @@ private:
     /**
      * Common codec selection logic for onGetPixels and onStartIncrementalDecode.
      *
-     * If opts.fFrameIndex is valid and matches dims, calls fn on that codec and
-     * returns unconditionally. Otherwise loops through dimension-matched codecs,
-     * stopping on kSuccess or kIncompleteInput.
+     * If opts.fFrameIndex is a non-default index (> 0) it is authoritative: fn is
+     * called on exactly that entry's codec, and the call fails with kInvalidScale
+     * unless dims match that entry. For the default frame index (0), the entry is
+     * chosen by matching dims, looping through candidates and stopping on
+     * kSuccess or kIncompleteInput.
      *
      * fn signature: Result fn(SkCodec* codec, int codecIndex, const Options& embeddedOpts)
      * where embeddedOpts has fFrameIndex reset to 0.
