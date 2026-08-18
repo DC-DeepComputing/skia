@@ -544,14 +544,14 @@ filegroup(
     visibility = ["//dm:__pkg__"],
 )
 
-# TODO(b/480952153): These tests require Metal and Objective-C++ which are not yet supported in dm.
 filegroup(
     name = "ganesh_metal_tests_sources",
     testonly = True,
     srcs = [
-        "MtlBackendAllocationTest.mm",
-        "MtlCopySurfaceTest.mm",
+        "MtlBackendAllocationTest.cc",
+        "MtlCopySurfaceTest.cc",
     ],
+    visibility = ["//dm:__pkg__"],
 )
 
 filegroup(
@@ -658,11 +658,11 @@ filegroup(
     visibility = ["//dm:__pkg__"],
 )
 
-# TODO(b/480952153): These tests require Metal and Objective-C++ which are not yet supported in dm.
 filegroup(
     name = "graphite_metal_tests_sources",
     testonly = True,
-    srcs = ["graphite/MtlBackendTextureTest.mm"],
+    srcs = ["graphite/MtlBackendTextureTest.cc"],
+    visibility = ["//dm:__pkg__"],
 )
 
 filegroup(
