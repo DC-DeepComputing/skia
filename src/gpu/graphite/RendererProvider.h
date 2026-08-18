@@ -148,6 +148,7 @@ public:
     const Renderer* circularArc() const { return &fCircularArc; }
 
     const Renderer* analyticBlur() const { return &fAnalyticBlur; }
+    const Renderer* analyticRRectBlur() const { return &fAnalyticRRectBlur; }
 
     // TODO: May need to add support for inverse filled strokes (need to check SVG spec if this is a
     // real thing).
@@ -215,6 +216,7 @@ private:
     Renderer fCircularArc;
 
     Renderer fAnalyticBlur;
+    Renderer fAnalyticRRectBlur;
 
     Renderer fVertices[kVerticesCount];
     Renderer fMesh;

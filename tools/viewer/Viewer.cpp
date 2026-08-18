@@ -158,6 +158,11 @@
 using namespace skia_private;
 using skwindow::DisplayParams;
 
+namespace skgpu::graphite {
+extern bool gUseOldBlurrectRRect;
+}
+
+
 #if defined(SK_GANESH)
 class CapturingShaderErrorHandler : public GrContextOptions::ShaderErrorHandler {
 public:
@@ -927,6 +932,11 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
         fToggleCapture = true;
         fWindow->inval();
     });
+    fCommands.addCommand('x', "Misc", "Toggle capturing", [this]() {
+            skgpu::graphite::gUseOldBlurrectRRect = !skgpu::graphite::gUseOldBlurrectRRect;
+        this->updateTitle();
+        fWindow->inval();
+    });
     fCommands.addCommand('&', "Overlays", "Show slide dimensions", [this]() {
         fShowSlideDimensions = !fShowSlideDimensions;
         fWindow->inval();
@@ -1561,6 +1571,10 @@ void Viewer::updateTitle() {
     } else if (kPerspective_Fake == fPerspectiveMode) {
         title.append(" Perspective (Fake)");
     }
+
+#if defined(SK_GRAPHITE)
+    title.append(skgpu::graphite::gUseOldBlurrectRRect ? " [legacy blur]" : " [new blur]");
+#endif
 
     fWindow->setTitle(title.c_str());
 }
@@ -2569,6 +2583,10 @@ void Viewer::drawImGui() {
                 ImGui::RadioButton("Metal (Graphite)",
                                    &newBackend,
                                    static_cast<int>(sk_app::Window::BackendType::kGraphiteMetal));
+                if (ImGui::Checkbox("Toggle rrect blur method",
+                                    &skgpu::graphite::gUseOldBlurrectRRect)) {
+                    this->updateTitle();
+                }
 #   endif
 #endif
 
