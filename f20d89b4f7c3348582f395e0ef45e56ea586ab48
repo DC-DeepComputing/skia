@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "70c64b6b_7f910930",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-18T20:19:37Z",
+      "side": 1,
+      "message": "PTAL; your fix was verified on some of the old bugs, but there are still more outstanding triangulator issues.",
+      "revId": "f20d89b4f7c3348582f395e0ef45e56ea586ab48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
