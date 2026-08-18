@@ -158,8 +158,8 @@ static size_t format_alignment(SkMask::Format format) {
             return alignof(uint8_t);
         case SkMask::kARGB32_Format:
             return alignof(uint32_t);
-        case SkMask::kLCD16_Format:
-            return alignof(uint16_t);
+        case SkMask::kLCD32_Format:
+            return alignof(uint32_t);
     }
     SkUNREACHABLE;
 }
@@ -406,7 +406,7 @@ size_t SkGlyph::addPathFromBuffer(SkReadBuffer& buffer, SkArenaAlloc* alloc) {
         if (auto path = buffer.readPath()) {
             if (fMaskFormat != SkMask::kBW_Format &&
                 fMaskFormat != SkMask::kA8_Format &&
-                fMaskFormat != SkMask::kLCD16_Format) {
+                fMaskFormat != SkMask::kLCD32_Format) {
                 buffer.validate(false);
                 return 0;
             }

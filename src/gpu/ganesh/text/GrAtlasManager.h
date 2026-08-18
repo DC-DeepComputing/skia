@@ -53,7 +53,6 @@ public:
     // functions which use the atlas. Note that we can have proxies available but none active
     // (i.e., none instantiated).
     const GrSurfaceProxyView* getViews(skgpu::MaskFormat format, unsigned int* numActiveProxies) {
-        format = this->resolveMaskFormat(format);
         if (this->initAtlas(format)) {
             *numActiveProxies = this->getAtlas(format)->numActivePages();
             return this->getAtlas(format)->getViews();
@@ -68,7 +67,7 @@ public:
                                                               int srcPadding) {
         // Bump direct mask glyphs (zero padding) up to 1px when the atlas can be bilerp'ed
         int padding = srcPadding == 0 && fSupportBilerpAtlas ? 1 : srcPadding;
-        return {this->resolveMaskFormat(format), padding};
+        return {format, padding};
     }
 
     void freeAll();
@@ -135,18 +134,6 @@ private:
     friend class GrAtlasManagerTools;
     bool initAtlas(skgpu::MaskFormat resolvedMaskFormat);
 
-    // Change an expected 565 mask format to 8888 if 565 is not supported (will happen when using
-    // Metal on macOS). The actual conversion of the data is handled in get_packed_glyph_image() in
-    // StrikeCache.cpp
-    skgpu::MaskFormat resolveMaskFormat(skgpu::MaskFormat format) const {
-        if (skgpu::MaskFormat::kA565 == format &&
-            !fProxyProvider->caps()->getDefaultBackendFormat(GrColorType::kBGR_565,
-                                                             GrRenderable::kNo).isValid()) {
-            format = skgpu::MaskFormat::kARGB;
-        }
-        return format;
-    }
-
     // add to texture atlas that matches this format
     GrDrawOpAtlas::ErrorCode addToAtlas(GrResourceProvider* resourceProvider,
                                         GrDeferredUploadTarget* target,
@@ -167,7 +154,6 @@ private:
     }
 
     GrDrawOpAtlas* getAtlas(skgpu::MaskFormat resolvedMaskFormat) const {
-        SkASSERT(resolvedMaskFormat == this->resolveMaskFormat(resolvedMaskFormat));
         int atlasIndex = MaskFormatToAtlasIndex(resolvedMaskFormat);
         SkASSERT(fAtlases[atlasIndex]);
         return fAtlases[atlasIndex].get();

@@ -503,8 +503,8 @@ bool SkGenerateDistanceFieldFromA8Image(unsigned char* distanceField,
     return generate_distance_field_from_image(distanceField, copyPtr, width, height);
 }
 
-// assumes a 16-bit lcd mask and 8-bit distance field
-bool SkGenerateDistanceFieldFromLCD16Mask(unsigned char* distanceField,
+// assumes a 32-bit lcd mask and 8-bit distance field
+bool SkGenerateDistanceFieldFromLCD32Mask(unsigned char* distanceField,
                                            const unsigned char* image,
                                            int w, int h, size_t rowBytes) {
     SkASSERT(distanceField);
@@ -516,9 +516,9 @@ bool SkGenerateDistanceFieldFromLCD16Mask(unsigned char* distanceField,
 
     // we copy our source image into a padded copy to ensure we catch edge transitions
     // around the outside
-    const uint16_t* start = reinterpret_cast<const uint16_t*>(image);
-    auto currSrcScanline = SkMask::AlphaIter<SkMask::kLCD16_Format>(start);
-    auto endSrcScanline = SkMask::AlphaIter<SkMask::kLCD16_Format>(start + w);
+    const uint32_t* start = reinterpret_cast<const uint32_t*>(image);
+    auto currSrcScanline = SkMask::AlphaIter<SkMask::kLCD32_Format>(start);
+    auto endSrcScanline = SkMask::AlphaIter<SkMask::kLCD32_Format>(start + w);
     sk_bzero(copyPtr, (w+2)*sizeof(char));
     unsigned char* currDestPtr = copyPtr + w + 2;
     for (int i = 0; i < h; ++i, currSrcScanline >>= rowBytes, endSrcScanline >>= rowBytes) {

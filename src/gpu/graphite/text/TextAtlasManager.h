@@ -31,8 +31,8 @@ class TextureProxy;
  */
 class TextAtlasManager : public DrawAtlas::GenerationCounter {
 public:
-    // For text there are three atlases (A8, 565, ARGB) that are kept in relation with one another.
-    // In general, because A8 is the most frequently used mask format its dimensions are 2x the 565
+    // For text there are three atlases (A8, A888, ARGB) that are kept in relation with one another.
+    // In general, because A8 is the most frequently used mask format its dimensions are 2x the A888
     // and ARGB dimensions, with the constraint that an atlas size will always contain at least one
     // plot. Since the ARGB atlas takes the most space, its dimensions are used to size the other
     // two atlases.
@@ -76,7 +76,6 @@ public:
     sktext::gpu::RendererData resolveRendererData(sktext::gpu::RendererData data) {
         // Bump direct mask glyphs (zero padding) up to 1px when the atlas can be bilerp'ed
         data.srcPadding = data.srcPadding == 0 && fSupportBilerpAtlas ? 1 : data.srcPadding;
-        data.maskFormat = this->resolveMaskFormat(data.maskFormat);
         // Leave SDF and LCD properties alone
         return data;
     }
@@ -127,10 +126,6 @@ public:
 
 private:
     bool initAtlas(MaskFormat resolvedMaskFormat);
-    // Change an expected 565 mask format to 8888 if 565 is not supported (will happen when using
-    // Metal on Intel MacOS). The actual conversion of the data is handled in
-    // get_packed_glyph_image() in StrikeCache.cpp
-    MaskFormat resolveMaskFormat(MaskFormat format) const;
 
     // There is a 1:1 mapping between skgpu::MaskFormats and atlas indices
     static int MaskFormatToAtlasIndex(MaskFormat format) {
@@ -141,7 +136,6 @@ private:
     }
 
     DrawAtlas* getAtlas(MaskFormat resolvedMaskFormat) const {
-        SkASSERT(resolvedMaskFormat == this->resolveMaskFormat(resolvedMaskFormat));
         int atlasIndex = MaskFormatToAtlasIndex(resolvedMaskFormat);
         SkASSERT(fAtlases[atlasIndex]);
         return fAtlases[atlasIndex].get();

@@ -1806,13 +1806,16 @@ static inline uint8_t mergeOne(uint8_t value, unsigned alpha) {
     return SkMulDiv255Round(value, alpha);
 }
 
-static inline uint16_t mergeOne(uint16_t value, unsigned alpha) {
-    unsigned r = SkGetPackedR16(value);
-    unsigned g = SkGetPackedG16(value);
-    unsigned b = SkGetPackedB16(value);
-    return SkPackRGB16(SkMulDiv255Round(r, alpha),
-                       SkMulDiv255Round(g, alpha),
-                       SkMulDiv255Round(b, alpha));
+static inline uint32_t mergeOne(uint32_t value, unsigned alpha) {
+    unsigned r = (value >> SK_RGBA_R32_SHIFT) & 0xFF;
+    unsigned g = (value >> SK_RGBA_G32_SHIFT) & 0xFF;
+    unsigned b = (value >> SK_RGBA_B32_SHIFT) & 0xFF;
+    unsigned a = (value >> SK_RGBA_A32_SHIFT) & 0xFF;
+
+    return SkPackARGB_as_RGBA(a,
+                              SkMulDiv255Round(r, alpha),
+                              SkMulDiv255Round(g, alpha),
+                              SkMulDiv255Round(b, alpha));
 }
 
 template <typename T>
@@ -1856,8 +1859,8 @@ static MergeAAProc find_merge_aa_proc(SkMask::Format format) {
         case SkMask::kA8_Format:
         case SkMask::k3D_Format:
             return mergeT<uint8_t> ;
-        case SkMask::kLCD16_Format:
-            return mergeT<uint16_t>;
+        case SkMask::kLCD32_Format:
+            return mergeT<uint32_t>;
         default:
             SkDEBUGFAIL("unsupported");
             return nullptr;

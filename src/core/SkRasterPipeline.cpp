@@ -133,9 +133,9 @@ void SkRasterPipeline::uncheckedAppend(SkRasterPipelineOp op, void* ctx) {
             isLoad = true;
             break;
         }
-        case Op::scale_565:
-        case Op::lerp_565: {
-            ct = kRGB_565_SkColorType;
+        case Op::scale_8888:
+        case Op::lerp_8888: {
+            ct = kRGBA_8888_SkColorType;
             isLoad = true;
             break;
         }

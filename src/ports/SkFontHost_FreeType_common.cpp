@@ -125,20 +125,20 @@ FT_Pixel_Mode compute_pixel_mode(SkMask::Format format) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-uint16_t packTriple(U8CPU r, U8CPU g, U8CPU b) {
+uint32_t packTriple(U8CPU r, U8CPU g, U8CPU b) {
     if constexpr (kSkShowTextBlitCoverage) {
         r = std::max(r, (U8CPU)0x40);
         g = std::max(g, (U8CPU)0x40);
         b = std::max(b, (U8CPU)0x40);
     }
-    return SkPack888ToRGB16(r, g, b);
+    return SkPackARGB_as_RGBA(0xFF, r, g, b);
 }
 
-uint16_t grayToRGB16(U8CPU gray) {
+uint32_t grayToRGB32(U8CPU gray) {
     if constexpr (kSkShowTextBlitCoverage) {
         gray = std::max(gray, (U8CPU)0x40);
     }
-    return SkPack888ToRGB16(gray, gray, gray);
+    return SkPackARGB_as_RGBA(0xFF, gray, gray, gray);
 }
 
 int bittst(const uint8_t data[], int bitOffset) {
@@ -156,10 +156,10 @@ int bittst(const uint8_t data[], int bitOffset) {
  *  FT_PIXEL_MODE_LCD_V
  */
 template<bool APPLY_PREBLEND>
-void copyFT2LCD16(const FT_Bitmap& bitmap, SkMaskBuilder* dstMask, int lcdIsBGR,
+void copyFT2LCD32(const FT_Bitmap& bitmap, SkMaskBuilder* dstMask, int lcdIsBGR,
                   const uint8_t* tableR, const uint8_t* tableG, const uint8_t* tableB)
 {
-    SkASSERT(SkMask::kLCD16_Format == dstMask->fFormat);
+    SkASSERT(SkMask::kLCD32_Format == dstMask->fFormat);
     if (FT_PIXEL_MODE_LCD != bitmap.pixel_mode) {
         SkASSERT(dstMask->fBounds.width() == static_cast<int>(bitmap.width));
     }
@@ -168,7 +168,7 @@ void copyFT2LCD16(const FT_Bitmap& bitmap, SkMaskBuilder* dstMask, int lcdIsBGR,
     }
 
     const uint8_t* src = bitmap.buffer;
-    uint16_t* dst = reinterpret_cast<uint16_t*>(dstMask->image());
+    uint32_t* dst = reinterpret_cast<uint32_t*>(dstMask->image());
     const size_t dstRB = dstMask->fRowBytes;
 
     const int width = dstMask->fBounds.width();
@@ -180,16 +180,16 @@ void copyFT2LCD16(const FT_Bitmap& bitmap, SkMaskBuilder* dstMask, int lcdIsBGR,
                 for (int x = 0; x < width; ++x) {
                     dst[x] = -bittst(src, x);
                 }
-                dst = (uint16_t*)((char*)dst + dstRB);
+                dst = (uint32_t*)((char*)dst + dstRB);
                 src += bitmap.pitch;
             }
             break;
         case FT_PIXEL_MODE_GRAY:
             for (int y = height; y --> 0;) {
                 for (int x = 0; x < width; ++x) {
-                    dst[x] = grayToRGB16(src[x]);
+                    dst[x] = grayToRGB32(src[x]);
                 }
-                dst = (uint16_t*)((char*)dst + dstRB);
+                dst = (uint32_t*)((char*)dst + dstRB);
                 src += bitmap.pitch;
             }
             break;
@@ -213,7 +213,7 @@ void copyFT2LCD16(const FT_Bitmap& bitmap, SkMaskBuilder* dstMask, int lcdIsBGR,
                     }
                 }
                 src += bitmap.pitch;
-                dst = (uint16_t*)((char*)dst + dstRB);
+                dst = (uint32_t*)((char*)dst + dstRB);
             }
             break;
         case FT_PIXEL_MODE_LCD_V:
@@ -232,12 +232,12 @@ void copyFT2LCD16(const FT_Bitmap& bitmap, SkMaskBuilder* dstMask, int lcdIsBGR,
                                         sk_apply_lut_if<APPLY_PREBLEND>(*srcB++, tableB));
                 }
                 src += 3 * bitmap.pitch;
-                dst = (uint16_t*)((char*)dst + dstRB);
+                dst = (uint32_t*)((char*)dst + dstRB);
             }
             break;
         default:
             SkDEBUGF("FT_Pixel_Mode %d", bitmap.pixel_mode);
-            SkDEBUGFAIL("unsupported FT_Pixel_Mode for LCD16");
+            SkDEBUGFAIL("unsupported FT_Pixel_Mode for LCD32");
             break;
     }
 }
@@ -247,7 +247,7 @@ void copyFT2LCD16(const FT_Bitmap& bitmap, SkMaskBuilder* dstMask, int lcdIsBGR,
  *
  *  Yes, No, Never Requested, Never Produced
  *
- *                        kBW kA8 k3D kARGB32 kLCD16
+ *                        kBW kA8 k3D kARGB32 kLCD32
  *  FT_PIXEL_MODE_MONO     Y   Y  NR     N       Y
  *  FT_PIXEL_MODE_GRAY     N   Y  NR     N       Y
  *  FT_PIXEL_MODE_GRAY2   NP  NP  NR    NP      NP
@@ -285,8 +285,8 @@ void copyFTBitmap(const FT_Bitmap& srcFTBitmap, SkMaskBuilder* dstMask) {
     const size_t width = srcFTBitmap.width;
     const size_t height = srcFTBitmap.rows;
 
-    if (SkMask::kLCD16_Format == dstFormat) {
-        copyFT2LCD16<false>(srcFTBitmap, dstMask, false, nullptr, nullptr, nullptr);
+    if (SkMask::kLCD32_Format == dstFormat) {
+        copyFT2LCD32<false>(srcFTBitmap, dstMask, false, nullptr, nullptr, nullptr);
         return;
     }
 
@@ -416,7 +416,7 @@ inline SkColorType SkColorType_for_SkMaskFormat(SkMask::Format format) {
     switch (format) {
         case SkMask::kBW_Format:
         case SkMask::kA8_Format:
-        case SkMask::kLCD16_Format:
+        case SkMask::kLCD32_Format:
             return kAlpha_8_SkColorType;
         case SkMask::kARGB32_Format:
             return kN32_SkColorType;
@@ -1647,7 +1647,7 @@ void SkScalerContextFTUtils::generateGlyphImage(FT_Face face, const SkGlyph& gly
 
             memset(imageBuffer, 0, glyph.rowBytes() * glyph.height());
 
-            if (SkMask::kLCD16_Format == glyph.maskFormat()) {
+            if (SkMask::kLCD32_Format == glyph.maskFormat()) {
                 const bool doBGR = SkToBool(fFlags & SkScalerContext::kLCD_BGROrder_Flag);
                 const bool doVert = SkToBool(fFlags & SkScalerContext::kLCD_Vertical_Flag);
 
@@ -1697,7 +1697,7 @@ void SkScalerContextFTUtils::generateGlyphImage(FT_Face face, const SkGlyph& gly
                     mask.bounds().fTop = -ftGlyph.bitmap_top;
                 }
                 if (mask.fBounds.fLeft < ftGlyph.bitmap_left) {
-                    mask.image() += sizeof(uint16_t) * (ftGlyph.bitmap_left - mask.fBounds.fLeft);
+                    mask.image() += sizeof(uint32_t) * (ftGlyph.bitmap_left - mask.fBounds.fLeft);
                     mask.bounds().fLeft = ftGlyph.bitmap_left;
                 }
                 // Origins aligned, clean up the width and height.
@@ -1716,10 +1716,10 @@ void SkScalerContextFTUtils::generateGlyphImage(FT_Face face, const SkGlyph& gly
                     mask.bounds().fRight = mask.fBounds.fLeft + ftGlyph.bitmap.width / ftHoriScale;
                 }
                 if (preBlend.isApplicable()) {
-                    copyFT2LCD16<true>(ftGlyph.bitmap, &mask, doBGR,
+                    copyFT2LCD32<true>(ftGlyph.bitmap, &mask, doBGR,
                                        preBlend.fR, preBlend.fG, preBlend.fB);
                 } else {
-                    copyFT2LCD16<false>(ftGlyph.bitmap, &mask, doBGR,
+                    copyFT2LCD32<false>(ftGlyph.bitmap, &mask, doBGR,
                                         preBlend.fR, preBlend.fG, preBlend.fB);
                 }
                 // Restore the buffer pointer so FreeType can properly free it.
@@ -1783,7 +1783,7 @@ void SkScalerContextFTUtils::generateGlyphImage(FT_Face face, const SkGlyph& gly
             SkASSERT(SkMask::kBW_Format == maskFormat ||
                      SkMask::kA8_Format == maskFormat ||
                      SkMask::kARGB32_Format == maskFormat ||
-                     SkMask::kLCD16_Format == maskFormat);
+                     SkMask::kLCD32_Format == maskFormat);
 
             // If no scaling needed, directly copy glyph bitmap.
             if (bitmapTransform.isIdentity()) {
@@ -1821,7 +1821,7 @@ void SkScalerContextFTUtils::generateGlyphImage(FT_Face face, const SkGlyph& gly
             // LCD should use a 4x A8 target, which will then be down sampled.
             // For simplicity, LCD uses A8 and is replicated.
             int bitmapRowBytes = 0;
-            if (SkMask::kBW_Format != maskFormat && SkMask::kLCD16_Format != maskFormat) {
+            if (SkMask::kBW_Format != maskFormat && SkMask::kLCD32_Format != maskFormat) {
                 bitmapRowBytes = glyph.rowBytes();
             }
             SkBitmap dstBitmap;
@@ -1830,7 +1830,7 @@ void SkScalerContextFTUtils::generateGlyphImage(FT_Face face, const SkGlyph& gly
                                                 SkColorType_for_SkMaskFormat(maskFormat),
                                                 kPremul_SkAlphaType),
                               bitmapRowBytes);
-            if (SkMask::kBW_Format == maskFormat || SkMask::kLCD16_Format == maskFormat) {
+            if (SkMask::kBW_Format == maskFormat || SkMask::kLCD32_Format == maskFormat) {
                 if (!dstBitmap.tryAllocPixels()) {
                     // TODO: set the fImage to indicate "missing"
                     memset(imageBuffer, 0, glyph.rowBytes() * glyph.height());
@@ -1860,15 +1860,15 @@ void SkScalerContextFTUtils::generateGlyphImage(FT_Face face, const SkGlyph& gly
                 SkMaskBuilder dstMask(static_cast<uint8_t*>(imageBuffer),
                                       glyph.iRect(), glyph.rowBytes(), glyph.maskFormat());
                 packA8ToA1(&dstMask, dstBitmap.getAddr8(0, 0), dstBitmap.rowBytes());
-            } else if (SkMask::kLCD16_Format == maskFormat) {
-                // Copy the A8 dstBitmap into the LCD16 imageBuffer.
+            } else if (SkMask::kLCD32_Format == maskFormat) {
+                // Copy the A8 dstBitmap into the LCD32 imageBuffer.
                 uint8_t* src = dstBitmap.getAddr8(0, 0);
-                uint16_t* dst = reinterpret_cast<uint16_t*>(imageBuffer);
+                uint32_t* dst = reinterpret_cast<uint32_t*>(imageBuffer);
                 for (int y = dstBitmap.height(); y --> 0;) {
                     for (int x = 0; x < dstBitmap.width(); ++x) {
-                        dst[x] = grayToRGB16(src[x]);
+                        dst[x] = grayToRGB32(src[x]);
                     }
-                    dst = (uint16_t*)((char*)dst + glyph.rowBytes());
+                    dst = (uint32_t*)((char*)dst + glyph.rowBytes());
                     src += dstBitmap.rowBytes();
                 }
             }

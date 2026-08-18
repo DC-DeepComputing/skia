@@ -47,7 +47,7 @@ constexpr int kNumTextAtlasTextures = 4;
 RenderStep::RenderStepID variant_id(skgpu::MaskFormat variant) {
     switch (variant) {
         case skgpu::MaskFormat::kA8:   return RenderStep::RenderStepID::kBitmapText_Mask;
-        case skgpu::MaskFormat::kA565: return RenderStep::RenderStepID::kBitmapText_LCD;
+        case skgpu::MaskFormat::kA888: return RenderStep::RenderStepID::kBitmapText_LCD;
         case skgpu::MaskFormat::kARGB: return RenderStep::RenderStepID::kBitmapText_Color;
     }
 
@@ -85,7 +85,7 @@ SkEnumBitMask<RenderStep::Flags> BitmapTextRenderStep::Flags(skgpu::MaskFormat v
     switch (variant) {
         case skgpu::MaskFormat::kA8:
             return Flags::kPerformsShading | Flags::kHasTextures | Flags::kEmitsCoverage;
-        case skgpu::MaskFormat::kA565:
+        case skgpu::MaskFormat::kA888:
             return Flags::kPerformsShading | Flags::kHasTextures | Flags::kEmitsCoverage |
                    Flags::kLCDCoverage;
         case skgpu::MaskFormat::kARGB:

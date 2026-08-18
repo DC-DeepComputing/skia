@@ -66,7 +66,7 @@ private:
                         const uint8_t* table8);
 
     template<bool APPLY_PREBLEND, bool RGB>
-    static void RGBToLcd16(const uint8_t* SK_RESTRICT src, const SkGlyph& glyph, void* dst,
+    static void RGBToLcd32(const uint8_t* SK_RESTRICT src, const SkGlyph& glyph, void* dst,
                            const uint8_t* tableR, const uint8_t* tableG, const uint8_t* tableB);
 
     DWriteFontTypeface* getDWriteTypeface() {

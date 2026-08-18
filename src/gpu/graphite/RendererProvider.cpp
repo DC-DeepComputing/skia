@@ -135,9 +135,9 @@ RendererProvider::RendererProvider(const Caps* caps, StaticBufferManager* buffer
         skgpu::MaskFormat fFormat;
         DrawTypeFlags     fDrawType;
     } kBitmapTextVariants [] = {
-        // We are using 565 here to represent LCD text, regardless of texture format
+        // We are using A888 here to represent LCD text, regardless of texture format
         { skgpu::MaskFormat::kA8,   DrawTypeFlags::kBitmapText_Mask  },
-        { skgpu::MaskFormat::kA565, DrawTypeFlags::kBitmapText_LCD   },
+        { skgpu::MaskFormat::kA888, DrawTypeFlags::kBitmapText_LCD   },
         { skgpu::MaskFormat::kARGB, DrawTypeFlags::kBitmapText_Color }
     };
 

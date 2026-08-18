@@ -42,16 +42,16 @@ bool SkGenerateDistanceFieldFromA8Image(unsigned char* distanceField,
                                         const unsigned char* image,
                                         int w, int h, size_t rowBytes);
 
-/** Given LCD16 mask data (not a 16-bit image), generate the associated distance field
+/** Given LCD32 mask data (not a 32-bit image), generate the associated distance field
 
  *  @param distanceField     The distance field to be generated. Should already be allocated
  *                           by the client with the padding above.
- *  @param image             16-bit LCD data we're using to generate the distance field.
+ *  @param image             32-bit LCD data we're using to generate the distance field.
  *  @param w                 Width of the original image.
  *  @param h                 Height of the original image.
  *  @param rowBytes          Size of each row in the image, in bytes
  */
-bool SkGenerateDistanceFieldFromLCD16Mask(unsigned char* distanceField,
+bool SkGenerateDistanceFieldFromLCD32Mask(unsigned char* distanceField,
                                           const unsigned char* image,
                                           int w, int h, size_t rowBytes);
 
