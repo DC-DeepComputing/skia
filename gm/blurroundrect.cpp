@@ -110,3 +110,66 @@ DEF_SIMPLE_GM(blur_large_rrects, canvas, 300, 300) {
         canvas->rotate(90.f, 150.f, 150.f);
     }
 }
+
+#if defined(SK_GRAPHITE)
+namespace skgpu::graphite {
+extern bool gUseOldBlurrectRRect;
+}
+#endif
+
+DEF_SIMPLE_GM(simpleblurroundrect_test, canvas, 300, 300) {
+    canvas->scale(1.5f, 1.5f);
+    canvas->save();
+    canvas->translate(50.f, 50.f);
+
+    const SkRect r = SkRect::MakeWH(25.f, 25.f);
+    SkPaint paint;
+    paint.setColor(SK_ColorBLACK);
+    paint.setMaskFilter(SkMaskFilter::MakeBlur(
+            kNormal_SkBlurStyle, SkBlurMask::ConvertRadiusToSigma(1.f)));
+
+    // Row 1: Using current/active toggle setting
+    {
+        SkAutoCanvasRestore acr(canvas, true);
+
+        // RRect 1: corner radius 1.f
+        SkRRect rrect1;
+        rrect1.setRectXY(r, 1.f, 1.f);
+        canvas->drawRRect(rrect1, paint);
+
+        canvas->translate(r.width() + 25.f, 0);
+
+        // RRect 2: corner radius 20.f
+        SkRRect rrect2;
+        rrect2.setRectXY(r, 20.f, 20.f);
+        canvas->drawRRect(rrect2, paint);
+    }
+
+    // Row 2: Toggled setting on a lower Y level
+    {
+        SkAutoCanvasRestore acr(canvas, true);
+        canvas->translate(0.f, r.height() + 25.f);
+
+#if defined(SK_GRAPHITE)
+        bool origFlag = skgpu::graphite::gUseOldBlurrectRRect;
+        skgpu::graphite::gUseOldBlurrectRRect = !origFlag;
+#endif
+
+        // RRect 1: corner radius 1.f
+        SkRRect rrect1;
+        rrect1.setRectXY(r, 1.f, 1.f);
+        canvas->drawRRect(rrect1, paint);
+
+        canvas->translate(r.width() + 25.f, 0);
+
+        // RRect 2: corner radius 20.f
+        SkRRect rrect2;
+        rrect2.setRectXY(r, 20.f, 20.f);
+        canvas->drawRRect(rrect2, paint);
+
+#if defined(SK_GRAPHITE)
+        skgpu::graphite::gUseOldBlurrectRRect = origFlag;
+#endif
+    }
+    canvas->restore();
+}
