@@ -37,6 +37,8 @@ SkExecutor::~SkExecutor() {}
 // The default default SkExecutor is an SkTrivialExecutor, which just runs the work right away.
 class SkTrivialExecutor final : public SkExecutor {
 public:
+    int foo() const override { return -1; }
+
     void add(std::function<void(void)> work, int /* workList */) override {
         work();
     }
@@ -80,6 +82,8 @@ static inline std::function<void(void)> pop(TArray<std::function<void(void)>>* l
 template <typename WorkList>
 class SkThreadPool final : public SkExecutor {
 public:
+    int foo() const override { return fThreads.size(); }
+
     explicit SkThreadPool(int numWorkLists, int threads, bool allowBorrowing)
             : fNumWorkLists(numWorkLists < 1 ? 1 : numWorkLists)
             , fAllowBorrowing(allowBorrowing) {

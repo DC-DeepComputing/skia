@@ -279,7 +279,7 @@ static const char* config_extended_help_fn() {
 DEFINE_extended_string(config, defaultConfigs, config_help_fn(), config_extended_help_fn());
 
 DEFINE_int(gpuThreads,
-           2,
+           0,
            "Create this many extra threads to assist with GPU work, "
            "including software path rendering. Defaults to two.");
 

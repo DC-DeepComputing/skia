@@ -25,6 +25,8 @@
 static constexpr int kHighPriorityWorkList = 0;
 static constexpr int kLowPriorityWorkList = 1;
 
+bool pastWarmUp = false;
+
 namespace skgpu::graphite {
 
 // Directly accessing the two variants is thread safe because a given GraphicsPipelineHandle
@@ -50,9 +52,12 @@ GraphicsPipelineHandle::GraphicsPipelineHandle(sk_sp<GraphicsPipeline> pipeline)
     : fTaskOrPipeline(std::move(pipeline)) {}
 
 PipelineManager::PipelineManager(SkExecutor* executor) {
+#if 0
     if (executor) {
+        fprintf(stderr, "------- %d\n", executor->foo());
         fTaskGroup = std::make_unique<SkTaskGroup>(*executor);
     }
+#endif
 }
 
 PipelineManager::~PipelineManager() {
@@ -95,6 +100,7 @@ GraphicsPipelineHandle PipelineManager::createHandle(
         return GraphicsPipelineHandle(std::move(pipeline));
     }
 
+    SkASSERT_RELEASE(!pastWarmUp);
     // Although 'findGraphicsPipeline' didn't find a GraphicsPipeline, there could be a race.
     // In 'findOrCreateTask' we will, thread-safely, check if there is a task in flight to
     // create the Pipeline and, failing that, create one. If the race had occurred and
@@ -132,6 +138,7 @@ GraphicsPipelineHandle PipelineManager::createHandle(
 void PipelineManager::InlineCompile(SharedContext* sharedContext,
                                     PipelineManager* pipelineManager,
                                     PipelineCreationTask* task) {
+    SkASSERT_RELEASE(!pastWarmUp);
     // This is a bit racy but the exact correctness of the actual cause for the compilation
     // isn't crucial. In essence, this tries to give the SharedContext a best guess about
     // the driver behind the compilation. The exact race is if a precompile compilation
@@ -159,6 +166,8 @@ void PipelineManager::InlineCompile(SharedContext* sharedContext,
 void PipelineManager::addTaskToWorkList(SharedContext* sharedContext,
                                         sk_sp<PipelineCreationTask> task,
                                         Priority priority) {
+    SkASSERT_RELEASE(!pastWarmUp);
+
     // Note: this lambda function relies on the continued existence of the shared
     // context and the PipelineManager. The task is reffed.
     auto compileTask = [sharedContext, this, task] {
@@ -200,6 +209,8 @@ sk_sp<GraphicsPipeline> PipelineManager::resolveHandle(SharedContext* sharedCont
         return std::get<sk_sp<GraphicsPipeline>>(handle.fTaskOrPipeline);
     }
 
+    SkASSERT_RELEASE(!pastWarmUp);
+
     // Since 'fTaskOrPipeline' doesn't hold a pipeline the pipeline must not have existed when
     // the handle was created so a compilation task must've been created to compile it
     sk_sp<PipelineCreationTask> task =
@@ -212,6 +223,7 @@ sk_sp<GraphicsPipeline> PipelineManager::resolveHandle(SharedContext* sharedCont
 }
 
 void PipelineManager::shutDown() {
+#if 1
     // We null out 'fTaskGroup' so no more threaded work can be added after this point.
     std::unique_ptr<SkTaskGroup> tmp;
     {
@@ -230,6 +242,7 @@ void PipelineManager::shutDown() {
         SkASSERT(!fTaskGroup);
         SkASSERT(fActiveTasks.count() == 0);
     }
+#endif
 }
 
 #if defined(GPU_TEST_UTILS)
@@ -260,6 +273,9 @@ sk_sp<PipelineCreationTask> PipelineManager::findOrCreateTask(
         const GraphicsPipelineDesc& pipelineDesc,
         const RenderPassDesc& renderPassDesc,
         Priority priority) {
+
+    SkASSERT_RELEASE(!pastWarmUp);
+
     SkAutoSpinlock lock{fSpinLock};
 
     sk_sp<PipelineCreationTask>* task = fActiveTasks.find(pipelineKey);
@@ -285,12 +301,16 @@ sk_sp<PipelineCreationTask> PipelineManager::findOrCreateTask(
 }
 
 void PipelineManager::removeTask(PipelineCreationTask* task) {
+    SkASSERT_RELEASE(!pastWarmUp);
+
     SkAutoSpinlock lock{fSpinLock};
 
     fActiveTasks.remove(task->fPipelineKey);
 }
 
 void PipelineManager::signalCompleted(PipelineCreationTask* task) {
+    SkASSERT_RELEASE(!pastWarmUp);
+
     std::unique_lock<std::mutex> lock(fMutex);
 
     // Even though 'fCompleted' is atomic it is still required that it be
@@ -308,8 +328,13 @@ void PipelineManager::signalCompleted(PipelineCreationTask* task) {
 void PipelineManager::potentiallyWaitOn(SharedContext* sharedContext, PipelineCreationTask* task) {
     // If we can preempt some thread that is scheduled to compile this Pipeline, do so rather
     // than waiting.
-    if (!task->fStarted.exchange(true)) {
-        InlineCompile(sharedContext, this, task);
+//    if (!task->fStarted.exchange(true)) {
+//        InlineCompile(sharedContext, this, task);
+//        SkASSERT(task->fCompleted);
+//        return;
+//    }
+
+    if (pastWarmUp) {
         SkASSERT(task->fCompleted);
         return;
     }
@@ -319,6 +344,7 @@ void PipelineManager::potentiallyWaitOn(SharedContext* sharedContext, PipelineCr
     if (task->fCompleted) {
         return;
     }
+    SkASSERT_RELEASE(!pastWarmUp);
     fConditionVariable.wait(lock, [task]{ return task->fCompleted.load(); });
 
     SkASSERT(task->fCompleted);

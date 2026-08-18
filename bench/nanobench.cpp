@@ -77,6 +77,7 @@
 #include "include/gpu/graphite/Recorder.h"
 #include "include/gpu/graphite/Recording.h"
 #include "include/gpu/graphite/Surface.h"
+#include "src/gpu/graphite/ContextPriv.h"
 #include "tools/flags/CommonFlagsGraphite.h"
 #include "tools/graphite/ContextFactory.h"
 #include "tools/graphite/GraphiteTestContext.h"
@@ -174,7 +175,7 @@ static DEFINE_bool(gpuStatsDump, false, "Dump GPU stats after each benchmark to 
 static DEFINE_bool(dmsaaStatsDump, false, "Dump DMSAA stats after each benchmark to json");
 static DEFINE_bool(keepAlive, false, "Print a message every so often so that we don't time out");
 static DEFINE_bool(csv, false, "Print status in CSV format");
-static DEFINE_string(sourceType, "",
+static DEFINE_string(sourceType, "skp",
         "Apply usual --match rules to source type: bench, gm, skp, image, etc.");
 static DEFINE_string(benchType,  "",
         "Apply usual --match rules to bench type: micro, recording, "
@@ -359,6 +360,11 @@ struct GraphiteTarget : public Target {
             }
         }
     }
+    void hariKiriTime() override {
+        auto pm = context->priv().sharedContext()->pipelineManager();
+        pm->shutDown();
+    }
+
     void submitWorkAndSyncCPU() override {
         if (context && recorder) {
             // TODO: have a way to sync work with out submitting a Recording which is currently
@@ -543,7 +549,15 @@ static int setup_cpu_bench(const double overhead, Target* target, Benchmark* ben
     return loops;
 }
 
+extern bool pastWarmUp;
+
 static int setup_gpu_bench(Target* target, Benchmark* bench, int maxGpuFrameLag) {
+    [[maybe_unused]] double unused = time(1, bench, target);
+    target->hariKiriTime();
+    pastWarmUp = true;
+
+
+
     // First, figure out how many loops it'll take to get a frame up to FLAGS_gpuMs.
     int loops = bench->shouldLoop() ? FLAGS_loops : 1;
     if (kAutoTuneLoops == loops) {

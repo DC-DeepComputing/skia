@@ -58,6 +58,8 @@ struct Target {
         GPU. */
     virtual void submitFrame() { }
 
+    virtual void hariKiriTime() { }
+
     /** Called between benchmarks (or between calibration and measured
         runs) to make sure all pending work in drivers / threads is
         complete. */
