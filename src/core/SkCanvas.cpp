@@ -2002,13 +2002,6 @@ const SkBlurMaskFilterImpl* SkCanvas::canAttemptBlurredRRectDraw(const SkPaint& 
         return nullptr;
     }
 
-    if (!this->getTotalMatrix().isSimilarity()) {
-        // TODO: If the CTM does more than just translation, rotation, and uniform scale, then the
-        // results of analytic blurring will be different than mask filter blurring. Skip the
-        // specialized path in this case.
-        return nullptr;
-    }
-
     return blurMaskFilter;
 }
 
