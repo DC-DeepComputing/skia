@@ -22,6 +22,30 @@
       },
       "revId": "e930506cf403ff7e9755da27da0b3f4b88607205",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8db67dc8_3cfecce1",
+        "filename": "src/core/SkRasterPipelineBlitter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 687,
+      "author": {
+        "id": 5091073
+      },
+      "writtenOn": "2026-08-18T08:51:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b0e3f961_3002d3be",
+      "range": {
+        "startLine": 687,
+        "startChar": 24,
+        "endLine": 687,
+        "endChar": 32
+      },
+      "revId": "e930506cf403ff7e9755da27da0b3f4b88607205",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
