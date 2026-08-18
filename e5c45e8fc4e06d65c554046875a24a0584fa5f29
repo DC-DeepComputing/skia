@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3332dbad_b3c901ca",
+        "filename": "src/gpu/graphite/DrawListTypes.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-08-18T14:04:15Z",
+      "side": 1,
+      "message": "nit: typo, should be `uninitialized`",
+      "range": {
+        "startLine": 150,
+        "startChar": 35,
+        "endLine": 150,
+        "endChar": 46
+      },
+      "revId": "e5c45e8fc4e06d65c554046875a24a0584fa5f29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
