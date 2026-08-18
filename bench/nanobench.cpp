@@ -61,6 +61,8 @@
 
 #include <ctype.h>
 
+extern bool gPastInitialization;
+
 #if defined(SK_ENABLE_SVG)
 #include "modules/skshaper/utils/FactoryHelpers.h"
 #include "modules/svg/include/SkSVGDOM.h"
@@ -77,6 +79,7 @@
 #include "include/gpu/graphite/Recorder.h"
 #include "include/gpu/graphite/Recording.h"
 #include "include/gpu/graphite/Surface.h"
+#include "src/gpu/graphite/ContextPriv.h"
 #include "tools/flags/CommonFlagsGraphite.h"
 #include "tools/graphite/ContextFactory.h"
 #include "tools/graphite/GraphiteTestContext.h"
@@ -359,6 +362,15 @@ struct GraphiteTarget : public Target {
             }
         }
     }
+    virtual void harikiriTime() override {
+        context->priv().sharedContext()->pipelineManager()->shutDown();
+        context->submit(skgpu::graphite::SyncToCpu::kYes);
+        testContext->syncedSubmit(context);
+        context->priv().sharedContext()->pipelineManager()->fPastInitialization = true;
+
+        SkDebugf("+++ %d\n", context->priv().sharedContext()->caps()->allowCpuSync());
+    }
+
     void submitWorkAndSyncCPU() override {
         if (context && recorder) {
             // TODO: have a way to sync work with out submitting a Recording which is currently
@@ -544,6 +556,10 @@ static int setup_cpu_bench(const double overhead, Target* target, Benchmark* ben
 }
 
 static int setup_gpu_bench(Target* target, Benchmark* bench, int maxGpuFrameLag) {
+    time(1, bench, target);
+    target->harikiriTime();
+    target->submitWorkAndSyncCPU();
+
     // First, figure out how many loops it'll take to get a frame up to FLAGS_gpuMs.
     int loops = bench->shouldLoop() ? FLAGS_loops : 1;
     if (kAutoTuneLoops == loops) {

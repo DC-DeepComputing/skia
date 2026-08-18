@@ -759,9 +759,16 @@ std::pair<SkEnumBitMask<TextureUsage>, SkEnumBitMask<SampleCount>> VulkanCaps::g
         supports |= TextureUsage::kRender;
 
         // At least 1x sample count should be supported (the limit for linear tiling).
-        sampleCounts = tiling == Tiling::kOptimal
-                ? this->getSupportedSampleCounts(interface, physDev, vkFormat, renderUsageFlags)
-                : SampleCount::k1;
+        if (tiling == Tiling::kOptimal) {
+//            SkEnumBitMask<SampleCount> tmp = this->getSupportedSampleCounts(interface, physDev, vkFormat, renderUsageFlags);
+//            if (tmp) {
+//                sampleCounts = tmp;
+//            } else {
+                sampleCounts = SampleCount::k1;
+//            }
+        } else {
+            sampleCounts = SampleCount::k1;
+        }
 
         if (this->msaaRenderToSingleSampledSupport() &&
             SkToBool(sampleCounts) &&
@@ -968,6 +975,7 @@ SkEnumBitMask<SampleCount> VulkanCaps::getSupportedSampleCounts(
                                                                       0,  // createFlags
                                                                       &properties));
     if (result != VK_SUCCESS) {
+        SKIA_LOG_W("format: %d usage: %d", format, usage);
         SKIA_LOG_W("Vulkan call GetPhysicalDeviceImageFormatProperties failed: %d", result);
         return {};
     }
