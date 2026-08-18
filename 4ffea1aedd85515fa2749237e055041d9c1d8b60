@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0d60d44_d0987c10",
+        "filename": "tests/JpegxlTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-08-18T18:32:13Z",
+      "side": 1,
+      "message": "I\u0027d prefer to use the explicit decoder from https://github.com/google/skia/blob/main/include/codec/SkJpegxlDecoder.h as the MakeFromData based on compile flags is deprecated.",
+      "range": {
+        "startLine": 28,
+        "startChar": 26,
+        "endLine": 28,
+        "endChar": 38
+      },
+      "revId": "4ffea1aedd85515fa2749237e055041d9c1d8b60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
