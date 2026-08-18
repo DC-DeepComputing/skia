@@ -39,6 +39,18 @@ skia_cc_binary(
         "@platforms//os:windows": [
             # "//tests:graphite_vulkan_tests_sources",
         ],
+        "@platforms//os:macos": [
+            "//tests:ganesh_metal_tests_sources",
+            "//tests:graphite_metal_tests_sources",
+        ],
+        "//conditions:default": [],
+    }),
+    copts = select({
+        "@platforms//os:macos": [
+            "-x",
+            "objective-c++",
+            "-fobjc-arc",
+        ],
         "//conditions:default": [],
     }),
     data = [
