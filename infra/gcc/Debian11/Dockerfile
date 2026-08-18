@@ -1,5 +1,6 @@
 FROM debian:11-slim
 
+# gcc --version says gcc (Debian 10.2.1-6)
 RUN apt-get update && apt-get upgrade -y && apt-get install -y  \
   build-essential \
   ca-certificates \
