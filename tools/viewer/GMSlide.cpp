@@ -46,6 +46,9 @@ void GMSlide::draw(SkCanvas* canvas) {
 bool GMSlide::animate(double nanos) { return fGM->animate(nanos); }
 
 bool GMSlide::onChar(SkUnichar c) { return fGM->onChar(c); }
+bool GMSlide::onMouse(SkScalar x, SkScalar y, skui::InputState state, skui::ModifierKey modifiers) {
+    return fGM->onMouse(x, y, state, modifiers);
+}
 
 bool GMSlide::onGetControls(SkMetaData* controls) {
     return fGM->getControls(controls);

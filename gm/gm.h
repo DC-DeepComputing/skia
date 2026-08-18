@@ -16,6 +16,8 @@
 #include "include/core/SkTypes.h"
 #include "include/private/SkMacros.h"
 #include "tools/Registry.h"
+#include "tools/skui/InputState.h"
+#include "tools/skui/ModifierKey.h"
 
 #include <functional>
 #include <map>
@@ -168,6 +170,7 @@ namespace skiagm {
 
         bool animate(double /*nanos*/);
         virtual bool onChar(SkUnichar);
+        virtual bool onMouse(SkScalar /*x*/, SkScalar /*y*/, skui::InputState /*state*/, skui::ModifierKey /*modifiers*/) { return false; }
 
         bool getControls(SkMetaData* controls) { return this->onGetControls(controls); }
         void setControls(const SkMetaData& controls) { this->onSetControls(controls); }
