@@ -16,6 +16,92 @@
       "message": "PTAL; your fix was verified on some of the old bugs, but there are still more outstanding triangulator issues.",
       "revId": "f20d89b4f7c3348582f395e0ef45e56ea586ab48",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc8be608_ed2fb559",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20899
+      },
+      "writtenOn": "2026-08-18T20:43:33Z",
+      "side": 1,
+      "message": "LGTM.  Nits included.",
+      "revId": "f20d89b4f7c3348582f395e0ef45e56ea586ab48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0269e2e_7664af31",
+        "filename": "src/gpu/ganesh/geometry/GrTriangulator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 858,
+      "author": {
+        "id": 20899
+      },
+      "writtenOn": "2026-08-18T20:43:33Z",
+      "side": 1,
+      "message": "Extra space here.",
+      "range": {
+        "startLine": 858,
+        "startChar": 0,
+        "endLine": 858,
+        "endChar": 0
+      },
+      "revId": "f20d89b4f7c3348582f395e0ef45e56ea586ab48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d8599b8_48beda23",
+        "filename": "src/gpu/ganesh/geometry/GrTriangulator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1211,
+      "author": {
+        "id": 20899
+      },
+      "writtenOn": "2026-08-18T20:43:33Z",
+      "side": 1,
+      "message": "Instead of manual list_remove, consider calling edge-\u003edisconnect(). This is more thorough as it will also remove the edge from the other vertex\u0027s list (if fTop is non-null) and clear the edge\u0027s own vertex pointers.",
+      "range": {
+        "startLine": 1211,
+        "startChar": 0,
+        "endLine": 1211,
+        "endChar": 0
+      },
+      "revId": "f20d89b4f7c3348582f395e0ef45e56ea586ab48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db44bd50_73e5cb7d",
+        "filename": "src/gpu/ganesh/geometry/GrTriangulator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1220,
+      "author": {
+        "id": 20899
+      },
+      "writtenOn": "2026-08-18T20:43:33Z",
+      "side": 1,
+      "message": "Same as above, consider using edge-\u003edisconnect() for a cleaner and more complete removal of the invalid edge from the mesh.",
+      "range": {
+        "startLine": 1220,
+        "startChar": 0,
+        "endLine": 1220,
+        "endChar": 0
+      },
+      "revId": "f20d89b4f7c3348582f395e0ef45e56ea586ab48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
