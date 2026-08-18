@@ -9,10 +9,16 @@
 
 #include "include/core/SkPath.h"
 #include "include/core/SkPoint.h"
+#include "include/private/SkTDArray.h"
 #include "src/core/SkVx.h"
 #include "src/gpu/graphite/sparse_strips/MSAA_LUT.h"
+#include "src/gpu/graphite/sparse_strips/Polyline.h"
+#include "src/gpu/graphite/sparse_strips/Strip.h"
+#include "src/gpu/graphite/sparse_strips/Tiler.h"
+#include "tests/Test.h"
 
 #include <cstdint>
+#include <unordered_map>
 #include <vector>
 
 namespace skgpu::graphite {
@@ -89,6 +95,92 @@ private:
     bool fBuilt = false;
     std::vector<CurveIntersection> fHits;
     std::vector<RowWindingInterval> fIntervals;
+};
+
+template <uint16_t kTileWidth, uint16_t kTileHeight> class StripStreamValidator {
+public:
+    enum class Strictness {
+        kStrict,     // Exact sample matching against oracle
+        kNonStrict,  // Forgive winding errors on subsamples within flattening tolerance of any chord in tile
+    };
+
+    StripStreamValidator(const SkPath& path,
+                         const SkTDArray<Strip>& stripBuf,
+                         const SkTDArray<uint8_t>& alphaBuf,
+                         const SkTDArray<skvx::int8>& exactWindings,
+                         const Polyline* polyline = nullptr,
+                         const Tiles<kTileWidth, kTileHeight>* tiler = nullptr,
+                         const char* testName = "StripStreamValidator",
+                         Strictness strictness = Strictness::kStrict,
+                         float flatteningTolerance = 0.25f);
+
+    void setStrictness(Strictness s) { fStrictness = s; }
+    Strictness strictness() const { return fStrictness; }
+    void setTolerance(float tol) { fToleranceSq = tol * tol; }
+
+    static skvx::int8 GetOracleWinding(
+            int px, const std::vector<ScanlineOracle8x::RowWindingInterval>& intervals);
+
+    bool validate(skiatest::Reporter* reporter,
+                  uint16_t viewportWidth,
+                  uint16_t viewportHeight,
+                  uint32_t* maxSampleDiffOut = nullptr) const;
+
+private:
+    bool validateStreamInvariants(skiatest::Reporter* reporter,
+                                  uint16_t viewportWidth,
+                                  uint16_t viewportHeight) const;
+
+    bool validateBoundaryColumn(
+            skiatest::Reporter* reporter,
+            uint16_t px,
+            uint16_t py,
+            const std::vector<ScanlineOracle8x::RowWindingInterval>& oracleIntervals,
+            bool expectedFill) const;
+
+    bool validateGapSpan(
+            skiatest::Reporter* reporter,
+            int startPx,
+            int endPx,
+            uint16_t py,
+            const std::vector<ScanlineOracle8x::RowWindingInterval>& oracleIntervals,
+            bool expectedFill) const;
+
+    bool validateAlphaTileSpan(
+            skiatest::Reporter* reporter,
+            const Strip& strip,
+            uint32_t startAlphaIdx,
+            uint16_t spannedTiles,
+            uint16_t py,
+            const std::vector<ScanlineOracle8x::RowWindingInterval>& oracleIntervals,
+            uint32_t* maxSampleDiffOut) const;
+
+    void printMismatchDiagnostics(skiatest::Reporter* reporter,
+                                  uint16_t tileStartX,
+                                  uint16_t tileStartY,
+                                  uint16_t px,
+                                  uint16_t py,
+                                  skvx::int8 actualWinding,
+                                  skvx::int8 oracleWinding) const;
+
+    static float DistanceSqToSegment(SkPoint p, SkPoint a, SkPoint b);
+    void buildTileLineMap();
+    bool isWithinTolerance(SkPoint subPt, uint16_t tileX, uint16_t tileY) const;
+
+    const SkPath& fPath;
+    const SkTDArray<Strip>& fStrips;
+    const SkTDArray<uint8_t>& fAlphaBuf;
+    const SkTDArray<skvx::int8>& fExactWindings;
+    const Polyline* fPolyline;
+    const Tiles<kTileWidth, kTileHeight>* fTiler;
+    const char* fTestName;
+    Strictness fStrictness = Strictness::kStrict;
+    float fToleranceSq = 0.25f * 0.25f;
+    std::unordered_map<uint32_t, std::vector<Line>> fTileLineMap;
+    mutable ScanlineOracle8x fOracle;
+
+    // We only explicitly instantiate 4 and 8
+    static_assert(kTileWidth == kTileHeight && (kTileWidth == 4 || kTileWidth == 8));
 };
 
 }  // namespace skgpu::graphite
