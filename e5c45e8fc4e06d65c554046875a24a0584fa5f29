@@ -22,6 +22,48 @@
       },
       "revId": "e5c45e8fc4e06d65c554046875a24a0584fa5f29",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8b8dcc5_332f5851",
+        "filename": "src/gpu/graphite/DrawListTypes.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-18T15:34:03Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "3332dbad_b3c901ca",
+      "range": {
+        "startLine": 150,
+        "startChar": 35,
+        "endLine": 150,
+        "endChar": 46
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "168a0d88_3b1de83f",
+          "description": "GET_AI_FIX_FOR_COMMENT prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/DrawListTypes.h",
+              "range": {
+                "startLine": 150,
+                "startChar": 0,
+                "endLine": 151,
+                "endChar": 0
+              },
+              "replacement": "    Draw() \u003d default; // Let it be uninitialized\n"
+            }
+          ]
+        }
+      ],
+      "revId": "e5c45e8fc4e06d65c554046875a24a0584fa5f29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
