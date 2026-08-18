@@ -174,7 +174,7 @@ static DEFINE_bool(gpuStatsDump, false, "Dump GPU stats after each benchmark to 
 static DEFINE_bool(dmsaaStatsDump, false, "Dump DMSAA stats after each benchmark to json");
 static DEFINE_bool(keepAlive, false, "Print a message every so often so that we don't time out");
 static DEFINE_bool(csv, false, "Print status in CSV format");
-static DEFINE_string(sourceType, "",
+static DEFINE_string(sourceType, "skp",
         "Apply usual --match rules to source type: bench, gm, skp, image, etc.");
 static DEFINE_string(benchType,  "",
         "Apply usual --match rules to bench type: micro, recording, "
@@ -543,7 +543,11 @@ static int setup_cpu_bench(const double overhead, Target* target, Benchmark* ben
     return loops;
 }
 
+extern bool foo77;
+
 static int setup_gpu_bench(Target* target, Benchmark* bench, int maxGpuFrameLag) {
+    [[maybe_unused]] double unused = time(1, bench, target);
+    foo77 = true;
     // First, figure out how many loops it'll take to get a frame up to FLAGS_gpuMs.
     int loops = bench->shouldLoop() ? FLAGS_loops : 1;
     if (kAutoTuneLoops == loops) {
