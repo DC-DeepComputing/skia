@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "851cc798_ce5bf1e2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4569768
+      },
+      "writtenOn": "2026-08-18T09:15:35Z",
+      "side": 1,
+      "message": "Hi!\nI ran extended testing on multiple platforms on Edge for Rust ICO and found some failures when decoding multiple images with different dimensions.\n\nIt would only return the first image, which is not the expected behaviour, so I added another test and added an override to fix the issue.",
+      "revId": "f905fb3848eb33cf122ff88d4a52c59f83c0e2f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
