@@ -32,6 +32,7 @@ public:
     bool animate(double nanos) override;
 
     bool onChar(SkUnichar c) override;
+    bool onMouse(SkScalar x, SkScalar y, skui::InputState state, skui::ModifierKey modifiers) override;
 
     bool onGetControls(SkMetaData*) override;
     void onSetControls(const SkMetaData&) override;
