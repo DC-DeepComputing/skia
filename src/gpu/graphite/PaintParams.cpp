@@ -500,12 +500,18 @@ void ShadingParams::handleClipping(const KeyContext& keyContext) const {
     }
 }
 
-std::optional<ShadingParams::Result> ShadingParams::toKey(const KeyContext& keyContext) const {
-    SkDEBUGCODE(keyContext.pipelineDataGatherer()->checkReset());
-    SkDEBUGCODE(keyContext.paintParamsKeyBuilder()->checkReset());
-    SkDEBUGCODE(const Caps* caps = keyContext.caps();)
-    SkDEBUGCODE(TextureFormat format = keyContext.drawContext()->target().proxy()->format();)
+std::optional<ShadingParams::Result> ShadingParams::toKey(const KeyContext& keyContextIn) const {
+    SkDEBUGCODE(keyContextIn.pipelineDataGatherer()->checkReset());
+    SkDEBUGCODE(keyContextIn.paintParamsKeyBuilder()->checkReset());
+    SkDEBUGCODE(const Caps* caps = keyContextIn.caps();)
+    SkDEBUGCODE(TextureFormat format = keyContextIn.drawContext()->target().proxy()->format();)
     SkDEBUGCODE(bool paintDependsOnDst = true;)
+
+    // Disable sampling optimizations if we are drawing an SkMesh since the user can vary the
+    // sampled shader local coordinates so we can't expect this optimization to always work.
+    const KeyContext& keyContext = fPaint.meshSpec()
+                ? keyContextIn.withExtraFlags(KeyGenFlags::kDisableSamplingOptimization)
+                : keyContextIn;
 
     // Root Node 0 is the source color, which is the output of all effects post dithering
     keyContext.paintParamsKeyBuilder()->addRootBlockHeader(RootBlockType::kSrcColor);

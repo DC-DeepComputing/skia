@@ -10,7 +10,9 @@
 #include "src/gpu/graphite/PaintParamsKey.h"
 
 #include "include/private/SkAssert.h"
+#include "include/private/SkDebug.h"
 #include "src/core/SkMeshPriv.h"
+#include "src/core/SkRuntimeEffectPriv.h"
 #include "src/core/SkSLTypeShared.h"
 #include "src/core/SkVertState.h"
 #include "src/gpu/BufferWriter.h"
@@ -18,14 +20,21 @@
 #include "src/gpu/graphite/DrawTypes.h"
 #include "src/gpu/graphite/DrawWriter.h"
 #include "src/gpu/graphite/PipelineData.h"
+#include "src/gpu/graphite/ShaderCodeDictionary.h"
 #include "src/gpu/graphite/geom/Geometry.h"
 #include "src/gpu/graphite/geom/Transform.h"
+#include "src/sksl/SkSLString.h"
 
 #include "src/gpu/graphite/render/CommonDepthStencilSettings.h"
 
 #include <cstdint>
 
 namespace skgpu::graphite {
+
+static constexpr char kMeshFSLocalCoordsName[] = "meshLocalCoordsOverride";
+
+static constexpr std::initializer_list<Uniform> kStepUniforms =
+        {{"depth", SkSLType::kFloat}, {"localToDevice", SkSLType::kFloat4x4}};
 
 static SkVertices::VertexMode vertex_mode(SkMesh::Mode mode) {
     if (mode == SkMesh::Mode::kTriangles) {
@@ -41,7 +50,7 @@ MeshRenderStep::MeshRenderStep(Layout layout)
                      RenderStep::RenderStepID::kMesh,
                      Flags::kPerformsShading | Flags::kAppendVertices
                                              | Flags::kEmitsPrimitiveColor,
-                     /*uniforms=*/{},
+                     kStepUniforms,
                      PrimitiveType::kTriangles,
                      kDirectDepthLEqualPass,
                      /*staticAttrs=*/{},
@@ -50,11 +59,69 @@ MeshRenderStep::MeshRenderStep(Layout layout)
 MeshRenderStep::~MeshRenderStep() {}
 
 std::string MeshRenderStep::vertexSkSL(const RootNodesInfo& roots) const {
-    return "";
+    SkASSERT(roots.fMeshSpec);
+    const SkMeshSpecification* spec = roots.fMeshSpec;
+
+    std::string attrs = "Attributes attributes;\n";
+    for (const auto& attr : spec->attributes()) {
+        attrs += SkSL::String::printf("attributes.%s = %s;\n",
+                                      attr.name.c_str(), attr.name.c_str());
+    }
+
+    std::string varyingAssignments;
+    for (const auto& v : SkMeshSpecificationPriv::Varyings(*spec)) {
+        varyingAssignments += SkSL::String::printf("%s%s = varyings.%s;\n",
+                                                   v.name.c_str(), kMeshVaryingMangleSuffix,
+                                                   v.name.c_str());
+    }
+
+    return SkSL::String::printf("%s\n"
+                                "Varyings varyings = %s(attributes);\n"
+                                "float4 devPosition"
+                                "       = localToDevice * float4(varyings.position, depth, 1.0);\n"
+                                "stepLocalCoords = varyings.position;\n"
+                                "%s", attrs.c_str(), kMeshVSMainName,
+                                varyingAssignments.c_str());
 }
 
 std::string MeshRenderStep::fragmentColorSkSL(const RootNodesInfo& roots) const {
-    return "";
+    SkASSERT(roots.fMeshSpec);
+    const SkMeshSpecification* spec = roots.fMeshSpec;
+
+    std::string s = "Varyings varyings;\n";
+    for (const auto& v : SkMeshSpecificationPriv::Varyings(*spec)) {
+        s += SkSL::String::printf("varyings.%s = %s%s;\n",
+                                  v.name.c_str(), v.name.c_str(),
+                                  kMeshVaryingMangleSuffix);
+    }
+
+    bool needsColorConversion = SkMeshSpecificationPriv::GetColorType(*spec)
+                                         == SkMeshSpecificationPriv::ColorType::kFloat4;
+    std::string outColorName = "primitiveColor";
+    if (needsColorConversion) {
+        outColorName = "primitiveColorFloat4";
+        s += "float4 " + outColorName + ";\n";
+    }
+
+    // Check if the mesh FS should have a primitive color output parameter.
+    bool hasColorOutput = SkMeshSpecificationPriv::HasColors(*spec);
+    std::string methodCall = hasColorOutput ? SkSL::String::printf("%s(varyings, %s)",
+                                                                   kMeshFSMainName,
+                                                                   outColorName.c_str())
+                                            : SkSL::String::printf("%s(varyings)",
+                                                                   kMeshFSMainName);
+
+    s += SkSL::String::printf("float2 %s = %s;\n",
+                              kMeshFSLocalCoordsName,
+                              methodCall.c_str());
+    if (needsColorConversion) {
+        s += "primitiveColor = half4(" + outColorName + ");\n";
+    }
+    return s;
+}
+
+const char* MeshRenderStep::fragmentColorSkSLLocalCoordsVariable() const {
+    return kMeshFSLocalCoordsName;
 }
 
 void MeshRenderStep::writeVertices(DrawWriter* writer,
@@ -101,7 +168,49 @@ void MeshRenderStep::writeVertices(DrawWriter* writer,
 
 void MeshRenderStep::writeUniformsAndTextures(const DrawParams& params,
                                               PipelineDataGatherer* gatherer) const {
-    // TODO (nathanasanchez): Implement uniform writing.
+    const SkMesh& mesh = params.geometry().mesh();
+    const SkMeshSpecification* spec = mesh.spec();
+
+    const size_t renderStepUniformNum = this->numUniforms();
+    skia_private::TArray<Uniform> uniforms(kStepUniforms);
+    uniforms.reserve_exact(renderStepUniformNum + spec->uniforms().size());
+    SkASSERT(uniforms.size() == static_cast<int>(renderStepUniformNum));
+
+    // Append SkMeshSpecification uniform data to `uniforms`, keeping the c string pointers
+    // alive in `uniformNames`.
+    skia_private::TArray<std::string> uniformNames;
+    uniformNames.reserve_exact(spec->uniforms().size());
+    for (const auto& u : spec->uniforms()) {
+        uniformNames.push_back(std::string(u.name));
+        uniforms.push_back(Uniform(uniformNames.back().c_str(),
+                                   ShaderCodeDictionary::UniformTypeToSkSLType(u),
+                                   u.isArray() ? u.count : Uniform::kNonArray));
+    }
+    SkDEBUGCODE(gatherer->checkRewind());
+    SkDEBUGCODE(UniformExpectationsValidator uev(gatherer, uniforms));
+
+    // Write step uniforms.
+    gatherer->write(params.order().depthAsFloat());
+    gatherer->write(params.transform().matrix());
+
+    // Write SkMeshSpecification uniforms.
+    sk_sp<const SkData> transformedUniforms = SkRuntimeEffectPriv::TransformUniforms(
+            spec->uniforms(), mesh.refUniforms(), SkMeshSpecificationPriv::ColorSpace(*spec));
+    for (size_t i = 0; i < spec->uniforms().size(); i++) {
+        // Since we are doing pointer arithmetic, make sure we are operating on bytes.
+        static_assert(std::is_same_v<decltype(transformedUniforms->bytes()), const uint8_t*>);
+        gatherer->write(uniforms[i + renderStepUniformNum],
+                        transformedUniforms->bytes() + spec->uniforms()[i].offset);
+    }
+}
+
+size_t MeshRenderStep::appendDataStride(const DrawParams& params) const {
+    const SkMeshSpecification* spec = params.geometry().mesh().spec();
+    size_t stride = RenderStep::appendDataStride();
+    for (const auto& attr : spec->attributes()) {
+        stride += Attribute::MakeFromSkMeshAttribute(attr).sizeAlign4();
+    }
+    return stride;
 }
 
 }  // namespace skgpu::graphite
