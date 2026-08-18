@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1cc71ad9_4729baee",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-08-18T13:29:19Z",
+      "side": 1,
+      "message": "Could this be folded into the loop below?",
+      "range": {
+        "startLine": 129,
+        "startChar": 0,
+        "endLine": 135,
+        "endChar": 9
+      },
+      "revId": "64e3c0fbac0667fdcc2905eabb9414cf779b83c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
