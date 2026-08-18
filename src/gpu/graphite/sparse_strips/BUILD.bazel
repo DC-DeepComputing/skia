@@ -7,6 +7,8 @@ package(
 licenses(["notice"])
 
 SPARSE_STRIPS_FILES = [
+    "AlphaAtlasManager.cpp",
+    "AlphaAtlasManager.h",
     "Flatten.cpp",
     "Flatten.h",
     "MSAA_LUT.h",

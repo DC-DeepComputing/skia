@@ -383,11 +383,13 @@ SK_ALWAYS_INLINE void processPathsImpl(const SkPath& path,
                     pts = mappedPts;
                 }
 
-                if (!closed && lastPt != startPt) {
+                if (!closed) {
                     if (needStartPt) {
                         polyline->appendPoint(lastPt);
+                        polyline->appendPoint(startPt);
+                    } else if (lastPt != startPt) {
+                        polyline->appendPoint(startPt);
                     }
-                    polyline->appendPoint(startPt);
                 }
                 polyline->appendSentinel();
 
@@ -424,11 +426,13 @@ SK_ALWAYS_INLINE void processPathsImpl(const SkPath& path,
 
                 if (processQuad(pts, needStartPt)) {
                     needStartPt = false;
-                } else if (!needStartPt) {
-                    polyline->appendSentinel();
-                    needStartPt = true;
+                    lastPt = pts[2];
+                } else {
+                    if (!needStartPt) {
+                        polyline->appendSentinel();
+                        needStartPt = true;
+                    }
                 }
-                lastPt = pts[2];
                 break;
             }
             case SkPath::kConic_Verb: {
@@ -441,11 +445,13 @@ SK_ALWAYS_INLINE void processPathsImpl(const SkPath& path,
 
                 if (processConic(pts, iter.conicWeight(), needStartPt)) {
                     needStartPt = false;
-                } else if (!needStartPt) {
-                    polyline->appendSentinel();
-                    needStartPt = true;
+                    lastPt = pts[2];
+                } else {
+                    if (!needStartPt) {
+                        polyline->appendSentinel();
+                        needStartPt = true;
+                    }
                 }
-                lastPt = pts[2];
                 break;
             }
             case SkPath::kCubic_Verb: {
@@ -458,19 +464,21 @@ SK_ALWAYS_INLINE void processPathsImpl(const SkPath& path,
 
                 if (processCubic(pts, needStartPt)) {
                     needStartPt = false;
-                } else if (!needStartPt) {
-                    polyline->appendSentinel();
-                    needStartPt = true;
+                    lastPt = pts[3];
+                } else {
+                    if (!needStartPt) {
+                        polyline->appendSentinel();
+                        needStartPt = true;
+                    }
                 }
-                lastPt = pts[3];
                 break;
             }
             case SkPath::kClose_Verb: {
                 closed = true;
-                if (lastPt != startPt) {
-                    if (needStartPt) {
-                        polyline->appendPoint(lastPt);
-                    }
+                if (needStartPt) {
+                    polyline->appendPoint(lastPt);
+                    polyline->appendPoint(startPt);
+                } else if (lastPt != startPt) {
                     polyline->appendPoint(startPt);
                 }
                 needStartPt = false;
@@ -481,11 +489,13 @@ SK_ALWAYS_INLINE void processPathsImpl(const SkPath& path,
         }
     }
 
-    if (!closed && lastPt != startPt) {
+    if (!closed) {
         if (needStartPt) {
             polyline->appendPoint(lastPt);
+            polyline->appendPoint(startPt);
+        } else if (lastPt != startPt) {
+            polyline->appendPoint(startPt);
         }
-        polyline->appendPoint(startPt);
     }
 
     polyline->appendSentinel();

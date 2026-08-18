@@ -18,6 +18,7 @@
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/RendererProvider.h"
 #include "src/gpu/graphite/TextureProxy.h"
+#include "src/gpu/graphite/sparse_strips/AlphaAtlasManager.h"
 #include "src/gpu/graphite/text/TextAtlasManager.h"
 
 #include <utility>
@@ -31,7 +32,8 @@ static bool use_clip_atlas(const Recorder* recorder) {
 }
 
 AtlasProvider::AtlasProvider(Recorder* recorder)
-        : fTextAtlasManager(std::make_unique<TextAtlasManager>(recorder))
+        : fAlphaAtlasManager(std::make_unique<AlphaAtlasManager>(recorder))
+        , fTextAtlasManager(std::make_unique<TextAtlasManager>(recorder))
         , fRasterPathAtlas(std::make_unique<RasterPathAtlas>(recorder))
         , fClipAtlasManager(use_clip_atlas(recorder) ? std::make_unique<ClipAtlasManager>(recorder)
                                                      : nullptr) {}
@@ -93,6 +95,9 @@ sk_sp<TextureProxy> AtlasProvider::getAtlasTexture(Recorder* recorder,
 }
 
 void AtlasProvider::freeGpuResources() {
+    if (fAlphaAtlasManager) {
+        fAlphaAtlasManager->freeGpuResources();
+    }
     // Clear out any pages not in use or needed for any pending work on the Recorder.
     // In the event this is called right after a snap(), all pages would be eligible
     // for cleanup anyways.
@@ -112,6 +117,9 @@ void AtlasProvider::freeGpuResources() {
 }
 
 void AtlasProvider::recordUploads(DrawContext* dc) {
+    if (fAlphaAtlasManager) {
+        fAlphaAtlasManager->recordUploads(dc);
+    }
     if (!fTextAtlasManager->recordUploads(dc)) {
         SKIA_LOG_E("TextAtlasManager uploads have failed -- may see invalid results.");
     }
