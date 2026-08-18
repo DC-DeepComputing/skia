@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6243c0d7_6aaedab3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-18T17:35:08Z",
+      "side": 1,
+      "message": "PTAL V2, this is the stateful class we discussed",
+      "revId": "67999eb1ba6f6c5f5d594978d0a1f0d6736b8c9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
