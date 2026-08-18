@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f2fd6be_6ec50750",
+        "filename": "src/core/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 644,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2026-08-18T12:24:57Z",
+      "side": 1,
+      "message": "Add \"//src/partition_alloc:raw_ptr\" to deps here",
+      "revId": "3a8cb55ec93cdc6446eddce26c2abea5e07459fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
