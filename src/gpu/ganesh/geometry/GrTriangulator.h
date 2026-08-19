@@ -459,7 +459,11 @@ struct GrTriangulator::Edge {
 
     bool isRightOf(const Vertex& v) const { return this->dist(v.fPoint) < 0.0; }
     bool isLeftOf(const Vertex& v) const { return this->dist(v.fPoint)  > 0.0; }
-    void recompute() { fLine = Line(fTop, fBottom); }
+    void recompute() {
+        // Should have bailed in setTop/Bottom if this wasn't true.
+        SkASSERT(hasTopAndBottom());
+        fLine = Line(fTop, fBottom);
+    }
     void insertAbove(Vertex*, const Comparator&);
     void insertBelow(Vertex*, const Comparator&);
     void disconnect();
