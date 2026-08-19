@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f127f65_eae51049",
+        "filename": "src/sksl/SkSLCompiler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-19T19:10:03Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "8c87d863_ca70433d",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 1
+      },
+      "revId": "ced56596b29a8256e84cf3381797ff0308ce931d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8b76c70a_be1bad12",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "02b79083_7e94b8b8",
+        "filename": "src/sksl/SkSLCompiler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-19T19:10:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8b76c70a_be1bad12",
+      "range": {
+        "startLine": 64,
+        "startChar": 54,
+        "endLine": 64,
+        "endChar": 66
+      },
+      "revId": "ced56596b29a8256e84cf3381797ff0308ce931d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eb87c119_0feba824",
@@ -77,6 +125,30 @@
       "writtenOn": "2026-08-19T15:53:35Z",
       "side": 1,
       "message": "If the compiler is created with a ModuleLoader, do we need this function? Or can we just have `moduleForProgramKind` use the moduleloader that was passed into the compiler ctor?",
+      "range": {
+        "startLine": 163,
+        "startChar": 0,
+        "endLine": 163,
+        "endChar": 85
+      },
+      "revId": "ced56596b29a8256e84cf3381797ff0308ce931d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "012f1468_209c2aa6",
+        "filename": "src/sksl/SkSLCompiler.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-19T19:10:03Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "eb87c119_0feba824",
       "range": {
         "startLine": 163,
         "startChar": 0,
