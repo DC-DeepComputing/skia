@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4ea0af8_bcc891be",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-08-19T12:44:49Z",
+      "side": 1,
+      "message": "Relanding with a staging flag to facilitate client rebaselines.",
+      "revId": "c4a1bc725f9f1940bb9f7d323801be2c9b435b81",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
