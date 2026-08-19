@@ -88,6 +88,13 @@ static constexpr BuiltinTypePtr kPrivateTypes[] = {
 
 #undef TYPE
 
+// Built-in types are immutable and shared across all ModuleLoader instances to preserve pointer
+// equality in type checks (e.g. `type == context.fTypes.fBool.get()`).
+static const BuiltinTypes& builtin_types() {
+    static SkNoDestructor<BuiltinTypes> sBuiltinTypes;
+    return *sBuiltinTypes;
+}
+
 struct ModuleLoader::Impl {
     Impl();
 
@@ -96,7 +103,7 @@ struct ModuleLoader::Impl {
     // This mutex is taken when ModuleLoader::Get is called, and released when the returned
     // ModuleLoader object falls out of scope.
     SkMutex fMutex;
-    const BuiltinTypes fBuiltinTypes;
+    const BuiltinTypes& fBuiltinTypes;
 
     std::unique_ptr<const Module> fRootModule;
 
@@ -119,7 +126,15 @@ ModuleLoader ModuleLoader::Get() {
     return ModuleLoader(*sModuleLoaderImpl);
 }
 
-ModuleLoader::ModuleLoader(ModuleLoader::Impl& m) : fModuleLoader(m) {
+ModuleLoader::ModuleLoader()
+        : fLocalImpl(std::make_unique<Impl>())
+        , fModuleLoader(*fLocalImpl) {
+    fModuleLoader.fMutex.acquire();
+}
+
+ModuleLoader::ModuleLoader(ModuleLoader::Impl& m)
+        : fLocalImpl(nullptr)
+        , fModuleLoader(m) {
     fModuleLoader.fMutex.acquire();
 }
 
@@ -127,19 +142,8 @@ ModuleLoader::~ModuleLoader() {
     fModuleLoader.fMutex.release();
 }
 
-void ModuleLoader::unloadModules() {
-    fModuleLoader.fSharedModule           = nullptr;
-    fModuleLoader.fGPUModule              = nullptr;
-    fModuleLoader.fVertexModule           = nullptr;
-    fModuleLoader.fFragmentModule         = nullptr;
-    fModuleLoader.fComputeModule          = nullptr;
-    fModuleLoader.fGraphiteVertexModule   = nullptr;
-    fModuleLoader.fGraphiteFragmentModule = nullptr;
-    fModuleLoader.fPublicModule           = nullptr;
-    fModuleLoader.fRuntimeShaderModule    = nullptr;
-}
-
-ModuleLoader::Impl::Impl() {
+ModuleLoader::Impl::Impl()
+        : fBuiltinTypes(builtin_types()) {
     this->makeRootSymbolTable();
 }
 

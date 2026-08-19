@@ -60,10 +60,18 @@ Compiler::Compiler() : fErrorReporter(this) {
     fContext = std::make_shared<Context>(moduleLoader.builtinTypes(), fErrorReporter);
 }
 
+Compiler::Compiler(ModuleLoader& moduleLoader) : fErrorReporter(this) {
+    fContext = std::make_shared<Context>(moduleLoader.builtinTypes(), fErrorReporter);
+}
+
 Compiler::~Compiler() {}
 
 const Module* Compiler::moduleForProgramKind(ProgramKind kind) {
     auto m = ModuleLoader::Get();
+    return this->moduleForProgramKind(kind, m);
+}
+
+const Module* Compiler::moduleForProgramKind(ProgramKind kind, ModuleLoader& m) {
     switch (kind) {
         case ProgramKind::kFragment:              return m.loadFragmentModule(this);
         case ProgramKind::kVertex:                return m.loadVertexModule(this);
