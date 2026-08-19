@@ -7,6 +7,7 @@
 
 #include "experimental/rust_ico/decoder/SkIcoRustDecoder.h"
 
+#include <iterator>
 #include <memory>
 #include <utility>
 
@@ -18,8 +19,11 @@
 #include "include/core/SkImage.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPixmap.h"
+#include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkSize.h"
 #include "include/core/SkStream.h"
+#include "include/core/SkString.h"
 #include "tests/ComparePixels.h"
 #include "tests/FakeStreams.h"
 #include "tests/Test.h"
@@ -62,6 +66,72 @@ DEF_TEST(RustIcoCodec_decode_multi_bmp, r) {
     auto [image, result] = codec->getImage();
     REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, result);
     REPORTER_ASSERT(r, image);
+}
+
+// Verifies the multi-frame contract for an ICO whose entries have *different*
+// dimensions (color_wheel.ico: 128, 64, 48, 32, 16 px, all BMP).
+//
+// This mirrors how a multi-frame client (e.g. Blink's SkiaImageDecoderBase)
+// consumes the codec: read getFrameCount(), read each frame's size from
+// getFrameInfo().fFrameRect, then decode frame N into a buffer sized to that
+// frame with Options.fFrameIndex == N. Every entry must report and decode at
+// its own size -- not the largest/canvas size. Regression test for the case
+// where a smaller entry was reported/decoded at the canvas size and therefore
+// looked like a duplicate of a larger frame to multi-frame clients.
+DEF_TEST(RustIcoCodec_multiframe_different_dimensions, r) {
+    std::unique_ptr<SkCodec> codec = decode_ico(r, "images/color_wheel.ico");
+    if (!codec) {
+        return;
+    }
+
+    // The top-level (canvas) size is the largest entry.
+    REPORTER_ASSERT(r, codec->dimensions() == SkISize::Make(128, 128),
+                    "Expected 128x128 canvas, got %dx%d",
+                    codec->dimensions().width(), codec->dimensions().height());
+
+    const int frameCount = codec->getFrameCount();
+    REPORTER_ASSERT(r, frameCount == 5, "Expected 5 frames, got %d", frameCount);
+
+    // Entries are ordered by decreasing area (then bit depth as a tiebreaker).
+    const int kExpectedSizes[] = {128, 64, 48, 32, 16};
+    REPORTER_ASSERT(r, frameCount == static_cast<int>(std::size(kExpectedSizes)));
+
+    for (int i = 0; i < frameCount; i++) {
+        skiatest::ReporterContext ctx(r, SkStringPrintf("frame %d", i).c_str());
+        const int expected = kExpectedSizes[i];
+
+        // Each entry must report its own dimensions via fFrameRect, and that
+        // rect must always be contained by the canvas.
+        SkCodec::FrameInfo frameInfo;
+        REPORTER_ASSERT(r, codec->getFrameInfo(i, &frameInfo),
+                        "getFrameInfo(%d) failed", i);
+        REPORTER_ASSERT(r, frameInfo.fFrameRect == SkIRect::MakeWH(expected, expected),
+                        "frame %d rect=(%d,%d,%d,%d), expected (0,0,%d,%d)",
+                        i, frameInfo.fFrameRect.fLeft, frameInfo.fFrameRect.fTop,
+                        frameInfo.fFrameRect.fRight, frameInfo.fFrameRect.fBottom,
+                        expected, expected);
+        REPORTER_ASSERT(r,
+                        SkIRect::MakeSize(codec->dimensions()).contains(frameInfo.fFrameRect));
+
+        // Decode frame i into a destination sized to *this* frame (not the
+        // canvas). This is only accepted because onDimensionsSupported() reports
+        // every entry's size, and it decodes the correct entry because a
+        // specific frame index is authoritative in selectAndDecode().
+        SkImageInfo info = codec->getInfo()
+                                   .makeWH(expected, expected)
+                                   .makeColorType(kN32_SkColorType);
+        SkBitmap bitmap;
+        REPORTER_ASSERT(r, bitmap.tryAllocPixels(info));
+        bitmap.eraseColor(SK_ColorTRANSPARENT);
+
+        SkCodec::Options options;
+        options.fFrameIndex = i;
+        SkCodec::Result result = codec->getPixels(bitmap.pixmap(), &options);
+        REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, result);
+        REPORTER_ASSERT(r, bitmap.width() == expected && bitmap.height() == expected,
+                        "decoded %dx%d, expected %dx%d",
+                        bitmap.width(), bitmap.height(), expected, expected);
+    }
 }
 
 // Test decoding a valid ICO file with PNG images (google_chrome.ico has PNG).
@@ -477,14 +547,27 @@ DEF_TEST(RustIcoCodec_truncated_all_entries_missing, r) {
 }
 
 // Test that an ICO file truncated so that only some embedded images are present
-// returns kIncompleteInput (not kSuccess), while still producing a usable codec
-// for the entries that are available.
+// still reports kSuccess (matching SkIcoCodec) and produces a usable codec whose
+// reported size is stable, derived from the ICO directory rather than from the
+// subset of frames that happen to be decodable so far.
+//
+// This stability is required by progressive/deferred clients such as Blink: they
+// lock the image size from the first successful parse, so a size that grew as
+// more data arrived would leave earlier buffers undersized and overflow on a
+// later decode. Reporting kIncompleteInput here would instead leave such clients
+// with no size at all. See SkIcoRustCodec::MakeFromStream for details.
 DEF_TEST(RustIcoCodec_truncated_some_entries_missing, r) {
     sk_sp<SkData> data = GetResourceAsData("images/color_wheel.ico");
     if (!data) {
         ERRORF(r, "Missing resource: images/color_wheel.ico");
         return;
     }
+    // Reported size with the full, well-formed file, for the stability check.
+    SkCodec::Result fullResult;
+    std::unique_ptr<SkCodec> fullCodec =
+            SkIcoRustDecoder::Decode(SkMemoryStream::Make(data), &fullResult);
+    REPORTER_ASSERT(r, fullCodec, "Codec creation should succeed with full data");
+    const SkISize fullDims = fullCodec ? fullCodec->dimensions() : SkISize::MakeEmpty();
 
     // color_wheel.ico has 5 BMP images. Truncate to roughly half the file so
     // some entries are fully present but later ones are cut off.
@@ -496,9 +579,11 @@ DEF_TEST(RustIcoCodec_truncated_some_entries_missing, r) {
             SkIcoRustDecoder::Decode(SkMemoryStream::Make(std::move(truncated)), &result);
 
     if (codec) {
-        // Some entries decoded successfully but not all — should be kIncompleteInput.
-        REPORTER_ASSERT(r, result == SkCodec::kIncompleteInput,
-                        "Expected kIncompleteInput for partially truncated ICO, got %s",
+        // As long as we have a usable codec we report kSuccess, mirroring
+        // SkIcoCodec.
+        REPORTER_ASSERT(r, result == SkCodec::kSuccess,
+                        "Expected kSuccess for partially truncated ICO with usable "
+                        "frames, got %s",
                         SkCodec::ResultToString(result));
 
         // The codec should still be usable for the entries that are present.
@@ -507,9 +592,17 @@ DEF_TEST(RustIcoCodec_truncated_some_entries_missing, r) {
         REPORTER_ASSERT(r, frameCount < 5,
                         "Should have fewer than 5 frames (original has 5), got %d", frameCount);
 
-        // Verify the available frames can be decoded.
-        auto [image, decodeResult] = codec->getImage();
-        REPORTER_ASSERT(r, image, "Should be able to decode available frames");
+        // The reported size must match the full-file size even though fewer
+        // frames are decodable -- it comes from the directory, not the decodable
+        // subset. This is the property that prevents progressive-decode overflows.
+        REPORTER_ASSERT(r, codec->dimensions() == fullDims,
+                        "Partial-data size (%dx%d) should equal full-data size (%dx%d)",
+                        codec->dimensions().width(), codec->dimensions().height(),
+                        fullDims.width(), fullDims.height());
+
+        // getInfo() must describe a non-empty image so callers can size buffers.
+        REPORTER_ASSERT(r, !codec->getInfo().isEmpty(),
+                        "Codec info should describe a non-empty image");
     } else {
         // If no entries decoded at all, kInvalidInput is acceptable.
         REPORTER_ASSERT(r, result == SkCodec::kInvalidInput ||

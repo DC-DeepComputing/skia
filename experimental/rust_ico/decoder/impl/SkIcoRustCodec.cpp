@@ -106,6 +106,35 @@ std::unique_ptr<SkCodec> SkIcoRustCodec::MakeFromStream(std::unique_ptr<SkStream
 
     const uint32_t numImages = directoryResult->image_count();
 
+    // Determine the largest image described by the ICO *directory* (a width or
+    // height byte of 0 means 256 per the ICO spec). This is known as soon as the
+    // directory is parsed -- before any embedded payload has arrived -- so using
+    // it as the codec's reported size keeps getInfo()/dimensions() STABLE as more
+    // of the stream is received.
+    //
+    // This matters for clients that decode progressively. Blink's deferred image
+    // pipeline locks the image size from the first successful parse and allocates
+    // frame buffers at that size. If the size were derived from the largest frame
+    // we can currently *decode*, it would grow as more data arrived (e.g. a small
+    // frame is present first, a larger one only later), and the previously
+    // allocated buffer would then be too small -- the later decode overflows it
+    // and crashes the renderer. SkIcoCodec and Blink's legacy ICOImageDecoder
+    // avoid this by sizing from the largest directory entry; we do the same.
+    //
+    // selectAndDecode() always dimension-matches an embedded codec to the
+    // requested dstInfo, so reporting a directory size that no decodable frame
+    // matches can only cause a decode to fail gracefully -- never an overflow.
+    int dirMaxWidth = 0, dirMaxHeight = 0;
+    for (uint32_t i = 0; i < numImages; i++) {
+        rust_ico::IcoEntry dirEntry = directoryResult->get_entry(i);
+        int w = dirEntry.width == 0 ? 256 : dirEntry.width;
+        int h = dirEntry.height == 0 ? 256 : dirEntry.height;
+        if (w * h > dirMaxWidth * dirMaxHeight) {
+            dirMaxWidth = w;
+            dirMaxHeight = h;
+        }
+    }
+
     // Default Result, if no valid embedded codecs are found.
     *result = kInvalidInput;
 
@@ -247,12 +276,28 @@ std::unique_ptr<SkCodec> SkIcoRustCodec::MakeFromStream(std::unique_ptr<SkStream
         embeddedImages.push_back({std::move(entry.codec), std::move(entry.bmpEntryData)});
     }
 
-    // Use the first (largest) codec's info
+    // Report the codec's overall dimensions from the largest image described by
+    // the directory rather than the largest frame we happen to be able to decode
+    // right now (see the directory scan above for why this stability matters).
+    // We keep the primary decodable codec's color/alpha, only overriding the
+    // width/height when the directory advertises a larger image than we can
+    // currently decode -- i.e. under partial input, or a directory that
+    // over-reports. For a fully received, well-formed ICO the largest directory
+    // entry equals the largest decodable frame, so this is a no-op.
     auto maxInfo = embeddedImages.front().fCodec->getEncodedInfo().copy();
+    if (dirMaxWidth * dirMaxHeight > maxInfo.width() * maxInfo.height()) {
+        maxInfo = SkEncodedInfo::Make(dirMaxWidth, dirMaxHeight, maxInfo.color(),
+                                      maxInfo.alpha(), maxInfo.bitsPerComponent());
+    }
 
-    // Signal incomplete input if some embedded images couldn't be decoded.
-    // This lets callers (e.g. Blink) retry when more data arrives.
-    *result = (embeddedImages.size() < numImages) ? kIncompleteInput : kSuccess;
+    // Report kSuccess as long as we produced at least one usable embedded codec,
+    // mirroring SkIcoCodec. The directory is fully parsed and getInfo()/
+    // dimensions() are stable and valid, so callers can establish the image size.
+    // Returning kIncompleteInput here would leave clients such as Blink's
+    // SkiaImageDecoderBase without a size (its OnSetData only calls SetSize on
+    // kSuccess), corrupting decoder state and later yielding an invalid
+    // SkImageInfo / a null generator during partial multi-frame decode.
+    *result = kSuccess;
     return std::unique_ptr<SkCodec>(
             new SkIcoRustCodec(std::move(maxInfo), std::move(stream),
                                std::move(embeddedImages)));
@@ -332,6 +377,16 @@ int SkIcoRustCodec::chooseCodec(const SkISize& requestedSize, int startIndex) {
 }
 
 /*
+ * Any embedded entry's dimensions are a valid decode size. This lets a caller
+ * decode a smaller entry at its native size (rather than only the largest,
+ * canvas-sized entry), which the multi-frame decode path relies on: each ICO
+ * entry is an independent image and is decoded into a buffer sized to itself.
+ */
+bool SkIcoRustCodec::onDimensionsSupported(const SkISize& dim) {
+    return this->chooseCodec(dim, 0) >= 0;
+}
+
+/*
  * Common codec selection logic shared by onGetPixels and onStartIncrementalDecode.
  * See selectAndDecode declaration in the header for details.
  */
@@ -343,15 +398,28 @@ SkCodec::Result SkIcoRustCodec::selectAndDecode(
     Options embeddedOpts = opts;
     embeddedOpts.fFrameIndex = 0;
 
-    // If a specific frame index is requested, use that embedded codec directly.
-    if (opts.fFrameIndex >= 0 && opts.fFrameIndex < SkToInt(fEmbeddedImages.size())) {
-        SkCodec* codec = fEmbeddedImages[opts.fFrameIndex].fCodec.get();
-        if (codec->dimensions() == dims) {
-            return fn(codec, opts.fFrameIndex, embeddedOpts);
+    const int frameCount = SkToInt(fEmbeddedImages.size());
+    const int frameIndex = opts.fFrameIndex;
+
+    // A specific frame (a non-default index) is authoritative. ICO entries are
+    // independent images with their own dimensions, so we must decode exactly
+    // that entry into a destination sized to it. Falling back to size-based
+    // matching here would let a different entry that merely shares the
+    // destination's dimensions masquerade as this frame -- the bug that made a
+    // small entry look like a duplicate of a larger one to multi-frame clients.
+    if (frameIndex > 0 && frameIndex < frameCount) {
+        SkCodec* codec = fEmbeddedImages[frameIndex].fCodec.get();
+        if (codec->dimensions() != dims) {
+            SkCodecPrintf("Error: ico frame %d requires a %dx%d destination.\n",
+                          frameIndex, codec->dimensions().width(),
+                          codec->dimensions().height());
+            return kInvalidScale;
         }
+        return fn(codec, frameIndex, embeddedOpts);
     }
 
-    // Fall back to dimension-based codec selection.
+    // Default frame index (0): let the destination dimensions select any
+    // matching entry, so a caller can pick a smaller entry purely by size.
     int index = 0;
     Result lastResult = kInvalidScale;
     while (true) {
