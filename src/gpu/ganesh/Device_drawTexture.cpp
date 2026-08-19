@@ -725,6 +725,11 @@ void Device::drawEdgeAAImageSet(const SkCanvas::ImageSetEntry set[], int count,
 
 bool Device::drawBlurredRRect(const SkRRect& rrect, const SkPaint& paint, float deviceSigma) {
     SkMatrix localToDevice = this->localToDevice();
+    // If there is more than just translation, rotation, and uniform scale, then the results of
+    // analytic blurring will be different than mask filter blurring.
+    if (!localToDevice.isSimilarity()) {
+        return false;
+    }
 
     SurfaceDrawContext* sdc = fSurfaceDrawContext.get();
     const GrClip* clip = this->clip();
