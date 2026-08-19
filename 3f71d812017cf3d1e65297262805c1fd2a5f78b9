@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4a11d22_ea1ad3b0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-08-19T20:04:16Z",
+      "side": 1,
+      "message": "I could also split this into multiple CLs if you want (options, spans, etc), but it\u0027s less churn if done at once.",
+      "revId": "3f71d812017cf3d1e65297262805c1fd2a5f78b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
