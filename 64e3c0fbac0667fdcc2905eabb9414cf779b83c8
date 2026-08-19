@@ -68,6 +68,30 @@
       },
       "revId": "64e3c0fbac0667fdcc2905eabb9414cf779b83c8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37e4dfac_bf440950",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 421,
+      "author": {
+        "id": 4569768
+      },
+      "writtenOn": "2026-08-19T13:02:54Z",
+      "side": 1,
+      "message": "Oh, you\u0027re right!\nThe current frameIndex \u003e 0 logic can decode another entry when frame 0 was requested with smaller destination dimensions. That violates the frame-index contract.\n\nThe legacy ICO codec avoids this conflict by not exposing entries as frames; it only selects by dimensions. If Rust ICO exposes entries as frames, the clean behavior is to make every valid index, including 0, authoritative. Supporting both “frame 0” and “select by size” would require an API sentinel that currently does not exist.\n\nI could do a rewrite to handle the ICO implementation in the same way, where entries aren\u0027t exposed as frames. (This shouldn\u0027t be too big of a change, but I need to ensure all the tests still pass.)",
+      "parentUuid": "561ca151_24272ecf",
+      "range": {
+        "startLine": 421,
+        "startChar": 7,
+        "endLine": 421,
+        "endChar": 30
+      },
+      "revId": "64e3c0fbac0667fdcc2905eabb9414cf779b83c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
