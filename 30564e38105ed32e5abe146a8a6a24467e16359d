@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "daea56f5_567c4291",
+        "filename": "src/sksl/SkSLGraphiteModules.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-19T15:53:35Z",
+      "side": 0,
+      "message": "I think these comment details are still relevant, no?",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 24
+      },
+      "revId": "30564e38105ed32e5abe146a8a6a24467e16359d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
