@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f09cd555_07cafc2e",
+        "filename": "dm/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-08-19T18:54:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e7b699e3_56390bf3",
+      "range": {
+        "startLine": 51,
+        "startChar": 13,
+        "endLine": 51,
+        "endChar": 22
+      },
+      "revId": "2a581a5b103a9495f82718debe85af019cb3174c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9e1152a7_0f85811a",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-08-18T19:07:25Z",
       "side": 1,
       "message": "Might be worth a comment that these .cc files are really .mm files (same below). Unlike the .cpp files which are real C++ files.",
+      "range": {
+        "startLine": 551,
+        "startChar": 9,
+        "endLine": 551,
+        "endChar": 33
+      },
+      "revId": "2a581a5b103a9495f82718debe85af019cb3174c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "58512a5b_d1f21064",
+        "filename": "tests/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 551,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-08-19T18:54:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9e1152a7_0f85811a",
       "range": {
         "startLine": 551,
         "startChar": 9,
