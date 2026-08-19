@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5efeffa7_7bd9e240",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-08-19T20:21:59Z",
+      "side": 1,
+      "message": "Sending out now so you can take a look to gain context and possibly spot any issues that would be resulting in the visible diffs.\n\nWill remove references to `gUseOldBlurrectRRect` as well as `GM_simpleblurroundrect_test` since they are used for debugging the diffs between this new algorithm and the old ninepatch rrect blur method. Will replace usecases of `gUseOldBlurrectRRect` with #ifdefs for feature flagging once the diffs are figured out. This should fix all the try jobs that are currently failing as well.",
+      "revId": "f1f377d3ebc4cdfa5f42a7e59163aed2151e8c7d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ffa1559d_9de66066",
+        "filename": "src/gpu/graphite/render/AnalyticRRectBlurRenderStep.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-08-19T20:21:59Z",
+      "side": 1,
+      "message": "Will replace these and indices with direct calls to VertexWriter, however don\u0027t want to change how the vertex generation is done from the original SkMesh prototype so I can better pinpoint the fix for the current diffs.",
+      "range": {
+        "startLine": 155,
+        "startChar": 4,
+        "endLine": 156,
+        "endChar": 34
+      },
+      "revId": "f1f377d3ebc4cdfa5f42a7e59163aed2151e8c7d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
