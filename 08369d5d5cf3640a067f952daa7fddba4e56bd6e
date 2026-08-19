@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9f6a9e5_6b98bd83",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-19T16:54:39Z",
+      "side": 1,
+      "message": "PTAL; \n\n1) I have updated the name of `StorageAttributes` to `StorageUniforms`. I also considered renaming `Uniforms` to `TrueUniforms,` but I don\u0027t think that adds enough clarity to justify the amount of work it take to change naming across the codebase.\n\n2) I have implemented the generalized StepStorageBuffer emission in shader info now, but there is some awkwardness, as I haven\u0027t moved all the gradient stuff over. \n\nSo technically, shaderInfo could emit the declarations for both StepStorage (new) and FSStorage (old), but since no RenderStep uses StorageUniforms, it will never happen. This will be addressed in a follow on.",
+      "revId": "08369d5d5cf3640a067f952daa7fddba4e56bd6e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

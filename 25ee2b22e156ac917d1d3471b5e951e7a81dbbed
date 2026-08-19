@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "68f00f5e_81d96e74",
+        "filename": "src/gpu/graphite/Renderer.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-19T16:54:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "39d23834_b1840d4b",
+      "range": {
+        "startLine": 23,
+        "startChar": 36,
+        "endLine": 23,
+        "endChar": 45
+      },
+      "revId": "25ee2b22e156ac917d1d3471b5e951e7a81dbbed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d0e79cd8_20cb2376",
@@ -54,6 +78,30 @@
       "writtenOn": "2026-08-17T15:10:29Z",
       "side": 1,
       "message": "If we\u0027re going to right justify this on the `()`, we should do it at primitiveType().",
+      "range": {
+        "startLine": 208,
+        "startChar": 0,
+        "endLine": 209,
+        "endChar": 43
+      },
+      "revId": "25ee2b22e156ac917d1d3471b5e951e7a81dbbed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bbb6ea2e_f26add65",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-19T16:54:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d0e79cd8_20cb2376",
       "range": {
         "startLine": 208,
         "startChar": 0,
