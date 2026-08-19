@@ -36,14 +36,13 @@ class SkJSONWriter;
 class SkGaneshRecorder;
 class SkRecorder;
 
-namespace skcpu {
-class ContextImpl;
-class Recorder;
-}  // namespace skcpu
-
 namespace sktext::gpu {
 class SubRunAllocator;
 class TextBlobRedrawCoordinator;
+}
+
+namespace skcpu {
+class Recorder;
 }
 
 class GrRecordingContext : public GrImageContext {
@@ -109,6 +108,7 @@ public:
     SK_API sk_sp<const SkCapabilities> skCapabilities() const;
 
     SK_API SkRecorder* asRecorder();
+
     SK_API std::unique_ptr<skcpu::Recorder> makeCPURecorder();
 
     // Provides access to functions that aren't part of the public API.
@@ -282,7 +282,6 @@ private:
     std::unique_ptr<GrProxyProvider> fProxyProvider;
     // Depends on fProxyProvider (drawing tasks reference proxies). Must be destroyed first.
     std::unique_ptr<GrDrawingManager> fDrawingManager;
-    std::unique_ptr<const skcpu::ContextImpl> fCPUContext;
     std::unique_ptr<SkGaneshRecorder> fRecorder;
 
 #if defined(GPU_TEST_UTILS)

@@ -36,6 +36,29 @@ public:
 
     virtual skcpu::Recorder* cpuRecorder() = 0;
 
+    /** Allocates a bitmap-backed SkSurface. SkCanvas returned by SkSurface draws directly into
+     *  those allocated pixels, which are zeroed before use. Pixel memory size is imageInfo.height()
+     *  times imageInfo.minRowBytes() or rowBytes, if provided and non-zero.
+     *
+     *  Pixel memory is deleted when SkSurface is deleted.
+     *
+     *  Validity constraints include:
+     *    - info dimensions are greater than zero;
+     *    - info contains SkColorType and SkAlphaType supported by raster surface.
+     *
+     *  @param imageInfo  width, height, SkColorType, SkAlphaType, SkColorSpace,
+     *                    of raster surface; width and height must be greater than zero
+     *  @param rowBytes   interval from one SkSurface row to the next.
+     *  @param props      LCD striping orientation and setting for device independent fonts;
+     *                    may be nullptr
+     *  @return           SkSurface if parameters are valid and memory was allocated, else nullptr.
+     */
+    sk_sp<SkSurface> makeBitmapSurface(const SkImageInfo& imageInfo,
+                                       size_t rowBytes,
+                                       const SkSurfaceProps* surfaceProps);
+    sk_sp<SkSurface> makeBitmapSurface(const SkImageInfo& imageInfo,
+                                       const SkSurfaceProps* surfaceProps = nullptr);
+
 protected:
     skia_private::TArray<sk_sp<SkPicture>> fCapturedPictures;
 

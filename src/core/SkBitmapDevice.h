@@ -15,7 +15,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkSpan.h"
-#include "src/core/SkCPURecorderImpl.h"
+#include "include/cpu/Recorder.h"
 #include "src/core/SkDevice.h"
 #include "src/core/SkGlyphRunPainter.h"
 #include "src/core/SkRasterClipStack.h"
@@ -53,16 +53,12 @@ public:
      */
     explicit SkBitmapDevice(const SkBitmap& bitmap);
 
-    /**
-     *  Construct a new device with the specified bitmap as its backend. It is
-     *  valid for the bitmap to have no pixels associated with it. In that case,
-     *  any drawing to this device will have no effect.
-     */
-    SkBitmapDevice(const SkBitmap& bitmap, const SkSurfaceProps& surfaceProps,
+    SkBitmapDevice(const SkBitmap& bitmap,
+                   const SkSurfaceProps& surfaceProps,
                    void* externalHandle = nullptr);
 
-    SkBitmapDevice(skcpu::RecorderImpl*, const SkBitmap& bitmap);
-    SkBitmapDevice(skcpu::RecorderImpl*,
+    SkBitmapDevice(skcpu::Recorder* recorder, const SkBitmap& bitmap);
+    SkBitmapDevice(skcpu::Recorder* recorder,
                    const SkBitmap& bitmap,
                    const SkSurfaceProps& surfaceProps,
                    void* externalHandle = nullptr);
@@ -154,10 +150,10 @@ private:
                     sk_sp<SkMipmap>);
 
     void* fRasterHandle = nullptr;
-    skcpu::RecorderImpl* fRecorder = nullptr;
     SkBitmap fBitmap;
     SkRasterClipStack fRCStack;
     skcpu::GlyphRunListPainter fGlyphPainter;
+    skcpu::Recorder* fRecorder = nullptr;
 };
 
 #endif // SkBitmapDevice_DEFINED
