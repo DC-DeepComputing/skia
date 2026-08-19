@@ -14,11 +14,8 @@ struct GraphiteModules {
     const char* fVertexShader;
 };
 
-// These need to be two different functions so we can implement them in two different files.
-// In particular, the GetGraphiteModules() needs to be implemented in a graphite specific
-// file, but SetGraphiteModuleLoader needs to be implemented in the common file (used by both
-// Ganesh and Graphite).
-GraphiteModules GetGraphiteModules();
+// Initializes the Graphite SkSL modules in the central module loader. Safe to call multiple times.
+void LoadGraphiteModules();
 void SetGraphiteModuleData(const GraphiteModules&);
 
 }  // namespace SkSL::Loader

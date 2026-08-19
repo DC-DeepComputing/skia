@@ -26,9 +26,11 @@ using BuiltinTypePtr = const std::unique_ptr<Type> BuiltinTypes::*;
 class ModuleLoader {
 private:
     struct Impl;
+    std::unique_ptr<Impl> fLocalImpl;
     Impl& fModuleLoader;
 
 public:
+    ModuleLoader();
     ModuleLoader(ModuleLoader::Impl&);
     ~ModuleLoader();
 
@@ -57,9 +59,6 @@ public:
     // This updates an existing Module's symbol table to match Runtime Effect rules. GLSL types like
     // `vec4` are added; SkSL private types like `sampler2D` are replaced with an invalid type.
     void addPublicTypeAliases(const SkSL::Module* module);
-
-    // This unloads every module. It's useful primarily for benchmarking purposes.
-    void unloadModules();
 };
 
 }  // namespace SkSL
