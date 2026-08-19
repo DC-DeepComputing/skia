@@ -27,7 +27,9 @@ public:
     /** Returns a non-null global context. Can be used as a means of transitioning onto
      * new APIs when a skcpu::Context/Recorder has not been piped down into the code paths
      */
-    static Recorder* TODO();
+    static Recorder* TODO() {
+        return nullptr;
+    }
 
     SkRecorder::Type type() const final { return SkRecorder::Type::kCPU; }
     skcpu::Recorder* cpuRecorder() final { return this; }

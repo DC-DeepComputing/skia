@@ -36,6 +36,7 @@ public:
 
     virtual skcpu::Recorder* cpuRecorder() = 0;
 
+
 protected:
     skia_private::TArray<sk_sp<SkPicture>> fCapturedPictures;
 

@@ -13,6 +13,7 @@
 #include "include/core/SkSize.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
+#include "include/cpu/Recorder.h"
 #include "include/gpu/graphite/GraphiteTypes.h"
 #include "include/gpu/graphite/Recorder.h"  // IWYU pragma: keep
 #include "include/private/SingleOwner.h"
@@ -38,14 +39,13 @@ class SkTraceMemoryDump;
 struct SkIRect;
 struct SkImageInfo;
 
-namespace skcpu {
-class ContextImpl;
-class Recorder;
-}  // namespace skcpu
-
 namespace skgpu {
 enum class BackendApi : unsigned int;
 enum class GpuStatsFlags : uint32_t;
+}
+
+namespace skcpu {
+class Recorder;
 }
 
 namespace skgpu::graphite {
@@ -75,6 +75,7 @@ public:
     BackendApi backend() const;
 
     std::unique_ptr<Recorder> makeRecorder(const RecorderOptions& = {});
+
     std::unique_ptr<skcpu::Recorder> makeCPURecorder();
 
     /** Creates a helper object that can be moved to a different thread and used
@@ -412,7 +413,6 @@ private:
     std::unique_ptr<ResourceProvider> fResourceProvider;
     std::unique_ptr<ClientMappedBufferManager> fMappedBufferManager;
     std::unique_ptr<QueueManager> fQueueManager;
-    std::unique_ptr<const skcpu::ContextImpl> fCPUContext;
 
     PersistentPipelineStorage* fPersistentPipelineStorage;
 
