@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4280cba0_e80cabfb",
+        "filename": "gm/hdr_pip_blur.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-08-19T20:20:00Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "948aaea7_4f1cd0bf",
+      "range": {
+        "startLine": 169,
+        "startChar": 8,
+        "endLine": 169,
+        "endChar": 48
+      },
+      "revId": "62182d11a625ccc4a10b64dca79146afac25b7e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1099f51c_556fc49f",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8df89e16_3a258045",
+        "filename": "include/core/SkCPURecorder.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-08-19T20:20:00Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "1099f51c_556fc49f",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 2
+      },
+      "revId": "62182d11a625ccc4a10b64dca79146afac25b7e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c0967bd3_f7240453",
@@ -60,6 +108,30 @@
       "writtenOn": "2026-08-14T20:21:56Z",
       "side": 0,
       "message": "we\u0027re going to need a cpu recorder. Why are you removing this?",
+      "range": {
+        "startLine": 28,
+        "startChar": 7,
+        "endLine": 28,
+        "endChar": 13
+      },
+      "revId": "62182d11a625ccc4a10b64dca79146afac25b7e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e6413f69_b1f8b3d5",
+        "filename": "include/core/SkRecorder.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-08-19T20:20:00Z",
+      "side": 0,
+      "message": "My mistake, didn\u0027t mean to remove this enum.",
+      "parentUuid": "c0967bd3_f7240453",
       "range": {
         "startLine": 28,
         "startChar": 7,
