@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3bd6c285_62925283",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-08-19T15:15:45Z",
+      "side": 1,
+      "message": "Wenting FYI: This got reverted due to internal clients test failures. They were expecting exact pixel matches for some assets and since we\u0027re now (correctly) observing tracking, the results have changed and their baseline images need to be updated.  I\u0027ve [relanded the CL](https://skia-review.git.corp.google.com/c/skia/+/1330997) with a build time flag that should allow us to rebaseline those images.  No action needed on your part.",
+      "revId": "30564e38105ed32e5abe146a8a6a24467e16359d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
