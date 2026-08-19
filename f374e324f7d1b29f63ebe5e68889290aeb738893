@@ -22,6 +22,30 @@
       },
       "revId": "f374e324f7d1b29f63ebe5e68889290aeb738893",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c1f74e1_366b323f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 19829
+      },
+      "writtenOn": "2026-08-19T02:55:36Z",
+      "side": 1,
+      "message": "you\u0027re right, I think my build might have been in a bad state when this happened, I tried again on latest and it no longer requires sksg, thanks! abandoning change",
+      "parentUuid": "50b924ff_d214c784",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 17
+      },
+      "revId": "f374e324f7d1b29f63ebe5e68889290aeb738893",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
