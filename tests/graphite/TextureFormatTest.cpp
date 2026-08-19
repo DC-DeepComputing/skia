@@ -1184,6 +1184,28 @@ void run_texture_format_test(skiatest::Reporter* r, const Caps* caps, TextureFor
                             }
                         }
                     }
+
+                    // Test filterable and unfilterable sampled copy info
+                    TextureInfo filterableInfo = caps->getDefaultSampledTextureInfo(
+                            ct, Mipmapped::kNo, Protected::kNo, Renderable::kNo, Filterable::kYes);
+                    if (filterableInfo.isValid() &&
+                        TextureInfoPriv::ViewFormat(filterableInfo) == format) {
+                        REPORTER_ASSERT(r, caps->isTexturable(filterableInfo));
+                        REPORTER_ASSERT(r, caps->isFilterable(filterableInfo));
+                        TextureInfo copyInfo = caps->getTextureInfoForSampledCopy(
+                                filterableInfo, Mipmapped::kNo);
+                        REPORTER_ASSERT(r, copyInfo.isValid());
+                    }
+
+                    TextureInfo unfilterableInfo = caps->getDefaultSampledTextureInfo(
+                            ct, Mipmapped::kNo, Protected::kNo, Renderable::kNo, Filterable::kNo);
+                    if (unfilterableInfo.isValid() &&
+                        TextureInfoPriv::ViewFormat(unfilterableInfo) == format) {
+                        REPORTER_ASSERT(r, caps->isTexturable(unfilterableInfo));
+                        TextureInfo copyInfo = caps->getTextureInfoForSampledCopy(
+                                unfilterableInfo, Mipmapped::kNo);
+                        REPORTER_ASSERT(r, copyInfo.isValid());
+                    }
                 }
             }
 

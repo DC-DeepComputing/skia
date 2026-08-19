@@ -679,6 +679,13 @@ std::pair<sk_sp<SkImage>, SkSamplingOptions> GetGraphiteBacked(Recorder* recorde
         sampling = SkSamplingPriv::AnisoFallback(result->hasMipmaps());
     }
 
+    if (result && as_IB(result)->isGraphiteBacked()) {
+        TextureProxyView view = AsView(result.get());
+        if (view && !recorder->priv().caps()->isFilterable(view.proxy()->textureInfo())) {
+            sampling = SkSamplingOptions(SkFilterMode::kNearest, SkMipmapMode::kNone);
+        }
+    }
+
     return { result, sampling };
 }
 
