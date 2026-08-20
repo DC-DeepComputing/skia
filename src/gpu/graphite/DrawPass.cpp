@@ -32,7 +32,7 @@ DrawPass::DrawPass(sk_sp<TextureProxy> target,
                    std::array<float, 4> clearColor)
         : fTarget(std::move(target))
         , fBounds(SkIRect::MakeEmpty())
-        , fOps(ops)
+        , fOps1(ops)
         , fClearColor(clearColor) {}
 
 DrawPass::~DrawPass() = default;

@@ -131,6 +131,7 @@ protected:
     bool fRequiresMSAA = false;
     SkEnumBitMask<DepthStencilFlags> fDepthStencilFlags = DepthStencilFlags::kNone;
 
+public:
     LoadOp fLoadOp = LoadOp::kLoad;
     std::array<float, 4> fClearColor = {0.f, 0.f, 0.f, 0.f};
 
