@@ -16,6 +16,9 @@
 #include "src/gpu/graphite/RuntimeEffectDictionary.h"
 #include "src/gpu/graphite/SharedContext.h"
 
+#include "src/gpu/graphite/ContextUtils.h"
+#include "src/gpu/graphite/RendererProvider.h"
+
 // The threaded PipelineManager is set up to work with a executor with two worklists.
 // All work from the first work list must be completed before work from the second list
 // is begun. In-line compiles will be put in the high priority list while precompiles
@@ -50,16 +53,18 @@ GraphicsPipelineHandle::GraphicsPipelineHandle(sk_sp<GraphicsPipeline> pipeline)
     : fTaskOrPipeline(std::move(pipeline)) {}
 
 PipelineManager::PipelineManager(SkExecutor* executor) {
+#if 0
     if (executor) {
         fTaskGroup = std::make_unique<SkTaskGroup>(*executor);
     }
+#endif
 }
 
 PipelineManager::~PipelineManager() {
     // The task group should've been shutdown and deleted in Context's destructor (via
     // shutDown()).
     {
-        SkDEBUGCODE(SkAutoSpinlock lock{fSpinLock};)
+        SkDEBUGCODE(SkAutoSpinlock lock{fSpinLock1};)
         SkASSERT(!fTaskGroup);
         SkASSERT(fActiveTasks.count() == 0);
     }
@@ -93,6 +98,11 @@ GraphicsPipelineHandle PipelineManager::createHandle(
             pipelineCreationFlags);
     if (pipeline) {
         return GraphicsPipelineHandle(std::move(pipeline));
+    }
+
+//    SkASSERT_RELEASE(!fPastInitialization);
+    if (fPastInitialization) {
+        SkDebugf("Didn't find a Pipeline after initialization\n");
     }
 
     // Although 'findGraphicsPipeline' didn't find a GraphicsPipeline, there could be a race.
@@ -132,6 +142,18 @@ GraphicsPipelineHandle PipelineManager::createHandle(
 void PipelineManager::InlineCompile(SharedContext* sharedContext,
                                     PipelineManager* pipelineManager,
                                     PipelineCreationTask* task) {
+//    SkASSERT_RELEASE(!pipelineManager->fPastInitialization);
+
+    const ShaderCodeDictionary* dict = sharedContext->shaderCodeDictionary();
+    const RenderStep* step = sharedContext->rendererProvider()->lookup(task->fGraphicsPipelineDesc.renderStepID());
+    std::string tmp = GetPipelineLabel(sharedContext->caps(), dict, task->fRenderPassDesc, step, task->fGraphicsPipelineDesc.paintParamsID());
+
+    if (pipelineManager->fPastInitialization) {
+        SkDebugf("----- ");
+    }
+
+    SkDebugf("compiling after initialization %s\n", tmp.c_str());
+
     // This is a bit racy but the exact correctness of the actual cause for the compilation
     // isn't crucial. In essence, this tries to give the SharedContext a best guess about
     // the driver behind the compilation. The exact race is if a precompile compilation
@@ -159,6 +181,11 @@ void PipelineManager::InlineCompile(SharedContext* sharedContext,
 void PipelineManager::addTaskToWorkList(SharedContext* sharedContext,
                                         sk_sp<PipelineCreationTask> task,
                                         Priority priority) {
+//    SkASSERT_RELEASE(!fPastInitialization);
+    if (fPastInitialization) {
+        SkDebugf("adding task to worklist after initialization\n");
+    }
+
     // Note: this lambda function relies on the continued existence of the shared
     // context and the PipelineManager. The task is reffed.
     auto compileTask = [sharedContext, this, task] {
@@ -174,7 +201,7 @@ void PipelineManager::addTaskToWorkList(SharedContext* sharedContext,
     };
 
     {
-        SkAutoSpinlock lock{fSpinLock};
+        SkAutoSpinlock lock{fSpinLock1};
 
         if (fTaskGroup) {
             int workList = priority == Priority::kLow ? kLowPriorityWorkList
@@ -200,6 +227,8 @@ sk_sp<GraphicsPipeline> PipelineManager::resolveHandle(SharedContext* sharedCont
         return std::get<sk_sp<GraphicsPipeline>>(handle.fTaskOrPipeline);
     }
 
+//    SkASSERT_RELEASE(!fPastInitialization);
+
     // Since 'fTaskOrPipeline' doesn't hold a pipeline the pipeline must not have existed when
     // the handle was created so a compilation task must've been created to compile it
     sk_sp<PipelineCreationTask> task =
@@ -215,7 +244,7 @@ void PipelineManager::shutDown() {
     // We null out 'fTaskGroup' so no more threaded work can be added after this point.
     std::unique_ptr<SkTaskGroup> tmp;
     {
-        SkAutoSpinlock lock{fSpinLock};
+        SkAutoSpinlock lock{fSpinLock1};
         tmp = std::move(fTaskGroup);
     }
     if (tmp) {
@@ -226,7 +255,7 @@ void PipelineManager::shutDown() {
         tmp->wait();
     }
     {
-        SkDEBUGCODE(SkAutoSpinlock lock{fSpinLock};)
+        SkDEBUGCODE(SkAutoSpinlock lock{fSpinLock1};)
         SkASSERT(!fTaskGroup);
         SkASSERT(fActiveTasks.count() == 0);
     }
@@ -236,7 +265,7 @@ void PipelineManager::shutDown() {
 void PipelineManager::wait_TestOnly() {
     SkTaskGroup* tmp;
     {
-        SkAutoSpinlock lock{fSpinLock};
+        SkAutoSpinlock lock{fSpinLock1};
         tmp = fTaskGroup.get();
     }
     // This isn't safe (since 'fTaskGroup' could be altered on some other thread) but, hopefully,
@@ -248,7 +277,7 @@ void PipelineManager::wait_TestOnly() {
 }
 
 PipelineManager::Stats PipelineManager::getStats() const {
-    SkAutoSpinlock lock{fSpinLock};
+    SkAutoSpinlock lock{fSpinLock1};
 
     return fStats;
 }
@@ -260,7 +289,9 @@ sk_sp<PipelineCreationTask> PipelineManager::findOrCreateTask(
         const GraphicsPipelineDesc& pipelineDesc,
         const RenderPassDesc& renderPassDesc,
         Priority priority) {
-    SkAutoSpinlock lock{fSpinLock};
+//    SkASSERT_RELEASE(!fPastInitialization);
+
+    SkAutoSpinlock lock{fSpinLock1};
 
     sk_sp<PipelineCreationTask>* task = fActiveTasks.find(pipelineKey);
     if (task) {
@@ -274,6 +305,10 @@ sk_sp<PipelineCreationTask> PipelineManager::findOrCreateTask(
     fStats.fNumTasksCreated++;
 #endif
 
+    if (fPastInitialization) {
+        SkDebugf("Creating a task after initialization\n");
+    }
+
     sk_sp<PipelineCreationTask> newTask = sk_sp<PipelineCreationTask>(
             new PipelineCreationTask(std::move(runtimeDict),
                                      pipelineKey,
@@ -285,27 +320,33 @@ sk_sp<PipelineCreationTask> PipelineManager::findOrCreateTask(
 }
 
 void PipelineManager::removeTask(PipelineCreationTask* task) {
-    SkAutoSpinlock lock{fSpinLock};
+//    SkASSERT_RELEASE(!fPastInitialization);
+
+    SkAutoSpinlock lock{fSpinLock1};
 
     fActiveTasks.remove(task->fPipelineKey);
 }
 
 void PipelineManager::signalCompleted(PipelineCreationTask* task) {
-    std::unique_lock<std::mutex> lock(fMutex);
+//    SkASSERT_RELEASE(!fPastInitialization);
+
+//    std::unique_lock<std::mutex> lock(fMutex1);
 
     // Even though 'fCompleted' is atomic it is still required that it be
     // modified within the locked mutex lest the 'wait' in potentiallyWaitOn
     // misses the signal.
     task->fCompleted = true;
 
-    lock.unlock();
+//    lock.unlock();
     // potentiallyWaitOn should only ever be called from the main thread (on which
     // Context::insertRecording is called) so only one thread should ever be waiting
-    fConditionVariable.notify_one();
+//    fConditionVariable.notify_one();
 }
 
 
 void PipelineManager::potentiallyWaitOn(SharedContext* sharedContext, PipelineCreationTask* task) {
+//    SkASSERT_RELEASE(!fPastInitialization);
+
     // If we can preempt some thread that is scheduled to compile this Pipeline, do so rather
     // than waiting.
     if (!task->fStarted.exchange(true)) {
@@ -314,12 +355,12 @@ void PipelineManager::potentiallyWaitOn(SharedContext* sharedContext, PipelineCr
         return;
     }
 
-    std::unique_lock<std::mutex> lock(fMutex);
+//    std::unique_lock<std::mutex> lock(fMutex1);
 
     if (task->fCompleted) {
         return;
     }
-    fConditionVariable.wait(lock, [task]{ return task->fCompleted.load(); });
+//    fConditionVariable.wait(lock, [task]{ return task->fCompleted.load(); });
 
     SkASSERT(task->fCompleted);
 }

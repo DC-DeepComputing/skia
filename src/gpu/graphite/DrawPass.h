@@ -54,7 +54,7 @@ public:
     const SkIRect&      bounds() const { return fBounds;       }
     TextureProxy* target() const { return fTarget.get(); }
     const BindBufferInfo& storageBufferInfo() const { return fStorageBufferInfo; }
-    std::pair<LoadOp, StoreOp> ops() const { return fOps; }
+    std::pair<LoadOp, StoreOp> ops() const { return fOps1; }
     std::array<float, 4> clearColor() const { return fClearColor; }
 
     size_t vertexBufferSize()  const { return 0; }
@@ -104,7 +104,7 @@ private:
     sk_sp<TextureProxy> fTarget;
     SkIRect fBounds;
 
-    std::pair<LoadOp, StoreOp> fOps;
+    std::pair<LoadOp, StoreOp> fOps1;
     std::array<float, 4> fClearColor;
 
     // The pipelines are referenced by index in BindGraphicsPipeline, but that will index into
