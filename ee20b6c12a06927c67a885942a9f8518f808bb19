@@ -22,6 +22,30 @@
       },
       "revId": "ee20b6c12a06927c67a885942a9f8518f808bb19",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "231d04b0_38616399",
+        "filename": "src/ports/SkFontMgr_fontconfig.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-08-20T13:12:49Z",
+      "side": 1,
+      "message": "this assumes `remove_weak` will be called after family name has been added to  FC_FAMILY first (index \u003d 0). \n\nI believe that using FcPatternAdd(type) will add the element with a strong binding. It\u0027s not explicitly mentioned in the description of FcPatternAdd(type) but FcPatternAddWeak mentions that, unlike FcPatternAdd, it adds an element with a weak binding, implying that FcPatternAdd(type) adds with a strong binding. \n\nExact code below for reference and fontconfig docs\n\nhttps://man.netbsd.org/NetBSD-3.0/fontconfig.3\n\n\n```shell\n       FcBool FcPatternAdd (FcPattern *p, const char *object,  FcValue  value,\n       FcBool append)\n              Adds a single value to the list of values  associated  with  the\n              property  named  `object\u0027.   If `append\u0027 is FcTrue, the value is\n              added at the end of any existing list, otherwise it is  inserted\n              at  the  begining.   `value\u0027  is  saved  (with FcValueSave) when\n              inserted into the pattern so that the library retains no  refer-\n              ence to any application-supplied data structure.\n\n\n       FcBool  FcPatternAddWeak  (FcPattern  *p,  const  char *object, FcValue\n       value, FcBool append)\n              FcPatternAddWeak  is essentially the same as FcPatternAdd except\n              that any values added to the list have binding \u0027weak\u0027 instead of\n              \u0027strong\u0027.\n\n\n       FcBool FcPatternAddInteger (FcPattern *p, const char *object, int i)\n       FcBool FcPatternAddDouble (FcPattern *p, const char *object, double d)\n       FcBool FcPatternAddString (FcPattern *p, const char *object, const char\n       *s)\n       FcBool  FcPatternAddMatrix  (FcPattern  *p,  const  char *object, const\n       FcMatrix *s)\n       FcBool  FcPatternAddCharSet  (FcPattern  *p,  const char *object, const\n       FcCharSet *c)\n       FcBool FcPatternAddBool (FcPattern *p, const char *object, FcBool b)\n              These  are  all convenience functions that insert objects of the\n              specified type into the pattern.  Use  these  in  preference  to\n              FcPatternAdd  as  they  will  provide compile-time typechecking.\n              These all append values to any existing list of values.\n```\n\n```C++\n       SkAutoFcPattern pattern;\n        FcPatternAddString(pattern, FC_FAMILY, (const FcChar8*)familyName);\n        FcConfigSubstitute(fFC, pattern, FcMatchPattern);\n        FcDefaultSubstitute(pattern);\n\n        FcPattern* matchPattern;\n        SkAutoFcPattern strongPattern(nullptr);\n        if (familyName) {\n            strongPattern.reset(FcPatternDuplicate(pattern));\n            remove_weak(strongPattern, FC_FAMILY);\n            matchPattern \u003d strongPattern;\n        } else {\n            matchPattern \u003d pattern;\n        }\n```",
+      "parentUuid": "657439ec_ed3b1442",
+      "range": {
+        "startLine": 314,
+        "startChar": 72,
+        "endLine": 314,
+        "endChar": 81
+      },
+      "revId": "ee20b6c12a06927c67a885942a9f8518f808bb19",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
