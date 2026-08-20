@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7850e1f_26a89d07",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-08-20T14:40:23Z",
+      "side": 1,
+      "message": "Is it possible to add few tests for this change?\nTo include different pattern lists? I understand that it\u0027s hard to test this functionality but it would be nice to make sure all the cases are working. \nFor instance (don\u0027t know if these cases even possible but still):\n- Patterns with weak bindings at index 0 \n- Patterns with interleaved strong and weak bindings\n- Patterns with only weak bindings",
+      "revId": "ee20b6c12a06927c67a885942a9f8518f808bb19",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "657439ec_ed3b1442",
