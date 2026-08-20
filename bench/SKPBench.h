@@ -43,12 +43,32 @@ protected:
     void onDrawFrame(int loops, SkCanvas*, std::function<void()> submitFrame) override;
     SkISize onGetSize() override;
 
-    virtual void drawMPDPicture();
     virtual void drawPicture();
 
     const SkPicture* picture() const { return fPic.get(); }
-    const skia_private::TArray<sk_sp<SkSurface>>& surfaces() const { return fSurfaces; }
-    const SkTDArray<SkIRect>& tileRects() const { return fTileRects; }
+
+    struct TileInfo {
+        TileInfo(sk_sp<SkSurface> surface, SkIRect tileRect, SkRect clip, const SkM44& mat)
+            : fSurface(std::move(surface))
+            , fTileRect(tileRect)
+            , fClip(clip)
+            , fMat(mat) {}
+
+        SkSurface* surface() const { return fSurface.get(); }
+        SkIRect tileRect() const { return fTileRect; }
+        SkRect clipRect() const { return fClip; }
+        const SkM44& mat() const { return fMat; }
+
+        void reset() { fSurface.reset(); }
+
+    private:
+        sk_sp<SkSurface> fSurface;
+        SkIRect fTileRect;
+        SkRect fClip;
+        SkM44 fMat;
+    };
+
+    const skia_private::TArray<TileInfo>& tileInfo() const { return fTiles; }
 
 private:
     bool submitsInternalFrames() override { return true; }
@@ -59,8 +79,8 @@ private:
     SkString fName;
     SkString fUniqueName;
 
-    skia_private::TArray<sk_sp<SkSurface>> fSurfaces;   // for MultiPictureDraw
-    SkTDArray<SkIRect> fTileRects;     // for MultiPictureDraw
+
+    skia_private::TArray<TileInfo> fTiles;
 
     const bool fDoLooping;
 
