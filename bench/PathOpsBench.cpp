@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "bench/Benchmark.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkPathBuilder.h"
@@ -152,7 +153,7 @@ class PathBuilderBench : public Benchmark {
 
 public:
     PathBuilderBench(MakeType mt, bool reserve) : fMakeType(mt), fUseReserve(reserve) {
-        const char* typenames[] = { "path", "snapshot", "detach", "arrays" };
+        auto typenames = std::to_array<const char *>({ "path", "snapshot", "detach", "arrays" ,});
 
         fName.printf("makepath_%s_%s", typenames[(int)mt], reserve ? "reserve" : "noreserve");
     }

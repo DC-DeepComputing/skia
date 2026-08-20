@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkBlendMode.h"
@@ -48,7 +49,7 @@ enum SrcType {
     kBasic_SrcType                        = 0x03, //!< Just basic source types.
 };
 
-const struct {
+struct GModes {
     SkBlendMode fMode;
     int         fSourceTypeMask;  // The source types to use this
                                   // mode with. See draw_mode for
@@ -56,38 +57,38 @@ const struct {
                                   // PDF has to play some tricks
                                   // to support the base modes,
                                   // test those more extensively.
-} gModes[] = {
-    { SkBlendMode::kClear,        kAll_SrcType   },
-    { SkBlendMode::kSrc,          kAll_SrcType   },
-    { SkBlendMode::kDst,          kAll_SrcType   },
-    { SkBlendMode::kSrcOver,      kAll_SrcType   },
-    { SkBlendMode::kDstOver,      kAll_SrcType   },
-    { SkBlendMode::kSrcIn,        kAll_SrcType   },
-    { SkBlendMode::kDstIn,        kAll_SrcType   },
-    { SkBlendMode::kSrcOut,       kAll_SrcType   },
-    { SkBlendMode::kDstOut,       kAll_SrcType   },
-    { SkBlendMode::kSrcATop,      kAll_SrcType   },
-    { SkBlendMode::kDstATop,      kAll_SrcType   },
+}; const auto gModes = std::to_array<GModes>({
+    GModes{ SkBlendMode::kClear,        kAll_SrcType   },
+    GModes{ SkBlendMode::kSrc,          kAll_SrcType   },
+    GModes{ SkBlendMode::kDst,          kAll_SrcType   },
+    GModes{ SkBlendMode::kSrcOver,      kAll_SrcType   },
+    GModes{ SkBlendMode::kDstOver,      kAll_SrcType   },
+    GModes{ SkBlendMode::kSrcIn,        kAll_SrcType   },
+    GModes{ SkBlendMode::kDstIn,        kAll_SrcType   },
+    GModes{ SkBlendMode::kSrcOut,       kAll_SrcType   },
+    GModes{ SkBlendMode::kDstOut,       kAll_SrcType   },
+    GModes{ SkBlendMode::kSrcATop,      kAll_SrcType   },
+    GModes{ SkBlendMode::kDstATop,      kAll_SrcType   },
 
-    { SkBlendMode::kXor,          kBasic_SrcType },
-    { SkBlendMode::kPlus,         kBasic_SrcType },
-    { SkBlendMode::kModulate,     kAll_SrcType   },
-    { SkBlendMode::kScreen,       kBasic_SrcType },
-    { SkBlendMode::kOverlay,      kBasic_SrcType },
-    { SkBlendMode::kDarken,       kBasic_SrcType },
-    { SkBlendMode::kLighten,      kBasic_SrcType },
-    { SkBlendMode::kColorDodge,   kBasic_SrcType },
-    { SkBlendMode::kColorBurn,    kBasic_SrcType },
-    { SkBlendMode::kHardLight,    kBasic_SrcType },
-    { SkBlendMode::kSoftLight,    kBasic_SrcType },
-    { SkBlendMode::kDifference,   kBasic_SrcType },
-    { SkBlendMode::kExclusion,    kBasic_SrcType },
-    { SkBlendMode::kMultiply,     kAll_SrcType   },
-    { SkBlendMode::kHue,          kBasic_SrcType },
-    { SkBlendMode::kSaturation,   kBasic_SrcType },
-    { SkBlendMode::kColor,        kBasic_SrcType },
-    { SkBlendMode::kLuminosity,   kBasic_SrcType },
-};
+    GModes{ SkBlendMode::kXor,          kBasic_SrcType },
+    GModes{ SkBlendMode::kPlus,         kBasic_SrcType },
+    GModes{ SkBlendMode::kModulate,     kAll_SrcType   },
+    GModes{ SkBlendMode::kScreen,       kBasic_SrcType },
+    GModes{ SkBlendMode::kOverlay,      kBasic_SrcType },
+    GModes{ SkBlendMode::kDarken,       kBasic_SrcType },
+    GModes{ SkBlendMode::kLighten,      kBasic_SrcType },
+    GModes{ SkBlendMode::kColorDodge,   kBasic_SrcType },
+    GModes{ SkBlendMode::kColorBurn,    kBasic_SrcType },
+    GModes{ SkBlendMode::kHardLight,    kBasic_SrcType },
+    GModes{ SkBlendMode::kSoftLight,    kBasic_SrcType },
+    GModes{ SkBlendMode::kDifference,   kBasic_SrcType },
+    GModes{ SkBlendMode::kExclusion,    kBasic_SrcType },
+    GModes{ SkBlendMode::kMultiply,     kAll_SrcType   },
+    GModes{ SkBlendMode::kHue,          kBasic_SrcType },
+    GModes{ SkBlendMode::kSaturation,   kBasic_SrcType },
+    GModes{ SkBlendMode::kColor,        kBasic_SrcType },
+    GModes{ SkBlendMode::kLuminosity,   kBasic_SrcType },
+});
 
 static void make_bitmaps(int w, int h, SkBitmap* src, SkBitmap* dst,
                          SkBitmap* transparent) {

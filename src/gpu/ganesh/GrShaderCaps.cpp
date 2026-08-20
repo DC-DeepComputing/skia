@@ -6,6 +6,7 @@
  */
 
 
+#include <array>
 #include "src/gpu/ganesh/GrShaderCaps.h"
 
 #include "include/gpu/ganesh/GrContextOptions.h"
@@ -25,11 +26,11 @@ void GrShaderCaps::dumpJSON(SkJSONWriter* writer) const {
     writer->appendBool("Nonsquare Matrix Support", fNonsquareMatrixSupport);
     writer->appendBool("Inverse Hyperbolic Support", fInverseHyperbolicSupport);
 
-    static const char* kAdvBlendEqInteractionStr[] = {
+    static auto kAdvBlendEqInteractionStr = std::to_array<const char *>({
         "Not Supported",
         "Automatic",
         "General Enable",
-    };
+    });
     static_assert(0 == kNotSupported_AdvBlendEqInteraction);
     static_assert(1 == kAutomatic_AdvBlendEqInteraction);
     static_assert(2 == kGeneralEnable_AdvBlendEqInteraction);

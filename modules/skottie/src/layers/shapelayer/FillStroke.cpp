@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkColor.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkRefCnt.h"
@@ -55,20 +56,20 @@ public:
             this->node()->setStyle(SkPaint::kStroke_Style);
             this->node()->setStrokeMiter(ParseDefault<SkScalar>(jpaint["ml"], 4.0f));
 
-            static constexpr SkPaint::Join gJoins[] = {
+            static constexpr auto gJoins = std::to_array<SkPaint::Join>({
                 SkPaint::kMiter_Join,
                 SkPaint::kRound_Join,
                 SkPaint::kBevel_Join,
-            };
+            });
             this->node()->setStrokeJoin(
                         gJoins[std::min<size_t>(ParseDefault<size_t>(jpaint["lj"], 1) - 1,
                                               std::size(gJoins) - 1)]);
 
-            static constexpr SkPaint::Cap gCaps[] = {
+            static constexpr auto gCaps = std::to_array<SkPaint::Cap>({
                 SkPaint::kButt_Cap,
                 SkPaint::kRound_Cap,
                 SkPaint::kSquare_Cap,
-            };
+            });
             this->node()->setStrokeCap(
                         gCaps[std::min<size_t>(ParseDefault<size_t>(jpaint["lc"], 1) - 1,
                                              std::size(gCaps) - 1)]);

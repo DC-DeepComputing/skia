@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -151,11 +152,11 @@ DEF_SIMPLE_GM(recordopts, canvas, (kTestRectSize+1)*2, (kTestRectSize+1)*15) {
     canvas->clear(SK_ColorTRANSPARENT);
 
     typedef void (*TestVariantSequence)(SkCanvas*, SkColor, InstallDetectorFunc);
-    TestVariantSequence funcs[] = {
+    auto funcs = std::to_array<TestVariantSequence>({
         draw_save_layer_draw_rect_restore_sequence,
         draw_save_layer_draw_bitmap_restore_sequence,
         draw_svg_opacity_and_filter_layer_sequence,
-    };
+    });
 
     // Draw layer-related sequences that can be optimized by folding the opacity layer alpha to
     // the inner draw operation. This tries to trigger the optimization, and relies on gm diffs
@@ -193,15 +194,15 @@ DEF_SIMPLE_GM(recordopts, canvas, (kTestRectSize+1)*2, (kTestRectSize+1)*15) {
     // the possibility that optimization is applied.
     // At the end, draws the same patterns in translucent black. This tests that the detectors
     // work, eg. that if the value the detector sees is wrong, the resulting image shows this.
-    SkColor shapeColors[] = {
+    auto shapeColors = std::to_array<SkColor>({
         SkColorSetARGB(255, 0, kDetectorGreenValue, 0),
         SkColorSetARGB(255, 0, (kDetectorGreenValue + 1), 0) // This tests that detectors work.
-    };
+    });
 
-    InstallDetectorFunc detectorInstallFuncs[] = {
+    auto detectorInstallFuncs = std::to_array<InstallDetectorFunc>({
         install_detector_image_filter,
         install_detector_color_filter
-    };
+    });
 
     for (size_t i = 0; i < std::size(shapeColors); ++i) {
         shapeColor = shapeColors[i];

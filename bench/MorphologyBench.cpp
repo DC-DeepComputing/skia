@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "bench/Benchmark.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPaint.h"
@@ -22,10 +23,10 @@ enum MorphologyType {
     kDilate_MT
 };
 
-static const char* gStyleName[] = {
+static auto gStyleName = std::to_array<const char *>({
     "erode",
     "dilate"
-};
+});
 
 class MorphologyBench : public Benchmark {
     SkScalar       fRadius;

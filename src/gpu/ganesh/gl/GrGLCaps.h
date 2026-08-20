@@ -9,6 +9,7 @@
 #ifndef GrGLCaps_DEFINED
 #define GrGLCaps_DEFINED
 
+#include <array>
 #include "include/gpu/ganesh/GrBackendSurface.h"
 #include "include/gpu/ganesh/gl/GrGLBackendSurface.h"
 #include "include/gpu/ganesh/gl/GrGLTypes.h"
@@ -836,14 +837,14 @@ private:
         int fColorTypeInfoCount = 0;
     };
 
-    FormatInfo fFormatTable[kGrGLColorFormatCount];
+    std::array<FormatInfo, kGrGLColorFormatCount> fFormatTable;
 
     FormatInfo& getFormatInfo(GrGLFormat format) { return fFormatTable[static_cast<int>(format)]; }
     const FormatInfo& getFormatInfo(GrGLFormat format) const {
         return fFormatTable[static_cast<int>(format)];
     }
 
-    GrGLFormat fColorTypeToFormatTable[kGrColorTypeCnt];
+    std::array<GrGLFormat, kGrColorTypeCnt> fColorTypeToFormatTable;
     void setColorTypeFormat(GrColorType, GrGLFormat);
 
     using INHERITED = GrCaps;

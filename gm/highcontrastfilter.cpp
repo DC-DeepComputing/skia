@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -121,16 +122,16 @@ protected:
     SkISize getISize() override { return SkISize::Make(800, 420); }
 
     void onDraw(SkCanvas* canvas) override {
-        SkHighContrastConfig configs[] = {
-            { false, InvertStyle::kNoInvert, 0.0f },
-            { false, InvertStyle::kInvertBrightness, 0.0f },
-            { false, InvertStyle::kInvertLightness, 0.0f },
-            { false, InvertStyle::kInvertLightness, 0.2f },
-            { true, InvertStyle::kNoInvert, 0.0f },
-            { true, InvertStyle::kInvertBrightness, 0.0f },
-            { true, InvertStyle::kInvertLightness, 0.0f },
-            { true, InvertStyle::kInvertLightness, 0.2f },
-        };
+        auto configs = std::to_array<SkHighContrastConfig>({
+            SkHighContrastConfig{ false, InvertStyle::kNoInvert, 0.0f },
+            SkHighContrastConfig{ false, InvertStyle::kInvertBrightness, 0.0f },
+            SkHighContrastConfig{ false, InvertStyle::kInvertLightness, 0.0f },
+            SkHighContrastConfig{ false, InvertStyle::kInvertLightness, 0.2f },
+            SkHighContrastConfig{ true, InvertStyle::kNoInvert, 0.0f },
+            SkHighContrastConfig{ true, InvertStyle::kInvertBrightness, 0.0f },
+            SkHighContrastConfig{ true, InvertStyle::kInvertLightness, 0.0f },
+            SkHighContrastConfig{ true, InvertStyle::kInvertLightness, 0.2f },
+        });
 
         for (size_t i = 0; i < std::size(configs); ++i) {
             SkScalar x = kSize * (i % 4);

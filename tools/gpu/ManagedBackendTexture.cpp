@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "tools/gpu/ManagedBackendTexture.h"
 
 #include "include/core/SkBitmap.h"
@@ -29,7 +30,7 @@ namespace {
 struct Context {
     GrGpuFinishedProc fWrappedProc = nullptr;
     GrGpuFinishedContext fWrappedContext = nullptr;
-    sk_sp<sk_gpu_test::ManagedBackendTexture> fMBETs[SkYUVAInfo::kMaxPlanes];
+    std::array<sk_sp<sk_gpu_test::ManagedBackendTexture>, SkYUVAInfo::kMaxPlanes> fMBETs;
 };
 
 }  // anonymous namespace

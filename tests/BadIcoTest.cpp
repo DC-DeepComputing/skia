@@ -20,7 +20,7 @@
 #include <utility>
 
 DEF_TEST(BadImage, reporter) {
-    const char* const badImages [] = {
+    const auto badImages = std::to_array<const char *>({
         "sigabort_favicon.ico",
         "sigsegv_favicon.ico",
         "sigsegv_favicon_2.ico",
@@ -31,7 +31,7 @@ DEF_TEST(BadImage, reporter) {
         "skbug3429.webp",
         "b38116746.ico",
         "skbug5883.gif",
-    };
+    });
 
     const char* badImagesFolder = "invalid_images";
 

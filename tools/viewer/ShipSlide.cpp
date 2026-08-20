@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkCanvas.h"
 #include "include/core/SkFont.h"
 #include "include/core/SkRSXform.h"
@@ -145,8 +146,8 @@ private:
     DrawAtlasProc  fProc;
 
     sk_sp<SkImage> fAtlas;
-    SkRSXform      fXform[kGrid*kGrid+1];
-    SkRect         fTex[kGrid*kGrid+1];
+    std::array<SkRSXform, kGrid*kGrid+1> fXform;
+    std::array<SkRect, kGrid*kGrid+1> fTex;
 };
 
 //////////////////////////////////////////////////////////////////////////////

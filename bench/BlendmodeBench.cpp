@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "bench/Benchmark.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkFont.h"
@@ -25,9 +26,9 @@ enum Type {
 };
 }
 
-const char* gTypeNames[] = {
+auto gTypeNames = std::to_array<const char *>({
     "mask", "rect", "sprite",
-};
+});
 
 // Benchmark that draws non-AA rects or AA text with an SkBlendMode.
 class XfermodeBench : public Benchmark {

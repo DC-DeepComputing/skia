@@ -7,6 +7,7 @@
 #ifndef SkOpEdgeBuilder_DEFINED
 #define SkOpEdgeBuilder_DEFINED
 
+#include <array>
 #include "include/core/SkPoint.h"
 #include "include/core/SkScalar.h"
 #include "include/private/SkTDArray.h"
@@ -63,7 +64,7 @@ private:
     SkTDArray<uint8_t> fPathVerbs;
     SkOpContourBuilder fContourBuilder;
     SkOpContourHead* fContoursHead;
-    SkPathOpsMask fXorMask[2];
+    std::array<SkPathOpsMask, 2> fXorMask;
     int fSecondHalf;
     bool fOperand;
     bool fAllowOpenContours;

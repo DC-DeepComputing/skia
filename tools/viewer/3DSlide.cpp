@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkCanvas.h"
 #include "include/core/SkM44.h"
 #include "include/core/SkPaint.h"
@@ -431,13 +432,13 @@ DEF_SLIDE( return new Bump3DSlide; )
 #include "modules/skottie/include/Skottie.h"
 
 class SkottieCubeSlide : public CubeBaseSlide {
-    sk_sp<skottie::Animation> fAnim[6];
+    std::array<sk_sp<skottie::Animation>, 6> fAnim;
 
 public:
     SkottieCubeSlide() : CubeBaseSlide(kCanRunOnCPU) { fName = "skottie3d"; }
 
     void load(SkScalar w, SkScalar h) override {
-        const char* files[] = {
+        auto files = std::to_array<const char *>({
             "skottie/skottie-chained-mattes.json",
             "skottie/skottie-gradient-ramp.json",
             "skottie/skottie_sample_2.json",
@@ -445,7 +446,7 @@ public:
             "skottie/skottie-text-animator-4.json",
             "skottie/skottie-motiontile-effect-phase.json",
 
-        };
+        });
         for (unsigned i = 0; i < std::size(files); ++i) {
             if (auto stream = GetResourceAsStream(files[i])) {
                 fAnim[i] = skottie::Animation::Make(stream.get());

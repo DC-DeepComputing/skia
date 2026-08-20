@@ -4,6 +4,7 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include <array>
 #include "bench/Benchmark.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkString.h"
@@ -94,7 +95,7 @@ protected:
         }
     }
 private:
-    SkMatrix fMatrix[10];
+    std::array<SkMatrix, 10> fMatrix;
     SkRandom fRandom;
     using INHERITED = MatrixBench;
 };
@@ -239,7 +240,7 @@ public:
     const Use      fUse;
 
     enum { N = 32 };
-    SkPoint fDst[N];
+    std::array<SkPoint, N> fDst;
 
     SkString fName;
 
@@ -302,7 +303,7 @@ public:
                         fM.mapPoints({&fDst[j], 1}, {&src, 1});
                         src.fX += 1;
                     }
-                    this->handle(fDst);
+                    this->handle(fDst.data());
                 }
                 break;
             case Use::kSingle:
@@ -312,7 +313,7 @@ public:
                         fDst[j] = fM.mapPoint(src);
                         src.fX += 1;
                     }
-                    this->handle(fDst);
+                    this->handle(fDst.data());
                 }
                 break;
             case Use::kAffine:
@@ -322,7 +323,7 @@ public:
                         fDst[j] = fM.mapPointAffine(src);
                         src.fX += 1;
                     }
-                    this->handle(fDst);
+                    this->handle(fDst.data());
                 }
                 break;
         }

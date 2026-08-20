@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkColorSpace.h"
@@ -152,7 +153,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(BasicDrawOpAtlas,
     check(reporter, atlas.get(), 0, 0);
 
     // Fill up the first level
-    GrAtlasLocator atlasLocators[kNumPlots * kNumPlots];
+    std::array<GrAtlasLocator, kNumPlots * kNumPlots> atlasLocators;
     for (int i = 0; i < kNumPlots * kNumPlots; ++i) {
         bool result = fill_plot(
                 atlas.get(), resourceProvider, &uploadTarget, &atlasLocators[i], i * 32);

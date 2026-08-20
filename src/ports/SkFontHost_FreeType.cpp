@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkBBHFactory.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -2258,37 +2259,37 @@ bool SkFontScanner_FreeType::scanInstance(SkStreamAsset* stream,
     }
 
     if (!hasOs2 && !hasAxes && 0 == FT_Get_PS_Font_Info(face.get(), &psFontInfo) && psFontInfo.weight) {
-        static const struct {
+        struct CommonWeights {
             char const * const name;
             int const weight;
-        } commonWeights [] = {
+        }; static const auto commonWeights = std::to_array<CommonWeights>({
                 // There are probably more common names, but these are known to exist.
-                { "all", SkFontStyle::kNormal_Weight }, // Multiple Masters usually default to normal.
-                { "black", SkFontStyle::kBlack_Weight },
-                { "bold", SkFontStyle::kBold_Weight },
-                { "book", (SkFontStyle::kNormal_Weight + SkFontStyle::kLight_Weight)/2 },
-                { "demi", SkFontStyle::kSemiBold_Weight },
-                { "demibold", SkFontStyle::kSemiBold_Weight },
-                { "extra", SkFontStyle::kExtraBold_Weight },
-                { "extrabold", SkFontStyle::kExtraBold_Weight },
-                { "extralight", SkFontStyle::kExtraLight_Weight },
-                { "hairline", SkFontStyle::kThin_Weight },
-                { "heavy", SkFontStyle::kBlack_Weight },
-                { "light", SkFontStyle::kLight_Weight },
-                { "medium", SkFontStyle::kMedium_Weight },
-                { "normal", SkFontStyle::kNormal_Weight },
-                { "plain", SkFontStyle::kNormal_Weight },
-                { "regular", SkFontStyle::kNormal_Weight },
-                { "roman", SkFontStyle::kNormal_Weight },
-                { "semibold", SkFontStyle::kSemiBold_Weight },
-                { "standard", SkFontStyle::kNormal_Weight },
-                { "thin", SkFontStyle::kThin_Weight },
-                { "ultra", SkFontStyle::kExtraBold_Weight },
-                { "ultrablack", SkFontStyle::kExtraBlack_Weight },
-                { "ultrabold", SkFontStyle::kExtraBold_Weight },
-                { "ultraheavy", SkFontStyle::kExtraBlack_Weight },
-                { "ultralight", SkFontStyle::kExtraLight_Weight },
-        };
+                CommonWeights{ "all", SkFontStyle::kNormal_Weight }, // Multiple Masters usually default to normal.
+                CommonWeights{ "black", SkFontStyle::kBlack_Weight },
+                CommonWeights{ "bold", SkFontStyle::kBold_Weight },
+                CommonWeights{ "book", (SkFontStyle::kNormal_Weight + SkFontStyle::kLight_Weight)/2 },
+                CommonWeights{ "demi", SkFontStyle::kSemiBold_Weight },
+                CommonWeights{ "demibold", SkFontStyle::kSemiBold_Weight },
+                CommonWeights{ "extra", SkFontStyle::kExtraBold_Weight },
+                CommonWeights{ "extrabold", SkFontStyle::kExtraBold_Weight },
+                CommonWeights{ "extralight", SkFontStyle::kExtraLight_Weight },
+                CommonWeights{ "hairline", SkFontStyle::kThin_Weight },
+                CommonWeights{ "heavy", SkFontStyle::kBlack_Weight },
+                CommonWeights{ "light", SkFontStyle::kLight_Weight },
+                CommonWeights{ "medium", SkFontStyle::kMedium_Weight },
+                CommonWeights{ "normal", SkFontStyle::kNormal_Weight },
+                CommonWeights{ "plain", SkFontStyle::kNormal_Weight },
+                CommonWeights{ "regular", SkFontStyle::kNormal_Weight },
+                CommonWeights{ "roman", SkFontStyle::kNormal_Weight },
+                CommonWeights{ "semibold", SkFontStyle::kSemiBold_Weight },
+                CommonWeights{ "standard", SkFontStyle::kNormal_Weight },
+                CommonWeights{ "thin", SkFontStyle::kThin_Weight },
+                CommonWeights{ "ultra", SkFontStyle::kExtraBold_Weight },
+                CommonWeights{ "ultrablack", SkFontStyle::kExtraBlack_Weight },
+                CommonWeights{ "ultrabold", SkFontStyle::kExtraBold_Weight },
+                CommonWeights{ "ultraheavy", SkFontStyle::kExtraBlack_Weight },
+                CommonWeights{ "ultralight", SkFontStyle::kExtraLight_Weight },
+        });
         int const index = SkStrLCSearch(&commonWeights[0].name, std::size(commonWeights),
                                         psFontInfo.weight, sizeof(commonWeights[0]));
         if (index >= 0) {

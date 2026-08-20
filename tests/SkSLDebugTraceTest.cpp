@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkData.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkStream.h"
@@ -173,12 +174,12 @@ DEF_TEST(DebugTracePrivGetSlotComponentSuffix, r) {
                    {"m", 4, 4, 14, 14, SkSL::Type::NumberKind::kFloat, 0, SkSL::Position{}, -1},
                    {"m", 4, 4, 15, 15, SkSL::Type::NumberKind::kFloat, 0, SkSL::Position{}, -1}};
 
-    const std::string kExpected[] = {"",
+    const auto kExpected = std::to_array<std::string>({"",
                                      ".x",     ".y",     ".z",     ".w",
                                      "[0][0]", "[0][1]", "[0][2]", "[0][3]",
                                      "[1][0]", "[1][1]", "[1][2]", "[1][3]",
                                      "[2][0]", "[2][1]", "[2][2]", "[2][3]",
-                                     "[3][0]", "[3][1]", "[3][2]", "[3][3]"};
+                                     "[3][0]", "[3][1]", "[3][2]", "[3][3]",});
 
     REPORTER_ASSERT(r, i.fSlotInfo.size() == std::size(kExpected));
     for (size_t index = 0; index < std::size(kExpected); ++index) {

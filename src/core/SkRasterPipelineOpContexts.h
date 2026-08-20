@@ -8,6 +8,7 @@
 #ifndef SkRasterPipelineOpContexts_DEFINED
 #define SkRasterPipelineOpContexts_DEFINED
 
+#include <array>
 #include <algorithm>
 #include <cstddef>
 #include <cstdint>
@@ -173,8 +174,8 @@ constexpr size_t kRGBAChannels = 4;
 
 struct GradientCtx {
     size_t stopCount;
-    float* factors[kRGBAChannels];
-    float* biases[kRGBAChannels];
+    std::array<float *, kRGBAChannels> factors;
+    std::array<float *, kRGBAChannels> biases;
     float* ts;
 };
 

@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkPath.h"
 #include "include/core/SkPathBuilder.h"
 #include "include/core/SkSpan.h"
@@ -14,12 +15,12 @@
 
 #include <functional>
 
-char const * const gFillTypeStrs[] = {
+static constexpr auto gFillTypeStrs = std::to_array<const char *>({
     "Winding",
     "EvenOdd",
     "InverseWinding",
     "InverseEvenOdd",
-};
+});
 
 constexpr float kSentinelConicWeight = -12345;  // not a valid weight
 

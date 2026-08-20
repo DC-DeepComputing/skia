@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -48,12 +49,12 @@ constexpr SkColor4f  gColorClamp[] = {
     SkColors::kRed, SkColors::kGreen, SkColors::kGreen, SkColors::kBlue
 };
 
-constexpr GradData gGradData[] = {
-    { 2, gColors, gPos0 },
-    { 2, gColors, gPos1 },
-    { 5, gColors, gPos2 },
-    { 4, gColorClamp, gPosClamp }
-};
+constexpr auto gGradData = std::to_array<GradData>({
+    GradData{ 2, gColors, gPos0 },
+    GradData{ 2, gColors, gPos1 },
+    GradData{ 5, gColors, gPos2 },
+    GradData{ 4, gColorClamp, gPosClamp }
+});
 
 static sk_sp<SkShader> Make2ConicalOutside(const SkPoint pts[2], const GradData& data,
                                            SkTileMode tm, const SkMatrix& localMatrix) {
@@ -295,15 +296,15 @@ constexpr GradMaker gGradMakersEdgeCases[] = {
 };
 
 
-constexpr struct {
+struct GGradCases {
     const GradMaker*   fMaker;
     const int fCount;
     const char* fName;
-} gGradCases[] = {
-    { gGradMakersOutside,   std::size(gGradMakersOutside),     "outside"  },
-    { gGradMakersInside,    std::size(gGradMakersInside),      "inside"  },
-    { gGradMakersEdgeCases, std::size(gGradMakersEdgeCases),   "edge"  },
-};
+}; constexpr auto gGradCases = std::to_array<GGradCases>({
+    GGradCases{ gGradMakersOutside,   std::size(gGradMakersOutside),     "outside"  },
+    GGradCases{ gGradMakersInside,    std::size(gGradMakersInside),      "inside"  },
+    GGradCases{ gGradMakersEdgeCases, std::size(gGradMakersEdgeCases),   "edge"  },
+});
 
 enum GradCaseType { // these must match the order in gGradCases
     kOutside_GradCaseType,

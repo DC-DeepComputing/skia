@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -232,15 +233,15 @@ DEF_SIMPLE_GM(manyarcs, canvas, 620, 330) {
         canvas->translate(10, 10);
 
         // 20 angles.
-        SkScalar sweepAngles[] = {
+        auto sweepAngles = std::to_array<SkScalar>({
                            -123.7f, -2.3f, -2, -1, -0.3f, -0.000001f, 0, 0.000001f, 0.3f, 0.7f,
                            1, 1.3f, 1.5f, 1.7f, 1.99999f, 2, 2.00001f, 2.3f, 4.3f, 3934723942837.3f
-        };
+        ,});
         for (size_t i = 0; i < std::size(sweepAngles); ++i) {
             sweepAngles[i] *= 180;
         }
 
-        SkScalar startAngles[] = { -1, -0.5f, 0, 0.5f };
+        auto startAngles = std::to_array<SkScalar>({ -1, -0.5f, 0, 0.5f });
         for (size_t i = 0; i < std::size(startAngles); ++i) {
             startAngles[i] *= 180;
         }
@@ -280,7 +281,7 @@ DEF_SIMPLE_GM(tinyanglearcs, canvas, 620, 330) {
         SkScalar innerRadius = outerRadius - 20.0f;
         SkScalar centerX = 50;
         SkScalar centerY = outerRadius;
-        SkScalar startAngles[] = { 1.5f * SK_ScalarPI , 1.501f * SK_ScalarPI  };
+        auto startAngles = std::to_array<SkScalar>({ 1.5f * SK_ScalarPI , 1.501f * SK_ScalarPI  });
         SkScalar sweepAngle = 10.0f / outerRadius;
 
         for (size_t i = 0; i < std::size(startAngles); ++i) {

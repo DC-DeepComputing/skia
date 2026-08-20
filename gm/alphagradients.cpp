@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -43,25 +44,25 @@ protected:
     }
 
     void onDraw(SkCanvas* canvas) override {
-        constexpr struct {
+        struct GRec {
             SkColor4f fColor0;
             SkColor4f fColor1;
-        } gRec[] = {
-            { SkColors::kWhite, {0, 0, 0, 0} },
-            { SkColors::kWhite, {1, 0, 0, 0} },
-            { SkColors::kWhite, {1, 1, 0, 0} },
-            { SkColors::kWhite, {1, 1, 1, 0} },
+        }; constexpr auto gRec = std::to_array<GRec>({
+            GRec{ SkColors::kWhite, {0, 0, 0, 0} },
+            GRec{ SkColors::kWhite, {1, 0, 0, 0} },
+            GRec{ SkColors::kWhite, {1, 1, 0, 0} },
+            GRec{ SkColors::kWhite, {1, 1, 1, 0} },
 
-            { SkColors::kRed, {0, 0, 0, 0} },
-            { SkColors::kRed, {1, 0, 0, 0} },
-            { SkColors::kRed, {1, 1, 0, 0} },
-            { SkColors::kRed, {1, 1, 1, 0} },
+            GRec{ SkColors::kRed, {0, 0, 0, 0} },
+            GRec{ SkColors::kRed, {1, 0, 0, 0} },
+            GRec{ SkColors::kRed, {1, 1, 0, 0} },
+            GRec{ SkColors::kRed, {1, 1, 1, 0} },
 
-            { SkColors::kBlue, {0, 0, 0, 0} },
-            { SkColors::kBlue, {1, 0, 0, 0} },
-            { SkColors::kBlue, {1, 1, 0, 0} },
-            { SkColors::kBlue, {1, 1, 1, 0} },
-        };
+            GRec{ SkColors::kBlue, {0, 0, 0, 0} },
+            GRec{ SkColors::kBlue, {1, 0, 0, 0} },
+            GRec{ SkColors::kBlue, {1, 1, 0, 0} },
+            GRec{ SkColors::kBlue, {1, 1, 1, 0} },
+        });
 
         SkRect r = SkRect::MakeWH(300, 30);
 

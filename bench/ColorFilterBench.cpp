@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "bench/Benchmark.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColorFilter.h"
@@ -78,12 +79,12 @@ public:
     };
 
     FilteredRectBench(Type t) : fType(t) {
-        static constexpr const char* kSuffix[] = {
+        static constexpr auto kSuffix = std::to_array<const char *>({
                 "nofilter",
                 "colorfilter",
                 "imagefilter",
                 "runtimecolorfilter",
-        };
+        });
         fName.printf("filteredrect_%s", kSuffix[t]);
         fPaint.setColor(SK_ColorRED);
     }

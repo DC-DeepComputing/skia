@@ -1,3 +1,5 @@
+#include <array>
+
 // Copyright 2019 Google LLC
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 #include "tools/fiddle/examples.h"
@@ -12,12 +14,12 @@ void draw(SkCanvas* canvas) {
                     &srcPixels.front(), rowBytes);
     canvas->scale(4, 4);
 
-    const SkSamplingOptions samplings[] = {
+    const auto samplings = std::to_array<SkSamplingOptions>({
         SkSamplingOptions(),
         SkSamplingOptions(SkFilterMode::kLinear),
         SkSamplingOptions(SkFilterMode::kLinear, SkMipmapMode::kLinear),
         SkSamplingOptions({1.0f/3, 1.0f/3}),
-    };
+    });
     for (unsigned index = 0; index < std::size(samplings); ++index) {
         image->scalePixels(pixmap, samplings[index]);
         sk_sp<SkImage> filtered = SkImages::RasterFromPixmap(pixmap, nullptr, nullptr);

@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkCanvas.h"
 #include "include/core/SkFont.h"
 #include "include/core/SkPaint.h"
@@ -138,7 +139,7 @@ private:
     static const int kMaxRectSize = 256;
 
     int                                   fCurRandRect;
-    SkTDArray<SkISize>                    fRects[3];
+    std::array<SkTDArray<SkISize>, 3> fRects;
     SkTDArray<SkISize>*                   fCurRects;
     SkTDArray<SkIPoint16>                 fRectLocations;
     TArray<std::unique_ptr<Rectanizer>> fRectanizers;

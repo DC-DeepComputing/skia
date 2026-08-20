@@ -9,6 +9,7 @@
 #ifndef TestContext_DEFINED
 #define TestContext_DEFINED
 
+#include <array>
 #include "include/core/SkRefCnt.h"
 #include "include/gpu/ganesh/GrTypes.h"
 #include "include/private/SkNoncopyable.h"
@@ -108,7 +109,7 @@ private:
         kMaxFrameLag = 3
     };
 
-    sk_sp<FlushFinishTracker> fFinishTrackers[kMaxFrameLag - 1];
+    std::array<sk_sp<FlushFinishTracker>, kMaxFrameLag - 1> fFinishTrackers;
     int fCurrentFlushIdx = 0;
 
     using INHERITED = SkNoncopyable;

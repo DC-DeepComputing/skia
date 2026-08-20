@@ -4,6 +4,7 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include <array>
 #include "modules/skottie/src/text/TextAdapter.h"
 
 #include "include/core/SkCanvas.h"
@@ -349,12 +350,12 @@ sk_sp<TextAdapter> TextAdapter::Make(const skjson::ObjectValue& jlayer,
 
     // "More options"
     const skjson::ObjectValue* jm = (*jt)["m"];
-    static constexpr AnchorPointGrouping gGroupingMap[] = {
+    static constexpr auto gGroupingMap = std::to_array<AnchorPointGrouping>({
         AnchorPointGrouping::kCharacter, // 'g': 1
         AnchorPointGrouping::kWord,      // 'g': 2
         AnchorPointGrouping::kLine,      // 'g': 3
         AnchorPointGrouping::kAll,       // 'g': 4
-    };
+    });
     const auto apg = jm
             ? SkTPin<int>(ParseDefault<int>((*jm)["g"], 1), 1, std::size(gGroupingMap))
             : 1;

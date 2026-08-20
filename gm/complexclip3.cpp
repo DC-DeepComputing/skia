@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkClipOp.h"
@@ -63,13 +64,13 @@ protected:
 
         SkFont font(ToolUtils::DefaultPortableTypeface(), 20);
 
-        constexpr struct {
+        struct GOps {
             SkClipOp    fOp;
             const char* fName;
-        } gOps[] = {
-            {SkClipOp::kIntersect,         "I"},
-            {SkClipOp::kDifference,        "D" },
-        };
+        }; constexpr auto gOps = std::to_array<GOps>({
+            GOps{SkClipOp::kIntersect,         "I"},
+            GOps{SkClipOp::kDifference,        "D" },
+        });
 
         canvas->translate(SkIntToScalar(20), SkIntToScalar(20));
         canvas->scale(3 * SK_Scalar1 / 4, 3 * SK_Scalar1 / 4);

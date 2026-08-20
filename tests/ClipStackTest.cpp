@@ -134,12 +134,12 @@ static void assert_count(skiatest::Reporter* reporter, const SkClipStack& stack,
 static void test_iterators(skiatest::Reporter* reporter) {
     SkClipStack stack;
 
-    static const SkRect gRects[] = {
-        { 0,   0,  40,  40 },
-        { 60,  0, 100,  40 },
-        { 0,  60,  40, 100 },
-        { 60, 60, 100, 100 }
-    };
+    static const auto gRects = std::to_array<SkRect>({
+        SkRect{ 0,   0,  40,  40 },
+        SkRect{ 60,  0, 100,  40 },
+        SkRect{ 0,  60,  40, 100 },
+        SkRect{ 60, 60, 100, 100 }
+    });
 
     for (size_t i = 0; i < std::size(gRects); i++) {
         // the difference op will prevent these from being fused together
@@ -197,7 +197,7 @@ static void test_iterators(skiatest::Reporter* reporter) {
 static void test_bounds(skiatest::Reporter* reporter,
                         SkClipStack::Element::DeviceSpaceType primType) {
     static const int gNumCases = 8;
-    static const SkRect gAnswerRectsBW[gNumCases] = {
+    static const std::array<SkRect, gNumCases> gAnswerRectsBW = {{
         // A op B
         { 40, 40, 50, 50 },
         { 10, 10, 50, 50 },
@@ -213,12 +213,12 @@ static void test_bounds(skiatest::Reporter* reporter,
         // invA op invB
         { 0, 0, 100, 100 },
         { 40, 40, 80, 80 },
-    };
+    }};
 
-    static const SkClipOp gOps[] = {
+    static const auto gOps = std::to_array<SkClipOp>({
         SkClipOp::kIntersect,
         SkClipOp::kDifference
-    };
+    });
 
     SkRect rectA, rectB;
 
@@ -831,12 +831,12 @@ DEF_TEST(ClipStack, reporter) {
     REPORTER_ASSERT(reporter, 0 == stack.getSaveCount());
     assert_count(reporter, stack, 0);
 
-    static const SkIRect gRects[] = {
-        { 0, 0, 100, 100 },
-        { 25, 25, 125, 125 },
-        { 0, 0, 1000, 1000 },
-        { 0, 0, 75, 75 }
-    };
+    static const auto gRects = std::to_array<SkIRect>({
+        SkIRect{ 0, 0, 100, 100 },
+        SkIRect{ 25, 25, 125, 125 },
+        SkIRect{ 0, 0, 1000, 1000 },
+        SkIRect{ 0, 0, 75, 75 }
+    });
     for (size_t i = 0; i < std::size(gRects); i++) {
         stack.clipDevRect(gRects[i], SkClipOp::kIntersect);
     }
