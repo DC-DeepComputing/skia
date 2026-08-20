@@ -95,6 +95,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "058d422b_3f86f856",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-08-20T13:16:12Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "6ae09add_f2bc814a",
+      "range": {
+        "startLine": 129,
+        "startChar": 0,
+        "endLine": 135,
+        "endChar": 9
+      },
+      "revId": "64e3c0fbac0667fdcc2905eabb9414cf779b83c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "561ca151_24272ecf",
@@ -132,6 +156,30 @@
       "side": 1,
       "message": "Oh, you\u0027re right!\nThe current frameIndex \u003e 0 logic can decode another entry when frame 0 was requested with smaller destination dimensions. That violates the frame-index contract.\n\nThe legacy ICO codec avoids this conflict by not exposing entries as frames; it only selects by dimensions. If Rust ICO exposes entries as frames, the clean behavior is to make every valid index, including 0, authoritative. Supporting both “frame 0” and “select by size” would require an API sentinel that currently does not exist.\n\nI could do a rewrite to handle the ICO implementation in the same way, where entries aren\u0027t exposed as frames. (This shouldn\u0027t be too big of a change, but I need to ensure all the tests still pass.)",
       "parentUuid": "561ca151_24272ecf",
+      "range": {
+        "startLine": 421,
+        "startChar": 7,
+        "endLine": 421,
+        "endChar": 30
+      },
+      "revId": "64e3c0fbac0667fdcc2905eabb9414cf779b83c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "897a5009_5d75288a",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 421,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-08-20T13:16:12Z",
+      "side": 1,
+      "message": "\u003e I could do a rewrite to handle the ICO implementation in the same way, where entries aren\u0027t exposed as frames.\n\nI think that would make sense: in the context of SkCodec, \"frames\" pertain to animated images (they have durations, inter-frame dependencies, etc), so exposing ICO embedded images as frames is a mismatch and could create significant confusion.\n\nWhat are the implications for Blink, is size-based selection sufficient for its use case?",
+      "parentUuid": "37e4dfac_bf440950",
       "range": {
         "startLine": 421,
         "startChar": 7,
