@@ -39,6 +39,8 @@ public:
     PipelineManager(SkExecutor* executor);
     ~PipelineManager();
 
+    bool fPastInitialization = false;
+
     // If an existing Pipeline is found, it is just wrapped in a Handle and returned.
     // Otherwise, a compilation task is created and queued up for execution.
     // If no Executor is provided the compilations will occur synchronously, in-line.
@@ -64,11 +66,11 @@ public:
         int fNumTasksCreated = 0;
     };
 
-    Stats getStats() const SK_EXCLUDES(fSpinLock);
+    Stats getStats() const SK_EXCLUDES(fSpinLock1);
 #endif
 
 private:
-    mutable SkSpinlock fSpinLock;
+    mutable SkSpinlock fSpinLock1;
 
     enum class Priority { kHigh = 0, kLow = 1 };
 
@@ -77,13 +79,13 @@ private:
             const UniqueKey& pipelineKey,
             const GraphicsPipelineDesc&,
             const RenderPassDesc&,
-            Priority) SK_EXCLUDES(fSpinLock);
+            Priority) SK_EXCLUDES(fSpinLock1);
 
     void addTaskToWorkList(SharedContext*,
                            sk_sp<PipelineCreationTask>,
                            Priority);
 
-    void removeTask(PipelineCreationTask*) SK_EXCLUDES(fSpinLock);
+    void removeTask(PipelineCreationTask*) SK_EXCLUDES(fSpinLock1);
 
     struct Traits {
         static const UniqueKey& GetKey(const sk_sp<PipelineCreationTask>&);
@@ -91,13 +93,13 @@ private:
     };
     using TaskMap = skia_private::THashTable<sk_sp<PipelineCreationTask>, UniqueKey, Traits>;
 
-    TaskMap fActiveTasks SK_GUARDED_BY(fSpinLock);
+    TaskMap fActiveTasks SK_GUARDED_BY(fSpinLock1);
 
 #if defined(GPU_TEST_UTILS)
-    Stats fStats SK_GUARDED_BY(fSpinLock);
+    Stats fStats SK_GUARDED_BY(fSpinLock1);
 #endif
 
-    std::unique_ptr<SkTaskGroup> fTaskGroup SK_GUARDED_BY(fSpinLock);
+    std::unique_ptr<SkTaskGroup> fTaskGroup SK_GUARDED_BY(fSpinLock1);
 
     void signalCompleted(PipelineCreationTask*);
     void potentiallyWaitOn(SharedContext*, PipelineCreationTask*);
@@ -112,8 +114,8 @@ private:
     // ever be waiting on at most one pipeline at a time and no other thread will
     // need to block on waiting for a different pipeline. This means we don't need
     // to add a condition_variable to every PipelineCreationTask.
-    std::mutex fMutex;
-    std::condition_variable fConditionVariable; // SK_GUARDED_BY(fMutex)
+//    std::mutex fMutex1;
+//    std::condition_variable fConditionVariable; // SK_GUARDED_BY(fMutex)
 };
 
 } // namespace skgpu::graphite

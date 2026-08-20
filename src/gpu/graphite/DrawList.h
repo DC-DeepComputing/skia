@@ -94,7 +94,7 @@ public:
 
     // Discard all previously recorded draws and set to the requested load op (with optional clear
     // color).
-    void reset(LoadOp op, SkColor4f clearColor = {0.f, 0.f, 0.f, 0.f}) override;
+    void reset1(LoadOp op, SkColor4f clearColor = {0.f, 0.f, 0.f, 0.f}) override;
 
 private:
     struct Draw {

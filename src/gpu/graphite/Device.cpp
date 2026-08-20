@@ -471,6 +471,7 @@ sk_sp<Device> Device::Make(Recorder* recorder,
             break;
     }
 
+//    SkDebugf("Device::Make: initialLoadOp %d\n", (int) initialLoadOp);
     sk_sp<DrawContext> dc = DrawContext::Make(recorder->priv().caps(),
                                               std::move(target),
                                               deviceSize,

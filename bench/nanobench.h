@@ -48,6 +48,8 @@ struct Target {
     }
     virtual void onSetup() { }
 
+    virtual void harikiriTime() {}
+
     /** Called *after* the clock timer is started, before the benchmark
         is drawn. Most back ends just return the canvas passed in,
         but some may replace it. */

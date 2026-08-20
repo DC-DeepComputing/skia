@@ -76,7 +76,7 @@ public:
     int renderStepCount() const { return fRenderStepCount; }
 
     bool modifiesTarget() const {
-        return this->renderStepCount() > 0 || fLoadOp == LoadOp::kClear;
+        return this->renderStepCount() > 0 || fLoadOp1 == LoadOp::kClear;
     }
 
     bool samplesTexture(const TextureProxy* texture) const {
@@ -91,8 +91,9 @@ public:
 
     SkDEBUGCODE(bool hasCoverageMaskDraws() const { return fCoverageMaskShapeDrawCount > 0; })
 
-    virtual void reset(LoadOp op, SkColor4f clearColor = {0.f, 0.f, 0.f, 0.f}) {
-        fLoadOp = op;
+    virtual void reset1(LoadOp op, SkColor4f clearColor = {0.f, 0.f, 0.f, 0.f}) {
+        fLoadOp1 = op;
+        fTouched = true;
         fClearColor = clearColor.premul().array();
         fRenderStepCount = 0;
         fDstReadBounds = Rect::InfiniteInverted();
@@ -131,7 +132,9 @@ protected:
     bool fRequiresMSAA = false;
     SkEnumBitMask<DepthStencilFlags> fDepthStencilFlags = DepthStencilFlags::kNone;
 
-    LoadOp fLoadOp = LoadOp::kLoad;
+public:
+    LoadOp fLoadOp1 = LoadOp::kLoad;
+    bool fTouched = false;
     std::array<float, 4> fClearColor = {0.f, 0.f, 0.f, 0.f};
 
 #if defined(SK_DEBUG)
