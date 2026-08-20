@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "929b65b3_189effcc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 4569768
+      },
+      "writtenOn": "2026-08-20T09:40:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "45258a50_4eef4561",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 73
+      },
+      "revId": "64e3c0fbac0667fdcc2905eabb9414cf779b83c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1cc71ad9_4729baee",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-08-18T13:29:19Z",
       "side": 1,
       "message": "Could this be folded into the loop below?",
+      "range": {
+        "startLine": 129,
+        "startChar": 0,
+        "endLine": 135,
+        "endChar": 9
+      },
+      "revId": "64e3c0fbac0667fdcc2905eabb9414cf779b83c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ae09add_f2bc814a",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 4569768
+      },
+      "writtenOn": "2026-08-20T09:40:43Z",
+      "side": 1,
+      "message": "I don\u0027t think it would be too good as the loop below can break and continue unexpectedly.\n\nKeeping the separate directory-only pass makes that requirement explicit and avoids coupling reported dimensions to decodability.",
+      "parentUuid": "1cc71ad9_4729baee",
       "range": {
         "startLine": 129,
         "startChar": 0,
