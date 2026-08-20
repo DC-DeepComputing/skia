@@ -62,6 +62,8 @@ public:
         kAlwaysDither_Flag = 1 << 2,
         // The surface will preserve transparent draws (instead of skipping them).
         kPreservesTransparentDraws_Flag = 1 << 3,
+        // Use 32-bit LCD masks instead of LCD16.
+        kUseLCD32_Flag = 1 << 4,
     };
 
     /** No flags, unknown pixel geometry, platform-default contrast/gamma. */

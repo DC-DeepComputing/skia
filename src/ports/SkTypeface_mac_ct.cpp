@@ -935,10 +935,10 @@ void SkTypeface_Mac::onFilterRec(SkScalerContextRec* rec) const {
     // [LCD][no-hint]: currently unable to honor, and must pick which to respect.
     // Currently side with LCD, effectively ignoring the hinting setting.
     // [LCD][yes-hint]: generate LCD using CoreGraphic's LCD output.
-    if (rec->fMaskFormat == SkMask::kLCD16_Format) {
+    if (rec->fMaskFormat == SkMask::kLCD16_Format ||
+        rec->fMaskFormat == SkMask::kLCD32_Format) {
         if (smoothBehavior == SkCTFontSmoothBehavior::subpixel) {
             //CoreGraphics creates 555 masks for smoothed text anyway.
-            rec->fMaskFormat = SkMask::kLCD16_Format;
             rec->setHinting(SkFontHinting::kNormal);
         } else {
             rec->fMaskFormat = SkMask::kA8_Format;

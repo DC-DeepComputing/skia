@@ -136,6 +136,7 @@ private:
                                                         fBlitAntiH,
                                                         fBlitMaskA8,
                                                         fBlitMaskLCD16,
+                                                        fBlitMaskLCD32,
                                                         fBlitMask3D;
 
     // These values are pointed to by the blit pipelines above,
@@ -633,11 +634,15 @@ void SkRasterPipelineBlitter::blitMask(const SkMask& mask, const SkIRect& clip) 
     // ARGB and SDF masks shouldn't make it here.
     SkASSERT(mask.fFormat == SkMask::kA8_Format
           || mask.fFormat == SkMask::kLCD16_Format
+          || mask.fFormat == SkMask::kLCD32_Format
           || mask.fFormat == SkMask::k3D_Format);
 
     auto extract_mask_plane = [&mask](int plane, SkRasterPipelineContexts::MemoryCtx* ctx) {
-        // LCD is 16-bit per pixel; A8 and 3D are 8-bit per pixel.
-        size_t bpp = mask.fFormat == SkMask::kLCD16_Format ? 2 : 1;
+        // LCD16 is 16-bit per pixel, LCD32 is 32-bit per pixel;
+        // A8 and 3D are 8-bit per pixel.
+        size_t bpp = mask.fFormat == SkMask::kLCD16_Format ? 2
+                   : mask.fFormat == SkMask::kLCD32_Format ? 4
+                                                           : 1;
 
         // Select the right mask plane.  Usually plane == 0 and this is just mask.fImage.
         auto ptr = (uintptr_t)mask.fImage
@@ -698,6 +703,26 @@ void SkRasterPipelineBlitter::blitMask(const SkMask& mask, const SkIRect& clip) 
         this->appendStore(&p);
         fBlitMaskLCD16 = p.compile();
     }
+    if (mask.fFormat == SkMask::kLCD32_Format && !fBlitMaskLCD32) {
+        SkRasterPipeline p(fAlloc);
+        p.extend(fColorPipeline);
+        p.appendClampIfNormalized(fDst.info());
+        if (fBlendMode.has_value() &&
+            SkBlendMode_ShouldPreScaleCoverage(*fBlendMode, /*rgb_coverage=*/true)) {
+            // Alpha coverage depends on dst alpha, so scale_8888 needs dst loaded first.
+            this->appendLoadDst(&p);
+            p.append(SkRasterPipelineOp::scale_8888, &fMaskPtr);
+            this->appendClipScale(&p);
+            p.extend(fBlendPipeline);
+        } else {
+            this->appendLoadDst(&p);
+            p.extend(fBlendPipeline);
+            p.append(SkRasterPipelineOp::lerp_8888, &fMaskPtr);
+            this->appendClipLerp(&p);
+        }
+        this->appendStore(&p);
+        fBlitMaskLCD32 = p.compile();
+    }
     if (mask.fFormat == SkMask::k3D_Format && !fBlitMask3D) {
         SkRasterPipeline p(fAlloc);
         p.extend(fColorPipeline);
@@ -725,6 +750,7 @@ void SkRasterPipelineBlitter::blitMask(const SkMask& mask, const SkIRect& clip) 
     switch (mask.fFormat) {
         case SkMask::kA8_Format:    blitter = &fBlitMaskA8;    break;
         case SkMask::kLCD16_Format: blitter = &fBlitMaskLCD16; break;
+        case SkMask::kLCD32_Format: blitter = &fBlitMaskLCD32; break;
         case SkMask::k3D_Format:    blitter = &fBlitMask3D;    break;
         default:
             SkASSERT(false);

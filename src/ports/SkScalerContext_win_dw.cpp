@@ -103,7 +103,8 @@ private:
 };
 
 static bool isLCD(const SkScalerContextRec& rec) {
-    return SkMask::kLCD16_Format == rec.fMaskFormat;
+    return SkMask::kLCD16_Format == rec.fMaskFormat ||
+           SkMask::kLCD32_Format == rec.fMaskFormat;
 }
 
 static bool is_hinted(DWriteFontTypeface* typeface) {
@@ -2048,6 +2049,38 @@ void SkScalerContext_DW::RGBToLcd16(const uint8_t* SK_RESTRICT src, const SkGlyp
     }
 }
 
+template<bool APPLY_PREBLEND, bool RGB>
+void SkScalerContext_DW::RGBToLcd32(const uint8_t* SK_RESTRICT src, const SkGlyph& glyph,
+                                    void* imageBuffer,
+                                    const uint8_t* tableR, const uint8_t* tableG,
+                                    const uint8_t* tableB) {
+    const size_t dstRB = glyph.rowBytes();
+    const int width = glyph.width();
+    uint32_t* SK_RESTRICT dst = static_cast<uint32_t*>(imageBuffer);
+
+    for (int y = 0; y < glyph.height(); y++) {
+        for (int i = 0; i < width; i++) {
+            U8CPU r, g, b;
+            if (RGB) {
+                r = sk_apply_lut_if<APPLY_PREBLEND>(*(src++), tableR);
+                g = sk_apply_lut_if<APPLY_PREBLEND>(*(src++), tableG);
+                b = sk_apply_lut_if<APPLY_PREBLEND>(*(src++), tableB);
+            } else {
+                b = sk_apply_lut_if<APPLY_PREBLEND>(*(src++), tableB);
+                g = sk_apply_lut_if<APPLY_PREBLEND>(*(src++), tableG);
+                r = sk_apply_lut_if<APPLY_PREBLEND>(*(src++), tableR);
+            }
+            if constexpr (kSkShowTextBlitCoverage) {
+                r = std::max<U8CPU>(0x30, r);
+                g = std::max<U8CPU>(0x30, g);
+                b = std::max<U8CPU>(0x30, b);
+            }
+            dst[i] = SkPackARGB_as_RGBA(0xFF, r, g, b);
+        }
+        dst = SkTAddOffset<uint32_t>(dst, dstRB);
+    }
+}
+
 const void* SkScalerContext_DW::getDWMaskBits(const SkGlyph& glyph,
                                               DWRITE_RENDERING_MODE renderingMode,
                                               DWRITE_TEXTURE_TYPE textureType)
@@ -2168,6 +2201,24 @@ bool SkScalerContext_DW::generateDWImage(const SkGlyph& glyph, void* imageBuffer
                 RGBToA8<true>(src, glyph, imageBuffer, fPreBlend.fG);
             } else {
                 RGBToA8<false>(src, glyph, imageBuffer, fPreBlend.fG);
+            }
+        }
+    } else if (SkMask::kLCD32_Format == glyph.maskFormat()) {
+        if (fPreBlend.isApplicable()) {
+            if (fRec.fFlags & SkScalerContext::kLCD_BGROrder_Flag) {
+                RGBToLcd32<true, false>(src, glyph, imageBuffer,
+                                        fPreBlend.fR, fPreBlend.fG, fPreBlend.fB);
+            } else {
+                RGBToLcd32<true, true>(src, glyph, imageBuffer,
+                                       fPreBlend.fR, fPreBlend.fG, fPreBlend.fB);
+            }
+        } else {
+            if (fRec.fFlags & SkScalerContext::kLCD_BGROrder_Flag) {
+                RGBToLcd32<false, false>(src, glyph, imageBuffer,
+                                         fPreBlend.fR, fPreBlend.fG, fPreBlend.fB);
+            } else {
+                RGBToLcd32<false, true>(src, glyph, imageBuffer,
+                                        fPreBlend.fR, fPreBlend.fG, fPreBlend.fB);
             }
         }
     } else {

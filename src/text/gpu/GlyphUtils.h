@@ -29,6 +29,8 @@ inline skgpu::MaskFormat FormatFromSkGlyph(SkMask::Format format) {
             return skgpu::MaskFormat::kA8;  // ignore the mul and add planes, just use the mask
         case SkMask::kLCD16_Format:
             return skgpu::MaskFormat::kA565;
+        case SkMask::kLCD32_Format:
+            return skgpu::MaskFormat::kA888;
         case SkMask::kARGB32_Format:
             return skgpu::MaskFormat::kARGB;
     }

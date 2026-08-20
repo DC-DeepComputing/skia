@@ -185,6 +185,11 @@ static void get_packed_glyph_image(
                     expand_bits(rgb565, bits, width, height, dstRB, srcRB);
                     break;
                 }
+                case MaskFormat::kA888: {
+                    uint32_t* rgb888 = reinterpret_cast<uint32_t*>(dst);
+                    expand_bits(rgb888, bits, width, height, dstRB, srcRB);
+                    break;
+                }
                 default:
                     SK_ABORT("Invalid MaskFormat");
             }

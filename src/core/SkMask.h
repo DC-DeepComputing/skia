@@ -30,10 +30,11 @@ struct SkMask {
         kARGB32_Format,         //!< SkPMColor
         kLCD16_Format,          //!< 565 alpha for r/g/b
         kSDF_Format,            //!< 8bits representing signed distance field
+        kLCD32_Format,          //!< 888 alpha for r/g/b
     };
 
     enum {
-        kCountMaskFormats = kSDF_Format + 1
+        kCountMaskFormats = kLCD32_Format + 1
     };
 
     SkMask(const uint8_t* img, const SkIRect& bounds, uint32_t rowBytes, Format format)
@@ -102,7 +103,7 @@ struct SkMask {
      *  are contained in the mask's fBounds.
      */
     const uint32_t* getAddr32(int x, int y) const {
-        SkASSERT(kARGB32_Format == fFormat);
+        SkASSERT(kARGB32_Format == fFormat || kLCD32_Format == fFormat);
         SkASSERT(fBounds.contains(x, y));
         SkASSERT(fImage != nullptr);
         const uint32_t* row = (const uint32_t*)(fImage + (y - fBounds.fTop) * fRowBytes);
@@ -212,6 +213,26 @@ template <> struct SkMask::AlphaIter<SkMask::kLCD16_Format> {
     }
     bool operator<(const AlphaIter& that) const { return fPtr < that.fPtr; }
     const uint16_t* fPtr;
+};
+
+template <> struct SkMask::AlphaIter<SkMask::kLCD32_Format> {
+    AlphaIter(const uint32_t* ptr) : fPtr(ptr) {}
+    AlphaIter(const AlphaIter& that) : fPtr(that.fPtr) {}
+    AlphaIter& operator++() { ++fPtr; return *this; }
+    AlphaIter& operator--() { --fPtr; return *this; }
+    AlphaIter& operator>>=(uint32_t rb) {
+        fPtr = SkTAddOffset<const uint32_t>(fPtr, rb);
+        return *this;
+    }
+    uint8_t operator*() const {
+        uint32_t packed = *fPtr;
+        unsigned r = (packed >> SK_RGBA_R32_SHIFT) & 0xFF;
+        unsigned g = (packed >> SK_RGBA_G32_SHIFT) & 0xFF;
+        unsigned b = (packed >> SK_RGBA_B32_SHIFT) & 0xFF;
+        return (r + g + b) / 3;
+    }
+    bool operator<(const AlphaIter& that) const { return fPtr < that.fPtr; }
+    const uint32_t* fPtr;
 };
 
 ///////////////////////////////////////////////////////////////////////////////

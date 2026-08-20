@@ -139,6 +139,12 @@ void SkRasterPipeline::uncheckedAppend(SkRasterPipelineOp op, void* ctx) {
             isLoad = true;
             break;
         }
+        case Op::scale_8888:
+        case Op::lerp_8888: {
+            ct = kRGBA_8888_SkColorType;
+            isLoad = true;
+            break;
+        }
         case Op::emboss: {
             // Special-case, this op uses a context that holds *two* MemoryCtxs
             SkRasterPipelineContexts::EmbossCtx* embossCtx =
