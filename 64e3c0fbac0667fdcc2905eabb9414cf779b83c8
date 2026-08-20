@@ -188,6 +188,30 @@
       },
       "revId": "64e3c0fbac0667fdcc2905eabb9414cf779b83c8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01a263c3_0fa8ca80",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 421,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-08-20T14:03:35Z",
+      "side": 1,
+      "message": "Assuming Blink will instantiate `SkIcoRustCodec` directly (which I think it will), we could also introduce specialized APIs to query the embedded image registry.\n\n`SkIcoRustCodec::MakeFromStream` currently returns an `SkCodec`, but it could be updated to return the concrete type for access to these APIs.",
+      "parentUuid": "897a5009_5d75288a",
+      "range": {
+        "startLine": 421,
+        "startChar": 7,
+        "endLine": 421,
+        "endChar": 30
+      },
+      "revId": "64e3c0fbac0667fdcc2905eabb9414cf779b83c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
