@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c31a50e5_02202f7e",
+        "filename": "src/ports/SkFontMgr_fontconfig.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 895,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-08-20T15:02:27Z",
+      "side": 0,
+      "message": "This comment also worries me, as it sounds like the original choice was quite intentional in keeping leading weak bindings.",
+      "range": {
+        "startLine": 891,
+        "startChar": 0,
+        "endLine": 895,
+        "endChar": 100
+      },
+      "revId": "8b8c3872fbc03f025855db96ce683f34ec98a815",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

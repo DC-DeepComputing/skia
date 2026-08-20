@@ -87,6 +87,30 @@
       },
       "revId": "ee20b6c12a06927c67a885942a9f8518f808bb19",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a66e6393_ed410d53",
+        "filename": "src/ports/SkFontMgr_fontconfig.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-08-20T15:02:27Z",
+      "side": 1,
+      "message": "\u003e \u003e I believe that using FcPatternAdd(type) will add the element with a strong binding.\n\u003e \n\u003e I think you\u0027re right, let\u0027s try to lock in the invariants some.\n\nActually that\u0027s probably not right: it\u0027s true that the original pattern starts with a strong family binding, but `FcConfigSubstitute` can change all that.  Per Gemini:\n```\n  When FcConfigSubstitute runs, it executes system Fontconfig configuration rules (like /etc/fonts/conf.d/*). \n   * In Fontconfig, aliases for generic font families (such as \u003calias\u003e\u003cfamily\u003esans-serif\u003c/family\u003e\u003cprefer\u003e\u003cfamily\u003eNoto Sans\u003c/family\u003e\u003c/prefer\u003e\u003c/alias\u003e) translate under the hood to a prepend operation.\n   * A prepended alias shifts the existing list elements down and inserts the new families at the beginning of the list (index 0).\n   * Because aliases use weak bindings by default, these prepended families are added as weak.\n```",
+      "parentUuid": "23a60974_74cb4730",
+      "range": {
+        "startLine": 314,
+        "startChar": 72,
+        "endLine": 314,
+        "endChar": 81
+      },
+      "revId": "ee20b6c12a06927c67a885942a9f8518f808bb19",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
