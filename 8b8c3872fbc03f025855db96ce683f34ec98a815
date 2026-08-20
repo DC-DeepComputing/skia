@@ -22,6 +22,30 @@
       },
       "revId": "8b8c3872fbc03f025855db96ce683f34ec98a815",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "092e033d_313f06df",
+        "filename": "src/ports/SkFontMgr_fontconfig.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 895,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-08-20T15:13:07Z",
+      "side": 0,
+      "message": "How about a middle-ground approach where we prune all weak bindings **after the first strong binding**?\n\n`wwwwwwwwswwwswwws -\u003e wwwwwwwwsss`\n\nThat should preserve the intentional behavior outlined in the comment, the question is whether it\u0027s sufficient to address the bug at hand.",
+      "parentUuid": "c31a50e5_02202f7e",
+      "range": {
+        "startLine": 891,
+        "startChar": 0,
+        "endLine": 895,
+        "endChar": 100
+      },
+      "revId": "8b8c3872fbc03f025855db96ce683f34ec98a815",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
