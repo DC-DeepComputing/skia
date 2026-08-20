@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b06d198b_4a69cdf6",
+        "filename": "bench/SKPAnimationBench.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-20T19:03:19Z",
+      "side": 1,
+      "message": "This and the second restoreToCount(0) are redundant, right? WDYT about just wrapping the tile rendering logic inside an `SkAutoCanvasRestore`? The first time we draw a tile, the canvas should be in its default state and then the auto-restore should bring it back to that.",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 34
+      },
+      "revId": "7a473d962a78b5935f237f66a5813b3f312cb046",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "392c96d5_ca0d8fba",
+        "filename": "bench/SKPBench.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-20T19:03:19Z",
+      "side": 1,
+      "message": "Same pattern here as in the animated skp bench.",
+      "range": {
+        "startLine": 131,
+        "startChar": 0,
+        "endLine": 131,
+        "endChar": 34
+      },
+      "revId": "7a473d962a78b5935f237f66a5813b3f312cb046",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
