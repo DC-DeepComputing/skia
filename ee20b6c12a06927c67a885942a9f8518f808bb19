@@ -63,6 +63,30 @@
       },
       "revId": "ee20b6c12a06927c67a885942a9f8518f808bb19",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23a60974_74cb4730",
+        "filename": "src/ports/SkFontMgr_fontconfig.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-08-20T14:46:31Z",
+      "side": 1,
+      "message": "\u003e I believe that using FcPatternAdd(type) will add the element with a strong binding.\n\nI think you\u0027re right, let\u0027s try to lock in the invariants some.\n\n1) we only call `remove_weak` for `FC_FAMILY`.  let\u0027s rename it to `remove_weak_familiy` and drop the object param\n\n2) add some asserts at the top of the function:\n\n\n```\n  SkDEBUGCODE(\n      // We assume the pattern is non-empty and it starts with a strong family binding.\n      FcValue value;\n      FcValueBinding binding;\n      SkASSERT(FcPatternGetWithBinding(pattern, FC_FAMILY, 0, \u0026value, \u0026binding) \u003d\u003d FcResultMatch);\n      SkASSERT(binding \u003d\u003d FcValueBindingStrong);\n    );\n``` \n\n3) then we should be able to start the loop at index 1",
+      "parentUuid": "231d04b0_38616399",
+      "range": {
+        "startLine": 314,
+        "startChar": 72,
+        "endLine": 314,
+        "endChar": 81
+      },
+      "revId": "ee20b6c12a06927c67a885942a9f8518f808bb19",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
