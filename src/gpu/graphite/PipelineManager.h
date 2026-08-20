@@ -13,9 +13,6 @@
 #include "src/core/SkSpinlock.h"
 #include "src/core/SkTHash.h"
 
-#include <condition_variable>
-#include <mutex>
-
 namespace skgpu {
 class UniqueKey;
 }
