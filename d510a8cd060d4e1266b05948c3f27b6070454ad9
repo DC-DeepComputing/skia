@@ -33,6 +33,24 @@
       "message": "CC\u0027ing Greg as well to see my thoughts above.",
       "revId": "d510a8cd060d4e1266b05948c3f27b6070454ad9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fca4dd78_f4bea44a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5091073
+      },
+      "writtenOn": "2026-08-20T18:56:12Z",
+      "side": 1,
+      "message": "Updated the CL to keep LCD16 as the default and expose LCD32 as an opt-in through `SkSurfaceProps::kUseLCD32_Flag`.\n\nI also wired this locally in Chromium behind a disabled-by-default `UseLCD32Text` feature. Chromium builds successfully, and I tested both modes locally: LCD16 remains unchanged and LCD32 renders correctly.\n\nChromium patch used for testing:\n\n```diff\ndiff --git a/skia/ext/legacy_display_globals.cc b/skia/ext/legacy_display_globals.cc\nindex 2cae07d71a..40fe490ad4 100644\n--- a/skia/ext/legacy_display_globals.cc\n+++ b/skia/ext/legacy_display_globals.cc\n@@ -64,6 +64,10 @@ SkSurfaceProps LegacyDisplayGlobals::GetSkSurfaceProps() {\n \n // static\n SkSurfaceProps LegacyDisplayGlobals::GetSkSurfaceProps(uint32_t flags) {\n+  if (base::FeatureList::IsEnabled(features::kUseLCD32Text)) {\n+    flags |\u003d SkSurfaceProps::kUseLCD32_Flag;\n+  }\n+\n   base::AutoLock lock(GetLock());\n   float contrast \u003d g_text_contrast;\n   float gamma \u003d g_text_gamma;\ndiff --git a/ui/base/ui_base_features.cc b/ui/base/ui_base_features.cc\nindex 3ba9f39ab7..0e766517e6 100644\n--- a/ui/base/ui_base_features.cc\n+++ b/ui/base/ui_base_features.cc\n@@ -422,6 +422,8 @@ bool IsVariableRefreshRateAlwaysOn() {\n \n BASE_FEATURE(kBubbleMetricsApi, base::FEATURE_DISABLED_BY_DEFAULT);\n \n+BASE_FEATURE(kUseLCD32Text, base::FEATURE_DISABLED_BY_DEFAULT);\n+\n #if BUILDFLAG(IS_WIN)\n BASE_FEATURE(kUseGammaContrastRegistrySettings,\n              base::FEATURE_ENABLED_BY_DEFAULT);\ndiff --git a/ui/base/ui_base_features.h b/ui/base/ui_base_features.h\nindex c42967d608..524404772f 100644\n--- a/ui/base/ui_base_features.h\n+++ b/ui/base/ui_base_features.h\n@@ -245,6 +245,9 @@ COMPONENT_EXPORT(UI_BASE_FEATURES) bool IsVariableRefreshRateAlwaysOn();\n COMPONENT_EXPORT(UI_BASE_FEATURES)\n BASE_DECLARE_FEATURE(kBubbleMetricsApi);\n \n+COMPONENT_EXPORT(UI_BASE_FEATURES)\n+BASE_DECLARE_FEATURE(kUseLCD32Text);\n+\n #if BUILDFLAG(IS_WIN)\n```",
+      "parentUuid": "08177d8f_5fff1bf0",
+      "revId": "d510a8cd060d4e1266b05948c3f27b6070454ad9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
