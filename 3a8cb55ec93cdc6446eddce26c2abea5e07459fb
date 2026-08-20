@@ -16,6 +16,24 @@
       "message": "Add \"//src/partition_alloc:raw_ptr\" to deps here",
       "revId": "3a8cb55ec93cdc6446eddce26c2abea5e07459fb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a817068_d886f380",
+        "filename": "src/core/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 644,
+      "author": {
+        "id": 18514
+      },
+      "writtenOn": "2026-08-20T13:32:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4f2fd6be_6ec50750",
+      "revId": "3a8cb55ec93cdc6446eddce26c2abea5e07459fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
