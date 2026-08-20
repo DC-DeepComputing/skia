@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "faf1b633_9d53efc8",
+        "filename": "src/gpu/ganesh/geometry/GrTriangulator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 858,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-20T01:07:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a0269e2e_7664af31",
+      "range": {
+        "startLine": 858,
+        "startChar": 0,
+        "endLine": 858,
+        "endChar": 0
+      },
+      "revId": "f20d89b4f7c3348582f395e0ef45e56ea586ab48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9d8599b8_48beda23",
@@ -81,6 +105,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0cdf3f4e_c565b442",
+        "filename": "src/gpu/ganesh/geometry/GrTriangulator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1211,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-20T01:07:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9d8599b8_48beda23",
+      "range": {
+        "startLine": 1211,
+        "startChar": 0,
+        "endLine": 1211,
+        "endChar": 0
+      },
+      "revId": "f20d89b4f7c3348582f395e0ef45e56ea586ab48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "db44bd50_73e5cb7d",
@@ -94,6 +142,30 @@
       "writtenOn": "2026-08-18T20:43:33Z",
       "side": 1,
       "message": "Same as above, consider using edge-\u003edisconnect() for a cleaner and more complete removal of the invalid edge from the mesh.",
+      "range": {
+        "startLine": 1220,
+        "startChar": 0,
+        "endLine": 1220,
+        "endChar": 0
+      },
+      "revId": "f20d89b4f7c3348582f395e0ef45e56ea586ab48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "935a7032_5f242fa3",
+        "filename": "src/gpu/ganesh/geometry/GrTriangulator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1220,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-20T01:07:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "db44bd50_73e5cb7d",
       "range": {
         "startLine": 1220,
         "startChar": 0,
