@@ -37,7 +37,7 @@ protected:
     void drawMPDPicture() override {
         SK_ABORT("MPD not supported");
     }
-    void drawPicture() override;
+    void drawPicture1() override;
 
 private:
     sk_sp<Animation> fAnimation;

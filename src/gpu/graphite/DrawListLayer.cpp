@@ -18,8 +18,8 @@
 
 namespace skgpu::graphite {
 
-void DrawListLayer::reset(LoadOp loadOp, SkColor4f color) {
-    DrawListBase::reset(loadOp, color);
+void DrawListLayer::reset1(LoadOp loadOp, SkColor4f color) {
+    DrawListBase::reset1(loadOp, color);
 
     fStorage.reset();
     fLayers.reset();
@@ -307,9 +307,10 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
                                                       const DstReadStrategy dstReadStrategy) {
     TRACE_EVENT1_ALWAYS("skia.gpu", TRACE_FUNC, "draw count", fDrawCount);
 
+    SkDebugf("---- 2: %d\n", (int) fLoadOp1);
     std::unique_ptr<DrawPass> drawPass(new DrawPass(target,
-                                                    {fLoadOp, StoreOp::kStore},
-                                                    fClearColor));
+                                                    {fLoadOp1, StoreOp::kStore},
+                                                    fClearColor, true, true, -2)); //$$
     DrawBufferManager* bufferMgr = recorder->priv().drawBufferManager();
     DrawWriter drawWriter(&drawPass->fCommandList, bufferMgr);
 
@@ -426,7 +427,8 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
         drawPass->fStorageBufferInfo = storageContext->finalize(bufferMgr);
         if (!storageContext->isEmpty() && !drawPass->fStorageBufferInfo) SK_UNLIKELY {
             SKIA_LOG_W("Failed to write Storage Data for Draw pass, dropping!");
-            this->reset(LoadOp::kLoad);
+            SkDebugf("------ failure!!!\n");
+            this->reset1(LoadOp::kLoad);
             return nullptr;
         }
     }
@@ -441,7 +443,8 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
                                 "# commands", drawPass->fCommandList.count(),
                                 "# textures", drawPass->fSampledTextures.size());
 
-    this->reset(LoadOp::kLoad);
+    SkDebugf("----- 1\n");
+    this->reset1(LoadOp::kLoad);
 
     if (bufferMgr->hasMappingFailed()) {
         SKIA_LOG_W("Failed to write necessary vertex/instance data for DrawPass, dropping!");

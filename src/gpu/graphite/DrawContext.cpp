@@ -112,12 +112,17 @@ DrawContext::~DrawContext() = default;
 
 void DrawContext::clear(const SkColor4f& clearColor) {
     this->resetForClearOrDiscard();
-    fPendingDraws->reset(LoadOp::kClear, clearColor);
+//    SkDebugf("%d: -- clear %d -> %d\n", fPendingDraws->fID, (int)fPendingDraws->fLoadOp1, (int)LoadOp::kClear);
+//    if (fPendingDraws->fLoadOp1 == LoadOp::kLoad) {
+//        SkDebugf("here1\n");
+//    }
+    fPendingDraws->reset1(LoadOp::kClear, clearColor);
 }
 
 void DrawContext::discard() {
     this->resetForClearOrDiscard();
-    fPendingDraws->reset(LoadOp::kDiscard);
+//    SkDebugf("%d ------- discard: %d -> %d\n", fPendingDraws->fID, (int)fPendingDraws->fLoadOp1, (int) LoadOp::kDiscard);
+    fPendingDraws->reset1(LoadOp::kDiscard);
 }
 
 void DrawContext::resetForClearOrDiscard() {
@@ -308,7 +313,7 @@ void DrawContext::flush(Recorder* recorder) {
                                                    pass->clearColor(),
                                                    drawsRequireMSAA,
                                                    *writeSwizzle,
-                                                   drawPassDstReadStrategy);
+                                                   drawPassDstReadStrategy, pass->fID);
 
         RenderPassTask::DrawPassList passes;
         passes.emplace_back(std::move(pass));

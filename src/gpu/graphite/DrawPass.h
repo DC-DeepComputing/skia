@@ -54,7 +54,7 @@ public:
     const SkIRect&      bounds() const { return fBounds;       }
     TextureProxy* target() const { return fTarget.get(); }
     const BindBufferInfo& storageBufferInfo() const { return fStorageBufferInfo; }
-    std::pair<LoadOp, StoreOp> ops() const { return fOps; }
+    std::pair<LoadOp, StoreOp> ops() const { return fOps1; }
     std::array<float, 4> clearColor() const { return fClearColor; }
 
     size_t vertexBufferSize()  const { return 0; }
@@ -91,20 +91,22 @@ public:
 
     [[nodiscard]] bool addResourceRefs(ResourceProvider*, CommandBuffer*);
 
+    int fID = 0;
+
 private:
     friend class DrawList;      // For the constructor
     friend class DrawListLayer; // ''
 
     DrawPass(sk_sp<TextureProxy> target,
              std::pair<LoadOp, StoreOp> ops,
-             std::array<float, 4> clearColor);
+             std::array<float, 4> clearColor, bool, bool, int id);
 
     DrawPassCommands::List fCommandList;
 
     sk_sp<TextureProxy> fTarget;
     SkIRect fBounds;
 
-    std::pair<LoadOp, StoreOp> fOps;
+    std::pair<LoadOp, StoreOp> fOps1;
     std::array<float, 4> fClearColor;
 
     // The pipelines are referenced by index in BindGraphicsPipeline, but that will index into

@@ -44,7 +44,8 @@ RenderPassDesc RenderPassDesc::Make(const Caps* caps,
                                     const std::array<float, 4>& clearColor,
                                     bool requiresMSAA,
                                     Swizzle writeSwizzle,
-                                    const DstReadStrategy dstReadStrategy) {
+                                    const DstReadStrategy dstReadStrategy,
+                                    int id) {
     // It doesn't make sense to have a storeOp for our main target not be store. Why are we doing
     // this DrawPass then
     SkASSERT(storeOp == StoreOp::kStore);
@@ -78,6 +79,7 @@ RenderPassDesc RenderPassDesc::Make(const Caps* caps,
             desc.fSampleCount > SampleCount::k1 &&         // using MSAA for the render pass,
             targetInfo.sampleCount() == SampleCount::k1 && // the target isn't already MSAA'ed,
             !msaaRenderToSingleSampledSupport;             // can't use an MSAA->single extension.
+//    SkDebugf("-- %d %d %d\n", (int) desc.fSampleCount, (int) targetInfo.sampleCount(), msaaRenderToSingleSampledSupport);
     if (needsMSAAColorAttachment) {
         // We set the color and resolve attachments up the same regardless of if the backend ends up
         // using msaaRenderToSingleSampledSupport() to skip explicitly creating the MSAA attachment.
@@ -91,6 +93,18 @@ RenderPassDesc RenderPassDesc::Make(const Caps* caps,
                                         loadOp != LoadOp::kLoad ? LoadOp::kDiscard : LoadOp::kLoad,
                                         storeOp,
                                         SampleCount::k1};
+
+//        const bool loadMsaaFromResolve =
+//                desc.fColorResolveAttachment.fFormat != TextureFormat::kUnsupported &&
+//                desc.fColorResolveAttachment.fLoadOp == LoadOp::kLoad;
+        // fLoadOp when from discard to load
+//        SkDebugf("%d: loadMsaaFromResolve %d - %d %d - loadOp: %d\n", id, loadMsaaFromResolve,
+//                 (int) desc.fColorResolveAttachment.fFormat,
+//                 (int) desc.fColorResolveAttachment.fLoadOp,
+//                 (int) loadOp);
+//        if (loadMsaaFromResolve) {
+//            SkDebugf("here\n");
+//        }
     } else {
         // The target will be the color attachment and skip configuring the resolve attachment.
         SkASSERT(desc.fColorResolveAttachment.fFormat == TextureFormat::kUnsupported);

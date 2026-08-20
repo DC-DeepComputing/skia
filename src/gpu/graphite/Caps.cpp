@@ -195,11 +195,11 @@ bool Caps::isStorage(const TextureInfo& info) const {
 }
 
 bool Caps::isRenderableWithMSRTSS(const TextureInfo& info) const {
-    return this->isSupported(info, TextureUsage::kMSRTSS | TextureUsage::kRender,
-                             /*allowMSAA=*/true,
-                             /*allowExternal=*/true,
-                             /*allowCompressed=*/false,
-                             /*allowProtected=*/true);
+    return false; //this->isSupported(info, TextureUsage::kMSRTSS | TextureUsage::kRender,
+//                             /*allowMSAA=*/true,
+//                             /*allowExternal=*/true,
+//                             /*allowCompressed=*/false,
+//                             /*allowProtected=*/true);
 }
 
 TextureInfo Caps::getDefaultTextureInfo(SkEnumBitMask<TextureUsage> usage,

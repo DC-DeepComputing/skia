@@ -126,11 +126,25 @@ std::unique_ptr<DrawPass> DrawList::snapDrawPass(Recorder* recorder,
 
     TRACE_EVENT1_ALWAYS("skia.gpu", TRACE_FUNC, "draw count", fDraws.count());
 
+//    SkDebugf("%d: ---- snapDrawPass - loadOp: %d touched %d\n", fID, (int) fLoadOp1, fTouched);
+
+//    const bool needsMSAAColorAttachment =
+//            desc.fSampleCount > SampleCount::k1 &&         // using MSAA for the render pass,
+//            targetInfo.sampleCount() == SampleCount::k1 && // the target isn't already MSAA'ed,
+//            !msaaRenderToSingleSampledSupport;             // can't use an MSAA->single extension.
+    //    SkDebugf("-- %d %d %d\n", (int) desc.fSampleCount, (int) targetInfo.sampleCount(), msaaRenderToSingleSampledSupport);
+//    if (fLoadOp1 == LoadOp::kLoad) {
+//        SkDebugf("here2\n");
+//    }
+
+//    if (fLoadOp1 == LoadOp::kLoad) {
+//        SkDebugf("------------ here\n");
+//    }
     // The DrawList is converted directly into the DrawPass' data structures, but once the DrawPass
     // is returned from Make(), it is considered immutable.
     std::unique_ptr<DrawPass> drawPass(new DrawPass(target,
-                                                    {fLoadOp, StoreOp::kStore},
-                                                    fClearColor));
+                                                    {fLoadOp1, StoreOp::kStore},
+                                                    fClearColor, true, true, fID)); //$$
 
     DrawBufferManager* bufferMgr = recorder->priv().drawBufferManager();
     DrawWriter drawWriter(&drawPass->fCommandList, bufferMgr);
@@ -236,7 +250,8 @@ std::unique_ptr<DrawPass> DrawList::snapDrawPass(Recorder* recorder,
 
         if (bufferMgr->hasMappingFailed()) {
             SKIA_LOG_W("Failed to write necessary vertex/instance data for DrawPass, dropping!");
-            this->reset(LoadOp::kLoad);
+            SkDebugf("----- failure 2\n");
+            this->reset1(LoadOp::kLoad);
             return nullptr;
         }
 
@@ -251,7 +266,8 @@ std::unique_ptr<DrawPass> DrawList::snapDrawPass(Recorder* recorder,
         drawPass->fStorageBufferInfo = storageContext->finalize(bufferMgr);
         if (!storageContext->isEmpty() && !drawPass->fStorageBufferInfo) SK_UNLIKELY {
             SKIA_LOG_W("Failed to write Storage Data for Draw pass, dropping!");
-            this->reset(LoadOp::kLoad);
+            SkDebugf("----- failure 3\n");
+            this->reset1(LoadOp::kLoad);
             return nullptr;
         }
     }
@@ -266,15 +282,16 @@ std::unique_ptr<DrawPass> DrawList::snapDrawPass(Recorder* recorder,
                                 "# commands", drawPass->fCommandList.count(),
                                 "# textures", drawPass->fSampledTextures.size());
 
-    this->reset(LoadOp::kLoad);
+//    SkDebugf("%d: --- snapDrawPass - at end %d -> %d\n", fID, (int) fLoadOp1, (int) LoadOp::kLoad);
+    this->reset1(LoadOp::kLoad);
 
     return drawPass;
 }
 
-void DrawList::reset(LoadOp op, SkColor4f clearColor) {
+void DrawList::reset1(LoadOp op, SkColor4f clearColor) {
     fDraws.reset();
     fSortKeys.clear();
-    DrawListBase::reset(op, clearColor);
+    DrawListBase::reset1(op, clearColor);
 }
 
 } // namespace skgpu::graphite

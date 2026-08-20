@@ -759,9 +759,20 @@ std::pair<SkEnumBitMask<TextureUsage>, SkEnumBitMask<SampleCount>> VulkanCaps::g
         supports |= TextureUsage::kRender;
 
         // At least 1x sample count should be supported (the limit for linear tiling).
-        sampleCounts = tiling == Tiling::kOptimal
-                ? this->getSupportedSampleCounts(interface, physDev, vkFormat, renderUsageFlags)
-                : SampleCount::k1;
+        if (tiling == Tiling::kOptimal) {
+            // 5 == kA8
+            //VK_IMAGE_USAGE_TRANSFER_SRC_BIT = 0x00000001,    ---------
+            //VK_IMAGE_USAGE_TRANSFER_DST_BIT = 0x00000002,     ---------
+            //VK_IMAGE_USAGE_SAMPLED_BIT = 0x00000004,                  -----------
+            //VK_IMAGE_USAGE_STORAGE_BIT = 0x00000008,
+            //VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT = 0x00000010,            ---------
+            //VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT = 0x00000020,
+            //VK_IMAGE_USAGE_TRANSIENT_ATTACHMENT_BIT = 0x00000040,
+            //VK_IMAGE_USAGE_INPUT_ATTACHMENT_BIT = 0x00000080,              ---------
+            sampleCounts = this->getSupportedSampleCounts(interface, physDev, vkFormat, renderUsageFlags);
+        } else {
+            sampleCounts = SampleCount::k1;
+        }
 
         if (this->msaaRenderToSingleSampledSupport() &&
             SkToBool(sampleCounts) &&
@@ -968,6 +979,7 @@ SkEnumBitMask<SampleCount> VulkanCaps::getSupportedSampleCounts(
                                                                       0,  // createFlags
                                                                       &properties));
     if (result != VK_SUCCESS) {
+        SKIA_LOG_W("format: %d usage: 0x%x", format, usage);
         SKIA_LOG_W("Vulkan call GetPhysicalDeviceImageFormatProperties failed: %d", result);
         return {};
     }
