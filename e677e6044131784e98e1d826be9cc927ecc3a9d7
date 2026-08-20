@@ -1,0 +1,205 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6fc9da8f_54e3996f",
+        "filename": "include/core/SkRecorder.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-08-20T20:16:42Z",
+      "side": 1,
+      "message": "nit: extra \\n",
+      "revId": "e677e6044131784e98e1d826be9cc927ecc3a9d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3820518e_878849b4",
+        "filename": "include/cpu/Recorder.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-08-20T20:16:42Z",
+      "side": 1,
+      "message": "Do you know if all the places that are taking this Recorder are checking for nullptr? I worry that some may not be and thus we\u0027ll crash. The old code passed a valid Recorder that just didn\u0027t do anything.",
+      "range": {
+        "startLine": 31,
+        "startChar": 8,
+        "endLine": 31,
+        "endChar": 23
+      },
+      "revId": "e677e6044131784e98e1d826be9cc927ecc3a9d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb5271ef_10813a6c",
+        "filename": "include/gpu/ganesh/GrRecordingContext.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-08-20T20:16:42Z",
+      "side": 1,
+      "message": "Is there a reason you moved this namespace down? If not I would move it back to roughly keep it alphabetical order between skcpu -\u003e sktext",
+      "range": {
+        "startLine": 44,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 1
+      },
+      "revId": "e677e6044131784e98e1d826be9cc927ecc3a9d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49194e76_99748ca9",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-08-20T20:16:42Z",
+      "side": 1,
+      "message": "same question about ordering",
+      "range": {
+        "startLine": 47,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 17
+      },
+      "revId": "e677e6044131784e98e1d826be9cc927ecc3a9d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9ea6c42_18cb3d11",
+        "filename": "src/gpu/ganesh/GrRecordingContext.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-08-20T20:16:42Z",
+      "side": 1,
+      "message": "again is it safe to be pass nullptr here?",
+      "range": {
+        "startLine": 189,
+        "startChar": 80,
+        "endLine": 189,
+        "endChar": 87
+      },
+      "revId": "e677e6044131784e98e1d826be9cc927ecc3a9d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9fd9185b_7cbe466a",
+        "filename": "src/gpu/ganesh/SkGaneshRecorder.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-08-20T20:16:42Z",
+      "side": 1,
+      "message": "this is still a virtual function. You\u0027ll need the override",
+      "range": {
+        "startLine": 29,
+        "startChar": 21,
+        "endLine": 29,
+        "endChar": 32
+      },
+      "revId": "e677e6044131784e98e1d826be9cc927ecc3a9d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a451f388_0b7e00a6",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-08-20T20:16:42Z",
+      "side": 1,
+      "message": "same question",
+      "range": {
+        "startLine": 228,
+        "startChar": 69,
+        "endLine": 228,
+        "endChar": 76
+      },
+      "revId": "e677e6044131784e98e1d826be9cc927ecc3a9d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42b8fc16_11e8cd2a",
+        "filename": "src/image/SkSurface_Raster.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-08-20T20:16:42Z",
+      "side": 1,
+      "message": "nit: 100chars",
+      "range": {
+        "startLine": 66,
+        "startChar": 0,
+        "endLine": 66,
+        "endChar": 1
+      },
+      "revId": "e677e6044131784e98e1d826be9cc927ecc3a9d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b18ecdb_bff94eb4",
+        "filename": "src/image/SkSurface_Raster.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-08-20T20:16:42Z",
+      "side": 1,
+      "message": "out of curiosity, why did you move the ordering here?",
+      "range": {
+        "startLine": 72,
+        "startChar": 4,
+        "endLine": 72,
+        "endChar": 31
+      },
+      "revId": "e677e6044131784e98e1d826be9cc927ecc3a9d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
