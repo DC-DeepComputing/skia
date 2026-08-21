@@ -6,6 +6,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkBitmap.h"
 #include "include/core/SkClipOp.h"
 #include "include/core/SkColorSpace.h"
@@ -1626,7 +1627,7 @@ DEF_TEST(ClipStack_ComplexClip, reporter) {
 
     enum ShapeType { kRect, kRRect, kConvex };
 
-    SkRect rects[] = { kTL, kTR, kBL, kBR };
+    auto rects = std::to_array<SkRect>({ kTL, kTR, kBL, kBR });
     for (ShapeType type : { kRect, kRRect, kConvex }) {
         for (int opBits = 6; opBits < 16; ++opBits) {
             SkString name;

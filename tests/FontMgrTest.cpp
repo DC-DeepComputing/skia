@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkFont.h"
 #include "include/core/SkFontArguments.h"
 #include "include/core/SkFontMgr.h"
@@ -72,9 +73,9 @@ DEF_TEST(FontMgr_Font, reporter) {
  *  if we request the alias name multiple times.
  */
 DEF_TEST(FontMgr_AliasNames, reporter) {
-    const char* inNames[] = {
+    auto inNames = std::to_array<const char *>({
         "sans", "sans-serif", "serif", "monospace", "times", "helvetica"
-    };
+    ,});
 
     for (size_t i = 0; i < std::size(inNames); ++i) {
         sk_sp<SkTypeface> first(ToolUtils::CreateTestTypeface(inNames[i], SkFontStyle()));
