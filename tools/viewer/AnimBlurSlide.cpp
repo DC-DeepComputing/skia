@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkBlurTypes.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkMaskFilter.h"
@@ -32,12 +33,12 @@ public:
     AnimBlurSlide() { fName ="AnimBlur"; }
 
     void draw(SkCanvas* canvas) override {
-        static const SkBlurStyle gStyles[] = {
+        static const auto gStyles = std::to_array<SkBlurStyle>({
             kNormal_SkBlurStyle,
             kInner_SkBlurStyle,
             kSolid_SkBlurStyle,
             kOuter_SkBlurStyle,
-        };
+        });
         SkRandom random;
 
         for (size_t i = 0; i < std::size(gStyles); ++i) {

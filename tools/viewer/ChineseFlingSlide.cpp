@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkCanvas.h"
 #include "include/core/SkFontMetrics.h"
 #include "include/core/SkFontMgr.h"
@@ -48,7 +49,7 @@ class ChineseFlingSlide : public Slide {
 
     sk_sp<SkTypeface>    fTypeface;
     SkFontMetrics        fMetrics;
-    sk_sp<SkTextBlob>    fBlobs[kNumBlobs];
+    std::array<sk_sp<SkTextBlob>, kNumBlobs> fBlobs;
     SkRandom             fRand;
     int                  fIndex = 0;
 
@@ -115,7 +116,7 @@ class ChineseZoomSlide : public Slide {
     bool                 fAfterFirstFrame = false;
     sk_sp<SkTypeface>    fTypeface;
     SkFontMetrics        fMetrics;
-    sk_sp<SkTextBlob>    fBlobs[kNumBlobs];
+    std::array<sk_sp<SkTextBlob>, kNumBlobs> fBlobs;
     SkRandom             fRand;
     SkScalar             fScale = 15;
     SkScalar             fTranslate = 0;
@@ -237,7 +238,7 @@ class ChineseScrollSlide : public Slide {
     static constexpr int kDefaultScrollUnitsPerSecondLog2 = 7;
 
     sk_sp<SkTypeface> fTypeface;
-    sk_sp<SkTextBlob> fBlobs[kNumBlobs];
+    std::array<sk_sp<SkTextBlob>, kNumBlobs> fBlobs;
     float             fVerticalPeriod;
     SkRandom          fRand;
     float             fTranslate = 0;

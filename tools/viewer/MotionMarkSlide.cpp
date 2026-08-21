@@ -6,6 +6,7 @@
  */
 #include <vector>
 
+#include <array>
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkPathBuilder.h"
@@ -163,7 +164,7 @@ float adjust_end_angle(float startAngle, float endAngle, bool ccw) {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 struct LineSegmentParams {
     float fCircleRadius;
-    SkPoint fCircleCenters[4];
+    std::array<SkPoint, 4> fCircleCenters;
     float fLineLengthMaximum;
     float fLineMinimum;
 };
@@ -173,9 +174,9 @@ public:
     CanvasLineSegment(SkRandom* random, const LineSegmentParams& params) {
         int circle = random->nextRangeU(0, 3);
 
-        static constexpr SkColor kColors[] = {
+        static constexpr auto kColors = std::to_array<SkColor>({
             0xffe01040, 0xff10c030, 0xff744cba, 0xffe05010
-        };
+        ,});
         fColor = kColors[circle];
         fLineWidth = std::pow(random->nextF(), 12) * 20 + 3;
         fOmega = random->nextF() * 3 + 0.2f;
@@ -280,12 +281,12 @@ public:
         paint.setAntiAlias(true);
         paint.setStrokeWidth(15);
         for (int i = 0; i < 4; i++) {
-            const SkColor strokeColors[] = {
+            const auto strokeColors = std::to_array<SkColor>({
                 0xffe01040, 0xff10c030, 0xff744cba, 0xffe05010
-            };
-            const SkColor fillColors[] = {
+            ,});
+            const auto fillColors = std::to_array<SkColor>({
                 0xff70051d, 0xff016112, 0xff2F0C6E, 0xff702701
-            };
+            ,});
             paint.setColor(strokeColors[i]);
             paint.setStyle(SkPaint::kStroke_Style);
             SkRect arcRect = SkRect::MakeXYWH(fParams.fCircleCenters[i].fX - fParams.fCircleRadius,
@@ -334,10 +335,10 @@ public:
         constexpr float kMaxX = 6;
         constexpr float kMaxY = 3;
 
-        const SkColor baseColors[3] = {
+        const std::array<SkColor, 3> baseColors = {
             0xff101010, 0xff808080, 0xffc0c0c0
         };
-        const SkColor bonusColors[3] = {
+        const std::array<SkColor, 3> bonusColors = {
             0xffe01040, 0xff10c030, 0xffe05010
         };
         float distanceX = size.fWidth / kMaxX;
@@ -435,12 +436,12 @@ protected:
     void setEndPoint(SkRandom* random, SkSize size, SkPoint* prevCoord) {
         const SkSize kGridSize = { 80, 40 };
         const SkPoint kGridCenter = { 40, 20 };
-        const SkPoint kOffsets[4] = {
+        const std::array<SkPoint, 4> kOffsets = {{
             {-4, 0},
             {2, 0},
             {1, -2},
             {1, 2}
-        };
+        ,}};
 
         SkPoint coordinate = prevCoord ? *prevCoord : kGridCenter;
         if (prevCoord) {
@@ -459,7 +460,7 @@ protected:
 
 public:
     CanvasLinePoint(SkRandom* random, SkSize size, SkPoint* prev) {
-        const SkColor kColors[7] = {
+        const std::array<SkColor, 7> kColors = {
             0xff101010, 0xff808080, 0xffc0c0c0, 0xff101010, 0xff808080, 0xffc0c0c0, 0xffe01040
         };
         fColor = kColors[random->nextRangeU(0, 6)];
@@ -797,7 +798,7 @@ public:
     ~BouncingTaggedImagesStage() override = default;
 
     void initImages(SkCanvas* canvas) {
-        const char* kImageSrcs[kImageCount] = {
+        std::array<const char *, kImageCount> kImageSrcs = {
             "images/brickwork-texture.jpg",
             "images/dog.jpg",
             "images/color_wheel.jpg",
@@ -862,7 +863,7 @@ private:
     static constexpr int kImageCount = 5;
 
     bool fNeedToInitImages = true;
-    sk_sp<SkImage> fImages[kImageCount];
+    std::array<sk_sp<SkImage>, kImageCount> fImages;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
