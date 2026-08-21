@@ -73,6 +73,14 @@ enum class Renderable : bool {
 };
 
 /**
+ * Is a texture filterable (supports linear filtering) or not
+ */
+enum class Filterable : bool {
+    kNo = false,
+    kYes = true,
+};
+
+/**
  * What is the logical origin of a BackendTexture passed into Skia
  */
 enum class Origin : unsigned {
