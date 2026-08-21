@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "fuzz/Fuzz.h"
 #include "fuzz/FuzzCommon.h"
 #include "include/core/SkPathBuilder.h"
@@ -15,7 +16,7 @@ void inline ignoreResult(bool ) {}
 DEF_FUZZ(PathMeasure, fuzz) {
     uint8_t bits;
     fuzz->next(&bits);
-    SkScalar distance[6];
+    std::array<SkScalar, 6> distance;
     for (auto index = 0; index < 6; ++index) {
         fuzz->next(&distance[index]);
     }
