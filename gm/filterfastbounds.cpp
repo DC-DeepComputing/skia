@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -91,9 +92,9 @@ static void draw_bitmap(SkCanvas* canvas, const SkRect& r, const SkPaint& p) {
     canvas->drawImageRect(bm.asImage(), r, SkSamplingOptions(), &p);
 }
 
-constexpr drawMth gDrawMthds[] = {
+constexpr auto gDrawMthds = std::to_array<drawMth>({
     draw_rect, draw_oval, draw_rrect, draw_drrect, draw_path, draw_points, draw_bitmap
-};
+,});
 
 static void add_paint(TArray<SkPaint>* paints, sk_sp<SkImageFilter> filter) {
     SkPaint& p = paints->push_back();
