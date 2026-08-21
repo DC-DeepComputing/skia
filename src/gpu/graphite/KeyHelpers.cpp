@@ -614,7 +614,11 @@ void ImageShaderBlock::AddBlock(const KeyContext& keyContext, const ImageData& i
             : imgData.fImmutableSamplerInfo;
     auto tileModeWithSubstitution = doTilingInHw ? imgData.fTileModes :
                                     std::make_pair(SkTileMode::kClamp, SkTileMode::kClamp);
-    SamplerDesc samplerDesc{imgData.fSampling, tileModeWithSubstitution, info};
+    SkSamplingOptions sampling = imgData.fSampling;
+    if (imgData.fTextureProxy && !caps->isTexturable(imgData.fTextureProxy->textureInfo())) {
+        sampling = SkSamplingOptions(SkFilterMode::kNearest, SkMipmapMode::kNone);
+    }
+    SamplerDesc samplerDesc{sampling, tileModeWithSubstitution, info};
     keyContext.pipelineDataGatherer()->add(imgData.fTextureProxy, samplerDesc);
     add_sampler_data_to_key(keyContext, samplerDesc);
 

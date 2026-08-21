@@ -159,7 +159,12 @@ public:
                                              Protected,
                                              Renderable) const;
 
+    TextureInfo getDefaultReadableTextureInfo(SkColorType,
+                                              Mipmapped = Mipmapped::kNo,
+                                              Protected = Protected::kNo) const;
+
     TextureInfo getTextureInfoForSampledCopy(const TextureInfo&,  Mipmapped) const;
+    TextureInfo getTextureInfoForReadableCopy(const TextureInfo&,  Mipmapped) const;
 
     TextureInfo getDefaultCompressedTextureInfo(SkTextureCompressionType,
                                                 Mipmapped,
@@ -176,10 +181,11 @@ public:
     // sampled targets to show MSAA isn't supported.
     SampleCount getCompatibleMSAASampleCount(const TextureInfo&) const;
 
-    // If true, the texture can be sampled within a shader (possibly with MSAA, although by default
-    // we consider multisampled textures not to be sampleable because that requires backend-specific
-    // shader code not exposed in SkSL).
+    // If true, the texture can be sampled within a shader with linear filtering.
     bool isTexturable(const TextureInfo&, bool allowMSAA=false) const;
+    // If true, the texture can be read within a shader (via nearest sampling, texel fetch,
+    // or as a readonly proxy for storage buffers).
+    bool isReadable(const TextureInfo&, bool allowMSAA=false) const;
     // If true, the texture can be rasterized and/or resolved to (possibly with MSAA)
     bool isRenderable(const TextureInfo&) const;
     // If true, the texture can be rasterized using multisample-render-to-single-sample features.
@@ -517,6 +523,13 @@ protected:
 
     bool fSetBackendLabels = false;
 
+protected:
+    // Return the supported TextureUsages and SampleCounts for a texture of the given format and
+    // tiling, assuming the textures are created with the requisite usages.
+    FormatSupport getTextureSupport(TextureFormat format, Tiling tiling) const {
+        return fFormatSupport[static_cast<int>(tiling)][static_cast<int>(format)];
+    }
+
 private:
     // Validates format support and calls onGetDefaultTextureInfo if it would be valid, returning
     // a TextureInfo for the first format that is supported.
@@ -535,12 +548,6 @@ private:
                                                 Mipmapped,
                                                 Protected,
                                                 Discardable) const = 0;
-
-    // Return the supported TextureUsages and SampleCounts for a texture of the given format and
-    // tiling, assuming the textures are created with the requisite usages.
-    FormatSupport getTextureSupport(TextureFormat format, Tiling tiling) const {
-        return fFormatSupport[static_cast<int>(tiling)][static_cast<int>(format)];
-    }
 
     // Return the mask of TextureUsages supported by the described texture, as well as its tiling
     // representation. Subclasses can assume that this will only be called on valid TextureInfos
