@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -710,16 +711,16 @@ DEF_GANESH_TEST_FOR_GL_CONTEXT(CharacterizationFBO0nessTest,
     const SkSurfaceProps surfaceProps(0x0, kRGB_H_SkPixelGeometry);
 
     // Rows are characterizations and columns are surfaces
-    static const bool kExpectedCompatibility[4][4] = {
+    static const std::array<std::array<const bool, 4>, 4> kExpectedCompatibility = {{
                     //  FBO0 & MSAA, FBO0 & not-MSAA, not-FBO0 & MSAA, not-FBO0 & not-MSAA
 /* FBO0 & MSAA     */ { true,        false,           false,           false },
 /* FBO0 & not-MSAA */ { false,       true,            false,           true  },
 /* not-FBO0 & MSAA */ { false,       false,           true,            false },
 /* not-FBO0 & not- */ { false,       false,           false,           true  }
-    };
+    ,}};
 
-    GrSurfaceCharacterization characterizations[4];
-    sk_sp<SkSurface> surfaces[4];
+    std::array<GrSurfaceCharacterization, 4> characterizations;
+    std::array<sk_sp<SkSurface>, 4> surfaces;
 
     int index = 0;
     for (bool isFBO0 : { true, false }) {

@@ -92,10 +92,10 @@ private:
 ////////////////////////////////////////////////////////////////////////////////
 
 DEF_TEST(Image_NewFromGenerator, r) {
-    const TestImageGenerator::TestType testTypes[] = {
+    const auto testTypes = std::to_array<TestImageGenerator::TestType>({
         TestImageGenerator::kFailGetPixels_TestType,
         TestImageGenerator::kSucceedGetPixels_TestType,
-    };
+    });
     const SkColorType testColorTypes[] = {
         kN32_SkColorType,
         kRGB_565_SkColorType
