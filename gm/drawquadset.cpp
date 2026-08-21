@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkCanvas.h"
@@ -165,13 +166,13 @@ static void draw_tile_boundaries(SkCanvas* canvas, const SkMatrix& local) {
 
 // Tile renderers (column variation)
 typedef void (*TileRenderer)(SkCanvas*);
-static TileRenderer kTileSets[] = {
-    [](SkCanvas* canvas) { draw_gradient_tiles(canvas, /* aligned */ false); },
-    [](SkCanvas* canvas) { draw_gradient_tiles(canvas, /* aligned */ true); },
-    [](SkCanvas* canvas) { draw_color_tiles(canvas, /* multicolor */ false); },
-    [](SkCanvas* canvas) { draw_color_tiles(canvas, /* multicolor */true); },
-};
-static const char* kTileSetNames[] = { "Local", "Aligned", "Green", "Multicolor" };
+static auto kTileSets = std::to_array<TileRenderer>({
+    TileRenderer([](SkCanvas* canvas) { draw_gradient_tiles(canvas, /* aligned */ false); }),
+    TileRenderer([](SkCanvas* canvas) { draw_gradient_tiles(canvas, /* aligned */ true); }),
+    TileRenderer([](SkCanvas* canvas) { draw_color_tiles(canvas, /* multicolor */ false); }),
+    TileRenderer([](SkCanvas* canvas) { draw_color_tiles(canvas, /* multicolor */true); }),
+});
+static auto kTileSetNames = std::to_array<const char *>({ "Local", "Aligned", "Green", "Multicolor" ,});
 static_assert(std::size(kTileSets) == std::size(kTileSetNames), "Count mismatch");
 
 namespace skiagm {
@@ -182,7 +183,7 @@ private:
     SkISize getISize() override { return SkISize::Make(800, 800); }
 
     void onDraw(SkCanvas* canvas) override {
-        SkMatrix rowMatrices[5];
+        std::array<SkMatrix, 5> rowMatrices;
         // Identity
         rowMatrices[0].setIdentity();
         // Translate/scale
@@ -203,7 +204,7 @@ private:
                           {25.f, kRowCount * kTileHeight - 15.f}};
         SkAssertResult(rowMatrices[4].setPolyToPoly(src, dst));
         rowMatrices[4].preTranslate(0.f, +10.f);
-        static const char* matrixNames[] = { "Identity", "T+S", "Rotate", "Skew", "Perspective" };
+        static auto matrixNames = std::to_array<const char *>({ "Identity", "T+S", "Rotate", "Skew", "Perspective" ,});
         static_assert(std::size(matrixNames) == std::size(rowMatrices), "Count mismatch");
 
         // Print a column header

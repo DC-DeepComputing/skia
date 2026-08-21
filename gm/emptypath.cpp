@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -50,21 +51,21 @@ class EmptyPathGM : public GM {
             SkPathFillType fFill;
             const char*      fName;
         };
-        constexpr FillAndName gFills[] = {
-            {SkPathFillType::kWinding, "Winding"},
-            {SkPathFillType::kEvenOdd, "Even / Odd"},
-            {SkPathFillType::kInverseWinding, "Inverse Winding"},
-            {SkPathFillType::kInverseEvenOdd, "Inverse Even / Odd"},
-        };
+        constexpr auto gFills = std::to_array<FillAndName>({
+            FillAndName{SkPathFillType::kWinding, "Winding"},
+            FillAndName{SkPathFillType::kEvenOdd, "Even / Odd"},
+            FillAndName{SkPathFillType::kInverseWinding, "Inverse Winding"},
+            FillAndName{SkPathFillType::kInverseEvenOdd, "Inverse Even / Odd"},
+        });
         struct StyleAndName {
             SkPaint::Style fStyle;
             const char*    fName;
         };
-        constexpr StyleAndName gStyles[] = {
-            {SkPaint::kFill_Style, "Fill"},
-            {SkPaint::kStroke_Style, "Stroke"},
-            {SkPaint::kStrokeAndFill_Style, "Stroke And Fill"},
-        };
+        constexpr auto gStyles = std::to_array<StyleAndName>({
+            StyleAndName{SkPaint::kFill_Style, "Fill"},
+            StyleAndName{SkPaint::kStroke_Style, "Stroke"},
+            StyleAndName{SkPaint::kStrokeAndFill_Style, "Stroke And Fill"},
+        });
 
         SkFont     font(ToolUtils::DefaultPortableTypeface(), 15);
         const char title[] = "Empty Paths Drawn Into Rectangle Clips With "
