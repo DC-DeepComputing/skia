@@ -51,6 +51,24 @@
       "parentUuid": "08177d8f_5fff1bf0",
       "revId": "d510a8cd060d4e1266b05948c3f27b6070454ad9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f0d3ab6_8159d0ed",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-08-21T12:41:59Z",
+      "side": 1,
+      "message": "Thank you for reworking the CL. \n\nWould it be possible to split this change into two changes\n* first, introducing the 3x horizontal sampling with Freetype\u0027s 5tap filter to LCD565\n* then a follow up CL for introducing LCD888 with a disabled-by-default feature as you have done here.\n\nOur team is still evaluating the efficacy of LCD888. We have considered that both Freetype and DirectWrite both use 565 for mask generation. Using LCD888 would make the codebase more concise, but will also bring a memory cost. So we want to understand if it\u0027s possible to improve our path-rendering LCD generation algorithm while still fitting into 565.\n\nLet me know if you have any questions 👍",
+      "parentUuid": "fca4dd78_f4bea44a",
+      "revId": "d510a8cd060d4e1266b05948c3f27b6070454ad9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
