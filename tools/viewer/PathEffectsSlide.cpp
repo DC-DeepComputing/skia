@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkPathBuilder.h"
@@ -23,9 +24,9 @@
 
 #define CORNER_RADIUS   12
 
-static const int gXY[] = {
+static const auto gXY = std::to_array<int>({
     4, 0, 0, -4, 8, -4, 12, 0, 8, 4, 0, 4
-};
+,});
 
 static sk_sp<SkPathEffect> make_pe(int flags, SkScalar phase) {
     if (flags == 1) {

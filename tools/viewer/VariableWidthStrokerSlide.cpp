@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "imgui.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -882,14 +883,14 @@ void SkVarWidthStroker::appendPathReversed(const SkPath& path, SkPathBuilder* re
 }
 
 int SkVarWidthStroker::segmentDegree(const PathSegment& seg) {
-    static constexpr int lut[] = {
+    static constexpr auto lut = std::to_array<int>({
             -1,  // move,
             1,   // line
             2,   // quad
             -1,  // conic
             3,   // cubic
             -1   // done
-    };
+    ,});
     const int deg = lut[static_cast<uint8_t>(seg.fVerb)];
     SkASSERT(deg > 0);
     return deg;

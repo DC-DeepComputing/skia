@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkCanvas.h"
 #include "include/core/SkFont.h"
 #include "include/core/SkSurface.h"
@@ -33,7 +34,7 @@ public:
 
         // Draw one pixel at a time with drawImageRect(),
         // timing how long each drawImageRect() call takes.
-        double cost[H][W];
+        std::array<std::array<double, W>, H> cost;
         double min = +INFINITY,
                max = -INFINITY;
         for (int y = 0; y < H; y++)
