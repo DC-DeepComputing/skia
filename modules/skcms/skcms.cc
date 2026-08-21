@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "src/skcms_public.h"  // NO_G3_REWRITE
 #include "src/skcms_internals.h"  // NO_G3_REWRITE
 #include "src/skcms_Transform.h"  // NO_G3_REWRITE
@@ -594,7 +595,7 @@ static bool read_curve_para(const uint8_t* buf, uint32_t size,
         return false;
     }
 
-    static const uint32_t curve_bytes[] = { 4, 12, 16, 20, 28 };
+    static const auto curve_bytes = std::to_array<uint32_t>({ 4, 12, 16, 20, 28 });
     if (size < SAFE_FIXED_SIZE(para_Layout) + curve_bytes[function_type]) {
         return false;
     }
@@ -942,7 +943,7 @@ typedef struct {
 } mAB_or_mBA_Layout;
 
 typedef struct {
-    uint8_t grid_points          [16];
+    std::array<uint8_t, 16> grid_points;
     uint8_t grid_byte_width      [ 1];
     uint8_t reserved             [ 3];
     uint8_t variable             [1/*variable*/];
@@ -1864,7 +1865,7 @@ static bool is_zero_to_one(float x) {
     return 0 <= x && x <= 1;
 }
 
-typedef struct { float vals[3]; } skcms_Vector3;
+typedef struct { std::array<float, 3> vals; } skcms_Vector3;
 
 static skcms_Vector3 mv_mul(const skcms_Matrix3x3* m, const skcms_Vector3* v) {
     skcms_Vector3 dst = {{0,0,0}};
@@ -2548,12 +2549,12 @@ static OpAndArg select_curve_op(const skcms_Curve* curve, int channel) {
     struct OpType {
         Op sGamma, sRGBish, PQish, HLGish, HLGinvish, table;
     };
-    static constexpr OpType kOps[] = {
-        { Op::gamma_r, Op::tf_r, Op::pq_r, Op::hlg_r, Op::hlginv_r, Op::table_r },
-        { Op::gamma_g, Op::tf_g, Op::pq_g, Op::hlg_g, Op::hlginv_g, Op::table_g },
-        { Op::gamma_b, Op::tf_b, Op::pq_b, Op::hlg_b, Op::hlginv_b, Op::table_b },
-        { Op::gamma_a, Op::tf_a, Op::pq_a, Op::hlg_a, Op::hlginv_a, Op::table_a },
-    };
+    static constexpr auto kOps = std::to_array<OpType>({
+        OpType{ Op::gamma_r, Op::tf_r, Op::pq_r, Op::hlg_r, Op::hlginv_r, Op::table_r },
+        OpType{ Op::gamma_g, Op::tf_g, Op::pq_g, Op::hlg_g, Op::hlginv_g, Op::table_g },
+        OpType{ Op::gamma_b, Op::tf_b, Op::pq_b, Op::hlg_b, Op::hlginv_b, Op::table_b },
+        OpType{ Op::gamma_a, Op::tf_a, Op::pq_a, Op::hlg_a, Op::hlginv_a, Op::table_a },
+    });
     const auto& op = kOps[channel];
 
     if (curve->table_entries == 0) {
@@ -3158,7 +3159,7 @@ bool skcms_MakeUsableAsDestination(skcms_ICCProfile* profile) {
             return false;
         }
 
-        skcms_TransferFunction tf[3];
+        std::array<skcms_TransferFunction, 3> tf;
         for (int i = 0; i < 3; i++) {
             skcms_TransferFunction inv;
             if (profile->trc[i].table_entries == 0
