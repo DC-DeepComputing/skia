@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -73,7 +74,7 @@ private:
 
         const SkColor4f colors[] = {SkColors::kRed, SkColors::kGreen};
 
-        SkScalar pos[std::size(colors)];
+        std::array<SkScalar, std::size(colors)> pos;
         for (unsigned i = 0; i < std::size(pos); ++i) {
             pos[i] = (float)i / (std::size(pos) - 1);
         }

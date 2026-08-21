@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkBlendMode.h"
@@ -52,7 +53,7 @@ protected:
         canvas->clear(SK_ColorBLACK);
         SkPaint paint;
 
-        const SkBlendMode gModes[] = {
+        const auto gModes = std::to_array<SkBlendMode>({
             SkBlendMode::kClear,
             SkBlendMode::kSrc,
             SkBlendMode::kDst,
@@ -83,7 +84,7 @@ protected:
             SkBlendMode::kSaturation,
             SkBlendMode::kColor,
             SkBlendMode::kLuminosity,
-        };
+        });
 
         int x = 0, y = 0;
         sk_sp<SkImageFilter> background(SkImageFilters::Image(fCheckerboard,
@@ -140,12 +141,12 @@ protected:
         }
         // Test cropping
         constexpr size_t nbSamples = 3;
-        const SkBlendMode sampledModes[nbSamples] = {
+        const std::array<SkBlendMode, nbSamples> sampledModes = {
             SkBlendMode::kOverlay, SkBlendMode::kSrcOver, SkBlendMode::kPlus
         };
-        int offsets[nbSamples][4] = {{ 10,  10, -16, -16},
+        std::array<std::array<int, 4>, nbSamples> offsets = {{{ 10,  10, -16, -16},
                                      { 10,  10,  10,  10},
-                                     {-10, -10,  -6,  -6}};
+                                     {-10, -10,  -6,  -6},}};
         for (size_t i = 0; i < nbSamples; ++i) {
             SkIRect cropRect = SkIRect::MakeXYWH(offsets[i][0],
                                                  offsets[i][1],
