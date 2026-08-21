@@ -110,7 +110,6 @@ filegroup(
         "ConvertPixelsTest.cpp",
         "CoreBlittersTest.cpp",
         "CPUBackendTest.cpp",
-        "CPUContextRecorderTest.cpp",
         "CubicChopTest.cpp",
         "CubicMapTest.cpp",
         "CubicRootsTest.cpp",
