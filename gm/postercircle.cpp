@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -145,7 +146,7 @@ private:
     static const int kRingRadius = 200;
     static const int kPosterSize = 100;
 
-    sk_sp<SkImage> fPosterImages[kNumAngles];
+    std::array<sk_sp<SkImage>, kNumAngles> fPosterImages;
     SkScalar fTime;
 };
 

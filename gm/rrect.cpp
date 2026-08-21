@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkBlurTypes.h"
@@ -147,11 +148,11 @@ protected:
     SkISize getISize() override { return SkISize::Make(820, 710); }
 
     void onDraw(SkCanvas* canvas) override {
-        constexpr InsetProc insetProcs[] = {
+        constexpr auto insetProcs = std::to_array<InsetProc>({
             inset0, inset1, inset2, inset3
-        };
+        ,});
 
-        SkRRect rrect[4];
+        std::array<SkRRect, 4> rrect;
         SkRect r = { 0, 0, 120, 100 };
         SkVector radii[4] = {
             { 0, 0 }, { 30, 1 }, { 10, 40 }, { 40, 40 }

@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -147,7 +148,7 @@ static void plot(SkCanvas* canvas,
     if (!bitmap.empty()) {
         // Plot.
         SkPaint plotPaint({ 0.0f, 0.5f, 0.0f, 1.0f });
-        SkPoint pts[kBoxSize];
+        std::array<SkPoint, kBoxSize> pts;
         for (int x = 0; x < kBoxSize; ++x) {
             SkColor c = bitmap.getColor(x, 0);
             SkScalar y = (1 - (SkColorGetR(c) / 255.0f)) * kBoxSize;
