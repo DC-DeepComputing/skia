@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkPaint.h"
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkTPin.h"
@@ -31,11 +32,11 @@ public:
                        const AnimationBuilder& abuilder,
                        sk_sp<sksg::GeometryNode> child)
         : INHERITED(sksg::OffsetEffect::Make(std::move(child))) {
-        static constexpr SkPaint::Join gJoinMap[] = {
+        static constexpr auto gJoinMap = std::to_array<SkPaint::Join>({
             SkPaint::kMiter_Join,  // 'lj': 1
             SkPaint::kRound_Join,  // 'lj': 2
             SkPaint::kBevel_Join,  // 'lj': 3
-        };
+        });
 
         const auto join = ParseDefault<int>(joffset["lj"], 1) - 1;
         this->node()->setJoin(gJoinMap[SkTPin<int>(join, 0, std::size(gJoinMap) - 1)]);
