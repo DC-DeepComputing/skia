@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkBlurTypes.h"
@@ -294,13 +295,13 @@ static void draw_path(SkCanvas* canvas, const SkPoint& p0, const SkPoint& p1, Sk
 DEF_SIMPLE_GM(strokedline_caps, canvas, 1400, 740) {
     canvas->translate(kStrokeWidth*3/2, kStrokeWidth*3/2);
 
-    constexpr SkPaint::Cap kCaps[] = {
+    constexpr auto kCaps = std::to_array<SkPaint::Cap>({
         SkPaint::kSquare_Cap, SkPaint::kButt_Cap, SkPaint::kRound_Cap
-    };
+    ,});
 
-    constexpr float kLengths[] = {
+    constexpr auto kLengths = std::to_array<float>({
         4*kStrokeWidth, kStrokeWidth, kStrokeWidth/2, kStrokeWidth/4
-    };
+    ,});
 
     for (size_t i = 0; i < std::size(kCaps); ++i) {
         SkAutoCanvasRestore acr(canvas, true);

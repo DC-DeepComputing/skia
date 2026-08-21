@@ -5,6 +5,7 @@
 * found in the LICENSE file.
 */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -39,7 +40,7 @@ protected:
             ToolUtils::EmojiFontFormat::Test,
             ToolUtils::EmojiFontFormat::Svg,
     };
-    ToolUtils::EmojiTestSample fontSamples[std::size(formatsToTest)];
+    std::array<ToolUtils::EmojiTestSample, std::size(formatsToTest)> fontSamples;
     void onOnceBeforeDraw() override {
         for (auto&& [i, format] : SkMakeEnumerate(formatsToTest)) {
             fontSamples[i] = ToolUtils::EmojiSample(format);

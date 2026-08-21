@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -26,46 +27,46 @@ constexpr SkScalar kPictureSize = SK_Scalar1;
 constexpr SkScalar kFillSize = 100;
 constexpr unsigned kRowSize = 6;
 
-constexpr struct {
+struct Tiles {
     SkScalar x, y, w, h;
     SkScalar offsetX, offsetY;
-} tiles[] = {
-    {      0,      0,    1,    1,      0,    0 },
-    {  -0.5f,  -0.5f,    1,    1,      0,    0 },
-    {   0.5f,   0.5f,    1,    1,      0,    0 },
+}; constexpr auto tiles = std::to_array<Tiles>({
+    Tiles{      0,      0,    1,    1,      0,    0 },
+    Tiles{  -0.5f,  -0.5f,    1,    1,      0,    0 },
+    Tiles{   0.5f,   0.5f,    1,    1,      0,    0 },
 
-    {      0,      0, 1.5f, 1.5f,      0,    0 },
-    {  -0.5f,  -0.5f, 1.5f, 1.5f,      0,    0 },
-    {   0.5f,   0.5f, 1.5f, 1.5f,      0,    0 },
+    Tiles{      0,      0, 1.5f, 1.5f,      0,    0 },
+    Tiles{  -0.5f,  -0.5f, 1.5f, 1.5f,      0,    0 },
+    Tiles{   0.5f,   0.5f, 1.5f, 1.5f,      0,    0 },
 
-    {      0,      0, 0.5f, 0.5f,      0,    0 },
-    {  0.25f,  0.25f, 0.5f, 0.5f,      0,    0 },
-    { -0.25f, -0.25f, 0.5f, 0.5f,      0,    0 },
+    Tiles{      0,      0, 0.5f, 0.5f,      0,    0 },
+    Tiles{  0.25f,  0.25f, 0.5f, 0.5f,      0,    0 },
+    Tiles{ -0.25f, -0.25f, 0.5f, 0.5f,      0,    0 },
 
-    {      0,      0,    1,    1,   0.5f, 0.5f },
-    {  -0.5f,  -0.5f,    1,    1,   0.5f, 0.5f },
-    {   0.5f,   0.5f,    1,    1,   0.5f, 0.5f },
+    Tiles{      0,      0,    1,    1,   0.5f, 0.5f },
+    Tiles{  -0.5f,  -0.5f,    1,    1,   0.5f, 0.5f },
+    Tiles{   0.5f,   0.5f,    1,    1,   0.5f, 0.5f },
 
-    {      0,      0, 1.5f, 1.5f,   0.5f, 0.5f },
-    {  -0.5f,  -0.5f, 1.5f, 1.5f,   0.5f, 0.5f },
-    {   0.5f,   0.5f, 1.5f, 1.5f,   0.5f, 0.5f },
+    Tiles{      0,      0, 1.5f, 1.5f,   0.5f, 0.5f },
+    Tiles{  -0.5f,  -0.5f, 1.5f, 1.5f,   0.5f, 0.5f },
+    Tiles{   0.5f,   0.5f, 1.5f, 1.5f,   0.5f, 0.5f },
 
-    {      0,      0, 1.5f,    1,      0,    0 },
-    {  -0.5f,  -0.5f, 1.5f,    1,      0,    0 },
-    {   0.5f,   0.5f, 1.5f,    1,      0,    0 },
+    Tiles{      0,      0, 1.5f,    1,      0,    0 },
+    Tiles{  -0.5f,  -0.5f, 1.5f,    1,      0,    0 },
+    Tiles{   0.5f,   0.5f, 1.5f,    1,      0,    0 },
 
-    {      0,      0, 0.5f,    1,      0,    0 },
-    {  0.25f,  0.25f, 0.5f,    1,      0,    0 },
-    { -0.25f, -0.25f, 0.5f,    1,      0,    0 },
+    Tiles{      0,      0, 0.5f,    1,      0,    0 },
+    Tiles{  0.25f,  0.25f, 0.5f,    1,      0,    0 },
+    Tiles{ -0.25f, -0.25f, 0.5f,    1,      0,    0 },
 
-    {      0,      0,    1, 1.5f,      0,    0 },
-    {  -0.5f,  -0.5f,    1, 1.5f,      0,    0 },
-    {   0.5f,   0.5f,    1, 1.5f,      0,    0 },
+    Tiles{      0,      0,    1, 1.5f,      0,    0 },
+    Tiles{  -0.5f,  -0.5f,    1, 1.5f,      0,    0 },
+    Tiles{   0.5f,   0.5f,    1, 1.5f,      0,    0 },
 
-    {      0,      0,    1, 0.5f,      0,    0 },
-    {  0.25f,  0.25f,    1, 0.5f,      0,    0 },
-    { -0.25f, -0.25f,    1, 0.5f,      0,    0 },
-};
+    Tiles{      0,      0,    1, 0.5f,      0,    0 },
+    Tiles{  0.25f,  0.25f,    1, 0.5f,      0,    0 },
+    Tiles{ -0.25f, -0.25f,    1, 0.5f,      0,    0 },
+});
 
 static void draw_scene(SkCanvas* canvas, SkScalar pictureSize) {
     canvas->clear(SK_ColorWHITE);
@@ -153,7 +154,7 @@ protected:
     }
 
 private:
-    sk_sp<SkShader> fShaders[std::size(tiles)];
+    std::array<sk_sp<SkShader>, std::size(tiles)> fShaders;
 
     using INHERITED = GM;
 };

@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -91,10 +92,10 @@ protected:
         canvas->translate(15.f, 15.f);
         canvas->scale(2.f, 2.f);
 
-        constexpr SkTileMode kTileModes[] = {
+        constexpr auto kTileModes = std::to_array<SkTileMode>({
             SkTileMode::kRepeat,
             SkTileMode::kMirror,
-        };
+        });
 
         // position the baseline of the first path
         canvas->translate(0.f, 2.25);

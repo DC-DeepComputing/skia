@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkCanvas.h"
@@ -85,17 +86,17 @@ class SrcModeGM : public skiagm::GM {
         SkFont  font(ToolUtils::DefaultPortableTypeface(), H / 4);
         paint.setColor(0x80F60000);
 
-        const Proc procs[] = {
+        const auto procs = std::to_array<Proc>({
             draw_hair, draw_thick, draw_rect, draw_oval, draw_text
-        };
+        ,});
 
-        const SkBlendMode modes[] = {
+        const auto modes = std::to_array<SkBlendMode>({
             SkBlendMode::kSrcOver, SkBlendMode::kSrc, SkBlendMode::kClear
-        };
+        ,});
 
-        const PaintProc paintProcs[] = {
+        const auto paintProcs = std::to_array<PaintProc>({
             identity_paintproc, gradient_paintproc
-        };
+        });
 
         for (int aa = 0; aa <= 1; ++aa) {
             paint.setAntiAlias(SkToBool(aa));
