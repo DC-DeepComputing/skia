@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -21,11 +22,11 @@
 #include "tools/fonts/FontToolUtils.h"
 
 static void make_bm(SkBitmap* bm) {
-    const SkColor colors[4] = {
+    const std::array<SkColor, 4> colors = {
         SK_ColorRED, SK_ColorGREEN,
         SK_ColorBLUE, SK_ColorWHITE
     };
-    SkPMColor colorsPM[4];
+    std::array<SkPMColor, 4> colorsPM;
     for (size_t i = 0; i < std::size(colors); ++i) {
         colorsPM[i] = SkPreMultiplyColor(colors[i]);
     }

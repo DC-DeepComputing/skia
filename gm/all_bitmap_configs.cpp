@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -61,7 +62,7 @@ static SkBitmap make_bitmap(SkColorType ct) {
             SkASSERT(false);
             return bm;
     }
-    uint8_t spectrum[256];
+    std::array<uint8_t, 256> spectrum;
     for (int y = 0; y < 256; ++y) {
         spectrum[y] = y;
     }

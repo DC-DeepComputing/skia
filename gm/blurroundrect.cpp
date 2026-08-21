@@ -5,6 +5,7 @@
 * found in the LICENSE file.
 */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkBlurTypes.h"
@@ -64,8 +65,8 @@ class SimpleBlurRoundRectGM : public skiagm::GM {
         canvas->scale(1.5f, 1.5f);
         canvas->translate(50,50);
 
-        const float blurRadii[] = {1.f, 5.f, 10.f, 20.f};
-        const float cornerRadii[] = {1.f, 5.f, 10.f, 20.f};
+        const auto blurRadii = std::to_array<float>({1.f, 5.f, 10.f, 20.f});
+        const auto cornerRadii = std::to_array<float>({1.f, 5.f, 10.f, 20.f});
         const SkRect r = SkRect::MakeWH(25.f, 25.f);
         for (size_t row = 0; row < std::size(blurRadii); ++row) {
             SkAutoCanvasRestore autoRestore(canvas, true);
