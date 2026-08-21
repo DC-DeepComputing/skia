@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -64,21 +65,21 @@ static const char marker[] =
     "\n"
     "var testDivs = [\n";
 
-static const char* opStrs[] = {
+static auto opStrs = std::to_array<const char *>({
     "kDifference_SkPathOp",
     "kIntersect_SkPathOp",
     "kUnion_SkPathOp",
     "kXOR_PathOp",
     "kReverseDifference_SkPathOp",
-};
+});
 
-static const char* opSuffixes[] = {
+static auto opSuffixes = std::to_array<const char *>({
     "d",
     "i",
     "u",
     "o",
     "r",
-};
+});
 
 enum class ExpectSuccess {
     kNo,
@@ -408,20 +409,20 @@ static void json_status(ExpectSuccess expectSuccess, ExpectMatch expectMatch, bo
 
 static void json_path_out(const SkPath& path, const char* pathName, const char* fillTypeName,
         bool lastField) {
-    char const * const gFillTypeStrs[] = {
+    const auto gFillTypeStrs = std::to_array<const char *>({
         "Winding",
         "EvenOdd",
         "InverseWinding",
         "InverseEvenOdd",
-    };
+    });
     if (PathOpsDebug::gOutputSVG) {
         SkString svg = SkParsePath::ToSVGString(path);
         fprintf(PathOpsDebug::gOut, "  \"%s\": \"%s\",\n", pathName, svg.c_str());
     } else {
                                  // MOVE, LINE, QUAD, CONIC, CUBIC, CLOSE
-        const int verbConst[] =  {     0,    1,    2,     3,     4,     5 };
-        const int pointIndex[] = {     0,    1,    1,     1,     1,     0 };
-        const int pointCount[] = {     1,    2,    3,     3,     4,     0 };
+        const auto verbConst = std::to_array<int>({     0,    1,    2,     3,     4,     5 ,});
+        const auto pointIndex = std::to_array<int>({     0,    1,    1,     1,     1,     0 ,});
+        const auto pointCount = std::to_array<int>({     1,    2,    3,     3,     4,     0 ,});
         fprintf(PathOpsDebug::gOut, "  \"%s\": [", pathName);
         bool first = true;
         for (auto [verb, points, w] : SkPathPriv::Iterate(path)) {

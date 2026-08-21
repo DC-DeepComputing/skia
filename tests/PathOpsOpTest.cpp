@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkPath.h"
 #include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathTypes.h"
@@ -1163,13 +1164,13 @@ static void cubicOp69d(skiatest::Reporter* reporter, const char* filename) {
     testPathOp(reporter, path.detach(), pathB.detach(), kDifference_SkPathOp, filename);
 }
 
-SkPathOp ops[] = {
+auto ops = std::to_array<SkPathOp>({
     kUnion_SkPathOp,
     kXOR_SkPathOp,
     kReverseDifference_SkPathOp,
     kXOR_SkPathOp,
     kReverseDifference_SkPathOp,
-};
+});
 
 static void rRect1(skiatest::Reporter* reporter, const char* filename) {
     SkScalar xA = 0.65f;
@@ -1185,7 +1186,7 @@ static void rRect1(skiatest::Reporter* reporter, const char* filename) {
     SkScalar yD = 30.65f;
     SkScalar yE = 40.65f;
     SkScalar yF = 50.65f;
-    SkPath paths[5];
+    std::array<SkPath, 5> paths;
     SkRect rects[5];
     rects[0].setLTRB(xB, yB, xE, yE);
     paths[0] = SkPath::RRect(rects[0], SkIntToScalar(5), SkIntToScalar(5));  // red
