@@ -8,6 +8,7 @@
 #ifndef SkPathMakers_DEFINED
 #define SkPathMakers_DEFINED
 
+#include <array>
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRRect.h"
@@ -29,7 +30,7 @@ public:
     }
 
     protected:
-    SkPoint fPts[N];
+    std::array<SkPoint, N> fPts;
 
     private:
     unsigned fCurrent;
