@@ -16,9 +16,9 @@ const int $kShapeTypeRect = 0;
 const int $kShapeTypeRRect = 1;
 const int $kShapeTypeCircle = 2;
 
-// Matches GrTextureEffect::kLinearInset, to make sure we don't touch an outer
-// row or column with a weight of 0 when linear filtering.
-const float $kLinearInset = 0.5 + 0.00001;
+// Matches skgpu::kLinearInset, to make sure we don't touch an outer row or column with a weight of
+// 0 when linear filtering.
+const float $kLinearInset = 0.5 + 1.0 / 512;
 
 $pure half4 sk_error() {
     return half4(1.0, 0.0, 0.0, 1.0);
