@@ -148,8 +148,8 @@ SkRect normalize_and_inset_subset(GrSamplerState::Filter filter,
         ltrb = skvx::floor(ltrb*flipHi)*flipHi;
     }
     // Inset with pin to the rect center.
-    ltrb += skvx::Vec<4, float>({ GrTextureEffect::kLinearInset,  GrTextureEffect::kLinearInset,
-                                 -GrTextureEffect::kLinearInset, -GrTextureEffect::kLinearInset});
+    ltrb += skvx::Vec<4, float>({ skgpu::kLinearInset,  skgpu::kLinearInset,
+                                 -skgpu::kLinearInset, -skgpu::kLinearInset});
     auto mid = (skvx::shuffle<2, 3, 0, 1>(ltrb) + ltrb)*0.5f;
     ltrb = skvx::min(ltrb*flipHi, mid*flipHi)*flipHi;
 
@@ -210,8 +210,7 @@ bool safe_to_ignore_subset_rect(GrAAType aaType, GrSamplerState::Filter filter,
 
     // If the local quad is inset by at least 0.5 pixels into the subset rect's bounds, the
     // sampler shouldn't overshoot, even when antialiasing and filtering is taken into account.
-    if (subsetRect.makeInset(GrTextureEffect::kLinearInset,
-                             GrTextureEffect::kLinearInset)
+    if (subsetRect.makeInset(skgpu::kLinearInset, skgpu::kLinearInset)
                   .contains(localBounds)) {
         return true;
     }
