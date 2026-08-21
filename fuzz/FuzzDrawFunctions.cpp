@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "fuzz/Fuzz.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -122,7 +123,7 @@ static void fuzz_drawText(Fuzz* fuzz, sk_sp<SkTypeface> typeface) {
     SkScalar x, y;
     fuzz->next(&x, &y);
     // populate pts array
-    SkPoint pts[kPtsLen];
+    std::array<SkPoint, kPtsLen> pts;
     for (uint8_t i = 0; i < kPtsLen; ++i) {
         pts[i].set(x, y);
         x += font.getSize();
