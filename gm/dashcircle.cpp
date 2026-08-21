@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -130,7 +131,7 @@ protected:
 
     void onDraw(SkCanvas* canvas) override {
         // These intervals are defined relative to tau.
-        static constexpr SkScalar kIntervals[][2]{
+        static constexpr auto kIntervals = std::to_array<std::array<SkScalar, 2>>({
                 {0.333f, 0.333f},
                 {0.015f, 0.015f},
                 {0.01f , 0.09f },
@@ -141,7 +142,7 @@ protected:
                 {0.6f  , 0.7f  }, // adds to > 1
                 {1.2f  , 0.8f  }, // on is > 1
                 {0.1f  , 1.1f  }, // off is > 1*/
-        };
+        });
 
         static constexpr int kN = std::size(kIntervals);
         static constexpr SkScalar kRadius = 20.f;
@@ -154,8 +155,8 @@ protected:
                                                 kThinRadius,  kThinRadius};
         static constexpr SkScalar kThinStrokeWidth = 0.4f;
 
-        sk_sp<SkPathEffect> deffects[std::size(kIntervals)];
-        sk_sp<SkPathEffect> thinDEffects[std::size(kIntervals)];
+        std::array<sk_sp<SkPathEffect>, std::size(kIntervals)> deffects;
+        std::array<sk_sp<SkPathEffect>, std::size(kIntervals)> thinDEffects;
         for (int i = 0; i < kN; ++i) {
             static constexpr SkScalar kTau = 2 * SK_ScalarPI;
             static constexpr SkScalar kCircumference = kRadius * kTau;

@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -153,9 +154,9 @@ class Dashing2GM : public skiagm::GM {
             2,  2, 2
         };
 
-        SkPath (*gProc[])(const SkRect&) = {
+        auto gProc = std::to_array<SkPath (*)(const SkRect &)>({
             make_path_line, make_path_rect, make_path_oval, make_path_star,
-        };
+        });
 
         SkPaint paint;
         paint.setAntiAlias(true);
@@ -421,7 +422,7 @@ private:
         constexpr int kOff = 4;
         constexpr int kIntervalLength = kOn + kOff;
 
-        constexpr SkColor gColors[kIntervalLength] = {
+        constexpr std::array<SkColor, kIntervalLength> gColors = {
             SK_ColorRED,
             SK_ColorGREEN,
             SK_ColorBLUE,
@@ -529,7 +530,7 @@ DEF_SIMPLE_GM(dashbigrects, canvas, 256, 256) {
     constexpr SkScalar intervals[] = { kOnOffInterval, kOnOffInterval };
     p.setPathEffect(SkDashPathEffect::Make(intervals, 0));
 
-    constexpr float gWidthHeights[] = {
+    constexpr auto gWidthHeights = std::to_array<float>({
         1000000000.0f * kOnOffInterval + kOnOffInterval/2.0f,
         1000000.0f * kOnOffInterval + kOnOffInterval/2.0f,
         1000.0f * kOnOffInterval + kOnOffInterval/2.0f,
@@ -541,7 +542,7 @@ DEF_SIMPLE_GM(dashbigrects, canvas, 256, 256) {
         6.0f * kOnOffInterval + kOnOffInterval/2.0f,
         5.0f * kOnOffInterval + kOnOffInterval/2.0f,
         4.0f * kOnOffInterval + kOnOffInterval/2.0f,
-    };
+    });
 
     for (size_t i = 0; i < std::size(gWidthHeights); ++i) {
         p.setColor(ToolUtils::color_to_565(rand.nextU() | (0xFF << 24)));

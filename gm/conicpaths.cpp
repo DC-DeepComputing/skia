@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -102,7 +103,7 @@ protected:
     }
 
     void onDraw(SkCanvas* canvas) override {
-        const SkAlpha kAlphaValue[] = { 0xFF, 0x40 };
+        const auto kAlphaValue = std::to_array<SkAlpha>({ 0xFF, 0x40 });
 
         const SkScalar margin = 15;
         canvas->translate(margin, margin);
