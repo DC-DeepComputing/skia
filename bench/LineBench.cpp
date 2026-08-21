@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "bench/Benchmark.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -23,7 +24,7 @@ class LineBench : public Benchmark {
     enum {
         PTS = 500,
     };
-    SkPoint fPts[PTS];
+    std::array<SkPoint, PTS> fPts;
 
 public:
     LineBench(SkScalar width, bool doAA)  {
