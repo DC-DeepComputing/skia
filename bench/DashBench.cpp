@@ -4,6 +4,7 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include <array>
 #include "bench/Benchmark.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -310,7 +311,7 @@ public:
     };
 
     static const char* LineTypeName(LineType lt) {
-        static const char* gNames[] = { "hori", "vert", "diag" };
+        static auto gNames = std::to_array<const char *>({ "hori", "vert", "diag" });
         static_assert(kLineTypeCount == std::size(gNames), "names_wrong_size");
         return gNames[lt];
     }

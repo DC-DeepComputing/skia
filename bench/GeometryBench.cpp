@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "bench/Benchmark.h"
 #include "include/core/SkRRect.h"
 #include "include/core/SkRect.h"
@@ -48,7 +49,7 @@ public:
     GeoRectBench(const char suffix[]) : GeometryBench(suffix) {}
 
 protected:
-    SkRect fRects[2048];
+    std::array<SkRect, 2048> fRects;
 
     void onDelayedSetup() override {
         const SkScalar min = -100;
