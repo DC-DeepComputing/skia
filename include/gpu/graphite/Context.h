@@ -13,6 +13,7 @@
 #include "include/core/SkSize.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
+#include "include/cpu/Recorder.h"
 #include "include/gpu/graphite/GraphiteTypes.h"
 #include "include/gpu/graphite/Recorder.h"  // IWYU pragma: keep
 #include "include/private/SingleOwner.h"
@@ -39,7 +40,6 @@ struct SkIRect;
 struct SkImageInfo;
 
 namespace skcpu {
-class ContextImpl;
 class Recorder;
 }  // namespace skcpu
 
@@ -412,7 +412,6 @@ private:
     std::unique_ptr<ResourceProvider> fResourceProvider;
     std::unique_ptr<ClientMappedBufferManager> fMappedBufferManager;
     std::unique_ptr<QueueManager> fQueueManager;
-    std::unique_ptr<const skcpu::ContextImpl> fCPUContext;
 
     PersistentPipelineStorage* fPersistentPipelineStorage;
 
