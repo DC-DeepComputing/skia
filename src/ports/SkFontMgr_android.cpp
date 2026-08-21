@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkTypes.h"
 
 #include "include/core/SkData.h"
@@ -535,9 +536,9 @@ private:
 };
 
 #ifdef SK_DEBUG
-static char const * const gSystemFontUseStrings[] = {
+static const auto gSystemFontUseStrings = std::to_array<const char *>({
     "OnlyCustom", "PreferCustom", "PreferSystem"
-};
+,});
 #endif
 
 }  // namespace
