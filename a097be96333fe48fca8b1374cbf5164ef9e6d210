@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ce96468_196a7bda",
+        "filename": "src/gpu/graphite/sparse_strips/MSAA_LUT.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-21T00:56:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9476fda6_7776483e",
+      "range": {
+        "startLine": 113,
+        "startChar": 21,
+        "endLine": 113,
+        "endChar": 25
+      },
+      "revId": "a097be96333fe48fca8b1374cbf5164ef9e6d210",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "72d880f4_155998a9",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-08-20T15:48:32Z",
       "side": 1,
       "message": "Here, and in the following, would it be better to pass this as const\u0026 ?",
+      "range": {
+        "startLine": 25,
+        "startChar": 59,
+        "endLine": 25,
+        "endChar": 71
+      },
+      "revId": "a097be96333fe48fca8b1374cbf5164ef9e6d210",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e70a6652_03690931",
+        "filename": "tests/graphite/sparse_strips/CoverageTestUtils.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-21T00:56:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "72d880f4_155998a9",
       "range": {
         "startLine": 25,
         "startChar": 59,
@@ -64,6 +112,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "807ef69f_70788972",
+        "filename": "tests/graphite/sparse_strips/CoverageTestUtils.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-21T00:56:41Z",
+      "side": 1,
+      "message": "Yeah we get the close by setting `forceClose\u003dtrue` on the PathIter constructor. I\u0027ve updated the call to have the inline comment so it\u0027s clearer.",
+      "parentUuid": "698a7a9e_ed6ed122",
+      "revId": "a097be96333fe48fca8b1374cbf5164ef9e6d210",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8d791350_b5e5a85d",
@@ -81,6 +147,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef6d91d9_dd1a8bb2",
+        "filename": "tests/graphite/sparse_strips/CoverageTestUtils.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-21T00:56:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8d791350_b5e5a85d",
+      "revId": "a097be96333fe48fca8b1374cbf5164ef9e6d210",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1078c257_06ecab5d",
@@ -94,6 +178,24 @@
       "writtenOn": "2026-08-20T15:48:32Z",
       "side": 1,
       "message": "SkPath, mainly, just holds a fPathData. I think this should just be an SkPath and then SkPath::reset will do what you want.",
+      "revId": "a097be96333fe48fca8b1374cbf5164ef9e6d210",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "30563db1_b2d84d1f",
+        "filename": "tests/graphite/sparse_strips/CoverageTestUtils.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-21T00:56:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1078c257_06ecab5d",
       "revId": "a097be96333fe48fca8b1374cbf5164ef9e6d210",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
