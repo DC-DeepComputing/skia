@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "src/gpu/ganesh/GrCaps.h"
 
 #include "include/core/SkColor.h"
@@ -282,11 +283,11 @@ void GrCaps::dumpJSON(SkJSONWriter* writer) const {
     writer->appendS32("Max Window Rectangles", fMaxWindowRectangles);
     writer->appendS32("Sample Count for Internal MSAA", fInternalMultisampleCount);
 
-    static const char* kBlendEquationSupportNames[] = {
+    static auto kBlendEquationSupportNames = std::to_array<const char *>({
         "Basic",
         "Advanced",
         "Advanced Coherent",
-    };
+    });
     static_assert(0 == kBasic_BlendEquationSupport);
     static_assert(1 == kAdvanced_BlendEquationSupport);
     static_assert(2 == kAdvancedCoherent_BlendEquationSupport);
