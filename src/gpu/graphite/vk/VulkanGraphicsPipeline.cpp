@@ -530,8 +530,11 @@ static bool uniform_desc_set_layout(VkDescriptorSetLayout& outLayout,
     }
 
     if (SkToBool(storageStageFlags)) {
+        DescriptorType storageType = sharedContext->caps()->storageBufferSupport()
+                ? DescriptorType::kStorageBuffer
+                : DescriptorType::kTexture;
         uniformDescriptors.push_back({
-                DescriptorType::kStorageBuffer,
+                storageType,
                 /*count=*/1,
                 VulkanGraphicsPipeline::kStorageBufferIndex,
                 storageStageFlags});

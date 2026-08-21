@@ -16,6 +16,7 @@
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
 #include "src/gpu/graphite/GraphicsPipelineHandle.h"
 #include "src/gpu/graphite/ResourceTypes.h"
+#include "src/gpu/graphite/task/Task.h"
 
 struct SkImageInfo;
 
@@ -54,6 +55,8 @@ public:
     const SkIRect&      bounds() const { return fBounds;       }
     TextureProxy* target() const { return fTarget.get(); }
     const BindBufferInfo& storageBufferInfo() const { return fStorageBufferInfo; }
+    const TextureProxy* storageTextureProxy() const { return fStorageTextureProxy.get(); }
+    sk_sp<Task> takeTextureFallbackUploadTask() { return std::move(fTextureFallbackUploadTask); }
     std::pair<LoadOp, StoreOp> ops() const { return fOps; }
     std::array<float, 4> clearColor() const { return fClearColor; }
 
@@ -94,6 +97,7 @@ public:
 private:
     friend class DrawList;      // For the constructor
     friend class DrawListLayer; // ''
+    friend class StorageContext;
 
     DrawPass(sk_sp<TextureProxy> target,
              std::pair<LoadOp, StoreOp> ops,
@@ -119,6 +123,8 @@ private:
     SkDEBUGCODE(bool fPipelinesHaveBeenResolved = false;)    // set in addResourceRefs
 
     BindBufferInfo fStorageBufferInfo;
+    sk_sp<TextureProxy> fStorageTextureProxy;
+    sk_sp<Task> fTextureFallbackUploadTask;
 };
 
 } // namespace skgpu::graphite
