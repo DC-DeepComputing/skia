@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBlurTypes.h"
 #include "include/core/SkCanvas.h"
@@ -52,28 +53,28 @@ sk_sp<SkPathEffect> make_dash() {
     return SkDashPathEffect::Make(kIntervals, 0);
 }
 
-Style styles[] {
-    {SkPaint::kStroke_Style},
-    {SkPaint::kStrokeAndFill_Style},
-    {SkPaint::kFill_Style},
-    {SkPaint::kStroke_Style, make_dash()},
-};
+auto styles = std::to_array<Style>({
+    Style{SkPaint::kStroke_Style},
+    Style{SkPaint::kStrokeAndFill_Style},
+    Style{SkPaint::kFill_Style},
+    Style{SkPaint::kStroke_Style, make_dash()},
+});
 
-SkScalar pathSizes[] = {
+auto pathSizes = std::to_array<SkScalar>({
         40,
         10,
         0
-};
-SkScalar strokeWidths[] = {
+});
+auto strokeWidths = std::to_array<SkScalar>({
         10,
         0
-};
-SkPath (*paths[])(SkScalar, SkScalar, SkScalar) = {
+});
+auto paths = std::to_array<SkPath (*)(SkScalar, SkScalar, SkScalar)>({
         generate_square,
         generate_rect_line,
         generate_circle,
         generate_line
-};
+,});
 
 const SkScalar slideWidth = 90, slideHeight = 90;
 const SkScalar slideBoundary = 5;

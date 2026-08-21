@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkCanvas.h"
@@ -79,9 +80,9 @@ DEF_SIMPLE_GM(imagefilters_xfermodes, canvas, 480, 480) {
                                                                  SkSamplingOptions(),
                                                                  nullptr));
 
-        const SkBlendMode modes[] = {
+        const auto modes = std::to_array<SkBlendMode>({
             SkBlendMode::kSrcATop, SkBlendMode::kDstIn
-        };
+        });
 
         for (size_t i = 0; i < std::size(modes); ++i) {
             canvas->save();
