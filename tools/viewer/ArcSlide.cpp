@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkDrawable.h"
@@ -106,7 +107,7 @@ class ArcsSlide : public Slide {
 
         paint.setStrokeWidth(SkIntToScalar(1));
 
-        static const SkScalar gAngles[] = {
+        static const auto gAngles = std::to_array<SkScalar>({
             0, 360,
             0, 45,
             0, -45,
@@ -116,7 +117,7 @@ class ArcsSlide : public Slide {
             -90, 271,
             -180, -270,
             225, 90
-        };
+        ,});
 
         for (size_t i = 0; i < std::size(gAngles); i += 2) {
             paint.setColor(SK_ColorBLACK);
