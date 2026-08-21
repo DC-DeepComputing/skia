@@ -4,6 +4,7 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include <array>
 #include "src/pathops/SkOpSegment.h"
 
 #include "include/private/SkTDArray.h"
@@ -31,11 +32,11 @@ intersection tests cannot.
 #define F (false)      // discard the edge
 #define T (true)       // keep the edge
 
-static constexpr bool kUnaryActiveEdge[2][2] = {
+static constexpr std::array<std::array<bool, 2>, 2> kUnaryActiveEdge = {{
 //  from=0  from=1
 //  to=0,1  to=0,1
     {F, T}, {T, F},
-};
+}};
 
 static constexpr bool kActiveEdge[kXOR_SkPathOp + 1][2][2][2][2] = {
 //                 miFrom=0                              miFrom=1

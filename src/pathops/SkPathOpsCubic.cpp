@@ -4,6 +4,7 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include <array>
 #include "src/pathops/SkPathOpsCubic.h"
 
 #include "include/private/SkFloatingPoint.h"
@@ -157,8 +158,8 @@ bool SkDCubic::endsAreExtremaInXOrY() const {
 */
 bool SkDCubic::hullIntersects(const SkDPoint* pts, int ptCount, bool* isLinear) const {
     bool linear = true;
-    char hullOrder[4];
-    int hullCount = convexHull(hullOrder);
+    std::array<char, 4> hullOrder;
+    int hullCount = convexHull(hullOrder.data());
     int end1 = hullOrder[0];
     int hullIndex = 0;
     const SkDPoint* endPt[2];
