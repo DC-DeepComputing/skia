@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -135,31 +136,31 @@ protected:
     }
 
     void onDraw(SkCanvas* canvas) override {
-        const struct {
+        struct Configs {
             SkISize  size;
             SkScalar scaleX, scaleY;
             SkScalar opacity;
-        } configs[] = {
-            { SkISize::Make(200, 100), 1, 1, 1 },
-            { SkISize::Make(200, 200), 1, 1, 1 },
-            { SkISize::Make(200, 200), 1, 2, 1 },
-            { SkISize::Make(400, 200), 2, 2, 1 },
+        }; const auto configs = std::to_array<Configs>({
+            Configs{ SkISize::Make(200, 100), 1, 1, 1 },
+            Configs{ SkISize::Make(200, 200), 1, 1, 1 },
+            Configs{ SkISize::Make(200, 200), 1, 2, 1 },
+            Configs{ SkISize::Make(400, 200), 2, 2, 1 },
 
-            { SkISize::Make(200, 100), 1, 1, 0.9f  },
-            { SkISize::Make(200, 200), 1, 1, 0.75f },
-            { SkISize::Make(200, 200), 1, 2, 0.5f  },
-            { SkISize::Make(400, 200), 2, 2, 0.25f },
+            Configs{ SkISize::Make(200, 100), 1, 1, 0.9f  },
+            Configs{ SkISize::Make(200, 200), 1, 1, 0.75f },
+            Configs{ SkISize::Make(200, 200), 1, 2, 0.5f  },
+            Configs{ SkISize::Make(400, 200), 2, 2, 0.25f },
 
-            { SkISize::Make(200, 200), 0.5f, 1,    1 },
-            { SkISize::Make(200, 200), 1,    0.5f, 1 },
-            { SkISize::Make(200, 200), 0.5f, 0.5f, 1 },
-            { SkISize::Make(200, 200), 2,    2,    1 },
+            Configs{ SkISize::Make(200, 200), 0.5f, 1,    1 },
+            Configs{ SkISize::Make(200, 200), 1,    0.5f, 1 },
+            Configs{ SkISize::Make(200, 200), 0.5f, 0.5f, 1 },
+            Configs{ SkISize::Make(200, 200), 2,    2,    1 },
 
-            { SkISize::Make(200, 100), -1,  1, 1    },
-            { SkISize::Make(200, 100),  1, -1, 1    },
-            { SkISize::Make(200, 100), -1, -1, 1    },
-            { SkISize::Make(200, 100), -1, -1, 0.5f },
-        };
+            Configs{ SkISize::Make(200, 100), -1,  1, 1    },
+            Configs{ SkISize::Make(200, 100),  1, -1, 1    },
+            Configs{ SkISize::Make(200, 100), -1, -1, 1    },
+            Configs{ SkISize::Make(200, 100), -1, -1, 0.5f },
+        });
 
         auto srgbColorSpace = SkColorSpace::MakeSRGB();
         const unsigned kDrawsPerRow = 4;

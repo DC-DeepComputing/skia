@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkCanvas.h"
@@ -99,11 +100,11 @@ static void dopatch(SkCanvas* canvas, const SkColor colors[], sk_sp<SkImage> img
     SkPaint paint;
     paint.setColor(SK_ColorGREEN);
 
-    const SkBlendMode modes[] = {
+    const auto modes = std::to_array<SkBlendMode>({
         SkBlendMode::kSrc,
         SkBlendMode::kDst,
         SkBlendMode::kColorDodge,
-    };
+    });
 
     SkPoint texStorage[4];
     const SkPoint* tex = gTexCoords;

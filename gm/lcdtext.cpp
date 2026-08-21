@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -80,17 +81,17 @@ class LcdTextSizeGM : public skiagm::GM {
 
         constexpr static float kLCDTextSizeLimit = 48;
 
-        const struct {
+        struct Rec {
             SkPoint     fLoc;
             SkScalar    fTextSize;
             SkScalar    fScale;
             const char* fText;
-        } rec[] = {
-            { {  10,  50 }, kLCDTextSizeLimit - 1,     1,  lcd_text },
-            { { 160,  50 }, kLCDTextSizeLimit + 1,     1,  gray_text },
-            { {  10, 100 }, kLCDTextSizeLimit / 2, 1.99f,  lcd_text },
-            { { 160, 100 }, kLCDTextSizeLimit / 2, 2.01f,  gray_text },
-        };
+        }; const auto rec = std::to_array<Rec>({
+            Rec{ {  10,  50 }, kLCDTextSizeLimit - 1,     1,  lcd_text },
+            Rec{ { 160,  50 }, kLCDTextSizeLimit + 1,     1,  gray_text },
+            Rec{ {  10, 100 }, kLCDTextSizeLimit / 2, 1.99f,  lcd_text },
+            Rec{ { 160, 100 }, kLCDTextSizeLimit / 2, 2.01f,  gray_text },
+        });
 
         for (size_t i = 0; i < std::size(rec); ++i) {
             const SkPoint loc = rec[i].fLoc;
