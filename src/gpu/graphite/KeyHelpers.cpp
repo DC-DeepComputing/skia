@@ -614,6 +614,13 @@ void ImageShaderBlock::AddBlock(const KeyContext& keyContext, const ImageData& i
             : imgData.fImmutableSamplerInfo;
     auto tileModeWithSubstitution = doTilingInHw ? imgData.fTileModes :
                                     std::make_pair(SkTileMode::kClamp, SkTileMode::kClamp);
+
+    // If we're a read only texture, we should have no mipmapping and kNearest sampling.
+    SkASSERT(!imgData.fTextureProxy ||
+             !caps->isReadable(imgData.fTextureProxy->textureInfo()) ||
+             caps->isTexturable(imgData.fTextureProxy->textureInfo()) ||
+             imgData.fSampling == SkSamplingOptions(SkFilterMode::kNearest, SkMipmapMode::kNone));
+
     SamplerDesc samplerDesc{imgData.fSampling, tileModeWithSubstitution, info};
     keyContext.pipelineDataGatherer()->add(imgData.fTextureProxy, samplerDesc);
     add_sampler_data_to_key(keyContext, samplerDesc);

@@ -81,6 +81,11 @@ public:
                 supported |= featureSet.second;
             }
         }
+        if (supported != DawnFormatFlag::None) {
+            // All valid formats in WebGPU support TextureBinding (nearest sampling / texel reads).
+            // See https://gpuweb.github.io/gpuweb/#texture-format-caps
+            supported |= DawnFormatFlag::Read;
+        }
         return supported;
     }
 
