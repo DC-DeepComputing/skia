@@ -22,7 +22,6 @@
 #include "src/gpu/graphite/Texture.h"  // IWYU pragma: keep
 #include "src/gpu/graphite/TextureProxy.h"
 
-
 using namespace skia_private;
 
 namespace skgpu::graphite {
