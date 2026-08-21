@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -58,8 +59,8 @@ protected:
     SkISize getISize() override { return SkISize::Make(1024, 768); }
 
     void onDraw(SkCanvas* inputCanvas) override {
-        SkScalar textSizes[] = { 9.0f, 9.0f*2.0f, 9.0f*5.0f, 9.0f*2.0f*5.0f };
-        SkScalar scales[] = { 2.0f*5.0f, 5.0f, 2.0f, 1.0f };
+        auto textSizes = std::to_array<SkScalar>({ 9.0f, 9.0f*2.0f, 9.0f*5.0f, 9.0f*2.0f*5.0f ,});
+        auto scales = std::to_array<SkScalar>({ 2.0f*5.0f, 5.0f, 2.0f, 1.0f });
 
         // set up offscreen rendering with distance field text
         SkISize size = this->getISize();
@@ -159,12 +160,12 @@ protected:
 
 
         // check gamma-corrected blending
-        const SkColor fg[] = {
+        const auto fg = std::to_array<SkColor>({
             0xFFFFFFFF,
             0xFFFFFF00, 0xFFFF00FF, 0xFF00FFFF,
             0xFFFF0000, 0xFF00FF00, 0xFF0000FF,
             0xFF000000,
-        };
+        });
 
         paint.setColor(0xFFF7F3F7);
         SkRect r = SkRect::MakeLTRB(670, 215, 820, 397);

@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkBlurTypes.h"
 #include "include/core/SkCanvas.h"
@@ -28,16 +29,16 @@
 
 DEF_SIMPLE_GM_BG(blurs, canvas, 700, 500, 0xFFDDDDDD) {
     SkBlurStyle NONE = SkBlurStyle(-999);
-    const struct {
+    struct GRecs {
         SkBlurStyle fStyle;
         int         fCx, fCy;
-    } gRecs[] = {
-        { NONE,                 0,  0 },
-        { kInner_SkBlurStyle,  -1,  0 },
-        { kNormal_SkBlurStyle,  0,  1 },
-        { kSolid_SkBlurStyle,   0, -1 },
-        { kOuter_SkBlurStyle,   1,  0 },
-    };
+    }; const auto gRecs = std::to_array<GRecs>({
+        GRecs{ NONE,                 0,  0 },
+        GRecs{ kInner_SkBlurStyle,  -1,  0 },
+        GRecs{ kNormal_SkBlurStyle,  0,  1 },
+        GRecs{ kSolid_SkBlurStyle,   0, -1 },
+        GRecs{ kOuter_SkBlurStyle,   1,  0 },
+    });
 
     SkPaint paint;
     paint.setAntiAlias(true);

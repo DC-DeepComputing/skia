@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkTypes.h"
 
 #include "gm/gm.h"
@@ -135,7 +136,7 @@ static CompressedImageObjects make_compressed_image(SkCanvas* canvas,
     size_t offset = 0;
 
     // Use a different color for each mipmap level so we can visually evaluate the draws
-    static const SkColor kColors[] = {
+    static const auto kColors = std::to_array<SkColor>({
         SK_ColorRED,
         SK_ColorGREEN,
         SK_ColorBLUE,
@@ -143,7 +144,7 @@ static CompressedImageObjects make_compressed_image(SkCanvas* canvas,
         SK_ColorMAGENTA,
         SK_ColorYELLOW,
         SK_ColorWHITE,
-    };
+    });
 
     SkISize levelDims = dimensions;
     for (int i = 0; i < numMipLevels; ++i) {
