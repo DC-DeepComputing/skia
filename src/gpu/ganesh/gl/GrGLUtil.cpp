@@ -822,7 +822,7 @@ GrGLDriverInfo GrGLGetDriverInfo(const GrGLInterface* interface) {
 }
 
 GrGLenum GrToGLStencilFunc(GrStencilTest test) {
-    static const GrGLenum gTable[kGrStencilTestCount] = {
+    static const std::array<GrGLenum, kGrStencilTestCount> gTable = {
         GR_GL_ALWAYS,           // kAlways
         GR_GL_NEVER,            // kNever
         GR_GL_GREATER,          // kGreater

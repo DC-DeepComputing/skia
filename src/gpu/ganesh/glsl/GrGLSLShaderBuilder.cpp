@@ -4,6 +4,7 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include <array>
 #include "src/gpu/ganesh/glsl/GrGLSLShaderBuilder.h"
 
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
@@ -307,10 +308,10 @@ void GrGLSLShaderBuilder::addLayoutQualifier(const char* param, InterfaceQualifi
 }
 
 void GrGLSLShaderBuilder::compileAndAppendLayoutQualifiers() {
-    static const char* interfaceQualifierNames[] = {
+    static auto interfaceQualifierNames = std::to_array<const char *>({
         "in",
         "out"
-    };
+    });
 
     for (int interface = 0; interface <= kLastInterfaceQualifier; ++interface) {
         const TArray<SkString>& params = fLayoutParams[interface];

@@ -8,6 +8,7 @@
 #ifndef GrGradientShader_DEFINE
 #define GrGradientShader_DEFINE
 
+#include <array>
 #include "include/core/SkColor.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkRefCnt.h"
@@ -55,8 +56,8 @@ std::unique_ptr<GrFragmentProcessor> MakeLinear(const SkLinearGradient& shader,
         RandomParams(SkRandom* r);
 
         bool fUseColors4f;
-        SkColor fColors[kMaxRandomGradientColors];
-        SkColor4f fColors4f[kMaxRandomGradientColors];
+        std::array<SkColor, kMaxRandomGradientColors> fColors;
+        std::array<SkColor4f, kMaxRandomGradientColors> fColors4f;
         sk_sp<SkColorSpace> fColorSpace;
         SkScalar fStopStorage[kMaxRandomGradientColors];
         SkTileMode fTileMode;
