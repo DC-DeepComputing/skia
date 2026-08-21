@@ -194,9 +194,16 @@ void MtlCaps::initFormatTable(const id<MTLDevice> device) {
             supportedUsage |= TextureUsage::kCopySrc | TextureUsage::kCopyDst;
         }
 
-        // Graphite assumes you can filter in a shader (not just read texels)
+        // Per "Texture capabilities by pixel format" in
+        // https://developer.apple.com/metal/Metal-Feature-Set-Tables.pdf:
+        // All graphics and compute kernels can read or sample a texture with any available pixel
+        // format (i.e. nearest filtering, texel reads), but linear filtering requires the Filter
+        // feature flag.
         if (features & MTLFeatureFlag::Filter) {
             supportedUsage |= TextureUsage::kSample;
+        }
+        if (features != MTLFeatureFlag::NotAvailable) {
+            supportedUsage |= TextureUsage::kRead;
         }
 
         // Graphite requires textures to be writable to be used for compute storage
@@ -241,7 +248,15 @@ std::pair<SkEnumBitMask<TextureUsage>, Tiling> MtlCaps::getTextureUsage(
     // Other than rendering, every other usage is blocked if it's framebuffer-only
     if (!mtlInfo.fFramebufferOnly) {
         if (mtlInfo.fUsage & MTLTextureUsageShaderRead) {
-            usage |= TextureUsage::kSample;
+            TextureFormat format = TextureInfoPriv::ViewFormat(info);
+            MTLPixelFormat mtlFormat = TextureFormatToMTLPixelFormat(format);
+            SkEnumBitMask<MTLFeatureFlag> features = MTLPixelFormatSupport(fGPUFamily, mtlFormat);
+            if (features & MTLFeatureFlag::Filter) {
+                usage |= TextureUsage::kSample;
+            }
+            if (features != MTLFeatureFlag::NotAvailable) {
+                usage |= TextureUsage::kRead;
+            }
 
             if (mtlInfo.fUsage & MTLTextureUsageShaderWrite) {
                 usage |= TextureUsage::kStorage;
@@ -271,7 +286,7 @@ TextureInfo MtlCaps::onGetDefaultTextureInfo(SkEnumBitMask<TextureUsage> usage,
     MTLStorageMode storageMode = MTLStorageModePrivate;
     MTLTextureUsage mtlUsage = MTLTextureUsageUnknown;
 
-    if (usage & TextureUsage::kSample) {
+    if (usage & (TextureUsage::kSample | TextureUsage::kRead)) {
         mtlUsage |= MTLTextureUsageShaderRead;
     }
     if (usage & TextureUsage::kStorage) {
