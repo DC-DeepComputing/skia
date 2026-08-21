@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "bench/Benchmark.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPath.h"
@@ -91,7 +92,7 @@ class NestedAAClipBench : public Benchmark {
     static const int kNestingDepth = 3;
     static const int kImageSize = 400;
 
-    SkPoint fSizes[kNestingDepth+1];
+    std::array<SkPoint, kNestingDepth+1> fSizes;
 
 public:
     NestedAAClipBench(bool doAA) : fDoAA(doAA) {
