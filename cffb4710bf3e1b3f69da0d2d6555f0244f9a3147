@@ -3,6 +3,75 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3cebdab0_aa9f6179",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 2023,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-24T14:44:23Z",
+      "side": 1,
+      "message": "This logic here is still dependent on the isSimilarity() matrix type check. When that\u0027s not the case, `computeXformedSigma` is lossy and you can\u0027t also then go back to a local-space sigma accurately either.\n\nI think what we\u0027ll need to do before we can expand the matrix types that are supported by Graphite\u0027s rrect blur is update the `drawBlurredRRect` API to take in the sigma and a flag for whether or not it\u0027s local.  \n\nFor algorithms that render with local sigma, then it can accept any matrix for the local case, but has more limited scenarios where it can handle the device sigma. For algorithms that render in device space, its\u0027 the opposite.  If we\u0027re able to support a 2D sigma, then a local algorithm also can be used in a few more non-similarity \"device sigma\" cases because an axis-aligned non-uniform scale matrix can still be represented locally.",
+      "range": {
+        "startLine": 2023,
+        "startChar": 0,
+        "endLine": 2023,
+        "endChar": 90
+      },
+      "revId": "cffb4710bf3e1b3f69da0d2d6555f0244f9a3147",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af036a4c_23fbdafe",
+        "filename": "src/gpu/graphite/render/AnalyticRRectBlurRenderStep.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-24T14:44:23Z",
+      "side": 1,
+      "message": "I think this is basically just reconstructing `position`, right?",
+      "range": {
+        "startLine": 62,
+        "startChar": 0,
+        "endLine": 62,
+        "endChar": 76
+      },
+      "revId": "cffb4710bf3e1b3f69da0d2d6555f0244f9a3147",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eff0b038_dbc26cbf",
+        "filename": "src/gpu/graphite/render/AnalyticRRectBlurRenderStep.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-24T14:44:23Z",
+      "side": 1,
+      "message": "Eventually, some of this could be simplified by relying on functions like `makeOutset`",
+      "range": {
+        "startLine": 93,
+        "startChar": 0,
+        "endLine": 96,
+        "endChar": 40
+      },
+      "revId": "cffb4710bf3e1b3f69da0d2d6555f0244f9a3147",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bbef5b29_8aa612bb",
         "filename": "src/sksl/sksl_graphite_frag.sksl",
         "patchSetId": 17
@@ -19,6 +88,99 @@
         "startChar": 43,
         "endLine": 1869,
         "endChar": 46
+      },
+      "revId": "cffb4710bf3e1b3f69da0d2d6555f0244f9a3147",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf1b1d10_c48871b5",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 17
+      },
+      "lineNbr": 1869,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-24T14:44:23Z",
+      "side": 1,
+      "message": "Right now we usually just have a big // KEEP IN SYNC. We haven\u0027t figured out a system for embedding C++ constants into the sksl, although that would be handy.",
+      "parentUuid": "bbef5b29_8aa612bb",
+      "range": {
+        "startLine": 1869,
+        "startChar": 43,
+        "endLine": 1869,
+        "endChar": 46
+      },
+      "revId": "cffb4710bf3e1b3f69da0d2d6555f0244f9a3147",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a240a653_9b9a8844",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 17
+      },
+      "lineNbr": 1870,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-24T14:44:23Z",
+      "side": 1,
+      "message": "What could be causing the visual shift is a mismatch with how the LUT is defined and how we\u0027re accessing it. If it is 256 values, it probably stored x\u003d0 into texel 0 but that is sampled as float texel coord \u003d 0.5.  The final value at x\u003d1 into texel 255 is sampled as 255.5.  If we\u0027re not adjusting the normalization range to fit that here, or in how we filled out the table, then it could bias the lookup.",
+      "range": {
+        "startLine": 1870,
+        "startChar": 33,
+        "endLine": 1870,
+        "endChar": 38
+      },
+      "revId": "cffb4710bf3e1b3f69da0d2d6555f0244f9a3147",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ad03b89_3d51f890",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 17
+      },
+      "lineNbr": 2036,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-24T14:44:23Z",
+      "side": 1,
+      "message": "Is this meant to check all fields of `f`?",
+      "range": {
+        "startLine": 2036,
+        "startChar": 8,
+        "endLine": 2036,
+        "endChar": 32
+      },
+      "revId": "cffb4710bf3e1b3f69da0d2d6555f0244f9a3147",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fac1e227_a890f78b",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 17
+      },
+      "lineNbr": 2040,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-24T14:44:23Z",
+      "side": 1,
+      "message": "`coords` is in the local coordinate space here (which is a good thing, since that\u0027s what gives us the transform flexibility). But it means that a lot of the comments above in the eval functions that discuss pixels are misleading.",
+      "range": {
+        "startLine": 2040,
+        "startChar": 0,
+        "endLine": 2040,
+        "endChar": 24
       },
       "revId": "cffb4710bf3e1b3f69da0d2d6555f0244f9a3147",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"

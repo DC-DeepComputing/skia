@@ -39,6 +39,30 @@
       },
       "revId": "f1f377d3ebc4cdfa5f42a7e59163aed2151e8c7d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8aa3b413_b05658c7",
+        "filename": "src/gpu/graphite/render/AnalyticRRectBlurRenderStep.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-24T14:44:23Z",
+      "side": 1,
+      "message": "What we can hopefully do is have one pre-defined vertex/index array that we can then use with instanced rendering, and lean on the vertex shader to place all the vertices exactly.",
+      "parentUuid": "ffa1559d_9de66066",
+      "range": {
+        "startLine": 155,
+        "startChar": 4,
+        "endLine": 156,
+        "endChar": 34
+      },
+      "revId": "f1f377d3ebc4cdfa5f42a7e59163aed2151e8c7d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
