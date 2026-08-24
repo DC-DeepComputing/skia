@@ -14,6 +14,7 @@ filegroup(
         "fontations.cpp",
         "fontations_cbdt.cpp",
         "fontations_ebdt.cpp",
+        "literata_cap_height.cpp",
         "palette.cpp",
     ],
     visibility = ["//tools/viewer:__pkg__"],

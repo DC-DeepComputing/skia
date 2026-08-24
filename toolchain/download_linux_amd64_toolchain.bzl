@@ -168,6 +168,16 @@ debs_to_install = [
         "sha256": "969e9197d8b8a36780f9b5d86f7c3066cdfef9dd7cdc3aee59a1870415c53578",
         "url": "http://ftp.debian.org/debian/pool/main/libg/libglvnd/libgles-dev_1.3.2-1_amd64.deb",
     },
+    {
+        # https://packages.debian.org/bullseye/amd64/libgbm-dev/download
+        "sha256": "47d53d5959ef7a6c326c8487db7b33911718616e7d9832f2793691ed4458fb03",
+        "url": "https://ftp.debian.org/debian/pool/main/m/mesa/libgbm-dev_20.3.5-1_amd64.deb",
+    },
+    {
+        # https://packages.debian.org/bullseye/amd64/libgbm1/download
+        "sha256": "2d9b07282e46e3c9398613b6d4fe86c3259e4326b158be7e1f4f58cab541156c",
+        "url": "https://ftp.debian.org/debian/pool/main/m/mesa/libgbm1_20.3.5-1_amd64.deb",
+    },
 ]
 
 def _download_and_extract_deb(ctx, deb, sha256, prefix, output = ""):

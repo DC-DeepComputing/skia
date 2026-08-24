@@ -250,6 +250,7 @@ gm_sources = [
   "$_gm/lcdtext.cpp",
   "$_gm/lighting.cpp",
   "$_gm/linepaths.cpp",
+  "$_gm/literata_cap_height.cpp",
   "$_gm/localmatriximagefilter.cpp",
   "$_gm/localmatriximageshader.cpp",
   "$_gm/localmatrixshader.cpp",

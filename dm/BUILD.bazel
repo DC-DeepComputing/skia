@@ -30,6 +30,7 @@ skia_cc_binary(
         "//tests:pathops_tests_sources",
         "//tests:tests_hdrs",
         "//tests:tests_sources",
+        "//gm:gm_subset",
         "//tools/flags:common_flags_config",
         "//src/utils:canvas_state_utils",
     ] + select({
