@@ -15,9 +15,12 @@
 #include "src/gpu/graphite/geom/AnalyticBlurMask.h"
 #include "src/gpu/graphite/geom/CoverageMaskShape.h"
 #include "src/gpu/graphite/geom/EdgeAAQuad.h"
+#include "src/gpu/graphite/geom/EndCaps.h"
 #include "src/gpu/graphite/geom/Rect.h"
 #include "src/gpu/graphite/geom/Shape.h"
 #include "src/gpu/graphite/geom/SubRunData.h"
+#include "src/gpu/graphite/geom/WideTiles.h"
+#include "src/gpu/graphite/sparse_strips/SparseStripsConfig.h"
 
 #include <cstdint>
 #include <new>
@@ -33,7 +36,16 @@ namespace skgpu::graphite {
 class Geometry {
 public:
     enum class Type : uint8_t {
-        kEmpty, kShape, kVertices, kMesh, kSubRun, kEdgeAAQuad, kCoverageMaskShape, kAnalyticBlur
+        kEmpty,
+        kShape,
+        kVertices,
+        kMesh,
+        kSubRun,
+        kEdgeAAQuad,
+        kCoverageMaskShape,
+        kAnalyticBlur,
+        kWideTiles,
+        kEndCaps,
     };
 
     Geometry() {}
@@ -47,6 +59,12 @@ public:
     explicit Geometry(const SkMesh& mesh) { this->setMesh(mesh); }
     explicit Geometry(const CoverageMaskShape& mask) { this->setCoverageMaskShape(mask); }
     explicit Geometry(const AnalyticBlurMask& blur) { this->setAnalyticBlur(blur); }
+    explicit Geometry(const WideTiles<SparseStripConfig::kTileHeight>& wideTiles) {
+        this->setWideTiles(wideTiles);
+    }
+    explicit Geometry(const EndCaps<SparseStripConfig::kTileHeight>& endCaps) {
+        this->setEndCaps(endCaps);
+    }
 
     ~Geometry() { this->setType(Type::kEmpty); }
 
@@ -84,6 +102,14 @@ public:
                     this->setAnalyticBlur(geom.analyticBlurMask());
                     geom.setType(Type::kEmpty);
                     break;
+                case Type::kWideTiles:
+                    this->setWideTiles(geom.wideTiles());
+                    geom.setType(Type::kEmpty);
+                    break;
+                case Type::kEndCaps:
+                    this->setEndCaps(geom.endCaps());
+                    geom.setType(Type::kEmpty);
+                    break;
             }
         }
         return *this;
@@ -99,6 +125,8 @@ public:
             case Type::kCoverageMaskShape:
                     this->setCoverageMaskShape(geom.coverageMaskShape()); break;
             case Type::kAnalyticBlur: this->setAnalyticBlur(geom.analyticBlurMask()); break;
+            case Type::kWideTiles: this->setWideTiles(geom.wideTiles()); break;
+            case Type::kEndCaps: this->setEndCaps(geom.endCaps()); break;
             default: break;
         }
         return *this;
@@ -113,6 +141,8 @@ public:
     bool isEdgeAAQuad() const { return fType == Type::kEdgeAAQuad; }
     bool isCoverageMaskShape() const { return fType == Type::kCoverageMaskShape; }
     bool isAnalyticBlur() const { return fType == Type::kAnalyticBlur; }
+    bool isWideTiles() const { return fType == Type::kWideTiles; }
+    bool isEndCaps() const { return fType == Type::kEndCaps; }
     bool isEmpty() const {
         return fType == (Type::kEmpty) || (this->isShape() &&
                                            this->shape().isEmpty() &&
@@ -134,6 +164,12 @@ public:
     sk_sp<SkVertices> refVertices() const {
         SkASSERT(this->isVertices());
         return fVertices;
+    }
+    const WideTiles<SparseStripConfig::kTileHeight>& wideTiles() const {
+        SkASSERT(this->isWideTiles()); return fWideTiles;
+    }
+    const EndCaps<SparseStripConfig::kTileHeight>& endCaps() const {
+        SkASSERT(this->isEndCaps()); return fEndCaps;
     }
     const SkMesh& mesh() const { SkASSERT(this->isMesh()); return fMesh; }
 
@@ -198,6 +234,24 @@ public:
         }
     }
 
+    void setWideTiles(const WideTiles<SparseStripConfig::kTileHeight>& wideTiles) {
+        if (fType == Type::kWideTiles) {
+            fWideTiles = wideTiles;
+        } else {
+            this->setType(Type::kWideTiles);
+            new (&fWideTiles) WideTiles<SparseStripConfig::kTileHeight>(wideTiles);
+        }
+    }
+
+    void setEndCaps(const EndCaps<SparseStripConfig::kTileHeight>& endCaps) {
+        if (fType == Type::kEndCaps) {
+            fEndCaps = endCaps;
+        } else {
+            this->setType(Type::kEndCaps);
+            new (&fEndCaps) EndCaps<SparseStripConfig::kTileHeight>(endCaps);
+        }
+    }
+
     // Bounds are relative to the mask coordinate space defined by maskToDevice(). If maskToDevice()
     // returns null, the bounds are relative to the original local-to-device transofrm of the draw.
     Rect bounds() const {
@@ -210,6 +264,8 @@ public:
             case Type::kEdgeAAQuad: return fEdgeAAQuad.bounds();
             case Type::kCoverageMaskShape: return fCoverageMaskShape.bounds();
             case Type::kAnalyticBlur: return fAnalyticBlurMask.drawBounds();
+            case Type::kWideTiles: return Rect(0, 0, 0, 0); // These are unused, as the geometry
+            case Type::kEndCaps: return Rect(0, 0, 0, 0);   // is generated after clipping
         }
         SkUNREACHABLE;
     }
@@ -252,6 +308,10 @@ private:
             fCoverageMaskShape.~CoverageMaskShape();
         } else if (this->isAnalyticBlur() && type != Type::kAnalyticBlur) {
             fAnalyticBlurMask.~AnalyticBlurMask();
+        } else if (this->isWideTiles() && type != Type::kWideTiles) {
+            fWideTiles.~WideTiles<SparseStripConfig::kTileHeight>();
+        } else if (this->isEndCaps() && type != Type::kEndCaps) {
+            fEndCaps.~EndCaps<SparseStripConfig::kTileHeight>();
         }
         fType = type;
     }
@@ -265,6 +325,8 @@ private:
         EdgeAAQuad fEdgeAAQuad;
         CoverageMaskShape fCoverageMaskShape;
         AnalyticBlurMask fAnalyticBlurMask;
+        WideTiles<SparseStripConfig::kTileHeight> fWideTiles;
+        EndCaps<SparseStripConfig::kTileHeight> fEndCaps;
     };
 };
 

@@ -9,10 +9,11 @@
 #include "bench/BenchmarkDataset.h"
 #include "include/core/SkPath.h"
 #include "include/private/SkTDArray.h"
+#include "src/gpu/graphite/geom/EndCaps.h"
+#include "src/gpu/graphite/geom/WideTiles.h"
 #include "src/gpu/graphite/sparse_strips/Flatten.h"
 #include "src/gpu/graphite/sparse_strips/MSAA_LUT.h"
 #include "src/gpu/graphite/sparse_strips/MakeStrips.h"
-#include "src/gpu/graphite/sparse_strips/Strip.h"
 #include "src/gpu/graphite/sparse_strips/Tiler.h"
 
 namespace skgpu::graphite {
@@ -21,11 +22,15 @@ template <uint16_t kTileWidth, uint16_t kTileHeight, BenchmarkDataset kDataset>
 class CoverageBench : public Benchmark {
 public:
     using MakeStripsFn = void (*)(const Tiles<kTileWidth, kTileHeight>&,
-                                  SkTDArray<Strip>*,
+                                  WideTiles<kTileHeight>&,
+                                  EndCaps<kTileHeight>&,
+                                  AlphaAtlasManager*,
                                   SkTDArray<uint8_t>*,
                                   SkPathFillType,
                                   const Polyline&,
                                   const SkTDArray<uint8_t>&,
+                                  uint16_t viewportWidth,
+                                  uint16_t viewportHeight,
                                   MsaaExactMaskObserver);
 
     CoverageBench(const char* name, MakeStripsFn func) : fFunc(func) {
@@ -51,12 +56,17 @@ protected:
     }
 
     void onDraw(int loops, SkCanvas* /*canvas*/) override {
-        SkTDArray<Strip> strips;
+        using DatasetInfo = BenchmarkDatasetInfo<kDataset>;
+        WideTiles<kTileHeight> wides;
+        EndCaps<kTileHeight> ends;
         SkTDArray<uint8_t> alphas;
         for (int i = 0; i < loops; ++i) {
-            fFunc(fTiles, &strips, &alphas, SkPathFillType::kDefault, fPolyline, fLUT,
+            fFunc(fTiles, wides, ends, /*atlasManager=*/nullptr, &alphas,
+                  SkPathFillType::kDefault, fPolyline, fLUT,
+                  DatasetInfo::kWidth, DatasetInfo::kHeight,
                   /*MsaaExactMaskObserver=*/nullptr);
-            strips.resize(0);
+            wides.clear();
+            ends.clear();
             alphas.resize(0);
         }
     }

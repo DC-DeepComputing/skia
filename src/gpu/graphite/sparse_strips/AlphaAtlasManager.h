@@ -10,9 +10,11 @@
 #include "include/core/SkColorType.h"
 #include "include/private/SkTDArray.h"
 #include "src/gpu/graphite/TextureProxy.h"
+#include "src/gpu/graphite/geom/EndCaps.h"
+#include "src/gpu/graphite/sparse_strips/SparseStripsConfig.h"
 
+#include <algorithm>
 #include <cstdint>
-#include <queue>
 #include <vector>
 
 namespace skgpu::graphite {
@@ -22,56 +24,52 @@ class Recorder;
 
 class AlphaAtlasManager {
 public:
-    static constexpr int32_t kAtlasWidth = 8192;
-    static constexpr int32_t kAtlasDimsBytes = kAtlasWidth * 4;
-    static constexpr int32_t kInitialAtlasHeight = 32;
-    static constexpr int32_t kMaxAtlasHeight = 4096;
-    static constexpr int32_t kMaxCapBytes = kAtlasWidth * kMaxAtlasHeight * 4;
-    static constexpr int32_t kMaxPages = 2;
-    static constexpr SkColorType kColorType = SkColorType::kRGBA_8888_SkColorType;
+    struct AlphaAllocation {
+        uint8_t* fWritePtr   = nullptr;
+        int32_t  fAlphaIndex = 0;       // Page-local byte offset
+        uint16_t fTexPage    = 0;       // Draw-local index into ends.proxies() (0 or 1)
+        bool     fSuccess    = false;   // True if allocation succeeded within draw's max pages
+    };
 
     AlphaAtlasManager(Recorder* recorder);
 
-    SkTDArray<uint8_t>& getAlphaBuffer() {
-        SkASSERT(!fMarked);
-        SkDEBUGCODE(fMarked = true;)
-        initializeTexture();
-        fMarkedStart = fTextures.back().fAlphaBuffer.size();
-        return fTextures.back().fAlphaBuffer;
+    AlphaAllocation requestAlphaSpace(skia_private::TArray<sk_sp<TextureProxy>>& proxies,
+                                      int32_t numBytes);
+
+    template <uint16_t kTileHeight>
+    AlphaAllocation requestAlphaSpace(EndCaps<kTileHeight>& ends, int32_t numBytes) {
+        return this->requestAlphaSpace(ends.proxyArray(), numBytes);
     }
 
-    int32_t getUploadOffset() const {
-        SkASSERT(!fTextures.empty() && fTextures.back().fTexture);
-        return fTextures.back().fUploadSize;
-    }
-
-    bool getAssociatedProxies(SkTDArray<std::pair<int32_t, sk_sp<TextureProxy>>>& allocations);
-
-    bool initializeTexture();
     void recordUploads(DrawContext* dc);
     void freeGpuResources();
 
-private:
-#if defined(GPU_TEST_UTILS)
-    template <uint16_t, uint16_t> friend class CoverageTestRunner;
-    void resetBuffer() { fTextures.back().fAlphaBuffer.clear(); }
-    uint8_t getAlpha(int32_t index) const { return fTextures.back().fAlphaBuffer[index]; }
-#endif
+    size_t numPages() const { return fPages.size(); }
+    int32_t activePageRowCount() const {
+        return (fActivePageIndex >= 0 && fActivePageIndex < static_cast<int32_t>(fPages.size()))
+                       ? fPages[fActivePageIndex].fRowCount
+                       : 0;
+    }
+    sk_sp<TextureProxy> getPageProxy(size_t index) const {
+        return (index < fPages.size()) ? fPages[index].fTexture : nullptr;
+    }
 
-    struct TextureState {
-        int32_t fCurrentHeight = kInitialAtlasHeight;
-        int32_t fUploadSize = 0;
+private:
+    struct TexturePage {
         sk_sp<TextureProxy> fTexture;
+        int32_t fRowCount = SparseStripConfig::kInitialAtlasRows;
+        int32_t fCapacityBytes = SparseStripConfig::kAtlasWidthBytes;
+        int32_t fUsedBytes = 0;
+        int32_t fUploadedRows = 0;
         SkTDArray<uint8_t> fAlphaBuffer;
     };
 
-    bool makeTextureProxy(TextureState& state, int32_t height);
+    bool createNewPage(int32_t minRequiredBytes = 0);
 
     Recorder* fRecorder;
-    int32_t fMarkedStart = 0;
-    int32_t fConsumedBytes = 0;
-    std::queue<TextureState> fTextures;
-    SkDEBUGCODE(bool fMarked = false;)
+    std::vector<TexturePage> fPages;
+    int32_t fActivePageIndex = -1;
+    int32_t fNextPageRowCount = SparseStripConfig::kInitialAtlasRows;
 };
 
 }  // namespace skgpu::graphite
