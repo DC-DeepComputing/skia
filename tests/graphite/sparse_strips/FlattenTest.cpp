@@ -405,7 +405,7 @@ template <FlattenMode kMode> class FlattenTestRunner {
         const float kViewH = 100.0f;
 
         enum class Expect {
-            kCulled,      // Removed: Init NaN + Start pt + Cull NaN + Last pt + Start pt (5 points)
+            kCulled,      // Completely dropped: Start pt + NaN + lastPt + startPt (4 points)
             kSimplified,  // Left side simplification: Start pt + End pt + Close pt + NaN (4 points)
             kSubdivided   // Intersects viewport: Subdivided curve (> 4 points)
         };
@@ -420,8 +420,8 @@ template <FlattenMode kMode> class FlattenTestRunner {
             if (expect == Expect::kCulled) {
                 REPORTER_ASSERT(
                         reporter,
-                        count == 5,
-                        "[%s] Expected curve to be entirely culled (5 points), got %d points",
+                        count == 4,
+                        "[%s] Expected curve to be entirely culled (4 points), got %d points",
                         testName,
                         count);
             } else if (expect == Expect::kSimplified) {
