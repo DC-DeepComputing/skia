@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c32048d7_7df5f09f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-24T14:47:55Z",
+      "side": 1,
+      "message": "Only tangentially related, but when we finally get to doing blurs in compute, it\u0027ll be plugged into the SkBlurEngine as an Algorithm subclass.",
+      "revId": "61ba30ae9d4134dc6fdef895327952d120238d5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
