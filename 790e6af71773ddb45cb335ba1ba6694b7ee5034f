@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a08c34b_a7d0d4eb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-08-24T17:13:07Z",
+      "side": 1,
+      "message": "I think the new API is a better fit for the ICO usecase/scenario.  Quick question (just to double-check / I won\u0027t really know): can these Skia-side changes potentially temporarily break Chromium tests and/or in-the-wild scenarios?",
+      "revId": "790e6af71773ddb45cb335ba1ba6694b7ee5034f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1af6527_3dafe797",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-08-24T17:13:07Z",
+      "side": 1,
+      "message": "nit: Let\u0027s default to `SkASSERT_RELEASE`?\n\nSee https://chromium.googlesource.com/chromium/src/+/HEAD/styleguide/c++/checks.md#invariant_verification-mechanisms which says to \"Prefer `CHECK()` and `NOTREACHED()` over `DCHECK()`\"",
+      "range": {
+        "startLine": 313,
+        "startChar": 4,
+        "endLine": 313,
+        "endChar": 12
+      },
+      "revId": "790e6af71773ddb45cb335ba1ba6694b7ee5034f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
