@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc83166b_e06600bd",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-08-24T13:37:51Z",
+      "side": 1,
+      "message": "should we remove this function? is it used elsewhere after this fix?",
+      "range": {
+        "startLine": 327,
+        "startChar": 1,
+        "endLine": 329,
+        "endChar": 64
+      },
+      "revId": "9162dc1748f9f3aa7164550d540397205b977d6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
