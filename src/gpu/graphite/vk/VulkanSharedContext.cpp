@@ -126,6 +126,7 @@ VulkanSharedContext::~VulkanSharedContext() {
         fPipelineCache = VK_NULL_HANDLE;
     }
     fThreadSafeResourceProvider.reset();
+    this->destroyCaptureManager();
 
     // need to clear out resources before the allocator is removed
     this->globalCache()->deleteResources();
