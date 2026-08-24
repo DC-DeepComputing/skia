@@ -1,0 +1,257 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a699c93_a3698beb",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-24T13:32:54Z",
+      "side": 1,
+      "message": "As a follow-up, do you mind doing an audit of the places where we call getTextureInfoForSampledCopy and see if we can replace them with getTextureInfoForReadableCopy.\n\nIt may be that some code paths (like dst-copy) are trivial since they are always 1:1, but CopyAsDraw might need to branch since it may need filtering if it\u0027s doing a resolution change.",
+      "range": {
+        "startLine": 166,
+        "startChar": 0,
+        "endLine": 166,
+        "endChar": 72
+      },
+      "revId": "94dff4198e34c093629b92e8cd427567237ddf07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2eec994e_d19ac33f",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 528,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-24T13:32:54Z",
+      "side": 1,
+      "message": "Because this is automatically applied by Caps, we can keep it private and simplify the getTextureUsage() impls changes.",
+      "range": {
+        "startLine": 528,
+        "startChar": 18,
+        "endLine": 528,
+        "endChar": 35
+      },
+      "revId": "94dff4198e34c093629b92e8cd427567237ddf07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cca71792_628beea5",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 622,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-24T13:32:54Z",
+      "side": 1,
+      "message": "YUV image shaders are going to need similar logic, but because they play games with the sampling on a per-plane basis (and return null from AsView()), the logic in TextureUtils will have to be handled a little differently for their views.",
+      "range": {
+        "startLine": 619,
+        "startChar": 4,
+        "endLine": 622,
+        "endChar": 98
+      },
+      "revId": "94dff4198e34c093629b92e8cd427567237ddf07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33e729ea_91002093",
+        "filename": "src/gpu/graphite/TextureUtils.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 682,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-24T13:32:54Z",
+      "side": 1,
+      "message": "At this point in the function, if we have `result`, we can assume it\u0027s graphite backed.  AsView also does the right thing if `result` is null so I think the outer if can go away completely.",
+      "range": {
+        "startLine": 682,
+        "startChar": 15,
+        "endLine": 682,
+        "endChar": 51
+      },
+      "revId": "94dff4198e34c093629b92e8cd427567237ddf07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4271f02_21f1b32f",
+        "filename": "src/gpu/graphite/TextureUtils.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 685,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-24T13:32:54Z",
+      "side": 1,
+      "message": "You can shorten this to just `SkFilterMode::kNearest`, since SkSamplingOptions intentionally has implicit constructors to support brevity.",
+      "range": {
+        "startLine": 685,
+        "startChar": 23,
+        "endLine": 685,
+        "endChar": 86
+      },
+      "revId": "94dff4198e34c093629b92e8cd427567237ddf07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20e28208_5836d470",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-24T13:32:54Z",
+      "side": 1,
+      "message": "Can be assumed since the format flags get masked in afterwards.",
+      "range": {
+        "startLine": 179,
+        "startChar": 12,
+        "endLine": 185,
+        "endChar": 13
+      },
+      "revId": "94dff4198e34c093629b92e8cd427567237ddf07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a3ea679_d49c31d8",
+        "filename": "src/gpu/graphite/dawn/DawnGraphiteUtils.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-24T13:32:54Z",
+      "side": 1,
+      "message": "Do we need to add DawnFormatFlag::kRead or can we just have this logic inside DawnCaps when it builds the TextureUsage mask?\n\nI don\u0027t think there are any wgpu::TextureFormats that currently report kNone for these flags but should be upgraded to have kRead.",
+      "range": {
+        "startLine": 84,
+        "startChar": 7,
+        "endLine": 88,
+        "endChar": 9
+      },
+      "revId": "94dff4198e34c093629b92e8cd427567237ddf07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b2d9feb_35d1a919",
+        "filename": "src/gpu/graphite/mtl/MtlCaps.mm",
+        "patchSetId": 9
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-24T13:32:54Z",
+      "side": 1,
+      "message": "We can always include kSample here, and rely on the same trick that is used for adding kCopySrc | kCopyDst below (these usages are masked against the cached format usages automatically).",
+      "range": {
+        "startLine": 251,
+        "startChar": 12,
+        "endLine": 256,
+        "endChar": 13
+      },
+      "revId": "94dff4198e34c093629b92e8cd427567237ddf07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a05cc25_a159369b",
+        "filename": "src/gpu/graphite/mtl/MtlCaps.mm",
+        "patchSetId": 9
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-24T13:32:54Z",
+      "side": 1,
+      "message": "nit: For this function, the calling context is that this is the `info` for an existing texture (or about to be created texture), so if we assume it succeeded with the usage flags, we can skip the check for NotAvailable and just always add kRead.",
+      "range": {
+        "startLine": 257,
+        "startChar": 12,
+        "endLine": 259,
+        "endChar": 13
+      },
+      "revId": "94dff4198e34c093629b92e8cd427567237ddf07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e6971ae_78c6a465",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 865,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-24T13:32:54Z",
+      "side": 1,
+      "message": "Same as in MtlCaps, we can always add kSample | kRead here, and let them be masked off after the fact.",
+      "range": {
+        "startLine": 859,
+        "startChar": 8,
+        "endLine": 865,
+        "endChar": 9
+      },
+      "revId": "94dff4198e34c093629b92e8cd427567237ddf07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fdcae5e0_ac52f0e4",
+        "filename": "tests/graphite/TextureFormatTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 1207,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-24T13:32:54Z",
+      "side": 1,
+      "message": "nit: can you move these checks above the \"Test all combinations\" comment? That keeps the asserts grouped by properties and then the transferring logic.",
+      "range": {
+        "startLine": 1188,
+        "startChar": 20,
+        "endLine": 1207,
+        "endChar": 21
+      },
+      "revId": "94dff4198e34c093629b92e8cd427567237ddf07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
