@@ -166,6 +166,10 @@ public:
     const VelloRenderer* velloRenderer() const { return fVelloRenderer.get(); }
 #endif
 
+    const Renderer* sparseStripsEndCap() const { return &fSparseStrips[0]; }
+    const Renderer* sparseStripsWideTile() const { return &fSparseStrips[1]; }
+    SkSpan<const Renderer> sparseStrips() const { return {fSparseStrips, 2}; }
+
 private:
     static constexpr int kPathTypeCount = 4;
     static constexpr int kVerticesCount = 4; // 2 color configs * 2 tex coord configs
@@ -216,6 +220,8 @@ private:
 
     Renderer fVertices[kVerticesCount];
     Renderer fMesh;
+
+    Renderer fSparseStrips[2]; // kEndCap, and kStrip
 
     // Aggregate of all enabled Renderers for convenient iteration when pre-compiling
     skia_private::TArray<const Renderer*> fRenderers;
