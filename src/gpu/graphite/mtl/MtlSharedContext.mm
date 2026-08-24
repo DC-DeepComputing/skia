@@ -87,6 +87,7 @@ MtlSharedContext::MtlSharedContext(sk_cfp<id<MTLDevice>> device,
 
 MtlSharedContext::~MtlSharedContext() {
     fThreadSafeResourceProvider.reset();
+    this->destroyCaptureManager();
 
     // need to clear out resources before the allocator (if any) is removed
     this->globalCache()->deleteResources();
