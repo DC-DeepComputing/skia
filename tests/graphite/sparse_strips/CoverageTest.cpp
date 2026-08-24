@@ -5,11 +5,15 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkCanvas.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkPathBuilder.h"
+#include "include/core/SkPathUtils.h"
+#include "include/core/SkPicture.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
+#include "include/core/SkStream.h"
 #include "include/core/SkString.h"
 #include "include/private/SkTDArray.h"
 #include "src/gpu/graphite/sparse_strips/Flatten.h"
@@ -19,10 +23,15 @@
 #include "src/gpu/graphite/sparse_strips/Strip.h"
 #include "src/gpu/graphite/sparse_strips/Tiler.h"
 #include "tests/Test.h"
+#include "tests/graphite/sparse_strips/CoverageTestUtils.h"
+#include "tools/Resources.h"
+#include "tools/ToolUtils.h"
 
+#include <algorithm>
 #include <array>
 #include <cmath>
 #include <cstdint>
+#include <vector>
 
 namespace skgpu::graphite {
 
@@ -309,7 +318,7 @@ private:
         SkTDArray<uint8_t> alphaBuf;
         SkTDArray<uint8_t> exactMasks;
 
-        auto observer = [&](uint8_t exactMask) { exactMasks.push_back(exactMask); };
+        auto observer = [&](uint8_t exactMask, skvx::int8) { exactMasks.push_back(exactMask); };
         fFunc(tiler, &stripBuf, &alphaBuf, /*isInverse=*/false, polyline, lut, observer);
 
         if (stripBuf.empty()) {
@@ -435,6 +444,16 @@ DEF_TEST(SparseStrips_CoverageSIMD_8x8, reporter) {
     skgpu::graphite::CoverageTestRunner<8, 8> simdRunner(
             &skgpu::graphite::CoverageTestRunner<8, 8>::RunSimdWinding, "SIMD");
     simdRunner.runAll(reporter);
+}
+
+DEF_TEST(SparseStrips_Coverage_SKP_SIMD_4x4, reporter) {
+    const SkTDArray<uint8_t> lut = GenerateMSAALUT<uint8_t>();
+    SkpValidator::ValidateSkp<4, 4>(reporter, "skps/desk_tiger8svg.skp", lut, /*useSimd=*/true);
+}
+
+DEF_TEST(SparseStrips_Coverage_SKP_SIMD_8x8, reporter) {
+    const SkTDArray<uint8_t> lut = GenerateMSAALUT<uint8_t>();
+    SkpValidator::ValidateSkp<8, 8>(reporter, "skps/desk_tiger8svg.skp", lut, /*useSimd=*/true);
 }
 
 }  // namespace skgpu::graphite
