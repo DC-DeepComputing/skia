@@ -212,6 +212,30 @@
       },
       "revId": "64e3c0fbac0667fdcc2905eabb9414cf779b83c8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c737df5_3337842d",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 421,
+      "author": {
+        "id": 4569768
+      },
+      "writtenOn": "2026-08-24T11:36:09Z",
+      "side": 1,
+      "message": "Done. ICO entries are no longer exposed as SkCodec animation frames. I also added the small Skia API needed by the follow-up Chromium change: MakeFromStream() returns the concrete SkIcoRustCodec, which exposes the embedded image count and dimensions. Blink can use this to preserve size selection through an ICO-specific adapter.",
+      "parentUuid": "01a263c3_0fa8ca80",
+      "range": {
+        "startLine": 421,
+        "startChar": 7,
+        "endLine": 421,
+        "endChar": 30
+      },
+      "revId": "64e3c0fbac0667fdcc2905eabb9414cf779b83c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
