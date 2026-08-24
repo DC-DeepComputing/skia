@@ -39,6 +39,80 @@
       },
       "revId": "790e6af71773ddb45cb335ba1ba6694b7ee5034f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "539600e2_f65415c3",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-08-24T20:46:37Z",
+      "side": 1,
+      "message": "nit: `std::numeric_limits\u003cfloat\u003e::max()`",
+      "range": {
+        "startLine": 321,
+        "startChar": 21,
+        "endLine": 321,
+        "endChar": 84
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "6bfc22e0_39bc3208",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+              "range": {
+                "startLine": 1,
+                "startChar": 0,
+                "endLine": 1,
+                "endChar": 0
+              },
+              "replacement": "#include \u003climits\u003e\n"
+            },
+            {
+              "path": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+              "range": {
+                "startLine": 321,
+                "startChar": 0,
+                "endLine": 322,
+                "endChar": 0
+              },
+              "replacement": "    float minError \u003d std::numeric_limits\u003cfloat\u003e::max();\n"
+            }
+          ]
+        }
+      ],
+      "revId": "790e6af71773ddb45cb335ba1ba6694b7ee5034f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f0d0433_05b5b1ca",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 443,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-08-24T20:46:37Z",
+      "side": 1,
+      "message": "Is scanline decoding for PNG entries not supported?\n\nTaking a step back, how is scanline decoding related to the main issue?  Kinda feels like a separate feature/cl, can it be split out easily?  I don\u0027t know if we have any test coverage for it either.",
+      "range": {
+        "startLine": 443,
+        "startChar": 12,
+        "endLine": 443,
+        "endChar": 31
+      },
+      "revId": "790e6af71773ddb45cb335ba1ba6694b7ee5034f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
