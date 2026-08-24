@@ -22,6 +22,30 @@
       },
       "revId": "9162dc1748f9f3aa7164550d540397205b977d6f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e6e9ea1_f3cf32fd",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-08-24T14:01:15Z",
+      "side": 1,
+      "message": "Actually, I discussed it with Michael and it would be good to add a build time  flag to switch between pack4 and pack3. Could that be added please 🙏",
+      "parentUuid": "dc83166b_e06600bd",
+      "range": {
+        "startLine": 327,
+        "startChar": 1,
+        "endLine": 329,
+        "endChar": 64
+      },
+      "revId": "9162dc1748f9f3aa7164550d540397205b977d6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
