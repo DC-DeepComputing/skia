@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 #include "src/gpu/ganesh/ops/DefaultPathRenderer.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPath.h"
@@ -401,7 +402,7 @@ private:
     int fFirstVertex;
     int fVerticesInChunk;
     SkPoint* fVertices;
-    SkPoint* fCurVert;
+    RAW_PTR_EXCLUSION SkPoint* fCurVert;
 
     sk_sp<const GrBuffer> fIndexBuffer;
     int fFirstIndex;

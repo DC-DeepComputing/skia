@@ -7,6 +7,7 @@
 
 #ifndef SkRasterPipelineOpContexts_DEFINED
 #define SkRasterPipelineOpContexts_DEFINED
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <algorithm>
 #include <cstddef>
@@ -33,7 +34,7 @@ inline static constexpr size_t kMaxScratchPerPatch =
 
 // These structs hold the context data for many of the Raster Pipeline ops.
 struct MemoryCtx {
-    void* pixels;
+    RAW_PTR_EXCLUSION void* pixels;
     int   stride;
 };
 
@@ -53,7 +54,7 @@ struct MemoryCtx {
 // To do all of this, the pipeline creates a MemoryCtxPatch for each unique MemoryCtx referenced by
 // the pipeline.
 struct MemoryCtxInfo {
-    MemoryCtx* context;
+    RAW_PTR_EXCLUSION MemoryCtx* context;
 
     int bytesPerPixel;
     bool load;
@@ -64,7 +65,7 @@ struct MemoryCtxPatch {
     std::byte scratch[kMaxScratchPerPatch];
 
     MemoryCtxInfo info;
-    void* backup;  // Remembers context->pixels so we can restore it
+    RAW_PTR_EXCLUSION void* backup;  // Remembers context->pixels so we can restore it
 };
 
 struct GatherCtx {
