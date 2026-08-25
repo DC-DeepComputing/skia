@@ -8,6 +8,8 @@ if (!defined(is_skia_standalone)) {
 
 is_skia_dev_build = is_skia_standalone && !is_official_build
 
+skia_root = get_path_info("..", "abspath")
+
 declare_args() {
   is_canvaskit = false
 }
@@ -126,8 +128,12 @@ declare_args() {
   #
   # While GCC is supported, it lacks CI coverage to catch regressions.
   # Therefore, we disable it by default on GCC builds.
-  skia_use_partition_alloc = is_clang
-  skia_partition_alloc_dir = "//third_party/externals/partition_alloc"
+  #
+  # Embedders like Flutter use this GN configuration but do not sync the
+  # partition_alloc dependency, so it is only enabled by default for
+  # standalone Skia builds.
+  skia_use_partition_alloc = is_skia_standalone && is_clang
+  skia_partition_alloc_dir = "$skia_root/third_party/externals/partition_alloc"
 }
 
 declare_args() {
