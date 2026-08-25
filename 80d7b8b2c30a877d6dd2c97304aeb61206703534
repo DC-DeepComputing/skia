@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f44ac33_8c71705a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-08-25T14:39:42Z",
+      "side": 1,
+      "message": "formatting nit: please wrap the description at 72 columns (there should be a \"Format\" button with editing to help with that).",
+      "revId": "80d7b8b2c30a877d6dd2c97304aeb61206703534",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "9e183e9a_3bad9d7e",
