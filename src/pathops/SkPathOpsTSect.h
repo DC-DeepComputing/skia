@@ -6,6 +6,7 @@
  */
 #ifndef SkPathOpsTSect_DEFINED
 #define SkPathOpsTSect_DEFINED
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include "include/core/SkScalar.h"
 #include "include/core/SkTypes.h"
@@ -226,7 +227,7 @@ private:
     SkTCoincident fCoinEnd;
     SkTSpanBounded* fBounded;
     SkTSpan* fPrev;
-    SkTSpan* fNext;
+    RAW_PTR_EXCLUSION SkTSpan* fNext;
     SkDRect fBounds;
     double fStartT;
     double fEndT;
@@ -354,7 +355,7 @@ private:
 
     const SkTCurve& fCurve;
     SkSTArenaAlloc<1024> fHeap;
-    SkTSpan* fHead;
+    RAW_PTR_EXCLUSION SkTSpan* fHead;
     SkTSpan* fCoincident;
     SkTSpan* fDeleted;
     int fActiveCount;

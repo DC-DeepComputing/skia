@@ -6,6 +6,7 @@
  */
 #ifndef SkOpCoincidence_DEFINED
 #define SkOpCoincidence_DEFINED
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include "include/core/SkTypes.h"
 #include "include/private/SkDebug.h"
@@ -127,7 +128,7 @@ public:
     void setNext(SkCoincidentSpans* next) { fNext = next; }
 
 private:
-    SkCoincidentSpans* fNext;
+    RAW_PTR_EXCLUSION SkCoincidentSpans* fNext;
     const SkOpPtT* fCoinPtTStart;
     const SkOpPtT* fCoinPtTEnd;
     const SkOpPtT* fOppPtTStart;
@@ -295,8 +296,8 @@ private:
     static double TRange(const SkOpPtT* overS, double t, const SkOpSegment* coinPtT
                          SkDEBUGPARAMS(const SkOpPtT* overE));
 
-    SkCoincidentSpans* fHead;
-    SkCoincidentSpans* fTop;
+    RAW_PTR_EXCLUSION SkCoincidentSpans* fHead;
+    RAW_PTR_EXCLUSION SkCoincidentSpans* fTop;
     SkOpGlobalState* fGlobalState;
     bool fContinue;
     bool fSpanDeleted;
