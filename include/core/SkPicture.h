@@ -16,6 +16,8 @@
 #include <atomic>
 #include <cstddef>
 #include <cstdint>
+#include <memory>
+#include "include/private/SkNoncopyable.h"
 
 class SkCanvas;
 class SkData;
@@ -25,6 +27,8 @@ class SkWStream;
 enum class SkFilterMode;
 struct SkDeserialProcs;
 struct SkSerialProcs;
+class SkRecord;
+class SkBBoxHierarchy;
 
 // TODO(kjlubick) Remove this after cleaning up clients
 #include "include/core/SkTileMode.h"  // IWYU pragma: keep
@@ -43,6 +47,18 @@ struct SkSerialProcs;
 */
 class SK_API SkPicture : public SkRefCnt {
 public:
+    class SK_API SnapshotArray : ::SkNoncopyable {
+    public:
+        SnapshotArray(const SkPicture* pics[], int count);
+        ~SnapshotArray();
+
+        const SkPicture* const* begin() const { return fPics; }
+        int count() const { return fCount; }
+    private:
+        const SkPicture** fPics;
+        int fCount;
+    };
+
     ~SkPicture() override;
 
     /** Recreates SkPicture that was serialized into a stream. Returns constructed SkPicture
@@ -133,7 +149,7 @@ public:
 
         example: https://fiddle.skia.org/c/@Picture_playback
     */
-    virtual void playback(SkCanvas* canvas, AbortCallback* callback = nullptr) const = 0;
+    void playback(SkCanvas* canvas, AbortCallback* callback = nullptr) const;
 
     /** Returns cull SkRect for this picture, passed in when SkPicture was created.
         Returned SkRect does not specify clipping SkRect for SkPicture; cull is hint
@@ -146,7 +162,7 @@ public:
 
         example: https://fiddle.skia.org/c/@Picture_cullRect
     */
-    virtual SkRect cullRect() const = 0;
+    SkRect cullRect() const { return fCullRect; }
 
     /** Returns a non-zero value unique among SkPicture in Skia process.
 
@@ -216,7 +232,7 @@ public:
 
         example: https://fiddle.skia.org/c/@Picture_approximateOpCount
     */
-    virtual int approximateOpCount(bool nested = false) const = 0;
+    int approximateOpCount(bool nested = false) const;
 
     /** Returns the approximate byte size of SkPicture. Does not include large objects
         referenced by SkPicture.
@@ -225,7 +241,7 @@ public:
 
         example: https://fiddle.skia.org/c/@Picture_approximateBytesUsed
     */
-    virtual size_t approximateBytesUsed() const = 0;
+    size_t approximateBytesUsed() const;
 
     /** Return a new shader that will draw with this picture.
      *
@@ -248,11 +264,16 @@ public:
     }
 
 private:
-    // Allowed subclasses.
-    SkPicture();
-    friend class SkBigPicture;
-    friend class SkEmptyPicture;
+    SkPicture(const SkRect& cull,
+              sk_sp<const SkRecord> record,
+              std::unique_ptr<const SnapshotArray> drawablePicts,
+              sk_sp<const SkBBoxHierarchy> bbh,
+              size_t approxBytesUsedBySubPictures);
+    SkPicture(const SkRect& cull, bool isPlaceholder);
+
     friend class SkPicturePriv;
+    friend class SkPictureRecorder;
+    friend class SkRecordedDrawable;
 
     void serialize(SkWStream*, const SkSerialProcs*, class SkRefCntSet* typefaces,
         bool textBlobsOnly=false) const;
@@ -273,9 +294,6 @@ private:
     static bool BufferIsSKP(class SkReadBuffer*, struct SkPictInfo*);
     friend bool SkPicture_StreamIsSKP(SkStream*, struct SkPictInfo*);
 
-    // Returns NULL if this is not an SkBigPicture.
-    virtual const class SkBigPicture* asSkBigPicture() const { return nullptr; }
-
     static bool IsValidPictInfo(const struct SkPictInfo& info);
     static sk_sp<SkPicture> Forwardport(const struct SkPictInfo&,
                                         const class SkPictureData*,
@@ -284,8 +302,14 @@ private:
     struct SkPictInfo createHeader() const;
     class SkPictureData* backport() const;
 
-    uint32_t fUniqueID;
-    mutable std::atomic<bool> fAddedToCache{false};
+    const uint32_t                       fUniqueID;
+    const SkRect                         fCullRect;
+    const size_t                         fApproxBytesUsedBySubPictures;
+    const sk_sp<const SkRecord>          fRecord;
+    const std::unique_ptr<const SnapshotArray> fDrawablePicts;
+    const sk_sp<const SkBBoxHierarchy>   fBBH;
+    const bool                           fIsPlaceholder;
+    mutable std::atomic<bool>            fAddedToCache{false};
 };
 
 #endif
