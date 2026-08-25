@@ -135,6 +135,8 @@ struct SK_API ContextOptions {
     bool fSetBackendLabels = false;
 #endif
 
+    bool fDrawListLayer = false;
+
     /**
      * Client-provided context that is passed to the client-provided PipelineCachingCallback
      * and the (deprecated) PipelineCallback.
