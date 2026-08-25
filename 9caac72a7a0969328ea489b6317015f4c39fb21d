@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f96cea4_6f9082a6",
+        "filename": "tests/graphite/sparse_strips/OracleValidator.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-25T14:52:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1e298336_e79d1f14",
+      "range": {
+        "startLine": 34,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 30
+      },
+      "revId": "9caac72a7a0969328ea489b6317015f4c39fb21d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f570626f_5c8e8f74",
@@ -54,6 +78,30 @@
       "writtenOn": "2026-08-25T14:41:26Z",
       "side": 1,
       "message": "Maybe just a \"const SkPath\" ?",
+      "range": {
+        "startLine": 88,
+        "startChar": 10,
+        "endLine": 88,
+        "endChar": 18
+      },
+      "revId": "9caac72a7a0969328ea489b6317015f4c39fb21d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df0c7b19_1f496c7d",
+        "filename": "tests/graphite/sparse_strips/OracleValidator.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-25T14:52:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f570626f_5c8e8f74",
       "range": {
         "startLine": 88,
         "startChar": 10,
