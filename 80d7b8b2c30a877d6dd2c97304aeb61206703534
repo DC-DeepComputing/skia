@@ -16,6 +16,23 @@
       "message": "Hi Kaylee — this is my first CanvasKit change, please say if any of this should be done differently.\n\nI ran into this building a CanvasKit documentation site: MakeCanvas is the only way to get an EmulatedCanvas2D, and it always allocates a raster surface, so it cannot run on a GPU. HTMLCanvas isn\u0027t exported either, so there\u0027s no workaround outside the module.\n\nThe change is focused on exactly that, and doesn\u0027t alter default behavior.",
       "revId": "80d7b8b2c30a877d6dd2c97304aeb61206703534",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a18ec0da_8573c088",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-08-25T14:34:52Z",
+      "side": 1,
+      "message": "Thanks Ivan!\n\nPlease also add your info to `AUTHORS`.",
+      "revId": "80d7b8b2c30a877d6dd2c97304aeb61206703534",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
