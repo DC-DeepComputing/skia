@@ -9,7 +9,12 @@ if (skia_use_partition_alloc && defined(skia_partition_alloc_dir)) {
   import("${skia_partition_alloc_dir}/partition_alloc.gni")
 }
 
+config("public_config") {
+  include_dirs = [ "$skia_root" ]
+}
+
 source_set("raw_ptr") {
+  public_configs = [ ":public_config" ]
   public = [
     "raw_ptr.h",
     "raw_ptr_exclusion.h",

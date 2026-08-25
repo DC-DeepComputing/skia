@@ -3,6 +3,7 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
+import("../../gn/skia.gni")
 import("skcms.gni")
 
 # Use for CPU-specific skcms transform code that needs particular compiler flags.
@@ -13,6 +14,10 @@ template("arch") {
       visibility = [ ":*" ]
       check_includes = false
       forward_variables_from(invoker, "*")
+      if (!defined(deps)) {
+        deps = []
+      }
+      deps += [ "$skia_root/src/partition_alloc:raw_ptr" ]
     }
   } else {
     # If not enabled, a phony empty target that swallows all otherwise unused variables.
@@ -96,5 +101,6 @@ static_library("skcms") {
   deps = [
     ":skcms_TransformHsw",
     ":skcms_TransformSkx",
+    "$skia_root/src/partition_alloc:raw_ptr",
   ]
 }
