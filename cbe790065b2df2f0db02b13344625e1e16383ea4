@@ -16,6 +16,23 @@
       "message": "Hi Robert,\nCould you please take a look?",
       "revId": "cbe790065b2df2f0db02b13344625e1e16383ea4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b25207d_ff186032",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-08-25T14:52:09Z",
+      "side": 1,
+      "message": "You can disregard the canary job for now:\n```\nTo run the G3 tryjob, changes must be either owned and authored by Googlers or approved (Code-Review+1) by Googlers.\n```\n\nI need to wait for an approval.",
+      "revId": "cbe790065b2df2f0db02b13344625e1e16383ea4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
