@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd971026_4ab21a87",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-25T18:43:24Z",
+      "side": 1,
+      "message": "PTAL;\n\nThis is a new system so the old comments are outdated.",
+      "revId": "933f84b06b24c9c2887d30e7151b2f8c47a87b3f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
