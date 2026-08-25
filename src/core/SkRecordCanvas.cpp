@@ -28,7 +28,6 @@
 #include "include/private/SkTemplates.h"
 #include "include/private/SkTo.h"
 #include "include/private/chromium/Slug.h"
-#include "src/core/SkBigPicture.h"
 #include "src/core/SkCanvasPriv.h"
 #include "src/core/SkRecord.h"
 #include "src/core/SkRecords.h"
@@ -59,7 +58,7 @@ SkDrawableList::~SkDrawableList() {
     fArray.reset();
 }
 
-SkBigPicture::SnapshotArray* SkDrawableList::newDrawableSnapshot() {
+SkPicture::SnapshotArray* SkDrawableList::newDrawableSnapshot() {
     const int count = fArray.size();
     if (0 == count) {
         return nullptr;
@@ -68,7 +67,7 @@ SkBigPicture::SnapshotArray* SkDrawableList::newDrawableSnapshot() {
     for (int i = 0; i < count; ++i) {
         pics[i] = fArray[i]->makePictureSnapshot().release();
     }
-    return new SkBigPicture::SnapshotArray(pics.release(), count);
+    return new SkPicture::SnapshotArray(pics.release(), count);
 }
 
 void SkDrawableList::append(SkDrawable* drawable) { *fArray.append() = SkRef(drawable); }
