@@ -49,10 +49,10 @@ protected:
 
     struct TileInfo {
         TileInfo(sk_sp<SkSurface> surface, SkIRect tileRect, SkRect clipRect, const SkM44& mat)
-            : fSurface(std::move(surface))
-            , fTileRect(tileRect)
-            , fClipRect(clipRect)
-            , fMat(mat) {}
+                : fSurface(std::move(surface))
+                , fTileRect(tileRect)
+                , fClipRect(clipRect)
+                , fMat(mat) {}
 
         SkSurface* surface() const { return fSurface.get(); }
         SkIRect tileRect() const { return fTileRect; }

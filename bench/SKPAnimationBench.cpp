@@ -32,8 +32,8 @@ void SKPAnimationBench::drawPicture() {
     const skia_private::TArray<TileInfo>& tileInfo = this->tileInfo();
 
     for (const TileInfo& tile : tileInfo) {
-        SkMatrix trans = SkMatrix::Translate(-1.f * tile.tileRect().fLeft,
-                                             -1.f * tile.tileRect().fTop);
+        SkMatrix trans =
+                SkMatrix::Translate(-1.f * tile.tileRect().fLeft, -1.f * tile.tileRect().fTop);
         fAnimation->preConcatFrameMatrix(fAnimationTime.nextRangeF(0, 1000), fDevBounds, &trans);
 
         SkCanvas* canvas = tile.surface()->getCanvas();

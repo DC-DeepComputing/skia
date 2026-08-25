@@ -12,14 +12,35 @@
 #include "include/core/SkPicture.h"
 #include "include/core/SkRefCnt.h"
 
+#include "include/private/SkNoncopyable.h"
+#include "include/private/SkTemplates.h"
+
 #include <atomic>
 #include <cstdint>
 
-class SkBigPicture;
 class SkReadBuffer;
 class SkStream;
 class SkWriteBuffer;
 struct SkPictInfo;
+class SkRecord;
+class SkBBoxHierarchy;
+
+class SkPicture::SnapshotArray : ::SkNoncopyable {
+public:
+    SnapshotArray(const SkPicture* pics[], int count) : fPics(pics), fCount(count) {}
+    ~SnapshotArray() {
+        for (int i = 0; i < fCount; i++) {
+            fPics[i]->unref();
+        }
+    }
+
+    const SkPicture* const* begin() const { return fPics; }
+    int count() const { return fCount; }
+
+private:
+    skia_private::AutoTMalloc<const SkPicture*> fPics;
+    int fCount;
+};
 
 class SkPicturePriv {
 public:
@@ -39,9 +60,17 @@ public:
      */
     static void Flatten(const sk_sp<const SkPicture> , SkWriteBuffer& buffer);
 
-    // Returns NULL if this is not an SkBigPicture.
-    static const SkBigPicture* AsSkBigPicture(const sk_sp<const SkPicture>& picture) {
-        return picture->asSkBigPicture();
+    static const SkRecord* GetRecord(const SkPicture* pic) {
+        return pic ? pic->fRecord.get() : nullptr;
+    }
+    static const SkBBoxHierarchy* GetBBH(const SkPicture* pic) {
+        return pic ? pic->fBBH.get() : nullptr;
+    }
+    static int DrawableCount(const SkPicture* pic) {
+        return (pic && pic->fDrawablePicts) ? pic->fDrawablePicts->count() : 0;
+    }
+    static SkPicture const* const* DrawablePicts(const SkPicture* pic) {
+        return (pic && pic->fDrawablePicts) ? pic->fDrawablePicts->begin() : nullptr;
     }
 
     static uint64_t MakeSharedID(uint32_t pictureID) {
@@ -50,7 +79,9 @@ public:
     }
 
     static void AddedToCache(const SkPicture* pic) {
-        pic->fAddedToCache.store(true);
+        if (pic) {
+            pic->fAddedToCache.store(true);
+        }
     }
 
     // V35: Store SkRect (rather then width & height) in header
