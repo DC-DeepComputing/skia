@@ -491,13 +491,13 @@ void SkSVGDevice::AutoElement::addColorFilterResources(const SkColorFilter& cf,
             AutoElement floodElement("feFlood", *this);
             floodElement.addAttribute("flood-color", svg_color(filterColor));
             floodElement.addAttribute("flood-opacity", svg_opacity(filterColor));
-            floodElement.addAttribute("result", "flood");
         }
 
         {
-            // apply the transform to filter color
+            // composite with the source
             AutoElement compositeElement("feComposite", *this);
-            compositeElement.addAttribute("in", "flood");
+            // "in" defaults to feFlood output
+            compositeElement.addAttribute("in2", "SourceGraphic");
             compositeElement.addAttribute("operator", "in");
         }
     }
