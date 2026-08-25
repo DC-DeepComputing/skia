@@ -95,9 +95,8 @@ void SKPBench::onPerCanvasPostDraw(SkCanvas* canvas) {
     // saving the images
     for (const TileInfo& tile : fTiles) {
         sk_sp<SkImage> image(tile.surface()->makeImageSnapshot());
-        canvas->drawImage(image,
-                          SkIntToScalar(tile.tileRect().fLeft),
-                          SkIntToScalar(tile.tileRect().fTop));
+        canvas->drawImage(
+                image, SkIntToScalar(tile.tileRect().fLeft), SkIntToScalar(tile.tileRect().fTop));
     }
 
     fTiles.clear();
