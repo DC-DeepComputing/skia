@@ -15,11 +15,12 @@
 #include <atomic>
 #include <cstdint>
 
-class SkBigPicture;
 class SkReadBuffer;
 class SkStream;
 class SkWriteBuffer;
 struct SkPictInfo;
+class SkRecord;
+class SkBBoxHierarchy;
 
 class SkPicturePriv {
 public:
@@ -39,9 +40,13 @@ public:
      */
     static void Flatten(const sk_sp<const SkPicture> , SkWriteBuffer& buffer);
 
-    // Returns NULL if this is not an SkBigPicture.
-    static const SkBigPicture* AsSkBigPicture(const sk_sp<const SkPicture>& picture) {
-        return picture->asSkBigPicture();
+    static const SkRecord* GetRecord(const SkPicture* pic) { return pic->fRecord.get(); }
+    static const SkBBoxHierarchy* GetBBH(const SkPicture* pic) { return pic->fBBH.get(); }
+    static int DrawableCount(const SkPicture* pic) {
+        return pic->fDrawablePicts ? pic->fDrawablePicts->count() : 0;
+    }
+    static SkPicture const* const* DrawablePicts(const SkPicture* pic) {
+        return pic->fDrawablePicts ? pic->fDrawablePicts->begin() : nullptr;
     }
 
     static uint64_t MakeSharedID(uint32_t pictureID) {
