@@ -8,6 +8,8 @@
 #ifndef SkRasterPipelineOpContexts_DEFINED
 #define SkRasterPipelineOpContexts_DEFINED
 
+#include "src/partition_alloc/raw_ptr_exclusion.h"
+
 #include <algorithm>
 #include <cstddef>
 #include <cstdint>
@@ -53,7 +55,7 @@ struct MemoryCtx {
 // To do all of this, the pipeline creates a MemoryCtxPatch for each unique MemoryCtx referenced by
 // the pipeline.
 struct MemoryCtxInfo {
-    MemoryCtx* context;
+    RAW_PTR_EXCLUSION MemoryCtx* context;
 
     int bytesPerPixel;
     bool load;
