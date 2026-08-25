@@ -17,6 +17,10 @@ struct SparseStripConfig {
     static constexpr uint16_t kTileHeight = 8;
     static_assert(kTileWidth == kTileHeight);
 
+    // The tile dimensions MUST match the hard coded constant in the fragment shader. If that value
+    // changes, this must be updated.
+    static_assert(kTileWidth == 8);
+
     static constexpr int32_t kAtlasWidth          = 8192;
     static constexpr int32_t kAtlasBytesPerTexel  = 4;
     static constexpr int32_t kAtlasWidthBytes     = kAtlasWidth * kAtlasBytesPerTexel;
