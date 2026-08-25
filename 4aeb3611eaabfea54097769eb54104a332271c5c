@@ -1,0 +1,146 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6008ee20_27f02f50",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-08-25T16:06:25Z",
+      "side": 1,
+      "message": "The CL description should have a usage example for building and executing.\n\nIt should also point to dump_record.cpp as a reference.",
+      "revId": "4aeb3611eaabfea54097769eb54104a332271c5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1abe698f_dc90832d",
+        "filename": "BUILD.gn",
+        "patchSetId": 4
+      },
+      "lineNbr": 3382,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-08-25T16:06:25Z",
+      "side": 1,
+      "message": "Can you also get this working in Bazel since we\u0027re trying to move our tools off of GN?",
+      "revId": "4aeb3611eaabfea54097769eb54104a332271c5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ea4f7c9_8233672c",
+        "filename": "tools/dump_capture.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-08-25T16:06:25Z",
+      "side": 1,
+      "message": "nit: This reads a bit confusingly\n\nI would rewrite this with an emphasis on how this class takes advantage of the visitor pattern that already exists in SkRecord.\n\n// RecordDumper is a functor for inspecting canvas commands via SkRecord::visit()\n// (see src/core/SkRecord.h).\n//\n// Specific overloads (e.g. operator()(const SkRecords::DrawRect\u0026)) customize formatting\n// or manage indentation state (Save/Restore). The generic template fallback handles all\n// other SkRecords::* types by default via NameOf().",
+      "revId": "4aeb3611eaabfea54097769eb54104a332271c5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0644ca7_f29a4f89",
+        "filename": "tools/dump_capture.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-08-25T16:06:25Z",
+      "side": 1,
+      "message": "What is total?",
+      "revId": "4aeb3611eaabfea54097769eb54104a332271c5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2410d1f1_55e40611",
+        "filename": "tools/dump_capture.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-08-25T16:06:25Z",
+      "side": 1,
+      "message": "What is a complex double macro function? Consider rewriting the entire comment block. Lead with what the function does at a high level, then go into the double-macro (called a X-macro or higher order macro) and how CASE(U) goes into SK_RECORD_TYPES.\n\n// NameOf uses the X-macro pattern to...\n// SK_RECORD_TYPES(MY_MACRO) applies MY_MACRO to every record type\n// CASE(U) does...",
+      "revId": "4aeb3611eaabfea54097769eb54104a332271c5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0d62499_c958d264",
+        "filename": "tools/dump_capture.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-08-25T16:06:25Z",
+      "side": 1,
+      "message": "nit: enumerate",
+      "range": {
+        "startLine": 126,
+        "startChar": 23,
+        "endLine": 126,
+        "endChar": 33
+      },
+      "revId": "4aeb3611eaabfea54097769eb54104a332271c5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "903c0165_72658538",
+        "filename": "tools/dump_capture.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-08-25T16:06:25Z",
+      "side": 1,
+      "message": "Is this needed? What happens if you just delete this comment (and the matching clang-format on)?",
+      "revId": "4aeb3611eaabfea54097769eb54104a332271c5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca61a7d3_f483e7a6",
+        "filename": "tools/dump_capture.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-08-25T16:06:25Z",
+      "side": 1,
+      "message": "Add comments for these.",
+      "revId": "4aeb3611eaabfea54097769eb54104a332271c5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

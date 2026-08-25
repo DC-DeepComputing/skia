@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f719895_fc4abc71",
+        "filename": "tools/dump_capture.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-08-25T16:06:25Z",
+      "side": 1,
+      "message": "2026",
+      "revId": "c0a968b58561d26ff2a9d4d9c408cc16a464103c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
