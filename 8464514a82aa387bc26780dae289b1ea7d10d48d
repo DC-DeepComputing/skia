@@ -16,6 +16,29 @@
       "message": "PTAL",
       "revId": "8464514a82aa387bc26780dae289b1ea7d10d48d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f90f651c_d528a4de",
+        "filename": "include/gpu/graphite/ContextOptions.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-08-25T15:59:16Z",
+      "side": 1,
+      "message": "Can we add a comment explaining what this does. Also more nit but a think a verb in the name would help, like fUseDrawListLayer.",
+      "range": {
+        "startLine": 138,
+        "startChar": 9,
+        "endLine": 138,
+        "endChar": 23
+      },
+      "revId": "8464514a82aa387bc26780dae289b1ea7d10d48d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
