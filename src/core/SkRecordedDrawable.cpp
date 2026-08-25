@@ -10,9 +10,9 @@
 #include "include/core/SkPicture.h"
 #include "include/core/SkPictureRecorder.h"
 #include "include/core/SkSize.h"
-#include "src/core/SkBigPicture.h"
 #include "src/core/SkPictureData.h"
 #include "src/core/SkPicturePlayback.h"
+#include "src/core/SkPicturePriv.h"
 #include "src/core/SkPictureRecord.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkRecordDraw.h"
@@ -46,7 +46,7 @@ void SkRecordedDrawable::onDraw(SkCanvas* canvas) {
 sk_sp<SkPicture> SkRecordedDrawable::onMakePictureSnapshot() {
     // TODO: should we plumb-down the BBHFactory and recordFlags from our host
     //       PictureRecorder?
-    std::unique_ptr<SkBigPicture::SnapshotArray> pictList{
+    std::unique_ptr<SkPicture::SnapshotArray> pictList{
         fDrawableList ? fDrawableList->newDrawableSnapshot() : nullptr
     };
 
@@ -54,7 +54,7 @@ sk_sp<SkPicture> SkRecordedDrawable::onMakePictureSnapshot() {
     for (int i = 0; pictList && i < pictList->count(); i++) {
         subPictureBytes += pictList->begin()[i]->approximateBytesUsed();
     }
-    return sk_make_sp<SkBigPicture>(fBounds, fRecord, std::move(pictList), fBBH, subPictureBytes);
+    return sk_sp<SkPicture>(new SkPicture(fBounds, fRecord, std::move(pictList), fBBH, subPictureBytes));
 }
 
 void SkRecordedDrawable::flatten(SkWriteBuffer& buffer) const {

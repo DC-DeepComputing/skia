@@ -30,7 +30,6 @@
 #include "include/core/SkStream.h"
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
-#include "src/core/SkBigPicture.h"
 #include "src/core/SkPicturePriv.h"
 #include "src/core/SkRandom.h"
 #include "src/core/SkRectPriv.h"
@@ -436,10 +435,9 @@ static void test_cull_rect_reset(skiatest::Reporter* reporter) {
     canvas->drawRect(bounds, paint);
     canvas->drawRect(bounds, paint);
     sk_sp<SkPicture> p(recorder.finishRecordingAsPictureWithCull(bounds));
-    const SkBigPicture* picture = SkPicturePriv::AsSkBigPicture(p);
-    REPORTER_ASSERT(reporter, picture);
+    REPORTER_ASSERT(reporter, p);
 
-    SkRect finalCullRect = picture->cullRect();
+    SkRect finalCullRect = p->cullRect();
     REPORTER_ASSERT(reporter, 0 == finalCullRect.fLeft);
     REPORTER_ASSERT(reporter, 0 == finalCullRect.fTop);
     REPORTER_ASSERT(reporter, 100 == finalCullRect.fBottom);
@@ -832,7 +830,7 @@ DEF_TEST(Picture_emptyNestedPictureBug, r) {
 
     // These three pictures should all draw the same but due to bugs they don't:
     //
-    //   1) inner has enough content that it is recoreded as an SkBigPicture,
+    //   1) inner has enough content that it is not empty,
     //      and all its content falls outside the positive/positive quadrant,
     //      and it is recorded with an R-tree so we contract the cullRect to those bounds;
     //
