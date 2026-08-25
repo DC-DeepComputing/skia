@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "68715459_7ac05ac3",
+        "filename": "include/core/SkPicture.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-08-25T22:05:30Z",
+      "side": 1,
+      "message": "Na we want the ctor to stay private and force users to use the factory functions to create an SkPicture.\n\nWe could have factories in SkPicturePriv like `SkPicturePriv::MakeFromBuffer()` for example and they would have access to the private constructor.",
+      "parentUuid": "c40f65cc_f6eebb90",
+      "range": {
+        "startLine": 264,
+        "startChar": 4,
+        "endLine": 267,
+        "endChar": 36
+      },
+      "revId": "7257273d625795f79c59dd956da960754fa35775",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "afd12da8_459b22ab",
         "filename": "src/core/SkPicturePriv.h",
         "patchSetId": 15

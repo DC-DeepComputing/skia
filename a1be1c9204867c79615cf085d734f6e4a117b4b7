@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24dd7dba_f60a92e3",
+        "filename": "include/core/SkPicture.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-08-25T22:05:30Z",
+      "side": 1,
+      "message": "nit: move up to be with other forward declares",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 20
+      },
+      "revId": "a1be1c9204867c79615cf085d734f6e4a117b4b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d02690ff_5059e119",
+        "filename": "src/core/SkPicturePriv.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-08-25T22:05:30Z",
+      "side": 1,
+      "message": "nit: SkSnapshotArray",
+      "range": {
+        "startLine": 197,
+        "startChar": 6,
+        "endLine": 197,
+        "endChar": 19
+      },
+      "revId": "a1be1c9204867c79615cf085d734f6e4a117b4b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
