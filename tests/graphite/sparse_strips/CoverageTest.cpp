@@ -5,34 +5,18 @@
  * found in the LICENSE file.
  */
 
-#include "include/core/SkCanvas.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkPathBuilder.h"
-#include "include/core/SkPathUtils.h"
-#include "include/core/SkPicture.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
-#include "include/core/SkStream.h"
 #include "include/core/SkString.h"
-#include "include/private/SkTDArray.h"
-#include "src/gpu/graphite/geom/EndCaps.h"
-#include "src/gpu/graphite/geom/WideTiles.h"
-#include "src/gpu/graphite/sparse_strips/Flatten.h"
 #include "src/gpu/graphite/sparse_strips/MSAA_LUT.h"
-#include "src/gpu/graphite/sparse_strips/MakeStrips.h"
-#include "src/gpu/graphite/sparse_strips/Polyline.h"
-#include "src/gpu/graphite/sparse_strips/Tiler.h"
 #include "tests/Test.h"
-#include "tests/graphite/sparse_strips/CoverageTestUtils.h"
+#include "tests/graphite/sparse_strips/FastValidator.h"
 #include "tests/graphite/sparse_strips/SkpValidator.h"
-#include "tools/Resources.h"
-#include "tools/ToolUtils.h"
 
-#include <algorithm>
 #include <array>
-#include <cmath>
-#include <cstdint>
 #include <vector>
 
 namespace skgpu::graphite {
@@ -46,43 +30,36 @@ public:
     static constexpr float kViewportWidthF = static_cast<float>(kViewportWidth);
     static constexpr float kViewportHeightF = static_cast<float>(kViewportHeight);
 
-    using StripFunc = void (*)(const Tiles<kTileWidth, kTileHeight>&,
-                               WideTiles<kTileHeight>& wides,
-                               EndCaps<kTileHeight>& ends,
-                               SkTDArray<uint8_t>* alphaBuf,
-                               bool isInverse,
-                               const Polyline& polyline,
-                               const SkTDArray<uint8_t>& msaaLut,
-                               MsaaExactMaskObserver observer);
+    using StripFunc = typename FastValidator<kTileWidth, kTileHeight>::StripFunc;
 
     static void RunScalarWinding(const Tiles<kTileWidth, kTileHeight>& tileContainer,
                                  WideTiles<kTileHeight>& wides,
                                  EndCaps<kTileHeight>& ends,
                                  SkTDArray<uint8_t>* alphaBuf,
-                                 bool isInverse,
+                                 SkPathFillType fillType,
                                  const Polyline& polyline,
                                  const SkTDArray<uint8_t>& maskLut,
-                                 MsaaExactMaskObserver observer) {
-        SkPathFillType fillType =
-                isInverse ? SkPathFillType::kInverseWinding : SkPathFillType::kWinding;
-        MakeStrips::MsaaScalar<kTileWidth, kTileHeight>(
-                tileContainer, wides, ends, /*atlasManager=*/nullptr, alphaBuf,
-                fillType, polyline, maskLut, kViewportWidth, kViewportHeight, observer);
+                                 MsaaExactMaskObserver observer,
+                                 uint16_t viewportWidth,
+                                 uint16_t viewportHeight) {
+        FastValidator<kTileWidth, kTileHeight>::RunScalarWinding(
+                tileContainer, wides, ends, alphaBuf, fillType, polyline, maskLut, observer,
+                viewportWidth, viewportHeight);
     }
 
     static void RunSimdWinding(const Tiles<kTileWidth, kTileHeight>& tileContainer,
                                WideTiles<kTileHeight>& wides,
                                EndCaps<kTileHeight>& ends,
                                SkTDArray<uint8_t>* alphaBuf,
-                               bool isInverse,
+                               SkPathFillType fillType,
                                const Polyline& polyline,
                                const SkTDArray<uint8_t>& maskLut,
-                               MsaaExactMaskObserver observer) {
-        SkPathFillType fillType =
-                isInverse ? SkPathFillType::kInverseWinding : SkPathFillType::kWinding;
-        MakeStrips::MsaaSimd<kTileWidth, kTileHeight>(
-                tileContainer, wides, ends, /*atlasManager=*/nullptr, alphaBuf,
-                fillType, polyline, maskLut, kViewportWidth, kViewportHeight, observer);
+                               MsaaExactMaskObserver observer,
+                               uint16_t viewportWidth,
+                               uint16_t viewportHeight) {
+        FastValidator<kTileWidth, kTileHeight>::RunSimdWinding(
+                tileContainer, wides, ends, alphaBuf, fillType, polyline, maskLut, observer,
+                viewportWidth, viewportHeight);
     }
 
     CoverageTestRunner(StripFunc func, const char* implName) : fFunc(func), fImplName(implName) {}
@@ -159,11 +136,16 @@ public:
                                     alignment.fX,
                                     alignment.fY);
 
-                    if (!this->runSingleTest(reporter,
-                                             deviceSpacePath,
-                                             testName.c_str(),
-                                             lut,
-                                             &minorErrorCount)) {
+                    if (!FastValidator<kTileWidth, kTileHeight>::ValidatePath(
+                                reporter,
+                                deviceSpacePath,
+                                SkMatrix::I(),
+                                kViewportWidth,
+                                kViewportHeight,
+                                testName.c_str(),
+                                lut,
+                                fFunc,
+                                &minorErrorCount)) {
                         return;
                     }
                     totalTestsRun++;
@@ -186,128 +168,6 @@ public:
 private:
     StripFunc fFunc;
     const char* fImplName;
-
-    bool runSingleTest(skiatest::Reporter* reporter,
-                       const SkPath& path,
-                       const char* name,
-                       const SkTDArray<uint8_t>& lut,
-                       std::array<uint32_t, 3>* minorErrorCount) {
-        Flatten flattener;
-        Polyline polyline;
-        flattener.processPaths<FlattenMode::kSimd>(
-                path, SkMatrix(), kViewportWidthF, kViewportHeightF, &polyline);
-
-        Tiles<kTileWidth, kTileHeight> tiler;
-        tiler.makeTilesMSAA(polyline, kViewportWidth, kViewportHeight);
-        tiler.sortTiles();
-
-        WideTiles<kTileHeight> wides;
-        EndCaps<kTileHeight> ends;
-        SkTDArray<uint8_t> alphaBuf;
-        SkTDArray<uint8_t> exactMasks;
-
-        auto observer = [&](uint8_t exactMask, skvx::int8) { exactMasks.push_back(exactMask); };
-        fFunc(tiler, wides, ends, &alphaBuf, /*isInverse=*/false, polyline, lut, observer);
-
-        if (ends.empty()) {
-            bool bufferSizeMatch = alphaBuf.empty();
-            REPORTER_ASSERT(
-                    reporter, bufferSizeMatch, "[%s] No endcaps but alpha buffer has data.", name);
-            return bufferSizeMatch;
-        }
-
-        int32_t alphaIdx = 0;
-
-        for (const auto& cap : ends.caps()) {
-            uint16_t spannedTiles = cap.fWidth / kTileWidth;
-            uint16_t currX = cap.fX;
-            uint16_t currY = cap.fY;
-
-            for (int32_t s = 0; s < spannedTiles; ++s) {
-                int32_t tileStartIdx = alphaIdx;
-                for (int32_t y = 0; y < kTileHeight; ++y) {
-                    for (int32_t x = 0; x < kTileWidth; ++x) {
-                        uint8_t expectedMask = 0;
-                        int expectedSamples = 0;
-                        for (int k = 0; k < 8; ++k) {
-                            if (CoverageTestUtils::PointInPolygon(
-                                        {currX + x + (MSAA_LUT<uint8_t>::kPattern[k] + 0.5f) / 8.0f,
-                                         currY + y + (k + 0.5f) / 8.0f},
-                                        polyline)) {
-                                expectedSamples++;
-                                expectedMask |= (1 << k);
-                            }
-                        }
-
-                        uint8_t actualMask =
-                                (alphaIdx < exactMasks.size()) ? exactMasks[alphaIdx] : 0;
-                        uint8_t actualAlpha = (alphaIdx < alphaBuf.size()) ? alphaBuf[alphaIdx] : 0;
-
-                        int sampleDiff = 0;
-                        int actualSamples = 0;
-                        for (int k = 0; k < 8; ++k) {
-                            if (actualMask & (1 << k)) actualSamples++;
-                            if ((expectedMask & (1 << k)) != (actualMask & (1 << k))) sampleDiff++;
-                        }
-
-                        uint8_t expectedAlphaFromMask =
-                                static_cast<uint8_t>((actualSamples * 255 + 4) / 8);
-                        if (actualAlpha != expectedAlphaFromMask) {
-                            REPORTER_ASSERT(
-                                    reporter,
-                                    false,
-                                    "[%s] Alpha Reduction Mismatch at tile(%d,%d) pixel(%d,%d). "
-                                    "Observer tracked %d active bits (expected alpha %d), "
-                                    "but AlphaBuf output was %d.",
-                                    name,
-                                    currX / kTileWidth,
-                                    currY / kTileHeight,
-                                    x,
-                                    y,
-                                    actualSamples,
-                                    expectedAlphaFromMask,
-                                    actualAlpha);
-                            return false;
-                        }
-
-                        if (sampleDiff > 3) {
-                            CoverageTestUtils::PrintCoverageDiagnostics(reporter,
-                                                                        polyline,
-                                                                        tiler,
-                                                                        currX,
-                                                                        currY,
-                                                                        exactMasks,
-                                                                        tileStartIdx);
-                            REPORTER_ASSERT(reporter,
-                                            false,
-                                            "[%s] Fail at tile(%d,%d). Exp %d, Got %d (alpha %d)",
-                                            name,
-                                            currX / kTileWidth,
-                                            currY / kTileHeight,
-                                            expectedSamples,
-                                            actualSamples,
-                                            actualAlpha);
-                            return false;
-                        } else if (sampleDiff > 0) {
-                            (*minorErrorCount)[sampleDiff - 1]++;
-                        }
-
-                        alphaIdx++;
-                    }
-                }
-                currX += kTileWidth;
-            }
-        }
-
-        bool bufferSizeMatch = (alphaIdx == alphaBuf.size());
-        REPORTER_ASSERT(reporter,
-                        bufferSizeMatch,
-                        "[%s] Checked %d alpha bytes but buffer size is %d",
-                        name,
-                        alphaIdx,
-                        alphaBuf.size());
-        return bufferSizeMatch;
-    }
 };
 
 DEF_TEST(SparseStrips_CoverageScalar_4x4, reporter) {
