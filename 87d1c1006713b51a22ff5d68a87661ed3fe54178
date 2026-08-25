@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c1ed6a0_8af40291",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 21
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-08-25T11:17:47Z",
+      "side": 1,
+      "message": "It is not ready yet, due to the revert:\nhttps://skia-review.git.corp.google.com/c/skia/+/1329576",
+      "revId": "87d1c1006713b51a22ff5d68a87661ed3fe54178",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
