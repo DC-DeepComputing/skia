@@ -10,6 +10,8 @@
 
 #include "include/core/SkColorType.h"
 
+#include <cstdint>
+
 namespace skgpu::graphite {
 
 struct SparseStripConfig {
@@ -30,6 +32,18 @@ struct SparseStripConfig {
                                                     kAtlasBytesPerTexel;
     static constexpr int32_t kMaxTexturePages     = 2;
     static constexpr SkColorType kColorType       = SkColorType::kRGBA_8888_SkColorType;
+
+    static constexpr int32_t   kNumSubSamples     = 8;
+    static_assert(!((kNumSubSamples & (kNumSubSamples - 1))));
+
+    static constexpr int32_t kLutMaskWidth        = 64;
+    static constexpr int32_t kLutMaskHeight       = 64;
+    static constexpr int32_t kLutMaskWidthExcl    = kLutMaskWidth - 1;
+    static constexpr int32_t kLutMaskHeightExcl   = kLutMaskHeight - 1;
+    static constexpr float   kLutMaskWidthF       = static_cast<float>(kLutMaskWidth);
+    static constexpr float   kLutMaskHeightF      = static_cast<float>(kLutMaskHeight);
+
+    static constexpr float kStripEpsilon          = 1e-5f;
 };
 
 }  // namespace skgpu::graphite
