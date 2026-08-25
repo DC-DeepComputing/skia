@@ -17,6 +17,7 @@
 
 #include <optional>
 #include <string>
+#include "include/core/SkTaskRunner.h"
 
 class SkData;
 class SkExecutor;
@@ -205,7 +206,9 @@ struct SK_API ContextOptions {
      * for other tasks. It is up to the client to ensure the SkExecutor remains valid throughout
      * the lifetime of the Context.
      */
-    SkExecutor* fExecutor = nullptr;
+    SkExecutor* fExecutor1 = nullptr;
+
+    SkTaskRunner* fTaskRunner = nullptr;
 
     /**
      * Allows Graphite to store Pipeline data across Context lifetimes. It is up to the
