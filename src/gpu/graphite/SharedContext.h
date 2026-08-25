@@ -97,7 +97,8 @@ public:
 protected:
     SharedContext(std::unique_ptr<const Caps>,
                   BackendApi,
-                  SkExecutor* executor,
+                  SkExecutor*,
+                  SkTaskRunner*,
                   SkSpan<sk_sp<SkRuntimeEffect>> userDefinedKnownRuntimeEffects);
 
     // All the resources in the ThreadSafeResourceProvider should be 0-sized.

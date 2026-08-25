@@ -36,7 +36,7 @@ void SetTestOptions(skiatest::graphite::TestOptions* testOptions) {
                                                                /* allowBorrowing= */ false);
     }
 
-    testOptions->fContextOptions.fExecutor = gGpuExecutor.get();
+    testOptions->fContextOptions.fExecutor1 = gGpuExecutor.get();
 
     if (FLAGS_internalSamples >= 0) {
         testOptions->fContextOptions.fInternalMultisampleCount =

@@ -49,9 +49,9 @@ GraphicsPipelineHandle::GraphicsPipelineHandle(sk_sp<PipelineCreationTask> task)
 GraphicsPipelineHandle::GraphicsPipelineHandle(sk_sp<GraphicsPipeline> pipeline)
     : fTaskOrPipeline(std::move(pipeline)) {}
 
-PipelineManager::PipelineManager(SkExecutor* executor) {
+PipelineManager::PipelineManager(SkExecutor* executor, SkTaskRunner* taskRunner) {
     if (executor) {
-        fTaskGroup = std::make_unique<SkTaskGroup>(*executor);
+        fTaskGroup1 = std::make_unique<SkTaskGroup>(*executor);
     }
 }
 
@@ -60,7 +60,7 @@ PipelineManager::~PipelineManager() {
     // shutDown()).
     {
         SkDEBUGCODE(SkAutoSpinlock lock{fSpinLock};)
-        SkASSERT(!fTaskGroup);
+        SkASSERT(!fTaskGroup1);
         SkASSERT(fActiveTasks.count() == 0);
     }
 }
@@ -176,11 +176,11 @@ void PipelineManager::addTaskToWorkList(SharedContext* sharedContext,
     {
         SkAutoSpinlock lock{fSpinLock};
 
-        if (fTaskGroup) {
+        if (fTaskGroup1) {
             int workList = priority == Priority::kLow ? kLowPriorityWorkList
                                                       : kHighPriorityWorkList;
 
-            fTaskGroup->add(std::move(compileTask), workList);
+            fTaskGroup1->add(std::move(compileTask), workList);
             return;
         }
     }
@@ -216,7 +216,7 @@ void PipelineManager::shutDown() {
     std::unique_ptr<SkTaskGroup> tmp;
     {
         SkAutoSpinlock lock{fSpinLock};
-        tmp = std::move(fTaskGroup);
+        tmp = std::move(fTaskGroup1);
     }
     if (tmp) {
         // We have to wait for the remaining tasks to complete bc they rely on the existence
@@ -227,7 +227,7 @@ void PipelineManager::shutDown() {
     }
     {
         SkDEBUGCODE(SkAutoSpinlock lock{fSpinLock};)
-        SkASSERT(!fTaskGroup);
+        SkASSERT(!fTaskGroup1);
         SkASSERT(fActiveTasks.count() == 0);
     }
 }
@@ -237,7 +237,7 @@ void PipelineManager::wait_TestOnly() {
     SkTaskGroup* tmp;
     {
         SkAutoSpinlock lock{fSpinLock};
-        tmp = fTaskGroup.get();
+        tmp = fTaskGroup1.get();
     }
     // This isn't safe (since 'fTaskGroup' could be altered on some other thread) but, hopefully,
     // the unit tests know what they're doing (i.e., don't delete the owning Context while

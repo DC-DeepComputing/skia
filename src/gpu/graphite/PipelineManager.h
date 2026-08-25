@@ -8,6 +8,8 @@
 #ifndef skgpu_graphite_PipelineManager_DEFINED
 #define skgpu_graphite_PipelineManager_DEFINED
 
+#include "include/core/SkTaskRunner.h"
+
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkEnumBitMask.h"
 #include "src/core/SkSpinlock.h"
@@ -36,7 +38,7 @@ class SharedContext;
 
 class PipelineManager {
 public:
-    PipelineManager(SkExecutor* executor);
+    PipelineManager(SkExecutor* executor, SkTaskRunner* taskRunner);
     ~PipelineManager();
 
     // If an existing Pipeline is found, it is just wrapped in a Handle and returned.
@@ -97,7 +99,7 @@ private:
     Stats fStats SK_GUARDED_BY(fSpinLock);
 #endif
 
-    std::unique_ptr<SkTaskGroup> fTaskGroup SK_GUARDED_BY(fSpinLock);
+    std::unique_ptr<SkTaskGroup> fTaskGroup1 SK_GUARDED_BY(fSpinLock);
 
     void signalCompleted(PipelineCreationTask*);
     void potentiallyWaitOn(SharedContext*, PipelineCreationTask*);
