@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb46604f_670787b0",
+        "filename": "bench/SKPAnimationBench.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-08-25T12:37:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b06d198b_4a69cdf6",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 34
+      },
+      "revId": "7a473d962a78b5935f237f66a5813b3f312cb046",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "392c96d5_ca0d8fba",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-08-20T19:03:19Z",
       "side": 1,
       "message": "Same pattern here as in the animated skp bench.",
+      "range": {
+        "startLine": 131,
+        "startChar": 0,
+        "endLine": 131,
+        "endChar": 34
+      },
+      "revId": "7a473d962a78b5935f237f66a5813b3f312cb046",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7657d106_218527d2",
+        "filename": "bench/SKPBench.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-08-25T12:37:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "392c96d5_ca0d8fba",
       "range": {
         "startLine": 131,
         "startChar": 0,
