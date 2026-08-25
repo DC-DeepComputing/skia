@@ -51,6 +51,14 @@ enum class Coverage { kNone, kSingleChannel, kLCD };
 // RenderStep::kRenderStepIDVersion value. The enum values generated from this
 // list are serialized and the kRenderStepIDVersion value is the signal to
 // abandon older serialized data.
+#if defined(SK_ENABLE_SPARSE_STRIPS)
+#define SKGPU_RENDERSTEP_ENDCAP(M1)   M1(EndCap)
+#define SKGPU_RENDERSTEP_WIDETILE(M1) M1(WideTile)
+#else
+#define SKGPU_RENDERSTEP_ENDCAP(M1)
+#define SKGPU_RENDERSTEP_WIDETILE(M1)
+#endif
+
 #define SKGPU_RENDERSTEP_TYPES(M1, M2)          \
         M1(Invalid)                             \
         M1(CircularArc)                         \
@@ -64,10 +72,12 @@ enum class Coverage { kNone, kSingleChannel, kLCD };
         M2(BitmapText,       Mask)              \
         M2(BitmapText,       LCD)               \
         M2(BitmapText,       Color)             \
+        SKGPU_RENDERSTEP_ENDCAP(M1)             \
         M2(MiddleOutFan,     EvenOdd)           \
         M2(MiddleOutFan,     Winding)           \
         M1(SDFTextLCD)                          \
         M1(SDFText)                             \
+        SKGPU_RENDERSTEP_WIDETILE(M1)           \
         M2(TessellateCurves, EvenOdd)           \
         M2(TessellateCurves, Winding)           \
         M2(TessellateStrokes,Fill)              \
@@ -234,7 +244,7 @@ public:
                         ? DepthStencilFlags::kDepth : DepthStencilFlags::kNone);
     }
 
-    static const int kRenderStepIDVersion = 1;
+    static const int kRenderStepIDVersion = 3;
 
 #define ENUM1(BaseName) k##BaseName,
 #define ENUM2(BaseName, VariantName) k##BaseName##_##VariantName,
