@@ -1971,6 +1971,7 @@ skia_source_set("core") {
     ":typeface_fontations",
     ":typeface_freetype",
   ]
+  public_deps = [ "//src/partition_alloc:raw_ptr" ]
 }
 
 skia_component("skia") {
@@ -2000,6 +2001,7 @@ skia_component("skia") {
     ":png_encode_libpng",
     ":webp_encode",
     ":xps",
+    "//src/partition_alloc:raw_ptr",
   ]
 
   deps = [
@@ -2023,7 +2025,6 @@ skia_component("skia") {
     ":wuffs",
     ":xml",
     "modules/skcms",
-    "//src/partition_alloc:raw_ptr",
   ]
 
   public = []
@@ -3321,6 +3322,9 @@ if (skia_enable_tools) {
           ":tests",
           ":tool_utils",
         ]
+        if (skia_use_partition_alloc) {
+          deps += [ "//src/partition_alloc:raw_ptr" ]
+        }
       }
       if (skia_use_libpng_decode) {
         test_app("skqp") {
