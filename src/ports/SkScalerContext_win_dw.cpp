@@ -4,6 +4,9 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "src/ports/SkScalerContext_win_dw.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
+
 #include "src/utils/win/SkDWriteNTDDI_VERSION.h"
 
 #include "include/core/SkTypes.h"
@@ -34,7 +37,6 @@
 #include "src/core/SkScalerContext.h"
 #include "src/core/SkScopeExit.h"
 #include "src/core/SkSharedMutex.h"
-#include "src/ports/SkScalerContext_win_dw.h"
 #include "src/ports/SkTypeface_win_dw.h"
 #include "src/sfnt/SkOTTable_EBLC.h"
 #include "src/sfnt/SkOTTable_EBSC.h"
@@ -2454,7 +2456,10 @@ SkScalerContext_DW::generatePath(const SkGlyph& glyph) {
 
 sk_sp<SkDrawable> SkScalerContext_DW::generateDrawable(const SkGlyph& glyph) {
     struct GlyphDrawable : public SkDrawable {
-        SkScalerContext_DW* fSelf;
+        // TODO(arthursonzogni): GlyphDrawable may outlive SkScalerContext. Find a way to avoid
+        // holding a raw pointer, as it causes a long-lived dangling pointer which would lead to
+        // BackupRefPtr quarantine bloat. RAW_PTR_EXCLUSION: See TODO.
+        RAW_PTR_EXCLUSION SkScalerContext_DW* fSelf;
         SkGlyph fGlyph;
         GlyphDrawable(SkScalerContext_DW* self, const SkGlyph& glyph) : fSelf(self), fGlyph(glyph){}
         SkRect onGetBounds() override { return fGlyph.rect();  }
