@@ -9,174 +9,133 @@
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/DrawContext.h"
 #include "src/gpu/graphite/RecorderPriv.h"
+#include "src/gpu/graphite/TextureInfoPriv.h"
 #include "src/gpu/graphite/task/UploadTask.h"
-
-#include "src/gpu/graphite/task/CopyTask.h"
 
 namespace skgpu::graphite {
 
-AlphaAtlasManager::AlphaAtlasManager(Recorder* recorder) : fRecorder(recorder) {
-    fTextures.push({});
-}
+AlphaAtlasManager::AlphaAtlasManager(Recorder* recorder)
+        : fRecorder(recorder)
+        , fActiveSlot(0)
+        , fNextPageRowCount(SparseStripConfig::kInitialAtlasRows) {}
 
-bool AlphaAtlasManager::initializeTexture() {
-    SkASSERT(!fTextures.empty());
-    if (fTextures.back().fTexture) {
-        return true;
+bool AlphaAtlasManager::createPageInSlot(int slot, int32_t minRequiredBytes) {
+    SkASSERT(slot == 0 || slot == 1);
+    int32_t rows = fNextPageRowCount;
+    if (minRequiredBytes > 0) {
+        int32_t neededRows = (minRequiredBytes + SparseStripConfig::kAtlasWidthBytes - 1) /
+                             SparseStripConfig::kAtlasWidthBytes;
+        rows = std::max(rows, neededRows);
     }
-    return makeTextureProxy(fTextures.back(), fTextures.back().fCurrentHeight);
-}
+    rows = std::min(rows, SparseStripConfig::kMaxAtlasRows);
 
-bool AlphaAtlasManager::makeTextureProxy(TextureState& state, int32_t height) {
     const Caps* caps = fRecorder->priv().caps();
     TextureInfo info = caps->getDefaultSampledTextureInfo(
-            kColorType, Mipmapped::kNo, fRecorder->priv().isProtected(), Renderable::kNo);
+            SparseStripConfig::kColorType,
+            Mipmapped::kNo,
+            fRecorder->priv().isProtected(),
+            Renderable::kNo);
 
-    state.fTexture = TextureProxy::Make(caps,
-                                        fRecorder->priv().resourceProvider(),
-                                        SkISize::Make(kAtlasWidth, height),
-                                        info,
-                                        "AlphaAtlas",
-                                        Budgeted::kYes);
-    state.fCurrentHeight = height;
-    return state.fTexture != nullptr;
-}
+    sk_sp<TextureProxy> proxy = TextureProxy::Make(
+            caps,
+            fRecorder->priv().resourceProvider(),
+            SkISize::Make(SparseStripConfig::kAtlasWidth, rows),
+            info,
+            "AlphaAtlas",
+            Budgeted::kYes);
 
-bool AlphaAtlasManager::getAssociatedProxies(
-        SkTDArray<std::pair<int32_t, sk_sp<TextureProxy>>>& allocations) {
-    SkASSERT(fMarked);
-    SkDEBUGCODE(fMarked = false;)
-    SkASSERT(!fTextures.empty());
-    TextureState& origTex = fTextures.back();
-    int32_t currentSize = origTex.fAlphaBuffer.size();
-
-    // Nothing appended
-    if (currentSize == fMarkedStart) {
-        return true;
+    if (!proxy) {
+        return false;
     }
 
-    // Check if we need to grow the current texture height
-    int32_t totalNeededBytes = origTex.fUploadSize + currentSize;
-    int32_t maxCurrentPageCapacity = kAtlasWidth * origTex.fCurrentHeight * 4;
+    TexturePage& page = fPages[slot];
+    page.fTexture = std::move(proxy);
+    page.fRowCount = rows;
+    page.fCapacityBytes = rows * SparseStripConfig::kAtlasWidthBytes;
+    page.fUsedBytes = 0;
+    page.fUploadedRows = 0;
+    page.fAlphaBuffer.clear();
 
-    if (totalNeededBytes > maxCurrentPageCapacity && origTex.fCurrentHeight < kMaxAtlasHeight) {
-        int32_t newHeight = origTex.fCurrentHeight;
-        while (totalNeededBytes > (kAtlasWidth * newHeight * 4) && newHeight < kMaxAtlasHeight) {
-            newHeight *= 2;
-        }
-
-        sk_sp<TextureProxy> oldTexture = origTex.fTexture;
-        int32_t oldUploadSize = origTex.fUploadSize;
-
-        // Upload any pending alpha data that fits into oldTexture before replacing it
-        int32_t remainingOldBytes = maxCurrentPageCapacity - oldUploadSize;
-        int32_t uploadableBytes = std::min(currentSize, remainingOldBytes);
-        int32_t rowsToUpload = uploadableBytes / kAtlasDimsBytes;
-        int32_t bytesToUpload = rowsToUpload * kAtlasDimsBytes;
-
-        if (bytesToUpload > 0 && oldTexture) {
-            MipLevel level;
-            level.fPixels = origTex.fAlphaBuffer.data();
-            level.fRowBytes = kAtlasDimsBytes;
-            int startRow = oldUploadSize / kAtlasDimsBytes;
-            SkIRect dstRect = SkIRect::MakeXYWH(0, startRow, kAtlasWidth, rowsToUpload);
-
-            Swizzle readSwizzle = ReadSwizzleForColorType(
-                    kColorType, TextureInfoPriv::ViewFormat(oldTexture->textureInfo()));
-            TextureProxyView proxyView(oldTexture, readSwizzle);
-
-            SkColorInfo srcColorInfo(kColorType, kPremul_SkAlphaType, nullptr);
-            SkColorInfo dstColorInfo(kColorType, kPremul_SkAlphaType, nullptr);
-            UploadSource source = UploadSource::Make(fRecorder->priv().caps(),
-                                                     proxyView,
-                                                     srcColorInfo,
-                                                     dstColorInfo,
-                                                     SkSpan<const MipLevel>(&level, 1),
-                                                     dstRect);
-
-            UploadInstance instance = UploadInstance::Make(fRecorder, source, nullptr);
-            if (instance.isValid()) {
-                fRecorder->priv().add(UploadTask::Make(std::move(instance)));
-            }
-
-            origTex.fUploadSize += bytesToUpload;
-            int32_t remainingInBuf = currentSize - bytesToUpload;
-            if (remainingInBuf > 0) {
-                memmove(origTex.fAlphaBuffer.data(),
-                        origTex.fAlphaBuffer.data() + bytesToUpload,
-                        remainingInBuf);
-            }
-            origTex.fAlphaBuffer.resize(remainingInBuf);
-            currentSize = remainingInBuf;
-        }
-
-        if (makeTextureProxy(origTex, newHeight)) {
-            int copyUploadSize = origTex.fUploadSize;
-            if (copyUploadSize > 0 && oldTexture) {
-                int oldUploadedRows = (copyUploadSize + kAtlasDimsBytes - 1) / kAtlasDimsBytes;
-                SkIRect srcRect = SkIRect::MakeWH(kAtlasWidth, oldUploadedRows);
-                fRecorder->priv().add(CopyTextureToTextureTask::Make(
-                        std::move(oldTexture), srcRect, origTex.fTexture, SkIPoint::Make(0, 0)));
-            }
-        }
-    }
-
-    int32_t maxCapacity = kAtlasWidth * origTex.fCurrentHeight * 4;
-    int32_t firstPageSize = maxCapacity - origTex.fUploadSize;
-
-    if (currentSize <= firstPageSize) {
-        allocations.push_back({currentSize, origTex.fTexture});
-        return true;
-    }
-
-    // Handle overflow across pages
-    allocations.push_back({firstPageSize, origTex.fTexture});
-
-    int32_t processed = firstPageSize;
-    while (processed < currentSize) {
-        if (fTextures.size() >= static_cast<size_t>(kMaxPages)) {
-            // BAILOUT! Exceeded total texture page budget!
-            origTex.fAlphaBuffer.resize(fMarkedStart);
-            allocations.clear();
-            return false;
-        }
-        int32_t chunk = std::min(kMaxCapBytes, currentSize - processed);
-        fTextures.push({});
-        initializeTexture();
-        fTextures.back().fAlphaBuffer.append(chunk, origTex.fAlphaBuffer.begin() + processed);
-        processed += chunk;
-        allocations.push_back({processed, fTextures.back().fTexture});
-    }
-
-    origTex.fAlphaBuffer.resize(firstPageSize);
+    // Double row count for the next created page, clamped to max atlas rows
+    fNextPageRowCount = std::min(SparseStripConfig::kMaxAtlasRows, rows * 2);
     return true;
 }
 
+std::optional<AlphaAtlasManager::AlphaAllocation> AlphaAtlasManager::requestAlphaSpace(
+        int32_t numBytes) {
+    if (numBytes <= 0 || numBytes > SparseStripConfig::kMaxCapBytes) {
+        return std::nullopt;
+    }
+
+    // 1. Ensure current active slot has a valid page allocated
+    if (!fPages[fActiveSlot].isValid()) {
+        if (!this->createPageInSlot(fActiveSlot, numBytes)) {
+            return std::nullopt;
+        }
+    }
+
+    TexturePage* activePage = &fPages[fActiveSlot];
+
+    // 2. Check if the active slot has enough remaining room.
+    // An endcap's alphas must be atomic to a single texture page (never split across pages).
+    if (activePage->fUsedBytes + numBytes <= activePage->fCapacityBytes) {
+        int32_t alphaIdx = activePage->fUsedBytes;
+        activePage->fUsedBytes += numBytes;
+        uint8_t* ptr = activePage->fAlphaBuffer.append(numBytes);
+        return AlphaAllocation{ptr, alphaIdx, static_cast<uint16_t>(fActiveSlot)};
+    }
+
+    // 3. Current active slot does not have enough room.
+    // Flip-flop to the other slot: nextSlot = fActiveSlot ^ 1
+    int nextSlot = fActiveSlot ^ 1;
+
+    // If nextSlot is already in use, both slots are full for this batch!
+    if (fPages[nextSlot].isValid()) {
+        return std::nullopt;
+    }
+
+    if (!this->createPageInSlot(nextSlot, numBytes)) {
+        return std::nullopt;
+    }
+
+    fActiveSlot = nextSlot;
+    activePage = &fPages[fActiveSlot];
+
+    int32_t alphaIdx = 0;
+    activePage->fUsedBytes = numBytes;
+    uint8_t* ptr = activePage->fAlphaBuffer.append(numBytes);
+    return AlphaAllocation{ptr, alphaIdx, static_cast<uint16_t>(fActiveSlot)};
+}
+
 void AlphaAtlasManager::recordUploads(DrawContext* dc) {
-    while (!fTextures.empty()) {
-        TextureState& tex = fTextures.front();
+    for (int i = 0; i < 2; ++i) {
+        TexturePage& page = fPages[i];
+        if (page.isValid() && !page.fAlphaBuffer.empty()) {
+            SkASSERT(page.fTexture);
 
-        if (!tex.fAlphaBuffer.empty()) {
-            SkASSERT(tex.fTexture);
-
-            int height = (tex.fAlphaBuffer.size() + kAtlasDimsBytes - 1) / kAtlasDimsBytes;
-            int paddedSize = height * kAtlasDimsBytes;
-            if (tex.fAlphaBuffer.size() != paddedSize) {
-                tex.fAlphaBuffer.resize(paddedSize);
+            // Compute how many rows are in the pending buffer and pad buffer to full rows
+            int32_t pendingRows = (page.fAlphaBuffer.size() + SparseStripConfig::kAtlasWidthBytes - 1) /
+                                  SparseStripConfig::kAtlasWidthBytes;
+            int32_t paddedSize = pendingRows * SparseStripConfig::kAtlasWidthBytes;
+            if (page.fAlphaBuffer.size() < paddedSize) {
+                int32_t diff = paddedSize - page.fAlphaBuffer.size();
+                uint8_t* ptr = page.fAlphaBuffer.append(diff);
+                std::memset(ptr, 0, diff);
             }
 
             MipLevel level;
-            level.fPixels = tex.fAlphaBuffer.data();
-            level.fRowBytes = kAtlasDimsBytes;
-            int startRow = tex.fUploadSize / kAtlasDimsBytes;
-            SkIRect dstRect = SkIRect::MakeXYWH(0, startRow, kAtlasWidth, height);
+            level.fPixels = page.fAlphaBuffer.data();
+            level.fRowBytes = SparseStripConfig::kAtlasWidthBytes;
+            int32_t startRow = page.fUploadedRows;
+            SkIRect dstRect = SkIRect::MakeXYWH(0, startRow, SparseStripConfig::kAtlasWidth, pendingRows);
 
             Swizzle readSwizzle = ReadSwizzleForColorType(
-                    kColorType, TextureInfoPriv::ViewFormat(tex.fTexture->textureInfo()));
-            TextureProxyView proxyView(tex.fTexture, readSwizzle);
+                    SparseStripConfig::kColorType,
+                    TextureInfoPriv::ViewFormat(page.fTexture->textureInfo()));
+            TextureProxyView proxyView(page.fTexture, readSwizzle);
 
-            SkColorInfo srcColorInfo(kColorType, kPremul_SkAlphaType, nullptr);
-            SkColorInfo dstColorInfo(kColorType, kPremul_SkAlphaType, nullptr);
+            SkColorInfo srcColorInfo(SparseStripConfig::kColorType, kPremul_SkAlphaType, nullptr);
+            SkColorInfo dstColorInfo(SparseStripConfig::kColorType, kPremul_SkAlphaType, nullptr);
             UploadSource source = UploadSource::Make(fRecorder->priv().caps(),
                                                      proxyView,
                                                      srcColorInfo,
@@ -184,23 +143,29 @@ void AlphaAtlasManager::recordUploads(DrawContext* dc) {
                                                      SkSpan<const MipLevel>(&level, 1),
                                                      dstRect);
 
-            dc->recordUpload(fRecorder, source, nullptr);
+            if (dc) {
+                dc->recordUpload(fRecorder, source, nullptr);
+            }
 
-            tex.fUploadSize += tex.fAlphaBuffer.size();
-            tex.fAlphaBuffer.clear();
+            page.fUploadedRows += pendingRows;
+            page.fUsedBytes = page.fUploadedRows * SparseStripConfig::kAtlasWidthBytes;
+            page.fAlphaBuffer.clear();
         }
-
-        fTextures.pop();
     }
 
-    // Reset initial texture state for the next frame
-    fTextures.push({});
+    // At flush time, retire the older slot (fActiveSlot ^ 1).
+    // Graphite's resource management keeps it alive for any pending GPU tasks.
+    int oldSlot = fActiveSlot ^ 1;
+    if (fPages[oldSlot].isValid()) {
+        fPages[oldSlot].reset();
+    }
 }
 
 void AlphaAtlasManager::freeGpuResources() {
-    while (!fTextures.empty()) {
-        fTextures.pop();
-    }
+    fPages[0].reset();
+    fPages[1].reset();
+    fActiveSlot = 0;
+    fNextPageRowCount = SparseStripConfig::kInitialAtlasRows;
 }
 
 }  // namespace skgpu::graphite

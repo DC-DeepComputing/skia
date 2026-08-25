@@ -12,11 +12,12 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkString.h"
 #include "include/private/SkTDArray.h"
+#include "src/gpu/graphite/geom/EndCaps.h"
+#include "src/gpu/graphite/geom/WideTiles.h"
 #include "src/gpu/graphite/sparse_strips/Flatten.h"
 #include "src/gpu/graphite/sparse_strips/MSAA_LUT.h"
 #include "src/gpu/graphite/sparse_strips/MakeStrips.h"
 #include "src/gpu/graphite/sparse_strips/Polyline.h"
-#include "src/gpu/graphite/sparse_strips/Strip.h"
 #include "src/gpu/graphite/sparse_strips/Tiler.h"
 #include "tests/Test.h"
 
@@ -155,7 +156,8 @@ public:
     static constexpr float kViewportHeightF   = static_cast<float>(kViewportHeight);
 
     using StripFunc = void (*)(const Tiles<kTileWidth, kTileHeight>&,
-                               SkTDArray<Strip>* stripBuf,
+                               WideTiles<kTileHeight>& wides,
+                               EndCaps<kTileHeight>& ends,
                                SkTDArray<uint8_t>* alphaBuf,
                                bool isInverse,
                                const Polyline& polyline,
@@ -163,7 +165,8 @@ public:
                                MsaaExactMaskObserver observer);
 
     static void RunScalarWinding(const Tiles<kTileWidth, kTileHeight>& tileContainer,
-                                 SkTDArray<Strip>* stripBuf,
+                                 WideTiles<kTileHeight>& wides,
+                                 EndCaps<kTileHeight>& ends,
                                  SkTDArray<uint8_t>* alphaBuf,
                                  bool isInverse,
                                  const Polyline& polyline,
@@ -172,11 +175,13 @@ public:
         SkPathFillType fillType =
                 isInverse ? SkPathFillType::kInverseWinding : SkPathFillType::kWinding;
         MakeStrips::MsaaScalar<kTileWidth, kTileHeight>(
-                tileContainer, stripBuf, alphaBuf, fillType, polyline, maskLut, observer);
+                tileContainer, wides, ends, /*atlasManager=*/nullptr, alphaBuf,
+                fillType, polyline, maskLut, kViewportWidth, kViewportHeight, observer);
     }
 
     static void RunSimdWinding(const Tiles<kTileWidth, kTileHeight>& tileContainer,
-                               SkTDArray<Strip>* stripBuf,
+                               WideTiles<kTileHeight>& wides,
+                               EndCaps<kTileHeight>& ends,
                                SkTDArray<uint8_t>* alphaBuf,
                                bool isInverse,
                                const Polyline& polyline,
@@ -185,7 +190,8 @@ public:
         SkPathFillType fillType =
                 isInverse ? SkPathFillType::kInverseWinding : SkPathFillType::kWinding;
         MakeStrips::MsaaSimd<kTileWidth, kTileHeight>(
-                tileContainer, stripBuf, alphaBuf, fillType, polyline, maskLut, observer);
+                tileContainer, wides, ends, /*atlasManager=*/nullptr, alphaBuf,
+                fillType, polyline, maskLut, kViewportWidth, kViewportHeight, observer);
     }
 
     CoverageTestRunner(StripFunc func, const char* implName) : fFunc(func), fImplName(implName) {}
@@ -305,32 +311,26 @@ private:
         tiler.makeTilesMSAA(polyline, kViewportWidth, kViewportHeight);
         tiler.sortTiles();
 
-        SkTDArray<Strip> stripBuf;
+        EndCaps<kTileHeight> ends;
         SkTDArray<uint8_t> alphaBuf;
         SkTDArray<uint8_t> exactMasks;
-
+        WideTiles<kTileHeight> wides;
         auto observer = [&](uint8_t exactMask) { exactMasks.push_back(exactMask); };
-        fFunc(tiler, &stripBuf, &alphaBuf, /*isInverse=*/false, polyline, lut, observer);
+        fFunc(tiler, wides, ends, &alphaBuf, /*isInverse=*/false, polyline, lut, observer);
 
-        if (stripBuf.empty()) {
+        if (ends.empty()) {
             bool bufferSizeMatch = alphaBuf.empty();
             REPORTER_ASSERT(
-                    reporter, bufferSizeMatch, "[%s] No strips but alpha buffer has data.", name);
+                    reporter, bufferSizeMatch, "[%s] No endcaps but alpha buffer has data.", name);
             return bufferSizeMatch;
         }
 
         int32_t alphaIdx = 0;
 
-        for (int32_t i = 0; i < stripBuf.size() - 1; ++i) {
-            const Strip& curr = stripBuf[i];
-            const Strip& next = stripBuf[i + 1];
-
-            uint32_t startIdx = curr.alphaIndex();
-            uint32_t endIdx = next.alphaIndex();
-            uint16_t spannedTiles = (endIdx - startIdx) / (kTileWidth * kTileHeight);
-
-            uint16_t currX = curr.fX;
-            uint16_t currY = curr.fY;
+        for (const auto& cap : ends.caps()) {
+            uint16_t spannedTiles = cap.fWidth / kTileWidth;
+            uint16_t currX = cap.fX;
+            uint16_t currY = cap.fY;
 
             for (int32_t s = 0; s < spannedTiles; ++s) {
                 int32_t tileStartIdx = alphaIdx;

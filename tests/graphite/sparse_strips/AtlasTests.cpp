@@ -7,116 +7,164 @@
 
 #include "include/gpu/graphite/Context.h"
 #include "include/gpu/graphite/Recorder.h"
+#include "src/gpu/graphite/geom/EndCaps.h"
 #include "src/gpu/graphite/sparse_strips/AlphaAtlasManager.h"
+#include "src/gpu/graphite/sparse_strips/SparseStripsConfig.h"
 #include "tests/CtsEnforcement.h"
 #include "tests/Test.h"
 
 namespace skgpu::graphite {
+
 DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(SparseStrips_AtlasDimensionsAndStride,
                                          reporter,
                                          context,
                                          CtsEnforcement::kNever) {
     auto recorder = context->makeRecorder();
     AlphaAtlasManager atlasManager(recorder.get());
+    // Initial allocation (e.g. 512 bytes = 8 tiles of 8x8)
+    auto alloc1 = atlasManager.requestAlphaSpace(512);
+    REPORTER_ASSERT(reporter, alloc1.has_value());
+    REPORTER_ASSERT(reporter, alloc1->fAlphaIndex == 0);
+    REPORTER_ASSERT(reporter, alloc1->fTexPage == 0);
+    REPORTER_ASSERT(reporter, atlasManager.numPages() == 1);
 
-    // Initialize alpha buffer
-    SkTDArray<uint8_t>& buf = atlasManager.getAlphaBuffer();
-    REPORTER_ASSERT(reporter, buf.empty());
-
-    // Add 1 row of data (32,768 bytes)
-    buf.append(AlphaAtlasManager::kAtlasDimsBytes);
-
-    SkTDArray<std::pair<int32_t, sk_sp<TextureProxy>>> allocations;
-    bool success = atlasManager.getAssociatedProxies(allocations);
-    REPORTER_ASSERT(reporter, success);
-    REPORTER_ASSERT(reporter, allocations.size() == 1);
-
-    // Verify Texture dimensions (8192 x 32)
-    sk_sp<TextureProxy> proxy = allocations[0].second;
+    // Initial page dimensions: 8192 x 1
+    sk_sp<TextureProxy> proxy = atlasManager.getPageProxy(0);
     REPORTER_ASSERT(reporter, proxy != nullptr);
-    REPORTER_ASSERT(reporter, proxy->dimensions().width() == AlphaAtlasManager::kAtlasWidth);
-    REPORTER_ASSERT(reporter,
-                    proxy->dimensions().height() == AlphaAtlasManager::kInitialAtlasHeight);
+    REPORTER_ASSERT(reporter, proxy->dimensions().width() == SparseStripConfig::kAtlasWidth);
+    REPORTER_ASSERT(reporter, proxy->dimensions().height() == 1);
 
     // Verify row byte stride alignment (32,768 bytes/row = 8192 pixels * 4 bytes/pixel)
-    int32_t strideBytes = AlphaAtlasManager::kAtlasDimsBytes;
-    REPORTER_ASSERT(reporter, strideBytes == AlphaAtlasManager::kAtlasWidth * 4);
-    REPORTER_ASSERT(reporter, allocations[0].first == AlphaAtlasManager::kAtlasDimsBytes);
+    int32_t strideBytes = SparseStripConfig::kAtlasWidthBytes;
+    REPORTER_ASSERT(reporter, strideBytes == 32768);
+
+    // Subsequent allocation on same row/page
+    auto alloc2 = atlasManager.requestAlphaSpace(1024);
+    REPORTER_ASSERT(reporter, alloc2.has_value());
+    REPORTER_ASSERT(reporter, alloc2->fAlphaIndex == 512);
+    REPORTER_ASSERT(reporter, alloc2->fTexPage == 0);
+    REPORTER_ASSERT(reporter, atlasManager.numPages() == 1);
 }
 
-DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(SparseStrips_AtlasDynamicGrowth,
+DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(SparseStrips_AtlasDynamicGrowthAndDoubling,
                                          reporter,
                                          context,
                                          CtsEnforcement::kNever) {
     auto recorder = context->makeRecorder();
     AlphaAtlasManager atlasManager(recorder.get());
 
-    // Step A: Small data (fits in height 32 = 1 MB)
-    SkTDArray<uint8_t>& buf = atlasManager.getAlphaBuffer();
-    int32_t smallBytes = AlphaAtlasManager::kAtlasDimsBytes * 10;
-    buf.append(smallBytes);
+    // Page 0: allocate exactly 1 row (32,768 bytes)
+    auto alloc1 = atlasManager.requestAlphaSpace(SparseStripConfig::kAtlasWidthBytes);
+    REPORTER_ASSERT(reporter, alloc1.has_value());
+    REPORTER_ASSERT(reporter, alloc1->fTexPage == 0);
+    REPORTER_ASSERT(reporter, atlasManager.getPageProxy(0)->dimensions().height() == 1);
 
-    SkTDArray<std::pair<int32_t, sk_sp<TextureProxy>>> allocations;
-    bool success = atlasManager.getAssociatedProxies(allocations);
-    REPORTER_ASSERT(reporter, success);
-    REPORTER_ASSERT(reporter, allocations.size() == 1);
-    REPORTER_ASSERT(reporter, allocations[0].second->dimensions().height() == 32);
-
-    // Step B: Append more data requiring growth (e.g. 50 rows total = 1.6 MB -> needs height 64)
-    SkTDArray<uint8_t>& buf2 = atlasManager.getAlphaBuffer();
-    int32_t extraBytes = AlphaAtlasManager::kAtlasDimsBytes * 40;
-    buf2.append(extraBytes);
-
-    allocations.clear();
-    success = atlasManager.getAssociatedProxies(allocations);
-    REPORTER_ASSERT(reporter, success);
-    REPORTER_ASSERT(reporter, allocations.size() == 1);
-    // Height should have doubled from 32 to 64
-    REPORTER_ASSERT(reporter, allocations[0].second->dimensions().height() == 64);
+    // Page 1: allocating 1 more tile exceeds Page 0, triggers doubling -> 2 rows (65,536 bytes)
+    auto alloc2 = atlasManager.requestAlphaSpace(64);
+    REPORTER_ASSERT(reporter, alloc2.has_value());
+    REPORTER_ASSERT(reporter, alloc2->fAlphaIndex == 0); // Atomic on new page, starts at 0
+    REPORTER_ASSERT(reporter, alloc2->fTexPage == 1);
+    REPORTER_ASSERT(reporter, atlasManager.numPages() == 2);
+    REPORTER_ASSERT(reporter, atlasManager.getPageProxy(1)->dimensions().height() == 2);
 }
 
-DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(SparseStrips_AtlasOverflowToSecondTexture,
+DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(SparseStrips_AtlasStrictTwoPageLimit,
                                          reporter,
                                          context,
                                          CtsEnforcement::kNever) {
     auto recorder = context->makeRecorder();
     AlphaAtlasManager atlasManager(recorder.get());
 
-    // Fill Page 1 beyond max single texture size (4096 rows * 32,768 bytes = 128 MB)
-    SkTDArray<uint8_t>& buf = atlasManager.getAlphaBuffer();
-    int32_t page1Bytes = AlphaAtlasManager::kMaxCapBytes;
-    int32_t overflowBytes = AlphaAtlasManager::kAtlasDimsBytes * 10;
-    buf.append(page1Bytes + overflowBytes);
+    // Page 0: 1 row
+    auto alloc1 = atlasManager.requestAlphaSpace(SparseStripConfig::kAtlasWidthBytes);
+    REPORTER_ASSERT(reporter, alloc1.has_value());
+    REPORTER_ASSERT(reporter, atlasManager.numPages() == 1);
 
-    SkTDArray<std::pair<int32_t, sk_sp<TextureProxy>>> allocations;
-    bool success = atlasManager.getAssociatedProxies(allocations);
-    REPORTER_ASSERT(reporter, success);
-    // Should allocate across 2 texture pages
-    REPORTER_ASSERT(reporter, allocations.size() == 2);
-    REPORTER_ASSERT(reporter, allocations[0].second != allocations[1].second);
-    REPORTER_ASSERT(
-            reporter,
-            allocations[0].second->dimensions().height() == AlphaAtlasManager::kMaxAtlasHeight);
+    // Page 1: 2 rows
+    auto alloc2 = atlasManager.requestAlphaSpace(SparseStripConfig::kAtlasWidthBytes * 2);
+    REPORTER_ASSERT(reporter, alloc2.has_value());
+    REPORTER_ASSERT(reporter, atlasManager.numPages() == 2);
+
+    // Attempting to exceed Page 1: we only ever allow 2 pages globally across all endcaps.
+    // Should fail gracefully!
+    auto alloc3 = atlasManager.requestAlphaSpace(64);
+    REPORTER_ASSERT(reporter, !alloc3.has_value());
+    REPORTER_ASSERT(reporter, atlasManager.numPages() == 2);
 }
 
-DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(SparseStrips_AtlasBailoutWhenFull,
+DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(SparseStrips_AtlasEndCapAtomicity,
                                          reporter,
                                          context,
                                          CtsEnforcement::kNever) {
     auto recorder = context->makeRecorder();
     AlphaAtlasManager atlasManager(recorder.get());
 
-    // Exceed total capacity across all 2 pages (2 * 128 MB = 256 MB)
-    SkTDArray<uint8_t>& buf = atlasManager.getAlphaBuffer();
-    int32_t maxTotalBytes = AlphaAtlasManager::kMaxCapBytes * AlphaAtlasManager::kMaxPages;
-    int32_t excessBytes = AlphaAtlasManager::kAtlasDimsBytes * 100;
-    buf.append(maxTotalBytes + excessBytes);
+    // Allocate almost all of Page 0, leaving 64 bytes
+    auto alloc1 = atlasManager.requestAlphaSpace(SparseStripConfig::kAtlasWidthBytes - 64);
+    REPORTER_ASSERT(reporter, alloc1.has_value());
+    REPORTER_ASSERT(reporter, alloc1->fTexPage == 0);
+    REPORTER_ASSERT(reporter, alloc1->fAlphaIndex == 0);
 
-    SkTDArray<std::pair<int32_t, sk_sp<TextureProxy>>> allocations;
-    bool success = atlasManager.getAssociatedProxies(allocations);
-    // Must return false (bailout) when running out of room
-    REPORTER_ASSERT(reporter, !success);
-    REPORTER_ASSERT(reporter, allocations.empty());
+    // Request 128 bytes (which cannot fit in the remaining 64 bytes of Page 0).
+    // The allocation must be atomic to Page 1: entire 128 bytes at offset 0 of Page 1.
+    auto alloc2 = atlasManager.requestAlphaSpace(128);
+    REPORTER_ASSERT(reporter, alloc2.has_value());
+    REPORTER_ASSERT(reporter, alloc2->fTexPage == 1);
+    REPORTER_ASSERT(reporter, alloc2->fAlphaIndex == 0);
+    REPORTER_ASSERT(reporter, atlasManager.numPages() == 2);
+}
+
+DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(SparseStrips_AtlasFlipFlopAtFlush,
+                                         reporter,
+                                         context,
+                                         CtsEnforcement::kNever) {
+    auto recorder = context->makeRecorder();
+    AlphaAtlasManager atlasManager(recorder.get());
+
+    // Slot 0: 1 row (32,768 bytes)
+    auto alloc1 = atlasManager.requestAlphaSpace(SparseStripConfig::kAtlasWidthBytes);
+    REPORTER_ASSERT(reporter, alloc1.has_value());
+    REPORTER_ASSERT(reporter, alloc1->fTexPage == 0);
+    REPORTER_ASSERT(reporter, atlasManager.activeSlot() == 0);
+    sk_sp<TextureProxy> initialSlot0 = atlasManager.getPageProxy(0);
+    REPORTER_ASSERT(reporter, atlasManager.numPages() == 1);
+
+    // Slot 1: 2 rows (65,536 bytes) via XOR flip-flop (0 ^ 1 = 1)
+    auto alloc2 = atlasManager.requestAlphaSpace(64);
+    REPORTER_ASSERT(reporter, alloc2.has_value());
+    REPORTER_ASSERT(reporter, alloc2->fTexPage == 1);
+    REPORTER_ASSERT(reporter, atlasManager.activeSlot() == 1);
+    sk_sp<TextureProxy> initialSlot1 = atlasManager.getPageProxy(1);
+    REPORTER_ASSERT(reporter, atlasManager.numPages() == 2);
+
+    // Flush: recordUploads(nullptr) retires older slot 0 (1 ^ 1 = 0).
+    // Slot 1 stays right in place in slot 1 (no moving needed)!
+    atlasManager.recordUploads(nullptr);
+    REPORTER_ASSERT(reporter, atlasManager.numPages() == 1);
+    REPORTER_ASSERT(reporter, atlasManager.getPageProxy(0) == nullptr);
+    REPORTER_ASSERT(reporter, atlasManager.getPageProxy(1) == initialSlot1);
+    REPORTER_ASSERT(reporter, atlasManager.activeSlot() == 1);
+
+    // Continue allocating in current active slot (Slot 1):
+    auto alloc3 = atlasManager.requestAlphaSpace(64);
+    REPORTER_ASSERT(reporter, alloc3.has_value());
+    REPORTER_ASSERT(reporter, alloc3->fTexPage == 1);
+    REPORTER_ASSERT(reporter, atlasManager.numPages() == 1);
+
+    // Fill Slot 1 and trigger flip-flop to Slot 0 (1 ^ 1 = 0) -> doubled to 4 rows!
+    auto alloc4 = atlasManager.requestAlphaSpace(SparseStripConfig::kAtlasWidthBytes * 2);
+    REPORTER_ASSERT(reporter, alloc4.has_value());
+    REPORTER_ASSERT(reporter, alloc4->fTexPage == 0);
+    REPORTER_ASSERT(reporter, atlasManager.activeSlot() == 0);
+    REPORTER_ASSERT(reporter, atlasManager.numPages() == 2);
+    REPORTER_ASSERT(reporter, atlasManager.getPageProxy(0)->dimensions().height() == 4);
+
+    // Second flush: retires older slot 1 (0 ^ 1 = 1). Slot 0 remains active!
+    atlasManager.recordUploads(nullptr);
+    REPORTER_ASSERT(reporter, atlasManager.numPages() == 1);
+    REPORTER_ASSERT(reporter, atlasManager.getPageProxy(1) == nullptr);
+    REPORTER_ASSERT(reporter, atlasManager.getPageProxy(0)->dimensions().height() == 4);
+    REPORTER_ASSERT(reporter, atlasManager.activeSlot() == 0);
 }
 
 }  // namespace skgpu::graphite
