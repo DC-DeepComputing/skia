@@ -1,0 +1,159 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b472b59_f8d5483e",
+        "filename": "include/core/SkPicture.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-08-25T19:28:04Z",
+      "side": 1,
+      "message": "When I was isEmpty I was thinking more along the lines of `!fRecord || !fRecord-\u003ecount()`. In this case fCullRect will also be empty, but I haven\u0027t thought hard enough to know if the cull rect being empty implies my meaning.\n\nNow given my meaning of empty here, I actually don\u0027t think we need this function at all (see comment in cpp where it is used).",
+      "range": {
+        "startLine": 301,
+        "startChar": 37,
+        "endLine": 301,
+        "endChar": 64
+      },
+      "revId": "68f6c9f275fbae991ec09d428a4bcfeab4148284",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd2ed0ce_a71403aa",
+        "filename": "include/core/SkPicture.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-08-25T19:28:04Z",
+      "side": 1,
+      "message": "nit: remove \\n",
+      "revId": "68f6c9f275fbae991ec09d428a4bcfeab4148284",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0541bd02_d4a482a8",
+        "filename": "src/core/SkPicture.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-08-25T19:28:04Z",
+      "side": 1,
+      "message": "We don\u0027t need this anymore. I would set this ctor to just call the other one above passing in cull and nullptr for all the other things",
+      "range": {
+        "startLine": 69,
+        "startChar": 39,
+        "endLine": 69,
+        "endChar": 59
+      },
+      "revId": "68f6c9f275fbae991ec09d428a4bcfeab4148284",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6b57472_9d6481ee",
+        "filename": "src/core/SkPicture.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 365,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-08-25T19:28:04Z",
+      "side": 1,
+      "message": "this only needs to be `if (this-\u003eplaceHolder())` now",
+      "range": {
+        "startLine": 365,
+        "startChar": 4,
+        "endLine": 365,
+        "endChar": 38
+      },
+      "revId": "68f6c9f275fbae991ec09d428a4bcfeab4148284",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f6909d5_43cddeaa",
+        "filename": "src/core/SkPicture.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 388,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-08-25T19:28:04Z",
+      "side": 1,
+      "message": "this-\u003e",
+      "range": {
+        "startLine": 388,
+        "startChar": 8,
+        "endLine": 388,
+        "endChar": 21
+      },
+      "revId": "68f6c9f275fbae991ec09d428a4bcfeab4148284",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79d48134_44623c6c",
+        "filename": "src/core/SkPicture.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 395,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-08-25T19:28:04Z",
+      "side": 1,
+      "message": "Why do we need this? Wouldn\u0027t this just fall down to return fRecord-\u003ecount() which should be 0.",
+      "range": {
+        "startLine": 393,
+        "startChar": 4,
+        "endLine": 395,
+        "endChar": 5
+      },
+      "revId": "68f6c9f275fbae991ec09d428a4bcfeab4148284",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78d0b744_6c474e37",
+        "filename": "src/core/SkPicture.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 408,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-08-25T19:28:04Z",
+      "side": 1,
+      "message": "this-\u003e",
+      "range": {
+        "startLine": 408,
+        "startChar": 8,
+        "endLine": 408,
+        "endChar": 21
+      },
+      "revId": "68f6c9f275fbae991ec09d428a4bcfeab4148284",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
