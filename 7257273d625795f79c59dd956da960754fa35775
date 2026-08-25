@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a9d9219_8ee29b77",
+        "filename": "include/core/SkPicture.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-08-25T19:34:25Z",
+      "side": 1,
+      "message": "what are each of these friends for? I.e. what do they need access to? Can we not just expose the private parts via SkPicturePriv for these other classes to use?",
+      "range": {
+        "startLine": 264,
+        "startChar": 4,
+        "endLine": 267,
+        "endChar": 36
+      },
+      "revId": "7257273d625795f79c59dd956da960754fa35775",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "afd12da8_459b22ab",
+        "filename": "src/core/SkPicturePriv.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-08-25T19:34:25Z",
+      "side": 1,
+      "message": "Are these used anywhere? Can we delete them?",
+      "range": {
+        "startLine": 66,
+        "startChar": 2,
+        "endLine": 73,
+        "endChar": 85
+      },
+      "revId": "7257273d625795f79c59dd956da960754fa35775",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
