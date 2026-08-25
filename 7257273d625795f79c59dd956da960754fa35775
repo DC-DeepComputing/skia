@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c40f65cc_f6eebb90",
+        "filename": "include/core/SkPicture.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-08-25T21:39:45Z",
+      "side": 1,
+      "message": "I was able to get rid of SkDrawableList by moving where snapshotarray was defined, but I had to make the Ctor for SkPicture public in order to remove the friend declaration for SkPictureRecorder and SkRecordedDrawable.\n\nis that something we want?",
+      "parentUuid": "7a9d9219_8ee29b77",
+      "range": {
+        "startLine": 264,
+        "startChar": 4,
+        "endLine": 267,
+        "endChar": 36
+      },
+      "revId": "7257273d625795f79c59dd956da960754fa35775",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "afd12da8_459b22ab",
         "filename": "src/core/SkPicturePriv.h",
         "patchSetId": 15
@@ -37,6 +61,30 @@
       "writtenOn": "2026-08-25T19:34:25Z",
       "side": 1,
       "message": "Are these used anywhere? Can we delete them?",
+      "range": {
+        "startLine": 66,
+        "startChar": 2,
+        "endLine": 73,
+        "endChar": 85
+      },
+      "revId": "7257273d625795f79c59dd956da960754fa35775",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "af98ef8d_e6ce5397",
+        "filename": "src/core/SkPicturePriv.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-08-25T21:39:45Z",
+      "side": 1,
+      "message": "from my investigations, it looks like these aren\u0027t really used anywhere (from my chromium search for the original function names that were in SkBigPicture and in our code). I think we can remove these",
+      "parentUuid": "afd12da8_459b22ab",
       "range": {
         "startLine": 66,
         "startChar": 2,

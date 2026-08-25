@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6150782_66052f39",
+        "filename": "include/core/SkPicture.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-08-25T21:39:45Z",
+      "side": 1,
+      "message": "I think from my investigations, it looks like we use this definition of \"empty\" from now on. I think whether or not `fCullRect` being empty is tightly linked to the SkPicture being empty, we can just use a definition of emptiness that makes more sense (i.e. using !fRecord || !fRecord-\u003ecount())",
+      "parentUuid": "7b472b59_f8d5483e",
+      "range": {
+        "startLine": 301,
+        "startChar": 37,
+        "endLine": 301,
+        "endChar": 64
+      },
+      "revId": "68f6c9f275fbae991ec09d428a4bcfeab4148284",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bd2ed0ce_a71403aa",
@@ -41,6 +65,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b28d9d8_0b97798b",
+        "filename": "include/core/SkPicture.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-08-25T21:39:45Z",
+      "side": 1,
+      "message": "I deleted the \\n so that the fields would be grouped together (minuxs fAddedToCache). is that right?",
+      "parentUuid": "bd2ed0ce_a71403aa",
+      "revId": "68f6c9f275fbae991ec09d428a4bcfeab4148284",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0541bd02_d4a482a8",
@@ -54,6 +96,30 @@
       "writtenOn": "2026-08-25T19:28:04Z",
       "side": 1,
       "message": "We don\u0027t need this anymore. I would set this ctor to just call the other one above passing in cull and nullptr for all the other things",
+      "range": {
+        "startLine": 69,
+        "startChar": 39,
+        "endLine": 69,
+        "endChar": 59
+      },
+      "revId": "68f6c9f275fbae991ec09d428a4bcfeab4148284",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ba85c1f_41922c3c",
+        "filename": "src/core/SkPicture.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-08-25T21:39:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0541bd02_d4a482a8",
       "range": {
         "startLine": 69,
         "startChar": 39,
@@ -87,6 +153,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a76aedf6_a46b2996",
+        "filename": "src/core/SkPicture.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 365,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-08-25T21:39:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f6b57472_9d6481ee",
+      "range": {
+        "startLine": 365,
+        "startChar": 4,
+        "endLine": 365,
+        "endChar": 38
+      },
+      "revId": "68f6c9f275fbae991ec09d428a4bcfeab4148284",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0f6909d5_43cddeaa",
@@ -100,6 +190,30 @@
       "writtenOn": "2026-08-25T19:28:04Z",
       "side": 1,
       "message": "this-\u003e",
+      "range": {
+        "startLine": 388,
+        "startChar": 8,
+        "endLine": 388,
+        "endChar": 21
+      },
+      "revId": "68f6c9f275fbae991ec09d428a4bcfeab4148284",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "be6e6f03_3fb122ed",
+        "filename": "src/core/SkPicture.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 388,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-08-25T21:39:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0f6909d5_43cddeaa",
       "range": {
         "startLine": 388,
         "startChar": 8,
@@ -133,6 +247,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7aa6fb37_55f26025",
+        "filename": "src/core/SkPicture.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 395,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-08-25T21:39:45Z",
+      "side": 1,
+      "message": "sounds good, understood your reasoning from the other comments. omitted this line",
+      "parentUuid": "79d48134_44623c6c",
+      "range": {
+        "startLine": 393,
+        "startChar": 4,
+        "endLine": 395,
+        "endChar": 5
+      },
+      "revId": "68f6c9f275fbae991ec09d428a4bcfeab4148284",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "78d0b744_6c474e37",
@@ -146,6 +284,30 @@
       "writtenOn": "2026-08-25T19:28:04Z",
       "side": 1,
       "message": "this-\u003e",
+      "range": {
+        "startLine": 408,
+        "startChar": 8,
+        "endLine": 408,
+        "endChar": 21
+      },
+      "revId": "68f6c9f275fbae991ec09d428a4bcfeab4148284",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "54866b24_3cc3de3b",
+        "filename": "src/core/SkPicture.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 408,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-08-25T21:39:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "78d0b744_6c474e37",
       "range": {
         "startLine": 408,
         "startChar": 8,
