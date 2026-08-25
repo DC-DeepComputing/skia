@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b14cc97_abd3428f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-08-25T16:16:29Z",
+      "side": 1,
+      "message": "ptal -- small cleanup, after other API use is gone, we can remove them",
+      "revId": "561e1b5e0b35f3df84920d45178602dff2ebc06e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
