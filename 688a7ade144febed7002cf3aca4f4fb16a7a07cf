@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47a31724_bc8d4d13",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-08-25T16:34:54Z",
+      "side": 1,
+      "message": "I don\u0027t think you need to include this here since we\u0027re forward declaring below",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 33
+      },
+      "revId": "688a7ade144febed7002cf3aca4f4fb16a7a07cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06519d99_775c3250",
+        "filename": "src/core/SkBitmapDevice.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-08-25T16:34:54Z",
+      "side": 1,
+      "message": "Do we know that we\u0027ll need a context on the Draw object? My guess if we need anything it will actually be the fSharedState, but that should be available from the recorder. So I wonder if we don\u0027t know why we need the context here I was just delete all of this. We can always go back and add it if we find out why we needed it.",
+      "range": {
+        "startLine": 138,
+        "startChar": 21,
+        "endLine": 138,
+        "endChar": 25
+      },
+      "revId": "688a7ade144febed7002cf3aca4f4fb16a7a07cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "706887d6_09000788",
+        "filename": "src/core/SkBitmapDevice.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-08-25T16:34:54Z",
+      "side": 1,
+      "message": "Is this needed to be included in the header? Looks like most usages are just pointers so could we forward declare it?",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 32
+      },
+      "revId": "688a7ade144febed7002cf3aca4f4fb16a7a07cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

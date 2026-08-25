@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96f62afe_63ef51e1",
+        "filename": "src/core/SkBitmapDevice.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-08-25T16:34:54Z",
+      "side": 0,
+      "message": "Depending on the response in the header, we may need the include of Recorder.h here",
+      "range": {
+        "startLine": 12,
+        "startChar": 28,
+        "endLine": 12,
+        "endChar": 39
+      },
+      "revId": "57968d087d18c203a59689c48f4ec707eb17a52b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8605e1d6_a46a562a",
+        "filename": "src/core/SkBitmapDevice.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-08-25T16:34:54Z",
+      "side": 0,
+      "message": "was this deleted on accident?",
+      "range": {
+        "startLine": 56,
+        "startChar": 4,
+        "endLine": 60,
+        "endChar": 7
+      },
+      "revId": "57968d087d18c203a59689c48f4ec707eb17a52b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d69e8ad_2423afc6",
+        "filename": "tests/CPUContextRecorderTest.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-08-25T16:34:54Z",
+      "side": 0,
+      "message": "is there anyway to keep all these tests around or at least make sure they are disabled in a way so we\u0027ll know to add them back when we have the new cpu context ready? Same with the tests in here and the deleted ones in graphite and ganesh.",
+      "range": {
+        "startLine": 27,
+        "startChar": 9,
+        "endLine": 27,
+        "endChar": 63
+      },
+      "revId": "57968d087d18c203a59689c48f4ec707eb17a52b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
