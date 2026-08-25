@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4572ac88_1bd7c035",
+        "filename": "include/core/SkPicture.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-08-25T19:17:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "98a9a34e_26fa724f",
+      "range": {
+        "startLine": 302,
+        "startChar": 20,
+        "endLine": 302,
+        "endChar": 21
+      },
+      "revId": "55511d22b2930675ce876b38f3475ec3e31da815",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5839406a_c955f0ab",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-08-25T18:33:25Z",
       "side": 1,
       "message": "If I\u0027m following the ctors correctly, then the only time fIsPlaceholder can be true fRecord will always be nullptr. So could this check just be `if (!fRecord)`?\n\nBetter yet I don\u0027t think we need the extra fIsPlaceholder member variable at all. Instead we could do something along the lines of 1) fRecord \u003d\u003d nullptr means \"place holder\", 2) our empty pictures just make a Record with count of zero, and 3) normal pictures have record count \u003e 0. IIUC there shouldn\u0027t be any issue in this class treating 2) and 3) the same in logic. So we just use checks for !fRecord to handle the place holder logic.",
+      "range": {
+        "startLine": 367,
+        "startChar": 8,
+        "endLine": 367,
+        "endChar": 34
+      },
+      "revId": "55511d22b2930675ce876b38f3475ec3e31da815",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1948d88_59e7c2ec",
+        "filename": "src/core/SkPicture.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 367,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-08-25T19:17:44Z",
+      "side": 1,
+      "message": "I think your understanding is correct. That\u0027s a smart optimization, thanks for catching that. I updated the logic to use !fRecord as a marker for placeholder pictures.\n\nI also made the isEmpty() and isPlaceholder() methods to communicate the intuition better.\n\nisEmpty is based off the SkRect::MakeEmpty() fCullRect we use to initialize the SkPicture, but let me know if this is not the right assumption",
+      "parentUuid": "5839406a_c955f0ab",
       "range": {
         "startLine": 367,
         "startChar": 8,
