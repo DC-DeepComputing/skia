@@ -31,6 +31,7 @@ struct SparseStripConfig {
     static constexpr int32_t kMaxCapBytes         = kAtlasWidth * kMaxAtlasRows *
                                                     kAtlasBytesPerTexel;
     static constexpr int32_t kMaxTexturePages     = 2;
+    static constexpr uint16_t kInvalidTexPage     = 0xFFFF;
     static constexpr SkColorType kColorType       = SkColorType::kRGBA_8888_SkColorType;
 
     static constexpr int32_t   kNumSubSamples     = 8;

@@ -5,10 +5,15 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkPathBuilder.h"
 #include "include/gpu/graphite/Context.h"
 #include "include/gpu/graphite/Recorder.h"
+#include "src/gpu/graphite/AtlasProvider.h"
+#include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/sparse_strips/AlphaAtlasManager.h"
+#include "src/gpu/graphite/sparse_strips/MSAA_LUT.h"
 #include "src/gpu/graphite/sparse_strips/SparseStripsConfig.h"
+#include "src/gpu/graphite/sparse_strips/StripGenerator.h"
 #include "tests/CtsEnforcement.h"
 #include "tests/Test.h"
 
@@ -77,17 +82,19 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(SparseStrips_AtlasStrictTwoPageLimit,
     // Page 0: 1 row
     auto alloc1 = atlasManager.requestAlphaSpace(SparseStripConfig::kAtlasWidthBytes);
     REPORTER_ASSERT(reporter, alloc1.has_value());
+    REPORTER_ASSERT(reporter, alloc1->fTexPage == 0);
     REPORTER_ASSERT(reporter, atlasManager.numPages() == 1);
 
     // Page 1: 2 rows
     auto alloc2 = atlasManager.requestAlphaSpace(SparseStripConfig::kAtlasWidthBytes * 2);
     REPORTER_ASSERT(reporter, alloc2.has_value());
+    REPORTER_ASSERT(reporter, alloc2->fTexPage == 1);
     REPORTER_ASSERT(reporter, atlasManager.numPages() == 2);
 
-    // Attempting to exceed Page 1: we only ever allow 2 pages globally across all endcaps.
-    // Should fail gracefully!
+    // Attempting to exceed Page 1 when out of proxy room: allocation gets kInvalidTexPage!
     auto alloc3 = atlasManager.requestAlphaSpace(64);
-    REPORTER_ASSERT(reporter, !alloc3.has_value());
+    REPORTER_ASSERT(reporter, alloc3.has_value());
+    REPORTER_ASSERT(reporter, alloc3->fTexPage == SparseStripConfig::kInvalidTexPage);
     REPORTER_ASSERT(reporter, atlasManager.numPages() == 2);
 }
 
@@ -164,6 +171,70 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(SparseStrips_AtlasFlipFlopAtFlush,
     REPORTER_ASSERT(reporter, atlasManager.getPageProxy(1) == nullptr);
     REPORTER_ASSERT(reporter, atlasManager.getPageProxy(0)->dimensions().height() == 4);
     REPORTER_ASSERT(reporter, atlasManager.activeSlot() == 0);
+}
+
+DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(SparseStrips_AtlasNullEndCapsAndCleanup,
+                                         reporter,
+                                         context,
+                                         CtsEnforcement::kNever) {
+    auto recorder = context->makeRecorder();
+    AlphaAtlasManager* atlasManager = recorder->priv().atlasProvider()->alphaAtlasManager();
+    REPORTER_ASSERT(reporter, atlasManager != nullptr);
+
+    // 1. Fill Slot 0 (1 row = 32,768 bytes).
+    auto alloc1 = atlasManager->requestAlphaSpace(SparseStripConfig::kAtlasWidthBytes);
+    REPORTER_ASSERT(reporter, alloc1.has_value());
+    REPORTER_ASSERT(reporter, alloc1->fTexPage == 0);
+    std::memset(alloc1->fWritePtr, 0xAA, SparseStripConfig::kAtlasWidthBytes);
+
+    // 2. Fill Slot 1 (2 rows = 65,536 bytes).
+    auto alloc2 = atlasManager->requestAlphaSpace(SparseStripConfig::kAtlasWidthBytes * 2);
+    REPORTER_ASSERT(reporter, alloc2.has_value());
+    REPORTER_ASSERT(reporter, alloc2->fTexPage == 1);
+    REPORTER_ASSERT(reporter, atlasManager->numPages() == 2);
+    REPORTER_ASSERT(reporter, atlasManager->activeSlot() == 1);
+    std::memset(alloc2->fWritePtr, 0xBB, SparseStripConfig::kAtlasWidthBytes * 2);
+
+    // 3. Process geometry when both proxy slots are full: MakeStrips ALWAYS completes!
+    // Out-of-room endcaps receive fTexPage == kInvalidTexPage.
+    SkTDArray<uint8_t> lut = GenerateMSAALUT<uint8_t>();
+    StripGenerator generator(100, 100, lut, recorder.get());
+
+    SkPath path = SkPathBuilder().moveTo(10, 10)
+                                 .lineTo(90, 10)
+                                 .lineTo(90, 90)
+                                 .lineTo(10, 90)
+                                 .close()
+                                 .detach();
+
+    bool success = generator.processGeometry(path, SkMatrix::I());
+    REPORTER_ASSERT(reporter, success);
+    REPORTER_ASSERT(reporter, !generator.ends().empty());
+    REPORTER_ASSERT(reporter, generator.hasNullCaps());
+
+    // Verify at least one endcap has fTexPage == kInvalidTexPage
+    bool hasInvalidPage = false;
+    for (const auto& cap : generator.ends().caps()) {
+        if (cap.fTexPage == SparseStripConfig::kInvalidTexPage) {
+            hasInvalidPage = true;
+            break;
+        }
+    }
+    REPORTER_ASSERT(reporter, hasInvalidPage);
+
+    // 4. Simulate flush of tracked devices: recordUploads retires older slot 0!
+    atlasManager->recordUploads(nullptr);
+
+    // 5. Cleanup function handles all null endcaps!
+    bool cleaned = generator.cleanupNullCaps();
+    REPORTER_ASSERT(reporter, cleaned);
+    REPORTER_ASSERT(reporter, !generator.hasNullCaps());
+    REPORTER_ASSERT(reporter, !generator.ends().proxies().empty());
+
+    for (const auto& cap : generator.ends().caps()) {
+        REPORTER_ASSERT(reporter, cap.fTexPage != SparseStripConfig::kInvalidTexPage);
+        REPORTER_ASSERT(reporter, cap.fAlphaIndex >= 0);
+    }
 }
 
 }  // namespace skgpu::graphite

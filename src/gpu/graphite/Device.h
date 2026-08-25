@@ -83,6 +83,9 @@ class Shape;
 class Task;
 class TextureProxy;
 class TextureProxyView;
+#if defined(SK_ENABLE_SPARSE_STRIPS)
+class StripGenerator;
+#endif
 
 class Device final : public SkDevice {
 public:
@@ -404,6 +407,10 @@ private:
 #endif
 
     friend class ClipStack; // for drawClipShape
+
+#if defined(SK_ENABLE_SPARSE_STRIPS)
+    std::unique_ptr<StripGenerator> fStripGenerator;
+#endif
 };
 
 } // namespace skgpu::graphite
