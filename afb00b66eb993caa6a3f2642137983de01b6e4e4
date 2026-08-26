@@ -22,6 +22,30 @@
       },
       "revId": "afb00b66eb993caa6a3f2642137983de01b6e4e4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "86a5dd4f_6fabf938",
+        "filename": "src/core/SkColorSpace.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-08-26T08:54:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d4ff58e3_b55afaf2",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 50
+      },
+      "revId": "afb00b66eb993caa6a3f2642137983de01b6e4e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
