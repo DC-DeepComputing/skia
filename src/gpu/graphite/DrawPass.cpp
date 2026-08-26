@@ -22,7 +22,6 @@
 #include "src/gpu/graphite/Texture.h"  // IWYU pragma: keep
 #include "src/gpu/graphite/TextureProxy.h"
 
-
 using namespace skia_private;
 
 namespace skgpu::graphite {
@@ -97,6 +96,8 @@ bool DrawPass::addResourceRefs(ResourceProvider* resourceProvider,
             SKIA_LOG_W("Failed to create Pipeline for draw in RenderPass. Dropping draw!");
             return false;
         }
+
+        fStorageBufferStages |= pipeline->storageBufferStages();
 
         TRACE_EVENT_INSTANT1_ALWAYS(
                 "skia.shaders",
