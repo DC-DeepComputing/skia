@@ -291,7 +291,10 @@ public:
                  fResourceBindingReqs.fStorageBufferLayout == Layout::kStd430_F16 ||
                  fResourceBindingReqs.fStorageBufferLayout == Layout::kMetal);
         return fStorageBufferSupport;
-    }
+    bool storageBufferSupport() const { return fStorageBufferSupport; }
+
+    /* Returns whether storage buffers are supported for compute dispatches. */
+    bool storageBufferSupportForCompute() const { return fStorageBufferSupportForCompute; }
 
     /* Returns whether a draw buffer can be mapped. */
     bool drawBufferCanBeMapped() const { return fDrawBufferCanBeMapped; }
@@ -459,6 +462,7 @@ protected:
     bool fAvoidDepthMode = false;
 
     bool fComputeSupport = false;
+    bool fStorageBufferSupportForCompute = false;
     bool fSupportsAHardwareBufferImages = false;
     bool fFullCompressedUploadSizeMustAlignToBlockDims = false;
 
