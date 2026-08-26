@@ -234,11 +234,17 @@ void CaptureSlide::draw(SkCanvas* canvas) {
         return;
     }
 
+    int prevAssetIndex = fCurrentAssetIndex;
+
     drawCaptureExplorer(fCapture.get(),
                         fCurrentAssetIndex,
                         fCurrentRecordingCaptureIndex,
                         fCurrentDrawTaskIndex,
                         fInvalidate);
+
+    if (prevAssetIndex != fCurrentAssetIndex) {
+        fDebugCanvas.reset();
+    }
 
     auto focusPicture = fCapture->getAsset(fCurrentAssetIndex);
     if (!focusPicture) {
