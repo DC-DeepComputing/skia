@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12ccd68c_e817f643",
+        "filename": "src/ports/SkScalerContext_win_dw.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-08-26T09:07:49Z",
+      "side": 1,
+      "message": "Reorder the headers appropriatedly. you should group the L8 and L10 together in their own section.",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 48
+      },
+      "revId": "c29d0ff58e6b14ee29f3fe172cf4a84f7bd3ab5a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
