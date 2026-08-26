@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "49d88cda_2b69aff7",
+        "filename": "src/gpu/graphite/TextureUtils.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 675,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-26T14:53:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7dfd689c_cf04596e",
+      "range": {
+        "startLine": 664,
+        "startChar": 8,
+        "endLine": 675,
+        "endChar": 9
+      },
+      "revId": "2b4f900cd9e0d54a709bbf966591ff66d800c07b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b6754140_019b5e44",
@@ -54,6 +78,30 @@
       "writtenOn": "2026-08-26T13:28:12Z",
       "side": 1,
       "message": "This can be undone now right?",
+      "range": {
+        "startLine": 87,
+        "startChar": 0,
+        "endLine": 96,
+        "endChar": 2
+      },
+      "revId": "2b4f900cd9e0d54a709bbf966591ff66d800c07b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "026fa76b_c67863c5",
+        "filename": "src/gpu/graphite/dawn/DawnGraphiteUtils.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-26T14:53:37Z",
+      "side": 1,
+      "message": "Yea I wasn\u0027t sure whether to remove it or keep it in for completeness",
+      "parentUuid": "b6754140_019b5e44",
       "range": {
         "startLine": 87,
         "startChar": 0,
