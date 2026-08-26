@@ -16,9 +16,10 @@
 #include "src/core/SkStringUtils.h"
 
 #include <io.h>
-#include <new>
 #include <stdio.h>
 #include <sys/stat.h>
+#include <new>
+#include <vector>
 
 void sk_fsync(FILE* f) {
     _commit(sk_fileno(f));
@@ -163,34 +164,29 @@ size_t sk_qread(FILE* file, void* buffer, size_t count, size_t offset) {
 ////////////////////////////////////////////////////////////////////////////
 
 struct SkOSFileIterData {
-    SkOSFileIterData() : fHandle(0), fPath16(nullptr) { }
+    SkOSFileIterData() : fHandle(0) {}
     HANDLE fHandle;
-    uint16_t* fPath16;
+    std::vector<uint16_t> fPath16;
 };
 static_assert(sizeof(SkOSFileIterData) <= SkOSFile::Iter::kStorageSize, "not_enough_space");
 
-static uint16_t* concat_to_16(const char src[], const char suffix[]) {
-    size_t  i, len = strlen(src);
-    size_t  len2 = 3 + (suffix ? strlen(suffix) : 0);
-    uint16_t* dst = (uint16_t*)sk_malloc_throw((len + len2) * sizeof(uint16_t));
-
-    for (i = 0; i < len; i++) {
-        dst[i] = src[i];
-    }
-
-    if (i > 0 && dst[i-1] != '/') {
-        dst[i++] = '/';
-    }
-    dst[i++] = '*';
-
-    if (suffix) {
-        while (*suffix) {
-            dst[i++] = *suffix++;
+static std::vector<uint16_t> concat_to_16(const char* src, const char* suffix) {
+    std::vector<uint16_t> dst;
+    if (src) {
+        while (*src) {
+            dst.push_back(static_cast<uint16_t>(*src++));
         }
     }
-    dst[i] = 0;
-    SkASSERT(i + 1 <= len + len2);
-
+    if (!dst.empty() && dst.back() != '/') {
+        dst.push_back('/');
+    }
+    dst.push_back('*');
+    if (suffix) {
+        while (*suffix) {
+            dst.push_back(static_cast<uint16_t>(*suffix++));
+        }
+    }
+    dst.push_back(0);
     return dst;
 }
 
@@ -203,7 +199,6 @@ SkOSFile::Iter::Iter(const char path[], const char suffix[]) {
 
 SkOSFile::Iter::~Iter() {
     SkOSFileIterData& self = *reinterpret_cast<SkOSFileIterData*>(fSelf);
-    sk_free(self.fPath16);
     if (self.fHandle) {
         ::FindClose(self.fHandle);
     }
@@ -216,11 +211,6 @@ void SkOSFile::Iter::reset(const char path[], const char suffix[]) {
         ::FindClose(self.fHandle);
         self.fHandle = 0;
     }
-    if (nullptr == path) {
-        path = "";
-    }
-
-    sk_free(self.fPath16);
     self.fPath16 = concat_to_16(path, suffix);
 }
 
@@ -271,11 +261,11 @@ bool SkOSFile::Iter::next(SkString* name, bool getDir) {
     WIN32_FIND_DATAW*   dataPtr = nullptr;
 
     if (self.fHandle == 0) {  // our first time
-        if (self.fPath16 == nullptr || *self.fPath16 == 0) {  // check for no path
+        if (self.fPath16.empty()) {  // check for no path
             return false;
         }
 
-        self.fHandle = ::FindFirstFileW((LPCWSTR)self.fPath16, &data);
+        self.fHandle = ::FindFirstFileW((LPCWSTR)self.fPath16.data(), &data);
         if (self.fHandle != 0 && self.fHandle != (HANDLE)~0) {
             dataPtr = &data;
         }
