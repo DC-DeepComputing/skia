@@ -129,6 +129,7 @@ private:
     void pollCapturingStatus();
     void attachRecordingCanvas();
     void detachRecordingCanvas();
+    void trackImageMetadata(const SkImage* image);
 
     bool fCapturing = false;
     SkPictureRecorder fRecorder;

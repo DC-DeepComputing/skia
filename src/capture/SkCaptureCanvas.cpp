@@ -62,6 +62,19 @@ void SkCaptureCanvas::detachRecordingCanvas() {
     this->removeCanvas(fRecorder.getRecordingCanvas());
 }
 
+void SkCaptureCanvas::trackImageMetadata(const SkImage* image) {
+    if (!image) {
+        return;
+    }
+    for (const auto& storage : as_IB(image)->getPixelStorages()) {
+        if (storage) {
+            // TODO (b/412351769): Track image metadata in the capture manager.
+            SKIA_LOG_D("SkCaptureCanvas::trackImageMetadata: StorageID=%u, ContentID=%u\n",
+                       storage->getPixelStorageId(), storage->getContentId());
+        }
+    }
+}
+
 void SkCaptureCanvas::onSurfaceDelete() {
     // TODO (b/412351769): signal to the capture manager that this canvas's surface has been deleted
 }
@@ -230,13 +243,7 @@ void SkCaptureCanvas::onDrawImage2(const SkImage* image,
                                    const SkPaint* paint) {
     this->pollCapturingStatus();
     this->SkNWayCanvas::onDrawImage2(image, left, top, sampling, paint);
-    for (const auto& storage : as_IB(image)->getPixelStorages()) {
-        if (storage) {
-            // TODO (b/412351769): Track image metadata in the capture manager.
-            SKIA_LOG_D("SkCaptureCanvas::onDrawImage2: StorageID=%u, ContentID=%u\n",
-                     storage->getPixelStorageId(), storage->getContentId());
-        }
-    }
+    this->trackImageMetadata(image);
 }
 
 void SkCaptureCanvas::onDrawImageRect2(const SkImage* image,
@@ -247,13 +254,7 @@ void SkCaptureCanvas::onDrawImageRect2(const SkImage* image,
                                        SrcRectConstraint constraint) {
     this->pollCapturingStatus();
     this->SkNWayCanvas::onDrawImageRect2(image, src, dst, sampling, paint, constraint);
-    for (const auto& storage : as_IB(image)->getPixelStorages()) {
-        if (storage) {
-            // TODO (b/412351769): Track image metadata in the capture manager.
-            SKIA_LOG_D("SkCaptureCanvas::onDrawImageRect2: StorageID=%u, ContentID=%u\n",
-                     storage->getPixelStorageId(), storage->getContentId());
-        }
-    }
+    this->trackImageMetadata(image);
 }
 
 void SkCaptureCanvas::onDrawImageLattice2(const SkImage* image,
@@ -263,13 +264,7 @@ void SkCaptureCanvas::onDrawImageLattice2(const SkImage* image,
                                           const SkPaint* paint) {
     this->pollCapturingStatus();
     this->SkNWayCanvas::onDrawImageLattice2(image, lattice, dst, filter, paint);
-    for (const auto& storage : as_IB(image)->getPixelStorages()) {
-        if (storage) {
-            // TODO (b/412351769): Track image metadata in the capture manager.
-            SKIA_LOG_D("SkCaptureCanvas::onDrawImageLattice2: StorageID=%u, ContentID=%u\n",
-                     storage->getPixelStorageId(), storage->getContentId());
-        }
-    }
+    this->trackImageMetadata(image);
 }
 
 void SkCaptureCanvas::onDrawAtlas2(const SkImage* image,
@@ -283,13 +278,7 @@ void SkCaptureCanvas::onDrawAtlas2(const SkImage* image,
                                    const SkPaint* paint) {
     this->pollCapturingStatus();
     this->SkNWayCanvas::onDrawAtlas2(image, xform, tex, colors, count, bmode, sampling, cull, paint);
-    for (const auto& storage : as_IB(image)->getPixelStorages()) {
-        if (storage) {
-            // TODO (b/412351769): Track image metadata in the capture manager.
-            SKIA_LOG_D("SkCaptureCanvas::onDrawAtlas2: StorageID=%u, ContentID=%u\n",
-                     storage->getPixelStorageId(), storage->getContentId());
-        }
-    }
+    this->trackImageMetadata(image);
 }
 
 void SkCaptureCanvas::onDrawMesh(const SkMesh& mesh, sk_sp<SkBlender> blender, const SkPaint& paint) {
@@ -372,4 +361,9 @@ void SkCaptureCanvas::onDrawEdgeAAImageSet2(const ImageSetEntry set[],
     this->pollCapturingStatus();
     this->SkNWayCanvas::onDrawEdgeAAImageSet2(
             set, count, dstClips, preViewMatrices, sampling, paint, constraint);
+    if (set) {
+        for (int i = 0; i < count; ++i) {
+            this->trackImageMetadata(set[i].fImage.get());
+        }
+    }
 }
