@@ -12,17 +12,36 @@
 #include "include/core/SkPicture.h"
 #include "include/core/SkRefCnt.h"
 
+#include "include/private/SkNoncopyable.h"
+#include "include/private/SkTemplates.h"
+
 #include <atomic>
 #include <cstdint>
 
-class SkBigPicture;
 class SkReadBuffer;
 class SkStream;
 class SkWriteBuffer;
 struct SkPictInfo;
+class SkRecord;
+class SkBBoxHierarchy;
 
 class SkPicturePriv {
 public:
+    static sk_sp<SkPicture> MakePicture(const SkRect& cull,
+                                        sk_sp<const SkRecord> record,
+                                        std::unique_ptr<const SkSnapshotArray> drawablePicts,
+                                        sk_sp<const SkBBoxHierarchy> bbh,
+                                        size_t approxBytesUsedBySubPictures) {
+        return sk_sp<SkPicture>(new SkPicture(cull,
+                                              std::move(record),
+                                              std::move(drawablePicts),
+                                              std::move(bbh),
+                                              approxBytesUsedBySubPictures));
+    }
+
+    static sk_sp<SkPicture> MakePicture(const SkRect& cull) {
+        return sk_sp<SkPicture>(new SkPicture(cull));
+    }
     /**
      *  Recreate a picture that was serialized into a buffer. If the creation requires bitmap
      *  decoding, the decoder must be set on the SkReadBuffer parameter by calling
@@ -39,9 +58,8 @@ public:
      */
     static void Flatten(const sk_sp<const SkPicture> , SkWriteBuffer& buffer);
 
-    // Returns NULL if this is not an SkBigPicture.
-    static const SkBigPicture* AsSkBigPicture(const sk_sp<const SkPicture>& picture) {
-        return picture->asSkBigPicture();
+    static const SkRecord* GetRecord(const SkPicture* pic) {
+        return pic ? pic->fRecord.get() : nullptr;
     }
 
     static uint64_t MakeSharedID(uint32_t pictureID) {
@@ -50,7 +68,9 @@ public:
     }
 
     static void AddedToCache(const SkPicture* pic) {
-        pic->fAddedToCache.store(true);
+        if (pic) {
+            pic->fAddedToCache.store(true);
+        }
     }
 
     // V35: Store SkRect (rather then width & height) in header
@@ -189,4 +209,20 @@ public:
 
 bool SkPicture_StreamIsSKP(SkStream*, SkPictInfo*);
 
+class SkSnapshotArray : ::SkNoncopyable {
+public:
+    SkSnapshotArray(const SkPicture* pics[], int count) : fPics(pics), fCount(count) {}
+    ~SkSnapshotArray() {
+        for (int i = 0; i < fCount; i++) {
+            fPics[i]->unref();
+        }
+    }
+
+    const SkPicture* const* begin() const { return fPics; }
+    int count() const { return fCount; }
+
+private:
+    skia_private::AutoTMalloc<const SkPicture*> fPics;
+    int fCount;
+};
 #endif
