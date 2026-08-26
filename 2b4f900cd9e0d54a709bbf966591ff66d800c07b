@@ -16,6 +16,52 @@
       "message": "PTAL",
       "revId": "2b4f900cd9e0d54a709bbf966591ff66d800c07b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7dfd689c_cf04596e",
+        "filename": "src/gpu/graphite/TextureUtils.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 675,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-26T13:28:12Z",
+      "side": 1,
+      "message": "In https://skia-review.git.corp.google.com/c/skia/+/1334556, I\u0027m adding a `SkSpan\u003cTextureProxyView\u003e textureProxyViews()` function to `skgpu::graphite::Image_Base`, so once that lands, this can be simplified to just a cast to Image_Base and a loop over the span without worrying about YUVA vs single-plane",
+      "range": {
+        "startLine": 664,
+        "startChar": 8,
+        "endLine": 675,
+        "endChar": 9
+      },
+      "revId": "2b4f900cd9e0d54a709bbf966591ff66d800c07b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6754140_019b5e44",
+        "filename": "src/gpu/graphite/dawn/DawnGraphiteUtils.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-26T13:28:12Z",
+      "side": 1,
+      "message": "This can be undone now right?",
+      "range": {
+        "startLine": 87,
+        "startChar": 0,
+        "endLine": 96,
+        "endChar": 2
+      },
+      "revId": "2b4f900cd9e0d54a709bbf966591ff66d800c07b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
