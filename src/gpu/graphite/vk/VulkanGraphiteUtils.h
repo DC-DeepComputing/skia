@@ -80,7 +80,8 @@ VkShaderModule CreateVulkanShaderModule(const VulkanSharedContext*,
                                         const SkSL::NativeShader& spirv,
                                         VkShaderStageFlagBits);
 
-VkDescriptorType DsTypeEnumToVkDs(DescriptorType);
+VkDescriptorType DsTypeEnumToVkDs(DescriptorType,
+                                  SkEnumBitMask<PipelineStageFlags> = {});
 void DescriptorDataToVkDescSetLayout(const VulkanSharedContext*,
                                      const SkSpan<DescriptorData>&,
                                      VkDescriptorSetLayout*);
