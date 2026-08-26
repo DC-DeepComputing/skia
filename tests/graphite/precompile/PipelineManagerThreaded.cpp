@@ -82,7 +82,7 @@ void run_test(skiatest::Reporter* reporter, GraphiteTestContext* testContext,
     }
 
     TestOptions newOptions(origOptions);
-    newOptions.fContextOptions.fExecutor = executor.get();
+    newOptions.fContextOptions.fExecutor1 = executor.get();
 
     {
         std::unique_ptr<Context> context = testContext->makeContext(newOptions);

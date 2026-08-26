@@ -35,7 +35,7 @@ PrecompileContext::~PrecompileContext() {
     ASSERT_SINGLE_OWNER
 }
 
-PrecompileContext::PrecompileContext(sk_sp<SharedContext> sharedContext)
+PrecompileContext::PrecompileContext(sk_sp<SharedContext> sharedContext, bool)
     : fSharedContext(sharedContext) {
 }
 

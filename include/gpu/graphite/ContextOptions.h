@@ -11,6 +11,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkSpan.h"
+#include "include/core/SkTaskRunner.h"
 #include "include/gpu/graphite/GraphiteTypes.h"
 #include "include/private/SkAPI.h"
 #include "include/private/SkMath.h"
@@ -205,7 +206,9 @@ struct SK_API ContextOptions {
      * for other tasks. It is up to the client to ensure the SkExecutor remains valid throughout
      * the lifetime of the Context.
      */
-    SkExecutor* fExecutor = nullptr;
+    SkExecutor* fExecutor1 = nullptr;
+
+    sk_sp<SkTaskRunner> fTaskRunner;
 
     /**
      * Allows Graphite to store Pipeline data across Context lifetimes. It is up to the
