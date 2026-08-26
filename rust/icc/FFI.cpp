@@ -19,8 +19,7 @@ namespace rust_icc {
 
 static constexpr uint64_t kMaxGridPoints = 350000000;
 
-// Keep this at the skcms bridge boundary: moxcms has its own parser limits,
-// while C++ tests and future callers can still construct rust_icc::IccProfile directly.
+// Validate grid point dimensions against max limits at the bridge boundary.
 static bool ValidateGridPoints(const uint8_t grid_points[4], uint32_t active_channels) {
     if (active_channels < 1 || active_channels > 4) {
         return false;
@@ -84,7 +83,7 @@ static void ToSkcmsCurve(const rust_icc::Curve& rust_curve, skcms_Curve* out_skc
     }
 }
 
-static bool ToSkcmsA2B(const rust_icc::A2B& rust_a2b, skcms_A2B* out_skcms) {
+static bool ToSkcmsA2B(const rust_icc::A2BOrB2ATransform& rust_a2b, skcms_A2B* out_skcms) {
     memset(out_skcms, 0, sizeof(skcms_A2B));
 
     // Input curves: If input_channels is non-zero, ensure we have enough curves
@@ -172,7 +171,7 @@ static bool ToSkcmsA2B(const rust_icc::A2B& rust_a2b, skcms_A2B* out_skcms) {
 }
 
 // Helper to populate skcms_B2A from Rust B2A data
-static bool ToSkcmsB2A(const rust_icc::B2A& rust_b2a, skcms_B2A* out_skcms) {
+static bool ToSkcmsB2A(const rust_icc::A2BOrB2ATransform& rust_b2a, skcms_B2A* out_skcms) {
     memset(out_skcms, 0, sizeof(skcms_B2A));
 
     // Input curves
@@ -229,7 +228,7 @@ static bool ToSkcmsB2A(const rust_icc::B2A& rust_b2a, skcms_B2A* out_skcms) {
     }
     memcpy(out_skcms->grid_points, rust_b2a.grid_points.data(), 4);
     if (!rust_b2a.grid_data.empty()) {
-        if (!ValidateGridPoints(out_skcms->grid_points, rust_b2a.output_channels)) {
+        if (!ValidateGridPoints(out_skcms->grid_points, rust_b2a.input_channels)) {
             return false;
         }
         if (rust_b2a.is_16bit_grid) {
@@ -239,8 +238,10 @@ static bool ToSkcmsB2A(const rust_icc::B2A& rust_b2a, skcms_B2A* out_skcms) {
         }
     }
 
-    // skcms requires 3 (RGB) or 4 (CMYK) output channels for B2A.
-    if (rust_b2a.output_channels < 3 || rust_b2a.output_channels > 4) {
+    // skcms requires 3 (RGB) or 4 (CMYK) output channels for B2A,
+    // or 0 when the CLUT/A-curves stage is skipped.
+    if (rust_b2a.output_channels != 0 &&
+        (rust_b2a.output_channels < 3 || rust_b2a.output_channels > 4)) {
         return false;
     }
     if (rust_b2a.output_channels > rust_b2a.output_curves.size()) {
@@ -295,8 +296,7 @@ bool ToSkcmsIccProfile(const IccProfile& rust_profile, skcms_ICCProfile* out_skc
     out_skcms->has_B2A = rust_profile.has_b2a;
     if (rust_profile.has_b2a) {
         if (!ToSkcmsB2A(rust_profile.b2a, &out_skcms->B2A)) {
-            // Non-fatal: a2b_to_b2a() can produce invalid channel counts
-            // for CMYK and curve-only B2A profiles. Profile is still usable via A2B.
+            // Non-fatal: if B2A conversion fails, the profile is still usable via A2B.
             out_skcms->has_B2A = false;
         }
     }

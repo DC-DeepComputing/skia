@@ -803,11 +803,27 @@ static float eval_skcms_curve(const skcms_Curve& c, float x) {
     int lo = (int)idx;
     int hi = lo + 1 < (int)c.table_entries ? lo + 1 : lo;
     float frac = idx - (float)lo;
-    auto read16 = [&](int i) -> float {
-        uint16_t v = (uint16_t)((c.table_16[2*i] << 8) | c.table_16[2*i+1]);
-        return (float)v / 65535.0f;
+    auto read_val = [&](int i) -> float {
+        if (c.table_16) {
+            uint16_t v = (uint16_t)((c.table_16[2*i] << 8) | c.table_16[2*i+1]);
+            return (float)v / 65535.0f;
+        } else if (c.table_8) {
+            return (float)c.table_8[i] / 255.0f;
+        }
+        return 0.0f;
     };
-    return read16(lo) * (1.0f - frac) + read16(hi) * frac;
+    return read_val(lo) * (1.0f - frac) + read_val(hi) * frac;
+}
+
+static bool is_identity_parametric(const skcms_Curve& c) {
+    return c.table_entries == 0 &&
+           c.parametric.g == 1.0f &&
+           c.parametric.a == 1.0f &&
+           c.parametric.b == 0.0f &&
+           c.parametric.c == 0.0f &&
+           c.parametric.d == 0.0f &&
+           c.parametric.e == 0.0f &&
+           c.parametric.f == 0.0f;
 }
 
 static void compare_curves_by_evaluation(
@@ -823,19 +839,17 @@ static void compare_curves_by_evaluation(
                                   rust_curve.parametric, skcms_curve.parametric);
         return;
     }
-    // If both are table-based with the same number of entries, compare bytes.
-    if (rust_curve.table_entries != 0 &&
-        rust_curve.table_entries == skcms_curve.table_entries) {
+
+    // If both are table-based with the same number of entries, compare table values directly.
+    if (rust_curve.table_entries != 0 && rust_curve.table_entries == skcms_curve.table_entries) {
         const uint32_t n = rust_curve.table_entries;
-        const uint8_t* rust_data  = rust_curve.table_16;
-        const uint8_t* skcms_data = skcms_curve.table_16;
-        if (!rust_data || !skcms_data) {
-            ERRORF(r, "[%s] %s[%d] null table_16 pointer", path, stage, channel);
-            return;
-        }
         for (uint32_t i = 0; i < n; ++i) {
-            uint16_t rv = (uint16_t)(rust_data[2*i]  << 8 | rust_data[2*i+1]);
-            uint16_t sv = (uint16_t)(skcms_data[2*i] << 8 | skcms_data[2*i+1]);
+            uint16_t rv = rust_curve.table_16
+                              ? (uint16_t)(rust_curve.table_16[2 * i] << 8 | rust_curve.table_16[2 * i + 1])
+                              : (uint16_t)(rust_curve.table_8[i] << 8 | rust_curve.table_8[i]);
+            uint16_t sv = skcms_curve.table_16
+                              ? (uint16_t)(skcms_curve.table_16[2 * i] << 8 | skcms_curve.table_16[2 * i + 1])
+                              : (uint16_t)(skcms_curve.table_8[i] << 8 | skcms_curve.table_8[i]);
             if (rv != sv) {
                 ERRORF(r, "[%s] %s[%d] table entry %u mismatch: rust=%u, skcms=%u",
                        path, stage, channel, i, rv, sv);
@@ -844,19 +858,28 @@ static void compare_curves_by_evaluation(
         }
         return;
     }
-    // Mixed representation (e.g. Rust approximates table as parametric):
-    // compare by sampling both curves at several points with 1% tolerance.
-    static const float kSamples[] = {0.0f, 0.05f, 0.1f, 0.25f,
-                                     0.5f, 0.75f, 0.9f, 1.0f};
-    for (float x : kSamples) {
-        float rv = eval_skcms_curve(rust_curve,  x);
-        float sv = eval_skcms_curve(skcms_curve, x);
-        if (fabsf(rv - sv) > 0.01f) {
-            ERRORF(r, "[%s] %s[%d] curve eval mismatch at x=%.2f: rust=%f, skcms=%f",
-                   path, stage, channel, x, rv, sv);
-            return;
+
+    // If skcms converted an identity table to an identity parametric curve via
+    // canonicalize_identity() while Rust retained the table, compare by evaluation.
+    // canonicalize_identity() will be removed from skcms, so this fallback is temporary.
+    if (is_identity_parametric(skcms_curve) && rust_curve.table_entries != 0) {
+        static const float kSamples[] = {0.0f, 0.05f, 0.1f, 0.25f,
+                                         0.5f, 0.75f, 0.9f, 1.0f};
+        for (float x : kSamples) {
+            float rv = eval_skcms_curve(rust_curve,  x);
+            float sv = eval_skcms_curve(skcms_curve, x);
+            if (fabsf(rv - sv) > 0.01f) {
+                ERRORF(r, "[%s] %s[%d] curve eval mismatch at x=%.2f: rust=%f, skcms=%f",
+                       path, stage, channel, x, rv, sv);
+                return;
+            }
         }
+        return;
     }
+
+    // For any other difference in curve structure/entries, report mismatch.
+    ERRORF(r, "[%s] %s[%d] table_entries mismatch: rust=%u, skcms=%u",
+           path, stage, channel, rust_curve.table_entries, skcms_curve.table_entries);
 }
 
 // Helper to compare A2B grid data (CLUT) between rust and skcms parsed profiles.
@@ -915,15 +938,102 @@ DEF_TEST(RustIcc_equivalence_with_skcms_resource_files, r) {
         "icc_profiles/AdobeRGB1998.icc",
         "icc_profiles/HP_Z32x.icc",
         "icc_profiles/HP_ZR30w.icc",
+        "icc_profiles/apng19.icc",
+        "icc_profiles/chromium/colorspin.icc",
+        "icc_profiles/chromium/generic_rgb.icc",
+        "icc_profiles/color.org/Lower_Left.icc",
+        "icc_profiles/color.org/Lower_Right.icc",
+        "icc_profiles/color.org/sRGB2014.icc",
+        "icc_profiles/color.org/sRGB_D65_MAT.icc",
+        "icc_profiles/color.org/sRGB_D65_colorimetric.icc",
+        "icc_profiles/color.org/sRGB_ICC_v4_Appearance.icc",
+        "icc_profiles/color.org/sRGB_ISO22028.icc",
+        "icc_profiles/fuzz/a2b_too_many_input_channels.icc",
+        "icc_profiles/fuzz/a2b_too_many_input_channels2.icc",
+        "icc_profiles/fuzz/b2a_no_clut.icc",
+        "icc_profiles/fuzz/b2a_too_few_output_channels.icc",
+        "icc_profiles/fuzz/clut_overflow.icc",
+        "icc_profiles/fuzz/curv_size_overflow.icc",
+        "icc_profiles/fuzz/direct_fit_negative_a.icc",
+        "icc_profiles/fuzz/direct_fit_not_invertible.icc",
+        "icc_profiles/fuzz/fit_pq.icc",
+        "icc_profiles/fuzz/inf_a.icc",
+        "icc_profiles/fuzz/infinite_roundtrip.icc",
+        "icc_profiles/fuzz/inverse_tf_adb_negative.icc",
+        "icc_profiles/fuzz/inverse_tf_huge_g.icc",
+        "icc_profiles/fuzz/inverse_tf_not_invertible.icc",
+        "icc_profiles/fuzz/large_g.icc",
+        "icc_profiles/fuzz/last_tag_too_small.icc",
+        "icc_profiles/fuzz/mangled_trc_tags.icc",
+        "icc_profiles/fuzz/named_tag_too_small.icc",
+        "icc_profiles/fuzz/nan_s.icc",
+        "icc_profiles/fuzz/negative_a_plus_b.icc",
+        "icc_profiles/fuzz/negative_a_when_inverted.icc",
+        "icc_profiles/fuzz/negative_g_para.icc",
+        "icc_profiles/fuzz/one_d_clut.icc",
+        "icc_profiles/fuzz/polytf_big_float_to_int_cast.icc",
+        "icc_profiles/fuzz/polytf_nan_after_update.icc",
+        "icc_profiles/fuzz/truncated_curv_tag.icc",
+        "icc_profiles/fuzz/zero_a.icc",
+        "icc_profiles/fuzz/zero_g.icc",
+        "icc_profiles/misc/AdobeColorSpin.icc",
+        "icc_profiles/misc/AdobeRGB.icc",
+        "icc_profiles/misc/Apple_Color_LCD.icc",
+        "icc_profiles/misc/Apple_Wide_Color.icc",
+        "icc_profiles/misc/Apple_pq_hagc_hdgm2.icc",
+        "icc_profiles/misc/BenQ_GL2450.icc",
+        "icc_profiles/misc/BenQ_RL2455.icc",
+        "icc_profiles/misc/Calibrated_A2B_XYZ_Mismatch.icc",
+        "icc_profiles/misc/Coated_FOGRA27_CMYK.icc",
+        "icc_profiles/misc/Coated_FOGRA39_CMYK.icc",
+        "icc_profiles/misc/ColorGATE_Sihl_PhotoPaper.icc",
+        "icc_profiles/misc/ColorLogic_ISO_Coated_CMYK.icc",
+        "icc_profiles/misc/Color_Spin_Gamma_18.icc",
+        "icc_profiles/misc/DisplayCal_ASUS_NonMonotonic.icc",
+        "icc_profiles/misc/Generic_RGB_Gamma_18.icc",
+        "icc_profiles/misc/Gray_Gamma_22.icc",
+        "icc_profiles/misc/HD_709.icc",
+        "icc_profiles/misc/Japan_Color_2001_Coated.icc",
+        "icc_profiles/misc/Kodak_sRGB.icc",
+        "icc_profiles/misc/Lexmark_X110.icc",
+        "icc_profiles/misc/MR2416GSDF.icc",
+        "icc_profiles/misc/MartiMaria_browsertest_A2B.icc",
+        "icc_profiles/misc/MartiMaria_browsertest_HARD.icc",
+        "icc_profiles/misc/P3_PQ_cicp.icc",
+        "icc_profiles/misc/Phase_One_P25.icc",
+        "icc_profiles/misc/PrintOpen_ISO_Coated_CMYK.icc",
+        "icc_profiles/misc/Rec2020_HLG_cicp.icc",
+        "icc_profiles/misc/Rec2020_PQ_cicp.icc",
+        "icc_profiles/misc/SM245B.icc",
+        "icc_profiles/misc/SWOP_Coated_20_GCR_CMYK.icc",
+        "icc_profiles/misc/ThinkpadX1YogaV2.icc",
+        "icc_profiles/misc/US_Web_Coated_SWOP_CMYK.icc",
+        "icc_profiles/misc/XPS13_9360.icc",
+        "icc_profiles/misc/XRite_GRACol7_340_CMYK.icc",
+        "icc_profiles/misc/bad_pcs.icc",
+        "icc_profiles/misc/calibrated_nonzero_black.icc",
+        "icc_profiles/misc/crbug_1017960_19.icc",
+        "icc_profiles/misc/crbug_976551.icc",
+        "icc_profiles/misc/sRGB_Calibrated_Heterogeneous.icc",
+        "icc_profiles/misc/sRGB_Calibrated_Homogeneous.icc",
+        "icc_profiles/misc/sRGB_Facebook.icc",
+        "icc_profiles/misc/sRGB_HP.icc",
+        "icc_profiles/misc/sRGB_HP_2.icc",
+        "icc_profiles/misc/sRGB_ICC_v4_beta.icc",
+        "icc_profiles/misc/sRGB_black_scaled.icc",
+        "icc_profiles/misc/sRGB_lcms.icc",
+        "icc_profiles/mobile/Display_P3_LUT.icc",
+        "icc_profiles/mobile/Display_P3_parametric.icc",
+        "icc_profiles/mobile/iPhone7p.icc",
+        "icc_profiles/mobile/sRGB_LUT.icc",
+        "icc_profiles/mobile/sRGB_parametric.icc",
+        "icc_profiles/mu_gray.icc",
+        "icc_profiles/pq_hdr.icc",
         "icc_profiles/srgb_lab_pcs.icc",
+        "icc_profiles/swapped.icc",
+        "icc_profiles/tiles.icc",
         "icc_profiles/upperLeft.icc",
         "icc_profiles/upperRight.icc",
-        // Files added after regressions found during development of the Rust parser, not covered
-        // by existing ICC profiles in Skia's resources:
-        "icc_profiles/apng19.icc",
-        "icc_profiles/swapped.icc",
-        "icc_profiles/mu_gray.icc",
-        "icc_profiles/tiles.icc",
     };
 
     for (const char* path : icc_files) {
@@ -936,12 +1046,15 @@ DEF_TEST(RustIcc_equivalence_with_skcms_resource_files, r) {
         auto rust_profile = SkCodecs::MakeICCProfileWithRust(data);
         auto skcms_profile = SkCodecs::ColorProfile::MakeICCProfileWithSkCMS(data);
 
-        if (!rust_profile) {
-            ERRORF(r, "Rust parser failed for: %s", path);
+        if ((rust_profile == nullptr) != (skcms_profile == nullptr)) {
+            ERRORF(r, "[%s] Parse success mismatch: rust=%s, skcms=%s",
+                   path,
+                   rust_profile ? "true" : "false",
+                   skcms_profile ? "true" : "false");
             continue;
         }
-        if (!skcms_profile) {
-            ERRORF(r, "SkCMS parser failed for: %s", path);
+        if (!rust_profile && !skcms_profile) {
+            // Both parsers agree the profile is malformed/unusable.
             continue;
         }
 
@@ -1163,7 +1276,7 @@ DEF_TEST(RustIcc_trc_table_passthrough, r) {
     REPORTER_ASSERT(r, skcms_prof.has_trc,
                     "skcms should report has_trc=true for swapped.icc");
 
-    // Rust/moxcms path: must expose the 1024-entry table TRC bit-exactly.
+    // Rust path: must expose the 1024-entry table TRC bit-exactly.
     auto rust_profile = SkCodecs::MakeICCProfileWithRust(data);
     if (!rust_profile) {
         ERRORF(r, "Rust ICC parser failed to parse swapped.icc");
@@ -1190,12 +1303,9 @@ DEF_TEST(RustIcc_trc_table_passthrough, r) {
 // Regression test for the non-fatal B2A rejection path.
 //
 // pq_hdr.icc is an ICCv4 PQ HDR profile with an A2B tag and a curve-only B2A
-// tag.  The Rust path reuses convert_to_a2b() for B2A, then a2b_to_b2a()
-// swaps input/output channels.  Curve-only B2A profiles yield invalid channel
-// counts so ToSkcmsB2A rejects them.  ToSkcmsIccProfile must treat this
-// rejection as non-fatal: has_B2A is left false while A2B (and the rest of
-// the profile) is still usable.
-DEF_TEST(RustIcc_pq_hdr_b2a_absent, r) {
+// Tests that curve-only B2A tags are correctly parsed and match skcms.
+// pq_hdr.icc is an ICCv4 PQ HDR profile with an A2B tag and a curve-only B2A tag.
+DEF_TEST(RustIcc_pq_hdr_b2a_present, r) {
     auto data = GetResourceAsData("icc_profiles/pq_hdr.icc");
     if (!data) {
         ERRORF(r, "Failed to load icc_profiles/pq_hdr.icc");
@@ -1221,20 +1331,11 @@ DEF_TEST(RustIcc_pq_hdr_b2a_absent, r) {
     REPORTER_ASSERT(r, rust.has_A2B,  "Rust must expose A2B for pq_hdr.icc");
     REPORTER_ASSERT(r, skcms.has_A2B, "skcms must expose A2B for pq_hdr.icc");
 
-    // skcms parses the curve-only B2A tag; the Rust path correctly rejects it
-    // because a2b_to_b2a() cannot handle curve-only B2A.  has_B2A must be
-    // false in the Rust profile and the parse must not have failed entirely.
-    REPORTER_ASSERT(r,  skcms.has_B2A, "skcms must expose B2A for pq_hdr.icc");
-    REPORTER_ASSERT(r, !rust.has_B2A,
-                    "Rust must not expose B2A for curve-only B2A (pq_hdr.icc); "
-                    "if this now passes, a2b_to_b2a() handles curve-only B2A and "
-                    "pq_hdr.icc can be added to RustIcc_equivalence_with_skcms_resource_files");
+    // Both parsers must expose the curve-only B2A tag.
+    REPORTER_ASSERT(r, rust.has_B2A,  "Rust must expose B2A for pq_hdr.icc");
+    REPORTER_ASSERT(r, skcms.has_B2A, "skcms must expose B2A for pq_hdr.icc");
 
-    // The profiles should be approximately equal on everything except B2A.
-    // Temporarily clear has_B2A on the skcms copy so the comparison is fair.
-    skcms_ICCProfile skcms_no_b2a = skcms;
-    skcms_no_b2a.has_B2A = false;
-    if (!skcms_ApproximatelyEqualProfiles(&rust, &skcms_no_b2a)) {
-        ERRORF(r, "[pq_hdr.icc] profiles not approximately equal (ignoring B2A)");
+    if (!skcms_ApproximatelyEqualProfiles(&rust, &skcms)) {
+        ERRORF(r, "[pq_hdr.icc] profiles not approximately equal");
     }
 }
