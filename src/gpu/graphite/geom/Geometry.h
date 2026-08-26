@@ -13,6 +13,7 @@
 #include "include/core/SkVertices.h"
 #include "include/private/SkAssert.h"
 #include "src/gpu/graphite/geom/AnalyticBlurMask.h"
+#include "src/gpu/graphite/geom/AnalyticRRectBlurMask.h"
 #include "src/gpu/graphite/geom/CoverageMaskShape.h"
 #include "src/gpu/graphite/geom/EdgeAAQuad.h"
 #include "src/gpu/graphite/geom/Rect.h"
@@ -33,7 +34,8 @@ namespace skgpu::graphite {
 class Geometry {
 public:
     enum class Type : uint8_t {
-        kEmpty, kShape, kVertices, kMesh, kSubRun, kEdgeAAQuad, kCoverageMaskShape, kAnalyticBlur
+        kEmpty, kShape, kVertices, kMesh, kSubRun, kEdgeAAQuad, kCoverageMaskShape, kAnalyticBlur,
+        kAnalyticRRectBlur
     };
 
     Geometry() {}
@@ -47,6 +49,7 @@ public:
     explicit Geometry(const SkMesh& mesh) { this->setMesh(mesh); }
     explicit Geometry(const CoverageMaskShape& mask) { this->setCoverageMaskShape(mask); }
     explicit Geometry(const AnalyticBlurMask& blur) { this->setAnalyticBlur(blur); }
+    explicit Geometry(const AnalyticRRectBlurMask& blur) { this->setAnalyticRRectBlur(blur); }
 
     ~Geometry() { this->setType(Type::kEmpty); }
 
@@ -84,6 +87,10 @@ public:
                     this->setAnalyticBlur(geom.analyticBlurMask());
                     geom.setType(Type::kEmpty);
                     break;
+                case Type::kAnalyticRRectBlur:
+                    this->setAnalyticRRectBlur(geom.analyticRRectBlurMask());
+                    geom.setType(Type::kEmpty);
+                    break;
             }
         }
         return *this;
@@ -99,6 +106,8 @@ public:
             case Type::kCoverageMaskShape:
                     this->setCoverageMaskShape(geom.coverageMaskShape()); break;
             case Type::kAnalyticBlur: this->setAnalyticBlur(geom.analyticBlurMask()); break;
+            case Type::kAnalyticRRectBlur:
+                    this->setAnalyticRRectBlur(geom.analyticRRectBlurMask()); break;
             default: break;
         }
         return *this;
@@ -113,6 +122,7 @@ public:
     bool isEdgeAAQuad() const { return fType == Type::kEdgeAAQuad; }
     bool isCoverageMaskShape() const { return fType == Type::kCoverageMaskShape; }
     bool isAnalyticBlur() const { return fType == Type::kAnalyticBlur; }
+    bool isAnalyticRRectBlur() const { return fType == Type::kAnalyticRRectBlur; }
     bool isEmpty() const {
         return fType == (Type::kEmpty) || (this->isShape() &&
                                            this->shape().isEmpty() &&
@@ -129,6 +139,9 @@ public:
     }
     const AnalyticBlurMask& analyticBlurMask() const {
         SkASSERT(this->isAnalyticBlur()); return fAnalyticBlurMask;
+    }
+    const AnalyticRRectBlurMask& analyticRRectBlurMask() const {
+        SkASSERT(this->isAnalyticRRectBlur()); return fAnalyticRRectBlurMask;
     }
     const SkVertices* vertices() const { SkASSERT(this->isVertices()); return fVertices.get(); }
     sk_sp<SkVertices> refVertices() const {
@@ -197,6 +210,14 @@ public:
             new (&fAnalyticBlurMask) AnalyticBlurMask(blur);
         }
     }
+    void setAnalyticRRectBlur(const AnalyticRRectBlurMask& blur) {
+        if (fType == Type::kAnalyticRRectBlur) {
+            fAnalyticRRectBlurMask = blur;
+        } else {
+            this->setType(Type::kAnalyticRRectBlur);
+            new (&fAnalyticRRectBlurMask) AnalyticRRectBlurMask(blur);
+        }
+    }
 
     // Bounds are relative to the mask coordinate space defined by maskToDevice(). If maskToDevice()
     // returns null, the bounds are relative to the original local-to-device transofrm of the draw.
@@ -210,6 +231,7 @@ public:
             case Type::kEdgeAAQuad: return fEdgeAAQuad.bounds();
             case Type::kCoverageMaskShape: return fCoverageMaskShape.bounds();
             case Type::kAnalyticBlur: return fAnalyticBlurMask.drawBounds();
+            case Type::kAnalyticRRectBlur: return fAnalyticRRectBlurMask.bounds();
         }
         SkUNREACHABLE;
     }
@@ -252,6 +274,8 @@ private:
             fCoverageMaskShape.~CoverageMaskShape();
         } else if (this->isAnalyticBlur() && type != Type::kAnalyticBlur) {
             fAnalyticBlurMask.~AnalyticBlurMask();
+        } else if (this->isAnalyticRRectBlur() && type != Type::kAnalyticRRectBlur) {
+            fAnalyticRRectBlurMask.~AnalyticRRectBlurMask();
         }
         fType = type;
     }
@@ -265,6 +289,7 @@ private:
         EdgeAAQuad fEdgeAAQuad;
         CoverageMaskShape fCoverageMaskShape;
         AnalyticBlurMask fAnalyticBlurMask;
+        AnalyticRRectBlurMask fAnalyticRRectBlurMask;
     };
 };
 

@@ -72,19 +72,26 @@ class SimpleBlurRoundRectGM : public skiagm::GM {
             canvas->translate(0, (r.height() + 50.f) * row);
             for (size_t pair = 0; pair < std::size(cornerRadii); ++pair) {
                 SkPaint paint;
+                paint.setAntiAlias(false);
                 paint.setColor(SK_ColorBLACK);
                 paint.setMaskFilter(SkMaskFilter::MakeBlur(
                         kNormal_SkBlurStyle, SkBlurMask::ConvertRadiusToSigma(blurRadii[row])));
                 SkRRect rrect;
                 rrect.setRectXY(r, cornerRadii[pair], cornerRadii[pair]);
 
+                SkPaint overlayPaint;
+                overlayPaint.setColor4f({0.0f, 0.5f, 1.0f, 0.4f});
+                overlayPaint.setAntiAlias(paint.isAntiAlias());
+
                 // Even-indexed columns are without a gradient
                 canvas->drawRRect(rrect, paint);
+                //canvas->drawRRect(rrect, overlayPaint);
                 canvas->translate(r.width() + 50.f, 0);
 
                 // Odd-indexed columns have a gradient
                 paint.setShader(MakeRadial());
                 canvas->drawRRect(rrect, paint);
+                //canvas->drawRRect(rrect, overlayPaint);
                 canvas->translate(r.width() + 50.f, 0);
             }
         }
@@ -109,4 +116,83 @@ DEF_SIMPLE_GM(blur_large_rrects, canvas, 300, 300) {
         canvas->drawRRect(rrect, paint);
         canvas->rotate(90.f, 150.f, 150.f);
     }
+}
+
+#if defined(SK_GRAPHITE)
+namespace skgpu::graphite {
+extern bool gUseOldBlurrectRRect;
+}
+#endif
+
+DEF_SIMPLE_GM(simpleblurroundrect_test, canvas, 500, 500) {
+    canvas->scale(1.5f, 1.5f);
+    canvas->save();
+    canvas->translate(50.f, 50.f);
+
+    const SkRect r = SkRect::MakeWH(25.f, 25.f);
+    SkPaint paint;
+    paint.setColor(SK_ColorBLACK);
+    paint.setMaskFilter(SkMaskFilter::MakeBlur(
+            kNormal_SkBlurStyle, SkBlurMask::ConvertRadiusToSigma(1.f)));
+    paint.setAntiAlias(false);
+
+    SkPaint overlayPaint;
+    overlayPaint.setColor4f({0.0f, 0.5f, 1.0f, 0.4f});
+    overlayPaint.setAntiAlias(paint.isAntiAlias());
+
+    printf("\n\nstart drawing\n");
+    // Row 1: Using current/active toggle setting
+    {
+        SkAutoCanvasRestore acr(canvas, true);
+
+        // RRect 1: corner radius 5.f
+        SkRRect rrect1;
+        rrect1.setRectXY(r, 1.f, 1.f);
+        canvas->drawRRect(rrect1, paint);
+        canvas->drawRRect(rrect1, overlayPaint);
+
+        canvas->translate(r.width() + 25.f, 0);
+
+        // RRect 2: corner radius 20.f
+        SkRRect rrect2;
+        rrect2.setRectXY(r, 20.f, 20.f);
+        canvas->drawRRect(rrect2, paint);
+        canvas->drawRRect(rrect2, overlayPaint);
+    }
+
+    // Row 1 Extra: Row 2 Col 3 RRect (blur 5.f, corner 5.f) from SimpleBlurRoundRectGM
+    {
+        SkAutoCanvasRestore acr(canvas, true);
+        canvas->translate(150.f, 75.f);
+
+        SkPaint paint5;
+        paint5.setColor(SK_ColorBLACK);
+        paint5.setMaskFilter(SkMaskFilter::MakeBlur(
+                kNormal_SkBlurStyle, SkBlurMask::ConvertRadiusToSigma(5.f)));
+        paint5.setAntiAlias(paint.isAntiAlias());
+
+        SkRRect rrect;
+        rrect.setRectXY(r, 5.f, 5.f);
+        canvas->drawRRect(rrect, paint5);
+        canvas->drawRRect(rrect, overlayPaint);
+    }
+
+    // Row 1 Extra 2: Row 2 Col 1 RRect (blur 5.f, corner 1.f) from SimpleBlurRoundRectGM
+    {
+        SkAutoCanvasRestore acr(canvas, true);
+        canvas->translate(0.f, 75.f);
+
+        SkPaint paint5;
+        paint5.setColor(SK_ColorBLACK);
+        paint5.setMaskFilter(SkMaskFilter::MakeBlur(
+                kNormal_SkBlurStyle, SkBlurMask::ConvertRadiusToSigma(5.f)));
+        paint5.setAntiAlias(paint.isAntiAlias());
+
+        SkRRect rrect;
+        rrect.setRectXY(r, 1.f, 1.f);
+        canvas->drawRRect(rrect, paint5);
+        canvas->drawRRect(rrect, overlayPaint);
+    }
+
+    canvas->restore();
 }
