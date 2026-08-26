@@ -77,7 +77,6 @@ rust_static_library(
         ":cxx_bridge",
         ":ffi_cpp_lib",
         "@crates//:cxx",
-        "@crates//:moxcms",
     ],
 )
 
