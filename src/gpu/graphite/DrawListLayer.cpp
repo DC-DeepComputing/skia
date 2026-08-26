@@ -338,8 +338,7 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
 
     const bool rebindTexturesOnPipelineChange = dstReadStrategy == DstReadStrategy::kTextureCopy;
 
-    if (fStorageBufferSupport) {
-        SkASSERT(storageContext);
+    if (storageContext) {
         storageContext->finalizePrecachedStorageData();
     }
 
@@ -350,7 +349,6 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
     SkASSERT(drawPass->fTarget->isFullyLazy() ||
              SkIRect::MakeSize(drawPass->fTarget->dimensions()).contains(lastScissor));
     drawPass->fCommandList.setScissor(lastScissor);
-
     // Accumulate rough pixel area touched by each pipeline
     drawPass->fPipelineDrawAreas.push_back_n(fPipelineCache.count(), 0.f);
 
@@ -441,10 +439,9 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
 
     drawWriter.flush();
 
-    if (fStorageBufferSupport) {
-        SkASSERT(storageContext);
-        drawPass->fStorageBufferInfo = storageContext->finalize(bufferMgr);
-        if (!storageContext->isEmpty() && !drawPass->fStorageBufferInfo) SK_UNLIKELY {
+    if (storageContext) {
+        drawPass->fStorageBufferInfo = storageContext->finalize(bufferMgr, recorder, drawPass.get());
+        if (fStorageBufferSupport && !storageContext->isEmpty() && !drawPass->fStorageBufferInfo) SK_UNLIKELY {
             SKIA_LOG_W("Failed to write Storage Data for Draw pass, dropping!");
             this->reset(LoadOp::kLoad);
             return nullptr;
@@ -454,6 +451,10 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
     drawPass->fBounds = fPassBounds.roundOut().asSkIRect();
     drawPass->fPipelineDescs = fPipelineCache.detach();
     drawPass->fSampledTextures = fTextureDataCache.detachTextures();
+    if (drawPass->fStorageTextureProxy) {
+        drawPass->fSampledTextures.push_back(drawPass->fStorageTextureProxy);
+    }
+
 
     TRACE_EVENT_INSTANT2_ALWAYS("skia.gpu",
                                 "DrawPass Stats",
