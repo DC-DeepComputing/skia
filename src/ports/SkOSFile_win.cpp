@@ -11,6 +11,7 @@
 #include "include/private/SkMalloc.h"
 #include "include/private/SkNoncopyable.h"
 #include "include/private/SkTFitsIn.h"
+#include "include/private/SkTemplates.h"
 #include "src/core/SkLeanWindows.h"
 #include "src/core/SkOSFile.h"
 #include "src/core/SkStringUtils.h"
@@ -162,33 +163,36 @@ size_t sk_qread(FILE* file, void* buffer, size_t count, size_t offset) {
 
 ////////////////////////////////////////////////////////////////////////////
 
+using SkUniqueU16Array = std::unique_ptr<uint16_t, SkFunctionObject<sk_free>>;
+
 struct SkOSFileIterData {
     SkOSFileIterData() : fHandle(0), fPath16(nullptr) { }
     HANDLE fHandle;
-    uint16_t* fPath16;
+    SkUniqueU16Array fPath16;
 };
 static_assert(sizeof(SkOSFileIterData) <= SkOSFile::Iter::kStorageSize, "not_enough_space");
 
-static uint16_t* concat_to_16(const char src[], const char suffix[]) {
+static SkUniqueU16Array concat_to_16(const char src[], const char suffix[]) {
     size_t  i, len = strlen(src);
     size_t  len2 = 3 + (suffix ? strlen(suffix) : 0);
-    uint16_t* dst = (uint16_t*)sk_malloc_throw((len + len2) * sizeof(uint16_t));
+    SkUniqueU16Array dst((uint16_t*)sk_malloc_throw((len + len2) * sizeof(uint16_t)));
+    uint16_t* ptr = dst.get();
 
     for (i = 0; i < len; i++) {
-        dst[i] = src[i];
+        ptr[i] = src[i];
     }
 
-    if (i > 0 && dst[i-1] != '/') {
-        dst[i++] = '/';
+    if (i > 0 && ptr[i - 1] != '/') {
+        ptr[i++] = '/';
     }
-    dst[i++] = '*';
+    ptr[i++] = '*';
 
     if (suffix) {
         while (*suffix) {
-            dst[i++] = *suffix++;
+            ptr[i++] = *suffix++;
         }
     }
-    dst[i] = 0;
+    ptr[i] = 0;
     SkASSERT(i + 1 <= len + len2);
 
     return dst;
@@ -203,7 +207,6 @@ SkOSFile::Iter::Iter(const char path[], const char suffix[]) {
 
 SkOSFile::Iter::~Iter() {
     SkOSFileIterData& self = *reinterpret_cast<SkOSFileIterData*>(fSelf);
-    sk_free(self.fPath16);
     if (self.fHandle) {
         ::FindClose(self.fHandle);
     }
@@ -220,7 +223,6 @@ void SkOSFile::Iter::reset(const char path[], const char suffix[]) {
         path = "";
     }
 
-    sk_free(self.fPath16);
     self.fPath16 = concat_to_16(path, suffix);
 }
 
@@ -275,7 +277,7 @@ bool SkOSFile::Iter::next(SkString* name, bool getDir) {
             return false;
         }
 
-        self.fHandle = ::FindFirstFileW((LPCWSTR)self.fPath16, &data);
+        self.fHandle = ::FindFirstFileW((LPCWSTR)self.fPath16.get(), &data);
         if (self.fHandle != 0 && self.fHandle != (HANDLE)~0) {
             dataPtr = &data;
         }
