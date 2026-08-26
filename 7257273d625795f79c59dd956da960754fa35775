@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a93aadb_4dffce25",
+        "filename": "include/core/SkPicture.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-08-26T13:40:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "68715459_7ac05ac3",
+      "range": {
+        "startLine": 264,
+        "startChar": 4,
+        "endLine": 267,
+        "endChar": 36
+      },
+      "revId": "7257273d625795f79c59dd956da960754fa35775",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "afd12da8_459b22ab",
