@@ -1,0 +1,211 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7eccb1b7_5e44928d",
+        "filename": "src/gpu/graphite/Attribute.h",
+        "patchSetId": 32
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-26T13:51:31Z",
+      "side": 1,
+      "message": "The Graphite `Attribute` doesn\u0027t own its name, so can we add a comment here that says `attr` must outlive the returned `Attribute` or the returned `Attribute` must be deep-copied before the SkMeshSpecification goes out of scope?",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 90
+      },
+      "revId": "1461d8bd91e610425d8d6a6a50d4c797ddc21741",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72d89ce4_75d142d1",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 32
+      },
+      "lineNbr": 514,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-26T13:51:31Z",
+      "side": 1,
+      "message": "Do we need this if we\u0027re already calling `KeyContext::forMeshSpecChild()` on its children?\n\nIf we do need this, I think we should have that configured by Device when it\u0027s choosing its base keygen flags.  That also avoids the issue where right now the KeyContext returned by `withExtraFlags` goes away at the end of the expression, which leaves the `keyContext\u0026` dangling.",
+      "range": {
+        "startLine": 510,
+        "startChar": 0,
+        "endLine": 514,
+        "endChar": 31
+      },
+      "revId": "1461d8bd91e610425d8d6a6a50d4c797ddc21741",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a8a620f_e4da8453",
+        "filename": "src/gpu/graphite/PaintParamsKey.cpp",
+        "patchSetId": 32
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-26T13:51:31Z",
+      "side": 1,
+      "message": "I think we could remove the `canLiftCoords` parameter by instead just passing `availableVaryings\u003d0` when we are a mesh shader.",
+      "range": {
+        "startLine": 309,
+        "startChar": 47,
+        "endLine": 309,
+        "endChar": 64
+      },
+      "revId": "1461d8bd91e610425d8d6a6a50d4c797ddc21741",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6b06740_e029b39e",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 32
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-26T13:51:31Z",
+      "side": 1,
+      "message": "Do we ever call this old version anymore?",
+      "range": {
+        "startLine": 208,
+        "startChar": 0,
+        "endLine": 208,
+        "endChar": 73
+      },
+      "revId": "1461d8bd91e610425d8d6a6a50d4c797ddc21741",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4fa7a679_af4d76ea",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.h",
+        "patchSetId": 32
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-26T13:51:31Z",
+      "side": 1,
+      "message": "nit: just 8 spaces over",
+      "range": {
+        "startLine": 301,
+        "startChar": 40,
+        "endLine": 302,
+        "endChar": 61
+      },
+      "revId": "1461d8bd91e610425d8d6a6a50d4c797ddc21741",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9fa2a6a7_513b8a89",
+        "filename": "src/gpu/graphite/ShaderInfo.h",
+        "patchSetId": 32
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-26T13:51:31Z",
+      "side": 1,
+      "message": "WDYT about just moving the RenderStep attributes into this array if there is no mesh shader to handle? That would keep downstream support simpler and it\u0027s not really a performance concern compared to the bulk of the pipeline compile time.",
+      "range": {
+        "startLine": 137,
+        "startChar": 4,
+        "endLine": 140,
+        "endChar": 49
+      },
+      "revId": "1461d8bd91e610425d8d6a6a50d4c797ddc21741",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea92e760_16e21dbf",
+        "filename": "src/gpu/graphite/render/MeshRenderStep.cpp",
+        "patchSetId": 32
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-26T13:51:31Z",
+      "side": 1,
+      "message": "Can we add a comment that clarifies that we expect the Mesh\u0027s SkSL to have included definitions for Attributes and Varyings?",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 65,
+        "endChar": 51
+      },
+      "revId": "1461d8bd91e610425d8d6a6a50d4c797ddc21741",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7bb6287_0c0cdbdc",
+        "filename": "src/gpu/graphite/render/MeshRenderStep.cpp",
+        "patchSetId": 32
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-26T13:51:31Z",
+      "side": 1,
+      "message": "I think we can get away with not keeping them alive, since the `uniforms` array goes away at the end of this function. Alternatively, WDYT about adjusting this function signature to pass in the ShaderCodeDictionary so that it can look up the actual snippet and just access the existing cached uniforms?",
+      "range": {
+        "startLine": 183,
+        "startChar": 0,
+        "endLine": 183,
+        "endChar": 52
+      },
+      "revId": "1461d8bd91e610425d8d6a6a50d4c797ddc21741",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b2d4ade_ccf2e496",
+        "filename": "src/gpu/graphite/render/MeshRenderStep.cpp",
+        "patchSetId": 32
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-26T13:51:31Z",
+      "side": 1,
+      "message": "nit: `this-\u003eRenderStep::appendDataStride()`",
+      "range": {
+        "startLine": 208,
+        "startChar": 20,
+        "endLine": 208,
+        "endChar": 30
+      },
+      "revId": "1461d8bd91e610425d8d6a6a50d4c797ddc21741",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
