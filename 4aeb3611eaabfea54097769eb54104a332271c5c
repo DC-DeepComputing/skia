@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4266682_7f617a8f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-08-26T14:40:22Z",
+      "side": 1,
+      "message": "Marked as resolved.",
+      "parentUuid": "6008ee20_27f02f50",
+      "revId": "4aeb3611eaabfea54097769eb54104a332271c5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1abe698f_dc90832d",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-08-25T16:06:25Z",
       "side": 1,
       "message": "Can you also get this working in Bazel since we\u0027re trying to move our tools off of GN?",
+      "revId": "4aeb3611eaabfea54097769eb54104a332271c5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5e29572_3f7cadd9",
+        "filename": "BUILD.gn",
+        "patchSetId": 4
+      },
+      "lineNbr": 3382,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-08-26T14:40:22Z",
+      "side": 1,
+      "message": "should be working on bazel now",
+      "parentUuid": "1abe698f_dc90832d",
       "revId": "4aeb3611eaabfea54097769eb54104a332271c5c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -52,6 +88,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0cc6ef89_945d035f",
+        "filename": "tools/dump_capture.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-08-26T14:40:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3ea4f7c9_8233672c",
+      "revId": "4aeb3611eaabfea54097769eb54104a332271c5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c0644ca7_f29a4f89",
@@ -69,6 +123,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e600277_756ebb6c",
+        "filename": "tools/dump_capture.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-08-26T14:40:22Z",
+      "side": 1,
+      "message": "it\u0027s the total number of commands, which is needed to determine Digits (which is the number of digits to use for printing the command index).",
+      "parentUuid": "c0644ca7_f29a4f89",
+      "revId": "4aeb3611eaabfea54097769eb54104a332271c5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2410d1f1_55e40611",
@@ -82,6 +154,24 @@
       "writtenOn": "2026-08-25T16:06:25Z",
       "side": 1,
       "message": "What is a complex double macro function? Consider rewriting the entire comment block. Lead with what the function does at a high level, then go into the double-macro (called a X-macro or higher order macro) and how CASE(U) goes into SK_RECORD_TYPES.\n\n// NameOf uses the X-macro pattern to...\n// SK_RECORD_TYPES(MY_MACRO) applies MY_MACRO to every record type\n// CASE(U) does...",
+      "revId": "4aeb3611eaabfea54097769eb54104a332271c5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d43300f_bafda1ed",
+        "filename": "tools/dump_capture.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-08-26T14:40:22Z",
+      "side": 1,
+      "message": "Didn\u0027t realize this pattern had a name. Thanks for catching that 👍",
+      "parentUuid": "2410d1f1_55e40611",
       "revId": "4aeb3611eaabfea54097769eb54104a332271c5c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -109,6 +199,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d0f706f_8187a96e",
+        "filename": "tools/dump_capture.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-08-26T14:40:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d0d62499_c958d264",
+      "range": {
+        "startLine": 126,
+        "startChar": 23,
+        "endLine": 126,
+        "endChar": 33
+      },
+      "revId": "4aeb3611eaabfea54097769eb54104a332271c5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "903c0165_72658538",
@@ -126,6 +240,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "743304f8_74c3c1c9",
+        "filename": "tools/dump_capture.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-08-26T14:40:22Z",
+      "side": 1,
+      "message": "I felt like the formatting was off because it wouldn\u0027t allow it to remain on one line. I\u0027d like to keep the CASE macro to one line to look cleaner. I removed the comments, let me know if you prefer this style instead",
+      "parentUuid": "903c0165_72658538",
+      "revId": "4aeb3611eaabfea54097769eb54104a332271c5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ca61a7d3_f483e7a6",
@@ -139,6 +271,24 @@
       "writtenOn": "2026-08-25T16:06:25Z",
       "side": 1,
       "message": "Add comments for these.",
+      "revId": "4aeb3611eaabfea54097769eb54104a332271c5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2341bbf4_c5d7baf6",
+        "filename": "tools/dump_capture.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-08-26T14:40:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ca61a7d3_f483e7a6",
       "revId": "4aeb3611eaabfea54097769eb54104a332271c5c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
