@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "512481d4_e1ae567f",
+        "filename": "src/gpu/graphite/Attribute.h",
+        "patchSetId": 32
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-08-26T17:09:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7eccb1b7_5e44928d",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 90
+      },
+      "revId": "1461d8bd91e610425d8d6a6a50d4c797ddc21741",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "72d89ce4_75d142d1",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-08-26T13:51:31Z",
       "side": 1,
       "message": "Do we need this if we\u0027re already calling `KeyContext::forMeshSpecChild()` on its children?\n\nIf we do need this, I think we should have that configured by Device when it\u0027s choosing its base keygen flags.  That also avoids the issue where right now the KeyContext returned by `withExtraFlags` goes away at the end of the expression, which leaves the `keyContext\u0026` dangling.",
+      "range": {
+        "startLine": 510,
+        "startChar": 0,
+        "endLine": 514,
+        "endChar": 31
+      },
+      "revId": "1461d8bd91e610425d8d6a6a50d4c797ddc21741",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "399622a5_08071df5",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 32
+      },
+      "lineNbr": 514,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-08-26T17:09:01Z",
+      "side": 1,
+      "message": "Yes we do need this, some of the GMs triggered this sampling optimization when using a paint with an image shader where it started sampling with nearest neighbor instead of linear filtering. And since the user can vary their local coords within their defined mesh shader fragment main function, I don\u0027t think we can assume this optimization.\n\nMoved the flag definition to `drawGeometry` in Device.",
+      "parentUuid": "72d89ce4_75d142d1",
       "range": {
         "startLine": 510,
         "startChar": 0,
@@ -72,6 +120,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b429d8a7_bd6b9861",
+        "filename": "src/gpu/graphite/PaintParamsKey.cpp",
+        "patchSetId": 32
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-08-26T17:09:01Z",
+      "side": 1,
+      "message": "I think this would work but would also make it so `lift_color_expressions` doesn\u0027t run since it relies on `availableVaryings`. Should I still make `availableVaryings\u003d0` in this case still or leave `canLiftCoords`?",
+      "parentUuid": "2a8a620f_e4da8453",
+      "range": {
+        "startLine": 309,
+        "startChar": 47,
+        "endLine": 309,
+        "endChar": 64
+      },
+      "revId": "1461d8bd91e610425d8d6a6a50d4c797ddc21741",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a6b06740_e029b39e",
         "filename": "src/gpu/graphite/Renderer.h",
         "patchSetId": 32
@@ -83,6 +155,30 @@
       "writtenOn": "2026-08-26T13:51:31Z",
       "side": 1,
       "message": "Do we ever call this old version anymore?",
+      "range": {
+        "startLine": 208,
+        "startChar": 0,
+        "endLine": 208,
+        "endChar": 73
+      },
+      "revId": "1461d8bd91e610425d8d6a6a50d4c797ddc21741",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36627f73_8677b214",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 32
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-08-26T17:09:01Z",
+      "side": 1,
+      "message": "Yes, inside the TessellateWedges and TessellateCurves render steps it is called within the constructors for an assert.",
+      "parentUuid": "a6b06740_e029b39e",
       "range": {
         "startLine": 208,
         "startChar": 0,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3f84313_5ffc9634",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.h",
+        "patchSetId": 32
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-08-26T17:09:01Z",
+      "side": 1,
+      "message": "Done, assuming you meant 8 spaces indented from the `static` in the first line and not the very beginning of the line.",
+      "parentUuid": "4fa7a679_af4d76ea",
+      "range": {
+        "startLine": 301,
+        "startChar": 40,
+        "endLine": 302,
+        "endChar": 61
+      },
+      "revId": "1461d8bd91e610425d8d6a6a50d4c797ddc21741",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9fa2a6a7_513b8a89",
@@ -139,6 +259,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5f3ccf4_969769c1",
+        "filename": "src/gpu/graphite/ShaderInfo.h",
+        "patchSetId": 32
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-08-26T17:09:01Z",
+      "side": 1,
+      "message": "Sure, I think that does simplify things since we can then omit the check for where the attributes should be fetched from within the pipelines.",
+      "parentUuid": "9fa2a6a7_513b8a89",
+      "range": {
+        "startLine": 137,
+        "startChar": 4,
+        "endLine": 140,
+        "endChar": 49
+      },
+      "revId": "1461d8bd91e610425d8d6a6a50d4c797ddc21741",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ea92e760_16e21dbf",
@@ -152,6 +296,30 @@
       "writtenOn": "2026-08-26T13:51:31Z",
       "side": 1,
       "message": "Can we add a comment that clarifies that we expect the Mesh\u0027s SkSL to have included definitions for Attributes and Varyings?",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 65,
+        "endChar": 51
+      },
+      "revId": "1461d8bd91e610425d8d6a6a50d4c797ddc21741",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c66e964e_e3f19325",
+        "filename": "src/gpu/graphite/render/MeshRenderStep.cpp",
+        "patchSetId": 32
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-08-26T17:09:01Z",
+      "side": 1,
+      "message": "Done, the users provided SkSL only defines uniforms at the top level, attributes and varyings are define by the mesh specification and emitted by ShaderInfo, clarified that in the comment.",
+      "parentUuid": "ea92e760_16e21dbf",
       "range": {
         "startLine": 65,
         "startChar": 0,
@@ -187,6 +355,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "99ad6c9c_1c06d74e",
+        "filename": "src/gpu/graphite/render/MeshRenderStep.cpp",
+        "patchSetId": 32
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-08-26T17:09:01Z",
+      "side": 1,
+      "message": "I believe we still need to make a copy of the name into a null terminated string for the `const char*` in the `Uniform` constructor.\n\nI don\u0027t think we should look up the shader snippet here since I don\u0027t define the uniforms within the shader snippet to ensure we emit the uniforms along with the render step uniforms. So if we did that I would likely have to add an extra flag to `SnippetRequirementFlags` to ensure uniforms are not emitted for that snippet but IMO that complicates things for this usecase.\n\nBut also since we are only writing uniforms here I think we can leave the name here `nullptr` here since it is not used so I changed it to that.",
+      "parentUuid": "d7bb6287_0c0cdbdc",
+      "range": {
+        "startLine": 183,
+        "startChar": 0,
+        "endLine": 183,
+        "endChar": 52
+      },
+      "revId": "1461d8bd91e610425d8d6a6a50d4c797ddc21741",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5b2d4ade_ccf2e496",
         "filename": "src/gpu/graphite/render/MeshRenderStep.cpp",
         "patchSetId": 32
@@ -198,6 +390,30 @@
       "writtenOn": "2026-08-26T13:51:31Z",
       "side": 1,
       "message": "nit: `this-\u003eRenderStep::appendDataStride()`",
+      "range": {
+        "startLine": 208,
+        "startChar": 20,
+        "endLine": 208,
+        "endChar": 30
+      },
+      "revId": "1461d8bd91e610425d8d6a6a50d4c797ddc21741",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "61b012cd_914a9dd9",
+        "filename": "src/gpu/graphite/render/MeshRenderStep.cpp",
+        "patchSetId": 32
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-08-26T17:09:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5b2d4ade_ccf2e496",
       "range": {
         "startLine": 208,
         "startChar": 20,
