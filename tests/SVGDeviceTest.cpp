@@ -5,6 +5,9 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkBlendMode.h"
+#include "include/core/SkColor.h"
+#include "include/core/SkScalar.h"
 #include "include/core/SkTypes.h"
 #ifdef SK_XML
 
@@ -373,36 +376,65 @@ DEF_TEST(SVGDevice_image_shader_tileboth, reporter) {
 }
 
 DEF_TEST(SVGDevice_ColorFilters, reporter) {
-    SkDOM dom;
-    SkPaint paint;
-    paint.setColorFilter(SkColorFilters::Blend(SK_ColorRED, SkBlendMode::kSrcIn));
-    {
-        auto svgCanvas = MakeDOMCanvas(&dom);
-        SkRect bounds{0, 0, SkIntToScalar(100), SkIntToScalar(100)};
-        svgCanvas->drawRect(bounds, paint);
-    }
-    const SkDOM::Node* rootElement = dom.finishParsing();
-    ABORT_TEST(reporter, !rootElement, "root element not found");
+    const auto check_blendmode = [&](SkBlendMode bm,
+                                     const char* expected_operator_attr,
+                                     const char* expected_in_attr,
+                                     const char* expected_in2_attr) {
+        // Using a non-opaque color to avoid Blend() no-op collapse/optimizations.
+        static constexpr float kAlpha = .5f;
+        const SkColor4f kColor = SkColors::kRed.withAlpha(kAlpha);
 
-    const SkDOM::Node* filterElement = dom.getFirstChild(rootElement, "filter");
-    ABORT_TEST(reporter, !filterElement, "filter element not found");
+        SkPaint paint;
+        paint.setColorFilter(SkColorFilters::Blend(kColor.toSkColor(), bm));
 
-    const SkDOM::Node* floodElement = dom.getFirstChild(filterElement, "feFlood");
-    ABORT_TEST(reporter, !floodElement, "feFlood element not found");
+        SkDOM dom;
+        {
+            auto svgCanvas = MakeDOMCanvas(&dom);
+            SkRect bounds{0, 0, SkIntToScalar(100), SkIntToScalar(100)};
+            svgCanvas->drawRect(bounds, paint);
+        }
+        const SkDOM::Node* rootElement = dom.finishParsing();
+        ABORT_TEST(reporter, !rootElement, "root element not found");
 
-    const SkDOM::Node* compositeElement = dom.getFirstChild(filterElement, "feComposite");
-    ABORT_TEST(reporter, !compositeElement, "feComposite element not found");
+        const SkDOM::Node* filterElement = dom.getFirstChild(rootElement, "filter");
+        ABORT_TEST(reporter, !filterElement, "filter element not found");
+        REPORTER_ASSERT(reporter, strcmp(dom.findAttr(filterElement, "width"), "100%") == 0);
+        REPORTER_ASSERT(reporter, strcmp(dom.findAttr(filterElement, "height"), "100%") == 0);
 
-    REPORTER_ASSERT(reporter, strcmp(dom.findAttr(filterElement, "width"), "100%") == 0);
-    REPORTER_ASSERT(reporter, strcmp(dom.findAttr(filterElement, "height"), "100%") == 0);
+        const SkDOM::Node* floodElement = dom.getFirstChild(filterElement, "feFlood");
+        ABORT_TEST(reporter, !floodElement, "feFlood element not found");
+        REPORTER_ASSERT(reporter, strcmp(dom.findAttr(floodElement, "flood-color"), "red") == 0);
+        REPORTER_ASSERT(reporter,
+              SkScalarNearlyEqual(atof(dom.findAttr(floodElement, "flood-opacity")), kAlpha, .01f));
 
-    REPORTER_ASSERT(reporter,
-                    strcmp(dom.findAttr(floodElement, "flood-color"), "red") == 0);
-    REPORTER_ASSERT(reporter, atoi(dom.findAttr(floodElement, "flood-opacity")) == 1);
+        const SkDOM::Node* compositeElement = dom.getFirstChild(filterElement, "feComposite");
+        if (expected_operator_attr) {
+            ABORT_TEST(reporter, !compositeElement, "feComposite element not found");
 
-    REPORTER_ASSERT(reporter, strcmp(dom.findAttr(compositeElement, "in"), "flood") == 0);
-    REPORTER_ASSERT(reporter, strcmp(dom.findAttr(compositeElement, "in2"), "SourceGraphic") == 0);
-    REPORTER_ASSERT(reporter, strcmp(dom.findAttr(compositeElement, "operator"), "in") == 0);
+            REPORTER_ASSERT(reporter,
+                strcmp(dom.findAttr(compositeElement, "in"), expected_in_attr) == 0);
+            REPORTER_ASSERT(reporter,
+                strcmp(dom.findAttr(compositeElement, "in2"), expected_in2_attr) == 0);
+            REPORTER_ASSERT(reporter,
+                strcmp(dom.findAttr(compositeElement, "operator"), expected_operator_attr) == 0);
+        } else {
+            // some modes should not emit feComposite
+            REPORTER_ASSERT(reporter, !compositeElement);
+        }
+    };
+
+    // For kSrc we don't emit a feComposite node at all.
+    check_blendmode(SkBlendMode::kSrc    , nullptr  , nullptr, nullptr);
+
+    check_blendmode(SkBlendMode::kSrcOver, "over"   , "flood", "SourceGraphic");
+    check_blendmode(SkBlendMode::kSrcIn  , "in"     , "flood", "SourceGraphic");
+    check_blendmode(SkBlendMode::kSrcOut , "out"    , "flood", "SourceGraphic");
+    check_blendmode(SkBlendMode::kSrcATop, "atop"   , "flood", "SourceGraphic");
+    check_blendmode(SkBlendMode::kDstOver, "over"   , "SourceGraphic", "flood");
+    check_blendmode(SkBlendMode::kDstIn  , "in"     , "SourceGraphic", "flood");
+    check_blendmode(SkBlendMode::kDstOut , "out"    , "SourceGraphic", "flood");
+    check_blendmode(SkBlendMode::kDstATop, "atop"   , "SourceGraphic", "flood");
+    check_blendmode(SkBlendMode::kXor    , "xor"    , "flood", "SourceGraphic");
 }
 
 DEF_TEST(SVGDevice_textpath, reporter) {
