@@ -43,6 +43,7 @@
 #include "src/gpu/graphite/DrawContext.h"
 #include "src/gpu/graphite/Image_Base_Graphite.h"
 #include "src/gpu/graphite/Image_Graphite.h"
+#include "src/gpu/graphite/Image_YUVA_Graphite.h"
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/ResourceProvider.h"
 #include "src/gpu/graphite/ResourceTypes.h"
@@ -650,18 +651,36 @@ std::pair<sk_sp<SkImage>, SkSamplingOptions> GetGraphiteBacked(Recorder* recorde
 
     if (imageIn->dimensions().area() <= 1 && mipmapped == Mipmapped::kYes) {
         mipmapped = Mipmapped::kNo;
-        sampling = SkSamplingOptions(SkFilterMode::kLinear, SkMipmapMode::kNone);
+        sampling = SkSamplingOptions(SkFilterMode::kLinear);
     }
 
     sk_sp<SkImage> result;
     if (as_IB(imageIn)->isGraphiteBacked()) {
         result = sk_ref_sp(imageIn);
 
-        // If the preexisting Graphite-backed image doesn't have the required mipmaps we will drop
-        // down the sampling
-        if (mipmapped == Mipmapped::kYes && !result->hasMipmaps()) {
-            mipmapped = Mipmapped::kNo;
-            sampling = SkSamplingOptions(SkFilterMode::kLinear, SkMipmapMode::kNone);
+        // If the preexisting Graphite-backed image isn't texturable or doesn't have the required
+        // mipmaps, we drop down the sampling
+        //
+        // TODO: Once 1334556 lands, we can iterate over the planes returned by
+        // SkSpan<TextureProxyView> textureProxyViews() instead of checking if we are YUVA.
+        bool isTexturable = true;
+        if (as_IB(result)->isYUVA()) {
+            auto yuva = static_cast<const Image_YUVA*>(result.get());
+            for (int i = 0; i < SkYUVAInfo::kYUVAChannelCount; ++i) {
+                if (const auto& view = yuva->proxyView(i);
+                    view && !recorder->priv().caps()->isTexturable(view.proxy()->textureInfo())) {
+                    isTexturable = false;
+                    break;
+                }
+            }
+        } else if (TextureProxyView view = AsView(result.get())) {
+            isTexturable = recorder->priv().caps()->isTexturable(view.proxy()->textureInfo());
+        }
+
+        if (!isTexturable) {
+            sampling = SkSamplingOptions(SkFilterMode::kNearest);
+        } else if (mipmapped == Mipmapped::kYes && !result->hasMipmaps()) {
+            sampling = SkSamplingOptions(SkFilterMode::kLinear);
         }
     } else {
         auto clientImageProvider = recorder->clientImageProvider();
