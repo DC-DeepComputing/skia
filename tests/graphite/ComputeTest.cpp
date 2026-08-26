@@ -96,7 +96,9 @@ std::unique_ptr<Recording> submit_recording(Context* context,
 }
 
 bool is_dawn_or_metal_context_type(skiatest::GpuContextType ctxType) {
-    return skiatest::IsDawnContextType(ctxType) || skiatest::IsMetalContextType(ctxType);
+    return skiatest::IsDawnContextType(ctxType) ||
+           skiatest::IsMetalContextType(ctxType) ||
+           skiatest::IsVulkanContextType(ctxType);
 }
 
 // These tests often need to write one float parameter into a uniform declared as a float4 in
