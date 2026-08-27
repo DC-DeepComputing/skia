@@ -1889,7 +1889,8 @@ SpvId SPIRVCodeGenerator::getType(const Type& rawType,
                                               memoryLayout,
                                               storageClass);
 
-            bool sampled = (type->textureAccess() == Type::TextureAccess::kSample);
+            bool sampled = (type->textureAccess() == Type::TextureAccess::kSample ||
+                            type->textureAccess() == Type::TextureAccess::kRead);
             SpvImageFormat format = (!sampled && type->dimensions() != SpvDimSubpassData)
                                             ? layout_flags_to_image_format(typeLayout.fFlags)
                                             : SpvImageFormatUnknown;
@@ -2362,12 +2363,12 @@ SpvId SPIRVCodeGenerator::writeSpecialIntrinsic(const FunctionCall& c, SpecialIn
 
             switch (arg0Type.textureAccess()) {
                 case Type::TextureAccess::kSample:
+                case Type::TextureAccess::kRead:
                     this->writeInstruction(SpvOpImageFetch, type, result, image, coord,
                                            SpvImageOperandsLodMask,
                                            this->writeOpConstant(*fContext.fTypes.fInt, 0),
                                            out);
                     break;
-                case Type::TextureAccess::kRead:
                 case Type::TextureAccess::kReadWrite:
                     this->writeInstruction(SpvOpImageRead, type, result, image, coord, out);
                     break;
