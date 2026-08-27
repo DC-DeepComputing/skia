@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "83d85098_b5865239",
+        "filename": "src/gpu/ganesh/GrResourceAllocator.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 312,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-08-27T16:12:06Z",
+      "side": 0,
+      "message": "I removed SkDEBUGCODE, because clang had issues formating them when the semicolon was inside the macros.",
+      "range": {
+        "startLine": 311,
+        "startChar": 0,
+        "endLine": 312,
+        "endChar": 52
+      },
+      "revId": "16bafda1333c081f3074c304c40a2728910f8e9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
