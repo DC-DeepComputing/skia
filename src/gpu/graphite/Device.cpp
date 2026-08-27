@@ -1146,6 +1146,28 @@ void Device::drawArc(const SkArc& arc, const SkPaint& paint) {
     }
 }
 
+static SkRRect snap_rrect_to_pixels(const SkRRect& rr,
+                                        SkStrokeRec& style,
+                                        const Transform& localToDevice) {
+    // Snap the horizontal and vertical edges of the rounded rectangle to pixel edges to match
+    // the behavior of drawRect(rr.bounds()), to partially emulate non-AA rendering while
+    // preserving the anti-aliasing of the curved corners.
+    Rect snappedBounds;
+    if (style.isFillStyle()) {
+        snappedBounds = snap_rect_to_pixels(localToDevice, rr.rect());
+    } else {
+        const bool strokeAndFill = style.getStyle() == SkStrokeRec::kStrokeAndFill_Style;
+        float strokeWidth = style.getWidth();
+        snappedBounds = snap_rect_to_pixels(localToDevice,
+                                            rr.rect(), &strokeWidth);
+        style.setStrokeStyle(strokeWidth, strokeAndFill);
+    }
+
+    SkRRect snappedRRect;
+    snappedRRect.setRectRadii(snappedBounds.asSkRect(), rr.radii().data());
+    return snappedRRect;
+}
+
 void Device::drawRRect(const SkRRect& rr, const SkPaint& paint) {
     Shape rrectToDraw;
     SkStrokeRec style(paint);
@@ -1153,23 +1175,7 @@ void Device::drawRRect(const SkRRect& rr, const SkPaint& paint) {
     if (paint.isAntiAlias()) {
         rrectToDraw.setRRect(rr);
     } else {
-        // Snap the horizontal and vertical edges of the rounded rectangle to pixel edges to match
-        // the behavior of drawRect(rr.bounds()), to partially emulate non-AA rendering while
-        // preserving the anti-aliasing of the curved corners.
-        Rect snappedBounds;
-        if (style.isFillStyle()) {
-            snappedBounds = snap_rect_to_pixels(this->localToDeviceTransform(), rr.rect());
-        } else {
-            const bool strokeAndFill = style.getStyle() == SkStrokeRec::kStrokeAndFill_Style;
-            float strokeWidth = style.getWidth();
-            snappedBounds = snap_rect_to_pixels(this->localToDeviceTransform(),
-                                                rr.rect(), &strokeWidth);
-            style.setStrokeStyle(strokeWidth, strokeAndFill);
-        }
-
-        SkRRect snappedRRect;
-        snappedRRect.setRectRadii(snappedBounds.asSkRect(), rr.radii().data());
-        rrectToDraw.setRRect(snappedRRect);
+        rrectToDraw.setRRect(snap_rrect_to_pixels(rr, style, this->localToDeviceTransform()));
     }
 
     this->drawGeometryWithPathEffect(this->localToDeviceTransform(),
@@ -2479,8 +2485,16 @@ bool Device::drawBlurredRRect(const SkRRect& rrect, const SkPaint& paint, float 
         return true;
     }
 
+    SkRRect rrectToBlur;
+    SkStrokeRec style(paint);
+    if (paint.isAntiAlias()) {
+        rrectToBlur = rrect;
+    } else {
+        rrectToBlur = snap_rrect_to_pixels(rrect, style, this->localToDeviceTransform());
+    }
+
     std::optional<AnalyticBlurMask> analyticBlur = AnalyticBlurMask::Make(
-            this->recorder(), this->localToDeviceTransform(), deviceSigma, rrect);
+            this->recorder(), this->localToDeviceTransform(), deviceSigma, rrectToBlur);
     if (!analyticBlur) {
         return false;
     }
@@ -2488,7 +2502,7 @@ bool Device::drawBlurredRRect(const SkRRect& rrect, const SkPaint& paint, float 
     this->drawGeometry(this->localToDeviceTransform(),
                        Geometry(*analyticBlur),
                        PaintParams(paint),
-                       SkStrokeRec(paint));
+                       style);
     return true;
 }
 
