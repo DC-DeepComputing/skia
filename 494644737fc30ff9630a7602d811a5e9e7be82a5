@@ -16,6 +16,24 @@
       "message": "nit: Does `bazel run //tools:dump_capture -- --input \u003cfile1.capt\u003e` not work? If so, that\u0027s the more user friendly way to run binaries.",
       "revId": "494644737fc30ff9630a7602d811a5e9e7be82a5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e96492f_19bea143",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 14
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-08-27T21:04:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6d33f1fa_11b35723",
+      "revId": "494644737fc30ff9630a7602d811a5e9e7be82a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
