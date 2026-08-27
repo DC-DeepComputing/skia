@@ -16,6 +16,23 @@
       "message": "Hi Michael,\nCould you please take a look?",
       "revId": "d80ab353cb5ef7ddf668338ce87b481cbfe367c1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0af25a2e_747c219e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-08-27T14:07:40Z",
+      "side": 1,
+      "message": "Thanks!",
+      "revId": "d80ab353cb5ef7ddf668338ce87b481cbfe367c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
