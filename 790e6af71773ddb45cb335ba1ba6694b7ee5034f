@@ -203,6 +203,30 @@
       },
       "revId": "790e6af71773ddb45cb335ba1ba6694b7ee5034f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9eb6286_80c1e1ff",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 443,
+      "author": {
+        "id": 4569768
+      },
+      "writtenOn": "2026-08-27T09:35:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d080fe4c_a8830e21",
+      "range": {
+        "startLine": 443,
+        "startChar": 12,
+        "endLine": 443,
+        "endChar": 31
+      },
+      "revId": "790e6af71773ddb45cb335ba1ba6694b7ee5034f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
