@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b790707_7260a56e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-08-27T10:14:06Z",
+      "side": 1,
+      "message": "Hi Michael,\nCould you please take a look?",
+      "revId": "2ebf53f21d79639d6232f1aeabad3a01210f772a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "448cbeff_8041b1ad",
+        "filename": "src/core/SkCachedData.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-08-27T10:14:06Z",
+      "side": 1,
+      "message": "@michaelludwig@google.com\n\nAn alternative to this patch is simply to call:\n```\n    void* fData \u003d nullptr;\n```\nin the destructor.\n\nAfter the MiraclePtr rewrite, `fData` is detected as dangling, because it points to storage. The storage is manually deleted first, which leave the pointer momentarilly dangling.\n\n---\n\nI decided to modernize it with unique_ptr and rely on the default destructor instead. Since pointer depends on storage, it is declared second, but destroyed in the reverse order, which makes the defaulted destructor valid.",
+      "range": {
+        "startLine": 55,
+        "startChar": 4,
+        "endLine": 55,
+        "endChar": 25
+      },
+      "revId": "2ebf53f21d79639d6232f1aeabad3a01210f772a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
