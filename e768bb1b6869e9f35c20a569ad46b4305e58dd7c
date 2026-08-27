@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "56c707de_ff28261f",
+        "filename": "src/ports/SkOSFile_win.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-08-27T14:12:05Z",
+      "side": 1,
+      "message": "This is preexisting. I just reordered to group the C system include and then the C++ ones.\n\nThis is needed by the placement new:\n```\nSkOSFile::Iter::Iter() { new (fSelf) SkOSFileIterData; }\n```",
+      "parentUuid": "05b165d0_e63c96fe",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 14
+      },
+      "revId": "e768bb1b6869e9f35c20a569ad46b4305e58dd7c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f053fc6d_904568fe",
         "filename": "src/ports/SkOSFile_win.cpp",
         "patchSetId": 10
