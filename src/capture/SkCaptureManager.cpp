@@ -26,6 +26,18 @@ SkCanvas* SkCaptureManager::makeCaptureCanvas(SkCanvas* canvas) {
     return rawCanvasPtr;
 }
 
+void SkCaptureManager::onCanvasSurfaceDeleted(SkCaptureCanvas* canvas) {
+    if (!canvas) {
+        return;
+    }
+    for (int i = 0; i < fTrackedCanvases.size(); ++i) {
+        if (fTrackedCanvases[i].get() == canvas) {
+            fTrackedCanvases.removeShuffle(i);
+            return;
+        }
+    }
+}
+
 sk_sp<SkPicture> SkCaptureManager::snapAndIncrement(SkCaptureCanvas* canvas) {
     auto picture = canvas->snapPicture();
     if (picture) {
