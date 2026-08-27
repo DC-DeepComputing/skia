@@ -16,6 +16,24 @@
       "message": "And ... I\u0027m not sure who should review this. Would you want to?\n\nI made this as much of a mirror image of skcms.cc as I could, so that we\u0027re not so much verifying \"this does the right thing per ICC spec\" as \"this does what skcms does\"",
       "revId": "8650246985d8ec27eeb64b90415ad6ca4980a4ab",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ccfb7555_5c2073f7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-08-27T14:38:03Z",
+      "side": 1,
+      "message": "I\u0027ll take a look but I\u0027m no Rust expert.  Maybe Łukasz and Sergio can help.",
+      "parentUuid": "046b9954_57c5d13c",
+      "revId": "8650246985d8ec27eeb64b90415ad6ca4980a4ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
