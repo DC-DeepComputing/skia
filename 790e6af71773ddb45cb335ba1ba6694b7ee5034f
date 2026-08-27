@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "060dbed9_ef920b5c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-08-27T17:14:13Z",
+      "side": 1,
+      "message": "Yup, looks like this is causing test failures in Chromium, so it would break the Skia roll:\n\nhttps://ci.chromium.org/ui/p/chromium/builders/try/linux-rel/2865947/overview\n```\n[23467:23467:FATAL:third_party/blink/renderer/platform/image-decoders/skia/skia_image_decoder_base.cc:247] DCHECK failed: frame_info_received. \n#0 0x56d504989e92 base::debug::CollectStackTrace()\n#1 0x56d5049738e4 base::debug::StackTrace::StackTrace()\n#2 0x56d50483005c logging::LogMessage::Flush()\n#3 0x56d50482ff2c logging::LogMessage::~LogMessage()\n#4 0x56d504815d7f logging::(anonymous namespace)::DCheckLogMessage::~DCheckLogMessage()\n#5 0x56d504815dee logging::(anonymous namespace)::DCheckLogMessage::~DCheckLogMessage()\n#6 0x56d504815423 logging::CheckError::~CheckError()\n#7 0x56d506e7e4ee blink::SkiaImageDecoderBase::InitializeNewFrame()\n#8 0x56d506e6aa17 blink::ImageDecoder::FrameCount()\n#9 0x56d506e6aacd blink::ImageDecoder::DecodeFrameBufferAtIndex()\n#10 0x56d503b88b4e blink::ICODecoderComparisonTest_CompareDecoders_Test::TestBody()\n#11 0x56d503971c42 testing::Test::Run()\n#12 0x56d503972b9f testing::TestInfo::Run()\n#13 0x56d503973b17 testing::TestSuite::Run()\n#14 0x56d503984937 testing::internal::UnitTestImpl::RunAllTests()\n#15 0x56d503984171 testing::UnitTest::Run()\n#16 0x56d5072125b8 base::TestSuite::Run()\n#17 0x56d4fe56b673 (anonymous namespace)::runTestSuite()\n#18 0x56d5072340d7 base::(anonymous namespace)::LaunchUnitTestsInternal()\n#19 0x56d507233dad base::LaunchUnitTests()\n#20 0x56d4fe56b5cc main\n#21 0x7a591f029d90 (/usr/lib/x86_64-linux-gnu/libc.so.6+0x29d8f)\n#22 0x7a591f029e40 __libc_start_main\n#23 0x56d4fd7bb02a _start\n```",
+      "parentUuid": "95aa0204_27e1e0f3",
+      "revId": "790e6af71773ddb45cb335ba1ba6694b7ee5034f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c1af6527_3dafe797",
         "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
         "patchSetId": 8
