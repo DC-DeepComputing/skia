@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "81e5a1c4_8a7a53f6",
+        "filename": "src/capture/SkCaptureManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-08-27T17:33:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ce6f1489_bf09a291",
+      "range": {
+        "startLine": 89,
+        "startChar": 8,
+        "endLine": 101,
+        "endChar": 9
+      },
+      "revId": "6e288251f32edc4d7b59b77af30c8190e34c4e91",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3d86bcf4_16121b35",
@@ -37,6 +61,24 @@
       "writtenOn": "2026-08-27T00:45:56Z",
       "side": 1,
       "message": "nit: could you add a comment here explaining why the prevAssetIndex changes from before after running drawCaptureExplorer?",
+      "revId": "6e288251f32edc4d7b59b77af30c8190e34c4e91",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "48b8e866_0eb39de3",
+        "filename": "tools/viewer/CaptureSlide.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-08-27T17:33:40Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "3d86bcf4_16121b35",
       "revId": "6e288251f32edc4d7b59b77af30c8190e34c4e91",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
