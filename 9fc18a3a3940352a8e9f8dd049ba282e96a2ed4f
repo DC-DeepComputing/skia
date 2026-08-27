@@ -16,6 +16,24 @@
       "message": "I\u0027m not sure about this part :/\n\nCan we get a skia owner to look at this before submitting?",
       "revId": "9fc18a3a3940352a8e9f8dd049ba282e96a2ed4f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a7380a8_a1898d0f",
+        "filename": "go.mod",
+        "patchSetId": 7
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 3719525
+      },
+      "writtenOn": "2026-08-27T04:19:10Z",
+      "side": 1,
+      "message": "From https://task-scheduler.skia.org/job/FT5kq9LBYUrdChW60CJ9?content_ref\u003drunning+go+1+24+2+gotoolchain+local -- the reason I did this was due to \"google.golang.org/grpc@v1.82.1 requires go \u003e\u003d 1.25.0 (running go 1.24.2...)\"",
+      "parentUuid": "b929e5bc_c0a4db82",
+      "revId": "9fc18a3a3940352a8e9f8dd049ba282e96a2ed4f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
