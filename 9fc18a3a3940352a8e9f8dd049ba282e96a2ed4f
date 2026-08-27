@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b929e5bc_c0a4db82",
+        "filename": "go.mod",
+        "patchSetId": 7
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 4476355
+      },
+      "writtenOn": "2026-08-27T04:13:32Z",
+      "side": 1,
+      "message": "I\u0027m not sure about this part :/\n\nCan we get a skia owner to look at this before submitting?",
+      "revId": "9fc18a3a3940352a8e9f8dd049ba282e96a2ed4f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
