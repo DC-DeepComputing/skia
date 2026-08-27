@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "046b9954_57c5d13c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-08-27T01:37:12Z",
+      "side": 1,
+      "message": "And ... I\u0027m not sure who should review this. Would you want to?\n\nI made this as much of a mirror image of skcms.cc as I could, so that we\u0027re not so much verifying \"this does the right thing per ICC spec\" as \"this does what skcms does\"",
+      "revId": "8650246985d8ec27eeb64b90415ad6ca4980a4ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
