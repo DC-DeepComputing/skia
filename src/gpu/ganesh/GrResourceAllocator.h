@@ -296,23 +296,23 @@ private:
     // Compositing use cases can create > 80 intervals.
     static const int kInitialArenaSize = 128 * sizeof(Interval);
 
-    GrDirectContext*             fDContext;
-    FreePoolMultiMap             fFreePool;          // Recently created/used GrSurfaces
-    IntvlHash                    fIntvlHash;         // All the intervals, hashed by proxyID
+    GrDirectContext* fDContext;
+    SkSTArenaAllocWithReset<kInitialArenaSize> fInternalAllocator;  // intervals & registers
 
-    IntervalList                 fIntvlList;         // All the intervals sorted by increasing start
-    IntervalList                 fActiveIntvls;      // List of live intervals during assignment
-                                                     // (sorted by increasing end)
-    IntervalList                 fFinishedIntvls;    // All the completed intervals
-                                                     // (sorted by increasing start)
-    UniqueKeyRegisterHash        fUniqueKeyRegisters;
-    unsigned int                 fNumOps = 0;
+    FreePoolMultiMap fFreePool;  // Recently created/used GrSurfaces
+    IntvlHash fIntvlHash;        // All the intervals, hashed by proxyID
 
-    SkDEBUGCODE(bool             fPlanned = false;)
-    SkDEBUGCODE(bool             fAssigned = false;)
+    IntervalList fIntvlList;       // All the intervals sorted by increasing start
+    IntervalList fActiveIntvls;    // List of live intervals during assignment
+                                   // (sorted by increasing end)
+    IntervalList fFinishedIntvls;  // All the completed intervals
+                                   // (sorted by increasing start)
+    UniqueKeyRegisterHash fUniqueKeyRegisters;
+    unsigned int fNumOps = 0;
 
-    SkSTArenaAllocWithReset<kInitialArenaSize>   fInternalAllocator; // intervals & registers
-    bool                                         fFailedInstantiation = false;
+    SkDEBUGCODE(bool fPlanned = false;) SkDEBUGCODE(bool fAssigned = false;)
+
+            bool fFailedInstantiation = false;
 };
 
 #endif // GrResourceAllocator_DEFINED
