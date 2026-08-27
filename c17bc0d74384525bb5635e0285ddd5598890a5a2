@@ -39,6 +39,30 @@
       },
       "revId": "c17bc0d74384525bb5635e0285ddd5598890a5a2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df62c80f_872c131e",
+        "filename": "src/core/SkBlurMaskFilterImpl.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-08-27T14:28:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "30e5dfd3_41b924c3",
+      "range": {
+        "startLine": 206,
+        "startChar": 0,
+        "endLine": 260,
+        "endChar": 1
+      },
+      "revId": "c17bc0d74384525bb5635e0285ddd5598890a5a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
