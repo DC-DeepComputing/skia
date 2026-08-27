@@ -39,6 +39,30 @@
       },
       "revId": "6ee5e5af38dbbc39afb840e53a537819aa8cc6ff",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bcb969f1_e487c3e7",
+        "filename": "src/gpu/ganesh/GrHashMapWithCache.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-08-27T13:02:43Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "bba6ea90_50b26244",
+      "range": {
+        "startLine": 58,
+        "startChar": 12,
+        "endLine": 58,
+        "endChar": 66
+      },
+      "revId": "6ee5e5af38dbbc39afb840e53a537819aa8cc6ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
