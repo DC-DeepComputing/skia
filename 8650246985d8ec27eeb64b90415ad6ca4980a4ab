@@ -53,6 +53,46 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "738726c1_e863220c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-08-27T22:11:15Z",
+      "side": 1,
+      "message": "LGTM with some nits / comments",
+      "revId": "8650246985d8ec27eeb64b90415ad6ca4980a4ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a8fc88c_87fa48b4",
+        "filename": "MODULE.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-08-27T22:11:15Z",
+      "side": 1,
+      "message": "Is this dependency still used anywhere by Skia?  Can this be removed?",
+      "range": {
+        "startLine": 159,
+        "startChar": 0,
+        "endLine": 162,
+        "endChar": 1
+      },
+      "revId": "8650246985d8ec27eeb64b90415ad6ca4980a4ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "44329a80_a389b76f",
@@ -106,6 +146,52 @@
       "writtenOn": "2026-08-27T19:38:07Z",
       "side": 1,
       "message": "These offsets come from untrusted `u32` fields and are converted to `usize`. On a 32-bit target, `matrix_offset` + 48 can overflow, causing a debug panic or wrapping before the later slice operation. The same pattern appears around the CLUT calculations below and in the header-size calculation. Could we use `checked_add` and bounded `get()` operations consistently, perhaps through a small reader helper? Malformed ICC data should return false rather than panic, particularly on 32-bit.",
+      "revId": "8650246985d8ec27eeb64b90415ad6ca4980a4ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d80718f_65583e2f",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 765,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-08-27T22:11:15Z",
+      "side": 1,
+      "message": "nit: Similarly to Sergio\u0027s other comment, this probably can also be a `checked_add` because `clut_offset` is untrustworthy.",
+      "range": {
+        "startLine": 765,
+        "startChar": 43,
+        "endLine": 765,
+        "endChar": 44
+      },
+      "revId": "8650246985d8ec27eeb64b90415ad6ca4980a4ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31df9cea_0ab0a709",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 885,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-08-27T22:11:15Z",
+      "side": 1,
+      "message": "I wonder if there is a way to avoid these repetitive `let foo \u003d match ... return false` blocks somehow.\n\nOne way to do this may be to change the return type to `Option\u003c()\u003e` - then `?` works in `let version \u003d match read_u32(\u0026header[8..12])?;`.  (An outer, C/C++/FFI-friendly function can then translate `Some(())` to `true` and `None` to false - just `ret_val.is_some()`.)\n\nA slightly less disruptive (but not sure if as effective) way may be to use `let ... else` - e.g.:\n\n```\n    let Some(version) \u003d read_u32(\u0026header[8..12]) else { return false; };\n```",
+      "range": {
+        "startLine": 882,
+        "startChar": 0,
+        "endLine": 885,
+        "endChar": 6
+      },
       "revId": "8650246985d8ec27eeb64b90415ad6ca4980a4ab",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
