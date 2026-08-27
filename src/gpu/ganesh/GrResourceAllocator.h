@@ -297,6 +297,7 @@ private:
     static const int kInitialArenaSize = 128 * sizeof(Interval);
 
     GrDirectContext*             fDContext;
+    SkSTArenaAllocWithReset<kInitialArenaSize>   fInternalAllocator; // intervals & registers
     FreePoolMultiMap             fFreePool;          // Recently created/used GrSurfaces
     IntvlHash                    fIntvlHash;         // All the intervals, hashed by proxyID
 
@@ -311,7 +312,6 @@ private:
     SkDEBUGCODE(bool             fPlanned = false;)
     SkDEBUGCODE(bool             fAssigned = false;)
 
-    SkSTArenaAllocWithReset<kInitialArenaSize>   fInternalAllocator; // intervals & registers
     bool                                         fFailedInstantiation = false;
 };
 
