@@ -915,6 +915,8 @@ func (b *TaskBuilder) defaultSwarmDimensions() {
 		}
 		if b.Parts["model"] == "iPadPro" {
 			d["os"] = "iOS-13.6"
+		} else if b.Parts["model"] == "iPhone7" {
+			d["os"] = "iOS-15.8"
 		}
 	} else {
 		d["os"] = DEFAULT_OS_LINUX_GCE
@@ -1218,6 +1220,8 @@ func (b *TaskBuilder) maybeAddIosDevImage() {
 				asset = "ios-dev-image-13.5"
 			case "13.6":
 				asset = "ios-dev-image-13.6"
+			case "15.8":
+				asset = "ios-dev-image-15.8"
 			case "18.2.1", "18.4":
 				// Newer iOS versions don't use a pre-packaged dev image.
 			default:
