@@ -16,6 +16,29 @@
       "message": "Hi Michael,\nCould you please take a look?",
       "revId": "c17bc0d74384525bb5635e0285ddd5598890a5a2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30e5dfd3_41b924c3",
+        "filename": "src/core/SkBlurMaskFilterImpl.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-27T13:20:00Z",
+      "side": 1,
+      "message": "Can you update these functions as well as the SkMaskCache interface to use sk_sp\u003cSkCachedData\u003e instead of raw pointers? That will pair well with storing them in NinePatch as an sk_sp and not rely on the constructor assuming that its adopting ownership of something that already had a ref on it.",
+      "range": {
+        "startLine": 206,
+        "startChar": 0,
+        "endLine": 260,
+        "endChar": 1
+      },
+      "revId": "c17bc0d74384525bb5635e0285ddd5598890a5a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
