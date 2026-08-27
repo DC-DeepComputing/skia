@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6e29bbc4_62f50524",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4569768
+      },
+      "writtenOn": "2026-08-27T08:09:11Z",
+      "side": 1,
+      "message": "I don\u0027t think it should break Chromium as long as we keep the feature disabled until I get the patch to enable the API and add the adapter in the same CL.\n\nDoes that sounds reasonable?",
+      "parentUuid": "2a08c34b_a7d0d4eb",
+      "revId": "790e6af71773ddb45cb335ba1ba6694b7ee5034f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c1af6527_3dafe797",
         "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
         "patchSetId": 8
@@ -31,6 +49,30 @@
       "writtenOn": "2026-08-24T17:13:07Z",
       "side": 1,
       "message": "nit: Let\u0027s default to `SkASSERT_RELEASE`?\n\nSee https://chromium.googlesource.com/chromium/src/+/HEAD/styleguide/c++/checks.md#invariant_verification-mechanisms which says to \"Prefer `CHECK()` and `NOTREACHED()` over `DCHECK()`\"",
+      "range": {
+        "startLine": 313,
+        "startChar": 4,
+        "endLine": 313,
+        "endChar": 12
+      },
+      "revId": "790e6af71773ddb45cb335ba1ba6694b7ee5034f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6034ce7e_684d22bf",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 4569768
+      },
+      "writtenOn": "2026-08-27T08:09:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c1af6527_3dafe797",
       "range": {
         "startLine": 313,
         "startChar": 4,
@@ -92,6 +134,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "397f9257_a4b94ac4",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 4569768
+      },
+      "writtenOn": "2026-08-27T08:09:11Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "539600e2_f65415c3",
+      "range": {
+        "startLine": 321,
+        "startChar": 21,
+        "endLine": 321,
+        "endChar": 84
+      },
+      "revId": "790e6af71773ddb45cb335ba1ba6694b7ee5034f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3f0d0433_05b5b1ca",
@@ -105,6 +171,30 @@
       "writtenOn": "2026-08-24T20:46:37Z",
       "side": 1,
       "message": "Is scanline decoding for PNG entries not supported?\n\nTaking a step back, how is scanline decoding related to the main issue?  Kinda feels like a separate feature/cl, can it be split out easily?  I don\u0027t know if we have any test coverage for it either.",
+      "range": {
+        "startLine": 443,
+        "startChar": 12,
+        "endLine": 443,
+        "endChar": 31
+      },
+      "revId": "790e6af71773ddb45cb335ba1ba6694b7ee5034f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d080fe4c_a8830e21",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 443,
+      "author": {
+        "id": 4569768
+      },
+      "writtenOn": "2026-08-27T08:09:11Z",
+      "side": 1,
+      "message": "Yeah, PNG-entry scanline decoding is not supported.\nIt continues to return kUnimplemented, and the buffered implementation is only for BMP entries and is covered by the shared Codec_ico test. \n\nI agree it is separate from the frame/size-selection issue. It can be split mechanically, although the Rust ICO path would fail the existing BMP scanline expectation until the follow-up lands.",
+      "parentUuid": "3f0d0433_05b5b1ca",
       "range": {
         "startLine": 443,
         "startChar": 12,
