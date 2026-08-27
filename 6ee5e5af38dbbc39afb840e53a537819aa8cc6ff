@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0bf84e9_916a02b7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-08-27T11:25:11Z",
+      "side": 1,
+      "message": "Hi Greg,\nCould you please take a look?",
+      "revId": "6ee5e5af38dbbc39afb840e53a537819aa8cc6ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bba6ea90_50b26244",
+        "filename": "src/gpu/ganesh/GrHashMapWithCache.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-08-27T11:25:11Z",
+      "side": 1,
+      "message": "Note: Code is 100% verified to be correct/safe. However, MiraclePtr would detect the `fLastValue` pointer to be briefly dangling here when fMap.set causes a reallocation.\n\nI suspect this will lead to performance regressions if this pointer was protected. I haven\u0027t data to confirm, but this is a likely scenario.",
+      "range": {
+        "startLine": 58,
+        "startChar": 12,
+        "endLine": 58,
+        "endChar": 66
+      },
+      "revId": "6ee5e5af38dbbc39afb840e53a537819aa8cc6ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
