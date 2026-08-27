@@ -33,6 +33,24 @@
       "message": "Can we move the majority of these comments to the end of the annotated line ?",
       "revId": "4218d658190309785e001047044a121a53e058e5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb81f979_dc72d4c2",
+        "filename": "src/pathops/SkPathOpsQuad.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-08-27T12:34:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7d1db519_f2856f07",
+      "revId": "4218d658190309785e001047044a121a53e058e5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
