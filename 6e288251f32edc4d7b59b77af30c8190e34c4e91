@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce6f1489_bf09a291",
+        "filename": "src/capture/SkCaptureManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-08-27T00:45:56Z",
+      "side": 1,
+      "message": "there\u0027s a lot of nesting here, could you look into ways of reducing this?\n\nI typically use the pattern below \n\n```\n    for (auto\u0026 canvas : fTrackedCanvases) {\n        if (!canvas) {\n      \t\tcontinue;\n        }\n        SkSurface* surface \u003d canvas-\u003egetBaseCanvasSurface();\n        if (!surface) {\n       \t\tcontinue;\n        }\n        \n\tetc\n        }\n    ```",
+      "range": {
+        "startLine": 89,
+        "startChar": 8,
+        "endLine": 101,
+        "endChar": 9
+      },
+      "revId": "6e288251f32edc4d7b59b77af30c8190e34c4e91",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d86bcf4_16121b35",
+        "filename": "tools/viewer/CaptureSlide.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-08-27T00:45:56Z",
+      "side": 1,
+      "message": "nit: could you add a comment here explaining why the prevAssetIndex changes from before after running drawCaptureExplorer?",
+      "revId": "6e288251f32edc4d7b59b77af30c8190e34c4e91",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
