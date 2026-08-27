@@ -34,6 +34,80 @@
       "parentUuid": "046b9954_57c5d13c",
       "revId": "8650246985d8ec27eeb64b90415ad6ca4980a4ab",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe735be2_00fbf1b9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-08-27T19:38:07Z",
+      "side": 1,
+      "message": "Thank you for putting this together, Christopher. The direct function-to-function correspondence with skcms.cc made the semantic review much easier. I checked the header and tag envelope, curve types, legacy and modern LUTs in both directions, PCS encoding adjustments, A2B priority, CICP, and source-usability behavior. The supported surface looks like the right minimum for mirroring skcms_Parse, and the resource equivalence test gives good coverage across the existing corpus.",
+      "revId": "8650246985d8ec27eeb64b90415ad6ca4980a4ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44329a80_a389b76f",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-08-27T19:38:07Z",
+      "side": 1,
+      "message": "I would suggest to keep in FFI file purely FFI interface implementation + data type, and moving the specific ICC parsing implementation to its own file.",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 9
+      },
+      "revId": "8650246985d8ec27eeb64b90415ad6ca4980a4ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "041286f5_a34453a5",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-08-27T19:38:07Z",
+      "side": 1,
+      "message": "These limits have different consequences from their skcms equivalents. skcms borrows table and CLUT data, while this rust parser copies it into `Vec`s. For example, the 350M-point limit can permit a CLUT copy larger than 1 GiB, and a 16M-entry gray curve is copied into each of the three TRCs. Should we impose a profile-size or total-owned-data limit appropriate for codec input before making these allocations?",
+      "revId": "8650246985d8ec27eeb64b90415ad6ca4980a4ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b0d4092_bac14f2b",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 673,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-08-27T19:38:07Z",
+      "side": 1,
+      "message": "These offsets come from untrusted `u32` fields and are converted to `usize`. On a 32-bit target, `matrix_offset` + 48 can overflow, causing a debug panic or wrapping before the later slice operation. The same pattern appears around the CLUT calculations below and in the header-size calculation. Could we use `checked_add` and bounded `get()` operations consistently, perhaps through a small reader helper? Malformed ICC data should return false rather than panic, particularly on 32-bit.",
+      "revId": "8650246985d8ec27eeb64b90415ad6ca4980a4ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
