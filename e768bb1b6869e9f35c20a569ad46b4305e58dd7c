@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "00f1e036_a682f585",
+        "filename": "src/ports/SkOSFile_win.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-08-27T14:39:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "56c707de_ff28261f",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 14
+      },
+      "revId": "e768bb1b6869e9f35c20a569ad46b4305e58dd7c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f053fc6d_904568fe",
@@ -61,6 +85,30 @@
       "writtenOn": "2026-08-27T13:16:07Z",
       "side": 1,
       "message": "Can you switch to using TArray here in in `make_utf16_search_pattern`?",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 17
+      },
+      "revId": "e768bb1b6869e9f35c20a569ad46b4305e58dd7c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e470ed9_a092ead3",
+        "filename": "src/ports/SkOSFile_win.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-08-27T14:39:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f053fc6d_904568fe",
       "range": {
         "startLine": 22,
         "startChar": 0,
