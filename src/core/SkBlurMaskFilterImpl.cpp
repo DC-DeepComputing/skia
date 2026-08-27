@@ -432,7 +432,7 @@ std::optional<SkMaskFilterBase::NinePatch> SkBlurMaskFilterImpl::filterRRectToNi
             SkMask{cachedMask->fImage, bounds, cachedMask->fRowBytes, cachedMask->fFormat},
             dstM.fBounds,
             center,
-            cached);  // transfer ownership to patch
+            sk_sp<SkCachedData>(cached));
 }
 
 SkMaskFilterBase::FilterReturn SkBlurMaskFilterImpl::filterRectsToNine(
@@ -562,7 +562,7 @@ SkMaskFilterBase::FilterReturn SkBlurMaskFilterImpl::filterRectsToNine(
     patch->emplace(SkMask{cachedMask->fImage, bounds, cachedMask->fRowBytes, cachedMask->fFormat},
                    dstM.fBounds,
                    center,
-                   cached);  // transfer ownership to patch
+                   sk_sp<SkCachedData>(cached));
     return FilterReturn::kTrue;
 }
 
