@@ -3,6 +3,23 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "845c8fc6_5ea648db",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-08-27T14:59:45Z",
+      "side": 1,
+      "message": "Most of the Go dependencies in this repo are inherited from go.skia.org/infra, which is rolled daily.  I uploaded https://skia-review.git.corp.google.com/c/buildbot/+/1340816 to update the dep there, and when that rolls, it should update this repo\u0027s dep as well.",
+      "revId": "9fc18a3a3940352a8e9f8dd049ba282e96a2ed4f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "b929e5bc_c0a4db82",
         "filename": "go.mod",
         "patchSetId": 7
