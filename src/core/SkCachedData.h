@@ -9,10 +9,14 @@
 #define SkCachedData_DEFINED
 
 #include "include/core/SkTypes.h"
+#include "include/private/SkMalloc.h"
 #include "include/private/SkMutex.h"
 #include "include/private/SkNoncopyable.h"
+#include "include/private/SkTemplates.h"
 
 #include <cstddef>
+#include <memory>
+#include <variant>
 
 class SkDiscardableMemory;
 
@@ -34,9 +38,7 @@ public:
     bool testing_only_isLocked() const { return fIsLocked; }
     bool testing_only_isInCache() const { return fInCache; }
 
-    SkDiscardableMemory* diagnostic_only_getDiscardable() const {
-        return kDiscardableMemory_StorageType == fStorageType ? fStorage.fDM : nullptr;
-    }
+    SkDiscardableMemory* diagnostic_only_getDiscardable() const;
 
 protected:
     // called when fData changes. could be nullptr.
@@ -45,19 +47,12 @@ protected:
 private:
     SkMutex fMutex;     // could use a pool of these...
 
-    enum StorageType {
-        kDiscardableMemory_StorageType,
-        kMalloc_StorageType
-    };
-
-    union {
-        SkDiscardableMemory*    fDM;
-        void*                   fMalloc;
-    } fStorage;
+    std::variant<std::unique_ptr<SkDiscardableMemory>,
+                 std::unique_ptr<void, SkFunctionObject<sk_free>>>
+            fStorage;
     void*       fData;
     size_t      fSize;
     int         fRefCnt;    // low-bit means we're owned by the cache
-    StorageType fStorageType;
     bool        fInCache;
     bool        fIsLocked;
 
