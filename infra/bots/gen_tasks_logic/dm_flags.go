@@ -550,6 +550,11 @@ func (b *TaskBuilder) dmFlags(internalHardwareLabel string) {
 					// b/425434638 - PaintParamsKeyTest failing on Release Dawn_Vulkan
 					skip(ALL, "test", ALL, "PaintParamsKeyTest")
 
+					if b.MatchOs("Ubuntu26.04") {
+						skip(ALL, "test", ALL, "PersistentPipelineStorageTest")
+						skip(ALL, "test", ALL, "UserDefinedStableKeyTest")
+					}
+
 					if b.GPU("IntelIris540") {
 						// b/485161482 - Compute_SampledTexture fails with an access violation
 						skip(ALL, "test", ALL, "Compute_SampledTexture")
@@ -619,8 +624,8 @@ func (b *TaskBuilder) dmFlags(internalHardwareLabel string) {
 					skip(ALL, "test", ALL, "ThreadedPipelinePrecompileCompilePurgingTest")
 					skip(ALL, "test", ALL, "ThreadedPipelinePrecompilePurgingTest")
 
-					if b.GPU("QuadroP400") || b.MatchOs("Ubuntu24.04") {
-						// Neither the nVidia driver on the P400s nor the Ubuntu24.04 driver
+					if b.GPU("QuadroP400") || b.MatchOs("Ubuntu24.04") || b.MatchOs("Ubuntu26.04") {
+						// Neither the nVidia driver on the P400s nor the Ubuntu24.04/Ubuntu26.04 drivers
 						// correctly support pipeline caching control (i.e., they *never* return
 						// VK_PIPELINE_COMPILE_REQUIRED from CreateGraphicsPipelines)
 						skip(ALL, "test", ALL, "PersistentPipelineStorageTest")
