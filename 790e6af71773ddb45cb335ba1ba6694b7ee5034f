@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "95aa0204_27e1e0f3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-08-27T15:48:13Z",
+      "side": 1,
+      "message": "If Chromium depends on the current multi-frame behavior it may not break at compile time, but I assume the feature is enabled for testing - so that could be problematic?\n\nI\u0027ll kick off a canary run to see if it catches anything.\n\nIf needed, we could do something along these lines to migrate smoothly:\n\n1. introduce the getEmbeddedImage* APIs in Skia (while keeping the current multi-frame overrides)\n2. update Chromium to use the new APIs\n3. cleanup Skia (remove multi frame-overrides)",
+      "parentUuid": "6e29bbc4_62f50524",
+      "revId": "790e6af71773ddb45cb335ba1ba6694b7ee5034f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c1af6527_3dafe797",
         "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
         "patchSetId": 8
