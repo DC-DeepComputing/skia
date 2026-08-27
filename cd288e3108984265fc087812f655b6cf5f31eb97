@@ -16,6 +16,29 @@
       "message": "Hello Greg,\nCould you please take a look?",
       "revId": "cd288e3108984265fc087812f655b6cf5f31eb97",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec3b880e_df177a21",
+        "filename": "src/gpu/ganesh/GrResourceAllocator.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 300,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-08-27T13:05:11Z",
+      "side": 1,
+      "message": "nit: with this moved between context and free pool, the formatting seems off since the members are no longer aligned. Additionally there is no need on the bottom to have fFailedInstantiation as indented as it is now.\n\nNot sure what the best overall formatting should be, but I would play with it a little to clean it up and make it more consistent/readable.",
+      "range": {
+        "startLine": 300,
+        "startChar": 49,
+        "endLine": 300,
+        "endChar": 67
+      },
+      "revId": "cd288e3108984265fc087812f655b6cf5f31eb97",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
