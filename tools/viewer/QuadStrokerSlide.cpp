@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -118,7 +119,7 @@ class QuadStrokerSlide : public ClickHandlerSlide {
     enum {
         kCount = 18
     };
-    SkPoint fPts[kCount];
+    std::array<SkPoint, kCount> fPts;
     SkRect fWeightControl;
     SkRect fRadiusControl;
     SkRect fErrorControl;
