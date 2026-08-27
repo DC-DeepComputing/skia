@@ -493,7 +493,9 @@ sk_sp<const GrGpuBuffer> GrResourceProvider::findOrMakeStaticBuffer(
     if (buffer->isMapped()) {
         buffer->unmap();
     } else {
-        buffer->updateData(stagingBuffer, /*offset=*/0, size, /*preserve=*/false);
+        if (!buffer->updateData(stagingBuffer, /*offset=*/0, size, /*preserve=*/false)) {
+            return nullptr;
+        }
     }
 
     return buffer;

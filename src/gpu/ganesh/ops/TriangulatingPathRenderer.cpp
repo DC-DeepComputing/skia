@@ -177,11 +177,22 @@ public:
         if (fCanMapVB) {
             fVertexBuffer->unmap();
         } else {
-            fVertexBuffer->updateData(fVertices,
-                                      /*offset=*/0,
-                                      /*size=*/actualCount*fLockStride,
-                                      /*preserve=*/false);
-            sk_free(fVertices);
+            if (fVertexBuffer->updateData(fVertices,
+                                          /*offset=*/0,
+                                          /*size=*/actualCount*fLockStride,
+                                          /*preserve=*/false)) {
+                sk_free(fVertices);
+            } else {
+                // If we fail the upload, reset the buffer, shrink the fVertices allocation, and use
+                // it to make vertex data.
+                fVertexBuffer.reset();
+                fVertices = sk_realloc_throw(fVertices, actualCount * fLockStride);
+                fVertexData =
+                        GrThreadSafeCache::MakeVertexData(fVertices, actualCount, fLockStride);
+                fVertices = nullptr;
+                fLockStride = 0;
+                return;
+            }
         }
 
         fVertexData = GrThreadSafeCache::MakeVertexData(std::move(fVertexBuffer),
@@ -383,7 +394,9 @@ private:
                 sk_make_sp<UniqueKeyInvalidator>(key, target->contextUniqueID()));
         }
 
-        fMesh = CreateMesh(target, fVertexData->refGpuBuffer(), 0, fVertexData->numVertices());
+        if (fVertexData->gpuBuffer()) {
+            fMesh = CreateMesh(target, fVertexData->refGpuBuffer(), 0, fVertexData->numVertices());
+        }
     }
 
     void createAAMesh(GrMeshDrawTarget* target) {
