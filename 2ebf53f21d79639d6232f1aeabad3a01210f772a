@@ -39,6 +39,30 @@
       },
       "revId": "2ebf53f21d79639d6232f1aeabad3a01210f772a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d98d7b6_f7b8c1b9",
+        "filename": "src/core/SkCachedData.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-27T13:26:45Z",
+      "side": 1,
+      "message": "I think modernizing makes sense.",
+      "parentUuid": "448cbeff_8041b1ad",
+      "range": {
+        "startLine": 55,
+        "startChar": 4,
+        "endLine": 55,
+        "endChar": 25
+      },
+      "revId": "2ebf53f21d79639d6232f1aeabad3a01210f772a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

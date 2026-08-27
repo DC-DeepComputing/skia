@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70b06429_f46abc65",
+        "filename": "src/core/SkCachedData.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-27T13:26:45Z",
+      "side": 0,
+      "message": "Can we preserve this comment in an `// else ...` comment when not taking the discardable storage branch?",
+      "range": {
+        "startLine": 152,
+        "startChar": 0,
+        "endLine": 152,
+        "endChar": 34
+      },
+      "revId": "1443fa05c5137c2cb72d00cbedef01df76a61e5a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a3e0bf7_9ba678d1",
+        "filename": "src/core/SkCachedData.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-27T13:26:45Z",
+      "side": 0,
+      "message": "Same comment preservation idea here",
+      "range": {
+        "startLine": 174,
+        "startChar": 0,
+        "endLine": 174,
+        "endChar": 90
+      },
+      "revId": "1443fa05c5137c2cb72d00cbedef01df76a61e5a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
