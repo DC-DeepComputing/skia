@@ -6,7 +6,10 @@
  */
 
 #ifndef skgpu_tessellate_MiddleOutPolygonTriangulator_DEFINED
+
 #define skgpu_tessellate_MiddleOutPolygonTriangulator_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkPath.h"
 #include "include/core/SkPathTypes.h"
@@ -90,11 +93,11 @@ public:
         }
 
         PoppedTriangleStack(PoppedTriangleStack&& that)
-            : fMiddleOut(that.fMiddleOut)
-            , fLastPoint(that.fLastPoint)
-            , fEnd(that.fEnd)
-            , fNewTopVertex(that.fNewTopVertex)
-            , fNewTopValue(that.fNewTopValue) {
+                : fMiddleOut(std::move(that.fMiddleOut))
+                , fLastPoint(that.fLastPoint)
+                , fEnd(that.fEnd)
+                , fNewTopVertex(that.fNewTopVertex)
+                , fNewTopValue(that.fNewTopValue) {
             that.fMiddleOut = nullptr;  // Don't do a stack update during our destructor.
         }
 
@@ -111,18 +114,20 @@ public:
             std::tuple<SkPoint, SkPoint, SkPoint> operator*() {
                 return {fVertex[-1].fPoint, fVertex[0].fPoint, fLastPoint};
             }
-            StackVertex* fVertex;
+            raw_ptr<StackVertex, AllowPtrArithmetic> fVertex;
             SkPoint fLastPoint;
         };
 
-        Iter begin() const { return {fMiddleOut ? fMiddleOut->fTop : fEnd, fLastPoint}; }
-        Iter end() const { return {fEnd, fLastPoint}; }
+        Iter begin() const {
+            return {fMiddleOut ? fMiddleOut->fTop.get() : fEnd.get(), fLastPoint};
+        }
+        Iter end() const { return {fEnd.get(), fLastPoint}; }
 
     private:
-        MiddleOutPolygonTriangulator* fMiddleOut;
+        raw_ptr<MiddleOutPolygonTriangulator> fMiddleOut;
         SkPoint fLastPoint;
-        StackVertex* fEnd;
-        StackVertex* fNewTopVertex;
+        raw_ptr<StackVertex> fEnd;
+        raw_ptr<StackVertex> fNewTopVertex;
         StackVertex fNewTopValue;
     };
 
@@ -177,7 +182,7 @@ public:
 
         // Triangulate the rest of the polygon. Since we simply have to finish now, we can't be
         // picky anymore about getting a pure middle-out topology.
-        StackVertex* endVertex = std::min(fTop, fVertexStack + 1);
+        StackVertex* endVertex = std::min(fTop.get(), fVertexStack + 1);
 
         // Once every remaining triangle is popped, reset the vertex stack with newStartPoint.
         StackVertex* newTopVertex = fVertexStack;
@@ -195,8 +200,7 @@ public:
 private:
     constexpr static int kStackPreallocCount = 32;
     skia_private::AutoSTMalloc<kStackPreallocCount, StackVertex> fVertexStack;
-    SkDEBUGCODE(int fStackAllocCount;)
-    StackVertex* fTop;
+    SkDEBUGCODE(int fStackAllocCount;) raw_ptr<StackVertex> fTop;
 };
 
 // This is a helper class that transforms and pushes a path's inner fan vertices onto a

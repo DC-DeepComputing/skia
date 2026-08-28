@@ -8,6 +8,7 @@
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkTArray.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/sksl/SkSLDefines.h"
 #include "src/sksl/SkSLModule.h"
 #include "src/sksl/analysis/SkSLProgramUsage.h"
@@ -190,7 +191,7 @@ static void eliminate_unreachable_code(SkSpan<std::unique_ptr<ProgramElement>> e
             return false;
         }
 
-        ProgramUsage* fUsage;
+        raw_ptr<ProgramUsage> fUsage;
         STArray<32, bool> fFoundFunctionExit;
         STArray<32, bool> fFoundBlockExit;
 
