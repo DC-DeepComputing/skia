@@ -16,6 +16,236 @@
       "message": "PTAL",
       "revId": "0e44251cfcca63ce49cd60949f9c92c95f894793",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ebe62a3b_ab148efe",
+        "filename": "src/gpu/graphite/DrawContext.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-28T15:54:51Z",
+      "side": 1,
+      "message": "WDYT about having the fStorageContext just move its collected UploadTasks into the DrawContext instead of temporarily storing them on the DrawPass?",
+      "range": {
+        "startLine": 271,
+        "startChar": 8,
+        "endLine": 275,
+        "endChar": 9
+      },
+      "revId": "0e44251cfcca63ce49cd60949f9c92c95f894793",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6120d3f0_1c799e61",
+        "filename": "src/gpu/graphite/DrawList.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-28T15:54:51Z",
+      "side": 1,
+      "message": "Would it better if this returned a pair or variant of BindBufferInfo or TextureProxy?",
+      "range": {
+        "startLine": 251,
+        "startChar": 55,
+        "endLine": 251,
+        "endChar": 63
+      },
+      "revId": "0e44251cfcca63ce49cd60949f9c92c95f894793",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bbf152cd_9b9699e8",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 389,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-28T15:54:51Z",
+      "side": 1,
+      "message": "We have to module the `startComp + X` against 4 right?",
+      "range": {
+        "startLine": 381,
+        "startChar": 8,
+        "endLine": 389,
+        "endChar": 66
+      },
+      "revId": "0e44251cfcca63ce49cd60949f9c92c95f894793",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88dc3241_ecacdaf4",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 442,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-28T15:54:51Z",
+      "side": 1,
+      "message": "WDYT about having this be part of the textureAndSampler binding group for now? That would keep it consistent with the dstCopy texture. Both of these are \"intrinsic\" and ought to be bound only once, but we\u0027re still stuck in a suboptimal binding configuration right now. But having the backends treat the storage texture in the same code paths as the dst copy will hopefully make updating to a different binding organization in the future a bit smoother.",
+      "range": {
+        "startLine": 442,
+        "startChar": 72,
+        "endLine": 442,
+        "endChar": 87
+      },
+      "revId": "0e44251cfcca63ce49cd60949f9c92c95f894793",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e5e70b8_a2175701",
+        "filename": "src/gpu/graphite/StorageContext.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-28T15:54:51Z",
+      "side": 1,
+      "message": "When are we passing in a null DrawBufferManager?",
+      "range": {
+        "startLine": 140,
+        "startChar": 26,
+        "endLine": 140,
+        "endChar": 35
+      },
+      "revId": "0e44251cfcca63ce49cd60949f9c92c95f894793",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c4d1798_3308a29c",
+        "filename": "src/gpu/graphite/StorageContext.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-28T15:54:51Z",
+      "side": 1,
+      "message": "nit: nothing in this function depends on `this`, so it could just be a static function inside this CPP file.",
+      "range": {
+        "startLine": 163,
+        "startChar": 0,
+        "endLine": 163,
+        "endChar": 99
+      },
+      "revId": "0e44251cfcca63ce49cd60949f9c92c95f894793",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b5eeb39_6ccc367c",
+        "filename": "src/gpu/graphite/StorageContext.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-28T15:54:51Z",
+      "side": 1,
+      "message": "I should have realized this when we added the `getDefaultReadableTextureInfo` function, but we don\u0027t need to have these coupled to an SkColorType, since that implies a possible view swizzle and other color conversion operations.  Here, we really do just want data, so we could update `getDefaultReadableTextureInfo` to accept a TextureFormat value.  This would also let us possible switch from kRGBA32F to kR32F if having it be a scalar value makes things easier (but maybe a rgba32f return type is better since it\u0027ll cover loading a float4 in a single sample call).",
+      "range": {
+        "startLine": 166,
+        "startChar": 12,
+        "endLine": 166,
+        "endChar": 33
+      },
+      "revId": "0e44251cfcca63ce49cd60949f9c92c95f894793",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5841aa32_f2cbac23",
+        "filename": "src/gpu/graphite/StorageContext.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-28T15:54:51Z",
+      "side": 1,
+      "message": "This is fine for now, but it is highlighting a gap in functionality with Graphite\u0027s upload functionality. If we are actually wanting to move pure data to a texture, we don\u0027t have any uploadSource path that takes in the texture format bytes directly (although technically, that is what the MakeCompressed() function is doing).\n\nAdditionally, it would be really nice in this case where we have disjoint sources of data to be able to copy them directly to the transfer buffer\u0027s mapped GPU memory to avoid an extra memcpy/allocation.  I an imagine a version of UploadSource that takes in a callback function that gets invoked per row and is provided a BufferWriter (or actually lets us use TextureUploadWriter as a writer instead of a cumbersome 2D copier that it currently is).",
+      "range": {
+        "startLine": 210,
+        "startChar": 4,
+        "endLine": 263,
+        "endChar": 1
+      },
+      "revId": "0e44251cfcca63ce49cd60949f9c92c95f894793",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55d213f8_a5dcd3c1",
+        "filename": "src/gpu/graphite/StorageContext.h",
+        "patchSetId": 24
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-28T15:54:51Z",
+      "side": 1,
+      "message": "This is in a weird spot, maybe put this all below the `GradientCache` definition?",
+      "range": {
+        "startLine": 75,
+        "startChar": 0,
+        "endLine": 75,
+        "endChar": 8
+      },
+      "revId": "0e44251cfcca63ce49cd60949f9c92c95f894793",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a23aa3c5_07a85067",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 637,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-28T15:54:51Z",
+      "side": 1,
+      "message": "Do we want to have the storage texture get pushed into `sampledTextures()`, or does it make more sense to treat it like an intrinsic texture and bind it once alongside the dst copy?",
+      "range": {
+        "startLine": 637,
+        "startChar": 65,
+        "endLine": 637,
+        "endChar": 80
+      },
+      "revId": "0e44251cfcca63ce49cd60949f9c92c95f894793",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
