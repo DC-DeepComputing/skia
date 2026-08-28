@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3d926f5_d7510490",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-08-28T15:56:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "47a31724_bc8d4d13",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 33
+      },
+      "revId": "688a7ade144febed7002cf3aca4f4fb16a7a07cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "06519d99_775c3250",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3e7dbf4_9e83c9b9",
+        "filename": "src/core/SkBitmapDevice.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-08-28T15:56:18Z",
+      "side": 1,
+      "message": "I am not sure why this ctx is here. My guess is we can delete and come back to it later as you said",
+      "parentUuid": "06519d99_775c3250",
+      "range": {
+        "startLine": 138,
+        "startChar": 21,
+        "endLine": 138,
+        "endChar": 25
+      },
+      "revId": "688a7ade144febed7002cf3aca4f4fb16a7a07cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "706887d6_09000788",
@@ -60,6 +108,30 @@
       "writtenOn": "2026-08-25T16:34:54Z",
       "side": 1,
       "message": "Is this needed to be included in the header? Looks like most usages are just pointers so could we forward declare it?",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 32
+      },
+      "revId": "688a7ade144febed7002cf3aca4f4fb16a7a07cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b8c8682_9d84b0bd",
+        "filename": "src/core/SkBitmapDevice.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-08-28T15:56:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "706887d6_09000788",
       "range": {
         "startLine": 18,
         "startChar": 0,

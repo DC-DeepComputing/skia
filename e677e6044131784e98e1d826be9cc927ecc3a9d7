@@ -410,6 +410,30 @@
       },
       "revId": "e677e6044131784e98e1d826be9cc927ecc3a9d7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "49ffe693_33b85ece",
+        "filename": "src/image/SkSurface_Raster.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-08-28T15:56:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "77fca921_5a0bd2d6",
+      "range": {
+        "startLine": 72,
+        "startChar": 4,
+        "endLine": 72,
+        "endChar": 31
+      },
+      "revId": "e677e6044131784e98e1d826be9cc927ecc3a9d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
