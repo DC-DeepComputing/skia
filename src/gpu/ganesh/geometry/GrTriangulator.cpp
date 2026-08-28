@@ -546,8 +546,9 @@ void GrTriangulator::generateCubicPoints(const SkPoint& p0, const SkPoint& p1, c
 
 // Stage 1: convert the input path to a set of linear contours (linked list of Vertices).
 
-void GrTriangulator::pathToContours(float tolerance, const SkRect& clipBounds,
-                                    VertexList* contours, bool* isLinear) const {
+void GrTriangulator::pathToContours(const SkRect& clipBounds, VertexList* contours,
+                                    bool* isLinear) const {
+    float tolerance = fTolerance;
     SkScalar toleranceSqd = tolerance * tolerance;
     *isLinear = true;
     VertexList* contour = contours;
@@ -1328,7 +1329,10 @@ GrTriangulator::BoolFail GrTriangulator::checkForIntersection(
     if (left->intersect(*right, &p, &alpha) && p.isFinite()) {
         Vertex* v;
         TESS_LOG("found intersection, pt is %g, %g\n", p.fX, p.fY);
-        Vertex* top = *current;
+        // When edges intersect, rewind the sweep to left->fTop before continuing. Intersection math
+        // loses precision, so the split segment (leftTop->p) may cross edges already processed. An
+        // incorrect rewind point would corrupt the mesh topology.
+        Vertex* top = left->fTop;
         // If the intersection point is above the current vertex, rewind to the vertex above the
         // intersection.
         while (top && c.sweep_lt(p, top->fPoint)) {
@@ -1389,6 +1393,7 @@ void GrTriangulator::sanitizeContours(VertexList* contours, int contourCnt) cons
             }
             Vertex* next = v->fNext;
             Vertex* nextWrap = next ? next : contour->fHead;
+            Line line(prev->fPoint, nextWrap->fPoint);
             if (coincident(prev->fPoint, v->fPoint)) {
                 TESS_LOG("vertex %g,%g coincident; removing\n", v->fPoint.fX, v->fPoint.fY);
                 contour->remove(v);
@@ -1396,7 +1401,7 @@ void GrTriangulator::sanitizeContours(VertexList* contours, int contourCnt) cons
                 TESS_LOG("vertex %g,%g non-finite; removing\n", v->fPoint.fX, v->fPoint.fY);
                 contour->remove(v);
             } else if (!fPreserveCollinearVertices &&
-                       Line(prev->fPoint, nextWrap->fPoint).dist(v->fPoint) == 0.0) {
+                       std::abs(line.normalize().dist(v->fPoint)) < fTolerance) {
                 TESS_LOG("vertex %g,%g collinear; removing\n", v->fPoint.fX, v->fPoint.fY);
                 contour->remove(v);
             } else {
@@ -1865,7 +1870,7 @@ skgpu::VertexWriter GrTriangulator::polysToTriangles(Poly* polys,
     return data;
 }
 
-static int get_contour_count(const SkPath& path, SkScalar tolerance) {
+static int get_contour_count(const SkPath& path) {
     // We could theoretically be more aggressive about not counting empty contours, but we need to
     // actually match the exact number of contour linked lists the tessellator will create later on.
     int contourCnt = 1;
@@ -1897,9 +1902,8 @@ static int get_contour_count(const SkPath& path, SkScalar tolerance) {
     return contourCnt;
 }
 
-std::tuple<Poly*, bool> GrTriangulator::pathToPolys(float tolerance, const SkRect& clipBounds,
-                                                    bool* isLinear) {
-    int contourCnt = get_contour_count(fPath, tolerance);
+std::tuple<Poly*, bool> GrTriangulator::pathToPolys(const SkRect& clipBounds, bool* isLinear) {
+    int contourCnt = get_contour_count(fPath);
     if (contourCnt <= 0) {
         *isLinear = true;
         return { nullptr, true };
@@ -1910,7 +1914,7 @@ std::tuple<Poly*, bool> GrTriangulator::pathToPolys(float tolerance, const SkRec
     }
     std::unique_ptr<VertexList[]> contours(new VertexList[contourCnt]);
 
-    this->pathToContours(tolerance, clipBounds, contours.get(), isLinear);
+    this->pathToContours(clipBounds, contours.get(), isLinear);
     return this->contoursToPolys(contours.get(), contourCnt);
 }
 

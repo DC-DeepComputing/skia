@@ -43,13 +43,16 @@ public:
         }
         SkArenaAlloc alloc(kArenaDefaultChunkSize);
         GrTriangulator triangulator(path, &alloc);
-        auto [ polys, success ] = triangulator.pathToPolys(tolerance, clipBounds, isLinear);
+        triangulator.SetTolerance(tolerance);
+        auto [ polys, success ] = triangulator.pathToPolys(clipBounds, isLinear);
         if (!success) {
             return 0;
         }
         int count = triangulator.polysToTriangles(polys, vertexAllocator);
         return count;
     }
+
+    void SetTolerance(SkScalar tolerance) { fTolerance = tolerance; }
 
     // Enums used by GrTriangulator internals.
     enum class Side { kLeft, kRight };
@@ -72,8 +75,7 @@ protected:
     // There are six stages to the basic algorithm:
     //
     // 1) Linearize the path contours into piecewise linear segments:
-    void pathToContours(float tolerance, const SkRect& clipBounds, VertexList* contours,
-                        bool* isLinear) const;
+    void pathToContours(const SkRect& clipBounds, VertexList* contours, bool* isLinear) const;
 
     // 2) Build a mesh of edges connecting the vertices:
     void contoursToMesh(VertexList* contours, int contourCnt, VertexList* mesh,
@@ -195,8 +197,7 @@ protected:
     void buildEdges(VertexList* contours, int contourCnt, VertexList* mesh,
                     const Comparator&);
     std::tuple<Poly*, bool> contoursToPolys(VertexList* contours, int contourCnt);
-    std::tuple<Poly*, bool> pathToPolys(float tolerance, const SkRect& clipBounds,
-                      bool* isLinear);
+    std::tuple<Poly*, bool> pathToPolys(const SkRect& clipBounds, bool* isLinear);
     static int64_t CountPoints(Poly* polys, SkPathFillType overrideFillType);
     int polysToTriangles(Poly*, GrEagerVertexAllocator*) const;
 
@@ -207,6 +208,7 @@ protected:
     int fNumEdges = 0;
     // Track how deep of a stack we get from mergeCollinearEdges()
     mutable int fMergeCollinearStackCount = 0;
+    SkScalar fTolerance = 0;
 
     // Internal control knobs.
     bool fRoundVerticesToQuarterPixel = false;
@@ -370,15 +372,16 @@ struct GrTriangulator::Line {
     double dist(const SkPoint& p) const { return fA * p.fX + fB * p.fY + fC; }
     Line operator*(double v) const { return Line(fA * v, fB * v, fC * v); }
     double magSq() const { return fA * fA + fB * fB; }
-    void normalize() {
+    Line& normalize() {
         double len = sqrt(this->magSq());
         if (len == 0.0) {
-            return;
+            return *this;
         }
         double scale = 1.0f / len;
         fA *= scale;
         fB *= scale;
         fC *= scale;
+        return *this;
     }
 
     bool nearParallel(const Line& o) const {

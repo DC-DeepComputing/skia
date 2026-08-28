@@ -30,10 +30,11 @@ public:
                                  GrEagerVertexAllocator* vertexAllocator) {
         SkArenaAlloc alloc(kArenaDefaultChunkSize);
         GrAATriangulator aaTriangulator(path, &alloc);
+        aaTriangulator.SetTolerance(tolerance);
         aaTriangulator.fRoundVerticesToQuarterPixel = true;
         aaTriangulator.fEmitCoverage = true;
         bool isLinear;
-        auto [ polys, success ] = aaTriangulator.pathToPolys(tolerance, clipBounds, &isLinear);
+        auto [ polys, success ] = aaTriangulator.pathToPolys(clipBounds, &isLinear);
         if (!success) {
             return 0;
         }

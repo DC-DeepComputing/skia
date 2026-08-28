@@ -39,7 +39,7 @@ public:
     }
 
     Poly* pathToPolys(BreadcrumbTriangleList* breadcrumbList, bool* isLinear) {
-        auto [ polys, success ] = this->GrTriangulator::pathToPolys(0, SkRect::MakeEmpty(),
+        auto [ polys, success ] = this->GrTriangulator::pathToPolys(SkRect::MakeEmpty(),
                                                                     isLinear);
         if (!success) {
             return nullptr;
