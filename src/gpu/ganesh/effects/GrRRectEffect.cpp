@@ -169,7 +169,7 @@ private:
 };
 
 void CircularRRectEffect::Impl::emitCode(EmitArgs& args) {
-    const CircularRRectEffect& crre = args.fFp.cast<CircularRRectEffect>();
+    const CircularRRectEffect& crre = args.fFp->cast<CircularRRectEffect>();
     GrGLSLUniformHandler* uniformHandler = args.fUniformHandler;
     const char *rectName;
     const char *radiusPlusHalfName;
@@ -543,7 +543,7 @@ private:
 };
 
 void EllipticalRRectEffect::Impl::emitCode(EmitArgs& args) {
-    const EllipticalRRectEffect& erre = args.fFp.cast<EllipticalRRectEffect>();
+    const EllipticalRRectEffect& erre = args.fFp->cast<EllipticalRRectEffect>();
     GrGLSLUniformHandler* uniformHandler = args.fUniformHandler;
     const char *rectName;
     // The inner rect is the rrect bounds inset by the x/y radii

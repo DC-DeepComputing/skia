@@ -500,6 +500,18 @@ void GrVkResourceProvider::destroyResources() {
         taskGroup->wait();
     }
 
+    for (GrVkCommandPool* pool : fActiveCommandPools) {
+        SkASSERT(pool->unique());
+        pool->unref();
+    }
+    fActiveCommandPools.clear();
+
+    for (GrVkCommandPool* pool : fAvailableCommandPools) {
+        SkASSERT(pool->unique());
+        pool->unref();
+    }
+    fAvailableCommandPools.clear();
+
     // Release all msaa load pipelines
     fMSAALoadPipelines.clear();
 
@@ -525,18 +537,6 @@ void GrVkResourceProvider::destroyResources() {
 
     GR_VK_CALL(fGpu->vkInterface(), DestroyPipelineCache(fGpu->device(), fPipelineCache, nullptr));
     fPipelineCache = VK_NULL_HANDLE;
-
-    for (GrVkCommandPool* pool : fActiveCommandPools) {
-        SkASSERT(pool->unique());
-        pool->unref();
-    }
-    fActiveCommandPools.clear();
-
-    for (GrVkCommandPool* pool : fAvailableCommandPools) {
-        SkASSERT(pool->unique());
-        pool->unref();
-    }
-    fAvailableCommandPools.clear();
 
     // We must release/destroy all command buffers and pipeline states before releasing the
     // GrVkDescriptorSetManagers. Additionally, we must release all uniform buffers since they hold

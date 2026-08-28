@@ -26,7 +26,7 @@ std::unique_ptr<Expression> TernaryExpression::Convert(const Context& context,
                                                        std::unique_ptr<Expression> test,
                                                        std::unique_ptr<Expression> ifTrue,
                                                        std::unique_ptr<Expression> ifFalse) {
-    test = context.fTypes.fBool->coerceExpression(std::move(test), context);
+    test = context.fTypes->fBool->coerceExpression(std::move(test), context);
     if (!test || !ifTrue || !ifFalse) {
         return nullptr;
     }
