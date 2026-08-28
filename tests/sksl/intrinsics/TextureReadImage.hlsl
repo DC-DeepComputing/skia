@@ -1,4 +1,4 @@
-RWTexture2D<float4> t : register(u0, space0);
+Texture2D<float4> t : register(t0, space0);
 
 static float4 sk_FragColor;
 
@@ -9,7 +9,7 @@ struct SPIRV_Cross_Output
 
 void frag_main()
 {
-    sk_FragColor = t[uint2(0u, 0u)];
+    sk_FragColor = t.Load(int3(uint2(0u, 0u), 0));
 }
 
 SPIRV_Cross_Output main()

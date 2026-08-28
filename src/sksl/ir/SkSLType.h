@@ -375,7 +375,10 @@ public:
      * Returns true if this is a storage texture.
      */
     bool isStorageTexture() const {
-        return fTypeKind == TypeKind::kTexture && this->dimensions() != SpvDimSubpassData;
+        return fTypeKind == TypeKind::kTexture &&
+               this->dimensions() != SpvDimSubpassData &&
+               (this->textureAccess() == TextureAccess::kWrite ||
+                this->textureAccess() == TextureAccess::kReadWrite);
     }
 
     /**
