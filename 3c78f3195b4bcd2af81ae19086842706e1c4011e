@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef207cbd_85a478cf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-08-28T07:26:23Z",
+      "side": 1,
+      "message": "Hi Michael,\nCould you please take a look?",
+      "revId": "3c78f3195b4bcd2af81ae19086842706e1c4011e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fef0045d_c840e4f1",
+        "filename": "src/gpu/ganesh/vk/GrVkGpu.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-08-28T07:26:23Z",
+      "side": 1,
+      "message": "destroyResources() is only called during context shutdown/disconnect, so resetting it has not performance impact. Doing it upfront instead of during the destructor ensures child command buffers and framebuffers are destroyed before fResourceProvider.destroyResources() tears down the underlying pools, preventing internal pointers from temporarily dangling (which would otherwise require DanglingUntriaged annotations under MiraclePtr due to out-of-order destruction).",
+      "range": {
+        "startLine": 220,
+        "startChar": 0,
+        "endLine": 220,
+        "endChar": 33
+      },
+      "revId": "3c78f3195b4bcd2af81ae19086842706e1c4011e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2af838e0_2e9134b7",
+        "filename": "src/gpu/ganesh/vk/GrVkGpu.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-08-28T07:26:23Z",
+      "side": 1,
+      "message": "This is a backpointer inside fMainCmdPool. Since we are destroying `fMainCmdPool`, we should clear this pointer too to avoid potential UAF if it was used.\n\nThis avoids some `DanglingUntriaged`.",
+      "range": {
+        "startLine": 230,
+        "startChar": 8,
+        "endLine": 230,
+        "endChar": 33
+      },
+      "revId": "3c78f3195b4bcd2af81ae19086842706e1c4011e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
