@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "296de02f_2505a313",
+        "filename": "src/gpu/graphite/vk/VulkanComputePipeline.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-08-28T20:02:34Z",
+      "side": 1,
+      "message": "nit: line length",
+      "range": {
+        "startLine": 121,
+        "startChar": 20,
+        "endLine": 121,
+        "endChar": 103
+      },
+      "revId": "fa34dc2c182bbadbff6f668327e6d722c3730baf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bae5e610_f830c11e",
+        "filename": "src/gpu/graphite/vk/VulkanComputePipeline.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-08-28T20:02:34Z",
+      "side": 1,
+      "message": "nit: line length",
+      "range": {
+        "startLine": 152,
+        "startChar": 20,
+        "endLine": 152,
+        "endChar": 103
+      },
+      "revId": "fa34dc2c182bbadbff6f668327e6d722c3730baf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f00cfcf_05c0161c",
+        "filename": "src/gpu/graphite/vk/VulkanComputePipeline.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-08-28T20:02:34Z",
+      "side": 1,
+      "message": "nit: line length",
+      "range": {
+        "startLine": 189,
+        "startChar": 20,
+        "endLine": 189,
+        "endChar": 101
+      },
+      "revId": "fa34dc2c182bbadbff6f668327e6d722c3730baf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

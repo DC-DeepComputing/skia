@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4840067c_998cd875",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorPool.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-08-28T20:02:34Z",
+      "side": 1,
+      "message": "Might be worth renaming this to just `requestedDescriptors` since IMO this makes we think it is the count of each descriptor type we need but that is not the case anymore after your change since we are now culminating the counts we need.",
+      "range": {
+        "startLine": 17,
+        "startChar": 78,
+        "endLine": 17,
+        "endChar": 97
+      },
+      "revId": "36fb0a0a2589efb0c6edd0a48775b616a2c6b70f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a9e1bba_43452c49",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorPool.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-08-28T20:02:34Z",
+      "side": 1,
+      "message": "Now that we have 2 extra possible VkDescriptorTypes due to the dynamic/static uniform and ssbo types, maybe we could have a new vk specific constant to account for this?",
+      "range": {
+        "startLine": 33,
+        "startChar": 26,
+        "endLine": 33,
+        "endChar": 46
+      },
+      "revId": "36fb0a0a2589efb0c6edd0a48775b616a2c6b70f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9605b9df_0eda9830",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorPool.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-08-28T20:02:34Z",
+      "side": 1,
+      "message": "We should probably move/change this check to take into account the cumulative number of descriptors per type since we are now adding them up.",
+      "range": {
+        "startLine": 36,
+        "startChar": 12,
+        "endLine": 36,
+        "endChar": 41
+      },
+      "revId": "36fb0a0a2589efb0c6edd0a48775b616a2c6b70f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3d8dc2b_4aae8b94",
+        "filename": "src/gpu/graphite/vk/VulkanGraphiteUtils.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-08-28T20:02:34Z",
+      "side": 1,
+      "message": "Could we have a comment explaining why this number was picked? Assuming it\u0027s for compute steps bindings since they would have more than one binding per descriptor type (like multiple storage buffers).",
+      "range": {
+        "startLine": 87,
+        "startChar": 26,
+        "endLine": 87,
+        "endChar": 28
+      },
+      "revId": "36fb0a0a2589efb0c6edd0a48775b616a2c6b70f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d514f9b1_dd74b6f0",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-08-28T20:02:34Z",
+      "side": 1,
+      "message": "nit: line length",
+      "range": {
+        "startLine": 130,
+        "startChar": 0,
+        "endLine": 130,
+        "endChar": 103
+      },
+      "revId": "36fb0a0a2589efb0c6edd0a48775b616a2c6b70f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
