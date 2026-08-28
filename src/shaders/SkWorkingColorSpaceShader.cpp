@@ -46,7 +46,7 @@ sk_sp<SkShader> SkWorkingColorSpaceShader::Make(sk_sp<SkShader> shader,
 
 bool SkWorkingColorSpaceShader::appendStages(const SkStageRec& rec,
                                              const SkShaders::MatrixRec& mRec) const {
-    sk_sp<SkColorSpace> dstCS = sk_ref_sp(rec.fDstCS);
+    sk_sp<SkColorSpace> dstCS = sk_ref_sp(rec.fDstCS.get());
     if (!dstCS) {
         dstCS = SkColorSpace::MakeSRGB();
     }

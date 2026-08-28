@@ -65,6 +65,7 @@
 #include "src/core/SkStrikeSpec.h"
 #include "src/core/SkTLazy.h"
 #include "src/core/SkUTF.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/pdf/SkBitmapKey.h"
 #include "src/pdf/SkClusterator.h"
 #include "src/pdf/SkKeyedImage.h"
@@ -387,12 +388,12 @@ public:
     }
 
 private:
-    SkPDFDevice* fDevice = nullptr;
-    SkDynamicMemoryWStream* fContentStream = nullptr;
+    raw_ptr<SkPDFDevice> fDevice = nullptr;
+    raw_ptr<SkDynamicMemoryWStream> fContentStream = nullptr;
     SkBlendMode fBlendMode;
     SkPDFIndirectReference fDstFormXObject;
     SkPath fShape;
-    const SkClipStack* fClipStack;
+    raw_ptr<const SkClipStack> fClipStack;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -840,8 +841,8 @@ public:
     }
 
 private:
-    SkDynamicMemoryWStream* fContent;
-    SkPDFFont* fPDFFont = nullptr;
+    raw_ptr<SkDynamicMemoryWStream> fContent;
+    raw_ptr<SkPDFFont> fPDFFont = nullptr;
     SkPoint fCurrentMatrixOrigin;
     SkScalar fXAdvance = 0.0f;
     bool fViewersAgreeOnAdvancesInFont = true;
@@ -880,7 +881,7 @@ void SkPDFDevice::drawGlyphRunAsPath(
     struct Rec {
         SkPathBuilder fBuilder;
         SkPoint fOffset;
-        const SkPoint* fPos;
+        raw_ptr<const SkPoint, AllowPtrArithmetic> fPos;
     } rec = {{}, offset, glyphRun.positions().data()};
 
     font.getPaths(glyphRun.glyphsIDs(),

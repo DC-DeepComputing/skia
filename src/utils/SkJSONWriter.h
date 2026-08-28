@@ -6,7 +6,10 @@
  */
 
 #ifndef SkJSONWriter_DEFINED
+
 #define SkJSONWriter_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include "include/core/SkSerialProcs.h"
 #include "include/core/SkStream.h"
@@ -409,11 +412,11 @@ private:
         }
     }
 
-    char* fBlock;
-    char* fWrite;
-    char* fBlockEnd;
+    RAW_PTR_EXCLUSION char* fBlock;
+    RAW_PTR_EXCLUSION char* fWrite;
+    RAW_PTR_EXCLUSION char* fBlockEnd;
 
-    SkWStream* fStream;
+    raw_ptr<SkWStream> fStream;
     Mode fMode;
     State fState;
     skia_private::STArray<16, Scope, true> fScopeStack;

@@ -5,8 +5,13 @@
  * found in the LICENSE file.
  */
 
+#include "src/partition_alloc/raw_ref.h"
+
 #ifndef SkRasterClip_DEFINED
+
 #define SkRasterClip_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
@@ -133,14 +138,11 @@ private:
 
 class [[nodiscard]] SkAutoRasterClipValidate : SkNoncopyable {
 public:
-    SkAutoRasterClipValidate(const SkRasterClip& rc) : fRC(rc) {
-        fRC.validate();
-    }
-    ~SkAutoRasterClipValidate() {
-        fRC.validate();
-    }
+    SkAutoRasterClipValidate(const SkRasterClip& rc) : fRC(rc) { fRC->validate(); }
+    ~SkAutoRasterClipValidate() { fRC->validate(); }
+
 private:
-    const SkRasterClip& fRC;
+    const raw_ref<const SkRasterClip, DanglingUntriaged> fRC;
 };
 
 #ifdef SK_DEBUG
@@ -185,8 +187,8 @@ private:
     SkRegion        fBWRgn;
     SkAAClipBlitter fAABlitter;
     // what we return
-    const SkRegion* fClipRgn;
-    SkBlitter* fBlitter;
+    raw_ptr<const SkRegion, DanglingUntriaged> fClipRgn;
+    raw_ptr<SkBlitter, DanglingUntriaged> fBlitter;
 };
 
 #endif
