@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c4b37c75_74823a7c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-08-28T15:54:12Z",
+      "side": 1,
+      "message": "nit: I think that it might be worth it to clarify this isn\u0027t necessarily part of the SkCapture project, but it is an area of tech debt/maintenence we noticed while working on SkCapture. (i.e. this doesn\u0027t have to land for SkCapture to progress).",
+      "revId": "55511d22b2930675ce876b38f3475ec3e31da815",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "98a9a34e_26fa724f",
         "filename": "include/core/SkPicture.h",
         "patchSetId": 11
