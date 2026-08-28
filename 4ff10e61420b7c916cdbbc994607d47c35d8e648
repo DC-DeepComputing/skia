@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2c2fe11_c012f3cf",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 21
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-08-28T19:53:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "17f520a4_f4e1ac42",
+      "range": {
+        "startLine": 12,
+        "startChar": 54,
+        "endLine": 12,
+        "endChar": 62
+      },
+      "revId": "4ff10e61420b7c916cdbbc994607d47c35d8e648",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "38098d88_6e5f1bad",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-08-28T15:43:09Z",
       "side": 1,
       "message": "do you have any doc or reference for coming up with these filters? How did you derive these DAGs to correspond to the Skia filters?",
+      "range": {
+        "startLine": 489,
+        "startChar": 14,
+        "endLine": 490,
+        "endChar": 42
+      },
+      "revId": "4ff10e61420b7c916cdbbc994607d47c35d8e648",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b02d0df_4d8ae191",
+        "filename": "src/svg/SkSVGDevice.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 490,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-08-28T19:53:57Z",
+      "side": 1,
+      "message": "No doc beyond the SVG spec and existing `SkBlendMode` comments, but the solution space is quite constrained:\n\n  * `SkColorFilters::Blend` has two components: a color source, and a blend mode\n  * SVG\u0027s `feFlood` fits the bill for a color generator, which is always the first stage\n  * then there are exactly two SVG filter primitives that cover compositing/blending: `feComposite` and `feBlend`\n  * given Skia\u0027s supported blend modes (`SkBlendmode`), we want to support the maximal set representable in SVG\n  * so for each `SkBlendMode`, evaluate whether it matches one of the `feComposite` or `feBlend` operators, and use the corresponding SVG primitive for a second/blending stage\n  * some modes don\u0027t have a direct mapping but can be supported by swapping the inputs (`kDst*`)\n  * a couple of others can be expressed using `feComposite`\u0027s arithmetic K coefficients (`kPlus`, `kModulate`)\n  * then finally `kSrc` is special in that it completely overrides dst so it doesn\u0027t need a blending stage at all (plus there\u0027s no SVG blend/composite operator that would support it), so we skip the stage altogether\n  * orthogonally, there\u0027s the issue of SVG filter coverage: Skia\u0027s color filters are only applied to non-zero coverage (inside geometry, non-transparent pixels), but SVG filters (and also Skia `SkImageFilter`s) always apply to a well defined rectangular region.  So if the blend mode doesn\u0027t naturally mask out for transparent dst pixels, we can end up flooding the whole filter region.  To avoid that, add a third `feComposite` masking stage where the result is modulated against the input/geometry alpha, to emulate coverage semantics (`in` `SourceAlpha`).\n  * the three DAG forms listed in the description should cover all these combinations",
+      "parentUuid": "38098d88_6e5f1bad",
       "range": {
         "startLine": 489,
         "startChar": 14,
