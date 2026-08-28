@@ -187,7 +187,7 @@ std::optional<SkStrikePromise> SkStrikePromise::MakeFromBuffer(
     }
 
     sk_sp<SkStrike> strike = strikeCache->findStrike(*descriptor->getDesc());
-    SkASSERT(strike != nullptr);
+    // SkASSERT(strike != nullptr);
     if (!buffer.validate(strike != nullptr)) {
         return std::nullopt;
     }
