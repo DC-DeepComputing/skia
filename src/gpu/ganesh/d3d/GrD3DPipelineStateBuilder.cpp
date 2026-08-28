@@ -602,7 +602,7 @@ std::unique_ptr<GrD3DPipelineState> GrD3DPipelineStateBuilder::finalize() {
             }
             sk_sp<SkData> key =
                     SkData::MakeWithoutCopy(this->desc().asKey(), this->desc().initialKeyLength());
-            SkString description = GrProgramDesc::Describe(fProgramInfo, *this->caps());
+            SkString description = GrProgramDesc::Describe(*fProgramInfo, *this->caps());
             sk_sp<SkData> data = GrPersistentCacheUtils::PackCachedShaders(
                     cacheSkSL ? kSKSL_Tag : kHLSL_Tag, hlsl, intfs, kGrShaderTypeCount);
             persistentCache->store(*key, *data, description);
@@ -616,10 +616,15 @@ std::unique_ptr<GrD3DPipelineState> GrD3DPipelineStateBuilder::finalize() {
     }
 
     const GrD3DRenderTarget* rt = static_cast<const GrD3DRenderTarget*>(fRenderTarget);
-    gr_cp<ID3D12PipelineState> pipelineState = create_pipeline_state(
-            fGpu, fProgramInfo, rootSig, std::move(shaders[kVertex_GrShaderType]),
-            std::move(shaders[kFragment_GrShaderType]),
-            rt->dxgiFormat(), rt->stencilDxgiFormat(), rt->sampleQualityPattern());
+    gr_cp<ID3D12PipelineState> pipelineState =
+            create_pipeline_state(fGpu,
+                                  *fProgramInfo,
+                                  rootSig,
+                                  std::move(shaders[kVertex_GrShaderType]),
+                                  std::move(shaders[kFragment_GrShaderType]),
+                                  rt->dxgiFormat(),
+                                  rt->stencilDxgiFormat(),
+                                  rt->sampleQualityPattern());
     sk_sp<GrD3DPipeline> pipeline = GrD3DPipeline::Make(std::move(pipelineState));
     if (!pipeline) {
         return nullptr;

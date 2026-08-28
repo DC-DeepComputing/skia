@@ -8,6 +8,8 @@
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "src/core/SkTHash.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ref.h"
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLModule.h"
 #include "src/sksl/SkSLProgramSettings.h"
@@ -89,7 +91,7 @@ static bool eliminate_dead_local_variables(const Context& context,
                         // effects. ExpressionStatement::Make will preserve side effects, but
                         // replaces pure expressions with Nop.
                         fUsage->remove(stmt.get());
-                        stmt = ExpressionStatement::Make(fContext, std::move(varDecl.value()));
+                        stmt = ExpressionStatement::Make(*fContext, std::move(varDecl.value()));
                         fUsage->add(stmt.get());
                     } else {
                         // The variable has no initial-value and can be cleanly eliminated.
@@ -129,8 +131,8 @@ static bool eliminate_dead_local_variables(const Context& context,
         }
 
         bool fMadeChanges = false;
-        const Context& fContext;
-        ProgramUsage* fUsage;
+        const raw_ref<const Context> fContext;
+        raw_ptr<ProgramUsage> fUsage;
         THashSet<const Variable*> fDeadVariables;
         bool fAssignmentWasEliminated = false;
 
