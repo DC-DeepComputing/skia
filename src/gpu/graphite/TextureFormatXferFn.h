@@ -70,6 +70,41 @@ public:
              const void* src, size_t srcRowBytes,
              void* dst, size_t dstRowBytes) const;
 
+    bool usesRP() const { return SkToBool(fRP); }
+    bool usesXferOps() const { return fPreOps || fPostOps; }
+
+    uint8_t ops() const { return fPreOps | fPostOps; }
+
+    bool hasMixedBpp() const { return fRP && fRP->fSrcBpp != fRP->fDstBpp; }
+
+    bool computesLuminance() const { return fComputeLuminance; }
+
+    void dump() const {
+        if (this->isIdentity()) {
+            SkDebugf("identity transfer\n");
+            return;
+        }
+
+        if (fPreOps) {
+            SkDebugf("pre-ops: %u\n", fPreOps);
+        }
+        if (fRP) {
+            fRP->fRP.dump();
+        }
+        if (fPostOps) {
+            SkDebugf("post-ops: %u\n", fPostOps);
+        }
+    }
+
+    SkColorType srcCT() const {
+        SkASSERT(this->usesRP());
+        return fRP->fSrcCT;
+    }
+    SkColorType dstCT() const {
+        SkASSERT(this->usesRP());
+        return fRP->fDstCT;
+    }
+
 private:
     struct RPOps : public SkNVRefCnt<RPOps> {
         SkRasterPipelineContexts::MemoryCtx fSrcCtx{nullptr, 0};
@@ -81,8 +116,12 @@ private:
         const int fSrcBpp;
         const int fDstBpp;
 
+        SkColorType fSrcCT;
+        SkColorType fDstCT;
+
         template<typename... RPModifiers>
-        static sk_sp<RPOps> Make(SkColorType srcCT, SkColorType dstCT, RPModifiers...);
+        static sk_sp<RPOps> Make(SkColorType srcCT, SkColorType dstCT,
+                                 uint8_t* xferOps, RPModifiers...);
 
         // Returns true if RasterPipeline can process the whole 2D block via its strides
         bool setStrides(size_t srcRowBytes, size_t dstRowBytes, uint8_t otherOps);
@@ -91,11 +130,18 @@ private:
         RPOps(int srcBpp, int dstBpp) : fRP(&fArena), fSrcBpp(srcBpp), fDstBpp(dstBpp) {}
     };
 
+    // some weird formats that I don't know if they are worth optimizing
+    // G8 -> A8 creates a raster pipeline, but could just skip reading G entirely and force opaque
+    // A8 -> R8 creates a raster pipeline, but could just skip reading A and force the red channel to 0
+    // R8 -> A8 is the same category as G8 -> A8
+
     TextureFormatXferFn(TextureFormat format,
                         uint8_t preOps,
                         sk_sp<RPOps> rp,
-                        uint8_t postOps)
-            : fFormat(format), fPreOps(preOps), fRP(std::move(rp)), fPostOps(postOps) {
+                        uint8_t postOps,
+                        bool computesLuminance)
+            : fFormat(format), fPreOps(preOps), fRP(std::move(rp)), fPostOps(postOps)
+            , fComputeLuminance(computesLuminance) {
         // At least one direction should not add extra conversion operations
         SkASSERT(preOps == 0 || postOps == 0);
     }
@@ -111,6 +157,9 @@ private:
     uint8_t fPreOps;  // 1. Bit manipulations to convert raw data to src ct
     sk_sp<RPOps> fRP; // 2. Raster pipeline to convert to dst ct
     uint8_t fPostOps; // 3. Bit manipulations to convert dst ct to raw data
+
+    bool fComputeLuminance;
+
 };
 
 } // namespace skgpu::graphite

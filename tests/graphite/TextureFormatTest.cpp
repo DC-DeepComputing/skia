@@ -14,6 +14,7 @@
 #include "src/core/SkColorSpaceXformSteps.h"
 #include "src/core/SkFloatBits.h"
 #include "src/core/SkHalf.h"
+#include "src/core/SkImageInfoPriv.h"
 #include "src/core/SkRasterPipeline.h"
 #include "src/gpu/Swizzle.h"
 #include "src/gpu/graphite/Caps.h"
@@ -24,7 +25,7 @@
 #include "tools/ToolUtils.h"
 
 // Uncomment the SK_ABORT() to exit on first pixel mismatch to help debugging
-#define STOP_ON_TRANSFER_FAILURE // SK_ABORT();
+#define STOP_ON_TRANSFER_FAILURE SK_ABORT();
 
 namespace skgpu::graphite {
 
@@ -487,7 +488,8 @@ int channel_tolerance(SkSpan<const Channel> srcChannels, SkAlphaType srcAT,
 bool compare_pixels(SkSpan<const Channel> channels,
                     const PixelData& expected,
                     const PixelData& actual,
-                    int channelTolerance) {
+                    int channelTolerance,
+                    bool ignoreAlpha) {
     int bitOffset = 0;
     for (const Channel& c : channels) {
         uint32_t actualChannelBits = 0;
@@ -498,7 +500,7 @@ bool compare_pixels(SkSpan<const Channel> channels,
 
         int64_t channelDiff = static_cast<int64_t>(actualChannelBits) -
                               static_cast<int64_t>(expectedChannelBits);
-        if (c.fType != Pad && std::abs(channelDiff) > channelTolerance) {
+        if (c.fType != Pad && !(c.fName == 'a' && ignoreAlpha) && std::abs(channelDiff) > channelTolerance) {
             return false;
         }
     }
@@ -962,12 +964,98 @@ static const FormatExpectation kExpectations[] {
      .fCompatibleColorTypes={}},
 };
 
+static int gIdentityFns = 0;
+static int gRPOnlyFns = 0;
+static int gXferOpOnlyFns = 0;
+static int gMixedFns = 0;
+
+// static int dumpCount = 0;
+// static const int kDumpWhen = 0;
+
+static bool okRPUse(const TextureFormatXferFn& xferFn, bool hasCS) {
+    // Colorspace conversions, computing luminance values, and changing bit representations are
+    // the valid reasons to use RP.
+    if (!xferFn.usesRP()) {
+        return true; // no use is good use
+    }
+    if (hasCS || xferFn.hasMixedBpp() || xferFn.computesLuminance()) {
+        return true;
+    }
+    // Here we have src and dst colors that share the same bpp but are allowed
+    SkColorType s = xferFn.srcCT();
+    SkColorType d = xferFn.dstCT();
+
+    if (SkColorTypeMaxBitsPerChannel(s) != SkColorTypeMaxBitsPerChannel(d)) {
+        return true;
+    }
+
+#define GOOD_PAIR(S, D) if ((s == S && d == D) || (s == D && d == S)) { return true; }
+
+    GOOD_PAIR(kA16_float_SkColorType, kA16_unorm_SkColorType)
+    GOOD_PAIR(kR16_float_SkColorType, kR16_unorm_SkColorType)
+    GOOD_PAIR(kR16G16_float_SkColorType, kR16G16_unorm_SkColorType)
+    GOOD_PAIR(kRGBA_F16_SkColorType, kR16G16B16A16_unorm_SkColorType)
+    GOOD_PAIR(kRGBA_8888_SkColorType, kSRGBA_8888_SkColorType)
+    GOOD_PAIR(kRGBA_1010102_SkColorType, kBGR_101010x_XR_SkColorType)
+    GOOD_PAIR(kBGRA_1010102_SkColorType, kBGR_101010x_XR_SkColorType)
+    GOOD_PAIR(kRGBA_10x6_SkColorType, kBGRA_10101010_XR_SkColorType)
+    return false;
+}
+
+static bool okMixedOps(uint8_t ops) {
+    // the only ops that are allowed are the kDropAlpha/kPadAlpha since they have no equivalent
+    // action in raster pipeline so it forces mixed use.
+    static const uint8_t kDropAlpha = 1;
+    static const uint8_t kPadAlpha = 2;
+    return ops == kDropAlpha || ops == kPadAlpha;
+}
+
+static void collect_stats(const TextureFormatXferFn& xferFn, bool hasCS) {
+    if (xferFn.usesXferOps() && xferFn.usesRP()) {
+        gMixedFns++;
+        if (!okRPUse(xferFn, hasCS) || !okMixedOps(xferFn.ops())) {
+            // xferFn.dump();
+            // SkASSERT(false);
+        }
+    } else if (xferFn.usesXferOps()) {
+        gXferOpOnlyFns++;
+    } else if (xferFn.usesRP()) {
+        gRPOnlyFns++;
+        if (!okRPUse(xferFn, hasCS)) {
+            // xferFn.dump();
+            // SkASSERT(false);
+        }
+    } else {
+        gIdentityFns++;
+    }
+}
+
+static void dump_stats() {
+    SkDebugf("Identity = %d, RP-only = %d, Xfer-only = %d, Mixed = %d\n", gIdentityFns, gRPOnlyFns, gXferOpOnlyFns, gMixedFns);
+    gIdentityFns = 0;
+    gRPOnlyFns = 0;
+    gXferOpOnlyFns = 0;
+    gMixedFns = 0;
+}
+
+// Match convention used with WrapTexture, where unknown alpha is forced to opaque via swizzle
+Swizzle adjust_swizzle_for_alphatype(Swizzle readSwizzle, SkAlphaType at) {
+    return Swizzle::Concat(readSwizzle, Swizzle::RGB1());
+}
+
 void test_format_transfers(skiatest::Reporter* r,
                            const FormatExpectation& textureFormat,
                            const ColorTypeExpectation& textureCT,
                            SkAlphaType srcAT,
                            SkAlphaType dstAT,
                            bool applyCS) {
+    // if (textureFormat.fFormat != TextureFormat::kARGB4) {
+    //     return;
+    // }
+    // if (textureCT.fColorType != kARGB_4444_SkColorType) {
+    //     return;
+    // }
+
     // When transferring to CPU->GPU, we want to apply the textureCT's write swizzle, but if that
     // is undefined because rendering is disabled, switch to RGB1. This is applicable for the
     // RGBx cases and for gray (alongside adjusting the texture channel to produce 'G').
@@ -979,6 +1067,15 @@ void test_format_transfers(skiatest::Reporter* r,
         SkASSERT(expectedTextureChannels.size() == 1 && expectedTextureChannels[0].fName == 'r');
         expectedTextureChannels[0].fName = 'G';
     }
+    // Relax the alpha channel to be 'x' if the color type doesn't use it.
+    // if (SkColorTypeChannelFlags(textureCT.fColorType) == kRGB_SkColorChannelFlags &&
+    //     expectedTextureChannels.size() == 4) {
+    //     if (expectedTextureChannels[0].fName == 'a') {
+    //         expectedTextureChannels[0].fName = 'x';
+    //     } else if (expectedTextureChannels[3].fName == 'a') {
+    //         expectedTextureChannels[3].fName = 'x';
+    //     }
+    // }
 
     // This colorspace is constructed to have a linear gamma curve and an identity gamut transform
     // so that any operations that it applies are just multiplies by 0 or 1. Anything else adds
@@ -997,10 +1094,11 @@ void test_format_transfers(skiatest::Reporter* r,
                 TextureFormatXferFn::MakeCpuToGpu(src.fColorType,
                                                   csSteps,
                                                   textureFormat.fFormat,
-                                                  textureCT.fReadSwizzle);
+                                                  adjust_swizzle_for_alphatype(textureCT.fReadSwizzle, dstAT));
         REPORTER_ASSERT(r, textureFormat.fXferSwizzle.has_value() == xferFn.has_value());
 
         if (textureFormat.fXferSwizzle.has_value() && xferFn.has_value()) {
+            collect_stats(*xferFn, SkToBool(csSteps));
             auto [cpuPixel, cpuPixelBits] = gen_pixel_data(src.fChannels, Swizzle::RGBA(), srcAT);
 
             // The expected GPU value is formed by applying the source colortype's effective
@@ -1023,7 +1121,8 @@ void test_format_transfers(skiatest::Reporter* r,
 
             const int tol = channel_tolerance(src.fChannels, srcAT,
                                               expectedTextureChannels, dstAT);
-            if (!compare_pixels(textureFormat.fChannels, expectedGpuPixel, actualGpuPixel, tol)) {
+            if (!compare_pixels(expectedTextureChannels, expectedGpuPixel, actualGpuPixel, tol,
+                                /*ignoreAlpha=*/textureCT.fReadSwizzle[3] == '1' || dstAT == kUnknown_SkAlphaType)) {
                 SkString ctLabel = SkStringPrintf("CPU colortype %s",
                                                   ToolUtils::colortype_name(src.fColorType));
                 dump_pixel_comparison(ctLabel,
@@ -1033,6 +1132,7 @@ void test_format_transfers(skiatest::Reporter* r,
                                       textureFormat.fChannels,
                                       expectedGpuPixel,
                                       actualGpuPixel);
+                xferFn->dump();
                 REPORTER_ASSERT(r, false,  "Pixel mismatch uploading from %s, alpha %s -> %s%s",
                                 ctLabel.c_str(),
                                 ToolUtils::alphatype_name(srcAT),
@@ -1047,12 +1147,13 @@ void test_format_transfers(skiatest::Reporter* r,
     for (const ColorTypeChannels& dst : kColorTypeChannels) {
         std::optional<TextureFormatXferFn> xferFn =
                 TextureFormatXferFn::MakeGpuToCpu(textureFormat.fFormat,
-                                                  textureCT.fReadSwizzle,
+                                                  adjust_swizzle_for_alphatype(textureCT.fReadSwizzle, srcAT),
                                                   csSteps,
                                                   dst.fColorType);
         REPORTER_ASSERT(r, textureFormat.fXferSwizzle.has_value() == xferFn.has_value());
 
         if (textureFormat.fXferSwizzle.has_value() && xferFn.has_value()) {
+            collect_stats(*xferFn, SkToBool(csSteps));
             auto [gpuPixel, gpuPixelBits] = gen_pixel_data(expectedTextureChannels,
                                                            textureCT.fReadSwizzle,
                                                            srcAT);
@@ -1075,7 +1176,8 @@ void test_format_transfers(skiatest::Reporter* r,
 
             const int tol = channel_tolerance(expectedTextureChannels, srcAT,
                                               dst.fChannels, dstAT);
-            if (!compare_pixels(dst.fChannels, expectedCpuPixel, actualCpuPixel, tol)) {
+            if (!compare_pixels(dst.fChannels, expectedCpuPixel, actualCpuPixel, tol, dstAT == kUnknown_SkAlphaType)) {
+                                // !(SkColorTypeChannelFlags(dst.fColorType) & kAlpha_SkColorChannelFlag))) {
                 SkString ctLabel = SkStringPrintf("CPU colortype %s",
                                                   ToolUtils::colortype_name(dst.fColorType));
 
@@ -1086,6 +1188,7 @@ void test_format_transfers(skiatest::Reporter* r,
                                       dst.fChannels,
                                       expectedCpuPixel,
                                       actualCpuPixel);
+                xferFn->dump();
                 REPORTER_ASSERT(r, false,  "Pixel mismatch reading back to %s, alpha %s -> %s%s",
                                 ctLabel.c_str(),
                                 ToolUtils::alphatype_name(srcAT),
@@ -1203,6 +1306,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(TextureFormatTest, r, ctx, CtsEnforcement::kA
     for (int i = 0; i < kTextureFormatCount; ++i) {
         run_texture_format_test(r, ctx->priv().caps(), static_cast<TextureFormat>(i));
     }
+    dump_stats();
 }
 
 } // namespace skgpu::graphite
