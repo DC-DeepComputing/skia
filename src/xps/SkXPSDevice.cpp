@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 
+#include "src/xps/SkXPSDevice.h"
+
 #include "include/core/SkTypes.h"
 #if defined(SK_BUILD_FOR_WIN)
 
@@ -58,7 +60,6 @@
 #include "src/utils/win/SkHRESULT.h"
 #include "src/utils/win/SkIStream.h"
 #include "src/utils/win/SkTScopedComPtr.h"
-#include "src/xps/SkXPSDevice.h"
 
 using namespace skia_private;
 
@@ -443,7 +444,16 @@ bool SkXPSDevice::endPortfolio() {
         HRBM(this->fPackageWriter->Close(), "Could not close writer.");
     }
 
+    this->cleanup();
+
     return true;
+}
+
+void SkXPSDevice::cleanup() {
+    fPackageWriter.reset();
+    fOutputStream.reset();
+    fCurrentXpsCanvas.reset();
+    fXpsFactory.reset();
 }
 
 static XPS_COLOR xps_color(const SkColor4f skColor) {

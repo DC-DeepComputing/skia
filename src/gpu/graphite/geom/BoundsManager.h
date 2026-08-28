@@ -6,7 +6,10 @@
  */
 
 #ifndef skgpu_graphite_geom_BoundsManager_DEFINED
+
 #define skgpu_graphite_geom_BoundsManager_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
@@ -297,8 +300,7 @@ private:
     // outlives fCurrentManager on destruction (since fCurrentManager can point to
     // fBruteForceManager).
     BruteForceBoundsManager                  fBruteForceManager;
-
-    BoundsManager* fCurrentManager;
+    raw_ptr<BoundsManager> fCurrentManager;
 
     // The grid manager starts out null and is created the first time we exceed fMaxBruteForceN.
     // However, even if we reset back to the brute force manager, we keep the grid around under the

@@ -6,7 +6,10 @@
  */
 
 #ifndef SkReadBuffer_DEFINED
+
 #define SkReadBuffer_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkColor.h"
 #include "include/core/SkColorFilter.h"
@@ -267,10 +270,10 @@ private:
 
     int fVersion = 0;
 
-    sk_sp<SkTypeface>* fTFArray = nullptr;
+    raw_ptr<sk_sp<SkTypeface>, AllowPtrArithmetic> fTFArray = nullptr;
     int                fTFCount = 0;
 
-    SkFlattenable::Factory* fFactoryArray = nullptr;
+    raw_ptr<SkFlattenable::Factory, AllowPtrArithmetic> fFactoryArray = nullptr;
     int                     fFactoryCount = 0;
 
     SkDeserialProcs fProcs;

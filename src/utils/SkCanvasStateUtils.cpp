@@ -20,6 +20,7 @@
 #include "include/private/SkMalloc.h"
 #include "src/core/SkDevice.h"
 #include "src/core/SkWriter32.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/partition_alloc/raw_ptr_exclusion.h"
 #include "src/utils/SkCanvasStack.h"
 

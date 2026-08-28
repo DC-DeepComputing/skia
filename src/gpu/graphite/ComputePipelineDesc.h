@@ -5,7 +5,10 @@
  * found in the LICENSE file.
  */
 #ifndef skgpu_graphite_ComputePipelineDesc_DEFINED
+
 #define skgpu_graphite_ComputePipelineDesc_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "src/gpu/graphite/compute/ComputeStep.h"
 
@@ -30,7 +33,7 @@ public:
     uint32_t uniqueID() const { return fComputeStep->uniqueID(); }
 
 private:
-    const ComputeStep* fComputeStep;
+    raw_ptr<const ComputeStep> fComputeStep;
 };
 
 }  // namespace skgpu::graphite
