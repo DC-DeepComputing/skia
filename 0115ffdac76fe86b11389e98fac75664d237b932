@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "35ec59f8_c06c7a88",
+        "filename": "src/core/SkPicturePriv.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-08-28T15:17:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6d1f0d24_a3d38d6f",
+      "range": {
+        "startLine": 31,
+        "startChar": 52,
+        "endLine": 31,
+        "endChar": 60
+      },
+      "revId": "0115ffdac76fe86b11389e98fac75664d237b932",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8f4a7698_160e8079",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "685a23b2_2daeb005",
+        "filename": "src/core/SkPicturePriv.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-08-28T15:17:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8f4a7698_160e8079",
+      "range": {
+        "startLine": 42,
+        "startChar": 28,
+        "endLine": 42,
+        "endChar": 39
+      },
+      "revId": "0115ffdac76fe86b11389e98fac75664d237b932",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b87180c7_43782eb8",
@@ -60,6 +108,30 @@
       "writtenOn": "2026-08-27T13:28:36Z",
       "side": 1,
       "message": "Since we now have the factories, I would just have this call the above factory and remove the extra ctor in SkPicture.h",
+      "range": {
+        "startLine": 43,
+        "startChar": 8,
+        "endLine": 43,
+        "endChar": 53
+      },
+      "revId": "0115ffdac76fe86b11389e98fac75664d237b932",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "231df8a5_8d4b8614",
+        "filename": "src/core/SkPicturePriv.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-08-28T15:17:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b87180c7_43782eb8",
       "range": {
         "startLine": 43,
         "startChar": 8,
