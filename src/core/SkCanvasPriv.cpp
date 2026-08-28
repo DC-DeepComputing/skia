@@ -213,6 +213,7 @@ AutoLayerForImageFilter::~AutoLayerForImageFilter() {
     }
     // Negative save count occurs when this layer was moved.
     SkASSERT(fSaveCount < 0 || fCanvas->getSaveCount() == fSaveCount);
+    fCanvas = nullptr;
 }
 
 AutoLayerForImageFilter::AutoLayerForImageFilter(AutoLayerForImageFilter&& other) {
