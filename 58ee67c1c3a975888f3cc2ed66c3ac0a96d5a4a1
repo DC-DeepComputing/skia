@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d6fbbce_c92cd00d",
+        "filename": "src/core/SkPicture.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 387,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-08-28T19:53:38Z",
+      "side": 1,
+      "message": "Documenting a suggestion for a possible follow up since it will actually be a behavior change. So we should land this CL first then consider the following follow on change.\n\nNow that we\u0027ve moved everything into a single SkPicture class, the indices store on DrawDrawable directly map 1:1 with the indices into fDrawablePicts. Thus we can actually safely recurse of those too to get amore accurate count of ops. To do that we\u0027d add the following override here:\n```\n    void operator()(const SkRecords::DrawDrawable\u0026 op) {\n        if (fDrawablePicts \u0026\u0026 op.index \u003e\u003d 0 \u0026\u0026 op.index \u003c fDrawablePicts-\u003ecount()) {\n            fCount +\u003d fDrawablePicts-\u003ebegin()[op.index]-\u003eapproximateOpCount(true);\n        } else {\n            fCount +\u003d 1;\n        }\n    }\n```\n\nWe\u0027d also need to store `const SkSnapshotArray* fDrawablePicts;` on this class and initialize it approximateOpCount with: `NestedApproxOpCounter visitor(fDrawablePicts.get());`",
+      "range": {
+        "startLine": 387,
+        "startChar": 7,
+        "endLine": 387,
+        "endChar": 28
+      },
+      "revId": "58ee67c1c3a975888f3cc2ed66c3ac0a96d5a4a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
