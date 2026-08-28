@@ -296,7 +296,7 @@ bool VarDeclaration::ErrorCheckAndCoerce(const Context& context,
                                          const Variable& var,
                                          const Type* baseType,
                                          std::unique_ptr<Expression>& value) {
-    if (baseType->matches(*context.fTypes.fInvalid)) {
+    if (baseType->matches(*context.fTypes->fInvalid)) {
         context.fErrors->error(var.fPosition, "invalid type");
         return false;
     }
@@ -421,7 +421,7 @@ std::unique_ptr<VarDeclaration> VarDeclaration::Convert(const Context& context,
 
         // `sk_RTAdjust` is special, and makes the IR generator emit position-fixup expressions.
         if (var->name() == Compiler::RTADJUST_NAME) {
-            if (!var->type().matches(*context.fTypes.fFloat4)) {
+            if (!var->type().matches(*context.fTypes->fFloat4)) {
                 context.fErrors->error(var->fPosition, "sk_RTAdjust must have type 'float4'");
                 return nullptr;
             }

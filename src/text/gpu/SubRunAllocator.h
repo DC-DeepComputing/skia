@@ -6,7 +6,10 @@
  */
 
 #ifndef sktext_gpu_SubRunAllocator_DEFINED
+
 #define sktext_gpu_SubRunAllocator_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkSpan.h"
 #include "include/private/SkAssert.h"
@@ -148,8 +151,8 @@ private:
     struct Block {
         Block(char* previous, char* startOfBlock);
         // The start of the originally allocated bytes. This is the thing that must be deleted.
-        char* const fBlockStart;
-        Block* const fPrevious;
+        const raw_ptr<char> fBlockStart;
+        const raw_ptr<Block> fPrevious;
     };
 
     // Note: fCapacity is the number of bytes remaining, and is subtracted from fEndByte to
@@ -177,7 +180,7 @@ private:
     // of this pointer are the bytes to be allocated. The positive side points to the Block for
     // this memory. In other words, the pointer to the Block structure for these bytes is
     // reinterpret_cast<Block*>(fEndByte).
-    char* fEndByte{nullptr};
+    raw_ptr<char, AllowPtrArithmetic | DanglingUntriaged> fEndByte{nullptr};
 
     // The number of bytes remaining in this block.
     int fCapacity{0};

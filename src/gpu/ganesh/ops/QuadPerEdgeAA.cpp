@@ -686,7 +686,7 @@ public:
             void onEmitCode(EmitArgs& args, GrGPArgs* gpArgs) override {
                 using Interpolation = GrGLSLVaryingHandler::Interpolation;
 
-                const auto& gp = args.fGeomProc.cast<QuadPerEdgeAAGeometryProcessor>();
+                const auto& gp = args.fGeomProc->cast<QuadPerEdgeAAGeometryProcessor>();
                 fTextureColorSpaceXformHelper.emitCode(args.fUniformHandler,
                                                        gp.fTextureColorSpaceXform.get());
 

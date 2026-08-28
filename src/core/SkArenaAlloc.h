@@ -6,7 +6,9 @@
  */
 
 #ifndef SkArenaAlloc_DEFINED
+
 #define SkArenaAlloc_DEFINED
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include "include/core/SkSpan.h"
 #include "include/private/SkASAN.h"
@@ -312,9 +314,9 @@ private:
         return (T*)objStart;
     }
 
-    char*          fDtorCursor;
-    char*          fCursor;
-    char*          fEnd;
+    RAW_PTR_EXCLUSION char* fDtorCursor;
+    RAW_PTR_EXCLUSION char* fCursor;
+    RAW_PTR_EXCLUSION char* fEnd;
 
     SkFibBlockSizes<std::numeric_limits<uint32_t>::max()> fFibonacciProgression;
 };
@@ -333,7 +335,7 @@ public:
     bool isEmpty();
 
 private:
-    char* const    fFirstBlock;
+    RAW_PTR_EXCLUSION char* fFirstBlock;
     const uint32_t fFirstSize;
     const uint32_t fFirstHeapAllocationSize;
 };
