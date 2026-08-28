@@ -236,7 +236,8 @@ void VarDeclaration::ErrorCheck(const Context& context,
 
     // Pixel format modifiers are required on storage textures, and forbidden on other types.
     if (baseType->isStorageTexture()) {
-        if (!(layout.fFlags & LayoutFlag::kAllPixelFormats)) {
+        if (baseType->textureAccess() != Type::TextureAccess::kRead &&
+            !(layout.fFlags & LayoutFlag::kAllPixelFormats)) {
             context.fErrors->error(pos, "storage textures must declare a pixel format");
         }
     } else {
