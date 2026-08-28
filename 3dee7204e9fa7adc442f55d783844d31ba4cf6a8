@@ -33,6 +33,52 @@
       "message": "Michael, could you please take another look?",
       "revId": "3dee7204e9fa7adc442f55d783844d31ba4cf6a8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c23388d_7957b781",
+        "filename": "src/core/SkBlurMaskFilterImpl.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-28T14:17:51Z",
+      "side": 1,
+      "message": "Sorry, I think we need to keep pushing this down the stack. `SkResourceCache::newCachedData` and its static version should be returning `sk_sp` as well instead of a bare pointer with an implicitly held ref.\n\nThen this can simply be assignment to `data \u003d cache ? cache-\u003enewCachedData(size) : SkResourceCache::NewCachedData(size);`",
+      "range": {
+        "startLine": 210,
+        "startChar": 26,
+        "endLine": 210,
+        "endChar": 39
+      },
+      "revId": "3dee7204e9fa7adc442f55d783844d31ba4cf6a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a501812_0c14f451",
+        "filename": "src/core/SkMaskCache.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-08-28T14:17:51Z",
+      "side": 1,
+      "message": "These should also be taking in an sk_sp, although when it\u0027s passed down into `RRectBlurRec`, it\u0027ll switch to holding the bare pointer to use the special internal ref/unref functions.",
+      "range": {
+        "startLine": 46,
+        "startChar": 62,
+        "endLine": 46,
+        "endChar": 81
+      },
+      "revId": "3dee7204e9fa7adc442f55d783844d31ba4cf6a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
