@@ -44,7 +44,11 @@ GrMemoryPool::~GrMemoryPool() {
     this->reportLeaks();
     SkASSERT(0 == fDebug->fAllocationCount);
     SkASSERT(this->isEmpty());
-    SkDEBUGCODE(delete fDebug;)
+#ifdef SK_DEBUG
+    Debug* toDelete = fDebug;
+    fDebug = nullptr;
+    delete toDelete;
+#endif
 }
 
 void GrMemoryPool::reportLeaks() const {
