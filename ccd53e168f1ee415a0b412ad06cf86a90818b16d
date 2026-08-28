@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "acda4b95_87dd4ac0",
+        "filename": "include/core/SkPicture.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-08-28T18:24:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "deb7f110_109da095",
+      "range": {
+        "startLine": 221,
+        "startChar": 28,
+        "endLine": 221,
+        "endChar": 32
+      },
+      "revId": "ccd53e168f1ee415a0b412ad06cf86a90818b16d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3664bf5c_5985ec24",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-08-28T15:48:25Z",
       "side": 1,
       "message": "This needs to return a valid Record that empty. If you pass in nullptr here for the Record then it will be treated as a placeholder picture which is different from empty.",
+      "range": {
+        "startLine": 356,
+        "startChar": 59,
+        "endLine": 356,
+        "endChar": 66
+      },
+      "revId": "ccd53e168f1ee415a0b412ad06cf86a90818b16d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "af73a094_62b9f9b8",
+        "filename": "src/core/SkPicture.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 356,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-08-28T18:24:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3664bf5c_5985ec24",
       "range": {
         "startLine": 356,
         "startChar": 59,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d6c5b01_dfd68ab6",
+        "filename": "src/core/SkPicture.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 424,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-08-28T18:24:01Z",
+      "side": 1,
+      "message": "you\u0027re right, my mistake",
+      "parentUuid": "3f67969e_9eb48f04",
+      "range": {
+        "startLine": 424,
+        "startChar": 43,
+        "endLine": 424,
+        "endChar": 54
+      },
+      "revId": "ccd53e168f1ee415a0b412ad06cf86a90818b16d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "46f2aed8_13a11bc2",
@@ -83,6 +155,30 @@
       "writtenOn": "2026-08-28T15:48:25Z",
       "side": 1,
       "message": "Reading through the code, I\u0027m pretty sure how things are structured right now fPics[i] is never going to be null. However, there aren\u0027t really any explicit checks on that, and nothing that stops someone from having makePictureSnapshot return nullptr in the future.\n\nI think it is probably safer to check in newDrawableSnapshot that all returned pics are not null and return null if one is. Then in SkSnapshotArray we can add an assert that all fPics are non null.",
+      "range": {
+        "startLine": 211,
+        "startChar": 12,
+        "endLine": 211,
+        "endChar": 17
+      },
+      "revId": "ccd53e168f1ee415a0b412ad06cf86a90818b16d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "33afc2d3_24ab7d61",
+        "filename": "src/core/SkPicturePriv.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-08-28T18:24:01Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "46f2aed8_13a11bc2",
       "range": {
         "startLine": 211,
         "startChar": 12,
