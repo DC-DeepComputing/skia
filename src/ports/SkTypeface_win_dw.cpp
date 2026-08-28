@@ -1,4 +1,8 @@
 /*
+#include "src/ports/SkTypeface_win_dw.h"
+
+#include "src/partition_alloc/raw_ptr.h"
+
  * Copyright 2014 Google Inc.
  *
  * Use of this source code is governed by a BSD-style license that can be
@@ -24,7 +28,6 @@
 #include "src/core/SkFontStream.h"
 #include "src/core/SkScalerContext.h"
 #include "src/ports/SkScalerContext_win_dw.h"
-#include "src/ports/SkTypeface_win_dw.h"
 #include "src/sfnt/SkOTTable_OS_2.h"
 #include "src/sfnt/SkOTTable_fvar.h"
 #include "src/sfnt/SkOTTable_head.h"
@@ -587,7 +590,7 @@ sk_sp<SkData> DWriteFontTypeface::onCopyTableData(SkFontTableTag tag) const {
     struct Context {
         Context(void* lock, IDWriteFontFace* face) : fLock(lock), fFontFace(SkRefComPtr(face)) {}
         ~Context() { fFontFace->ReleaseFontTable(fLock); }
-        void* fLock;
+        raw_ptr<void> fLock;
         SkTScopedComPtr<IDWriteFontFace> fFontFace;
     };
     return SkData::MakeWithProc(data, size,
@@ -1149,8 +1152,8 @@ private:
         return factory->UnregisterFontCollectionLoader(unregister);
     }
 
-    IDWriteFactory* fFactory;
-    T* fUnregister;
+    raw_ptr<IDWriteFactory> fFactory;
+    raw_ptr<T> fUnregister;
 };
 
 SK_STDMETHODIMP StreamFontCollectionLoader::CreateEnumeratorFromKey(

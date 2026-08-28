@@ -5,7 +5,10 @@
  * found in the LICENSE file.
  */
 #ifndef GrGLOpsRenderPass_DEFINED
+
 #define GrGLOpsRenderPass_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
@@ -100,7 +103,7 @@ private:
     void onClear(const GrScissorState& scissor, std::array<float, 4> color) override;
     void onClearStencilClip(const GrScissorState& scissor, bool insideStencilMask) override;
 
-    GrGLGpu* const fGpu;
+    const raw_ptr<GrGLGpu> fGpu;
 
     bool fUseMultisampleFBO;
     SkIRect fContentBounds;
@@ -109,11 +112,11 @@ private:
 
     // Per-pipeline state.
     GrPrimitiveType fPrimitiveType;
-    GrGLAttribArrayState* fAttribArrayState = nullptr;
+    raw_ptr<GrGLAttribArrayState> fAttribArrayState = nullptr;
 
     // If using an index buffer, this gets set during onBindBuffers. It is either the CPU address of
     // the indices, or nullptr if they reside physically in GPU memory.
-    const uint16_t* fIndexPointer;
+    raw_ptr<const uint16_t, AllowPtrArithmetic> fIndexPointer;
 
     // This tracks whether or not we bound the respective buffers during the bindBuffers call.
     SkDEBUGCODE(bool fDidBindVertexBuffer = false;)
