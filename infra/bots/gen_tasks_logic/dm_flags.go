@@ -483,6 +483,10 @@ func (b *TaskBuilder) dmFlags(internalHardwareLabel string) {
 
 				configs = []string{baseConfig}
 
+				if b.MatchOs("Ubuntu26.04") {
+					args = append(args, "--gpuThreads", "0")
+				}
+
 				if b.ExtraConfig("FakeWGPU") {
 					args = append(args, "--neverYieldToWebGPU")
 					args = append(args, "--useWGPUTextureView")
@@ -549,6 +553,30 @@ func (b *TaskBuilder) dmFlags(internalHardwareLabel string) {
 				if b.ExtraConfig("Vulkan") {
 					// b/425434638 - PaintParamsKeyTest failing on Release Dawn_Vulkan
 					skip(ALL, "test", ALL, "PaintParamsKeyTest")
+
+					if b.MatchOs("Ubuntu26.04") {
+						skip(ALL, "test", ALL, "PersistentPipelineStorageTest")
+						skip(ALL, "test", ALL, "ThreadedPipelinePrecompileCompileTest")
+						skip(ALL, "test", ALL, "ThreadedPipelinePrecompileCompilePurgingTest")
+						skip(ALL, "test", ALL, "ThreadedPipelinePrecompileTest")
+						skip(ALL, "test", ALL, "ThreadedPipelinePrecompilePurgingTest")
+						skip(ALL, "test", ALL, "ThreadedPipelineCompilePurgingTest")
+						skip(ALL, "test", ALL, "UserDefinedStableKeyTest")
+						skip(ALL, "test", ALL, "UserDefinedStableKeyTest_Duplicates")
+						skip(ALL, "test", ALL, "UserDefinedStableKeyTest_Nullptrs")
+						skip(ALL, "test", ALL, "UserDefinedStableKeyTest_Overflow")
+						skip(ALL, "test", ALL, "PipelineManagerEarlyExitTest_1")
+						skip(ALL, "test", ALL, "PipelineManagerEarlyExitTest_2")
+						skip(ALL, "test", ALL, "PipelineManagerEarlyExitTest_3")
+						skip(ALL, "test", ALL, "PipelineManagerEarlyExitTest_4")
+						skip(ALL, "test", ALL, "PipelineManagerThreadedTest_1")
+						skip(ALL, "test", ALL, "PipelineManagerThreadedTest_2")
+						skip(ALL, "test", ALL, "PipelineManagerThreadedTest_3")
+						skip(ALL, "test", ALL, "PipelineManagerThreadedTest_4")
+						skip(ALL, "test", ALL, "PipelineCallbackTest")
+						skip(ALL, "test", ALL, "DirectMaskLimitTest")
+						skip(ALL, "test", ALL, "CacheBudgetTest")
+					}
 
 					if b.GPU("IntelIris540") {
 						// b/485161482 - Compute_SampledTexture fails with an access violation
@@ -619,8 +647,8 @@ func (b *TaskBuilder) dmFlags(internalHardwareLabel string) {
 					skip(ALL, "test", ALL, "ThreadedPipelinePrecompileCompilePurgingTest")
 					skip(ALL, "test", ALL, "ThreadedPipelinePrecompilePurgingTest")
 
-					if b.GPU("QuadroP400") || b.MatchOs("Ubuntu24.04") {
-						// Neither the nVidia driver on the P400s nor the Ubuntu24.04 driver
+					if b.GPU("QuadroP400") || b.MatchOs("Ubuntu24.04") || b.MatchOs("Ubuntu26.04") {
+						// Neither the nVidia driver on the P400s nor the Ubuntu24.04/Ubuntu26.04 drivers
 						// correctly support pipeline caching control (i.e., they *never* return
 						// VK_PIPELINE_COMPILE_REQUIRED from CreateGraphicsPipelines)
 						skip(ALL, "test", ALL, "PersistentPipelineStorageTest")
