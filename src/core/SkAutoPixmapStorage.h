@@ -6,7 +6,10 @@
  */
 
 #ifndef SkAutoPixmapStorage_DEFINED
+
 #define SkAutoPixmapStorage_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkPixmap.h"
 #include "include/core/SkRefCnt.h"
@@ -84,7 +87,7 @@ public:
     }
 
 private:
-    void*   fStorage;
+    raw_ptr<void, DanglingUntriaged> fStorage;
 
     void freeStorage() {
         sk_free(fStorage);

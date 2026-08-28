@@ -6,7 +6,10 @@
  */
 
 #ifndef GrAATriangulator_DEFINED
+
 #define GrAATriangulator_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkTypes.h"
 #if !defined(SK_ENABLE_OPTIMIZE_SIZE)
@@ -46,7 +49,7 @@ public:
     struct Event {
         Event(SSEdge* edge, const SkPoint& point, uint8_t alpha)
                 : fEdge(edge), fPoint(point), fAlpha(alpha) {}
-        SSEdge* fEdge;
+        raw_ptr<SSEdge> fEdge;
         SkPoint fPoint;
         uint8_t fAlpha;
         void apply(VertexList* mesh, const Comparator&, EventList* events, GrAATriangulator*);

@@ -6,7 +6,10 @@
  */
 
 #ifndef skgpu_graphite_TextureProxy_DEFINED
+
 #define skgpu_graphite_TextureProxy_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
@@ -163,7 +166,7 @@ public:
     }
 
 private:
-    TextureProxy* const fTextureProxy;
+    const raw_ptr<TextureProxy> fTextureProxy;
 };
 
 }  // namespace skgpu::graphite

@@ -26,6 +26,7 @@ skia_cc_library(
         "raw_ptr_exclusion.h",
         "raw_ref.h",
         "safety_checks.h",
+        "//include/private:private_hdrs",
     ],
     visibility = ["//:__subpackages__"],
 )
