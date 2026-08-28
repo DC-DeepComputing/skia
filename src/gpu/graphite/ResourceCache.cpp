@@ -17,6 +17,7 @@
 #include "src/gpu/graphite/ProxyCache.h"
 #include "src/gpu/graphite/Resource.h"
 #include "src/gpu/graphite/SharedContext.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #if defined(GPU_TEST_UTILS)
 #include "src/gpu/graphite/Texture.h"
@@ -85,6 +86,8 @@ void ResourceCache::shutdown() {
     // linked list. We do need to finish processing them for a graceful shutdown.
     this->processReturnedResources(Sentinel::Get());
 
+    fResourceMap.reset();
+
     if (fProxyCache) {
         fProxyCache->purgeAll();
         // NOTE: any resources that would become purgeable or reusable from purging the proxy cache
@@ -121,6 +124,7 @@ void ResourceCache::shutdown() {
     GlobalResourceStats::TraceStatsSummary(); // Record the completion of all the cleanup
 
     TRACE_EVENT_INSTANT0("skia.gpu.cache", TRACE_FUNC, TRACE_EVENT_SCOPE_THREAD);
+    fSingleOwner = nullptr;
 }
 
 void ResourceCache::insertResource(Resource* resource,
@@ -304,7 +308,7 @@ bool ResourceCache::returnResource(Resource* resource) {
         // If we get here, we know the usage ref count is 0, so the only way for that to increase
         // again is if the Resource triggers the initial usage ref in the callback.
         struct TakeRefContext {
-            Resource* resource;
+            raw_ptr<Resource> resource;
             SkDEBUGCODE(bool takeRefActuallyCalled = false;)
         } ctx = {resource};
         bool takeRefCalled = resource->prepareForReturnToCache([](void* ctx) {
@@ -813,18 +817,15 @@ void ResourceCache::validate() const {
     }
 
     struct Stats {
-        int fShareable;
-        int fScratch;
-        size_t fBudgetedBytes;
-        size_t fPurgeableBytes;
-        const ResourceMap* fResourceMap;
-        const PurgeableQueue* fPurgeableQueue;
+        int fShareable = 0;
+        int fScratch = 0;
+        size_t fBudgetedBytes = 0;
+        size_t fPurgeableBytes = 0;
+        raw_ptr<const ResourceMap> fResourceMap;
+        raw_ptr<const PurgeableQueue> fPurgeableQueue;
 
-        Stats(const ResourceCache* cache) {
-            memset(this, 0, sizeof(*this));
-            fResourceMap = &cache->fResourceMap;
-            fPurgeableQueue = &cache->fPurgeableQueue;
-        }
+        Stats(const ResourceCache* cache)
+                : fResourceMap(&cache->fResourceMap), fPurgeableQueue(&cache->fPurgeableQueue) {}
 
         void update(Resource* resource) {
             const GraphiteResourceKey& key = resource->key();
