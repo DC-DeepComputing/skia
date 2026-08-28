@@ -69,7 +69,7 @@ public:
      * of onExecute() indicates whether any commands were actually issued to the GPU.
      */
     void onPrepare(GrOpFlushState* flushState) override;
-    bool onExecute(GrOpFlushState* flushState) override;
+    [[nodiscard]] ResultFoo onExecute1(GrOpFlushState* flushState) override;
 
     void addSampledTexture(GrSurfaceProxy* proxy) {
         // This function takes a GrSurfaceProxy because all subsequent uses of the proxy do not

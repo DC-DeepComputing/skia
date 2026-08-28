@@ -104,7 +104,7 @@ void SkImage::asyncRescaleAndReadPixels(const SkImageInfo& info,
         callback(context, nullptr);
         return;
     }
-    as_IB(this)->onAsyncRescaleAndReadPixels(
+    as_IB(this)->onAsyncRescaleAndReadPixels1(
             info, srcRect, rescaleGamma, rescaleMode, callback, context);
 }
 

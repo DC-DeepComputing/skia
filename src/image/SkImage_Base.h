@@ -79,7 +79,7 @@ public:
     /**
      * Default implementation does a rescale/read and then calls the callback.
      */
-    virtual void onAsyncRescaleAndReadPixels(const SkImageInfo&,
+    virtual void onAsyncRescaleAndReadPixels1(const SkImageInfo&,
                                              SkIRect srcRect,
                                              RescaleGamma,
                                              RescaleMode,

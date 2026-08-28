@@ -444,7 +444,7 @@ GrSemaphoresSubmitted GrDirectContext::flush(const GrFlushInfo& info) {
         return GrSemaphoresSubmitted::kNo;
     }
 
-    return this->drawingManager()->flushSurfaces(
+    return this->drawingManager()->flushSurfaces1(
             {}, SkSurfaces::BackendSurfaceAccess::kNoAccess, info, nullptr);
 }
 
@@ -500,7 +500,7 @@ GrSemaphoresSubmitted GrDirectContext::flush(SkSurface* surface,
     SkASSERT(this->priv().matches(gs->getDevice()->recordingContext()->asDirectContext()));
     GrRenderTargetProxy* rtp = gs->getDevice()->targetProxy();
 
-    return this->priv().flushSurface(rtp, access, info, nullptr);
+    return this->priv().flushSurface2(rtp, access, info, nullptr);
 }
 
 GrSemaphoresSubmitted GrDirectContext::flush(SkSurface* surface,
@@ -518,7 +518,7 @@ GrSemaphoresSubmitted GrDirectContext::flush(SkSurface* surface,
     SkASSERT(this->priv().matches(gs->getDevice()->recordingContext()->asDirectContext()));
     GrRenderTargetProxy* rtp = gs->getDevice()->targetProxy();
 
-    return this->priv().flushSurface(
+    return this->priv().flushSurface2(
             rtp, SkSurfaces::BackendSurfaceAccess::kNoAccess, info, newState);
 }
 
@@ -727,8 +727,13 @@ static bool update_texture_with_pixmaps(GrDirectContext* context,
 
     GrSurfaceProxy* p = surfaceContext.asSurfaceProxy();
     GrFlushInfo info;
-    context->priv().drawingManager()->flushSurfaces(
+
+    bool hasPendingTasks = context->priv().drawingManager()->getLastRenderTask(p) != nullptr;
+    GrSemaphoresSubmitted flushResult = context->priv().drawingManager()->flushSurfaces1(
             {&p, 1}, SkSurfaces::BackendSurfaceAccess::kNoAccess, info, nullptr);
+    if (flushResult == GrSemaphoresSubmitted::kNo && hasPendingTasks) {
+        return false;
+    }
     return true;
 }
 

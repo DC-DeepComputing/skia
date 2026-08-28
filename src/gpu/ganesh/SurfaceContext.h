@@ -95,7 +95,7 @@ public:
     using RescaleMode        = SkImage::RescaleMode;
 
     // GPU implementation for SkImage:: and SkSurface::asyncRescaleAndReadPixels.
-    void asyncRescaleAndReadPixels(GrDirectContext*,
+    void asyncRescaleAndReadPixels1(GrDirectContext*,
                                    const SkImageInfo& info,
                                    const SkIRect& srcRect,
                                    RescaleGamma rescaleGamma,
@@ -221,7 +221,7 @@ protected:
     PixelTransferResult transferPixels(GrColorType colorType, const SkIRect& rect);
 
     // The async read step of asyncRescaleAndReadPixels()
-    void asyncReadPixels(GrDirectContext*,
+    void asyncReadPixels1(GrDirectContext*,
                          const SkIRect& srcRect,
                          SkColorType,
                          ReadPixelsCallback,

@@ -294,7 +294,7 @@ bool SurfaceContext::readPixels(GrDirectContext* dContext, GrPixmap dst, SkIPoin
 
     bool hasPendingTasks =
             dContext->priv().drawingManager()->getLastRenderTask(srcProxy.get()) != nullptr;
-    GrSemaphoresSubmitted flushResult = dContext->priv().flushSurface(srcProxy.get());
+    GrSemaphoresSubmitted flushResult = dContext->priv().flushSurface2(srcProxy.get());
     if (flushResult == GrSemaphoresSubmitted::kNo && hasPendingTasks) {
         return false;
     }
@@ -589,7 +589,7 @@ bool SurfaceContext::internalWritePixels(GrDirectContext* dContext,
         const bool hasPendingTasks =
                 dContext->priv().drawingManager()->getLastRenderTask(dstProxy) != nullptr;
         SkASSERT(!expectsTasks || hasPendingTasks);
-        GrSemaphoresSubmitted flushResult = dContext->priv().flushSurface(dstProxy);
+        GrSemaphoresSubmitted flushResult = dContext->priv().flushSurface2(dstProxy);
         return flushResult == GrSemaphoresSubmitted::kYes || !hasPendingTasks;
     };
 
@@ -623,7 +623,7 @@ bool SurfaceContext::internalWritePixels(GrDirectContext* dContext,
     return true;
 }
 
-void SurfaceContext::asyncRescaleAndReadPixels(GrDirectContext* dContext,
+void SurfaceContext::asyncRescaleAndReadPixels1(GrDirectContext* dContext,
                                                const SkImageInfo& info,
                                                const SkIRect& srcRect,
                                                RescaleGamma rescaleGamma,
@@ -687,7 +687,7 @@ void SurfaceContext::asyncRescaleAndReadPixels(GrDirectContext* dContext,
         x = y = 0;
     }
     auto srcCtx = tempFC ? tempFC.get() : this;
-    return srcCtx->asyncReadPixels(dContext,
+    return srcCtx->asyncReadPixels1(dContext,
                                    SkIRect::MakePtSize({x, y}, info.dimensions()),
                                    info.colorType(),
                                    callback,
@@ -871,7 +871,7 @@ void SurfaceContext::asyncReadPixels(GrDirectContext* dContext,
         reinterpret_cast<AsyncReadPixelContext*>(c)->setFinished();
     };
 
-    dContext->priv().flushSurface(
+    dContext->priv().flushSurface2(
             this->asSurfaceProxy(), SkSurfaces::BackendSurfaceAccess::kNoAccess, flushInfo);
 }
 
@@ -1130,7 +1130,7 @@ void SurfaceContext::asyncRescaleAndReadPixelsYUV420(GrDirectContext* dContext,
         reinterpret_cast<AsyncReadPixelContext*>(c)->setFinished();
     };
 
-    dContext->priv().flushSurface(
+    dContext->priv().flushSurface2(
             this->asSurfaceProxy(), SkSurfaces::BackendSurfaceAccess::kNoAccess, flushInfo);
 }
 

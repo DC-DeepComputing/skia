@@ -178,10 +178,10 @@ public:
 
     static bool ProgramUnitTest(GrDirectContext*, int maxStages, int maxLevels);
 
-    GrSemaphoresSubmitted flushSurfaces(SkSpan<GrSurfaceProxy*>,
-                                        SkSurfaces::BackendSurfaceAccess,
-                                        const GrFlushInfo&,
-                                        const skgpu::MutableTextureState* newState);
+    [[nodiscard]] GrSemaphoresSubmitted flushSurfaces1(SkSpan<GrSurfaceProxy*>,
+                                                       SkSurfaces::BackendSurfaceAccess,
+                                                       const GrFlushInfo&,
+                                                       const skgpu::MutableTextureState* newState);
 
     void addOnFlushCallbackObject(GrOnFlushCallbackObject*);
 
@@ -202,7 +202,7 @@ public:
 
     // This is public so it can be called by an SkImage factory (in SkImages namespace).
     // It is not meant to be directly called in other situations.
-    bool flush(SkSpan<GrSurfaceProxy*> proxies,
+    bool flush1(SkSpan<GrSurfaceProxy*> proxies,
                SkSurfaces::BackendSurfaceAccess access,
                const GrFlushInfo&,
                const skgpu::MutableTextureState* newState);
@@ -217,7 +217,7 @@ private:
     void closeActiveOpsTask();
 
     // return true if any GrRenderTasks were actually executed; false otherwise
-    bool executeRenderTasks(GrOpFlushState*);
+    GrRenderTask::ResultFoo executeRenderTasks1(GrOpFlushState*);
 
     void removeRenderTasks();
 

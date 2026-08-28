@@ -125,7 +125,7 @@ public:
     using ReadPixelsCallback = SkImage::ReadPixelsCallback;
     using ReadPixelsContext  = SkImage::ReadPixelsContext;
 
-    void asyncRescaleAndReadPixels(const SkImageInfo& info,
+    void asyncRescaleAndReadPixels1(const SkImageInfo& info,
                                    const SkIRect& srcRect,
                                    RescaleGamma rescaleGamma,
                                    RescaleMode rescaleMode,

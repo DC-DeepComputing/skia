@@ -97,7 +97,7 @@ static GrRenderTarget* prepare_rt_for_external_access(SkSurface_Ganesh* surface,
             break;
     }
 
-    dContext->priv().flushSurface(surface->getDevice()->targetProxy());
+    dContext->priv().flushSurface2(surface->getDevice()->targetProxy());
 
     // Grab the render target *after* firing notifications, as it may get switched if CoW kicks in.
     return surface->getDevice()->targetProxy()->peekRenderTarget();

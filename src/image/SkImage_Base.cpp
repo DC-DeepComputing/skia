@@ -38,7 +38,7 @@ SkImage_Base::~SkImage_Base() {
     }
 }
 
-void SkImage_Base::onAsyncRescaleAndReadPixels(const SkImageInfo& info,
+void SkImage_Base::onAsyncRescaleAndReadPixels1(const SkImageInfo& info,
                                                SkIRect origSrcRect,
                                                RescaleGamma rescaleGamma,
                                                RescaleMode rescaleMode,

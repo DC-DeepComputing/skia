@@ -50,7 +50,22 @@ public:
 
     // These two methods are only invoked at flush time
     void prepare(GrOpFlushState* flushState);
-    bool execute(GrOpFlushState* flushState) { return this->onExecute(flushState); }
+
+    // The return is [didRun, errorOccurred]
+    struct ResultFoo {
+        ResultFoo& operator|=(const ResultFoo& other) {
+            fDidRun |= other.fDidRun;
+            fErrorOccurred |= other.fErrorOccurred;
+            return *this;
+        }
+        void* pFoo;
+        bool fDidRun;
+        bool fErrorOccurred;
+    };
+    static constexpr ResultFoo kRanWithOutError{nullptr, true, false};
+    static constexpr ResultFoo kFailedWithError{nullptr, false, true};
+
+    [[nodiscard]] ResultFoo execute1(GrOpFlushState* flushState) { return this->onExecute1(flushState); }
 
     virtual bool requiresExplicitCleanup() const { return false; }
 
@@ -278,7 +293,8 @@ private:
     virtual void onMakeSkippable() {}
     virtual void onPrePrepare(GrRecordingContext*) {} // Only OpsTask currently overrides this
     virtual void onPrepare(GrOpFlushState*) {} // OpsTask and GrDDLTask override this
-    virtual bool onExecute(GrOpFlushState* flushState) = 0;
+
+    [[nodiscard]] virtual ResultFoo onExecute1(GrOpFlushState* flushState) = 0;
 
     const uint32_t         fUniqueID;
     uint32_t               fFlags;

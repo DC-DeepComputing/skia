@@ -1269,7 +1269,7 @@ bool Device::replaceBackingProxy(SkSurface::ContentChangeMode mode) {
                                      this->surfaceProps());
 }
 
-void Device::asyncRescaleAndReadPixels(const SkImageInfo& info,
+void Device::asyncRescaleAndReadPixels1(const SkImageInfo& info,
                                        const SkIRect& srcRect,
                                        RescaleGamma rescaleGamma,
                                        RescaleMode rescaleMode,
@@ -1281,7 +1281,7 @@ void Device::asyncRescaleAndReadPixels(const SkImageInfo& info,
     if (!dContext) {
         return;
     }
-    sdc->asyncRescaleAndReadPixels(dContext, info, srcRect, rescaleGamma, rescaleMode, callback,
+    sdc->asyncRescaleAndReadPixels1(dContext, info, srcRect, rescaleGamma, rescaleMode, callback,
                                    context);
 }
 

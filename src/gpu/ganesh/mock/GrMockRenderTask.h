@@ -48,7 +48,7 @@ public:
         }
         return false;
     }
-    bool onExecute(GrOpFlushState*) override { return true; }
+    [[nodiscard]] ResultFoo onExecute1(GrOpFlushState*) override { return kRanWithOutError; }
 
 #if defined(GPU_TEST_UTILS)
     const char* name() const final { return "Mock"; }

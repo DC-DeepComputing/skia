@@ -83,7 +83,7 @@ public:
 
     sk_sp<SkImage> onReinterpretColorSpace(sk_sp<SkColorSpace>) const final;
 
-    void onAsyncRescaleAndReadPixels(const SkImageInfo&,
+    void onAsyncRescaleAndReadPixels1(const SkImageInfo&,
                                      SkIRect srcRect,
                                      RescaleGamma,
                                      RescaleMode,

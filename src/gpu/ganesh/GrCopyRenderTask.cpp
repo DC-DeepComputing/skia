@@ -85,18 +85,19 @@ GrRenderTask::ExpectedOutcome GrCopyRenderTask::onMakeClosed(GrRecordingContext*
     return ExpectedOutcome::kTargetDirty;
 }
 
-bool GrCopyRenderTask::onExecute(GrOpFlushState* flushState) {
+GrRenderTask::ResultFoo GrCopyRenderTask::onExecute1(GrOpFlushState* flushState) {
     if (!fSrc) {
         // Did nothing, just like we're supposed to.
-        return true;
+        return kRanWithOutError;
     }
     GrSurfaceProxy* dstProxy = this->target(0);
     if (!fSrc->isInstantiated() || !dstProxy->isInstantiated()) {
-        return false;
+        return kFailedWithError;
     }
     GrSurface* srcSurface = fSrc->peekSurface();
     GrSurface* dstSurface = dstProxy->peekSurface();
     SkIRect srcRect = GrNativeRect::MakeIRectRelativeTo(fOrigin, srcSurface->height(), fSrcRect);
     SkIRect dstRect = GrNativeRect::MakeIRectRelativeTo(fOrigin, dstSurface->height(), fDstRect);
-    return flushState->gpu()->copySurface(dstSurface, dstRect, srcSurface, srcRect, fFilter);
+    bool success = flushState->gpu()->copySurface(dstSurface, dstRect, srcSurface, srcRect, fFilter);
+    return { nullptr, true, !success};
 }
