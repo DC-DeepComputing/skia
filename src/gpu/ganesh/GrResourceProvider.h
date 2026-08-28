@@ -6,7 +6,10 @@
  */
 
 #ifndef GrResourceProvider_DEFINED
+
 #define GrResourceProvider_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
@@ -438,14 +441,14 @@ private:
     sk_sp<const GrGpuBuffer> createNonAAQuadIndexBuffer();
     sk_sp<const GrGpuBuffer> createAAQuadIndexBuffer();
 
-    GrResourceCache* fCache;
-    GrGpu* fGpu;
+    raw_ptr<GrResourceCache> fCache;
+    raw_ptr<GrGpu> fGpu;
     sk_sp<const GrCaps> fCaps;
     sk_sp<const GrGpuBuffer> fNonAAQuadIndexBuffer;
     sk_sp<const GrGpuBuffer> fAAQuadIndexBuffer;
 
     // In debug builds we guard against improper thread handling
-    SkDEBUGCODE(mutable skgpu::SingleOwner* fSingleOwner;)
+    SkDEBUGCODE(mutable raw_ptr<skgpu::SingleOwner> fSingleOwner;)
 };
 
 #endif
