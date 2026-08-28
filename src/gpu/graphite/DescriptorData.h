@@ -26,8 +26,9 @@ enum class DescriptorType : uint8_t {
     kCombinedTextureSampler,
     kStorageBuffer,
     kInputAttachment,
+    kStorageTexture,
 
-    kLast = kInputAttachment,
+    kLast = kStorageTexture,
 };
 static constexpr int kDescriptorTypeCount = (int)(DescriptorType::kLast) + 1;
 
