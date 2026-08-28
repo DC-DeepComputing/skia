@@ -8,6 +8,9 @@
 #ifndef skgpu_graphite_DrawListTypes_DEFINED
 #define skgpu_graphite_DrawListTypes_DEFINED
 
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
+
 #include "include/private/SkDebug.h"
 #include "include/private/SkEnumBitMask.h"
 #include "src/core/SkBlockAllocator.h"
@@ -149,7 +152,7 @@ struct Draw {
 
     Draw() = default; // Let it be uninitialized
 
-    const DrawParams* fDrawParams;
+    RAW_PTR_EXCLUSION const DrawParams* fDrawParams;
     UniformDataCache::Index fUniformIndex;
 
     Draw* fNext;
@@ -172,7 +175,7 @@ struct BindingList {
 
     Rect fBounds = Rect::InfiniteInverted();
 
-    const RenderStep* fStep;
+    RAW_PTR_EXCLUSION const RenderStep* fStep;
     LayerKey fKey;
 
     // Maintain a singly-linked list of draws, either prepending to head for front-to-back

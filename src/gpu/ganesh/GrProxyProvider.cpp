@@ -369,7 +369,7 @@ sk_sp<GrTextureProxy> GrProxyProvider::createNonMippedProxyFromBitmap(const SkBi
                 GrMipLevel mipLevel = {bitmap.getPixels(), bitmap.rowBytes(), nullptr};
                 auto colorType = SkColorTypeToGrColorType(bitmap.colorType());
                 return LazyCallbackResult(resourceProvider->createTexture(desc.fDimensions,
-                                                                          desc.fFormat,
+                                                                          *desc.fFormat,
                                                                           desc.fTextureType,
                                                                           colorType,
                                                                           desc.fRenderable,
@@ -436,7 +436,7 @@ sk_sp<GrTextureProxy> GrProxyProvider::createMippedProxyFromBitmap(const GrMippe
                     SkASSERT(generatedMipLevel.fPixmap.colorType() == bitmap.colorType());
                 }
                 return LazyCallbackResult(resourceProvider->createTexture(desc.fDimensions,
-                                                                          desc.fFormat,
+                                                                          *desc.fFormat,
                                                                           desc.fTextureType,
                                                                           colorType,
                                                                           GrRenderable::kNo,
@@ -569,7 +569,7 @@ sk_sp<GrTextureProxy> GrProxyProvider::createCompressedTextureProxy(
             [data](GrResourceProvider* resourceProvider, const LazySurfaceDesc& desc) {
                 return LazyCallbackResult(
                         resourceProvider->createCompressedTexture(desc.fDimensions,
-                                                                  desc.fFormat,
+                                                                  *desc.fFormat,
                                                                   desc.fBudgeted,
                                                                   desc.fMipmapped,
                                                                   desc.fProtected,

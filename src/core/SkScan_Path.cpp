@@ -30,6 +30,7 @@
 #include "src/core/SkScan.h"
 #include "src/core/SkScanPriv.h"
 #include "src/core/SkTSort.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <algorithm>
 #include <cmath>
@@ -354,7 +355,7 @@ public:
     }
 
 private:
-    SkBlitter*  fBlitter;
+    raw_ptr<SkBlitter> fBlitter;
     int         fFirstX, fLastX, fPrevX;
 };
 
