@@ -21,6 +21,7 @@
 #include "src/core/SkLineClipper.h"
 #include "src/core/SkPathPriv.h"
 #include "src/core/SkSafeMath.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 SkEdgeBuilder::Combine SkBasicEdgeBuilder::combineVertical(const SkEdge* edge, SkEdge* last) {
     // We only consider edges that were originally lines to be vertical to avoid numerical issues
@@ -271,7 +272,7 @@ int SkEdgeBuilder::build(const SkPathRaw& raw, const SkIRect* iclip, bool canCul
     if (iclip) {
         SkRect clip = this->recoverClip(*iclip);
         struct Rec {
-            SkEdgeBuilder* fBuilder;
+            raw_ptr<SkEdgeBuilder> fBuilder;
             bool           fIsFinite;
         } rec = { this, true };
 
@@ -313,22 +314,22 @@ int SkEdgeBuilder::build(const SkPathRaw& raw, const SkIRect* iclip, bool canCul
     while (auto e = iter.next()) {
         switch (e.fEdge) {
             case SkPathEdgeIter::Edge::kLine:
-                this->addLine(e.fPts);
+                this->addLine(e.fPts.get());
                 break;
             case SkPathEdgeIter::Edge::kQuad: {
-                handle_quad(e.fPts);
+                handle_quad(e.fPts.get());
                 break;
             }
             case SkPathEdgeIter::Edge::kConic: {
                 const SkPoint* quadPts =
-                        quadder.computeQuads(e.fPts, iter.conicWeight(), kConicTol);
+                        quadder.computeQuads(e.fPts.get(), iter.conicWeight(), kConicTol);
                 for (int i = 0; i < quadder.countQuads(); ++i) {
                     handle_quad(quadPts);
                     quadPts += 2;
                 }
             } break;
             case SkPathEdgeIter::Edge::kCubic: {
-                int n = SkChopCubicAtYExtrema(e.fPts, monoY);
+                int n = SkChopCubicAtYExtrema(e.fPts.get(), monoY);
                 for (int i = 0; i <= n; i++) {
                     this->addCubic(&monoY[i * 3]);
                 }
