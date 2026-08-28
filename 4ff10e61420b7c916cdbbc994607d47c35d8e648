@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17f520a4_f4e1ac42",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 21
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-08-28T15:43:09Z",
+      "side": 1,
+      "message": "nit: is this meant to be a period?\n\nas in \n\n```\nThere is no single SVG filter effect that covers all modes. Thus, we use feComposite [1] for basic Porter/Duff (plus some modes representable\nvia \u0027arithmetic\u0027 operators) and feBlend [2] for advanced blending ops.\n```",
+      "range": {
+        "startLine": 12,
+        "startChar": 54,
+        "endLine": 12,
+        "endChar": 62
+      },
+      "revId": "4ff10e61420b7c916cdbbc994607d47c35d8e648",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38098d88_6e5f1bad",
+        "filename": "src/svg/SkSVGDevice.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 490,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-08-28T15:43:09Z",
+      "side": 1,
+      "message": "do you have any doc or reference for coming up with these filters? How did you derive these DAGs to correspond to the Skia filters?",
+      "range": {
+        "startLine": 489,
+        "startChar": 14,
+        "endLine": 490,
+        "endChar": 42
+      },
+      "revId": "4ff10e61420b7c916cdbbc994607d47c35d8e648",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
