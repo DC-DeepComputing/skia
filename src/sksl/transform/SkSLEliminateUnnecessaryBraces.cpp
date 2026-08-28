@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "src/partition_alloc/raw_ref.h"
 #include "src/sksl/SkSLDefines.h"
 #include "src/sksl/SkSLModule.h"
 #include "src/sksl/SkSLPosition.h"
@@ -153,7 +154,7 @@ void Transform::EliminateUnnecessaryBraces(const Context& context, Module& modul
                         Position stmtPosition = blockStmts.front()->position();
                         std::unique_ptr<Statement> bracedIfTrue =
                                 Block::MakeBlock(stmtPosition, std::move(blockStmts));
-                        stmt = IfStatement::Make(fContext,
+                        stmt = IfStatement::Make(*fContext,
                                                  outer.position(),
                                                  std::move(outer.test()),
                                                  std::move(bracedIfTrue),
@@ -166,7 +167,7 @@ void Transform::EliminateUnnecessaryBraces(const Context& context, Module& modul
             return false;
         }
 
-        const Context& fContext;
+        const raw_ref<const Context> fContext;
         using INHERITED = ProgramWriter;
     };
 

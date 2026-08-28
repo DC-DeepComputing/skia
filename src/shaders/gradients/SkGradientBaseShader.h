@@ -6,7 +6,9 @@
  */
 
 #ifndef SkGradientShaderPriv_DEFINED
+
 #define SkGradientShaderPriv_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColor.h"
@@ -130,8 +132,8 @@ public:
     void setCachedBitmap(SkBitmap b) const { fColorsAndOffsetsBitmap = b; }
 
 private:
-    SkColor4f* fColors;               // points into fStorage
-    SkScalar* fPositions;             // points into fStorage, or nullptr
+    SkColor4f* fColors;    // points into fStorage
+    SkScalar* fPositions;  // points into fStorage, or nullptr
     sk_sp<SkColorSpace> fColorSpace;  // color space of gradient stops
     Interpolation fInterpolation;
     size_t fColorCount;               // length of fColors (and fPositions, if not nullptr)
@@ -165,7 +167,7 @@ struct SkColor4fXformer {
 
     ColorStorage fColors;
     PositionStorage fPositionStorage;
-    const float* fPositions;
+    raw_ptr<const float> fPositions;
     sk_sp<SkColorSpace> fIntermediateColorSpace;
 };
 

@@ -6,7 +6,10 @@
  */
 
 #ifndef skgpu_graphite_DawnResourceProvider_DEFINED
+
 #define skgpu_graphite_DawnResourceProvider_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkSpan.h"
 #include "include/gpu/graphite/dawn/DawnGraphiteTypes.h"
@@ -113,7 +116,7 @@ private:
     class IntrinsicConstantsManager;
     std::unique_ptr<IntrinsicConstantsManager> fIntrinsicConstantsManager;
 
-    SingleOwner* fSingleOwner = nullptr;
+    raw_ptr<SingleOwner> fSingleOwner = nullptr;
 };
 
 }  // namespace skgpu::graphite

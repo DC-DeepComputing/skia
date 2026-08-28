@@ -5,7 +5,10 @@
  * found in the LICENSE file.
  */
 #ifndef PathStencilCoverOp_DEFINED
+
 #define PathStencilCoverOp_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkPath.h"
 #include "include/core/SkPathTypes.h"
@@ -111,7 +114,7 @@ private:
     void onPrepare(GrOpFlushState*) override;
     void onExecute(GrOpFlushState*, const SkRect& chainBounds) override;
 
-    const PathDrawList* fPathDrawList;
+    raw_ptr<const PathDrawList, DanglingUntriaged> fPathDrawList;
     const int fTotalCombinedPathVerbCnt;
     const int fPathCount;
     const FillPathFlags fPathFlags;
@@ -120,11 +123,11 @@ private:
     GrProcessorSet fProcessors;
     SkDEBUGCODE(SkRect fOriginalDrawBounds;)
 
-    // Decided during prePreparePrograms.
-    PathTessellator* fTessellator = nullptr;
-    const GrProgramInfo* fStencilFanProgram = nullptr;
-    const GrProgramInfo* fStencilPathProgram = nullptr;
-    const GrProgramInfo* fCoverBBoxProgram = nullptr;
+            // Decided during prePreparePrograms.
+            raw_ptr<PathTessellator, DanglingUntriaged> fTessellator = nullptr;
+    raw_ptr<const GrProgramInfo, DanglingUntriaged> fStencilFanProgram = nullptr;
+    raw_ptr<const GrProgramInfo, DanglingUntriaged> fStencilPathProgram = nullptr;
+    raw_ptr<const GrProgramInfo, DanglingUntriaged> fCoverBBoxProgram = nullptr;
 
     // Filled during onPrepare.
     sk_sp<const GrBuffer> fFanBuffer;
