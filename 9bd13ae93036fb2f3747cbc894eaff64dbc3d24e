@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8753b96d_bf9d9dd8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-08-28T17:48:51Z",
+      "side": 1,
+      "message": "Thanks for the feedback! I\u0027ve reworked this to be much simpler. It uses an `IccReader` class that chews through bytes, rather than specifying offsets for each parameter.",
+      "revId": "9bd13ae93036fb2f3747cbc894eaff64dbc3d24e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
