@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "df9afe7a_44f92c0d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-28T17:32:36Z",
+      "side": 1,
+      "message": "PTAL",
+      "revId": "933f84b06b24c9c2887d30e7151b2f8c47a87b3f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9c9266e3_3d6a696c",
@@ -35,6 +52,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "432e52d7_be639d5b",
+        "filename": "src/gpu/graphite/AtlasProvider.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-28T17:32:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9c9266e3_3d6a696c",
+      "revId": "933f84b06b24c9c2887d30e7151b2f8c47a87b3f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "577dbc45_3b2ce493",
@@ -48,6 +83,24 @@
       "writtenOn": "2026-08-27T13:52:57Z",
       "side": 1,
       "message": "// All the cool AtlasManagers have a comment",
+      "revId": "933f84b06b24c9c2887d30e7151b2f8c47a87b3f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b986555_0b3c3891",
+        "filename": "src/gpu/graphite/AtlasProvider.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-28T17:32:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "577dbc45_3b2ce493",
       "revId": "933f84b06b24c9c2887d30e7151b2f8c47a87b3f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -75,6 +128,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "85e2b8d3_99f67345",
+        "filename": "src/gpu/graphite/sparse_strips/AlphaAtlasManager.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-28T17:32:36Z",
+      "side": 1,
+      "message": "Removed the initialization in the header.",
+      "parentUuid": "5e461d86_fb9398bf",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 65
+      },
+      "revId": "933f84b06b24c9c2887d30e7151b2f8c47a87b3f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aba68517_7f42b469",
@@ -88,6 +165,24 @@
       "writtenOn": "2026-08-27T13:52:57Z",
       "side": 1,
       "message": "SkASSERT(!fPages[slot].isValid()); \n?",
+      "revId": "933f84b06b24c9c2887d30e7151b2f8c47a87b3f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "98d2203d_805fcc38",
+        "filename": "src/gpu/graphite/sparse_strips/AlphaAtlasManager.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-28T17:32:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aba68517_7f42b469",
       "revId": "933f84b06b24c9c2887d30e7151b2f8c47a87b3f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -109,6 +204,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6c52efa_ba31e9ad",
+        "filename": "src/gpu/graphite/sparse_strips/AlphaAtlasManager.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-28T17:32:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3a5e16b0_b9d0f710",
+      "revId": "933f84b06b24c9c2887d30e7151b2f8c47a87b3f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bb351c42_fc500bad",
@@ -122,6 +235,24 @@
       "writtenOn": "2026-08-27T13:52:57Z",
       "side": 1,
       "message": "This flipflopping \u0026 progressive invalidation would be good to document in the header",
+      "revId": "933f84b06b24c9c2887d30e7151b2f8c47a87b3f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f30c1f28_c6dd5dc7",
+        "filename": "src/gpu/graphite/sparse_strips/AlphaAtlasManager.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-28T17:32:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bb351c42_fc500bad",
       "revId": "933f84b06b24c9c2887d30e7151b2f8c47a87b3f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -143,6 +274,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "533c7a31_d9db02fa",
+        "filename": "src/gpu/graphite/sparse_strips/AlphaAtlasManager.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-28T17:32:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e7a0489a_cba3dcca",
+      "revId": "933f84b06b24c9c2887d30e7151b2f8c47a87b3f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8cd322cf_165a4f8b",
@@ -156,6 +305,30 @@
       "writtenOn": "2026-08-27T13:52:57Z",
       "side": 1,
       "message": "These two fields could use some explanation - esp. why both ?",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 65
+      },
+      "revId": "933f84b06b24c9c2887d30e7151b2f8c47a87b3f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "29ab7f75_312990de",
+        "filename": "src/gpu/graphite/sparse_strips/AlphaAtlasManager.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-28T17:32:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8cd322cf_165a4f8b",
       "range": {
         "startLine": 29,
         "startChar": 0,
@@ -189,6 +362,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "893dff38_92bc89ef",
+        "filename": "src/gpu/graphite/sparse_strips/AlphaAtlasManager.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-28T17:32:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "36661dc2_56c54dfc",
+      "range": {
+        "startLine": 53,
+        "startChar": 45,
+        "endLine": 53,
+        "endChar": 46
+      },
+      "revId": "933f84b06b24c9c2887d30e7151b2f8c47a87b3f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "19061d77_cabc5f04",
@@ -202,6 +399,30 @@
       "writtenOn": "2026-08-27T13:52:57Z",
       "side": 1,
       "message": "kMaxTexturePages ?",
+      "range": {
+        "startLine": 85,
+        "startChar": 23,
+        "endLine": 85,
+        "endChar": 25
+      },
+      "revId": "933f84b06b24c9c2887d30e7151b2f8c47a87b3f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "27194301_993b04e7",
+        "filename": "src/gpu/graphite/sparse_strips/AlphaAtlasManager.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-28T17:32:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "19061d77_cabc5f04",
       "range": {
         "startLine": 85,
         "startChar": 23,
@@ -229,6 +450,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2e7baa4_08c85701",
+        "filename": "src/gpu/graphite/sparse_strips/SparseStripsConfig.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-28T17:32:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a0a03716_107e2e6e",
+      "revId": "933f84b06b24c9c2887d30e7151b2f8c47a87b3f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c58026da_7a798bc5",
@@ -242,6 +481,24 @@
       "writtenOn": "2026-08-27T13:52:57Z",
       "side": 1,
       "message": "// These control .. ?",
+      "revId": "933f84b06b24c9c2887d30e7151b2f8c47a87b3f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "90c7e767_ccd6cf8f",
+        "filename": "src/gpu/graphite/sparse_strips/SparseStripsConfig.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-28T17:32:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c58026da_7a798bc5",
       "revId": "933f84b06b24c9c2887d30e7151b2f8c47a87b3f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -263,6 +520,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef266284_35612bd7",
+        "filename": "src/gpu/graphite/sparse_strips/SparseStripsConfig.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-28T17:32:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "569a9270_59ea304a",
+      "revId": "933f84b06b24c9c2887d30e7151b2f8c47a87b3f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b8238e4a_748d8b09",
@@ -276,6 +551,24 @@
       "writtenOn": "2026-08-27T13:52:57Z",
       "side": 1,
       "message": "Shouldn\u0027t this be derived from kColorType ?",
+      "revId": "933f84b06b24c9c2887d30e7151b2f8c47a87b3f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c99d7d32_6da5d78a",
+        "filename": "src/gpu/graphite/sparse_strips/SparseStripsConfig.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-28T17:32:36Z",
+      "side": 1,
+      "message": "In lieu of adding a constexpr helper, I\u0027ve asserted that the color type matches the current color type.",
+      "parentUuid": "b8238e4a_748d8b09",
       "revId": "933f84b06b24c9c2887d30e7151b2f8c47a87b3f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
