@@ -25,7 +25,7 @@
     %v4float = OpTypeVector %float 4
 %_ptr_Output_v4float = OpTypePointer Output %v4float
 %sk_FragColor = OpVariable %_ptr_Output_v4float Output  ; RelaxedPrecision, Location 0, Index 0
-         %12 = OpTypeImage %float 2D 0 0 0 2 Rgba32f
+         %12 = OpTypeImage %float 2D 0 0 0 1 Unknown
 %_ptr_UniformConstant_12 = OpTypePointer UniformConstant %12
           %t = OpVariable %_ptr_UniformConstant_12 UniformConstant  ; Binding 0, DescriptorSet 0
        %void = OpTypeVoid
@@ -34,6 +34,7 @@
      %uint_0 = OpConstant %uint 0
      %v2uint = OpTypeVector %uint 2
          %22 = OpConstantComposite %v2uint %uint_0 %uint_0
+      %int_0 = OpConstant %int 0
 
 
                ; Function main
@@ -41,7 +42,7 @@
 
          %16 = OpLabel
          %18 =   OpLoad %12 %t                      ; RelaxedPrecision
-         %17 =   OpImageRead %v4float %18 %22       ; RelaxedPrecision
+         %17 =   OpImageFetch %v4float %18 %22 Lod %int_0   ; RelaxedPrecision
                  OpStore %sk_FragColor %17
                  OpReturn
                OpFunctionEnd

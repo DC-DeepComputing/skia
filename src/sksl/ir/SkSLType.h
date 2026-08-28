@@ -372,10 +372,17 @@ public:
     }
 
     /**
-     * Returns true if this is a storage texture.
+     * Returns true if this type represents a dedicated storage texture (writeonly or readwrite).
+     *
+     * Note: `readonly texture2D` (TextureAccess::kRead) can represent either:
+     *  - A read-only storage image (if declared with a pixel-format layout like `layout(rgba8)`)
+     *  - A standalone sampled texture (if declared without a pixel-format layout)
      */
     bool isStorageTexture() const {
-        return fTypeKind == TypeKind::kTexture && this->dimensions() != SpvDimSubpassData;
+        return fTypeKind == TypeKind::kTexture &&
+               this->dimensions() != SpvDimSubpassData &&
+               (this->textureAccess() == TextureAccess::kWrite ||
+                this->textureAccess() == TextureAccess::kReadWrite);
     }
 
     /**
