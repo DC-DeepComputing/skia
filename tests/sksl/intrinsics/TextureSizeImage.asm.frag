@@ -18,9 +18,8 @@
                OpDecorate %t Binding 0
                OpDecorate %t DescriptorSet 0
                OpDecorate %22 RelaxedPrecision
-               OpDecorate %24 RelaxedPrecision
-               OpDecorate %26 RelaxedPrecision
-               OpDecorate %28 RelaxedPrecision
+               OpDecorate %25 RelaxedPrecision
+               OpDecorate %27 RelaxedPrecision
                OpDecorate %29 RelaxedPrecision
                OpDecorate %30 RelaxedPrecision
                OpDecorate %31 RelaxedPrecision
@@ -29,6 +28,7 @@
                OpDecorate %34 RelaxedPrecision
                OpDecorate %35 RelaxedPrecision
                OpDecorate %36 RelaxedPrecision
+               OpDecorate %37 RelaxedPrecision
 
                ; Types, variables and constants
         %int = OpTypeInt 32 1
@@ -37,7 +37,7 @@
     %v4float = OpTypeVector %float 4
 %_ptr_Output_v4float = OpTypePointer Output %v4float
 %sk_FragColor = OpVariable %_ptr_Output_v4float Output  ; RelaxedPrecision, Location 0, Index 0
-         %12 = OpTypeImage %float 2D 0 0 0 2 Rgba32f
+         %12 = OpTypeImage %float 2D 0 0 0 1 Unknown
 %_ptr_UniformConstant_12 = OpTypePointer UniformConstant %12
           %t = OpVariable %_ptr_UniformConstant_12 UniformConstant  ; Binding 0, DescriptorSet 0
        %void = OpTypeVoid
@@ -45,6 +45,7 @@
        %uint = OpTypeInt 32 0
      %v2uint = OpTypeVector %uint 2
 %_ptr_Function_v2uint = OpTypePointer Function %v2uint
+      %int_0 = OpConstant %int 0
     %v2float = OpTypeVector %float 2
 
 
@@ -54,21 +55,21 @@
          %16 = OpLabel
        %dims =   OpVariable %_ptr_Function_v2uint Function
          %22 =   OpLoad %12 %t                      ; RelaxedPrecision
-         %21 =   OpImageQuerySize %v2uint %22
+         %21 =   OpImageQuerySizeLod %v2uint %22 %int_0
                  OpStore %dims %21
-         %23 =   OpCompositeExtract %uint %21 0
-         %24 =   OpConvertUToF %float %23           ; RelaxedPrecision
-         %25 =   OpCompositeExtract %uint %21 1
-         %26 =   OpConvertUToF %float %25           ; RelaxedPrecision
-         %28 =   OpCompositeConstruct %v2float %24 %26  ; RelaxedPrecision
-         %29 =   OpCompositeExtract %float %28 0        ; RelaxedPrecision
-         %30 =   OpCompositeExtract %float %28 1        ; RelaxedPrecision
-         %31 =   OpConvertUToF %float %23               ; RelaxedPrecision
-         %32 =   OpConvertUToF %float %25               ; RelaxedPrecision
-         %33 =   OpCompositeConstruct %v2float %31 %32  ; RelaxedPrecision
-         %34 =   OpCompositeExtract %float %33 0        ; RelaxedPrecision
-         %35 =   OpCompositeExtract %float %33 1        ; RelaxedPrecision
-         %36 =   OpCompositeConstruct %v4float %29 %30 %34 %35  ; RelaxedPrecision
-                 OpStore %sk_FragColor %36
+         %24 =   OpCompositeExtract %uint %21 0
+         %25 =   OpConvertUToF %float %24           ; RelaxedPrecision
+         %26 =   OpCompositeExtract %uint %21 1
+         %27 =   OpConvertUToF %float %26           ; RelaxedPrecision
+         %29 =   OpCompositeConstruct %v2float %25 %27  ; RelaxedPrecision
+         %30 =   OpCompositeExtract %float %29 0        ; RelaxedPrecision
+         %31 =   OpCompositeExtract %float %29 1        ; RelaxedPrecision
+         %32 =   OpConvertUToF %float %24               ; RelaxedPrecision
+         %33 =   OpConvertUToF %float %26               ; RelaxedPrecision
+         %34 =   OpCompositeConstruct %v2float %32 %33  ; RelaxedPrecision
+         %35 =   OpCompositeExtract %float %34 0        ; RelaxedPrecision
+         %36 =   OpCompositeExtract %float %34 1        ; RelaxedPrecision
+         %37 =   OpCompositeConstruct %v4float %30 %31 %35 %36  ; RelaxedPrecision
+                 OpStore %sk_FragColor %37
                  OpReturn
                OpFunctionEnd
