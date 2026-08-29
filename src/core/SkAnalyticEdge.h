@@ -6,7 +6,11 @@
  */
 
 #ifndef SkAnalyticEdge_DEFINED
+
 #define SkAnalyticEdge_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include "include/private/SkAssert.h"
 #include "include/private/SkDebug.h"
@@ -29,8 +33,8 @@ struct SkAnalyticEdge {
         kCCW = -1,  // counter clockwise
     };
 
-    SkAnalyticEdge* fNext;
-    SkAnalyticEdge* fPrev;
+    RAW_PTR_EXCLUSION SkAnalyticEdge* fNext;
+    RAW_PTR_EXCLUSION SkAnalyticEdge* fPrev;
 
     SkFixed fX;
     SkFixed fDX;

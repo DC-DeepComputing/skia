@@ -57,7 +57,7 @@ std::unique_ptr<GrFragmentProcessor::ProgramImpl>
 GrModulateAtlasCoverageEffect::onMakeProgramImpl() const {
     class Impl : public ProgramImpl {
         void emitCode(EmitArgs& args) override {
-            auto fp = args.fFp.cast<GrModulateAtlasCoverageEffect>();
+            auto fp = args.fFp->cast<GrModulateAtlasCoverageEffect>();
             auto f = args.fFragBuilder;
             auto uniHandler = args.fUniformHandler;
             SkString inputColor = this->invokeChild(0, args);

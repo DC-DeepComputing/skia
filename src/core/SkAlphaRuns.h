@@ -6,7 +6,11 @@
  */
 
 #ifndef SkAlphaRuns_DEFINED
+
 #define SkAlphaRuns_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include "include/core/SkColor.h"
 #include "include/core/SkTypes.h"
@@ -23,8 +27,8 @@
 
 class SkAlphaRuns {
 public:
-    int16_t*    fRuns;
-    uint8_t*     fAlpha;
+    RAW_PTR_EXCLUSION int16_t* fRuns;
+    RAW_PTR_EXCLUSION uint8_t* fAlpha;
 
     // Return 0-255 given 0-256
     static inline SkAlpha CatchOverflow(int alpha) {

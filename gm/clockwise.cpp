@@ -104,7 +104,7 @@ std::unique_ptr<GrGeometryProcessor::ProgramImpl> ClockwiseTestProcessor::makePr
 
     private:
         void onEmitCode(EmitArgs& args, GrGPArgs* gpArgs) override {
-            const ClockwiseTestProcessor& proc = args.fGeomProc.cast<ClockwiseTestProcessor>();
+            const ClockwiseTestProcessor& proc = args.fGeomProc->cast<ClockwiseTestProcessor>();
             args.fVaryingHandler->emitAttributes(proc);
             gpArgs->fPositionVar.set(SkSLType::kFloat2, "position");
             args.fFragBuilder->codeAppendf(
