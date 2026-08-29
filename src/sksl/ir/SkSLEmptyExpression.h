@@ -23,7 +23,7 @@ public:
     inline static constexpr Kind kIRNodeKind = Kind::kEmpty;
 
     static std::unique_ptr<Expression> Make(Position pos, const Context& context) {
-        return std::make_unique<EmptyExpression>(pos, context.fTypes.fVoid.get());
+        return std::make_unique<EmptyExpression>(pos, context.fTypes->fVoid.get());
     }
 
     EmptyExpression(Position pos, const Type* type)

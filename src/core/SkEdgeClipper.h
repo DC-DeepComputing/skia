@@ -7,7 +7,11 @@
 
 
 #ifndef SkEdgeClipper_DEFINED
+
 #define SkEdgeClipper_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkPoint.h"
@@ -42,8 +46,9 @@ public:
                          void (*consume)(SkEdgeClipper*, bool newCtr, void* ctx), void* ctx);
 
 private:
-    SkPoint*    fCurrPoint;
-    SkPathVerb* fCurrVerb, *fCurrVerbStop;
+    RAW_PTR_EXCLUSION SkPoint* fCurrPoint;
+    RAW_PTR_EXCLUSION SkPathVerb* fCurrVerb;
+    RAW_PTR_EXCLUSION SkPathVerb* fCurrVerbStop;
     const bool  fCanCullToTheRight;
 
     enum {
