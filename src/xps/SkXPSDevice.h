@@ -6,7 +6,10 @@
  */
 
 #ifndef SkXPSDevice_DEFINED
+
 #define SkXPSDevice_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkTypes.h"
 
@@ -23,6 +26,7 @@
 #include "include/core/SkPoint.h"
 #include "include/core/SkShader.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkStream.h"
 #include "include/core/SkTypeface.h"
 #include "include/docs/SkXPSDocument.h"
 #include "include/private/SkTArray.h"
@@ -81,6 +85,7 @@ public:
 
     bool endSheet();
     bool endPortfolio();
+    void cleanup();
 
     void drawPaint(const SkPaint& paint) override;
     void drawPoints(SkCanvas::PointMode, SkSpan<const SkPoint>, const SkPaint&) override;
@@ -139,7 +144,7 @@ private:
     SkVector fCurrentPixelsPerMeter;
 
     skia_private::TArray<TypefaceUse, true> fTypefaces;
-    skia_private::TArray<TypefaceUse, true>* fTopTypefaces;
+    raw_ptr<skia_private::TArray<TypefaceUse, true>> fTopTypefaces;
 
     SkXPS::Options fOpts;
 

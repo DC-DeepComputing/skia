@@ -23,6 +23,7 @@
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/geom/Shape.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 namespace skgpu::graphite {
 
@@ -127,7 +128,7 @@ sk_sp<TextureProxy> ClipAtlasManager::findOrCreateEntry(uint32_t stackRecordID,
                                   /*includeBounds=*/true, &keyBounds, &usesPathKey);
 
     const struct ClipDrawContext {
-        const ClipStack::ElementList* fElementList;
+        raw_ptr<const ClipStack::ElementList> fElementList;
         SkIRect fMaskDeviceBounds;
     } context = {elementList, maskDeviceBounds};
     sk_sp<TextureProxy> proxy = fRecorder->priv().proxyCache()->findOrCreateCachedProxy(
