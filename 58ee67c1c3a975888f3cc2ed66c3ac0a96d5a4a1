@@ -22,6 +22,30 @@
       },
       "revId": "58ee67c1c3a975888f3cc2ed66c3ac0a96d5a4a1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "388a8b28_bde94d7b",
+        "filename": "src/core/SkPicture.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 387,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-08-29T02:05:26Z",
+      "side": 1,
+      "message": "replying to resolve to submit. Will work on this",
+      "parentUuid": "8d6fbbce_c92cd00d",
+      "range": {
+        "startLine": 387,
+        "startChar": 7,
+        "endLine": 387,
+        "endChar": 28
+      },
+      "revId": "58ee67c1c3a975888f3cc2ed66c3ac0a96d5a4a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
