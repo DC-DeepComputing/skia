@@ -115,8 +115,8 @@ static void adjust_for_lcd_coverage(GrGLSLXPFragmentBuilder* fragBuilder,
 }
 
 void ProgramImpl::emitCode(const EmitArgs& args) {
-    if (!args.fXP.willReadDstColor()) {
-        adjust_for_lcd_coverage(args.fXPFragBuilder, args.fInputCoverage, args.fXP);
+    if (!args.fXP->willReadDstColor()) {
+        adjust_for_lcd_coverage(args.fXPFragBuilder, args.fInputCoverage, *args.fXP);
         this->emitOutputsForBlendState(args);
     } else {
         GrGLSLXPFragmentBuilder* fragBuilder = args.fXPFragBuilder;
@@ -159,7 +159,7 @@ void ProgramImpl::emitCode(const EmitArgs& args) {
                                       dstColor,
                                       outColor,
                                       args.fOutputSecondary,
-                                      args.fXP);
+                                      *args.fXP);
         if (needsLocalOutColor) {
             fragBuilder->codeAppendf("%s = %s;", args.fOutputPrimary, outColor);
         }

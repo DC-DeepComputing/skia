@@ -6,7 +6,10 @@
  */
 
 #ifndef skgpu_graphite_UploadBufferManager_DEFINED
+
 #define skgpu_graphite_UploadBufferManager_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRefCnt.h"
 #include "src/gpu/BufferWriter.h"
@@ -46,7 +49,7 @@ private:
                                                                  size_t requiredAlignment,
                                                                  std::string_view label);
 
-    ResourceProvider* fResourceProvider;
+    raw_ptr<ResourceProvider> fResourceProvider;
 
     sk_sp<Buffer> fReusedBuffer;
     const uint32_t fMinAlignment;
