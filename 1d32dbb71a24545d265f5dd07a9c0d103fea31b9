@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ea45995_27c5bbb3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5125129
+      },
+      "writtenOn": "2026-08-31T06:06:38Z",
+      "side": 1,
+      "message": "I am working on enable 8/10bit 4:2:2/4:4:4 encoding support for Chromium and hit this issue, PTAL~",
+      "revId": "1d32dbb71a24545d265f5dd07a9c0d103fea31b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
