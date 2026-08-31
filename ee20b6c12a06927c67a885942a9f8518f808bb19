@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "40e7872d_900e55f1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-08-31T23:59:10Z",
+      "side": 1,
+      "message": "draft to say resolved",
+      "parentUuid": "d7850e1f_26a89d07",
+      "revId": "ee20b6c12a06927c67a885942a9f8518f808bb19",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "657439ec_ed3b1442",
         "filename": "src/ports/SkFontMgr_fontconfig.cpp",
         "patchSetId": 9
