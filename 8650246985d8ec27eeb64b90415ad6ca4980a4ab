@@ -119,6 +119,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9c8265b2_342eb961",
+        "filename": "MODULE.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-08-31T18:47:24Z",
+      "side": 1,
+      "message": "Sounds good.  OTOH, IIUC everything here will be exercised during gn/ninja driven builds, as they shell-out/fork-out to bazel for building Rust stuff here: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/BUILD.gn;l\u003d1582-1588;drc\u003d436a90e38eba66169514e8dd97e24fe63f0bfda8.  So I think changing this has as much or as little risk as the changes you are already making in this CL to `//BUILD.gn`.",
+      "parentUuid": "079a7bec_9277bb32",
+      "range": {
+        "startLine": 159,
+        "startChar": 0,
+        "endLine": 162,
+        "endChar": 1
+      },
+      "revId": "8650246985d8ec27eeb64b90415ad6ca4980a4ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "44329a80_a389b76f",
         "filename": "rust/icc/FFI.rs",
         "patchSetId": 8
