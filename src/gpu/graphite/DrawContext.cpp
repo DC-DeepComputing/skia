@@ -260,6 +260,7 @@ void DrawContext::flush(Recorder* recorder) {
     // to the RenderPassTask separately.
     std::unique_ptr<DrawPass> pass = fPendingDraws->snapDrawPass(recorder,
                                                                  &fStorageContext,
+                                                                 fCurrentDrawTask.get(),
                                                                  fTarget.refProxy(),
                                                                  this->imageInfo(),
                                                                  drawPassDstReadStrategy);

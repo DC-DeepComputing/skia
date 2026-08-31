@@ -322,6 +322,7 @@ std::pair<DrawParams*, Layer*> DrawListLayer::recordDraw(const Renderer* rendere
 
 std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
                                                       StorageContext* storageContext,
+                                                      DrawTask* drawTask,
                                                       sk_sp<TextureProxy> target,
                                                       const SkImageInfo& targetInfo,
                                                       const DstReadStrategy dstReadStrategy) {
@@ -338,8 +339,7 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
 
     const bool rebindTexturesOnPipelineChange = dstReadStrategy == DstReadStrategy::kTextureCopy;
 
-    if (fStorageBufferSupport) {
-        SkASSERT(storageContext);
+    if (storageContext) {
         storageContext->finalizePrecachedStorageData();
     }
 
@@ -350,7 +350,6 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
     SkASSERT(drawPass->fTarget->isFullyLazy() ||
              SkIRect::MakeSize(drawPass->fTarget->dimensions()).contains(lastScissor));
     drawPass->fCommandList.setScissor(lastScissor);
-
     // Accumulate rough pixel area touched by each pipeline
     drawPass->fPipelineDrawAreas.push_back_n(fPipelineCache.count(), 0.f);
 
@@ -441,10 +440,11 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
 
     drawWriter.flush();
 
-    if (fStorageBufferSupport) {
-        SkASSERT(storageContext);
-        drawPass->fStorageBufferInfo = storageContext->finalize(bufferMgr);
-        if (!storageContext->isEmpty() && !drawPass->fStorageBufferInfo) SK_UNLIKELY {
+    if (storageContext) {
+        drawPass->fStorageBufferInfo =
+                storageContext->finalize(bufferMgr, recorder, drawTask, drawPass.get());
+        if (fStorageBufferSupport &&
+            !storageContext->isEmpty() && !drawPass->fStorageBufferInfo) SK_UNLIKELY {
             SKIA_LOG_W("Failed to write Storage Data for Draw pass, dropping!");
             this->reset(LoadOp::kLoad);
             return nullptr;

@@ -98,6 +98,7 @@ std::pair<DrawParams*, Layer*> DrawList::recordDraw(
 
 std::unique_ptr<DrawPass> DrawList::snapDrawPass(Recorder* recorder,
                                                  StorageContext* storageContext,
+                                                 DrawTask* drawTask,
                                                  sk_sp<TextureProxy> target,
                                                  const SkImageInfo& targetInfo,
                                                  DstReadStrategy dstReadStrategy) {
@@ -148,8 +149,7 @@ std::unique_ptr<DrawPass> DrawList::snapDrawPass(Recorder* recorder,
     const bool useStorageBuffers = caps->storageBufferSupport();
     UniformTracker uniformTracker(useStorageBuffers);
 
-    if (useStorageBuffers) {
-        SkASSERT(storageContext);
+    if (storageContext) {
         storageContext->finalizePrecachedStorageData();
     }
 
@@ -248,10 +248,11 @@ std::unique_ptr<DrawPass> DrawList::snapDrawPass(Recorder* recorder,
     // Finish recording draw calls for any collected data still pending at end of the loop
     drawWriter.flush();
 
-    if (useStorageBuffers) {
-        SkASSERT(storageContext);
-        drawPass->fStorageBufferInfo = storageContext->finalize(bufferMgr);
-        if (!storageContext->isEmpty() && !drawPass->fStorageBufferInfo) SK_UNLIKELY {
+    if (storageContext) {
+        drawPass->fStorageBufferInfo =
+                storageContext->finalize(bufferMgr, recorder, drawTask, drawPass.get());
+        if (useStorageBuffers && !
+            storageContext->isEmpty() && !drawPass->fStorageBufferInfo) SK_UNLIKELY {
             SKIA_LOG_W("Failed to write Storage Data for Draw pass, dropping!");
             this->reset(LoadOp::kLoad);
             return nullptr;

@@ -22,7 +22,6 @@
 #include "src/gpu/graphite/Texture.h"  // IWYU pragma: keep
 #include "src/gpu/graphite/TextureProxy.h"
 
-
 using namespace skia_private;
 
 namespace skgpu::graphite {
@@ -76,6 +75,15 @@ bool DrawPass::prepareResources(ResourceProvider* resourceProvider,
         }
     }
 
+    if (fStorageTextureProxy) {
+        SkASSERT(fStorageTextureProxy->textureInfo().isValid());
+        if (!fStorageTextureProxy->isInstantiated() && !fStorageTextureProxy->isLazy()) {
+            SKIA_LOG_W("Cannot sample from an uninstantiated TextureProxy, label %s",
+                        fStorageTextureProxy->label());
+            return false;
+        }
+    }
+
     return true;
 }
 
@@ -98,6 +106,8 @@ bool DrawPass::addResourceRefs(ResourceProvider* resourceProvider,
             return false;
         }
 
+        fStorageBufferStages |= pipeline->storageBufferStages();
+
         TRACE_EVENT_INSTANT1_ALWAYS(
                 "skia.shaders",
                 TRACE_STR_COPY(pipeline->getLabel()),
@@ -111,6 +121,10 @@ bool DrawPass::addResourceRefs(ResourceProvider* resourceProvider,
 
     for (int i = 0; i < fSampledTextures.size(); ++i) {
         commandBuffer->trackResource(fSampledTextures[i]->refTexture());
+    }
+
+    if (fStorageTextureProxy) {
+        commandBuffer->trackResource(fStorageTextureProxy->refTexture());
     }
 
     return true;

@@ -60,7 +60,10 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(StorageContextAlignmentTest,
     ctxHandle->finalizePrecachedStorageData();
 
     // Finalize storage buffer allocation and check 16-byte alignment
-    auto bindInfo = ctxHandle->finalize(recorder->priv().drawBufferManager());
+    auto bindInfo = ctxHandle->finalize(recorder->priv().drawBufferManager(),
+                                        /*recorder=*/nullptr,
+                                        /*drawTask=*/nullptr,
+                                        /*drawPass=*/nullptr);
     REPORTER_ASSERT(reporter, bindInfo.fBuffer != nullptr);
     REPORTER_ASSERT(reporter, bindInfo.fSize == 80);
     REPORTER_ASSERT(reporter, bindInfo.fSize % 16 == 0);
@@ -90,7 +93,10 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(StorageContextPaddingAlignmentTest,
     ctxHandle->finalizePrecachedStorageData();
 
     // Finalize: 40 bytes should be padded to 48 bytes (aligned to 16 bytes)
-    auto bindInfo = ctxHandle->finalize(recorder->priv().drawBufferManager());
+    auto bindInfo = ctxHandle->finalize(recorder->priv().drawBufferManager(),
+                                        /*recorder=*/nullptr,
+                                        /*drawTask=*/nullptr,
+                                        /*drawPass=*/nullptr);
     REPORTER_ASSERT(reporter, bindInfo.fBuffer != nullptr);
     REPORTER_ASSERT(reporter, bindInfo.fSize == 48);
     REPORTER_ASSERT(reporter, bindInfo.fSize % 16 == 0);
@@ -126,7 +132,10 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(StorageContextAppendVertexTest,
     REPORTER_ASSERT(reporter, vOffset == 48);
 
     // 5. Finalize storage buffer
-    auto bindInfo = ctxHandle->finalize(recorder->priv().drawBufferManager());
+    auto bindInfo = ctxHandle->finalize(recorder->priv().drawBufferManager(),
+                                        /*recorder=*/nullptr,
+                                        /*drawTask=*/nullptr,
+                                        /*drawPass=*/nullptr);
     REPORTER_ASSERT(reporter, bindInfo.fBuffer != nullptr);
     // Total size = 48 (aligned gradient) + 48 (vertices) = 96 bytes
     REPORTER_ASSERT(reporter, bindInfo.fSize == 96);
@@ -173,7 +182,10 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(StorageContextMultipleRenderStepsTest,
     REPORTER_ASSERT(reporter, offsetB == 96 + 32);  // 128
 
     // 6. Finalize storage buffer: Total size = 96 (gradient) + 32 (local offset) + 32 (dataB) = 160
-    auto bindInfo = ctxHandle->finalize(recorder->priv().drawBufferManager());
+    auto bindInfo = ctxHandle->finalize(recorder->priv().drawBufferManager(),
+                                        /*recorder=*/nullptr,
+                                        /*drawTask=*/nullptr,
+                                        /*drawPass=*/nullptr);
     REPORTER_ASSERT(reporter, bindInfo.fBuffer != nullptr);
     REPORTER_ASSERT(reporter, bindInfo.fSize == 160);
     REPORTER_ASSERT(reporter, bindInfo.fSize % 32 == 0);
@@ -224,7 +236,10 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(StorageContextLCMVariantsTest,
         REPORTER_ASSERT(reporter, vOffset % tc.align == 0);
         REPORTER_ASSERT(reporter, vOffset % tc.expectedLCM == 0);
 
-        auto bindInfo = ctx.finalize(recorder->priv().drawBufferManager());
+        auto bindInfo = ctx.finalize(recorder->priv().drawBufferManager(),
+                                     /*recorder=*/nullptr,
+                                     /*drawTask=*/nullptr,
+                                     /*drawPass=*/nullptr);
         REPORTER_ASSERT(reporter, bindInfo.fBuffer != nullptr);
         REPORTER_ASSERT(reporter, bindInfo.fSize == expectedPaddedGradSize + tc.stride * 2);
     }
@@ -241,7 +256,10 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(StorageContextVertexOnlyAndResetTest,
 
     // 1. Finalize on empty context returns null buffer
     ctx.finalizePrecachedStorageData();
-    auto emptyInfo = ctx.finalize(recorder->priv().drawBufferManager());
+    auto emptyInfo = ctx.finalize(recorder->priv().drawBufferManager(),
+                                  /*recorder=*/nullptr,
+                                  /*drawTask=*/nullptr,
+                                  /*drawPass=*/nullptr);
     REPORTER_ASSERT(reporter, emptyInfo.fBuffer == nullptr);
     REPORTER_ASSERT(reporter, emptyInfo.fSize == 0);
 
@@ -254,7 +272,10 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(StorageContextVertexOnlyAndResetTest,
     REPORTER_ASSERT(reporter, offset == 0);
     REPORTER_ASSERT(reporter, !ctx.isEmpty());
 
-    auto bindInfo = ctx.finalize(recorder->priv().drawBufferManager());
+    auto bindInfo = ctx.finalize(recorder->priv().drawBufferManager(),
+                                 /*recorder=*/nullptr,
+                                 /*drawTask=*/nullptr,
+                                 /*drawPass=*/nullptr);
     REPORTER_ASSERT(reporter, bindInfo.fBuffer != nullptr);
     REPORTER_ASSERT(reporter, bindInfo.fSize == 24);
 
