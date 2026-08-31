@@ -16,6 +16,29 @@
       "message": "PTAL; Lost the +1",
       "revId": "f71382b5b4deaa17c02011f7ffebdc1ba2bc4a27",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a16a368d_c019a93e",
+        "filename": "src/gpu/graphite/geom/WideTiles.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-08-31T15:23:12Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 24,
+        "startChar": 40,
+        "endLine": 24,
+        "endChar": 50
+      },
+      "revId": "f71382b5b4deaa17c02011f7ffebdc1ba2bc4a27",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
