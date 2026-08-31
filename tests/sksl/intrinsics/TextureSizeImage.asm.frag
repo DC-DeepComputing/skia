@@ -37,7 +37,7 @@
     %v4float = OpTypeVector %float 4
 %_ptr_Output_v4float = OpTypePointer Output %v4float
 %sk_FragColor = OpVariable %_ptr_Output_v4float Output  ; RelaxedPrecision, Location 0, Index 0
-         %12 = OpTypeImage %float 2D 0 0 0 2 Rgba32f
+         %12 = OpTypeImage %float 2D 0 0 0 2 Rgba8
 %_ptr_UniformConstant_12 = OpTypePointer UniformConstant %12
           %t = OpVariable %_ptr_UniformConstant_12 UniformConstant  ; Binding 0, DescriptorSet 0
        %void = OpTypeVoid

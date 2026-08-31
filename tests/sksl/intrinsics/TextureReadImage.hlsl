@@ -1,4 +1,4 @@
-RWTexture2D<float4> t : register(u0, space0);
+RWTexture2D<unorm float4> t : register(u0, space0);
 
 static float4 sk_FragColor;
 
