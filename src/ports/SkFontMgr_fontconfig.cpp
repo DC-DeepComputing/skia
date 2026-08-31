@@ -30,6 +30,7 @@
 #include "src/core/SkScalerContext.h"
 #include "src/core/SkTSort.h"
 #include "src/core/SkTypefaceCache.h"
+#include "src/ports/SkFontMgr_fontconfig_priv.h"
 #include "src/ports/SkTypeface_proxy.h"
 
 #include <fontconfig/fontconfig.h>
@@ -79,6 +80,14 @@ static SkMutex& f_c_mutex() {
     static SkMutex& mutex = *(new SkMutex);
     return mutex;
 }
+static int& f_c_mutex_depth() {
+    static int depth = 0;
+    return depth;
+}
+static SkThreadID& f_c_mutex_owner() {
+    static SkThreadID owner = kIllegalThreadID;
+    return owner;
+}
 
 class FCLocker {
     inline static constexpr int FontConfigThreadSafeVersion = 21393;
@@ -86,13 +95,24 @@ class FCLocker {
     // Assume FcGetVersion() has always been thread safe.
     static void lock() SK_NO_THREAD_SAFETY_ANALYSIS {
         if (FcGetVersion() < FontConfigThreadSafeVersion) {
-            f_c_mutex().acquire();
+            SkThreadID self = SkGetThreadID();
+            if (f_c_mutex_owner() != self) {
+                f_c_mutex().acquire();
+                f_c_mutex_owner() = self;
+                f_c_mutex_depth() = 1;
+            } else {
+                f_c_mutex_depth()++;
+            }
         }
     }
     static void unlock() SK_NO_THREAD_SAFETY_ANALYSIS {
-        AssertHeld();
         if (FcGetVersion() < FontConfigThreadSafeVersion) {
-            f_c_mutex().release();
+            AssertHeld();
+            f_c_mutex_depth()--;
+            if (f_c_mutex_depth() == 0) {
+                f_c_mutex_owner() = kIllegalThreadID;
+                f_c_mutex().release();
+            }
         }
     }
 
@@ -102,7 +122,7 @@ public:
 
     static void AssertHeld() { SkDEBUGCODE(
         if (FcGetVersion() < FontConfigThreadSafeVersion) {
-            f_c_mutex().assertHeld();
+            SkASSERT(f_c_mutex_owner() == SkGetThreadID());
         }
     ) }
 };
@@ -165,119 +185,33 @@ static const FcMatrix* get_matrix(FcPattern* pattern, const char object[]) {
     return matrix;
 }
 
-enum SkWeakReturn {
-    kIsWeak_WeakReturn,
-    kIsStrong_WeakReturn,
-    kNoId_WeakReturn
-};
-/** Ideally there  would exist a call like
- *  FcResult FcPatternIsWeak(pattern, object, id, FcBool* isWeak);
- *  Sometime after 2.12.4 FcPatternGetWithBinding was added which can retrieve the binding.
- *
- *  However, there is no such call and as of Fc 2.11.0 even FcPatternEquals ignores the weak bit.
- *  Currently, the only reliable way of finding the weak bit is by its effect on matching.
- *  The weak bit only affects the matching of FC_FAMILY and FC_POSTSCRIPT_NAME object values.
- *  A element with the weak bit is scored after FC_LANG, without the weak bit is scored before.
- *  Note that the weak bit is stored on the element, not on the value it holds.
- */
-static SkWeakReturn is_weak(FcPattern* pattern, const char object[], int id) {
-    FCLocker::AssertHeld();
+void SkFontMgr_FontConfig_remove_weak(FcPattern* pattern, const char object[]) {
+    FCLocker lock;
 
-    FcResult result;
-
-    // Create a copy of the pattern with only the value 'pattern'['object'['id']] in it.
-    // Internally, FontConfig pattern objects are linked lists, so faster to remove from head.
-    SkAutoFcObjectSet requestedObjectOnly(FcObjectSetBuild(object, nullptr));
-    SkAutoFcPattern minimal(FcPatternFilter(pattern, requestedObjectOnly));
-    FcBool hasId = true;
-    for (int i = 0; hasId && i < id; ++i) {
-        hasId = FcPatternRemove(minimal, object, 0);
-    }
-    if (!hasId) {
-        return kNoId_WeakReturn;
-    }
-    FcValue value;
-    result = FcPatternGet(minimal, object, 0, &value);
-    if (result != FcResultMatch) {
-        return kNoId_WeakReturn;
-    }
-    while (hasId) {
-        hasId = FcPatternRemove(minimal, object, 1);
-    }
-
-    // Create a font set with two patterns.
-    // 1. the same 'object' as minimal and a lang object with only 'nomatchlang'.
-    // 2. a different 'object' from minimal and a lang object with only 'matchlang'.
-    SkAutoFcFontSet fontSet;
-
-    SkAutoFcLangSet strongLangSet;
-    FcLangSetAdd(strongLangSet, (const FcChar8*)"nomatchlang");
-    SkAutoFcPattern strong(FcPatternDuplicate(minimal));
-    FcPatternAddLangSet(strong, FC_LANG, strongLangSet);
-
-    SkAutoFcLangSet weakLangSet;
-    FcLangSetAdd(weakLangSet, (const FcChar8*)"matchlang");
-    SkAutoFcPattern weak;
-    FcPatternAddString(weak, object, (const FcChar8*)"nomatchstring");
-    FcPatternAddLangSet(weak, FC_LANG, weakLangSet);
-
-    FcFontSetAdd(fontSet, strong.release());
-    FcFontSetAdd(fontSet, weak.release());
-
-    // Add 'matchlang' to the copy of the pattern.
-    FcPatternAddLangSet(minimal, FC_LANG, weakLangSet);
-
-    // Run a match against the copy of the pattern.
-    // If the 'id' was weak, then we should match the pattern with 'matchlang'.
-    // If the 'id' was strong, then we should match the pattern with 'nomatchlang'.
-
-    // Note that this config is only used for FcFontRenderPrepare, which we don't even want.
-    // However, there appears to be no way to match/sort without it.
-    SkAutoFcConfig config;
-    FcFontSet* fontSets[1] = { fontSet };
-    SkAutoFcPattern match(FcFontSetMatch(config, fontSets, std::size(fontSets),
-                                         minimal, &result));
-
-    FcLangSet* matchLangSet;
-    FcPatternGetLangSet(match, FC_LANG, 0, &matchLangSet);
-    return FcLangEqual == FcLangSetHasLang(matchLangSet, (const FcChar8*)"matchlang")
-                        ? kIsWeak_WeakReturn : kIsStrong_WeakReturn;
-}
-
-/** Removes weak elements from either FC_FAMILY or FC_POSTSCRIPT_NAME objects in the property.
- *  This can be quite expensive, and should not be used more than once per font lookup.
- *  This removes all of the weak elements after the last strong element.
- */
-static void remove_weak(FcPattern* pattern, const char object[]) {
-    FCLocker::AssertHeld();
-
-    SkAutoFcObjectSet requestedObjectOnly(FcObjectSetBuild(object, nullptr));
-    SkAutoFcPattern minimal(FcPatternFilter(pattern, requestedObjectOnly));
-
-    int lastStrongId = -1;
-    int numIds;
-    SkWeakReturn result;
-    for (int id = 0; ; ++id) {
-        result = is_weak(minimal, object, 0);
-        if (kNoId_WeakReturn == result) {
-            numIds = id;
+    bool seenStrong = false;
+    int index = 0;
+    while (true) {
+        FcValue value;
+        FcValueBinding binding;
+        FcResult result = FcPatternGetWithBinding(pattern, object, index, &value, &binding);
+        if (result != FcResultMatch) {
             break;
         }
-        if (kIsStrong_WeakReturn == result) {
-            lastStrongId = id;
+        if (binding == FcValueBindingStrong) {
+            seenStrong = true;
+            ++index;
+        } else if (binding == FcValueBindingWeak && seenStrong) {
+            // remove the element at this index but do not advance index as all of the elements will
+            // move up. (e.g. [a, b, c] remove a -> [b, c])
+            SkAssertResult(FcPatternRemove(pattern, object, index));
+        } else {
+            ++index;
         }
-        SkAssertResult(FcPatternRemove(minimal, object, 0));
     }
+}
 
-    // If they were all weak, then leave the pattern alone.
-    if (lastStrongId < 0) {
-        return;
-    }
-
-    // Remove everything after the last strong.
-    for (int id = lastStrongId + 1; id < numIds; ++id) {
-        SkAssertResult(FcPatternRemove(pattern, object, lastStrongId + 1));
-    }
+static void remove_weak(FcPattern* pattern, const char object[]) {
+    SkFontMgr_FontConfig_remove_weak(pattern, object);
 }
 
 static int map_range(SkScalar value,
@@ -553,9 +487,10 @@ class SkFontMgr_fontconfig : public SkFontMgr {
 
     class StyleSet : public SkFontStyleSet {
     public:
-        StyleSet(sk_sp<SkFontMgr_fontconfig> parent, SkAutoFcFontSet fontSet)
+        StyleSet(sk_sp<SkFontMgr_fontconfig> parent, SkAutoFcFontSet fontSet, SkString familyName)
             : fFontMgr(std::move(parent))
             , fFontSet(std::move(fontSet))
+            , fFamilyName(std::move(familyName))
         { }
 
         ~StyleSet() override {
@@ -597,6 +532,7 @@ class SkFontMgr_fontconfig : public SkFontMgr {
                 FCLocker lock;
 
                 SkAutoFcPattern pattern;
+                FcPatternAddString(pattern, FC_FAMILY, (const FcChar8*)fFamilyName.c_str());
                 fcpattern_from_skfontstyle(style, pattern);
                 FcConfigSubstitute(fFontMgr->fFC, pattern, FcMatchPattern);
                 FcDefaultSubstitute(pattern);
@@ -614,6 +550,7 @@ class SkFontMgr_fontconfig : public SkFontMgr {
     private:
         sk_sp<SkFontMgr_fontconfig> fFontMgr;
         SkAutoFcFontSet fFontSet;
+        SkString fFamilyName;
     };
 
     static bool FindName(const SkTDArray<const char*>& list, const char* str) {
@@ -865,12 +802,12 @@ protected:
             for (int fontIndex = 0; fontIndex < allFonts->nfont; ++fontIndex) {
                 FcPattern* font = allFonts->fonts[fontIndex];
                 if (FontFamilyNameMatches(font, matchPattern) && FontAccessible(font)) {
-                    FcFontSetAdd(matches, FcFontRenderPrepare(fFC, pattern, font));
+                    FcFontSetAdd(matches, FcFontRenderPrepare(fFC, matchPattern, font));
                 }
             }
         }
 
-        return sk_sp<SkFontStyleSet>(new StyleSet(sk_ref_sp(this), std::move(matches)));
+        return sk_sp<SkFontStyleSet>(new StyleSet(sk_ref_sp(this), std::move(matches), SkString(familyName)));
     }
 
     sk_sp<SkTypeface> onMatchFamilyStyle(const char familyName[],
