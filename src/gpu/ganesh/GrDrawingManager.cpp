@@ -176,8 +176,7 @@ bool GrDrawingManager::flush(SkSpan<GrSurfaceProxy*> proxies,
         preFlushSuccessful &= onFlushCBObject->preFlush(&onFlushProvider);
     }
 
-    bool cachePurgeNeeded = false;
-    bool flushSuccessful = false;
+    GrRenderTask::ExecutionResult result { false, true };
 
     if (preFlushSuccessful) {
         bool usingReorderedDAG = false;
@@ -209,14 +208,14 @@ bool GrDrawingManager::flush(SkSpan<GrSurfaceProxy*> proxies,
         }
 
         if (!resourceAllocator.failedInstantiation()) {
-            cachePurgeNeeded = this->executeRenderTasks(&flushState);
-            flushSuccessful = true;
+            result = this->executeRenderTasks(&flushState);
         }
     }
     this->removeRenderTasks();
 
     gpu->executeFlushInfo(proxies, access, info, std::move(timerQuery), newState);
 
+    bool cachePurgeNeeded = result.fAnyTaskExecuted;
     // Give the cache a chance to purge resources that become purgeable due to flushing.
     if (cachePurgeNeeded) {
         resourceCache->purgeAsNeeded();
@@ -231,7 +230,7 @@ bool GrDrawingManager::flush(SkSpan<GrSurfaceProxy*> proxies,
     }
     fFlushing = false;
 
-    return flushSuccessful;
+    return result.fAllTasksSuccessful;
 }
 
 bool GrDrawingManager::submitToGpu() {
@@ -247,7 +246,8 @@ bool GrDrawingManager::submitToGpu() {
     return gpu->submitToGpu();
 }
 
-bool GrDrawingManager::executeRenderTasks(GrOpFlushState* flushState) {
+
+GrRenderTask::ExecutionResult GrDrawingManager::executeRenderTasks(GrOpFlushState* flushState) {
 #if GR_FLUSH_TIME_OP_SPEW
     SkDebugf("Flushing %d opsTasks\n", fDAG.size());
     for (int i = 0; i < fDAG.size(); ++i) {
@@ -258,8 +258,6 @@ bool GrDrawingManager::executeRenderTasks(GrOpFlushState* flushState) {
         }
     }
 #endif
-
-    bool anyRenderTasksExecuted = false;
 
     for (const auto& renderTask : fDAG) {
         if (!renderTask || !renderTask->isInstantiated()) {
@@ -285,6 +283,7 @@ bool GrDrawingManager::executeRenderTasks(GrOpFlushState* flushState) {
     // Unlike kMaxRenderTasksBeforeFlush, this is a global limit.
     static constexpr int kMaxRenderPassesBeforeFlush = 100;
 
+    GrRenderTask::ExecutionResult result {false, true};
     // Execute the normal op lists.
     for (const auto& renderTask : fDAG) {
         SkASSERT(renderTask);
@@ -292,9 +291,8 @@ bool GrDrawingManager::executeRenderTasks(GrOpFlushState* flushState) {
             continue;
         }
 
-        if (renderTask->execute(flushState)) {
-            anyRenderTasksExecuted = true;
-        }
+        result.accum(renderTask->execute(flushState));
+
         if (++numRenderTasksExecuted >= kMaxRenderTasksBeforeFlush ||
             flushState->gpu()->getCurrentSubmitRenderPassCount() >= kMaxRenderPassesBeforeFlush) {
             flushState->gpu()->submitToGpu();
@@ -310,7 +308,7 @@ bool GrDrawingManager::executeRenderTasks(GrOpFlushState* flushState) {
     // resources are the last to be purged by the resource cache.
     flushState->reset();
 
-    return anyRenderTasksExecuted;
+    return result;
 }
 
 void GrDrawingManager::removeRenderTasks() {
