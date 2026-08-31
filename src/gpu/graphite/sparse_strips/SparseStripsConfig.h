@@ -19,6 +19,10 @@ struct SparseStripConfig {
     static constexpr uint16_t kTileHeight = 8;
     static_assert(kTileWidth == kTileHeight);
 
+    // The tile dimensions MUST match the hard coded constant in the fragment shader. If that value
+    // changes, this must be updated.
+    static_assert(kTileWidth == 8);
+
     // These control the AlphaAtlasManager
     static constexpr SkColorType kColorType       = SkColorType::kRGBA_8888_SkColorType;
     static constexpr int32_t kAtlasBytesPerTexel  = 4;

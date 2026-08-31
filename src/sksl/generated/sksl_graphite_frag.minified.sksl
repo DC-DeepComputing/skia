@@ -265,4 +265,8 @@ static constexpr char SKSL_MINIFIED_sksl_graphite_frag[] =
 " i=(2.*c).xx;half2 j=h/i;return sample(d,float2(j)).xxxx;}$pure half4 blur_coverage_fn"
 "(float2 a,float4 b,half2 c,int d,sampler2D e){switch(d){case 0:{return $M(a"
 ",b,c.x,c.y,e);}case 2:{return $N(a,b,e);}case 1:{return $O(a,b,c.x,e);}}return"
-" half4(0.);}";
+" half4(0.);}$pure half4 endcap_coverage_fn(float2 a,float2 b,sampler2D c,sampler2D"
+" d,uint e,int f){uint g=8;uint h=8;uint i=uint(floor(a.x));uint j=uint(floor"
+"(a.y));uint k=i/g;uint l=i%g;uint m=j;uint n=g*h;uint o=(k*n+m*g)+l;uint p="
+"e+o;uint q=p&3;uint r=p>>2;uint s=uint(b.x);uint2 t=uint2(r%s,r/s);half4 u;"
+"if(f==0)u=textureRead(c,t);else u=textureRead(d,t);return u[q].xxxx;}";
