@@ -165,6 +165,50 @@ static const FcMatrix* get_matrix(FcPattern* pattern, const char object[]) {
     return matrix;
 }
 
+/** Removes weak elements from either FC_FAMILY or FC_POSTSCRIPT_NAME objects in
+ * the property. This can be quite expensive, and should not be used more than
+ * once per font lookup. This removes all of the weak elements after the last
+ * strong element.
+ */
+static void remove_weak(FcPattern* pattern, const char object[]) {
+    FCLocker::AssertHeld();
+
+    SkAutoFcObjectSet requestedObjectOnly(FcObjectSetBuild(object, nullptr));
+    SkAutoFcPattern minimal(FcPatternFilter(pattern, requestedObjectOnly));
+
+    int lastStrongId = -1;
+    int numIds;
+    FcValue value;
+    FcValueBinding binding;
+
+    for (int id = 0;; ++id) {
+        FcResult result = FcPatternGetWithBinding(
+                pattern, object, index, &value, &binding);
+        if (result == FcResultNoId) {
+            break;
+        }
+
+        if (result == FcResultMatch && binding == FcValueBindingWeak) {
+            numIds = id;
+            break;
+        }
+        if (result == FcResultMatch && binding == FcValueBindingStrong) {
+            lastStrongId = id;
+        }
+        SkAssertResult(FcPatternRemove(minimal, object, 0));
+    }
+
+    // If they were all weak, then leave the pattern alone.
+    if (lastStrongId < 0) {
+        return;
+    }
+
+    // Remove everything after the last strong.
+    for (int id = lastStrongId + 1; id < numIds; ++id) {
+        SkAssertResult(FcPatternRemove(pattern, object, lastStrongId + 1));
+    }
+}
+
 static int map_range(SkScalar value,
                      SkScalar old_min, SkScalar old_max,
                      SkScalar new_min, SkScalar new_max)
@@ -294,50 +338,6 @@ static void fcpattern_from_skfontstyle(SkFontStyle style, FcPattern* pattern) {
     FcPatternAddInteger(pattern, FC_WEIGHT, weight);
     FcPatternAddInteger(pattern, FC_WIDTH , width);
     FcPatternAddInteger(pattern, FC_SLANT , slant);
-}
-
-/** Removes weak elements from either FC_FAMILY or FC_POSTSCRIPT_NAME objects in
- * the property. This can be quite expensive, and should not be used more than
- * once per font lookup. This removes all of the weak elements after the last
- * strong element.
- */
-static void remove_weak(FcPattern* pattern, const char object[]) {
-    FCLocker::AssertHeld();
-
-    SkAutoFcObjectSet requestedObjectOnly(FcObjectSetBuild(object, nullptr));
-    SkAutoFcPattern minimal(FcPatternFilter(pattern, requestedObjectOnly));
-
-    int lastStrongId = -1;
-    int numIds;
-    FcValue value;
-    FcValueBinding binding;
-
-    for (int id = 0;; ++id) {
-        FcResult result = FcPatternGetWithBinding(
-                pattern, object, index, &value, &binding);
-        if (result == FcResultNoId) {
-            break;
-        }
-
-        if (result == FcResultMatch && binding == FcValueBindingWeak) {
-            numIds = id;
-            break;
-        }
-        if (result == FcResultMatch && binding == FcValueBindingStrong) {
-            lastStrongId = id;
-        }
-        SkAssertResult(FcPatternRemove(minimal, object, 0));
-    }
-
-    // If they were all weak, then leave the pattern alone.
-    if (lastStrongId < 0) {
-        return;
-    }
-
-    // Remove everything after the last strong.
-    for (int id = lastStrongId + 1; id < numIds; ++id) {
-        SkAssertResult(FcPatternRemove(pattern, object, lastStrongId + 1));
-    }
 }
 
 class SkTypeface_fontconfig : public SkTypeface_proxy {
