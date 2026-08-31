@@ -16,6 +16,52 @@
       "message": "PTAL",
       "revId": "179fdddef5b81dfa7486076619234795f78ba9b9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8208bc88_89c40295",
+        "filename": "resources/sksl/errors/InvalidBackendBindingFlagsMetal.sksl",
+        "patchSetId": 7
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-08-31T20:00:26Z",
+      "side": 1,
+      "message": "nit: align with other comments",
+      "range": {
+        "startLine": 17,
+        "startChar": 66,
+        "endLine": 17,
+        "endChar": 90
+      },
+      "revId": "179fdddef5b81dfa7486076619234795f78ba9b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a24614c2_817f9790",
+        "filename": "src/sksl/ir/SkSLFunctionDeclaration.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-08-31T20:00:26Z",
+      "side": 1,
+      "message": "I noticed this check is done 3 times, here, in `SkSLFunctionCall.cpp`, and `SkSLVarDeclarations.cpp`. Could this logic be extracted to new method in SkSLType.h similar to `isStorageTexture()`? Could be named something like `isReadonlyTexture()`.",
+      "range": {
+        "startLine": 96,
+        "startChar": 19,
+        "endLine": 98,
+        "endChar": 69
+      },
+      "revId": "179fdddef5b81dfa7486076619234795f78ba9b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
