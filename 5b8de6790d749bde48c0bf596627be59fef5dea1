@@ -34,6 +34,24 @@
       ],
       "revId": "5b8de6790d749bde48c0bf596627be59fef5dea1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "13e30e4a_440ab047",
+        "filename": "modules/skparagraph/src/OneLineShaper.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 716,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-08-31T15:28:58Z",
+      "side": 1,
+      "message": "I think they\u0027re fully equivalent (`SkScalar` is just a typedef for `float` these days), should be fine to switch to float.  I kept it because it has an assigned name, but definitely not required.",
+      "parentUuid": "e63a5de9_7fe8dc6f",
+      "revId": "5b8de6790d749bde48c0bf596627be59fef5dea1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
