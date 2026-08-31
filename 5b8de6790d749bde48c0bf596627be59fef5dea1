@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e63a5de9_7fe8dc6f",
+        "filename": "modules/skparagraph/src/OneLineShaper.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 716,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-08-31T15:06:11Z",
+      "side": 1,
+      "message": "So, limitlessWidth is std::numeric_limits\u003cSkScalar\u003e::max() and it\u0027s not the same as std::numeric_limits\u003cfloat\u003e::max()?\nI wonder if I could use float in such case (not sure it would not come up in some weird Flutter test).",
+      "fixSuggestions": [
+        {
+          "fixId": "f1302297_ab58b593",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "modules/skparagraph/src/OneLineShaper.cpp",
+              "range": {
+                "startLine": 716,
+                "startChar": 0,
+                "endLine": 717,
+                "endChar": 0
+              },
+              "replacement": "                                  limitlessWidth, this);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "5b8de6790d749bde48c0bf596627be59fef5dea1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
