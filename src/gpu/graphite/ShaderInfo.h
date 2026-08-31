@@ -88,6 +88,10 @@ public:
     static constexpr char kStorageBufferName[] = "fsStorageBuffer";
 
 private:
+#if defined(GPU_TEST_UTILS)
+    friend class StepStorageTextureTest;
+#endif
+
     struct SharedGeneratorData;
 
     ShaderInfo(const ShaderCodeDictionary*,
@@ -111,6 +115,9 @@ private:
     void generateVertexSkSL(const Caps*,
                             const RenderStep*,
                             const SharedGeneratorData&);
+
+    static std::string emitStepStorageTextureFallback(const ResourceBindingRequirements&,
+                                                      const RenderStep*);
 
     const ShaderCodeDictionary* fShaderCodeDictionary;
     const RuntimeEffectDictionary* fRuntimeEffectDictionary;

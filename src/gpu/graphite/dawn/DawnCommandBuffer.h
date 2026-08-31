@@ -162,6 +162,7 @@ private:
     bool fBoundUniformBuffersDirty = false;
 
     std::array<BindBufferInfo, DawnGraphicsPipeline::kMaxNumUniformBuffers> fBoundUniforms;
+    const Texture* fBoundStorageTexture = nullptr;
 
     wgpu::CommandEncoder fCommandEncoder;
     wgpu::RenderPassEncoder fActiveRenderPassEncoder;

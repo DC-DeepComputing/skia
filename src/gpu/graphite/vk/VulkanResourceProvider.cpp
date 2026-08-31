@@ -130,6 +130,20 @@ sk_sp<ComputePipeline> VulkanResourceProvider::createComputePipeline(const Compu
     return nullptr;
 }
 
+VkImageView VulkanResourceProvider::getOrCreateNullTextureView() {
+    if (!fNullTexture) {
+        TextureInfo info = this->vulkanSharedContext()->caps()->getDefaultReadableTextureInfo(
+                kRGBA_F32_SkColorType,
+                Protected::kNo);
+        fNullTexture = this->createTexture(SkISize::Make(1, 1), info, "UnusedStorageTextureSlot");
+        SkASSERT(fNullTexture);
+    }
+    const auto* vkTex = static_cast<const VulkanTexture*>(fNullTexture.get());
+    const auto* view = vkTex ? vkTex->getImageView(VulkanImageView::Usage::kShaderInput) : nullptr;
+    SkASSERT(view);
+    return view ? view->imageView() : VK_NULL_HANDLE;
+}
+
 sk_sp<Texture> VulkanResourceProvider::createTexture(SkISize size,
                                                      const TextureInfo& info,
                                                      std::string_view label) {
