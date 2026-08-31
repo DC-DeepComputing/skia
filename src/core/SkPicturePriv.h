@@ -215,6 +215,7 @@ public:
     }
 
     const SkPicture* const* begin() const { return fPics; }
+    const SkPicture* const at(int i) const { return fPics[i]; }
     int count() const { return fCount; }
 
 private:
