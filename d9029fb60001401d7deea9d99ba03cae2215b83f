@@ -1,0 +1,205 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87e0b5b0_0dc657cc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-08-31T20:26:53Z",
+      "side": 1,
+      "message": "Did you actually run your new unit test? I don\u0027t see how this would pass at all especially given there are multiple duplicate checks with different expectations",
+      "revId": "d9029fb60001401d7deea9d99ba03cae2215b83f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c823b8e_4c9cb5dc",
+        "filename": "tests/PictureTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 942,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-08-31T20:26:53Z",
+      "side": 1,
+      "message": "Should we also have a version where the internal layer is another drawable call? Possibly calling that internal drawable multiple times?",
+      "range": {
+        "startLine": 942,
+        "startChar": 16,
+        "endLine": 942,
+        "endChar": 30
+      },
+      "revId": "d9029fb60001401d7deea9d99ba03cae2215b83f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11cb2c75_03aef316",
+        "filename": "tests/PictureTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 957,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-08-31T20:26:53Z",
+      "side": 1,
+      "message": "bool?",
+      "range": {
+        "startLine": 957,
+        "startChar": 8,
+        "endLine": 957,
+        "endChar": 11
+      },
+      "revId": "d9029fb60001401d7deea9d99ba03cae2215b83f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a10410dc_fbc33122",
+        "filename": "tests/PictureTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 989,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-08-31T20:26:53Z",
+      "side": 1,
+      "message": "why isn\u0027t the nest count 100?",
+      "range": {
+        "startLine": 989,
+        "startChar": 69,
+        "endLine": 989,
+        "endChar": 71
+      },
+      "revId": "d9029fb60001401d7deea9d99ba03cae2215b83f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd898433_a8865692",
+        "filename": "tests/PictureTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 991,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-08-31T20:26:53Z",
+      "side": 1,
+      "message": "This looks the same as the test above but has an expected value of 100. Delete one of these?",
+      "range": {
+        "startLine": 991,
+        "startChar": 4,
+        "endLine": 991,
+        "endChar": 74
+      },
+      "revId": "d9029fb60001401d7deea9d99ba03cae2215b83f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "075c2357_2d13cfd6",
+        "filename": "tests/PictureTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 993,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-08-31T20:26:53Z",
+      "side": 1,
+      "message": "should this not be 2?",
+      "range": {
+        "startLine": 993,
+        "startChar": 68,
+        "endLine": 993,
+        "endChar": 69
+      },
+      "revId": "d9029fb60001401d7deea9d99ba03cae2215b83f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64054582_d9763f83",
+        "filename": "tests/PictureTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 994,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-08-31T20:26:53Z",
+      "side": 1,
+      "message": "11?",
+      "range": {
+        "startLine": 994,
+        "startChar": 69,
+        "endLine": 994,
+        "endChar": 71
+      },
+      "revId": "d9029fb60001401d7deea9d99ba03cae2215b83f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f299f12_d7f72436",
+        "filename": "tests/PictureTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 996,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-08-31T20:26:53Z",
+      "side": 1,
+      "message": "This looks to be the same above but with a different shallow expectation?",
+      "range": {
+        "startLine": 996,
+        "startChar": 4,
+        "endLine": 996,
+        "endChar": 74
+      },
+      "revId": "d9029fb60001401d7deea9d99ba03cae2215b83f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e87f5d33_075810ad",
+        "filename": "tests/PictureTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 997,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-08-31T20:26:53Z",
+      "side": 1,
+      "message": "again this looks like it is copied but now with a different nested expectation?",
+      "range": {
+        "startLine": 997,
+        "startChar": 4,
+        "endLine": 997,
+        "endChar": 75
+      },
+      "revId": "d9029fb60001401d7deea9d99ba03cae2215b83f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
