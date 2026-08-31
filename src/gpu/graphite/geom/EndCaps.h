@@ -21,6 +21,8 @@ namespace skgpu::graphite {
 // antialiased portion of the path rendering, and spans a variable non-zero number of tiles.
 class EndCaps {
 public:
+    static constexpr uint16_t kInvalidTexPage = SparseStripConfig::kInvalidTexPage;
+
     struct EndCap {
         EndCap(uint16_t x, uint16_t y, uint16_t width, int32_t alphaIndex, uint16_t texPage)
                 : fX(x), fY(y), fWidth(width), fAlphaIndex(alphaIndex), fTexPage(texPage),
@@ -55,12 +57,26 @@ public:
     const skia_private::TArray<EndCap>& caps() const { return fCaps; }
     skia_private::TArray<EndCap>& caps() { return fCaps; }
     const skia_private::TArray<sk_sp<TextureProxy>>& proxies() const { return fProxies; }
+    void clearProxies() { fProxies.clear(); }
 
     bool empty() const { return fCaps.empty(); }
     size_t size() const { return fCaps.size(); }
     void clear() {
         fCaps.clear();
         fProxies.clear();
+    }
+
+    bool hasNullCaps() const {
+        return !fCaps.empty() && fCaps.back().fTexPage == kInvalidTexPage;
+    }
+
+    int32_t firstNullCapIndex() const {
+        for (int32_t i = 0; i < fCaps.size(); ++i) {
+            if (fCaps[i].fTexPage == kInvalidTexPage) {
+                return i;
+            }
+        }
+        return -1;
     }
 
 private:
