@@ -22,7 +22,7 @@ class SkCaptureManager;
  * recording canvas, and replace it with a new one.
  *
  */
-class SkCaptureCanvas : public SkNWayCanvas {
+class SkCaptureCanvas : public SkNWayCanvas, public SkRefCnt {
 public:
     SkCaptureCanvas(SkCanvas*, SkCaptureManager*);
     ~SkCaptureCanvas() override;

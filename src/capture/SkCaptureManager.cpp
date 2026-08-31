@@ -20,10 +20,22 @@
 SkCaptureManager::SkCaptureManager() {}
 
 SkCanvas* SkCaptureManager::makeCaptureCanvas(SkCanvas* canvas) {
-    auto newCanvas = std::make_unique<SkCaptureCanvas>(canvas, this);
+    auto newCanvas = sk_make_sp<SkCaptureCanvas>(canvas, this);
     auto rawCanvasPtr = newCanvas.get();
     fTrackedCanvases.emplace_back(std::move(newCanvas));
     return rawCanvasPtr;
+}
+
+void SkCaptureManager::onCanvasSurfaceDeleted(SkCaptureCanvas* canvas) {
+    if (!canvas) {
+        return;
+    }
+    for (int i = 0; i < fTrackedCanvases.size(); ++i) {
+        if (fTrackedCanvases[i].get() == canvas) {
+            fTrackedCanvases.removeShuffle(i);
+            return;
+        }
+    }
 }
 
 sk_sp<SkPicture> SkCaptureManager::snapAndIncrement(SkCaptureCanvas* canvas) {
