@@ -141,6 +141,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd5e57d2_9e7f3b45",
+        "filename": "MODULE.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-08-31T19:05:04Z",
+      "side": 1,
+      "message": "Yeah, that part feels safe, but updates to the MODULE.bazel.lock file cause tons of conflicts, so I pulled this out into a separate patch here\nhttps://skia-review.googlesource.com/c/skia/+/1344917 \n\n(I assume they should be updated together?)\n\n(and that patch doesn\u0027t merge cleanly, so I\u0027ll have to try it again)",
+      "parentUuid": "9c8265b2_342eb961",
+      "range": {
+        "startLine": 159,
+        "startChar": 0,
+        "endLine": 162,
+        "endChar": 1
+      },
+      "revId": "8650246985d8ec27eeb64b90415ad6ca4980a4ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "44329a80_a389b76f",
