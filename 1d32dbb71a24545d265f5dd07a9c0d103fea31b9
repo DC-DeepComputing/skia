@@ -16,6 +16,23 @@
       "message": "I am working on enable 8/10bit 4:2:2/4:4:4 encoding support for Chromium and hit this issue, PTAL~",
       "revId": "1d32dbb71a24545d265f5dd07a9c0d103fea31b9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c17b60a0_772854e9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5125129
+      },
+      "writtenOn": "2026-08-31T23:21:36Z",
+      "side": 1,
+      "message": "Hey @michaelludwig@google.com, would you mind helping retrigger CQ +2 again? I don\u0027t have permission to trigger it on Skia.",
+      "revId": "1d32dbb71a24545d265f5dd07a9c0d103fea31b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
