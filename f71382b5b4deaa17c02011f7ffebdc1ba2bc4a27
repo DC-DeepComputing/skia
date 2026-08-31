@@ -39,6 +39,30 @@
       },
       "revId": "f71382b5b4deaa17c02011f7ffebdc1ba2bc4a27",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b6396c3_556b1ccf",
+        "filename": "src/gpu/graphite/geom/WideTiles.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-08-31T15:25:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a16a368d_c019a93e",
+      "range": {
+        "startLine": 24,
+        "startChar": 40,
+        "endLine": 24,
+        "endChar": 50
+      },
+      "revId": "f71382b5b4deaa17c02011f7ffebdc1ba2bc4a27",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
