@@ -1864,3 +1864,42 @@ $pure half4 blur_coverage_fn(float2 coords,
     }
     return half4(0);
 }
+
+$pure half4 endcap_coverage_fn(float2 rectCoord,
+                               sampler2D alpha_text_0,
+                               sampler2D alpha_text_1,
+                               uint maskIndex,
+                               int texPageVarying) {
+    // Must exactly match the values set in the SparseStripsConfig.h
+    const uint tileWidth = 8;
+    const uint tileHeight = 8;
+    const uint atlasShift = 13;
+    const uint atlasMask = 8191;
+
+    // Floor and cast the interpolated floating-point local coordinates
+    uint dx = uint(floor(rectCoord.x));
+    uint dy = uint(floor(rectCoord.y));
+
+    uint tileX = dx / tileWidth;
+    uint inTileX = dx % tileWidth;
+    uint inTileY = dy;
+
+    uint tileArea = tileWidth * tileHeight;
+    uint linearOffset = (tileX * tileArea) + (inTileY * tileWidth) + inTileX;
+
+    uint linearIdx = maskIndex + linearOffset;
+    uint channelIdx = linearIdx & 3;
+    uint trueLinearIdx = linearIdx >> 2;
+
+    uint2 uv = uint2(trueLinearIdx & atlasMask, trueLinearIdx >> atlasShift);
+
+    half4 texColor;
+    if (texPageVarying == 0) {
+        texColor = textureRead(alpha_text_0, uv);
+    } else {
+        texColor = textureRead(alpha_text_1, uv);
+    }
+
+    return texColor[channelIdx].rrrr;
+}
+
