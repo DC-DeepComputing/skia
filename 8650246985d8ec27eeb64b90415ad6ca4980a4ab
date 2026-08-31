@@ -164,6 +164,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a578a42_f29f6311",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-08-31T18:17:31Z",
+      "side": 1,
+      "message": "Marked as resolved.",
+      "parentUuid": "64fffb28_50eda7b8",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 9
+      },
+      "revId": "8650246985d8ec27eeb64b90415ad6ca4980a4ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "041286f5_a34453a5",
@@ -199,6 +223,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d56882e_55b2b043",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-08-31T18:17:31Z",
+      "side": 1,
+      "message": "Marked as resolved.",
+      "parentUuid": "aa4b9747_e168d01c",
+      "revId": "8650246985d8ec27eeb64b90415ad6ca4980a4ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7b0d4092_bac14f2b",
@@ -230,6 +272,24 @@
       "side": 1,
       "message": "Yes, the \"reader\" scheme fixes this. It now just does\n```\n  let mut mtx_reader \u003d tag.reader.sub_reader(matrix_offset)?;\n  // then 16 times it does\n  mtx_reader.read_fixed()?;\n```\n\nSo I no longer need to do any bounds checking here.",
       "parentUuid": "7b0d4092_bac14f2b",
+      "revId": "8650246985d8ec27eeb64b90415ad6ca4980a4ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "88e4093e_afd0421b",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 673,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-08-31T18:17:31Z",
+      "side": 1,
+      "message": "Marked as resolved.",
+      "parentUuid": "86383bb6_8e7697b5",
       "revId": "8650246985d8ec27eeb64b90415ad6ca4980a4ab",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -281,6 +341,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ba0ff45_6deabdf7",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 765,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-08-31T18:17:31Z",
+      "side": 1,
+      "message": "Marked as resolved.",
+      "parentUuid": "6ac6ccdd_0c47a219",
+      "range": {
+        "startLine": 765,
+        "startChar": 43,
+        "endLine": 765,
+        "endChar": 44
+      },
+      "revId": "8650246985d8ec27eeb64b90415ad6ca4980a4ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "31df9cea_0ab0a709",
@@ -318,6 +402,30 @@
       "side": 1,
       "message": "Yes, I changed the return type to Option, so now it\u0027s just:\n```\n    let version \u003d r.read_u32()?;\n```",
       "parentUuid": "31df9cea_0ab0a709",
+      "range": {
+        "startLine": 882,
+        "startChar": 0,
+        "endLine": 885,
+        "endChar": 6
+      },
+      "revId": "8650246985d8ec27eeb64b90415ad6ca4980a4ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ebcc6629_3d573c62",
+        "filename": "rust/icc/FFI.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 885,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-08-31T18:17:31Z",
+      "side": 1,
+      "message": "Marked as resolved.",
+      "parentUuid": "4e2d7d2f_12eabe48",
       "range": {
         "startLine": 882,
         "startChar": 0,
