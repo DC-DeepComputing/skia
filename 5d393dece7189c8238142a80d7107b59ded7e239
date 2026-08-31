@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef1e1cf1_99b5428f",
+        "filename": "src/gpu/graphite/geom/EndCaps.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-08-31T12:34:15Z",
+      "side": 1,
+      "message": "Do we actually need this templating?",
+      "range": {
+        "startLine": 20,
+        "startChar": 9,
+        "endLine": 20,
+        "endChar": 31
+      },
+      "revId": "5d393dece7189c8238142a80d7107b59ded7e239",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8f3878a_286f7f68",
+        "filename": "src/gpu/graphite/geom/EndCaps.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-08-31T12:34:15Z",
+      "side": 1,
+      "message": "Maybe a comment ?",
+      "revId": "5d393dece7189c8238142a80d7107b59ded7e239",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a043f6f5_6984f730",
+        "filename": "src/gpu/graphite/geom/WideTiles.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-08-31T12:34:15Z",
+      "side": 1,
+      "message": "Do we need this templating?",
+      "range": {
+        "startLine": 17,
+        "startChar": 9,
+        "endLine": 17,
+        "endChar": 31
+      },
+      "revId": "5d393dece7189c8238142a80d7107b59ded7e239",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f82f91a_69520e40",
+        "filename": "src/gpu/graphite/geom/WideTiles.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-08-31T12:34:15Z",
+      "side": 1,
+      "message": "Maybe a comment ?",
+      "revId": "5d393dece7189c8238142a80d7107b59ded7e239",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
