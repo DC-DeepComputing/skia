@@ -285,7 +285,7 @@ DEF_GANESH_TEST(OpChainTest, reporter, /*ctxInfo*/, CtsEnforcement::kApiLevel_T)
                 }
                 opsTask.makeClosed(dContext.get());
                 opsTask.prepare(&flushState);
-                opsTask.execute(&flushState);
+                opsTask.execute1(&flushState);
                 opsTask.endFlush(drawingMgr);
                 opsTask.disown(drawingMgr);
 #if 0  // Useful to repeat a random configuration that fails the test while debugger attached.

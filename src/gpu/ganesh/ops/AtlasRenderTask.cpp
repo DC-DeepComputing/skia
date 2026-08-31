@@ -204,9 +204,10 @@ void AtlasRenderTask::addAtlasDrawOp(GrOp::Owner op, const GrCaps& caps) {
     this->recordOp(std::move(op), true/*usesMSAA*/, processorAnalysis, nullptr, nullptr, caps);
 }
 
-bool AtlasRenderTask::onExecute(GrOpFlushState* flushState) {
-    if (!this->OpsTask::onExecute(flushState)) {
-        return false;
+GrRenderTask::ExecutionResult AtlasRenderTask::onExecute1(GrOpFlushState* flushState) {
+    ExecutionResult result = this->OpsTask::onExecute1(flushState);
+    if (!result.fAllTasksSuccessful) {
+        return result;
     }
     if (this->target(0)->requiresManualMSAAResolve()) {
         // Since atlases don't get closed until they are done being built, the drawingManager
@@ -217,7 +218,7 @@ bool AtlasRenderTask::onExecute(GrOpFlushState* flushState) {
                 SkIRect::MakeSize(fDynamicAtlas->drawBounds()));
         flushState->gpu()->resolveRenderTarget(this->target(0)->peekRenderTarget(), nativeRect);
     }
-    return true;
+    return {true, true};
 }
 
 }  // namespace skgpu::ganesh
