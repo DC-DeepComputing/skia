@@ -37,6 +37,7 @@ struct SparseStripConfig {
     static constexpr int32_t kMaxCapBytes         = kAtlasWidth * kMaxAtlasRows *
                                                     kAtlasBytesPerTexel;
     static constexpr int32_t kMaxTexturePages     = 2;
+    static constexpr uint16_t kInvalidTexPage     = 0xFFFF;
 
     // The AlphaAtlasManager uses a flipflopping allocation system that will break if the page count
     // is increased beyond 2.
