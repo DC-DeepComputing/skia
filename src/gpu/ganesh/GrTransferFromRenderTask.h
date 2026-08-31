@@ -54,7 +54,7 @@ private:
         return ExpectedOutcome::kTargetUnchanged;
     }
 
-    bool onExecute(GrOpFlushState*) override;
+    ExecutionResult onExecute(GrOpFlushState*) override;
 
 #if defined(GPU_TEST_UTILS)
     const char* name() const final { return "TransferFrom"; }
