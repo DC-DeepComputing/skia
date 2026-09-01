@@ -22,7 +22,6 @@
 #include "src/gpu/graphite/Texture.h"  // IWYU pragma: keep
 #include "src/gpu/graphite/TextureProxy.h"
 
-
 using namespace skia_private;
 
 namespace skgpu::graphite {
@@ -76,6 +75,15 @@ bool DrawPass::prepareResources(ResourceProvider* resourceProvider,
         }
     }
 
+    if (fStorageTextureProxy) {
+        SkASSERT(fStorageTextureProxy->textureInfo().isValid());
+        if (!fStorageTextureProxy->isInstantiated() && !fStorageTextureProxy->isLazy()) {
+            SKIA_LOG_W("Cannot sample from an uninstantiated TextureProxy, label %s",
+                        fStorageTextureProxy->label());
+            return false;
+        }
+    }
+
     return true;
 }
 
@@ -98,6 +106,8 @@ bool DrawPass::addResourceRefs(ResourceProvider* resourceProvider,
             return false;
         }
 
+        fStorageBufferStages |= pipeline->storageBufferStages();
+
         TRACE_EVENT_INSTANT1_ALWAYS(
                 "skia.shaders",
                 TRACE_STR_COPY(pipeline->getLabel()),
@@ -113,6 +123,27 @@ bool DrawPass::addResourceRefs(ResourceProvider* resourceProvider,
         commandBuffer->trackResource(fSampledTextures[i]->refTexture());
     }
 
+    if (fStorageTextureProxy) {
+        commandBuffer->trackResource(fStorageTextureProxy->refTexture());
+    }
+
+    return true;
+}
+
+bool DrawPass::setStorageResult(StorageContextResult result) {
+    if (std::holds_alternative<BindBufferInfo>(result)) {
+        fStorageBufferInfo = std::get<BindBufferInfo>(result);
+        if (!fStorageBufferInfo) SK_UNLIKELY {
+            SKIA_LOG_W("Failed to write Storage Data for Draw pass, dropping!");
+            return false;
+        }
+    } else {
+        fStorageTextureProxy = std::get<sk_sp<TextureProxy>>(result);
+        if (!fStorageTextureProxy) SK_UNLIKELY {
+            SKIA_LOG_W("Failed to write fallback texture for Draw pass, dropping!");
+            return false;
+        }
+    }
     return true;
 }
 
