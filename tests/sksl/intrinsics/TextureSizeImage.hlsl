@@ -1,4 +1,4 @@
-RWTexture2D<float4> t : register(u0, space0);
+RWTexture2D<unorm float4> t : register(u0, space0);
 
 static float4 sk_FragColor;
 
@@ -7,7 +7,7 @@ struct SPIRV_Cross_Output
     float4 sk_FragColor : SV_Target0;
 };
 
-uint2 spvImageSize(RWTexture2D<float4> Tex, out uint Param)
+uint2 spvImageSize(RWTexture2D<unorm float4> Tex, out uint Param)
 {
     uint2 ret;
     Tex.GetDimensions(ret.x, ret.y);
