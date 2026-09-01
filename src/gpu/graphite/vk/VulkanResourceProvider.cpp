@@ -17,6 +17,7 @@
 #include "src/gpu/graphite/GraphicsPipeline.h"
 #include "src/gpu/graphite/RenderPassDesc.h"
 #include "src/gpu/graphite/Sampler.h"
+#include "src/gpu/graphite/StorageContext.h"
 #include "src/gpu/graphite/Texture.h"
 #include "src/gpu/graphite/TextureInfoPriv.h"
 #include "src/gpu/graphite/vk/VulkanBuffer.h"
@@ -128,6 +129,20 @@ sk_sp<Texture> VulkanResourceProvider::onCreateWrappedTexture(const BackendTextu
 
 sk_sp<ComputePipeline> VulkanResourceProvider::createComputePipeline(const ComputePipelineDesc&) {
     return nullptr;
+}
+
+VkImageView VulkanResourceProvider::getOrCreateNullTextureView() {
+    if (!fNullTexture) {
+        TextureInfo info = this->vulkanSharedContext()->caps()->getDefaultReadableTextureInfo(
+                StorageContext::kTextureFormat,
+                Protected::kNo);
+        fNullTexture = this->createTexture(SkISize::Make(1, 1), info, "UnusedStorageTextureSlot");
+        SkASSERT(fNullTexture);
+    }
+    const auto* vkTex = static_cast<const VulkanTexture*>(fNullTexture.get());
+    const auto* view = vkTex ? vkTex->getImageView(VulkanImageView::Usage::kShaderInput) : nullptr;
+    SkASSERT(view);
+    return view ? view->imageView() : VK_NULL_HANDLE;
 }
 
 sk_sp<Texture> VulkanResourceProvider::createTexture(SkISize size,
