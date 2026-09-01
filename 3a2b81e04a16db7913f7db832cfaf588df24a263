@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2595c3f_41d7260c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-09-01T23:09:35Z",
+      "side": 1,
+      "message": "ptal -- the promised module removal. And the massive lock change, which was tone right (suspicious use of the passive voice there)",
+      "revId": "3a2b81e04a16db7913f7db832cfaf588df24a263",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
