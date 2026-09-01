@@ -33,6 +33,24 @@
       "message": "Do the other examples also have trailing whitespace ?",
       "revId": "656202a3929509a6665a55f4ba98270808dc13f8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c3ed8c4_9dfe3e76",
+        "filename": "src/gpu/graphite/render/EndCapRenderStep.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-01T19:30:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "365972f3_2a3417e7",
+      "revId": "656202a3929509a6665a55f4ba98270808dc13f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
