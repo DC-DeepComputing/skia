@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3cdba1e2_592a4941",
+        "filename": "src/gpu/ganesh/GrCopyRenderTask.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-01T17:34:46Z",
+      "side": 1,
+      "message": "I think I may have misunderstood what the `ExecutionResult` means. \n\nIf I\u0027m understanding correctly now, \"anyTask\" executed is inclusive to the parent task? So nothing executing here is successful execution of this task?",
+      "parentUuid": "c92f27cb_d502aa4f",
+      "range": {
+        "startLine": 91,
+        "startChar": 8,
+        "endLine": 91,
+        "endChar": 30
+      },
+      "revId": "ce7db51b18973bb57fb3f53e706cf6bad9d12c27",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3be5dda4_2ad164ec",
         "filename": "src/gpu/ganesh/ops/AtlasRenderTask.cpp",
         "patchSetId": 8
@@ -150,6 +174,30 @@
       "side": 1,
       "message": "Well, arguably, the task did its thing, just, its thing was to do nothing.",
       "parentUuid": "ef414be3_5a9ea831",
+      "range": {
+        "startLine": 565,
+        "startChar": 8,
+        "endLine": 565,
+        "endChar": 30
+      },
+      "revId": "ce7db51b18973bb57fb3f53e706cf6bad9d12c27",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dfb5c37e_b9b48980",
+        "filename": "src/gpu/ganesh/ops/OpsTask.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 565,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-01T17:34:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3bc61b56_5636e4ae",
       "range": {
         "startLine": 565,
         "startChar": 8,
