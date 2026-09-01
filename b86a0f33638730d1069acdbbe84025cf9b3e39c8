@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "901b39fe_9b8e7c54",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-01T19:33:59Z",
+      "side": 1,
+      "message": "Flip OpImageFetch and Read around in my comment :p",
+      "parentUuid": "1c91036c_01193368",
+      "range": {
+        "startLine": 13,
+        "startChar": 2,
+        "endLine": 13,
+        "endChar": 147
+      },
+      "revId": "b86a0f33638730d1069acdbbe84025cf9b3e39c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "304dd9ad_8c4a9ee7",
@@ -112,6 +136,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3648698f_87aa9354",
+        "filename": "resources/sksl/intrinsics/TextureReadImage.sksl",
+        "patchSetId": 10
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-01T19:33:59Z",
+      "side": 1,
+      "message": "nit: Any reason for changing the format here?",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 46
+      },
+      "revId": "b86a0f33638730d1069acdbbe84025cf9b3e39c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "813adfa9_891a053e",
         "filename": "resources/sksl/intrinsics/TextureReadTexture.sksl",
         "patchSetId": 10
@@ -128,6 +175,75 @@
         "startChar": 0,
         "endLine": 1,
         "endChar": 39
+      },
+      "revId": "b86a0f33638730d1069acdbbe84025cf9b3e39c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32a4d986_9dfb53ac",
+        "filename": "resources/sksl/intrinsics/TextureSizeImage.sksl",
+        "patchSetId": 10
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-01T19:33:59Z",
+      "side": 1,
+      "message": "same question/nit",
+      "range": {
+        "startLine": 1,
+        "startChar": 18,
+        "endLine": 1,
+        "endChar": 23
+      },
+      "revId": "b86a0f33638730d1069acdbbe84025cf9b3e39c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d46f6fb_dc91e143",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 2239,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-01T19:33:59Z",
+      "side": 1,
+      "message": "WDYT about having this be delegated to an is_sampled_texture_type helper that operates on a Type, so that it can used by this Expression helper and in the above typeKind switch?",
+      "range": {
+        "startLine": 2226,
+        "startChar": 4,
+        "endLine": 2239,
+        "endChar": 5
+      },
+      "revId": "b86a0f33638730d1069acdbbe84025cf9b3e39c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44b9433c_7d1fb3c5",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 2475,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-01T19:33:59Z",
+      "side": 1,
+      "message": "What does this do if it\u0027s not a sampled texture? Just emit nothing? Otherwise are we increasing our emitted spir-v size unnecessarily for storage texture queries?",
+      "range": {
+        "startLine": 2475,
+        "startChar": 0,
+        "endLine": 2475,
+        "endChar": 66
       },
       "revId": "b86a0f33638730d1069acdbbe84025cf9b3e39c8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"

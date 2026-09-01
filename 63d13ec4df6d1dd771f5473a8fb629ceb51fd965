@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d3b3522_e0cb94c2",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 2383,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-01T19:33:59Z",
+      "side": 0,
+      "message": "Is this caught on the front end now?",
+      "range": {
+        "startLine": 2380,
+        "startChar": 16,
+        "endLine": 2383,
+        "endChar": 26
+      },
+      "revId": "63d13ec4df6d1dd771f5473a8fb629ceb51fd965",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
