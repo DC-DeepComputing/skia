@@ -5,12 +5,13 @@
  * found in the LICENSE file.
  */
 
+#include "src/sksl/ir/SkSLProgram.h"
+
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLPool.h"
 #include "src/sksl/SkSLProgramSettings.h"
 #include "src/sksl/analysis/SkSLProgramUsage.h"
 #include "src/sksl/ir/SkSLFunctionDeclaration.h"
-#include "src/sksl/ir/SkSLProgram.h"
 #include "src/sksl/ir/SkSLProgramElement.h"
 #include "src/sksl/ir/SkSLSymbol.h"
 #include "src/sksl/ir/SkSLSymbolTable.h" // IWYU pragma: keep
@@ -28,8 +29,8 @@ Program::Program(std::unique_ptr<std::string> source,
         : fSource(std::move(source))
         , fConfig(std::move(config))
         , fContext(context)
-        , fSymbols(std::move(symbols))
         , fPool(std::move(pool))
+        , fSymbols(std::move(symbols))
         , fOwnedElements(std::move(elements)) {
     fUsage = Analysis::GetUsage(*this);
 }
