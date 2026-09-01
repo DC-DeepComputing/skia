@@ -16,6 +16,23 @@
       "message": "PTAL",
       "revId": "656202a3929509a6665a55f4ba98270808dc13f8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "365972f3_2a3417e7",
+        "filename": "src/gpu/graphite/render/EndCapRenderStep.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-01T18:06:10Z",
+      "side": 1,
+      "message": "Do the other examples also have trailing whitespace ?",
+      "revId": "656202a3929509a6665a55f4ba98270808dc13f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
