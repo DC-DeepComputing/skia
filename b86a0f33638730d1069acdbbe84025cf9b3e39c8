@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a2fb9e9_513d92e1",
+        "filename": "resources/sksl/errors/InvalidBackendBindingFlagsMetal.sksl",
+        "patchSetId": 10
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-01T18:46:00Z",
+      "side": 1,
+      "message": "These names clash with the `rtexture2` and `rtexture3` declared below, should probably be declared along with different names like `rstoragetexture2` if readonly storage is what you\u0027re aiming to test with these. Might be useful to add to the comments why the layout is valid, e.g. `// valid (readonly non-storage texture)` `// valid (readonly storage texture)` or something like that.",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 74
+      },
+      "revId": "b86a0f33638730d1069acdbbe84025cf9b3e39c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1fe41f9c_eabbc52b",
+        "filename": "resources/sksl/errors/InvalidBackendBindingFlagsSPIRV.sksl",
+        "patchSetId": 10
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-01T18:46:00Z",
+      "side": 1,
+      "message": "Name clashes with the definition of `rtexture2` below so should probably rename. `rtexture3` check also seems redundant and unneeded since it is the same definition as `rtexture1`.",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 90
+      },
+      "revId": "b86a0f33638730d1069acdbbe84025cf9b3e39c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24bac9ec_fe315f87",
+        "filename": "resources/sksl/errors/InvalidBackendBindingFlagsWGSL.sksl",
+        "patchSetId": 10
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-01T18:46:00Z",
+      "side": 1,
+      "message": "Same name clashing here as in other comment I left on other test file.",
+      "range": {
+        "startLine": 4,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 82
+      },
+      "revId": "b86a0f33638730d1069acdbbe84025cf9b3e39c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "813adfa9_891a053e",
+        "filename": "resources/sksl/intrinsics/TextureReadTexture.sksl",
+        "patchSetId": 10
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-01T18:46:00Z",
+      "side": 1,
+      "message": "Could we have a comment here explaining that this means we are using a non-storage texture since we don\u0027t have the pixel format specified.",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 39
+      },
+      "revId": "b86a0f33638730d1069acdbbe84025cf9b3e39c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
