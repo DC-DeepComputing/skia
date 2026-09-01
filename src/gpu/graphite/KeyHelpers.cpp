@@ -60,6 +60,7 @@
 #include "src/gpu/graphite/Uniform.h"
 #include "src/gpu/graphite/UniformManager.h"
 #include "src/image/SkImage_Base.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/shaders/SkBlendShader.h"
 #include "src/shaders/SkColorFilterShader.h"
 #include "src/shaders/SkColorShader.h"
@@ -116,7 +117,7 @@ private:
         }
     }
 
-    PipelineDataGatherer* fGatherer;
+    raw_ptr<PipelineDataGatherer> fGatherer;
     SkDEBUGCODE(UniformExpectationsValidator fValidator;)
 };
 

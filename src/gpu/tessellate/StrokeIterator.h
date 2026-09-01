@@ -348,8 +348,8 @@ private:
     }
 
     // Info and iterators from the original path.
-    const SkMatrix* const fViewMatrix;  // For hairlines.
-    const SkStrokeRec* const fStroke;
+    const SkMatrix* fViewMatrix;  // For hairlines.
+    const SkStrokeRec* fStroke;
     SkPathPriv::RangeIter fIter;
     SkPathPriv::RangeIter fEnd;
 
