@@ -12,9 +12,12 @@
 #include "include/core/SkMesh.h"
 #include "include/core/SkPaint.h"
 #include "include/private/SkEnumBitMask.h"
+#include "include/private/SkStackAllocated.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/Renderer.h"
 #include "src/gpu/graphite/geom/NonMSAAClip.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 class SkColorInfo;
 class SkColorSpace;
@@ -51,8 +54,9 @@ public:
     // required, set to the image's bounds.
     struct SimpleImage {
         // fImage (required) and fLocalMatrix (optional) must outlive the PaintParams object
-        const SkImage* fImage;
-        const SkMatrix* fLocalMatrix = nullptr;
+        // RAW_PTR_EXCLUSION: performance regression
+        RAW_PTR_EXCLUSION const SkImage* fImage;
+        RAW_PTR_EXCLUSION const SkMatrix* fLocalMatrix = nullptr;
         // Post local matrix strict clamping rectangle (e.g. relative to image's texels)
         SkRect fSubset;
         SkSamplingOptions fSamplingOptions;
@@ -128,14 +132,17 @@ private:
     // shader-based blending.
     std::pair<const SkBlender*, SkBlendMode> fFinalBlend;
 
-    const SkShader*      fShader;
-    const SimpleImage*   fImageShader; // Overrides fShader for color images, mixes for alpha
-    const SkColorFilter* fColorFilter;
+    // RAW_PTR_EXCLUSION: performance regression
+    RAW_PTR_EXCLUSION const SkShader* fShader;
+    RAW_PTR_EXCLUSION const SimpleImage*
+            fImageShader;  // Overrides fShader for color images, mixes for alpha
+    RAW_PTR_EXCLUSION const SkColorFilter* fColorFilter;
 
     // A nullptr fPrimitiveBlender means there's no primitive color blending and it is skipped.
     // In the case where there is primitive blending, the primitive color is the source color and
     // the dest is the paint's color (or the paint's shader's computed color).
-    const SkBlender* fPrimitiveBlender;
+    // RAW_PTR_EXCLUSION: performance regression
+    RAW_PTR_EXCLUSION const SkBlender* fPrimitiveBlender;
     // When a fPrimitiveColorOverride is present, it is used instead of any defined primitive colors
     // in the vertices for primitive color blending. This is done to enable primitive color blending
     // for render steps which don't emit primitive colors.
@@ -155,6 +162,8 @@ private:
 // given the current hardware.
 class ShadingParams {
 public:
+    SK_STACK_ALLOCATED();
+
     // NOTE: Does not copy `paint`, `nonMSAAClip` or `clipShader`; these must outlive ShadingParams.
     ShadingParams(const Caps* caps,
                   const PaintParams& paint,

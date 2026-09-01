@@ -15,6 +15,13 @@ source_set("test_support") {
   testonly = true
   public = [ "TestSupport.h" ]
   sources = [ "TestSupport.cpp" ]
-  configs += [ ":skia_root_includes" ]
+  configs += [
+    ":skia_root_includes",
+    "//:skia_public",
+    "//:skia_private",
+  ]
   deps = [ "${skia_partition_alloc_dir}:partition_alloc" ]
+  if (is_win) {
+    libs = [ "DbgHelp.lib" ]
+  }
 }

@@ -90,11 +90,11 @@ public:
         }
 
         PoppedTriangleStack(PoppedTriangleStack&& that)
-            : fMiddleOut(that.fMiddleOut)
-            , fLastPoint(that.fLastPoint)
-            , fEnd(that.fEnd)
-            , fNewTopVertex(that.fNewTopVertex)
-            , fNewTopValue(that.fNewTopValue) {
+                : fMiddleOut(std::move(that.fMiddleOut))
+                , fLastPoint(that.fLastPoint)
+                , fEnd(that.fEnd)
+                , fNewTopVertex(that.fNewTopVertex)
+                , fNewTopValue(that.fNewTopValue) {
             that.fMiddleOut = nullptr;  // Don't do a stack update during our destructor.
         }
 
@@ -195,8 +195,7 @@ public:
 private:
     constexpr static int kStackPreallocCount = 32;
     skia_private::AutoSTMalloc<kStackPreallocCount, StackVertex> fVertexStack;
-    SkDEBUGCODE(int fStackAllocCount;)
-    StackVertex* fTop;
+    SkDEBUGCODE(int fStackAllocCount;) StackVertex* fTop;
 };
 
 // This is a helper class that transforms and pushes a path's inner fan vertices onto a
