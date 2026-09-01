@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c80d907c_806f637b",
+        "filename": "tests/graphite/TextureFormatTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1019,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-01T14:43:36Z",
+      "side": 1,
+      "message": "extra work ?",
+      "range": {
+        "startLine": 1019,
+        "startChar": 88,
+        "endLine": 1019,
+        "endChar": 93
+      },
+      "revId": "da8d75fff6a9611f464205e6d917e883e0d677b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e11528e_a94544e9",
+        "filename": "tests/graphite/TextureFormatTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1035,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-01T14:43:36Z",
+      "side": 1,
+      "message": "overlength",
+      "revId": "da8d75fff6a9611f464205e6d917e883e0d677b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a4f8770_c5635c39",
+        "filename": "tests/graphite/TextureFormatTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1089,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-01T14:43:36Z",
+      "side": 1,
+      "message": "same here ?",
+      "range": {
+        "startLine": 1089,
+        "startChar": 88,
+        "endLine": 1089,
+        "endChar": 93
+      },
+      "revId": "da8d75fff6a9611f464205e6d917e883e0d677b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
