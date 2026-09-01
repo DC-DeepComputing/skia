@@ -555,7 +555,7 @@ std::unique_ptr<GrGeometryProcessor::ProgramImpl> MeshTestProcessor::makeProgram
 
     private:
         void onEmitCode(EmitArgs& args, GrGPArgs* gpArgs) final {
-            const MeshTestProcessor& mp = args.fGeomProc.cast<MeshTestProcessor>();
+            const MeshTestProcessor& mp = args.fGeomProc->cast<MeshTestProcessor>();
             GrGLSLVertexBuilder* v = args.fVertBuilder;
             GrGLSLFPFragmentBuilder* f = args.fFragBuilder;
 
