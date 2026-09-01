@@ -24,6 +24,7 @@
 #include "src/core/SkFDot6.h"
 #include "src/core/SkSwizzlePriv.h"
 #include "src/core/SkTHash.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <algorithm>
 #include <optional>
@@ -1902,7 +1903,7 @@ void SkScalerContextFTUtils::generateGlyphImage(FT_Face face, const SkGlyph& gly
 namespace {
 
 class SkFTGeometrySink {
-    SkPathBuilder* fBuilder;
+    raw_ptr<SkPathBuilder> fBuilder;
     bool fStarted;
     FT_Vector fCurrent;
 

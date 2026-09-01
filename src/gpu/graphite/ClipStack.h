@@ -6,7 +6,11 @@
  */
 
 #ifndef skgpu_graphite_ClipStack_DEFINED
+
 #define skgpu_graphite_ClipStack_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkShader.h"
@@ -283,8 +287,9 @@ private:
         //             This acts as a dependency barrier; clipped draws affected by this rawElement
         //             must be inserted into or after the latest layer+list across all their
         //             dependcy depth draws.
-        DrawParams* fCaptureParams;
-        Layer* fInsertion;
+        // RAW_PTR_EXCLUSION: performance regression
+        RAW_PTR_EXCLUSION DrawParams* fCaptureParams;
+        RAW_PTR_EXCLUSION Layer* fInsertion;
     };
 
     // Represents a saved point in the clip stack, and manages the life time of elements added to
@@ -377,7 +382,7 @@ private:
     RawElement::Stack fElements;
     SaveRecord::Stack fSaves; // always has one wide open record at the top
 
-    Device* fDevice; // the device this clip stack is coupled with
+    raw_ptr<Device> fDevice;  // the device this clip stack is coupled with
 };
 
 // Clip element iteration

@@ -30,6 +30,8 @@
 #include "src/core/SkScan.h"
 #include "src/core/SkScanPriv.h"
 #include "src/core/SkTSort.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <algorithm>
 #include <cmath>
@@ -354,7 +356,8 @@ public:
     }
 
 private:
-    SkBlitter*  fBlitter;
+    // RAW_PTR_EXCLUSION: performance regression
+    RAW_PTR_EXCLUSION SkBlitter* fBlitter;
     int         fFirstX, fLastX, fPrevX;
 };
 

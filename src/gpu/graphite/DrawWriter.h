@@ -7,6 +7,10 @@
 #ifndef skgpu_graphite_DrawWriter_DEFINED
 #define skgpu_graphite_DrawWriter_DEFINED
 
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
+#include "src/partition_alloc/raw_ref.h"
+
 #include "include/private/SkAlign.h"
 #include "include/private/SkAssert.h"
 #include "include/private/SkContainers.h"
@@ -231,8 +235,9 @@ public:
 
 private:
     // Both of these pointers must outlive the DrawWriter.
-    DrawPassCommands::List* fCommandList;
-    DrawBufferManager* fManager;
+    // RAW_PTR_EXCLUSION: performance regression
+    RAW_PTR_EXCLUSION DrawPassCommands::List* fCommandList;
+    RAW_PTR_EXCLUSION DrawBufferManager* fManager;
 
     BufferSubAllocator fCurrentBuffer;
     SkAutoMalloc fFailureStorage; // storage address for VertexWriter when GPU buffer mapping fails
@@ -318,14 +323,15 @@ private:
     // RAII - Sets the DrawWriter's template and marks the writer in append mode (disabling direct
     // draws until the Appender is destructed).
     class Appender;
-    SkDEBUGCODE(const Appender* fAppender = nullptr;)
+    SkDEBUGCODE(RAW_PTR_EXCLUSION const Appender* fAppender = nullptr;)
 
-    // Helper functions for Appender implementations:
+            // Helper functions for Appender implementations:
 
-    // Reallocates at least `count` blocks of the current `fAppendStride` so that later `append()`
-    // calls with the same or smaller count should succeed. Flushes pending draws if needed.
-    template <bool AppendVertices>
-    void realloc(unsigned int count) {
+            // Reallocates at least `count` blocks of the current `fAppendStride` so that later
+            // `append()` calls with the same or smaller count should succeed. Flushes pending draws
+            // if needed.
+            template <bool AppendVertices>
+            void realloc(unsigned int count) {
         this->flush();
 
         // For vertex rendering (ARM bug b/399631317), kBaseMultiple should be 4, otherwise 1.

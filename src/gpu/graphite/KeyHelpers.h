@@ -6,7 +6,11 @@
  */
 
 #ifndef skgpu_graphite_KeyHelpers_DEFINED
+
 #define skgpu_graphite_KeyHelpers_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkBlendMode.h"
@@ -109,9 +113,10 @@ struct GradientShaderBlocks {
         SkPMColor4f                   fColors[kNumInternalStorageStops];
         SkV4                          fOffsets[kNumInternalStorageStops / 4];
         sk_sp<TextureProxy>           fColorsAndOffsetsProxy;
-        const SkPMColor4f*            fSrcColors;
-        const float*                  fSrcOffsets;
-        const SkGradientBaseShader*   fSrcShader;
+        // RAW_PTR_EXCLUSION: performance regression
+        RAW_PTR_EXCLUSION const SkPMColor4f* fSrcColors;
+        RAW_PTR_EXCLUSION const float* fSrcOffsets;
+        RAW_PTR_EXCLUSION const SkGradientBaseShader* fSrcShader;
 
         SkGradient::Interpolation     fInterpolation;
     };

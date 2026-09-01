@@ -21,6 +21,7 @@
 #include "src/core/SkLineClipper.h"
 #include "src/core/SkPathPriv.h"
 #include "src/core/SkSafeMath.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 SkEdgeBuilder::Combine SkBasicEdgeBuilder::combineVertical(const SkEdge* edge, SkEdge* last) {
     // We only consider edges that were originally lines to be vertical to avoid numerical issues
@@ -271,7 +272,7 @@ int SkEdgeBuilder::build(const SkPathRaw& raw, const SkIRect* iclip, bool canCul
     if (iclip) {
         SkRect clip = this->recoverClip(*iclip);
         struct Rec {
-            SkEdgeBuilder* fBuilder;
+            raw_ptr<SkEdgeBuilder> fBuilder;
             bool           fIsFinite;
         } rec = { this, true };
 
