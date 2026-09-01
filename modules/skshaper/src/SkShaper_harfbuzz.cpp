@@ -735,12 +735,14 @@ private:
                RunHandler*) const final;
 #endif  // !defined(SK_DISABLE_LEGACY_SKSHAPER_FUNCTIONS)
 
-    void shape(const char* utf8Text, size_t textBytes,
+    void shape(const char* utf8Text,
+               size_t textBytes,
                FontRunIterator&,
                BiDiRunIterator&,
                ScriptRunIterator&,
                LanguageRunIterator&,
-               const Feature*, size_t featuresSize,
+               const Feature*,
+               size_t featuresSize,
                SkScalar width,
                RunHandler*) const final;
 

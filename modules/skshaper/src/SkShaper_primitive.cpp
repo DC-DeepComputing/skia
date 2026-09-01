@@ -41,12 +41,14 @@ private:
                RunHandler*) const override;
 #endif  // !defined(SK_DISABLE_LEGACY_SKSHAPER_FUNCTIONS)
 
-    void shape(const char* utf8, size_t utf8Bytes,
+    void shape(const char* utf8,
+               size_t utf8Bytes,
                FontRunIterator&,
                BiDiRunIterator&,
                ScriptRunIterator&,
                LanguageRunIterator&,
-               const Feature*, size_t featureSize,
+               const Feature*,
+               size_t featureSize,
                SkScalar width,
                RunHandler*) const override;
 
