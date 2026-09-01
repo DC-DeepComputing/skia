@@ -6,7 +6,11 @@
  */
 
 #ifndef SkTHash_DEFINED
+
 #define SkTHash_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include "include/core/SkTypes.h"
 #include "src/core/SkChecksum.h"
@@ -294,7 +298,8 @@ public:
         }
 
     protected:
-        const TTable* fTable;
+        // RAW_PTR_EXCLUSION: performance regression
+        RAW_PTR_EXCLUSION const TTable* fTable;
         int fSlot;
     };
 

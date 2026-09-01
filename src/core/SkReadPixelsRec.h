@@ -6,7 +6,10 @@
  */
 
 #ifndef SkReadPixelsRec_DEFINED
+
 #define SkReadPixelsRec_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPixmap.h"
@@ -38,7 +41,7 @@ struct SkReadPixelsRec {
         , fY(y)
     {}
 
-    void*       fPixels;
+    raw_ptr<void, DanglingUntriaged> fPixels;
     size_t      fRowBytes;
     SkImageInfo fInfo;
     int         fX;
