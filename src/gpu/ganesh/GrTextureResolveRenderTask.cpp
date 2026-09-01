@@ -90,7 +90,7 @@ void GrTextureResolveRenderTask::gatherProxyIntervals(GrResourceAllocator* alloc
     alloc->incOps();
 }
 
-bool GrTextureResolveRenderTask::onExecute(GrOpFlushState* flushState) {
+GrRenderTask::ExecutionResult GrTextureResolveRenderTask::onExecute(GrOpFlushState* flushState) {
     // Resolve all msaa back-to-back, before regenerating mipmaps.
     SkASSERT(fResolves.size() == this->numTargets());
     for (int i = 0; i < fResolves.size(); ++i) {
@@ -117,7 +117,7 @@ bool GrTextureResolveRenderTask::onExecute(GrOpFlushState* flushState) {
         }
     }
 
-    return true;
+    return ExecutionResult::Leaf(true);
 }
 
 void GrTextureResolveRenderTask::endFlush(GrDrawingManager* drawingMgr) {
