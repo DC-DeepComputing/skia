@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "b32b2e9a_15a5dab0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-01T19:50:57Z",
+      "side": 1,
+      "message": "I have not tested performance, but `OpImageFetch` requires an LOD parameters whereas `OpImageRead` does not. It\u0027s unclear whether one is faster than the other. Since `OpImageRead` does not care about LOD, it can omit that logic. But `OpImageFetch` is backed by the texture cache whereas a storage texture backed by the L2 cache. (Texture cache is almost always faster because it\u0027s read only whereas L2 cache must handle writes).\n\n`OpImageFetch` does not need to know the format. If you look at \n\"TextureReadTexture.asm.frag\" and `TextureReadSampler.asm.frag` both the `OpImageFetch` ops are decorated with \"Unknown.\" Instead, the pixel format gets filled in by the driver at runtime.\n\n`OpImageFetch` explicitly operates on non-storage textures/does not require storage usage.\n\nPrior to this change, we only supported `OpImageFetch` on `sampler2D`. If we wanted to read from a texture, we always bumped the texture to storage, which was unnecessary. Performance concerns aside, storage textures are less supported. Prior to this change, Dawn did not support readonly storage textures:\nhttps://developer.chrome.com/blog/new-in-webgpu-124\n\nSo we really just want a non-storage readonly texture2D.\n\nWe still maintain both readonly storage and readonly texture2D. \nIf you want texture2D, you omit the pixel format declaration:\n`layout(binding\u003d0) readonly texture2D t;` \n\nIf you want storage texture2D you include the pixel format declaration:\n`layout(binding\u003d0, rgba8) readonly texture2D t;`",
+      "parentUuid": "1c91036c_01193368",
+      "range": {
+        "startLine": 13,
+        "startChar": 2,
+        "endLine": 13,
+        "endChar": 147
+      },
+      "revId": "b86a0f33638730d1069acdbbe84025cf9b3e39c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "304dd9ad_8c4a9ee7",
