@@ -29,6 +29,7 @@
 #include "src/core/SkScan.h"
 #include "src/core/SkUtils.h"
 #include "src/core/SkVx.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <algorithm>
 #include <array>

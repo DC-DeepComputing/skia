@@ -151,7 +151,7 @@ std::unique_ptr<Statement> SwitchStatement::Convert(const Context& context,
                                                     std::unique_ptr<SymbolTable> symbolTable) {
     SkASSERT(caseValues.size() == caseStatements.size());
 
-    value = context.fTypes.fInt->coerceExpression(std::move(value), context);
+    value = context.fTypes->fInt->coerceExpression(std::move(value), context);
     if (!value) {
         return nullptr;
     }
