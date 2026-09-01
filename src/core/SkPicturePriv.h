@@ -215,6 +215,10 @@ public:
     }
 
     const SkPicture* const* begin() const { return fPics; }
+    const SkPicture* at(int i) const {
+        SkASSERT(0 <= i && i < fCount);
+        return fPics[i];
+    }
     int count() const { return fCount; }
 
 private:
