@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c92f27cb_d502aa4f",
+        "filename": "src/gpu/ganesh/GrCopyRenderTask.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-01T16:10:43Z",
+      "side": 1,
+      "message": "Same as the OpTask.cpp case, it did it\u0027s job.",
+      "parentUuid": "ceca15ef_2cefd0cc",
+      "range": {
+        "startLine": 91,
+        "startChar": 8,
+        "endLine": 91,
+        "endChar": 30
+      },
+      "revId": "ce7db51b18973bb57fb3f53e706cf6bad9d12c27",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3be5dda4_2ad164ec",
         "filename": "src/gpu/ganesh/ops/AtlasRenderTask.cpp",
         "patchSetId": 8
@@ -65,6 +89,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3ca478e_e537946f",
+        "filename": "src/gpu/ganesh/ops/AtlasRenderTask.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-01T16:10:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3be5dda4_2ad164ec",
+      "range": {
+        "startLine": 221,
+        "startChar": 4,
+        "endLine": 221,
+        "endChar": 26
+      },
+      "revId": "ce7db51b18973bb57fb3f53e706cf6bad9d12c27",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ef414be3_5a9ea831",
@@ -78,6 +126,30 @@
       "writtenOn": "2026-09-01T14:59:12Z",
       "side": 1,
       "message": "This was changed from false to true? At the very least we should return false for no tasks executed?",
+      "range": {
+        "startLine": 565,
+        "startChar": 8,
+        "endLine": 565,
+        "endChar": 30
+      },
+      "revId": "ce7db51b18973bb57fb3f53e706cf6bad9d12c27",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3bc61b56_5636e4ae",
+        "filename": "src/gpu/ganesh/ops/OpsTask.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 565,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-01T16:10:43Z",
+      "side": 1,
+      "message": "Well, arguably, the task did its thing, just, its thing was to do nothing.",
+      "parentUuid": "ef414be3_5a9ea831",
       "range": {
         "startLine": 565,
         "startChar": 8,
