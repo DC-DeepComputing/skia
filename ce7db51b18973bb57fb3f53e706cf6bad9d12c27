@@ -1,0 +1,91 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ceca15ef_2cefd0cc",
+        "filename": "src/gpu/ganesh/GrCopyRenderTask.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-01T14:59:12Z",
+      "side": 1,
+      "message": "No tasks executed should have a false?",
+      "range": {
+        "startLine": 91,
+        "startChar": 8,
+        "endLine": 91,
+        "endChar": 30
+      },
+      "revId": "ce7db51b18973bb57fb3f53e706cf6bad9d12c27",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3be5dda4_2ad164ec",
+        "filename": "src/gpu/ganesh/ops/AtlasRenderTask.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-01T14:59:12Z",
+      "side": 1,
+      "message": "This overwrites `result`. Should we still return result if we get to this point?",
+      "range": {
+        "startLine": 221,
+        "startChar": 4,
+        "endLine": 221,
+        "endChar": 26
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "b000d933_45578246",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/ganesh/ops/AtlasRenderTask.cpp",
+              "range": {
+                "startLine": 221,
+                "startChar": 0,
+                "endLine": 222,
+                "endChar": 0
+              },
+              "replacement": "    return result;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "ce7db51b18973bb57fb3f53e706cf6bad9d12c27",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef414be3_5a9ea831",
+        "filename": "src/gpu/ganesh/ops/OpsTask.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 565,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-01T14:59:12Z",
+      "side": 1,
+      "message": "This was changed from false to true? At the very least we should return false for no tasks executed?",
+      "range": {
+        "startLine": 565,
+        "startChar": 8,
+        "endLine": 565,
+        "endChar": 30
+      },
+      "revId": "ce7db51b18973bb57fb3f53e706cf6bad9d12c27",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
