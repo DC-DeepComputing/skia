@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48ff72d8_e3155fea",
+        "filename": "src/gpu/ganesh/GrDrawingManager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-01T14:40:43Z",
+      "side": 1,
+      "message": "Historically I suppose we would return false in the case that there was nothing to flush, since nothing would set flushSuccessful \u003d true in the loop.  But we can distinguish that scenario now if we return the ExecutionResult because it\u0027d say false for any tasks submitted, but true for all being successful.",
+      "range": {
+        "startLine": 179,
+        "startChar": 50,
+        "endLine": 179,
+        "endChar": 55
+      },
+      "revId": "eded207465d6fb93abe6400d4a898d06514b5988",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "006fc48d_f7d81dfd",
+        "filename": "src/gpu/ganesh/GrDrawingManager.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-01T14:40:43Z",
+      "side": 1,
+      "message": "There are a number of places that try to reconstruct whether or not any tasks have been submitted such that we can assume semaphores or finish procs are going to be executed reasonably. Would they be able to take advantage of ExecutionResult to have a simpler check?",
+      "range": {
+        "startLine": 206,
+        "startChar": 4,
+        "endLine": 206,
+        "endChar": 8
+      },
+      "revId": "eded207465d6fb93abe6400d4a898d06514b5988",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c703e3ac_668d3fb6",
+        "filename": "src/gpu/ganesh/GrRenderTask.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-01T14:40:43Z",
+      "side": 1,
+      "message": "WDYT about a static factory like `ExecutionResult::Leaf(bool success) { return {success, success};`?",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 58,
+        "endChar": 28
+      },
+      "revId": "eded207465d6fb93abe6400d4a898d06514b5988",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09da9946_d40eff88",
+        "filename": "src/gpu/ganesh/GrRenderTask.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-01T14:40:43Z",
+      "side": 1,
+      "message": "Have these default to false and true respectively?",
+      "range": {
+        "startLine": 59,
+        "startChar": 8,
+        "endLine": 60,
+        "endChar": 33
+      },
+      "revId": "eded207465d6fb93abe6400d4a898d06514b5988",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4387703_b4978396",
+        "filename": "src/gpu/ganesh/GrRenderTask.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-01T14:40:43Z",
+      "side": 1,
+      "message": "Could be\n```\nfAnyTaskExecuted |\u003d newResult.fAnyTaskExecuted;\nfAllTasksSuccessful \u0026\u003d newResult.fAllTasksSuccesful;\n```\nwhich do you prefer?",
+      "range": {
+        "startLine": 63,
+        "startChar": 12,
+        "endLine": 64,
+        "endChar": 80
+      },
+      "revId": "eded207465d6fb93abe6400d4a898d06514b5988",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
