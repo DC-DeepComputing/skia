@@ -3,6 +3,75 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fd791634_966fc92e",
+        "filename": "src/gpu/graphite/vk/VulkanBuffer.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-09-01T19:30:44Z",
+      "side": 1,
+      "message": "nit: space after //",
+      "range": {
+        "startLine": 324,
+        "startChar": 46,
+        "endLine": 324,
+        "endChar": 47
+      },
+      "revId": "36fb0a0a2589efb0c6edd0a48775b616a2c6b70f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a28413a5_38ef929a",
+        "filename": "src/gpu/graphite/vk/VulkanBuffer.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 325,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-09-01T19:30:44Z",
+      "side": 1,
+      "message": "why do you need the \"| write\" here? Isn\u0027t that covered by the fallthrough case above?",
+      "range": {
+        "startLine": 325,
+        "startChar": 40,
+        "endLine": 325,
+        "endChar": 69
+      },
+      "revId": "36fb0a0a2589efb0c6edd0a48775b616a2c6b70f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aeeb1f46_05d533d4",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-09-01T19:30:44Z",
+      "side": 1,
+      "message": "If this is true I don\u0027t think I would do a check, just set it to true with a comment. If you really wanted to be safe you could add an assert.",
+      "range": {
+        "startLine": 160,
+        "startChar": 0,
+        "endLine": 160,
+        "endChar": 91
+      },
+      "revId": "36fb0a0a2589efb0c6edd0a48775b616a2c6b70f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4840067c_998cd875",
         "filename": "src/gpu/graphite/vk/VulkanDescriptorPool.cpp",
         "patchSetId": 17
@@ -95,6 +164,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "564cbca7_8bc51ba6",
+        "filename": "src/gpu/graphite/vk/VulkanGraphiteUtils.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-09-01T19:30:44Z",
+      "side": 1,
+      "message": "Is this better then just adding a new DescriptorType, kUniformBuffer and kUniformBufferDynamic? Seems like it would be better to be more explicit in the calling code what they want",
+      "range": {
+        "startLine": 129,
+        "startChar": 20,
+        "endLine": 129,
+        "endChar": 62
+      },
+      "revId": "36fb0a0a2589efb0c6edd0a48775b616a2c6b70f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d514f9b1_dd74b6f0",
         "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
         "patchSetId": 17
@@ -111,6 +203,29 @@
         "startChar": 0,
         "endLine": 130,
         "endChar": 103
+      },
+      "revId": "36fb0a0a2589efb0c6edd0a48775b616a2c6b70f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2cde558b_55f895a6",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-09-01T19:30:44Z",
+      "side": 1,
+      "message": "If we added the new descriptor types as suggested in other file we wouldn\u0027t need to add this to the key",
+      "range": {
+        "startLine": 213,
+        "startChar": 8,
+        "endLine": 213,
+        "endChar": 60
       },
       "revId": "36fb0a0a2589efb0c6edd0a48775b616a2c6b70f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
