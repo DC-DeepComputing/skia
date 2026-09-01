@@ -18,6 +18,92 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "40aa6ac4_592c4e28",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-09-01T13:48:15Z",
+      "side": 1,
+      "message": "I know this is still WIP especially the test, but here are some thoughts I had",
+      "revId": "d9029fb60001401d7deea9d99ba03cae2215b83f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3069488_40bb6de8",
+        "filename": "src/core/SkPicture.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 396,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-09-01T13:48:15Z",
+      "side": 1,
+      "message": "I\u0027m trying to figure out if it matters or not, or even what we\u0027d prefer the behavior to be. But I\u0027m wondering for this and the drawable case when we do nesting if we want to count the drawPicture or drawDrawable as an op itself. So this would turn into `fCount +\u003d 1 + op.picture-\u003eapproximateOpCount(true)`.\n\nPart of my reasoning is that if we have a picture/drawable with zero internal ops, if we have nested is false then it will return 1 and if we nested as true it will return 0. In my head I feel like they should match, but maybe not???",
+      "range": {
+        "startLine": 396,
+        "startChar": 15,
+        "endLine": 396,
+        "endChar": 21
+      },
+      "revId": "d9029fb60001401d7deea9d99ba03cae2215b83f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0cc926f2_10f428e4",
+        "filename": "src/core/SkPicture.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 399,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-09-01T13:48:15Z",
+      "side": 1,
+      "message": "I think it might be possible as nothing stops drawables from referencing themselves or previous drawables to form a loop. I think we\u0027ll want approximateOpCount to take a depth parameter to limit recursion. The we can stop recursion when the depth gets to SkPicturePriv::kDefaultRecursionLimit and just return 1 like we use to for that case.",
+      "range": {
+        "startLine": 399,
+        "startChar": 43,
+        "endLine": 399,
+        "endChar": 68
+      },
+      "revId": "d9029fb60001401d7deea9d99ba03cae2215b83f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f382e311_6e4062a9",
+        "filename": "src/core/SkPicturePriv.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-09-01T13:48:15Z",
+      "side": 1,
+      "message": "Just for safety, can we add `SkASSERT(i \u003e\u003d0 \u0026\u0026 i \u003c fCount)` here?",
+      "range": {
+        "startLine": 218,
+        "startChar": 4,
+        "endLine": 218,
+        "endChar": 57
+      },
+      "revId": "d9029fb60001401d7deea9d99ba03cae2215b83f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6c823b8e_4c9cb5dc",
