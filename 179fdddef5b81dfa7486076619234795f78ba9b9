@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8158541a_68edcfe9",
+        "filename": "resources/sksl/errors/InvalidBackendBindingFlagsMetal.sksl",
+        "patchSetId": 7
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-01T15:50:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8208bc88_89c40295",
+      "range": {
+        "startLine": 17,
+        "startChar": 66,
+        "endLine": 17,
+        "endChar": 90
+      },
+      "revId": "179fdddef5b81dfa7486076619234795f78ba9b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a24614c2_817f9790",
@@ -54,6 +78,30 @@
       "writtenOn": "2026-08-31T20:00:26Z",
       "side": 1,
       "message": "I noticed this check is done 3 times, here, in `SkSLFunctionCall.cpp`, and `SkSLVarDeclarations.cpp`. Could this logic be extracted to new method in SkSLType.h similar to `isStorageTexture()`? Could be named something like `isReadonlyTexture()`.",
+      "range": {
+        "startLine": 96,
+        "startChar": 19,
+        "endLine": 98,
+        "endChar": 69
+      },
+      "revId": "179fdddef5b81dfa7486076619234795f78ba9b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b88a0e4f_93914986",
+        "filename": "src/sksl/ir/SkSLFunctionDeclaration.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-01T15:50:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a24614c2_817f9790",
       "range": {
         "startLine": 96,
         "startChar": 19,
