@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 #include "include/ports/SkFontMgr_fontconfig.h"
+#include "src/ports/SkFontMgr_fontconfig_priv.h"
 
 #include "include/core/SkDataTable.h"
 #include "include/core/SkFontArguments.h"
@@ -82,17 +83,24 @@ static SkMutex& f_c_mutex() {
 
 class FCLocker {
     inline static constexpr int FontConfigThreadSafeVersion = 21393;
+    static inline thread_local int fLockCount = 0;
 
     // Assume FcGetVersion() has always been thread safe.
     static void lock() SK_NO_THREAD_SAFETY_ANALYSIS {
         if (FcGetVersion() < FontConfigThreadSafeVersion) {
-            f_c_mutex().acquire();
+            if (fLockCount == 0) {
+                f_c_mutex().acquire();
+            }
+            ++fLockCount;
         }
     }
     static void unlock() SK_NO_THREAD_SAFETY_ANALYSIS {
         AssertHeld();
         if (FcGetVersion() < FontConfigThreadSafeVersion) {
-            f_c_mutex().release();
+            --fLockCount;
+            if (fLockCount == 0) {
+                f_c_mutex().release();
+            }
         }
     }
 
@@ -102,6 +110,7 @@ public:
 
     static void AssertHeld() { SkDEBUGCODE(
         if (FcGetVersion() < FontConfigThreadSafeVersion) {
+            SkASSERT(fLockCount > 0);
             f_c_mutex().assertHeld();
         }
     ) }
@@ -248,8 +257,8 @@ static SkWeakReturn is_weak(FcPattern* pattern, const char object[], int id) {
  *  This can be quite expensive, and should not be used more than once per font lookup.
  *  This removes all of the weak elements after the last strong element.
  */
-static void remove_weak(FcPattern* pattern, const char object[]) {
-    FCLocker::AssertHeld();
+void SkFontMgr_fontconfig::remove_weak(FcPattern* pattern, const char object[]) {
+    FCLocker lock;
 
     SkAutoFcObjectSet requestedObjectOnly(FcObjectSetBuild(object, nullptr));
     SkAutoFcPattern minimal(FcPatternFilter(pattern, requestedObjectOnly));
@@ -545,7 +554,7 @@ private:
     {}
 };
 
-class SkFontMgr_fontconfig : public SkFontMgr {
+class SkFontMgr_FontConfig : public SkFontMgr {
     mutable SkAutoFcConfig fFC;  // Only mutable to avoid const cast when passed to FontConfig API.
     const SkString fSysroot;
     const sk_sp<SkDataTable> fFamilyNames;
@@ -553,7 +562,7 @@ class SkFontMgr_fontconfig : public SkFontMgr {
 
     class StyleSet : public SkFontStyleSet {
     public:
-        StyleSet(sk_sp<SkFontMgr_fontconfig> parent, SkAutoFcFontSet fontSet)
+        StyleSet(sk_sp<SkFontMgr_FontConfig> parent, SkAutoFcFontSet fontSet)
             : fFontMgr(std::move(parent))
             , fFontSet(std::move(fontSet))
         { }
@@ -612,7 +621,7 @@ class SkFontMgr_fontconfig : public SkFontMgr {
         }
 
     private:
-        sk_sp<SkFontMgr_fontconfig> fFontMgr;
+        sk_sp<SkFontMgr_FontConfig> fFontMgr;
         SkAutoFcFontSet fFontSet;
     };
 
@@ -703,7 +712,7 @@ class SkFontMgr_fontconfig : public SkFontMgr {
 
 public:
     /** Takes control of the reference to 'config'. */
-    SkFontMgr_fontconfig(FcConfig* config, std::unique_ptr<SkFontScanner> scanner)
+    SkFontMgr_FontConfig(FcConfig* config, std::unique_ptr<SkFontScanner> scanner)
         : fFC(config ? config : FcInitLoadConfigAndFonts())
         , fSysroot(reinterpret_cast<const char*>(FcConfigGetSysRoot(fFC)))
         , fFamilyNames(GetFamilyNames(fFC))
@@ -711,7 +720,7 @@ public:
             SkASSERT(fScanner);
         }
 
-    ~SkFontMgr_fontconfig() override {
+    ~SkFontMgr_FontConfig() override {
         // Hold the lock while unrefing the config.
         FCLocker lock;
         fFC.reset();
@@ -844,7 +853,7 @@ protected:
         SkAutoFcPattern strongPattern(nullptr);
         if (familyName) {
             strongPattern.reset(FcPatternDuplicate(pattern));
-            remove_weak(strongPattern, FC_FAMILY);
+            SkFontMgr_fontconfig::remove_weak(strongPattern, FC_FAMILY);
             matchPattern = strongPattern;
         } else {
             matchPattern = pattern;
@@ -897,7 +906,7 @@ protected:
             SkAutoFcPattern strongPattern(nullptr);
             if (familyName) {
                 strongPattern.reset(FcPatternDuplicate(pattern));
-                remove_weak(strongPattern, FC_FAMILY);
+                SkFontMgr_fontconfig::remove_weak(strongPattern, FC_FAMILY);
                 matchPattern = strongPattern;
             } else {
                 matchPattern = pattern;
@@ -992,5 +1001,5 @@ protected:
 };
 
 sk_sp<SkFontMgr> SkFontMgr_New_FontConfig(FcConfig* fc, std::unique_ptr<SkFontScanner> scanner) {
-    return sk_make_sp<SkFontMgr_fontconfig>(fc, std::move(scanner));
+    return sk_make_sp<SkFontMgr_FontConfig>(fc, std::move(scanner));
 }

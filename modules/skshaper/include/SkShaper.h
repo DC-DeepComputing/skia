@@ -260,7 +260,6 @@ public:
                        LanguageRunIterator&,
                        SkScalar width,
                        RunHandler*) const = 0;
-#endif  // !defined(SK_DISABLE_LEGACY_SKSHAPER_FUNCTIONS)
 
     virtual void shape(const char* utf8,
                        size_t utf8Bytes,
@@ -272,6 +271,7 @@ public:
                        size_t featuresSize,
                        SkScalar width,
                        RunHandler*) const = 0;
+#endif  // !defined(SK_DISABLE_LEGACY_SKSHAPER_FUNCTIONS)
 
     struct Options {
         // Width available for horizontal layout, before wrapping kicks in.
