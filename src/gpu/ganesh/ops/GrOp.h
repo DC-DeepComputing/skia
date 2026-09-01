@@ -6,7 +6,10 @@
  */
 
 #ifndef GrOp_DEFINED
+
 #define GrOp_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkMatrix.h"
 #include "include/core/SkRect.h"
@@ -220,13 +223,13 @@ public:
             bool operator!=(const Iter& that) const { return fCurr != that.fCurr; }
 
         private:
-            const OpSubclass* fCurr;
+            raw_ptr<const OpSubclass> fCurr;
         };
-        const OpSubclass* fHead;
+        raw_ptr<const OpSubclass> fHead;
 
     public:
         explicit ChainRange(const OpSubclass* head) : fHead(head) {}
-        Iter begin() { return Iter(fHead); }
+        Iter begin() { return Iter(fHead.get()); }
         Iter end() { return Iter(nullptr); }
     };
 
@@ -344,7 +347,7 @@ private:
     };
 
     Owner                               fNextInChain{nullptr};
-    GrOp*                               fPrevInChain = nullptr;
+    raw_ptr<GrOp> fPrevInChain = nullptr;
     const uint16_t                      fClassID;
     uint16_t                            fBoundsFlags;
 

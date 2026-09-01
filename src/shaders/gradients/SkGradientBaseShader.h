@@ -6,7 +6,9 @@
  */
 
 #ifndef SkGradientShaderPriv_DEFINED
+
 #define SkGradientShaderPriv_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColor.h"
@@ -165,7 +167,7 @@ struct SkColor4fXformer {
 
     ColorStorage fColors;
     PositionStorage fPositionStorage;
-    const float* fPositions;
+    raw_ptr<const float> fPositions;
     sk_sp<SkColorSpace> fIntermediateColorSpace;
 };
 

@@ -6,7 +6,11 @@
  */
 
 #ifndef SkEdge_DEFINED
+
 #define SkEdge_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include "include/core/SkPoint.h"
 #include "include/private/SkAssert.h"
@@ -50,8 +54,8 @@ public:
     };
 
     // Can be used to join edges together
-    SkEdge* fNext;
-    SkEdge* fPrev;
+    RAW_PTR_EXCLUSION SkEdge* fNext;
+    RAW_PTR_EXCLUSION SkEdge* fPrev;
 
     // The current line segment starts at (fX, fFirstY + 0.5). It has slope
     // fDxDy (yes, run over rise, because this is geared toward horizontal scanlines)

@@ -6,7 +6,10 @@
  */
 
 #ifndef skgpu_graphite_precompile_PrecompileColorFiltersPriv_DEFINED
+
 #define skgpu_graphite_precompile_PrecompileColorFiltersPriv_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSpan.h"
@@ -44,7 +47,7 @@ private:
     const PrecompileColorFilterPriv* operator&() const;
     PrecompileColorFilterPriv *operator&();
 
-    PrecompileColorFilter* fPrecompileColorFilter;
+    raw_ptr<PrecompileColorFilter> fPrecompileColorFilter;
 };
 
 inline PrecompileColorFilterPriv PrecompileColorFilter::priv() {

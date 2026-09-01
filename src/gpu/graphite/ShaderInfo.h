@@ -6,7 +6,11 @@
  */
 
 #ifndef skgpu_graphite_ShaderInfo_DEFINED
+
 #define skgpu_graphite_ShaderInfo_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include "include/private/SkTArray.h"
 #include "src/core/SkArenaAlloc.h"
@@ -112,8 +116,9 @@ private:
                             const RenderStep*,
                             const SharedGeneratorData&);
 
-    const ShaderCodeDictionary* fShaderCodeDictionary;
-    const RuntimeEffectDictionary* fRuntimeEffectDictionary;
+    // RAW_PTR_EXCLUSION: performance regression
+    RAW_PTR_EXCLUSION const ShaderCodeDictionary* fShaderCodeDictionary;
+    RAW_PTR_EXCLUSION const RuntimeEffectDictionary* fRuntimeEffectDictionary;
     const char* fUniformSsboIndex;
 
     // The blendInfo represents the actual GPU blend operations, which may or may not completely
