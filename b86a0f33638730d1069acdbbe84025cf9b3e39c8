@@ -96,6 +96,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "76a6054a_808403d1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-01T19:55:05Z",
+      "side": 1,
+      "message": "Dawn did not support readonly storage textures until the patch I linked***",
+      "parentUuid": "1d972428_6ca4653b",
+      "range": {
+        "startLine": 13,
+        "startChar": 2,
+        "endLine": 13,
+        "endChar": 147
+      },
+      "revId": "b86a0f33638730d1069acdbbe84025cf9b3e39c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "304dd9ad_8c4a9ee7",
