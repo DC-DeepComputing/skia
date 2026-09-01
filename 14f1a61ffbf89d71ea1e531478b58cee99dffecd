@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ad5f6de_46bb2800",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 469,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-01T13:50:57Z",
+      "side": 1,
+      "message": "nit: Skia style would have this named `sampleWidth`",
+      "range": {
+        "startLine": 469,
+        "startChar": 14,
+        "endLine": 469,
+        "endChar": 26
+      },
+      "revId": "14f1a61ffbf89d71ea1e531478b58cee99dffecd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1dc52ef_f1dc6262",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 474,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-01T13:50:57Z",
+      "side": 1,
+      "message": "nit: Can you make these const?",
+      "range": {
+        "startLine": 473,
+        "startChar": 4,
+        "endLine": 474,
+        "endChar": 36
+      },
+      "revId": "14f1a61ffbf89d71ea1e531478b58cee99dffecd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c67d5cf_fe1dcdaa",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 478,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-01T13:50:57Z",
+      "side": 1,
+      "message": "dstPDelta and the choice between dstRB and dstPB can be made outside of this for loop",
+      "range": {
+        "startLine": 478,
+        "startChar": 15,
+        "endLine": 478,
+        "endChar": 24
+      },
+      "revId": "14f1a61ffbf89d71ea1e531478b58cee99dffecd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
