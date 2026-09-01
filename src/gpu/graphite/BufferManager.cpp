@@ -168,6 +168,14 @@ BufferSubAllocator& BufferSubAllocator::operator=(BufferSubAllocator&& other) {
     fStride = other.fStride;
     fRemaining = other.fRemaining;
 
+    // Clear moved-from fields
+    other.fOwner = nullptr;
+    other.fTransferBuffer = {};
+    other.fMappedPtr = nullptr;
+    other.fOffset = 0;
+    other.fStride = 1;
+    other.fRemaining = 0;
+
     // Move buffer (leaving other in an invalid state)
     fBuffer = std::move(other.fBuffer);
     SkASSERT(!other);
@@ -260,6 +268,8 @@ void BufferSubAllocator::reset() {
         }
 
         fRemaining = 0;
+        fMappedPtr = nullptr;
+        fTransferBuffer = {};
         SkASSERT(!fBuffer);
     } // else nothing to reset
 }

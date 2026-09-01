@@ -59,6 +59,8 @@
 #include "src/core/SkVerticesPriv.h"
 #include "src/effects/colorfilters/SkColorFilterBase.h"
 #include "src/image/SkSurface_Base.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 #include "src/shaders/SkImageShader.h"
 #include "src/text/GlyphRun.h"
 #include "src/utils/SkPatchUtils.h"
@@ -245,7 +247,7 @@ public:
     }
 
 private:
-    SkCanvas* fCanvas;
+    RAW_PTR_EXCLUSION SkCanvas* fCanvas;
 
     AutoUpdateQRBounds(AutoUpdateQRBounds&&) = delete;
     AutoUpdateQRBounds(const AutoUpdateQRBounds&) = delete;
@@ -2435,8 +2437,8 @@ public:
     sktext::GlyphRunBuilder* operator->() { return fGlyphRunBuilder; }
 
 private:
-    SkCanvas* fCanvas;
-    sktext::GlyphRunBuilder* fGlyphRunBuilder;
+    RAW_PTR_EXCLUSION SkCanvas* fCanvas;
+    RAW_PTR_EXCLUSION sktext::GlyphRunBuilder* fGlyphRunBuilder;
 };
 
 void SkCanvas::onDrawTextBlob(const SkTextBlob* blob, SkScalar x, SkScalar y,

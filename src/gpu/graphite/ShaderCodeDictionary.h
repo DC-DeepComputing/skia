@@ -6,7 +6,11 @@
  */
 
 #ifndef skgpu_graphite_ShaderCodeDictionary_DEFINED
+
 #define skgpu_graphite_ShaderCodeDictionary_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include "include/core/SkSpan.h"
 #include "include/effects/SkRuntimeEffect.h"
@@ -236,7 +240,8 @@ public:
     SkSpan<const uint32_t> data() const { return fData; }
 
 private:
-    const ShaderSnippet* fEntry; // Owned by the ShaderCodeDictionary
+    // RAW_PTR_EXCLUSION: performance regression
+    RAW_PTR_EXCLUSION const ShaderSnippet* fEntry;  // Owned by the ShaderCodeDictionary
     SkSpan<ShaderNode*> fChildren; // Owned by the ShaderInfo's arena
 
     int32_t fCodeID;

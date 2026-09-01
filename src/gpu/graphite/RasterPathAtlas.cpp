@@ -106,10 +106,12 @@ sk_sp<TextureProxy> RasterPathAtlas::onAddShape(const Shape& shape,
         const SkStrokeRec& fStrokeRec;
         SkIRect fShapeBounds;
         SkIVector fTransformedMaskOffset;
-    } context = { shape, localToDevice, strokeRec,
-                  SkIRect::MakeSize({maskSize.x(), maskSize.y()}).makeOffset(kEntryPadding,
-                                                                             kEntryPadding),
-                  transformedMaskOffset };
+    } context = {shape,
+                 localToDevice,
+                 strokeRec,
+                 SkIRect::MakeSize({maskSize.x(), maskSize.y()})
+                         .makeOffset(kEntryPadding, kEntryPadding),
+                 transformedMaskOffset};
     sk_sp<TextureProxy> cachedProxy = fRecorder->priv().proxyCache()->findOrCreateCachedProxy(
             fRecorder, maskKey, &context,
             [](const void* ctx) {
