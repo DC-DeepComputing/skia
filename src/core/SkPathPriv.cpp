@@ -5,18 +5,21 @@
  * found in the LICENSE file.
  */
 
-#include "include/core/SkPathTypes.h"
-#include "include/private/SkPathRef.h"
-#include "include/private/SkTDArray.h"
-#include "src/core/SkCubicClipper.h"
-#include "src/core/SkGeometry.h"
 #include "src/core/SkPathPriv.h"
-#include "src/core/SkPointPriv.h"
+
 #include <algorithm>
 #include <array>
 #include <cstdint>
 #include <iterator>
 #include <optional>
+#include "include/core/SkPathTypes.h"
+#include "include/private/SkPathRef.h"
+#include "include/private/SkTDArray.h"
+#include "src/core/SkCubicClipper.h"
+#include "src/core/SkGeometry.h"
+#include "src/core/SkPointPriv.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 int SkPathPriv::GenIDChangeListenersCount(const SkPath& path) {
     return path.fPathData->genIDChangeListenerCount();
@@ -753,10 +756,10 @@ public:
 
 private:
     int fCurrPtCount;
-    const SkPoint* fCurrPt;
-    const SkPathVerb* fCurrVerb;
-    const SkPathVerb* fStopVerbs;
-    const SkScalar* fCurrConicWeight;
+    RAW_PTR_EXCLUSION const SkPoint* fCurrPt;
+    RAW_PTR_EXCLUSION const SkPathVerb* fCurrVerb;
+    RAW_PTR_EXCLUSION const SkPathVerb* fStopVerbs;
+    RAW_PTR_EXCLUSION const SkScalar* fCurrConicWeight;
     bool fDone;
     SkDEBUGCODE(int fContourCounter;)
 };

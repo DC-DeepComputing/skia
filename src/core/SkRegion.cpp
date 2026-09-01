@@ -15,6 +15,8 @@
 #include "src/core/SkBuffer.h"
 #include "src/core/SkRegionPriv.h"
 #include "src/core/SkSafeMath.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <algorithm>
 #include <atomic>
@@ -63,7 +65,7 @@ constexpr int kRunArrayStackCount = 256;
 //   - Uses sk_realloc_throw()
 //   - Can never be made smaller.
 // Measurement:  for the `region_union_16` benchmark, this is 6% faster.
-class RunArray {
+class RunArray : SkNoncopyable {
 public:
     RunArray() { fPtr = fStack; }
     #ifdef SK_DEBUG
@@ -80,8 +82,10 @@ public:
             SkSafeMath safe;
             int newCount = safe.addInt(count, count >> 1);
             count = safe ? newCount : SK_MaxS32;
+            bool wasStack = (fPtr == fStack);
+            fPtr = nullptr;
             fMalloc.realloc(count);
-            if (fPtr == fStack) {
+            if (wasStack) {
                 memcpy(fMalloc.get(), fStack, fCount * sizeof(SkRegionPriv::RunType));
             }
             fPtr = fMalloc.get();
@@ -92,7 +96,7 @@ private:
     SkRegionPriv::RunType fStack[kRunArrayStackCount];
     AutoTMalloc<SkRegionPriv::RunType> fMalloc;
     int fCount = kRunArrayStackCount;
-    SkRegionPriv::RunType* fPtr;  // non-owning pointer
+    RAW_PTR_EXCLUSION SkRegionPriv::RunType* fPtr;  // non-owning pointer
 };
 
 /*  Pass in the beginning with the intervals.
@@ -708,8 +712,8 @@ static void assert_valid_pair(int left, int rite)
 #endif
 
 struct spanRec {
-    const SkRegionPriv::RunType*    fA_runs;
-    const SkRegionPriv::RunType*    fB_runs;
+    RAW_PTR_EXCLUSION const SkRegionPriv::RunType* fA_runs;
+    RAW_PTR_EXCLUSION const SkRegionPriv::RunType* fB_runs;
     int                         fA_left, fA_rite, fB_left, fB_rite;
     int                         fLeft, fRite, fInside;
 
@@ -923,7 +927,7 @@ public:
     uint8_t fMin, fMax;
 
 private:
-    RunArray* fArray;
+    RAW_PTR_EXCLUSION RunArray* fArray;
     int fStartDst = 0;
     int fPrevDst = 1;
     size_t fPrevLen = 0;  // will never match a length from operate_on_span
