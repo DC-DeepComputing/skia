@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d90ab1cf_0274258a",
+        "filename": "src/gpu/ganesh/GrCopyRenderTask.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-01T18:22:14Z",
+      "side": 1,
+      "message": "PTAL - I\u0027ve updated the CL so once we get into a leaf onExecute we always return \u0027true\u0027 for \u0027fAnyTaskExecuted\u0027. One could play games in the two no-op cases and return \u0027false\u0027 but then we should rename the variable to be \u0027fIsAPurgeRequired\u0027 which would require more thinking (i.e., even for a no-op task is there truly no purging required).",
+      "parentUuid": "3cdba1e2_592a4941",
+      "range": {
+        "startLine": 91,
+        "startChar": 8,
+        "endLine": 91,
+        "endChar": 30
+      },
+      "revId": "ce7db51b18973bb57fb3f53e706cf6bad9d12c27",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3be5dda4_2ad164ec",
         "filename": "src/gpu/ganesh/ops/AtlasRenderTask.cpp",
         "patchSetId": 8
