@@ -5,11 +5,12 @@
  * found in the LICENSE file.
  */
 
+#include "src/gpu/ganesh/GrAHardwareBufferImageGenerator.h"
+
 #include "include/core/SkTypes.h"
 
 #if defined(SK_BUILD_FOR_ANDROID) && __ANDROID_API__ >= 26
 
-#include "src/gpu/ganesh/GrAHardwareBufferImageGenerator.h"
 
 #include "include/android/AHardwareBufferUtils.h"
 #include "include/android/GrAHardwareBufferUtils.h"
@@ -131,7 +132,7 @@ GrSurfaceProxyView GrAHardwareBufferImageGenerator::makeView(GrRecordingContext*
                                                                    &updateImageProc,
                                                                    &texImageCtx,
                                                                    isProtected,
-                                                                   desc.fFormat,
+                                                                   *desc.fFormat,
                                                                    false);
                 if (!backendTex.isValid()) {
                     return {};

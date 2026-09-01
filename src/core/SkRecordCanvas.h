@@ -6,7 +6,10 @@
  */
 
 #ifndef SkRecordCanvas_DEFINED
+
 #define SkRecordCanvas_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkCPURecorder.h"
 #include "include/core/SkCanvasVirtualEnforcer.h"
@@ -191,7 +194,7 @@ private:
     template <typename T, typename... Args> void append(Args&&...);
 
     size_t fApproxBytesUsedBySubPictures;
-    SkRecord* fRecord;
+    raw_ptr<SkRecord, DanglingUntriaged> fRecord;
     std::unique_ptr<SkDrawableList> fDrawableList;
 };
 

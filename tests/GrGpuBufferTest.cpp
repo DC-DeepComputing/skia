@@ -165,7 +165,7 @@ private:
 
             private:
                 void onEmitCode(EmitArgs& args, GrGPArgs* gpArgs) override {
-                    const auto& gp = args.fGeomProc.cast<GP>();
+                    const auto& gp = args.fGeomProc->cast<GP>();
                     args.fVaryingHandler->emitAttributes(gp);
                     args.fFragBuilder->codeAppendf("half4 %s = half4(0, 1, 0, 1);",
                                                    args.fOutputColor);

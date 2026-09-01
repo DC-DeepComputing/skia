@@ -6,7 +6,11 @@
  */
 
 #ifndef skgpu_graphite_PathAtlas_DEFINED
+
 #define skgpu_graphite_PathAtlas_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include "include/core/SkStrokeRec.h"
 #include "src/core/SkTHash.h"
@@ -186,7 +190,8 @@ protected:
     };
 
     // The Recorder that created and owns this Atlas.
-    Recorder* fRecorder;
+    // RAW_PTR_EXCLUSION: performance regression
+    RAW_PTR_EXCLUSION Recorder* fRecorder;
 
     uint32_t fWidth = 0;
     uint32_t fHeight = 0;

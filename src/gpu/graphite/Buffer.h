@@ -6,7 +6,11 @@
  */
 
 #ifndef skgpu_graphite_Buffer_DEFINED
+
 #define skgpu_graphite_Buffer_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include "include/gpu/graphite/GraphiteTypes.h"
 #include "src/gpu/graphite/Resource.h"
@@ -59,7 +63,8 @@ protected:
             , fSize(size)
             , fIsProtected(isProtected) {}
 
-    void* fMapPtr = nullptr;
+    // RAW_PTR_EXCLUSION: GPU mapped memory, performance critical
+    RAW_PTR_EXCLUSION void* fMapPtr = nullptr;
 
 private:
     virtual void onMap() = 0;

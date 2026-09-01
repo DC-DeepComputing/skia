@@ -6,7 +6,11 @@
  */
 
 #ifndef skgpu_graphite_TextAtlasManager_DEFINED
+
 #define skgpu_graphite_TextAtlasManager_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include "include/core/SkRefCnt.h"  // IWYU pragma: keep
 #include "include/private/SkAssert.h"
@@ -147,7 +151,8 @@ private:
         return fAtlases[atlasIndex].get();
     }
 
-    Recorder* fRecorder;
+    // RAW_PTR_EXCLUSION: performance regression
+    RAW_PTR_EXCLUSION Recorder* fRecorder;
     DrawAtlas::AllowMultitexturing fAllowMultitexturing;
     std::unique_ptr<DrawAtlas> fAtlases[kMaskFormatCount];
     static_assert(kMaskFormatCount == 3);

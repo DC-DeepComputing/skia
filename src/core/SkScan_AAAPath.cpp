@@ -25,6 +25,8 @@
 #include "src/core/SkScan.h"
 #include "src/core/SkScanPriv.h"
 #include "src/core/SkTSort.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <algorithm>
 #include <cstdint>
@@ -195,13 +197,13 @@ private:
     static const int kMAX_WIDTH   = 32;
     static const int kMAX_STORAGE = 1024;
 
-    SkBlitter* fRealBlitter;
+    RAW_PTR_EXCLUSION SkBlitter* fRealBlitter;
     SkMaskBuilder fMask;
     SkIRect    fClipRect;
     // we add 2 because we can write 1 extra byte at either end due to precision error
     uint32_t fStorage[(kMAX_STORAGE >> 2) + 2];
 
-    uint8_t* fRow;
+    RAW_PTR_EXCLUSION uint8_t* fRow;
     int      fY;
 };
 
@@ -303,7 +305,7 @@ public:
     }
 
 protected:
-    SkBlitter* fRealBlitter;
+    RAW_PTR_EXCLUSION SkBlitter* fRealBlitter;
 
     int fCurrY;  // Current y coordinate.
     int fWidth;  // Widest row of region to be blitted
@@ -315,7 +317,7 @@ protected:
     // ever be updated in advanceRuns(), and fRuns should always point to
     // a valid SkAlphaRuns...
     int         fRunsToBuffer;
-    void*       fRunsBuffer;
+    RAW_PTR_EXCLUSION void* fRunsBuffer;
     int         fCurrentRun;
     SkAlphaRuns fRuns;
 
@@ -332,9 +334,9 @@ protected:
     void advanceRuns() {
         const size_t kRunsSz = this->getRunsSz();
         fCurrentRun          = (fCurrentRun + 1) % fRunsToBuffer;
-        fRuns.fRuns          = reinterpret_cast<int16_t*>(reinterpret_cast<uint8_t*>(fRunsBuffer) +
+        fRuns.fRuns = reinterpret_cast<int16_t*>(reinterpret_cast<uint8_t*>(fRunsBuffer) +
                                                  fCurrentRun * kRunsSz);
-        fRuns.fAlpha         = reinterpret_cast<SkAlpha*>(fRuns.fRuns + fWidth + 1);
+        fRuns.fAlpha = reinterpret_cast<SkAlpha*>(fRuns.fRuns + fWidth + 1);
         fRuns.reset(fWidth);
     }
 
