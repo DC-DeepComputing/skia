@@ -46,6 +46,30 @@
       },
       "revId": "8b8c3872fbc03f025855db96ce683f34ec98a815",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd874408_2adec9ec",
+        "filename": "src/ports/SkFontMgr_fontconfig.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 895,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-09-01T00:26:19Z",
+      "side": 0,
+      "message": "Resolving this for now. Changed this cl to only edit the behavior of remove_weak so that it uses the standard FcPatternGetWithBinding instead of the is_weak method. \n\nWill make a follow up CL to edit functionality of `remove_weak` after",
+      "parentUuid": "092e033d_313f06df",
+      "range": {
+        "startLine": 891,
+        "startChar": 0,
+        "endLine": 895,
+        "endChar": 100
+      },
+      "revId": "8b8c3872fbc03f025855db96ce683f34ec98a815",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
