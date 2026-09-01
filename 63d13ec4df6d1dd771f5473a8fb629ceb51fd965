@@ -22,6 +22,30 @@
       },
       "revId": "63d13ec4df6d1dd771f5473a8fb629ceb51fd965",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b477d96_10693ce6",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 2383,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-01T21:06:18Z",
+      "side": 0,
+      "message": "I didn\u0027t realize it when I made the initial `TextureRead` patch, but the intrinsic declaration in \"sksl_gpu.sksl\" provides the necessary guarding already:\n`$pure half4 textureRead($readableTexture2D t, uint2 pos);`\n`$pure half4 textureRead(sampler2D s, uint2 pos);`\n\nIf we get a write-only texture2D we fail on the type matching for the function.\n\nI\u0027ve added an assert.",
+      "parentUuid": "6d3b3522_e0cb94c2",
+      "range": {
+        "startLine": 2380,
+        "startChar": 16,
+        "endLine": 2383,
+        "endChar": 26
+      },
+      "revId": "63d13ec4df6d1dd771f5473a8fb629ceb51fd965",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

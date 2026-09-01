@@ -160,6 +160,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d94585df_2f2457a5",
+        "filename": "resources/sksl/errors/InvalidBackendBindingFlagsMetal.sksl",
+        "patchSetId": 10
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-01T21:06:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a2fb9e9_513d92e1",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 74
+      },
+      "revId": "b86a0f33638730d1069acdbbe84025cf9b3e39c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1fe41f9c_eabbc52b",
@@ -173,6 +197,30 @@
       "writtenOn": "2026-09-01T18:46:00Z",
       "side": 1,
       "message": "Name clashes with the definition of `rtexture2` below so should probably rename. `rtexture3` check also seems redundant and unneeded since it is the same definition as `rtexture1`.",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 90
+      },
+      "revId": "b86a0f33638730d1069acdbbe84025cf9b3e39c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0bee6131_dfde60c5",
+        "filename": "resources/sksl/errors/InvalidBackendBindingFlagsSPIRV.sksl",
+        "patchSetId": 10
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-01T21:06:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1fe41f9c_eabbc52b",
       "range": {
         "startLine": 6,
         "startChar": 0,
@@ -206,6 +254,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f87ad5e7_79407081",
+        "filename": "resources/sksl/errors/InvalidBackendBindingFlagsWGSL.sksl",
+        "patchSetId": 10
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-01T21:06:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "24bac9ec_fe315f87",
+      "range": {
+        "startLine": 4,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 82
+      },
+      "revId": "b86a0f33638730d1069acdbbe84025cf9b3e39c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3648698f_87aa9354",
@@ -219,6 +291,30 @@
       "writtenOn": "2026-09-01T19:33:59Z",
       "side": 1,
       "message": "nit: Any reason for changing the format here?",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 46
+      },
+      "revId": "b86a0f33638730d1069acdbbe84025cf9b3e39c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9368e196_b4dd77c1",
+        "filename": "resources/sksl/intrinsics/TextureReadImage.sksl",
+        "patchSetId": 10
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-01T21:06:18Z",
+      "side": 1,
+      "message": "Blast Radius; reverted.",
+      "parentUuid": "3648698f_87aa9354",
       "range": {
         "startLine": 1,
         "startChar": 0,
@@ -252,6 +348,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e143ce2_8a3ccb68",
+        "filename": "resources/sksl/intrinsics/TextureReadTexture.sksl",
+        "patchSetId": 10
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-01T21:06:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "813adfa9_891a053e",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 39
+      },
+      "revId": "b86a0f33638730d1069acdbbe84025cf9b3e39c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "32a4d986_9dfb53ac",
@@ -265,6 +385,30 @@
       "writtenOn": "2026-09-01T19:33:59Z",
       "side": 1,
       "message": "same question/nit",
+      "range": {
+        "startLine": 1,
+        "startChar": 18,
+        "endLine": 1,
+        "endChar": 23
+      },
+      "revId": "b86a0f33638730d1069acdbbe84025cf9b3e39c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "50bd8ba7_ad383de3",
+        "filename": "resources/sksl/intrinsics/TextureSizeImage.sksl",
+        "patchSetId": 10
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-01T21:06:18Z",
+      "side": 1,
+      "message": "Blast Radius; reverted.",
+      "parentUuid": "32a4d986_9dfb53ac",
       "range": {
         "startLine": 1,
         "startChar": 18,
@@ -311,6 +455,30 @@
       "writtenOn": "2026-09-01T19:33:59Z",
       "side": 1,
       "message": "What does this do if it\u0027s not a sampled texture? Just emit nothing? Otherwise are we increasing our emitted spir-v size unnecessarily for storage texture queries?",
+      "range": {
+        "startLine": 2475,
+        "startChar": 0,
+        "endLine": 2475,
+        "endChar": 66
+      },
+      "revId": "b86a0f33638730d1069acdbbe84025cf9b3e39c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ef39509_b3c8ddab",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 2475,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-01T21:06:18Z",
+      "side": 1,
+      "message": "This is purely for the case where we have a sampler and want to read. \n\nThis should be zero overhead, but I\u0027ve moved it into the sampler block regardless. This is from when I first added the `textureRead` function.",
+      "parentUuid": "44b9433c_7d1fb3c5",
       "range": {
         "startLine": 2475,
         "startChar": 0,
