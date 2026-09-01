@@ -6,7 +6,10 @@
  */
 
 #ifndef GrSimpleMeshDrawOpHelperWithStencil_DEFINED
+
 #define GrSimpleMeshDrawOpHelperWithStencil_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkString.h"
 #include "src/core/SkColorData.h"
@@ -104,7 +107,7 @@ public:
     const GrUserStencilSettings* stencilSettings() const { return fStencilSettings; }
 
 private:
-    const GrUserStencilSettings* fStencilSettings;
+    raw_ptr<const GrUserStencilSettings> fStencilSettings;
     using INHERITED = GrSimpleMeshDrawOpHelper;
 };
 
