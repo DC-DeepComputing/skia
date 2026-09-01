@@ -16,6 +16,241 @@
       "message": "PTAL",
       "revId": "1f428ef2ac38d41383652be6d312ab231954b891",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d972a2e_09b393e4",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-01T12:43:41Z",
+      "side": 1,
+      "message": "These values are serialized so the new ones should go at the end.\n\nAlso, is there a way they can always be present?",
+      "revId": "1f428ef2ac38d41383652be6d312ab231954b891",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55e177fb_4480f7e6",
+        "filename": "src/gpu/graphite/RendererProvider.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-01T12:43:41Z",
+      "side": 1,
+      "message": "kWideTile ?",
+      "range": {
+        "startLine": 227,
+        "startChar": 47,
+        "endLine": 227,
+        "endChar": 53
+      },
+      "revId": "1f428ef2ac38d41383652be6d312ab231954b891",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f21964e_b2fa5c19",
+        "filename": "src/gpu/graphite/render/EndCapRenderStep.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-01T12:43:41Z",
+      "side": 1,
+      "message": "rm the spaces but move the \" right\nHistorically, the extra spaces in our strings have consumed a non-negligible amount of memory.\n\nBelow also",
+      "range": {
+        "startLine": 64,
+        "startChar": 11,
+        "endLine": 64,
+        "endChar": 12
+      },
+      "revId": "1f428ef2ac38d41383652be6d312ab231954b891",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3625bf76_2b93edfa",
+        "filename": "src/gpu/graphite/render/EndCapRenderStep.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-01T12:43:41Z",
+      "side": 1,
+      "message": "Tab this line right to align with \"(\" ?",
+      "revId": "1f428ef2ac38d41383652be6d312ab231954b891",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6fdd196c_12d05076",
+        "filename": "src/gpu/graphite/render/EndCapRenderStep.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-01T12:43:41Z",
+      "side": 1,
+      "message": "Tab these guys right ?",
+      "range": {
+        "startLine": 87,
+        "startChar": 0,
+        "endLine": 90,
+        "endChar": 30
+      },
+      "revId": "1f428ef2ac38d41383652be6d312ab231954b891",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5f2e1a7_5016e209",
+        "filename": "src/gpu/graphite/render/EndCapRenderStep.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-01T12:43:41Z",
+      "side": 1,
+      "message": "A \\n here ?",
+      "range": {
+        "startLine": 123,
+        "startChar": 66,
+        "endLine": 123,
+        "endChar": 69
+      },
+      "revId": "1f428ef2ac38d41383652be6d312ab231954b891",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07011ea6_2b14d664",
+        "filename": "src/gpu/graphite/render/EndCapRenderStep.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-01T12:43:41Z",
+      "side": 1,
+      "message": "2026",
+      "range": {
+        "startLine": 2,
+        "startChar": 13,
+        "endLine": 2,
+        "endChar": 17
+      },
+      "revId": "1f428ef2ac38d41383652be6d312ab231954b891",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "387c9b6d_135e3e23",
+        "filename": "src/gpu/graphite/render/WideTileRenderStep.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-01T12:43:41Z",
+      "side": 1,
+      "message": "rm spaces in string",
+      "range": {
+        "startLine": 51,
+        "startChar": 11,
+        "endLine": 51,
+        "endChar": 12
+      },
+      "revId": "1f428ef2ac38d41383652be6d312ab231954b891",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2146c82_b137bdec",
+        "filename": "src/gpu/graphite/render/WideTileRenderStep.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-01T12:43:41Z",
+      "side": 1,
+      "message": "\\n here ?",
+      "range": {
+        "startLine": 82,
+        "startChar": 70,
+        "endLine": 82,
+        "endChar": 72
+      },
+      "revId": "1f428ef2ac38d41383652be6d312ab231954b891",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de158cfe_a8b13f99",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 5
+      },
+      "lineNbr": 1868,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-01T12:43:41Z",
+      "side": 1,
+      "message": "Maybe an overview comment?",
+      "revId": "1f428ef2ac38d41383652be6d312ab231954b891",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8cb020ae_f6772032",
+        "filename": "src/sksl/sksl_graphite_vert.sksl",
+        "patchSetId": 5
+      },
+      "lineNbr": 1207,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-01T12:43:41Z",
+      "side": 1,
+      "message": "vertex_fn ?",
+      "range": {
+        "startLine": 1207,
+        "startChar": 23,
+        "endLine": 1207,
+        "endChar": 25
+      },
+      "revId": "1f428ef2ac38d41383652be6d312ab231954b891",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
