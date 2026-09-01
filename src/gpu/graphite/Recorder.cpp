@@ -325,6 +325,12 @@ void Recorder::createCaptureBreakpoint(SkSurface* surface) {
     }
 }
 
+void Recorder::deregisterCaptureCanvas(SkCanvas* canvas) {
+    if (fSharedContext->captureManager()) {
+        fSharedContext->captureManager()->deregisterCaptureCanvas(canvas);
+    }
+}
+
 void Recorder::registerDevice(sk_sp<Device> device) {
     ASSERT_SINGLE_OWNER
 
