@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5192d1e_f66dd28d",
+        "filename": "src/gpu/ganesh/GrDrawingManager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-01T18:50:01Z",
+      "side": 1,
+      "message": "Yeah I think it could be addressed in subsequent CLs like you suggested on the other comment.",
+      "parentUuid": "64a92988_ba517256",
+      "range": {
+        "startLine": 179,
+        "startChar": 50,
+        "endLine": 179,
+        "endChar": 55
+      },
+      "revId": "eded207465d6fb93abe6400d4a898d06514b5988",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "006fc48d_f7d81dfd",
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "Initially I tried to change the error handling all the way up the call stack but it got to be a huge change. I think we, ultimately, want to go in that direction but we should do it in follow on CLs.",
       "parentUuid": "006fc48d_f7d81dfd",
+      "range": {
+        "startLine": 206,
+        "startChar": 4,
+        "endLine": 206,
+        "endChar": 8
+      },
+      "revId": "eded207465d6fb93abe6400d4a898d06514b5988",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e40b4c0a_ec54fb48",
+        "filename": "src/gpu/ganesh/GrDrawingManager.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-01T18:50:01Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "653a0cdf_9ae50ac8",
       "range": {
         "startLine": 206,
         "startChar": 4,
