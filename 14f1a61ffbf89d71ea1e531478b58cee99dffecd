@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "dd389e5e_d3d1de4c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-09-01T14:39:02Z",
+      "side": 1,
+      "message": "I believe you should rebase to resolve the canary issue.",
+      "revId": "14f1a61ffbf89d71ea1e531478b58cee99dffecd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7ad5f6de_46bb2800",
         "filename": "src/core/SkScalerContext.cpp",
         "patchSetId": 7
