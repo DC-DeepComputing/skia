@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c913fd2_0171833d",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-01T17:27:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1d972a2e_09b393e4",
+      "revId": "1f428ef2ac38d41383652be6d312ab231954b891",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "55e177fb_4480f7e6",
@@ -48,6 +66,30 @@
       "writtenOn": "2026-09-01T12:43:41Z",
       "side": 1,
       "message": "kWideTile ?",
+      "range": {
+        "startLine": 227,
+        "startChar": 47,
+        "endLine": 227,
+        "endChar": 53
+      },
+      "revId": "1f428ef2ac38d41383652be6d312ab231954b891",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8370968a_bf6f7205",
+        "filename": "src/gpu/graphite/RendererProvider.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-01T17:27:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "55e177fb_4480f7e6",
       "range": {
         "startLine": 227,
         "startChar": 47,
@@ -81,6 +123,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5bd1030f_82469c12",
+        "filename": "src/gpu/graphite/render/EndCapRenderStep.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-01T17:27:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3f21964e_b2fa5c19",
+      "range": {
+        "startLine": 64,
+        "startChar": 11,
+        "endLine": 64,
+        "endChar": 12
+      },
+      "revId": "1f428ef2ac38d41383652be6d312ab231954b891",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3625bf76_2b93edfa",
@@ -98,6 +164,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eef64e55_7b7c8b9f",
+        "filename": "src/gpu/graphite/render/EndCapRenderStep.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-01T17:27:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3625bf76_2b93edfa",
+      "revId": "1f428ef2ac38d41383652be6d312ab231954b891",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6fdd196c_12d05076",
@@ -111,6 +195,30 @@
       "writtenOn": "2026-09-01T12:43:41Z",
       "side": 1,
       "message": "Tab these guys right ?",
+      "range": {
+        "startLine": 87,
+        "startChar": 0,
+        "endLine": 90,
+        "endChar": 30
+      },
+      "revId": "1f428ef2ac38d41383652be6d312ab231954b891",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff52ef67_d0ce8774",
+        "filename": "src/gpu/graphite/render/EndCapRenderStep.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-01T17:27:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6fdd196c_12d05076",
       "range": {
         "startLine": 87,
         "startChar": 0,
@@ -144,6 +252,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d72f71ea_fdfd6fd6",
+        "filename": "src/gpu/graphite/render/EndCapRenderStep.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-01T17:27:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e5f2e1a7_5016e209",
+      "range": {
+        "startLine": 123,
+        "startChar": 66,
+        "endLine": 123,
+        "endChar": 69
+      },
+      "revId": "1f428ef2ac38d41383652be6d312ab231954b891",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "07011ea6_2b14d664",
@@ -157,6 +289,30 @@
       "writtenOn": "2026-09-01T12:43:41Z",
       "side": 1,
       "message": "2026",
+      "range": {
+        "startLine": 2,
+        "startChar": 13,
+        "endLine": 2,
+        "endChar": 17
+      },
+      "revId": "1f428ef2ac38d41383652be6d312ab231954b891",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b05f979a_d4112916",
+        "filename": "src/gpu/graphite/render/EndCapRenderStep.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-01T17:27:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "07011ea6_2b14d664",
       "range": {
         "startLine": 2,
         "startChar": 13,
@@ -190,6 +346,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2c4d9d7_16239b1d",
+        "filename": "src/gpu/graphite/render/WideTileRenderStep.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-01T17:27:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "387c9b6d_135e3e23",
+      "range": {
+        "startLine": 51,
+        "startChar": 11,
+        "endLine": 51,
+        "endChar": 12
+      },
+      "revId": "1f428ef2ac38d41383652be6d312ab231954b891",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d2146c82_b137bdec",
@@ -203,6 +383,30 @@
       "writtenOn": "2026-09-01T12:43:41Z",
       "side": 1,
       "message": "\\n here ?",
+      "range": {
+        "startLine": 82,
+        "startChar": 70,
+        "endLine": 82,
+        "endChar": 72
+      },
+      "revId": "1f428ef2ac38d41383652be6d312ab231954b891",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e6e34e0_06081225",
+        "filename": "src/gpu/graphite/render/WideTileRenderStep.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-01T17:27:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d2146c82_b137bdec",
       "range": {
         "startLine": 82,
         "startChar": 70,
@@ -230,6 +434,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "115a96a2_25b083ca",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 5
+      },
+      "lineNbr": 1868,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-01T17:27:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "de158cfe_a8b13f99",
+      "revId": "1f428ef2ac38d41383652be6d312ab231954b891",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8cb020ae_f6772032",
@@ -243,6 +465,30 @@
       "writtenOn": "2026-09-01T12:43:41Z",
       "side": 1,
       "message": "vertex_fn ?",
+      "range": {
+        "startLine": 1207,
+        "startChar": 23,
+        "endLine": 1207,
+        "endChar": 25
+      },
+      "revId": "1f428ef2ac38d41383652be6d312ab231954b891",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e52e0641_fdd9ba29",
+        "filename": "src/sksl/sksl_graphite_vert.sksl",
+        "patchSetId": 5
+      },
+      "lineNbr": 1207,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-01T17:27:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8cb020ae_f6772032",
       "range": {
         "startLine": 1207,
         "startChar": 23,
