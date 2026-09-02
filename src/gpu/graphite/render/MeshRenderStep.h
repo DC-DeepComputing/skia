@@ -22,7 +22,7 @@ class PipelineDataGatherer;
 
 class MeshRenderStep final : public RenderStep {
 public:
-    explicit MeshRenderStep(Layout);
+    explicit MeshRenderStep(Layout, std::string storageFallbackSkSL = {});
     ~MeshRenderStep() override;
 
     std::string vertexSkSL(const RootNodesInfo&) const override;

@@ -8,23 +8,37 @@
 #ifndef skgpu_graphite_StorageContext_DEFINED
 #define skgpu_graphite_StorageContext_DEFINED
 
+#include "include/core/SkColorType.h"
 #include "include/private/SkTDArray.h"
 #include "src/core/SkTHash.h"
 #include "src/gpu/graphite/BufferManager.h"
 #include "src/gpu/graphite/ResourceTypes.h"
+#include "src/gpu/graphite/TextureFormat.h"
 
 #include <cstdint>
 #include <limits>
 #include <utility>
+#include <variant>
 
 class SkGradientBaseShader;
 
 namespace skgpu::graphite {
 
 class DrawBufferManager;
+class DrawTask;
+class Recorder;
+class TextureProxy;
+class TextureProxyView;
+
+using StorageContextResult = std::variant<BindBufferInfo, sk_sp<TextureProxy>>;
 
 class StorageContext {
 public:
+    static constexpr int           kTexelBytes    = 16;
+    static constexpr int           kMaxAtlasWidth = 8192;
+    static constexpr SkColorType   kColorType     = kRGBA_F32_SkColorType;
+    static constexpr TextureFormat kTextureFormat = TextureFormat::kRGBA32F;
+
     StorageContext();
     ~StorageContext();
 
@@ -54,9 +68,9 @@ public:
     // perform GPU uploads.
     void finalizePrecachedStorageData();
 
-    // Called after snapping the draw pass. It creates a single mapped buffer containing the
-    // concatenated cached and append data.
-    BindBufferInfo finalize(DrawBufferManager* bufferMgr);
+    // Called after snapping the draw pass. It creates either a single mapped buffer or a fallback
+    // texture containing the concatenated cached and append data.
+    StorageContextResult finalize(DrawBufferManager*, Recorder*, DrawTask*);
 
     bool isEmpty() const { return fGradientCache.isEmpty() && fVertexData.empty(); }
 
@@ -64,6 +78,9 @@ public:
     SkDEBUGCODE(int vertexSize() const { return fVertexData.size(); })
 
 private:
+    BindBufferInfo finalizeSSBO(DrawBufferManager* bufferMgr);
+    TextureProxyView finalizeTexture(Recorder* recorder, DrawTask* drawTask);
+
     struct GradientCache {
         static constexpr int kMaxGradientStops = 1024 * 1024;
         static constexpr int kMaxStorageFloats =
@@ -83,7 +100,7 @@ private:
     GradientCache fGradientCache;
 
     SkTDArray<char> fVertexData;
-    uint32_t fRunningLCM = 1;
+    uint32_t fRunningLCM;
 };
 
 } // namespace skgpu::graphite

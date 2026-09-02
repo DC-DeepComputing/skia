@@ -36,7 +36,7 @@ static SkVertices::VertexMode vertex_mode(SkMesh::Mode mode) {
     }
 }
 
-MeshRenderStep::MeshRenderStep(Layout layout)
+MeshRenderStep::MeshRenderStep(Layout layout, std::string storageFallbackSkSL)
         : RenderStep(layout,
                      RenderStep::RenderStepID::kMesh,
                      Flags::kPerformsShading | Flags::kAppendVertices
@@ -46,7 +46,9 @@ MeshRenderStep::MeshRenderStep(Layout layout)
                      kDirectDepthLEqualPass,
                      /*staticAttrs=*/{},
                      /*appendAttrs=*/{{"ssboIndex", VertexAttribType::kUInt, SkSLType::kUInt}},
-                     /*storageUniforms=*/{}) {}
+                     /*storageUniforms=*/{},
+                     /*varyings=*/{},
+                     std::move(storageFallbackSkSL)) {}
 
 MeshRenderStep::~MeshRenderStep() {}
 
