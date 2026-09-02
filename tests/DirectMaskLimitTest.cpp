@@ -101,7 +101,7 @@ DEF_GANESH_TEST_FOR_CONTEXTS(DirectMaskLimitTest_Ganesh,
     if (!surface) {
         return;
     }
-    test_direct_mask_limit(reporter, surface.get(), [&] { dContext->flushAndSubmit(); });
+    test_direct_mask_limit(reporter, surface.get(), [&] { dContext->flushAndSubmit_bad1(); });
 }
 #endif // SK_GANESH
 

@@ -398,7 +398,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ResourceAllocatorStressTest,
     draw(context);
     draw(context);
     draw(context);
-    context->flushAndSubmit();
+    context->flushAndSubmit_bad1();
 
     context->setResourceCacheLimit(maxBytes);
 }

@@ -189,7 +189,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(PromiseImageTest,
     canvas->drawImage(refImg, 0, 0);
     check_unfulfilled(promiseChecker, reporter);
 
-    ctx->flushAndSubmit(surface.get(), GrSyncCpu::kNo);
+    ctx->flushAndSubmit_bad1(surface.get(), GrSyncCpu::kNo);
     // We still own the image so we should not have called Release or Done.
     check_only_fulfilled(reporter, promiseChecker);
 
@@ -199,13 +199,13 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(PromiseImageTest,
     canvas->drawImage(refImg, 0, 0);
     canvas->drawImage(refImg, 0, 0);
 
-    ctx->flushAndSubmit(surface.get(), GrSyncCpu::kYes);
+    ctx->flushAndSubmit_bad1(surface.get(), GrSyncCpu::kYes);
 
     // Image should still be fulfilled from the first time we drew/flushed it.
     check_only_fulfilled(reporter, promiseChecker);
 
     canvas->drawImage(refImg, 0, 0);
-    ctx->flushAndSubmit(surface.get(), GrSyncCpu::kNo);
+    ctx->flushAndSubmit_bad1(surface.get(), GrSyncCpu::kNo);
     check_only_fulfilled(reporter, promiseChecker);
 
     canvas->drawImage(refImg, 0, 0);
@@ -213,7 +213,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(PromiseImageTest,
     // We no longer own the image but the last draw is still unflushed.
     check_only_fulfilled(reporter, promiseChecker);
 
-    ctx->flushAndSubmit(surface.get(), GrSyncCpu::kNo);
+    ctx->flushAndSubmit_bad1(surface.get(), GrSyncCpu::kNo);
     // Flushing should have called Release. Depending on the backend and timing it may have called
     // done.
     check_all_flushed_but_not_synced(reporter, promiseChecker, ctx->backend());
@@ -295,7 +295,7 @@ DEF_GANESH_TEST(PromiseImageTextureShutdown, reporter, ctxInfo, CtsEnforcement::
             // to destroy the context (and instead will release-all-and-abandon).
             surface.reset();
 
-            ctx->flushAndSubmit();
+            ctx->flushAndSubmit_bad1();
             contextDeath(&factory, ctx);
 
             check_all_done(reporter, promiseChecker);
@@ -373,20 +373,20 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(PromiseImageTextureFullCache,
     // Relying on the asserts in the promiseImageChecker to ensure that fulfills and releases are
     // properly ordered.
     canvas->drawImage(image, 0, 0);
-    dContext->flushAndSubmit(surface.get(), GrSyncCpu::kNo);
+    dContext->flushAndSubmit_bad1(surface.get(), GrSyncCpu::kNo);
     canvas->drawImage(image, 1, 0);
-    dContext->flushAndSubmit(surface.get(), GrSyncCpu::kNo);
+    dContext->flushAndSubmit_bad1(surface.get(), GrSyncCpu::kNo);
     canvas->drawImage(image, 2, 0);
-    dContext->flushAndSubmit(surface.get(), GrSyncCpu::kNo);
+    dContext->flushAndSubmit_bad1(surface.get(), GrSyncCpu::kNo);
     canvas->drawImage(image, 3, 0);
-    dContext->flushAndSubmit(surface.get(), GrSyncCpu::kNo);
+    dContext->flushAndSubmit_bad1(surface.get(), GrSyncCpu::kNo);
     canvas->drawImage(image, 4, 0);
-    dContext->flushAndSubmit(surface.get(), GrSyncCpu::kNo);
+    dContext->flushAndSubmit_bad1(surface.get(), GrSyncCpu::kNo);
     canvas->drawImage(image, 5, 0);
-    dContext->flushAndSubmit(surface.get(), GrSyncCpu::kNo);
+    dContext->flushAndSubmit_bad1(surface.get(), GrSyncCpu::kNo);
     // Must call these to ensure that all callbacks are performed before the checker is destroyed.
     image.reset();
-    dContext->flushAndSubmit(GrSyncCpu::kYes);
+    dContext->flushAndSubmit_bad1(GrSyncCpu::kYes);
 
     dContext->deleteBackendTexture(backendTex);
 }
@@ -446,7 +446,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(PromiseImageNullFulfill,
     canvas->drawRect(SkRect::MakeWH(1,1), paint);
     paint.setShader(nullptr);
     refImg.reset();
-    dContext->flushAndSubmit(surface.get(), GrSyncCpu::kNo);
+    dContext->flushAndSubmit_bad1(surface.get(), GrSyncCpu::kNo);
     // We should only call each callback once and we should have made all the calls by this point.
     REPORTER_ASSERT(reporter, counts.fFulfillCount == 1);
     REPORTER_ASSERT(reporter, counts.fReleaseCount == 1);

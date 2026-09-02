@@ -97,7 +97,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(RepeatedClippedBlurTest,
     }
 
     // flush here just to clear the playing field
-    dContext->flushAndSubmit();
+    dContext->flushAndSubmit_bad1();
 
     size_t beforeBytes = cache->getResourceBytes();
 
@@ -125,7 +125,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(RepeatedClippedBlurTest,
                                  nullptr, SkCanvas::kStrict_SrcRectConstraint);
 
         // Flush here to mimic Chrome's SkiaHelper::ApplyImageFilter
-        dContext->flushAndSubmit();
+        dContext->flushAndSubmit_bad1();
 
         clip.fRight -= 16;
     }

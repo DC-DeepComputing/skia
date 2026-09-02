@@ -824,7 +824,7 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(TriangulatingPathRendererTests,
         return;
     }
 
-    ctx->flushAndSubmit();
+    ctx->flushAndSubmit_bad1();
     // Adding discard to appease vulkan validation warning about loading uninitialized data on draw
     sdc->discard();
 

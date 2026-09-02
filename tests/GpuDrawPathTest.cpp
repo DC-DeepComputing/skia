@@ -119,7 +119,7 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(GrDrawCollapsedPath,
              -8.94321693e-06f, -0.00173384184f, 0.998692870f);
     surface->getCanvas()->setMatrix(m);
     surface->getCanvas()->drawPath(path, paint);
-    dContext->flushAndSubmit(surface.get(), GrSyncCpu::kNo);
+    dContext->flushAndSubmit_bad1(surface.get(), GrSyncCpu::kNo);
 }
 
 DEF_GANESH_TEST_FOR_ALL_CONTEXTS(PathTest_CrBug1232834,
@@ -142,7 +142,7 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(PathTest_CrBug1232834,
                   .detach();
 
     surface->getCanvas()->drawPath(path, paint);
-    dContext->flushAndSubmit(surface.get(), GrSyncCpu::kNo);
+    dContext->flushAndSubmit_bad1(surface.get(), GrSyncCpu::kNo);
 }
 
 DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(StrokeCircle_Bug356182429,
@@ -170,5 +170,5 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(StrokeCircle_Bug356182429,
     //   the implementation of mapRadius (computing geometric mean of the lengths of two vectors).
     SkRect oval = SkRect::MakeLTRB(0, 0, 1.83670992E-40f, 1.21223864E-38f);
     surface->getCanvas()->drawArc(oval, 8.17909887E-41f, 2.24207754E-44f, false, paint);
-    dContext->flushAndSubmit(surface.get(), GrSyncCpu::kNo);
+    dContext->flushAndSubmit_bad1(surface.get(), GrSyncCpu::kNo);
 }

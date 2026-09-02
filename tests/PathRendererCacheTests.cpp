@@ -130,7 +130,7 @@ static void test_path(
 
     // Draw the path, check that new resource count matches expectations
     draw_path(dContext.get(), sdc.get(), path, pathRenderer.get(), aaType, style);
-    dContext->flushAndSubmit();
+    dContext->flushAndSubmit_bad1();
     REPORTER_ASSERT(reporter, cache_non_scratch_resources_equals(cache, expected));
 
     // Nothing should be purgeable yet
@@ -154,7 +154,7 @@ static void test_path(
         float scaleX = 1 + ((float)i + 1)/20.f;
         draw_path(dContext.get(), sdc.get(), path, pathRenderer.get(), aaType, style, scaleX);
     }
-    dContext->flushAndSubmit();
+    dContext->flushAndSubmit_bad1();
     REPORTER_ASSERT(reporter, SkPathPriv::GenIDChangeListenersCount(path) == 20);
     cache->purgeUnlockedResources(GrPurgeResourceOptions::kAllResources);
     // The listeners don't actually purge until we try to add another one.

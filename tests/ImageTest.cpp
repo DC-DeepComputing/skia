@@ -451,7 +451,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SkImage_makeTextureImage,
             [otherContextInfo] {
                 auto restore = otherContextInfo.testContext()->makeCurrentAndAutoRestore();
                 auto otherContextImage = create_gpu_image(otherContextInfo.directContext());
-                otherContextInfo.directContext()->flushAndSubmit();
+                otherContextInfo.directContext()->flushAndSubmit_bad1();
                 return otherContextImage;
             }};
     for (auto mipmapped : {skgpu::Mipmapped::kNo, skgpu::Mipmapped::kYes}) {
@@ -519,7 +519,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SkImage_makeTextureImage,
             }
         }
     }
-    dContext->flushAndSubmit();
+    dContext->flushAndSubmit_bad1();
 }
 
 DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SkImage_makeNonTextureImage,
@@ -1031,7 +1031,7 @@ static void test_cross_context_image(
             sk_sp<SkImage> refImg(imageMaker(dContext));
 
             canvas->drawImage(refImg, 0, 0);
-            dContext->flushAndSubmit(surface.get(), GrSyncCpu::kNo);
+            dContext->flushAndSubmit_bad1(surface.get(), GrSyncCpu::kNo);
 
             refImg.reset(nullptr); // force a release of the image
         }
@@ -1043,7 +1043,7 @@ static void test_cross_context_image(
             canvas->drawImage(refImg, 0, 0);
             refImg.reset(nullptr); // force a release of the image
 
-            dContext->flushAndSubmit(surface.get(), GrSyncCpu::kNo);
+            dContext->flushAndSubmit_bad1(surface.get(), GrSyncCpu::kNo);
         }
 
         // Configure second context
@@ -1068,7 +1068,7 @@ static void test_cross_context_image(
 
             otherTestContext->makeCurrent();
             canvas->drawImage(refImg, 0, 0);
-            otherCtx->flushAndSubmit(surface.get(), GrSyncCpu::kNo);
+            otherCtx->flushAndSubmit_bad1(surface.get(), GrSyncCpu::kNo);
 
             testContext->makeCurrent();
             refImg.reset(nullptr); // force a release of the image
@@ -1088,7 +1088,7 @@ static void test_cross_context_image(
             otherTestContext->makeCurrent();
             // Sync is specifically here for vulkan to guarantee the command buffer will finish
             // which is when we call the ReleaseProc.
-            otherCtx->flushAndSubmit(surface.get(), GrSyncCpu::kYes);
+            otherCtx->flushAndSubmit_bad1(surface.get(), GrSyncCpu::kYes);
         }
 
         // Case #6: Verify that only one context can be using the image at a time
@@ -1240,7 +1240,7 @@ DEF_GANESH_TEST_FOR_GL_CONTEXT(makeBackendTexture, reporter, ctxInfo, CtsEnforce
         { [otherContextInfo] {
             auto restore = otherContextInfo.testContext()->makeCurrentAndAutoRestore();
             sk_sp<SkImage> otherContextImage = create_gpu_image(otherContextInfo.directContext());
-            otherContextInfo.directContext()->flushAndSubmit();
+            otherContextInfo.directContext()->flushAndSubmit_bad1();
             return otherContextImage;
           }, false, false },
         // Create an image that is too large to be texture backed.
@@ -1281,7 +1281,7 @@ DEF_GANESH_TEST_FOR_GL_CONTEXT(makeBackendTexture, reporter, ctxInfo, CtsEnforce
             kExpectedState[testCase.fCanTakeDirectly]);
         }
 
-        context->flushAndSubmit();
+        context->flushAndSubmit_bad1();
     }
 }
 
@@ -1589,7 +1589,7 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(ImageFlush, reporter, ctxInfo, CtsEnforcement::
 
     // Flush all the setup work we did above and then make little lambda that reports the flush
     // count delta since the last time it was called.
-    dContext->flushAndSubmit();
+    dContext->flushAndSubmit_bad1();
     auto numSubmits =
             [dContext,
              submitCnt = dContext->priv().getGpu()->stats()->numSubmitToGpus()]() mutable {
@@ -1600,55 +1600,55 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(ImageFlush, reporter, ctxInfo, CtsEnforcement::
     };
 
     // Images aren't used therefore flush is ignored, but submit is still called.
-    dContext->flushAndSubmit(i0);
-    dContext->flushAndSubmit(i1);
-    dContext->flushAndSubmit(i2);
+    dContext->flushAndSubmit_bad1(i0);
+    dContext->flushAndSubmit_bad1(i1);
+    dContext->flushAndSubmit_bad1(i2);
     REPORTER_ASSERT(reporter, numSubmits() == 3);
 
     // Syncing forces the flush to happen even if the images aren't used.
-    dContext->flush(i0);
+    dContext->flush_bad1(i0);
     dContext->submit(GrSyncCpu::kYes);
     REPORTER_ASSERT(reporter, numSubmits() == 1);
-    dContext->flush(i1);
+    dContext->flush_bad1(i1);
     dContext->submit(GrSyncCpu::kYes);
     REPORTER_ASSERT(reporter, numSubmits() == 1);
-    dContext->flush(i2);
+    dContext->flush_bad1(i2);
     dContext->submit(GrSyncCpu::kYes);
     REPORTER_ASSERT(reporter, numSubmits() == 1);
 
     // Use image 1
     s->getCanvas()->drawImage(i1, 0, 0);
     // Flushing image 0 should do nothing, but submit is still called.
-    dContext->flushAndSubmit(i0);
+    dContext->flushAndSubmit_bad1(i0);
     REPORTER_ASSERT(reporter, numSubmits() == 1);
     // Flushing image 1 should flush.
-    dContext->flushAndSubmit(i1);
+    dContext->flushAndSubmit_bad1(i1);
     REPORTER_ASSERT(reporter, numSubmits() == 1);
     // Flushing image 2 should do nothing, but submit is still called.
-    dContext->flushAndSubmit(i2);
+    dContext->flushAndSubmit_bad1(i2);
     REPORTER_ASSERT(reporter, numSubmits() == 1);
 
     // Use image 2
     s->getCanvas()->drawImage(i2, 0, 0);
     // Flushing image 0 should do nothing, but submit is still called.
-    dContext->flushAndSubmit(i0);
+    dContext->flushAndSubmit_bad1(i0);
     REPORTER_ASSERT(reporter, numSubmits() == 1);
     // Flushing image 1 do nothing, but submit is still called.
-    dContext->flushAndSubmit(i1);
+    dContext->flushAndSubmit_bad1(i1);
     REPORTER_ASSERT(reporter, numSubmits() == 1);
     // Flushing image 2 should flush.
-    dContext->flushAndSubmit(i2);
+    dContext->flushAndSubmit_bad1(i2);
     REPORTER_ASSERT(reporter, numSubmits() == 1);
     REPORTER_ASSERT(reporter, static_cast<SkImage_GaneshYUVA*>(as_IB(i2.get()))->isTextureBacked());
     s->getCanvas()->drawImage(i2, 0, 0);
     // Flushing image 0 should do nothing, but submit is still called.
-    dContext->flushAndSubmit(i0);
+    dContext->flushAndSubmit_bad1(i0);
     REPORTER_ASSERT(reporter, numSubmits() == 1);
     // Flushing image 1 do nothing, but submit is still called.
-    dContext->flushAndSubmit(i1);
+    dContext->flushAndSubmit_bad1(i1);
     REPORTER_ASSERT(reporter, numSubmits() == 1);
     // Flushing image 2 should flush.
-    dContext->flushAndSubmit(i2);
+    dContext->flushAndSubmit_bad1(i2);
     REPORTER_ASSERT(reporter, numSubmits() == 1);
 }
 #endif

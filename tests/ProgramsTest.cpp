@@ -334,7 +334,7 @@ bool GrDrawingManager::ProgramUnitTest(GrDirectContext* direct, int maxStages, i
         GrDrawRandomOp(&random, surfaceDrawContext.get(), std::move(paint));
     }
     // Flush everything, test passes if flush is successful(ie, no asserts are hit, no crashes)
-    direct->flush(GrFlushInfo());
+    direct->flush_bad2(GrFlushInfo());
     direct->submit(GrSyncCpu::kNo);
 
     // Validate that GrFPs work correctly without an input.
@@ -363,7 +363,7 @@ bool GrDrawingManager::ProgramUnitTest(GrDirectContext* direct, int maxStages, i
             paint.setColorFragmentProcessor(std::move(blockFP));
             GrDrawRandomOp(&random, sdc.get(), std::move(paint));
 
-            direct->flush(GrFlushInfo());
+            direct->flush_bad2(GrFlushInfo());
             direct->submit(GrSyncCpu::kNo);
         }
     }

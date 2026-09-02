@@ -52,7 +52,7 @@ void TestContext::flushAndWaitOnSync(GrDirectContext* context) {
     flushInfo.fFinishedProc = FlushFinishTracker::FlushFinished;
     flushInfo.fFinishedContext = fFinishTrackers[fCurrentFlushIdx].get();
 
-    context->flush(flushInfo);
+    context->flush_bad2(flushInfo);
     context->submit();
 
     fCurrentFlushIdx = (fCurrentFlushIdx + 1) % std::size(fFinishTrackers);
@@ -60,7 +60,7 @@ void TestContext::flushAndWaitOnSync(GrDirectContext* context) {
 
 void TestContext::flushAndSyncCpu(GrDirectContext* context) {
     SkASSERT(context);
-    context->flush();
+    context->flush_bad1();
     context->submit(GrSyncCpu::kYes);
 }
 

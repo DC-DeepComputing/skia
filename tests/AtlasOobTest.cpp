@@ -180,7 +180,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(Atlas_Oob_ganesh,
 
     run_atlas_oob_test(reporter, canvas);
 
-    dContext->flushAndSubmit();
+    dContext->flushAndSubmit_bad1();
 }
 #endif // defined(SK_GANESH)
 

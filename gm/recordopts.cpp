@@ -143,7 +143,7 @@ DEF_SIMPLE_GM(recordopts, canvas, (kTestRectSize+1)*2, (kTestRectSize+1)*15) {
     auto flushGanesh = [&] {
 #if defined(SK_GANESH)
         if (auto direct = GrAsDirectContext(canvas->recordingContext())) {
-            direct->flushAndSubmit();
+            direct->flushAndSubmit_bad1();
         }
 #endif
     };

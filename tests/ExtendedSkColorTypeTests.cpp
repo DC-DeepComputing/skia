@@ -334,7 +334,7 @@ static void ganesh_tests(GrDirectContext* dContext,
         }
 
         img.reset();
-        dContext->flushAndSubmit();
+        dContext->flushAndSubmit_bad1();
         dContext->deleteBackendTexture(backendTex);
     }
 }

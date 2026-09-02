@@ -111,7 +111,7 @@ class FontRegenGM : public skiagm::GM {
 #if defined(SK_GANESH)
         auto dContext = GrAsDirectContext(canvas->recordingContext());
         if (dContext) {
-            dContext->flushAndSubmit();
+            dContext->flushAndSubmit_bad1();
         }
 #endif
 

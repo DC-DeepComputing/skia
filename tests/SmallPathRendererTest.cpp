@@ -46,5 +46,5 @@ DEF_GANESH_TEST_FOR_CONTEXTS(SmallPathRenderer_crbug505876830,
 
     // Passes if we don't assert.
     sdc->drawPath(nullptr, GrPaint(), GrAA::kYes, m, smolpath, style);
-    ctx->flushAndSubmit();
+    ctx->flushAndSubmit_bad1();
 }

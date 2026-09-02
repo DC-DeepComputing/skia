@@ -222,7 +222,7 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(VertexAttributeCount,
         ERRORF(reporter, "No attributes allowed?!");
         return;
     }
-    dContext->flushAndSubmit();
+    dContext->flushAndSubmit_bad1();
     dContext->priv().resetGpuStats();
 #if GR_GPU_STATS
     REPORTER_ASSERT(reporter, gpu->stats()->numDraws() == 0);
@@ -234,14 +234,14 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(VertexAttributeCount,
     GrPaint grPaint;
     // This one should succeed.
     sdc->addDrawOp(Op::Make(dContext, attribCnt));
-    dContext->flushAndSubmit();
+    dContext->flushAndSubmit_bad1();
 #if GR_GPU_STATS
     REPORTER_ASSERT(reporter, gpu->stats()->numDraws() == 1);
     REPORTER_ASSERT(reporter, gpu->stats()->numFailedDraws() == 0);
 #endif
     dContext->priv().resetGpuStats();
     sdc->addDrawOp(Op::Make(dContext, attribCnt + 1));
-    dContext->flushAndSubmit();
+    dContext->flushAndSubmit_bad1();
 #if GR_GPU_STATS
     REPORTER_ASSERT(reporter, gpu->stats()->numDraws() == 0);
     REPORTER_ASSERT(reporter, gpu->stats()->numFailedDraws() == 1);

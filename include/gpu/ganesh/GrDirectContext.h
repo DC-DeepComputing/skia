@@ -320,14 +320,31 @@ public:
     bool wait(int numSemaphores, const GrBackendSemaphore* waitSemaphores,
               bool deleteSemaphoresAfterWait = true);
 
+    /*
+     * Result from a flush call. a flush can be successful w/ or w/o any semaphores being flushed.
+     * In some circumstances an unsuccessful flush can still have flushed the semaphores but,
+     * overall, the results are not trustworthy.
+     */
+    struct FlushResult {
+        bool fSuccess;                    // Did the flush succeed
+        // We any semaphores submitted during the flush process. Will be kNo if no
+        // semaphores were specified.
+        GrSemaphoresSubmitted fSubmitted;
+    };
+
     /**
      * Call to ensure all drawing to the context has been flushed and submitted to the underlying 3D
      * API. This is equivalent to calling GrContext::flush with a default GrFlushInfo followed by
      * GrContext::submit(sync).
      */
-    void flushAndSubmit(GrSyncCpu sync = GrSyncCpu::kNo) {
-        this->flush(GrFlushInfo());
-        this->submit(sync);
+    FlushResult flushAndSubmit_good(GrSyncCpu sync = GrSyncCpu::kNo) {
+        FlushResult result = this->flush_good(GrFlushInfo());
+        result.fSuccess &= this->submit(sync);
+        return result;
+    }
+
+    void flushAndSubmit_bad1(GrSyncCpu sync = GrSyncCpu::kNo) {
+        (void) this->flushAndSubmit_good(sync);
     }
 
     /**
@@ -354,9 +371,14 @@ public:
      * happen. It simply means there were no semaphores submitted to the GPU. A caller should only
      * take this as a failure if they passed in semaphores to be submitted.
      */
-    GrSemaphoresSubmitted flush(const GrFlushInfo& info);
+    FlushResult flush_good(const GrFlushInfo& info);
 
-    void flush() { this->flush(GrFlushInfo()); }
+    GrSemaphoresSubmitted flush_bad2(const GrFlushInfo& info) {
+        FlushResult result = this->flush_good(info);
+        return result.fSubmitted;
+    }
+
+    void flush_bad1() { this->flush_good(GrFlushInfo()); }
 
     /** Flushes any pending uses of texture-backed images in the GPU backend. If the image is not
      *  texture-backed (including promise texture images) or if the GrDirectContext does not
@@ -367,13 +389,27 @@ public:
      *  @param image    the non-null image to flush.
      *  @param info     flush options
      */
-    GrSemaphoresSubmitted flush(const sk_sp<const SkImage>& image, const GrFlushInfo& info);
-    void flush(const sk_sp<const SkImage>& image);
+    FlushResult flush_good(const sk_sp<const SkImage>& image, const GrFlushInfo& info);
+
+    GrSemaphoresSubmitted flush_bad2(const sk_sp<const SkImage>& image, const GrFlushInfo& info) {
+        FlushResult result = this->flush_good(image, info);
+        return result.fSubmitted;
+    }
+
+    void flush_bad1(const sk_sp<const SkImage>& image) { (void) this->flush_good(image, {}); }
 
     /** Version of flush() that uses a default GrFlushInfo. Also submits the flushed work to the
      *   GPU.
      */
-    void flushAndSubmit(const sk_sp<const SkImage>& image);
+    FlushResult flushAndSubmit_good(const sk_sp<const SkImage>& image) {
+        FlushResult result = this->flush_good(image, {});
+        result.fSuccess &= this->submit();
+        return result;
+    }
+
+    void flushAndSubmit_bad1(const sk_sp<const SkImage>& image) {
+        (void) this->flushAndSubmit_good(image);
+    }
 
     /** Issues pending SkSurface commands to the GPU-backed API objects and resolves any SkSurface
      *  MSAA. A call to GrDirectContext::submit is always required to ensure work is actually sent
@@ -420,9 +456,16 @@ public:
      *  @param access  type of access the call will do on the backend object after flush
      *  @param info    flush options
      */
-    GrSemaphoresSubmitted flush(SkSurface* surface,
+    FlushResult flush_good(SkSurface* surface,
+                      SkSurfaces::BackendSurfaceAccess access,
+                      const GrFlushInfo& info);
+
+    GrSemaphoresSubmitted flush_bad2(SkSurface* surface,
                                 SkSurfaces::BackendSurfaceAccess access,
-                                const GrFlushInfo& info);
+                                const GrFlushInfo& info) {
+        FlushResult result = this->flush_good(surface, access, info);
+        return result.fSubmitted;
+    }
 
     /**
      *  Same as above except:
@@ -443,9 +486,25 @@ public:
      *  @param info     flush options
      *  @param newState optional state change request after flush
      */
-    GrSemaphoresSubmitted flush(SkSurface* surface,
+    FlushResult flush_good(SkSurface* surface,
+                      const GrFlushInfo& info,
+                      const skgpu::MutableTextureState* newState = nullptr);
+
+    GrSemaphoresSubmitted flush_bad2(SkSurface* surface,
                                 const GrFlushInfo& info,
-                                const skgpu::MutableTextureState* newState = nullptr);
+                                const skgpu::MutableTextureState* newState = nullptr) {
+        FlushResult result = this->flush_good(surface, info, newState);
+        return result.fSubmitted;
+    }
+
+    /**
+     * Flushes the given surface with the default GrFlushInfo.
+     *
+     *  Has no effect on a CPU-backed surface.
+     */
+    void flush_bad1(SkSurface* surface) {
+        (void) this->flush_good(surface, GrFlushInfo(), nullptr);
+    }
 
     /** Call to ensure all reads/writes of the surface have been issued to the underlying 3D API.
      *  Skia will correctly order its own draws and pixel operations. This must to be used to ensure
@@ -455,14 +514,11 @@ public:
      *
      *  Has no effect on a CPU-backed surface.
      */
-    void flushAndSubmit(SkSurface* surface, GrSyncCpu sync = GrSyncCpu::kNo);
+    FlushResult flushAndSubmit_good(SkSurface* surface, GrSyncCpu sync = GrSyncCpu::kNo);
 
-    /**
-     * Flushes the given surface with the default GrFlushInfo.
-     *
-     *  Has no effect on a CPU-backed surface.
-     */
-    void flush(SkSurface* surface);
+    void flushAndSubmit_bad1(SkSurface* surface, GrSyncCpu sync = GrSyncCpu::kNo) {
+        return (void) flushAndSubmit_good(surface, sync);
+    }
 
     /**
      * Submit outstanding work to the gpu from all previously un-submitted flushes. The return

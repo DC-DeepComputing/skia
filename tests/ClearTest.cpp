@@ -304,7 +304,7 @@ static void clear_op_test(skiatest::Reporter* reporter, GrDirectContext* dContex
             REPORTER_ASSERT(reporter, clearOp.color() == kExpected);
             REPORTER_ASSERT(reporter, clearOp.stencilInsideMask());
 
-            dContext->flushAndSubmit();
+            dContext->flushAndSubmit_bad1();
         }
 
         // Try combining a pure-stencil clear w/ a combined stencil & color clear
@@ -330,7 +330,7 @@ static void clear_op_test(skiatest::Reporter* reporter, GrDirectContext* dContex
             REPORTER_ASSERT(reporter, clearOp.color() == kExpected);
             REPORTER_ASSERT(reporter, !clearOp.stencilInsideMask());
 
-            dContext->flushAndSubmit();
+            dContext->flushAndSubmit_bad1();
         }
     }
 }

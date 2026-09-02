@@ -485,7 +485,7 @@ DEF_GANESH_TEST(LazyProxyFailedInstantiationTest,
         int executeTestValue = 0;
         sdc->addDrawOp(LazyFailedInstantiationTestOp::Make(ctx.get(), proxyProvider,
                                                            &executeTestValue, failInstantiation));
-        ctx->flushAndSubmit();
+        ctx->flushAndSubmit_bad1();
 
         if (failInstantiation) {
             REPORTER_ASSERT(reporter, 1 == executeTestValue);

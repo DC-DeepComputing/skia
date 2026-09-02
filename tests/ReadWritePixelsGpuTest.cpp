@@ -1496,7 +1496,7 @@ DEF_GANESH_TEST_FOR_GL_CONTEXT(GLReadPixelsUnbindPBO,
                                      &asyncContext);
 
     // This will force the async readback to finish.
-    ctxInfo.directContext()->flushAndSubmit(GrSyncCpu::kYes);
+    ctxInfo.directContext()->flushAndSubmit_bad1(GrSyncCpu::kYes);
     if (!asyncContext.fCalled) {
         ERRORF(reporter, "async_callback not called.");
     }
@@ -1563,7 +1563,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ReadPixelsIntermediateFailedFlush,
     }
 
     surf->getCanvas()->clear(kSrcColor);
-    dContext->flushAndSubmit(GrSyncCpu::kYes);
+    dContext->flushAndSubmit_bad1(GrSyncCpu::kYes);
 
     // From here on the flush-time callback fails so any queued render tasks are discarded.
     FailingFlushCallback failingCallback;
@@ -1621,7 +1621,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(WritePixelsFailedFlushLeaksScratch,
     if (!surf->getCanvas()->writePixels(srcBM, 0, 0)) {
         return;
     }
-    dContext->flushAndSubmit(GrSyncCpu::kYes);
+    dContext->flushAndSubmit_bad1(GrSyncCpu::kYes);
 
     // Arm a preFlush() that fails exactly once. When it fires on the flush for uploading to a
     // temporary texture, we should propagate the failure and not use the temporary texture as the
@@ -1653,7 +1653,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(WritePixelsFailedFlushLeaksScratch,
 
     // If none of the code paths triggered an internal flush from the write pixels, it should
     // execute successfully when we flush here.
-    dContext->flushAndSubmit(GrSyncCpu::kYes);
+    dContext->flushAndSubmit_bad1(GrSyncCpu::kYes);
 
     SkBitmap readback;
     readback.allocPixels(dstII);

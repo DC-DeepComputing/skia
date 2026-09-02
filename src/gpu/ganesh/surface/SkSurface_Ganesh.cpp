@@ -97,7 +97,10 @@ static GrRenderTarget* prepare_rt_for_external_access(SkSurface_Ganesh* surface,
             break;
     }
 
-    dContext->priv().flushSurface(surface->getDevice()->targetProxy());
+    GrDirectContext::FlushResult result = dContext->priv().flushSurface1(surface->getDevice()->targetProxy());
+    if (!result.fSuccess) {
+        return nullptr;
+    }
 
     // Grab the render target *after* firing notifications, as it may get switched if CoW kicks in.
     return surface->getDevice()->targetProxy()->peekRenderTarget();
@@ -193,7 +196,7 @@ void SkSurface_Ganesh::onAsyncRescaleAndReadPixels(const SkImageInfo& info,
                                                    RescaleMode rescaleMode,
                                                    ReadPixelsCallback callback,
                                                    ReadPixelsContext context) {
-    fDevice->asyncRescaleAndReadPixels(info, srcRect, rescaleGamma, rescaleMode, callback, context);
+    fDevice->asyncRescaleAndReadPixels1(info, srcRect, rescaleGamma, rescaleMode, callback, context);
 }
 
 void SkSurface_Ganesh::onAsyncRescaleAndReadPixelsYUV420(SkYUVColorSpace yuvColorSpace,
@@ -205,7 +208,7 @@ void SkSurface_Ganesh::onAsyncRescaleAndReadPixelsYUV420(SkYUVColorSpace yuvColo
                                                          RescaleMode rescaleMode,
                                                          ReadPixelsCallback callback,
                                                          ReadPixelsContext context) {
-    fDevice->asyncRescaleAndReadPixelsYUV420(yuvColorSpace,
+    fDevice->asyncRescaleAndReadPixelsYUV4201(yuvColorSpace,
                                              readAlpha,
                                              std::move(dstColorSpace),
                                              srcRect,
@@ -751,24 +754,24 @@ void ResolveMSAA(SkSurface* surface) {
 }  // namespace SkSurfaces
 
 namespace skgpu::ganesh {
-GrSemaphoresSubmitted Flush(SkSurface* surface) {
+GrDirectContext::FlushResult Flush1(SkSurface* surface) {
     if (!surface) {
-        return GrSemaphoresSubmitted::kNo;
+        return {false, GrSemaphoresSubmitted::kNo};
     }
     if (auto rContext = surface->recordingContext(); rContext != nullptr) {
-        return rContext->asDirectContext()->flush(surface, {});
+        return rContext->asDirectContext()->flush_good(surface, {});
     }
-    return GrSemaphoresSubmitted::kNo;
+    return {false, GrSemaphoresSubmitted::kNo};
 }
 
-GrSemaphoresSubmitted Flush(sk_sp<SkSurface> surface) {
+GrDirectContext::FlushResult Flush1(sk_sp<SkSurface> surface) {
     if (!surface) {
-        return GrSemaphoresSubmitted::kNo;
+        return {false, GrSemaphoresSubmitted::kNo};
     }
     if (auto rContext = surface->recordingContext(); rContext != nullptr) {
-        return rContext->asDirectContext()->flush(surface.get(), {});
+        return rContext->asDirectContext()->flush_good(surface.get(), {});
     }
-    return GrSemaphoresSubmitted::kNo;
+    return {false, GrSemaphoresSubmitted::kNo};
 }
 
 void FlushAndSubmit(SkSurface* surface) {
@@ -776,7 +779,7 @@ void FlushAndSubmit(SkSurface* surface) {
         return;
     }
     if (auto rContext = surface->recordingContext(); rContext != nullptr) {
-        rContext->asDirectContext()->flushAndSubmit(surface, GrSyncCpu::kNo);
+        rContext->asDirectContext()->flushAndSubmit_bad1(surface, GrSyncCpu::kNo);
     }
 }
 
@@ -785,7 +788,7 @@ void FlushAndSubmit(sk_sp<SkSurface> surface) {
         return;
     }
     if (auto rContext = surface->recordingContext(); rContext != nullptr) {
-        rContext->asDirectContext()->flushAndSubmit(surface.get(), GrSyncCpu::kNo);
+        rContext->asDirectContext()->flushAndSubmit_bad1(surface.get(), GrSyncCpu::kNo);
     }
 }
 

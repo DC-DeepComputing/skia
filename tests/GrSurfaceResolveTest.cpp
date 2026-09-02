@@ -138,14 +138,14 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfaceResolveTest,
     // First do a simple test where we clear the surface than flush with SkSurface::flush. This
     // should trigger the resolve and the texture should have the correct data.
     surface->getCanvas()->clear(SK_ColorRED);
-    dContext->flush(surface.get());
+    dContext->flush_bad1(surface.get());
     dContext->submit();
     REPORTER_ASSERT(reporter, check_pixels(reporter, dContext, tex, info, SK_ColorRED));
 
     // Next try doing a GrDirectContext::flush without the surface which will not trigger a resolve
     // on gpus without automatic msaa resolves.
     surface->getCanvas()->clear(SK_ColorBLUE);
-    dContext->flush();
+    dContext->flush_bad1();
     dContext->submit();
     if (autoResolves) {
         REPORTER_ASSERT(reporter, check_pixels(reporter, dContext, tex, info, SK_ColorBLUE));
@@ -155,21 +155,21 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfaceResolveTest,
 
     // Now doing a surface flush (even without any queued up normal work) should still resolve the
     // surface.
-    dContext->flush(surface.get());
+    dContext->flush_bad1(surface.get());
     dContext->submit();
     REPORTER_ASSERT(reporter, check_pixels(reporter, dContext, tex, info, SK_ColorBLUE));
 
     // Test using SkSurface::resolve with a GrDirectContext::flush
     surface->getCanvas()->clear(SK_ColorRED);
     SkSurfaces::ResolveMSAA(surface);
-    dContext->flush();
+    dContext->flush_bad1();
     dContext->submit();
     REPORTER_ASSERT(reporter, check_pixels(reporter, dContext, tex, info, SK_ColorRED));
 
     // Calling resolve again should cause no issues as it is a no-op (there is an assert in the
     // resolve op that the surface's msaa is dirty, we shouldn't hit that assert).
     SkSurfaces::ResolveMSAA(surface);
-    dContext->flush();
+    dContext->flush_bad1();
     dContext->submit();
     REPORTER_ASSERT(reporter, check_pixels(reporter, dContext, tex, info, SK_ColorRED));
 
@@ -178,7 +178,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfaceResolveTest,
     surface->getCanvas()->clear(SK_ColorGREEN);
     SkSurfaces::ResolveMSAA(surface);
     surface->getCanvas()->clear(SK_ColorBLUE);
-    dContext->flush();
+    dContext->flush_bad1();
     dContext->submit();
     if (autoResolves) {
         REPORTER_ASSERT(reporter, check_pixels(reporter, dContext, tex, info, SK_ColorBLUE));
@@ -189,14 +189,14 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfaceResolveTest,
     // Test that a resolve between draws to a different surface doesn't cause the OpsTasks for that
     // surface to be split. Fails if we hit validation asserts in GrDrawingManager.
     // First clear out dirty msaa from previous test
-    dContext->flush(surface.get());
+    dContext->flush_bad1(surface.get());
 
     auto otherSurface = SkSurfaces::RenderTarget(dContext, skgpu::Budgeted::kYes, info);
     REPORTER_ASSERT(reporter, otherSurface);
     otherSurface->getCanvas()->clear(SK_ColorRED);
     SkSurfaces::ResolveMSAA(surface);
     otherSurface->getCanvas()->clear(SK_ColorBLUE);
-    dContext->flush();
+    dContext->flush_bad1();
     dContext->submit();
 
     // Make sure resolving a non-msaa surface doesn't trigger a resolve call. We'll hit an assert
@@ -204,7 +204,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfaceResolveTest,
     REPORTER_ASSERT(reporter, otherSurface);
     otherSurface->getCanvas()->clear(SK_ColorRED);
     SkSurfaces::ResolveMSAA(otherSurface);
-    dContext->flush();
+    dContext->flush_bad1();
     dContext->submit();
 }
 
@@ -488,7 +488,7 @@ DEF_GANESH_TEST(SurfaceResolveProxyStateAfterFailedFlush,
                 REPORTER_ASSERT(reporter, !texProxy->mipmapsAreDirty());
                 REPORTER_ASSERT(reporter, !testMSAA || !rtProxy->isMSAADirty());
 
-                dContext->flush();
+                dContext->flush_bad1();
                 drawingManager->testingOnly_removeOnFlushCallbackObject(&failCB);
             }
 
@@ -505,7 +505,7 @@ DEF_GANESH_TEST(SurfaceResolveProxyStateAfterFailedFlush,
             {
                 auto dstSDC = recordDirtyingDrawAndMipmappedDependency();
                 REPORTER_ASSERT(reporter, dstSDC->getOpsTask()->resolveTask());
-                dContext->flush();
+                dContext->flush_bad1();
             }
             REPORTER_ASSERT(reporter, !texProxy->mipmapsAreDirty());
             REPORTER_ASSERT(reporter, !testMSAA || !rtProxy->isMSAADirty());
@@ -581,7 +581,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfaceResolveAfterFailedFlush,
             return;  // MSAA=4 unsupported on this config.
         }
         surface->getCanvas()->clear(kBaseline);
-        dContext->flush(surface.get());
+        dContext->flush_bad1(surface.get());
         dContext->submit(GrSyncCpu::kYes);
     }
     // Ensure the second wrap below allocates a *fresh* MSAA attachment rather than recycling the
@@ -612,7 +612,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfaceResolveAfterFailedFlush,
     dContext->priv().addOnFlushCallbackObject(&failCB);
 
     surface->getCanvas()->clear(kIntended);
-    GrSemaphoresSubmitted result = dContext->flush(surface.get(), GrFlushInfo{});
+    GrSemaphoresSubmitted result = dContext->flush_bad2(surface.get(), GrFlushInfo{});
     dContext->submit(GrSyncCpu::kYes);
 
     GrDrawingManager* drawingManager = dContext->priv().drawingManager();

@@ -88,7 +88,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(OpsTaskFlushCount,
                                    SkCanvas::kStrict_SrcRectConstraint);
         }
     }
-    context->flushAndSubmit();
+    context->flushAndSubmit_bad1();
 
     // In total we make 2000 oplists. Our current limit on max oplists between flushes is 100, so we
     // should do 20 flushes while executing oplists. Additionaly we always do 1 flush at the end of

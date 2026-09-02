@@ -275,7 +275,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ResourceCacheWrappedResources,
     borrowed.reset();
     adopted.reset();
 
-    context->flushAndSubmit(GrSyncCpu::kYes);
+    context->flushAndSubmit_bad1(GrSyncCpu::kYes);
 
     bool borrowedIsAlive = gpu->isTestingOnlyBackendTexture(mbet->texture());
     bool adoptedIsAlive = gpu->isTestingOnlyBackendTexture(unmbet);
@@ -1408,7 +1408,7 @@ static void test_time_purge(skiatest::Reporter* reporter) {
 
         // Verify that calling flush() on a context with nothing to do will not trigger resource
         // eviction
-        dContext->flushAndSubmit();
+        dContext->flushAndSubmit_bad1();
         for (int i = 0; i < 10; ++i) {
             TestResource* r = new TestResource(gpu, /*label=*/{});
             skgpu::UniqueKey k;
@@ -1417,7 +1417,7 @@ static void test_time_purge(skiatest::Reporter* reporter) {
             r->unref();
         }
         REPORTER_ASSERT(reporter, 10 == cache->getResourceCount());
-        dContext->flushAndSubmit();
+        dContext->flushAndSubmit_bad1();
         REPORTER_ASSERT(reporter, 10 == cache->getResourceCount());
         cache->purgeResourcesNotUsedSince(nowish(), GrPurgeResourceOptions::kAllResources);
         REPORTER_ASSERT(reporter, 0 == cache->getResourceCount());
@@ -1909,8 +1909,8 @@ DEF_GANESH_TEST_FOR_MOCK_CONTEXT(OverbudgetFlush, reporter, ctxInfo) {
     drawToSurf(surf2.get());
 
     // Flush each surface once to ensure that their backing stores are allocated.
-    context->flushAndSubmit(surf1.get(), GrSyncCpu::kNo);
-    context->flushAndSubmit(surf2.get(), GrSyncCpu::kNo);
+    context->flushAndSubmit_bad1(surf1.get(), GrSyncCpu::kNo);
+    context->flushAndSubmit_bad1(surf2.get(), GrSyncCpu::kNo);
     REPORTER_ASSERT(reporter, overbudget());
     getFlushCountDelta();
 
@@ -1922,7 +1922,7 @@ DEF_GANESH_TEST_FOR_MOCK_CONTEXT(OverbudgetFlush, reporter, ctxInfo) {
     REPORTER_ASSERT(reporter, overbudget());
 
     // Make surf1 purgeable. Drawing to surf2 should flush.
-    context->flushAndSubmit(surf1.get(), GrSyncCpu::kNo);
+    context->flushAndSubmit_bad1(surf1.get(), GrSyncCpu::kNo);
     surf1.reset();
     drawToSurf(surf2.get());
     REPORTER_ASSERT(reporter, getFlushCountDelta());

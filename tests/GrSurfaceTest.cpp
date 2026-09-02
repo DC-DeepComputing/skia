@@ -494,7 +494,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ReadOnlyTexture,
         auto writeResult = surfContext->writePixels(dContext, write, {0, 0});
         REPORTER_ASSERT(reporter, writeResult == (ioType == kRW_GrIOType));
         // Try the low level write.
-        dContext->flushAndSubmit();
+        dContext->flushAndSubmit_bad1();
         auto gpuWriteResult = dContext->priv().getGpu()->writePixels(
                 proxy->peekTexture(),
                 SkIRect::MakeWH(kSize, kSize),
@@ -511,7 +511,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ReadOnlyTexture,
         auto copyResult = surfContext->testCopy(copySrc.refProxy());
         REPORTER_ASSERT(reporter, copyResult == (ioType == kRW_GrIOType));
         // Try the low level copy.
-        dContext->flushAndSubmit();
+        dContext->flushAndSubmit_bad1();
         auto gpuCopyResult = dContext->priv().getGpu()->copySurface(
                 proxy->peekSurface(),
                 SkIRect::MakeWH(kSize, kSize),
@@ -532,7 +532,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ReadOnlyTexture,
             proxy = proxyProvider->wrapBackendTexture(mbet->texture(), kBorrow_GrWrapOwnership,
                                                       GrWrapCacheable::kNo, ioType,
                                                       mbet->refCountedCallback());
-            dContext->flushAndSubmit();
+            dContext->flushAndSubmit_bad1();
             proxy->peekTexture()->markMipmapsDirty();  // avoids assert in GrGpu.
             auto regenResult =
                     dContext->priv().getGpu()->regenerateMipMapLevels(proxy->peekTexture());

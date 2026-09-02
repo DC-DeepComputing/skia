@@ -93,7 +93,7 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(Protected_SmokeTest, reporter, ctxInfo, CtsEnfo
             REPORTER_ASSERT(reporter, beTex.isValid());
             REPORTER_ASSERT(reporter, beTex.isProtected() == isProtected);
 
-            dContext->flushAndSubmit(GrSyncCpu::kYes);
+            dContext->flushAndSubmit_bad1(GrSyncCpu::kYes);
 
             {
                 sk_sp<SkImage> img = SkImages::BorrowTextureFrom(dContext, beTex,
@@ -245,7 +245,7 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(Protected_pictureShader, reporter,
                                                                            { kSize, kSize },
                                                                            SkColors::kBlue,
                                                                            /* isProtected= */ true);
-    dContext->flushAndSubmit(GrSyncCpu::kYes);
+    dContext->flushAndSubmit_bad1(GrSyncCpu::kYes);
 
     REPORTER_ASSERT(reporter, protectedImage);
     REPORTER_ASSERT(reporter, protectedImage->isProtected());
@@ -285,7 +285,7 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(Protected_pictureShader, reporter,
         surface->getCanvas()->drawPaint(protectedPaint);
     }
 
-    dContext->flushAndSubmit(GrSyncCpu::kYes);
+    dContext->flushAndSubmit_bad1(GrSyncCpu::kYes);
 }
 
 #endif  // defined(SK_GANESH)

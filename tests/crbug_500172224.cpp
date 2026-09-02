@@ -94,7 +94,7 @@ void run_test(GrDirectContext* dContext, uint32_t numXSteps, uint32_t numYSteps,
         preViewMatrices,
         SkSamplingOptions());
 
-    dContext->flushAndSubmit(surface.get(), GrSyncCpu::kYes);
+    dContext->flushAndSubmit_bad1(surface.get(), GrSyncCpu::kYes);
 
     delete [] preViewMatrices;
     delete [] entries;

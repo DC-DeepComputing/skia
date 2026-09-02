@@ -148,7 +148,7 @@ static void fillrectop_creation_test(skiatest::Reporter* reporter, GrDirectConte
     REPORTER_ASSERT(reporter, expectedNumOps == actualNumOps);
     REPORTER_ASSERT(reporter, requestedTotNumQuads == actualTotNumQuads);
 
-    dContext->flushAndSubmit();
+    dContext->flushAndSubmit_bad1();
 
     delete[] quads;
 }
@@ -266,7 +266,7 @@ static void textureop_creation_test(skiatest::Reporter* reporter, GrDirectContex
     REPORTER_ASSERT(reporter, expectedNumOps == actualNumOps);
     REPORTER_ASSERT(reporter, requestedTotNumQuads == actualTotNumQuads);
 
-    dContext->flushAndSubmit();
+    dContext->flushAndSubmit_bad1();
 
     delete[] set;
 }

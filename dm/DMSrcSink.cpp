@@ -1652,7 +1652,7 @@ Result GPUSink::onDraw(const Src& src, SkBitmap* dst, SkWStream*, SkString* log,
     if (!result.isOk()) {
         return result;
     }
-    direct->flushAndSubmit(surface.get(), GrSyncCpu::kNo);
+    direct->flushAndSubmit_bad1(surface.get(), GrSyncCpu::kNo);
     if (FLAGS_gpuStats) {
         direct->priv().dumpCacheStats(log);
         direct->priv().dumpGpuStats(log);
@@ -1907,7 +1907,7 @@ Result GPUDDLSink::ddlDraw(const Src& src,
                                            // TODO: switch over to using the promiseImage callbacks
                                            // to free the backendTextures. This is complicated a
                                            // bit by which thread possesses the direct context.
-                                           dContext->flush();
+                                           dContext->flush_bad1();
                                            dContext->submit(GrSyncCpu::kYes);
                                        });
 

@@ -411,13 +411,13 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(Gr1x1TextureMipMappedTest,
 
     // This should upload the image to a non mipped GrTextureProxy.
     surface->getCanvas()->drawImage(bmpImage, 0, 0);
-    dContext->flushAndSubmit(surface.get(), GrSyncCpu::kNo);
+    dContext->flushAndSubmit_bad1(surface.get(), GrSyncCpu::kNo);
 
     // Now set the filter quality to high so we use mip maps. We should find the non mipped texture
     // in the cache for the SkImage. Since the texture is 1x1 we should just use that texture
     // instead of trying to do a copy to a mipped texture.
     surface->getCanvas()->drawImage(bmpImage, 0, 0, SkSamplingOptions({1.0f/3, 1.0f/3}));
-    dContext->flushAndSubmit(surface.get(), GrSyncCpu::kNo);
+    dContext->flushAndSubmit_bad1(surface.get(), GrSyncCpu::kNo);
 }
 
 // Create a new render target and draw 'mipmapView' into it using the provided 'filter'.
@@ -555,7 +555,7 @@ DEF_GANESH_TEST(GrManyDependentsMipMappedTest,
         SkASSERT(!mipmapProxy->mipmapsAreDirty());
 
         // Reset everything so we can go again, this time with the first draw not mipmapped.
-        dContext->flushAndSubmit();
+        dContext->flushAndSubmit_bad1();
 
         // Mip regen tasks don't get added as dependencies until makeClosed().
         REPORTER_ASSERT(reporter, sdc1Task->dependsOn(initialMipmapRegenTask));
@@ -599,7 +599,7 @@ DEF_GANESH_TEST(GrManyDependentsMipMappedTest,
         SkASSERT(!mipmapProxy->mipmapsAreDirty());
 
         // Mip regen tasks don't get added as dependencies until makeClosed().
-        dContext->flushAndSubmit();
+        dContext->flushAndSubmit_bad1();
         REPORTER_ASSERT(reporter, sdc2Task->dependsOn(mipRegenTask2));
     }
 }

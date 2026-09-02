@@ -256,7 +256,7 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(ProcessorRefTest, reporter, ctxInfo, CtsEnforce
 
                 CheckSingleThreadedProxyRefs(reporter, proxy.get(), expectedProxyRefs, -1);
 
-                dContext->flushAndSubmit();
+                dContext->flushAndSubmit_bad1();
 
                 // just one from the 'proxy' sk_sp
                 CheckSingleThreadedProxyRefs(reporter, proxy.get(), 1, 1);

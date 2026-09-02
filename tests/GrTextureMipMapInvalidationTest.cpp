@@ -77,7 +77,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrTextureMipMapInvalidationTest,
         auto surf2 = SkSurfaces::RenderTarget(context, skgpu::Budgeted::kYes, info);
         // Draw something just in case we ever had a solid color optimization
         surf1->getCanvas()->drawCircle(128, 128, 50, SkPaint());
-        context->flushAndSubmit(surf1.get(), GrSyncCpu::kNo);
+        context->flushAndSubmit_bad1(surf1.get(), GrSyncCpu::kNo);
 
         // No mipmaps initially
         REPORTER_ASSERT(reporter, isMipped(surf1.get()) == allocateMips);
@@ -89,13 +89,13 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrTextureMipMapInvalidationTest,
 
         surf2->getCanvas()->scale(0.2f, 0.2f);
         surf2->getCanvas()->drawImage(surf1->makeImageSnapshot(), 0, 0, sampling);
-        context->flushAndSubmit();
+        context->flushAndSubmit_bad1();
         REPORTER_ASSERT(reporter, isMipped(surf1.get()) == allocateMips);
         REPORTER_ASSERT(reporter, !allocateMips || !mipsAreDirty(surf1.get()));
 
         // Changing the contents of the surface should invalidate the mipmap, but not de-allocate
         surf1->getCanvas()->drawCircle(128, 128, 100, SkPaint());
-        context->flushAndSubmit();
+        context->flushAndSubmit_bad1();
         REPORTER_ASSERT(reporter, isMipped(surf1.get()) == allocateMips);
         REPORTER_ASSERT(reporter, mipsAreDirty(surf1.get()));
     }

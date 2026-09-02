@@ -634,7 +634,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(BlurDegenerateAffineFuzzer,
 
     canvas->concat(matrix);
     canvas->drawRect(SkRect::MakeWH(100.f, 100.f), paint);
-    context->flushAndSubmit();  // The test passes if no assertions are hit
+    context->flushAndSubmit_bad1();  // The test passes if no assertions are hit
 }
 #endif
 

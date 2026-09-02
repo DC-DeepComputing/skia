@@ -64,7 +64,7 @@ using MaskFormat = skgpu::MaskFormat;
     SkASSERT(!(P) || !((P)->peekTexture()) || (P)->peekTexture()->getContext() == this->context())
 #define ASSERT_SINGLE_OWNER SKGPU_ASSERT_SINGLE_OWNER(this->context()->singleOwner())
 
-GrSemaphoresSubmitted GrDirectContextPriv::flushSurfaces(
+GrDirectContext::FlushResult GrDirectContextPriv::flushSurfaces1(
         SkSpan<GrSurfaceProxy*> proxies,
         SkSurfaces::BackendSurfaceAccess access,
         const GrFlushInfo& info,
@@ -79,7 +79,7 @@ GrSemaphoresSubmitted GrDirectContextPriv::flushSurfaces(
         if (info.fFinishedProc) {
             info.fFinishedProc(info.fFinishedContext);
         }
-        return GrSemaphoresSubmitted::kNo;
+        return {false, GrSemaphoresSubmitted::kNo};
     }
 
 #ifdef SK_DEBUG
@@ -88,7 +88,7 @@ GrSemaphoresSubmitted GrDirectContextPriv::flushSurfaces(
         ASSERT_OWNED_PROXY(proxy);
     }
 #endif
-    return this->context()->drawingManager()->flushSurfaces(proxies, access, info, newState);
+    return this->context()->drawingManager()->flushSurfaces1(proxies, access, info, newState);
 }
 
 void GrDirectContextPriv::createDDLTask(sk_sp<const GrDeferredDisplayList> ddl,
@@ -210,7 +210,7 @@ sk_sp<SkImage> GrDirectContextPriv::testingOnly_getFontAtlasImage(MaskFormat for
 
 void GrDirectContextPriv::testingOnly_flushAndRemoveOnFlushCallbackObject(
         GrOnFlushCallbackObject* cb) {
-    this->context()->flushAndSubmit();
+    this->context()->flushAndSubmit_bad1();
     this->context()->drawingManager()->testingOnly_removeOnFlushCallbackObject(cb);
 }
 #endif
