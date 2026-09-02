@@ -11,9 +11,10 @@
 #include "include/core/SkClipOp.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkData.h"
+#include "include/core/SkDrawable.h"
 #include "include/core/SkFont.h"
 #include "include/core/SkFontStyle.h"
-#include "include/core/SkImage.h" // IWYU pragma: keep
+#include "include/core/SkImage.h"  // IWYU pragma: keep
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPaint.h"
@@ -921,4 +922,123 @@ DEF_TEST(Picture_nested_op_count, r) {
     check(make_pic( 1, leaf10),  1,  10);
     check(make_pic(10, leaf1),  10,  10);
     check(make_pic(10, leaf10), 10, 100);
+}
+
+DEF_TEST(Picture_nested_draw_drawable, r) {
+    class MultiOpDrawable : public SkDrawable {
+    public:
+        MultiOpDrawable(int numOps,
+                        sk_sp<SkDrawable> childDrawable = nullptr,
+                        int numChildDraws = 0,
+                        sk_sp<SkPicture> childPicture = nullptr)
+                : fNumOps(numOps)
+                , fChildDrawable(std::move(childDrawable))
+                , fNumChildDraws(numChildDraws)
+                , fChildPicture(std::move(childPicture)) {}
+
+    protected:
+        void onDraw(SkCanvas* canvas) override {
+            SkPaint paint;
+            for (int i = 0; i < fNumOps; i++) {
+                canvas->drawRect(SkRect::MakeXYWH(10, 10, 80, 80), paint);
+            }
+
+            if (fChildDrawable) {
+                for (int i = 0; i < fNumChildDraws; i++) {
+                    canvas->drawDrawable(fChildDrawable.get(), nullptr);
+                }
+            }
+
+            if (fChildPicture) {
+                canvas->drawPicture(fChildPicture);
+            }
+        }
+
+        SkRect onGetBounds() override { return SkRect::MakeXYWH(0, 0, 100, 100); }
+
+    private:
+        int fNumOps;
+        sk_sp<SkDrawable> fChildDrawable;
+        int fNumChildDraws;
+        sk_sp<SkPicture> fChildPicture;
+    };
+
+    auto make_picture = [](int n, const sk_sp<SkDrawable>& drawable) {
+        SkPictureRecorder rec;
+        SkCanvas* c = rec.beginRecording({0, 0, 100, 100});
+        for (int i = 0; i < n; i++) {
+            c->drawDrawable(drawable.get(), nullptr);
+        }
+        return rec.finishRecordingAsPicture();
+    };
+
+    auto make_rect_picture = [](int n) {
+        SkPictureRecorder rec;
+        SkCanvas* c = rec.beginRecording({0, 0, 100, 100});
+        SkPaint paint;
+        for (int i = 0; i < n; i++) {
+            c->drawRect(SkRect::MakeXYWH(10, 10, 80, 80), paint);
+        }
+        return rec.finishRecordingAsPicture();
+    };
+
+    auto checkShallowAndNested =
+            [r](const sk_sp<SkPicture>& pic, int expectedShallow, int expectedNested) {
+                int s = pic->approximateOpCount(false);
+                int n = pic->approximateOpCount(true);
+                REPORTER_ASSERT(r, s == expectedShallow);
+                REPORTER_ASSERT(r, n == expectedNested);
+            };
+
+    // 1. Leaf drawables (direct drawRect ops only)
+    sk_sp<SkDrawable> drawable1_nolayers = sk_make_sp<MultiOpDrawable>(1);
+    sk_sp<SkDrawable> drawable10_nolayers = sk_make_sp<MultiOpDrawable>(10);
+
+    // draw `drawable1` once: 1 shallow draw and 1 nested draw
+    checkShallowAndNested(make_picture(1, drawable1_nolayers), 1, 1);
+    // draw `drawable10` once: 1 shallow draw and 10 nested draws
+    checkShallowAndNested(make_picture(1, drawable10_nolayers), 1, 10);
+
+    // draw `drawable1` ten times: 10 shallow draws and 10 nested draws
+    checkShallowAndNested(make_picture(10, drawable1_nolayers), 10, 10);
+    // draw `drawable10` ten times: 10 shallow draws and 100 nested draws
+    checkShallowAndNested(make_picture(10, drawable10_nolayers), 10, 100);
+
+    // 2. Drawables with an internal picture layer
+    sk_sp<SkPicture> pic10 = make_rect_picture(10);
+    sk_sp<SkDrawable> drawable1_withpic = sk_make_sp<MultiOpDrawable>(1, nullptr, 0, pic10);
+    sk_sp<SkDrawable> drawable10_withpic = sk_make_sp<MultiOpDrawable>(10, nullptr, 0, pic10);
+
+    checkShallowAndNested(make_picture(1, drawable1_withpic), 1, 11);
+    checkShallowAndNested(make_picture(1, drawable10_withpic), 1, 20);
+
+    checkShallowAndNested(make_picture(10, drawable1_withpic), 10, 110);
+    checkShallowAndNested(make_picture(10, drawable10_withpic), 10, 200);
+
+    // 3. Drawables with an internal drawable layer, calling the internal drawable multiple times
+    sk_sp<SkDrawable> parent_1draw_child1 =
+            sk_make_sp<MultiOpDrawable>(0, drawable1_nolayers, 1);
+    sk_sp<SkDrawable> parent_1draw_child10 =
+            sk_make_sp<MultiOpDrawable>(0, drawable10_nolayers, 1);
+    sk_sp<SkDrawable> parent_10draw_child1 =
+            sk_make_sp<MultiOpDrawable>(0, drawable1_nolayers, 10);
+    sk_sp<SkDrawable> parent_10draw_child10 =
+            sk_make_sp<MultiOpDrawable>(0, drawable10_nolayers, 10);
+
+    checkShallowAndNested(make_picture(1, parent_1draw_child1), 1, 1);
+    checkShallowAndNested(make_picture(1, parent_1draw_child10), 1, 10);
+    checkShallowAndNested(make_picture(1, parent_10draw_child1), 1, 10);
+    checkShallowAndNested(make_picture(1, parent_10draw_child10), 1, 100);
+
+    checkShallowAndNested(make_picture(10, parent_1draw_child1), 10, 10);
+    checkShallowAndNested(make_picture(10, parent_1draw_child10), 10, 100);
+    checkShallowAndNested(make_picture(10, parent_10draw_child1), 10, 100);
+    checkShallowAndNested(make_picture(10, parent_10draw_child10), 10, 1000);
+
+    // 4. Multi-level nested drawables mixing direct ops, child drawables, and child pictures
+    sk_sp<SkDrawable> mixed_parent =
+            sk_make_sp<MultiOpDrawable>(5, parent_10draw_child10, 2, pic10);
+    // 5 direct rects + 2 * (10 * 10) from child drawable + 10 from pic10 = 215 ops
+    checkShallowAndNested(make_picture(1, mixed_parent), 1, 215);
+    checkShallowAndNested(make_picture(10, mixed_parent), 10, 2150);
 }

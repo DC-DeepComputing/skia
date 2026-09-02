@@ -263,7 +263,10 @@ private:
               sk_sp<const SkBBoxHierarchy> bbh,
               size_t approxBytesUsedBySubPictures);
 
+    int approximateOpCountPriv(int depth, bool nested) const;
+
     friend class SkPicturePriv;
+    friend class NestedApproxOpCounter;
 
     void serialize(SkWStream*, const SkSerialProcs*, class SkRefCntSet* typefaces,
         bool textBlobsOnly=false) const;
