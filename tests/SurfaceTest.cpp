@@ -464,7 +464,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfaceAbandonPostFlush_Gpu,
     direct->flush(surface.get());
     direct->abandonContext();
     // We pass the test if we don't hit any asserts or crashes when the ref on the surface goes away
-    // after we abanonded the context. One thing specifically this checks is to make sure we're
+    // after we abandoned the context. One thing specifically this checks is to make sure we're
     // correctly handling the mix of normal refs and command buffer refs, and correctly deleting
     // the object at the right time.
 }
