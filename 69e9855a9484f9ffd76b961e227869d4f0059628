@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f730ed3_ec41e6a8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-02T17:42:12Z",
+      "side": 1,
+      "message": "PTAL Again!\n\nI realized that we allowed storage textures to be passed to functions expecting regular sampled textures. So instead we unwrap the argument\u0027s root variable and make sure its layout flags match what the function parameter expects.\n\nI moved the unwrapping back into a helper but it\u0027s now inside SkSLAnalysis, which I think is the right place for it?",
+      "revId": "69e9855a9484f9ffd76b961e227869d4f0059628",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
