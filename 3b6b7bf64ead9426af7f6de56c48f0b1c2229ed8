@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9618219_ceef4342",
+        "filename": "src/core/SkPicture.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 413,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-09-02T16:13:35Z",
+      "side": 1,
+      "message": "nit: 100 chars",
+      "range": {
+        "startLine": 413,
+        "startChar": 100,
+        "endLine": 413,
+        "endChar": 102
+      },
+      "revId": "3b6b7bf64ead9426af7f6de56c48f0b1c2229ed8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0a680ad_2808c760",
+        "filename": "src/core/SkPicture.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 419,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-09-02T16:13:35Z",
+      "side": 1,
+      "message": "What if we add here:\n\n```\nif (!pic || depth \u003e limit) {\n   return 0;\n}\n```\n\nThen I don\u0027t believe you need to do any checks in the visitor operators.",
+      "range": {
+        "startLine": 419,
+        "startChar": 12,
+        "endLine": 419,
+        "endChar": 13
+      },
+      "revId": "3b6b7bf64ead9426af7f6de56c48f0b1c2229ed8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb6627e5_f3ea4f60",
+        "filename": "tests/PictureTest.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 921,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-09-02T16:13:35Z",
+      "side": 1,
+      "message": "should this be 2?",
+      "range": {
+        "startLine": 921,
+        "startChar": 38,
+        "endLine": 921,
+        "endChar": 39
+      },
+      "revId": "3b6b7bf64ead9426af7f6de56c48f0b1c2229ed8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e746f78_21a3a5ee",
+        "filename": "tests/PictureTest.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 922,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-09-02T16:13:35Z",
+      "side": 1,
+      "message": "previously these were aligned. I would add the spaces back to make for easier reading with the lines above and below",
+      "revId": "3b6b7bf64ead9426af7f6de56c48f0b1c2229ed8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7f00544_72c7c9dd",
+        "filename": "tests/PictureTest.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 923,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-09-02T16:13:35Z",
+      "side": 1,
+      "message": "20?",
+      "range": {
+        "startLine": 923,
+        "startChar": 37,
+        "endLine": 923,
+        "endChar": 39
+      },
+      "revId": "3b6b7bf64ead9426af7f6de56c48f0b1c2229ed8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
