@@ -7,8 +7,12 @@
 
 #include "src/gpu/graphite/Renderer.h"
 
+#include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/DrawParams.h"
+#include "src/gpu/graphite/ResourceTypes.h"
+#include "src/gpu/graphite/StorageContext.h"
 #include "src/gpu/graphite/UniformManager.h"
+#include "src/sksl/SkSLString.h"
 
 namespace skgpu::graphite {
 
@@ -21,7 +25,8 @@ RenderStep::RenderStep(Layout layout,
                        SkSpan<const Attribute> staticAttrs,
                        SkSpan<const Attribute> appendAttrs,
                        SkSpan<const Uniform> storageUniforms,
-                       SkSpan<const Varying> varyings)
+                       SkSpan<const Varying> varyings,
+                       std::string storageTextureFallbackSkSL)
         : fRenderStepID(renderStepID)
         , fFlags(flags)
         , fStorageBufferStages(
@@ -40,7 +45,8 @@ RenderStep::RenderStep(Layout layout,
         , fStaticDataStride(0)
         , fAppendDataStride(0)
         , fStorageUniformStride(0)
-        , fStorageUniformAlignment(1) {
+        , fStorageUniformAlignment(1)
+        , fStorageTextureFallbackSkSL(std::move(storageTextureFallbackSkSL)) {
     SkASSERT(fStorageUniforms.empty() ||
              SkToBool(fStorageBufferStages & (PipelineStageFlags::kVertexShader |
                                               PipelineStageFlags::kFragmentShader)));
@@ -143,6 +149,16 @@ const char* RenderStep::RenderStepName(RenderStepID id) {
 bool RenderStep::IsValidRenderStepID(uint32_t renderStepID) {
     return renderStepID > (int) RenderStep::RenderStepID::kInvalid &&
            renderStepID < RenderStep::kNumRenderSteps;
+}
+
+std::string RenderStep::stepStorageTextureFallbackSkSL(
+        const ResourceBindingRequirements& bindingReqs) const {
+    SkASSERT(!fStorageUniforms.empty());
+    return SkSL::String::printf(
+            "layout(set=%d, binding=%d) readonly texture2D storageFallbackTexture;\n%s",
+            bindingReqs.fUniformsSetIdx,
+            bindingReqs.fStorageBufferBinding,
+            fStorageTextureFallbackSkSL.c_str());
 }
 
 } // namespace skgpu::graphite
