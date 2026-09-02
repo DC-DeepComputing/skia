@@ -16,6 +16,29 @@
       "message": "Ok, I think this is ready for review.  I had to skip a LOT of tests.",
       "revId": "bf932061acc21b72fc2c7e7b8a24c817e22a412f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "056bb8cb_57c83d95",
+        "filename": "infra/bots/gen_tasks_logic/dm_flags.go",
+        "patchSetId": 34
+      },
+      "lineNbr": 596,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-02T18:40:42Z",
+      "side": 1,
+      "message": "Huh, kind of surprising that these fairly backend-generic tests are failing on Dawn-Vulkan but not native-Vulkan. Do you have a dump of the errors out of curiosity? Realistically this being Linux, it\u0027s lower priority since Dawn-VK doesn\u0027t claim support for non-Android yet AFAIK.",
+      "range": {
+        "startLine": 561,
+        "startChar": 0,
+        "endLine": 596,
+        "endChar": 48
+      },
+      "revId": "bf932061acc21b72fc2c7e7b8a24c817e22a412f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
