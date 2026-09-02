@@ -414,11 +414,11 @@ public:
     // Provides a hook for post-flush actions (e.g. Vulkan command buffer submits). This will also
     // insert any numSemaphore semaphores on the gpu and set the backendSemaphores to match the
     // inserted semaphores.
-    void executeFlushInfo(SkSpan<GrSurfaceProxy*>,
-                          SkSurfaces::BackendSurfaceAccess access,
-                          const GrFlushInfo&,
-                          std::optional<GrTimerQuery> timerQuery,
-                          const skgpu::MutableTextureState* newState);
+    GrSemaphoresSubmitted executeFlushInfo(SkSpan<GrSurfaceProxy*>,
+                                           SkSurfaces::BackendSurfaceAccess access,
+                                           const GrFlushInfo&,
+                                           std::optional<GrTimerQuery> timerQuery,
+                                           const skgpu::MutableTextureState* newState);
 
     // Called before render tasks are executed during a flush.
     virtual void willExecute() {}
