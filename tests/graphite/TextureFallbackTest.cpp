@@ -7,8 +7,13 @@
 
 #include "tests/Test.h"
 
+#include "include/core/SkCanvas.h"
+#include "include/core/SkColor.h"
+#include "include/core/SkPaint.h"
+#include "include/effects/SkGradient.h"
 #include "include/gpu/graphite/Context.h"
 #include "include/gpu/graphite/Recorder.h"
+#include "include/gpu/graphite/Surface.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/ContextUtils.h"
 #include "src/gpu/graphite/RecorderPriv.h"
@@ -446,6 +451,74 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(TextureFallbackStressBackToBackComplexStructu
     REPORTER_ASSERT(reporter, sksl.find("int linearIdx0 = index * 13 + 0;") != std::string::npos);
     REPORTER_ASSERT(reporter, sksl.find("int linearIdx12 = index * 13 + 12;") != std::string::npos);
     REPORTER_ASSERT(reporter, sksl.find("int linearIdx13") == std::string::npos);
+}
+
+// 8. End-to-end Draw Test with Multi-Stop (> 8 stops) Gradients
+DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(TextureFallbackMultiStopGradientsDrawTest,
+                                   reporter,
+                                   context,
+                                   CtsEnforcement::kApiLevel_202404) {
+    std::unique_ptr<Recorder> recorder = context->makeRecorder();
+    SkImageInfo ii = SkImageInfo::Make(SkISize::Make(100, 100),
+                                       SkColorType::kRGBA_8888_SkColorType,
+                                       SkAlphaType::kPremul_SkAlphaType);
+    sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(recorder.get(), ii);
+    REPORTER_ASSERT(reporter, surface != nullptr);
+    SkCanvas* canvas = surface->getCanvas();
+
+    constexpr int kNumStops = 12;
+    SkColor4f colors[kNumStops];
+    SkScalar pos[kNumStops];
+    for (int i = 0; i < kNumStops; ++i) {
+        float t = static_cast<float>(i) / (kNumStops - 1);
+        colors[i] = {t, 1.0f - t, 0.5f, 1.0f};
+        pos[i] = t;
+    }
+
+    SkPoint pts[2] = {{0.f, 0.f}, {100.f, 100.f}};
+
+    // 1. Linear gradient (> 8 stops)
+    {
+        SkPaint paint;
+        paint.setShader(SkShaders::LinearGradient(
+                pts, SkGradient{SkGradient::Colors{colors, pos, SkTileMode::kClamp}, {}}));
+        canvas->drawRect(SkRect::MakeWH(50, 50), paint);
+    }
+
+    // 2. Radial gradient (> 8 stops)
+    {
+        SkPaint paint;
+        paint.setShader(SkShaders::RadialGradient(
+                {50.f, 50.f}, 50.f,
+                SkGradient{SkGradient::Colors{colors, pos, SkTileMode::kRepeat}, {}}));
+        canvas->drawRect(SkRect::MakeXYWH(50, 0, 50, 50), paint);
+    }
+
+    // 3. Sweep gradient (> 8 stops)
+    {
+        SkPaint paint;
+        paint.setShader(SkShaders::SweepGradient(
+                {50.f, 50.f},
+                SkGradient{SkGradient::Colors{colors, pos, SkTileMode::kMirror}, {}}));
+        canvas->drawRect(SkRect::MakeXYWH(0, 50, 50, 50), paint);
+    }
+
+    // 4. Conical gradient (> 8 stops)
+    {
+        SkPaint paint;
+        paint.setShader(SkShaders::TwoPointConicalGradient(
+                pts[0], 10.f, pts[1], 50.f,
+                SkGradient{SkGradient::Colors{colors, pos, SkTileMode::kClamp}, {}}));
+        canvas->drawRect(SkRect::MakeXYWH(50, 50, 50, 50), paint);
+    }
+
+    std::unique_ptr<Recording> recording = recorder->snap();
+    REPORTER_ASSERT(reporter, recording != nullptr);
+
+    InsertRecordingInfo insertInfo;
+    insertInfo.fRecording = recording.get();
+    context->insertRecording(insertInfo);
+    context->submit(SyncToCpu::kYes);
 }
 
 }  // namespace skgpu::graphite

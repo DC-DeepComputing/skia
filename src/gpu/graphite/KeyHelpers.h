@@ -61,13 +61,13 @@ struct AlphaOnlyPaintColorBlock {
 struct GradientShaderBlocks {
     struct GradientData {
         // The number of stops stored internal to this data structure before falling back to
-        // bitmap storage.
+        // storage buffer / texture fallback data.
         static constexpr int kNumInternalStorageStops = 8;
 
         // This ctor is used during pre-compilation when we don't have enough information to
         // extract uniform data. However, we must be able to provide enough data to make all the
         // relevant decisions about which code snippets to use.
-        GradientData(SkShaderBase::GradientType, int numStops, bool useStorageBuffer);
+        GradientData(SkShaderBase::GradientType, int numStops);
 
         // This ctor is used when extracting information from PaintParams. It must provide
         // enough data to generate the uniform data the selected code snippet will require.
@@ -80,8 +80,6 @@ struct GradientShaderBlocks {
                      const SkPMColor4f* colors,
                      const float* offsets,
                      const SkGradientBaseShader* shader,
-                     sk_sp<TextureProxy> colorsAndOffsetsProxy,
-                     bool useStorageBuffer,
                      const SkGradient::Interpolation&);
 
         bool operator==(const GradientData& rhs) const = delete;
@@ -98,17 +96,14 @@ struct GradientShaderBlocks {
 
         SkTileMode             fTM;
         int                    fNumStops;
-        bool                   fUseStorageBuffer;
 
         // For gradients w/ <= kNumInternalStorageStops stops we use fColors and fOffsets.
         // The offsets are packed into a single float4 to save space when the layout is std140.
         //
-        // Otherwise when storage buffers are preferred, we save the colors and offsets pointers
-        // to fSrcColors and fSrcOffsets so we can directly copy to the gatherer gradient buffer,
-        // else we pack the data into the fColorsAndOffsetsProxy texture.
+        // Otherwise we save the colors and offsets pointers to fSrcColors and fSrcOffsets
+        // so we can directly copy to the storageContext gradient buffer.
         SkPMColor4f                   fColors[kNumInternalStorageStops];
         SkV4                          fOffsets[kNumInternalStorageStops / 4];
-        sk_sp<TextureProxy>           fColorsAndOffsetsProxy;
         const SkPMColor4f*            fSrcColors;
         const float*                  fSrcOffsets;
         const SkGradientBaseShader*   fSrcShader;
