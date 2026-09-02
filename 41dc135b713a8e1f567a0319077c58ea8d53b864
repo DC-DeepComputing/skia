@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "56d84ae2_46e6ae89",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-02T19:50:35Z",
+      "side": 1,
+      "message": "PTAL; added per comment in https://skia-review.git.corp.google.com/c/skia/+/1304057",
+      "revId": "41dc135b713a8e1f567a0319077c58ea8d53b864",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
