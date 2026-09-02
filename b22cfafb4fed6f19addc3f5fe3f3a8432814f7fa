@@ -89,6 +89,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5fd0f0da_2998819b",
+        "filename": "src/core/SkRRect.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 779,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-09-02T20:27:15Z",
+      "side": 1,
+      "message": "Just to confirm this is a way to avoid doing all variations of the check like are_radius_check_predicates_valid does with the three `(rad \u003c\u003d max - min) \u0026\u0026 (min + rad \u003c\u003d max) \u0026\u0026 (max - rad \u003e\u003d min)`.\n\nI haven\u0027t read exactly what AlmostEqual does but I assume it adds some tolerance to the comparison. This is probably more then enough tolerance for our uses cases to be safe, but less generally robust then just doing the three variations of the math/comparison as was done before.\n\nAnyways I\u0027m fine with going with this new patter, I just want to confirm my understanding",
+      "parentUuid": "a1496020_75c1c5c6",
+      "range": {
+        "startLine": 777,
+        "startChar": 4,
+        "endLine": 779,
+        "endChar": 74
+      },
+      "revId": "b22cfafb4fed6f19addc3f5fe3f3a8432814f7fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c5cceda7_1ce300dd",
         "filename": "src/core/SkRRect.cpp",
         "patchSetId": 4
