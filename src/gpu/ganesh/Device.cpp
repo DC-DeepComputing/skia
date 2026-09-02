@@ -1269,23 +1269,24 @@ bool Device::replaceBackingProxy(SkSurface::ContentChangeMode mode) {
                                      this->surfaceProps());
 }
 
-void Device::asyncRescaleAndReadPixels(const SkImageInfo& info,
+void Device::asyncRescaleAndReadPixels1(const SkImageInfo& info,
                                        const SkIRect& srcRect,
                                        RescaleGamma rescaleGamma,
                                        RescaleMode rescaleMode,
                                        ReadPixelsCallback callback,
-                                       ReadPixelsContext context) {
+                                       ReadPixelsContext callbackContext) {
     auto* sdc = fSurfaceDrawContext.get();
     // Context TODO: Elevate direct context requirement to public API.
     auto dContext = sdc->recordingContext()->asDirectContext();
     if (!dContext) {
+        callback(callbackContext, nullptr);
         return;
     }
-    sdc->asyncRescaleAndReadPixels(dContext, info, srcRect, rescaleGamma, rescaleMode, callback,
-                                   context);
+    sdc->asyncRescaleAndReadPixels1(dContext, info, srcRect, rescaleGamma, rescaleMode, callback,
+                                   callbackContext);
 }
 
-void Device::asyncRescaleAndReadPixelsYUV420(SkYUVColorSpace yuvColorSpace,
+void Device::asyncRescaleAndReadPixelsYUV4201(SkYUVColorSpace yuvColorSpace,
                                              bool readAlpha,
                                              sk_sp<SkColorSpace> dstColorSpace,
                                              const SkIRect& srcRect,
@@ -1293,14 +1294,15 @@ void Device::asyncRescaleAndReadPixelsYUV420(SkYUVColorSpace yuvColorSpace,
                                              RescaleGamma rescaleGamma,
                                              RescaleMode rescaleMode,
                                              ReadPixelsCallback callback,
-                                             ReadPixelsContext context) {
+                                             ReadPixelsContext callbackContext) {
     auto* sdc = fSurfaceDrawContext.get();
     // Context TODO: Elevate direct context requirement to public API.
     auto dContext = sdc->recordingContext()->asDirectContext();
     if (!dContext) {
+        callback(callbackContext, nullptr);
         return;
     }
-    sdc->asyncRescaleAndReadPixelsYUV420(dContext,
+    sdc->asyncRescaleAndReadPixelsYUV4201(dContext,
                                          yuvColorSpace,
                                          readAlpha,
                                          std::move(dstColorSpace),
@@ -1309,7 +1311,7 @@ void Device::asyncRescaleAndReadPixelsYUV420(SkYUVColorSpace yuvColorSpace,
                                          rescaleGamma,
                                          rescaleMode,
                                          callback,
-                                         context);
+                                         callbackContext);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
