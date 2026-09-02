@@ -762,6 +762,23 @@ static bool are_radius_check_predicates_valid(SkScalar rad, SkScalar min, SkScal
            rad >= 0;
 }
 
+static bool are_radius_pair_predicates_valid(SkScalar rad1,
+                                             SkScalar rad2,
+                                             SkScalar min,
+                                             SkScalar max) {
+    if (min > max) {
+        return false;
+    }
+    const SkScalar limit = max - min;
+    const SkScalar sum = rad1 + rad2;
+    if (sum <= limit) {
+        return true;
+    }
+    const SkFloatingPoint<float, 4> fpSum(sum);
+    const SkFloatingPoint<float, 4> fpLimit(limit);
+    return SkScalarNearlyEqual(sum, limit) || fpSum.AlmostEquals(fpLimit);
+}
+
 bool SkRRect::isValid() const {
     if (!AreRectAndRadiiValid(fRect, fRadii)) {
         return false;
@@ -854,6 +871,24 @@ bool SkRRect::AreRectAndRadiiValid(const SkRect& rect, const SkVector radii[4]) 
             !are_radius_check_predicates_valid(radii[i].fY, rect.fTop, rect.fBottom)) {
             return false;
         }
+    }
+    if (!are_radius_pair_predicates_valid(radii[kUpperLeft_Corner].fX,
+                                          radii[kUpperRight_Corner].fX,
+                                          rect.fLeft,
+                                          rect.fRight) ||
+        !are_radius_pair_predicates_valid(radii[kLowerLeft_Corner].fX,
+                                          radii[kLowerRight_Corner].fX,
+                                          rect.fLeft,
+                                          rect.fRight) ||
+        !are_radius_pair_predicates_valid(radii[kUpperLeft_Corner].fY,
+                                          radii[kLowerLeft_Corner].fY,
+                                          rect.fTop,
+                                          rect.fBottom) ||
+        !are_radius_pair_predicates_valid(radii[kUpperRight_Corner].fY,
+                                          radii[kLowerRight_Corner].fY,
+                                          rect.fTop,
+                                          rect.fBottom)) {
+        return false;
     }
     return true;
 }
