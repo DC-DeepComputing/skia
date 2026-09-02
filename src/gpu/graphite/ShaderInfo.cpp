@@ -13,6 +13,7 @@
 #include "src/gpu/graphite/RenderPassDesc.h"
 #include "src/gpu/graphite/Renderer.h"
 #include "src/gpu/graphite/ShaderCodeDictionary.h"
+#include "src/gpu/graphite/StorageContext.h"
 #include "src/gpu/graphite/TextureFormat.h"
 #include "src/gpu/graphite/UniformManager.h"
 #include "src/sksl/SkSLString.h"
@@ -322,11 +323,141 @@ std::string emit_step_storage_buffer(const ResourceBindingRequirements& bindingR
             "struct StepStorageData {\n%s};\n"
             "layout (set=%d, binding=%d) readonly buffer StepStorageBuffer {\n"
             "    StepStorageData stepStorageData[];\n"
-            "};\n",
+            "};\n"
+            "inline StepStorageData readStepStorageData(int idx) {\n"
+            "    return stepStorageData[idx];\n"
+            "}\n"
+            "inline StepStorageData readStepStorageData(uint idx) {\n"
+            "    return stepStorageData[idx];\n"
+            "}\n",
             fields.c_str(),
             bindingReqs.fUniformsSetIdx,
             bindingReqs.fStorageBufferBinding);
 }
+
+} // anonymous namespace
+
+std::string ShaderInfo::emitStepStorageTextureFallback(
+        const ResourceBindingRequirements& bindingReqs, const RenderStep* step) {
+    // TODO (thomsmit): https://www.w3.org/TR/WGSL/#differences-from-ieee754 We are currently using
+    // an RGBA_F32 texture as a fallback for storage buffers, and reinterpret-casting the float bits
+    // to integer types (floatBitsToInt/floatBitsToUint). Warning: On some mobile GPU architectures
+    // (e.g. Mali, Adreno), the hardware texture unit may operate in Flush-To-Zero (FTZ) mode on
+    // floating-point textures. If an integer field has a small non-zero value (e.g. 1 or 2), its
+    // IEEE 754 float representation is a subnormal/denormal float (~1.4e-45), which the texture
+    // unit could flush to 0.0 before the shader reads it. If subnormal corruption occurs in
+    // practice, we should migrate the fallback texture format to RGBA32UInt instead.
+    SkASSERT(step->numStorageUniforms() > 0);
+    std::string fields;
+    for (auto a : step->storageUniforms()) {
+        SkSL::String::appendf(&fields, "    %s %s;\n", SkSLTypeString(a.type()), a.name());
+    }
+
+    static const char* kSwizzles[] = {"x", "y", "z", "w"};
+    std::string fieldAssignments;
+
+    UniformOffsetCalculator calculator = UniformOffsetCalculator::ForStruct(Layout::kStd430);
+
+    for (auto a : step->storageUniforms()) {
+        const int byteOffset = calculator.advanceOffset(a.type(), a.count());
+        const int floatOffset = byteOffset / 4;
+        const int startTexel = floatOffset / 4;
+        const int startComp = floatOffset % 4;
+
+        const int mat = SkSLTypeMatrixSize(a.type());
+        const int vec = SkSLTypeVecLength(a.type());
+
+        std::string expr;
+        if (mat == 2) {
+            if (startComp == 0) {
+                expr = SkSL::String::printf("float2x2(t%d.xy, t%d.zw)", startTexel, startTexel);
+            } else {
+                expr = SkSL::String::printf(
+                        "float2x2(t%d.zw, t%d.xy)", startTexel, startTexel + 1);
+            }
+        } else if (mat == 3) {
+            expr = SkSL::String::printf("float3x3(t%d.xyz, t%d.xyz, t%d.xyz)",
+                                        startTexel,
+                                        startTexel + 1,
+                                        startTexel + 2);
+        } else if (mat == 4) {
+            expr = SkSL::String::printf("float4x4(t%d, t%d, t%d, t%d)",
+                                        startTexel,
+                                        startTexel + 1,
+                                        startTexel + 2,
+                                        startTexel + 3);
+        } else if (vec == 4) {
+            expr = SkSL::String::printf("t%d", startTexel);
+        } else if (vec == 3) {
+            expr = SkSL::String::printf(
+                    "t%d.%s%s%s",
+                    startTexel,
+                    kSwizzles[startComp],
+                    kSwizzles[startComp + 1],
+                    kSwizzles[startComp + 2]);
+        } else if (vec == 2) {
+            expr = SkSL::String::printf(
+                    "t%d.%s%s", startTexel, kSwizzles[startComp], kSwizzles[startComp + 1]);
+        } else {
+            expr = SkSL::String::printf("t%d.%s", startTexel, kSwizzles[startComp]);
+        }
+
+        switch (a.type()) {
+            case SkSLType::kInt:
+            case SkSLType::kInt2:
+            case SkSLType::kInt3:
+            case SkSLType::kInt4:
+                expr = "floatBitsToInt(" + expr + ")";
+                break;
+            case SkSLType::kUInt:
+            case SkSLType::kUInt2:
+            case SkSLType::kUInt3:
+            case SkSLType::kUInt4:
+                expr = "floatBitsToUint(" + expr + ")";
+                break;
+            default:
+                break;
+        }
+
+        SkSL::String::appendf(&fieldAssignments, "    data.%s = %s;\n", a.name(), expr.c_str());
+    }
+
+    int nTexels = (calculator.size() + 15) / 16;
+
+    std::string texelLoads = SkSL::String::printf(
+            "    const int texWidth = %d;\n", StorageContext::kMaxAtlasWidth);
+    for (int i = 0; i < nTexels; ++i) {
+        SkSL::String::appendf(
+                &texelLoads,
+                "    int linearIdx%d = index * %d + %d;\n"
+                "    int2 coords%d = int2(linearIdx%d %% texWidth, linearIdx%d / texWidth);\n"
+                "    float4 t%d = float4(textureRead(storageFallbackTexture, uint2(coords%d)));\n",
+                i, nTexels, i, i, i, i, i, i);
+    }
+
+    std::string storageTextureLayout = SkSL::String::printf("layout(set=%d, binding=%d)",
+                                                            bindingReqs.fUniformsSetIdx,
+                                                            bindingReqs.fStorageBufferBinding);
+
+    return SkSL::String::printf(
+            "struct StepStorageData {\n%s};\n"
+            "%s readonly texture2D storageFallbackTexture;\n"
+            "StepStorageData readStepStorageData(int index) {\n"
+            "%s"
+            "    StepStorageData data;\n"
+            "%s"
+            "    return data;\n"
+            "}\n"
+            "inline StepStorageData readStepStorageData(uint index) {\n"
+            "    return readStepStorageData(int(index));\n"
+            "}\n",
+            fields.c_str(),
+            storageTextureLayout.c_str(),
+            texelLoads.c_str(),
+            fieldAssignments.c_str());
+}
+
+namespace {
 
 void append_sampler_descs(const SkSpan<const uint32_t> samplerData,
                           skia_private::TArray<SamplerDesc>& outDescs) {
@@ -1097,8 +1228,12 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
         fStorageBufferStages |= PipelineStageFlags::kFragmentShader;
     }
 
-    if (caps->storageBufferSupport() && step->fsUsesStorage() && step->numStorageUniforms() > 0) {
-        fsPreamble += emit_step_storage_buffer(bindingReqs, step);
+    if (step->fsUsesStorage() && step->numStorageUniforms() > 0) {
+        if (caps->storageBufferSupport()) {
+            fsPreamble += emit_step_storage_buffer(bindingReqs, step);
+        } else {
+            fsPreamble += emitStepStorageTextureFallback(bindingReqs, step);
+        }
         fStorageBufferStages |= PipelineStageFlags::kFragmentShader;
     }
 
@@ -1334,9 +1469,13 @@ void ShaderInfo::generateVertexSkSL(const Caps* caps,
                                 sharedData.fHasSsboIndexVarying,
                                 sharedData.fNeedsLocalCoords);
 
-    // Declare vertex storage buffer if the RenderStep has storage uniforms and uses storage in VS
-    if (caps->storageBufferSupport() && step->vsUsesStorage() && step->numStorageUniforms() > 0) {
-        vsPreamble += emit_step_storage_buffer(bindingReqs, step);
+    // Declare vertex storage buffer (or fallback texture) if the RenderStep has storage uniforms
+    if (step->vsUsesStorage() && step->numStorageUniforms() > 0) {
+        if (caps->storageBufferSupport()) {
+            vsPreamble += emit_step_storage_buffer(bindingReqs, step);
+        } else {
+            vsPreamble += emitStepStorageTextureFallback(bindingReqs, step);
+        }
         fStorageBufferStages |= PipelineStageFlags::kVertexShader;
     }
 
