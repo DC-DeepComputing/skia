@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bededfe7_135a5263",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-09-02T19:25:38Z",
+      "side": 1,
+      "message": "Adding Michael as a RRect geometry enthusiast",
+      "revId": "b22cfafb4fed6f19addc3f5fe3f3a8432814f7fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c5cceda7_1ce300dd",
