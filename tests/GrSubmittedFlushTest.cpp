@@ -93,7 +93,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(FlushSubmittedProcTest,
     // Test an abandoned context to get a failed submit immediately when flush is called
     canvas->clear(SK_ColorCYAN);
     ctx->abandonContext();
-    ctx->flush(surface.get(), SkSurfaces::BackendSurfaceAccess::kNoAccess, flushInfo);
+    ctx->flush_bad2(surface.get(), SkSurfaces::BackendSurfaceAccess::kNoAccess, flushInfo);
     REPORTER_ASSERT(reporter, submittedCount == 6);
     REPORTER_ASSERT(reporter, !submittedSuccess);
     ctx->flush(flushInfo);

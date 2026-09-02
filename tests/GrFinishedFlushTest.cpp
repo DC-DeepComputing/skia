@@ -76,7 +76,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(FlushFinishedProcTest,
     flushInfoFinishedProc.fFinishedProc = testing_finished_proc;
     flushInfoFinishedProc.fFinishedContext = (void*)&count;
     // There is no work on the surface so flushing may immediately call the finished proc.
-    dContext->flush(surface.get(), flushInfoFinishedProc);
+    dContext->flush_bad2(surface.get(), flushInfoFinishedProc);
     dContext->submit();
     REPORTER_ASSERT(reporter, count == 0 || count == 1);
     // Busy waiting should detect that the work is done.
@@ -84,7 +84,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(FlushFinishedProcTest,
 
     canvas->clear(SK_ColorRED);
 
-    dContext->flush(surface.get(), flushInfoFinishedProc);
+    dContext->flush_bad2(surface.get(), flushInfoFinishedProc);
     dContext->submit(GrSyncCpu::kNo);
 
     bool expectAsyncCallback = dContext->priv().caps()->finishedProcAsyncCallbackSupport();
@@ -138,7 +138,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(FlushFinishedProcTest,
     count = 0;
     int count2 = 0;
     canvas->clear(SK_ColorGREEN);
-    dContext->flush(surface.get(), flushInfoFinishedProc);
+    dContext->flush_bad2(surface.get(), flushInfoFinishedProc);
     dContext->submit(GrSyncCpu::kNo);
     // There is no work to be flushed here so this will return immediately, but make sure the
     // finished call from this proc isn't called till the previous surface flush also is finished.
