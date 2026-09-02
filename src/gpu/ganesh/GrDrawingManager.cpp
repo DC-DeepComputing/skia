@@ -95,10 +95,11 @@ void GrDrawingManager::freeGpuResources() {
 }
 
 // MDB TODO: make use of the 'proxies' parameter.
-bool GrDrawingManager::flush(SkSpan<GrSurfaceProxy*> proxies,
-                             SkSurfaces::BackendSurfaceAccess access,
-                             const GrFlushInfo& info,
-                             const skgpu::MutableTextureState* newState) {
+// flush1 correctly finishes up callbacks!
+GrDirectContext::FlushResult GrDrawingManager::flush1(SkSpan<GrSurfaceProxy*> proxies,
+                                                       SkSurfaces::BackendSurfaceAccess access,
+                                                       const GrFlushInfo& info,
+                                                       const skgpu::MutableTextureState* newState) {
     GR_CREATE_TRACE_MARKER_CONTEXT("GrDrawingManager", "flush", fContext);
 
     if (fFlushing || this->wasAbandoned()) {
@@ -108,7 +109,7 @@ bool GrDrawingManager::flush(SkSpan<GrSurfaceProxy*> proxies,
         if (info.fFinishedProc) {
             info.fFinishedProc(info.fFinishedContext);
         }
-        return false;
+        return {false, GrSemaphoresSubmitted::kNo};
     }
 
     SkDEBUGCODE(this->validate());
@@ -128,7 +129,7 @@ bool GrDrawingManager::flush(SkSpan<GrSurfaceProxy*> proxies,
             }
             // Nothing to flush is a success (fSubmittedProc is already called with `true`
             // above).
-            return true;
+            return {true, GrSemaphoresSubmitted::kNo};
         }
     }
 
@@ -214,7 +215,8 @@ bool GrDrawingManager::flush(SkSpan<GrSurfaceProxy*> proxies,
     }
     this->removeRenderTasks();
 
-    gpu->executeFlushInfo(proxies, access, info, std::move(timerQuery), newState);
+    GrSemaphoresSubmitted summitted = gpu->executeFlushInfo1(proxies, access, info,
+                                                             std::move(timerQuery), newState);
 
     bool cachePurgeNeeded = result.fAnyTaskExecuted;
     // Give the cache a chance to purge resources that become purgeable due to flushing.
@@ -230,7 +232,7 @@ bool GrDrawingManager::flush(SkSpan<GrSurfaceProxy*> proxies,
         resourceCache->purgeAsNeeded();
     }
     fFlushing = false;
-    return result.fAllTasksSuccessful;
+    return {result.fAllTasksSuccessful, summitted};
 }
 
 bool GrDrawingManager::submitToGpu() {
@@ -517,10 +519,11 @@ static void resolve_and_mipmap(GrGpu* gpu, GrSurfaceProxy* proxy) {
     }
 }
 
-GrSemaphoresSubmitted GrDrawingManager::flushSurfaces(SkSpan<GrSurfaceProxy*> proxies,
-                                                      SkSurfaces::BackendSurfaceAccess access,
-                                                      const GrFlushInfo& info,
-                                                      const skgpu::MutableTextureState* newState) {
+GrDirectContext::FlushResult GrDrawingManager::flushSurfaces(
+        SkSpan<GrSurfaceProxy*> proxies,
+        SkSurfaces::BackendSurfaceAccess access,
+        const GrFlushInfo& info,
+        const skgpu::MutableTextureState* newState) {
     if (this->wasAbandoned()) {
         if (info.fSubmittedProc) {
             info.fSubmittedProc(info.fSubmittedContext, false);
@@ -528,7 +531,7 @@ GrSemaphoresSubmitted GrDrawingManager::flushSurfaces(SkSpan<GrSurfaceProxy*> pr
         if (info.fFinishedProc) {
             info.fFinishedProc(info.fFinishedContext);
         }
-        return GrSemaphoresSubmitted::kNo;
+        return {false, GrSemaphoresSubmitted::kNo};
     }
     SkDEBUGCODE(this->validate());
 
@@ -541,8 +544,8 @@ GrSemaphoresSubmitted GrDrawingManager::flushSurfaces(SkSpan<GrSurfaceProxy*> pr
     // TODO: It is important to upgrade the drawingmanager to just flushing the
     // portion of the DAG required by 'proxies' in order to restore some of the
     // semantics of this method.
-    bool didFlush = this->flush(proxies, access, info, newState);
-    if (didFlush) {
+    GrDirectContext::FlushResult result = this->flush1(proxies, access, info, newState);
+    if (result.fSuccess) {
         // Only resolve/regen mips if the flush actually executed the render tasks.
         for (GrSurfaceProxy* proxy : proxies) {
             resolve_and_mipmap(gpu, proxy);
@@ -551,10 +554,7 @@ GrSemaphoresSubmitted GrDrawingManager::flushSurfaces(SkSpan<GrSurfaceProxy*> pr
 
     SkDEBUGCODE(this->validate());
 
-    if (!didFlush || (!direct->priv().caps()->backendSemaphoreSupport() && info.fNumSemaphores)) {
-        return GrSemaphoresSubmitted::kNo;
-    }
-    return GrSemaphoresSubmitted::kYes;
+    return result;
 }
 
 void GrDrawingManager::addOnFlushCallbackObject(GrOnFlushCallbackObject* onFlushCBObject) {

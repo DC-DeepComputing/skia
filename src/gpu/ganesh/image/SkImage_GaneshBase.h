@@ -20,6 +20,8 @@
 #include <cstddef>
 #include <cstdint>
 
+#include "include/gpu/ganesh/GrDirectContext.h"
+
 class GrBackendFormat;
 class GrBackendTexture;
 class GrCaps;
@@ -74,7 +76,12 @@ public:
                       int srcY,
                       CachingHint) const override;
 
-    virtual GrSemaphoresSubmitted flush(GrDirectContext*, const GrFlushInfo&) const = 0;
+    GrSemaphoresSubmitted flush(GrDirectContext* dContext, const GrFlushInfo& info) const {
+        GrDirectContext::FlushResult result = this->flush(dContext, info, true);
+        return result.fSubmitted;
+    }
+
+    virtual GrDirectContext::FlushResult flush(GrDirectContext*, const GrFlushInfo&, bool) const = 0;
 
     static bool ValidateBackendTexture(const GrCaps*,
                                        const GrBackendTexture& tex,
