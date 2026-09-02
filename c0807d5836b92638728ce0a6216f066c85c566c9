@@ -16,6 +16,24 @@
       "message": "Leftover from previous versions?\n\n(I don\u0027t think we want functional changes if just refactoring `remove_weak`.)",
       "revId": "c0807d5836b92638728ce0a6216f066c85c566c9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "30d3f3d7_2ea17331",
+        "filename": "src/ports/SkFontMgr_fontconfig.cpp",
+        "patchSetId": 33
+      },
+      "lineNbr": 787,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-09-02T17:39:32Z",
+      "side": 1,
+      "message": "youre right. fixed.",
+      "parentUuid": "ba132fed_06af331c",
+      "revId": "c0807d5836b92638728ce0a6216f066c85c566c9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
