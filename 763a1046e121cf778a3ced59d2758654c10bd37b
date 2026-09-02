@@ -16,6 +16,29 @@
       "message": "PTAL",
       "revId": "763a1046e121cf778a3ced59d2758654c10bd37b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0813b1e_6e8bc8c4",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 2225,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-02T15:04:34Z",
+      "side": 1,
+      "message": "nit: since this is only used in `is_sampled_texture`, and both of these functions are relatively simple, and there are a lot of assumptions about `expr`\u0027s nature in `find_texture_variable`, I\u0027d lean towards inlining this into `is_sampled_texture` just so a future caller doesn\u0027t think it\u0027s a more general helper function than it is.",
+      "range": {
+        "startLine": 2217,
+        "startChar": 0,
+        "endLine": 2225,
+        "endChar": 1
+      },
+      "revId": "763a1046e121cf778a3ced59d2758654c10bd37b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
