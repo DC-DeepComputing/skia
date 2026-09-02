@@ -12,6 +12,7 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
+#include "include/gpu/ganesh/GrDirectContext.h"
 #include "include/private/SkDebug.h"
 #include "src/gpu/Swizzle.h"
 #include "src/gpu/ganesh/GrColorInfo.h"
@@ -95,7 +96,7 @@ public:
     using RescaleMode        = SkImage::RescaleMode;
 
     // GPU implementation for SkImage:: and SkSurface::asyncRescaleAndReadPixels.
-    void asyncRescaleAndReadPixels(GrDirectContext*,
+    void asyncRescaleAndReadPixels1(GrDirectContext*,
                                    const SkImageInfo& info,
                                    const SkIRect& srcRect,
                                    RescaleGamma rescaleGamma,
@@ -104,7 +105,7 @@ public:
                                    ReadPixelsContext callbackContext);
 
     // GPU implementation for SkImage:: and SkSurface::asyncRescaleAndReadPixelsYUV420.
-    void asyncRescaleAndReadPixelsYUV420(GrDirectContext*,
+    void asyncRescaleAndReadPixelsYUV4201(GrDirectContext*,
                                          SkYUVColorSpace yuvColorSpace,
                                          bool readAlpha,
                                          sk_sp<SkColorSpace> dstColorSpace,
@@ -221,7 +222,7 @@ protected:
     PixelTransferResult transferPixels(GrColorType colorType, const SkIRect& rect);
 
     // The async read step of asyncRescaleAndReadPixels()
-    void asyncReadPixels(GrDirectContext*,
+    void asyncReadPixels1(GrDirectContext*,
                          const SkIRect& srcRect,
                          SkColorType,
                          ReadPixelsCallback,

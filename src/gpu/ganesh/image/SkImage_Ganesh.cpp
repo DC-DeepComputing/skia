@@ -253,8 +253,8 @@ bool SkImage_Ganesh::onIsProtected() const {
     return fChooser.isProtected() == skgpu::Protected::kYes;
 }
 
-GrSemaphoresSubmitted SkImage_Ganesh::flush(GrDirectContext* dContext,
-                                            const GrFlushInfo& info) const {
+GrDirectContext::FlushResult SkImage_Ganesh::flush(GrDirectContext* dContext,
+                                                   const GrFlushInfo& info, bool) const {
     if (!fContext->priv().matches(dContext) || dContext->abandoned()) {
         if (info.fSubmittedProc) {
             info.fSubmittedProc(info.fSubmittedContext, false);
@@ -262,11 +262,11 @@ GrSemaphoresSubmitted SkImage_Ganesh::flush(GrDirectContext* dContext,
         if (info.fFinishedProc) {
             info.fFinishedProc(info.fFinishedContext);
         }
-        return GrSemaphoresSubmitted::kNo;
+        return {false, GrSemaphoresSubmitted::kNo};
     }
 
     sk_sp<GrSurfaceProxy> proxy = fChooser.chooseProxy(dContext, nullptr);
-    return dContext->priv().flushSurface(
+    return dContext->priv().flushSurface1(
             proxy.get(), SkSurfaces::BackendSurfaceAccess::kNoAccess, info);
 }
 
@@ -299,7 +299,10 @@ bool SkImage_Ganesh::getExistingBackendTexture(GrBackendTexture* outTexture,
         return false;
     }
     if (flushPendingGrContextIO) {
-        direct->priv().flushSurface(proxy.get());
+        GrDirectContext::FlushResult result = direct->priv().flushSurface1(proxy.get());
+        if (!result.fSuccess) {
+            return false;
+        }
     }
     if (origin) {
         *origin = fOrigin;
@@ -375,7 +378,7 @@ void SkImage_Ganesh::onAsyncRescaleAndReadPixels(const SkImageInfo& info,
         callback(context, nullptr);
         return;
     }
-    ctx->asyncRescaleAndReadPixels(
+    ctx->asyncRescaleAndReadPixels1(
             dContext, info, srcRect, rescaleGamma, rescaleMode, callback, context);
 }
 
@@ -400,7 +403,7 @@ void SkImage_Ganesh::onAsyncRescaleAndReadPixelsYUV420(SkYUVColorSpace yuvColorS
         callback(context, nullptr);
         return;
     }
-    ctx->asyncRescaleAndReadPixelsYUV420(dContext,
+    ctx->asyncRescaleAndReadPixelsYUV4201(dContext,
                                          yuvColorSpace,
                                          readAlpha,
                                          std::move(dstColorSpace),

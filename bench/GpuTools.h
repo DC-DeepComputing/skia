@@ -31,9 +31,9 @@ inline void Flush(SkSurface* surface) {
 #endif
 }
 
-inline void FlushAndSubmit(SkSurface* surface) {
+inline void FlushAndSubmit7(SkSurface* surface) {
 #if defined(SK_GANESH)
-    skgpu::ganesh::FlushAndSubmit(surface);
+    skgpu::ganesh::FlushAndSubmit_bad(surface);
 #endif
 #if defined(SK_GRAPHITE)
     // Graphite doesn't have a "flush and submit" equivalent
