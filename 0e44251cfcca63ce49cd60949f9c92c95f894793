@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "86b52ab7_e1c39417",
+        "filename": "src/gpu/graphite/DrawContext.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-02T22:10:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ebe62a3b_ab148efe",
+      "range": {
+        "startLine": 271,
+        "startChar": 8,
+        "endLine": 275,
+        "endChar": 9
+      },
+      "revId": "0e44251cfcca63ce49cd60949f9c92c95f894793",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6120d3f0_1c799e61",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "84a5cfb7_e2bf110a",
+        "filename": "src/gpu/graphite/DrawList.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-02T22:10:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6120d3f0_1c799e61",
+      "range": {
+        "startLine": 251,
+        "startChar": 55,
+        "endLine": 251,
+        "endChar": 63
+      },
+      "revId": "0e44251cfcca63ce49cd60949f9c92c95f894793",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bbf152cd_9b9699e8",
@@ -77,6 +125,30 @@
       "writtenOn": "2026-08-28T15:54:51Z",
       "side": 1,
       "message": "We have to module the `startComp + X` against 4 right?",
+      "range": {
+        "startLine": 381,
+        "startChar": 8,
+        "endLine": 389,
+        "endChar": 66
+      },
+      "revId": "0e44251cfcca63ce49cd60949f9c92c95f894793",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "08a05eac_42728d64",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 389,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-02T22:10:11Z",
+      "side": 1,
+      "message": "No, if a multi-component type crosses a float4 boundary, we set `currentComp` to 0 and increment `currentTexel`.\n\nHowever, I realized that this needs to obey std::430 rules too, so I\u0027ve updated this and added tests.",
+      "parentUuid": "bbf152cd_9b9699e8",
       "range": {
         "startLine": 381,
         "startChar": 8,
@@ -112,6 +184,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "14905dea_732ed789",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 442,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-02T22:10:11Z",
+      "side": 1,
+      "message": "I think it should remain on Uniform:\n\n1) By assigning it to the uniform set, the shader layout binding is identical whether the device supports storage buffers or falls back to texture. Neither ShaderInfo nor the backend pipeline layouts need to branch on separate binding layouts for the storage data.\n\n2) The texture sampler bindings depend on the paint; to get a consistent index we would have to make a system where it takes up the 0th index slot or something like that.",
+      "parentUuid": "88dc3241_ecacdaf4",
+      "range": {
+        "startLine": 442,
+        "startChar": 72,
+        "endLine": 442,
+        "endChar": 87
+      },
+      "revId": "0e44251cfcca63ce49cd60949f9c92c95f894793",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1e5e70b8_a2175701",
         "filename": "src/gpu/graphite/StorageContext.cpp",
         "patchSetId": 24
@@ -123,6 +219,30 @@
       "writtenOn": "2026-08-28T15:54:51Z",
       "side": 1,
       "message": "When are we passing in a null DrawBufferManager?",
+      "range": {
+        "startLine": 140,
+        "startChar": 26,
+        "endLine": 140,
+        "endChar": 35
+      },
+      "revId": "0e44251cfcca63ce49cd60949f9c92c95f894793",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "48dfc9aa_177f7182",
+        "filename": "src/gpu/graphite/StorageContext.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-02T22:10:11Z",
+      "side": 1,
+      "message": "We passed in nullptrs inside the storage context test for convenience, as we don\u0027t validate the post finalized data. I\u0027ve updated the tests, and turned these into asserts.",
+      "parentUuid": "1e5e70b8_a2175701",
       "range": {
         "startLine": 140,
         "startChar": 26,
@@ -156,6 +276,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea7b5014_265a110b",
+        "filename": "src/gpu/graphite/StorageContext.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-02T22:10:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2c4d1798_3308a29c",
+      "range": {
+        "startLine": 163,
+        "startChar": 0,
+        "endLine": 163,
+        "endChar": 99
+      },
+      "revId": "0e44251cfcca63ce49cd60949f9c92c95f894793",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0b5eeb39_6ccc367c",
@@ -169,6 +313,30 @@
       "writtenOn": "2026-08-28T15:54:51Z",
       "side": 1,
       "message": "I should have realized this when we added the `getDefaultReadableTextureInfo` function, but we don\u0027t need to have these coupled to an SkColorType, since that implies a possible view swizzle and other color conversion operations.  Here, we really do just want data, so we could update `getDefaultReadableTextureInfo` to accept a TextureFormat value.  This would also let us possible switch from kRGBA32F to kR32F if having it be a scalar value makes things easier (but maybe a rgba32f return type is better since it\u0027ll cover loading a float4 in a single sample call).",
+      "range": {
+        "startLine": 166,
+        "startChar": 12,
+        "endLine": 166,
+        "endChar": 33
+      },
+      "revId": "0e44251cfcca63ce49cd60949f9c92c95f894793",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "69251f80_f113e228",
+        "filename": "src/gpu/graphite/StorageContext.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-02T22:10:11Z",
+      "side": 1,
+      "message": "Acknowledged\n\nShould be separate CL.",
+      "parentUuid": "0b5eeb39_6ccc367c",
       "range": {
         "startLine": 166,
         "startChar": 12,
@@ -202,6 +370,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d406282_2f2fe33f",
+        "filename": "src/gpu/graphite/StorageContext.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-02T22:10:11Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "5841aa32_f2cbac23",
+      "range": {
+        "startLine": 210,
+        "startChar": 4,
+        "endLine": 263,
+        "endChar": 1
+      },
+      "revId": "0e44251cfcca63ce49cd60949f9c92c95f894793",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "55d213f8_a5dcd3c1",
@@ -225,6 +417,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f3d662d_62cb620f",
+        "filename": "src/gpu/graphite/StorageContext.h",
+        "patchSetId": 24
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-02T22:10:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "55d213f8_a5dcd3c1",
+      "range": {
+        "startLine": 75,
+        "startChar": 0,
+        "endLine": 75,
+        "endChar": 8
+      },
+      "revId": "0e44251cfcca63ce49cd60949f9c92c95f894793",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a23aa3c5_07a85067",
@@ -238,6 +454,30 @@
       "writtenOn": "2026-08-28T15:54:51Z",
       "side": 1,
       "message": "Do we want to have the storage texture get pushed into `sampledTextures()`, or does it make more sense to treat it like an intrinsic texture and bind it once alongside the dst copy?",
+      "range": {
+        "startLine": 637,
+        "startChar": 65,
+        "endLine": 637,
+        "endChar": 80
+      },
+      "revId": "0e44251cfcca63ce49cd60949f9c92c95f894793",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e29a945_9f6e7bf6",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 637,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-02T22:10:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a23aa3c5_07a85067",
       "range": {
         "startLine": 637,
         "startChar": 65,
