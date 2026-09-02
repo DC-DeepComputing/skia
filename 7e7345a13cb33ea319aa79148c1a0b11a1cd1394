@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "44289f51_e3ba5409",
+        "filename": "include/core/SkRecorder.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-09-02T15:20:45Z",
+      "side": 1,
+      "message": "I know the plan is to eventually move the capture manager up to the base class, but needing this to be virtual here and implemented in all the backends is another signal that things should be architectured so that the base case can do more of this general stuff.",
+      "range": {
+        "startLine": 53,
+        "startChar": 4,
+        "endLine": 53,
+        "endChar": 11
+      },
+      "revId": "7e7345a13cb33ea319aa79148c1a0b11a1cd1394",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3d114504_3a976cc1",
         "filename": "src/capture/SkCaptureManager.cpp",
         "patchSetId": 8
