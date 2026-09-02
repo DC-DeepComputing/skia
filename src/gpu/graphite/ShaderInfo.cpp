@@ -911,7 +911,7 @@ std::unique_ptr<ShaderInfo> ShaderInfo::Make(const Caps* caps,
     const bool hasFragShader = paintID.isValid() && step->performsShading();
 
     // Create the final ShaderInfo object.
-    auto result = std::unique_ptr<ShaderInfo>(new ShaderInfo(dict, rteDict, uniformSsboIndex,
+    auto result = std::unique_ptr<ShaderInfo>(new ShaderInfo(caps, dict, rteDict, uniformSsboIndex,
                                               hasFragShader ? rpDesc.fDstReadStrategy
                                                             : DstReadStrategy::kNoneRequired));
 
@@ -969,11 +969,13 @@ std::unique_ptr<ShaderInfo> ShaderInfo::Make(const Caps* caps,
     return result;
 }
 
-ShaderInfo::ShaderInfo(const ShaderCodeDictionary* shaderCodeDictionary,
+ShaderInfo::ShaderInfo(const Caps* caps,
+                       const ShaderCodeDictionary* shaderCodeDictionary,
                        const RuntimeEffectDictionary* rteDict,
                        const char* uniformSsboIndex,
                        DstReadStrategy dstReadStrategy)
-        : fShaderCodeDictionary(shaderCodeDictionary)
+        : fCaps(caps)
+        , fShaderCodeDictionary(shaderCodeDictionary)
         , fRuntimeEffectDictionary(rteDict)
         , fUniformSsboIndex(uniformSsboIndex)
         , fDstReadStrategy(dstReadStrategy) {}
@@ -1089,28 +1091,36 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
                 /*binding=*/0);
     }
 
-    bool useStorageBuffer = caps->storageBufferSupport() &&
-                            (allReqFlags & SnippetRequirementFlags::kStorageBuffer);
-    SkASSERT(caps->storageBufferSupport() ||
-             !SkToBool(allReqFlags & SnippetRequirementFlags::kStorageBuffer));
-    if (useStorageBuffer) {
-        SkSL::String::appendf(&fsPreamble,
-                              "layout (set=%d, binding=%d) readonly buffer FSStorageBuffer {\n"
-                              "float %s[];\n"
-                              "};\n",
-                              bindingReqs.fUniformsSetIdx,
-                              bindingReqs.fStorageBufferBinding,
-                              ShaderInfo::kStorageBufferName);
-        fStorageBufferStages |= PipelineStageFlags::kFragmentShader;
-    }
-
-    if (step->fsUsesStorage() && step->numStorageUniforms() > 0) {
-        if (caps->storageBufferSupport()) {
-            fsPreamble += emit_step_storage_buffer(bindingReqs, step);
-        } else {
-            fsPreamble += step->stepStorageTextureFallbackSkSL(bindingReqs);
+    if (caps->storageBufferSupport()) {
+        if (allReqFlags & SnippetRequirementFlags::kStorageBuffer) {
+            SkSL::String::appendf(&fsPreamble,
+                                  "layout (set=%d, binding=%d) readonly buffer FSStorageBuffer {\n"
+                                  "float %s[];\n"
+                                  "};\n",
+                                  bindingReqs.fUniformsSetIdx,
+                                  bindingReqs.fStorageBufferBinding,
+                                  ShaderInfo::kStorageBufferName);
+            fStorageBufferStages |= PipelineStageFlags::kFragmentShader;
         }
-        fStorageBufferStages |= PipelineStageFlags::kFragmentShader;
+        if (step->fsUsesStorage() && step->numStorageUniforms() > 0) {
+            fsPreamble += emit_step_storage_buffer(bindingReqs, step);
+            fStorageBufferStages |= PipelineStageFlags::kFragmentShader;
+        }
+    } else {
+        bool needsStorageFallback = (allReqFlags & SnippetRequirementFlags::kStorageBuffer) ||
+                                    (step->fsUsesStorage() && step->numStorageUniforms() > 0);
+        if (needsStorageFallback) {
+            SkSL::String::appendf(
+                    &fsPreamble,
+                    "layout (set=%d, binding=%d) readonly texture2D %s;\n",
+                    bindingReqs.fUniformsSetIdx,
+                    bindingReqs.fStorageBufferBinding,
+                    ShaderInfo::kStorageFallbackTextureName);
+            if (step->fsUsesStorage() && step->numStorageUniforms() > 0) {
+                fsPreamble += step->storageTextureFallbackSkSL();
+            }
+            fStorageBufferStages |= PipelineStageFlags::kFragmentShader;
+        }
     }
 
     const bool useDstSampler = fDstReadStrategy == DstReadStrategy::kTextureCopy ||
