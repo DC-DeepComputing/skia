@@ -20,6 +20,75 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3802132d_ace39a61",
+        "filename": "src/core/SkRRect.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 768,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-02T19:56:03Z",
+      "side": 1,
+      "message": "Naming nits: could do `radii` instead of `radius_pair`, and I would change `rad1` and `rad2` to be something that shows their relationship to the `min` and `max` coordinates. While `min` and `max` were the old names, they are a bit ambiguous too.\n\nSomething like: `radiusFromMin`, `radiusFromMax`, `minCoord`, `maxCoord`?",
+      "range": {
+        "startLine": 765,
+        "startChar": 0,
+        "endLine": 768,
+        "endChar": 60
+      },
+      "revId": "b22cfafb4fed6f19addc3f5fe3f3a8432814f7fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c97bdac4_f4472adc",
+        "filename": "src/core/SkRRect.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 776,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-02T19:56:03Z",
+      "side": 1,
+      "message": "If we are getting rid of `are_radius_check_predicates_valid`, we should also test that `min + rad1 \u003c\u003d max - rad2`, and that both `rad1` and `rad2` are non-negative.",
+      "range": {
+        "startLine": 772,
+        "startChar": 4,
+        "endLine": 776,
+        "endChar": 5
+      },
+      "revId": "b22cfafb4fed6f19addc3f5fe3f3a8432814f7fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1496020_75c1c5c6",
+        "filename": "src/core/SkRRect.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 779,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-02T19:56:03Z",
+      "side": 1,
+      "message": "Can you add a brief comment here that summarizes Kaylee\u0027s CL comment from https://skia-review.git.corp.google.com/c/skia/+/1279236, since that appears to be when this pattern showed up in `isValid()` below and it caused me a bit of a double-take.",
+      "range": {
+        "startLine": 777,
+        "startChar": 4,
+        "endLine": 779,
+        "endChar": 74
+      },
+      "revId": "b22cfafb4fed6f19addc3f5fe3f3a8432814f7fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c5cceda7_1ce300dd",
         "filename": "src/core/SkRRect.cpp",
         "patchSetId": 4
@@ -31,6 +100,30 @@
       "writtenOn": "2026-09-02T19:14:55Z",
       "side": 1,
       "message": "should we remove this check and merge are_radius_check_predicates_valid and are_radius_pair_predicates_valid,",
+      "range": {
+        "startLine": 870,
+        "startChar": 14,
+        "endLine": 872,
+        "endChar": 18
+      },
+      "revId": "b22cfafb4fed6f19addc3f5fe3f3a8432814f7fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc3c49ca_337d6a23",
+        "filename": "src/core/SkRRect.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 872,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-02T19:56:03Z",
+      "side": 1,
+      "message": "I think we should remove this for loop and remove are_radius_check_predicates_valid, as it is effectively redundant with the new checks you added.",
+      "parentUuid": "c5cceda7_1ce300dd",
       "range": {
         "startLine": 870,
         "startChar": 14,
