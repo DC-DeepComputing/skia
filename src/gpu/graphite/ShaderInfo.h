@@ -88,6 +88,10 @@ public:
     static constexpr char kStorageBufferName[] = "fsStorageBuffer";
 
 private:
+#if defined(GPU_TEST_UTILS)
+    friend class TextureFallbackTest;
+#endif
+
     struct SharedGeneratorData;
 
     ShaderInfo(const ShaderCodeDictionary*,
@@ -111,6 +115,11 @@ private:
     void generateVertexSkSL(const Caps*,
                             const RenderStep*,
                             const SharedGeneratorData&);
+
+    // This could be in the anonymous namespace, but we make it a class member to give access to the
+    // test class.
+    static std::string emitStepStorageTextureFallback(const ResourceBindingRequirements&,
+                                                      const RenderStep*);
 
     const ShaderCodeDictionary* fShaderCodeDictionary;
     const RuntimeEffectDictionary* fRuntimeEffectDictionary;
