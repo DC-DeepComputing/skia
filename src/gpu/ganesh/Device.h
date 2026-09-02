@@ -19,6 +19,7 @@
 #include "include/core/SkShader.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkSurface.h"
+#include "include/gpu/ganesh/GrDirectContext.h"
 #include "include/gpu/ganesh/GrRecordingContext.h"
 #include "include/gpu/ganesh/GrTypes.h"
 #include "include/private/SkAssert.h"
@@ -125,14 +126,14 @@ public:
     using ReadPixelsCallback = SkImage::ReadPixelsCallback;
     using ReadPixelsContext  = SkImage::ReadPixelsContext;
 
-    void asyncRescaleAndReadPixels(const SkImageInfo& info,
+    void asyncRescaleAndReadPixels1(const SkImageInfo& info,
                                    const SkIRect& srcRect,
                                    RescaleGamma rescaleGamma,
                                    RescaleMode rescaleMode,
                                    ReadPixelsCallback callback,
                                    ReadPixelsContext context);
 
-    void asyncRescaleAndReadPixelsYUV420(SkYUVColorSpace yuvColorSpace,
+    void asyncRescaleAndReadPixelsYUV4201(SkYUVColorSpace yuvColorSpace,
                                          bool readAlpha,
                                          sk_sp<SkColorSpace> dstColorSpace,
                                          const SkIRect& srcRect,

@@ -22,18 +22,18 @@ namespace skgpu {
 // Flush any surface, even if we don't know what GPU backend it is for. This keeps the
 // comparisons between Ganesh and Graphite more fair as the latter can do more batching
 // unless we explicitly perform flushes.
-inline void Flush(SkSurface* surface) {
+inline void Flush7(SkSurface* surface) {
 #if defined(SK_GANESH)
-    skgpu::ganesh::Flush(surface);
+    skgpu::ganesh::Flush_bad(surface);
 #endif
 #if defined(SK_GRAPHITE)
     skgpu::graphite::Flush(surface);
 #endif
 }
 
-inline void FlushAndSubmit(SkSurface* surface) {
+inline void FlushAndSubmit7(SkSurface* surface) {
 #if defined(SK_GANESH)
-    skgpu::ganesh::FlushAndSubmit(surface);
+    skgpu::ganesh::FlushAndSubmit_bad(surface);
 #endif
 #if defined(SK_GRAPHITE)
     // Graphite doesn't have a "flush and submit" equivalent

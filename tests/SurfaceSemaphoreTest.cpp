@@ -187,13 +187,13 @@ void surface_semaphore_test(skiatest::Reporter* reporter,
     info.fSignalSemaphores = semaphores.get();
     switch (flushType) {
         case FlushType::kSurface:
-            mainCtx->flush(mainSurface.get(), SkSurfaces::BackendSurfaceAccess::kNoAccess, info);
+            mainCtx->flush_bad2(mainSurface.get(), SkSurfaces::BackendSurfaceAccess::kNoAccess, info);
             break;
         case FlushType::kImage:
-            mainCtx->flush(blueImage, info);
+            mainCtx->flush_bad2(blueImage, info);
             break;
         case FlushType::kContext:
-            mainCtx->flush(info);
+            mainCtx->flush_bad2(info);
             break;
     }
     mainCtx->submit();
@@ -282,9 +282,9 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(EmptySurfaceSemaphoreTest,
     GrFlushInfo flushInfo;
     flushInfo.fNumSemaphores = 1;
     flushInfo.fSignalSemaphores = &semaphore;
-    GrSemaphoresSubmitted submitted =
-            ctx->flush(mainSurface.get(), SkSurfaces::BackendSurfaceAccess::kNoAccess, flushInfo);
-    REPORTER_ASSERT(reporter, GrSemaphoresSubmitted::kYes == submitted);
+    GrDirectContext::FlushResult result =
+            ctx->flush_good(mainSurface.get(), SkSurfaces::BackendSurfaceAccess::kNoAccess, flushInfo);
+    REPORTER_ASSERT(reporter, GrSemaphoresSubmitted::kYes == result.fSubmitted);
     ctx->submit();
 
 #ifdef SK_VULKAN
