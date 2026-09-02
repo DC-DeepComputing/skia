@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5cceda7_1ce300dd",
+        "filename": "src/core/SkRRect.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 872,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-09-02T19:14:55Z",
+      "side": 1,
+      "message": "should we remove this check and merge are_radius_check_predicates_valid and are_radius_pair_predicates_valid,",
+      "range": {
+        "startLine": 870,
+        "startChar": 14,
+        "endLine": 872,
+        "endChar": 18
+      },
+      "revId": "b22cfafb4fed6f19addc3f5fe3f3a8432814f7fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
