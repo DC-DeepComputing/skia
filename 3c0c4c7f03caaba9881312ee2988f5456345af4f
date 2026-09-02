@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc55bb5e_6b30520a",
+        "filename": "tests/FontMgrFontConfigTest.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 337,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-09-02T15:26:02Z",
+      "side": 1,
+      "message": "nit: we could use smart pointers to avoid having to call `FcPatternDestroy` explicitly.\n\n`using UniqueFcPattern \u003d std::unique_ptr\u003cFcPattern, SkFunctionObject\u003cFcPatternDestroy\u003e\u003e;`",
+      "revId": "3c0c4c7f03caaba9881312ee2988f5456345af4f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
