@@ -39,6 +39,30 @@
       },
       "revId": "bf932061acc21b72fc2c7e7b8a24c817e22a412f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c8b272b_76b19641",
+        "filename": "infra/bots/gen_tasks_logic/dm_flags.go",
+        "patchSetId": 34
+      },
+      "lineNbr": 596,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-09-02T18:56:38Z",
+      "side": 1,
+      "message": "It\u0027s a crash in libgallium, here\u0027s an example: https://paste.googleplex.com/6439183783165952",
+      "parentUuid": "056bb8cb_57c83d95",
+      "range": {
+        "startLine": 561,
+        "startChar": 0,
+        "endLine": 596,
+        "endChar": 48
+      },
+      "revId": "bf932061acc21b72fc2c7e7b8a24c817e22a412f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
