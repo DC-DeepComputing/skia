@@ -12,6 +12,7 @@
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkColorType.h"
+#include "include/core/SkData.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkMatrix.h"
@@ -22,9 +23,11 @@
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkShader.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkString.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkTileMode.h"
 #include "include/core/SkTypes.h"
+#include "include/effects/SkRuntimeEffect.h"
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/graphite/BackendTexture.h"
 #include "include/gpu/graphite/ContextOptions.h"
@@ -439,20 +442,170 @@ void Context::asyncReadPixels(std::unique_ptr<Recorder> recorder,
                            params.fSrcImage->imageInfo().colorInfo());
 }
 
+namespace {
+
+bool is_rgba_or_bgra_8888(SkColorType ct) {
+    return ct == kRGBA_8888_SkColorType || ct == kBGRA_8888_SkColorType;
+}
+
+// Mirrors Ganesh's SurfaceContext::readPixels "canvas2DFastPath": if the only conversion needed
+// between src and dst is premul->unpremul (i.e. no color space work), it's cheaper to do the
+// alpha division in a shader while copying to a scratch texture than to run an SkRasterPipeline
+// unpremul step on the CPU after the GPU->CPU transfer completes.
+//
+// NOTE: Unlike Ganesh's canvas2DFastPath, this does not yet validate that the GPU-side
+// premul<->unpremul round trip is bit-exact on this device (see GrDirectContext's
+// validPMUPMConversionExists()). Graphite's math is compiled from the same WGSL/HLSL/MSL/SPIR-V
+// across Dawn backends rather than relying on fixed-function blend hardware, which makes cross-
+// driver rounding differences less likely, but this has not been verified across backends.
+bool use_unpremul_shader_fast_path(const SkColorInfo& srcColorInfo,
+                                   const SkColorInfo& dstColorInfo) {
+    SkColorSpaceXformSteps::Flags flags =
+            SkColorSpaceXformSteps(srcColorInfo.colorSpace(), srcColorInfo.alphaType(),
+                                   dstColorInfo.colorSpace(), dstColorInfo.alphaType()).fFlags;
+    if (!flags.unpremul || flags.linearize || flags.gamut_transform || flags.encode) {
+        return false;
+    }
+    return is_rgba_or_bgra_8888(srcColorInfo.colorType()) &&
+           is_rgba_or_bgra_8888(dstColorInfo.colorType());
+}
+
+// Returns a shared, intentionally-leaked SkColorFilter that divides RGB by A in the shader
+// (i.e. converts premultiplied input color to unpremultiplied output color).
+sk_sp<SkColorFilter> make_unpremul_color_filter() {
+    static const SkRuntimeEffect* effect = []() -> const SkRuntimeEffect* {
+        static constexpr char kSKSL[] =
+                "half4 main(half4 color) {"
+                "    return color.a > 0 ? half4(color.rgb / color.a, color.a) : half4(0);"
+                "}";
+        auto result = SkRuntimeEffect::MakeForColorFilter(SkString(kSKSL));
+        if (!result.effect) {
+            SKIA_LOG_E("Failed to compile unpremul color filter: %s", result.errorText.c_str());
+        }
+        return result.effect.release();
+    }();
+    return effect ? effect->makeColorFilter(SkData::MakeEmpty()) : nullptr;
+}
+
+} // anonymous namespace
+
+Context::PixelTransferResult Context::transferPixelsViaUnpremulShader(
+        Recorder* recorder,
+        const TextureProxyView& srcView,
+        const SkColorInfo& srcColorInfo,
+        const SkColorInfo& dstColorInfo,
+        const SkIRect& srcRect) {
+    TRACE_EVENT0("skia.gpu", "Context::transferPixelsViaUnpremulShader");
+    SkASSERT(recorder);
+
+    sk_sp<SkColorFilter> unpremulFilter = make_unpremul_color_filter();
+    if (!unpremulFilter) {
+        TRACE_EVENT_INSTANT0("skia.gpu",
+                             "transferPixelsViaUnpremulShader::fail_no_color_filter",
+                             TRACE_EVENT_SCOPE_THREAD);
+        return {};
+    }
+
+    // Scratch texture that will hold the already-unpremultiplied result of the shader. Using
+    // RGBA8 (rather than dstColorInfo's color type) mirrors Ganesh's canvas2DFastPath, which
+    // always targets a renderable RGBA8888 format for the intermediate copy.
+    //
+    // NOTE: The surface is declared kPremul (not dstColorInfo's real kUnpremul), because
+    // DrawContext::Make() unconditionally refuses to render into a kUnpremul-typed target
+    // (see DrawContext.cpp) -- that's a hard Graphite API rule, not a backend capability
+    // check, so requesting kUnpremul here always fails MakeScratch(). This is safe: the
+    // draw below uses kSrc blend mode, so the destination's declared alpha type never
+    // factors into the blend math -- the shader's output bytes land in the texture
+    // unmodified regardless of what label the surface was created with. The bytes actually
+    // written are the true unpremultiplied values (that's what the color filter computes),
+    // so when handing off to transferPixels() below we describe the buffer with its real
+    // semantic alpha type (kUnpremul, matching dstColorInfo) rather than the surface's
+    // renderable-safe kPremul label, so transferPixels() treats it as a plain copy instead
+    // of re-running a (redundant, and incorrect) CPU-side unpremul step.
+    SkImageInfo scratchInfo = SkImageInfo::Make(srcRect.size(),
+                                                kRGBA_8888_SkColorType,
+                                                kPremul_SkAlphaType,
+                                                dstColorInfo.refColorSpace());
+    sk_sp<Surface> scratch = Surface::MakeScratch(recorder,
+                                                  scratchInfo,
+                                                  "AsyncReadUnpremulFastPath",
+                                                  Budgeted::kYes,
+                                                  Mipmapped::kNo,
+                                                  SkBackingFit::kApprox);
+    if (!scratch) {
+        TRACE_EVENT_INSTANT0("skia.gpu",
+                             "transferPixelsViaUnpremulShader::fail_no_scratch_surface",
+                             TRACE_EVENT_SCOPE_THREAD);
+        return {};
+    }
+
+    sk_sp<SkImage> srcImage{new Image(srcView, srcColorInfo)};
+
+    SkPaint paint;
+    paint.setColorFilter(std::move(unpremulFilter));
+    paint.setBlendMode(SkBlendMode::kSrc);
+    scratch->getCanvas()->drawImage(srcImage.get(), -srcRect.left(), -srcRect.top(),
+                                    SkFilterMode::kNearest, &paint);
+
+    // Manually flush the surface before transferPixels() is called to ensure the unpremul draw
+    // runs before the CopyTextureToBuffer task.
+    Flush(scratch);
+
+    // Describe the scratch texture's true contents (kUnpremul), not its renderable-safe
+    // kPremul creation label -- see the comment above scratchInfo.
+    SkColorInfo scratchContentsInfo(kRGBA_8888_SkColorType,
+                                    dstColorInfo.alphaType(),
+                                    dstColorInfo.refColorSpace());
+
+    // Must use srcRect's size (not scratch's dimensions) for the transfer since the surface is
+    // kApprox-fit.
+    return this->transferPixels(recorder,
+                                scratch->target(),
+                                scratchContentsInfo,
+                                dstColorInfo,
+                                SkIRect::MakeSize(srcRect.size()));
+}
+
 void Context::asyncReadTexture(std::unique_ptr<Recorder> recorder,
                                const AsyncParams<TextureProxyView>& params,
                                const SkColorInfo& srcColorInfo) {
+    TRACE_EVENT2("skia.gpu", "Context::asyncReadTexture",
+                "width", params.fSrcRect.width(),
+                "height", params.fSrcRect.height());
     SkASSERT(params.fSrcRect.size() == params.fDstImageInfo.dimensions());
 
     // We can get here directly from surface or testing-only read pixels, so re-validate
     if (!params.validate()) {
         return params.fail();
     }
-    PixelTransferResult transferResult = this->transferPixels(recorder.get(),
-                                                              *params.fSrcImage,
-                                                              srcColorInfo,
-                                                              params.fDstImageInfo.colorInfo(),
-                                                              params.fSrcRect);
+
+    const SkColorInfo& dstColorInfo = params.fDstImageInfo.colorInfo();
+
+    bool fastPathEligible = use_unpremul_shader_fast_path(srcColorInfo, dstColorInfo);
+    TRACE_EVENT_INSTANT1("skia.gpu", "Context::asyncReadTexture::unpremul_fast_path_eligible",
+                         TRACE_EVENT_SCOPE_THREAD, "eligible", fastPathEligible);
+
+    PixelTransferResult transferResult;
+    if (fastPathEligible) {
+        if (!recorder) {
+            recorder = this->makeInternalRecorder();
+        }
+        transferResult = this->transferPixelsViaUnpremulShader(recorder.get(),
+                                                               *params.fSrcImage,
+                                                               srcColorInfo,
+                                                               dstColorInfo,
+                                                               params.fSrcRect);
+        TRACE_EVENT_INSTANT1("skia.gpu", "Context::asyncReadTexture::unpremul_fast_path_result",
+                             TRACE_EVENT_SCOPE_THREAD,
+                             "succeeded", SkToBool(transferResult.fTransferBuffer));
+    }
+    if (!transferResult.fTransferBuffer) {
+        transferResult = this->transferPixels(recorder.get(),
+                                              *params.fSrcImage,
+                                              srcColorInfo,
+                                              dstColorInfo,
+                                              params.fSrcRect);
+    }
 
     if (!transferResult.fTransferBuffer) {
         // TODO: try to do a synchronous readPixels instead

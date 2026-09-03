@@ -427,9 +427,24 @@ sk_sp<Device> Device::Make(Recorder* recorder,
                                                           recorder->priv().isProtected(),
                                                           Renderable::kYes);
 
+    if (label == "AsyncReadUnpremulFastPath") {
+        TRACE_EVENT_INSTANT2("skia.gpu", "Device::Make diag: textureInfo",
+                             TRACE_EVENT_SCOPE_THREAD,
+                             "valid", textureInfo.isValid(),
+                             "info", textureInfo.isValid() ? textureInfo.toString().c_str() : "n/a");
+    }
+
+    sk_sp<TextureProxy> proxy = TextureProxy::Make(caps, recorder->priv().resourceProvider(),
+                                                   backingDimensions, textureInfo, label, budgeted);
+
+    if (label == "AsyncReadUnpremulFastPath") {
+        TRACE_EVENT_INSTANT1("skia.gpu", "Device::Make diag: proxy",
+                             TRACE_EVENT_SCOPE_THREAD,
+                             "valid", SkToBool(proxy));
+    }
+
     return Make(recorder,
-                TextureProxy::Make(caps, recorder->priv().resourceProvider(),
-                                   backingDimensions, textureInfo, label, budgeted),
+                std::move(proxy),
                 ii.dimensions(),
                 ii.colorInfo(),
                 props,
@@ -453,14 +468,28 @@ sk_sp<Device> Device::Make(Recorder* recorder,
     // - This would also apply for compute renderers that have to write directly to `target`, but
     //   the current versions of compute render into separate compute-compatible textures instead.
     const Caps* caps = recorder->priv().caps();
+    const bool isDiagTarget = (deviceSize == SkISize::Make(10, 10));
+    if (isDiagTarget) {
+        TRACE_EVENT_INSTANT1("skia.gpu", "Device::Make diag: pathRendererStrategy",
+                             TRACE_EVENT_SCOPE_THREAD,
+                             "strategy",
+                             static_cast<int>(recorder->priv().rendererProvider()->pathRendererStrategy()));
+    }
     switch (recorder->priv().rendererProvider()->pathRendererStrategy()) {
         case PathRendererStrategy::kTessellationAndSmallAtlas:
             [[fallthrough]];
-        case PathRendererStrategy::kTessellation:
-            if (caps->getCompatibleMSAASampleCount(target->textureInfo()) <= SampleCount::k1) {
+        case PathRendererStrategy::kTessellation: {
+            SampleCount msaaCount = caps->getCompatibleMSAASampleCount(target->textureInfo());
+            if (isDiagTarget) {
+                TRACE_EVENT_INSTANT1("skia.gpu", "Device::Make diag: msaaCount",
+                                     TRACE_EVENT_SCOPE_THREAD,
+                                     "count", static_cast<int>(msaaCount));
+            }
+            if (msaaCount <= SampleCount::k1) {
                 return nullptr;
             }
             break;
+        }
 
         case PathRendererStrategy::kCPUSparseStripsMSAA8:
         case PathRendererStrategy::kRasterAtlas:
@@ -476,6 +505,11 @@ sk_sp<Device> Device::Make(Recorder* recorder,
                                               deviceSize,
                                               colorInfo,
                                               props);
+    if (isDiagTarget) {
+        TRACE_EVENT_INSTANT1("skia.gpu", "Device::Make diag: drawContext",
+                             TRACE_EVENT_SCOPE_THREAD,
+                             "valid", SkToBool(dc));
+    }
     if (!dc) {
         return nullptr;
     } else if (initialLoadOp == LoadOp::kClear) {

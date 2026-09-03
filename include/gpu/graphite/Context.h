@@ -401,6 +401,17 @@ private:
                                        const SkColorInfo& dstColorInfo,
                                        const SkIRect& srcRect);
 
+    // Like transferPixels(), but for the case where the only conversion needed between src and
+    // dst is premul->unpremul (no color space work). Performs the alpha division in a shader
+    // while copying into a scratch texture, so the CPU doesn't have to run an SkRasterPipeline
+    // unpremul step over the mapped transfer buffer. Requires a non-null Recorder since it must
+    // record a draw. Returns a PixelTransferResult with a null fTransferBuffer on failure.
+    PixelTransferResult transferPixelsViaUnpremulShader(Recorder*,
+                                                        const TextureProxyView& srcView,
+                                                        const SkColorInfo& srcColorInfo,
+                                                        const SkColorInfo& dstColorInfo,
+                                                        const SkIRect& srcRect);
+
     // If the recorder is non-null, it will be snapped and inserted with the assumption that the
     // copy tasks (and possibly preparatory draw tasks) have already been added to the Recording.
     void finalizeAsyncReadPixels(std::unique_ptr<Recorder>,

@@ -58,19 +58,48 @@ sk_sp<DrawContext> DrawContext::Make(const Caps* caps,
                                      SkISize deviceSize,
                                      const SkColorInfo& colorInfo,
                                      const SkSurfaceProps& props) {
+    const bool isDiagTarget = (deviceSize == SkISize::Make(10, 10));
+    if (isDiagTarget) {
+        TRACE_EVENT_INSTANT2("skia.gpu", "DrawContext::Make diag: entry",
+                             TRACE_EVENT_SCOPE_THREAD,
+                             "hasTarget", SkToBool(target),
+                             "alphaType", static_cast<int>(colorInfo.alphaType()));
+    }
     if (!target) {
+        if (isDiagTarget) {
+            TRACE_EVENT_INSTANT0("skia.gpu", "DrawContext::Make diag: fail_no_target",
+                                 TRACE_EVENT_SCOPE_THREAD);
+        }
         return nullptr;
     }
     // We don't render to unknown or unpremul alphatypes
     if (colorInfo.alphaType() == kUnknown_SkAlphaType ||
         colorInfo.alphaType() == kUnpremul_SkAlphaType) {
+        if (isDiagTarget) {
+            TRACE_EVENT_INSTANT1("skia.gpu", "DrawContext::Make diag: fail_bad_alphatype",
+                                 TRACE_EVENT_SCOPE_THREAD,
+                                 "alphaType", static_cast<int>(colorInfo.alphaType()));
+        }
         return nullptr;
     }
     if (!caps->isRenderable(target->textureInfo())) {
+        if (isDiagTarget) {
+            TRACE_EVENT_INSTANT0("skia.gpu", "DrawContext::Make diag: fail_not_renderable",
+                                 TRACE_EVENT_SCOPE_THREAD);
+        }
         return nullptr;
     }
     if (!AreColorTypeAndFormatCompatible(colorInfo.colorType(),  target->format())) {
+        if (isDiagTarget) {
+            TRACE_EVENT_INSTANT1("skia.gpu", "DrawContext::Make diag: fail_format_incompatible",
+                                 TRACE_EVENT_SCOPE_THREAD,
+                                 "colorType", static_cast<int>(colorInfo.colorType()));
+        }
         return nullptr;
+    }
+    if (isDiagTarget) {
+        TRACE_EVENT_INSTANT0("skia.gpu", "DrawContext::Make diag: success",
+                             TRACE_EVENT_SCOPE_THREAD);
     }
 
     // Accept an approximate-fit texture, but make sure it's at least as large as the device's
