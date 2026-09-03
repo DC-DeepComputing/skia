@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0fd9b4fe_551f1b83",
+        "filename": "src/gpu/ganesh/GrDirectContextPriv.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-03T18:58:21Z",
+      "side": 1,
+      "message": "WDYT about making these a [[nodiscard]] to help make sure all our internal call sites are covered? Maybe we could add it to the public API as well but that seems like it could stall things out too much.",
+      "range": {
+        "startLine": 93,
+        "startChar": 0,
+        "endLine": 93,
+        "endChar": 47
+      },
+      "revId": "7cc28fcfdf8dae2620d174d33621a3da751bedfc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a85e60b4_f48c0af5",
+        "filename": "src/gpu/ganesh/SurfaceContext.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 594,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-03T18:58:21Z",
+      "side": 1,
+      "message": "I think this change loses a nuance, where previously we could call flush here and if there was no pending work, it would be considered a success and we\u0027d carry on to the write pixels task.\n\nI think now that the ExecutionResult is initialized with \n```\nGrRenderTask::ExecutionResult executionResult { /* fAnyTaskExecuted\u003d */false,\n                                                /* fAllTasksSuccessful\u003d */false };\n```\n\nif there are no actual tasks to submit, we\u0027ll bubble up false in the FlushResult\u0027s fSuccess.  If `fAllTasksSuccessful` starts to true, then I think we\u0027d get the behavior that this expects here.",
+      "range": {
+        "startLine": 594,
+        "startChar": 0,
+        "endLine": 594,
+        "endChar": 53
+      },
+      "revId": "7cc28fcfdf8dae2620d174d33621a3da751bedfc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
