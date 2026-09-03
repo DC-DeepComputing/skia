@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7bd0a65_2e7c2934",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-03T15:08:55Z",
+      "side": 1,
+      "message": "PTAL;\n\nThe TextureFallback CL was getting way too big, so I\u0027m trying to chop it up. Most notably in this patch, we move the SKSL generation from ShaderInfo to ContextUtils. Not sure if it should be here or possibly on Renderer? but I think it should definitely live on the RenderStep. \n\nIf StorageBuffers are supported, nothing gets generated.",
+      "revId": "eebcfae3c9a73724944c1dad55ca82d35cf984ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
