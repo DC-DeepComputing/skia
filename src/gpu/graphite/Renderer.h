@@ -177,6 +177,7 @@ public:
     // Emits the SkSL declaration and unpack functions for storage uniforms emulated via a 2D
     // fallback texture.
     std::string stepStorageTextureFallbackSkSL(const ResourceBindingRequirements&) const;
+    const std::string& storageTextureFallbackSkSL() const { return fStorageTextureFallbackSkSL; }
 
     // Returns a name formatted as "Subclass[variant]", where "Subclass" matches the C++ class name
     // and variant is a unique term describing instance's specific configuration.
