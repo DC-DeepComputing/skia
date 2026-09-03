@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4c61d6c_3a5ea6d7",
+        "filename": "bench/graphite/sparse_strips/CoverageBench.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-03T15:17:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2596a006_c4be4902",
+      "range": {
+        "startLine": 25,
+        "startChar": 34,
+        "endLine": 26,
+        "endChar": 42
+      },
+      "revId": "1745e1420e80ff78363ce43961e6502c187e61f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3bcbd581_25812ee7",
@@ -54,6 +78,30 @@
       "writtenOn": "2026-09-03T14:40:26Z",
       "side": 1,
       "message": "Pass by \u0027*\u0027",
+      "range": {
+        "startLine": 215,
+        "startChar": 48,
+        "endLine": 215,
+        "endChar": 64
+      },
+      "revId": "1745e1420e80ff78363ce43961e6502c187e61f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d7176d4_7e8bd28a",
+        "filename": "src/gpu/graphite/sparse_strips/MakeStrips.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-03T15:17:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3bcbd581_25812ee7",
       "range": {
         "startLine": 215,
         "startChar": 48,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2149fc6a_48d58594",
+        "filename": "src/gpu/graphite/sparse_strips/MakeStrips.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-03T15:17:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0ef0d304_62ac208f",
+      "range": {
+        "startLine": 225,
+        "startChar": 45,
+        "endLine": 225,
+        "endChar": 56
+      },
+      "revId": "1745e1420e80ff78363ce43961e6502c187e61f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5fada4b3_5d1553b6",
@@ -100,6 +172,30 @@
       "writtenOn": "2026-09-03T14:40:26Z",
       "side": 1,
       "message": "Pass by \u0027*\u0027",
+      "range": {
+        "startLine": 228,
+        "startChar": 63,
+        "endLine": 228,
+        "endChar": 64
+      },
+      "revId": "1745e1420e80ff78363ce43961e6502c187e61f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "182a5bad_c31f0e07",
+        "filename": "src/gpu/graphite/sparse_strips/MakeStrips.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-03T15:17:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5fada4b3_5d1553b6",
       "range": {
         "startLine": 228,
         "startChar": 63,
@@ -133,6 +229,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8e6a770_82d00e81",
+        "filename": "src/gpu/graphite/sparse_strips/MakeStrips.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-03T15:17:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "235a807f_97599382",
+      "range": {
+        "startLine": 230,
+        "startChar": 0,
+        "endLine": 232,
+        "endChar": 67
+      },
+      "revId": "1745e1420e80ff78363ce43961e6502c187e61f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "355f5233_3e47c619",
@@ -146,6 +266,24 @@
       "writtenOn": "2026-09-03T14:40:26Z",
       "side": 1,
       "message": "// These control ... ?",
+      "revId": "1745e1420e80ff78363ce43961e6502c187e61f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "147ba157_9d5837c3",
+        "filename": "src/gpu/graphite/sparse_strips/SparseStripsConfig.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-03T15:17:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "355f5233_3e47c619",
       "revId": "1745e1420e80ff78363ce43961e6502c187e61f2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
