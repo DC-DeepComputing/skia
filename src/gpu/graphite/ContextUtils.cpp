@@ -29,6 +29,7 @@
 #include "src/gpu/graphite/Renderer.h"
 #include "src/gpu/graphite/ResourceTypes.h"
 #include "src/gpu/graphite/ShaderCodeDictionary.h"
+#include "src/gpu/graphite/StorageContext.h"
 #include "src/gpu/graphite/TextureFormat.h"
 #include "src/gpu/graphite/UniformManager.h"
 #include "src/gpu/graphite/UniquePaintParamsID.h"
@@ -232,6 +233,124 @@ std::string BuildComputeSkSL(const Caps* caps, const ComputeStep* step, BackendA
 
     sksl += step->computeSkSL();
     return sksl;
+}
+
+std::string BuildStorageTextureFallbackSkSL(Layout layout,
+                                            SkSpan<const Uniform> storageUniforms,
+                                            int maxTextureSize) {
+    if (storageUniforms.empty()) {
+        return "";
+    }
+
+    std::string fields;
+    for (auto a : storageUniforms) {
+        // Array storage uniforms are not supported by the texture fallback.
+        SkASSERT(a.count() == 0);
+        SkSL::String::appendf(&fields, "    %s %s;\n", SkSLTypeString(a.type()), a.name());
+    }
+
+    static const char* kSwizzles[] = {"x", "y", "z", "w"};
+    std::string fieldAssignments;
+
+    UniformOffsetCalculator calculator = UniformOffsetCalculator::ForStruct(layout);
+
+    for (auto a : storageUniforms) {
+        const int byteOffset = calculator.advanceOffset(a.type(), a.count());
+        const int floatOffset = byteOffset / 4;
+        const int startTexel = floatOffset / 4;
+        const int startComp = floatOffset % 4;
+
+        const int mat = SkSLTypeMatrixSize(a.type());
+        const int vec = SkSLTypeVecLength(a.type());
+
+        std::string expr;
+        if (mat == 2) {
+            if (startComp == 0) {
+                expr = SkSL::String::printf("float2x2(t%d.xy, t%d.zw)", startTexel, startTexel);
+            } else {
+                expr = SkSL::String::printf(
+                        "float2x2(t%d.zw, t%d.xy)", startTexel, startTexel + 1);
+            }
+        } else if (mat == 3) {
+            // std140/std430 dictates 16-byte alignment for 3-component column vectors.
+            SkASSERT(startComp == 0);
+            expr = SkSL::String::printf("float3x3(t%d.xyz, t%d.xyz, t%d.xyz)",
+                                        startTexel,
+                                        startTexel + 1,
+                                        startTexel + 2);
+        } else if (mat == 4) {
+            // std140/std430 dictates 16-byte alignment for 4-component column vectors.
+            SkASSERT(startComp == 0);
+            expr = SkSL::String::printf("float4x4(t%d, t%d, t%d, t%d)",
+                                        startTexel,
+                                        startTexel + 1,
+                                        startTexel + 2,
+                                        startTexel + 3);
+        } else if (vec == 4) {
+            expr = SkSL::String::printf("t%d", startTexel);
+        } else if (vec == 3) {
+            // std140/std430 dictates 16-byte alignment for vec3; startComp must be 0 to avoid OOB
+            // swizzles.
+            SkASSERT(startComp == 0);
+            expr = SkSL::String::printf(
+                    "t%d.%s%s%s",
+                    startTexel,
+                    kSwizzles[startComp],
+                    kSwizzles[startComp + 1],
+                    kSwizzles[startComp + 2]);
+        } else if (vec == 2) {
+            expr = SkSL::String::printf(
+                    "t%d.%s%s", startTexel, kSwizzles[startComp], kSwizzles[startComp + 1]);
+        } else {
+            expr = SkSL::String::printf("t%d.%s", startTexel, kSwizzles[startComp]);
+        }
+
+        switch (a.type()) {
+            case SkSLType::kInt:
+            case SkSLType::kInt2:
+            case SkSLType::kInt3:
+            case SkSLType::kInt4:
+                expr = "floatBitsToInt(" + expr + ")";
+                break;
+            case SkSLType::kUInt:
+            case SkSLType::kUInt2:
+            case SkSLType::kUInt3:
+            case SkSLType::kUInt4:
+                expr = "floatBitsToUint(" + expr + ")";
+                break;
+            default:
+                break;
+        }
+
+        SkSL::String::appendf(&fieldAssignments, "    data.%s = %s;\n", a.name(), expr.c_str());
+    }
+
+    int nTexels = (calculator.size() + 15) / 16;
+    const int maxAtlasWidth = std::min(StorageContext::kMaxAtlasWidth, maxTextureSize);
+    std::string texelLoads = SkSL::String::printf("    const int texWidth = %d;\n", maxAtlasWidth);
+    for (int i = 0; i < nTexels; ++i) {
+        SkSL::String::appendf(
+                &texelLoads,
+                "    int linearIdx%d = index * %d + %d;\n"
+                "    int2 coords%d = int2(linearIdx%d %% texWidth, linearIdx%d / texWidth);\n"
+                "    float4 t%d = float4(textureRead(storageFallbackTexture, uint2(coords%d)));\n",
+                i, nTexels, i, i, i, i, i, i);
+    }
+
+    return SkSL::String::printf(
+            "struct StepStorageData {\n%s};\n"
+            "StepStorageData readStepStorageData(int index) {\n"
+            "%s"
+            "    StepStorageData data;\n"
+            "%s"
+            "    return data;\n"
+            "}\n"
+            "inline StepStorageData readStepStorageData(uint index) {\n"
+            "    return readStepStorageData(int(index));\n"
+            "}\n",
+            fields.c_str(),
+            texelLoads.c_str(),
+            fieldAssignments.c_str());
 }
 
 } // namespace skgpu::graphite

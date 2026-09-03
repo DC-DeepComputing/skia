@@ -100,7 +100,8 @@ DrawContext::DrawContext(const Caps* caps,
                           ? std::unique_ptr<DrawListBase>(std::make_unique<DrawListLayer>(
                                    caps->storageBufferSupport()))
                           : std::unique_ptr<DrawListBase>(std::make_unique<DrawList>()))
-        , fPendingUploads(std::make_unique<UploadList>()) {
+        , fPendingUploads(std::make_unique<UploadList>())
+        , fStorageContext(caps->maxTextureSize()) {
     // Must determine a valid strategy to use should a dst texture read be required.
     SkASSERT(fDstReadStrategy != DstReadStrategy::kNoneRequired);
 
@@ -260,6 +261,7 @@ void DrawContext::flush(Recorder* recorder) {
     // to the RenderPassTask separately.
     std::unique_ptr<DrawPass> pass = fPendingDraws->snapDrawPass(recorder,
                                                                  &fStorageContext,
+                                                                 fCurrentDrawTask.get(),
                                                                  fTarget.refProxy(),
                                                                  this->imageInfo(),
                                                                  drawPassDstReadStrategy);

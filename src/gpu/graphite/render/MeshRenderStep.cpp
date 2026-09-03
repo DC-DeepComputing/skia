@@ -46,7 +46,9 @@ MeshRenderStep::MeshRenderStep(Layout layout)
                      kDirectDepthLEqualPass,
                      /*staticAttrs=*/{},
                      /*appendAttrs=*/{{"ssboIndex", VertexAttribType::kUInt, SkSLType::kUInt}},
-                     /*storageUniforms=*/{}) {}
+                     /*storageUniforms=*/{},
+                     /*varyings=*/{},
+                     /*storageTextureFallbackSkSL=*/{}) {}
 
 MeshRenderStep::~MeshRenderStep() {}
 

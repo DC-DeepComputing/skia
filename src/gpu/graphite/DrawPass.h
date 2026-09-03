@@ -16,6 +16,7 @@
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
 #include "src/gpu/graphite/GraphicsPipelineHandle.h"
 #include "src/gpu/graphite/ResourceTypes.h"
+#include "src/gpu/graphite/StorageContext.h"
 
 struct SkImageInfo;
 
@@ -54,6 +55,12 @@ public:
     const SkIRect&      bounds() const { return fBounds;       }
     TextureProxy* target() const { return fTarget.get(); }
     const BindBufferInfo& storageBufferInfo() const { return fStorageBufferInfo; }
+    const TextureProxy* storageFallbackTexture() const {
+        return fStorageFallbackTexture.get();
+    }
+    SkEnumBitMask<PipelineStageFlags> storageBufferStages() const {
+        return fStorageBufferStages;
+    }
     std::pair<LoadOp, StoreOp> ops() const { return fOps; }
     std::array<float, 4> clearColor() const { return fClearColor; }
 
@@ -90,6 +97,7 @@ public:
     }
 
     [[nodiscard]] bool addResourceRefs(ResourceProvider*, CommandBuffer*);
+    [[nodiscard]] bool setStorageResult(StorageContextResult result);
 
 private:
     friend class DrawList;      // For the constructor
@@ -119,6 +127,12 @@ private:
     SkDEBUGCODE(bool fPipelinesHaveBeenResolved = false;)    // set in addResourceRefs
 
     BindBufferInfo fStorageBufferInfo;
+    sk_sp<TextureProxy> fStorageFallbackTexture;
+
+    // In Vulkan, when storage buffers are not supported, image layout transition barriers must be
+    // submitted before beginning the render pass (before any pipeline is active). So store a copy
+    // of the shader stage visibility here.
+    SkEnumBitMask<PipelineStageFlags> fStorageBufferStages;
 };
 
 } // namespace skgpu::graphite

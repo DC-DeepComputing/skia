@@ -64,6 +64,9 @@ public:
     sk_sp<VulkanRenderPass> findOrCreateRenderPass(const RenderPassDesc&, bool compatibleOnly);
 
     VkPipelineLayout mockPipelineLayout() const { return fMockPipelineLayout; }
+    VkImageView getOrCreateNullTextureView();
+    const Texture* getOrCreateNullTexture();
+    const Texture* nullTexture() const { return fNullTexture.get(); }
 
     sk_sp<VulkanFramebuffer> findOrCreateFramebuffer(const VulkanSharedContext*,
                                                      VulkanTexture* colorTexture,
@@ -112,6 +115,7 @@ private:
     std::unique_ptr<VulkanProgramInfo> fLoadMSAAProgram;
 
     skia_private::TArray<std::pair<GraphiteResourceKey, uint32_t>> fCurrentPoolSizes;
+    sk_sp<Texture> fNullTexture;
 };
 
 } // namespace skgpu::graphite

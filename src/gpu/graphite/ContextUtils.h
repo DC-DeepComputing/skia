@@ -8,7 +8,9 @@
 #ifndef skgpu_graphite_ContextUtils_DEFINED
 #define skgpu_graphite_ContextUtils_DEFINED
 
+#include "include/core/SkSpan.h"
 #include "src/core/SkSLTypeShared.h"
+#include "src/gpu/graphite/StorageContext.h"
 #include "src/gpu/graphite/Uniform.h"
 
 #include <cstdint>
@@ -77,6 +79,10 @@ std::string GetPipelineLabel(const Caps*,
 // decisions. It would be ideal if we could make this more backend-agnostic, perhaps by having a
 // compute-specific equivalent to ResourceBindingRequirements.
 std::string BuildComputeSkSL(const Caps*, const ComputeStep*, BackendApi);
+
+std::string BuildStorageTextureFallbackSkSL(Layout layout,
+                                            SkSpan<const Uniform> storageUniforms,
+                                            int maxTextureSize);
 
 std::string EmitSamplerLayout(const ResourceBindingRequirements&, int* binding);
 
