@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "51c34ede_ef66f28d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-09-03T15:05:47Z",
+      "side": 1,
+      "message": "Would be good to add a regression test for this.  See `SkottieTest.cpp`/`Skottie_Gradient_InvalidCount` for a gradient test example.",
+      "revId": "537f695bb18c5e4b0548abce65cfd623413c781e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "081f84f6_7f377527",
+        "filename": "modules/skottie/src/layers/shapelayer/Gradient.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-09-03T15:05:47Z",
+      "side": 1,
+      "message": "WDYT about using the negated condition trick suggested in the bug?  That should cover NaNs without introducing special handling:\n\n```\n             if (!(c_pos \u003e o_pos)) {\n                 c_rec \u003d next_rec\u003cColorRec\u003e(c_rec, c_end);\n             }\n             if (!(o_pos \u003e c_pos)) {\n                 o_rec \u003d next_rec\u003cOpacityRec\u003e(o_rec, o_end);\n             }\n```\n\nAnother option is to check and advance NaN values individually (e.g. there\u0027s no reason to advance the opacity rec if only the color rec is NaN):\n\n```\n             if (SkIsNaN(c_pos) || c_pos \u003c\u003d o_pos) {\n                 c_rec \u003d next_rec\u003cColorRec\u003e(c_rec, c_end);\n             }\n             if (SkIsNaN(o_pos) || o_pos \u003c\u003d c_pos) {\n                 o_rec \u003d next_rec\u003cOpacityRec\u003e(o_rec, o_end);\n             }\n```\n\nI think this last version makes most sense.",
+      "range": {
+        "startLine": 219,
+        "startChar": 0,
+        "endLine": 219,
+        "endChar": 51
+      },
+      "revId": "537f695bb18c5e4b0548abce65cfd623413c781e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
