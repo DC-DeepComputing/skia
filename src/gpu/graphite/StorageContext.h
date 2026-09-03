@@ -25,6 +25,8 @@ class DrawBufferManager;
 
 class StorageContext {
 public:
+    static constexpr int kMaxAtlasWidth = 8192;
+
     StorageContext();
     ~StorageContext();
 

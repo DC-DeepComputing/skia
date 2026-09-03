@@ -322,7 +322,13 @@ std::string emit_step_storage_buffer(const ResourceBindingRequirements& bindingR
             "struct StepStorageData {\n%s};\n"
             "layout (set=%d, binding=%d) readonly buffer StepStorageBuffer {\n"
             "    StepStorageData stepStorageData[];\n"
-            "};\n",
+            "};\n"
+            "inline StepStorageData readStepStorageData(int idx) {\n"
+            "    return stepStorageData[idx];\n"
+            "}\n"
+            "inline StepStorageData readStepStorageData(uint idx) {\n"
+            "    return stepStorageData[idx];\n"
+            "}\n",
             fields.c_str(),
             bindingReqs.fUniformsSetIdx,
             bindingReqs.fStorageBufferBinding);
@@ -1097,8 +1103,12 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
         fStorageBufferStages |= PipelineStageFlags::kFragmentShader;
     }
 
-    if (caps->storageBufferSupport() && step->fsUsesStorage() && step->numStorageUniforms() > 0) {
-        fsPreamble += emit_step_storage_buffer(bindingReqs, step);
+    if (step->fsUsesStorage() && step->numStorageUniforms() > 0) {
+        if (caps->storageBufferSupport()) {
+            fsPreamble += emit_step_storage_buffer(bindingReqs, step);
+        } else {
+            fsPreamble += step->stepStorageTextureFallbackSkSL(bindingReqs);
+        }
         fStorageBufferStages |= PipelineStageFlags::kFragmentShader;
     }
 
@@ -1334,9 +1344,13 @@ void ShaderInfo::generateVertexSkSL(const Caps* caps,
                                 sharedData.fHasSsboIndexVarying,
                                 sharedData.fNeedsLocalCoords);
 
-    // Declare vertex storage buffer if the RenderStep has storage uniforms and uses storage in VS
-    if (caps->storageBufferSupport() && step->vsUsesStorage() && step->numStorageUniforms() > 0) {
-        vsPreamble += emit_step_storage_buffer(bindingReqs, step);
+    // Declare vertex storage buffer (or fallback texture) if the RenderStep has storage uniforms
+    if (step->vsUsesStorage() && step->numStorageUniforms() > 0) {
+        if (caps->storageBufferSupport()) {
+            vsPreamble += emit_step_storage_buffer(bindingReqs, step);
+        } else {
+            vsPreamble += step->stepStorageTextureFallbackSkSL(bindingReqs);
+        }
         fStorageBufferStages |= PipelineStageFlags::kVertexShader;
     }
 
