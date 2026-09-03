@@ -16,6 +16,23 @@
       "message": "PTAL;\n\nThe TextureFallback CL was getting way too big, so I\u0027m trying to chop it up. Most notably in this patch, we move the SKSL generation from ShaderInfo to ContextUtils. Not sure if it should be here or possibly on Renderer? but I think it should definitely live on the RenderStep. \n\nIf StorageBuffers are supported, nothing gets generated.",
       "revId": "eebcfae3c9a73724944c1dad55ca82d35cf984ad",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec0c6d7f_875f5ced",
+        "filename": "src/gpu/graphite/Renderer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-03T15:58:58Z",
+      "side": 1,
+      "message": "I think from a performance POV, it should be acceptable to call `BuildStorageTextureFallbackSkSL` here to create the SkSL. It\u0027s not going to be that significant compared to the rest of the cost of compiling a pipeline.  It also allows us to avoid having to pass in a Layout to every RenderStep that wants to use fallback storage textures, since that can be retrieved off of the ResourceBindingRequirements.\n\nSince the base RenderStep stores the storage attributes, there\u0027s also no need for the subclass of RenderStep to be calling `BuildStorageTextureFallbackSkSL` (even if we do keep it in the ctor).\n\nIt also seems reasonable to me to add the max texture size for texture fallback to ResourceBindingRequirements. That could be used as a signal for whether or not the texture fallback should be used for storage as well (e.g. 0 means use regular storage).",
+      "revId": "eebcfae3c9a73724944c1dad55ca82d35cf984ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
