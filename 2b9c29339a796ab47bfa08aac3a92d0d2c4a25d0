@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32680e05_9369d144",
+        "filename": "src/pathops/SkDConicLineIntersection.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-09-03T14:39:43Z",
+      "side": 1,
+      "message": "general nit: should be grouped with the existing system includes below for consistency.\n\nThis being an automated CL, I\u0027m not sure if it\u0027s feasible to tweak manually.  Could the clang plugin be updated to handle this?",
+      "revId": "2b9c29339a796ab47bfa08aac3a92d0d2c4a25d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25151855_878c9243",
+        "filename": "src/pathops/SkOpEdgeBuilder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-09-03T14:39:43Z",
+      "side": 1,
+      "message": "This include is in a comment.",
+      "revId": "2b9c29339a796ab47bfa08aac3a92d0d2c4a25d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db93f939_146ac8ee",
+        "filename": "src/pathops/SkPathOpsCurve.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-09-03T14:39:43Z",
+      "side": 1,
+      "message": "formatting nit (here and below): is the comma supposed to be on the prev line?",
+      "range": {
+        "startLine": 140,
+        "startChar": 0,
+        "endLine": 140,
+        "endChar": 1
+      },
+      "revId": "2b9c29339a796ab47bfa08aac3a92d0d2c4a25d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
