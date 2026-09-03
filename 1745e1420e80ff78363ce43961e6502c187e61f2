@@ -16,6 +16,138 @@
       "message": "PTAL",
       "revId": "1745e1420e80ff78363ce43961e6502c187e61f2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2596a006_c4be4902",
+        "filename": "bench/graphite/sparse_strips/CoverageBench.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-03T14:40:26Z",
+      "side": 1,
+      "message": "These are being changed so they need to be passed by pointer.",
+      "range": {
+        "startLine": 25,
+        "startChar": 34,
+        "endLine": 26,
+        "endChar": 42
+      },
+      "revId": "1745e1420e80ff78363ce43961e6502c187e61f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3bcbd581_25812ee7",
+        "filename": "src/gpu/graphite/sparse_strips/MakeStrips.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-03T14:40:26Z",
+      "side": 1,
+      "message": "Pass by \u0027*\u0027",
+      "range": {
+        "startLine": 215,
+        "startChar": 48,
+        "endLine": 215,
+        "endChar": 64
+      },
+      "revId": "1745e1420e80ff78363ce43961e6502c187e61f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ef0d304_62ac208f",
+        "filename": "src/gpu/graphite/sparse_strips/MakeStrips.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-03T14:40:26Z",
+      "side": 1,
+      "message": "Pass by \u0027*\u0027",
+      "range": {
+        "startLine": 225,
+        "startChar": 45,
+        "endLine": 225,
+        "endChar": 56
+      },
+      "revId": "1745e1420e80ff78363ce43961e6502c187e61f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5fada4b3_5d1553b6",
+        "filename": "src/gpu/graphite/sparse_strips/MakeStrips.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-03T14:40:26Z",
+      "side": 1,
+      "message": "Pass by \u0027*\u0027",
+      "range": {
+        "startLine": 228,
+        "startChar": 63,
+        "endLine": 228,
+        "endChar": 64
+      },
+      "revId": "1745e1420e80ff78363ce43961e6502c187e61f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "235a807f_97599382",
+        "filename": "src/gpu/graphite/sparse_strips/MakeStrips.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-03T14:40:26Z",
+      "side": 1,
+      "message": "Pass these 3 by \u0027*\u0027 too",
+      "range": {
+        "startLine": 230,
+        "startChar": 0,
+        "endLine": 232,
+        "endChar": 67
+      },
+      "revId": "1745e1420e80ff78363ce43961e6502c187e61f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "355f5233_3e47c619",
+        "filename": "src/gpu/graphite/sparse_strips/SparseStripsConfig.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-03T14:40:26Z",
+      "side": 1,
+      "message": "// These control ... ?",
+      "revId": "1745e1420e80ff78363ce43961e6502c187e61f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
