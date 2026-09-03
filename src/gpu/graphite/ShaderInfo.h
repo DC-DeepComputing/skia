@@ -84,13 +84,18 @@ public:
         return SkToBool(fStorageBufferStages & PipelineStageFlags::kFragmentShader);
     }
 
-    // Name used in-shader for storage buffer uniform.
+    // Name used in-shader for storage buffer uniform and texture fallback.
     static constexpr char kStorageBufferName[] = "fsStorageBuffer";
+    static constexpr char kStorageFallbackTextureName[] = "storageFallbackTexture";
+
+    const Caps* caps() const { return fCaps; }
+    bool storageBufferSupport() const { return fCaps->storageBufferSupport(); }
 
 private:
     struct SharedGeneratorData;
 
-    ShaderInfo(const ShaderCodeDictionary*,
+    ShaderInfo(const Caps*,
+               const ShaderCodeDictionary*,
                const RuntimeEffectDictionary*,
                const char* uniformSsboIndex,
                DstReadStrategy);
@@ -112,6 +117,7 @@ private:
                             const RenderStep*,
                             const SharedGeneratorData&);
 
+    const Caps* fCaps;
     const ShaderCodeDictionary* fShaderCodeDictionary;
     const RuntimeEffectDictionary* fRuntimeEffectDictionary;
     const char* fUniformSsboIndex;

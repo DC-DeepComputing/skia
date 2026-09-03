@@ -78,6 +78,8 @@ std::pair<float*, int> StorageContext::allocateGradientData(int numStops,
     }
 
     int floatOffset = fGradientCache.fGradientData.size();
+    SkASSERT(floatOffset % 4 == 0);
+
     const int alignedOffsetsCount = SkAlign4(numStops);
     const int floatCount = SkAlign4(alignedOffsetsCount + numStops * 4);
     if (GradientCache::kMaxStorageFloats - floatCount < floatOffset) {
