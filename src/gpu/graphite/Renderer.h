@@ -174,6 +174,10 @@ public:
         return this->coverage() != Coverage::kNone || this->emitsPrimitiveColor();
     }
 
+    // Emits the SkSL declaration and unpack functions for storage uniforms emulated via a 2D
+    // fallback texture.
+    std::string stepStorageTextureFallbackSkSL(const ResourceBindingRequirements&) const;
+
     // Returns a name formatted as "Subclass[variant]", where "Subclass" matches the C++ class name
     // and variant is a unique term describing instance's specific configuration.
     const char* name() const { return RenderStepName(fRenderStepID); }
@@ -295,7 +299,8 @@ SK_DECL_BITMASK_OPS_FRIENDS(Flags)
                SkSpan<const Attribute> staticAttrs,
                SkSpan<const Attribute> appendAttrs,
                SkSpan<const Uniform> storageUniforms = {},
-               SkSpan<const Varying> varyings = {});
+               SkSpan<const Varying> varyings = {},
+               std::string storageTextureFallbackSkSL = {});
 
 private:
     friend class Renderer; // for Flags
@@ -324,11 +329,12 @@ private:
     std::vector<Uniform>   fStorageUniforms;
     std::vector<Varying>   fVaryings;
 
-    int    fUniformAlignment;        // derived from the renderstep uniforms
-    size_t fStaticDataStride;        // derived from vertex attribute set
-    size_t fAppendDataStride;        // derived from instance attribute set
-    size_t fStorageUniformStride;    // derived from storage uniform set
-    size_t fStorageUniformAlignment; // derived from storage uniform set
+    int         fUniformAlignment;           // derived from the renderstep uniforms
+    size_t      fStaticDataStride;           // derived from vertex attribute set
+    size_t      fAppendDataStride;           // derived from instance attribute set
+    size_t      fStorageUniformStride;       // derived from storage uniform set
+    size_t      fStorageUniformAlignment;    // derived from storage uniform set
+    std::string fStorageTextureFallbackSkSL; // cached fallback unpack SkSL
 };
 SK_MAKE_BITMASK_OPS(RenderStep::Flags)
 
