@@ -303,13 +303,19 @@ static int write_color_and_offset_bufdata(StorageContext* storageContext,
     auto [dstData, bufferOffset] = storageContext->allocateGradientData(numStops, shader);
     if (dstData) {
         SkASSERT(bufferOffset >= 0);
-        // Data doesn't already exist so we need to write it. Writes all offset data, then color
-        // data. This way when binary searching through the offsets, there is better cache locality.
-        for (int i = 0, colorIdx = numStops; i < numStops; i++, colorIdx+=4) {
+        const bool useStorage = storageContext->useStorageBuffers();
+        // In texture fallback, offsets are padded to a 4-float (16-byte) boundary so colors start
+        // on a 16-byte boundary. In storage buffer mode, colors start immediately after numStops.
+        const int alignedOffsetsCount = useStorage ? numStops : SkAlign4(numStops);
+        for (int i = 0; i < numStops; ++i) {
             float offset = offsets ? offsets[i] : SkIntToFloat(i) / (numStops - 1);
             SkASSERT(offset >= 0.0f && offset <= 1.0f);
-
             dstData[i] = offset;
+        }
+        for (int i = numStops; i < alignedOffsetsCount; ++i) {
+            dstData[i] = 0.0f;
+        }
+        for (int i = 0, colorIdx = alignedOffsetsCount; i < numStops; ++i, colorIdx += 4) {
             dstData[colorIdx + 0] = colors[i].fR;
             dstData[colorIdx + 1] = colors[i].fG;
             dstData[colorIdx + 2] = colors[i].fB;
@@ -2538,6 +2544,8 @@ static void add_gradient_to_key(const KeyContext& keyContext,
 
     sk_sp<TextureProxy> proxy;
 
+    // TODO (thomsmit) delete this in the future, all fallbacks should get routed through the
+    // StorageBufferManager. Also, need to pipe out the fragment shader visibility for this.
     bool gradUsesStorage = keyContext.caps()->storageBufferSupport();
     if (colorCount > GradientShaderBlocks::GradientData::kNumInternalStorageStops
             && !gradUsesStorage) {
