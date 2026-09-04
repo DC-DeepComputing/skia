@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "68449f1a_dc8a3aeb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-04T20:11:17Z",
+      "side": 1,
+      "message": "PTAL; lost +1. I realized I should force Std430 in the Renderer constructor",
+      "revId": "6c314f9ec18543d221724f471039bce9dc28d63c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
