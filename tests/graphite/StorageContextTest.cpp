@@ -36,7 +36,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(StorageContextAlignmentTest,
     auto grad2 =
             sk_make_sp<SkLinearGradient>(pts, SkGradient{{colors, {}, SkTileMode::kRepeat}, {}});
 
-    StorageContext ctxStorage;
+    StorageContext ctxStorage(/*storageBufferSupport=*/true);
     StorageContext* ctxHandle = &ctxStorage;
 
     // 1. Allocate gradient data for shader1 (2 stops * 5 floats = 10 floats = 40 bytes)
@@ -76,7 +76,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(StorageContextPaddingAlignmentTest,
     SkColor4f colors[2] = {SkColors::kRed, SkColors::kBlue};
     auto grad = sk_make_sp<SkLinearGradient>(pts, SkGradient{{colors, {}, SkTileMode::kClamp}, {}});
 
-    StorageContext ctxStorage;
+    StorageContext ctxStorage(/*storageBufferSupport=*/true);
     StorageContext* ctxHandle = &ctxStorage;
 
     // Allocate gradient data for 1 shader with 2 stops = 40 bytes
@@ -106,7 +106,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(StorageContextAppendVertexTest,
     SkColor4f colors[2] = {SkColors::kRed, SkColors::kBlue};
     auto grad = sk_make_sp<SkLinearGradient>(pts, SkGradient{{colors, {}, SkTileMode::kClamp}, {}});
 
-    StorageContext ctxStorage;
+    StorageContext ctxStorage(/*storageBufferSupport=*/true);
     StorageContext* ctxHandle = &ctxStorage;
 
     // 1. Allocate gradient data (40 bytes)
@@ -143,7 +143,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(StorageContextMultipleRenderStepsTest,
     SkColor4f colors[2] = {SkColors::kRed, SkColors::kBlue};
     auto grad = sk_make_sp<SkLinearGradient>(pts, SkGradient{{colors, {}, SkTileMode::kClamp}, {}});
 
-    StorageContext ctxStorage;
+    StorageContext ctxStorage(/*storageBufferSupport=*/true);
     StorageContext* ctxHandle = &ctxStorage;
 
     // 1. Allocate gradient data (40 bytes)
@@ -206,7 +206,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(StorageContextLCMVariantsTest,
     auto grad = sk_make_sp<SkLinearGradient>(pts, SkGradient{{colors, {}, SkTileMode::kClamp}, {}});
 
     for (const auto& tc : testCases) {
-        StorageContext ctx;
+        StorageContext ctx(/*storageBufferSupport=*/true);
         // Allocate 2 gradient stops = 40 bytes
         auto [gradPtr, gradOffset] = ctx.allocateGradientData(2, grad.get());
         REPORTER_ASSERT(reporter, gradPtr != nullptr);
@@ -235,7 +235,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(StorageContextVertexOnlyAndResetTest,
                                    context,
                                    CtsEnforcement::kApiLevel_202404) {
     std::unique_ptr<Recorder> recorder = context->makeRecorder();
-    StorageContext ctx;
+    StorageContext ctx(/*storageBufferSupport=*/true);
 
     REPORTER_ASSERT(reporter, ctx.isEmpty());
 

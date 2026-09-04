@@ -25,8 +25,11 @@ class DrawBufferManager;
 
 class StorageContext {
 public:
-    StorageContext();
+    StorageContext(bool storageBufferSupport);
     ~StorageContext();
+
+    bool storageBufferSupport() const { return fStorageBufferSupport; }
+    uint32_t runningLCM() const { return fRunningLCM; }
 
     // Resets cached gradient and vertex data. Should only occur at "organic" flush time
     // (e.g. canvas/recorder flush).
@@ -83,7 +86,8 @@ private:
     GradientCache fGradientCache;
 
     SkTDArray<char> fVertexData;
-    uint32_t fRunningLCM = 1;
+    uint32_t fRunningLCM;
+    bool fStorageBufferSupport;
 };
 
 } // namespace skgpu::graphite
