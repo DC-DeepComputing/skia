@@ -6,10 +6,7 @@
  */
 
 #ifndef GrTextureResolveManager_DEFINED
-
 #define GrTextureResolveManager_DEFINED
-
-#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRefCnt.h"
 #include "src/gpu/ganesh/GrDrawingManager.h"
@@ -34,7 +31,7 @@ public:
     }
 
 private:
-    raw_ptr<GrDrawingManager> fDrawingManager;
+    GrDrawingManager* fDrawingManager;
 };
 
 #endif

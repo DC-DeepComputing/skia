@@ -6,10 +6,7 @@
  */
 
 #ifndef GrTriangulator_DEFINED
-
 #define GrTriangulator_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
-#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #if !defined(SK_ENABLE_OPTIMIZE_SIZE)
 
@@ -205,7 +202,7 @@ protected:
 
     // FIXME: fPath should be plumbed through function parameters instead.
     const SkPath fPath;
-    const raw_ptr<SkArenaAlloc> fAlloc;
+    SkArenaAlloc* const fAlloc;
     int fNumMonotonePolys = 0;
     int fNumEdges = 0;
     // Track how deep of a stack we get from mergeCollinearEdges()
@@ -243,7 +240,7 @@ protected:
         struct Node {
             Node(SkPoint a, SkPoint b, SkPoint c) : fPts{a, b, c} {}
             SkPoint fPts[3];
-            RAW_PTR_EXCLUSION Node* fNext = nullptr;
+            Node* fNext = nullptr;
         };
         const Node* head() const { return fHead; }
         int count() const { return fCount; }
@@ -277,8 +274,8 @@ protected:
         }
 
     private:
-        RAW_PTR_EXCLUSION Node* fHead = nullptr;
-        RAW_PTR_EXCLUSION Node** fTail = &fHead;
+        Node* fHead = nullptr;
+        Node** fTail = &fHead;
         int fCount = 0;
     };
 
@@ -310,15 +307,15 @@ struct GrTriangulator::Vertex {
 #endif
     {}
     SkPoint fPoint;               // Vertex position
-    RAW_PTR_EXCLUSION Vertex* fPrev;             // Linked list of contours, then Y-sorted vertices.
-    RAW_PTR_EXCLUSION Vertex* fNext;             // "
-    RAW_PTR_EXCLUSION Edge* fFirstEdgeAbove;     // Linked list of edges above this vertex.
-    RAW_PTR_EXCLUSION Edge* fLastEdgeAbove;      // "
-    RAW_PTR_EXCLUSION Edge* fFirstEdgeBelow;     // Linked list of edges below this vertex.
-    RAW_PTR_EXCLUSION Edge* fLastEdgeBelow;      // "
-    RAW_PTR_EXCLUSION Edge* fLeftEnclosingEdge;  // Nearest edge in the AEL left of this vertex.
-    RAW_PTR_EXCLUSION Edge* fRightEnclosingEdge;  // Nearest edge in the AEL right of this vertex.
-    RAW_PTR_EXCLUSION Vertex* fPartner;           // Corresponding inner or outer vertex (for AA).
+    Vertex* fPrev;                // Linked list of contours, then Y-sorted vertices.
+    Vertex* fNext;                // "
+    Edge*   fFirstEdgeAbove;      // Linked list of edges above this vertex.
+    Edge*   fLastEdgeAbove;       // "
+    Edge*   fFirstEdgeBelow;      // Linked list of edges below this vertex.
+    Edge*   fLastEdgeBelow;       // "
+    Edge*   fLeftEnclosingEdge;   // Nearest edge in the AEL left of this vertex.
+    Edge*   fRightEnclosingEdge;  // Nearest edge in the AEL right of this vertex.
+    Vertex* fPartner;             // Corresponding inner or outer vertex (for AA).
     uint8_t fAlpha;
     bool    fSynthetic;           // Is this a synthetic vertex?
 #if TRIANGULATOR_LOGGING
@@ -330,8 +327,8 @@ struct GrTriangulator::Vertex {
 struct GrTriangulator::VertexList {
     VertexList() : fHead(nullptr), fTail(nullptr) {}
     VertexList(Vertex* head, Vertex* tail) : fHead(head), fTail(tail) {}
-    RAW_PTR_EXCLUSION Vertex* fHead;
-    RAW_PTR_EXCLUSION Vertex* fTail;
+    Vertex* fHead;
+    Vertex* fTail;
     void insert(Vertex* v, Vertex* prev, Vertex* next);
     void append(Vertex* v) { insert(v, fTail, nullptr); }
     void append(const VertexList& list) {
@@ -433,23 +430,21 @@ struct GrTriangulator::Edge {
         , fUsedInRightPoly(false)
         , fLine(top, bottom) {}
     int      fWinding;          // 1 == edge goes downward; -1 = edge goes upward.
-    RAW_PTR_EXCLUSION Vertex* fTop;     // The top vertex in vertex-sort-order (sweep_lt).
-    RAW_PTR_EXCLUSION Vertex* fBottom;  // The bottom vertex in vertex-sort-order.
+    Vertex*  fTop;              // The top vertex in vertex-sort-order (sweep_lt).
+    Vertex*  fBottom;           // The bottom vertex in vertex-sort-order.
     EdgeType fType;
-    RAW_PTR_EXCLUSION Edge* fLeft;   // The linked list of edges in the active edge list.
-    RAW_PTR_EXCLUSION Edge* fRight;  // "
-    RAW_PTR_EXCLUSION Edge*
-            fPrevEdgeAbove;  // The linked list of edges in the bottom Vertex's "edges above".
-    RAW_PTR_EXCLUSION Edge* fNextEdgeAbove;  // "
-    RAW_PTR_EXCLUSION Edge*
-            fPrevEdgeBelow;  // The linked list of edges in the top Vertex's "edges below".
-    RAW_PTR_EXCLUSION Edge* fNextEdgeBelow;  // "
-    RAW_PTR_EXCLUSION Poly* fLeftPoly;       // The Poly to the left of this edge, if any.
-    RAW_PTR_EXCLUSION Poly* fRightPoly;      // The Poly to the right of this edge, if any.
-    RAW_PTR_EXCLUSION Edge* fLeftPolyPrev;
-    RAW_PTR_EXCLUSION Edge* fLeftPolyNext;
-    RAW_PTR_EXCLUSION Edge* fRightPolyPrev;
-    RAW_PTR_EXCLUSION Edge* fRightPolyNext;
+    Edge*    fLeft;             // The linked list of edges in the active edge list.
+    Edge*    fRight;            // "
+    Edge*    fPrevEdgeAbove;    // The linked list of edges in the bottom Vertex's "edges above".
+    Edge*    fNextEdgeAbove;    // "
+    Edge*    fPrevEdgeBelow;    // The linked list of edges in the top Vertex's "edges below".
+    Edge*    fNextEdgeBelow;    // "
+    Poly*    fLeftPoly;         // The Poly to the left of this edge, if any.
+    Poly*    fRightPoly;        // The Poly to the right of this edge, if any.
+    Edge*    fLeftPolyPrev;
+    Edge*    fLeftPolyNext;
+    Edge*    fRightPolyPrev;
+    Edge*    fRightPolyNext;
     bool     fUsedInLeftPoly;
     bool     fUsedInRightPoly;
     Line     fLine;
@@ -480,8 +475,8 @@ struct GrTriangulator::Edge {
 
 struct GrTriangulator::EdgeList {
     EdgeList() : fHead(nullptr), fTail(nullptr) {}
-    RAW_PTR_EXCLUSION Edge* fHead;
-    RAW_PTR_EXCLUSION Edge* fTail;
+    Edge* fHead;
+    Edge* fTail;
     void insert(Edge* edge, Edge* prev, Edge* next);
     bool insert(Edge* edge, Edge* prev);
     void append(Edge* e) { insert(e, fTail, nullptr); }
@@ -511,10 +506,10 @@ struct GrTriangulator::MonotonePoly {
         this->addEdge(edge);
     }
     Side          fSide;
-    RAW_PTR_EXCLUSION Edge* fFirstEdge;
-    RAW_PTR_EXCLUSION Edge* fLastEdge;
-    RAW_PTR_EXCLUSION MonotonePoly* fPrev;
-    RAW_PTR_EXCLUSION MonotonePoly* fNext;
+    Edge*         fFirstEdge;
+    Edge*         fLastEdge;
+    MonotonePoly* fPrev;
+    MonotonePoly* fNext;
     int fWinding;
     void addEdge(Edge*);
 };
@@ -524,12 +519,12 @@ struct GrTriangulator::Poly {
 
     Poly* addEdge(Edge* e, Side side, GrTriangulator*);
     Vertex* lastVertex() const { return fTail ? fTail->fLastEdge->fBottom : fFirstVertex; }
-    RAW_PTR_EXCLUSION Vertex* fFirstVertex;
+    Vertex* fFirstVertex;
     int fWinding;
-    RAW_PTR_EXCLUSION MonotonePoly* fHead;
-    RAW_PTR_EXCLUSION MonotonePoly* fTail;
-    RAW_PTR_EXCLUSION Poly* fNext;
-    RAW_PTR_EXCLUSION Poly* fPartner;
+    MonotonePoly* fHead;
+    MonotonePoly* fTail;
+    Poly* fNext;
+    Poly* fPartner;
     int fCount;
 #if TRIANGULATOR_LOGGING
     int fID;

@@ -6,10 +6,7 @@
  */
 
 #ifndef GrVkImage_DEFINED
-
 #define GrVkImage_DEFINED
-
-#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
@@ -318,7 +315,7 @@ private:
     private:
         void freeGPUData() const override;
 
-        raw_ptr<const GrVkGpu> fGpu;
+        const GrVkGpu*     fGpu;
         VkImage            fImage;
         skgpu::VulkanAlloc fAlloc;
 
@@ -336,7 +333,7 @@ private:
         void freeGPUData() const override;
     };
 
-    raw_ptr<Resource> fResource;
+    Resource* fResource;
 
     friend class GrVkRenderTarget;
 };

@@ -6,9 +6,7 @@
  */
 
 #ifndef SkWriter32_DEFINED
-
 #define SkWriter32_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkData.h"
 #include "include/core/SkPath.h"
@@ -75,7 +73,7 @@ public:
             this->growToAtLeast(totalRequired);
         }
         fUsed = totalRequired;
-        return (uint32_t*)(fData.get() + offset);
+        return (uint32_t*)(fData + offset);
     }
 
     /**
@@ -86,7 +84,7 @@ public:
     const T& readTAt(size_t offset) const {
         SkASSERT(SkAlign4(offset) == offset);
         SkASSERT(offset < fUsed);
-        return *(T*)(fData.get() + offset);
+        return *(T*)(fData + offset);
     }
 
     /**
@@ -97,7 +95,7 @@ public:
     void overwriteTAt(size_t offset, const T& value) {
         SkASSERT(SkAlign4(offset) == offset);
         SkASSERT(offset < fUsed);
-        *(T*)(fData.get() + offset) = value;
+        *(T*)(fData + offset) = value;
     }
 
     bool writeBool(bool value) {
@@ -256,12 +254,11 @@ public:
 private:
     void growToAtLeast(size_t size);
 
-    skia_private::AutoTMalloc<uint8_t> fInternal;  // Managed memory block.
-    raw_ptr<uint8_t, AllowPtrArithmetic | DanglingUntriaged>
-            fData;                     // Points to either fInternal or fExternal.
+    uint8_t* fData;                    // Points to either fInternal or fExternal.
     size_t fCapacity;                  // Number of bytes we can write to fData.
     size_t fUsed;                      // Number of bytes written.
-    raw_ptr<void> fExternal;           // Unmanaged memory block.
+    void* fExternal;                   // Unmanaged memory block.
+    skia_private::AutoTMalloc<uint8_t> fInternal;  // Managed memory block.
 };
 
 /**
@@ -273,7 +270,6 @@ private:
 template <size_t SIZE> class SkSWriter32 : public SkWriter32 {
 public:
     SkSWriter32() { this->reset(); }
-    ~SkSWriter32() { this->INHERITED::reset(); }
 
     void reset() {this->INHERITED::reset(fData.fStorage, SIZE); }
 

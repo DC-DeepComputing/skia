@@ -6,10 +6,7 @@
  */
 
 #ifndef GrAuditTrail_DEFINED
-
 #define GrAuditTrail_DEFINED
-
-#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRect.h"
 #include "include/core/SkString.h"
@@ -52,7 +49,7 @@ public:
         }
 
     private:
-        raw_ptr<GrAuditTrail> fAuditTrail;
+        GrAuditTrail* fAuditTrail;
     };
 
     class AutoManageOpsTask {
@@ -64,7 +61,7 @@ public:
 
     private:
         AutoEnable fAutoEnable;
-        raw_ptr<GrAuditTrail> fAuditTrail;
+        GrAuditTrail* fAuditTrail;
     };
 
     class AutoCollectOps {
@@ -78,7 +75,7 @@ public:
 
     private:
         AutoEnable fAutoEnable;
-        raw_ptr<GrAuditTrail> fAuditTrail;
+        GrAuditTrail* fAuditTrail;
     };
 
     void pushFrame(const char* framename) {

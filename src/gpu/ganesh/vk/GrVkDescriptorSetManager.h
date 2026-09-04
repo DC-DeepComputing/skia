@@ -6,10 +6,7 @@
 */
 
 #ifndef GrVkDescriptorSetManager_DEFINED
-
 #define GrVkDescriptorSetManager_DEFINED
-
-#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/private/SkAssert.h"
 #include "include/private/SkTArray.h"
@@ -73,7 +70,7 @@ private:
         uint32_t               fDescCountPerSet;
         uint32_t               fMaxDescriptors;
         uint32_t               fCurrentDescriptorCount;
-        raw_ptr<GrVkDescriptorPool> fPool;
+        GrVkDescriptorPool*    fPool;
 
     private:
         static constexpr size_t kMaxDescriptors = 1024;

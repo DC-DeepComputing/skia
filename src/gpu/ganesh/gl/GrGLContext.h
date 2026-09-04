@@ -7,10 +7,7 @@
 
 
 #ifndef GrGLContext_DEFINED
-
 #define GrGLContext_DEFINED
-
-#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRefCnt.h"
 #include "include/gpu/ganesh/gl/GrGLInterface.h"
@@ -96,7 +93,7 @@ protected:
         sk_sp<const GrGLInterface>          fInterface;
         GrGLDriverInfo                      fDriverInfo;
         SkSL::GLSLGeneration                fGLSLGeneration;
-        raw_ptr<const GrContextOptions> fContextOptions;
+        const  GrContextOptions*            fContextOptions;
     };
 
     GrGLContextInfo(ConstructorArgs&&);

@@ -5,10 +5,7 @@
  * found in the LICENSE file.
  */
 #ifndef GrVkImageView_DEFINED
-
 #define GrVkImageView_DEFINED
-
-#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkDebug.h"
@@ -57,7 +54,7 @@ private:
     void freeGPUData() const override;
 
     VkImageView  fImageView;
-    raw_ptr<GrVkSamplerYcbcrConversion> fYcbcrConversion;
+    GrVkSamplerYcbcrConversion* fYcbcrConversion;
 
     using INHERITED = GrVkManagedResource;
 };

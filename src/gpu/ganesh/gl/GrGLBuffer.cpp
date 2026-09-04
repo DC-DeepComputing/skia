@@ -248,7 +248,7 @@ void GrGLBuffer::onUnmap(MapType) {
         }
         case GrGLCaps::kChromium_MapBufferType:
             this->glGpu()->bindBuffer(fIntendedType, this); // TODO: Is this needed?
-            GL_CALL(UnmapBufferSubData(fMapPtr.get()));
+            GL_CALL(UnmapBufferSubData(fMapPtr));
             break;
     }
     fMapPtr = nullptr;

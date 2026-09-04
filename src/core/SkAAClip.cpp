@@ -23,8 +23,6 @@
 #include "src/core/SkMask.h"
 #include "src/core/SkPathPriv.h"
 #include "src/core/SkScan.h"
-#include "src/partition_alloc/raw_ptr.h"
-#include "src/partition_alloc/raw_ref.h"
 
 #include <algorithm>
 #include <atomic>
@@ -34,11 +32,14 @@ namespace {
 
 class AutoAAClipValidate {
 public:
-    AutoAAClipValidate(const SkAAClip& clip) : fClip(clip) { fClip->validate(); }
-    ~AutoAAClipValidate() { fClip->validate(); }
-
+    AutoAAClipValidate(const SkAAClip& clip) : fClip(clip) {
+        fClip.validate();
+    }
+    ~AutoAAClipValidate() {
+        fClip.validate();
+    }
 private:
-    const raw_ref<const SkAAClip, DanglingUntriaged> fClip;
+    const SkAAClip& fClip;
 };
 
 #ifdef SK_DEBUG
@@ -75,7 +76,7 @@ struct YOffset {
     uint32_t fOffset;
 };
 
-class RowIter : SkNoncopyable {
+class RowIter {
 public:
     RowIter(const uint8_t* row, const SkIRect& bounds) {
         fRow = row;
@@ -114,7 +115,7 @@ public:
     }
 
 private:
-    raw_ptr<const uint8_t, AllowPtrArithmetic | DanglingUntriaged> fRow;
+    const uint8_t*  fRow;
     int             fLeft;
     int             fRight;
     int             fBoundsRight;
@@ -122,7 +123,7 @@ private:
     uint8_t         fAlpha;
 };
 
-class Iter : SkNoncopyable {
+class Iter {
 public:
     Iter() = default;
 
@@ -159,9 +160,9 @@ public:
     }
 
 private:
-    raw_ptr<const YOffset, DanglingUntriaged> fCurrYOff = nullptr;
-    raw_ptr<const YOffset, DanglingUntriaged> fStopYOff = nullptr;
-    raw_ptr<const uint8_t, AllowPtrArithmetic | DanglingUntriaged> fData = nullptr;
+    const YOffset* fCurrYOff = nullptr;
+    const YOffset* fStopYOff = nullptr;
+    const uint8_t* fData = nullptr;
 
     int fTop = kMaxInt32;
     int fBottom = kMaxInt32;
@@ -250,10 +251,10 @@ class SkAAClip::Builder {
     struct Row {
         int fY;
         int fWidth;
-        raw_ptr<SkTDArray<uint8_t>, DanglingUntriaged> fData;
+        SkTDArray<uint8_t>* fData;
     };
     SkTDArray<Row>  fRows;
-    raw_ptr<Row, DanglingUntriaged> fCurrRow;
+    Row* fCurrRow;
     int fPrevY;
     int fWidth;
     int fMinY;
@@ -271,7 +272,6 @@ public:
         Row* stop = fRows.end();
         while (row < stop) {
             delete row->fData;
-            row->fData = nullptr;
             row += 1;
         }
     }
@@ -486,7 +486,6 @@ private:
     }
 
     Row* flushRow(bool readyForAnother) {
-        fCurrRow = nullptr;
         Row* next = nullptr;
         int count = fRows.size();
         if (count > 0) {
@@ -505,21 +504,18 @@ private:
                     next = curr;
                 } else {
                     delete curr->fData;
-                    curr->fData = nullptr;
                     fRows.removeShuffle(count - 1);
                 }
             } else {
                 if (readyForAnother) {
                     next = fRows.append();
-                    new (&next->fData)
-                            raw_ptr<SkTDArray<uint8_t>, DanglingUntriaged>(new SkTDArray<uint8_t>);
+                    next->fData = new SkTDArray<uint8_t>;
                 }
             }
         } else {
             if (readyForAnother) {
                 next = fRows.append();
-                new (&next->fData)
-                        raw_ptr<SkTDArray<uint8_t>, DanglingUntriaged>(new SkTDArray<uint8_t>);
+                next->fData = new SkTDArray<uint8_t>;
             }
         }
         return next;
@@ -810,7 +806,7 @@ public:
     }
 
 private:
-    raw_ptr<Builder, DanglingUntriaged> fBuilder;
+    Builder* fBuilder;
     int      fLeft; // cache of builder's bounds' left edge
     int      fRight;
     int      fMinY;

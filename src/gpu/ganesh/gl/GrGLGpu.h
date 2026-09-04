@@ -6,10 +6,7 @@
  */
 
 #ifndef GrGLGpu_DEFINED
-
 #define GrGLGpu_DEFINED
-
-#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSamplingOptions.h"
@@ -750,7 +747,7 @@ private:
         GrGLAttribArrayState fDefaultVertexArrayAttribState;
 
         // This is used when we're using a core profile.
-        raw_ptr<GrGLVertexArray, DanglingUntriaged> fCoreProfileVertexArray;
+        GrGLVertexArray*     fCoreProfileVertexArray;
     } fHWVertexArrayState;
 
     struct {

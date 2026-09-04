@@ -6,9 +6,7 @@
  */
 
 #ifndef SkSpinlock_DEFINED
-
 #define SkSpinlock_DEFINED
-#include "src/partition_alloc/raw_ref.h"
 
 #include "include/private/SkAPI.h"
 #include "include/private/SkThreadAnnotations.h"
@@ -51,12 +49,12 @@ private:
 class SK_SCOPED_CAPABILITY SkAutoSpinlock {
 public:
     explicit SkAutoSpinlock(SkSpinlock& mutex) SK_ACQUIRE(mutex) : fSpinlock(mutex) {
-        fSpinlock->acquire();
+        fSpinlock.acquire();
     }
-    ~SkAutoSpinlock() SK_RELEASE_CAPABILITY() { fSpinlock->release(); }
+    ~SkAutoSpinlock() SK_RELEASE_CAPABILITY() { fSpinlock.release(); }
 
 private:
-    const raw_ref<SkSpinlock> fSpinlock;
+    SkSpinlock& fSpinlock;
 };
 
 #endif//SkSpinlock_DEFINED

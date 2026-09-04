@@ -6,10 +6,7 @@
  */
 
 #ifndef DrawAtlasPathOp_DEFINED
-
 #define DrawAtlasPathOp_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
-#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include "include/core/SkMatrix.h"
 #include "include/core/SkRect.h"
@@ -96,18 +93,18 @@ private:
         std::array<float, 6> fLocalToDeviceIfUsingLocalCoords;
         SkPMColor4f fColor;
         AtlasInstancedHelper::Instance fAtlasInstance;
-        RAW_PTR_EXCLUSION Instance* fNext = nullptr;
+        Instance* fNext = nullptr;
     };
 
-    RAW_PTR_EXCLUSION Instance* fHeadInstance;
-    RAW_PTR_EXCLUSION Instance** fTailInstance;
+    Instance* fHeadInstance;
+    Instance** fTailInstance;
 
     AtlasInstancedHelper fAtlasHelper;
     bool fUsesLocalCoords = false;
 
     int fInstanceCount = 1;
 
-    raw_ptr<GrProgramInfo, DanglingUntriaged> fProgram = nullptr;
+    GrProgramInfo* fProgram = nullptr;
 
     sk_sp<const GrBuffer> fInstanceBuffer;
     int fBaseInstance;

@@ -24,7 +24,6 @@
 #include "src/gpu/ganesh/GrSurfaceProxyPriv.h"
 #include "src/gpu/ganesh/GrSurfaceProxyView.h"
 #include "src/gpu/ganesh/GrTexture.h"
-#include "src/partition_alloc/raw_ptr.h"
 
 #include <algorithm>
 #include <functional>
@@ -59,8 +58,8 @@ public:
     }
 
 private:
-    const raw_ptr<Node> fPrevious;
-    const raw_ptr<Rectanizer> fRectanizer;
+    Node* const fPrevious;
+    Rectanizer* const fRectanizer;
     const int fX, fY;
 };
 
@@ -109,7 +108,7 @@ void GrDynamicAtlas::reset(SkISize initialSize, const GrCaps& caps) {
                 if (!fBackingTexture) {
                     fBackingTexture =
                             resourceProvider->createTexture(fTextureProxy->backingStoreDimensions(),
-                                                            *desc.fFormat,
+                                                            desc.fFormat,
                                                             desc.fTextureType,
                                                             desc.fRenderable,
                                                             desc.fSampleCnt,

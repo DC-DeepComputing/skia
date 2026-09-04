@@ -6,10 +6,7 @@
  */
 
 #ifndef GrGLProgramBuilder_DEFINED
-
 #define GrGLProgramBuilder_DEFINED
-
-#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkData.h"
 #include "include/core/SkRefCnt.h"
@@ -101,7 +98,7 @@ private:
     const GrGLSLUniformHandler* uniformHandler() const override { return &fUniformHandler; }
     GrGLSLVaryingHandler* varyingHandler() override { return &fVaryingHandler; }
 
-    raw_ptr<GrGLGpu> fGpu;
+    GrGLGpu*              fGpu;
     GrGLVaryingHandler    fVaryingHandler;
     GrGLUniformHandler    fUniformHandler;
 

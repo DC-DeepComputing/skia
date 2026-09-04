@@ -6,10 +6,7 @@
  */
 
 #ifndef GrOnFlushResourceProvider_DEFINED
-
 #define GrOnFlushResourceProvider_DEFINED
-
-#include "src/partition_alloc/raw_ptr.h"
 
 #include "src/gpu/ganesh/GrAtlasTypes.h"
 
@@ -67,7 +64,7 @@ private:
     GrOnFlushResourceProvider(const GrOnFlushResourceProvider&) = delete;
     GrOnFlushResourceProvider& operator=(const GrOnFlushResourceProvider&) = delete;
 
-    raw_ptr<GrDrawingManager> fDrawingMgr;
+    GrDrawingManager* fDrawingMgr;
 };
 
 #endif

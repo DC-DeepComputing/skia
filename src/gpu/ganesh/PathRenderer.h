@@ -6,16 +6,11 @@
  */
 
 #ifndef PathRenderer_DEFINED
-#include "include/private/SkStackAllocated.h"
-#include "src/partition_alloc/raw_ptr.h"
-#include "src/partition_alloc/raw_ptr_exclusion.h"
-
 #define PathRenderer_DEFINED
 
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkAssert.h"
 #include "include/private/SkDebug.h"
-#include "include/private/SkStackAllocated.h"
 #include "src/gpu/ganesh/GrPaint.h"
 
 #include <string.h>
@@ -93,8 +88,6 @@ public:
     };
 
     struct CanDrawPathArgs {
-        SK_STACK_ALLOCATED();
-
         SkDEBUGCODE(CanDrawPathArgs() { memset(this, 0, sizeof(*this)); }) // For validation.
 
         const GrCaps*               fCaps;
@@ -132,8 +125,6 @@ public:
     }
 
     struct DrawPathArgs {
-        SK_STACK_ALLOCATED();
-
         GrRecordingContext*          fContext;
         GrPaint&&                    fPaint;
         const GrUserStencilSettings* fUserStencilSettings;
@@ -165,8 +156,6 @@ public:
      * Args to stencilPath(). fAAType cannot be kCoverage.
      */
     struct StencilPathArgs {
-        SK_STACK_ALLOCATED();
-
         SkDEBUGCODE(StencilPathArgs() { memset(this, 0, sizeof(*this)); }) // For validation.
 
         GrRecordingContext*  fContext;

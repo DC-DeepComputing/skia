@@ -6,10 +6,7 @@
  */
 
 #ifndef GrGLSLShaderBuilder_DEFINED
-
 #define GrGLSLShaderBuilder_DEFINED
-
-#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
@@ -181,7 +178,7 @@ public:
             fBuilder->codeAppend("}");
         }
     private:
-        raw_ptr<GrGLSLShaderBuilder> fBuilder;
+        GrGLSLShaderBuilder* fBuilder;
     };
 
 protected:
@@ -267,7 +264,7 @@ protected:
         kPrealloc = kCode + 6,  // 6 == Reasonable upper bound on number of processor stages
     };
 
-    raw_ptr<GrGLSLProgramBuilder> fProgramBuilder;
+    GrGLSLProgramBuilder* fProgramBuilder;
     std::string fCompilerString;
     skia_private::STArray<kPrealloc, SkString> fShaderStrings;
     SkString fCode;

@@ -6,10 +6,7 @@
  */
 
 #ifndef SurfaceContext_DEFINED
-
 #define SurfaceContext_DEFINED
-
-#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkImage.h"
 #include "include/core/SkRect.h"
@@ -197,9 +194,9 @@ protected:
 
     SkDEBUGCODE(void validate() const;)
 
-            SkDEBUGCODE(skgpu::SingleOwner* singleOwner() const;)
+    SkDEBUGCODE(skgpu::SingleOwner* singleOwner() const;)
 
-                    raw_ptr<GrRecordingContext> fContext;
+    GrRecordingContext* fContext;
 
     GrSurfaceProxyView fReadView;
 

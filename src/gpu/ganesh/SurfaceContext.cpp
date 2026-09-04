@@ -56,7 +56,6 @@
 #include "src/gpu/ganesh/effects/GrBicubicEffect.h"
 #include "src/gpu/ganesh/effects/GrTextureEffect.h"
 #include "src/gpu/ganesh/geometry/GrRect.h"
-#include "src/partition_alloc/raw_ptr.h"
 
 #include <algorithm>
 #include <cstdint>
@@ -705,7 +704,7 @@ struct SurfaceContext::AsyncReadPixelContext {
     ReadPixelsCallback* fClientCallback;
     ReadPixelsContext fClientContext;
     SkISize fSize;
-    raw_ptr<GrClientMappedBufferManager> fMappedBufferManager;
+    GrClientMappedBufferManager* fMappedBufferManager;
 
     PixelTransferResult fPrimaryTransfer; // RGBA or Y
     PixelTransferResult fUTransfer = {};
@@ -795,9 +794,10 @@ struct SurfaceContext::AsyncReadPixelContext {
                 // We reach this for RGBA transfers (just the first plane), or for YUV w/o an alpha.
                 break;
             }
-            if (result &&
-                !result->addTransferResult(
-                        *transfer, size, transfer->fRowBytes, fMappedBufferManager.get())) {
+            if (result && !result->addTransferResult(*transfer,
+                                                     size,
+                                                     transfer->fRowBytes,
+                                                     fMappedBufferManager)) {
                 result.reset();
             }
             if (!result && transfer->fTransferBuffer->isMapped()) {

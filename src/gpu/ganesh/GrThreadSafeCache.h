@@ -6,10 +6,7 @@
  */
 
 #ifndef GrThreadSafeCache_DEFINED
-
 #define GrThreadSafeCache_DEFINED
-
-#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkAssert.h"
@@ -148,7 +145,7 @@ public:
         }
 
         void reset() {
-            sk_free(const_cast<void*>(fVertices.get()));
+            sk_free(const_cast<void*>(fVertices));
             fVertices = nullptr;
             fNumVertices = 0;
             fVertexSize = 0;
@@ -171,7 +168,7 @@ public:
                 , fGpuBuffer(std::move(gpuBuffer)) {
         }
 
-        raw_ptr<const void, DanglingUntriaged> fVertices;
+        const void*        fVertices;
         int                fNumVertices;
         size_t             fVertexSize;
 
@@ -341,7 +338,7 @@ private:
 
     char                         fStorage[kInitialArenaSize];
     SkArenaAlloc                 fEntryAllocator{fStorage, kInitialArenaSize, kInitialArenaSize};
-    raw_ptr<Entry> fFreeEntryList SK_GUARDED_BY(fSpinLock);
+    Entry*                       fFreeEntryList  SK_GUARDED_BY(fSpinLock);
 };
 
 #endif // GrThreadSafeCache_DEFINED

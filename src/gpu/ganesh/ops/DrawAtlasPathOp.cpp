@@ -41,7 +41,6 @@
 #include "src/gpu/ganesh/glsl/GrGLSLUniformHandler.h"
 #include "src/gpu/ganesh/glsl/GrGLSLVarying.h"
 #include "src/gpu/ganesh/glsl/GrGLSLVertexGeoBuilder.h"
-#include "src/partition_alloc/raw_ptr.h"
 
 #include <memory>
 
@@ -94,7 +93,7 @@ private:
     std::unique_ptr<ProgramImpl> makeProgramImpl(const GrShaderCaps&) const override;
 
     const bool fUsesLocalCoords;
-    const raw_ptr<const skgpu::ganesh::AtlasInstancedHelper> fAtlasHelper;
+    const skgpu::ganesh::AtlasInstancedHelper* const fAtlasHelper;
     TextureSampler fAtlasAccess;
     constexpr static int kMaxInstanceAttribs = 6;
     STArray<kMaxInstanceAttribs, GrGeometryProcessor::Attribute> fAttribs;
@@ -105,13 +104,13 @@ public:
     void setData(const GrGLSLProgramDataManager& pdman,
                  const GrShaderCaps&,
                  const GrGeometryProcessor& geomProc) override {
-        auto* atlasHelper = geomProc.cast<DrawAtlasPathShader>().fAtlasHelper.get();
+        auto* atlasHelper = geomProc.cast<DrawAtlasPathShader>().fAtlasHelper;
         atlasHelper->setUniformData(pdman, fAtlasAdjustUniform);
     }
 
 private:
     void onEmitCode(EmitArgs& args, GrGPArgs* gpArgs) override {
-        const auto& shader = args.fGeomProc->cast<DrawAtlasPathShader>();
+        const auto& shader = args.fGeomProc.cast<DrawAtlasPathShader>();
         args.fVaryingHandler->emitAttributes(shader);
 
         if (args.fShaderCaps->fVertexIDSupport) {

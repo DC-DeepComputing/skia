@@ -6,10 +6,7 @@
  */
 
 #ifndef GrResourceProviderPriv_DEFINED
-
 #define GrResourceProviderPriv_DEFINED
-
-#include "src/partition_alloc/raw_ptr.h"
 
 #include "src/gpu/ganesh/GrResourceProvider.h"
 
@@ -28,7 +25,7 @@ private:
     const GrResourceProviderPriv* operator&() const;
     GrResourceProviderPriv* operator&();
 
-    raw_ptr<GrResourceProvider> fResourceProvider;
+    GrResourceProvider* fResourceProvider;
     friend class GrResourceProvider; // to construct/copy this type
 };
 

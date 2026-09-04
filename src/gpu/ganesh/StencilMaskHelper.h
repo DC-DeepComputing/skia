@@ -6,10 +6,7 @@
  */
 
 #ifndef StencilMaskHelper_DEFINED
-
 #define StencilMaskHelper_DEFINED
-
-#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRegion.h"
 #include "include/private/SkNoncopyable.h"
@@ -70,8 +67,8 @@ public:
     void finish();
 
 private:
-    raw_ptr<GrRecordingContext> fContext;
-    raw_ptr<SurfaceDrawContext> fSDC;
+    GrRecordingContext* fContext;
+    SurfaceDrawContext* fSDC;
     StencilClip         fClip;
     int                 fNumFPs;
 

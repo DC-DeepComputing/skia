@@ -6,10 +6,7 @@
  */
 
 #ifndef SkDescriptor_DEFINED
-
 #define SkDescriptor_DEFINED
-
-#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkString.h"
 #include "include/private/SkAssert.h"
@@ -113,7 +110,7 @@ private:
               + sizeof(SkDescriptor::Entry) + sizeof(void*)              // for typeface
               + 32;   // slop for occasional small extras
 
-    raw_ptr<SkDescriptor, DanglingUntriaged> fDesc{nullptr};
+    SkDescriptor*   fDesc{nullptr};
     alignas(uint32_t) char fStorage[kStorageSize];
 };
 

@@ -6,10 +6,7 @@
  */
 
 #ifndef GrMemoryPool_DEFINED
-
 #define GrMemoryPool_DEFINED
-
-#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/private/SkDebug.h"
 #include "src/core/SkBlockAllocator.h"
@@ -136,7 +133,7 @@ private:
         skia_private::THashSet<int> fAllocatedIDs;
         int                         fAllocationCount;
     };
-    raw_ptr<Debug> fDebug{nullptr};
+    Debug* fDebug{nullptr};
 #endif
 
     SkBlockAllocator fAllocator; // Must be the last field, in order to use extra allocated space

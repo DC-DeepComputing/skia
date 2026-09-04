@@ -6,10 +6,7 @@
  */
 
 #ifndef GrGpuResourceCacheAccess_DEFINED
-
 #define GrGpuResourceCacheAccess_DEFINED
-
-#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/private/SkAssert.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
@@ -103,7 +100,7 @@ private:
     const CacheAccess* operator&() const = delete;
     CacheAccess* operator&() = delete;
 
-    raw_ptr<GrGpuResource, DanglingUntriaged> fResource;
+    GrGpuResource* fResource;
 
     friend class GrGpuResource; // to construct/copy this type.
     friend class GrResourceCache; // to use this type

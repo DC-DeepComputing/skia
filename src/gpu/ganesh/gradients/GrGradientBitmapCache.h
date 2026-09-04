@@ -5,10 +5,7 @@
  * found in the LICENSE file.
  */
 #ifndef GrGradientBitmapCache_DEFINED
-
 #define GrGradientBitmapCache_DEFINED
-
-#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkScalar.h"
 #include "include/effects/SkGradient.h"
@@ -50,8 +47,8 @@ private:
     const int fResolution;
 
     struct Entry;
-    mutable raw_ptr<Entry> fHead;
-    mutable raw_ptr<Entry> fTail;
+    mutable Entry*  fHead;
+    mutable Entry*  fTail;
 
     inline Entry* release(Entry*) const;
     inline void attachToHead(Entry*) const;
@@ -79,7 +76,7 @@ private:
         AutoValidate(const GrGradientBitmapCache* bc) : fBC(bc) { bc->validate(); }
         ~AutoValidate() { fBC->validate(); }
     private:
-        raw_ptr<const GrGradientBitmapCache> fBC;
+        const GrGradientBitmapCache* fBC;
     };
 };
 

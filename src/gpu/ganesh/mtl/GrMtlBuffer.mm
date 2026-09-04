@@ -5,11 +5,10 @@
  * found in the LICENSE file.
  */
 
-#include "src/gpu/ganesh/mtl/GrMtlBuffer.h"
-
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/gpu/ganesh/GrGpuResourcePriv.h"
 #include "src/gpu/ganesh/GrStagingBufferManager.h"
+#include "src/gpu/ganesh/mtl/GrMtlBuffer.h"
 #include "src/gpu/ganesh/mtl/GrMtlCommandBuffer.h"
 #include "src/gpu/ganesh/mtl/GrMtlGpu.h"
 
@@ -90,7 +89,7 @@ bool GrMtlBuffer::onUpdateData(const void *src, size_t offset, size_t size, bool
         if (!fMapPtr) {
             return false;
         }
-        memcpy(SkTAddOffset<void>(fMapPtr.get(), offset), src, size);
+        memcpy(SkTAddOffset<void>(fMapPtr, offset), src, size);
         this->internalUnmap(offset, size);
         return true;
     }
@@ -111,7 +110,7 @@ bool GrMtlBuffer::onUpdateData(const void *src, size_t offset, size_t size, bool
     if (!slice.fBuffer) {
         return false;
     }
-    memcpy(SkTAddOffset<void>(slice.fOffsetMapPtr.get(), r), src, size);
+    memcpy(SkTAddOffset<void>(slice.fOffsetMapPtr, r), src, size);
 
     GrMtlCommandBuffer* cmdBuffer = this->mtlGpu()->commandBuffer();
     id<MTLBlitCommandEncoder> GR_NORETAIN blitCmdEncoder = cmdBuffer->getBlitCommandEncoder();

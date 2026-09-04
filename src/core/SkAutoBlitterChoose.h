@@ -6,9 +6,7 @@
  */
 
 #ifndef SkAutoBlitterChoose_DEFINED
-
 #define SkAutoBlitterChoose_DEFINED
-#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include "include/private/SkMacros.h"
 #include "src/core/SkArenaAlloc.h"
@@ -39,7 +37,6 @@ public:
                         SkDrawCoverage drawCoverage = SkDrawCoverage::kNo) {
         this->choose(draw, ctm, paint, devBounds, drawCoverage);
     }
-    ~SkAutoBlitterChoose() { fBlitter = nullptr; }
 
     SkBlitter*  operator->() { return fBlitter; }
     SkBlitter*  get() const { return fBlitter; }
@@ -63,8 +60,7 @@ public:
 
 private:
     // Owned by fAlloc, which will handle the delete.
-    // RAW_PTR_EXCLUSION: Arena-allocated pointer owned by fAlloc
-    RAW_PTR_EXCLUSION SkBlitter* fBlitter = nullptr;
+    SkBlitter* fBlitter = nullptr;
 
     SkBlitterSizedArena fAlloc;
 };

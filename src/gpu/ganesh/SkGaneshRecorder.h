@@ -6,7 +6,6 @@
  */
 
 #ifndef SkGaneshRecorder_DEFINED
-
 #define SkGaneshRecorder_DEFINED
 
 #include "include/core/SkRecorder.h"
@@ -14,7 +13,6 @@
 #include "include/cpu/Recorder.h"
 #include "include/gpu/ganesh/GrRecordingContext.h"
 #include "src/capture/SkCaptureManager.h"
-#include "src/partition_alloc/raw_ptr.h"
 
 class GrDirectContext;
 
@@ -31,7 +29,7 @@ public:
     skcpu::Recorder* cpuRecorder() override { return skcpu::Recorder::TODO(); }
 
 private:
-    raw_ptr<GrRecordingContext> fGaneshCtx;
+    GrRecordingContext* fGaneshCtx;
 
     SkCanvas* makeCaptureCanvas(SkCanvas*) override { return nullptr; }
     void createCaptureBreakpoint(SkSurface*) override { }

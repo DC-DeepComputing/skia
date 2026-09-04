@@ -5,10 +5,7 @@
  * found in the LICENSE file.
  */
 #ifndef GrGLProgram_DEFINED
-
 #define GrGLProgram_DEFINED
-
-#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
@@ -167,7 +164,7 @@ private:
     int fVertexStride;
     int fInstanceStride;
 
-    raw_ptr<GrGLGpu> fGpu;
+    GrGLGpu* fGpu;
     GrGLProgramDataManager fProgramDataManager;
 
     int fNumTextureSamplers;

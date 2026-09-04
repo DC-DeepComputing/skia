@@ -5,13 +5,8 @@
  * found in the LICENSE file.
  */
 
-#include "src/partition_alloc/raw_ref.h"
-
 #ifndef skgpu_ganesh_AtlasTextOp_DEFINED
-
 #define skgpu_ganesh_AtlasTextOp_DEFINED
-#include "src/partition_alloc/raw_ptr.h"
-#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include "include/core/SkColor.h"
 #include "include/core/SkMatrix.h"
@@ -108,7 +103,7 @@ public:
 
         void fillVertexData(void* dst, int offset, int count) const;
 
-        const raw_ref<const sktext::gpu::AtlasSubRun, DanglingUntriaged> fSubRun;
+        const sktext::gpu::AtlasSubRun& fSubRun;
 
         // Keep the TextBlob or Slug alive until the op is deleted.
         sk_sp<SkRefCnt> fSupportDataKeepAlive;
@@ -124,8 +119,7 @@ public:
         // a constant color that we then evaluate on the CPU.
         // TODO: This can be made const once processor analysis is separated from op creation.
         SkPMColor4f fColor;
-        // RAW_PTR_EXCLUSION: performance regression
-        RAW_PTR_EXCLUSION Geometry* fNext{nullptr};
+        Geometry* fNext{nullptr};
     };
 
     const char* name() const override { return "AtlasTextOp"; }
@@ -158,8 +152,8 @@ private:
     struct FlushInfo {
         sk_sp<const GrBuffer> fVertexBuffer;
         sk_sp<const GrBuffer> fIndexBuffer;
-        raw_ptr<GrGeometryProcessor> fGeometryProcessor;
-        raw_ptr<const GrSurfaceProxy*, AllowPtrArithmetic> fPrimProcProxies;
+        GrGeometryProcessor*  fGeometryProcessor;
+        const GrSurfaceProxy** fPrimProcProxies;
         int fGlyphsToFlush = 0;
         int fVertexOffset = 0;
         int fNumDraws = 0;
@@ -300,10 +294,8 @@ private:
     // for single-channel distance fields.
     const SkColor fLuminanceColor{0};
 
-    // RAW_PTR_EXCLUSION: performance regression
-    RAW_PTR_EXCLUSION Geometry* fHead{nullptr};
-    // RAW_PTR_EXCLUSION: performance regression
-    RAW_PTR_EXCLUSION Geometry** fTail{&fHead};
+    Geometry* fHead{nullptr};
+    Geometry** fTail{&fHead};
 
     using INHERITED = GrMeshDrawOp;
 };

@@ -6,10 +6,7 @@
  */
 
 #ifndef GrResourceAllocator_DEFINED
-
 #define GrResourceAllocator_DEFINED
-
-#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkAssert.h"
@@ -197,9 +194,10 @@ private:
         // proxies.
         bool instantiateSurface(GrSurfaceProxy*, GrResourceProvider*);
 
-    SkDEBUGCODE(uint32_t uniqueID() const { return fUniqueID; })
+        SkDEBUGCODE(uint32_t uniqueID() const { return fUniqueID; })
 
-            private : raw_ptr<GrSurfaceProxy, DanglingUntriaged> fOriginatingProxy;
+    private:
+        GrSurfaceProxy*   fOriginatingProxy;
         skgpu::ScratchKey fScratchKey; // free pool wants a reference to this.
         sk_sp<GrSurface>  fExistingSurface; // queried from resource cache. may be null.
         bool              fAccountedForInBudget = false;
@@ -255,14 +253,15 @@ private:
         }
         AllowRecycling allowRecycling() const { return fAllowRecycling; }
 
-    SkDEBUGCODE(uint32_t uniqueID() const { return fUniqueID; })
+        SkDEBUGCODE(uint32_t uniqueID() const { return fUniqueID; })
 
-            private : raw_ptr<GrSurfaceProxy, DanglingUntriaged> fProxy;
+    private:
+        GrSurfaceProxy*  fProxy;
         unsigned int     fStart;
         unsigned int     fEnd;
-        raw_ptr<Interval, DanglingUntriaged> fNext = nullptr;
+        Interval*        fNext = nullptr;
         unsigned int     fUses = 0;
-        raw_ptr<Register, DanglingUntriaged> fRegister = nullptr;
+        Register*        fRegister = nullptr;
         AllowRecycling   fAllowRecycling = AllowRecycling::kYes;
 
 #ifdef SK_DEBUG
@@ -290,14 +289,14 @@ private:
     private:
         SkDEBUGCODE(void validate() const;)
 
-                raw_ptr<Interval> fHead = nullptr;
-        raw_ptr<Interval> fTail = nullptr;
+        Interval* fHead = nullptr;
+        Interval* fTail = nullptr;
     };
 
     // Compositing use cases can create > 80 intervals.
     static const int kInitialArenaSize = 128 * sizeof(Interval);
 
-    raw_ptr<GrDirectContext> fDContext;
+    GrDirectContext* fDContext;
     SkSTArenaAllocWithReset<kInitialArenaSize> fInternalAllocator;  // Intervals & registers.
     FreePoolMultiMap fFreePool;  // Recently created/used GrSurfaces.
     IntvlHash fIntvlHash;        // All intervals, hashed by proxyID.

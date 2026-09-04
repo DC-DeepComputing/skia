@@ -56,7 +56,6 @@
 #include "src/gpu/ganesh/ops/GrMeshDrawOp.h"
 #include "src/gpu/ganesh/ops/GrOp.h"
 #include "src/gpu/ganesh/ops/GrSimpleMeshDrawOpHelperWithStencil.h"
-#include "src/partition_alloc/raw_ptr.h"
 
 #if defined(GPU_TEST_UTILS)
 #include "src/core/SkRandom.h"
@@ -656,7 +655,7 @@ std::unique_ptr<GrGeometryProcessor::ProgramImpl> QuadEdgeEffect::makeProgramImp
 
     private:
         void onEmitCode(EmitArgs& args, GrGPArgs* gpArgs) override {
-            const QuadEdgeEffect& qe = args.fGeomProc->cast<QuadEdgeEffect>();
+            const QuadEdgeEffect& qe = args.fGeomProc.cast<QuadEdgeEffect>();
             GrGLSLVertexBuilder* vertBuilder = args.fVertBuilder;
             GrGLSLFPFragmentBuilder* fragBuilder = args.fFragBuilder;
             GrGLSLVaryingHandler* varyingHandler = args.fVaryingHandler;
@@ -938,12 +937,12 @@ private:
     bool fWideColor;
 
     struct MeshDraw {
-        raw_ptr<GrSimpleMesh, AllowPtrArithmetic | DanglingUntriaged> fMeshes;
+        GrSimpleMesh* fMeshes;
         int fMeshCount;
     };
 
-    skia_private::TArray<MeshDraw> fDraws;
-    raw_ptr<GrProgramInfo, DanglingUntriaged> fProgramInfo = nullptr;
+    SkTDArray<MeshDraw> fDraws;
+    GrProgramInfo*      fProgramInfo = nullptr;
 
     using INHERITED = GrMeshDrawOp;
 };

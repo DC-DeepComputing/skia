@@ -24,7 +24,6 @@
 #include "src/gpu/ganesh/image/SkImage_Ganesh.h"
 #include "src/gpu/ganesh/image/SkImage_GaneshYUVA.h"
 #include "src/image/SkImage_Base.h"
-#include "src/partition_alloc/raw_ptr.h"
 
 #include <cstddef>
 #include <tuple>
@@ -64,11 +63,11 @@ public:
     sk_sp<SkImage> asImage() const override {
         fView.proxy()->priv().exactify();
         return sk_make_sp<SkImage_Ganesh>(
-                sk_ref_sp(fContext.get()), this->uniqueID(), fView, this->colorInfo());
+                sk_ref_sp(fContext), this->uniqueID(), fView, this->colorInfo());
     }
 
 private:
-    raw_ptr<GrRecordingContext> fContext;
+    GrRecordingContext* fContext;
     GrSurfaceProxyView fView;
 };
 

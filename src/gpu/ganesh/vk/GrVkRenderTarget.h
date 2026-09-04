@@ -7,10 +7,7 @@
 
 
 #ifndef GrVkRenderTarget_DEFINED
-
 #define GrVkRenderTarget_DEFINED
-
-#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRefCnt.h"
 #include "include/gpu/ganesh/GrBackendSurface.h"
@@ -202,7 +199,7 @@ private:
 
     sk_sp<const GrVkFramebuffer> fCachedFramebuffers[kNumCachedFramebuffers];
 
-    raw_ptr<const GrVkDescriptorSet> fCachedInputDescriptorSet = nullptr;
+    const GrVkDescriptorSet* fCachedInputDescriptorSet = nullptr;
 
     sk_sp<GrVkFramebuffer> fExternalFramebuffer;
 };

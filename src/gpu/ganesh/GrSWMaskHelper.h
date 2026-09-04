@@ -6,10 +6,7 @@
  */
 
 #ifndef GrSWMaskHelper_DEFINED
-
 #define GrSWMaskHelper_DEFINED
-
-#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkColor.h"
 #include "include/core/SkPoint.h"
@@ -82,7 +79,7 @@ private:
     // fPixelsStorage must be declared before fPixels so that fPixelsStorage outlives
     // fPixels on destruction (since fPixels can be a raw pointer pointing to fPixelsStorage).
     SkAutoPixmapStorage  fPixelsStorage;
-    raw_ptr<SkAutoPixmapStorage, DanglingUntriaged> fPixels;
+    SkAutoPixmapStorage* fPixels;
     skcpu::Draw          fDraw;
     SkRasterClip         fRasterClip;
 

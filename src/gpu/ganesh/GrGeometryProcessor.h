@@ -5,13 +5,8 @@
  * found in the LICENSE file.
  */
 
-#include "src/partition_alloc/raw_ref.h"
-
 #ifndef GrGeometryProcessor_DEFINED
-
 #define GrGeometryProcessor_DEFINED
-
-#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkMatrix.h"
 #include "include/gpu/ganesh/GrBackendSurface.h"
@@ -166,7 +161,7 @@ public:
         private:
             void skipUninitialized();
 
-            raw_ptr<const Attribute, AllowPtrArithmetic> fCurr = nullptr;
+            const Attribute* fCurr           = nullptr;
             int              fRemaining      = 0;
             size_t           fImplicitOffset = 0;
         };
@@ -187,7 +182,7 @@ public:
         void addToKey(skgpu::KeyBuilder* b) const;
 
     private:
-        raw_ptr<const Attribute, AllowPtrArithmetic | DanglingUntriaged> fAttributes = nullptr;
+        const Attribute* fAttributes = nullptr;
         int              fRawCount = 0;
         int              fCount = 0;
         size_t           fStride = 0;
@@ -308,15 +303,15 @@ public:
                 , fOutputColor(outputColor)
                 , fOutputCoverage(outputCoverage)
                 , fTexSamplers(texSamplers) {}
-        raw_ptr<GrGLSLVertexBuilder> fVertBuilder;
-        raw_ptr<GrGLSLFPFragmentBuilder> fFragBuilder;
-        raw_ptr<GrGLSLVaryingHandler> fVaryingHandler;
-        raw_ptr<GrGLSLUniformHandler> fUniformHandler;
-        raw_ptr<const GrShaderCaps> fShaderCaps;
-        const raw_ref<const GrGeometryProcessor> fGeomProc;
+        GrGLSLVertexBuilder* fVertBuilder;
+        GrGLSLFPFragmentBuilder* fFragBuilder;
+        GrGLSLVaryingHandler* fVaryingHandler;
+        GrGLSLUniformHandler* fUniformHandler;
+        const GrShaderCaps* fShaderCaps;
+        const GrGeometryProcessor& fGeomProc;
         const char* fOutputColor;
         const char* fOutputCoverage;
-        raw_ptr<const SamplerHandle, AllowPtrArithmetic> fTexSamplers;
+        const SamplerHandle* fTexSamplers;
     };
 
     /**

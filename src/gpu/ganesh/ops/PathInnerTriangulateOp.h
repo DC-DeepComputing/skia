@@ -6,10 +6,7 @@
  */
 
 #ifndef PathInnerTriangulateOp_DEFINED
-
 #define PathInnerTriangulateOp_DEFINED
-
-#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkTypes.h"
 
@@ -86,17 +83,12 @@ private:
 
     // These calls set up the stencil & fill programs we will use prior to preparing and executing.
     void pushFanStencilProgram(const GrTessellationShader::ProgramArgs&,
-                               const GrPipeline* pipelineForStencils,
-                               const GrUserStencilSettings*);
+                               const GrPipeline* pipelineForStencils, const GrUserStencilSettings*);
     void pushFanFillProgram(const GrTessellationShader::ProgramArgs&, const GrUserStencilSettings*);
     void prePreparePrograms(const GrTessellationShader::ProgramArgs&, GrAppliedClip&&);
 
-    void onPrePrepare(GrRecordingContext*,
-                      const GrSurfaceProxyView&,
-                      GrAppliedClip*,
-                      const GrDstProxyView&,
-                      GrXferBarrierFlags,
-                      GrLoadOp colorLoadOp) override;
+    void onPrePrepare(GrRecordingContext*, const GrSurfaceProxyView&, GrAppliedClip*,
+                      const GrDstProxyView&, GrXferBarrierFlags, GrLoadOp colorLoadOp) override;
     void onPrepare(GrOpFlushState*) override;
     void onExecute(GrOpFlushState*, const SkRect& chainBounds) override;
 
@@ -108,25 +100,25 @@ private:
     GrProcessorSet fProcessors;
 
     // Triangulates the inner fan.
-    raw_ptr<GrInnerFanTriangulator, DanglingUntriaged> fFanTriangulator = nullptr;
-    raw_ptr<GrTriangulator::Poly, DanglingUntriaged> fFanPolys = nullptr;
+    GrInnerFanTriangulator* fFanTriangulator = nullptr;
+    GrTriangulator::Poly* fFanPolys = nullptr;
     GrInnerFanTriangulator::BreadcrumbTriangleList fFanBreadcrumbs;
 
     // This pipeline is shared by all programs that do filling.
-    raw_ptr<const GrPipeline, DanglingUntriaged> fPipelineForFills = nullptr;
+    const GrPipeline* fPipelineForFills = nullptr;
 
     // Tessellates the outer curves.
-    raw_ptr<PathCurveTessellator, DanglingUntriaged> fTessellator = nullptr;
+    PathCurveTessellator* fTessellator = nullptr;
 
     // Pass 1: Tessellate the outer curves into the stencil buffer.
-    raw_ptr<const GrProgramInfo, DanglingUntriaged> fStencilCurvesProgram = nullptr;
+    const GrProgramInfo* fStencilCurvesProgram = nullptr;
 
     // Pass 2: Fill the path's inner fan with a stencil test against the curves. (In extenuating
     // circumstances this might require two separate draws.)
     skia_private::STArray<2, const GrProgramInfo*> fFanPrograms;
 
     // Pass 3: Draw convex hulls around each curve.
-    raw_ptr<const GrProgramInfo, DanglingUntriaged> fCoverHullsProgram = nullptr;
+    const GrProgramInfo* fCoverHullsProgram = nullptr;
 
     // This buffer gets created by fFanTriangulator during onPrepare.
     sk_sp<const GrBuffer> fFanBuffer;
@@ -141,6 +133,6 @@ private:
 
 }  // namespace skgpu::ganesh
 
-#endif  // SK_ENABLE_OPTIMIZE_SIZE
+#endif // SK_ENABLE_OPTIMIZE_SIZE
 
-#endif  // PathInnerTriangulateOp_DEFINED
+#endif // PathInnerTriangulateOp_DEFINED

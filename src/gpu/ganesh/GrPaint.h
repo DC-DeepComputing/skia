@@ -6,10 +6,7 @@
  * found in the LICENSE file.
  */
 #ifndef GrPaint_DEFINED
-
 #define GrPaint_DEFINED
-
-#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRegion.h"
 #include "include/private/SkAssert.h"
@@ -130,7 +127,7 @@ private:
 
     friend class GrProcessorSet;
 
-    raw_ptr<const GrXPFactory> fXPFactory = nullptr;
+    const GrXPFactory* fXPFactory = nullptr;
     std::unique_ptr<GrFragmentProcessor> fColorFragmentProcessor;
     std::unique_ptr<GrFragmentProcessor> fCoverageFragmentProcessor;
     bool fTrivial = true;

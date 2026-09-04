@@ -8,8 +8,6 @@
 #ifndef GrVkDescriptorSet_DEFINED
 #define GrVkDescriptorSet_DEFINED
 
-#include "src/partition_alloc/raw_ptr.h"
-
 #include "include/private/SkDebug.h"
 #include "include/private/gpu/vk/SkiaVulkan.h"
 #include "src/gpu/ganesh/GrManagedResource.h"
@@ -45,7 +43,7 @@ private:
     void onRecycle() const override;
 
     VkDescriptorSet                          fDescSet;
-    mutable raw_ptr<GrVkDescriptorPool> fPool;
+    SkDEBUGCODE(mutable) GrVkDescriptorPool* fPool;
     GrVkDescriptorSetManager::Handle         fHandle;
 
     using INHERITED = GrVkRecycledResource;

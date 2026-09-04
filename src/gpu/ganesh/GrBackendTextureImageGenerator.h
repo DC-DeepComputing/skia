@@ -5,10 +5,7 @@
  * found in the LICENSE file.
  */
 #ifndef GrBackendTextureImageGenerator_DEFINED
-
 #define GrBackendTextureImageGenerator_DEFINED
-
-#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRefCnt.h"
 #include "include/gpu/ganesh/GrBackendSurface.h"
@@ -94,13 +91,13 @@ private:
         // all uses of the wrapped texture are finished on the borrowing context before we open
         // this back up to other contexts. In general a ref to this release proc is owned by all
         // proxies and gpu uses of the backend texture.
-        raw_ptr<skgpu::RefCntedCallback> fBorrowingContextReleaseProc;
+        skgpu::RefCntedCallback*         fBorrowingContextReleaseProc;
         GrDirectContext::DirectContextID fBorrowingContextID;
 
         std::unique_ptr<GrSemaphore>     fSemaphore;
     };
 
-    raw_ptr<RefHelper, DanglingUntriaged> fRefHelper;
+    RefHelper*       fRefHelper;
     // This Mutex is used to guard the borrowing of the texture to one GrContext at a time as well
     // as the creation of the fBorrowingContextReleaseProc. The latter happening if two threads with
     // the same consuming GrContext try to generate a texture at the same time.
