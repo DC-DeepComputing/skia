@@ -290,6 +290,10 @@ bool RenderPassTask::visitProxies(const std::function<bool(const TextureProxy*)>
             }
         }
 
+        if (pass->storageFallbackTexture() && !visitor(pass->storageFallbackTexture())) {
+            return false;
+        }
+
         if (fDstCopy && !visitor(fDstCopy.get())) {
             return false;
         }

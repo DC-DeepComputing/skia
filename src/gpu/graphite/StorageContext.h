@@ -72,7 +72,6 @@ public:
     // Called after snapping the draw pass. It creates either a single mapped buffer or a fallback
     // texture containing the concatenated cached and append data.
     StorageContextResult finalize(DrawBufferManager*, Recorder*, DrawTask*);
-    BindBufferInfo finalize(DrawBufferManager* bufferMgr);
 
     bool isEmpty() const { return fGradientCache.isEmpty() && fVertexData.empty(); }
 

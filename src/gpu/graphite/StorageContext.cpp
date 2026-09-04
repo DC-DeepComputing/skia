@@ -195,11 +195,6 @@ StorageContextResult StorageContext::finalize(DrawBufferManager* bufferMgr,
     return this->finalizeStorageBuffer(bufferMgr);
 }
 
-// Temporary, remove once texture fallback CL chain is complete
-BindBufferInfo StorageContext::finalize(DrawBufferManager* bufferMgr) {
-    return this->finalizeStorageBuffer(bufferMgr);
-}
-
 BindBufferInfo StorageContext::finalizeStorageBuffer(DrawBufferManager* bufferMgr) {
     SkASSERT(fGradientsFinalized);
     SkASSERT(bufferMgr);
