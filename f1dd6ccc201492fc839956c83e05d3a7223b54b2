@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "65980d67_a9a7e90a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-09-04T18:30:13Z",
+      "side": 1,
+      "message": "This is the Rust-and-encoding companion to the ICC HAGC support",
+      "revId": "f1dd6ccc201492fc839956c83e05d3a7223b54b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
