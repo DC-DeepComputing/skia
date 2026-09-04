@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e901761e_7253a4f1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-04T17:47:05Z",
+      "side": 1,
+      "message": "This is slightly different from the AI suggested patch in the linked bug report, namely I think it was wrong to guard the bulk use updater\u0027s reset on begin \u003e 0. I added a comment to the code arguing why we should always be resetting it, but as reviewers, I\u0027d appreciate a double check on that logic vs. what Gemini was thinking.",
+      "revId": "075d62798195dc309b4478db05b12f978eade98c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
