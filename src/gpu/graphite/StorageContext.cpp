@@ -13,7 +13,8 @@
 
 namespace skgpu::graphite {
 
-StorageContext::StorageContext() = default;
+StorageContext::StorageContext(bool storageBufferSupport)
+        : fRunningLCM(1), fStorageBufferSupport(storageBufferSupport) {}
 
 StorageContext::~StorageContext() {
     this->resetCache();
@@ -66,6 +67,10 @@ std::pair<float*, int> StorageContext::allocateGradientData(int numStops,
 void StorageContext::recordAlignment(size_t stride, size_t align) {
     SkASSERT(stride > 0 && align > 0);
     SkASSERT(!fGradientsFinalized);
+    if (!fStorageBufferSupport) {
+        align = std::max<size_t>(align, 16);
+        stride = SkAlignTo<size_t>(stride, 16);
+    }
     uint32_t align32 = BufferAligner::LcmAlignment(SkTo<uint32_t>(align), SkTo<uint32_t>(stride));
     fRunningLCM = BufferAligner::LcmAlignment(fRunningLCM, align32);
 }
@@ -75,6 +80,10 @@ uint32_t StorageContext::appendVertices(const void* data,
                                         size_t stride,
                                         size_t align) {
     SkASSERT(data && count > 0 && stride > 0 && align > 0);
+    if (!fStorageBufferSupport) {
+        align = std::max<size_t>(align, 16);
+        stride = SkAlignTo<size_t>(stride, 16);
+    }
 
     uint32_t align32 = BufferAligner::LcmAlignment(SkTo<uint32_t>(align), SkTo<uint32_t>(stride));
     SkASSERT(fRunningLCM % align32 == 0);
