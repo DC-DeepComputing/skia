@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8b57375_e3d29649",
+        "filename": "src/pathops/SkDConicLineIntersection.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 4621846
+      },
+      "writtenOn": "2026-09-04T22:18:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c6562b02_01c5c5a2",
+      "revId": "2b9c29339a796ab47bfa08aac3a92d0d2c4a25d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "25151855_878c9243",
