@@ -27,7 +27,6 @@
 #include "include/core/SkTextBlob.h"
 #include "include/core/SkVertices.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkTArray.h"
 #include "include/private/SkTDArray.h"
 #include "include/private/SkTemplates.h"
 #include "include/private/chromium/Slug.h"
@@ -37,7 +36,6 @@
 #include "src/core/SkRecord.h"
 #include "src/core/SkRecords.h"
 #include "src/effects/colorfilters/SkColorFilterBase.h"
-#include "src/partition_alloc/raw_ptr.h"
 #include "src/utils/SkPatchUtils.h"
 
 #include <algorithm>
@@ -279,8 +277,7 @@ private:
     struct SaveBounds {
         int controlOps;        // Number of control ops in this Save block, including the Save.
         Bounds bounds;         // Bounds of everything in the block.
-        raw_ptr<const SkPaint>
-                paint;  // Unowned.  If set, adjusts the bounds of all ops in this block.
+        const SkPaint* paint;  // Unowned.  If set, adjusts the bounds of all ops in this block.
         SkMatrix ctm;
     };
 
@@ -569,10 +566,10 @@ private:
     const SkRect fCullRect;
 
     // Conservative identity-space bounds for each op in the SkRecord.
-    raw_ptr<Bounds, AllowPtrArithmetic> fBounds;
+    Bounds* fBounds;
 
     // Parallel array to fBounds, holding metadata for each bounds rect.
-    raw_ptr<SkBBoxHierarchy::Metadata, AllowPtrArithmetic> fMeta;
+    SkBBoxHierarchy::Metadata* fMeta;
 
     // We walk fCurrentOp through the SkRecord,
     // as we go using updateCTM() to maintain the exact CTM (fCTM).
@@ -580,7 +577,7 @@ private:
     SkMatrix fCTM;
 
     // Used to track the bounds of Save/Restore blocks and the control ops inside them.
-    skia_private::TArray<SaveBounds> fSaveStack;
+    SkTDArray<SaveBounds> fSaveStack;
     SkTDArray<int>   fControlIndices;
 };
 

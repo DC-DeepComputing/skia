@@ -6,10 +6,7 @@
  */
 
 #ifndef SkZip_DEFINED
-
 #define SkZip_DEFINED
-
-#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkSpan.h"
 #include "include/private/SkAssert.h"
@@ -47,7 +44,7 @@ class SkZip {
         }
 
     private:
-        const raw_ptr<const SkZip<Ts...>> fZip = nullptr;
+        const SkZip* const fZip = nullptr;
         size_t fIndex = 0;
     };
 

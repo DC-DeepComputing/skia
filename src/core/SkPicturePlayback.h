@@ -6,10 +6,7 @@
  */
 
 #ifndef SkPicturePlayback_DEFINED
-
 #define SkPicturePlayback_DEFINED
-
-#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkM44.h"
 #include "include/core/SkPicture.h"
@@ -37,7 +34,7 @@ public:
     void resetOpID() { fCurOffset = 0; }
 
 private:
-    raw_ptr<const SkPictureData> fPictureData;
+    const SkPictureData* fPictureData;
 
     // The offset of the current operation when within the draw method
     size_t fCurOffset;
@@ -58,7 +55,7 @@ private:
         }
 
     private:
-        raw_ptr<SkPicturePlayback> fPlayback;
+        SkPicturePlayback* fPlayback;
     };
 
     using INHERITED = SkNoncopyable;
