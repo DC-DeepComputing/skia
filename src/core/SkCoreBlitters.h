@@ -6,11 +6,7 @@
  */
 
 #ifndef SkCoreBlitters_DEFINED
-
 #define SkCoreBlitters_DEFINED
-
-#include "src/partition_alloc/raw_ptr.h"
-#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include "include/core/SkColor.h"
 #include "include/core/SkPaint.h"
@@ -54,7 +50,7 @@ public:
 
 protected:
     sk_sp<SkShader>         fShader;
-    RAW_PTR_EXCLUSION SkShaderBase::Context* fShaderContext;
+    SkShaderBase::Context* fShaderContext;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -112,7 +108,7 @@ public:
     void blitMask(const SkMask&, const SkIRect&) override;
 
 private:
-    RAW_PTR_EXCLUSION SkPMColor* fBuffer;
+    SkPMColor*          fBuffer;
     SkBlitRow::Proc32   fProc32;
     SkBlitRow::Proc32   fProc32Blend;
     bool fShadeDirectlyIntoDevice;

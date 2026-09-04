@@ -6,9 +6,7 @@
  */
 
 #ifndef SkRecord_DEFINED
-
 #define SkRecord_DEFINED
-#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkAssert.h"
@@ -136,7 +134,7 @@ private:
     // A typed pointer to some bytes in fAlloc.  visit() and mutate() allow polymorphic dispatch.
     struct Record {
         SkRecords::Type fType;
-        RAW_PTR_EXCLUSION void* fPtr;
+        void*           fPtr;
 
         // Point this record to its data in fAlloc.  Returns ptr for convenience.
         template <typename T>

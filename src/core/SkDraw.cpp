@@ -55,7 +55,6 @@
 #include "src/core/SkTLazy.h"
 #include "src/core/SkZip.h"
 #include "src/image/SkImage_Raster.h"
-#include "src/partition_alloc/raw_ptr.h"
 #include "src/shaders/SkImageShader.h"
 
 #include <algorithm>
@@ -90,13 +89,12 @@ static SkPaint make_paint_with_image(const SkPaint& origPaint,
 }
 
 Draw::Draw() { fBlitterChooser = SkBlitter::Choose; }
-Draw::~Draw() = default;
 
 struct PtProcRec {
     SkCanvas::PointMode fMode;
-    raw_ptr<const SkPaint, DanglingUntriaged> fPaint;
-    raw_ptr<const SkRegion, DanglingUntriaged> fClip;
-    raw_ptr<const SkRasterClip, DanglingUntriaged> fRC;
+    const SkPaint*  fPaint;
+    const SkRegion* fClip;
+    const SkRasterClip* fRC;
 
     // computed values
     SkRect   fClipBounds;
@@ -110,13 +108,6 @@ struct PtProcRec {
 
 private:
     SkAAClipBlitterWrapper fWrapper;
-
-public:
-    ~PtProcRec() {
-        fPaint = nullptr;
-        fClip = nullptr;
-        fRC = nullptr;
-    }
 };
 
 #define DIRECT_BLIT_LOOP(writable_method, value)    \

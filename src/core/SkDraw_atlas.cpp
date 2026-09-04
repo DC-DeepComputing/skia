@@ -35,7 +35,6 @@
 #include "src/core/SkRasterPipelineOpList.h"
 #include "src/core/SkScan.h"
 #include "src/core/SkSurfacePriv.h"
-#include "src/partition_alloc/raw_ref.h"
 #include "src/shaders/SkShaderBase.h"
 #include "src/shaders/SkTransformShader.h"
 
@@ -104,7 +103,7 @@ void Draw::drawAtlas(SkSpan<const SkRSXform> xform,
                       fDst.colorType(),
                       fDst.colorSpace(),
                       p.getColor4f(),
-                      raw_ref(props),
+                      props,
                       SkRect::MakeEmpty()};
     // We pass an identity matrix here rather than the CTM. The CTM gets folded into the
     // per-triangle matrix.

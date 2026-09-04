@@ -6,10 +6,7 @@
  */
 
 #ifndef SkClipStack_DEFINED
-
 #define SkClipStack_DEFINED
-
-#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkClipOp.h"
 #include "include/core/SkMatrix.h"
@@ -306,7 +303,7 @@ public:
         }
 
     private:
-        raw_ptr<SkClipStack> fCS;
+        SkClipStack* fCS;
         const int    fSaveCount;
     };
 
@@ -428,7 +425,7 @@ public:
         void reset(const SkClipStack& stack, IterStart startLoc);
 
     private:
-        raw_ptr<const SkClipStack> fStack;
+        const SkClipStack* fStack;
         SkDeque::Iter      fIter;
     };
 
