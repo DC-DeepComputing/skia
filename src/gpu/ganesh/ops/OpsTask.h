@@ -5,7 +5,10 @@
  * found in the LICENSE file.
  */
 #ifndef OpsTask_DEFINED
+
 #define OpsTask_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
@@ -231,7 +234,7 @@ private:
 
         private:
             GrOp::Owner fHead{nullptr};
-            GrOp* fTail{nullptr};
+            raw_ptr<GrOp> fTail{nullptr};
 
             static_assert(::sk_is_trivially_relocatable<decltype(fHead)>::value);
             static_assert(::sk_is_trivially_relocatable<decltype(fTail)>::value);
@@ -247,7 +250,7 @@ private:
         List fList;
         GrProcessorSet::Analysis fProcessorAnalysis;
         GrDstProxyView fDstProxyView;
-        GrAppliedClip* fAppliedClip;
+        raw_ptr<GrAppliedClip> fAppliedClip;
         SkRect fBounds;
 
         static_assert(::sk_is_trivially_relocatable<decltype(fProcessorAnalysis)>::value);
@@ -275,7 +278,7 @@ private:
     // however, requires that the SDC be able to coordinate with the op list to achieve similar ends
     friend class skgpu::ganesh::SurfaceDrawContext;
 
-    GrAuditTrail* fAuditTrail;
+    raw_ptr<GrAuditTrail, DanglingUntriaged> fAuditTrail;
 
     bool fUsesMSAASurface;
     skgpu::Swizzle fTargetSwizzle;

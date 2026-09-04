@@ -6,7 +6,10 @@
  */
 
 #ifndef SkSurface_Raster_DEFINED
+
 #define SkSurface_Raster_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkImageInfo.h"
@@ -67,9 +70,8 @@ public:
     sk_sp<const SkCapabilities> onCapabilities() override;
     SkRecorder* onGetBaseRecorder() const override;
 
-private:
+    raw_ptr<skcpu::Recorder> fRecorder;
     SkBitmap fBitmap;
-    skcpu::Recorder* fRecorder;
     bool fWeOwnThePixels;
 };
 

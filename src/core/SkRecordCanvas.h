@@ -6,6 +6,7 @@
  */
 
 #ifndef SkRecordCanvas_DEFINED
+
 #define SkRecordCanvas_DEFINED
 
 #include "include/core/SkCanvasVirtualEnforcer.h"
@@ -19,6 +20,7 @@
 #include "include/private/SkNoncopyable.h"
 #include "include/private/SkTDArray.h"
 #include "include/utils/SkNoDrawCanvas.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <cstddef>
 #include <memory>
@@ -188,7 +190,7 @@ private:
     template <typename T, typename... Args> void append(Args&&...);
 
     size_t fApproxBytesUsedBySubPictures;
-    SkRecord* fRecord;
+    raw_ptr<SkRecord, DanglingUntriaged> fRecord;
     std::unique_ptr<SkDrawableList> fDrawableList;
 };
 

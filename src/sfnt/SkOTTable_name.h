@@ -6,7 +6,10 @@
  */
 
 #ifndef SkOTTable_name_DEFINED
+
 #define SkOTTable_name_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkString.h"
 #include "src/core/SkEndian.h"
@@ -562,7 +565,7 @@ struct SkOTTableName {
         bool next(Record&);
 
     private:
-        const uint8_t* fNameTable;
+        raw_ptr<const uint8_t, AllowPtrArithmetic> fNameTable;
         const size_t fNameTableSize;
         size_t fIndex;
         int fType;
