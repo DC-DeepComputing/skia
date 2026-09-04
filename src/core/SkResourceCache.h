@@ -8,9 +8,6 @@
 #ifndef SkResourceCache_DEFINED
 #define SkResourceCache_DEFINED
 
-#include "src/partition_alloc/raw_ptr.h"
-#include "src/partition_alloc/raw_ptr_exclusion.h"
-
 #include "include/private/SkDebug.h"
 #include "src/core/SkMessageBus.h"
 #include "src/partition_alloc/raw_ptr_exclusion.h"
@@ -110,8 +107,8 @@ public:
         virtual SkDiscardableMemory* diagnostic_only_getDiscardable() const { return nullptr; }
 
     private:
-        raw_ptr<Rec, DanglingUntriaged> fNext;
-        raw_ptr<Rec, DanglingUntriaged> fPrev;
+        Rec*    fNext;
+        Rec*    fPrev;
 
         friend class SkResourceCache;
     };
@@ -265,11 +262,11 @@ public:
     virtual void dump() const;
 
 private:
-    raw_ptr<Rec, DanglingUntriaged> fHead;
-    raw_ptr<Rec, DanglingUntriaged> fTail;
+    Rec*    fHead;
+    Rec*    fTail;
 
     class Hash;
-    raw_ptr<Hash, DanglingUntriaged> fHash;
+    Hash*   fHash;
 
     DiscardableFactory  fDiscardableFactory;
 

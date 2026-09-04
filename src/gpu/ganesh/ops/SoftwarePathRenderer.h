@@ -5,10 +5,7 @@
  * found in the LICENSE file.
  */
 #ifndef SoftwarePathRenderer_DEFINED
-
 #define SoftwarePathRenderer_DEFINED
-
-#include "src/partition_alloc/raw_ptr.h"
 
 #include "src/gpu/ganesh/PathRenderer.h"
 
@@ -84,7 +81,7 @@ private:
     bool onDrawPath(const DrawPathArgs&) override;
 
 private:
-    raw_ptr<GrProxyProvider> fProxyProvider;
+    GrProxyProvider* fProxyProvider;
     bool             fAllowCaching;
 };
 

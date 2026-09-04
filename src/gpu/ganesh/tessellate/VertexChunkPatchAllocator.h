@@ -6,10 +6,7 @@
  */
 
 #ifndef VertexChunkPatchAllocator_DEFINED
-
 #define VertexChunkPatchAllocator_DEFINED
-
-#include "src/partition_alloc/raw_ptr.h"
 
 #include "src/gpu/BufferWriter.h"
 #include "src/gpu/ganesh/GrVertexChunkArray.h"
@@ -43,7 +40,7 @@ public:
     }
 
 private:
-    raw_ptr<tess::LinearTolerances> fWorstCaseTolerances;
+    tess::LinearTolerances* fWorstCaseTolerances;
     GrVertexChunkBuilder    fBuilder;
 };
 

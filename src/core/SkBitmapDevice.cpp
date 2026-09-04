@@ -36,7 +36,6 @@
 #include "src/core/SkSpecialImage.h"
 #include "src/image/SkImage_Base.h"
 #include "src/image/SkImage_Raster.h"
-#include "src/partition_alloc/raw_ptr.h"
 #include "src/shaders/SkImageShader.h"
 #include "src/text/GlyphRun.h"
 
@@ -63,7 +62,7 @@ class SkDrawTiler {
     // 8K is 1 too big, since 8K << supersample == 32768 which is too big for SkFixed
     static constexpr int kMaxDim = 8192 - 1;
 
-    raw_ptr<SkBitmapDevice, DanglingUntriaged> fDevice;
+    SkBitmapDevice* fDevice;
     SkPixmap        fRootPixmap;
     SkIRect         fSrcBounds;
 
@@ -258,7 +257,6 @@ SkBitmapDevice::SkBitmapDevice(skcpu::Recorder* recorder,
 }
 
 SkRecorder* SkBitmapDevice::baseRecorder() const { return fRecorder; }
-SkBitmapDevice::~SkBitmapDevice() = default;
 
 sk_sp<SkBitmapDevice> SkBitmapDevice::Create(const SkImageInfo& origInfo,
                                              const SkSurfaceProps& surfaceProps,

@@ -6,11 +6,7 @@
  */
 
 #ifndef SkBlitter_DEFINED
-
 #define SkBlitter_DEFINED
-
-#include "src/partition_alloc/raw_ptr.h"
-#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include "include/core/SkColor.h"
 #include "include/core/SkPixmap.h"
@@ -213,7 +209,7 @@ public:
     }
 
 private:
-    RAW_PTR_EXCLUSION SkBlitter* fBlitter;
+    SkBlitter*  fBlitter;
     SkIRect     fClipRect;
 };
 
@@ -246,8 +242,8 @@ public:
     }
 
 private:
-    RAW_PTR_EXCLUSION SkBlitter* fBlitter;
-    RAW_PTR_EXCLUSION const SkRegion* fRgn;
+    SkBlitter*      fBlitter;
+    const SkRegion* fRgn;
 };
 
 #ifdef SK_DEBUG
@@ -279,7 +275,7 @@ public:
     }
 
 private:
-    RAW_PTR_EXCLUSION SkBlitter* fBlitter;
+    SkBlitter*  fBlitter;
     SkIRect     fClipRect;
 };
 #endif

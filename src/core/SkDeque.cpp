@@ -5,41 +5,26 @@
  * found in the LICENSE file.
  */
 
-#include "include/private/SkDeque.h"
-
-#include "src/partition_alloc/raw_ptr_exclusion.h"
-
 #include "include/private/SkAssert.h"
+#include "include/private/SkDeque.h"
 #include "include/private/SkMalloc.h"
-#include "src/partition_alloc/raw_ptr.h"
-#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <cstddef>
 
 struct SkDeque::Block {
-    raw_ptr<Block, DanglingUntriaged> fNext;
-    raw_ptr<Block, DanglingUntriaged> fPrev;
-    // RAW_PTR_EXCLUSION: Pointer to internal chunk buffer offset
-    RAW_PTR_EXCLUSION char* fBegin;  // start of used section in this chunk
-    // RAW_PTR_EXCLUSION: Pointer to internal chunk buffer offset
-    RAW_PTR_EXCLUSION char* fEnd;  // end of used section in this chunk
-    // RAW_PTR_EXCLUSION: Pointer to internal chunk buffer offset
-    RAW_PTR_EXCLUSION char* fStop;  // end of the allocated chunk
+    Block*  fNext;
+    Block*  fPrev;
+    char*   fBegin; // start of used section in this chunk
+    char*   fEnd;   // end of used section in this chunk
+    char*   fStop;  // end of the allocated chunk
 
     char*       start() { return (char*)(this + 1); }
     const char* start() const { return (const char*)(this + 1); }
 
     void init(size_t size) {
-        new (&fNext) raw_ptr<Block, DanglingUntriaged>(nullptr);
-        new (&fPrev) raw_ptr<Block, DanglingUntriaged>(nullptr);
-        fBegin = nullptr;
-        fEnd = nullptr;
-        fStop = (char*)this + size;
-    }
-
-    void destroy() {
-        fNext.~raw_ptr();
-        fPrev.~raw_ptr();
+        fNext   = fPrev = nullptr;
+        fBegin  = fEnd = nullptr;
+        fStop   = (char*)this + size;
     }
 };
 
@@ -79,8 +64,6 @@ SkDeque::~SkDeque() {
         Block* next = head->fNext;
         if (head != initialHead) {
             this->freeBlock(head);
-        } else {
-            head->destroy();
         }
         head = next;
     }

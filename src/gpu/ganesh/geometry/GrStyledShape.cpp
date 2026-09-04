@@ -16,7 +16,6 @@
 #include "include/private/SkIDChangeListener.h"
 #include "include/private/SkMalloc.h"
 #include "include/private/SkTo.h"
-#include "src/partition_alloc/raw_ptr.h"
 
 #include <algorithm>
 #include <cstring>
@@ -531,7 +530,7 @@ public:
     }
 
 private:
-    raw_ptr<GrShape> fShape;
+    GrShape* fShape;
     bool fInverted;
 };
 

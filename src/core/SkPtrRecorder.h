@@ -5,13 +5,9 @@
  * found in the LICENSE file.
  */
 
-#include "src/partition_alloc/raw_ref.h"
 
 #ifndef SkPtrSet_DEFINED
-
 #define SkPtrSet_DEFINED
-
-#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkFlattenable.h"
 #include "include/core/SkRefCnt.h"
@@ -75,10 +71,12 @@ public:
         /**
          * Return the next ptr in the set or null if the end was reached.
          */
-        void* next() { return fIndex < fSet->fList.size() ? fSet->fList[fIndex++].fPtr : nullptr; }
+        void* next() {
+            return fIndex < fSet.fList.size() ? fSet.fList[fIndex++].fPtr : nullptr;
+        }
 
     private:
-        const raw_ref<const SkPtrSet> fSet;
+        const SkPtrSet& fSet;
         int             fIndex;
     };
 
@@ -88,7 +86,7 @@ protected:
 
 private:
     struct Pair {
-        void* fPtr;         // never nullptr
+        void*       fPtr;   // never nullptr
         uint32_t    fIndex; // 1...N
     };
 

@@ -43,7 +43,6 @@
 #include "src/gpu/ganesh/image/GrMippedBitmap.h"
 #include "src/gpu/ganesh/ops/GrMeshDrawOp.h"
 #include "src/gpu/ganesh/ops/GrSimpleMeshDrawOpHelper.h"
-#include "src/partition_alloc/raw_ptr.h"
 
 #if defined(GPU_TEST_UTILS)
 #include "src/core/SkRandom.h"
@@ -716,8 +715,8 @@ private:
     int fIndexCount;
     GrSurfaceProxyView fFalloffView;
 
-    raw_ptr<GrSimpleMesh, DanglingUntriaged> fMesh = nullptr;
-    raw_ptr<GrProgramInfo, DanglingUntriaged> fProgramInfo = nullptr;
+    GrSimpleMesh*      fMesh = nullptr;
+    GrProgramInfo*     fProgramInfo = nullptr;
 
     using INHERITED = GrMeshDrawOp;
 };

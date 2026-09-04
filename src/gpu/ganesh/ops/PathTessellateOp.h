@@ -6,10 +6,7 @@
  */
 
 #ifndef PathTessellateOp_DEFINED
-
 #define PathTessellateOp_DEFINED
-
-#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPath.h"
@@ -88,17 +85,17 @@ private:
     void onExecute(GrOpFlushState*, const SkRect& chainBounds) override;
 
     const GrAAType fAAType;
-    const raw_ptr<const GrUserStencilSettings> fStencil;
+    const GrUserStencilSettings* const fStencil;
     int fTotalCombinedPathVerbCnt;
     PatchAttribs fPatchAttribs = PatchAttribs::kNone;
-    const raw_ptr<PathDrawList, DanglingUntriaged> fPathDrawList;
-    raw_ptr<PathDrawList*> fPathDrawTail;
+    PathDrawList* const fPathDrawList;
+    PathDrawList** fPathDrawTail;
     GrProcessorSet fProcessors;
     SkMatrix fShaderMatrix;
 
     // Decided during prepareTessellator.
-    raw_ptr<PathTessellator, DanglingUntriaged> fTessellator = nullptr;
-    raw_ptr<const GrProgramInfo, DanglingUntriaged> fTessellationProgram = nullptr;
+    PathTessellator* fTessellator = nullptr;
+    const GrProgramInfo* fTessellationProgram = nullptr;
 
     friend class GrOp;  // For ctor.
 };

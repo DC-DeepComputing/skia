@@ -7,8 +7,6 @@
 
 #include "src/gpu/ganesh/geometry/GrAATriangulator.h"
 
-#include "src/partition_alloc/raw_ptr.h"
-
 #if !defined(SK_ENABLE_OPTIMIZE_SIZE)
 #include "include/core/SkPathTypes.h"
 #include "include/private/SkDebug.h"
@@ -56,8 +54,8 @@ struct GrAATriangulator::SSEdge {
     SSEdge(Edge* edge, SSVertex* prev, SSVertex* next)
       : fEdge(edge), fEvent(nullptr), fPrev(prev), fNext(next) {
     }
-    Edge* fEdge;
-    Event* fEvent;
+    Edge*     fEdge;
+    Event*    fEvent;
     SSVertex* fPrev;
     SSVertex* fNext;
 };

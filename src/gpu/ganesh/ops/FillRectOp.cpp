@@ -36,7 +36,6 @@
 #include "src/gpu/ganesh/ops/GrMeshDrawOp.h"
 #include "src/gpu/ganesh/ops/GrSimpleMeshDrawOpHelperWithStencil.h"
 #include "src/gpu/ganesh/ops/QuadPerEdgeAA.h"
-#include "src/partition_alloc/raw_ptr.h"
 
 #if defined(GPU_TEST_UTILS)
 #include "src/core/SkRandom.h"
@@ -480,9 +479,9 @@ private:
 
     Helper fHelper;
     GrQuadBuffer<ColorAndAA> fQuads;
-    raw_ptr<char> fPrePreparedVertices = nullptr;
+    char* fPrePreparedVertices = nullptr;
 
-    raw_ptr<GrProgramInfo, DanglingUntriaged> fProgramInfo = nullptr;
+    GrProgramInfo* fProgramInfo = nullptr;
     ColorType      fColorType;
 
     sk_sp<const GrBuffer> fVertexBuffer;

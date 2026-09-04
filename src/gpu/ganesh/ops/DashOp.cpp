@@ -48,7 +48,6 @@
 #include "src/gpu/ganesh/ops/GrDrawOp.h"
 #include "src/gpu/ganesh/ops/GrMeshDrawOp.h"
 #include "src/gpu/ganesh/ops/GrSimpleMeshDrawOpHelper.h"
-#include "src/partition_alloc/raw_ptr.h"
 
 #if defined(GPU_TEST_UTILS)
 #include "src/core/SkRandom.h"
@@ -731,9 +730,9 @@ private:
     SkPaint::Cap cap() const { return fCap; }
 
     STArray<1, LineData, true> fLines;
-    raw_ptr<const GrUserStencilSettings> fStencilSettings;
-    raw_ptr<GrSimpleMesh, DanglingUntriaged> fMesh = nullptr;
-    raw_ptr<GrProgramInfo, DanglingUntriaged> fProgramInfo = nullptr;
+    const GrUserStencilSettings* fStencilSettings;
+    GrSimpleMesh*  fMesh = nullptr;
+    GrProgramInfo* fProgramInfo = nullptr;
 
     SkPMColor4f fColor;
     SkPaint::Cap fCap;

@@ -66,7 +66,6 @@
 #include "src/gpu/ganesh/ops/GrSimpleMeshDrawOpHelperWithStencil.h"
 #include "src/gpu/ganesh/ops/SmallPathAtlasMgr.h"
 #include "src/gpu/ganesh/ops/SmallPathShapeData.h"
-#include "src/partition_alloc/raw_ptr.h"
 
 #if defined(GPU_TEST_UTILS)
 #include "src/core/SkRandom.h"
@@ -166,8 +165,8 @@ private:
     struct FlushInfo {
         sk_sp<const GrBuffer> fVertexBuffer;
         sk_sp<const GrBuffer> fIndexBuffer;
-        raw_ptr<GrGeometryProcessor> fGeometryProcessor;
-        raw_ptr<const GrSurfaceProxy*, AllowPtrArithmetic> fPrimProcProxies;
+        GrGeometryProcessor*  fGeometryProcessor;
+        const GrSurfaceProxy** fPrimProcProxies;
         int fVertexOffset;
         int fInstancesToFlush;
     };

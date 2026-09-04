@@ -1,17 +1,11 @@
 /*
-#include "src/partition_alloc/raw_ref.h"
-
  * Copyright 2020 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
 #ifndef GrTessellationShader_DEFINED
-
 #define GrTessellationShader_DEFINED
-
-#include "src/partition_alloc/raw_ptr.h"
-#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include "include/core/SkMatrix.h"
 #include "src/core/SkArenaAlloc.h"
@@ -50,13 +44,13 @@ public:
     const SkPMColor4f& color() const { return fColor;}
 
     struct ProgramArgs {
-        RAW_PTR_EXCLUSION SkArenaAlloc* fArena;
-        const raw_ref<const GrSurfaceProxyView> fWriteView;
+        SkArenaAlloc* fArena;
+        const GrSurfaceProxyView& fWriteView;
         bool fUsesMSAASurface;
-        RAW_PTR_EXCLUSION const GrDstProxyView* fDstProxyView;
+        const GrDstProxyView* fDstProxyView;
         GrXferBarrierFlags fXferBarrierFlags;
         GrLoadOp fColorLoadOp;
-        RAW_PTR_EXCLUSION const GrCaps* fCaps;
+        const GrCaps* fCaps;
     };
 
     static const GrPipeline* MakePipeline(const ProgramArgs&, GrAAType,
@@ -66,15 +60,9 @@ public:
                                       const GrTessellationShader* shader,
                                       const GrPipeline* pipeline,
                                       const GrUserStencilSettings* stencil) {
-        return args.fArena->make<GrProgramInfo>(*args.fCaps,
-                                                *args.fWriteView,
-                                                args.fUsesMSAASurface,
-                                                pipeline,
-                                                stencil,
-                                                shader,
-                                                shader->fPrimitiveType,
-                                                args.fXferBarrierFlags,
-                                                args.fColorLoadOp);
+        return args.fArena->make<GrProgramInfo>(*args.fCaps, args.fWriteView, args.fUsesMSAASurface,
+                                                pipeline, stencil, shader, shader->fPrimitiveType,
+                                                args.fXferBarrierFlags, args.fColorLoadOp);
     }
 
     // SkSL functions that calculate Wang's formula for cubics or conics.
