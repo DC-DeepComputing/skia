@@ -130,6 +130,14 @@ private:
     int fNumFragmentTexturesAndSamplers = 0;
     bool fHasCombinedUniforms = false;
     SkEnumBitMask<PipelineStageFlags> fStorageBufferStages = {};
+
+#if defined(GPU_TEST_UTILS)
+    friend class TextureFallbackTest;
+    // Emits the SkSL declaration and unpack functions for storage uniforms emulated via a 2D
+    // fallback texture.
+    static std::string EmitStorageFallbackTexture(const ResourceBindingRequirements&,
+                                                  const RenderStep*);
+#endif
 };
 
 }  // namespace skgpu::graphite
