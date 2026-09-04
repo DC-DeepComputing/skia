@@ -16,6 +16,75 @@
       "message": "PTAL",
       "revId": "2b31a14bf4ca76ea63dc569a6fafdf6d9be7b55c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e66275cd_62490a4b",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 353,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-04T18:58:19Z",
+      "side": 1,
+      "message": "\"because we are definining how the data was put into the texture in the first place\"?",
+      "range": {
+        "startLine": 353,
+        "startChar": 0,
+        "endLine": 353,
+        "endChar": 25
+      },
+      "revId": "2b31a14bf4ca76ea63dc569a6fafdf6d9be7b55c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08a73591_be8ae80c",
+        "filename": "src/gpu/graphite/StorageContext.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-04T18:58:19Z",
+      "side": 1,
+      "message": "I think a comment here that this is padding on a per-texel basis, and not a per-row or per allocation basis would help get what this is doing and why it\u0027s specific to the texture case.",
+      "range": {
+        "startLine": 124,
+        "startChar": 12,
+        "endLine": 131,
+        "endChar": 13
+      },
+      "revId": "2b31a14bf4ca76ea63dc569a6fafdf6d9be7b55c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a72f1b2_c0d2d29e",
+        "filename": "src/gpu/graphite/StorageContext.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-04T18:58:19Z",
+      "side": 1,
+      "message": "Can this be behind a GPU_TEST_UTILS define?",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 55
+      },
+      "revId": "2b31a14bf4ca76ea63dc569a6fafdf6d9be7b55c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
