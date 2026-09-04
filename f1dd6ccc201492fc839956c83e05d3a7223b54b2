@@ -39,6 +39,30 @@
       },
       "revId": "f1dd6ccc201492fc839956c83e05d3a7223b54b2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "72914f94_9fc07f9b",
+        "filename": "src/encode/SkICC.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-09-04T20:58:40Z",
+      "side": 1,
+      "message": "Good point, this is pretty incoherent. Changed it to a `SkASSERT_RELEASE`, cause it\u0027s in error to specify size\u003e0 and null buffer.",
+      "parentUuid": "516a0b50_8e12c692",
+      "range": {
+        "startLine": 341,
+        "startChar": 8,
+        "endLine": 341,
+        "endChar": 36
+      },
+      "revId": "f1dd6ccc201492fc839956c83e05d3a7223b54b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
