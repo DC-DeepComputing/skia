@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6995bcf5_cd102171",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-04T20:28:48Z",
+      "side": 1,
+      "message": "PTAL; helper spun out of the texture fallback mega patch.",
+      "revId": "6da46ea9db00567baeb89f1fe149104980cb3e86",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
