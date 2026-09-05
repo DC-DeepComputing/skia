@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bb58e924_f212bb84",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 4621846
+      },
+      "writtenOn": "2026-09-05T06:21:28Z",
+      "side": 1,
+      "message": "I\u0027m collecting around 150-200 samples executing 15-20 times `nanobench`.\nI tried to use `--samples` flag but had some inconsistencies when testing many benches.",
+      "parentUuid": "bd859186_a4c69385",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 137
+      },
+      "revId": "6974b7ccc44f354a705461496fb34c7fcdd68fde",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8b83807d_23babd39",
         "filename": "tools/fiddle/examples.cpp",
         "patchSetId": 2
@@ -37,6 +61,30 @@
       "writtenOn": "2026-09-03T16:05:47Z",
       "side": 1,
       "message": "nit: Skia style puts the system headers like \u003carray\u003e at the bottom of the includes with a newline gap",
+      "range": {
+        "startLine": 4,
+        "startChar": 0,
+        "endLine": 4,
+        "endChar": 16
+      },
+      "revId": "6974b7ccc44f354a705461496fb34c7fcdd68fde",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0923d296_9869348e",
+        "filename": "tools/fiddle/examples.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 4621846
+      },
+      "writtenOn": "2026-09-05T06:21:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8b83807d_23babd39",
       "range": {
         "startLine": 4,
         "startChar": 0,
