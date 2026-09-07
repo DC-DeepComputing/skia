@@ -13,6 +13,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkTArray.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/sksl/ir/SkSLProgram.h"
 
 #include <string>
@@ -29,7 +30,7 @@ struct ProgramSettings;
 namespace GrPersistentCacheUtils {
 
 struct ShaderMetadata {
-    SkSL::ProgramSettings* fSettings = nullptr;
+    raw_ptr<SkSL::ProgramSettings> fSettings = nullptr;
     skia_private::TArray<std::string> fAttributeNames;
     bool fHasSecondaryColorOutput = false;
     sk_sp<SkData> fPlatformData;

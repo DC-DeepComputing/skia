@@ -15,6 +15,7 @@
 #include "src/core/SkSLTypeShared.h"
 #include "src/core/SkTBlockList.h"
 #include "src/gpu/ganesh/GrShaderVar.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrGLSLProgramBuilder;
 class GrGeometryProcessor;
@@ -163,7 +164,7 @@ protected:
     VarArray       fFragOutputs;
 
     // This is not owned by the class
-    GrGLSLProgramBuilder* fProgramBuilder;
+    raw_ptr<GrGLSLProgramBuilder> fProgramBuilder;
 
 private:
     void addAttribute(const GrShaderVar& var);

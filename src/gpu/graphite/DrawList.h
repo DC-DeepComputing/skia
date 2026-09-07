@@ -22,6 +22,7 @@
 #include "src/gpu/graphite/PipelineData.h"
 #include "src/gpu/graphite/geom/Rect.h"
 #include "src/gpu/graphite/geom/Transform.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <cstdint>
 #include <limits>
@@ -109,7 +110,8 @@ private:
         const DrawParams& drawParams()          const { return fDrawParams; }
 
     private:
-        const Renderer* fRenderer;
+        // RAW_PTR_EXCLUSION: Block allocator storage in DrawList.
+        RAW_PTR_EXCLUSION const Renderer* fRenderer;
         DrawParams fDrawParams;
     };
 
@@ -205,7 +207,8 @@ private:
         uint64_t fUniformKey;
 
         // Backpointer to the draw that produced the sort key
-        const Draw* fDraw;
+        // RAW_PTR_EXCLUSION: Hot draw sorting key backpointer.
+        RAW_PTR_EXCLUSION const Draw* fDraw;
 
 // https://issues.skia.org/issues/485303056
 #if defined(__clang__)

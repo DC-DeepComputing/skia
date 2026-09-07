@@ -8,6 +8,8 @@
 #ifndef GrEagerVertexAllocator_DEFINED
 #define GrEagerVertexAllocator_DEFINED
 
+#include "src/partition_alloc/raw_ptr_exclusion.h"
+
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
 #include "src/gpu/BufferWriter.h"
@@ -67,9 +69,10 @@ public:
     void unlock(int actualCount) final;
 
 private:
-    GrMeshDrawTarget* const fTarget;
-    sk_sp<const GrBuffer>* const fVertexBuffer;
-    int* const fBaseVertex;
+    // RAW_PTR_EXCLUSION: Hotpath per-draw vertex allocation.
+    RAW_PTR_EXCLUSION GrMeshDrawTarget* const fTarget;
+    RAW_PTR_EXCLUSION sk_sp<const GrBuffer>* const fVertexBuffer;
+    RAW_PTR_EXCLUSION int* const fBaseVertex;
 
     size_t fLockStride;
     int fLockCount = 0;
@@ -93,7 +96,8 @@ public:
 private:
     sk_sp<GrThreadSafeCache::VertexData> fVertexData;
 
-    void*  fVertices = nullptr;
+    // RAW_PTR_EXCLUSION: Raw CPU vertex data pointer.
+    RAW_PTR_EXCLUSION void* fVertices = nullptr;
     size_t fLockStride = 0;
 };
 

@@ -16,6 +16,7 @@
 #include "src/gpu/ganesh/GrAtlasTypes.h"
 #include "src/gpu/ganesh/GrDeferredUpload.h"
 #include "src/gpu/ganesh/GrSurfaceProxyView.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <cstddef>
 #include <cstdint>
@@ -238,7 +239,7 @@ private:
     // the generation counter. If a Glyph's generation is less than the atlas's
     // generation, then it knows it's been evicted and is either free to be deleted or
     // re-added to the atlas if necessary.
-    GrAtlasGenerationCounter* const fGenerationCounter;
+    const raw_ptr<GrAtlasGenerationCounter> fGenerationCounter;
     uint64_t                        fAtlasGeneration;
 
     // nextFlushToken() value at the end of the previous flush

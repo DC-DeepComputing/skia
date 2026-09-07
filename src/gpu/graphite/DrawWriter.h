@@ -19,6 +19,7 @@
 #include "src/gpu/graphite/BufferManager.h"
 #include "src/gpu/graphite/DrawTypes.h"
 #include "src/gpu/graphite/ResourceTypes.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <algorithm>
 #include <cstddef>
@@ -231,8 +232,9 @@ public:
 
 private:
     // Both of these pointers must outlive the DrawWriter.
-    DrawPassCommands::List* fCommandList;
-    DrawBufferManager* fManager;
+    // RAW_PTR_EXCLUSION: Inner vertex/instance recording loop.
+    RAW_PTR_EXCLUSION DrawPassCommands::List* fCommandList;
+    RAW_PTR_EXCLUSION DrawBufferManager* fManager;
 
     BufferSubAllocator fCurrentBuffer;
     SkAutoMalloc fFailureStorage; // storage address for VertexWriter when GPU buffer mapping fails
@@ -318,14 +320,15 @@ private:
     // RAII - Sets the DrawWriter's template and marks the writer in append mode (disabling direct
     // draws until the Appender is destructed).
     class Appender;
-    SkDEBUGCODE(const Appender* fAppender = nullptr;)
+    SkDEBUGCODE(RAW_PTR_EXCLUSION const Appender* fAppender = nullptr;)
 
-    // Helper functions for Appender implementations:
+            // Helper functions for Appender implementations:
 
-    // Reallocates at least `count` blocks of the current `fAppendStride` so that later `append()`
-    // calls with the same or smaller count should succeed. Flushes pending draws if needed.
-    template <bool AppendVertices>
-    void realloc(unsigned int count) {
+            // Reallocates at least `count` blocks of the current `fAppendStride` so that later
+            // `append()` calls with the same or smaller count should succeed. Flushes pending draws
+            // if needed.
+            template <bool AppendVertices>
+            void realloc(unsigned int count) {
         this->flush();
 
         // For vertex rendering (ARM bug b/399631317), kBaseMultiple should be 4, otherwise 1.
@@ -400,7 +403,8 @@ public:
     }
 
 protected:
-    DrawWriter& fDrawer;
+    // RAW_PTR_EXCLUSION: Inner vertex recording cursor.
+    RAW_PTR_EXCLUSION DrawWriter& fDrawer;
 };
 
 class DrawWriter::Vertices : private DrawWriter::Appender {

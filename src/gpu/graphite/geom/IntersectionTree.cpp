@@ -10,6 +10,7 @@
 #include "include/core/SkTypes.h"
 #include "include/private/SkTPin.h"
 #include "src/core/SkVx.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <algorithm>
 #include <limits>
@@ -54,8 +55,9 @@ private:
     }
 
     float fSplitCoord;
-    Node* fLo;
-    Node* fHi;
+    // RAW_PTR_EXCLUSION: Arena-allocated BSP tree with exact sizeof layout.
+    RAW_PTR_EXCLUSION Node* fLo;
+    RAW_PTR_EXCLUSION Node* fHi;
 };
 
 // Leaf node. Rects are kept in a simple list and intersection testing is performed by brute force.

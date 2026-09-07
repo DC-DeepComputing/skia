@@ -8,6 +8,9 @@
 #ifndef GrGeometryProcessor_DEFINED
 #define GrGeometryProcessor_DEFINED
 
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
+
 #include "include/core/SkMatrix.h"
 #include "include/gpu/ganesh/GrBackendSurface.h"
 #include "include/private/SkAlign.h"
@@ -161,7 +164,8 @@ public:
         private:
             void skipUninitialized();
 
-            const Attribute* fCurr           = nullptr;
+            // RAW_PTR_EXCLUSION: Vertex attribute iterator cursor.
+            RAW_PTR_EXCLUSION const Attribute* fCurr = nullptr;
             int              fRemaining      = 0;
             size_t           fImplicitOffset = 0;
         };
@@ -182,7 +186,8 @@ public:
         void addToKey(skgpu::KeyBuilder* b) const;
 
     private:
-        const Attribute* fAttributes = nullptr;
+        // RAW_PTR_EXCLUSION: Vertex attributes array pointer.
+        RAW_PTR_EXCLUSION const Attribute* fAttributes = nullptr;
         int              fRawCount = 0;
         int              fCount = 0;
         size_t           fStride = 0;
@@ -303,15 +308,17 @@ public:
                 , fOutputColor(outputColor)
                 , fOutputCoverage(outputCoverage)
                 , fTexSamplers(texSamplers) {}
-        GrGLSLVertexBuilder* fVertBuilder;
-        GrGLSLFPFragmentBuilder* fFragBuilder;
-        GrGLSLVaryingHandler* fVaryingHandler;
-        GrGLSLUniformHandler* fUniformHandler;
-        const GrShaderCaps* fShaderCaps;
-        const GrGeometryProcessor& fGeomProc;
+        raw_ptr<GrGLSLVertexBuilder> fVertBuilder;
+        raw_ptr<GrGLSLFPFragmentBuilder> fFragBuilder;
+        raw_ptr<GrGLSLVaryingHandler> fVaryingHandler;
+        raw_ptr<GrGLSLUniformHandler> fUniformHandler;
+        raw_ptr<const GrShaderCaps> fShaderCaps;
+        // RAW_PTR_EXCLUSION: Ephemeral shader program generator reference using dot access.
+        RAW_PTR_EXCLUSION const GrGeometryProcessor& fGeomProc;
         const char* fOutputColor;
         const char* fOutputCoverage;
-        const SamplerHandle* fTexSamplers;
+        // RAW_PTR_EXCLUSION: Array of sampler handles.
+        RAW_PTR_EXCLUSION const SamplerHandle* fTexSamplers;
     };
 
     /**

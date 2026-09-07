@@ -8,6 +8,8 @@
 #ifndef GrSurfaceProxy_DEFINED
 #define GrSurfaceProxy_DEFINED
 
+#include "src/partition_alloc/raw_ptr_exclusion.h"
+
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
@@ -91,7 +93,9 @@ public:
         GrRenderable fRenderable;
         skgpu::Mipmapped fMipmapped;
         int fSampleCnt;
-        const GrBackendFormat& fFormat;
+        // RAW_PTR_EXCLUSION: Aggregate struct initialized via copy-list-initialization across call
+        // sites.
+        RAW_PTR_EXCLUSION const GrBackendFormat& fFormat;
         GrTextureType fTextureType;
         GrProtected fProtected;
         skgpu::Budgeted fBudgeted;

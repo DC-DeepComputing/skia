@@ -8,6 +8,9 @@
 #ifndef GrResourceAllocator_DEFINED
 #define GrResourceAllocator_DEFINED
 
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
+
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkAssert.h"
 #include "include/private/SkDebug.h"
@@ -194,10 +197,11 @@ private:
         // proxies.
         bool instantiateSurface(GrSurfaceProxy*, GrResourceProvider*);
 
-        SkDEBUGCODE(uint32_t uniqueID() const { return fUniqueID; })
+    SkDEBUGCODE(uint32_t uniqueID() const { return fUniqueID; })
 
-    private:
-        GrSurfaceProxy*   fOriginatingProxy;
+            private :
+            // RAW_PTR_EXCLUSION: Arena-allocated register structure without destructors.
+            RAW_PTR_EXCLUSION GrSurfaceProxy* fOriginatingProxy;
         skgpu::ScratchKey fScratchKey; // free pool wants a reference to this.
         sk_sp<GrSurface>  fExistingSurface; // queried from resource cache. may be null.
         bool              fAccountedForInBudget = false;
@@ -253,15 +257,16 @@ private:
         }
         AllowRecycling allowRecycling() const { return fAllowRecycling; }
 
-        SkDEBUGCODE(uint32_t uniqueID() const { return fUniqueID; })
+    SkDEBUGCODE(uint32_t uniqueID() const { return fUniqueID; })
 
-    private:
-        GrSurfaceProxy*  fProxy;
+            private :
+            // RAW_PTR_EXCLUSION: Arena-allocated interval DAG coloring nodes without destructors.
+            RAW_PTR_EXCLUSION GrSurfaceProxy* fProxy;
         unsigned int     fStart;
         unsigned int     fEnd;
-        Interval*        fNext = nullptr;
+        RAW_PTR_EXCLUSION Interval* fNext = nullptr;
         unsigned int     fUses = 0;
-        Register*        fRegister = nullptr;
+        RAW_PTR_EXCLUSION Register* fRegister = nullptr;
         AllowRecycling   fAllowRecycling = AllowRecycling::kYes;
 
 #ifdef SK_DEBUG
@@ -289,14 +294,15 @@ private:
     private:
         SkDEBUGCODE(void validate() const;)
 
-        Interval* fHead = nullptr;
-        Interval* fTail = nullptr;
+                // RAW_PTR_EXCLUSION: Arena-allocated interval list cursors without destructors.
+                RAW_PTR_EXCLUSION Interval* fHead = nullptr;
+        RAW_PTR_EXCLUSION Interval* fTail = nullptr;
     };
 
     // Compositing use cases can create > 80 intervals.
     static const int kInitialArenaSize = 128 * sizeof(Interval);
 
-    GrDirectContext* fDContext;
+    raw_ptr<GrDirectContext> fDContext;
     SkSTArenaAllocWithReset<kInitialArenaSize> fInternalAllocator;  // Intervals & registers.
     FreePoolMultiMap fFreePool;  // Recently created/used GrSurfaces.
     IntvlHash fIntvlHash;        // All intervals, hashed by proxyID.

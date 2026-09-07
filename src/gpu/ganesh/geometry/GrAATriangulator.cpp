@@ -7,6 +7,9 @@
 
 #include "src/gpu/ganesh/geometry/GrAATriangulator.h"
 
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
+
 #if !defined(SK_ENABLE_OPTIMIZE_SIZE)
 #include "include/core/SkPathTypes.h"
 #include "include/private/SkDebug.h"
@@ -43,21 +46,23 @@ using EventList = GrAATriangulator::EventList;
 using Event = GrAATriangulator::Event;
 using EventComparator = GrAATriangulator::EventComparator;
 
+// RAW_PTR_EXCLUSION: performance regression (+14% on lines_1_AA, +10% on convex_path_200)
+// during straight-skeleton graph walk for AA triangulation.
 struct SSVertex {
     SSVertex(Vertex* v) : fVertex(v), fPrev(nullptr), fNext(nullptr) {}
-    Vertex* fVertex;
-    SSEdge* fPrev;
-    SSEdge* fNext;
+    RAW_PTR_EXCLUSION Vertex* fVertex;
+    RAW_PTR_EXCLUSION SSEdge* fPrev;
+    RAW_PTR_EXCLUSION SSEdge* fNext;
 };
 
 struct GrAATriangulator::SSEdge {
     SSEdge(Edge* edge, SSVertex* prev, SSVertex* next)
       : fEdge(edge), fEvent(nullptr), fPrev(prev), fNext(next) {
     }
-    Edge*     fEdge;
-    Event*    fEvent;
-    SSVertex* fPrev;
-    SSVertex* fNext;
+    RAW_PTR_EXCLUSION Edge* fEdge;
+    RAW_PTR_EXCLUSION Event* fEvent;
+    RAW_PTR_EXCLUSION SSVertex* fPrev;
+    RAW_PTR_EXCLUSION SSVertex* fNext;
 };
 
 typedef std::unordered_map<Vertex*, SSVertex*> SSVertexMap;

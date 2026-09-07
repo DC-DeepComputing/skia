@@ -16,6 +16,7 @@
 #include "src/core/SkDraw.h"
 #include "src/core/SkRasterClip.h"
 #include "src/gpu/ganesh/GrSurfaceProxyView.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <cstdint>
 
@@ -79,7 +80,7 @@ private:
     // fPixelsStorage must be declared before fPixels so that fPixelsStorage outlives
     // fPixels on destruction (since fPixels can be a raw pointer pointing to fPixelsStorage).
     SkAutoPixmapStorage  fPixelsStorage;
-    SkAutoPixmapStorage* fPixels;
+    raw_ptr<SkAutoPixmapStorage> fPixels;
     skcpu::Draw          fDraw;
     SkRasterClip         fRasterClip;
 

@@ -37,6 +37,7 @@
 #include "src/gpu/graphite/geom/EdgeAAQuad.h"
 #include "src/gpu/graphite/geom/Geometry.h"
 #include "src/gpu/graphite/geom/NonMSAAClip.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <algorithm>
 #include <atomic>
@@ -327,10 +328,11 @@ Rect snap_scissor(const Rect& a, const Rect& deviceBounds) {
 // interact with each other, without needing to share a base class, friend each other, or have a
 // template for each combination of two types.
 struct ClipStack::TransformedShape {
-    const Transform& fLocalToDevice;
-    const Shape&     fShape;
-    const Rect&      fOuterBounds;
-    const Rect&      fInnerBounds;
+    // RAW_PTR_EXCLUSION: Clip stack flyweight traversal object.
+    RAW_PTR_EXCLUSION const Transform& fLocalToDevice;
+    RAW_PTR_EXCLUSION const Shape& fShape;
+    RAW_PTR_EXCLUSION const Rect& fOuterBounds;
+    RAW_PTR_EXCLUSION const Rect& fInnerBounds;
 
     SkClipOp         fOp;
 

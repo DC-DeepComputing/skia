@@ -8,6 +8,8 @@
 #ifndef GrDrawIndirectCommand_DEFINED
 #define GrDrawIndirectCommand_DEFINED
 
+#include "src/partition_alloc/raw_ptr_exclusion.h"
+
 #include <cstdint>
 #include <utility>
 
@@ -97,7 +99,8 @@ public:
     }
 
 private:
-    GrDrawIndexedIndirectCommand* fData;
+    // RAW_PTR_EXCLUSION: Indirect command buffer writer with pointer arithmetic.
+    RAW_PTR_EXCLUSION GrDrawIndexedIndirectCommand* fData;
 };
 
 #endif

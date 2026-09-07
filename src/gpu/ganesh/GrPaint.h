@@ -14,6 +14,7 @@
 #include "include/private/SkTo.h"
 #include "src/core/SkColorData.h"
 #include "src/gpu/ganesh/GrFragmentProcessor.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <memory>
 #include <utility>
@@ -127,7 +128,7 @@ private:
 
     friend class GrProcessorSet;
 
-    const GrXPFactory* fXPFactory = nullptr;
+    raw_ptr<const GrXPFactory> fXPFactory = nullptr;
     std::unique_ptr<GrFragmentProcessor> fColorFragmentProcessor;
     std::unique_ptr<GrFragmentProcessor> fCoverageFragmentProcessor;
     bool fTrivial = true;

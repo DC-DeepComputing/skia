@@ -8,6 +8,8 @@
 #ifndef GrDynamicAtlas_DEFINED
 #define GrDynamicAtlas_DEFINED
 
+#include "src/partition_alloc/raw_ptr_exclusion.h"
+
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkTypes.h"
@@ -97,7 +99,8 @@ private:
     SkISize fDrawBounds;
 
     SkSTArenaAllocWithReset<512> fNodeAllocator;
-    Node* fTopNode = nullptr;
+    // RAW_PTR_EXCLUSION: Arena-allocated atlas node.
+    RAW_PTR_EXCLUSION Node* fTopNode = nullptr;
 
     sk_sp<GrTextureProxy> fTextureProxy;
     sk_sp<GrTexture> fBackingTexture;

@@ -8,6 +8,8 @@
 #ifndef skgpu_graphite_GpuWorkSubmission_DEFINED
 #define skgpu_graphite_GpuWorkSubmission_DEFINED
 
+#include "src/partition_alloc/raw_ptr.h"
+
 #include "include/core/SkRefCnt.h"
 
 #include <memory>
@@ -41,7 +43,7 @@ private:
 
     std::unique_ptr<CommandBuffer> fCommandBuffer;
     sk_sp<SkRefCnt> fOutstandingAsyncMapCounter;
-    QueueManager* fQueueManager;
+    raw_ptr<QueueManager> fQueueManager;
 };
 
 } // namespace skgpu::graphite

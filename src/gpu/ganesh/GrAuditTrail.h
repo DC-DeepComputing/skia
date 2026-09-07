@@ -8,6 +8,8 @@
 #ifndef GrAuditTrail_DEFINED
 #define GrAuditTrail_DEFINED
 
+#include "src/partition_alloc/raw_ptr.h"
+
 #include "include/core/SkRect.h"
 #include "include/core/SkString.h"
 #include "include/private/SkAssert.h"
@@ -75,7 +77,7 @@ public:
 
     private:
         AutoEnable fAutoEnable;
-        GrAuditTrail* fAuditTrail;
+        raw_ptr<GrAuditTrail> fAuditTrail;
     };
 
     void pushFrame(const char* framename) {

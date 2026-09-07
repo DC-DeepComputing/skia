@@ -7,6 +7,8 @@
 
 #include "src/gpu/graphite/ResourceCache.h"
 
+#include "src/partition_alloc/raw_ptr.h"
+
 #include "include/private/SingleOwner.h"
 #include "src/core/SkNoDestructor.h"
 #include "src/core/SkRandom.h"
@@ -304,7 +306,7 @@ bool ResourceCache::returnResource(Resource* resource) {
         // If we get here, we know the usage ref count is 0, so the only way for that to increase
         // again is if the Resource triggers the initial usage ref in the callback.
         struct TakeRefContext {
-            Resource* resource;
+            raw_ptr<Resource> resource;
             SkDEBUGCODE(bool takeRefActuallyCalled = false;)
         } ctx = {resource};
         bool takeRefCalled = resource->prepareForReturnToCache([](void* ctx) {
@@ -813,15 +815,14 @@ void ResourceCache::validate() const {
     }
 
     struct Stats {
-        int fShareable;
-        int fScratch;
-        size_t fBudgetedBytes;
-        size_t fPurgeableBytes;
-        const ResourceMap* fResourceMap;
-        const PurgeableQueue* fPurgeableQueue;
+        int fShareable = 0;
+        int fScratch = 0;
+        size_t fBudgetedBytes = 0;
+        size_t fPurgeableBytes = 0;
+        raw_ptr<const ResourceMap> fResourceMap;
+        raw_ptr<const PurgeableQueue> fPurgeableQueue;
 
         Stats(const ResourceCache* cache) {
-            memset(this, 0, sizeof(*this));
             fResourceMap = &cache->fResourceMap;
             fPurgeableQueue = &cache->fPurgeableQueue;
         }

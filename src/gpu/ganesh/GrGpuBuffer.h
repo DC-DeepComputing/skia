@@ -8,6 +8,8 @@
 #ifndef GrGpuBuffer_DEFINED
 #define GrGpuBuffer_DEFINED
 
+#include "src/partition_alloc/raw_ptr_exclusion.h"
+
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/gpu/ganesh/GrBuffer.h"
 #include "src/gpu/ganesh/GrGpuResource.h"
@@ -116,7 +118,8 @@ protected:
         kWriteDiscard,
     };
 
-    void* fMapPtr;
+    // RAW_PTR_EXCLUSION: GPU driver mapped memory buffer.
+    RAW_PTR_EXCLUSION void* fMapPtr;
 
 private:
     /** Currently MapType is determined entirely by the buffer type, as documented in map(). */

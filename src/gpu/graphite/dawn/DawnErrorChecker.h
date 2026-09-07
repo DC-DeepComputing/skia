@@ -9,6 +9,7 @@
 #define skgpu_graphite_DawnErrorChecker_DEFINED
 
 #include "include/private/SkEnumBitMask.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "src/gpu/graphite/dawn/DawnAsyncWait.h"
 
@@ -43,7 +44,7 @@ public:
 
 private:
     bool fArmed = true;
-    const DawnSharedContext* fSharedContext;
+    raw_ptr<const DawnSharedContext> fSharedContext;
 };
 
 }  // namespace skgpu::graphite

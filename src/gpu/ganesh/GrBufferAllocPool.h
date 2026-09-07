@@ -8,6 +8,9 @@
 #ifndef GrBufferAllocPool_DEFINED
 #define GrBufferAllocPool_DEFINED
 
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
+
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkNoncopyable.h"
@@ -172,9 +175,10 @@ private:
     skia_private::TArray<BufferBlock> fBlocks;
     sk_sp<CpuBufferCache> fCpuBufferCache;
     sk_sp<GrCpuBuffer> fCpuStagingBuffer;
-    GrGpu* fGpu;
+    raw_ptr<GrGpu> fGpu;
     GrGpuBufferType fBufferType;
-    void* fBufferPtr = nullptr;
+    // RAW_PTR_EXCLUSION: GPU driver mapped buffer pointer.
+    RAW_PTR_EXCLUSION void* fBufferPtr = nullptr;
 };
 
 /**

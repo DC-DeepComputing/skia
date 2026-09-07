@@ -6,6 +6,7 @@
  */
 
 #include "src/gpu/graphite/KeyHelpers.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkColorSpace.h"
@@ -116,7 +117,7 @@ private:
         }
     }
 
-    PipelineDataGatherer* fGatherer;
+    raw_ptr<PipelineDataGatherer> fGatherer;
     SkDEBUGCODE(UniformExpectationsValidator fValidator;)
 };
 

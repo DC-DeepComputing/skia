@@ -8,6 +8,8 @@
 #ifndef GrDeferredDisplayListPriv_DEFINED
 #define GrDeferredDisplayListPriv_DEFINED
 
+#include "src/partition_alloc/raw_ptr.h"
+
 #include "include/private/chromium/GrDeferredDisplayList.h"
 
 /*************************************************************************************************/
@@ -44,7 +46,7 @@ private:
     const GrDeferredDisplayListPriv* operator&() const;
     GrDeferredDisplayListPriv* operator&();
 
-    GrDeferredDisplayList* fDDL;
+    raw_ptr<GrDeferredDisplayList> fDDL;
 
     friend class GrDeferredDisplayList; // to construct/copy this type.
 };

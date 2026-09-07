@@ -14,6 +14,7 @@
 #include "include/core/SkSurfaceProps.h"
 #include "src/gpu/graphite/geom/Rect.h"
 #include "src/gpu/graphite/text/GlyphData.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/text/gpu/SubRunContainer.h"
 
 #include <utility>
@@ -87,7 +88,7 @@ public:
     }
 
 private:
-    const sktext::gpu::AtlasSubRun* fSubRun;
+    raw_ptr<const sktext::gpu::AtlasSubRun> fSubRun;
     // Keep the TextBlob or Slug alive until we're done with the Geometry.
     sk_sp<SkRefCnt> fSupportDataKeepAlive;
 
@@ -98,7 +99,7 @@ private:
     SkColor fLuminanceColor;            // only used by SDFTextRenderStep
     bool fUseGammaCorrectDistanceTable; // only used by SDFTextRenderStep
     SkPixelGeometry fPixelGeometry;     // only used by SDFTextLCDRenderStep
-    Recorder* fRecorder; // this SubRun can only be associated with this Recorder's atlas
+    raw_ptr<Recorder> fRecorder;  // this SubRun can only be associated with this Recorder's atlas
 };
 
 } // namespace skgpu::graphite

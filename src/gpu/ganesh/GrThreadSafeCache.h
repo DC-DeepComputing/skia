@@ -8,6 +8,8 @@
 #ifndef GrThreadSafeCache_DEFINED
 #define GrThreadSafeCache_DEFINED
 
+#include "src/partition_alloc/raw_ptr_exclusion.h"
+
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkAssert.h"
 #include "include/private/SkDebug.h"
@@ -168,7 +170,8 @@ public:
                 , fGpuBuffer(std::move(gpuBuffer)) {
         }
 
-        const void*        fVertices;
+        // RAW_PTR_EXCLUSION: Raw malloc-allocated or GPU vertex data buffer.
+        RAW_PTR_EXCLUSION const void* fVertices;
         int                fNumVertices;
         size_t             fVertexSize;
 
@@ -338,7 +341,8 @@ private:
 
     char                         fStorage[kInitialArenaSize];
     SkArenaAlloc                 fEntryAllocator{fStorage, kInitialArenaSize, kInitialArenaSize};
-    Entry*                       fFreeEntryList  SK_GUARDED_BY(fSpinLock);
+    // RAW_PTR_EXCLUSION: Arena-allocated intrusive free list entry.
+    RAW_PTR_EXCLUSION Entry* fFreeEntryList SK_GUARDED_BY(fSpinLock);
 };
 
 #endif // GrThreadSafeCache_DEFINED

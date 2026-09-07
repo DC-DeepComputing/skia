@@ -25,6 +25,7 @@
 #include "src/gpu/ganesh/GrWindowRectsState.h"
 #include "src/gpu/ganesh/GrXferProcessor.h"
 #include "src/gpu/ganesh/effects/GrPorterDuffXferProcessor.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <cstdint>
 #include <functional>
@@ -76,7 +77,7 @@ public:
 
     struct InitArgs {
         InputFlags fInputFlags = InputFlags::kNone;
-        const GrCaps* fCaps = nullptr;
+        raw_ptr<const GrCaps> fCaps = nullptr;
         GrDstProxyView fDstProxyView;
         skgpu::Swizzle fWriteSwizzle;
     };

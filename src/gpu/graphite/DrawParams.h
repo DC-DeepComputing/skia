@@ -18,6 +18,7 @@
 #include "src/gpu/graphite/geom/NonMSAAClip.h"
 #include "src/gpu/graphite/geom/Rect.h"
 #include "src/gpu/graphite/geom/Transform.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <algorithm>
 #include <optional>
@@ -175,7 +176,9 @@ public:
 private:
     friend class ClipStack; // For updating clip and order components on depth only draws
 
-    const Transform& fTransform; // Lifetime of the transform must be held longer than the geometry
+    // RAW_PTR_EXCLUSION: Embedded in DrawList::Draw storage.
+    RAW_PTR_EXCLUSION const Transform&
+            fTransform;  // Lifetime of the transform must be held longer than the geometry
     Geometry         fGeometry;
     Rect             fDrawBounds;
     Rect             fTransformedShapeBounds;

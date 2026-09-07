@@ -9,6 +9,7 @@
 #define skgpu_graphite_precompile_PrecompileImageFilterPriv_DEFINED
 
 #include "include/gpu/graphite/precompile/PrecompileImageFilter.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 namespace skgpu::graphite {
 
@@ -38,7 +39,7 @@ private:
     const PrecompileImageFilterPriv* operator&() const;
     PrecompileImageFilterPriv *operator&();
 
-    PrecompileImageFilter* fPrecompileImageFilter;
+    raw_ptr<PrecompileImageFilter> fPrecompileImageFilter;
 };
 
 inline PrecompileImageFilterPriv PrecompileImageFilter::priv() {
