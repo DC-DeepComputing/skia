@@ -73,7 +73,9 @@ std::tuple<bool, SkVector> VertexFiller::CanUseDirect(
             translation};
 }
 
-bool VertexFiller::isLCD() const { return fMaskFormat == MaskFormat::kA565; }
+bool VertexFiller::isLCD() const {
+    return fMaskFormat == MaskFormat::kA565 || fMaskFormat == MaskFormat::kA888;
+}
 
 // Return true if the positionMatrix represents an integer translation. Return the device
 // bounding box of all the glyphs. If the bounding box is empty, then something went singular

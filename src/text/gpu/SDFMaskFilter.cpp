@@ -50,7 +50,8 @@ bool SDFMaskFilterImpl::filterMask(SkMaskBuilder* dst, const SkMask& src,
                                    const SkMatrix& matrix, SkIPoint* margin) const {
     if (src.fFormat != SkMask::kA8_Format
         && src.fFormat != SkMask::kBW_Format
-        && src.fFormat != SkMask::kLCD16_Format) {
+        && src.fFormat != SkMask::kLCD16_Format
+        && src.fFormat != SkMask::kLCD32_Format) {
         return false;
     }
 
@@ -75,6 +76,10 @@ bool SDFMaskFilterImpl::filterMask(SkMaskBuilder* dst, const SkMask& src,
                                                   src.fRowBytes);
     } else if (src.fFormat == SkMask::kLCD16_Format) {
         return SkGenerateDistanceFieldFromLCD16Mask(dst->image(), src.fImage,
+                                                     src.fBounds.width(), src.fBounds.height(),
+                                                     src.fRowBytes);
+    } else if (src.fFormat == SkMask::kLCD32_Format) {
+        return SkGenerateDistanceFieldFromLCD32Mask(dst->image(), src.fImage,
                                                      src.fBounds.width(), src.fBounds.height(),
                                                      src.fRowBytes);
     } else {

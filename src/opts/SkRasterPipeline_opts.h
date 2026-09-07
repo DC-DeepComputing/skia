@@ -2918,6 +2918,19 @@ HIGHP_STAGE(scale_565, const SkRasterPipelineContexts::MemoryCtx* ctx) {
     b = b * cb;
     a = a * ca;
 }
+HIGHP_STAGE(scale_8888, const SkRasterPipelineContexts::MemoryCtx* ctx) {
+    auto ptr = ptr_at_xy<const uint32_t>(ctx, dx,dy);
+
+    F cr,cg,cb,unused;
+    from_8888(load<U32>(ptr), &cr, &cg, &cb, &unused);
+
+    F ca = alpha_coverage_from_rgb_coverage(a,da, cr,cg,cb);
+
+    r = r * cr;
+    g = g * cg;
+    b = b * cb;
+    a = a * ca;
+}
 
 SI F lerp(F from, F to, F t) {
     return mad(to-from, t, from);
@@ -2959,6 +2972,19 @@ HIGHP_STAGE(lerp_565, const SkRasterPipelineContexts::MemoryCtx* ctx) {
 
     F cr,cg,cb;
     from_565(load<U16>(ptr), &cr, &cg, &cb);
+
+    F ca = alpha_coverage_from_rgb_coverage(a,da, cr,cg,cb);
+
+    r = lerp(dr, r, cr);
+    g = lerp(dg, g, cg);
+    b = lerp(db, b, cb);
+    a = lerp(da, a, ca);
+}
+HIGHP_STAGE(lerp_8888, const SkRasterPipelineContexts::MemoryCtx* ctx) {
+    auto ptr = ptr_at_xy<const uint32_t>(ctx, dx,dy);
+
+    F cr,cg,cb,unused;
+    from_8888(load<U32>(ptr), &cr, &cg, &cb, &unused);
 
     F ca = alpha_coverage_from_rgb_coverage(a,da, cr,cg,cb);
 
@@ -6883,9 +6909,29 @@ LOWP_STAGE_PP(scale_565, const SkRasterPipelineContexts::MemoryCtx* ctx) {
     b = div255( b * cb );
     a = div255( a * ca );
 }
+LOWP_STAGE_PP(scale_8888, const SkRasterPipelineContexts::MemoryCtx* ctx) {
+    U16 cr,cg,cb,unused;
+    load_8888_(ptr_at_xy<const uint32_t>(ctx, dx,dy), &cr,&cg,&cb,&unused);
+    U16 ca = alpha_coverage_from_rgb_coverage(a,da, cr,cg,cb);
+
+    r = div255( r * cr );
+    g = div255( g * cg );
+    b = div255( b * cb );
+    a = div255( a * ca );
+}
 LOWP_STAGE_PP(lerp_565, const SkRasterPipelineContexts::MemoryCtx* ctx) {
     U16 cr,cg,cb;
     load_565_(ptr_at_xy<const uint16_t>(ctx, dx,dy), &cr,&cg,&cb);
+    U16 ca = alpha_coverage_from_rgb_coverage(a,da, cr,cg,cb);
+
+    r = lerp(dr, r, cr);
+    g = lerp(dg, g, cg);
+    b = lerp(db, b, cb);
+    a = lerp(da, a, ca);
+}
+LOWP_STAGE_PP(lerp_8888, const SkRasterPipelineContexts::MemoryCtx* ctx) {
+    U16 cr,cg,cb,unused;
+    load_8888_(ptr_at_xy<const uint32_t>(ctx, dx,dy), &cr,&cg,&cb,&unused);
     U16 ca = alpha_coverage_from_rgb_coverage(a,da, cr,cg,cb);
 
     r = lerp(dr, r, cr);

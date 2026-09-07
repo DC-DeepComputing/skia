@@ -224,7 +224,7 @@ private:
     skgpu::MaskFormat maskFormat() const {
         switch (this->maskType()) {
             case MaskType::kLCDCoverage:
-                return skgpu::MaskFormat::kA565;
+                return this->lcdMaskFormat();
             case MaskType::kColorBitmap:
                 return skgpu::MaskFormat::kARGB;
             case MaskType::kGrayscaleCoverage:
@@ -238,6 +238,8 @@ private:
         // SkUNREACHABLE;
         return skgpu::MaskFormat::kA8;
     }
+
+    skgpu::MaskFormat lcdMaskFormat() const;
 
 #if !defined(SK_DISABLE_SDF_TEXT)
     bool usesDistanceFields() const {
