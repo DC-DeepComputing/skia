@@ -8,6 +8,8 @@
 #include "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.h"
 
 #include <algorithm>
+#include <array>
+#include <limits>
 
 #include "include/codec/SkCodecAnimation.h"
 #include "include/core/SkColorType.h"
@@ -15,6 +17,8 @@
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkStream.h"
+#include "include/core/SkYUVAInfo.h"
+#include "include/core/SkYUVAPixmaps.h"
 #include "include/private/SkAssert.h"
 #include "include/private/SkEncodedInfo.h"
 #include "include/private/SkGainmapInfo.h"
@@ -41,17 +45,17 @@ static constexpr SkColorType kXformSrcColorType = kRGBA_8888_SkColorType;
 // Static assertions to validate that Rust JpegColor/JpegAlpha enum values
 // match the corresponding SkEncodedInfo enum values.
 static_assert(static_cast<int>(rust_jpeg::JpegColor::RGB) ==
-              static_cast<int>(SkEncodedInfo::kRGB_Color),
+                      static_cast<int>(SkEncodedInfo::kRGB_Color),
               "JpegColor::RGB must match SkEncodedInfo::kRGB_Color");
 static_assert(static_cast<int>(rust_jpeg::JpegColor::Grayscale) ==
-              static_cast<int>(SkEncodedInfo::kGray_Color),
+                      static_cast<int>(SkEncodedInfo::kGray_Color),
               "JpegColor::Grayscale must match SkEncodedInfo::kGray_Color");
 static_assert(static_cast<int>(rust_jpeg::JpegColor::InvertedCMYK) ==
-              static_cast<int>(SkEncodedInfo::kInvertedCMYK_Color),
+                      static_cast<int>(SkEncodedInfo::kInvertedCMYK_Color),
               "JpegColor::InvertedCMYK must match SkEncodedInfo::kInvertedCMYK_Color");
 
 static_assert(static_cast<int>(rust_jpeg::JpegAlpha::Opaque) ==
-              static_cast<int>(SkEncodedInfo::kOpaque_Alpha),
+                      static_cast<int>(SkEncodedInfo::kOpaque_Alpha),
               "JpegAlpha::Opaque must match SkEncodedInfo::kOpaque_Alpha");
 
 namespace {
@@ -74,6 +78,83 @@ SkCodec::Result MapDecodingResult(rust_jpeg::DecodingResult rustResult) {
             return SkCodec::kErrorInInput;
     }
     SK_ABORT("Unexpected `rust_jpeg::DecodingResult`: %d", static_cast<int>(rustResult));
+}
+
+bool GetYUVAInfo(const rust_jpeg::Reader& reader,
+                 SkISize dimensions,
+                 SkEncodedOrigin origin,
+                 const SkYUVAPixmapInfo::SupportedDataTypes* supportedDataTypes,
+                 SkYUVAPixmapInfo* yuvaPixmapInfo) {
+    if (reader.raw_component_count() != 3) {
+        return false;
+    }
+
+    std::array<rust_jpeg::RawPlaneInfo, 3> planes = {
+            reader.raw_plane_info(0), reader.raw_plane_info(1), reader.raw_plane_info(2)};
+    if (planes[0].component_id != 1 || planes[1].component_id != 2 || planes[2].component_id != 3 ||
+        planes[1].horizontal_sampling_factor != 1 || planes[1].vertical_sampling_factor != 1 ||
+        planes[2].horizontal_sampling_factor != 1 || planes[2].vertical_sampling_factor != 1) {
+        return false;
+    }
+
+    const uint32_t hY = planes[0].horizontal_sampling_factor;
+    const uint32_t vY = planes[0].vertical_sampling_factor;
+    SkYUVAInfo::Subsampling subsampling;
+    if (hY == 1 && vY == 1) {
+        subsampling = SkYUVAInfo::Subsampling::k444;
+    } else if (hY == 2 && vY == 1) {
+        subsampling = SkYUVAInfo::Subsampling::k422;
+    } else if (hY == 2 && vY == 2) {
+        subsampling = SkYUVAInfo::Subsampling::k420;
+    } else if (hY == 1 && vY == 2) {
+        subsampling = SkYUVAInfo::Subsampling::k440;
+    } else if (hY == 4 && vY == 1) {
+        subsampling = SkYUVAInfo::Subsampling::k411;
+    } else if (hY == 4 && vY == 2) {
+        subsampling = SkYUVAInfo::Subsampling::k410;
+    } else {
+        return false;
+    }
+
+    const auto ceilDiv = [](uint32_t value, uint32_t divisor) {
+        return value / divisor + (value % divisor != 0);
+    };
+    const uint32_t width = static_cast<uint32_t>(dimensions.width());
+    const uint32_t height = static_cast<uint32_t>(dimensions.height());
+    if (planes[0].width != width || planes[0].height != height ||
+        planes[1].width != ceilDiv(width, hY) || planes[2].width != ceilDiv(width, hY) ||
+        planes[1].height != ceilDiv(height, vY) || planes[2].height != ceilDiv(height, vY)) {
+        return false;
+    }
+    for (const auto& plane : planes) {
+        if (plane.width == 0 || plane.height == 0 || plane.row_bytes < plane.width) {
+            return false;
+        }
+    }
+
+    constexpr auto kConfig = SkYUVAInfo::PlaneConfig::kY_U_V;
+    constexpr auto kDataType = SkYUVAPixmapInfo::DataType::kUnorm8;
+    if (supportedDataTypes && !supportedDataTypes->supported(kConfig, kDataType)) {
+        return false;
+    }
+    if (yuvaPixmapInfo) {
+        const SkYUVAInfo yuvaInfo(dimensions,
+                                  kConfig,
+                                  subsampling,
+                                  kJPEG_Full_SkYUVColorSpace,
+                                  origin,
+                                  SkYUVAInfo::Siting::kCentered,
+                                  SkYUVAInfo::Siting::kCentered);
+        SkColorType colorTypes[SkYUVAPixmapInfo::kMaxPlanes] = {
+                kAlpha_8_SkColorType, kAlpha_8_SkColorType, kAlpha_8_SkColorType};
+        size_t rowBytes[SkYUVAPixmapInfo::kMaxPlanes] = {
+                planes[0].row_bytes, planes[1].row_bytes, planes[2].row_bytes};
+        *yuvaPixmapInfo = SkYUVAPixmapInfo(yuvaInfo, colorTypes, rowBytes);
+        if (!yuvaPixmapInfo->isValid()) {
+            return false;
+        }
+    }
+    return true;
 }
 
 }  // namespace
@@ -159,13 +240,7 @@ std::unique_ptr<SkJpegRustCodec> SkJpegRustCodec::MakeFromStream(std::unique_ptr
     }
 
     SkEncodedInfo encodedInfo = SkEncodedInfo::Make(
-        width,
-        height,
-        color,
-        alpha,
-        kBitsPerComponent,
-        std::move(colorProfile)
-    );
+            width, height, color, alpha, kBitsPerComponent, std::move(colorProfile));
 
     // Guard against overflow: reject images whose raw pixel buffer would
     // exceed size_t range.
@@ -194,21 +269,19 @@ std::unique_ptr<SkJpegRustCodec> SkJpegRustCodec::MakeFromStream(std::unique_ptr
 
     *result = kSuccess;
     return std::unique_ptr<SkJpegRustCodec>(new SkJpegRustCodec(
-        std::move(encodedInfo),
-        std::move(stream),
-        std::move(reader),
-        orientation
-    ));
+            std::move(encodedInfo), std::move(stream), std::move(reader), orientation));
 }
 
 SkJpegRustCodec::SkJpegRustCodec(SkEncodedInfo&& encodedInfo,
                                  std::unique_ptr<SkStream> stream,
                                  rust::Box<rust_jpeg::Reader> reader,
                                  SkEncodedOrigin origin)
-    : SkCodec(std::move(encodedInfo), skcms_PixelFormat_RGBA_8888,
-              /* stream = */ nullptr, origin)
-    , fPrivStream(std::move(stream))
-    , fReader(std::move(reader)) {
+        : SkCodec(std::move(encodedInfo),
+                  skcms_PixelFormat_RGBA_8888,
+                  /* stream = */ nullptr,
+                  origin)
+        , fPrivStream(std::move(stream))
+        , fReader(std::move(reader)) {
     SkASSERT_RELEASE(fPrivStream);
 }
 
@@ -260,8 +333,8 @@ bool SkJpegRustCodec::onGetGainmapInfo(SkGainmapInfo* info,
 
     // Two lambdas needed: CXX exposes Reader and EmbeddedJpegScanner methods
     // with different prefixes in a flat namespace.
-    auto buildSegmentsFromReader = [](const rust_jpeg::Reader& reader)
-            -> std::vector<SkJpegMetadataDecoder::Segment> {
+    auto buildSegmentsFromReader =
+            [](const rust_jpeg::Reader& reader) -> std::vector<SkJpegMetadataDecoder::Segment> {
         std::vector<SkJpegMetadataDecoder::Segment> segs;
         const uint32_t count = reader.segment_count();
         segs.reserve(count);
@@ -301,7 +374,7 @@ bool SkJpegRustCodec::onGetGainmapInfo(SkGainmapInfo* info,
     bool isoGainmapPresent = SkGainmapInfo::ParseVersion(
             baseMetadata->getISOGainmapMetadata(/*copyData=*/false).get());
 
-    std::vector<sk_sp<const SkData>> baseApp1Params;
+    std::vector<sk_sp<const SkData> > baseApp1Params;
     {
         const uint32_t segCount = fReader->segment_count();
         for (uint32_t i = 0; i < segCount; ++i) {
@@ -342,8 +415,7 @@ bool SkJpegRustCodec::onGetGainmapInfo(SkGainmapInfo* info,
             continue;
         }
 
-        rust::Slice<const uint8_t> embSlice(
-                encodedData->bytes() + imageOffset, imageSize);
+        rust::Slice<const uint8_t> embSlice(encodedData->bytes() + imageOffset, imageSize);
         auto embScanner = rust_jpeg::scan_embedded_jpeg(embSlice);
         if (embScanner->embedded_had_error()) {
             continue;
@@ -373,15 +445,14 @@ bool SkJpegRustCodec::onGetGainmapInfo(SkGainmapInfo* info,
         }
 
         if (!foundGainmap) {
-            std::vector<sk_sp<const SkData>> embApp1Params;
+            std::vector<sk_sp<const SkData> > embApp1Params;
             const uint32_t embSegCount = embScanner->embedded_segment_count();
             for (uint32_t j = 0; j < embSegCount; ++j) {
                 rust_jpeg::JpegSegmentInfo si = embScanner->embedded_segment_info(j);
                 if (si.marker == kXMPMarker && si.parameter_length > 2) {
                     rust::Vec<uint8_t> pd = embScanner->embedded_segment_data(j);
                     if (!pd.empty()) {
-                        embApp1Params.push_back(
-                                SkData::MakeWithCopy(pd.data(), pd.size()));
+                        embApp1Params.push_back(SkData::MakeWithCopy(pd.data(), pd.size()));
                     }
                 }
             }
@@ -392,8 +463,8 @@ bool SkJpegRustCodec::onGetGainmapInfo(SkGainmapInfo* info,
                     foundGainmap = embXmp->getGainmapInfoAdobe(&gainmapInfo);
                 }
                 if (!foundGainmap && baseExif.fHdrHeadroom.has_value()) {
-                    foundGainmap = embXmp->getGainmapInfoApple(
-                            baseExif.fHdrHeadroom.value(), &gainmapInfo);
+                    foundGainmap = embXmp->getGainmapInfoApple(baseExif.fHdrHeadroom.value(),
+                                                               &gainmapInfo);
                 }
             }
         }
@@ -428,6 +499,7 @@ bool SkJpegRustCodec::onGetGainmapCodec(SkGainmapInfo* info,
 
 bool SkJpegRustCodec::onRewind() {
     fIncrementalDecodingState.reset();
+    fScanlineBuffer.clear();
 
     if (!fPrivStream->rewind()) {
         return false;
@@ -444,6 +516,97 @@ bool SkJpegRustCodec::onRewind() {
     }
 
     return true;
+}
+
+bool SkJpegRustCodec::onQueryYUVAInfo(
+        const SkYUVAPixmapInfo::SupportedDataTypes& supportedDataTypes,
+        SkYUVAPixmapInfo* yuvaPixmapInfo) const {
+    return GetYUVAInfo(
+            *fReader, this->dimensions(), this->getOrigin(), &supportedDataTypes, yuvaPixmapInfo);
+}
+
+SkCodec::Result SkJpegRustCodec::onGetYUVAPlanes(const SkYUVAPixmaps& yuvaPixmaps) {
+    SkYUVAPixmapInfo expectedInfo;
+    if (!GetYUVAInfo(*fReader, this->dimensions(), this->getOrigin(), nullptr, &expectedInfo) ||
+        yuvaPixmaps.numPlanes() != 3 || yuvaPixmaps.yuvaInfo() != expectedInfo.yuvaInfo() ||
+        yuvaPixmaps.dataType() != SkYUVAPixmapInfo::DataType::kUnorm8) {
+        return kInvalidInput;
+    }
+
+    const auto& planes = yuvaPixmaps.planes();
+    for (int index = 0; index < 3; ++index) {
+        if (planes[index].colorType() != kAlpha_8_SkColorType ||
+            planes[index].dimensions() != expectedInfo.planeInfo(index).dimensions() ||
+            planes[index].rowBytes() < static_cast<size_t>(planes[index].width()) ||
+            planes[index].rowBytes() > std::numeric_limits<uint32_t>::max()) {
+            return kInvalidInput;
+        }
+    }
+
+    fReader->reset_decode_state();
+    std::array<uint32_t, 3> outputRows = {};
+    while (true) {
+        std::array<rust::Slice<uint8_t>, 3> destinations;
+        for (int index = 0; index < 3; ++index) {
+            const SkPixmap& plane = planes[index];
+            const size_t planeHeight = static_cast<size_t>(plane.height());
+            if (outputRows[index] > planeHeight) {
+                return kErrorInInput;
+            }
+            const size_t remainingRows = planeHeight - outputRows[index];
+            SkSafeMath safe;
+            const size_t addressOffset = safe.mul(outputRows[index], plane.rowBytes());
+            const size_t remainingBytes =
+                    remainingRows == 0 ? 0
+                                       : safe.add(safe.mul(remainingRows - 1, plane.rowBytes()),
+                                                  static_cast<size_t>(plane.width()));
+            if (!safe.ok()) {
+                return kInternalError;
+            }
+            auto* address = static_cast<uint8_t*>(plane.writable_addr()) + addressOffset;
+            destinations[index] = rust::Slice<uint8_t>(address, remainingBytes);
+        }
+
+        rust_jpeg::RawOutputResult result =
+                fReader->read_raw_imcu_row(destinations[0],
+                                           static_cast<uint32_t>(planes[0].rowBytes()),
+                                           destinations[1],
+                                           static_cast<uint32_t>(planes[1].rowBytes()),
+                                           destinations[2],
+                                           static_cast<uint32_t>(planes[2].rowBytes()));
+        switch (result.status) {
+            case rust_jpeg::OutputStatus::Ready: {
+                const std::array<uint32_t, 3> rows = {result.y_rows, result.u_rows, result.v_rows};
+                bool madeProgress = false;
+                for (int index = 0; index < 3; ++index) {
+                    const uint32_t planeHeight = static_cast<uint32_t>(planes[index].height());
+                    if (outputRows[index] > planeHeight ||
+                        rows[index] > planeHeight - outputRows[index]) {
+                        return kErrorInInput;
+                    }
+                    outputRows[index] += rows[index];
+                    madeProgress |= rows[index] != 0;
+                }
+                if (!madeProgress) {
+                    return kErrorInInput;
+                }
+                break;
+            }
+            case rust_jpeg::OutputStatus::NeedMoreInput:
+                return kIncompleteInput;
+            case rust_jpeg::OutputStatus::Complete:
+                for (int index = 0; index < 3; ++index) {
+                    if (outputRows[index] != static_cast<uint32_t>(planes[index].height())) {
+                        return kIncompleteInput;
+                    }
+                }
+                return kSuccess;
+            case rust_jpeg::OutputStatus::Error:
+                return MapDecodingResult(result.result);
+            default:
+                return kInternalError;
+        }
+    }
 }
 
 SkCodec::Result SkJpegRustCodec::initializeSwizzler(const SkImageInfo& dstInfo,
@@ -638,8 +801,8 @@ SkCodec::Result SkJpegRustCodec::incrementalDecode(DecodingState& state, int* ro
             this->swizzleRow(srcRow.data(), dstRow.data());
             copiedRows++;
         }
-        state.fTotalRowsInitialized = std::max(
-            state.fTotalRowsInitialized, static_cast<int>(dstRowStart + copiedRows));
+        state.fTotalRowsInitialized =
+                std::max(state.fTotalRowsInitialized, static_cast<int>(dstRowStart + copiedRows));
     }
 
     if (rowsDecodedPtr) {
@@ -647,7 +810,98 @@ SkCodec::Result SkJpegRustCodec::incrementalDecode(DecodingState& state, int* ro
     }
 
     return readResult == rust_jpeg::DecodingResult::Success &&
-               state.fTotalRowsInitialized >= this->dimensions().height()
-           ? kSuccess
-           : kIncompleteInput;
+                           state.fTotalRowsInitialized >= this->dimensions().height()
+                   ? kSuccess
+                   : kIncompleteInput;
+}
+
+SkCodec::Result SkJpegRustCodec::onStartScanlineDecode(const SkImageInfo& dstInfo,
+                                                       const Options& options) {
+    // zune-jpeg currently emits full-frame rows and has no scaled-IDCT or
+    // jpeg_crop_scanline equivalent. SkCodec rejects scaled dimensions before
+    // this hook; reject horizontal subsets explicitly instead of claiming them.
+    if (options.fSubset) {
+        return kUnimplemented;
+    }
+
+    Result result = this->initializeSwizzler(dstInfo, options);
+    if (result != kSuccess) {
+        return result;
+    }
+    fReader->reset_decode_state();
+    fScanlineBuffer.clear();
+
+    rust_jpeg::ScanlineOutputResult start = fReader->start_scanline_output();
+    switch (start.status) {
+        case rust_jpeg::OutputStatus::Ready:
+            return kSuccess;
+        case rust_jpeg::OutputStatus::NeedMoreInput:
+            return kIncompleteInput;
+        case rust_jpeg::OutputStatus::Complete:
+            return kSuccess;
+        case rust_jpeg::OutputStatus::Error:
+            return MapDecodingResult(start.result);
+        default:
+            return kInternalError;
+    }
+}
+
+int SkJpegRustCodec::onGetScanlines(void* dst, int countLines, size_t dstRowBytes) {
+    if (!dst || countLines <= 0) {
+        return 0;
+    }
+    const size_t srcRowBytes = fReader->row_bytes();
+    SkSafeMath safe;
+    const size_t bufferSize = safe.mul(srcRowBytes, safe.castTo<size_t>(countLines));
+    if (!safe.ok()) {
+        return 0;
+    }
+    fScanlineBuffer.resize(bufferSize);
+
+    int totalRows = 0;
+    while (totalRows < countLines) {
+        SkSafeMath loopSafe;
+        const size_t offset = loopSafe.mul(loopSafe.castTo<size_t>(totalRows), srcRowBytes);
+        const size_t remainingSize =
+                loopSafe.mul(loopSafe.castTo<size_t>(countLines - totalRows), srcRowBytes);
+        if (!loopSafe.ok() || offset > bufferSize || remainingSize > bufferSize - offset) {
+            return totalRows;
+        }
+        SkSpan<uint8_t> remaining(fScanlineBuffer.data() + offset, remainingSize);
+        rust_jpeg::ScanlineOutputResult result =
+                fReader->read_scanlines(rust::Slice<uint8_t>(remaining.data(), remaining.size()),
+                                        static_cast<uint32_t>(srcRowBytes));
+        if (result.status != rust_jpeg::OutputStatus::Ready || result.rows == 0) {
+            break;
+        }
+        if (result.rows > static_cast<uint32_t>(countLines - totalRows)) {
+            return totalRows;
+        }
+        totalRows += static_cast<int>(result.rows);
+    }
+
+    auto* dstBytes = static_cast<uint8_t*>(dst);
+    for (int row = 0; row < totalRows; ++row) {
+        this->swizzleRow(fScanlineBuffer.data() + row * srcRowBytes, dstBytes + row * dstRowBytes);
+    }
+    return totalRows;
+}
+
+bool SkJpegRustCodec::onSkipScanlines(int countLines) {
+    if (countLines < 0) {
+        return false;
+    }
+    uint32_t skipped = 0;
+    while (skipped < static_cast<uint32_t>(countLines)) {
+        rust_jpeg::ScanlineOutputResult result =
+                fReader->skip_scanlines(static_cast<uint32_t>(countLines) - skipped);
+        if (result.status != rust_jpeg::OutputStatus::Ready || result.rows == 0) {
+            return false;
+        }
+        if (result.rows > static_cast<uint32_t>(countLines) - skipped) {
+            return false;
+        }
+        skipped += result.rows;
+    }
+    return true;
 }
