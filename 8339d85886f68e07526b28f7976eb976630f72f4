@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc75a936_7806713b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5091073
+      },
+      "writtenOn": "2026-09-07T09:07:17Z",
+      "side": 1,
+      "message": "Follow-up to 1326616. This CL adds the opt-in RGBA8888 LCD text mask path while keeping LCD16 as the default.",
+      "revId": "8339d85886f68e07526b28f7976eb976630f72f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
