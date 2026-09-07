@@ -15,6 +15,7 @@
 #include "src/core/SkTBlockList.h"
 #include "src/gpu/ganesh/GrShaderVar.h"
 #include "src/gpu/ganesh/glsl/GrGLSLUniformHandler.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/sksl/SkSLDefines.h"
 #include "src/sksl/ir/SkSLStatement.h"  // IWYU pragma: keep
 
@@ -178,7 +179,7 @@ public:
             fBuilder->codeAppend("}");
         }
     private:
-        GrGLSLShaderBuilder* fBuilder;
+        raw_ptr<GrGLSLShaderBuilder> fBuilder;
     };
 
 protected:
@@ -264,7 +265,7 @@ protected:
         kPrealloc = kCode + 6,  // 6 == Reasonable upper bound on number of processor stages
     };
 
-    GrGLSLProgramBuilder* fProgramBuilder;
+    raw_ptr<GrGLSLProgramBuilder> fProgramBuilder;
     std::string fCompilerString;
     skia_private::STArray<kPrealloc, SkString> fShaderStrings;
     SkString fCode;

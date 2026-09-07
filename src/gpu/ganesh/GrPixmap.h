@@ -8,6 +8,8 @@
 #ifndef GrPixmap_DEFINED
 #define GrPixmap_DEFINED
 
+#include "src/partition_alloc/raw_ptr_exclusion.h"
+
 #include "include/core/SkData.h"
 #include "include/core/SkPixmap.h"
 #include "include/core/SkPoint.h"
@@ -87,7 +89,8 @@ protected:
     }
 
 private:
-    T* fAddr = nullptr;
+    // RAW_PTR_EXCLUSION: Points to client-provided or SkData raw pixel memory.
+    RAW_PTR_EXCLUSION T* fAddr = nullptr;
     size_t fRowBytes = 0;
     GrImageInfo fInfo;
     sk_sp<SkData> fPixelStorage;

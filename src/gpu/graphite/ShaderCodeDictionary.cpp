@@ -20,6 +20,8 @@
 #include "src/gpu/graphite/RuntimeEffectDictionary.h"
 #include "src/gpu/graphite/ShaderInfo.h"
 #include "src/gpu/graphite/UniformManager.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ref.h"
 #include "src/sksl/SkSLString.h"
 #include "src/sksl/codegen/SkSLPipelineStageCodeGenerator.h"
 #include "src/sksl/ir/SkSLVarDeclarations.h"
@@ -580,22 +582,20 @@ public:
 
     std::string declareUniform(const SkSL::VarDeclaration* decl) override {
         std::string result = get_mangled_name(std::string(decl->var()->name()), fNode->keyIndex());
-        if (fShaderInfo.uniformSsboIndex()) {
-            result =
-                    get_storage_buffer_access(fShaderInfo.uniformSsboIndex(), result.c_str());
+        if (fShaderInfo->uniformSsboIndex()) {
+            result = get_storage_buffer_access(fShaderInfo->uniformSsboIndex(), result.c_str());
         }
         return result;
     }
 
     void defineFunction(const char* decl, const char* body, bool isMain) override {
         if (isMain) {
-            SkSL::String::appendf(
-                    fPreamble,
-                    "%s { %s }",
-                    emit_helper_declaration(fNode).c_str(),
-                    body);
+            SkSL::String::appendf(fPreamble.get(),
+                                  "%s { %s }",
+                                  emit_helper_declaration(fNode.get()).c_str(),
+                                  body);
         } else {
-            SkSL::String::appendf(fPreamble, "%s {%s}\n", decl, body);
+            SkSL::String::appendf(fPreamble.get(), "%s {%s}\n", decl, body);
         }
     }
 
@@ -614,24 +614,24 @@ public:
     std::string sampleShader(int index, std::string coords) override {
         ShaderSnippet::Args args = ShaderSnippet::kDefaultArgs;
         args.fFragCoord = coords;
-        return invoke_node(fShaderInfo, fNode->child(index), args);
+        return invoke_node(*fShaderInfo, fNode->child(index), args);
     }
 
     std::string sampleColorFilter(int index, std::string color) override {
         ShaderSnippet::Args args = ShaderSnippet::kDefaultArgs;
         args.fPriorStageOutput = color;
-        return invoke_node(fShaderInfo, fNode->child(index), args);
+        return invoke_node(*fShaderInfo, fNode->child(index), args);
     }
 
     std::string sampleBlender(int index, std::string src, std::string dst) override {
         ShaderSnippet::Args args = ShaderSnippet::kDefaultArgs;
         args.fPriorStageOutput = src;
         args.fBlenderDstColor = dst;
-        return invoke_node(fShaderInfo, fNode->child(index), args);
+        return invoke_node(*fShaderInfo, fNode->child(index), args);
     }
 
     std::string toLinearSrgb(std::string color) override {
-        SkASSERT(SkRuntimeEffectPriv::UsesColorTransform(fEffect));
+        SkASSERT(SkRuntimeEffectPriv::UsesColorTransform(fEffect.get()));
         // If we use color transforms (e.g. reference [to|from]LinearSrgb(), we dynamically add two
         // children to the runtime effect's node after all explicitly declared children. The
         // conversion *to* linear srgb is the second-to-last child node, and the conversion *from*
@@ -641,13 +641,13 @@ public:
 
         ShaderSnippet::Args args = ShaderSnippet::kDefaultArgs;
         args.fPriorStageOutput = SkSL::String::printf("(%s).rgb1", color.c_str());
-        std::string xformedColor = invoke_node(fShaderInfo, toLinearSrgbNode, args);
+        std::string xformedColor = invoke_node(*fShaderInfo, toLinearSrgbNode, args);
         return SkSL::String::printf("(%s).rgb", xformedColor.c_str());
     }
 
 
     std::string fromLinearSrgb(std::string color) override {
-        SkASSERT(SkRuntimeEffectPriv::UsesColorTransform(fEffect));
+        SkASSERT(SkRuntimeEffectPriv::UsesColorTransform(fEffect.get()));
         // If we use color transforms (e.g. reference [to|from]LinearSrgb()), we dynamically add two
         // children to the runtime effect's node after all explicitly declared children. The
         // conversion *to* linear srgb is the second-to-last child node, and the conversion *from*
@@ -657,7 +657,7 @@ public:
 
         ShaderSnippet::Args args = ShaderSnippet::kDefaultArgs;
         args.fPriorStageOutput = SkSL::String::printf("(%s).rgb1", color.c_str());
-        std::string xformedColor = invoke_node(fShaderInfo, fromLinearSrgbNode, args);
+        std::string xformedColor = invoke_node(*fShaderInfo, fromLinearSrgbNode, args);
         return SkSL::String::printf("(%s).rgb", xformedColor.c_str());
     }
 
@@ -666,10 +666,10 @@ public:
     }
 
 private:
-    const ShaderInfo& fShaderInfo;
-    const ShaderNode* fNode;
-    std::string* fPreamble;
-    SkDEBUGCODE(const SkRuntimeEffect* fEffect;)
+    const raw_ref<const ShaderInfo> fShaderInfo;
+    raw_ptr<const ShaderNode> fNode;
+    raw_ptr<std::string> fPreamble;
+    SkDEBUGCODE(raw_ptr<const SkRuntimeEffect> fEffect;)
 };
 
 std::string NoopPreamble(const ShaderInfo& shaderInfo, const ShaderNode* node) {

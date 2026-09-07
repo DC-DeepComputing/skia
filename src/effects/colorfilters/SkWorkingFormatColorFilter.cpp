@@ -40,7 +40,7 @@ sk_sp<SkColorSpace> SkWorkingFormatColorFilter::workingFormat(const sk_sp<SkColo
 }
 
 bool SkWorkingFormatColorFilter::appendStages(const SkStageRec& rec, bool shaderIsOpaque) const {
-    sk_sp<SkColorSpace> dstCS = sk_ref_sp(rec.fDstCS);
+    sk_sp<SkColorSpace> dstCS = sk_ref_sp(rec.fDstCS.get());
 
     if (!dstCS) {
         dstCS = SkColorSpace::MakeSRGB();

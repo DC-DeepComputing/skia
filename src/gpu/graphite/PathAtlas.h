@@ -14,6 +14,7 @@
 #include "src/gpu/ResourceKey.h"
 #include "src/gpu/graphite/DrawAtlas.h"
 #include "src/gpu/graphite/geom/CoverageMaskShape.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 namespace skgpu::graphite {
 
@@ -186,7 +187,7 @@ protected:
     };
 
     // The Recorder that created and owns this Atlas.
-    Recorder* fRecorder;
+    raw_ptr<Recorder> fRecorder;
 
     uint32_t fWidth = 0;
     uint32_t fHeight = 0;

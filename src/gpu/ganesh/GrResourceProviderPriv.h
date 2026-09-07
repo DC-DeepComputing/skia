@@ -8,6 +8,8 @@
 #ifndef GrResourceProviderPriv_DEFINED
 #define GrResourceProviderPriv_DEFINED
 
+#include "src/partition_alloc/raw_ptr.h"
+
 #include "src/gpu/ganesh/GrResourceProvider.h"
 
 /** Class that adds methods to GrResourceProvider that are only intended for use internal to Skia.
@@ -25,7 +27,7 @@ private:
     const GrResourceProviderPriv* operator&() const;
     GrResourceProviderPriv* operator&();
 
-    GrResourceProvider* fResourceProvider;
+    raw_ptr<GrResourceProvider> fResourceProvider;
     friend class GrResourceProvider; // to construct/copy this type
 };
 

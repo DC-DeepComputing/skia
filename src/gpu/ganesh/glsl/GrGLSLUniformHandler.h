@@ -16,6 +16,7 @@
 #include "src/gpu/ganesh/GrResourceHandle.h"
 #include "src/gpu/ganesh/GrShaderVar.h"
 #include "src/gpu/ganesh/glsl/GrGLSLProgramDataManager.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <string.h>
 #include <cstdint>
@@ -43,7 +44,7 @@ public:
     struct UniformInfo {
         GrShaderVar        fVariable;
         uint32_t           fVisibility;
-        const GrProcessor* fOwner;
+        raw_ptr<const GrProcessor> fOwner;
         SkString           fRawName;
     };
 
@@ -104,7 +105,7 @@ protected:
     explicit GrGLSLUniformHandler(GrGLSLProgramBuilder* program) : fProgramBuilder(program) {}
 
     // This is not owned by the class
-    GrGLSLProgramBuilder* fProgramBuilder;
+    raw_ptr<GrGLSLProgramBuilder> fProgramBuilder;
 
 private:
     virtual const char * samplerVariable(SamplerHandle) const = 0;

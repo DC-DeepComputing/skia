@@ -22,6 +22,7 @@
 #include "src/gpu/graphite/StorageContext.h"
 #include "src/gpu/graphite/geom/Rect.h"
 #include "src/gpu/graphite/geom/Transform.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <array>
 #include <cstdint>
@@ -278,7 +279,7 @@ protected:
     private:
         TextureDataCache::Index fLastIndex = TextureDataCache::kInvalidIndex;
 
-        TextureDataCache* const fTextureCache;
+        const raw_ptr<TextureDataCache> fTextureCache;
     };
 };
 

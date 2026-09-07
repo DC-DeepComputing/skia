@@ -15,6 +15,7 @@
 #include "include/core/SkStrokeRec.h"
 #include "include/private/SkAssert.h"
 #include "src/core/SkPathPriv.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <array>
 
@@ -348,16 +349,17 @@ private:
     }
 
     // Info and iterators from the original path.
-    const SkMatrix* const fViewMatrix;  // For hairlines.
-    const SkStrokeRec* const fStroke;
+    // RAW_PTR_EXCLUSION: Inner-loop stroke iterator accessed on every path segment.
+    RAW_PTR_EXCLUSION const SkMatrix* const fViewMatrix;  // For hairlines.
+    RAW_PTR_EXCLUSION const SkStrokeRec* const fStroke;
     SkPathPriv::RangeIter fIter;
     SkPathPriv::RangeIter fEnd;
 
     // Info for the current contour we are iterating.
     Verb fFirstVerbInContour;
-    const SkPoint* fFirstPtsInContour;
-    const float* fFirstWInContour;
-    const SkPoint* fLastDegenerateStrokePt = nullptr;
+    RAW_PTR_EXCLUSION const SkPoint* fFirstPtsInContour;
+    RAW_PTR_EXCLUSION const float* fFirstWInContour;
+    RAW_PTR_EXCLUSION const SkPoint* fLastDegenerateStrokePt = nullptr;
 
     // The queue is implemented as a roll-over array with a floating front index.
     Verb fVerbs[kQueueBufferCount];

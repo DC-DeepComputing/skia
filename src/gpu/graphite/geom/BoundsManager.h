@@ -17,6 +17,7 @@
 #include "src/core/SkVx.h"
 #include "src/gpu/graphite/DrawOrder.h"
 #include "src/gpu/graphite/geom/Rect.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <cstdint>
 #include <cstring>
@@ -298,7 +299,8 @@ private:
     // fBruteForceManager).
     BruteForceBoundsManager                  fBruteForceManager;
 
-    BoundsManager* fCurrentManager;
+    // RAW_PTR_EXCLUSION: Inner draw recording dispatch cursor.
+    RAW_PTR_EXCLUSION BoundsManager* fCurrentManager;
 
     // The grid manager starts out null and is created the first time we exceed fMaxBruteForceN.
     // However, even if we reset back to the brute force manager, we keep the grid around under the

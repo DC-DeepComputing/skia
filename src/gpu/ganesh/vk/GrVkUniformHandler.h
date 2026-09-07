@@ -6,7 +6,10 @@
 */
 
 #ifndef GrVkUniformHandler_DEFINED
+
 #define GrVkUniformHandler_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/private/SkAssert.h"
 #include "include/private/SkTArray.h"
@@ -61,7 +64,7 @@ public:
         // offsets are only valid if the SkSLType of the fVariable is not a sampler.
         uint32_t                fOffsets[kLayoutCount];
         // fImmutableSampler is used for sampling an image with a ycbcr conversion.
-        const GrVkSampler*      fImmutableSampler = nullptr;
+        raw_ptr<const GrVkSampler> fImmutableSampler = nullptr;
     };
     typedef SkTBlockList<VkUniformInfo> UniformInfoArray;
 

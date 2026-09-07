@@ -348,7 +348,7 @@ public:
     ScopedDrawBuilder& operator=(const ScopedDrawBuilder&) = delete;
 
 private:
-    Recorder* fRecorder;
+    raw_ptr<Recorder> fRecorder;
     std::unique_ptr<KeyAndDataBuilder> fKeyAndDataBuilder;
 };
 

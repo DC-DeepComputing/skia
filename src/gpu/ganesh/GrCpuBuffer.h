@@ -8,6 +8,8 @@
 #ifndef GrCpuBuffer_DEFINED
 #define GrCpuBuffer_DEFINED
 
+#include "src/partition_alloc/raw_ptr_exclusion.h"
+
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkAssert.h"
 #include "src/core/SkSafeMath.h"
@@ -43,7 +45,8 @@ public:
 
 private:
     GrCpuBuffer(void* data, size_t size) : fData(data), fSize(size) {}
-    void* fData;
+    // RAW_PTR_EXCLUSION: Points to trailing memory allocated via ::operator new.
+    RAW_PTR_EXCLUSION void* fData;
     size_t fSize;
 };
 

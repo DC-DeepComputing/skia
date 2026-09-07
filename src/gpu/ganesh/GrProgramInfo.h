@@ -14,6 +14,7 @@
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrPipeline.h"
 #include "src/gpu/ganesh/GrUserStencilSettings.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <cstdint>
 
@@ -85,9 +86,9 @@ private:
     GrSurfaceOrigin                       fOrigin;
     bool                                  fTargetHasVkResolveAttachmentWithInput;
     int                                   fTargetsNumSamples;
-    const GrPipeline*                     fPipeline;
-    const GrUserStencilSettings*          fUserStencilSettings;
-    const GrGeometryProcessor*            fGeomProc;
+    raw_ptr<const GrPipeline> fPipeline;
+    raw_ptr<const GrUserStencilSettings> fUserStencilSettings;
+    raw_ptr<const GrGeometryProcessor> fGeomProc;
     GrPrimitiveType                       fPrimitiveType;
     GrXferBarrierFlags                    fRenderPassXferBarriers;
     GrLoadOp                              fColorLoadOp;

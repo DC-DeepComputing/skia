@@ -25,6 +25,7 @@
 #include "src/gpu/graphite/PaintParamsKey.h"
 #include "src/gpu/graphite/ResourceTypes.h"
 #include "src/gpu/graphite/TextureProxy.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/shaders/SkShaderBase.h"
 #include "src/shaders/gradients/SkGradientBaseShader.h"
 
@@ -109,9 +110,9 @@ struct GradientShaderBlocks {
         SkPMColor4f                   fColors[kNumInternalStorageStops];
         SkV4                          fOffsets[kNumInternalStorageStops / 4];
         sk_sp<TextureProxy>           fColorsAndOffsetsProxy;
-        const SkPMColor4f*            fSrcColors;
-        const float*                  fSrcOffsets;
-        const SkGradientBaseShader*   fSrcShader;
+        raw_ptr<const SkPMColor4f> fSrcColors;
+        raw_ptr<const float> fSrcOffsets;
+        raw_ptr<const SkGradientBaseShader> fSrcShader;
 
         SkGradient::Interpolation     fInterpolation;
     };

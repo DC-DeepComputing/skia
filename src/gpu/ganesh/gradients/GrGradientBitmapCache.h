@@ -7,6 +7,8 @@
 #ifndef GrGradientBitmapCache_DEFINED
 #define GrGradientBitmapCache_DEFINED
 
+#include "src/partition_alloc/raw_ptr.h"
+
 #include "include/core/SkScalar.h"
 #include "include/effects/SkGradient.h"
 #include "include/private/SkDebug.h"
@@ -47,8 +49,8 @@ private:
     const int fResolution;
 
     struct Entry;
-    mutable Entry*  fHead;
-    mutable Entry*  fTail;
+    mutable raw_ptr<Entry> fHead;
+    mutable raw_ptr<Entry> fTail;
 
     inline Entry* release(Entry*) const;
     inline void attachToHead(Entry*) const;
@@ -76,7 +78,7 @@ private:
         AutoValidate(const GrGradientBitmapCache* bc) : fBC(bc) { bc->validate(); }
         ~AutoValidate() { fBC->validate(); }
     private:
-        const GrGradientBitmapCache* fBC;
+        raw_ptr<const GrGradientBitmapCache> fBC;
     };
 };
 

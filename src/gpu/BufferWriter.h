@@ -17,6 +17,7 @@
 #include "src/core/SkColorData.h"
 #include "src/core/SkConvertPixels.h"
 #include "src/core/SkRectMemcpy.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <array>
 #include <cstddef>
@@ -141,7 +142,8 @@ protected:
         SkASSERT(!fEnd || Mark(fPtr, bytesToWrite) <= fEnd);
     }
 
-    void* fPtr = nullptr;
+    // RAW_PTR_EXCLUSION: Ephemeral stream writer for non-PA driver-mapped GPU buffers.
+    RAW_PTR_EXCLUSION void* fPtr = nullptr;
     SkDEBUGCODE(mutable Mark fEnd = {};)
 };
 
@@ -202,7 +204,7 @@ struct VertexWriter : private BufferWriter {
 
     template<typename T>
     struct ArrayDesc {
-        const T* fArray;
+        RAW_PTR_EXCLUSION const T* fArray;
         int fCount;
     };
 
@@ -213,7 +215,7 @@ struct VertexWriter : private BufferWriter {
 
     template<int kCount, typename T>
     struct RepeatDesc {
-        const T& fVal;
+        RAW_PTR_EXCLUSION const T& fVal;
     };
 
     template <int kCount, typename T>

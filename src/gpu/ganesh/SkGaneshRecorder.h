@@ -8,6 +8,8 @@
 #ifndef SkGaneshRecorder_DEFINED
 #define SkGaneshRecorder_DEFINED
 
+#include "src/partition_alloc/raw_ptr.h"
+
 #include "include/core/SkRecorder.h"
 #include "include/core/SkSurface.h"
 #include "include/cpu/Recorder.h"
@@ -29,7 +31,7 @@ public:
     skcpu::Recorder* cpuRecorder() override { return skcpu::Recorder::TODO(); }
 
 private:
-    GrRecordingContext* fGaneshCtx;
+    raw_ptr<GrRecordingContext> fGaneshCtx;
 
     SkCanvas* makeCaptureCanvas(SkCanvas*) override { return nullptr; }
     void createCaptureBreakpoint(SkSurface*) override { }

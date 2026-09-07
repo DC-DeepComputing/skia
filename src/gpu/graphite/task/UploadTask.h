@@ -8,6 +8,9 @@
 #ifndef skgpu_graphite_task_UploadTask_DEFINED
 #define skgpu_graphite_task_UploadTask_DEFINED
 
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
+
 #include "src/gpu/graphite/task/Task.h"
 
 #include "include/core/SkRefCnt.h"
@@ -39,7 +42,8 @@ class ScratchResourceManager;
 class TextureProxy;
 
 struct MipLevel {
-    const void* fPixels = nullptr;
+    // RAW_PTR_EXCLUSION: CPU upload buffer memory.
+    RAW_PTR_EXCLUSION const void* fPixels = nullptr;
     size_t fRowBytes = 0;
 };
 
@@ -168,7 +172,7 @@ private:
                    sk_sp<TextureProxy>,
                    std::unique_ptr<ConditionalUploadContext> = nullptr);
 
-    const Buffer* fBuffer;
+    raw_ptr<const Buffer> fBuffer;
     sk_sp<TextureProxy> fTextureProxy;
     skia_private::STArray<1, BufferTextureCopyData> fCopyData;
     std::unique_ptr<ConditionalUploadContext> fConditionalContext;

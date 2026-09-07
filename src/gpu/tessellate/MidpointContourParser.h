@@ -11,6 +11,7 @@
 #include "include/core/SkPath.h"
 #include "include/core/SkPoint.h"
 #include "src/core/SkPathPriv.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <cstdint>
 
@@ -99,16 +100,17 @@ private:
         fWtsIdx = 0;
     }
 
-    const SkPath& fPath;
+    RAW_PTR_EXCLUSION const SkPath& fPath;
 
-    const SkPathVerb* fVerbs;
+    // RAW_PTR_EXCLUSION: Inner-loop contour parser advances pointers per verb.
+    RAW_PTR_EXCLUSION const SkPathVerb* fVerbs;
     int fNumRemainingVerbs = 0;
     int fVerbsIdx = 0;
 
-    const SkPoint* fPoints;
+    RAW_PTR_EXCLUSION const SkPoint* fPoints;
     int fPtsIdx = 0;
 
-    const float* fWeights;
+    RAW_PTR_EXCLUSION const float* fWeights;
     int fWtsIdx = 0;
 
     SkPoint fMidpoint;

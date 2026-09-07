@@ -10,6 +10,7 @@
 
 #include "include/private/SkAssert.h"
 #include "src/core/SkColorData.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <cstdint>
 
@@ -72,7 +73,7 @@ namespace GrDefaultGeoProcFactory {
         bool hasLocalMatrix() const { return nullptr != fMatrix; }
 
         Type fType;
-        const SkMatrix* fMatrix;
+        raw_ptr<const SkMatrix> fMatrix;
     };
 
     GrGeometryProcessor* Make(SkArenaAlloc*,

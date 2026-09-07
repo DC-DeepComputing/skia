@@ -24,6 +24,7 @@
 #include "src/gpu/graphite/StorageContext.h"
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/UniformManager.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/shaders/gradients/SkGradientBaseShader.h"
 
 #include <optional>
@@ -470,7 +471,7 @@ public:
     }
 
 private:
-    UniformManager* fManager;
+    raw_ptr<UniformManager> fManager;
 
     UniformExpectationsValidator(UniformExpectationsValidator&&) = delete;
     UniformExpectationsValidator(const UniformExpectationsValidator&) = delete;

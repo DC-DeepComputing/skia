@@ -8,6 +8,9 @@
 #ifndef GrAtlasTypes_DEFINED
 #define GrAtlasTypes_DEFINED
 
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
+
 #include "include/core/SkColor.h"
 #include "include/core/SkColorType.h"
 #include "include/core/SkPoint.h"
@@ -391,10 +394,11 @@ private:
     skgpu::Token fLastUse;
     int          fFlushesSinceLastUse;
 
-    GrAtlasGenerationCounter* const fGenerationCounter;
+    const raw_ptr<GrAtlasGenerationCounter> fGenerationCounter;
     uint64_t fGenID;
     GrPlotLocator fPlotLocator;
-    std::byte* fData;
+    // RAW_PTR_EXCLUSION: Raw CPU pixel data buffer for texture upload.
+    RAW_PTR_EXCLUSION std::byte* fData;
     const int fWidth;
     const int fHeight;
     const int fX;

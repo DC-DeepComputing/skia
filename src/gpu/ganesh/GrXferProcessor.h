@@ -19,6 +19,8 @@
 #include "src/gpu/ganesh/GrProcessor.h"
 #include "src/gpu/ganesh/GrProcessorAnalysis.h"
 #include "src/gpu/ganesh/glsl/GrGLSLUniformHandler.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <memory>
 
@@ -306,10 +308,11 @@ public:
                 , fDstTextureSamplerHandle(dstTextureSamplerHandle)
                 , fDstTextureOrigin(dstTextureOrigin)
                 , fWriteSwizzle(writeSwizzle) {}
-        GrGLSLXPFragmentBuilder* fXPFragBuilder;
-        GrGLSLUniformHandler* fUniformHandler;
-        const GrShaderCaps* fShaderCaps;
-        const GrXferProcessor& fXP;
+        raw_ptr<GrGLSLXPFragmentBuilder> fXPFragBuilder;
+        raw_ptr<GrGLSLUniformHandler> fUniformHandler;
+        raw_ptr<const GrShaderCaps> fShaderCaps;
+        // RAW_PTR_EXCLUSION: Ephemeral shader program generator reference using dot access.
+        RAW_PTR_EXCLUSION const GrXferProcessor& fXP;
         const char* fInputColor;
         const char* fInputCoverage;
         const char* fOutputPrimary;

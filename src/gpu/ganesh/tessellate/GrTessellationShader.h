@@ -7,6 +7,10 @@
 #ifndef GrTessellationShader_DEFINED
 #define GrTessellationShader_DEFINED
 
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
+#include "src/partition_alloc/raw_ref.h"
+
 #include "include/core/SkMatrix.h"
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkColorData.h"
@@ -44,13 +48,14 @@ public:
     const SkPMColor4f& color() const { return fColor;}
 
     struct ProgramArgs {
-        SkArenaAlloc* fArena;
-        const GrSurfaceProxyView& fWriteView;
+        raw_ptr<SkArenaAlloc> fArena;
+        // RAW_PTR_EXCLUSION: Aggregate struct initialized via copy-list-initialization.
+        RAW_PTR_EXCLUSION const GrSurfaceProxyView& fWriteView;
         bool fUsesMSAASurface;
-        const GrDstProxyView* fDstProxyView;
+        raw_ptr<const GrDstProxyView> fDstProxyView;
         GrXferBarrierFlags fXferBarrierFlags;
         GrLoadOp fColorLoadOp;
-        const GrCaps* fCaps;
+        raw_ptr<const GrCaps> fCaps;
     };
 
     static const GrPipeline* MakePipeline(const ProgramArgs&, GrAAType,

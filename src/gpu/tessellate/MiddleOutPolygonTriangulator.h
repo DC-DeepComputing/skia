@@ -16,6 +16,7 @@
 #include "include/private/SkTemplates.h"
 #include "src/core/SkMathPriv.h"
 #include "src/core/SkPathPriv.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <algorithm>
 #include <cstring>
@@ -111,7 +112,8 @@ public:
             std::tuple<SkPoint, SkPoint, SkPoint> operator*() {
                 return {fVertex[-1].fPoint, fVertex[0].fPoint, fLastPoint};
             }
-            StackVertex* fVertex;
+            // RAW_PTR_EXCLUSION: Inner-loop polygon triangulation stack iterator.
+            RAW_PTR_EXCLUSION StackVertex* fVertex;
             SkPoint fLastPoint;
         };
 
@@ -119,10 +121,10 @@ public:
         Iter end() const { return {fEnd, fLastPoint}; }
 
     private:
-        MiddleOutPolygonTriangulator* fMiddleOut;
+        RAW_PTR_EXCLUSION MiddleOutPolygonTriangulator* fMiddleOut;
         SkPoint fLastPoint;
-        StackVertex* fEnd;
-        StackVertex* fNewTopVertex;
+        RAW_PTR_EXCLUSION StackVertex* fEnd;
+        RAW_PTR_EXCLUSION StackVertex* fNewTopVertex;
         StackVertex fNewTopValue;
     };
 
@@ -195,8 +197,7 @@ public:
 private:
     constexpr static int kStackPreallocCount = 32;
     skia_private::AutoSTMalloc<kStackPreallocCount, StackVertex> fVertexStack;
-    SkDEBUGCODE(int fStackAllocCount;)
-    StackVertex* fTop;
+    SkDEBUGCODE(int fStackAllocCount;) RAW_PTR_EXCLUSION StackVertex* fTop;
 };
 
 // This is a helper class that transforms and pushes a path's inner fan vertices onto a

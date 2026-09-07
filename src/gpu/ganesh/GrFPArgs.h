@@ -9,6 +9,7 @@
 #define GrFPArgs_DEFINED
 
 #include "include/private/SkAssert.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 class GrColorInfo;
 class SkSurfaceProps;
@@ -31,11 +32,10 @@ struct GrFPArgs {
         SkASSERT(fSurfaceDrawContext);
     }
 
-    skgpu::ganesh::SurfaceDrawContext* fSurfaceDrawContext;
-
-    const GrColorInfo* fDstColorInfo;
-
-    const SkSurfaceProps& fSurfaceProps;
+    // RAW_PTR_EXCLUSION: Ephemeral argument pack for FP construction.
+    RAW_PTR_EXCLUSION skgpu::ganesh::SurfaceDrawContext* fSurfaceDrawContext;
+    RAW_PTR_EXCLUSION const GrColorInfo* fDstColorInfo;
+    RAW_PTR_EXCLUSION const SkSurfaceProps& fSurfaceProps;
 
     Scope fScope;
 };

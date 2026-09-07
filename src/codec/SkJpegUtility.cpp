@@ -12,7 +12,7 @@
 #include "src/codec/SkCodecPriv.h"
 #include "src/codec/SkJpegPriv.h"
 
-#include <setjmp.h>
+#include <csetjmp>
 #include <cstddef>
 
 extern "C" {

@@ -23,6 +23,7 @@
 #include "src/gpu/ganesh/glsl/GrGLSLFragmentShaderBuilder.h"
 #include "src/gpu/ganesh/glsl/GrGLSLUniformHandler.h"
 #include "src/gpu/ganesh/glsl/GrGLSLVertexGeoBuilder.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <cstdint>
 #include <memory>
@@ -135,8 +136,9 @@ public:
     GrGLSLVertexBuilder          fVS;
     GrGLSLFragmentShaderBuilder  fFS;
 
-    const GrProgramDesc&         fDesc;
-    const GrProgramInfo&         fProgramInfo;
+    // RAW_PTR_EXCLUSION: Ephemeral shader program builder stack reference.
+    RAW_PTR_EXCLUSION const GrProgramDesc& fDesc;
+    RAW_PTR_EXCLUSION const GrProgramInfo& fProgramInfo;
 
     GrGLSLBuiltinUniformHandles  fUniformHandles;
 

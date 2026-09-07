@@ -20,6 +20,7 @@
 #include "src/gpu/graphite/PipelineData.h"
 #include "src/gpu/graphite/geom/Rect.h"
 #include "src/gpu/graphite/geom/Transform.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <cstdint>
 #include <functional>
@@ -149,7 +150,8 @@ struct Draw {
 
     Draw() = default; // Let it be uninitialized
 
-    const DrawParams* fDrawParams;
+    // RAW_PTR_EXCLUSION: Draw requires trivially destructible type for arena storage.
+    RAW_PTR_EXCLUSION const DrawParams* fDrawParams;
     UniformDataCache::Index fUniformIndex;
 
     Draw* fNext;
@@ -172,7 +174,8 @@ struct BindingList {
 
     Rect fBounds = Rect::InfiniteInverted();
 
-    const RenderStep* fStep;
+    // RAW_PTR_EXCLUSION: Inner draw list sorting structure.
+    RAW_PTR_EXCLUSION const RenderStep* fStep;
     LayerKey fKey;
 
     // Maintain a singly-linked list of draws, either prepending to head for front-to-back

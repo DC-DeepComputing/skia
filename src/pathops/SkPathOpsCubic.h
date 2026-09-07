@@ -14,6 +14,7 @@
 #include "include/private/SkDebug.h"
 #include "include/private/SkMalloc.h"
 #include "src/core/SkArenaAlloc.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/partition_alloc/raw_ptr_exclusion.h"
 #include "src/pathops/SkPathOpsDebug.h"
 #include "src/pathops/SkPathOpsPoint.h"
@@ -151,7 +152,7 @@ struct SkDCubic {
 
     static const int gPrecisionUnit;
     SkDPoint fPts[kPointCount];
-    SkDEBUGCODE(RAW_PTR_EXCLUSION SkOpGlobalState* fDebugGlobalState;)  // RAW_PTR_EXCLUSION: union.
+    SkDEBUGCODE(RAW_PTR_EXCLUSION SkOpGlobalState* fDebugGlobalState;)
 };
 
 /* Given the set [0, 1, 2, 3], and two of the four members, compute an XOR mask

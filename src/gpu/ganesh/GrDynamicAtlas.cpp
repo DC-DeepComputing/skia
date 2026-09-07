@@ -7,6 +7,8 @@
 
 #include "src/gpu/ganesh/GrDynamicAtlas.h"
 
+#include "src/partition_alloc/raw_ptr_exclusion.h"
+
 #include "include/core/SkTypes.h"
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/ganesh/GrBackendSurface.h"
@@ -58,8 +60,9 @@ public:
     }
 
 private:
-    Node* const fPrevious;
-    Rectanizer* const fRectanizer;
+    // RAW_PTR_EXCLUSION: Arena-allocated atlas tree node pointers.
+    RAW_PTR_EXCLUSION Node* const fPrevious;
+    RAW_PTR_EXCLUSION Rectanizer* const fRectanizer;
     const int fX, fY;
 };
 
