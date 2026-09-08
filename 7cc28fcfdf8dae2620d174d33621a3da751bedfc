@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb041488_b09759cd",
+        "filename": "src/gpu/ganesh/GrDirectContextPriv.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-08T14:22:49Z",
+      "side": 1,
+      "message": "Done\n\nI hesitate to add it to the public API lest we annoy clients.",
+      "parentUuid": "0fd9b4fe_551f1b83",
+      "range": {
+        "startLine": 93,
+        "startChar": 0,
+        "endLine": 93,
+        "endChar": 47
+      },
+      "revId": "7cc28fcfdf8dae2620d174d33621a3da751bedfc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a85e60b4_f48c0af5",
