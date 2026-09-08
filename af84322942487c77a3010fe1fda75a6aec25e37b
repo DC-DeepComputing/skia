@@ -16,6 +16,23 @@
       "message": "Hello @syoussefi@google.com could you please help me with a review? Thanks!",
       "revId": "af84322942487c77a3010fe1fda75a6aec25e37b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "12d66c35_6ae48935",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2026-09-08T20:10:21Z",
+      "side": 1,
+      "message": "Removing myself as reviewer as I\u0027m not an owner of Skia",
+      "revId": "af84322942487c77a3010fe1fda75a6aec25e37b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
