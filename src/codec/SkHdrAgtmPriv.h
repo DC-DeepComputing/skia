@@ -18,6 +18,14 @@
 #include <optional>
 #include <vector>
 
+#ifndef SkCodecPrintf
+#ifdef SK_PRINT_CODEC_MESSAGES
+    #define SkCodecPrintf SkDebugf
+#else
+    #define SkCodecPrintf(...)
+#endif
+#endif
+
 class SkData;
 class SkString;
 
