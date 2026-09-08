@@ -38,9 +38,10 @@ public:
     struct AlphaAllocation {
         uint8_t* fWritePtr   = nullptr; // The ptr into the AlphaAtlasManager's cpu storage
         int32_t  fAlphaIndex = 0;       // Page-local byte offset
-        uint16_t fTexPage    = 0;       // Atlas page index (0 or 1)
+        uint16_t fTexPage    = 0;       // Atlas page index (0 or 1, or kInvalidTexPage)
     };
-    std::optional<AlphaAllocation> requestAlphaSpace(int32_t numBytes);
+    uint8_t* requestAlphaSpace(int32_t numBytes);
+    std::optional<AlphaAllocation> finalizeRun(int32_t numBytes);
 
     void recordUploads(DrawContext* dc);
     void freeGpuResources();
@@ -64,12 +65,51 @@ public:
     int activeSlot() const { return fActiveSlot; }
 
     void populateProxies(EndCaps* ends) const {
+        ends->clearProxies();
         for (int32_t i = 0; i < SparseStripConfig::kMaxTexturePages; ++i) {
             if (fPages[i].isValid()) {
                 ends->addProxy(fPages[i].fTexture);
             }
         }
     }
+
+    bool resolveNullCaps(EndCaps* ends) {
+        int firstNull = ends->firstNullCapIndex();
+        if (firstNull == EndCaps::kInvalidIndex) {
+            return true;
+        }
+        int oldSlot = fActiveSlot ^ 1;
+        if (fPages[oldSlot].isValid()) {
+            fPages[oldSlot].reset();
+        }
+        if (!this->createPageInSlot(oldSlot, fNullAlphasBytes)) {
+            return false;
+        }
+        TexturePage* newPage = &fPages[oldSlot];
+        newPage->fUsedBytes = fNullAlphasBytes;
+
+        std::memcpy(fAlphaBuffer.data() + newPage->fBufferOffset,
+                    fAlphaBuffer.data() + fNullAlphasOffset,
+                    fNullAlphasBytes);
+        fAlphaBuffer.resize(std::max(fPages[0].fBufferOffset + fPages[0].fCapacityBytes,
+                                     fPages[1].fBufferOffset + fPages[1].fCapacityBytes));
+        fNullAlphasOffset = 0;
+        fNullAlphasBytes = 0;
+        fActiveSlot = oldSlot;
+
+        auto& caps = ends->caps();
+        for (int i = firstNull; i < caps.size(); ++i) {
+            caps[i].fTexPage = static_cast<uint16_t>(oldSlot);
+        }
+        ends->resetNullCaps();
+
+        this->populateProxies(ends);
+        return true;
+    }
+
+#if defined(GPU_TEST_UTILS)
+    AlphaAtlasManager() : AlphaAtlasManager(nullptr) {}
+#endif
 
 private:
     // The struct backing the manager's pages. Note, the struct contains fAlphaBuffer, which holds
@@ -80,7 +120,7 @@ private:
         int32_t fCapacityBytes = 0;
         int32_t fUsedBytes = 0;
         int32_t fUploadedRows = 0;
-        SkTDArray<uint8_t> fAlphaBuffer;
+        int32_t fBufferOffset = 0;
 
         bool isValid() const { return fTexture != nullptr; }
         void reset() {
@@ -89,7 +129,7 @@ private:
             fCapacityBytes = 0;
             fUsedBytes = 0;
             fUploadedRows = 0;
-            fAlphaBuffer.clear();
+            fBufferOffset = 0;
         }
     };
 
@@ -99,6 +139,10 @@ private:
     TexturePage fPages[SparseStripConfig::kMaxTexturePages];
     int fActiveSlot;
     int32_t fNextPageRowCount;
+    SkTDArray<uint8_t> fAlphaBuffer;
+    int32_t fNullAlphasOffset = 0;
+    int32_t fNullAlphasBytes = 0;
+    int32_t fWritingBytes = 0;
 };
 
 }  // namespace skgpu::graphite

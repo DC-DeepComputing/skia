@@ -21,6 +21,8 @@ namespace skgpu::graphite {
 // antialiased portion of the path rendering, and spans a variable non-zero number of tiles.
 class EndCaps {
 public:
+    static constexpr int32_t kInvalidIndex = -1;
+
     struct EndCap {
         EndCap(uint16_t x, uint16_t y, uint16_t width, int32_t alphaIndex, uint16_t texPage)
                 : fX(x), fY(y), fWidth(width), fAlphaIndex(alphaIndex), fTexPage(texPage),
@@ -41,6 +43,9 @@ public:
                 uint16_t width,
                 int32_t alphaIndex,
                 uint16_t texPage) {
+        if (texPage == SparseStripConfig::kInvalidTexPage && fFirstNullCapIndex == kInvalidIndex) {
+            fFirstNullCapIndex = fCaps.size();
+        }
         fCaps.push_back(EndCap(x, y, width, alphaIndex, texPage));
     }
 
@@ -55,17 +60,24 @@ public:
     const skia_private::TArray<EndCap>& caps() const { return fCaps; }
     skia_private::TArray<EndCap>& caps() { return fCaps; }
     const skia_private::TArray<sk_sp<TextureProxy>>& proxies() const { return fProxies; }
+    void clearProxies() { fProxies.clear(); }
 
     bool empty() const { return fCaps.empty(); }
     size_t size() const { return fCaps.size(); }
     void clear() {
         fCaps.clear();
         fProxies.clear();
+        fFirstNullCapIndex = kInvalidIndex;
     }
+
+    bool hasNullCaps() const { return fFirstNullCapIndex != kInvalidIndex; }
+    int32_t firstNullCapIndex() const { return fFirstNullCapIndex; }
+    void resetNullCaps() { fFirstNullCapIndex = kInvalidIndex; }
 
 private:
     skia_private::TArray<EndCap> fCaps;
     skia_private::STArray<SparseStripConfig::kMaxTexturePages, sk_sp<TextureProxy>> fProxies;
+    int32_t fFirstNullCapIndex = kInvalidIndex;
 };
 
 }  // namespace skgpu::graphite
