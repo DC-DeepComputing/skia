@@ -9,7 +9,6 @@
 #include "include/core/SkColorFilter.h"
 #include "include/effects/SkRuntimeEffect.h"
 #include "include/private/SkHdrMetadata.h"
-#include "src/codec/SkCodecPriv.h"
 #include "src/codec/SkHdrAgtmPriv.h"
 
 namespace {
