@@ -14,10 +14,27 @@
 
 namespace skgpu::graphite {
 
+namespace {
+
+int32_t aligned_width(int32_t bytes) {
+    constexpr int32_t kMask = SparseStripConfig::kAtlasWidthBytes - 1;
+    return (bytes + kMask) & ~kMask;
+}
+
+void allocate_aligned(SkTDArray<uint8_t>* buffer, int32_t targetBytes) {
+    int32_t alignedSize = aligned_width(targetBytes);
+    if (buffer->size() < alignedSize) {
+        buffer->resize(alignedSize);
+    }
+}
+
+}  // namespace
+
 AlphaAtlasManager::AlphaAtlasManager(Recorder* recorder)
         : fRecorder(recorder)
         , fActiveSlot(0)
-        , fNextPageRowCount(SparseStripConfig::kInitialAtlasRows) {}
+        , fNextPageRowCount(SparseStripConfig::kInitialAtlasRows)
+        , fWritingBytes(0) {}
 
 bool AlphaAtlasManager::createPageInSlot(int slot, int32_t minRequiredBytes) {
     SkASSERT(slot < SparseStripConfig::kMaxTexturePages);
@@ -25,8 +42,7 @@ bool AlphaAtlasManager::createPageInSlot(int slot, int32_t minRequiredBytes) {
 
     int32_t rows = fNextPageRowCount;
     if (minRequiredBytes > 0) {
-        int32_t neededRows = (minRequiredBytes + SparseStripConfig::kAtlasWidthBytes - 1) /
-                             SparseStripConfig::kAtlasWidthBytes;
+        int32_t neededRows = aligned_width(minRequiredBytes) / SparseStripConfig::kAtlasWidthBytes;
         rows = std::max(rows, neededRows);
     }
     rows = std::min(rows, SparseStripConfig::kMaxAtlasRows);
@@ -49,84 +65,151 @@ bool AlphaAtlasManager::createPageInSlot(int slot, int32_t minRequiredBytes) {
         return false;
     }
 
+    int otherSlot = slot ^ 1;
+    const TexturePage& otherPage = fPages[otherSlot];
+    int32_t bufferOffset = 0;
+    int32_t capacityBytes = rows * SparseStripConfig::kAtlasWidthBytes;
+
+    if (otherPage.isValid()) {
+        bufferOffset = (otherPage.fBufferOffset == 0) ? otherPage.fCapacityBytes : 0;
+    } else {
+        bufferOffset = 0;
+    }
+
+    int32_t requiredTotalBytes = bufferOffset + capacityBytes;
+    allocate_aligned(&fAlphaBuffer, requiredTotalBytes);
+
     TexturePage& page = fPages[slot];
     page.fTexture = std::move(proxy);
     page.fRowCount = rows;
-    page.fCapacityBytes = rows * SparseStripConfig::kAtlasWidthBytes;
+    page.fCapacityBytes = capacityBytes;
     page.fUsedBytes = 0;
     page.fUploadedRows = 0;
-    page.fAlphaBuffer.clear();
+    page.fBufferOffset = bufferOffset;
 
     // Double row count for the next created page, clamped to max atlas rows
     fNextPageRowCount = std::min(SparseStripConfig::kMaxAtlasRows, rows * 2);
     return true;
 }
 
-std::optional<AlphaAtlasManager::AlphaAllocation> AlphaAtlasManager::requestAlphaSpace(
-        int32_t numBytes) {
-    if (numBytes <= 0 || numBytes > SparseStripConfig::kMaxCapBytes) {
-        return std::nullopt;
+uint8_t* AlphaAtlasManager::requestAlphaSpace(int32_t numBytes) {
+    SkASSERT(numBytes > 0 && numBytes <= SparseStripConfig::kMaxCapBytes);
+
+    auto appendBytes = [&](int32_t baseOffset) -> uint8_t* {
+        int32_t offset = baseOffset + fWritingBytes;
+        allocate_aligned(&fAlphaBuffer, offset + numBytes);
+        fWritingBytes += numBytes;
+        return fAlphaBuffer.data() + offset;
+    };
+
+#if defined(GPU_TEST_UTILS)
+    if (!fRecorder) {
+        return appendBytes(fNullAlphasBytes);
+    }
+#endif
+
+    if (fNullAlphasBytes > 0) {
+        return appendBytes(fNullAlphasOffset + fNullAlphasBytes);
     }
 
-    // 1. Ensure current active slot has a valid page allocated
     if (!fPages[fActiveSlot].isValid()) {
         if (!this->createPageInSlot(fActiveSlot, numBytes)) {
-            return std::nullopt;
+            return nullptr;
         }
     }
 
     TexturePage* activePage = &fPages[fActiveSlot];
+    return appendBytes(activePage->fBufferOffset + activePage->fUsedBytes);
+}
 
-    // 2. Check if the active slot has enough remaining room.
-    // An endcap's alphas must be atomic to a single texture page (never split across pages).
+// TODO (thomsmit): Currently we memmove runs so that straddling runs always start cleanly on the
+// memory allocation for the next page. This seems a little messy, but performance is quite good, as
+// the movment happens rarely. The vast majority of allocations occur within the page.
+std::optional<AlphaAtlasManager::AlphaAllocation> AlphaAtlasManager::finalizeRun(int32_t numBytes) {
+    if (numBytes <= 0 || numBytes > SparseStripConfig::kMaxCapBytes) {
+        fWritingBytes = 0;
+        return std::nullopt;
+    }
+    SkASSERT(fWritingBytes == numBytes);
+
+    auto advance = [&](int32_t bufferOffset, int32_t& usedBytes, uint16_t texPage) {
+        int32_t alphaIdx = usedBytes;
+        usedBytes += numBytes;
+        fWritingBytes = 0;
+        return AlphaAllocation{fAlphaBuffer.data() + bufferOffset + alphaIdx, alphaIdx, texPage};
+    };
+
+#if defined(GPU_TEST_UTILS)
+    if (!fRecorder) {
+        return advance(/*bufferOffset=*/0, fNullAlphasBytes, /*texPage=*/0);
+    }
+#endif
+
+    if (fNullAlphasBytes > 0) {
+        return advance(fNullAlphasOffset, fNullAlphasBytes, SparseStripConfig::kInvalidTexPage);
+    }
+
+    SkASSERT(fPages[fActiveSlot].isValid());
+    TexturePage* activePage = &fPages[fActiveSlot];
+    int32_t runStartOffset = activePage->fBufferOffset + activePage->fUsedBytes;
+
     if (activePage->fUsedBytes + numBytes <= activePage->fCapacityBytes) {
-        int32_t alphaIdx = activePage->fUsedBytes;
-        activePage->fUsedBytes += numBytes;
-        uint8_t* ptr = activePage->fAlphaBuffer.append(numBytes);
-        return AlphaAllocation{ptr, alphaIdx, static_cast<uint16_t>(fActiveSlot)};
+        return advance(activePage->fBufferOffset, activePage->fUsedBytes,
+                       static_cast<uint16_t>(fActiveSlot));
     }
 
-    // 3. Current active slot does not have enough room.
-    // Flip-flop to the other slot: nextSlot = fActiveSlot ^ 1
+    // Run does not fit in activePage!
     int nextSlot = fActiveSlot ^ 1;
-
-    // If nextSlot is already in use, both slots are full for this batch!
-    if (fPages[nextSlot].isValid()) {
-        return std::nullopt;
+    if (!fPages[nextSlot].isValid()) {
+        if (!this->createPageInSlot(nextSlot, numBytes)) {
+            fWritingBytes = 0;
+            return std::nullopt;
+        }
+        fActiveSlot = nextSlot;
+        activePage = &fPages[fActiveSlot];
+        std::memmove(fAlphaBuffer.data() + activePage->fBufferOffset,
+                     fAlphaBuffer.data() + runStartOffset,
+                     numBytes);
+        return advance(activePage->fBufferOffset, activePage->fUsedBytes,
+                       static_cast<uint16_t>(fActiveSlot));
     }
 
-    if (!this->createPageInSlot(nextSlot, numBytes)) {
-        return std::nullopt;
-    }
-
-    fActiveSlot = nextSlot;
-    activePage = &fPages[fActiveSlot];
-
-    int32_t alphaIdx = 0;
-    activePage->fUsedBytes = numBytes;
-    uint8_t* ptr = activePage->fAlphaBuffer.append(numBytes);
-    return AlphaAllocation{ptr, alphaIdx, static_cast<uint16_t>(fActiveSlot)};
+    // Both slots in use! Enter null caps!
+    fNullAlphasOffset = aligned_width(fAlphaBuffer.size());
+    allocate_aligned(&fAlphaBuffer, fNullAlphasOffset + numBytes);
+    std::memmove(fAlphaBuffer.data() + fNullAlphasOffset,
+                 fAlphaBuffer.data() + runStartOffset,
+                 numBytes);
+    return advance(fNullAlphasOffset, fNullAlphasBytes, SparseStripConfig::kInvalidTexPage);
 }
 
 void AlphaAtlasManager::recordUploads(DrawContext* dc) {
     for (int i = 0; i < SparseStripConfig::kMaxTexturePages; ++i) {
         TexturePage& page = fPages[i];
-        if (page.isValid() && !page.fAlphaBuffer.empty()) {
+        if (page.isValid() &&
+            page.fUsedBytes > page.fUploadedRows * SparseStripConfig::kAtlasWidthBytes) {
             SkASSERT(page.fTexture);
 
-            // Compute how many rows are in the pending buffer and pad buffer to full rows
-            int32_t pendingRows =
-                    (page.fAlphaBuffer.size() + SparseStripConfig::kAtlasWidthBytes - 1) /
-                    SparseStripConfig::kAtlasWidthBytes;
-            int32_t paddedSize = pendingRows * SparseStripConfig::kAtlasWidthBytes;
-            if (page.fAlphaBuffer.size() < paddedSize) {
-                int32_t diff = paddedSize - page.fAlphaBuffer.size();
-                uint8_t* ptr = page.fAlphaBuffer.append(diff);
-                std::memset(ptr, 0, diff);
+            int32_t uploadedBytes = page.fUploadedRows * SparseStripConfig::kAtlasWidthBytes;
+            int32_t pendingBytes = page.fUsedBytes - uploadedBytes;
+            int32_t pendingRows = aligned_width(pendingBytes) / SparseStripConfig::kAtlasWidthBytes;
+            int32_t paddedSize =
+                    (page.fUploadedRows + pendingRows) * SparseStripConfig::kAtlasWidthBytes;
+
+            // Zero-pad trailing bytes in the last row in fAlphaBuffer
+            int32_t currentEndOffset = page.fBufferOffset + page.fUsedBytes;
+            int32_t targetEndOffset = page.fBufferOffset + paddedSize;
+
+            SkASSERT(fAlphaBuffer.size() >= targetEndOffset);
+            SkASSERT(targetEndOffset == aligned_width(targetEndOffset));
+
+            int32_t diff = targetEndOffset - currentEndOffset;
+            if (diff > 0) {
+                std::memset(fAlphaBuffer.data() + currentEndOffset, 0, diff);
             }
 
             MipLevel level;
-            level.fPixels = page.fAlphaBuffer.data();
+            level.fPixels = fAlphaBuffer.data() + page.fBufferOffset + uploadedBytes;
             level.fRowBytes = SparseStripConfig::kAtlasWidthBytes;
             int32_t startRow = page.fUploadedRows;
             SkIRect dstRect =
@@ -152,7 +235,6 @@ void AlphaAtlasManager::recordUploads(DrawContext* dc) {
 
             page.fUploadedRows += pendingRows;
             page.fUsedBytes = page.fUploadedRows * SparseStripConfig::kAtlasWidthBytes;
-            page.fAlphaBuffer.clear();
         }
     }
 
@@ -169,6 +251,10 @@ void AlphaAtlasManager::freeGpuResources() {
     fPages[1].reset();
     fActiveSlot = 0;
     fNextPageRowCount = SparseStripConfig::kInitialAtlasRows;
+    fAlphaBuffer.clear();
+    fNullAlphasOffset = 0;
+    fNullAlphasBytes = 0;
+    fWritingBytes = 0;
 }
 
 }  // namespace skgpu::graphite

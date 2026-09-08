@@ -58,12 +58,14 @@ protected:
         using DatasetInfo = BenchmarkDatasetInfo<kDataset>;
         WideTiles wides;
         EndCaps ends;
+        AlphaAtlasManager atlasManager;
         for (int i = 0; i < loops; ++i) {
-            fFunc(fTiles, &wides, &ends, /*atlasManager=*/nullptr, SkPathFillType::kDefault,
+            fFunc(fTiles, &wides, &ends, &atlasManager, SkPathFillType::kDefault,
                   fPolyline, fLUT, DatasetInfo::kWidth, DatasetInfo::kHeight,
                   /*MsaaExactMaskObserver=*/nullptr);
             wides.clear();
             ends.clear();
+            atlasManager.freeGpuResources();
         }
     }
 
