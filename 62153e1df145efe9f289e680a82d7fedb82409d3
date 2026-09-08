@@ -16,6 +16,24 @@
       "message": "What CL starts to use this?",
       "revId": "62153e1df145efe9f289e680a82d7fedb82409d3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d301734_cd854e0e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-08T14:40:58Z",
+      "side": 1,
+      "message": "https://skia-review.git.corp.google.com/c/skia/+/1304057/39 VulkanCommandBuffer line 651.\n\nThe issue for VK is that we need the stage flags during onAddRenderPass in order to make the layout transition.",
+      "parentUuid": "a53fb808_0c89c780",
+      "revId": "62153e1df145efe9f289e680a82d7fedb82409d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
