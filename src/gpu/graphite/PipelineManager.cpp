@@ -37,7 +37,7 @@ sk_sp<GraphicsPipeline> GraphicsPipelineHandle::pipelineOrNull() const {
         return std::get<sk_sp<GraphicsPipeline>>(fTaskOrPipeline);
     }
     sk_sp<PipelineCreationTask> task = std::get<sk_sp<PipelineCreationTask>>(fTaskOrPipeline);
-    if (!task->fCompleted) {
+    if (!task->isCompleted()) {
         return nullptr;
     }
     return task->fPipeline;
@@ -49,18 +49,46 @@ GraphicsPipelineHandle::GraphicsPipelineHandle(sk_sp<PipelineCreationTask> task)
 GraphicsPipelineHandle::GraphicsPipelineHandle(sk_sp<GraphicsPipeline> pipeline)
     : fTaskOrPipeline(std::move(pipeline)) {}
 
-PipelineManager::PipelineManager(SkExecutor* executor) {
+class ExecutorTaskRunner : public SkTaskRunner {
+public:
+    ExecutorTaskRunner(SkExecutor* executor) {
+        fTaskGroup1 = std::make_unique<SkTaskGroup>(*executor);
+    }
+
+    void add(sk_sp<SkTask> task, SkTaskRunner::Priority priority) override {
+        auto foo = [task] {
+            task->execute();
+        };
+
+        int workList = priority == SkTaskRunner::Priority::kLow ? kLowPriorityWorkList
+                                                                : kHighPriorityWorkList;
+
+        fTaskGroup1->add(std::move(foo), workList);
+    }
+
+    void wait() override {
+        fTaskGroup1->wait();
+    }
+
+private:
+    std::unique_ptr<SkTaskGroup> fTaskGroup1;
+};
+
+
+PipelineManager::PipelineManager(SkExecutor* executor, sk_sp<SkTaskRunner> taskRunner) {
     if (executor) {
-        fTaskGroup = std::make_unique<SkTaskGroup>(*executor);
+        fTaskRunner = sk_make_sp<ExecutorTaskRunner>(executor);
+    } else {
+        fTaskRunner = taskRunner;
     }
 }
 
 PipelineManager::~PipelineManager() {
-    // The task group should've been shutdown and deleted in Context's destructor (via
+    // The task runner should've been shutdown and deleted in Context's destructor (via
     // shutDown()).
     {
         SkDEBUGCODE(SkAutoSpinlock lock{fSpinLock};)
-        SkASSERT(!fTaskGroup);
+        SkASSERT(!fTaskRunner);
         SkASSERT(fActiveTasks.count() == 0);
     }
 }
@@ -84,7 +112,8 @@ GraphicsPipelineHandle PipelineManager::createHandle(
 
     bool forPrecompile =
         SkToBool(pipelineCreationFlags & PipelineCreationFlags::kForPrecompilation);
-    Priority curPriority = forPrecompile ? Priority::kLow : Priority::kHigh;
+    SkTaskRunner::Priority curPriority = forPrecompile ? SkTaskRunner::Priority::kLow
+                                                       : SkTaskRunner::Priority::kHigh;
 
     UniqueKey pipelineKey = caps->makeGraphicsPipelineKey(pipelineDesc, renderPassDesc);
 
@@ -108,7 +137,7 @@ GraphicsPipelineHandle PipelineManager::createHandle(
 
     bool shouldAddToWorkList = false;
 
-    if (curPriority == Priority::kHigh && task->isLowPriority()) {
+    if (curPriority == SkTaskRunner::Priority::kHigh && task->isLowPriority()) {
         // If we found an active task for the current Pipeline we know, modulo thread races,
         // that it hasn't completed yet (since it, then, wouldn't be in the active task list).
         // If it was initially added as low priority, but turned out to be high priority,
@@ -123,15 +152,16 @@ GraphicsPipelineHandle PipelineManager::createHandle(
     }
 
     if (shouldAddToWorkList) {
-        this->addTaskToWorkList(sharedContext, task, curPriority);
+        this->addTaskToWorkList(sk_ref_sp(sharedContext), task, curPriority);
     }
 
     return GraphicsPipelineHandle(std::move(task));
 }
 
 void PipelineManager::InlineCompile(SharedContext* sharedContext,
-                                    PipelineManager* pipelineManager,
                                     PipelineCreationTask* task) {
+    PipelineManager* pipelineManager = sharedContext->pipelineManager();
+
     // This is a bit racy but the exact correctness of the actual cause for the compilation
     // isn't crucial. In essence, this tries to give the SharedContext a best guess about
     // the driver behind the compilation. The exact race is if a precompile compilation
@@ -156,31 +186,41 @@ void PipelineManager::InlineCompile(SharedContext* sharedContext,
     pipelineManager->removeTask(task);
 }
 
-void PipelineManager::addTaskToWorkList(SharedContext* sharedContext,
-                                        sk_sp<PipelineCreationTask> task,
-                                        Priority priority) {
-    // Note: this lambda function relies on the continued existence of the shared
-    // context and the PipelineManager. The task is reffed.
-    auto compileTask = [sharedContext, this, task] {
+class PipelineCompileTask : public SkTask {
+public:
+    PipelineCompileTask(sk_sp<SharedContext> sharedContext, sk_sp<PipelineCreationTask> task)
+        : fSharedContext(std::move(sharedContext))
+        , fTask(std::move(task)) {}
+
+    void execute() override {
         // Since there might be threaded contention to execute the compilation for the same
         // task (e.g., if a low priority compile got duplicated as a high priority compile
         // or an immediate compile was required), we check the 'fStarted' atomic so only
         // one does the work.
-        if (task->fStarted.exchange(true)) {
+        if (fTask->fStarted.exchange(true)) {
             return;
         }
 
-        InlineCompile(sharedContext, this, task.get());
-    };
+        PipelineManager::InlineCompile(fSharedContext.get(), fTask.get());
+    }
+
+private:
+    sk_sp<SharedContext> fSharedContext;
+    sk_sp<PipelineCreationTask> fTask;
+};
+
+void PipelineManager::addTaskToWorkList(sk_sp<SharedContext> sharedContext,
+                                        sk_sp<PipelineCreationTask> task1,
+                                        SkTaskRunner::Priority priority) {
+    sk_sp<PipelineCompileTask> compileTask = sk_make_sp<PipelineCompileTask>(
+                        std::move(sharedContext),
+                        std::move(task1));
 
     {
         SkAutoSpinlock lock{fSpinLock};
 
-        if (fTaskGroup) {
-            int workList = priority == Priority::kLow ? kLowPriorityWorkList
-                                                      : kHighPriorityWorkList;
-
-            fTaskGroup->add(std::move(compileTask), workList);
+        if (fTaskRunner) {
+            fTaskRunner->add(std::move(compileTask), priority);
             return;
         }
     }
@@ -191,7 +231,7 @@ void PipelineManager::addTaskToWorkList(SharedContext* sharedContext,
     // will kick in to eliminate duplicate work. This does mean, as in the SkExecutor case,
     // that the task's Pipeline need not be resolved at the end of 'compileTask'. That is,
     // after all, the purview of 'resolveHandle'.
-    compileTask();
+    compileTask->execute();
 }
 
 sk_sp<GraphicsPipeline> PipelineManager::resolveHandle(SharedContext* sharedContext,
@@ -213,10 +253,10 @@ sk_sp<GraphicsPipeline> PipelineManager::resolveHandle(SharedContext* sharedCont
 
 void PipelineManager::shutDown() {
     // We null out 'fTaskGroup' so no more threaded work can be added after this point.
-    std::unique_ptr<SkTaskGroup> tmp;
+   sk_sp<SkTaskRunner> tmp;
     {
         SkAutoSpinlock lock{fSpinLock};
-        tmp = std::move(fTaskGroup);
+        tmp = std::move(fTaskRunner);
     }
     if (tmp) {
         // We have to wait for the remaining tasks to complete bc they rely on the existence
@@ -227,19 +267,19 @@ void PipelineManager::shutDown() {
     }
     {
         SkDEBUGCODE(SkAutoSpinlock lock{fSpinLock};)
-        SkASSERT(!fTaskGroup);
+        SkASSERT(!fTaskRunner);
         SkASSERT(fActiveTasks.count() == 0);
     }
 }
 
 #if defined(GPU_TEST_UTILS)
 void PipelineManager::wait_TestOnly() {
-    SkTaskGroup* tmp;
+    SkTaskRunner* tmp;
     {
         SkAutoSpinlock lock{fSpinLock};
-        tmp = fTaskGroup.get();
+        tmp = fTaskRunner.get();
     }
-    // This isn't safe (since 'fTaskGroup' could be altered on some other thread) but, hopefully,
+    // This isn't safe (since 'fTaskRunner' could be altered on some other thread) but, hopefully,
     // the unit tests know what they're doing (i.e., don't delete the owning Context while
     // in this method).
     if (tmp) {
@@ -259,7 +299,7 @@ sk_sp<PipelineCreationTask> PipelineManager::findOrCreateTask(
         const UniqueKey& pipelineKey,
         const GraphicsPipelineDesc& pipelineDesc,
         const RenderPassDesc& renderPassDesc,
-        Priority priority) {
+        SkTaskRunner::Priority priority) {
     SkAutoSpinlock lock{fSpinLock};
 
     sk_sp<PipelineCreationTask>* task = fActiveTasks.find(pipelineKey);
@@ -279,7 +319,7 @@ sk_sp<PipelineCreationTask> PipelineManager::findOrCreateTask(
                                      pipelineKey,
                                      pipelineDesc,
                                      renderPassDesc,
-                                     priority == Priority::kHigh));
+                                     priority == SkTaskRunner::Priority::kHigh));
     fActiveTasks.set(newTask);
     return newTask;
 }
@@ -309,7 +349,7 @@ void PipelineManager::potentiallyWaitOn(SharedContext* sharedContext, PipelineCr
     // If we can preempt some thread that is scheduled to compile this Pipeline, do so rather
     // than waiting.
     if (!task->fStarted.exchange(true)) {
-        InlineCompile(sharedContext, this, task);
+        InlineCompile(sharedContext, task);
         SkASSERT(task->fCompleted);
         return;
     }

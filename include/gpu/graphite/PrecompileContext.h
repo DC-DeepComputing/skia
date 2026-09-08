@@ -105,7 +105,7 @@ private:
     friend class PrecompileContextPriv;
     friend class Context; // for ctor
 
-    explicit PrecompileContext(sk_sp<SharedContext>);
+    explicit PrecompileContext(sk_sp<SharedContext>, bool);
 
     // The PrecompileContext should not be used on multiple threads
     mutable SingleOwner fSingleOwner;
