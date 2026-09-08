@@ -17,6 +17,7 @@
 #include "src/core/SkSafeMath.h"
 
 #include <algorithm>
+#include <array>
 #include <atomic>
 #include <cstring>
 #include <functional>
@@ -856,15 +857,16 @@ static int operate_on_span(const SkRegionPriv::RunType a_runs[],
 #pragma warning ( pop )
 #endif
 
-static const struct {
+struct GOpMinMax {
     uint8_t fMin;
     uint8_t fMax;
-} gOpMinMax[] = {
-    { 1, 1 },   // Difference
-    { 3, 3 },   // Intersection
-    { 1, 3 },   // Union
-    { 1, 2 }    // XOR
 };
+static constexpr auto gOpMinMax = std::to_array<GOpMinMax>({
+    GOpMinMax{ 1, 1 },   // Difference
+    GOpMinMax{ 3, 3 },   // Intersection
+    GOpMinMax{ 1, 3 },   // Union
+    GOpMinMax{ 1, 2 }    // XOR
+});
 // need to ensure that the op enum lines up with our minmax array
 static_assert(0 == SkRegion::kDifference_Op, "");
 static_assert(1 == SkRegion::kIntersect_Op,  "");
