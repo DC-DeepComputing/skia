@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "046b8a21_430903ab",
+        "filename": "src/core/SkCubics.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-08T14:01:08Z",
+      "side": 1,
+      "message": "Generally, if the header matches the .cpp file it gets to go at the top in Skia\u0027s style.",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 30
+      },
+      "revId": "389e36e479b6aabe0985d9feb1de866f53944e21",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59bd34cf_eae22be6",
+        "filename": "src/core/SkDebugUtils.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-08T14:01:08Z",
+      "side": 1,
+      "message": "Line this up",
+      "revId": "389e36e479b6aabe0985d9feb1de866f53944e21",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
