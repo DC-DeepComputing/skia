@@ -161,8 +161,9 @@ crate.spec(
     version = "=0.6.0",
 )
 crate.spec(
+    git = "https://github.com/telecos/zune-image.git",
     package = "zune-jpeg",
-    version = "=0.5.16-rc1",
+    rev = "54828a285f6f01d49427fc22cc3091ffaf377f46",
 )
 crate.spec(
     features = ["std"],
