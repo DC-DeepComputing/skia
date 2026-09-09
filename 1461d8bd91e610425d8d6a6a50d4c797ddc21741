@@ -142,6 +142,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3571e03_e582226a",
+        "filename": "src/gpu/graphite/PaintParamsKey.cpp",
+        "patchSetId": 32
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-09T14:35:21Z",
+      "side": 1,
+      "message": "Ah, let\u0027s leave it for now.",
+      "parentUuid": "b429d8a7_bd6b9861",
+      "range": {
+        "startLine": 309,
+        "startChar": 47,
+        "endLine": 309,
+        "endChar": 64
+      },
+      "revId": "1461d8bd91e610425d8d6a6a50d4c797ddc21741",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a6b06740_e029b39e",
@@ -179,6 +203,30 @@
       "side": 1,
       "message": "Yes, inside the TessellateWedges and TessellateCurves render steps it is called within the constructors for an assert.",
       "parentUuid": "a6b06740_e029b39e",
+      "range": {
+        "startLine": 208,
+        "startChar": 0,
+        "endLine": 208,
+        "endChar": 73
+      },
+      "revId": "1461d8bd91e610425d8d6a6a50d4c797ddc21741",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b585f81_093f4564",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 32
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-09T14:35:21Z",
+      "side": 1,
+      "message": "Let\u0027s move the asserts into `writeVertices` so that the assert can just use the new version of appendDataStride().",
+      "parentUuid": "36627f73_8677b214",
       "range": {
         "startLine": 208,
         "startChar": 0,
@@ -367,6 +415,30 @@
       "side": 1,
       "message": "I believe we still need to make a copy of the name into a null terminated string for the `const char*` in the `Uniform` constructor.\n\nI don\u0027t think we should look up the shader snippet here since I don\u0027t define the uniforms within the shader snippet to ensure we emit the uniforms along with the render step uniforms. So if we did that I would likely have to add an extra flag to `SnippetRequirementFlags` to ensure uniforms are not emitted for that snippet but IMO that complicates things for this usecase.\n\nBut also since we are only writing uniforms here I think we can leave the name here `nullptr` here since it is not used so I changed it to that.",
       "parentUuid": "d7bb6287_0c0cdbdc",
+      "range": {
+        "startLine": 183,
+        "startChar": 0,
+        "endLine": 183,
+        "endChar": 52
+      },
+      "revId": "1461d8bd91e610425d8d6a6a50d4c797ddc21741",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36236844_3faeaac3",
+        "filename": "src/gpu/graphite/render/MeshRenderStep.cpp",
+        "patchSetId": 32
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-09T14:35:21Z",
+      "side": 1,
+      "message": "Gotcha, I didn\u0027t realize that the SkRuntimeEffect::Uniform\u0027s name was a string_view instead of a std::string.  We could always update Graphite\u0027s Uniform to have a string_view instead of a const char* but that doesn\u0027t buy us much since the name is only used here for debugging.\n\nHow about this plan:\n\n1. Bring back the name copying and building the full uniform array, but guard all of that by an `#if defined(SK_DEBUG)`, since the uniform array and names are only going to be used by the UniformExpectationsValidator.\n\n2. Inside the main for loop calling write(), we can just use a single stack allocated Uniform inside the loop that has a null name with a comment outlining that we only need the type information. That way in release builds we aren\u0027t allocating anything while writing uniforms.",
+      "parentUuid": "99ad6c9c_1c06d74e",
       "range": {
         "startLine": 183,
         "startChar": 0,
