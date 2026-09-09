@@ -81,7 +81,7 @@ void run_test(GraphiteTestContext* testContext, const TestOptions& origOptions,
     }
 
     TestOptions newOptions(origOptions);
-    newOptions.fContextOptions.fExecutor = executor.get();
+    newOptions.fContextOptions.fExecutor1 = executor.get();
 
     std::unique_ptr<PrecompileContext> precompileContext;
 

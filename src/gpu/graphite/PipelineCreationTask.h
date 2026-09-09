@@ -9,6 +9,7 @@
 #define skgpu_graphite_PipelineCreationTask_DEFINED
 
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkTaskRunner.h"
 #include "src/gpu/graphite/GraphicsPipeline.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
 #include "src/gpu/graphite/RenderPassDesc.h"
@@ -42,9 +43,14 @@ public:
         return !fIsHighPriority.load(std::memory_order_relaxed);
     }
 
+    bool isCompleted() const {
+        return fCompleted;
+    }
+
 private:
     friend class PipelineManager; // for entire API and fPipeline
     friend class GraphicsPipelineHandle; // for fPipeline in pipelineOrNull()
+    friend class PipelineCompileTask; // for fStarted
 
     PipelineCreationTask(sk_sp<const RuntimeEffectDictionary> runtimeDict,
                          const UniqueKey& pipelineKey,

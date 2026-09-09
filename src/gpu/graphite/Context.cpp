@@ -236,7 +236,7 @@ std::unique_ptr<skcpu::Recorder> Context::makeCPURecorder() {
 std::unique_ptr<PrecompileContext> Context::makePrecompileContext() {
     ASSERT_SINGLE_OWNER
 
-    return std::unique_ptr<PrecompileContext>(new PrecompileContext(fSharedContext));
+    return std::unique_ptr<PrecompileContext>(new PrecompileContext(fSharedContext, true));
 }
 
 std::unique_ptr<Recorder> Context::makeInternalRecorder() const {

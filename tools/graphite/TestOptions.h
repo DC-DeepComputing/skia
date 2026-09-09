@@ -47,7 +47,7 @@ struct TestOptions {
 #endif
     }
 
-    skgpu::graphite::ContextOptions fContextOptions = {};
+    skgpu::graphite::ContextOptions fContextOptions = {true};
     skgpu::graphite::ContextOptionsPriv fOptionsPriv;
 
 #if defined(SK_DAWN)
