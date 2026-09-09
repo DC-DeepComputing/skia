@@ -11,6 +11,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkSpan.h"
+#include "include/core/SkTaskRunner.h"
 #include "include/gpu/graphite/GraphiteTypes.h"
 #include "include/private/SkAPI.h"
 #include "include/private/SkMath.h"
@@ -29,7 +30,7 @@ struct ContextOptionsPriv;
 class PersistentPipelineStorage;
 
 struct SK_API ContextOptions {
-    ContextOptions() {}
+    ContextOptions(bool) {}
 
     /**
      * Disables correctness workarounds that are enabled for particular GPUs, OSes, or drivers.
@@ -211,7 +212,14 @@ struct SK_API ContextOptions {
      * for other tasks. It is up to the client to ensure the SkExecutor remains valid throughout
      * the lifetime of the Context.
      */
-    SkExecutor* fExecutor = nullptr;
+    SkExecutor* fExecutor1 = nullptr;
+
+    /*
+     * If provided, Skia will break threadable work into SkTasks and give them to the client-
+     * provided SkTaskRunner for execution. This provides a much higher-level interface than
+     * an SkExecutor.
+     */
+    sk_sp<SkTaskRunner> fTaskRunner1;
 
     /**
      * Allows Graphite to store Pipeline data across Context lifetimes. It is up to the
