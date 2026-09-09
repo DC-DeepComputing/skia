@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "ddf07687_8e27c27c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 30
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 4764846
+      },
+      "writtenOn": "2026-09-09T22:25:25Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "8aac05c6_53bdaa16",
+      "revId": "e83fa0c51c2a57e33a4261586c50929cdd0b233c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "86704b00_57dd48d7",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 30
@@ -66,6 +84,24 @@
       "side": 1,
       "message": "Yeah SkAttributes would be better for this",
       "parentUuid": "00339704_8eff09a9",
+      "revId": "e83fa0c51c2a57e33a4261586c50929cdd0b233c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9db616d1_2f94b112",
+        "filename": "include/private/SkMacros.h",
+        "patchSetId": 30
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 4764846
+      },
+      "writtenOn": "2026-09-09T22:25:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "13f67a5b_601790f8",
       "revId": "e83fa0c51c2a57e33a4261586c50929cdd0b233c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -117,6 +153,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7da4a45_58d35f97",
+        "filename": "include/private/SkMacros.h",
+        "patchSetId": 30
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 4764846
+      },
+      "writtenOn": "2026-09-09T22:25:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5665e4b2_fe1dfb53",
+      "range": {
+        "startLine": 170,
+        "startChar": 0,
+        "endLine": 181,
+        "endChar": 64
+      },
+      "revId": "e83fa0c51c2a57e33a4261586c50929cdd0b233c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "abaa5c88_928e02da",
@@ -158,6 +218,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b28373a0_cf947e1d",
+        "filename": "include/private/SkMacros.h",
+        "patchSetId": 30
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 4764846
+      },
+      "writtenOn": "2026-09-09T22:25:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "abaa5c88_928e02da",
+      "range": {
+        "startLine": 196,
+        "startChar": 20,
+        "endLine": 196,
+        "endChar": 26
+      },
+      "revId": "e83fa0c51c2a57e33a4261586c50929cdd0b233c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5ea66634_91be6f37",
@@ -171,6 +255,30 @@
       "writtenOn": "2026-09-09T17:13:26Z",
       "side": 1,
       "message": "What about\n```\n// Annotates code indicating that it should be permanently exempted from\n// `-Wunsafe-buffer-usage`. For temporary cases such as migrating callers to\n// safer patterns, use `SK_UNSAFE_TODO()` instead; see documentation there.\n//\n// All calls to functions annotated with `SK_UNSAFE_BUFFER_USAGE` must be\n// marked with one of these two macros; they can also be used around pointer\n// arithmetic, pointer subscripting, and the like.\n//\n// ** USE OF THIS MACRO SHOULD BE VERY RARE.** Using this macro indicates that\n// the compiler cannot verify that the code avoids out-of-bounds (OOB) access,\n// and manual review is required. Even with manual review, it\u0027s easy for\n// assumptions to change and security bugs to creep in over time. Prefer safer\n// patterns (such as `SkSpan` or `std::span`) instead.\n//\n// Usage should wrap the minimum necessary code, and *must* include a\n// `// SAFETY: ...` comment that explains how the code guarantees safety or\n// meets the requirements of called `SK_UNSAFE_BUFFER_USAGE` functions.\n// Guarantees must be manually verifiable during code review using only local\n// invariants. Valid invariants include:\n// - Runtime conditions or `SkASSERT`s nearby\n// - Invariants guaranteed by types in the surrounding code\n// - Invariants guaranteed by function calls in the surrounding code\n// - Caller requirements, if the containing function is itself annotated with\n//   `SK_UNSAFE_BUFFER_USAGE`; this is less safe and should be a last resort\n//\n// See also:\n//    https://chromium.googlesource.com/chromium/src/+/main/docs/unsafe_buffers.md\n//    https://clang.llvm.org/docs/SafeBuffers.html\n//    https://clang.llvm.org/docs/DiagnosticsReference.html#wunsafe-buffer-usage\n//\n// Usage:\n//\n//    // The following call will not trigger a compiler warning even if `Func()`\n//    // is annotated `SK_UNSAFE_BUFFER_USAGE`.\n//    return SK_UNSAFE_BUFFERS(Func(input, end));\n//\n// Test for `__clang__` directly, as there\u0027s no `__has_pragma` or similar (see\n// https://github.com/llvm/llvm-project/issues/51887).\n```",
+      "range": {
+        "startLine": 188,
+        "startChar": 0,
+        "endLine": 198,
+        "endChar": 53
+      },
+      "revId": "e83fa0c51c2a57e33a4261586c50929cdd0b233c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15395374_496e7448",
+        "filename": "include/private/SkMacros.h",
+        "patchSetId": 30
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 4764846
+      },
+      "writtenOn": "2026-09-09T22:25:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5ea66634_91be6f37",
       "range": {
         "startLine": 188,
         "startChar": 0,
@@ -204,6 +312,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e643f55a_d33c5ec4",
+        "filename": "include/private/SkMacros.h",
+        "patchSetId": 30
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 4764846
+      },
+      "writtenOn": "2026-09-09T22:25:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c1318b44_3f15ee71",
+      "range": {
+        "startLine": 199,
+        "startChar": 0,
+        "endLine": 211,
+        "endChar": 0
+      },
+      "revId": "e83fa0c51c2a57e33a4261586c50929cdd0b233c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5d255553_1723bc85",
@@ -217,6 +349,24 @@
       "writtenOn": "2026-09-09T17:13:26Z",
       "side": 1,
       "message": "It would be nice to have a presubmit forbidding regressing -WUnsafe-buffer-usage coverage.\nI opened:\nhttps://b.corp.google.com/issues/559168168\n\nThat would be nice in a follow-up.",
+      "revId": "e83fa0c51c2a57e33a4261586c50929cdd0b233c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e095cdc8_bef88de2",
+        "filename": "include/private/SkMacros.h",
+        "patchSetId": 30
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 4764846
+      },
+      "writtenOn": "2026-09-09T22:25:25Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "5d255553_1723bc85",
       "revId": "e83fa0c51c2a57e33a4261586c50929cdd0b233c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
