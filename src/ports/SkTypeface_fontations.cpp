@@ -1015,6 +1015,7 @@ sk_sp<SkTypeface> SkTypeface_Fontations::onMakeClone(const SkFontArguments& args
     }
 
     SkFontArguments fusedArgs;
+    fusedArgs.setCollectionIndex(fTtcIndex);
     fusedArgs.setVariationDesignPosition({fusedDesignPosition.get(), SkToInt(numAxes)});
     fusedArgs.setPalette(args.getPalette());
 
