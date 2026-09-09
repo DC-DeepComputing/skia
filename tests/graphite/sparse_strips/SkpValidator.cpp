@@ -140,11 +140,12 @@ bool SkpValidator::ValidatePath(skiatest::Reporter* reporter,
 
     WideTiles wides;
     EndCaps ends;
+    AlphaAtlasManager atlasManager;
     MakeStrips::MsaaSimd<kTileWidth, kTileHeight>(
             tiler,
             &wides,
             &ends,
-            /*atlasManager=*/nullptr,
+            &atlasManager,
             localPath.getFillType(),
             polyline,
             maskLut,

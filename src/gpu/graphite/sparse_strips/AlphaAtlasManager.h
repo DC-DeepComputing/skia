@@ -16,6 +16,7 @@
 #include <algorithm>
 #include <cstdint>
 #include <optional>
+#include <utility>
 #include <vector>
 
 namespace skgpu::graphite {
@@ -31,8 +32,30 @@ class Recorder;
 // are active at flush time, the older page is retired, and the larger page takes its place as the
 // initial page.
 class AlphaAtlasManager {
+private:
+    // The struct backing each texture page, with its own CPU-side buffer.
+    struct TexturePage {
+        sk_sp<TextureProxy> fTexture;
+        int32_t fRowCount = 0;
+        int32_t fCapacityBytes = 0;
+        int32_t fUsedBytes = 0;
+        int32_t fUploadedRows = 0;
+        SkTDArray<uint8_t> fAlphaBuffer;
+
+        bool isValid() const { return fTexture != nullptr || fCapacityBytes > 0; }
+        void reset() {
+            fTexture = nullptr;
+            fRowCount = 0;
+            fCapacityBytes = 0;
+            fUsedBytes = 0;
+            fUploadedRows = 0;
+            fAlphaBuffer.clear();
+        }
+    };
+
 public:
     AlphaAtlasManager(Recorder* recorder);
+    AlphaAtlasManager() : AlphaAtlasManager(nullptr) {}
 
     // TODO(thomsmit): bitpack the texture page into the alpha index?
     struct AlphaAllocation {
@@ -40,7 +63,21 @@ public:
         int32_t  fAlphaIndex = 0;       // Page-local byte offset
         uint16_t fTexPage    = 0;       // Atlas page index (0 or 1)
     };
-    std::optional<AlphaAllocation> requestAlphaSpace(int32_t numBytes);
+
+    SK_ALWAYS_INLINE uint8_t* requestAlphaSpace(int32_t numBytes) {
+        if (!fInNullCaps && fPages[fActiveSlot].isValid()) {
+            TexturePage& page = fPages[fActiveSlot];
+            if (page.fUsedBytes + fWritingBytes + numBytes <= page.fCapacityBytes) {
+                uint8_t* ptr = page.fAlphaBuffer.append(numBytes);
+                fWritingBytes += numBytes;
+                return ptr;
+            }
+        }
+        return this->requestAlphaSpaceSlow(numBytes);
+    }
+
+    std::optional<AlphaAllocation> finalizeRun(int32_t numBytes = -1);
+    void abortRun();
 
     void recordUploads(DrawContext* dc);
     void freeGpuResources();
@@ -64,41 +101,39 @@ public:
     int activeSlot() const { return fActiveSlot; }
 
     void populateProxies(EndCaps* ends) const {
-        for (int32_t i = 0; i < SparseStripConfig::kMaxTexturePages; ++i) {
-            if (fPages[i].isValid()) {
-                ends->addProxy(fPages[i].fTexture);
-            }
+        ends->clearProxies();
+        sk_sp<TextureProxy> p0 = fPages[0].isValid() ? fPages[0].fTexture : fPages[1].fTexture;
+        sk_sp<TextureProxy> p1 = fPages[1].isValid() ? fPages[1].fTexture : fPages[0].fTexture;
+        if (p0) {
+            ends->addProxy(std::move(p0));
+        }
+        if (p1) {
+            ends->addProxy(std::move(p1));
         }
     }
 
+    bool resolveNullCaps(EndCaps* ends, DrawContext* dc = nullptr);
+    bool inNullCaps() const { return fInNullCaps; }
+    void resetNullCaps() {
+        fInNullCaps = false;
+        fNullAlphasBuffer.clear();
+        fNullAlphasUsedBytes = 0;
+    }
+
 private:
-    // The struct backing the manager's pages. Note, the struct contains fAlphaBuffer, which holds
-    // the cpu-side data for the page (e.g. a single upload).
-    struct TexturePage {
-        sk_sp<TextureProxy> fTexture;
-        int32_t fRowCount = 0;
-        int32_t fCapacityBytes = 0;
-        int32_t fUsedBytes = 0;
-        int32_t fUploadedRows = 0;
-        SkTDArray<uint8_t> fAlphaBuffer;
-
-        bool isValid() const { return fTexture != nullptr; }
-        void reset() {
-            fTexture = nullptr;
-            fRowCount = 0;
-            fCapacityBytes = 0;
-            fUsedBytes = 0;
-            fUploadedRows = 0;
-            fAlphaBuffer.clear();
-        }
-    };
-
+    uint8_t* requestAlphaSpaceSlow(int32_t numBytes);
     bool createPageInSlot(int slot, int32_t minRequiredBytes = 0);
+    void uploadPage(DrawContext* dc, int slot);
 
     Recorder* fRecorder;
     TexturePage fPages[SparseStripConfig::kMaxTexturePages];
     int fActiveSlot;
     int32_t fNextPageRowCount;
+    int32_t fWritingBytes;
+
+    bool fInNullCaps = false;
+    SkTDArray<uint8_t> fNullAlphasBuffer;
+    int32_t fNullAlphasUsedBytes = 0;
 };
 
 }  // namespace skgpu::graphite

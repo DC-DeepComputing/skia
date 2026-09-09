@@ -63,8 +63,9 @@ public:
                                  MsaaExactMaskObserver observer) {
         SkPathFillType fillType =
                 isInverse ? SkPathFillType::kInverseWinding : SkPathFillType::kWinding;
+        AlphaAtlasManager atlasManager;
         MakeStrips::MsaaScalar<kTileWidth, kTileHeight>(
-                tileContainer, wides, ends, /*atlasManager=*/nullptr,
+                tileContainer, wides, ends, &atlasManager,
                 fillType, polyline, maskLut, kViewportWidth, kViewportHeight, observer);
     }
 
@@ -77,8 +78,9 @@ public:
                                MsaaExactMaskObserver observer) {
         SkPathFillType fillType =
                 isInverse ? SkPathFillType::kInverseWinding : SkPathFillType::kWinding;
+        AlphaAtlasManager atlasManager;
         MakeStrips::MsaaSimd<kTileWidth, kTileHeight>(
-                tileContainer, wides, ends, /*atlasManager=*/nullptr,
+                tileContainer, wides, ends, &atlasManager,
                 fillType, polyline, maskLut, kViewportWidth, kViewportHeight, observer);
     }
 
