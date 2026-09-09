@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "226584ee_190329d2",
+        "filename": "tests/graphite/TextureFormatTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1073,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-09T14:45:00Z",
+      "side": 1,
+      "message": "Is this intentional ?",
+      "range": {
+        "startLine": 1073,
+        "startChar": 4,
+        "endLine": 1073,
+        "endChar": 9
+      },
+      "revId": "c636d4cd2bd1ebf06f1e9191e49d01bff2dbada1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
