@@ -249,7 +249,6 @@ SkBitmapDevice::SkBitmapDevice(skcpu::Recorder* recorder,
                                SkRasterHandleAllocator::Handle hndl)
         : SkDevice(bitmap.info(), surfaceProps)
         , fRasterHandle(hndl)
-        , fRecorder(recorder)
         , fBitmap(bitmap)
         , fRCStack(bitmap.width(), bitmap.height())
         , fGlyphPainter(this->surfaceProps(), bitmap.colorType(), bitmap.colorSpace()) {
@@ -721,4 +720,8 @@ void SkBitmapDevice::android_utils_clipAsRgn(SkRegion* rgn) const {
 
 SkIRect SkBitmapDevice::devClipBounds() const {
     return fRCStack.rc().getBounds();
+}
+
+SkRecorder* SkBitmapDevice::baseRecorder() const {
+    return fRecorder;
 }

@@ -6,6 +6,7 @@
  */
 #include "include/cpu/Recorder.h"
 
+#include "include/core/SkContext.h"
 #include "include/core/SkTypes.h"
 #include "src/capture/SkCaptureManager.h"
 

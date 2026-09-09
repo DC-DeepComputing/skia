@@ -25,6 +25,7 @@ class SkArenaAlloc;
 class SkBitmap;
 class SkBlender;
 class SkBlitter;
+class SkContext;
 class SkDevice;
 class SkGlyph;
 class SkMaskFilter;

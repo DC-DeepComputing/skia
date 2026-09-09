@@ -32,6 +32,7 @@ class GrRecordingContextPriv;
 class GrThreadSafeCache;
 class SkArenaAlloc;
 class SkCapabilities;
+class SkContext;
 class SkJSONWriter;
 class SkGaneshRecorder;
 class SkRecorder;
@@ -108,7 +109,6 @@ public:
     SK_API sk_sp<const SkCapabilities> skCapabilities() const;
 
     SK_API SkRecorder* asRecorder();
-    SK_API std::unique_ptr<skcpu::Recorder> makeCPURecorder();
 
     // Provides access to functions that aren't part of the public API.
     GrRecordingContextPriv priv();
