@@ -54,6 +54,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "13f67a5b_601790f8",
+        "filename": "include/private/SkMacros.h",
+        "patchSetId": 30
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-09-09T17:23:16Z",
+      "side": 1,
+      "message": "Yeah SkAttributes would be better for this",
+      "parentUuid": "00339704_8eff09a9",
+      "revId": "e83fa0c51c2a57e33a4261586c50929cdd0b233c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ecdc1f90_2dffd446",
         "filename": "include/private/SkMacros.h",
         "patchSetId": 30
@@ -65,6 +83,30 @@
       "writtenOn": "2026-09-09T17:13:26Z",
       "side": 1,
       "message": "This is short, but I feel a skia adaptation of the chromium comment would be more useful.\n\nWhat about:\n```\n// Annotates a function indicating it can lead to out-of-bounds accesses (OOB)\n// if given incorrect inputs.\n//\n// This commonly includes functions that take raw pointers, sizes, iterators,\n// sentinels, etc., and cannot fully check their preconditions (e.g., that the\n// provided pointer actually points to an allocation of at least the provided\n// size). Useful to diagnose potential misuse via `-Wunsafe-buffer-usage`, as\n// well as to mark functions in need of safer alternatives.\n//\n// All functions annotated with this macro should come with a `// PRECONDITIONS:`\n// comment explaining what the caller must guarantee to ensure safe operation.\n// Callers can then write `// SAFETY:` comments explaining why the specific\n// preconditions have been met (e.g., verified by caller bounds, types, or\n// nearby `SkASSERT`s).\n//\n// Ideally, unsafe functions should also be paired with a safer overload, e.g.,\n// one that replaces pointer and size parameters with `SkSpan` (or `std::span`);\n// otherwise, document safer replacement patterns callers can migrate to.\n//\n// Annotating a function `SK_UNSAFE_BUFFER_USAGE` means all call sites (that do\n// not disable the warning) must wrap calls in `SK_UNSAFE_BUFFERS()`; see\n// documentation there.\n//\n// See also:\n//    https://chromium.googlesource.com/chromium/src/+/main/docs/unsafe_buffers.md\n//    https://clang.llvm.org/docs/SafeBuffers.html\n//    https://clang.llvm.org/docs/DiagnosticsReference.html#wunsafe-buffer-usage\n//\n// Usage:\n//\n//    // Calls to this function must be wrapped in `SK_UNSAFE_BUFFERS()`.\n//    SK_UNSAFE_BUFFER_USAGE void Func(T* input, T* end);\n```\n\n\nWe can update the doc link to the skia version once it exists, if we decide to add it.\n\n\nNote: I omitted the parts about usage in fields. This is not used that way in Chrome at all.",
+      "range": {
+        "startLine": 170,
+        "startChar": 0,
+        "endLine": 181,
+        "endChar": 64
+      },
+      "revId": "e83fa0c51c2a57e33a4261586c50929cdd0b233c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5665e4b2_fe1dfb53",
+        "filename": "include/private/SkMacros.h",
+        "patchSetId": 30
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-09-09T17:23:16Z",
+      "side": 1,
+      "message": "I agree, I like the longer, more detailed comment",
+      "parentUuid": "ecdc1f90_2dffd446",
       "range": {
         "startLine": 170,
         "startChar": 0,
