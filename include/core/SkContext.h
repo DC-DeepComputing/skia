@@ -11,13 +11,27 @@
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkAPI.h"
 
+#include <memory>
+
 class SkContextPriv;
+class SkContextPrivConst;
 class SkResourceCache;
 class SkSharedContext;
 class SkStrikeCache;
 class SkTraceMemoryDump;
 class SkTypefaceCache;
 struct SkContextOptions;
+class SkRecorder;
+
+namespace SkContexts {
+
+enum SkBackendSelection {
+    kAutomatic,  // Default
+    kRaster,
+    kGPU,
+};
+
+}
 
 /**
  * @brief SkContext is a central context object that serves as the mandatory first point of
@@ -34,10 +48,27 @@ public:
     ~SkContext();
 
     SkContextPriv priv();
-    const SkContextPriv priv() const;
+    SkContextPrivConst priv() const;
+
+    // Using PassKey pattern to allow only restricted access to SkContextAccessor
+    // See //base/types/pass_key.h for Chromium's implementation of the pattern
+    class FactoryPassKey {
+    private:
+        friend class SkContextCtorAccessor;
+        FactoryPassKey() = default;
+    };
+
+    SkContext(FactoryPassKey, sk_sp<SkSharedContext>, const SkContextOptions&);
+
+    // Must be called in Make() to handle one-time GPU setup operations that can possibly fail and
+    // require Context::Make() to return a nullptr.
+    bool finishInitialization(FactoryPassKey);
+
+    std::unique_ptr<SkRecorder> makeRecorder(SkContexts::SkBackendSelection selection) const;
 
 private:
-    SkContext(sk_sp<SkSharedContext>);
+    friend class SkContextPrivConst;
+    friend class SkContextPriv;
 
     SkResourceCache* resourceCache() const;
     SkStrikeCache* fontCache() const;
@@ -57,6 +88,9 @@ private:
     void dumpMemoryStatistics(SkTraceMemoryDump* dump);
 
     sk_sp<SkSharedContext> fSharedContext;
+#if defined(SK_GRAPHITE)
+    std::unique_ptr<skgpu::graphite::Context> fGraphiteContext;
+#endif
 };
 
 #endif  // SkContext_DEFINED

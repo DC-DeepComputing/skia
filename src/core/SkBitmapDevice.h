@@ -45,6 +45,10 @@ class Recorder;
 }
 namespace sktext { class GlyphRunList; }
 
+namespace skcpu {
+class Recorder;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 class SkBitmapDevice final : public SkDevice {
 public:
