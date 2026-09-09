@@ -77,6 +77,7 @@ private:
                       std::unique_ptr<const DawnCaps>,
                       wgpu::ShaderModule noopFragment,
                       SkExecutor*,
+                      sk_sp<SkTaskRunner>,
                       SkSpan<sk_sp<SkRuntimeEffect>> userDefinedKnownRuntimeEffects);
 
     void createUniformBuffersBindGroupLayout();

@@ -58,6 +58,7 @@ private:
                      sk_sp<skgpu::MtlMemoryAllocator>,
                      std::unique_ptr<const MtlCaps>,
                      SkExecutor*,
+                     sk_sp<SkTaskRunner>,
                      SkSpan<sk_sp<SkRuntimeEffect>> userDefinedKnownRuntimeEffects);
 
     void createCompatibleDepthStencilState(const DepthStencilSettings&, const char* label);
