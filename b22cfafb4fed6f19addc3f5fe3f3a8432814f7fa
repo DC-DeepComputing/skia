@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7503f5f9_3f6b2783",
+        "filename": "src/core/SkRRect.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 768,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-09-09T19:52:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3802132d_ace39a61",
+      "range": {
+        "startLine": 765,
+        "startChar": 0,
+        "endLine": 768,
+        "endChar": 60
+      },
+      "revId": "b22cfafb4fed6f19addc3f5fe3f3a8432814f7fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c97bdac4_f4472adc",
@@ -54,6 +78,30 @@
       "writtenOn": "2026-09-02T19:56:03Z",
       "side": 1,
       "message": "If we are getting rid of `are_radius_check_predicates_valid`, we should also test that `min + rad1 \u003c\u003d max - rad2`, and that both `rad1` and `rad2` are non-negative.",
+      "range": {
+        "startLine": 772,
+        "startChar": 4,
+        "endLine": 776,
+        "endChar": 5
+      },
+      "revId": "b22cfafb4fed6f19addc3f5fe3f3a8432814f7fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6aba889_6e857e64",
+        "filename": "src/core/SkRRect.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 776,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-09-09T19:52:56Z",
+      "side": 1,
+      "message": "Implemented this as the below check\n```\nminCoord + radiusFromMin \u003c\u003d maxCoord - radiusFromMax\n```",
+      "parentUuid": "c97bdac4_f4472adc",
       "range": {
         "startLine": 772,
         "startChar": 4,
@@ -111,6 +159,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc23284f_c53e9e8c",
+        "filename": "src/core/SkRRect.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 779,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-09-09T19:52:56Z",
+      "side": 1,
+      "message": "AlmostEqual does add some tolerance to the comparison using ULP (units of least precision). They are essentially the smallest \"difference\" between two representable floating point values. Kaylee explains it in this CL (https://skia-review.git.corp.google.com/c/skia/+/1279236), but you can think of it as a dynamic way of measuring tolerance depending on the magnitude of the two numbers being compared.\n\nThe AlmostEqual check is different from the below checks in that the below is a fast path for verifying \n* sum \u003c\u003d limit (thus checking the relative distances)\n* minCoord + radiusFromMin \u003c\u003d maxCoord - radiusFromMax (thus checking the absolute distances)\n\n\nAnd when floating point imprecision leads to the above to evaluate to \u003e rather than \u003c\u003d, then we fallback to using AlmostEqual and SkScalarNearlyEqual",
+      "parentUuid": "5fd0f0da_2998819b",
+      "range": {
+        "startLine": 777,
+        "startChar": 4,
+        "endLine": 779,
+        "endChar": 74
+      },
+      "revId": "b22cfafb4fed6f19addc3f5fe3f3a8432814f7fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c5cceda7_1ce300dd",
@@ -148,6 +220,30 @@
       "side": 1,
       "message": "I think we should remove this for loop and remove are_radius_check_predicates_valid, as it is effectively redundant with the new checks you added.",
       "parentUuid": "c5cceda7_1ce300dd",
+      "range": {
+        "startLine": 870,
+        "startChar": 14,
+        "endLine": 872,
+        "endChar": 18
+      },
+      "revId": "b22cfafb4fed6f19addc3f5fe3f3a8432814f7fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "632a6b22_406bc031",
+        "filename": "src/core/SkRRect.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 872,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-09-09T19:52:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dc3c49ca_337d6a23",
       "range": {
         "startLine": 870,
         "startChar": 14,
