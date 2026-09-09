@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "209e96dc_a28c3fa5",
+        "filename": "src/gpu/android/AHardwareBufferUtils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-09T15:23:46Z",
+      "side": 1,
+      "message": "For here and in AHardwareBufferGL.cpp, can you try updating this to be\n```\n#if __has_include(\u003cvndk/hardware_buffer.h\u003e)\n    #include \u003cvndk/haardware_buffer.h\u003e\n    #define HAS_AHB_BGRA8_UNORM\n#endif\n```\n\nThen in the switch table, guard the `AHARDWAREBUFFER_FORMAT_B8G8R8A8_UNORM` case with `defined(HAS_AHB_BGRA8_UNORM)`?\n\nThis was the recommended way we bring in an include to a fairly internal vendor header that normally we wouldn\u0027t want Skia to have to include.",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 37
+      },
+      "revId": "e02cf91aaa85d1c31cbe58d9b6a782093f432659",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
