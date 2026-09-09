@@ -16,6 +16,29 @@
       "message": "alexisdavidc",
       "revId": "5427d67ed89d320ab3a23ec938ff1273ba3e95db",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5c666c4_fddc3453",
+        "filename": "tools/viewer/SlidesSlide.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-09-09T20:06:22Z",
+      "side": 1,
+      "message": "fix formatting",
+      "range": {
+        "startLine": 86,
+        "startChar": 20,
+        "endLine": 86,
+        "endChar": 101
+      },
+      "revId": "5427d67ed89d320ab3a23ec938ff1273ba3e95db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
