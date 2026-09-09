@@ -78,7 +78,7 @@ SkSurface_Raster::SkSurface_Raster(skcpu::Recorder* recorder,
                                    void (*releaseProc)(void* pixels, void* context),
                                    void* context,
                                    const SkSurfaceProps* props)
-        : SkSurface_Base(info, props, nullptr), fRecorder(recorder) {
+        : SkSurface_Base(info, props, nullptr) {
     fBitmap.installPixels(info, pixels, rowBytes, releaseProc, context);
     fPixelStorage = sk_ref_sp(fBitmap.pixelRef());
     fWeOwnThePixels = false;    // We are "Direct"
@@ -88,20 +88,18 @@ SkSurface_Raster::SkSurface_Raster(skcpu::Recorder* recorder,
                                    const SkImageInfo& info,
                                    sk_sp<SkPixelRef> pr,
                                    const SkSurfaceProps* props)
-        : SkSurface_Base(pr->width(), pr->height(), props, pr), fRecorder(recorder) {
+        : SkSurface_Base(pr->width(), pr->height(), props, pr) {
     fBitmap.setInfo(info, pr->rowBytes());
     fBitmap.setPixelRef(std::move(pr), 0, 0);
     fWeOwnThePixels = true;
 }
 
 SkCanvas* SkSurface_Raster::onNewCanvas() {
-    SkASSERT(fRecorder);
-    return new SkCanvas(sk_make_sp<SkBitmapDevice>(fRecorder, fBitmap, this->props()));
+    return new SkCanvas(sk_make_sp<SkBitmapDevice>(fBitmap, this->props()));
 }
 
 sk_sp<SkSurface> SkSurface_Raster::onNewSurface(const SkImageInfo& info) {
-    SkASSERT(fRecorder);
-    return fRecorder->makeBitmapSurface(info, 0, &this->props());
+    return SkSurfaces::Raster(info, 0, &this->props());
 }
 
 void SkSurface_Raster::onDraw(SkCanvas* canvas, SkScalar x, SkScalar y,

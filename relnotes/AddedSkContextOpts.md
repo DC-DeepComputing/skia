@@ -1,0 +1,1 @@
+Added SkContextOpts that will serve to initialize SkContext.
