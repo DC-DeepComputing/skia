@@ -7,18 +7,18 @@
 
 #include "include/core/SkContext.h"
 
+#include "include/core/SkCPURecorder.h"
+#include "include/core/SkContextOptions.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTraceMemoryDump.h"
 #include "include/core/SkTypes.h"
+#include "src/core/SkContextPriv.h"
 #include "src/core/SkResourceCache.h"
 #include "src/core/SkSharedContext.h"
 #include "src/core/SkStrikeCache.h"
 #include "src/core/SkSynchronizedResourceCache.h"
 #include "src/core/SkTypefaceCache.h"
-
-SkContext::SkContext(sk_sp<SkSharedContext> sharedContext)
-        : fSharedContext(std::move(sharedContext)) {}
 
 SkContext::~SkContext() = default;
 
@@ -57,7 +57,6 @@ int SkContext::setFontCacheCountLimit(int count) {
 int SkContext::fontCacheCountUsed() const {
     return this->fontCache()->getCacheCountUsed();
 }
-
 void SkContext::purgeFontCache() { this->fontCache()->purgeAll(); }
 
 void SkContext::purgePinnedFontCache() { this->fontCache()->purgePinned(); }

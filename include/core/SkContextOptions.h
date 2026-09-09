@@ -8,8 +8,10 @@
 #ifndef SkContextOptions_DEFINED
 #define SkContextOptions_DEFINED
 
+#include "include/core/SkRefCnt.h"
 #include "include/private/SkAPI.h"
 
-struct SK_API SkContextOptions {};
+struct SK_API SkContextOptions {
+};
 
 #endif  // SkContextOptions_DEFINED
