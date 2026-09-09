@@ -34,6 +34,7 @@
 #include "src/core/SkMathPriv.h"
 #include "tests/Test.h"
 
+#include <array>
 #include <cstdint>
 #include <cstring>
 #include <initializer_list>
@@ -283,18 +284,18 @@ static void init_bitmap(SkBitmap* bitmap, const SkIRect& rect, TightRowBytes tig
     bitmap->allocPixels(info, rowBytes);
 }
 
-static const struct {
+struct GReadPixelsConfigs {
     SkColorType fColorType;
     SkAlphaType fAlphaType;
-} gReadPixelsConfigs[] = {
-        {kRGBA_8888_SkColorType, kPremul_SkAlphaType},
-        {kRGBA_8888_SkColorType, kUnpremul_SkAlphaType},
-        {kRGB_888x_SkColorType, kOpaque_SkAlphaType},
-        {kBGRA_8888_SkColorType, kPremul_SkAlphaType},
-        {kBGRA_8888_SkColorType, kUnpremul_SkAlphaType},
-        {kAlpha_8_SkColorType, kPremul_SkAlphaType},
-};
-const SkIRect gReadPixelsTestRects[] = {
+}; static const auto gReadPixelsConfigs = std::to_array<GReadPixelsConfigs>({
+        GReadPixelsConfigs{kRGBA_8888_SkColorType, kPremul_SkAlphaType},
+        GReadPixelsConfigs{kRGBA_8888_SkColorType, kUnpremul_SkAlphaType},
+        GReadPixelsConfigs{kRGB_888x_SkColorType, kOpaque_SkAlphaType},
+        GReadPixelsConfigs{kBGRA_8888_SkColorType, kPremul_SkAlphaType},
+        GReadPixelsConfigs{kBGRA_8888_SkColorType, kUnpremul_SkAlphaType},
+        GReadPixelsConfigs{kAlpha_8_SkColorType, kPremul_SkAlphaType},
+});
+const auto gReadPixelsTestRects = std::to_array<SkIRect>({
     // entire thing
     DEV_RECT,
     // larger on all sides
@@ -339,7 +340,7 @@ const SkIRect gReadPixelsTestRects[] = {
     SkIRect::MakeLTRB(3 * DEV_W / 4, 3 * DEV_H / 4, DEV_W + 10, DEV_H + 10),
     // overlapping top right and bottom right corners
     SkIRect::MakeLTRB(3 * DEV_W / 4, -10, DEV_W + 10, DEV_H + 10),
-};
+});
 
 bool read_should_succeed(const SkIRect& srcRect, const SkImageInfo& dstInfo,
                          const SkImageInfo& srcInfo) {
