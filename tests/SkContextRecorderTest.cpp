@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Google LLC
+ * Copyright 2026 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -10,6 +10,8 @@
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkColorSpace.h"
+#include "include/core/SkContext.h"
+#include "include/core/SkContextOptions.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkMaskFilter.h"
 #include "include/core/SkPaint.h"
@@ -26,9 +28,13 @@ DEF_TEST(CPUSurface_UsesCPUContextAndRecorderToDraw_DrawsPixels, reporter) {
     skcpu::Context::Options opts;
     auto ctx = skcpu::Context::Make(opts);
     std::unique_ptr<skcpu::Recorder> recorder = ctx->makeRecorder();
+    REPORTER_ASSERT(reporter, recorder != nullptr);
+    REPORTER_ASSERT(reporter, recorder->type() == SkRecorder::Type::kCPU);
+    REPORTER_ASSERT(reporter, recorder->ctx() == ctx.get());
     SkImageInfo imageInfo =
             SkImageInfo::Make(100, 100, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
     auto surface = recorder->makeBitmapSurface(imageInfo, imageInfo.minRowBytes(), {});
+    REPORTER_ASSERT(reporter, surface != nullptr);
     SkPaint paint;
     paint.setColor(SK_ColorRED);
     paint.setMaskFilter(SkMaskFilter::MakeBlur(SkBlurStyle::kNormal_SkBlurStyle, 3.1f));
@@ -42,7 +48,9 @@ DEF_TEST(CPUSurface_UsesCPUContextAndRecorderToDraw_DrawsPixels, reporter) {
 DEF_TEST(CPUSurface_UsesTODORecorder_DrawsPixels, reporter) {
     SkImageInfo imageInfo =
             SkImageInfo::Make(100, 100, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
-    auto surface = skcpu::Recorder::TODO()->makeBitmapSurface(imageInfo, imageInfo.minRowBytes(), {});
+    auto surface =
+            skcpu::Recorder::TODO()->makeBitmapSurface(imageInfo, imageInfo.minRowBytes(), {});
+    REPORTER_ASSERT(reporter, surface != nullptr);
     SkPaint paint;
     paint.setColor(SK_ColorRED);
     paint.setMaskFilter(SkMaskFilter::MakeBlur(SkBlurStyle::kNormal_SkBlurStyle, 3.1f));
@@ -55,8 +63,10 @@ DEF_TEST(CPUSurface_UsesTODORecorder_DrawsPixels, reporter) {
 }
 
 DEF_TEST(ImageMakeColorSpace_UsesCPURecorderToMakeImage_Success, reporter) {
-    auto ctx = skcpu::Context::Make();
+    auto ctx = SkContextCtorAccessor::MakeContext(sk_make_sp<SkSharedContext>(), {});
+    REPORTER_ASSERT(reporter, ctx != nullptr);
     std::unique_ptr<skcpu::Recorder> recorder = ctx->makeRecorder();
+    REPORTER_ASSERT(reporter, recorder != nullptr);
     SkBitmap bm;
     bm.setInfo(SkImageInfo::Make(100, 100, kRGBA_8888_SkColorType, kPremul_SkAlphaType));
     bm.allocPixels();
@@ -70,8 +80,10 @@ DEF_TEST(ImageMakeColorSpace_UsesCPURecorderToMakeImage_Success, reporter) {
 }
 
 DEF_TEST(ImageMakeScaled_UsesCPURecorderToMakeImage_Success, reporter) {
-    auto ctx = skcpu::Context::Make();
+    auto ctx = SkContextCtorAccessor::MakeContext(sk_make_sp<SkSharedContext>(), {});
+    REPORTER_ASSERT(reporter, ctx != nullptr);
     std::unique_ptr<skcpu::Recorder> recorder = ctx->makeRecorder();
+    REPORTER_ASSERT(reporter, recorder != nullptr);
     SkBitmap bm;
     bm.setInfo(SkImageInfo::Make(100, 100, kRGBA_8888_SkColorType, kPremul_SkAlphaType));
     bm.allocPixels();

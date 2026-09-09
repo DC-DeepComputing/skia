@@ -100,7 +100,6 @@ public:
     BackendApi backend() const;
 
     Type type() const override { return SkRecorder::Type::kGraphite; }
-    skcpu::Recorder* cpuRecorder() override;
 
     std::unique_ptr<Recording> snap();
 

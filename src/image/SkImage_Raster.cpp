@@ -92,7 +92,7 @@ bool SkImage_Raster::getROPixels(GrDirectContext*, SkBitmap* dst, CachingHint) c
     return true;
 }
 
-sk_sp<SkSurface> SkImage_Raster::onMakeSurface(SkRecorder* recorder,
+sk_sp<SkSurface> SkImage_Raster::onMakeSurface(SkRecorder*,
                                                const SkImageInfo& info) const {
     if (!recorder) {
         recorder = skcpu::Recorder::TODO();

@@ -7,6 +7,8 @@
 
 #include "include/gpu/ganesh/GrRecordingContext.h"
 
+#include "include/core/SkContext.h"
+#include "include/core/SkContextOptions.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
 #include "include/gpu/GpuTypes.h"
