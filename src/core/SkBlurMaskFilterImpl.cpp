@@ -111,7 +111,7 @@ std::pair<sk_sp<SkImageFilter>, bool> SkBlurMaskFilterImpl::asImageFilter(const 
 SkScalar SkBlurMaskFilterImpl::computeXformedSigma(const SkMatrix& ctm) const {
     constexpr SkScalar kMaxBlurSigma = SkIntToScalar(128);
     SkScalar xformedSigma = this->ignoreXform() ? fSigma : ctm.mapRadius(fSigma);
-    return std::min(xformedSigma, kMaxBlurSigma);
+    return xformedSigma;
 }
 
 bool SkBlurMaskFilterImpl::filterMask(SkMaskBuilder* dst, const SkMask& src,
