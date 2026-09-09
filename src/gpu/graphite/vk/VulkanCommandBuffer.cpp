@@ -923,8 +923,8 @@ VkRect2D get_render_area(const SkIRect& srcBounds,
     SkIRect dstBounds;
     // Adjust Width
     if (granularity.width == 0 || granularity.width == 1) {
-        dstBounds.fLeft = srcBounds.fLeft;
-        dstBounds.fRight = srcBounds.fRight;
+        dstBounds.fLeft = std::max(0, srcBounds.fLeft);
+        dstBounds.fRight = std::min(maxWidth, srcBounds.fRight);
     } else {
         // Start with the right side of rect so we know if we end up going past the maxWidth.
         int rightAdj = srcBounds.fRight % granularity.width;
@@ -941,8 +941,8 @@ VkRect2D get_render_area(const SkIRect& srcBounds,
     }
 
     if (granularity.height == 0 || granularity.height == 1) {
-        dstBounds.fTop = srcBounds.fTop;
-        dstBounds.fBottom = srcBounds.fBottom;
+        dstBounds.fTop = std::max(0, srcBounds.fTop);
+        dstBounds.fBottom = std::min(maxHeight, srcBounds.fBottom);
     } else {
         // Start with the bottom side of rect so we know if we end up going past the maxHeight.
         int bottomAdj = srcBounds.fBottom % granularity.height;
@@ -1092,7 +1092,7 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& rpDesc,
 
     if (loadMSAAFromResolve && !this->loadMSAAFromResolve(rpDesc,
                                                           *vulkanResolveTexture,
-                                                          fTargetTexture->dimensions(),
+                                                          framebufferDims,
                                                           nativeBounds)) {
         SKIA_LOG_E("Failed to load MSAA from resolve");
         this->endRenderPass();
