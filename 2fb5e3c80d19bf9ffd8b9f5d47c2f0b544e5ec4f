@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55f43983_f659fc60",
+        "filename": "src/gpu/graphite/TextureFormatXferFn.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 704,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-09T12:20:57Z",
+      "side": 1,
+      "message": "Is there a missing comma here ?",
+      "range": {
+        "startLine": 702,
+        "startChar": 0,
+        "endLine": 704,
+        "endChar": 95
+      },
+      "revId": "2fb5e3c80d19bf9ffd8b9f5d47c2f0b544e5ec4f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
