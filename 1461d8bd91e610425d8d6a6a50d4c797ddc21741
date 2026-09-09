@@ -237,6 +237,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "35bf070b_a0347baf",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 32
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-09T15:08:27Z",
+      "side": 1,
+      "message": "Sure, I updated those assert and removed the non-virtual version of `appendDataStride` so now we only have the version taking in DrawParams.",
+      "parentUuid": "3b585f81_093f4564",
+      "range": {
+        "startLine": 208,
+        "startChar": 0,
+        "endLine": 208,
+        "endChar": 73
+      },
+      "revId": "1461d8bd91e610425d8d6a6a50d4c797ddc21741",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4fa7a679_af4d76ea",
@@ -439,6 +463,30 @@
       "side": 1,
       "message": "Gotcha, I didn\u0027t realize that the SkRuntimeEffect::Uniform\u0027s name was a string_view instead of a std::string.  We could always update Graphite\u0027s Uniform to have a string_view instead of a const char* but that doesn\u0027t buy us much since the name is only used here for debugging.\n\nHow about this plan:\n\n1. Bring back the name copying and building the full uniform array, but guard all of that by an `#if defined(SK_DEBUG)`, since the uniform array and names are only going to be used by the UniformExpectationsValidator.\n\n2. Inside the main for loop calling write(), we can just use a single stack allocated Uniform inside the loop that has a null name with a comment outlining that we only need the type information. That way in release builds we aren\u0027t allocating anything while writing uniforms.",
       "parentUuid": "99ad6c9c_1c06d74e",
+      "range": {
+        "startLine": 183,
+        "startChar": 0,
+        "endLine": 183,
+        "endChar": 52
+      },
+      "revId": "1461d8bd91e610425d8d6a6a50d4c797ddc21741",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "70551cd8_ca60fa4e",
+        "filename": "src/gpu/graphite/render/MeshRenderStep.cpp",
+        "patchSetId": 32
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-09T15:08:27Z",
+      "side": 1,
+      "message": "That sounds good to me, implemented this approach.",
+      "parentUuid": "36236844_3faeaac3",
       "range": {
         "startLine": 183,
         "startChar": 0,
