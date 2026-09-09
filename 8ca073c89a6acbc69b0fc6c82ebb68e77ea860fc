@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23be8fd8_facc6005",
+        "filename": "src/codec/SkHdrAgtm.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 417,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-09-09T14:56:21Z",
+      "side": 1,
+      "message": "nit: format to 100 lines",
+      "range": {
+        "startLine": 417,
+        "startChar": 0,
+        "endLine": 417,
+        "endChar": 107
+      },
+      "revId": "8ca073c89a6acbc69b0fc6c82ebb68e77ea860fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d68a8ae_a116c6c2",
+        "filename": "src/codec/SkHdrAgtm.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 568,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-09-09T14:56:21Z",
+      "side": 1,
+      "message": "nit: format to 100 lines",
+      "range": {
+        "startLine": 568,
+        "startChar": 0,
+        "endLine": 568,
+        "endChar": 104
+      },
+      "revId": "8ca073c89a6acbc69b0fc6c82ebb68e77ea860fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2ec77f9_7f8c0ab1",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-09-09T14:56:21Z",
+      "side": 1,
+      "message": "nit: format to 100 lines",
+      "revId": "8ca073c89a6acbc69b0fc6c82ebb68e77ea860fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26e44e88_ff8e3b28",
+        "filename": "src/codec/SkHdrAgtmParse.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-09-09T14:56:21Z",
+      "side": 1,
+      "message": "nit: format to 100 lines. Please review other instances in the cl that require this formatting",
+      "revId": "8ca073c89a6acbc69b0fc6c82ebb68e77ea860fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
