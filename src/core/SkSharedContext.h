@@ -9,6 +9,8 @@
 #define SkSharedContext_DEFINED
 
 #include "include/core/SkRefCnt.h"
+#include "src/core/SkSynchronizedResourceCache.h"
+#include "src/core/SkTypefaceCache.h"
 
 #include <memory>
 
@@ -16,6 +18,7 @@ class SkOpenTypeSVGDecoder;
 class SkStrikeCache;
 class SkSynchronizedResourceCache;
 class SkTypefaceCache;
+struct SkContextOptions;
 
 using OpenTypeSVGDecoderFactory = std::unique_ptr<SkOpenTypeSVGDecoder> (*)(const uint8_t* svg,
                                                                             size_t length);
@@ -40,6 +43,22 @@ public:
     int setTypefaceCacheCountLimit(int count) {
         const int prev = fTypefaceCacheCountLimit;
         fTypefaceCacheCountLimit = count;
+        return prev;
+    }
+
+    int resourceCacheTotalByteLimit() const { return fResourceCache->getTotalByteLimit(); }
+    int setResourceCacheTotalByteLimit(int bytes) {
+        const int prev = fResourceCache->getTotalByteLimit();
+        fResourceCache->setTotalByteLimit(bytes);
+        return prev;
+    }
+
+    int resourceCacheSingleAllocationByteLimit() const {
+        return fResourceCache->getSingleAllocationByteLimit();
+    }
+    int setResourceCacheSingleAllocationByteLimit(int bytes) {
+        const int prev = fResourceCache->getSingleAllocationByteLimit();
+        fResourceCache->setSingleAllocationByteLimit(bytes);
         return prev;
     }
 
