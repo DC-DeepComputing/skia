@@ -1,0 +1,182 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8aac05c6_53bdaa16",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 30
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-09-09T17:13:26Z",
+      "side": 1,
+      "message": "It could be nice to have some equivalent documentation in Skia as the one we have for Chrome? I opened a bug:\nhttps://b.corp.google.com/issues/559168574\n\nThis can happen in a follow-up. Only if Skia OWNERS feel this would be valuable. ( +CC @egdaniel@google.com, maybe not?)",
+      "revId": "e83fa0c51c2a57e33a4261586c50929cdd0b233c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "86704b00_57dd48d7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 30
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-09-09T17:13:26Z",
+      "side": 1,
+      "message": "Hello Greg,\nCould you please takea a look?",
+      "revId": "e83fa0c51c2a57e33a4261586c50929cdd0b233c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00339704_8eff09a9",
+        "filename": "include/private/SkMacros.h",
+        "patchSetId": 30
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-09-09T17:13:26Z",
+      "side": 1,
+      "message": "To be confirmed with skia OWNERs like @egdaniel@google.com. I think this might belong to:\n```\ninclude/private/SkAttributes.h\n```\n?",
+      "revId": "e83fa0c51c2a57e33a4261586c50929cdd0b233c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ecdc1f90_2dffd446",
+        "filename": "include/private/SkMacros.h",
+        "patchSetId": 30
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-09-09T17:13:26Z",
+      "side": 1,
+      "message": "This is short, but I feel a skia adaptation of the chromium comment would be more useful.\n\nWhat about:\n```\n// Annotates a function indicating it can lead to out-of-bounds accesses (OOB)\n// if given incorrect inputs.\n//\n// This commonly includes functions that take raw pointers, sizes, iterators,\n// sentinels, etc., and cannot fully check their preconditions (e.g., that the\n// provided pointer actually points to an allocation of at least the provided\n// size). Useful to diagnose potential misuse via `-Wunsafe-buffer-usage`, as\n// well as to mark functions in need of safer alternatives.\n//\n// All functions annotated with this macro should come with a `// PRECONDITIONS:`\n// comment explaining what the caller must guarantee to ensure safe operation.\n// Callers can then write `// SAFETY:` comments explaining why the specific\n// preconditions have been met (e.g., verified by caller bounds, types, or\n// nearby `SkASSERT`s).\n//\n// Ideally, unsafe functions should also be paired with a safer overload, e.g.,\n// one that replaces pointer and size parameters with `SkSpan` (or `std::span`);\n// otherwise, document safer replacement patterns callers can migrate to.\n//\n// Annotating a function `SK_UNSAFE_BUFFER_USAGE` means all call sites (that do\n// not disable the warning) must wrap calls in `SK_UNSAFE_BUFFERS()`; see\n// documentation there.\n//\n// See also:\n//    https://chromium.googlesource.com/chromium/src/+/main/docs/unsafe_buffers.md\n//    https://clang.llvm.org/docs/SafeBuffers.html\n//    https://clang.llvm.org/docs/DiagnosticsReference.html#wunsafe-buffer-usage\n//\n// Usage:\n//\n//    // Calls to this function must be wrapped in `SK_UNSAFE_BUFFERS()`.\n//    SK_UNSAFE_BUFFER_USAGE void Func(T* input, T* end);\n```\n\n\nWe can update the doc link to the skia version once it exists, if we decide to add it.\n\n\nNote: I omitted the parts about usage in fields. This is not used that way in Chrome at all.",
+      "range": {
+        "startLine": 170,
+        "startChar": 0,
+        "endLine": 181,
+        "endChar": 64
+      },
+      "revId": "e83fa0c51c2a57e33a4261586c50929cdd0b233c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "abaa5c88_928e02da",
+        "filename": "include/private/SkMacros.h",
+        "patchSetId": 30
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-09-09T17:13:26Z",
+      "side": 1,
+      "message": "Use Skia equivalent. CHECK are Chrome specific.",
+      "range": {
+        "startLine": 196,
+        "startChar": 20,
+        "endLine": 196,
+        "endChar": 26
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "56fc797e_b1727798",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/private/SkMacros.h",
+              "range": {
+                "startLine": 196,
+                "startChar": 0,
+                "endLine": 197,
+                "endChar": 0
+              },
+              "replacement": "//    (e.g., nearby SkASSERTs, types, or caller bounds) guarantee memory safety.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "e83fa0c51c2a57e33a4261586c50929cdd0b233c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ea66634_91be6f37",
+        "filename": "include/private/SkMacros.h",
+        "patchSetId": 30
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-09-09T17:13:26Z",
+      "side": 1,
+      "message": "What about\n```\n// Annotates code indicating that it should be permanently exempted from\n// `-Wunsafe-buffer-usage`. For temporary cases such as migrating callers to\n// safer patterns, use `SK_UNSAFE_TODO()` instead; see documentation there.\n//\n// All calls to functions annotated with `SK_UNSAFE_BUFFER_USAGE` must be\n// marked with one of these two macros; they can also be used around pointer\n// arithmetic, pointer subscripting, and the like.\n//\n// ** USE OF THIS MACRO SHOULD BE VERY RARE.** Using this macro indicates that\n// the compiler cannot verify that the code avoids out-of-bounds (OOB) access,\n// and manual review is required. Even with manual review, it\u0027s easy for\n// assumptions to change and security bugs to creep in over time. Prefer safer\n// patterns (such as `SkSpan` or `std::span`) instead.\n//\n// Usage should wrap the minimum necessary code, and *must* include a\n// `// SAFETY: ...` comment that explains how the code guarantees safety or\n// meets the requirements of called `SK_UNSAFE_BUFFER_USAGE` functions.\n// Guarantees must be manually verifiable during code review using only local\n// invariants. Valid invariants include:\n// - Runtime conditions or `SkASSERT`s nearby\n// - Invariants guaranteed by types in the surrounding code\n// - Invariants guaranteed by function calls in the surrounding code\n// - Caller requirements, if the containing function is itself annotated with\n//   `SK_UNSAFE_BUFFER_USAGE`; this is less safe and should be a last resort\n//\n// See also:\n//    https://chromium.googlesource.com/chromium/src/+/main/docs/unsafe_buffers.md\n//    https://clang.llvm.org/docs/SafeBuffers.html\n//    https://clang.llvm.org/docs/DiagnosticsReference.html#wunsafe-buffer-usage\n//\n// Usage:\n//\n//    // The following call will not trigger a compiler warning even if `Func()`\n//    // is annotated `SK_UNSAFE_BUFFER_USAGE`.\n//    return SK_UNSAFE_BUFFERS(Func(input, end));\n//\n// Test for `__clang__` directly, as there\u0027s no `__has_pragma` or similar (see\n// https://github.com/llvm/llvm-project/issues/51887).\n```",
+      "range": {
+        "startLine": 188,
+        "startChar": 0,
+        "endLine": 198,
+        "endChar": 53
+      },
+      "revId": "e83fa0c51c2a57e33a4261586c50929cdd0b233c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1318b44_3f15ee71",
+        "filename": "include/private/SkMacros.h",
+        "patchSetId": 30
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-09-09T17:13:26Z",
+      "side": 1,
+      "message": "Instead of nested if and the 4 cases. What about a fallback like in Chrome?\n```\n#if defined(__clang__) \u0026\u0026 defined(__has_warning)\n#  if __has_warning(\"-Wunsafe-buffer-usage\")\n#    define SK_UNSAFE_BUFFERS(...) \\\n       _Pragma(\"clang unsafe_buffer_usage begin\") \\\n       __VA_ARGS__ \\\n       _Pragma(\"clang unsafe_buffer_usage end\")\n#  endif\n#endif\n\n#ifndef SK_UNSAFE_BUFFERS\n#  define SK_UNSAFE_BUFFERS(...) __VA_ARGS__\n#endif\n```",
+      "range": {
+        "startLine": 199,
+        "startChar": 0,
+        "endLine": 211,
+        "endChar": 0
+      },
+      "revId": "e83fa0c51c2a57e33a4261586c50929cdd0b233c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d255553_1723bc85",
+        "filename": "include/private/SkMacros.h",
+        "patchSetId": 30
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-09-09T17:13:26Z",
+      "side": 1,
+      "message": "It would be nice to have a presubmit forbidding regressing -WUnsafe-buffer-usage coverage.\nI opened:\nhttps://b.corp.google.com/issues/559168168\n\nThat would be nice in a follow-up.",
+      "revId": "e83fa0c51c2a57e33a4261586c50929cdd0b233c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
