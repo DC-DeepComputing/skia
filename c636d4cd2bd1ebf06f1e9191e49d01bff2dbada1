@@ -22,6 +22,30 @@
       },
       "revId": "c636d4cd2bd1ebf06f1e9191e49d01bff2dbada1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a7a9493_363b50e9",
+        "filename": "tests/graphite/TextureFormatTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1073,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-09T15:27:29Z",
+      "side": 1,
+      "message": "Nope, just some aggressive cmd+/\u0027ing",
+      "parentUuid": "226584ee_190329d2",
+      "range": {
+        "startLine": 1073,
+        "startChar": 4,
+        "endLine": 1073,
+        "endChar": 9
+      },
+      "revId": "c636d4cd2bd1ebf06f1e9191e49d01bff2dbada1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
