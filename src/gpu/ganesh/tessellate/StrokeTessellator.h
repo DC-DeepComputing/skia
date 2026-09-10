@@ -7,6 +7,9 @@
 
 #ifndef StrokeTessellator_DEFINED
 #define StrokeTessellator_DEFINED
+#include "src/partition_alloc/raw_ptr_exclusion.h"
+
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include "include/core/SkPath.h"
 #include "include/core/SkRefCnt.h"
@@ -35,7 +38,8 @@ public:
         SkPath fPath;
         SkStrokeRec fStroke;
         SkPMColor4f fColor;
-        PathStrokeList* fNext = nullptr;
+        // RAW_PTR_EXCLUSION: performance regression
+        RAW_PTR_EXCLUSION PathStrokeList* fNext = nullptr;
     };
 
     StrokeTessellator(PatchAttribs attribs) : fAttribs(attribs | PatchAttribs::kJoinControlPoint) {}

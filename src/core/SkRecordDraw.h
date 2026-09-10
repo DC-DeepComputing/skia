@@ -13,6 +13,7 @@
 #include "include/core/SkM44.h"
 #include "include/core/SkPicture.h"
 #include "include/private/SkNoncopyable.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 class SkDrawable;
 class SkRecord;
@@ -58,9 +59,9 @@ private:
     template <typename T> void draw(const T&);
 
     const SkM44 fInitialCTM;
-    SkCanvas* fCanvas;
-    SkPicture const* const* fDrawablePicts;
-    SkDrawable* const* fDrawables;
+    bisect_raw_ptr<SkCanvas> fCanvas;
+    bisect_raw_ptr<const SkPicture* const, AllowPtrArithmetic> fDrawablePicts;
+    bisect_raw_ptr<SkDrawable* const, AllowPtrArithmetic> fDrawables;
     int fDrawableCount;
 };
 

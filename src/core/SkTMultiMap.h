@@ -6,7 +6,10 @@
  */
 
 #ifndef SkTMultiMap_DEFINED
+
 #define SkTMultiMap_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "src/core/SkTDynamicHash.h"
 
@@ -22,8 +25,8 @@ class SkTMultiMap {
 
         static const Key& GetKey(const ValueList& e) { return HashTraits::GetKey(*e.fValue); }
         static uint32_t Hash(const Key& key) { return HashTraits::Hash(key); }
-        T* fValue;
-        ValueList* fNext;
+        raw_ptr<T, DisableDanglingPtrDetection> fValue;
+        raw_ptr<ValueList> fNext;
 
         // TODO(b/407062399): Debugging information holding count of elements in ValueList.
         // Only maintained in the head of the linked list to view in LLDB dumps.
@@ -54,7 +57,7 @@ public:
         if (list) {
             // The new ValueList entry is inserted as the second element in the
             // linked list, and it will contain the value of the first element.
-            ValueList* newEntry = new ValueList(list->fValue);
+            ValueList* newEntry = new ValueList(list->fValue.get());
             newEntry->fNext = list->fNext;
             // The existing first ValueList entry is updated to contain the
             // inserted value.

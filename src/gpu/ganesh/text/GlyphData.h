@@ -6,7 +6,8 @@
  */
 
 #ifndef skgpu_ganesh_GlyphData_DEFINED
-#define skgpu_ganesh_GlyphData_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSpan.h"
@@ -49,7 +50,8 @@ struct GlyphEntry {
 
 /** Adapts GlyphEntry* to conform to GlyphVectors GlyphType requirements. */
 class Glyph {
-    GlyphEntry* fEntry;
+    // RAW_PTR_EXCLUSION: Must be trivially destructible to satisfy GlyphVector's GlyphType concept.
+    RAW_PTR_EXCLUSION GlyphEntry* fEntry;
 
     Glyph() = delete;
     Glyph(const Glyph&) = delete;
