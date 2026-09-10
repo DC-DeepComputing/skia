@@ -5735,3 +5735,23 @@ DEF_TEST(Path_snapshot_rrect_success, reporter) {
         REPORTER_ASSERT(reporter, info->fDirection == SkPathDirection::kCCW);
     }
 }
+
+DEF_TEST(Fuzz_b464232697_ExtremeStrokeBounds, reporter) {
+    SkPath path = SkPathBuilder()
+                          .moveTo(5.0f, -0.93f)
+                          .cubicTo(7.0f, 8088.0f, 4473540.0f, 6.0f, 311.0f, 7245220098.0f)
+                          .lineTo(0.0f, 574404044.0f)
+                          .detach();
+
+    SkPaint paint;
+    paint.setStyle(SkPaint::kStroke_Style);
+    paint.setStrokeWidth(37.002f);
+
+    SkPathBuilder dstBuilder;
+    bool success = skpathutils::FillPathWithPaint(path, paint, &dstBuilder);
+#if defined(SK_BUILD_FOR_FUZZER)
+    REPORTER_ASSERT(reporter, !success);
+#else
+    (void)success;
+#endif
+}
