@@ -372,8 +372,8 @@ bool GrTextureEffect::ShaderModeRequiresUnormCoord(ShaderMode m) {
 void GrTextureEffect::Impl::emitCode(EmitArgs& args) {
     using ShaderMode = GrTextureEffect::ShaderMode;
 
-    auto& te = args.fFp.cast<GrTextureEffect>();
-    auto* fb = args.fFragBuilder;
+    auto& te = args.fFp->cast<GrTextureEffect>();
+    auto* fb = args.fFragBuilder.get();
 
     if (te.fShaderModes[0] == ShaderMode::kNone &&
         te.fShaderModes[1] == ShaderMode::kNone) {
