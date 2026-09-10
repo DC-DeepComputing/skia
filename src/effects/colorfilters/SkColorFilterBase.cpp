@@ -6,6 +6,8 @@
  */
 #include "src/effects/colorfilters/SkColorFilterBase.h"
 
+#include "src/partition_alloc/raw_ref.h"
+
 #include "include/core/SkColor.h"
 #include "include/core/SkColorSpace.h" // IWYU pragma: keep
 #include "include/core/SkColorType.h"
@@ -42,7 +44,7 @@ SkPMColor4f SkColorFilterBase::onFilterColor4f(const SkPMColor4f& color,
                       kRGBA_F32_SkColorType,
                       dstCS,
                       color.unpremul(),
-                      props,
+                      raw_ref(props),
                       SkRect::MakeEmpty()};
 
     if (as_CFB(this)->appendStages(rec, color.fA == 1)) {
