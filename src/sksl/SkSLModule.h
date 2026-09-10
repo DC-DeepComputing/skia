@@ -50,7 +50,7 @@ enum class ModuleType : int8_t {
 };
 
 struct Module {
-    raw_ptr<const Module> fParent = nullptr;
+    bisect_raw_ptr<const Module> fParent = nullptr;
     std::unique_ptr<SymbolTable>                 fSymbols;
     std::vector<std::unique_ptr<ProgramElement>> fElements;
     ModuleType                                   fModuleType = ModuleType::unknown;
