@@ -6,7 +6,10 @@
  */
 
 #ifndef GrGpuBuffer_DEFINED
+
 #define GrGpuBuffer_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/gpu/ganesh/GrBuffer.h"
@@ -116,7 +119,7 @@ protected:
         kWriteDiscard,
     };
 
-    void* fMapPtr;
+    raw_ptr<void, DanglingUntriaged> fMapPtr;
 
 private:
     /** Currently MapType is determined entirely by the buffer type, as documented in map(). */
