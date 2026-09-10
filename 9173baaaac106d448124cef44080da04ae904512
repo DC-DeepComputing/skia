@@ -16,6 +16,24 @@
       "message": "Do we also want to update this one?",
       "revId": "9173baaaac106d448124cef44080da04ae904512",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9bd2f0da_9d3e4bd5",
+        "filename": "tools/viewer/PathSlide.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 424,
+      "author": {
+        "id": 4621846
+      },
+      "writtenOn": "2026-09-10T19:40:40Z",
+      "side": 0,
+      "message": "Nice catch! Yes, we also want to update that array.\nIt was excluded from these CLs because the spanify tool grouped that change with other `SkSpan` changes. And, for the moment we are only applying `std::array` rewrites. But, eventually we\u0027ll update this array too. Thanks",
+      "parentUuid": "1158f70c_0c015a10",
+      "revId": "9173baaaac106d448124cef44080da04ae904512",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
