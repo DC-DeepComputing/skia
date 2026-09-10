@@ -81,7 +81,7 @@ public:
     }
 
 private:
-    raw_ptr<SkSharedMutex> fLock;
+    bisect_raw_ptr<SkSharedMutex> fLock;
 };
 class SK_SCOPED_CAPABILITY Shared {
 public:
@@ -101,7 +101,7 @@ public:
     }
 
 private:
-    raw_ptr<SkSharedMutex> fLock;
+    bisect_raw_ptr<SkSharedMutex> fLock;
 };
 
 static bool isLCD(const SkScalerContextRec& rec) {
@@ -1686,7 +1686,7 @@ bool SkScalerContext_DW::generateSVGMetrics(const SkGlyph& glyph, SkRect* bounds
 namespace {
 struct Context {
     SkTScopedComPtr<IDWriteFontFace4> fontFace4;
-    raw_ptr<void> glyphDataContext;
+    bisect_raw_ptr<void> glyphDataContext;
     Context(IDWriteFontFace4* face4, void* context)
             : fontFace4(SkRefComPtr(face4)), glyphDataContext(context) {}
 };
