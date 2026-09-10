@@ -142,29 +142,29 @@ private:
             fGenerator->fBuffer = fOldBuffer;
         }
 
-        raw_ptr<PipelineStageCodeGenerator> fGenerator;
-        raw_ptr<StringStream> fOldBuffer;
+        bisect_raw_ptr<PipelineStageCodeGenerator> fGenerator;
+        bisect_raw_ptr<StringStream> fOldBuffer;
         StringStream                fBuffer;
     };
 
-    const raw_ref<const Program> fProgram;
+    const bisect_raw_ref<const Program> fProgram;
     const char*    fSampleCoords;
     const char*    fInputColor;
     const char*    fDestColor;
-    raw_ptr<Callbacks> fCallbacks;
+    bisect_raw_ptr<Callbacks> fCallbacks;
 
     Analysis::SpecializationInfo fSpecializationInfo;
     Analysis::SpecializationIndex fActiveSpecializationIndex = Analysis::kUnspecialized;
-    raw_ptr<const Analysis::SpecializedParameters> fActiveSpecialization = nullptr;
+    bisect_raw_ptr<const Analysis::SpecializedParameters> fActiveSpecialization = nullptr;
 
     THashMap<const Variable*, std::string>                                      fVariableNames;
     THashMap<const Type*, std::string>                                          fStructNames;
     THashMap<Analysis::SpecializedFunctionKey, std::string, Analysis::SpecializedFunctionKey::Hash>
             fFunctionNames;
 
-    raw_ptr<StringStream> fBuffer = nullptr;
+    bisect_raw_ptr<StringStream> fBuffer = nullptr;
     bool                       fCastReturnsToHalf = false;
-    raw_ptr<const FunctionDeclaration> fCurrentFunction = nullptr;
+    bisect_raw_ptr<const FunctionDeclaration> fCurrentFunction = nullptr;
 };
 
 
