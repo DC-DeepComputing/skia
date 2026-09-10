@@ -2438,7 +2438,7 @@ public:
 
 private:
     RAW_PTR_EXCLUSION SkCanvas* fCanvas;
-    RAW_PTR_EXCLUSION sktext::GlyphRunBuilder* fGlyphRunBuilder;
+    raw_ptr<sktext::GlyphRunBuilder, DanglingUntriaged> fGlyphRunBuilder;
 };
 
 void SkCanvas::onDrawTextBlob(const SkTextBlob* blob, SkScalar x, SkScalar y,
