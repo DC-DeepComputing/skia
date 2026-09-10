@@ -16,6 +16,23 @@
       "message": "LGTM with no voting rights",
       "revId": "e91110769821b9ce0b2aababcaaa50b0a4869fe3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e4634e1_f32fa19a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2026-09-10T15:20:02Z",
+      "side": 1,
+      "message": "Oh my gosh, I\u0027m so sorry for missing this! Proxying LGTM from Shahbaz. Thanks, Sharadh!",
+      "revId": "e91110769821b9ce0b2aababcaaa50b0a4869fe3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
