@@ -19,6 +19,7 @@
 #include "src/gpu/tessellate/Tessellation.h"
 
 #include <tuple>
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrMeshDrawTarget;
 class GrOpFlushState;
@@ -49,7 +50,7 @@ public:
             std::tuple<const SkMatrix&, const SkPath&, const SkPMColor4f&> operator*() const {
                 return {fHead->fPathMatrix, fHead->fPath, fHead->fColor};
             }
-            const PathDrawList* fHead;
+            raw_ptr<const PathDrawList> fHead;
         };
         Iter begin() const { return {this}; }
         Iter end() const { return {nullptr}; }
