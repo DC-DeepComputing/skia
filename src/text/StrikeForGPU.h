@@ -6,13 +6,15 @@
  */
 
 #ifndef sktext_StrikeForGPU_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
+
 #define sktext_StrikeForGPU_DEFINED
 
 #include "include/core/SkPath.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
 #include "src/core/SkGlyph.h"
-#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <memory>
 #include <optional>
@@ -108,7 +110,7 @@ union IDOrPath {
 // prepareForDrawableDrawing uses this union to convert glyph ids to drawables.
 union IDOrDrawable {
     SkGlyphID fGlyphID;
-    RAW_PTR_EXCLUSION SkDrawable* fDrawable;  // RAW_PTR_EXCLUSION: union.
+    RAW_PTR_EXCLUSION SkDrawable* fDrawable;
 };
 
 // -- StrikeMutationMonitor ------------------------------------------------------------------------
@@ -118,7 +120,7 @@ public:
     ~StrikeMutationMonitor();
 
 private:
-    StrikeForGPU* fStrike;
+    raw_ptr<StrikeForGPU> fStrike;
 };
 
 // -- StrikeForGPUCacheInterface -------------------------------------------------------------------

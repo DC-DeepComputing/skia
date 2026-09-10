@@ -7,6 +7,10 @@
 #ifndef SkPathOpsTSect_DEFINED
 #define SkPathOpsTSect_DEFINED
 
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
+#include "src/partition_alloc/raw_ref.h"
+
 #include "include/core/SkScalar.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkDebug.h"
@@ -82,8 +86,8 @@ private:
 };
 
 struct SkTSpanBounded {
-    SkTSpan* fBounded;
-    SkTSpanBounded* fNext;
+    raw_ptr<SkTSpan, DanglingUntriaged> fBounded;
+    raw_ptr<SkTSpanBounded, DanglingUntriaged> fNext;
 };
 
 class SkTSpan {
@@ -221,12 +225,12 @@ private:
     void validatePerpT(double oppT) const;
     void validatePerpPt(double t, const SkDPoint& ) const;
 
-    SkTCurve* fPart;
+    raw_ptr<SkTCurve, DanglingUntriaged> fPart;
     SkTCoincident fCoinStart;
     SkTCoincident fCoinEnd;
-    SkTSpanBounded* fBounded;
-    SkTSpan* fPrev;
-    SkTSpan* fNext;
+    raw_ptr<SkTSpanBounded, DanglingUntriaged> fBounded;
+    raw_ptr<SkTSpan, DanglingUntriaged> fPrev;
+    RAW_PTR_EXCLUSION SkTSpan* fNext;
     SkDRect fBounds;
     double fStartT;
     double fEndT;
@@ -236,10 +240,9 @@ private:
     SkOpDebugBool fIsLinear;
     SkOpDebugBool fIsLine;
     SkOpDebugBool fDeleted;
-    SkDEBUGCODE(SkOpGlobalState* fDebugGlobalState;)
-    SkDEBUGCODE(SkTSect* fDebugSect;)
-    PATH_OPS_DEBUG_T_SECT_CODE(int fID;)
-    friend class SkTSect;
+    SkDEBUGCODE(raw_ptr<SkOpGlobalState> fDebugGlobalState;)
+            SkDEBUGCODE(raw_ptr<SkTSect> fDebugSect;)
+                    PATH_OPS_DEBUG_T_SECT_CODE(int fID;) friend class SkTSect;
 };
 
 class SkTSect {
@@ -284,8 +287,8 @@ private:
         SkTSpan* result = this->addOne();
         SkDEBUGCODE(result->debugSetGlobalState(this->globalState()));
         result->splitAt(span, t, &fHeap);
-        result->initBounds(fCurve);
-        span->initBounds(fCurve);
+        result->initBounds(*fCurve);
+        span->initBounds(*fCurve);
         return result;
     }
 
@@ -324,9 +327,7 @@ private:
                          bool* calcMatched, bool* oppMatched) const;
     void mergeCoincidence(SkTSect* sect2);
 
-    const SkDPoint& pointLast() const {
-        return fCurve[fCurve.pointLast()];
-    }
+    const SkDPoint& pointLast() const { return (*fCurve)[fCurve->pointLast()]; }
 
     SkTSpan* prev(SkTSpan* ) const;
     bool removeByPerpendicular(SkTSect* opp);
@@ -352,21 +353,19 @@ private:
     void validate() const;
     void validateBounded() const;
 
-    const SkTCurve& fCurve;
+    const raw_ref<const SkTCurve> fCurve;
     SkSTArenaAlloc<1024> fHeap;
-    SkTSpan* fHead;
-    SkTSpan* fCoincident;
-    SkTSpan* fDeleted;
+    RAW_PTR_EXCLUSION SkTSpan* fHead;
+    raw_ptr<SkTSpan> fCoincident;
+    raw_ptr<SkTSpan> fDeleted;
     int fActiveCount;
     bool fRemovedStartT;
     bool fRemovedEndT;
     bool fHung;
-    SkDEBUGCODE(SkOpGlobalState* fDebugGlobalState;)
-    SkDEBUGCODE(SkTSect* fOppSect;)
-    PATH_OPS_DEBUG_T_SECT_CODE(int fID;)
-    PATH_OPS_DEBUG_T_SECT_CODE(int fDebugCount;)
+    SkDEBUGCODE(raw_ptr<SkOpGlobalState> fDebugGlobalState;) SkDEBUGCODE(raw_ptr<SkTSect> fOppSect;)
+            PATH_OPS_DEBUG_T_SECT_CODE(int fID;) PATH_OPS_DEBUG_T_SECT_CODE(int fDebugCount;)
 #if DEBUG_T_SECT
-    int fDebugAllocatedCount;
+                    int fDebugAllocatedCount;
 #endif
     friend class SkTSpan;
 };

@@ -27,6 +27,7 @@
 #include <string>
 #include <string_view>
 #include <utility>
+#include "src/partition_alloc/raw_ptr.h"
 
 class SkCapabilities;
 enum class SkTextureCompressionType;
@@ -497,7 +498,7 @@ protected:
      * If present, use this object to report shader compilation failures. If not, report failures
      * via SkDebugf and assert.
      */
-    ShaderErrorHandler* fShaderErrorHandler = nullptr;
+    raw_ptr<ShaderErrorHandler> fShaderErrorHandler = nullptr;
 
 #if defined(GPU_TEST_UTILS)
     std::string fDeviceName;

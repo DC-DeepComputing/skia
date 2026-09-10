@@ -30,6 +30,7 @@
 #include <string>
 #include <string_view>
 #include <vector>
+#include "src/partition_alloc/raw_ptr.h"
 
 class SkPixmap;
 enum SkColorType : int;
@@ -124,7 +125,7 @@ public:
     private:
         friend class DrawAtlas;
         explicit RecordVisitor(Plot* p) : fPlot{p} {}
-        Plot* fPlot;
+        raw_ptr<Plot> fPlot;
     };
 
     class EvictionCallback {
@@ -350,7 +351,7 @@ private:
     // the generation counter. If a Glyph's generation is less than the atlas's
     // generation, then it knows it's been evicted and is either free to be deleted or
     // re-added to the atlas if necessary.
-    GenerationCounter* const fGenerationCounter;
+    const raw_ptr<GenerationCounter> fGenerationCounter;
     uint64_t                 fAtlasGeneration;
 
     // nextFlushToken() value at the end of the previous DrawPass

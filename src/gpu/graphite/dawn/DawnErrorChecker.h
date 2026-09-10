@@ -13,6 +13,7 @@
 #include "src/gpu/graphite/dawn/DawnAsyncWait.h"
 
 #include "webgpu/webgpu_cpp.h"  // NO_G3_REWRITE
+#include "src/partition_alloc/raw_ptr.h"
 
 namespace skgpu::graphite {
 
@@ -43,7 +44,7 @@ public:
 
 private:
     bool fArmed = true;
-    const DawnSharedContext* fSharedContext;
+    raw_ptr<const DawnSharedContext> fSharedContext;
 };
 
 }  // namespace skgpu::graphite

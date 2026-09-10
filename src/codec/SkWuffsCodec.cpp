@@ -60,6 +60,7 @@
 #error "SkWuffsCodec should not #define WUFFS_IMPLEMENTATION"
 #endif
 #include "wuffs-v0.3.c"  // NO_G3_REWRITE
+#include "src/partition_alloc/raw_ptr.h"
 // Commit count 2514 is Wuffs 0.3.0-alpha.4.
 #if WUFFS_VERSION_BUILD_METADATA_COMMIT_COUNT < 2514
 #error "Wuffs version is too old. Upgrade to the latest version."
@@ -231,7 +232,7 @@ public:
     const SkFrame* onGetFrame(int i) const override;
 
 private:
-    const SkWuffsCodec* fCodec;
+    raw_ptr<const SkWuffsCodec> fCodec;
 
     using INHERITED = SkFrameHolder;
 };
@@ -309,7 +310,7 @@ private:
     wuffs_base__io_buffer    fIOBuffer;
 
     // Incremental decoding state.
-    uint8_t*                fIncrDecDst;
+    raw_ptr<uint8_t, DanglingUntriaged> fIncrDecDst;
     size_t                  fIncrDecRowBytes;
     wuffs_base__pixel_blend fIncrDecPixelBlend;
     bool                    fIncrDecOnePass;

@@ -20,6 +20,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <functional>
+#include "src/partition_alloc/raw_ptr.h"
 
 class SkMatrix;
 enum class SkRasterPipelineOp;
@@ -96,7 +97,7 @@ public:
 
     // Callers can inspect the stage list for debugging purposes.
     struct StageList {
-        StageList*          prev;
+        bisect_raw_ptr<StageList> prev;
         SkRasterPipelineOp  stage;
         RAW_PTR_EXCLUSION void* ctx;  // RAW_PTR_EXCLUSION: pointer used to pack integers.
     };
@@ -158,11 +159,11 @@ private:
                           bool store);
     uint8_t* tailPointer();
 
-    SkArenaAlloc*                        fAlloc;
-    SkRasterPipelineContexts::RewindCtx* fRewindCtx;
+    bisect_raw_ptr<SkArenaAlloc> fAlloc;
+    bisect_raw_ptr<SkRasterPipelineContexts::RewindCtx> fRewindCtx;
     // A linked list of stages. fStages and getStageList() return the latest stage.
-    StageList*                  fStages;
-    uint8_t*                    fTailPointer;
+    bisect_raw_ptr<StageList> fStages;
+    bisect_raw_ptr<uint8_t> fTailPointer;
     int                         fNumStages;
 
     // Only 1 in 2 million CPU-backend pipelines used more than two MemoryCtxs.

@@ -12,6 +12,8 @@
 #include "include/private/SkAssert.h"
 #include "include/private/SkDebug.h"
 
+#include "src/partition_alloc/raw_ptr.h"
+
 #include <algorithm>
 #include <cstddef>
 #include <cstdint>
@@ -44,7 +46,7 @@ class SkZip {
         }
 
     private:
-        const SkZip* const fZip = nullptr;
+        const bisect_raw_ptr<const SkZip<Ts...>> fZip = nullptr;
         size_t fIndex = 0;
     };
 

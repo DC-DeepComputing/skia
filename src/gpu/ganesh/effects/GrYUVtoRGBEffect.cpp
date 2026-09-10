@@ -263,7 +263,7 @@ std::unique_ptr<GrFragmentProcessor::ProgramImpl> GrYUVtoRGBEffect::onMakeProgra
     public:
         void emitCode(EmitArgs& args) override {
             GrGLSLFPFragmentBuilder* fragBuilder = args.fFragBuilder;
-            const GrYUVtoRGBEffect& yuvEffect = args.fFp.cast<GrYUVtoRGBEffect>();
+            const GrYUVtoRGBEffect& yuvEffect = args.fFp->cast<GrYUVtoRGBEffect>();
 
             int numPlanes = yuvEffect.numChildProcessors();
 
