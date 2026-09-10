@@ -116,7 +116,7 @@ GrColorSpaceXformEffect::onMakeProgramImpl() const {
     class Impl : public ProgramImpl {
     public:
         void emitCode(EmitArgs& args) override {
-            const GrColorSpaceXformEffect& proc = args.fFp.cast<GrColorSpaceXformEffect>();
+            const GrColorSpaceXformEffect& proc = args.fFp->cast<GrColorSpaceXformEffect>();
             GrGLSLFPFragmentBuilder* fragBuilder = args.fFragBuilder;
             GrGLSLUniformHandler* uniformHandler = args.fUniformHandler;
 

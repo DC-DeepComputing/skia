@@ -111,7 +111,7 @@ struct IRHelpers {
                                          Binary(std::move(l), OperatorKind::EQ, std::move(r)));
     }
 
-    const raw_ref<const Context> fContext;
+    const bisect_raw_ref<const Context> fContext;
 };
 
 }  // namespace SkSL
