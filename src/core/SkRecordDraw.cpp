@@ -6,6 +6,7 @@
  */
 
 #include "src/core/SkRecordDraw.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkBBHFactory.h"
 #include "include/core/SkBlendMode.h"
@@ -277,7 +278,8 @@ private:
     struct SaveBounds {
         int controlOps;        // Number of control ops in this Save block, including the Save.
         Bounds bounds;         // Bounds of everything in the block.
-        const SkPaint* paint;  // Unowned.  If set, adjusts the bounds of all ops in this block.
+        bisect_raw_ptr<const SkPaint>
+                paint;  // Unowned.  If set, adjusts the bounds of all ops in this block.
         SkMatrix ctm;
     };
 
@@ -566,10 +568,10 @@ private:
     const SkRect fCullRect;
 
     // Conservative identity-space bounds for each op in the SkRecord.
-    Bounds* fBounds;
+    bisect_raw_ptr<Bounds, AllowPtrArithmetic> fBounds;
 
     // Parallel array to fBounds, holding metadata for each bounds rect.
-    SkBBoxHierarchy::Metadata* fMeta;
+    bisect_raw_ptr<SkBBoxHierarchy::Metadata, AllowPtrArithmetic> fMeta;
 
     // We walk fCurrentOp through the SkRecord,
     // as we go using updateCTM() to maintain the exact CTM (fCTM).
