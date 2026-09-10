@@ -35,7 +35,7 @@ protected:
     virtual bool isAccessible(const char* filename);
 
 private:
-    raw_ptr<FcConfig> fFC;
+    bisect_raw_ptr<FcConfig> fFC;
     bool isValidPattern(FcPattern* pattern);
 
     /**

@@ -13,6 +13,7 @@
 #include "include/private/SkDebug.h"
 #include "include/private/SkTo.h"
 #include "src/core/SkZip.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/pdf/SkPDFDocumentPriv.h"
 
 #include <algorithm>
@@ -63,7 +64,7 @@ struct SkPDFStructElem {
         return elemIdString;
     }
 
-    SkPDFStructElem* fParent = nullptr;
+    bisect_raw_ptr<SkPDFStructElem> fParent = nullptr;
     SkSpan<SkPDFStructElem> fChildren;
     struct MarkedContentInfo {
         Location fLocation;

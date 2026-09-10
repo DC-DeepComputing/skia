@@ -111,7 +111,7 @@ public:
     }
 
 private:
-    raw_ptr<const THashSet<const Variable*>> fLoopIndices;
+    bisect_raw_ptr<const THashSet<const Variable*>> fLoopIndices;
     using INHERITED = ProgramVisitor;
 };
 
@@ -149,7 +149,7 @@ public:
     using ProgramVisitor::visitProgramElement;
 
 private:
-    const raw_ref<ErrorReporter> fErrors;
+    const bisect_raw_ref<ErrorReporter> fErrors;
     THashSet<const Variable*> fLoopIndices;
     using INHERITED = ProgramVisitor;
 };

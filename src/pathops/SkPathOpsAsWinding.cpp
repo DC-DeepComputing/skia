@@ -1,4 +1,6 @@
 /*
+#include "src/partition_alloc/raw_ref.h"
+
  * Copyright 2018 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
@@ -193,7 +195,7 @@ public:
         bounds.setEmpty();
         int lastStart = 0;
         int verbStart = 0;
-        for (auto [verb, pts, w] : SkPathPriv::Iterate(fPath)) {
+        for (auto [verb, pts, w] : SkPathPriv::Iterate(*fPath)) {
             if (SkPathVerb::kMove == verb) {
                 if (!bounds.isEmpty()) {
                     containers->emplace_back(bounds, lastStart, verbStart);
@@ -215,7 +217,7 @@ public:
     }
 
     Contour::Direction getDirection(Contour& contour) {
-        SkPath::Iter iter(fPath, true);
+        SkPath::Iter iter(*fPath, true);
         int verbCount = -1;
 
         SkScalar total_signed_area = 0;
@@ -251,7 +253,7 @@ public:
     }
 
     int nextEdge(Contour& contour, Edge edge) {
-        SkPath::Iter iter(fPath, true);
+        SkPath::Iter iter(*fPath, true);
         int verbCount = -1;
         int winding = 0;
         while (auto rec = iter.next()) {
@@ -364,7 +366,7 @@ public:
     }
 
     SkPath reverseMarkedContours(vector<Contour>& contours, SkPathFillType fillType) {
-        SkPathPriv::Iterate iterate(fPath);
+        SkPathPriv::Iterate iterate(*fPath);
         auto iter = iterate.begin();
         int verbCount = 0;
 
@@ -405,7 +407,7 @@ public:
     }
 
 private:
-    const SkPath& fPath;
+    const bisect_raw_ref<const SkPath> fPath;
 };
 
 std::optional<SkPath> AsWinding(const SkPath& path) {

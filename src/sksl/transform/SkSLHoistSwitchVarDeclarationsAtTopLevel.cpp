@@ -72,7 +72,7 @@ std::unique_ptr<Block> Transform::HoistSwitchVarDeclarationsAtTopLevel(const Con
             return false;
         }
 
-        const raw_ref<const Context> fContext;
+        const bisect_raw_ref<const Context> fContext;
         TArray<std::unique_ptr<Statement>*> fVarDeclarations;
 
         using INHERITED = ProgramWriter;

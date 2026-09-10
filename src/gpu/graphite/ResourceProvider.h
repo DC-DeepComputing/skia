@@ -16,6 +16,7 @@
 #include "src/gpu/graphite/GraphicsPipeline.h"
 #include "src/gpu/graphite/ResourceCache.h"
 #include "src/gpu/graphite/ResourceTypes.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 struct AHardwareBuffer;
 struct SkSamplingOptions;
@@ -129,7 +130,7 @@ protected:
                      uint32_t recorderID,
                      size_t resourceBudget);
 
-    SharedContext* fSharedContext;
+    bisect_raw_ptr<SharedContext, DanglingUntriaged> fSharedContext;
     // Each ResourceProvider owns one local cache; for some resources it also refers out to the
     // global cache of the SharedContext, which is assumed to outlive the ResourceProvider.
     sk_sp<ResourceCache> fResourceCache;

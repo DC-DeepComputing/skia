@@ -13,6 +13,7 @@
 #include "include/private/SkDebug.h"
 #include "include/private/SkMalloc.h"
 #include "src/core/SkArenaAlloc.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/partition_alloc/raw_ptr_exclusion.h"
 #include "src/pathops/SkPathOpsCubic.h"
 #include "src/pathops/SkPathOpsDebug.h"
@@ -133,7 +134,7 @@ struct SkDQuad {
     void dumpID(int id) const;
     void dumpInner() const;
 
-    SkDEBUGCODE(RAW_PTR_EXCLUSION SkOpGlobalState* fDebugGlobalState;)  // RAW_PTR_EXCLUSION: union.
+    SkDEBUGCODE(RAW_PTR_EXCLUSION SkOpGlobalState* fDebugGlobalState;)
 };
 
 

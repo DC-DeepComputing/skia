@@ -157,9 +157,9 @@ void FindFunctionsToSpecialize(const Program& program,
         }
 
     private:
-        const raw_ref<SpecializationMap> fSpecializationMap;
-        const raw_ref<SpecializedCallMap> fSpecializedCallMap;
-        const raw_ref<const ParameterMatchesFn> fParameterMatchesFn;
+        const bisect_raw_ref<SpecializationMap> fSpecializationMap;
+        const bisect_raw_ref<SpecializedCallMap> fSpecializedCallMap;
+        const bisect_raw_ref<const ParameterMatchesFn> fParameterMatchesFn;
         THashSet<const FunctionDeclaration*> fVisitedFunctions;
 
         SpecializedParameters fInheritedSpecializations;

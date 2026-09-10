@@ -370,18 +370,18 @@ auto AtlasTextOp::Geometry::Make(const sktext::gpu::AtlasSubRun& subRun,
 }
 
 void AtlasTextOp::Geometry::fillVertexData(void *dst, int offset, int count) const {
-    SkASSERT(fSubRun.glyphVector().hasBackendData());
+    SkASSERT(fSubRun->glyphVector().hasBackendData());
 
     // Get the backend-specific glyph data
-    auto& glyphData = fSubRun.glyphVector().accessBackendData<GlyphData>();
+    auto& glyphData = fSubRun->glyphVector().accessBackendData<GlyphData>();
 
-    auto glyphSpan = fSubRun.glyphVector().accessBackendGlyphs<Glyph>();
+    auto glyphSpan = fSubRun->glyphVector().accessBackendGlyphs<Glyph>();
 
     // Apply the draw origin translation to the matrix
     SkMatrix positionMatrix = fDrawMatrix;
     positionMatrix.preTranslate(fDrawOrigin.x(), fDrawOrigin.y());
 
-    glyphData.fillVertexData(fSubRun.vertexFiller(),
+    glyphData.fillVertexData(fSubRun->vertexFiller(),
                              glyphSpan,
                              offset,
                              count,
@@ -510,8 +510,8 @@ void AtlasTextOp::onPrepareDraws(GrMeshDrawTarget* target) {
         // Only use linear padding if the glyphs were also padded for it. If we somehow get a direct
         // subrun with a corrupted transform, we should still use nearest neighbor since it was
         // packed tightly.
-        const bool hasGlyphPadding = atlasManager->supportsBilerp() ||
-                                     fHead->fSubRun.glyphSrcPadding() > 0;
+        const bool hasGlyphPadding =
+                atlasManager->supportsBilerp() || fHead->fSubRun->glyphSrcPadding() > 0;
         auto filter = fNeedsGlyphTransform && hasGlyphPadding ? GrSamplerState::Filter::kLinear
                                                               : GrSamplerState::Filter::kNearest;
         // Bitmap text uses a single color, combineIfPossible ensures all geometries have the same
@@ -557,7 +557,7 @@ void AtlasTextOp::onPrepareDraws(GrMeshDrawTarget* target) {
     }
 
     for (const Geometry* geo = fHead; geo != nullptr; geo = geo->fNext) {
-        const sktext::gpu::AtlasSubRun& subRun = geo->fSubRun;
+        const sktext::gpu::AtlasSubRun& subRun = *geo->fSubRun;
 
         if (!subRun.glyphVector().hasBackendData()) {
             subRun.glyphVector().initBackendData<GlyphData>(target->strikeCache(),
@@ -668,7 +668,7 @@ void AtlasTextOp::createDrawForGeneratedGlyphs(GrMeshDrawTarget* target,
         } else
 #endif
         {
-            const bool hasGlyphPadding = fHead->fSubRun.glyphSrcPadding() > 0;
+            const bool hasGlyphPadding = fHead->fSubRun->glyphSrcPadding() > 0;
             auto filter = fNeedsGlyphTransform && hasGlyphPadding
                     ? GrSamplerState::Filter::kLinear : GrSamplerState::Filter::kNearest;
             reinterpret_cast<GrBitmapTextGeoProc*>(gp)->addNewViews(views, numActiveViews, filter);
@@ -703,7 +703,7 @@ GrOp::CombineResult AtlasTextOp::onCombineIfPossible(GrOp* t, SkArenaAlloc*, con
     // at the head's src padding, so we can only combine if we are consistent with that.
     // NOTE: We don't have access to the context or atlas manager to check if it's always adding
     // padding (even when the glyphs don't add it themselves), so this is conservative.
-    if (fHead->fSubRun.glyphSrcPadding() != that->fHead->fSubRun.glyphSrcPadding()) {
+    if (fHead->fSubRun->glyphSrcPadding() != that->fHead->fSubRun->glyphSrcPadding()) {
         return CombineResult::kCannotCombine;
     }
 

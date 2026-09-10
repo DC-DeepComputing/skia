@@ -37,7 +37,7 @@ public:
     }
 
 private:
-    raw_ptr<const FunctionDeclaration> fDeclaration;
+    bisect_raw_ptr<const FunctionDeclaration> fDeclaration;
 
     using INHERITED = ProgramElement;
 };

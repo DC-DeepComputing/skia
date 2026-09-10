@@ -428,7 +428,7 @@ private:
     // of matrices combine both wrappers. These wrapper structs are unpacked into natively-typed
     // globals at the shader entrypoint.
     struct FieldPolyfillInfo {
-        raw_ptr<const InterfaceBlock> fInterfaceBlock;
+        bisect_raw_ptr<const InterfaceBlock> fInterfaceBlock;
         std::string fReplacementName;
         bool fIsArray = false;
         bool fIsMatrix = false;
@@ -1127,9 +1127,9 @@ private:
         return ProgramVisitor::visitExpression(e);
     }
 
-    const raw_ptr<const Program> fProgram;
-    const raw_ptr<const FunctionDeclaration> fFunction;
-    const raw_ptr<DepsMap> fDependencyMap;
+    const bisect_raw_ptr<const Program> fProgram;
+    const bisect_raw_ptr<const FunctionDeclaration> fFunction;
+    const bisect_raw_ptr<DepsMap> fDependencyMap;
     Deps fDeps = WGSLFunctionDependency::kNone;
 };
 
@@ -1358,9 +1358,9 @@ public:
     }
 
 private:
-    const raw_ref<const Context> fContext;
+    const bisect_raw_ref<const Context> fContext;
     std::string fName;
-    const raw_ref<const Type> fType;
+    const bisect_raw_ref<const Type> fType;
     ComponentArray fComponents;
     ComponentArray fUntouchedComponents;
     ComponentArray fReintegrationSwizzle;
@@ -1411,7 +1411,7 @@ private:
         }
     }
 
-    raw_ptr<WGSLCodeGenerator> fGenerator;
+    bisect_raw_ptr<WGSLCodeGenerator> fGenerator;
     bool fOriginalValue;
 };
 

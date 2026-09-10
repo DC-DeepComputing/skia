@@ -120,7 +120,7 @@ struct MultiPictureDocument final : public SkDocument {
 
 struct PagerCanvas : public SkNWayCanvas {
     SkPictureRecorder fRecorder;
-    raw_ptr<SkDocumentPage, AllowPtrArithmetic> fDst;
+    bisect_raw_ptr<SkDocumentPage, AllowPtrArithmetic> fDst;
     int fCount;
     int fIndex = 0;
     PagerCanvas(SkISize wh, SkDocumentPage* dst, int count)

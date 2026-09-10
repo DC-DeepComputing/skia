@@ -105,7 +105,7 @@ public:
 private:
     using INHERITED = Type;
 
-    const raw_ref<const Type> fTargetType;
+    const bisect_raw_ref<const Type> fTargetType;
 };
 
 class ArrayType final : public Type {
@@ -181,7 +181,7 @@ public:
 private:
     using INHERITED = Type;
 
-    const raw_ref<const Type, DanglingUntriaged> fComponentType;
+    const bisect_raw_ref<const Type, DanglingUntriaged> fComponentType;
     int fCount;
     bool fIsBuiltin;
 };
@@ -210,7 +210,7 @@ private:
     using INHERITED = Type;
 
     const Type* fCoercibleTypes[9];
-    raw_ptr<const Type> fSlotType;
+    bisect_raw_ptr<const Type> fSlotType;
     size_t fNumTypes;
 };
 
@@ -267,7 +267,7 @@ public:
 private:
     using INHERITED = Type;
 
-    const raw_ref<const Type> fScalarType;
+    const bisect_raw_ref<const Type> fScalarType;
     int8_t fPriority;
 };
 
@@ -446,7 +446,7 @@ public:
 private:
     using INHERITED = Type;
 
-    const raw_ref<const ScalarType> fComponentType;
+    const bisect_raw_ref<const ScalarType> fComponentType;
     int8_t fColumns;
     int8_t fRows;
 };
@@ -532,7 +532,7 @@ public:
 private:
     using INHERITED = Type;
 
-    const raw_ref<const TextureType> fTextureType;
+    const bisect_raw_ref<const TextureType> fTextureType;
 };
 
 class StructType final : public Type {
@@ -698,7 +698,7 @@ public:
 private:
     using INHERITED = Type;
 
-    const raw_ref<const ScalarType> fComponentType;
+    const bisect_raw_ref<const ScalarType> fComponentType;
     int8_t fColumns;
 };
 

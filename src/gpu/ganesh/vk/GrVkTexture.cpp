@@ -22,6 +22,7 @@
 #include "src/gpu/ganesh/vk/GrVkGpu.h"
 #include "src/gpu/ganesh/vk/GrVkUtil.h"
 #include "src/gpu/vk/VulkanUtilsPriv.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #define VK_CALL(GPU, X) GR_VK_CALL(GPU->vkInterface(), X)
 
@@ -185,8 +186,8 @@ struct GrVkTexture::DescriptorCacheEntry {
         }
     }
 
-    const GrVkDescriptorSet* fDescriptorSet;
-    GrVkGpu* fGpu;
+    bisect_raw_ptr<const GrVkDescriptorSet> fDescriptorSet;
+    bisect_raw_ptr<GrVkGpu> fGpu;
 };
 
 void GrVkTexture::onAbandon() {

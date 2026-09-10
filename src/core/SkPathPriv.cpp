@@ -753,10 +753,11 @@ public:
 
 private:
     int fCurrPtCount;
-    const SkPoint* fCurrPt;
-    const SkPathVerb* fCurrVerb;
-    const SkPathVerb* fStopVerbs;
-    const SkScalar* fCurrConicWeight;
+    // RAW_PTR_EXCLUSION: Inner-loop contour iterator cursors.
+    RAW_PTR_EXCLUSION const SkPoint* fCurrPt;
+    RAW_PTR_EXCLUSION const SkPathVerb* fCurrVerb;
+    RAW_PTR_EXCLUSION const SkPathVerb* fStopVerbs;
+    RAW_PTR_EXCLUSION const SkScalar* fCurrConicWeight;
     bool fDone;
     SkDEBUGCODE(int fContourCounter;)
 };

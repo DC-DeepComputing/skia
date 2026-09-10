@@ -115,7 +115,7 @@ public:
     void flush() override { fStream->flush(); }
 
 private:
-    raw_ptr<SkWStream> fStream = nullptr;  // Non-owning pointer.
+    bisect_raw_ptr<SkWStream> fStream = nullptr;  // Non-owning pointer.
 };
 
 #ifdef SK_CODEC_USES_PNG_WITH_RUST_FOR_ANDROID

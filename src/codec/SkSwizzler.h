@@ -16,6 +16,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <memory>
+#include "src/partition_alloc/raw_ptr.h"
 
 struct SkEncodedInfo;
 struct SkIRect;
@@ -139,7 +140,7 @@ private:
     // whether or not we are sampling.
     RowProc             fActualProc;
 
-    const SkPMColor*    fColorTable;      // Unowned pointer
+    bisect_raw_ptr<const SkPMColor, DanglingUntriaged> fColorTable;      // Unowned pointer
 
     // Subset Swizzles
     // There are two types of subset swizzles that we support.  We do not

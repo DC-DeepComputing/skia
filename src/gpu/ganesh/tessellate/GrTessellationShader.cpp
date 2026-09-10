@@ -24,7 +24,7 @@ const GrPipeline* GrTessellationShader::MakePipeline(const ProgramArgs& args,
 
     pipelineArgs.fCaps = args.fCaps;
     pipelineArgs.fDstProxyView = *args.fDstProxyView;
-    pipelineArgs.fWriteSwizzle = args.fWriteView.swizzle();
+    pipelineArgs.fWriteSwizzle = args.fWriteView->swizzle();
 
     return args.fArena->make<GrPipeline>(pipelineArgs,
                                          std::move(processors),

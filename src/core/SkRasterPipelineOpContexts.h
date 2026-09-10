@@ -11,6 +11,7 @@
 #include <algorithm>
 #include <cstddef>
 #include <cstdint>
+#include "src/partition_alloc/raw_ptr.h"
 
 namespace SkSL { class TraceHook; }
 // state shared by stack_checkpoint and stack_rewind
@@ -68,7 +69,7 @@ struct MemoryCtxPatch {
 };
 
 struct GatherCtx {
-    const void* pixels;
+    bisect_raw_ptr<const void> pixels;
     int         stride;
     float       width;
     float       height;
@@ -153,7 +154,7 @@ struct CallbackCtx {
     // When called, fn() will have our active pixels available in rgba.
     // When fn() returns, the pipeline will read back those active pixels from read_from.
     float rgba[4 * kMaxStride_highp];
-    float* read_from = rgba;
+    bisect_raw_ptr<float> read_from = rgba;
 };
 
 struct RewindCtx {
@@ -165,8 +166,8 @@ struct RewindCtx {
     float dg[kMaxStride_highp];
     float db[kMaxStride_highp];
     float da[kMaxStride_highp];
-    std::byte* base;
-    SkRasterPipelineStage* stage;
+    bisect_raw_ptr<std::byte> base;
+    bisect_raw_ptr<SkRasterPipelineStage> stage;
 };
 
 constexpr size_t kRGBAChannels = 4;
@@ -175,7 +176,7 @@ struct GradientCtx {
     size_t stopCount;
     float* factors[kRGBAChannels];
     float* biases[kRGBAChannels];
-    float* ts;
+    bisect_raw_ptr<float, AllowPtrArithmetic> ts;
 };
 
 struct EvenlySpaced2StopGradientCtx {

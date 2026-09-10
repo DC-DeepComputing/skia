@@ -416,7 +416,7 @@ private:
     RAW_PTR_EXCLUSION char* fWrite;
     RAW_PTR_EXCLUSION char* fBlockEnd;
 
-    raw_ptr<SkWStream> fStream;
+    bisect_raw_ptr<SkWStream> fStream;
     Mode fMode;
     State fState;
     skia_private::STArray<16, Scope, true> fScopeStack;

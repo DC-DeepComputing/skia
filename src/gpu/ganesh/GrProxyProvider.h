@@ -6,7 +6,10 @@
  */
 
 #ifndef GrProxyProvider_DEFINED
+
 #define GrProxyProvider_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRefCnt.h"
 #include "include/gpu/ganesh/GrTypes.h"
@@ -361,7 +364,7 @@ private:
 
     sk_sp<GrTextureProxy> createWrapped(sk_sp<GrTexture> tex, UseAllocator useAllocator);
 
-    GrImageContext*        fImageContext;
+    bisect_raw_ptr<GrImageContext> fImageContext;
     sk_sp<GrUniquelyKeyedProxyRegistry> fUniquelyKeyedProxyRegistry;
 };
 

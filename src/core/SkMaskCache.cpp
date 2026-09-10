@@ -28,7 +28,7 @@ enum SkBlurStyle : int;
 
 struct MaskValue {
     SkMask          fMask;
-    raw_ptr<SkCachedData> fData;
+    bisect_raw_ptr<SkCachedData> fData;
 };
 
 namespace {

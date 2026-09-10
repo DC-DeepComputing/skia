@@ -263,7 +263,7 @@ private:
 
     struct TempVar {
         SpvId spvId;
-        raw_ptr<const Type> type;
+        bisect_raw_ptr<const Type> type;
         std::unique_ptr<SPIRVCodeGenerator::LValue> lvalue;
     };
 
@@ -697,14 +697,14 @@ private:
 
     Analysis::SpecializationInfo fSpecializationInfo;
     Analysis::SpecializationIndex fActiveSpecializationIndex = Analysis::kUnspecialized;
-    raw_ptr<const Analysis::SpecializedParameters> fActiveSpecialization = nullptr;
+    bisect_raw_ptr<const Analysis::SpecializedParameters> fActiveSpecialization = nullptr;
 
     THashMap<const Variable*, SpvId> fVariableMap;
     THashMap<const Type*, SpvId> fStructMap;
 
     // SPIR-V is defined in 32-bit words, so this generator directly uses std::vector<uint32_t>
     // instead of an OutputStream.
-    raw_ptr<SPIRVBlob> fOutBuffer;
+    bisect_raw_ptr<SPIRVBlob> fOutBuffer;
     SPIRVBlob fGlobalInitializersBuffer;
     SPIRVBlob fConstantBuffer;
     SPIRVBlob fVariableBuffer;
@@ -3411,7 +3411,7 @@ public:
     }
 
 private:
-    const raw_ref<SPIRVCodeGenerator> fGen;
+    const bisect_raw_ref<SPIRVCodeGenerator> fGen;
     const SpvId fPointer;
     const bool fIsMemoryObject;
     const SpvId fType;
@@ -3502,11 +3502,11 @@ public:
     }
 
 private:
-    const raw_ref<SPIRVCodeGenerator> fGen;
+    const bisect_raw_ref<SPIRVCodeGenerator> fGen;
     const SpvId fVecPointer;
     ComponentArray fComponents;
-    raw_ptr<const Type> fBaseType;
-    raw_ptr<const Type> fSwizzleType;
+    bisect_raw_ptr<const Type> fBaseType;
+    bisect_raw_ptr<const Type> fSwizzleType;
     const StorageClass fStorageClass;
 };
 

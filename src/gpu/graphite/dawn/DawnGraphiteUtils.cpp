@@ -16,6 +16,7 @@
 #include "src/gpu/graphite/TextureFormat.h"
 #include "src/gpu/graphite/dawn/DawnQueueManager.h"
 #include "src/gpu/graphite/dawn/DawnSharedContext.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 using namespace skia_private;
 
@@ -462,7 +463,7 @@ static bool check_shader_module([[maybe_unused]] const DawnSharedContext* shared
         }
 
         const char* fShaderText;
-        ShaderErrorHandler* fErrorHandler;
+        bisect_raw_ptr<ShaderErrorHandler> fErrorHandler;
         bool fSuccess = false;
     };
 

@@ -50,9 +50,9 @@ struct SkDOMAttr {
 
 struct SkDOMNode {
     const char* fName;
-    raw_ptr<SkDOMNode> fFirstChild;
-    raw_ptr<SkDOMNode> fNextSibling;
-    raw_ptr<SkDOMAttr> fAttrs;
+    bisect_raw_ptr<SkDOMNode> fFirstChild;
+    bisect_raw_ptr<SkDOMNode> fNextSibling;
+    bisect_raw_ptr<SkDOMAttr> fAttrs;
     uint16_t    fAttrCount;
     uint8_t     fType;
     uint8_t     fPad;
@@ -167,13 +167,13 @@ private:
     }
 
     SkTDArray<SkDOM::Node*> fParentStack;
-    raw_ptr<SkArenaAllocWithReset> fAlloc;
-    raw_ptr<SkDOM::Node, DanglingUntriaged> fRoot;
+    bisect_raw_ptr<SkArenaAllocWithReset> fAlloc;
+    bisect_raw_ptr<SkDOM::Node, DanglingUntriaged> fRoot;
     bool                    fNeedToFlush;
 
     // state needed for flushAttributes()
     SkTDArray<SkDOM::Attr>  fAttrs;
-    raw_ptr<char, DanglingUntriaged> fElemName;
+    bisect_raw_ptr<char, DanglingUntriaged> fElemName;
     SkDOM::Type             fElemType;
     int                     fLevel;
 };

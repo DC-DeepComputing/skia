@@ -17,6 +17,7 @@
 #include "src/gpu/graphite/UniformManager.h"
 #include "src/sksl/SkSLString.h"
 #include "src/sksl/SkSLUtil.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 using namespace skia_private;
 
@@ -26,7 +27,7 @@ namespace {
 
 struct LiftedExpression {
     // The node who's expression should be lifted.
-    const ShaderNode* fNode;
+    bisect_raw_ptr<const ShaderNode> fNode;
     // The arguments to use as input to the lifted expression.
     ShaderSnippet::Args fArgs;
     // If true, capture the expression's resolved value in a varying.

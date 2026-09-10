@@ -110,7 +110,7 @@ bool Analysis::CheckProgramStructure(const Program& program) {
             kVisited,
         };
 
-        const raw_ref<const Context> fContext;
+        const bisect_raw_ref<const Context> fContext;
         skia_private::THashMap<const FunctionDeclaration*, FunctionState> fFunctionMap;
         std::vector<const FunctionDeclaration*> fStack;
     };

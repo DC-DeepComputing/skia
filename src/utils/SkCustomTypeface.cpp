@@ -423,7 +423,7 @@ std::unique_ptr<SkStreamAsset> SkUserTypeface::onOpenStream(int* ttcIndex) const
 }
 
 class AutoRestorePosition {
-    raw_ptr<SkStream> fStream;
+    bisect_raw_ptr<SkStream> fStream;
     size_t fPosition;
 public:
     AutoRestorePosition(SkStream* stream) : fStream(stream) {

@@ -104,7 +104,7 @@ struct ParsingContext {
         fBufferedText.insert(fBufferedText.end(), txt, &txt[len]);
     }
 
-    raw_ptr<SkXMLParser> fParser;
+    bisect_raw_ptr<SkXMLParser> fParser;
     SkAutoTCallVProc<std::remove_pointer_t<XML_Parser>, XML_ParserFree> fXMLParser;
 
 private:

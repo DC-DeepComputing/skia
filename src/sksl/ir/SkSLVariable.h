@@ -80,7 +80,7 @@ public:
      * Useful when doing IR rewrites, e.g. inlining a function call.
      */
     struct ScratchVariable {
-        raw_ptr<const Variable> fVarSymbol;
+        bisect_raw_ptr<const Variable> fVarSymbol;
         std::unique_ptr<Statement> fVarDecl;
     };
     static ScratchVariable MakeScratchVariable(const Context& context,
@@ -140,7 +140,7 @@ public:
     }
 
 private:
-    raw_ptr<IRNode> fDeclaringElement = nullptr;
+    bisect_raw_ptr<IRNode> fDeclaringElement = nullptr;
     ModifierFlags fModifierFlags;
     Position fModifiersPosition;
     VariableStorage fStorage;
@@ -190,7 +190,7 @@ public:
     std::string_view mangledName() const override;
 
 private:
-    raw_ptr<InterfaceBlock> fInterfaceBlockElement = nullptr;
+    bisect_raw_ptr<InterfaceBlock> fInterfaceBlockElement = nullptr;
     Layout fLayout;
     std::string fMangledName;
 
