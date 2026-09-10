@@ -6,7 +6,10 @@
  */
 
 #ifndef SkWritePixelsRec_DEFINED
+
 #define SkWritePixelsRec_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPixmap.h"
@@ -38,7 +41,7 @@ struct SkWritePixelsRec {
         , fY(y)
     {}
 
-    const void* fPixels;
+    bisect_raw_ptr<const void> fPixels;
     size_t      fRowBytes;
     SkImageInfo fInfo;
     int         fX;
