@@ -97,7 +97,7 @@ public:
     }
 
 private:
-    const raw_ref<const sk_sp<SharedGenerator>> fSharedGenerator;
+    const bisect_raw_ref<const sk_sp<SharedGenerator>> fSharedGenerator;
     SkAutoMutexExclusive          fAutoAcquire;
 };
 
