@@ -93,9 +93,9 @@ static void hoist_vardecl_symbols_into_outer_scope(const Context& context,
             return ProgramVisitor::visitStatement(stmt);
         }
 
-        const raw_ref<const Context> fContext;
-        raw_ptr<SymbolTable> fInnerSymbols;
-        raw_ptr<SymbolTable> fHoistedSymbols;
+        const bisect_raw_ref<const Context> fContext;
+        bisect_raw_ptr<SymbolTable> fInnerSymbols;
+        bisect_raw_ptr<SymbolTable> fHoistedSymbols;
     };
 
     SymbolHoister{context, innerSymbols, hoistedSymbols}.visitStatement(initBlock);

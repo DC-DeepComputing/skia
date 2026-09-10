@@ -23,6 +23,7 @@
 #include "src/sksl/SkSLString.h"
 #include "src/sksl/codegen/SkSLPipelineStageCodeGenerator.h"
 #include "src/sksl/ir/SkSLVarDeclarations.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 using namespace skia_private;
 using namespace SkKnownRuntimeEffects;
@@ -667,9 +668,9 @@ public:
 
 private:
     const ShaderInfo& fShaderInfo;
-    const ShaderNode* fNode;
-    std::string* fPreamble;
-    SkDEBUGCODE(const SkRuntimeEffect* fEffect;)
+    raw_ptr<const ShaderNode> fNode;
+    raw_ptr<std::string> fPreamble;
+    SkDEBUGCODE(raw_ptr<const SkRuntimeEffect> fEffect;)
 };
 
 std::string NoopPreamble(const ShaderInfo& shaderInfo, const ShaderNode* node) {
