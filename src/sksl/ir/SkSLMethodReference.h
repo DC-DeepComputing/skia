@@ -67,7 +67,7 @@ private:
             , fOverloadChain(overloadChain) {}
 
     std::unique_ptr<Expression> fSelf;
-    raw_ptr<const FunctionDeclaration> fOverloadChain;
+    bisect_raw_ptr<const FunctionDeclaration> fOverloadChain;
 
     using INHERITED = Expression;
 };

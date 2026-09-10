@@ -135,7 +135,7 @@ struct Program {
         friend struct Program;
 
         ElementsCollection(const Program& program) : fProgram(program) {}
-        const raw_ref<const Program> fProgram;
+        const bisect_raw_ref<const Program> fProgram;
     };
 
     /**

@@ -6,7 +6,10 @@
  */
 
 #ifndef SkGlyphRun_DEFINED
+
 #define SkGlyphRun_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkFont.h"
 #include "include/core/SkFontTypes.h"
@@ -128,10 +131,10 @@ public:
 private:
     // The text blob is needed to hook up the call back that the SkTextBlob destructor calls. It
     // should be used for nothing else.
-    const SkTextBlob* fOriginalTextBlob{nullptr};
+    raw_ptr<const SkTextBlob, DanglingUntriaged> fOriginalTextBlob{nullptr};
     const SkRect fSourceBounds{SkRect::MakeEmpty()};
     const SkPoint fOrigin = {0, 0};
-    GlyphRunBuilder* const fBuilder;
+    const raw_ptr<GlyphRunBuilder> fBuilder;
 };
 
 class GlyphRunBuilder {

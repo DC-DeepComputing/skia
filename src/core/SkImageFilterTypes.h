@@ -5,8 +5,13 @@
  * found in the LICENSE file.
  */
 
+#include "src/partition_alloc/raw_ref.h"
+
 #ifndef SkImageFilterTypes_DEFINED
+
 #define SkImageFilterTypes_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkColorSpace.h"
@@ -1090,7 +1095,7 @@ private:
                             const LayerSpace<SkIRect>& outputBounds,
                             bool evaluateInParameterSpace) const;
 
-    const Context& fContext; // Must outlive the builder
+    const bisect_raw_ref<const Context> fContext;  // Must outlive the builder
     skia_private::STArray<1, SampledFilterResult> fInputs;
     // Lazily created once all inputs are collected, but parallels fInputs.
     skia_private::STArray<1, sk_sp<SkShader>> fInputShaders;
@@ -1265,7 +1270,7 @@ private:
     // The color space the filters are evaluated in
     sk_sp<SkColorSpace> fColorSpace;
 
-    Stats* fStats;
+    bisect_raw_ptr<Stats> fStats;
 };
 
 } // end namespace skif

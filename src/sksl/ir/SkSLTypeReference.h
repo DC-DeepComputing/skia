@@ -65,7 +65,7 @@ private:
         : INHERITED(pos, kIRNodeKind, type)
         , fValue(*value) {}
 
-    const raw_ref<const Type> fValue;
+    const bisect_raw_ref<const Type> fValue;
 
     using INHERITED = Expression;
 };

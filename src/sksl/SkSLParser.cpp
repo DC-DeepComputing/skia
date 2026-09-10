@@ -122,7 +122,7 @@ public:
     }
 
 private:
-    raw_ptr<Parser> fParser;
+    bisect_raw_ptr<Parser> fParser;
     int fDepth;
 };
 
@@ -131,7 +131,7 @@ public:
     AutoSymbolTable(Parser* p, std::unique_ptr<SymbolTable>* newSymbolTable, bool enable = true) {
         if (enable) {
             fParser = p;
-            raw_ptr<SymbolTable>& ctxSymbols = this->contextSymbolTable();
+            bisect_raw_ptr<SymbolTable>& ctxSymbols = this->contextSymbolTable();
             *newSymbolTable = std::make_unique<SymbolTable>(ctxSymbols, ctxSymbols->isBuiltin());
             ctxSymbols = newSymbolTable->get();
         }
@@ -139,17 +139,17 @@ public:
 
     ~AutoSymbolTable() {
         if (fParser) {
-            raw_ptr<SymbolTable>& ctxSymbols = this->contextSymbolTable();
+            bisect_raw_ptr<SymbolTable>& ctxSymbols = this->contextSymbolTable();
             ctxSymbols = ctxSymbols->fParent.get();
         }
     }
 
 private:
-    raw_ptr<SymbolTable>& contextSymbolTable() {
+    bisect_raw_ptr<SymbolTable>& contextSymbolTable() {
         return fParser->fCompiler->context().fSymbolTable;
     }
 
-    raw_ptr<Parser> fParser = nullptr;
+    bisect_raw_ptr<Parser> fParser = nullptr;
 };
 
 class Parser::Checkpoint {
@@ -211,11 +211,11 @@ private:
         fOldErrorReporter = nullptr;
     }
 
-    raw_ptr<Parser> fParser;
+    bisect_raw_ptr<Parser> fParser;
     Token fPushbackCheckpoint;
     SkSL::Lexer::Checkpoint fLexerCheckpoint;
     ForwardingErrorReporter fErrorReporter;
-    raw_ptr<ErrorReporter> fOldErrorReporter;
+    bisect_raw_ptr<ErrorReporter> fOldErrorReporter;
     bool fOldEncounteredFatalError;
 };
 
