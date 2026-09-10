@@ -135,7 +135,7 @@ PipelineDynamicStateTestProcessor::makeProgramImpl(const GrShaderCaps&) const {
 
         void onEmitCode(EmitArgs& args, GrGPArgs* gpArgs) final {
             const PipelineDynamicStateTestProcessor& mp =
-                    args.fGeomProc.cast<PipelineDynamicStateTestProcessor>();
+                    args.fGeomProc->cast<PipelineDynamicStateTestProcessor>();
             GrGLSLVertexBuilder* v = args.fVertBuilder;
             GrGLSLFPFragmentBuilder* f = args.fFragBuilder;
 

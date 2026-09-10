@@ -6,7 +6,10 @@
  */
 
 #ifndef GrBufferAllocPool_DEFINED
+
 #define GrBufferAllocPool_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
@@ -172,9 +175,9 @@ private:
     skia_private::TArray<BufferBlock> fBlocks;
     sk_sp<CpuBufferCache> fCpuBufferCache;
     sk_sp<GrCpuBuffer> fCpuStagingBuffer;
-    GrGpu* fGpu;
+    raw_ptr<GrGpu> fGpu;
     GrGpuBufferType fBufferType;
-    void* fBufferPtr = nullptr;
+    raw_ptr<void, DanglingUntriaged> fBufferPtr = nullptr;
 };
 
 /**

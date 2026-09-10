@@ -46,6 +46,7 @@
 #include "src/gpu/ganesh/ops/FillRectOp.h"
 #include "src/gpu/ganesh/ops/GrMeshDrawOp.h"
 #include "src/gpu/ganesh/ops/GrSimpleMeshDrawOpHelper.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <algorithm>
 #include <array>
@@ -309,8 +310,8 @@ private:
     SkMatrix       fViewMatrix;
     SkRect         fRect;
     SkScalar       fStrokeWidth;
-    GrSimpleMesh*  fMesh = nullptr;
-    GrProgramInfo* fProgramInfo = nullptr;
+    raw_ptr<GrSimpleMesh, DanglingUntriaged> fMesh = nullptr;
+    raw_ptr<GrProgramInfo, DanglingUntriaged> fProgramInfo = nullptr;
 
     const static int kVertsPerHairlineRect = 5;
     const static int kVertsPerStrokeRect = 10;
@@ -619,8 +620,8 @@ private:
     Helper         fHelper;
     STArray<1, RectInfo, true> fRects;
     SkMatrix       fViewMatrix;
-    GrSimpleMesh*  fMesh = nullptr;
-    GrProgramInfo* fProgramInfo = nullptr;
+    raw_ptr<GrSimpleMesh, DanglingUntriaged> fMesh = nullptr;
+    raw_ptr<GrProgramInfo, DanglingUntriaged> fProgramInfo = nullptr;
     bool           fMiterStroke;
     bool           fWideColor;
 

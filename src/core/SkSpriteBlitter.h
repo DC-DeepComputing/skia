@@ -6,7 +6,10 @@
  */
 
 #ifndef SkSpriteBlitter_DEFINED
+
 #define SkSpriteBlitter_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkPixmap.h"
 #include "include/core/SkShader.h"
@@ -38,7 +41,7 @@ protected:
     SkPixmap        fDst;
     const SkPixmap  fSource;
     int             fLeft, fTop;
-    const SkPaint*  fPaint;
+    raw_ptr<const SkPaint> fPaint;
 
 private:
     using INHERITED = SkBlitter;
