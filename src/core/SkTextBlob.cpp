@@ -26,6 +26,7 @@
 #include "src/core/SkStrikeSpec.h"
 #include "src/core/SkTextBlobPriv.h"
 #include "src/core/SkWriteBuffer.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/text/GlyphRun.h"
 
 #include <algorithm>
@@ -39,7 +40,7 @@ using namespace skia_private;
 namespace {
 struct RunFontStorageEquivalent {
     SkScalar fSize, fScaleX;
-    void*    fTypeface;
+    bisect_raw_ptr<void> fTypeface;
     SkScalar fSkewX;
     uint32_t fFlags;
 };
