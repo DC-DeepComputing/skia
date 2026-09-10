@@ -299,7 +299,7 @@ public:
 
     protected:
         // RAW_PTR_EXCLUSION: performance regression
-        RAW_PTR_EXCLUSION const TTable* fTable;
+        raw_ptr<const TTable> fTable;
         int fSlot;
     };
 
