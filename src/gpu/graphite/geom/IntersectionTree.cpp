@@ -13,6 +13,7 @@
 
 #include <algorithm>
 #include <limits>
+#include "src/partition_alloc/raw_ptr.h"
 
 namespace skgpu::graphite {
 
@@ -54,8 +55,8 @@ private:
     }
 
     float fSplitCoord;
-    Node* fLo;
-    Node* fHi;
+    raw_ptr<Node> fLo;
+    raw_ptr<Node> fHi;
 };
 
 // Leaf node. Rects are kept in a simple list and intersection testing is performed by brute force.

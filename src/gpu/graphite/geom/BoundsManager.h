@@ -21,6 +21,7 @@
 #include <cstdint>
 #include <cstring>
 #include <memory>
+#include "src/partition_alloc/raw_ptr.h"
 
 namespace skgpu::graphite {
 
@@ -298,7 +299,7 @@ private:
     // fBruteForceManager).
     BruteForceBoundsManager                  fBruteForceManager;
 
-    BoundsManager* fCurrentManager;
+    raw_ptr<BoundsManager> fCurrentManager;
 
     // The grid manager starts out null and is created the first time we exceed fMaxBruteForceN.
     // However, even if we reset back to the brute force manager, we keep the grid around under the
