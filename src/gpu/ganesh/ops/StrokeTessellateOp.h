@@ -21,6 +21,7 @@
 #include "src/gpu/ganesh/tessellate/GrTessellationShader.h"
 #include "src/gpu/ganesh/tessellate/StrokeTessellator.h"
 #include "src/gpu/tessellate/Tessellation.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrAppliedClip;
 class GrDstProxyView;
@@ -96,7 +97,7 @@ private:
 
     StrokeTessellator* fTessellator = nullptr;
     GrStrokeTessellationShader* fTessellationShader;
-    const GrProgramInfo* fStencilProgram = nullptr;  // Only used if the stroke has transparency.
+    raw_ptr<const GrProgramInfo, DanglingUntriaged> fStencilProgram = nullptr;  // Only used if the stroke has transparency.
     const GrProgramInfo* fFillProgram = nullptr;
 };
 

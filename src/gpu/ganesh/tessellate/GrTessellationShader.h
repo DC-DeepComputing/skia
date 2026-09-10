@@ -14,6 +14,7 @@
 #include "src/gpu/ganesh/GrProgramInfo.h"
 
 #include <cstdint>
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrAppliedClip;
 class GrCaps;
@@ -44,13 +45,13 @@ public:
     const SkPMColor4f& color() const { return fColor;}
 
     struct ProgramArgs {
-        SkArenaAlloc* fArena;
+        raw_ptr<SkArenaAlloc> fArena;
         const GrSurfaceProxyView& fWriteView;
         bool fUsesMSAASurface;
-        const GrDstProxyView* fDstProxyView;
+        raw_ptr<const GrDstProxyView> fDstProxyView;
         GrXferBarrierFlags fXferBarrierFlags;
         GrLoadOp fColorLoadOp;
-        const GrCaps* fCaps;
+        raw_ptr<const GrCaps> fCaps;
     };
 
     static const GrPipeline* MakePipeline(const ProgramArgs&, GrAAType,

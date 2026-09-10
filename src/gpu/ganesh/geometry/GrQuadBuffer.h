@@ -15,6 +15,7 @@
 
 #include <cstdint>
 #include <cstring>
+#include "src/partition_alloc/raw_ptr.h"
 
 template<typename T>
 class GrQuadBuffer {
@@ -134,7 +135,7 @@ public:
 
     private:
         GrQuadBuffer<T>* fBuffer;
-        char* fCurrentEntry;
+        raw_ptr<char, AllowPtrArithmetic> fCurrentEntry;
 
         SkDEBUGCODE(int fExpectedCount;)
 
