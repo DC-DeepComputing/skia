@@ -20,6 +20,7 @@
 
 #if defined(GPU_TEST_UTILS)
 #include "src/gpu/graphite/Texture.h"
+#include "src/partition_alloc/raw_ptr.h"
 #endif
 
 namespace skgpu::graphite {
@@ -817,8 +818,8 @@ void ResourceCache::validate() const {
         int fScratch;
         size_t fBudgetedBytes;
         size_t fPurgeableBytes;
-        const ResourceMap* fResourceMap;
-        const PurgeableQueue* fPurgeableQueue;
+        raw_ptr<const ResourceMap> fResourceMap;
+        raw_ptr<const PurgeableQueue> fPurgeableQueue;
 
         Stats(const ResourceCache* cache) {
             memset(this, 0, sizeof(*this));

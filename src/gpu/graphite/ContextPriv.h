@@ -14,6 +14,7 @@
 #include "src/gpu/graphite/SharedContext.h"
 
 #include <memory>
+#include "src/partition_alloc/raw_ptr.h"
 
 class SkPixmap;
 struct SkImageInfo;
@@ -90,7 +91,7 @@ private:
     const ContextPriv* operator&() const;
     ContextPriv *operator&();
 
-    Context* fContext;
+    raw_ptr<Context> fContext;
 };
 
 inline ContextPriv Context::priv() { return ContextPriv(this); }

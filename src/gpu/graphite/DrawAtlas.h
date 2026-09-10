@@ -30,6 +30,7 @@
 #include <string>
 #include <string_view>
 #include <vector>
+#include "src/partition_alloc/raw_ptr.h"
 
 class SkPixmap;
 enum SkColorType : int;
@@ -124,7 +125,7 @@ public:
     private:
         friend class DrawAtlas;
         explicit RecordVisitor(Plot* p) : fPlot{p} {}
-        Plot* fPlot;
+        raw_ptr<Plot> fPlot;
     };
 
     class EvictionCallback {
