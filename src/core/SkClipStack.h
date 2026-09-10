@@ -23,6 +23,7 @@
 #include <cstdint>
 #include <optional>
 #include <utility>
+#include "src/partition_alloc/raw_ptr.h"
 
 // Because a single save/restore state can have multiple clips, this class
 // stores the stack depth (fSaveCount) and clips (fDeque) separately.
@@ -303,7 +304,7 @@ public:
         }
 
     private:
-        SkClipStack* fCS;
+        bisect_raw_ptr<SkClipStack> fCS;
         const int    fSaveCount;
     };
 
@@ -425,7 +426,7 @@ public:
         void reset(const SkClipStack& stack, IterStart startLoc);
 
     private:
-        const SkClipStack* fStack;
+        bisect_raw_ptr<const SkClipStack> fStack;
         SkDeque::Iter      fIter;
     };
 
