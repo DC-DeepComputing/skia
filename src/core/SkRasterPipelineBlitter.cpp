@@ -47,6 +47,7 @@
 #include <optional>
 #include <utility>
 #include <vector>
+#include "src/partition_alloc/raw_ptr.h"
 
 class SkColorSpace;
 class SkShader;
@@ -110,13 +111,13 @@ private:
     void appendClipLerp     (SkRasterPipeline*) const;
 
     SkPixmap               fDst;
-    SkArenaAlloc*          fAlloc;
+    bisect_raw_ptr<SkArenaAlloc, DanglingUntriaged> fAlloc;
     SkRasterPipeline       fColorPipeline;
     SkRasterPipeline       fBlendPipeline;
     // If the blender is a blend-mode, we retain that information for late-stage optimizations
     std::optional<SkBlendMode> fBlendMode;
     // set to pipeline storage (for alpha) if we have a clipShader
-    void*                  fClipShaderBuffer = nullptr; // "native" : float or U16
+    bisect_raw_ptr<void, DanglingUntriaged> fClipShaderBuffer = nullptr; // "native" : float or U16
 
     bool fCanDirectBlit;
     const SkColor4f fDirectBlitPaintColor;
@@ -179,9 +180,14 @@ static bool create_pipeline_for_blitter(const SkPixmap& dst,
     SkColorType dstCT = dst.colorType();
     *isOpaqueOut = shader->isOpaque() && dstPaintColor->fA == 1.0f;
     *isConstantOut = shader->isConstant();
-    if (shader->appendRootStages(
-                SkStageRec{shaderPipeline, alloc, dstCT, dstCS, *dstPaintColor, props, devBounds},
-                ctm)) {
+    if (shader->appendRootStages(SkStageRec{shaderPipeline,
+                                            alloc,
+                                            dstCT,
+                                            dstCS,
+                                            *dstPaintColor,
+                                            bisect_raw_ref(props),
+                                            devBounds},
+                                 ctm)) {
         if (dstPaintColor->fA != 1.0f) {
             shaderPipeline->append(SkRasterPipelineOp::scale_1_float,
                                    alloc->make<float>(dstPaintColor->fA));
@@ -324,8 +330,13 @@ SkBlitter* SkRasterPipelineBlitter::Create(const SkPixmap& dst,
         SkColorType clipCT = kRGBA_8888_SkColorType;
         SkColorSpace* clipCS = nullptr;
         SkSurfaceProps props{}; // default OK; clipShader doesn't render text
-        SkStageRec rec = {
-                clipP, alloc, clipCT, clipCS, SkColors::kBlack, props, SkRect::MakeEmpty()};
+        SkStageRec rec = {clipP,
+                          alloc,
+                          clipCT,
+                          clipCS,
+                          SkColors::kBlack,
+                          bisect_raw_ref(props),
+                          SkRect::MakeEmpty()};
         if (as_SB(clipShader)->appendRootStages(rec, SkMatrix::I())) {
             struct Storage {
                 // large enough for highp (float) or lowp(U16)
@@ -351,7 +362,7 @@ SkBlitter* SkRasterPipelineBlitter::Create(const SkPixmap& dst,
                           dst.colorType(),
                           dst.colorSpace(),
                           dstPaintColor,
-                          props,
+                          bisect_raw_ref(props),
                           SkRect::MakeEmpty()};
         if (!as_CFB(colorFilter)->appendStages(rec, is_opaque)) {
             return nullptr;
@@ -482,7 +493,7 @@ SkBlitter* SkRasterPipelineBlitter::Create(const SkPixmap& dst,
                           dst.colorType(),
                           dst.colorSpace(),
                           dstPaintColor,
-                          props,
+                          bisect_raw_ref(props),
                           SkRect::MakeEmpty()};
         if (!as_BB(blender)->appendStages(rec)) {
             return nullptr;

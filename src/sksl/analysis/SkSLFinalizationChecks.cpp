@@ -194,8 +194,8 @@ public:
 private:
     using INHERITED = ProgramVisitor;
     size_t fGlobalSlotsUsed = 0;
-    const raw_ref<const Context> fContext;
-    const raw_ref<const ProgramUsage> fUsage;
+    const bisect_raw_ref<const Context> fContext;
+    const bisect_raw_ref<const ProgramUsage> fUsage;
     // we pack the set/binding pair into a single 64 bit int
     THashSet<uint64_t> fBindings;
 
