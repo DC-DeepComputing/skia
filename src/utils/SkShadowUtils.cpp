@@ -312,7 +312,7 @@ template <typename FACTORY>
 struct FindContext {
     FindContext(const SkMatrix* viewMatrix, const FACTORY* factory)
             : fViewMatrix(viewMatrix), fFactory(factory) {}
-    const raw_ptr<const SkMatrix> fViewMatrix;
+    const bisect_raw_ptr<const SkMatrix> fViewMatrix;
     // If this is valid after Find is called then we found the vertices and they should be drawn
     // with fTranslate applied.
     sk_sp<SkVertices> fVertices;
@@ -322,7 +322,7 @@ struct FindContext {
     // and create a new CachedTessellationsRec and insert it into SkResourceCache.
     sk_sp<CachedTessellations> fTessellationsOnFailure;
 
-    raw_ptr<const FACTORY> fFactory;
+    bisect_raw_ptr<const FACTORY> fFactory;
 };
 
 /**
@@ -374,8 +374,8 @@ public:
 #endif
 
 private:
-    raw_ptr<const SkPath> fPath;
-    raw_ptr<const SkMatrix> fViewMatrix;
+    bisect_raw_ptr<const SkPath> fPath;
+    bisect_raw_ptr<const SkMatrix> fViewMatrix;
 #if defined(SK_GANESH)
     GrStyledShape fShapeForKey;
 #endif

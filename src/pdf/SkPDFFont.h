@@ -5,7 +5,10 @@
  * found in the LICENSE file.
  */
 #ifndef SkPDFFont_DEFINED
+
 #define SkPDFFont_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
@@ -47,7 +50,7 @@ public:
     const SkPDFStrikeSpec fPath;
     const SkPDFStrikeSpec fImage;
     const bool fHasMaskFilter;
-    SkPDFDocument* fDoc;
+    bisect_raw_ptr<SkPDFDocument> fDoc;
     skia_private::THashMap<SkGlyphID, SkPDFFont> fFontMap;
 
     /** Get the font resource for the glyph.
@@ -144,7 +147,7 @@ public:
     const SkPDFStrike& strike() const { return *fStrike; }
 
 private:
-    const SkPDFStrike* fStrike;
+    bisect_raw_ptr<const SkPDFStrike> fStrike;
     SkPDFGlyphUse fGlyphUsage;
     SkPDFIndirectReference fIndirectReference;
     SkAdvancedTypefaceMetrics::FontType fFontType;

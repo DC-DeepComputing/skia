@@ -16,6 +16,7 @@
 #include "src/gpu/graphite/DescriptorData.h"
 #include "src/gpu/graphite/ResourceTypes.h"
 #include "src/gpu/graphite/UniquePaintParamsID.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 namespace skgpu::graphite {
 
@@ -112,8 +113,8 @@ private:
                             const RenderStep*,
                             const SharedGeneratorData&);
 
-    const ShaderCodeDictionary* fShaderCodeDictionary;
-    const RuntimeEffectDictionary* fRuntimeEffectDictionary;
+    bisect_raw_ptr<const ShaderCodeDictionary> fShaderCodeDictionary;
+    bisect_raw_ptr<const RuntimeEffectDictionary> fRuntimeEffectDictionary;
     const char* fUniformSsboIndex;
 
     // The blendInfo represents the actual GPU blend operations, which may or may not completely

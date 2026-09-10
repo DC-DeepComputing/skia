@@ -10,6 +10,7 @@
 
 #include "include/private/SkTLogic.h"
 #include "src/core/SkRecord.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 namespace SkRecords {
 
@@ -37,7 +38,7 @@ public:
     }
 
 private:
-    type* fPtr;
+    bisect_raw_ptr<type, DanglingUntriaged> fPtr;
 };
 
 // Matches any command that draws, and stores its paint.
@@ -71,7 +72,7 @@ private:
     template <typename T> static T* AsPtr(SkRecords::Optional<T>& x) { return x; }
     template <typename T> static T* AsPtr(T& x) { return &x; }
 
-    SkPaint* fPaint;
+    bisect_raw_ptr<SkPaint, DanglingUntriaged> fPaint;
 };
 
 // Matches any command that draws *once* (logically), and stores its paint.
@@ -111,7 +112,7 @@ private:
     template <typename T> static T* AsPtr(SkRecords::Optional<T>& x) { return x; }
     template <typename T> static T* AsPtr(T& x) { return &x; }
 
-    SkPaint* fPaint;
+    bisect_raw_ptr<SkPaint, DanglingUntriaged> fPaint;
 };
 
 // Matches if Matcher doesn't.  Stores nothing.
