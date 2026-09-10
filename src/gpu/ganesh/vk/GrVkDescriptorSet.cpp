@@ -23,7 +23,9 @@ GrVkDescriptorSet::GrVkDescriptorSet(GrVkGpu* gpu,
 }
 
 void GrVkDescriptorSet::freeGPUData() const {
-    fPool->unref();
+    GrVkDescriptorPool* pool = fPool.get();
+    fPool = nullptr;
+    pool->unref();
 }
 
 void GrVkDescriptorSet::onRecycle() const {
