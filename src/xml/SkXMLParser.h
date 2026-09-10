@@ -80,10 +80,10 @@ public:
     bool addAttribute(const char name[], const char value[]);
     bool endElement(const char elem[]);
     bool text(const char text[], int len);
-    raw_ptr<void> fParser;
+    bisect_raw_ptr<void> fParser;
 
 protected:
-    raw_ptr<SkXMLParserError> fError;
+    bisect_raw_ptr<SkXMLParserError> fError;
 
 private:
     void reportError(void* parser);
