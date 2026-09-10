@@ -16,6 +16,24 @@
       "message": "It seems that recipes modified in this CL doesn\u0027t use CMake and ninja is specified via full path?\nIf you have a link to failed build, can I see how that failed?",
       "revId": "4497de5c3dcecaa6467acc387e9c1c6d5775e6cd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28efb799_c587f10d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 4954845
+      },
+      "writtenOn": "2026-09-10T04:55:02Z",
+      "side": 1,
+      "message": "Sure thing, see this one: https://skia-review.git.corp.google.com/c/skia/+/1356137",
+      "parentUuid": "bd594e9a_fcdde94d",
+      "revId": "4497de5c3dcecaa6467acc387e9c1c6d5775e6cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
