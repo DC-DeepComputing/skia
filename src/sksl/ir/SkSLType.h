@@ -94,7 +94,7 @@ struct Field {
     Layout fLayout;
     ModifierFlags fModifierFlags;
     std::string_view fName;
-    raw_ptr<const Type, DanglingUntriaged> fType;
+    bisect_raw_ptr<const Type, DanglingUntriaged> fType;
 };
 
 /**

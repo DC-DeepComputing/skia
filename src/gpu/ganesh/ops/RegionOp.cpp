@@ -28,6 +28,7 @@
 #include "src/gpu/ganesh/GrProgramInfo.h"
 #include "src/gpu/ganesh/ops/GrMeshDrawOp.h"
 #include "src/gpu/ganesh/ops/GrSimpleMeshDrawOpHelperWithStencil.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #if defined(GPU_TEST_UTILS)
 #include "src/core/SkRandom.h"
@@ -226,8 +227,8 @@ private:
     STArray<1, RegionInfo, true> fRegions;
     bool fWideColor;
 
-    GrSimpleMesh*  fMesh = nullptr;
-    GrProgramInfo* fProgramInfo = nullptr;
+    bisect_raw_ptr<GrSimpleMesh, DanglingUntriaged> fMesh = nullptr;
+    bisect_raw_ptr<GrProgramInfo, DanglingUntriaged> fProgramInfo = nullptr;
 
     using INHERITED = GrMeshDrawOp;
 };

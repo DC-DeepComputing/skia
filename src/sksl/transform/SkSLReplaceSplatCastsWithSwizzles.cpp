@@ -51,7 +51,7 @@ void Transform::ReplaceSplatCastsWithSwizzles(const Context& context, Module& mo
             return false;
         }
 
-        const raw_ref<const Context> fContext;
+        const bisect_raw_ref<const Context> fContext;
 
         using INHERITED = ProgramWriter;
     };

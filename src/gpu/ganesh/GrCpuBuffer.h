@@ -6,7 +6,10 @@
  */
 
 #ifndef GrCpuBuffer_DEFINED
+
 #define GrCpuBuffer_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkAssert.h"
@@ -38,12 +41,12 @@ public:
     size_t size() const override { return fSize; }
     bool isCpuBuffer() const override { return true; }
 
-    char* data() { return reinterpret_cast<char*>(fData); }
-    const char* data() const { return reinterpret_cast<const char*>(fData); }
+    char* data() { return reinterpret_cast<char*>(fData.get()); }
+    const char* data() const { return reinterpret_cast<const char*>(fData.get()); }
 
 private:
     GrCpuBuffer(void* data, size_t size) : fData(data), fSize(size) {}
-    void* fData;
+    bisect_raw_ptr<void, DanglingUntriaged> fData;
     size_t fSize;
 };
 

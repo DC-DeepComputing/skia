@@ -191,7 +191,7 @@ static void eliminate_unreachable_code(SkSpan<std::unique_ptr<ProgramElement>> e
             return false;
         }
 
-        raw_ptr<ProgramUsage> fUsage;
+        bisect_raw_ptr<ProgramUsage> fUsage;
         STArray<32, bool> fFoundFunctionExit;
         STArray<32, bool> fFoundBlockExit;
 

@@ -122,8 +122,8 @@ private:
                                     const Type* baseType,
                                     std::unique_ptr<Expression>& value);
 
-    raw_ptr<Variable> fVar;
-    const raw_ref<const Type> fBaseType;
+    bisect_raw_ptr<Variable> fVar;
+    const bisect_raw_ref<const Type> fBaseType;
     int fArraySize;  // zero means "not an array"
     std::unique_ptr<Expression> fValue;
 

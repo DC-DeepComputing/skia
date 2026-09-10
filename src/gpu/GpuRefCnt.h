@@ -14,6 +14,7 @@
 
 #include <cstddef>
 #include <type_traits>
+#include "src/partition_alloc/raw_ptr.h"
 
 // We have to use auto for the function pointers here because if the actual functions live on the
 // base class of T we need the function here to be a pointer to a function of the base class and not
@@ -157,7 +158,7 @@ private:
         return ptr;
     }
 
-    T* fPtr;
+    bisect_raw_ptr<T> fPtr;
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

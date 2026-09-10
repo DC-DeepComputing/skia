@@ -72,7 +72,7 @@ struct SkOTUtils {
     private:
         static SK_OT_USHORT familyNameTypes[3];
 
-        raw_ptr<SK_OT_USHORT, AllowPtrArithmetic> fTypes;
+        bisect_raw_ptr<SK_OT_USHORT, AllowPtrArithmetic> fTypes;
         int fTypesCount;
         int fTypesIndex;
         std::unique_ptr<uint8_t[]> fNameTableData;

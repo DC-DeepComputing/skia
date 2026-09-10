@@ -81,7 +81,7 @@ public:
     }
 
 private:
-    raw_ptr<SkSharedMutex> fLock;
+    bisect_raw_ptr<SkSharedMutex> fLock;
 };
 class SK_SCOPED_CAPABILITY Shared {
 public:
@@ -101,7 +101,7 @@ public:
     }
 
 private:
-    raw_ptr<SkSharedMutex> fLock;
+    bisect_raw_ptr<SkSharedMutex> fLock;
 };
 
 static bool isLCD(const SkScalerContextRec& rec) {
@@ -1686,7 +1686,7 @@ bool SkScalerContext_DW::generateSVGMetrics(const SkGlyph& glyph, SkRect* bounds
 namespace {
 struct Context {
     SkTScopedComPtr<IDWriteFontFace4> fontFace4;
-    raw_ptr<void> glyphDataContext;
+    bisect_raw_ptr<void> glyphDataContext;
     Context(IDWriteFontFace4* face4, void* context)
             : fontFace4(SkRefComPtr(face4)), glyphDataContext(context) {}
 };
@@ -2431,7 +2431,7 @@ sk_sp<SkDrawable> SkScalerContext_DW::generateDrawable(const SkGlyph& glyph) {
         // TODO(arthursonzogni): GlyphDrawable may outlive SkScalerContext. Find a way to avoid
         // holding a raw pointer, as it causes a long-lived dangling pointer which would lead to
         // BackupRefPtr quarantine bloat. RAW_PTR_EXCLUSION: See TODO.
-        RAW_PTR_EXCLUSION SkScalerContext_DW* fSelf;
+        bisect_raw_ptr<SkScalerContext_DW> fSelf;
         SkGlyph fGlyph;
         GlyphDrawable(SkScalerContext_DW* self, const SkGlyph& glyph)
                 : fSelf(self), fGlyph(glyph) {}

@@ -15,6 +15,7 @@
 #include "include/private/SkMacros.h"
 #include "include/private/SkMath.h"
 #include "include/private/SkNoncopyable.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <algorithm>
 #include <cstddef>
@@ -148,8 +149,9 @@ public:
 
         SkDEBUGCODE(uint32_t fSentinel;)  // known value to check for bad back pointers to blocks
 
-        Block*          fNext;      // doubly-linked list of blocks
-        Block*          fPrev;
+                // RAW_PTR_EXCLUSION: Inner-loop memory allocator block chaining.
+                RAW_PTR_EXCLUSION Block* fNext;  // doubly-linked list of blocks
+        RAW_PTR_EXCLUSION Block* fPrev;
 
         // Each block tracks its own cursor because as later blocks are released, an older block
         // may become the active tail again.
@@ -446,7 +448,9 @@ private:
 
     int scratchBlockSize() const { return fHead.fPrev ? fHead.fPrev->fSize : 0; }
 
-    Block* fTail; // All non-head blocks are heap allocated; tail will never be null.
+    // RAW_PTR_EXCLUSION: Inner-loop memory allocator tail pointer.
+    RAW_PTR_EXCLUSION Block*
+            fTail;  // All non-head blocks are heap allocated; tail will never be null.
 
     // All remaining state is packed into 64 bits to keep SkBlockAllocator at 16 bytes + head block
     // (on a 64-bit system).
@@ -726,16 +730,18 @@ public:
             SkASSERT(!fNext || !fNext->isScratch());
         }
 
-        BlockT* fBlock;
+        // RAW_PTR_EXCLUSION: Inner-loop memory allocator block traversal cursors.
+        RAW_PTR_EXCLUSION BlockT* fBlock;
         // Cache this before operator++ so that fBlock can be released during iteration
-        BlockT* fNext;
+        RAW_PTR_EXCLUSION BlockT* fNext;
     };
 
     Item begin() const { return Item(Forward ? &fAllocator->fHead : fAllocator->fTail); }
     Item end() const { return Item(nullptr); }
 
 private:
-    AllocatorT* fAllocator;
+    // RAW_PTR_EXCLUSION: Inner-loop memory allocator pointer.
+    RAW_PTR_EXCLUSION AllocatorT* fAllocator;
 };
 
 SkBlockAllocator::BlockIter<true, false> SkBlockAllocator::blocks() {

@@ -16,6 +16,7 @@
 #include <setjmp.h>
 // stdio is needed for jpeglib
 #include <stdio.h>
+#include "src/partition_alloc/raw_ptr.h"
 
 extern "C" {
     #include "jpeglib.h"  // NO_G3_REWRITE
@@ -33,7 +34,7 @@ struct skjpeg_error_mgr : public jpeg_error_mgr {
         operator jmp_buf&()                               { return fJmpBuf; }
 
     private:
-        skjpeg_error_mgr* const fMgr;
+        const bisect_raw_ptr<skjpeg_error_mgr> fMgr;
         jmp_buf fJmpBuf;
     };
 

@@ -141,7 +141,7 @@ private:
     SkVector fCurrentPixelsPerMeter;
 
     skia_private::TArray<TypefaceUse, true> fTypefaces;
-    raw_ptr<skia_private::TArray<TypefaceUse, true>> fTopTypefaces;
+    bisect_raw_ptr<skia_private::TArray<TypefaceUse, true>> fTopTypefaces;
 
     SkXPS::Options fOpts;
 

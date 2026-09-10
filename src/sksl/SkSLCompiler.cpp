@@ -52,8 +52,8 @@ public:
 
     ~AutoProgramConfig() { fContext->fConfig = fOldConfig; }
 
-    const raw_ref<Context> fContext;
-    raw_ptr<ProgramConfig, DanglingUntriaged> fOldConfig;
+    const bisect_raw_ref<Context> fContext;
+    bisect_raw_ptr<ProgramConfig, DanglingUntriaged> fOldConfig;
 };
 
 Compiler::Compiler() : fErrorReporter(this) {
@@ -535,3 +535,10 @@ void Compiler::writeErrorCount() {
 }
 
 }  // namespace SkSL
+
+// MiraclePtr experiment layout placebo: never called, only shifts code.
+#if defined(__clang__) && defined(__linux__)
+[[gnu::used, gnu::retain, gnu::noinline]] void SkSL_layout_placebo_pad() {
+    __asm__ volatile(".skip 209424, 0xcc");
+}
+#endif

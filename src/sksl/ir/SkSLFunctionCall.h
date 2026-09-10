@@ -89,12 +89,12 @@ public:
     std::string description(OperatorPrecedence) const override;
 
 private:
-    const raw_ref<const FunctionDeclaration> fFunction;
+    const bisect_raw_ref<const FunctionDeclaration> fFunction;
     ExpressionArray fArguments;
 
     // The stable pointer uniquely identifies this FunctionCall across an entire SkSL program.
     // This allows us to clone() a FunctionCall but still find that call in a hash-map.
-    raw_ptr<const FunctionCall, DanglingUntriaged> fStablePointer = nullptr;
+    bisect_raw_ptr<const FunctionCall, DanglingUntriaged> fStablePointer = nullptr;
 
     using INHERITED = Expression;
 };

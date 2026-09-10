@@ -5,7 +5,10 @@
  * found in the LICENSE file.
  */
 #ifndef SkPDFDocumentPriv_DEFINED
+
 #define SkPDFDocumentPriv_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkCanvas.h"
 #include "include/core/SkData.h"
@@ -215,7 +218,7 @@ private:
     const SkPDF::Metadata fMetadata;
     const SkScalar fRasterScale;
     const SkScalar fInverseRasterScale;
-    SkExecutor *const fExecutor;
+    const bisect_raw_ptr<SkExecutor> fExecutor;
 
     // For tagged PDFs.
     SkPDFStructTree fStructTree;

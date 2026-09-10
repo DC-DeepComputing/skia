@@ -64,7 +64,7 @@ public:
 
 private:
     std::string_view fName;
-    raw_ptr<const Type, DanglingUntriaged> fType;
+    bisect_raw_ptr<const Type, DanglingUntriaged> fType;
 
     using INHERITED = IRNode;
 };

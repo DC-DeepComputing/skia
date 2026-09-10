@@ -32,13 +32,13 @@ public:
     ~Context();
 
     // The Context holds a reference to all of the built-in types.
-    const raw_ref<const BuiltinTypes> fTypes;
+    const bisect_raw_ref<const BuiltinTypes> fTypes;
 
     // The Context holds a pointer to the configuration of the program being compiled.
-    raw_ptr<ProgramConfig, DanglingUntriaged> fConfig = nullptr;
+    bisect_raw_ptr<ProgramConfig, DanglingUntriaged> fConfig = nullptr;
 
     // The Context holds a pointer to our error reporter.
-    raw_ptr<ErrorReporter> fErrors;
+    bisect_raw_ptr<ErrorReporter> fErrors;
 
     void setErrorReporter(ErrorReporter* e) {
         SkASSERT(e);
@@ -46,11 +46,11 @@ public:
     }
 
     // The Context holds a pointer to our module with built-in declarations.
-    raw_ptr<const Module> fModule = nullptr;
+    bisect_raw_ptr<const Module> fModule = nullptr;
 
     // This is the current symbol table of the code we are processing, and therefore changes during
     // compilation.
-    raw_ptr<SymbolTable> fSymbolTable = nullptr;
+    bisect_raw_ptr<SymbolTable> fSymbolTable = nullptr;
 };
 
 }  // namespace SkSL
