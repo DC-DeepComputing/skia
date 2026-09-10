@@ -25,11 +25,13 @@
 #include "src/core/SkRasterPipelineOpContexts.h"
 #include "src/core/SkRasterPipelineOpList.h"
 #include "src/core/SkSpriteBlitter.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <cstdint>
 #include <cstring>
 #include <optional>
 #include <utility>
+#include "src/partition_alloc/raw_ptr.h"
 
 struct SkIRect;
 struct SkMask;
@@ -181,8 +183,9 @@ public:
     }
 
 private:
-    SkArenaAlloc*              fAlloc;
-    SkBlitter*                 fBlitter;
+    // RAW_PTR_EXCLUSION: Inner-loop per-span sprite blitter state.
+    raw_ptr<SkArenaAlloc, DanglingUntriaged> fAlloc;
+    raw_ptr<SkBlitter, DanglingUntriaged> fBlitter;
     SkRasterPipelineContexts::MemoryCtx fSrcPtr;
     SkColor4f                  fPaintColor;
     sk_sp<SkShader>            fClipShader;
