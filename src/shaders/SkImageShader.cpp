@@ -408,10 +408,10 @@ namespace {
 struct MipLevelHelper {
     SkPixmap pm;
     SkMatrix inv;
-    raw_ptr<SkRasterPipelineContexts::GatherCtx> gather;
-    raw_ptr<SkRasterPipelineContexts::TileCtx> limitX;
-    raw_ptr<SkRasterPipelineContexts::TileCtx> limitY;
-    raw_ptr<SkRasterPipelineContexts::DecalTileCtx> decalCtx = nullptr;
+    bisect_raw_ptr<SkRasterPipelineContexts::GatherCtx> gather;
+    bisect_raw_ptr<SkRasterPipelineContexts::TileCtx> limitX;
+    bisect_raw_ptr<SkRasterPipelineContexts::TileCtx> limitY;
+    bisect_raw_ptr<SkRasterPipelineContexts::DecalTileCtx> decalCtx = nullptr;
 
     void allocAndInit(SkArenaAlloc* alloc,
                       const SkSamplingOptions& sampling,

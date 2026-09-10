@@ -135,8 +135,8 @@ private:
 
     bool fCapturing = false;
     SkPictureRecorder fRecorder;
-    raw_ptr<SkCanvas> fBaseCanvas = nullptr;
-    raw_ptr<SkCaptureManager> fManager = nullptr;
+    bisect_raw_ptr<SkCanvas> fBaseCanvas = nullptr;
+    bisect_raw_ptr<SkCaptureManager> fManager = nullptr;
 
     // Hide NWay management functions as clients shouldn't be using these directly.
     void addCanvas(SkCanvas* canvas) override {SkNWayCanvas::addCanvas(canvas);}

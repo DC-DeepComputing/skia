@@ -10,6 +10,7 @@
 #include "include/private/SkTFitsIn.h"
 #include "include/private/SkTemplates.h"
 #include "src/core/SkOSFile.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <dirent.h>
 #include <new>
@@ -132,7 +133,7 @@ size_t sk_qread(FILE* file, void* buffer, size_t count, size_t offset) {
 
 struct SkOSFileIterData {
     SkOSFileIterData() : fDIR(nullptr) { }
-    DIR* fDIR;
+    bisect_raw_ptr<DIR, DanglingUntriaged> fDIR;
     SkString fPath, fSuffix;
 };
 static_assert(sizeof(SkOSFileIterData) <= SkOSFile::Iter::kStorageSize, "not_enough_space");

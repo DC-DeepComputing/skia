@@ -114,12 +114,12 @@ struct FamilyData {
     { }
 
     XML_Parser fParser;                         // The expat parser doing the work, owned by caller
-    const raw_ref<std::vector<std::unique_ptr<FontFamily>>>
+    const bisect_raw_ref<std::vector<std::unique_ptr<FontFamily>>>
             fFamilies;                          // Collection of families, owned by caller
     std::unique_ptr<FontFamily> fCurrentFamily; // The family being created, owned by this
-    raw_ptr<FontFileInfo> fCurrentFontInfo;     // The info being created, owned by fCurrentFamily
+    bisect_raw_ptr<FontFileInfo> fCurrentFontInfo;     // The info being created, owned by fCurrentFamily
     int fVersion;                               // The version of the file parsed.
-    const raw_ref<const SkString> fBasePath;    // The current base path.
+    const bisect_raw_ref<const SkString> fBasePath;    // The current base path.
     const bool fIsFallback;                     // The file being parsed is a fallback file
     const char* fFilename;                      // The name of the file currently being parsed.
 

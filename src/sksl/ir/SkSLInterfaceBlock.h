@@ -95,7 +95,7 @@ public:
     std::string description() const override;
 
 private:
-    raw_ptr<Variable> fVariable;
+    bisect_raw_ptr<Variable> fVariable;
 
     using INHERITED = ProgramElement;
 };

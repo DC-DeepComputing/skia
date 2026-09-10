@@ -149,7 +149,7 @@ LoopControlFlowInfo GetLoopControlFlowInfo(const Statement& stmt);
  * are not actually writable.
  */
 struct AssignmentInfo {
-    raw_ptr<VariableReference> fAssignedVar = nullptr;
+    bisect_raw_ptr<VariableReference> fAssignedVar = nullptr;
 };
 bool IsAssignable(Expression& expr, AssignmentInfo* info = nullptr,
                   ErrorReporter* errors = nullptr);
@@ -281,7 +281,7 @@ public:
     }
 
 private:
-    raw_ptr<std::vector<SymbolTable*>> fStackToPop = nullptr;
+    bisect_raw_ptr<std::vector<SymbolTable*>> fStackToPop = nullptr;
 };
 
 }  // namespace Analysis

@@ -83,7 +83,7 @@ private:
     void newline();
     void tab(int lvl);
 
-    const raw_ref<SkWStream> fStream;
+    const bisect_raw_ref<SkWStream> fStream;
     const uint32_t  fFlags;
 };
 
@@ -97,7 +97,7 @@ protected:
     void onAddAttributeLen(const char name[], const char value[], size_t length) override;
     void onAddText(const char text[], size_t length) override;
 private:
-    const raw_ref<SkXMLParser> fParser;
+    const bisect_raw_ref<SkXMLParser> fParser;
 };
 
 

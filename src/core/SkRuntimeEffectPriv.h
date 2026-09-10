@@ -57,7 +57,7 @@ struct Program;
 class SkRuntimeEffectPriv {
 public:
     struct UniformsCallbackContext {
-        raw_ptr<const SkColorSpace> fDstColorSpace;
+        bisect_raw_ptr<const SkColorSpace> fDstColorSpace;
     };
 
     // Private (experimental) API for creating runtime shaders with late-bound uniforms.
@@ -258,7 +258,7 @@ private:
     void applyColorSpaceXform(const SkColorSpaceXformSteps& tempXform, const void* color);
 
     const SkStageRec fStage;
-    const raw_ref<const SkShaders::MatrixRec> fMatrix;
+    const bisect_raw_ref<const SkShaders::MatrixRec> fMatrix;
     SkSpan<const SkRuntimeEffect::ChildPtr> fChildren;
     SkSpan<const SkSL::SampleUsage> fSampleUsages;
 };

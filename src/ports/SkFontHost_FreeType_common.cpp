@@ -1903,7 +1903,7 @@ void SkScalerContextFTUtils::generateGlyphImage(FT_Face face, const SkGlyph& gly
 namespace {
 
 class SkFTGeometrySink {
-    raw_ptr<SkPathBuilder> fBuilder;
+    bisect_raw_ptr<SkPathBuilder> fBuilder;
     bool fStarted;
     FT_Vector fCurrent;
 

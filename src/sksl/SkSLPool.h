@@ -90,7 +90,7 @@ public:
     }
 
 private:
-    raw_ptr<Pool> fPool = nullptr;
+    bisect_raw_ptr<Pool> fPool = nullptr;
 };
 
 

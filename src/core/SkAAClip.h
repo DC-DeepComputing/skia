@@ -15,6 +15,7 @@
 #include "src/core/SkBlitter.h"
 #include <cstdint>
 #include "include/private/SkDebug.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 class SkPath;
 class SkRegion;
@@ -72,7 +73,7 @@ private:
     friend class SkAAClipBlitter;
 
     SkIRect  fBounds;
-    RunHead* fRunHead;
+    bisect_raw_ptr<RunHead, DanglingUntriaged> fRunHead;
 
     void freeRuns();
 
@@ -108,8 +109,8 @@ public:
     void blitMask(const SkMask&, const SkIRect& clip) override;
 
 private:
-    SkBlitter*      fBlitter;
-    const SkAAClip* fAAClip;
+    bisect_raw_ptr<SkBlitter, DanglingUntriaged> fBlitter;
+    bisect_raw_ptr<const SkAAClip, DanglingUntriaged> fAAClip;
     SkIRect         fAAClipBounds;
 
     // point into fScanlineScratch
