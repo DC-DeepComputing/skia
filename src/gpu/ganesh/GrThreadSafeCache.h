@@ -28,6 +28,7 @@
 #include <cstdint>
 #include <tuple>
 #include <utility>
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrDirectContext;
 class GrResourceCache;
@@ -338,7 +339,7 @@ private:
 
     char                         fStorage[kInitialArenaSize];
     SkArenaAlloc                 fEntryAllocator{fStorage, kInitialArenaSize, kInitialArenaSize};
-    Entry*                       fFreeEntryList  SK_GUARDED_BY(fSpinLock);
+    raw_ptr<Entry> fFreeEntryList  SK_GUARDED_BY(fSpinLock);
 };
 
 #endif // GrThreadSafeCache_DEFINED

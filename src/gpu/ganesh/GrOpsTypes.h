@@ -12,6 +12,7 @@
 #include "include/core/SkRect.h"
 #include "src/core/SkColorData.h"
 #include "src/gpu/ganesh/GrSurfaceProxyView.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 enum SkAlphaType : int;
 enum class GrQuadAAFlags;
@@ -32,7 +33,7 @@ struct GrTextureSetEntry {
     SkRect fSrcRect;
     SkRect fDstRect;
     const SkPoint* fDstClipQuad; // Must be null, or point to an array of 4 points
-    const SkMatrix* fPreViewMatrix; // If not null, entry's CTM is 'viewMatrix' * fPreViewMatrix
+    raw_ptr<const SkMatrix> fPreViewMatrix; // If not null, entry's CTM is 'viewMatrix' * fPreViewMatrix
     SkPMColor4f   fColor; // {a,a,a,a} for rgb textures, {r,g,b,a} for alpha-only textures
     GrQuadAAFlags fAAFlags;
 };
