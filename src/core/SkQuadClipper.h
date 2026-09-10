@@ -14,6 +14,8 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkScalar.h"
 #include "include/private/SkDebug.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 /** This class is initialized with a clip rectangle, and then can be fed quads,
     which must already be monotonic in Y.
@@ -45,8 +47,9 @@ public:
     SkPath::Verb next(SkPoint pts[]);
 
 private:
-    SkPoint*        fCurrPoint;
-    SkPath::Verb*   fCurrVerb;
+    // RAW_PTR_EXCLUSION: Inner-loop clipping iterator cursors.
+    bisect_raw_ptr<SkPoint> fCurrPoint;
+    bisect_raw_ptr<SkPath::Verb> fCurrVerb;
 
     enum {
         kMaxVerbs = 13,
