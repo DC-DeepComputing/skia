@@ -56,7 +56,7 @@ std::unique_ptr<GrXferProcessor::ProgramImpl> CoverageSetOpXP::makeProgramImpl()
     class Impl : public ProgramImpl {
     private:
         void emitOutputsForBlendState(const EmitArgs& args) override {
-            const CoverageSetOpXP& xp = args.fXP.cast<CoverageSetOpXP>();
+            const CoverageSetOpXP& xp = args.fXP->cast<CoverageSetOpXP>();
             GrGLSLXPFragmentBuilder* fb = args.fXPFragBuilder;
             if (xp.fInvertCoverage) {
                 fb->codeAppendf("%s = 1.0 - %s;", args.fOutputPrimary, args.fInputCoverage);
