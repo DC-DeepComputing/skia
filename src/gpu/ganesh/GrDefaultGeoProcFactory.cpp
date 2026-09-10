@@ -106,7 +106,7 @@ private:
 
     private:
         void onEmitCode(EmitArgs& args, GrGPArgs* gpArgs) override {
-            const DefaultGeoProc& gp = args.fGeomProc.cast<DefaultGeoProc>();
+            const DefaultGeoProc& gp = args.fGeomProc->cast<DefaultGeoProc>();
             GrGLSLVertexBuilder* vertBuilder = args.fVertBuilder;
             GrGLSLFPFragmentBuilder* fragBuilder = args.fFragBuilder;
             GrGLSLVaryingHandler* varyingHandler = args.fVaryingHandler;
