@@ -6,7 +6,10 @@
  */
 
 #ifndef GrDynamicAtlas_DEFINED
+
 #define GrDynamicAtlas_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
@@ -97,7 +100,7 @@ private:
     SkISize fDrawBounds;
 
     SkSTArenaAllocWithReset<512> fNodeAllocator;
-    Node* fTopNode = nullptr;
+    bisect_raw_ptr<Node> fTopNode = nullptr;
 
     sk_sp<GrTextureProxy> fTextureProxy;
     sk_sp<GrTexture> fBackingTexture;
