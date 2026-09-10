@@ -48,7 +48,7 @@ public:
     bool isOpaque() const override { return fShader->isOpaque(); }
 
 private:
-    const raw_ref<const SkShaderBase> fShader;
+    const bisect_raw_ref<const SkShaderBase> fShader;
     SkScalar fMatrixStorage[9];  // actual memory used by generated RP or VM
     bool fAllowPerspective;
 };
