@@ -28,6 +28,28 @@ public:
         return rr.isSimple() && SkScalarNearlyEqual(rr.fRadii[0].fX, rr.fRadii[0].fY);
     }
 
+    static bool AreRectAndRadiiValid(const SkRect& rect, const SkVector radii[4]) {
+        if (!rect.isFinite() || !rect.isSorted()) {
+            return false;
+        }
+        return are_radii_predicates_valid(radii[SkRRect::Corner::kUpperLeft_Corner].fX,
+                                          radii[SkRRect::Corner::kUpperRight_Corner].fX,
+                                          rect.fLeft,
+                                          rect.fRight) &&
+               are_radii_predicates_valid(radii[SkRRect::Corner::kLowerLeft_Corner].fX,
+                                          radii[SkRRect::Corner::kLowerRight_Corner].fX,
+                                          rect.fLeft,
+                                          rect.fRight) &&
+               are_radii_predicates_valid(radii[SkRRect::Corner::kUpperLeft_Corner].fY,
+                                          radii[SkRRect::Corner::kLowerLeft_Corner].fY,
+                                          rect.fTop,
+                                          rect.fBottom) &&
+               are_radii_predicates_valid(radii[SkRRect::Corner::kUpperRight_Corner].fY,
+                                          radii[SkRRect::Corner::kLowerRight_Corner].fY,
+                                          rect.fTop,
+                                          rect.fBottom);
+    }
+
     // Looser version of IsSimpleCircular, where the x & y values of the radii
     // only have to be nearly equal instead of strictly equal.
     static bool IsNearlySimpleCircular(const SkRRect& rr, float tolerance = SK_ScalarNearlyZero);
