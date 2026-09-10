@@ -79,7 +79,7 @@ public:
     std::string description(OperatorPrecedence) const override;
 
 private:
-    raw_ptr<const Variable, DanglingUntriaged> fVariable;
+    bisect_raw_ptr<const Variable, DanglingUntriaged> fVariable;
     VariableRefKind fRefKind;
 
     using INHERITED = Expression;
