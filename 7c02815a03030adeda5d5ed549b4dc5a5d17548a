@@ -16,6 +16,24 @@
       "message": "Overlength. I guess, put each memcpy parameter on its own line and line them up vertically.",
       "revId": "7c02815a03030adeda5d5ed549b4dc5a5d17548a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ffc662c0_99c22bdc",
+        "filename": "fuzz/FuzzCanvasHelpers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 947,
+      "author": {
+        "id": 4621846
+      },
+      "writtenOn": "2026-09-10T04:31:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "da6e31b9_a935a085",
+      "revId": "7c02815a03030adeda5d5ed549b4dc5a5d17548a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
