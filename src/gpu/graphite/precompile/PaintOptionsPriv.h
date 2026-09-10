@@ -9,6 +9,7 @@
 #define skgpu_graphite_PaintOptionsPriv_DEFINED
 
 #include "include/gpu/graphite/precompile/PaintOptions.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 namespace skgpu::graphite {
 
@@ -61,7 +62,7 @@ private:
     const PaintOptionsPriv* operator&() const;
     PaintOptionsPriv *operator&();
 
-    PaintOptions* fPaintOptions;
+    raw_ptr<PaintOptions> fPaintOptions;
 };
 
 inline PaintOptionsPriv PaintOptions::priv() { return PaintOptionsPriv(this); }

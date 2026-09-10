@@ -25,6 +25,7 @@
 #include "src/gpu/graphite/dawn/DawnSharedContext.h"
 #include "src/gpu/graphite/dawn/DawnTexture.h"
 #include "src/sksl/SkSLCompiler.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 namespace skgpu::graphite {
 
@@ -213,7 +214,7 @@ private:
 
     DawnResourceProvider* const fResourceProvider;
     // The current buffer being filled up, as well as the how much of it has been written to.
-    IntrinsicBuffer* fCurrentBuffer = nullptr;
+    raw_ptr<IntrinsicBuffer> fCurrentBuffer= nullptr;
 
     // All cached intrinsic buffers, in LRU order.
     SkTInternalLList<IntrinsicBuffer> fIntrinsicBuffersLRU;

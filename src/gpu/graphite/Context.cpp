@@ -99,6 +99,7 @@
 
 #if defined(GPU_TEST_UTILS)
 #include "src/gpu/graphite/ContextOptionsPriv.h"
+#include "src/partition_alloc/raw_ptr.h"
 #endif
 
 class SkTraceMemoryDump;
@@ -285,7 +286,7 @@ bool Context::hasPendingGPUWork() const { return fQueueManager->hasPendingGPUWor
 
 template <typename SrcPixels>
 struct Context::AsyncParams {
-    const SrcPixels* fSrcImage;
+    raw_ptr<const SrcPixels> fSrcImage;
     SkIRect          fSrcRect;
     SkImageInfo      fDstImageInfo;
 
