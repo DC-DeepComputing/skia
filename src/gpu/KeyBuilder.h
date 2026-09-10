@@ -14,6 +14,7 @@
 
 #include <cstdint>
 #include <string_view>
+#include "src/partition_alloc/raw_ptr.h"
 
 namespace skgpu {
 
@@ -72,7 +73,7 @@ public:
     }
 
 private:
-    skia_private::TArray<uint32_t, true>* fData;
+    bisect_raw_ptr<skia_private::TArray<uint32_t, true>> fData;
     uint32_t fCurValue = 0;
     uint32_t fBitsUsed = 0;  // ... in current value
 };

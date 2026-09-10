@@ -131,8 +131,8 @@ static bool eliminate_dead_local_variables(const Context& context,
         }
 
         bool fMadeChanges = false;
-        const raw_ref<const Context> fContext;
-        raw_ptr<ProgramUsage> fUsage;
+        const bisect_raw_ref<const Context> fContext;
+        bisect_raw_ptr<ProgramUsage> fUsage;
         THashSet<const Variable*> fDeadVariables;
         bool fAssignmentWasEliminated = false;
 

@@ -7,6 +7,8 @@
 
 #include "include/core/SkColorSpace.h"
 
+#include "src/partition_alloc/raw_ptr_exclusion.h"
+
 #include "include/core/SkData.h"
 #include "include/private/SkTemplates.h"
 #include "modules/skcms/skcms.h"

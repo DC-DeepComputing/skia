@@ -6,6 +6,7 @@
  */
 
 #include "src/core/SkBitmapDevice.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBlender.h"
@@ -62,7 +63,7 @@ class SkDrawTiler {
     // 8K is 1 too big, since 8K << supersample == 32768 which is too big for SkFixed
     static constexpr int kMaxDim = 8192 - 1;
 
-    SkBitmapDevice* fDevice;
+    bisect_raw_ptr<SkBitmapDevice, DanglingUntriaged> fDevice;
     SkPixmap        fRootPixmap;
     SkIRect         fSrcBounds;
 

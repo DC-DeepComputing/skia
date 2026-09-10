@@ -201,7 +201,7 @@ public:
         fAtModuleBoundary = true;
     }
 
-    raw_ptr<SymbolTable, DanglingUntriaged> fParent = nullptr;
+    bisect_raw_ptr<SymbolTable, DanglingUntriaged> fParent = nullptr;
 
     std::vector<std::unique_ptr<Symbol>> fOwnedSymbols;
 

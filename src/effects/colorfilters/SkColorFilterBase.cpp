@@ -42,7 +42,7 @@ SkPMColor4f SkColorFilterBase::onFilterColor4f(const SkPMColor4f& color,
                       kRGBA_F32_SkColorType,
                       dstCS,
                       color.unpremul(),
-                      props,
+                      bisect_raw_ref(props),
                       SkRect::MakeEmpty()};
 
     if (as_CFB(this)->appendStages(rec, color.fA == 1)) {
