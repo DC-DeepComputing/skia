@@ -43,13 +43,13 @@ private:
 };
 
 void GrBicubicEffect::Impl::emitCode(EmitArgs& args) {
-    const GrBicubicEffect& bicubicEffect = args.fFp.cast<GrBicubicEffect>();
+    const GrBicubicEffect& bicubicEffect = args.fFp->cast<GrBicubicEffect>();
 
     GrGLSLFPFragmentBuilder* fragBuilder = args.fFragBuilder;
 
     const char* coeffs;
-    fCoefficientUni = args.fUniformHandler->addUniform(&args.fFp, kFragment_GrShaderFlag,
-                                                       SkSLType::kHalf4x4, "coefficients", &coeffs);
+    fCoefficientUni = args.fUniformHandler->addUniform(
+            &*args.fFp, kFragment_GrShaderFlag, SkSLType::kHalf4x4, "coefficients", &coeffs);
     // We determine our fractional offset (f) within the texel. We then snap coord to a texel
     // center. The snap prevents cases where the starting coords are near a texel boundary and
     // offsets with imperfect precision would cause us to skip/double hit a texel.

@@ -353,7 +353,7 @@ protected:
     skia_private::THashSet<std::string> fHelpers;
     int fUniformBuffer = -1;
     std::string fRTFlipName;
-    raw_ptr<const FunctionDeclaration> fCurrentFunction = nullptr;
+    bisect_raw_ptr<const FunctionDeclaration> fCurrentFunction = nullptr;
     int fSwizzleHelperCount = 0;
     static constexpr char kTextureSuffix[] = "_Tex";
     static constexpr char kSamplerSuffix[] = "_Smplr";
@@ -3186,7 +3186,7 @@ void MetalCodeGenerator::writeSampler2DPolyfill() {
             fCodeGen->write(polyfill.c_str());
         }
 
-        raw_ptr<MetalCodeGenerator> fCodeGen = nullptr;
+        bisect_raw_ptr<MetalCodeGenerator> fCodeGen = nullptr;
         float fTextureBias = 0.0f;
         bool fWrotePolyfill = false;
     } visitor;
@@ -3374,7 +3374,7 @@ void MetalCodeGenerator::writeConstantVariables() {
             fCodeGen->finishLine();
         }
 
-        raw_ptr<MetalCodeGenerator> fCodeGen = nullptr;
+        bisect_raw_ptr<MetalCodeGenerator> fCodeGen = nullptr;
     } visitor;
 
     visitor.fCodeGen = this;
@@ -3472,7 +3472,7 @@ void MetalCodeGenerator::writeGlobalStruct() {
             }
         }
 
-        raw_ptr<MetalCodeGenerator> fCodeGen = nullptr;
+        bisect_raw_ptr<MetalCodeGenerator> fCodeGen = nullptr;
         bool fFirst = true;
     } visitor;
 
@@ -3529,7 +3529,7 @@ void MetalCodeGenerator::writeGlobalInit() {
                 fCodeGen->writeLine("(void)_globals;");
             }
         }
-        raw_ptr<MetalCodeGenerator> fCodeGen = nullptr;
+        bisect_raw_ptr<MetalCodeGenerator> fCodeGen = nullptr;
         bool fFirst = true;
     } visitor;
 
@@ -3579,7 +3579,7 @@ void MetalCodeGenerator::writeThreadgroupStruct() {
             }
         }
 
-        raw_ptr<MetalCodeGenerator> fCodeGen = nullptr;
+        bisect_raw_ptr<MetalCodeGenerator> fCodeGen = nullptr;
         bool fFirst = true;
     } visitor;
 
@@ -3609,7 +3609,7 @@ void MetalCodeGenerator::writeThreadgroupInit() {
                 fCodeGen->writeLine("(void)_threadgroups;");
             }
         }
-        raw_ptr<MetalCodeGenerator> fCodeGen = nullptr;
+        bisect_raw_ptr<MetalCodeGenerator> fCodeGen = nullptr;
         bool fFirst = true;
     } visitor;
 
@@ -3699,7 +3699,7 @@ MetalCodeGenerator::Requirements MetalCodeGenerator::requirements(const Statemen
             return ProgramVisitor::visitExpression(e);
         }
 
-        raw_ptr<MetalCodeGenerator> fCodeGen;
+        bisect_raw_ptr<MetalCodeGenerator> fCodeGen;
         Requirements fRequirements = kNo_Requirements;
     };
 

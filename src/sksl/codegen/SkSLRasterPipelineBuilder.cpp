@@ -2895,7 +2895,7 @@ public:
 
 private:
     const int N = SkOpts::raster_pipeline_highp_stride;
-    const raw_ref<const Program> fProgram;
+    const bisect_raw_ref<const Program> fProgram;
     TArray<Stage> fStages;
     TArray<std::string> fSlotNameList;
     THashMap<int, int> fLabelToStageMap;  // <label ID, stage index>
