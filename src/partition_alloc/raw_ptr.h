@@ -23,4 +23,7 @@ struct sk_is_trivially_relocatable<partition_alloc::internal::raw_ptr<T, Traits>
 };
 #endif
 
+// TEMPORARY (do not land): always-noop twin used to build A/B arms.
+#include "src/partition_alloc/bisect/raw_ptr.h"
+
 #endif  // SRC_PARTITION_ALLOC_RAW_PTR_H_

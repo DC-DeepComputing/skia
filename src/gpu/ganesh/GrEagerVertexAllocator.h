@@ -6,7 +6,11 @@
  */
 
 #ifndef GrEagerVertexAllocator_DEFINED
+
 #define GrEagerVertexAllocator_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
@@ -67,9 +71,9 @@ public:
     void unlock(int actualCount) final;
 
 private:
-    GrMeshDrawTarget* const fTarget;
-    sk_sp<const GrBuffer>* const fVertexBuffer;
-    int* const fBaseVertex;
+    const bisect_raw_ptr<GrMeshDrawTarget> fTarget;
+    const bisect_raw_ptr<sk_sp<const GrBuffer>> fVertexBuffer;
+    const raw_ptr<int> fBaseVertex;
 
     size_t fLockStride;
     int fLockCount = 0;
@@ -93,7 +97,7 @@ public:
 private:
     sk_sp<GrThreadSafeCache::VertexData> fVertexData;
 
-    void*  fVertices = nullptr;
+    bisect_raw_ptr<void> fVertices = nullptr;
     size_t fLockStride = 0;
 };
 

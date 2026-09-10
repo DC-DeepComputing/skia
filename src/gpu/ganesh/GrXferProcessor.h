@@ -5,8 +5,13 @@
  * found in the LICENSE file.
  */
 
+#include "src/partition_alloc/raw_ref.h"
+
 #ifndef GrXferProcessor_DEFINED
+
 #define GrXferProcessor_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkAssert.h"
@@ -306,10 +311,10 @@ public:
                 , fDstTextureSamplerHandle(dstTextureSamplerHandle)
                 , fDstTextureOrigin(dstTextureOrigin)
                 , fWriteSwizzle(writeSwizzle) {}
-        GrGLSLXPFragmentBuilder* fXPFragBuilder;
-        GrGLSLUniformHandler* fUniformHandler;
-        const GrShaderCaps* fShaderCaps;
-        const GrXferProcessor& fXP;
+        raw_ptr<GrGLSLXPFragmentBuilder> fXPFragBuilder;
+        raw_ptr<GrGLSLUniformHandler> fUniformHandler;
+        raw_ptr<const GrShaderCaps> fShaderCaps;
+        const raw_ref<const GrXferProcessor> fXP;
         const char* fInputColor;
         const char* fInputCoverage;
         const char* fOutputPrimary;
