@@ -247,7 +247,7 @@ public:
 
     private:
         // RAW_PTR_EXCLUSION: performance regression
-        RAW_PTR_EXCLUSION T* fCurr;
+        raw_ptr<T> fCurr;
     };
 
     Iter begin() const {
