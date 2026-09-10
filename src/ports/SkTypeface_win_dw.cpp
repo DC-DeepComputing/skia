@@ -590,7 +590,7 @@ sk_sp<SkData> DWriteFontTypeface::onCopyTableData(SkFontTableTag tag) const {
     struct Context {
         Context(void* lock, IDWriteFontFace* face) : fLock(lock), fFontFace(SkRefComPtr(face)) {}
         ~Context() { fFontFace->ReleaseFontTable(fLock); }
-        raw_ptr<void> fLock;
+        bisect_raw_ptr<void> fLock;
         SkTScopedComPtr<IDWriteFontFace> fFontFace;
     };
     return SkData::MakeWithProc(data, size,
@@ -1152,8 +1152,8 @@ private:
         return factory->UnregisterFontCollectionLoader(unregister);
     }
 
-    raw_ptr<IDWriteFactory> fFactory;
-    raw_ptr<T> fUnregister;
+    bisect_raw_ptr<IDWriteFactory> fFactory;
+    bisect_raw_ptr<T> fUnregister;
 };
 
 SK_STDMETHODIMP StreamFontCollectionLoader::CreateEnumeratorFromKey(
