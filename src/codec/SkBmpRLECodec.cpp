@@ -26,6 +26,7 @@
 #include <cstring>
 #include <memory>
 #include <utility>
+#include "src/partition_alloc/raw_ptr.h"
 
 /*
  * Creates an instance of the decoder
@@ -567,7 +568,7 @@ private:
     }
 
     // Unowned pointer. fCodec will delete this class in its destructor.
-    SkBmpRLECodec* fCodec;
+    raw_ptr<SkBmpRLECodec> fCodec;
 };
 
 SkSampler* SkBmpRLECodec::getSampler(bool createIfNecessary) {
