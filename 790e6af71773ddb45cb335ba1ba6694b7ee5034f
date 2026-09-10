@@ -74,6 +74,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "30ba8d0d_fd6e685f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4569768
+      },
+      "writtenOn": "2026-09-10T10:24:41Z",
+      "side": 1,
+      "message": "Yes, this would break the Skia roll. I’ll keep the existing frame APIs temporarily while Chromium migrates to getEmbeddedImage*(). Once that lands in Chromium, we can remove the temporary compatibility code from Skia.",
+      "parentUuid": "060dbed9_ef920b5c",
+      "revId": "790e6af71773ddb45cb335ba1ba6694b7ee5034f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c1af6527_3dafe797",
         "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
         "patchSetId": 8
