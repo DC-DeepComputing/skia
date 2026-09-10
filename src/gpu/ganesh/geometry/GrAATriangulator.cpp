@@ -7,6 +7,8 @@
 
 #include "src/gpu/ganesh/geometry/GrAATriangulator.h"
 
+#include "src/partition_alloc/raw_ptr.h"
+
 #if !defined(SK_ENABLE_OPTIMIZE_SIZE)
 #include "include/core/SkPathTypes.h"
 #include "include/private/SkDebug.h"
@@ -45,7 +47,7 @@ using EventComparator = GrAATriangulator::EventComparator;
 
 struct SSVertex {
     SSVertex(Vertex* v) : fVertex(v), fPrev(nullptr), fNext(nullptr) {}
-    Vertex* fVertex;
+    bisect_raw_ptr<Vertex> fVertex;
     SSEdge* fPrev;
     SSEdge* fNext;
 };
@@ -54,10 +56,10 @@ struct GrAATriangulator::SSEdge {
     SSEdge(Edge* edge, SSVertex* prev, SSVertex* next)
       : fEdge(edge), fEvent(nullptr), fPrev(prev), fNext(next) {
     }
-    Edge*     fEdge;
-    Event*    fEvent;
-    SSVertex* fPrev;
-    SSVertex* fNext;
+    bisect_raw_ptr<Edge> fEdge;
+    bisect_raw_ptr<Event> fEvent;
+    bisect_raw_ptr<SSVertex> fPrev;
+    bisect_raw_ptr<SSVertex> fNext;
 };
 
 typedef std::unordered_map<Vertex*, SSVertex*> SSVertexMap;
