@@ -21,6 +21,7 @@
 #include <cstdint>
 #include <memory>
 #include <string_view>
+#include "src/partition_alloc/raw_ptr.h"
 
 class SkBitmap;
 
@@ -130,7 +131,7 @@ private:
     const RecorderPriv* operator&() const = delete;
     RecorderPriv* operator&() = delete;
 
-    Recorder* fRecorder;
+    raw_ptr<Recorder> fRecorder;
 
     friend class Recorder;  // to construct/copy this type.
 };

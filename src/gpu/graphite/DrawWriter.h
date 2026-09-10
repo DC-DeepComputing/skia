@@ -25,6 +25,7 @@
 #include <cstdint>
 #include <optional>
 #include <utility>
+#include "src/partition_alloc/raw_ptr.h"
 
 namespace skgpu::graphite {
 
@@ -231,8 +232,8 @@ public:
 
 private:
     // Both of these pointers must outlive the DrawWriter.
-    DrawPassCommands::List* fCommandList;
-    DrawBufferManager* fManager;
+    raw_ptr<DrawPassCommands::List> fCommandList;
+    raw_ptr<DrawBufferManager> fManager;
 
     BufferSubAllocator fCurrentBuffer;
     SkAutoMalloc fFailureStorage; // storage address for VertexWriter when GPU buffer mapping fails
@@ -318,7 +319,7 @@ private:
     // RAII - Sets the DrawWriter's template and marks the writer in append mode (disabling direct
     // draws until the Appender is destructed).
     class Appender;
-    SkDEBUGCODE(const Appender* fAppender = nullptr;)
+    SkDEBUGCODE(raw_ptr<const Appender> fAppender = nullptr;)
 
     // Helper functions for Appender implementations:
 
