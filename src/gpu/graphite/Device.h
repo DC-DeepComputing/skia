@@ -31,6 +31,7 @@
 #include <memory>
 #include <string_view>
 #include <utility>
+#include "src/partition_alloc/raw_ptr.h"
 
 class SkColorInfo;
 class SkDrawable;
@@ -355,7 +356,7 @@ private:
     // Flush internal work, such as pending clip draws and atlas uploads, into the Device's DrawTask
     void internalFlush();
 
-    Recorder* fRecorder;
+    bisect_raw_ptr<Recorder> fRecorder;
     sk_sp<DrawContext> fDC;
     // Scratch devices hold on to their last snapped DrawTask so that they can be directly
     // referenced when the device image is drawn into some other surface.

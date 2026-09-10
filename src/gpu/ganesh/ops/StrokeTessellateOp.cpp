@@ -7,6 +7,8 @@
 
 #include "src/gpu/ganesh/ops/StrokeTessellateOp.h"
 
+#include "src/partition_alloc/raw_ref.h"
+
 #include "include/core/SkColor.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkRect.h"
@@ -139,8 +141,9 @@ GrOp::CombineResult StrokeTessellateOp::onCombineIfPossible(GrOp* grOp, SkArenaA
     // copy it.
     auto* headCopy = alloc->make<PathStrokeList>(std::move(op->fPathStrokeList));
     *fPathStrokeTail = headCopy;
-    fPathStrokeTail = (op->fPathStrokeTail == &op->fPathStrokeList.fNext) ? &headCopy->fNext
-                                                                          : op->fPathStrokeTail;
+    fPathStrokeTail = (op->fPathStrokeTail == &op->fPathStrokeList.fNext)
+                              ? &headCopy->fNext
+                              : op->fPathStrokeTail.get();
 
     fTotalCombinedVerbCnt = combinedVerbCnt;
     return CombineResult::kMerged;
@@ -174,8 +177,8 @@ void StrokeTessellateOp::prePrepareTessellator(GrTessellationShader::ProgramArgs
     SkASSERT(!fFillProgram);
     SkASSERT(!fStencilProgram);
     // GrOp::setClippedBounds() should have been called by now.
-    SkASSERT(SkRect::MakeIWH(args.fWriteView.width(),
-                             args.fWriteView.height()).contains(this->bounds()));
+    SkASSERT(SkRect::MakeIWH(args.fWriteView->width(), args.fWriteView->height())
+                     .contains(this->bounds()));
 
     const GrCaps& caps = *args.fCaps;
     SkArenaAlloc* arena = args.fArena;
@@ -184,17 +187,13 @@ void StrokeTessellateOp::prePrepareTessellator(GrTessellationShader::ProgramArgs
                                                         std::move(fProcessors));
 
     fTessellator = arena->make<StrokeTessellator>(fPatchAttribs);
-    fTessellationShader = args.fArena->make<GrStrokeTessellationShader>(
-            *caps.shaderCaps(),
-            fPatchAttribs,
-            fViewMatrix,
-            this->headStroke(),
-            this->headColor());
+    auto* tessellationShader = args.fArena->make<GrStrokeTessellationShader>(
+            *caps.shaderCaps(), fPatchAttribs, fViewMatrix, this->headStroke(), this->headColor());
 
     auto fillStencil = &GrUserStencilSettings::kUnused;
     if (fNeedsStencil) {
-        fStencilProgram = GrTessellationShader::MakeProgram(args, fTessellationShader, pipeline,
-                                                            &kMarkStencil);
+        fStencilProgram = GrTessellationShader::MakeProgram(
+                args, tessellationShader, pipeline, &kMarkStencil);
         fillStencil = &kTestAndResetStencil;
         // TODO: Currently if we have a texture barrier for a dst read it will get put in before
         // both the stencil draw and the fill draw. In reality we only really need the barrier
@@ -204,8 +203,8 @@ void StrokeTessellateOp::prePrepareTessellator(GrTessellationShader::ProgramArgs
         // general Skia use.
     }
 
-    fFillProgram = GrTessellationShader::MakeProgram(args, fTessellationShader, pipeline,
-                                                     fillStencil);
+    fFillProgram =
+            GrTessellationShader::MakeProgram(args, tessellationShader, pipeline, fillStencil);
 }
 
 void StrokeTessellateOp::onPrePrepare(GrRecordingContext* context,
@@ -215,9 +214,13 @@ void StrokeTessellateOp::onPrePrepare(GrRecordingContext* context,
                                       colorLoadOp) {
     // DMSAA is not supported on DDL.
     bool usesMSAASurface = writeView.asRenderTargetProxy()->numSamples() > 1;
-    this->prePrepareTessellator({context->priv().recordTimeAllocator(), writeView, usesMSAASurface,
-                                &dstProxyView, renderPassXferBarriers, colorLoadOp,
-                                context->priv().caps()},
+    this->prePrepareTessellator({context->priv().recordTimeAllocator(),
+                                 bisect_raw_ref(writeView),
+                                 usesMSAASurface,
+                                 &dstProxyView,
+                                 renderPassXferBarriers,
+                                 colorLoadOp,
+                                 context->priv().caps()},
                                 (clip) ? std::move(*clip) : GrAppliedClip::Disabled());
     if (fStencilProgram) {
         context->priv().recordProgramInfo(fStencilProgram);
@@ -229,10 +232,14 @@ void StrokeTessellateOp::onPrePrepare(GrRecordingContext* context,
 
 void StrokeTessellateOp::onPrepare(GrOpFlushState* flushState) {
     if (!fTessellator) {
-        this->prePrepareTessellator({flushState->allocator(), flushState->writeView(),
-                                    flushState->usesMSAASurface(), &flushState->dstProxyView(),
-                                    flushState->renderPassBarriers(), flushState->colorLoadOp(),
-                                    &flushState->caps()}, flushState->detachAppliedClip());
+        this->prePrepareTessellator({flushState->allocator(),
+                                     bisect_raw_ref(flushState->writeView()),
+                                     flushState->usesMSAASurface(),
+                                     &flushState->dstProxyView(),
+                                     flushState->renderPassBarriers(),
+                                     flushState->colorLoadOp(),
+                                     &flushState->caps()},
+                                    flushState->detachAppliedClip());
     }
     SkASSERT(fTessellator);
     fTessellator->prepare(flushState,
