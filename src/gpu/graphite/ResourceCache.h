@@ -20,6 +20,7 @@
 
 #if defined(GPU_TEST_UTILS)
 #include <functional>
+#include "src/partition_alloc/raw_ptr.h"
 #endif
 
 class SkTraceMemoryDump;
@@ -195,7 +196,7 @@ private:
     // down. Once set to that address, this will never change value.
     std::atomic<Resource*> fReturnQueue = nullptr;
 
-    SingleOwner* fSingleOwner = nullptr;
+    bisect_raw_ptr<SingleOwner> fSingleOwner = nullptr;
     SkDEBUGCODE(int fCount = 0;)
 };
 
