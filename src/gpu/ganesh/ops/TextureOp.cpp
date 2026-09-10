@@ -62,6 +62,8 @@
 #include "src/gpu/ganesh/ops/GrMeshDrawOp.h"
 #include "src/gpu/ganesh/ops/GrSimpleMeshDrawOpHelper.h"
 #include "src/gpu/ganesh/ops/QuadPerEdgeAA.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ref.h"
 
 #if defined(GPU_TEST_UTILS)
 #include "src/core/SkRandom.h"
@@ -412,9 +414,9 @@ private:
         int fNumTotalQuads = 0;
 
         // This member variable is only used by 'onPrePrepareDraws'.
-        char* fPrePreparedVertices = nullptr;
+        bisect_raw_ptr<char> fPrePreparedVertices = nullptr;
 
-        GrProgramInfo* fProgramInfo = nullptr;
+        bisect_raw_ptr<GrProgramInfo, DanglingUntriaged> fProgramInfo = nullptr;
 
         sk_sp<const GrBuffer> fIndexBuffer;
         sk_sp<const GrBuffer> fVertexBuffer;
@@ -656,7 +658,7 @@ private:
     GrProgramInfo* programInfo() override {
         // Although this Op implements its own onPrePrepareDraws it calls GrMeshDrawOps' version so
         // this entry point will be called.
-        return (fDesc) ? fDesc->fProgramInfo : nullptr;
+        return (fDesc) ? fDesc->fProgramInfo.get() : nullptr;
     }
 
     void onCreateProgramInfo(const GrCaps* caps,
@@ -1119,7 +1121,7 @@ private:
     // Most state of TextureOp is packed into these two field to minimize the op's size.
     // Historically, increasing the size of TextureOp has caused surprising perf regressions, so
     // consider/measure changes with care.
-    Desc* fDesc;
+    bisect_raw_ptr<Desc, DanglingUntriaged> fDesc;
     Metadata fMetadata;
 
     // This field must go last. When allocating this op, we will allocate extra space to hold
@@ -1263,7 +1265,7 @@ public:
             , fNumLeft(numEntries) {}
 
     int determineClumpSize(const GrTextureSetEntry set[], int quadLimit) const {
-        bool hasPersp = fViewMatrix.hasPerspective();
+        bool hasPersp = fViewMatrix->hasPerspective();
 
         int conservativeNumQuads = 0;
         for (int i = 0; i < fNumLeft; ++i) {
@@ -1296,7 +1298,7 @@ public:
                                              fSaturate,
                                              aaType,
                                              fConstraint,
-                                             fViewMatrix,
+                                             *fViewMatrix,
                                              fTextureColorSpaceXform);
         fSDC->addDrawOp(fClip, std::move(op));
 
@@ -1308,14 +1310,14 @@ public:
     int baseIndex() const { return fNumClumped; }
 
 private:
-    ganesh::SurfaceDrawContext* fSDC;
-    const GrClip*               fClip;
-    GrRecordingContext*         fContext;
+    bisect_raw_ptr<ganesh::SurfaceDrawContext> fSDC;
+    bisect_raw_ptr<const GrClip> fClip;
+    bisect_raw_ptr<GrRecordingContext> fContext;
     GrSamplerState::Filter      fFilter;
     GrSamplerState::MipmapMode  fMipmapMode;
     Saturate                    fSaturate;
     SkCanvas::SrcRectConstraint fConstraint;
-    const SkMatrix&             fViewMatrix;
+    const bisect_raw_ref<const SkMatrix> fViewMatrix;
     sk_sp<GrColorSpaceXform>    fTextureColorSpaceXform;
 
     int                         fNumLeft;

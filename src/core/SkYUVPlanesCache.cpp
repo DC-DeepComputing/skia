@@ -11,6 +11,7 @@
 #include "src/core/SkBitmapCache.h"
 #include "src/core/SkCachedData.h"
 #include "src/core/SkResourceCache.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <cstddef>
 
@@ -24,7 +25,7 @@ static unsigned gYUVPlanesKeyNamespaceLabel;
 
 struct YUVValue {
     SkYUVAPixmaps fPixmaps;
-    SkCachedData* fData;
+    raw_ptr<SkCachedData> fData;
 };
 
 struct YUVPlanesKey : public SkResourceCache::Key {
@@ -47,7 +48,9 @@ struct YUVPlanesRec : public SkResourceCache::Rec {
         fValue.fData->attachToCacheAndRef();
     }
     ~YUVPlanesRec() override {
-        fValue.fData->detachFromCacheAndUnref();
+        SkCachedData* data = fValue.fData;
+        fValue.fData = nullptr;
+        data->detachFromCacheAndUnref();
     }
 
     YUVPlanesKey  fKey;

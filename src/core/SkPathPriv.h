@@ -8,6 +8,8 @@
 #ifndef SkPathPriv_DEFINED
 #define SkPathPriv_DEFINED
 
+#include "src/partition_alloc/raw_ptr_exclusion.h"
+
 #include "include/core/SkArc.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkPathBuilder.h"
@@ -201,10 +203,11 @@ public:
         SkPath::RangeIter begin() { return {fVerbsBegin, fPoints, fWeights}; }
         SkPath::RangeIter end() { return {fVerbsEnd, nullptr, nullptr}; }
     private:
-        const SkPathVerb* fVerbsBegin;
-        const SkPathVerb* fVerbsEnd;
-        const SkPoint* fPoints;
-        const SkScalar* fWeights;
+        // RAW_PTR_EXCLUSION: Inner-loop path range iterator cursors.
+        RAW_PTR_EXCLUSION const SkPathVerb* fVerbsBegin;
+        RAW_PTR_EXCLUSION const SkPathVerb* fVerbsEnd;
+        RAW_PTR_EXCLUSION const SkPoint* fPoints;
+        RAW_PTR_EXCLUSION const SkScalar* fWeights;
     };
 
     // returns Empty() if there are no points
@@ -438,11 +441,12 @@ public:
 // Roughly the same as SkPath::Iter(path, true), but does not return moves or closes
 //
 class SkPathEdgeIter {
-    const SkPathVerb* fVerbs;
-    const SkPathVerb* fVerbsStop;
-    const SkPoint*  fPts;
-    const SkPoint*  fMoveToPtr;
-    const SkScalar* fConicWeights;
+    // RAW_PTR_EXCLUSION: Inner-loop path edge iterator cursors.
+    RAW_PTR_EXCLUSION const SkPathVerb* fVerbs;
+    RAW_PTR_EXCLUSION const SkPathVerb* fVerbsStop;
+    RAW_PTR_EXCLUSION const SkPoint* fPts;
+    RAW_PTR_EXCLUSION const SkPoint* fMoveToPtr;
+    RAW_PTR_EXCLUSION const SkScalar* fConicWeights;
     SkPoint         fScratch[2];    // for auto-close lines
     bool            fNeedsCloseLine;
     bool            fNextIsNewContour;
@@ -471,7 +475,7 @@ public:
 
     // todo: return as optional? fPts become span?
     struct Result {
-        const SkPoint*  fPts;   // points for the segment, or null if done
+        RAW_PTR_EXCLUSION const SkPoint* fPts;  // points for the segment, or null if done
         Edge            fEdge;
         bool            fIsNewContour;
 
