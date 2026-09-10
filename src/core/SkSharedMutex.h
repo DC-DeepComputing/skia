@@ -6,7 +6,9 @@
  */
 
 #ifndef SkSharedLock_DEFINED
+
 #define SkSharedLock_DEFINED
+#include "src/partition_alloc/raw_ref.h"
 
 #include "include/private/SkDebug.h"
 #include "include/private/SkSemaphore.h"
@@ -79,10 +81,10 @@ public:
             : fLock(lock) {
         lock.acquire();
     }
-    ~SkAutoSharedMutexExclusive() SK_RELEASE_CAPABILITY() { fLock.release(); }
+    ~SkAutoSharedMutexExclusive() SK_RELEASE_CAPABILITY() { fLock->release(); }
 
 private:
-    SkSharedMutex& fLock;
+    const bisect_raw_ref<SkSharedMutex> fLock;
 };
 
 class SK_SCOPED_CAPABILITY SkAutoSharedMutexShared {
@@ -95,10 +97,10 @@ public:
     // You would think this should be SK_RELEASE_SHARED_CAPABILITY, but SK_SCOPED_CAPABILITY
     // doesn't fully understand the difference between shared and exclusive.
     // Please review https://reviews.llvm.org/D52578 for more information.
-    ~SkAutoSharedMutexShared() SK_RELEASE_CAPABILITY() { fLock.releaseShared(); }
+    ~SkAutoSharedMutexShared() SK_RELEASE_CAPABILITY() { fLock->releaseShared(); }
 
 private:
-    SkSharedMutex& fLock;
+    const bisect_raw_ref<SkSharedMutex> fLock;
 };
 
 #endif // SkSharedLock_DEFINED
