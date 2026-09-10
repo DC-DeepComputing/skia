@@ -21,6 +21,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <memory>
+#include "src/partition_alloc/raw_ptr.h"
 
 class JpegDecoderMgr;
 class SkSampler;
@@ -123,7 +124,7 @@ private:
     const int fReadyState;
 
     skia_private::AutoTMalloc<uint8_t> fStorage;
-    uint8_t* fSwizzleSrcRow = nullptr;
+    raw_ptr<uint8_t> fSwizzleSrcRow = nullptr;
     uint32_t* fColorXformSrcRow = nullptr;
 
     // libjpeg-turbo provides some subsetting.  In the case that libjpeg-turbo

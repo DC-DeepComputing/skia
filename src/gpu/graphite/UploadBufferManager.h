@@ -16,6 +16,7 @@
 #include <string_view>
 #include <tuple>
 #include <vector>
+#include "src/partition_alloc/raw_ptr.h"
 
 namespace skgpu::graphite {
 
@@ -46,7 +47,7 @@ private:
                                                                  size_t requiredAlignment,
                                                                  std::string_view label);
 
-    ResourceProvider* fResourceProvider;
+    raw_ptr<ResourceProvider> fResourceProvider;
 
     sk_sp<Buffer> fReusedBuffer;
     const uint32_t fMinAlignment;
