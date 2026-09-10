@@ -6,7 +6,10 @@
  */
 
 #ifndef GrBaseContextPriv_DEFINED
+
 #define GrBaseContextPriv_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRefCnt.h"
 #include "include/gpu/ganesh/GrContextOptions.h"
@@ -45,7 +48,7 @@ public:
 protected:
     explicit GrBaseContextPriv(GrContext_Base* context) : fContext(context) {}
 
-    GrContext_Base* fContext;
+    bisect_raw_ptr<GrContext_Base> fContext;
 
 private:
     GrBaseContextPriv& operator=(const GrBaseContextPriv&) = delete;

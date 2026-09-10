@@ -16,6 +16,7 @@
 #include "src/gpu/graphite/TextureInfoPriv.h"
 
 #include <functional>
+#include "src/partition_alloc/raw_ptr.h"
 
 enum SkColorType : int;
 
@@ -163,7 +164,7 @@ public:
     }
 
 private:
-    TextureProxy* const fTextureProxy;
+    const raw_ptr<TextureProxy> fTextureProxy;
 };
 
 }  // namespace skgpu::graphite
