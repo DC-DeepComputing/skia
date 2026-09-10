@@ -312,7 +312,7 @@ const char* GrPathTessellationShader::Impl::kEvalRationalCubicFn =
 "}";
 
 void GrPathTessellationShader::Impl::onEmitCode(EmitArgs& args, GrGPArgs* gpArgs) {
-    const auto& shader = args.fGeomProc.cast<GrPathTessellationShader>();
+    const auto& shader = args.fGeomProc->cast<GrPathTessellationShader>();
     args.fVaryingHandler->emitAttributes(shader);
 
     // Vertex shader.
