@@ -234,7 +234,7 @@ private:
  */
 struct NameToFamily {
     SkString name;
-    raw_ptr<SkFontStyleSet_Android> styleSet;
+    bisect_raw_ptr<SkFontStyleSet_Android> styleSet;
 };
 
 class SkFontMgr_Android : public SkFontMgr {

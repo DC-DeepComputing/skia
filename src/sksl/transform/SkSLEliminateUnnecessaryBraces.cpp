@@ -167,7 +167,7 @@ void Transform::EliminateUnnecessaryBraces(const Context& context, Module& modul
             return false;
         }
 
-        const raw_ref<const Context> fContext;
+        const bisect_raw_ref<const Context> fContext;
         using INHERITED = ProgramWriter;
     };
 

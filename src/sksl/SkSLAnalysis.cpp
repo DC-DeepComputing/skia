@@ -85,9 +85,9 @@ public:
     int elidedSampleCoordCount() const { return fElidedSampleCoordCount; }
 
 protected:
-    const raw_ref<const Context> fContext;
-    const raw_ref<const Variable> fChild;
-    raw_ptr<const Variable> fMainCoordsParam = nullptr;
+    const bisect_raw_ref<const Context> fContext;
+    const bisect_raw_ref<const Variable> fChild;
+    bisect_raw_ptr<const Variable> fMainCoordsParam = nullptr;
     const bool fWritesToSampleCoords;
     SampleUsage fUsage;
     int fElidedSampleCoordCount = 0;
@@ -252,7 +252,7 @@ public:
     }
 
 private:
-    raw_ptr<const Variable> fVar;
+    bisect_raw_ptr<const Variable> fVar;
 
     using INHERITED = ProgramVisitor;
 };
@@ -334,8 +334,8 @@ private:
         }
     }
 
-    raw_ptr<ErrorReporter> fErrors;
-    raw_ptr<VariableReference> fAssignedVar = nullptr;
+    bisect_raw_ptr<ErrorReporter> fErrors;
+    bisect_raw_ptr<VariableReference> fAssignedVar = nullptr;
 
     using INHERITED = ProgramVisitor;
 };
@@ -442,7 +442,7 @@ bool Analysis::ContainsVariable(const Expression& expr, const Variable& var) {
         }
 
         using INHERITED = ProgramVisitor;
-        raw_ptr<const Variable> fVariable;
+        bisect_raw_ptr<const Variable> fVariable;
     };
 
     ContainsVariableVisitor visitor{&var};

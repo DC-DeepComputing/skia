@@ -50,7 +50,7 @@ private:
             : INHERITED(pos, kIRNodeKind, type)
             , fOverloadChain(overloadChain) {}
 
-    raw_ptr<const FunctionDeclaration> fOverloadChain;
+    bisect_raw_ptr<const FunctionDeclaration> fOverloadChain;
 
     using INHERITED = Expression;
 };

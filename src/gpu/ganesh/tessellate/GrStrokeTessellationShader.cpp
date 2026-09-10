@@ -197,7 +197,7 @@ class GrStrokeTessellationShader::Impl : public ProgramImpl {
 };
 
 void GrStrokeTessellationShader::Impl::onEmitCode(EmitArgs& args, GrGPArgs* gpArgs) {
-    const auto& shader = args.fGeomProc.cast<GrStrokeTessellationShader>();
+    const auto& shader = args.fGeomProc->cast<GrStrokeTessellationShader>();
     SkPaint::Join joinType = shader.stroke().getJoin();
     args.fVaryingHandler->emitAttributes(shader);
 

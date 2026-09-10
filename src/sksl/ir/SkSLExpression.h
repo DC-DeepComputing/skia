@@ -136,7 +136,7 @@ public:
 
 
 private:
-    raw_ptr<const Type> fType;
+    bisect_raw_ptr<const Type> fType;
 
     using INHERITED = IRNode;
 };
