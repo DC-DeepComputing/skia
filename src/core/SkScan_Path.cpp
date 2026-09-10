@@ -34,6 +34,7 @@
 #include <algorithm>
 #include <cmath>
 #include <cstdint>
+#include "src/partition_alloc/raw_ptr.h"
 
 struct SkMask;
 
@@ -354,7 +355,7 @@ public:
     }
 
 private:
-    SkBlitter*  fBlitter;
+    raw_ptr<SkBlitter> fBlitter;
     int         fFirstX, fLastX, fPrevX;
 };
 

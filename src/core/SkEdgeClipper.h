@@ -15,6 +15,7 @@
 #include "include/private/SkDebug.h"
 
 #include <optional>
+#include "src/partition_alloc/raw_ptr.h"
 
 struct SkPathRaw;
 struct SkRect;
@@ -42,8 +43,9 @@ public:
                          void (*consume)(SkEdgeClipper*, bool newCtr, void* ctx), void* ctx);
 
 private:
-    SkPoint*    fCurrPoint;
-    SkPathVerb* fCurrVerb, *fCurrVerbStop;
+    raw_ptr<SkPoint, AllowPtrArithmetic> fCurrPoint;
+    raw_ptr<SkPathVerb, AllowPtrArithmetic> fCurrVerb;
+    raw_ptr<SkPathVerb, AllowPtrArithmetic> fCurrVerbStop;
     const bool  fCanCullToTheRight;
 
     enum {
