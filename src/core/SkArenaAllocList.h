@@ -10,8 +10,10 @@
 
 #include "include/private/SkAssert.h"
 #include "src/core/SkArenaAlloc.h" // IWYU pragma: keep
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <utility>
+#include "src/partition_alloc/raw_ptr.h"
 
 /**
  * A singly linked list of Ts stored in a SkArenaAlloc. The arena rather than the list owns
@@ -42,7 +44,8 @@ public:
     private:
         friend class SkArenaAllocList;
         explicit Iter(Node* node) : fCurr(node) {}
-        Node* fCurr = nullptr;
+        // RAW_PTR_EXCLUSION: Inner-loop arena linked-list traversal cursor.
+        bisect_raw_ptr<Node> fCurr = nullptr;
     };
 
     Iter begin() { return Iter(fHead); }
@@ -54,10 +57,12 @@ private:
         template <typename... Args>
         Node(Args... args) : fT(std::forward<Args>(args)...) {}
         T fT;
-        Node* fNext = nullptr;
+        // RAW_PTR_EXCLUSION: Inner-loop arena linked-list node chaining.
+        bisect_raw_ptr<Node> fNext = nullptr;
     };
-    Node* fHead = nullptr;
-    Node* fTail = nullptr;
+    // RAW_PTR_EXCLUSION: Inner-loop arena linked-list head/tail pointers.
+    bisect_raw_ptr<Node, DanglingUntriaged> fHead = nullptr;
+    bisect_raw_ptr<Node, DanglingUntriaged> fTail = nullptr;
 };
 
 template <typename T>
