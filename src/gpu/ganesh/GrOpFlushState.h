@@ -7,6 +7,9 @@
 #ifndef GrOpFlushState_DEFINED
 #define GrOpFlushState_DEFINED
 
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ref.h"
+
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkAssert.h"
 #include "include/private/SkDebug.h"
@@ -104,7 +107,7 @@ public:
         }
 
         GrOp* op() { return fOp; }
-        const GrSurfaceProxyView& writeView() const { return fSurfaceView; }
+        const GrSurfaceProxyView& writeView() const { return *fSurfaceView; }
         GrRenderTargetProxy* rtProxy() const { return fRenderTargetProxy; }
         // True if the op under consideration belongs to an opsTask that renders to an MSAA buffer.
         bool usesMSAASurface() const { return fUsesMSAASurface; }
@@ -117,16 +120,16 @@ public:
 #ifdef SK_DEBUG
         void validate() const {
             SkASSERT(fOp);
-            SkASSERT(fSurfaceView);
+            SkASSERT(*fSurfaceView);
         }
 #endif
 
     private:
-        GrOp*                         fOp;
-        const GrSurfaceProxyView&     fSurfaceView;
-        GrRenderTargetProxy*          fRenderTargetProxy;
+        bisect_raw_ptr<GrOp> fOp;
+        const bisect_raw_ref<const GrSurfaceProxyView> fSurfaceView;
+        bisect_raw_ptr<GrRenderTargetProxy> fRenderTargetProxy;
         bool                          fUsesMSAASurface;
-        GrAppliedClip*                fAppliedClip;
+        bisect_raw_ptr<GrAppliedClip> fAppliedClip;
         GrDstProxyView                fDstProxyView;   // TODO: do we still need the dst proxy here?
         GrXferBarrierFlags            fRenderPassXferBarriers;
         GrLoadOp                      fColorLoadOp;
@@ -310,11 +313,11 @@ private:
         ~Draw();
         // The geometry processor is always forced to be in an arena allocation. This object does
         // not need to manage its lifetime.
-        const GrGeometryProcessor* fGeometryProcessor = nullptr;
+        bisect_raw_ptr<const GrGeometryProcessor> fGeometryProcessor = nullptr;
         // Must have GrGeometryProcessor::numTextureSamplers() entries. Can be null if no samplers.
-        const GrSurfaceProxy* const* fGeomProcProxies = nullptr;
-        const GrSimpleMesh* fMeshes = nullptr;
-        const GrOp* fOp = nullptr;
+        bisect_raw_ptr<const GrSurfaceProxy* const, AllowPtrArithmetic> fGeomProcProxies = nullptr;
+        bisect_raw_ptr<const GrSimpleMesh, AllowPtrArithmetic> fMeshes = nullptr;
+        bisect_raw_ptr<const GrOp> fOp = nullptr;
         int fMeshCnt = 0;
         GrPrimitiveType fPrimitiveType;
     };
@@ -338,16 +341,16 @@ private:
 
     // Info about the op that is currently preparing or executing using the flush state or null if
     // an op is not currently preparing of executing.
-    OpArgs* fOpArgs = nullptr;
+    bisect_raw_ptr<OpArgs> fOpArgs = nullptr;
 
     // This field is only transiently set during flush. Each OpsTask will set it to point to an
     // array of proxies it uses before call onPrepare and onExecute.
-    skia_private::TArray<GrSurfaceProxy*, true>* fSampledProxies;
+    raw_ptr<skia_private::TArray<GrSurfaceProxy*, true>> fSampledProxies;
 
-    GrGpu* fGpu;
-    GrResourceProvider* fResourceProvider;
-    skgpu::TokenTracker* fTokenTracker;
-    GrOpsRenderPass* fOpsRenderPass = nullptr;
+    raw_ptr<GrGpu> fGpu;
+    raw_ptr<GrResourceProvider> fResourceProvider;
+    raw_ptr<skgpu::TokenTracker> fTokenTracker;
+    raw_ptr<GrOpsRenderPass, DanglingUntriaged> fOpsRenderPass = nullptr;
 
     // Variables that are used to track where we are in lists as ops are executed
     SkArenaAllocList<Draw>::Iter fCurrDraw;

@@ -5,6 +5,9 @@
  * found in the LICENSE file.
  */
 #ifndef SkOpCoincidence_DEFINED
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
+
 #define SkOpCoincidence_DEFINED
 
 #include "include/core/SkTypes.h"
@@ -26,8 +29,8 @@ public:
 
     // These return non-const pointers so that, as copies, they can be added
     // to a new span pair
-    SkOpPtT* coinPtTEndWritable() const { return const_cast<SkOpPtT*>(fCoinPtTEnd); }
-    SkOpPtT* coinPtTStartWritable() const { return const_cast<SkOpPtT*>(fCoinPtTStart); }
+    SkOpPtT* coinPtTEndWritable() const { return const_cast<SkOpPtT*>(fCoinPtTEnd.get()); }
+    SkOpPtT* coinPtTStartWritable() const { return const_cast<SkOpPtT*>(fCoinPtTStart.get()); }
 
     bool collapsed(const SkOpPtT* ) const;
     bool contains(const SkOpPtT* s, const SkOpPtT* e) const;
@@ -75,8 +78,8 @@ public:
     const SkOpPtT* oppPtTEnd() const;
     // These return non-const pointers so that, as copies, they can be added
     // to a new span pair
-    SkOpPtT* oppPtTStartWritable() const { return const_cast<SkOpPtT*>(fOppPtTStart); }
-    SkOpPtT* oppPtTEndWritable() const { return const_cast<SkOpPtT*>(fOppPtTEnd); }
+    SkOpPtT* oppPtTStartWritable() const { return const_cast<SkOpPtT*>(fOppPtTStart.get()); }
+    SkOpPtT* oppPtTEndWritable() const { return const_cast<SkOpPtT*>(fOppPtTEnd.get()); }
     bool ordered(bool* result) const;
 
     void set(SkCoincidentSpans* next, const SkOpPtT* coinPtTStart, const SkOpPtT* coinPtTEnd,
@@ -127,12 +130,13 @@ public:
     void setNext(SkCoincidentSpans* next) { fNext = next; }
 
 private:
-    SkCoincidentSpans* fNext;
-    const SkOpPtT* fCoinPtTStart;
-    const SkOpPtT* fCoinPtTEnd;
-    const SkOpPtT* fOppPtTStart;
-    const SkOpPtT* fOppPtTEnd;
-    SkDEBUGCODE(SkOpGlobalState* fGlobalState;)
+    // RAW_PTR_EXCLUSION: performance regression
+    RAW_PTR_EXCLUSION SkCoincidentSpans* fNext;
+    bisect_raw_ptr<const SkOpPtT> fCoinPtTStart;
+    bisect_raw_ptr<const SkOpPtT> fCoinPtTEnd;
+    bisect_raw_ptr<const SkOpPtT> fOppPtTStart;
+    bisect_raw_ptr<const SkOpPtT> fOppPtTEnd;
+    SkDEBUGCODE(bisect_raw_ptr<SkOpGlobalState> fGlobalState;)
 };
 
 class SkOpCoincidence {
@@ -295,9 +299,11 @@ private:
     static double TRange(const SkOpPtT* overS, double t, const SkOpSegment* coinPtT
                          SkDEBUGPARAMS(const SkOpPtT* overE));
 
-    SkCoincidentSpans* fHead;
-    SkCoincidentSpans* fTop;
-    SkOpGlobalState* fGlobalState;
+    // RAW_PTR_EXCLUSION: performance regression
+    RAW_PTR_EXCLUSION SkCoincidentSpans* fHead;
+    // RAW_PTR_EXCLUSION: performance regression
+    RAW_PTR_EXCLUSION SkCoincidentSpans* fTop;
+    bisect_raw_ptr<SkOpGlobalState> fGlobalState;
     bool fContinue;
     bool fSpanDeleted;
     bool fPtAllocated;
