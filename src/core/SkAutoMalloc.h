@@ -6,7 +6,10 @@
  */
 
 #ifndef SkAutoMalloc_DEFINED
+
 #define SkAutoMalloc_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/private/SkAlign.h"
 #include "include/private/SkAssert.h"
@@ -169,7 +172,7 @@ private:
     static const size_t kSize = kSizeAlign4;
 #endif
 
-    void*       fPtr;
+    bisect_raw_ptr<void, DanglingUntriaged> fPtr;
     size_t      fSize;  // can be larger than the requested size (see kReuse)
     uint32_t    fStorage[kSize >> 2];
 };

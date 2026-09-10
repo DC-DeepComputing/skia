@@ -617,7 +617,7 @@ private:
     const WCHAR* fString;
     UINT32 fLength;
     const WCHAR* fLocale;
-    raw_ptr<IDWriteNumberSubstitution> fNumberSubstitution;
+    bisect_raw_ptr<IDWriteNumberSubstitution> fNumberSubstitution;
 };
 
 sk_sp<SkTypeface> SkFontMgr_DirectWrite::onMatchFamilyStyleCharacter(

@@ -693,8 +693,8 @@ struct ActiveEdge {
     uint16_t fIndex0;   // indices for previous and next vertex in polygon
     uint16_t fIndex1;
     ActiveEdge* fChild[2];
-    raw_ptr<ActiveEdge> fAbove;
-    raw_ptr<ActiveEdge> fBelow;
+    bisect_raw_ptr<ActiveEdge> fAbove;
+    bisect_raw_ptr<ActiveEdge> fBelow;
     int32_t  fRed;
 };
 
@@ -1082,7 +1082,7 @@ private:
     }
 
     ActiveEdge fTreeHead;
-    raw_ptr<char, AllowPtrArithmetic | DanglingUntriaged> fAllocation;
+    bisect_raw_ptr<char, AllowPtrArithmetic | DanglingUntriaged> fAllocation;
     int        fCurrFree;
     int        fMaxFree;
 };

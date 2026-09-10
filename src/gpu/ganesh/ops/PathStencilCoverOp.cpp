@@ -7,6 +7,8 @@
 
 #include "src/gpu/ganesh/ops/PathStencilCoverOp.h"
 
+#include "src/partition_alloc/raw_ref.h"
+
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkPoint.h"
@@ -100,7 +102,7 @@ std::unique_ptr<GrGeometryProcessor::ProgramImpl> BoundingBoxShader::makeProgram
 
     private:
         void onEmitCode(EmitArgs& args, GrGPArgs* gpArgs) final {
-            args.fVaryingHandler->emitAttributes(args.fGeomProc);
+            args.fVaryingHandler->emitAttributes(*args.fGeomProc);
 
             // Vertex shader.
             if (args.fShaderCaps->fVertexIDSupport) {
@@ -216,17 +218,17 @@ void PathStencilCoverOp::prePreparePrograms(const GrTessellationShader::ProgramA
                                                                 std::move(fProcessors));
         auto* bboxStencil = GrPathTessellationShader::TestAndResetStencilSettings(
                 SkPathFillType_IsInverse(this->pathFillType()));
-        fCoverBBoxProgram = GrSimpleMeshDrawOpHelper::CreateProgramInfo(
-                args.fCaps,
-                args.fArena,
-                bboxPipeline,
-                args.fWriteView,
-                args.fUsesMSAASurface,
-                bboxShader,
-                GrPrimitiveType::kTriangleStrip,
-                args.fXferBarrierFlags,
-                args.fColorLoadOp,
-                bboxStencil);
+        fCoverBBoxProgram =
+                GrSimpleMeshDrawOpHelper::CreateProgramInfo(args.fCaps,
+                                                            args.fArena,
+                                                            bboxPipeline,
+                                                            *args.fWriteView,
+                                                            args.fUsesMSAASurface,
+                                                            bboxShader,
+                                                            GrPrimitiveType::kTriangleStrip,
+                                                            args.fXferBarrierFlags,
+                                                            args.fColorLoadOp,
+                                                            bboxStencil);
     }
 }
 
@@ -237,9 +239,13 @@ void PathStencilCoverOp::onPrePrepare(GrRecordingContext* context,
                                       GrLoadOp colorLoadOp) {
     // DMSAA is not supported on DDL.
     bool usesMSAASurface = writeView.asRenderTargetProxy()->numSamples() > 1;
-    this->prePreparePrograms({context->priv().recordTimeAllocator(), writeView, usesMSAASurface,
-                             &dstProxyView, renderPassXferBarriers, colorLoadOp,
-                             context->priv().caps()},
+    this->prePreparePrograms({context->priv().recordTimeAllocator(),
+                              bisect_raw_ref(writeView),
+                              usesMSAASurface,
+                              &dstProxyView,
+                              renderPassXferBarriers,
+                              colorLoadOp,
+                              context->priv().caps()},
                              (clip) ? std::move(*clip) : GrAppliedClip::Disabled());
     if (fStencilFanProgram) {
         context->priv().recordProgramInfo(fStencilFanProgram);
@@ -256,10 +262,14 @@ SKGPU_DECLARE_STATIC_UNIQUE_KEY(gUnitQuadBufferKey);
 
 void PathStencilCoverOp::onPrepare(GrOpFlushState* flushState) {
     if (!fTessellator) {
-        this->prePreparePrograms({flushState->allocator(), flushState->writeView(),
-                                 flushState->usesMSAASurface(), &flushState->dstProxyView(),
-                                 flushState->renderPassBarriers(), flushState->colorLoadOp(),
-                                 &flushState->caps()}, flushState->detachAppliedClip());
+        this->prePreparePrograms({flushState->allocator(),
+                                  bisect_raw_ref(flushState->writeView()),
+                                  flushState->usesMSAASurface(),
+                                  &flushState->dstProxyView(),
+                                  flushState->renderPassBarriers(),
+                                  flushState->colorLoadOp(),
+                                  &flushState->caps()},
+                                 flushState->detachAppliedClip());
         if (!fTessellator) {
             return;
         }

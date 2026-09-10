@@ -22,6 +22,7 @@
 #include "src/core/SkGeometry.h"
 #include "src/core/SkPathPriv.h"
 #include "src/image/SkImage_Base.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/pdf/SkPDFResourceDict.h"
 #include "src/pdf/SkPDFTypes.h"
 #include "src/pdf/SkPDFUtils.h"
@@ -254,7 +255,7 @@ private:
         }
     }
 
-    SkWStream*                  fContentStream;
+    bisect_raw_ptr<SkWStream> fContentStream;
     const SkPDFUtils::EmptyArea fEmptyArea;
 
     SkDynamicMemoryWStream      fBuffer;

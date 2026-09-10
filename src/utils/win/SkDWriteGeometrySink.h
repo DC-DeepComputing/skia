@@ -20,7 +20,7 @@
 class SkDWriteGeometrySink : public IDWriteGeometrySink {
 private:
     LONG fRefCount;
-    raw_ptr<SkPathBuilder> fBuilder;
+    bisect_raw_ptr<SkPathBuilder> fBuilder;
     bool fStarted;
     D2D1_POINT_2F fCurrent;
 

@@ -565,7 +565,7 @@ struct SkOTTableName {
         bool next(Record&);
 
     private:
-        raw_ptr<const uint8_t, AllowPtrArithmetic> fNameTable;
+        bisect_raw_ptr<const uint8_t, AllowPtrArithmetic> fNameTable;
         const size_t fNameTableSize;
         size_t fIndex;
         int fType;

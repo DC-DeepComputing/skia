@@ -374,9 +374,9 @@ int check_for_passthrough_local_coords_and_dead_varyings(const SkSL::Program& fs
             fPassthroughFieldIndex = kFailed;
         }
 
-        const raw_ref<const Context> fContext;
-        raw_ptr<const Type> fVaryingsType = nullptr;
-        raw_ptr<const Variable> fVaryings = nullptr;
+        const bisect_raw_ref<const Context> fContext;
+        bisect_raw_ptr<const Type> fVaryingsType = nullptr;
+        bisect_raw_ptr<const Variable> fVaryings = nullptr;
         int             fPassthroughFieldIndex = -1;
         bool            fInMain                = false;
         uint32_t        fFieldUseMask          = 0;

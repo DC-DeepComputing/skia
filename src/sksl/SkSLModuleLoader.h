@@ -29,7 +29,7 @@ class ModuleLoader {
 private:
     struct Impl;
     std::unique_ptr<Impl> fLocalImpl;
-    const raw_ref<Impl> fModuleLoader;
+    const bisect_raw_ref<Impl> fModuleLoader;
 
 public:
     ModuleLoader();

@@ -167,7 +167,7 @@ struct SkColor4fXformer {
 
     ColorStorage fColors;
     PositionStorage fPositionStorage;
-    raw_ptr<const float> fPositions;
+    bisect_raw_ptr<const float> fPositions;
     sk_sp<SkColorSpace> fIntermediateColorSpace;
 };
 

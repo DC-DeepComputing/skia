@@ -94,7 +94,7 @@ public:
     SK_STDMETHODIMP Stat(STATSTG* pStatstg, DWORD grfStatFlag) override;
 
 private:
-    raw_ptr<SkWStream> fSkWStream;
+    bisect_raw_ptr<SkWStream> fSkWStream;
 
     SkWIStream(SkWStream* stream);
     ~SkWIStream() override;

@@ -12,6 +12,7 @@
 #define SkShaderBase_DEFINED
 
 #include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include "include/core/SkColor.h"
 #include "include/core/SkFlattenable.h"
@@ -250,8 +251,11 @@ public:
                                                //   of fColors/fColorOffsets on input, and
                                                //   actual number of colors/offsets on
                                                //   output.
-        SkColor4f*  fColors        = nullptr;  //!< The colors in the gradient.
-        SkScalar*   fColorOffsets  = nullptr;  //!< The unit offset for color transitions.
+        // RAW_PTR_EXCLUSION: Ephemeral out-parameter buffer passed to template functions (e.g.
+        // SkPackedArrayEqual).
+        RAW_PTR_EXCLUSION SkColor4f* fColors = nullptr;  //!< The colors in the gradient.
+        RAW_PTR_EXCLUSION SkScalar* fColorOffsets =
+                nullptr;                       //!< The unit offset for color transitions.
         SkPoint     fPoint[2];                 //!< Type specific, see above.
         SkScalar    fRadius[2];                //!< Type specific, see above.
         SkTileMode  fTileMode;
@@ -293,7 +297,7 @@ public:
 
         const SkShaders::MatrixRec fMatrixRec;
         SkColorType                fDstColorType;   // the color type of the dest surface
-        raw_ptr<SkColorSpace> fDstColorSpace;       // the color space of the dest surface (if any)
+        bisect_raw_ptr<SkColorSpace> fDstColorSpace;       // the color space of the dest surface (if any)
         SkSurfaceProps             fProps;          // props of the dest surface
         SkAlpha                    fPaintAlpha;
 
@@ -324,7 +328,7 @@ public:
 
     protected:
         // Reference to shader, so we don't have to dupe information.
-        const raw_ref<const SkShaderBase> fShader;
+        const bisect_raw_ref<const SkShaderBase> fShader;
 
         uint8_t getPaintAlpha() const { return fPaintAlpha; }
 
