@@ -13,8 +13,8 @@
 #include "src/core/SkStringUtils.h"
 #include "src/gpu/ganesh/GrStencilSettings.h"
 
-#include <ctype.h>
 #include <array>
+#include <cctype>
 #include <cstdio>
 #include <cstring>
 #include <tuple>
@@ -822,7 +822,7 @@ GrGLDriverInfo GrGLGetDriverInfo(const GrGLInterface* interface) {
 }
 
 GrGLenum GrToGLStencilFunc(GrStencilTest test) {
-    static const GrGLenum gTable[kGrStencilTestCount] = {
+    static constexpr std::array<GrGLenum, kGrStencilTestCount> gTable = {
         GR_GL_ALWAYS,           // kAlways
         GR_GL_NEVER,            // kNever
         GR_GL_GREATER,          // kGreater
