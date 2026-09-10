@@ -52,6 +52,24 @@
       "parentUuid": "28efb799_c587f10d",
       "revId": "4497de5c3dcecaa6467acc387e9c1c6d5775e6cd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "707b6e16_5956aa52",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5670
+      },
+      "writtenOn": "2026-09-10T05:29:40Z",
+      "side": 1,
+      "message": "Could you add explanation about how the failure in the CL is related to this CL in description?\nhttps://logs.chromium.org/logs/skia/7aa21fe3ed3b2e11/+/steps/ninja/0/stdout\nmay also help explaining how CMake is related to the step.",
+      "parentUuid": "28efb799_c587f10d",
+      "revId": "4497de5c3dcecaa6467acc387e9c1c6d5775e6cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
