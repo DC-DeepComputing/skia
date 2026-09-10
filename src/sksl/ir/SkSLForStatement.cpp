@@ -99,6 +99,31 @@ static void hoist_vardecl_symbols_into_outer_scope(const Context& context,
     SymbolHoister{context, innerSymbols, hoistedSymbols}.visitStatement(initBlock);
 }
 
+#if defined(SK_BUILD_FOR_FUZZER)
+static int max_nested_loop_iterations(const Statement& stmt) {
+    class Visitor : public ProgramVisitor {
+    public:
+        int fMaxProduct = 1;
+        bool visitExpression(const Expression&) override { return false; }
+        bool visitStatement(const Statement& s) override {
+            if (s.is<ForStatement>()) {
+                const ForStatement& forStmt = s.as<ForStatement>();
+                if (forStmt.unrollInfo()) {
+                    int innerMax = max_nested_loop_iterations(*forStmt.statement());
+                    int64_t prod = (int64_t)forStmt.unrollInfo()->fCount * innerMax;
+                    fMaxProduct = std::max(fMaxProduct, (int)std::min<int64_t>(prod, 257));
+                    return false;
+                }
+            }
+            return ProgramVisitor::visitStatement(s);
+        }
+    };
+    Visitor v;
+    v.visitStatement(stmt);
+    return v.fMaxProduct;
+}
+#endif
+
 std::unique_ptr<Statement> ForStatement::Convert(const Context& context,
                                                  Position pos,
                                                  ForLoopPositions positions,
@@ -137,6 +162,13 @@ std::unique_ptr<Statement> ForStatement::Convert(const Context& context,
         if (!unrollInfo) {
             return nullptr;
         }
+#if defined(SK_BUILD_FOR_FUZZER)
+        if (int64_t total = (int64_t)unrollInfo->fCount * max_nested_loop_iterations(*statement);
+            total > 256) {
+            context.fErrors->error(pos, "loop iteration count exceeds fuzzer limit");
+            return nullptr;
+        }
+#endif
     } else {
         // In ES3, loops don't have to be unrollable, but we can use the unroll information for
         // optimization purposes.
