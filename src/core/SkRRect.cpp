@@ -754,16 +754,8 @@ void SkRRect::dump(bool asHex) const { SkDebugf("%s\n", this->dumpToString(asHex
 
 ///////////////////////////////////////////////////////////////////////////////
 
-/**
- *  We need all combinations of predicates to be true to have a "safe" radius value.
- */
-static bool are_radius_check_predicates_valid(SkScalar rad, SkScalar min, SkScalar max) {
-    return (min <= max) && (rad <= max - min) && (min + rad <= max) && (max - rad >= min) &&
-           rad >= 0;
-}
-
 bool SkRRect::isValid() const {
-    if (!AreRectAndRadiiValid(fRect, fRadii)) {
+    if (!SkRRectPriv::AreRectAndRadiiValid(fRect, fRadii)) {
         return false;
     }
 
@@ -845,18 +837,6 @@ bool SkRRect::isValid() const {
     return true;
 }
 
-bool SkRRect::AreRectAndRadiiValid(const SkRect& rect, const SkVector radii[4]) {
-    if (!rect.isFinite() || !rect.isSorted()) {
-        return false;
-    }
-    for (int i = 0; i < 4; ++i) {
-        if (!are_radius_check_predicates_valid(radii[i].fX, rect.fLeft, rect.fRight) ||
-            !are_radius_check_predicates_valid(radii[i].fY, rect.fTop, rect.fBottom)) {
-            return false;
-        }
-    }
-    return true;
-}
 ///////////////////////////////////////////////////////////////////////////////
 
 SkRect SkRRectPriv::InnerBounds(const SkRRect& rr) {
@@ -1023,7 +1003,7 @@ SkRRect SkRRectPriv::ConservativeIntersect(const SkRRect& a, const SkRRect& b) {
     // If the radii are scaled, the combination of radii from two adjacent corners doesn't fit.
     // Normally for a regularly constructed SkRRect, we want this scaling, but in this case it means
     // the intersection shape is definitively not a round rect.
-    if (!SkRRect::AreRectAndRadiiValid(intersection.fRect, intersection.fRadii) ||
+    if (!SkRRectPriv::AreRectAndRadiiValid(intersection.fRect, intersection.fRadii) ||
         intersection.scaleRadii()) {
         return SkRRect::MakeEmpty();
     }
