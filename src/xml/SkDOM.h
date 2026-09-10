@@ -86,13 +86,13 @@ public:
         AttrIter(const SkDOM&, const Node*);
         const char* next(const char** value);
     private:
-        raw_ptr<const Attr, AllowPtrArithmetic> fAttr;
-        raw_ptr<const Attr, AllowPtrArithmetic> fStop;
+        bisect_raw_ptr<const Attr, AllowPtrArithmetic> fAttr;
+        bisect_raw_ptr<const Attr, AllowPtrArithmetic> fStop;
     };
 
 private:
     SkArenaAllocWithReset        fAlloc;
-    raw_ptr<Node, DanglingUntriaged> fRoot;
+    bisect_raw_ptr<Node, DanglingUntriaged> fRoot;
     std::unique_ptr<SkDOMParser> fParser;
 
     using INHERITED = SkNoncopyable;

@@ -117,8 +117,8 @@ public:
     }
 
 private:
-    const raw_ref<const ProgramUsage> fUsage;
-    raw_ptr<const Variable> fInputVar = nullptr;
+    const bisect_raw_ref<const ProgramUsage> fUsage;
+    bisect_raw_ptr<const Variable> fInputVar = nullptr;
 
     using INHERITED = ProgramVisitor;
 };

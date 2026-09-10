@@ -6,7 +6,10 @@
  */
 
 #ifndef GrVkSemaphore_DEFINED
+
 #define GrVkSemaphore_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/private/SkDebug.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
@@ -94,7 +97,7 @@ private:
         fResource->setIsOwned();
     }
 
-    Resource* fResource;
+    bisect_raw_ptr<Resource> fResource;
 
     using INHERITED = GrSemaphore;
 };

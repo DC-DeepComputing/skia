@@ -137,7 +137,7 @@ public:
     using ProgramVisitor::visitProgramElement;
     using ProgramVisitor::visitStatement;
 
-    raw_ptr<ProgramUsage> fUsage;
+    bisect_raw_ptr<ProgramUsage> fUsage;
     int fDelta;
     using INHERITED = ProgramVisitor;
 };
