@@ -24,6 +24,7 @@
 #include <cstring>
 #include <type_traits>
 #include <utility>
+#include "src/partition_alloc/raw_ptr.h"
 
 namespace skgpu {
 
@@ -202,7 +203,7 @@ struct VertexWriter : private BufferWriter {
 
     template<typename T>
     struct ArrayDesc {
-        const T* fArray;
+        bisect_raw_ptr<const T> fArray;
         int fCount;
     };
 
