@@ -5,8 +5,14 @@
  * found in the LICENSE file.
  */
 
+#include "src/partition_alloc/raw_ref.h"
+
 #ifndef SkEffectPriv_DEFINED
+
 #define SkEffectPriv_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include "include/core/SkColor.h"
 #include "include/core/SkColorType.h"
@@ -19,12 +25,12 @@ class SkSurfaceProps;
 
 // Passed to effects that will add stages to rasterpipeline
 struct SkStageRec {
-    SkRasterPipeline*       fPipeline;
-    SkArenaAlloc*           fAlloc;
+    RAW_PTR_EXCLUSION SkRasterPipeline* fPipeline;
+    RAW_PTR_EXCLUSION SkArenaAlloc* fAlloc;
     SkColorType             fDstColorType;
-    SkColorSpace*           fDstCS;         // may be nullptr
+    RAW_PTR_EXCLUSION SkColorSpace* fDstCS;  // may be nullptr
     SkColor4f               fPaintColor;
-    const SkSurfaceProps&   fSurfaceProps;
+    const raw_ref<const SkSurfaceProps> fSurfaceProps;
     // The device-space bounding box of the geometry being drawn.
     // An empty value can be used when it is expensive to compute,
     // in which case a heuristic will be used if necessary.
