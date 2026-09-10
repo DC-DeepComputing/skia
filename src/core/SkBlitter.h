@@ -18,10 +18,12 @@
 #include "include/private/SkDebug.h"
 #include "include/private/SkTo.h"
 #include "src/core/SkAutoMalloc.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <cstddef>
 #include <cstdint>
 #include <optional>
+#include "src/partition_alloc/raw_ptr.h"
 
 class SkArenaAlloc;
 class SkMatrix;
@@ -242,8 +244,9 @@ public:
     }
 
 private:
-    SkBlitter*      fBlitter;
-    const SkRegion* fRgn;
+    // RAW_PTR_EXCLUSION: Inner-loop per-span blitter and clip region.
+    RAW_PTR_EXCLUSION SkBlitter* fBlitter;
+    raw_ptr<const SkRegion, DanglingUntriaged> fRgn;
 };
 
 #ifdef SK_DEBUG
