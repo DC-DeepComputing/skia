@@ -78,8 +78,8 @@ static void append_rtadjust_fixup_to_vertex_main(const Context& context,
                             Swizzle(Pos(), {SwizzleComponent::W})));
             }
 
-            raw_ptr<const FieldSymbol> fSkPositionField;
-            raw_ptr<const SkSL::Symbol> fRTAdjust;
+            bisect_raw_ptr<const FieldSymbol> fSkPositionField;
+            bisect_raw_ptr<const SkSL::Symbol> fRTAdjust;
         };
 
         AppendRTAdjustFixupHelper helper(context, rtAdjust);
@@ -300,8 +300,8 @@ std::unique_ptr<FunctionDefinition> FunctionDefinition::Convert(const Context& c
         }
 
     private:
-        const raw_ref<const Context> fContext;
-        const raw_ref<const FunctionDeclaration> fFunction;
+        const bisect_raw_ref<const Context> fContext;
+        const bisect_raw_ref<const FunctionDeclaration> fFunction;
         // how deeply nested we are in breakable constructs (for, do, switch).
         int fBreakableLevel = 0;
         // number of slots consumed by all variables declared in the function
@@ -311,7 +311,7 @@ std::unique_ptr<FunctionDefinition> FunctionDefinition::Convert(const Context& c
         std::forward_list<int> fContinuableLevel{0};
         // We track uninitialized variable declarations, and if they are immediately assigned-to,
         // we can move the assignment directly into the decl.
-        raw_ptr<VarDeclaration> fUninitializedVarDecl = nullptr;
+        bisect_raw_ptr<VarDeclaration> fUninitializedVarDecl = nullptr;
 
         using INHERITED = ProgramWriter;
     };
