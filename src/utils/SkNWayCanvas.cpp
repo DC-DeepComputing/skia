@@ -99,8 +99,7 @@ public:
 private:
     const raw_ref<const SkTDArray<SkCanvas*>> fList;
     int fIndex;
-    // RAW_PTR_EXCLUSION: Iter is a transient stack-allocated helper.
-    RAW_PTR_EXCLUSION SkCanvas* fCanvas;
+    raw_ptr<SkCanvas> fCanvas;
 };
 
 void SkNWayCanvas::willSave() {

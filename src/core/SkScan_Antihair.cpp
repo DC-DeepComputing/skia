@@ -25,6 +25,7 @@
 
 #include <algorithm>
 #include <cstdint>
+#include "src/partition_alloc/raw_ptr.h"
 
 #define HLINE_STACK_BUFFER      100
 
@@ -86,7 +87,7 @@ public:
     virtual SkFixed drawLine(int x, int stopx, SkFixed fy, SkFixed slope) = 0;
 
 private:
-    SkBlitter*  fBlitter;
+    raw_ptr<SkBlitter> fBlitter;
 };
 
 // This class is responsible for drawing perfectly horizontal hairlines.

@@ -29,6 +29,7 @@
 #include <algorithm>
 #include <cstdint>
 #include <cstring>
+#include "src/partition_alloc/raw_ptr.h"
 
 /*
 
@@ -201,7 +202,7 @@ private:
     // we add 2 because we can write 1 extra byte at either end due to precision error
     uint32_t fStorage[(kMAX_STORAGE >> 2) + 2];
 
-    uint8_t* fRow;
+    raw_ptr<uint8_t> fRow;
     int      fY;
 };
 
