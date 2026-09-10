@@ -212,9 +212,9 @@ bool RequiresViewportReset(const SkPaint& paint) {
 
 void AddPath(const sktext::GlyphRun& glyphRun, const SkPoint& offset, SkPathBuilder* builder) {
     struct Rec {
-        raw_ptr<SkPathBuilder> fBuilder;
+        bisect_raw_ptr<SkPathBuilder> fBuilder;
         const SkPoint  fOffset;
-        raw_ptr<const SkPoint, AllowPtrArithmetic> fPos;
+        bisect_raw_ptr<const SkPoint, AllowPtrArithmetic> fPos;
     } rec = { builder, offset, glyphRun.positions().data() };
 
     glyphRun.font().getPaths(glyphRun.glyphsIDs(),
@@ -272,8 +272,8 @@ private:
 };
 
 struct SkSVGDevice::MxCp {
-    raw_ptr<const SkMatrix> fMatrix;
-    raw_ptr<const SkClipStack> fClipStack;
+    bisect_raw_ptr<const SkMatrix> fMatrix;
+    bisect_raw_ptr<const SkClipStack> fClipStack;
 
     MxCp(const SkMatrix* mx, const SkClipStack* cs) : fMatrix(mx), fClipStack(cs) {}
     MxCp(SkSVGDevice* device) : fMatrix(&device->localToDevice()), fClipStack(&device->cs()) {}
@@ -359,9 +359,9 @@ private:
                             const SkShader* shader,
                             const SkMatrix& localMatrix);
 
-    raw_ptr<SkXMLWriter> fWriter = nullptr;
+    bisect_raw_ptr<SkXMLWriter> fWriter = nullptr;
     SkSVGCanvas::EncodePngCallback fPngEncoder = nullptr;
-    raw_ptr<ResourceBucket> fResourceBucket = nullptr;
+    bisect_raw_ptr<ResourceBucket> fResourceBucket = nullptr;
 };
 
 void SkSVGDevice::AutoElement::addPaint(const SkPaint& paint, const Resources& resources) {
