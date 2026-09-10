@@ -6,7 +6,10 @@
  */
 
 #ifndef GrTextureProxyCacheAccess_DEFINED
+
 #define GrTextureProxyCacheAccess_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "src/gpu/ganesh/GrTextureProxy.h"
 
@@ -35,7 +38,7 @@ private:
     const CacheAccess* operator&() const;
     CacheAccess* operator&();
 
-    GrTextureProxy* fTextureProxy;
+    bisect_raw_ptr<GrTextureProxy> fTextureProxy;
 
     friend class GrTextureProxy;  // to construct/copy this type.
     friend class GrProxyProvider; // to use this type

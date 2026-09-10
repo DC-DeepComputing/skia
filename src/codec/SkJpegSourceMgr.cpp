@@ -16,6 +16,7 @@
 #ifdef SK_CODEC_DECODES_JPEG_GAINMAPS
 #include "src/codec/SkJpegConstants.h"
 #include "src/codec/SkJpegSegmentScan.h"
+#include "src/partition_alloc/raw_ptr.h"
 #endif  // SK_CODEC_DECODES_JPEG_GAINMAPS
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -41,7 +42,7 @@ public:
     }
 
 private:
-    SkStream* const fStream;
+    const raw_ptr<SkStream> fStream;
     const size_t fPosition;
 };
 
