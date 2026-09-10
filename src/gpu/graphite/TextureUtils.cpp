@@ -56,6 +56,7 @@
 #include "src/gpu/graphite/task/UploadTask.h"
 
 #include <array>
+#include "src/partition_alloc/raw_ptr.h"
 
 
 using SkImages::GraphitePromiseTextureFulfillProc;
@@ -799,7 +800,7 @@ public:
     }
 
 private:
-    skgpu::graphite::Recorder* fRecorder;
+    raw_ptr<skgpu::graphite::Recorder> fRecorder;
 };
 
 } // anonymous namespace

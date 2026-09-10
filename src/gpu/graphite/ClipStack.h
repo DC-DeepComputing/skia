@@ -21,6 +21,7 @@
 #include "src/gpu/graphite/geom/Transform.h"
 
 #include <cstdint>
+#include "src/partition_alloc/raw_ptr.h"
 
 class SkStrokeRec;
 enum class SkClipOp;
@@ -283,7 +284,7 @@ private:
         //             This acts as a dependency barrier; clipped draws affected by this rawElement
         //             must be inserted into or after the latest layer+list across all their
         //             dependcy depth draws.
-        DrawParams* fCaptureParams;
+        raw_ptr<DrawParams> fCaptureParams;
         Layer* fInsertion;
     };
 
@@ -377,7 +378,7 @@ private:
     RawElement::Stack fElements;
     SaveRecord::Stack fSaves; // always has one wide open record at the top
 
-    Device* fDevice; // the device this clip stack is coupled with
+    raw_ptr<Device> fDevice; // the device this clip stack is coupled with
 };
 
 // Clip element iteration
