@@ -55,7 +55,7 @@ public:
     std::string description() const override;
 
 private:
-    raw_ptr<const Type> fType = nullptr;
+    bisect_raw_ptr<const Type> fType = nullptr;
 
     using INHERITED = ProgramElement;
 };
