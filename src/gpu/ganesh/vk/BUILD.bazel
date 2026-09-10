@@ -116,6 +116,7 @@ skia_cc_library_with_testutil(
         "//src/gpu",
         "//src/gpu/ganesh",
         "//src/gpu/vk",
+        "//src/partition_alloc:raw_ptr",
         "//src/utils:shader_utils",
         "@vulkan_headers",
     ],

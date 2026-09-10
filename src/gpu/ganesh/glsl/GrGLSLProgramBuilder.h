@@ -6,7 +6,9 @@
  */
 
 #ifndef GrGLSLProgramBuilder_DEFINED
+
 #define GrGLSLProgramBuilder_DEFINED
+#include "src/partition_alloc/raw_ref.h"
 
 #include "include/private/SkDebug.h"
 #include "include/private/SkTArray.h"
@@ -46,15 +48,15 @@ public:
     virtual const GrCaps* caps() const = 0;
     const GrShaderCaps* shaderCaps() const { return this->caps()->shaderCaps(); }
 
-    GrSurfaceOrigin origin() const { return fProgramInfo.origin(); }
-    const GrPipeline& pipeline() const { return fProgramInfo.pipeline(); }
-    const GrGeometryProcessor& geometryProcessor() const { return fProgramInfo.geomProc(); }
+    GrSurfaceOrigin origin() const { return fProgramInfo->origin(); }
+    const GrPipeline& pipeline() const { return fProgramInfo->pipeline(); }
+    const GrGeometryProcessor& geometryProcessor() const { return fProgramInfo->geomProc(); }
     bool snapVerticesToPixelCenters() const {
-        return fProgramInfo.pipeline().snapVerticesToPixelCenters();
+        return fProgramInfo->pipeline().snapVerticesToPixelCenters();
     }
-    bool hasPointSize() const { return fProgramInfo.primitiveType() == GrPrimitiveType::kPoints; }
+    bool hasPointSize() const { return fProgramInfo->primitiveType() == GrPrimitiveType::kPoints; }
 
-    const GrProgramDesc& desc() const { return fDesc; }
+    const GrProgramDesc& desc() const { return *fDesc; }
 
     void appendUniformDecls(GrShaderFlags visibility, SkString*) const;
 
@@ -135,8 +137,8 @@ public:
     GrGLSLVertexBuilder          fVS;
     GrGLSLFragmentShaderBuilder  fFS;
 
-    const GrProgramDesc&         fDesc;
-    const GrProgramInfo&         fProgramInfo;
+    const raw_ref<const GrProgramDesc> fDesc;
+    const raw_ref<const GrProgramInfo> fProgramInfo;
 
     GrGLSLBuiltinUniformHandles  fUniformHandles;
 
