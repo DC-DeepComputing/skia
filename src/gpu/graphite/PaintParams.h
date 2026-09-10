@@ -15,6 +15,7 @@
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/Renderer.h"
 #include "src/gpu/graphite/geom/NonMSAAClip.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 class SkColorInfo;
 class SkColorSpace;
@@ -51,8 +52,8 @@ public:
     // required, set to the image's bounds.
     struct SimpleImage {
         // fImage (required) and fLocalMatrix (optional) must outlive the PaintParams object
-        const SkImage* fImage;
-        const SkMatrix* fLocalMatrix = nullptr;
+        raw_ptr<const SkImage> fImage;
+        raw_ptr<const SkMatrix> fLocalMatrix= nullptr;
         // Post local matrix strict clamping rectangle (e.g. relative to image's texels)
         SkRect fSubset;
         SkSamplingOptions fSamplingOptions;
@@ -128,14 +129,14 @@ private:
     // shader-based blending.
     std::pair<const SkBlender*, SkBlendMode> fFinalBlend;
 
-    const SkShader*      fShader;
-    const SimpleImage*   fImageShader; // Overrides fShader for color images, mixes for alpha
-    const SkColorFilter* fColorFilter;
+    raw_ptr<const SkShader> fShader;
+    raw_ptr<const SimpleImage> fImageShader; // Overrides fShader for color images, mixes for alpha
+    raw_ptr<const SkColorFilter> fColorFilter;
 
     // A nullptr fPrimitiveBlender means there's no primitive color blending and it is skipped.
     // In the case where there is primitive blending, the primitive color is the source color and
     // the dest is the paint's color (or the paint's shader's computed color).
-    const SkBlender* fPrimitiveBlender;
+    raw_ptr<const SkBlender> fPrimitiveBlender;
     // When a fPrimitiveColorOverride is present, it is used instead of any defined primitive colors
     // in the vertices for primitive color blending. This is done to enable primitive color blending
     // for render steps which don't emit primitive colors.
@@ -186,7 +187,7 @@ private:
 
     const PaintParams& fPaint;
     const NonMSAAClip& fNonMSAAClip;
-    const SkShader*    fClipShader;
+    raw_ptr<const SkShader> fClipShader;
 
     // Base (incomplete) dst usage that will be augmented by opacity analysis calculated in toKey().
     // This is only relevant for kSrcOver, fDstUsage is set assuming the paint is opaque; if it's
