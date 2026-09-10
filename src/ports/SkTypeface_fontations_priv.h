@@ -46,7 +46,7 @@ public:
     size_t size() const override;
 
 private:
-    raw_ptr<SkFontParameters::Variation::Axis, AllowPtrArithmetic> fAxisArray;
+    bisect_raw_ptr<SkFontParameters::Variation::Axis, AllowPtrArithmetic> fAxisArray;
     size_t fAxisCount;
 };
 
@@ -119,8 +119,8 @@ private:
                                uint8_t extend_mode,
                                SkPaint& paint,
                                SkMatrix* = nullptr);
-    const raw_ref<SkFontationsScalerContext> fScalerContext;
-    const raw_ref<SkCanvas> fCanvas;
+    const bisect_raw_ref<SkFontationsScalerContext> fScalerContext;
+    const bisect_raw_ref<SkCanvas> fCanvas;
     SkSpan<const SkColor> fPalette;
     SkColor fForegroundColor;
     bool fAntialias;
@@ -180,7 +180,7 @@ public:
                                   uint8_t) override;
 
 private:
-    const raw_ref<SkFontationsScalerContext> fScalerContext;
+    const bisect_raw_ref<SkFontationsScalerContext> fScalerContext;
     skia_private::STArray<4, SkMatrix> fMatrixStack;
 
     uint16_t fUpem;
