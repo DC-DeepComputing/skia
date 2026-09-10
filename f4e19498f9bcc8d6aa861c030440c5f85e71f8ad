@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed37aeb9_6368fdcd",
+        "filename": "agents/skills/skia-fuzzer-workflow/SKILL.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-09-10T18:42:11Z",
+      "side": 1,
+      "message": "should we be concerned about the ai downloading files on it\u0027s own (e.g. prompt injection, malicious software, etc)?",
+      "range": {
+        "startLine": 61,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 84
+      },
+      "revId": "f4e19498f9bcc8d6aa861c030440c5f85e71f8ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
