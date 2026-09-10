@@ -6,7 +6,10 @@
  */
 
 #ifndef GrPersistentCacheEntry_DEFINED
+
 #define GrPersistentCacheEntry_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkData.h"
 #include "include/core/SkFourByteTag.h"
@@ -29,7 +32,7 @@ struct ProgramSettings;
 namespace GrPersistentCacheUtils {
 
 struct ShaderMetadata {
-    SkSL::ProgramSettings* fSettings = nullptr;
+    bisect_raw_ptr<SkSL::ProgramSettings> fSettings = nullptr;
     skia_private::TArray<std::string> fAttributeNames;
     bool fHasSecondaryColorOutput = false;
     sk_sp<SkData> fPlatformData;

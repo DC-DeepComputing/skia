@@ -88,17 +88,18 @@ SkScalerContextRec SkScalerContext::PreprocessRec(const SkTypeface& typeface,
     return rec;
 }
 
-SkScalerContext::SkScalerContext(SkTypeface& typeface, const SkScalerContextEffects& effects,
+SkScalerContext::SkScalerContext(SkTypeface& typeface,
+                                 const SkScalerContextEffects& effects,
                                  const SkDescriptor* desc)
-    : fRec(PreprocessRec(typeface, effects, *desc))
-    , fTypeface(typeface)
-    , fPathEffect(sk_ref_sp(effects.fPathEffect))
-    , fMaskFilter(sk_ref_sp(effects.fMaskFilter))
-      // Initialize based on our settings. Subclasses can also force this.
-    , fGenerateImageFromPath(fRec.fFrameWidth >= 0 || fPathEffect != nullptr)
+        : fRec(PreprocessRec(typeface, effects, *desc))
+        , fTypeface(typeface)
+        , fPathEffect(sk_ref_sp(effects.fPathEffect.get()))
+        , fMaskFilter(sk_ref_sp(effects.fMaskFilter.get()))
+        // Initialize based on our settings. Subclasses can also force this.
+        , fGenerateImageFromPath(fRec.fFrameWidth >= 0 || fPathEffect != nullptr)
 
-    , fPreBlend(fMaskFilter ? SkMaskGamma::PreBlend() : SkScalerContext::GetMaskPreBlend(fRec))
-{
+        , fPreBlend(fMaskFilter ? SkMaskGamma::PreBlend()
+                                : SkScalerContext::GetMaskPreBlend(fRec)) {
     if constexpr (kSkScalerContextDumpRec) {
         SkDebugf("SkScalerContext checksum %x count %u length %u\n",
                  desc->getChecksum(), desc->getCount(), desc->getLength());

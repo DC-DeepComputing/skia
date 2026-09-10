@@ -29,6 +29,7 @@
 #include <optional>
 #include <type_traits>
 #include <variant>
+#include "src/partition_alloc/raw_ptr.h"
 
 namespace skgpu::graphite {
 
@@ -470,7 +471,7 @@ public:
     }
 
 private:
-    UniformManager* fManager;
+    raw_ptr<UniformManager> fManager;
 
     UniformExpectationsValidator(UniformExpectationsValidator&&) = delete;
     UniformExpectationsValidator(const UniformExpectationsValidator&) = delete;

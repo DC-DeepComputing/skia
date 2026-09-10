@@ -15,6 +15,7 @@
 #include "include/private/SkTemplates.h"
 #include "include/private/SkTo.h"
 #include "src/core/SkArenaAlloc.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <algorithm>
 #include <array>
@@ -27,6 +28,7 @@
 #include <new>
 #include <tuple>
 #include <utility>
+#include "src/partition_alloc/raw_ptr.h"
 
 namespace sktext::gpu {
 
@@ -148,8 +150,10 @@ private:
     struct Block {
         Block(char* previous, char* startOfBlock);
         // The start of the originally allocated bytes. This is the thing that must be deleted.
-        char* const fBlockStart;
-        Block* const fPrevious;
+        // RAW_PTR_EXCLUSION: Block is placement-allocated in raw heap buffer; destructor is not
+        // invoked on buffer deallocation (delete[] toDelete).
+        const raw_ptr<char> fBlockStart;
+        const raw_ptr<Block> fPrevious;
     };
 
     // Note: fCapacity is the number of bytes remaining, and is subtracted from fEndByte to
@@ -177,7 +181,8 @@ private:
     // of this pointer are the bytes to be allocated. The positive side points to the Block for
     // this memory. In other words, the pointer to the Block structure for these bytes is
     // reinterpret_cast<Block*>(fEndByte).
-    char* fEndByte{nullptr};
+    // RAW_PTR_EXCLUSION: Subject to raw pointer arithmetic and reinterpret_cast to Block*.
+    RAW_PTR_EXCLUSION char* fEndByte{nullptr};
 
     // The number of bytes remaining in this block.
     int fCapacity{0};

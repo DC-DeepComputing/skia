@@ -2431,7 +2431,7 @@ sk_sp<SkDrawable> SkScalerContext_DW::generateDrawable(const SkGlyph& glyph) {
         // TODO(arthursonzogni): GlyphDrawable may outlive SkScalerContext. Find a way to avoid
         // holding a raw pointer, as it causes a long-lived dangling pointer which would lead to
         // BackupRefPtr quarantine bloat. RAW_PTR_EXCLUSION: See TODO.
-        RAW_PTR_EXCLUSION SkScalerContext_DW* fSelf;
+        raw_ptr<SkScalerContext_DW> fSelf;
         SkGlyph fGlyph;
         GlyphDrawable(SkScalerContext_DW* self, const SkGlyph& glyph)
                 : fSelf(self), fGlyph(glyph) {}

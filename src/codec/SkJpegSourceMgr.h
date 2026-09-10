@@ -20,6 +20,7 @@
 
 #ifdef SK_CODEC_DECODES_JPEG_GAINMAPS
 #include <vector>
+#include "src/partition_alloc/raw_ptr.h"
 #endif  // SK_CODEC_DECODES_JPEG_GAINMAPS
 
 class SkStream;
@@ -66,7 +67,7 @@ public:
 
 protected:
     explicit SkJpegSourceMgr(SkStream* stream);
-    SkStream* const fStream;  // unowned
+    const raw_ptr<SkStream> fStream;  // unowned
 
 #ifdef SK_CODEC_DECODES_JPEG_GAINMAPS
     // The segment scanner is lazily creatd only when needed.

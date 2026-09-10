@@ -8,6 +8,7 @@
 
 #include "include/private/SkMalloc.h"
 #include "include/private/chromium/SkDiscardableMemory.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 SkCachedData::SkCachedData(void* data, size_t size)
         : fStorage(std::in_place_type<MallocStorage>, data), fData(data), fSize(size) {}
@@ -41,7 +42,7 @@ public:
     SkCachedData* operator->() { return fCD; }
 
 private:
-    SkCachedData* fCD;
+    bisect_raw_ptr<SkCachedData> fCD;
 };
 
 void SkCachedData::internalRef(bool fromCache) const {
