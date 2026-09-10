@@ -16,6 +16,24 @@
       "message": "We don\u0027t want the commit message to be so big unless it\u0027s really needed. It is sufficient to list ways that it is different.\n\ndump_record is largely unchanged.\ndump_captures prepends timing information to each command.",
       "revId": "60f0558fd4c59fe9f1287c87dfe880f2033968a9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ddbd80ec_d75bdcf1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-09-10T17:43:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "977fe9c6_301fa46e",
+      "revId": "60f0558fd4c59fe9f1287c87dfe880f2033968a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
