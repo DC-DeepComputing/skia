@@ -70,6 +70,24 @@
       "parentUuid": "28efb799_c587f10d",
       "revId": "4497de5c3dcecaa6467acc387e9c1c6d5775e6cd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "faf59a7e_e8e94371",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 4954845
+      },
+      "writtenOn": "2026-09-10T05:36:07Z",
+      "side": 1,
+      "message": "I\u0027ve generated a longer description, wdyt? Basically this is another solution as initializing depot_tools will likely hurt us.",
+      "parentUuid": "707b6e16_5956aa52",
+      "revId": "4497de5c3dcecaa6467acc387e9c1c6d5775e6cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
