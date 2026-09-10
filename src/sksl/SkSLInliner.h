@@ -117,7 +117,7 @@ private:
 
     bool overInlineStatementLimit() const;
 
-    raw_ptr<const Context> fContext = nullptr;
+    bisect_raw_ptr<const Context> fContext = nullptr;
     Mangler fMangler;
     int fInlinedStatementCounter = 0;
 };

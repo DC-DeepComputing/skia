@@ -19,6 +19,7 @@
 #include "include/private/SkDebug.h"
 #include "include/private/SkFixed.h"
 #include "src/core/SkArenaAlloc.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <cstddef>
 #include <cstdint>
@@ -46,7 +47,8 @@ struct SkBitmapProcState {
                                   int count,
                                   SkPMColor colors[]);
 
-    const SkImage_Base*     fImage;
+    // RAW_PTR_EXCLUSION: Inner-loop image sampling state.
+    RAW_PTR_EXCLUSION const SkImage_Base* fImage;
 
     SkPixmap                fPixmap;
     SkMatrix                fInvMatrix;         // This changes based on tile mode.
