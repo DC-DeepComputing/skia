@@ -119,8 +119,8 @@ public:
                   });
     }
 
-    const raw_ref<const Context> fContext;
-    const raw_ref<const SymbolTable> fSymbols;
+    const bisect_raw_ref<const Context> fContext;
+    const bisect_raw_ref<const SymbolTable> fSymbols;
     std::vector<const ProgramElement*> fNewElements;
 };
 
