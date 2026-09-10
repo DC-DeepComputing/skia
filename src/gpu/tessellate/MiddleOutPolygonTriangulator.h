@@ -20,6 +20,7 @@
 #include <algorithm>
 #include <cstring>
 #include <tuple>
+#include "src/partition_alloc/raw_ptr.h"
 
 namespace skgpu::tess {
 
@@ -111,7 +112,7 @@ public:
             std::tuple<SkPoint, SkPoint, SkPoint> operator*() {
                 return {fVertex[-1].fPoint, fVertex[0].fPoint, fLastPoint};
             }
-            StackVertex* fVertex;
+            bisect_raw_ptr<StackVertex, AllowPtrArithmetic> fVertex;
             SkPoint fLastPoint;
         };
 
@@ -119,10 +120,10 @@ public:
         Iter end() const { return {fEnd, fLastPoint}; }
 
     private:
-        MiddleOutPolygonTriangulator* fMiddleOut;
+        bisect_raw_ptr<MiddleOutPolygonTriangulator> fMiddleOut;
         SkPoint fLastPoint;
         StackVertex* fEnd;
-        StackVertex* fNewTopVertex;
+        bisect_raw_ptr<StackVertex> fNewTopVertex;
         StackVertex fNewTopValue;
     };
 

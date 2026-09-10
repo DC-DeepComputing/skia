@@ -22,6 +22,7 @@
 #include "src/gpu/ganesh/vk/GrVkPipelineState.h"
 #include "src/gpu/ganesh/vk/GrVkPipelineStateBuilder.h"
 #include "src/gpu/ganesh/vk/GrVkResourceProvider.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <memory>
 
@@ -41,7 +42,7 @@ struct GrVkResourceProvider::PipelineStateCache::Entry {
         }
     }
 
-    GrVkGpu* fGpu;
+    raw_ptr<GrVkGpu> fGpu;
     std::unique_ptr<GrVkPipelineState> fPipelineState;
 };
 
@@ -73,6 +74,7 @@ GrVkResourceProvider::PipelineStateCache::~PipelineStateCache() {
 
 void GrVkResourceProvider::PipelineStateCache::release() {
     fMap.reset();
+    fGpu = nullptr;
 }
 
 GrVkPipelineState* GrVkResourceProvider::PipelineStateCache::findOrCreatePipelineState(
