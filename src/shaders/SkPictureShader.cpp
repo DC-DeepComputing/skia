@@ -295,10 +295,8 @@ bool SkPictureShader::appendStages(const SkStageRec& rec, const SkShaders::Matri
     // mapping to make an image. It could be wildly wrong if there is a runtime shader transforming
     // the coordinates in a manner we don't know about here. However, that is a fundamental problem
     // with the technique of converting a picture to an image to implement this shader.
-    bitmapShader = this->rasterShader(mRec.totalMatrix(),
-                                      rec.fDstColorType,
-                                      rec.fDstCS,
-                                      rec.fSurfaceProps);
+    bitmapShader = this->rasterShader(
+            mRec.totalMatrix(), rec.fDstColorType, rec.fDstCS, *rec.fSurfaceProps);
     if (!bitmapShader) {
         return false;
     }

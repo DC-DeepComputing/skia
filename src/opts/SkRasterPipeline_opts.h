@@ -21,6 +21,7 @@
 
 #include <cstdint>
 #include <type_traits>
+#include "src/partition_alloc/raw_ptr.h"
 
 // Every function in this file should be marked static and inline using SI.
 #if defined(__clang__) || defined(__GNUC__)
@@ -63,7 +64,7 @@ SI Dst widen_cast(const Src& src) {
 }
 
 struct Ctx {
-    SkRasterPipelineStage* fStage;
+    bisect_raw_ptr<SkRasterPipelineStage> fStage;
 
     template <typename T>
     operator T*() {
