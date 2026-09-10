@@ -70,7 +70,7 @@ public:
     sk_sp<const SkCapabilities> onCapabilities() override;
     SkRecorder* onGetBaseRecorder() const override;
 
-    raw_ptr<skcpu::Recorder> fRecorder;
+    bisect_raw_ptr<skcpu::Recorder> fRecorder;
     SkBitmap fBitmap;
     bool fWeOwnThePixels;
 };

@@ -6,7 +6,10 @@
  */
 
 #ifndef StrokeTessellateOp_DEFINED
+
 #define StrokeTessellateOp_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkMatrix.h"
 #include "include/core/SkStrokeRec.h"
@@ -89,15 +92,15 @@ private:
     const SkMatrix fViewMatrix;
     PatchAttribs fPatchAttribs = PatchAttribs::kNone;
     PathStrokeList fPathStrokeList;
-    PathStrokeList** fPathStrokeTail = &fPathStrokeList.fNext;
+    bisect_raw_ptr<PathStrokeList*> fPathStrokeTail = &fPathStrokeList.fNext;
     int fTotalCombinedVerbCnt = 0;
     GrProcessorSet fProcessors;
     bool fNeedsStencil;
 
-    StrokeTessellator* fTessellator = nullptr;
-    GrStrokeTessellationShader* fTessellationShader;
-    const GrProgramInfo* fStencilProgram = nullptr;  // Only used if the stroke has transparency.
-    const GrProgramInfo* fFillProgram = nullptr;
+    bisect_raw_ptr<StrokeTessellator, DanglingUntriaged> fTessellator = nullptr;
+    bisect_raw_ptr<const GrProgramInfo, DanglingUntriaged> fStencilProgram =
+            nullptr;  // Only used if the stroke has transparency.
+    bisect_raw_ptr<const GrProgramInfo, DanglingUntriaged> fFillProgram = nullptr;
 };
 
 }  // namespace skgpu::ganesh

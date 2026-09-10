@@ -5,7 +5,10 @@
  * found in the LICENSE file.
  */
 #ifndef SkOpSegment_DEFINE
+
 #define SkOpSegment_DEFINE
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkPath.h"
 #include "include/core/SkPoint.h"
@@ -439,10 +442,11 @@ public:
 private:
     SkOpSpan fHead;  // the head span always has its t set to zero
     SkOpSpanBase fTail;  // the tail span always has its t set to one
-    SkOpContour* fContour;
-    SkOpSegment* fNext;  // forward-only linked list used by contour to walk the segments
-    const SkOpSegment* fPrev;
-    SkPoint* fPts;  // pointer into array of points owned by edge builder that may be tweaked
+    bisect_raw_ptr<SkOpContour> fContour;
+    bisect_raw_ptr<SkOpSegment> fNext;  // forward-only linked list used by contour to walk the segments
+    bisect_raw_ptr<const SkOpSegment> fPrev;
+    bisect_raw_ptr<SkPoint, DanglingUntriaged | AllowPtrArithmetic>
+            fPts;  // pointer into array of points owned by edge builder that may be tweaked
     SkPathOpsBounds fBounds;  // tight bounds
     SkScalar fWeight;
     int fCount;  // number of spans (one for a non-intersecting segment)

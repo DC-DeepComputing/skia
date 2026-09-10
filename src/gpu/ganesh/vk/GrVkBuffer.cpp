@@ -360,7 +360,7 @@ bool GrVkBuffer::onUpdateData(const void* src, size_t offset, size_t size, bool 
         if (!fMapPtr) {
             return false;
         }
-        memcpy(SkTAddOffset<void>(fMapPtr, offset), src, size);
+        memcpy(SkTAddOffset<void>(fMapPtr.get(), offset), src, size);
         // We only need to flush the updated portion so pass the true range here.
         this->vkUnmap(offset, size);
         fMapPtr = nullptr;

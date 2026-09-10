@@ -6,7 +6,10 @@
  */
 
 #ifndef SkPDFTag_DEFINED
+
 #define SkPDFTag_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
@@ -33,7 +36,7 @@ public:
     ~SkPDFStructTree();
 
     class Mark {
-        SkPDFStructElem* fStructElem;
+        raw_ptr<SkPDFStructElem> fStructElem;
         size_t fMarkIndex;
     public:
         Mark(SkPDFStructElem* structElem, size_t markIndex)
@@ -94,11 +97,11 @@ private:
 
     SkArenaAlloc fArena;
     skia_private::THashMap<int, SkPDFStructElem*> fStructElemForElemId;
-    SkPDFStructElem* fRoot = nullptr;
+    raw_ptr<SkPDFStructElem> fRoot = nullptr;
     SkPDF::Metadata::Outline fOutline = SkPDF::Metadata::Outline::None;
 
     struct Item {
-        SkPDFStructElem* fStructElem;
+        raw_ptr<SkPDFStructElem> fStructElem;
         SkPDFIndirectReference fContentItemRef;
     };
     struct Stream {
