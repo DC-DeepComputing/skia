@@ -13,6 +13,7 @@
 #include "src/gpu/graphite/ResourceTypes.h"
 
 #include <cstddef>
+#include "src/partition_alloc/raw_ptr.h"
 
 namespace skgpu {
 enum class Protected : bool;
@@ -59,7 +60,7 @@ protected:
             , fSize(size)
             , fIsProtected(isProtected) {}
 
-    void* fMapPtr = nullptr;
+    raw_ptr<void> fMapPtr = nullptr;
 
 private:
     virtual void onMap() = 0;
