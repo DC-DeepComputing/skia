@@ -17,6 +17,7 @@
 #include <cstdint>
 #include <iterator>
 #include <optional>
+#include "src/partition_alloc/raw_ptr.h"
 
 int SkPathPriv::GenIDChangeListenersCount(const SkPath& path) {
     return path.fPathData->genIDChangeListenerCount();
@@ -753,10 +754,11 @@ public:
 
 private:
     int fCurrPtCount;
-    const SkPoint* fCurrPt;
-    const SkPathVerb* fCurrVerb;
-    const SkPathVerb* fStopVerbs;
-    const SkScalar* fCurrConicWeight;
+    // RAW_PTR_EXCLUSION: Inner-loop contour iterator cursors.
+    raw_ptr<const SkPoint, AllowPtrArithmetic> fCurrPt;
+    raw_ptr<const SkPathVerb, AllowPtrArithmetic> fCurrVerb;
+    raw_ptr<const SkPathVerb> fStopVerbs;
+    raw_ptr<const SkScalar, AllowPtrArithmetic> fCurrConicWeight;
     bool fDone;
     SkDEBUGCODE(int fContourCounter;)
 };
