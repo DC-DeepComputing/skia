@@ -27,6 +27,7 @@
 #include <algorithm>
 #include <atomic>
 #include <cstring>
+#include "src/partition_alloc/raw_ptr.h"
 
 namespace {
 
@@ -115,7 +116,7 @@ public:
     }
 
 private:
-    const uint8_t*  fRow;
+    bisect_raw_ptr<const uint8_t, AllowPtrArithmetic | DanglingUntriaged> fRow;
     int             fLeft;
     int             fRight;
     int             fBoundsRight;
@@ -160,8 +161,8 @@ public:
     }
 
 private:
-    const YOffset* fCurrYOff = nullptr;
-    const YOffset* fStopYOff = nullptr;
+    bisect_raw_ptr<const YOffset, DanglingUntriaged> fCurrYOff = nullptr;
+    bisect_raw_ptr<const YOffset, DanglingUntriaged> fStopYOff = nullptr;
     const uint8_t* fData = nullptr;
 
     int fTop = kMaxInt32;
@@ -251,10 +252,10 @@ class SkAAClip::Builder {
     struct Row {
         int fY;
         int fWidth;
-        SkTDArray<uint8_t>* fData;
+        bisect_raw_ptr<SkTDArray<uint8_t>, DanglingUntriaged> fData;
     };
     SkTDArray<Row>  fRows;
-    Row* fCurrRow;
+    bisect_raw_ptr<Row, DanglingUntriaged> fCurrRow;
     int fPrevY;
     int fWidth;
     int fMinY;
@@ -806,7 +807,7 @@ public:
     }
 
 private:
-    Builder* fBuilder;
+    bisect_raw_ptr<Builder, DanglingUntriaged> fBuilder;
     int      fLeft; // cache of builder's bounds' left edge
     int      fRight;
     int      fMinY;

@@ -5,7 +5,10 @@
  * found in the LICENSE file.
  */
 #ifndef SkPictureFlat_DEFINED
+
 #define SkPictureFlat_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkFlattenable.h"
 #include "include/core/SkRefCnt.h"
@@ -225,7 +228,7 @@ public:
 
 private:
     int fCount;
-    SkFlattenable::Factory* fArray;
+    bisect_raw_ptr<SkFlattenable::Factory, DanglingUntriaged> fArray;
 };
 
 #endif
