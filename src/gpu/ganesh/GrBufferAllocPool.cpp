@@ -209,14 +209,14 @@ void* GrBufferAllocPool::makeSpace(size_t size,
             return nullptr;
         }
         if (alignedSize <= back.fBytesFree) {
-            memset((void*)(reinterpret_cast<intptr_t>(fBufferPtr) + usedBytes), 0, pad);
+            memset((void*)(reinterpret_cast<intptr_t>(fBufferPtr.get()) + usedBytes), 0, pad);
             usedBytes += pad;
             *offset = usedBytes;
             *buffer = back.fBuffer;
             back.fBytesFree -= alignedSize;
             fBytesInUse += alignedSize;
             VALIDATE();
-            return (void*)(reinterpret_cast<intptr_t>(fBufferPtr) + usedBytes);
+            return (void*)(reinterpret_cast<intptr_t>(fBufferPtr.get()) + usedBytes);
         }
     }
 

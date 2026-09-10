@@ -7,6 +7,8 @@
 
 #include "src/gpu/ganesh/ops/FillRRectOp.h"
 
+#include "src/partition_alloc/raw_ptr_exclusion.h"
+
 #include "include/core/SkClipOp.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPoint.h"
@@ -53,6 +55,8 @@
 #include "src/gpu/ganesh/ops/GrDrawOp.h"
 #include "src/gpu/ganesh/ops/GrMeshDrawOp.h"
 #include "src/gpu/ganesh/ops/GrSimpleMeshDrawOpHelper.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #if defined(GPU_TEST_UTILS)
 #include "src/core/SkRandom.h"
@@ -213,11 +217,14 @@ private:
         SkRRect fRRect;
         LocalCoords fLocalCoords;
         SkPMColor4f fColor;
-        Instance* fNext = nullptr;
+        // RAW_PTR_EXCLUSION: performance regression
+        RAW_PTR_EXCLUSION Instance* fNext = nullptr;
     };
 
-    Instance* fHeadInstance;
-    Instance** fTailInstance;
+    // RAW_PTR_EXCLUSION: performance regression
+    RAW_PTR_EXCLUSION Instance* fHeadInstance;
+    // RAW_PTR_EXCLUSION: performance regression
+    RAW_PTR_EXCLUSION Instance** fTailInstance;
     int fInstanceCount = 1;
 
     sk_sp<const GrBuffer> fInstanceBuffer;
@@ -227,7 +234,7 @@ private:
 
     // If this op is prePrepared the created programInfo will be stored here for use in
     // onExecute. In the prePrepared case it will have been stored in the record-time arena.
-    GrProgramInfo* fProgramInfo = nullptr;
+    bisect_raw_ptr<GrProgramInfo, DanglingUntriaged> fProgramInfo = nullptr;
 };
 
 SK_MAKE_BITFIELD_CLASS_OPS(FillRRectOpImpl::ProcessorFlags)
@@ -506,7 +513,7 @@ private:
 
     constexpr static int kMaxInstanceAttribs = 6;
     STArray<kMaxInstanceAttribs, Attribute> fInstanceAttribs;
-    const Attribute* fColorAttrib;
+    bisect_raw_ptr<const Attribute> fColorAttrib;
 };
 
 // Our coverage geometry consists of an inset octagon with solid coverage, surrounded by linear
@@ -713,7 +720,7 @@ private:
         GrGLSLVertexBuilder* v = args.fVertBuilder;
         GrGLSLFPFragmentBuilder* f = args.fFragBuilder;
 
-        const auto& proc = args.fGeomProc.cast<Processor>();
+        const auto& proc = args.fGeomProc->cast<Processor>();
         bool useHWDerivatives = (proc.fFlags & ProcessorFlags::kUseHWDerivatives);
 
         SkASSERT(proc.vertexStride() == sizeof(CoverageVertex));
