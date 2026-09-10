@@ -6,7 +6,10 @@
  */
 
 #ifndef GrVkGpu_DEFINED
+
 #define GrVkGpu_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkDrawable.h"
 #include "include/core/SkRefCnt.h"
@@ -463,9 +466,9 @@ private:
 
     GrVkMSAALoadManager                                   fMSAALoadManager;
 
-    GrVkCommandPool*                                      fMainCmdPool;
+    bisect_raw_ptr<GrVkCommandPool> fMainCmdPool;
     // just a raw pointer; object's lifespan is managed by fCmdPool
-    GrVkPrimaryCommandBuffer*                             fMainCmdBuffer;
+    bisect_raw_ptr<GrVkPrimaryCommandBuffer> fMainCmdBuffer;
 
     skia_private::STArray<1, GrVkSemaphore::Resource*>    fSemaphoresToWaitOn;
     skia_private::STArray<1, GrVkSemaphore::Resource*>    fSemaphoresToSignal;
