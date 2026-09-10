@@ -234,11 +234,13 @@ private:
             return false;
         }
         auto [alphaIndex, texPage] = *alloc;
+        sk_sp<TextureProxy> proxy = atlasManager->getPageProxy(texPage);
         ends->addCap(endCapX,
                      prevTile.y * kTileHeight,
                      endCapWidth,
                      alphaIndex,
-                     texPage);
+                     texPage,
+                     std::move(proxy));
         return true;
     }
 

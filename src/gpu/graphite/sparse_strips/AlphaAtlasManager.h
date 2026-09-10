@@ -45,8 +45,12 @@ public:
     // Returns a pair of {alphaIndex, texPage} on success.
     std::optional<std::pair<int32_t, uint16_t>> finalizeRun();
 
+    static constexpr int kNullSlot = SparseStripConfig::kMaxTexturePages;
+    static constexpr int kMaxSlots = kNullSlot + 1;
+
     void recordUploads(DrawContext* dc);
     void freeGpuResources();
+    bool resolveNullCaps(EndCaps* ends);
 
     size_t numPages() const {
         size_t numPages = 0;
@@ -58,22 +62,32 @@ public:
         return numPages;
     }
     int32_t activePageRowCount() const {
-        return fPages[fActiveSlot].isValid() ? fPages[fActiveSlot].fRowCount : 0;
+        return (fActiveSlot < SparseStripConfig::kMaxTexturePages && fPages[fActiveSlot].isValid())
+                       ? fPages[fActiveSlot].fRowCount
+                       : 0;
     }
     sk_sp<TextureProxy> getPageProxy(size_t index) const {
         return (index < SparseStripConfig::kMaxTexturePages && fPages[index].isValid()) ?
                 fPages[index].fTexture : nullptr;
     }
     const uint8_t* getPageData(size_t index) const {
-        return (index < SparseStripConfig::kMaxTexturePages && fPages[index].isValid()) ?
+        return (index < kMaxSlots && (fPages[index].isValid() || index == kNullSlot)) ?
                 fPages[index].fAlphaBuffer.data() : nullptr;
     }
     int activeSlot() const { return fActiveSlot; }
+    bool hasNullBuffer() const { return fPages[kNullSlot].fUsedBytes > 0; }
 
     void populateProxies(EndCaps* ends) const {
         for (int32_t i = 0; i < SparseStripConfig::kMaxTexturePages; ++i) {
             if (fPages[i].isValid()) {
-                ends->addProxy(fPages[i].fTexture);
+                ends->setProxy(i, fPages[i].fTexture);
+            }
+        }
+        if (ends->proxies().size() == 2) {
+            if (!ends->proxies()[0] && ends->proxies()[1]) {
+                ends->setProxy(0, ends->proxies()[1]);
+            } else if (!ends->proxies()[1] && ends->proxies()[0]) {
+                ends->setProxy(1, ends->proxies()[0]);
             }
         }
     }
@@ -103,8 +117,9 @@ private:
     bool createPageInSlot(int slot, int32_t minRequiredBytes = 0);
 
     Recorder* fRecorder;
-    TexturePage fPages[SparseStripConfig::kMaxTexturePages];
+    TexturePage fPages[kMaxSlots];
     int fActiveSlot;
+    int fLastGpuSlot = 0;
     int32_t fNextPageRowCount;
 };
 
