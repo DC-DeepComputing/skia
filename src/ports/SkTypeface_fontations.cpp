@@ -883,7 +883,7 @@ protected:
             // TODO(arthursonzogni): GlyphDrawable may outlive SkScalerContext. Find a way to avoid
             // holding a raw pointer, as it causes a long-lived dangling pointer which would lead to
             // BackupRefPtr quarantine bloat. RAW_PTR_EXCLUSION: See TODO.
-            RAW_PTR_EXCLUSION SkFontationsScalerContext* fSelf;
+            raw_ptr<SkFontationsScalerContext> fSelf;
             SkGlyphID fGlyphId;
             SkRect fBounds;
             GlyphDrawable(SkFontationsScalerContext* self, const SkGlyph& glyph)

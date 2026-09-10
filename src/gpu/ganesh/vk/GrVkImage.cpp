@@ -614,8 +614,9 @@ void GrVkImage::prepareForExternal(GrVkGpu* gpu) {
 
 void GrVkImage::releaseImage() {
     if (fResource) {
-        fResource->unref();
+        Resource* resource = fResource.get();
         fResource = nullptr;
+        resource->unref();
     }
     fFramebufferView.reset();
     fTextureView.reset();
