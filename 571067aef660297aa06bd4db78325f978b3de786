@@ -16,6 +16,24 @@
       "message": "Hey Bryan, I think you may have to rebase this? Also for whatever reason, this CL only changes one file?",
       "revId": "571067aef660297aa06bd4db78325f978b3de786",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d05c26d4_d9d7c542",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4621846
+      },
+      "writtenOn": "2026-09-10T06:20:05Z",
+      "side": 1,
+      "message": "Yes, thank you, it\u0027s now rebased.\nAnd yes, `git cl split` generated a pair of one-file CLs",
+      "parentUuid": "20f79f71_cd069e9d",
+      "revId": "571067aef660297aa06bd4db78325f978b3de786",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
