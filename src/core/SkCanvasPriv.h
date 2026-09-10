@@ -15,6 +15,7 @@
 #include "include/core/SkTileMode.h"
 #include "include/private/SkDebug.h"
 #include "include/private/SkNoncopyable.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <cstddef>
 
@@ -31,8 +32,8 @@ public:
     ~SkAutoCanvasMatrixPaint();
 
 private:
-    SkCanvas*   fCanvas;
-    int         fSaveCount;
+    raw_ptr<SkCanvas, DanglingUntriaged> fCanvas;
+    int fSaveCount;
 };
 
 class SkCanvasPriv {
