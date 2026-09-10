@@ -56,7 +56,7 @@ void Transform::ReplaceConstVarsWithLiterals(Module& module, ProgramUsage* usage
             return INHERITED::visitExpressionPtr(expr);
         }
 
-        raw_ptr<ProgramUsage> fUsage;
+        bisect_raw_ptr<ProgramUsage> fUsage;
         THashSet<const Variable*> fCandidates;
 
         using INHERITED = ProgramWriter;
