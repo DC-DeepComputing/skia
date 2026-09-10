@@ -883,7 +883,7 @@ protected:
             // TODO(arthursonzogni): GlyphDrawable may outlive SkScalerContext. Find a way to avoid
             // holding a raw pointer, as it causes a long-lived dangling pointer which would lead to
             // BackupRefPtr quarantine bloat. RAW_PTR_EXCLUSION: See TODO.
-            RAW_PTR_EXCLUSION SkFontationsScalerContext* fSelf;
+            bisect_raw_ptr<SkFontationsScalerContext> fSelf;
             SkGlyphID fGlyphId;
             SkRect fBounds;
             GlyphDrawable(SkFontationsScalerContext* self, const SkGlyph& glyph)
@@ -986,11 +986,11 @@ private:
     SkVector fScale;
     SkMatrix fRemainingMatrix;
     sk_sp<SkData> fFontData = nullptr;
-    const raw_ref<const fontations_ffi::BridgeFontRef> fBridgeFontRef;
-    const raw_ref<const fontations_ffi::BridgeNormalizedCoords> fBridgeNormalizedCoords;
-    const raw_ref<const fontations_ffi::BridgeOutlineCollection> fOutlines;
-    const raw_ref<const fontations_ffi::BridgeGlyphStyles> fGlyphStyles;
-    const raw_ref<const fontations_ffi::BridgeMappingIndex> fMappingIndex;
+    const bisect_raw_ref<const fontations_ffi::BridgeFontRef> fBridgeFontRef;
+    const bisect_raw_ref<const fontations_ffi::BridgeNormalizedCoords> fBridgeNormalizedCoords;
+    const bisect_raw_ref<const fontations_ffi::BridgeOutlineCollection> fOutlines;
+    const bisect_raw_ref<const fontations_ffi::BridgeGlyphStyles> fGlyphStyles;
+    const bisect_raw_ref<const fontations_ffi::BridgeMappingIndex> fMappingIndex;
     const SkSpan<const SkColor> fPalette;
     rust::Box<fontations_ffi::BridgeHintingInstance> fHintingInstance;
     bool fDoLinearMetrics = false;
