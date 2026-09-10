@@ -79,7 +79,7 @@ public:
     }
 
 private:
-    raw_ptr<const FunctionDeclaration> fDeclaration;
+    bisect_raw_ptr<const FunctionDeclaration> fDeclaration;
     std::unique_ptr<Statement> fBody;
 
     using INHERITED = ProgramElement;
