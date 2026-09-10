@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd594e9a_fcdde94d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5670
+      },
+      "writtenOn": "2026-09-10T04:47:00Z",
+      "side": 1,
+      "message": "It seems that recipes modified in this CL doesn\u0027t use CMake and ninja is specified via full path?\nIf you have a link to failed build, can I see how that failed?",
+      "revId": "4497de5c3dcecaa6467acc387e9c1c6d5775e6cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
