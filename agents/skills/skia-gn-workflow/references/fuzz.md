@@ -46,3 +46,7 @@ Implement the fix, verify that the unit test passes, and ensure the fuzzer tool 
 
 ## 6. Clean Up
 Always remove all temporary debug `SKIA_LOG_D` statements before finalizing the changes.
+
+## 7. End-to-End Workflow Skill
+For the comprehensive workflow covering root-cause diagnosis, test authoring, multi-solution iteration, benchmarking with `nanobench`, and uploading to Gerrit for review, see the [skia-fuzzer-workflow](../../skia-fuzzer-workflow/SKILL.md) skill.
+
