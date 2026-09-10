@@ -48,7 +48,7 @@ public:
     }
 
 private:
-    raw_ptr<const Variable, DanglingUntriaged> fOwner;
+    bisect_raw_ptr<const Variable, DanglingUntriaged> fOwner;
     int fFieldIndex;
 
     using INHERITED = Symbol;
