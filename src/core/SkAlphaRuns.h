@@ -15,6 +15,7 @@
 #include "include/private/SkTo.h"
 
 #include <cstdint>
+#include "src/partition_alloc/raw_ptr.h"
 
 /** Sparse array of run-length-encoded alpha (supersampling coverage) values.
     Sparseness allows us to independently compose several paths into the
@@ -24,7 +25,7 @@
 class SkAlphaRuns {
 public:
     int16_t*    fRuns;
-    uint8_t*     fAlpha;
+    raw_ptr<uint8_t, AllowPtrArithmetic | DanglingUntriaged> fAlpha;
 
     // Return 0-255 given 0-256
     static inline SkAlpha CatchOverflow(int alpha) {

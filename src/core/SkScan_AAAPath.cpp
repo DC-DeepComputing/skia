@@ -29,6 +29,7 @@
 #include <algorithm>
 #include <cstdint>
 #include <cstring>
+#include "src/partition_alloc/raw_ptr.h"
 
 /*
 
@@ -195,13 +196,13 @@ private:
     static const int kMAX_WIDTH   = 32;
     static const int kMAX_STORAGE = 1024;
 
-    SkBlitter* fRealBlitter;
+    raw_ptr<SkBlitter> fRealBlitter;
     SkMaskBuilder fMask;
     SkIRect    fClipRect;
     // we add 2 because we can write 1 extra byte at either end due to precision error
     uint32_t fStorage[(kMAX_STORAGE >> 2) + 2];
 
-    uint8_t* fRow;
+    raw_ptr<uint8_t> fRow;
     int      fY;
 };
 
@@ -303,7 +304,7 @@ public:
     }
 
 protected:
-    SkBlitter* fRealBlitter;
+    raw_ptr<SkBlitter> fRealBlitter;
 
     int fCurrY;  // Current y coordinate.
     int fWidth;  // Widest row of region to be blitted
