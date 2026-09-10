@@ -34,6 +34,24 @@
       "parentUuid": "bd594e9a_fcdde94d",
       "revId": "4497de5c3dcecaa6467acc387e9c1c6d5775e6cd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0cd809a0_422e0ef4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 4954845
+      },
+      "writtenOn": "2026-09-10T05:17:32Z",
+      "side": 1,
+      "message": "The other option is to introduce an escape hatch in depot_tools if the .txt file is missing, but I want to postpone this solution and fix clients where possible.",
+      "parentUuid": "28efb799_c587f10d",
+      "revId": "4497de5c3dcecaa6467acc387e9c1c6d5775e6cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
