@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e819e5eb_29db01be",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-10T19:09:03Z",
+      "side": 1,
+      "message": "I like the updates, one more minor change that I realized we can clean up in SkRRect.h",
+      "revId": "e3bfde482ac5758969f421722c5d403e902daf4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3825a0e_2d43a20b",
+        "filename": "src/core/SkRRectPriv.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-10T19:09:03Z",
+      "side": 1,
+      "message": "Minor organizational note, but I think we should remove the declaration in SkRRect of this function, since the only code that uses it can just call SkRRectPriv::AreRectAndRadiiValid. \n\nIt remains an internal function but is publicly available to our own source code and tests. It never needed to be a function inside SkRRect\u0027s private scope because it never required access to private fields of an SkRRect.",
+      "range": {
+        "startLine": 56,
+        "startChar": 0,
+        "endLine": 56,
+        "endChar": 58
+      },
+      "revId": "e3bfde482ac5758969f421722c5d403e902daf4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
