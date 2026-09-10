@@ -6,7 +6,10 @@
 */
 
 #ifndef GrVkResourceProvider_DEFINED
+
 #define GrVkResourceProvider_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkAssert.h"
@@ -262,7 +265,7 @@ private:
 
         SkLRUCache<const GrProgramDesc, std::unique_ptr<Entry>, DescHash> fMap;
 
-        GrVkGpu*                    fGpu;
+        raw_ptr<GrVkGpu> fGpu;
     };
 
     class CompatibleRenderPassSet {
@@ -298,14 +301,14 @@ private:
 
     VkPipelineCache pipelineCache();
 
-    GrVkGpu* fGpu;
+    raw_ptr<GrVkGpu> fGpu;
 
     // Central cache for creating pipelines
     VkPipelineCache fPipelineCache;
 
     struct MSAALoadPipeline {
         sk_sp<const GrVkPipeline> fPipeline;
-        const GrVkRenderPass* fRenderPass;
+        raw_ptr<const GrVkRenderPass> fRenderPass;
     };
 
     // Cache of previously created msaa load pipelines
