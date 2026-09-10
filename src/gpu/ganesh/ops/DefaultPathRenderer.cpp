@@ -6,6 +6,8 @@
  */
 #include "src/gpu/ganesh/ops/DefaultPathRenderer.h"
 
+#include "src/partition_alloc/raw_ptr_exclusion.h"
+
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkPathTypes.h"
@@ -53,6 +55,8 @@
 #include "src/gpu/ganesh/ops/GrOp.h"
 #include "src/gpu/ganesh/ops/GrPathStencilSettings.h"
 #include "src/gpu/ganesh/ops/GrSimpleMeshDrawOpHelperWithStencil.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #if defined(GPU_TEST_UTILS)
 #include "src/core/SkRandom.h"
@@ -394,25 +398,26 @@ private:
     }
 
     GrPrimitiveType fPrimitiveType;
-    GrMeshDrawTarget* fTarget;
+    bisect_raw_ptr<GrMeshDrawTarget> fTarget;
     size_t fVertexStride;
 
     sk_sp<const GrBuffer> fVertexBuffer;
     int fFirstVertex;
     int fVerticesInChunk;
-    SkPoint* fVertices;
-    SkPoint* fCurVert;
+    bisect_raw_ptr<SkPoint, AllowPtrArithmetic> fVertices;
+    // RAW_PTR_EXCLUSION: performance regression
+    RAW_PTR_EXCLUSION SkPoint* fCurVert;
 
     sk_sp<const GrBuffer> fIndexBuffer;
     int fFirstIndex;
     int fIndicesInChunk;
-    uint16_t* fIndices;
-    uint16_t* fCurIdx;
+    bisect_raw_ptr<uint16_t, AllowPtrArithmetic> fIndices;
+    bisect_raw_ptr<uint16_t, AllowPtrArithmetic> fCurIdx;
     uint16_t fSubpathIndexStart;
     SkPoint fSubpathStartPoint;
 
     bool fValid = true;
-    SkTDArray<GrSimpleMesh*>* fMeshes;
+    bisect_raw_ptr<SkTDArray<GrSimpleMesh*>> fMeshes;
 };
 
 class DefaultPathOp final : public GrMeshDrawOp {
@@ -606,7 +611,7 @@ private:
     bool fIsHairline;
 
     SkTDArray<GrSimpleMesh*> fMeshes;
-    GrProgramInfo* fProgramInfo = nullptr;
+    bisect_raw_ptr<GrProgramInfo, DanglingUntriaged> fProgramInfo = nullptr;
 
     using INHERITED = GrMeshDrawOp;
 };
