@@ -247,7 +247,7 @@ public:
     }
 
 private:
-    RAW_PTR_EXCLUSION SkCanvas* fCanvas;
+    raw_ptr<SkCanvas, DanglingUntriaged> fCanvas;
 
     AutoUpdateQRBounds(AutoUpdateQRBounds&&) = delete;
     AutoUpdateQRBounds(const AutoUpdateQRBounds&) = delete;
@@ -2437,8 +2437,8 @@ public:
     sktext::GlyphRunBuilder* operator->() { return fGlyphRunBuilder; }
 
 private:
-    RAW_PTR_EXCLUSION SkCanvas* fCanvas;
-    RAW_PTR_EXCLUSION sktext::GlyphRunBuilder* fGlyphRunBuilder;
+    raw_ptr<SkCanvas, DanglingUntriaged> fCanvas;
+    raw_ptr<sktext::GlyphRunBuilder, DanglingUntriaged> fGlyphRunBuilder;
 };
 
 void SkCanvas::onDrawTextBlob(const SkTextBlob* blob, SkScalar x, SkScalar y,
