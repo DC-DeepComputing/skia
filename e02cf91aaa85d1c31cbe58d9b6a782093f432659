@@ -22,6 +22,30 @@
       },
       "revId": "e02cf91aaa85d1c31cbe58d9b6a782093f432659",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f57c16b9_8504c1cd",
+        "filename": "src/gpu/android/AHardwareBufferUtils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5150452
+      },
+      "writtenOn": "2026-09-10T04:09:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "209e96dc_a28c3fa5",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 37
+      },
+      "revId": "e02cf91aaa85d1c31cbe58d9b6a782093f432659",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
