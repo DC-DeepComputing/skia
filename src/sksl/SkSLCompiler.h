@@ -176,7 +176,7 @@ private:
         }
 
     private:
-        const raw_ref<Compiler> fCompiler;
+        const bisect_raw_ref<Compiler> fCompiler;
     };
 
     /** Updates ProgramSettings to eliminate contradictions and to honor the ProgramKind. */

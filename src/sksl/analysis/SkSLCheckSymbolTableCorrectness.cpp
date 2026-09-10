@@ -75,7 +75,7 @@ void Analysis::CheckSymbolTableCorrectness(const Program& program) {
     private:
         using INHERITED = ProgramVisitor;
 
-        const raw_ref<const Context> fContext;
+        const bisect_raw_ref<const Context> fContext;
         std::vector<SymbolTable*> fSymbolTableStack;
     };
 

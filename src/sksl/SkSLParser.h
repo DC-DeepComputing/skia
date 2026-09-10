@@ -168,7 +168,7 @@ private:
     struct VarDeclarationsPrefix {
         Position fPosition;
         Modifiers fModifiers;
-        raw_ptr<const Type> fType;
+        bisect_raw_ptr<const Type> fType;
         Token fName;
     };
 
@@ -321,9 +321,9 @@ private:
 
     SymbolTable* symbolTable();
 
-    const raw_ref<Compiler> fCompiler;
+    const bisect_raw_ref<Compiler> fCompiler;
     ProgramSettings fSettings;
-    raw_ptr<ErrorReporter> fErrorReporter;
+    bisect_raw_ptr<ErrorReporter> fErrorReporter;
     bool fEncounteredFatalError;
     ProgramKind fKind;
     std::unique_ptr<std::string> fText;
