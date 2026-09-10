@@ -77,7 +77,7 @@ bool GrMeshBuffer<Base, Type>::onUpdate(GrDirectContext* dc,
         auto [sliceBuffer, sliceOffset, ptr] = sbm->allocateStagingBufferSlice(size, alignment);
         if (sliceBuffer) {
             std::memcpy(ptr, data, size);
-            tempBuffer.reset(SkRef(sliceBuffer));
+            tempBuffer.reset(SkRef(sliceBuffer.get()));
             tempOffset = sliceOffset;
         }
     }
