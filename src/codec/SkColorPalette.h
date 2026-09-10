@@ -11,6 +11,7 @@
 #include "include/core/SkColor.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 /** \class SkColorPalette
 
@@ -42,7 +43,7 @@ public:
     const SkPMColor* readColors() const { return fColors; }
 
 private:
-    SkPMColor*  fColors;
+    raw_ptr<SkPMColor, DanglingUntriaged | AllowPtrArithmetic> fColors;
     int         fCount;
 
     using INHERITED = SkRefCnt;
