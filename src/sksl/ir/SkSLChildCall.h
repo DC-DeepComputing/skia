@@ -61,7 +61,7 @@ public:
     std::string description(OperatorPrecedence) const override;
 
 private:
-    const raw_ref<const Variable> fChild;
+    const bisect_raw_ref<const Variable> fChild;
     ExpressionArray fArguments;
 
     using INHERITED = Expression;

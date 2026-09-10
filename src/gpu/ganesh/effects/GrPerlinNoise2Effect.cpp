@@ -64,7 +64,7 @@ std::unique_ptr<GrFragmentProcessor> GrPerlinNoise2Effect::TestCreate(GrProcesso
 #endif
 
 SkString GrPerlinNoise2Effect::Impl::emitHelper(EmitArgs& args) {
-    const GrPerlinNoise2Effect& pne = args.fFp.cast<GrPerlinNoise2Effect>();
+    const GrPerlinNoise2Effect& pne = args.fFp->cast<GrPerlinNoise2Effect>();
 
     GrGLSLFPFragmentBuilder* fragBuilder = args.fFragBuilder;
 
@@ -172,7 +172,7 @@ SkString GrPerlinNoise2Effect::Impl::emitHelper(EmitArgs& args) {
 void GrPerlinNoise2Effect::Impl::emitCode(EmitArgs& args) {
     SkString noiseFuncName = this->emitHelper(args);
 
-    const GrPerlinNoise2Effect& pne = args.fFp.cast<GrPerlinNoise2Effect>();
+    const GrPerlinNoise2Effect& pne = args.fFp->cast<GrPerlinNoise2Effect>();
 
     GrGLSLFPFragmentBuilder* fragBuilder = args.fFragBuilder;
     GrGLSLUniformHandler* uniformHandler = args.fUniformHandler;
