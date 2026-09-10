@@ -11,6 +11,7 @@
 #include "include/core/SkPath.h"
 #include "src/core/SkBlitter.h"
 #include "src/core/SkScan.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 // controls how much we super-sample (when we use that scan convertion)
 #define SK_SUPERSAMPLE_SHIFT    2
@@ -29,8 +30,8 @@ private:
 #ifdef SK_DEBUG
     SkRectClipCheckBlitter fRectClipCheckBlitter;
 #endif
-    SkBlitter*          fBlitter;
-    const SkIRect*      fClipRect;
+    raw_ptr<SkBlitter> fBlitter;
+    raw_ptr<const SkIRect> fClipRect;
 };
 
 // blit the rects above and below avoid, clipped to clip
