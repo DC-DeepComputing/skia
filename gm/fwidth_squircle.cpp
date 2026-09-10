@@ -99,21 +99,21 @@ std::unique_ptr<GrGeometryProcessor::ProgramImpl> FwidthSquircleTestProcessor::m
 
     private:
         void onEmitCode(EmitArgs& args, GrGPArgs* gpArgs) override {
-            const auto& proc = args.fGeomProc.cast<FwidthSquircleTestProcessor>();
+            const auto& proc = args.fGeomProc->cast<FwidthSquircleTestProcessor>();
 
-            auto* uniforms = args.fUniformHandler;
+            auto uniforms = args.fUniformHandler;
             fViewMatrixHandle = uniforms->addUniform(nullptr,
                                                      kVertex_GrShaderFlag,
                                                      SkSLType::kFloat3x3,
                                                      "viewmatrix");
 
-            auto* varyings = args.fVaryingHandler;
+            auto varyings = args.fVaryingHandler;
             varyings->emitAttributes(proc);
 
             GrGLSLVarying squircleCoord(SkSLType::kFloat2);
             varyings->addVarying("bboxcoord", &squircleCoord);
 
-            auto* v = args.fVertBuilder;
+            auto v = args.fVertBuilder;
             v->codeAppendf("float2x2 R = float2x2(cos(.05), sin(.05), -sin(.05), cos(.05));");
 
             v->codeAppendf("%s = bboxcoord * 1.25;", squircleCoord.vsOut());
@@ -122,7 +122,7 @@ std::unique_ptr<GrGeometryProcessor::ProgramImpl> FwidthSquircleTestProcessor::m
                            uniforms->getUniformCStr(fViewMatrixHandle));
             gpArgs->fPositionVar.set(SkSLType::kFloat3, "vertexpos");
 
-            auto* f = args.fFragBuilder;
+            auto f = args.fFragBuilder;
             f->codeAppendf("float golden_ratio = 1.61803398875;");
             f->codeAppendf("float pi = 3.141592653589793;");
             f->codeAppendf("float x = abs(%s.x), y = abs(%s.y);",
