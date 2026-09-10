@@ -60,10 +60,10 @@ protected:
     // this time the bias is not implemented in the MSL codegen and so iOS/Metal was not tested.
     static constexpr float kSharpenTexturesBias = -.475f;
 
-    const raw_ref<const Program> fProgram;
+    const bisect_raw_ref<const Program> fProgram;
     Context fContext;
-    const raw_ref<const ShaderCaps> fCaps;
-    raw_ptr<OutputStream> fOut;
+    const bisect_raw_ref<const ShaderCaps> fCaps;
+    bisect_raw_ptr<OutputStream> fOut;
 };
 
 class AutoOutputStream {
@@ -91,8 +91,8 @@ public:
     }
 
 private:
-    raw_ptr<CodeGenerator> fCodeGen = nullptr;
-    raw_ptr<OutputStream> fOldOutput = nullptr;
+    bisect_raw_ptr<CodeGenerator> fCodeGen = nullptr;
+    bisect_raw_ptr<OutputStream> fOldOutput = nullptr;
     raw_ptr<int> fIndentationPtr = nullptr;
     int fOldIndentation = 0;
 };

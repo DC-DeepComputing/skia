@@ -144,7 +144,7 @@ public:
 private:
     THashMap<const IRNode*, SlotRange> fSlotMap;
     int fSlotCount = 0;
-    raw_ptr<std::vector<SlotDebugInfo>> fSlotDebugInfo;
+    bisect_raw_ptr<std::vector<SlotDebugInfo>> fSlotDebugInfo;
 };
 
 class AutoStack {
@@ -175,7 +175,7 @@ public:
     void pushCloneIndirect(SlotRange range, int dynamicStackID, int offsetFromStackTop);
 
 private:
-    raw_ptr<Generator> fGenerator;
+    bisect_raw_ptr<Generator> fGenerator;
     int fStackID = 0;
     int fParentStackID = 0;
 };
@@ -475,10 +475,10 @@ public:
     }
 
 private:
-    const raw_ref<const SkSL::Program> fProgram;
+    const bisect_raw_ref<const SkSL::Program> fProgram;
     SkSL::Context fContext;
     Builder fBuilder;
-    raw_ptr<DebugTracePriv> fDebugTrace = nullptr;
+    bisect_raw_ptr<DebugTracePriv> fDebugTrace = nullptr;
     bool fWriteTraceOps = false;
     THashMap<const Variable*, int> fChildEffectMap;
 
@@ -487,9 +487,9 @@ private:
     SlotManager fImmutableSlots;
 
     std::optional<AutoStack> fTraceMask;
-    raw_ptr<const FunctionDefinition> fCurrentFunction = nullptr;
+    bisect_raw_ptr<const FunctionDefinition> fCurrentFunction = nullptr;
     SlotRange fCurrentFunctionResult;
-    raw_ptr<AutoContinueMask> fCurrentContinueMask = nullptr;
+    bisect_raw_ptr<AutoContinueMask> fCurrentContinueMask = nullptr;
     int fCurrentBreakTarget = -1;
     int fCurrentStack = 0;
     int fNextStackID = 0;
@@ -645,8 +645,8 @@ public:
 
 private:
     std::optional<AutoStack> fContinueMaskStack;
-    raw_ptr<Generator> fGenerator = nullptr;
-    raw_ptr<AutoContinueMask> fPreviousContinueMask = nullptr;
+    bisect_raw_ptr<Generator> fGenerator = nullptr;
+    bisect_raw_ptr<AutoContinueMask> fPreviousContinueMask = nullptr;
 };
 
 class AutoLoopTarget {
@@ -666,7 +666,7 @@ public:
     }
 
 private:
-    raw_ptr<Generator> fGenerator = nullptr;
+    bisect_raw_ptr<Generator> fGenerator = nullptr;
     raw_ptr<int> fLoopTargetPtr = nullptr;
     int fPreviousLoopTarget;
     int fLabelID;
@@ -772,8 +772,8 @@ public:
     }
 
 private:
-    raw_ptr<Generator> fGenerator = nullptr;
-    raw_ptr<const Expression> fExpression = nullptr;
+    bisect_raw_ptr<Generator> fGenerator = nullptr;
+    bisect_raw_ptr<const Expression> fExpression = nullptr;
     std::optional<AutoStack> fDedicatedStack;
     int fNumSlots = 0;
 };
@@ -858,7 +858,7 @@ public:
     }
 
 private:
-    raw_ptr<const Variable> fVariable;
+    bisect_raw_ptr<const Variable> fVariable;
 };
 
 class ImmutableLValue final : public LValue {
@@ -902,7 +902,7 @@ public:
     }
 
 private:
-    raw_ptr<const Variable> fVariable;
+    bisect_raw_ptr<const Variable> fVariable;
 };
 
 class SwizzleLValue final : public LValue {
@@ -951,7 +951,7 @@ public:
 
 private:
     std::unique_ptr<LValue> fParent;
-    const raw_ref<const ComponentArray> fComponents;
+    const bisect_raw_ref<const ComponentArray> fComponents;
 };
 
 class UnownedLValueSlice : public LValue {
@@ -996,7 +996,7 @@ public:
     }
 
 protected:
-    raw_ptr<LValue, DanglingUntriaged> fParent;
+    bisect_raw_ptr<LValue, DanglingUntriaged> fParent;
 
 private:
     int fInitialSlot = 0;
@@ -1100,10 +1100,10 @@ public:
     }
 
 private:
-    raw_ptr<Generator> fGenerator = nullptr;
+    bisect_raw_ptr<Generator> fGenerator = nullptr;
     std::unique_ptr<LValue> fParent;
     std::optional<AutoStack> fDedicatedStack;
-    raw_ptr<const IndexExpression> fIndexExpr = nullptr;
+    bisect_raw_ptr<const IndexExpression> fIndexExpr = nullptr;
 };
 
 void SlotManager::addSlotDebugInfoForGroup(const std::string& varName,
@@ -1391,7 +1391,7 @@ std::optional<SlotRange> Generator::writeFunction(
 
     // Handle parameter lvalues.
     struct RemappedSlotRange {
-        raw_ptr<const Variable> fVariable;
+        bisect_raw_ptr<const Variable> fVariable;
         std::optional<SlotRange> fSlotRange;
     };
     SkSpan<Variable* const> parameters = function.declaration().parameters();
