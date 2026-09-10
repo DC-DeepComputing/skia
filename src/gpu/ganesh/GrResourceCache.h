@@ -6,7 +6,10 @@
  */
 
 #ifndef GrResourceCache_DEFINED
+
 #define GrResourceCache_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
@@ -362,8 +365,8 @@ private:
     typedef SkTDPQueue<GrGpuResource*, CompareTimestamp, AccessResourceIndex> PurgeableQueue;
     typedef SkTDArray<GrGpuResource*> ResourceArray;
 
-    GrProxyProvider*                    fProxyProvider = nullptr;
-    GrThreadSafeCache*                  fThreadSafeCache = nullptr;
+    bisect_raw_ptr<GrProxyProvider> fProxyProvider = nullptr;
+    bisect_raw_ptr<GrThreadSafeCache> fThreadSafeCache = nullptr;
 
     // Whenever a resource is added to the cache or the result of a cache lookup, fTimestamp is
     // assigned as the resource's timestamp and then incremented. fPurgeableQueue orders the
@@ -401,11 +404,11 @@ private:
 
     GrDirectContext::DirectContextID    fOwningContextID;
     uint32_t                            fContextUniqueID = SK_InvalidUniqueID;
-    skgpu::SingleOwner*                 fSingleOwner = nullptr;
+    bisect_raw_ptr<skgpu::SingleOwner> fSingleOwner = nullptr;
 
     // This resource is allowed to be in the nonpurgeable array for the sake of validate() because
     // we're in the midst of converting it to purgeable status.
-    SkDEBUGCODE(GrGpuResource*          fNewlyPurgeableResourceForValidation = nullptr;)
+    SkDEBUGCODE(raw_ptr<GrGpuResource> fNewlyPurgeableResourceForValidation = nullptr;)
 };
 
 class GrResourceCache::ResourceAccess {
@@ -477,7 +480,7 @@ private:
     const ResourceAccess* operator&() const;
     ResourceAccess* operator&();
 
-    GrResourceCache* fCache;
+    bisect_raw_ptr<GrResourceCache> fCache;
 
     friend class GrGpuResource; // To access all the proxy inline methods.
     friend class GrResourceCache; // To create this type.

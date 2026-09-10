@@ -34,7 +34,7 @@ void skjpeg_error_exit(j_common_ptr cinfo);
 struct SK_SPI skjpeg_destination_mgr : jpeg_destination_mgr {
     skjpeg_destination_mgr(SkWStream* stream);
 
-    const raw_ptr<SkWStream> fStream;
+    const bisect_raw_ptr<SkWStream> fStream;
 
     enum {
         kBufferSize = 1024
