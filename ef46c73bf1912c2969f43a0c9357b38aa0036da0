@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cbf3970a_59347891",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5150452
+      },
+      "writtenOn": "2026-09-10T20:32:26Z",
+      "side": 1,
+      "message": "I need to add \"zhai.he@nxp.com\" into AUTHORS, and commit again, right?",
+      "revId": "ef46c73bf1912c2969f43a0c9357b38aa0036da0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
