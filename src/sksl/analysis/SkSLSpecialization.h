@@ -63,7 +63,7 @@ struct SpecializedFunctionKey {
                fSpecializationIndex == other.fSpecializationIndex;
     }
 
-    raw_ptr<const FunctionDeclaration> fDeclaration = nullptr;
+    bisect_raw_ptr<const FunctionDeclaration> fDeclaration = nullptr;
     SpecializationIndex fSpecializationIndex = Analysis::kUnspecialized;
 };
 
@@ -81,7 +81,7 @@ struct SpecializedCallKey {
                fParentSpecializationIndex == other.fParentSpecializationIndex;
     }
 
-    raw_ptr<const FunctionCall> fStablePointer = nullptr;
+    bisect_raw_ptr<const FunctionCall> fStablePointer = nullptr;
     SpecializationIndex fParentSpecializationIndex = Analysis::kUnspecialized;
 };
 
