@@ -79,6 +79,7 @@
 #include "src/shaders/gradients/SkLinearGradient.h"
 #include "src/shaders/gradients/SkRadialGradient.h"
 #include "src/shaders/gradients/SkSweepGradient.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 using namespace skia_private;
 
@@ -116,7 +117,7 @@ private:
         }
     }
 
-    PipelineDataGatherer* fGatherer;
+    raw_ptr<PipelineDataGatherer> fGatherer;
     SkDEBUGCODE(UniformExpectationsValidator fValidator;)
 };
 
