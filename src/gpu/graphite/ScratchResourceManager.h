@@ -14,6 +14,7 @@
 #include "src/core/SkTHash.h"
 
 #include <string_view>
+#include "src/partition_alloc/raw_ptr.h"
 
 namespace skgpu::graphite {
 
@@ -174,7 +175,7 @@ public:
     }
 
 private:
-    ResourceProvider* fResourceProvider;
+    raw_ptr<ResourceProvider> fResourceProvider;
 
     // ScratchResourceManager holds a pointer to each un-returned scratch resource that it's
     // fetched from the ResourceProvider that should be considered unavailable when making
