@@ -14,6 +14,7 @@
 #include <cstddef>
 #include <utility>
 #include <vector>
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrGpu;
 
@@ -62,7 +63,7 @@ private:
     };
 
     std::vector<StagingBuffer> fBuffers;
-    GrGpu* fGpu;
+    raw_ptr<GrGpu> fGpu;
 };
 
 #endif

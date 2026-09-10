@@ -13,6 +13,7 @@
 #include "include/private/gpu/ganesh/GrContext_Base.h"
 
 #include <cstdint>
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrCaps;
 class GrDirectContext;
@@ -45,7 +46,7 @@ public:
 protected:
     explicit GrBaseContextPriv(GrContext_Base* context) : fContext(context) {}
 
-    GrContext_Base* fContext;
+    raw_ptr<GrContext_Base> fContext;
 
 private:
     GrBaseContextPriv& operator=(const GrBaseContextPriv&) = delete;

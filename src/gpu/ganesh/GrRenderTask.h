@@ -21,6 +21,7 @@
 #include "src/gpu/ganesh/GrSurfaceProxyView.h"
 
 #include <cstdint>
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrDrawingManager;
 class GrOpFlushState;
@@ -312,7 +313,7 @@ private:
     // For performance reasons, we should perform texture resolves back-to-back as much as possible.
     // (skbug.com/40040728). To accomplish this, we make and reuse one single resolve task for
     // each render task, then add it as a dependency during makeClosed().
-    GrTextureResolveRenderTask* fTextureResolveTask = nullptr;
+    raw_ptr<GrTextureResolveRenderTask> fTextureResolveTask= nullptr;
 
     SkDEBUGCODE(GrDrawingManager *fDrawingMgr = nullptr;)
 };

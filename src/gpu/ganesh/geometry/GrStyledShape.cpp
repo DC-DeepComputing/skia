@@ -21,6 +21,7 @@
 #include <cstring>
 #include <limits>
 #include <utility>
+#include "src/partition_alloc/raw_ptr.h"
 
 
 GrStyledShape& GrStyledShape::operator=(const GrStyledShape& that) {
@@ -530,7 +531,7 @@ public:
     }
 
 private:
-    GrShape* fShape;
+    raw_ptr<GrShape> fShape;
     bool fInverted;
 };
 

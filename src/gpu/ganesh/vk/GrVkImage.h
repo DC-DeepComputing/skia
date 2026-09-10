@@ -31,6 +31,7 @@
 #include <cinttypes>
 #include <cstdint>
 #include <string_view>
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrVkGpu;
 class GrVkImageView;
@@ -315,7 +316,7 @@ private:
     private:
         void freeGPUData() const override;
 
-        const GrVkGpu*     fGpu;
+        raw_ptr<const GrVkGpu> fGpu;
         VkImage            fImage;
         skgpu::VulkanAlloc fAlloc;
 
@@ -333,7 +334,7 @@ private:
         void freeGPUData() const override;
     };
 
-    Resource* fResource;
+    raw_ptr<Resource> fResource;
 
     friend class GrVkRenderTarget;
 };

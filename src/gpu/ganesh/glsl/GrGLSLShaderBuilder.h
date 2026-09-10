@@ -22,6 +22,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <string>
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrGLSLColorSpaceXformHelper;
 class GrGLSLProgramBuilder;
@@ -178,7 +179,7 @@ public:
             fBuilder->codeAppend("}");
         }
     private:
-        GrGLSLShaderBuilder* fBuilder;
+        raw_ptr<GrGLSLShaderBuilder> fBuilder;
     };
 
 protected:
@@ -264,7 +265,7 @@ protected:
         kPrealloc = kCode + 6,  // 6 == Reasonable upper bound on number of processor stages
     };
 
-    GrGLSLProgramBuilder* fProgramBuilder;
+    raw_ptr<GrGLSLProgramBuilder> fProgramBuilder;
     std::string fCompilerString;
     skia_private::STArray<kPrealloc, SkString> fShaderStrings;
     SkString fCode;

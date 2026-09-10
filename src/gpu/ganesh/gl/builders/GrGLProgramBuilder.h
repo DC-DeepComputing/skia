@@ -23,6 +23,7 @@
 
 #include <cstddef>
 #include <memory>
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrCaps;
 class GrDirectContext;
@@ -98,7 +99,7 @@ private:
     const GrGLSLUniformHandler* uniformHandler() const override { return &fUniformHandler; }
     GrGLSLVaryingHandler* varyingHandler() override { return &fVaryingHandler; }
 
-    GrGLGpu*              fGpu;
+    raw_ptr<GrGLGpu> fGpu;
     GrGLVaryingHandler    fVaryingHandler;
     GrGLUniformHandler    fUniformHandler;
 

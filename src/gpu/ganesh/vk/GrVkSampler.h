@@ -19,6 +19,7 @@
 
 #include <cinttypes>
 #include <cstdint>
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrSamplerState;
 class GrVkGpu;
@@ -82,7 +83,7 @@ private:
     static uint32_t GenID();
 
     VkSampler                   fSampler;
-    GrVkSamplerYcbcrConversion* fYcbcrConversion;
+    raw_ptr<GrVkSamplerYcbcrConversion> fYcbcrConversion;
     Key                         fKey;
     uint32_t                    fUniqueID;
 

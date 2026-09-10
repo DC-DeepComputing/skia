@@ -10,6 +10,7 @@
 
 #include <cstdint>
 #include <utility>
+#include "src/partition_alloc/raw_ptr.h"
 
 struct GrDrawIndirectCommand {
     uint32_t fVertexCount;
@@ -97,7 +98,7 @@ public:
     }
 
 private:
-    GrDrawIndexedIndirectCommand* fData;
+    raw_ptr<GrDrawIndexedIndirectCommand, AllowPtrArithmetic> fData;
 };
 
 #endif

@@ -9,6 +9,7 @@
 #define GrOnFlushResourceProvider_DEFINED
 
 #include "src/gpu/ganesh/GrAtlasTypes.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrCaps;
 class GrDrawingManager;
@@ -64,7 +65,7 @@ private:
     GrOnFlushResourceProvider(const GrOnFlushResourceProvider&) = delete;
     GrOnFlushResourceProvider& operator=(const GrOnFlushResourceProvider&) = delete;
 
-    GrDrawingManager* fDrawingMgr;
+    raw_ptr<GrDrawingManager> fDrawingMgr;
 };
 
 #endif

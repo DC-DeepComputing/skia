@@ -12,6 +12,7 @@
 #include "src/gpu/ganesh/GrTextureProxy.h"
 
 #include <memory>
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrDeferredProxyUploader;
 class GrOpFlushState;
@@ -39,7 +40,7 @@ private:
     const GrTextureProxyPriv* operator&() const;
     GrTextureProxyPriv* operator&();
 
-    GrTextureProxy* fTextureProxy;
+    raw_ptr<GrTextureProxy> fTextureProxy;
 
     friend class GrTextureProxy;  // to construct/copy this type.
 };

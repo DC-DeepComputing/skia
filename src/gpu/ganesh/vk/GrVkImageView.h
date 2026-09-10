@@ -15,6 +15,7 @@
 
 #include <cinttypes>
 #include <cstdint>
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrVkGpu;
 class GrVkSamplerYcbcrConversion;
@@ -54,7 +55,7 @@ private:
     void freeGPUData() const override;
 
     VkImageView  fImageView;
-    GrVkSamplerYcbcrConversion* fYcbcrConversion;
+    raw_ptr<GrVkSamplerYcbcrConversion> fYcbcrConversion;
 
     using INHERITED = GrVkManagedResource;
 };

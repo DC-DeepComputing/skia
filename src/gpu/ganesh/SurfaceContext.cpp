@@ -61,6 +61,7 @@
 #include <cstdint>
 #include <memory>
 #include <tuple>
+#include "src/partition_alloc/raw_ptr.h"
 
 using namespace skia_private;
 
@@ -704,7 +705,7 @@ struct SurfaceContext::AsyncReadPixelContext {
     ReadPixelsCallback* fClientCallback;
     ReadPixelsContext fClientContext;
     SkISize fSize;
-    GrClientMappedBufferManager* fMappedBufferManager;
+    raw_ptr<GrClientMappedBufferManager> fMappedBufferManager;
 
     PixelTransferResult fPrimaryTransfer; // RGBA or Y
     PixelTransferResult fUTransfer = {};

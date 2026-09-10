@@ -17,6 +17,7 @@
 #include "src/sksl/ir/SkSLProgram.h"
 
 #include <string>
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrCaps;
 class GrGLSLUniformHandler;
@@ -84,7 +85,7 @@ private:
     const GrGLSLUniformHandler* uniformHandler() const override { return &fUniformHandler; }
     GrGLSLVaryingHandler* varyingHandler() override { return &fVaryingHandler; }
 
-    GrVkGpu* fGpu;
+    raw_ptr<GrVkGpu> fGpu;
     GrVkVaryingHandler fVaryingHandler;
     GrVkUniformHandler fUniformHandler;
 

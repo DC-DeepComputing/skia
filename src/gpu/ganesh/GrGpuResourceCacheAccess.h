@@ -16,6 +16,7 @@
 #include "src/gpu/ganesh/GrGpuResourcePriv.h"
 
 #include <cstdint>
+#include "src/partition_alloc/raw_ptr.h"
 
 namespace skiatest {
 class Reporter;
@@ -100,7 +101,7 @@ private:
     const CacheAccess* operator&() const = delete;
     CacheAccess* operator&() = delete;
 
-    GrGpuResource* fResource;
+    raw_ptr<GrGpuResource, DanglingUntriaged> fResource;
 
     friend class GrGpuResource; // to construct/copy this type.
     friend class GrResourceCache; // to use this type

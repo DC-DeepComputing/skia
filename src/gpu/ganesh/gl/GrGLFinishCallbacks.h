@@ -12,6 +12,7 @@
 #include "src/gpu/RefCntedCallback.h"
 
 #include <list>
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrGLGpu;
 
@@ -58,7 +59,7 @@ private:
         GrGLint             fTimerQuery;
     };
 
-    GrGLGpu*                  fGpu;
+    raw_ptr<GrGLGpu> fGpu;
     std::list<FinishCallback> fCallbacks;
 };
 

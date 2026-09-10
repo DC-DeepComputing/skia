@@ -21,6 +21,7 @@
 #include <cstdint>
 #include <string>
 #include <string_view>
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrDirectContext;
 class GrGpu;
@@ -332,7 +333,7 @@ private:
 
     // This is not ref'ed but abandon() or release() will be called before the GrGpu object
     // is destroyed. Those calls will set this to NULL.
-    GrGpu* fGpu;
+    raw_ptr<GrGpu> fGpu;
     mutable size_t fGpuMemorySize = kInvalidGpuMemorySize;
 
     GrBudgetedType fBudgetedType = GrBudgetedType::kUnbudgetedUncacheable;
@@ -356,7 +357,7 @@ private:
     const CacheAccess* operator&() const = delete;
     CacheAccess* operator&() = delete;
 
-    GrGpuResource* fResource;
+    raw_ptr<GrGpuResource> fResource;
 
     friend class GrGpuResource;
     friend class GrSurfaceProxy;

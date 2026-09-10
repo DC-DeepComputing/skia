@@ -24,6 +24,7 @@
 #include <cstdint>
 #include <memory>
 #include <type_traits>
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrAppliedClip;
 class GrDrawOp;
@@ -333,10 +334,10 @@ private:
     // of the actual clip stack.
     // NOTE: These fields can go away once a context has a dedicated clip atlas
     mutable Mask::Stack      fMasks;
-    mutable GrProxyProvider* fProxyProvider;
+    mutable raw_ptr<GrProxyProvider> fProxyProvider;
 
     const SkIRect            fDeviceBounds;
-    const SkMatrix*          fCTM;
+    raw_ptr<const SkMatrix> fCTM;
 
     // When there's MSAA, clip elements are applied using the stencil buffer. If a backend cannot
     // disable MSAA per draw, then all elements are effectively AA'ed. Tracking them as such makes

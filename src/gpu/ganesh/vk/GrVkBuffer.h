@@ -17,6 +17,7 @@
 
 #include <cstddef>
 #include <string_view>
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrVkDescriptorSet;
 class GrVkGpu;
@@ -72,7 +73,7 @@ private:
     VkBuffer fBuffer;
     skgpu::VulkanAlloc fAlloc;
 
-    const GrVkDescriptorSet* fUniformDescriptorSet;
+    raw_ptr<const GrVkDescriptorSet> fUniformDescriptorSet;
 
     using INHERITED = GrGpuBuffer;
 };

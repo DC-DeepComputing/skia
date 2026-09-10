@@ -18,6 +18,7 @@
 #include "src/gpu/ganesh/GrSurfaceProxyView.h"
 
 #include <cstdint>
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrRecordingContext;
 class GrShape;
@@ -79,7 +80,7 @@ private:
     // fPixelsStorage must be declared before fPixels so that fPixelsStorage outlives
     // fPixels on destruction (since fPixels can be a raw pointer pointing to fPixelsStorage).
     SkAutoPixmapStorage  fPixelsStorage;
-    SkAutoPixmapStorage* fPixels;
+    raw_ptr<SkAutoPixmapStorage> fPixels;
     skcpu::Draw          fDraw;
     SkRasterClip         fRasterClip;
 

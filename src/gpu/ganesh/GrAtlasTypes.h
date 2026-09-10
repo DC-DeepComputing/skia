@@ -26,6 +26,7 @@
 #include <cstdint>
 #include <cstring>
 #include <utility>
+#include "src/partition_alloc/raw_ptr.h"
 
 class SkPixmap;
 
@@ -394,7 +395,7 @@ private:
     GrAtlasGenerationCounter* const fGenerationCounter;
     uint64_t fGenID;
     GrPlotLocator fPlotLocator;
-    std::byte* fData;
+    raw_ptr<std::byte, DanglingUntriaged | AllowPtrArithmetic> fData;
     const int fWidth;
     const int fHeight;
     const int fX;

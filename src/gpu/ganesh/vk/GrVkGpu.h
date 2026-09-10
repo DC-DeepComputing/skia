@@ -38,6 +38,7 @@
 #include <optional>
 #include <string_view>
 #include <utility>
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrAttachment;
 class GrBackendSemaphore;
@@ -463,9 +464,9 @@ private:
 
     GrVkMSAALoadManager                                   fMSAALoadManager;
 
-    GrVkCommandPool*                                      fMainCmdPool;
+    raw_ptr<GrVkCommandPool> fMainCmdPool;
     // just a raw pointer; object's lifespan is managed by fCmdPool
-    GrVkPrimaryCommandBuffer*                             fMainCmdBuffer;
+    raw_ptr<GrVkPrimaryCommandBuffer> fMainCmdBuffer;
 
     skia_private::STArray<1, GrVkSemaphore::Resource*>    fSemaphoresToWaitOn;
     skia_private::STArray<1, GrVkSemaphore::Resource*>    fSemaphoresToSignal;

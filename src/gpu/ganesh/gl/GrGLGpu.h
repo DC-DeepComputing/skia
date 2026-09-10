@@ -56,6 +56,7 @@
 #include <memory>
 #include <optional>
 #include <string_view>
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrAttachment;
 class GrBackendSemaphore;
@@ -747,7 +748,7 @@ private:
         GrGLAttribArrayState fDefaultVertexArrayAttribState;
 
         // This is used when we're using a core profile.
-        GrGLVertexArray*     fCoreProfileVertexArray;
+        raw_ptr<GrGLVertexArray, DanglingUntriaged> fCoreProfileVertexArray;
     } fHWVertexArrayState;
 
     struct {

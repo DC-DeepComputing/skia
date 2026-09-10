@@ -18,6 +18,7 @@
 #include <cinttypes>
 #include <cstdint>
 #include <memory>
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrBackendSemaphore;
 class GrVkGpu;
@@ -94,7 +95,7 @@ private:
         fResource->setIsOwned();
     }
 
-    Resource* fResource;
+    raw_ptr<Resource> fResource;
 
     using INHERITED = GrSemaphore;
 };

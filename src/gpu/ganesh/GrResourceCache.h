@@ -31,6 +31,7 @@
 #include <functional>
 #include <type_traits>
 #include <utility>
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrProxyProvider;
 class GrSurface;
@@ -362,8 +363,8 @@ private:
     typedef SkTDPQueue<GrGpuResource*, CompareTimestamp, AccessResourceIndex> PurgeableQueue;
     typedef SkTDArray<GrGpuResource*> ResourceArray;
 
-    GrProxyProvider*                    fProxyProvider = nullptr;
-    GrThreadSafeCache*                  fThreadSafeCache = nullptr;
+    raw_ptr<GrProxyProvider> fProxyProvider= nullptr;
+    raw_ptr<GrThreadSafeCache> fThreadSafeCache= nullptr;
 
     // Whenever a resource is added to the cache or the result of a cache lookup, fTimestamp is
     // assigned as the resource's timestamp and then incremented. fPurgeableQueue orders the
@@ -401,7 +402,7 @@ private:
 
     GrDirectContext::DirectContextID    fOwningContextID;
     uint32_t                            fContextUniqueID = SK_InvalidUniqueID;
-    skgpu::SingleOwner*                 fSingleOwner = nullptr;
+    raw_ptr<skgpu::SingleOwner> fSingleOwner= nullptr;
 
     // This resource is allowed to be in the nonpurgeable array for the sake of validate() because
     // we're in the midst of converting it to purgeable status.
@@ -477,7 +478,7 @@ private:
     const ResourceAccess* operator&() const;
     ResourceAccess* operator&();
 
-    GrResourceCache* fCache;
+    raw_ptr<GrResourceCache> fCache;
 
     friend class GrGpuResource; // To access all the proxy inline methods.
     friend class GrResourceCache; // To create this type.

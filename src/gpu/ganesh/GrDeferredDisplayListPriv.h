@@ -9,6 +9,7 @@
 #define GrDeferredDisplayListPriv_DEFINED
 
 #include "include/private/chromium/GrDeferredDisplayList.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 /*************************************************************************************************/
 /** Class that adds methods to GrDeferredDisplayList that are only intended for use internal to
@@ -44,7 +45,7 @@ private:
     const GrDeferredDisplayListPriv* operator&() const;
     GrDeferredDisplayListPriv* operator&();
 
-    GrDeferredDisplayList* fDDL;
+    raw_ptr<GrDeferredDisplayList> fDDL;
 
     friend class GrDeferredDisplayList; // to construct/copy this type.
 };

@@ -22,12 +22,13 @@
 
 #include <cstdint>
 #include <cstring>
+#include "src/partition_alloc/raw_ptr.h"
 
 using namespace skia_private;
 
 struct GrGradientBitmapCache::Entry {
-    Entry*      fPrev;
-    Entry*      fNext;
+    raw_ptr<Entry> fPrev;
+    raw_ptr<Entry> fNext;
 
     void*       fBuffer;
     size_t      fSize;

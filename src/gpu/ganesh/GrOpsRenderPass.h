@@ -22,6 +22,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <memory>
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrGeometryProcessor;
 class GrGpu;
@@ -165,7 +166,7 @@ protected:
     }
 
     GrSurfaceOrigin fOrigin;
-    GrRenderTarget* fRenderTarget;
+    raw_ptr<GrRenderTarget> fRenderTarget;
 
     // Backends may defer binding of certain buffers if their draw API requires a buffer, or if
     // their bind methods don't support base values.

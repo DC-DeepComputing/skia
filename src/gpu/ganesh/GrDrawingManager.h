@@ -25,6 +25,7 @@
 #include <cstdint>
 #include <memory>
 #include <vector>
+#include "src/partition_alloc/raw_ptr.h"
 
 // Enabling this will print out which path renderers are being chosen
 #define GR_PATH_RENDERER_SPEW 0
@@ -252,7 +253,7 @@ private:
 
     skia_private::TArray<sk_sp<GrRenderTask>>  fDAG;
     std::vector<int>                           fReorderBlockerTaskIndices;
-    skgpu::ganesh::OpsTask*                    fActiveOpsTask = nullptr;
+    raw_ptr<skgpu::ganesh::OpsTask, DanglingUntriaged> fActiveOpsTask= nullptr;
 
     PathRendererChain::Options                 fOptionsForPathRendererChain;
     std::unique_ptr<PathRendererChain>         fPathRendererChain;

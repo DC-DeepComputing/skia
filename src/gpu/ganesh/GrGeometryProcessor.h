@@ -31,6 +31,7 @@
 #include <optional>
 #include <tuple>
 #include <unordered_map>
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrGLSLFPFragmentBuilder;
 class GrGLSLVertexBuilder;
@@ -161,7 +162,7 @@ public:
         private:
             void skipUninitialized();
 
-            const Attribute* fCurr           = nullptr;
+            raw_ptr<const Attribute, AllowPtrArithmetic> fCurr= nullptr;
             int              fRemaining      = 0;
             size_t           fImplicitOffset = 0;
         };
@@ -182,7 +183,7 @@ public:
         void addToKey(skgpu::KeyBuilder* b) const;
 
     private:
-        const Attribute* fAttributes = nullptr;
+        raw_ptr<const Attribute, AllowPtrArithmetic | DanglingUntriaged> fAttributes= nullptr;
         int              fRawCount = 0;
         int              fCount = 0;
         size_t           fStride = 0;
@@ -307,11 +308,11 @@ public:
         GrGLSLFPFragmentBuilder* fFragBuilder;
         GrGLSLVaryingHandler* fVaryingHandler;
         GrGLSLUniformHandler* fUniformHandler;
-        const GrShaderCaps* fShaderCaps;
+        raw_ptr<const GrShaderCaps> fShaderCaps;
         const GrGeometryProcessor& fGeomProc;
         const char* fOutputColor;
         const char* fOutputCoverage;
-        const SamplerHandle* fTexSamplers;
+        raw_ptr<const SamplerHandle, AllowPtrArithmetic> fTexSamplers;
     };
 
     /**

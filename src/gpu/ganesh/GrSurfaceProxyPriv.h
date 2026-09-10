@@ -15,6 +15,7 @@
 #include "src/gpu/ganesh/GrSurfaceProxy.h"
 
 #include <utility>
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrCaps;
 class GrResourceProvider;
@@ -62,7 +63,7 @@ private:
     const GrSurfaceProxyPriv* operator&() const;
     GrSurfaceProxyPriv* operator&();
 
-    GrSurfaceProxy* fProxy;
+    raw_ptr<GrSurfaceProxy> fProxy;
 
     friend class GrSurfaceProxy; // to construct/copy this type.
 };
