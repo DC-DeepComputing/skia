@@ -20,6 +20,7 @@
 #include <memory>
 #include <optional>
 #include <variant>
+#include "src/partition_alloc/raw_ptr.h"
 
 namespace skgpu::graphite {
 
@@ -202,7 +203,7 @@ private:
     // The object under construction.
     std::unique_ptr<DispatchGroup> fObj;
 
-    Recorder* fRecorder;
+    raw_ptr<Recorder> fRecorder;
     OutputTable fOutputTable;
 };
 

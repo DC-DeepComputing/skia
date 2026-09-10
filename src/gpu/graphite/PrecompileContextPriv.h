@@ -10,6 +10,7 @@
 
 #include "include/gpu/graphite/PrecompileContext.h"
 #include "src/gpu/graphite/SharedContext.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 class Caps;
 
@@ -53,7 +54,7 @@ private:
     const PrecompileContextPriv* operator&() const;
     PrecompileContextPriv *operator&();
 
-    PrecompileContext* fPrecompileContext;
+    raw_ptr<PrecompileContext> fPrecompileContext;
 };
 
 inline PrecompileContextPriv PrecompileContext::priv() { return PrecompileContextPriv(this); }

@@ -9,6 +9,7 @@
 #define skgpu_graphite_precompile_PrecompileBasePriv_DEFINED
 
 #include "src/gpu/graphite/PrecompileInternal.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 namespace skgpu::graphite {
 
@@ -42,7 +43,7 @@ private:
     const PrecompileBasePriv* operator&() const;
     PrecompileBasePriv *operator&();
 
-    PrecompileBase* fPrecompileBase;
+    raw_ptr<PrecompileBase> fPrecompileBase;
 };
 
 inline PrecompileBasePriv PrecompileBase::priv() { return PrecompileBasePriv(this); }

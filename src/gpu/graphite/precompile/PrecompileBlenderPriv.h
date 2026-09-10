@@ -11,6 +11,7 @@
 #include "include/gpu/graphite/precompile/PrecompileBlender.h"
 
 #include <vector>
+#include "src/partition_alloc/raw_ptr.h"
 
 namespace skgpu::graphite {
 
@@ -42,7 +43,7 @@ private:
     const PrecompileBlenderPriv* operator&() const;
     PrecompileBlenderPriv *operator&();
 
-    PrecompileBlender* fPrecompileBlender;
+    raw_ptr<PrecompileBlender> fPrecompileBlender;
 };
 
 inline PrecompileBlenderPriv PrecompileBlender::priv() { return PrecompileBlenderPriv(this); }

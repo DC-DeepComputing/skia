@@ -17,6 +17,7 @@
 
 #include <limits>
 #include <cstring> // for memcmp
+#include "src/partition_alloc/raw_ptr.h"
 
 class SkArenaAlloc;
 class SkMeshSpecification;
@@ -343,7 +344,7 @@ private:
         int fDataSize = -1;
     };
 
-    const ShaderCodeDictionary* fDict;
+    raw_ptr<const ShaderCodeDictionary> fDict;
     skia_private::TArray<StackFrame> fStack;
     bool fLocked = false;
 #endif
@@ -364,7 +365,7 @@ public:
     const PaintParamsKey* operator->() const { return &fKey; }
 
 private:
-    PaintParamsKeyBuilder* fBuilder;
+    raw_ptr<PaintParamsKeyBuilder> fBuilder;
     PaintParamsKey fKey;
 };
 
