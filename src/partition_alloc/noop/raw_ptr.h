@@ -344,6 +344,12 @@ constexpr RawPtrTraits DisableDanglingPtrDetection = 1 << 0;
 constexpr RawPtrTraits DanglingUntriaged = 1 << 0;
 constexpr RawPtrTraits LeakedDanglingUntriaged = 1 << 0;
 constexpr RawPtrTraits AllowPtrArithmetic = 1 << 1;
+// Marks a pointer that stays unprotected in release builds because protecting
+// it costs measurable performance. Everything here is already a no-op, so the
+// value is irrelevant; it exists so that declarations spelling this trait
+// still compile when Skia is built without PartitionAlloc.
+constexpr RawPtrTraits kUnprotectedInRelease = 0;
+
 
 namespace std {
 
