@@ -26,6 +26,7 @@
 
 #include <array>
 #include <cstdint>
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrAppliedClip;
 class GrArenas;
@@ -231,7 +232,7 @@ private:
 
         private:
             GrOp::Owner fHead{nullptr};
-            GrOp* fTail{nullptr};
+            raw_ptr<GrOp> fTail{nullptr};
 
             static_assert(::sk_is_trivially_relocatable<decltype(fHead)>::value);
             static_assert(::sk_is_trivially_relocatable<decltype(fTail)>::value);

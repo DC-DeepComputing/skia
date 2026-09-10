@@ -22,6 +22,7 @@
 #include <cmath>
 #include <cstdint>
 #include <tuple>
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrEagerVertexAllocator;
 struct SkRect;
@@ -275,7 +276,7 @@ protected:
 
     private:
         Node* fHead = nullptr;
-        Node** fTail = &fHead;
+        raw_ptr<Node *> fTail = &fHead;
         int fCount = 0;
     };
 
