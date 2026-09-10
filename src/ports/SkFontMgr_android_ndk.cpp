@@ -457,8 +457,8 @@ struct SkAFont {
     float getAxisValue(uint32_t index) const { return fAPI->AFont_getAxisValue(fFont, index); }
 
 private:
-    const raw_ref<const AndroidFontAPI> fAPI;
-    raw_ptr<AFont> fFont;
+    const bisect_raw_ref<const AndroidFontAPI> fAPI;
+    bisect_raw_ptr<AFont> fFont;
 };
 
 struct SkASystemFontIterator {
@@ -476,8 +476,8 @@ struct SkASystemFontIterator {
     SkAFont next() { return SkAFont(*fAPI, fAPI->ASystemFontIterator_next(fIterator)); }
 
 private:
-    const raw_ref<const AndroidFontAPI> fAPI;
-    const raw_ptr<ASystemFontIterator> fIterator;
+    const bisect_raw_ref<const AndroidFontAPI> fAPI;
+    const bisect_raw_ptr<ASystemFontIterator> fIterator;
 };
 
 class SkALanguage {
@@ -673,7 +673,7 @@ private:
         private:
             sk_sp<SkTypeface_AndroidNDK> fTypeface;
             sk_sp<SkTypeface::LocalizedStrings> fBase;
-            raw_ptr<const SkString, AllowPtrArithmetic> fExtraFamilyName;
+            bisect_raw_ptr<const SkString, AllowPtrArithmetic> fExtraFamilyName;
 
             bool next(LocalizedString* localizedString) override {
                 if (!fExtraFamilyName) {
@@ -946,7 +946,7 @@ private:
 struct NameToFamily {
     SkString name;
     SkString normalizedName;
-    raw_ptr<SkFontStyleSet_AndroidNDK> styleSet;
+    bisect_raw_ptr<SkFontStyleSet_AndroidNDK> styleSet;
 
     using sk_is_trivially_relocatable = std::true_type;
     static_assert(::sk_is_trivially_relocatable<decltype(name)>::value);
