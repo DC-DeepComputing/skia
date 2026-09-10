@@ -22,6 +22,7 @@
 #include "src/core/SkScalerContext.h"
 #include "src/core/SkStrikeCache.h"
 #include "src/core/SkWriteBuffer.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/text/StrikeForGPU.h"
 
 #include <cctype>
@@ -69,7 +70,7 @@ public:
     }
 
 private:
-    SkStrike* const fStrike;
+    const bisect_raw_ptr<SkStrike> fStrike;
 };
 
 void SkStrike::lock() {
