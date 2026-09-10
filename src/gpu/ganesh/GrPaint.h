@@ -17,6 +17,7 @@
 
 #include <memory>
 #include <utility>
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrXPFactory;
 enum class SkBlendMode;
@@ -127,7 +128,7 @@ private:
 
     friend class GrProcessorSet;
 
-    const GrXPFactory* fXPFactory = nullptr;
+    raw_ptr<const GrXPFactory> fXPFactory= nullptr;
     std::unique_ptr<GrFragmentProcessor> fColorFragmentProcessor;
     std::unique_ptr<GrFragmentProcessor> fCoverageFragmentProcessor;
     bool fTrivial = true;

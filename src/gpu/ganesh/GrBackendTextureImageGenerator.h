@@ -16,6 +16,7 @@
 #include "src/gpu/ganesh/GrSurfaceProxyView.h"
 
 #include <memory>
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrRecordingContext;
 class GrSemaphore;
@@ -97,7 +98,7 @@ private:
         std::unique_ptr<GrSemaphore>     fSemaphore;
     };
 
-    RefHelper*       fRefHelper;
+    raw_ptr<RefHelper> fRefHelper;
     // This Mutex is used to guard the borrowing of the texture to one GrContext at a time as well
     // as the creation of the fBorrowingContextReleaseProc. The latter happening if two threads with
     // the same consuming GrContext try to generate a texture at the same time.

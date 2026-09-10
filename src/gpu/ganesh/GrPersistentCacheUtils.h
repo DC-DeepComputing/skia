@@ -16,6 +16,7 @@
 #include "src/sksl/ir/SkSLProgram.h"
 
 #include <string>
+#include "src/partition_alloc/raw_ptr.h"
 
 class SkReadBuffer;
 namespace SkSL {
@@ -29,7 +30,7 @@ struct ProgramSettings;
 namespace GrPersistentCacheUtils {
 
 struct ShaderMetadata {
-    SkSL::ProgramSettings* fSettings = nullptr;
+    raw_ptr<SkSL::ProgramSettings> fSettings= nullptr;
     skia_private::TArray<std::string> fAttributeNames;
     bool fHasSecondaryColorOutput = false;
     sk_sp<SkData> fPlatformData;

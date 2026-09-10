@@ -13,6 +13,7 @@
 #include "src/gpu/ganesh/StencilClip.h"
 
 #include <cstdint>
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrRecordingContext;
 class GrShape;
@@ -68,7 +69,7 @@ public:
 
 private:
     GrRecordingContext* fContext;
-    SurfaceDrawContext* fSDC;
+    raw_ptr<SurfaceDrawContext> fSDC;
     StencilClip         fClip;
     int                 fNumFPs;
 

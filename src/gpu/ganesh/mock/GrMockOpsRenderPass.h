@@ -19,6 +19,7 @@
 #include <array>
 #include <cstddef>
 #include <cstdint>
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrBuffer;
 class GrGeometryProcessor;
@@ -81,7 +82,7 @@ private:
         }
     }
 
-    GrMockGpu* fGpu;
+    raw_ptr<GrMockGpu> fGpu;
     GrLoadOp fColorLoadOp;
     int fNumDraws = 0;
 

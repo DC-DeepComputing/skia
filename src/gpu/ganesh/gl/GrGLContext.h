@@ -17,6 +17,7 @@
 
 #include <memory>
 #include <utility>
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrGLExtensions;
 struct GrContextOptions;
@@ -93,7 +94,7 @@ protected:
         sk_sp<const GrGLInterface>          fInterface;
         GrGLDriverInfo                      fDriverInfo;
         SkSL::GLSLGeneration                fGLSLGeneration;
-        const  GrContextOptions*            fContextOptions;
+        raw_ptr<const  GrContextOptions> fContextOptions;
     };
 
     GrGLContextInfo(ConstructorArgs&&);

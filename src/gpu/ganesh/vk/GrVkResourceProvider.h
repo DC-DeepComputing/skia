@@ -28,6 +28,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <memory>
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrProgramInfo;
 class GrRenderTarget;
@@ -305,7 +306,7 @@ private:
 
     struct MSAALoadPipeline {
         sk_sp<const GrVkPipeline> fPipeline;
-        const GrVkRenderPass* fRenderPass;
+        raw_ptr<const GrVkRenderPass> fRenderPass;
     };
 
     // Cache of previously created msaa load pipelines

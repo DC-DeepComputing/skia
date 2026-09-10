@@ -14,6 +14,7 @@
 #include "src/gpu/ganesh/GrGpuResource.h"
 
 #include <cstddef>
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrBuffer;
 class GrGLGpu;
@@ -85,7 +86,7 @@ private:
         GrVertexAttribType        fCPUType;
         SkSLType                  fGPUType;
         GrGLsizei                 fStride;
-        const GrGLvoid*           fOffset;
+        raw_ptr<const GrGLvoid> fOffset;
         int                       fDivisor;
     };
 

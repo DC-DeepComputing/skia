@@ -23,6 +23,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <memory>
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrBuffer;
 class GrGpu;
@@ -126,16 +127,16 @@ private:
 
     sk_sp<GrVkFramebuffer>                      fFramebuffer;
     std::unique_ptr<GrVkSecondaryCommandBuffer> fCurrentSecondaryCommandBuffer;
-    const GrVkRenderPass*                       fCurrentRenderPass;
+    raw_ptr<const GrVkRenderPass> fCurrentRenderPass;
     SkIRect                                     fCurrentPipelineBounds;
-    GrVkPipelineState*                          fCurrentPipelineState = nullptr;
+    raw_ptr<GrVkPipelineState> fCurrentPipelineState= nullptr;
     bool                                        fCurrentCBIsEmpty = true;
     SkIRect                                     fBounds;
     SelfDependencyFlags                         fSelfDependencyFlags = SelfDependencyFlags::kNone;
     LoadFromResolve                             fLoadFromResolve = LoadFromResolve::kNo;
     bool                                        fOverridePipelinesForResolveLoad = false;
 
-    GrVkGpu*                                    fGpu;
+    raw_ptr<GrVkGpu> fGpu;
 
 #ifdef SK_DEBUG
     // When we are actively recording into the GrVkOpsRenderPass we set this flag to true. This

@@ -20,6 +20,7 @@
 #include <array>
 #include <cstddef>
 #include <cstdint>
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrBuffer;
 class GrGLAttribArrayState;
@@ -109,11 +110,11 @@ private:
 
     // Per-pipeline state.
     GrPrimitiveType fPrimitiveType;
-    GrGLAttribArrayState* fAttribArrayState = nullptr;
+    raw_ptr<GrGLAttribArrayState> fAttribArrayState= nullptr;
 
     // If using an index buffer, this gets set during onBindBuffers. It is either the CPU address of
     // the indices, or nullptr if they reside physically in GPU memory.
-    const uint16_t* fIndexPointer;
+    raw_ptr<const uint16_t, AllowPtrArithmetic> fIndexPointer;
 
     // This tracks whether or not we bound the respective buffers during the bindBuffers call.
     SkDEBUGCODE(bool fDidBindVertexBuffer = false;)

@@ -29,6 +29,7 @@
 #include <cstdint>
 #include <functional>
 #include <memory>
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrAppliedClip;
 class GrAppliedHardClip;
@@ -76,7 +77,7 @@ public:
 
     struct InitArgs {
         InputFlags fInputFlags = InputFlags::kNone;
-        const GrCaps* fCaps = nullptr;
+        raw_ptr<const GrCaps> fCaps= nullptr;
         GrDstProxyView fDstProxyView;
         skgpu::Swizzle fWriteSwizzle;
     };

@@ -17,6 +17,7 @@
 #include "src/core/SkPathPriv.h"
 
 #include <array>
+#include "src/partition_alloc/raw_ptr.h"
 
 class SkPath;
 
@@ -355,9 +356,9 @@ private:
 
     // Info for the current contour we are iterating.
     Verb fFirstVerbInContour;
-    const SkPoint* fFirstPtsInContour;
-    const float* fFirstWInContour;
-    const SkPoint* fLastDegenerateStrokePt = nullptr;
+    raw_ptr<const SkPoint, AllowPtrArithmetic> fFirstPtsInContour;
+    raw_ptr<const float> fFirstWInContour;
+    raw_ptr<const SkPoint, AllowPtrArithmetic> fLastDegenerateStrokePt= nullptr;
 
     // The queue is implemented as a roll-over array with a floating front index.
     Verb fVerbs[kQueueBufferCount];

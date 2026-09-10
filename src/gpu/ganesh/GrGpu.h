@@ -30,6 +30,7 @@
 #include <memory>
 #include <optional>
 #include <string_view>
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrAttachment;
 class GrBackendSemaphore;
@@ -896,7 +897,7 @@ private:
 
     uint32_t fResetBits;
     // The context owns us, not vice-versa, so this ptr is not ref'ed by Gpu.
-    GrDirectContext* fContext;
+    raw_ptr<GrDirectContext> fContext;
 
     struct SubmittedProc {
         SubmittedProc(GrGpuSubmittedProc proc, GrGpuSubmittedContext context)

@@ -24,6 +24,7 @@
 #include "src/gpu/ganesh/vk/GrVkResourceProvider.h"
 
 #include <memory>
+#include "src/partition_alloc/raw_ptr.h"
 
 #ifdef SK_DEBUG
 // Display pipeline state cache usage
@@ -41,7 +42,7 @@ struct GrVkResourceProvider::PipelineStateCache::Entry {
         }
     }
 
-    GrVkGpu* fGpu;
+    raw_ptr<GrVkGpu> fGpu;
     std::unique_ptr<GrVkPipelineState> fPipelineState;
 };
 

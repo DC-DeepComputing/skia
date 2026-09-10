@@ -32,6 +32,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <utility>
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrAtlasManager;
 class GrCaps;
@@ -124,9 +125,9 @@ public:
     private:
         GrOp*                         fOp;
         const GrSurfaceProxyView&     fSurfaceView;
-        GrRenderTargetProxy*          fRenderTargetProxy;
+        raw_ptr<GrRenderTargetProxy> fRenderTargetProxy;
         bool                          fUsesMSAASurface;
-        GrAppliedClip*                fAppliedClip;
+        raw_ptr<GrAppliedClip> fAppliedClip;
         GrDstProxyView                fDstProxyView;   // TODO: do we still need the dst proxy here?
         GrXferBarrierFlags            fRenderPassXferBarriers;
         GrLoadOp                      fColorLoadOp;
@@ -313,8 +314,8 @@ private:
         const GrGeometryProcessor* fGeometryProcessor = nullptr;
         // Must have GrGeometryProcessor::numTextureSamplers() entries. Can be null if no samplers.
         const GrSurfaceProxy* const* fGeomProcProxies = nullptr;
-        const GrSimpleMesh* fMeshes = nullptr;
-        const GrOp* fOp = nullptr;
+        raw_ptr<const GrSimpleMesh, AllowPtrArithmetic> fMeshes= nullptr;
+        raw_ptr<const GrOp> fOp= nullptr;
         int fMeshCnt = 0;
         GrPrimitiveType fPrimitiveType;
     };
@@ -338,16 +339,16 @@ private:
 
     // Info about the op that is currently preparing or executing using the flush state or null if
     // an op is not currently preparing of executing.
-    OpArgs* fOpArgs = nullptr;
+    raw_ptr<OpArgs> fOpArgs= nullptr;
 
     // This field is only transiently set during flush. Each OpsTask will set it to point to an
     // array of proxies it uses before call onPrepare and onExecute.
     skia_private::TArray<GrSurfaceProxy*, true>* fSampledProxies;
 
-    GrGpu* fGpu;
-    GrResourceProvider* fResourceProvider;
-    skgpu::TokenTracker* fTokenTracker;
-    GrOpsRenderPass* fOpsRenderPass = nullptr;
+    raw_ptr<GrGpu> fGpu;
+    raw_ptr<GrResourceProvider> fResourceProvider;
+    raw_ptr<skgpu::TokenTracker> fTokenTracker;
+    raw_ptr<GrOpsRenderPass, DanglingUntriaged> fOpsRenderPass= nullptr;
 
     // Variables that are used to track where we are in lists as ops are executed
     SkArenaAllocList<Draw>::Iter fCurrDraw;

@@ -13,6 +13,7 @@
 #include "src/gpu/tessellate/LinearTolerances.h"
 
 #include <cstddef>
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrMeshDrawTarget;
 
@@ -40,7 +41,7 @@ public:
     }
 
 private:
-    tess::LinearTolerances* fWorstCaseTolerances;
+    raw_ptr<tess::LinearTolerances> fWorstCaseTolerances;
     GrVertexChunkBuilder    fBuilder;
 };
 

@@ -12,6 +12,7 @@
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/gpu/ResourceKey.h"
 #include "src/gpu/ganesh/GrGpuResource.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 /**
  * This class allows code internal to Skia privileged access to manage the cache keys and budget
@@ -86,7 +87,7 @@ protected:
     const ResourcePriv* operator&() const;
     ResourcePriv* operator&();
 
-    GrGpuResource* fResource;
+    raw_ptr<GrGpuResource> fResource;
 
     friend class GrGpuResource; // to construct/copy this type.
 };

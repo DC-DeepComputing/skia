@@ -21,6 +21,7 @@
 #include "src/gpu/ganesh/glsl/GrGLSLUniformHandler.h"
 
 #include <memory>
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrGLSLProgramDataManager;
 class GrGLSLXPFragmentBuilder;
@@ -306,9 +307,9 @@ public:
                 , fDstTextureSamplerHandle(dstTextureSamplerHandle)
                 , fDstTextureOrigin(dstTextureOrigin)
                 , fWriteSwizzle(writeSwizzle) {}
-        GrGLSLXPFragmentBuilder* fXPFragBuilder;
+        raw_ptr<GrGLSLXPFragmentBuilder> fXPFragBuilder;
         GrGLSLUniformHandler* fUniformHandler;
-        const GrShaderCaps* fShaderCaps;
+        raw_ptr<const GrShaderCaps> fShaderCaps;
         const GrXferProcessor& fXP;
         const char* fInputColor;
         const char* fInputCoverage;

@@ -25,6 +25,7 @@
 #include <memory>
 #include <string_view>
 #include <type_traits>
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrAttachment;
 class GrBackendFormat;
@@ -438,8 +439,8 @@ private:
     sk_sp<const GrGpuBuffer> createNonAAQuadIndexBuffer();
     sk_sp<const GrGpuBuffer> createAAQuadIndexBuffer();
 
-    GrResourceCache* fCache;
-    GrGpu* fGpu;
+    raw_ptr<GrResourceCache> fCache;
+    raw_ptr<GrGpu> fGpu;
     sk_sp<const GrCaps> fCaps;
     sk_sp<const GrGpuBuffer> fNonAAQuadIndexBuffer;
     sk_sp<const GrGpuBuffer> fAAQuadIndexBuffer;

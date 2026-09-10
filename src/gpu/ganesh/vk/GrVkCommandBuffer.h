@@ -23,6 +23,7 @@
 #include <cstdint>
 #include <memory>
 #include <utility>
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrGpu;
 class GrGpuBuffer;
@@ -188,7 +189,7 @@ protected:
     // Stores a pointer to the current active render pass (i.e. begin has been called but not
     // end). A nullptr means there is no active render pass. The GrVKCommandBuffer does not own
     // the render pass.
-    const GrVkRenderPass*     fActiveRenderPass = nullptr;
+    raw_ptr<const GrVkRenderPass> fActiveRenderPass= nullptr;
 
     VkCommandBuffer           fCmdBuffer;
 

@@ -15,6 +15,7 @@
 #include "src/core/SkColorData.h"
 
 #include <cstddef>
+#include "src/partition_alloc/raw_ptr.h"
 
 class SkBitmap;
 class SkColorSpace;
@@ -47,8 +48,8 @@ private:
     const int fResolution;
 
     struct Entry;
-    mutable Entry*  fHead;
-    mutable Entry*  fTail;
+    mutable raw_ptr<Entry> fHead;
+    mutable raw_ptr<Entry> fTail;
 
     inline Entry* release(Entry*) const;
     inline void attachToHead(Entry*) const;
@@ -76,7 +77,7 @@ private:
         AutoValidate(const GrGradientBitmapCache* bc) : fBC(bc) { bc->validate(); }
         ~AutoValidate() { fBC->validate(); }
     private:
-        const GrGradientBitmapCache* fBC;
+        raw_ptr<const GrGradientBitmapCache> fBC;
     };
 };
 

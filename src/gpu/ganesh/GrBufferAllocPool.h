@@ -23,6 +23,7 @@
 #include <memory>
 #include <type_traits>
 #include <utility>
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrGpu;
 
@@ -172,7 +173,7 @@ private:
     skia_private::TArray<BufferBlock> fBlocks;
     sk_sp<CpuBufferCache> fCpuBufferCache;
     sk_sp<GrCpuBuffer> fCpuStagingBuffer;
-    GrGpu* fGpu;
+    raw_ptr<GrGpu> fGpu;
     GrGpuBufferType fBufferType;
     void* fBufferPtr = nullptr;
 };

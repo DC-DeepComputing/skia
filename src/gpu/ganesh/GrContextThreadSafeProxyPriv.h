@@ -13,6 +13,7 @@
 
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/text/gpu/TextBlobRedrawCoordinator.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 /**
  * Class that adds methods to GrContextThreadSafeProxy that are only intended for use internal to
@@ -58,7 +59,7 @@ private:
     const GrContextThreadSafeProxyPriv* operator&() const = delete;
     GrContextThreadSafeProxyPriv* operator&() = delete;
 
-    GrContextThreadSafeProxy* fProxy;
+    raw_ptr<GrContextThreadSafeProxy> fProxy;
 
     friend class GrContextThreadSafeProxy;  // to construct/copy this type.
 };

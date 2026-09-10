@@ -10,6 +10,7 @@
 
 #include "include/core/SkRefCnt.h"
 #include "src/gpu/ganesh/GrDrawingManager.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrCaps;
 class GrDrawingManager;
@@ -31,7 +32,7 @@ public:
     }
 
 private:
-    GrDrawingManager* fDrawingManager;
+    raw_ptr<GrDrawingManager> fDrawingManager;
 };
 
 #endif

@@ -17,6 +17,7 @@
 #include "src/gpu/graphite/RuntimeEffectDictionary.h"
 
 #include <functional>
+#include "src/partition_alloc/raw_ptr.h"
 
 namespace skgpu::graphite {
 
@@ -32,7 +33,7 @@ class Task : public SkRefCnt {
 public:
     // Holds a render target and translation to use in the task's work, if necessary.
     struct ReplayTargetData {
-        const Texture* fTarget;
+        raw_ptr<const Texture> fTarget;
         SkIVector fTranslation;
         SkIRect fClip;
     };

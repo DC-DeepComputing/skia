@@ -27,6 +27,7 @@
 #include <string_view>
 #include <tuple>
 #include <utility>
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrGLSLFPFragmentBuilder;
 class GrGLSLProgramDataManager;
@@ -526,7 +527,7 @@ public:
                 , fSampleCoord(sampleCoord) {}
         GrGLSLFPFragmentBuilder* fFragBuilder;
         GrGLSLUniformHandler* fUniformHandler;
-        const GrShaderCaps* fShaderCaps;
+        raw_ptr<const GrShaderCaps> fShaderCaps;
         const GrFragmentProcessor& fFp;
         const char* fInputColor;
         const char* fDestColor;

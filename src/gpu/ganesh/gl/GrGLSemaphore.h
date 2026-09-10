@@ -14,6 +14,7 @@
 #include "src/gpu/ganesh/GrSemaphore.h"
 
 #include <memory>
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrGLGpu;
 
@@ -39,7 +40,7 @@ private:
         fIsOwned = true;
     }
 
-    GrGLGpu* fGpu;
+    raw_ptr<GrGLGpu> fGpu;
     GrGLsync fSync;
     bool     fIsOwned;
 

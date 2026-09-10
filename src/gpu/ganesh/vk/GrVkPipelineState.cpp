@@ -42,6 +42,7 @@
 #include <array>
 #include <functional>
 #include <utility>
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrTexture;
 
@@ -140,7 +141,7 @@ bool GrVkPipelineState::setAndBindTextures(GrVkGpu* gpu,
     }
     struct SamplerBindings {
         GrSamplerState fState;
-        GrVkTexture* fTexture;
+        raw_ptr<GrVkTexture> fTexture;
     };
     AutoSTArray<8, SamplerBindings> samplerBindings(fNumSamplers);
     int currTextureBinding = 0;

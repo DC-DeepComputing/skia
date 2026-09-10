@@ -22,6 +22,7 @@
 #include <cstddef>
 #include <memory>
 #include <vector>
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrGLGpu;
 class GrPipeline;
@@ -164,7 +165,7 @@ private:
     int fVertexStride;
     int fInstanceStride;
 
-    GrGLGpu* fGpu;
+    raw_ptr<GrGLGpu> fGpu;
     GrGLProgramDataManager fProgramDataManager;
 
     int fNumTextureSamplers;

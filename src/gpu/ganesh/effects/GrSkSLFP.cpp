@@ -43,6 +43,7 @@
 #include "src/sksl/ir/SkSLVariable.h"
 
 #include <algorithm>
+#include "src/partition_alloc/raw_ptr.h"
 
 namespace SkSL { class Context; }
 struct GrShaderCaps;
@@ -205,12 +206,12 @@ public:
                 return SkSL::String::printf("(%s).rgb", xformedColor.c_str());
             }
 
-            Impl*                         fSelf;
+            raw_ptr<Impl> fSelf;
             EmitArgs&                     fArgs;
             const char*                   fInputColor;
             const SkSL::Context&          fContext;
             const uint8_t*                fUniformData;
-            const Specialized*            fSpecialized;
+            raw_ptr<const Specialized, AllowPtrArithmetic> fSpecialized;
             int                           fUniformIndex = 0;
         };
 

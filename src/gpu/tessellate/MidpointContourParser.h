@@ -13,6 +13,7 @@
 #include "src/core/SkPathPriv.h"
 
 #include <cstdint>
+#include "src/partition_alloc/raw_ptr.h"
 
 namespace skgpu::tess {
 
@@ -101,14 +102,14 @@ private:
 
     const SkPath& fPath;
 
-    const SkPathVerb* fVerbs;
+    raw_ptr<const SkPathVerb, AllowPtrArithmetic> fVerbs;
     int fNumRemainingVerbs = 0;
     int fVerbsIdx = 0;
 
-    const SkPoint* fPoints;
+    raw_ptr<const SkPoint, AllowPtrArithmetic> fPoints;
     int fPtsIdx = 0;
 
-    const float* fWeights;
+    raw_ptr<const float, AllowPtrArithmetic> fWeights;
     int fWtsIdx = 0;
 
     SkPoint fMidpoint;

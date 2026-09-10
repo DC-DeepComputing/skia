@@ -19,6 +19,7 @@
 #include <unordered_map>
 #include <utility>
 #include <vector>
+#include "src/partition_alloc/raw_ptr.h"
 
 #if TRIANGULATOR_LOGGING
 #define TESS_LOG SkDebugf
@@ -45,7 +46,7 @@ using EventComparator = GrAATriangulator::EventComparator;
 
 struct SSVertex {
     SSVertex(Vertex* v) : fVertex(v), fPrev(nullptr), fNext(nullptr) {}
-    Vertex* fVertex;
+    raw_ptr<Vertex> fVertex;
     SSEdge* fPrev;
     SSEdge* fNext;
 };
@@ -54,10 +55,10 @@ struct GrAATriangulator::SSEdge {
     SSEdge(Edge* edge, SSVertex* prev, SSVertex* next)
       : fEdge(edge), fEvent(nullptr), fPrev(prev), fNext(next) {
     }
-    Edge*     fEdge;
-    Event*    fEvent;
-    SSVertex* fPrev;
-    SSVertex* fNext;
+    raw_ptr<Edge> fEdge;
+    raw_ptr<Event> fEvent;
+    raw_ptr<SSVertex> fPrev;
+    raw_ptr<SSVertex> fNext;
 };
 
 typedef std::unordered_map<Vertex*, SSVertex*> SSVertexMap;

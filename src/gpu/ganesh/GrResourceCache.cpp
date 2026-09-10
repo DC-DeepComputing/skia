@@ -28,6 +28,7 @@
 #include <chrono>
 #include <cstring>
 #include <vector>
+#include "src/partition_alloc/raw_ptr.h"
 
 using namespace skia_private;
 
@@ -59,7 +60,7 @@ public:
     AutoValidate(GrResourceCache* cache) : fCache(cache) { cache->validate(); }
     ~AutoValidate() { fCache->validate(); }
 private:
-    GrResourceCache* fCache;
+    raw_ptr<GrResourceCache> fCache;
 };
 
 //////////////////////////////////////////////////////////////////////////////
@@ -821,7 +822,7 @@ void GrResourceCache::validate() const {
         int fCouldBeScratch;
         int fContent;
         const ScratchMap* fScratchMap;
-        const UniqueHash* fUniqueHash;
+        raw_ptr<const UniqueHash> fUniqueHash;
 
         Stats(const GrResourceCache* cache) {
             memset(this, 0, sizeof(*this));

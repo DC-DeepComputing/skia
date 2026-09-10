@@ -28,6 +28,7 @@
 #include <optional>
 #include <string_view>
 #include <utility>
+#include "src/partition_alloc/raw_ptr.h"
 
 namespace skgpu::graphite {
 
@@ -225,7 +226,7 @@ private:
     }
 
     // Non-null when valid and not already returned to the pool
-    DrawBufferManager* fOwner = nullptr;
+    raw_ptr<DrawBufferManager> fOwner= nullptr;
     int fStateIndex = 0;
 
     sk_sp<Buffer> fBuffer;
@@ -430,7 +431,7 @@ private:
 
     ResourceProvider* const fResourceProvider;
     const Caps* const fCaps;
-    UploadBufferManager* fUploadManager;
+    raw_ptr<UploadBufferManager> fUploadManager;
 
     static constexpr size_t kVertexBufferIndex          = 0;
     static constexpr size_t kIndexBufferIndex           = 1;
@@ -536,7 +537,7 @@ public:
 private:
     struct CopyRange {
         BindBufferInfo  fSource;            // The CPU-to-GPU buffer and offset for the source of the copy
-        BindBufferInfo* fTarget;            // The late-assigned destination of the copy
+        raw_ptr<BindBufferInfo> fTarget;            // The late-assigned destination of the copy
         uint32_t        fRequiredAlignment; // The requested stride of the data.
 #if defined(GPU_TEST_UTILS)
         uint32_t        fUnalignedSize;     // The requested size without count-4 alignment

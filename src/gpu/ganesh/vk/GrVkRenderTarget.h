@@ -21,6 +21,7 @@
 #include <cstddef>
 #include <string_view>
 #include <utility>
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrAttachment;
 class GrProgramInfo;
@@ -199,7 +200,7 @@ private:
 
     sk_sp<const GrVkFramebuffer> fCachedFramebuffers[kNumCachedFramebuffers];
 
-    const GrVkDescriptorSet* fCachedInputDescriptorSet = nullptr;
+    raw_ptr<const GrVkDescriptorSet> fCachedInputDescriptorSet= nullptr;
 
     sk_sp<GrVkFramebuffer> fExternalFramebuffer;
 };
