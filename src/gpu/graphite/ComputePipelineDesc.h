@@ -10,6 +10,7 @@
 #include "src/gpu/graphite/compute/ComputeStep.h"
 
 #include <cstdint>
+#include "src/partition_alloc/raw_ptr.h"
 
 namespace skgpu::graphite {
 
@@ -30,7 +31,7 @@ public:
     uint32_t uniqueID() const { return fComputeStep->uniqueID(); }
 
 private:
-    const ComputeStep* fComputeStep;
+    raw_ptr<const ComputeStep> fComputeStep;
 };
 
 }  // namespace skgpu::graphite

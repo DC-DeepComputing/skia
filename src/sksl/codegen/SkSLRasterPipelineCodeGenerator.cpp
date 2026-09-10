@@ -667,7 +667,7 @@ public:
 
 private:
     raw_ptr<Generator> fGenerator = nullptr;
-    raw_ptr<int> fLoopTargetPtr = nullptr;
+    bisect_raw_ptr<int> fLoopTargetPtr = nullptr;
     int fPreviousLoopTarget;
     int fLabelID;
 };
