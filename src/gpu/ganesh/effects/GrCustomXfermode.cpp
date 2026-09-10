@@ -130,7 +130,7 @@ std::unique_ptr<GrXferProcessor::ProgramImpl> CustomXP::makeProgramImpl() const 
     class Impl : public ProgramImpl {
     private:
         void emitOutputsForBlendState(const EmitArgs& args) override {
-            const CustomXP& xp = args.fXP.cast<CustomXP>();
+            const CustomXP& xp = args.fXP->cast<CustomXP>();
             SkASSERT(xp.hasHWBlendEquation());
 
             GrGLSLXPFragmentBuilder* fragBuilder = args.fXPFragBuilder;
