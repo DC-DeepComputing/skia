@@ -114,6 +114,7 @@
 #include <tuple>
 #include <unordered_map>
 #include <vector>
+#include "src/partition_alloc/raw_ptr.h"
 
 using RescaleGamma       = SkImage::RescaleGamma;
 using RescaleMode        = SkImage::RescaleMode;
@@ -348,7 +349,7 @@ public:
     ScopedDrawBuilder& operator=(const ScopedDrawBuilder&) = delete;
 
 private:
-    Recorder* fRecorder;
+    raw_ptr<Recorder> fRecorder;
     std::unique_ptr<KeyAndDataBuilder> fKeyAndDataBuilder;
 };
 

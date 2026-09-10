@@ -28,6 +28,7 @@
 #include <limits>
 #include <memory>
 #include <optional>
+#include "src/partition_alloc/raw_ptr.h"
 
 namespace skgpu::graphite {
 
@@ -278,7 +279,7 @@ protected:
     private:
         TextureDataCache::Index fLastIndex = TextureDataCache::kInvalidIndex;
 
-        TextureDataCache* const fTextureCache;
+        const raw_ptr<TextureDataCache> fTextureCache;
     };
 };
 
