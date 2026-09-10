@@ -15,6 +15,7 @@
 
 #include <cstdint>
 #include <memory>
+#include "src/partition_alloc/raw_ptr.h"
 
 struct SkIRect;
 
@@ -90,7 +91,7 @@ private:
     const RecordingPriv* operator&() const = delete;
     RecordingPriv* operator&() = delete;
 
-    Recording* fRecording;
+    raw_ptr<Recording> fRecording;
 
     friend class Recording;  // to construct/copy this type.
 };
