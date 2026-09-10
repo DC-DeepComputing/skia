@@ -6,7 +6,10 @@
  */
 
 #ifndef SkTextBlobPriv_DEFINED
+
 #define SkTextBlobPriv_DEFINED
+
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkFont.h"
@@ -244,7 +247,7 @@ public:
     bool isLCD() const;
 
 private:
-    const SkTextBlob::RunRecord* fCurrentRun;
+    bisect_raw_ptr<const SkTextBlob::RunRecord> fCurrentRun;
 
     SkDEBUGCODE(const uint8_t* fStorageTop;)
 };
