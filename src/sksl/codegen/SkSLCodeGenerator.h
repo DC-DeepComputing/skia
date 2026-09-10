@@ -93,7 +93,7 @@ public:
 private:
     raw_ptr<CodeGenerator> fCodeGen = nullptr;
     raw_ptr<OutputStream> fOldOutput = nullptr;
-    raw_ptr<int> fIndentationPtr = nullptr;
+    bisect_raw_ptr<int> fIndentationPtr = nullptr;
     int fOldIndentation = 0;
 };
 

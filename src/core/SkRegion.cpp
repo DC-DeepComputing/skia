@@ -96,7 +96,7 @@ private:
     SkRegionPriv::RunType fStack[kRunArrayStackCount];
     AutoTMalloc<SkRegionPriv::RunType> fMalloc;
     int fCount = kRunArrayStackCount;
-    RAW_PTR_EXCLUSION SkRegionPriv::RunType* fPtr;  // non-owning pointer
+    raw_ptr<SkRegionPriv::RunType, AllowPtrArithmetic | DanglingUntriaged> fPtr;  // non-owning pointer
 };
 
 /*  Pass in the beginning with the intervals.
@@ -712,8 +712,8 @@ static void assert_valid_pair(int left, int rite)
 #endif
 
 struct spanRec {
-    RAW_PTR_EXCLUSION const SkRegionPriv::RunType* fA_runs;
-    RAW_PTR_EXCLUSION const SkRegionPriv::RunType* fB_runs;
+    bisect_raw_ptr<const SkRegionPriv::RunType, AllowPtrArithmetic | DanglingUntriaged> fA_runs;
+    bisect_raw_ptr<const SkRegionPriv::RunType, AllowPtrArithmetic | DanglingUntriaged> fB_runs;
     int                         fA_left, fA_rite, fB_left, fB_rite;
     int                         fLeft, fRite, fInside;
 
@@ -927,7 +927,7 @@ public:
     uint8_t fMin, fMax;
 
 private:
-    RAW_PTR_EXCLUSION RunArray* fArray;
+    raw_ptr<RunArray, DanglingUntriaged> fArray;
     int fStartDst = 0;
     int fPrevDst = 1;
     size_t fPrevLen = 0;  // will never match a length from operate_on_span
