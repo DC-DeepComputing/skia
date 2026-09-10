@@ -228,7 +228,7 @@ std::unique_ptr<GrFragmentProcessor::ProgramImpl> BlendFragmentProcessor::onMake
     public:
         void emitCode(EmitArgs& args) override {
             GrGLSLFPFragmentBuilder* fragBuilder = args.fFragBuilder;
-            const BlendFragmentProcessor& bfp = args.fFp.cast<BlendFragmentProcessor>();
+            const BlendFragmentProcessor& bfp = args.fFp->cast<BlendFragmentProcessor>();
             const SkBlendMode mode = bfp.fMode;
 
             // Invoke src/dst with our input color (or substitute input color if no child FP)
@@ -237,7 +237,7 @@ std::unique_ptr<GrFragmentProcessor::ProgramImpl> BlendFragmentProcessor::onMake
 
             if (bfp.fShareBlendLogic) {
                 // Use a blend expression that may rely on uniforms.
-                std::string blendExpr = GrGLSLBlend::BlendExpression(&args.fFp,
+                std::string blendExpr = GrGLSLBlend::BlendExpression(&*args.fFp,
                                                                      args.fUniformHandler,
                                                                      &fBlendUniform,
                                                                      srcColor.c_str(),

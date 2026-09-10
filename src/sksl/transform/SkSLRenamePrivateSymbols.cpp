@@ -218,8 +218,8 @@ void Transform::RenamePrivateSymbols(Context& context,
             return INHERITED::visitStatementPtr(stmt);
         }
 
-        const raw_ref<Context> fContext;
-        raw_ptr<ProgramUsage> fUsage;
+        const bisect_raw_ref<Context> fContext;
+        bisect_raw_ptr<ProgramUsage> fUsage;
         std::vector<SymbolTable*> fSymbolTableStack;
         ProgramKind fKind;
         using INHERITED = ProgramWriter;

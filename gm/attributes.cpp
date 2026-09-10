@@ -106,7 +106,7 @@ std::unique_ptr<GrGeometryProcessor::ProgramImpl> AttributeTestProcessor::makePr
 
     private:
         void onEmitCode(EmitArgs& args, GrGPArgs* gpArgs) override {
-            const AttributeTestProcessor& proc = args.fGeomProc.cast<AttributeTestProcessor>();
+            const AttributeTestProcessor& proc = args.fGeomProc->cast<AttributeTestProcessor>();
             args.fVaryingHandler->emitAttributes(proc);
             if (proc.fMode == AttrMode::kWacky) {
                 args.fVertBuilder->codeAppend("float2 pos = pos0 + pos1;");
