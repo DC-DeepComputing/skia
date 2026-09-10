@@ -45,7 +45,7 @@ void SkTextUtils::GetPath(const void* text, size_t length, SkTextEncoding encodi
 
     struct Rec {
         SkPathBuilder fDst;
-        raw_ptr<const SkPoint, AllowPtrArithmetic> fPos;
+        bisect_raw_ptr<const SkPoint, AllowPtrArithmetic> fPos;
     } rec = { {}, pos.get() };
 
     font.getPaths(ag.glyphs(), [](const SkPath* src, const SkMatrix& mx, void* ctx) {
