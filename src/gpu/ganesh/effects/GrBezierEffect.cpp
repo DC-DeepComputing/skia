@@ -58,7 +58,7 @@ private:
 
 void GrConicEffect::Impl::onEmitCode(EmitArgs& args, GrGPArgs* gpArgs) {
     GrGLSLVertexBuilder* vertBuilder = args.fVertBuilder;
-    const GrConicEffect& gp = args.fGeomProc.cast<GrConicEffect>();
+    const GrConicEffect& gp = args.fGeomProc->cast<GrConicEffect>();
     GrGLSLVaryingHandler* varyingHandler = args.fVaryingHandler;
     GrGLSLUniformHandler* uniformHandler = args.fUniformHandler;
 
@@ -246,7 +246,7 @@ private:
 
 void GrQuadEffect::Impl::onEmitCode(EmitArgs& args, GrGPArgs* gpArgs) {
     GrGLSLVertexBuilder* vertBuilder = args.fVertBuilder;
-    const GrQuadEffect& gp = args.fGeomProc.cast<GrQuadEffect>();
+    const GrQuadEffect& gp = args.fGeomProc->cast<GrQuadEffect>();
     GrGLSLVaryingHandler* varyingHandler = args.fVaryingHandler;
     GrGLSLUniformHandler* uniformHandler = args.fUniformHandler;
 

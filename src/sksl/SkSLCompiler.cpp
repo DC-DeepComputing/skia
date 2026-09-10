@@ -52,8 +52,8 @@ public:
 
     ~AutoProgramConfig() { fContext->fConfig = fOldConfig; }
 
-    const raw_ref<Context> fContext;
-    raw_ptr<ProgramConfig, DanglingUntriaged> fOldConfig;
+    const bisect_raw_ref<Context> fContext;
+    bisect_raw_ptr<ProgramConfig, DanglingUntriaged> fOldConfig;
 };
 
 Compiler::Compiler() : fErrorReporter(this) {
