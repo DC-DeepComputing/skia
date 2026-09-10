@@ -68,7 +68,7 @@ public:
     BOOL fExists;
 private:
     // Borrowed reference, the user must ensure the fontFace stays alive.
-    raw_ptr<IDWriteFontFace> fFontFace;
+    bisect_raw_ptr<IDWriteFontFace> fFontFace;
     void* fLock;
 };
 template<typename T> class AutoTDWriteTable : public AutoDWriteTable {
