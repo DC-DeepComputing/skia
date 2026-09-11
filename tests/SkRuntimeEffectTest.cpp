@@ -144,7 +144,12 @@ DEF_TEST(SkRuntimeEffect_DeadCodeEliminationStackOverflow, r) {
             return value.xxxx;
         }
     )"));
+#if defined(SK_BUILD_FOR_FUZZER)
+    REPORTER_ASSERT(r, !effect);
+    REPORTER_ASSERT(r, errorText.contains("loop iteration count exceeds fuzzer limit of 256"));
+#else
     REPORTER_ASSERT(r, effect, "%s", errorText.c_str());
+#endif
 }
 
 DEF_TEST(SkRuntimeEffectCanDisableES2Restrictions, r) {
@@ -1920,3 +1925,51 @@ DEF_TEST(SkRuntimeBlender_b466686344, r) {
     REPORTER_ASSERT(r, effect != nullptr);
 #endif
 }
+
+DEF_TEST(SkRuntimeColorFilter_b466744542, r) {
+    // b/466744542: nested loops multiplying to excessive iteration counts must be rejected
+    // under fuzzer builds to prevent timeouts in skruntimecolorfilter.
+    auto check_loop = [&](const char* sksl) {
+        auto [effect, err] = SkRuntimeEffect::MakeForColorFilter(SkString(sksl));
+#if defined(SK_BUILD_FOR_FUZZER)
+        REPORTER_ASSERT(r, !effect);
+        REPORTER_ASSERT(r, err.contains("loop iteration count exceeds fuzzer limit of 256"));
+#else
+        REPORTER_ASSERT(r, effect != nullptr, "%s", err.c_str());
+#endif
+    };
+
+    // 1. Nested loops: 20 * 20 = 400 iterations (> 256).
+    check_loop("half4 main(half4 color) {"
+               "    half4 x = color;"
+               "    for (int a = 0; a < 20; ++a) {"
+               "        for (int b = 0; b < 20; ++b) {"
+               "            x += half4(0.01);"
+               "        }"
+               "    }"
+               "    return x;"
+               "}");
+
+    // 2. Sequential loops nested in a parent loop: 100 * (2 + 2) = 400 iterations (> 256).
+    check_loop("half4 main(half4 color) {"
+               "    half4 x = color;"
+               "    for (int a = 0; a < 100; ++a) {"
+               "        for (int b = 0; b < 2; ++b) { x += half4(0.01); }"
+               "        for (int c = 0; c < 2; ++c) { x += half4(0.01); }"
+               "    }"
+               "    return x;"
+               "}");
+
+    // 3. Nested unrollable loops in ES3 mode: 20 * 20 = 400 iterations (> 256).
+    check_loop("#version 300\n"
+               "half4 main(half4 color) {"
+               "    half4 x = color;"
+               "    for (int a = 0; a < 20; ++a) {"
+               "        for (int b = 0; b < 20; ++b) {"
+               "            x += half4(0.01);"
+               "        }"
+               "    }"
+               "    return x;"
+               "}");
+}
+
