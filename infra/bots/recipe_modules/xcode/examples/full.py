@@ -25,3 +25,12 @@ def GenTests(api):
     patch_set=2,
     swarm_out_dir='[SWARM_OUT_DIR]',
   )
+
+  yield api.test('xcode-test-ios18-device') + api.properties(
+    buildername='Test-iOS18-Clang-iPhone11-GPU-AppleA13-arm64-Debug-All',
+    repository='https://skia.googlesource.com/skia.git',
+    revision='abc123',
+    path_config='kitchen',
+    patch_set=2,
+    swarm_out_dir='[SWARM_OUT_DIR]',
+  )
