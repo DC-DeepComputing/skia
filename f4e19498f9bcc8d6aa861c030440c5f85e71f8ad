@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "85da6350_fc7f79e4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3470872
+      },
+      "writtenOn": "2026-09-11T15:29:46Z",
+      "side": 1,
+      "message": "I wonder if it would be best to isolate these skills and test them individually",
+      "parentUuid": "43bee067_f4522216",
+      "revId": "f4e19498f9bcc8d6aa861c030440c5f85e71f8ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5b728323_d09682c6",
         "filename": "agents/skills/skia-fuzzer-workflow/SKILL.md",
         "patchSetId": 8
