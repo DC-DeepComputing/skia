@@ -1,6 +1,63 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "43bee067_f4522216",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3470872
+      },
+      "writtenOn": "2026-09-11T15:28:38Z",
+      "side": 1,
+      "message": "I believe lots of these steps can be separated into multiple skills where any main agent can invoke when appropriate.",
+      "revId": "f4e19498f9bcc8d6aa861c030440c5f85e71f8ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b728323_d09682c6",
+        "filename": "agents/skills/skia-fuzzer-workflow/SKILL.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 3470872
+      },
+      "writtenOn": "2026-09-11T15:28:38Z",
+      "side": 1,
+      "message": "This can be a separate skill associated with scripts that aid in diagnosing the issue.",
+      "range": {
+        "startLine": 31,
+        "startChar": 2,
+        "endLine": 31,
+        "endChar": 35
+      },
+      "revId": "f4e19498f9bcc8d6aa861c030440c5f85e71f8ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70f323f2_cd725704",
+        "filename": "agents/skills/skia-fuzzer-workflow/SKILL.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 3470872
+      },
+      "writtenOn": "2026-09-11T15:28:38Z",
+      "side": 1,
+      "message": "Isn\u0027t there a Buganizer Skill in that can be used? We should resort to that",
+      "revId": "f4e19498f9bcc8d6aa861c030440c5f85e71f8ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ed37aeb9_6368fdcd",
@@ -20,6 +77,167 @@
         "endLine": 61,
         "endChar": 84
       },
+      "revId": "f4e19498f9bcc8d6aa861c030440c5f85e71f8ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e779345_5a787ddb",
+        "filename": "agents/skills/skia-fuzzer-workflow/SKILL.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 3470872
+      },
+      "writtenOn": "2026-09-11T15:28:38Z",
+      "side": 1,
+      "message": "Not sure what this line entails. What exactly are you downloading? Where are you downloading from? To what scratch directory? Can you be more specific?",
+      "parentUuid": "ed37aeb9_6368fdcd",
+      "range": {
+        "startLine": 61,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 84
+      },
+      "revId": "f4e19498f9bcc8d6aa861c030440c5f85e71f8ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3cee5ef1_de45eeea",
+        "filename": "agents/skills/skia-fuzzer-workflow/SKILL.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 3470872
+      },
+      "writtenOn": "2026-09-11T15:28:38Z",
+      "side": 1,
+      "message": "I recommend this being it\u0027s own skill so anyone can invoke this at any given time.",
+      "revId": "f4e19498f9bcc8d6aa861c030440c5f85e71f8ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b31529e_17376dcf",
+        "filename": "agents/skills/skia-fuzzer-workflow/SKILL.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 3470872
+      },
+      "writtenOn": "2026-09-11T15:28:38Z",
+      "side": 1,
+      "message": "Does this imply adding custom gdb scripts?",
+      "range": {
+        "startLine": 81,
+        "startChar": 30,
+        "endLine": 81,
+        "endChar": 78
+      },
+      "revId": "f4e19498f9bcc8d6aa861c030440c5f85e71f8ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "760f06e0_686baf65",
+        "filename": "agents/skills/skia-fuzzer-workflow/SKILL.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 3470872
+      },
+      "writtenOn": "2026-09-11T15:28:38Z",
+      "side": 1,
+      "message": "Step 4 and 5 could be combined to into a single skill.",
+      "revId": "f4e19498f9bcc8d6aa861c030440c5f85e71f8ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bcedc2f7_8d8bcd9f",
+        "filename": "agents/skills/skia-fuzzer-workflow/SKILL.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 3470872
+      },
+      "writtenOn": "2026-09-11T15:28:38Z",
+      "side": 1,
+      "message": "Try make paths relative to the root of the repo",
+      "range": {
+        "startLine": 98,
+        "startChar": 34,
+        "endLine": 98,
+        "endChar": 43
+      },
+      "revId": "f4e19498f9bcc8d6aa861c030440c5f85e71f8ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "022abbe3_9b56dd67",
+        "filename": "agents/skills/skia-fuzzer-workflow/SKILL.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 3470872
+      },
+      "writtenOn": "2026-09-11T15:28:38Z",
+      "side": 1,
+      "message": "What does failure look like in the output? This should be defined here",
+      "range": {
+        "startLine": 107,
+        "startChar": 21,
+        "endLine": 107,
+        "endChar": 36
+      },
+      "revId": "f4e19498f9bcc8d6aa861c030440c5f85e71f8ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "845558d9_e3495931",
+        "filename": "agents/skills/skia-fuzzer-workflow/SKILL.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 3470872
+      },
+      "writtenOn": "2026-09-11T15:28:38Z",
+      "side": 1,
+      "message": "My hunch is the main agent will likely want to know all arguments for nanobench. Can this be a separate nanobench skill.",
+      "revId": "f4e19498f9bcc8d6aa861c030440c5f85e71f8ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1543539c_4af0a7a4",
+        "filename": "agents/skills/skia-fuzzer-workflow/SKILL.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 3470872
+      },
+      "writtenOn": "2026-09-11T15:28:38Z",
+      "side": 1,
+      "message": "Isn\u0027t there a gerrit skill that can be used? We should resort to that",
       "revId": "f4e19498f9bcc8d6aa861c030440c5f85e71f8ad",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
