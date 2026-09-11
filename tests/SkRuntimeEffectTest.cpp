@@ -1899,6 +1899,24 @@ DEF_TEST(SkRuntimeShader_b416061512, r) {
     }
 }
 
+<<<<<<< PATCH SET (98bfad948c191a3f8981372cbe99bb3d423686f4 [fuzz] Allow 16-bit loop int in GetLoopUnrollInfo)
+DEF_TEST(SkRuntimeColorFilter_b520831887, r) {
+    // b/520831887: loops with 16-bit integer induction variables (e.g. mediump int)
+    // must not trigger an assertion failure in GetLoopUnrollInfo.
+    constexpr const char* kSkSL =
+            "half4 main(half4 color) {"
+            "    for (mediump int b = 2; b < 4; ++b) {}"
+            "    return color;"
+            "}";
+
+    auto [effect, err] = SkRuntimeEffect::MakeForColorFilter(SkString(kSkSL));
+    REPORTER_ASSERT(r, effect != nullptr, "%s", err.c_str());
+    if (effect) {
+        sk_sp<SkColorFilter> cf = effect->makeColorFilter(nullptr);
+        REPORTER_ASSERT(r, cf != nullptr);
+    }
+||||||| BASE      (9173baaaac106d448124cef44080da04ae904512 spanification: Support for -Wunsafe-buffer-usage in Macros)
+=======
 DEF_TEST(SkRuntimeBlender_b466686344, r) {
     // b/466686344: large loops in strict ES2 runtime effects must not cause execution timeouts.
     // Under fuzzer builds (SK_BUILD_FOR_FUZZER), kLoopTerminationLimit is lowered to 256.
@@ -1919,4 +1937,5 @@ DEF_TEST(SkRuntimeBlender_b466686344, r) {
 #else
     REPORTER_ASSERT(r, effect != nullptr);
 #endif
+>>>>>>> BASE      (0f2aa03b6b8a0c7d76d27bd36505a032c802821b [infra] Run iOS builds on newer Mac Minis)
 }
