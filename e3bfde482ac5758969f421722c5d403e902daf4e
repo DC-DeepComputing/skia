@@ -39,6 +39,30 @@
       },
       "revId": "e3bfde482ac5758969f421722c5d403e902daf4e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3914540_ac21c79a",
+        "filename": "src/core/SkRRectPriv.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-09-11T13:28:20Z",
+      "side": 1,
+      "message": "I removed the declaration from SkRRect.h and moved the AreRectAndRadiiValid to SkRRectPriv.h. Let me know if this is what you were thinking",
+      "parentUuid": "d3825a0e_2d43a20b",
+      "range": {
+        "startLine": 56,
+        "startChar": 0,
+        "endLine": 56,
+        "endChar": 58
+      },
+      "revId": "e3bfde482ac5758969f421722c5d403e902daf4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
