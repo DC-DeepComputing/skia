@@ -889,6 +889,16 @@ void TextureFormatXferFn::run(int width, int height,
         height = 1;
     }
 
+    const int bpp = TextureFormatBytesPerBlock(fFormat);
+    bool denseTransfer = false;
+    if ((!fRP && !(fPreOps & kPadAlpha) && !(fPostOps & kDropAlpha)) ||
+        (fRP && fRP->fSwizzler && !fPreOps && !fPostOps)) {
+        // bpp is the same for src and dst and we'll only have 1 row function so see if we can
+        // convert from height rows to 1 row that's height*width wide.
+        const size_t stride = (size_t) width * bpp;
+        denseTransfer = stride == srcRowBytes && stride == dstRowBytes;
+    }
+
     skia_private::STArray<2, XferRowFn> rowFns; // At most 2 actions per row
     if (fPreOps) {
         // `src` is definitively the texture
@@ -896,6 +906,11 @@ void TextureFormatXferFn::run(int width, int height,
             // We need a temporary buffer equal to srcBpp*width to hold the output of the preOps
             // that is used as the source of data for SkRasterPipeline (executed per row).
             tempRowStorage.reset(fRP->fSrcBpp * width);
+        } else if (fPreOps & kPadAlpha) {
+            // bpp isn't the same between src and dst but it can still be a dense xfer
+            const size_t srcStride = (size_t) width * bpp;
+            const size_t dstStride = (size_t) width * (bpp + bpp/3);
+            denseTransfer = srcStride == srcRowBytes && dstStride == dstRowBytes;
         }
         rowFns.push_back(get_xfer_row_fn(fFormat, fPreOps));
     }
@@ -927,16 +942,29 @@ void TextureFormatXferFn::run(int width, int height,
             // We need a temporary buffer equal to dstBpp*width to hold the output of the
             // SkRasterPipeline conversion that is used as the input to postOps (executed per row).
             tempRowStorage.reset(fRP->fDstBpp * width);
+        } else if (fPostOps & kDropAlpha) {
+            const size_t srcStride = (size_t) width * (bpp + bpp/3);
+            const size_t dstStride = (size_t) width * bpp;
+            denseTransfer = srcStride == srcRowBytes && dstStride == dstRowBytes;
         }
         rowFns.push_back(get_xfer_row_fn(fFormat, fPostOps));
     }
 
     if (rowFns.empty()) {
         // Identity conversion function still needs to move the data
-        const int bpp = TextureFormatBytesPerBlock(fFormat);
         rowFns.push_back([bpp](const char* src, char* dst, int width) {
             memcpy(dst, src, bpp * width);
         });
+    }
+
+    if (denseTransfer) {
+        // A tight transfer without intermediate storage can switch from row-by-row to an "single"
+        // row that is width*rpInvokeCount
+        SkASSERT(height == 1 && rowFns.size() == 1 && (!fRP || fRP->fSwizzler));
+        if (std::numeric_limits<int>::max() / rpInvokeCount > width) {
+            width *= rpInvokeCount;
+            rpInvokeCount = 1;
+        } // otherwise will proceed row by row
     }
 
     for (int y = 0; y < rpInvokeCount; ++y) {
