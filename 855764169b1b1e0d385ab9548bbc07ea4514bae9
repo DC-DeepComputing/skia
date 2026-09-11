@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea744629_34f66480",
+        "filename": "gn/check_compiler_flag.py",
+        "patchSetId": 21
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 4764846
+      },
+      "writtenOn": "2026-09-11T03:19:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3cb69117_87d3504e",
+      "range": {
+        "startLine": 3,
+        "startChar": 12,
+        "endLine": 3,
+        "endChar": 16
+      },
+      "revId": "855764169b1b1e0d385ab9548bbc07ea4514bae9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7674d22a_4d396c3c",
@@ -78,6 +102,30 @@
           ]
         }
       ],
+      "revId": "855764169b1b1e0d385ab9548bbc07ea4514bae9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa5e42fd_87bf3d98",
+        "filename": "gn/check_compiler_flag.py",
+        "patchSetId": 21
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 4764846
+      },
+      "writtenOn": "2026-09-11T03:19:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7674d22a_4d396c3c",
+      "range": {
+        "startLine": 25,
+        "startChar": 19,
+        "endLine": 25,
+        "endChar": 40
+      },
       "revId": "855764169b1b1e0d385ab9548bbc07ea4514bae9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -123,6 +171,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8ff5c03_60885f14",
+        "filename": "gn/check_compiler_flag.py",
+        "patchSetId": 21
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 4764846
+      },
+      "writtenOn": "2026-09-11T03:19:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "35be01dd_4311f9eb",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 83
+      },
+      "revId": "855764169b1b1e0d385ab9548bbc07ea4514bae9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c4a2407a_09c46e6a",
@@ -136,6 +208,24 @@
       "writtenOn": "2026-09-10T12:08:50Z",
       "side": 1,
       "message": "Optional. You can try something like:\n```\n#!/usr/bin/env python3\n#\n# Copyright 2026 Google LLC\n#\n# Use of this source code is governed by a BSD-style license that can be\n# found in the LICENSE file.\n\n# Checks whether a compiler supports a given flag.\n# Prints \"true\" or \"false\" to stdout for consumption by GN\u0027s exec_script().\n\nimport os\nimport shlex\nimport subprocess\nimport sys\n\ndef main():\n    if len(sys.argv) !\u003d 3:\n        print(\"false\")\n        return\n\n    compiler \u003d sys.argv[1]\n    flag \u003d sys.argv[2]\n\n    compiler_cmd \u003d shlex.split(compiler, posix\u003d(os.name !\u003d \u0027nt\u0027))\n    cmd \u003d compiler_cmd + [\u0027-Werror\u0027, flag, \u0027-fsyntax-only\u0027, \u0027-x\u0027, \u0027c++\u0027, os.devnull]\n\n    try:\n        subprocess.check_call(\n            cmd,\n            stdout\u003dsubprocess.DEVNULL,\n            stderr\u003dsubprocess.DEVNULL,\n            timeout\u003d10,\n        )\n        print(\"true\")\n    except (subprocess.CalledProcessError, subprocess.TimeoutExpired, OSError):\n        print(\"false\")\n\nif __name__ \u003d\u003d \u0027__main__\u0027:\n    main()\n```",
+      "revId": "855764169b1b1e0d385ab9548bbc07ea4514bae9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c13d842_b14cbd81",
+        "filename": "gn/check_compiler_flag.py",
+        "patchSetId": 21
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 4764846
+      },
+      "writtenOn": "2026-09-11T03:19:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c4a2407a_09c46e6a",
       "revId": "855764169b1b1e0d385ab9548bbc07ea4514bae9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -201,6 +291,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c170de5e_c98c9cb9",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 21
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 4764846
+      },
+      "writtenOn": "2026-09-11T03:19:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "82f2cf66_b70a95c4",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 42
+      },
+      "revId": "855764169b1b1e0d385ab9548bbc07ea4514bae9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dcc3a9fd_9f36f886",
@@ -214,6 +328,30 @@
       "writtenOn": "2026-09-10T12:08:50Z",
       "side": 1,
       "message": "Why excluding Android? Can you add comment explaining this behavior?",
+      "range": {
+        "startLine": 23,
+        "startChar": 33,
+        "endLine": 24,
+        "endChar": 1
+      },
+      "revId": "855764169b1b1e0d385ab9548bbc07ea4514bae9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22ebfa09_2df6ab22",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 21
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 4764846
+      },
+      "writtenOn": "2026-09-11T03:19:50Z",
+      "side": 1,
+      "message": "I thought the scope of the project was only Chrome builds, but if we want to enforce it on Android, we can do so and set enable_unsafe_buffer_warning to true; that would be very easy.\n\nIf we want to keep it as it is (enable_unsafe_buffer_warning \u003d !is_android), then the other if statements have to be modified because of the strict GN policies against unused variables.\n\nWe can do something like this:\nif (_supports_unsafe_buffers_mappings \u0026\u0026 enable_unsafe_buffer_warning) {\n       cflags +\u003d [\n        \"-Wunsafe-buffer-usage\",\n        \"--warning-suppression-mappings\u003d\" + _unsafe_buffers_mappings,\n      ]\n    } else {\n       cflags +\u003d [ \"-Wno-unsafe-buffer-usage\" ]\n       # A dummy read to satisfy GN for the string variable\n       not_needed([ \"_unsafe_buffers_mappings\" ]) \n    }",
+      "parentUuid": "dcc3a9fd_9f36f886",
       "range": {
         "startLine": 23,
         "startChar": 33,
@@ -247,6 +385,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "97aeff12_270e3657",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 21
+      },
+      "lineNbr": 648,
+      "author": {
+        "id": 4764846
+      },
+      "writtenOn": "2026-09-11T03:19:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "945ef391_e99f796d",
+      "range": {
+        "startLine": 648,
+        "startChar": 56,
+        "endLine": 648,
+        "endChar": 65
+      },
+      "revId": "855764169b1b1e0d385ab9548bbc07ea4514bae9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0dc6fb11_6bc883ed",
@@ -260,6 +422,30 @@
       "writtenOn": "2026-09-10T12:08:50Z",
       "side": 1,
       "message": "If you apply me previous suggestions, we merge the two conditions and simplify into:\n```\nif (enable_unsafe_buffer_warning \u0026\u0026 _supports_unsafe_buffers_mappings) {\n  cflags +\u003d [\n    \"-Wunsafe-buffer-usage\",\n    \"--warning-suppression-mappings\u003d\" + _unsafe_buffers_mappings,\n  ]\n} else {\n  cflags +\u003d [ \"-Wno-unsafe-buffer-usage\" ]\n}\n```",
+      "range": {
+        "startLine": 642,
+        "startChar": 0,
+        "endLine": 664,
+        "endChar": 3
+      },
+      "revId": "855764169b1b1e0d385ab9548bbc07ea4514bae9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f01d918d_dde081e2",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 21
+      },
+      "lineNbr": 664,
+      "author": {
+        "id": 4764846
+      },
+      "writtenOn": "2026-09-11T03:19:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0dc6fb11_6bc883ed",
       "range": {
         "startLine": 642,
         "startChar": 0,
