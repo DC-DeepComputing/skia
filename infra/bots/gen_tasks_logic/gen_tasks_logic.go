@@ -975,6 +975,9 @@ func (b *TaskBuilder) defaultSwarmDimensions() {
 				log.Fatalf("Entry %q not found in iOS mapping.", b.Parts["model"])
 			}
 			d["device"] = device
+			if b.Parts["model"] == "iPhone15Pro" {
+				d["id"] = "mac-723-e505"
+			}
 		} else if b.CPU() || b.ExtraConfig("CanvasKit", "Docker", "SwiftShader") {
 			modelMapping, ok := map[string]map[string]dimensionMap{
 				"AppleM1": {
@@ -1146,14 +1149,20 @@ func (b *TaskBuilder) defaultSwarmDimensions() {
 			d["machine_type"] = MACHINE_TYPE_LARGE
 		} else if d["os"] == DEFAULT_OS_MAC {
 			if b.MatchExtraConfig("iOS") {
-				// TODO(borenet): Remove this special case (and the associated
-				// machines) once the new machines have the certs needed to
-				// build for iOS.
-				d["os"] = "Mac-14.5"
-				d["cpu"] = "x86-64"
-				d["cores"] = "12"
-				delete(d, "gpu")
-			} else {
+				if b.MatchExtraConfig("iOS18") {
+					d["id"] = "mac-723-e505"
+					d["pool"] = "SkiaIOS"
+					delete(d, "gpu")
+				} else {
+					// TODO(borenet): Remove this special case (and the associated
+					// machines) once the new machines have the certs needed to
+					// build for iOS.
+					d["os"] = "Mac-14.5"
+					d["cpu"] = "x86-64"
+					d["cores"] = "12"
+					delete(d, "gpu")
+			}
+		} else {
 				d["mac_model"] = "Mac16,11"
 				delete(d, "gpu")
 			}
