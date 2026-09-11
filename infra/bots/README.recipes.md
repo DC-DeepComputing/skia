@@ -288,11 +288,11 @@ Prepare the variables.
 
 #### **class [SkiaXCodeApi](/infra/bots/recipe_modules/xcode/api.py#10)([RecipeApi][recipe_engine/wkt/RecipeApi]):**
 
-&mdash; **def [install](/infra/bots/recipe_modules/xcode/api.py#21)(self):**
+&mdash; **def [install](/infra/bots/recipe_modules/xcode/api.py#25)(self):**
 
-&emsp; **@property**<br>&mdash; **def [path](/infra/bots/recipe_modules/xcode/api.py#17)(self):**
+&emsp; **@property**<br>&mdash; **def [path](/infra/bots/recipe_modules/xcode/api.py#21)(self):**
 
-&emsp; **@property**<br>&mdash; **def [version](/infra/bots/recipe_modules/xcode/api.py#13)(self):**
+&emsp; **@property**<br>&mdash; **def [version](/infra/bots/recipe_modules/xcode/api.py#14)(self):**
 ## Recipes
 
 ### *recipes* / [build:examples/full](/infra/bots/recipe_modules/build/examples/full.py)

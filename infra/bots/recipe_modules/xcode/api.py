@@ -9,9 +9,13 @@ from recipe_engine import recipe_api
 
 class SkiaXCodeApi(recipe_api.RecipeApi):
   XCODE_BUILD_VERSION = '16a242d' # Xcode 16.0
+  XCODE_16_3_BUILD_VERSION = '16e140' # Xcode 16.3
 
   @property
   def version(self):
+    if (self.m.vars.builder_cfg.get('os') == 'iOS18' or
+        'iOS18' in self.m.vars.extra_tokens):
+      return self.XCODE_16_3_BUILD_VERSION
     return self.XCODE_BUILD_VERSION
 
   @property
