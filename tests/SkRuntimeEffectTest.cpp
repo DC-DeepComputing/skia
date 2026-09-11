@@ -1898,3 +1898,20 @@ DEF_TEST(SkRuntimeShader_b416061512, r) {
         s->getCanvas()->drawPaint(paint);
     }
 }
+
+DEF_TEST(SkRuntimeColorFilter_b520831887, r) {
+    // b/520831887: loops with 16-bit integer induction variables (e.g. mediump int)
+    // must not trigger an assertion failure in GetLoopUnrollInfo.
+    constexpr const char* kSkSL =
+            "half4 main(half4 color) {"
+            "    for (mediump int b = 2; b < 4; ++b) {}"
+            "    return color;"
+            "}";
+
+    auto [effect, err] = SkRuntimeEffect::MakeForColorFilter(SkString(kSkSL));
+    REPORTER_ASSERT(r, effect != nullptr, "%s", err.c_str());
+    if (effect) {
+        sk_sp<SkColorFilter> cf = effect->makeColorFilter(nullptr);
+        REPORTER_ASSERT(r, cf != nullptr);
+    }
+}
