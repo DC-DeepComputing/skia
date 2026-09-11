@@ -16,6 +16,23 @@
       "message": "It seems like I got an unrelated failure, so I merged with main.",
       "revId": "f2bf3a983888f790cf79ceb76464d302d2ce7830",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "993501e5_9d682024",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4569768
+      },
+      "writtenOn": "2026-09-11T14:03:34Z",
+      "side": 1,
+      "message": "These compile failures were caused by the CL being based on an outdated Skia revision, not by the ICO changes. I’ve rebased it onto current Skia main and will rerun the Chromium canary.",
+      "revId": "f2bf3a983888f790cf79ceb76464d302d2ce7830",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
