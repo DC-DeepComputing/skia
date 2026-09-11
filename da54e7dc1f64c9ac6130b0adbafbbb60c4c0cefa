@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe0d1641_8200907b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-11T20:17:42Z",
+      "side": 1,
+      "message": "This should be ready for review.  https://skia-review.git.corp.google.com/c/skia/+/1355857 fixes the original issues that were causing failures and crashes on swiftshader and nvidia.\n\nBesides that, the main changes from before are also fixing the logic in RenderPassTask that determines the render target bounds (it had been colorAttachment-\u003edimensions() to automatically get the smaller size when using Dawn\u0027s partial load/resolve emulation, but now we also might need to keep the resolve target\u0027s smaller dimensions when doing approx-sized attachments).\n\nLastly, it switches to kApprox by default for vulkan and adds logic to detect Adreno 6xx that are then disabled. PS3 continues to show Adreno620 corruption even after the other fixes, and PS4 adds the detection and there is no more corruption.",
+      "revId": "da54e7dc1f64c9ac6130b0adbafbbb60c4c0cefa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
