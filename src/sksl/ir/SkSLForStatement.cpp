@@ -99,6 +99,42 @@ static void hoist_vardecl_symbols_into_outer_scope(const Context& context,
     SymbolHoister{context, innerSymbols, hoistedSymbols}.visitStatement(initBlock);
 }
 
+#if defined(SK_BUILD_FOR_FUZZER)
+static bool loop_exceeds_nested_iteration_limit(const Statement& stmt,
+                                                int64_t parentMultiplier) {
+    if (parentMultiplier > 256) {
+        return true;
+    }
+    class NestedLoopVisitor : public ProgramVisitor {
+    public:
+        int64_t fCurrentMultiplier = 1;
+
+        bool visitExpression(const Expression&) override { return false; }
+
+        bool visitStatement(const Statement& s) override {
+            if (s.is<ForStatement>()) {
+                const ForStatement& forStmt = s.as<ForStatement>();
+                if (forStmt.unrollInfo()) {
+                    int64_t oldMultiplier = fCurrentMultiplier;
+                    fCurrentMultiplier *= forStmt.unrollInfo()->fCount;
+                    if (fCurrentMultiplier > 256) {
+                        return true;
+                    }
+                    bool exceeded = this->visitStatement(*forStmt.statement());
+                    fCurrentMultiplier = oldMultiplier;
+                    return exceeded;
+                }
+            }
+            return ProgramVisitor::visitStatement(s);
+        }
+    };
+
+    NestedLoopVisitor visitor;
+    visitor.fCurrentMultiplier = parentMultiplier;
+    return visitor.visitStatement(stmt);
+}
+#endif
+
 std::unique_ptr<Statement> ForStatement::Convert(const Context& context,
                                                  Position pos,
                                                  ForLoopPositions positions,
@@ -137,6 +173,12 @@ std::unique_ptr<Statement> ForStatement::Convert(const Context& context,
         if (!unrollInfo) {
             return nullptr;
         }
+#if defined(SK_BUILD_FOR_FUZZER)
+        if (loop_exceeds_nested_iteration_limit(*statement, unrollInfo->fCount)) {
+            context.fErrors->error(pos, "loop iteration count exceeds fuzzer limit");
+            return nullptr;
+        }
+#endif
     } else {
         // In ES3, loops don't have to be unrollable, but we can use the unroll information for
         // optimization purposes.
