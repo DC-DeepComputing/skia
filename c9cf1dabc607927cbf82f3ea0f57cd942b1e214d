@@ -1,0 +1,372 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20700cf4_282f9c33",
+        "filename": "docs/examples/ImageInfo_bytesPerPixel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-11T13:56:13Z",
+      "side": 1,
+      "message": "2 tabs",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 92
+      },
+      "revId": "c9cf1dabc607927cbf82f3ea0f57cd942b1e214d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a31c5903_941875f1",
+        "filename": "docs/examples/ImageInfo_colorType.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-11T13:56:13Z",
+      "side": 1,
+      "message": "2 tabs",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 92
+      },
+      "revId": "c9cf1dabc607927cbf82f3ea0f57cd942b1e214d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96ec9fd0_34a56e1a",
+        "filename": "docs/examples/Image_colorType.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-11T13:56:13Z",
+      "side": 1,
+      "message": "2 tabs",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 92
+      },
+      "revId": "c9cf1dabc607927cbf82f3ea0f57cd942b1e214d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5267c6e1_e71f209d",
+        "filename": "docs/examples/Matrix_SetAffineIdentity.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-11T13:56:13Z",
+      "side": 1,
+      "message": "2 tabs, with std::to_array on the above line if needed",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 95
+      },
+      "revId": "c9cf1dabc607927cbf82f3ea0f57cd942b1e214d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e34cda6_b838d629",
+        "filename": "docs/examples/Matrix_asAffine.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-11T13:56:13Z",
+      "side": 1,
+      "message": "same tabbing nit",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 99
+      },
+      "revId": "c9cf1dabc607927cbf82f3ea0f57cd942b1e214d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "048fd0ce_0d21a61a",
+        "filename": "docs/examples/Matrix_mapHomogeneousPoints.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-11T13:56:13Z",
+      "side": 1,
+      "message": "2 tabs",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 82
+      },
+      "revId": "c9cf1dabc607927cbf82f3ea0f57cd942b1e214d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5ce7784_5189159b",
+        "filename": "docs/examples/Matrix_setAffine.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-11T13:56:13Z",
+      "side": 1,
+      "message": "same tabbing nit",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 99
+      },
+      "revId": "c9cf1dabc607927cbf82f3ea0f57cd942b1e214d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "663cff70_0a9b3921",
+        "filename": "docs/examples/Path_IsLineDegenerate.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-11T13:56:13Z",
+      "side": 1,
+      "message": "2 tabs over, and can we avoid the redundant type names per item?",
+      "range": {
+        "startLine": 10,
+        "startChar": 9,
+        "endLine": 10,
+        "endChar": 16
+      },
+      "revId": "c9cf1dabc607927cbf82f3ea0f57cd942b1e214d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f310a40c_16659550",
+        "filename": "docs/examples/Path_Iter_const_SkPath.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-11T13:56:13Z",
+      "side": 1,
+      "message": "same tabbing nit",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 100
+      },
+      "revId": "c9cf1dabc607927cbf82f3ea0f57cd942b1e214d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aff18eb8_826b5e8a",
+        "filename": "docs/examples/Path_Iter_next.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-11T13:56:13Z",
+      "side": 1,
+      "message": "nit: same tabbing nit",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 96
+      },
+      "revId": "c9cf1dabc607927cbf82f3ea0f57cd942b1e214d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1975a8c1_6c961b06",
+        "filename": "docs/examples/Path_Iter_setPath.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-11T13:56:13Z",
+      "side": 1,
+      "message": "nit: we usually tab over 2x for initializers, so for that to fit, the std::to_array\u003c\u003e can go on the above line",
+      "range": {
+        "startLine": 11,
+        "startChar": 21,
+        "endLine": 12,
+        "endChar": 22
+      },
+      "revId": "c9cf1dabc607927cbf82f3ea0f57cd942b1e214d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2db136a_d2d78bc2",
+        "filename": "docs/examples/Path_conicTo.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-11T13:56:13Z",
+      "side": 1,
+      "message": "2 tabs",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 81
+      },
+      "revId": "c9cf1dabc607927cbf82f3ea0f57cd942b1e214d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b61ad5b_b188e9e6",
+        "filename": "docs/examples/Path_conicTo_2.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-11T13:56:13Z",
+      "side": 1,
+      "message": "2 tabs",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 78
+      },
+      "revId": "c9cf1dabc607927cbf82f3ea0f57cd942b1e214d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21a54c18_0f053fb3",
+        "filename": "docs/examples/Path_conservativelyContainsRect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-11T13:56:13Z",
+      "side": 1,
+      "message": "Can we avoid the SkRect repetition here?",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 6
+      },
+      "revId": "c9cf1dabc607927cbf82f3ea0f57cd942b1e214d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb74db5a_5c71ec52",
+        "filename": "docs/examples/Path_getVerbs.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-11T13:56:13Z",
+      "side": 1,
+      "message": "same tabbing nit",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 93
+      },
+      "revId": "c9cf1dabc607927cbf82f3ea0f57cd942b1e214d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c89babc_6168dc65",
+        "filename": "docs/examples/Path_lineTo_2.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-11T13:56:13Z",
+      "side": 1,
+      "message": "nit: can you preserve the 3x4 grid formatting here?",
+      "range": {
+        "startLine": 11,
+        "startChar": 8,
+        "endLine": 13,
+        "endChar": 46
+      },
+      "revId": "c9cf1dabc607927cbf82f3ea0f57cd942b1e214d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
