@@ -1,0 +1,665 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a879648_6a19d738",
+        "filename": "tests/PathOpsQuadIntersectionTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-11T14:56:39Z",
+      "side": 1,
+      "message": "nit: can you indent this, old code also had this inconsistent indentation but since you are changing it would be nice to update it to make it consistent.",
+      "range": {
+        "startLine": 69,
+        "startChar": 0,
+        "endLine": 144,
+        "endChar": 0
+      },
+      "revId": "2eea966e262f8f5c6493789c56e2922117b0d6a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16622a06_0289c7e5",
+        "filename": "tests/PathOpsQuadLineIntersectionTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-11T14:56:39Z",
+      "side": 1,
+      "message": "nit: bring this down to a newline.",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 56
+      },
+      "revId": "2eea966e262f8f5c6493789c56e2922117b0d6a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66c964fb_b03f336e",
+        "filename": "tests/PathOpsQuadLineIntersectionTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-11T14:56:39Z",
+      "side": 1,
+      "message": "nit: bring this down to a newline.",
+      "range": {
+        "startLine": 69,
+        "startChar": 0,
+        "endLine": 69,
+        "endChar": 53
+      },
+      "revId": "2eea966e262f8f5c6493789c56e2922117b0d6a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91dba548_190a7313",
+        "filename": "tests/PathOpsThreeWayTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-11T14:56:39Z",
+      "side": 1,
+      "message": "nit: bring this down to a newline.",
+      "range": {
+        "startLine": 42,
+        "startChar": 1,
+        "endLine": 42,
+        "endChar": 56
+      },
+      "revId": "2eea966e262f8f5c6493789c56e2922117b0d6a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1add2605_fb5f8062",
+        "filename": "tests/PathTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1073,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-11T14:56:39Z",
+      "side": 1,
+      "message": "nit: no space between char and *, same with instances down below.",
+      "range": {
+        "startLine": 1073,
+        "startChar": 49,
+        "endLine": 1073,
+        "endChar": 51
+      },
+      "revId": "2eea966e262f8f5c6493789c56e2922117b0d6a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0291313a_329b2f85",
+        "filename": "tests/PathTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1609,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-11T14:56:39Z",
+      "side": 1,
+      "message": "nit: newline",
+      "range": {
+        "startLine": 1609,
+        "startChar": 5,
+        "endLine": 1609,
+        "endChar": 53
+      },
+      "revId": "2eea966e262f8f5c6493789c56e2922117b0d6a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a3d0d41_d5f85205",
+        "filename": "tests/PathTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1814,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-11T14:56:39Z",
+      "side": 1,
+      "message": "nit: bring variable declaration to a new line, also align the bools within the struct with SkRect",
+      "range": {
+        "startLine": 1799,
+        "startChar": 4,
+        "endLine": 1814,
+        "endChar": 27
+      },
+      "revId": "2eea966e262f8f5c6493789c56e2922117b0d6a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f315014_e37d02d9",
+        "filename": "tests/PathTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1836,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-11T14:56:39Z",
+      "side": 1,
+      "message": "nit: line length, can align bools under SkRect",
+      "range": {
+        "startLine": 1833,
+        "startChar": 8,
+        "endLine": 1836,
+        "endChar": 102
+      },
+      "revId": "2eea966e262f8f5c6493789c56e2922117b0d6a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "beade799_e370a527",
+        "filename": "tests/PathTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1855,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-11T14:56:39Z",
+      "side": 1,
+      "message": "nit: line length",
+      "range": {
+        "startLine": 1855,
+        "startChar": 8,
+        "endLine": 1855,
+        "endChar": 103
+      },
+      "revId": "2eea966e262f8f5c6493789c56e2922117b0d6a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de381ec2_ef2bffca",
+        "filename": "tests/PathTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 2090,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-11T14:56:39Z",
+      "side": 1,
+      "message": "nit: newline",
+      "range": {
+        "startLine": 2090,
+        "startChar": 4,
+        "endLine": 2090,
+        "endChar": 47
+      },
+      "revId": "2eea966e262f8f5c6493789c56e2922117b0d6a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80905378_ea911ed7",
+        "filename": "tests/PathTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 2421,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-11T14:56:39Z",
+      "side": 1,
+      "message": "nit: newline",
+      "range": {
+        "startLine": 2421,
+        "startChar": 4,
+        "endLine": 2421,
+        "endChar": 53
+      },
+      "revId": "2eea966e262f8f5c6493789c56e2922117b0d6a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb74016a_2d92d19b",
+        "filename": "tests/PathTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 2700,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-11T14:56:39Z",
+      "side": 1,
+      "message": "nit: line length",
+      "range": {
+        "startLine": 2700,
+        "startChar": 8,
+        "endLine": 2700,
+        "endChar": 115
+      },
+      "revId": "2eea966e262f8f5c6493789c56e2922117b0d6a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8cbbe89f_b123138a",
+        "filename": "tests/PathTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 4083,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-11T14:56:39Z",
+      "side": 1,
+      "message": "nit: line length",
+      "range": {
+        "startLine": 4083,
+        "startChar": 4,
+        "endLine": 4083,
+        "endChar": 152
+      },
+      "revId": "2eea966e262f8f5c6493789c56e2922117b0d6a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d343092_32141298",
+        "filename": "tests/PathTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 4099,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-11T14:56:39Z",
+      "side": 1,
+      "message": "nit: line length",
+      "range": {
+        "startLine": 4099,
+        "startChar": 4,
+        "endLine": 4099,
+        "endChar": 152
+      },
+      "revId": "2eea966e262f8f5c6493789c56e2922117b0d6a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26e670ad_dad45906",
+        "filename": "tests/PathTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 4118,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-11T14:56:39Z",
+      "side": 1,
+      "message": "nit: line length",
+      "range": {
+        "startLine": 4118,
+        "startChar": 4,
+        "endLine": 4118,
+        "endChar": 190
+      },
+      "revId": "2eea966e262f8f5c6493789c56e2922117b0d6a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2776a39d_d0f795b3",
+        "filename": "tests/PathTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 4299,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-11T14:56:39Z",
+      "side": 1,
+      "message": "nit: line length, can bring first 2 elements down to a new line",
+      "range": {
+        "startLine": 4299,
+        "startChar": 48,
+        "endLine": 4299,
+        "endChar": 121
+      },
+      "revId": "2eea966e262f8f5c6493789c56e2922117b0d6a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11487065_2fa6a797",
+        "filename": "tests/Point3Test.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-11T14:56:39Z",
+      "side": 1,
+      "message": "nit: bring to newline",
+      "range": {
+        "startLine": 136,
+        "startChar": 5,
+        "endLine": 136,
+        "endChar": 53
+      },
+      "revId": "2eea966e262f8f5c6493789c56e2922117b0d6a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1de4ec9_a2e60fac",
+        "filename": "tests/PointTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-11T14:56:39Z",
+      "side": 1,
+      "message": "nit: new line",
+      "range": {
+        "startLine": 140,
+        "startChar": 4,
+        "endLine": 140,
+        "endChar": 53
+      },
+      "revId": "2eea966e262f8f5c6493789c56e2922117b0d6a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e813bd3_36bb3a48",
+        "filename": "tests/PointTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-11T14:56:39Z",
+      "side": 1,
+      "message": "nit: line length and can remove trailing comma.",
+      "range": {
+        "startLine": 156,
+        "startChar": 4,
+        "endLine": 156,
+        "endChar": 108
+      },
+      "revId": "2eea966e262f8f5c6493789c56e2922117b0d6a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1280c478_8896ec68",
+        "filename": "tests/PremulAlphaRoundTripTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-11T14:56:39Z",
+      "side": 1,
+      "message": "nit: new line",
+      "range": {
+        "startLine": 57,
+        "startChar": 0,
+        "endLine": 57,
+        "endChar": 52
+      },
+      "revId": "2eea966e262f8f5c6493789c56e2922117b0d6a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60bb2183_5bbe8082",
+        "filename": "tests/ReadPixelsTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-11T14:56:39Z",
+      "side": 1,
+      "message": "nit: newline",
+      "range": {
+        "startLine": 290,
+        "startChar": 1,
+        "endLine": 290,
+        "endChar": 77
+      },
+      "revId": "2eea966e262f8f5c6493789c56e2922117b0d6a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "277e8cd9_c7996cd3",
+        "filename": "tests/RecordOptsTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 268,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-11T14:56:39Z",
+      "side": 1,
+      "message": "nit: line length, keep * next to the type without a space",
+      "revId": "2eea966e262f8f5c6493789c56e2922117b0d6a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e5ab9ed_f802a2ba",
+        "filename": "tests/RecordOptsTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-11T14:56:39Z",
+      "side": 1,
+      "message": "nit: newline",
+      "range": {
+        "startLine": 304,
+        "startChar": 4,
+        "endLine": 304,
+        "endChar": 58
+      },
+      "revId": "2eea966e262f8f5c6493789c56e2922117b0d6a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1b57e31_14f7927a",
+        "filename": "tests/ResourceAllocatorTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-11T14:56:39Z",
+      "side": 1,
+      "message": "nit: align with above line `{64`, same goes for the other elements in this array",
+      "range": {
+        "startLine": 308,
+        "startChar": 9,
+        "endLine": 309,
+        "endChar": 17
+      },
+      "revId": "2eea966e262f8f5c6493789c56e2922117b0d6a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1606d326_8d6f5659",
+        "filename": "tests/SVGDeviceTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-11T14:56:39Z",
+      "side": 1,
+      "message": "nit: newline",
+      "range": {
+        "startLine": 189,
+        "startChar": 4,
+        "endLine": 189,
+        "endChar": 55
+      },
+      "revId": "2eea966e262f8f5c6493789c56e2922117b0d6a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34dfbba5_02f6bf24",
+        "filename": "tests/ScalarTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-11T14:56:39Z",
+      "side": 1,
+      "message": "nit: newline",
+      "range": {
+        "startLine": 75,
+        "startChar": 4,
+        "endLine": 75,
+        "endChar": 55
+      },
+      "revId": "2eea966e262f8f5c6493789c56e2922117b0d6a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f20519f_273f0036",
+        "filename": "tests/SerialProcsTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-11T14:56:39Z",
+      "side": 1,
+      "message": "nit: line length",
+      "range": {
+        "startLine": 81,
+        "startChar": 12,
+        "endLine": 81,
+        "endChar": 127
+      },
+      "revId": "2eea966e262f8f5c6493789c56e2922117b0d6a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e0a7b59_91ba6e1f",
+        "filename": "tests/SerialProcsTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-11T14:56:39Z",
+      "side": 1,
+      "message": "nit: line length",
+      "range": {
+        "startLine": 90,
+        "startChar": 11,
+        "endLine": 90,
+        "endChar": 121
+      },
+      "revId": "2eea966e262f8f5c6493789c56e2922117b0d6a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea9e02c9_a7dd133f",
+        "filename": "tests/SkBlockAllocatorTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-11T14:56:39Z",
+      "side": 1,
+      "message": "nit: line length",
+      "range": {
+        "startLine": 301,
+        "startChar": 4,
+        "endLine": 301,
+        "endChar": 122
+      },
+      "revId": "2eea966e262f8f5c6493789c56e2922117b0d6a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
