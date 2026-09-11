@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d48cf573_8b04beee",
+        "filename": "src/core/SkRRectPriv.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-11T14:52:56Z",
+      "side": 1,
+      "message": "All these definitions should still remain in SkRRect.cpp, they just have SkRRectPriv:: in front instead.",
+      "range": {
+        "startLine": 56,
+        "startChar": 16,
+        "endLine": 56,
+        "endChar": 36
+      },
+      "revId": "75be79d171cea5e7c4ca1cd502b8340146e55dc3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
