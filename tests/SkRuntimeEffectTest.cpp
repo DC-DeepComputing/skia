@@ -1898,3 +1898,27 @@ DEF_TEST(SkRuntimeShader_b416061512, r) {
         s->getCanvas()->drawPaint(paint);
     }
 }
+
+DEF_TEST(SkRuntimeColorFilter_b466744542, r) {
+    // b/466744542: nested loops multiplying to excessive iteration counts must be rejected
+    // under fuzzer builds to prevent timeouts in skruntimecolorfilter.
+    constexpr const char* kSkSL =
+            "half4 main(half4 color) {"
+            "    half4 x = color;"
+            "    for (int a = 0; a < 20; ++a) {"
+            "        for (int b = 0; b < 20; ++b) {"
+            "            x += half4(0.01);"
+            "        }"
+            "    }"
+            "    return x;"
+            "}";
+
+    auto [effect, err] = SkRuntimeEffect::MakeForColorFilter(SkString(kSkSL));
+#if defined(SK_BUILD_FOR_FUZZER)
+    // 20 * 20 = 400 iterations, exceeding the fuzzer loop limit of 256.
+    REPORTER_ASSERT(r, !effect);
+    REPORTER_ASSERT(r, err.contains("loop iteration count exceeds fuzzer limit"));
+#else
+    REPORTER_ASSERT(r, effect != nullptr);
+#endif
+}
