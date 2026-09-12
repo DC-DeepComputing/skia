@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eef3ca9d_2b8bc6ae",
+        "filename": "docs/examples/ImageInfo_bytesPerPixel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 4621846
+      },
+      "writtenOn": "2026-09-12T00:05:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "20700cf4_282f9c33",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 92
+      },
+      "revId": "c9cf1dabc607927cbf82f3ea0f57cd942b1e214d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a31c5903_941875f1",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-09-11T13:56:13Z",
       "side": 1,
       "message": "2 tabs",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 92
+      },
+      "revId": "c9cf1dabc607927cbf82f3ea0f57cd942b1e214d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7f9ce72_9edd780c",
+        "filename": "docs/examples/ImageInfo_colorType.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 4621846
+      },
+      "writtenOn": "2026-09-12T00:05:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a31c5903_941875f1",
       "range": {
         "startLine": 10,
         "startChar": 0,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ddc364d_8c3dbff6",
+        "filename": "docs/examples/Image_colorType.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 4621846
+      },
+      "writtenOn": "2026-09-12T00:05:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "96ec9fd0_34a56e1a",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 92
+      },
+      "revId": "c9cf1dabc607927cbf82f3ea0f57cd942b1e214d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5267c6e1_e71f209d",
@@ -83,6 +155,30 @@
       "writtenOn": "2026-09-11T13:56:13Z",
       "side": 1,
       "message": "2 tabs, with std::to_array on the above line if needed",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 95
+      },
+      "revId": "c9cf1dabc607927cbf82f3ea0f57cd942b1e214d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4a6eff9_79b1603c",
+        "filename": "docs/examples/Matrix_SetAffineIdentity.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 4621846
+      },
+      "writtenOn": "2026-09-12T00:05:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5267c6e1_e71f209d",
       "range": {
         "startLine": 12,
         "startChar": 0,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e922d6f_2521462a",
+        "filename": "docs/examples/Matrix_asAffine.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 4621846
+      },
+      "writtenOn": "2026-09-12T00:05:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5e34cda6_b838d629",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 99
+      },
+      "revId": "c9cf1dabc607927cbf82f3ea0f57cd942b1e214d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "048fd0ce_0d21a61a",
@@ -139,6 +259,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aaf81f90_b139f807",
+        "filename": "docs/examples/Matrix_mapHomogeneousPoints.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 4621846
+      },
+      "writtenOn": "2026-09-12T00:05:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "048fd0ce_0d21a61a",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 82
+      },
+      "revId": "c9cf1dabc607927cbf82f3ea0f57cd942b1e214d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d5ce7784_5189159b",
@@ -152,6 +296,30 @@
       "writtenOn": "2026-09-11T13:56:13Z",
       "side": 1,
       "message": "same tabbing nit",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 99
+      },
+      "revId": "c9cf1dabc607927cbf82f3ea0f57cd942b1e214d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "16aef63a_3cf16745",
+        "filename": "docs/examples/Matrix_setAffine.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 4621846
+      },
+      "writtenOn": "2026-09-12T00:05:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d5ce7784_5189159b",
       "range": {
         "startLine": 14,
         "startChar": 0,
@@ -187,6 +355,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "28d7264c_2d0f6311",
+        "filename": "docs/examples/Path_IsLineDegenerate.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 4621846
+      },
+      "writtenOn": "2026-09-12T00:05:26Z",
+      "side": 1,
+      "message": "Seems like is not possible, since the builder `Build-Debian11-GCC-x86_64-Debug-Docker` reports build error if we do not specify that type name.\nhttps://task-scheduler.skia.org/job/8ysN3AcOFBeRt8nWK6hF\n\nThose tests belong to another CL:\nhttps://skia-review.git.corp.google.com/c/skia/+/1299996/5",
+      "parentUuid": "663cff70_0a9b3921",
+      "range": {
+        "startLine": 10,
+        "startChar": 9,
+        "endLine": 10,
+        "endChar": 16
+      },
+      "revId": "c9cf1dabc607927cbf82f3ea0f57cd942b1e214d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f310a40c_16659550",
         "filename": "docs/examples/Path_Iter_const_SkPath.cpp",
         "patchSetId": 3
@@ -198,6 +390,30 @@
       "writtenOn": "2026-09-11T13:56:13Z",
       "side": 1,
       "message": "same tabbing nit",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 100
+      },
+      "revId": "c9cf1dabc607927cbf82f3ea0f57cd942b1e214d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "607ab26e_e49ad7eb",
+        "filename": "docs/examples/Path_Iter_const_SkPath.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 4621846
+      },
+      "writtenOn": "2026-09-12T00:05:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f310a40c_16659550",
       "range": {
         "startLine": 12,
         "startChar": 0,
@@ -231,6 +447,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c2552fc_c152c171",
+        "filename": "docs/examples/Path_Iter_next.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 4621846
+      },
+      "writtenOn": "2026-09-12T00:05:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aff18eb8_826b5e8a",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 96
+      },
+      "revId": "c9cf1dabc607927cbf82f3ea0f57cd942b1e214d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1975a8c1_6c961b06",
@@ -244,6 +484,30 @@
       "writtenOn": "2026-09-11T13:56:13Z",
       "side": 1,
       "message": "nit: we usually tab over 2x for initializers, so for that to fit, the std::to_array\u003c\u003e can go on the above line",
+      "range": {
+        "startLine": 11,
+        "startChar": 21,
+        "endLine": 12,
+        "endChar": 22
+      },
+      "revId": "c9cf1dabc607927cbf82f3ea0f57cd942b1e214d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ca83825_16ebab06",
+        "filename": "docs/examples/Path_Iter_setPath.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 4621846
+      },
+      "writtenOn": "2026-09-12T00:05:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1975a8c1_6c961b06",
       "range": {
         "startLine": 11,
         "startChar": 21,
@@ -277,6 +541,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4e1cef3_d9d86323",
+        "filename": "docs/examples/Path_conicTo.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 4621846
+      },
+      "writtenOn": "2026-09-12T00:05:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d2db136a_d2d78bc2",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 81
+      },
+      "revId": "c9cf1dabc607927cbf82f3ea0f57cd942b1e214d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6b61ad5b_b188e9e6",
@@ -290,6 +578,30 @@
       "writtenOn": "2026-09-11T13:56:13Z",
       "side": 1,
       "message": "2 tabs",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 78
+      },
+      "revId": "c9cf1dabc607927cbf82f3ea0f57cd942b1e214d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "713bd575_f652f61a",
+        "filename": "docs/examples/Path_conicTo_2.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 4621846
+      },
+      "writtenOn": "2026-09-12T00:05:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6b61ad5b_b188e9e6",
       "range": {
         "startLine": 21,
         "startChar": 0,
@@ -325,6 +637,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0c5e9166_ac38bae6",
+        "filename": "docs/examples/Path_conservativelyContainsRect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 4621846
+      },
+      "writtenOn": "2026-09-12T00:05:26Z",
+      "side": 1,
+      "message": "I think is not possible.\n\nIn builder `Build-Debian11-GCC-x86_64-Debug-Docker`, we get a build error if we do not specify that type name.\nhttps://task-scheduler.skia.org/job/8ysN3AcOFBeRt8nWK6hF\n\nThat\u0027s why we added that type name on initializer lists.",
+      "parentUuid": "21a54c18_0f053fb3",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 6
+      },
+      "revId": "c9cf1dabc607927cbf82f3ea0f57cd942b1e214d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cb74db5a_5c71ec52",
         "filename": "docs/examples/Path_getVerbs.cpp",
         "patchSetId": 3
@@ -336,6 +672,30 @@
       "writtenOn": "2026-09-11T13:56:13Z",
       "side": 1,
       "message": "same tabbing nit",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 93
+      },
+      "revId": "c9cf1dabc607927cbf82f3ea0f57cd942b1e214d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "08c871de_3271b2b5",
+        "filename": "docs/examples/Path_getVerbs.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 4621846
+      },
+      "writtenOn": "2026-09-12T00:05:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cb74db5a_5c71ec52",
       "range": {
         "startLine": 13,
         "startChar": 0,
@@ -359,6 +719,30 @@
       "writtenOn": "2026-09-11T13:56:13Z",
       "side": 1,
       "message": "nit: can you preserve the 3x4 grid formatting here?",
+      "range": {
+        "startLine": 11,
+        "startChar": 8,
+        "endLine": 13,
+        "endChar": 46
+      },
+      "revId": "c9cf1dabc607927cbf82f3ea0f57cd942b1e214d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2bbe750d_8921ec21",
+        "filename": "docs/examples/Path_lineTo_2.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 4621846
+      },
+      "writtenOn": "2026-09-12T00:05:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2c89babc_6168dc65",
       "range": {
         "startLine": 11,
         "startChar": 8,
