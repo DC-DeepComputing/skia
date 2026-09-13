@@ -163,7 +163,9 @@ GrBitmapTextGeoProc::GrBitmapTextGeoProc(const GrShaderCaps& caps,
         fInPosition = {"inPosition", kFloat2_GrVertexAttribType, SkSLType::kFloat2};
     }
 
-    bool hasVertexColor = MaskFormat::kA8 == fMaskFormat || MaskFormat::kA565 == fMaskFormat;
+    bool hasVertexColor = MaskFormat::kA8 == fMaskFormat ||
+                          MaskFormat::kA565 == fMaskFormat ||
+                          MaskFormat::kA888 == fMaskFormat;
     if (hasVertexColor) {
         fInColor = MakeColorAttribute("inColor", wideColor);
     }

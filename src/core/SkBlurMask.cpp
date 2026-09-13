@@ -113,7 +113,8 @@ bool SkBlurMask::BoxBlur(SkMaskBuilder* dst,
     if (src.fFormat != SkMask::kBW_Format &&
         src.fFormat != SkMask::kA8_Format &&
         src.fFormat != SkMask::kARGB32_Format &&
-        src.fFormat != SkMask::kLCD16_Format)
+        src.fFormat != SkMask::kLCD16_Format &&
+        src.fFormat != SkMask::kLCD32_Format)
     {
         return false;
     }
@@ -190,6 +191,13 @@ bool SkBlurMask::BoxBlur(SkMaskBuilder* dst,
                             SkMask::AlphaIter<SkMask::kLCD16_Format>(srcLCD), src.fRowBytes,
                             src.fBounds.width(), src.fBounds.height());
                 } break;
+                case SkMask::kLCD32_Format: {
+                    const uint32_t* srcLCD = reinterpret_cast<const uint32_t*>(src.fImage);
+                    clamp_solid_with_orig(
+                            dstStart, dst->fRowBytes,
+                            SkMask::AlphaIter<SkMask::kLCD32_Format>(srcLCD), src.fRowBytes,
+                            src.fBounds.width(), src.fBounds.height());
+                } break;
                 default:
                     SK_ABORT("Unhandled format.");
             }
@@ -221,6 +229,13 @@ bool SkBlurMask::BoxBlur(SkMaskBuilder* dst,
                     clamp_outer_with_orig(
                             dstStart, dst->fRowBytes,
                             SkMask::AlphaIter<SkMask::kLCD16_Format>(srcLCD), src.fRowBytes,
+                            src.fBounds.width(), src.fBounds.height());
+                } break;
+                case SkMask::kLCD32_Format: {
+                    const uint32_t* srcLCD = reinterpret_cast<const uint32_t*>(src.fImage);
+                    clamp_outer_with_orig(
+                            dstStart, dst->fRowBytes,
+                            SkMask::AlphaIter<SkMask::kLCD32_Format>(srcLCD), src.fRowBytes,
                             src.fBounds.width(), src.fBounds.height());
                 } break;
                 default:
@@ -268,6 +283,14 @@ bool SkBlurMask::BoxBlur(SkMaskBuilder* dst,
                     merge_src_with_blur(
                             dst->image(), dst->fRowBytes,
                             SkMask::AlphaIter<SkMask::kLCD16_Format>(srcLCD), src.fRowBytes,
+                            blurStart, blur.fRowBytes,
+                            src.fBounds.width(), src.fBounds.height());
+                } break;
+                case SkMask::kLCD32_Format: {
+                    const uint32_t* srcLCD = reinterpret_cast<const uint32_t*>(src.fImage);
+                    merge_src_with_blur(
+                            dst->image(), dst->fRowBytes,
+                            SkMask::AlphaIter<SkMask::kLCD32_Format>(srcLCD), src.fRowBytes,
                             blurStart, blur.fRowBytes,
                             src.fBounds.width(), src.fBounds.height());
                 } break;

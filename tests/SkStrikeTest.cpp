@@ -54,6 +54,77 @@ using namespace skia_private;
 using namespace sktext;
 using namespace skglyph;
 
+DEF_TEST(SkScalerContext_LCD32Flag, reporter) {
+    sk_sp<SkTypeface> typeface =
+            ToolUtils::CreatePortableTypeface("serif", SkFontStyle());
+
+    SkFont font(typeface, 24);
+    font.setEdging(SkFont::Edging::kSubpixelAntiAlias);
+
+    SkPaint paint;
+    SkSurfaceProps surfaceProps(0, kRGB_H_SkPixelGeometry);
+
+    SkScalerContextRec lcd16Rec;
+    SkScalerContextEffects lcd16Effects;
+    SkScalerContext::MakeRecAndEffects(font,
+                                       paint,
+                                       surfaceProps,
+                                       SkScalerContextFlags::kNone,
+                                       SkMatrix::I(),
+                                       &lcd16Rec,
+                                       &lcd16Effects);
+
+    REPORTER_ASSERT(reporter, lcd16Rec.getFormat() == SkMask::kLCD16_Format);
+
+    SkSurfaceProps lcd32SurfaceProps(SkSurfaceProps::kUseLCD32_Flag,
+                                     kRGB_H_SkPixelGeometry);
+
+    SkScalerContextRec lcd32Rec;
+    SkScalerContextEffects lcd32Effects;
+    SkScalerContext::MakeRecAndEffects(font,
+                                       paint,
+                                       lcd32SurfaceProps,
+                                       SkScalerContextFlags::kNone,
+                                       SkMatrix::I(),
+                                       &lcd32Rec,
+                                       &lcd32Effects);
+
+    REPORTER_ASSERT(reporter, lcd32Rec.getFormat() == SkMask::kLCD32_Format);
+
+    SkSurfaceProps unknownGeometry(0, kUnknown_SkPixelGeometry);
+
+    SkScalerContextRec lcd16FallbackRec;
+    SkScalerContextEffects lcd16FallbackEffects;
+    SkScalerContext::MakeRecAndEffects(font,
+                                       paint,
+                                       unknownGeometry,
+                                       SkScalerContextFlags::kNone,
+                                       SkMatrix::I(),
+                                       &lcd16FallbackRec,
+                                       &lcd16FallbackEffects);
+
+    SkSurfaceProps lcd32UnknownGeometry(SkSurfaceProps::kUseLCD32_Flag,
+                                        kUnknown_SkPixelGeometry);
+
+    SkScalerContextRec lcd32FallbackRec;
+    SkScalerContextEffects lcd32FallbackEffects;
+    SkScalerContext::MakeRecAndEffects(font,
+                                       paint,
+                                       lcd32UnknownGeometry,
+                                       SkScalerContextFlags::kNone,
+                                       SkMatrix::I(),
+                                       &lcd32FallbackRec,
+                                       &lcd32FallbackEffects);
+
+    REPORTER_ASSERT(reporter, lcd16FallbackRec.getFormat() == SkMask::kA8_Format);
+    REPORTER_ASSERT(reporter, lcd32FallbackRec.getFormat() == SkMask::kA8_Format);
+
+    REPORTER_ASSERT(reporter,
+                    lcd16FallbackRec.fFlags & SkScalerContext::kGenA8FromLCD_Flag);
+    REPORTER_ASSERT(reporter,
+                    lcd32FallbackRec.fFlags & SkScalerContext::kGenA8FromLCD_Flag);
+}
+
 class Barrier {
 public:
     Barrier(int threadCount) : fThreadCount(threadCount) { }

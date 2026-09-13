@@ -1412,7 +1412,8 @@ DEF_TEST(SkGraphics_Limits, reporter) {
 }
 
 DEF_TEST(SkRemoteGlyphCache_b513780208, reporter) {
-    // Legitimate path glyphs should only use kBW_Format, kA8_Format, or kLCD16_Format.
+    // Legitimate path glyphs should only use kBW_Format, kA8_Format, kLCD16_Format,
+    // or kLCD32_Format.
     // If a malicious strike provided a path with kARGB32_Format, it could trigger an
     // uninitialized memory issue in SkScalerContext::GenerateImageFromPath.
     //
