@@ -33,6 +33,23 @@
       "message": "These compile failures were caused by the CL being based on an outdated Skia revision, not by the ICO changes. I’ve rebased it onto current Skia main and will rerun the Chromium canary.",
       "revId": "f2bf3a983888f790cf79ceb76464d302d2ce7830",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9a6ba75_59490848",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4569768
+      },
+      "writtenOn": "2026-09-13T16:06:31Z",
+      "side": 1,
+      "message": "It looks like the current failure is completely unrelated to ICO.\nI think a rerun of the Skia roll will eventually solve the issue.\n\ncontext_lost_passthrough_graphite_tests on Android device Pixel 6 failed because of:\nContextLost_WebGLUnblockedAfterUserInitiatedReload",
+      "revId": "f2bf3a983888f790cf79ceb76464d302d2ce7830",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
