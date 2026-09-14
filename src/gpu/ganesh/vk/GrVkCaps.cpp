@@ -1517,10 +1517,6 @@ void GrVkCaps::FormatInfo::initSampleCounts(const GrContextOptions& contextOptio
     if (flags & VK_SAMPLE_COUNT_1_BIT) {
         fColorSampleCounts.push_back(1);
     }
-    if (skgpu::kImagination_VkVendor == physProps.vendorID) {
-        // MSAA does not work on imagination
-        return;
-    }
     if (skgpu::kIntel_VkVendor == physProps.vendorID) {
         if (GetIntelGen(GetIntelGPUType(physProps.deviceID)) < 12 ||
             !contextOptions.fAllowMSAAOnNewIntel) {
