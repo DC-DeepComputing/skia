@@ -1,0 +1,62 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e79b04bf_f67cf0d5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 25
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-09-14T12:17:13Z",
+      "side": 1,
+      "message": "Thanks!",
+      "revId": "0a2c3dabd8322dc3fe9a4f4e982365eaacd82776",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9839efea_3d539206",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 25
+      },
+      "lineNbr": 656,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-09-14T12:17:13Z",
+      "side": 1,
+      "message": "This can be removed. If it isn\u0027t enabled, it isn\u0027t tagged as supported.",
+      "range": {
+        "startLine": 656,
+        "startChar": 41,
+        "endLine": 656,
+        "endChar": 73
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "f8904565_3474396f",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "gn/skia/BUILD.gn",
+              "range": {
+                "startLine": 656,
+                "startChar": 0,
+                "endLine": 657,
+                "endChar": 0
+              },
+              "replacement": "    if (_supports_unsafe_buffers_mappings) {\n"
+            }
+          ]
+        }
+      ],
+      "revId": "0a2c3dabd8322dc3fe9a4f4e982365eaacd82776",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
