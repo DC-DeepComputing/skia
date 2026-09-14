@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "432fd1e1_decbeb31",
+        "filename": "include/core/SkRecorder.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-09-14T17:47:04Z",
+      "side": 1,
+      "message": "Ack. I\u0027ll sync with Alexis about hitting the consolidation of these methods into the base case so we can clean this up.",
+      "parentUuid": "44289f51_e3ba5409",
+      "range": {
+        "startLine": 53,
+        "startChar": 4,
+        "endLine": 53,
+        "endChar": 11
+      },
+      "revId": "7e7345a13cb33ea319aa79148c1a0b11a1cd1394",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3d114504_3a976cc1",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d53d6c00_8049fb90",
+        "filename": "src/capture/SkCaptureManager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-09-14T17:47:04Z",
+      "side": 1,
+      "message": "Ack. Not doing it now because I have another WIP change that will address this. But there is an entire CL dedicated to capturing all draws not able to make it to the Context I\u0027ll send your way for review.",
+      "parentUuid": "3d114504_3a976cc1",
+      "range": {
+        "startLine": 35,
+        "startChar": 12,
+        "endLine": 35,
+        "endChar": 13
+      },
+      "revId": "7e7345a13cb33ea319aa79148c1a0b11a1cd1394",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "57e94e0e_cf1ac0e1",
@@ -60,6 +108,30 @@
       "writtenOn": "2026-09-02T15:17:58Z",
       "side": 1,
       "message": "Can\u0027t this be null now after deregistering it? Should we reorder these calls as:\n\n```\nif (fCachedCanvas) {\n    fCachedCanvas-\u003esetSurfaceBase(nullptr);\n    if (auto recorder \u003d this-\u003ebaseRecorder()) {\n        recorder-\u003ederegisterCaptureCanvas(fCachedCanvas);\n    }\n}\n```",
+      "range": {
+        "startLine": 47,
+        "startChar": 8,
+        "endLine": 47,
+        "endChar": 21
+      },
+      "revId": "7e7345a13cb33ea319aa79148c1a0b11a1cd1394",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c07ecbc_eeffc470",
+        "filename": "src/image/SkSurface_Base.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-09-14T17:47:04Z",
+      "side": 1,
+      "message": "Good catch. Done.",
+      "parentUuid": "57e94e0e_cf1ac0e1",
       "range": {
         "startLine": 47,
         "startChar": 8,
