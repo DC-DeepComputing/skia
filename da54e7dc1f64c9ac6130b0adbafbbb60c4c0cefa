@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0de5538_03f262ee",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-14T16:49:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3fd0f937_d6904b70",
+      "range": {
+        "startLine": 145,
+        "startChar": 36,
+        "endLine": 145,
+        "endChar": 46
+      },
+      "revId": "da54e7dc1f64c9ac6130b0adbafbbb60c4c0cefa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "05f472e4_84429dcb",
@@ -54,6 +78,30 @@
       "writtenOn": "2026-09-14T16:02:46Z",
       "side": 1,
       "message": "Should we add `|| driverID \u003d\u003d VK_DRIVER_ID_GOOGLE_SWIFTSHADER` which was in your pre-revert CL? Seems SwiftShader is still breaking.",
+      "range": {
+        "startLine": 641,
+        "startChar": 68,
+        "endLine": 641,
+        "endChar": 70
+      },
+      "revId": "da54e7dc1f64c9ac6130b0adbafbbb60c4c0cefa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0e214a6_e924637c",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 641,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-14T16:49:51Z",
+      "side": 1,
+      "message": "Yeah, it turns out the early test runs with the fixes that helped the mali 710s and nvidia GPUs still had the swiftshader guard so I mistook it as succeeding.",
+      "parentUuid": "05f472e4_84429dcb",
       "range": {
         "startLine": 641,
         "startChar": 68,
