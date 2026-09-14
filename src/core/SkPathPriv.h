@@ -69,6 +69,13 @@ public:
      */
     static bool Contains(const SkPathRaw&, SkPoint);
 
+    // Signed intersections of an edge with the leftward ray from p. Curves are
+    // split at Y extrema; each monotone piece includes its minimum Y and excludes
+    // its maximum Y. Increasing Y contributes +1, decreasing Y contributes -1.
+    // Points on the edge are accumulated separately, as in Contains().
+    static int Winding(
+            const SkPoint pts[], SkPathVerb, SkScalar conicWeight, SkPoint p, int* onCurveCount);
+
     // skbug.com/40041027: Not a perfect solution for W plane clipping, but 1/16384 is a
     // reasonable limit (roughly 5e-5)
     inline static constexpr SkScalar kW0PlaneDistance = 1.f / (1 << 14);
