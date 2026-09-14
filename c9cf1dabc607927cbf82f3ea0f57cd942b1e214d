@@ -377,6 +377,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac433077_f37edce3",
+        "filename": "docs/examples/Path_IsLineDegenerate.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-14T16:50:33Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "28d7264c_2d0f6311",
+      "range": {
+        "startLine": 10,
+        "startChar": 9,
+        "endLine": 10,
+        "endChar": 16
+      },
+      "revId": "c9cf1dabc607927cbf82f3ea0f57cd942b1e214d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f310a40c_16659550",
@@ -649,6 +673,30 @@
       "side": 1,
       "message": "I think is not possible.\n\nIn builder `Build-Debian11-GCC-x86_64-Debug-Docker`, we get a build error if we do not specify that type name.\nhttps://task-scheduler.skia.org/job/8ysN3AcOFBeRt8nWK6hF\n\nThat\u0027s why we added that type name on initializer lists.",
       "parentUuid": "21a54c18_0f053fb3",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 6
+      },
+      "revId": "c9cf1dabc607927cbf82f3ea0f57cd942b1e214d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4495e914_2d89e047",
+        "filename": "docs/examples/Path_conservativelyContainsRect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-14T16:50:33Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "0c5e9166_ac38bae6",
       "range": {
         "startLine": 12,
         "startChar": 0,
