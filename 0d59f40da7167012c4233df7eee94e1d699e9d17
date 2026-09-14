@@ -22,6 +22,30 @@
       },
       "revId": "0d59f40da7167012c4233df7eee94e1d699e9d17",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "216212ff_f46250a4",
+        "filename": "src/gpu/graphite/TextureFormatXferFn.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-14T19:15:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0e9cdbec_9e333dea",
+      "range": {
+        "startLine": 112,
+        "startChar": 26,
+        "endLine": 112,
+        "endChar": 30
+      },
+      "revId": "0d59f40da7167012c4233df7eee94e1d699e9d17",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
