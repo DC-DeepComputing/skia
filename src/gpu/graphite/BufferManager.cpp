@@ -43,7 +43,7 @@ namespace {
 // FIXME The current usage is 4732 bytes across static vertex and index buffers, but that includes
 // multiple copies of tessellation data, and an unoptimized AnalyticRRect mesh. Once those issues
 // are addressed, we can tighten this and decide on the transfer buffer sizing as well.
-[[maybe_unused]] static constexpr uint32_t kMaxStaticDataSize = 6 << 10;
+[[maybe_unused]] static constexpr uint32_t kMaxStaticDataSize = 8 << 10;
 
 // Helpers for creating a BufferState based on type, options, and caps
 

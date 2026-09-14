@@ -108,16 +108,32 @@ std::pair<sk_sp<SkImageFilter>, bool> SkBlurMaskFilterImpl::asImageFilter(const 
     SkUNREACHABLE;
 }
 
-SkScalar SkBlurMaskFilterImpl::computeXformedSigma(const SkMatrix& ctm) const {
-    constexpr SkScalar kMaxBlurSigma = SkIntToScalar(128);
+static constexpr SkScalar kMaxBlurSigma = SkIntToScalar(128);
+
+SkScalar SkBlurMaskFilterImpl::computeXformedDeviceSigma(const SkMatrix& ctm) const {
+    // If we don't do the matrix transform, consider our local sigma as our device sigma for
+    // algorithms which rely on device sigma.
     SkScalar xformedSigma = this->ignoreXform() ? fSigma : ctm.mapRadius(fSigma);
     return std::min(xformedSigma, kMaxBlurSigma);
+}
+
+SkV2 SkBlurMaskFilterImpl::computeXformedLocalSigma(const SkMatrix& ctm) const {
+    // For algorithm that rely on local sigma, clamp the local sigma to match the transformed then
+    // clamped device sigma when we do the local to device transform.
+    SkScalar clampedSigma = std::min(fSigma, kMaxBlurSigma);
+    SkV2 localSigma = {clampedSigma, clampedSigma};
+    SkSize scale;
+    if (ctm.decomposeScale(&scale, nullptr) && !this->ignoreXform()) {
+        localSigma.x = std::min(localSigma.x, kMaxBlurSigma / scale.width());
+        localSigma.y = std::min(localSigma.y, kMaxBlurSigma / scale.height());
+    }
+    return localSigma;
 }
 
 bool SkBlurMaskFilterImpl::filterMask(SkMaskBuilder* dst, const SkMask& src,
                                       const SkMatrix& matrix,
                                       SkIPoint* margin) const {
-    SkScalar sigma = this->computeXformedSigma(matrix);
+    SkScalar sigma = this->computeXformedDeviceSigma(matrix);
     return SkBlurMask::BoxBlur(dst, src, sigma, fBlurStyle, margin);
 }
 
@@ -125,7 +141,7 @@ bool SkBlurMaskFilterImpl::filterRectMask(SkMaskBuilder* dst, const SkRect& r,
                                           const SkMatrix& matrix,
                                           SkIPoint* margin,
                                           SkMaskBuilder::CreateMode createMode) const {
-    SkScalar sigma = computeXformedSigma(matrix);
+    SkScalar sigma = computeXformedDeviceSigma(matrix);
 
     return SkBlurMask::BlurRect(sigma, dst, r, fBlurStyle, margin, createMode);
 }
@@ -378,7 +394,7 @@ std::optional<SkMaskFilterBase::NinePatch> SkBlurMaskFilterImpl::filterRRectToNi
     SkRRect smallRR;
     smallRR.setRectRadii(smallR, rrect.radii().data());
 
-    const float sigma = this->computeXformedSigma(matrix);
+    const float sigma = this->computeXformedDeviceSigma(matrix);
     // If we've already blurred this small rrect, pull it out of the cache and we are done
     SkTLazy<SkMask> cachedMask;
     SkCachedData* cached = find_cached_rrect(&cachedMask, sigma, fBlurStyle, smallRR, cache);
@@ -532,7 +548,7 @@ SkMaskFilterBase::FilterReturn SkBlurMaskFilterImpl::filterRectsToNine(
         SkASSERT(!smallR[1].isEmpty());
     }
 
-    const SkScalar sigma = this->computeXformedSigma(matrix);
+    const SkScalar sigma = this->computeXformedDeviceSigma(matrix);
     SkTLazy<SkMask> cachedMask;
     SkSpan<const SkRect> smallRects = SkSpan(smallR, rectCount);
     SkCachedData* cached = find_cached_rects(&cachedMask, sigma, fBlurStyle, smallRects, cache);
