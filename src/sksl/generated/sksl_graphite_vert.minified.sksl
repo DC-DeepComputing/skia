@@ -130,4 +130,16 @@ static constexpr char SKSL_MINIFIED_sksl_graphite_vert[] =
 ",c*f.z,f.z);}else{a=mix(b.zw,b.xy,a);float3 f=inverse(d)*float3(a,1.);float"
 " g=1./f.z;e=f.xy*g;return float4(a*g,c*g,g);}}float4 endcap_vertex_fn(float2"
 " a,float2 b,float c,uint d,uint e,out uint f,out int g,out float2 h){h=b;f="
-"d;g=int(e);return float4(a,c,1.);}";
+"d;g=int(e);return float4(a,c,1.);}float4 analytic_rrect_blur_vertex_fn(int4"
+" a,int c,float4x4 d,float4 e,float[6]f,float[6]g,float4 h,float2 i,float2[4"
+"]j,float k,out float2 l,out half4 m,out float2 n){int p=c;float2 q=p==0?j[0"
+"]:(p==4?j[1]:(p==24?j[2]:j[3]));float2 r=(q+i)*.585786462;float s=min(r.x,p"
+"==0||p==20?f[1]-f[0]:f[5]-f[4]);float t=min(r.y,p<=4?g[1]-g[0]:g[5]-g[4]);float"
+" u=f[a.x];float v=g[a.y];u+=float(a.z)*s;v+=float(a.w)*t;float2 w=float2(u,"
+"v);float4 x=d*float4(w,0.,1.);x.z=k;n=w;l=w;int y=p%5;int z=p/5;float A=f[y"
+"];float B=f[y+1];float C=g[z];float D=g[z+1];bool E=((A>=f[1]&&B<=f[4])&&C>="
+"h.y)&&D<=h.w;bool F=((A>=h.x&&B<=h.z)&&C>=g[1])&&D<=g[4];if(E||F)m=half4(.5"
+");else{half J=half(A<(e.x+j[0].x)+i.x&&C<(e.y+j[0].y)+i.y);half K=half(B>(e"
+".z-j[1].x)-i.x&&C<(e.y+j[1].y)+i.y);half L=half(B>(e.z-j[2].x)-i.x&&D>(e.w-"
+"j[2].y)-i.y);half M=half(A<(e.x+j[3].x)+i.x&&D>(e.w-j[3].y)-i.y);m=half4(J,"
+"K,L,M);}return x;}";
