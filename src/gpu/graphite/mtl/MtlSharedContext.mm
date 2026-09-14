@@ -72,14 +72,15 @@ MtlSharedContext::MtlSharedContext(sk_cfp<id<MTLDevice>> device,
     static constexpr DepthStencilSettings kIgnoreDSS;
 
     for (auto dss : std::initializer_list<std::pair<const DepthStencilSettings&, const char*>>{
-              { kDirectDepthLessPass,   "direct-depth-less"   },
-              { kDirectDepthLEqualPass, "direct-depth-lequal" },
-              { kWindingStencilPass,    "winding-stencil"     },
-              { kEvenOddStencilPass,    "evenodd-stencil"     },
-              { kIncrementStencilPass,  "increment-stencil"     },
-              { kRegularCoverPass,      "regular-cover"       },
-              { kInverseCoverPass,      "inverse-cover"       },
-              { kIgnoreDSS,             "ignore"              },
+              { kDirectDepthLessPass,        "direct-depth-less"          },
+              { kDirectDepthLessNoWritePass, "direct-depth-less-no-write" },
+              { kDirectDepthLEqualPass,      "direct-depth-lequal"        },
+              { kWindingStencilPass,         "winding-stencil"            },
+              { kEvenOddStencilPass,         "evenodd-stencil"            },
+              { kIncrementStencilPass,       "increment-stencil"          },
+              { kRegularCoverPass,           "regular-cover"              },
+              { kInverseCoverPass,           "inverse-cover"              },
+              { kIgnoreDSS,                  "ignore"                     },
             }) {
         this->createCompatibleDepthStencilState(dss.first, dss.second);
     }

@@ -1217,3 +1217,84 @@ float4 endcap_vertex_fn(float2 position,
     texPageVarying = int(texPageAttr);
     return float4(position, depth, 1.0);
 }
+
+float4 analytic_rrect_blur_vertex_fn(int4 gridAndBevel,
+                                     int cellIndex,
+                                     float4x4 localToDevice,
+                                     float4 rect,
+                                     float[6] xBounds,
+                                     float[6] yBounds,
+                                     float4 safeLimits,
+                                     float2 drawPad,
+                                     float2[4] radii,
+                                     float depth,
+                                     out float2 scaledShapeCoords,
+                                     out half4 vFlags,
+                                     out float2 stepLocalCoords) {
+
+    // The fraction of the radius along which we will bevel the corner, this is calculated by
+    // determining the intercepts of the tangent line to the point 45 degrees along the
+    // rounded corner.
+    const float kBevelFrac = 0.58578644; // 2 - sqrt(2)
+
+    int cId = cellIndex;
+    float2 rad = (cId == 0) ? radii[0] :
+                     (cId == 4) ? radii[1] :
+                         (cId == 24) ? radii[2] : radii[3];
+    float2 b = (rad + drawPad) * kBevelFrac;
+
+    // The amount which we should bevel along the axis, in the case of a very small sigma but large
+    // corner radius, our edge inset bounds will be very small. Bevel could then exceed the current
+    // cells bounds due to the small edge inset so in that case we just clamp to the cell's bounds.
+    float cx = min(b.x, (cId == 0 || cId == 20) ? (xBounds[1] - xBounds[0])
+                                                : (xBounds[5] - xBounds[4]));
+    float cy = min(b.y, (cId <= 4) ? (yBounds[1] - yBounds[0])
+                                   : (yBounds[5] - yBounds[4]));
+
+    float posX = xBounds[gridAndBevel.x];
+    float posY = yBounds[gridAndBevel.y];
+    posX += float(gridAndBevel.z) * cx;
+    posY += float(gridAndBevel.w) * cy;
+    float2 position = float2(posX, posY);
+
+    float4 devPosition = localToDevice * float4(position, 0.0, 1.0);
+    devPosition.z = depth;
+    stepLocalCoords = position;
+    scaledShapeCoords = position;
+
+    int col = cId % 5;
+    int row = cId / 5;
+    float cellX0 = xBounds[col];
+    float cellX1 = xBounds[col + 1];
+    float cellY0 = yBounds[row];
+    float cellY1 = yBounds[row + 1];
+
+    // Saturate our bounds when we are far enough from the edge and within the corner safe bounds
+    // of the other axis. This should usually result in the center cell and the 4 adjacent cells
+    // being fully saturated.
+    bool isHorizontalEdgeSaturated = (cellX0 >= xBounds[1] && cellX1 <= xBounds[4] &&
+                                     cellY0 >= safeLimits.y && cellY1 <= safeLimits.w);
+    bool isVerticalEdgeSaturated = (cellX0 >= safeLimits.x && cellX1 <= safeLimits.z &&
+                                    cellY0 >= yBounds[1] && cellY1 <= yBounds[4]);
+
+    const half kCornerActive = 1.0;
+    const half kCornerInactive = 0.0;
+    const half kInside = 0.5;
+
+    if (isHorizontalEdgeSaturated || isVerticalEdgeSaturated) {
+        vFlags = half4(kInside);
+    } else {
+        // Determine which corner which may affect the blur for the current cell.
+        half doTL = (cellX0 < rect.x + radii[0].x + drawPad.x &&
+                     cellY0 < rect.y + radii[0].y + drawPad.y) ? kCornerActive : kCornerInactive;
+        half doTR = (cellX1 > rect.z - radii[1].x - drawPad.x &&
+                     cellY0 < rect.y + radii[1].y + drawPad.y) ? kCornerActive : kCornerInactive;
+        half doBR = (cellX1 > rect.z - radii[2].x - drawPad.x &&
+                     cellY1 > rect.w - radii[2].y - drawPad.y) ? kCornerActive : kCornerInactive;
+        half doBL = (cellX0 < rect.x + radii[3].x + drawPad.x &&
+                     cellY1 > rect.w - radii[3].y - drawPad.y) ? kCornerActive : kCornerInactive;
+        vFlags = half4(doTL, doTR, doBR, doBL);
+    }
+
+    return devPosition;
+}
