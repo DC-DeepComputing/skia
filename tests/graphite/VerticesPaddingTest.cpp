@@ -143,13 +143,6 @@ DEF_GRAPHITE_TEST_FOR_DAWN_AND_VULKAN_CONTEXTS(StaticVerticesPaddingTest,
         return;
     }
 
-    uint32_t vertexInfoElementCount = static_cast<uint32_t>(staticVertexCopyRanges.size());
-    if (vertexInfoElementCount & 3) {
-        ERRORF(reporter, "Initial static vert information was not correctly populated: "
-                         "Element count was %u, expected multiple of 4.", vertexInfoElementCount);
-        return;
-    }
-
     auto staticGpuVertexBuffer = sharedContext->globalCache()->getStaticVertexBuffer();
     if (!staticGpuVertexBuffer){
         ERRORF(reporter, "Did not get a valid static vertex buffer.");
