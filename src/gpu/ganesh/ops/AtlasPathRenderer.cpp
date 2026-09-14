@@ -148,7 +148,11 @@ bool AtlasPathRenderer::IsSupported(GrRecordingContext* rContext) {
 #endif
     const GrCaps& caps = *rContext->priv().caps();
     auto atlasFormat = caps.getDefaultBackendFormat(kAtlasAlpha8Type, GrRenderable::kYes);
-    return rContext->asDirectContext() &&  // The atlas doesn't support DDL yet.
+    // LOCAL EXPERIMENT (do not submit): variant C. Caps are identical to the
+    // R8-only build, but AtlasPathRenderer is forced off, to separate "the
+    // renderer is used and is slower here" from "the caps change itself costs".
+    return false &&
+           rContext->asDirectContext() &&  // The atlas doesn't support DDL yet.
            caps.internalMultisampleCount(atlasFormat) > 1 &&
            // GrAtlasRenderTask currently requires tessellation. In the future it could use the
            // default path renderer when tessellation isn't available.
