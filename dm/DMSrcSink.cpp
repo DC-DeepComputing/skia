@@ -2193,12 +2193,14 @@ Result GraphiteSink::draw(const Src& src,
     // We don't expect the src to mess with the more esoteric options
     SkDEBUGCODE(auto cache = options.fContextOptions.fPersistentPipelineStorage);
     SkDEBUGCODE(auto exec = options.fContextOptions.fExecutor);
+    SkDEBUGCODE(auto runner = options.fContextOptions.fTaskRunner);
     SkDEBUGCODE(auto cbContext = options.fContextOptions.fPipelineCallbackContext);
     SkDEBUGCODE(auto cb1 = options.fContextOptions.fPipelineCallback);
     SkDEBUGCODE(auto cb2 = options.fContextOptions.fPipelineCachingCallback);
     src.modifyGraphiteContextOptions(&options.fContextOptions);
     SkASSERT(cache == options.fContextOptions.fPersistentPipelineStorage);
     SkASSERT(exec == options.fContextOptions.fExecutor);
+    SkASSERT(runner == options.fContextOptions.fTaskRunner);
     SkASSERT(cbContext == options.fContextOptions.fPipelineCallbackContext);
     SkASSERT(cb1 == options.fContextOptions.fPipelineCallback);
     SkASSERT(cb2 == options.fContextOptions.fPipelineCachingCallback);
@@ -2515,12 +2517,14 @@ Result GraphitePrecompileTestingSink::draw(const Src& src,
         // We don't expect the src to mess with the more esoteric options
         SkDEBUGCODE(auto cache = options.fContextOptions.fPersistentPipelineStorage);
         SkDEBUGCODE(auto exec = options.fContextOptions.fExecutor);
+        SkDEBUGCODE(auto runner = options.fContextOptions.fTaskRunner);
         SkDEBUGCODE(auto cbContext = options.fContextOptions.fPipelineCallbackContext);
         SkDEBUGCODE(auto cb1 = options.fContextOptions.fPipelineCallback);
         SkDEBUGCODE(auto cb2 = options.fContextOptions.fPipelineCachingCallback);
         src.modifyGraphiteContextOptions(&options.fContextOptions);
         SkASSERT(cache == options.fContextOptions.fPersistentPipelineStorage);
         SkASSERT(exec == options.fContextOptions.fExecutor);
+        SkASSERT(runner == options.fContextOptions.fTaskRunner);
         SkASSERT(cbContext == options.fContextOptions.fPipelineCallbackContext);
         SkASSERT(cb1 == options.fContextOptions.fPipelineCallback);
         SkASSERT(cb2 == options.fContextOptions.fPipelineCachingCallback);

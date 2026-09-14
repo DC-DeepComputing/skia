@@ -11,6 +11,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkSpan.h"
+#include "include/core/SkTaskRunner.h"
 #include "include/gpu/graphite/GraphiteTypes.h"
 #include "include/private/SkAPI.h"
 #include "include/private/SkMath.h"
@@ -212,6 +213,13 @@ struct SK_API ContextOptions {
      * the lifetime of the Context.
      */
     SkExecutor* fExecutor = nullptr;
+
+    /*
+     * If provided, Skia will break threadable work into SkTasks and give them to the client-
+     * provided SkTaskRunner for execution. This provides a much higher-level interface than
+     * an SkExecutor.
+     */
+    sk_sp<SkTaskRunner> fTaskRunner;
 
     /**
      * Allows Graphite to store Pipeline data across Context lifetimes. It is up to the
