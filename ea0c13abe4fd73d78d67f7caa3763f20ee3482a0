@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "596fc4c0_c8bb9148",
+        "filename": "src/core/SkPathUtils.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-09-14T23:03:32Z",
+      "side": 1,
+      "message": "sounds good! good call",
+      "parentUuid": "6932ffc3_da83b90f",
+      "range": {
+        "startLine": 39,
+        "startChar": 55,
+        "endLine": 39,
+        "endChar": 58
+      },
+      "revId": "ea0c13abe4fd73d78d67f7caa3763f20ee3482a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f7c4825d_999fa1c2",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-09-14T16:43:56Z",
       "side": 1,
       "message": "I think we should keep the tests universally (assuming they finish in a reasonable amount of time) and then just use the SK_BUILD_FOR_FUZZER to determine whether or not we expect success.\n\nHow long does this take in a debug build that\u0027s not fuzzing/asan?",
+      "range": {
+        "startLine": 5739,
+        "startChar": 0,
+        "endLine": 5739,
+        "endChar": 32
+      },
+      "revId": "ea0c13abe4fd73d78d67f7caa3763f20ee3482a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "96b42411_7ad41ce7",
+        "filename": "tests/PathTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 5739,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-09-14T23:03:32Z",
+      "side": 1,
+      "message": "Moved the SK_BUILD_FOR_FUZZER flag to the REPORTER_ASSERT. Here are the debug build times below. Let me know if that\u0027s not too long\n\nStandard Debug Build (is_debug \u003d true, non-fuzzing, no sanitizers):\nraw output \nhttps://paste.googleplex.com/5025508870455296",
+      "parentUuid": "f7c4825d_999fa1c2",
       "range": {
         "startLine": 5739,
         "startChar": 0,
