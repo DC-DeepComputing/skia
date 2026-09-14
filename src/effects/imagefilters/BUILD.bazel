@@ -21,6 +21,7 @@ IMAGEFILTERS_FILES = [
     "SkMatrixConvolutionImageFilter.h",
     "SkMatrixTransformImageFilter.cpp",
     "SkMergeImageFilter.cpp",
+    "SkMipMapedBlurImageFilter.cpp",
     "SkMorphologyImageFilter.cpp",
     "SkPictureImageFilter.cpp",
     "SkRuntimeImageFilter.cpp",

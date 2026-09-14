@@ -130,6 +130,71 @@ public:
     }
 
     /**
+     *  Create a mipmap (LOD) based blur image filter. Instead of a direct Gaussian
+     *  convolution, the input is repeatedly downscaled by half (with a 3x3 tent kernel)
+     *  to build a mipmap chain; the sigma is mapped to a fractional LOD value
+     *  (lodValue = log2(1 + sigma)) and the two adjacent LOD levels are upsampled and
+     *  linearly interpolated in an SkSL fragment shader to approximate the blur.
+     *  @param sigmaX   The Gaussian sigma value for blurring along the X axis.
+     *  @param sigmaY   The Gaussian sigma value for blurring along the Y axis.
+     *                  (LOD selection uses max(sigmaX, sigmaY); the blur is isotropic.)
+     *  @param tileMode The tile mode applied at edges.
+     *  @param input    The input filter that is blurred, uses source bitmap if this is null.
+     *  @param cropRect Optional rectangle that crops the input and output.
+     */
+    static sk_sp<SkImageFilter> MipMapedBlur(SkScalar sigmaX, SkScalar sigmaY, SkTileMode tileMode,
+                                             sk_sp<SkImageFilter> input,
+                                             const CropRect& cropRect = {});
+
+    /**
+     *  Create a gradient (spatially-varying radius) mipmap blur. The blur strength varies
+     *  along a direction axis: full strength up to the pivot, then eases down to zero
+     *  following a fixed cubic-bezier curve, and is fully sharp past 'percent'.
+     *  @param sigmaX        The Gaussian sigma for the strongest (full) blur along X.
+     *  @param sigmaY        The Gaussian sigma for the strongest (full) blur along Y.
+     *                       (LOD selection uses max(sigmaX, sigmaY); the blur is isotropic.)
+     *  @param percent       0~1. Portion of the content (along the gradient axis, measured
+     *                       from the start edge) that is affected by blur. Past this the
+     *                       output is unblurred.
+     *  @param pivotPercent  0~1. Relative position INSIDE the blur region where the falloff
+     *                       begins: [0, percent*pivotPercent] keeps full blur, then the
+     *                       cubic-bezier eases the strength down to zero at 'percent'.
+     *  @param directionDeg  Gradient direction in degrees:
+     *                       0 = top to bottom (y=0 -> y=1), 90 = left to right (x=0 -> x=1).
+     *  @param tileMode      The tile mode applied at edges.
+     *  @param input         The input filter that is blurred, uses source bitmap if null.
+     *  @param cropRect      Optional rectangle that crops the input and output.
+     */
+    static sk_sp<SkImageFilter> MipMapedGradientBlur(SkScalar sigmaX, SkScalar sigmaY,
+                                                     SkScalar percent, SkScalar pivotPercent,
+                                                     SkScalar directionDeg, SkTileMode tileMode,
+                                                     sk_sp<SkImageFilter> input,
+                                                     const CropRect& cropRect = {});
+
+    /**
+     *  Create a circular (radial) mipmap blur. The blur strength depends on the distance from
+     *  the center of the content bounds, normalized so that 1 = the half-diagonal (corners):
+     *  full strength up to percent*pivotPercent, then eases down to zero following the same
+     *  fixed cubic-bezier curve as MipMapedGradientBlur, and fully sharp past 'percent'.
+     *  @param sigmaX        The Gaussian sigma for the strongest (center) blur along X.
+     *  @param sigmaY        The Gaussian sigma for the strongest (center) blur along Y.
+     *                       (LOD selection uses max(sigmaX, sigmaY); the blur is isotropic.)
+     *  @param percent       0~1. Normalized radius of the circle affected by blur. Past this
+     *                       the output is unblurred.
+     *  @param pivotPercent  0~1. Relative radius INSIDE the blur circle where the falloff
+     *                       begins: [0, percent*pivotPercent] keeps full blur, then the
+     *                       cubic-bezier eases the strength down to zero at 'percent'.
+     *  @param tileMode      The tile mode applied at edges.
+     *  @param input         The input filter that is blurred, uses source bitmap if null.
+     *  @param cropRect      Optional rectangle that crops the input and output.
+     */
+    static sk_sp<SkImageFilter> MipMapedCircleBlur(SkScalar sigmaX, SkScalar sigmaY,
+                                                   SkScalar percent, SkScalar pivotPercent,
+                                                   SkTileMode tileMode,
+                                                   sk_sp<SkImageFilter> input,
+                                                   const CropRect& cropRect = {});
+
+    /**
      *  Create a filter that applies the color filter to the input filter results.
      *  @param cf       The color filter that transforms the input image.
      *  @param input    The input filter, or uses the source bitmap if this is null.

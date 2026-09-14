@@ -120,6 +120,7 @@
         SkRegisterMatrixConvolutionImageFilterFlattenable();
         SkRegisterMatrixTransformImageFilterFlattenable();
         SkRegisterMergeImageFilterFlattenable();
+        SkRegisterMipMapedBlurImageFilterFlattenable();
         SkRegisterMorphologyImageFilterFlattenables();
         SkRegisterPictureImageFilterFlattenable();
         SkRegisterRuntimeImageFilterFlattenable();
