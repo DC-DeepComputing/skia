@@ -7898,10 +7898,9 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "cores:12",
-        "cpu:x86-64",
-        "os:Mac-14.5",
-        "pool:Skia"
+        "id:mac-723-e505",
+        "os:Mac-15.7",
+        "pool:SkiaIOS"
       ],
       "environment": {
         "RECIPES_USE_PY3": "true",
@@ -7985,10 +7984,9 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "cores:12",
-        "cpu:x86-64",
-        "os:Mac-14.5",
-        "pool:Skia"
+        "id:mac-723-e505",
+        "os:Mac-15.7",
+        "pool:SkiaIOS"
       ],
       "environment": {
         "RECIPES_USE_PY3": "true",
@@ -9194,10 +9192,9 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "cores:12",
-        "cpu:x86-64",
-        "os:Mac-14.5",
-        "pool:Skia"
+        "id:mac-723-e505",
+        "os:Mac-15.7",
+        "pool:SkiaIOS"
       ],
       "environment": {
         "RECIPES_USE_PY3": "true",
@@ -9281,10 +9278,9 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "cores:12",
-        "cpu:x86-64",
-        "os:Mac-14.5",
-        "pool:Skia"
+        "id:mac-723-e505",
+        "os:Mac-15.7",
+        "pool:SkiaIOS"
       ],
       "environment": {
         "RECIPES_USE_PY3": "true",
@@ -42186,6 +42182,7 @@
       ],
       "dimensions": [
         "device:iPhone16,1",
+        "id:mac-723-e505",
         "os:iOS-18.2.1",
         "pool:SkiaIOS"
       ],
@@ -42286,6 +42283,7 @@
       ],
       "dimensions": [
         "device:iPhone16,1",
+        "id:mac-723-e505",
         "os:iOS-18.2.1",
         "pool:SkiaIOS"
       ],
@@ -75189,6 +75187,7 @@
       ],
       "dimensions": [
         "device:iPhone16,1",
+        "id:mac-723-e505",
         "os:iOS-18.2.1",
         "pool:SkiaIOS"
       ],
@@ -75289,6 +75288,7 @@
       ],
       "dimensions": [
         "device:iPhone16,1",
+        "id:mac-723-e505",
         "os:iOS-18.2.1",
         "pool:SkiaIOS"
       ],
@@ -75389,6 +75389,7 @@
       ],
       "dimensions": [
         "device:iPhone16,1",
+        "id:mac-723-e505",
         "os:iOS-18.2.1",
         "pool:SkiaIOS"
       ],
@@ -75489,6 +75490,7 @@
       ],
       "dimensions": [
         "device:iPhone16,1",
+        "id:mac-723-e505",
         "os:iOS-18.2.1",
         "pool:SkiaIOS"
       ],
