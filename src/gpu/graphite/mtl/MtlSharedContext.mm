@@ -50,6 +50,7 @@ sk_sp<SharedContext> MtlSharedContext::Make(const MtlBackendContext& context,
                                                      std::move(memoryAllocator),
                                                      std::move(caps),
                                                      options.fExecutor,
+                                                     options.fTaskRunner,
                                                      options.fUserDefinedKnownRuntimeEffects));
 }
 
@@ -57,10 +58,12 @@ MtlSharedContext::MtlSharedContext(sk_cfp<id<MTLDevice>> device,
                                    sk_sp<skgpu::MtlMemoryAllocator> memoryAllocator,
                                    std::unique_ptr<const MtlCaps> caps,
                                    SkExecutor* executor,
+                                   sk_sp<SkTaskRunner> taskRunner,
                                    SkSpan<sk_sp<SkRuntimeEffect>> userDefinedKnownRuntimeEffects)
         : SharedContext(std::move(caps),
                         BackendApi::kMetal,
                         executor,
+                        std::move(taskRunner),
                         userDefinedKnownRuntimeEffects)
         , fMemoryAllocator(std::move(memoryAllocator))
         , fDevice(std::move(device)) {
