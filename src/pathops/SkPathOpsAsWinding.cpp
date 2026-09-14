@@ -64,61 +64,14 @@ static int VerbPtIndex(SkPathVerb verb) {
     return kPtIndex[index];
 }
 
-static Contour::Direction to_direction(SkScalar dy) {
-    return dy > 0 ? Contour::Direction::kCCW : dy < 0 ? Contour::Direction::kCW :
-            Contour::Direction::kNone;
-}
-
-static int contains_edge(const SkPoint pts[4], SkPathVerb verb, SkScalar weight, const SkPoint& edge) {
-    SkRect bounds = SkRect::BoundsOrEmpty({pts, VerbPtCount(verb) + 1});
-    if (bounds.fTop > edge.fY) {
-        return 0;
-    }
-    if (bounds.fBottom <= edge.fY) {  // check to see if y is at line end to avoid double counting
-        return 0;
-    }
-    if (bounds.fLeft >= edge.fX) {
-        return 0;
-    }
-    int winding = 0;
-    double tVals[3];
-    std::array<Contour::Direction, 3> directions;
-    // must intersect horz ray with curve in case it intersects more than once
-    int count = (*CurveIntercept[(int)verb * 2])(pts, weight, edge.fY, tVals);
-    SkASSERT(between(0, count, 3));
-    // remove results to the right of edge
-    for (int index = 0; index < count; ) {
-        SkScalar intersectX = (*CurvePointAtT[(int)verb])(pts, weight, tVals[index]).fX;
-        if (intersectX < edge.fX) {
-            ++index;
-            continue;
-        }
-        if (intersectX > edge.fX) {
-            tVals[index] = tVals[--count];
-            continue;
-        }
-        // if intersect x equals edge x, we need to determine if pts is to the left or right of edge
-        if (pts[0].fX < edge.fX && pts[VerbPtCount(verb)].fX < edge.fX) {
-            ++index;
-            continue;
-        }
-        // TODO : other cases need discriminating. need op angle code to figure it out
-        // example: edge ends 45 degree diagonal going up. If pts is to the left of edge, keep.
-        // if pts is to the right of edge, discard. With code as is, can't distiguish the two cases.
-        tVals[index] = tVals[--count];
-    }
-    // use first derivative to determine if intersection is contributing +1 or -1 to winding
-    for (int index = 0; index < count; ++index) {
-        directions[index] = to_direction((*CurveSlopeAtT[(int)verb])(pts, weight, tVals[index]).fY);
-    }
-    for (int index = 0; index < count; ++index) {
-        // skip intersections that end at edge and go up
-        if (zero_or_one(tVals[index]) && Contour::Direction::kCCW != directions[index]) {
-            continue;
-        }
-        winding += (int) directions[index];
-    }
-    return winding;  // note winding indicates containership, not contour direction
+static int contains_edge(const SkPoint pts[4],
+                         SkPathVerb verb,
+                         SkScalar weight,
+                         const SkPoint& edge,
+                         int* onCurveCount) {
+    // Use the same Y-monotone crossings and endpoint convention as path contains.
+    // Preserve AsWinding's sign convention. This count is not contour direction.
+    return -SkPathPriv::Winding(pts, verb, weight, edge, onCurveCount);
 }
 
 static float conic_weight(const SkPath::IterRec& rec) {
@@ -194,7 +147,12 @@ public:
         bounds.setEmpty();
         int lastStart = 0;
         int verbStart = 0;
-        for (auto [verb, pts, w] : SkPathPriv::Iterate(fPath)) {
+        // Use the same verb sequence as nextEdge() and getDirection(), including
+        // implicit closing edges. Raw verb offsets drift when contours are open.
+        SkPath::Iter iter(fPath, true);
+        while (auto rec = iter.next()) {
+            auto verb = rec->fVerb;
+            auto pts = rec->fPoints;
             if (SkPathVerb::kMove == verb) {
                 if (!bounds.isEmpty()) {
                     containers->emplace_back(bounds, lastStart, verbStart);
@@ -211,7 +169,7 @@ public:
             ++verbStart;
         }
         if (!bounds.isEmpty()) {
-            containers->emplace_back(bounds, lastStart, ++verbStart);
+            containers->emplace_back(bounds, lastStart, verbStart);
         }
     }
 
@@ -251,7 +209,7 @@ public:
         return total_signed_area < 0 ? Contour::Direction::kCCW: Contour::Direction::kCW;
     }
 
-    int nextEdge(Contour& contour, Edge edge) {
+    int nextEdge(Contour& contour, Edge edge, int* onCurveCount = nullptr) {
         SkPath::Iter iter(fPath, true);
         int verbCount = -1;
         int winding = 0;
@@ -268,6 +226,11 @@ public:
             }
 
             SkSpan<const SkPoint> pts = rec->fPoints;
+            if (edge == Edge::kCompare) {
+                winding += contains_edge(
+                        pts.data(), verb, conic_weight(*rec), contour.fMinXY, onCurveCount);
+                continue;
+            }
             bool horizontal = true;
             for (size_t index = 1; index <= VerbPtCount(verb); ++index) {
                 if (pts[0].fY != pts[index].fY) {
@@ -276,11 +239,6 @@ public:
                 }
             }
             if (horizontal) {
-                continue;
-            }
-            if (edge == Edge::kCompare) {
-                winding += contains_edge(pts.data(), verb, conic_weight(*rec),
-                                         contour.fMinXY);
                 continue;
             }
             SkASSERT(edge == Edge::kInitial);
@@ -306,13 +264,47 @@ public:
         if (SK_ScalarMax == test.fMinXY.fX) {
             this->nextEdge(test, Edge::kInitial);
         }
-        // find all edges on greater equal or to the left of one on lesser
-        contour.fMinXY = test.fMinXY;
-        int winding = this->nextEdge(contour, Edge::kCompare);
-        // if edge is up, mark contour cw, otherwise, ccw
-        // sum of greater edges direction should be cw, 0, ccw
+        int onCurveCount = 0;
+        auto windingAt = [&](SkPoint p) {
+            contour.fMinXY = p;
+            onCurveCount = 0;
+            return this->nextEdge(contour, Edge::kCompare, &onCurveCount);
+        };
+        int winding = windingAt(test.fMinXY);
+        if (onCurveCount) {
+            // Touching contours can share the initial query point. For contours
+            // that do not cross, any point off the parent's boundary determines
+            // containment. Try vertices and edge midpoints before giving up.
+            SkPath::Iter iter(fPath, true);
+            int verbCount = -1;
+            while (auto rec = iter.next()) {
+                if (++verbCount < test.fVerbStart) {
+                    continue;
+                }
+                if (verbCount >= test.fVerbEnd) {
+                    break;
+                }
+                auto verb = rec->fVerb;
+                if (verb < SkPathVerb::kLine || verb > SkPathVerb::kCubic) {
+                    continue;
+                }
+                auto pts = rec->fPoints;
+                for (double t : {0.0, 0.5}) {
+                    SkPoint p = (*CurvePointAtT[(int)verb])(pts.data(), conic_weight(*rec), t);
+                    winding = windingAt(p);
+                    if (!onCurveCount) {
+                        test.fMinXY = p;
+                        break;
+                    }
+                }
+                if (!onCurveCount) {
+                    break;
+                }
+            }
+        }
+        // A boundary point alone cannot determine strict containment.
         test.fContained = winding != 0;
-        return -1 <= winding && winding <= 1;
+        return onCurveCount == 0 && -1 <= winding && winding <= 1;
     }
 
     void inParent(Contour& contour, Contour& parent) {
@@ -350,23 +342,21 @@ public:
     }
 
     bool markReverse(Contour* parent, Contour* child) {
-        bool reversed = false;
+        // Descendants must see the effective direction after this contour is reversed.
+        child->fDirection = getDirection(*child);
+        child->fReverse = parent && parent->fDirection == child->fDirection;
+        if (child->fReverse) {
+            child->fDirection = (Contour::Direction) -(int) child->fDirection;
+        }
+        bool reversed = child->fReverse;
         for (auto grandChild : child->fChildren) {
             reversed |= markReverse(grandChild->fContained ? child : parent, grandChild);
-        }
-
-        child->fDirection = getDirection(*child);
-        if (parent && parent->fDirection == child->fDirection) {
-            child->fReverse = true;
-            child->fDirection = (Contour::Direction) -(int) child->fDirection;
-            return true;
         }
         return reversed;
     }
 
     SkPath reverseMarkedContours(vector<Contour>& contours, SkPathFillType fillType) {
-        SkPathPriv::Iterate iterate(fPath);
-        auto iter = iterate.begin();
+        SkPath::Iter iter(fPath, true);
         int verbCount = 0;
 
         SkPathBuilder result;
@@ -374,20 +364,27 @@ public:
         for (const Contour& contour : contours) {
             SkPathBuilder reverse;
             SkPathBuilder* temp = contour.fReverse ? &reverse : &result;
-            for (; iter != iterate.end() && verbCount < contour.fVerbEnd; ++iter, ++verbCount) {
-                auto [verb, pts, w] = *iter;
+            for (; verbCount < contour.fVerbEnd; ++verbCount) {
+                auto rec = iter.next();
+                SkASSERT(rec);
+                auto verb = rec->fVerb;
+                auto pts = rec->fPoints;
                 switch (verb) {
                     case SkPathVerb::kMove:
                         temp->moveTo(pts[0]);
                         break;
                     case SkPathVerb::kLine:
-                        temp->lineTo(pts[1]);
+                        // close() below will supply this edge; preserve the usual
+                        // representation for contours with an implicit closing line.
+                        if (!iter.isCloseLine()) {
+                            temp->lineTo(pts[1]);
+                        }
                         break;
                     case SkPathVerb::kQuad:
                         temp->quadTo(pts[1], pts[2]);
                         break;
                     case SkPathVerb::kConic:
-                        temp->conicTo(pts[1], pts[2], *w);
+                        temp->conicTo(pts[1], pts[2], rec->conicWeight());
                         break;
                     case SkPathVerb::kCubic:
                         temp->cubicTo(pts[1], pts[2], pts[3]);
@@ -443,7 +440,6 @@ std::optional<SkPath> AsWinding(const SkPath& path) {
     // starting with outermost and moving inward, see if one path contains another
     for (auto contour : sorted.fChildren) {
         winder.nextEdge(*contour, OpAsWinding::Edge::kInitial);
-        contour->fDirection = winder.getDirection(*contour);
         if (!winder.checkContainerChildren(nullptr, contour)) {
             return {};
         }

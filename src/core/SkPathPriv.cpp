@@ -1202,6 +1202,22 @@ static int winding_line(SkSpan<const SkPoint> pts, SkScalar x, SkScalar y, int* 
     return dir;
 }
 
+int SkPathPriv::Winding(
+        const SkPoint pts[], SkPathVerb verb, SkScalar weight, SkPoint p, int* onCurveCount) {
+    switch (verb) {
+        case SkPathVerb::kLine:
+            return winding_line({pts, 2}, p.fX, p.fY, onCurveCount);
+        case SkPathVerb::kQuad:
+            return winding_quad({pts, 3}, p.fX, p.fY, onCurveCount);
+        case SkPathVerb::kConic:
+            return winding_conic({pts, 3}, p.fX, p.fY, weight, onCurveCount);
+        case SkPathVerb::kCubic:
+            return winding_cubic({pts, 4}, p.fX, p.fY, onCurveCount);
+        default:
+            SkUNREACHABLE;
+    }
+}
+
 static void tangent_cubic(SkSpan<const SkPoint> pts, SkScalar x, SkScalar y,
                           SkTDArray<SkVector>* tangents) {
     if (!between(pts[0].fY, y, pts[1].fY) && !between(pts[1].fY, y, pts[2].fY)

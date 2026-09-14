@@ -17,6 +17,7 @@
 #include "src/core/SkPathPriv.h"
 #include "tests/Test.h"
 
+#include <cmath>
 #include <initializer_list>
 #include <string>
 
@@ -566,4 +567,164 @@ DEF_TEST(PathOpsAsWinding, reporter) {
     bug13496_1(reporter);
     bug13496_2(reporter);
     bug13496_3(reporter);
+}
+
+static SkPath as_winding_endpoint_triangles(float scale) {
+    SkPathBuilder b(SkPathFillType::kEvenOdd);
+    auto triangle = [&](double cy, double rx, double ry) {
+        // Scale in double, then materialize the float SkPoint coordinates.
+        auto point = [&](double x, double y) {
+            return SkPoint{float(x * scale), float(y * scale)};
+        };
+        b.moveTo(point(0, cy - ry));
+        b.lineTo(point(rx, cy + ry));
+        b.lineTo(point(-rx, cy));
+        b.lineTo(point(0, cy - ry));  // Explicit closing edge.
+        b.close();
+    };
+    triangle(16, 10, 12);
+    triangle(16.0000007, 5, 6);
+    return b.detach();
+}
+
+DEF_TEST(PathOpsAsWindingEndpointScale, reporter) {
+    // Adjacent floats straddle a local pass/fail transition at scale 1.
+    for (float scale :
+         {0.75f, std::nextafter(1.0f, 0.0f), 1.0f, std::nextafter(1.0f, 2.0f), 1.5f}) {
+        SkPath input = as_winding_endpoint_triangles(scale);
+        auto output = AsWinding(input);
+        REPORTER_ASSERT(reporter, !input.contains(0, 16 * scale));
+        REPORTER_ASSERT(reporter, output.has_value());
+        if (output) {
+            REPORTER_ASSERT(reporter, !output->contains(0, 16 * scale));
+        }
+    }
+}
+
+DEF_TEST(PathOpsAsWindingNestedDirections, reporter) {
+    // A grandchild must compare with the parent's direction after reversal.
+    for (auto verb :
+         {SkPath::kLine_Verb, SkPath::kQuad_Verb, SkPath::kConic_Verb, SkPath::kCubic_Verb}) {
+        for (int levels : {4, 6}) {
+            for (int mask = 0; mask < (1 << levels); ++mask) {
+                for (bool innerFirst : {false, true}) {
+                    for (bool inverse : {false, true}) {
+                        SkPathBuilder builder(inverse ? SkPathFillType::kInverseEvenOdd
+                                                      : SkPathFillType::kEvenOdd);
+                        for (int i = 0; i < levels; ++i) {
+                            int depth = innerFirst ? levels - 1 - i : i;
+                            SkPath contour = build_squircle(
+                                    verb,
+                                    SkRect::MakeLTRB(depth, depth, 16 - depth, 16 - depth),
+                                    (mask & (1 << depth)) ? SkPathDirection::kCW
+                                                          : SkPathDirection::kCCW);
+                            builder.addPath(contour);
+                        }
+                        SkPath input = builder.detach();
+                        auto output = AsWinding(input);
+                        REPORTER_ASSERT(reporter, output.has_value());
+                        if (!output) {
+                            continue;
+                        }
+                        for (int depth = 0; depth <= levels; ++depth) {
+                            // Stay away from boundaries; include every ring and the central hole.
+                            SkPoint p = {depth + 0.5f, 8};
+                            REPORTER_ASSERT(
+                                    reporter,
+                                    input.contains(p) == output->contains(p),
+                                    "verb=%d levels=%d mask=%d innerFirst=%d inverse=%d depth=%d",
+                                    (int)verb,
+                                    levels,
+                                    mask,
+                                    innerFirst,
+                                    inverse,
+                                    depth);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+DEF_TEST(PathOpsAsWindingHorizontalTangents, reporter) {
+    for (int kind = 0; kind < 4; ++kind) {
+        SkPathBuilder outer;
+        if (kind == 3) {
+            // y(t) = (2t - 1)^3 crosses y=0 with zero first derivative.
+            outer.moveTo(0, -1).cubicTo(1, 1, 2, -1, 3, 1);
+        } else {
+            outer.moveTo(0, 0);
+            if (kind == 0) {
+                outer.quadTo(1, 0, 2, 1);
+            } else if (kind == 1) {
+                outer.conicTo(1, 0, 2, 1, 0.75f);
+            } else {
+                outer.cubicTo(1, 0, 1.5f, 0, 2, 1);
+            }
+        }
+        outer.lineTo(6, 1).lineTo(6, -2).lineTo(0, -2);
+        outer.lineTo(0, kind == 3 ? -1 : 0).close();
+        SkPath outerPath = outer.detach();
+        SkPath innerPath = SkPathBuilder()
+                                   .moveTo(4, 0)
+                                   .lineTo(5, 0.5f)
+                                   .lineTo(5, -0.5f)
+                                   .lineTo(4, 0)
+                                   .close()
+                                   .detach();
+        for (bool reverse : {false, true}) {
+            SkPathBuilder builder(SkPathFillType::kEvenOdd);
+            if (reverse) {
+                SkPathPriv::ReverseAddPath(&builder, outerPath);
+                SkPathPriv::ReverseAddPath(&builder, innerPath);
+            } else {
+                builder.addPath(outerPath).addPath(innerPath);
+            }
+            SkPath input = builder.detach();
+            auto output = AsWinding(input);
+            REPORTER_ASSERT(reporter, output.has_value());
+            if (output) {
+                REPORTER_ASSERT(reporter, !input.contains(4.5f, 0));
+                REPORTER_ASSERT(reporter, !output->contains(4.5f, 0));
+                REPORTER_ASSERT(reporter, output->contains(5.5f, 0));
+            }
+        }
+    }
+}
+
+DEF_TEST(PathOpsAsWindingTouchingContours, reporter) {
+    // The inner contour shares the parent's leftmost vertex, so the first
+    // containment query is on the boundary. Its other vertices are strictly inside.
+    SkPath outer = SkPathBuilder()
+                           .moveTo(0, 4)
+                           .lineTo(10, 28)
+                           .lineTo(-10, 16)
+                           .lineTo(0, 4)
+                           .close()
+                           .detach();
+    SkPath inner = SkPathBuilder()
+                           .moveTo(0, 10)
+                           .lineTo(5, 22)
+                           .lineTo(-10, 16)
+                           .lineTo(0, 10)
+                           .close()
+                           .detach();
+    for (bool reverse : {false, true}) {
+        SkPathBuilder builder(SkPathFillType::kEvenOdd);
+        if (reverse) {
+            SkPathPriv::ReverseAddPath(&builder, outer);
+            SkPathPriv::ReverseAddPath(&builder, inner);
+        } else {
+            builder.addPath(outer).addPath(inner);
+        }
+        SkPath input = builder.detach();
+        auto output = AsWinding(input);
+        REPORTER_ASSERT(reporter, output.has_value());
+        if (output) {
+            REPORTER_ASSERT(reporter, !input.contains(0, 16));
+            REPORTER_ASSERT(reporter, !output->contains(0, 16));
+            REPORTER_ASSERT(reporter, output->contains(0, 6));
+        }
+    }
 }
