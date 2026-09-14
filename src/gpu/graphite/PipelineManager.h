@@ -8,7 +8,9 @@
 #ifndef skgpu_graphite_PipelineManager_DEFINED
 #define skgpu_graphite_PipelineManager_DEFINED
 
+
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkTaskRunner.h"
 #include "include/private/SkEnumBitMask.h"
 #include "src/core/SkSpinlock.h"
 #include "src/core/SkTHash.h"
@@ -36,7 +38,7 @@ class SharedContext;
 
 class PipelineManager {
 public:
-    PipelineManager(SkExecutor* executor);
+    PipelineManager(SkExecutor* executor, sk_sp<SkTaskRunner> taskRunner);
     ~PipelineManager();
 
     // If an existing Pipeline is found, it is just wrapped in a Handle and returned.
@@ -55,6 +57,8 @@ public:
     // more threaded tasks.
     void shutDown();
 
+    static void InlineCompile(SharedContext*, PipelineCreationTask*);
+
 #if defined(GPU_TEST_UTILS)
     void wait_TestOnly();
 
@@ -70,18 +74,16 @@ public:
 private:
     mutable SkSpinlock fSpinLock;
 
-    enum class Priority { kHigh = 0, kLow = 1 };
-
     sk_sp<PipelineCreationTask> findOrCreateTask(
             sk_sp<const RuntimeEffectDictionary> runtimeDict,
             const UniqueKey& pipelineKey,
             const GraphicsPipelineDesc&,
             const RenderPassDesc&,
-            Priority) SK_EXCLUDES(fSpinLock);
+            SkTaskRunner::Priority) SK_EXCLUDES(fSpinLock);
 
-    void addTaskToWorkList(SharedContext*,
+    void addTaskToWorkList(sk_sp<SharedContext>,
                            sk_sp<PipelineCreationTask>,
-                           Priority);
+                           SkTaskRunner::Priority);
 
     void removeTask(PipelineCreationTask*) SK_EXCLUDES(fSpinLock);
 
@@ -97,14 +99,10 @@ private:
     Stats fStats SK_GUARDED_BY(fSpinLock);
 #endif
 
-    std::unique_ptr<SkTaskGroup> fTaskGroup SK_GUARDED_BY(fSpinLock);
+    sk_sp<SkTaskRunner> fTaskRunner SK_GUARDED_BY(fSpinLock);
 
     void signalCompleted(PipelineCreationTask*);
     void potentiallyWaitOn(SharedContext*, PipelineCreationTask*);
-
-    static void InlineCompile(SharedContext* sharedContext,
-                              PipelineManager* pipelineManager,
-                              PipelineCreationTask* task);
 
     // We have the mutex and condition_variable here to limit the number of
     // mutexes/semaphores we need for synchronizing access to the pipelines.

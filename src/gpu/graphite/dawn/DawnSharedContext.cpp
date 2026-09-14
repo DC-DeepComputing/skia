@@ -54,6 +54,7 @@ sk_sp<SharedContext> DawnSharedContext::Make(const DawnBackendContext& backendCo
                                                       std::move(caps),
                                                       std::move(noopFragment),
                                                       options.fExecutor,
+                                                      options.fTaskRunner,
                                                       options.fUserDefinedKnownRuntimeEffects));
 }
 
@@ -61,10 +62,12 @@ DawnSharedContext::DawnSharedContext(const DawnBackendContext& backendContext,
                                      std::unique_ptr<const DawnCaps> caps,
                                      wgpu::ShaderModule noopFragment,
                                      SkExecutor* executor,
+                                     sk_sp<SkTaskRunner> taskRunner,
                                      SkSpan<sk_sp<SkRuntimeEffect>> userDefinedKnownRuntimeEffects)
         : SharedContext(std::move(caps),
                         BackendApi::kDawn,
                         executor,
+                        std::move(taskRunner),
                         userDefinedKnownRuntimeEffects)
         , fInstance(backendContext.fInstance)
         , fDevice(backendContext.fDevice)
