@@ -37,6 +37,16 @@ static constexpr DepthStencilSettings kDirectDepthLEqualPass = {
         /*depthWrite=*/  true
 };
 
+static constexpr DepthStencilSettings kDirectDepthLessNoWritePass = {
+        /*front=*/       {},
+        /*back=*/        {},
+        /*stencilRef=*/  0,
+        /*stencilTest=*/ false,
+        /*depthCompare=*/CompareOp::kLess,
+        /*depthTest=*/   true,
+        /*depthWrite=*/  false
+};
+
 /**
  * "stencil" pass DepthStencilSettings reusable for RenderSteps following some form of
  * stencil-then-cover multi-pass algorithm.

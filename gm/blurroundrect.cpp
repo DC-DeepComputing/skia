@@ -72,19 +72,26 @@ class SimpleBlurRoundRectGM : public skiagm::GM {
             canvas->translate(0, (r.height() + 50.f) * row);
             for (size_t pair = 0; pair < std::size(cornerRadii); ++pair) {
                 SkPaint paint;
+                paint.setAntiAlias(false);
                 paint.setColor(SK_ColorBLACK);
                 paint.setMaskFilter(SkMaskFilter::MakeBlur(
                         kNormal_SkBlurStyle, SkBlurMask::ConvertRadiusToSigma(blurRadii[row])));
                 SkRRect rrect;
                 rrect.setRectXY(r, cornerRadii[pair], cornerRadii[pair]);
 
+                SkPaint overlayPaint;
+                overlayPaint.setColor4f({0.0f, 0.5f, 1.0f, 0.4f});
+                overlayPaint.setAntiAlias(paint.isAntiAlias());
+
                 // Even-indexed columns are without a gradient
                 canvas->drawRRect(rrect, paint);
+                //canvas->drawRRect(rrect, overlayPaint);
                 canvas->translate(r.width() + 50.f, 0);
 
                 // Odd-indexed columns have a gradient
                 paint.setShader(MakeRadial());
                 canvas->drawRRect(rrect, paint);
+                //canvas->drawRRect(rrect, overlayPaint);
                 canvas->translate(r.width() + 50.f, 0);
             }
         }
