@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "b87b9c19_2abf2e93",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-15T21:44:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e4a61b0e_dcf0fed0",
+      "range": {
+        "startLine": 9,
+        "startChar": 89,
+        "endLine": 9,
+        "endChar": 95
+      },
+      "revId": "80f169910fb9a5c305f630d850071c9f37e421b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "67b5dfb2_6057a28b",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 5
@@ -58,6 +82,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed45e7c0_00d65a61",
+        "filename": "src/gpu/graphite/sparse_strips/AlphaAtlasManager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-15T21:44:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "934d5c00_3b633fee",
+      "revId": "80f169910fb9a5c305f630d850071c9f37e421b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "76b2d94c_a7957fea",
@@ -71,6 +113,30 @@
       "writtenOn": "2026-09-15T17:43:18Z",
       "side": 1,
       "message": "Maybe \u0027fActiveSlot\u0027 for clarity ?",
+      "range": {
+        "startLine": 142,
+        "startChar": 51,
+        "endLine": 142,
+        "endChar": 59
+      },
+      "revId": "80f169910fb9a5c305f630d850071c9f37e421b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "85ca2653_394f83b7",
+        "filename": "src/gpu/graphite/sparse_strips/AlphaAtlasManager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-15T21:44:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "76b2d94c_a7957fea",
       "range": {
         "startLine": 142,
         "startChar": 51,
@@ -98,6 +164,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "78e7046b_a6915b88",
+        "filename": "src/gpu/graphite/sparse_strips/AlphaAtlasManager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-15T21:44:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "05d0ca7a_48f226c6",
+      "revId": "80f169910fb9a5c305f630d850071c9f37e421b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "965be8de_51d9a52d",
@@ -111,6 +195,24 @@
       "writtenOn": "2026-09-15T17:43:18Z",
       "side": 1,
       "message": "What do we need this for ?",
+      "revId": "80f169910fb9a5c305f630d850071c9f37e421b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "55e3b67a_3be33c54",
+        "filename": "src/gpu/graphite/sparse_strips/AlphaAtlasManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-15T21:44:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "965be8de_51d9a52d",
       "revId": "80f169910fb9a5c305f630d850071c9f37e421b1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -132,6 +234,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e15bc881_b9deb729",
+        "filename": "src/gpu/graphite/sparse_strips/AlphaAtlasManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-15T21:44:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "42651242_519dc222",
+      "revId": "80f169910fb9a5c305f630d850071c9f37e421b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b69e1a37_74f001a3",
@@ -145,6 +265,30 @@
       "writtenOn": "2026-09-15T17:43:18Z",
       "side": 1,
       "message": "fwiw, I do like the \u0027fTexPage\u0027/\u0027fAlphaIndex\u0027 names better than \u0027first\u0027/\u0027second\u0027",
+      "range": {
+        "startLine": 152,
+        "startChar": 38,
+        "endLine": 152,
+        "endChar": 44
+      },
+      "revId": "80f169910fb9a5c305f630d850071c9f37e421b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "87a1cf80_27fd734e",
+        "filename": "tests/graphite/sparse_strips/AtlasTests.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-15T21:44:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b69e1a37_74f001a3",
       "range": {
         "startLine": 152,
         "startChar": 38,
@@ -178,6 +322,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f6c9e5ef_b0104df9",
+        "filename": "tests/graphite/sparse_strips/AtlasTests.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-15T21:44:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a0ed95dc_1fb28f79",
+      "range": {
+        "startLine": 194,
+        "startChar": 57,
+        "endLine": 194,
+        "endChar": 63
+      },
+      "revId": "80f169910fb9a5c305f630d850071c9f37e421b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c0c0f831_2b4a370d",
@@ -191,6 +359,30 @@
       "writtenOn": "2026-09-15T17:43:18Z",
       "side": 1,
       "message": "Maybe kToBeDetermined ?",
+      "range": {
+        "startLine": 300,
+        "startChar": 57,
+        "endLine": 300,
+        "endChar": 63
+      },
+      "revId": "80f169910fb9a5c305f630d850071c9f37e421b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9417e047_98faee86",
+        "filename": "tests/graphite/sparse_strips/CoverageTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 300,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-15T21:44:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c0c0f831_2b4a370d",
       "range": {
         "startLine": 300,
         "startChar": 57,
