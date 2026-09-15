@@ -37,7 +37,7 @@ public:
 
     const char* getResourceType() const override { return "Metal Render Command Encoder"; }
 
-    void setLabel(NSString* label) {
+    void setMtlLabel(NSString* label) {
         [(*fCommandEncoder) setLabel:label];
     }
 

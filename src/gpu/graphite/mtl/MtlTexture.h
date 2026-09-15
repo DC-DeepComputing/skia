@@ -28,7 +28,8 @@ public:
     static sk_sp<Texture> Make(const MtlSharedContext*,
                                SkISize dimensions,
                                const TextureInfo&,
-                               std::string_view label);
+                               std::string_view label,
+                               SkEnumBitMask<TextureUsageFlags> usages);
 
     static sk_sp<Texture> MakeWrapped(const MtlSharedContext*,
                                       SkISize dimensions,

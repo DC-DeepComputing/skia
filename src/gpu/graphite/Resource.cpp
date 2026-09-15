@@ -29,7 +29,9 @@ Resource::Resource(const SharedContext* sharedContext,
                    std::string_view label,
                    bool reusableRequiresPurgeable,
                    bool requiresPrepareForReturnToCache)
-        : fRefs(RefIncrement(RefType::kUsage)) // Start with 1 usage ref and no others
+        : fLabel(label)
+        , fBackendLabelDirty(!label.empty())
+        , fRefs(RefIncrement(RefType::kUsage)) // Start with 1 usage ref and no others
         , fReusableRefMask(
             (reusableRequiresPurgeable ? PurgeableMask()
                                        : RefMask(RefType::kUsage)) | RefMask(RefType::kReturnQueue))
@@ -37,9 +39,7 @@ Resource::Resource(const SharedContext* sharedContext,
         , fUniqueID(create_unique_id())
         , fOwnership(ownership)
         , fRequiresPrepareForReturnToCache(requiresPrepareForReturnToCache)
-        , fGpuMemorySize(gpuMemorySize)
-        , fLabel(label)
-        , fBackendLabelDirty(!label.empty()) {
+        , fGpuMemorySize(gpuMemorySize) {
     // At initialization time, a Resource should not be considered budgeted because it does not yet
     // belong to a ResourceCache (which manages a budget). Wrapped resources and owned-but-uncached
     // resources will never be added to a cache and can therefore depend on this default value (as
