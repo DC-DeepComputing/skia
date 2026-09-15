@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb104cc3_921a4654",
+        "filename": "src/pathops/SkPathOpsAsWinding.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-15T16:42:58Z",
+      "side": 1,
+      "message": "Can we get an isolated test for this scenario? E.g. when a missing implicit close would have broken things?",
+      "range": {
+        "startLine": 150,
+        "startChar": 7,
+        "endLine": 155,
+        "endChar": 0
+      },
+      "revId": "0e1ef2636ff6e4a6b09732fc19264358a6bee27f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "137ceb2b_8cfdcd05",
+        "filename": "src/pathops/SkPathOpsAsWinding.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-15T16:42:58Z",
+      "side": 1,
+      "message": "Are you sure this is necessary? A perfectly horizontal line should never contribute winding itself. Given a closed contour, the sibling edge which shares its endpoint should always provide the winding?",
+      "range": {
+        "startLine": 229,
+        "startChar": 12,
+        "endLine": 233,
+        "endChar": 13
+      },
+      "revId": "0e1ef2636ff6e4a6b09732fc19264358a6bee27f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7257d2d4_fa5e1b93",
+        "filename": "src/pathops/SkPathOpsAsWinding.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-15T16:42:58Z",
+      "side": 1,
+      "message": "Nit: (verb !\u003d SkPathVerb::kMove \u0026\u0026 verb !\u003d SkPathVerb::kClose) is clearer I think.",
+      "range": {
+        "startLine": 288,
+        "startChar": 16,
+        "endLine": 290,
+        "endChar": 17
+      },
+      "revId": "0e1ef2636ff6e4a6b09732fc19264358a6bee27f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
