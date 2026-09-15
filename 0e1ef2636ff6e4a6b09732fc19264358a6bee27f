@@ -68,6 +68,30 @@
       },
       "revId": "0e1ef2636ff6e4a6b09732fc19264358a6bee27f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6322347_fc5b4879",
+        "filename": "src/pathops/SkPathOpsAsWinding.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-15T20:12:23Z",
+      "side": 1,
+      "message": "Sorry, I meant (verb \u003d\u003d SkPathVerb::kMove || verb \u003d\u003d SkPathVerb::kClose)",
+      "parentUuid": "7257d2d4_fa5e1b93",
+      "range": {
+        "startLine": 288,
+        "startChar": 16,
+        "endLine": 290,
+        "endChar": 17
+      },
+      "revId": "0e1ef2636ff6e4a6b09732fc19264358a6bee27f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
