@@ -18,8 +18,17 @@
 #include "modules/skunicode/include/SkUnicode_icu4x.h"
 #endif
 
+#if defined(SK_UNICODE_APPLE_IMPLEMENTATION)
+#include "modules/skunicode/include/SkUnicode_apple.h"
+#endif
+
 namespace {
 sk_sp<SkUnicode> get_unicode() {
+#if defined(SK_UNICODE_APPLE_IMPLEMENTATION)
+    if (auto unicode = SkUnicodes::Apple::Make()) {
+        return unicode;
+    }
+#endif
 #if defined(SK_UNICODE_ICU_IMPLEMENTATION)
     if (auto unicode = SkUnicodes::ICU::Make()) {
         return unicode;
