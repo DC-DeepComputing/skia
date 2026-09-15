@@ -386,6 +386,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "115f601c_572cdc46",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 21
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 4764846
+      },
+      "writtenOn": "2026-09-15T03:02:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "56bae458_baeba1cf",
+      "range": {
+        "startLine": 23,
+        "startChar": 33,
+        "endLine": 24,
+        "endChar": 1
+      },
+      "revId": "855764169b1b1e0d385ab9548bbc07ea4514bae9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "945ef391_e99f796d",
