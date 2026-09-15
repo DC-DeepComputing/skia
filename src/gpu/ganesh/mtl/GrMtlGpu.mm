@@ -1653,7 +1653,7 @@ void GrMtlGpu::resolve(GrMtlAttachment* resolveAttachment,
     GrMtlRenderCommandEncoder* cmdEncoder =
             this->commandBuffer()->getRenderCommandEncoder(renderPassDesc, nullptr, nullptr);
     if (cmdEncoder) {
-        cmdEncoder->setLabel(@"resolveTexture");
+        cmdEncoder->setMtlLabel(@"resolveTexture");
         this->commandBuffer()->addGrSurface(sk_ref_sp<const GrSurface>(resolveAttachment));
         this->commandBuffer()->addGrSurface(sk_ref_sp<const GrSurface>(msaaAttachment));
     }

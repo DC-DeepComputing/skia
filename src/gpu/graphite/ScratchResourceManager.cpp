@@ -39,9 +39,17 @@ ScratchResourceManager::~ScratchResourceManager() {
 
 sk_sp<Texture> ScratchResourceManager::getScratchTexture(SkISize dimensions,
                                                          const TextureInfo& info,
-                                                         std::string_view label) {
+                                                         std::string_view label,
+                                                         SkEnumBitMask<TextureUsageFlags> usages) {
     sk_sp<Texture> scratchTexture = fResourceProvider->findOrCreateScratchTexture(
-            dimensions, info, label, fUnavailable);
+            dimensions, info, fUnavailable, label, usages);
+
+    // TODO(b/476118698): A scratch texture's label should reflect the labels of every
+    // TextureProxy instantiated by the texture. This class will be responsible for mapping each
+    // scratch texture used to its accumulated labels. This map can then be transferred to a snapped
+    // Recording and be used to issue any necessary scratch texture label updates upon insertion to
+    // reflect its use within that Recording.
+
     // Store the returned scratch texture into fUnavailable so that it is filtered from the
     // ResourceCache when going through *this* ScratchResourceManager. But the scratch texture will
     // remain visible to other Recorders.
