@@ -48,7 +48,7 @@ public:
     GeoRectBench(const char suffix[]) : GeometryBench(suffix) {}
 
 protected:
-    SkRect fRects[2048];
+    std::array<SkRect, 2048> fRects;
 
     void onDelayedSetup() override {
         const SkScalar min = -100;
@@ -249,6 +249,8 @@ protected:
 DEF_BENCH( return new ChopCubicAt; )
 
 #include "include/core/SkPath.h"
+
+#include <array>
 
 class ConvexityBench : public Benchmark {
     SkPath fPath;
