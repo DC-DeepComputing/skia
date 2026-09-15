@@ -53,6 +53,7 @@ public:
 
 private:
     friend class DrawContext; // for "addTask"
+    friend class StorageContext;
 
     // DrawTask is modified directly by DrawContext for efficiency, but its task list will be
     // fixed once DrawContext snaps the task.
