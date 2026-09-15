@@ -1145,7 +1145,10 @@ func (b *TaskBuilder) defaultSwarmDimensions() {
 			// Use many-core machines for Build tasks.
 			d["machine_type"] = MACHINE_TYPE_LARGE
 		} else if d["os"] == DEFAULT_OS_MAC {
-			if b.MatchExtraConfig("iOS") {
+			if b.MatchExtraConfig("iOS18") {
+				d["pool"] = "SkiaIOS"
+				delete(d, "gpu")
+			} else if b.MatchExtraConfig("iOS") {
 				// TODO(borenet): Remove this special case (and the associated
 				// machines) once the new machines have the certs needed to
 				// build for iOS.
@@ -1628,7 +1631,7 @@ func (b *TaskBuilder) commonTestPerfAssets() {
 	if b.ExtraConfig("CanvasKit") || (b.Role("Test") && b.ExtraConfig("LottieWeb")) {
 		return
 	}
-	if b.Os("Android", "ChromeOS", "iOS") {
+	if b.MatchOs("Android", "ChromeOS", "iOS") {
 		b.asset("skp", "svg", "skimage")
 	} else if b.ExtraConfig("OldestSupportedSkpVersion") {
 		b.cipd(&specs.CipdPackage{
