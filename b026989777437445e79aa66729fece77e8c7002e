@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f0c1575_868ebff4",
+        "filename": "src/capture/SkCaptureManager.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-09-15T00:16:14Z",
+      "side": 1,
+      "message": "could we reduce indentation with a check like \n\nif (fTrackedCanvases[i].get() !\u003d canvas) continue;",
+      "range": {
+        "startLine": 34,
+        "startChar": 7,
+        "endLine": 36,
+        "endChar": 11
+      },
+      "revId": "b026989777437445e79aa66729fece77e8c7002e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ceeb68b_e9b9b232",
+        "filename": "src/image/SkSurface_Base.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-09-15T00:16:14Z",
+      "side": 1,
+      "message": "nit: reduce indentation with \n\nif (!fCachedCanvas) return;",
+      "range": {
+        "startLine": 43,
+        "startChar": 8,
+        "endLine": 43,
+        "endChar": 18
+      },
+      "revId": "b026989777437445e79aa66729fece77e8c7002e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
