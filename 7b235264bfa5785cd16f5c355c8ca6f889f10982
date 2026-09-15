@@ -16,6 +16,24 @@
       "message": "I reworked the vertex generation and moved a lot of the vertex code to the vertex shader. Also added the local sigma clamping we talking about which now matches the same behavior as the device sigma.\n\nThere are still some noticeable diffs in the GMs so I am still looking into those to see what the cause is and if they can be addressed or it is just a result of doing the blur analytically (with GL4 approximation) vs discrete.",
       "revId": "7b235264bfa5785cd16f5c355c8ca6f889f10982",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "23ff7a29_77f49c95",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 31
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-15T16:51:21Z",
+      "side": 1,
+      "message": "FWIW I tested making all the rrects in GM_simpleblurroundrect into just rects so we exercise the analytic rect blur path in AnalyticBlurMask, noticed similar diffs as the current ones with this CL when it comes to the slight difference in the blur strength.",
+      "parentUuid": "1643d181_75c63cda",
+      "revId": "7b235264bfa5785cd16f5c355c8ca6f889f10982",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
