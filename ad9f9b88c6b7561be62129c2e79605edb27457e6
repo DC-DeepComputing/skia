@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26f8a5d9_41b159ea",
+        "filename": "src/sksl/ir/SkSLForStatement.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-09-15T13:31:41Z",
+      "side": 1,
+      "message": "This define this as a constant",
+      "range": {
+        "startLine": 105,
+        "startChar": 27,
+        "endLine": 105,
+        "endChar": 30
+      },
+      "revId": "ad9f9b88c6b7561be62129c2e79605edb27457e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "551c75ff_c897617a",
+        "filename": "src/sksl/ir/SkSLForStatement.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-09-15T13:31:41Z",
+      "side": 1,
+      "message": "What is our goal for the limit here? If it is simply to track the iterations of the most deeply nested loop then this works as you wrote it. However, if we want the 256 to be a limit on the total number of unrolled loops, then we need to be summing sequential loops nested in the same parent loop. Though for the later you can argue this is not different from just have 1000 independent 2 iteration non nested loops. And in that case we\u0027re not summing them all together.",
+      "range": {
+        "startLine": 124,
+        "startChar": 20,
+        "endLine": 124,
+        "endChar": 38
+      },
+      "revId": "ad9f9b88c6b7561be62129c2e79605edb27457e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "008516e8_64c8c1fc",
+        "filename": "src/sksl/ir/SkSLForStatement.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-09-15T13:31:41Z",
+      "side": 1,
+      "message": "Is there a reason to only do this in strict es2 mode? For fuzzers couldn\u0027t they also timeout in ES3 with huge unrolled loops?",
+      "range": {
+        "startLine": 177,
+        "startChar": 12,
+        "endLine": 177,
+        "endChar": 47
+      },
+      "revId": "ad9f9b88c6b7561be62129c2e79605edb27457e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bcefe7e7_03c9a7af",
+        "filename": "src/sksl/ir/SkSLForStatement.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-09-15T13:31:41Z",
+      "side": 1,
+      "message": "is it worth saying what the limit is in the error message?",
+      "range": {
+        "startLine": 178,
+        "startChar": 77,
+        "endLine": 178,
+        "endChar": 82
+      },
+      "revId": "ad9f9b88c6b7561be62129c2e79605edb27457e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
