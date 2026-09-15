@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a436191_1b83a1f1",
+        "filename": "tests/PathOpsQuadIntersectionTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 475,
+      "author": {
+        "id": 4621846
+      },
+      "writtenOn": "2026-09-15T20:05:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6f950bdf_35a7c2a9",
+      "range": {
+        "startLine": 471,
+        "startChar": 0,
+        "endLine": 475,
+        "endChar": 36
+      },
+      "revId": "e23754181f6f84c2bce961de9e7be7e45efe0be6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "68b33799_3bc0f74b",
@@ -54,6 +78,30 @@
       "writtenOn": "2026-09-15T14:35:49Z",
       "side": 1,
       "message": "nit: can bring this up next to ( in the above line.",
+      "range": {
+        "startLine": 305,
+        "startChar": 12,
+        "endLine": 305,
+        "endChar": 13
+      },
+      "revId": "e23754181f6f84c2bce961de9e7be7e45efe0be6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7289e19_72be2638",
+        "filename": "tests/ResourceAllocatorTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 4621846
+      },
+      "writtenOn": "2026-09-15T20:05:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "68b33799_3bc0f74b",
       "range": {
         "startLine": 305,
         "startChar": 12,
