@@ -16,6 +16,7 @@ _modules = get_path_info("../../modules", "abspath")
 #  //modules/skshaper/utils:core_hdrs
 skia_shaper_public = [
   "$_modules/skshaper/include/SkShaper.h",
+  "$_modules/skshaper/include/SkShaper_coretext.h",
   "$_modules/skshaper/include/SkShaper_factory.h",
   "$_modules/skshaper/include/SkShaper_harfbuzz.h",
   "$_modules/skshaper/include/SkShaper_skunicode.h",

@@ -23,7 +23,12 @@
 #include "modules/skparagraph/src/ParagraphImpl.h"
 #include "modules/skparagraph/src/ParagraphPainterImpl.h"
 #include "modules/skshaper/include/SkShaper.h"
+#if defined(SK_SHAPER_HARFBUZZ_AVAILABLE)
 #include "modules/skshaper/include/SkShaper_harfbuzz.h"
+#endif
+#if defined(SK_SHAPER_CORETEXT_AVAILABLE)
+#include "modules/skshaper/include/SkShaper_coretext.h"
+#endif
 #include "modules/skshaper/include/SkShaper_skunicode.h"
 
 #include <algorithm>
@@ -723,9 +728,6 @@ std::unique_ptr<Run> TextLine::shapeEllipsis(const SkString& ellipsis,
         font.setHinting(textStyle.getFontHinting());
         font.setSubpixel(textStyle.getSubpixel());
 
-        std::unique_ptr<SkShaper> shaper = SkShapers::HB::ShapeDontWrapOrReorder(
-                fOwner->getUnicode(), fallback ? fallback : SkFontMgr::RefEmpty());
-
         const SkBidiIterator::Level defaultLevel = SkBidiIterator::kLTR;
         const char* utf8 = ellipsis.c_str();
         size_t utf8Bytes = ellipsis.size();
@@ -738,9 +740,21 @@ std::unique_ptr<Run> TextLine::shapeEllipsis(const SkString& ellipsis,
                 SkShaper::MakeStdLanguageRunIterator(utf8, utf8Bytes);
         SkASSERT(language);
 
-        std::unique_ptr<SkShaper::ScriptRunIterator> script =
-                SkShapers::HB::ScriptRunIterator(utf8, utf8Bytes);
-        SkASSERT(script);
+        std::unique_ptr<SkShaper> shaper;
+        std::unique_ptr<SkShaper::ScriptRunIterator> script;
+#if defined(SK_SHAPER_HARFBUZZ_AVAILABLE)
+        shaper = SkShapers::HB::ShapeDontWrapOrReorder(
+                fOwner->getUnicode(), fallback ? fallback : SkFontMgr::RefEmpty());
+        script = SkShapers::HB::ScriptRunIterator(utf8, utf8Bytes);
+#elif defined(SK_SHAPER_CORETEXT_AVAILABLE)
+        shaper = SkShapers::CT::CoreText();
+        script = std::make_unique<SkShaper::TrivialScriptRunIterator>(
+                SkSetFourByteTag('l','a','t','n'), utf8Bytes);
+#else
+        shaper = SkShapers::Primitive::PrimitiveText();
+        script = std::make_unique<SkShaper::TrivialScriptRunIterator>(
+                SkSetFourByteTag('l','a','t','n'), utf8Bytes);
+#endif
 
         std::unique_ptr<SkShaper::FontRunIterator> fontRuns = SkShaper::MakeFontMgrRunIterator(
                 utf8, utf8Bytes, font, fallback ? fallback : SkFontMgr::RefEmpty());
