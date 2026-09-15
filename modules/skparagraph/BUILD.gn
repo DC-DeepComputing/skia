@@ -12,8 +12,7 @@ declare_args() {
   paragraph_bench_enabled = false
 }
 
-if (skia_enable_skparagraph && skia_enable_skshaper && skia_enable_skunicode &&
-    skia_use_harfbuzz) {
+if (skia_enable_skparagraph && skia_enable_skshaper && skia_enable_skunicode) {
   config("public_config") {
     defines = [ "SK_ENABLE_PARAGRAPH" ]
     include_dirs = [
@@ -52,7 +51,8 @@ if (skia_enable_skparagraph && skia_enable_skshaper && skia_enable_skunicode &&
 
     skia_source_set("gm") {
       if (paragraph_gms_enabled &&
-          (skia_use_icu || skia_use_libgrapheme || skia_use_icu4x)) {
+          (skia_use_icu || skia_use_libgrapheme || skia_use_icu4x ||
+           skia_use_apple_unicode)) {
         testonly = true
         sources = [ "gm/simple_gm.cpp" ]
         deps = [
@@ -69,7 +69,8 @@ if (skia_enable_skparagraph && skia_enable_skshaper && skia_enable_skunicode &&
     if (skia_enable_tools) {
       skia_source_set("tests") {
         if (paragraph_tests_enabled &&
-            (skia_use_icu || skia_use_libgrapheme || skia_use_icu4x)) {
+            (skia_use_icu || skia_use_libgrapheme || skia_use_icu4x ||
+             skia_use_apple_unicode)) {
           testonly = true
           sources = skparagraph_tests
           deps = [
@@ -88,7 +89,8 @@ if (skia_enable_skparagraph && skia_enable_skshaper && skia_enable_skunicode &&
 
     skia_source_set("bench") {
       if (paragraph_bench_enabled &&
-          (skia_use_icu || skia_use_libgrapheme || skia_use_icu4x)) {
+          (skia_use_icu || skia_use_libgrapheme || skia_use_icu4x ||
+           skia_use_apple_unicode)) {
         testonly = true
         sources = [ "bench/ParagraphBench.cpp" ]
         deps = [
@@ -103,7 +105,7 @@ if (skia_enable_skparagraph && skia_enable_skshaper && skia_enable_skunicode &&
     }
 
     skia_source_set("slides") {
-      if (skia_use_icu || skia_use_libgrapheme) {
+      if (skia_use_icu || skia_use_libgrapheme || skia_use_apple_unicode) {
         testonly = true
         sources = [ "slides/ParagraphSlide.cpp" ]
         deps = [

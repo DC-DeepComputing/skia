@@ -2,7 +2,12 @@
 #include "modules/skparagraph/src/OneLineShaper.h"
 
 #include "modules/skparagraph/src/Iterators.h"
+#if defined(SK_SHAPER_HARFBUZZ_AVAILABLE)
 #include "modules/skshaper/include/SkShaper_harfbuzz.h"
+#endif
+#if defined(SK_SHAPER_CORETEXT_AVAILABLE)
+#include "modules/skshaper/include/SkShaper_coretext.h"
+#endif
 #include "src/core/SkUTF.h"
 
 #include <algorithm>
@@ -636,8 +641,15 @@ bool OneLineShaper::shape() {
             (TextRange textRange, SkSpan<Block> styleSpan, SkScalar& advanceX, TextIndex textStart, uint8_t defaultBidiLevel) {
 
         // Set up the shaper and shape the next
-        auto shaper = SkShapers::HB::ShapeDontWrapOrReorder(fParagraph->fUnicode,
-                                                            SkFontMgr::RefEmpty());  // no fallback
+        std::unique_ptr<SkShaper> shaper;
+#if defined(SK_SHAPER_HARFBUZZ_AVAILABLE)
+        shaper = SkShapers::HB::ShapeDontWrapOrReorder(fParagraph->fUnicode,
+                                                       SkFontMgr::RefEmpty());  // no fallback
+#elif defined(SK_SHAPER_CORETEXT_AVAILABLE)
+        shaper = SkShapers::CT::CoreText();
+#else
+        shaper = SkShapers::Primitive::PrimitiveText();
+#endif
         if (shaper == nullptr) {
             // For instance, loadICU does not work. We have to stop the process
             return false;
@@ -695,8 +707,13 @@ bool OneLineShaper::shape() {
                     LangIterator langIter(unresolvedText, blockSpan,
                                       fParagraph->paragraphStyle().getTextStyle());
                     SkShaper::TrivialBiDiRunIterator bidiIter(defaultBidiLevel, unresolvedText.size());
+#if defined(SK_SHAPER_HARFBUZZ_AVAILABLE)
                     auto scriptIter = SkShapers::HB::ScriptRunIterator(unresolvedText.data(),
                                                                        unresolvedText.size());
+#else
+                    auto scriptIter = std::make_unique<SkShaper::TrivialScriptRunIterator>(
+                            SkSetFourByteTag('l','a','t','n'), unresolvedText.size());
+#endif
                     fCurrentText = unresolvedRange;
 
                     // Map the block's features to subranges within the unresolved range.

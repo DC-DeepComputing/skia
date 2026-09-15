@@ -18,6 +18,12 @@
 #include "modules/skparagraph/src/TextLine.h"
 #include "modules/skparagraph/utils/TestFontCollection.h"
 #include "modules/skshaper/utils/FactoryHelpers.h"
+#if defined(SK_UNICODE_APPLE_IMPLEMENTATION)
+#include "modules/skunicode/include/SkUnicode_apple.h"
+#endif
+#if defined(SK_FONTMGR_CORETEXT_AVAILABLE)
+#include "include/ports/SkFontMgr_mac_ct.h"
+#endif
 #include "src/core/SkColorPriv.h"
 #include "src/core/SkOSFile.h"
 #include "src/core/SkRandom.h"
@@ -36,7 +42,10 @@ namespace {
 
 static sk_sp<SkUnicode> get_unicode() {
     auto factory = SkShapers::BestAvailable();
-    return sk_ref_sp<SkUnicode>(factory->getUnicode());
+    if (factory && factory->getUnicode()) {
+        return sk_ref_sp<SkUnicode>(factory->getUnicode());
+    }
+    return SkShapers::BestAvailableUnicode();
 }
 
 class ParagraphSlide_Base : public ClickHandlerSlide {
@@ -1912,7 +1921,7 @@ public:
                                                     line.offset().fX);
                 }
                 line.iterateThroughVisualRuns(true,
-                    [&](const Run* run, SkScalar runOffset, TextRange textRange, SkScalar* width) {
+                    [&](const Run* run, SkScalar runOffset, skia::textlayout::TextRange textRange, SkScalar* width) {
                     *width = line.measureTextInsideOneRun(textRange, run, runOffset, 0, true, TextLine::TextAdjustment::GlyphCluster).clip.width();
                     if (this->isVerbose()) {
                         SkDebugf("%zu[%zu: %zu) @%f + %f %s\n",
@@ -2672,6 +2681,7 @@ public:
       }
 
       sk_sp<FontCollection> font_collection = sk_make_sp<FontCollection>();
+      font_collection->setDefaultFontManager(ToolUtils::TestFontMgr());
       font_collection->setAssetFontManager(std::move(font_provider));
       font_collection->getParagraphCache()->turnOn(false);
 
@@ -4271,53 +4281,147 @@ public:
     void draw(SkCanvas* canvas) override {
         canvas->drawColor(SK_ColorWHITE);
         auto fontCollection = sk_make_sp<FontCollection>();
-        fontCollection->setDefaultFontManager(ToolUtils::TestFontMgr(), std::vector<SkString>());
+#if defined(SK_FONTMGR_CORETEXT_AVAILABLE)
+        fontCollection->setDefaultFontManager(SkFontMgr_New_CoreText(nullptr));
+#else
+        fontCollection->setDefaultFontManager(ToolUtils::TestFontMgr());
+#endif
         fontCollection->enableFontFallback();
-        TextStyle text_style;
-        text_style.setFontFamilies({SkString("")});
-        text_style.setFontSize(20);
-        text_style.setColor(SK_ColorBLACK);
-        ParagraphStyle paragraph_style;
-        paragraph_style.setTextStyle(text_style);
 
-        auto test = [&](const char* text) {
+        // 1. Draw Active Engine Banner at top
+        SkPaint bannerPaint;
+#if defined(SK_SHAPER_HARFBUZZ_AVAILABLE)
+        bannerPaint.setColor(SkColorSetRGB(30, 100, 220)); // Blue for HarfBuzz/ICU
+        const char* engineTitle = "ENGINE: Google Skia Standard (HarfBuzz + ICU)";
+        const char* engineSub = "Shaper: SkShapers::HB (HarfBuzz)  |  Unicode: SkUnicode_ICU";
+#else
+        bannerPaint.setColor(SkColorSetRGB(30, 160, 60)); // Green for Apple Native
+        const char* engineTitle = "ENGINE: Apple Native SkoreText (CoreText + SkUnicode_Apple)";
+        const char* engineSub = "Shaper: SkShapers::CT (CoreText)  |  Unicode: SkUnicode_Apple (CFString)";
+#endif
+        canvas->drawRect(SkRect::MakeXYWH(20, 15, this->size().width() - 40, 60), bannerPaint);
+
+        TextStyle titleStyle;
+        titleStyle.setColor(SK_ColorWHITE);
+        titleStyle.setFontSize(18);
+        ParagraphStyle titlePStyle;
+        titlePStyle.setTextStyle(titleStyle);
+        ParagraphBuilderImpl titleBuilder(titlePStyle, fontCollection, get_unicode());
+        titleBuilder.addText(engineTitle);
+        auto titlePara = titleBuilder.Build();
+        titlePara->layout(this->size().width() - 60);
+        titlePara->paint(canvas, 30, 22);
+
+        TextStyle subStyle;
+        subStyle.setColor(SkColorSetARGB(220, 255, 255, 255));
+        subStyle.setFontSize(13);
+        ParagraphStyle subPStyle;
+        subPStyle.setTextStyle(subStyle);
+        ParagraphBuilderImpl subBuilder(subPStyle, fontCollection, get_unicode());
+        subBuilder.addText(engineSub);
+        auto subPara = subBuilder.Build();
+        subPara->layout(this->size().width() - 60);
+        subPara->paint(canvas, 30, 48);
+
+        // 2. Body test rows
+        SkScalar yPos = 90;
+
+        auto drawSection = [&](const char* heading) {
+            TextStyle hStyle;
+            hStyle.setColor(SkColorSetRGB(100, 100, 100));
+            hStyle.setFontSize(13);
+            ParagraphStyle hpStyle;
+            hpStyle.setTextStyle(hStyle);
+            ParagraphBuilderImpl hBuilder(hpStyle, fontCollection, get_unicode());
+            hBuilder.addText(heading);
+            auto hPara = hBuilder.Build();
+            hPara->layout(this->size().width() - 60);
+            hPara->paint(canvas, 30, yPos);
+            yPos += 20;
+        };
+
+        auto testRow = [&](const char* fontFam, SkScalar fSize, const char* text, SkScalar wrapWidth = 0) {
+            TextStyle text_style;
+            if (fontFam && strlen(fontFam) > 0) {
+                text_style.setFontFamilies({SkString(fontFam)});
+            }
+            text_style.setFontSize(fSize);
+            text_style.setColor(SK_ColorBLACK);
+            ParagraphStyle paragraph_style;
+            paragraph_style.setTextStyle(text_style);
+
             ParagraphBuilderImpl builder(paragraph_style, fontCollection, get_unicode());
             builder.pushStyle(text_style);
             builder.addText(text);
             auto paragraph = builder.Build();
-            paragraph->layout(this->size().width());
-            paragraph->paint(canvas, 0, 0);
-            if ((false)) {
-                SkDebugf("Paragraph '%s'\n", text);
-                auto impl = static_cast<ParagraphImpl*>(paragraph.get());
-                for (auto& run: impl->runs()) {
-                    SkString ff;
-                    run.font().getTypeface()->getFamilyName(&ff);
-                    SkDebugf("'%s': [%zu:%zu)\n", ff.c_str(), run.textRange().start, run.textRange().end);
-                }
+            SkScalar layoutW = (wrapWidth > 0) ? wrapWidth : (this->size().width() - 60);
+            paragraph->layout(layoutW);
+
+            auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+            size_t totalGlyphs = 0;
+            for (auto& r : impl->runs()) {
+                totalGlyphs += r.size();
             }
+
+            // Draw alternating cluster boxes to reveal exact cluster mapping
+            size_t strLen = strlen(text);
+            const SkColor clusterColors[] = {
+                SkColorSetARGB(50, 255, 100, 100),
+                SkColorSetARGB(50, 100, 220, 100),
+                SkColorSetARGB(50, 100, 150, 255),
+                SkColorSetARGB(50, 255, 200, 80),
+                SkColorSetARGB(50, 220, 100, 255),
+                SkColorSetARGB(50, 80, 220, 220),
+            };
+            size_t colorIdx = 0;
+            for (size_t i = 0; i < strLen; ++i) {
+                auto boxes = paragraph->getRectsForRange(i, i + 1, RectHeightStyle::kTight, RectWidthStyle::kTight);
+                for (auto& tb : boxes) {
+                    SkPaint p;
+                    p.setColor(clusterColors[colorIdx % 6]);
+                    canvas->drawRect(SkRect::MakeXYWH(30 + tb.rect.fLeft, yPos + tb.rect.fTop,
+                                                      tb.rect.width(), tb.rect.height()), p);
+                }
+                colorIdx++;
+            }
+
+            // Draw outer bounding box
+            SkPaint boxPaint;
+            boxPaint.setStyle(SkPaint::kStroke_Style);
+            boxPaint.setColor(SkColorSetARGB(80, 0, 0, 0));
+            boxPaint.setStrokeWidth(1);
+            canvas->drawRect(SkRect::MakeXYWH(30, yPos, paragraph->getLongestLine(), paragraph->getHeight()), boxPaint);
+
+            // Paint paragraph
+            paragraph->paint(canvas, 30, yPos);
+
+            // Draw stats tag
+            SkPaint tagPaint;
+            tagPaint.setColor(SkColorSetRGB(80, 80, 80));
+            SkFont tagFont(ToolUtils::DefaultPortableTypeface(), 11);
+            SkString statStr = SkStringPrintf("  [Runs: %zu | Glyphs: %zu | W: %.1f]",
+                                              impl->runs().size(), totalGlyphs, paragraph->getLongestLine());
+            canvas->drawString(statStr, 35 + paragraph->getLongestLine(), yPos + fSize * 0.8f, tagFont, tagPaint);
+
+            yPos += paragraph->getHeight() + 15;
         };
-        test("2nd");
-        canvas->translate(0, 50);
-        test("99");
-        canvas->translate(0, 50);
-        test("999");
-        canvas->translate(0, 50);
-        /*
-        test("🆗");
-        canvas->translate(0, 50);
-        test("0️⃣");
-        canvas->translate(0, 50);
-        test("0️⃣🆗");
-        canvas->translate(0, 50);
-        test("0");
-        canvas->translate(0, 50);
-        test("0️");
-        canvas->translate(0, 50);
-        test("♻️");
-        canvas->translate(0, 50);
-        test("󠁢󠁳󠁣󠁴󠁿🏴󠁧󠁢󠁳󠁣󠁴󠁿♻️");
-        */
+
+        // Section A: AAT Calligraphy & Flourishes (Zapfino)
+        drawSection("1. Apple Advanced Typography (AAT) Contextual Ligatures (Font: Zapfino):");
+        testRow("Zapfino", 18, "Zapfino: The art of fine calligraphy and flourishes - Affirmation, Flower, Efficient");
+
+        // Section B: Complex Emoji Sequences & Modifiers
+        drawSection("2. Extended Grapheme Emoji Sequences & Modifiers (With Cluster Box Outlines):");
+        testRow("", 22, "👨‍👩‍👧‍👦 (Family ZWJ) | 👩🏽‍💻 (Skin Tone Modifier) | 0️⃣ (Keycap) | 🏴󠁧󠁢󠁳󠁣󠁴󠁿 (Flag) | ♻️ (VS16)");
+
+        // Section C: Thai / Japanese Dictionary Line Breaking
+        drawSection("3. Non-Spaced Script Line Breaking (Thai / Japanese CFStringTokenizer vs ICU):");
+        testRow("", 15, "ภาษาไทยภาษาไทยภาษาไทยภาษาไทยภาษาไทยภาษาไทยภาษาไทยภาษาไทย", 220);
+        testRow("", 15, "こんにちは世界今日の天気はとても良いです散歩に行きましょう", 220);
+
+        // Section D: Mixed Arabic & Digits BiDi
+        drawSection("4. Arabic RTL Contextual Joining & BiDi Numbers:");
+        testRow("", 20, "العربية 12345 فحص الاتصال والكتابة السريعة");
     }
 };
 
@@ -4440,6 +4544,111 @@ public:
 };
 
 }  // namespace
+
+namespace {
+
+class ParagraphSlideWrapper : public Slide {
+public:
+    ParagraphSlideWrapper(sk_sp<Slide> inner)
+        : fInner(std::move(inner))
+        , fWidth(800)
+        , fHeight(600) {
+        if (fInner) {
+            fName = fInner->getName();
+        }
+    }
+
+    SkISize getDimensions() const override { return fInner ? fInner->getDimensions() : SkISize::MakeEmpty(); }
+    void gpuTeardown() override { if (fInner) fInner->gpuTeardown(); }
+    void setSurfaceProps(SkSurfaceProps* props) override { if (fInner) fInner->setSurfaceProps(props); }
+    bool animate(double nanos) override { return fInner ? fInner->animate(nanos) : false; }
+    void load(SkScalar w, SkScalar h) override { fWidth = w; fHeight = h; if (fInner) fInner->load(w, h); }
+    void resize(SkScalar w, SkScalar h) override { fWidth = w; fHeight = h; if (fInner) fInner->resize(w, h); }
+    void unload() override { if (fInner) fInner->unload(); }
+    bool onChar(SkUnichar c) override { return fInner ? fInner->onChar(c) : false; }
+    bool onMouse(SkScalar x, SkScalar y, skui::InputState s, skui::ModifierKey m) override {
+        return fInner ? fInner->onMouse(x, y, s, m) : false;
+    }
+    bool onGetControls(SkMetaData* m) override { return fInner ? fInner->onGetControls(m) : false; }
+    void onSetControls(const SkMetaData& m) override { if (fInner) fInner->onSetControls(m); }
+
+    void draw(SkCanvas* canvas) override {
+        if (fInner) {
+            fInner->draw(canvas);
+        }
+        drawEngineHeader(canvas);
+    }
+
+private:
+    void drawEngineHeader(SkCanvas* canvas) {
+        const char* engineDesc = "";
+        SkColor dotColor = SkColorSetRGB(150, 150, 150);
+
+#if defined(SK_SHAPER_HARFBUZZ_AVAILABLE)
+    #if defined(SK_UNICODE_ICU_IMPLEMENTATION)
+        engineDesc = "SkParagraph: HarfBuzz + ICU";
+    #elif defined(SK_UNICODE_APPLE_IMPLEMENTATION)
+        engineDesc = "SkParagraph: HarfBuzz + SkUnicode_Apple";
+    #else
+        engineDesc = "SkParagraph: HarfBuzz";
+    #endif
+        dotColor = SkColorSetRGB(30, 110, 230); // Google Blue
+#elif defined(SK_SHAPER_CORETEXT_AVAILABLE)
+    #if defined(SK_UNICODE_APPLE_IMPLEMENTATION)
+        engineDesc = "SkParagraph: Apple CoreText + SkUnicode_Apple";
+    #else
+        engineDesc = "SkParagraph: Apple CoreText";
+    #endif
+        dotColor = SkColorSetRGB(35, 160, 70);  // Apple Green
+#else
+        engineDesc = "SkParagraph: Standard";
+        dotColor = SkColorSetRGB(150, 150, 150);
+#endif
+
+        SkFont font(ToolUtils::DefaultPortableTypeface(), 12);
+        SkScalar textWidth = font.measureText(engineDesc, strlen(engineDesc), SkTextEncoding::kUTF8);
+
+        SkScalar pillW = textWidth + 36;
+        SkScalar pillH = 26;
+        SkScalar pillX = (fWidth > 0 ? fWidth : 800) - pillW - 14;
+        SkScalar pillY = 12;
+
+        SkPaint bgPaint;
+        bgPaint.setAntiAlias(true);
+        bgPaint.setColor(SkColorSetARGB(230, 25, 30, 38));
+        canvas->drawRoundRect(SkRect::MakeXYWH(pillX, pillY, pillW, pillH), 6, 6, bgPaint);
+
+        SkPaint borderPaint;
+        borderPaint.setAntiAlias(true);
+        borderPaint.setStyle(SkPaint::kStroke_Style);
+        borderPaint.setStrokeWidth(1);
+        borderPaint.setColor(SkColorSetARGB(80, 255, 255, 255));
+        canvas->drawRoundRect(SkRect::MakeXYWH(pillX, pillY, pillW, pillH), 6, 6, borderPaint);
+
+        SkPaint dotPaint;
+        dotPaint.setAntiAlias(true);
+        dotPaint.setColor(dotColor);
+        canvas->drawCircle(pillX + 14, pillY + pillH / 2, 4.5f, dotPaint);
+
+        SkPaint textPaint;
+        textPaint.setAntiAlias(true);
+        textPaint.setColor(SK_ColorWHITE);
+        canvas->drawString(engineDesc, pillX + 24, pillY + pillH / 2 + 4.5f, font, textPaint);
+    }
+
+    sk_sp<Slide> fInner;
+    SkScalar fWidth;
+    SkScalar fHeight;
+};
+
+}  // namespace
+
+#undef DEF_SLIDE
+#define DEF_SLIDE(code) \
+    static Slide* SK_MACRO_APPEND_LINE(F_)() { \
+        return new ParagraphSlideWrapper(sk_sp<Slide>([&]() -> Slide* { code }())); \
+    } \
+    static SlideRegistry SK_MACRO_APPEND_LINE(R_)(SK_MACRO_APPEND_LINE(F_));
 
 //////////////////////////////////////////////////////////////////////////////
 DEF_SLIDE(return new ParagraphSlide1();)

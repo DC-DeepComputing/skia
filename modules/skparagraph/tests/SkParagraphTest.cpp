@@ -17,6 +17,7 @@
 #include "include/core/SkSpan.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
+#include "include/core/SkSurface.h"
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
 #include "include/encode/SkPngEncoder.h"
@@ -65,6 +66,10 @@
 
 #if defined(SK_UNICODE_ICU4X_IMPLEMENTATION)
 #include "modules/skunicode/include/SkUnicode_icu4x.h"
+#endif
+
+#if defined(SK_UNICODE_APPLE_IMPLEMENTATION)
+#include "modules/skunicode/include/SkUnicode_apple.h"
 #endif
 
 using namespace skia_private;
@@ -272,8 +277,16 @@ private:
 };
 
 static sk_sp<SkUnicode> get_unicode() {
+#if defined(SK_UNICODE_APPLE_IMPLEMENTATION)
+    if (auto unicode = SkUnicodes::Apple::Make()) {
+        return unicode;
+    }
+#endif
     auto factory = SkShapers::BestAvailable();
-    return sk_ref_sp<SkUnicode>(factory->getUnicode());
+    if (factory && factory->getUnicode()) {
+        return sk_ref_sp<SkUnicode>(factory->getUnicode());
+    }
+    return nullptr;
 }
 
 }  // namespace
@@ -8980,3 +8993,130 @@ UNIX_ONLY_TEST(SkParagraph_ICU4X_EmojiRuns, reporter) {
     SkUnicode_Emoji(SkUnicodes::ICU4X::Make(), reporter);
 }
 #endif
+
+#if defined(SK_UNICODE_APPLE_IMPLEMENTATION)
+DEF_TEST(SkParagraph_Apple_BasicLayout, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+
+    ParagraphStyle paragraph_style;
+    ParagraphBuilderImpl builder(paragraph_style, fontCollection, get_unicode());
+    TextStyle text_style;
+    text_style.setFontFamilies({SkString("Roboto")});
+    text_style.setFontSize(20);
+    text_style.setColor(SK_ColorBLACK);
+    builder.pushStyle(text_style);
+    const char* text = "Hello Apple SkoreText Paragraph!";
+    builder.addText(text, strlen(text));
+    builder.pop();
+
+    auto paragraph = builder.Build();
+    paragraph->layout(500);
+
+    REPORTER_ASSERT(reporter, paragraph->lineNumber() == 1);
+    REPORTER_ASSERT(reporter, paragraph->getMaxWidth() == 500);
+    REPORTER_ASSERT(reporter, paragraph->getHeight() > 0);
+    REPORTER_ASSERT(reporter, paragraph->getLongestLine() > 0);
+}
+
+DEF_TEST(SkParagraph_Apple_LineWrapping, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+
+    ParagraphStyle paragraph_style;
+    ParagraphBuilderImpl builder(paragraph_style, fontCollection, get_unicode());
+    TextStyle text_style;
+    text_style.setFontFamilies({SkString("Roboto")});
+    text_style.setFontSize(20);
+    text_style.setColor(SK_ColorBLACK);
+    builder.pushStyle(text_style);
+    const char* text = "First line that should definitely wrap into multiple lines when width is small.";
+    builder.addText(text, strlen(text));
+    builder.pop();
+
+    auto paragraph = builder.Build();
+    paragraph->layout(150);
+
+    REPORTER_ASSERT(reporter, paragraph->lineNumber() > 1);
+    REPORTER_ASSERT(reporter, paragraph->getHeight() > 20);
+}
+
+DEF_TEST(SkParagraph_Apple_GetRectsForRange, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+
+    ParagraphStyle paragraph_style;
+    ParagraphBuilderImpl builder(paragraph_style, fontCollection, get_unicode());
+    TextStyle text_style;
+    text_style.setFontFamilies({SkString("Roboto")});
+    text_style.setFontSize(20);
+    builder.pushStyle(text_style);
+    const char* text = "Selecting text range in paragraph";
+    builder.addText(text, strlen(text));
+    builder.pop();
+
+    auto paragraph = builder.Build();
+    paragraph->layout(500);
+
+    auto rects = paragraph->getRectsForRange(10, 20, RectHeightStyle::kTight, RectWidthStyle::kTight);
+    REPORTER_ASSERT(reporter, !rects.empty());
+    REPORTER_ASSERT(reporter, rects[0].rect.width() > 0);
+    REPORTER_ASSERT(reporter, rects[0].rect.height() > 0);
+}
+
+DEF_TEST(SkParagraph_Apple_ComplexBidi, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+
+    ParagraphStyle paragraph_style;
+    ParagraphBuilderImpl builder(paragraph_style, fontCollection, get_unicode());
+    TextStyle text_style;
+    text_style.setFontFamilies({SkString("Roboto")});
+    text_style.setFontSize(20);
+    builder.pushStyle(text_style);
+    const char* text = "English text with مرحبا بالعالم Arabic mixed in.";
+    builder.addText(text, strlen(text));
+    builder.pop();
+
+    auto paragraph = builder.Build();
+    paragraph->layout(600);
+
+    REPORTER_ASSERT(reporter, paragraph->lineNumber() >= 1);
+    REPORTER_ASSERT(reporter, paragraph->getHeight() > 0);
+}
+
+DEF_TEST(SkParagraph_Apple_RTL_Paragraph14, reporter) {
+    TextStyle text_style;
+    text_style.setFontFamilies({SkString("Ahem")});
+    text_style.setColor(SK_ColorBLACK);
+    text_style.setFontSize(25);
+    text_style.setDecoration((TextDecoration)(TextDecoration::kUnderline | TextDecoration::kOverline | TextDecoration::kLineThrough));
+    text_style.setDecorationColor(SK_ColorBLUE);
+    text_style.setDecorationStyle(TextDecorationStyle::kWavy);
+    text_style.setDecorationThicknessMultiplier(4.0f);
+    ParagraphStyle paragraph_style;
+    paragraph_style.setTextStyle(text_style);
+    paragraph_style.setTextDirection(TextDirection::kRtl);
+    auto fontCollection = sk_make_sp<TestFontCollection>(GetResourcePath("fonts").c_str(), false, true);
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+
+    ParagraphBuilderImpl builder(paragraph_style, fontCollection, get_unicode());
+    builder.pushStyle(text_style);
+    builder.addText("Hello, wor!\nabcd.");
+    auto paragraph = builder.Build();
+    paragraph->layout(300);
+
+    auto surf = SkSurfaces::Raster(SkImageInfo::MakeN32Premul(800, 600));
+    surf->getCanvas()->drawColor(SK_ColorWHITE);
+    paragraph->paint(surf->getCanvas(), 0, 0);
+
+    REPORTER_ASSERT(reporter, paragraph->lineNumber() == 2);
+}
+
+DEF_TEST(SkParagraph_Apple_EmojiRuns, reporter) {
+    SkUnicode_Emoji(SkUnicodes::Apple::Make(), reporter);
+}
+#endif
+
+
+

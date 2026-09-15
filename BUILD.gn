@@ -3262,6 +3262,19 @@ if (skia_enable_tools) {
       }
     }
 
+    if (skia_enable_skunicode) {
+      test_app("paragraph_perf") {
+        sources = [ "tools/paragraph_perf.cpp" ]
+        deps = [
+          ":skia",
+          ":tool_utils",
+          "modules/skparagraph",
+          "modules/skshaper",
+          "modules/skunicode",
+        ]
+      }
+    }
+
     if (is_linux || is_mac) {
       test_app("create_test_font") {
         sources = [ "tools/fonts/create_test_font.cpp" ]
