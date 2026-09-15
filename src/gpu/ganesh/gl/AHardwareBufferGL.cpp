@@ -286,9 +286,20 @@ GrBackendTexture MakeGLBackendTexture(GrDirectContext* dContext,
         return GrBackendTexture();
     }
 
+    // Import read-only source layers as GL_TEXTURE_EXTERNAL_OES so the sampler can read
+    // the AHardwareBuffer's native (often tiled/compressed) layout directly. As a plain
+    // GL_TEXTURE_2D the driver may detile it into a linear copy every frame, which on some
+    // GPUs raises GPU time and power. Output/renderable buffers stay GL_TEXTURE_2D (the
+    // isRenderable guard); already-external formats are left untouched.
+    GrBackendFormat effFormat = backendFormat;
+    if (!isRenderable && backendFormat.textureType() == GrTextureType::k2D) {
+        effFormat = GrBackendFormats::MakeGLExternal();
+    }
+
     GrBackendTexture tex =
             make_gl_backend_texture(dContext, hardwareBuffer, width, height, deleteProc,
-                                    updateProc, imageCtx, isProtectedContent, backendFormat);
+                                    updateProc, imageCtx, isProtectedContent, effFormat);
+
     // Retry if we can still fallback external texture target.
     //
     // Even when the format is known, an AHB can fail to be imported as a regular GL_TEXTURE_2D for
