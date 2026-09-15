@@ -77,6 +77,7 @@ var (
 		"rust",
 		"third_party/externals",
 		"toolchain",
+		"vpython.toml",
 	}
 )
 

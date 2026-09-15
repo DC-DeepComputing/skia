@@ -176,6 +176,7 @@ var (
 			"skia/infra/lottiecap",
 			"skia/tools/lottie-web-perf",
 			"skia/tools/lottiecap",
+			"skia/vpython.toml",
 		},
 		Excludes: []string{rbe.ExcludeGitDir},
 	}
@@ -502,6 +503,7 @@ func GenTasks(cfg *Config) {
 			"skia/infra/bots/run_recipe.py",
 			"skia/infra/canvaskit",
 			"skia/modules/canvaskit",
+			"skia/vpython.toml",
 		},
 		Excludes: []string{rbe.ExcludeGitDir},
 	})
@@ -513,6 +515,7 @@ func GenTasks(cfg *Config) {
 			"skia/.vpython3",
 			"skia/infra/bots/run_recipe.py",
 			"skia/tools/lottie-web-perf",
+			"skia/vpython.toml",
 		},
 		Excludes: []string{rbe.ExcludeGitDir},
 	})
@@ -524,6 +527,7 @@ func GenTasks(cfg *Config) {
 			"skia/infra/bots/run_recipe.py",
 			"skia/platform_tools/ios/bin",
 			"skia/resources",
+			"skia/vpython.toml",
 		},
 		Excludes: []string{rbe.ExcludeGitDir},
 	})
@@ -532,6 +536,7 @@ func GenTasks(cfg *Config) {
 		Paths: []string{
 			".vpython3",
 			"tools/perf-canvaskit-puppeteer",
+			"vpython.toml",
 		},
 		Excludes: []string{rbe.ExcludeGitDir},
 	})
@@ -545,6 +550,7 @@ func GenTasks(cfg *Config) {
 			"skia/infra/bots/recipe_modules",
 			"skia/infra/bots/recipes",
 			"skia/infra/bots/recipes.py",
+			"skia/vpython.toml",
 		},
 		Excludes: []string{rbe.ExcludeGitDir},
 	})
@@ -553,6 +559,7 @@ func GenTasks(cfg *Config) {
 		Paths: []string{
 			"skia/.vpython3",
 			"skia/infra/bots/run_recipe.py",
+			"skia/vpython.toml",
 		},
 		Excludes: []string{rbe.ExcludeGitDir},
 	})
@@ -562,6 +569,7 @@ func GenTasks(cfg *Config) {
 			"skia/.vpython3",
 			"skia/infra/bots/run_recipe.py",
 			"skia/tools/skottie-wasm-perf",
+			"skia/vpython.toml",
 		},
 		Excludes: []string{rbe.ExcludeGitDir},
 	})
@@ -600,6 +608,7 @@ func GenTasks(cfg *Config) {
 			"skia/infra/bots/run_recipe.py",
 			"skia/platform_tools/ios/bin",
 			"skia/resources",
+			"skia/vpython.toml",
 		},
 		Excludes: []string{rbe.ExcludeGitDir},
 	})
@@ -609,6 +618,7 @@ func GenTasks(cfg *Config) {
 			".vpython3",
 			"resources",
 			"tools/run-wasm-gm-tests",
+			"vpython.toml",
 		},
 		Excludes: []string{rbe.ExcludeGitDir},
 	})
@@ -622,6 +632,7 @@ func GenTasks(cfg *Config) {
 			"skia/infra/bots/assets/skp",
 			"skia/infra/bots/utils.py",
 			"skia/tools/skp",
+			"skia/vpython.toml",
 		},
 		Excludes: []string{rbe.ExcludeGitDir},
 	})
