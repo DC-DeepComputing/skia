@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5876923_720cec1a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-15T14:35:49Z",
+      "side": 1,
+      "message": "Two small nits, otherwise LGTM!",
+      "revId": "e23754181f6f84c2bce961de9e7be7e45efe0be6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f950bdf_35a7c2a9",
+        "filename": "tests/PathOpsQuadIntersectionTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 475,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-15T14:35:49Z",
+      "side": 1,
+      "message": "nit: could the two elements in the if section be indented to match the rest, also looks like two of the array elements is missing the explicit `QuadPts`, could that be added for consistency with the other elements",
+      "range": {
+        "startLine": 471,
+        "startChar": 0,
+        "endLine": 475,
+        "endChar": 36
+      },
+      "revId": "e23754181f6f84c2bce961de9e7be7e45efe0be6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68b33799_3bc0f74b",
+        "filename": "tests/ResourceAllocatorTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-15T14:35:49Z",
+      "side": 1,
+      "message": "nit: can bring this up next to ( in the above line.",
+      "range": {
+        "startLine": 305,
+        "startChar": 12,
+        "endLine": 305,
+        "endChar": 13
+      },
+      "revId": "e23754181f6f84c2bce961de9e7be7e45efe0be6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
