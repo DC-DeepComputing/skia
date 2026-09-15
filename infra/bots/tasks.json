@@ -75569,7 +75569,8 @@
         "skia/.vpython3",
         "skia/infra/bots/run_recipe.py",
         "skia/infra/canvaskit",
-        "skia/modules/canvaskit"
+        "skia/modules/canvaskit",
+        "skia/vpython.toml"
       ],
       "excludes": [
         "^(.*\\/)*\\.git(\\/.*)*$"
@@ -75649,7 +75650,8 @@
         "skia/tests",
         "skia/third_party",
         "skia/toolchain",
-        "skia/tools"
+        "skia/tools",
+        "skia/vpython.toml"
       ],
       "excludes": [
         "^(.*\\/)*\\.git(\\/.*)*$"
@@ -75665,7 +75667,8 @@
         "skia/infra/bots/run_recipe.py",
         "skia/infra/lottiecap",
         "skia/tools/lottie-web-perf",
-        "skia/tools/lottiecap"
+        "skia/tools/lottiecap",
+        "skia/vpython.toml"
       ],
       "excludes": [
         "^(.*\\/)*\\.git(\\/.*)*$"
@@ -75676,7 +75679,8 @@
       "paths": [
         "skia/.vpython3",
         "skia/infra/bots/run_recipe.py",
-        "skia/tools/lottie-web-perf"
+        "skia/tools/lottie-web-perf",
+        "skia/vpython.toml"
       ],
       "excludes": [
         "^(.*\\/)*\\.git(\\/.*)*$"
@@ -75689,7 +75693,8 @@
         "skia/infra/bots/assets",
         "skia/infra/bots/run_recipe.py",
         "skia/platform_tools/ios/bin",
-        "skia/resources"
+        "skia/resources",
+        "skia/vpython.toml"
       ],
       "excludes": [
         "^(.*\\/)*\\.git(\\/.*)*$"
@@ -75699,7 +75704,8 @@
       "root": "../skia",
       "paths": [
         ".vpython3",
-        "tools/perf-canvaskit-puppeteer"
+        "tools/perf-canvaskit-puppeteer",
+        "vpython.toml"
       ],
       "excludes": [
         "^(.*\\/)*\\.git(\\/.*)*$"
@@ -75714,7 +75720,8 @@
         "skia/infra/bots/README.recipes.md",
         "skia/infra/bots/recipe_modules",
         "skia/infra/bots/recipes",
-        "skia/infra/bots/recipes.py"
+        "skia/infra/bots/recipes.py",
+        "skia/vpython.toml"
       ],
       "excludes": [
         "^(.*\\/)*\\.git(\\/.*)*$"
@@ -75728,7 +75735,8 @@
         "skia/bin/fetch-sk",
         "skia/infra/bots/assets/skp",
         "skia/infra/bots/utils.py",
-        "skia/tools/skp"
+        "skia/tools/skp",
+        "skia/vpython.toml"
       ],
       "excludes": [
         "^(.*\\/)*\\.git(\\/.*)*$"
@@ -75738,7 +75746,8 @@
       "root": "..",
       "paths": [
         "skia/.vpython3",
-        "skia/infra/bots/run_recipe.py"
+        "skia/infra/bots/run_recipe.py",
+        "skia/vpython.toml"
       ],
       "excludes": [
         "^(.*\\/)*\\.git(\\/.*)*$"
@@ -75749,7 +75758,8 @@
       "paths": [
         "skia/.vpython3",
         "skia/infra/bots/run_recipe.py",
-        "skia/tools/skottie-wasm-perf"
+        "skia/tools/skottie-wasm-perf",
+        "skia/vpython.toml"
       ],
       "excludes": [
         "^(.*\\/)*\\.git(\\/.*)*$"
@@ -75788,7 +75798,8 @@
         "skia/infra/bots/assets",
         "skia/infra/bots/run_recipe.py",
         "skia/platform_tools/ios/bin",
-        "skia/resources"
+        "skia/resources",
+        "skia/vpython.toml"
       ],
       "excludes": [
         "^(.*\\/)*\\.git(\\/.*)*$"
@@ -75799,7 +75810,8 @@
       "paths": [
         ".vpython3",
         "resources",
-        "tools/run-wasm-gm-tests"
+        "tools/run-wasm-gm-tests",
+        "vpython.toml"
       ],
       "excludes": [
         "^(.*\\/)*\\.git(\\/.*)*$"
