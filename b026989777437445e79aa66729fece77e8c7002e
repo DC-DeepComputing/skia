@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4dcab22d_494a826a",
+        "filename": "src/capture/SkCaptureManager.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-09-15T14:47:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4f0c1575_868ebff4",
+      "range": {
+        "startLine": 34,
+        "startChar": 7,
+        "endLine": 36,
+        "endChar": 11
+      },
+      "revId": "b026989777437445e79aa66729fece77e8c7002e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6ceeb68b_e9b9b232",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-09-15T00:16:14Z",
       "side": 1,
       "message": "nit: reduce indentation with \n\nif (!fCachedCanvas) return;",
+      "range": {
+        "startLine": 43,
+        "startChar": 8,
+        "endLine": 43,
+        "endChar": 18
+      },
+      "revId": "b026989777437445e79aa66729fece77e8c7002e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ec08430_55364a39",
+        "filename": "src/image/SkSurface_Base.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-09-15T14:47:26Z",
+      "side": 1,
+      "message": "I think in this case it\u0027s actually healthier to keep the fCachedCanvas references in the conditional. There might be code later on in the destructor that we want to run even if there is no cached canvas.",
+      "parentUuid": "6ceeb68b_e9b9b232",
       "range": {
         "startLine": 43,
         "startChar": 8,
