@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fbbf5b78_a15de0ce",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 2023,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-15T14:27:22Z",
+      "side": 1,
+      "message": "Decided to pass both the local sigma and the device sigma, as well as if the device sigma is actually the local sigma, then we only need to do the matrix similarity check for algorithms that rely on device sigma if it is not the same as the local sigma.\n\nAlso made a new function for transforming the local sigma, which makes the local sigma follow the same clamping logic as the device sigma so we get similar behavior when device sigma is large due to high scale factors in the `localToDevice` matrix.",
+      "parentUuid": "3cebdab0_aa9f6179",
+      "range": {
+        "startLine": 2023,
+        "startChar": 0,
+        "endLine": 2023,
+        "endChar": 90
+      },
+      "revId": "cffb4710bf3e1b3f69da0d2d6555f0244f9a3147",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "af036a4c_23fbdafe",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bdb459bb_ca1c75a1",
+        "filename": "src/gpu/graphite/render/AnalyticRRectBlurRenderStep.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-15T14:27:22Z",
+      "side": 1,
+      "message": "Yes it is, I changed this to just be `position` which is now defined in the vertex function for this renderstep.",
+      "parentUuid": "af036a4c_23fbdafe",
+      "range": {
+        "startLine": 62,
+        "startChar": 0,
+        "endLine": 62,
+        "endChar": 76
+      },
+      "revId": "cffb4710bf3e1b3f69da0d2d6555f0244f9a3147",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eff0b038_dbc26cbf",
@@ -60,6 +108,30 @@
       "writtenOn": "2026-08-24T14:44:23Z",
       "side": 1,
       "message": "Eventually, some of this could be simplified by relying on functions like `makeOutset`",
+      "range": {
+        "startLine": 93,
+        "startChar": 0,
+        "endLine": 96,
+        "endChar": 40
+      },
+      "revId": "cffb4710bf3e1b3f69da0d2d6555f0244f9a3147",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e81aba67_ca5b39e1",
+        "filename": "src/gpu/graphite/render/AnalyticRRectBlurRenderStep.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-15T14:27:22Z",
+      "side": 1,
+      "message": "Changed the vertex code so this isn\u0027t applicable now.",
+      "parentUuid": "eff0b038_dbc26cbf",
       "range": {
         "startLine": 93,
         "startChar": 0,
@@ -117,6 +189,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ec541ad_e6210025",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 17
+      },
+      "lineNbr": 1869,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-15T14:27:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bf1b1d10_c48871b5",
+      "range": {
+        "startLine": 1869,
+        "startChar": 43,
+        "endLine": 1869,
+        "endChar": 46
+      },
+      "revId": "cffb4710bf3e1b3f69da0d2d6555f0244f9a3147",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a240a653_9b9a8844",
@@ -130,6 +226,30 @@
       "writtenOn": "2026-08-24T14:44:23Z",
       "side": 1,
       "message": "What could be causing the visual shift is a mismatch with how the LUT is defined and how we\u0027re accessing it. If it is 256 values, it probably stored x\u003d0 into texel 0 but that is sampled as float texel coord \u003d 0.5.  The final value at x\u003d1 into texel 255 is sampled as 255.5.  If we\u0027re not adjusting the normalization range to fit that here, or in how we filled out the table, then it could bias the lookup.",
+      "range": {
+        "startLine": 1870,
+        "startChar": 33,
+        "endLine": 1870,
+        "endChar": 38
+      },
+      "revId": "cffb4710bf3e1b3f69da0d2d6555f0244f9a3147",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "52fa2768_cb514ea0",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 17
+      },
+      "lineNbr": 1870,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-15T14:27:22Z",
+      "side": 1,
+      "message": "When we generate our CDF LUT, we do store the value of x\u003d0.5 into x\u003d0, so I believe that should be correct when we then sample with x\u003d0.5, we are getting the expected value. This should also be the case with the last pixel where we sample 255.5, which gets clamped to 255, but that is also correct since we stored the value of x\u003d255.5 in pixel 255.",
+      "parentUuid": "a240a653_9b9a8844",
       "range": {
         "startLine": 1870,
         "startChar": 33,
@@ -165,6 +285,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "10b41458_d37f2848",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 17
+      },
+      "lineNbr": 2036,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-15T14:27:22Z",
+      "side": 1,
+      "message": "No we only need to check one component, with how the vertices are written, if one `flags` component has a value 0.5 (`kInside` in `analytic_rrect_blur_vertex_fn`) then all the other components of `flags` also has 0.5.",
+      "parentUuid": "5ad03b89_3d51f890",
+      "range": {
+        "startLine": 2036,
+        "startChar": 8,
+        "endLine": 2036,
+        "endChar": 32
+      },
+      "revId": "cffb4710bf3e1b3f69da0d2d6555f0244f9a3147",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fac1e227_a890f78b",
         "filename": "src/sksl/sksl_graphite_frag.sksl",
         "patchSetId": 17
@@ -176,6 +320,30 @@
       "writtenOn": "2026-08-24T14:44:23Z",
       "side": 1,
       "message": "`coords` is in the local coordinate space here (which is a good thing, since that\u0027s what gives us the transform flexibility). But it means that a lot of the comments above in the eval functions that discuss pixels are misleading.",
+      "range": {
+        "startLine": 2040,
+        "startChar": 0,
+        "endLine": 2040,
+        "endChar": 24
+      },
+      "revId": "cffb4710bf3e1b3f69da0d2d6555f0244f9a3147",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4bbaafe1_d1aaedfa",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 17
+      },
+      "lineNbr": 2040,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-15T14:27:22Z",
+      "side": 1,
+      "message": "Changed the instances of `pixel` in the comments to refer to `coordinate` to keep it generalized since we are talking about the local coordinate space.",
+      "parentUuid": "fac1e227_a890f78b",
       "range": {
         "startLine": 2040,
         "startChar": 0,

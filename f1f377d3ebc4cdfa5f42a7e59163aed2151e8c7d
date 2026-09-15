@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "94753940_dea5e001",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-15T14:27:22Z",
+      "side": 1,
+      "message": "Removed the old globals and added ifdefs for the new blur.",
+      "parentUuid": "5efeffa7_7bd9e240",
+      "revId": "f1f377d3ebc4cdfa5f42a7e59163aed2151e8c7d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ffa1559d_9de66066",
@@ -55,6 +73,30 @@
       "side": 1,
       "message": "What we can hopefully do is have one pre-defined vertex/index array that we can then use with instanced rendering, and lean on the vertex shader to place all the vertices exactly.",
       "parentUuid": "ffa1559d_9de66066",
+      "range": {
+        "startLine": 155,
+        "startChar": 4,
+        "endLine": 156,
+        "endChar": 34
+      },
+      "revId": "f1f377d3ebc4cdfa5f42a7e59163aed2151e8c7d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5d1b8da_61da5d44",
+        "filename": "src/gpu/graphite/render/AnalyticRRectBlurRenderStep.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-15T14:27:22Z",
+      "side": 1,
+      "message": "Done, added the vertex sksl function for this renderstep and comments detailing how we create our vertices and the placement for them.",
+      "parentUuid": "8aa3b413_b05658c7",
       "range": {
         "startLine": 155,
         "startChar": 4,

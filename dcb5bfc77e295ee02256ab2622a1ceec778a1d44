@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "477ef4ed_6ae8d5de",
+        "filename": "tests/graphite/VerticesPaddingTest.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-15T14:27:22Z",
+      "side": 0,
+      "message": "Seems like this is checked down below for the alignment, not sure why the number of copy ranges themselves needs to be a multiple of 4.",
+      "range": {
+        "startLine": 146,
+        "startChar": 4,
+        "endLine": 151,
+        "endChar": 5
+      },
+      "revId": "dcb5bfc77e295ee02256ab2622a1ceec778a1d44",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
