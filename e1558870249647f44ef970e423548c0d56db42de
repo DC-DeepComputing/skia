@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8bceeb25_a4bab865",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4597277
+      },
+      "writtenOn": "2026-09-15T06:40:50Z",
+      "side": 1,
+      "message": "hi @egdaniel@google.com @michaelludwig@google.com @nicolettep@google.com @robertphillips@google.com\n\nthanks a lot for taking the time to look at this CL, we\u0027d really appreciate\nyour review and feedback.\n\nCommit dcc71ab329 switched several common AHB formats (RGBA8, RGBA16F, RGB565,\nRGB10_A2, RGB8, R8) from GL_TEXTURE_EXTERNAL_OES to plain GL_TEXTURE_2D.\n\nOn GPUs without an efficient linear sampling path, binding a tiled/compressed\nAHB as GL_TEXTURE_2D forces the driver to detile it into a linear copy every\nframe. In SurfaceFlinger client composition (every source layer sampled per\nframe) we measured ~28% higher GPU power on a low-end board; this CL restores\nthe previous level.\n\nThe fix is intentionally narrow: downgrade to external only for read-only layers\n(isRenderable \u003d\u003d false), and only for formats currently mapped to k2D so\nalready-external formats (e.g. RGBA10x6 from dcc71ab329) are untouched.\nRenderable/output buffers keep GL_TEXTURE_2D.\n\nIt is also complementary to 76a371627c: that CL is a reactive fallback (retry\nexternal only if 2D import fails); this one proactively picks external for\nread-only layers to avoid the per-frame detile even when 2D would succeed.\nRenderable layers are unchanged, and the fallback still tests the original\nbackendFormat, so the two don\u0027t interfere.",
+      "revId": "e1558870249647f44ef970e423548c0d56db42de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
