@@ -481,4 +481,14 @@ Task::Status UploadTask::addCommands(Context* context,
     }
 }
 
+Protected UploadTask::isProtected() const {
+    for (const UploadInstance& instance: fInstances) {
+        if (instance.isValid() && instance.fTextureProxy &&
+            instance.fTextureProxy->isProtected() == Protected::kYes) {
+            return Protected::kYes;
+        }
+    }
+    return Protected::kNo;
+}
+
 } // namespace skgpu::graphite

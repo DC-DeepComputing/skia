@@ -156,7 +156,11 @@ CopyTextureToTextureTask::CopyTextureToTextureTask(sk_sp<TextureProxy> srcProxy,
         , fSrcRect(srcRect)
         , fDstProxy(std::move(dstProxy))
         , fDstPoint(dstPoint)
-        , fDstLevel(dstLevel) {}
+        , fDstLevel(dstLevel) {
+    // Ensure we never copy from a protected src to an unprotected dst.
+    SkASSERT(fSrcProxy->isProtected() == Protected::kNo ||
+             fDstProxy->isProtected() == Protected::kYes);
+}
 
 CopyTextureToTextureTask::~CopyTextureToTextureTask() {}
 
@@ -207,6 +211,16 @@ Task::Status CopyTextureToTextureTask::addCommands(Context*,
     } else {
         return Status::kFail;
     }
+}
+
+Protected CopyTextureToTextureTask::isProtected() const {
+    if (fDstProxy && fDstProxy->isProtected() == Protected::kYes) {
+        return Protected::kYes;
+    }
+    if (fSrcProxy && fSrcProxy->isProtected() == Protected::kYes) {
+        return Protected::kYes;
+    }
+    return Protected::kNo;
 }
 
 } // namespace skgpu::graphite
