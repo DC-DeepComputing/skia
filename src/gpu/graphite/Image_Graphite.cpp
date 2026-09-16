@@ -122,7 +122,7 @@ sk_sp<Image> Image::Copy(Recorder* recorder,
             backingFit == SkBackingFit::kApprox ? GetApproxSize(subset.size()) : subset.size(),
             textureInfo,
             budgeted,
-            label);
+            TextureUsageFlags::kDstCopy);
     if (!dst) {
         return nullptr;
     }

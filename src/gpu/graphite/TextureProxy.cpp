@@ -18,16 +18,17 @@
 #include "src/gpu/graphite/TextureUtils.h"
 
 namespace skgpu::graphite {
-
 TextureProxy::TextureProxy(SkISize dimensions,
                            const TextureInfo& info,
                            skgpu::Budgeted budgeted,
+                           SkEnumBitMask<TextureUsageFlags> usageFlags,
                            std::string_view label)
         : SkPixelStorage(SkPixelStorage::Type::kTextureProxy)
         , fDimensions(dimensions)
         , fInfo(info)
         , fBudgeted(budgeted)
         , fVolatile(Volatile::kNo)
+        , fTextureUsages(usageFlags)
         , fLabel(label) {
     SkASSERT(fInfo.isValid());
 }
@@ -38,6 +39,7 @@ TextureProxy::TextureProxy(sk_sp<Texture> texture)
         , fInfo(texture->textureInfo())
         , fBudgeted(texture->budgeted())
         , fVolatile(Volatile::kNo)
+        , fTextureUsages(texture->textureUsages())
         , fLabel(texture->getLabel())
         , fTexture(std::move(texture)) {
     SkASSERT(fInfo.isValid());
@@ -96,7 +98,7 @@ bool TextureProxy::instantiate(ResourceProvider* resourceProvider) {
     // TODO(389908374): Once all tasks use the ScratchResourceManager, this can be updated to just
     // finding and creating a non-shareable AND non-budgeted texture.
     fTexture = resourceProvider->findOrCreateNonShareableTexture(
-            fDimensions, fInfo, fLabel, fBudgeted);
+            fDimensions, fInfo, fBudgeted, fLabel, fTextureUsages);
     if (!fTexture) {
         return false;
     }
@@ -136,7 +138,8 @@ bool TextureProxy::InstantiateIfNotLazy(ScratchResourceManager* scratchManager,
 
     textureProxy->fTexture = scratchManager->getScratchTexture(textureProxy->dimensions(),
                                                                textureProxy->textureInfo(),
-                                                               textureProxy->fLabel);
+                                                               textureProxy->textureUsages(),
+                                                               textureProxy->label());
     if (!textureProxy->fTexture) {
         return false;
     }
@@ -172,12 +175,13 @@ sk_sp<TextureProxy> TextureProxy::Make(const Caps* caps,
                                        SkISize dimensions,
                                        const TextureInfo& textureInfo,
                                        skgpu::Budgeted budgeted,
+                                       SkEnumBitMask<TextureUsageFlags> usages,
                                        std::string_view label) {
     if (!texture_info_and_size_are_valid(dimensions, textureInfo, caps->maxTextureSize())) {
         return nullptr;
     }
 
-    sk_sp<TextureProxy> proxy {new TextureProxy(dimensions, textureInfo, budgeted, label)};
+    sk_sp<TextureProxy> proxy {new TextureProxy(dimensions, textureInfo, budgeted, usages, label)};
     if (budgeted == Budgeted::kNo) {
         // Instantiate immediately to avoid races later on if the client starts to use the wrapping
         // object on multiple threads.

@@ -565,6 +565,7 @@ sk_sp<SkImage> TextureFromYUVAPixmaps(Recorder* recorder,
     }
 
     std::string labelStr(label);
+    // TODO: Utilize TextureUsageFlags
     if (labelStr.empty()) {
         labelStr = "YUVRasterBitmapPlane";
     } else {

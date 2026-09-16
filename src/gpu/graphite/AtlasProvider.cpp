@@ -87,6 +87,7 @@ sk_sp<TextureProxy> AtlasProvider::getAtlasTexture(Recorder* recorder,
                                                    SkISize::Make((int32_t)width, (int32_t)height),
                                                    textureInfo,
                                                    Budgeted::kYes,
+                                                   TextureUsageFlags::kNone, // TODO - flag?
                                                    "AtlasProviderTexture");
     if (!proxy) {
         return nullptr;

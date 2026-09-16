@@ -163,7 +163,8 @@ sk_sp<Texture> VulkanTexture::Make(const VulkanSharedContext* sharedContext,
                                    SkISize dimensions,
                                    const TextureInfo& info,
                                    sk_sp<VulkanYcbcrConversion> ycbcrConversion,
-                                   std::string_view label) {
+                                   std::string_view label,
+                                   SkEnumBitMask<TextureUsageFlags> usages) {
     CreatedImageInfo imageInfo;
     if (!MakeVkImage(sharedContext, dimensions, info, &imageInfo)) {
         return nullptr;
@@ -177,7 +178,8 @@ sk_sp<Texture> VulkanTexture::Make(const VulkanSharedContext* sharedContext,
                                             imageInfo.fMemoryAlloc,
                                             Ownership::kOwned,
                                             std::move(ycbcrConversion),
-                                            label));
+                                            label,
+                                            usages));
 }
 
 sk_sp<Texture> VulkanTexture::MakeWrapped(const VulkanSharedContext* sharedContext,
@@ -187,7 +189,8 @@ sk_sp<Texture> VulkanTexture::MakeWrapped(const VulkanSharedContext* sharedConte
                                           VkImage image,
                                           const VulkanAlloc& alloc,
                                           sk_sp<VulkanYcbcrConversion> ycbcrConversion,
-                                          std::string_view label) {
+                                          std::string_view label,
+                                          SkEnumBitMask<TextureUsageFlags> usages) {
     return sk_sp<Texture>(new VulkanTexture(sharedContext,
                                             dimensions,
                                             info,
@@ -196,7 +199,8 @@ sk_sp<Texture> VulkanTexture::MakeWrapped(const VulkanSharedContext* sharedConte
                                             alloc,
                                             Ownership::kWrapped,
                                             std::move(ycbcrConversion),
-                                            label));
+                                            label,
+                                            usages));
 }
 
 VulkanTexture::~VulkanTexture() {}
@@ -324,14 +328,16 @@ VulkanTexture::VulkanTexture(const VulkanSharedContext* sharedContext,
                              const VulkanAlloc& alloc,
                              Ownership ownership,
                              sk_sp<VulkanYcbcrConversion> ycbcrConversion,
-                             std::string_view label)
+                             std::string_view label,
+                             SkEnumBitMask<TextureUsageFlags> usages)
         : Texture(sharedContext,
                   dimensions,
                   info,
                   uses_lazy_memory(alloc),
                   std::move(mutableState),
                   ownership,
-                  label)
+                  label,
+                  usages)
         , fImage(image)
         , fMemoryAlloc(alloc)
         , fYcbcrConversion(std::move(ycbcrConversion)) {
