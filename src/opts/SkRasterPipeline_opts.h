@@ -5878,8 +5878,35 @@ SI I32 min_intr(I32 x, I32 y) { return min(x, y); }
 SI U16 max_intr(U16 x, U16 y) { return max(x, y); }
 SI U16 min_intr(U16 x, U16 y) { return min(x, y); }
 #endif // defined(SKRP_CPU_SSE41) || defined(SKRP_CPU_AVX)
+#elif defined(SKRP_CPU_NEON)
+SI F max_intr(F x, F y) {
+    float32x4_t xl, xh, yl, yh;
+    split(x, &xl, &xh);
+    split(y, &yl, &yh);
+    return join<F>(vmaxq_f32(xl, yl), vmaxq_f32(xh, yh));
+}
+SI F min_intr(F x, F y) {
+    float32x4_t xl, xh, yl, yh;
+    split(x, &xl, &xh);
+    split(y, &yl, &yh);
+    return join<F>(vminq_f32(xl, yl), vminq_f32(xh, yh));
+}
+SI I32 max_intr(I32 x, I32 y) {
+    int32x4_t xl, xh, yl, yh;
+    split(x, &xl, &xh);
+    split(y, &yl, &yh);
+    return join<I32>(vmaxq_s32(xl, yl), vmaxq_s32(xh, yh));
+}
+SI I32 min_intr(I32 x, I32 y) {
+    int32x4_t xl, xh, yl, yh;
+    split(x, &xl, &xh);
+    split(y, &yl, &yh);
+    return join<I32>(vminq_s32(xl, yl), vminq_s32(xh, yh));
+}
+SI U16 max_intr(U16 x, U16 y) { return vmaxq_u16(x, y); }
+SI U16 min_intr(U16 x, U16 y) { return vminq_u16(x, y); }
 #else
-// TODO(kjlubick) make sure NEON and other architectures are handling this well
+// TODO(kjlubick) make sure other architectures are handling this well
 SI F   max_intr(F x, F y) { return max(x, y); }
 SI F   min_intr(F x, F y) { return min(x, y); }
 SI I32 max_intr(I32 x, I32 y) { return max(x, y); }
@@ -7155,30 +7182,55 @@ LOWP_STAGE_GP(bilerp_clamp_8888, const SkRasterPipelineContexts::GatherCtx* ctx)
         return v2 >> 1;
     };
 
-    const uint32_t* ptr;
-    U32 ix = ix_and_ptr(&ptr, ctx, sx, sy);
+    SkASSERT(ctx->roundDownAtInteger == 0);
+    const uint32_t* ptr = (const uint32_t*)ctx->pixels;
+    const I32 w = I32_(ctx->width - 1);
+    U32 ax0 = cast<U32>(min_intr(max_intr(0, sx    ), w)),
+        ax1 = cast<U32>(min_intr(max_intr(0, sx + 1), w));
+
     U16 leftR, leftG, leftB, leftA;
-    from_8888(gather_unaligned<U32>(ptr, ix), &leftR,&leftG,&leftB,&leftA);
-
-    ix = ix_and_ptr(&ptr, ctx, sx+1, sy);
     U16 rightR, rightG, rightB, rightA;
-    from_8888(gather_unaligned<U32>(ptr, ix), &rightR,&rightG,&rightB,&rightA);
+    U16 topR, topG, topB, topA;
+    U16 bottomR, bottomG, bottomB, bottomA;
 
-    U16 topR = lerpX(leftR, rightR),
-        topG = lerpX(leftG, rightG),
-        topB = lerpX(leftB, rightB),
+    if (qy[0] == qy[N - 1]) {
+        int sy0 = sy[0];
+        int h = ctx->height - 1;
+        const uint32_t* row0 = ptr + std::min(std::max(0, sy0    ), h) * ctx->stride;
+        const uint32_t* row1 = ptr + std::min(std::max(0, sy0 + 1), h) * ctx->stride;
+
+        from_8888(gather_unaligned<U32>(row0, ax0), &leftR,&leftG,&leftB,&leftA);
+        from_8888(gather_unaligned<U32>(row0, ax1), &rightR,&rightG,&rightB,&rightA);
+        topR = lerpX(leftR, rightR);
+        topG = lerpX(leftG, rightG);
+        topB = lerpX(leftB, rightB);
         topA = lerpX(leftA, rightA);
 
-    ix = ix_and_ptr(&ptr, ctx, sx, sy+1);
-    from_8888(gather_unaligned<U32>(ptr, ix), &leftR,&leftG,&leftB,&leftA);
-
-    ix = ix_and_ptr(&ptr, ctx, sx+1, sy+1);
-    from_8888(gather_unaligned<U32>(ptr, ix), &rightR,&rightG,&rightB,&rightA);
-
-    U16 bottomR = lerpX(leftR, rightR),
-        bottomG = lerpX(leftG, rightG),
-        bottomB = lerpX(leftB, rightB),
+        from_8888(gather_unaligned<U32>(row1, ax0), &leftR,&leftG,&leftB,&leftA);
+        from_8888(gather_unaligned<U32>(row1, ax1), &rightR,&rightG,&rightB,&rightA);
+        bottomR = lerpX(leftR, rightR);
+        bottomG = lerpX(leftG, rightG);
+        bottomB = lerpX(leftB, rightB);
         bottomA = lerpX(leftA, rightA);
+    } else {
+        const I32 h = I32_(ctx->height - 1);
+        U32 ay0 = cast<U32>(min_intr(max_intr(0, sy    ), h)) * ctx->stride,
+            ay1 = cast<U32>(min_intr(max_intr(0, sy + 1), h)) * ctx->stride;
+
+        from_8888(gather_unaligned<U32>(ptr, ay0 + ax0), &leftR,&leftG,&leftB,&leftA);
+        from_8888(gather_unaligned<U32>(ptr, ay0 + ax1), &rightR,&rightG,&rightB,&rightA);
+        topR = lerpX(leftR, rightR);
+        topG = lerpX(leftG, rightG);
+        topB = lerpX(leftB, rightB);
+        topA = lerpX(leftA, rightA);
+
+        from_8888(gather_unaligned<U32>(ptr, ay1 + ax0), &leftR,&leftG,&leftB,&leftA);
+        from_8888(gather_unaligned<U32>(ptr, ay1 + ax1), &rightR,&rightG,&rightB,&rightA);
+        bottomR = lerpX(leftR, rightR);
+        bottomG = lerpX(leftG, rightG);
+        bottomB = lerpX(leftB, rightB);
+        bottomA = lerpX(leftA, rightA);
+    }
 
     // lerpY plays the same mathematical tricks as lerpX, but the final divide is by 256 resulting
     // in a value on [0, 255].
