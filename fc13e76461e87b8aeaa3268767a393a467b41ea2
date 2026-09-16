@@ -49,6 +49,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c9a73f82_aa01b5f4",
+        "filename": "src/gpu/graphite/StorageContext.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-16T18:53:40Z",
+      "side": 1,
+      "message": "Agree with 1, but not sure if I\u0027m missing something about 2 or 3. The reasoning behind the intermediate storage is that we don\u0027t know the buffer size upfront, otherwise we would need to optimistically allocate a buffer. (As you mention, the current setup also makes alignment convenient.)\n\nI guess this could be made similar to draw writer, but that would require multi buffer/ multi texture handling.",
+      "parentUuid": "b54e7d4d_ab9040ba",
+      "range": {
+        "startLine": 252,
+        "startChar": 4,
+        "endLine": 263,
+        "endChar": 0
+      },
+      "revId": "fc13e76461e87b8aeaa3268767a393a467b41ea2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3c0700fd_d870ad33",
         "filename": "src/gpu/graphite/StorageContext.h",
         "patchSetId": 1
