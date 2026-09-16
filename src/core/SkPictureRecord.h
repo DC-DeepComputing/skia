@@ -273,7 +273,7 @@ private:
     skia_private::TArray<SkPaint>  fPaints;
 
     struct PathHash {
-        uint32_t operator()(const SkPath& p) { return p.getGenerationID(); }
+        uint32_t operator()(const SkPath& p) { return SkGoodHash()(p.getGenerationID()); }
     };
     skia_private::THashMap<SkPath, int, PathHash> fPaths;
 
