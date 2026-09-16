@@ -505,7 +505,7 @@ SkSL::NativeShader TransformSPIRV(const SkSL::NativeShader& spirv,
     SpirvTransformer transformer(spirv.fBinary, options, &result.fBinary);
     transformer.transform();
 
-#ifdef SK_DEBUG
+#if defined(SK_DEBUG) && defined(GPU_TEST_UTILS)
     // Validate the SPIR-V after performing any transformations. This is rather costly, so only
     // do this on debug builds.
     static SkSL::Compiler compiler;
