@@ -49,11 +49,16 @@ public:
 
     using ScratchResourceSet = skia_private::THashSet<const Resource*>;
     // Find a resource that matches a key. If Shareable == kScratch, then `unavailable` must be
-    // non-null and is used to filter the scratch resources that can fulfill this request.
-    Resource* findAndRefResource(const GraphiteResourceKey& key,
-                                 Budgeted, Shareable,
-                                 std::string_view label = {},
-                                 const ScratchResourceSet* unavailable = nullptr);
+    // non-null and is used to filter the scratch resources that can fulfill this request. Texture
+    // resources are the only kind of Resource which should pass in any usage flags other than
+    // TextureUsageFlags::kNone.
+    Resource* findAndRefResource(
+            const GraphiteResourceKey& key,
+            Budgeted,
+            Shareable,
+            SkEnumBitMask<TextureUsageFlags> = TextureUsageFlags::kNone,
+            std::string_view label = "", // TODO - preference b/w this and {} ?
+            const ScratchResourceSet* unavailable = nullptr);
 
     // Purge resources not used since the passed point in time. Resources that have a gpu memory
     // size of zero will not be purged.

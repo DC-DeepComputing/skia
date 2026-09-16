@@ -9,6 +9,7 @@
 #define skgpu_graphite_Resource_DEFINED
 
 #include "include/gpu/GpuTypes.h"
+#include "include/private/SkEnumBitMask.h"
 #include "include/private/SkMutex.h"
 #include "src/gpu/GpuTypesPriv.h"
 #include "src/gpu/graphite/GraphiteResourceKey.h"
@@ -29,6 +30,7 @@ class GlobalCache;
 class ResourceCache;
 class SharedContext;
 class Texture;
+enum class TextureUsageFlags : uint32_t;
 
 /**
  * Base class for objects that can be kept in the ResourceCache and created or fetched by a
@@ -309,9 +311,10 @@ protected:
     //      A) during resource creation,
     //      B) when returning a non-shareable resource from the cache, or
     //      C) by the Context thread when updating scratch resource labels upon Recording insertion.
-    void setLabel(std::string_view label) {
+    void setLabel(std::string_view label,
+                  SkEnumBitMask<TextureUsageFlags> usages = TextureUsageFlags::kNone) {
         std::optional<std::string> updatedLabel;
-        updatedLabel = this->onSetLabel(label);
+        updatedLabel = this->onSetLabel(label, usages);
 
         if (updatedLabel.has_value()) {
             fLabel = updatedLabel.value();
@@ -321,9 +324,10 @@ protected:
 
     // Define default implementation for updating a Resource's label. Subclasses may override it
     // to consider and update other information (e.g. Texture usage flags). Returns the updated
-    // label or std::nullopt if no update is necessary.
-    // TODO(b/431796811): Add texture usage flags to this call signature for use by Texture objects.
-    virtual std::optional<std::string> onSetLabel(std::string_view label) {
+    // label or std::nullopt if no update is necessary
+    virtual std::optional<std::string> onSetLabel(
+            std::string_view label,
+            SkEnumBitMask<TextureUsageFlags> = TextureUsageFlags::kNone) {
         if (fLabel == label) {
             return std::nullopt;
         }

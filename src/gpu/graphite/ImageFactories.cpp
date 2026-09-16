@@ -97,8 +97,8 @@ sk_sp<SkImage> WrapTexture(Recorder* recorder,
         label = "WrappedImage";
     }
 
-    sk_sp<Texture> texture =
-            recorder->priv().resourceProvider()->createWrappedTexture(backendTex, label);
+    sk_sp<Texture> texture = recorder->priv().resourceProvider()->createWrappedTexture(
+            backendTex, TextureUsageFlags::kNone, label);
     if (!texture) {
         SKIA_LOG_W("Texture creation failed");
         return nullptr;
@@ -185,11 +185,12 @@ sk_sp<SkImage> WrapTexture(Recorder* recorder,
     }
 
     if (label.empty()) {
+        // TODO use flag
         label = "WrappedImage";
     }
 
-    sk_sp<Texture> texture =
-            recorder->priv().resourceProvider()->createWrappedTexture(backendTex, label);
+    sk_sp<Texture> texture = recorder->priv().resourceProvider()->createWrappedTexture(
+            backendTex, TextureUsageFlags::kNone, label);
     if (!texture) {
         SKIA_LOG_W("Texture creation failed");
         return nullptr;
@@ -565,6 +566,7 @@ sk_sp<SkImage> TextureFromYUVAPixmaps(Recorder* recorder,
     }
 
     std::string labelStr(label);
+    // TODO: Utilize TextureUsageFlags
     if (labelStr.empty()) {
         labelStr = "YUVRasterBitmapPlane";
     } else {
@@ -608,6 +610,7 @@ sk_sp<SkImage> TextureFromYUVATextures(Recorder* recorder,
     }
 
     std::string labelStr(label);
+    // TODO - use flag
     if (labelStr.empty()) {
         labelStr = "Wrapped_YUVPlane";
     } else {
@@ -617,7 +620,7 @@ sk_sp<SkImage> TextureFromYUVATextures(Recorder* recorder,
     TextureProxyView planes[SkYUVAInfo::kMaxPlanes];
     for (int i = 0; i < yuvaTextures.yuvaInfo().numPlanes(); ++i) {
         sk_sp<Texture> texture = recorder->priv().resourceProvider()->createWrappedTexture(
-                yuvaTextures.planeTexture(i), labelStr);
+                yuvaTextures.planeTexture(i), TextureUsageFlags::kNone, labelStr);
         if (!texture) {
             SKIA_LOG_W("Failed to wrap backend texture for YUVA plane %d", i);
             return nullptr;

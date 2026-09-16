@@ -30,19 +30,22 @@ public:
     static sk_sp<Texture> Make(const DawnSharedContext*,
                                SkISize dimensions,
                                const TextureInfo&,
-                               std::string_view label);
+                               SkEnumBitMask<TextureUsageFlags> usages,
+                               std::string_view label = "");
 
     static sk_sp<Texture> MakeWrapped(const DawnSharedContext*,
                                       SkISize dimensions,
                                       const TextureInfo&,
                                       wgpu::Texture,
-                                      std::string_view label);
+                                      SkEnumBitMask<TextureUsageFlags> usages,
+                                      std::string_view label = "");
 
     static sk_sp<Texture> MakeWrapped(const DawnSharedContext*,
                                       SkISize dimensions,
                                       const TextureInfo&,
                                       const wgpu::TextureView&,
-                                      std::string_view label);
+                                      SkEnumBitMask<TextureUsageFlags> usages,
+                                      std::string_view label = "");
 
     ~DawnTexture() override {}
 
@@ -65,6 +68,7 @@ private:
                 wgpu::TextureView sampleTextureView,
                 wgpu::TextureView renderTextureView,
                 Ownership,
+                SkEnumBitMask<TextureUsageFlags> usages,
                 std::string_view label);
 
     void freeGpuData() override;

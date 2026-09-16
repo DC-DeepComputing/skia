@@ -28,12 +28,14 @@ public:
     static sk_sp<Texture> Make(const MtlSharedContext*,
                                SkISize dimensions,
                                const TextureInfo&,
+                               SkEnumBitMask<TextureUsageFlags> usages,
                                std::string_view label);
 
     static sk_sp<Texture> MakeWrapped(const MtlSharedContext*,
                                       SkISize dimensions,
                                       const TextureInfo&,
                                       sk_cfp<id<MTLTexture>>,
+                                      SkEnumBitMask<TextureUsageFlags> usages,
                                       std::string_view label);
 
     ~MtlTexture() override {}
@@ -49,6 +51,7 @@ private:
                const TextureInfo& info,
                sk_cfp<id<MTLTexture>>,
                Ownership,
+               SkEnumBitMask<TextureUsageFlags> usages,
                std::string_view label);
 
     void freeGpuData() override;

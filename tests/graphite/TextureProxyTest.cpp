@@ -40,14 +40,20 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteTextureProxyTest, reporter, context,
             kValidColorType, Mipmapped::kNo, isProtected, Renderable::kNo);
     BackendTexture backendTexture = recorder->createBackendTexture(kValidSize, textureInfo);
     sk_sp<Texture> texture = resourceProvider->createWrappedTexture(backendTexture,
+                                                                    TextureUsageFlags::kNone,
                                                                     "TextureProxyTestWrappedTex");
 
     auto makeProxy = [&](SkISize dimensions, SkColorType colorType, Mipmapped mipmapped,
                          Protected isProtected, Renderable renderable, Budgeted budgeted) {
         auto textureInfo = caps->getDefaultSampledTextureInfo(colorType, mipmapped,
                                                               isProtected, renderable);
-        return TextureProxy::Make(caps, recorder->priv().resourceProvider(),
-                                  dimensions, textureInfo, budgeted, "TextureProxyTestTexture");
+        return TextureProxy::Make(caps,
+                                  recorder->priv().resourceProvider(),
+                                  dimensions,
+                                  textureInfo,
+                                  budgeted,
+                                  TextureUsageFlags::kNone,
+                                  "TextureProxyTestTexture");
     };
 
     auto nullCallback = [](ResourceProvider*) -> sk_sp<Texture> { return nullptr; };
@@ -175,6 +181,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteTextureProxyTest, reporter, context,
     BackendTexture largerBackendTexture =
             recorder->createBackendTexture(kLargerSize, textureInfo);
     assignableTexture = resourceProvider->createWrappedTexture(largerBackendTexture,
+                                                               TextureUsageFlags::kNone,
                                                                "TextureProxyTestWrappedTex");
     instantiateSuccess = textureProxy->lazyInstantiate(resourceProvider);
     REPORTER_ASSERT(reporter, instantiateSuccess);

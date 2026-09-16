@@ -318,7 +318,8 @@ sk_sp<DrawContext> get_precompile_draw_context(
                                                     drawSize,
                                                     texInfo,
                                                     skgpu::Budgeted::kYes,
-                                                    "PrecompileTarget");
+                                                    TextureUsageFlags::kNone,
+                                                    "PrecompileTarget"); // TODO - define flag?
     sk_sp<DrawContext> precompileDrawContext = DrawContext::Make(caps,
                                                                  std::move(target),
                                                                  drawSize,

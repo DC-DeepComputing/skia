@@ -54,20 +54,29 @@ public:
 
     sk_sp<ComputePipeline> findOrCreateComputePipeline(const ComputePipelineDesc&);
 
-    sk_sp<Texture> findOrCreateShareableTexture(SkISize,
-                                                const TextureInfo&,
-                                                std::string_view label);
+    sk_sp<Texture> findOrCreateShareableTexture(
+            SkISize,
+            const TextureInfo&,
+            SkEnumBitMask<TextureUsageFlags> usages,
+            std::string_view label = "");
 
-    sk_sp<Texture> findOrCreateNonShareableTexture(SkISize,
-                                                   const TextureInfo&,
-                                                   std::string_view label,
-                                                   Budgeted);
-    sk_sp<Texture> findOrCreateScratchTexture(SkISize,
-                                              const TextureInfo&,
-                                              std::string_view label,
-                                              const ResourceCache::ScratchResourceSet& unavailable);
+    sk_sp<Texture> findOrCreateNonShareableTexture(
+            SkISize,
+            const TextureInfo&,
+            Budgeted,
+            SkEnumBitMask<TextureUsageFlags> usages,
+            std::string_view label = "");
 
-    sk_sp<Texture> createWrappedTexture(const BackendTexture&, std::string_view label);
+    sk_sp<Texture> findOrCreateScratchTexture(
+            SkISize,
+            const TextureInfo&,
+            const ResourceCache::ScratchResourceSet& unavailable,
+            SkEnumBitMask<TextureUsageFlags> usages,
+            std::string_view label = "");
+
+    sk_sp<Texture> createWrappedTexture(const BackendTexture&,
+                                        SkEnumBitMask<TextureUsageFlags> usages,
+                                        std::string_view label = "");
 
     sk_sp<Buffer> findOrCreateNonShareableBuffer(size_t,
                                                  BufferType,
@@ -136,19 +145,24 @@ protected:
 
 private:
     virtual sk_sp<ComputePipeline> createComputePipeline(const ComputePipelineDesc&) = 0;
-    virtual sk_sp<Texture> createTexture(SkISize, const TextureInfo&, std::string_view label) = 0;
+    virtual sk_sp<Texture> createTexture(SkISize,
+                                         const TextureInfo&,
+                                         SkEnumBitMask<TextureUsageFlags> usages,
+                                         std::string_view label = "") = 0;
     virtual sk_sp<Buffer> createBuffer(size_t,
                                        BufferType,
                                        AccessPattern,
                                        std::string_view label) = 0;
     virtual sk_sp<Sampler> createSampler(const SamplerDesc&) = 0;
 
-    sk_sp<Texture> findOrCreateTexture(SkISize dimensions,
-                                       const TextureInfo& info,
-                                       std::string_view label,
-                                       Budgeted,
-                                       Shareable,
-                                       const ResourceCache::ScratchResourceSet* = nullptr);
+    sk_sp<Texture> findOrCreateTexture(
+            SkISize dimensions,
+            const TextureInfo& info,
+            Budgeted,
+            Shareable,
+            SkEnumBitMask<TextureUsageFlags>,
+            std::string_view label = "",
+            const ResourceCache::ScratchResourceSet* = nullptr);
 
     sk_sp<Buffer> findOrCreateBuffer(size_t,
                                      BufferType,
@@ -158,7 +172,8 @@ private:
                                      const ResourceCache::ScratchResourceSet* = nullptr);
 
     virtual sk_sp<Texture> onCreateWrappedTexture(const BackendTexture&,
-                                                  std::string_view label) = 0;
+                                                  SkEnumBitMask<TextureUsageFlags> usages,
+                                                  std::string_view label = "") = 0;
 
     virtual BackendTexture onCreateBackendTexture(SkISize dimensions, const TextureInfo&) = 0;
 #ifdef SK_BUILD_FOR_ANDROID

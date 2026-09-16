@@ -11,6 +11,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
 #include "include/gpu/graphite/TextureInfo.h"
+#include "include/private/SkEnumBitMask.h"
 #include "include/private/SkPixelStorage.h"
 #include "include/private/SkTo.h"
 #include "src/gpu/graphite/TextureInfoPriv.h"
@@ -27,6 +28,7 @@ class ResourceProvider;
 class ScratchResourceManager;
 class Texture;
 enum class TextureFormat : uint8_t;
+enum class TextureUsageFlags : uint32_t;
 
 class TextureProxy : public SkPixelStorage {
 public:
@@ -41,6 +43,7 @@ public:
     const TextureInfo& textureInfo() const { return fInfo; }
 
     const char* label() const { return fLabel.c_str(); }
+    SkEnumBitMask<TextureUsageFlags> textureUsages() const { return fTextureUsages; }
 
     bool isLazy() const;
     bool isFullyLazy() const;
@@ -96,12 +99,14 @@ public:
     }
 
     // Make() will immediately instantiate non-budgeted proxies.
-    static sk_sp<TextureProxy> Make(const Caps*,
-                                    ResourceProvider*,
-                                    SkISize dimensions,
-                                    const TextureInfo&,
-                                    skgpu::Budgeted,
-                                    std::string_view label);
+    static sk_sp<TextureProxy> Make(
+            const Caps*,
+            ResourceProvider*,
+            SkISize dimensions,
+            const TextureInfo&,
+            skgpu::Budgeted,
+            SkEnumBitMask<TextureUsageFlags> usageFlags,
+            std::string_view label = "");
 
     using LazyInstantiateCallback = std::function<sk_sp<Texture> (ResourceProvider*)>;
 
@@ -120,9 +125,10 @@ public:
 
 private:
     TextureProxy(SkISize dimensions,
-                 const TextureInfo& info,
-                 Budgeted budgeted,
-                 std::string_view label);
+                 const TextureInfo&,
+                 skgpu::Budgeted,
+                 SkEnumBitMask<TextureUsageFlags>,
+                 std::string_view label = "");
     TextureProxy(SkISize dimensions,
                  const TextureInfo&,
                  Budgeted,
@@ -142,8 +148,12 @@ private:
     Budgeted fBudgeted;
     const Volatile fVolatile;
 
-    // String used to describe the current use of this TextureProxy. It will be set on its
-    // Texture object when the proxy gets instantiated.
+    // Bitmask of statically-defined texture usage flags used to describe the current use of this
+    // TextureProxy. Upon instantiation, these usages will be included in the Texture object's flags
+    // which are used for label comparison and generation logic.
+    SkEnumBitMask<TextureUsageFlags> fTextureUsages;
+    // Custom string used to describe the current use of this TextureProxy. Upon instantiation, it
+    // will be included in the Texture object's label.
     std::string fLabel;
 
     sk_sp<Texture> fTexture;

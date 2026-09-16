@@ -74,13 +74,15 @@ MtlTexture::MtlTexture(const MtlSharedContext* sharedContext,
                        const TextureInfo& info,
                        sk_cfp<id<MTLTexture>> texture,
                        Ownership ownership,
+                       SkEnumBitMask<TextureUsageFlags> usages,
                        std::string_view label)
         : Texture(sharedContext,
                   dimensions,
                   info,
-                  /*isTransient=*/has_transient_usage(info),
+                  has_transient_usage(info),
                   /*mutableState=*/nullptr,
                   ownership,
+                  usages,
                   label)
         , fTexture(std::move(texture)) {
     // Update the newly-created underlying GPU object's label to match the Resource's
@@ -90,6 +92,7 @@ MtlTexture::MtlTexture(const MtlSharedContext* sharedContext,
 sk_sp<Texture> MtlTexture::Make(const MtlSharedContext* sharedContext,
                                 SkISize dimensions,
                                 const TextureInfo& info,
+                                SkEnumBitMask<TextureUsageFlags> usages,
                                 std::string_view label) {
     sk_cfp<id<MTLTexture>> texture = MakeMtlTexture(sharedContext, dimensions, info);
     if (!texture) {
@@ -100,6 +103,7 @@ sk_sp<Texture> MtlTexture::Make(const MtlSharedContext* sharedContext,
                                          info,
                                          std::move(texture),
                                          Ownership::kOwned,
+                                         usages,
                                          label));
 }
 
@@ -107,12 +111,14 @@ sk_sp<Texture> MtlTexture::MakeWrapped(const MtlSharedContext* sharedContext,
                                        SkISize dimensions,
                                        const TextureInfo& info,
                                        sk_cfp<id<MTLTexture>> texture,
+                                       SkEnumBitMask<TextureUsageFlags> usages,
                                        std::string_view label) {
     return sk_sp<Texture>(new MtlTexture(sharedContext,
                                          dimensions,
                                          info,
                                          std::move(texture),
                                          Ownership::kWrapped,
+                                         usages,
                                          label));
 }
 

@@ -97,13 +97,15 @@ DawnTexture::DawnTexture(const DawnSharedContext* sharedContext,
                          wgpu::TextureView sampleTextureView,
                          wgpu::TextureView renderTextureView,
                          Ownership ownership,
+                         SkEnumBitMask<TextureUsageFlags> usages,
                          std::string_view label)
         : Texture(sharedContext,
                   dimensions,
                   info,
-                  /*isTransient=*/has_transient_usage(info),
+                  has_transient_usage(info),
                   /*mutableState=*/nullptr,
                   ownership,
+                  usages,
                   label)
         , fTexture(std::move(texture))
         , fSampleTextureView(std::move(sampleTextureView))
@@ -165,6 +167,7 @@ std::pair<wgpu::TextureView, wgpu::TextureView> DawnTexture::CreateTextureViews(
 sk_sp<Texture> DawnTexture::Make(const DawnSharedContext* sharedContext,
                                  SkISize dimensions,
                                  const TextureInfo& info,
+                                 SkEnumBitMask<TextureUsageFlags> usages,
                                  std::string_view label) {
     auto texture = MakeDawnTexture(sharedContext, dimensions, info);
     if (!texture) {
@@ -178,6 +181,7 @@ sk_sp<Texture> DawnTexture::Make(const DawnSharedContext* sharedContext,
                                           std::move(sampleTextureView),
                                           std::move(renderTextureView),
                                           Ownership::kOwned,
+                                          usages,
                                           label));
 }
 
@@ -185,6 +189,7 @@ sk_sp<Texture> DawnTexture::MakeWrapped(const DawnSharedContext* sharedContext,
                                         SkISize dimensions,
                                         const TextureInfo& info,
                                         wgpu::Texture texture,
+                                        SkEnumBitMask<TextureUsageFlags> usages,
                                         std::string_view label) {
     if (!texture) {
         SKIA_LOG_E("No valid texture passed into MakeWrapped\n");
@@ -199,6 +204,7 @@ sk_sp<Texture> DawnTexture::MakeWrapped(const DawnSharedContext* sharedContext,
                                           std::move(sampleTextureView),
                                           std::move(renderTextureView),
                                           Ownership::kWrapped,
+                                          usages,
                                           label));
 }
 
@@ -206,7 +212,8 @@ sk_sp<Texture> DawnTexture::MakeWrapped(const DawnSharedContext* sharedContext,
                                         SkISize dimensions,
                                         const TextureInfo& info,
                                         const wgpu::TextureView& textureView,
-                                        std::string_view label) {
+                                        std::string_view label,
+                                        SkEnumBitMask<TextureUsageFlags> usages) {
     if (!textureView) {
         SKIA_LOG_E("No valid texture view passed into MakeWrapped\n");
         return {};
@@ -218,6 +225,7 @@ sk_sp<Texture> DawnTexture::MakeWrapped(const DawnSharedContext* sharedContext,
                                           /*sampleTextureView=*/textureView,
                                           /*renderTextureView=*/textureView,
                                           Ownership::kWrapped,
+                                          usages,
                                           label));
 }
 

@@ -47,7 +47,8 @@ public:
                                SkISize dimensions,
                                const TextureInfo&,
                                sk_sp<VulkanYcbcrConversion>,
-                               std::string_view label);
+                               SkEnumBitMask<TextureUsageFlags> usages,
+                               std::string_view label = "");
 
     static sk_sp<Texture> MakeWrapped(const VulkanSharedContext*,
                                       SkISize dimensions,
@@ -56,7 +57,8 @@ public:
                                       VkImage,
                                       const VulkanAlloc&,
                                       sk_sp<VulkanYcbcrConversion>,
-                                      std::string_view label);
+                                      SkEnumBitMask<TextureUsageFlags> usages,
+                                      std::string_view label = "");
 
     ~VulkanTexture() override;
 
@@ -117,6 +119,7 @@ private:
                   const VulkanAlloc&,
                   Ownership,
                   sk_sp<VulkanYcbcrConversion>,
+                  SkEnumBitMask<TextureUsageFlags> usages,
                   std::string_view label);
 
     void freeGpuData() override;

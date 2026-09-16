@@ -43,7 +43,8 @@ bool AlphaAtlasManager::createPageInSlot(int slot, int32_t minRequiredBytes) {
                                SkISize::Make(SparseStripConfig::kAtlasWidth, rows),
                                info,
                                Budgeted::kYes,
-                               "AlphaAtlas");
+                               TextureUsageFlags::kNone,
+                               "AlphaAtlas"); // TODO - Define as flag
 
     if (!proxy) {
         return false;

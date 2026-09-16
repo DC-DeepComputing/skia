@@ -64,12 +64,15 @@ sk_sp<ComputePipeline> MtlResourceProvider::createComputePipeline(
 
 sk_sp<Texture> MtlResourceProvider::createTexture(SkISize dimensions,
                                                   const TextureInfo& info,
+                                                  SkEnumBitMask<TextureUsageFlags> usages,
                                                   std::string_view label) {
-    return MtlTexture::Make(this->mtlSharedContext(), dimensions, info, label);
+    return MtlTexture::Make(this->mtlSharedContext(), dimensions, info, usages, label);
 }
 
-sk_sp<Texture> MtlResourceProvider::onCreateWrappedTexture(const BackendTexture& texture,
-                                                           std::string_view label) {
+sk_sp<Texture> MtlResourceProvider::onCreateWrappedTexture(
+        const BackendTexture& texture,
+        SkEnumBitMask<TextureUsageFlags> usages,
+        std::string_view label) {
     CFTypeRef mtlHandleTexture = BackendTextures::GetMtlTexture(texture);
     if (!mtlHandleTexture) {
         return nullptr;
@@ -79,6 +82,7 @@ sk_sp<Texture> MtlResourceProvider::onCreateWrappedTexture(const BackendTexture&
                                    texture.dimensions(),
                                    texture.info(),
                                    std::move(mtlTexture),
+                                   usages,
                                    label);
 }
 

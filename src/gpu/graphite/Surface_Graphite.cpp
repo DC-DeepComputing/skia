@@ -308,8 +308,8 @@ sk_sp<SkSurface> WrapBackendTexture(Recorder* recorder,
         label = "SkSurfaceWrappedTexture";
     }
 
-    sk_sp<Texture> texture =
-            recorder->priv().resourceProvider()->createWrappedTexture(backendTex, label);
+    sk_sp<Texture> texture = recorder->priv().resourceProvider()->createWrappedTexture(
+            backendTex, TextureUsageFlags::kNone, label);
     if (!texture) {
         return nullptr;
     }

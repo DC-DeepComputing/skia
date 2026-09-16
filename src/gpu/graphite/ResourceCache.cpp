@@ -182,6 +182,7 @@ void ResourceCache::insertResource(Resource* resource,
 Resource* ResourceCache::findAndRefResource(const GraphiteResourceKey& key,
                                             Budgeted budgeted,
                                             Shareable shareable,
+                                            SkEnumBitMask<TextureUsageFlags> textureUsages,
                                             std::string_view label,
                                             const ScratchResourceSet* unavailable) {
     ASSERT_SINGLE_OWNER
@@ -213,36 +214,42 @@ Resource* ResourceCache::findAndRefResource(const GraphiteResourceKey& key,
         SkASSERT(resource->budgeted() == Budgeted::kYes);
         SkASSERT(resource->key() == key);
 
-        if (shareable == Shareable::kNo) {
-            // If the returned resource is no longer shareable then we remove it from the map so
-            // that it isn't found again.
-            SkASSERT(resource->shareable() == Shareable::kNo);
-            this->removeFromResourceMap(resource);
-            if (budgeted == Budgeted::kNo) {
-                resource->setBudgeted(Budgeted::kNo);
-                fBudgetedBytes -= resource->gpuMemorySize();
-                GlobalResourceStats::RecordResourceBudgetChange(
-                        resource->isProtected(), resource->gpuMemorySize(), Budgeted::kNo);
+        switch (shareable) {
+            case Shareable::kYes: {
+                SkASSERT(budgeted == Budgeted::kYes);
+                // Shareable resource labels cannot be changed after creation.
+                SkASSERT(resource->getLabel() == label);
+                resource->setShareable(shareable);
+                break;
             }
-            // It is safe to update non-shareable resources when returning them from the cache.
-            resource->setLabel(label);
-            resource->synchronizeBackendLabel();
-        } else {
-            // Shareable and scratch resources should never be requested as non-budgeted
-            SkASSERT(budgeted == Budgeted::kYes);
-
-            // TODO(b/387505250): Eventually, scratch resource label updates will be uniquely
-            // handled per the threadsafe label update model outlined in Resource.h. For now,
-            // maintain original functionality by allowing label reassignment here.
-            if (shareable == Shareable::kScratch) {
-                resource->setLabel(label);
+            case Shareable::kScratch: {
+                SkASSERT(budgeted == Budgeted::kYes);
+                // TODO(b/431796811): Scratch resource label management will eventually be handled
+                // by the ScratchResourceManager, which will handle label updates upon Recording
+                // insertion. For now, determining and updating the label here maintains existing
+                // functionality, which works until moving to use one singular threadsafe cache.
+                resource->setLabel(label, textureUsages);
                 resource->synchronizeBackendLabel();
-            } else {
-                // Shareable resource labels should never change after initial creation.
-                SkASSERT(shareable == Shareable::kYes && resource->getLabel() == label);
-            }
 
-            resource->setShareable(shareable);
+                resource->setShareable(shareable);
+                break;
+            }
+            case Shareable::kNo: {
+                // If the returned resource is no longer shareable, remove it from the map so it
+                // isn't found again.
+                SkASSERT(resource->shareable() == Shareable::kNo);
+                this->removeFromResourceMap(resource);
+                if (budgeted == Budgeted::kNo) {
+                    resource->setBudgeted(Budgeted::kNo);
+                    fBudgetedBytes -= resource->gpuMemorySize();
+                }
+
+                // It is safe to update non-shareable resources when returning them from the cache.
+                resource->setLabel(label, textureUsages);
+                resource->synchronizeBackendLabel();
+                break;
+            }
+            default: SkUNREACHABLE; break;
         }
         this->refAndMakeResourceMRU(resource);
         this->validate();
