@@ -65,6 +65,11 @@ protected:
     void onDumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump,
                                 const char* dumpName) const override;
 
+    // TODO(b/431796811): Once texture usage flags are defined and accepted as arguments to
+    // onSetLabel(...), override that method to give the Texture a chance to consider texture usage
+    // flags before bothering with cumbersome string generation and comparison.
+    // virtual std::optional<std::string> onSetLabel(std::string_view label) override;
+
 private:
     SkISize fDimensions;
     TextureInfo fInfo;
