@@ -550,3 +550,32 @@ DEF_TEST(pathdata_inverted_bounds, reporter) {
         }
     }
 }
+
+DEF_TEST(pathdata_generation_id, reporter) {
+    auto pdata1 = SkPathData::Rect(SkRect::MakeWH(10, 10));
+    auto pdata2 = SkPathData::Rect(SkRect::MakeWH(10, 10));
+
+    static_assert(std::is_same_v<decltype(pdata1->uniqueID()), uint64_t>);
+
+    REPORTER_ASSERT(reporter, pdata1->uniqueID() != 0);
+    REPORTER_ASSERT(reporter, pdata2->uniqueID() != 0);
+    REPORTER_ASSERT(reporter, pdata1->uniqueID() != pdata2->uniqueID());
+    REPORTER_ASSERT(reporter, pdata2->uniqueID() > pdata1->uniqueID());
+
+    SkPath path1 = SkPath::Rect(SkRect::MakeWH(10, 10));
+    SkPath path2 = SkPath::Rect(SkRect::MakeWH(10, 10));
+
+    static_assert(std::is_same_v<decltype(path1.getGenerationID()), uint64_t>);
+
+    REPORTER_ASSERT(reporter, path1.getGenerationID() != 0);
+    REPORTER_ASSERT(reporter, path2.getGenerationID() != 0);
+    REPORTER_ASSERT(reporter, path1.getGenerationID() != path2.getGenerationID());
+
+    // Copying a path preserves its generation ID
+    SkPath path1Copy = path1;
+    REPORTER_ASSERT(reporter, path1Copy.getGenerationID() == path1.getGenerationID());
+
+    // Changing fill type does not change generation ID
+    path1Copy.setFillType(SkPathFillType::kInverseWinding);
+    REPORTER_ASSERT(reporter, path1Copy.getGenerationID() == path1.getGenerationID());
+}

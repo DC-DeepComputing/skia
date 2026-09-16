@@ -117,15 +117,20 @@ private:
     struct AtlasPathKey {
         void set(const SkMatrix&, const SkPath&);
         bool operator==(const AtlasPathKey& k) const {
-            static_assert(sizeof(*this) == sizeof(uint32_t) * 8);
+            static_assert(sizeof(*(this)) == sizeof(fPathGenID) + sizeof(fAffineMatrix) +
+                                                     sizeof(fFillRule) + sizeof(fPad));
             return !memcmp(this, &k, sizeof(*this));
         }
-        uint32_t fPathGenID;
+        uint64_t fPathGenID;
         float fAffineMatrix[6];
         uint32_t fFillRule;
+        // The compiler will align to 8 bytes, adding an extra 4 bytes padding, which causes
+        // memcmp() to return false for identical keys. Add explicit padding instead.
+        uint32_t fPad = 0;
 
         using Hash = SkForceDirectHash<AtlasPathKey>;
     };
+    static_assert(alignof(AtlasPathKey) == 8);
 
     skia_private::THashMap<AtlasPathKey, SkIPoint16, AtlasPathKey::Hash> fAtlasPathCache;
 };
