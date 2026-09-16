@@ -26,7 +26,8 @@ public:
                uint32_t physicalDeviceVersion,
                const VkPhysicalDeviceFeatures2*,
                const skgpu::VulkanExtensions*,
-               Protected);
+               Protected,
+               bool protectedMultiQueueSupport);
     ~VulkanCaps() override;
 
     // Override Caps's implementation in order to consult Vulkan-specific texture properties.
@@ -111,7 +112,8 @@ private:
               uint32_t physicalDeviceVersion,
               const VkPhysicalDeviceFeatures2*,
               const skgpu::VulkanExtensions*,
-              Protected);
+              Protected,
+              bool protectedMultiQueueSupport);
 
     struct EnabledFeatures {
         // VkPhysicalDeviceFeatures

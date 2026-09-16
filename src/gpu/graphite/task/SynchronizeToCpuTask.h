@@ -9,6 +9,7 @@
 #define skgpu_graphite_task_SynchronizeToCpuTask_DEFINED
 
 #include "include/core/SkRefCnt.h"
+#include "src/gpu/graphite/Buffer.h"
 #include "src/gpu/graphite/task/Task.h"
 #include <utility>
 
@@ -40,10 +41,14 @@ public:
 
     Status addCommands(Context*, CommandBuffer*, ReplayTargetData) override;
 
+    Protected isProtected() const override;
+
     SK_DUMP_TASKS_CODE(const char* getTaskName() const override { return "Sync to CPU Task"; })
 
 private:
-    explicit SynchronizeToCpuTask(sk_sp<Buffer> buffer) : fBuffer(std::move(buffer)) {}
+    explicit SynchronizeToCpuTask(sk_sp<Buffer> buffer) : fBuffer(std::move(buffer)) {
+        SkASSERT(buffer->isProtected() == Protected::kNo);
+    }
 
     sk_sp<Buffer> fBuffer;
 };
