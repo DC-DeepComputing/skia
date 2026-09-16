@@ -44,7 +44,10 @@ CopyBufferToBufferTask::CopyBufferToBufferTask(const Buffer* srcBuffer,
         , fSrcOffset(srcOffset)
         , fDstBuffer(std::move(dstBuffer))
         , fDstOffset(dstOffset)
-        , fSize(size) {}
+        , fSize(size) {
+    SkASSERT(fSrcBuffer->isProtected() == Protected::kNo ||
+             fDstBuffer->isProtected() == Protected::kYes);
+}
 
 CopyBufferToBufferTask::~CopyBufferToBufferTask() = default;
 
@@ -62,6 +65,16 @@ Task::Status CopyBufferToBufferTask::addCommands(Context*,
     } else {
         return Status::kFail;
     }
+}
+
+Protected CopyBufferToBufferTask::isProtected() const {
+    if (fDstBuffer && fDstBuffer->isProtected() == Protected::kYes) {
+        return Protected::kYes;
+    }
+    if (fSrcBuffer && fSrcBuffer->isProtected() == Protected::kYes) {
+        return Protected::kYes;
+    }
+    return Protected::kNo;
 }
 
 sk_sp<CopyTextureToBufferTask> CopyTextureToBufferTask::Make(sk_sp<TextureProxy> textureProxy,
@@ -89,6 +102,8 @@ CopyTextureToBufferTask::CopyTextureToBufferTask(sk_sp<TextureProxy> textureProx
         , fBuffer(std::move(buffer))
         , fBufferOffset(bufferOffset)
         , fBufferRowBytes(bufferRowBytes) {
+    SkASSERT(fTextureProxy->isProtected() == Protected::kNo ||
+             (fBuffer && fBuffer->isProtected() == Protected::kYes));
 }
 
 CopyTextureToBufferTask::~CopyTextureToBufferTask() {}
@@ -120,6 +135,16 @@ Task::Status CopyTextureToBufferTask::addCommands(Context*,
     } else {
         return Status::kFail;
     }
+}
+
+Protected CopyTextureToBufferTask::isProtected() const {
+    if (fBuffer && fBuffer->isProtected() == Protected::kYes) {
+        return Protected::kYes;
+    }
+    if (fTextureProxy && fTextureProxy->isProtected() == Protected::kYes) {
+        return Protected::kYes;
+    }
+    return Protected::kNo;
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -156,7 +181,10 @@ CopyTextureToTextureTask::CopyTextureToTextureTask(sk_sp<TextureProxy> srcProxy,
         , fSrcRect(srcRect)
         , fDstProxy(std::move(dstProxy))
         , fDstPoint(dstPoint)
-        , fDstLevel(dstLevel) {}
+        , fDstLevel(dstLevel) {
+    SkASSERT(fSrcProxy->isProtected() == Protected::kNo ||
+             fDstProxy->isProtected() == Protected::kYes);
+}
 
 CopyTextureToTextureTask::~CopyTextureToTextureTask() {}
 
@@ -207,6 +235,16 @@ Task::Status CopyTextureToTextureTask::addCommands(Context*,
     } else {
         return Status::kFail;
     }
+}
+
+Protected CopyTextureToTextureTask::isProtected() const {
+    if (fDstProxy && fDstProxy->isProtected() == Protected::kYes) {
+        return Protected::kYes;
+    }
+    if (fSrcProxy && fSrcProxy->isProtected() == Protected::kYes) {
+        return Protected::kYes;
+    }
+    return Protected::kNo;
 }
 
 } // namespace skgpu::graphite
