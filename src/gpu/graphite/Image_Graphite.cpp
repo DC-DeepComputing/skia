@@ -126,6 +126,9 @@ sk_sp<Image> Image::Copy(Recorder* recorder,
     if (!dst) {
         return nullptr;
     }
+    if (srcView.proxy()) {
+        dst->setOrigin({srcView.proxy()->getPixelStorageId(), srcView.proxy()->getContentId()});
+    }
 
     auto copyTask = CopyTextureToTextureTask::Make(srcView.refProxy(), subset, dst, {0, 0});
     if (!copyTask) {
@@ -145,7 +148,11 @@ sk_sp<Image> Image::Copy(Recorder* recorder,
         }
     }
 
-    return sk_sp<Image>(new Image({std::move(dst), srcView.swizzle()}, srcColorInfo));
+    sk_sp<Image> image(new Image({std::move(dst), srcView.swizzle()}, srcColorInfo));
+    if (srcView.proxy()) {
+        image->fPixelStorages.push_back(srcView.refProxy());
+    }
+    return image;
 }
 
 size_t Image::textureSize() const {

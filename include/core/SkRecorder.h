@@ -10,6 +10,7 @@
 #include "include/core/SkPicture.h"
 #include "include/private/SkAPI.h"
 #include "include/private/SkTArray.h"
+#include "src/capture/SkCapture.h"
 
 class SkCanvas;
 class SkSurface;
@@ -37,7 +38,7 @@ public:
     virtual skcpu::Recorder* cpuRecorder() = 0;
 
 protected:
-    skia_private::TArray<sk_sp<SkPicture>> fCapturedPictures;
+    skia_private::TArray<SkCapture::Asset> fCapturedPictures;
 
 private:
 

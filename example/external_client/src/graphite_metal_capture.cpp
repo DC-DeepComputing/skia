@@ -109,7 +109,7 @@ int main(int argc, char *argv[]) {
     auto circlesImg = surface->makeImageSnapshot();
 
     // Canvas B
-    canvasB->clear(SK_ColorMAGENTA);
+    canvasB->clear(SK_ColorYELLOW);
     paint.setColor(SK_ColorBLACK);
     canvasB->drawImage(contentImg, 0, 0);
     canvasB->drawImage(circlesImg, 20, 20);

@@ -27,22 +27,26 @@ SkCanvas* SkCaptureManager::makeCaptureCanvas(SkCanvas* canvas) {
     return rawCanvasPtr;
 }
 
-sk_sp<SkPicture> SkCaptureManager::snapAndIncrement(SkCaptureCanvas* canvas) {
-    auto picture = canvas->snapPicture();
-    if (picture) {
-        if (auto storage = asSB(canvas->getBaseCanvasSurface())->getPixelStorage()) {
-            storage->incrementContentId();
+SkCapture::Asset SkCaptureManager::snapAndIncrement(SkCaptureCanvas* canvas) {
+    SkCapture::Asset asset;
+    asset.fPicture = canvas->snapPicture();
+    if (asset.fPicture) {
+        if (auto surface = canvas->getBaseCanvasSurface()) {
+            if (auto storage = asSB(surface)->getPixelStorage()) {
+                asset.fPixelStorageID = storage->getPixelStorageId();
+                asset.fContentID = storage->incrementContentId();
+            }
         }
     }
-    return picture;
+    return asset;
 }
 
 void SkCaptureManager::captureUninsertedDrawTasks() {
     for (auto& canvas : fTrackedCanvases) {
         if (canvas) {
-            auto picture = this->snapAndIncrement(canvas.get());
-            if (picture && fActiveCapture) {
-                fActiveCapture->addAsset(std::move(picture));
+            auto asset = this->snapAndIncrement(canvas.get());
+            if (asset.fPicture && fActiveCapture) {
+                fActiveCapture->addAsset(std::move(asset));
             }
         }
     }
@@ -62,7 +66,7 @@ void SkCaptureManager::toggleCapture(bool capturing) {
     fIsCurrentlyCapturing = capturing;
 }
 
-sk_sp<SkPicture> SkCaptureManager::snapPicture(SkSurface* surface) {
+SkCapture::Asset SkCaptureManager::snapPicture(SkSurface* surface) {
     for (auto& canvas : fTrackedCanvases) {
         if (canvas) {
             if (canvas->getBaseCanvasSurface() == surface) {
@@ -70,7 +74,7 @@ sk_sp<SkPicture> SkCaptureManager::snapPicture(SkSurface* surface) {
             }
         }
     }
-    return nullptr;
+    return {};
 }
 
 
@@ -78,9 +82,9 @@ sk_sp<SkCapture> SkCaptureManager::getLastCapture() const {
    return fLastCapture;
 }
 
-skia_private::TArray<sk_sp<SkPicture>> SkCaptureManager::snapDrawTasksForStorageIDs(
+skia_private::TArray<SkCapture::Asset> SkCaptureManager::snapDrawTasksForStorageIDs(
         SkSpan<const uint32_t> storageIds) {
-    skia_private::TArray<sk_sp<SkPicture>> snapped;
+    skia_private::TArray<SkCapture::Asset> snapped;
     if (!fIsCurrentlyCapturing || storageIds.empty()) {
         return snapped;
     }
@@ -99,20 +103,21 @@ skia_private::TArray<sk_sp<SkPicture>> SkCaptureManager::snapDrawTasksForStorage
         }
         uint32_t id = storage->getPixelStorageId();
         if (std::find(storageIds.begin(), storageIds.end(), id) != storageIds.end()) {
-            if (auto picture = this->snapAndIncrement(canvas.get())) {
-                snapped.push_back(std::move(picture));
+            auto asset = this->snapAndIncrement(canvas.get());
+            if (asset.fPicture) {
+                snapped.push_back(std::move(asset));
             }
         }
     }
     return snapped;
 }
 
-void SkCaptureManager::onInsertRecording(const skia_private::TArray<sk_sp<SkPicture>>& capturedPictures) {
+void SkCaptureManager::onInsertRecording(const skia_private::TArray<SkCapture::Asset>& capturedPictures) {
     if (!fIsCurrentlyCapturing || !fActiveCapture) return;
 
     skia_private::TArray<SkCapture::DrawTask> drawTasks;
-    for (const auto& pic : capturedPictures) {
-        fActiveCapture->addAsset(pic);
+    for (const auto& asset : capturedPictures) {
+        fActiveCapture->addAsset(asset);
         uint32_t assetIdx = fActiveCapture->getMetadata().numAssets - 1;
         drawTasks.push_back({assetIdx});
     }

@@ -68,10 +68,10 @@ public:
     uint32_t recorderID() const { return fRecording->fRecorderID; }
     uint32_t uniqueID() const { return fRecording->fUniqueID; }
 
-    const skia_private::TArray<sk_sp<SkPicture>>& capturedPictures() const {
+    const skia_private::TArray<SkCapture::Asset>& capturedPictures() const {
         return fRecording->fCapturedPictures;
     }
-    void setCapturedPictures(skia_private::TArray<sk_sp<SkPicture>>&& pictures) {
+    void setCapturedPictures(skia_private::TArray<SkCapture::Asset>&& pictures) {
         fRecording->fCapturedPictures = std::move(pictures);
     }
 

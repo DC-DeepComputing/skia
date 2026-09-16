@@ -11,6 +11,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkAPI.h"
 #include "include/private/SkTArray.h"
+#include "src/capture/SkCapture.h"
 #include <cstddef>
 #include <cstdint>
 #include <memory>
@@ -95,7 +96,7 @@ private:
 
     skia_private::TArray<sk_sp<RefCntedCallback>> fFinishedProcs;
 
-    skia_private::TArray<sk_sp<SkPicture>> fCapturedPictures;
+    skia_private::TArray<SkCapture::Asset> fCapturedPictures;
 };
 
 } // namespace skgpu::graphite

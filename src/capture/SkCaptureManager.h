@@ -12,13 +12,13 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSpan.h"
 #include "include/private/SkTArray.h"
+#include "src/capture/SkCapture.h"
 
 #include <atomic>
 #include <cstdint>
 #include <map>
 
 class SkCanvas;
-class SkCapture;
 class SkCaptureCanvas;
 class SkSurface;
 
@@ -33,7 +33,7 @@ public:
     SkCanvas* makeCaptureCanvas(SkCanvas* canvas);
 
     // TODO: Take in a SkPixelStorage ID instead
-    sk_sp<SkPicture> snapPicture(SkSurface*);
+    SkCapture::Asset snapPicture(SkSurface*);
 
     void toggleCapture(bool capturing);
 
@@ -48,9 +48,9 @@ public:
      *
      * @param storageIds The PixelStorage IDs of the surfaces whose pending draws should be snapped.
      */
-    skia_private::TArray<sk_sp<SkPicture>> snapDrawTasksForStorageIDs(
+    skia_private::TArray<SkCapture::Asset> snapDrawTasksForStorageIDs(
             SkSpan<const uint32_t> storageIds);
-    void onInsertRecording(const skia_private::TArray<sk_sp<SkPicture>>& capturedPictures);
+    void onInsertRecording(const skia_private::TArray<SkCapture::Asset>& capturedPictures);
 
     sk_sp<SkCapture> getLastCapture() const;
 
@@ -60,7 +60,7 @@ private:
     // anything.
     // TODO:  Capture draws that were snapped in unsubmitted Recordings.
     void captureUninsertedDrawTasks();
-    sk_sp<SkPicture> snapAndIncrement(SkCaptureCanvas*);
+    SkCapture::Asset snapAndIncrement(SkCaptureCanvas*);
 
     std::atomic<bool> fIsCurrentlyCapturing = false;
     skia_private::TArray<std::unique_ptr<SkCaptureCanvas>> fTrackedCanvases;

@@ -24,6 +24,13 @@ public:
         kPixelRef,
     };
 
+    struct PixelStorageOrigin {
+        uint32_t fParentPixelStorageID = 0;
+        uint32_t fParentContentID = 0;
+
+        bool hasParent() const { return fParentPixelStorageID != 0; }
+    };
+
     SkPixelStorage(Type type);
     ~SkPixelStorage() override = default;
 
@@ -32,6 +39,9 @@ public:
 
     uint32_t getContentId() const { return fContentID.load(std::memory_order_relaxed); }
     uint32_t incrementContentId() { return fContentID.fetch_add(1, std::memory_order_relaxed) + 1; }
+
+    void setOrigin(PixelStorageOrigin origin) { fOrigin = origin; }
+    PixelStorageOrigin origin() const { return fOrigin; }
 
 private:
     Type fType;
@@ -45,6 +55,8 @@ private:
      * and read from other objects that want to track the state of a PixelStorage at a given time.
      */
     std::atomic<uint32_t> fContentID = 0;
+
+    PixelStorageOrigin fOrigin;
 
     static uint32_t NextId();
 };
