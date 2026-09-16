@@ -20,7 +20,8 @@ namespace skgpu::graphite {
 
 sk_cfp<id<MTLTexture>> MtlTexture::MakeMtlTexture(const MtlSharedContext* sharedContext,
                                                   SkISize dimensions,
-                                                  const TextureInfo& info) {
+                                                  const TextureInfo& info,
+                                                  SkEnumBitMask<TextureUsageFlags> usages) {
     const Caps* caps = sharedContext->caps();
     if (dimensions.width() > caps->maxTextureSize() ||
         dimensions.height() > caps->maxTextureSize()) {
@@ -74,14 +75,16 @@ MtlTexture::MtlTexture(const MtlSharedContext* sharedContext,
                        const TextureInfo& info,
                        sk_cfp<id<MTLTexture>> texture,
                        Ownership ownership,
-                       std::string_view label)
+                       std::string_view label,
+                       SkEnumBitMask<TextureUsageFlags> usages)
         : Texture(sharedContext,
                   dimensions,
                   info,
                   /*isTransient=*/has_transient_usage(info),
                   /*mutableState=*/nullptr,
                   ownership,
-                  label)
+                  label,
+                  usages)
         , fTexture(std::move(texture)) {
     // Update the newly-created underlying GPU object's label to match the Resource's
     this->synchronizeBackendLabel();
@@ -107,13 +110,15 @@ sk_sp<Texture> MtlTexture::MakeWrapped(const MtlSharedContext* sharedContext,
                                        SkISize dimensions,
                                        const TextureInfo& info,
                                        sk_cfp<id<MTLTexture>> texture,
-                                       std::string_view label) {
+                                       std::string_view label,
+                                       SkEnumBitMask<TextureUsageFlags> usages) {
     return sk_sp<Texture>(new MtlTexture(sharedContext,
                                          dimensions,
                                          info,
                                          std::move(texture),
                                          Ownership::kWrapped,
-                                         label));
+                                         label,
+                                         usages));
 }
 
 void MtlTexture::freeGpuData() {

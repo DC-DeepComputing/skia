@@ -263,6 +263,9 @@ InsertStatus Context::insertRecording(const InsertRecordingInfo& info) {
         );
     }
 
+    // TODO(b/476118698): Use the Recording's stored mapping of scratch textures to their associated
+    // usages or concatenated custom labels to safely issue any necessary label updates.
+
     return fQueueManager->addRecording(info, this);
 }
 
