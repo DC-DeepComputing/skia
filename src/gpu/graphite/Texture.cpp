@@ -28,7 +28,15 @@ Texture::Texture(const SharedContext* sharedContext,
         : Resource(sharedContext, ownership, isTransient ? 0 : ComputeSize(dimensions, info), label)
         , fDimensions(dimensions)
         , fInfo(info)
-        , fMutableState(std::move(mutableState)) {}
+        , fMutableState(std::move(mutableState)) {
+    // TODO(b/431796811): Although the Texture's label can be passed in to Resource creation,
+    // eventually Textures will additionally store statically-defined usage flags which will also
+    // need to be translated into strings and incorporated in to the label. To accommodate this, go
+    // through Resource::setLabel(...). T his is what will later allow the Texture to consider and
+    // incorporate these flags. For now, this should be a no-op call.
+    this->setLabel(label);
+    this->synchronizeBackendLabel();
+}
 
 Texture::~Texture() = default;
 
