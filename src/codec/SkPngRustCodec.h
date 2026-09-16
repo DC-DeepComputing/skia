@@ -98,6 +98,11 @@ private:
         size_t fYByteOffset = 0;
     };
 
+    // Helper to query whether the image supports sampling or subsetting
+    // (only static full-canvas images are supported; APNG animations and
+    // offset frames are unsupported).
+    bool supportsSamplingOrSubsetting();
+
     // Helper for validating parameters of `onGetPixels` and/or
     // `onStartIncrementalDecode`.  If `kSuccess` is returned then
     // `decodingState` output parameter got populated.

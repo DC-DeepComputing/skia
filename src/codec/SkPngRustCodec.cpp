@@ -638,16 +638,19 @@ SkCodec::Result SkPngRustCodec::startDecoding(const SkImageInfo& dstInfo,
                                               size_t rowBytes,
                                               const Options& options,
                                               DecodingState* decodingState) {
-    // TODO(https://crbug.com/362830091): Consider handling `fSubset` for APNG.
-    if (options.fSubset && this->isAnimated() != IsAnimated::kNo) {
-        return kUnimplemented;
-    }
-
     if (options.fFrameIndex < 0 || options.fFrameIndex >= fFrameHolder.size()) {
         return kInvalidParameters;
     }
     const SkFrame* frame = fFrameHolder.getFrame(options.fFrameIndex);
     SkASSERT_RELEASE(frame);
+
+    // Subsetting and downsampling are only supported on static images that cover
+    // the full canvas. Animated APNGs and frames with non-zero offsets cannot be
+    // translated into subset or downsampled buffers.
+    // TODO(https://crbug.com/362830091): Consider handling `fSubset` for APNG.
+    if (options.fSubset && !this->supportsSamplingOrSubsetting()) {
+        return kUnimplemented;
+    }
 
     Result result = this->seekToStartOfFrame(options.fFrameIndex);
     if (result != kSuccess) {
@@ -717,11 +720,20 @@ SkCodec::Result SkPngRustCodec::startDecoding(const SkImageInfo& dstInfo,
             return kErrorInInput;
         }
 
-        decodingDst.fDst = SkSpan(static_cast<uint8_t*>(pixels), imageSize)
-                                .subspan(xByteOffsetFrame)
-                                .subspan(yByteOffsetFrame);
-        if (frameHeightTimesRowStride < decodingDst.fDst.size()) {
-            decodingDst.fDst = decodingDst.fDst.first(frameHeightTimesRowStride);
+        if (!this->supportsSamplingOrSubsetting() && rowBytes < dstInfo.minRowBytes()) {
+            // SkSampledCodec passed a downsampled buffer with native canvas dimensions,
+            // so rowBytes is smaller than dstInfo.minRowBytes().  Applying the frame's
+            // canvas-space origin would compute an out-of-bounds span.
+            // Leave fDst empty; SkSampledCodec requires startIncrementalDecode to succeed
+            // before it queries getSampler(true), which will refuse the decode.
+            decodingDst.fDst = {};
+        } else {
+            decodingDst.fDst = SkSpan(static_cast<uint8_t*>(pixels), imageSize)
+                                       .subspan(xByteOffsetFrame)
+                                       .subspan(yByteOffsetFrame);
+            if (frameHeightTimesRowStride < decodingDst.fDst.size()) {
+                decodingDst.fDst = decodingDst.fDst.first(frameHeightTimesRowStride);
+            }
         }
 
         if (fReader->interlaced()) {
@@ -1416,8 +1428,20 @@ SkCodec::Result SkPngRustCodec::FrameHolder::setFrameInfoFromCurrentFctlChunk(
 
 void SkPngRustCodec::processUnknownChunks() { ReadUnknownChunks(*fReader, fPngChunkReader.get()); }
 
+bool SkPngRustCodec::supportsSamplingOrSubsetting() {
+    if (this->isAnimated() != IsAnimated::kNo || fFrameHolder.size() == 0) {
+        return false;
+    }
+    const SkFrame* frame = fFrameHolder.getFrame(0);
+    return frame && frame->frameRect() == this->bounds();
+}
+
 SkSampler* SkPngRustCodec::getSampler(bool createIfNecessary) {
-    if (this->isAnimated() != IsAnimated::kNo) {
+    if (!this->supportsSamplingOrSubsetting()) {
+        if (createIfNecessary) {
+            // Clean up tentative decoding state set up by startIncrementalDecode.
+            fIncrementalDecodingState.reset();
+        }
         return nullptr;
     }
     return SkPngCodecBase::getSampler(createIfNecessary);
