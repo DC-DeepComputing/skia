@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8453645a_0584806e",
+        "filename": "tools/ios_test_app_main.mm",
+        "patchSetId": 15
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-09-16T16:45:01Z",
+      "side": 1,
+      "message": "Please take a close look at this file, this was done by Gemini and I\u0027m not at all familiar with this stuff.",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 2
+      },
+      "revId": "e3e265dcee2b3c4c9c5dbdc9b8d79cb63c2b4bd9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
