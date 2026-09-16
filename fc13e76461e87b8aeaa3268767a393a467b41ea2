@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eeaaaaf4_068bc33b",
+        "filename": "src/gpu/graphite/StorageContext.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-16T18:39:58Z",
+      "side": 1,
+      "message": "Does just doing `SkAlign4(numStops * 5)` and skipping alignedOffsetCount work?",
+      "range": {
+        "startLine": 85,
+        "startChar": 14,
+        "endLine": 85,
+        "endChar": 59
+      },
+      "revId": "fc13e76461e87b8aeaa3268767a393a467b41ea2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b54e7d4d_ab9040ba",
+        "filename": "src/gpu/graphite/StorageContext.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-16T18:39:58Z",
+      "side": 1,
+      "message": "Can we add a TODO that this should be optimized to write the gradient data and vertex data to the GPU mapped buffer instead of adding this extra copy?\n\nWhat we are missing in UploadSource or UploadInstance is a way to do three things that will make this code cleaner:\n\n1. Operate on just a TextureFormat\u0027s data directly so we don\u0027t have to play games with kColorType or worry about the color conversion workflow.\n2. Have some type of writer that can go through the multiple 1D sources of data and splat it out into the 2D transfer+texture rowbyte aligned layout without making an intermediate copy.\n3. Write directly to the GPU mapped buffer.\n\nRight now UploadSource is what requires the original single 2D array data, and then UploadInstance\u0027s factory gets the GPU mapped buffer and re-arranges the data into the final rowbyte-aligned layout in said GPU buffer.\n\nIf we cut UploadSource out of the equation, we could have an UploadInstance factory function that creates the GPU buffer and then invokes a function that is passed the texture upload writer that lets us copy the gradient and vertex data in directly. This could also be defined to just take the TextureFormat so it gives very direct control over the upload preparation. It could also have helpers that write a row of data, or converts a dense 1D array into N rows of data automatically.\n\nI think it\u0027s fine to land this as is since it will work, and will let us then add actual use of the texture storage before we go back and adjust the uploading.",
+      "range": {
+        "startLine": 252,
+        "startChar": 4,
+        "endLine": 263,
+        "endChar": 0
+      },
+      "revId": "fc13e76461e87b8aeaa3268767a393a467b41ea2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c0700fd_d870ad33",
+        "filename": "src/gpu/graphite/StorageContext.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-16T18:39:58Z",
+      "side": 1,
+      "message": "I think we can get the DrawBufferManager from the Recorder so this could just be Recorder and DrawTask",
+      "range": {
+        "startLine": 74,
+        "startChar": 54,
+        "endLine": 74,
+        "endChar": 62
+      },
+      "revId": "fc13e76461e87b8aeaa3268767a393a467b41ea2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
