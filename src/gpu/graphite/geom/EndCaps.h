@@ -49,12 +49,18 @@ public:
         fCaps.push_back(EndCap(x, y, width, alphaIndex, texPage));
     }
 
-    void addProxy(sk_sp<TextureProxy> texture) {
-        if (fProxies.size() < SparseStripConfig::kMaxTexturePages) {
-            fProxies.push_back(texture);
-        } else {
-            SKIA_LOG_W("Warning, exceeded max textures per endcap renderstep");
+    void markFirstNullCap() {
+        if (fFirstNullCapIndex == -1) {
+            fFirstNullCapIndex = static_cast<int32_t>(fCaps.size());
         }
+    }
+
+    void setProxy(int slot, sk_sp<TextureProxy> proxy) {
+        SkASSERT(slot >= 0 && slot < SparseStripConfig::kMaxTexturePages);
+        if (fProxies.size() <= slot) {
+            fProxies.resize(slot + 1);
+        }
+        fProxies[slot] = std::move(proxy);
     }
 
     const skia_private::TArray<EndCap>& caps() const { return fCaps; }
@@ -63,14 +69,29 @@ public:
 
     bool empty() const { return fCaps.empty(); }
     size_t size() const { return fCaps.size(); }
+    bool hasNullCaps() const { return fFirstNullCapIndex != -1; }
+    int32_t firstNullCapIndex() const { return fFirstNullCapIndex; }
+    void setFirstNullCapIndex(int32_t index) { fFirstNullCapIndex = index; }
+    void clearNullCaps() { fFirstNullCapIndex = -1; }
+
+    int32_t drawStartIndex() const { return fDrawStartIndex; }
+    int32_t drawEndIndex() const {
+        return this->hasNullCaps() ? fFirstNullCapIndex : static_cast<int32_t>(fCaps.size());
+    }
+    void setDrawStartIndex(int32_t index) { fDrawStartIndex = index; }
+
     void clear() {
         fCaps.clear();
         fProxies.clear();
+        fFirstNullCapIndex = -1;
+        fDrawStartIndex = 0;
     }
 
 private:
     skia_private::TArray<EndCap> fCaps;
     skia_private::STArray<SparseStripConfig::kMaxTexturePages, sk_sp<TextureProxy>> fProxies;
+    int32_t fDrawStartIndex = 0;
+    int32_t fFirstNullCapIndex = -1;
 };
 
 }  // namespace skgpu::graphite
