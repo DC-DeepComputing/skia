@@ -1,0 +1,251 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ffb61d4_6b35d841",
+        "filename": "modules/skottie/src/BlendModes.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-16T13:12:45Z",
+      "side": 1,
+      "message": "4 spaces left please",
+      "range": {
+        "startLine": 51,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 50
+      },
+      "revId": "a9e0f2569c27f36c8517049358f1868770dfb474",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de2e6887_e2028322",
+        "filename": "modules/skottie/src/Layer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-16T13:12:45Z",
+      "side": 1,
+      "message": "Can we employ a:\n    using BuilderInfo \u003d skottie::internal::LayerBuilder::BuilderInfo;\nto condense this?\n\nI think they will still be overlength even with that so we could also remove the \"\u0027ty\u0027: \" from all the comments and add a comment at the top like:\n    // This array maps the \u0027ty\u0027 field to the appropriate layer building member function",
+      "revId": "a9e0f2569c27f36c8517049358f1868770dfb474",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59e8d806_91d64ce1",
+        "filename": "modules/skottie/src/effects/DisplacementMapEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-16T13:12:45Z",
+      "side": 1,
+      "message": "4 left. Also, I believe the spaces before the c_scale and c_offset initializers was intentional.",
+      "range": {
+        "startLine": 160,
+        "startChar": 0,
+        "endLine": 171,
+        "endChar": 82
+      },
+      "revId": "a9e0f2569c27f36c8517049358f1868770dfb474",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9cd58661_448d4c38",
+        "filename": "modules/skottie/src/effects/FractalNoiseEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-16T13:12:45Z",
+      "side": 1,
+      "message": "4 left here and in gFractals",
+      "range": {
+        "startLine": 228,
+        "startChar": 0,
+        "endLine": 230,
+        "endChar": 34
+      },
+      "revId": "a9e0f2569c27f36c8517049358f1868770dfb474",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6b16320_7b625aa4",
+        "filename": "modules/skottie/src/effects/FractalNoiseEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-16T13:12:45Z",
+      "side": 1,
+      "message": "There\u0027s got to be some better way to format this",
+      "range": {
+        "startLine": 267,
+        "startChar": 0,
+        "endLine": 270,
+        "endChar": 25
+      },
+      "revId": "a9e0f2569c27f36c8517049358f1868770dfb474",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "079dd868_420a2633",
+        "filename": "modules/skottie/src/effects/GaussianBlurEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-16T13:12:45Z",
+      "side": 1,
+      "message": "4 left",
+      "range": {
+        "startLine": 64,
+        "startChar": 0,
+        "endLine": 66,
+        "endChar": 49
+      },
+      "revId": "a9e0f2569c27f36c8517049358f1868770dfb474",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ae4e94b_ca2ecbb1",
+        "filename": "modules/skottie/src/layers/shapelayer/FillStroke.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-16T13:12:45Z",
+      "side": 1,
+      "message": "4 spaces left - here and for \u0027gCaps\u0027 too",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 62,
+        "endChar": 41
+      },
+      "revId": "a9e0f2569c27f36c8517049358f1868770dfb474",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b43b0906_a5be7b91",
+        "filename": "modules/skottie/src/layers/shapelayer/MergePaths.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-16T13:12:45Z",
+      "side": 1,
+      "message": "4 left please",
+      "range": {
+        "startLine": 42,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 55
+      },
+      "revId": "a9e0f2569c27f36c8517049358f1868770dfb474",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b5f18eb_f0f5f8dc",
+        "filename": "modules/skottie/src/layers/shapelayer/OffsetPaths.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-16T13:12:45Z",
+      "side": 1,
+      "message": "4 left please",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 49
+      },
+      "revId": "a9e0f2569c27f36c8517049358f1868770dfb474",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11e9468a_b7b9a564",
+        "filename": "modules/skottie/src/layers/shapelayer/Polystar.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-16T13:12:45Z",
+      "side": 1,
+      "message": "4 left please\n\nIn all the following cases too please",
+      "range": {
+        "startLine": 104,
+        "startChar": 0,
+        "endLine": 105,
+        "endChar": 61
+      },
+      "revId": "a9e0f2569c27f36c8517049358f1868770dfb474",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9e8180d_bb2c0eb8",
+        "filename": "modules/skottie/src/text/RangeSelector.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-16T13:12:45Z",
+      "side": 1,
+      "message": "4 left and line up as with prior formatting",
+      "range": {
+        "startLine": 218,
+        "startChar": 0,
+        "endLine": 223,
+        "endChar": 88
+      },
+      "revId": "a9e0f2569c27f36c8517049358f1868770dfb474",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
