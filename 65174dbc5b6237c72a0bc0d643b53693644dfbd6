@@ -1,0 +1,188 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a0e43b1_ab5016cc",
+        "filename": "bench/AlternatingColorPatternBench.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-16T12:17:47Z",
+      "side": 1,
+      "message": "Please line all these up like they were in the earlier incarnation",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 92
+      },
+      "revId": "65174dbc5b6237c72a0bc0d643b53693644dfbd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ae63380_addefc14",
+        "filename": "bench/BlendmodeBench.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-16T12:17:47Z",
+      "side": 1,
+      "message": "Left 4 spaces please",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 33,
+        "endChar": 17
+      },
+      "revId": "65174dbc5b6237c72a0bc0d643b53693644dfbd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e16d2b78_7d1b064e",
+        "filename": "bench/BlurBench.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-16T12:17:47Z",
+      "side": 1,
+      "message": "Left four spaces",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 16
+      },
+      "revId": "65174dbc5b6237c72a0bc0d643b53693644dfbd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c15711e_409e65a4",
+        "filename": "bench/FontCacheBench.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-16T12:17:47Z",
+      "side": 1,
+      "message": "HashTestCase",
+      "range": {
+        "startLine": 72,
+        "startChar": 7,
+        "endLine": 72,
+        "endChar": 11
+      },
+      "revId": "65174dbc5b6237c72a0bc0d643b53693644dfbd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6bef8c6a_4ba8bc0c",
+        "filename": "bench/FontCacheBench.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-16T12:17:47Z",
+      "side": 1,
+      "message": "left 4 spaces",
+      "range": {
+        "startLine": 77,
+        "startChar": 0,
+        "endLine": 78,
+        "endChar": 41
+      },
+      "revId": "65174dbc5b6237c72a0bc0d643b53693644dfbd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9465857c_5a868fbd",
+        "filename": "bench/GeometryBench.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-16T12:17:47Z",
+      "side": 1,
+      "message": "Move both of these to the top of the file.",
+      "range": {
+        "startLine": 250,
+        "startChar": 0,
+        "endLine": 253,
+        "endChar": 16
+      },
+      "revId": "65174dbc5b6237c72a0bc0d643b53693644dfbd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4630be8_e09db4ed",
+        "filename": "bench/GradientBench.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-16T12:17:47Z",
+      "side": 1,
+      "message": "GradTestCase",
+      "range": {
+        "startLine": 135,
+        "startChar": 7,
+        "endLine": 135,
+        "endChar": 13
+      },
+      "revId": "65174dbc5b6237c72a0bc0d643b53693644dfbd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8bbac340_e9cd9431",
+        "filename": "bench/GradientBench.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-16T12:17:47Z",
+      "side": 1,
+      "message": "Indent and line up as before",
+      "range": {
+        "startLine": 140,
+        "startChar": 0,
+        "endLine": 146,
+        "endChar": 60
+      },
+      "revId": "65174dbc5b6237c72a0bc0d643b53693644dfbd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
