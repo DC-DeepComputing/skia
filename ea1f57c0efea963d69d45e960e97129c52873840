@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c97ff98_03adfe0b",
+        "filename": "src/gpu/graphite/vk/VulkanSpirvTransforms.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-09-16T14:20:57Z",
+      "side": 1,
+      "message": "should we update this as well?",
+      "range": {
+        "startLine": 14,
+        "startChar": 7,
+        "endLine": 14,
+        "endChar": 15
+      },
+      "revId": "ea1f57c0efea963d69d45e960e97129c52873840",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
