@@ -73,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "97d7fc9b_adede778",
+        "filename": "src/gpu/graphite/StorageContext.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-16T18:55:30Z",
+      "side": 1,
+      "message": "For 2 and 3, I meant more that we could write from fVertexData and the gradient cache data into the GPU mapped buffer (so 1 level of indirection since we have to accumulate the vertex and gradient data separately), but that we could skip having to create a temporary array on the CPU that holds the combined vertex and gradient data before copying that to the GPU buffer.",
+      "parentUuid": "c9a73f82_aa01b5f4",
+      "range": {
+        "startLine": 252,
+        "startChar": 4,
+        "endLine": 263,
+        "endChar": 0
+      },
+      "revId": "fc13e76461e87b8aeaa3268767a393a467b41ea2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3c0700fd_d870ad33",
         "filename": "src/gpu/graphite/StorageContext.h",
         "patchSetId": 1
