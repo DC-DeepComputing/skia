@@ -30,19 +30,22 @@ public:
     static sk_sp<Texture> Make(const DawnSharedContext*,
                                SkISize dimensions,
                                const TextureInfo&,
-                               std::string_view label);
+                               std::string_view label,
+                               SkEnumBitMask<TextureUsageFlags> usages);
 
     static sk_sp<Texture> MakeWrapped(const DawnSharedContext*,
                                       SkISize dimensions,
                                       const TextureInfo&,
                                       wgpu::Texture,
-                                      std::string_view label);
+                                      std::string_view label,
+                                      SkEnumBitMask<TextureUsageFlags> usages);
 
     static sk_sp<Texture> MakeWrapped(const DawnSharedContext*,
                                       SkISize dimensions,
                                       const TextureInfo&,
                                       const wgpu::TextureView&,
-                                      std::string_view label);
+                                      std::string_view label,
+                                      SkEnumBitMask<TextureUsageFlags> usages);
 
     ~DawnTexture() override {}
 

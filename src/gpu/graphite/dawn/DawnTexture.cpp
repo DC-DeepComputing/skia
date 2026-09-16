@@ -97,14 +97,16 @@ DawnTexture::DawnTexture(const DawnSharedContext* sharedContext,
                          wgpu::TextureView sampleTextureView,
                          wgpu::TextureView renderTextureView,
                          Ownership ownership,
-                         std::string_view label)
+                         std::string_view label,
+                         SkEnumBitMask<TextureUsageFlags> usages)
         : Texture(sharedContext,
                   dimensions,
                   info,
                   /*isTransient=*/has_transient_usage(info),
                   /*mutableState=*/nullptr,
                   ownership,
-                  label)
+                  label,
+                  usages)
         , fTexture(std::move(texture))
         , fSampleTextureView(std::move(sampleTextureView))
         , fRenderTextureView(std::move(renderTextureView)) {
@@ -165,7 +167,8 @@ std::pair<wgpu::TextureView, wgpu::TextureView> DawnTexture::CreateTextureViews(
 sk_sp<Texture> DawnTexture::Make(const DawnSharedContext* sharedContext,
                                  SkISize dimensions,
                                  const TextureInfo& info,
-                                 std::string_view label) {
+                                 std::string_view label,
+                                 SkEnumBitMask<TextureUsageFlags> usages) {
     auto texture = MakeDawnTexture(sharedContext, dimensions, info);
     if (!texture) {
         return {};
@@ -178,14 +181,16 @@ sk_sp<Texture> DawnTexture::Make(const DawnSharedContext* sharedContext,
                                           std::move(sampleTextureView),
                                           std::move(renderTextureView),
                                           Ownership::kOwned,
-                                          label));
+                                          label,
+                                          usages));
 }
 
 sk_sp<Texture> DawnTexture::MakeWrapped(const DawnSharedContext* sharedContext,
                                         SkISize dimensions,
                                         const TextureInfo& info,
                                         wgpu::Texture texture,
-                                        std::string_view label) {
+                                        std::string_view label,
+                                        SkEnumBitMask<TextureUsageFlags> usages) {
     if (!texture) {
         SKIA_LOG_E("No valid texture passed into MakeWrapped\n");
         return {};
@@ -199,14 +204,16 @@ sk_sp<Texture> DawnTexture::MakeWrapped(const DawnSharedContext* sharedContext,
                                           std::move(sampleTextureView),
                                           std::move(renderTextureView),
                                           Ownership::kWrapped,
-                                          label));
+                                          label,
+                                          usages));
 }
 
 sk_sp<Texture> DawnTexture::MakeWrapped(const DawnSharedContext* sharedContext,
                                         SkISize dimensions,
                                         const TextureInfo& info,
                                         const wgpu::TextureView& textureView,
-                                        std::string_view label) {
+                                        std::string_view label,
+                                        SkEnumBitMask<TextureUsageFlags> usages) {
     if (!textureView) {
         SKIA_LOG_E("No valid texture view passed into MakeWrapped\n");
         return {};
@@ -218,7 +225,8 @@ sk_sp<Texture> DawnTexture::MakeWrapped(const DawnSharedContext* sharedContext,
                                           /*sampleTextureView=*/textureView,
                                           /*renderTextureView=*/textureView,
                                           Ownership::kWrapped,
-                                          label));
+                                          label,
+                                          usages));
 }
 
 void DawnTexture::freeGpuData() {
