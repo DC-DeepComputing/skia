@@ -262,8 +262,9 @@ TextureProxyView MakeBitmapProxyView(Recorder* recorder,
         mipmapped = Mipmapped::kNo;
     }
 
-    Protected isProtected = recorder->priv().isProtected();
-    auto textureInfo = caps->getDefaultSampledTextureInfo(ct, mipmapped, isProtected,
+    // If we are constructing a texture from a bitmap, we can assume it can be  unprotected since
+    // we are only uploading CPU data to it.
+    auto textureInfo = caps->getDefaultSampledTextureInfo(ct, mipmapped, Protected::kNo,
                                                           Renderable::kNo);
     if (!textureInfo.isValid()) {
         return {};

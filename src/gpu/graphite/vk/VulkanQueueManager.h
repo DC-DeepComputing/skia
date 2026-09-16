@@ -18,12 +18,13 @@ class VulkanSharedContext;
 
 class VulkanQueueManager final : public QueueManager {
 public:
-    VulkanQueueManager(VkQueue queue, const SharedContext*);
-    ~VulkanQueueManager() override {}
+    VulkanQueueManager(VkQueue queue, VkQueue protectedQueue, const SharedContext*);
+    ~VulkanQueueManager() override;
 
 private:
     const VulkanSharedContext* vkSharedContext() const;
 
+    BackendSemaphore initProtectedTransitionSemaphore() override;
     std::unique_ptr<CommandBuffer> getNewCommandBuffer(ResourceProvider*, Protected) override;
     OutstandingSubmission onSubmitToGpu(const SubmitInfo& submitInfo) override;
 
@@ -34,6 +35,7 @@ private:
 #endif
 
     VkQueue fQueue;
+    VkQueue fProtectedQueue;
 };
 
 } // namespace skgpu::graphite
