@@ -324,4 +324,21 @@ bool RenderPassTask::visitProxies(const std::function<bool(const TextureProxy*)>
     return true;
 }
 
+Protected RenderPassTask::isProtected() const {
+    if (fTarget && fTarget->isProtected() == Protected::kYes) {
+        return Protected::kYes;
+    }
+    if (fDstCopy && fDstCopy->isProtected() == Protected::kYes) {
+        return Protected::kYes;
+    }
+    for (const std::unique_ptr<DrawPass>& pass : fDrawPasses) {
+        for (const sk_sp<TextureProxy>& proxy : pass->sampledTextures()) {
+            if (proxy && proxy->isProtected() == Protected::kYes) {
+                return Protected::kYes;
+            }
+        }
+    }
+    return Protected::kNo;
+}
+
 } // namespace skgpu::graphite

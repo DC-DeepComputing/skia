@@ -27,6 +27,10 @@ struct SK_API VulkanBackendContext {
     VkPhysicalDevice                 fPhysicalDevice = VK_NULL_HANDLE;
     VkDevice                         fDevice = VK_NULL_HANDLE;
     VkQueue                          fQueue = VK_NULL_HANDLE;
+    // Can be set along with fQueue to signal that the vulkan context should support both protected
+    // and unprotected calls within the same context. Expects fQueue to be set with the unprotected
+    // queue.
+    VkQueue                          fProtectedQueue = VK_NULL_HANDLE;
     uint32_t                         fGraphicsQueueIndex = 0;
     // The max api version set here should match the value set in VkApplicationInfo::apiVersion when
     // then VkInstance was created. Skia requires Vulkan 1.1 as the minimum version.
@@ -43,7 +47,9 @@ struct SK_API VulkanBackendContext {
     // for allocating Vulkan resources that use VkDeviceMemory.
     sk_sp<VulkanMemoryAllocator>     fMemoryAllocator;
     skgpu::VulkanGetProc             fGetProc;
+    // Always if fProtectedMultiQueueSupport is true.
     Protected                        fProtectedContext = Protected::kNo;
+    bool                             fProtectedMultiQueueSupport = false;
     // Optional callback which will be invoked if a VK_ERROR_DEVICE_LOST error code is received from
     // the driver. Debug information from the driver will be provided to the callback if the
     // VK_EXT_device_fault extension is supported and enabled (VkPhysicalDeviceFaultFeaturesEXT must
