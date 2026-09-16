@@ -34,10 +34,6 @@ double SkDLine::exactPoint(const SkDPoint& xy) const {
 }
 
 double SkDLine::nearPoint(const SkDPoint& xy, bool* unequal) const {
-    if (!AlmostBetweenUlps(fPts[0].fX, xy.fX, fPts[1].fX)
-            || !AlmostBetweenUlps(fPts[0].fY, xy.fY, fPts[1].fY)) {
-        return -1;
-    }
     // project a perpendicular ray from the point to the line; find the T on the line
     SkDVector len = fPts[1] - fPts[0]; // the x/y magnitudes of the line
     double denom = len.fX * len.fX + len.fY * len.fY;  // see DLine intersectRay
