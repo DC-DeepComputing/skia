@@ -398,7 +398,9 @@ sk_sp<SkImage> MakeWithFilter(Recorder* recorder,
         return nullptr;
     }
 
-    sk_sp<skif::Backend> backend = skif::MakeGraphiteBackend(recorder, {}, src->colorType());
+    skgpu::Protected isProtected = src->isProtected() ? skgpu::Protected::kYes
+                                                      : skgpu::Protected::kNo;
+    sk_sp<skif::Backend> backend = skif::MakeGraphiteBackend(recorder, {}, src->colorType(), isProtected);
     sk_sp<SkImage> image = as_IFB(filter)->makeImageWithFilter(std::move(backend),
                                                                std::move(src),
                                                                subset,

@@ -413,18 +413,21 @@ sk_sp<Device> Device::Make(Recorder* recorder,
                            const SkSurfaceProps& props,
                            LoadOp initialLoadOp,
                            std::string_view label,
-                           bool registerWithRecorder) {
+                           bool registerWithRecorder,
+                           std::optional<Protected> isProtected) {
     SkASSERT(!(mipmapped == Mipmapped::kYes && backingFit == SkBackingFit::kApprox));
     if (!recorder) {
         return nullptr;
     }
 
+    Protected protectedness = isProtected.has_value() ? *isProtected
+                                                      : recorder->priv().isProtected();
     const Caps* caps = recorder->priv().caps();
     SkISize backingDimensions = backingFit == SkBackingFit::kApprox ? GetApproxSize(ii.dimensions())
                                                                     : ii.dimensions();
     auto textureInfo = caps->getDefaultSampledTextureInfo(ii.colorType(),
                                                           mipmapped,
-                                                          recorder->priv().isProtected(),
+                                                          protectedness,
                                                           Renderable::kYes);
 
     return Make(recorder,
@@ -2441,7 +2444,9 @@ sk_sp<SkSpecialImage> Device::snapSpecial(const SkIRect& subset, bool forceCopy)
 
 sk_sp<skif::Backend> Device::createImageFilteringBackend(const SkSurfaceProps& surfaceProps,
                                                          SkColorType colorType) const {
-    return skif::MakeGraphiteBackend(fRecorder, surfaceProps, colorType);
+    Protected isProtected = fDC->target().proxy() ? fDC->target().proxy()->isProtected()
+                                                  : Protected::kNo;
+    return skif::MakeGraphiteBackend(fRecorder, surfaceProps, colorType, isProtected);
 }
 
 const TextureProxyView& Device::target() const { return fDC->target(); }

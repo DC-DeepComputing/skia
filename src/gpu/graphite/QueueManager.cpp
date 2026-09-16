@@ -36,6 +36,7 @@ static constexpr int kDefaultOutstandingAllocCnt = 8;
 QueueManager::QueueManager(const SharedContext* sharedContext)
         : fSharedContext(sharedContext)
         , fOutstandingSubmissions(sizeof(OutstandingSubmission), kDefaultOutstandingAllocCnt) {
+    fProtectedTransitionSemaphore = this->initProtectedTransitionSemaphore();
 }
 
 QueueManager::~QueueManager() {
@@ -47,41 +48,46 @@ QueueManager::~QueueManager() {
     }
 }
 
-std::vector<std::unique_ptr<CommandBuffer>>*
-QueueManager::getAvailableCommandBufferList(Protected isProtected) {
+std::vector<std::unique_ptr<CommandBuffer>>* QueueManager::getAvailableCommandBufferList(
+        Protected isProtected) {
     return isProtected == Protected::kNo ? &fAvailableCommandBuffers
                                          : &fAvailableProtectedCommandBuffers;
 }
 
-
 bool QueueManager::setupCommandBuffer(ResourceProvider* resourceProvider, Protected isProtected) {
-    if (!fCurrentCommandBuffer) {
+    std::unique_ptr<CommandBuffer>& commandBuffer
+            = isProtected == Protected::kNo ? fCurrentCommandBuffer
+                                            : fCurrentProtectedCommandBuffer;
+    if (!commandBuffer) {
         std::vector<std::unique_ptr<CommandBuffer>>* bufferList =
                 this->getAvailableCommandBufferList(isProtected);
         if (!bufferList->empty()) {
-            fCurrentCommandBuffer = std::move(bufferList->back());
+            commandBuffer = std::move(bufferList->back());
             bufferList->pop_back();
-            if (!fCurrentCommandBuffer->setNewCommandBufferResources()) {
-                fCurrentCommandBuffer.reset();
+            if (!commandBuffer->setNewCommandBufferResources()) {
+                commandBuffer.reset();
             }
         }
-    } else {
-        if (fCurrentCommandBuffer->isProtected() != isProtected) {
-            // If we're doing things where we are switching between using protected and unprotected
-            // command buffers, it is our job to make sure previous work was submitted.
-            SKIA_LOG_E("Trying to use a CommandBuffer with protectedness that differs from our "
-                        "current active command buffer.");
-            return false;
-        }
     }
-    if (!fCurrentCommandBuffer) {
-        fCurrentCommandBuffer = this->getNewCommandBuffer(resourceProvider, isProtected);
+    if (!commandBuffer) {
+        commandBuffer = this->getNewCommandBuffer(resourceProvider, isProtected);
     }
-    if (!fCurrentCommandBuffer) {
+    if (!commandBuffer) {
         return false;
     }
 
     return true;
+}
+
+CommandBuffer* QueueManager::getCurrentCommandBuffer(Protected isProtected) {
+    return isProtected == Protected::kNo ? fCurrentCommandBuffer.get() : fCurrentProtectedCommandBuffer.get();
+}
+
+Protected QueueManager::getDefaultProtectedness() {
+    return this->protectedMultiQueueSupport() ? skgpu::Protected::kNo
+                                              : fSharedContext->caps()->protectedSupport()
+                                                    ? skgpu::Protected::kYes
+                                                    : skgpu::Protected::kNo;
 }
 
 InsertStatus QueueManager::addRecording(const InsertRecordingInfo& info, Context* context) {
@@ -143,11 +149,28 @@ InsertStatus QueueManager::addRecording(const InsertRecordingInfo& info, Context
     SIMULATE_FAIL(InsertStatus::kInvalidRecording);
 
     auto resourceProvider = context->priv().resourceProvider();
-    // Technically no commands have been added yet, but if this fails, things are in a bad state
-    // so signal the unrecoverable status.
-    RETURN_FAIL_IF(!this->setupCommandBuffer(resourceProvider, fSharedContext->isProtected()),
-                   InsertStatus::kAddCommandsFailed,
-                   "CommandBuffer creation failed");
+    TaskList* taskList = info.fRecording->priv().taskList();
+
+    if (this->protectedMultiQueueSupport()) {
+        const bool hasUnprotected = taskList->hasTasks(Protected::kNo);
+        const bool hasProtected   = taskList->hasTasks(Protected::kYes);
+
+        if (hasUnprotected) {
+            RETURN_FAIL_IF(!this->setupCommandBuffer(resourceProvider, Protected::kNo),
+                           InsertStatus::kAddCommandsFailed,
+                           "Unprotected CommandBuffer creation failed");
+        }
+        if (hasProtected) {
+            RETURN_FAIL_IF(!this->setupCommandBuffer(resourceProvider, Protected::kYes),
+                           InsertStatus::kAddCommandsFailed,
+                           "Protected CommandBuffer creation failed");
+        }
+    } else {
+        Protected isProtected = fSharedContext->isProtected();
+        RETURN_FAIL_IF(!this->setupCommandBuffer(resourceProvider, isProtected),
+                       InsertStatus::kAddCommandsFailed,
+                       "CommandBuffer creation failed");
+    }
 
     // This must happen before instantiating the lazy proxies, because the target for draws in this
     // recording may itself be a lazy proxy whose instantiation must be handled specially here.
@@ -186,54 +209,115 @@ InsertStatus QueueManager::addRecording(const InsertRecordingInfo& info, Context
     SIMULATE_FAIL(InsertStatus::kPromiseImageInstantiationFailed);
 
     if (activeStatsFlags != GpuStatsFlags::kNone) {
-        if (!fCurrentCommandBuffer->startStatsQuery(activeStatsFlags)) {
+        if (fCurrentCommandBuffer && !fCurrentCommandBuffer->startStatsQuery(activeStatsFlags)) {
+            activeStatsFlags = GpuStatsFlags::kNone;
+        }
+        if (fCurrentProtectedCommandBuffer &&
+                !fCurrentProtectedCommandBuffer->startStatsQuery(activeStatsFlags)) {
             activeStatsFlags = GpuStatsFlags::kNone;
         }
     }
-    fCurrentCommandBuffer->addWaitSemaphores(info.fNumWaitSemaphores, info.fWaitSemaphores);
-    if (!info.fRecording->priv().addCommands(context,
-                                             fCurrentCommandBuffer.get(),
-                                             replayTarget,
-                                             info.fTargetTranslation,
-                                             info.fTargetClip)) {
-        // If the commands failed, iterate over all the used pipelines to see if their async
-        // compilation was the reason for failure. Clients that manage pipeline disk caches may
-        // want to handle the failure differently than when any other GPU command failed.
-        // We will only report the 1st pipeline creation's failure message.
-        std::string failureMsg;
-        const bool validPipelines = info.fRecording->priv().taskList()->visitPipelines(
-                [&failureMsg](const GraphicsPipeline* pipeline) {
-                    if (auto failure = pipeline->didAsyncCompilationFail()) {
-                        failureMsg = *failure;
-                        return false;
-                    }
-                    return true;
-                });
 
-        // We are already definitely going to fail, it's just a matter of which status to return
-        RETURN_FAIL_IF(validPipelines,
-                       InsertStatus::kAddCommandsFailed,
-                       "Adding Recording commands to the CommandBuffer has failed");
-        RETURN_FAIL_IF(
-                true,
-                InsertStatus(InsertStatus::kAsyncShaderCompilesFailed, std::move(failureMsg)),
-                "Async pipeline compiles failed, unable to add Recording commands");
+    if (this->protectedMultiQueueSupport()) {
+        bool unprotectedSuccess = true;
+        bool protectedSuccess = true;
+
+        if (fCurrentCommandBuffer) {
+            fCurrentCommandBuffer->addWaitSemaphores(info.fNumWaitSemaphores, info.fWaitSemaphores);
+            unprotectedSuccess = info.fRecording->priv().addCommands(context,
+                                                                     fCurrentCommandBuffer.get(),
+                                                                     replayTarget,
+                                                                     info.fTargetTranslation,
+                                                                     info.fTargetClip);
+        }
+
+        if (fCurrentProtectedCommandBuffer) {
+            if (!fCurrentCommandBuffer) {
+                fCurrentProtectedCommandBuffer->addWaitSemaphores(info.fNumWaitSemaphores,
+                                                                  info.fWaitSemaphores);
+            }
+            protectedSuccess
+                = info.fRecording->priv().addCommands(context,
+                                                      fCurrentProtectedCommandBuffer.get(),
+                                                      replayTarget,
+                                                      info.fTargetTranslation,
+                                                      info.fTargetClip);
+        }
+
+        if (!unprotectedSuccess || !protectedSuccess) {
+            std::string failureMsg;
+            const bool validPipelines = info.fRecording->priv().taskList()->visitPipelines(
+                    [&failureMsg](const GraphicsPipeline* pipeline) {
+                        if (auto failure = pipeline->didAsyncCompilationFail()) {
+                            failureMsg = *failure;
+                            return false;
+                        }
+                        return true;
+                    });
+
+            RETURN_FAIL_IF(validPipelines,
+                           InsertStatus::kAddCommandsFailed,
+                           "Adding Recording commands to the CommandBuffer has failed");
+            RETURN_FAIL_IF(
+                    true,
+                    InsertStatus(InsertStatus::kAsyncShaderCompilesFailed, std::move(failureMsg)),
+                    "Async pipeline compiles failed, unable to add Recording commands");
+        }
+
+        if (fCurrentCommandBuffer && fCurrentProtectedCommandBuffer) {
+            RETURN_FAIL_IF(!fProtectedTransitionSemaphore.isValid(),
+                           InsertStatus::kAddCommandsFailed,
+                           "Semaphore to transition from unprotected to protected submit is not "
+                           "valid");
+
+            fCurrentCommandBuffer->addSignalSemaphores(1, &fProtectedTransitionSemaphore);
+            fCurrentProtectedCommandBuffer->addWaitSemaphores(1, &fProtectedTransitionSemaphore);
+        }
+    } else {
+        CommandBuffer* activeCmdBuffer = this->getCurrentCommandBuffer(Protected::kNo);
+        activeCmdBuffer->addWaitSemaphores(info.fNumWaitSemaphores, info.fWaitSemaphores);
+        if (!info.fRecording->priv().addCommands(context,
+                                                 activeCmdBuffer,
+                                                 replayTarget,
+                                                 info.fTargetTranslation,
+                                                 info.fTargetClip)) {
+            std::string failureMsg;
+            const bool validPipelines = info.fRecording->priv().taskList()->visitPipelines(
+                    [&failureMsg](const GraphicsPipeline* pipeline) {
+                        if (auto failure = pipeline->didAsyncCompilationFail()) {
+                            failureMsg = *failure;
+                            return false;
+                        }
+                        return true;
+                    });
+
+            RETURN_FAIL_IF(validPipelines,
+                           InsertStatus::kAddCommandsFailed,
+                           "Adding Recording commands to the CommandBuffer has failed");
+            RETURN_FAIL_IF(
+                    true,
+                    InsertStatus(InsertStatus::kAsyncShaderCompilesFailed, std::move(failureMsg)),
+                    "Async pipeline compiles failed, unable to add Recording commands");
+        }
     }
 
     SIMULATE_FAIL(InsertStatus::kAddCommandsFailed);
     SIMULATE_FAIL(InsertStatus::kAsyncShaderCompilesFailed);
 
-    fCurrentCommandBuffer->addSignalSemaphores(info.fNumSignalSemaphores, info.fSignalSemaphores);
-    if (info.fTargetTextureState) {
-        fCurrentCommandBuffer->prepareSurfaceForStateUpdate(info.fTargetSurface,
-                                                            info.fTargetTextureState);
-    }
-    if (activeStatsFlags != GpuStatsFlags::kNone) {
-        fCurrentCommandBuffer->endStatsQuery(activeStatsFlags);
-    }
+    CommandBuffer* lastCmdBuffer
+        = fCurrentProtectedCommandBuffer ? fCurrentProtectedCommandBuffer.get()
+                                         : fCurrentCommandBuffer.get();
 
-    if (callback) {
-        fCurrentCommandBuffer->addFinishedProc(std::move(callback));
+    if (lastCmdBuffer) {
+        lastCmdBuffer->addSignalSemaphores(info.fNumSignalSemaphores, info.fSignalSemaphores);
+        if (info.fTargetTextureState) {
+            lastCmdBuffer->prepareSurfaceForStateUpdate(info.fTargetSurface,
+                                                        info.fTargetTextureState);
+        }
+
+        if (callback) {
+            lastCmdBuffer->addFinishedProc(std::move(callback));
+        }
     }
 
     info.fRecording->priv().deinstantiateVolatileLazyProxies();
@@ -253,12 +337,17 @@ bool QueueManager::addTask(Task* task,
         return false;
     }
 
+    if (!this->protectedMultiQueueSupport()) {
+        isProtected = fSharedContext->isProtected();
+    }
+
     if (!this->setupCommandBuffer(context->priv().resourceProvider(), isProtected)) {
         SKIA_LOG_E("CommandBuffer creation failed");
         return false;
     }
 
-    if (task->addCommands(context, fCurrentCommandBuffer.get(), {}) == Task::Status::kFail) {
+    CommandBuffer* activeCmdBuffer = this->getCurrentCommandBuffer(isProtected);
+    if (task->addCommands(context, activeCmdBuffer, {}) == Task::Status::kFail) {
         SKIA_LOG_E("Adding Task commands to the CommandBuffer has failed");
         return false;
     }
@@ -274,7 +363,7 @@ bool QueueManager::addFinishInfo(const InsertFinishInfo& info,
         callback = RefCntedCallback::Make(info.fFinishedProc, info.fFinishedContext);
     }
 
-    if (!this->setupCommandBuffer(resourceProvider, fSharedContext->isProtected())) {
+    if (!this->setupCommandBuffer(resourceProvider, this->getDefaultProtectedness())) {
         if (callback) {
             callback->setFailureResult();
         }
@@ -282,10 +371,11 @@ bool QueueManager::addFinishInfo(const InsertFinishInfo& info,
         return false;
     }
 
+    CommandBuffer* activeCmdBuffer = this->getCurrentCommandBuffer(this->getDefaultProtectedness());
     if (callback) {
-        fCurrentCommandBuffer->addFinishedProc(std::move(callback));
+        activeCmdBuffer->addFinishedProc(std::move(callback));
     }
-    fCurrentCommandBuffer->addBuffersToAsyncMapOnSubmit(buffersToAsyncMap);
+    activeCmdBuffer->addBuffersToAsyncMapOnSubmit(buffersToAsyncMap);
 
     return true;
 }
@@ -298,32 +388,65 @@ bool QueueManager::submitToGpu(const SubmitInfo& submitInfo) {
         callback = RefCntedCallback::Make(submitInfo.fFinishedProc, submitInfo.fFinishedContext);
     }
 
-    if (!fCurrentCommandBuffer) {
-        // If a finish proc was provided, attach it to the most recent outstanding submission,
-        // or let it fire immediately if the GPU is idle (when callback goes out of scope).
-        if (callback) {
-            if (!fOutstandingSubmissions.empty()) {
-                OutstandingSubmission* back =
-                        (OutstandingSubmission*)fOutstandingSubmissions.back();
-                (*back)->addFinishedProc(std::move(callback));
+    if (this->protectedMultiQueueSupport()) {
+        if (!fCurrentCommandBuffer && !fCurrentProtectedCommandBuffer) {
+            // If a finish proc was provided, attach it to the most recent outstanding submission,
+            // or let it fire immediately if the GPU is idle (when callback goes out of scope).
+            if (callback) {
+                if (!fOutstandingSubmissions.empty()) {
+                    OutstandingSubmission* back =
+                            (OutstandingSubmission*)fOutstandingSubmissions.back();
+                    (*back)->addFinishedProc(std::move(callback));
+                }
+                return true;
             }
+            // We warn because this probably representative of a bad client state, where they don't
+            // need to submit but didn't notice, but technically the submit itself is fine (no-op),
+            // so we return true.
+            SKIA_LOG_D("Submit called with no active command buffer!");
             return true;
         }
-        // We warn because this probably representative of a bad client state, where they don't
-        // need to submit but didn't notice, but technically the submit itself is fine (no-op), so
-        // we return true.
-        SKIA_LOG_D("Submit called with no active command buffer!");
-        return true;
-    }
+
+        // Attach the callback to the last submitted command buffer (we submit unprotected then
+        // protected).
+        if (callback) {
+            if (fCurrentProtectedCommandBuffer) {
+                fCurrentProtectedCommandBuffer->addFinishedProc(std::move(callback));
+            } else {
+                SkASSERT(fCurrentCommandBuffer);
+                fCurrentCommandBuffer->addFinishedProc(std::move(callback));
+            }
+        }
+    } else {
+        CommandBuffer* activeCmdBuffer
+            = this->getCurrentCommandBuffer(this->getDefaultProtectedness());
+        if (!activeCmdBuffer) {
+            // If a finish proc was provided, attach it to the most recent outstanding submission,
+            // or let it fire immediately if the GPU is idle (when callback goes out of scope).
+            if (callback) {
+                if (!fOutstandingSubmissions.empty()) {
+                    OutstandingSubmission* back =
+                            (OutstandingSubmission*)fOutstandingSubmissions.back();
+                    (*back)->addFinishedProc(std::move(callback));
+                }
+                return true;
+            }
+            // We warn because this probably representative of a bad client state, where they don't
+            // need to submit but didn't notice, but technically the submit itself is fine (no-op), so
+            // we return true.
+            SKIA_LOG_D("Submit called with no active command buffer!");
+            return true;
+        }
 
 #ifdef SK_DEBUG
-    if (!fCurrentCommandBuffer->hasWork()) {
-        SKIA_LOG_D("Submitting empty command buffer!");
-    }
+        if (!activeCmdBuffer->hasWork()) {
+            SKIA_LOG_D("Submitting empty command buffer!");
+        }
 #endif
 
-    if (callback) {
-        fCurrentCommandBuffer->addFinishedProc(std::move(callback));
+        if (callback) {
+            activeCmdBuffer->addFinishedProc(std::move(callback));
+        }
     }
 
     auto submission = this->onSubmitToGpu(submitInfo);
@@ -338,11 +461,11 @@ bool QueueManager::submitToGpu(const SubmitInfo& submitInfo) {
 bool QueueManager::hasUnfinishedGpuWork() { return !fOutstandingSubmissions.empty(); }
 
 bool QueueManager::hasPendingGPUWork() const {
-    // Only check if fCurrentCommandBuffer is non-null.
+    // Only check if fCurrentCommandBuffer/fCurrentProtectedCommandBuffer is non-null.
     // If there is no command in the command buffer i.e. fCurrentCommandBuffer->hasWork() is false,
     // it's still considered valid. Because clients can insert a recording without any command just
     // to track the finish proc.
-    return fCurrentCommandBuffer != nullptr;
+    return fCurrentCommandBuffer != nullptr || fCurrentProtectedCommandBuffer != nullptr;
 }
 
 void QueueManager::checkForFinishedWork(SyncToCpu sync) {
@@ -383,9 +506,14 @@ void QueueManager::returnCommandBuffer(std::unique_ptr<CommandBuffer> commandBuf
 
 void QueueManager::addUploadBufferManagerRefs(UploadBufferManager* uploadManager,
                                               ResourceProvider* resourceProvider) {
-    this->setupCommandBuffer(resourceProvider, skgpu::Protected::kNo);
-    SkASSERT(fCurrentCommandBuffer);
-    uploadManager->transferToCommandBuffer(fCurrentCommandBuffer.get());
+    this->setupCommandBuffer(resourceProvider, this->getDefaultProtectedness());
+    CommandBuffer* activeCmdBuffer = this->getCurrentCommandBuffer(this->getDefaultProtectedness());
+    SkASSERT(activeCmdBuffer);
+    uploadManager->transferToCommandBuffer(activeCmdBuffer);
+}
+
+bool QueueManager::protectedMultiQueueSupport() const {
+    return fSharedContext->caps()->protectedMultiQueueSupport();
 }
 
 } // namespace skgpu::graphite
