@@ -39,6 +39,30 @@
       },
       "revId": "02333f5617432ca271f05a7e793b9647f2110563",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "539d74b9_b65d973b",
+        "filename": "tests/graphite/sparse_strips/CoverageTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 300,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-16T14:33:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d9f43692_7a9003d9",
+      "range": {
+        "startLine": 300,
+        "startChar": 57,
+        "endLine": 300,
+        "endChar": 63
+      },
+      "revId": "02333f5617432ca271f05a7e793b9647f2110563",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
