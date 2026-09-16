@@ -9,6 +9,7 @@
 #define skgpu_graphite_Resource_DEFINED
 
 #include "include/gpu/GpuTypes.h"
+#include "include/private/SkEnumBitMask.h"
 #include "include/private/SkMutex.h"
 #include "src/gpu/GpuTypesPriv.h"
 #include "src/gpu/graphite/GraphiteResourceKey.h"
@@ -16,6 +17,7 @@
 
 #include <atomic>
 #include <functional>
+#include <optional>
 #include <string>
 #include <string_view>
 
@@ -301,6 +303,35 @@ protected:
 
     const SharedContext* sharedContext() const { return fSharedContext; }
 
+    // We allow the label on a Resource to change when used for a different function (e.g. when
+    // reusing a scratch Texture, we can change the label to reflect the caller's current usage).
+    // This method is only expected to be called when it is threadsafe to update the label.
+    // This means it should only be called:
+    //      A) during resource creation,
+    //      B) when returning a non-shareable resource from the cache, or
+    //      C) by the Context thread when updating scratch resource labels upon Recording insertion.
+    void setLabel(std::string_view label) {
+        std::optional<std::string> updatedLabel;
+        updatedLabel = this->onSetLabel(label);
+        if (updatedLabel.has_value()) {
+            fLabel = updatedLabel.value();
+            fBackendLabelDirty = true;
+        }
+    }
+
+    // Allow subclasses the opportunity to override onSetLabel(...) to define custom means of
+    // determining what a Resource's new label should be. By default, simply update it to
+    // `label` without considering any subclass-specific information. Returns an updated label or
+    // std::nullopt if no update is necessary.
+    // TODO(b/431796811): Add texture usage flags to this call signature for use on Texture objects.
+    virtual std::optional<std::string> onSetLabel(std::string_view label) {
+        if (fLabel == label) {
+            return std::nullopt;
+        }
+
+        return std::string(label);
+    }
+
     // Update the backend GPU resource label to match fLabel. This should only ever be called by the
     // ResourceCache or Resource subclass constructors.
     void synchronizeBackendLabel() {
@@ -444,22 +475,6 @@ private:
         return {(origRefs & fReusableRefMask) == RefMask(RefType::kReturnQueue),
                 (origRefs & PurgeableMask()) == 0,
                 next};
-    }
-
-    // We allow the label on a Resource to change when used for a different function (e.g. when
-    // reusing a scratch Texture, we can change the label to reflect the caller's current usage).
-    // This method is only expected to be called when returning a non-shareable or scratch resource
-    // from the cache.
-    void setLabel(std::string_view label) {
-        if (fLabel == label) {
-            return;
-        }
-
-        fLabel = label;
-
-        // It is not always safe to immediately update the backend GPU resource label. Mark it
-        // as dirty so it can be updated when appropriate.
-        fBackendLabelDirty = true;
     }
 
 #if defined(SK_DEBUG) || defined(GPU_TEST_UTILS)
