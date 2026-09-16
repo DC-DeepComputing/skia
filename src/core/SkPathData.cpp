@@ -300,14 +300,15 @@ sk_sp<SkPathData> SkPathData::makeTransform(const SkMatrix& mx) const {
     const SkPathFillType ft = SkPathFillType::kDefault;
 
     if (auto result = MakeTransform(this->raw(ft, SkResolveConvexity::kNo), mx)) {
-        // See if we can maintian our IsA status ...
+        // See if we can maintain our IsA status ...
         if ((fType == SkPathIsAType::kOval || fType == SkPathIsAType::kRRect) &&
             mx.rectStaysRect() && SkPathPriv::IsAxisAligned(fPoints))
         {
-            auto [dir, start] =
-            SkPathPriv::TransformDirAndStart(mx, fType == SkPathIsAType::kRRect,
-                                             fIsA.fDirection, fIsA.fStartIndex);
-            result->setupIsA(fType, dir, start);
+            if (fType == SkPathIsAType::kOval || !result->bounds().isEmpty()) {
+                auto [dir, start] = SkPathPriv::TransformDirAndStart(
+                        mx, fType == SkPathIsAType::kRRect, fIsA.fDirection, fIsA.fStartIndex);
+                result->setupIsA(fType, dir, start);
+            }
         }
         return result;
     }
