@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e66b3d41_1367d4f5",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 325,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-16T20:39:42Z",
+      "side": 1,
+      "message": "I think if Texture has a member for its usage flags, that won\u0027t be necessary. That would also allow it to remember what its last usage flags mask were for a faster comparison without generating the usage label.",
+      "range": {
+        "startLine": 325,
+        "startChar": 0,
+        "endLine": 325,
+        "endChar": 100
+      },
+      "revId": "3ce1e5fe683c1b3cee4dd45ffa151b6e8fcf63cb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c247e6b4_932440ca",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-16T20:39:42Z",
+      "side": 1,
+      "message": "This should be a private virtual function; subclasses can still override private virtuals, they just aren\u0027t allowed to call them directly, which is what we want here.",
+      "range": {
+        "startLine": 326,
+        "startChar": 0,
+        "endLine": 332,
+        "endChar": 5
+      },
+      "revId": "3ce1e5fe683c1b3cee4dd45ffa151b6e8fcf63cb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
