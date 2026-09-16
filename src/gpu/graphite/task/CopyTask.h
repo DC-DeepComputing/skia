@@ -134,6 +134,8 @@ public:
 
     Status addCommands(Context*, CommandBuffer*, ReplayTargetData) override;
 
+    Protected isProtected() const override;
+
     bool visitProxies(const std::function<bool(const TextureProxy*)>& visitor,
                       bool readsOnly) override {
         // Only visit fDstProxy if readsOnly is false; fSrcProxy is the only texture being read.

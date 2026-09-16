@@ -52,10 +52,11 @@ VulkanCaps::VulkanCaps(const ContextOptions& contextOptions,
                        uint32_t physicalDeviceVersion,
                        const VkPhysicalDeviceFeatures2* features,
                        const skgpu::VulkanExtensions* extensions,
-                       Protected isProtected)
+                       Protected isProtected,
+                       bool protectedMultiQueueSupport)
         : Caps() {
     this->init(contextOptions, vkInterface, physDev, physicalDeviceVersion, features, extensions,
-               isProtected);
+               isProtected, protectedMultiQueueSupport);
 }
 
 VulkanCaps::~VulkanCaps() {}
@@ -97,7 +98,8 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
                       uint32_t physicalDeviceVersion,
                       const VkPhysicalDeviceFeatures2* features,
                       const skgpu::VulkanExtensions* extensions,
-                      Protected isProtected) {
+                      Protected isProtected,
+                      bool protectedMultiQueueSupport) {
     const EnabledFeatures enabledFeatures =
             this->getEnabledFeatures(features, physicalDeviceVersion);
 
@@ -116,10 +118,17 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
     this->setDeviceName(deviceProperties.fBase.properties.deviceName);
 #endif
 
-    if (isProtected == Protected::kYes && enabledFeatures.fProtectedMemory) {
+    if ((isProtected == Protected::kYes && enabledFeatures.fProtectedMemory)
+#ifdef SK_ENABLE_VK_MULTI_QUEUE_DEFINITION
+            || protectedMultiQueueSupport) {
+#else
+        ) {
+#endif
         fProtectedSupport = true;
-        fShouldAlwaysUseDedicatedImageMemory = true;
     }
+#ifdef SK_ENABLE_VK_MULTI_QUEUE_DEFINITION
+    fProtectedMultiQueueSupport = protectedMultiQueueSupport;
+#endif
 
     fPhysicalDeviceMemoryProperties2.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_MEMORY_PROPERTIES_2;
     fPhysicalDeviceMemoryProperties2.pNext = nullptr;
@@ -200,8 +209,7 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
 
 #ifdef SK_BUILD_FOR_ANDROID
     if (extensions->hasExtension(
-                VK_ANDROID_EXTERNAL_MEMORY_ANDROID_HARDWARE_BUFFER_EXTENSION_NAME, 2) &&
-        extensions->hasExtension(VK_EXT_QUEUE_FAMILY_FOREIGN_EXTENSION_NAME, 1)) {
+                VK_ANDROID_EXTERNAL_MEMORY_ANDROID_HARDWARE_BUFFER_EXTENSION_NAME, 2)) {
         fSupportsAHardwareBufferImages = true;
     }
 #endif
