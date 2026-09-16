@@ -9,6 +9,7 @@
 #define skgpu_graphite_QueueManager_DEFINED
 
 #include "include/core/SkRefCnt.h"
+#include "include/gpu/graphite/BackendSemaphore.h"
 #include "include/gpu/graphite/GraphiteTypes.h"
 #include "include/private/SkDeque.h"
 #include "include/private/SkTArray.h"
@@ -84,14 +85,21 @@ protected:
 
     using OutstandingSubmission = std::unique_ptr<GpuWorkSubmission>;
 
+    virtual BackendSemaphore initProtectedTransitionSemaphore() { return {}; }
+
+    bool protectedMultiQueueSupport() const;
+
     const SharedContext* fSharedContext;
     std::unique_ptr<CommandBuffer> fCurrentCommandBuffer;
+    std::unique_ptr<CommandBuffer> fCurrentProtectedCommandBuffer;
+    BackendSemaphore fProtectedTransitionSemaphore;
 
 private:
     virtual std::unique_ptr<CommandBuffer> getNewCommandBuffer(ResourceProvider*, Protected) = 0;
     virtual OutstandingSubmission onSubmitToGpu(const SubmitInfo&) = 0;
 
     bool setupCommandBuffer(ResourceProvider*, Protected);
+    std::unique_ptr<CommandBuffer>& getCurrentCommandBufferRef(Protected isProtected);
 
     std::vector<std::unique_ptr<CommandBuffer>>* getAvailableCommandBufferList(Protected);
 

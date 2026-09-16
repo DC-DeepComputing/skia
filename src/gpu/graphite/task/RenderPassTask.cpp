@@ -175,6 +175,15 @@ Task::Status RenderPassTask::prepareResources(ResourceProvider* resourceProvider
 Task::Status RenderPassTask::addCommands(Context* context,
                                          CommandBuffer* commandBuffer,
                                          ReplayTargetData replayData) {
+    SKIA_LOG_E("[DIAG] RenderPassTask::addCommands - fTarget: %p (isProtected=%d), taskIsProtected: %d, cmdBufferIsProtected: %d",
+               fTarget.get(), fTarget ? (int)fTarget->isProtected() : -1, (int)this->isProtected(), (int)commandBuffer->isProtected());
+    for (const auto& pass : fDrawPasses) {
+        for (const auto& proxy : pass->sampledTextures()) {
+            if (proxy) {
+                SKIA_LOG_E("[DIAG]   DrawPass sampledProxy: %p (isProtected=%d)", proxy.get(), (int)proxy->isProtected());
+            }
+        }
+    }
     // TBD: Expose the surfaces that will need to be attached within the renderpass?
 
     const Caps* caps = context->priv().caps();
@@ -322,6 +331,26 @@ bool RenderPassTask::visitProxies(const std::function<bool(const TextureProxy*)>
     }
 
     return true;
+}
+
+Protected RenderPassTask::isProtected() const {
+    if (fTarget && fTarget->isProtected() == Protected::kYes) {
+        SKIA_LOG_E("RenderPassTask::isProtected -> Protected::kYes (target surface %p is protected)", fTarget.get());
+        return Protected::kYes;
+    }
+    if (fDstCopy && fDstCopy->isProtected() == Protected::kYes) {
+        SKIA_LOG_E("RenderPassTask::isProtected -> Protected::kYes (dstCopy %p is protected)", fDstCopy.get());
+        return Protected::kYes;
+    }
+    for (const std::unique_ptr<DrawPass>& pass : fDrawPasses) {
+        for (const sk_sp<TextureProxy>& proxy : pass->sampledTextures()) {
+            if (proxy && proxy->isProtected() == Protected::kYes) {
+                SKIA_LOG_E("RenderPassTask::isProtected -> Protected::kYes (sampled texture proxy %p is protected)", proxy.get());
+                return Protected::kYes;
+            }
+        }
+    }
+    return Protected::kNo;
 }
 
 } // namespace skgpu::graphite

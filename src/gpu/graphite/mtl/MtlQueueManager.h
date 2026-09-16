@@ -20,7 +20,7 @@ class MtlSharedContext;
 class MtlQueueManager : public QueueManager {
 public:
     MtlQueueManager(sk_cfp<id<MTLCommandQueue>> queue, const SharedContext*);
-    ~MtlQueueManager() override {}
+    ~MtlQueueManager() override;
 
 private:
     const MtlSharedContext* mtlSharedContext() const;

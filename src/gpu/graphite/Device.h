@@ -69,6 +69,8 @@ class GlyphRunList;
 namespace gpu { class Slug; }
 }
 
+#include <optional>
+
 namespace skgpu::graphite {
 
 class BoundsManager;
@@ -107,7 +109,8 @@ public:
                               const SkSurfaceProps&,
                               LoadOp initialLoadOp,
                               std::string_view label,
-                              bool registerWithRecorder=true);
+                              bool registerWithRecorder=true,
+                              std::optional<Protected> isProtected = std::nullopt);
 
     Device* asGraphiteDevice() override { return this; }
 

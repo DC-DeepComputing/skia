@@ -93,6 +93,8 @@ SkColorType ComputeShaderCoverageMaskTargetFormat(const Caps*);
 
 } // namespace skgpu::graphite
 
+#include <optional>
+
 namespace skif {
 
 class Backend;

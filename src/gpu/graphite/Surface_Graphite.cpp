@@ -148,7 +148,11 @@ sk_sp<Surface> Surface::Make(Recorder* recorder,
                              SkBackingFit backingFit,
                              const SkSurfaceProps* props,
                              LoadOp initialLoadOp,
-                             bool registerWithRecorder) {
+                             bool registerWithRecorder,
+                             std::optional<Protected> isProtected) {
+    SKIA_LOG_E("[DIAG] Surface::Make - label: '%.*s', dimensions: %dx%d, isProtected: %d, budgeted: %d",
+               (int)label.size(), label.data(), info.width(), info.height(),
+               isProtected.has_value() ? (int)*isProtected : -1, (int)budgeted);
     sk_sp<Device> device = Device::Make(recorder,
                                         info,
                                         budgeted,
@@ -157,7 +161,8 @@ sk_sp<Surface> Surface::Make(Recorder* recorder,
                                         SkSurfacePropsCopyOrDefault(props),
                                         initialLoadOp,
                                         label,
-                                        registerWithRecorder);
+                                        registerWithRecorder,
+                                        isProtected);
     if (!device) {
         return nullptr;
     }
@@ -245,13 +250,17 @@ sk_sp<SkSurface> RenderTarget(Recorder* recorder,
                               const SkImageInfo& info,
                               skgpu::Mipmapped mipmapped,
                               const SkSurfaceProps* props,
-                              std::string_view label) {
+                              std::string_view label,
+                              std::optional<skgpu::Protected> isProtected) {
     if (label.empty()) {
         label = "SkSurfaceRenderTarget";
     }
+    SKIA_LOG_E("[DIAG] SkSurfaces::RenderTarget - label: '%.*s', dimensions: %dx%d, isProtected: %d",
+               (int)label.size(), label.data(), info.width(), info.height(),
+               isProtected.has_value() ? (int)*isProtected : -1);
     // The client is getting the ref on this surface so it must be unbudgeted.
     return skgpu::graphite::Surface::Make(recorder, info, label, skgpu::Budgeted::kNo,
-                                          mipmapped, SkBackingFit::kExact, props);
+                                          mipmapped, SkBackingFit::kExact, props, isProtected);
 }
 
 sk_sp<SkSurface> WrapBackendTexture(Recorder* recorder,
@@ -307,6 +316,9 @@ sk_sp<SkSurface> WrapBackendTexture(Recorder* recorder,
     if (label.empty()) {
         label = "SkSurfaceWrappedTexture";
     }
+
+    SKIA_LOG_E("[DIAG] SkSurfaces::WrapBackendTexture - label: '%.*s', dimensions: %dx%d, backendTexProtected: %d",
+               (int)label.size(), label.data(), backendTex.dimensions().width(), backendTex.dimensions().height(), (int)backendTex.info().isProtected());
 
     sk_sp<Texture> texture =
             recorder->priv().resourceProvider()->createWrappedTexture(backendTex, label);

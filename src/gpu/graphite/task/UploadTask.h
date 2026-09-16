@@ -216,6 +216,16 @@ public:
 
     Status addCommands(Context*, CommandBuffer*, ReplayTargetData) override;
 
+    Protected isProtected() const override {
+        for (int i = 0; i < fInstances.size(); ++i) {
+            if (fInstances[i].isValid() && fInstances[i].fTextureProxy &&
+                fInstances[i].fTextureProxy->isProtected() == Protected::kYes) {
+                return Protected::kYes;
+            }
+        }
+        return Protected::kNo;
+    }
+
     bool visitProxies(const std::function<bool(const TextureProxy*)>& visitor,
                       bool readsOnly) override {
         // Textures being uploaded to are never read from, so skip all visiting unless readsOnly

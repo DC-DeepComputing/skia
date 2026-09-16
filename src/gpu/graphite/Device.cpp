@@ -413,19 +413,26 @@ sk_sp<Device> Device::Make(Recorder* recorder,
                            const SkSurfaceProps& props,
                            LoadOp initialLoadOp,
                            std::string_view label,
-                           bool registerWithRecorder) {
+                           bool registerWithRecorder,
+                           std::optional<Protected> isProtected) {
     SkASSERT(!(mipmapped == Mipmapped::kYes && backingFit == SkBackingFit::kApprox));
     if (!recorder) {
         return nullptr;
     }
 
+    Protected protectedness = isProtected.has_value() ? *isProtected
+                                                      : recorder->priv().isProtected();
     const Caps* caps = recorder->priv().caps();
     SkISize backingDimensions = backingFit == SkBackingFit::kApprox ? GetApproxSize(ii.dimensions())
                                                                     : ii.dimensions();
     auto textureInfo = caps->getDefaultSampledTextureInfo(ii.colorType(),
                                                           mipmapped,
-                                                          recorder->priv().isProtected(),
+                                                          protectedness,
                                                           Renderable::kYes);
+
+    SKIA_LOG_E("[DIAG] Device::Make - label: '%.*s', size: %dx%d, isProtected arg: %d, recorderIsProtected: %d, finalProtectedness: %d, textureInfoIsValid: %d",
+               (int)label.size(), label.data(), ii.width(), ii.height(),
+               isProtected.has_value() ? (int)*isProtected : -1, (int)recorder->priv().isProtected(), (int)protectedness, (int)textureInfo.isValid());
 
     return Make(recorder,
                 TextureProxy::Make(caps, recorder->priv().resourceProvider(),
@@ -447,6 +454,9 @@ sk_sp<Device> Device::Make(Recorder* recorder,
     if (!recorder || !target) {
         return nullptr;
     }
+
+    SKIA_LOG_E("[DIAG] Device::Make (wrapping proxy) - targetProxy: %p, proxyIsProtected: %d, deviceSize: %dx%d",
+               target.get(), target ? (int)target->isProtected() : -1, deviceSize.width(), deviceSize.height());
 
     // DrawContext::Make ensures `target` can be rendered into, but if the path strategy might
     // require MSAA, then we need to make sure a multisampled attachment can also be created later.

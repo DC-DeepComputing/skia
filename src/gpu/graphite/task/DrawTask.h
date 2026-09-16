@@ -51,6 +51,13 @@ public:
         return fChildTasks.visitProxies(visitor, readsOnly);
     }
 
+    Protected isProtected() const override {
+        if (fTarget && fTarget->isProtected() == Protected::kYes) {
+            return Protected::kYes;
+        }
+        return fChildTasks.hasTasks(Protected::kYes) ? Protected::kYes : Protected::kNo;
+    }
+
 private:
     friend class DrawContext; // for "addTask"
 

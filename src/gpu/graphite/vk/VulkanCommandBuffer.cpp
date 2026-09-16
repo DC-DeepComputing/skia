@@ -416,6 +416,9 @@ void VulkanCommandBuffer::prepareSurfaceForStateUpdate(SkSurface* targetSurface,
 
     this->trackResource(sk_ref_sp(texture));
 
+    SKIA_LOG_E("VulkanCommandBuffer::prepareSurfaceForStateUpdate (cmdBufProtected=%d) - layout %d -> %d, queueIndex %d -> %d",
+               (int)this->isProtected(), texture->currentLayout(), newLayout, currentQueueFamilyIndex, newQueueFamilyIndex);
+
     texture->setImageLayoutAndQueueIndex(this,
                                          newLayout,
                                          dstAccess,
@@ -489,28 +492,30 @@ static VkResult submit_to_queue(const VulkanSharedContext* sharedContext,
     return result;
 }
 
-bool VulkanCommandBuffer::submit(VkQueue queue, const SubmitInfo& submitInfo) {
+bool VulkanCommandBuffer::submit(VkQueue queue, const SubmitInfo& submitInfo, bool useFence) {
     this->end();
 
     auto device = fSharedContext->device();
     VkResult err;
 
-    if (fSubmitFence == VK_NULL_HANDLE) {
-        VkFenceCreateInfo fenceInfo = {};
-        fenceInfo.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
-        VULKAN_CALL_RESULT(
-                fSharedContext, err, CreateFence(device, &fenceInfo, nullptr, &fSubmitFence));
-        if (err) {
-            fSubmitFence = VK_NULL_HANDLE;
-            return false;
+    if (useFence) {
+        if (fSubmitFence == VK_NULL_HANDLE) {
+            VkFenceCreateInfo fenceInfo = {};
+            fenceInfo.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
+            VULKAN_CALL_RESULT(
+                    fSharedContext, err, CreateFence(device, &fenceInfo, nullptr, &fSubmitFence));
+            if (err) {
+                fSubmitFence = VK_NULL_HANDLE;
+                return false;
+            }
+        } else {
+            // This cannot return DEVICE_LOST so we assert we succeeded.
+            VULKAN_CALL_RESULT(fSharedContext, err, ResetFences(device, 1, &fSubmitFence));
+            SkASSERT(err == VK_SUCCESS);
         }
-    } else {
-        // This cannot return DEVICE_LOST so we assert we succeeded.
-        VULKAN_CALL_RESULT(fSharedContext, err, ResetFences(device, 1, &fSubmitFence));
-        SkASSERT(err == VK_SUCCESS);
+        SkASSERT(fSubmitFence != VK_NULL_HANDLE);
     }
 
-    SkASSERT(fSubmitFence != VK_NULL_HANDLE);
     int waitCount = fWaitSemaphores.size();
     TArray<VkPipelineStageFlags> vkWaitStages(waitCount);
     for (int i = 0; i < waitCount; ++i) {
@@ -520,7 +525,7 @@ bool VulkanCommandBuffer::submit(VkQueue queue, const SubmitInfo& submitInfo) {
 
     VkResult submitResult = submit_to_queue(fSharedContext,
                                             queue,
-                                            fSubmitFence,
+                                            useFence ? fSubmitFence : VK_NULL_HANDLE,
                                             waitCount,
                                             fWaitSemaphores.data(),
                                             vkWaitStages.data(),
@@ -546,8 +551,10 @@ bool VulkanCommandBuffer::submit(VkQueue queue, const SubmitInfo& submitInfo) {
                      submitResult == VK_ERROR_OUT_OF_DEVICE_MEMORY);
         }
 
-        VULKAN_CALL(fSharedContext->interface(), DestroyFence(device, fSubmitFence, nullptr));
-        fSubmitFence = VK_NULL_HANDLE;
+        if (useFence && fSubmitFence != VK_NULL_HANDLE) {
+            VULKAN_CALL(fSharedContext->interface(), DestroyFence(device, fSubmitFence, nullptr));
+            fSubmitFence = VK_NULL_HANDLE;
+        }
         return false;
     }
     return true;
@@ -623,6 +630,10 @@ bool VulkanCommandBuffer::onAddRenderPass(const RenderPassDesc& rpDesc,
                                           SkIPoint resolveOffset,
                                           SkIRect viewport,
                                           const DrawPassList& drawPasses) {
+    SKIA_LOG_E("[DIAG] VulkanCommandBuffer::onAddRenderPass - cmdBufferProtected: %d, colorTexture: %p (isProtected=%d), resolveTexture: %p (isProtected=%d), depthStencilTexture: %p (isProtected=%d)",
+               (int)this->isProtected(), colorTexture, colorTexture ? (int)colorTexture->isProtected() : -1,
+               resolveTexture, resolveTexture ? (int)resolveTexture->isProtected() : -1,
+               depthStencilTexture, depthStencilTexture ? (int)depthStencilTexture->isProtected() : -1);
     SkASSERT(resolveOffset.isZero());
     for (const auto& drawPass : drawPasses) {
         // Track resources now since the barriers will reference them.

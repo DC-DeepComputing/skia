@@ -26,7 +26,8 @@ public:
                uint32_t physicalDeviceVersion,
                const VkPhysicalDeviceFeatures2*,
                const skgpu::VulkanExtensions*,
-               Protected);
+               Protected,
+               bool protectedMultiQueueSupport = false);
     ~VulkanCaps() override;
 
     // Override Caps's implementation in order to consult Vulkan-specific texture properties.
@@ -97,6 +98,7 @@ public:
     }
 
     bool supportsOcclusionQueryPrecise() const { return fOcclusionQueryPrecise; }
+    bool supportsQueueFamilyForeign() const { return fSupportsQueueFamilyForeign; }
 
     uint32_t timestampValidBits(uint32_t queueIndex) const {
         return fQueueFamilyTimestampValidBits[queueIndex];
@@ -111,7 +113,8 @@ private:
               uint32_t physicalDeviceVersion,
               const VkPhysicalDeviceFeatures2*,
               const skgpu::VulkanExtensions*,
-              Protected);
+              Protected,
+              bool protectedMultiQueueSupport);
 
     struct EnabledFeatures {
         // VkPhysicalDeviceFeatures
@@ -217,6 +220,7 @@ private:
     bool fSupportsFrameBoundary = false;
     bool fSupportsPipelineCreationCacheControl = false;
     bool fOcclusionQueryPrecise = false;
+    bool fSupportsQueueFamilyForeign = false;
 
     // Flags to enable workarounds for driver bugs
     bool fMustLoadFullImageForMSAA = false;

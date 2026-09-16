@@ -209,4 +209,14 @@ Task::Status CopyTextureToTextureTask::addCommands(Context*,
     }
 }
 
+Protected CopyTextureToTextureTask::isProtected() const {
+    if (fDstProxy && fDstProxy->isProtected() == Protected::kYes) {
+        return Protected::kYes;
+    }
+    if (fSrcProxy && fSrcProxy->isProtected() == Protected::kYes) {
+        return Protected::kYes;
+    }
+    return Protected::kNo;
+}
+
 } // namespace skgpu::graphite

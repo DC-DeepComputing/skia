@@ -7,6 +7,7 @@
 
 #include "src/gpu/graphite/mtl/MtlQueueManager.h"
 
+#include "include/gpu/graphite/mtl/MtlGraphiteTypes_cpp.h"
 #include "src/gpu/graphite/GpuWorkSubmission.h"
 #include "src/gpu/graphite/mtl/MtlCommandBuffer.h"
 #include "src/gpu/graphite/mtl/MtlResourceProvider.h"
@@ -19,6 +20,13 @@ MtlQueueManager::MtlQueueManager(sk_cfp<id<MTLCommandQueue>> queue,
         : QueueManager(sharedContext)
         , fQueue(std::move(queue))
 {
+}
+
+MtlQueueManager::~MtlQueueManager() {
+    CFTypeRef event = BackendSemaphores::GetMtlEvent(fUnprotectedToProtectedSemaphore);
+    if (event) {
+        CFRelease(event);
+    }
 }
 
 const MtlSharedContext* MtlQueueManager::mtlSharedContext() const {

@@ -262,7 +262,7 @@ TextureProxyView MakeBitmapProxyView(Recorder* recorder,
         mipmapped = Mipmapped::kNo;
     }
 
-    Protected isProtected = recorder->priv().isProtected();
+    Protected isProtected = Protected::kNo;
     auto textureInfo = caps->getDefaultSampledTextureInfo(ct, mipmapped, isProtected,
                                                           Renderable::kNo);
     if (!textureInfo.isValid()) {
@@ -800,6 +800,7 @@ public:
 
 private:
     skgpu::graphite::Recorder* fRecorder;
+    std::optional<skgpu::Protected> fIsProtected;
 };
 
 } // anonymous namespace

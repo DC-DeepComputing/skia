@@ -57,6 +57,8 @@ public:
 
     Status addCommands(Context*, CommandBuffer*, ReplayTargetData) override;
 
+    Protected isProtected() const override;
+
     bool visitPipelines(const std::function<bool(const GraphicsPipeline*)>& visitor) override;
 
     bool visitProxies(const std::function<bool(const TextureProxy*)>& visitor,
