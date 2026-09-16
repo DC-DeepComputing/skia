@@ -336,6 +336,15 @@ Task::Status UploadInstance::addCommand(Context* context,
     using Status = Task::Status;
     SkASSERT(fTextureProxy && fTextureProxy->isInstantiated());
 
+    if (fTextureProxy->isProtected() == Protected::kNo
+            && fBuffer->isProtected() == Protected::kYes) {
+        SKIA_LOG_E("UploadTask texture proxy %s is unprotected but source upload buffer %s is "
+                   "protected.",
+                   fTextureProxy->label(),
+                   fBuffer->getLabel().c_str());
+        return Status::kFail;
+    }
+
     if (fConditionalContext && !fConditionalContext->needsUpload(context)) {
         // Assume that if a conditional context says to dynamically not upload that another
         // time through the tasks should try to upload again.
@@ -479,6 +488,16 @@ Task::Status UploadTask::addCommands(Context* context,
     } else {
         return Status::kSuccess;
     }
+}
+
+Protected UploadTask::isProtected() const {
+    for (const UploadInstance& instance: fInstances) {
+        if (instance.isValid() && instance.fTextureProxy &&
+            instance.fTextureProxy->isProtected() == Protected::kYes) {
+            return Protected::kYes;
+        }
+    }
+    return Protected::kNo;
 }
 
 } // namespace skgpu::graphite

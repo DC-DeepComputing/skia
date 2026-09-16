@@ -216,6 +216,8 @@ public:
 
     Status addCommands(Context*, CommandBuffer*, ReplayTargetData) override;
 
+    Protected isProtected() const override;
+
     bool visitProxies(const std::function<bool(const TextureProxy*)>& visitor,
                       bool readsOnly) override {
         // Textures being uploaded to are never read from, so skip all visiting unless readsOnly

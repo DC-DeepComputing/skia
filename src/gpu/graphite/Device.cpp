@@ -413,18 +413,21 @@ sk_sp<Device> Device::Make(Recorder* recorder,
                            const SkSurfaceProps& props,
                            LoadOp initialLoadOp,
                            std::string_view label,
-                           bool registerWithRecorder) {
+                           bool registerWithRecorder,
+                           std::optional<Protected> isProtected) {
     SkASSERT(!(mipmapped == Mipmapped::kYes && backingFit == SkBackingFit::kApprox));
     if (!recorder) {
         return nullptr;
     }
 
+    Protected protectedness = isProtected.has_value() ? *isProtected
+                                                      : recorder->priv().isProtected();
     const Caps* caps = recorder->priv().caps();
     SkISize backingDimensions = backingFit == SkBackingFit::kApprox ? GetApproxSize(ii.dimensions())
                                                                     : ii.dimensions();
     auto textureInfo = caps->getDefaultSampledTextureInfo(ii.colorType(),
                                                           mipmapped,
-                                                          recorder->priv().isProtected(),
+                                                          protectedness,
                                                           Renderable::kYes);
 
     return Make(recorder,
@@ -1037,12 +1040,14 @@ void Device::drawMesh(const SkMesh& mesh, sk_sp<SkBlender> blender, const SkPain
         drawMesh = std::move(result.mesh);
     }
 
-    SkBlender* primitiveBlender =
+
+    // TODO (nathanasanchez): Enable once MeshRenderStep is fully implemented.
+    [[maybe_unused]] SkBlender* primitiveBlender =
         (blender && SkMeshSpecificationPriv::HasColors(*drawMesh.spec())) ? blender.get() : nullptr;
-    this->drawGeometry(this->localToDeviceTransform(),
-                       Geometry(drawMesh),
-                       PaintParams(paint, primitiveBlender).makeWithMesh(mesh),
-                       DefaultFillStyle());
+    //this->drawGeometry(this->localToDeviceTransform(),
+    //                   Geometry(drawMesh),
+    //                   PaintParams(paint, primitiveBlender).makeWithMesh(mesh),
+    //                   DefaultFillStyle());
 }
 
 void Device::drawImageLattice(const SkImage* image, const SkCanvas::Lattice& lattice,
@@ -1749,11 +1754,6 @@ void Device::drawGeometry(const Transform& localToDevice,
     if (renderer && (renderer->useNonAAInnerFill() || renderer->coverage() == Coverage::kNone)) {
         keyGenFlags |= KeyGenFlags::kPreferFixedSrcBlend;
     }
-    // Disable sampling optimizations if we are drawing an SkMesh since the user can vary the
-    // sampled shader local coordinates so we can't expect this optimization to always work.
-    if (geometry.isMesh()) {
-        keyGenFlags |= KeyGenFlags::kDisableSamplingOptimization;
-    }
     KeyContext keyContext{fRecorder,
                           fDC.get(),
                           scopedDrawBuilder.builder(),
@@ -2441,7 +2441,9 @@ sk_sp<SkSpecialImage> Device::snapSpecial(const SkIRect& subset, bool forceCopy)
 
 sk_sp<skif::Backend> Device::createImageFilteringBackend(const SkSurfaceProps& surfaceProps,
                                                          SkColorType colorType) const {
-    return skif::MakeGraphiteBackend(fRecorder, surfaceProps, colorType);
+    Protected isProtected = fDC->target().proxy() ? fDC->target().proxy()->isProtected()
+                                                  : Protected::kNo;
+    return skif::MakeGraphiteBackend(fRecorder, surfaceProps, colorType, isProtected);
 }
 
 const TextureProxyView& Device::target() const { return fDC->target(); }
