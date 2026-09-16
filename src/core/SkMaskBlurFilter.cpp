@@ -296,6 +296,19 @@ static void lcd_to_a8(uint8_t* a8, const uint8_t* from, int width) {
         a8[i] = (r + g + b) / 3;
     }
 }
+
+static void lcd32_to_a8(uint8_t* a8, const uint8_t* from, int width) {
+    SkASSERT(0 < width && width <= 8);
+
+    for (int i = 0; i < width; ++i) {
+        uint32_t rgb = reinterpret_cast<const uint32_t*>(from)[i];
+        unsigned r = (rgb >> SK_RGBA_R32_SHIFT) & 0xFF;
+        unsigned g = (rgb >> SK_RGBA_G32_SHIFT) & 0xFF;
+        unsigned b = (rgb >> SK_RGBA_B32_SHIFT) & 0xFF;
+        a8[i] = (r + g + b) / 3;
+    }
+}
+
 static void argb32_to_a8(uint8_t* a8, const uint8_t* from, int width) {
     SkASSERT(0 < width && width <= 8);
     for (int i = 0; i < width; ++i) {
@@ -949,6 +962,11 @@ static SkIPoint small_blur(double sigmaX, double sigmaY, const SkMask& src, SkMa
                           src.fImage, srcRB, srcW, srcH,
                           dst->image() + radiusX, dstRB);
             break;
+        case SkMask::kLCD32_Format:
+            direct_blur_y(lcd32_to_a8, 32, radiusY, gaussFactorsY,
+                          src.fImage, srcRB, srcW, srcH,
+                          dst->image() + radiusX, dstRB);
+            break;
         default:
             SK_ABORT("Unhandled format.");
     }
@@ -1041,6 +1059,15 @@ SkIPoint SkMaskBlurFilter::blur(const SkMask& src, SkMaskBuilder* dst) const {
             const uint16_t* lcdStart = reinterpret_cast<const uint16_t*>(src.fImage);
             auto start = SkMask::AlphaIter<SkMask::kLCD16_Format>(lcdStart);
             auto end = SkMask::AlphaIter<SkMask::kLCD16_Format>(lcdStart + srcW);
+            for (int y = 0; y < srcH; ++y, start >>= src.fRowBytes, end >>= src.fRowBytes) {
+                auto tmpStart = &tmp[y];
+                scanW.blur(start, end, tmpStart, tmpW, tmpStart + tmpW * tmpH);
+            }
+        } break;
+        case SkMask::kLCD32_Format: {
+            const uint32_t* lcdStart = reinterpret_cast<const uint32_t*>(src.fImage);
+            auto start = SkMask::AlphaIter<SkMask::kLCD32_Format>(lcdStart);
+            auto end = SkMask::AlphaIter<SkMask::kLCD32_Format>(lcdStart + srcW);
             for (int y = 0; y < srcH; ++y, start >>= src.fRowBytes, end >>= src.fRowBytes) {
                 auto tmpStart = &tmp[y];
                 scanW.blur(start, end, tmpStart, tmpW, tmpStart + tmpW * tmpH);

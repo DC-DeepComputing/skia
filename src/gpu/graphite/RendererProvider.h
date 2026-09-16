@@ -119,7 +119,7 @@ public:
         if (useLCDText) {
             return &fBitmapText[(int)MaskFormat::kA565];
         }
-        SkASSERT(format != MaskFormat::kA565);
+        SkASSERT(format != MaskFormat::kA565 && format != MaskFormat::kA888);
         return &fBitmapText[(int)format];
     }
     const Renderer* sdfText(bool useLCDText) const { return &fSDFText[useLCDText]; }

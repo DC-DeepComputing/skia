@@ -261,7 +261,8 @@ std::tuple<bool, int> GlyphData::regenerateAtlas(int begin,
 
 size_t GlyphData::vertexStride(MaskFormat mf, const SkMatrix& matrix) const {
     if (mf != skgpu::MaskFormat::kARGB) {
-        // For formats MaskFormat::kA565 and MaskFormat::kA8 where A8 include SDF.
+        // For formats MaskFormat::kA565, MaskFormat::kA888, and MaskFormat::kA8 where A8 includes
+        // SDF.
         return matrix.hasPerspective() ? sizeof(Mask3DVertex) : sizeof(Mask2DVertex);
     }
     // For format MaskFormat::kARGB

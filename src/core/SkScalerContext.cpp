@@ -226,10 +226,11 @@ void SkScalerContext::GenerateMetricsFromPath(
     SkGlyph* glyph, const SkPath& devPath, SkMask::Format format,
     const bool verticalLCD, const bool a8FromLCD, const bool hairline)
 {
-    // Only BW, A8, and LCD16 can be produced from paths.
+    // Only BW, A8, LCD16, and LCD32 can be produced from paths.
     if (glyph->fMaskFormat != SkMask::kBW_Format &&
         glyph->fMaskFormat != SkMask::kA8_Format &&
-        glyph->fMaskFormat != SkMask::kLCD16_Format)
+        glyph->fMaskFormat != SkMask::kLCD16_Format &&
+        glyph->fMaskFormat != SkMask::kLCD32_Format)
     {
         glyph->fMaskFormat = SkMask::kA8_Format;
     }
@@ -237,6 +238,7 @@ void SkScalerContext::GenerateMetricsFromPath(
     SkRect bounds = devPath.getBounds();
     if (!bounds.isEmpty()) {
         const bool fromLCD = (glyph->fMaskFormat == SkMask::kLCD16_Format) ||
+                             (glyph->fMaskFormat == SkMask::kLCD32_Format) ||
                              (glyph->fMaskFormat == SkMask::kA8_Format && a8FromLCD);
 
         const bool needExtraWidth  = (fromLCD && !verticalLCD) || hairline;
@@ -446,7 +448,6 @@ static void pack4xHToMask(const SkPixmap& src, SkMaskBuilder& dst,
     }
 }
 
-#if defined(SK_USE_LCD_TEXT_3X_FILTER)
 static void pack3xHToMask(const SkPixmap& src, SkMaskBuilder& dst,
                           const bool doBGR, const bool doVert) {
     static constexpr int kSamplesPerPixel = 3;
@@ -457,7 +458,8 @@ static void pack3xHToMask(const SkPixmap& src, SkMaskBuilder& dst,
     };
 
     SkASSERT(kAlpha_8_SkColorType == src.colorType());
-    SkASSERT(SkMask::kLCD16_Format == dst.fFormat);
+    SkASSERT(dst.fFormat == SkMask::kLCD16_Format ||
+             dst.fFormat == SkMask::kLCD32_Format);
 
     // doVert in this function means swap x and y when writing to dst.
     if (doVert) {
@@ -473,7 +475,9 @@ static void pack3xHToMask(const SkPixmap& src, SkMaskBuilder& dst,
 
     uint8_t* dstImage = dst.image();
     const size_t dstRB = dst.fRowBytes;
-    const size_t dstPB = sizeof(uint16_t);
+    const size_t dstPB = dst.fFormat == SkMask::kLCD16_Format
+                                 ? sizeof(uint16_t)
+                                 : sizeof(uint32_t);
     const size_t dstPDelta = doVert ? dstRB : dstPB;
     const size_t dstYDelta = doVert ? dstPB : dstRB;
 
@@ -516,12 +520,15 @@ static void pack3xHToMask(const SkPixmap& src, SkMaskBuilder& dst,
                 g = std::max(g, 10u);
                 b = std::max(b, 10u);
             }
-            *(uint16_t*)dstP = SkPack888ToRGB16(r, g, b);
+            if (dst.fFormat == SkMask::kLCD16_Format) {
+                *(uint16_t*)dstP = SkPack888ToRGB16(r, g, b);
+            } else {
+                *(uint32_t*)dstP = SkPackARGB_as_RGBA(0xFF, r, g, b);
+            }
             dstP = SkTAddOffset<uint8_t>(dstP, dstPDelta);
         }
     }
 }
-#endif
 
 static inline int convert_8_to_1(unsigned byte) {
     SkASSERT(byte <= 0xFF);
@@ -589,7 +596,8 @@ void SkScalerContext::GenerateImageFromPath(
 {
     SkASSERT(dstMask.fFormat == SkMask::kBW_Format ||
              dstMask.fFormat == SkMask::kA8_Format ||
-             dstMask.fFormat == SkMask::kLCD16_Format);
+             dstMask.fFormat == SkMask::kLCD16_Format ||
+             dstMask.fFormat == SkMask::kLCD32_Format);
 
     SkPaint paint;
     SkPath strokePath;
@@ -607,15 +615,20 @@ void SkScalerContext::GenerateImageFromPath(
     paint.setStroke(hairline);
     paint.setAntiAlias(SkMask::kBW_Format != dstMask.fFormat);
 
+    const bool lcd32 = dstMask.fFormat == SkMask::kLCD32_Format;
     const bool fromLCD = (dstMask.fFormat == SkMask::kLCD16_Format) ||
+                         lcd32 ||
                          (dstMask.fFormat == SkMask::kA8_Format && a8FromLCD);
     const bool intermediateDst = fromLCD || dstMask.fFormat == SkMask::kBW_Format;
     if (fromLCD) {
 #if defined(SK_USE_LCD_TEXT_3X_FILTER)
-        const int samplesPerPixel = dstMask.fFormat == SkMask::kLCD16_Format ? 3 : 4;
+        const int lcd16SamplesPerPixel =
+                dstMask.fFormat == SkMask::kLCD16_Format ? 3 : 4;
 #else
-        constexpr int samplesPerPixel = 4;
+        constexpr int lcd16SamplesPerPixel = 4;
 #endif
+        const int samplesPerPixel = lcd32 ? 3 : lcd16SamplesPerPixel;
+
         if (verticalLCD) {
             dstW = samplesPerPixel * dstH - 2 * samplesPerPixel;
             dstH = srcW;
@@ -689,6 +702,9 @@ void SkScalerContext::GenerateImageFromPath(
 #else
             pack4xHToMask(dst, dstMask, maskPreBlend, doBGR, verticalLCD);
 #endif
+            break;
+        case SkMask::kLCD32_Format:
+            pack3xHToMask(dst, dstMask, doBGR, verticalLCD);
             break;
         default:
             SkUNREACHABLE;
@@ -1236,9 +1252,16 @@ void SkScalerContext::MakeRecAndEffects(const SkFont& font, const SkPaint& paint
 
     rec->fMaskFormat = compute_mask_format(font);
 
-    // NOTE: SDFLCD text will never have kLCD16_Format at this point, and effectively skips this
-    // block. Instead the subPixelGeometry is piped in during drawAtlasSubrun.
-    if (SkMask::kLCD16_Format == rec->fMaskFormat) {
+    if (SkMask::kLCD16_Format == rec->fMaskFormat &&
+        SkToBool(surfaceProps.flags() & SkSurfaceProps::kUseLCD32_Flag)) {
+        rec->fMaskFormat = SkMask::kLCD32_Format;
+    }
+
+    // NOTE: SDFLCD text will never have kLCD16_Format or kLCD32_Format at this point, and
+    // effectively skips this block. Instead the subPixelGeometry is piped in during
+    // drawAtlasSubrun.
+    if (SkMask::kLCD16_Format == rec->fMaskFormat ||
+        SkMask::kLCD32_Format == rec->fMaskFormat) {
         if (too_big_for_lcd(*rec, checkPost2x2)) {
             rec->fMaskFormat = SkMask::kA8_Format;
             flags |= SkScalerContext::kGenA8FromLCD_Flag;

@@ -631,6 +631,7 @@ static ImageAndOffset to_image(SkGlyphID gid, SkBulkGlyphMetricsAndImages* small
                         mask.fRowBytes),
                     {bounds.x(), bounds.y()}};
         case SkMask::kLCD16_Format:
+        case SkMask::kLCD32_Format:
         default:
             SkASSERT(false);
             return {nullptr, {0, 0}};

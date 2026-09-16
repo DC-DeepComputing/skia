@@ -113,7 +113,8 @@ SkMatrix position_matrix(const SkMatrix& drawMatrix, SkPoint drawOrigin) {
 AtlasTextOp::MaskType op_mask_type(MaskFormat maskFormat) {
     switch (maskFormat) {
         case MaskFormat::kA8:   return AtlasTextOp::MaskType::kGrayscaleCoverage;
-        case MaskFormat::kA565: return AtlasTextOp::MaskType::kLCDCoverage;
+        case MaskFormat::kA565:
+        case MaskFormat::kA888: return AtlasTextOp::MaskType::kLCDCoverage;
         case MaskFormat::kARGB: return AtlasTextOp::MaskType::kColorBitmap;
     }
     SkUNREACHABLE;
@@ -205,6 +206,13 @@ static std::tuple<AtlasTextOp::MaskType, uint32_t, bool> calculate_sdf_parameter
 }
 #endif
 } // anonymous namespace
+
+MaskFormat AtlasTextOp::lcdMaskFormat() const {
+    SkASSERT(fHead != nullptr);
+    MaskFormat format = fHead->fSubRun.maskFormat();
+    SkASSERT(format == MaskFormat::kA565 || format == MaskFormat::kA888);
+    return format;
+}
 
 std::tuple<const GrClip*, GrOp::Owner> AtlasTextOp::Make(SurfaceDrawContext* sdc,
                                                          const sktext::gpu::AtlasSubRun* subrun,
@@ -691,6 +699,7 @@ GrOp::CombineResult AtlasTextOp::onCombineIfPossible(GrOp* t, SkArenaAlloc*, con
 
     if (fDFGPFlags != that->fDFGPFlags ||
         fMaskType != that->fMaskType ||
+        this->maskFormat() != that->maskFormat() ||
         fUsesLocalCoords != that->fUsesLocalCoords ||
         fNeedsGlyphTransform != that->fNeedsGlyphTransform ||
         fHasPerspective != that->fHasPerspective ||
