@@ -7,6 +7,7 @@
 
 #include "src/core/SkSharedContext.h"
 
+#include "include/core/SkContextOptions.h"
 #include "src/core/SkStrikeCache.h"
 #include "src/core/SkSynchronizedResourceCache.h"
 #include "src/core/SkTypefaceCache.h"
@@ -19,7 +20,7 @@
 #define SK_DEFAULT_IMAGE_CACHE_LIMIT (32 * 1024 * 1024)
 #endif
 
-SkSharedContext::SkSharedContext() {
+SkSharedContext::SkSharedContext(const SkContextOptions& options) {
 #if defined(SK_USE_DISCARDABLE_SCALEDIMAGECACHE)
     fResourceCache = std::make_unique<SkSynchronizedResourceCache>(SkDiscardableMemory::Create);
 #else
@@ -27,7 +28,14 @@ SkSharedContext::SkSharedContext() {
 #endif
 
     fFontCache = std::make_unique<SkStrikeCache>();
+
     fTypefaceCache = std::make_unique<SkTypefaceCache>();
+    fTypefaceCacheCountLimit = options.fTypefaceCacheCountLimit;
+
+    fResourceCache->setSingleAllocationByteLimit(options.fResourceCacheSingleAllocationByteLimit);
+    fResourceCache->setTotalByteLimit(options.fResourceCacheTotalByteLimit);
+    fFontCache->setCacheCountLimit(options.fFontCacheCountLimit);
+    fFontCache->setCacheSizeLimit(options.fFontCacheLimit);
 }
 
 SkSharedContext::~SkSharedContext() = default;

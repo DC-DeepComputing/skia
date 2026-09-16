@@ -11,14 +11,16 @@
 #include "include/core/SkString.h"
 #include "include/core/SkTraceMemoryDump.h"
 #include "include/core/SkTypes.h"
+#include "src/core/SkContextPriv.h"
 #include "src/core/SkResourceCache.h"
 #include "src/core/SkSharedContext.h"
 #include "src/core/SkStrikeCache.h"
 #include "src/core/SkSynchronizedResourceCache.h"
 #include "src/core/SkTypefaceCache.h"
 
-SkContext::SkContext(sk_sp<SkSharedContext> sharedContext)
-        : fSharedContext(std::move(sharedContext)) {}
+SkContext::SkContext(const SkContextOptions& options) {
+    fSharedContext = sk_make_sp<SkSharedContext>(options);
+}
 
 SkContext::~SkContext() = default;
 
@@ -83,4 +85,8 @@ void sk_trace_dump_visitor(const SkResourceCache::Rec& rec, void* context) {
 void SkContext::dumpMemoryStatistics(SkTraceMemoryDump* dump) {
     this->resourceCache()->visitAll(sk_trace_dump_visitor, dump);
     SkStrikeCache::DumpMemoryStatistics(dump);
+}
+
+std::unique_ptr<SkContext> SkContextCtorAccessor::MakeContext(const SkContextOptions& options) {
+    return std::make_unique<SkContext>(options);
 }
