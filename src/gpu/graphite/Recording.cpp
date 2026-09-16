@@ -217,6 +217,10 @@ bool RecordingPriv::prepareResources(ResourceProvider* resourceProvider,
         }, /*readsOnly=*/false);
     }
 
+    // TODO(b/476118698): After preparing resources, store an immutable copy of the
+    // ScratchResourceManager's mapping of scratch textures and their associated usage flags OR
+    // custom labels on to the Recording which can then safely issue any label updates on insertion.
+
     return status != Task::Status::kFail;
 }
 

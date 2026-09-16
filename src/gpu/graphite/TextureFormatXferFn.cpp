@@ -30,7 +30,7 @@ namespace {
 using TF = TextureFormat;
 
 // This is intentionally not a class enum and is distinct from FormatXferOps for two reasons:
-// 1. We can't use SkEnumBitmask inside template parameters for the row bit manipulation functions.
+// 1. We can't use SkEnumBitMask inside template parameters for the row bit manipulation functions.
 // 2. It's convenient to split the FormatXferOps into specific ops based on their conversion
 //    direction that doesn't need to be exposed in the public API.
 enum ExtendedFormatXferOp : uint8_t {

@@ -24,6 +24,7 @@ enum class Budgeted : bool;
 namespace skgpu::graphite {
 
 class UploadSource;
+enum class TextureUsageFlags : uint32_t;
 
 class Texture : public Resource {
 public:
@@ -49,6 +50,28 @@ public:
     // texture on the host directly. Returns `false` only if driver calls fail.
     virtual bool uploadDataOnHost(const UploadSource& source);
 
+    std::optional<std::string> onSetLabel(
+            std::string_view label,
+            SkEnumBitMask<TextureUsageFlags> usages = TextureUsageFlags::kNone) override {
+        if (label == this->getLabel() && usages == fTextureUsages) {
+            return std::nullopt; // No label change required.
+        }
+
+        fTextureUsages = usages;
+        std::string updatedLabel(label);
+        AppendUsagesToLabel(updatedLabel, fTextureUsages);
+        return updatedLabel;
+    }
+
+    SkEnumBitMask<TextureUsageFlags> textureUsages() const { return fTextureUsages; }
+
+    // Texture usage flags are assigned upon creation and should only be updated when it is thread-
+    // safe to do so (i.e. by the Context during Recording insertion, or when returning a
+    // non-shareable resource from the cache).
+    void updateTextureUsages(SkEnumBitMask<TextureUsageFlags> usages) { fTextureUsages = usages; }
+
+    static void AppendUsagesToLabel(std::string label, SkEnumBitMask<TextureUsageFlags>);
+
 protected:
     Texture(const SharedContext*,
             SkISize dimensions,
@@ -56,7 +79,8 @@ protected:
             bool isTransient,
             sk_sp<MutableTextureState>,
             Ownership,
-            std::string_view label);
+            std::string_view label,
+            SkEnumBitMask<TextureUsageFlags> = TextureUsageFlags::kNone);
 
     MutableTextureState* mutableState() const;
 
@@ -65,16 +89,15 @@ protected:
     void onDumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump,
                                 const char* dumpName) const override;
 
-    // TODO(b/431796811): Once texture usage flags are defined and accepted as arguments to
-    // onSetLabel(...), override that method to give the Texture a chance to consider texture usage
-    // flags before bothering with cumbersome string generation and comparison.
-    // virtual std::optional<std::string> onSetLabel(std::string_view label) override;
-
 private:
     SkISize fDimensions;
     TextureInfo fInfo;
     sk_sp<MutableTextureState> fMutableState;
     sk_sp<RefCntedCallback> fReleaseCallback;
+
+    // Flags representing known Texture usages. This allows us to more efficiently determine whether
+    // the Texture needs a label update or not before performing string generation and comparison.
+    SkEnumBitMask<TextureUsageFlags> fTextureUsages;
 };
 
 } // namespace skgpu::graphite

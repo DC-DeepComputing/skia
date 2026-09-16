@@ -57,26 +57,32 @@ sk_sp<ComputePipeline> ResourceProvider::findOrCreateComputePipeline(
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
-sk_sp<Texture> ResourceProvider::findOrCreateShareableTexture(SkISize dimensions,
-                                                              const TextureInfo& info,
-                                                              std::string_view label) {
-    return this->findOrCreateTexture(dimensions, info, label, Budgeted::kYes, Shareable::kYes);
+sk_sp<Texture> ResourceProvider::findOrCreateShareableTexture(
+        SkISize dimensions,
+        const TextureInfo& info,
+        std::string_view label,
+        SkEnumBitMask<TextureUsageFlags> usages) {
+    return this->findOrCreateTexture(
+        dimensions, info, label, Budgeted::kYes, Shareable::kYes, usages);
 }
 
-sk_sp<Texture> ResourceProvider::findOrCreateNonShareableTexture(SkISize dimensions,
-                                                                 const TextureInfo& info,
-                                                                 std::string_view label,
-                                                                 Budgeted budgeted) {
-    return this->findOrCreateTexture(dimensions, info, label, budgeted, Shareable::kNo);
+sk_sp<Texture> ResourceProvider::findOrCreateNonShareableTexture(
+        SkISize dimensions,
+        const TextureInfo& info,
+        Budgeted budgeted,
+        std::string_view label,
+        SkEnumBitMask<TextureUsageFlags> usages) {
+    return this->findOrCreateTexture(dimensions, info, label, budgeted, Shareable::kNo, usages);
 }
 
 sk_sp<Texture> ResourceProvider::findOrCreateScratchTexture(
         SkISize dimensions,
         const TextureInfo& info,
+        const ResourceCache::ScratchResourceSet& unavailable,
         std::string_view label,
-        const ResourceCache::ScratchResourceSet& unavailable) {
+        SkEnumBitMask<TextureUsageFlags> usages) {
     return this->findOrCreateTexture(
-            dimensions, info, label, Budgeted::kYes, Shareable::kScratch, &unavailable);
+            dimensions, info, label, Budgeted::kYes, Shareable::kScratch, usages, &unavailable);
 }
 
 sk_sp<Texture> ResourceProvider::findOrCreateTexture(
@@ -85,39 +91,40 @@ sk_sp<Texture> ResourceProvider::findOrCreateTexture(
         std::string_view label,
         Budgeted budgeted,
         Shareable shareable,
+        SkEnumBitMask<TextureUsageFlags> usages,
         const ResourceCache::ScratchResourceSet* unavailable) {
     // If the resource is shareable it should be budgeted since it shouldn't be backing any client
     // owned object.
     SkASSERT(shareable == Shareable::kNo || budgeted == Budgeted::kYes);
     SkASSERT(shareable != Shareable::kScratch || SkToBool(unavailable));
 
-    static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
-
     if (!info.isValid()) {
-        // Checking for a valid TextureInfo here allows callers to consolidate error checking for
-        // both TextureInfo and Texture creation to checking for a null returned Texture.
         return nullptr;
     }
-
+    static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
     GraphiteResourceKey key;
     fSharedContext->caps()->buildKeyForTexture(dimensions, info, kType, &key);
 
-    if (Resource* resource =
-                fResourceCache->findAndRefResource(key, budgeted, shareable, label, unavailable)) {
+    if (Resource* resource = fResourceCache->findAndRefResource(key,
+                                                                budgeted,
+                                                                shareable,
+                                                                label,
+                                                                usages,
+                                                                unavailable)) {
         return sk_sp<Texture>(static_cast<Texture*>(resource));
     }
 
-    if (auto tex = this->createTexture(dimensions, info, label)) {
+    if (auto tex = this->createTexture(dimensions, info, label, usages)) {
         fResourceCache->insertResource(tex.get(), key, budgeted, shareable);
         return tex;
     }
-
     return nullptr;
 }
 
 sk_sp<Texture> ResourceProvider::createWrappedTexture(const BackendTexture& backendTexture,
-                                                      std::string_view label) {
-    sk_sp<Texture> texture = this->onCreateWrappedTexture(backendTexture, label);
+                                                      std::string_view label,
+                                                      SkEnumBitMask<TextureUsageFlags> usages) {
+    sk_sp<Texture> texture = this->onCreateWrappedTexture(backendTexture, label, usages);
     SkASSERT(!texture || texture->ownership() == Ownership::kWrapped);
     return texture;
 }
@@ -209,8 +216,8 @@ sk_sp<Buffer> ResourceProvider::findOrCreateBuffer(
         }
     }
 
-    if (Resource* resource =
-            fResourceCache->findAndRefResource(key, kBudgeted, shareable, label, unavailable)) {
+    if (Resource* resource = fResourceCache->findAndRefResource(
+            key, kBudgeted, shareable, label, TextureUsageFlags::kNone, unavailable)) {
         return sk_sp<Buffer>(static_cast<Buffer*>(resource));
     }
 
