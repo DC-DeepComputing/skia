@@ -303,6 +303,8 @@ public:
 
     bool protectedSupport() const { return fProtectedSupport; }
 
+    bool protectedMultiQueueSupport() const { return fProtectedMultiQueueSupport; }
+
     /* Supports BackendSemaphores */
     bool semaphoreSupport() const { return fSemaphoreSupport; }
 
@@ -472,6 +474,7 @@ protected:
     bool fNDCYAxisPointsDown = false; // Most backends have NDC +Y pointing up
     bool fClampToBorderSupport = true;
     bool fProtectedSupport = false;
+    bool fProtectedMultiQueueSupport = false;
     bool fSemaphoreSupport = false;
     bool fAllowCpuSync = true;
     bool fStorageBufferSupport = false;
