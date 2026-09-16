@@ -51,6 +51,8 @@ public:
         return fChildTasks.visitProxies(visitor, readsOnly);
     }
 
+    Protected isProtected() const override;
+
 private:
     friend class DrawContext; // for "addTask"
 
