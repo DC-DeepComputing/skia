@@ -22,6 +22,30 @@
       },
       "revId": "71e02ba3d85d457d63933e939524425ef58afa67",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d71024dd_3339e75b",
+        "filename": "src/core/SkSwizzlePriv.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-16T19:35:27Z",
+      "side": 1,
+      "message": "Yeah, it\u0027s like a regex for optional since there is the RGBA_to_BGRA function that doesn\u0027t premultiply.",
+      "parentUuid": "98ad5c8c_7f90f2a4",
+      "range": {
+        "startLine": 17,
+        "startChar": 58,
+        "endLine": 17,
+        "endChar": 59
+      },
+      "revId": "71e02ba3d85d457d63933e939524425ef58afa67",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
