@@ -63,6 +63,22 @@ std::unique_ptr<GrFragmentProcessor> GrYUVtoRGBEffect::Make(const GrYUVATextureP
         return nullptr;
     }
 
+    const bool packedYUYV = yuvaProxies.yuvaInfo().planeConfig() ==
+                            SkYUVAInfo::PlaneConfig::kYUYV;
+    if (packedYUYV) {
+        // Packed 4:2:2 requires a single full-resolution plane whose texels hold
+        // two pixels each; the effect samples adjacent texels explicitly.
+        SkASSERT(numPlanes == 1);
+        SkASSERT(yuvaProxies.yuvaInfo().subsampling() == SkYUVAInfo::Subsampling::k422);
+        SkASSERT(yuvaProxies.yuvaInfo().width() % 2 == 0);
+    }
+    // Sampling the packed plane exactly at texel centers requires nearest
+    // filtering on the plane texture.
+    GrSamplerState planeSamplerState = packedYUYV
+            ? GrSamplerState(samplerState.wrapModeX(), samplerState.wrapModeY(),
+                             GrSamplerState::Filter::kNearest, samplerState.mipmapMode())
+            : samplerState;
+
     bool usesBorder = samplerState.wrapModeX() == GrSamplerState::WrapMode::kClampToBorder ||
                       samplerState.wrapModeY() == GrSamplerState::WrapMode::kClampToBorder;
     float planeBorders[4][4] = {};
@@ -177,7 +193,7 @@ std::unique_ptr<GrFragmentProcessor> GrYUVtoRGBEffect::Make(const GrYUVATextureP
                 planeFPs[i] = GrTextureEffect::MakeSubset(std::move(view),
                                                           kUnknown_SkAlphaType,
                                                           planeMatrix,
-                                                          samplerState,
+                                                          planeSamplerState,
                                                           planeSubset,
                                                           planeDomain,
                                                           caps,
@@ -186,13 +202,13 @@ std::unique_ptr<GrFragmentProcessor> GrYUVtoRGBEffect::Make(const GrYUVATextureP
                 planeFPs[i] = GrTextureEffect::MakeSubset(std::move(view),
                                                           kUnknown_SkAlphaType,
                                                           planeMatrix,
-                                                          samplerState,
+                                                          planeSamplerState,
                                                           planeSubset,
                                                           caps,
                                                           planeBorders[i]);
             }
         } else {
-            GrSamplerState planeSampler = samplerState;
+            GrSamplerState planeSampler = planeSamplerState;
             if (makeLinearWithSnap) {
                 planeSampler = GrSamplerState(samplerState.wrapModeX(),
                                               samplerState.wrapModeY(),
@@ -212,6 +228,7 @@ std::unique_ptr<GrFragmentProcessor> GrYUVtoRGBEffect::Make(const GrYUVATextureP
                                  numPlanes,
                                  yuvaProxies.yuvaLocations(),
                                  snap,
+                                 packedYUYV,
                                  yuvaProxies.yuvaInfo().yuvColorSpace()));
     return GrMatrixEffect::Make(localMatrix, std::move(fp));
 }
@@ -225,15 +242,18 @@ GrYUVtoRGBEffect::GrYUVtoRGBEffect(std::unique_ptr<GrFragmentProcessor> planeFPs
                                    int numPlanes,
                                    const SkYUVAInfo::YUVALocations& locations,
                                    const bool snap[2],
+                                   bool packedYUYV,
                                    SkYUVColorSpace yuvColorSpace)
         : GrFragmentProcessor(kGrYUVtoRGBEffect_ClassID,
                               ModulateForClampedSamplerOptFlags(alpha_type(locations)))
         , fLocations(locations)
-        , fYUVColorSpace(yuvColorSpace) {
+        , fYUVColorSpace(yuvColorSpace)
+        , fPackedYUYV(packedYUYV) {
     std::copy_n(snap, 2, fSnap);
 
-    if (fSnap[0] || fSnap[1]) {
-        // Need this so that we can access coords in SKSL to perform snapping.
+    if (fSnap[0] || fSnap[1] || fPackedYUYV) {
+        // Need this so that we can access coords in SKSL to perform snapping
+        // or the pixel-parity-aware sampling of the packed 4:2:2 plane.
         this->setUsesSampleCoordsDirectly();
         for (int i = 0; i < numPlanes; ++i) {
             this->registerChild(std::move(planeFPs[i]), SkSL::SampleUsage::Explicit());
@@ -282,29 +302,62 @@ std::unique_ptr<GrFragmentProcessor::ProgramImpl> GrYUVtoRGBEffect::onMakeProgra
             fragBuilder->codeAppendf("half4 color;");
             const bool hasAlpha = yuvEffect.fLocations[SkYUVAInfo::YUVAChannels::kA].fPlane >= 0;
 
-            for (int planeIdx = 0; planeIdx < numPlanes; ++planeIdx) {
-                std::string colorChannel;
-                std::string planeChannel;
-                for (int locIdx = 0; locIdx < (hasAlpha ? 4 : 3); ++locIdx) {
-                    auto [yuvPlane, yuvChannel] = yuvEffect.fLocations[locIdx];
-                    if (yuvPlane == planeIdx) {
-                        colorChannel.push_back("rgba"[locIdx]);
-                        planeChannel.push_back("rgba"[static_cast<int>(yuvChannel)]);
+            if (yuvEffect.fPackedYUYV) {
+                // See PlaneConfig::kYUYV: the single plane is a 2-channel texture
+                // whose texels hold (Y, U) and (Y, V) for alternating pixels.
+                // Sample the texel pair for the current pixel and select Y by
+                // pixel parity. The locations for this config are fixed: Y is
+                // channel 0 (R) and U/V are channel 1 (G) of the plane.
+                SkASSERT(numPlanes == 1);
+                SkASSERT(yuvEffect.fLocations[SkYUVAInfo::YUVAChannels::kY].fChannel ==
+                                 SkColorChannel::kR);
+                SkASSERT(yuvEffect.fLocations[SkYUVAInfo::YUVAChannels::kU].fChannel ==
+                                 SkColorChannel::kG);
+                SkASSERT(yuvEffect.fLocations[SkYUVAInfo::YUVAChannels::kV].fChannel ==
+                                 SkColorChannel::kG);
+                // Sample coordinates are in image space with pixel centers at
+                // half-integers; the plane has one texel per pixel pair.
+                fragBuilder->codeAppendf(
+                        "float pixelIdx = floor(%s.x - 0.5);", args.fSampleCoord);
+                fragBuilder->codeAppendf(
+                        "float2 texelCenter = float2(floor(pixelIdx * 0.5) + 0.5, %s.y);",
+                        args.fSampleCoord);
+                fragBuilder->codeAppendf(
+                        "bool odd = mod(pixelIdx, 2.0) > 0.5;");
+                fragBuilder->codeAppendf(
+                        "half4 s0 = %s;",
+                        this->invokeChild(0, args, "texelCenter").c_str());
+                fragBuilder->codeAppendf(
+                        "half4 s1 = %s;",
+                        this->invokeChild(0, args, "texelCenter + float2(1.0, 0.0)").c_str());
+                fragBuilder->codeAppendf("color.r = odd ? s1.r : s0.r;");  // Y
+                fragBuilder->codeAppendf("color.g = s0.g;");  // U
+                fragBuilder->codeAppendf("color.b = s1.g;");  // V
+                fragBuilder->codeAppendf("color.a = 1.0;");
+            } else {
+                for (int planeIdx = 0; planeIdx < numPlanes; ++planeIdx) {
+                    std::string colorChannel;
+                    std::string planeChannel;
+                    for (int locIdx = 0; locIdx < (hasAlpha ? 4 : 3); ++locIdx) {
+                        auto [yuvPlane, yuvChannel] = yuvEffect.fLocations[locIdx];
+                        if (yuvPlane == planeIdx) {
+                            colorChannel.push_back("rgba"[locIdx]);
+                            planeChannel.push_back("rgba"[static_cast<int>(yuvChannel)]);
+                        }
+                    }
+
+                    SkASSERT(colorChannel.size() == planeChannel.size());
+                    if (!colorChannel.empty()) {
+                        fragBuilder->codeAppendf(
+                                "color.%s = (%s).%s;",
+                                colorChannel.c_str(),
+                                this->invokeChild(planeIdx, args, sampleCoords).c_str(),
+                                planeChannel.c_str());
                     }
                 }
-
-                SkASSERT(colorChannel.size() == planeChannel.size());
-                if (!colorChannel.empty()) {
-                    fragBuilder->codeAppendf(
-                            "color.%s = (%s).%s;",
-                            colorChannel.c_str(),
-                            this->invokeChild(planeIdx, args, sampleCoords).c_str(),
-                            planeChannel.c_str());
+                if (!hasAlpha) {
+                    fragBuilder->codeAppendf("color.a = 1;");
                 }
-            }
-
-            if (!hasAlpha) {
-                fragBuilder->codeAppendf("color.a = 1;");
             }
 
             if (kIdentity_SkYUVColorSpace != yuvEffect.fYUVColorSpace) {
@@ -380,6 +433,9 @@ void GrYUVtoRGBEffect::onAddToKey(const GrShaderCaps& caps, skgpu::KeyBuilder* b
     if (fSnap[1]) {
         packed |= 1 << 18;
     }
+    if (fPackedYUYV) {
+        packed |= 1 << 19;
+    }
     b->add32(packed);
 }
 
@@ -388,13 +444,15 @@ bool GrYUVtoRGBEffect::onIsEqual(const GrFragmentProcessor& other) const {
 
     return fLocations == that.fLocations            &&
            std::equal(fSnap, fSnap + 2, that.fSnap) &&
-           fYUVColorSpace == that.fYUVColorSpace;
+           fYUVColorSpace == that.fYUVColorSpace    &&
+           fPackedYUYV == that.fPackedYUYV;
 }
 
 GrYUVtoRGBEffect::GrYUVtoRGBEffect(const GrYUVtoRGBEffect& src)
         : GrFragmentProcessor(src)
         , fLocations((src.fLocations))
-        , fYUVColorSpace(src.fYUVColorSpace) {
+        , fYUVColorSpace(src.fYUVColorSpace)
+        , fPackedYUYV(src.fPackedYUYV) {
     std::copy_n(src.fSnap, 2, fSnap);
 }
 
