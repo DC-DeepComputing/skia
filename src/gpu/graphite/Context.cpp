@@ -406,9 +406,36 @@ void Context::asyncReadPixels(std::unique_ptr<Recorder> recorder,
 
     const Caps* caps = fSharedContext->caps();
     TextureProxyView view = AsView(params.fSrcImage);
-    if (!view || !caps->isCopyableSrc(view.proxy()->textureInfo())) {
-        // This is either a YUVA image (null view) or the texture can't be read directly, so
-        // perform a draw into a compatible texture format and/or flatten any YUVA planes to RGBA.
+
+    const SkColorInfo& srcColorInfo = params.fSrcImage->imageInfo().colorInfo();
+    const SkColorInfo& dstColorInfo = params.fDstImageInfo.colorInfo();
+
+    const bool needsAlphaConversion =
+            (srcColorInfo.alphaType() == kPremul_SkAlphaType &&
+             dstColorInfo.alphaType() == kUnpremul_SkAlphaType) ||
+            (srcColorInfo.alphaType() == kUnpremul_SkAlphaType &&
+             dstColorInfo.alphaType() == kPremul_SkAlphaType);
+
+    const bool needsColorSpaceConversion =
+            !SkColorSpace::Equals(srcColorInfo.colorSpace(), dstColorInfo.colorSpace());
+
+    const bool isCopyableSrc = view && caps->isCopyableSrc(view.proxy()->textureInfo());
+    const bool canCopyAsDraw = caps->isRenderable(
+            caps->getDefaultSampledTextureInfo(dstColorInfo.colorType(),
+                                               Mipmapped::kNo,
+                                               Protected::kNo,
+                                               Renderable::kYes));
+
+    const bool needsConversion =
+            !isCopyableSrc ||
+            (view && (view.origin() == Origin::kBottomLeft ||
+                      needsAlphaConversion ||
+                      needsColorSpaceConversion));
+
+    if (canCopyAsDraw && needsConversion) {
+        // This is either a YUVA image (null view), the texture can't be read directly, or
+        // we need GPU conversion (bottom-left origin, alpha type conversion, or color space conversion).
+        // Perform a draw into a compatible texture format and/or flatten any YUVA planes to RGBA.
         if (!recorder) {
             recorder = this->makeInternalRecorder();
         }
@@ -420,7 +447,7 @@ void Context::asyncReadPixels(std::unique_ptr<Recorder> recorder,
                                               Budgeted::kYes,
                                               Mipmapped::kNo,
                                               SkBackingFit::kApprox,
-                                              "AsyncReadPixelsFallbackTexture");
+                                              "AsyncReadPixelsGpuConversionTexture");
         if (!flattened) {
             SKIA_LOG_W("AsyncRead failed because copy-as-drawing into a readable format failed");
             return params.fail();
@@ -428,7 +455,13 @@ void Context::asyncReadPixels(std::unique_ptr<Recorder> recorder,
         // Use the original fSrcRect and not flattened's size since it's approx-fit.
         return this->asyncReadPixels(std::move(recorder),
                                      params.withNewSource(flattened.get(),
-                                     SkIRect::MakeSize(params.fSrcRect.size())));
+                                                          SkIRect::MakeSize(params.fSrcRect.size())));
+    }
+
+    if (!isCopyableSrc) {
+        SKIA_LOG_W("AsyncRead failed because source texture cannot be copied directly and "
+                   "GPU conversion is not supported");
+        return params.fail();
     }
 
     // Can copy directly from the image's texture
@@ -785,10 +818,18 @@ Context::PixelTransferResult Context::transferPixels(Recorder* recorder,
         return {};
     }
 
+    const bool flipY = (srcView.origin() == Origin::kBottomLeft);
+    SkIRect copyRect = srcRect;
+    if (flipY) {
+        int h = srcView.dimensions().height();
+        copyRect = SkIRect::MakeLTRB(srcRect.fLeft, h - srcRect.fBottom,
+                                     srcRect.fRight, h - srcRect.fTop);
+    }
+
     // Set up copy task. Since we always use a new buffer the offset can be 0 and we don't need to
     // worry about aligning it to the required transfer buffer alignment.
     sk_sp<CopyTextureToBufferTask> copyTask = CopyTextureToBufferTask::Make(srcView.refProxy(),
-                                                                            srcRect,
+                                                                            copyRect,
                                                                             buffer,
                                                                             /*bufferOffset=*/0,
                                                                             rowBytes);
@@ -815,16 +856,27 @@ Context::PixelTransferResult Context::transferPixels(Recorder* recorder,
     PixelTransferResult result;
     result.fTransferBuffer = std::move(buffer);
     result.fSize = srcRect.size();
-    if (xferFn->isIdentity()) {
+    if (xferFn->isIdentity() && !flipY) {
         result.fRowBytes = rowBytes;
     } else {
         SkImageInfo dstInfo = SkImageInfo::Make(srcRect.size(), dstColorInfo);
         result.fRowBytes = dstInfo.minRowBytes();
-        result.fPixelConverter = [xferFn, dstInfo, rowBytes](void* dst, const void* src) {
+        result.fPixelConverter = [xferFn, dstInfo, rowBytes, flipY](void* dst, const void* src) {
             SkASSERT(xferFn.has_value());
-            xferFn->run(dstInfo.width(), dstInfo.height(),
-                        src, rowBytes,
-                        dst, dstInfo.minRowBytes());
+            if (flipY) {
+                for (int y = 0; y < dstInfo.height(); ++y) {
+                    const auto* srcRow = static_cast<const char*>(src) +
+                                         (dstInfo.height() - 1 - y) * rowBytes;
+                    auto* dstRow = static_cast<char*>(dst) + y * dstInfo.minRowBytes();
+                    xferFn->run(dstInfo.width(), 1,
+                                srcRow, rowBytes,
+                                dstRow, dstInfo.minRowBytes());
+                }
+            } else {
+                xferFn->run(dstInfo.width(), dstInfo.height(),
+                            src, rowBytes,
+                            dst, dstInfo.minRowBytes());
+            }
         };
     }
 

@@ -47,9 +47,11 @@ public:
                                       std::string_view label,
                                       Budgeted budgeted = Budgeted::kYes,
                                       Mipmapped mipmapped = Mipmapped::kNo,
-                                      SkBackingFit backingFit = SkBackingFit::kApprox) {
+                                      SkBackingFit backingFit = SkBackingFit::kApprox,
+                                      bool allowUnpremul = false) {
         return Make(recorder, info, label, budgeted, mipmapped, backingFit,
-                    /*props=*/nullptr, LoadOp::kDiscard, /*registerWithRecorder=*/false);
+                    /*props=*/nullptr, LoadOp::kDiscard, /*registerWithRecorder=*/false,
+                    allowUnpremul);
     }
 
     Surface(sk_sp<Device>);
@@ -112,7 +114,8 @@ private:
                                SkBackingFit,
                                const SkSurfaceProps* props,
                                LoadOp initialLoadOp,
-                               bool registerWithRecorder);
+                               bool registerWithRecorder,
+                               bool allowUnpremul = false);
 
     sk_sp<Device> fDevice;
     sk_sp<Image>  fImageView; // the image object returned by asImage()
