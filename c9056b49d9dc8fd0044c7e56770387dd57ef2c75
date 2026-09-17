@@ -16,6 +16,40 @@
       "message": "PTAL",
       "revId": "c9056b49d9dc8fd0044c7e56770387dd57ef2c75",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2164ed5e_394ef26a",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 1732,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-17T18:22:53Z",
+      "side": 1,
+      "message": "Can we do this with renderer-\u003erenderStepID() \u003d\u003d RenderStepID::kEndCap ?",
+      "revId": "c9056b49d9dc8fd0044c7e56770387dd57ef2c75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56fe94a9_41d58722",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 1785,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-17T18:22:53Z",
+      "side": 1,
+      "message": "It seems like we\u0027re going to see some dropped-draw-w/o-error-return AI bugs from this",
+      "revId": "c9056b49d9dc8fd0044c7e56770387dd57ef2c75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
