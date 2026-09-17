@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef15f13a_a9a25f58",
+        "filename": "modules/skottie/src/BlendModes.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-17T19:03:22Z",
+      "side": 1,
+      "message": "I spoke w/ Michael - it seems 2 tabs is fine.\n\nBe aware that the .clang-format file is not gospel.",
+      "parentUuid": "c13f228e_744f656b",
+      "range": {
+        "startLine": 51,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 50
+      },
+      "revId": "a9e0f2569c27f36c8517049358f1868770dfb474",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "de2e6887_e2028322",
@@ -90,6 +114,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "abb55740_7dd18a78",
+        "filename": "modules/skottie/src/effects/DisplacementMapEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-17T19:03:22Z",
+      "side": 1,
+      "message": "The spaces before c_scale and c_offset portion still stands.",
+      "parentUuid": "59e8d806_91d64ce1",
+      "range": {
+        "startLine": 160,
+        "startChar": 0,
+        "endLine": 171,
+        "endChar": 82
+      },
+      "revId": "a9e0f2569c27f36c8517049358f1868770dfb474",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9cd58661_448d4c38",
         "filename": "modules/skottie/src/effects/FractalNoiseEffect.cpp",
         "patchSetId": 3
@@ -101,6 +149,30 @@
       "writtenOn": "2026-09-16T13:12:45Z",
       "side": 1,
       "message": "4 left here and in gFractals",
+      "range": {
+        "startLine": 228,
+        "startChar": 0,
+        "endLine": 230,
+        "endChar": 34
+      },
+      "revId": "a9e0f2569c27f36c8517049358f1868770dfb474",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "90b692f8_aab97416",
+        "filename": "modules/skottie/src/effects/FractalNoiseEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-17T19:03:22Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "9cd58661_448d4c38",
       "range": {
         "startLine": 228,
         "startChar": 0,
@@ -157,6 +229,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba5e97aa_8fd36170",
+        "filename": "modules/skottie/src/effects/GaussianBlurEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-17T19:03:22Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "079dd868_420a2633",
+      "range": {
+        "startLine": 64,
+        "startChar": 0,
+        "endLine": 66,
+        "endChar": 49
+      },
+      "revId": "a9e0f2569c27f36c8517049358f1868770dfb474",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6ae4e94b_ca2ecbb1",
@@ -170,6 +266,30 @@
       "writtenOn": "2026-09-16T13:12:45Z",
       "side": 1,
       "message": "4 spaces left - here and for \u0027gCaps\u0027 too",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 62,
+        "endChar": 41
+      },
+      "revId": "a9e0f2569c27f36c8517049358f1868770dfb474",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d5e5b45_224b2af8",
+        "filename": "modules/skottie/src/layers/shapelayer/FillStroke.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-17T19:03:22Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "6ae4e94b_ca2ecbb1",
       "range": {
         "startLine": 60,
         "startChar": 0,
@@ -203,6 +323,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e623c519_4ceceffb",
+        "filename": "modules/skottie/src/layers/shapelayer/MergePaths.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-17T19:03:22Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "b43b0906_a5be7b91",
+      "range": {
+        "startLine": 42,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 55
+      },
+      "revId": "a9e0f2569c27f36c8517049358f1868770dfb474",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8b5f18eb_f0f5f8dc",
@@ -216,6 +360,30 @@
       "writtenOn": "2026-09-16T13:12:45Z",
       "side": 1,
       "message": "4 left please",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 49
+      },
+      "revId": "a9e0f2569c27f36c8517049358f1868770dfb474",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e284b6f_9b52010b",
+        "filename": "modules/skottie/src/layers/shapelayer/OffsetPaths.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-17T19:03:22Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "8b5f18eb_f0f5f8dc",
       "range": {
         "startLine": 36,
         "startChar": 0,
@@ -249,6 +417,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eabba930_9cd340c3",
+        "filename": "modules/skottie/src/layers/shapelayer/Polystar.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-17T19:03:22Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "11e9468a_b7b9a564",
+      "range": {
+        "startLine": 104,
+        "startChar": 0,
+        "endLine": 105,
+        "endChar": 61
+      },
+      "revId": "a9e0f2569c27f36c8517049358f1868770dfb474",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c9e8180d_bb2c0eb8",
@@ -262,6 +454,30 @@
       "writtenOn": "2026-09-16T13:12:45Z",
       "side": 1,
       "message": "4 left and line up as with prior formatting",
+      "range": {
+        "startLine": 218,
+        "startChar": 0,
+        "endLine": 223,
+        "endChar": 88
+      },
+      "revId": "a9e0f2569c27f36c8517049358f1868770dfb474",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1097e88_82fe174a",
+        "filename": "modules/skottie/src/text/RangeSelector.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-17T19:03:22Z",
+      "side": 1,
+      "message": "Prior formatting portion still stands",
+      "parentUuid": "c9e8180d_bb2c0eb8",
       "range": {
         "startLine": 218,
         "startChar": 0,
