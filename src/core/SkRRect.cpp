@@ -498,13 +498,16 @@ std::optional<SkRRect> SkRRect::transform(const SkMatrix& matrix) const {
         return {};
     }
 
+    if (this->isEmpty()) {
+        return MakeEmpty();
+    }
+
     const SkRect newRect = matrix.mapRect(fRect);
-    if (!newRect.isFinite()) {
+    if (!newRect.isFinite() || newRect.isEmpty()) {
         return {};
     }
 
     switch (this->getType()) {
-        case kEmpty_Type: return MakeEmpty();
         case kRect_Type:  return MakeRect(newRect);
         case kOval_Type:  return MakeOval(newRect);
         default:
@@ -754,28 +757,35 @@ void SkRRect::dump(bool asHex) const { SkDebugf("%s\n", this->dumpToString(asHex
 
 ///////////////////////////////////////////////////////////////////////////////
 
+/**
+ *  We need all combinations of predicates to be true to have a "safe" radius value.
+ */
+static bool are_radius_check_predicates_valid(SkScalar rad, SkScalar min, SkScalar max) {
+    return (min <= max) && (rad <= max - min) && (min + rad <= max) && (max - rad >= min) &&
+           rad >= 0;
+}
+
 static bool are_radii_predicates_valid(SkScalar radiusFromMin,
                                        SkScalar radiusFromMax,
                                        SkScalar minCoord,
                                        SkScalar maxCoord) {
-    if (minCoord > maxCoord || radiusFromMin < 0 || radiusFromMax < 0) {
-        return false;
-    }
     const SkScalar limit = maxCoord - minCoord;
     const SkScalar sum = radiusFromMin + radiusFromMax;
-    // Check both lengths (sum <= limit) and absolute coordinates (min + r1 <= max - r2)
-    // because floating-point rounding can cause one to pass while the other fails. Testing both
-    // ensures the corner curves never overlap regardless of how algorithms compute edge spans.
-    if (sum <= limit && minCoord + radiusFromMin <= maxCoord - radiusFromMax) {
-        return true;
-    }
+    const SkScalar ptFromMin = minCoord + radiusFromMin;
+    const SkScalar ptFromMax = maxCoord - radiusFromMax;
+
     // Accept either floats that are within an absolute tolerance of each other (for small numbers)
     // or within a few ULPs (Units in the Last Place, i.e. the step between adjacent
     // representable floats, for large numbers) to be robust against floating-point imprecision
     // when translated. See https://skia-review.git.corp.google.com/c/skia/+/1279236.
-    const SkFloatingPoint<float, 4> fpSum(sum);
-    const SkFloatingPoint<float, 4> fpLimit(limit);
-    return SkScalarNearlyEqual(sum, limit) || fpSum.AlmostEquals(fpLimit);
+    const bool sumValid =
+            sum <= limit || SkScalarNearlyEqual(sum, limit) ||
+            SkFloatingPoint<float, 4>(sum).AlmostEquals(SkFloatingPoint<float, 4>(limit));
+    const bool ptsValid =
+            ptFromMin <= ptFromMax || SkScalarNearlyEqual(ptFromMin, ptFromMax) ||
+            SkFloatingPoint<float, 4>(ptFromMin).AlmostEquals(SkFloatingPoint<float, 4>(ptFromMax));
+
+    return sumValid && ptsValid;
 }
 
 bool SkRRect::isValid() const {
@@ -865,6 +875,15 @@ bool SkRRectPriv::AreRectAndRadiiValid(const SkRect& rect, const SkVector radii[
     if (!rect.isFinite() || !rect.isSorted()) {
         return false;
     }
+
+    for (int i = 0; i < 4; ++i) {
+        if (are_radius_check_predicates_valid(radii[i].fX, rect.fLeft, rect.fRight) &&
+            are_radius_check_predicates_valid(radii[i].fY, rect.fTop, rect.fBottom))
+            continue;
+
+        return false;
+    }
+
     return are_radii_predicates_valid(radii[SkRRect::kUpperLeft_Corner].fX,
                                       radii[SkRRect::kUpperRight_Corner].fX,
                                       rect.fLeft,
