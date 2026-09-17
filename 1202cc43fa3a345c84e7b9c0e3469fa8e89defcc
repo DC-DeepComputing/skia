@@ -46,6 +46,30 @@
       },
       "revId": "1202cc43fa3a345c84e7b9c0e3469fa8e89defcc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d540de0d_dc4adc05",
+        "filename": "tools/gpu/vk/VkYcbcrSamplerHelper.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-09-17T14:45:45Z",
+      "side": 1,
+      "message": "Okay, just wanted to confirm my understanding of what should be happening. Happy to land this change to unblock you, but I would highly suggests filing a bug with lavapipe with the details of your investigation so that bug can be fixed on their end.",
+      "parentUuid": "a2b41b78_a565eef4",
+      "range": {
+        "startLine": 123,
+        "startChar": 44,
+        "endLine": 123,
+        "endChar": 59
+      },
+      "revId": "1202cc43fa3a345c84e7b9c0e3469fa8e89defcc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
