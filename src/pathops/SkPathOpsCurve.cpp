@@ -23,7 +23,8 @@ double SkDCurve::nearPoint(SkPath::Verb verb, const SkDPoint& xy, const SkDPoint
         minX = std::min(minX, fCubic.fPts[index].fX);
         maxX = std::max(maxX, fCubic.fPts[index].fX);
     }
-    if (!AlmostBetweenUlps(minX, xy.fX, maxX)) {
+    // See comment in SkDLine::nearPoint: check 2-ULP tolerance only when constant/axis-aligned.
+    if (minX == maxX && !AlmostBequalUlps(xy.fX, minX)) {
         return -1;
     }
     double minY = fCubic.fPts[0].fY;
@@ -32,7 +33,7 @@ double SkDCurve::nearPoint(SkPath::Verb verb, const SkDPoint& xy, const SkDPoint
         minY = std::min(minY, fCubic.fPts[index].fY);
         maxY = std::max(maxY, fCubic.fPts[index].fY);
     }
-    if (!AlmostBetweenUlps(minY, xy.fY, maxY)) {
+    if (minY == maxY && !AlmostBequalUlps(xy.fY, minY)) {
         return -1;
     }
     SkIntersections i;
