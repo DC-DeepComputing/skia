@@ -125,6 +125,8 @@ GRAPHITE_FILES = [
     "RuntimeEffectDictionary.h",
     "Sampler.cpp",
     "Sampler.h",
+    "ScratchDeviceAtlas.cpp",
+    "ScratchDeviceAtlas.h",
     "ScratchResourceManager.cpp",
     "ScratchResourceManager.h",
     "SerializationUtils.cpp",

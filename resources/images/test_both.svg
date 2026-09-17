@@ -1,0 +1,17 @@
+<svg width="918.390625" height="459.1953125">
+    <defs>
+        <filter id="ferrari-glow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+            <feMerge>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+        </filter>
+    </defs>
+    <g transform="translate(15,12)">
+        <rect class="shipment-bar" x="229.52524483472877" y="393.5127069536424" width="9.553296232876713"
+            height="3.6826055463575926" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="241.06799973892583" y="394.56487996688736" width="9.553296232876713"
+            height="2.6304325331126392" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+    </g>
+</svg>

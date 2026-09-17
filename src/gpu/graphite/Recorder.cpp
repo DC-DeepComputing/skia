@@ -768,6 +768,14 @@ void RecorderPriv::compactAtlasProvider() {
     fRecorder->fAtlasProvider->compact();
 }
 
+void RecorderPriv::flushScratchDeviceAtlases() {
+    ASSERT_SINGLE_OWNER_PRIV
+    if (!fRecorder->fAtlasProvider) {
+        return;
+    }
+    fRecorder->fAtlasProvider->flushScratchDeviceAtlases();
+}
+
 #if defined(GPU_TEST_UTILS)
 bool RecorderPriv::deviceIsRegistered(Device* device) const {
     ASSERT_SINGLE_OWNER_PRIV

@@ -18,10 +18,12 @@
 #include "include/gpu/graphite/Recorder.h"
 #include "include/private/SkDebug.h"
 #include "include/private/SkEnumBitMask.h"
+#include "src/core/SkArenaAlloc.h"
 #include "src/core/SkDevice.h"
 #include "src/gpu/graphite/ClipStack.h"
 #include "src/gpu/graphite/DrawOrder.h"
 #include "src/gpu/graphite/ResourceTypes.h"
+#include "src/gpu/graphite/geom/IntersectionTree.h"
 #include "src/gpu/graphite/geom/Rect.h"
 #include "src/gpu/graphite/geom/Transform.h"
 #include "src/text/gpu/SubRunContainer.h"
@@ -30,7 +32,9 @@
 #include <cstdint>
 #include <memory>
 #include <string_view>
+#include <unordered_map>
 #include <utility>
+#include <vector>
 
 class SkColorInfo;
 class SkDrawable;
@@ -83,6 +87,7 @@ class Shape;
 class Task;
 class TextureProxy;
 class TextureProxyView;
+class ScratchDeviceAtlas;
 
 #if defined(SK_ENABLE_SPARSE_STRIPS)
 class StripGenerator;
@@ -114,6 +119,17 @@ public:
                               std::string_view label,
                               bool registerWithRecorder=true,
                               bool allowUnpremul=false);
+
+    static sk_sp<Device> MakeAtlased(Recorder* recorder,
+                                     sk_sp<DrawContext> atlasDC,
+                                     SkIPoint atlasOffset,
+                                     SkISize deviceSize,
+                                     const SkColorInfo& colorInfo,
+                                     const SkSurfaceProps& props,
+                                     ScratchDeviceAtlas* atlas);
+
+    bool isAtlased() const { return fAtlas != nullptr; }
+    SkIPoint atlasOffset() const { return fAtlasOffset; }
 
     Device* asGraphiteDevice() override { return this; }
 
@@ -274,10 +290,63 @@ public:
     int testingOnly_pendingRenderSteps() const;
 #endif
 
+    /**
+     * IntersectionTreeSet controls multiple IntersectionTrees to organize all add rectangles into
+     * disjoint sets. For a given CompressedPaintersOrder and bounds, it returns the smallest
+     * DisjointStencilIndex that guarantees the bounds are disjoint from all other draws that use
+     * the same painters order and stencil index.
+     */
+    class IntersectionTreeSet {
+    public:
+        IntersectionTreeSet() = default;
+
+        DisjointStencilIndex add(CompressedPaintersOrder drawOrder, Rect rect) {
+            auto& trees = fTrees[drawOrder];
+            DisjointStencilIndex stencil = DisjointStencilIndex::First();
+            for (auto&& tree : trees) {
+                if (tree->add(rect)) {
+                    return stencil;
+                }
+                stencil = stencil.next(); // advance to the next tree's index
+            }
+
+            // If here, no existing intersection tree can hold the rect so add a new one
+            SkASSERT(stencil != DrawOrder::kUnassigned);
+            IntersectionTree* newTree = this->makeTree();
+            SkAssertResult(newTree->add(rect));
+            trees.push_back(newTree);
+            return stencil;
+        }
+
+        void reset() {
+            fTrees.clear();
+            fTreeStore.reset();
+        }
+
+    private:
+        struct Hash {
+            size_t operator()(const CompressedPaintersOrder& o) const noexcept { return o.bits(); }
+        };
+
+        IntersectionTree* makeTree() {
+            return fTreeStore.make<IntersectionTree>();
+        }
+
+        std::unordered_map<CompressedPaintersOrder, std::vector<IntersectionTree*>, Hash> fTrees;
+        SkSTArenaAllocWithReset<4 * sizeof(IntersectionTree)> fTreeStore;
+    };
+
 private:
-    class IntersectionTreeSet;
+    friend class ScratchDeviceAtlas;
 
     Device(Recorder*, sk_sp<DrawContext>);
+    Device(Recorder*,
+           sk_sp<DrawContext>,
+           SkIPoint atlasOffset,
+           SkISize deviceSize,
+           const SkColorInfo&,
+           const SkSurfaceProps&,
+           ScratchDeviceAtlas*);
 
     bool onReadPixels(const SkPixmap&, int x, int y) override;
 
@@ -371,6 +440,10 @@ private:
     // some other task chain that makes it to the root list.
     sk_sp<Task> fLastTask;
 
+    SkIPoint fAtlasOffset = {0, 0};
+    ScratchDeviceAtlas* fAtlas = nullptr;
+    bool fRegisteredInAtlas = false;
+
     ClipStack fClip;
 
     // TODO (thomsmit): remove these when layering is added
@@ -409,6 +482,10 @@ private:
     // in the expected order.
     uint32_t fScopedRecordingID = 0;
 #endif
+
+    BoundsManager* boundsManager() const;
+    IntersectionTreeSet* disjointStencilSet() const;
+    PaintersDepth& currentDepth();
 
     friend class ClipStack; // for drawClipShape
 

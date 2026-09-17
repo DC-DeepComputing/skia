@@ -35,6 +35,11 @@ struct ContextOptionsPriv {
     bool fDrawListLayer = false;
 
     /**
+     * If true, enables batching small scratch devices into a shared texture atlas.
+     */
+    bool fScratchDeviceAtlas = false;
+
+    /**
      * Override Caps' default strategy heuristics to prioritize this one if set *and* is supported.
      */
     std::optional<PathRendererStrategy> fPathRendererStrategy;

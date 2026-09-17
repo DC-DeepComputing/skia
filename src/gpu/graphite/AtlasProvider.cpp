@@ -14,9 +14,11 @@
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/ClipAtlasManager.h"
 #include "src/gpu/graphite/ComputePathAtlas.h"
+#include "src/gpu/graphite/Device.h"
 #include "src/gpu/graphite/RasterPathAtlas.h"
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/RendererProvider.h"
+#include "src/gpu/graphite/ScratchDeviceAtlas.h"
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/text/TextAtlasManager.h"
 
@@ -35,7 +37,8 @@ static bool use_clip_atlas(const Recorder* recorder) {
 }
 
 AtlasProvider::AtlasProvider(Recorder* recorder)
-        : fTextAtlasManager(std::make_unique<TextAtlasManager>(recorder))
+        : fRecorder(recorder)
+        , fTextAtlasManager(std::make_unique<TextAtlasManager>(recorder))
         , fRasterPathAtlas(std::make_unique<RasterPathAtlas>(recorder))
         , fClipAtlasManager(use_clip_atlas(recorder) ? std::make_unique<ClipAtlasManager>(recorder)
                                                      : nullptr)
@@ -118,6 +121,16 @@ void AtlasProvider::freeGpuResources() {
     // TextureProxies in the pool, it should be safe to clear the pool in the middle of Recording.
     // Draws that use the previous TextureProxies will have refs on them.
     fTexturePool.clear();
+    if (fActiveAtlasedDevices == 0) {
+        if (fChildAtlas) {
+            fChildAtlas->reset();
+        }
+        for (int i = 0; i < kMaxFilterAtlases; ++i) {
+            if (fFilterAtlas[i]) {
+                fFilterAtlas[i]->reset();
+            }
+        }
+    }
 }
 
 void AtlasProvider::recordUploads(DrawContext* dc) {
@@ -159,6 +172,84 @@ void AtlasProvider::invalidateAtlases() {
     }
     if (fClipAtlasManager) {
         fClipAtlasManager->evictAtlases();
+    }
+    if (fActiveAtlasedDevices == 0) {
+        if (fChildAtlas) {
+            fChildAtlas->reset();
+        }
+        for (int i = 0; i < kMaxFilterAtlases; ++i) {
+            if (fFilterAtlas[i]) {
+                fFilterAtlas[i]->reset();
+            }
+        }
+    }
+}
+
+sk_sp<Device> AtlasProvider::makeChildDevice(const SkImageInfo& info,
+                                             const SkSurfaceProps& props) {
+    if (fActiveAtlasedDevices > 0 || !fRecorder->priv().caps()->useScratchDeviceAtlas()) {
+        return nullptr;
+    }
+    if (!fChildAtlas) {
+        fChildAtlas = std::make_unique<ScratchDeviceAtlas>(fRecorder);
+    }
+    if (fChildAtlas->isEligible(info)) {
+        sk_sp<Device> device = fChildAtlas->createDevice(info, props);
+        if (device) {
+            return device;
+        }
+    }
+    this->flushScratchDeviceAtlases();
+    return nullptr;
+}
+
+void AtlasProvider::beginFilterPasses() {
+    if (fActiveAtlasedDevices == 0 && fRecorder->priv().caps()->useScratchDeviceAtlas()) {
+        fFilterPassIndex = 0;
+    } else {
+        fFilterPassIndex = -1;
+    }
+}
+
+void AtlasProvider::endFilterPasses() {
+    fFilterPassIndex = -1;
+}
+
+sk_sp<Device> AtlasProvider::makeFilterDevice(const SkImageInfo& info,
+                                              const SkSurfaceProps& props) {
+    if (fFilterPassIndex < 0 || fActiveAtlasedDevices > 0 ||
+        !fRecorder->priv().caps()->useScratchDeviceAtlas()) {
+        return nullptr;
+    }
+    int pass = fFilterPassIndex++;
+    if (pass < kMaxFilterAtlases) {
+        if (!fFilterAtlas[pass]) {
+            fFilterAtlas[pass] = std::make_unique<ScratchDeviceAtlas>(fRecorder);
+        }
+        if (fFilterAtlas[pass]->isEligible(info)) {
+            sk_sp<Device> device = fFilterAtlas[pass]->createDevice(info, props);
+            if (device) {
+                return device;
+            }
+        }
+    }
+    this->flushScratchDeviceAtlases();
+    return nullptr;
+}
+
+void AtlasProvider::flushScratchDeviceAtlases() {
+    if (fActiveAtlasedDevices > 0) {
+        return;
+    }
+    if (fChildAtlas) {
+        fChildAtlas->flush(fRecorder);
+        fChildAtlas->reset();
+    }
+    for (int i = 0; i < kMaxFilterAtlases; ++i) {
+        if (fFilterAtlas[i]) {
+            fFilterAtlas[i]->flush(fRecorder);
+            fFilterAtlas[i]->reset();
+        }
     }
 }
 

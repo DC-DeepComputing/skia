@@ -94,6 +94,7 @@ public:
     AtlasProvider* getOrCreateAtlasProvider();
     void recordAtlasProviderUploads(DrawContext*);
     void compactAtlasProvider();
+    void flushScratchDeviceAtlases();
     TokenTracker* tokenTracker() { return fRecorder->fTokenTracker.get(); }
     sktext::gpu::StrikeCache* strikeCache() { return fRecorder->fStrikeCache.get(); }
     sktext::gpu::TextBlobRedrawCoordinator* textBlobCache() {

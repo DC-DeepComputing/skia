@@ -58,6 +58,7 @@ void Caps::finishInitialization(const ContextOptions& options) {
         fMaxTextureSize = std::min(fMaxTextureSize, options.fOptionsPriv->fMaxTextureSizeOverride);
         fRequestedPathRendererStrategy = options.fOptionsPriv->fPathRendererStrategy;
         fDrawListLayer = options.fOptionsPriv->fDrawListLayer;
+        fUseScratchDeviceAtlas = options.fOptionsPriv->fScratchDeviceAtlas;
     }
 #endif
     fGlyphCacheTextureMaximumBytes = options.fGlyphCacheTextureMaximumBytes;
@@ -73,6 +74,7 @@ void Caps::finishInitialization(const ContextOptions& options) {
 
     // Enable setting this flag from either the private or public context options.
     fDrawListLayer |= options.fUseDrawListLayer;
+    fUseScratchDeviceAtlas |= options.fUseScratchDeviceAtlas;
 
     constexpr int kMaxFallbackTextureSize = 8192;
     fResourceBindingReqs.fMaxFallbackTextureSize =

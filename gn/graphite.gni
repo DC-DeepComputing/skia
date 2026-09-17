@@ -180,6 +180,8 @@ skia_graphite_sources = [
   "$_src/gpu/graphite/RuntimeEffectDictionary.h",
   "$_src/gpu/graphite/Sampler.cpp",
   "$_src/gpu/graphite/Sampler.h",
+  "$_src/gpu/graphite/ScratchDeviceAtlas.cpp",
+  "$_src/gpu/graphite/ScratchDeviceAtlas.h",
   "$_src/gpu/graphite/ScratchResourceManager.cpp",
   "$_src/gpu/graphite/ScratchResourceManager.h",
   "$_src/gpu/graphite/SerializationUtils.cpp",

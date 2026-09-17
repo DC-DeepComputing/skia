@@ -82,6 +82,7 @@
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/Renderer.h"
 #include "src/gpu/graphite/RendererProvider.h"
+#include "src/gpu/graphite/ScratchDeviceAtlas.h"
 #include "src/gpu/graphite/SpecialImage_Graphite.h"
 #include "src/gpu/graphite/TextureFormat.h"
 #include "src/gpu/graphite/TextureInfoPriv.h"
@@ -368,57 +369,6 @@ private:
 
 } // anonymous namespace
 
-/**
- * IntersectionTreeSet controls multiple IntersectionTrees to organize all add rectangles into
- * disjoint sets. For a given CompressedPaintersOrder and bounds, it returns the smallest
- * DisjointStencilIndex that guarantees the bounds are disjoint from all other draws that use the
- * same painters order and stencil index.
- */
-class Device::IntersectionTreeSet {
-public:
-    IntersectionTreeSet() = default;
-
-    DisjointStencilIndex add(CompressedPaintersOrder drawOrder, Rect rect) {
-        auto& trees = fTrees[drawOrder];
-        DisjointStencilIndex stencil = DisjointStencilIndex::First();
-        for (auto&& tree : trees) {
-            if (tree->add(rect)) {
-                return stencil;
-            }
-            stencil = stencil.next(); // advance to the next tree's index
-        }
-
-        // If here, no existing intersection tree can hold the rect so add a new one
-        SkASSERT(stencil != DrawOrder::kUnassigned);
-        IntersectionTree* newTree = this->makeTree();
-        SkAssertResult(newTree->add(rect));
-        trees.push_back(newTree);
-        return stencil;
-    }
-
-    void reset() {
-        fTrees.clear();
-        fTreeStore.reset();
-    }
-
-private:
-    struct Hash {
-        size_t operator()(const CompressedPaintersOrder& o) const noexcept { return o.bits(); }
-    };
-
-    IntersectionTree* makeTree() {
-        return fTreeStore.make<IntersectionTree>();
-    }
-
-    // Each compressed painters order defines a barrier around draws so each order's set of draws
-    // are independent, even if they may intersect. Within each order, the list of trees holds the
-    // IntersectionTrees representing each disjoint set.
-    // TODO: This organization of trees is logically convenient but may need to be optimized based
-    // on real world data (e.g. how sparse is the map, how long is each vector of trees,...)
-    std::unordered_map<CompressedPaintersOrder, std::vector<IntersectionTree*>, Hash> fTrees;
-    SkSTArenaAllocWithReset<4 * sizeof(IntersectionTree)> fTreeStore;
-};
-
 sk_sp<Device> Device::Make(Recorder* recorder,
                            const SkImageInfo& ii,
                            skgpu::Budgeted budgeted,
@@ -514,6 +464,24 @@ sk_sp<Device> Device::Make(Recorder* recorder,
     return device;
 }
 
+sk_sp<Device> Device::MakeAtlased(Recorder* recorder,
+                                 sk_sp<DrawContext> atlasDC,
+                                 SkIPoint atlasOffset,
+                                 SkISize deviceSize,
+                                 const SkColorInfo& colorInfo,
+                                 const SkSurfaceProps& props,
+                                 ScratchDeviceAtlas* atlas) {
+    if (!recorder || !atlasDC) {
+        return nullptr;
+    }
+    sk_sp<Device> device{new Device(recorder, std::move(atlasDC), atlasOffset, deviceSize,
+                                    colorInfo, props, atlas)};
+    recorder->priv().getOrCreateAtlasProvider()->notifyAtlasedDeviceCreated();
+    device->fRegisteredInAtlas = true;
+    SkDEBUGCODE(device->fScopedRecordingID = recorder->priv().nextRecordingID();)
+    return device;
+}
+
 // These default tuning numbers for the HybridBoundsManager were chosen from looking at performance
 // and accuracy curves produced by the BoundsManagerBench for random draw bounding boxes. This
 // config will use brute force for the first 64 draw calls to the Device and then switch to a grid
@@ -531,6 +499,8 @@ Device::Device(Recorder* recorder, sk_sp<DrawContext> dc)
         : SkDevice(dc->imageInfo(), dc->surfaceProps())
         , fRecorder(recorder)
         , fDC(std::move(dc))
+        , fAtlasOffset({0, 0})
+        , fAtlas(nullptr)
         , fClip(this)
         , fColorDepthBoundsManager(std::make_unique<HybridBoundsManager>(
                   fDC->imageInfo().dimensions(), kGridCellSize, kMaxBruteForceN, kMaxGridSize))
@@ -552,7 +522,31 @@ Device::Device(Recorder* recorder, sk_sp<DrawContext> dc)
 #endif
 }
 
+Device::Device(Recorder* recorder,
+               sk_sp<DrawContext> dc,
+               SkIPoint atlasOffset,
+               SkISize deviceSize,
+               const SkColorInfo& colorInfo,
+               const SkSurfaceProps& props,
+               ScratchDeviceAtlas* atlas)
+        : SkDevice(SkImageInfo::Make(deviceSize, colorInfo), props)
+        , fRecorder(recorder)
+        , fDC(std::move(dc))
+        , fAtlasOffset(atlasOffset)
+        , fAtlas(atlas)
+        , fClip(this)
+        , fCachedLocalToDevice(SkM44())
+        , fCurrentDepth(DrawOrder::kClearDepth)
+        , fSubRunControl(recorder->priv().caps()->getSubRunControl(
+                fDC->surfaceProps().isUseDeviceIndependentFonts())) {
+    SkASSERT(SkToBool(fDC) && SkToBool(fRecorder));
+}
+
 Device::~Device() {
+    if (fRegisteredInAtlas && fRecorder) {
+        fRecorder->priv().getOrCreateAtlasProvider()->notifyAtlasedDeviceImmutable();
+        fRegisteredInAtlas = false;
+    }
     // The Device should have been marked immutable before it's destroyed, or the Recorder was the
     // last holder of a reference to it and de-registered the device as part of its cleanup.
     // However, if the Device was not registered with the recorder (i.e. a scratch device) we don't
@@ -584,7 +578,13 @@ void Device::setImmutable() {
         // which might be called from another thread if it was linked to an Image used in multiple
         // recorders.
         this->flushPendingWork(/*drawContext=*/nullptr);
-        fRecorder->deregisterDevice(this);
+        if (fRegisteredInAtlas) {
+            fRecorder->priv().getOrCreateAtlasProvider()->notifyAtlasedDeviceImmutable();
+            fRegisteredInAtlas = false;
+        }
+        if (!this->isAtlased()) {
+            fRecorder->deregisterDevice(this);
+        }
         // Abandoning the recorder ensures that there are no further operations that can be recorded
         // and is relied on by Image::notifyInUse() to detect when it can unlink from a Device.
         this->abandonRecorder();
@@ -661,9 +661,25 @@ bool Device::hasPendingReads(const TextureProxy* texture) const {
 
 const Transform& Device::localToDeviceTransform() {
     if (this->checkLocalToDeviceDirty()) {
-        fCachedLocalToDevice = Transform{this->localToDevice44()};
+        SkM44 m = this->localToDevice44();
+        if (this->isAtlased()) {
+            m.postTranslate(fAtlasOffset.fX, fAtlasOffset.fY);
+        }
+        fCachedLocalToDevice = Transform{m};
     }
     return fCachedLocalToDevice;
+}
+
+BoundsManager* Device::boundsManager() const {
+    return fAtlas ? fAtlas->boundsManager() : fColorDepthBoundsManager.get();
+}
+
+Device::IntersectionTreeSet* Device::disjointStencilSet() const {
+    return fAtlas ? fAtlas->disjointStencilSet() : fDisjointStencilSet.get();
+}
+
+PaintersDepth& Device::currentDepth() {
+    return fAtlas ? fAtlas->currentDepth() : fCurrentDepth;
 }
 
 SkStrikeDeviceInfo Device::strikeDeviceInfo() const {
@@ -678,6 +694,14 @@ sk_sp<SkDevice> Device::createDevice(const CreateInfo& info, const SkPaint*) {
 
     // Skia's convention is to only clear a device if it is non-opaque.
     LoadOp initialLoadOp = info.fInfo.isOpaque() ? LoadOp::kDiscard : LoadOp::kClear;
+
+    if (!this->isAtlased() && fRecorder->priv().caps()->useScratchDeviceAtlas()) {
+        if (sk_sp<Device> atlasedDevice =
+                    fRecorder->priv().getOrCreateAtlasProvider()->makeChildDevice(info.fInfo,
+                                                                                  props)) {
+            return atlasedDevice;
+        }
+    }
 
     std::string label = fDC->target().proxy()->label();
     if (label.empty()) {
@@ -709,6 +733,15 @@ sk_sp<Image> Device::makeImageCopy(const SkIRect& subset,
     // Image::Copy so that tasks end up on the root task list.
     this->flushPendingWork(/*drawContext=*/nullptr);
 
+    SkIRect actualSubset = subset;
+    if (this->isAtlased()) {
+        actualSubset.offset(fAtlasOffset.fX, fAtlasOffset.fY);
+        fRecorder->priv().flushScratchDeviceAtlases();
+        if (fAtlas) {
+            fAtlas->flush(fRecorder);
+        }
+    }
+
     std::string label = fDC->target().proxy()->label();
     if (label.empty()) {
         label = "CopyDeviceTexture";
@@ -720,7 +753,7 @@ sk_sp<Image> Device::makeImageCopy(const SkIRect& subset,
                        /*drawContext=*/nullptr,
                        fDC->target(),
                        this->imageInfo().colorInfo(),
-                       subset,
+                       actualSubset,
                        budgeted,
                        mipmapped,
                        backingFit,
@@ -733,6 +766,14 @@ bool Device::onReadPixels(const SkPixmap& pm, int srcX, int srcY) {
     // Recorder, since it's accessed via the test-held Surface.
     ASSERT_SINGLE_OWNER
     if (Context* context = fRecorder->priv().context()) {
+        if (this->isAtlased()) {
+            srcX += fAtlasOffset.fX;
+            srcY += fAtlasOffset.fY;
+            fRecorder->priv().flushScratchDeviceAtlases();
+            if (fAtlas) {
+                fAtlas->flush(fRecorder);
+            }
+        }
         // Add all previous commands generated to the command buffer.
         // If the client snaps later they'll only get post-read commands in their Recording,
         // but since they're doing a readPixels in the middle that shouldn't be unexpected.
@@ -779,8 +820,19 @@ bool Device::onWritePixels(const SkPixmap& src, int x, int y) {
     SkASSERT(fDC->target().origin() == Origin::kTopLeft);
 
     // Determine rect to copy
+    if (this->isAtlased()) {
+        x += fAtlasOffset.fX;
+        y += fAtlasOffset.fY;
+    }
     SkIRect dstRect = SkIRect::MakePtSize({x, y}, src.dimensions());
-    if (!target->isFullyLazy() && !dstRect.intersect(SkIRect::MakeSize(target->dimensions()))) {
+    if (this->isAtlased()) {
+        SkIRect slotBounds = SkIRect::MakeXYWH(
+                fAtlasOffset.fX, fAtlasOffset.fY, this->width(), this->height());
+        if (!dstRect.intersect(slotBounds)) {
+            return false;
+        }
+    } else if (!target->isFullyLazy() &&
+               !dstRect.intersect(SkIRect::MakeSize(target->dimensions()))) {
         return false;
     }
 
@@ -820,7 +872,11 @@ bool Device::isClipAntiAliased() const {
 }
 
 SkIRect Device::devClipBounds() const {
-    return rect_to_pixelbounds(fClip.conservativeBounds());
+    SkIRect bounds = rect_to_pixelbounds(fClip.conservativeBounds());
+    if (this->isAtlased()) {
+        bounds.offset(-fAtlasOffset.fX, -fAtlasOffset.fY);
+    }
+    return bounds;
 }
 
 // TODO: This is easy enough to support, but do we still need this API in Skia at all?
@@ -870,7 +926,11 @@ void Device::onClipShader(sk_sp<SkShader> shader) {
 void Device::clipRegion(const SkRegion& globalRgn, SkClipOp op) {
     SkASSERT(op == SkClipOp::kIntersect || op == SkClipOp::kDifference);
 
-    Transform globalToDevice{this->globalToDevice()};
+    SkM44 globalToDeviceM44(this->globalToDevice());
+    if (this->isAtlased()) {
+        globalToDeviceM44.postTranslate(fAtlasOffset.fX, fAtlasOffset.fY);
+    }
+    Transform globalToDevice{globalToDeviceM44};
 
     if (globalRgn.isEmpty()) {
         fClip.clipShape(globalToDevice, Shape{}, op);
@@ -1531,12 +1591,13 @@ void Device::onDrawGlyphRunList(SkCanvas* canvas,
                                 const sktext::GlyphRunList& glyphRunList,
                                 const SkPaint& paint) {
     ASSERT_SINGLE_OWNER
-    fRecorder->priv().textBlobCache()->drawGlyphRunList(canvas,
-                                                        this->localToDevice(),
-                                                        glyphRunList,
-                                                        paint,
-                                                        this->strikeDeviceInfo(),
-                                                        this->atlasDelegate());
+    fRecorder->priv().textBlobCache()->drawGlyphRunList(
+            canvas,
+            this->localToDeviceTransform().matrix().asM33(),
+            glyphRunList,
+            paint,
+            this->strikeDeviceInfo(),
+            this->atlasDelegate());
 }
 
 void Device::drawAtlasSubRun(const sktext::gpu::AtlasSubRun* subRun,
@@ -1847,6 +1908,7 @@ void Device::drawGeometry(const Transform& localToDevice,
                                      geometry.isShape() &&
                                      geometry.shape().isFloodFill() &&
                                      !fDC->target().proxy()->isFullyLazy() &&
+                                     !this->isAtlased() &&
                                      clipElements.empty() &&
                                      clip.scissor().contains(this->bounds());
     if (overwritesAllPixels) {
@@ -1916,9 +1978,9 @@ void Device::drawGeometry(const Transform& localToDevice,
 
     // Update the clip stack after issuing a flush (if it was needed). A draw will be recorded after
     // this point.
-    DrawOrder order(fCurrentDepth.next());
+    DrawOrder order(this->currentDepth().next());
     auto [clipOrder, clipLayer] = fClip.updateClipStateForDraw(
-            clip, clipElements, fColorDepthBoundsManager.get(), order.depth());
+            clip, clipElements, this->boundsManager(), order.depth());
 
     // A draw's order always depends on the clips that must be drawn before it
     order.dependsOnPaintersOrder(clipOrder);
@@ -1929,7 +1991,7 @@ void Device::drawGeometry(const Transform& localToDevice,
         // in order to blend correctly. If there is no depth buffer, then always use painters order.
         if ((dstUsage & DstUsage::kDependsOnDst) || avoidDepthMode) {
             CompressedPaintersOrder prevDraw =
-                fColorDepthBoundsManager->getMostRecentDraw(clip.drawBounds());
+                this->boundsManager()->getMostRecentDraw(clip.drawBounds());
             order.dependsOnPaintersOrder(prevDraw);
         }
 
@@ -1938,8 +2000,8 @@ void Device::drawGeometry(const Transform& localToDevice,
         // reorder the RenderSteps across draws instead of in sequence for each draw.
         if (renderer->depthStencilFlags() & DepthStencilFlags::kStencil) {
             SkASSERT(!avoidDepthMode);
-            DisjointStencilIndex setIndex = fDisjointStencilSet->add(order.paintOrder(),
-                                                                    clip.drawBounds());
+            DisjointStencilIndex setIndex = this->disjointStencilSet()->add(order.paintOrder(),
+                                                                            clip.drawBounds());
             order.dependsOnStencil(setIndex);
         } else if (!(dstUsage & DstUsage::kDependsOnDst) &&
                    styleType == SkStrokeRec::kFill_Style &&
@@ -2006,9 +2068,9 @@ void Device::drawGeometry(const Transform& localToDevice,
     }
 
     if (!useDrawListLayer) {
-        fColorDepthBoundsManager->recordDraw(clip.drawBounds(), order.paintOrder());
+        this->boundsManager()->recordDraw(clip.drawBounds(), order.paintOrder());
     }
-    fCurrentDepth = order.depth();
+    this->currentDepth() = order.depth();
 
     // TODO(b/238758897): When we enable layer elision that depends on draws not overlapping, we
     // can use the `getMostRecentDraw()` query to determine that, although that will mean querying
@@ -2036,8 +2098,8 @@ void Device::drawClipShape(const Transform& localToDevice,
     } else if (!fRecorder->priv().caps()->useDrawListLayer() &&
                (renderer->depthStencilFlags() & DepthStencilFlags::kStencil)) {
         SkASSERT(!fRecorder->priv().caps()->avoidDepthMode());
-        DisjointStencilIndex setIndex = fDisjointStencilSet->add(order.paintOrder(),
-                                                                 clip.drawBounds());
+        DisjointStencilIndex setIndex = this->disjointStencilSet()->add(order.paintOrder(),
+                                                                        clip.drawBounds());
         order.dependsOnStencil(setIndex);
     }
 
@@ -2063,8 +2125,8 @@ void Device::drawClipShape(const Transform& localToDevice,
     }
     // This ensures that draws recorded after this clip shape has been popped off the stack will
     // be unaffected by the Z value the clip shape wrote to the depth attachment.
-    if (order.depth() > fCurrentDepth) {
-        fCurrentDepth = order.depth();
+    if (order.depth() > this->currentDepth()) {
+        this->currentDepth() = order.depth();
     }
 }
 
@@ -2097,8 +2159,8 @@ std::pair<DrawParams*, Layer*> Device::drawClipShapeImmediate(const Transform& l
 void Device::updateNextDepthForClipping(PaintersDepth depth) {
     // This ensures that draws recorded after this clip shape has been popped off the stack will
     // be unaffected by the Z value the clip shape wrote to the depth attachment.
-    if (depth > fCurrentDepth) {
-        fCurrentDepth = depth;
+    if (depth > this->currentDepth()) {
+        this->currentDepth() = depth;
     }
 }
 
@@ -2308,12 +2370,14 @@ sk_sp<Task> Device::lastDrawTask() const {
 }
 
 void Device::flushPendingWork(DrawContext* drawContext) {
-    TRACE_EVENT0("skia.gpu", TRACE_FUNC);
+    if (this->isAtlased()) {
+        fClip.recordDeferredClipDraws();
+        return;
+    }
 
-    // If this is a scratch device being flushed, it should only be flushing into the expected
-    // next recording from when the Device was first created.
-    SkASSERT(fRecorder);
-    SkASSERT(fScopedRecordingID == 0 || fScopedRecordingID == fRecorder->priv().nextRecordingID());
+    fRecorder->priv().flushScratchDeviceAtlases();
+
+    TRACE_EVENT0("skia.gpu", TRACE_FUNC);
 
     // Ideally we would just check if `drawTask` was non-null and then call flushTrackedDevices()
     // before we appended `drawTask` afterwards. Unfortunately, internalFlush() is not 100% internal
@@ -2382,9 +2446,9 @@ void Device::internalFlush() {
     // Flush all pending items to the internal task list and reset Device tracking state
     fDC->flush(fRecorder);
 
-    fColorDepthBoundsManager->reset();
-    fDisjointStencilSet->reset();
-    fCurrentDepth = DrawOrder::kClearDepth;
+    this->boundsManager()->reset();
+    this->disjointStencilSet()->reset();
+    this->currentDepth() = DrawOrder::kClearDepth;
     fAtlasedPathCount = 0;
 
     // Any cleanup in the AtlasProvider
@@ -2434,7 +2498,11 @@ void Device::drawSpecial(SkSpecialImage* special,
     // whose flags match the paint's AA request.
     EdgeAAQuad::Flags aaFlags = paint.isAntiAlias() ? EdgeAAQuad::Flags::kAll
                                                     : EdgeAAQuad::Flags::kNone;
-    this->drawGeometry(Transform(SkM44(localToDevice)),
+    SkM44 m(localToDevice);
+    if (this->isAtlased()) {
+        m.postTranslate(fAtlasOffset.fX, fAtlasOffset.fY);
+    }
+    this->drawGeometry(Transform(m),
                        Geometry(EdgeAAQuad(dst, aaFlags)),
                        PaintParams(paint, imageShader),
                        DefaultFillStyle());
@@ -2466,10 +2534,14 @@ void Device::drawCoverageMask(const SkSpecialImage* mask,
     // original shape has been long lost, so just use a Rect that bounds the image.
     // The provided `maskToDevice` places the mask in device space. The Device's local-to-device
     // transform is used for shading.
+    SkM44 maskToAtlasDevice(maskToDevice);
+    if (this->isAtlased()) {
+        maskToAtlasDevice.postTranslate(fAtlasOffset.fX, fAtlasOffset.fY);
+    }
     CoverageMaskShape maskShape{Shape{Rect::WH((float)mask->width(), (float)mask->height())},
                                 // We store a ref to the textureProxy to keep it alive.
                                 maskProxyView.refProxy(),
-                                SkM44(maskToDevice),
+                                maskToAtlasDevice,
                                 maskInfo};
 
     this->drawGeometry(this->localToDeviceTransform(),
@@ -2489,14 +2561,18 @@ sk_sp<SkSpecialImage> Device::snapSpecial(const SkIRect& subset, bool forceCopy)
                 subset, Budgeted::kYes, Mipmapped::kNo, SkBackingFit::kApprox);
         finalSubset = SkIRect::MakeSize(subset.size());
     } else {
-        // TODO(b/323886870): For now snapSpecial() force adds the pending work to the recorder's
-        // root task list. Once shared atlas management is solved and DrawTasks can be nested in a
-        // graph then this can go away in favor of auto-flushing through the image's linked device.
-        if (fRecorder) {
-            this->flushPendingWork(/*drawContext=*/nullptr);
+        // For atlased devices, don't force-flush this device's DrawContext to root task list,
+        // because that would break batching.
+        if (!this->isAtlased()) {
+            if (fRecorder) {
+                this->flushPendingWork(/*drawContext=*/nullptr);
+            }
         }
         deviceImage = Image::WrapDevice(sk_ref_sp(this));
         finalSubset = subset;
+        if (this->isAtlased()) {
+            finalSubset.offset(fAtlasOffset.fX, fAtlasOffset.fY);
+        }
     }
 
     if (!deviceImage) {
@@ -2511,6 +2587,9 @@ sk_sp<SkSpecialImage> Device::snapSpecial(const SkIRect& subset, bool forceCopy)
 
 sk_sp<skif::Backend> Device::createImageFilteringBackend(const SkSurfaceProps& surfaceProps,
                                                          SkColorType colorType) const {
+    if (!this->isAtlased() && fRecorder && fRecorder->priv().caps()->useScratchDeviceAtlas()) {
+        fRecorder->priv().getOrCreateAtlasProvider()->beginFilterPasses();
+    }
     return skif::MakeGraphiteBackend(fRecorder, surfaceProps, colorType);
 }
 
@@ -2534,7 +2613,7 @@ bool Device::isScratchDevice() const {
 
 sk_sp<sktext::gpu::Slug> Device::convertGlyphRunListToSlug(const sktext::GlyphRunList& glyphRunList,
                                                            const SkPaint& paint) {
-    return sktext::gpu::SlugImpl::Make(this->localToDevice(),
+    return sktext::gpu::SlugImpl::Make(this->localToDeviceTransform().matrix().asM33(),
                                        glyphRunList,
                                        paint,
                                        this->strikeDeviceInfo(),

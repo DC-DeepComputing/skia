@@ -54,6 +54,7 @@ if (skia_enable_svg && skia_use_expat) {
         sources = [
           "tests/Filters.cpp",
           "tests/PaintServer.cpp",
+          "tests/SvgRenderPassCountTest.cpp",
           "tests/Text.cpp",
         ]
 

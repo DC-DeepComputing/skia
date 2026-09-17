@@ -37,6 +37,7 @@
 #include "src/gpu/BlurUtils.h"
 #include "src/gpu/RefCntedCallback.h"
 #include "src/gpu/SkBackingFit.h"
+#include "src/gpu/graphite/AtlasProvider.h"
 #include "src/gpu/graphite/Buffer.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/CommandBuffer.h"
@@ -746,6 +747,12 @@ public:
                       surfaceProps, colorType)
             , fRecorder(recorder) {}
 
+    ~GraphiteBackend() override {
+        if (fRecorder && fRecorder->priv().caps()->useScratchDeviceAtlas()) {
+            fRecorder->priv().getOrCreateAtlasProvider()->endFilterPasses();
+        }
+    }
+
     // Backend
     sk_sp<SkDevice> makeDevice(SkISize size,
                                sk_sp<SkColorSpace> colorSpace,
@@ -754,12 +761,20 @@ public:
                                                   this->colorType(),
                                                   kPremul_SkAlphaType,
                                                   std::move(colorSpace));
+        const SkSurfaceProps& surfaceProps = props ? *props : this->surfaceProps();
+        if (fRecorder->priv().caps()->useScratchDeviceAtlas()) {
+            if (sk_sp<SkDevice> device =
+                        fRecorder->priv().getOrCreateAtlasProvider()->makeFilterDevice(
+                                imageInfo, surfaceProps)) {
+                return device;
+            }
+        }
         return skgpu::graphite::Device::Make(fRecorder,
                                              imageInfo,
                                              skgpu::Budgeted::kYes,
                                              skgpu::Mipmapped::kNo,
                                              SkBackingFit::kApprox,
-                                             props ? *props : this->surfaceProps(),
+                                             surfaceProps,
                                              skgpu::graphite::LoadOp::kDiscard,
                                              "ImageFilterResult");
     }
@@ -794,6 +809,13 @@ public:
 
     // SkShaderBlurAlgorithm
     sk_sp<SkDevice> makeDevice(const SkImageInfo& imageInfo) const override {
+        if (fRecorder->priv().caps()->useScratchDeviceAtlas()) {
+            if (sk_sp<SkDevice> device =
+                        fRecorder->priv().getOrCreateAtlasProvider()->makeFilterDevice(
+                                imageInfo, this->surfaceProps())) {
+                return device;
+            }
+        }
         return skgpu::graphite::Device::Make(fRecorder,
                                              imageInfo,
                                              skgpu::Budgeted::kYes,

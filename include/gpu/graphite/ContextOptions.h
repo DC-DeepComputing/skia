@@ -142,6 +142,12 @@ struct SK_API ContextOptions {
     bool fUseDrawListLayer = false;
 
     /**
+     * Enables batching small scratch devices (such as saveLayer and image filter passes) into a
+     * shared texture atlas to reduce render pass overhead.
+     */
+    bool fUseScratchDeviceAtlas = false;
+
+    /**
      * Client-provided context that is passed to the client-provided PipelineCachingCallback
      * and the (deprecated) PipelineCallback.
      */
