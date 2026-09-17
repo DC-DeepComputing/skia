@@ -199,6 +199,8 @@ class Resource {
         kReturnQueue, // At most 1 ref, held while in the cache's return queue.
     };
 
+    // TODO: put resourceusage enum here rather than resourcetypes?
+
 public:
     Resource(const Resource&) = delete;
     Resource(Resource&&) = delete;
@@ -294,6 +296,8 @@ protected:
     Resource(const SharedContext*,
              Ownership,
              size_t gpuMemorySize,
+             // TODO(b/431796811): Remove default assignment once texture flags are added.
+             ResourceUsage = ResourceUsage::kNone,
              std::string_view label = {},
              bool reusableRequiresPurgeable = false,
              bool requiresPrepareForReturnToCache = false);
@@ -747,6 +751,8 @@ private:
     // the same (i.e. returned at time points less than the system's granularity).
     uint32_t fLastUseToken = 0;
     skgpu::StdSteadyClock::time_point fLastAccess;
+
+    SkEnumBitMask<ResourceUsage> fUsageFlags;
 
     // String used to describe the current use of this Resource.
     std::string fLabel;

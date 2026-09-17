@@ -26,6 +26,7 @@ uint32_t create_unique_id() {
 Resource::Resource(const SharedContext* sharedContext,
                    Ownership ownership,
                    size_t gpuMemorySize,
+                   ResourceUsage type,
                    std::string_view label,
                    bool reusableRequiresPurgeable,
                    bool requiresPrepareForReturnToCache)

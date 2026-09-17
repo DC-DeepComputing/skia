@@ -21,14 +21,18 @@ class MtlBuffer final : public Buffer {
 public:
     static sk_sp<Buffer> Make(const MtlSharedContext*,
                               size_t,
-                              BufferType,
                               AccessPattern,
+                              ResourceUsage,
                               std::string_view label);
 
     id<MTLBuffer> mtlBuffer() const { return fBuffer.get(); }
 
 private:
-    MtlBuffer(const MtlSharedContext*, size_t, sk_cfp<id<MTLBuffer>>, std::string_view label);
+    MtlBuffer(const MtlSharedContext*,
+              size_t,
+              sk_cfp<id<MTLBuffer>>,
+              ResourceUsage type,
+              std::string_view label);
 
     void onMap() override;
     void onUnmap() override;

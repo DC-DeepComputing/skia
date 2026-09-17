@@ -25,7 +25,11 @@ Texture::Texture(const SharedContext* sharedContext,
                  std::string_view label)
         // For the initial GPU size, this assumes that a transient texture will not have any actual
         // memory. Over a texture's lifetime this may not stay the case.
-        : Resource(sharedContext, ownership, isTransient ? 0 : ComputeSize(dimensions, info), label)
+        : Resource(sharedContext,
+                   ownership,
+                   isTransient ? 0 : ComputeSize(dimensions, info),
+                   ResourceUsage::kNone, // TODO(b/431796811): Define + use texture flags
+                   label)
         , fDimensions(dimensions)
         , fInfo(info)
         , fMutableState(std::move(mutableState)) {
