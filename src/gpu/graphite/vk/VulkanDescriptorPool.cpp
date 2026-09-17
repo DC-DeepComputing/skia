@@ -39,19 +39,28 @@ sk_sp<VulkanDescriptorPool> VulkanDescriptorPool::Make(const VulkanSharedContext
                      kMaxNumDescriptors);
             return nullptr;
         }
-        VkDescriptorPoolSize& poolSize = poolSizes.push_back();
-        poolSize = {};
-        // Map each DescriptorSetType to the appropriate backend VkDescriptorType
-        poolSize.type = DsTypeEnumToVkDs(requestedDescCounts[i].fType);
-        // Create a pool large enough to accommodate the maximum possible number of descriptor sets
-        poolSize.descriptorCount = requestedDescCounts[i].fCount * numSets;
+        VkDescriptorType descType = DsTypeEnumToVkDs(requestedDescCounts[i].fType);
+        bool found = false;
+        for (auto& existing : poolSizes) {
+            if (existing.type == descType) {
+                existing.descriptorCount += requestedDescCounts[i].fCount * numSets;
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            VkDescriptorPoolSize& poolSize = poolSizes.push_back();
+            poolSize = {};
+            poolSize.type = descType;
+            poolSize.descriptorCount = requestedDescCounts[i].fCount * numSets;
+        }
     }
 
     VkDescriptorPoolCreateInfo createInfo = {};
     createInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
     createInfo.maxSets = numSets;
-    createInfo.poolSizeCount = requestedDescCounts.size();
-    createInfo.pPoolSizes = &poolSizes.front();
+    createInfo.poolSizeCount = poolSizes.size();
+    createInfo.pPoolSizes = poolSizes.data();
 
     VkDescriptorPool pool;
     VkResult result;
