@@ -8,6 +8,10 @@
 #ifndef skgpu_graphite_Context_DEFINED
 #define skgpu_graphite_Context_DEFINED
 
+#if !defined(SK_GRAPHITE_READ_PIXELS_SUPPORTS_BOTTOM_LEFT)
+#define SK_GRAPHITE_READ_PIXELS_SUPPORTS_BOTTOM_LEFT 1
+#endif
+
 #include "include/core/SkImage.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"

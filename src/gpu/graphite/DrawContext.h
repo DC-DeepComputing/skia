@@ -53,7 +53,8 @@ public:
                                    sk_sp<TextureProxy> target,
                                    SkISize deviceSize,
                                    const SkColorInfo&,
-                                   const SkSurfaceProps&);
+                                   const SkSurfaceProps&,
+                                   bool allowUnpremul = false);
 
     ~DrawContext() override;
 
