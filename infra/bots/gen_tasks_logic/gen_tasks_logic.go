@@ -892,7 +892,6 @@ func (b *TaskBuilder) defaultSwarmDimensions() {
 			"Win10":       "Windows-10-19045",
 			"Win11":       "Windows-11-26100",
 			"iOS":         "iOS-13.3.1",
-			"iOS18":       "iOS-18.2.1",
 		}[os]
 		if !ok {
 			log.Fatalf("Entry %q not found in OS mapping.", os)
@@ -912,6 +911,8 @@ func (b *TaskBuilder) defaultSwarmDimensions() {
 			d["pool"] = "SkiaIOS"
 			if b.Model("iPhone11") {
 				d["os"] = "iOS-18.4"
+			} else if b.Model("iPhone15Pro") {
+				d["os"] = "iOS-18.2.1"
 			}
 		}
 		if b.Parts["model"] == "iPadPro" {
