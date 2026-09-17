@@ -48,6 +48,7 @@
 #include "src/gpu/graphite/ResourceProvider.h"
 #include "src/gpu/graphite/ResourceTypes.h"
 #include "src/gpu/graphite/RuntimeEffectDictionary.h"
+#include "src/gpu/graphite/ScratchDeviceAtlas.h"
 #include "src/gpu/graphite/SpecialImage_Graphite.h"
 #include "src/gpu/graphite/Surface_Graphite.h"
 #include "src/gpu/graphite/Texture.h"
@@ -741,10 +742,12 @@ public:
 
     GraphiteBackend(skgpu::graphite::Recorder* recorder,
                     const SkSurfaceProps& surfaceProps,
-                    SkColorType colorType)
+                    SkColorType colorType,
+                    skgpu::graphite::Device* parentDevice = nullptr)
             : Backend(SkImageFilterCache::Create(SkImageFilterCache::kDefaultTransientSize),
                       surfaceProps, colorType)
-            , fRecorder(recorder) {}
+            , fRecorder(recorder)
+            , fParentDevice(parentDevice) {}
 
     // Backend
     sk_sp<SkDevice> makeDevice(SkISize size,
@@ -754,12 +757,26 @@ public:
                                                   this->colorType(),
                                                   kPremul_SkAlphaType,
                                                   std::move(colorSpace));
+        const SkSurfaceProps& surfaceProps = props ? *props : this->surfaceProps();
+        if (fParentDevice && fRecorder->priv().caps()->useScratchDeviceAtlas()) {
+            int pass = fPassIndex++;
+            if (pass < skgpu::graphite::Device::kMaxFilterAtlases) {
+                auto atlas = fParentDevice->getOrCreateFilterAtlas(pass, imageInfo.colorInfo());
+                if (atlas && atlas->isEligible(imageInfo)) {
+                    sk_sp<SkDevice> device = atlas->createDevice(imageInfo, surfaceProps);
+                    if (device) {
+                        return device;
+                    }
+                }
+            }
+            fParentDevice->flushAtlases();
+        }
         return skgpu::graphite::Device::Make(fRecorder,
                                              imageInfo,
                                              skgpu::Budgeted::kYes,
                                              skgpu::Mipmapped::kNo,
                                              SkBackingFit::kApprox,
-                                             props ? *props : this->surfaceProps(),
+                                             surfaceProps,
                                              skgpu::graphite::LoadOp::kDiscard,
                                              "ImageFilterResult");
     }
@@ -794,6 +811,20 @@ public:
 
     // SkShaderBlurAlgorithm
     sk_sp<SkDevice> makeDevice(const SkImageInfo& imageInfo) const override {
+        if (fParentDevice && fRecorder->priv().caps()->useScratchDeviceAtlas()) {
+            int pass = fPassIndex++;
+            if (pass < skgpu::graphite::Device::kMaxFilterAtlases) {
+                auto atlas = fParentDevice->getOrCreateFilterAtlas(pass, imageInfo.colorInfo());
+                if (atlas && atlas->isEligible(imageInfo)) {
+                    sk_sp<SkDevice> device =
+                            atlas->createDevice(imageInfo, this->surfaceProps());
+                    if (device) {
+                        return device;
+                    }
+                }
+            }
+            fParentDevice->flushAtlases();
+        }
         return skgpu::graphite::Device::Make(fRecorder,
                                              imageInfo,
                                              skgpu::Budgeted::kYes,
@@ -806,15 +837,18 @@ public:
 
 private:
     skgpu::graphite::Recorder* fRecorder;
+    skgpu::graphite::Device* fParentDevice = nullptr;
+    mutable int fPassIndex = 0;
 };
 
 } // anonymous namespace
 
 sk_sp<Backend> MakeGraphiteBackend(skgpu::graphite::Recorder* recorder,
                                    const SkSurfaceProps& surfaceProps,
-                                   SkColorType colorType) {
+                                   SkColorType colorType,
+                                   skgpu::graphite::Device* parentDevice) {
     SkASSERT(recorder);
-    return sk_make_sp<GraphiteBackend>(recorder, surfaceProps, colorType);
+    return sk_make_sp<GraphiteBackend>(recorder, surfaceProps, colorType, parentDevice);
 }
 
 }  // namespace skif

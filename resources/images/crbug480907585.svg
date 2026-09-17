@@ -1,0 +1,269 @@
+<svg width="918.390625" height="459.1953125">
+    <defs>
+        <linearGradient id="line-gradient-btc" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#00f0ff" stop-opacity="0.6"/>
+            <stop offset="50%" stop-color="#00f0ff" stop-opacity="1"/>
+            <stop offset="100%" stop-color="#00f0ff" stop-opacity="0.6"/></linearGradient>
+        <linearGradient id="line-gradient-sp" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#22c55e" stop-opacity="0.5"/>
+            <stop offset="50%" stop-color="#22c55e" stop-opacity="0.9"/>
+            <stop offset="100%" stop-color="#22c55e" stop-opacity="0.5"/></linearGradient>
+        <linearGradient id="line-gradient-ndq" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#a855f7" stop-opacity="0.5"/>
+            <stop offset="50%" stop-color="#a855f7" stop-opacity="0.9"/>
+            <stop offset="100%" stop-color="#a855f7" stop-opacity="0.5"/></linearGradient>
+        <filter id="ferrari-glow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+            <feMerge>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="SourceGraphic"/></feMerge></filter>
+    </defs>
+    <g transform="translate(15,12)">
+        <g class="grid" opacity="0.06" fill="none" font-size="10" font-family="sans-serif" text-anchor="end">
+            <path class="domain" stroke="currentColor" d="M843.390625,397.1953125H0V0H843.390625"/>
+            <g class="tick" opacity="1" transform="translate(0,371.196283074145)">
+                <line stroke="currentColor" x2="843.390625"/><text fill="currentColor" x="-3" dy="3.2"/></g>
+            <g class="tick" opacity="1" transform="translate(0,308.21780798570165)">
+                <line stroke="currentColor" x2="843.390625"/><text fill="currentColor" x="-3" dy="3.2"/></g>
+            <g class="tick" opacity="1" transform="translate(0,245.2393328972582)">
+                <line stroke="currentColor" x2="843.390625"/><text fill="currentColor" x="-3" dy="3.2"/></g>
+            <g class="tick" opacity="1" transform="translate(0,182.26085780881485)">
+                <line stroke="currentColor" x2="843.390625"/><text fill="currentColor" x="-3" dy="3.2"/></g>
+            <g class="tick" opacity="1" transform="translate(0,119.28238272037146)">
+                <line stroke="currentColor" x2="843.390625"/><text fill="currentColor" x="-3" dy="3.2"/></g>
+            <g class="tick" opacity="1" transform="translate(0,56.30390763192807)">
+                <line stroke="currentColor" x2="843.390625"/><text fill="currentColor" x="-3" dy="3.2"/></g>
+        </g>
+        <line x1="0" x2="843.390625" y1="371.196283074145" y2="371.196283074145" stroke="#ffd700" stroke-width="1"
+            stroke-dasharray="4,4" opacity="0.3"/>
+        <g transform="translate(8, 0)" fill="none" font-size="10" font-family="sans-serif" text-anchor="end"
+            color="#fffdd0">
+            <g class="tick" opacity="1" transform="translate(0,371.196283074145)">
+                <line stroke="currentColor" x2="0"/>
+                <rect x="-5" y="-5" width="16.39609432220459" height="13.199999809265137" fill="rgba(0, 0, 0, 0.7)"
+                    rx="2"/><text fill="currentColor" x="-3" dy="3.2"
+                    style="font-family: monospace; font-size: 10px; text-anchor: start;">0%</text></g>
+            <g class="tick" opacity="1" transform="translate(0,308.21780798570165)">
+                <line stroke="currentColor" x2="0"/>
+                <rect x="-5" y="-5" width="34.38437461853027" height="13.199999809265137" fill="rgba(0, 0, 0, 0.7)"
+                    rx="2"/><text fill="currentColor" x="-3" dy="3.2"
+                    style="font-family: monospace; font-size: 10px; text-anchor: start;">+200%</text></g>
+            <g class="tick" opacity="1" transform="translate(0,245.2393328972582)">
+                <line stroke="currentColor" x2="0"/>
+                <rect x="-5" y="-5" width="34.38437461853027" height="13.199999809265137" fill="rgba(0, 0, 0, 0.7)"
+                    rx="2"/><text fill="currentColor" x="-3" dy="3.2"
+                    style="font-family: monospace; font-size: 10px; text-anchor: start;">+400%</text></g>
+            <g class="tick" opacity="1" transform="translate(0,182.26085780881485)">
+                <line stroke="currentColor" x2="0"/>
+                <rect x="-5" y="-5" width="34.38437461853027" height="13.199999809265137" fill="rgba(0, 0, 0, 0.7)"
+                    rx="2"/><text fill="currentColor" x="-3" dy="3.2"
+                    style="font-family: monospace; font-size: 10px; text-anchor: start;">+600%</text></g>
+            <g class="tick" opacity="1" transform="translate(0,119.28238272037146)">
+                <line stroke="currentColor" x2="0"/>
+                <rect x="-5" y="-5" width="34.38437461853027" height="13.199999809265137" fill="rgba(0, 0, 0, 0.7)"
+                    rx="2"/><text fill="currentColor" x="-3" dy="3.2"
+                    style="font-family: monospace; font-size: 10px; text-anchor: start;">+800%</text></g>
+            <g class="tick" opacity="1" transform="translate(0,56.30390763192807)">
+                <line stroke="currentColor" x2="0"/>
+                <rect x="-5" y="-5" width="40.380470275878906" height="13.199999809265137" fill="rgba(0, 0, 0, 0.7)"
+                    rx="2"/><text fill="currentColor" x="-3" dy="3.2"
+                    style="font-family: monospace; font-size: 10px; text-anchor: start;">+1000%</text></g>
+        </g>
+        <path fill="none" stroke="url(#line-gradient-sp)" stroke-width="2"
+            d="M0,371.196C3.976,371.978,7.952,372.76,11.928,373.851C15.647,374.872,19.366,377.453,23.086,377.453C27.056,377.453,31.026,375.01,34.997,374.261C38.845,373.536,42.692,373.278,46.54,372.973C50.516,372.658,54.491,372.791,58.467,372.426C62.315,372.074,66.162,371.394,70.01,370.757C73.986,370.098,77.962,368.522,81.938,368.522C85.913,368.522,89.889,369.481,93.865,369.859C97.713,370.225,101.56,370.767,105.408,370.767C109.389,370.767,113.37,368.123,117.351,367.331C121.199,366.565,125.047,366.023,128.894,366.023C132.87,366.023,136.846,366.433,140.822,366.433C144.797,366.433,148.773,365.942,152.749,365.486C156.34,365.074,159.931,364.472,163.522,363.905C167.493,363.277,171.463,362.029,175.434,361.874C179.281,361.725,183.129,361.8,186.977,361.65C190.952,361.495,194.928,361.049,198.904,360.732C202.752,360.426,206.599,360.144,210.447,359.786C214.423,359.415,218.399,358.536,222.374,358.536C226.35,358.536,230.326,360.635,234.302,360.635C238.149,360.635,241.997,357.736,245.845,357.736C249.826,357.736,253.807,358.107,257.788,358.107C261.636,358.107,265.483,356.164,269.331,356.164C273.307,356.164,277.283,357.967,281.258,358.604C285.234,359.242,289.21,359.991,293.186,359.991C296.777,359.991,300.368,358.468,303.959,358.468C307.93,358.468,311.9,362.353,315.871,362.353C319.718,362.353,323.566,362.353,327.413,362.353C331.389,362.353,335.365,365.74,339.341,365.74C343.189,365.74,347.036,362.372,350.884,362.372C354.86,362.372,358.835,363.195,362.811,364.08C366.787,364.965,370.763,367.682,374.739,367.682C378.586,367.682,382.434,365.685,386.281,364.891C390.263,364.068,394.244,362.86,398.225,362.86C402.073,362.86,405.92,365.203,409.768,365.203C413.744,365.203,417.719,362.89,421.695,362.89C425.671,362.89,429.647,363.934,433.623,363.934C437.214,363.934,440.805,362.899,444.396,362.577C448.367,362.222,452.337,362.065,456.308,361.992C460.155,361.92,464.003,361.956,467.85,361.884C471.826,361.81,475.802,359.918,479.778,359.249C483.625,358.601,487.473,357.892,491.321,357.892C495.296,357.892,499.272,358.193,503.248,358.683C507.224,359.172,511.2,360.317,515.176,360.83C519.023,361.326,522.871,361.748,526.718,361.748C530.7,361.748,534.681,359.041,538.662,358.097C542.509,357.185,546.357,356.577,550.205,356.125C554.18,355.658,558.156,355.878,562.132,355.383C566.108,354.889,570.084,353.62,574.06,352.943C577.779,352.31,581.498,351.401,585.218,351.401C589.188,351.401,593.159,353.529,597.129,353.529C600.977,353.529,604.824,351.849,608.672,351.167C612.648,350.462,616.624,349.787,620.599,349.39C624.447,349.006,628.295,349.082,632.142,348.785C636.118,348.477,640.094,347.945,644.07,347.555C648.046,347.165,652.021,346.442,655.997,346.442C659.845,346.442,663.692,346.999,667.54,346.999C671.521,346.999,675.502,343.807,679.484,343.807C683.331,343.807,687.179,345.271,691.026,345.271C695.002,345.271,698.978,343.719,702.954,343.719C706.93,343.719,710.905,344.002,714.881,344.568C718.472,345.079,722.063,347.653,725.655,347.906C729.625,348.186,733.596,348.326,737.566,348.326C741.414,348.326,745.261,345.999,749.109,344.978C753.085,343.923,757.06,342.816,761.036,342.118C764.884,341.443,768.731,341.219,772.579,340.81C776.555,340.387,780.531,340.197,784.507,339.629C788.482,339.061,792.458,338.028,796.434,337.403C800.282,336.799,804.129,335.976,807.977,335.92C811.958,335.861,815.939,335.832,819.92,335.832C823.768,335.832,827.616,335.861,831.463,335.861C835.439,335.861,839.415,335.476,843.391,335.09"/>
+        <path fill="none" stroke="url(#line-gradient-ndq)" stroke-width="2"
+            d="M0,371.196C3.976,371.765,7.952,372.333,11.928,373.206C15.647,374.023,19.366,376.189,23.086,376.189C27.056,376.189,31.026,373.127,34.997,372.094C38.845,371.094,42.692,370.69,46.54,370.03C50.516,369.347,54.491,368.806,58.467,368.072C62.315,367.361,66.162,366.673,70.01,365.711C73.986,364.717,77.962,362.167,81.938,362.167C85.913,362.167,89.889,363.759,93.865,364.256C97.713,364.736,101.56,365.137,105.408,365.137C109.389,365.137,113.37,361.849,117.351,360.708C121.199,359.605,125.047,358.743,128.894,358.337C132.87,357.917,136.846,357.882,140.822,357.707C144.797,357.533,148.773,357.393,152.749,357.291C156.34,357.198,159.931,357.228,163.522,357.102C167.493,356.962,171.463,354.638,175.434,354.638C179.281,354.638,183.129,355.374,186.977,355.374C190.952,355.374,194.928,353.177,198.904,352.776C202.752,352.389,206.599,352.582,210.447,352.195C214.423,351.794,218.399,350.178,222.374,350.178C226.35,350.178,230.326,352.965,234.302,352.965C238.149,352.965,241.997,349.444,245.845,349.356C249.826,349.264,253.807,349.305,257.788,349.218C261.636,349.134,265.483,348.85,269.331,348.85C273.307,348.85,277.283,352.598,281.258,353.685C285.234,354.771,289.21,355.367,293.186,355.367C296.777,355.367,300.368,353.75,303.959,353.75C307.93,353.75,311.9,359.639,315.871,360.24C319.718,360.823,323.566,360.531,327.413,361.114C331.389,361.716,335.365,364.734,339.341,364.734C343.189,364.734,347.036,360.047,350.884,360.047C354.86,360.047,358.835,360.985,362.811,362.026C366.787,363.067,370.763,366.293,374.739,366.293C378.586,366.293,382.434,365.377,386.281,364.875C390.263,364.068,394.244,363.223,398.225,363.223C402.073,363.223,405.92,366.671,409.768,366.671C413.744,366.671,417.719,362.821,421.695,362.821C425.671,362.821,429.647,363.265,433.623,363.265C437.214,363.265,440.805,360.639,444.396,360.629C448.367,360.617,452.337,360.623,456.308,360.612C460.155,360.6,464.003,359.054,467.85,358.175C471.826,357.268,475.802,356.057,479.778,355.24C483.625,354.449,487.473,353.32,491.321,353.32C495.296,353.32,499.272,353.744,503.248,354.39C507.224,355.036,511.2,356.516,515.176,357.198C519.023,357.858,522.871,358.464,526.718,358.464C530.7,358.464,534.681,354.982,538.662,353.733C542.509,352.526,546.357,351.371,550.205,351.032C554.18,350.681,558.156,350.856,562.132,350.505C566.108,350.154,570.084,348.008,574.06,347.312C577.779,346.66,581.498,346.324,585.218,346.324C589.188,346.324,593.159,348.805,597.129,348.805C600.977,348.805,604.824,346.272,608.672,345.099C612.648,343.887,616.624,341.665,620.599,341.665C624.447,341.665,628.295,342.126,632.142,342.126C636.118,342.126,640.094,341.994,644.07,341.73C648.046,341.467,652.021,340.096,655.997,340.096C659.845,340.096,663.692,340.419,667.54,340.419C671.521,340.419,675.502,336.776,679.484,336.555C683.331,336.342,687.179,336.448,691.026,336.235C695.002,336.015,698.978,335.148,702.954,335.148C706.93,335.148,710.905,336.374,714.881,337.832C718.472,339.148,722.063,343.158,725.655,343.158C729.625,343.158,733.596,342.99,737.566,342.653C741.414,342.326,745.261,338.571,749.109,336.913C753.085,335.2,757.06,333.752,761.036,332.591C764.884,331.467,768.731,330.624,772.579,330.003C776.555,329.362,780.531,329.62,784.507,328.854C788.482,328.088,792.458,326.032,796.434,324.711C800.282,323.433,804.129,321.046,807.977,321.046C811.958,321.046,815.939,322.004,819.92,322.281C823.768,322.549,827.616,322.708,831.463,322.708C835.439,322.708,839.415,322.354,843.391,321.999"/>
+        <path fill="none" stroke="url(#line-gradient-btc)" stroke-width="2.5"
+            d="M0,371.196C3.976,371.656,7.952,372.115,11.928,373.94C15.647,375.647,19.366,381.451,23.086,381.451C27.056,381.451,31.026,375.457,34.997,373.665C38.845,371.929,42.692,370.721,46.54,370.721C50.516,370.721,54.491,372.16,58.467,372.16C62.315,372.16,66.162,365.205,70.01,364.585C73.986,363.945,77.962,363.625,81.938,363.625C85.913,363.625,89.889,366.546,93.865,366.546C97.713,366.546,101.56,361.684,105.408,356.987C109.389,352.127,113.37,346.473,117.351,337.556C121.199,328.937,125.047,312.704,128.894,304.862C132.87,296.758,136.846,300.001,140.822,290.339C144.797,280.676,148.773,261.825,152.749,246.889C156.34,233.398,159.931,205.306,163.522,205.306C167.493,205.306,171.463,206.206,175.434,208.006C179.281,209.75,183.129,274.967,186.977,280.178C190.952,285.562,194.928,288.254,198.904,288.254C202.752,288.254,206.599,268.264,210.447,261.225C214.423,253.951,218.399,245.714,222.374,245.714C226.35,245.714,230.326,257.26,234.302,257.26C238.149,257.26,241.997,201.659,245.845,201.659C249.826,201.659,253.807,205.013,257.788,211.723C261.636,218.207,265.483,236.025,269.331,246.236C273.307,256.788,277.283,273.748,281.258,273.748C285.234,273.748,289.21,260.658,293.186,257.712C296.777,255.051,300.368,253.721,303.959,253.721C307.93,253.721,311.9,268.23,315.871,275.534C319.718,282.612,323.566,286.996,327.413,296.859C331.389,307.052,335.365,336.261,339.341,336.261C343.189,336.261,347.036,324.528,350.884,324.528C354.86,324.528,358.835,334.396,362.811,335.746C366.787,337.095,370.763,337.77,374.739,337.77C378.586,337.77,382.434,334.143,386.281,334.143C390.263,334.143,394.244,343.905,398.225,345.338C402.073,346.723,405.92,347.415,409.768,347.415C413.744,347.415,417.719,326.803,421.695,325.304C425.671,323.805,429.647,324.555,433.623,323.056C437.214,321.702,440.805,307.127,444.396,307.127C448.367,307.127,452.337,307.128,456.308,307.13C460.155,307.133,464.003,313.096,467.85,313.096C471.826,313.096,475.802,300.998,479.778,300.998C483.625,300.998,487.473,303.749,491.321,306.17C495.296,308.672,499.272,315.909,503.248,315.909C507.224,315.909,511.2,314.764,515.176,312.473C519.023,310.257,522.871,292.723,526.718,286.732C530.7,280.533,534.681,280.808,538.662,276.454C542.509,272.247,546.357,261.825,550.205,261.232C554.18,260.618,558.156,260.925,562.132,260.311C566.108,259.698,570.084,213.85,574.06,197.999C577.779,183.17,581.498,166.429,585.218,166.429C589.188,166.429,593.159,201.201,597.129,201.201C600.977,201.201,604.824,176.132,608.672,176.132C612.648,176.132,616.624,190.458,620.599,190.458C624.447,190.458,628.295,188.44,632.142,188.44C636.118,188.44,640.094,206.617,644.07,206.617C648.046,206.617,652.021,195.727,655.997,189.611C659.845,183.692,663.692,183.273,667.54,170.598C671.521,157.482,675.502,80.152,679.484,80.152C683.331,80.152,687.179,89.429,691.026,89.429C695.002,89.429,698.978,60.155,702.954,60.155C706.93,60.155,710.905,107.129,714.881,114.712C718.472,121.562,722.063,124.987,725.655,124.987C729.625,124.987,733.596,97.075,737.566,85.518C741.414,74.319,745.261,63.311,749.109,56.428C753.085,49.314,757.06,51.083,761.036,44.099C764.884,37.34,768.731,15.745,772.579,15.745C776.555,15.745,780.531,43.102,784.507,43.102C788.482,43.102,792.458,20.696,796.434,20.696C800.282,20.696,804.129,25.712,807.977,35.745C811.958,46.126,815.939,115.408,819.92,115.408C823.768,115.408,827.616,111.966,831.463,109.741C835.439,107.441,839.415,104.603,843.391,101.765"/>
+        <g transform="translate(0,397.1953125)" fill="none" font-size="10" font-family="sans-serif" text-anchor="middle"
+            color="#fffdd0">
+            <path class="domain" stroke="currentColor" d="M0,6V0H843.390625V6"/>
+            <g class="tick" opacity="1" transform="translate(0,0)">
+                <line stroke="currentColor" y2="6"/><text fill="currentColor" y="9" dy="7.81"
+                    style="font-family: monospace; font-size: 11px;">Jan 2020</text></g>
+            <g class="tick" opacity="1" transform="translate(70.01001481476202,0)">
+                <line stroke="currentColor" y2="6"/><text fill="currentColor" y="9" dy="7.81"
+                    style="font-family: monospace; font-size: 11px;">Jul 2020</text></g>
+            <g class="tick" opacity="1" transform="translate(140.82160983120437,0)">
+                <line stroke="currentColor" y2="6"/><text fill="currentColor" y="9" dy="7.81"
+                    style="font-family: monospace; font-size: 11px;">Jan 2021</text></g>
+            <g class="tick" opacity="1" transform="translate(210.44686614915983,0)">
+                <line stroke="currentColor" y2="6"/><text fill="currentColor" y="9" dy="7.81"
+                    style="font-family: monospace; font-size: 11px;">Jul 2021</text></g>
+            <g class="tick" opacity="1" transform="translate(281.25846116560217,0)">
+                <line stroke="currentColor" y2="6"/><text fill="currentColor" y="9" dy="7.81"
+                    style="font-family: monospace; font-size: 11px;">Jan 2022</text></g>
+            <g class="tick" opacity="1" transform="translate(350.88371748355763,0)">
+                <line stroke="currentColor" y2="6"/><text fill="currentColor" y="9" dy="7.81"
+                    style="font-family: monospace; font-size: 11px;">Jul 2022</text></g>
+            <g class="tick" opacity="1" transform="translate(421.6953125,0)">
+                <line stroke="currentColor" y2="6"/><text fill="currentColor" y="9" dy="7.81"
+                    style="font-family: monospace; font-size: 11px;">Jan 2023</text></g>
+            <g class="tick" opacity="1" transform="translate(491.32056881795546,0)">
+                <line stroke="currentColor" y2="6"/><text fill="currentColor" y="9" dy="7.81"
+                    style="font-family: monospace; font-size: 11px;">Jul 2023</text></g>
+            <g class="tick" opacity="1" transform="translate(562.1321638343978,0)">
+                <line stroke="currentColor" y2="6"/><text fill="currentColor" y="9" dy="7.81"
+                    style="font-family: monospace; font-size: 11px;">Jan 2024</text></g>
+            <g class="tick" opacity="1" transform="translate(632.1421786491599,0)">
+                <line stroke="currentColor" y2="6"/><text fill="currentColor" y="9" dy="7.81"
+                    style="font-family: monospace; font-size: 11px;">Jul 2024</text></g>
+            <g class="tick" opacity="1" transform="translate(702.9537736656022,0)">
+                <line stroke="currentColor" y2="6"/><text fill="currentColor" y="9" dy="7.81"
+                    style="font-family: monospace; font-size: 11px;">Jan 2025</text></g>
+            <g class="tick" opacity="1" transform="translate(772.5790299835576,0)">
+                <line stroke="currentColor" y2="6"/><text fill="currentColor" y="9" dy="7.81"
+                    style="font-family: monospace; font-size: 11px;">Jul 2025</text></g>
+            <g class="tick" opacity="1" transform="translate(843.390625,0)">
+                <line stroke="currentColor" y2="6"/><text fill="currentColor" y="9" dy="7.81"
+                    style="font-family: monospace; font-size: 11px;">Jan 2026</text></g>
+        </g>
+        <rect class="shipment-bar" x="-4.7766481164383565" y="393.5127069536424" width="9.553296232876713"
+            height="3.6826055463575926" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="7.150865284565293" y="392.9866204470199" width="9.553296232876713"
+            height="4.208692052980098" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="18.308861691955805" y="394.56487996688736" width="9.553296232876713"
+            height="2.6304325331126392" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="30.220343488925845" y="395.6170529801324" width="9.553296232876713"
+            height="1.5782595198675722" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="41.763098393122924" y="396.143139486755" width="9.553296232876713"
+            height="1.0521730132450102" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="53.690611794126575" y="393.5127069536424" width="9.553296232876713"
+            height="3.6826055463575926" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="65.23336669832366" y="393.5127069536424" width="9.553296232876713"
+            height="3.6826055463575926" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="77.16088009932731" y="393.5127069536424" width="9.553296232876713"
+            height="3.6826055463575926" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="89.08839350033097" y="394.0387934602649" width="9.553296232876713"
+            height="3.1565190397350875" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="100.63114840452803" y="394.0387934602649" width="9.553296232876713"
+            height="3.1565190397350875" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="112.57469340956528" y="391.40836092715233" width="9.553296232876713"
+            height="5.78695157284767" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="124.11744831376235" y="389.83010140728476" width="9.553296232876713"
+            height="7.365211092715242" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="136.044961714766" y="394.0387934602649" width="9.553296232876713"
+            height="3.1565190397350875" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="147.97247511576967" y="391.40836092715233" width="9.553296232876713"
+            height="5.78695157284767" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="158.7457130263536" y="396.143139486755" width="9.553296232876713"
+            height="1.0521730132450102" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="170.65719482332366" y="396.143139486755" width="9.553296232876713"
+            height="1.0521730132450102" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="182.19994972752073" y="394.56487996688736" width="9.553296232876713"
+            height="2.6304325331126392" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="194.12746312852437" y="381.4127173013245" width="9.553296232876713"
+            height="15.782595198675494" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="205.67021803272146" y="394.56487996688736" width="9.553296232876713"
+            height="2.6304325331126392" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="217.5977314337251" y="396.143139486755" width="9.553296232876713"
+            height="1.0521730132450102" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="229.52524483472877" y="393.5127069536424" width="9.553296232876713"
+            height="3.6826055463575926" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="241.06799973892583" y="394.56487996688736" width="9.553296232876713"
+            height="2.6304325331126392" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="253.01154474396304" y="390.35618791390726" width="9.553296232876713"
+            height="6.839124586092737" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="264.5542996481602" y="394.56487996688736" width="9.553296232876713"
+            height="2.6304325331126392" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="276.4818130491638" y="378.2561982615894" width="9.553296232876713"
+            height="18.939114238410582" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="288.4093264501675" y="391.40836092715233" width="9.553296232876713"
+            height="5.78695157284767" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="299.1825643607514" y="387.1996688741722" width="9.553296232876713"
+            height="9.995643625827825" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="311.0940461577215" y="389.83010140728476" width="9.553296232876713"
+            height="7.365211092715242" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="322.63680106191856" y="392.9866204470199" width="9.553296232876713"
+            height="4.208692052980098" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="334.5643144629222" y="386.67358236754967" width="9.553296232876713"
+            height="10.52173013245033" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="346.10706936711927" y="394.0387934602649" width="9.553296232876713"
+            height="3.1565190397350875" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="358.0345827681229" y="384.04314983443714" width="9.553296232876713"
+            height="13.152162665562855" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="369.9620961691266" y="393.5127069536424" width="9.553296232876713"
+            height="3.6826055463575926" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="393.4483960783609" y="395.0909664735099" width="9.553296232876713"
+            height="2.1043460264900773" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="404.991150982558" y="365.630122102649" width="9.553296232876713"
+            height="31.56519039735099" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="416.91866438356163" y="337.7475372516557" width="9.553296232876713"
+            height="59.44777524834433" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="428.84617778456527" y="362.4736030629139" width="9.553296232876713"
+            height="34.721709437086076" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="439.6194156951492" y="345.11274834437086" width="9.553296232876713"
+            height="52.08256415562914" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="451.53089749211927" y="298.8171357615894" width="9.553296232876713"
+            height="98.37817673841062" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="463.0736523963164" y="278.2997620033113" width="9.553296232876713"
+            height="118.89555049668871" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="475.00116579731997" y="302.49974130794703" width="9.553296232876713"
+            height="94.69557119205297" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="486.5439207015171" y="308.2866928807947" width="9.553296232876713"
+            height="88.9086196192053" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="498.47143410252073" y="364.57794908940394" width="9.553296232876713"
+            height="32.617363410596056" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="510.3989475035243" y="326.69972061258284" width="9.553296232876713"
+            height="70.49559188741716" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="521.9417024077216" y="318.28233650662247" width="9.553296232876713"
+            height="78.91297599337753" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="533.8852474127589" y="329.85623965231787" width="9.553296232876713"
+            height="67.33907284768213" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="545.4280023169558" y="313.54755794701987" width="9.553296232876713"
+            height="83.64775455298013" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="557.3555157179595" y="288.29540562913905" width="9.553296232876713"
+            height="108.89990687086095" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="569.2830291189632" y="316.17799048013245" width="9.553296232876713"
+            height="81.01732201986755" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="580.4410255263537" y="274.6171564569537" width="9.553296232876713"
+            height="122.5781560430463" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="592.3525073233237" y="262.5171668046358" width="9.553296232876713"
+            height="134.6781456953642" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="603.8952622275208" y="168.8737686258278" width="9.553296232876713"
+            height="228.3215438741722" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="615.8227756285244" y="261.4649937913907" width="9.553296232876713"
+            height="135.73031870860927" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="627.3655305327216" y="196.23026697019867" width="9.553296232876713"
+            height="200.96504552980133" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="639.2930439337251" y="277.2475889900662" width="9.553296232876713"
+            height="119.94772350993378" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="651.2205573347288" y="269.3562913907285" width="9.553296232876713"
+            height="127.83902110927153" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="662.7633122389259" y="246.20848509933774" width="9.553296232876713"
+            height="150.98682740066226" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="674.7068572439632" y="225.69111134105958" width="9.553296232876713"
+            height="171.50420115894042" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="686.2496121481602" y="258.8345612582782" width="9.553296232876713"
+            height="138.3607512417218" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="698.1771255491639" y="258.30847475165564" width="9.553296232876713"
+            height="138.88683774834436" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="710.1046389501676" y="226.21719784768212" width="9.553296232876713"
+            height="170.97811465231788" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="720.8778768607515" y="158.878125" width="9.553296232876713" height="238.3171875"
+            fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="732.7893586577216" y="221.48241928807948" width="9.553296232876713"
+            height="175.71289321192052" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="744.3321135619186" y="262.5171668046358" width="9.553296232876713"
+            height="134.6781456953642" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="756.2596269629223" y="243.05196605960265" width="9.553296232876713"
+            height="154.14334644039735" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="767.8023818671193" y="256.20412872516556" width="9.553296232876713"
+            height="140.99118377483444" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="779.729895268123" y="316.17799048013245" width="9.553296232876713"
+            height="81.01732201986755" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="791.6574086691267" y="268.3041183774834" width="9.553296232876713"
+            height="128.8911941225166" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="803.2001635733237" y="253.57369619205298" width="9.553296232876713"
+            height="143.62161630794702" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="815.1437085783609" y="248.3128311258278" width="9.553296232876713"
+            height="148.8824813741722" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="826.6864634825581" y="283.0345405629139" width="9.553296232876713"
+            height="114.16077193708611" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+        <rect class="shipment-bar" x="838.6139768835617" y="355.6344784768212" width="9.553296232876713"
+            height="41.56083402317881" fill="#ff2800" opacity="0.7" rx="2" filter="url(#ferrari-glow)"/>
+    </g>
+    <line class="crosshair" stroke="#fffdd0" stroke-width="1" stroke-dasharray="3,3" opacity="0" y1="12"
+        y2="409.1953125" x1="846.4631115989964" x2="846.4631115989964"/>
+    <rect x="15" y="12" width="843.390625" height="397.1953125" fill="none"/>
+</svg>

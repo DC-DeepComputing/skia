@@ -32,6 +32,7 @@ namespace skgpu::graphite {
 
 class Caps;
 class Context;
+class Device;
 class DrawContext;
 class Image;
 class Image_Base;
@@ -99,7 +100,8 @@ class Backend;
 
 sk_sp<Backend> MakeGraphiteBackend(skgpu::graphite::Recorder* recorder,
                                    const SkSurfaceProps&,
-                                   SkColorType);
+                                   SkColorType,
+                                   skgpu::graphite::Device* parentDevice = nullptr);
 
 }  // namespace skif
 
