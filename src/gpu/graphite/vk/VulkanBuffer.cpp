@@ -80,20 +80,25 @@ sk_sp<Buffer> VulkanBuffer::Make(const VulkanSharedContext* sharedContext,
             bufInfo.usage = VK_BUFFER_USAGE_INDEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT;
             break;
         case BufferType::kStorage:
-            bufInfo.usage = VK_BUFFER_USAGE_STORAGE_BUFFER_BIT;
+            bufInfo.usage = VK_BUFFER_USAGE_STORAGE_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT;
             break;
         case BufferType::kQuery:
             SK_ABORT("Query buffers not supported on Vulkan");
             break;
         case BufferType::kIndirect:
-            bufInfo.usage =
-                    VK_BUFFER_USAGE_INDIRECT_BUFFER_BIT | VK_BUFFER_USAGE_STORAGE_BUFFER_BIT;
+            bufInfo.usage = VK_BUFFER_USAGE_INDIRECT_BUFFER_BIT |
+                            VK_BUFFER_USAGE_STORAGE_BUFFER_BIT |
+                            VK_BUFFER_USAGE_TRANSFER_DST_BIT;
             break;
         case BufferType::kVertexStorage:
-            bufInfo.usage = VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_STORAGE_BUFFER_BIT;
+            bufInfo.usage = VK_BUFFER_USAGE_VERTEX_BUFFER_BIT |
+                            VK_BUFFER_USAGE_STORAGE_BUFFER_BIT |
+                            VK_BUFFER_USAGE_TRANSFER_DST_BIT;
             break;
         case BufferType::kIndexStorage:
-            bufInfo.usage = VK_BUFFER_USAGE_INDEX_BUFFER_BIT | VK_BUFFER_USAGE_STORAGE_BUFFER_BIT;
+            bufInfo.usage = VK_BUFFER_USAGE_INDEX_BUFFER_BIT |
+                            VK_BUFFER_USAGE_STORAGE_BUFFER_BIT |
+                            VK_BUFFER_USAGE_TRANSFER_DST_BIT;
             break;
         case BufferType::kUniform:
             bufInfo.usage = VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT;
@@ -310,14 +315,21 @@ VkPipelineStageFlags access_to_pipeline_srcStageFlags(const VkAccessFlags srcAcc
             // stage bit indiscriminately is a bit overkill. This call should be modified to check &
             // allow for selecting VK_PIPELINE_STAGE_VERTEX_SHADER_BIT when appropriate.
             return (VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT | VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT);
-        case (VK_ACCESS_SHADER_WRITE_BIT):
+        case (VK_ACCESS_SHADER_READ_BIT):
+            return (VK_PIPELINE_STAGE_VERTEX_SHADER_BIT |
+                    VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT |
+                    VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT);
+        // There is no current usage that is write only, but in the future compute might, so
+        // defensively fallthrough anyways.
+        case (VK_ACCESS_SHADER_WRITE_BIT):  // fallthrough
+        case (VK_ACCESS_SHADER_READ_BIT | VK_ACCESS_SHADER_WRITE_BIT):
             return VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT;
-        case (VK_ACCESS_INDEX_READ_BIT):  // fallthrough
+        case (VK_ACCESS_INDEX_READ_BIT):    // fallthrough
         case (VK_ACCESS_VERTEX_ATTRIBUTE_READ_BIT):
             return VK_PIPELINE_STAGE_VERTEX_INPUT_BIT;
         case (VK_ACCESS_INDIRECT_COMMAND_READ_BIT):
-            return VK_PIPELINE_STAGE_DRAW_INDIRECT_BIT;
-        case (VK_ACCESS_HOST_READ_BIT):  // fallthrough
+            return (VK_PIPELINE_STAGE_DRAW_INDIRECT_BIT | VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT);
+        case (VK_ACCESS_HOST_READ_BIT):     // fallthrough
         case (VK_ACCESS_HOST_WRITE_BIT):
             return VK_PIPELINE_STAGE_HOST_BIT;
         default:
@@ -330,6 +342,7 @@ bool access_is_read_only(VkAccessFlags access) {
         case 0: // initialization state
         case (VK_ACCESS_TRANSFER_READ_BIT):
         case (VK_ACCESS_UNIFORM_READ_BIT):
+        case (VK_ACCESS_SHADER_READ_BIT):
         case (VK_ACCESS_INDEX_READ_BIT):
         case (VK_ACCESS_VERTEX_ATTRIBUTE_READ_BIT):
         case (VK_ACCESS_INDIRECT_COMMAND_READ_BIT):
@@ -337,6 +350,7 @@ bool access_is_read_only(VkAccessFlags access) {
             return true;
         case (VK_ACCESS_TRANSFER_WRITE_BIT):
         case (VK_ACCESS_SHADER_WRITE_BIT):
+        case (VK_ACCESS_SHADER_READ_BIT | VK_ACCESS_SHADER_WRITE_BIT):
         case (VK_ACCESS_HOST_WRITE_BIT):
             return false;
         default:
@@ -354,7 +368,11 @@ void VulkanBuffer::setBufferAccess(VulkanCommandBuffer* cmdBuffer,
              dstAccess == VK_ACCESS_TRANSFER_READ_BIT ||
              dstAccess == VK_ACCESS_UNIFORM_READ_BIT ||
              dstAccess == VK_ACCESS_VERTEX_ATTRIBUTE_READ_BIT ||
-             dstAccess == VK_ACCESS_INDEX_READ_BIT);
+             dstAccess == VK_ACCESS_INDEX_READ_BIT ||
+             dstAccess == VK_ACCESS_INDIRECT_COMMAND_READ_BIT ||
+             dstAccess == VK_ACCESS_SHADER_READ_BIT ||
+             dstAccess == VK_ACCESS_SHADER_WRITE_BIT ||
+             dstAccess == (VK_ACCESS_SHADER_READ_BIT | VK_ACCESS_SHADER_WRITE_BIT));
 
     VkPipelineStageFlags srcStageMask = access_to_pipeline_srcStageFlags(fCurrentAccess);
     SkASSERT(srcStageMask);
