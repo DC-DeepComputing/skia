@@ -182,10 +182,13 @@ public:
         return fPixelStorages;
     }
 
+    uint32_t getContentId() const { return fContentID; }
+
 protected:
     SkImage_Base(const SkImageInfo& info, uint32_t uniqueID, sk_sp<SkPixelStorage> backingStorage);
     // fPixelStorages is protected since SkImage_Raster needs access in ctor
     skia_private::STArray<1, sk_sp<SkPixelStorage>> fPixelStorages;
+    uint32_t fContentID = 0;
 private:
     // Set true by caches when they cache content that's derived from the current pixels.
 

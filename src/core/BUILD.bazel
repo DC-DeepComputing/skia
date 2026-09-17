@@ -297,6 +297,7 @@ skia_filegroup(
         "Recorder.cpp",
         "SkAAClip.cpp",
         "SkATrace.cpp",
+        "SkRecorder.cpp",
         "SkAlphaRuns.cpp",
         "SkAnalyticEdge.cpp",
         "SkAnnotation.cpp",
