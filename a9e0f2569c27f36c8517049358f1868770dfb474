@@ -113,6 +113,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "747d135d_a9e75762",
+        "filename": "modules/skottie/src/Layer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 4621846
+      },
+      "writtenOn": "2026-09-17T20:51:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "de2e6887_e2028322",
+      "revId": "a9e0f2569c27f36c8517049358f1868770dfb474",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "59e8d806_91d64ce1",
@@ -244,6 +262,30 @@
       "writtenOn": "2026-09-16T13:12:45Z",
       "side": 1,
       "message": "There\u0027s got to be some better way to format this",
+      "range": {
+        "startLine": 267,
+        "startChar": 0,
+        "endLine": 270,
+        "endChar": 25
+      },
+      "revId": "a9e0f2569c27f36c8517049358f1868770dfb474",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3436f16_0f5171aa",
+        "filename": "modules/skottie/src/effects/FractalNoiseEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 4621846
+      },
+      "writtenOn": "2026-09-17T20:51:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d6b16320_7b625aa4",
       "range": {
         "startLine": 267,
         "startChar": 0,
