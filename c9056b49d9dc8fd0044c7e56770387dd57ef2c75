@@ -50,6 +50,46 @@
       "message": "It seems like we\u0027re going to see some dropped-draw-w/o-error-return AI bugs from this",
       "revId": "c9056b49d9dc8fd0044c7e56770387dd57ef2c75",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d288e9fd_823976b4",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 2014,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-17T18:53:43Z",
+      "side": 1,
+      "message": "overlength",
+      "revId": "c9056b49d9dc8fd0044c7e56770387dd57ef2c75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ea0cf23_392ebce5",
+        "filename": "src/gpu/graphite/sparse_strips/StripGenerator.h",
+        "patchSetId": 27
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-17T18:53:43Z",
+      "side": 1,
+      "message": "Can we just forward declare these two ?",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 32
+      },
+      "revId": "c9056b49d9dc8fd0044c7e56770387dd57ef2c75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
