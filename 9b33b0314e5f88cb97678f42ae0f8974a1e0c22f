@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "565499cb_f584dea0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-09-17T23:29:41Z",
+      "side": 1,
+      "message": "Yeah unfortunately C++ doesn’t have something quite as ergonomic as Rust’s `match` statements, but after trying out both it looks alright with `std::variant` here",
+      "parentUuid": "ef0c6c3f_af077e42",
+      "revId": "9b33b0314e5f88cb97678f42ae0f8974a1e0c22f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ae788adb_0e2c8595",
@@ -31,6 +49,30 @@
       "writtenOn": "2026-09-17T22:43:43Z",
       "side": 1,
       "message": "Is the `monostate` part needed?  Isn\u0027t this equivalent to just storing a `std::nullopt` in `std::optional\u003cDecodingState\u003e fIncrementalDecodingState`?",
+      "range": {
+        "startLine": 86,
+        "startChar": 26,
+        "endLine": 86,
+        "endChar": 35
+      },
+      "revId": "9b33b0314e5f88cb97678f42ae0f8974a1e0c22f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad7f40e0_cf327a63",
+        "filename": "src/codec/SkPngRustCodec.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-09-17T23:29:41Z",
+      "side": 1,
+      "message": "Good catch! Changed `startDecoding` to populate `std::optional\u003cDecodingState\u003e\u0026` directly so `std::nullopt` represents the absent state and `fDst` is just `std::variant\u003cUninitializedDstInfo, DecodingDstInfo\u003e` (this also simplifies `onStartIncrementalDecode`).",
+      "parentUuid": "ae788adb_0e2c8595",
       "range": {
         "startLine": 86,
         "startChar": 26,
