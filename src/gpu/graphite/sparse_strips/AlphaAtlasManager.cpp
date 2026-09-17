@@ -48,8 +48,8 @@ bool AlphaAtlasManager::createPageInSlot(int slot, int32_t minRequiredBytes) {
                                fRecorder->priv().resourceProvider(),
                                SkISize::Make(SparseStripConfig::kAtlasWidth, rows),
                                info,
-                               "AlphaAtlas",
-                               Budgeted::kYes);
+                               Budgeted::kYes,
+                               "AlphaAtlas");
 
     if (!proxy) {
         return false;
