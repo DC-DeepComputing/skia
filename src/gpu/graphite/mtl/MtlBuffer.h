@@ -21,7 +21,7 @@ class MtlBuffer final : public Buffer {
 public:
     static sk_sp<Buffer> Make(const MtlSharedContext*,
                               size_t,
-                              BufferType,
+                              ResourceUsage,
                               AccessPattern,
                               std::string_view label);
 

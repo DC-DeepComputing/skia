@@ -90,25 +90,50 @@ enum class StoreOp : uint8_t {
 inline static constexpr int kStoreOpCount = (int)(StoreOp::kLast) + 1;
 
 /**
- * What a GPU buffer will be used for
+ * Define static flags to represent anticipated types of and uses for Resources. This allows for
+ * more efficient storage and comparison than string labels. The flags can be mapped to strings once
+ * a Resource's usage(s) are solidified.
  */
-enum class BufferType : int {
-    kVertex,
-    kIndex,
-    kXferCpuToGpu,
-    kXferGpuToCpu,
-    kUniform,
-    kStorage,
-    kQuery,
-
+enum class ResourceUsage : uint32_t {
+    // First bits reserved for GPU buffer types
+    kVertexBuffer                    = 1 <<  0,
+    kIndexBuffer                     = 1 <<  1,
+    kXferCpuToGpuBuffer              = 1 <<  2,
+    kXferGpuToCpuBuffer              = 1 <<  3,
+    kUniformBuffer                   = 1 <<  4,
+    kStorageBuffer                   = 1 <<  5,
+    kQueryBuffer                     = 1 <<  6,
     // GPU-only buffer types
-    kIndirect,
-    kVertexStorage,
-    kIndexStorage,
+    kIndirectBuffer                  = 1 <<  7,
+    kVertexStorageBuffer             = 1 <<  8,
+    kIndexStorageBuffer              = 1 <<  9,
 
-    kLast = kIndexStorage,
+    // Needed? kLastResourceUsage                  = kIndexStorageBuffer,
+
+    // Anticipated texture usages
+    kAtlasProviderTexture            = 1 << 10,
+    kAsyncReadPixelsFallbackTexture  = 1 << 11,
+    kChildDeviceTexture              = 1 << 12,
+    kCopyDeviceTexture               = 1 << 13,
+    kDiscardableLoadMSAATexture      = 1 << 14,
+    kDispatchWriteOnlyStorageTexture = 1 << 15,
+    kDstCopyTexture                  = 1 << 16,
+    kEvalBlurTexture                 = 1 << 17,
+    kGenerateMipmapsScratchTexture   = 1 << 18,
+    kImageFilterCachedBitmapTexture  = 1 << 19,
+    kImageFilterResultTexture        = 1 << 20,
+    kImageMakeCTandCSTexture         = 1 << 21,
+    kImageSubsetTexture              = 1 << 22,
+    kLazySkImageBitmapTexture        = 1 << 23,
+    kRasterBitmapTexture             = 1 << 24,
+    kRescaleDstTexture               = 1 << 25,
+    kRescaleImageTempTexture         = 1 << 26,
+    kRescaleLinearGammaTexture       = 1 << 27,
+    kYUVRasterBitmapPlaneTexture     = 1 << 28,
+
+    // Needed? kLastTextureUsage                = kYUVRasterBitmapPlaneTexture,
 };
-static const int kBufferTypeCount = static_cast<int>(BufferType::kLast) + 1;
+SK_MAKE_BITMASK_OPS(ResourceUsage)
 
 /**
  * Data layout requirements on host-shareable buffer contents.

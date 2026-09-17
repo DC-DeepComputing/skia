@@ -748,6 +748,8 @@ private:
     uint32_t fLastUseToken = 0;
     skgpu::StdSteadyClock::time_point fLastAccess;
 
+    SkEnumBitMask<ResourceUsage> fUsageFlags;
+
     // String used to describe the current use of this Resource.
     std::string fLabel;
     // Flag to signal whether this Resource's label has been updated and its backend label is now

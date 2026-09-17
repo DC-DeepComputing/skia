@@ -24,7 +24,7 @@ class DawnBuffer final : public Buffer {
 public:
     static sk_sp<DawnBuffer> Make(const DawnSharedContext*,
                                   size_t,
-                                  BufferType,
+                                  ResourceUsage,
                                   AccessPattern,
                                   std::string_view label);
 
