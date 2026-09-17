@@ -66,6 +66,10 @@ protected:
                                 const char* dumpName) const override;
 
 private:
+    // TODO(b/431796811): Once texture usage flags are stored on this class, override onSetLabel()
+    // to consider these flags before bothering with cumbersome string generation / comparison.
+    // virtual std::optional<std::string> onSetLabel(std::string_view label) override;
+
     SkISize fDimensions;
     TextureInfo fInfo;
     sk_sp<MutableTextureState> fMutableState;
