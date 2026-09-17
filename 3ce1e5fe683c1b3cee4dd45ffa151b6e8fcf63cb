@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bbd262bd_43ffb9e6",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 325,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-09-17T14:01:47Z",
+      "side": 1,
+      "message": "Ack - Removed this comment, and will make sure that works as intended in future CLs (adjusting flags with a method call or something rather than upon setting a new label).",
+      "parentUuid": "e66b3d41_1367d4f5",
+      "range": {
+        "startLine": 325,
+        "startChar": 0,
+        "endLine": 325,
+        "endChar": 100
+      },
+      "revId": "3ce1e5fe683c1b3cee4dd45ffa151b6e8fcf63cb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c247e6b4_932440ca",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-09-16T20:39:42Z",
       "side": 1,
       "message": "This should be a private virtual function; subclasses can still override private virtuals, they just aren\u0027t allowed to call them directly, which is what we want here.",
+      "range": {
+        "startLine": 326,
+        "startChar": 0,
+        "endLine": 332,
+        "endChar": 5
+      },
+      "revId": "3ce1e5fe683c1b3cee4dd45ffa151b6e8fcf63cb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a0c9ae5a_4733df48",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-09-17T14:01:47Z",
+      "side": 1,
+      "message": "Ah, true, that is definitely better. Yep, they just need to be able to call into Resource::setLabel so that can stay protected, and this one I\u0027ve moved to be private.",
+      "parentUuid": "c247e6b4_932440ca",
       "range": {
         "startLine": 326,
         "startChar": 0,
