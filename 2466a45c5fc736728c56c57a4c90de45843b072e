@@ -110,6 +110,30 @@
       },
       "revId": "2466a45c5fc736728c56c57a4c90de45843b072e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4a8c833_799523a4",
+        "filename": "src/codec/SkPngRustCodec.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-09-17T20:56:18Z",
+      "side": 1,
+      "message": "\u003e I see what you mean; I think this could be expressed as `std::variant\u003cUninitializedDst, InitializedDst\u003e` or something like that, which would be cleaner and less error-prone\n\u003e \n\u003e Considering it’s a security fix and this refactor is likely to increase the diff somewhat significantly, would you be OK with doing this as a follow-up CL?\n\nYes - a follow-up CL SGTM.  FWIW I don\u0027t have a strong opinion on `std::optional` vs `std::variant` approach (the latter is more correct, but I worry that C++ code for dealing with `std::variant` may be quite noisy/weird compared to the `std::optional` approach).",
+      "parentUuid": "9a251236_0240557b",
+      "range": {
+        "startLine": 78,
+        "startChar": 8,
+        "endLine": 78,
+        "endChar": 37
+      },
+      "revId": "2466a45c5fc736728c56c57a4c90de45843b072e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
