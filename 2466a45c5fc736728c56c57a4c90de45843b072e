@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4576236e_bdc66f6d",
+        "filename": "src/codec/SkPngRustCodec.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 650,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-09-17T20:38:47Z",
+      "side": 1,
+      "message": "Whoops sorry the comment was there from a prior iteration before I introduced `supportsSamplingOrSubsetting`.\n\nI initially was checking the `this-\u003eisAnimated() !\u003d IsAnimated::kNo` and `frame-\u003eframeRect() \u003d\u003d this-\u003ebounds()` conditions separately to return a different error code in this case because of the `SkASSERT(result !\u003d kUnimplemented)` assertion in `SkCodec`. But then I realized this assertion should just be removed since callers actually do return `kUnimplemented`.\n\nRemoved the comment here, since it’s already documented in the header file for `supportsSamplingOrSubsetting`.",
+      "parentUuid": "3bfdc557_e3fdb5e7",
+      "range": {
+        "startLine": 647,
+        "startChar": 0,
+        "endLine": 650,
+        "endChar": 79
+      },
+      "revId": "2466a45c5fc736728c56c57a4c90de45843b072e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1d788e4d_c30058b7",
@@ -54,6 +78,30 @@
       "writtenOn": "2026-09-17T20:11:16Z",
       "side": 1,
       "message": "I wonder if using `std::optional` somewhere here would more clearly communicate which fields are off-limits before `initializeDecodingDst` gets called?  This would potentially make obsolete the explanatory comment above.\n\nPS. Although I guess this is more of a hypothetical `std::either` that initially holds `uint8_t* fDstPtr` and then gets transformed by `initializeDecodingDst` to hold the calculated offsets / subspans / etc.  In Rust this would be expressed via https://docs.rs/either\n\nPPS. And I guess to some extent this is a pre-existing coding issue - before this CL `initializeSamplerParams` initializes `fPreblendBuffer` without making this more explicit via `std::optional`... :-/",
+      "range": {
+        "startLine": 78,
+        "startChar": 8,
+        "endLine": 78,
+        "endChar": 37
+      },
+      "revId": "2466a45c5fc736728c56c57a4c90de45843b072e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a251236_0240557b",
+        "filename": "src/codec/SkPngRustCodec.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-09-17T20:38:47Z",
+      "side": 1,
+      "message": "I see what you mean; I think this could be expressed as `std::variant\u003cUninitializedDst, InitializedDst\u003e` or something like that, which would be cleaner and less error-prone\n\nConsidering it’s a security fix and this refactor is likely to increase the diff somewhat significantly, would you be OK with doing this as a follow-up CL?",
+      "parentUuid": "1d788e4d_c30058b7",
       "range": {
         "startLine": 78,
         "startChar": 8,
