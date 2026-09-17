@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "372c7131_aa549c30",
+        "filename": "src/gpu/graphite/geom/EndCaps.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-17T20:29:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "03d86a03_c7a9937d",
+      "revId": "6142e1c5e35b2be117c1cb43fec8534f4acda0a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ddd5952d_d39c2c3c",
@@ -48,6 +66,24 @@
       "writtenOn": "2026-09-17T15:31:31Z",
       "side": 1,
       "message": "// -1 means there are no null caps ?",
+      "revId": "6142e1c5e35b2be117c1cb43fec8534f4acda0a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f74582ae_c8c8f61a",
+        "filename": "src/gpu/graphite/geom/EndCaps.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-17T20:29:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ddd5952d_d39c2c3c",
       "revId": "6142e1c5e35b2be117c1cb43fec8534f4acda0a3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -104,6 +140,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4661f49_91ef0fc0",
+        "filename": "src/gpu/graphite/sparse_strips/AlphaAtlasManager.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-17T20:29:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c12ee4a8_0362f079",
+      "revId": "6142e1c5e35b2be117c1cb43fec8534f4acda0a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9f932f18_7789bc6b",
@@ -117,6 +171,24 @@
       "writtenOn": "2026-09-17T16:40:49Z",
       "side": 1,
       "message": "// Can be kNullSlot when ... ?",
+      "revId": "6142e1c5e35b2be117c1cb43fec8534f4acda0a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6cad8a9d_48da5b82",
+        "filename": "src/gpu/graphite/sparse_strips/AlphaAtlasManager.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-17T20:29:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9f932f18_7789bc6b",
       "revId": "6142e1c5e35b2be117c1cb43fec8534f4acda0a3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -138,6 +210,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "16a38780_de8aa017",
+        "filename": "src/gpu/graphite/sparse_strips/AlphaAtlasManager.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-17T20:29:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "beb6304b_634cb0e5",
+      "revId": "6142e1c5e35b2be117c1cb43fec8534f4acda0a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1410ee38_e0b1b6e1",
@@ -151,6 +241,24 @@
       "writtenOn": "2026-09-17T17:05:50Z",
       "side": 1,
       "message": "\\n ?",
+      "revId": "6142e1c5e35b2be117c1cb43fec8534f4acda0a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2cac59f_388aae87",
+        "filename": "tests/graphite/sparse_strips/AtlasTests.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-17T20:29:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1410ee38_e0b1b6e1",
       "revId": "6142e1c5e35b2be117c1cb43fec8534f4acda0a3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
