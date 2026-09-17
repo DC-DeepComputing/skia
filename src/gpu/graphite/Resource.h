@@ -16,6 +16,7 @@
 
 #include <atomic>
 #include <functional>
+#include <optional>
 #include <string>
 #include <string_view>
 
@@ -301,6 +302,25 @@ protected:
 
     const SharedContext* sharedContext() const { return fSharedContext; }
 
+    // We allow the label on a Resource to change when used for a different function (e.g. when
+    // reusing a scratch Texture, we can change the label to reflect the caller's current usage).
+    // This method is only expected to be called when it is threadsafe to update the label.
+    // This means it should only be called:
+    //      A) during resource creation,
+    //      B) when returning a non-shareable resource from the cache, or
+    //      C) by the Context thread when updating scratch resource labels upon Recording insertion.
+    void setLabel(std::string_view label) {
+        if (fLabel == label) {
+            return;
+        }
+
+        fLabel = label;
+
+        // It is not always safe to immediately update the backend GPU resource label. Mark it
+        // as dirty so it can be updated when appropriate.
+        fBackendLabelDirty = true;
+    }
+
     // Update the backend GPU resource label to match fLabel. This should only ever be called by the
     // ResourceCache or Resource subclass constructors.
     void synchronizeBackendLabel() {
@@ -444,22 +464,6 @@ private:
         return {(origRefs & fReusableRefMask) == RefMask(RefType::kReturnQueue),
                 (origRefs & PurgeableMask()) == 0,
                 next};
-    }
-
-    // We allow the label on a Resource to change when used for a different function (e.g. when
-    // reusing a scratch Texture, we can change the label to reflect the caller's current usage).
-    // This method is only expected to be called when returning a non-shareable or scratch resource
-    // from the cache.
-    void setLabel(std::string_view label) {
-        if (fLabel == label) {
-            return;
-        }
-
-        fLabel = label;
-
-        // It is not always safe to immediately update the backend GPU resource label. Mark it
-        // as dirty so it can be updated when appropriate.
-        fBackendLabelDirty = true;
     }
 
 #if defined(SK_DEBUG) || defined(GPU_TEST_UTILS)
