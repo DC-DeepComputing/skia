@@ -67,6 +67,24 @@
       "message": "Couldn\u0027t the second one be null?",
       "revId": "6142e1c5e35b2be117c1cb43fec8534f4acda0a3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3689521_0bb8b49c",
+        "filename": "src/gpu/graphite/render/EndCapRenderStep.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-17T15:40:01Z",
+      "side": 1,
+      "message": "Handled by AlphaAtlasManager::populateProxies, which will always fill EndCaps with valid proxies.",
+      "parentUuid": "360ee1d1_6a4820af",
+      "revId": "6142e1c5e35b2be117c1cb43fec8534f4acda0a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
