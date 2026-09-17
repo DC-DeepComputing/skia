@@ -84,14 +84,15 @@ void DescriptorDataToVkDescSetLayout(const VulkanSharedContext* ctxt,
                                      VkDescriptorSetLayout* outLayout) {
     // If requestedDescriptors is empty, that simply means we should create an empty placeholder
     // layout that doesn't actually contain any descriptors.
-    skia_private::STArray<kDescriptorTypeCount, VkDescriptorSetLayoutBinding> bindingLayouts;
+    skia_private::STArray<16, VkDescriptorSetLayoutBinding> bindingLayouts;
     for (size_t i = 0; i < requestedDescriptors.size(); i++) {
         if (requestedDescriptors[i].fCount != 0) {
             const DescriptorData& currDescriptor = requestedDescriptors[i];
             VkDescriptorSetLayoutBinding& layoutBinding = bindingLayouts.push_back();
             layoutBinding = {};
             layoutBinding.binding = currDescriptor.fBindingIndex;
-            layoutBinding.descriptorType = DsTypeEnumToVkDs(currDescriptor.fType);
+            layoutBinding.descriptorType = DsTypeEnumToVkDs(currDescriptor.fType,
+                                                            currDescriptor.fPipelineStageFlags);
             layoutBinding.descriptorCount = currDescriptor.fCount;
             layoutBinding.stageFlags =
                     PipelineStageFlagsToVkShaderStageFlags(currDescriptor.fPipelineStageFlags);
@@ -118,10 +119,16 @@ void DescriptorDataToVkDescSetLayout(const VulkanSharedContext* ctxt,
     }
 }
 
-VkDescriptorType DsTypeEnumToVkDs(DescriptorType type) {
+VkDescriptorType DsTypeEnumToVkDs(DescriptorType type,
+                                  SkEnumBitMask<PipelineStageFlags> stageFlags) {
+    // Graphite's compute dispatches currently allocate unique descriptor sets per dispatch rather
+    // than using dynamic offsets, while graphics pipelines use dynamic offsets to reuse descriptor
+    // sets across draws.
     switch (type) {
         case DescriptorType::kUniformBuffer:
-            return VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC;
+            return (stageFlags & PipelineStageFlags::kCompute)
+                    ? VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER
+                    : VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC;
         case DescriptorType::kTextureSampler:
             return VK_DESCRIPTOR_TYPE_SAMPLER;
         case DescriptorType::kTexture:
@@ -129,9 +136,13 @@ VkDescriptorType DsTypeEnumToVkDs(DescriptorType type) {
         case DescriptorType::kCombinedTextureSampler:
             return VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
         case DescriptorType::kStorageBuffer:
-            return VK_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC;
+            return (stageFlags & PipelineStageFlags::kCompute)
+                    ? VK_DESCRIPTOR_TYPE_STORAGE_BUFFER
+                    : VK_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC;
         case DescriptorType::kInputAttachment:
             return VK_DESCRIPTOR_TYPE_INPUT_ATTACHMENT;
+        case DescriptorType::kStorageTexture:
+            return VK_DESCRIPTOR_TYPE_STORAGE_IMAGE;
     }
     SkUNREACHABLE;
 }

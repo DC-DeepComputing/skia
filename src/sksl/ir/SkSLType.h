@@ -372,11 +372,23 @@ public:
     }
 
     /**
-     * Returns true if this type represents a dedicated storage texture (writeonly or readwrite).
+     * Returns true if this type represents an inherently dedicated storage texture (writeonly or
+     * readwrite).
      *
-     * Note: `readonly texture2D` (TextureAccess::kRead) can represent either:
-     *  - A read-only storage image (if declared with a pixel-format layout like `layout(rgba8)`)
-     *  - A standalone sampled texture (if declared without a pixel-format layout)
+     * In GPU APIs and SPIR-V, textures fall into two distinct descriptor categories:
+     *  1. Storage Images (VK_DESCRIPTOR_TYPE_STORAGE_IMAGE, SPIR-V `Sampled = 2`): Declared with an
+     *     explicit pixel format layout qualifier (e.g. `rgba8`, `rgba32f`) and accessed via
+     *     `OpImageRead` / `OpImageWrite`.
+     *  2. Sampled Textures (VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE, WGSL `texture_2d<f32>`, SPIR-V
+     *     `Sampled = 1`): Declared without a pixel format and accessed via `OpImageFetch` (lod 0)
+     *     or `OpImageSample*`.
+     *
+     * In SkSL, `texture2D` is used for both concepts:
+     *  - `writeonly` and `readwrite` textures are always storage textures and MUST specify a pixel
+     *    format.
+     *  - `readonly texture2D` is dual-purpose: if an explicit pixel format is provided (e.g.
+     *    `layout(rgba8)`), it represents a read-only storage image; if omitted, it represents a
+     *    standalone sampled texture.
      */
     bool isStorageTexture() const {
         return fTypeKind == TypeKind::kTexture &&
