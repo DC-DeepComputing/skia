@@ -34,16 +34,22 @@ public:
     SkContext& operator=(const SkContext&) = delete;
     SkContext& operator=(SkContext&&) = delete;
 
+    class SkContextFactoryPasskey {
+    private:
+        SkContextFactoryPasskey() = default;
+        friend class SkContextCtorAccessor;
+    };
+
+    SkContext(SkContextFactoryPasskey, const SkContextOptions&);
     ~SkContext();
 
     SkContextPriv priv();
     SkContextPrivConst priv() const;
 
 private:
-    SkContext(sk_sp<SkSharedContext>);
-
     friend class SkContextPrivConst;
     friend class SkContextPriv;
+    friend class SkContextCtorAccessor;
 
     SkResourceCache* resourceCache() const;
     SkStrikeCache* fontCache() const;
