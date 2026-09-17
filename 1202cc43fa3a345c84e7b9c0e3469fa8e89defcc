@@ -22,6 +22,30 @@
       },
       "revId": "1202cc43fa3a345c84e7b9c0e3469fa8e89defcc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2b41b78_a565eef4",
+        "filename": "tools/gpu/vk/VkYcbcrSamplerHelper.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 5160072
+      },
+      "writtenOn": "2026-09-17T12:23:41Z",
+      "side": 1,
+      "message": "There is no spec requirement for bind order. It looks like Lavapipe implementation bug based on my test results. Please take a look more detail in https://b.corp.google.com/issues/558500878#comment9\n\nWe are using Cloud VM (without physical GPU) to run automated CTS runs for emulators. So, this fix can help to pass this automated test runs. Thanks.",
+      "parentUuid": "51116eb0_103f41e0",
+      "range": {
+        "startLine": 123,
+        "startChar": 44,
+        "endLine": 123,
+        "endChar": 59
+      },
+      "revId": "1202cc43fa3a345c84e7b9c0e3469fa8e89defcc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
