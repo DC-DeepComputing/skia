@@ -59,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3016e690_56a95e8c",
+        "filename": "src/core/SkBlurMaskFilterImpl.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-17T21:12:04Z",
+      "side": 1,
+      "message": "Moved the clamp. In the `ignoreXform()` branch `fSigma` does represent a device-space sigma since that is how it is used in `computeXformedDeviceSigma()`, so I believe we should still clamp it first and then transform by the inverse to go from device-space to local-space. I renamed `kMaxBlurSigma` to `kMaxBlurDeviceSigma` to clarify and added comments to each branch so the reasoning behind the order of operations is clearer.",
+      "parentUuid": "c06d8441_6799c489",
+      "range": {
+        "startLine": 123,
+        "startChar": 0,
+        "endLine": 123,
+        "endChar": 60
+      },
+      "revId": "7b235264bfa5785cd16f5c355c8ca6f889f10982",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e801fb0f_a3639a10",
@@ -72,6 +96,30 @@
       "writtenOn": "2026-09-16T19:59:07Z",
       "side": 1,
       "message": "nit: !defined(SK_SUPPORT_LEGACY_RRECT_BLUR). We\u0027ve tried to move towards using defined(FOO) instead of #ifdef or #ifndef",
+      "range": {
+        "startLine": 2500,
+        "startChar": 0,
+        "endLine": 2500,
+        "endChar": 36
+      },
+      "revId": "7b235264bfa5785cd16f5c355c8ca6f889f10982",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f1c8a0e_7fa48923",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 2500,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-17T21:12:04Z",
+      "side": 1,
+      "message": "Done, also renamed to `SK_SUPPORT_LEGACY_GRAPHITE_RRECT_BLUR`.",
+      "parentUuid": "e801fb0f_a3639a10",
       "range": {
         "startLine": 2500,
         "startChar": 0,
@@ -105,6 +153,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dae12d0a_a2380c89",
+        "filename": "src/gpu/graphite/geom/AnalyticRRectBlurMask.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-17T21:12:04Z",
+      "side": 1,
+      "message": "Yes done, this was left over from other old code.",
+      "parentUuid": "282b125c_fe5e76a6",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 66
+      },
+      "revId": "7b235264bfa5785cd16f5c355c8ca6f889f10982",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5dade758_04eac641",
@@ -118,6 +190,30 @@
       "writtenOn": "2026-09-16T19:59:07Z",
       "side": 1,
       "message": "Since these values aren\u0027t part of the key anymore, I think it\u0027s better to remove these derived properties from AnalyticRRectBlurMask and calculate them as needed inside the render step\u0027s functions (possibly still in writeVertices vs. the VS).",
+      "range": {
+        "startLine": 38,
+        "startChar": 3,
+        "endLine": 42,
+        "endChar": 0
+      },
+      "revId": "7b235264bfa5785cd16f5c355c8ca6f889f10982",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e6b024c_ca20bbfe",
+        "filename": "src/gpu/graphite/geom/AnalyticRRectBlurMask.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-17T21:12:04Z",
+      "side": 1,
+      "message": "Sure, moved it there.",
+      "parentUuid": "5dade758_04eac641",
       "range": {
         "startLine": 38,
         "startChar": 3,
@@ -151,6 +247,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ff1dc10_7782fb22",
+        "filename": "src/gpu/graphite/render/AnalyticRRectBlurRenderStep.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-17T21:12:04Z",
+      "side": 1,
+      "message": "Sure, added additional comments for what you proposed.",
+      "parentUuid": "ef5987f8_e205c280",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 72
+      },
+      "revId": "7b235264bfa5785cd16f5c355c8ca6f889f10982",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2ae146e3_1b3c0044",
@@ -164,6 +284,30 @@
       "writtenOn": "2026-09-16T19:59:07Z",
       "side": 1,
       "message": "An ASCII figure here could be helpful too if it\u0027s possible to fit reasonably",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 69
+      },
+      "revId": "7b235264bfa5785cd16f5c355c8ca6f889f10982",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8dcad0c0_16c33135",
+        "filename": "src/gpu/graphite/render/AnalyticRRectBlurRenderStep.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-17T21:12:04Z",
+      "side": 1,
+      "message": "Added three diagrams which showcases the different cases we may end up with after the vertex shader. Added some more comments as well explaining the figures.",
+      "parentUuid": "2ae146e3_1b3c0044",
       "range": {
         "startLine": 39,
         "startChar": 0,
@@ -197,6 +341,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "de7c230d_0a74281f",
+        "filename": "src/gpu/graphite/render/AnalyticRRectBlurRenderStep.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-17T21:12:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5d0dde44_066a80ee",
+      "range": {
+        "startLine": 56,
+        "startChar": 60,
+        "endLine": 56,
+        "endChar": 64
+      },
+      "revId": "7b235264bfa5785cd16f5c355c8ca6f889f10982",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9c53d72c_ec350e71",
@@ -210,6 +378,30 @@
       "writtenOn": "2026-09-16T19:59:07Z",
       "side": 1,
       "message": "just a note, when using std140 layout (which is what we use for uniform storage in vulkan and dawn), an array of float like this will actually have its elements padded out to 4 elements each. xBounds and yBounds would both then take up 96 bytes instead of 24.\n\nWe could pack the xBounds and yBounds into 3 float4s to avoid that, but it does make indexing more annoying in the VS.",
+      "range": {
+        "startLine": 153,
+        "startChar": 0,
+        "endLine": 154,
+        "endChar": 56
+      },
+      "revId": "7b235264bfa5785cd16f5c355c8ca6f889f10982",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "46f1e71a_24c7f015",
+        "filename": "src/gpu/graphite/render/AnalyticRRectBlurRenderStep.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-17T21:12:04Z",
+      "side": 1,
+      "message": "Done, packed it into those 3 float4s. It does make the indexing a bit more confusing but I left a comment in the sksl vertex function to clarify the packing of the bounds.",
+      "parentUuid": "9c53d72c_ec350e71",
       "range": {
         "startLine": 153,
         "startChar": 0,
@@ -243,6 +435,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "da70afdd_1065fe83",
+        "filename": "src/gpu/graphite/render/AnalyticRRectBlurRenderStep.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-17T21:12:04Z",
+      "side": 1,
+      "message": "Sure I can pack this into 2 float4s, however I think it might be simpler to not separate the X and Y since in the vertex shader we do use pick one of 4 radii depending on the corner index for beveling, so it would be easier to just keep the x/y together so I can swizzle to get both as a float2 in the VS.",
+      "parentUuid": "e49ab2ea_a90ee548",
+      "range": {
+        "startLine": 158,
+        "startChar": 0,
+        "endLine": 158,
+        "endChar": 55
+      },
+      "revId": "7b235264bfa5785cd16f5c355c8ca6f889f10982",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "480bb6c9_4a00fb18",
@@ -266,6 +482,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b41b9ff9_58355e74",
+        "filename": "src/gpu/graphite/render/AnalyticRRectBlurRenderStep.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-17T21:12:04Z",
+      "side": 1,
+      "message": "Renamed them to `blurRadius` and `rrectRadii` respectively.",
+      "parentUuid": "480bb6c9_4a00fb18",
+      "range": {
+        "startLine": 159,
+        "startChar": 0,
+        "endLine": 159,
+        "endChar": 53
+      },
+      "revId": "7b235264bfa5785cd16f5c355c8ca6f889f10982",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3ee2adab_492accf2",
@@ -279,6 +519,30 @@
       "writtenOn": "2026-09-16T19:59:07Z",
       "side": 1,
       "message": "Some of these properties that are only used in the vertex shader could be included as appendAttrs instead of uniforms.",
+      "range": {
+        "startLine": 181,
+        "startChar": 0,
+        "endLine": 181,
+        "endChar": 72
+      },
+      "revId": "7b235264bfa5785cd16f5c355c8ca6f889f10982",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd87266a_3eff1d48",
+        "filename": "src/gpu/graphite/render/AnalyticRRectBlurRenderStep.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-17T21:12:04Z",
+      "side": 1,
+      "message": "Done, moved the VS only uniforms to append attrs.",
+      "parentUuid": "3ee2adab_492accf2",
       "range": {
         "startLine": 181,
         "startChar": 0,
